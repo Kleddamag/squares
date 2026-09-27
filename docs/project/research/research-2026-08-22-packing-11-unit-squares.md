@@ -878,54 +878,53 @@ Use the structured form to query or plot; use these tables to read.
 | `n` | best reported `s(n)` | how | deg | reported lower bound | from | gap |
 | --- | --- | --- | --- | --- | --- | --- |
 | 11 | 3.87708359 | hand | 8 | 3.875 | elementary | 0.0021 |
-| 12 | 4 | grid | — | 3.788854 | monotone from `s(11)` | 0.2111 |
-| 17 | 4.67553009 | hand | 18 | 4.62002 | elementary | 0.0555 |
-| 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.613046 | monotone from `s(17)` | 0.2098 |
-| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.617282 | unavoidable points | 0.2683 |
-| 20 | 5 | grid | — | 4.617282 | monotone | 0.3827 |
-| 21 | 5 | grid | — | 4.7438 | unavoidable points | 0.2562 |
-| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.508 | elementary | 0.1133 |
-| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.508 | monotone | 0.1991 |
-| 28 | 5.82444462 | annealing | 6 | 5.511709 | unavoidable points | 0.3127 |
-| 29 | 5.93383346 | annealing | — | 5.71 | elementary | 0.2238 |
-| 30 | 6 | grid | — | 5.71 | monotone | 0.29 |
-| 31 | 6 | grid | — | 5.71 | monotone | 0.29 |
-| 32 | 6 | grid | — | 5.795832 | Nagamochi | 0.2042 |
-| 37 | 6.59861961 | hand | 8 | 6.350603 | unavoidable points | 0.248 |
-| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.350603 | monotone | 0.3565 |
-| 39 | 6.81072208 | annealing | 5 | 6.5 | elementary | 0.3107 |
-| 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.5 | elementary | 0.3284 |
-| 41 | 6.92669309 | annealing | 42 | 6.5 | monotone | 0.4267 |
-| 42 | 7 | grid | — | 6.567764 | Nagamochi | 0.4322 |
-| 43 | 7 | grid | — | 6.656854 | Nagamochi | 0.3431 |
-| 44 | 7 | grid | — | 6.744563 | Nagamochi | 0.2554 |
-| 45 | 7 | grid | — | 6.830952 | Nagamochi | 0.169 |
+| 12 | 4 | grid | — | 3.968615 | elementary | 0.0314 |
+| 17 | 4.67553009 | hand | 18 | 4.66001 | elementary | 0.0155 |
+| 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | elementary | 0.1279 |
+| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.815 | elementary | 0.0706 |
+| 20 | 5 | grid | — | 4.895 | elementary | 0.105 |
+| 21 | 5 | grid | — | 4.995004 | elementary | 0.005 |
+| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.53 | elementary | 0.0913 |
+| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6 | elementary | 0.1071 |
+| 28 | 5.82444462 | annealing | 6 | 5.695 | elementary | 0.1294 |
+| 29 | 5.93383346 | annealing | — | 5.785 | elementary | 0.1488 |
+| 30 | 6 | grid | — | 5.865 | elementary | 0.135 |
+| 31 | 6 | grid | — | 5.92 | elementary | 0.08 |
+| 37 | 6.59861961 | hand | 8 | 6.4 | elementary | 0.1986 |
+| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.52 | elementary | 0.1871 |
+| 39 | 6.81072208 | annealing | 5 | 6.62 | elementary | 0.1907 |
+| 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.695 | elementary | 0.1334 |
+| 41 | 6.92669309 | annealing | 42 | 6.745 | elementary | 0.1817 |
+| 42 | 7 | grid | — | 6.76 | elementary | 0.24 |
+| 43 | 7 | grid | — | 6.855 | elementary | 0.145 |
+| 44 | 7 | grid | — | 6.925 | elementary | 0.075 |
+| 45 | 7 | grid | — | 6.955 | elementary | 0.045 |
 | 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.317426 | unavoidable points | 0.254 |
-| 51 | 7.70079924 | annealing | 12 | 7.317426 | monotone | 0.3834 |
-| 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.317426 | monotone | 0.3897 |
-| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.38 | elementary | 0.4429 |
-| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.403124 | Nagamochi | 0.4435 |
-| 55 | 7.94577101 | annealing | — | 7.54 | elementary | 0.4058 |
-| 56 | 8 | grid | — | 7.62 | elementary | 0.38 |
-| 57 | 8 | grid | — | 7.63325 | Nagamochi | 0.3668 |
-| 58 | 8 | grid | — | 7.708204 | Nagamochi | 0.2918 |
-| 59 | 8 | grid | — | 7.78233 | Nagamochi | 0.2177 |
-| 60 | 8 | grid | — | 7.855655 | Nagamochi | 0.1443 |
-| 61 | 8 | grid | — | 7.928203 | Nagamochi | 0.0718 |
+| 51 | 7.70079924 | annealing | 12 | 7.43 | elementary | 0.2708 |
+| 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.505 | elementary | 0.2021 |
+| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.58 | elementary | 0.2429 |
+| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.665 | elementary | 0.1817 |
+| 55 | 7.94577101 | annealing | — | 7.7 | elementary | 0.2458 |
+| 56 | 8 | grid | — | 7.76 | elementary | 0.24 |
+| 57 | 8 | grid | — | 7.8 | elementary | 0.2 |
+| 58 | 8 | grid | — | 7.88 | elementary | 0.12 |
+| 59 | 8 | grid | — | 7.905 | elementary | 0.095 |
+| 60 | 8 | grid | — | 7.92 | elementary | 0.08 |
+| 61 | 8 | grid | — | 7.96 | elementary | 0.04 |
 | 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.289966 | unavoidable points | 0.2456 |
-| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.289966 | monotone | 0.3669 |
-| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.289966 | monotone | 0.4171 |
-| 68 | 8.80338307 | — | — | 8.289966 | monotone | 0.5134 |
-| 69 | 8.82720551 | — | — | 8.41 | elementary | 0.4172 |
-| 70 | 8.88166676 | hand | 4 | 8.55 | elementary | 0.3317 |
-| 71 | 8.94407156 | annealing | — | 8.55 | monotone | 0.3941 |
-| 72 | 9 | grid | — | 8.61 | elementary | 0.39 |
-| 73 | 9 | grid | — | 8.615773 | Nagamochi | 0.3842 |
-| 74 | 9 | grid | — | 8.681146 | Nagamochi | 0.3189 |
-| 75 | 9 | grid | — | 8.745967 | Nagamochi | 0.254 |
-| 76 | 9 | grid | — | 8.81025 | Nagamochi | 0.1898 |
-| 77 | 9 | grid | — | 8.874008 | Nagamochi | 0.126 |
-| 78 | 9 | grid | — | 8.937254 | Nagamochi | 0.0627 |
+| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.345 | elementary | 0.3119 |
+| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.44 | elementary | 0.2671 |
+| 68 | 8.80338307 | — | — | 8.46 | elementary | 0.3434 |
+| 69 | 8.82720551 | — | — | 8.545 | elementary | 0.2822 |
+| 70 | 8.88166676 | hand | 4 | 8.61 | elementary | 0.2717 |
+| 71 | 8.94407156 | annealing | — | 8.645 | elementary | 0.2991 |
+| 72 | 9 | grid | — | 8.705 | elementary | 0.295 |
+| 73 | 9 | grid | — | 8.74 | elementary | 0.26 |
+| 74 | 9 | grid | — | 8.815 | elementary | 0.185 |
+| 75 | 9 | grid | — | 8.89 | elementary | 0.11 |
+| 76 | 9 | grid | — | 8.9 | elementary | 0.1 |
+| 77 | 9 | grid | — | 8.9 | monotone | 0.1 |
+| 78 | 9 | grid | — | 8.955 | elementary | 0.045 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
 | 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.266734 | monotone | 0.4404 |
@@ -1169,6 +1168,7 @@ Use the structured form to query or plot; use these tables to read.
 | 23 | `5` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 24 | `5` | unavoidable points | Erich Friedman (1999) | proved |
 | 25 | `5` | perfect square | classical | proved |
+| 32 | `6` | elementary | Evan Daniel (2026) | proved |
 | 33 | `6` | unavoidable points | Wolfram Bentz (2016) | proved |
 | 34 | `6` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 35 | `6` | unavoidable points | Erich Friedman (1999) | proved |

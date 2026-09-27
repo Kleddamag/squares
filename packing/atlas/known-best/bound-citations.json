@@ -192,16 +192,14 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "project",
+          "basis": "external",
           "confirmed_by": [],
           "note": null,
-          "result": "T-017",
-          "results": [
-            "T-017"
-          ],
-          "source_key": null,
-          "text": "This project 2026, result T-017",
-          "value": "3.96"
+          "result": null,
+          "results": [],
+          "source_key": "[evand square-packing 2026]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "3.968615"
         },
         "n": 12,
         "record": "n-012",
@@ -288,9 +286,9 @@
           "note": null,
           "result": null,
           "results": [],
-          "source_key": "[Guzhou0806 n17 R052]",
-          "text": "Guzhou0806 2026, GitHub",
-          "value": "4.62002"
+          "source_key": "[Kleddamag n17 4.66001]",
+          "text": "Kleddamag after Levy, Mira, Guzhou0806 2026, GitHub",
+          "value": "4.66001"
         },
         "n": 17,
         "record": "n-017",
@@ -317,7 +315,7 @@
             "T-030"
           ],
           "source_key": null,
-          "text": "This project 2026, result T-030",
+          "text": "Squares Project (Levy) 2026, result T-030",
           "value": "4.679"
         },
         "n": 18,
@@ -345,7 +343,7 @@
             "T-020"
           ],
           "source_key": null,
-          "text": "This project 2026, result T-020",
+          "text": "Squares Project (Levy) 2026, result T-020",
           "value": "4.8"
         },
         "n": 19,
@@ -373,7 +371,7 @@
             "T-021"
           ],
           "source_key": null,
-          "text": "This project 2026, result T-021",
+          "text": "Squares Project (Levy) 2026, result T-021",
           "value": "4.85"
         },
         "n": 20,
@@ -383,16 +381,14 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "project",
+          "basis": "external",
           "confirmed_by": [],
           "note": null,
-          "result": "T-034",
-          "results": [
-            "T-034"
-          ],
-          "source_key": null,
-          "text": "This project 2026, result T-034",
-          "value": "4.88"
+          "result": null,
+          "results": [],
+          "source_key": "[evand square-packing 2026]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "4.995004"
         },
         "n": 21,
         "record": "n-021",
@@ -502,9 +498,9 @@
           "note": null,
           "result": null,
           "results": [],
-          "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu 2026, GitHub",
-          "value": "5.508"
+          "source_key": "[wand125 rectangle bounds 2026]",
+          "text": "wand125 after Tokoharu 2026, GitHub",
+          "value": "5.6"
         },
         "n": 27,
         "record": "n-027",
@@ -528,9 +524,9 @@
           "note": null,
           "result": null,
           "results": [],
-          "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu 2026, GitHub",
-          "value": "5.508"
+          "source_key": "[wand125 rectangle bounds 2026]",
+          "text": "wand125 after Tokoharu 2026, GitHub",
+          "value": "5.6"
         },
         "n": 28,
         "record": "n-028",
@@ -600,9 +596,9 @@
           "note": null,
           "result": null,
           "results": [],
-          "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu 2026, GitHub",
-          "value": "5.71"
+          "source_key": "[wand125 rectangle bounds 2026]",
+          "text": "wand125 after Tokoharu 2026, GitHub",
+          "value": "5.92"
         },
         "n": 31,
         "record": "n-031",
@@ -615,12 +611,10 @@
           "confirmed_by": [],
           "note": null,
           "result": null,
-          "results": [
-            "T-007"
-          ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "5.79583152331"
+          "results": [],
+          "source_key": "[evand square-packing 2026]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "6"
         },
         "n": 32,
         "record": "n-032",

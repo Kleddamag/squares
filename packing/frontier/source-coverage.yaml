@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-09-25'
+last_reviewed: '2026-09-27'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -16,6 +16,96 @@ case_corpus:
   n_max: 324
   reader_view: frontier/STATUS.md
 sources:
+  - id: evand-square-packing-2026
+    title: square-packing, exact weighted certificates and zero-margin closed covers
+    role: source-repository
+    url: https://github.com/evand/square-packing
+    local: resources/web/evand-square-packing-2026-09-26/square-packing/
+    source_key: '[evand square-packing 2026]'
+    scope: {n_values: [12, 13, 21, 32]}
+    reviewed: '2026-09-27'
+    source_date: '2026-09-26'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-012.md, frontier/n-013.md, frontier/n-021.md, frontier/n-032.md]
+    evidence:
+      - E-n032-evand-closed-cover-report
+      - E-n032-evand-closed-cover-source-run
+      - E-n012-evand-15680-3951-report
+      - E-n012-evand-15680-3951-source-replay
+      - E-n012-evand-15680-3951-native-parent-core
+      - E-n021-evand-5000-1001-report
+      - E-n021-evand-5000-1001-source-replay
+      - E-n013-evand-casefree-cover-report
+    notes: >-
+      Evan Daniel's repository, formerly evand/square-packing-12, at
+      167d842cd27ba1451cb2833773ea930c80b9e65b, retained on 2026-09-27 with
+      replay receipts; its CREDITS.md says the work was produced with an AI
+      agent under human direction. The Rust angle-net verifier on the s(12) and s(21) certificates
+      passed here at N = 6000, so s(12) >= 15680/3951 and s(21) >= 5000/1001
+      are registered at V4/C3; this repository's native parent-core interval
+      route then decided all 2,486 rows of the s(12) certificate, a second
+      method, so s(12) is at V4/C4. s(32) = 6 is registered at V4/C3: the
+      complete zeromargin.py re-sweep here certified all 7,200 roots of the D4
+      region (D4 RECHECK CLEAN), every per-root census identical to the
+      source's shipped record, and the 2026-09-27 review found no mathematical
+      defect. Neither zmcheck sweep, the
+      Lean build, the exhaustive xcheck.py passes nor the case-free s(13) cover
+      was replayed. The source's s(11) >= 3040/797
+      is below the verified 31/8 and is retained in the packet but not registered.
+  - id: kleddamag-n17-466001-2026
+    title: Seventeen unit squares — a certified lower bound, 4.66001 package
+    role: source-repository
+    url: https://github.com/Kleddamag/17-squares-certified-bound/tree/57519bb74085157cb7047ae94c599bce4a006430
+    local: resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/
+    source_key: '[Kleddamag n17 4.66001]'
+    scope: {n_values: [17]}
+    reviewed: '2026-09-27'
+    source_date: '2026-09-27'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md]
+    evidence: [E-n017-kleddamag-466001-report, E-n017-kleddamag-466001-source-replay]
+    notes: >-
+      Kleddamag, building on Squares Project (Joshua Levy), Mira and Guzhou0806:
+      an exact weighted-certificate proof over 2,168 orientation intervals.
+      Commit 57519bb74085157cb7047ae94c599bce4a006430 of 2026-09-27, untagged
+      (the release's CHANGELOG lists it as unreleased), retained on 2026-09-27
+      as the 33 files that changed or were added since v1.1.0; of the other
+      103, 29 are byte-identical to the retained v1.1.0 tree
+      (kleddamag-n17-4640020-2026) and 74 to the v1.0.0 tree
+      (kleddamag-n17-2026), and the three packets together pass the release's
+      own 135-file manifest check. Both complete source checkers of
+      bounds/4.66001/verify.py passed here, with check_integrity.py and
+      controls.py. Registered at V4/C3; the native parent-core route cannot
+      represent the weighted-threshold and winning-subset features, so no
+      method-distinct C4 is claimed.
+  - id: kleddamag-n17-4640020-2026
+    title: Seventeen unit squares — a certified lower bound, v1.1.0 (4.640020)
+    role: source-repository
+    url: https://github.com/Kleddamag/17-squares-certified-bound/tree/v1.1.0
+    local: resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/
+    source_key: '[Kleddamag n17 4.640020]'
+    scope: {n_values: [17]}
+    reviewed: '2026-09-27'
+    source_date: '2026-09-26'
+    disposition: superseded-covered
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md]
+    evidence: [E-n017-kleddamag-4640020-report, E-n017-kleddamag-4640020-source-replay]
+    notes: >-
+      Kleddamag, building on Squares Project (Joshua Levy), Mira and Guzhou0806.
+      The v1.1.0 release at 13821ddfa24133a8d796648383464574404d5fa0, retained
+      on 2026-09-27 as the 37 files that changed or were added since v1.0.0; the
+      other 74 are byte-identical to the retained v1.0.0 tree
+      (kleddamag-n17-2026), and the two packets together pass the release's own
+      110-file manifest check. Both complete source checkers of
+      bounds/4.640020/verify.py passed here, with check_integrity.py and
+      controls.py. Registered at V4/C3; the native parent-core route cannot
+      represent the weighted-threshold and winning-subset features, so no
+      method-distinct C4 is claimed. Superseded on 2026-09-27 by the same
+      repository's 4.66001 package (kleddamag-n17-466001-2026) and kept as the
+      previous verified bound.
   - id: guzhou-n17-r052-2026
     title: N17 square packing, R052 strict lower bound
     role: source-repository
@@ -25,7 +115,7 @@ sources:
     scope: {n_values: [17]}
     reviewed: '2026-09-25'
     source_date: '2026-09-25'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-017.md]
     evidence: [E-n017-guzhou-r052-report, E-n017-guzhou-r052-source-replay]
@@ -36,6 +126,8 @@ sources:
       four source replay modes passed here, both full sweeps reproducing the
       source's ledgers. Registered at V4/C3; the native route refuses the
       certificate at its engine ceilings, so no method-distinct C4 is claimed.
+      Superseded on 2026-09-27 by Kleddamag's v1.1.0 (kleddamag-n17-4640020-2026)
+      and kept as the previous verified bound.
   - id: kleddamag-n17-2026
     title: Seventeen unit squares — a certified lower bound
     role: source-repository
@@ -75,6 +167,30 @@ sources:
       Complete v1.0.2 tree pinned at 6a733f339395c3514f2ab63d8c4aa64cf63c0b5a,
       with offline R038 checker dependency, supplied and fetched social text,
       and separate mathematical review and replay receipts in the source packet.
+  - id: guzhou-n17-r052-continuation-2026
+    title: N17 square packing, R052 continuation to 4.62003
+    role: source-repository
+    url: https://github.com/Guzhou0806/n17-square-packing/tree/6f64e4b206374bd609a0c1a517d5d51d9397dc9c/certificates/R052-4.62003
+    local: resources/web/n17-guzhou-r052-continuation-2026-09-26/README.md
+    source_key: '[Guzhou0806 n17 R052 continuation]'
+    scope: {n_values: [17]}
+    reviewed: '2026-09-27'
+    source_date: '2026-09-25'
+    disposition: superseded-covered
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md]
+    evidence: [E-n017-guzhou-r052-report]
+    notes: >-
+      Guzhou0806's continuation of R052 at
+      6f64e4b206374bd609a0c1a517d5d51d9397dc9c (committed 2026-09-25T16:50:31Z)
+      claims s(17) > 462003/100000 = 4.62003 by an exact D4 site deformation
+      of R052 and two four-way angle splits: 15,727 rows, surplus 2 units of
+      10^-12. Retained as a publication record, with the source's own
+      validation record and local receipts for its records, containment and
+      new C++ full modes. Kleddamag's public 4.640020 of 2026-09-26 supersedes
+      it, so it carries no bound here and was not reviewed; the C++ kernel runs
+      the same exact event-cell sweep as the source's Python and Node/BigInt
+      checkers, so it adds no method-distinct decision.
   - id: tokoharu-density-2026
     title: Rectangle-density lower-bound certificates
     role: source-repository
@@ -82,8 +198,8 @@ sources:
     local: resources/web/external-square-certificates-2026-09-22/tokoharu-density/
     source_key: '[Tokoharu density 2026]'
     scope: {n_values: [11, 26, 27, 28, 29, 30, 31]}
-    reviewed: '2026-09-22'
-    source_date: null
+    reviewed: '2026-09-27'
+    source_date: '2026-09-23'
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-011.md, frontier/n-026.md, frontier/n-027.md, frontier/n-028.md, frontier/n-029.md, frontier/n-030.md, frontier/n-031.md]
@@ -93,7 +209,18 @@ sources:
       Japanese proof, search code, interval verifier and all three certificates.
       The separately retained wand125 density fork's main and add-push-driver
       branch contain the same certificates; neither supplies the unspecified
-      stronger numerical results mentioned by the social post.
+      stronger numerical results mentioned by the social post. Re-checked on
+      2026-09-27 at HEAD 84bebef51856d46a19c145b035664324ba9572d3 (2026-09-23,
+      merged from the wand125 fork's fix-ladder-driver branch), the only commit
+      after b543990: it changes src/push.py, tests/test_push.py and .gitignore
+      alone (the ladder driver's step widening, consecutive-failure stop,
+      push.jsonl run log and failure detail). No certificate, proof,
+      certify.py or verify.cpp byte changes, so no recorded result moves and
+      the retained b543990 tree remains the reviewed state; the
+      starting-certificate admission gap the 2026-09-22 review filed as DENS-1
+      is untouched. The commit message reports an n = 29 ladder reaching
+      L = 5.73 from cert_n29_L571; no such certificate is in this repository,
+      and it is not recorded as a bound.
   - id: wand125-points-2026
     title: Weighted point certificates for ten square counts
     role: source-repository
@@ -115,6 +242,29 @@ sources:
       and local n52/n68 deductions from the exact masses, credited as local deductions
       rather than literal upstream claims. All ten complete exact replays passed; their verified evidence is recorded
       separately from the literal source reports.
+  - id: wand125-rectangles-2026
+    title: Rectangle-density certificates for 44 square counts
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds
+    local: resources/web/wand125-rectangle-certificates-2026-09-27/
+    source_key: '[wand125 rectangle bounds 2026]'
+    scope: {n_values: [18, 19, 20, 21, 26, 27, 28, 29, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43, 44, 45, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]}
+    reviewed: '2026-09-27'
+    source_date: '2026-09-27'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence: [E-wand125-rectangle-report, E-wand125-rectangle-monotone-report, E-wand125-rectangle-source-replay]
+    notes: >-
+      Revision ad43d29d96d0d9740b34643b5ac3fb960909cf9c of the same repository as
+      the point certificates, pinned file by file. It adds one standing
+      rectangle-density certificate per listed count, in Tokoharu's format and
+      accepted by his byte-identical checker, and every one improves the case's
+      previous reported lower bound; n77 takes the stronger n76 transfer. At n21 and
+      n32 Evan Daniel's separately registered bounds are stronger, so those two claims are
+      superseded priors and no case record cites them. All 44 pass
+      the first-party exact preflight; the verified lane holds only the counts whose
+      complete coverage replay is in the packet's receipts.
   - id: kingbird-current
     title: Squares in Squares
     role: current-catalogue

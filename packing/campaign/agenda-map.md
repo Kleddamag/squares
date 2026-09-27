@@ -2,7 +2,7 @@
 
 # Agenda map
 
-380 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
+385 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
 Source of truth is [`agendas/`](agendas/); this view is regenerated, never edited.
 
 An agenda's queue owns priority ordering, so this map preserves each agenda's
@@ -10,9 +10,9 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **13** in_progress, **23** ready, **21** tentative, **69** blocked, **61** stopped, **193** complete.
+- **13** in_progress, **24** ready, **21** tentative, **70** blocked, **63** stopped, **194** complete.
 
-- **26 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
+- **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
 ## Live queue
 
@@ -70,13 +70,14 @@ Commitments a session may take now, in each agenda's declared order.
 | agenda-041 | `BC-371` | in_progress | 0 | insight | research | Does the external n = 17 measure, which is stated in a restricted parent-centre language this repository does… | `think-xdoh` |
 | agenda-041 | `BC-369` | in_progress | 1 | efficiency | tool_validation | The deep gate costs about 45 minutes of wall and its exhaustive tier runs at 1.376x its own declared price,… | `think-zmos` |
 | agenda-041 | `BC-372` | in_progress | 2 | insight | research | Can this repository's own site sets cover at the external side L = 4613/1000 at all, and at which shrink do… | `think-xdoh` |
-| agenda-042 | `BC-386` | ready | 1 | correctness | tool_validation | Does this repository's native coverage engine decide every row of R052's certificate at or above its charge… | `think-amx8` |
-| agenda-042 | `BC-387` | ready | 1 | insight | research | Does the capacity-one ceiling lemma survive review, and do triangle-free overlap families of 34 squares at… | `think-68la` |
+| agenda-042 | `BC-387` | ready | 1 | insight | research | With the capacity-one ceiling lemma proved in the 4.640020 review, does a clique-weighted family of unit… | `think-68la` |
 | agenda-042 | `BC-388` | ready | 1 | insight | research | What is the least side f(theta) along the six-axis plus five-common-angle family at 200 tilts, and on which… | `think-91yk` |
+| agenda-042 | `BC-393` | ready | 1 | correctness | tool_validation | Does this repository's native coverage engine decide every one of the 2,168 rows of Kleddamag's 4.66001… | `think-0rbj` |
+| agenda-042 | `BC-394` | ready | 1 | insight | research | Do rectangle-density ladders from the trivial seed, with tokoharu's pinned push.py, reach 93/10 at n = 82 and… | `think-pr2b` |
 | agenda-042 | `BC-389` | ready | 2 | insight | research | Does a two-class parent-core counting certificate close the rung-1 box at 20 degrees, half-tangent [0.1758,… | `think-nho8` |
 | agenda-042 | `BC-390` | ready | 2 | correctness | research | Does the unchanged rung-0 instrument prove H-236's statement on the half-tangent box of half-width 10^-4… | `think-7c17` |
+| agenda-042 | `BC-395` | ready | 2 | insight | research | Does the rectangle-density ladder from the trivial seed pass Daniel's 3.968616 at n = 12 and reach 399/100? | `think-ujwy` |
 | agenda-042 | `BC-380` | ready | 3 | correctness | tool_validation | Can a direction-dependent parent-centre clip behind colgen's clip parameter, and a converter from a frozen… | `think-m9iz` |
-| agenda-042 | `BC-391` | ready | 3 | insight | research | Does the additive point certificate at n21 reach side 4.89 on stock column generation, without the parent… | `think-t50i` |
 
 ## Blocked, and on what
 
@@ -153,6 +154,7 @@ A commitment blocked by other commitments names them; one blocked by something e
 | agenda-040 | `BC-364` | 2 | `BC-363` | yes | The non-convex box-avoidance domain predicate (BC-204) and a conflict-edge atom class in the relational reader. |
 | agenda-040 | `BC-365` | 3 | — | no | An unshrunk exact-orientation verifier generalised from cases/green17/interval_audit.py and an unshrunk column… |
 | agenda-042 | `BC-384` | 1 | `BC-388`, `BC-389` | no | — |
+| agenda-042 | `BC-396` | 1 | — | no | The intake lane's accepting review of evand/square-packing's s(32) certificate at 167d842, which is also the reading of… |
 
 ## Discharged elsewhere
 
@@ -214,7 +216,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active |  | 7 |  | 1 |  | 10 | 18 |
+| agenda-042 | active |  | 8 |  | 2 | 2 | 11 | 23 |
 
 ## By program
 
@@ -254,11 +256,15 @@ Open frontier: `BC-204`, `BC-205`, `BC-212`.
 | agenda-042 | `BC-378` | complete | Does a window-enriched point certificate retain at n21, side 122/25, below mass 21? |
 | agenda-042 | `BC-379` | complete | Does the cutting loop certify an additive ceiling at n12, side 39609/10000? |
 | agenda-042 | `BC-380` | ready | Can a direction-dependent parent-centre clip behind colgen's clip parameter, and a converter from a… |
-| agenda-042 | `BC-386` | ready | Does this repository's native coverage engine decide every row of R052's certificate at or above… |
-| agenda-042 | `BC-387` | ready | Does the capacity-one ceiling lemma survive review, and do triangle-free overlap families of 34… |
-| agenda-042 | `BC-391` | ready | Does the additive point certificate at n21 reach side 4.89 on stock column generation, without the… |
+| agenda-042 | `BC-386` | stopped | Does this repository's native coverage engine decide every row of R052's certificate at or above… |
+| agenda-042 | `BC-387` | ready | With the capacity-one ceiling lemma proved in the 4.640020 review, does a clique-weighted family of… |
+| agenda-042 | `BC-391` | stopped | Does the additive point certificate at n21 reach side 4.89 on stock column generation, without the… |
+| agenda-042 | `BC-393` | ready | Does this repository's native coverage engine decide every one of the 2,168 rows of Kleddamag's… |
+| agenda-042 | `BC-394` | ready | Do rectangle-density ladders from the trivial seed, with tokoharu's pinned push.py, reach 93/10 at… |
+| agenda-042 | `BC-395` | ready | Does the rectangle-density ladder from the trivial seed pass Daniel's 3.968616 at n = 12 and reach… |
+| agenda-042 | `BC-396` | blocked | Does Daniel's zero-margin weighted closed cover, which proves s(32) = 6, carry to k = 7, giving a… |
 
-Open frontier: `BC-380`, `BC-386`, `BC-387`, `BC-391`.
+Open frontier: `BC-380`, `BC-387`, `BC-393`, `BC-394`, `BC-395`, `BC-396`.
 
 ### `n11-adaptive-fractional-frontier`
 

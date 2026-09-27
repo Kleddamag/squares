@@ -13,8 +13,7 @@ session:
   deadline_at: '2026-09-28T02:30:00Z'
   branch: claude/happy-hawking-br4fwg
   primary_bead: think-il68
-  status: stopped
-  certification_pending: think-noha
+  status: completed
   ended_at: '2026-09-27T23:13:00Z'
   goal: >-
     Get PR 235 green and mergeable, take in the collaborating repositories' newest n = 11
@@ -106,7 +105,7 @@ session:
       every new registration independently where a route exists, apply the owner's credit
       rules across the record, document the video regeneration, and consolidate PR 236 as
       organized commits with large retained data compressed.
-    status: stopped
+    status: completed
     entered_by: user_request
     switch_reason: >-
       The owner merged PR 235, pointed at Kleddamag's newest release, and asked for
@@ -135,9 +134,7 @@ session:
     - packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md
     - packing/resources/web/evand-square-packing-2026-09-26/README.md
     - packages/workbench/README.md
-    stop_reason: >-
-      The block's registrations, credits and documentation are landed; certification of
-      the rebuilt head is pending (think-noha).
+    stop_reason: The block's registrations, credits and documentation are landed.
     next_action: Close the session.
   budget:
     wall_minutes: 1150
@@ -198,6 +195,7 @@ session:
   - packages/workbench/README.md
   - docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
   checks:
+  - 'full gate: fast at f26053cf7ba24bb74995519c840da166a66ccfa5: passed (hosted Packing validation run 36359659779; Certificate page run 36359659839 also passed)'
   - Kleddamag v1.1.0 verify.py passed here (PASS_COMPLETE_SEVENTEEN_SQUARE_EXCLUSION, 2,204 s), with controls.py and check_integrity.py.
   - Daniel's Rust verifier passed on s(12) and s(21) at N = 6000; the s(32) bundle check passed and 735 of 7,200 roots of the full re-sweep matched.
   - wand125's complete replays passed at n = 27, 31 and 32 with the upstream node counts; all 44 exact preflights passed.
@@ -205,12 +203,11 @@ session:
   - The full zeromargin re-sweep of Daniel's s(32) cover printed D4 RECHECK CLEAN over all 7,200 roots; the native parent-core route decided all 2,486 rows of the s(12) certificate.
   - packing-validate --records passed on the merged head.
   stop_reason: >-
-    Stopped pending certification of the rebuilt PR 236 head (think-noha). The owner's
-    requests reached their exits: PR 235 is green and mergeable, the new
+    The owner's requests reached their exits, and hosted run 36359659779 certified the
+    rebuilt PR 236 head: PR 235 is green and mergeable, the new
     external results are reviewed and registered in a pull request stacked on it, and
     the overnight queue is selected.
   next_action: >-
-    Certify this handover (think-noha) with a hosted gate on PR 236's final head, then
     BC-390 (think-7c17): run the widened n = 11 rung 0 box on eight workers overnight,
     with the rectangle ladders and the queued wand125 and Daniel replays on the remaining
     workers, per the 2026-09-27 plan.

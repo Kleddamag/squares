@@ -2715,7 +2715,7 @@ sessions:
   codex_receipts: []
 - id: session-160
   title: "Intake of Kleddamag's 4.640020, Daniel's s(32) = 6 and wand125's Rectangle Bounds"
-  status: stopped
+  status: completed
   primary_bead: think-il68
   phases: 3
   measured: true

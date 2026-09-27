@@ -560,6 +560,12 @@ def _draw_reproduced(page: Page, *, math_trace: dict[str, object] | None = None)
     CI one and the local one were different formulas -- and that the shipped document is the
     one ninety local renders agreed on.
 
+    D-509 measured where that assumption stops. A load can settle one glyph of prepared
+    math a fifth of a pixel off the placement other loads give it, and then print that
+    placement identically every time: one local load did so on four prints in a row.
+    Nothing here can see that, because it compares prints of one load; the check's
+    comparison of separate loads is what catches it, and fails on it.
+
     The rate this is up against, measured on this host over thirty renders of the retained
     page from run 35764316182: one render disagreed with the other twenty-nine, a single
     inline math box 0.609375 px off its baseline. The CI occurrence was the same shape,

@@ -5826,7 +5826,7 @@ table above.
 
 Kept with the same discipline as the experiment record, because the aggregate says
 things no individual bug report can.
-The log contains 508 defects, [one line each](defects.md), generated from `defects.yaml`
+The log contains 509 defects, [one line each](defects.md), generated from `defects.yaml`
 and checked in the gate.
 
 | Class | Count | The system … |
@@ -5834,7 +5834,7 @@ and checked in the gate.
 | soundness | 103 | asserted something false about the mathematics |
 | validity | 127 | was correct, but the measurement did not bear on the question |
 | bookkeeping | 191 | recorded something its own evidence contradicts |
-| robustness | 68 | did not finish, or finished only by luck |
+| robustness | 69 | did not finish, or finished only by luck |
 | performance | 19 | worked, but cost far more than it should |
 
 One entry is filed under a class it only half fits, and the table reads accordingly.
@@ -5859,10 +5859,10 @@ Two observations the log exists to make.
 error looks like a success.
 That is the dangerous class, and it is the majority of it.
 
-**The automated gate has caught eighty defects in 508, and no soundness defect ever.**
-Every soundness failure was found by a control cell whose answer was known in advance, a
-rule written down before the measurement, a generated view contradicting its source, or
-someone reading carefully.
+**The automated gate has caught eighty-one defects in 509, and no soundness defect
+ever.** Every soundness failure was found by a control cell whose answer was known in
+advance, a rule written down before the measurement, a generated view contradicting its
+source, or someone reading carefully.
 Gates confirm what you already thought to check; these were found by devices built to be
 *surprised*. Gate-detected entries here are mechanical process, implementation, or
 test-validity failures, found by contiguity, integration, mutation-anchor,
@@ -5882,6 +5882,14 @@ That makes the measured missing-face state a poor match for the observed two-byt
 on that host; it does not identify the runner’s cause or rule out another readiness
 failure. The cause stays open under `think-ptit`; the next occurrence will name the
 object or outside-object PDF section containing the first difference.
+
+[D-509](defects.md) is open, and it is D-490 again, past the containment D-490 built: PR
+235’s `pdf` job failed on a records-only commit with two equal-length draws differing
+inside one untyped deflate stream where the page content streams sit.
+Locally, five of 104 page loads placed one prepared-math glyph a fifth of a pixel off
+the others’ placement and then printed that placement identically, four prints running,
+so drawing each load twice cannot see it; the cause and the check’s answer are open
+under `think-6dle`.
 
 **[D-489](defects.md) is open, and it is the log’s clearest case of a guard that reads
 like soundness and acts like a filter.** `devtools/screen_corner_dual_salvage.py`

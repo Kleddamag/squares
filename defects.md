@@ -250,7 +250,7 @@ This is the actionable list.
 | D-489 | outstanding | high | The corner-dual salvage screen can only accept a family that already fails the mass threshold | `think-rm5c` |
 | D-490 | contained | medium | Two renders of the explainer disagreed by two bytes and the check could not say where | `think-ptit` |
 | D-502 | outstanding | high | Costly partial pre-push selections kept pytest serial until the command timed out | `think-1i1x` |
-| D-509 | outstanding | medium | One math glyph's baseline is decided per page load, so drawing each load twice does not contain it | `think-6dle` |
+| D-509 | contained | medium | One math glyph's baseline is decided per page load, so drawing each load twice does not contain it | `think-6dle` |
 
 ## Every defect
 
@@ -764,7 +764,7 @@ This is the actionable list.
 | [D-506](packing/campaign/agent-sessions/session-143-lower-bound-math-review.md) | 2026-09-20 | docs | soundness | conservative | `review` | high | fixed | Bentz 2016 transcription inverted Lemma 7's bound and rewrote its lemma reference |
 | [D-507](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/bentz2016-one-spare-receipt.md) | 2026-09-20 | docs | soundness | conservative | `review` | high | fixed | Bentz 2016 transcription dropped the factor 2 from Theorem 9's budget line |
 | [D-508](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-231-h236-rung-zero-cell-tree.md) | 2026-09-24 | record | bookkeeping | flattering | `inspection` | low | fixed | Rung-0 records counted the reader's branch nodes as leaf certificates |
-| [D-509](packing/devtools/render_explainer_pdf.py) | 2026-09-25 | tooling | robustness |  | `gate` | medium | outstanding | One math glyph's baseline is decided per page load, so drawing each load twice does not contain it |
+| [D-509](packing/devtools/render_explainer_pdf.py) | 2026-09-25 | tooling | robustness |  | `gate` | medium | contained | One math glyph's baseline is decided per page load, so drawing each load twice does not contain it |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

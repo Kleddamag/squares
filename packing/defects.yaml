@@ -16887,7 +16887,7 @@ defects:
     does not hold. When the first page load that settled into the other placement
     happened is not known.
   severity: medium
-  status: outstanding
+  status: contained
   recurrence_of: D-490
   bead: think-6dle
   what: >-
@@ -16944,19 +16944,57 @@ defects:
     few. The rate on the pinned runner is not known. It is not the local 5 in 104, which
     was measured on a different Chromium build.
   fix: >-
-    None yet, and the check is unchanged. Three things are open. The first is why one
-    glyph of a prepared KaTeX box takes one of two vertical placements per load: the
-    moves are 7/32 and 3/16 px, between a fractional and a whole-pixel baseline, and
-    the box's inline em geometry and faces are identical in both. The second is what the
-    pinned build's CI pair shows once artifact 10859178879, which expires seven days
-    after 2026-09-25, is read from a host that can reach it. The third is what the check
-    should do. `_draw_reproduced` cannot help, since a load repeats its own placement.
-    Candidates, none measured: `--update` could draw several loads and keep the
-    placement most of them agree on; `--check-artifact` could compare the stored bytes
-    against more than one fresh load before it refuses; and `_difference` could inflate
-    a FlateDecode object and name its first differing decoded line. That last one would
-    have put the moved `Tm` in the CI log itself, with no artifact download. The
-    cause-level repair belongs where the per-load placement is decided, which has not
-    been located.
-  regression: none
+    Contained in the check, with two of the three candidates this entry first listed.
+    A second CI occurrence came first: PR 236's run 36317430319, at f2739c74b, read
+    `849949 then 849947 bytes`, first difference at byte 510915 in object 144 again,
+    whose `/Length` was 5237 against 5235. So the difference began in the stream
+    dictionary, ahead of any payload byte, and the log named no line.
+
+    `--check-artifact` now draws further page loads when the first does not reproduce the
+    stored PDF, up to `_ARTIFACT_LOADS` = 4 in all, and stops at the first that does. It
+    passes when a load reproduced the artifact and every load that did not drew one and
+    the same other document, which is D-509's shape: two placements of one page. It
+    refuses when no load reproduced the artifact, and when the loads that did not drew two
+    different documents, stopping as soon as either is certain. A refusal carries the
+    existing difference and a census of the distinct documents the loads drew, each
+    located against the artifact, and `--diagnostics-dir` retains each distinct document
+    beside the pair. Every load that differs is printed as it is drawn, pass or fail,
+    so the runner's rate becomes countable from the logs. A passing first comparison
+    draws nothing extra. The failure path costs up to three more loads: a real refusal
+    of a doctored artifact took 25.7 s here against 7.5 s for a pass, inside the `pdf`
+    job's 117 s ceiling above its 73.3 s record. `--check` is unchanged on purpose. It is
+    the instrument the per-load rate was measured with, and tolerating a differing load
+    there would hide what it measures.
+
+    `_difference` now inflates the containing object when it is a FlateDecode stream in
+    both files and names the first differing decoded line, with the line after it: the
+    glyph that the `Tm` places. Building it found that `_OBJECT_STREAM` only knew `stream`
+    on a line of its own, while Chromium's writer puts it after `>>` on the dictionary's
+    line, so D-490's bound on the declaration scan never applied to a real content
+    stream. The pattern takes both shapes now.
+
+    Contained and not fixed, for three reasons. An artifact that `--update` drew in the
+    minority placement is still refused, because most fresh loads differ from it; at the
+    local 5 in 104 that is about one run in twenty, against about one in ten before.
+    Keeping the placement most loads agree on is `--update`'s side and is not built. The
+    cause is still unlocated. Nothing explains why one glyph of a prepared KaTeX box takes
+    one of two vertical placements per load: the moves are 7/32 and 3/16 px, between a
+    fractional and a whole-pixel baseline, with identical inline em geometry and faces.
+    Finally, the pinned build's CI pair in artifact 10859178879, which expires seven days
+    after 2026-09-25, has not been read.
+  regression: >-
+    `tests/test_render_explainer_pdf.py`, against fake loads in D-509's shape: a
+    22-page document with one `Tm` in a Skia-shaped Flate content stream. An artifact
+    reproduced by the second of two loads, the second of three requested, or the fourth
+    load passes, with the differing load's decoded line in the log and no diagnostics
+    written. A first load that agrees draws nothing more. An artifact no load reproduces
+    is refused after four loads, with the census, and the pair retained. Two different
+    non-matching documents are refused at the second, before a third load that would
+    have matched, and both are retained. A second document after a match is refused under
+    an explicit count. The decoded diagnosis names the moved `Tm` line and the glyph after
+    it, including when the first differing byte is the dictionary's `/Length`. A payload
+    that does not inflate is reported as such, and an uncompressed stream gets no decoded
+    report. A Skia-shaped stream payload cannot lend its object a type. The earlier
+    artifact cases now expect the extra loads: a stored file that fresh loads agree
+    against is still refused.
   recorded_in: packing/devtools/render_explainer_pdf.py

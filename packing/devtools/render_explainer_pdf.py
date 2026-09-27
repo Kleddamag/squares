@@ -43,10 +43,14 @@ are a function of the Chromium build, of which binary variant ran -- the headles
 and full Chrome differ in about 99% of the output -- and of the fonts the host has. So
 `--check` compares fresh renders taken here, now, with the same browser build. Pages uses
 `--check-artifact` instead: the exact PDF prepared for publication, including its source
-receipt, must match a fresh draw of the current page. It also checks that stored PDF's
-fonts and pagination without rewriting it. Neither mode compares against a committed
-PDF or a portable digest. `--diagnostics-dir` retains the raw comparison pair and a
-neutral report when a check fails; a successful check creates no diagnostic files.
+receipt, must match a fresh draw of the current page. D-509 measured that one page load
+is not enough to decide that, because each load settles one math glyph into one of two
+sub-pixel placements; when the first fresh load differs, the check draws up to
+`_ARTIFACT_LOADS` in all and passes only if one of them reproduces the stored file
+exactly. It also checks that stored PDF's fonts and pagination without rewriting it.
+Neither mode compares against a committed PDF or a portable digest. `--diagnostics-dir`
+retains the raw comparison pair and a neutral report when a check fails; a successful
+check creates no diagnostic files.
 With `--trace-math`, each completed draw also retains visible prepared-math geometry
 and font state around the existing final frames and PDF call. A render exception retains
 its available observations, with no PDF. The observer can change timing and force layout:
@@ -62,6 +66,7 @@ import os
 import platform
 import re
 import sys
+import zlib
 from collections.abc import Iterable, Sequence
 from functools import cache
 from importlib.metadata import version
@@ -269,7 +274,22 @@ def _normalised(pdf: bytes) -> bytes:
 #: PDF structure around the objects rather than to the last object before it.
 _OBJECT_HEADER = re.compile(rb"(?m)^(\d+)\s+0\s+obj\b")
 _OBJECT_END = re.compile(rb"(?m)^endobj\b")
-_OBJECT_STREAM = re.compile(rb"(?m)^stream\r?$")
+
+#: The `stream` keyword that opens an object's payload, in both shapes a writer uses:
+#: on a line of its own, or after the dictionary's `>>` on the same line, which is what
+#: Chromium's Skia writer emits (`/Length 5022>> stream`). Reading only the first shape
+#: left every real content stream of this document unbounded. The payload starts after
+#: the end of line this match stops before.
+_OBJECT_STREAM = re.compile(rb"(?m)(?:^|(?<=>>)[ \t]?)stream\r?$")
+
+#: A stream dictionary that asks its reader to inflate the payload. Chromium compresses
+#: every page content stream this way, so without inflating it a moved glyph shows in a
+#: CI log only as two unreadable windows of deflate output.
+_FLATE = re.compile(rb"/Filter\s*/FlateDecode\b")
+
+#: How much of one decoded content-stream line to quote. A `Tm` line is about thirty
+#: bytes; the cap is for the long `TJ` arrays, which would otherwise fill the log.
+_LINE = 160
 
 #: Named PDF sections outside indirect objects. The latest marker before a difference
 #: distinguishes a cross-reference entry or trailer value from ordinary inter-object
@@ -318,6 +338,9 @@ def _difference(first: bytes, second: bytes) -> str:
     of each render around it. It does not infer a cause from the difference's size or
     location.
 
+    When that object is a Flate stream in both renders, both versions are inflated and
+    the first differing decoded line is quoted as well: see `_decoded_difference`.
+
     Called on renders that have already been found to differ. Handed two that do not it
     says so rather than inventing a disagreement. The exact-prefix case reports only the
     byte relationship: that observation cannot distinguish truncation from appended bytes.
@@ -335,6 +358,7 @@ def _difference(first: bytes, second: bytes) -> str:
         key=lambda found: found.start(),
         default=None,
     )
+    decoded = ""
     if header is None:
         where = "the file header"
     else:
@@ -351,6 +375,7 @@ def _difference(first: bytes, second: bytes) -> str:
             kind = _OBJECT_SUBTYPE.search(head) or _OBJECT_TYPE.search(head)
             declared = f", {kind.group(1).decode()}" if kind else ""
             where = f"object {header.group(1).decode()}{declared}"
+            decoded = _decoded_difference(first, second, header)
         else:
             section = max(
                 _OUTSIDE_SECTION.finditer(first, end.end(), offset),
@@ -366,7 +391,70 @@ def _difference(first: bytes, second: bytes) -> str:
     window = slice(max(0, offset - _WINDOW // 2), offset + _WINDOW // 2)
     return (
         f"first difference at byte {offset}, in {where}: "
-        f"{first[window]!r} against {second[window]!r}"
+        f"{first[window]!r} against {second[window]!r}{decoded}"
+    )
+
+
+def _flate_payload(document: bytes, header: re.Match[bytes]) -> bytes | None:
+    """The compressed payload of the object `header` opens, or `None` if it has none.
+
+    Bounded by the object's own `endobj`, like the declaration scan above, so a stream
+    later in the file is never read as this object's. The payload runs from the end of
+    the `stream` line to the last `endstream` before that bound; the end-of-line byte
+    before `endstream` is left on, since inflating stops at the end of the deflate data.
+    """
+    end = _OBJECT_END.search(document, header.end())
+    object_end = end.start() if end else len(document)
+    stream = _OBJECT_STREAM.search(document, header.end(), object_end)
+    if stream is None or not _FLATE.search(document, header.end(), stream.start()):
+        return None
+    start = document.find(b"\n", stream.end()) + 1
+    finish = document.rfind(b"endstream", start, object_end)
+    return document[start:finish] if start and finish != -1 else None
+
+
+def _quoted(line: bytes) -> str:
+    return repr(line if len(line) <= _LINE else line[:_LINE] + b"...")
+
+
+def _decoded_difference(first: bytes, second: bytes, header: re.Match[bytes]) -> str:
+    """The first decoded line where two versions of one Flate stream disagree, or nothing.
+
+    D-509's CI occurrences named object 144 and showed two windows of deflate output,
+    and reading which glyph had moved took an artifact download that the recording
+    session's proxy refused. The moved glyph is one `Tm` line of the page's content
+    stream, so this inflates both versions of the object and quotes the first line that
+    differs, with the line after it, which is the glyph the matrix places.
+
+    Empty when there is nothing to decode: the object is not a Flate stream in both
+    files, or the difference changed its object number, so the second file holds a
+    different object at that position.
+    """
+    theirs = _OBJECT_HEADER.match(second, header.start())
+    if theirs is None or theirs.group(1) != header.group(1):
+        return ""
+    ours_payload, their_payload = _flate_payload(first, header), _flate_payload(second, theirs)
+    if ours_payload is None or their_payload is None:
+        return ""
+    try:
+        mine = zlib.decompressobj().decompress(ours_payload)
+        yours = zlib.decompressobj().decompress(their_payload)
+    except zlib.error as error:
+        return f"; its FlateDecode stream does not inflate: {error}"
+    ours, other = mine.split(b"\n"), yours.split(b"\n")
+    pairs = enumerate(zip(ours, other, strict=False))
+    at = next((n for n, (one, two) in pairs if one != two), None)
+    if at is None:
+        if len(ours) == len(other):
+            return "; its FlateDecode stream inflates to identical text in both"
+        return (
+            f"; its FlateDecode stream inflates to {len(ours)} then {len(other)} lines, "
+            "the shorter an exact prefix of the longer"
+        )
+    after = ours[at + 1] if at + 1 < len(ours) else b""
+    return (
+        f"; inflated, the stream first differs at line {at + 1} of {len(ours)}: "
+        f"{_quoted(ours[at])} against {_quoted(other[at])}, before {_quoted(after)}"
     )
 
 
@@ -563,8 +651,9 @@ def _draw_reproduced(page: Page, *, math_trace: dict[str, object] | None = None)
     D-509 measured where that assumption stops. A load can settle one glyph of prepared
     math a fifth of a pixel off the placement other loads give it, and then print that
     placement identically every time: one local load did so on four prints in a row.
-    Nothing here can see that, because it compares prints of one load; the check's
-    comparison of separate loads is what catches it, and fails on it.
+    Nothing here can see that, because it compares prints of one load; the artifact
+    check's comparison of separate loads is what sees it, and `_artifact_reproduced`
+    is where it is tolerated, within limits that function states.
 
     The rate this is up against, measured on this host over thirty renders of the retained
     page from run 35764316182: one render disagreed with the other twenty-nine, a single
@@ -1121,8 +1210,13 @@ def _failed_check(
     diagnostics_dir: Path | None,
     reference_kind: str,
     replay_number: int,
+    others: Sequence[tuple[int, bytes]] = (),
 ) -> Never:
-    """Retain the actual compared bytes without replacing an earlier failure's pair."""
+    """Retain the actual compared bytes without replacing an earlier failure's pair.
+
+    `others` are further fresh loads worth keeping beside the pair, by load number: the
+    artifact check passes the distinct documents its extra loads drew.
+    """
     if diagnostics_dir is not None:
         try:
             diagnostics_dir.mkdir(parents=True, exist_ok=True)
@@ -1137,6 +1231,7 @@ def _failed_check(
             for name, data in (
                 ("reference.pdf", reference),
                 ("replay.pdf", replay),
+                *((f"load-{number}.pdf", load) for number, load in others),
                 ("report.txt", report.encode("utf-8")),
             ):
                 with atomic_output_file(retained / name) as temporary:
@@ -1145,6 +1240,148 @@ def _failed_check(
         except OSError as error:
             message += f"\ncould not retain PDF diagnostics in {diagnostics_dir}: {error}"
     raise SystemExit(message)
+
+
+def _mismatch(first: bytes, again: bytes) -> str:
+    """The refusal's first sentence and the located difference, for two normalised files."""
+    return (
+        f"explainer PDF does not reproduce itself: {len(first)} then {len(again)} bytes, "
+        f"normalised; length delta {abs(len(first) - len(again))}. Each of these was drawn "
+        "until two consecutive prints of its page agreed, so this is a difference between "
+        "renders and not the print-time re-render D-490 records. " + _difference(first, again)
+    )
+
+
+#: How many fresh page loads `--check-artifact` may draw before it refuses, when the
+#: first one does not reproduce the stored artifact. D-509 measured why one is not
+#: enough: a page load settles one glyph of prepared math into one of two sub-pixel
+#: placements and prints that placement every time, so the stored PDF and a single fresh
+#: load are two independent samples, and a correct artifact is refused whenever they
+#: land on different placements. Locally 5 of 104 loads drew a minority document.
+#:
+#: Extra loads are drawn only after a mismatch, so a passing first comparison costs what
+#: it always did. At the local rate, which is not the runner's, a single fresh load
+#: misses a majority-placement artifact about one run in twenty; with the extra loads
+#: such an artifact is refused only when a second, different minority document turns up
+#: first, about one run in four hundred. What this does not absorb is an artifact that
+#: `--update` drew in a minority placement, about one run in twenty at that rate: most
+#: fresh loads differ from it, all four usually do, and the check refuses it. Making the
+#: published placement the majority one is `--update`'s side of D-509, not this check's.
+_ARTIFACT_LOADS = 4
+
+
+def _load_list(numbers: Sequence[int]) -> str:
+    return f"{'load' if len(numbers) == 1 else 'loads'} {', '.join(map(str, numbers))}"
+
+
+def _census(first: bytes, loads: Sequence[bytes], compared: int) -> str:
+    """One line per distinct document the fresh loads drew, against the stored artifact.
+
+    `compared` is the load the refusal's main difference was computed from; its line
+    refers back to that report rather than repeating it.
+    """
+    groups: dict[bytes, list[int]] = {}
+    for number, load in enumerate(loads, start=1):
+        groups.setdefault(_normalised(load), []).append(number)
+    heading = (
+        f"{len(loads)} fresh page {'load' if len(loads) == 1 else 'loads'} drew "
+        f"{len(groups)} distinct {'document' if len(groups) == 1 else 'documents'} "
+        f"against the stored artifact's {len(first)} normalised bytes:"
+    )
+    lines = [heading]
+    for document, numbers in groups.items():
+        if document == first:
+            which = "the stored artifact's document"
+        elif compared in numbers:
+            which = "the document compared above"
+        else:
+            which = _difference(first, document)
+        lines.append(f"  {_load_list(numbers)}: {len(document)} bytes, {which}")
+    return "\n".join(lines)
+
+
+def _artifact_reproduced(
+    reference: bytes,
+    renders: int,
+    *,
+    source: bytes,
+    diagnostics_dir: Path | None,
+    trace_dir: Path | None,
+) -> tuple[bytes, int, str]:
+    """Require a fresh page load to reproduce the stored artifact; return the last load.
+
+    `renders - 1` fresh loads are always drawn. When none of them reproduces the stored
+    artifact, more are drawn, up to `_ARTIFACT_LOADS` in all, stopping at the first that
+    does. The check passes when some load reproduced the artifact and every load that
+    did not drew one and the same other document: that is D-509's shape, two placements
+    of one page. It refuses when no load reproduced the artifact, and when the loads
+    that did not drew two different documents, which is more than D-509 accounts for;
+    it stops drawing as soon as either is certain.
+
+    Every load that does not reproduce the artifact is reported in the log as it is
+    drawn, pass or fail, because how often that happens on the runner is what D-509
+    does not yet know. Returns the last load, its number, and the passing summary.
+    """
+    first = _normalised(reference)
+    loads: list[bytes] = []
+    matched: list[int] = []
+    others: dict[bytes, list[int]] = {}
+    while len(others) < 2 and len(loads) < max(renders - 1, _ARTIFACT_LOADS):
+        if matched and len(loads) >= renders - 1:
+            break
+        number = len(loads) + 1
+        drawn = _draw_for_check(trace_dir, number, source=source)
+        loads.append(drawn)
+        again = _normalised(drawn)
+        if again == first:
+            matched.append(number)
+            continue
+        seen = others.setdefault(again, [])
+        seen.append(number)
+        report = (
+            f"the same document as load {seen[0]}"
+            if len(seen) > 1
+            else _difference(first, again)
+        )
+        print(
+            f"explainer PDF: fresh load {number} does not reproduce the stored artifact "
+            f"(D-509): {len(first)} then {len(again)} bytes, normalised; {report}",
+            flush=True,
+        )
+    if matched and len(others) < 2:
+        if not others:
+            fresh = f"{len(loads)} fresh {'render' if len(loads) == 1 else 'renders'}"
+            return loads[-1], len(loads), f"stored artifact and {fresh} agree"
+        (other,) = others.values()
+        return (
+            loads[-1],
+            len(loads),
+            (
+                f"stored artifact reproduced by fresh {_load_list(matched)} of "
+                f"{len(loads)}; {_load_list(other)} drew one other document, the "
+                "per-load placement D-509 records"
+            ),
+        )
+    compared = next(iter(others.values()))[0]
+    replay = loads[compared - 1]
+    reason = (
+        f"No fresh page load reproduced the stored artifact, in {len(loads)} drawn; "
+        "D-509's per-load placement is accepted only when one does."
+        if not matched
+        else f"Fresh {_load_list(matched)} reproduced the stored artifact, but the loads "
+        "that did not drew two different documents, which is more than D-509's two "
+        "placements of one page account for."
+    )
+    _failed_check(
+        f"{_mismatch(first, _normalised(replay))}\n{reason}\n"
+        + _census(first, loads, compared),
+        reference,
+        replay,
+        diagnostics_dir=diagnostics_dir,
+        reference_kind="stored artifact",
+        replay_number=compared,
+        others=[(numbers[0], loads[numbers[0] - 1]) for numbers in others.values()][1:],
+    )
 
 
 def _check_renders(
@@ -1156,29 +1393,37 @@ def _check_renders(
     trace_dir: Path | None = None,
     rebuild_prepared_text: bool = False,
 ) -> None:
-    """Compare complete files; the stored artifact's receipt participates in equality."""
+    """Compare complete files; the stored artifact's receipt participates in equality.
+
+    Fresh draws (`source is None`) must all agree with the first. A stored artifact is
+    compared by `_artifact_reproduced`, which may draw further loads after a mismatch.
+    """
     reference_kind = "stored artifact" if source is not None else "fresh draw 1"
     first = _normalised(reference)
-    replay = reference
-    for number in range(1, renders):
-        replay = _draw_for_check(
-            trace_dir, number, source=source, rebuild_prepared_text=rebuild_prepared_text
+    if source is not None:
+        replay, replay_number, compared = _artifact_reproduced(
+            reference,
+            renders,
+            source=source,
+            diagnostics_dir=diagnostics_dir,
+            trace_dir=trace_dir,
         )
-        again = _normalised(replay)
-        if first != again:
-            length_delta = abs(len(first) - len(again))
-            _failed_check(
-                f"explainer PDF does not reproduce itself: {len(first)} then {len(again)} "
-                f"bytes, normalised; length delta {length_delta}. Each of these was drawn "
-                "until two consecutive prints of its page agreed, so this is a difference "
-                "between renders and not the print-time re-render D-490 records. "
-                + _difference(first, again),
-                reference,
-                replay,
-                diagnostics_dir=diagnostics_dir,
-                reference_kind=reference_kind,
-                replay_number=number if source is not None else number + 1,
+    else:
+        replay, replay_number, compared = reference, renders, f"{renders} fresh renders agree"
+        for number in range(1, renders):
+            replay = _draw_for_check(
+                trace_dir, number, rebuild_prepared_text=rebuild_prepared_text
             )
+            again = _normalised(replay)
+            if first != again:
+                _failed_check(
+                    _mismatch(first, again),
+                    reference,
+                    replay,
+                    diagnostics_dir=diagnostics_dir,
+                    reference_kind=reference_kind,
+                    replay_number=number + 1,
+                )
     findings = font_findings(reference)
     pages = reference.count(b"/Type /Page\n") or reference.count(b"/Type/Page")
     if pages != EXPECTED_PAGE_COUNT:
@@ -1193,18 +1438,12 @@ def _check_renders(
             replay,
             diagnostics_dir=diagnostics_dir,
             reference_kind=reference_kind,
-            replay_number=renders - 1 if source is not None else renders,
+            replay_number=replay_number,
         )
     embedded = embedded_fonts(reference)
     host = sorted(set(outline_fonts(reference)))
     fallbacks = ", ".join(host)
     trailer = f"; drawn as outlines from the host's own fonts: {fallbacks}" if host else ""
-    compared = (
-        f"stored artifact and {renders - 1} fresh "
-        f"{'render' if renders == 2 else 'renders'} agree"
-        if source is not None
-        else f"{renders} fresh renders agree"
-    )
     print(
         f"explainer PDF check passed: {compared}, {len(first)} bytes, "
         f"{pages} pages, {len(embedded)} embedded fonts, none of them this page's "
@@ -1233,6 +1472,10 @@ def check(
     draw must also pass the font and pagination guards: repeated agreement alone
     cannot establish that fonts are embedded or the reviewed layout is intact.
     `renders=10` repeats the historical ten-draw readiness control on the current host.
+
+    This comparison does not take the extra loads `--check-artifact` does. It is the
+    instrument D-509's per-load rate was measured with, and the Pages job runs it only
+    as an opt-in trace; tolerating a differing load here would hide what it measures.
     """
     if renders < 2:
         raise ValueError("at least 2 renders are required for a comparison")
@@ -1257,9 +1500,11 @@ def check_artifact(
     """Validate the existing publication candidate without modifying it.
 
     The stored file is the first of `renders` total draws, so the default adds one
-    fresh draw. The current HTML receipt is appended to every replay; missing, stale
-    or duplicate receipts on the stored file therefore fail the complete comparison.
-    There is no fallback draw when the publication candidate is missing.
+    fresh draw, and up to `_ARTIFACT_LOADS` fresh loads when that one does not
+    reproduce it (D-509; `_artifact_reproduced` has the rule). The current HTML receipt
+    is appended to every replay; missing, stale or duplicate receipts on the stored file
+    therefore fail every comparison. There is no fallback draw when the publication
+    candidate is missing.
     """
     if renders < 2:
         raise ValueError("at least 2 renders are required for a comparison")
@@ -1314,7 +1559,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--renders",
         type=int,
         metavar="N",
-        help="total draws compared (default 2); --check-artifact counts the stored PDF as one",
+        help=(
+            "total draws compared (default 2); --check-artifact counts the stored PDF as "
+            f"one, and draws up to {_ARTIFACT_LOADS} fresh loads when the first differs"
+        ),
     )
     command.add_argument(
         "--diagnostics-dir",

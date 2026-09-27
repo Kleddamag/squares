@@ -5888,7 +5888,11 @@ object or outside-object PDF section containing the first difference.
 inside one untyped deflate stream where the page content streams sit.
 Locally, five of 104 page loads placed one prepared-math glyph a fifth of a pixel off
 the others’ placement and then printed that placement identically, four prints running,
-so drawing each load twice cannot see it; the cause and the check’s answer are open
+so drawing each load twice cannot see it.
+It is contained: when the first fresh load does not reproduce the stored PDF,
+`--check-artifact` draws up to four loads and passes only if one does and the rest drew
+a single other document, and a refusal now names the moved `Tm` line.
+An artifact drawn in the minority placement is still refused, and the cause stays open
 under `think-6dle`.
 
 **[D-489](defects.md) is open, and it is the log’s clearest case of a guard that reads

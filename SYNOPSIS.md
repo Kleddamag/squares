@@ -5889,11 +5889,14 @@ inside one untyped deflate stream where the page content streams sit.
 Locally, five of 104 page loads placed one prepared-math glyph a fifth of a pixel off
 the others’ placement and then printed that placement identically, four prints running,
 so drawing each load twice cannot see it.
-It is contained: when the first fresh load does not reproduce the stored PDF,
+It is contained on both sides.
+`--update` publishes only a document two of up to three page loads drew, and refuses
+when no two agree. When the first fresh load does not reproduce the stored PDF,
 `--check-artifact` draws up to four loads and passes only if one does and the rest drew
-a single other document, and a refusal now names the moved `Tm` line.
-An artifact drawn in the minority placement is still refused, and the cause stays open
-under `think-6dle`.
+a single other document.
+A refusal names the moved `Tm` line.
+At the local rate that leaves about one run in 110 refused, against one in eleven
+before, and the cause stays open under `think-6dle`.
 
 **[D-489](defects.md) is open, and it is the log’s clearest case of a guard that reads
 like soundness and acts like a filter.** `devtools/screen_corner_dual_salvage.py`

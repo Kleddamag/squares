@@ -47,7 +47,9 @@ receipt, must match a fresh draw of the current page. D-509 measured that one pa
 is not enough to decide that, because each load settles one math glyph into one of two
 sub-pixel placements; when the first fresh load differs, the check draws up to
 `_ARTIFACT_LOADS` in all and passes only if one of them reproduces the stored file
-exactly. It also checks that stored PDF's fonts and pagination without rewriting it.
+exactly. `--update` meets it from the other side: it writes only a document that two
+separate page loads drew, from up to `_UPDATE_LOADS`. The check also reads the stored
+PDF's fonts and pagination without rewriting it.
 Neither mode compares against a committed PDF or a portable digest. `--diagnostics-dir`
 retains the raw comparison pair and a neutral report when a check fails; a successful
 check creates no diagnostic files.
@@ -1117,10 +1119,55 @@ def _with_receipt(pdf: bytes, source: bytes) -> bytes:
 
 
 def update() -> None:
-    written = _with_receipt(render_pdf_bytes(), PAGE.read_bytes())
+    """Write the publication PDF, from a document two page loads agreed on.
+
+    One load is not enough for the same reason it is not enough for `--check-artifact`:
+    D-509's page load decides one glyph's placement, so a single draw publishes a
+    minority placement about as often as that placement occurs. `_confirmed_draw` has
+    the rule and its cost.
+    """
+    drawn, loads = _confirmed_draw()
+    written = _with_receipt(drawn, PAGE.read_bytes())
     with atomic_output_file(OUTPUT, make_parents=True) as temporary:
         temporary.write_bytes(written)
-    print(f"explainer PDF updated: {OUTPUT.name} ({len(written)} bytes)")
+    print(
+        f"explainer PDF updated: {OUTPUT.name} ({len(written)} bytes; "
+        f"two of {loads} page loads agreed)"
+    )
+
+
+def _confirmed_draw() -> tuple[bytes, int]:
+    """Bytes two separate page loads drew, and how many loads it took to find them.
+
+    Draws until one load agrees with an earlier one once the clock fields are
+    normalised, up to `_UPDATE_LOADS`, and returns the later load of that pair. When the
+    first two agree that is one load more than `--update` drew before D-509, and the
+    only extra cost of a passing run. Every load that agrees with none before it is
+    printed with its located difference, publish or refuse, so the runner's rate is
+    countable from the logs. When no two loads agree nothing is written: an
+    unconfirmed draw is exactly what this exists not to publish.
+    """
+    loads: list[bytes] = []
+    for number in range(1, _UPDATE_LOADS + 1):
+        drawn = render_pdf_bytes()
+        again = _normalised(drawn)
+        if any(_normalised(load) == again for load in loads):
+            return drawn, number
+        loads.append(drawn)
+        if number > 1:
+            print(
+                f"explainer PDF: page load {number} agrees with no earlier load (D-509): "
+                f"{_difference(_normalised(loads[0]), again)}",
+                flush=True,
+            )
+    first, second = _normalised(loads[0]), _normalised(loads[1])
+    raise SystemExit(
+        f"explainer PDF not written: no two of {_UPDATE_LOADS} page loads agreed, so "
+        "there is no confirmed document to publish. D-509 records a per-load placement "
+        "with two outcomes; three different documents are more than that. "
+        f"{len(first)} then {len(second)} bytes, normalised: {_difference(first, second)}\n"
+        + _census(first, loads, 2, reference="load 1")
+    )
 
 
 def _math_trace_directory(diagnostics_dir: Path | None) -> Path:
@@ -1263,22 +1310,41 @@ def _mismatch(first: bytes, again: bytes) -> str:
 #: it always did. At the local rate, which is not the runner's, a single fresh load
 #: misses a majority-placement artifact about one run in twenty; with the extra loads
 #: such an artifact is refused only when a second, different minority document turns up
-#: first, about one run in four hundred. What this does not absorb is an artifact that
-#: `--update` drew in a minority placement, about one run in twenty at that rate: most
-#: fresh loads differ from it, all four usually do, and the check refuses it. Making the
-#: published placement the majority one is `--update`'s side of D-509, not this check's.
+#: first, about one run in four hundred. An artifact in a minority placement is still
+#: refused, because most fresh loads differ from it; `_UPDATE_LOADS` is what keeps
+#: `--update` from publishing one.
 _ARTIFACT_LOADS = 4
+
+#: How many page loads `--update` may draw to find two that agree. It publishes only a
+#: document two loads drew, and stops as soon as two agree, so the usual cost is two
+#: loads, one more than it drew before D-509; a third is drawn only when the first two
+#: differ. Three loads that all differ publish nothing.
+#:
+#: At the local rate (5 of 104 loads drew a minority document, on a different Chromium
+#: build from the runner's), one load is a minority draw about one run in twenty. With
+#: this rule `--update` ends on a minority or refuses only when at least two of the
+#: loads it needs are minority draws, about one run in 150: it publishes the minority if
+#: those two agree, and refuses if they differ, which is what D-509's four minority
+#: documents did (four glyphs on four pages).
+_UPDATE_LOADS = 3
 
 
 def _load_list(numbers: Sequence[int]) -> str:
     return f"{'load' if len(numbers) == 1 else 'loads'} {', '.join(map(str, numbers))}"
 
 
-def _census(first: bytes, loads: Sequence[bytes], compared: int) -> str:
-    """One line per distinct document the fresh loads drew, against the stored artifact.
+def _census(
+    first: bytes,
+    loads: Sequence[bytes],
+    compared: int,
+    *,
+    reference: str = "the stored artifact",
+) -> str:
+    """One line per distinct document the fresh loads drew, against `reference`.
 
-    `compared` is the load the refusal's main difference was computed from; its line
-    refers back to that report rather than repeating it.
+    `first` is the reference's normalised bytes. `compared` is the load the refusal's
+    main difference was computed from; its line refers back to that report rather than
+    repeating it.
     """
     groups: dict[bytes, list[int]] = {}
     for number, load in enumerate(loads, start=1):
@@ -1286,12 +1352,12 @@ def _census(first: bytes, loads: Sequence[bytes], compared: int) -> str:
     heading = (
         f"{len(loads)} fresh page {'load' if len(loads) == 1 else 'loads'} drew "
         f"{len(groups)} distinct {'document' if len(groups) == 1 else 'documents'} "
-        f"against the stored artifact's {len(first)} normalised bytes:"
+        f"against {reference}'s {len(first)} normalised bytes:"
     )
     lines = [heading]
     for document, numbers in groups.items():
         if document == first:
-            which = "the stored artifact's document"
+            which = f"{reference}'s document"
         elif compared in numbers:
             which = "the document compared above"
         else:
@@ -1545,7 +1611,11 @@ def fonts() -> None:
 def main(argv: Sequence[str] | None = None) -> int:
     command = argparse.ArgumentParser(description=__doc__)
     mode = command.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--update", action="store_true", help="write the PDF")
+    mode.add_argument(
+        "--update",
+        action="store_true",
+        help=f"write the PDF two of up to {_UPDATE_LOADS} page loads agree on",
+    )
     mode.add_argument(
         "--check", action="store_true", help="compare fresh renders for diagnosis"
     )

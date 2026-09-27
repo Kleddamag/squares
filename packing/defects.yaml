@@ -16944,8 +16944,8 @@ defects:
     few. The rate on the pinned runner is not known. It is not the local 5 in 104, which
     was measured on a different Chromium build.
   fix: >-
-    Contained in the check, with two of the three candidates this entry first listed.
-    A second CI occurrence came first: PR 236's run 36317430319, at f2739c74b, read
+    Contained on both sides of the publication, with all three candidates this entry
+    first listed. A second CI occurrence came first: PR 236's run 36317430319, at f2739c74b, read
     `849949 then 849947 bytes`, first difference at byte 510915 in object 144 again,
     whose `/Length` was 5237 against 5235. So the difference began in the stream
     dictionary, ahead of any payload byte, and the log named no line.
@@ -16966,6 +16966,18 @@ defects:
     the instrument the per-load rate was measured with, and tolerating a differing load
     there would hide what it measures.
 
+    `--update` no longer publishes a single load. It draws page loads until one agrees
+    with an earlier one once the clock fields are normalised, up to `_UPDATE_LOADS` = 3,
+    and writes the later load of that pair. When no two of the three agree it writes
+    nothing and refuses, with the first difference and the census located against load
+    1: an unconfirmed draw is never published. A load that agrees with none before it is
+    printed with its difference either way. A passing run whose first two loads agree
+    costs one load more than before: 12.6 s here against 8.8 s for the single draw, and
+    the Pages workflow puts one load at about 4.5 s on the runner. That brings the `pdf`
+    job to about 78 s on its 73.3 s record. The worst case, both failure paths in one
+    run, is five more loads, about 96 s: under the drift limit of 110 s and the ceiling
+    of 117 s, so `gate-budgets.yaml` is unchanged until a run measures it.
+
     `_difference` now inflates the containing object when it is a FlateDecode stream in
     both files and names the first differing decoded line, with the line after it: the
     glyph that the `Tm` places. Building it found that `_OBJECT_STREAM` only knew `stream`
@@ -16973,14 +16985,22 @@ defects:
     line, so D-490's bound on the declaration scan never applied to a real content
     stream. The pattern takes both shapes now.
 
-    Contained and not fixed, for three reasons. An artifact that `--update` drew in the
-    minority placement is still refused, because most fresh loads differ from it; at the
-    local 5 in 104 that is about one run in twenty, against about one in ten before.
-    Keeping the placement most loads agree on is `--update`'s side and is not built. The
-    cause is still unlocated. Nothing explains why one glyph of a prepared KaTeX box takes
+    The residual rate follows from the local 5 in 104, taken as p, on a different Chromium
+    build from the runner's. One load against one load disagreed with probability 2p,
+    about one run in eleven. Now `--update` ends on a minority document or refuses only
+    when two of the loads it needs are minority draws, p squared times three, about one
+    run in 150. The four minority documents measured locally each moved a different
+    glyph, so two minority draws usually differ and the run refuses rather than publish.
+    Against a majority artifact, `--check-artifact` refuses only when its first two loads
+    are two different minority documents, about one run in 430. Together that is about
+    one run in 110, every one of them a refusal and none a wrong publication, unless two
+    minority loads happen to agree.
+
+    Contained and not fixed, for two reasons. The cause is still unlocated. Nothing explains why one glyph of a prepared KaTeX box takes
     one of two vertical placements per load: the moves are 7/32 and 3/16 px, between a
     fractional and a whole-pixel baseline, with identical inline em geometry and faces.
-    Finally, the pinned build's CI pair in artifact 10859178879, which expires seven days
+    The rate on the pinned runner is not known either, and the pinned build's CI pair in
+    artifact 10859178879, which expires seven days
     after 2026-09-25, has not been read.
   regression: >-
     `tests/test_render_explainer_pdf.py`, against fake loads in D-509's shape: a
@@ -16996,5 +17016,9 @@ defects:
     that does not inflate is reported as such, and an uncompressed stream gets no decoded
     report. A Skia-shaped stream payload cannot lend its object a type. The earlier
     artifact cases now expect the extra loads: a stored file that fresh loads agree
-    against is still refused.
+    against is still refused. For `--update`: two agreeing first loads stop there and
+    publish, with no D-509 line; a minority first load is outvoted by two majority loads,
+    and a first and third that agree are published over a differing second, each with
+    the differing load's decoded line in the log; three different loads refuse, leave the
+    previous file in place, and give the census against load 1.
   recorded_in: packing/devtools/render_explainer_pdf.py

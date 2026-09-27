@@ -583,6 +583,70 @@ def test_artifact_check_refuses_a_second_document_after_a_match(
     assert "Fresh load 1 reproduced the stored artifact, but" in str(refused.value)
 
 
+def test_update_stops_at_the_second_load_when_the_first_two_agree(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The passing run's whole extra cost is one load over the single draw of before."""
+    _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    drawn = _loads(monkeypatch, [_MAJORITY, _MAJORITY, _MINORITY])
+    assert pdf.main(["--update"]) == 0
+    assert drawn == [_MAJORITY, _MAJORITY]
+    assert pdf.OUTPUT.read_bytes() == pdf._with_receipt(_MAJORITY, pdf.PAGE.read_bytes())
+    out = capsys.readouterr().out
+    assert "two of 2 page loads agreed" in out
+    assert "D-509" not in out
+
+
+@pytest.mark.parametrize(
+    ("sequence", "published"),
+    [
+        ([_MINORITY, _MAJORITY, _MAJORITY], _MAJORITY),
+        ([_MINORITY, _MAJORITY, _MINORITY], _MINORITY),
+    ],
+    ids=["majority-after-a-minority-first", "first-and-third"],
+)
+def test_update_publishes_the_document_two_loads_agree_on(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    *,
+    sequence: list[bytes],
+    published: bytes,
+) -> None:
+    """D-509: a first load in the minority placement is not what ships. What ships is
+    what two loads drew, and the load that agreed with nothing is in the log with the
+    line that moved."""
+    _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    drawn = _loads(monkeypatch, sequence)
+    pdf.update()
+    assert drawn == sequence
+    assert pdf.OUTPUT.read_bytes() == pdf._with_receipt(published, pdf.PAGE.read_bytes())
+    out = capsys.readouterr().out
+    assert "two of 3 page loads agreed" in out
+    assert "page load 2 agrees with no earlier load (D-509)" in out
+    assert "b'1 0 0 -1 412.5 18560 Tm' against b'1 0 0 -1 412.5 18560.219 Tm'" in out
+
+
+def test_update_refuses_when_no_two_loads_agree_and_leaves_the_old_file(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Three different documents are more than D-509's two placements, and none of them
+    is confirmed, so nothing is published: never an unconfirmed draw."""
+    earlier = _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    drawn = _loads(monkeypatch, [_MINORITY, _MAJORITY, _ELSEWHERE, _MAJORITY])
+    with pytest.raises(SystemExit, match="no two of 3 page loads agreed") as refused:
+        pdf.update()
+    assert drawn == [_MINORITY, _MAJORITY, _ELSEWHERE]
+    assert pdf.OUTPUT.read_bytes() == earlier
+    message = str(refused.value)
+    assert "b'1 0 0 -1 412.5 18560 Tm' against b'1 0 0 -1 412.5 18560.219 Tm'" in message
+    assert "3 fresh page loads drew 3 distinct documents against load 1's" in message
+    assert "load 1: " in message
+    assert "load 1's document" in message
+    assert "the document compared above" in message
+    assert "18560 Tm' against b'1 0 0 -1 412.5 18560.2188 Tm'" in message
+
+
 @pytest.mark.parametrize("receipt", ["missing", "stale", "duplicate"])
 def test_artifact_check_compares_the_source_receipt_as_part_of_the_file(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, receipt: str

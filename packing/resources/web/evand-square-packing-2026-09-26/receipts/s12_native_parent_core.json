@@ -4,21 +4,19 @@
   "method": "directed-rounding box branch-and-bound over parent-core rows",
   "case": "s12",
   "provenance": {
-    "git_commit": "0d62157f99239c6f340053ef1772ff39f4cada6e",
+    "git_commit": "1f262c0d323d93a92b3b24652cc7f18a709cae24",
     "dirty": false,
     "python": "3.14.7 (main, Sep 24 2026, 17:58:18) [Clang 22.1.3 ]",
     "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
     "command": [
-      "/home/user/squares/.claude/worktrees/agent-aadc88d5d978f0bb0/packing/devtools/verify_evand_angle_net_native.py",
+      "devtools/verify_evand_angle_net_native.py",
       "--case",
       "s12",
       "--all",
       "--workers",
-      "1",
-      "--resume",
-      "/tmp/claude-0/evand-native/s12-all.rows.jsonl",
+      "2",
       "--output",
-      "/tmp/claude-0/evand-native/run2/s12-all.json"
+      "OUT/s12_native_parent_core.json"
     ],
     "source_url": "https://github.com/evand/square-packing",
     "source_commit": "167d842cd27ba1451cb2833773ea930c80b9e65b",
@@ -40,14 +38,14 @@
   },
   "catalogue_rows": 2486,
   "selected_rows": 2486,
-  "resumed_rows": 299,
+  "resumed_rows": 0,
   "complete": true,
   "batch_size": 2048,
-  "workers": 1,
+  "workers": 2,
   "scale": 10000000,
   "threshold_units": 10000000,
   "boxes": 23409578,
-  "row_cpu_seconds": 934.1292325730319,
+  "row_cpu_seconds": 752.0807761187825,
   "least_lower": {
     "row": 496,
     "units": 10000000
@@ -57,6 +55,6 @@
     "bin": 0
   },
   "refutations": [],
-  "seconds": 836.779034211002,
+  "seconds": 377.9086515960007,
   "rows": null
 }

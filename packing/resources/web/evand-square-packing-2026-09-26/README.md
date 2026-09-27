@@ -209,16 +209,15 @@ this repository’s parent-core theorem with parent side `1`: bin `k` is the row
 the certificate’s integers without importing source code, proves their premises exactly
 with `validate_parent_core`, and decides coverage with the directed-rounding branch and
 bound over centre boxes, `verify_parent_core_rows`, which shares nothing with the
-source’s arrangement sweep. Run from `packing/` on clean commit `0d62157f`, it accepted
-every row at one unit, 23,409,578 boxes with no stalled box and no refutation, in 934 s
-of summed row time on one worker
+source’s arrangement sweep. Run from `packing/` on clean commit `1f262c0d`, it accepted
+every row at one unit, 23,409,578 boxes with no stalled box and no refutation, in 752 s
+of summed row time on two workers
 ([`receipts/s12_native_parent_core.json`](receipts/s12_native_parent_core.json), with
-its row journal). A first run on the same commit was stopped at row 299 and the second
-resumed from its journal; those 299 rows, re-decided separately on `be3e3f3b`, gave
-identical outcomes.
+its row journal). An earlier complete run, on a clean commit of this branch before its
+history was rebuilt, gave the same status and the same 23,409,578 boxes.
 
-**The `s(21)` native decision is an overnight item.** A complete run on clean commit
-`a47301e8` was started on 2026-09-27 and stopped by hand at 21:42 UTC, past this lane’s
+**The `s(21)` native decision is an overnight item.** A complete run on a clean commit
+of this branch, before its history was rebuilt, was started on 2026-09-27 and stopped by hand at 21:42 UTC, past this lane’s
 1.5 CPU-hour budget, with rows 0 to 2,378 of 2,486 decided: every one certified at one
 unit, 87,247,713 boxes, no stalled box and no exhausted budget, in 9,695 s of summed row
 time on two workers. Its journal is not retained, so nothing here rests on it and
@@ -389,7 +388,7 @@ are present, the repository’s readers require them to agree.
 
 | Stored file | Origin | Git blob | SHA-256, decompressed |
 | --- | --- | --- | --- |
-| `receipts/s12_native_parent_core.rows.jsonl.gz` | receipt | `850db46a9a4d4b15ecc065c4b5fa4c0c6362000d` | `06555cca4c2bcde0029d93f20be3caf012a16c29d43b936fdcc439bb7fcefef0` |
+| `receipts/s12_native_parent_core.rows.jsonl.gz` | receipt | `aaaf1b72f172e3c3fa97761e6dfc3eab2539e975` | `2dd7388ea9e054da8129b73bbc5da282d624403c6d4a62e9dd82a32b873dbc40` |
 | `receipts/s32_zeromargin_roots.jsonl.gz` | receipt | `1003ccf426a47c80e44c272bdc93914648fd906a` | `16366bb7637c0d114667df2a9df7b5913a5b6714af5023287326c57ba47a4e0e` |
 | `square-packing/s12/certificates/rung2/s13_closed_cover_4.txt.gz` | upstream | `f5da1b112e08bc6d81db63a7aa6ae2530099677c` | `ea303acea08cc17a13cecc24d3714c2df409f91eba048cd5546050ed064b53ed` |
 | `square-packing/s12/certificates/s12_lower_3.9686.txt.gz` | upstream | `4c3f0bb3b2607ad037086e1183324eb4fb7a8d68` | `75f1cc891a8b8739b92b50c7ddbd85a493efa58cf2e921d58ce4ac7c2dcabe78` |

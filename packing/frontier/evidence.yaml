@@ -2568,12 +2568,11 @@ evidence:
         - Disjoint parent interiors make their closed cores disjoint, so twelve parents would capture at least 12 from a total below 12.
       audit_record: docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
     limitations: >-
-      The complete native run on clean commit 0d62157f99239c6f340053ef1772ff39f4cada6e
+      The complete native run on clean commit 1f262c0d323d93a92b3b24652cc7f18a709cae24
       on 2026-09-27 accepted all 2,486 rows at the one-unit threshold with
-      23,409,578 boxes, zero stalls, no exhausted budget and no refutation, in 934 s of
-      summed row time on one worker; 299 of its rows were decided by an interrupted
-      first run on the same clean commit and carried by the journal's resume, and a
-      separate re-decision of those 299 rows on be3e3f3b4 gave identical outcomes.
+      23,409,578 boxes, zero stalls, no exhausted budget and no refutation, in 752 s of
+      summed row time on two workers; an earlier complete run on a clean commit of this
+      branch, before its history was rebuilt, gave the same status and box count.
       The coverage decision is this repository's interval branch and bound over
       centre boxes, which shares nothing with the source's exact arrangement sweep
       (verify/) or its Python re-check (xcheck.py); with
@@ -2672,7 +2671,7 @@ evidence:
       format, not to the method. The native parent-core decision that would add
       a second method is an overnight item: a run of
       devtools.verify_evand_angle_net_native --case s21 --all --workers 2 on
-      clean a47301e8a certified rows 0 to 2,378 of 2,486 (no stall, 9,695 s of
+      a clean commit of this branch (before its history was rebuilt) certified rows 0 to 2,378 of 2,486 (no stall, 9,695 s of
       row time) before it was stopped at the lane's budget; its journal is not
       retained, and the complete run projects to about 2.8 CPU-hours. Advance over the previous verified 122/25
       (T-034, which remains valid): 2878/25025, about 0.115; gap to the grid's

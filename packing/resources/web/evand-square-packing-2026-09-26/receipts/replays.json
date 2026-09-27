@@ -139,25 +139,27 @@
     },
     {
       "check": "s12 native parent-core interval decision (method-distinct, this repository's engine)",
-      "command": "cd packing && .venv/bin/python3 -m devtools.verify_evand_angle_net_native --case s12 --all --workers 1 --output OUT.json (resumed once with --resume from the first run's row journal after that run was stopped at row 299)",
+      "command": "cd packing && .venv/bin/python3 -m devtools.verify_evand_angle_net_native --case s12 --all --workers 2 --output OUT.json",
       "working_directory": "packing/ of this repository, not the source tree",
-      "started_utc": "2026-09-27T19:02:21Z (first run, stopped at 19:04:01 with rows 0-298 journalled); resumed 2026-09-27T19:07:59Z",
-      "ended_utc": "2026-09-27T19:21:56Z",
-      "git_commit": "0d62157f99239c6f340053ef1772ff39f4cada6e",
+      "started_utc": "2026-09-27T23:06:42Z",
+      "ended_utc": "2026-09-27T23:13:01Z",
+      "git_commit": "1f262c0d323d93a92b3b24652cc7f18a709cae24",
       "dirty": false,
       "exit": 0,
       "status": "PASS_COMPLETE",
       "rows": 2486,
       "boxes": 23409578,
-      "row_seconds": 934.1,
+      "row_seconds": 752.1,
       "stalled_rows": 0,
       "refutations": 0,
       "threshold_units": 10000000,
       "scale": 10000000,
-      "control": "rows 0-298, carried by the resume, re-decided separately on be3e3f3b4 (clean) with identical status, boxes and lower bound per row",
+      "control": "a first complete run (one worker, resumed once at row 299) on an earlier clean commit of this branch, since rewritten, gave the same status and 23,409,578 boxes; this run replaced it as the retained receipt on the rebuilt branch",
       "receipt": "s12_native_parent_core.json",
       "records": "s12_native_parent_core.rows.jsonl",
-      "log": "s12_native_parent_core.log"
+      "log": "s12_native_parent_core.log",
+      "wall_seconds": 377.9,
+      "records_sha256_decompressed": "2dd7388ea9e054da8129b73bbc5da282d624403c6d4a62e9dd82a32b873dbc40"
     }
   ]
 }

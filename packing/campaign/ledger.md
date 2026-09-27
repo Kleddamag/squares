@@ -174,6 +174,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-157](agent-sessions/session-157-n11-rung0-overnight-cpu.md) | completed | contemporaneous | `research-loop` (correctness) | `review-planning-oversight` (process) | 2 | think-ie35 | BC-381 (think-6w2y): a Fable max W2 review of the closed rung-0 tree and the register decision. |
 | [session-158](agent-sessions/session-158-n11-rung0-lock-in-and-rung1-pilot.md) | completed | contemporaneous | `factual-review` (correctness) | `factual-review` (correctness) | 1 | think-svmp | BC-384 (think-ggk5): design and measure a stronger per-node bound for the fixed-angle cell tree. |
 | [session-159](agent-sessions/session-159-n17-guzhou-r052-intake.md) | completed | contemporaneous | `factual-review` (correctness) | `review-planning-oversight` (insight) | 2 | think-ju2h | BC-386 (think-amx8): lift the native coverage ceilings and decide R052 natively, the first lane of the after-R052 order, with the n11 tilt-profile census and the ceiling search beside it. |
+| [session-160](agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | stopped | contemporaneous | `factual-review` (correctness) | `factual-review` (correctness) | 3 | think-il68 | Certify this handover (think-noha) with a hosted gate on PR 236's final head, then BC-390 (think-7c17): run the widened n = 11 rung 0 box on eight workers overnight, with the rectangle ladders and the queued wand125 and Daniel replays on the remaining workers, per the 2026-09-27 plan. |
 
 ### Workflow summary
 
@@ -182,7 +183,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | workflow | declared entries | retrospective entries | declared phases | retrospective phases |
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 3 | 2 | 15 | 2 |
-| `factual-review` | 10 | 0 | 60 | 2 |
+| `factual-review` | 11 | 0 | 62 | 2 |
 | `insight-iteration` | 27 | 1 | 84 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 37 | 1 |
@@ -190,7 +191,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `pipeline-improvement` | 36 | 2 | 154 | 5 |
 | `documentation-pass` | 1 | 0 | 25 | 1 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 34 | 2 |
+| `review-planning-oversight` | 6 | 0 | 35 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -841,12 +842,17 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-383 | research | 11 | complete | 1 | think-6b12 | The pilot receipts under results/agenda-042/ and an experiment record. |
 | BC-384 | research | 11 | blocked | 1 | think-ggk5 | A design note and a benchmark receipt. |
 | BC-385 | research | 11, 12, 17, 21 | complete | 0 | think-f0if | docs/project/specs/active/plan-2026-09-25-after-r052-planning.md |
-| BC-386 | tool_validation | 17 | ready | 1 | think-amx8 | A native-decision receipt for R052 under results/agenda-042/ and the reviewed cap-lift commit. |
+| BC-386 | tool_validation | 17 | stopped | 1 | think-amx8 | A native-decision receipt for R052 under results/agenda-042/ and the reviewed cap-lift commit. |
 | BC-387 | research | 17, 12 | ready | 1 | think-68la | A dated lemma review under docs/project/reviews/, then the checker receipts under results/agenda-042/. |
 | BC-388 | research | 11 | ready | 1 | think-91yk | The census receipt under results/agenda-042/ and an experiment record. |
 | BC-389 | research | 11 | ready | 2 | think-nho8 | The frozen certificate, the native sweep receipt and a dated lemma review. |
 | BC-390 | research | 11 | ready | 2 | think-7c17 | The frozen digests, run output and reader verdict under results/agenda-042/. |
-| BC-391 | research | 21 | ready | 3 | think-t50i | The run logs and decision receipts under results/agenda-042/. |
+| BC-391 | research | 21 | stopped | 3 | think-t50i | The run logs and decision receipts under results/agenda-042/. |
+| BC-392 | research | 11, 12, 17, 50, 82 | complete | 0 | think-0v60 | docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md |
+| BC-393 | tool_validation | 17 | ready | 1 | think-0rbj | A native-decision receipt in the 4.66001 source packet and the reviewed commit. |
+| BC-394 | research | 82, 50 | ready | 1 | think-pr2b | The ladder logs and certificate directories, then the replay receipts. |
+| BC-395 | research | 12 | ready | 2 | think-ujwy | The ladder log and the highest certificate directory. |
+| BC-396 | research | 45 | blocked | 1 | think-0g4t | The k = 7 cover, both censuses and the review. |
 
 ## Series
 
@@ -1040,6 +1046,11 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-245 | open question | proof | What is the least side f(theta) of packings of eleven unit squares wit |  | 0 |  |  |
 | H-246 | blocked | proof | Every packing of eleven unit squares with six axis-parallel and five a |  | 0 |  |  |
 | H-247 | open | proof | In the family of six unit squares at actual orientation 0 and five sha |  | 0 |  |  |
+| H-248 | blocked | proof | A finite family F of unit squares inside [0, 4675/1000]^2, at any angl |  | 0 |  |  |
+| H-249 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
+| H-250 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
+| H-251 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
+| H-252 | blocked | proof | A D4-invariant weighted point set in [0,7]^2 with rational weights and |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 

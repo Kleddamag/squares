@@ -1,0 +1,3 @@
+PASS: 135 release files match their SHA-256 manifest.
+exit=0
+136

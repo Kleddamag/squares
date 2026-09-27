@@ -1,0 +1,13 @@
+# command: verify/target/release/verify certificates/s21/s21_lower_4.9950.txt 21 6000 2 0
+# cwd: s12/ of evand/square-packing 167d842 (scratch copy)
+# python3: 3.14.7
+# host: 4 cores; started 2026-09-27T09:56:28Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=4604 total weight = 208045600/10000000 = 20.804560
+s = 5000/1001 = 4.995005
+angles: k=0..2486 (N=6000), covering [0,45deg]
+min covered weight over ALL placements = 10000083/10000000 = 1.000008  (at angle k=684)
+VERIFIED: every CLOSED unit square inside C covers weight >= 1, and total weight < 21.
+==> 21 unit squares cannot be packed into any square of side < 5000/1001 = 4.995004995,
+    i.e.  s(21) >= 4.995004995
+# finished 2026-09-27T10:20:47Z; exit 0; wall 1459 s

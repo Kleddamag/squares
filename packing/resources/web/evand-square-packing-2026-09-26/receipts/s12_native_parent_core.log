@@ -1,0 +1,23 @@
+row 300: certified, 11863 boxes, 0 stalled, 0.39s
+row 400: certified, 12983 boxes, 0 stalled, 0.45s
+row 500: certified, 14795 boxes, 0 stalled, 0.47s
+row 600: certified, 15279 boxes, 0 stalled, 0.52s
+row 700: certified, 14083 boxes, 0 stalled, 0.45s
+row 800: certified, 11903 boxes, 0 stalled, 0.36s
+row 900: certified, 9287 boxes, 0 stalled, 0.29s
+row 1000: certified, 7467 boxes, 0 stalled, 0.24s
+row 1100: certified, 7791 boxes, 0 stalled, 0.25s
+row 1200: certified, 6583 boxes, 0 stalled, 0.21s
+row 1300: certified, 6483 boxes, 0 stalled, 0.21s
+row 1400: certified, 7859 boxes, 0 stalled, 0.30s
+row 1500: certified, 9483 boxes, 0 stalled, 0.30s
+row 1600: certified, 8967 boxes, 0 stalled, 0.28s
+row 1700: certified, 10471 boxes, 0 stalled, 0.47s
+row 1800: certified, 9939 boxes, 0 stalled, 0.32s
+row 1900: certified, 9823 boxes, 0 stalled, 0.66s
+row 2000: certified, 8379 boxes, 0 stalled, 0.26s
+row 2100: certified, 7119 boxes, 0 stalled, 0.48s
+row 2200: certified, 6647 boxes, 0 stalled, 0.44s
+row 2300: certified, 6079 boxes, 0 stalled, 0.41s
+row 2400: certified, 5959 boxes, 0 stalled, 0.43s
+PASS_COMPLETE: /tmp/claude-0/evand-native/run2/s12-all.json

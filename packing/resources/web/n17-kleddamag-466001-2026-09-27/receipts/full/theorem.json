@@ -1,0 +1,36 @@
+{
+  "status": "PASS_COMPLETE_SEVENTEEN_SQUARE_EXCLUSION",
+  "side_bound": "s(17)>466001/100000",
+  "target": "466001/100000",
+  "certificate_sha256": "280af3d46150ca990917d714d83ee73baf4e6c45a0563090bf35588fb22de6e5",
+  "budget_units": 17000402008,
+  "minimum_units": 1000026844,
+  "surplus": 54340,
+  "ratio": "4250100502/250006711",
+  "intervals": 2168,
+  "verified_utc": "2026-09-27T19:43:25.252311+00:00",
+  "processes": [
+    {
+      "command": [
+        "PYTHON_FULL/bin/python",
+        "SRC/bounds/4.66001/verify_global_python.py",
+        "SRC/bounds/4.66001/certificate.json",
+        "OUT/full/python.json",
+        "1"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/node22/bin/node",
+        "SRC/bounds/4.66001/verify_global_variable.js",
+        "SRC/bounds/4.66001/certificate.json",
+        "OUT/full/node-0.json",
+        "0",
+        "2168",
+        "audit"
+      ],
+      "returncode": 0
+    }
+  ]
+}

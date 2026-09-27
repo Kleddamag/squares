@@ -1,0 +1,100 @@
+{
+  "schema": "ExternalCertificateReplayReceipts/v1",
+  "source": {
+    "url": "https://github.com/Kleddamag/17-squares-certified-bound",
+    "tag": "v1.1.0",
+    "commit": "13821ddfa24133a8d796648383464574404d5fa0",
+    "certificate": "bounds/4.640020/certificate.json",
+    "certificate_sha256": "5f4f0988acc23b738bdf29ee855b9827cda10fce0e12a7b3a78e6923cc5f8dda",
+    "release_manifest_sha256": "48695b48f72e7a1bc49d50c55d84a716597a0057c61ef8d7eb0e7db97de56627"
+  },
+  "host": {
+    "platform": "Linux 6.18.44 x86_64 container",
+    "cpus": 4,
+    "contention": "The launcher runs two Python workers and two Node processes on four cores; nothing else heavy ran during the full replay. The controls run overlapped the start of an atlas rebuild. Walls are readings, not benchmarks."
+  },
+  "working_directory": "packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound",
+  "output_directory": "a session scratch directory outside the packet, not retained",
+  "interpreters": {
+    "project": "packing/.venv/bin/python3, CPython 3.14.7",
+    "python_full": "a separate venv, CPython 3.14.7 with exactly numpy==2.3.5, numba==0.67.0, llvmlite==0.49.0 from the release's requirements.txt; the release's publication replay used CPython 3.12.14",
+    "node": "v22.22.2; the release's publication replay used v25.6.1"
+  },
+  "runs": [
+    {
+      "mode": "full",
+      "command": "python -X utf8 -B bounds/4.640020/verify.py --output-directory OUT/full --workers 2",
+      "started_utc": "2026-09-27T07:39:02Z",
+      "ended_utc": "2026-09-27T08:15:46Z",
+      "wall_seconds": 2204.37,
+      "checker_seconds": {
+        "python, 2 workers, all 2048 intervals": 2184.47,
+        "node, intervals 0-1023": 2188.57,
+        "node, intervals 1024-2047": 2204.11
+      },
+      "exit": 0,
+      "status": "PASS_COMPLETE_SEVENTEEN_SQUARE_EXCLUSION",
+      "target": "232001/50000",
+      "budget_units": 16978369232,
+      "minimum_units": 998727933,
+      "surplus": 5629,
+      "intervals": 2048,
+      "theorem_sha256": "b566baef021da3408522073336c9a7c8560c685ff37150b446bbe239ad797e64",
+      "python_ledger_sha256": "144b0c327c914763ac52ad14f3cf3a13f5ad30122478eef486e4db98766ff584",
+      "node_ledger_sha256": {
+        "node-0.json": "3a049c646b901a65c5c8f6ada61977d0996a8f9afd9252764ca3c53579d8272f",
+        "node-1.json": "428171739d1a0983ea7aa570586965b92779c7c726720934e03580ecad4425f6"
+      },
+      "receipt": "full/"
+    },
+    {
+      "mode": "controls",
+      "command": "python -X utf8 -B bounds/4.640020/controls.py --output-directory OUT/controls",
+      "started_utc": "2026-09-27T08:15:57Z",
+      "ended_utc": "2026-09-27T08:16:19Z",
+      "wall_seconds": 21.74,
+      "exit": 0,
+      "status": "PASS_RULE_BUDGET_SWEEP_AND_NEGATIVE_CONTROLS",
+      "distinct_rule_patterns": 29,
+      "direct_sweep_intervals": [0, 511, 1024, 2047],
+      "negative_controls_rejected_by_both": ["budget", "zero-coefficient", "wrong-coefficient", "missing-image", "angle-gap", "non-strict-core", "false-target", "disjoint-rule-winners"],
+      "receipt": "controls/"
+    },
+    {
+      "mode": "integrity",
+      "command": "packing/.venv/bin/python3 -X utf8 -B check_integrity.py, run in a copy of ../n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound overlaid with this packet's kleddamag-17-squares-certified-bound",
+      "started_utc": "2026-09-27T08:26Z",
+      "exit": 0,
+      "status": "PASS: 110 release files match their SHA-256 manifest.",
+      "composed_files": 111,
+      "receipt": "integrity/"
+    }
+  ],
+  "cross_checks": [
+    {
+      "check": "The fresh Python and Node row ledgers, reduced to (interval, minimum_units, cells), are identical to each other and to all three of the source's published pairs: the original audit (r464002-global-*), the coordinator's repeat (r464002-fresh-*) and the publication replay (publication/)",
+      "command": "jq -c '[.rows[]|{interval,minimum_units:(.minimum_units|tonumber),cells}]' on each Python ledger, jq -s -c '[.[].rows[]|{...}]' over each set of Node ledgers, then cmp",
+      "output": {"canonical_rows_sha256": "aa526d8a9ab3ce86934b8f7e43ee805ddfbd0e84bf3f65182b5f50852155314b", "ledgers_compared": 8, "mismatches": 0}
+    },
+    {
+      "check": "The minimum 998727933 falls only on interval 1207; the 2048 intervals sweep 263623242504 cells in all",
+      "command": "jq -c '(map(.minimum_units)|min) as $m | {rows:length, min:$m, argmin:[.[]|select(.minimum_units==$m)|.interval], cells:(map(.cells)|add)}'",
+      "output": {"rows": 2048, "min": 998727933, "argmin": [1207], "cells": 263623242504}
+    },
+    {
+      "check": "controls.json equals the source's evidence/publication-controls.json except for verified_utc",
+      "command": "diff <(jq -S 'del(.verified_utc)' controls.json) <(jq -S 'del(.verified_utc)' bounds/4.640020/evidence/publication-controls.json)",
+      "exit": 0
+    },
+    {
+      "check": "The budget reconstructs from the certificate's weights, images and per-image budgets: point 8646880660, two-of-three 3799348860, three-of-five 1274273224, four-of-seven 54285144, weighted threshold 1114736304, winning subsets 2088845040; total 16978369232",
+      "command": "sum of weight x images x floor(m/k), floor(sum a_i/k) or 1 over threshold_orbits, in the project interpreter",
+      "output": {"total": 16978369232, "equals_budget_units": true}
+    },
+    {
+      "check": "All 37 retained files equal their blobs at the pinned commit, and the release's other 74 files equal the copies in the v1.0.0 packet",
+      "command": "git blob hash of each file, compared with git ls-tree -r v1.1.0 in a clone",
+      "output": {"retained": 37, "retained_mismatches": 0, "reused_from_v1_0_0_packet": 74, "reused_mismatches": 0}
+    }
+  ]
+}

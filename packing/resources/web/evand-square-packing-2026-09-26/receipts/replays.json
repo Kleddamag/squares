@@ -1,0 +1,163 @@
+{
+  "schema": "ExternalCertificateReplayReceipts/v1",
+  "source": {
+    "url": "https://github.com/evand/square-packing",
+    "commit": "167d842cd27ba1451cb2833773ea930c80b9e65b",
+    "tree": "0ed02f62b37f01ceb02f70463a4b53343c6945ce",
+    "certificates_sha256": {
+      "s12/certificates/s32/s32_closed_cover_6.txt": "a0d2d38fc9a585a166b9e06c5069fdae9bdce44ca9fb64dda75abcc99e3c2144",
+      "s12/certificates/s12_lower_3.9686.txt": "75f1cc891a8b8739b92b50c7ddbd85a493efa58cf2e921d58ce4ac7c2dcabe78",
+      "s12/certificates/s21/s21_lower_4.9950.txt": "c8e8f878205f2da9c213e4a87c06f17c5a759dce7e695e676dd5c50e0994f2ef"
+    }
+  },
+  "host": {
+    "platform": "Linux 6.18 container",
+    "cpus": 4,
+    "workers_used": 2,
+    "contention": "The host was shared with other work; its load average ran from 7 to 22 during these runs, so every wall is a contended reading."
+  },
+  "working_directory": "s12/ of a scratch copy of the source tree at the pinned commit; the retained files are byte-identical to it by Git blob",
+  "output_directory": "session scratch space, outside the packet; only the receipts here are retained",
+  "interpreters": {
+    "python3": "packing/.venv/bin/python3, CPython 3.14.7 with numpy 2.5.2",
+    "cargo": "cargo 1.94.1; verify/ and verify2/ built with cargo build --release, verify sha256 09442b2a87ca438025bce2f7db8e14b735c5fd60010d27190dba7a58244a837f, zmcheck sha256 833a23ceb2d4705739f0c26241b31aeccb5d8b5e3516f070f7277a3a03ba1744"
+  },
+  "runs": [
+    {
+      "check": "s32 bundle, fast tier",
+      "command": "certificates/s32/verify.sh",
+      "started_utc": "2026-09-27T09:34:12Z",
+      "wall_seconds": 13,
+      "exit": 0,
+      "status": "s(32) bundle: OK",
+      "receipt": "s32_bundle_fast.log"
+    },
+    {
+      "check": "s32 zeromargin.py D4 re-sweep of s32_closed_cover_6.txt, complete",
+      "command": "python3 search/zm_d4_sweep.py run --cert certificates/s32/s32_closed_cover_6.txt --out OUT --depth 24 --nproc 2 (leg 1), resumed with --nproc-auto 1:2 (legs 2 and 3); then run ... --depth 24 --deepen 30 --nproc 2; then python3 search/zm_d4_sweep.py summary --out OUT",
+      "working_directory": "leg 1 from s12/ of a scratch copy of the source tree; legs 2 to 4 from s12/ of this packet; the retained files are byte-identical by Git blob",
+      "legs": [
+        {
+          "started_utc": "2026-09-27T09:34:35Z",
+          "ended_utc": "2026-09-27T10:36:20Z",
+          "wall_seconds": 3705,
+          "paused_seconds": 2003,
+          "exit": 143,
+          "records_after": 735,
+          "note": "stopped by hand under host load; receipt s32_zeromargin_partial_sweep.log"
+        },
+        {
+          "started_utc": "2026-09-27T18:55:37Z",
+          "ended_utc": "2026-09-27T19:04Z",
+          "records_after": 1122,
+          "note": "seeded with leg 1's 735 records; the process died with its lane"
+        },
+        {
+          "started_utc": "2026-09-27T19:07:13Z",
+          "ended_utc": "2026-09-27T19:11Z",
+          "records_after": 1305,
+          "note": "resumed with the same command; superseded by leg 3's wrapper"
+        },
+        {
+          "started_utc": "2026-09-27T19:11:10Z",
+          "ended_utc": "2026-09-27T20:40:45Z",
+          "wall_seconds": 5375,
+          "exit": 0,
+          "records_after": 7201,
+          "note": "depth-24 pass over the remaining 5,895 roots (2.06 CPU-h), the --deepen 30 pass over the one root left open, then summary"
+        }
+      ],
+      "exit": 0,
+      "status": "D4 RECHECK CLEAN: every root of the D4 region certified",
+      "roots_in_region": 7200,
+      "records": 7201,
+      "boxes": 164130,
+      "max_depth": 27,
+      "leaves": {
+        "ADM": 12201,
+        "CHAIN": 70007,
+        "EMPTY": 3457,
+        "UNCERTIFIED": 0
+      },
+      "roots_certified_only_by_the_deepen_record": [
+        "3/2,8/5,1/2,3/5,0,1/16"
+      ],
+      "cpu_seconds_all_records": 9429.0,
+      "source_cpu_seconds_all_records": 9958.2,
+      "checker_sha256": "640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab",
+      "runner_sha256": "cc7fa8c70f7a39c5e1e920baa9efdc1af8feb68bc6eeb029dab4a99fc3f77fbe",
+      "summary_txt_sha256": "a642ff9de86e0af1730a17990570ab36d0373806a410971d266aa00905712417",
+      "summary_txt_bytes": 1370940,
+      "comparison": "s32_sweep_comparison.json: all 7,201 records carry the census of the source's record of the same root at the same depth; none differs",
+      "comparison_command": "cd packing && .venv/bin/python3 -m devtools.compare_evand_s32_sweep --records resources/web/evand-square-packing-2026-09-26/receipts/s32_zeromargin_roots.jsonl --output resources/web/evand-square-packing-2026-09-26/receipts/s32_sweep_comparison.json (exit 0)",
+      "receipt": "s32_zeromargin_sweep.log (legs 2 to 4) and s32_zeromargin_partial_sweep.log (leg 1)",
+      "records_file": "s32_zeromargin_roots.jsonl"
+    },
+    {
+      "check": "s12 angle-net verifier",
+      "command": "verify/target/release/verify certificates/s12_lower_3.9686.txt 12 6000 2 0",
+      "started_utc": "2026-09-27T09:52:07Z",
+      "wall_seconds": 256,
+      "exit": 0,
+      "status": "VERIFIED",
+      "least_covered_weight": "10000056/10000000",
+      "binding_bin": 0,
+      "receipt": "s12_verify_N6000.log"
+    },
+    {
+      "check": "s21 angle-net verifier",
+      "command": "verify/target/release/verify certificates/s21/s21_lower_4.9950.txt 21 6000 2 0",
+      "started_utc": "2026-09-27T09:56:28Z",
+      "wall_seconds": 1459,
+      "exit": 0,
+      "status": "VERIFIED",
+      "least_covered_weight": "10000083/10000000",
+      "binding_bin": 684,
+      "receipt": "s21_verify_N6000.log"
+    },
+    {
+      "check": "s21 exact Python re-check, sampled",
+      "command": "python3 xcheck.py certificates/s21/s21_lower_4.9950.txt 6000 684 --n 21 -j 2",
+      "started_utc": "2026-09-27T10:21:18Z",
+      "wall_seconds": 69,
+      "exit": 0,
+      "status": "4 of 2,486 bins (0, 684, 1368, 2052); sampled, not a proof",
+      "least_covered_weight": "10000083/10000000",
+      "binding_bin": 684,
+      "receipt": "s21_xcheck_stride684_N6000.log"
+    },
+    {
+      "check": "s12 exact Python re-check, sampled",
+      "command": "python3 xcheck.py certificates/s12_lower_3.9686.txt 6000 50 --n 12 -j 2",
+      "started_utc": "2026-09-27T10:22:39Z",
+      "wall_seconds": 168,
+      "exit": 0,
+      "status": "50 of 2,486 bins (stride 50); sampled, not a proof",
+      "least_covered_weight": "1250007/1250000",
+      "binding_bin": 0,
+      "receipt": "s12_xcheck_stride50_N6000.log"
+    },
+    {
+      "check": "s12 native parent-core interval decision (method-distinct, this repository's engine)",
+      "command": "cd packing && .venv/bin/python3 -m devtools.verify_evand_angle_net_native --case s12 --all --workers 1 --output OUT.json (resumed once with --resume from the first run's row journal after that run was stopped at row 299)",
+      "working_directory": "packing/ of this repository, not the source tree",
+      "started_utc": "2026-09-27T19:02:21Z (first run, stopped at 19:04:01 with rows 0-298 journalled); resumed 2026-09-27T19:07:59Z",
+      "ended_utc": "2026-09-27T19:21:56Z",
+      "git_commit": "0d62157f99239c6f340053ef1772ff39f4cada6e",
+      "dirty": false,
+      "exit": 0,
+      "status": "PASS_COMPLETE",
+      "rows": 2486,
+      "boxes": 23409578,
+      "row_seconds": 934.1,
+      "stalled_rows": 0,
+      "refutations": 0,
+      "threshold_units": 10000000,
+      "scale": 10000000,
+      "control": "rows 0-298, carried by the resume, re-decided separately on be3e3f3b4 (clean) with identical status, boxes and lower bound per row",
+      "receipt": "s12_native_parent_core.json",
+      "records": "s12_native_parent_core.rows.jsonl",
+      "log": "s12_native_parent_core.log"
+    }
+  ]
+}

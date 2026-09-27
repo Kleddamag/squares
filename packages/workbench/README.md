@@ -164,6 +164,163 @@ uv run --frozen --all-extras --group dev squares-workbench-check-transitions --t
 - `tools/workbench_tools` contains Python import, geometry, trial and report contracts.
   Numerical admission retains the exact checked snapshot and its tolerance.
 
+## Regenerating and publishing the ascent videos
+
+The explainer plays, and the README links, two cuts of this page’s Animate mode at
+1080p60 with the CITATION section on: `n = 1…100` under the `social` profile and the
+full `n = 1…324` under `archive`. They are GitHub Release assets, never committed.
+Why, and what each profile holds, is the
+[delivery-profiles plan](../../docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md#publication);
+this section is the procedure, in order.
+The spikes under `packing/atlas/known-best/video/spikes/` are not part of it.
+
+**For an agent.** *Inputs*: a full clone of `main` at the commit to cut from (normally
+the merge that changed the data), `gh` signed in with write access to `jlevy/squares`,
+and the owner’s answer to step 2. *Outputs*: two MP4s and their receipts on the release
+named by `PUBLICATION_VERSION`, and one pull request carrying the new poster, the
+updated links and the published record.
+*Done* when both cuts conform to their profiles, each served asset answers a range
+request with 206 and matches its receipt’s digest, and step 10 passes on that pull
+request’s merge. Ask the owner at step 2 and before deleting a published asset; nothing
+else needs a decision.
+Never commit an MP4, a receipt or a frame.
+Commands run from `packing/`, with `uv run --frozen --all-extras --group dev` in front
+of each `python -m` and `squares-workbench-*` command below.
+
+1. **Prerequisites.** Everything in [A fresh clone](../../AGENTS.md#a-fresh-clone) (full
+   history, the submodule, `npm ci`), plus:
+   - `ffmpeg` with `libx264` on `PATH`: `ffmpeg -hide_banner -encoders | grep libx264`.
+   - Playwright’s pinned Chromium, `playwright install chromium`. The
+     `playwright==1.62.0` pin in `pyproject.toml` fixes it at 151.0.7922.34, which each
+     receipt records.
+   - Node from `.node-version` (the engines field allows `>=24.18.0 <25`).
+   - Disk for the PNG frames, which go to a temporary directory (move it with `TMPDIR`)
+     and are deleted after the encode.
+     A trial near `n = 88` measured 160 kB a frame, so the 29,639-frame full cut needs
+     about 5 GB and more where the packings are denser; keep 10 GB free.
+   - Time: the `v0.4.1` receipts record 502.7 s of capture for 8,401 frames and 2,118 s
+     for 29,639 on the owner’s machine.
+
+2. **Decide the version first.** Every frame prints `PUBLICATION_EDITION` from
+   `packing/src/sqpack/release.py`, and the release tag is `PUBLICATION_VERSION`, so the
+   version is fixed before capture, never after.
+   New data does not move it by itself: the stamp’s data revision names the data, and
+   the version names an edition the owner cuts, at most one per merge, by
+   [Cutting an edition](../../development.md#publishing-the-explainer).
+   Ask the owner whether this re-cut goes out under the current version or a new one.
+   A new one is cut and merged in its own pull request, and this procedure then starts
+   from that merge.
+
+3. **Preflight.** On a clean tree (`git status` empty; the receipt records `dirty`):
+   - `python -m pytest tests/test_release.py` passes, so the pinned `DATA_REVISION` is
+     the last data commit.
+   - `python -m devtools.build_known_best_atlas --check` passes.
+   - `python -m devtools.build_bound_citations --check` passes, and `--review` shows
+     credit lines that meet the owner’s rules: no AI agent credited as an author, last
+     names or handles in these brief lines, and this project as “Squares Project (Levy)”
+     or “Levy”. The frames carry these lines, so a wrong one costs a re-cut.
+
+4. **Build the page** at the checked-out commit:
+
+   ```bash
+   python -m workbench_tools.build_site --check --revision "$(git rev-parse HEAD)"
+   ```
+
+   It writes `site/workbench/index.html` (gitignored) from the inputs `RENDER_INPUTS` in
+   [`build_site.py`](tools/workbench_tools/build_site.py) lists.
+
+5. **Capture both cuts.** Each refuses a file that does not conform to its profile and
+   writes `<name>.receipt.json` beside the video.
+
+   ```bash
+   squares-workbench-capture --from 2 --to 100 --citations --profile social \
+     --out site/workbench/ascent-n1-100-1080p60-citations.mp4
+   squares-workbench-capture --from 2 --to 324 --citations --profile archive \
+     --out site/workbench/ascent-n1-324-1080p60-citations.mp4
+   squares-workbench-check-cadence site/workbench/ascent-n1-*-citations.mp4
+   ```
+
+   Record what the cadence check reports, including repeated frames inside motion.
+   A nonzero exit is a finding for the published record rather than a stop: the `v0.4.1`
+   cuts had 11 and 39 such frames, tracked as `think-dh9j`.
+
+6. **Cut the poster** from the new `n = 1…100` cut, which replaces
+   [`assets/ascent-n1-100-poster.png`](assets/ascent-n1-100-poster.png) with its
+   `n = 88` frame at 1280 × 720 and so updates the version stamp it shows:
+
+   ```bash
+   squares-workbench-poster site/workbench/ascent-n1-100-1080p60-citations.receipt.json
+   ```
+
+   It takes the step’s settled last frame; `--before-end K` takes one `K` frames
+   earlier. The poster committed on 2026-09-22 was chosen by hand and is not an exact
+   frame of the published cut; its closest match is 17 frames before the settled end,
+   mid colour fade.
+
+7. **Put the files on the release** named by the version from step 2:
+
+   ```bash
+   TAG=$(uv run --frozen python -c 'from sqpack.release import PUBLICATION_VERSION as v; print(v)')
+   gh api repos/jlevy/squares/releases/tags/$TAG --jq '.id, (.assets[] | [.id, .name] | @tsv)'
+   ```
+
+   A new version has no release yet; create one at the commit the page was built from
+   with
+   `gh api repos/jlevy/squares/releases -f tag_name=$TAG -f target_commitish=<commit> -f name=$TAG --jq .id`.
+   Under an existing version, delete each asset being replaced once the owner agrees,
+   with `gh api -X DELETE repos/jlevy/squares/releases/assets/<asset id>`; the embed is
+   broken until its replacement is up.
+   Then upload the four files through the REST API, since `gh release upload` cannot set
+   a content type:
+
+   ```bash
+   ID=<release id>
+   for f in site/workbench/ascent-n1-{100,324}-1080p60-citations.{mp4,receipt.json}; do
+     case $f in *.mp4) type=video/mp4 ;; *) type=application/json ;; esac
+     curl -sS --fail -X POST -H "Authorization: Bearer $(gh auth token)" \
+       -H "Content-Type: $type" --data-binary "@$f" \
+       "https://uploads.github.com/repos/jlevy/squares/releases/$ID/assets?name=$(basename "$f")"
+   done
+   ```
+
+8. **Verify what is served.** Each video answers a range request with 206, and its bytes
+   hash to its receipt’s `video_sha256`:
+
+   ```bash
+   for cut in 100 324; do
+     url=https://github.com/jlevy/squares/releases/download/$TAG/ascent-n1-$cut-1080p60-citations.mp4
+     curl -sSL -r 0-99 -o /dev/null -w '%{http_code}\n' "$url"
+     curl -sSL "$url" | shasum -a 256
+   done
+   ```
+
+   The release API should report both videos as `video/mp4`
+   (`gh api repos/jlevy/squares/releases/tags/$TAG --jq '.assets[] | [.name, .content_type] | @tsv'`).
+   The download itself is served as `application/octet-stream`, which is expected; the
+   plan’s
+   [procedure](../../docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md#the-procedure)
+   says why a player accepts it.
+
+9. **Open one pull request** with the poster from step 6 and these edits, then run
+   `python -m pytest tests/test_explainer.py`:
+   - [`README.md`](../../README.md), the film paragraph under the atlas: each length
+     (`2m 20s` from the receipt’s `seconds`) and size (`38 MB`, the file’s bytes over
+     2²⁰), and the tag in its three links if it changed.
+   - [`explainer-article.md`](../../packing/devtools/templates/explainer-article.md),
+     Figure 2: the tag in its three release URLs and the full cut’s length (“runs 8m
+     14s”).
+   - The plan’s
+     [What was published](../../docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md#what-was-published):
+     tag, commit and date, the table rows from the receipts, the page digest prefix and
+     stamp, and the cadence findings from step 5; and the URL in
+     [The embed](../../docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md#the-embed)
+     if the tag changed.
+
+10. **After it merges**, confirm the deploy as
+    [Publishing the Explainer](../../development.md#publishing-the-explainer) says, with
+    `python -m devtools.check_published_site --commit <merge commit>`, and play the film
+    on the explainer page once to see the new poster and the new stamp.
+
 ## Reproducible block reports
 
 From `packing/`, a cohort manifest and a JSONL envelope file produce the report:

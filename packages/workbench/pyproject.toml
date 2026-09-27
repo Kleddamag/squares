@@ -20,6 +20,7 @@ squares-workbench-ascent = "workbench_tools.ascent:main"
 squares-workbench-strategy = "workbench_tools.strategy_execution:main"
 squares-workbench-recover = "workbench_tools.recover_records:main"
 squares-workbench-export-svg = "workbench_tools.export_animation_svg:main"
+squares-workbench-poster = "workbench_tools.poster:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["tools/workbench_tools"]

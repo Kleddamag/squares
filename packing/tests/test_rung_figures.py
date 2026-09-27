@@ -697,12 +697,20 @@ def test_every_case_page_binds_the_certificate_its_own_evidence_names() -> None:
     """
     #: n -> why this case's bound cannot be bound to a certificate object at that side.
     external_reduction = {
-        17: "R052, after R012 (T-032): parent rescaling, bound L/A is no container side",
+        17: "4.66001, after v1.1.0, R052, R012 (T-032): parent rescaling; L/A is no side",
     }
     superseded_current_bound = {
         11: (
             "T-026 remains replayable historical evidence after the external bound "
             "superseded it"
+        ),
+        12: (
+            "T-017 remains valid evidence after Evan Daniel's replayed 15680/3951 "
+            "superseded it on 2026-09-27; that certificate is in the source's own format"
+        ),
+        21: (
+            "T-034 remains valid evidence after Evan Daniel's replayed 5000/1001 "
+            "superseded it on 2026-09-27; that certificate is in the source's own format"
         ),
     }
 
@@ -733,8 +741,10 @@ def test_every_case_page_binds_the_certificate_its_own_evidence_names() -> None:
             except OSError, UnicodeDecodeError, json.JSONDecodeError:
                 continue
             # An evidence certificate need not be a JSON object at all: R012's measure
-            # ships as a bare list of orbit rows (E-n017-guzhou-r012-source-replay), and
-            # R052's as gzip bytes (E-n017-guzhou-r052-source-replay).
+            # ships as a bare list of orbit rows (E-n017-guzhou-r012-source-replay),
+            # R052's as gzip bytes (E-n017-guzhou-r052-source-replay), and Kleddamag's
+            # v1.1.0 and 4.66001 as schemaless objects (E-n017-kleddamag-4640020- and
+            # E-n017-kleddamag-466001-source-replay).
             if not isinstance(record, dict):
                 continue
             if record.get("schema") not in (

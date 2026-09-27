@@ -27,9 +27,11 @@ states is how `D-385` happened, and the same four questions recur for each bound
    exactly `n = 29`, whose interval certificate `T-009` is scored new.
 3. *Otherwise, whose is it?* A lower bound's previously-published entries must share one
    source key, and that key's authors, year and short venue come from
-   `resources/bibliography.yaml`. An upper bound credits the case's own `found_by` and
-   `improved_by`, with the venue of its `source_key`; where the register credits nobody,
-   the line cites the source itself.
+   `resources/bibliography.yaml`. Where the source's credit is joint with the work it
+   builds on, the entry's `credit` is printed in place of the joined authors, and it must
+   fit the line with its year and venue however the case uses it. An upper bound credits
+   the case's own `found_by` and `improved_by`, with the venue of its `source_key`; where
+   the register credits nobody, the line cites the source itself.
 4. *What has this project recorded about it?* Every result for this `n` that carries one
    of the bound's own evidence entries is listed in `results`. Those that carry one this
    project performed -- a replay, an audit, an interval certificate -- confirm the
@@ -105,7 +107,10 @@ TEXT_LIMIT = 66
 VERIFIED = "verified"
 REPORTED = "reported"
 
-PROJECT_NAME = "This project"
+#: How a line credits this project's own bound: the project and its human author, as a
+#: brief note does (the owner, 2026-09-27). The longest project line is well inside
+#: `TEXT_LIMIT`, so the bare "Levy" the credit rules allow where room is short is not needed.
+PROJECT_NAME = "Squares Project (Levy)"
 
 #: The novelty the evidence schema gives the grid, area and center-counting bounds.
 COMMON_KNOWLEDGE = "common-knowledge"
@@ -128,6 +133,17 @@ class Source:
     venue: str
     #: The venue a line falls back to when its confirmation would not otherwise fit.
     short_venue: str | None = None
+    #: What a line prints in place of the joined authors, where the credit is joint with
+    #: the lineage the source builds on: Kleddamag's n = 17 releases continue this
+    #: project's, Mira's and Guzhou0806's methods, which the authors field has no place for
+    #: (the owner, 2026-09-27). Last names, or handles where no name is published; human
+    #: authors and projects only, since an AI agent is never a credited author.
+    credit: str | None = None
+
+    @property
+    def credited(self) -> str:
+        """Who a line citing this source names: its `credit`, else its joined authors."""
+        return self.credit if self.credit is not None else join_authors(self.authors)
 
 
 @dataclass(frozen=True, slots=True)
@@ -151,9 +167,11 @@ def load_register() -> Register:
             year=entry["year"],
             venue=str(entry["venue"]),
             short_venue=entry.get("short_venue"),
+            credit=entry.get("credit"),
         )
         for entry in bibliography["sources"]
     }
+    check_credits(sources.values())
     return Register(
         evidence={str(entry["id"]): entry for entry in evidence},
         results=results,
@@ -162,6 +180,24 @@ def load_register() -> Register:
             str(name): str(surname) for name, surname in bibliography["credited_names"].items()
         },
     )
+
+
+def check_credits(sources: Iterable[Source]) -> None:
+    """Fail on a `credit` whose own line, `credit year, venue`, would not fit the stage.
+
+    Checked for every credited source, not only the ones a case cites today, so a joint
+    credit is known to fit before a bound first carries it. The note is left out: it is
+    this project's to shorten, through `short_venue`, and `_checked` still counts it.
+    """
+    for source in sources:
+        if source.credit is None:
+            continue
+        line = cite(source.credit, source.year, source.venue)
+        if len(line) > TEXT_LIMIT:
+            raise ValueError(
+                f"{source.key}: credit line {line!r} is {len(line)} characters, "
+                f"over {TEXT_LIMIT}"
+            )
 
 
 def record_name(n: int) -> str:
@@ -417,7 +453,7 @@ def lower_citation(
         n,
         "lower",
         source=source,
-        credited=(join_authors(source.authors), source.year),
+        credited=(source.credited, source.year),
         own=own,
         value=value,
         assurance="verified",
@@ -451,7 +487,7 @@ def upper_citation(
         n,
         "upper",
         source=source,
-        credited=(names, year) if names else (join_authors(source.authors), source.year),
+        credited=(names, year) if names else (source.credited, source.year),
         own=own_evidence([*construction, *certificate], register),
         value=value,
         assurance=assurance,

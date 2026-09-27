@@ -70,6 +70,10 @@ DECLARED_CONSUMER_TREES = {
 }
 
 DECLARED_CONSUMERS = {
+    "packing/tests/test_evand_square_packing.py": (
+        "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
+        "6 is what makes that case proved; it reads the field as a ceiling, not as s(n)"
+    ),
     "packing/cases/w3_lower_bound_directions/frontier_transfer_audit.py": (
         "reads the verified ceiling to measure a bounded transfer-diagnostic gap; it "
         "does not identify that ceiling with s(n) or claim optimality"

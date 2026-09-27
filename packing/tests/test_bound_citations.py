@@ -242,6 +242,58 @@ def test_a_published_bound_and_its_replay_cite_the_one_source_and_name_the_repla
     }
 
 
+def test_a_sources_credit_is_printed_in_place_of_its_joined_authors() -> None:
+    """A joint credit with the lineage is the source's own, and is printed whole.
+
+    Three or more names would fold into "et al.", which is exactly the lineage the credit
+    exists to name; `credit` keeps it, and the width check still applies.
+    """
+    register = _synthetic_register()
+    credited = citations.Source(
+        "[Paper 2001]", ("Author",), 2001, "J. Test 1", credit="Author after A, B, C"
+    )
+    register = citations.Register(
+        evidence=register.evidence,
+        results=register.results,
+        sources={**register.sources, "[Paper 2001]": credited},
+        names=register.names,
+    )
+    line = citations.lower_citation(7, _synthetic_case(["E-paper"]), register)
+    assert line is not None
+    assert line["text"] == "Author after A, B, C 2001, J. Test 1"
+    assert citations.Source("[K]", ("A", "B", "C"), 2001, "J").credited == "A et al."
+
+
+def test_a_credit_whose_line_would_not_fit_fails_before_any_case_cites_it() -> None:
+    """The width is checked on the credit's own line, year and venue included."""
+    fits = "K" * (citations.TEXT_LIMIT - len(" 2026, GitHub"))
+    citations.check_credits([citations.Source("[K]", ("K",), 2026, "GitHub", credit=fits)])
+    with pytest.raises(ValueError, match="67 characters, over 66"):
+        citations.check_credits(
+            [citations.Source("[K]", ("K",), 2026, "GitHub", credit=fits + "K")]
+        )
+
+
+#: Names an AI agent goes by. The owner's rule (2026-09-27): no agent is ever a credited
+#: author; a release's use of one belongs in its provenance note, not in `credit`.
+AGENT_NAMES = re.compile(r"codex|openai|claude|anthropic|gpt|gemini|copilot", re.IGNORECASE)
+
+
+def test_every_recorded_credit_fits_the_stage_in_latin_letters_and_names_no_agent() -> None:
+    """Every `credit` in the bibliography, cited on the stage today or not."""
+    joint = {
+        source.key: source.credit
+        for source in _register().sources.values()
+        if source.credit is not None
+    }
+    assert joint
+    citations.check_credits(_register().sources.values())
+    for key, credit in joint.items():
+        assert credit.isascii(), key
+        assert credit.isprintable(), key
+        assert not AGENT_NAMES.search(credit), key
+
+
 def test_a_published_bound_with_no_replay_here_carries_no_confirmation() -> None:
     register = _synthetic_register()
     line = citations.lower_citation(7, _synthetic_case(["E-paper"]), register)
@@ -269,7 +321,7 @@ def test_a_novel_first_party_bound_cites_this_project_and_its_result() -> None:
     line = citations.lower_citation(7, _synthetic_case(["E-ours", "E-paper"]), register)
     assert line is not None
     assert (line["text"], line["basis"], line["result"], line["source_key"]) == (
-        "This project 2026, result T-900",
+        "Squares Project (Levy) 2026, result T-900",
         "project",
         "T-900",
         None,
@@ -439,7 +491,12 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 
 @pytest.mark.parametrize(
     ("n", "author"),
-    [(11, "Kleddamag"), (17, "Guzhou0806"), (26, "Tokoharu"), (29, "Tokoharu")],
+    [
+        (11, "Kleddamag"),
+        (17, "Kleddamag after Levy, Mira, Guzhou0806"),
+        (26, "Tokoharu"),
+        (29, "Tokoharu"),
+    ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(n: int, author: str) -> None:
     lower = _entry(n)["lower"]
@@ -619,7 +676,7 @@ def test_a_project_line_names_the_result_that_carries_its_evidence() -> None:
             continue
         result = results[line["result"]]
         year = str(result["significance"]["scored"])[:4]
-        assert line["text"] == f"This project {year}, result {line['result']}"
+        assert line["text"] == f"Squares Project (Levy) {year}, result {line['result']}"
         evidence = citations.load_case(entry["n"])["verified_lower_bound"]["evidence"]
         novel = {
             item

@@ -27,6 +27,8 @@ from typing import Any
 
 from strif import atomic_write_text
 
+from devtools.retained_data import read_retained_text
+
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density"
 REVISION = "b543990f7794b8c511cb46cf3854b7e8166c3674"
@@ -54,6 +56,18 @@ def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 
 def _json(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(), parse_float=Fraction, object_pairs_hook=_pairs)
+    if not isinstance(value, dict):
+        raise TypeError(f"expected JSON object: {path}")
+    return value
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    """Read a certificate JSON object with exact decimals and no duplicate keys.
+
+    Unlike this module's own reads, it accepts a file stored as ``path.gz``: packets
+    after this one keep large retained data as deterministic gzip.
+    """
+    value = json.loads(read_retained_text(path), parse_float=Fraction, object_pairs_hook=_pairs)
     if not isinstance(value, dict):
         raise TypeError(f"expected JSON object: {path}")
     return value
@@ -201,11 +215,15 @@ def _interval(tokens: Iterator[str], expected: Fraction, context: str) -> None:
         raise ValueError(f"interval fails exact enclosure: {context}")
 
 
-def preflight(case: Path, n: int) -> dict[str, Any]:
-    """Bind raw intervals to exact data and prove all non-coverage obligations."""
+def preflight(case: Path, n: int, expected_side: Fraction | None = None) -> dict[str, Any]:
+    """Bind raw intervals to exact data and prove all non-coverage obligations.
+
+    ``expected_side`` defaults to the reviewed Tokoharu side for ``n``; other packets in
+    the same format (wand125's rectangle certificates) pass their own pinned side.
+    """
     data = _json(case / "certified_candidate.json")
     side, shrink, total, rectangles = density(data)
-    if side != SIDES[n] or total >= n:
+    if side != (SIDES[n] if expected_side is None else expected_side) or total >= n:
         raise ValueError("declared side mismatch or total mass fails strict n bound")
     end = (ANGLE_COUNT - 1) * GAP
     if end * end + 2 * end - 1 < 0:
@@ -312,6 +330,11 @@ def _enclose(lower: Fraction, upper: Fraction | None = None) -> str:
     if Fraction(hi) < upper:
         hi = math.nextafter(hi, math.inf)
     return f"{lo.hex()} {hi.hex()}"
+
+
+def enclose(value: Fraction) -> str:
+    """The checker's input form: the tightest binary64 interval around an exact value."""
+    return _enclose(value)
 
 
 def _line_length(polygon: list[Point], x: Fraction, lo: Fraction, hi: Fraction) -> Fraction:

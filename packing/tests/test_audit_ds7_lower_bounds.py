@@ -86,8 +86,7 @@ def test_table82_contradiction_is_excluded_without_rewriting_the_theorem() -> No
 @pytest.mark.parametrize(
     ("n", "reported_exact", "note_fragment", "verified_value"),
     [
-        (17, "231001/50000", "s(17) > 231001/50000", "4.62002"),
-        (18, "461300/99999", "s(17) >= 461300/99999", "4.679"),
+        (17, "466001/100000", "s(17) > 466001/100000", "4.66001"),
     ],
 )
 def test_indexed_external17_report_never_exceeds_the_verified_lane(
@@ -98,9 +97,11 @@ def test_indexed_external17_report_never_exceeds_the_verified_lane(
     It was anabologyco-maker's 9141/2000, below the verified lane at both sizes.
     Since 2026-09-20 Guzhou0806's historical R012 has supplied the n = 18 report. At
     n = 17 later strict bounds supersede R012 -- Kleddamag's 461300/99853 from
-    2026-09-22, then Guzhou0806's R052 231001/50000 from 2026-09-25 -- and the reported
-    and verified fields hold the same value; at n = 18 R012 still sits below a stronger
-    first-party rung. Either way the
+    2026-09-22, Guzhou0806's R052 231001/50000 from 2026-09-25, Kleddamag's v1.1.0
+    232001/50000 and then Kleddamag's 466001/100000 (building on this project, Mira and
+    Guzhou0806), both from 2026-09-27 -- and the reported and verified fields hold the
+    same value. At n = 18 R012 held the report below a stronger first-party rung until
+    wand125's rectangle report replaced it; see the next test. Either way the
     audit's own selector must be at a fixed point: the reported lane is raised only by
     a report that exceeds it, and never past what the verified lane already carries.
     """
@@ -114,12 +115,33 @@ def test_indexed_external17_report_never_exceeds_the_verified_lane(
     assert ds7.select_update(case) is None
 
 
+def test_a_stronger_non_ds7_report_at_n18_is_left_in_place() -> None:
+    """wand125's rectangle report outranks both R012 and the DS7 candidates at n = 18.
+
+    It sits above the verified lane until its coverage replay runs here, a reported-lane
+    fact the DS7 selector must neither lower nor replace.
+    """
+    case = ds7.read_case(REPO, None, 18)
+    assert case["reported_lower_bound"]["exact_form"] == "939/200"
+    assert case["reported_lower_bound"]["source_key"] == "[wand125 rectangle bounds 2026]"
+    assert ds7.select_update(case) is None
+
+
 def test_opaque21_stays_nonexact_and_cannot_replace_a_stronger_exact_identity() -> None:
     case = ds7.read_case(REPO, None, 21)
-    assert case["reported_lower_bound"]["exact_form"] is None
-    assert case["reported_lower_bound"]["value"] == "4.7438"
-    # T-034's 122/25 since 2026-09-23; T-021's 97/20 before it.
-    assert case["verified_lower_bound"]["value"] == "4.88"
+    # Evan Daniel's 5000/1001 in both lanes since 2026-09-27; before it the reported lane
+    # held DS7's opaque 4.7438 and the verified lane T-034's 122/25, then T-021's 97/20.
+    assert case["reported_lower_bound"]["exact_form"] == "5000/1001"
+    assert case["verified_lower_bound"]["value"] == "4.995004"
+    assert ds7.select_update(case) is None
+    assert not ds7.opaque_needs_update(case, "4.7438")
+    # The opaque decimal itself stays non-exact: restored to the lane, it is not an update
+    # of itself and carries no exact identity.
+    opaque = deepcopy(case)
+    opaque["reported_lower_bound"].update(value="4.7438", exact_form=None)
+    assert not ds7.opaque_needs_update(opaque, "4.7438")
+    with pytest.raises(ValueError, match="lacks a usable exact identity"):
+        ds7.field_expression(opaque, "reported_lower_bound")
     case["reported_lower_bound"].update(value="4.7", exact_form="19/4")
     before = deepcopy(case)
     assert ds7.select_update(case) is None

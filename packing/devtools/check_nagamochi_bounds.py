@@ -3,16 +3,17 @@
 
 `E-nagamochi-lower` is the register's most-cited evidence record, and two different
 counts describe it. 95 of the hundred case records cite this result; it supplies the
-operative verified lower bound in 65 of them. The other 30 citations are context rather
+operative verified lower bound in 64 of them. The other 31 citations are context rather
 than current bounds: seven proved cases that never rested on the theorem; the five open
-cases `n = 17` through `n = 21`, where first-party certificates displaced it; and 18 open
-cases whose retained external certificates were replayed on 2026-09-22. The next
-most-cited evidence record carries two.
+cases `n = 17` through `n = 21`, where certificates displaced it; 18 open cases whose
+retained external certificates were replayed on 2026-09-22; and `n = 32`, proved on
+2026-09-27 by a replayed external closed cover. The next most-cited evidence record
+carries two.
 
 Nothing checked that the recorded values were what the theorem gives: `assurance.py`
 verifies that a bound cites verified evidence of the right claim and scope, which is a
 statement about the citation and not about the arithmetic. A transcription slip in any
-one of the 65 operative verified-field values would have passed.
+one of the 64 operative verified-field values would have passed.
 
 Theorem 2, as the evidence record states it and as re-derived here from Theorem 1
 (`nu(a, b) < ab - (a + 1 - ceil(a)) - (b + 1 - ceil(b))` for `a, b >= 2`):

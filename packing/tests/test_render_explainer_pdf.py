@@ -18,7 +18,10 @@ an earlier file; agreement between the later pair could not validate that artifa
 CLI-to-function join is the one D-488 was made of: a count that argparse accepts and
 nothing forwards looks exactly like a count that works. The image wait initially
 discarded every decode rejection, which could let two PDFs agree on the same absent
-figure.
+figure. D-509 is the page load deciding one glyph's placement, so the artifact check may
+draw up to four loads and the cases below pin when that passes and when it still refuses;
+its CI logs named object 144 and nothing readable, so a Flate difference is inflated and
+its first differing line quoted.
 
 Nothing here launches a browser. `render_pdf_bytes` is replaced with synthetic
 documents in the shapes Chromium writes, and the exact image-wait, settlement and math
@@ -30,6 +33,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import zlib
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
@@ -199,6 +203,71 @@ def test_an_exact_prefix_is_reported_without_assigning_a_cause(*, trailing: bool
     assert "cut short" not in report
 
 
+def _content(text: bytes, *, number: int = 144, compress: bool = True) -> bytes:
+    """A page content stream in the shape Chromium's Skia writer emits: Flate, with
+    `stream` after the dictionary's `>>` on the same line rather than on its own."""
+    payload = zlib.compress(text) if compress else text
+    return (
+        b"%s%d 0 obj\n<</Filter /FlateDecode\n/Length %d>> stream\n%s\nendstream\nendobj\n"
+        % (
+            _HEADER,
+            number,
+            len(payload),
+            payload,
+        )
+    )
+
+
+#: Three lines of a KaTeX run, the middle one D-509's `≥`: y 18560.219 on one load and
+#: 18560 on another, with the glyph it places on the line after.
+_GLYPH = b"BT\n/F7 18.08 Tf\n1 0 0 -1 412.5 %s Tm\n<0021> Tj\nET"
+
+
+def test_a_flate_difference_names_the_first_decoded_line_that_moved() -> None:
+    """D-509's CI logs said `object 144` and quoted deflate output; the moved `Tm` line
+    took an artifact download to read. The decoded line is what the log should carry."""
+    settled = _content(_GLYPH % b"18560.219")
+    moved = _content(_GLYPH % b"18560")
+    report = pdf._difference(settled, moved)
+    assert "in object 144:" in report
+    assert "first differs at line 3 of 5" in report
+    assert "b'1 0 0 -1 412.5 18560.219 Tm' against b'1 0 0 -1 412.5 18560 Tm'" in report
+    assert "before b'<0021> Tj'" in report
+
+
+def test_a_difference_in_the_stream_length_still_reaches_the_decoded_line() -> None:
+    """Run 36317430319: Length 5237 against 5235. The first differing byte was in the
+    dictionary, ahead of any stream byte, and the decoded line is still what moved."""
+    settled = _content(_GLYPH % b"18560.219" + b"\n" + b"0 0 1 rg\n" * 40)
+    moved = _content(_GLYPH % b"18560" + b"\n" + b"0 0 1 rg\n" * 40)
+    report = pdf._difference(settled, moved)
+    offset = int(report.split("first difference at byte ", 1)[1].split(",", 1)[0])
+    assert settled.index(b"/Length") < offset < settled.index(b"stream"), report
+    assert "18560.219 Tm' against b'1 0 0 -1 412.5 18560 Tm'" in report
+
+
+def test_a_stream_that_will_not_inflate_is_reported_as_such() -> None:
+    report = pdf._difference(
+        _content(b"garbage one", compress=False), _content(b"garbage two", compress=False)
+    )
+    assert "in object 144:" in report
+    assert "does not inflate" in report
+
+
+def test_an_uncompressed_stream_gets_no_decoded_report() -> None:
+    report = pdf._difference(_document(b"0.5 rg"), _document(b"0.6 rg"))
+    assert "inflate" not in report
+
+
+def test_a_skia_stream_payload_does_not_lend_its_object_a_type() -> None:
+    """The writer's own shape, `>> stream` on one line: the declaration scan has to stop
+    there too, or payload bytes that read like `/Type /Link` name the object."""
+    prefix = b"7 0 obj\n<</Length 18>> stream\n/Type /Link value="
+    suffix = b"\nendstream\nendobj\n"
+    report = pdf._difference(_HEADER + prefix + b"a" + suffix, _HEADER + prefix + b"b" + suffix)
+    assert "in object 7:" in report
+
+
 def test_two_renders_that_agree_are_not_given_an_invented_difference() -> None:
     """Unreachable from `check`, which only asks about renders it has found to differ.
     Reported honestly anyway: the prefix message would otherwise announce an unequal
@@ -361,15 +430,221 @@ def _artifact(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, raw: bytes) -> by
 def test_artifact_check_refuses_a_bad_saved_draw_even_when_later_draws_agree(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
+    """Fresh loads agreeing with each other do not validate an artifact none of them drew.
+
+    This case once asserted that a mismatch drew nothing more. D-509 is why it now
+    draws `_ARTIFACT_LOADS`: a load can differ from a correct artifact. The stored file
+    is still the reference, and agreement among the fresh loads still counts for nothing.
+    """
     stored = _artifact(monkeypatch, tmp_path, _document(b"0.5 rg"))
     drawn: list[int] = []
     monkeypatch.setattr(
         pdf, "render_pdf_bytes", lambda: (drawn.append(1), _document(b"0.6 rg"))[1]
     )
-    with pytest.raises(SystemExit, match="does not reproduce itself"):
+    with pytest.raises(SystemExit, match="does not reproduce itself") as refused:
         pdf.check_artifact(3)
-    assert drawn == [1], "the stored artifact must be the reference, with no retry"
+    assert len(drawn) == pdf._ARTIFACT_LOADS
+    message = str(refused.value)
+    assert f"No fresh page load reproduced the stored artifact, in {len(drawn)}" in message
+    assert f"{len(drawn)} fresh page loads drew 1 distinct document" in message
+    assert "loads 1, 2, 3, 4: 160 bytes, the document compared above" in message
     assert pdf.OUTPUT.read_bytes() == stored
+
+
+def _loads(monkeypatch: pytest.MonkeyPatch, documents: Sequence[bytes]) -> list[bytes]:
+    """Fresh loads drawing `documents` in order; the list records what was drawn."""
+    drawn: list[bytes] = []
+    remaining = iter(documents)
+
+    def render() -> bytes:
+        drawn.append(next(remaining))
+        return drawn[-1]
+
+    monkeypatch.setattr(pdf, "render_pdf_bytes", render)
+    monkeypatch.setattr(pdf, "font_findings", lambda _: [])
+    return drawn
+
+
+#: Three documents in D-509's shape: the whole paper, with one glyph's `Tm` in one of
+#: two placements, and a third placing a different glyph elsewhere.
+_PLACED = _HEADER + _pages(pdf.EXPECTED_PAGE_COUNT)
+_MAJORITY = _PLACED + _content(_GLYPH % b"18560.219", number=900)[len(_HEADER) :]
+_MINORITY = _PLACED + _content(_GLYPH % b"18560", number=900)[len(_HEADER) :]
+_ELSEWHERE = _PLACED + _content(_GLYPH % b"18560.2188", number=900)[len(_HEADER) :]
+
+
+@pytest.mark.parametrize(
+    ("renders", "sequence", "expected"),
+    [
+        (None, [_MINORITY, _MAJORITY], 2),
+        (4, [_MINORITY, _MAJORITY, _MINORITY], 3),
+        (None, [_MINORITY, _MINORITY, _MINORITY, _MAJORITY], 4),
+    ],
+    ids=["second-of-two", "second-of-three", "fourth"],
+)
+def test_artifact_check_passes_when_a_later_fresh_load_reproduces_the_artifact(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    *,
+    renders: int | None,
+    sequence: list[bytes],
+    expected: int,
+) -> None:
+    """D-509: one load's glyph placement differs from the artifact's, another's does not.
+    The extra loads stop at the first that reproduces the artifact once the requested
+    count is drawn, and every load that did not is reported with its decoded line."""
+    stored = _artifact(monkeypatch, tmp_path, _MAJORITY)
+    drawn = _loads(monkeypatch, sequence)
+    diagnostics = tmp_path / "diagnostics"
+    count = [] if renders is None else ["--renders", str(renders)]
+    assert pdf.main(["--check-artifact", *count, "--diagnostics-dir", str(diagnostics)]) == 0
+    assert len(drawn) == expected
+    out = capsys.readouterr().out
+    assert "explainer PDF check passed: stored artifact reproduced by fresh load" in out
+    assert f"of {expected}; load" in out
+    assert "drew one other document, the per-load placement D-509 records" in out
+    assert "fresh load 1 does not reproduce the stored artifact (D-509)" in out
+    assert "b'1 0 0 -1 412.5 18560.219 Tm' against b'1 0 0 -1 412.5 18560 Tm'" in out
+    assert not diagnostics.exists()
+    assert pdf.OUTPUT.read_bytes() == stored
+
+
+def test_artifact_check_with_a_first_load_that_agrees_draws_no_more(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The extra loads are the failure path's cost, never the passing run's."""
+    _artifact(monkeypatch, tmp_path, _MAJORITY)
+    drawn = _loads(monkeypatch, [_MAJORITY, _MINORITY])
+    pdf.check_artifact()
+    assert len(drawn) == 1
+    out = capsys.readouterr().out
+    assert "stored artifact and 1 fresh render agree" in out
+    assert "D-509" not in out
+
+
+def test_artifact_check_refuses_an_artifact_no_fresh_load_reproduces(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """A minority-placement artifact, against loads that all draw the majority: the
+    census says so, and the refusal names the moved line."""
+    stored = _artifact(monkeypatch, tmp_path, _MINORITY)
+    drawn = _loads(monkeypatch, [_MAJORITY] * pdf._ARTIFACT_LOADS)
+    diagnostics = tmp_path / "diagnostics"
+    with pytest.raises(SystemExit, match="does not reproduce itself") as refused:
+        pdf.check_artifact(diagnostics_dir=diagnostics)
+    assert len(drawn) == pdf._ARTIFACT_LOADS
+    message = str(refused.value)
+    assert "No fresh page load reproduced the stored artifact, in 4 drawn" in message
+    assert "4 fresh page loads drew 1 distinct document" in message
+    assert "b'1 0 0 -1 412.5 18560 Tm' against b'1 0 0 -1 412.5 18560.219 Tm'" in message
+    (run,) = diagnostics.glob("pdf-check-*")
+    assert (run / "reference.pdf").read_bytes() == stored
+    assert (run / "replay.pdf").read_bytes() == pdf._with_receipt(
+        _MAJORITY, pdf.PAGE.read_bytes()
+    )
+    assert not list(run.glob("load-*.pdf")), "one distinct document needs no extra copy"
+    assert "fresh page loads drew 1 distinct document" in (run / "report.txt").read_text()
+
+
+def test_artifact_check_refuses_two_different_documents_even_when_one_would_match(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Two placements of one page is D-509's shape; a third document is not, so the
+    check stops at the second different document and refuses, retaining both."""
+    _artifact(monkeypatch, tmp_path, _MAJORITY)
+    drawn = _loads(monkeypatch, [_MINORITY, _ELSEWHERE, _MAJORITY])
+    diagnostics = tmp_path / "diagnostics"
+    with pytest.raises(SystemExit, match="does not reproduce itself") as refused:
+        pdf.check_artifact(diagnostics_dir=diagnostics)
+    assert drawn == [_MINORITY, _ELSEWHERE]
+    message = str(refused.value)
+    assert "No fresh page load reproduced the stored artifact, in 2 drawn" in message
+    assert "2 fresh page loads drew 2 distinct documents" in message
+    assert "load 1: " in message
+    assert "the document compared above" in message
+    assert "b'1 0 0 -1 412.5 18560.219 Tm' against b'1 0 0 -1 412.5 18560.2188 Tm'" in message
+    (run,) = diagnostics.glob("pdf-check-*")
+    receipt = pdf.PAGE.read_bytes()
+    assert (run / "replay.pdf").read_bytes() == pdf._with_receipt(_MINORITY, receipt)
+    assert (run / "load-2.pdf").read_bytes() == pdf._with_receipt(_ELSEWHERE, receipt)
+
+
+def test_artifact_check_refuses_a_second_document_after_a_match(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """With an explicit count every requested load is drawn, and a match does not excuse
+    two other documents beside it."""
+    _artifact(monkeypatch, tmp_path, _MAJORITY)
+    drawn = _loads(monkeypatch, [_MAJORITY, _MINORITY, _ELSEWHERE, _MAJORITY])
+    with pytest.raises(SystemExit, match="does not reproduce itself") as refused:
+        pdf.check_artifact(5)
+    assert len(drawn) == 3
+    assert "Fresh load 1 reproduced the stored artifact, but" in str(refused.value)
+
+
+def test_update_stops_at_the_second_load_when_the_first_two_agree(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The passing run's whole extra cost is one load over the single draw of before."""
+    _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    drawn = _loads(monkeypatch, [_MAJORITY, _MAJORITY, _MINORITY])
+    assert pdf.main(["--update"]) == 0
+    assert drawn == [_MAJORITY, _MAJORITY]
+    assert pdf.OUTPUT.read_bytes() == pdf._with_receipt(_MAJORITY, pdf.PAGE.read_bytes())
+    out = capsys.readouterr().out
+    assert "two of 2 page loads agreed" in out
+    assert "D-509" not in out
+
+
+@pytest.mark.parametrize(
+    ("sequence", "published"),
+    [
+        ([_MINORITY, _MAJORITY, _MAJORITY], _MAJORITY),
+        ([_MINORITY, _MAJORITY, _MINORITY], _MINORITY),
+    ],
+    ids=["majority-after-a-minority-first", "first-and-third"],
+)
+def test_update_publishes_the_document_two_loads_agree_on(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    *,
+    sequence: list[bytes],
+    published: bytes,
+) -> None:
+    """D-509: a first load in the minority placement is not what ships. What ships is
+    what two loads drew, and the load that agreed with nothing is in the log with the
+    line that moved."""
+    _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    drawn = _loads(monkeypatch, sequence)
+    pdf.update()
+    assert drawn == sequence
+    assert pdf.OUTPUT.read_bytes() == pdf._with_receipt(published, pdf.PAGE.read_bytes())
+    out = capsys.readouterr().out
+    assert "two of 3 page loads agreed" in out
+    assert "page load 2 agrees with no earlier load (D-509)" in out
+    assert "b'1 0 0 -1 412.5 18560 Tm' against b'1 0 0 -1 412.5 18560.219 Tm'" in out
+
+
+def test_update_refuses_when_no_two_loads_agree_and_leaves_the_old_file(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Three different documents are more than D-509's two placements, and none of them
+    is confirmed, so nothing is published: never an unconfirmed draw."""
+    earlier = _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    drawn = _loads(monkeypatch, [_MINORITY, _MAJORITY, _ELSEWHERE, _MAJORITY])
+    with pytest.raises(SystemExit, match="no two of 3 page loads agreed") as refused:
+        pdf.update()
+    assert drawn == [_MINORITY, _MAJORITY, _ELSEWHERE]
+    assert pdf.OUTPUT.read_bytes() == earlier
+    message = str(refused.value)
+    assert "b'1 0 0 -1 412.5 18560 Tm' against b'1 0 0 -1 412.5 18560.219 Tm'" in message
+    assert "3 fresh page loads drew 3 distinct documents against load 1's" in message
+    assert "load 1: " in message
+    assert "load 1's document" in message
+    assert "the document compared above" in message
+    assert "18560 Tm' against b'1 0 0 -1 412.5 18560.2188 Tm'" in message
 
 
 @pytest.mark.parametrize("receipt", ["missing", "stale", "duplicate"])
@@ -481,7 +756,7 @@ def test_failed_comparisons_retain_the_raw_pair_and_report_without_overwriting_p
         else (raw, fresh)
     )
     for _ in range(2):
-        draws = iter([raw, fresh] if mode == "fresh" else [fresh])
+        draws = iter([raw, fresh] if mode == "fresh" else [fresh] * pdf._ARTIFACT_LOADS)
         monkeypatch.setattr(pdf, "render_pdf_bytes", draws.__next__)
         check = pdf.check_artifact if mode == "artifact" else pdf.check
         with pytest.raises(SystemExit, match="difference between renders") as refused:
@@ -591,7 +866,11 @@ def test_math_trace_retains_the_exact_draws_and_marks_unobserved_stored_dom(
     run = runs[0]
     assert (run / "source.html").read_bytes() == pdf.PAGE.read_bytes()
     records = [json.loads(p.read_text()) for p in sorted(run.glob("draw-*.json"))]
-    assert len(records) == 2
+    # A stored artifact no load reproduces is compared against D-509's extra loads, and
+    # each of them is traced like the first.
+    extra = pdf._ARTIFACT_LOADS - 1 if disagree and mode == "--check-artifact" else 0
+    assert len(records) == 2 + extra
+    assert len(draws) == len(records) - (mode == "--check-artifact")
     assert records[0]["origin"] == (
         "stored artifact" if mode == "--check-artifact" else "fresh"
     )

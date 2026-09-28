@@ -108,7 +108,7 @@ def test_the_history_keeps_every_edition_back_to_the_first() -> None:
     front; nothing comes off the back.
     """
     versions = [entry.version for entry in PUBLICATION_HISTORY]
-    assert {"v0.4.1", "v0.4.0", "v0.3.0"} <= set(versions)
+    assert {"v0.4.2", "v0.4.1", "v0.4.0", "v0.3.0"} <= set(versions)
     assert len(set(versions)) == len(versions)
     assert [_version(e) for e in PUBLICATION_HISTORY] == sorted(
         (_version(e) for e in PUBLICATION_HISTORY), reverse=True
@@ -132,6 +132,7 @@ def test_each_edition_is_dated_by_when_it_was_first_published() -> None:
     assert dated["v0.3.0"] == "September 5, 2026"
     assert dated["v0.4.0"] == "September 13, 2026"
     assert dated["v0.4.1"] == "September 22, 2026"
+    assert dated["v0.4.2"] == "September 28, 2026"
     assert PUBLICATION_HISTORY[0].first_published == PUBLICATION_DATE
     assert PUBLICATION_HISTORY[-1].first_published == FIRST_PUBLISHED
 

@@ -198,7 +198,7 @@ of each `python -m` and `squares-workbench-*` command below.
      and are deleted after the encode.
      A trial near `n = 88` measured 160 kB a frame, so the 29,639-frame full cut needs
      about 5 GB and more where the packings are denser; keep 10 GB free.
-   - Time: the `v0.4.1` receipts record 502.7 s of capture for 8,401 frames and 2,118 s
+   - Time: the `v0.4.2` receipts record 562.6 s of capture for 8,401 frames and 2,105 s
      for 29,639 on the owner’s machine.
 
 2. **Decide the version first.** Every frame prints `PUBLICATION_EDITION` from
@@ -241,8 +241,8 @@ of each `python -m` and `squares-workbench-*` command below.
    ```
 
    Record what the cadence check reports, including repeated frames inside motion.
-   A nonzero exit is a finding for the published record rather than a stop: the `v0.4.1`
-   cuts had 11 and 39 such frames, tracked as `think-dh9j`.
+   A nonzero exit is a finding for the published record rather than a stop: the `v0.4.2`
+   cuts had 12 and 41 such frames, tracked as `think-dh9j`.
 
 6. **Cut the poster** from the new `n = 1…100` cut, which replaces
    [`assets/ascent-n1-100-poster.png`](assets/ascent-n1-100-poster.png) with its
@@ -253,9 +253,9 @@ of each `python -m` and `squares-workbench-*` command below.
    ```
 
    It takes the step’s settled last frame; `--before-end K` takes one `K` frames
-   earlier. The poster committed on 2026-09-22 was chosen by hand and is not an exact
-   frame of the published cut; its closest match is 17 frames before the settled end,
-   mid colour fade.
+   earlier. The committed poster is the settled end of `n = 88` in the `v0.4.2` cut,
+   frame 7,864 of 8,401; 17 frames earlier the colour fade has already turned the
+   picture grey.
 
 7. **Put the files on the release** named by the version from step 2:
 

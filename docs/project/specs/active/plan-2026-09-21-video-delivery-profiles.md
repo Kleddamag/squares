@@ -278,10 +278,10 @@ Measured on 2026-09-22: a release asset URL 302-redirects to
 
 ### The tag
 
-The tag is the **publication version alone** — `v0.4.1`, which is
+The tag is the **publication version alone** — `v0.4.2`, which is
 `sqpack.release.PUBLICATION_VERSION` — and carries no data revision.
 The frames carry the full edition, `PUBLICATION_EDITION`, which appends the first six
-characters of the pinned data revision: `v0.4.1-b7690c`. The two are deliberately
+characters of the pinned data revision: `v0.4.2-d48006`. The two are deliberately
 different. The tag names a release, which is a thing a reader cites and a maintainer
 moves forward; the stamp names the evidence a particular frame was drawn from, which is
 finer-grained and changes whenever the records do.
@@ -331,18 +331,18 @@ The steps below are the reasoning; the commands, in order, are the workbench’s
 
 ### What was published
 
-`v0.4.1`, tagged at `d5b1c2e1b` on 2026-09-22:
-<https://github.com/jlevy/squares/releases/tag/v0.4.1>. Four assets — both cuts and both
-receipts.
+`v0.4.2`, tagged at `c19e6c0e2` on 2026-09-28:
+<https://github.com/jlevy/squares/releases/tag/v0.4.2>. Four assets — both cuts and both
+receipts. The `v0.4.1` release keeps its own four, so links to it still resolve.
 
 | Asset | Frames | Length | Size | Profile |
 | --- | ---: | ---: | ---: | --- |
-| `ascent-n1-100-1080p60-citations.mp4` | 8,401 | 140.02 s | 38.0 MB | `social` |
-| `ascent-n1-324-1080p60-citations.mp4` | 29,639 | 493.98 s | 206.1 MB | `archive` |
+| `ascent-n1-100-1080p60-citations.mp4` | 8,401 | 140.02 s | 38.1 MB | `social` |
+| `ascent-n1-324-1080p60-citations.mp4` | 29,639 | 493.98 s | 206.3 MB | `archive` |
 
-Both drawn from page `575ccc8e` and stamped `v0.4.1-b7690c`. Their clocks are exact to
-0.7 microseconds of 1/60 s; repeated frames inside motion are 11 and 39, 0.13% of each,
-and ten of the eleven in the excerpt are the one beat `think-dh9j` tracks.
+Both drawn from page `9e2a35cd` and stamped `v0.4.2-d48006`. Their clocks are exact to
+0.7 microseconds of 1/60 s; repeated frames inside motion are 12 and 41, 0.14% of each,
+which `think-dh9j` tracks.
 
 The explainer plays the excerpt under Figure 2, in a `screen-only` block so the typeset
 PDF does not carry a black rectangle where a player would be; the PDF still renders 22
@@ -363,7 +363,7 @@ yuv420p, 1920 x 1080, 60 fps, and no audio track:
 
 ```html
 <video controls width="960" playsinline>
-  <source src="https://github.com/jlevy/squares/releases/download/v0.4.1/ascent-n1-100-1080p60-citations.mp4"
+  <source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4"
           type='video/mp4; codecs="avc1.640028"'>
 </video>
 ```

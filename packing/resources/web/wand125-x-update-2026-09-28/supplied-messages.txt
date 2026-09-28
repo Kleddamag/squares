@@ -1,0 +1,64 @@
+Source: two messages from @wand_125 on X (Twitter), addressed to Joshua Levy
+Supplied: 2026-09-28, pasted by the project owner into a Claude Code session, in two parts
+URL: not supplied; no status link or publication timestamp was given
+Method: the text below is the supplied text, unedited
+
+Message 1 of 2
+
+Thanks for putting all of this together, Joshua. A few things that don't appear yet in the known-best PDF:
+
+- evand has proved s(21) = 5 and s(45) = 7; the PDF still shows s(21) ≥ 4.995004 and s(45) ≥ 6.830951.
+- Our rectangle-density lower bounds aren't reflected yet. They now improve on the previous bounds for most n from 18 to 95 (e.g. s(37) ≥ 6.425, s(50) ≥ 7.35, s(91) ≥ 9.645).
+
+We've also been keeping a lower-bound table with sources for every n up to 100:
+claude.ai/artifact/TUa8v1nJWbQpKAokfLMTJy
+
+Certificates and code:
+github.com/wand125/square-packing-bounds
+github.com/wand125/square-packing-density-bounds (fork of tokoharu's solver)
+
+Proof status:
+- Rectangle-density certificates: exact rational certificates built with tokoharu's solver. Each is replayed on all 201 angle cases with his unmodified verify.cpp before publication.
+- n = 50 (7.35): coverage only reaches 1.0000000005, below the 1.0001 margin verify.cpp requires, so it ships with its own verifier and a full replay bundle.
+- n = 21: a point-only route to s(21) = 5, derived from evand's support (no priority claimed), with a Lean 4 reduction to minSide 21 = 5 from a single capture hypothesis (point_n21_L5/).
+
+
+Here are some of the problem-solving tools I've built, grouped by area, in case any are useful to others. Most aren't public yet; I plan to clean them up and publish them.
+
+1. Moving certificates between n and L (on top of tokoharu's rectangle-density solver)
+- Expanding n: a certified certificate for n can seed a larger n. Weights are re-optimized, so the new proof is independent of the parent.
+- Climbing L: when the LP hits the mass budget, a budget-recovery step prices new rectangles along the four edges and climbs L in small steps (0.01 or less).
+- Rescaling: a candidate can be shrunk or enlarged exactly to a nearby L, then fitted back to the budget.
+- Inheritance by mass: one certificate also gives bounds for larger n when its total mass is below them.
+- A ceiling: with core side B, no certificate can reach L ≥ B·UB(n), because the known packing shrunk by B then fits n disjoint cores. We cap targets there, which saves a lot of wasted runs near integer upper bounds.
+
+2. Speeding up the solver
+- Counterexample screening runs in parallel over the angle net (about 3–4x faster).
+- Counterexamples are fed back to the LP in batches of 16, prioritizing recent directions.
+- LP state is reused between rounds (40–50% less solve time in our comparisons).
+- A lower-memory "working" LP is used for long continuations.
+- An axis-direction cache speeds up in-job checks. Published certificates are always replayed with the unmodified verifier.
+
+3. Verification and publication
+- Before publishing, every certificate is replayed on all 201 angle cases with tokoharu's unmodified verify.cpp, with the verifier and file hashes pinned, several replays in parallel.
+- Certificates that fall outside that format (like our n = 50 ones, which reach coverage ≥ 1 but not 1.0001) ship with their own verifier and a full replay bundle.
+
+4. Formalization
+- A Lean 4 overlay on top of evand's unmodified Lean files: a script turns a certificate into a Lean data file, and the reduction to minSide n = k is proved from a single capture hypothesis (used for our point-only s(21) = 5).
+
+5. Point-certificate checking
+- A faster variant of evand's zmx2 that computes line intersections lazily, regenerated from a fixed patch and compared region by region against the original.
+
+6. Records and visualization
+- A lower-bound table for n ≤ 100 with sources, including values inherited from smaller n.
+- A browser viewer that draws the rectangles of each published certificate.
+
+7. Running it all
+- Jobs run on local machines plus GCP Spot instances with memory-aware scheduling.
+- A 30-minute monitoring loop continues, advances, retries or moves each ladder automatically, and restarts from saved state after a machine is preempted.
+
+Message 2 of 2
+
+Quick update on n = 50 from the list above: for the N = k²+1 family, by bringing Green's approach into our search, we were able to improve it to s(50) ≥ 7.40 (was 7.35), about 0.083 above Green's 7.3174 (2000). The certificate passes all 201 angles plus a full replay with the same verifier as before (certificates/mixed_n50_L740).
+
+Next we're aiming at n = 65 (Green: 8.2900) and n = 82 (Green: 9.2667).

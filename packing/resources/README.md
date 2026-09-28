@@ -476,6 +476,13 @@ under **[wand125 rectangle bounds 2026]**. It retains each standing certificate�
 candidate and upstream run record, digests every other file of the source tree, and
 keeps the first-party preflight and coverage-replay receipts.
 
+The [September 28 wand125 update](web/wand125-x-update-2026-09-28/README.md), under
+**[wand125 X update 2026-09-28]**, keeps two messages wand125 sent the owner on X and a
+byte capture of the `n ≤ 100` lower-bound table they link.
+They report evand’s `s(21) = 5` and `s(45) = 7`, rectangle-density bounds to `n = 95`
+and `s(50) ≥ 37/5`, none of it yet acquired or replayed here; the packet maps each claim
+to the record and to the bead that owns its intake.
+
 | Key | What | Source | File stem (in `web/`) |
 | --- | --- | --- | --- |
 | **[Friedman Center]** | Packing Center record tables and diagrams | erich-friedman.github.io | `friedman-packing-center-squares` |

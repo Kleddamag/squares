@@ -953,6 +953,9 @@ receipt that travels with each video; and the `<video>` embed with its codec str
 is
 [Publication](docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md#publication)
 in the delivery-profiles plan.
+To re-cut and publish them, follow
+[Regenerating and publishing the ascent videos](packages/workbench/README.md#regenerating-and-publishing-the-ascent-videos),
+the ordered runbook from prerequisites to the post-merge check.
 
 **After any commit that changes the data, re-pin.** A commit cannot contain its own
 hash, so a data change is followed by a second commit that sets `DATA_REVISION` to the

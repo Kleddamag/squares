@@ -1,0 +1,12 @@
+# command: python3 xcheck.py certificates/s12_lower_3.9686.txt 6000 50 --n 12 -j 2
+# cwd: s12/ of evand/square-packing 167d842 (scratch copy)
+# python3: 3.14.7
+# host: 4 cores; started 2026-09-27T10:22:39Z
+certificate certificates/s12_lower_3.9686.txt:  s=15680/3951=3.968616  atoms=1736  total weight=29934509/2500000=11.9738036
+total < n=12: yes
+D4 symmetry of the atom set: OK  -> angles reduce to [0,45deg]: bins k=0..2485 (N=6000)
+SAMPLED: checking 50 of 2486 bins with 2 worker(s)
+wall time 167.9s
+minimum covered weight over SAMPLED bins = 1250007/1250000 = 1.0000056   (at bin k=0)
+VERIFIED: every closed unit square inside [0,15680/3951]^2 covers weight >= 1, and total weight < 12  (sampled bins only -- not a proof)
+# finished 2026-09-27T10:25:27Z; exit 0; wall 168 s

@@ -7,19 +7,19 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 159
+count: 160
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 105
+  sessions_measured: 106
   sessions_unmeasured: 54
   attributed:
-    rollups: 216
-    turns: 55713
-    tool_calls: 30572
-    tool_errors: 585
-    one_off_code: 4557
-    wall_hours: 503.37
+    rollups: 244
+    turns: 61361
+    tool_calls: 33926
+    tool_errors: 746
+    one_off_code: 4864
+    wall_hours: 545.99
   unattributed:
     rollups: 64
     turns: 13577
@@ -28,12 +28,12 @@ totals:
     one_off_code: 1122
     wall_hours: 61.29
   measured:
-    rollups: 280
-    turns: 69290
-    tool_calls: 38427
-    tool_errors: 762
-    one_off_code: 5679
-    wall_hours: 564.66
+    rollups: 308
+    turns: 74938
+    tool_calls: 41781
+    tool_errors: 923
+    one_off_code: 5986
+    wall_hours: 607.28
 codex_receipts:
   attributed: 64
   unattributed: 2
@@ -2712,4 +2712,45 @@ sessions:
   tool_errors: 13
   one_off_code: 135
   wall_hours: 53.24
+  codex_receipts: []
+- id: session-160
+  title: "Intake of Kleddamag's 4.640020, Daniel's s(32) = 6 and wand125's Rectangle Bounds"
+  status: completed
+  primary_bead: think-il68
+  phases: 3
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/bce203b4-0b22-546f-a1b6-1b79c35d9fe4.yaml
+  - packing/campaign/resource-usage/agent-a029e6f2adbb0eb8d.yaml
+  - packing/campaign/resource-usage/agent-a06f4cbf529e2d169.yaml
+  - packing/campaign/resource-usage/agent-a13ebcd8a636ea1f6.yaml
+  - packing/campaign/resource-usage/agent-a28a02fde58348135.yaml
+  - packing/campaign/resource-usage/agent-a33806add7c351723.yaml
+  - packing/campaign/resource-usage/agent-a40241ff609b4550f.yaml
+  - packing/campaign/resource-usage/agent-a6cf780ba2b65f304.yaml
+  - packing/campaign/resource-usage/agent-a7877380e0c2daa7b.yaml
+  - packing/campaign/resource-usage/agent-a7f9a8b940397cc26.yaml
+  - packing/campaign/resource-usage/agent-a884dd8f8d7c9bd82.yaml
+  - packing/campaign/resource-usage/agent-a993a56e603a9443b.yaml
+  - packing/campaign/resource-usage/agent-aa0a2a1206f107f33.yaml
+  - packing/campaign/resource-usage/agent-aa52661c56598f4f3.yaml
+  - packing/campaign/resource-usage/agent-aaa0dbcddfc2848a6.yaml
+  - packing/campaign/resource-usage/agent-aaa29ee188954acb4.yaml
+  - packing/campaign/resource-usage/agent-aadc88d5d978f0bb0.yaml
+  - packing/campaign/resource-usage/agent-abc2f1b6af3278443.yaml
+  - packing/campaign/resource-usage/agent-acaa4b629f747481e.yaml
+  - packing/campaign/resource-usage/agent-acfae128503c1b915.yaml
+  - packing/campaign/resource-usage/agent-adb59a45a116a3243.yaml
+  - packing/campaign/resource-usage/agent-add9a00f5d0413554.yaml
+  - packing/campaign/resource-usage/agent-ae3df25cab6ae99dc.yaml
+  - packing/campaign/resource-usage/agent-ae76cca1e7a6a5122.yaml
+  - packing/campaign/resource-usage/agent-aecf9734f157c8a67.yaml
+  - packing/campaign/resource-usage/agent-aedb51562b3867afd.yaml
+  - packing/campaign/resource-usage/agent-af45b841f3f246dcf.yaml
+  - packing/campaign/resource-usage/agent-af566fd76f08eeb18.yaml
+  turns: 5648
+  tool_calls: 3354
+  tool_errors: 161
+  one_off_code: 307
+  wall_hours: 42.62
   codex_receipts: []

@@ -34,6 +34,12 @@ properties:
         venue: {type: string, minLength: 1}
         # The venue a line falls back to when this project's confirmation would not fit.
         short_venue: {type: string, minLength: 1}
+        # Printed in place of the joined authors where the credit is joint with the lineage
+        # the source builds on: last names or published handles, never an AI agent.
+        # Printable ASCII, since the stage sets citations in Latin faces and counts them
+        # against a fixed width; devtools.build_bound_citations fails a credit whose line
+        # `credit year, venue` is wider than that stage's 66 characters.
+        credit: {type: string, minLength: 1, maxLength: 58, pattern: '^[ -~]+$'}
         # Where a web source's authors or year were read, since the README's Web Sources
         # table carries neither.
         note: {type: string, minLength: 1}

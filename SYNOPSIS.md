@@ -96,8 +96,36 @@ on Kleddamag’s `v1.0.0` mixed point/threshold architecture, at `V4/C3`. All fo
 source’s replay modes pass here, but both full sweeps are one event-cell method and the
 native interval route refuses the certificate at its engine ceilings, so there is no
 method-distinct decision.
-It supplies the verified Frontier bound for `n = 17`, about `0.000229` above Kleddamag’s
-previous `461300/99853`; like Kleddamag’s, it carries no `T-NNN` identifier.
+It supplied the verified Frontier bound for `n = 17` from 25 to 27 September, about
+`0.000229` above Kleddamag’s `461300/99853`. Kleddamag’s `v1.1.0` of 26 September then
+proved `s(17) > 232001/50000 = 4.64002`, exactly `0.02` above R052, on the same author’s
+architecture extended with weighted thresholds and pairwise-intersecting winning-subset
+rules. Both of its complete checkers pass here and agree on all 2,048 intervals, with a
+counting surplus of 5,629 units of `10⁻⁹`; they share one event-cell method, and the
+native parent-core route cannot yet represent the new features, so it is `V4/C3`, and
+its [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) is a
+separate record. It supplied the verified Frontier bound for `n = 17` on 27 September.
+The same day `s(17) > 466001/100000 = 4.66001` followed, `0.01999` above it: Kleddamag,
+building on Squares Project (Joshua Levy), Mira and Guzhou0806, an exact
+weighted-certificate proof over 2,168 orientation intervals on the same two checkers.
+Both pass here and agree on every interval, with a counting surplus of 54,340 units of
+`10⁻⁹`, again at `V4/C3`. It supplies the verified Frontier bound for `n = 17`, `0.0155`
+below Bidwell’s packing; its proof review is a separate record,
+`docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md`. Like the earlier
+external bounds, neither carries a `T-NNN` identifier.
+
+The same intake took in three more sources.
+Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
+weighted exact-rational covering method, proves `s(32) = 6` by a zero-margin weighted
+closed cover of `[0,6]²`, at `V4/C1` until its complete re-sweep runs here, and its
+angle-net certificates `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001` pass the source’s
+verifier here at `V4/C3`; its case-free proof of Bentz’s `s(13) = 4` is recorded as a
+report. wand125’s 44 rectangle-density certificates for `n = 18` to `78`, built with
+Tokoharu’s solver and decided by Tokoharu’s reviewed interval verifier, are verified at
+`n = 27`, `28` by monotonicity, and `31`, and reported at the other counts until their
+replays run. Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by
+`v1.1.0`, is retained as a publication record.
+[Third-Party Results](README.md#third-party-results) gives the credit for each.
 
 Every result this project has registered, in the reading order its significance scores
 set. The full claims, the rationale behind each score, and the next evidence-improving
@@ -172,10 +200,10 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 380 | 193 complete; 61 stopped; 69 blocked; 23 ready; 21 tentative; 13 in progress |
-| Sessions | 159 | 100 completed; 59 stopped; all terminal |
+| Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
+| Sessions | 160 | 101 completed; 59 stopped; all terminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 182 | 32 confirmed; 32 refuted; 58 blocked; 17 unresolved; 6 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 36 | 36 registered |
 
@@ -471,6 +499,7 @@ case or experiment separately.
 | [Feature: Video delivery profiles](docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md) | implementation plan | current | transient | — |
 | [Plan: Certify the Reported Upper Bounds, One Validation Block at a Time](docs/project/specs/active/plan-2026-09-22-upper-bound-certification-blocks.md) | implementation plan | current | transient | — |
 | [Plan: What R052 and Rung 0 Change at n = 11 and n = 17](docs/project/specs/active/plan-2026-09-25-after-r052-planning.md) | implementation plan | current | transient | — |
+| [Plan: An Overnight Queue After s(17) > 4.640020](docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |
 | [BC329 Reader F6/F7: Exact-Commit Admission Review](docs/project/reviews/review-2026-09-13-n11-bc329-reader-f6f7-overflow.md) | dated review record | record | retained | — |
@@ -899,6 +928,11 @@ case or experiment separately.
 | [Review of the Closed Rung-0 Tree, 24 September 2026](docs/project/reviews/review-2026-09-24-rung0-closed-tree.md) | dated review record | record | retained | — |
 | [Review of the n21 Certificate at 122/25, 23 September 2026](docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R052, `s(17) > 231001/50000`](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md) | dated review record | record | retained | — |
+| [Proof Review: Kleddamag’s v1.1.0, `s(17) > 232001/50000`](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) | dated review record | record | retained | — |
+| [Proof Review: Kleddamag’s `s(17) > 466001/100000`](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) | dated review record | record | retained | — |
+| [Proof Review: Evan Daniel’s `s(32) = 6`, `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001`](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) | dated review record | record | retained | — |
+| [Review Addendum: The Ceiling Lemma, the `+0.006` Cap and H-248 in the Post-4.640020 Plan](docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md) | dated review record | record | retained | — |
+| [wand125 Rectangle Certificates: Does the Reviewed Checker Scale to Side 9?](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) | dated review record | record | retained | — |
 | [The Three-Lane Research Method](docs/project/three-lane-research-method.md) | component scope and use | record | retained | — |
 | [Handoff — 2026-09-04, close of the fractional-certificate block](docs/project/handoff-2026-09-04-block-close.md) | dated handoff record | record | retained | — |
 | [Handoff: Post-3.81 Portfolio at T+2](docs/project/handoff-2026-09-06-post-381-t2-commissioning.md) | dated handoff record | record | retained | — |
@@ -1254,9 +1288,10 @@ session.
 took in Guzhou0806’s R052, `s(17) > 231001/50000 = 4.62002`, built on Kleddamag’s
 architecture. All four of the source’s replay modes pass here, both full sweeps
 reproducing its row ledgers exactly, and a Fable max review found no mathematical defect
-([review](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md)). It is the
-verified n = 17 lower bound at `V4/C3`; the native interval route refuses it at its
-engine ceilings, so there is no method-distinct decision yet.
+([review](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md)). It became the
+verified n = 17 lower bound at `V4/C3`, until Kleddamag’s `v1.1.0` `232001/50000`
+superseded it on 27 September; the native interval route refuses it at its engine
+ceilings, so there is no method-distinct decision yet.
 A planning block then asked what R052 and the closed rung 0 make possible
 ([plan](docs/project/specs/active/plan-2026-09-25-after-r052-planning.md)). At n = 17,
 R052’s certificate is nearly saturated, so a first-party increment of `10^-4` is not
@@ -1268,10 +1303,37 @@ counting certificate.
 Agenda-042 gains BC-386 to BC-391 and H-243 to H-247. Hosted full run 36121001128
 certified the closed session.
 
-**Selected next entry:** `think-amx8`, BC-386: lift the native coverage ceilings and
-decide R052 natively on two workers overnight, the first lane of the after-R052 order;
-BC-388’s n11 tilt-profile census runs beside it on seven workers and BC-387’s ceiling
-search fits in a free slot.
+**The 27 September planning block** (BC-392,
+[plan](docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md)) followed
+Kleddamag v1.1.0’s `s(17) > 232001/50000 = 4.640020` and wand125’s rectangle
+certificates for n = 18 to 78. Every atom of v1.1.0 has capacity one, so the certificate
+itself refutes H-243’s `4.63` family and the ceiling search moves to `4.65` in
+clique-weighted form (H-248); a reweighting of its dictionary is worth of order `10⁻³`
+in charge, an unmeasured amount of side (the
+[lemma check](docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md)
+withdrew the plan’s `+0.006` cap).
+BC-386 is superseded by BC-393, the same cap lift aimed at v1.1.0 through a
+winning-subset atom; BC-391 is superseded by wand125’s `4.985`. The overnight queue is
+BC-390 on eight workers beside rectangle-density ladders at n = 82 and n = 50 (BC-394,
+H-250 and H-251) and n = 12 (BC-395, H-249), the rows the external certificates left
+weakest; BC-393, BC-388 and BC-387 follow their day builds.
+evand/square-packing’s claims (`s(32) = 6` by a zero-margin closed cover, `s(12) ≥
+3.968616`, `s(21) ≥ 4.995`), reviewed and registered by other lanes, retarget H-249 to
+`3.99` and add BC-396 (H-252): the same cover carried upward to `n = 45`, side `7`.
+
+[Session 160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md)
+took in Kleddamag’s `s(17) > 232001/50000` at `V4/C3`, Evan Daniel’s `s(32) = 6` at
+`V4/C1` with `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001` at `V4/C3`, and wand125’s
+rectangle bounds for n = 18 to 78, each after a Fable max review, and contained D-509’s
+explainer PDF wobble on PR 235.
+
+**Selected next entry:** `think-7c17`, BC-390: the widened n = 11 rung 0 box on eight
+workers overnight, with BC-394’s rectangle ladders (`think-pr2b`), the 41 queued wand125
+replays and Evan Daniel’s `s(32)` full sweep on the remaining workers; BC-393
+(`think-0rbj`), BC-388 and BC-387 follow their day builds.
+
+**Selected next entry at the Session 159 cutoff:** `think-amx8`, BC-386, since stopped
+in favour of BC-393.
 
 **Selected next entry at the Session 158 cutoff:** `think-ggk5`, BC-384, now blocked on
 BC-388 and BC-389.
@@ -3706,7 +3768,7 @@ Where the program has spent effort, and what came of it.
 | 16 | proved, `4` | `4` | proved not-below control | The valid replacement for the old `n=12` guard: any reported side below `4` is known to be invalid |
 | 17 | open | `4.67553009…` (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of `0°`, `+39.80496°`, and `−36.62379°`. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports `5.0`, the trivial `5×5` grid, on all five binary64 screening seeds |
 | 61, 78, 97 | open, `m² − 3` | `8`, `9`, `10` (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at `arctan(3/4)` is registered and **not yet made** |
-| 1–100 | 35 proved, 65 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
+| 1–100 | 36 proved, 64 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
 
 Three facts about this table drive the strategy.
 
@@ -4927,6 +4989,11 @@ round that names the hypothesis, control roles included.
 | [H-245](packing/campaign/hypotheses/H-245-n11-family-side-profile-along-the-tilt.md) | open question | The least side f(θ) along the six-axis plus five-common-angle family at 200 tilts, and the window within 0.01 of U; a pricing measurement that moves no bound | 0 | — |
 | [H-246](packing/campaign/hypotheses/H-246-n11-two-class-certificate-closes-a-rung1-box.md) | blocked | A two-class parent-core counting certificate closes the rung-1 box at half-tangent [0.1758, 0.1768] above U; blocked on the producer build (BC-389) | 0 | — |
 | [H-247](packing/campaign/hypotheses/H-247-n11-rung0-widened-to-half-width-1e-4.md) | open | Rung 0 widened: H-236’s statement on the half-tangent box of half-width 10^-4 around Trump’s tilt, by the unchanged instrument (BC-390) | 0 | — |
+| [H-248](packing/campaign/hypotheses/H-248-n17-clique-weighted-family-at-4-675.md) | blocked | A clique-weighted family of unit squares with fractional stability at least 17 fits at 4675/1000 (then 467/100), capping every capacity-one certificate at n17 under the proved ceiling lemma; the successor of H-243, whose 463/100 Kleddamag v1.1.0 refutes; retargeted 2026-09-27 after Kleddamag’s 4.66001 certificate refuted its first targets, 465/100 and 466/100; blocked on the search driver (BC-387) | 0 | — |
+| [H-249](packing/campaign/hypotheses/H-249-n12-rectangle-density-certificate-at-3-99.md) | open | A rectangle-density certificate in tokoharu’s format with mass below 12 at 397/100, then 399/100 (BC-395) | 0 | — |
+| [H-250](packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md) | open | A rectangle-density certificate with mass below 50 at 73/10, the row wand125’s ladder left at 1 + √37 (BC-394) | 0 | — |
+| [H-251](packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md) | open | A rectangle-density certificate with mass below 82 at 93/10, covering n = 82..85 by mass against Nagamochi’s 1 + √(n − 17) (BC-394) | 0 | — |
+| [H-252](packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md) | blocked | Evan Daniel’s zero-margin closed cover carried to k = 7: a cover of [0,7]² with mass below 45, so s(45) = 7; blocked on the intake lane’s review of the s(32) certificate (BC-396) | 0 | — |
 
 ### Confirmed
 
@@ -5095,9 +5162,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 216 | 55,713 | 30,572 | 585 | 4,557 | 503.37 h |
+| claimed by a session | 244 | 61,361 | 33,926 | 746 | 4,864 | 545.99 h |
 | claimed by none | 64 | 13,577 | 7,855 | 177 | 1,122 | 61.29 h |
-| **measured** | **280** | **69,290** | **38,427** | **762** | **5,679** | **564.66 h** |
+| **measured** | **308** | **74,938** | **41,781** | **923** | **5,986** | **607.28 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5151,7 +5218,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-157](packing/campaign/agent-sessions/session-157-n11-rung0-overnight-cpu.md) | 2 | 0 | 0 | 0 | 0 | 0 h |
 | [session-158](packing/campaign/agent-sessions/session-158-n11-rung0-lock-in-and-rung1-pilot.md) | 1 | 5 | 646 | 379 | 3 | 1.89 h |
 | [session-159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md) | 2 | 6 | 844 | 484 | 10 | 2.34 h |
-| *shared by 50 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
+| [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
+| *shared by 51 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -5224,9 +5292,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 105 |
+| measured | 106 |
 | unmeasured | 54 |
-| **total** | **159** |
+| **total** | **160** |
 
 <!-- END GENERATED: session-close-report -->
 
@@ -6428,16 +6496,19 @@ theorem or assurance level.
 The result retains its historical S5 registration; its current significance is S3 as
 method and calibration evidence, while the external certificate supplies the current
 case bound. `s(12) >= 99/25` is [T-017](packing/frontier/RESULTS.md), the first bound
-located that was proved about twelve squares rather than inherited from eleven.
-`s(17) >= 459/100`, and `n = 18` and `n = 19` at the same side without a monotonicity
-step, is [T-019](packing/frontier/RESULTS.md) and displaces Massaccesi’s published
-`4.5058` by `0.0842`. `s(19)`, `s(20)` and `s(21) >= 24/5` is
-[T-020](packing/frontier/RESULTS.md), which carries `n = 19` past `T-019` the same
-evening and displaces Nagamochi’s 2005 closed form at the other two — `1 + sqrt(13)` and
-`1 + sqrt(14)` — by `0.194449` and `0.058343`. Its `0.21` at `n = 19` is the largest
-single-case movement in the register, and twenty and twenty-one had never carried a
-bound of their own at all.
-Between them those two are the only values in print this project has replaced.
+located that was proved about twelve squares rather than inherited from eleven; the case
+bound is now Evan Daniel’s third-party `15680/3951`, replayed here on 2026-09-27
+([`n-012`](packing/frontier/n-012.md)). `s(17) >= 459/100`, and `n = 18` and `n = 19` at
+the same side without a monotonicity step, is [T-019](packing/frontier/RESULTS.md) and
+displaces Massaccesi’s published `4.5058` by `0.0842`. `s(19)`, `s(20)` and
+`s(21) >= 24/5` is [T-020](packing/frontier/RESULTS.md), which carries `n = 19` past
+`T-019` the same evening and displaces Nagamochi’s 2005 closed form at the other two —
+`1 + sqrt(13)` and `1 + sqrt(14)` — by `0.194449` and `0.058343`. Its `0.21` at `n = 19`
+is the largest single-case movement in the register, and twenty and twenty-one had never
+carried a bound of their own at all.
+The `n = 21` case bound is now Evan Daniel’s third-party `5000/1001`, replayed here on
+2026-09-27 ([`n-021`](packing/frontier/n-021.md)). Between them those two are the only
+values in print this project has replaced.
 All four stand at V4: each was decided twice from frozen bytes by an exact event-cell
 sweep and by an interval branch and bound with directed rounding — two routes that share
 the certificate and the closed-form conditions but decide Condition 5 by different
@@ -6478,8 +6549,12 @@ for one certificate.
 What the ceiling does not exclude is a proved family of certificates with sides tending
 to `4` and a limit argument on top of it; whether such a family exists is a question
 about the covering value, which nothing here settles.
-`n = 11` and `n = 17` are not foreclosed: their runways are `0.1808` and `0.3985`, and
-both truths sit below their grid bounds.
+Nor does it bind a certificate of a different shape.
+Evan Daniel’s third-party `s(32) = 6` is a weighted cover of the closed container
+`[0,6]²` itself, decided at margin zero by an exact subdivision of pose space rather
+than over a direction net, and it certifies the grid value directly
+([`n-032`](packing/frontier/n-032.md)). `n = 11` and `n = 17` are not foreclosed: their
+runways are `0.1808` and `0.3985`, and both truths sit below their grid bounds.
 At `n = 19`, `20` and `21` the ceiling is `5B = 4.9885`, so `T-020` has `0.1885` above
 it at twenty and twenty-one; at nineteen the best known packing binds first and the
 runway is `0.0856`.

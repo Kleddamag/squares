@@ -1,0 +1,27 @@
+# command: certificates/s32/verify.sh
+# cwd: s12/ of evand/square-packing 167d842 (scratch copy)
+# python3: 3.14.7
+# host: 4 cores; started 2026-09-27T09:34:12Z
+--- hashes
+s32_closed_cover_6.txt: OK
+s32_shift_v1.txt: OK
+zeromargin_d4/checker/zeromargin.py: OK
+zeromargin_d4/roots.jsonl: OK
+zeromargin_d4_shift_v1/roots.jsonl: OK
+--- Lean data (lean/Sqpack/S32Data.lean) is s32_closed_cover_6.txt
+lean/Sqpack/S32Data.lean matches certificates/s32/s32_closed_cover_6.txt (sha256 a0d2d38fc9a585a166b9e06c5069fdae9bdce44ca9fb64dda75abcc99e3c2144)
+--- shipped zeromargin.py run: zeromargin_d4
+D4 invariance of the weighted point set (exact, x->m-x and x<->y): True
+region: 7200 roots = [0,3]^2 x u in [0,1/2]; present 7200, missing 0, with uncertified boxes 0, bad/foreign records 0, extra 0
+totals: boxes 164130, max depth 27, leaves ADM 12201 P1 0 MIX 0 CHAIN 70007 EMPTY 3457 UNCERTIFIED 0; CPU 2.77 h (all valid records); census of the shown records
+D4 RECHECK CLEAN: every root of the D4 region certified
+--- shipped zeromargin.py run: zeromargin_d4_shift_v1
+D4 invariance of the weighted point set (exact, x->m-x and x<->y): True
+region: 7200 roots = [0,3]^2 x u in [0,1/2]; present 7200, missing 0, with uncertified boxes 0, bad/foreign records 0, extra 0
+totals: boxes 187002, max depth 27, leaves ADM 19370 P1 0 MIX 0 CHAIN 74200 EMPTY 3531 UNCERTIFIED 0; CPU 2.42 h (all valid records); census of the shown records
+D4 RECHECK CLEAN: every root of the D4 region certified
+--- fast re-execution: two interior tile-germ roots of s32_closed_cover_6.txt, census must equal the shipped records
+    3/2,8/5,7/5,3/2,1/16,1/8: 39 boxes, certified, census identical
+    7/5,3/2,7/5,3/2,0,1/16: 93 boxes, certified, census identical
+s(32) bundle: OK
+# finished 2026-09-27T09:34:25Z; exit 0; wall 13 s

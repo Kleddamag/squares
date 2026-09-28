@@ -54,7 +54,11 @@ hypothesis:
     feasible for every point or capacity-one certificate, and N = 34 refutes all of them
     at that side. R052 itself shows no such family fits at 4.62002; two copies of
     Bidwell's packing give a bipartite one at 4.6755. The lemma is derived but not yet
-    reviewed.
+    reviewed. Update 2026-09-27: the lemma is proved in the 4.640020 review, and
+    Kleddamag v1.1.0's certificate at 4.640020, every atom of capacity one, is itself
+    the refutation of the 463/100 target under this claim's own criterion; the 465/100
+    target continues as H-248 in clique-weighted form
+    (docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md).
 ---
 # H-243: Where the n17 Certificate Architecture Stops
 

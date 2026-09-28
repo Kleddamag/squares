@@ -765,7 +765,7 @@ the registered rows.
 | 240 | The H-112 ladder beyond rung 1: axis plus one angle at every multiplicity, then two orientations (H-113) | shaped | — | Priced by H-236’s node count and H-239’s constant. |
 | 241 | A point certificate at s(21) ≥ 4.88 | registered | [H-240](hypotheses/H-240-n21-additive-certificate-at-4-88.md) | The one low case with real additive headroom; the crossing near 4.886 is an estimate. |
 | 242 | The additive route at n12 is dead above 3.9609 | registered | [H-241](hypotheses/H-241-n12-additive-route-dead-above-3-9609.md) | One ceiling run decides every additive n12 route in one direction. |
-| 243 | A parent-centre clip lifts n21 to 4.9 and n18 to 4.70 on the native verifier | shaped | — | Blocked on the BC-380 instrument and its controls. |
+| 243 | A parent-centre clip lifts n21 to 4.9 and n18 to 4.70 on the native verifier | superseded | — | wand125’s rectangle certificates hold n18 at 4.695 and n21 at 4.985 (2026-09-27); the clip keeps n12 only, behind H-244. |
 | 244 | An excess-4 occupancy-allocation cut toward s(12) = 4 | shaped | — | One unrealizable surviving pattern is a new cut; one legal allocation refutes only that pattern. |
 | 245 | A parent-disjointness no-good closes a largest surviving n21 exact-five kill orbit | shaped | — | Extends H-226’s inventory; a realizable structure leaves the orbit open. |
 | 246 | A second-order-exact isolation theorem enlarges Trump’s ball beyond the BC-199 modulus | shaped | — | exp-227: 36 of 42 rows do not recover at second order along the binding direction; needs exact Hessians, a cubic remainder and a face-wise enclosure. |
@@ -782,13 +782,36 @@ selected these rows as BC-386 to BC-391.
 | # | Idea | Status | H | Crux |
 | --- | --- | --- | --- | --- |
 | 248 | A capacity-one ceiling lemma: N unit squares with a triangle-free overlap graph make weight ½ dual-feasible for every point or capacity-one certificate | shaped | — | Derived, not reviewed: two cores that trigger a capacity-one atom must overlap. BC-387 reviews it before any search result is read through it. |
-| 249 | A triangle-free family of 34 squares prices the n17 certificate architecture at 4.63 and 4.65 | registered | [H-243](hypotheses/H-243-n17-triangle-free-34-family-at-4-63.md) | The ceiling lies between R052’s 4.62002 and two Bidwell copies at 4.6755; a found family needs an exact checker, and none found is inconclusive. |
+| 249 | A triangle-free family of 34 squares prices the n17 certificate architecture at 4.63 and 4.65 | registered; 4.63 refuted | [H-243](hypotheses/H-243-n17-triangle-free-34-family-at-4-63.md) | Kleddamag v1.1.0’s certificate at 4.640020, every atom of capacity one, is itself the proof that no such family fits at 4.63; the 4.65 target continues as row 257 (H-248). |
 | 250 | A triangle-free family of 24 squares prices the n12 architecture at 3.99 and 3.97 | registered | [H-244](hypotheses/H-244-n12-triangle-free-24-family-at-3-99.md) | Same instrument as row 249; chains give only 18 at n12. Gates the n12 parent-core transfer. |
 | 251 | The side profile f(θ) along the six-axis plus five-common-angle family | open question | [H-245](hypotheses/H-245-n11-family-side-profile-along-the-tilt.md) | H-239’s unrun half for the rung-1 family; prices row 252 and BC-384. Known: f(41.56°) ≤ 3.8867, f(45°) ≤ 3.8856. |
 | 252 | A two-class parent-core certificate closes one rung-1 box outright | registered | [H-246](hypotheses/H-246-n11-two-class-certificate-closes-a-rung1-box.md) | R052’s architecture aimed at a box at 20° rather than at the side; row 239 aims the same producer at angle sets away from Trump’s. Near Trump’s tilt the ceiling is at most U, so that region still needs a tree. |
 | 253 | Parametric-in-tilt certificates: one dual vector certified over a whole tilt interval by univariate polynomial positivity | shaped | — | A BC-384 design candidate: rung 1 would cost about one rung-0 tree instead of forty or more. Chosen against per-square counting after BC-388 and BC-389. |
 | 254 | Rung 0 widened to a half-tangent half-width of 10⁻⁴ | registered | [H-247](hypotheses/H-247-n11-rung0-widened-to-half-width-1e-4.md) | Unchanged instrument; stops if the enclosure reach meets the local-theorem radius, near a half-width of 2.7e-4. |
-| 255 | The additive point certificate at n21 reaches 4.89 without the parent clip | shaped | — | BC-391; register an H-item before any run. Stop at 21 on two site sets. |
+| 255 | The additive point certificate at n21 reaches 4.89 without the parent clip | superseded | — | BC-391 retired 2026-09-27: wand125’s rectangle certificate holds n21 at 4.985. |
+
+## After 4.640020 — the 27 September Planning Block
+
+The
+[27 September plan](../../docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md)
+kept one Fable max assessment of what Kleddamag v1.1.0 (`s(17) > 4.640020`) and
+wand125’s rectangle certificates change, with probes under `attic/planning-160/`.
+[Agenda 042](agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md) selected
+these rows as BC-393 to BC-395 and retargeted BC-387.
+
+| # | Idea | Status | H | Crux |
+| --- | --- | --- | --- | --- |
+| 256 | The capacity-one ceiling lemma in clique-weighted form: any weights with clique mass at most 1 and total at least 17 refute every point, floor-one threshold or intersecting-rule certificate at that side | proved in the 4.640020 review (§8), sharpened here | — | Every set of cores firing one atom is pairwise overlapping, coefficient thresholds and winning-subset rules included; the triangle-free family with weight ½ is the special case. |
+| 257 | A clique-weighted family with fractional stability at least 17 at 4.65, then 4.66 | registered; 4.65 and 4.66 refuted by the 4.66001 certificate; retargeted to 4.675 and 4.67 | [H-248](hypotheses/H-248-n17-clique-weighted-family-at-4-675.md) | The ceiling lies in [4.66001, s(17)], so below 4.67553; the search runs at 4675/1000 first, where a family is easiest to fit. A two-minute anneal at 4.65 reached two triangles among 34 squares with fractional stability 16; the exact checker is the graph and clique tools plus containment. |
+| 258 | A native C4 decision of the 4.66001 certificate (first aimed at v1.1.0) through a winning-subset atom | shaped, BC-393 | — | 1,496 winning-subset images on 3 to 10 sites and 536 points written as masks are the atom class the parent-core route lacks; 20,856 sites need the cap lift; 2,168 rows, about 2–12 CPU-hours. |
+| 259 | A first-party reweighting of v1.1.0’s dictionary at a higher target | closed by the 4.66001 certificate | — | If the source’s LP was optimal, reweighting raises 17Γ/M to at most 1.00127, worth an unmeasured amount of side (about 0.006 only under a one-for-one assumption); new sites need the producer that does not exist. Closed 2026-09-27: the 4.66001 ledger is flat at its minimum on every row, the next cell value within 10^-7, so there is nothing to reweight. |
+| 260 | A rectangle-density certificate at n12 above T-017’s 3.96 | registered | [H-249](hypotheses/H-249-n12-rectangle-density-certificate-at-3-99.md) | The one n12 route untried; from the trivial seed the ladder accepts 1/200 rungs every 60–100 s with mass 9.009 of 12 at 3.40. |
+| 261 | A rectangle-density certificate at n50 toward 7.3 | registered | [H-250](hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md) | The one row in 46..61 wand125 left at 1 + √37; the n51 certificate’s mass 50.99 does not cover it. |
+| 262 | A rectangle-density certificate at n82 toward 9.3, covering n82..85 by mass | registered | [H-251](hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md) | n82..97 stay at Nagamochi’s 1 + √(n−17), gaps near 0.47; a certificate at 9.5 would lift n82..89. Admission only by preflight plus verifier replay, never the driver’s status (DENS-1). |
+| 263 | The Kleddamag/Guzhou mixed family applied at n18..21 | not selected | — | The rectangle route leads there by 0.015 to 0.1 and the point parent-core lock at n18 was 4.68 < 4.695; the mixed producer would have to beat both before it earns a run. |
+| 264 | Daniel’s zero-margin closed cover transferred upward in k: s(45) = 7, then n60, n77, n96 | registered | [H-252](hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md) | s(32) = 6 by a cover of mass 31.71 checked at margin zero; the same construction fell short at k = 5 (4.995) and k = 4 (3.968616, cover LP pinned at 12.000). About 4 CPU-h per cover at k = 7. Blocked on the intake review. |
+| 265 | Exact replay of the reported upper-bound packings for n = 68..307 (franciscouzo, griffcass, JoostdeWinter n211) | shaped, other lane | — | Seconds per packing through the 2026-09-22 certification pipeline; moves reported rows only until certified. |
+| 266 | A zero-margin cover at the n12 endpoint | dead by Daniel’s record | — | The pure weighted-cover LP at side 4 sits at exactly 12.000 on every pose set evand tried (notes/n12-gap.md §4.1); the rectangle ladder (row 260) is the route left at n12. |
 
 ## Dead ends
 

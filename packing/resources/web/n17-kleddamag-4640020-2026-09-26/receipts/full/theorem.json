@@ -1,0 +1,48 @@
+{
+  "status": "PASS_COMPLETE_SEVENTEEN_SQUARE_EXCLUSION",
+  "side_bound": "s(17)>232001/50000",
+  "target": "232001/50000",
+  "certificate_sha256": "5f4f0988acc23b738bdf29ee855b9827cda10fce0e12a7b3a78e6923cc5f8dda",
+  "budget_units": 16978369232,
+  "minimum_units": 998727933,
+  "surplus": 5629,
+  "ratio": "16978369232/998727933",
+  "intervals": 2048,
+  "verified_utc": "2026-09-27T08:15:46.729604+00:00",
+  "processes": [
+    {
+      "command": [
+        "/tmp/claude-0/-home-user-squares/bce203b4-0b22-546f-a1b6-1b79c35d9fe4/scratchpad/venv314/bin/python",
+        "/home/user/squares/.claude/worktrees/agent-ae76cca1e7a6a5122/packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify_global_python.py",
+        "/home/user/squares/.claude/worktrees/agent-ae76cca1e7a6a5122/packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/certificate.json",
+        "/tmp/claude-0/-home-user-squares/bce203b4-0b22-546f-a1b6-1b79c35d9fe4/scratchpad/runs/full/python.json",
+        "2"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/node22/bin/node",
+        "/home/user/squares/.claude/worktrees/agent-ae76cca1e7a6a5122/packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify_global_variable.js",
+        "/home/user/squares/.claude/worktrees/agent-ae76cca1e7a6a5122/packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/certificate.json",
+        "/tmp/claude-0/-home-user-squares/bce203b4-0b22-546f-a1b6-1b79c35d9fe4/scratchpad/runs/full/node-0.json",
+        "0",
+        "1024",
+        "audit"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/opt/node22/bin/node",
+        "/home/user/squares/.claude/worktrees/agent-ae76cca1e7a6a5122/packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify_global_variable.js",
+        "/home/user/squares/.claude/worktrees/agent-ae76cca1e7a6a5122/packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/certificate.json",
+        "/tmp/claude-0/-home-user-squares/bce203b4-0b22-546f-a1b6-1b79c35d9fe4/scratchpad/runs/full/node-1.json",
+        "1024",
+        "1024",
+        "audit"
+      ],
+      "returncode": 0
+    }
+  ]
+}

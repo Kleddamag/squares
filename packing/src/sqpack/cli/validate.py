@@ -64,10 +64,11 @@ from sqpack.yamlio import safe_load
 FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # (formal-open, reported-open, Nagamochi-bounded). 40 since 2026-09-22: exact and
     # interval replays promoted 18 external-certificate cases beyond the seven earlier
-    # first-party replacements.
-    "n=1..100": (65, 65, 40),
-    "n=1..200": (153, 153, 128),
-    "n=1..324": (265, 265, 240),
+    # first-party replacements. 39 since 2026-09-27: a replayed external closed cover
+    # proved s(32) = 6, so n = 32 left the open cases in both lanes.
+    "n=1..100": (64, 64, 39),
+    "n=1..200": (152, 152, 127),
+    "n=1..324": (264, 264, 239),
 }
 SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
     "n=1..100": ("n=68", "n=69"),

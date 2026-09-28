@@ -8,7 +8,7 @@ softschema:
 agenda:
   id: agenda-042
   title: Overnight n11 Settlement Ladder and Low-n Angles After PR 230
-  updated: '2026-09-25'
+  updated: '2026-09-27'
   status: active
   objective: >-
     Turn PR 230's W3 review and the two explorations it led to, X-046 and X-047, into
@@ -304,7 +304,11 @@ agenda:
     artifacts:
     - packing/campaign/explorations/X-047-low-n-angles-after-the-parent-core-advance.md
     parallel_group: overnight-low-n
-    note: The first target runs of the clip are a later session's registered hypotheses.
+    note: >-
+      The first target runs of the clip are a later session's registered hypotheses.
+      Retargeted 2026-09-27: wand125's rectangle certificates at n = 18 (4.695) and
+      n = 21 (4.985) pass the clip's n = 18 and n = 21 targets, so the instrument keeps
+      n = 12 only, behind H-244's price.
     outcomes:
     - scope: The ParentClip build, dispatched at 03:10 PT.
       classification: never-opened
@@ -507,7 +511,7 @@ agenda:
     purpose: tool_validation
     owner_focus: correctness
     instances: [17]
-    state: ready
+    state: stopped
     priority: 1
     question: >-
       Does this repository's native coverage engine decide every row of R052's
@@ -538,6 +542,18 @@ agenda:
       The cap lift lands as a reviewed commit before the run starts. R052 has zero
       slack, so a stalled or seam row is possible; it is recorded as a refusal, never as
       a negative.
+    outcomes:
+    - scope: The native R052 decision, before any build.
+      classification: never-opened
+      result: >-
+        Superseded on 2026-09-27 by Kleddamag v1.1.0 (s(17) > 232001/50000), which
+        replaces R052 as the verified bound. The cap lift and the native decision carry
+        over to BC-393, whose v1.1.0 loader also reads R052's schema as a subset if a
+        second data point is ever wanted; nothing was run.
+      evidence:
+      - docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+      disposition: defer-dependency
+      follow_up: think-0rbj
   - id: BC-387
     purpose: research
     owner_focus: insight
@@ -545,18 +561,22 @@ agenda:
     state: ready
     priority: 1
     question: >-
-      Does the capacity-one ceiling lemma survive review, and do triangle-free overlap
-      families of 34 squares at 463/100 and 465/100, and of 24 at 397/100 and 399/100,
-      exist under an exact checker?
-    hypotheses: [H-243, H-244]
+      With the capacity-one ceiling lemma proved in the 4.640020 review, does a
+      clique-weighted family of unit squares with fractional stability at least 17 exist
+      at 4675/1000 and 467/100, and a triangle-free family of 24 at 397/100 and 399/100,
+      under an exact checker?
+    hypotheses: [H-243, H-244, H-248]
     budget: >-
-      Fable extra-high lemma review about one hour; Opus extra-high build of the search
-      and exact checker four to six hours; the searches run in minutes wherever a slot
-      is free.
-    entry: The lemma as derived in the plan document; R052's certificate and Bidwell's packing as the two ends.
+      Opus extra-high about three hours to promote the attic/planning-160 anneal to a
+      devtool and drive geometric_graph_certificate, check_weighted_clique_certificate
+      and an exact containment check; the searches run in minutes wherever a slot is
+      free.
+    entry: >-
+      The lemma reviewed on 2026-09-27; Kleddamag's 4.66001 certificate and Bidwell's
+      packing as the two ends, so the ceiling lies in [4.66001, 4.67553].
     exit: >-
-      An accepting or rejecting lemma review, then an exact-checker verdict on a family
-      at each target or a search budget spent without one.
+      An exact-checker verdict on a family at each target or a search budget spent
+      without one.
     bead: think-68la
     depends_on: []
     next_evidence: A dated lemma review under docs/project/reviews/, then the checker receipts under results/agenda-042/.
@@ -565,11 +585,19 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-243-n17-triangle-free-34-family-at-4-63.md
     - packing/campaign/hypotheses/H-244-n12-triangle-free-24-family-at-3-99.md
+    - packing/campaign/hypotheses/H-248-n17-clique-weighted-family-at-4-675.md
+    - docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md
     parallel_group: architecture-ceiling
     note: >-
-      Stop if the lemma fails review. No family found is inconclusive, not a negative.
-      The price decides the first-party n17 producer (reconsidered only at a ceiling of
-      at least 4.64) and the n12 parent-core transfer.
+      Retargeted 2026-09-27: H-243's 463/100 is refuted by the v1.1.0 certificate
+      itself, since every one of its atoms has capacity one. H-248's 465/100 and 466/100
+      were refuted in turn by the 4.66001 certificate on 2026-09-27; H-248 takes
+      4675/1000 and 467/100 in the clique-weighted form. No family found is
+      inconclusive, not a negative. The price decides the first-party n17 producer
+      (reconsidered only if the search at 4675/1000 finds no family within its budget;
+      a family there caps the architecture below 4.675 and closes the producer
+      question) and the n12 parent-core transfer. A two-minute anneal at 4.65 ended at
+      two triangles with fractional stability 16.
   - id: BC-388
     purpose: research
     owner_focus: insight
@@ -591,7 +619,11 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-245-n11-family-side-profile-along-the-tilt.md
     parallel_group: n11-family-profile
-    note: None as a stop; it is a measurement that prices BC-389 and BC-384 and moves no bound.
+    note: >-
+      None as a stop; it is a measurement that prices BC-389 and BC-384 and moves no
+      bound. Priced 2026-09-27 at 11 to 19 s a start on one worker with the stock
+      census (8 s quench cap, 20 s filter cap), so about 80 CPU-hours for 20,000
+      starts; second night of the after-4.640020 order.
   - id: BC-389
     purpose: research
     owner_focus: insight
@@ -646,12 +678,17 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-247-n11-rung0-widened-to-half-width-1e-4.md
     parallel_group: n11-rung0-wide
-    note: Stop if the enclosure reach of a Trump-degenerate leaf meets the local-theorem radius rho.
+    note: >-
+      Stop if the enclosure reach of a Trump-degenerate leaf meets the local-theorem
+      radius rho. Selected on 2026-09-27 as the first lane of the night: the box
+      [731338615209/2000000000000, 731738615209/2000000000000] is admitted by box_setup
+      (reach 2.02e-4 against rho 4.04e-3); about 95 CPU-hours at exp-232's node rate,
+      eight workers, resumed by subtree if the morning cutoff comes first.
   - id: BC-391
     purpose: research
     owner_focus: insight
     instances: [21]
-    state: ready
+    state: stopped
     priority: 3
     question: >-
       Does the additive point certificate at n21 reach side 4.89 on stock column
@@ -675,6 +712,211 @@ agenda:
     note: >-
       Register the H-item before the first run. Stop when the value reaches 21 on two
       site sets or when the certificate fails on both.
+    outcomes:
+    - scope: The n21 point certificate at 4.89, before any run.
+      classification: never-opened
+      result: >-
+        Retired on 2026-09-27 as moot, not as a negative about the additive route:
+        wand125's rectangle-density certificate proves s(21) >= 997/200 = 4.985, and
+        Daniel's weighted cover claims 5000/1001 = 4.995, past 4.89 and past every
+        point-certificate rung the register could reach at n = 21. The intake of those
+        certificates is other lanes'.
+      evidence:
+      - docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+      disposition: retire-negative
+      follow_up: null
+  - id: BC-392
+    purpose: research
+    owner_focus: insight
+    instances: [11, 12, 17, 50, 82]
+    state: complete
+    priority: 0
+    question: >-
+      After Kleddamag v1.1.0 (s(17) > 4.640020) and wand125's rectangle certificates for
+      n = 18..78, which deeper pushes are worth an overnight CPU budget, and in what
+      order?
+    hypotheses: [H-248, H-249, H-250, H-251]
+    budget: >-
+      One Fable max planning lane with probes of at most fifteen minutes each on two
+      cores, then codification; about three hours.
+    entry: >-
+      v1.1.0 reviewed with no defect and the capacity-one lemma proved; wand125's
+      rectangle certificates published; the 2026-09-25 plan's order not yet started.
+    exit: >-
+      The plan document retained; H-248 to H-251 registered; BC-393 to BC-395 given
+      beads, prices, stop conditions and a queue; BC-386, BC-387, BC-391 and BC-380
+      dispositioned.
+    bead: think-0v60
+    depends_on: []
+    next_evidence: docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+    workflows: [review-planning-oversight]
+    artifacts:
+    - docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+    parallel_group: after-4640020-planning
+    note: >-
+      Not selected: a first-party n17 producer beyond 4.640020 (the same dictionary
+      caps near 4.646; BC-387's price at 4.65 decides), the Kleddamag/Guzhou family at
+      n = 18..21 (the rectangle route leads there), BC-389 (a build), and any n11
+      lower-bound increment under the owner's hold.
+    outcomes:
+    - scope: The 2026-09-27 planning block.
+      classification: achieved
+      result: >-
+        v1.1.0 has 2,048 rows, 8,876 sites and 4,328 charged images, every atom of
+        capacity one, including 240 winning-subset rules the native route lacks; its
+        ledger sits on a plateau with 65 binding rows, so reweighting caps near 4.646.
+        H-243's 4.63 target is refuted by the certificate itself and the ceiling search
+        moves to 4.65 in clique-weighted form, where a two-minute anneal reaches two
+        triangles. The largest prize is the rectangle ladder at the rows wand125 left
+        (n = 50 and 82..97, gaps near 0.49); tonight runs BC-390, BC-394 and BC-395,
+        and the day builds BC-393, BC-388 and BC-387. Nothing in the block moves a
+        bound.
+      evidence:
+      - docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+      disposition: retire-success
+      follow_up: null
+  - id: BC-393
+    purpose: tool_validation
+    owner_focus: correctness
+    instances: [17]
+    state: ready
+    priority: 1
+    question: >-
+      Does this repository's native coverage engine decide every one of the 2,168 rows
+      of Kleddamag's 4.66001 certificate (57519bb) at or above its charge, once a loader
+      for its schema, a winning-subset atom and the lifted site ceiling exist, so that
+      s(17) > 466001/100000 can be rated C4?
+    hypotheses: []
+    budget: >-
+      Opus extra-high three to four hours for the loader (sets, coefficients,
+      winning_masks), the winning-subset atom in the parent-core and interval routes,
+      the cap lift behind a byte budget and their tests; Fable extra-high one hour on
+      the atom's capacity-one lemma and the box bounds of a monotone rule; masks on up
+      to 12 sites, the cap lift to at least 20,856 sites, and about 2 to 12 CPU-hours
+      on two workers.
+    entry: >-
+      The 4.66001 certificate at V4/C3 on the intake branch;
+      packing/devtools/verify_guzhou_r052_native.py as the pattern; the 2026-09-27 rule
+      census.
+    exit: >-
+      Every row decided on a clean reviewed commit with the byte budget in the receipt,
+      or the refused rows listed as refusals; a Fable max reading before the rating
+      changes.
+    bead: think-0rbj
+    depends_on: []
+    next_evidence: A native-decision receipt in the 4.66001 source packet and the reviewed commit.
+    workflows: [pipeline-improvement, factual-review]
+    program: low-n-angles
+    artifacts:
+    - docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+    - docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md
+    - packing/devtools/verify_guzhou_r052_native.py
+    parallel_group: n17-native-c4
+    note: >-
+      Carries BC-386's cap lift. A refused row is a refusal; a row below the charge
+      contradicts two exact sweeps and is a loader defect until shown otherwise.
+      Second night of the after-4.640020 order. Retargeted 2026-09-27 from v1.1.0
+      (2,048 rows, 8,876 sites) to the 4.66001 certificate that supersedes it, since a
+      C4 rating of 4.640020 would be superseded on arrival.
+  - id: BC-394
+    purpose: research
+    owner_focus: insight
+    instances: [82, 50]
+    state: ready
+    priority: 1
+    question: >-
+      Do rectangle-density ladders from the trivial seed, with tokoharu's pinned
+      push.py, reach 93/10 at n = 82 and 73/10 at n = 50, with every accepted rung
+      admitted by the exact preflight and an unmodified verifier replay?
+    hypotheses: [H-250, H-251]
+    budget: >-
+      Launcher only tonight: one search worker each plus verify workers; the per-rung
+      cost is read from the first rungs. Admission needs audit_tokoharu_density
+      generalised to any certificate directory, Opus high one to two hours, before any
+      row is written.
+    entry: >-
+      The pinned clone at 84bebef with its dependencies in a scratch Python 3.12
+      environment; the tokoharu review of 2026-09-22 (DENS-1 on push.py --from, which
+      from-seed runs do not take).
+    exit: >-
+      The highest accepted rung of each ladder replayed and preflighted, then a Fable
+      max W2 review before a register row; or the driver giving up below the register.
+    bead: think-pr2b
+    depends_on: []
+    next_evidence: The ladder logs and certificate directories, then the replay receipts.
+    workflows: [research-loop, factual-review]
+    program: low-n-angles
+    artifacts:
+    - packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md
+    - packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md
+    parallel_group: rectangle-ladders
+    note: >-
+      The largest expected gain on the board: about 0.2 to 0.35 of verified side on gaps
+      near 0.49. A mass below 82 at side L covers every n >= 82 whose verified row is
+      below L. Never a bound on the driver's own status.
+  - id: BC-395
+    purpose: research
+    owner_focus: insight
+    instances: [12]
+    state: ready
+    priority: 2
+    question: >-
+      Does the rectangle-density ladder from the trivial seed pass Daniel's 3.968616 at
+      n = 12 and reach 399/100?
+    hypotheses: [H-249]
+    budget: Launcher only; one worker; about an hour to 3.96 at step 1/50, unknown above it.
+    entry: The same pinned clone and environment as BC-394; the fourteen-minute probe from the seed.
+    exit: >-
+      An accepted rung above 3.968616 replayed and preflighted, or the driver giving up
+      below 3.9687.
+    bead: think-ujwy
+    depends_on: []
+    next_evidence: The ladder log and the highest certificate directory.
+    workflows: [research-loop]
+    program: low-n-angles
+    artifacts:
+    - packing/campaign/hypotheses/H-249-n12-rectangle-density-certificate-at-3-99.md
+    parallel_group: rectangle-ladders
+    note: >-
+      The one n = 12 route not yet tried; the parent-core architecture cannot reach the
+      endpoint 4, the additive point route stalled near 3.96, and Daniel's pure cover LP
+      sits at exactly 12.000 at the endpoint. Runs in the slot that frees first.
+  - id: BC-396
+    purpose: research
+    owner_focus: insight
+    instances: [45]
+    state: blocked
+    priority: 1
+    question: >-
+      Does Daniel's zero-margin weighted closed cover, which proves s(32) = 6, carry to
+      k = 7, giving a cover of [0,7]^2 with mass below 45 and hence s(45) = 7?
+    hypotheses: [H-252]
+    budget: >-
+      Fable extra-high one to two hours on the method beside the intake lane's review;
+      Opus extra-high half a day if the search must be adapted to k = 7; about 4 CPU-h
+      per cover for the margin-zero check, by scaling the k = 6 census of 7,200 roots
+      at 2.8 CPU-h.
+    entry: >-
+      The intake lane's accepting review of evand/square-packing at 167d842; the cover
+      search under its s12/search and the two checkers.
+    exit: >-
+      A cover at k = 7 certified by both checkers here and a Fable max W2 review, or
+      the search stalling at or above mass 45.
+    bead: think-0g4t
+    depends_on: []
+    blocked_on: >-
+      The intake lane's accepting review of evand/square-packing's s(32) certificate
+      at 167d842, which is also the reading of the method this transfer needs.
+    next_evidence: The k = 7 cover, both censuses and the review.
+    workflows: [factual-review, research-loop]
+    program: low-n-angles
+    artifacts:
+    - packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md
+    parallel_group: zero-margin-transfer
+    note: >-
+      Blocked on the intake lane's review of Daniel's s(32) certificate. The construction
+      fell short at k = 5 (4.995) and k = 4 (3.968616), so the transfer is upward in k:
+      n = 45, then 60, 77 and 96. Nothing here replays or registers Daniel's own results.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -713,6 +955,26 @@ Each runs within about three agents at once.
 | Day | BC-387’s lemma review; BC-386’s cap lift, landed as a reviewed commit | BC-388’s census build |
 | First night | BC-386’s full native run on 2 workers; BC-387’s searches in any free slot | BC-388’s census on 7 workers |
 | Next | BC-391 in idle slots | BC-389’s build, then BC-390’s night; a Fable max reading of BC-388 and BC-389 selects BC-384’s design |
+
+## After 4.640020
+
+Two days later Kleddamag’s v1.1.0 proved `s(17) > 4.640020` and wand125 published
+rectangle certificates past every low-n rung here.
+The planning block BC-392
+([plan](../../../docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md))
+retired BC-386 and BC-391 as superseded, retargeted BC-387 to `4.65` in clique-weighted
+form, and reordered the nights around what is launcher-only today.
+Later the same day Kleddamag’s `s(17) > 4.66001` (`57519bb`) superseded `4.640020`; the
+[4.66001 review](../../../docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md)
+moved BC-393 to that certificate’s 2,168 rows and BC-387 (H-248) to `4675/1000` and
+`467/100`, its `4.65` and `4.66` targets refuted by the certificate itself.
+
+| Step | n17 and low-n lanes | n11 lanes |
+| --- | --- | --- |
+| Tonight | BC-394’s ladders at n = 82 and n = 50 on 2 workers; BC-395 at n = 12 in the slot that frees | BC-390 on 8 workers, resumed by subtree if needed |
+| Day | BC-393’s loader, atom and cap lift as a reviewed commit; BC-387’s search and checker driver | BC-388’s census build |
+| Second night | BC-393 on 2 workers; BC-387’s searches in the gaps | BC-388 on 7 workers |
+| Next | The ladders’ top rungs through the wand125-format intake | BC-389’s build; the Fable max reading that selects BC-384’s design |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

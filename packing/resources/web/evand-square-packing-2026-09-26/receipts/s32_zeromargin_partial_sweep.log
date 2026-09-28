@@ -1,0 +1,15 @@
+# command: a scratch wrapper running search/zm_d4_sweep.py run --cert certificates/s32/s32_closed_cover_6.txt --out OUT --depth 24 --nproc 2
+# cwd: s12/ of evand/square-packing 167d842 (scratch copy)
+# python3: 3.14.7
+# host: 4 cores; started 2026-09-27T09:34:35Z
+09:34:36 region 7200 roots, with records 0, todo 7200; checker 640fe453c1a3 cert a0d2d38fc9a5 depth 24; procs 2..2
+09:34:36 HB done 1/7200 this run (1/7200 total), cpu 0.00 h, wall 0.00 h, in flight 1 (cap 2), roots with uncertified boxes 0
+09:36:04 ROOT 3/2,8/5,1/2,3/5,0,1/16 boxes 133 depth 24 uncert 1 cpu 3s
+09:39:46 HB done 45/7200 this run (45/7200 total), cpu 0.11 h, wall 0.09 h, in flight 1 (cap 2), roots with uncertified boxes 1
+09:44:53 HB done 79/7200 this run (79/7200 total), cpu 0.19 h, wall 0.17 h, in flight 1 (cap 2), roots with uncertified boxes 1
+09:49:59 HB done 355/7200 this run (355/7200 total), cpu 0.23 h, wall 0.26 h, in flight 2 (cap 2), roots with uncertified boxes 1
+10:25:30 HB done 382/7200 this run (382/7200 total), cpu 0.26 h, wall 0.85 h, in flight 2 (cap 2), roots with uncertified boxes 1
+10:30:49 HB done 541/7200 this run (541/7200 total), cpu 0.31 h, wall 0.94 h, in flight 2 (cap 2), roots with uncertified boxes 1
+10:35:54 HB done 729/7200 this run (729/7200 total), cpu 0.37 h, wall 1.02 h, in flight 1 (cap 2), roots with uncertified boxes 1
+Terminated
+# finished 2026-09-27T10:36:20Z; exit 143; wall 3705 s

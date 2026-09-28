@@ -1,0 +1,60 @@
+{
+  "schema": "EvandNativeParentCoreReceipt/v1",
+  "status": "PASS_COMPLETE",
+  "method": "directed-rounding box branch-and-bound over parent-core rows",
+  "case": "s12",
+  "provenance": {
+    "git_commit": "1f262c0d323d93a92b3b24652cc7f18a709cae24",
+    "dirty": false,
+    "python": "3.14.7 (main, Sep 24 2026, 17:58:18) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-fc-v42-x86_64-with-glibc2.39",
+    "command": [
+      "devtools/verify_evand_angle_net_native.py",
+      "--case",
+      "s12",
+      "--all",
+      "--workers",
+      "2",
+      "--output",
+      "OUT/s12_native_parent_core.json"
+    ],
+    "source_url": "https://github.com/evand/square-packing",
+    "source_commit": "167d842cd27ba1451cb2833773ea930c80b9e65b",
+    "certificate": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s12_lower_3.9686.txt",
+    "certificate_sha256": "75f1cc891a8b8739b92b50c7ddbd85a493efa58cf2e921d58ce4ac7c2dcabe78"
+  },
+  "claim": "s(12) >= 15680/3951",
+  "native_bound": "s(12) > 15680/3951",
+  "net": 6000,
+  "sigma_scale": 1000000,
+  "points": 1736,
+  "budget": "29934509/2500000",
+  "counting_gap": "65491/2500000",
+  "premises": {
+    "budget": "29934509/2500000",
+    "minimum_containment_numerator": "242089/1332667500000000",
+    "final_half_tangent": "1243/3000",
+    "rows": 2486
+  },
+  "catalogue_rows": 2486,
+  "selected_rows": 2486,
+  "resumed_rows": 0,
+  "complete": true,
+  "batch_size": 2048,
+  "workers": 2,
+  "scale": 10000000,
+  "threshold_units": 10000000,
+  "boxes": 23409578,
+  "row_cpu_seconds": 752.0807761187825,
+  "least_lower": {
+    "row": 496,
+    "units": 10000000
+  },
+  "source_minimum": {
+    "weight": "10000056/10000000",
+    "bin": 0
+  },
+  "refutations": [],
+  "seconds": 377.9086515960007,
+  "rows": null
+}

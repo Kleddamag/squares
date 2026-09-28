@@ -19,9 +19,10 @@ This repository contains:
   authors have built on these certificates and credited them.
   Kleddamag’s `s(11) > 31/8 = 3.875`, developed from T-026’s certificate, is the
   strongest verified lower bound for eleven squares.
-  At seventeen squares, four certificates trace their support back to T-019’s atoms, and
-  the strongest, Guzhou0806’s R052 on Kleddamag’s architecture, is the verified lower
-  bound. Each is replayed and reviewed here before it is registered.
+  At seventeen squares, six certificates trace their support back to T-019’s atoms, and
+  the strongest, `s(17) > 4.66001` by Kleddamag, building on Squares Project (Joshua
+  Levy), Mira and Guzhou0806, is the verified lower bound.
+  Each is replayed and reviewed here before it is registered.
 - **[A survey of the whole problem](#survey).** Every case `n = 1…100`, the primary
   literature retained and transcribed, and the bound a source *reports* kept apart from
   the bound this repository has *verified*. Five of the lower bounds it shows were
@@ -183,7 +184,8 @@ Results first established here, as far as the recorded source searches show:
   before it would contradict the best-known packing.
   `T-021` has since raised the `n = 20` and `n = 21` bounds to `97/20`, leaving `0.1385`
   of room there, and `T-034` has raised `n = 21` again to `122/25`, leaving `0.1085`;
-  this `24/5` rung remains current for `n = 19`.
+  this `24/5` rung remains current for `n = 19`. A third-party certificate at
+  `5000/1001`, below, now carries `n = 21`.
 - **T-017: `s(12) ≥ 99/25`, from nothing case-specific at all (`S4`).**
   [`n = 12`](packing/frontier/n-012.md) had only the `n = 11` bound inherited by
   monotonicity; the frontier record said in as many words that nothing specific to
@@ -193,7 +195,8 @@ Results first established here, as far as the recorded source searches show:
   this is scored `S4` as a bound family rather than a case result.
   At `99/25 = 3.96` it also separates the cases: `s(12) > s(11)`, since Trump’s 1979
   packing puts `s(11) ≤ 3.877084`. That did not follow from anything on record before.
-  The case is now `0.04` from its conjectured optimum of `4`. On the retained
+  It left the case `0.04` from its conjectured optimum of `4`; Evan Daniel’s third-party
+  `15680/3951`, below, has since narrowed that to about `0.0314`. On the retained
   181-direction net, the proved ceiling for twelve squares is approximately `3.990816`;
   refining the net can raise that ceiling.
   Every finite net still has a ceiling strictly below `4`, so no single certificate of
@@ -221,8 +224,8 @@ erratum.
   total mass `19848723/1000000 = 19.848723`, so the same exact object proves both cases
   without a monotonicity step.
   It raises each bound by `0.05` above `T-020`; the heavier atom set does not apply to
-  `n = 19`. `T-034` has since raised `n = 21` to `122/25`, and `97/20` remains current
-  for `n = 20`.
+  `n = 19`. `T-034` has since raised `n = 21` to `122/25`, and a third-party certificate
+  to `5000/1001`; `97/20` remains current for `n = 20`.
 
 - **T-034: `s(21) ≥ 122/25` (`S3`).** A
   [certificate at `4.88`](packing/cases/n21_fractional_certificate/certificate.json) has
@@ -232,6 +235,7 @@ erratum.
   seed and no windows.
   A [review](docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md)
   re-decided the certificate by three routes and accepted it.
+  Evan Daniel’s third-party `5000/1001`, below, has since superseded it on that case.
 
 - **T-035 / T-036: Trump’s packing is optimal at its own angle (`S3`).** Six squares
   stay axis-aligned and five share a tilt within `10^-6` of Trump’s in the half-tangent;
@@ -321,9 +325,55 @@ accordingly.
 ## Third-Party Results
 
 Outside authors have built on this repository’s certificates, credited them, and taken
-the bounds further. The theorems and the credit belong to those authors.
+the bounds further, and one has worked in parallel from the same weighted method.
+The theorems and the credit belong to those authors.
 This repository replays each certificate completely, reviews its mathematics, and only
 then registers the bound.
+
+- **Evan Daniel: `s(32) = 6`, `s(21) ≥ 5000/1001` and `s(12) ≥ 15680/3951`.** The
+  [`evand/square-packing` repository](packing/resources/web/evand-square-packing-2026-09-26/README.md),
+  building on Sam Burns’s and Gustavo Massaccesi’s weighted exact-rational covering
+  method, proves the first exact value of `s(k² − 4)` for any `k ≥ 4`. Its certificate
+  is a weighted closed cover of `[0,6]²`: 13,085 points of total weight
+  `31.713505354 < 32` that every closed unit square captures at least `1` of, checked at
+  margin zero by an exact subdivision of pose space.
+  The upper bound is the trivial `6 × 6` grid.
+  A Lean theorem derives `minSide 32 = 6` from exactly the statement the source’s
+  `zeromargin.py` sweep checks over all 7,200 roots of the cover’s symmetry-reduced
+  region. Here that sweep was run again in full, certifying all 7,200 roots with the
+  source’s census on every one; the Lean build and the source’s second checker,
+  `zmcheck`, were not run.
+  Its angle-net certificates at [twenty-one](packing/frontier/n-021.md) and
+  [twelve squares](packing/frontier/n-012.md) pass the source’s Rust verifier here too,
+  and are now the verified lower bounds there, above `T-034` and `T-017`; `s(21)` is
+  left within `5/1001` of the grid.
+  The two angle-net bounds are registered at `V4/C3`, replayed from the source’s own
+  checkers, and `s(32) = 6` at `V4/C3` on the complete re-sweep.
+  `s(12)` alone reaches `V4/C4`: this repository’s native parent-core interval route
+  decides all 2,486 rows of its certificate, a second method beside the source’s
+  arrangement sweep. The
+  [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) was written beside
+  the intake. The same repository’s case-free proof of Bentz’s `s(13) = 4`, one
+  zero-margin closed cover of `[0,4]²`, is recorded on
+  [thirteen squares](packing/frontier/n-013.md) as a report and moves nothing.
+  The source’s `CREDITS.md` says the work was produced with an AI agent under human
+  direction.
+
+- **wand125, building on Tokoharu’s rectangle-density method: `n = 18` to `78`.** The
+  [rectangle-density certificates](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md)
+  of 26 and 27 September 2026, 44 standing ones, were built with Tokoharu’s solver and
+  are decided by Tokoharu’s interval verifier, byte for byte the copy reviewed here on
+  22 September; wand125 added the driver that raises each count’s side one certified
+  rung at a time. Each improves the reported lower bound this record held for its count,
+  except at `n = 21` and `n = 32`, where Evan Daniel’s bounds are stronger.
+  Complete replays have passed here at `n = 27` and `31`, so `s(27) ≥ 28/5`,
+  `s(28) ≥ 28/5` by monotonicity and `s(31) ≥ 148/25` are verified lower bounds; the
+  other counts stay reported until their replays, about 102 CPU-hours in all, are run.
+  The
+  [scaling review](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md)
+  found the reviewed checker’s premises unchanged at the new sizes.
+  The source README says parts of the work were produced with AI assistance under human
+  direction.
 
 - **Kleddamag: `s(11) > 31/8 = 3.875`.** The
   [certificate](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md)
@@ -340,8 +390,46 @@ then registers the bound.
   which confirms the bound at `V4/C4`. It is the verified lower bound for
   [eleven squares](packing/frontier/n-011.md), about `0.0021` below Trump’s packing and
   `0.048` above T-033.
-- **Guzhou0806: `s(17) > 231001/50000 = 4.62002`.** The
-  [R052 release](packing/resources/web/n17-guzhou-r052-2026-09-25/README.md) of 25
+
+- **Kleddamag, building on Squares Project (Joshua Levy), Mira and Guzhou0806:
+  `s(17) > 466001/100000 = 4.66001`.** An exact weighted-certificate proof over 2,168
+  orientation intervals, published on 27 September 2026 at an untagged commit as a
+  [new package](packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md) beside
+  the `v1.1.0` release below, whose two checkers it keeps byte for byte.
+  It combines two completed charge candidates into 889 charge orbits — point,
+  `k`-of-`m`, weighted-threshold and pairwise-intersecting winning-subset rules, every
+  one of capacity one — with an exact counting surplus of 54,340 units of `10⁻⁹`. Its
+  attribution credits this repository’s weighted-covering, strict-core, event-cell and
+  threshold-budget lineage, Mira’s support and parent-angle catalogue, and Guzhou0806’s
+  R038, and claims no invention of those methods and no optimality; its `AUTHORS.md`
+  says the work was produced with AI agents under Kleddamag’s direction.
+  Both of the source’s complete checkers, one in Python rationals and one in JavaScript
+  BigInt, pass here and agree on every interval.
+  They implement one event-cell method, and this repository’s native parent-core route
+  cannot yet represent the weighted and winning-subset features, so the rung is `V4/C3`.
+  The proof review is a separate record,
+  `docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md`. It is the verified
+  lower bound for [seventeen squares](packing/frontier/n-017.md), exactly `0.01999`
+  above `v1.1.0` and `0.0155` below Bidwell’s packing.
+
+- **Kleddamag: `s(17) > 232001/50000 = 4.64002`, the previous `n = 17` bound.** The
+  [`v1.1.0` release](packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md)
+  of 26 September 2026, by Kleddamag, building on Squares Project (Joshua Levy), Mira
+  and Guzhou0806, extends Kleddamag’s own `v1.0.0` architecture below with weighted
+  thresholds and pairwise-intersecting winning-subset rules alongside point,
+  two-of-three, three-of-five and four-of-seven charges: 546 charge orbits over 2,048
+  angle intervals, with an exact counting surplus of 5,629 units of `10⁻⁹`. It claims
+  neither priority nor optimality.
+  Both of the source’s complete checkers, one in Python rationals and one in JavaScript
+  BigInt, pass here and agree on every interval.
+  They implement one event-cell method, and this repository’s native parent-core route
+  cannot yet represent the new feature kinds, so the rung is `V4/C3`. The
+  [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) is a
+  separate record. It was the verified lower bound for seventeen squares on 27 September
+  2026, exactly `0.02` above R052, and it remains valid evidence.
+
+- **Guzhou0806: `s(17) > 231001/50000 = 4.62002`, the `n = 17` bound before `v1.1.0`.**
+  The [R052 release](packing/resources/web/n17-guzhou-r052-2026-09-25/README.md) of 25
   September 2026, by Guzhou0806 / N17 project with AI assistance, is built on
   Kleddamag’s `v1.0.0` mixed point/threshold parent-core architecture below and extends
   its own R050 with enlarged resources: 2,354 point orbits and 514 two-of-three and 54
@@ -353,12 +441,18 @@ then registers the bound.
   [proof review](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md) found no
   mathematical defect.
   Both sweeps implement one event-cell method, and this repository’s native interval
-  route refuses the certificate at its engine ceilings, so the rung is `V4/C3`. It is
-  the verified lower bound for [seventeen squares](packing/frontier/n-017.md), about
-  `0.000229` above Kleddamag’s and `0.0555` below Bidwell’s packing.
+  route refuses the certificate at its engine ceilings, so the rung is `V4/C3`. It was
+  the verified lower bound for seventeen squares from 25 to 27 September 2026, about
+  `0.000229` above Kleddamag’s `v1.0.0`, and it remains valid evidence.
   Guzhou0806’s intermediate R042, R043 and R050, each between Kleddamag’s bound and
   R052, are retained as publication records and not replayed.
-- **Kleddamag: `s(17) > 461300/99853 = 4.6197910…`, the previous `n = 17` bound.** The
+  Its
+  [continuation of R052](packing/resources/web/n17-guzhou-r052-continuation-2026-09-26/README.md),
+  `s(17) > 462003/100000 = 4.62003`, superseded by `v1.1.0`, is retained the same way,
+  with the receipts of one run of its C++ entry kept beside it.
+
+- **Kleddamag: `s(17) > 461300/99853 = 4.6197910…`, the `n = 17` bound before R052.**
+  The
   [certificate](packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md)
   of September 2026 takes its spatial support from Mira’s `4613/1000` certificate below,
   and its attribution credits this repository’s parent-centre contract and T-025
@@ -368,6 +462,7 @@ then registers the bound.
   support `V4/C3`; both of its checkers implement one event-cell method, so `C4` would
   need a second one. It was the verified lower bound for seventeen squares from 22 to 25
   September 2026, `0.0067` above T-032, and it remains valid evidence.
+
 - **T-032: `s(17) ≥ 461300/99999 = 4.61304613…`, from Guzhou0806 and Mira (`S3`).** Two
   certificates arrived together in September 2026, both built on `T-019`’s atoms and
   both crediting it. **Mira**’s of 7 September gives `4613/1000` on 1620 atoms, and is
@@ -401,7 +496,8 @@ Its source is one schema-validated case file under
 renders every retained known-best packing.
 The current `n = 18` survey row records the independently verified lower bound
 `4679/1000 = 4.679` from `T-030`, and the `n = 11` and `n = 17` rows record Kleddamag’s
-`n = 11` bound and Guzhou0806’s R052 under [Third-Party Results](#third-party-results).
+`n = 11` bound and Kleddamag’s `4.66001` `n = 17` bound under
+[Third-Party Results](#third-party-results).
 The
 [September 22 external review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
 also verifies Tokoharu’s rectangle-density bounds `s(26) ≥ 5.508` and `s(29) ≥ 5.71`,

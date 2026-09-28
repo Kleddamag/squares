@@ -1,0 +1,47 @@
+# receipt: the resumed repository re-sweep of s32_closed_cover_6.txt, legs 2 to 4 (leg 1 is s32_zeromargin_partial_sweep.log); absolute paths rewritten repository-relative, the output directory as OUT; the 735 records leg 1 wrote, which seeded OUT, are the first 735 lines of s32_zeromargin_roots.jsonl, byte for byte
+# command: search/zm_d4_sweep.py run --cert certificates/s32/s32_closed_cover_6.txt --out OUT --depth 24 --nproc-auto 1:2 (1 proc first hour), then --deepen 30, then summary
+# cwd: s12/ of this packet (evand/square-packing 167d842)
+# python3: 3.14.7 (packing/.venv/bin/python3)
+# seeded: 735 records of receipts/s32_zeromargin_partial_roots.jsonl
+# host: 4 cores; started 2026-09-27T18:55:37Z
+18:55:38 region 7200 roots, with records 735, todo 6465; checker 640fe453c1a3 cert a0d2d38fc9a5 depth 24; procs 1..2
+18:55:44 HB done 1/6465 this run (736/7200 total), cpu 0.00 h, wall 0.00 h, in flight 1 (cap 2), roots with uncertified boxes 0
+19:00:58 HB done 284/6465 this run (1019/7200 total), cpu 0.09 h, wall 0.09 h, in flight 0 (cap 1), roots with uncertified boxes 0
+# 2026-09-27T19:07:13Z resumed after the first process died at 19:04 with its lane (1122/7200 records present); same command, busy-pattern evand_s32_throttle
+19:07:14 region 7200 roots, with records 1122, todo 6078; checker 640fe453c1a3 cert a0d2d38fc9a5 depth 24; procs 1..2
+19:07:16 HB done 1/6078 this run (1123/7200 total), cpu 0.00 h, wall 0.00 h, in flight 0 (cap 1), roots with uncertified boxes 0
+# 2026-09-27T19:11:10Z resumed: 1305 records present; run --nproc-auto 1:2, then --deepen 30 --nproc 2, then summary
+19:11:11 region 7200 roots, with records 1305, todo 5895; checker 640fe453c1a3 cert a0d2d38fc9a5 depth 24; procs 1..2
+19:11:30 HB done 1/5895 this run (1306/7200 total), cpu 0.00 h, wall 0.01 h, in flight 0 (cap 1), roots with uncertified boxes 0
+19:16:55 HB done 210/5895 this run (1515/7200 total), cpu 0.08 h, wall 0.10 h, in flight 1 (cap 1), roots with uncertified boxes 0
+19:22:02 HB done 299/5895 this run (1604/7200 total), cpu 0.14 h, wall 0.18 h, in flight 0 (cap 1), roots with uncertified boxes 0
+19:27:05 HB done 410/5895 this run (1715/7200 total), cpu 0.22 h, wall 0.27 h, in flight 1 (cap 2), roots with uncertified boxes 0
+19:32:06 HB done 580/5895 this run (1885/7200 total), cpu 0.33 h, wall 0.35 h, in flight 1 (cap 2), roots with uncertified boxes 0
+19:37:08 HB done 769/5895 this run (2074/7200 total), cpu 0.44 h, wall 0.43 h, in flight 1 (cap 2), roots with uncertified boxes 0
+19:42:13 HB done 962/5895 this run (2267/7200 total), cpu 0.57 h, wall 0.52 h, in flight 1 (cap 2), roots with uncertified boxes 0
+19:47:19 HB done 1102/5895 this run (2407/7200 total), cpu 0.71 h, wall 0.60 h, in flight 1 (cap 2), roots with uncertified boxes 0
+19:52:46 HB done 1223/5895 this run (2528/7200 total), cpu 0.76 h, wall 0.69 h, in flight 2 (cap 2), roots with uncertified boxes 0
+19:58:00 HB done 1263/5895 this run (2568/7200 total), cpu 0.89 h, wall 0.78 h, in flight 2 (cap 2), roots with uncertified boxes 0
+20:03:01 HB done 3272/5895 this run (4577/7200 total), cpu 1.00 h, wall 0.86 h, in flight 1 (cap 2), roots with uncertified boxes 0
+20:08:02 HB done 3915/5895 this run (5220/7200 total), cpu 1.12 h, wall 0.95 h, in flight 2 (cap 2), roots with uncertified boxes 0
+20:13:02 HB done 4414/5895 this run (5719/7200 total), cpu 1.32 h, wall 1.03 h, in flight 1 (cap 2), roots with uncertified boxes 0
+20:18:10 HB done 4900/5895 this run (6205/7200 total), cpu 1.49 h, wall 1.12 h, in flight 1 (cap 2), roots with uncertified boxes 0
+20:23:16 HB done 5093/5895 this run (6398/7200 total), cpu 1.66 h, wall 1.20 h, in flight 1 (cap 2), roots with uncertified boxes 0
+20:28:45 HB done 5499/5895 this run (6804/7200 total), cpu 1.75 h, wall 1.29 h, in flight 2 (cap 2), roots with uncertified boxes 0
+20:34:01 HB done 5640/5895 this run (6945/7200 total), cpu 1.87 h, wall 1.38 h, in flight 1 (cap 2), roots with uncertified boxes 0
+20:39:27 HB done 5832/5895 this run (7137/7200 total), cpu 2.01 h, wall 1.47 h, in flight 1 (cap 2), roots with uncertified boxes 0
+20:40:40 run finished: 5895 roots, 2.06 CPU-h, 1.49 h wall; roots with uncertified boxes 0
+20:40:41 region 7200 roots, with records 7200, todo 1; checker 640fe453c1a3 cert a0d2d38fc9a5 depth 30; procs 2..2
+20:40:44 HB done 1/1 this run (7201/7200 total), cpu 0.00 h, wall 0.00 h, in flight 0 (cap 2), roots with uncertified boxes 0
+20:40:44 run finished: 1 roots, 0.00 CPU-h, 0.00 h wall; roots with uncertified boxes 0
+zeromargin.py D4 re-check: OUT
+certificate packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt  sha256 a0d2d38fc9a585a166b9e06c5069fdae9bdce44ca9fb64dda75abcc99e3c2144  (now a0d2d38fc9a585a166b9e06c5069fdae9bdce44ca9fb64dda75abcc99e3c2144)
+checker     OUT/checker/zeromargin.py  sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab  (now 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab)
+runner sha256 cc7fa8c70f7a39c5e1e920baa9efdc1af8feb68bc6eeb029dab4a99fc3f77fbe (now cc7fa8c70f7a39c5e1e920baa9efdc1af8feb68bc6eeb029dab4a99fc3f77fbe); settings {"depth": 24, "theta_bias": 1, "use_chain": true, "chain_from": 0, "use_adm": true, "clip": true, "pitch": "1/10", "ubins": 8, "reduction": "D4"}
+roots certified only by a --deepen record: 1
+D4 invariance of the weighted point set (exact, x->m-x and x<->y): True
+region: 7200 roots = [0,3]^2 x u in [0,1/2]; present 7200, missing 0, with uncertified boxes 0, bad/foreign records 0, extra 0
+totals: boxes 164130, max depth 27, leaves ADM 12201 P1 0 MIX 0 CHAIN 70007 EMPTY 3457 UNCERTIFIED 0; CPU 2.62 h (all valid records); census of the shown records
+D4 RECHECK CLEAN: every root of the D4 region certified
+# finished 2026-09-27T20:40:45Z; summary exit 0; wall of this resume 5375 s
+# OUT/SUMMARY.txt: 1,370,940 bytes, sha256 a642ff9de86e0af1730a17990570ab36d0373806a410971d266aa00905712417 (not retained; zm_d4_sweep.py summary --out OUT rewrites it from s32_zeromargin_roots.jsonl)

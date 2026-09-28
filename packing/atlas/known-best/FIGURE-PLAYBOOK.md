@@ -87,10 +87,10 @@ instead, so the two legends differ while the rules behind them do not.
 
 | Shown | Source | Verify by |
 | --- | --- | --- |
-| `s(n) = …` vs `s(n) ≤ …` | `packing.status` (`proved` / `open`) | 35 proved; equality only for those |
+| `s(n) = …` vs `s(n) ≤ …` | `packing.status` (`proved` / `open`) | 36 proved; equality only for those |
 | Side value | `reported_upper_bound.value` | Matches the witness side to its stated precision |
 | `s(n) ≥ …` second line | `verified_lower_bound.value`, shown where `status` is `open` | 65 lines; cut off rather than rounded, so the printed bound stays true |
-| ★ lower bound first proved here | `verified_lower_bound.evidence` cites first-party evidence the register scores as novel | 7 cases: `n = 11, 12, 17, 18, 19, 20, 21`; drawn as a polygon, since no figure font carries a star |
+| ★ lower bound first proved here | `verified_lower_bound.evidence` cites first-party evidence the register scores as novel | 3 cases: `n = 18, 19, 20`; drawn as a polygon, since no figure font carries a star |
 | `=` exact value known | `exact_form`, else `minimal_polynomial` or `algebraic_degree` | Evaluate the form, compare against the witness side |
 | `≈` only known numerically | none of the three present | 5 cases: `n = 29, 55, 68, 69, 71` |
 | `deg d` | `algebraic_degree` | Present for 11 cases; absence is not a claim of low degree |

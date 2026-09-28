@@ -131,7 +131,7 @@ The ones that carry the most weight:
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
-  There are currently 59 proved and 265 open formal cases.
+  There are currently 60 proved and 264 open formal cases.
 - `reported_upper_bound.catalogue_rigid` transcribes what the catalogue says about
   rigidity, in the catalogue’s own three-valued vocabulary: `rigid`, `semi-rigid`, or
   `not-stated`. `not-stated` is source silence and never a claim that a packing can
@@ -382,19 +382,21 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 265 open cases, **240** have Nagamochi’s formula as their verified lower bound.
+Of the 264 open cases, **239** have Nagamochi’s formula as their verified lower bound.
 Seven others use certificates already integrated into the register: current external
-certificate bounds at `n = 11` (`31/8`) and `n = 17` (`231001/50000`), plus the
-first-party bounds at `n = 12` (`99/25`), `n = 18` (`4679/1000`), `n = 19` (`24/5`),
-`n = 20` (`97/20`), and `n = 21` (`122/25`). Complete interval and exact replays add 18
-more external-certificate cases: `n = 26,27,28` at `1377/250`; `n = 29,30,31` at
-`571/100`; `n = 39,40,41` at `13/2`; `n = 52,53` at `369/50`; `n = 55` at `377/50`;
-`n = 56` at `381/50`; `n = 68,69` at `841/100`; `n = 70,71` at `171/20`; and `n = 72` at
-`861/100`. Within the original `n ≤ 100` corpus, the corresponding Nagamochi count is
-40\. The count is checked against the case records by `devtools.check_nagamochi_bounds`
-(`D-430`), because earlier hand-maintained counts outlived their case promotions.
+certificate bounds at `n = 11` (`31/8`), `n = 12` (`15680/3951`), `n = 17`
+(`466001/100000`) and `n = 21` (`5000/1001`), plus the first-party bounds at `n = 18`
+(`4679/1000`), `n = 19` (`24/5`) and `n = 20` (`97/20`). Complete interval and exact
+replays add 18 more external-certificate cases: `n = 26,27,28` at `1377/250`;
+`n = 29,30,31` at `571/100`; `n = 39,40,41` at `13/2`; `n = 52,53` at `369/50`; `n = 55`
+at `377/50`; `n = 56` at `381/50`; `n = 68,69` at `841/100`; `n = 70,71` at `171/20`;
+and `n = 72` at `861/100`. `n = 32` left the open cases on 2026-09-27, when a replayed
+external closed cover proved `s(32) = 6`. Within the original `n ≤ 100` corpus, the
+corresponding Nagamochi count is 39. The count is checked against the case records by
+`devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
+outlived their case promotions.
 
-Of the 265 open cases, 120 are still held by the trivial grid.
+Of the 264 open cases, 119 are still held by the trivial grid.
 The other 145 carry non-grid constructions.
 Within `n ≤ 100`, the 34 non-grid open cases comprise 14 hand-built, 10 from simulated
 annealing (nine of the ten dated 2024–2026; `n = 53` is Cantrell’s from 2002), 5
@@ -411,25 +413,31 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 
 | `n` | gap | record | note |
 | --- | --- | --- | --- |
-| 12 | 0.0400 | grid | `4² − 4`, carried to `99/25` by `T-017` |
+| 11 | 0.0021 | Trump 1979 | the famous case, carried to `31/8` by Kleddamag |
+| 21 | 0.0050 | grid | `5² − 4`, carried to `5000/1001` by Daniel after Burns, Massaccesi |
+| 17 | 0.0155 | Bidwell | carried to `466001/100000` by Kleddamag after Levy, Mira, Guzhou0806 |
+| 12 | 0.0314 | grid | `4² − 4`, carried to `15680/3951` by Daniel after Burns, Massaccesi |
 | 97 | 0.0557 | grid | `10² − 3` |
-| 78 | 0.0627 | grid | `9² − 3` |
-| 11 | 0.0671 | Trump 1979 | the famous case |
-| 61 | 0.0718 | grid | `8² − 3` |
 
-Three of the five are consecutive unproved members of the family `s(m² − 3) = m`, which
-is **proved exactly for `m = 3, 4, 5, 6, 7`** (that is
-`s(6), s(13), s(22), s(33), s(46)`) and conjectured beyond.
-Their gaps are small because Nagamochi’s bound is nearly tight there, and their
+The `n = 17` bound is Kleddamag, building on Squares Project (Joshua Levy), Mira and
+Guzhou0806: an exact weighted-certificate proof over 2,168 orientation intervals.
+All four leaders moved in September 2026 on third-party weighted certificates, and the
+`k² − 4` family now has one solved member above `k = 3`: `s(32) = 6`, proved on the same
+method’s zero-margin form by Evan Daniel.
+
+Next come `n = 78` at `0.0627` and `n = 61` at `0.0718`; with `n = 97` they are
+consecutive unproved members of the family `s(m² − 3) = m`, which is **proved exactly
+for `m = 3, 4, 5, 6, 7`** (that is `s(6), s(13), s(22), s(33), s(46)`) and conjectured
+beyond. Their gaps are small because Nagamochi’s bound is nearly tight there, and their
 conjectured optima are **integers**—the case the existing proof technique is built for.
 
 Their small gaps and integer conjectured optima make them candidates for the existing
 technique; the retained source audit found little case-specific treatment.
 
-`n = 11` is still the smallest gap among cases with a *non-trivial* record, but it is no
-longer clear of the field: `n = 17` follows at `0.0855` and `n = 19` at `0.0856`, then
-`n = 18` at `0.1439`. First-party certificates moved all four beginning on 2026-09-04;
-the retained `n = 18` ladder reached `4.679` on 2026-09-19.
+Among the cases with a *non-trivial* record, `n = 19` follows `n = 11` and `n = 17` at
+`0.0856`, then `n = 18` at `0.1439`. First-party certificates moved all four beginning
+on 2026-09-04; the retained `n = 18` ladder reached `4.679` on 2026-09-19, and external
+certificates now carry `n = 11` and `n = 17`.
 
 ## Cross-References
 

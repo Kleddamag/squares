@@ -1,0 +1,37 @@
+{
+ "shipped_records": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/zeromargin_d4/roots.jsonl",
+ "shipped_records_sha256": "a4feedde1d25335f2c554286fefb76acb2d228664361d6c023fa566082abfb1a",
+ "replay_records_sha256": "16366bb7637c0d114667df2a9df7b5913a5b6714af5023287326c57ba47a4e0e",
+ "roots_in_region": 7200,
+ "replay_records": 7201,
+ "replay_roots": 7200,
+ "missing_roots": 0,
+ "extra_roots": [],
+ "records_with_census_identical_to_source": 7201,
+ "records_whose_census_differs": [],
+ "records_at_a_depth_the_source_did_not_run": [],
+ "roots_uncertified_in_every_replay_record": [],
+ "roots_certified_only_by_a_deeper_record": [
+  "3/2,8/5,1/2,3/5,0,1/16"
+ ],
+ "replay_boxes_shown": 164130,
+ "replay_max_depth_shown": 27,
+ "replay_leaves_shown": {
+  "ADM": 12201,
+  "CORE": 0,
+  "P1": 0,
+  "MIX": 0,
+  "CHAIN": 70007,
+  "TRI": 0,
+  "EMPTY": 3457,
+  "UNCERT": 0
+ },
+ "checker_sha256": [
+  "640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab"
+ ],
+ "certificate_sha256": [
+  "a0d2d38fc9a585a166b9e06c5069fdae9bdce44ca9fb64dda75abcc99e3c2144"
+ ],
+ "replay_cpu_seconds_all_records": 9429.0,
+ "source_cpu_seconds_all_records": 9958.2
+}

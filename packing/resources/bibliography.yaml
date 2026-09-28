@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:Bibliography/v1
   schema: bibliography.schema.yaml
   status: enforced
-last_reviewed: '2026-09-22'
+last_reviewed: '2026-09-27'
 # The citation fields a generator needs, keyed by the source keys the frontier records
 # use. The Markdown tables in README.md stay the human index; this file holds only what
 # a line of citation text is built from, for the keys something cites.
@@ -13,8 +13,13 @@ last_reviewed: '2026-09-22'
 # `authors` are surnames as a citation prints them, in the source's own order; `year` is
 # null where the source carries none (a maintained web page); `venue` is the short form
 # printed after them, and `short_venue`, where given, the shorter one a line falls back to
-# when this project's "(confirmed, T-NNN)" would not otherwise fit. A web source's authors
-# are not in the README's Web Sources table, so its `note` says which retained bytes they
+# when this project's "(confirmed, T-NNN)" would not otherwise fit. `credit`, where given,
+# is printed in place of the joined authors, for a source whose credit is joint with the
+# lineage it builds on: last names, or handles where no name is published, this project
+# as "Squares Project (Levy)" where that fits and "Levy" where it does not, and never an
+# AI agent. `credit year, venue` must fit the stage's 66 characters, which
+# `devtools.build_bound_citations` checks. A web source's authors are
+# not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:
   - key: '[Bentz 2010]'
@@ -73,9 +78,35 @@ sources:
     year: 2026
     venue: GitHub
     note: >-
-      The retained v1.0.0 release and AUTHORS.md identify Kleddamag as the human
-      project director and credit OpenAI Codex for research, implementation and
-      verification (web/n17-kleddamag-certified-bound-2026-09-21/README.md).
+      The retained v1.0.0 release; its AUTHORS.md names Kleddamag as the project's
+      director and says the work was produced with AI agents (OpenAI Codex) under that
+      direction (web/n17-kleddamag-certified-bound-2026-09-21/README.md).
+  - key: '[Kleddamag n17 4.66001]'
+    authors: [Kleddamag]
+    year: 2026
+    venue: GitHub
+    credit: Kleddamag after Levy, Mira, Guzhou0806
+    note: >-
+      Commit 57519bb7 of Kleddamag/17-squares-certified-bound, 2026-09-27, untagged,
+      whose bounds/4.66001/ package proves s(17) > 466001/100000. Kleddamag, building
+      on Squares Project (Joshua Levy), Mira and Guzhou0806: its ATTRIBUTION.md
+      credits this project's weighted-covering, strict-core, event-cell and
+      threshold-budget lineage, Mira-acc/17squares and Guzhou0806 / N17 project's
+      R038, and claims no invention of those methods. Kleddamag publishes a handle
+      only. Its AUTHORS.md says the work was produced with AI agents (OpenAI Codex)
+      under Kleddamag's direction (web/n17-kleddamag-466001-2026-09-27/README.md).
+  - key: '[Kleddamag n17 4.640020]'
+    authors: [Kleddamag]
+    year: 2026
+    venue: GitHub
+    credit: Kleddamag after Levy, Mira, Guzhou0806
+    note: >-
+      The v1.1.0 release of Kleddamag/17-squares-certified-bound at 13821ddf,
+      2026-09-26, whose bounds/4.640020/ package proves s(17) > 232001/50000.
+      Kleddamag, building on Squares Project (Joshua Levy), Mira and Guzhou0806, on
+      the same lineage its ATTRIBUTION.md states. Its AUTHORS.md says the work was
+      produced with AI agents (OpenAI Codex) under Kleddamag's direction
+      (web/n17-kleddamag-4640020-2026-09-26/README.md).
   - key: '[Guzhou0806 n17 R052]'
     authors: [Guzhou0806]
     year: 2026
@@ -85,6 +116,17 @@ sources:
       which names itself as produced by "Guzhou0806 / N17 project with AI
       assistance" on Kleddamag's v1.0.0 architecture
       (web/n17-guzhou-r052-2026-09-25/README.md).
+  - key: '[evand square-packing 2026]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    credit: Daniel after Burns, Massaccesi
+    note: >-
+      evand/square-packing (formerly evand/square-packing-12) at 167d842c,
+      2026-09-26. Its LICENSE names Evan Daniel. Its CREDITS.md credits the
+      weighted exact-rational covering method to Sam Burns and Gustavo
+      Massaccesi, and says the work was produced with an AI agent under human
+      direction (web/evand-square-packing-2026-09-26/README.md).
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026
@@ -109,6 +151,16 @@ sources:
       The wand125/square-packing-bounds repository and its 2026 certificate claims,
       retained under web/external-square-certificates-2026-09-22/wand125-points/;
       acquisition/sources.json pins the complete source tree.
+  - key: '[wand125 rectangle bounds 2026]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    credit: wand125 after Tokoharu
+    note: >-
+      The rectangle-density certificates wand125/square-packing-bounds added on
+      2026-09-26 and 2026-09-27, built with and checked by Tokoharu's solver and
+      interval verifier; web/wand125-rectangle-certificates-2026-09-27/acquisition/sources.json
+      pins revision ad43d29d96d0d9740b34643b5ac3fb960909cf9c and every file of its tree.
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being

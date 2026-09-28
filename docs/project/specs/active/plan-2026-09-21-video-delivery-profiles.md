@@ -290,6 +290,9 @@ is what says which.
 
 ### The procedure
 
+The steps below are the reasoning; the commands, in order, are the workbench’s
+[Regenerating and publishing the ascent videos](../../../../packages/workbench/README.md#regenerating-and-publishing-the-ascent-videos).
+
 1. **Cut and verify.** `capture_video --citations` writes the file and its receipt,
    refuses a file that does not conform to its profile, and prices the range against the
    page. Run `squares-workbench-check-cadence` on the result and record where its

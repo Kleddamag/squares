@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:sqpack="https://github.com/jlevy/thinking-scratchpad/ns/sqpack/v1" width="4224" height="4912" viewBox="0 0 4224 4912" role="img" aria-labelledby="figure-title figure-description">
   <title id="figure-title">Best known packings of one through three hundred twenty-four unit squares</title>
-  <desc id="figure-description">An eighteen-by-eighteen poster of the retained best known unit-square packings for n equals 1 through 324, the whole audited corpus. Each tile is normalized to its own container and labeled with n, the best known upper bound on the container side and, where the value is not yet settled, the best proved lower bound beneath it. A star in crimson marks a recent result, a lower bound proved since August 2026. Badges mark which side lengths are proved optimal, and whether a side length is pinned exactly by a radical or a minimal polynomial rather than only by a decimal.</desc>
+  <desc id="figure-description">An eighteen-by-eighteen poster of the retained best known unit-square packings for n equals 1 through 324, the whole audited corpus. Each tile is normalized to its own container and labeled with n, the best known upper bound on the container side and, where the value is not yet settled, the best proved lower bound beneath it. A star in crimson marks a recent result, a lower bound proved since August 2026. Badges mark which side lengths are proved optimal, and whether a side length is pinned exactly by a radical or a minimal polynomial rather than only by a decimal. Citations for all results are available in the Squares Project: github.com/jlevy/squares.</desc>
   <metadata>
     <sqpack:profile version="8">
       <sqpack:coordinates>mathematical-y-up; svg-y-down</sqpack:coordinates>
@@ -30,43 +30,44 @@
   <text data-feature="release" x="1862.051857142857142857142857" y="114" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17202a">Including new results (September 28, 2026)</text>
   <text data-feature="repository" x="2112" y="148" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17202a">github.com/jlevy/squares</text>
   <g data-feature="evidence-legend">
-    <rect data-feature="evidence-badge" data-evidence="proved optimal" x="1186.836" y="4733" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />
-    <text x="1196.336" y="4747.75" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#ffffff">O</text>
-    <text x="1213.836" y="4748" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">proved optimal (60)</text>
-    <rect data-feature="evidence-badge" data-evidence="exact value known" x="1423.092" y="4733" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />
-    <text x="1432.592" y="4747" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#ffffff">=</text>
-    <text x="1450.092" y="4748" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">exact value known (287)</text>
-    <rect data-feature="evidence-badge" data-evidence="only known numerically" x="1701.623" y="4733" width="19" height="19" rx="4.5" fill="none" stroke="#5c6673" stroke-width="1.2" />
-    <text x="1711.123" y="4747" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#5c6673">≈</text>
-    <text x="1728.623" y="4748" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">only known numerically (37)</text>
-    <rect data-feature="evidence-badge" data-evidence="rigid (established here)" x="2017.09" y="4733" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />
-    <text x="2026.59" y="4747.75" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#ffffff">R</text>
-    <text x="2044.09" y="4748" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">rigid (established here) (20)</text>
-    <rect data-feature="evidence-badge" data-evidence="annotated rigid by the catalogue" x="2326.211" y="4733" width="19" height="19" rx="4.5" fill="none" stroke="#5c6673" stroke-width="1.2" />
-    <text x="2335.711" y="4747.75" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#5c6673">R</text>
-    <text x="2353.211" y="4748" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">annotated rigid by the catalogue (2)</text>
-    <polygon data-feature="legend-star" points="2717.659,4733.76 2719.714356666666666666666667,4739.671153333333333333333333 2725.97074,4739.79934 2720.98457,4743.580846666666666666666667 2722.796663333333333333333333,4749.57066 2717.659,4745.996 2712.521336666666666666666667,4749.57066 2714.33343,4743.580846666666666666666667 2709.34726,4739.79934 2715.603643333333333333333333,4739.671153333333333333333333" fill="#a3123f" data-evidence="recent result, since Aug 2026" />
-    <text x="2735.159" y="4748" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">recent result, since Aug 2026 (26)</text>
-    <rect data-feature="legend-swatch" x="1649.905" y="4761" width="19" height="19" fill="#4b9582" stroke="#000000" stroke-width="0.8" />
-    <rect data-feature="legend-swatch" x="1668.905" y="4761" width="19" height="19" fill="#c1c13c" stroke="#000000" stroke-width="0.8" />
-    <rect data-feature="legend-swatch" x="1687.905" y="4761" width="19" height="19" fill="#cb5698" stroke="#000000" stroke-width="0.8" />
-    <rect data-feature="legend-swatch" x="1706.905" y="4761" width="19" height="19" fill="#1588d8" stroke="#000000" stroke-width="0.8" />
-    <text x="1733.905" y="4776" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">colors indicate distinct tilt angles</text>
-    <rect data-feature="legend-swatch" x="2068.827" y="4761" width="19" height="19" fill="#9f9f1c" stroke="#000000" stroke-width="0.8" />
-    <text x="2078.327" y="4774.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">4</text>
-    <rect data-feature="legend-swatch" x="2087.827" y="4761" width="19" height="19" fill="#aead1f" stroke="#000000" stroke-width="0.8" />
-    <text x="2097.327" y="4774.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">3</text>
-    <rect data-feature="legend-swatch" x="2106.827" y="4761" width="19" height="19" fill="#c1c13c" stroke="#000000" stroke-width="0.8" />
-    <text x="2116.327" y="4774.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">2</text>
-    <rect data-feature="legend-swatch" x="2125.827" y="4761" width="19" height="19" fill="#d4d453" stroke="#000000" stroke-width="0.8" />
-    <text x="2135.327" y="4774.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">1</text>
-    <rect data-feature="legend-swatch" x="2144.827" y="4761" width="19" height="19" fill="#e8e868" stroke="#000000" stroke-width="0.8" />
-    <text x="2154.327" y="4774.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">0</text>
-    <text x="2171.827" y="4776" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">shade indicates number of full-side contacts</text>
+    <rect data-feature="evidence-badge" data-evidence="proved optimal" x="1186.836" y="4725" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />
+    <text x="1196.336" y="4739.75" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#ffffff">O</text>
+    <text x="1213.836" y="4740" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">proved optimal (60)</text>
+    <rect data-feature="evidence-badge" data-evidence="exact value known" x="1423.092" y="4725" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />
+    <text x="1432.592" y="4739" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#ffffff">=</text>
+    <text x="1450.092" y="4740" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">exact value known (287)</text>
+    <rect data-feature="evidence-badge" data-evidence="only known numerically" x="1701.623" y="4725" width="19" height="19" rx="4.5" fill="none" stroke="#5c6673" stroke-width="1.2" />
+    <text x="1711.123" y="4739" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#5c6673">≈</text>
+    <text x="1728.623" y="4740" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">only known numerically (37)</text>
+    <rect data-feature="evidence-badge" data-evidence="rigid (established here)" x="2017.09" y="4725" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />
+    <text x="2026.59" y="4739.75" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#ffffff">R</text>
+    <text x="2044.09" y="4740" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">rigid (established here) (20)</text>
+    <rect data-feature="evidence-badge" data-evidence="annotated rigid by the catalogue" x="2326.211" y="4725" width="19" height="19" rx="4.5" fill="none" stroke="#5c6673" stroke-width="1.2" />
+    <text x="2335.711" y="4739.75" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#5c6673">R</text>
+    <text x="2353.211" y="4740" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">annotated rigid by the catalogue (2)</text>
+    <polygon data-feature="legend-star" points="2717.659,4725.76 2719.714356666666666666666667,4731.671153333333333333333333 2725.97074,4731.79934 2720.98457,4735.580846666666666666666667 2722.796663333333333333333333,4741.57066 2717.659,4737.996 2712.521336666666666666666667,4741.57066 2714.33343,4735.580846666666666666666667 2709.34726,4731.79934 2715.603643333333333333333333,4731.671153333333333333333333" fill="#a3123f" data-evidence="recent result, since Aug 2026" />
+    <text x="2735.159" y="4740" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">recent result, since Aug 2026 (26)</text>
+    <rect data-feature="legend-swatch" x="1649.905" y="4753" width="19" height="19" fill="#4b9582" stroke="#000000" stroke-width="0.8" />
+    <rect data-feature="legend-swatch" x="1668.905" y="4753" width="19" height="19" fill="#c1c13c" stroke="#000000" stroke-width="0.8" />
+    <rect data-feature="legend-swatch" x="1687.905" y="4753" width="19" height="19" fill="#cb5698" stroke="#000000" stroke-width="0.8" />
+    <rect data-feature="legend-swatch" x="1706.905" y="4753" width="19" height="19" fill="#1588d8" stroke="#000000" stroke-width="0.8" />
+    <text x="1733.905" y="4768" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">colors indicate distinct tilt angles</text>
+    <rect data-feature="legend-swatch" x="2068.827" y="4753" width="19" height="19" fill="#9f9f1c" stroke="#000000" stroke-width="0.8" />
+    <text x="2078.327" y="4766.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">4</text>
+    <rect data-feature="legend-swatch" x="2087.827" y="4753" width="19" height="19" fill="#aead1f" stroke="#000000" stroke-width="0.8" />
+    <text x="2097.327" y="4766.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">3</text>
+    <rect data-feature="legend-swatch" x="2106.827" y="4753" width="19" height="19" fill="#c1c13c" stroke="#000000" stroke-width="0.8" />
+    <text x="2116.327" y="4766.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">2</text>
+    <rect data-feature="legend-swatch" x="2125.827" y="4753" width="19" height="19" fill="#d4d453" stroke="#000000" stroke-width="0.8" />
+    <text x="2135.327" y="4766.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">1</text>
+    <rect data-feature="legend-swatch" x="2144.827" y="4753" width="19" height="19" fill="#e8e868" stroke="#000000" stroke-width="0.8" />
+    <text x="2154.327" y="4766.4" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#17202a">0</text>
+    <text x="2171.827" y="4768" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">shade indicates number of full-side contacts</text>
   </g>
-  <text data-feature="explainer" x="1621.572" y="4820" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f"><tspan font-style="italic">s</tspan><tspan dx="1.045">(</tspan><tspan font-style="italic">n</tspan><tspan dx="1.045">) is the side of the smallest square holding </tspan><tspan font-style="italic">n</tspan><tspan dx="1.045"> unit squares; deg is the algebraic degree of that side length</tspan></text>
-  <text data-feature="credit" x="2112" y="4850" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">Diagram by Joshua Levy with assistance from Claude and Codex</text>
-  <text data-feature="release-stamp" x="2112" y="4880" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">v0.4.2-d48006</text>
+  <text data-feature="explainer" x="1621.572" y="4806" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f"><tspan font-style="italic">s</tspan><tspan dx="1.045">(</tspan><tspan font-style="italic">n</tspan><tspan dx="1.045">) is the side of the smallest square holding </tspan><tspan font-style="italic">n</tspan><tspan dx="1.045"> unit squares; deg is the algebraic degree of that side length</tspan></text>
+  <text data-feature="citations" x="2112" y="4833" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">Citations for all results are available in the Squares Project: github.com/jlevy/squares</text>
+  <text data-feature="credit" x="2112" y="4860" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">Diagram by Joshua Levy with assistance from Claude and Codex</text>
+  <text data-feature="release-stamp" x="2112" y="4887" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">v0.4.2-d48006</text>
   <g data-feature="packing-card" data-n="1" data-row="0" data-column="0" data-source-id="W-known-best-n001">
     <rect data-feature="container-outline" x="84" y="186" width="158" height="158" fill="#ffffff" stroke="#000000" stroke-width="1.15" />
     <g data-feature="square-fills" stroke="#000000" stroke-width="0.42" stroke-linejoin="round">

@@ -173,13 +173,19 @@ SUMMARY_STAR_REFERENCE_SIZE = Decimal(14)
 SUMMARY_STAR_TEXT_INSET = Decimal(17)
 SUMMARY_BADGE_SIZE = Decimal(19)
 #: Air between the bottom of the grid and the first legend row's baseline.
-SUMMARY_LEGEND_GAP = Decimal(38)
+SUMMARY_LEGEND_GAP = Decimal(30)
 #: Air between the last legend row and the explainer, which opens the footer block.
-SUMMARY_FOOTER_GAP = Decimal(44)
-#: Leading inside the footer block: explainer, credit, edition stamp.
-SUMMARY_FOOTER_LINE_PITCH = Decimal(30)
+SUMMARY_FOOTER_GAP = Decimal(38)
+#: Leading inside the footer block: explainer, citations, credit, edition stamp.
+SUMMARY_FOOTER_LINE_PITCH = Decimal(27)
 #: Air under the last footer line, which is where the canvas ends.
-SUMMARY_BOTTOM_MARGIN = Decimal(32)
+#:
+#: These four were 38, 44, 30 and 32 for a three-line footer. The citations line
+#: (2026-09-28) was fitted by taking its 27 units out of that air rather than growing the
+#: canvas: the canvas size is pinned in `manifest.json` and its schema, which are data
+#: under `sqpack.release.DATA_PATHS`, so a taller canvas would have been a data commit
+#: and moved the version every artifact prints.
+SUMMARY_BOTTOM_MARGIN = Decimal(25)
 #: The footer gloss, as runs of (text, italic). The variables are set in italic like the
 #: ones on the cards; `deg` is a function name and stays upright.
 SUMMARY_EXPLAINER_RUNS = (
@@ -306,6 +312,12 @@ SUMMARY_CREDIT = "Diagram by Joshua Levy with assistance from Claude and Codex"
 #: for byte; `sqpack.release` says how the pin is kept true.
 SUMMARY_RELEASE_STAMP = PUBLICATION_EDITION
 SUMMARY_REPOSITORY = "github.com/jlevy/squares"
+#: Where the bounds on the cards are cited, under the explainer and above the credit.
+#: The cards print numbers and no sources, so the footer says where the sources are
+#: (the owner, 2026-09-28).
+SUMMARY_CITATIONS = (
+    f"Citations for all results are available in the Squares Project: {SUMMARY_REPOSITORY}"
+)
 # Set a step above the other small labels so the URL reads as part of the
 # heading block rather than as another footnote.
 #: One size for the two lines under the title: the release line and the repository.
@@ -437,8 +449,8 @@ class CompositeCanvas:
     for, plus the margins, the legend and the footer, so a composite of another size
     moves all of them together instead of leaving a baseline behind at a number chosen
     for a canvas that no longer exists. The 1-100 figure's 2400 by 2896 canvas, its
-    legend at 2732 and its footer at 2804/2834/2864 are what these formulas return for
-    ten columns of ten.
+    legend at 2724 and its footer at 2790/2817/2844/2871 are what these formulas return
+    for ten columns of ten.
     """
 
     spec: CompositeSpec
@@ -466,8 +478,12 @@ class CompositeCanvas:
         return self.legend_baseline + SUMMARY_LEGEND_ROW_PITCH + SUMMARY_FOOTER_GAP
 
     @property
-    def credit_baseline(self) -> Decimal:
+    def citations_baseline(self) -> Decimal:
         return self.explainer_baseline + SUMMARY_FOOTER_LINE_PITCH
+
+    @property
+    def credit_baseline(self) -> Decimal:
+        return self.citations_baseline + SUMMARY_FOOTER_LINE_PITCH
 
     @property
     def stamp_baseline(self) -> Decimal:
@@ -538,7 +554,8 @@ SUMMARY_PROSE: dict[str, tuple[str, str]] = {
             "in crimson marks a recent result, a lower bound proved since August 2026. "
             "Badges mark "
             "which side lengths are proved optimal, and whether a side length is pinned "
-            "exactly by a radical or a minimal polynomial rather than only by a decimal."
+            "exactly by a radical or a minimal polynomial rather than only by a decimal. "
+            f"{SUMMARY_CITATIONS}."
         ),
     ),
     "known-best-1-324": (
@@ -552,7 +569,7 @@ SUMMARY_PROSE: dict[str, tuple[str, str]] = {
             "a lower bound proved since August 2026. Badges mark which side lengths are "
             "proved "
             "optimal, and whether a side length is pinned exactly by a radical or a "
-            "minimal polynomial rather than only by a decimal."
+            f"minimal polynomial rather than only by a decimal. {SUMMARY_CITATIONS}."
         ),
     ),
 }
@@ -1641,6 +1658,20 @@ def render_known_best_summary_svg(built: list[BuiltCase], canvas: CompositeCanva
             attributes["dx"] = kern
         sub(explainer, "tspan", attributes).text = text
         previous_italic = italic
+    sub(
+        root,
+        "text",
+        {
+            "data-feature": "citations",
+            "x": heading_x,
+            "y": format_svg_number(canvas.citations_baseline),
+            "text-anchor": "middle",
+            "font-family": SUMMARY_FONT,
+            "font-size": SUMMARY_FOOTER_SIZE,
+            "font-weight": SUMMARY_SMALL_WEIGHT,
+            "fill": SUMMARY_SMALL_FILL,
+        },
+    ).text = SUMMARY_CITATIONS
     sub(
         root,
         "text",

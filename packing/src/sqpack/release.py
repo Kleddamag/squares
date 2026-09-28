@@ -136,11 +136,17 @@ DATA_PATHS: tuple[str, ...] = ("packing/frontier", "packing/atlas/known-best")
 #: no bound -- and under the old list that moved the version every artifact prints, which
 #: would have restamped the atlas and dated a cut whose every frame was identical. A
 #: version that changes when the instructions change is not naming the evidence.
+#:
+#: The figure playbook joins them on 2026-09-28 for the same reason: it says how the atlas
+#: is drawn and how to check it, and nothing is drawn from it. `6f6bc89ec` edited only its
+#: legend counts and moved the version every artifact prints; the atlas's new citations
+#: line then needed a one-word playbook edit that would have done it again.
 DATA_EXCLUDED: tuple[str, ...] = (
     "packing/atlas/known-best/known-best-1-*",
     "packing/atlas/known-best/video",
     "packing/frontier/README.md",
     "packing/atlas/known-best/README.md",
+    "packing/atlas/known-best/FIGURE-PLAYBOOK.md",
 )
 
 #: How many characters of that commit the version carries (the owner, 2026-09-22).

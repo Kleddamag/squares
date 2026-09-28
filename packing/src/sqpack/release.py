@@ -75,6 +75,15 @@ class PublicationHistoryEntry(NamedTuple):
 #: for each deployment's commit, what the page it built stated.
 PUBLICATION_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.4.2",
+        first_published="September 28, 2026",
+        result_scope=(
+            "The outside-certificates edition: the atlas takes in $s(32) = 6$ and "
+            "raises the lower bound for 22 more cases, among them $s(11) ≥ 3.875$ and "
+            "$s(17) \\gt 4.66001$, from outside certificates the register verifies."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.4.1",
         first_published="September 22, 2026",
         result_scope=(
@@ -170,7 +179,7 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: commit would fail their drift check forever. It is in no version string. It moves
 #: when the claim documents are regenerated for an edition, while the page's own links
 #: name the commit it is built from (`render_explainer.link_revision`).
-PUBLICATION_REVISION = "277f8b1a"
+PUBLICATION_REVISION = "0d7bb0fa"
 
 
 def data_pathspec() -> tuple[str, ...]:

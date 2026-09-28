@@ -31,7 +31,7 @@ This repository contains:
   the survey are produced and checked by AI agents running a recorded process:
   hypotheses registered before measurement, every claim graded, every defect logged.
 
-The [**v0.4.1 explainer page**](https://jlevy.github.io/squares/) starts with an
+The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/) starts with an
 interactive point-certificate proof, then shows how threshold atoms and a dilation limit
 reach T-026’s `s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was
 developed from. Its figures are drawn from the point certificates they explain.

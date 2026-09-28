@@ -75,6 +75,16 @@ class PublicationHistoryEntry(NamedTuple):
 #: for each deployment's commit, what the page it built stated.
 PUBLICATION_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.4.2",
+        first_published="September 28, 2026",
+        result_scope=(
+            "The recent-results edition: the atlas takes in $s(32) = 6$ and raises the "
+            "lower bound for 22 more cases, among them $s(11) ≥ 3.875$ and "
+            "$s(17) \\gt 4.66001$, from outside certificates the register verifies, and "
+            "its star now marks every recent result, credited case by case."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.4.1",
         first_published="September 22, 2026",
         result_scope=(
@@ -139,7 +149,7 @@ DATA_REVISION_LENGTH = 6
 #: The last data commit, pinned in full: what `data_revision` returned when it was last
 #: re-pinned. Full rather than six characters so the drift check compares a commit, not
 #: a prefix.
-DATA_REVISION = "6f6bc89ecd51756f1f6e8df47fb19c6bff7c4356"
+DATA_REVISION = "d48006f9cd60e6926df99b2dcf9efd9b50e72107"
 
 #: The version, written the one way it is ever written: `v0.4.1-f5e113`. Semver core,
 #: then the data revision, in the shape a build identifier takes everywhere else.
@@ -170,7 +180,7 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: commit would fail their drift check forever. It is in no version string. It moves
 #: when the claim documents are regenerated for an edition, while the page's own links
 #: name the commit it is built from (`render_explainer.link_revision`).
-PUBLICATION_REVISION = "277f8b1a"
+PUBLICATION_REVISION = "0d7bb0fa"
 
 
 def data_pathspec() -> tuple[str, ...]:

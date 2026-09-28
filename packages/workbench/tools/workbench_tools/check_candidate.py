@@ -1452,8 +1452,8 @@ def main() -> int:
             f"n={key}: badge outside the vocabulary",
         )
         check(
-            fact["star"] == entry["lower"]["first_proved_here"],
-            f"n={key}: star disagrees with first_proved_here",
+            fact["star"] == entry["lower"]["recent_result"],
+            f"n={key}: star disagrees with recent_result",
         )
         check(
             fact["open"] == open_items(entry),

@@ -22,8 +22,8 @@ source listing into geometry, or an abstract contact graph into a packing.
 
 *All 100 retained known-best constructions in row-major order.
 Each tile shows `n`, the reported side upper bound and, where `s(n)` is still open, the
-best proved lower bound, starred where this project proved it; the linked SVG remains
-sharp at any zoom level.*
+best proved lower bound, starred where it is a recent result, proved since August 2026;
+the linked SVG remains sharp at any zoom level.*
 
 ![Audited source coverage from n equals 101 through 324.](prospective/source-coverage-101-324.svg)
 

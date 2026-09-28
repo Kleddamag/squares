@@ -33,6 +33,7 @@ import mpmath as mp
 from strif import atomic_output_file
 
 from devtools import build_composite_figure_data, render_composite_pdf
+from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from sqpack.known_best import (
     ATLAS_SAMPLE_STRIDE,
@@ -534,7 +535,8 @@ SUMMARY_PROSE: dict[str, tuple[str, str]] = {
             "n equals 1 through 100. Each tile is normalized to its own container and "
             "labeled with n, the best known upper bound on the container side and, where "
             "the value is not yet settled, the best proved lower bound beneath it. A star "
-            "in crimson marks a lower bound first proved by this project. Badges mark "
+            "in crimson marks a recent result, a lower bound proved since August 2026. "
+            "Badges mark "
             "which side lengths are proved optimal, and whether a side length is pinned "
             "exactly by a radical or a minimal polynomial rather than only by a decimal."
         ),
@@ -546,8 +548,9 @@ SUMMARY_PROSE: dict[str, tuple[str, str]] = {
             "packings for n equals 1 through 324, the whole audited corpus. Each tile is "
             "normalized to its own container and labeled with n, the best known upper "
             "bound on the container side and, where the value is not yet settled, the "
-            "best proved lower bound beneath it. A star in crimson marks a lower bound "
-            "first proved by this project. Badges mark which side lengths are proved "
+            "best proved lower bound beneath it. A star in crimson marks a recent result, "
+            "a lower bound proved since August 2026. Badges mark which side lengths are "
+            "proved "
             "optimal, and whether a side length is pinned exactly by a radical or a "
             "minimal polynomial rather than only by a decimal."
         ),
@@ -1137,7 +1140,7 @@ def _append_lower_bound(card: ET.Element, n: int, *, left: Decimal, baseline: De
     """The certified floor, under the best known side.
 
     A proved case says `s(n) = ...` on the line above and gets nothing here. Where the
-    project proved the floor itself, the accent falls on the numeral alone, the same
+    floor is a recent result, the accent falls on the numeral alone, the same
     colour as the star in the badge row above it: what is new about the case is the
     bound, not the function it bounds, so the `s(n) >=` that introduces it stays in the
     caption colour it carries on every other card. The legend counts how many there are.
@@ -1162,8 +1165,16 @@ def _append_lower_bound(card: ET.Element, n: int, *, left: Decimal, baseline: De
         lower,
         entry["display"],
         SUMMARY_SMALL_SIZE,
-        accent=FIRST_PARTY_ACCENT_COLOR if entry["first_proved_here"] else None,
+        accent=FIRST_PARTY_ACCENT_COLOR if entry["recent_result"] else None,
     )
+
+
+#: What the star means, in the legend and on each card's badge: a recent result, whoever
+#: proved it (the owner, 2026-09-27). It used to read "lower bound first proved here", and
+#: so went out at n = 11 when Kleddamag's 3.875, developed from T-026, became the bound.
+#: The month is read from `RECENT_SINCE`, so the label cannot name another; it is the
+#: old label's width.
+RECENT_LABEL = f"recent result, since {RECENT_SINCE:%b %Y}"
 
 
 @cache
@@ -1187,8 +1198,8 @@ def _case_badges(built: BuiltCase) -> tuple[tuple[str, str, str], ...]:
     """
     entry = _figure_entries()[built.frontier.n]
     badges = [(badge["glyph"], badge["style"], badge["meaning"]) for badge in entry["badges"]]
-    if entry["lower"]["first_proved_here"]:
-        badges.insert(0, ("", "star", "lower bound first proved here"))
+    if entry["lower"]["recent_result"]:
+        badges.insert(0, ("", "star", RECENT_LABEL))
     return tuple(badges)
 
 
@@ -1433,7 +1444,7 @@ def _append_summary_legend(
         if composite["stem"] == canvas.spec.stem
     )
     tally = {
-        "lower bound first proved here": totals["lower_bound_first_proved_here"],
+        RECENT_LABEL: totals["lower_bound_recent_result"],
         "proved optimal": totals["proved_optimal"],
         "exact value known": totals["exact_value_known"],
         "only known numerically": totals["only_known_numerically"],
@@ -1455,7 +1466,7 @@ def _append_summary_legend(
         # The muted twin is the point of D-385: one glyph used to cover both, so a
         # source's annotation was rendered indistinguishable from an argument of ours.
         ("R", "muted", "annotated rigid by the catalogue"),
-        ("", "star", "lower bound first proved here"),
+        ("", "star", RECENT_LABEL),
     ]
     _legend_row(
         legend,

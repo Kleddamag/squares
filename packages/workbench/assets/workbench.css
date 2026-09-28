@@ -33,7 +33,7 @@
   --color-accent-hover: #2b3947;
   --color-selected: var(--color-accent);
   --color-selected-text: var(--color-text-inverse);
-  /* Colour: status. Scarlet is a bound first proved here and the proved lower bound; green is
+  /* Colour: status. Scarlet is a recent result and the proved lower bound; green is
      the best known arrangement, and nothing else on the page is green. */
   --color-status-new: #a3123f;
   --color-status-best: #17794a;
@@ -668,7 +668,7 @@ body.drawing #packing-svg #squares {
    at the same place whenever it is drawn.
    The rhythm, in stage pixels: a head is 6 above what it heads; a row of content is 28 above
    the next head. The badges took the slot the separate "new lower bound" line used to hold,
-   since a bound first proved here is now a badge of its own. */
+   since a recent result is now a badge of its own. */
 .section-head {
   position: absolute;
   left: 6px;
@@ -727,7 +727,7 @@ body.drawing #packing-svg #squares {
   white-space: nowrap;
 }
 /* The poster's badges, in a row with short labels: what this record establishes, and, first,
-   `new result` when the lower bound was first proved here. Fixed height, so the row never
+   `new result` when the lower bound is a recent result. Fixed height, so the row never
    reflows. */
 .badges {
   position: absolute;

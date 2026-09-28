@@ -18,6 +18,7 @@
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
           "lower_bound_first_proved_here": 3,
+          "lower_bound_recent_result": 26,
           "only_known_numerically": 5,
           "proved_optimal": 36,
           "rigidity_catalogue_annotated": 2,
@@ -41,6 +42,7 @@
           "degree_recorded_upstream": 36,
           "exact_value_known": 287,
           "lower_bound_first_proved_here": 3,
+          "lower_bound_recent_result": 26,
           "only_known_numerically": 37,
           "proved_optimal": 60,
           "rigidity_catalogue_annotated": 2,
@@ -82,6 +84,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "1"
         },
@@ -131,6 +134,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "2"
         },
@@ -180,6 +184,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "2"
         },
@@ -234,6 +239,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "2"
         },
@@ -288,6 +294,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "2.70710678118654752440084436210485"
         },
@@ -337,6 +344,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "3"
         },
@@ -386,6 +394,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "3"
         },
@@ -435,6 +444,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "3"
         },
@@ -489,6 +499,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "3"
         },
@@ -538,6 +549,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "3.70710678118654752440084436210485"
         },
@@ -588,6 +600,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "3.875"
         },
@@ -633,6 +646,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "3.968615"
         },
@@ -682,6 +696,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "4"
         },
@@ -731,6 +746,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "4"
         },
@@ -780,6 +796,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "4"
         },
@@ -834,6 +851,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "4"
         },
@@ -878,6 +896,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "4.66001"
         },
@@ -923,6 +942,7 @@
           ],
           "first_proved_here": true,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "4.679"
         },
@@ -968,6 +988,7 @@
           ],
           "first_proved_here": true,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "4.8"
         },
@@ -1013,6 +1034,7 @@
           ],
           "first_proved_here": true,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "4.85"
         },
@@ -1057,6 +1079,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "4.995004"
         },
@@ -1106,6 +1129,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "5"
         },
@@ -1155,6 +1179,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "5"
         },
@@ -1204,6 +1229,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "5"
         },
@@ -1258,6 +1284,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "5"
         },
@@ -1302,6 +1329,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "5.508"
         },
@@ -1346,6 +1374,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "5.6"
         },
@@ -1395,6 +1424,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "5.6"
         },
@@ -1439,6 +1469,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "5.71"
         },
@@ -1483,6 +1514,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "5.71"
         },
@@ -1527,6 +1559,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "5.92"
         },
@@ -1576,6 +1609,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": false,
           "value": "6"
         },
@@ -1625,6 +1659,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "6"
         },
@@ -1674,6 +1709,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "6"
         },
@@ -1723,6 +1759,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "6"
         },
@@ -1777,6 +1814,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "6"
         },
@@ -1821,6 +1859,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "6.09901951359"
         },
@@ -1865,6 +1904,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "6.19615242271"
         },
@@ -1909,6 +1949,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "6.5"
         },
@@ -1958,6 +1999,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "6.5"
         },
@@ -2002,6 +2044,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "6.5"
         },
@@ -2046,6 +2089,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "6.56776436283"
         },
@@ -2090,6 +2134,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "6.65685424949"
         },
@@ -2134,6 +2179,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "6.74456264654"
         },
@@ -2178,6 +2224,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "6.83095189485"
         },
@@ -2228,6 +2275,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "7"
         },
@@ -2277,6 +2325,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "7"
         },
@@ -2326,6 +2375,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "7"
         },
@@ -2380,6 +2430,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "7"
         },
@@ -2424,6 +2475,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.0827625303"
         },
@@ -2468,6 +2520,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.16441400297"
         },
@@ -2512,6 +2565,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "7.38"
         },
@@ -2556,6 +2610,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "7.38"
         },
@@ -2600,6 +2655,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.40312423743"
         },
@@ -2644,6 +2700,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "7.54"
         },
@@ -2688,6 +2745,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "7.62"
         },
@@ -2732,6 +2790,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.63324958071"
         },
@@ -2776,6 +2835,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.7082039325"
         },
@@ -2820,6 +2880,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.78232998313"
         },
@@ -2864,6 +2925,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.8556546004"
         },
@@ -2908,6 +2970,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "7.92820323028"
         },
@@ -2957,6 +3020,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "8"
         },
@@ -3006,6 +3070,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "8"
         },
@@ -3060,6 +3125,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "8"
         },
@@ -3104,6 +3170,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.07106781187"
         },
@@ -3148,6 +3215,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.14142842854"
         },
@@ -3192,6 +3260,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.21110255093"
         },
@@ -3236,6 +3305,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "8.41"
         },
@@ -3280,6 +3350,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "8.41"
         },
@@ -3324,6 +3395,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "8.55"
         },
@@ -3368,6 +3440,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "8.55"
         },
@@ -3412,6 +3485,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": true,
           "shown": true,
           "value": "8.61"
         },
@@ -3456,6 +3530,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.61577310586"
         },
@@ -3500,6 +3575,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.68114574787"
         },
@@ -3544,6 +3620,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.74596669241"
         },
@@ -3588,6 +3665,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.81024967591"
         },
@@ -3632,6 +3710,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.87400787401"
         },
@@ -3676,6 +3755,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "8.93725393319"
         },
@@ -3725,6 +3805,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "9"
         },
@@ -3774,6 +3855,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "9"
         },
@@ -3828,6 +3910,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "9"
         },
@@ -3872,6 +3955,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.0622577483"
         },
@@ -3916,6 +4000,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.12403840464"
         },
@@ -3960,6 +4045,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.18535277187"
         },
@@ -4004,6 +4090,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.24621125124"
         },
@@ -4048,6 +4135,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.30662386292"
         },
@@ -4092,6 +4180,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.36660026534"
         },
@@ -4136,6 +4225,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.42614977318"
         },
@@ -4180,6 +4270,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.48528137424"
         },
@@ -4224,6 +4315,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.54400374532"
         },
@@ -4268,6 +4360,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.60232526704"
         },
@@ -4312,6 +4405,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.66025403784"
         },
@@ -4356,6 +4450,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.71779788708"
         },
@@ -4400,6 +4495,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.77496438739"
         },
@@ -4444,6 +4540,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.83176086633"
         },
@@ -4488,6 +4585,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.88819441732"
         },
@@ -4532,6 +4630,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "9.94427191"
         },
@@ -4581,6 +4680,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "10"
         },
@@ -4630,6 +4730,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "10"
         },
@@ -4684,6 +4785,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "10"
         },
@@ -4728,6 +4830,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.0553851381"
         },
@@ -4772,6 +4875,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.1104335791"
         },
@@ -4816,6 +4920,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.1651513899"
         },
@@ -4860,6 +4965,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.2195444573"
         },
@@ -4904,6 +5010,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.2736184955"
         },
@@ -4948,6 +5055,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.3273790531"
         },
@@ -4992,6 +5100,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.3808315196"
         },
@@ -5036,6 +5145,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.4339811321"
         },
@@ -5080,6 +5190,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.4868329805"
         },
@@ -5124,6 +5235,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.5393920142"
         },
@@ -5168,6 +5280,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.5916630466"
         },
@@ -5212,6 +5325,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.643650761"
         },
@@ -5256,6 +5370,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.6953597148"
         },
@@ -5300,6 +5415,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.7467943448"
         },
@@ -5344,6 +5460,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.7979589711"
         },
@@ -5388,6 +5505,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.8488578018"
         },
@@ -5432,6 +5550,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.8994949366"
         },
@@ -5476,6 +5595,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "10.9498743711"
         },
@@ -5525,6 +5645,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "11"
         },
@@ -5574,6 +5695,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "11"
         },
@@ -5628,6 +5750,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "11"
         },
@@ -5672,6 +5795,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.0498756211"
         },
@@ -5716,6 +5840,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.0995049384"
         },
@@ -5760,6 +5885,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.1488915651"
         },
@@ -5804,6 +5930,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.1980390272"
         },
@@ -5848,6 +5975,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.246950766"
         },
@@ -5892,6 +6020,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.295630141"
         },
@@ -5936,6 +6065,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.3440804328"
         },
@@ -5980,6 +6110,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.3923048454"
         },
@@ -6024,6 +6155,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.4403065089"
         },
@@ -6068,6 +6200,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.4880884817"
         },
@@ -6112,6 +6245,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.5356537529"
         },
@@ -6156,6 +6290,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.5830052443"
         },
@@ -6200,6 +6335,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.6301458127"
         },
@@ -6244,6 +6380,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.677078252"
         },
@@ -6288,6 +6425,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.7238052948"
         },
@@ -6332,6 +6470,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.7703296143"
         },
@@ -6376,6 +6515,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.8166538264"
         },
@@ -6420,6 +6560,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.8627804912"
         },
@@ -6464,6 +6605,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.9087121146"
         },
@@ -6508,6 +6650,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "11.9544511501"
         },
@@ -6557,6 +6700,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "12"
         },
@@ -6606,6 +6750,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "12"
         },
@@ -6660,6 +6805,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "12"
         },
@@ -6704,6 +6850,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.0453610172"
         },
@@ -6748,6 +6895,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.0905365064"
         },
@@ -6792,6 +6940,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.1355287257"
         },
@@ -6836,6 +6985,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.1803398875"
         },
@@ -6880,6 +7030,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.2249721603"
         },
@@ -6924,6 +7075,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.2694276696"
         },
@@ -6968,6 +7120,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.313708499"
         },
@@ -7012,6 +7165,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.3578166916"
         },
@@ -7056,6 +7210,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.401754251"
         },
@@ -7100,6 +7255,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.4455231423"
         },
@@ -7144,6 +7300,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.4891252931"
         },
@@ -7188,6 +7345,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.5325625947"
         },
@@ -7232,6 +7390,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.5758369028"
         },
@@ -7276,6 +7435,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.6189500386"
         },
@@ -7320,6 +7480,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.6619037897"
         },
@@ -7364,6 +7525,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.7046999107"
         },
@@ -7408,6 +7570,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.7473401245"
         },
@@ -7452,6 +7615,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.7898261226"
         },
@@ -7496,6 +7660,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.8321595662"
         },
@@ -7540,6 +7705,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.874342087"
         },
@@ -7584,6 +7750,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.9163752878"
         },
@@ -7628,6 +7795,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "12.9582607431"
         },
@@ -7677,6 +7845,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "13"
         },
@@ -7726,6 +7895,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "13"
         },
@@ -7780,6 +7950,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "13"
         },
@@ -7824,6 +7995,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.0415945788"
         },
@@ -7868,6 +8040,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.0830459736"
         },
@@ -7912,6 +8085,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.124355653"
         },
@@ -7956,6 +8130,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.1655250606"
         },
@@ -8000,6 +8175,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.2065556157"
         },
@@ -8044,6 +8220,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.2474487139"
         },
@@ -8088,6 +8265,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.2882057274"
         },
@@ -8132,6 +8310,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.3288280059"
         },
@@ -8176,6 +8355,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.3693168769"
         },
@@ -8220,6 +8400,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.409673646"
         },
@@ -8264,6 +8445,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.449899598"
         },
@@ -8308,6 +8490,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.4899959968"
         },
@@ -8352,6 +8535,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.5299640861"
         },
@@ -8396,6 +8580,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.56980509"
         },
@@ -8440,6 +8625,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.6095202129"
         },
@@ -8484,6 +8670,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.6491106407"
         },
@@ -8528,6 +8715,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.6885775404"
         },
@@ -8572,6 +8760,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.7279220614"
         },
@@ -8616,6 +8805,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.7671453348"
         },
@@ -8660,6 +8850,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.8062484749"
         },
@@ -8704,6 +8895,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.8452325787"
         },
@@ -8748,6 +8940,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.8840987267"
         },
@@ -8792,6 +8985,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.9228479833"
         },
@@ -8836,6 +9030,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "13.9614813968"
         },
@@ -8885,6 +9080,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "14"
         },
@@ -8934,6 +9130,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "14"
         },
@@ -8988,6 +9185,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "14"
         },
@@ -9032,6 +9230,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.0384048104"
         },
@@ -9076,6 +9275,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.0766968306"
         },
@@ -9120,6 +9320,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.1148770486"
         },
@@ -9164,6 +9365,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.152946438"
         },
@@ -9208,6 +9410,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.1909059583"
         },
@@ -9252,6 +9455,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.2287565553"
         },
@@ -9296,6 +9500,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.2664991614"
         },
@@ -9340,6 +9545,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.3041346957"
         },
@@ -9384,6 +9590,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.3416640641"
         },
@@ -9428,6 +9635,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.3790881603"
         },
@@ -9472,6 +9680,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.416407865"
         },
@@ -9516,6 +9725,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.4536240471"
         },
@@ -9560,6 +9770,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.4907375632"
         },
@@ -9604,6 +9815,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.5277492585"
         },
@@ -9648,6 +9860,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.5646599663"
         },
@@ -9692,6 +9905,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.6014705087"
         },
@@ -9736,6 +9950,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.638181697"
         },
@@ -9780,6 +9995,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.6747943312"
         },
@@ -9824,6 +10040,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.7113092008"
         },
@@ -9868,6 +10085,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.7477270849"
         },
@@ -9912,6 +10130,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.7840487521"
         },
@@ -9956,6 +10175,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.8202749611"
         },
@@ -10000,6 +10220,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.8564064606"
         },
@@ -10044,6 +10265,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.8924439894"
         },
@@ -10088,6 +10310,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.9283882772"
         },
@@ -10132,6 +10355,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "14.9642400438"
         },
@@ -10181,6 +10405,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "15"
         },
@@ -10230,6 +10455,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "15"
         },
@@ -10284,6 +10510,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "15"
         },
@@ -10328,6 +10555,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.0356688476"
         },
@@ -10372,6 +10600,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.0712472795"
         },
@@ -10416,6 +10645,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.1067359797"
         },
@@ -10460,6 +10690,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.1421356237"
         },
@@ -10504,6 +10735,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.1774468788"
         },
@@ -10548,6 +10780,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.2126704036"
         },
@@ -10592,6 +10825,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.2478068488"
         },
@@ -10636,6 +10870,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.2828568571"
         },
@@ -10680,6 +10915,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.3178210633"
         },
@@ -10724,6 +10960,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.3527000944"
         },
@@ -10768,6 +11005,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.3874945699"
         },
@@ -10812,6 +11050,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.4222051019"
         },
@@ -10856,6 +11095,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.4568322948"
         },
@@ -10900,6 +11140,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.4913767462"
         },
@@ -10944,6 +11185,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.5258390463"
         },
@@ -10988,6 +11230,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.5602197786"
         },
@@ -11032,6 +11275,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.5945195193"
         },
@@ -11076,6 +11320,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.6287388383"
         },
@@ -11120,6 +11365,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.6628782986"
         },
@@ -11164,6 +11410,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.6969384567"
         },
@@ -11208,6 +11455,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.7309198627"
         },
@@ -11252,6 +11500,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.7648230602"
         },
@@ -11296,6 +11545,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.7986485869"
         },
@@ -11340,6 +11590,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.8323969742"
         },
@@ -11384,6 +11635,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.8660687473"
         },
@@ -11428,6 +11680,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.8996644258"
         },
@@ -11472,6 +11725,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.9331845231"
         },
@@ -11516,6 +11770,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "15.9666295471"
         },
@@ -11565,6 +11820,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "16"
         },
@@ -11614,6 +11870,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "16"
         },
@@ -11668,6 +11925,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "16"
         },
@@ -11712,6 +11970,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.0332963784"
         },
@@ -11756,6 +12015,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.0665191733"
         },
@@ -11800,6 +12060,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.0996688705"
         },
@@ -11844,6 +12105,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.1327459504"
         },
@@ -11888,6 +12150,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.1657508881"
         },
@@ -11932,6 +12195,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.1986841536"
         },
@@ -11976,6 +12240,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.2315462117"
         },
@@ -12020,6 +12285,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.2643375225"
         },
@@ -12064,6 +12330,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.2970585408"
         },
@@ -12108,6 +12375,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.3297097168"
         },
@@ -12152,6 +12420,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.3622914957"
         },
@@ -12196,6 +12465,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.3948043183"
         },
@@ -12240,6 +12510,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.4272486205"
         },
@@ -12284,6 +12555,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.4596248337"
         },
@@ -12328,6 +12600,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.4919333848"
         },
@@ -12372,6 +12645,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.5241746963"
         },
@@ -12416,6 +12690,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.5563491861"
         },
@@ -12460,6 +12735,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.5884572681"
         },
@@ -12504,6 +12780,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.6204993518"
         },
@@ -12548,6 +12825,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.6524758425"
         },
@@ -12592,6 +12870,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.6843871414"
         },
@@ -12636,6 +12915,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.7162336455"
         },
@@ -12680,6 +12960,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.748015748"
         },
@@ -12724,6 +13005,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.7797338381"
         },
@@ -12768,6 +13050,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.8113883008"
         },
@@ -12812,6 +13095,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.8429795178"
         },
@@ -12856,6 +13140,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.8745078664"
         },
@@ -12900,6 +13185,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.9059737206"
         },
@@ -12944,6 +13230,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.9373774505"
         },
@@ -12988,6 +13275,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "16.9687194227"
         },
@@ -13037,6 +13325,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "17"
         },
@@ -13086,6 +13375,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "17"
         },
@@ -13140,6 +13430,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "17"
         },
@@ -13184,6 +13475,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.0312195419"
         },
@@ -13228,6 +13520,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.0623784042"
         },
@@ -13272,6 +13565,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.0934769394"
         },
@@ -13316,6 +13610,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.1245154966"
         },
@@ -13360,6 +13655,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.1554944214"
         },
@@ -13404,6 +13700,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.1864140562"
         },
@@ -13448,6 +13745,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.2172747402"
         },
@@ -13492,6 +13790,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.2480768093"
         },
@@ -13536,6 +13835,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.2788205961"
         },
@@ -13580,6 +13880,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.3095064303"
         },
@@ -13624,6 +13925,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.3401346384"
         },
@@ -13668,6 +13970,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.3707055437"
         },
@@ -13712,6 +14015,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.4012194669"
         },
@@ -13756,6 +14060,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.4316767252"
         },
@@ -13800,6 +14105,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.4620776332"
         },
@@ -13844,6 +14150,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.4924225025"
         },
@@ -13888,6 +14195,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.5227116419"
         },
@@ -13932,6 +14240,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.5529453572"
         },
@@ -13976,6 +14285,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.5831239518"
         },
@@ -14020,6 +14330,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.6132477258"
         },
@@ -14064,6 +14375,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.6433169771"
         },
@@ -14108,6 +14420,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.6733320005"
         },
@@ -14152,6 +14465,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.7032930885"
         },
@@ -14196,6 +14510,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.7332005307"
         },
@@ -14240,6 +14555,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.7630546142"
         },
@@ -14284,6 +14600,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.7928556237"
         },
@@ -14328,6 +14645,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.8226038413"
         },
@@ -14372,6 +14690,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.8522995464"
         },
@@ -14416,6 +14735,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.8819430161"
         },
@@ -14460,6 +14780,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.9115345253"
         },
@@ -14504,6 +14825,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.9410743461"
         },
@@ -14548,6 +14870,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": true,
           "value": "17.9705627485"
         },
@@ -14597,6 +14920,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "18"
         },
@@ -14646,6 +14970,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "18"
         },
@@ -14700,6 +15025,7 @@
           ],
           "first_proved_here": false,
           "provenance": "frontier",
+          "recent_result": false,
           "shown": false,
           "value": "18"
         },
@@ -14740,6 +15066,7 @@
       "degree_recorded_upstream": 36,
       "exact_value_known": 287,
       "lower_bound_first_proved_here": 3,
+      "lower_bound_recent_result": 26,
       "only_known_numerically": 37,
       "proved_optimal": 60,
       "rigidity_catalogue_annotated": 2,

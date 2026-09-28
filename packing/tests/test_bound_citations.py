@@ -13,6 +13,7 @@ import functools
 import json
 import re
 from collections.abc import Mapping
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -239,6 +240,8 @@ def test_a_published_bound_and_its_replay_cite_the_one_source_and_name_the_repla
         "results": ["T-901", "T-902"],
         "confirmed_by": ["T-901"],
         "value": "2.25",
+        # The synthetic source is from 2001, so the bound is not a recent result.
+        "recent": False,
     }
 
 
@@ -468,7 +471,7 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     68: (
         ("UnitSquare Project 2026, Results Release 1 (reported)", "external", "reported"),
-        ("wand125 2026, GitHub", "external", "verified"),
+        ("wand125 after Levy 2026, GitHub", "external", "verified"),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
     101: (
@@ -492,10 +495,10 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 @pytest.mark.parametrize(
     ("n", "author"),
     [
-        (11, "Kleddamag"),
+        (11, "Kleddamag after Levy"),
         (17, "Kleddamag after Levy, Mira, Guzhou0806"),
-        (26, "Tokoharu"),
-        (29, "Tokoharu"),
+        (26, "Tokoharu after Levy, wand125"),
+        (29, "Tokoharu after Levy, wand125"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(n: int, author: str) -> None:
@@ -657,15 +660,58 @@ def test_every_value_is_the_one_the_composite_draws() -> None:
             assert entry["lower"]["value"] == figure["lower"]["value"], entry["n"]
 
 
-def test_the_project_lower_bounds_are_exactly_the_starred_cases() -> None:
-    starred = {n for n, figure in _composite().items() if figure["lower"]["first_proved_here"]}
+def test_the_recent_lower_bounds_are_exactly_the_starred_cases() -> None:
+    """The figure stars what the citation record calls recent, and nothing else."""
+    starred = {n for n, figure in _composite().items() if figure["lower"]["recent_result"]}
+    recent = {
+        entry["n"]
+        for entry in _record()["entries"]
+        if entry["lower"] is not None and entry["lower"]["recent"]
+    }
+    assert recent == starred
+    assert starred  # an empty set would pass vacuously
+
+
+def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
+    proved = {n for n, figure in _composite().items() if figure["lower"]["first_proved_here"]}
     project = {
         entry["n"]
         for entry in _record()["entries"]
         if entry["lower"] is not None and entry["lower"]["basis"] == "project"
     }
-    assert project == starred
-    assert starred  # an empty set would pass vacuously
+    assert project == proved
+    assert proved
+
+
+def test_the_star_marks_recent_results_whoever_proved_them() -> None:
+    """n = 11 is starred as Kleddamag's, and every project bound is starred too.
+
+    The star used to be `first_proved_here`, so it went out at n = 11 when Kleddamag's
+    3.875, developed from T-026, became the verified bound (the owner, 2026-09-27). Credit
+    is the line's business: joint work names this project after the author, other work
+    names only its own lineage, and this project's sole work names the project.
+    """
+    lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
+    assert lines[11]["recent"]
+    assert lines[11]["text"] == "Kleddamag after Levy 2026, GitHub"
+    assert lines[12]["recent"]
+    assert lines[12]["text"].startswith("Daniel after Burns")
+    assert lines[18]["recent"]
+    assert lines[18]["text"].startswith(citations.PROJECT_NAME)
+    assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")
+    assert not lines[4]["recent"]  # Nagamochi 2005
+
+
+def test_a_source_from_the_recent_year_must_say_its_date() -> None:
+    year = citations.RECENT_SINCE.year
+    undated = citations.Source(key="[X 2026]", authors=("X",), year=year, venue="GitHub")
+    with pytest.raises(ValueError, match="needs `dated`"):
+        citations.check_dates([undated])
+    earlier = citations.Source(
+        key="[Y 2026]", authors=("Y",), year=2026, venue="Web", dated=date(2026, 7, 29)
+    )
+    citations.check_dates([earlier])
+    assert not citations.is_recent(earlier)
 
 
 def test_a_project_line_names_the_result_that_carries_its_evidence() -> None:

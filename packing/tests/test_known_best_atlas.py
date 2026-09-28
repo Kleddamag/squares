@@ -866,7 +866,7 @@ def test_the_poster_badges_every_perfect_square_and_counts_them_in_its_legend() 
         "only known numerically (37)",
         "rigid (established here) (20)",
         "annotated rigid by the catalogue (2)",
-        "lower bound first proved here (3)",
+        "recent result, since Aug 2026 (26)",
         "colors indicate distinct tilt angles",
         "shade indicates number of full-side contacts",
     ]
@@ -1095,7 +1095,14 @@ def test_only_the_bound_numeral_carries_the_new_result_accent() -> None:
         assert re.fullmatch(r"[0-9.]+", value), value
         assert line.endswith(" " + value), line
 
-    assert len(accented) == record["figure"]["totals"]["lower_bound_first_proved_here"]
+    # A starred case that is proved, s(32) = 6 among them, says so in the equality above
+    # and draws no lower-bound line to accent; its star is still on the card.
+    drawn = [
+        entry
+        for entry in record["figure"]["entries"]
+        if entry["n"] <= 100 and entry["lower"]["recent_result"] and entry["lower"]["shown"]
+    ]
+    assert len(accented) == len(drawn)
     assert len(plain) > len(accented)
 
 

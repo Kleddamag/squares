@@ -89,7 +89,7 @@ its search strategy.
 |  | value | status |
 | --- | --- | --- |
 | best-known packing (upper bound) | `3.8770835…` | Trump 1979, a construction |
-| strongest verified lower bound | `31/8 = 3.875`, strict | Kleddamag 2026, [developed from T-026’s certificate](README.md#third-party-results) and confirmed here by two complete coverage methods |
+| strongest verified lower bound | `31/8 = 3.875`, strict | Kleddamag 2026, [developed from T-026’s certificate](README.md#results-by-others) and confirmed here by two complete coverage methods |
 | strongest first-party lower bound | `3.8269975…` | T-033, T-026’s atoms on a finer net; the point-only T-018 proof is explained [below](#how-a-weighted-atomic-lower-bound-proof-works) |
 | gap between the verified bounds | about `0.002084` | still open |
 
@@ -126,7 +126,7 @@ These labels describe the retained evidence and confirmation; the mathematical c
 the proved lower bound above.
 
 The detailed lesson below starts with the simpler point-only T-018 certificate;
-[the standalone v0.4.1 explainer](https://jlevy.github.io/squares/#proof-of-the-new-lower-bound)
+[the standalone v0.4.2 explainer](https://jlevy.github.io/squares/#proof-of-the-new-lower-bound)
 uses it as a visual worked example, then gives the threshold-counting and dilation proof
 of T-025 and T-026. The numerical `3.81` result is not a premise of T-026. Keeping the
 T-018 proof in full also gives readers an assurance bridge: its short standard-library

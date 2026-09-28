@@ -124,7 +124,7 @@ This lower bound is one of {{N_RESULTS}} results the framework has registered so
 {{N_NOVEL}} of them apparently new.
 These include improved lower bounds for $n = 12$, $17$, and $19$.[^other-results] The
 atlas of best known packings for every $n$ from 1 to 100 in Figure 2 comes from the same
-research agenda and currently includes {{N_STARRED}} new lower bounds.
+research agenda and currently includes {{N_PROVED_HERE}} new lower bounds proved here.
 
 The repository includes:
 
@@ -192,8 +192,8 @@ the film</a>. </video>
   </div>
 
   <figcaption><strong>Figure 2.</strong> The best known packings of 1 through 100 unit squares, with upper bounds
-  and, for unsettled cases, the current lower bounds verified here. A crimson star marks a lower bound this project
-  proved: {{N_STARRED}} of the hundred. The <a href="{{ATLAS_URL}}">repository</a> records every witness and its
+  and, for unsettled cases, the current lower bounds verified here. A crimson star marks a recent result, a lower bound
+  proved since {{RECENT_SINCE_MONTH}}: {{N_STARRED}} of the hundred, {{N_PROVED_HERE}} of them here. The <a href="{{ATLAS_URL}}">repository</a> records every witness and its
   provenance. PDFs are available for <a href="known-best-1-100.pdf">this figure</a> and the
   <a href="known-best-1-324.pdf">full 324-case poster</a>. The film below the atlas draws the same hundred
   packings one square at a time, each step naming the bound it reaches and where that bound comes from; the

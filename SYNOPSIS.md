@@ -125,7 +125,7 @@ Tokoharu’s solver and decided by Tokoharu’s reviewed interval verifier, are 
 `n = 27`, `28` by monotonicity, and `31`, and reported at the other counts until their
 replays run. Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by
 `v1.1.0`, is retained as a publication record.
-[Third-Party Results](README.md#third-party-results) gives the credit for each.
+[Results by Others](README.md#results-by-others) gives the credit for each.
 
 Every result this project has registered, in the reading order its significance scores
 set. The full claims, the rationale behind each score, and the next evidence-improving

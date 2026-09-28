@@ -7,12 +7,12 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 160
+count: 161
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
   sessions_measured: 106
-  sessions_unmeasured: 54
+  sessions_unmeasured: 55
   attributed:
     rollups: 244
     turns: 61361
@@ -2753,4 +2753,14 @@ sessions:
   tool_errors: 161
   one_off_code: 307
   wall_hours: 42.62
+  codex_receipts: []
+- id: session-161
+  title: "wand125’s Update and the 28 September Intake"
+  status: in_progress
+  primary_bead: think-1an7
+  phases: 2
+  measured: false
+  unmeasured_reason: >-
+    declares no resource measurement
+  rollups: []
   codex_receipts: []

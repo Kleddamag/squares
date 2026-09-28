@@ -2,7 +2,7 @@
 
 The stylesheet's tokens say what the layout should be; this measures what it is. At each
 declared viewport, in each view a reader reaches by ordinary navigation -- Animate on a bound
-first proved here, Animate with nothing open, the animation studio, Pack and Search -- the
+that is a recent result, Animate with nothing open, the animation studio, Pack and Search -- the
 `design/layout-metrics` probe reads the page's boxes, and `findings` requires:
 
 - **no horizontal overflow**, of the document or of the controls' column;
@@ -84,7 +84,7 @@ SLACK = 0.6
 #: Control kinds held to `--control-height`; tabs are held to `--tab-height`.
 AT_CONTROL_HEIGHT = frozenset({"button", "select", "input-number", "input-text", "chip"})
 
-#: A bound first proved here (n = 18) and an n with nothing open (n = 16).
+#: A recent result (n = 18) and an n with nothing open (n = 16).
 #: It was n = 17 until T-032 adopted an external certificate there, which is exactly the
 #: fact the star reports; the six that still qualify are n = 11, 12, 18, 19, 20 and 21.
 STAR_N = 18
@@ -325,9 +325,9 @@ def facts_findings(layer: Metrics, *, star: bool | None = None) -> list[str]:
             )
     new = [b for b in badges if b["text"] == NEW_RESULT]
     if star is True and not (len(new) == 1 and "badge-star" in (new[0]["icon"] or "").split()):
-        found.append(f"a bound first proved here has no `{NEW_RESULT}` star badge: {badges}")
+        found.append(f"a recent result has no `{NEW_RESULT}` star badge: {badges}")
     if star is False and new:
-        found.append(f"`{NEW_RESULT}` is drawn where no bound was first proved: {badges}")
+        found.append(f"`{NEW_RESULT}` is drawn where no bound is a recent result: {badges}")
     return found
 
 

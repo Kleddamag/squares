@@ -53,6 +53,18 @@ line carries no year, because `found_year` dates the find and the schema has no 
 the improvement's date. `--review` lists every such case, and every omitted line with the
 reason, so a gap is reported rather than filled.
 
+**A lower bound is starred as a recent result** where it is recent (the owner,
+2026-09-27): "we ultimately want these graphics and charts to be a full representation of
+the current state of understanding ... and they should show recent changes to be new."
+The star says when, not whose. A line credits case by case: another's work under its
+authors, joint work that builds on this project as `credit` in the bibliography (`Kleddamag
+after Levy`), and this project's sole work as `Squares Project (Levy)`. Recent is a typed
+date, never a year or a source key read as text: this project's own new bounds are recent
+by construction, and an external bound is recent where its source's `dated` is on or after
+`RECENT_SINCE`. A source from that year that carries no date fails the build, so a recent
+bound cannot go unstarred because its key happens not to name the year, as n = 17's does
+not. The `recent` field is the lower citation's alone; the stage stars no upper bound.
+
 A line must fit in `TEXT_LIMIT` characters, the width the stage sets it in, the reference
 and its note together. Where the note leaves too little room, the source's `short_venue`
 is used if the bibliography gives one; a line that still does not fit fails the build
@@ -73,6 +85,7 @@ import sys
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -122,6 +135,12 @@ NOVEL = frozenset({"apparently-novel", "confirmed-novel"})
 #: Who performed an entry this project did itself: a replay, an audit, a certificate.
 FIRST_PARTY = "repository"
 
+#: The first day of a recent result: the day this project's square-packing work began
+#: (`e5daa2d24`, the s(11) study, 2026-08-22). The repository is older, but its first six
+#: weeks were research on other subjects, since moved to jlevy/thinking. A lower bound
+#: whose source is dated on or after it is starred, whoever proved it.
+RECENT_SINCE = date(2026, 8, 22)
+
 
 @dataclass(frozen=True, slots=True)
 class Source:
@@ -139,6 +158,8 @@ class Source:
     #: (the owner, 2026-09-27). Last names, or handles where no name is published; human
     #: authors and projects only, since an AI agent is never a credited author.
     credit: str | None = None
+    #: The source's own date for the version cited, where the bibliography gives one.
+    dated: date | None = None
 
     @property
     def credited(self) -> str:
@@ -168,10 +189,12 @@ def load_register() -> Register:
             venue=str(entry["venue"]),
             short_venue=entry.get("short_venue"),
             credit=entry.get("credit"),
+            dated=date.fromisoformat(entry["dated"]) if "dated" in entry else None,
         )
         for entry in bibliography["sources"]
     }
     check_credits(sources.values())
+    check_dates(sources.values())
     return Register(
         evidence={str(entry["id"]): entry for entry in evidence},
         results=results,
@@ -198,6 +221,25 @@ def check_credits(sources: Iterable[Source]) -> None:
                 f"{source.key}: credit line {line!r} is {len(line)} characters, "
                 f"over {TEXT_LIMIT}"
             )
+
+
+def check_dates(sources: Iterable[Source]) -> None:
+    """Fail on a source from the year recent results begin that does not say its date.
+
+    Without the date the star cannot be decided, and deciding it from the year would star a
+    source from before `RECENT_SINCE` as readily as one after it.
+    """
+    for source in sources:
+        if source.dated is None and (source.year or 0) >= RECENT_SINCE.year:
+            raise ValueError(
+                f"{source.key}: a {source.year} source needs `dated`, the date of the "
+                f"version cited, to decide whether its bounds are recent"
+            )
+
+
+def is_recent(source: Source) -> bool:
+    """Whether a bound this source establishes is a recent result."""
+    return source.dated is not None and source.dated >= RECENT_SINCE
 
 
 def record_name(n: int) -> str:
@@ -442,14 +484,19 @@ def lower_citation(
         item for item in own if is_novel_first_party(register.evidence[item], "lower-bound")
     ]
     if novel:
-        return _project(n, "lower", novel, value=value, assurance="verified", register=register)
+        # This project's own new bounds are recent by construction: its work began on
+        # RECENT_SINCE.
+        own_line = _project(
+            n, "lower", novel, value=value, assurance="verified", register=register
+        )
+        return {**own_line, "recent": True}
     # A replay of a published bound is still that source's bound; the entries this project
     # performed but did not originate carry the source's key like the author's own do.
     keys = {register.evidence[item].get("source_key") for item in own}
     if len(keys) != 1:
         raise ValueError(f"n={n} lower: evidence {own} names {len(keys)} sources, not one")
     source = _source(keys.pop(), register, f"n={n} lower")
-    return _external(
+    external = _external(
         n,
         "lower",
         source=source,
@@ -459,6 +506,7 @@ def lower_citation(
         assurance="verified",
         register=register,
     )
+    return {**external, "recent": is_recent(source)}
 
 
 def upper_citation(
@@ -518,6 +566,20 @@ def build_record() -> dict[str, Any]:
             "entries": [build_entry(n, load_case(n), register) for n in CORPUS.numbers],
         },
     }
+
+
+def recent_lower_bounds() -> frozenset[int]:
+    """The cases whose lower bound is a recent result: what the stage and the atlas star.
+
+    `build_composite_figure_data` reads its star from here rather than deciding it again,
+    so the two records cannot disagree about which bounds are new.
+    """
+    register = load_register()
+    return frozenset(
+        n
+        for n in CORPUS.numbers
+        if (citation := lower_citation(n, load_case(n), register)) and citation["recent"]
+    )
 
 
 def load_record() -> dict[str, Any]:
@@ -646,6 +708,8 @@ def review() -> None:
     for key, numbers in sorted(cited.items(), key=lambda item: (-len(item[1]), item[0])):
         shown = "" if len(numbers) > 12 else f": n = {numbers}"
         print(f"lower cites {key} ({len(numbers)}){shown}")
+    recent = [entry["n"] for entry in entries if entry["lower"] and entry["lower"]["recent"]]
+    print(f"lower recent, since {RECENT_SINCE.isoformat()} ({len(recent)}): n = {recent}")
     print()
     for kind, by_n in linked_results(entries).items():
         grouped: dict[tuple[str, ...], list[int]] = {}

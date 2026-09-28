@@ -78,9 +78,10 @@ PUBLICATION_HISTORY = (
         version="v0.4.2",
         first_published="September 28, 2026",
         result_scope=(
-            "The outside-certificates edition: the atlas takes in $s(32) = 6$ and "
-            "raises the lower bound for 22 more cases, among them $s(11) ≥ 3.875$ and "
-            "$s(17) \\gt 4.66001$, from outside certificates the register verifies."
+            "The recent-results edition: the atlas takes in $s(32) = 6$ and raises the "
+            "lower bound for 22 more cases, among them $s(11) ≥ 3.875$ and "
+            "$s(17) \\gt 4.66001$, from outside certificates the register verifies, and "
+            "its star now marks every recent result, credited case by case."
         ),
     ),
     PublicationHistoryEntry(

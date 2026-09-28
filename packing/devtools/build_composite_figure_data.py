@@ -31,6 +31,7 @@ from sympy.parsing.sympy_parser import (
     standard_transformations,
 )
 
+from devtools.build_bound_citations import recent_lower_bounds
 from sqpack.known_best import (
     KNOWN_BEST_COMPOSITES,
     KNOWN_BEST_CORPUS,
@@ -107,6 +108,19 @@ def _first_party_lower_bounds() -> frozenset[str]:
         and entry.get("performed_by") == "repository"
         and entry.get("novelty") in {"apparently-novel", "confirmed-novel"}
     )
+
+
+@cache
+def _recent_lower_bounds() -> frozenset[int]:
+    """The cases whose lower bound is a recent result, which the figure stars.
+
+    The star used to be `first_proved_here`, and so it went out at n = 11 when Kleddamag's
+    3.875, developed from T-026, became the verified bound. The owner (2026-09-27) wants the
+    figures to show the current state of understanding, with recent changes marked as new
+    and credit given case by case on each line. `devtools.build_bound_citations` decides it
+    from each source's date, and both records read that one decision.
+    """
+    return recent_lower_bounds()
 
 
 def _six(text: str) -> str:
@@ -279,6 +293,9 @@ def _entry(n: int) -> dict:
             "shown": status != "proved",
             "display": f"s({n}) \u2265 {_lower_text(lower_value)}",
             "first_proved_here": bool(set(verified["evidence"]) & _first_party_lower_bounds()),
+            # The star: a recent result, whoever proved it. Read from the citation record's
+            # own test, so the stage's line and the figure's star cannot disagree.
+            "recent_result": n in _recent_lower_bounds(),
             "evidence": sorted(str(item) for item in verified["evidence"]),
             "provenance": "frontier",
         },
@@ -346,6 +363,7 @@ def _totals(entries: list[dict]) -> dict:
         "lower_bound_first_proved_here": sum(
             1 for e in entries if e["lower"]["first_proved_here"]
         ),
+        "lower_bound_recent_result": sum(1 for e in entries if e["lower"]["recent_result"]),
         # Counted separately rather than folded in, which is the whole of D-385:
         # a source's word and our own argument are two facts, not one.
         "rigidity_catalogue_annotated": sum(

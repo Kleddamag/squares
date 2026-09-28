@@ -177,8 +177,8 @@ STATIC_KINDS = frozenset({"prefix", "shared-picture"})
 STATIC_TIMING = {"dwell": 0.4, "move": 0.28, "correct": 0.12, "settle": 0.35}
 
 # The poster's badge vocabulary, exactly as composite-figure.json states it (glyph, style); the
-# star is `lower.first_proved_here`. A badge outside this set fails the build rather than being
-# drawn.
+# star is `lower.recent_result`, a recent result whoever proved it. A badge outside this set
+# fails the build rather than being drawn.
 BADGE_VOCABULARY = {
     ("O", "solid"): "proved optimal",
     ("=", "solid"): "exact value known",
@@ -1153,7 +1153,7 @@ def load_facts(manifest_entries: dict[int, dict]) -> dict[str, dict]:
             "lower": lower_value,
             "kind": kind,
             "badges": badges,
-            "star": bool(lower["first_proved_here"]),
+            "star": bool(lower["recent_result"]),
             "open": open_items,
         }
     # One call to KaTeX for the whole corpus rather than one per expression: the cost is a node

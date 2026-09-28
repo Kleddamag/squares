@@ -247,7 +247,7 @@ function facts(overrides: Partial<CorpusFacts>): CorpusFacts {
   };
 }
 
-test("a bound first proved here is a `new result` star badge, first in the row", () => {
+test("a recent result is a `new result` star badge, first in the row", () => {
   const plan = planFacts(facts({ star: true, open: ["optimality"] }), 17);
   assert.deepEqual(plan.badges[0], { glyph: "★", style: "star", label: "new result" });
   assert.equal(BADGE_LABELS[`${NEW_RESULT_BADGE.glyph}/${NEW_RESULT_BADGE.style}`], "new result");

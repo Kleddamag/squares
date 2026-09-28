@@ -25,8 +25,8 @@ This repository contains:
   Each is replayed and reviewed here before it is registered.
 - **[A survey of the whole problem](#survey).** Every case `n = 1…100`, the primary
   literature retained and transcribed, and the bound a source *reports* kept apart from
-  the bound this repository has *verified*. Five of the lower bounds it shows were
-  proved here.
+  the bound this repository has *verified*. Twenty-six of the lower bounds it shows are
+  recent results, proved since August 2026; three of them were proved here.
 - **[An automated research workflow](#autonomous-research-process).** The results and
   the survey are produced and checked by AI agents running a recorded process:
   hypotheses registered before measurement, every claim graded, every defect logged.
@@ -41,7 +41,8 @@ developed from. Its figures are drawn from the point certificates they explain.
 *The retained `n = 1…100` atlas, with each packing normalized to its own container and
 labeled by its best-known side upper bound.
 For open cases, the strongest verified lower bound appears beneath it.
-A crimson star marks a lower bound proved here.
+A crimson star marks a recent result, a lower bound proved since August 2026; each
+bound’s source and credit are on the film’s citation line.
 The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.svg),
 [**PDF**](https://jlevy.github.io/squares/known-best-1-100.pdf), and
 [**high-resolution PNG**](packing/atlas/known-best/known-best-1-100@2x.png).*

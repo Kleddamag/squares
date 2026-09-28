@@ -10,7 +10,7 @@ export const BADGE_LABELS: Readonly<Record<string, string>> = {
   "R/solid": "rigid",
   "R/muted": "rigid (catalogue)",
 };
-/** The badge that says the lower bound on the stage was first proved here. */
+/** The badge that says the lower bound on the stage is a recent result, whoever proved it. */
 export const NEW_RESULT_BADGE = Object.freeze({ glyph: "★", style: "star" });
 const OPEN_LABELS: Readonly<Record<string, string>> = {
   optimality: "optimality",
@@ -25,7 +25,7 @@ export interface FactsBadge {
 }
 /** What the panel says about one n, before any of it is drawn. */
 export interface FactsPlan {
-  /** PROVEN's badges, in order: `new result` first when the lower bound was first proved here. */
+  /** PROVEN's badges, in order: `new result` first when the lower bound is a recent result. */
   badges: FactsBadge[];
   /** OPEN's items, or null when nothing is open and the section is left out, heading and all. */
   open: FactsBadge[] | null;
@@ -34,7 +34,7 @@ export interface FactsPlan {
 /**
  * The panel's content for one n.
  *
- * A bound first proved here is a badge of its own, `new result` under the red star, in the same
+ * A recent result is a badge of its own, `new result` under the red star, in the same
  * row and the same type as every other badge; it used to be a separate serif line under the
  * bound. OPEN is drawn only when something is open: a heading over the word "none" said nothing
  * the absence of the section does not.
@@ -287,7 +287,7 @@ export function createFactsView(document: Document, DATA: Corpus) {
       return line;
     }
     // PROVED, in the order a reader wants it: the chained bound on the side, then the badges, led by
-    // `new result` when its lower bound was first proved here, and OPEN below carries the questions.
+    // `new result` when its lower bound is a recent result, and OPEN below carries the questions.
     // The upper bound is here because a construction shows it, but the register has certified only
     // some constructions: where it reports one it has not checked, the bound stays on this line and
     // the citation section says `reported` against it (the owner, 2026-09-22, think-n56i).

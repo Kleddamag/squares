@@ -51,10 +51,11 @@ from fractions import Fraction
 from functools import cache
 from math import isqrt
 from pathlib import Path
-from typing import Final, NamedTuple, TypedDict
+from typing import Any, Final, NamedTuple, TypedDict
 
 from strif import atomic_output_file
 
+from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
 from sqpack.fractional.certificate import (
@@ -1860,18 +1861,30 @@ def number_line_marks(facts: list[Facts], headline: Facts, current: CurrentBound
     return "\n    ".join(marks)
 
 
-def starred_lower_bounds() -> int:
-    """How many cells in Figure 2 carry a lower bound this project proved.
-
-    The composite counts them in its own legend from the figure record; the caption
-    beside the image reads the same total, so the two cannot disagree.
-    """
-    totals = next(
+def _figure_totals() -> dict[str, Any]:
+    return next(
         composite["totals"]
         for composite in load_figure_record()["composites"]
         if composite["stem"] == COMPOSITE_STEM.name
     )
-    return int(totals["lower_bound_first_proved_here"])
+
+
+def starred_lower_bounds() -> int:
+    """How many cells in Figure 2 carry the star: a recent lower bound, whoever proved it.
+
+    The composite counts them in its own legend from the figure record; the caption
+    beside the image reads the same total, so the two cannot disagree.
+    """
+    return int(_figure_totals()["lower_bound_recent_result"])
+
+
+def lower_bounds_proved_here() -> int:
+    """How many of Figure 2's lower bounds are this project's own new results.
+
+    Not the star's count: the star marks recent results, most of them by others, and a
+    sentence about what this research agenda produced must not borrow it.
+    """
+    return int(_figure_totals()["lower_bound_first_proved_here"])
 
 
 def novel_results() -> int:
@@ -2165,6 +2178,8 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
             REPO / "docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md"
         ),
         "N_STARRED": str(starred_lower_bounds()),
+        "N_PROVED_HERE": str(lower_bounds_proved_here()),
+        "RECENT_SINCE_MONTH": f"{RECENT_SINCE:%B %Y}",
         "SOURCE_URL": MARKDOWN_OUTPUT.name,
         "REPO_URL": REPO_URL,
         # The top of the page names when the result was first published, when it was last

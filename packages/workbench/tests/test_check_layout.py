@@ -268,7 +268,7 @@ def test_new_result_is_a_badge_in_the_badges_own_type() -> None:
     assert any("has no `new result`" in item for item in facts_findings(not_a_star, star=True))
     unearned = _layer(star=True, open_items=2)
     assert any(
-        "where no bound was first proved" in item
+        "where no bound is a recent result" in item
         for item in facts_findings(unearned, star=False)
     )
 

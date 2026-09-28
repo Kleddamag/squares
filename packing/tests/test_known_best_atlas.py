@@ -631,11 +631,13 @@ def test_known_best_composite_rasters_scale_the_one_canvas_by_whole_numbers() ->
 def test_the_1_100_canvas_is_what_its_specification_computes() -> None:
     """The published figure's numbers, as the golden answer to the formulas.
 
-    2400 by 2896, a legend at 2732 and a footer at 2804/2834/2864 were absolute
-    constants until the layout was parameterized, and they are what
-    `CompositeCanvas` returns for ten columns of ten. Pinning them literally here is
-    what makes the derivation checkable: a formula that quietly stopped agreeing with
-    the drawing would fail this before it reached a byte comparison.
+    2400 by 2896, a legend at 2724 and a footer at 2790/2817/2844/2871 are what
+    `CompositeCanvas` returns for ten columns of ten. They were absolute constants
+    until the layout was parameterized, and the footer was three lines until the
+    citations line joined it inside the same canvas (2026-09-28). Pinning them
+    literally here is what makes the derivation checkable: a formula that quietly
+    stopped agreeing with the drawing would fail this before it reached a byte
+    comparison.
     """
     canvas = known_best_builder.PRIMARY_COMPOSITE
     composite = canvas.spec
@@ -646,10 +648,11 @@ def test_the_1_100_canvas_is_what_its_specification_computes() -> None:
     assert composite.card_units == 1256
     assert (canvas.width, canvas.height) == (2400, 2896)
     assert canvas.grid_bottom == 2694
-    assert canvas.legend_baseline == 2732
-    assert canvas.explainer_baseline == 2804
-    assert canvas.credit_baseline == 2834
-    assert canvas.stamp_baseline == 2864
+    assert canvas.legend_baseline == 2724
+    assert canvas.explainer_baseline == 2790
+    assert canvas.citations_baseline == 2817
+    assert canvas.credit_baseline == 2844
+    assert canvas.stamp_baseline == 2871
     assert (composite.svg_name, composite.pdf_name) == (
         "known-best-1-100.svg",
         "known-best-1-100.pdf",
@@ -663,7 +666,7 @@ def test_the_poster_canvas_is_what_its_specification_computes() -> None:
     """The poster's numbers, as the golden answer to the same formulas.
 
     Written as literals for the same reason the figure's are: 4224 by 4912, a legend at
-    4748 and a footer at 4820/4850/4880 are what `CompositeCanvas` returns for eighteen
+    4740 and a footer at 4806/4833/4860/4887 are what `CompositeCanvas` returns for eighteen
     columns of eighteen, and a formula that quietly stopped agreeing with the drawing
     should fail here rather than in a byte comparison.
     """
@@ -677,10 +680,11 @@ def test_the_poster_canvas_is_what_its_specification_computes() -> None:
     assert composite.cases.label == "n=1..324"
     assert (canvas.width, canvas.height) == (4224, 4912)
     assert canvas.grid_bottom == 4710
-    assert canvas.legend_baseline == 4748
-    assert canvas.explainer_baseline == 4820
-    assert canvas.credit_baseline == 4850
-    assert canvas.stamp_baseline == 4880
+    assert canvas.legend_baseline == 4740
+    assert canvas.explainer_baseline == 4806
+    assert canvas.citations_baseline == 4833
+    assert canvas.credit_baseline == 4860
+    assert canvas.stamp_baseline == 4887
     assert (composite.svg_name, composite.pdf_name) == (
         "known-best-1-324.svg",
         "known-best-1-324.pdf",
@@ -692,13 +696,49 @@ def test_the_poster_canvas_is_what_its_specification_computes() -> None:
     assert composite.stem in known_best_builder.SUMMARY_PROSE
 
 
+def test_every_composite_footer_says_where_the_citations_are() -> None:
+    """The cards print bounds and no sources, so the footer says where the sources are.
+
+    The owner asked for it on 2026-09-28: "citations for all results are available in
+    the squares project". It is the footer's second line, under the explainer and above
+    the credit, and the accessible description carries the same sentence so a reader
+    who never sees the drawing is told as well. Read off both retained composites, since
+    the line is shared and a canvas that dropped it should fail by name.
+    """
+    citations = known_best_builder.SUMMARY_CITATIONS
+    assert citations.endswith(known_best_builder.SUMMARY_REPOSITORY)
+    order = ("explainer", "citations", "credit", "release-stamp")
+    text_width = known_best_builder._text_width  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
+    for canvas in known_best_builder.COMPOSITES:
+        root = ET.fromstring(canvas.svg_path.read_text(encoding="utf-8"))
+        footer = {
+            node.attrib["data-feature"]: node
+            for node in root.iter(f"{{{SVG['svg']}}}text")
+            if node.attrib.get("data-feature") in order
+        }
+        assert footer["citations"].text == citations, canvas.spec.stem
+        assert [float(footer[feature].attrib["y"]) for feature in order] == [
+            float(canvas.explainer_baseline),
+            float(canvas.citations_baseline),
+            float(canvas.credit_baseline),
+            float(canvas.stamp_baseline),
+        ], canvas.spec.stem
+        # Centred, so it clears both edges when its advance fits between the margins.
+        room = canvas.width - 2 * known_best_builder.SUMMARY_SIDE_MARGIN
+        assert text_width(citations, known_best_builder.SUMMARY_FOOTER_SIZE) < room
+        description = root.find("svg:desc", SVG)
+        assert description is not None
+        assert description.text is not None
+        assert description.text.endswith(f" {citations}."), canvas.spec.stem
+
+
 def test_a_second_composite_is_a_specification_and_not_a_second_set_of_constants() -> None:
     """Nothing in the poster's geometry is absolute; all of it is the figure's, shifted.
 
     This is the whole point of the parameterization, and it is asserted as differences
     rather than as literals -- the literals are the test above -- because what is being
     checked here is that no constant was edited by hand: eight more columns is eight more
-    column pitches of width, and eight more rows moves the legend and all three footer
+    column pitches of width, and eight more rows moves the legend and all four footer
     lines by eight row pitches.
     """
     poster = known_best_builder.COMPOSITES[1]
@@ -712,6 +752,7 @@ def test_a_second_composite_is_a_specification_and_not_a_second_set_of_constants
     assert poster.grid_bottom == figure.grid_bottom + shift
     assert poster.legend_baseline == figure.legend_baseline + shift
     assert poster.explainer_baseline == figure.explainer_baseline + shift
+    assert poster.citations_baseline == figure.citations_baseline + shift
     assert poster.credit_baseline == figure.credit_baseline + shift
     assert poster.stamp_baseline == figure.stamp_baseline + shift
     assert poster.height == figure.height + shift
@@ -1185,16 +1226,17 @@ def test_fast_composite_check_rejects_a_stale_version_stamp() -> None:
     )
 
 
-def test_the_version_leaves_out_the_stamped_composites_the_video_code_and_readmes() -> None:
+def test_the_version_leaves_out_the_stamped_composites_the_video_code_and_docs() -> None:
     """What `sqpack.release` does not count as data is what the stamp would chase.
 
     Each composite and every export drawn from it carries the version, so each must be
     outside the data or re-stamping it would be a data commit; anything else left out
     is data the version stops seeing. Two other kinds are left out, and neither is data:
-    the video spikes, which are code, and the registers' own READMEs, which are the prose
-    on how a record is written. `e560571f2` edited `frontier/README.md` alone and moved
-    the version every artifact prints (2026-09-22), which would have re-stamped the atlas
-    over a documentation change.
+    the video spikes, which are code, and the prose on how a record is written or drawn --
+    the registers' own READMEs and the figure playbook. `e560571f2` edited
+    `frontier/README.md` alone and moved the version every artifact prints (2026-09-22),
+    and `6f6bc89ec` did the same with the playbook's legend counts; each would have
+    re-stamped the atlas over a documentation change.
     """
 
     def tracked(*pathspec: str) -> set[str]:
@@ -1217,13 +1259,17 @@ def test_the_version_leaves_out_the_stamped_composites_the_video_code_and_readme
         family.add(render_composite_pdf.composite_pdf(stem))
     stamped = {path.resolve().relative_to(REPOSITORY).as_posix() for path in family}
     video = "packing/atlas/known-best/video/"
-    readmes = {"packing/frontier/README.md", "packing/atlas/known-best/README.md"}
-    assert {
-        path for path in left_out if not path.startswith(video) and path not in readmes
-    } == stamped
+    docs = {
+        "packing/frontier/README.md",
+        "packing/atlas/known-best/README.md",
+        "packing/atlas/known-best/FIGURE-PLAYBOOK.md",
+    }
+    assert {path for path in left_out if not path.startswith(video) and path not in docs} == (
+        stamped
+    )
     assert any(path.startswith(video) for path in left_out)
-    # Both READMEs are tracked, so leaving them out is a rule about them and not a typo.
-    assert readmes <= left_out
+    # The three are tracked, so leaving them out is a rule about them and not a typo.
+    assert docs <= left_out
 
 
 def _unitsquare_digests() -> dict[int, str]:

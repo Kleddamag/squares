@@ -55,7 +55,8 @@ in 1979 (Figure 1), shows
 
 **Frontier update, September 22, 2026:** We have verified Kleddamag’s stronger lower
 bound, developed from the T-026 certificate below, so the
-[current bracket]({{FRONTIER_N11_URL}}) is $3.875 < s(11) \le {{BEST_PACKING_TEX}}$. The
+[current bracket]({{FRONTIER_N11_URL}}) is
+${{VERIFIED_LOWER_DEC}} < s(11) \le {{BEST_PACKING_TEX}}$. The
 [mathematical review]({{FRONTIER_N11_REVIEW_URL}}) records the replays and proof.
 This article retains the T-018, T-025, and T-026 proofs below.
 
@@ -185,8 +186,8 @@ The proof presented here is of this kind.
 <video class="film" controls preload="none" playsinline width="1920" height="1080"
     poster="ascent-n1-100-poster.png"
     aria-label="The atlas built one unit square at a time, from n = 1 to n = 100, at 1080p60.">
-<source src="https://github.com/jlevy/squares/releases/download/v0.4.1/ascent-n1-100-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
-<a href="https://github.com/jlevy/squares/releases/download/v0.4.1/ascent-n1-100-1080p60-citations.mp4">Download
+<source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
+<a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">Download
 the film</a>. </video>
 
   </div>
@@ -197,7 +198,7 @@ the film</a>. </video>
   provenance. PDFs are available for <a href="known-best-1-100.pdf">this figure</a> and the
   <a href="known-best-1-324.pdf">full 324-case poster</a>. The film below the atlas draws the same hundred
   packings one square at a time, each step naming the bound it reaches and where that bound comes from; the
-  <a href="https://github.com/jlevy/squares/releases/download/v0.4.1/ascent-n1-324-1080p60-citations.mp4">full
+  <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">full
   <span class="tex">n = 1 \ldots 324</span> ascent</a> runs 8m 14s.</figcaption>
 </figure>
 
@@ -223,7 +224,7 @@ The figures below illustrate this certificate.
 
 <figure>
   <div class="line-fig kpress-diagram">
-  <svg viewBox="0 0 700 260" role="img" aria-label="Number line from 3.75 to 3.90 showing the previous lower bound {{PRIOR_LOWER_DEC}}, the point and threshold bounds proved here up to {{CURRENT_BOUND_DEC}}, and the best known packing at {{BEST_PACKING_DEC}}">
+  <svg viewBox="0 -32 700 292" role="img" aria-label="Number line from 3.75 to 3.90 showing the previous lower bound {{PRIOR_LOWER_DEC}}, the point and threshold bounds proved here up to {{CURRENT_BOUND_DEC}}, the current verified lower bound {{VERIFIED_LOWER_DEC}} ({{VERIFIED_SOURCE}}), and the best known packing at {{BEST_PACKING_DEC}}">
     <rect x="{{BAND_X}}" y="69.5" width="{{BAND_W}}" height="13" fill="var(--cert-accent-wash)"/>
     <line x1="20" y1="76" x2="680" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1"/>
     <g stroke="var(--kpress-doc-muted)" stroke-width="1">
@@ -238,16 +239,21 @@ The figures below illustrate this certificate.
     <g text-anchor="middle">
       <text x="{{PRIOR_X}}" y="52" fill="var(--kpress-doc-text)">{{PRIOR_LOWER_DEC}}</text>
       <text x="{{PRIOR_X}}" y="20" fill="var(--kpress-doc-muted)">{{PRIOR_SOURCE}}</text>
-      <text x="{{BEST_X}}" y="52" fill="var(--kpress-doc-text)">{{BEST_PACKING_DEC}}</text>
-      <text x="{{BEST_X}}" y="20" fill="var(--kpress-doc-muted)">{{BEST_SOURCE}}</text>
+      <text x="{{BEST_X}}" y="20" fill="var(--kpress-doc-text)">{{BEST_PACKING_DEC}}</text>
+      <text x="{{BEST_X}}" y="-12" fill="var(--kpress-doc-muted)">{{BEST_SOURCE}}</text>
     </g>
-    <line x1="{{BEST_X}}" y1="56" x2="{{BEST_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
+    <line x1="{{BEST_X}}" y1="24" x2="{{BEST_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
     <circle cx="{{BEST_X}}" cy="76" r="3.2" fill="var(--kpress-doc-muted)"/>
+    <line x1="{{VERIFIED_X}}" y1="56" x2="{{VERIFIED_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
+    <circle cx="{{VERIFIED_X}}" cy="76" r="3.2" fill="var(--kpress-doc-muted)"/>
+    <text x="{{VERIFIED_X}}" y="52" dx="-6" text-anchor="end" fill="var(--kpress-doc-text)">{{VERIFIED_LOWER_DEC}}, {{VERIFIED_SOURCE}}</text>
     {{NUMBER_LINE_MARKS}}
   </svg>
   </div>
   <figcaption><strong>Figure 3.</strong> Bounds on <span class="tex">s(11)</span>. The shaded band is the gap left by the certificates explained here. At T-026’s bound the gap is
-  <span class="tex">{{CURRENT_GAP}}</span> wide, down from <span class="tex">{{GAP_BEFORE}}</span> at Stromquist’s bound.</figcaption>
+  <span class="tex">{{CURRENT_GAP}}</span> wide, down from <span class="tex">{{GAP_BEFORE}}</span> at Stromquist’s bound.
+  The current verified lower bound, <span class="tex">{{VERIFIED_LOWER_DEC}}</span>
+  ({{VERIFIED_SOURCE}}), leaves a gap of <span class="tex">{{VERIFIED_GAP}}</span> beside Trump’s packing.</figcaption>
 </figure>
 
 ## The Five Conditions for a Point Certificate

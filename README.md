@@ -70,11 +70,11 @@ The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.sv
 **The atlas is also a film.** The same drawing is built one square at a time, at
 1080p60, each step naming the bound it reaches, where that bound comes from, and whether
 this repository has certified it:
-[**`n = 1…100`**](https://github.com/jlevy/squares/releases/download/v0.4.1/ascent-n1-100-1080p60-citations.mp4)
+[**`n = 1…100`**](https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4)
 (2m 20s, 38 MB) and the
-[**full `n = 1…324` ascent**](https://github.com/jlevy/squares/releases/download/v0.4.1/ascent-n1-324-1080p60-citations.mp4)
+[**full `n = 1…324` ascent**](https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4)
 (8m 14s, 206 MB), both on the
-[`v0.4.1` release](https://github.com/jlevy/squares/releases/tag/v0.4.1) with the
+[`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2) with the
 receipt that records what each file is and the page it was drawn from.
 GitHub strips `<video>` from Markdown, so these are links rather than an inline player;
 the [explainer page](https://jlevy.github.io/squares/) plays them.

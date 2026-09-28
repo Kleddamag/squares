@@ -294,7 +294,7 @@ Four fields say what a figure draws — first `n`, last `n`, columns, filename s
 the rest of the geometry follows: rows, the canvas, the legend and footer baselines, the
 layout string, the manifest record and the figure record’s own legend totals.
 Nothing is absolute, which is what a second entry demonstrated: eighteen columns is
-eight more column pitches of width, and eighteen rows moves the legend and all three
+eight more column pitches of width, and eighteen rows moves the legend and all four
 footer lines by eight row pitches.
 
 |  | figure | poster |

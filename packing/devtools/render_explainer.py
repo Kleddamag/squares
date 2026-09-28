@@ -304,6 +304,11 @@ SITE_NAME = "Squares"
 #: The atlas the Figure 2 caption sends a reader to browse, linked as a directory.
 ATLAS = PACKING / "atlas" / "known-best"
 BEST_RENDERING = ATLAS / "rendering" / "n-011.svg"
+#: Who each bound is credited to, as the atlas stage prints it. Figure 3 reads the
+#: current verified lower bound on s(11) and its credit here: the record's lower value is
+#: the frontier record's `verified_lower_bound`, and `build_bound_citations --check` holds
+#: the two together, so the figure moves when the register does.
+BOUND_CITATIONS = ATLAS / "bound-citations.json"
 # The atlas composite of every known-best packing, shown as Figure 2 and served
 # beside the page rather than inlined: the PNG is the image, the PDF the link.
 #: The composite travels with the page: the SVG the figure shows, the PDF it links for
@@ -1804,9 +1809,50 @@ LINE_LOW, LINE_HIGH, LINE_X0, LINE_X1 = 3.75, 3.90, 20.0, 680.0
 LINE_AXIS_Y = 76.0
 LINE_FIRST_ROW = 128.0
 LINE_ROW = 32.0
-# The viewBox height the figure declares. A certificate count that would not fit
-# under the axis fails the render rather than drawing off the bottom of the box.
+# The bottom of the viewBox the figure declares. A certificate count that would not fit
+# under the axis fails the render rather than drawing off the bottom of the box. The box
+# starts one row above zero, where Trump's packing labels sit so the verified bound's
+# label can take their row beside the axis.
 LINE_HEIGHT = 260.0
+
+
+@dataclass(frozen=True, slots=True)
+class VerifiedLowerBound:
+    """The case's current verified lower bound, as the citation record states it."""
+
+    value: Fraction
+    decimal: str
+    #: The reference without its venue, `Kleddamag after Levy 2026`: who and when, which
+    #: is what the figure's other sources print (`Stromquist 1984/2003`).
+    credit: str
+
+
+@cache
+def verified_lower_bound(n: int) -> VerifiedLowerBound:
+    """The verified lower bound on s(n) and its credit, read from the citation record.
+
+    Figure 3 marks it beside Trump's packing. The value is the frontier record's
+    `verified_lower_bound`, carried by `bound-citations.json`; the credit is that line's
+    reference, `authors year, venue` as `build_bound_citations.cite` writes it, cut at
+    the venue. A line of another shape, a bound the register has not verified, or one
+    carrying a note of this project's fails the render rather than being cut somewhere
+    else.
+    """
+    entries = json.loads(BOUND_CITATIONS.read_text(encoding="utf-8"))["citations"]["entries"]
+    lower = next((entry["lower"] for entry in entries if entry["n"] == n), None)
+    if lower is None or lower["assurance"] != "verified" or lower["note"] is not None:
+        raise SystemExit(
+            f"{BOUND_CITATIONS.name}: n = {n} has no verified lower bound without a note "
+            f"for Figure 3 to mark: {lower!r}"
+        )
+    reference = re.fullmatch(r"(.+ \d{4}), ([^,]+)", lower["text"])
+    if reference is None:
+        raise SystemExit(
+            f"{BOUND_CITATIONS.name}: n = {n} lower line {lower['text']!r} is not "
+            "`authors year, venue`"
+        )
+    value = Fraction(lower["value"])
+    return VerifiedLowerBound(value=value, decimal=decimal(value), credit=reference[1])
 
 
 def line_x(value: float) -> float:
@@ -2146,6 +2192,14 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
     """
     headline_frac = f"{headline.outer_side.numerator}/{headline.outer_side.denominator}"
     current = current_bound_facts()
+    verified = verified_lower_bound(headline.n)
+    # Figure 3 hangs this mark's label to the left of its tick, over the band and clear
+    # of the certificate rows, which holds only while it lies between the two.
+    if not current.bounded_side < verified.value < BEST_PACKING:
+        raise SystemExit(
+            f"the verified lower bound {verified.decimal} is not between T-026's bound and "
+            "the best packing; Figure 3's marks would stack wrong"
+        )
     package_side = Fraction(
         json.loads(THIRDPARTY_CERTIFICATE.read_text(encoding="utf-8"))["outer_side"]
     )
@@ -2251,7 +2305,11 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T026_REVIEW_URL": repo_file(T026_REVIEW),
         "T026_RECORD_URL": repo_file(CURRENT_BOUND_RECORD),
         "NUMBER_LINE_MARKS": number_line_marks(facts, headline, current),
+        "VERIFIED_LOWER_DEC": verified.decimal,
+        "VERIFIED_SOURCE": verified.credit,
+        "VERIFIED_GAP": truncated(BEST_PACKING - verified.value, tex=True),
         "PRIOR_X": f"{line_x(float(PRIOR_LOWER)):.0f}",
+        "VERIFIED_X": f"{line_x(float(verified.value)):.0f}",
         "BEST_X": f"{line_x(float(BEST_PACKING)):.0f}",
         "BAND_X": f"{line_x(float(current.bounded_side)):.0f}",
         "BAND_W": f"{line_x(float(BEST_PACKING)) - line_x(float(current.bounded_side)):.0f}",
@@ -2540,6 +2598,7 @@ RENDER_INPUTS = (
     PACKING / "src" / "sqpack",
     PACKING / "frontier" / "results.yaml",
     PACKING / "atlas" / "known-best" / "composite-figure.json",
+    BOUND_CITATIONS,
     PACKING / "atlas" / "known-best" / "rendering" / "n-011.svg",
     *COMPOSITE_ASSETS,
     TEMPLATE,

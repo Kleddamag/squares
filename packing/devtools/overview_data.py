@@ -74,7 +74,9 @@ def math_html(tex: str, *, display: bool = False) -> str:
     literal. This is the span its Markdown renderer emits: TeX that the page's KaTeX
     scripts enhance, with server-rendered MathML as the no-script fallback.
     """
-    from kpress.format.markdown import _render_math  # noqa: PLC0415
+    from kpress.format.markdown import (  # noqa: PLC0415
+        _render_math,  # pyright: ignore[reportPrivateUsage]
+    )
 
     return _render_math(tex, display="display" if display else "inline", math="auto", env={})
 
@@ -156,13 +158,6 @@ class Overview:
     groups: list[tuple[str, list[Result]]]
 
 
-def _sources() -> dict[str, dict]:
-    return {
-        source["key"]: source
-        for source in safe_load(BIBLIOGRAPHY.read_text(encoding="utf-8"))["sources"]
-    }
-
-
 def _evidence() -> dict[str, dict]:
     return {
         entry["id"]: entry
@@ -216,45 +211,28 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
 
 def load() -> Overview:
     """Everything the overview shows, grouped as `RESULTS.md` groups it."""
-    register = safe_load(RESULTS.read_text(encoding="utf-8"))["results"]
-    sources = _sources()
+    register = safe_load(RESULTS.read_text(encoding="utf-8"))
+    sources = render_results.load_sources()
     evidence = _evidence()
-    ordered = sorted(register, key=render_results._order)  # noqa: SLF001
     results: list[Result] = []
     groups: list[tuple[str, list[Result]]] = []
-
-    ours = [
-        Result(
-            r,
-            group="This project",
-            credit="This project",
-            ours=True,
-            records=_records(r, evidence),
-        )
-        for r in ordered
-        if not r.get("attribution")
-    ]
-    groups.append((f"This project{APOSTROPHE}s results", ours))
-    results.extend(ours)
-    others = [r for r in ordered if r.get("attribution")]
-    for lineage, title in render_results.OTHERS:
-        members = sorted(
-            (r for r in others if render_results._lineage(r, sources) == lineage),  # noqa: SLF001
-            key=lambda r: (int(r["confirmation"][1]) >= 3, *render_results._order(r)),  # noqa: SLF001
-        )
+    for title, members in render_results.grouped_results(register, sources):
         group = [
             Result(
                 r,
                 group=title,
-                credit=render_results._credit(r, sources).replace(r"\|", "|"),  # noqa: SLF001
-                ours=False,
+                credit=(
+                    render_results.credit(r, sources).replace(r"\|", "|")
+                    if r.get("attribution")
+                    else "This project"
+                ),
+                ours=not r.get("attribution"),
                 records=_records(r, evidence),
             )
             for r in members
         ]
-        if group:
-            groups.append((title, group))
-            results.extend(group)
+        groups.append((title, group))
+        results.extend(group)
 
     cases = {case["n"]: case for case in load_cases()}
     citations = json.loads(CITATIONS.read_text(encoding="utf-8"))["citations"]["entries"]

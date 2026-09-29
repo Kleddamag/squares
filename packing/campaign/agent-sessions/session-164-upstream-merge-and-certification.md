@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-29T22:35:05Z'
+  deadline_at: '2026-09-29T22:50:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-niqx
   status: in_progress
@@ -154,7 +154,7 @@ session:
     bead: think-niqx
     objective: Validate the frozen efficiency candidate with the default push tier, publish it only after
       that tier passes, and start the hosted fast and deferred workflows on the new PR head.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Focused scheduler, selector, shard and budget contracts passed; their end-to-end behavior
       now needs a qualifying candidate gate and hosted source-bound execution.
@@ -168,14 +168,49 @@ session:
       match the candidate commit.
     fallback: Retain the failed receipt, repair the named defect and rerun affected focused checks before
       another integrated push attempt.
+    outcome: >-
+      Candidate 1afb75ca6 passed all 7,714 selected tests with 9 skips, but failed the
+      new review's missing document-map entry. Documentation-only repair 9174140a8
+      passed all 51 selected steps and 1,733 tests in 181.36 seconds and was published.
+      Required packing 36636555656, page 36636555705 and deferred 36636552951 began
+      concurrently. The deferred resolver selected merge commit
+      0376416ec9ab3220bb87e52888ddb72919d3e861, and all nine workers started.
+    evidence:
+    - docs/project/reviews/review-2026-09-29-validation-parallelism.md
+    - packing/campaign/agent-sessions/session-164-efficiency-push.log
+    stop_reason: The repaired candidate is published and its hosted checks are running.
+    next_action: Integrate the independently reviewed parallel follow-ups and measure the new
+      worker allocation while the hosted fanout runs.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-xcij
+    objective: Integrate main/daily workflow parity, child-pytest timing receipts and exclusive
+      pool-heavy test allocation, retaining exact coverage and measuring the resulting gate.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: The broad gate exposed a CPU-active tail and missing node timing; the
+      first hosted fanout can run while these isolated follow-ups complete.
+    budget_minutes: 30
+    started_at: '2026-09-29T21:58:08Z'
+    deadline_at: '2026-09-29T22:28:08Z'
+    expected_output: Reviewed integrated source, a complete local push receipt with phase
+      allocation and node timing, and source-specific hosted results or explicit failures.
+    validation_command: cd packing && packing-validate --push --since 9174140a8
+    kill_condition: Missing or duplicated test coverage, hidden child failures, uncontrolled
+      worker multiplication or a receipt bound to the wrong source prevents publication.
+    fallback: Retain the last passing published checkpoint and repair the named failing
+      contract without deleting mathematical checks.
     outcome: null
     evidence:
     - docs/project/reviews/review-2026-09-29-validation-parallelism.md
     stop_reason: null
-    next_action: Run the default push tier, compare its selected files with the retained baseline, then
-      publish the passing candidate and inspect required hosted checks.
+    next_action: Measure the integrated think-08ht, think-14lz, think-ysvk and think-0atx
+      candidate while hosted checks continue; use explicit run IDs until think-2r96
+      completes event-aware recent-run sampling.
   budget:
-    wall_minutes: 150
+    wall_minutes: 165
     max_cycles: 6
     slice_minutes: 30
     finalization_minutes: 15
@@ -410,6 +445,14 @@ session:
   - 'Parallel efficiency follow-ups: think-08ht main/daily fanout passed independent Sol
     review and five focused tests in an isolated checkout; think-14lz child-pytest
     observability and think-ysvk pool-heavy allocation are in implementation and review.'
+  - 'Integrated follow-up contracts: 283 passed in 54.36 seconds. At fbf27b276, actual
+    collection partitions 7,744 non-exhaustive nodes into 7,743 normal nodes and one
+    pool-heavy atlas node with no omission or overlap. The later wall reporter adds
+    its own tests; final execution counts will be recorded separately.'
+  - 'Post-merge reporting think-0atx passed 74 focused tests, budget checks, Ruff and
+    BasedPyright, and independent Sol review. Review corrected unrelated-job inclusion,
+    missing or duplicated prerequisite inventory, unfinished walls, and critical endpoint
+    attribution. Automatic recent sampling remains think-2r96; explicit run IDs work.'
   - 'Sol synthetic-fixture repair: all 39 synopsis-handoff tests passed in 5.38 seconds; Ruff and BasedPyright
     clean.'
   - Final read-only Sol gap audit identified one stale minimum-independence sentence; the corrected review

@@ -45,8 +45,8 @@ The coordinator owns measurements, research-status records and publication.
 
 The local change must give the reachable pytest selection an exclusive CPU allocation
 while allowing independent edit checks to retain their existing concurrency.
-It must preserve the selected files and marker, propagate failures, respect explicit
-resource overrides, and bound nested pools.
+It must preserve the selected files and exact non-exhaustive test union, propagate
+failures, respect explicit resource overrides, and bound nested pools.
 Focused regressions must demonstrate these properties on both a single-CPU host and a
 multi-CPU host.
 
@@ -107,7 +107,11 @@ The previous published checkpoint `5d276119c` passed required packing and page C
 the complete
 [deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36630574302). Those
 results certify the predecessor tree, not the new scheduling implementation.
-Hosted execution of the new fanout remains pending.
+Published repair `9174140a8` passed all 51 selected push steps and 1,733 tests in 181.36
+seconds. The new
+[deferred run](https://github.com/jlevy/squares/actions/runs/36636552951) resolved PR
+merge commit `0376416ec9ab3220bb87e52888ddb72919d3e861` and started all nine workers
+concurrently; its final result and measured walls remain pending.
 
 The local run also exposed an allocation limit: nine workers had drained their queues
 while one remained CPU-active.
@@ -117,8 +121,24 @@ seconds in one call, and its existing per-case pool obeys `PACK_JOBS=1`. `think-
 adds child-pytest timing and live worker receipts; `think-ysvk` gives explicitly
 pool-heavy tests a separate, exclusive inner-worker phase while keeping the remaining
 tests parallel. Neither follow-up changes the test assertions.
-Post-merge and daily workflow parity is implemented and independently reviewed in an
-isolated checkout under `think-08ht`; it awaits integration and hosted validation.
+Post-merge and daily workflow parity is integrated after independent review under
+`think-08ht`; hosted validation remains pending.
+Child progress receipts and pool-heavy allocation are also integrated.
+Before the wall-reporting follow-up, collection at `fbf27b276` found 7,744 selected
+non-exhaustive nodes, partitioned into 7,743 ordinary nodes and the single whole-atlas
+node, with an exact union and no overlap.
+The integrated workflow, allocation, receipt and budget contracts passed 283 tests in
+54.36 seconds. The next full run will measure the allocation after the wall-reporting
+tests are added.
+
+Post-merge wall reporting is integrated under `think-0atx`, with 74 focused tests and
+independent review. The reporter excludes unrelated workflow jobs, refuses missing or
+duplicated prerequisites, leaves unfinished walls unknown, and identifies the latest
+completing prerequisite as the critical endpoint.
+New wall entries name their pending measurement owner; derived ceilings are not recorded
+as observations. Recent-run sampling still assumes pull-request events; `think-2r96`
+tracks that separate limitation.
+Explicit run IDs support the first post-merge measurement.
 
 The full native external rectangle replay and T-057 complete row-minimum census remain
 separate mathematical obligations; changing validation scheduling establishes neither.
@@ -132,7 +152,8 @@ conservative allocation while another gate holds it.
 It also refuses missing or extra selector-summary lines, preserves explicit worker
 settings, keeps edit failures in the ordered report, and releases the marker on
 interruption. Its 28 focused tests and clean lint and type checks cover those controls;
-an integrated candidate push is still needed to confirm the selected workload and wall.
+the first integrated run is recorded above, and the later pool-heavy phase still needs
+its integrated measurement.
 
 The separate selector refinement has a narrow coverage claim: it may remove walker
 evidence that exists only in comments or in the exact benign
@@ -160,7 +181,7 @@ and attempt.
 The final focused workflow, shard and budget suite passed 93 tests with Ruff
 and BasedPyright clean.
 The separate pending-measurement budget contract passed 55 tests.
-The hosted jobs still need to execute on the published candidate.
+The hosted jobs have started and still need to finish on the published candidate.
 
 New hosted ceilings are derived from predecessor Step or JUnit times plus setup.
 Their measured-wall fields remain null with `pending_measurement: think-tddk`; the first

@@ -165,20 +165,24 @@ alone is not full pre-merge evidence.
 
 | Tier | Who runs it, and when | Steps | Ceiling | Cost when last measured |
 | --- | --- | ---: | ---: | --- |
-| `--records` | contributor, before touching a registry; also every pull request | 33 of 80 | 300 s | 11.0 s |
-| `--edit` | contributor, in the edit loop | 48 of 80 | 240 s | 59.4 s |
+| `--records` | contributor, before touching a registry; also every pull request | 35 of 82 | 300 s | 11.0 s |
+| `--edit` | contributor, in the edit loop | 50 of 82 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the seven tiers below | 69 of 80 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 50 of 80 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 80 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 80 | 111 s | 55.67 s on CI, the mean of three readings |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 80 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 80 | 168 s | 109.92 s on exact head `be28ad5a`, the geometric mean of attempts 1–3 of run 35182460400 |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 80 | 154 s | 102.91 s, the geometric mean of five readings spanning 73.90–133.81 s (1.81x) across runs 35182460400, 35634463193, 35637674151 and 35638434973 |
-| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 80 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 80 of 80 | 3600 s | split across four jobs; not clocked whole |
+| `--fast` | contributor, at a block boundary; the union of the seven tiers below | 71 of 82 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 52 of 82 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 82 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 82 | 111 s | 55.67 s on CI, the mean of three readings |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 82 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 82 | 168 s | 109.92 s on exact head `be28ad5a`, the geometric mean of attempts 1–3 of run 35182460400 |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 82 | 154 s | 102.91 s, the geometric mean of five readings spanning 73.90–133.81 s (1.81x) across runs 35182460400, 35634463193, 35637674151 and 35638434973 |
+| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 82 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
+| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 82 of 82 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
-`--geometry`’s current cost is the geometric mean of seven readings at the reference
+Step counts describe the current 82-step registry.
+Dated costs retain their measured source and resource shape; they are not fresh
+measurements of the new scheduling.
+
+`--geometry`’s recorded cost is the geometric mean of seven readings at the reference
 shape. The earlier four-reading baseline remains in the register’s history.
 The superseded `--suite` tier’s final record was a single reading: merging PR 137
 brought sixteen test files and the threshold work four more, taking that quick selection
@@ -412,6 +416,9 @@ unsuccessful prerequisite fails the aggregate.
 Timing artifacts have distinct job names and record the checked-out commit.
 For a dispatched PR, that resolved merge commit can differ from the workflow dispatch
 ref; the checkout receipt identifies the source actually validated.
+Main, daily and manually dispatched packing validation use the same deferred groups.
+Their separate `post-merge-required` aggregate requires the integration job and all nine
+deferred workers to succeed; the seven-job PR aggregate remains separate.
 
 The last three joined on 2026-09-07 because the corpus tripled, not because the gate
 changed its mind about them.
@@ -618,7 +625,14 @@ file or suite configuration expands the selector to everything: the quick and sl
 together, against `FAST_SUITE_BUDGET_SECONDS`. A large proper subset can also dominate
 the run. When resource settings are implicit, the edit checks run with their normal
 concurrency, then the reachable tests use the available pytest workers after the edit
-pool has drained. Nested tool pools are capped at one during that phase.
+pool has drained. Nested tool pools are capped at one during the parallel pytest phase.
+Tests marked `pool_heavy` run afterward in a separate serial pytest process with the
+reserved CPUs assigned to their internal pool.
+The whole-atlas composite test uses this allocation; its per-case builder and global
+assertions are unchanged.
+Both phases use the same selected files and complementary markers, so every selected
+non-exhaustive test belongs to exactly one phase.
+Other slow tests remain parallel.
 This prevents the CPU-wide outer default from leaving pytest with one worker after the
 other checks finish.
 It also prevents two internally parallel checks from each claiming the same CPUs.
@@ -643,6 +657,13 @@ instead. Whole-suite fallback still requires the lock.
 The CLI reports which allocation it selected, and command receipts record the effective
 worker settings. Selections containing a broad or full-tier step still take the marker
 and still refuse a second gate.
+
+When command artifacts are enabled, the reachable-test wrapper records separate JUnit
+and duration reports for each child phase.
+Flushed per-worker JSONL progress identifies the source commit, run, test node and
+effective worker allocation; an interrupted test leaves its start event available before
+JUnit can finish. These are operational timing receipts, not mathematical acceptance
+evidence. Artifacts stay outside the source tree.
 
 Every validation subprocess has a finite 900-second default deadline.
 Override it with `--timeout-seconds SECONDS` or `PACKING_VALIDATE_TIMEOUT_SECONDS`;

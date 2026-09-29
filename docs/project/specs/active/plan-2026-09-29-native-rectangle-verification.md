@@ -149,7 +149,10 @@ required CI at `5d276119c`. Their negative or partial mathematical outcomes belo
 unchanged. The concurrent
 [validation efficiency block](../../reviews/review-2026-09-29-validation-parallelism.md)
 is tracked by `think-xcij`, with hosted fanout `think-tddk`, selector precision
-`think-6izq`, and post-merge workflow parity `think-08ht`.
+`think-6izq` (completed), post-merge workflow parity `think-08ht`, child-pytest receipts
+`think-14lz`, exclusive pool-heavy allocation `think-ysvk`, and post-merge wall
+reporting `think-0atx`. These change engineering validation and its observability, not
+the mathematical completion conditions below.
 
 | Obligation | Bead | Completion evidence or dependency |
 | --- | --- | --- |

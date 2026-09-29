@@ -502,8 +502,9 @@ def _couzo_paragraph(plan: Plan) -> str:
         f"{day(plan.case['current_since_authored_utc'])} and unchanged at the pinned "
         f"revision `{registration.source.revision[:7]}` of 27 September 2026 "
         f"({registration.result}).{_history_sentence(plan)} The repository names no method "
-        f"and no tolerance; its author said on [issue #227]({ISSUE}) that he found the "
-        "packings “with the help of Claude”."
+        "and no tolerance, and itself states no AI assistance; its author said on "
+        f"[issue #227]({ISSUE}) that he found the 102 and 103 packings “with the help of "
+        "Claude”."
     )
 
 

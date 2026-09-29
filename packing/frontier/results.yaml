@@ -3628,8 +3628,9 @@ results:
       here by an exact rational packing, the source's decimal pose rounded to rationals at
       centre dilation 1, decided pair by pair and wall by wall over Q by two checkers that
       share no code. Francisco Couzo; the author said on jlevy/squares#227 that he found
-      the packings with the help of Claude. An externally produced, previously published
-      result, not peer reviewed; no new first-party mathematics is claimed.
+      the 102 and 103 packings "with the help of Claude", and the repository itself states
+      no AI assistance. An externally produced, previously published result, not peer
+      reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
     verification: V4
     confirmation: C3

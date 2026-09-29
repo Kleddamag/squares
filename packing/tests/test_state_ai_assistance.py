@@ -14,14 +14,10 @@ from devtools import state_ai_assistance as assistance
 WAND125 = assistance.STATEMENTS[0]
 TOKOHARU = assistance.STATEMENTS[1]
 
-#: Records another lane owns on 2026-09-29, whose wand125 sentence it writes with
-#: `--apply`. The list may only shrink: a record added here is a statement not made.
-PENDING = frozenset(
-    {
-        *(f"n-{n:03d}.md" for n in (68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78)),
-        *(f"n-{n:03d}.md" for n in (86, 88, 89, 90, 91, 94, 95)),
-    }
-)
+#: Records still owing a statement. Empty since the n = 68 to 95 records took their
+#: wand125 sentence on 2026-09-29, and it may only stay empty: a record added here is a
+#: statement not made.
+PENDING: frozenset[str] = frozenset()
 
 
 def _record(front: str, body: str) -> str:

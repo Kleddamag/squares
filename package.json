@@ -20,6 +20,6 @@
     "lint:promises": "npm run lint:promises --workspace @squares/workbench",
     "format:check": "biome format .",
     "typecheck:packing-probes": "node packing/devtools/node/typecheck-probe-groups.mjs",
-    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.probes.json && tsc -p tsconfig.motion-lab.json && tsc -p tsconfig.devtools-node.json && tsc -p tsconfig.explainer.json && npm run typecheck:packing-probes && npm run typecheck --workspace @squares/workbench"
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.probes.json && tsc -p tsconfig.motion-lab.json && tsc -p tsconfig.devtools-node.json && tsc -p tsconfig.explainer.json && tsc -p tsconfig.overview.json && npm run typecheck:packing-probes && npm run typecheck --workspace @squares/workbench"
   }
 }

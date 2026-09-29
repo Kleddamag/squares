@@ -44,6 +44,7 @@ SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
+TABLE_SCRIPT = BROWSER / "table.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -52,6 +53,10 @@ SITE_NAME = "The Squares Project"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
+)
+FRONTIER_DESCRIPTION = (
+    "Every tracked case of packing n unit squares in the smallest square, n = 1 to 324: "
+    "the best known packing, the reported and verified bounds, and the records behind them."
 )
 
 #: Every page the published site serves, by path under the site root, whichever build
@@ -78,6 +83,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PACKING / "devtools" / "site_documents.py",
     REPO / "TUTORIAL.md",
     REPO / "SYNOPSIS.md",
+    PACKING / "devtools" / "render_frontier_page.py",
 )
 
 # The same refusal the explainer makes: a script or stylesheet with a source, a CSS
@@ -172,6 +178,8 @@ def kpress_page(
 ) -> Page:
     """One standalone kpress page with the site's layer, nav and colophon.
 
+    `page_scripts` are page programs in checked `.js` files, each placed in its own
+    script element after the math scripts; no script text is written here.
     `strict_anchors` raises kpress's `broken_anchor` warning, an in-page `#…` link
     with no target, to a failure; the reader documents are rendered that way.
     """
@@ -187,7 +195,7 @@ def kpress_page(
         trust_mode=trust_mode,
         metadata={"description": description, "url": canonical, "site_name": SITE_NAME},
     )
-    head, scripts = page_assets()
+    head, math_scripts = page_assets()
     options = RenderOptions(
         asset_mode="inline",
         asset_policy="none",
@@ -210,12 +218,18 @@ def kpress_page(
     page = rendered.html.replace(prose + '"', prose + ' site-page"', 1)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    own = "".join(
-        f"\n<script>{path.read_text(encoding='utf-8')}</script>" for path in page_scripts
-    )
-    page = page.replace("</body>", f"{scripts}{own}\n</body>", 1)
+    programs = "".join(f"\n<script>{_script_text(path)}</script>" for path in page_scripts)
+    page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
+
+
+def _script_text(path: Path) -> str:
+    """A page program's text, refused if it would close its own script element early."""
+    script = path.read_text(encoding="utf-8")
+    if "</script" in script.lower():
+        raise SystemExit(f"{path.name} contains a closing script tag")
+    return script
 
 
 def fill(template: str, values: dict[str, str], *, where: str) -> str:
@@ -257,7 +271,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        page_scripts=(FORWARD_SCRIPT,),
+        page_scripts=(FORWARD_SCRIPT, TABLE_SCRIPT),
     )
 
 
@@ -275,9 +289,25 @@ def synopsis_page() -> Page:
     return build()
 
 
+def frontier_page() -> Page:
+    """The frontier atlas: one row per case, from its `SquarePackingCase/v2` record."""
+    from devtools.render_frontier_page import frontier_markdown  # noqa: PLC0415
+
+    return kpress_page(
+        frontier_markdown(fill, PUBLICATION_EDITION),
+        name="frontier.html",
+        current="frontier",
+        title=f"The Frontier Atlas · {SITE_NAME}",
+        description=FRONTIER_DESCRIPTION,
+        toc=False,
+        page_scripts=(TABLE_SCRIPT,),
+    )
+
+
 #: The pages this renderer owns, by served name.
 PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
+    "frontier.html": frontier_page,
     "tutorial.html": tutorial_page,
     "synopsis.html": synopsis_page,
 }

@@ -1639,6 +1639,10 @@ def _lint_floor(context: Context) -> str:
     )
 
 
+#: The retained page scripts' Node tests, which `_browser_floor` runs beside the workbench's.
+NODE_TEST_GLOB = "packing/tests/node/**/*.test.mjs"
+
+
 def _browser_floor(context: Context) -> str:
     """Biome, the promise overlay, `tsc`, and Node tests over browser source.
 
@@ -1662,6 +1666,7 @@ def _browser_floor(context: Context) -> str:
     eslint = REPOSITORY_ROOT / "node_modules/.bin/eslint"
     tsc = REPOSITORY_ROOT / "node_modules/.bin/tsc"
     npm = _required_tool(context, "npm")
+    node = _required_tool(context, "node")
     missing = [str(tool) for tool in (biome, eslint, tsc) if not tool.is_file()]
     if missing:
         raise StepFailureError(
@@ -1695,6 +1700,13 @@ def _browser_floor(context: Context) -> str:
             ),
             (npm, "run", "typecheck:packing-probes"),
             (npm, "test", "--workspace", "@squares/workbench"),
+            # The retained page scripts' `node:test` files, found rather than listed so a
+            # new one cannot sit outside the floor. The site tables' are the first.
+            *(
+                (node, "--test", *(str(path.relative_to(REPOSITORY_ROOT)) for path in tests))
+                for tests in [sorted(REPOSITORY_ROOT.glob(NODE_TEST_GLOB))]
+                if tests
+            ),
         ),
         cwd=REPOSITORY_ROOT,
     )

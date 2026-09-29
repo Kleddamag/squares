@@ -752,7 +752,20 @@ def evidence_problems(selected: Sequence[Plan]) -> list[str]:
     return problems
 
 
-def _normalized(text: str) -> str:
+def apply_case(plan: Plan, text: str, earlier: Mapping[str, str]) -> str:
+    """One case record with this intake written over it: its front matter and its body.
+
+    ``devtools.generate_frontier_case`` applies it to its own draft of a certified count,
+    since the record is that draft with this intake applied.
+    """
+    _, front, body = text.split("---\n", 2)
+    payload = safe_load(front)["packing"]
+    written = body_text(plan, body, payload, earlier)
+    return f"---\n{front_matter(plan, front)}---\n{written}"
+
+
+def normalized(text: str) -> str:
+    """The text with its whitespace collapsed: the formatter rewraps what this writes."""
     return " ".join(text.split())
 
 
@@ -767,11 +780,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     for plan in selected:
         path = FRONTIER / f"n-{plan.n:03d}.md"
         text = path.read_text(encoding="utf-8")
-        _, front, body = text.split("---\n", 2)
-        payload = safe_load(front)["packing"]
-        written = body_text(plan, body, payload, earlier[plan.n])
-        rendered = f"---\n{front_matter(plan, front)}---\n{written}"
-        if _normalized(rendered) != _normalized(text):
+        rendered = apply_case(plan, text, earlier[plan.n])
+        if normalized(rendered) != normalized(text):
             drift.append(path)
             if not args.check:
                 atomic_write_text(path, rendered)

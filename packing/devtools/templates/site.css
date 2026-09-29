@@ -1,0 +1,370 @@
+/* ============================================================
+   The site's pages on top of the kpress design system.
+
+   The explainer is the reference: its paper typography (paper-design.md), its one
+   accent, and kpress for everything else. This layer carries the same tokens for the
+   overview, the frontier atlas, the tutorial and the synopsis, and adds only what kpress
+   has no component for: the site navigation bar, sortable and filterable tables,
+   expandable table rows, atlas thumbnails, and the verification bar. Every value is a
+   kpress token or derived from one, so the additions follow the theme and the print
+   rules. Written so each addition could move upstream into kpress unchanged.
+   ============================================================ */
+
+/* A standalone page scrolls the document, as the explainer does. */
+html,
+body {
+  height: auto;
+  overflow: visible;
+}
+.kpress-page-main.kpress-viewport {
+  block-size: auto;
+  overflow: visible;
+}
+
+/* One accent, everywhere: the explainer's rule, redeclared where kpress sets the link. */
+:root,
+.kpress,
+.kpress-page-main,
+.kpress-tooltip,
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme],
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-palette][data-kpress-resolved-theme],
+body {
+  --kpress-doc-link: var(--kpress-doc-accent);
+  --color-primary-light: var(--kpress-doc-accent);
+}
+:root:where([data-kpress-resolved-theme="dark"]),
+:where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
+  --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
+}
+
+/* The paper typography profile, as the explainer sets it: a 19/18 sans base against
+   the prose, and three sans weights. */
+:root {
+  --site-font-scale-sans: calc(19 / 18);
+  --site-font-weight-sans-light: var(--kpress-font-weight-sans-regular);
+  --site-font-weight-sans-medium: 550;
+  --site-font-weight-sans-bold: 680;
+  --site-font-size-sans-base: calc(var(--kpress-font-size-base) * var(--site-font-scale-sans));
+  --site-font-size-support: calc(var(--site-font-size-sans-base) * 0.95);
+  --site-font-size-note: calc(var(--site-font-size-sans-base) * 0.92);
+  --site-support-color: var(--kpress-doc-muted);
+  --site-wide: calc(var(--kpress-measure) + 18rem);
+}
+.site-page a,
+.kpress-tooltip a {
+  color: var(--kpress-doc-accent);
+  text-decoration: none;
+}
+.site-page a:hover {
+  text-decoration: underline;
+}
+.site-page h2 {
+  text-align: center;
+  margin-block: calc(var(--kpress-font-size-base) * 2.8) 1.3rem;
+}
+
+/* ---------- Navigation bar ----------
+   Carried in kpress's own site-header slot, widened to the site's wide track so the
+   links sit on one line above a wide table. */
+.kpress-site-header {
+  max-width: var(--site-wide);
+  padding: 0;
+}
+.kpress-page-main:has(.kpress-toc) .kpress-site-header {
+  padding-inline-start: 0;
+  max-width: none;
+}
+.site-nav {
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--site-font-size-support);
+}
+.site-nav-inner {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  margin-inline: auto;
+  max-width: var(--site-wide);
+  padding: 0.8rem 1rem;
+}
+.site-nav .site-name {
+  color: var(--kpress-doc-text);
+  font-weight: var(--site-font-weight-sans-bold);
+  letter-spacing: var(--kpress-caps-spacing);
+  margin-inline-end: auto;
+  text-decoration: none;
+  text-transform: var(--kpress-caps-transform);
+}
+.site-nav a {
+  color: var(--kpress-doc-muted);
+  font-weight: var(--site-font-weight-sans-medium);
+  text-decoration: none;
+}
+.site-nav a:hover {
+  color: var(--kpress-doc-accent);
+}
+.site-nav a[aria-current="page"] {
+  color: var(--kpress-doc-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+.site-nav .site-edition {
+  color: var(--kpress-doc-muted);
+  font-weight: var(--site-font-weight-sans-light);
+}
+
+/* ---------- Page body ---------- */
+.site-page {
+  margin-inline: auto;
+  max-width: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
+  padding-block-end: calc(var(--kpress-font-size-base) * 5);
+  padding-inline: 1rem;
+}
+/* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose. */
+.site-page .site-wide {
+  margin-inline: calc((min(var(--site-wide), 100vw - 2rem) - 100%) / -2);
+  max-width: min(var(--site-wide), 100vw - 2rem);
+}
+.site-hero {
+  padding-block-start: calc(var(--kpress-font-size-base) * 2);
+  text-align: center;
+}
+.site-hero h1 {
+  font-family: var(--kpress-font-sans);
+  font-size: calc(var(--site-font-size-sans-base) * 1.5);
+  font-weight: var(--site-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  text-transform: var(--kpress-caps-transform);
+}
+.site-hero .subtitle {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-sans-base);
+}
+.site-colophon {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: calc(var(--site-font-size-sans-base) * 0.85);
+  margin-block-start: 3rem;
+  text-align: center;
+}
+
+/* ---------- Cards ---------- */
+.site-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  margin-block: 1.5rem;
+}
+.site-card {
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-md, 6px);
+  padding: 0.9rem 1rem;
+}
+.site-card .site-card-label {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-caps-label-size, 0.8rem);
+  font-weight: var(--site-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  text-transform: var(--kpress-caps-transform);
+}
+.site-card .site-card-value {
+  font-size: 1.15em;
+  margin-block: 0.3rem;
+}
+.site-card .site-card-note {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  line-height: 1.4;
+}
+
+/* ---------- Tables: additions to .kpress-table ---------- */
+.site-table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-support);
+  margin-block: 1rem 0.5rem;
+}
+.site-table-tools label {
+  color: var(--kpress-doc-muted);
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+.site-table-tools :is(select, input) {
+  background: var(--kpress-doc-bg, transparent);
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-sm, 4px);
+  color: var(--kpress-doc-text);
+  font: inherit;
+  padding: 0.1rem 0.35rem;
+}
+.site-table-tools .site-count {
+  color: var(--site-support-color);
+  margin-inline-start: auto;
+}
+.site-table-wrap {
+  overflow-x: auto;
+}
+.site-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.site-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--kpress-doc-surface, var(--kpress-doc-bg));
+  z-index: 1;
+}
+.site-table th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.site-table th[data-sort]::after {
+  content: " ↕";
+  color: var(--kpress-doc-muted);
+  font-size: 0.8em;
+}
+.site-table th[aria-sort="ascending"]::after {
+  content: " ↑";
+  color: var(--kpress-doc-accent);
+}
+.site-table th[aria-sort="descending"]::after {
+  content: " ↓";
+  color: var(--kpress-doc-accent);
+}
+.site-table td {
+  vertical-align: top;
+}
+.site-table td.num,
+.site-table th.num {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.site-table tr[hidden] {
+  display: none;
+}
+.site-table details > summary {
+  cursor: pointer;
+}
+.site-table details > summary::marker {
+  color: var(--kpress-doc-accent);
+}
+.site-table .site-detail {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  line-height: 1.45;
+  margin-block: 0.4rem 0.2rem;
+}
+.site-table .site-detail dt {
+  font-weight: var(--site-font-weight-sans-medium);
+  color: var(--kpress-doc-text);
+}
+.site-table .site-detail dd {
+  margin: 0 0 0.4rem 0;
+}
+.site-records {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+}
+.site-records a {
+  white-space: nowrap;
+}
+.site-rung {
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-sm, 4px);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-medium);
+  padding: 0 0.3rem;
+  white-space: nowrap;
+}
+.site-star {
+  color: oklch(52% 0.19 25);
+}
+.site-thumb {
+  display: block;
+  width: 3.2rem;
+  height: 3.2rem;
+}
+.site-thumb svg {
+  width: 100%;
+  height: 100%;
+}
+.site-status-proved {
+  color: var(--kpress-doc-accent);
+  font-weight: var(--site-font-weight-sans-medium);
+}
+
+/* ---------- Verification bar ---------- */
+.site-bar {
+  display: grid;
+  gap: 0.45rem;
+  margin-block: 1rem;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+}
+.site-bar-row {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.6rem;
+  align-items: center;
+}
+.site-bar-track {
+  display: flex;
+  height: 1.1rem;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--kpress-doc-border);
+}
+.site-bar-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.8em;
+  min-width: 1.4rem;
+}
+.site-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+}
+.site-legend i {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 2px;
+  margin-inline-end: 0.3rem;
+  vertical-align: -0.1rem;
+}
+
+@media print {
+  .site-nav,
+  .site-table-tools {
+    display: none;
+  }
+  .site-table thead th {
+    position: static;
+  }
+}
+@media (width < 40rem) {
+  .site-nav .site-edition {
+    display: none;
+  }
+  .site-bar-row {
+    grid-template-columns: 1fr;
+  }
+}

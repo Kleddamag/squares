@@ -309,9 +309,10 @@ def couzo_history(clone: Path, n: int) -> list[dict[str, str]]:
     The first eight commits name files by side (``n102_s10.607902017700.txt``), and one
     replaces ``n206_s14.860232206380.txt`` by ``n206.txt`` without a rename Git can
     follow, so the history is read tree by tree rather than with ``--follow``. Those
-    eight commits were also committed again on 2026-09-24 at 10:34 UTC, up to a day
-    after they were authored, so both clocks are kept: the author's, and the
-    committer's, which bounds when the history now public was pushed.
+    eight commits were also committed again on 2026-09-24, the first at 10:33:57 UTC and
+    the last before 10:35, up to 33 hours after they were authored, so both clocks are
+    kept: the author's, and the committer's, which bounds when the history now public was
+    pushed.
     """
     pattern = re.compile(rf"n{n}(?:_s[0-9.]+)?\.txt")
     history: list[dict[str, str]] = []

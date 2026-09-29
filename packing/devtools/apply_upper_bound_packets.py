@@ -16,9 +16,10 @@ upper-bound blocker the earlier report carried, and where the certified ceiling 
 the printed side it records a ``replay-failure`` conflict and a ``mathematics`` blocker
 instead. It adds the evidence, resources and, at the counts both repositories report,
 priority notes stating Casson's and Couzo's dates and values, and never inferring that
-either packing derives from the other. In the body it points the opening sentence at the
-new side, removes or rewrites the ceiling section, and rewrites the packing section, keeping
-the earlier packing's paragraph under a heading of its own.
+either packing derives from the other; at ``n = 103``, which issue #227 named before
+Casson's commit, the body also gives the issue's date. In the body it points the opening
+sentence at the new side, removes or rewrites the ceiling section, and rewrites the
+packing section, keeping the earlier packing's paragraph under a heading of its own.
 
 In ``source-coverage.yaml`` it keeps the certified sources' ``selected_overrides`` and
 the ``superseded_reports`` they displace (UnitSquare's at five counts, and all of
@@ -40,6 +41,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal, localcontext
 from fractions import Fraction
+from functools import cache
 from pathlib import Path
 from typing import Any
 
@@ -64,6 +66,8 @@ EVIDENCE = FRONTIER / "evidence.yaml"
 CATALOGUE = ROOT / "resources/web/kingbird-squares-in-squares.html"
 INTAKE = "2026-09-29"
 ISSUE = "https://github.com/jlevy/squares/issues/227"
+#: The counts issue #227 names, in its author's words "the 102 and 103 problems".
+ISSUE_COUNTS = frozenset({102, 103})
 
 FRANCISCOUZO, DE_WINTER, CASSON = packets.FRANCISCOUZO, packets.DE_WINTER, packets.CASSON
 
@@ -469,6 +473,30 @@ def _certificate_paragraph(plan: Plan) -> str:
     )
 
 
+@cache
+def _issue_opened() -> str:
+    """When issue #227 was opened, as the Couzo packet's acquisition record keeps it."""
+    return str(packets.acquisition(FRANCISCOUZO)["ai_statement"]["opened_utc"])
+
+
+def _issue_sentence(plan: Plan, casson_time: str) -> str:
+    """At a count issue #227 names before Casson's commit, the issue as evidence of when.
+
+    The issue is dated by GitHub rather than by either author's clock, so it bears on
+    priority where the rewritten history cannot; it gives no side, so it dates a claim at
+    the count and not any one packing.
+    """
+    opened = _issue_opened()
+    if plan.n not in ISSUE_COUNTS or _when(opened) >= _when(casson_time):
+        return ""
+    return (
+        f" [Issue #227]({ISSUE}), opened on {clock(opened)}, already linked Couzo’s "
+        "repository and named this count, so a claim of his at this count predates "
+        "Casson’s commit by evidence independent of either repository’s clocks; the issue "
+        "gives no side."
+    )
+
+
 def _casson_paragraph(plan: Plan) -> str | None:
     casson = plan.casson
     if casson is None:
@@ -489,8 +517,9 @@ def _casson_paragraph(plan: Plan) -> str | None:
         f"Griffin Casson’s [`square-packing`]({_link(CASSON)}), committed on 23 September "
         "2026 at 22:45 UTC−6 (04:45 UTC on the 24th) with the help of Claude as its "
         f"README says, reports a packing of side `{casson['side']}` for this count, larger "
-        f"than Couzo’s by `{gap}`. {ordering[0].upper()}{ordering[1:]}. The record states "
-        "both dates and infers nothing about whether either packing derives from the other."
+        f"than Couzo’s by `{gap}`. {ordering[0].upper()}{ordering[1:]}."
+        f"{_issue_sentence(plan, casson_time)} The record states both dates and infers "
+        "nothing about whether either packing derives from the other."
     )
 
 

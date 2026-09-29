@@ -132,3 +132,25 @@ def test_shared_counts_state_both_sources_dates_and_values() -> None:
         assert f"`{plan.case['history'][0]['side']}`" in flat, plan.n
         assert "22:45 UTC\u22126" in flat, plan.n
         assert "infers nothing about whether either packing derives" in flat, plan.n
+
+
+def test_issue_227_dates_a_claim_only_at_the_shared_count_it_names() -> None:
+    """The issue names 102 and 103; Casson reports only 103, so only 103 cites its date."""
+    for plan in apply.plans():
+        body = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
+        flat = " ".join(body.split())
+        cited = "opened on 23 September 2026 at 02:48 UTC" in flat
+        assert cited == (plan.n == 103), plan.n
+
+
+def test_couzos_ai_statement_is_quoted_for_the_counts_it_names() -> None:
+    """Issue #227 speaks of the 102 and 103 packings, never of all 49."""
+    for plan in apply.plans():
+        if plan.registration.source is not packets.FRANCISCOUZO:
+            continue
+        body = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
+        flat = " ".join(body.split())
+        quoted = "found the 102 and 103 packings \u201cwith the help of Claude\u201d"
+        assert quoted in flat, plan.n
+        assert "itself states no AI assistance" in flat, plan.n
+        assert "found the packings" not in flat, plan.n

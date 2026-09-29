@@ -47,11 +47,20 @@ None of this was replayed here.
 
 The table compares Casson’s single commit with the first packing Francisco Couzo
 published for the same count, by both of Couzo’s clocks.
-Couzo’s first eight commits, up to `801915f`, were committed again on 2026-09-24 between
-10:28 and 10:34 UTC, up to a day after they were authored, so the history now public was
+Couzo’s first eight commits, up to `801915f`, were authored between 2026-09-23T01:35Z and
+2026-09-24T10:28Z and committed again on 2026-09-24, the first at 10:33:57 UTC and the
+last before 10:35, up to 33 hours after they were authored, so the history now public was
 pushed after Casson’s commit even where its author’s clock is earlier.
 By the authors’ clocks Casson published first at 36 of the 39 counts and Couzo at 103,
 152 and 180. At every count Couzo’s current side is smaller.
+
+At 103 one piece of evidence does not rest on either repository’s clock.
+Couzo opened [jlevy/squares#227](https://github.com/jlevy/squares/issues/227) on
+2026-09-23 at 02:48:35 UTC, 26 hours before Casson’s commit, linking his repository and
+saying he had found better solutions “for the 102 and 103 problems”; Casson reports no
+packing for 102. The issue gives no side, so it dates a claim at 103, not the packing of
+side `10.703583456926136` the table lists, though that packing’s own date, 01:35 UTC the
+same day, is consistent with it.
 At 123, 152, 156 and 182 the two current sides differ by between `1.2e-9` and `5.0e-9`; at every other count by more than `1e-8`.
 The record states these dates and values and infers nothing about whether either
 packing derives from the other.

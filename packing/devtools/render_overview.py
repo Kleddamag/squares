@@ -325,14 +325,12 @@ def overview_page() -> Page:
         "HERO": overview_sections.hero(),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
-        **overview_sections.bracket_11(overview),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),
         "RESULTS_TABLE": overview_sections.results_table(overview),
         "VERIFICATION": overview_sections.verification_block(overview, stats),
         "RECENT": overview_sections.recent_list(overview),
     }
-    values.pop("S11_LOWER_DECIMAL")
     markdown = fill(
         OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name
     )

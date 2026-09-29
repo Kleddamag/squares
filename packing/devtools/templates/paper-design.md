@@ -94,8 +94,13 @@ Each component is defined once in [site.css](site.css) and used on every page th
 it.
 
 - **Navigation bar.** One fixed-width row of sans links in the page’s header slot, the
-  same on every page. The current page is underlined in the accent.
-  The site name is “Square Packing”; the edition appears only in the closing line.
+  same on every page, led by the site name, “Square Packing”, as written and a step
+  heavier. Every item takes the cards’ gentle wash on hover and nothing underlines on
+  hover; the current page alone is underlined in the accent.
+  The edition appears only in the closing line.
+
+- **Page headings.** The homepage has no title heading: its hero picture leads, and its
+  sections are `h2`s.
 
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
   fill. The icon is case 11, the central open case, in the atlas ink on white, inlined as

@@ -10,8 +10,6 @@ works without scripts: rows are all present, details open with `<details>`, and
 from __future__ import annotations
 
 import html
-from decimal import Decimal
-from fractions import Fraction
 
 from devtools.overview_data import (
     APOSTROPHE,
@@ -31,40 +29,6 @@ C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
 
 def _esc(text: object) -> str:
     return html.escape(str(text), quote=True)
-
-
-def _tex_value(exact: str | None, value: str | None) -> str:
-    """A bound as inline TeX: a fraction as `a/b`, else its decimal."""
-    if exact and "/" in exact and "root" not in exact and "sqrt" not in exact:
-        return exact
-    if value:
-        return value
-    return exact or ""
-
-
-def bracket_11(overview: Overview) -> dict[str, str]:
-    """The central case's bracket and gap, read from `n-011.md`."""
-    case = overview.cases[11]
-    lower = case["verified_lower_bound"]
-    upper = case["verified_upper_bound"]
-    lower_value = (
-        Fraction(lower["exact_form"])
-        if lower.get("exact_form")
-        else Fraction(Decimal(lower["value"]))
-    )
-    upper_decimal = Decimal(upper["value"])
-    gap = Decimal(
-        float(upper_decimal - Decimal(lower_value.numerator) / lower_value.denominator)
-    )
-    upper_short = f"{upper_decimal:.7f}".rstrip("0")
-    return {
-        "S11_LOWER": _tex_value(lower.get("exact_form"), lower.get("value")),
-        "S11_LOWER_DECIMAL": f"{float(lower_value):.3f}",
-        "S11_UPPER": upper_short + r"\ldots",
-        "S11_GAP": f"{gap:.4f}",
-        "S11_UPPER_BY": _esc(", ".join(case["reported_upper_bound"].get("found_by") or [])),
-        "S11_UPPER_YEAR": _esc(case["reported_upper_bound"].get("found_year") or ""),
-    }
 
 
 def _fill(rung: str) -> str:

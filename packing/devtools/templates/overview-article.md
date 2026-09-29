@@ -1,52 +1,42 @@
 <div class="site-hero">
 
-# Square Packing
-
 {{HERO}}
 
 </div>
 
-## The Problem
+<!-- The explainer has a section of this name, and an old explainer link to it must
+     still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
+<h2 id="the-problem">The Square Packing Problem</h2>
 
 How small can a square be and still hold $n$ unit squares that do not overlap?
 Call the answer $s(n)$. The squares may be rotated, and they may touch.
-The question is easy to state and open even at small $n$: the first case nobody has
-settled is eleven squares.
+The question is easy to state and hard to settle: for most $n$ the answer is known only
+to lie between the best packing found and a proved lower bound.
 
 This site collects what the project has proved, what others have proved alongside it,
 and how each claim was checked.
 
 {{PAGE_CARDS}}
 
-## Verification at a Glance
-
-{{VERIFICATION}}
-
-## Recently Registered
-
-{{RECENT}}
-
-## Headline Results
-
-For $n = 11$ the best packing known was found by {{S11_UPPER_BY}} in {{S11_UPPER_YEAR}},
-and with the strongest verified lower bound the case now stands at
-
-$$
-{{S11_LOWER}} < s(11) \le {{S11_UPPER}},
-$$
-
-a gap of about {{S11_GAP}}. Before this project the lower bound had stood at
-Stromquist’s $2 + 4/\sqrt{5} \approx 3.7889$ since 2003.
+## Recent Results
 
 The results scored
-<span class="site-chip site-rung-fill" data-rung="S" data-level="5">S5</span>, for
-movement on this case:
+<span class="site-chip site-rung-fill" data-rung="S" data-level="5">S5</span>, the
+highest significance:
 
 {{HEADLINE_CARDS}}
 
-And the cases a recent lower bound has closed, where the exact value is now known:
+The cases a recent lower bound has closed, where the exact value is now known:
 
 {{EXACT_CARDS}}
+
+Every result registered recently, newest first:
+
+{{RECENT}}
+
+## Verification at a Glance
+
+{{VERIFICATION}}
 
 ## The Atlas
 

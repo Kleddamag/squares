@@ -23,27 +23,34 @@
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.1rem;
+  gap: 0.25rem 0.4rem;
   margin-inline: auto;
   max-width: 70rem;
-  padding: 0.8rem 1rem;
+  padding: 0.55rem 1rem;
 }
-.site-nav .site-name {
-  color: var(--kpress-doc-text);
-  font-weight: 680;
-  letter-spacing: var(--kpress-caps-spacing);
-  margin-inline-end: auto;
-  text-decoration: none;
-  text-transform: var(--kpress-caps-transform);
-}
+/* Every item, the site name included, is a padded box that takes a gentle wash on
+   hover, the cards' own hover; nothing underlines on hover. */
 .site-nav a {
   color: var(--kpress-doc-muted);
   font-weight: 550;
+  padding: 0.25rem 0.55rem;
   text-decoration: none;
 }
-.site-nav a:hover {
+.site-nav a:is(:hover, :focus-visible) {
+  background: var(--kpress-doc-surface-hover);
   color: var(--kpress-doc-accent);
+  text-decoration: none;
 }
+/* The name is set as written, in the bar's sans, a step heavier than the links. */
+.site-nav .site-name {
+  color: var(--kpress-doc-text);
+  font-weight: 680;
+  margin-inline: -0.55rem auto;
+}
+.site-nav .site-name:is(:hover, :focus-visible) {
+  color: var(--kpress-doc-text);
+}
+/* The current page is the one underline in the bar, and it stays through a hover. */
 .site-nav a[aria-current="page"] {
   color: var(--kpress-doc-accent);
   text-decoration: underline;

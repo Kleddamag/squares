@@ -72,17 +72,22 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     "n=1..200": (150, 150, 126),
     "n=1..324": (262, 262, 238),
 }
+#: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
+#: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
+#: one rendering left.
 SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
-    "n=1..100": ("n=68", "n=69"),
-    "n=1..200": ("n=68", "n=69", "n=103", "n=105", "n=110", "n=131"),
-    "n=1..324": ("n=68", "n=69", "n=103", "n=105", "n=110", "n=131"),
+    "n=1..100": ("n=69",),
+    "n=1..200": ("n=69",),
+    "n=1..324": ("n=69",),
 }
 #: (records with a separating square, those squares, records with any translating
-#: square, those squares).
+#: square, those squares). Re-measured on 2026-09-29 for the 50 records T-056 and T-057
+#: moved onto Couzo's and de Winter's packings, whose optimized poses leave fewer squares
+#: free to separate than the catalogue packings they replaced.
 SCREEN_FINDINGS: dict[str, tuple[int, int, int, int]] = {
-    "n=1..100": (25, 76, 84, 496),
-    "n=1..200": (60, 678, 176, 1933),
-    "n=1..324": (114, 2714, 296, 5323),
+    "n=1..100": (26, 87, 85, 518),
+    "n=1..200": (65, 606, 181, 1883),
+    "n=1..324": (120, 1906, 301, 4512),
 }
 UNDETERMINED_BY_MISS = (28,)
 #: The cases the two sampled sweeps re-derive on every pull request, computed here from

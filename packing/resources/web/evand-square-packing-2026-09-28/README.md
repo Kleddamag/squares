@@ -407,6 +407,15 @@ as its own evidence entry, `E-n032-evand-closed-cover-zmx2-replay`, an
 `interval-certified` method beside the `exact-algebraic` `zeromargin.py` re-sweep, which
 raises `s(32) = 6` from `V4/C3` to `V4/C4` (jlevy/squares#238); the entry and T-051’s
 composition say what the two checkers share.
+A no-symmetry run the same day, `zmx2 cert certificates/s32/s32_closed_cover_6.txt
+--full --pair-points`, over all 28,800 roots of the cover and its mirror (11,433,048
+boxes, 175 minutes on two threads), was NOT VERIFIED: 152 boxes stay uncertified at the
+depth cap, 38 in each of the four reflected images of one germ that the `--d4` run
+certifies, with float mass at least `1.0115` there
+([`receipts/s32_zmx2_full_pairpoints.log`](receipts/s32_zmx2_full_pairpoints.log) and
+its roots log). It is no counterexample: the pair lemma closes that germ in one
+orientation only, so `zmx2` certifies this cover only through the `D4` fold, which the
+two checkers share.
 A replayer audits their own log of that run, `OUT`, from `packing/`, with
 `devtools.audit_evand_mixed_covers zmx2 --case 32 --mode d4 OUT`, which requires the
 whole region and the source’s totals, and
@@ -576,6 +585,7 @@ present, the repository’s readers require them to agree.
 | `receipts/s21_zmx2_d4_roots.log.gz` | receipt | `263e03801859d22a39ff477594b93a0abb1712fb` | `9df401f0ef7a0ad1a04116a6a43b66843517d0ddaa42abbbdc13cd3b2819b426` |
 | `receipts/s21_zmx2_full_roots.log.gz` | receipt | `13a41837b835746b0eb742c856bcef168d40b00a` | `e9487eeb91a0f3c4e79e0cdec6bf408024b2ed6c8a8aa7a80627ab813691f239` |
 | `receipts/s32_zmx2_d4_pairpoints_roots.log.gz` | receipt | `cbe963e8505b617ca179466d01cc3fe2fd6311c8` | `afaaf261142c95466c86c6d6394ec71b0da12a9389cfe80ad20965caa32526a4` |
+| `receipts/s32_zmx2_full_pairpoints_roots.log.gz` | receipt | `f8a97175403733ddfd3db7361dfd8a9bcc1b0610` | `2700d83f963fc0123d9a9a8d784905aced864698d605f375ddf0e51e96229194` |
 | `receipts/s45_zmx2_d4_roots.log.gz` | receipt | `21fba95dc5eace70eb85798ca2b4f48811e9cb46` | `5f8f54d0e6e20cb8dfa98de92c5c7161d3ce7bae6c158edcb642403b16b7370c` |
 | `receipts/s45_zmx2_full.log.gz` | receipt | `51e798c9e3e90d9d7d01372cd0859fc5ab447b97` | `784f0e4d1e078dd61587ca5a4ff7c2384761c1ac2fb81f6f351a96c0d8841950` |
 | `receipts/s45_zmx2_full_roots.log.gz` | receipt | `dfc403ba3a0abd11ecc7649f63f2c6fc941f695d` | `8bf03a678b2a6f3bb609668eff030a006de9775b9aca4ddb6098fab33021a637` |

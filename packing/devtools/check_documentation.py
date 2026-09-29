@@ -157,6 +157,10 @@ def check() -> list[str]:
         for path in REPO.rglob("*.md")
         if path.is_file()
         and not is_vendored(path)
+        # cargo doc emits third-party font licenses beneath this crate's default
+        # build directory (think-k8hl). Exclude that generated tree, not authored
+        # documents in unrelated directories that happen to be named `target`.
+        and path.relative_to(REPO).parts[:3] != ("packing", "sqsearch", "target")
         and not any(
             part in IGNORED_PARTS or part.startswith(".")
             for part in path.relative_to(REPO).parts

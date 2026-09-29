@@ -276,6 +276,17 @@ tests in 24.05 seconds.
 The campaign-record check still reports the inherited Session 161 expired phase.
 Its owner status remains unresolved; this review does not claim a green full checkpoint.
 
+Hosted run `36544631396` passed both behavioral shards, types, frontend, geometry,
+sweeps and macOS portability; the Rust gate passed in 10.09 seconds.
+Rustdoc also exposed a documentation-scan interaction: its generated font-license
+Markdown under `packing/sqsearch/target` was treated as durable source.
+The scanner now excludes that exact build-output tree, with a regression proving that
+unrelated `target` directories and similarly named paths remain checked.
+Both documentation tests and the real 1,494-document scan passed.
+The
+[CI review comment](https://github.com/jlevy/squares/pull/246#issuecomment-5886864717)
+records the finding before this repair.
+
 Broader search-CLI contracts, an explicit platform and minimum-Rust support policy,
 dependency auditing and review of existing lint exceptions remain in **think-cr8l**. The
 scoped repair does not claim full adoption of every Rust guideline across the repository

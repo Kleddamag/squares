@@ -710,9 +710,9 @@ subject to the declared noise floor.
 A tier whose hosted walls form a distribution records a `measured_band`, the lowest and
 highest readings at its reference shape, and the ratios are then applied to the band’s
 edges: the stale rule to the low edge and the drift rule to the high one.
-The band must contain the record, be no wider than `drift_ratio / stale_ratio`, and keep
-its drift edge inside the ceiling (`think-be1s`, D-472). The records check independently
-rejects a ceiling above `max_headroom` times the baseline.
+The band must contain the record and be no wider than `drift_ratio / stale_ratio`; a
+ceiling under its drift edge binds first (`think-be1s`, D-472). The records check
+independently rejects a ceiling above `max_headroom` times the baseline.
 A `null` baseline leaves those ratio checks unarmed; a measurement printed by CI does
 not update the file automatically.
 

@@ -478,10 +478,11 @@ def band_problems(tier: TierBudget, policy: Policy) -> list[str]:
     """What is wrong with a tier's `measured_band`, read against its record and policy.
 
     A band moves the edges the policy's ratios are applied to, so it must not become a
-    way to switch them off. It must bracket the record it was taken with, it may be no
-    wider than the window the policy already tolerates around a point record
-    (`drift_ratio / stale_ratio`), and its drift edge must sit inside the ceiling, or the
-    ceiling fails before the drift rule can name what moved.
+    way to switch them off. It must bracket the record it was taken with, and it may be
+    no wider than the window the policy already tolerates around a point record
+    (`drift_ratio / stale_ratio`). A ceiling under the band's drift edge is not refused:
+    the ceiling then binds first, as it may for a point record (`typecheck`'s 111 s
+    ceiling, held on purpose under `OR-17`, does).
     """
     if tier.measured_band is None or tier.measured_seconds is None:
         return []
@@ -501,13 +502,6 @@ def band_problems(tier: TierBudget, policy: Policy) -> list[str]:
             f"than the {window:.2f}x window the policy tolerates around a point record "
             "(drift_ratio / stale_ratio), so it would switch the rules off rather than "
             "place them"
-        )
-    if policy.drift_ratio * high > tier.ceiling_seconds:
-        problems.append(
-            f"{label}: the drift edge, {policy.drift_ratio:g}x the band's high "
-            f"{high:g}s, is {policy.drift_ratio * high:.1f}s, above the "
-            f"{tier.ceiling_seconds:g}s ceiling; the ceiling would fail before the "
-            "drift rule could name what moved"
         )
     return problems
 

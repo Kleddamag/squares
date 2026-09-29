@@ -826,15 +826,18 @@ def test_a_band_places_the_stale_rule_at_its_low_edge_and_drift_at_its_high() ->
     assert any("band" in reason for reason in drift.failures), drift.failures
 
 
-def test_the_live_band_contains_every_reading_it_was_taken_from() -> None:
-    """The three fast hosted runs that failed the 102.73 s point record now pass."""
+def test_every_live_band_passes_the_readings_it_was_taken_from() -> None:
+    """Each banded tier passes its band's edges and middle: the runs that failed a point
+    record from the other regime (geometry at 58.75 s, typecheck at 92.27 s) now pass."""
     register = live()
-    tier = banded_tier(register)
-    assert tier.measured_band is not None
-    low, high = tier.measured_band
-    for wall in (low, (low + high) / 2, high):
-        verdict = judge_at_reference(register, tier, ((SLOW_STEP, wall),))
-        assert verdict.failures == (), (wall, verdict.failures)
+    banded = [tier for tier in register.tiers if tier.measured_band is not None]
+    assert banded, "no live tier records a measured_band"
+    for tier in banded:
+        assert tier.measured_band is not None
+        low, high = tier.measured_band
+        for wall in (low, (low + high) / 2, high):
+            verdict = judge_at_reference(register, tier, ((SLOW_STEP, wall),))
+            assert verdict.failures == (), (tier.id, wall, verdict.failures)
 
 
 def test_a_band_that_does_not_bracket_its_record_is_refused() -> None:
@@ -860,15 +863,18 @@ def test_a_band_wider_than_the_policy_window_is_refused() -> None:
     assert any("window" in problem for problem in problems), problems
 
 
-def test_a_band_whose_drift_edge_passes_the_ceiling_is_refused() -> None:
+def test_a_ceiling_under_the_band_s_drift_edge_binds_first_and_is_legal() -> None:
+    """The ceiling may bind before the drift rule, as it may for a point record."""
     register = live()
     tier = banded_tier(register)
     policy = register.policy
     assert tier.measured_band is not None
     high = tier.measured_band[1]
     tight = replace(tier, ceiling_seconds=policy.drift_ratio * high * 0.95)
-    problems = gate_budgets.band_problems(tight, policy)
-    assert any("drift edge" in problem for problem in problems), problems
+    assert gate_budgets.band_problems(tight, policy) == []
+    over = judge_at_reference(register, tight, ((SLOW_STEP, tight.ceiling_seconds * 1.01),))
+    assert over.failed, over
+    assert any("ceiling" in reason for reason in over.failures), over.failures
 
 
 def test_a_band_without_a_record_is_refused(tmp_path: Path) -> None:

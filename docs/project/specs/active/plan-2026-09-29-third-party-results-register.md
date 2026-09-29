@@ -4,7 +4,7 @@
 
 **Author:** Claude (agent), for the repository owner
 
-**Status:** Proposed; implementation tracked by `think-z9wy`
+**Status:** Implemented on the stacked results-register branch; tracked by `think-z9wy`
 
 **Workflow:** W7 pipeline improvement, following the W8 refresh of Session 161
 
@@ -65,38 +65,42 @@ As replays land, counts move from the reported entry to the replayed one.
 
 ## The Backfill
 
-Twenty-one new entries, and attribution added to six existing ones.
-Rungs are as the records stand at `901dbc59`.
+Nineteen new entries, `T-037` to `T-055`, and attribution added to eight existing ones.
+Rungs are as the records stand at `901dbc59`, derived by `check_results`.
 
-| Group | Result | Rung | Holds a field now |
-| --- | --- | --- | --- |
-| Building on this project | Kleddamag, `s(11) > 31/8` | `V4/C4` | yes |
-|  | Kleddamag `v1.0.0`, `s(17) > 461300/99853` | `V4/C3` | no |
-|  | Guzhou0806 R052, `s(17) > 231001/50000` | `V4/C3` | no |
-|  | Kleddamag `v1.1.0`, `s(17) > 232001/50000` | `V4/C3` | no |
-|  | Kleddamag, `s(17) > 466001/100000` | `V4/C3` | no |
-|  | Guzhou0806 R067, `s(17) > 233009/50000` | `V4/C3` | never held |
-|  | Guzhou0806 R068, `s(17) > 116511/25000` | `V4/C3` | yes |
-|  | wand125 point certificates, `n = 39–41, 52, 53, 55, 56, 68–72` | `V4/C3` | yes |
-|  | wand125 rectangle certificates, replayed: `n = 27, 28, 31` (and `32`, superseded) | `V4/C3` | yes |
-|  | wand125 rectangle certificates, reported: 48 counts, `n = 18–95` | `V0/C1` | yes, reported lane |
-| Crediting this project second-hand | Tokoharu, `s(26) ≥ 1377/250`, `s(29), s(30) ≥ 571/100`, `s(11) ≥ 381/100` | `V4/C3` | yes (26, 29, 30) |
-|  | wand125, `s(50) ≥ 37/5` | `V0/C1` (replay running) | yes, reported lane |
-| Independent | Evan Daniel, `s(12) ≥ 15680/3951` | `V4/C4` | yes |
-|  | Evan Daniel, `s(21) ≥ 5000/1001` | `V4/C3` | no |
-|  | Evan Daniel, `s(32) = 6` | `V4/C3` | yes |
-|  | Evan Daniel, `s(21) = 5` | `V4/C3` | yes |
-|  | Evan Daniel, `s(45) = 7` | `V4/C3` | yes |
-|  | wand125, point-only `s(45) = 7` | `V4/C3` | second certificate |
-|  | wand125, point-only `s(21) = 5` | `V0/C1` (replay running) | second certificate |
-| Existing, attribution added | `T-004`, `T-008`, `T-011` (literature audits); `T-015`, `T-016` (Massaccesi); `T-032` (Guzhou0806 R012, Mira) | unchanged | no |
+| Group | Entry | Result | Rung | Holds a case bound |
+| --- | --- | --- | --- | --- |
+| Building on this project | `T-037` | Kleddamag, `s(11) > 31/8` | `V4/C4` | yes |
+|  | `T-038` | Kleddamag `v1.0.0`, `s(17) > 461300/99853` | `V4/C3` | no |
+|  | `T-039` | Guzhou0806 R052, `s(17) > 231001/50000` | `V4/C3` | no |
+|  | `T-040` | Kleddamag `v1.1.0`, `s(17) > 232001/50000` | `V4/C3` | no |
+|  | `T-041` | Kleddamag, `s(17) > 466001/100000` | `V4/C3` | no |
+|  | `T-042` | Guzhou0806 R067, `s(17) > 233009/50000` | `V4/C3` | never held |
+|  | `T-043` | Guzhou0806 R068, `s(17) > 116511/25000` | `V4/C3` | yes |
+|  | `T-044` | wand125 point certificates, `n = 26, 29, 39–41, 52, 53, 55, 56, 68–72` | `V4/C3` | yes |
+|  | `T-045` | wand125 rectangle certificates, replayed: `n = 27, 28, 31, 32` | `V4/C3` | yes |
+|  | `T-046` | wand125 rectangle certificates, reported: 48 counts, `n = 18–95` | `V0/C0` | yes, reported lane |
+| Crediting this project second-hand | `T-047` | Tokoharu, `n = 11, 26–31` | `V4/C3` | yes |
+| Independent | `T-048` | wand125, `s(50) ≥ 37/5` (its source credits Evan Daniel and Tokoharu) | `V0/C0`, replay running | yes, reported lane |
+|  | `T-049` | Evan Daniel, `s(12) ≥ 15680/3951` | `V4/C4` | yes |
+|  | `T-050` | Evan Daniel, `s(21) ≥ 5000/1001` | `V4/C3` | no |
+|  | `T-051` | Evan Daniel, `s(32) = 6` | `V4/C3` | yes |
+|  | `T-052` | Evan Daniel, `s(21) = 5` | `V4/C3` | yes |
+|  | `T-053` | Evan Daniel, `s(45) = 7` | `V4/C3` | yes |
+|  | `T-054` | wand125, point-only `s(45) = 7` | `V4/C3` | second certificate |
+|  | `T-055` | wand125, point-only `s(21) = 5` | `V0/C0`, replay running | second certificate |
+| Before this project | `T-004`, `T-006`, `T-007`, `T-008`, `T-011`, `T-015`, `T-016` | Bentz, Nagamochi, Trump, Massaccesi | unchanged | varies |
+| Building on this project | `T-032` | Guzhou0806 R012 and Mira | unchanged | no |
 
-That puts about 57 entries in the register, 27 of them others’.
+The register holds 55 entries, 27 of them others’.
 Intake adds one to three a week at the current pace.
+The reported entries derive `C0`, not `C1`: the reviews that read them are recorded on
+the replay entries, not as an `external_review` on the report entries.
 
 ## Schema
 
-Three additions to `results.schema.yaml`, as `ResultsRegister/v2`.
+Two additions, both optional to a reader, so the contracts stay `ResultsRegister/v1` and
+`Bibliography/v1`, and one derived value.
 
 **`attribution`**, required on every `previously-published` result and refused on
 `apparently-novel` and `confirmed-novel` ones:
@@ -109,9 +113,10 @@ attribution:
 
 The credit line, the authors and the lineage are read from the bibliography entries the
 keys resolve to, never restated here, so the credit on an original result has one home.
-`published` is the date the result entered its source, which can precede the date this
-record first saw it (Evan Daniel’s `s(12)`, in his repository from 25 August and first
-seen here on 27 September).
+`published` may be a year alone for a source that carries no date (Trump’s 1979
+packing). `published` is the date the result entered its source, which can precede the
+date this record first saw it (Evan Daniel’s `s(12)`, in his repository from 25 August
+and first seen here on 27 September).
 
 **`lineage`** on each bibliography entry cited by an attributed result dated on or after
 22 August 2026: `builds-on-project` (the source credits this project’s certificates,
@@ -122,10 +127,15 @@ A test holds the two together: a credit that reads “after … Levy” is `buil
 or `credits-project`, and one that does not is `independent`. That test would have
 caught the four `n = 17` credit gaps the W8 inventory found.
 
-**`standing`** is derived, not declared: an entry is current when some `n` in its scope
-has a case lower bound, reported or verified, that cites one of its evidence entries,
-and superseded otherwise.
-The renderer prints it; nothing stores it.
+**Whether a result holds a case bound** is derived, not declared: yes when some `n` in
+its scope has a reported or verified bound that cites one of its evidence entries.
+A result that does not was superseded, or is a second certificate for a value another
+holds. The renderer prints it; nothing stores it.
+
+One consequence follows from the citation rule `build_bound_citations` already has: a
+register entry that carries a replay performed here confirms the external bound it
+replays, so the atlas citation lines for those bounds gain “(confirmed T-NNN)”. Their
+credit text is unchanged.
 
 No new identifier space.
 Others’ results continue `T-NNN` from `T-037`, as `T-015`, `T-016` and `T-032` already
@@ -138,10 +148,9 @@ and `X-NNN` is taken.
 
 The existing axes already separate the two things the owner asked to track.
 `V` is the strongest verification anywhere, whoever ran it; `C` is what this repository
-has done.
-A reported result enters at `V0/C0`, or `V0/C1` once a review has read it, with
-a `notes` field saying what the source reports running and a `next_rung` naming the
-replay and the review it waits on.
+has done. A reported result enters at `V0/C0`, or `V0/C1` once a review is recorded on
+it, with a `notes` field saying what the source reports running and a `next_rung` naming
+the replay and the review it waits on.
 A complete replay raises it to `V4/C3`, a second method to `C4`, and a mapped review
 artifact to `C5`, by the same derivation this project’s own results use.
 
@@ -158,8 +167,8 @@ does not now do.
 - **Coverage.** `check_results` fails when a case’s reported or verified lower bound
   cites an evidence entry from a source dated on or after 22 August 2026 that no
   register entry cites.
-  This is the rule of the second item above, made mechanical; it would fail today on
-  every result in the backfill table.
+  This is the rule of the second item above, made mechanical; before the backfill it
+  flagged 23 evidence ids.
 - **Attribution.** Every attributed result’s source keys resolve in `bibliography.yaml`,
   and each has a `lineage`.
 - **Credit consistency.** The test described under Schema.
@@ -168,11 +177,11 @@ does not now do.
 
 ## Rendering
 
-`RESULTS.md` groups entries by origin: this project’s results; results by others,
-building on this project; results by others, independent of it; and, within each, the
-entries awaiting replay or review first.
+`RESULTS.md` groups entries by origin: this project’s results, then results by others
+building on this project, crediting it second-hand, independent of it, and published
+before it began; within each group, the entries awaiting replay or review come first.
 Each row carries the credit line from the bibliography, the published date, `V`/`C` and
-the derived standing.
+whether the result holds a case bound.
 
 README’s “Results by Others” keeps its prose, and gains the generated all-sources table
 the W8 refresh proposed (`think-ti71`), rendered from the register instead of from the
@@ -189,7 +198,7 @@ covers its release.
 
 ## Staging
 
-1. Schema `v2`, the bibliography `lineage` field, the three gates, and the renderer.
+1. The `attribution` and `lineage` fields, the three gates, and the renderer.
 2. The backfill, in the same pull request, since the coverage gate fails without it.
 3. The README table from the register, and the intake step in the documentation pass.
 

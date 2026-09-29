@@ -33,6 +33,25 @@ sources:
     authors: [Bentz]
     year: 2016
     venue: arXiv:1606.03746
+  - key: '[Trump 2023]'
+    authors: [Trump]
+    year: 2023
+    venue: Author preprint
+    note: >-
+      Walter Trump's own account of his 1979 packing of eleven squares, which T-011
+      machine-checks; the register's attribution dates the result 1979.
+  - key: '[Burns–Massaccesi n17]'
+    authors: [Massaccesi, Burns]
+    year: 2026
+    venue: blog
+    dated: '2026-08-21'
+    credit: Massaccesi after Burns
+    lineage: independent
+    note: >-
+      Sam Burns's weighted certificate at 4.4811 (6 August 2026) and Gustavo Massaccesi's
+      at 4.5058 on Burns's architecture (21 August 2026), retained under
+      web/n17-lower-bounds-2026/ with both public verifiers; the authors are read from
+      the two retained posts. Dated by Massaccesi's post, the result T-015 registers.
   - key: '[Göbel 1979]'
     authors: [Göbel]
     year: 1979
@@ -71,6 +90,7 @@ sources:
     venue: GitHub
     dated: '2026-09-20'
     credit: Guzhou0806, Mira after Levy
+    lineage: builds-on-project
     note: >-
       The two repositories the packet retains, by their authors' GitHub names
       (web/n17-weighted-certificates-2026-09-20/README.md): Guzhou0806's R012
@@ -82,6 +102,7 @@ sources:
     venue: GitHub
     dated: '2026-09-21'
     credit: Kleddamag after Levy, Mira, Guzhou0806
+    lineage: builds-on-project
     note: >-
       The retained v1.0.0 release; its AUTHORS.md names Kleddamag as the project's
       director and says the work was produced with AI agents (OpenAI Codex) under that
@@ -92,6 +113,7 @@ sources:
     venue: GitHub
     dated: '2026-09-27'
     credit: Kleddamag after Levy, Mira, Guzhou0806
+    lineage: builds-on-project
     note: >-
       Commit 57519bb7 of Kleddamag/17-squares-certified-bound, 2026-09-27, untagged,
       whose bounds/4.66001/ package proves s(17) > 466001/100000. Kleddamag, building
@@ -107,6 +129,7 @@ sources:
     venue: GitHub
     dated: '2026-09-26'
     credit: Kleddamag after Levy, Mira, Guzhou0806
+    lineage: builds-on-project
     note: >-
       The v1.1.0 release of Kleddamag/17-squares-certified-bound at 13821ddf,
       2026-09-26, whose bounds/4.640020/ package proves s(17) > 232001/50000.
@@ -120,6 +143,7 @@ sources:
     venue: GitHub
     dated: '2026-09-25'
     credit: Guzhou0806 after Kleddamag, Levy
+    lineage: builds-on-project
     note: >-
       The R052 release of Guzhou0806/n17-square-packing at 3bf1095c, 2026-09-25,
       which names itself as produced by "Guzhou0806 / N17 project with AI
@@ -131,6 +155,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: Guzhou0806 after Kleddamag, Levy
+    lineage: builds-on-project
     note: >-
       The R068 release of Guzhou0806/n17-square-packing at 815b1626, 2026-09-28, whose
       certificates/R068-C010/accepted/4.66044/ proves s(17) > 116511/25000. Guzhou0806 /
@@ -145,6 +170,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: Guzhou0806 after Kleddamag, Levy
+    lineage: builds-on-project
     note: >-
       The R067 release of Guzhou0806/n17-square-packing at d4e2c287, 2026-09-28, whose
       certificates/R067-4.66018/ proves s(17) > 233009/50000 on Kleddamag's 4.66001
@@ -157,6 +183,7 @@ sources:
     venue: GitHub
     dated: '2026-09-27'
     credit: Daniel after Burns, Massaccesi
+    lineage: independent
     note: >-
       evand/square-packing (formerly evand/square-packing-12) at 167d842c,
       2026-09-26. Its LICENSE names Evan Daniel. Its CREDITS.md credits the
@@ -169,6 +196,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: Daniel after Burns, Massaccesi
+    lineage: independent
     note: >-
       evand/square-packing at 6aa82ba4, 2026-09-28, whose s12/certificates/s21/ and
       s12/certificates/s45/ bundles prove s(21) = 5 and s(45) = 7 by mixed covers. Its
@@ -181,6 +209,7 @@ sources:
     venue: GitHub
     dated: '2026-09-22'
     credit: Kleddamag after Levy
+    lineage: builds-on-project
     note: >-
       The v1.0.2 release of Kleddamag/11-squares-certified-bound, pinned in
       web/external-square-certificates-2026-09-22/acquisition/sources.json,
@@ -195,6 +224,7 @@ sources:
     venue: GitHub
     dated: '2026-09-22'
     credit: Tokoharu after Levy, wand125
+    lineage: credits-project
     note: >-
       The tokoharu/square-packing-density-bounds repository, pinned in
       web/external-square-certificates-2026-09-22/acquisition/sources.json,
@@ -210,6 +240,7 @@ sources:
     venue: GitHub
     dated: '2026-09-22'
     credit: wand125 after Levy
+    lineage: builds-on-project
     note: >-
       The wand125/square-packing-bounds repository and its 2026 certificate claims,
       retained under web/external-square-certificates-2026-09-22/wand125-points/;
@@ -223,6 +254,7 @@ sources:
     venue: GitHub
     dated: '2026-09-27'
     credit: wand125 after Tokoharu, Levy
+    lineage: builds-on-project
     note: >-
       The rectangle-density certificates wand125/square-packing-bounds added on
       2026-09-26 and 2026-09-27, built with and checked by Tokoharu's solver and
@@ -236,6 +268,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: wand125 after Tokoharu, Levy
+    lineage: builds-on-project
     note: >-
       The rectangle-density certificates wand125/square-packing-bounds added or raised
       between 2026-09-27 and 2026-09-28, built with and checked by Tokoharu's solver and
@@ -248,6 +281,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: wand125 after Daniel, Tokoharu
+    lineage: independent
     note: >-
       The point-only s(21) = 5 and s(45) = 7 certificates and the mixed-rectangle
       s(50) >= 37/5 certificate (with the superseded 147/20 and 3659/500 rungs) that

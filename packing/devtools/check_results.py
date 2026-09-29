@@ -20,6 +20,7 @@ import re
 from collections.abc import Iterable
 from pathlib import Path, PurePosixPath
 
+from devtools.build_bound_citations import RECENT_SINCE
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
 from sqpack.yamlio import safe_load
 
@@ -27,6 +28,8 @@ ROOT = Path(__file__).resolve().parent.parent
 REPO = ROOT.parent
 RESULTS = ROOT / "frontier" / "results.yaml"
 EVIDENCE = ROOT / "frontier" / "evidence.yaml"
+BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
+FRONTIER = ROOT / "frontier"
 READER_TIER = (REPO / "README.md", REPO / "SYNOPSIS.md")
 DOCUMENT_MAP = REPO / "docs" / "project" / "document-map.yaml"
 CAMPAIGN = ROOT / "campaign"
@@ -41,6 +44,11 @@ PRODUCED_BY_NOUNS = {
 MACHINE_METHODS = {"exact-algebraic", "interval-certified"}
 OURS_ORIGINS = {"audited-here", "replayed-here"}
 DECLARED_ONLY_V = {"V0", "V2"}
+# Whose result an entry is. A `previously-published` result is someone else's and names
+# its source; a novel one is this project's and names none (epistemics.md, "Results by
+# Others"). `common-knowledge` results owe no citation either way.
+ATTRIBUTED_NOVELTY = "previously-published"
+FIRST_PARTY_NOVELTY = {"apparently-novel", "confirmed-novel"}
 
 
 def _rank(rung: str) -> int:
@@ -147,6 +155,99 @@ def campaign_ids() -> dict[str, set[str]]:
     }
 
 
+LOWER_BOUND_FIELDS = ("reported_lower_bound", "verified_lower_bound")
+BOUND_FIELDS = (*LOWER_BOUND_FIELDS, "reported_upper_bound", "verified_upper_bound")
+
+
+def case_bound_evidence(
+    frontier: Path = FRONTIER, fields: tuple[str, ...] = LOWER_BOUND_FIELDS
+) -> dict[int, set[str]]:
+    """The evidence each case's bound fields cite, by `n`; the lower bounds by default.
+
+    Both lanes, because a reported bound is a result the record acts on as surely as a
+    verified one: it is registered when the source is taken in and waits on a replay.
+    """
+    cited: dict[int, set[str]] = {}
+    for path in sorted(frontier.glob("n-*.md")):
+        case = _frontmatter(path).get("packing") or {}
+        ids: set[str] = set()
+        for field in fields:
+            ids.update((case.get(field) or {}).get("evidence") or [])
+        cited[int(case["n"])] = ids
+    return cited
+
+
+def scope_values(scope: dict) -> set[int]:
+    if "n_values" in scope:
+        return set(scope["n_values"])
+    return set(range(scope["n_min"], scope["n_max"] + 1))
+
+
+def _dated(source: dict | None) -> str | None:
+    return str(source["dated"]) if source and source.get("dated") else None
+
+
+def attribution_problems(record: dict, sources: dict[str, dict]) -> list[str]:
+    """What is wrong with a result's `attribution`, given the bibliography."""
+    rid, novelty = record["id"], record["novelty"]
+    attribution = record.get("attribution")
+    if novelty == ATTRIBUTED_NOVELTY and not attribution:
+        return [f"{rid}: a previously-published result names its source in attribution"]
+    if novelty in FIRST_PARTY_NOVELTY and attribution:
+        return [f"{rid}: an {novelty} result is this project's and carries no attribution"]
+    if not attribution:
+        return []
+    problems: list[str] = []
+    recent = attribution["published"] >= RECENT_SINCE.isoformat()
+    for key in attribution["source_keys"]:
+        source = sources.get(key)
+        if source is None:
+            problems.append(f"{rid}: attribution names {key}, which bibliography.yaml lacks")
+        elif recent and not source.get("lineage"):
+            problems.append(
+                f"{rid}: {key} has no lineage, which a result by others published since "
+                f"{RECENT_SINCE.isoformat()} needs"
+            )
+    return problems
+
+
+def coverage_problems(
+    results: list[dict],
+    evidence_index: dict[str, dict],
+    sources: dict[str, dict],
+    cases: dict[int, set[str]],
+) -> list[str]:
+    """Case lower bounds from recent sources that no register entry covers.
+
+    The rule the register keeps (plan-2026-09-29-third-party-results-register): every
+    result of this project, and every result by others published since the project
+    began that the record acts on. A case's lower bound, reported or verified, is the
+    record acting on it; the entry that covers it must cite the same evidence and name
+    that `n` in its scope.
+    """
+    covered: dict[str, set[int]] = {}
+    for record in results:
+        for ref in record["evidence"]:
+            covered.setdefault(ref, set()).update(scope_values(record["scope"]))
+    problems: list[str] = []
+    for n, ids in sorted(cases.items()):
+        for ref in sorted(ids):
+            entry = evidence_index.get(ref) or {}
+            if entry.get("novelty") in FIRST_PARTY_NOVELTY:
+                recent = True
+            elif entry.get("novelty") == ATTRIBUTED_NOVELTY:
+                dated = _dated(sources.get(str(entry.get("source_key"))))
+                recent = dated is not None and dated >= RECENT_SINCE.isoformat()
+            else:
+                recent = False
+            if recent and n not in covered.get(ref, set()):
+                problems.append(
+                    f"n-{n:03d}: its lower bound cites {ref}, and no registered result "
+                    f"citing it covers n = {n}"
+                )
+    return problems
+
+
 def derive_verification(entries: list[dict]) -> str:
     if any(entry.get("method") == "proof-assistant-checked" for entry in entries):
         return "V5"
@@ -182,6 +283,10 @@ def main() -> int:
     }
     results = register["results"]
     known_ids = campaign_ids()
+    sources = {
+        source["key"]: source
+        for source in safe_load(BIBLIOGRAPHY.read_text(encoding="utf-8"))["sources"]
+    }
 
     expected_ids = [f"T-{index:03d}" for index in range(1, len(results) + 1)]
     actual_ids = [record["id"] for record in results]
@@ -209,6 +314,8 @@ def main() -> int:
                 for path in record.get(field) or []
                 if (problem := repository_file_problem(path))
             )
+
+        problems.extend(attribution_problems(record, sources))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):
@@ -269,6 +376,8 @@ def main() -> int:
                     f"document map: {review}"
                 )
 
+    problems.extend(coverage_problems(results, evidence_index, sources, case_bound_evidence()))
+
     known = set(actual_ids)
     for path in READER_TIER:
         text = path.read_text(encoding="utf-8")
@@ -286,8 +395,8 @@ def main() -> int:
 
     print(
         f"{len(results)} registered results: every declared rung passes its "
-        "structural checks, every path and produced_by id resolves, every reader-tier "
-        "mention exists"
+        "structural checks, every path, source and produced_by id resolves, every "
+        "recent case lower bound is covered, every reader-tier mention exists"
     )
     return 0
 

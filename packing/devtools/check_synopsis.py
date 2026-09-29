@@ -472,7 +472,15 @@ def current_research_status_rows() -> list[tuple[str, int, str]]:
                 ),
             ),
         ),
-        ("Frontier results", len(frontier_results), f"{len(frontier_results)} registered"),
+        (
+            "Frontier results",
+            len(frontier_results),
+            (
+                f"{len(frontier_results)} registered, "
+                f"{sum(bool(result.get('attribution')) for result in frontier_results)} "
+                "by others"
+            ),
+        ),
     ]
 
 

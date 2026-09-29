@@ -106,8 +106,9 @@ describes both.
 
 ## New Results
 
-The [results register](packing/frontier/RESULTS.md) collects this project’s results and
-the published results needed to interpret them.
+The [results register](packing/frontier/RESULTS.md) collects this project’s results, the
+published results needed to interpret them, and every result by others since 22 August
+2026 that this record registers, replays or reviews, each credited to its source.
 Each result has a `T-NNN` ID and the classifications defined in
 [`epistemics.md`](epistemics.md): **V**, the highest verification rung supported by its
 cited evidence, and **C**, what this repository has recorded or performed itself.
@@ -365,9 +366,11 @@ further, and others have worked independently of it, one of them from the same w
 method. The theorems and the credit belong to their authors.
 This repository registers each claimed bound as *reported* when it takes the source in,
 and as *verified* only after a complete replay of its certificate and a review of its
-mathematics. The groups below follow each source’s own attribution, which the
-bibliography’s credit line records: “after Levy” marks a source that credits this
-project’s certificates, data or pipeline.
+mathematics. Each has an entry in the [results register](packing/frontier/RESULTS.md),
+which carries the source’s credit beside this repository’s `V` and `C` for it.
+The groups below follow each source’s own attribution, which the bibliography’s credit
+line records: “after Levy” marks a source that credits this project’s certificates, data
+or pipeline.
 
 ### Building on This Project
 
@@ -493,8 +496,9 @@ project’s certificates, data or pipeline.
   [proof review](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md)
   found no error and supplies two steps R012’s note omits.
   It moved the `n = 17` bound `0.02305` above `T-019`. Like Massaccesi’s T-015 and T-016
-  before it, it carries a `T-NNN` identifier; the external bounds registered since are
-  recorded in their case files.
+  before it, it was registered with a `T-NNN` identifier when it was taken in; the
+  external bounds after it received theirs, `T-037` onward, on 29 September 2026, when
+  the register began to hold every result by others that this record acts on.
   Guzhou0806’s later R038 reports `461300000000/99974999999 = 4.6141535…`, between T-032
   and Kleddamag’s bound; its published tree has been retained here since 22 September
   2026 and has not been replayed.

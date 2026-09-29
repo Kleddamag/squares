@@ -170,11 +170,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-037"
+          ],
+          "note": "(confirmed T-037)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-037"
+          ],
           "source_key": "[Kleddamag n11 2026]",
           "text": "Kleddamag after Levy 2026, GitHub",
           "value": "3.875"
@@ -201,11 +205,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-049"
+          ],
+          "note": "(confirmed T-049)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-049"
+          ],
           "source_key": "[evand square-packing 2026]",
           "text": "Daniel after Burns, Massaccesi 2026, GitHub",
           "value": "3.968615"
@@ -295,11 +303,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-043"
+          ],
+          "note": "(confirmed T-043)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-043"
+          ],
           "source_key": "[Guzhou0806 n17 R068]",
           "text": "Guzhou0806 after Kleddamag, Levy 2026, GitHub",
           "value": "4.66044"
@@ -399,11 +411,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-052"
+          ],
+          "note": "(confirmed T-052)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-052"
+          ],
           "source_key": "[evand square-packing 2026-09-28]",
           "text": "Daniel after Burns, Massaccesi 2026, GitHub",
           "value": "5"
@@ -490,11 +506,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-047"
+          ],
+          "note": "(confirmed T-047)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-047"
+          ],
           "source_key": "[Tokoharu density 2026]",
           "text": "Tokoharu after Levy, wand125 2026, GitHub",
           "value": "5.508"
@@ -517,11 +537,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-045"
+          ],
+          "note": "(confirmed T-045)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-045"
+          ],
           "source_key": "[wand125 rectangle bounds 2026]",
           "text": "wand125 after Tokoharu, Levy 2026, GitHub",
           "value": "5.6"
@@ -544,11 +568,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-045"
+          ],
+          "note": "(confirmed T-045)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-045"
+          ],
           "source_key": "[wand125 rectangle bounds 2026]",
           "text": "wand125 after Tokoharu, Levy 2026, GitHub",
           "value": "5.6"
@@ -571,11 +599,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-047"
+          ],
+          "note": "(confirmed T-047)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-047"
+          ],
           "source_key": "[Tokoharu density 2026]",
           "text": "Tokoharu after Levy, wand125 2026, GitHub",
           "value": "5.71"
@@ -602,11 +634,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-047"
+          ],
+          "note": "(confirmed T-047)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-047"
+          ],
           "source_key": "[Tokoharu density 2026]",
           "text": "Tokoharu after Levy, wand125 2026, GitHub",
           "value": "5.71"
@@ -619,11 +655,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-045"
+          ],
+          "note": "(confirmed T-045)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-045"
+          ],
           "source_key": "[wand125 rectangle bounds 2026]",
           "text": "wand125 after Tokoharu, Levy 2026, GitHub",
           "value": "5.92"
@@ -636,11 +676,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-051"
+          ],
+          "note": "(confirmed T-051)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-051"
+          ],
           "source_key": "[evand square-packing 2026]",
           "text": "Daniel after Burns, Massaccesi 2026, GitHub",
           "value": "6"
@@ -785,11 +829,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "6.5"
@@ -812,11 +860,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "6.5"
@@ -839,11 +891,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "6.5"
@@ -923,11 +979,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-053"
+          ],
+          "note": "(confirmed T-053)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-053"
+          ],
           "source_key": "[evand square-packing 2026-09-28]",
           "text": "Daniel after Burns, Massaccesi 2026, GitHub",
           "value": "7"
@@ -1078,11 +1138,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "7.38"
@@ -1105,11 +1169,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "7.38"
@@ -1161,11 +1229,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "7.54"
@@ -1188,11 +1260,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "7.62"
@@ -1444,11 +1520,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "8.41"
@@ -1471,11 +1551,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "8.41"
@@ -1498,11 +1582,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "8.55"
@@ -1525,11 +1613,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "8.55"
@@ -1552,11 +1644,15 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-044"
+          ],
+          "note": "(confirmed T-044)",
           "recent": true,
           "result": null,
-          "results": [],
+          "results": [
+            "T-044"
+          ],
           "source_key": "[wand125 point bounds 2026]",
           "text": "wand125 after Levy 2026, GitHub",
           "value": "8.61"

@@ -471,7 +471,7 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     68: (
         ("UnitSquare Project 2026, Results Release 1 (reported)", "external", "reported"),
-        ("wand125 after Levy 2026, GitHub", "external", "verified"),
+        ("wand125 after Levy 2026, GitHub (confirmed T-044)", "external", "verified"),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
     101: (
@@ -493,19 +493,32 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 
 
 @pytest.mark.parametrize(
-    ("n", "author"),
+    ("n", "author", "entry"),
     [
-        (11, "Kleddamag after Levy"),
-        (17, "Guzhou0806 after Kleddamag, Levy"),
-        (26, "Tokoharu after Levy, wand125"),
-        (29, "Tokoharu after Levy, wand125"),
+        (11, "Kleddamag after Levy", "T-037"),
+        (17, "Guzhou0806 after Kleddamag, Levy", "T-043"),
+        (26, "Tokoharu after Levy, wand125", "T-047"),
+        (29, "Tokoharu after Levy, wand125", "T-047"),
     ],
 )
-def test_promoted_external_bounds_keep_the_sources_credit(n: int, author: str) -> None:
+def test_promoted_external_bounds_keep_the_sources_credit(
+    n: int, author: str, entry: str
+) -> None:
+    """The line credits the source; the register entry that replays it says so once.
+
+    Since 2026-09-29 the register holds others' results (epistemics.md, Results by
+    Others), so a promoted external bound has an entry of its own that carries the
+    replay: the credit stays the source's, the result id stays empty because the bound
+    is not this project's, and the entry is named as what confirms it.
+    """
     lower = _entry(n)["lower"]
-    assert _line(lower) == (f"{author} 2026, GitHub", "external", "verified")
+    assert _line(lower) == (
+        f"{author} 2026, GitHub (confirmed {entry})",
+        "external",
+        "verified",
+    )
     assert lower["result"] is None
-    assert lower["confirmed_by"] == []
+    assert lower["confirmed_by"] == [entry]
 
 
 def test_n29_credits_finder_and_optimizer_and_takes_the_registers_verdict() -> None:

@@ -46,6 +46,17 @@ properties:
         # against a fixed width; devtools.build_bound_citations fails a credit whose line
         # `credit year, venue` is wider than that stage's 66 characters.
         credit: {type: string, minLength: 1, maxLength: 58, pattern: '^[ -~]+$'}
+        lineage:
+          enum: [builds-on-project, credits-project, independent]
+          description: >-
+            How the source stands to this project, as the source itself says:
+            `builds-on-project` when it credits this project's certificates, data or
+            pipeline, `credits-project` when it credits this project only as
+            inspiration or second-hand and brings its own method, `independent`
+            otherwise. Typed because `credit` is prose that no tool parses; required by
+            `devtools.check_results` for every source a register result by others
+            published since the project began cites, and held to `credit` by
+            tests/test_results_register.py.
         # Where a web source's authors or year were read, since the README's Web Sources
         # table carries neither.
         note: {type: string, minLength: 1}

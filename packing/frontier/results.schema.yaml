@@ -113,6 +113,30 @@ $defs:
         minLength: 1
         description: The next evidence-improving action, or why no independent rung change applies.
       notes: {type: string, minLength: 1}
+      attribution:
+        type: object
+        additionalProperties: false
+        required: [source_keys, published]
+        description: >-
+          Whose result this is, when it is not this project's. Required on every
+          `previously-published` result and refused on `apparently-novel` and
+          `confirmed-novel` ones. The keys resolve in `resources/bibliography.yaml`,
+          which is the one home of the authors, the credit line and the lineage, so the
+          credit on an original result is never restated here. `published` is the date
+          the result entered its source, which can precede the date this record first
+          saw it. The rungs stay this repository's: `V` is the strongest verification
+          anywhere and `C` what this repository has done, so a result by others is
+          registered when it is taken in and rises as the replay and review land.
+        properties:
+          source_keys:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items: {type: string, pattern: '^\[.+\]$'}
+          published:
+            type: string
+            pattern: '^\d{4}(-\d{2}-\d{2})?$'
+            description: A date, or a year alone for a source that carries no date.
       produced_by:
         type: object
         additionalProperties: false

@@ -117,6 +117,35 @@ An `apparently-novel` evidence entry records the corpus, search, narrow novel ob
 and known gaps in `novelty_basis`. The result-level label is declared and reviewed; the
 results checker validates its enum value but does not derive it from the cited entries.
 
+## Results by Others
+
+The register holds others’ results beside this project’s, under the same `T-NNN`
+identifiers and the same derived rungs, because the work this repository does on them is
+the same work: register the claim, replay its certificate, review its mathematics.
+It holds every result of this project, and every result by others published on or after
+22 August 2026, the day this project’s square-packing work began, that the record acts
+on: its bound is or was a case’s reported or verified lower bound, or it has been or is
+queued to be replayed or reviewed here.
+Older results enter only when they hold or held a verified field here or are machine
+audits of the literature.
+Rungs of a ladder that the same release supersedes, publication records never replayed,
+and results below the standing bound that ask for no work stay in their case records and
+packets.
+
+Two things are tracked apart for such a result.
+**Credit** belongs to the original result: the entry’s `attribution` names its source
+keys and the date it was published, and the authors, the credit line and the lineage are
+read from [`bibliography.yaml`](packing/resources/bibliography.yaml), never restated.
+A source’s `lineage` says how it stands to this project, as the source itself says:
+`builds-on-project`, `credits-project` (inspiration or second-hand credit, with its own
+method), or `independent`. **Verification** is this register’s: `V` is the strongest
+verification anywhere, and `C` what this repository has done.
+A reported result enters at `V0/C0`, or `C1` once a review has read it, with a
+`next_rung` naming the replay and review it waits on, and rises by the same derivation
+as this project’s own results.
+Whether an entry is current or superseded is derived from the case records and never
+stored.
+
 ## Enforcement and Register
 
 Run the executable contract from `packing/` with:
@@ -131,7 +160,12 @@ The checker:
 - derives the structural `V` and `C` rungs described above;
 - refuses unsupported promotion and unexplained understatement;
 - requires `C5` review documents to be non-superseded reviews in
-  [`document-map.yaml`](docs/project/document-map.yaml); and
+  [`document-map.yaml`](docs/project/document-map.yaml);
+- requires `attribution` on every `previously-published` result and refuses it on a
+  novel one, resolves its source keys in the bibliography, and requires a `lineage` on
+  the sources of a result by others published since 22 August 2026;
+- fails when a case’s reported or verified lower bound cites evidence from a source
+  dated on or after 22 August 2026 that no register entry covering that `n` cites; and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s

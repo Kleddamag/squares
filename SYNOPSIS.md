@@ -5167,9 +5167,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 244 | 61,361 | 33,926 | 746 | 4,864 | 545.99 h |
-| claimed by none | 66 | 14,762 | 8,439 | 187 | 1,205 | 69.36 h |
-| **measured** | **310** | **76,123** | **42,365** | **933** | **6,069** | **615.35 h** |
+| claimed by a session | 254 | 63,978 | 35,394 | 773 | 5,088 | 557.08 h |
+| claimed by none | 65 | 14,196 | 8,149 | 185 | 1,184 | 67.13 h |
+| **measured** | **319** | **78,174** | **43,543** | **958** | **6,272** | **624.21 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5224,7 +5224,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-158](packing/campaign/agent-sessions/session-158-n11-rung0-lock-in-and-rung1-pilot.md) | 1 | 5 | 646 | 379 | 3 | 1.89 h |
 | [session-159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md) | 2 | 6 | 844 | 484 | 10 | 2.34 h |
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
-| *shared by 51 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
+| [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
+| *shared by 52 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -5297,8 +5298,8 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 106 |
-| unmeasured | 55 |
+| measured | 107 |
+| unmeasured | 54 |
 | **total** | **161** |
 
 <!-- END GENERATED: session-close-report -->

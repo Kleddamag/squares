@@ -78,11 +78,21 @@ session:
     kill_condition: A replay fails or a review finds a gap the certificate does not close.
     fallback: Record the claim as reported but unverified, with the finding.
     outcome: null
-    evidence: []
+    evidence:
+    - packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md
+    - packing/resources/web/evand-square-packing-2026-09-28/README.md
+    - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
+    - packing/resources/web/n17-guzhou-r068-2026-09-28/README.md
+    - docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+    - docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md
+    - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+    - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+    - docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     stop_reason: null
     next_action: >-
-      Integrate the lanes' packets and receipts, commission the Fable max reviews of the
-      zero-margin covers and of R067 and R068, then register.
+      Register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the reported s(50) >= 37/5;
+      publish them in README, SYNOPSIS and the atlas; collect the replays listed under
+      Recovery State below as they land.
   budget:
     wall_minutes: 720
     slice_minutes: 480
@@ -99,14 +109,30 @@ session:
       counts from n = 18 to 78, three of them verified; s(50) reported at Green’s
       7.317426.
     after: null
+  resource_rollups:
+  - packing/campaign/resource-usage/b85b7ecf-955c-5223-9481-e5200885a948.yaml
+  - packing/campaign/resource-usage/agent-a1599f925da991e56.yaml
+  - packing/campaign/resource-usage/agent-a3a70f9027a6dfb47.yaml
+  - packing/campaign/resource-usage/agent-a5b0a102d2ad6bfeb.yaml
+  - packing/campaign/resource-usage/agent-a7497e51ab0c6ab3e.yaml
+  - packing/campaign/resource-usage/agent-a925fccaaa104c764.yaml
+  - packing/campaign/resource-usage/agent-ac9d1dadcb7d744d7.yaml
+  - packing/campaign/resource-usage/agent-acb0d6d1650de489e.yaml
+  - packing/campaign/resource-usage/agent-ad0d0d7f65651db68.yaml
+  - packing/campaign/resource-usage/agent-af1471303a5fd7a0f.yaml
   delegations: []
   outputs:
   - packing/resources/web/wand125-x-update-2026-09-28/README.md
+  - packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md
+  - packing/resources/web/evand-square-packing-2026-09-28/README.md
+  - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
+  - packing/resources/web/n17-guzhou-r068-2026-09-28/README.md
+  - docs/project/reviews/review-2026-09-28-density-solver-comparison.md
   checks: []
   stop_reason: null
   next_action: >-
-    Integrate the five lanes’ packets and receipts, commission the Fable max reviews of
-    the zero-margin covers and of R067 and R068, then register.
+    Register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the reported s(50) >= 37/5,
+    publish them, and collect the replays listed under Recovery State as they land.
 ---
 # wand125’s Update and the 28 September Intake
 
@@ -122,6 +148,29 @@ point-only certificates for `s(21) = 5` and `s(45) = 7` and `s(50) >= 37/5` on i
 verifier; Guzhou0806’s publishes `s(17) > 116511/25000` without having run it locally.
 This session retains each, replays it here, has Fable max review it, and registers what
 the evidence supports.
+
+## Recovery State
+
+Work still running on 2026-09-29 at 01:50 UTC, and how to collect it.
+A successor collects each item in the same way; nothing below is registered until its
+receipt is committed.
+
+| Work | Where it runs | Where the receipt lands | Bead |
+| --- | --- | --- | --- |
+| Full `zm_mixed.py` re-sweep of Daniel’s `s(21)` cover (second method, for `C4`) | Cloud session `session_011CfRigVmuCke9r31UzDPhM` | Branch `claude/replay-evand-s21-zm-mixed`, `transfer/evand-s21-zm-mixed-full/` | `think-l6la` |
+| The same for `s(45)` | Cloud session `session_01Xt9EM5JEiNoK5aSsWz6E6x` | Branch `claude/replay-evand-s45-zm-mixed`, `transfer/evand-s45-zm-mixed-full/` | `think-l6la` |
+| Coverage replays of 45 wand125 rectangle certificates, in ten batches of about 13 CPU-h | Cloud sessions listed on `think-20mv` | Branches `claude/replay-wand125-rect-b01` to `b10`, `transfer/wand125-rect-bNN/` | `think-20mv` |
+| Complete replay of wand125’s `s(50) >= 37/5` (L740), about 10.5 CPU-h | This host, three workers | The command and its check are in the point-and-mixed packet README, “Pending: the complete L740 replay” | `think-nnlg` |
+| wand125’s point-only `s(21)` portable replay, frontier stage | This host, two workers | `n21-compare` in the same packet README | `think-ifsv` |
+
+A cloud replay of the `s(50)` certificate refused to run the external checker under its
+session’s permission classifier and pushed only that refusal, on
+`claude/replay-wand125-n50-l740`; the replay runs here instead.
+Each batch writes its own `audit.json` beside its `rect_n*/` directories.
+`audit_wand125_rectangles --resume` keeps only cases already in the output’s
+`audit.json`, so merging the batches into one packet receipt needs a merge step in that
+tool, which does not exist yet (`think-0rrj`); re-running `--resume --replay` on copied
+directories would replay them again.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

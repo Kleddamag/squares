@@ -11,29 +11,29 @@ count: 161
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 106
-  sessions_unmeasured: 55
+  sessions_measured: 107
+  sessions_unmeasured: 54
   attributed:
-    rollups: 244
-    turns: 61361
-    tool_calls: 33926
-    tool_errors: 746
-    one_off_code: 4864
-    wall_hours: 545.99
+    rollups: 254
+    turns: 63978
+    tool_calls: 35394
+    tool_errors: 773
+    one_off_code: 5088
+    wall_hours: 557.08
   unattributed:
-    rollups: 66
-    turns: 14762
-    tool_calls: 8439
-    tool_errors: 187
-    one_off_code: 1205
-    wall_hours: 69.36
+    rollups: 65
+    turns: 14196
+    tool_calls: 8149
+    tool_errors: 185
+    one_off_code: 1184
+    wall_hours: 67.13
   measured:
-    rollups: 310
-    turns: 76123
-    tool_calls: 42365
-    tool_errors: 933
-    one_off_code: 6069
-    wall_hours: 615.35
+    rollups: 319
+    turns: 78174
+    tool_calls: 43543
+    tool_errors: 958
+    one_off_code: 6272
+    wall_hours: 624.21
 codex_receipts:
   attributed: 64
   unattributed: 2
@@ -2759,8 +2759,21 @@ sessions:
   status: in_progress
   primary_bead: think-1an7
   phases: 2
-  measured: false
-  unmeasured_reason: >-
-    declares no resource measurement
-  rollups: []
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/b85b7ecf-955c-5223-9481-e5200885a948.yaml
+  - packing/campaign/resource-usage/agent-a1599f925da991e56.yaml
+  - packing/campaign/resource-usage/agent-a3a70f9027a6dfb47.yaml
+  - packing/campaign/resource-usage/agent-a5b0a102d2ad6bfeb.yaml
+  - packing/campaign/resource-usage/agent-a7497e51ab0c6ab3e.yaml
+  - packing/campaign/resource-usage/agent-a925fccaaa104c764.yaml
+  - packing/campaign/resource-usage/agent-ac9d1dadcb7d744d7.yaml
+  - packing/campaign/resource-usage/agent-acb0d6d1650de489e.yaml
+  - packing/campaign/resource-usage/agent-ad0d0d7f65651db68.yaml
+  - packing/campaign/resource-usage/agent-af1471303a5fd7a0f.yaml
+  turns: 2617
+  tool_calls: 1468
+  tool_errors: 27
+  one_off_code: 224
+  wall_hours: 11.09
   codex_receipts: []

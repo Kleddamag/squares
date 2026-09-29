@@ -498,6 +498,31 @@ def test_agenda_039_bulk_is_pruned_while_record_and_w3_inputs_survive(
         assert (tree / relative).read_bytes() == source.read_bytes()
 
 
+def test_session_152_timing_archive_is_not_a_mutation_worker_input(
+    control_snapshot: tuple[Path, set[Path]],
+) -> None:
+    tree, copied_targets = control_snapshot
+    archive = (
+        ROOT
+        / "campaign/agent-sessions/session-152-validation"
+        / "validation-timings-validate-1.zip"
+    )
+    session = ROOT / "campaign/agent-sessions/session-152-external-density-and-n11-review.md"
+    specification = safe_load((ROOT / "devtools/controls.yaml").read_text())
+    relative = archive.relative_to(controls.REPO)
+    packing_relative = archive.relative_to(ROOT).as_posix()
+
+    assert archive.is_file()
+    assert archive in PRUNE
+    assert all(
+        (ROOT / control["file"]).resolve() != archive and packing_relative not in control["run"]
+        for control in specification["controls"]
+    )
+    assert relative not in copied_targets
+    assert not (tree / relative).exists()
+    assert (tree / session.relative_to(controls.REPO)).read_bytes() == session.read_bytes()
+
+
 def test_old_validation_archive_is_pruned_while_current_records_survive(
     control_snapshot: tuple[Path, set[Path]],
 ) -> None:

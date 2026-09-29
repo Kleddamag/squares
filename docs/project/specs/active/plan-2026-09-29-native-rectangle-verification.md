@@ -226,10 +226,11 @@ No exact elapsed-time field was retained, so this receipt supports the work cens
 stop causes, not a measured runtime claim.
 No larger replay follows from this result.
 
-### Selected Two-Level Refinement Diagnostic
+### Predeclared Two-Level Refinement Diagnostic
 
-**think-gfpf**, under **think-bmf3**, is the next selected experiment.
-GPT-6 Astra at max thinking reviewed this contract; it has not been executed.
+**think-gfpf**, under **think-bmf3**, executed the following contract after GPT-6 Astra
+at max thinking reviewed it.
+The predeclared criterion is preserved here; the result appears below.
 Freeze the retained 1,000-node receipt, exact candidate, checker source and settings,
 angle 1 and threshold 1. Reconstruct its complete pending census and select exactly the
 67 depth-20 leaves. Recompute each parent bound, then split twice by the existing
@@ -279,6 +280,32 @@ Astra-max reviewed readiness before the target run.
 Full external coverage remains **think-aqne** under **think-bmf3**; the next slice must
 design and cost a whole-angle traversal rather than aggregate this diagnostic into a
 proof.
+
+### Full T-057 Replay Readiness
+
+The reviewed census wrapper can run rows `0-12027` without changing the source search.
+It runs one serial subprocess and requires a finite whole-process time limit.
+There is no wrapper-level resume or shard admission: a timed-out run retains a bound
+partial journal, but separately requested row sets have different bindings and cannot be
+combined into a complete verdict.
+
+The source reports 9,446 CPU-seconds for a full replay.
+That is reported cost, not a measurement on this host; the three sampled rows do not
+estimate the full cost.
+A complete local run has not been started.
+Its admission must require exactly 12,028 unique rows, matching minima and exact witness
+attainment, followed by `validate --require-complete`. Even `COMPLETE_ROW_EQUALITY`
+would establish row replay rather than a new global packing proof.
+
+**think-11z6** owns execution and evidence retention.
+The wrapper limits journal reads to 64 MiB and publishes without overwriting an existing
+path. Full-journal size remains unmeasured, but its required fields alone exceed the
+roughly 480 KiB of remaining mutation-worker snapshot headroom after this integration.
+Choose and test how to retain the full evidence before adding it to the repository;
+serial execution itself needs no new verifier mathematics.
+The broader distinction between link-existence checks and content inputs is tracked
+under **think-t1lk**. Neither a compressed format nor parallel or resumable admission is
+implemented by the current census wrapper.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

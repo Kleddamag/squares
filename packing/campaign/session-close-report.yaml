@@ -11,8 +11,8 @@ count: 164
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 109
-  sessions_unmeasured: 55
+  sessions_measured: 110
+  sessions_unmeasured: 54
   attributed:
     rollups: 254
     turns: 63978
@@ -35,9 +35,9 @@ totals:
     one_off_code: 6272
     wall_hours: 624.21
 codex_receipts:
-  attributed: 66
+  attributed: 67
   unattributed: 2
-  measured: 68
+  measured: 69
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -2821,9 +2821,19 @@ sessions:
   title: "Upstream Merge and PR 246 Certification"
   status: in_progress
   primary_bead: think-niqx
-  phases: 1
-  measured: false
-  unmeasured_reason: >-
-    declares no resource measurement
-  rollups: []
-  codex_receipts: []
+  phases: 3
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/session-164-codex-task-tree.yaml
+    model_responses: 398
+    agent_hours: 1.3
+    active_union_hours: 0.58
+    wall_hours: 0.58
+    snapshot_incomplete: true

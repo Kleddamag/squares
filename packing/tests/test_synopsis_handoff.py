@@ -33,9 +33,6 @@ from devtools.check_synopsis import (
 from sqpack.yamlio import safe_load
 
 REPO = Path(__file__).resolve().parents[2]
-SESSION_161 = (
-    REPO / "packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md"
-)
 SESSION_SCHEMA = REPO / "packing/campaign/schemas/agent-session.schema.yaml"
 
 
@@ -73,16 +70,51 @@ def _unmeasured_handoff(role: str = "administrative_closeout") -> dict:
 
 
 def _measured_administrative_closeout() -> dict:
+    """A schema-valid administrative record, independent of live session history."""
     return {
         "id": "session-161",
+        "title": "Administrative closeout fixture",
+        "date": "2026-09-28",
         "status": "stopped",
         "started_at": "2026-09-28T23:26:00Z",
         "deadline_at": "2026-09-29T11:26:00Z",
         "ended_at": "2026-09-29T15:10:35Z",
-        "handoff_role": "administrative_closeout",
-        "resource_rollups": [
-            "packing/campaign/resource-usage/b85b7ecf-955c-5223-9481-e5200885a948.yaml"
+        "goal": "Close resource administration without replacing the research handoff.",
+        "workflow_phases": [
+            {
+                "workflow": "documentation-pass",
+                "focus": "process",
+                "recording": "contemporaneous",
+                "objective": "Record the administrative closeout.",
+                "status": "stopped",
+                "entered_by": "session_start",
+                "switch_reason": None,
+                "budget_minutes": 720,
+                "started_at": "2026-09-28T23:26:00Z",
+                "deadline_at": "2026-09-29T11:26:00Z",
+                "expected_output": "A complete administrative closeout record.",
+                "validation_command": "python -m devtools.validate_schemas",
+                "kill_condition": "The closeout is recorded or its deadline passes.",
+                "fallback": "Continue research under think-1an7.",
+                "outcome": "Resource administration was closed.",
+                "evidence": [],
+                "stop_reason": "The administrative record is complete.",
+                "next_action": "Continue the work under think-1an7.",
+            }
         ],
+        "primary_bead": "think-1an7",
+        "handoff_role": "administrative_closeout",
+        "budget": {"wall_minutes": 720},
+        "stop_conditions": ["The administrative closeout is recorded."],
+        "progress": {
+            "metric": "Administrative closeout",
+            "before": "Open",
+            "after": "Closed",
+        },
+        "delegations": [],
+        "outputs": [],
+        "checks": [],
+        "resource_rollups": ["packing/campaign/resource-usage/administrative-fixture.yaml"],
         "stop_reason": "The expired coordinator record was closed administratively.",
         "next_action": "Continue the work under think-1an7.",
     }
@@ -218,8 +250,7 @@ def test_invalid_general_administrative_marker_cannot_hide_a_handoff(
 
 
 def test_session_schema_accepts_only_a_stopped_general_administrative_closeout() -> None:
-    document = safe_load(SESSION_161.read_text(encoding="utf-8").split("---\n", 2)[1])
-    session = document["session"]
+    session = _measured_administrative_closeout()
     schema = safe_load(SESSION_SCHEMA.read_text(encoding="utf-8"))
     validator = Draft202012Validator(schema)
 
@@ -232,7 +263,6 @@ def test_session_schema_accepts_only_a_stopped_general_administrative_closeout()
         ("handoff_role", "work_handoff"),
     ):
         invalid = copy.deepcopy(session)
-        invalid.pop("certification_pending", None)
         invalid[field] = value
         assert list(validator.iter_errors(invalid)), field
 

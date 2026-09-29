@@ -187,12 +187,15 @@ concerns points and threshold charges.
 It reports matching all 12,028 row minima of Kleddamag’s n11 certificate and explicitly
 leaves the global counting argument with Kleddamag.
 That is a useful separate cross-check claim.
-Our retained
-[three-row replay](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-sample.jsonl)
-checked rows 0, 6014, and 12027. Each independently recomputed minimum matched its
-recorded value, and each exact witness replayed.
-These probes establish agreement on those three rows; **T-057’s full 12,028-row census
-remains reported**. The identical certificate already has a
+Our production-bound
+[three-row journal](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable.jsonl)
+and its
+[summary](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json)
+cover rows 0, 6014, and 12027. The pinned source search returned minima matching the
+reference values, and a separate exact evaluator confirmed all three attaining
+witnesses. Minimality remains evidence from the source search; witness attainment alone
+does not prove it. These probes establish agreement on those three rows; **T-057’s full
+12,028-row census remains reported**. The identical certificate already has a
 [complete native parent-core verification](review-2026-09-22-native-n11-parent-core.md),
 including exact enclosures, $D_4$ folding, threshold budget and $11\Gamma>M$. Those
 global premises are established evidence for the existing `V4/C4` bound `s(11) > 31/8`;
@@ -204,7 +207,7 @@ It does not verify rectangle densities or remove their current C++ dependency.
 Source review found no defect in the threshold-charge boundary argument, exact four-axis
 separation test, leaf enumeration, witness reconstruction, or endpoint wall enclosure
 for well-formed pinned inputs.
-The replay harness still needs admission controls:
+The upstream replay harness still needs admission controls:
 [`run_n11.py`](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/general_pose_tree/run_n11.py)
 resumes by row number without binding previous results to the certificate and checker,
 while
@@ -212,6 +215,10 @@ while
 counts duplicate rows and does not establish the exact `0..12027` census.
 A complete local replay must reject duplicate, missing, stale or mixed-source rows
 before it compares minima.
+Our
+[first-party census wrapper](../../../packing/devtools/check_general_pose_tree_census.py)
+now enforces those identity and census checks, with explicit partial and complete
+verdicts. Its completed local replay still covers only the three rows above.
 The generic
 [`Measure` interface](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/general_pose_tree/measure.py)
 also silently converts coordinates with `int()` after checking duplicates; strict

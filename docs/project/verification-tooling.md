@@ -200,7 +200,12 @@ of the separate `zm_mixed.py` checker.
 Re-summarising the shipped complete records or replaying a restricted region does not
 constitute a complete fresh run of that second checker.
 The native point and parent-core routes do not implement its zero-margin segment
-measures.
+measures. For the separate n32 point cover, [T-051](../../packing/frontier/RESULTS.md)
+now retains two complete source-checker replays and is `V4/C4`. Its
+[record](../../packing/frontier/n-032.md) distinguishes the arithmetic and box-closing
+arguments while naming the shared point test, D4 fold, author and subdivision
+architecture. This n32 confirmation does not discharge the pending complete mixed-cover
+re-sweeps for n21 and n45.
 
 The
 [September 28 wand125 packet](../../packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md#limitations)

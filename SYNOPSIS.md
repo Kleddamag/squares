@@ -5398,13 +5398,14 @@ in separate tables: their units differ, and the same work can appear in both.
 | `session-142-stack-correctness.yaml` | session-142 | 1,186 | 5.01 h | 2.29 h | 2.3 h | yes |
 | `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
 | `session-163-codex-task-tree.yaml` | session-163 | 763 | 4.27 h | 2.53 h | 2.63 h | yes |
+| `session-164-codex-task-tree.yaml` | session-164 | 398 | 1.3 h | 0.58 h | 0.58 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 109 |
-| unmeasured | 55 |
+| measured | 110 |
+| unmeasured | 54 |
 | **total** | **164** |
 
 <!-- END GENERATED: session-close-report -->

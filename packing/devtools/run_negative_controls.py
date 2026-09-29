@@ -212,6 +212,15 @@ PRUNE = frozenset(
         ROOT
         / "campaign/agent-sessions/session-106-validation"
         / "full-46ee41af-validate.tar.gz",
+        # Session 152's 499,501-byte timing archive is historical generated output.
+        # Its session lists the path as an output, but no checked document links it
+        # inline and no mutation control, code reader, or results-register entry uses
+        # it. Keep the session record and archive in Git while omitting only this
+        # compressed byproduct from private mutation workers. The dependency-copy
+        # rules still take precedence if a checked link or registered use is added.
+        ROOT
+        / "campaign/agent-sessions/session-152-validation"
+        / "validation-timings-validate-1.zip",
         # Agenda 024's commissioning outputs and its two manager roots are retained
         # research evidence, not mutation-control inputs. Long numerical logs and warm
         # states can grow while the gate is running; copying them into every private

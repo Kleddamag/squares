@@ -86,14 +86,37 @@ def card_kind(href: str) -> str:
     return "page"
 
 
-def card(href: str, label: str, value: str, note: str) -> str:
-    """A card that is one link: a caps label, the summary, and a line under it. The
-    label and note are escaped here; the value is HTML, so it may carry math."""
+def _card_body(label: str, value: str, note: str) -> str:
     return (
-        f'<a class="site-card" href="{_esc(href)}" data-go="{card_kind(href)}">'
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value">{value}</span>'
-        f'<span class="site-card-note">{note}</span></a>'
+        f'<span class="site-card-note">{note}</span>'
+    )
+
+
+def card(href: str, label: str, value: str, note: str) -> str:
+    """A card that is one link: a caps label, the summary, and a line under it. The
+    label is escaped here; the value and note are HTML, so they may carry math."""
+    return (
+        f'<a class="site-card" href="{_esc(href)}" data-go="{card_kind(href)}">'
+        f"{_card_body(label, value, note)}</a>"
+    )
+
+
+def popover_card(target: str, label: str, value: str, note: str, details: str) -> str:
+    """A card that opens its details in place: a button naming a native popover, which
+    needs no script to open, closes on Escape or a click outside, and holds `details`
+    under the card's own label and value. The panel is set in sans, and the attribute
+    tells kpress so, so its math is sans too."""
+    return (
+        f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
+        f'data-go="popover">{_card_body(label, value, note)}</button>'
+        f'<div class="site-popover" id="{_esc(target)}" popover '
+        'data-kpress-prose-font="sans">'
+        f'<button type="button" class="site-popover-close" popovertarget="{_esc(target)}" '
+        'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<p class="site-popover-value">{value}</p>{details}</div>'
     )
 
 
@@ -102,8 +125,8 @@ def _cards(cards: list[str]) -> str:
 
 
 def headline_cards(overview: Overview) -> str:
-    """One card per `S5` result, this project's and others' alike; each scrolls to its
-    row in the results table."""
+    """One card per `S5` result, this project's and others' alike; each opens the
+    result's claim, rationale and records in a popover, with a link to its row."""
     cards = []
     for result in overview.results:
         if result.record["significance"]["score"] < 5:
@@ -117,12 +140,19 @@ def headline_cards(overview: Overview) -> str:
                 "S" + str(record["significance"]["score"]),
             )
         )
+        details = (
+            f"{_detail(result, full=False)}"
+            f'<p class="site-popover-links">{rungs}</p>'
+            f'<p class="site-popover-links">{_records(result)} · '
+            f'<a href="#{_esc(result.id.lower())}">row in the table</a></p>'
+        )
         cards.append(
-            card(
-                f"#{result.id.lower()}",
+            popover_card(
+                f"pop-{result.id.lower()}",
                 f"{result.id} · {result.credit}",
                 tex_bounds(result.summary),
                 rungs,
+                details,
             )
         )
     return _cards(cards)
@@ -149,14 +179,16 @@ def exact_value_cards(overview: Overview) -> str:
     return _cards(cards)
 
 
-def _detail(result: Result) -> str:
+def _detail(result: Result, *, full: bool = True) -> str:
+    """A result's claim and why it matters; `full` adds its composition and next rung,
+    which the table row carries and a card's popover leaves to the row."""
     record = result.record
     rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
-        if record.get(key):
+        if full and record.get(key):
             rows.append((label, tex_bounds(" ".join(str(record[key]).split()))))
     rows.append(
-        ("Significance", _esc(" ".join(str(record["significance"]["rationale"]).split())))
+        ("Significance", tex_bounds(" ".join(str(record["significance"]["rationale"]).split())))
     )
     body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
     return f'<dl class="site-detail">{body}</dl>'

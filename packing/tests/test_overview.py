@@ -142,6 +142,9 @@ def test_every_site_page_retries_untypeset_math(name: str) -> None:
     assert render_overview.MATH_RETRY_SCRIPT.read_text(encoding="utf-8") in page
 
 
+POPOVER_CARD = re.compile(
+    r'<button type="button" class="site-card" popovertarget="([^"]+)" data-go="popover">'
+)
 CARD = re.compile(r'<a class="site-card" href="([^"]+)" data-go="(scroll|external|page)"')
 
 
@@ -151,8 +154,18 @@ def test_every_card_names_where_it_goes_and_gets_there(page: str) -> None:
     site serves."""
     cards = CARD.findall(page)
     assert {kind for _, kind in cards} == {"scroll", "external", "page"}
-    # Every highlight leads somewhere: no card is plain text beside ones that link.
-    assert page.count('class="site-card"') == len(cards)
+    # Every highlight leads somewhere: no card is plain text beside ones that respond.
+    popovers = POPOVER_CARD.findall(page)
+    assert popovers
+    assert page.count('class="site-card"') == len(cards) + len(popovers)
+    for target in popovers:
+        panel = re.search(
+            rf'<div class="site-popover" id="{target}" popover[^>]*>(.*?)</div>',
+            page,
+            re.DOTALL,
+        )
+        assert panel, target
+        assert f'href="#{target.removeprefix("pop-")}"' in panel.group(1), target
     ids = set(ID.findall(page))
     served = {*render_overview.SITE_PAGES, "workbench/"}
     for href, kind in cards:

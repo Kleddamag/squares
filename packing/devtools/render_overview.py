@@ -46,6 +46,7 @@ BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
 MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
+POPOVER_SCRIPT = BROWSER / "popover.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -298,7 +299,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        page_scripts=(FORWARD_SCRIPT, TABLE_SCRIPT),
+        page_scripts=(FORWARD_SCRIPT, TABLE_SCRIPT, POPOVER_SCRIPT),
     )
 
 

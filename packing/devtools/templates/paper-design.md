@@ -96,24 +96,36 @@ it.
 - **Navigation bar.** One fixed-width row of sans links in the page’s header slot, the
   same on every page. The current page is underlined in the accent.
   The site name is “Square Packing”; the edition appears only in the closing line.
+
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
-  Every card is a link to its details, so no highlight is plain text beside ones that
-  respond: a result goes to its row in the table, a count to what it counts (the table,
-  the frontier atlas filtered by a query such as `frontier.html?recent=true`, or the
-  definition of the rungs), and a page or document to itself.
-  A card is one `<a>`, with a gentle wash on hover and a gray icon in its corner for
-  where it goes: `↓` to a row on the page, `↗` off the site, `→` to another page of the
-  site.
+  Every card responds, so no highlight is plain text beside ones that do, and what it
+  does depends on what it is about:
+  - A card about **one result** opens its details in place, in a popover: the claim, why
+    it matters, its rungs and records, and a link to its row in the table.
+    The popover is a native `popover` panel with square corners over a faint scrim, set
+    in sans, closed by its `×`, by Escape, or by a click outside.
+    It works without scripting.
+  - A card about **a collection, a page or a document** is a link to it: a count to what
+    it counts (the table, the frontier atlas filtered by a query such as
+    `frontier.html?recent=true`, or the definition of the rungs), a page or document to
+    itself, a case to its record in the frontier atlas.
+
+  Either kind gains a gentle wash on hover and a gray icon in its corner for what it
+  does: `+` opens a popover, `↓` scrolls to a row on the page, `↗` leaves the site, `→`
+  opens another page of the site.
+
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
   note size, a fill and no border.
   A plain chip is neutral gray; `data-tone="accent"` is an accent tint for a settled
   state, such as a proved case.
   A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, which the
   confirmation bar and its legend share.
+
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.
   On a phone, the results table becomes one card per row.
+
 - **Confirmation bar.** One stacked bar per source, in the confirmation rung fills.
 
 ## Token Ownership

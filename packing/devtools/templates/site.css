@@ -109,10 +109,12 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin-block: 1.5rem;
 }
-/* A card is a clean summary with square corners, and every card is a link to its
-   details: it gets a gentle wash on hover, and a gray icon in its corner says what
-   following it does. A down arrow scrolls to a row on this page, a diagonal arrow
-   leaves the site, and a right arrow opens another page of it. */
+/* A card is a clean summary with square corners, and every card responds: a card
+   about one result is a button that opens its popover, and any other card is a link.
+   Either gets a gentle wash on hover and a gray icon in its corner for what it does:
+   plus opens a popover, a down arrow scrolls to a row on this page, a diagonal arrow
+   leaves the site, and a right arrow opens another page of it. The rule is in
+   paper-design.md. */
 .kpress .site-card {
   border: 1px solid var(--kpress-doc-border);
   border-radius: 0;
@@ -121,18 +123,25 @@ body {
   gap: 0.2rem;
   padding: 0.9rem 1rem;
 }
-.kpress a.site-card {
+.kpress :is(a, button).site-card {
   color: inherit;
   padding-inline-end: 2.2rem;
   position: relative;
   text-decoration: none;
   transition: background-color 120ms ease;
 }
-.kpress a.site-card:hover,
-.kpress a.site-card:focus-visible {
+.kpress button.site-card {
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+  width: 100%;
+}
+.kpress :is(a, button).site-card:hover,
+.kpress :is(a, button).site-card:focus-visible {
   background: var(--kpress-doc-surface-hover);
 }
-.kpress a.site-card::after {
+.kpress :is(a, button).site-card::after {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   inset-block-start: 0.7rem;
@@ -141,8 +150,8 @@ body {
   position: absolute;
   transition: opacity 120ms ease;
 }
-.kpress a.site-card:hover::after,
-.kpress a.site-card:focus-visible::after {
+.kpress :is(a, button).site-card:hover::after,
+.kpress :is(a, button).site-card:focus-visible::after {
   opacity: 1;
 }
 .kpress a.site-card[data-go="scroll"]::after {
@@ -154,7 +163,50 @@ body {
 .kpress a.site-card[data-go="page"]::after {
   content: "\2192";
 }
-.kpress .site-card .site-card-label {
+.kpress button.site-card[data-go="popover"]::after {
+  content: "+";
+}
+
+/* A card's popover: its details in place, as a plain panel with square corners over a
+   faint scrim, closed by its button, Escape, or a click outside. */
+.site-popover {
+  background: var(--kpress-doc-bg);
+  font-family: var(--kpress-font-sans);
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: 0;
+  box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
+  color: var(--kpress-doc-text);
+  max-height: min(80vh, 40rem);
+  max-width: min(36rem, 100vw - 2rem);
+  overflow: auto;
+  padding: 1.2rem 2.6rem 1.2rem 1.4rem;
+}
+.site-popover::backdrop {
+  background: oklch(0% 0 0 / 0.12);
+}
+.site-popover .site-popover-close {
+  background: none;
+  border: 0;
+  color: var(--kpress-doc-muted);
+  cursor: pointer;
+  font-family: var(--kpress-font-sans);
+  font-size: 1.3rem;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.7rem;
+  line-height: 1;
+  position: absolute;
+}
+.site-popover .site-popover-value {
+  font-size: 1.15em;
+  margin-block: 0.3rem 0.8rem;
+}
+.site-popover .site-popover-links {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  margin-block: 0.6rem 0;
+}
+
+.kpress :is(.site-card, .site-popover) .site-card-label {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: var(--kpress-caps-label-size, 0.8rem);
@@ -247,18 +299,18 @@ body {
 .site-table details > summary::marker {
   color: var(--kpress-doc-accent);
 }
-.site-table .site-detail {
+:is(.site-table, .site-popover) .site-detail {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   line-height: 1.45;
   margin-block: 0.4rem 0.2rem;
 }
-.site-table .site-detail dt {
+:is(.site-table, .site-popover) .site-detail dt {
   font-weight: var(--site-font-weight-sans-medium);
   color: var(--kpress-doc-text);
 }
-.site-table .site-detail dd {
+:is(.site-table, .site-popover) .site-detail dd {
   margin: 0 0 0.4rem 0;
 }
 .site-records {

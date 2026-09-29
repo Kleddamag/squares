@@ -24,6 +24,13 @@ from devtools.reachable_tests import pytest_command, select_tests
 from sqpack.cli import validate
 
 
+@pytest.fixture(autouse=True)
+def _isolate_parent_reachable_receipt(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Unit runner mocks must not inherit the enclosing validation command's receipt."""
+    monkeypatch.delenv("PACKING_REACHABLE_TEST_ARTIFACT_STEM", raising=False)
+    monkeypatch.delenv("PACKING_REACHABLE_TEST_RUN_ID", raising=False)
+
+
 def test_a_change_to_validate_selects_the_tests_that_pinned_it() -> None:
     """The D-381 pair: both stale-pin failures lived in these two files."""
     selection = select_tests(["packing/src/sqpack/cli/validate.py"])

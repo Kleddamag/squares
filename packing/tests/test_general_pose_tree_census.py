@@ -23,6 +23,16 @@ RETAINED = PACKING / "resources/web/external-square-certificates-2026-09-22/kled
 SAMPLE = PACKING / "resources/web/wand125-tools-2026-09-29/receipts/n11-sample.jsonl"
 
 
+def _string_values(value: object) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        return [item for child in value.values() for item in _string_values(child)]
+    if isinstance(value, list):
+        return [item for child in value for item in _string_values(child)]
+    return []
+
+
 def _write_source(checker: Path, *, sleep: bool = False) -> None:
     script = """
 import argparse
@@ -211,6 +221,8 @@ def test_bound_runner_admits_only_the_exact_complete_row_census(
     assert result["global_minimum_matches_reference"] is True
     assert result["global_counting_theorem_verified"] is False
     header = json.loads(output.read_text().splitlines()[0])
+    assert "input_paths" not in header
+    assert not [value for value in _string_values(header) if Path(value).is_absolute()]
     wrapper = PACKING / "devtools/check_general_pose_tree_census.py"
     assert (
         header["binding"]["first_party_wrapper"]["sha256"]

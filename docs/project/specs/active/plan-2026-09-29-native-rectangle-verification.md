@@ -18,7 +18,7 @@ inventory of available checks and gaps.
 | Native rectangle verifier | W7 pipeline-improvement | think-bmf3 | Exact rational coverage engine, standalone candidate CLI, refusal controls, independently reviewed mathematical contract, and retained complete or explicitly inconclusive receipts |
 | Verifier golden tests and Rust gate review | W7 pipeline-improvement | think-v4dn, think-k8hl | Complete CLI decision goldens with separate semantic checks; live Rust lint probes, executed Rust tests and rustdoc; scoped review and validation evidence |
 | PR integration and certification | W7 pipeline-improvement | think-8cps, think-sewp | Reconcile the expired inherited session record, reduce frontend runtime without dropping checks, and obtain passing CI and full-checkpoint evidence |
-| General pose-tree replay | W2 factual-review | think-190a | Audit branch/enclosure/measure premises and replay all 12,028 n11 rows; separately bind global counting before any whole-bound promotion |
+| General pose-tree replay | W2 factual-review | think-190a | Audit branch/enclosure/measure premises and replay all 12,028 n11 minima; reuse the reconciled T-037 global proof for the identical certificate |
 | Reader documentation | W8 documentation-pass | think-8cps | Maintained repository index, synopsis summary, and tooling inventory naming actual independence and remaining gaps |
 
 The W7 block has parallel lanes with disjoint writes: mathematical contract and review

@@ -292,9 +292,9 @@ The review found no mathematical mismatch in the direct witness evaluator for th
 input.
 
 The
-[fresh bound sample](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample.jsonl)
+[fresh bound sample](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable.jsonl)
 and its
-[summary](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-summary.json)
+[summary](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json)
 record rows 0, 6014 and 12027: three matching source minima and three independent exact
 witness attainments.
 The result is `PARTIAL_ROW_EQUALITY`, with 12,025 rows missing, sample minimum
@@ -302,6 +302,11 @@ The result is `PARTIAL_ROW_EQUALITY`, with 12,025 rows missing, sample minimum
 The selected process completed; the full row census did not.
 Full replay and reuse of previously checked global premises are distinct evidence
 questions. The reconciliation below resolves the latter for this pinned input.
+
+The final journal omits machine-specific input paths; its input and implementation
+hashes retain the binding, while the writer receives protected paths directly.
+The original sample and wrapper remain in commit `754a0342c` as historical evidence.
+A fresh three-row run binds the portable journal to the corrected wrapper.
 
 ## Reusing the Existing T-037 Global Premises
 

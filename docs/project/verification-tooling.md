@@ -162,9 +162,9 @@ The wrapper uses isolated Python execution so an inherited optimization setting 
 disable upstream assertions.
 
 The
-[fresh bound journal](../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample.jsonl)
+[fresh bound journal](../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable.jsonl)
 and
-[summary](../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-summary.json)
+[summary](../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json)
 cover rows 0, 6014 and 12027. All three source minima equal `1000047518`, and the
 independent evaluator confirms all three attaining witnesses.
 The result is `PARTIAL_ROW_EQUALITY`: 12,025 rows remain unreplayed by this wrapper, and

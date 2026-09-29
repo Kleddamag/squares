@@ -665,9 +665,10 @@ def _write_bound_journal(
     header: dict[str, object],
     rows: list[dict[str, Any]],
     run_id: str,
+    protected_paths: tuple[Path, ...],
 ) -> None:
     _require(not output.exists(), "output already exists; fresh runs never overwrite evidence")
-    protected = {Path(value).resolve() for value in header["input_paths"].values()}  # type: ignore[union-attr]
+    protected = {path.resolve() for path in protected_paths}
     _require(output.resolve() not in protected, "output may not overwrite an input")
     lines = [json.dumps(header, sort_keys=True)]
     lines.extend(json.dumps(row | {"binding_sha256": run_id}, sort_keys=True) for row in rows)
@@ -804,12 +805,20 @@ def run_bound(
             "stdout_sha256": _sha256(stdout),
             "stderr_sha256": _sha256(stderr),
         },
-        "input_paths": {
-            "certificate": str(certificate_path.resolve()),
-            "reference": str(reference_path.resolve()),
-        },
     }
-    _write_bound_journal(output, header=header, rows=rows, run_id=run_id)
+    protected_paths = (
+        certificate_path,
+        reference_path,
+        WRAPPER_SOURCE,
+        *(checker / relative for relative in checker_files),
+    )
+    _write_bound_journal(
+        output,
+        header=header,
+        rows=rows,
+        run_id=run_id,
+        protected_paths=protected_paths,
+    )
     return validate_bound(
         output,
         checker,

@@ -3572,7 +3572,7 @@ results:
       - packing/resources/web/wand125-tools-2026-09-29/README.md
       - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
       - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
-      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-summary.json
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json
       - docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
     next_rung: >-
       think-11z6 under think-190a: replay all 12028 rows through the reviewed production-bound

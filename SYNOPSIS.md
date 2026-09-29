@@ -4047,9 +4047,9 @@ ablation attributes the improvement to any one of them.
 | Mathematical review | Threshold counting, strict core containment, coverage of every legal centre, exact arithmetic, boundaries and strictness | No blocking mathematical defect |
 
 The case record holds `verified_lower_bound: 31/8` on both evidence entries and states
-that this confirms Kleddamag’s published bound without a new result identifier or a C5
-claim ([`n-011`](packing/frontier/n-011.md)). There is no `T-` row because it is not a
-first-party result. The certificate closes `95.89%` of the interval from `T-026` to `U`;
+that this confirms Kleddamag’s published bound ([`n-011`](packing/frontier/n-011.md)).
+The existing `T-037` registers that published result at `V4/C4`; this review adds no new
+result or C5 claim. The certificate closes `95.89%` of the interval from `T-026` to `U`;
 the review is explicit that the percentage is not a probability of optimality.
 
 **The other external results bear on `n = 11` only lightly.** Tokoharu’s

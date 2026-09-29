@@ -298,6 +298,33 @@ def test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots() ->
     assert snapshot_source_bytes() < SNAPSHOT_MAX_BYTES
 
 
+def test_n32_inventory_stays_in_repo_but_out_of_mutation_workers(
+    control_snapshot: tuple[Path, set[Path]],
+) -> None:
+    tree, copied_targets = control_snapshot
+    inventory = (
+        ROOT
+        / "campaign/series/series-000-smoke-and-calibration/results/agenda-040"
+        / "one-spare-inventory-n32.json"
+    )
+    relative = inventory.relative_to(controls.REPO)
+    packing_relative = inventory.relative_to(ROOT).as_posix()
+    specification = safe_load((ROOT / "devtools/controls.yaml").read_text())
+
+    assert inventory.is_file()
+    assert inventory in PRUNE
+    assert all(
+        (ROOT / control["file"]).resolve() != inventory
+        and packing_relative not in control["run"]
+        for control in specification["controls"]
+    )
+    assert relative not in copied_targets
+    assert not (tree / relative).exists()
+    # The agenda is not removed wholesale; other checks use its retained files.
+    family = inventory.with_name("exp-214-n13-399-100-family.json")
+    assert (tree / family.relative_to(controls.REPO)).read_bytes() == family.read_bytes()
+
+
 def test_motion_lab_golden_is_not_a_mutation_worker_input(
     control_snapshot: tuple[Path, set[Path]],
 ) -> None:

@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-09-27'
+last_reviewed: '2026-09-29'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -53,6 +53,44 @@ sources:
       Lean build, the exhaustive xcheck.py passes nor the case-free s(13) cover
       was replayed. The source's s(11) >= 3040/797
       is below the verified 31/8 and is retained in the packet but not registered.
+      On 2026-09-29 the same repository's s(21) = 5
+      (evand-square-packing-2026-09-28) superseded its s(21) >= 5000/1001,
+      which is kept as the previous verified bound.
+  - id: evand-square-packing-2026-09-28
+    title: square-packing, mixed covers for s(21) = 5 and s(45) = 7
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/6aa82ba457e9eaeaaa3af0833600f27f91a2fce3
+    local: resources/web/evand-square-packing-2026-09-28/square-packing/
+    source_key: '[evand square-packing 2026-09-28]'
+    scope: {n_values: [21, 45]}
+    reviewed: '2026-09-28'
+    source_date: '2026-09-28'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-021.md, frontier/n-045.md]
+    evidence:
+      - E-n021-evand-mixed-cover-report
+      - E-n021-evand-mixed-cover-zmx2-replay
+      - E-n045-evand-mixed-cover-report
+      - E-n045-evand-mixed-cover-zmx2-replay
+    notes: >-
+      Evan Daniel's repository at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3,
+      retained on 2026-09-28 as the 91 files that changed or were added since
+      the 2026-09-26 packet's 167d842c; the two packets overlaid give the pinned
+      tree at every path either holds. Its CREDITS.md says the work was produced
+      with an AI agent under human direction. Mixed covers (weighted points plus
+      uniform mass on interior grid-line segments) prove s(21) = 5 and s(45) = 7
+      at margin zero, each certified at the source by zm_mixed.py (exact) and
+      zmx2 (Rust, binary64 enclosures widened outward), with a Lean top theorem
+      for s(21) from one hypothesis. Both bundles' fast tiers passed here, and
+      fresh zmx2 --d4 and --full runs certified every root with censuses equal
+      to the source's for all 66,600 roots, so both values are registered at
+      V4/C3 on the interval-certified method; a 64-root zm_mixed.py sample
+      matched, and the complete zm_mixed.py re-sweeps, which would add the exact
+      method and C4, run separately. The Lean build was not run (Mathlib's
+      cache is unreachable from this session). The source's hypothesis-free
+      Lean checks of s(13) = 4 and s(32) = 6 are reported, not built, and move
+      no bound.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -62,7 +100,7 @@ sources:
     scope: {n_values: [17]}
     reviewed: '2026-09-27'
     source_date: '2026-09-27'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-017.md]
     evidence: [E-n017-kleddamag-466001-report, E-n017-kleddamag-466001-source-replay]
@@ -79,7 +117,54 @@ sources:
       bounds/4.66001/verify.py passed here, with check_integrity.py and
       controls.py. Registered at V4/C3; the native parent-core route cannot
       represent the weighted-threshold and winning-subset features, so no
-      method-distinct C4 is claimed.
+      method-distinct C4 is claimed. Superseded on 2026-09-29 by Guzhou0806's
+      R068 (guzhou-n17-r068-2026), which continues its charge, and kept as the
+      previous verified bound.
+  - id: guzhou-n17-r068-2026
+    title: N17 square packing, R068 strict lower bound 4.66044
+    role: source-repository
+    url: https://github.com/Guzhou0806/n17-square-packing/tree/815b16261f852e389968513eec94b4b9e5b3206d/certificates/R068-C010
+    local: resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/
+    source_key: '[Guzhou0806 n17 R068]'
+    scope: {n_values: [17]}
+    reviewed: '2026-09-28'
+    source_date: '2026-09-28'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md]
+    evidence: [E-n017-guzhou-r068-report, E-n017-guzhou-r068-source-replay]
+    notes: >-
+      Guzhou0806 / N17 project's R068 release at
+      815b16261f852e389968513eec94b4b9e5b3206d, continuing Kleddamag's public
+      4.66001 charge (Kleddamag building on Squares Project (Joshua Levy), Mira
+      and Guzhou0806), retained on 2026-09-28 as the 93 files that changed or
+      were added since 6f64e4b2, with R067 in the same packet. Its publisher ran
+      no local validation and did not observe CI; the complete paired replay
+      here (Guzhou0806's C++ checker and Kleddamag's Node BigInt checker, byte
+      for byte) matched the published ledgers on every one of 4,991 rows.
+      One event-cell method, so V4/C3 and no method-distinct C4; the native
+      parent-core route cannot represent the weighted-threshold and
+      winning-subset features.
+  - id: guzhou-n17-r067-2026
+    title: N17 square packing, R067 strict lower bound 4.66018
+    role: source-repository
+    url: https://github.com/Guzhou0806/n17-square-packing/tree/d4e2c287408b416683f7d1b7f19e69fb7c592d73/certificates/R067-4.66018
+    local: resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/
+    source_key: '[Guzhou0806 n17 R067]'
+    scope: {n_values: [17]}
+    reviewed: '2026-09-28'
+    source_date: '2026-09-28'
+    disposition: superseded-covered
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md]
+    evidence: [E-n017-guzhou-r067-source-replay]
+    notes: >-
+      Guzhou0806 / N17 project's R067 release at
+      d4e2c287408b416683f7d1b7f19e69fb7c592d73, Kleddamag's 4.66001 charge
+      unchanged at a larger parent side over 2,808 intervals, retained in the
+      R068 packet. Its complete paired replay here matched the published ledgers
+      on every row (V4/C3). Superseded the same day by R068
+      (guzhou-n17-r068-2026), so it never carried the case's bound.
   - id: kleddamag-n17-4640020-2026
     title: Seventeen unit squares — a certified lower bound, v1.1.0 (4.640020)
     role: source-repository
@@ -264,7 +349,41 @@ sources:
       n32 Evan Daniel's separately registered bounds are stronger, so those two claims are
       superseded priors and no case record cites them. All 44 pass
       the first-party exact preflight; the verified lane holds only the counts whose
-      complete coverage replay is in the packet's receipts.
+      complete coverage replay is in the packet's receipts. At n45 the 1391/200
+      was the case's reported bound until Daniel's s(45) = 7
+      (evand-square-packing-2026-09-28) superseded it on 2026-09-29; the case
+      keeps E-wand125-rectangle-report as reported evidence.
+  - id: wand125-point-and-mixed-2026-09-28
+    title: Point-only and mixed-rectangle certificates for s(21), s(45) and s(50)
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/39d8ecc74d651b54ec977c331c8f2015b442a6c4
+    local: resources/web/wand125-point-and-mixed-2026-09-28/
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    scope: {n_values: [21, 45, 50]}
+    reviewed: '2026-09-28'
+    source_date: '2026-09-28'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-021.md, frontier/n-045.md, frontier/n-050.md]
+    evidence:
+      - E-n045-wand125-point-cover-report
+      - E-n045-wand125-point-cover-source-replay
+      - E-n021-wand125-point-endpoint-report
+      - E-n050-wand125-mixed-740-report
+    notes: >-
+      Revision 39d8ecc74d651b54ec977c331c8f2015b442a6c4 of the same repository
+      as the rectangle certificates, retained on 2026-09-28 as 64 files of a
+      517-file pinned subtree. A point-only s(45) = 7, decided by Evan Daniel's
+      unmodified zmx2, passed its complete source check here and is recorded at
+      V4/C3 as a second certificate for the value beside Daniel's own, not a
+      second method. A point-only s(21) = 5 on Daniel's support, decided by the
+      source's own rational replay, and s(50) >= 37/5, checked by a research
+      copy of Tokoharu's verify.cpp at threshold one, are recorded as reported
+      bounds; their complete replays were running when this entry was written
+      (the s(21) root and sieve stages, and four of the n = 50 directions,
+      matched the source's records). The source claims no priority for s(21)
+      or s(45). The superseded n = 50 rungs 147/20 and 3659/500 are retained
+      and not registered.
   - id: kingbird-current
     title: Squares in Squares
     role: current-catalogue

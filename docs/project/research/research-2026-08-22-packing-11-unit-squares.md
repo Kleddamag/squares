@@ -879,11 +879,10 @@ Use the structured form to query or plot; use these tables to read.
 | --- | --- | --- | --- | --- | --- | --- |
 | 11 | 3.87708359 | hand | 8 | 3.875 | elementary | 0.0021 |
 | 12 | 4 | grid | — | 3.968615 | elementary | 0.0314 |
-| 17 | 4.67553009 | hand | 18 | 4.66001 | elementary | 0.0155 |
+| 17 | 4.67553009 | hand | 18 | 4.66044 | elementary | 0.0151 |
 | 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | elementary | 0.1279 |
 | 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.815 | elementary | 0.0706 |
 | 20 | 5 | grid | — | 4.895 | elementary | 0.105 |
-| 21 | 5 | grid | — | 4.995004 | elementary | 0.005 |
 | 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.53 | elementary | 0.0913 |
 | 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6 | elementary | 0.1071 |
 | 28 | 5.82444462 | annealing | 6 | 5.72 | elementary | 0.1044 |
@@ -898,8 +897,7 @@ Use the structured form to query or plot; use these tables to read.
 | 42 | 7 | grid | — | 6.79 | elementary | 0.21 |
 | 43 | 7 | grid | — | 6.865 | elementary | 0.135 |
 | 44 | 7 | grid | — | 6.935 | elementary | 0.065 |
-| 45 | 7 | grid | — | 6.955 | elementary | 0.045 |
-| 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.317426 | unavoidable points | 0.254 |
+| 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.4 | elementary | 0.1714 |
 | 51 | 7.70079924 | annealing | 12 | 7.4425 | elementary | 0.2583 |
 | 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.535 | elementary | 0.1721 |
 | 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.595 | elementary | 0.2279 |
@@ -1164,6 +1162,7 @@ Use the structured form to query or plot; use these tables to read.
 | 14 | `4` | unavoidable points | Erich Friedman (2009) | proved |
 | 15 | `4` | elementary | Said El Moumni (1999) | proved |
 | 16 | `4` | perfect square | classical | proved |
+| 21 | `5` | elementary | Evan Daniel (2026) | proved |
 | 22 | `5` | unavoidable points | Wolfram Bentz (2016) | proved |
 | 23 | `5` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 24 | `5` | unavoidable points | Erich Friedman (1999) | proved |
@@ -1173,6 +1172,7 @@ Use the structured form to query or plot; use these tables to read.
 | 34 | `6` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 35 | `6` | unavoidable points | Erich Friedman (1999) | proved |
 | 36 | `6` | perfect square | classical | proved |
+| 45 | `7` | elementary | Evan Daniel (2026) | proved |
 | 46 | `7` | unavoidable points | Wolfram Bentz (2010) | proved |
 | 47 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 48 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |

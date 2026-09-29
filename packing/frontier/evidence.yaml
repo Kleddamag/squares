@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-09-27'
+last_reviewed: '2026-09-29'
 evidence:
   - id: E-wand125-point-source-replay
     claim: lower-bound
@@ -119,7 +119,10 @@ evidence:
       by digest only. This is the public-claim entry, not a local verification receipt.
       At n21 and n32 the claims 997/200 and 119/20 are superseded priors: Evan Daniel's
       separately registered s(21) >= 5000/1001 and s(32) = 6 are stronger, so neither
-      case record cites this entry.
+      case record cites this entry. At n45 the claim 1391/200 was the case's
+      reported bound until Daniel's s(45) = 7 (E-n045-evand-mixed-cover-report)
+      superseded it on 2026-09-29; the case record keeps this entry as reported
+      evidence.
     source_reviewed: '2026-09-27'
 
   - id: E-wand125-rectangle-monotone-report
@@ -259,6 +262,188 @@ evidence:
       "(also n = 90)". The listed counts are those where the transfer beats every other
       registered report. This derivation does not strengthen the assurance of its
       source premise or substitute for its complete replay.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n045-wand125-point-cover-report
+    claim: lower-bound
+    scope: {n_values: [45]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: independent-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/cover.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 39d8ecc74d651b54ec977c331c8f2015b442a6c4
+      (2026-09-28T22:20:47Z by the author's clock) claims s(45) = 7 from a
+      point-only, D4-invariant measure of 12,645 points, coordinates over 2,000
+      and weights over 2^49, total 12666371418707823/2^48 = 44.99999100001 < 45,
+      whose capture condition (every closed unit square in [0,7]^2 has mass at
+      least 1, a point on its boundary counting) is decided by Evan Daniel's
+      unmodified zmx2 (evand/square-packing 6e1223cf, zmx2.rs SHA-256
+      6b7f0f79..., zmx2 cert cover.txt --d4 --pair-points; reference run 204.4 s
+      on eight threads, 4,900 roots, 1,295,460 boxes, depth 38). zmx2 encloses
+      geometry in binary64 intervals widened outward and accepts by exact
+      integer tests. The weights came from an LP over candidate supports
+      iterated against weak poses that zmx2 located, scaled by about 1.000835
+      and rounded up; the checker is Daniel's, not the generator's author's,
+      although it steered the search. The source states that Daniel published
+      s(45) = 7 first with a mixed point-and-segment measure and claims no
+      priority; parts of the work were produced with AI assistance under human
+      direction, as its README says. The upper bound 7 is the grid. This entry
+      preserves the source claim; the local replay is recorded separately.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n045-wand125-point-cover-source-replay
+    claim: lower-bound
+    scope: {n_values: [45]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/cover.txt.gz
+    replay: >-
+      From a copy of
+      packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7
+      with its compressed files restored (packet README, Compressed Files),
+      python3 resolving to CPython 3.12 or later and Rust 1.86 or later on PATH:
+      sh verify.sh WORK 2 (WORK a new directory outside the packet), which
+      clones evand/square-packing at 6e1223cf, checks zmx2.rs against its pinned
+      SHA-256, builds it, runs zmx2 cert cover.txt --d4 --pair-points and must
+      end N45_POINT_COVER_VERIFIED; then, from packing/, .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed n45-compare WORK --out F, which
+      must print MATCHES_SOURCE_REFERENCE. Commands, walls and outputs are in
+      the packet README and receipts/n45/.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/README.md
+      theorem: No 45 unit squares fit in a square of side below 7; with the 7 x 7 grid, s(45) = 7.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        point_n45_L7/README.md; search/ZMX2.md section 4.5 (--pair-points) and
+        section 5 (Lemma R) at evand/square-packing 6e1223cf; the packet README,
+        "Replay Here", and receipts/n45/; section 3 of the 2026-09-28 point-only
+        review.
+      assumptions:
+        - The measure is nonnegative, exactly D4-invariant and totals 12666371418707823/2^48 < 45 (the packet's exact audit, check_cover.py and zmx2 d4 each check this).
+        - Every closed unit square in [0,7]^2 with centre in [0,7/2]^2 and angle 2 arctan u, u in [0,1/2], captures mass at least 1; zmx2 --d4 --pair-points certifies this region in 4,900 root boxes.
+        - The D4 reduction for measures carries that region to every centre and angle.
+        - Scaling a packing at side s < 7 by 7/s gives 45 pairwise disjoint closed unit squares in [0,7]^2.
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic on the host; the program is not formally verified.
+      audit_record: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: Fable max review of the point-only certificates (docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md), taking zmx2's soundness from the companion review of Daniel's covers.
+      note: >-
+        Sound as stated, given a passing replay of verify.sh. The pin is the
+        post-audit zmx2; --pair-points, which turns 6,105 off-grid points into
+        atoms of 2,530 partner lines so the pair lemma couples them, is sound at
+        margin zero, each atom's membership still decided by exact integer
+        tests; the data facts hold exactly; and the review's own complete
+        one-thread sweep returned VERIFIED-D4 with the reference census. The
+        cover's pointwise margin is a uniform 8.35 x 10^-4 with essentially no
+        room in the scale direction (F4). The certificate rests on zmx2's atom
+        and pair path, less exercised upstream than its segment path (F3), and
+        only the D4-reduced sweep is run (F2). Nothing about this cover is in
+        Lean (F5). None of F1 to F5 is blocking.
+    limitations: >-
+      Replays the source's own check on the retained bytes on 2026-09-28 and 29,
+      on a shared four-core Linux host with two threads, zmx2 built from the
+      pinned clone by cargo 1.94.1 (binary 5ee58ade...; the source's macOS
+      build is 4d2e0d3e...): verify.sh printed N45_POINT_COVER_VERIFIED, with
+      VERIFIED-D4 for all 4,900 roots, 1,295,460 boxes (629,884 certified,
+      20,296 empty, none uncertified or capped), maximum depth 38, equal to the
+      source's reference totals, in 1,287 s of wall and 1,494 CPU-s in all. The
+      roots log carries per-root milliseconds, so its digest cannot match the
+      source's; the census totals are compared (receipts/n45/comparison.json).
+      The first-party exact audit (devtools.audit_wand125_point_and_mixed exact)
+      independently checks the digest, nonnegativity, D4 invariance and total.
+      This is interval-certified evidence on the source-chosen zmx2, the same
+      implementation as E-n045-evand-mixed-cover-zmx2-replay, so it adds a
+      second certificate for s(45) = 7 under an existing method, not a second
+      method: V4/C3, not C4. The unreduced --full sweep was not run here.
+      Daniel's s(45) = 7 (mixed cover) came first and is the case's verified
+      bound; this is a second, point-only route, recorded without priority.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n021-wand125-point-endpoint-report
+    claim: lower-bound
+    scope: {n_values: [21]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/certificates/n21-original.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds claims s(21) = 5 from a point-only,
+      D4-invariant measure of 4,604 entries (4,520 positive) on Evan Daniel's
+      s21_lower_4.9950.txt support scaled by 1001/1000, re-weighted, with
+      capture threshold q = 249987/250000 over every closed unit square in
+      [0,5]^2, mass 2624862500021/125000000000 and 21q - mass =
+      999979/125000000000 > 0; introduced at b97c7963 and completed at d38917c6
+      (2026-09-28T10:44:48Z), with a Lean 4 overlay at b64f96e6 proving
+      n21pts_eq_five_of_checker : N21PtsCheckerCover -> minSide 21 = 5 from the
+      one capture hypothesis. The capture statement is decided by the source's
+      own exact rational replay of a retained certificate tree
+      (verify_portable.py over a 464 MB bundle: 5,000 roots, 8,758 sieve
+      parents, 31,678 frontier parents, 7,052 parents above t = 5/12
+      excluded), which took 8,577 s on two workers of an M1. The source names
+      Daniel's mixed-cover proof of s(21) = 5 (bundle commit 086a129a,
+      2026-09-27T19:56:22Z) as first and claims no priority; its s(21)
+      write-up says the code was developed with Codex. The upper bound is the
+      grid. The complete local replay was still running when this entry was
+      written (its root and sieve stages passed, every proof file
+      byte-identical to the source's M1 run), so no verified entry is recorded.
+      This entry preserves the source claim.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n050-wand125-mixed-740-report
+    claim: lower-bound
+    scope: {n_values: [50]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 39d8ecc (introduced at 75dd0952,
+      2026-09-28T22:16:21Z) claims s(50) >= 37/5 = 7.4 from a D4-expanded
+      rectangle density of 553 orbit representatives, mass 4999999/100000,
+      core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), a
+      research copy of Tokoharu's verify.cpp that accepts a centre box at lower
+      bound 1 instead of 10001/10000 and checks the per-node unit-square centre
+      domain; least recorded bound 1.0000000004625813 at index 150; the axis
+      direction by integer tables (13,205,956 cells, minimum
+      1.0084468491077132). The source ran the full replay twice, the second
+      from the published tarball (90621d1a...). It exceeds Green's reported
+      2 sqrt(2) + 101/25 + 3 sqrt(14)/25 = 7.3174260 by more than 0.0825739888
+      (exact comparison here). The same day's 147/20 (499 rectangles, its own
+      verifier) and 3659/500 (355 rectangles) are superseded and not
+      registered; the L7318 README's quoted minimum 1.0000019 is not its
+      minimum (1.0000000069521284 at index 81; review MV-5). The 2026-09-28
+      review found both changes to Tokoharu's checker legitimate and no
+      blocking finding. Here the exact audit, the pristine bundle's 621
+      digests, all 200 oblique inputs and a sampled replay of indices 0, 1,
+      150 and 200 (each equal to the shipped record) passed; the complete
+      replay, about 10.5 CPU-hours here, had not finished when this entry was
+      written, so no verified entry is recorded. This entry preserves the
+      source claim.
     source_reviewed: '2026-09-28'
 
   - id: E-n011-kleddamag-3875-source-replay
@@ -833,11 +1018,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 64 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 63 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 64 of them; the other 31 citations are historical or
+        verified lower bound in 63 of them; the other 32 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'
@@ -2733,6 +2918,9 @@ evidence:
       retained, and the complete run projects to about 2.8 CPU-hours. Advance over the previous verified 122/25
       (T-034, which remains valid): 2878/25025, about 0.115; gap to the grid's
       5 is 5/1001, about 0.005. wand125's 997/200 of 2026-09-26 lies between.
+      Since 2026-09-29 this is the previous verified bound for the case,
+      superseded by the same author's s(21) = 5 (E-n021-evand-mixed-cover-zmx2-replay);
+      it remains valid evidence.
     source_reviewed: '2026-09-27'
 
   - id: E-n013-evand-casefree-cover-report
@@ -2758,6 +2946,247 @@ evidence:
       source 34 minutes on 4 threads and zeromargin.py 1 h 42 min on 8
       processes. The theorem is Bentz's; the bound on this case is unchanged.
     source_reviewed: '2026-09-27'
+
+  - id: E-n021-evand-mixed-cover-report
+    claim: lower-bound
+    scope: {n_values: [21]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/s21_mixed_cover_5.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      evand/square-packing at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3
+      (2026-09-28; the s(21) bundle entered at 086a129a, 2026-09-27T19:56:22Z)
+      claims s(21) = 5: a mixed cover of [0,5]^2, 7,536 weighted points plus
+      mass spread uniformly along 1,872 segments of length 1/50 on the interior
+      grid lines x, y in {1, 2, 3, 4}, total 522368729933/(25*10^9) =
+      20.894749197 < 21, exactly D4-invariant, such that every closed unit
+      square in [0,5]^2 captures mass at least 1, a point on its boundary and a
+      segment along its edge counting in full. The source certifies the D4
+      region at margin zero with two separately written checkers: zm_mixed.py in
+      exact rational arithmetic (all 40,000 roots, 461,204 boxes, none
+      uncertified, 12.9 CPU-h) and the Rust zmx2, which decides points and
+      masses in integers and encloses chord ends in binary64 intervals widened
+      outward (--d4, all 2,500 roots; --full, all 20,000 roots of the unreduced
+      pose space). Lean proves s21_eq_five_of_checker : S21CheckerCover ->
+      minSide 21 = 5 from that one hypothesis, the statement both checkers' D4
+      runs certify, with the reduction, the D4 fold, the cover's total and its
+      invariance kernel-checked; the checker programs are not formalised. The
+      source calls this the second exact value of s(k^2 - 4) for k >= 4, after
+      its s(32) = 6; its CREDITS.md says the work was produced with an AI agent
+      under human direction. The upper bound 5 is the grid. This entry
+      preserves the source claim; the local replay is recorded separately.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n021-evand-mixed-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [21]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/s21_mixed_cover_5.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, the 2026-09-26 packet's
+      square-packing/ and then the 2026-09-28 packet's, with every .gz restored
+      (the 2026-09-28 packet README, Replay From the Packets), python3 resolving
+      to packing/.venv/bin/python3 and cargo on PATH: NPROC=2 CARGO_BUILD_JOBS=2
+      sh certificates/s21/verify.sh, which must print that the fresh zmx2 --full
+      census is identical to the shipped zmx2_full/roots.log, root for root, and
+      end "s(21) bundle: OK"; then verify2/target/release/zmx2 cert
+      certificates/s21/s21_mixed_cover_5.txt --d4 --threads 2 --log OUT/d4.log,
+      which must print VERIFIED-D4, and the same with --full and OUT/full.log,
+      which must print VERIFIED. Then, from packing/, .venv/bin/python3 -m
+      devtools.audit_evand_mixed_covers compare-zmx2 --case 21 --mode d4
+      --records OUT/d4.log and the same with --mode full and OUT/full.log must
+      each exit 0, as must devtools.audit_evand_mixed_covers check on the
+      retained receipts. Commands, walls and output digests are in the packet
+      README and receipts/replays.json.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/README.md
+      theorem: No 21 unit squares fit in a square of side below 5; with the 5 x 5 grid, s(21) = 5.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        certificates/s21/README.md, "The proof in one paragraph", "What is checked
+        by what" and "The float caveat of zmx2, plainly"; certificates/s21/FORMAT.md;
+        search/ZMX2.md sections 2 to 7 and section 5 (Lemma R); notes/lean-s21.md;
+        lean/Sqpack/S21.lean (S21CheckerCover, s21_eq_five_of_checker); the
+        replay receipts in the packet.
+      assumptions:
+        - The mixed cover is nonnegative, exactly D4-invariant as a measure and totals 522368729933/(25*10^9) < 21, which the bundle's verify.sh, zmx2 d4 and this repository's audit each re-check.
+        - Every closed unit square in [0,5]^2 captures mass at least 1, a point on its boundary and a segment along one of its edges counting in full; zmx2 --full certifies this over all 20,000 roots of the unreduced pose space, and zmx2 --d4 over the 2,500 roots of the D4 region.
+        - The D4 reduction for measures carries the D4 region to every centre and angle (proved in Lean upstream, not built here).
+        - Scaling a packing at side s < 5 by 5/s makes 21 pairwise disjoint closed unit squares, so a total below 21 excludes it.
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic without contraction on the host; the program is not formally verified.
+      audit_record: docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: Fable max review (docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md), reconciled with the replays by the intake and registration lanes.
+      note: >-
+        No mathematical defect. The Lean statement is the standard s(21); the
+        reduction for measures, the D4 fold, the cover's total and its invariance
+        are kernel-checked, and the one hypothesis is, term for term, what the
+        shipped zm_mixed.py and zmx2 D4 runs certify. The review re-derived the
+        lemmas of both checkers against their code, including zmx2's outward
+        rounding (Lemma R), re-summarised all six shipped run records, reproduced
+        single roots of both checkers, checked 630 dumped leaves exactly, and saw
+        zmx2 refuse the cover weakened by 0.994 at the tilted dip the source's
+        own audit found. Not machine-checked: the lemma layer of both checkers (F5) and the
+        IEEE-754 model zmx2 needs (F4). Findings F1 to F8 are none blocking.
+    limitations: >-
+      Replays the source's zmx2 on the retained bytes on 2026-09-28 and 29, on a
+      shared four-core Linux host with two threads, built from the retained
+      source (SHA-256 6b7f0f79..., the post-audit parser) by rustc 1.94.1
+      (binary 5ee58ade...; the source's 0247012e... is rustc 1.91.1's, so the
+      census is the reproducibility handle, review F2). The bundle's fast tier
+      printed "s(21) bundle: OK" (272 s wall), its fresh zmx2 --full census
+      identical to the shipped log root for root. The separate fresh runs:
+      --d4 VERIFIED-D4, 2,500 roots, 1,826,222 boxes, maximum depth 26, none
+      uncertified (22 s wall); --full VERIFIED, 20,000 roots, 14,709,448 boxes,
+      maximum depth 27, none uncertified (198 s wall).
+      devtools.audit_evand_mixed_covers finds every root of both carrying the
+      source's census exactly and re-derives the cover's total and D4
+      invariance with its own parser. This is interval-certified evidence: it
+      rests on the host's correctly rounded binary64 arithmetic. The exact
+      method, zm_mixed.py, was only sampled here: 32 roots in two centre cells,
+      1,510 boxes, every census equal to the shipped record's; the shipped
+      records of the source's complete run (40,000 roots) re-summarise clean,
+      and the complete re-sweep (12.9 CPU-h at the source) runs separately. One
+      method replayed, so this supports V4/C3; a complete zm_mixed.py re-sweep
+      recorded as a second, exact-algebraic entry would support C4, with the
+      shared pose-space architecture as the residual common-mode risk (review
+      section 9). The Lean build was not run (Mathlib's build cache is
+      unreachable from this session), and the checker programs are not
+      formalised. Advance over the previous verified 5000/1001 (Daniel's
+      angle-net certificate, which remains valid): 5/1001.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n045-evand-mixed-cover-report
+    claim: lower-bound
+    scope: {n_values: [45]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/s45_mixed_cover_7.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      evand/square-packing at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3
+      (2026-09-28; the s(45) bundle entered at d2001582, 2026-09-28T04:33:10Z)
+      claims s(45) = 7: a mixed cover of [0,7]^2, 19,989 weighted points plus
+      mass spread uniformly along 3,912 segments of length 1/50 on the interior
+      grid lines x, y in {1, ..., 6}, total 2238676387/(5*10^7) = 44.77352774
+      < 45, exactly D4-invariant, such that every closed unit square in [0,7]^2
+      captures mass at least 1, a point on its boundary and a segment along its
+      edge counting in full. The same two checkers as for s(21) certify it at
+      margin zero: zm_mixed.py over all 78,400 roots of the D4 region (437,510
+      boxes, none uncertified, 16.5 CPU-h), whose record was produced under a
+      working file name and imported with only the header's input path changed
+      (review finding F1), and zmx2 over all 4,900 D4 roots and all 39,200
+      unreduced roots. Nothing about this cover is in Lean: the reduction is the
+      m = 7 case of lemmas proved there for every side, and there is no data
+      file or top theorem. The source calls this the third exact value of
+      s(k^2 - 4) for k >= 4 and gives wand125's 1389/200 and Nagamochi's
+      1 + sqrt(34) as the earlier bounds; its CREDITS.md says the work was
+      produced with an AI agent under human direction. The upper bound 7 is the
+      grid. This entry preserves the source claim; the local replay is recorded
+      separately.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n045-evand-mixed-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [45]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/s45_mixed_cover_7.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, the 2026-09-26 packet's
+      square-packing/ and then the 2026-09-28 packet's, with every .gz restored
+      (the 2026-09-28 packet README, Replay From the Packets), python3 resolving
+      to packing/.venv/bin/python3 and cargo on PATH: NPROC=2 CARGO_BUILD_JOBS=2
+      sh certificates/s45/verify.sh, which must print that the fresh zmx2 --full
+      census is identical to the shipped zmx2_full/roots.log, root for root, and
+      end "s(45) bundle: OK"; then verify2/target/release/zmx2 cert
+      certificates/s45/s45_mixed_cover_7.txt --d4 --threads 2 --log OUT/d4.log,
+      which must print VERIFIED-D4, and the same with --full and OUT/full.log,
+      which must print VERIFIED. Then, from packing/, .venv/bin/python3 -m
+      devtools.audit_evand_mixed_covers compare-zmx2 --case 45 --mode d4
+      --records OUT/d4.log and the same with --mode full and OUT/full.log must
+      each exit 0, as must devtools.audit_evand_mixed_covers check on the
+      retained receipts. Commands, walls and output digests are in the packet
+      README and receipts/replays.json.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/README.md
+      theorem: No 45 unit squares fit in a square of side below 7; with the 7 x 7 grid, s(45) = 7.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        certificates/s45/README.md, "The proof in one paragraph", "What is checked
+        by what" and "The float caveat of zmx2, plainly"; certificates/s21/FORMAT.md;
+        search/ZMX2.md sections 2 to 7 and section 5 (Lemma R);
+        lean/Sqpack/MixedMeasure.lean (not_packs_of_measure,
+        d4_reduction_measure_u, proved for every side); the replay receipts in
+        the packet.
+      assumptions:
+        - The mixed cover is nonnegative, exactly D4-invariant as a measure and totals 2238676387/(5*10^7) < 45, which the bundle's verify.sh, zmx2 d4 and this repository's audit each re-check; none of this is kernel-checked for this cover.
+        - Every closed unit square in [0,7]^2 captures mass at least 1, a point on its boundary and a segment along one of its edges counting in full; zmx2 --full certifies this over all 39,200 roots of the unreduced pose space, and zmx2 --d4 over the 4,900 roots of the D4 region.
+        - Scaling a packing at side s < 7 by 7/s makes 45 pairwise disjoint closed unit squares, so a total below 45 excludes it (the m = 7 case of not_packs_of_measure).
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic without contraction on the host; the program is not formally verified.
+      audit_record: docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: Fable max review (docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md), reconciled with the replays by the intake and registration lanes.
+      note: >-
+        Sound as stated: the same two checkers and the same bytes as for s(21),
+        on a cover of [0,7]^2, with the reduction the m = 7 case of lemmas
+        proved in Lean for every side. The data facts rest on three independent
+        parsers, the source's two and the review's, and not on the kernel, and
+        no top theorem exists (F6). The zm_mixed.py record was imported from a
+        working-name run with only the input path changed (F1); the cover was not
+        separately audited at the source, and the review's rejection run on the
+        cover weakened by 0.985 was refused at a tilted pose near (2.3, 3.2).
+        Findings F1 to F8 are none blocking.
+    limitations: >-
+      Replays the source's zmx2 on the retained bytes on 2026-09-28 and 29, on a
+      shared four-core Linux host with two threads, built from the retained
+      source (SHA-256 6b7f0f79...) by rustc 1.94.1 (binary 5ee58ade...). The
+      bundle's fast tier printed "s(45) bundle: OK" (544 s wall), its fresh
+      zmx2 --full census identical to the shipped log root for root. The
+      separate fresh runs: --d4 VERIFIED-D4, 4,900 roots, 2,071,984 boxes,
+      maximum depth 24, none uncertified (36 s wall); --full VERIFIED, 39,200
+      roots, 16,648,752 boxes, maximum depth 24, none uncertified (311 s wall).
+      devtools.audit_evand_mixed_covers finds every root of both carrying the
+      source's census exactly and re-derives the cover's total and D4
+      invariance with its own parser. This is interval-certified evidence: it
+      rests on the host's correctly rounded binary64 arithmetic. The exact
+      method, zm_mixed.py, was only sampled here: 32 roots in two centre cells,
+      2,254 boxes, every census equal to the shipped record's; the complete
+      re-sweep (16.5 CPU-h at the source) runs separately. One method replayed,
+      so this supports V4/C3, not C4. Nothing about this cover is in Lean, and
+      the checker programs are not formalised. It supersedes wand125's reported
+      1391/200 (E-wand125-rectangle-report) and the verified Nagamochi
+      1 + sqrt(34); wand125's point-only route to the same value is recorded
+      separately (E-n045-wand125-point-cover-source-replay).
+    source_reviewed: '2026-09-28'
 
   - id: E-n017-kleddamag-466001-report
     claim: lower-bound
@@ -2875,7 +3304,216 @@ evidence:
       features and gives no method-distinct decision. Advance over the previous
       verified 232001/50000 (v1.1.0): exactly 1999/100000. No new theorem
       identifier is created.
+      Since 2026-09-29 this is the previous verified bound for the case,
+      superseded by Guzhou0806's R068 (E-n017-guzhou-r068-source-replay), which
+      continues this certificate's charge and runs its Node checker byte for
+      byte; it remains valid evidence.
     source_reviewed: '2026-09-27'
+
+  - id: E-n017-guzhou-r068-report
+    claim: lower-bound
+    scope: {n_values: [17]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Guzhou0806 n17 R068]'
+    certificate: resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/accepted/4.66044/certificate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      Guzhou0806 / N17 project's R068 release at
+      815b16261f852e389968513eec94b4b9e5b3206d (2026-09-28T12:44:22Z) claims the
+      strict lower bound s(17) > 116511/25000 = 4.66044 for independently
+      rotated unit squares with disjoint interiors and boundary contact allowed.
+      This entry records that source claim; the local replay of 2026-09-28 and
+      29 is recorded separately. It continues Kleddamag's public 4.66001 charge
+      (Kleddamag, building on Squares Project (Joshua Levy), Mira and
+      Guzhou0806): the 889 rule orbits and their weights are 4.66001's
+      byte for byte; one zero-weight site orbit moves by 1/12500 and one
+      weighted four-site point orbit is added, so the budget is
+      M = 17000402008 + 4 x 11734 = 17000448944 units of 10^-9; the parent side
+      is A = 115325/116511 in the container L = 4613/1000, over 4,991 angle
+      intervals refining 4.66001's 2,168; the certificate's requested minimum
+      is 1000026409 = ceil(M/17), and the shipped paired ledgers give minimum
+      core charge 1000026844 on every interval and surplus 17 x 1000026844 - M
+      = 7404. The source discloses AI assistance (research stages C007 to
+      C009), credits Kleddamag for the charge, proof and Node BigInt checker,
+      and states that its publisher ran no local scientific validation, no
+      non-proposer review, and did not observe its CI; it claims no record,
+      optimality, peer review or proof-assistant formalization. The same day's
+      R067 at d4e2c287408b416683f7d1b7f19e69fb7c592d73 (2026-09-28T07:53:00Z)
+      claimed s(17) > 233009/50000 = 4.66018 on 4.66001's unchanged charge at
+      parent side 32950/33287 over 2,808 intervals (budget 17000402008,
+      surplus 54340); R068 supersedes it, and its complete replay is recorded
+      separately (E-n017-guzhou-r067-source-replay). R068 also publishes C010
+      local material, a shifted-core strip sweep and an exact counterexample to
+      a separate FIT02 charge at 9321/2000, which the source says is not a
+      global bound and which carries none here.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n017-guzhou-r068-source-replay
+    claim: lower-bound
+    scope: {n_values: [17]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Guzhou0806 n17 R068]'
+    certificate: resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/accepted/4.66044/certificate.json.gz
+    replay: >-
+      From certificates/R068-C010/ of a clean clone of the source at 815b1626,
+      or of a copy of the packet's n17-square-packing/ with every .gz restored
+      (packet README, Compressed Files), with g++ and the Boost 1.83 headers and
+      Node on PATH: node check_package.js; g++ -O3 -std=c++17
+      upstream/cpp/verify.cpp -o .recheck/bin/verify; N17_TIMEOUT_MINUTES=600
+      node upstream/cpp/replay.js accepted/4.66044/certificate.json
+      .recheck/global .recheck/bin/verify 2, which must write THEOREM.json with
+      PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION; node assert_ci.js global, which
+      must print PASS_FRESH_EXPECTED_RESULTS. Then, from packing/,
+      .venv/bin/python3 -m devtools.audit_guzhou_r068 compare R068 with that
+      .recheck/global directory must report no mismatch. The exact commands, walls and
+      output digests are in
+      packing/resources/web/n17-guzhou-r068-2026-09-28/README.md and
+      receipts/replays.json.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/PROOF.md
+      theorem: Seventeen independently rotated unit squares cannot fit at side 116511/25000; compactness gives s(17) > 116511/25000.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The source's PROOF.md under certificates/R068-C010/, the argument and
+        budget rules of Kleddamag's bounds/4.66001/ and bounds/4.640020/,
+        reviewed in docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md;
+        sections 3 and 4 of the 2026-09-28 review of R067 and R068, which prove
+        the two steps PROOF.md asserts (endpoint sufficiency and the centre
+        envelope) and re-derive every premise.
+      assumptions:
+        - The exact nonnegative D4-invariant point, k-of-m threshold, weighted-threshold and winning-subset charges have total budget 17000448944 units of 10^-9, including the added four-site point orbit of weight 11734 per site.
+        - A weighted threshold with positive integer coefficients a_i and threshold k charges at most floor(sum a_i / k) disjoint cores, and a winning-subset feature whose listed subsets pairwise intersect charges at most one; every one of the 86 distinct rules has capacity one.
+        - The 4991 contiguous rational parent-angle intervals cover every folded orientation up to 207107/500000, with a strictly contained closed core in each.
+        - Each interval's centre envelope contains every legal parent centre, and the exact sweep decides every generic centre cell in it.
+        - Upper semicontinuity of the monotone nonnegative closed-set charges extends the generic bound to boundary and event centres.
+        - Exact arithmetic establishes minimum charge 1000026844, so 17 times that charge exceeds the budget by 7404 units; compactness makes the packing minimum attained.
+      audit_record: docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: Session 161 adversarial proof review (Fable, max thinking), reconciled with the replays by the Session 161 coordinator.
+      note: >-
+        The review finds no mathematical defect in either certificate. Every
+        premise was re-derived with exact arithmetic by an implementation sharing
+        no code with the source, the budget 17000448944 and the capacity one of
+        all 86 rule patterns included; the two steps the source asserts,
+        endpoint sufficiency and the centre envelope, are proved there and
+        checked exactly at interior points of every row; an independent sweep
+        reproduced the shipped minimum and cell count at nine sampled rows of
+        R068 and six of R067. The Node checker is Kleddamag's byte for byte; the C++ checker is
+        Guzhou0806's own, read in full there for the first time. Both decide one
+        event-cell method, so the rung is C3, not C4 (F1). None of F1 to F8 is
+        blocking.
+    limitations: >-
+      Replays the source's paired launcher over the retained bytes on 2026-09-28
+      and 29, in a clean clone at 815b1626 on a shared four-core Linux host,
+      pinned to two cores, with g++ 13.3.0 at -O3 -std=c++17, Boost 1.83 headers
+      and Node v24.18.0 (the source asks for Node 22), N17_TIMEOUT_MINUTES=600:
+      check_package.js PASS_PACKAGE_BYTES_ONLY; the global replay ran Guzhou0806's
+      C++ checker (executable cf761bb5...19d5; the source's GCC 14.2.0 build is
+      8f4d59ac...aa42) and Kleddamag's Node BigInt checker concurrently over all
+      4,991 intervals in two partitions each and wrote
+      PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION, target 116511/25000, budget
+      17000448944, minimum 1000026844, surplus 7404, in 4,649 s of wall; and
+      assert_ci.js global passed (PASS_FRESH_EXPECTED_RESULTS).
+      devtools.audit_guzhou_r068 compare finds the fresh C++ and Node ledgers
+      and the published C++ and Node ledgers identical, 4 x 4,991 rows, 0
+      differing, every row at minimum 1000026844, 2,210,145,745,763 cells in
+      all, C++ sites 20,860 and signed terms 49,208, reduced
+      (interval, minimum, cells) triples SHA-256
+      d2c47f4adcce9a3fa64dd280a0ea4ed04bbb37d8b3347a471e560980de937407, equal to
+      the review's. Certificate SHA-256 cf70f74d...205f; least strict core
+      margin just above 10^-12. The C++ checker is Guzhou0806's own and the
+      BigInt checker is Kleddamag's byte for byte; both run one exact
+      event-cell sweep, supporting V4/C3 rather than C4, and the native
+      parent-core route models only k-of-m threshold atoms, so it cannot read
+      the weighted and winning-subset features and gives no method-distinct
+      decision. This repository's replay is the first local validation of
+      R068: its publisher ran none and the upstream CI outcome was not
+      observed. Advance over the previous verified 466001/100000 (Kleddamag):
+      exactly 43/100000. No new theorem identifier is created.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n017-guzhou-r067-source-replay
+    claim: lower-bound
+    scope: {n_values: [17]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Guzhou0806 n17 R067]'
+    certificate: resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/certificate.json.gz
+    replay: >-
+      From certificates/R067-4.66018/ of a clean clone of the source at
+      815b1626 (R067's tree is unchanged since d4e2c287), or of a copy of the
+      packet's n17-square-packing/ with every .gz restored, with g++ and the
+      Boost 1.83 headers and Node on PATH: node check_records.js; g++ -O3
+      -std=c++17 src/verify.cpp -o verify; N17_TIMEOUT_MINUTES=600 node
+      src/replay.js certificate.json fresh-paired-run ./verify 2, which must
+      write THEOREM.json with PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION. Then, from
+      packing/, .venv/bin/python3 -m devtools.audit_guzhou_r068 compare R067
+      with that fresh-paired-run directory must report no mismatch. The exact
+      commands, walls and output digests are in
+      packing/resources/web/n17-guzhou-r068-2026-09-28/README.md and
+      receipts/replays.json.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/PROOF.md
+      theorem: Seventeen independently rotated unit squares cannot fit at side 233009/50000; compactness gives s(17) > 233009/50000.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The source's PROOF.md under certificates/R067-4.66018/, on Kleddamag's
+        4.66001 argument and budget rules; sections 3 and 4 of the 2026-09-28
+        review of R067 and R068.
+      assumptions:
+        - The charge is Kleddamag's 4.66001 dictionary unchanged, total budget 17000402008 units of 10^-9, and every one of its 86 distinct rules has capacity one.
+        - The 2808 contiguous rational parent-angle intervals cover every folded orientation up to 207107/500000, with a strictly contained closed core in each.
+        - Each interval's centre envelope contains every legal parent centre, and the exact sweep decides every generic centre cell in it.
+        - Exact arithmetic establishes minimum charge 1000026844, so 17 times that charge exceeds the budget by 54340 units; compactness makes the packing minimum attained.
+      audit_record: docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: Session 161 adversarial proof review (Fable, max thinking), reconciled with the replays by the Session 161 coordinator.
+      note: >-
+        No mathematical defect. R067 is Kleddamag's 4.66001 charge at a larger
+        parent side with rebuilt strict cores over a catalogue whose endpoints
+        contain every 4.66001 endpoint; the review re-derived every premise and
+        reproduced the shipped ledgers at six sampled rows with its own sweep.
+        One event-cell method, so C3, not C4.
+    limitations: >-
+      Replays the source's paired launcher over the retained bytes on
+      2026-09-29 in a clean clone at 815b1626, pinned to two cores of a shared
+      four-core host, with the toolchain of E-n017-guzhou-r068-source-replay
+      (the same executable, cf761bb5...19d5): check_records.js
+      PASS_RECORDED_FULL_COVERAGE, and the replay wrote
+      PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION, target 233009/50000, budget
+      17000402008, minimum 1000026844, surplus 54340, over all 2,808 intervals
+      in two partitions (the source's record has three), in 1,551 s of wall.
+      devtools.audit_guzhou_r068 compare finds the fresh and published C++ and
+      Node ledgers identical, 4 x 2,808 rows, 0 differing, every row at the
+      minimum, 1,249,459,677,392 cells, C++ sites 20,856 and signed terms
+      49,204, triples SHA-256
+      5fe449f6b2740278cb8d1e36e84ca639df0790c1e70e68bdee340e2c2c342d00.
+      Certificate SHA-256 101dd164...5d26. One event-cell method, V4/C3. R067
+      was published and superseded on the same day by R068
+      (E-n017-guzhou-r068-source-replay), 13/50000 higher; it was never the
+      case's verified bound and remains valid evidence. Its advance over
+      466001/100000 is 17/100000.
+    source_reviewed: '2026-09-28'
 
   - id: E-n017-kleddamag-4640020-report
     claim: lower-bound

@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections import Counter
 from dataclasses import dataclass
 from fractions import Fraction
@@ -105,7 +106,13 @@ def _case(n: int) -> dict:
     return safe_load(text.split("---\n")[1])["packing"]
 
 
-@pytest.mark.parametrize(("name", "n", "side", "total"), CLAIMS)
+#: The claims whose certified side the frontier still carries. s(21) >= 5000/1001 was the
+#: n = 21 bound until the same source's mixed cover proved s(21) = 5 on 2026-09-29; its
+#: certificate stays above as a well-formed control, and the test below holds the value.
+CURRENT_CLAIMS = tuple(claim for claim in CLAIMS if claim[1] != 21)
+
+
+@pytest.mark.parametrize(("name", "n", "side", "total"), CURRENT_CLAIMS)
 def test_frontier_records_the_certified_side(
     name: str, n: int, side: Fraction, total: Fraction
 ) -> None:
@@ -115,6 +122,27 @@ def test_frontier_records_the_certified_side(
     assert Fraction(verified["exact_form"]) == side
     assert any("evand" in e for e in verified["evidence"])
     assert case["reported_lower_bound"]["source_key"] == "[evand square-packing 2026]"
+
+
+@pytest.mark.parametrize("n", [21, 45])
+def test_mixed_covers_prove_the_grid_side(n: int) -> None:
+    """s(21) = 5 and s(45) = 7: the verified lower bound meets the grid's upper bound.
+
+    Both rest on Daniel's mixed covers of 2026-09-28, replayed here by zmx2; the upper
+    bound is the trivial grid in each case.
+    """
+    case = _case(n)
+    assert case["status"] == "proved"
+    assert case["reported_status"] == "proved"
+    grid = case["verified_upper_bound"]
+    assert grid["evidence"] == ["E-basic-grid-upper"]
+    verified = case["verified_lower_bound"]
+    assert Fraction(verified["exact_form"]) == Fraction(grid["exact_form"])
+    assert Fraction(verified["exact_form"]) == math.isqrt(n - 1) + 1
+    assert verified["evidence"] == [f"E-n{n:03d}-evand-mixed-cover-zmx2-replay"]
+    reported = case["reported_lower_bound"]
+    assert reported["source_key"] == "[evand square-packing 2026-09-28]"
+    assert Fraction(reported["exact_form"]) == Fraction(verified["exact_form"])
 
 
 def test_s32_is_proved_by_the_cover_and_the_grid() -> None:

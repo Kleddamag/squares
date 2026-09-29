@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:Bibliography/v1
   schema: bibliography.schema.yaml
   status: enforced
-last_reviewed: '2026-09-27'
+last_reviewed: '2026-09-29'
 # The citation fields a generator needs, keyed by the source keys the frontier records
 # use. The Markdown tables in README.md stay the human index; this file holds only what
 # a line of citation text is built from, for the keys something cites.
@@ -122,6 +122,32 @@ sources:
       which names itself as produced by "Guzhou0806 / N17 project with AI
       assistance" on Kleddamag's v1.0.0 architecture
       (web/n17-guzhou-r052-2026-09-25/README.md).
+  - key: '[Guzhou0806 n17 R068]'
+    authors: [Guzhou0806]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-28'
+    credit: Guzhou0806 after Kleddamag
+    note: >-
+      The R068 release of Guzhou0806/n17-square-packing at 815b1626, 2026-09-28, whose
+      certificates/R068-C010/accepted/4.66044/ proves s(17) > 116511/25000. Guzhou0806 /
+      N17 project, continuing Kleddamag's public 4.66001 charge (Kleddamag building on
+      Squares Project (Joshua Levy), Mira and Guzhou0806): the package credits Kleddamag
+      for the charge, proof and Node BigInt checker, and its C++ checker is Guzhou0806's
+      own. It discloses AI assistance and says its publisher ran no local validation and
+      did not observe CI (web/n17-guzhou-r068-2026-09-28/README.md).
+  - key: '[Guzhou0806 n17 R067]'
+    authors: [Guzhou0806]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-28'
+    credit: Guzhou0806 after Kleddamag
+    note: >-
+      The R067 release of Guzhou0806/n17-square-packing at d4e2c287, 2026-09-28, whose
+      certificates/R067-4.66018/ proves s(17) > 233009/50000 on Kleddamag's 4.66001
+      charge unchanged, named by "Guzhou0806 / N17 project with AI assistance"; superseded
+      by R068 the same day and retained in the same packet
+      (web/n17-guzhou-r068-2026-09-28/README.md).
   - key: '[evand square-packing 2026]'
     authors: [Daniel]
     year: 2026
@@ -134,6 +160,18 @@ sources:
       weighted exact-rational covering method to Sam Burns and Gustavo
       Massaccesi, and says the work was produced with an AI agent under human
       direction (web/evand-square-packing-2026-09-26/README.md).
+  - key: '[evand square-packing 2026-09-28]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-28'
+    credit: Daniel after Burns, Massaccesi
+    note: >-
+      evand/square-packing at 6aa82ba4, 2026-09-28, whose s12/certificates/s21/ and
+      s12/certificates/s45/ bundles prove s(21) = 5 and s(45) = 7 by mixed covers. Its
+      LICENSE names Evan Daniel. Its CREDITS.md credits the weighted exact-rational
+      covering method to Sam Burns and Gustavo Massaccesi, and says the work was produced
+      with an AI agent under human direction (web/evand-square-packing-2026-09-28/README.md).
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026
@@ -201,6 +239,24 @@ sources:
       interval verifier; web/wand125-rectangle-certificates-2026-09-28/acquisition/sources.json
       pins revision 39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of its tree.
       Credited as the September 27 key is. Dated by that revision, 2026-09-28.
+  - key: '[wand125 point and mixed bounds 2026-09-28]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-28'
+    credit: wand125 after Daniel, Tokoharu
+    note: >-
+      The point-only s(21) = 5 and s(45) = 7 certificates and the mixed-rectangle
+      s(50) >= 37/5 certificate (with the superseded 147/20 and 3659/500 rungs) that
+      wand125/square-packing-bounds added on 2026-09-28. The s(21) support is Evan
+      Daniel's s21_lower_4.9950.txt scaled by 1001/1000 and the s(45) capture condition
+      is decided by Daniel's unmodified zmx2; the n = 50 checker is a research copy of
+      Tokoharu's verify.cpp. The source claims no priority for s(21) or s(45), which
+      Daniel published first with mixed covers, and says parts of the work were produced
+      with AI assistance under human direction.
+      web/wand125-point-and-mixed-2026-09-28/acquisition/sources.json pins revision
+      39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of the five claim
+      directories. Dated by that revision, 2026-09-28.
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being

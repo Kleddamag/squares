@@ -300,9 +300,9 @@
           "recent": true,
           "result": null,
           "results": [],
-          "source_key": "[Kleddamag n17 4.66001]",
-          "text": "Kleddamag after Levy, Mira, Guzhou0806 2026, GitHub",
-          "value": "4.66001"
+          "source_key": "[Guzhou0806 n17 R068]",
+          "text": "Guzhou0806 after Kleddamag 2026, GitHub",
+          "value": "4.66044"
         },
         "n": 17,
         "record": "n-017",
@@ -404,9 +404,9 @@
           "recent": true,
           "result": null,
           "results": [],
-          "source_key": "[evand square-packing 2026]",
+          "source_key": "[evand square-packing 2026-09-28]",
           "text": "Daniel after Burns, Massaccesi 2026, GitHub",
-          "value": "4.995004"
+          "value": "5"
         },
         "n": 21,
         "record": "n-021",
@@ -925,14 +925,12 @@
           "basis": "external",
           "confirmed_by": [],
           "note": null,
-          "recent": false,
+          "recent": true,
           "result": null,
-          "results": [
-            "T-007"
-          ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "6.83095189485"
+          "results": [],
+          "source_key": "[evand square-packing 2026-09-28]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "7"
         },
         "n": 45,
         "record": "n-045",

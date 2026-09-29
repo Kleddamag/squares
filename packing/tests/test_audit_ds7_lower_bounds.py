@@ -86,7 +86,7 @@ def test_table82_contradiction_is_excluded_without_rewriting_the_theorem() -> No
 @pytest.mark.parametrize(
     ("n", "reported_exact", "note_fragment", "verified_value"),
     [
-        (17, "466001/100000", "s(17) > 466001/100000", "4.66001"),
+        (17, "116511/25000", "s(17) > 116511/25000", "4.66044"),
     ],
 )
 def test_indexed_external17_report_never_exceeds_the_verified_lane(
@@ -99,7 +99,8 @@ def test_indexed_external17_report_never_exceeds_the_verified_lane(
     n = 17 later strict bounds supersede R012 -- Kleddamag's 461300/99853 from
     2026-09-22, Guzhou0806's R052 231001/50000 from 2026-09-25, Kleddamag's v1.1.0
     232001/50000 and then Kleddamag's 466001/100000 (building on this project, Mira and
-    Guzhou0806), both from 2026-09-27 -- and the reported and verified fields hold the
+    Guzhou0806), both from 2026-09-27, then Guzhou0806's R068 116511/25000, continuing
+    Kleddamag's charge, from 2026-09-29 -- and the reported and verified fields hold the
     same value. At n = 18 R012 held the report below a stronger first-party rung until
     wand125's rectangle report replaced it; see the next test. Either way the
     audit's own selector must be at a fixed point: the reported lane is raised only by
@@ -129,10 +130,11 @@ def test_a_stronger_non_ds7_report_at_n18_is_left_in_place() -> None:
 
 def test_opaque21_stays_nonexact_and_cannot_replace_a_stronger_exact_identity() -> None:
     case = ds7.read_case(REPO, None, 21)
-    # Evan Daniel's 5000/1001 in both lanes since 2026-09-27; before it the reported lane
-    # held DS7's opaque 4.7438 and the verified lane T-034's 122/25, then T-021's 97/20.
-    assert case["reported_lower_bound"]["exact_form"] == "5000/1001"
-    assert case["verified_lower_bound"]["value"] == "4.995004"
+    # Evan Daniel's s(21) = 5 in both lanes since 2026-09-29, and his 5000/1001 from
+    # 2026-09-27 before it; before that the reported lane held DS7's opaque 4.7438 and
+    # the verified lane T-034's 122/25, then T-021's 97/20.
+    assert case["reported_lower_bound"]["exact_form"] == "5"
+    assert case["verified_lower_bound"]["value"] == "5"
     assert ds7.select_update(case) is None
     assert not ds7.opaque_needs_update(case, "4.7438")
     # The opaque decimal itself stays non-exact: restored to the lane, it is not an update

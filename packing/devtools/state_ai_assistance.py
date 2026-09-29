@@ -60,23 +60,27 @@ class Statement:
     marker: str
 
 
-STATEMENTS: tuple[Statement, ...] = (
-    Statement(
-        keys=frozenset(
-            {
-                "[wand125 point bounds 2026]",
-                "[wand125 rectangle bounds 2026]",
-                "[wand125 rectangle bounds 2026-09-28]",
-                "[wand125 point and mixed bounds 2026-09-28]",
-            }
-        ),
-        anchor=re.compile(r"wand125"),
-        sentence=(
-            "wand125’s README says parts of the work were produced with AI assistance under "
-            "human direction."
-        ),
-        marker=UNDER_HUMAN_DIRECTION,
+#: wand125's statement, which `devtools.apply_wand125_rectangles` also writes into the
+#: intake paragraph it owns, so that regenerating a record keeps the sentence this tool added.
+WAND125 = Statement(
+    keys=frozenset(
+        {
+            "[wand125 point bounds 2026]",
+            "[wand125 rectangle bounds 2026]",
+            "[wand125 rectangle bounds 2026-09-28]",
+            "[wand125 point and mixed bounds 2026-09-28]",
+        }
     ),
+    anchor=re.compile(r"wand125"),
+    sentence=(
+        "wand125’s README says parts of the work were produced with AI assistance under "
+        "human direction."
+    ),
+    marker=UNDER_HUMAN_DIRECTION,
+)
+
+STATEMENTS: tuple[Statement, ...] = (
+    WAND125,
     Statement(
         keys=frozenset({"[Tokoharu density 2026]"}),
         # Tokoharu's own result, not Tokoharu's checker running someone else's certificate.

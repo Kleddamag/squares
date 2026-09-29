@@ -21,11 +21,11 @@ This repository contains:
   wand125’s reported `939/200`, `963/200` and `979/200` above them until their replays
   run; the others have since been raised by the results below.
 - **[Results by others](#results-by-others):** Others have built on these certificates,
-  credited them and taken the bounds further, and one has worked in parallel from the
-  same weighted method.
+  credited them and taken the bounds further, and others have worked in parallel, one
+  from the same weighted method and two on smaller packings.
   This repository registers each claimed bound as *reported* when it takes the source
-  in, and as *verified* only after a complete replay of its certificate and a review of
-  its mathematics, with the credit its authors give.
+  in, and as *verified* only after a complete replay of its certificate here and, for a
+  lower bound, a review of its mathematics, with the credit its authors give.
   - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
     [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
     It is the strongest verified lower bound for eleven squares, about `0.0021` below
@@ -50,6 +50,14 @@ This repository contains:
     Tokoharu’s point and rectangle-density bounds for `n = 18` to `95`, and wand125’s
     `s(50) ≥ 37/5` are registered the same way, most of wand125’s still as reported
     bounds pending replay.
+  - **Smaller packings at fifty counts**, by Francisco Couzo, 49 counts from `n = 68` to
+    `307` ([T-056](packing/frontier/RESULTS.md)), and Joost de Winter,
+    `s(211) ≤ 14.9979607… < 15`, the first packing of 211 squares below the grid
+    ([T-057](packing/frontier/RESULTS.md)). Each is certified exactly here by two
+    checkers that share no code, and at `n = 206`, `259` and `305` the certified side
+    trails the printed one by at most three units of its fifteenth decimal.
+    Griffin Casson had published packings at 39 of Couzo’s counts earlier; Couzo’s are
+    smaller at all of them. Couzo’s came to this record through jlevy/squares#227.
 - **[A comprehensive survey of all known square packing results](#survey):** Every case
   `n = 1…100`, the primary literature retained and transcribed, and the bound a source
   *reports* kept apart from the bound this repository has *verified*. Fifty-five of its

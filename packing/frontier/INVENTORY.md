@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **143** evidence records. **101** are formal; **95** of those were established here.
+- **144** evidence records. **102** are formal; **96** of those were established here.
 - **33** rest on an argument made elsewhere, of which **8** have been read by nobody here.
 - **36** claim to be first established here. **11** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -100,6 +100,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n017-guzhou-r052-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n032-evand-closed-cover-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n032-evand-closed-cover-source-run` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
+| `E-n032-evand-closed-cover-zmx2-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
 | `E-n012-evand-15680-3951-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n012-evand-15680-3951-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n012-evand-15680-3951-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
@@ -166,9 +167,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 38, verified 101
-- **method**: exact-algebraic 75, interval-certified 17, numerical-multiprecision 4, proof-audited 3, published-proof 6, reported 38
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 92
+- **assurance**: numerically-checked 4, reported 38, verified 102
+- **method**: exact-algebraic 75, interval-certified 18, numerical-multiprecision 4, proof-audited 3, published-proof 6, reported 38
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 93
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

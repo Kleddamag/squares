@@ -127,15 +127,16 @@ credit beside this repository’s `V` and `C`.
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
 weighted exact-rational covering method, proves `s(32) = 6` by a zero-margin weighted
-closed cover of `[0,6]²`, at `V4/C3` on a complete re-sweep here, and
-`s(12) ≥ 15680/3951` at `V4/C4`; its `s(21) ≥ 5000/1001` was superseded on 28 September
-by the same author’s mixed covers, weighted points plus mass on interior grid-line
-segments, which prove `s(21) = 5` and `s(45) = 7`, both `V4/C3`. Its case-free proof of
-Bentz’s `s(13) = 4` is recorded as a report.
-wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at `39d8ecc`
-for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s reviewed
-interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`, and
-reported at the other counts until their replays run.
+closed cover of `[0,6]²`, at `V4/C4` on complete replays here of its exact checker and
+its binary64-enclosure `zmx2`, which share their author, point test and symmetry fold
+and differ in how they close germs, and `s(12) ≥ 15680/3951` at `V4/C4`; its
+`s(21) ≥ 5000/1001` was superseded by the same author’s mixed covers of 27 September,
+weighted points plus mass on interior grid-line segments, which prove `s(21) = 5` and
+`s(45) = 7`, both `V4/C3`. Its case-free proof of Bentz’s `s(13) = 4` is recorded as a
+report. wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at
+`39d8ecc` for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s
+reviewed interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`,
+and reported at the other counts until their replays run.
 wand125’s point-only routes to `s(21) = 5` and `s(45) = 7`, the latter verified here as
 a second certificate, and its reported `s(50) ≥ 37/5` followed on 28 September.
 Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by `v1.1.0`, is
@@ -160,9 +161,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-017](packing/frontier/RESULTS.md) | 12 | `V4` | `C4` | `S4` | `apparently-novel` | s(12) >= 99/25, by a first-party weighted fractional unavoidable-set certificate at container side 99/25 = 3.96. |
 | [T-019](packing/frontier/RESULTS.md) | 17, 18, 19 | `V4` | `C4` | `S4` | `apparently-novel` | s(17) >= 459/100, and s(18) >= 459/100 and s(19) >= 459/100, from a first-party weighted fractional unavoidable-set certificate at container side 459/100 = 4.59. |
 | [T-020](packing/frontier/RESULTS.md) | 19, 20, 21 | `V4` | `C4` | `S4` | `apparently-novel` | s(19) >= 24/5, s(20) >= 24/5 and s(21) >= 24/5, from a first-party weighted fractional unavoidable-set certificate at container side 24/5 = 4.80. |
+| [T-051](packing/frontier/RESULTS.md) | 32 | `V4` | `C4` | `S4` | `previously-published` | s(32) = 6. |
 | [T-010](packing/frontier/RESULTS.md) | 11 | `V4` | `C3` | `S4` | `apparently-novel` | s(11) >= 2 + 4/sqrt(5), by a source-distinct repair of Stromquist 2003’s Figure 14 point set: the replacement G' = (79/100, 37/20) restores the complete Figure 13 localization, A-triple forcing, repaired unavoidability, and 3+9 capacity chain, certified exactly. |
 | [T-047](packing/frontier/RESULTS.md) | 11, 26, 27, 28, 29, 30, 31 | `V4` | `C3` | `S4` | `previously-published` | s(11) >= 381/100, s(26) >= 1377/250 and s(29) >= 571/100, by Tokoharu’s rectangle-density certificates in tokoharu/square-packing-density-bounds at commit b543990f (22 September 2026). |
-| [T-051](packing/frontier/RESULTS.md) | 32 | `V4` | `C3` | `S4` | `previously-published` | s(32) = 6. |
 | [T-052](packing/frontier/RESULTS.md) | 21 | `V4` | `C3` | `S4` | `previously-published` | s(21) = 5. |
 | [T-053](packing/frontier/RESULTS.md) | 45 | `V4` | `C3` | `S4` | `previously-published` | s(45) = 7. |
 | [T-014](packing/frontier/RESULTS.md) | 5 | `V3` | `C5` | `S3` | `apparently-novel` | For s = 2 + sqrt(2)/2 and Goebel’s labeled pose P0 in C = (R^2 x S^1)^5, P0 is an isolated point of Feas(s) -- closed unit squares in [0, s]^2, pairwise disjoint interiors -- equivalently there is no nonconstant continuous feasible path from P0 and no sequence of distinct feasible poses converging to it; hence the n = 5 optimum is rigid at fixed side in the catalogue’s sense. |

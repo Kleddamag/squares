@@ -45,11 +45,11 @@ This repository contains:
     [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) and the
     [case record](packing/frontier/n-017.md).
   - **`s(21) = 5`, `s(32) = 6` and `s(45) = 7`**, by Evan Daniel, independent of this
-    project and building on Burns’s and Massaccesi’s weighted method: the first exact
-    values of `s(k² − 4)` for `k ≥ 4`. His `s(12) ≥ 15680/3951`, wand125’s and
-    Tokoharu’s point and rectangle-density bounds for `n = 18` to `95`, and wand125’s
-    `s(50) ≥ 37/5` are registered the same way, most of wand125’s still as reported
-    bounds pending replay.
+    project and building on Burns’s and Massaccesi’s weighted method: the exact values
+    of `s(k² − 4)` for `k = 5, 6, 7`, the first for any `k ≥ 4`; `s(12)` remains open.
+    His `s(12) ≥ 15680/3951`, wand125’s and Tokoharu’s point and rectangle-density
+    bounds for `n = 18` to `95`, and wand125’s `s(50) ≥ 37/5` are registered the same
+    way, most of wand125’s still as reported bounds pending replay.
   - **Smaller packings at fifty counts**, by Francisco Couzo, 49 counts from `n = 68` to
     `307` ([T-056](packing/frontier/RESULTS.md)), and Joost de Winter,
     `s(211) ≤ 14.9979607… < 15`, the first packing of 211 squares below the grid
@@ -240,7 +240,7 @@ column the retained source packet and this repository’s reviews.
 | 2026-09-27 | [T-046](packing/frontier/RESULTS.md) | 48 in 18–95 | Rectangle-density lower bounds reported for 48 counts in `n = 18…95` | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | builds on | V0/C0 | holds, reported | [packet 1](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md) · [packet 2](packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md) |
 | 2026-09-27 | [T-045](packing/frontier/RESULTS.md) | 27, 28, 31, 32 | `s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20` | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | builds on | V4/C3 | holds | [packet](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md) · [review 1](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) · [review 2](docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md) |
 | 2026-09-27 | [T-041](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 466001/100000 = 4.66001` | Kleddamag after Levy, Mira, Guzhou0806 | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md) · [review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) |
-| 2026-09-26 | [T-051](packing/frontier/RESULTS.md) | [32](packing/frontier/n-032.md) | `s(32) = 6` | Daniel after Burns, Massaccesi | independent | V4/C3 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) |
+| 2026-09-26 | [T-051](packing/frontier/RESULTS.md) | [32](packing/frontier/n-032.md) | `s(32) = 6` | Daniel after Burns, Massaccesi | independent | V4/C4 | holds | [packet 1](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [packet 2](packing/resources/web/evand-square-packing-2026-09-28/README.md) · [review 1](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) · [review 2](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
 | 2026-09-26 | [T-040](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 232001/50000 = 4.64002` | Kleddamag after Levy, Mira, Guzhou0806 | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) |
 | 2026-09-25 | [T-039](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 231001/50000 = 4.62002` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-guzhou-r052-2026-09-25/README.md) · [review](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md) |
 | 2026-09-23 | [T-050](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) ≥ 5000/1001 = 4.995004995…` | Daniel after Burns, Massaccesi | independent | V4/C3 | superseded | [packet](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) |
@@ -322,7 +322,7 @@ Where both bounds are recent, the lineage and date columns read verified first.
 | [29](packing/frontier/n-029.md) | `571/100` = 5.71 | Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi | T-047 `V4/C3` | `579/100` = 5.79 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-28 |
 | [30](packing/frontier/n-030.md) | `571/100` = 5.71 | Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi | T-047 `V4/C3` | `1173/200` = 5.865 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-27 |
 | [31](packing/frontier/n-031.md) | `148/25` = 5.92 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-045 `V4/C3` | `1187/200` = 5.935 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-27; 2026-09-28 |
-| [32](packing/frontier/n-032.md) | `6`, exact | Daniel after Burns, Massaccesi | T-051 `V4/C3` |  |  |  | independent | 2026-09-26 |
+| [32](packing/frontier/n-032.md) | `6`, exact | Daniel after Burns, Massaccesi | T-051 `V4/C4` |  |  |  | independent | 2026-09-26 |
 | [37](packing/frontier/n-037.md) | 6.0990… | Nagamochi | T-007 `V3/C1` | `257/40` = 6.425 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
 | [38](packing/frontier/n-038.md) | 6.1961… | Nagamochi | T-007 `V3/C1` | `327/50` = 6.54 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
 | [39](packing/frontier/n-039.md) | `13/2` = 6.5 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `663/100` = 6.63 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |

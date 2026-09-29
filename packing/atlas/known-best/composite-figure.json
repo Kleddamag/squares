@@ -1610,7 +1610,8 @@
         "lower": {
           "display": "s(32) ≥ 6",
           "evidence": [
-            "E-n032-evand-closed-cover-source-run"
+            "E-n032-evand-closed-cover-source-run",
+            "E-n032-evand-closed-cover-zmx2-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",

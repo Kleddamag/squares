@@ -5,7 +5,7 @@ title: Improve validation scheduling and test-selection efficiency
 kind: task
 status: in_progress
 priority: 1
-version: 15
+version: 18
 spec_path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
 delegate: claude-code@spud10.local
 labels: []
@@ -17,10 +17,13 @@ child_order_hints:
   - is-01m3qgvz4ka0qqjz4rrham7a3g
   - is-01m3qj2s8fb8ewx3h334rtqqjf
   - is-01m3qj6hf8hnceh702waazsnhk
+  - is-01m3qk36x5q25z6sqe018s8n7c
+  - is-01m3qknj2hpeb1d7tyv4kvqgh5
+  - is-01m3qn7w7yphc9530wk4p70qmz
 hold: null
 hold_until: null
 created_at: 2026-09-29T08:53:16.996Z
-updated_at: 2026-09-29T21:47:41.413Z
+updated_at: 2026-09-29T22:40:50.941Z
 started_at: 2026-09-29T21:06:47.567Z
 ---
 Observed during PR246 W7 quality follow-up: a narrow check_documentation.py generated-Cargo-output exclusion plus its regression and review prose selects dozens of workbench/certificate/search tests under packing-validate --push, after the previous selected suite already passed2039tests. Measure import/data fanout and preserve true callers and negative-control coverage while avoiding unrelated expensive replays. Do not weaken required test semantics or merely raise ceilings. Evidence: push-rustdoc.log in task scratch and PR246 hosted/local validation comments; full selector command retained in session tools.

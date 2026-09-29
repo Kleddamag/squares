@@ -17,10 +17,10 @@ bound; the follow-up beads under `think-1an7` own the intake.
 | Author | wand125, whose rectangle-density work builds on Tokoharu’s solver and verifier |
 | Channel | X (Twitter); the first message is addressed to Joshua Levy |
 | Supplied | 2026-09-28, pasted by the owner into a session in two parts; no status URL or publication time was given |
-| Messages | [`supplied-messages.txt`](supplied-messages.txt), the supplied text unedited |
+| Messages | [`supplied-messages.txt`](supplied-messages.txt), the first two as supplied on 2026-09-28, and [`supplied-message-3-2026-09-29.txt`](supplied-message-3-2026-09-29.txt), the third, supplied the next day; both unedited |
 | Linked table | `claude.ai/artifact/TUa8v1nJWbQpKAokfLMTJy`, “Who Holds Each Lower Bound”, retained as [`acquisition/lower-bound-table-2026-09-28.html`](acquisition/lower-bound-table-2026-09-28.html) |
 | Table SHA-256 | `560ec3d6bc2d2e52aee378c789e3008b9ae252d282ee62681fa8db57bbfc5837`, in [`acquisition/lower-bound-table-2026-09-28.sha256`](acquisition/lower-bound-table-2026-09-28.sha256) |
-| Linked repositories | [wand125/square-packing-bounds](https://github.com/wand125/square-packing-bounds) (certificates); [wand125/square-packing-density-bounds](https://github.com/wand125/square-packing-density-bounds) (fork of Tokoharu’s solver) |
+| Linked repositories | [wand125/square-packing-bounds](https://github.com/wand125/square-packing-bounds) (certificates); [wand125/square-packing-density-bounds](https://github.com/wand125/square-packing-density-bounds) (fork of Tokoharu’s solver); [wand125/square-packing-tools](https://github.com/wand125/square-packing-tools) (the drivers and speed-ups, from the third message; MIT, first commit `325f32ff9b8bd9a5e5b1f4d6e37699ea11f84a78`, tree `11d5a2110eb6ba3f22dcbe3c21c54642ce410db1`, 2026-09-29) |
 
 The table was read on 2026-09-28 at about 23:31 UTC through the Artifact tool, which
 saved the page as served; the retained file is those bytes.
@@ -81,6 +81,16 @@ Two bear directly on this repository’s own ladders:
   wand125 caps ladder targets there.
 - **Inheritance by mass.** A certificate whose total mass is below `k` also bounds every
   count `k` and above, which the September 27 packet already applies at `n = 77`.
+
+The third message says the first part of those tools is now public, at
+[wand125/square-packing-tools](https://github.com/wand125/square-packing-tools): moving
+certificates in `n` and `L` (transfer, budget-recovery rungs, the `B · UB(n)` ceiling,
+rescaling) and the speed-ups around Tokoharu’s solver (a working-row LP with basis reuse,
+batched and angle-parallel counterexample screening, a cached-axis verifier used only in
+search, and a faster `zmx2` for point certificates), with certificates still accepted only
+by Tokoharu’s unchanged `verify.cpp`. `think-664t` evaluates that release against this
+repository’s tools, and `think-bn62` makes a watch of other researchers’ repositories part
+of the research workflow.
 
 `think-v2lv` evaluates the transfer and speed-up techniques for adoption, and
 `think-64le` compares Tokoharu’s and wand125’s solver with this repository’s certificate

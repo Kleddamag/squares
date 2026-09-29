@@ -493,6 +493,17 @@ elementary generator moves of (c) in the point and threshold generator.
 - **Estimated:** the build and CPU costs of option (b), which the pilot in commitment 3
   exists to replace with a measurement.
 
+## Update, 2026-09-29
+
+The first part of wand125’s tools became public the day after this comparison, at
+[wand125/square-packing-tools](https://github.com/wand125/square-packing-tools) (MIT,
+first commit `325f32ff`): the transfer and ladder drivers, the `B · UB(n)` ceiling,
+rescaling, the working-row LP with basis reuse, batched and angle-parallel
+counterexample screening, a search-only cached-axis verifier and a faster `zmx2` patch
+for point certificates.
+The matrix’s cells that call those capabilities unpublished describe the state on
+2026-09-28 and are superseded; `think-664t` re-evaluates them from the released code.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

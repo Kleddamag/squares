@@ -10,9 +10,11 @@ works without scripts: rows are all present, details open with `<details>`, and
 from __future__ import annotations
 
 import html
+import re
 from decimal import Decimal
 from fractions import Fraction
 
+from devtools import overview_previews
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
@@ -20,6 +22,7 @@ from devtools.overview_data import (
     Overview,
     Result,
     Stats,
+    compress,
     math_html,
     tex_bounds,
 )
@@ -77,8 +80,8 @@ def _rung(label: str) -> str:
 
 
 def card_kind(href: str) -> str:
-    """What following a card does, which its hover icon shows: scroll to a row on this
-    page, open another site, or go to another page of this one."""
+    """Where a card's popover leads, which its icons show: a row on this page, another
+    site, or another page of this one."""
     if href.startswith("#"):
         return "scroll"
     if href.startswith("https://"):
@@ -86,37 +89,41 @@ def card_kind(href: str) -> str:
     return "page"
 
 
-def _card_body(label: str, value: str, note: str) -> str:
-    return (
-        f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<span class="site-card-value">{value}</span>'
-        f'<span class="site-card-note">{note}</span>'
-    )
+def card(
+    target: str,
+    label: str,
+    value: str,
+    note: str,
+    *,
+    preview: str,
+    href: str,
+    action: str,
+) -> str:
+    """A card and the popover it opens. The card is a caps label, the summary and a line
+    under it; pressing it opens a popover that repeats the label and summary, previews
+    what the card leads to, and ends in a button that goes there.
 
-
-def card(href: str, label: str, value: str, note: str) -> str:
-    """A card that is one link: a caps label, the summary, and a line under it. The
-    label is escaped here; the value and note are HTML, so they may carry math."""
-    return (
-        f'<a class="site-card" href="{_esc(href)}" data-go="{card_kind(href)}">'
-        f"{_card_body(label, value, note)}</a>"
-    )
-
-
-def popover_card(target: str, label: str, value: str, note: str, details: str) -> str:
-    """A card that opens its details in place: a button naming a native popover, which
-    needs no script to open, closes on Escape or a click outside, and holds `details`
-    under the card's own label and value. The panel is set in sans, and the attribute
-    tells kpress so, so its math is sans too."""
+    The popover is native (`popover`), so it opens, closes on Escape or a click outside,
+    and follows its button with no script. It is set in sans, and its attribute tells
+    kpress so, so its math is sans too. The label and action are escaped here; the value,
+    note and preview are HTML, so they may carry math.
+    """
+    kind = card_kind(href)
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
-        f'data-go="popover">{_card_body(label, value, note)}</button>'
-        f'<div class="site-popover" id="{_esc(target)}" popover '
-        'data-kpress-prose-font="sans">'
+        f'data-go="{kind}">'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-note">{note}</span></button>'
+        f'<div class="site-popover" id="{_esc(target)}" popover data-kpress-prose-font="sans">'
         f'<button type="button" class="site-popover-close" popovertarget="{_esc(target)}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<p class="site-popover-value">{value}</p>{details}</div>'
+        f'<p class="site-popover-value">{value}</p>'
+        f'<div class="site-popover-preview">{preview}</div>'
+        f'<a class="site-popover-action" href="{_esc(href)}" data-go="{kind}">'
+        f"{_esc(action)}</a>"
+        "</div>"
     )
 
 
@@ -124,9 +131,14 @@ def _cards(cards: list[str]) -> str:
     return '<div class="site-cards site-wide">' + "".join(cards) + "</div>"
 
 
+def _dl(rows: list[tuple[str, str]]) -> str:
+    body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
+    return f'<dl class="site-detail">{body}</dl>'
+
+
 def headline_cards(overview: Overview) -> str:
-    """One card per `S5` result, this project's and others' alike; each opens the
-    result's claim, rationale and records in a popover, with a link to its row."""
+    """One card per `S5` result, this project's and others' alike. Its popover previews
+    the result, its claim, rationale, rungs and records, and goes to its table row."""
     cards = []
     for result in overview.results:
         if result.record["significance"]["score"] < 5:
@@ -140,27 +152,33 @@ def headline_cards(overview: Overview) -> str:
                 "S" + str(record["significance"]["score"]),
             )
         )
-        details = (
+        preview = (
             f"{_detail(result, full=False)}"
             f'<p class="site-popover-links">{rungs}</p>'
-            f'<p class="site-popover-links">{_records(result)} · '
-            f'<a href="#{_esc(result.id.lower())}">row in the table</a></p>'
+            f'<p class="site-popover-links">{_records(result)}</p>'
         )
         cards.append(
-            popover_card(
+            card(
                 f"pop-{result.id.lower()}",
                 f"{result.id} · {result.credit}",
                 tex_bounds(result.summary),
                 rungs,
-                details,
+                preview=preview,
+                href=f"#{result.id.lower()}",
+                action=f"Show {result.id} in the table",
             )
         )
     return _cards(cards)
 
 
+def _people(names: list[str] | None, year: object) -> str:
+    who = ", ".join(names or [])
+    return f"{who} {year}".strip() if year else who
+
+
 def exact_value_cards(overview: Overview) -> str:
-    """Cases now proved by a recent verified lower bound: the new exact values, each
-    going to its case in the frontier atlas."""
+    """Cases now proved by a recent verified lower bound: the new exact values. Each
+    popover previews the case's two bounds and goes to it in the frontier atlas."""
     cards = []
     for n in sorted(overview.recent_lower):
         case = overview.cases[n]
@@ -168,12 +186,34 @@ def exact_value_cards(overview: Overview) -> str:
             continue
         lower = case["verified_lower_bound"]
         value = lower.get("exact_form") or lower.get("value")
+        reported_lower = case["reported_lower_bound"]
+        reported_upper = case["reported_upper_bound"]
+        lower_by = _people(reported_lower.get("proved_by"), reported_lower.get("proved_year"))
+        upper_by = _people(reported_upper.get("found_by"), reported_upper.get("found_year"))
+        upper_how = str(reported_upper.get("construction_method") or "a packing")
+        rows = [
+            (
+                "Lower bound",
+                math_html(f"s({n}) \\ge {value}")
+                + _esc(f", a {reported_lower.get('kind') or 'proved'} bound by {lower_by}"),
+            ),
+            (
+                "Upper bound",
+                math_html(f"s({n}) \\le {value}")
+                + _esc(
+                    f", {upper_how.replace('-', ' ')}" + (f" by {upper_by}" if upper_by else "")
+                ),
+            ),
+        ]
         cards.append(
             card(
-                f"frontier.html#n-{n}",
+                f"pop-n-{n}",
                 f"n = {n} · exact value",
                 math_html(f"s({n}) = {value}"),
-                "Proved; the case in the frontier atlas.",
+                "Proved by a recent lower bound.",
+                preview=_dl(rows),
+                href=f"frontier.html#n-{n}",
+                action=f"Open n = {n} in the frontier atlas",
             )
         )
     return _cards(cards)
@@ -280,33 +320,63 @@ def _bar(label: str, counts: dict[str, int]) -> str:
     )
 
 
-def verification_block(stats: Stats) -> str:
-    """Counts of results and cases, and the confirmation bar by source. Each count is a
-    card leading to what it counts: the results table, the frontier atlas filtered to
-    the cases or bounds it names, and the definition of the rungs."""
+def _rung_meanings(scale: str) -> dict[str, str]:
+    """Each rung of a scale and what it means, from its table in `epistemics.md`."""
+    text = (REPO / "epistemics.md").read_text(encoding="utf-8")
+    return dict(re.findall(rf"^\| `({scale}[0-9])` \| ([^|]+?) \|", text, flags=re.MULTILINE))
+
+
+def verification_block(overview: Overview, stats: Stats) -> str:
+    """Counts of results and cases, and the confirmation bar by source. Each count's
+    popover previews what it counts and goes to it: the results table, the frontier
+    atlas filtered to the cases or bounds it names, and the definition of the rungs."""
     from devtools.render_explainer import repo_file  # noqa: PLC0415
 
+    groups = _dl(
+        [(_esc(name), _esc(f"{len(results)} results")) for name, results in overview.groups]
+    )
+    first_hundred = [overview.cases[n] for n in range(1, 101) if n in overview.cases]
+    proved = [case["n"] for case in first_hundred if case["status"] == "proved"]
+    still_open = [case["n"] for case in first_hundred if case["status"] != "proved"]
+    cases = _dl([("Proved", _esc(compress(proved))), ("Open", _esc(compress(still_open)))])
+    recent = _dl([("Cases", _esc(compress(sorted(overview.recent_lower))))])
+    meanings = _rung_meanings("V")
+    rungs = _dl(
+        [
+            (_rung(rung), _esc(f"{meanings.get(rung, '')} · {stats.verification.get(rung, 0)}"))
+            for rung in sorted(meanings, reverse=True)
+        ]
+    )
     cards = [
         card(
-            "#every-result",
+            "pop-count-results",
             "Registered results",
             _esc(stats.total),
             _esc(f"{stats.ours} this project{APOSTROPHE}s, {stats.others} by others"),
+            preview=groups,
+            href="#every-result",
+            action="Show every result",
         ),
         card(
-            "frontier.html?n-max=100",
+            "pop-count-cases",
             f"Cases n = 1{EN_DASH}100",
             _esc(f"{stats.cases_1_100_proved} proved"),
             _esc(f"{stats.cases_1_100_open} still open"),
+            preview=cases,
+            href="frontier.html?n-max=100",
+            action="Open these cases in the frontier atlas",
         ),
         card(
-            "frontier.html?recent=true",
+            "pop-count-recent",
             "Recent lower bounds",
             _esc(stats.recent_lower_total),
             "verified lower bounds proved since 22 August 2026",
+            preview=recent,
+            href="frontier.html?recent=true",
+            action="Open these cases in the frontier atlas",
         ),
         card(
-            repo_file(REPO / "epistemics.md"),
+            "pop-count-verification",
             "Verification",
             _esc(f"{stats.verification.get('V4', 0)} at V4"),
             _esc(
@@ -314,6 +384,9 @@ def verification_block(stats: Stats) -> str:
                     f"{v} {k}" for k, v in sorted(stats.verification.items(), reverse=True)
                 )
             ),
+            preview=rungs,
+            href=repo_file(REPO / "epistemics.md"),
+            action="Read epistemics.md on GitHub",
         ),
     ]
     grid = "".join(cards)
@@ -360,12 +433,21 @@ DOCUMENTS: tuple[tuple[str, str, str], ...] = (
 
 
 def document_cards() -> str:
-    """One card per reader document, each a permalink to the file on GitHub."""
+    """One card per reader document; its popover previews the document's opening and
+    sections and goes to the file on GitHub."""
     from devtools.render_explainer import repo_file  # noqa: PLC0415
 
     return _cards(
         [
-            card(repo_file(REPO / path), path.rsplit("/", 1)[-1], _esc(label), _esc(note))
+            card(
+                f"pop-doc-{path.rsplit('/', 1)[-1].removesuffix('.md').lower()}",
+                path.rsplit("/", 1)[-1],
+                _esc(label),
+                _esc(note),
+                preview=overview_previews.document_preview(path),
+                href=repo_file(REPO / path),
+                action=f"Open {path.rsplit('/', 1)[-1]} on GitHub",
+            )
             for path, label, note in DOCUMENTS
         ]
     )
@@ -402,7 +484,19 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
 
 
 def page_cards() -> str:
-    """One card per page of the site other than this one."""
+    """One card per page of the site other than this one; its popover previews the
+    page's sections and opens it."""
     return _cards(
-        [card(href, label, tex_bounds(title), _esc(note)) for href, label, title, note in PAGES]
+        [
+            card(
+                f"pop-page-{label.split()[0].lower()}",
+                label,
+                tex_bounds(title),
+                _esc(note),
+                preview=overview_previews.page_preview(href, _esc(note)),
+                href=href,
+                action=f"Open the {label.lower()}",
+            )
+            for href, label, title, note in PAGES
+        ]
     )

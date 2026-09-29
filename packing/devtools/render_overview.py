@@ -112,10 +112,19 @@ def inputs() -> tuple[Path, ...]:
     The page modules are imported here rather than at the top because
     `render_frontier_page` reads `render_explainer`, which imports this module.
     """
-    from devtools import overview_data  # noqa: PLC0415
+    from devtools import overview_data, overview_previews  # noqa: PLC0415
     from devtools.render_frontier_page import FRONTIER_INPUTS  # noqa: PLC0415
 
-    return tuple(dict.fromkeys((*RENDER_INPUTS, *overview_data.INPUTS, *FRONTIER_INPUTS)))
+    return tuple(
+        dict.fromkeys(
+            (
+                *RENDER_INPUTS,
+                *overview_data.INPUTS,
+                *overview_previews.INPUTS,
+                *FRONTIER_INPUTS,
+            )
+        )
+    )
 
 
 class Page(NamedTuple):
@@ -285,7 +294,7 @@ def overview_page() -> Page:
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),
         "RESULTS_TABLE": overview_sections.results_table(overview),
-        "VERIFICATION": overview_sections.verification_block(stats),
+        "VERIFICATION": overview_sections.verification_block(overview, stats),
         "RECENT": overview_sections.recent_list(overview),
     }
     values.pop("S11_LOWER_DECIMAL")

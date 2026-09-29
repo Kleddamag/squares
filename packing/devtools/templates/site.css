@@ -109,12 +109,12 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin-block: 1.5rem;
 }
-/* A card is a clean summary with square corners, and every card responds: a card
-   about one result is a button that opens its popover, and any other card is a link.
-   Either gets a gentle wash on hover and a gray icon in its corner for what it does:
-   plus opens a popover, a down arrow scrolls to a row on this page, a diagonal arrow
-   leaves the site, and a right arrow opens another page of it. The rule is in
-   paper-design.md. */
+/* A card is a clean summary with square corners. Every card is a button that opens a
+   popover previewing where it leads, which ends in the one button that goes there. A
+   card gets a gentle wash on hover, and a gray icon in its corner, repeated on the
+   popover's button, says where that is: a down arrow scrolls to a row on this page, a
+   diagonal arrow leaves the site, and a right arrow opens another page of it. The rule
+   is in paper-design.md. */
 .kpress .site-card {
   border: 1px solid var(--kpress-doc-border);
   border-radius: 0;
@@ -154,28 +154,29 @@ body {
 .kpress :is(a, button).site-card:focus-visible::after {
   opacity: 1;
 }
-.kpress a.site-card[data-go="scroll"]::after {
+.kpress .site-card[data-go="scroll"]::after,
+.kpress .site-popover-action[data-go="scroll"]::after {
   content: "\2193";
 }
-.kpress a.site-card[data-go="external"]::after {
+.kpress .site-card[data-go="external"]::after,
+.kpress .site-popover-action[data-go="external"]::after {
   content: "\2197";
 }
-.kpress a.site-card[data-go="page"]::after {
+.kpress .site-card[data-go="page"]::after,
+.kpress .site-popover-action[data-go="page"]::after {
   content: "\2192";
 }
-.kpress button.site-card[data-go="popover"]::after {
-  content: "+";
-}
 
-/* A card's popover: its details in place, as a plain panel with square corners over a
-   faint scrim, closed by its button, Escape, or a click outside. */
+/* A card's popover previews where the card leads and ends in the button that goes
+   there: a plain sans panel with square corners over a faint scrim, closed by its
+   cross, Escape, or a click outside. */
 .site-popover {
   background: var(--kpress-doc-bg);
-  font-family: var(--kpress-font-sans);
   border: 1px solid var(--kpress-doc-border);
   border-radius: 0;
   box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
   color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
   max-height: min(80vh, 40rem);
   max-width: min(36rem, 100vw - 2rem);
   overflow: auto;
@@ -201,9 +202,41 @@ body {
   margin-block: 0.3rem 0.8rem;
 }
 .site-popover .site-popover-links {
-  font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   margin-block: 0.6rem 0;
+}
+.site-popover .site-popover-preview {
+  color: var(--site-support-color);
+  font-size: var(--site-font-size-note);
+  line-height: 1.45;
+}
+.site-popover .site-popover-preview :is(p, ul) {
+  margin-block: 0 0.6rem;
+}
+.site-popover .site-popover-preview ul {
+  padding-inline-start: 1.2rem;
+}
+.site-popover .site-popover-heading {
+  color: var(--kpress-doc-text);
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-block-end: 0.2rem;
+}
+.site-popover .site-popover-more {
+  list-style: none;
+}
+.kpress .site-popover a.site-popover-action {
+  background: var(--kpress-doc-accent);
+  color: var(--kpress-doc-bg);
+  display: inline-flex;
+  font-weight: var(--site-font-weight-sans-medium);
+  gap: 0.5rem;
+  margin-block-start: 0.6rem;
+  padding: 0.45rem 0.9rem;
+  text-decoration: none;
+}
+.kpress .site-popover a.site-popover-action:hover,
+.kpress .site-popover a.site-popover-action:focus-visible {
+  background: color-mix(in oklch, var(--kpress-doc-accent) 85%, var(--kpress-doc-text));
 }
 
 .kpress :is(.site-card, .site-popover) .site-card-label {

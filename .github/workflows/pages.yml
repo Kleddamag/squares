@@ -67,6 +67,7 @@ name: Certificate page
       - packing/devtools/render_overview.py
       - packing/devtools/overview_data.py
       - packing/devtools/overview_sections.py
+      - packing/devtools/overview_previews.py
       - packing/devtools/overview/**
       - packing/devtools/render_frontier_page.py
       - packing/devtools/templates/frontier-article.md
@@ -81,6 +82,11 @@ name: Certificate page
       - packing/resources/bibliography.yaml
       - epistemics.md
       - TUTORIAL.md
+      - README.md
+      - SYNOPSIS.md
+      - conventions.md
+      - development.md
+      - defects.md
       - packing/devtools/templates/fonts/**
       - packing/atlas/known-best/known-best-1-100.svg
       - packing/atlas/known-best/known-best-1-100.png

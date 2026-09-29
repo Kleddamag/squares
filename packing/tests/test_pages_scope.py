@@ -219,7 +219,7 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
         "overview",
     }
     assert in_scope(["vendor/kpress"], declared) == set(pages_scope.BUILDER_INPUTS)
-    assert in_scope(["README.md", "packing/resources/n11/source.md"], declared) == set()
+    assert in_scope(["AGENTS.md", "packing/resources/n11/source.md"], declared) == set()
 
 
 def test_a_matching_input_is_a_path_not_a_string_prefix() -> None:
@@ -277,7 +277,7 @@ def test_a_gate_on_an_undeclared_page_is_refused() -> None:
 
 
 def test_every_page_says_why_it_was_skipped(declared: dict[str, tuple[Path, ...]]) -> None:
-    decisions = decide(["README.md", "packing/campaign/ledger.md"], declared)
+    decisions = decide(["AGENTS.md", "packing/campaign/ledger.md"], declared)
     assert [d.half for d in decisions] == list(pages_scope.BUILDER_INPUTS)
     for decision in decisions:
         assert not decision.in_scope

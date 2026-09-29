@@ -142,34 +142,36 @@ def test_every_site_page_retries_untypeset_math(name: str) -> None:
     assert render_overview.MATH_RETRY_SCRIPT.read_text(encoding="utf-8") in page
 
 
-POPOVER_CARD = re.compile(
-    r'<button type="button" class="site-card" popovertarget="([^"]+)" data-go="popover">'
+CARD = re.compile(
+    r'<button type="button" class="site-card" popovertarget="([^"]+)" '
+    r'data-go="(scroll|external|page)">'
 )
-CARD = re.compile(r'<a class="site-card" href="([^"]+)" data-go="(scroll|external|page)"')
+ACTION = re.compile(
+    r'<a class="site-popover-action" href="([^"]+)" data-go="(scroll|external|page)"'
+)
 
 
-def test_every_card_names_where_it_goes_and_gets_there(page: str) -> None:
-    """Every card is a link, and its hover icon comes from `data-go`: a scroll lands on
-    an id of this page, an external card leaves the site, and a page card opens one the
-    site serves."""
+def test_every_card_previews_where_it_goes_and_gets_there(page: str) -> None:
+    """Every card opens a popover that previews its target and ends in one button that
+    goes there. The card's icon and the button's agree, and come from the target: a
+    scroll lands on an id of this page, an external button leaves the site, and a page
+    button opens one the site serves."""
     cards = CARD.findall(page)
     assert {kind for _, kind in cards} == {"scroll", "external", "page"}
-    # Every highlight leads somewhere: no card is plain text beside ones that respond.
-    popovers = POPOVER_CARD.findall(page)
-    assert popovers
-    assert page.count('class="site-card"') == len(cards) + len(popovers)
-    for target in popovers:
-        panel = re.search(
-            rf'<div class="site-popover" id="{target}" popover[^>]*>(.*?)</div>',
-            page,
-            re.DOTALL,
-        )
-        assert panel, target
-        assert f'href="#{target.removeprefix("pop-")}"' in panel.group(1), target
+    assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
     served = {*render_overview.SITE_PAGES, "workbench/"}
-    for href, kind in cards:
-        assert kind == overview_sections.card_kind(href), href
+    for target, kind in cards:
+        start = page.index(f'<div class="site-popover" id="{target}" popover')
+        panel = page[
+            start : page.index('<button type="button" class="site-card"', start)
+            if '<button type="button" class="site-card"' in page[start:]
+            else None
+        ]
+        assert 'class="site-popover-preview"' in panel, target
+        (action,) = ACTION.findall(panel)
+        href, action_kind = action
+        assert action_kind == kind == overview_sections.card_kind(href), target
         if kind == "scroll":
             assert href[1:] in ids, href
         elif kind == "page":

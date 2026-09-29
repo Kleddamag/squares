@@ -99,21 +99,24 @@ it.
 
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
-  Every card responds, so no highlight is plain text beside ones that do, and what it
-  does depends on what it is about:
-  - A card about **one result** opens its details in place, in a popover: the claim, why
-    it matters, its rungs and records, and a link to its row in the table.
-    The popover is a native `popover` panel with square corners over a faint scrim, set
-    in sans, closed by its `×`, by Escape, or by a click outside.
-    It works without scripting.
-  - A card about **a collection, a page or a document** is a link to it: a count to what
-    it counts (the table, the frontier atlas filtered by a query such as
-    `frontier.html?recent=true`, or the definition of the rungs), a page or document to
-    itself, a case to its record in the frontier atlas.
+  Every card works the same way: pressing it opens a popover that previews where it
+  leads, and the popover ends in one button that goes there.
+  The preview is read from the target itself, so it cannot drift from it:
+  - a result: its claim, why it matters, its rungs and records; the button shows its row
+    in the table;
+  - a case: its two bounds and who proved each; the button opens it in the frontier
+    atlas;
+  - a count: what it counts (the result groups, the cases proved and open, the recent
+    cases, what each verification rung means); the button opens the table or the
+    frontier atlas filtered by a query such as `frontier.html?recent=true`, or the
+    definition of the rungs;
+  - a page or a document: its opening and the sections inside it; the button opens it.
 
-  Either kind gains a gentle wash on hover and a gray icon in its corner for what it
-  does: `+` opens a popover, `↓` scrolls to a row on the page, `↗` leaves the site, `→`
-  opens another page of the site.
+  The popover is a native `popover` panel with square corners over a faint scrim, set in
+  sans, closed by its `×`, by Escape, or by a click outside, and it works without
+  scripting. A card gains a gentle wash on hover.
+  Its gray corner icon and the popover’s button both show where the button goes: `↓` to
+  a row on this page, `↗` off the site, `→` to another page of the site.
 
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
   note size, a fill and no border.

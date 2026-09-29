@@ -51,6 +51,7 @@ import argparse
 import json
 import math
 import os
+import re
 import sys
 from collections import Counter
 from collections.abc import Sequence
@@ -82,6 +83,18 @@ from sqpack.gate_budgets import (
 
 class GateWallError(Exception):
     """The API cannot supply what a verdict needs."""
+
+
+RECENT_EVENTS: dict[str, tuple[str, ...]] = {
+    "deep-gate": ("pull_request", "workflow_dispatch"),
+    "post-merge": ("push", "schedule", "workflow_dispatch"),
+}
+RECENT_PAGE_SIZE = 30
+RECENT_PAGE_LIMIT = 2
+RECENT_CANDIDATE_LIMIT = 60
+RECENT_SAMPLE_LIMIT = 20
+RECENT_JOB_LIMIT = 100
+HEAD_SHA = re.compile(r"[0-9a-f]{40}\Z")
 
 
 @dataclass(frozen=True)
@@ -123,7 +136,10 @@ class GateRun:
 def _instant(value: object) -> datetime | None:
     if not isinstance(value, str) or not value:
         return None
-    return datetime.fromisoformat(value)
+    try:
+        return datetime.fromisoformat(value)
+    except ValueError:
+        return None
 
 
 def _span(start: object, end: object) -> float | None:
@@ -385,7 +401,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--gate", default="deep-gate", help="the gate's id in the register")
     parser.add_argument("--run-id", type=int, action="append", default=[])
-    parser.add_argument("--recent", type=int, default=0, help="sample this many recent runs")
+    parser.add_argument("--recent", type=int, help="sample this many recent runs")
     parser.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY", "jlevy/squares"))
     parser.add_argument("--register", type=Path, default=BUDGETS)
     parser.add_argument("--sample", action="store_true", help="print a record from many runs")
@@ -398,18 +414,169 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _candidate_time(run: dict[str, Any]) -> float:
+    """A sortable run start, with malformed candidates placed last for rejection."""
+    instant = _instant(run.get("created_at") or run.get("run_started_at"))
+    if instant is None or instant.tzinfo is None:
+        return float("-inf")
+    return instant.timestamp()
+
+
+def _recent_candidates(
+    client: Client, gate: CiGate, events: Sequence[str]
+) -> list[dict[str, Any]]:
+    """Read a bounded window for every admitted event and merge it by global recency."""
+    workflow = Path(gate.file).name
+    by_id: dict[int, dict[str, Any]] = {}
+    for event in events:
+        for page_number in range(1, RECENT_PAGE_LIMIT + 1):
+            payload = client.get(
+                f"actions/workflows/{workflow}/runs?event={event}&status=success"
+                f"&per_page={RECENT_PAGE_SIZE}&page={page_number}"
+            )
+            if not isinstance(payload, dict) or not isinstance(
+                payload.get("workflow_runs"), list
+            ):
+                raise GateWallError(
+                    f"GitHub returned a malformed recent-run page for {gate.id}/{event}"
+                )
+            page = payload["workflow_runs"]
+            for candidate in page:
+                if not isinstance(candidate, dict):
+                    raise GateWallError(
+                        f"GitHub returned a malformed recent run for {gate.id}/{event}"
+                    )
+                identifier = candidate.get("id")
+                if type(identifier) is not int or identifier <= 0:
+                    raise GateWallError(
+                        f"GitHub returned a recent run without a positive integer id for "
+                        f"{gate.id}/{event}"
+                    )
+                previous = by_id.get(identifier)
+                if previous is None or _candidate_time(candidate) > _candidate_time(previous):
+                    by_id[identifier] = candidate
+            if len(page) < RECENT_PAGE_SIZE:
+                break
+    return sorted(by_id.values(), key=_candidate_time, reverse=True)[:RECENT_CANDIDATE_LIMIT]
+
+
+def _candidate_jobs(client: Client, run_id: int) -> list[dict[str, Any]] | None:
+    """Read one bounded job page; a larger inventory is incompatible with this gate."""
+    payload = client.get(
+        f"actions/runs/{run_id}/jobs?filter=latest&per_page={RECENT_JOB_LIMIT}&page=1"
+    )
+    if not isinstance(payload, dict):
+        raise GateWallError(f"GitHub returned a malformed jobs page for run {run_id}")
+    total = payload.get("total_count")
+    jobs = payload.get("jobs")
+    if type(total) is not int or total < 0 or not isinstance(jobs, list):
+        raise GateWallError(f"GitHub returned a malformed jobs page for run {run_id}")
+    if total > RECENT_JOB_LIMIT:
+        return None
+    if total != len(jobs) or any(not isinstance(job, dict) for job in jobs):
+        raise GateWallError(f"GitHub returned an incomplete jobs page for run {run_id}")
+    return jobs
+
+
+def _compatible_recent_run(
+    run: dict[str, Any], jobs: Sequence[dict[str, Any]], gate: CiGate, events: Sequence[str]
+) -> bool:
+    """Whether a successful run has the gate's current, complete job topology."""
+    if (
+        run.get("event") not in events
+        or run.get("conclusion") != "success"
+        or HEAD_SHA.fullmatch(str(run.get("head_sha", ""))) is None
+        or _candidate_time(run) == float("-inf")
+    ):
+        return False
+    names = Counter(str(job.get("name", "")) for job in jobs)
+    required = (*gate.ids, gate.aggregate)
+    if any(names[name] != 1 for name in required):
+        return False
+    selected = [job for job in jobs if str(job.get("name", "")) in required]
+    return all(
+        job.get("status") == "completed"
+        and job.get("conclusion") == "success"
+        and _span(job.get("started_at"), job.get("completed_at")) is not None
+        for job in selected
+    )
+
+
+def _recent_payloads(
+    client: Client, gate: CiGate, count: int
+) -> list[tuple[dict[str, Any], list[dict[str, Any]]]]:
+    """Find exactly ``count`` compatible readings inside a bounded discovery window."""
+    if not 1 <= count <= RECENT_SAMPLE_LIMIT:
+        raise GateWallError(
+            f"--recent must be between 1 and {RECENT_SAMPLE_LIMIT}, got {count}"
+        )
+    events = RECENT_EVENTS.get(gate.id)
+    if events is None:
+        raise GateWallError(
+            f"gate {gate.id!r} has no declared recent-run event surface; use --run-id"
+        )
+    accepted: list[tuple[dict[str, Any], list[dict[str, Any]]]] = []
+    for run in _recent_candidates(client, gate, events):
+        identifier = int(run["id"])
+        jobs = _candidate_jobs(client, identifier)
+        if jobs is not None and _compatible_recent_run(run, jobs, gate, events):
+            accepted.append((run, jobs))
+            if len(accepted) == count:
+                return accepted
+    named_events = ", ".join(events)
+    raise GateWallError(
+        f"requested {count} compatible recent {gate.id} runs, found {len(accepted)} "
+        f"within the bounded {RECENT_CANDIDATE_LIMIT}-candidate window for "
+        f"{named_events}; pass explicit --run-id values to inspect older runs"
+    )
+
+
+def _recent_run_ids(client: Client, gate: CiGate, count: int) -> list[int]:
+    """Expose the admitted ids for focused discovery contracts."""
+    return [int(run["id"]) for run, _jobs in _recent_payloads(client, gate, count)]
+
+
 def _run_ids(arguments: argparse.Namespace, client: Client, gate: CiGate) -> list[int]:
     if arguments.run_id:
         return [int(value) for value in arguments.run_id]
-    if arguments.recent:
-        runs = client.recent_runs(gate.file, int(arguments.recent))
-        return [int(run["id"]) for run in runs]
+    if arguments.recent is not None:
+        return _recent_run_ids(client, gate, int(arguments.recent))
     live = os.environ.get("GITHUB_RUN_ID")
     if live:
         return [int(live)]
     raise GateWallError(
         "no run to measure: pass --run-id, or --recent N, or run inside a workflow"
     )
+
+
+def _payloads(
+    arguments: argparse.Namespace, client: Client, gate: CiGate
+) -> list[tuple[dict[str, Any], list[dict[str, Any]]]]:
+    """Fetch explicit/live runs normally, but reuse bounded recent-run admission bytes."""
+    if arguments.run_id:
+        identifiers = [int(value) for value in arguments.run_id]
+    elif arguments.recent is not None:
+        return _recent_payloads(client, gate, int(arguments.recent))
+    else:
+        identifiers = _run_ids(arguments, client, gate)
+    return [(client.run(run_id), client.jobs(run_id)) for run_id in identifiers]
+
+
+def _require_sample_payloads(
+    payloads: Sequence[tuple[dict[str, Any], Sequence[dict[str, Any]]]], gate: CiGate
+) -> None:
+    """Refuse a pasteable baseline unless every supplied run matches the current gate."""
+    events = RECENT_EVENTS.get(gate.id)
+    if events is None:
+        raise GateWallError(
+            f"gate {gate.id!r} has no declared sample event surface; use ordinary --run-id"
+        )
+    for run, jobs in payloads:
+        if not _compatible_recent_run(run, jobs, gate, events):
+            raise GateWallError(
+                f"run {run.get('id')} is not a complete successful {gate.id} reading "
+                "at the current event and job topology"
+            )
 
 
 def _selected(arguments: argparse.Namespace) -> tuple[Register, CiGate]:
@@ -438,8 +605,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     client = Client(str(arguments.repo), github_token())
     try:
         policy = load_walls().policy
-        identifiers = _run_ids(arguments, client, gate)
-        payloads = [(client.run(run_id), client.jobs(run_id)) for run_id in identifiers]
+        payloads = _payloads(arguments, client, gate)
+        if arguments.sample and not arguments.dump:
+            _require_sample_payloads(payloads, gate)
         measured = (
             []
             if arguments.dump

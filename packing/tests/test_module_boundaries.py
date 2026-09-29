@@ -311,7 +311,14 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "validate",
         "suite-a",
         "suite-b",
-        "exhaustive",
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
+        "slow-lane",
+        "exhaustive-1",
+        "exhaustive-2",
+        "exhaustive-3",
         "screen",
         "macos-portability",
     ):
@@ -538,39 +545,57 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         if _mapping(step).get("name") == "Run the complete integration surface"
     )
     assert full_step["if"] == "github.event_name != 'pull_request'"
-    # Three `--skip`s, one per step that has its own runner: the exhaustive exact tier,
-    # slow lane and translation escape screen (`D-484`). The four selections partition
-    # `STEPS`, checked
-    # against the CLI's own selector in `test_the_post_merge_jobs_partition_the_gate`;
-    # what is pinned here is that this command leaves all three out.
-    assert " ".join(str(full_step["run"]).split()) == (
-        'uv run --frozen --all-extras --group dev packing-validate --skip "exhaustive '
-        'exact behavioral tests" --skip "slow behavioral tests" '
-        '--skip "single-square translation escape screen" --jobs 1 --inner-jobs 2'
-    )
-
-    # The exhaustive exact tier, split onto its own runner on 2026-09-05 (think-tr2z) so
-    # that a step which had been half the complete surface's wall time reports its own
-    # verdict against its own budget. D-456 is what that fixes: killed at its budget with
-    # its output still in an unflushed pipe, it turned `validate` red on three
-    # consecutive merges while saying nothing about the sixty steps beside it.
-    exhaustive_job = _mapping(jobs["exhaustive"])
-    assert exhaustive_job["if"] == "github.event_name != 'pull_request'"
-    assert "continue-on-error" not in exhaustive_job
-    exhaustive_steps = exhaustive_job["steps"]
-    assert isinstance(exhaustive_steps, list)
-    exhaustive_commands = [
-        " ".join(str(_mapping(step)["run"]).split())
-        for step in exhaustive_steps
-        if isinstance(_mapping(step).get("run"), str)
-        and "packing-validate" in str(_mapping(step)["run"])
+    # The complete integration runner omits every Step assigned to a deferred runner.
+    # The CLI/workflow partition contract also checks exact coverage and disjointness.
+    command = shlex.split(str(full_step["run"]))
+    assert command[: command.index("packing-validate") + 1] == [
+        "uv",
+        "run",
+        "--frozen",
+        "--all-extras",
+        "--group",
+        "dev",
+        "packing-validate",
     ]
-    assert exhaustive_commands == [
-        (
-            'uv run --frozen --all-extras --group dev packing-validate --only "exhaustive '
-            'exact behavioral tests" --jobs 1 --inner-jobs 4'
+    assert command[command.index("packing-validate") + 1 :] == [
+        flag
+        for name in (
+            "exhaustive exact behavioral tests",
+            "slow behavioral tests",
+            "single-square translation escape screen",
+            "threshold dilation-limit record, 1440 steps",
+            "known-best n=1..324 atlas rebuild",
+            "finer-net dilation-limit record, 720 steps",
+            "exact rational grid replay",
+            "negative controls",
+            "finer-net dilation-limit record, 1440 steps",
+            "threshold dilation-limit record, 720 steps",
+            "n=40 rigidity bracket still reproduces",
         )
-    ]
+        for flag in ("--skip", name)
+    ] + ["--jobs", "1", "--inner-jobs", "2"]
+
+    # The exhaustive exact tier is partitioned by whole test files across three
+    # isolated runners. Each remains one logical validation Step.
+    for index in (1, 2, 3):
+        exhaustive_job = _mapping(jobs[f"exhaustive-{index}"])
+        assert exhaustive_job["if"] == "github.event_name != 'pull_request'"
+        assert "continue-on-error" not in exhaustive_job
+        exhaustive_steps = exhaustive_job["steps"]
+        assert isinstance(exhaustive_steps, list)
+        exhaustive_commands = [
+            " ".join(str(_mapping(step)["run"]).split())
+            for step in exhaustive_steps
+            if isinstance(_mapping(step).get("run"), str)
+            and "packing-validate" in str(_mapping(step)["run"])
+        ]
+        assert exhaustive_commands == [
+            (
+                "uv run --frozen --all-extras --group dev packing-validate "
+                '--only "exhaustive exact behavioral tests" '
+                f"--exhaustive-shard {index}/3 --jobs 1 --inner-jobs 4"
+            )
+        ]
 
     # The translation escape screen, split onto its own runner by `D-484`. The reason is
     # not the exhaustive tier's: the screen reports a single verdict either way, and what

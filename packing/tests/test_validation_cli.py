@@ -3443,33 +3443,98 @@ def test_every_tier_band_is_declared_for_the_shape_ci_runs() -> None:
 
 
 def test_the_post_merge_jobs_partition_the_gate() -> None:
-    """The jobs a merge runs must together select every step, and none twice.
-
-    think-tr2z split the exhaustive tier onto its own runner so that it reports its own
-    verdict against its own budget; `--skip` on the other job is what stops it being paid
-    for twice. `D-484` split the translation escape screen off for a different reason --
-    not its verdict but its worker count, which beside the rest of the gate is two and
-    alone is four. Every part of both splits is a name typed into a YAML file, so this
-    reads the workflow, parses each command with the CLI's own parser, and resolves it
-    through the CLI's own selector: a step added to `STEPS` lands in exactly one job, and
-    a rename that breaks the split fails here rather than after a merge.
-
-    The slow lane also has its own runner. The complete integration surface excludes
-    all three isolated selections. The `frontend`, `geometry`, `suite-a`, `suite-b`, and
-    `sweeps` jobs are pull-request only, and the complete integration surface here
-    already contains every step they would have run.
-    """
+    """The complete checkpoint partitions whole Steps; exhaustive shards share one Step."""
     selections = _workflow_selections(pull_request=False)
-
-    assert set(selections) == {"validate", "exhaustive", "screen", "slow-lane"}
-    assert selections["exhaustive"] == {"exhaustive exact behavioral tests"}
-    assert selections["screen"] == {"single-square translation escape screen"}
+    deferred = {
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
+    }
+    shards = {f"exhaustive-{index}" for index in (1, 2, 3)}
+    assert set(selections) == {"validate", "slow-lane", "screen", *deferred, *shards}
     assert selections["slow-lane"] == {"slow behavioral tests"}
-    names = list(selections)
+    assert selections["screen"] == {"single-square translation escape screen"}
+    commands = _workflow_commands(pull_request=False)
+    for index in (1, 2, 3):
+        job = f"exhaustive-{index}"
+        assert selections[job] == {"exhaustive exact behavioral tests"}
+        assert commands[job].exhaustive_shard == f"{index}/3"
+        assert (commands[job].jobs, commands[job].inner_jobs) == ("1", "4")
+
+    # The three whole-file shards jointly own one Step. Every other Step has one owner.
+    logical = {name: selected for name, selected in selections.items() if name not in shards}
+    logical["exhaustive"] = selections["exhaustive-1"]
+    names = list(logical)
     for index, job in enumerate(names):
         for other in names[index + 1 :]:
-            assert not selections[job] & selections[other], f"{job} and {other} overlap"
-    assert set().union(*selections.values()) == {step.name for step in validate.STEPS}
+            assert not logical[job] & logical[other], f"{job} and {other} overlap"
+    assert set().union(*logical.values()) == {step.name for step in validate.STEPS}
+    assert sum(map(len, logical.values())) == len(validate.STEPS)
+
+
+def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> None:
+    document = safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    jobs = document["jobs"]
+    expected = {
+        "validate",
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
+        "slow-lane",
+        "exhaustive-1",
+        "exhaustive-2",
+        "exhaustive-3",
+        "screen",
+    }
+    aggregate = jobs["post-merge-required"]
+    assert aggregate["if"] == "!cancelled() && github.event_name != 'pull_request'"
+    assert set(aggregate["needs"]) == expected
+    verdict = aggregate["steps"][0]
+    command = verdict["run"]
+    for job in expected:
+        expression = f"${{{{ needs.{job}.result }}}}"
+        matching = [key for key, value in verdict["env"].items() if value == expression]
+        assert len(matching) == 1, job
+        assert f'test "${matching[0]}" = "success"' in command
+
+    # No deferred job can enter the seven-prerequisite pull-request context.
+    assert set(jobs["packing-required"]["needs"]) == {
+        "validate",
+        "frontend",
+        "typecheck",
+        "geometry",
+        "suite-a",
+        "suite-b",
+        "sweeps",
+    }
+    for name in expected - {"validate"}:
+        job = jobs[name]
+        assert job["if"] == "github.event_name != 'pull_request'"
+        steps = job["steps"]
+        checkouts = [step for step in steps if "actions/checkout@" in step.get("uses", "")]
+        assert checkouts
+        assert all(step["with"]["ref"] == "${{ github.sha }}" for step in checkouts)
+        validators = [
+            index
+            for index, step in enumerate(steps)
+            if "packing-validate" in step.get("run", "")
+        ]
+        receipts = [
+            index
+            for index, step in enumerate(steps)
+            if step.get("name") == "Bind the receipt to the immutable tree"
+        ]
+        assert len(validators) == len(receipts) == 1
+        assert receipts[0] < validators[0]
+        receipt = steps[receipts[0]]
+        assert receipt["env"]["VALIDATED_SHA"] == "${{ github.sha }}"
+        assert 'test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"' in receipt["run"]
+        uploads = [step for step in steps if "actions/upload-artifact@" in step.get("uses", "")]
+        assert len(uploads) == 1
+        expected_artifact = "validation-timings-${{ github.job }}-${{ github.run_attempt }}"
+        assert uploads[0]["with"]["name"] == expected_artifact
 
 
 def test_the_longest_steps_are_submitted_first() -> None:

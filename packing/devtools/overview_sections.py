@@ -24,17 +24,8 @@ from devtools.overview_data import (
     tex_bounds,
 )
 
-#: Confirmation rungs from strongest to weakest, with their bar colours (kpress-neutral
-#: hues chosen to stay distinct in both themes).
+#: Confirmation rungs from strongest to weakest.
 C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
-C_COLOURS = {
-    "C5": "oklch(45% 0.09 186)",
-    "C4": "oklch(55% 0.09 186)",
-    "C3": "oklch(66% 0.08 186)",
-    "C2": "oklch(70% 0.10 70)",
-    "C1": "oklch(66% 0.12 45)",
-    "C0": "oklch(62% 0.02 260)",
-}
 
 
 def _esc(text: object) -> str:
@@ -75,8 +66,14 @@ def bracket_11(overview: Overview) -> dict[str, str]:
     }
 
 
+def _fill(rung: str) -> str:
+    """The attributes `site.css` colours a rung by: its scale, `V`, `C` or `S`, and its
+    level, which darkens the fill. Badges, bar segments and legend swatches share them."""
+    return f'data-rung="{_esc(rung[0])}" data-level="{_esc(rung[1:])}"'
+
+
 def _rung(label: str) -> str:
-    return f'<span class="site-rung">{_esc(label)}</span>'
+    return f'<span class="site-rung site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
 def card_kind(href: str) -> str:
@@ -238,7 +235,7 @@ def results_table(overview: Overview) -> str:
 def _bar(label: str, counts: dict[str, int]) -> str:
     total = sum(counts.values()) or 1
     segments = "".join(
-        f'<span class="site-bar-seg" style="flex:{counts[c]};background:{C_COLOURS[c]}"'
+        f'<span class="site-bar-seg site-rung-fill" {_fill(c)} style="flex:{counts[c]}"'
         f' title="{c}: {counts[c]}">{counts[c]}</span>'
         for c in C_RUNGS
         if counts.get(c)
@@ -283,7 +280,7 @@ def verification_block(stats: Stats) -> str:
         for label, value, note in cards
     )
     legend = "".join(
-        f'<span><i style="background:{C_COLOURS[c]}"></i>{c}</span>' for c in C_RUNGS
+        f'<span><i class="site-rung-fill" {_fill(c)}></i>{c}</span>' for c in C_RUNGS
     )
     bars = _bar("This project", dict(stats.confirmation_ours)) + _bar(
         "By others", dict(stats.confirmation_others)

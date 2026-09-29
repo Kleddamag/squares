@@ -269,8 +269,40 @@ body {
 .site-records a {
   white-space: nowrap;
 }
+/* A rung's fill darkens with its level, on its own scale: verification in blue and
+   confirmation in green, each a desaturated shade of the packing palette's blue and green
+   squares, and significance in gray. Text turns light where the fill is dark. */
+.site-rung-fill {
+  --rung-hue: 250;
+  --rung-chroma: 0.05;
+  --rung-level: 0;
+  background: oklch(calc(95% - var(--rung-level) * 10%) var(--rung-chroma) var(--rung-hue));
+  color: oklch(25% 0.02 var(--rung-hue));
+}
+.site-rung-fill[data-rung="C"] {
+  --rung-hue: 158;
+}
+.site-rung-fill[data-rung="S"] {
+  --rung-chroma: 0.008;
+}
+.site-rung-fill[data-level="1"] {
+  --rung-level: 1;
+}
+.site-rung-fill[data-level="2"] {
+  --rung-level: 2;
+}
+.site-rung-fill[data-level="3"] {
+  --rung-level: 3;
+}
+.site-rung-fill[data-level="4"] {
+  --rung-level: 4;
+  color: white;
+}
+.site-rung-fill[data-level="5"] {
+  --rung-level: 5;
+  color: white;
+}
 .site-rung {
-  border: 1px solid var(--kpress-doc-border);
   border-radius: var(--kpress-radius-sm, 4px);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -320,7 +352,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   font-size: 0.8em;
   min-width: 1.4rem;
 }
@@ -333,6 +364,7 @@ body {
   font-size: var(--site-font-size-note);
 }
 .site-legend i {
+  box-shadow: inset 0 0 0 1px var(--kpress-doc-border);
   display: inline-block;
   width: 0.8rem;
   height: 0.8rem;

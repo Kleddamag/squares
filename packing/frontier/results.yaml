@@ -3658,6 +3658,7 @@ results:
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
       - packing/devtools/apply_upper_bound_packets.py
+      - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
       - packing/tests/test_upper_bound_packets.py
@@ -3710,6 +3711,7 @@ results:
       - packing/witnesses/de-winter-2026/n-211-rational.yaml.gz
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
+      - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
       - packing/tests/test_upper_bound_packets.py

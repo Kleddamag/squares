@@ -1,0 +1,25 @@
+---
+type: is
+id: is-01m3nrt5zy2g6dpegq1fbczpzg
+title: "Register others' results beside this project's: every result since 22 August 2026 that the record acts on, with original credit and this repository's verification tracked separately"
+kind: epic
+status: closed
+priority: 1
+version: 6
+labels:
+  - packing
+  - results-register
+dependencies: []
+child_order_hints:
+  - is-01m3nrt6qdv71mpn53gj361hrq
+  - is-01m3nrt7ckhxy0gt2sqb2rmmaq
+  - is-01m3nrt80pb585kyvy1tb43nzy
+  - is-01m3nrt8jt5aqjx0qb9r905fe8
+created_at: 2026-09-29T05:04:47.614Z
+updated_at: 2026-09-29T05:50:55.893Z
+closed_at: 2026-09-29T05:50:55.893Z
+close_reason: Implemented in 68903d852 (results-register PR); owner questions in think-9ec5, table in think-ti71
+resolution: null
+duplicate_of: null
+---
+Owner request 2026-09-29: extend the results register (packing/frontier/results.yaml) to cover results by others that this repository registers, replays or reviews, including reported ones whose proofs may be valid but need full review; track credit on the original result and the verification here by the same process as first-party T-NNN results; not every result, but all of this project's own and every result since the project began (2026-08-22) that needs codifying, review or verification; the notable n = 11 and n = 17 results in particular. Design: docs/project/specs/active/plan-2026-09-29-third-party-results-register.md. Lands as a PR stacked on the W8 refresh (think-m7zb).

@@ -433,6 +433,34 @@ def test_every_live_result_has_a_headline_within_the_ceiling() -> None:
         assert 0 < len(record["headline"]) <= check_results.HEADLINE_MAX, record["id"]
 
 
+def test_grouped_results_lists_every_result_once_in_the_rendered_order() -> None:
+    """`grouped_results` is the grouping `RESULTS.md` is written from, not a copy of it.
+
+    Every entry appears exactly once, and reading the groups in order gives the ids in
+    the order the committed `RESULTS.md` tables list them, group headings included.
+    """
+    register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
+    groups = render_results.grouped_results(register)
+    grouped = [record["id"] for _, group in groups for record in group]
+    assert sorted(grouped) == sorted(record["id"] for record in register["results"])
+    assert len(grouped) == len(set(grouped))
+
+    committed = render_results.OUTPUT.read_text(encoding="utf-8")
+    tables = committed.split("## Next actions")[0]
+    assert grouped == re.findall(r"^\| (T-\d{3}) \|", tables, re.MULTILINE)
+    headings = re.findall(r"^##+ (.+)$", tables, re.MULTILINE)
+    titles = [title for title, _ in groups]
+    assert titles[0] == headings[0] == render_results.OURS
+    assert [h for h in headings if h in dict(render_results.OTHERS).values()] == titles[1:]
+
+
+def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:
+    register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
+    for title, group in render_results.grouped_results(register)[1:]:
+        replayed = [int(record["confirmation"][1]) >= 3 for record in group]
+        assert replayed == sorted(replayed), title
+
+
 def test_the_registration_backfill_inserts_only_missing_dates() -> None:
     text = (
         "results:\n"

@@ -198,3 +198,23 @@ def test_every_link_the_block_writes_resolves_from_the_repository_root() -> None
     for target in targets:
         path, _, _fragment = target.partition("#")
         assert (repository_root / path).is_file(), f"dead link -> {target}"
+
+
+def test_the_verification_and_confirmation_rungs_are_read_from_their_tables() -> None:
+    """`anchors` reads all three axes' tables, so an overview legend quotes the policy.
+
+    The verification and confirmation tables carry a predicate column the significance
+    rubric lacks; the rung's name is the first cell in both shapes.
+    """
+    verification = anchors("V")
+    confirmation = anchors("C")
+
+    assert sorted(verification) == [0, 1, 2, 3, 4, 5]
+    assert sorted(confirmation) == [0, 1, 2, 3, 4, 5]
+    assert verification[4] == "Machine-verified"
+    assert confirmation[2] == "Replayed"
+    assert confirmation[5] == "Review-ready"
+    assert anchors() == anchors("S")
+    assert all("|" not in name and "`" not in name for name in verification.values())
+    with pytest.raises(ValueError, match="unknown axis"):
+        anchors("N")

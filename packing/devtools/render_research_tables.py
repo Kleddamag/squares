@@ -73,7 +73,7 @@ LB_LABEL = {
     "nagamochi": "Nagamochi",
     "monotonicity": "monotone",
     "unavoidable-points": "unavoidable points",
-    "counting": "elementary",
+    "counting": "counting",
 }
 UB_LABEL = {
     "trivial-grid": "grid",

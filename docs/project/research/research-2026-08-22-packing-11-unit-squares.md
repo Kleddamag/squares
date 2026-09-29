@@ -34,6 +34,12 @@ the weakest in this document and are flagged again in [Open Questions](#open-que
 
 ## Current Summary Through 2026-09-06
 
+**Since then.** T-033 carried this project’s bound to `3.8269975…` on 22 September, and
+Kleddamag’s `s(11) > 31/8 = 3.875`, developed from T-026’s certificate, is the verified
+lower bound, about `0.0021` below Trump’s packing; see
+[`n-011`](../../../packing/frontier/n-011.md).
+The summary below is kept as of its date.
+
 T-022 sharpens the project’s lower bound to
 
 ```text
@@ -877,66 +883,66 @@ Use the structured form to query or plot; use these tables to read.
 
 | `n` | best reported `s(n)` | how | deg | reported lower bound | from | gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| 11 | 3.87708359 | hand | 8 | 3.875 | elementary | 0.0021 |
-| 12 | 4 | grid | — | 3.968615 | elementary | 0.0314 |
-| 17 | 4.67553009 | hand | 18 | 4.66044 | elementary | 0.0151 |
-| 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | elementary | 0.1279 |
-| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.815 | elementary | 0.0706 |
-| 20 | 5 | grid | — | 4.895 | elementary | 0.105 |
-| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.53 | elementary | 0.0913 |
-| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6 | elementary | 0.1071 |
-| 28 | 5.82444462 | annealing | 6 | 5.72 | elementary | 0.1044 |
-| 29 | 5.93383346 | annealing | — | 5.79 | elementary | 0.1438 |
-| 30 | 6 | grid | — | 5.865 | elementary | 0.135 |
-| 31 | 6 | grid | — | 5.935 | elementary | 0.065 |
-| 37 | 6.59861961 | hand | 8 | 6.425 | elementary | 0.1736 |
-| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.54 | elementary | 0.1671 |
-| 39 | 6.81072208 | annealing | 5 | 6.63 | elementary | 0.1807 |
-| 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.695 | elementary | 0.1334 |
-| 41 | 6.92669309 | annealing | 42 | 6.755 | elementary | 0.1717 |
-| 42 | 7 | grid | — | 6.79 | elementary | 0.21 |
-| 43 | 7 | grid | — | 6.865 | elementary | 0.135 |
-| 44 | 7 | grid | — | 6.935 | elementary | 0.065 |
-| 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.4 | elementary | 0.1714 |
-| 51 | 7.70079924 | annealing | 12 | 7.4425 | elementary | 0.2583 |
-| 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.535 | elementary | 0.1721 |
-| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.595 | elementary | 0.2279 |
-| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.6675 | elementary | 0.1792 |
-| 55 | 7.94577101 | annealing | — | 7.71 | elementary | 0.2358 |
-| 56 | 8 | grid | — | 7.77 | elementary | 0.23 |
-| 57 | 8 | grid | — | 7.835 | elementary | 0.165 |
-| 58 | 8 | grid | — | 7.89 | elementary | 0.11 |
-| 59 | 8 | grid | — | 7.92 | elementary | 0.08 |
-| 60 | 8 | grid | — | 7.94 | elementary | 0.06 |
-| 61 | 8 | grid | — | 7.96 | elementary | 0.04 |
+| 11 | 3.87708359 | hand | 8 | 3.875 | counting | 0.0021 |
+| 12 | 4 | grid | — | 3.968615 | counting | 0.0314 |
+| 17 | 4.67553009 | hand | 18 | 4.66044 | counting | 0.0151 |
+| 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | counting | 0.1279 |
+| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.815 | counting | 0.0706 |
+| 20 | 5 | grid | — | 4.895 | counting | 0.105 |
+| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.53 | counting | 0.0913 |
+| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6 | counting | 0.1071 |
+| 28 | 5.82444462 | annealing | 6 | 5.72 | counting | 0.1044 |
+| 29 | 5.93383346 | annealing | — | 5.79 | counting | 0.1438 |
+| 30 | 6 | grid | — | 5.865 | counting | 0.135 |
+| 31 | 6 | grid | — | 5.935 | counting | 0.065 |
+| 37 | 6.59861961 | hand | 8 | 6.425 | counting | 0.1736 |
+| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.54 | counting | 0.1671 |
+| 39 | 6.81072208 | annealing | 5 | 6.63 | counting | 0.1807 |
+| 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.695 | counting | 0.1334 |
+| 41 | 6.92669309 | annealing | 42 | 6.755 | counting | 0.1717 |
+| 42 | 7 | grid | — | 6.79 | counting | 0.21 |
+| 43 | 7 | grid | — | 6.865 | counting | 0.135 |
+| 44 | 7 | grid | — | 6.935 | counting | 0.065 |
+| 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.4 | counting | 0.1714 |
+| 51 | 7.70079924 | annealing | 12 | 7.4425 | counting | 0.2583 |
+| 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.535 | counting | 0.1721 |
+| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.595 | counting | 0.2279 |
+| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.6675 | counting | 0.1792 |
+| 55 | 7.94577101 | annealing | — | 7.71 | counting | 0.2358 |
+| 56 | 8 | grid | — | 7.77 | counting | 0.23 |
+| 57 | 8 | grid | — | 7.835 | counting | 0.165 |
+| 58 | 8 | grid | — | 7.89 | counting | 0.11 |
+| 59 | 8 | grid | — | 7.92 | counting | 0.08 |
+| 60 | 8 | grid | — | 7.94 | counting | 0.06 |
+| 61 | 8 | grid | — | 7.96 | counting | 0.04 |
 | 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.289966 | unavoidable points | 0.2456 |
-| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.375 | elementary | 0.2819 |
-| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | elementary | 0.2521 |
-| 68 | 8.80338307 | — | — | 8.495 | elementary | 0.3084 |
-| 69 | 8.82720551 | — | — | 8.575 | elementary | 0.2522 |
-| 70 | 8.88166676 | hand | 4 | 8.62 | elementary | 0.2617 |
-| 71 | 8.94407156 | annealing | — | 8.685 | elementary | 0.2591 |
-| 72 | 9 | grid | — | 8.74 | elementary | 0.26 |
-| 73 | 9 | grid | — | 8.78 | elementary | 0.22 |
-| 74 | 9 | grid | — | 8.84 | elementary | 0.16 |
-| 75 | 9 | grid | — | 8.89 | elementary | 0.11 |
-| 76 | 9 | grid | — | 8.92 | elementary | 0.08 |
+| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.375 | counting | 0.2819 |
+| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | counting | 0.2521 |
+| 68 | 8.80338307 | — | — | 8.495 | counting | 0.3084 |
+| 69 | 8.82720551 | — | — | 8.575 | counting | 0.2522 |
+| 70 | 8.88166676 | hand | 4 | 8.62 | counting | 0.2617 |
+| 71 | 8.94407156 | annealing | — | 8.685 | counting | 0.2591 |
+| 72 | 9 | grid | — | 8.74 | counting | 0.26 |
+| 73 | 9 | grid | — | 8.78 | counting | 0.22 |
+| 74 | 9 | grid | — | 8.84 | counting | 0.16 |
+| 75 | 9 | grid | — | 8.89 | counting | 0.11 |
+| 76 | 9 | grid | — | 8.92 | counting | 0.08 |
 | 77 | 9 | grid | — | 8.92 | monotone | 0.08 |
-| 78 | 9 | grid | — | 8.955 | elementary | 0.045 |
+| 78 | 9 | grid | — | 8.955 | counting | 0.045 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
 | 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.266734 | monotone | 0.4404 |
 | 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.266734 | monotone | 0.4759 |
-| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.355 | elementary | 0.4679 |
+| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.355 | counting | 0.4679 |
 | 87 | 9.83881744 | annealing | 44 | 9.3666 | Nagamochi | 0.4722 |
-| 88 | 9.88815305 | hand | 20 | 9.45 | elementary | 0.4382 |
-| 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.55 | elementary | 0.3997 |
+| 88 | 9.88815305 | hand | 20 | 9.45 | counting | 0.4382 |
+| 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.55 | counting | 0.3997 |
 | 90 | 10 | grid | — | 9.55 | monotone | 0.45 |
-| 91 | 10 | grid | — | 9.645 | elementary | 0.355 |
+| 91 | 10 | grid | — | 9.645 | counting | 0.355 |
 | 92 | 10 | grid | — | 9.660254 | Nagamochi | 0.3397 |
 | 93 | 10 | grid | — | 9.717798 | Nagamochi | 0.2822 |
-| 94 | 10 | grid | — | 9.795 | elementary | 0.205 |
-| 95 | 10 | grid | — | 9.8418 | elementary | 0.1582 |
+| 94 | 10 | grid | — | 9.795 | counting | 0.205 |
+| 95 | 10 | grid | — | 9.8418 | counting | 0.1582 |
 | 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
 | 97 | 10 | grid | — | 9.944272 | Nagamochi | 0.0557 |
 | 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.246736 | unavoidable points | 0.2888 |
@@ -1149,30 +1155,30 @@ Use the structured form to query or plot; use these tables to read.
 | `n` | reported `s(n)` | reported basis | source | formal lane |
 | --- | --- | --- | --- | --- |
 | 1 | `1` | perfect square | classical | proved |
-| 2 | `2` | elementary | classical | proved |
-| 3 | `2` | elementary | classical | proved |
+| 2 | `2` | counting | classical | proved |
+| 3 | `2` | counting | classical | proved |
 | 4 | `2` | perfect square | classical | proved |
 | 5 | `2 + (1/2)√2` | unavoidable points | Frits Göbel (1979) | proved |
 | 6 | `3` | unavoidable points | Michael Kearney, Peter Shiu (2002) | proved |
-| 7 | `3` | elementary | Said El Moumni (1999) | proved |
-| 8 | `3` | elementary | Said El Moumni (1999) | proved |
+| 7 | `3` | counting | Said El Moumni (1999) | proved |
+| 8 | `3` | counting | Said El Moumni (1999) | proved |
 | 9 | `3` | perfect square | classical | proved |
 | 10 | `3 + (1/2)√2` | unavoidable points | Walter Stromquist (2003) | proved |
 | 13 | `4` | unavoidable points | Wolfram Bentz (2010) | proved |
 | 14 | `4` | unavoidable points | Erich Friedman (2009) | proved |
-| 15 | `4` | elementary | Said El Moumni (1999) | proved |
+| 15 | `4` | counting | Said El Moumni (1999) | proved |
 | 16 | `4` | perfect square | classical | proved |
-| 21 | `5` | elementary | Evan Daniel (2026) | proved |
+| 21 | `5` | counting | Evan Daniel (2026) | proved |
 | 22 | `5` | unavoidable points | Wolfram Bentz (2016) | proved |
 | 23 | `5` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 24 | `5` | unavoidable points | Erich Friedman (1999) | proved |
 | 25 | `5` | perfect square | classical | proved |
-| 32 | `6` | elementary | Evan Daniel (2026) | proved |
+| 32 | `6` | counting | Evan Daniel (2026) | proved |
 | 33 | `6` | unavoidable points | Wolfram Bentz (2016) | proved |
 | 34 | `6` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 35 | `6` | unavoidable points | Erich Friedman (1999) | proved |
 | 36 | `6` | perfect square | classical | proved |
-| 45 | `7` | elementary | Evan Daniel (2026) | proved |
+| 45 | `7` | counting | Evan Daniel (2026) | proved |
 | 46 | `7` | unavoidable points | Wolfram Bentz (2010) | proved |
 | 47 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 48 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |

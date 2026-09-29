@@ -1,0 +1,44 @@
+# command: env NPROC=2 sh certificates/s45/verify.sh
+# cwd: s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba; NPROC=2
+# python3: 3.14.7, the uv-managed base interpreter /root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu (a symlink to packing/.venv/bin/python3 does not activate the venv; the scripts this tier runs import only the standard library) -- corrected after the run
+# host: 4 cores; load 12.17 7.78 4.18; started 2026-09-28T23:52:41Z
+--- hashes
+s45_mixed_cover_7.txt: OK
+zm_mixed_d4/checker/zm_mixed.py: OK
+zm_mixed_d4/checker/mixed_cover.py: OK
+zm_mixed_d4/checker/zeromargin.py: OK
+zm_mixed_d4/roots.jsonl: OK
+zmx2_d4/roots.log: OK
+zmx2_full/roots.log: OK
+--- the cover: well-formed, exact total < 45, D4-invariant measure (search/mixed_records.py, own parser)
+cover: s = 7, D = 1000, W = 100000000: 19989 points, 3912 segments (3912 axis-parallel), 0 polygons; all in [0,7]^2, masses >= 0
+total = 2238676387/50000000 = 44.773527740000  (< 45: True)
+measure invariant under x -> 7-x: True, under x <-> y: True (these generate D4)
+COVER CLEAN
+--- shipped zm_mixed.py run (zm_mixed_d4/): header shas = checker/ + cover, settings, all 78,400 roots certified
+    header: zm_mixed.py ee3e2915349b8795…, mixed_cover.py bb89de15ecf5821d…, zeromargin.py 640fe453c1a32f4a… (= checker/), input 5da180d18434ec52… (= cover); settings D4, cert mode, depth 24, CHAIN True from 0, theta-bias 4, SPLIT True
+    region: 78400 roots = [0,7/2]^2 x u in [0,1/2]; present 78400, missing 0, extra 0, with uncertified boxes 0
+    totals: boxes 437510, max depth 19, leaves ADM 122892 CHAIN 45866 SPLIT 54276 PIECE 9458 P1 0 MIX 0 EMPTY 25463 UNCERTIFIED 0; T' closures 0; CPU 16.52 h
+    zm_mixed D4 RECORDS CLEAN: every root of the D4 region certified
+--- shipped zmx2 runs (zmx2_d4/, zmx2_full/): every root of each region certified
+    header: zmx2 cert hash=117e4b50fad482f5 mode=d4 atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-34,y0-34,bins0-3
+    region: 4900 roots = [0,7/2]^2 x u in [0,1/2]; present 4900, missing 0, extra 0
+    totals: boxes 2071984, certified 1023340, empty 15102, uncertified 0 (UNCERT lines 0), capped 0, max depth 24, CPU 19 s
+    zmx2 d4 RECORDS CLEAN: every root certified
+    header: zmx2 cert hash=117e4b50fad482f5 mode=full atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-69,y0-69,bins0-3
+    region: 39200 roots = [0,7]^2 x u in [0,1/2], cover and its y -> 7-y mirror; present 39200, missing 0, extra 0
+    totals: boxes 16648752, certified 8222632, empty 121344, uncertified 0 (UNCERT lines 0), capped 0, max depth 24, CPU 144 s
+    zmx2 full RECORDS CLEAN: every root certified
+--- fresh zmx2 run: the whole pose space, no symmetry assumed (--full: cover + mirror, 39,200 roots)
+    Finished `release` profile [optimized] target(s) in 0.02s
+D4: measure invariant under x->s-x and x<->y (exact)
+cover: s = 7/1, 19989 points, 3912 segments, total 2238676387/50000000 = 44.77352774000
+done in 333s wall: roots 39200 (missing 0), boxes 16648752, certified 8222632, empty 121344, uncertified 0, max depth 24, cpu 643s
+VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)
+    header: zmx2 cert hash=117e4b50fad482f5 mode=full atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-69,y0-69,bins0-3
+    region: 39200 roots = [0,7]^2 x u in [0,1/2], cover and its y -> 7-y mirror; present 39200, missing 0, extra 0
+    totals: boxes 16648752, certified 8222632, empty 121344, uncertified 0 (UNCERT lines 0), capped 0, max depth 24, CPU 643 s
+    zmx2 full RECORDS CLEAN: every root certified
+    fresh census identical to the shipped zmx2_full/roots.log, root for root
+s(45) bundle: OK
+# finished 2026-09-28T23:58:24Z; exit 0; wall 342.628 s; CPU 392.6 s (user 390.835 + sys 1.801); load 9.22 8.92 5.87

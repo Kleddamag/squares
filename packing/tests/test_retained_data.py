@@ -24,6 +24,7 @@ WEB = Path(__file__).resolve().parents[1] / "resources" / "web"
 #: Packets whose large data files are stored compressed, each with a README table.
 PACKETS = (
     "evand-square-packing-2026-09-26",
+    "evand-square-packing-2026-09-28",
     "n17-kleddamag-4640020-2026-09-26",
     "n17-kleddamag-466001-2026-09-27",
     "wand125-rectangle-certificates-2026-09-27",

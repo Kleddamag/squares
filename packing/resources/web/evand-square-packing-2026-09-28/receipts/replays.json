@@ -1,0 +1,342 @@
+{
+  "schema": "ExternalCertificateReplayReceipts/v1",
+  "source": {
+    "url": "https://github.com/evand/square-packing",
+    "commit": "6aa82ba457e9eaeaaa3af0833600f27f91a2fce3",
+    "tree": "c9d23e3a60b60e7fb45f5c93663a68040fccc010",
+    "covers_sha256": {
+      "s12/certificates/s21/s21_mixed_cover_5.txt": "8b415ceeb5f20b02c4e338ce2feb21bc206051ef6bc5c7e433bebae2ef39fc23",
+      "s12/certificates/s45/s45_mixed_cover_7.txt": "5da180d18434ec52a48b05e8ae0ce70453a280dd482df01d997f73bfbc627c6c"
+    }
+  },
+  "host": {
+    "platform": "Linux 6.18 container",
+    "cpus": 4,
+    "memory_gib": 16,
+    "workers_used": 2,
+    "contention": "Shared with three other lanes; load averages ran from about 8 to 13 during these runs, so every wall is a contended reading."
+  },
+  "toolchain": {
+    "python3": "packing/.venv/bin/python3, CPython 3.14.7 with numpy 2.5.2, called through a wrapper script; the first two fast-tier runs used the uv-managed base CPython 3.14.7 without the venv, as their receipts say",
+    "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)",
+    "zmx2_binary_sha256": "5ee58adea339e1a911712108aeec044d57b268ee3025821397c64c1c6476c39b",
+    "zmx2_source_sha256": "6b7f0f79466bf25c9a85f8fe2f3866de734935f0521ea188136818c2fb5b3fed",
+    "source_binary_sha256_for_comparison": "0247012e282136cb56cc34f7a00a82ea7b4717af602a384d221603e70a6d012b (rustc 1.91.1, the source build)"
+  },
+  "notes": [
+    "wall and CPU are measured by the bash time keyword around each command; CPU is user plus system of the command and every descendant it waited for.",
+    "zmx2's own 'cpu' figure is the sum of per-root elapsed times, not processor time.",
+    "OUT paths in the commands are session scratch directories outside the packet; the retained copies are named in each receipt entry.",
+    "The receipt headers of the zmx2-only commands originally named the interpreter wrapper; that line was corrected to say python3 is not used."
+  ],
+  "runs": [
+    {
+      "check": "zmx2 build",
+      "receipt": "zmx2_build.log",
+      "command": "cargo build --release --bin zmx2 -j 2",
+      "working_directory": "s12/verify2 of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-28T23:47:34Z",
+      "load_average_at_start": "1.77 1.85 1.64",
+      "ended_utc": "2026-09-28T23:47:51Z",
+      "exit": 0,
+      "wall_seconds": 17.2,
+      "cpu_seconds": 11.2,
+      "status_lines": [
+        "Finished `release` profile [optimized] target(s) in 17.16s"
+      ]
+    },
+    {
+      "check": "s21 bundle, fast tier, from the two packets overlaid",
+      "receipt": "s21_bundle_fast.log",
+      "command": "env NPROC=2 CARGO_BUILD_JOBS=2 sh certificates/s21/verify.sh",
+      "working_directory": "s12/ of the two packets overlaid (2026-09-26 then 2026-09-28 square-packing/, .gz restored); NPROC=2, CARGO_BUILD_JOBS=2",
+      "python3": "3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3",
+      "started_utc": "2026-09-29T00:21:25Z",
+      "load_average_at_start": "8.92 8.94 8.29",
+      "ended_utc": "2026-09-29T00:25:56Z",
+      "exit": 0,
+      "wall_seconds": 271.6,
+      "cpu_seconds": 236.3,
+      "status_lines": [
+        "COVER CLEAN",
+        "lean/Sqpack/S21Data.lean matches certificates/s21/s21_mixed_cover_5.txt (sha256 8b415ceeb5f20b02c4e338ce2feb21bc206051ef6bc5c7e433bebae2ef39fc23)",
+        "zm_mixed D4 RECORDS CLEAN: every root of the D4 region certified",
+        "zmx2 d4 RECORDS CLEAN: every root certified",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "Finished `release` profile [optimized] target(s) in 16.31s",
+        "done in 251s wall: roots 20000 (missing 0), boxes 14709448, certified 7164300, empty 200424, uncertified 0, max depth 27, cpu 486s",
+        "VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "fresh census identical to the shipped zmx2_full/roots.log, root for root",
+        "s(21) bundle: OK"
+      ]
+    },
+    {
+      "check": "s45 bundle, fast tier, from the two packets overlaid",
+      "receipt": "s45_bundle_fast.log",
+      "command": "env NPROC=2 CARGO_BUILD_JOBS=2 sh certificates/s45/verify.sh",
+      "working_directory": "s12/ of the two packets overlaid (2026-09-26 then 2026-09-28 square-packing/, .gz restored); NPROC=2, CARGO_BUILD_JOBS=2",
+      "python3": "3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3",
+      "started_utc": "2026-09-29T00:25:56Z",
+      "load_average_at_start": "7.78 8.12 8.11",
+      "ended_utc": "2026-09-29T00:35:00Z",
+      "exit": 0,
+      "wall_seconds": 543.6,
+      "cpu_seconds": 392.6,
+      "status_lines": [
+        "COVER CLEAN",
+        "zm_mixed D4 RECORDS CLEAN: every root of the D4 region certified",
+        "zmx2 d4 RECORDS CLEAN: every root certified",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "Finished `release` profile [optimized] target(s) in 0.01s",
+        "done in 535s wall: roots 39200 (missing 0), boxes 16648752, certified 8222632, empty 121344, uncertified 0, max depth 24, cpu 1023s",
+        "VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "fresh census identical to the shipped zmx2_full/roots.log, root for root",
+        "s(45) bundle: OK"
+      ]
+    },
+    {
+      "check": "s21 bundle, fast tier, first run from a scratch export",
+      "receipt": "s21_bundle_fast_export.log",
+      "command": "env NPROC=2 sh certificates/s21/verify.sh",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba; NPROC=2",
+      "python3": "3.14.7, the uv-managed base interpreter /root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu (a symlink to packing/.venv/bin/python3 does not activate the venv; the scripts this tier runs import only the standard library) -- corrected after the run",
+      "started_utc": "2026-09-28T23:48:03Z",
+      "load_average_at_start": "2.79 2.11 1.73",
+      "ended_utc": "2026-09-28T23:52:29Z",
+      "exit": 0,
+      "wall_seconds": 266.2,
+      "cpu_seconds": 234.5,
+      "status_lines": [
+        "COVER CLEAN",
+        "lean/Sqpack/S21Data.lean matches certificates/s21/s21_mixed_cover_5.txt (sha256 8b415ceeb5f20b02c4e338ce2feb21bc206051ef6bc5c7e433bebae2ef39fc23)",
+        "zm_mixed D4 RECORDS CLEAN: every root of the D4 region certified",
+        "zmx2 d4 RECORDS CLEAN: every root certified",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "Finished `release` profile [optimized] target(s) in 0.01s",
+        "done in 263s wall: roots 20000 (missing 0), boxes 14709448, certified 7164300, empty 200424, uncertified 0, max depth 27, cpu 514s",
+        "VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "fresh census identical to the shipped zmx2_full/roots.log, root for root",
+        "s(21) bundle: OK"
+      ]
+    },
+    {
+      "check": "s45 bundle, fast tier, first run from a scratch export",
+      "receipt": "s45_bundle_fast_export.log",
+      "command": "env NPROC=2 sh certificates/s45/verify.sh",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba; NPROC=2",
+      "python3": "3.14.7, the uv-managed base interpreter /root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu (a symlink to packing/.venv/bin/python3 does not activate the venv; the scripts this tier runs import only the standard library) -- corrected after the run",
+      "started_utc": "2026-09-28T23:52:41Z",
+      "load_average_at_start": "12.17 7.78 4.18",
+      "ended_utc": "2026-09-28T23:58:24Z",
+      "exit": 0,
+      "wall_seconds": 342.6,
+      "cpu_seconds": 392.6,
+      "status_lines": [
+        "COVER CLEAN",
+        "zm_mixed D4 RECORDS CLEAN: every root of the D4 region certified",
+        "zmx2 d4 RECORDS CLEAN: every root certified",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "Finished `release` profile [optimized] target(s) in 0.02s",
+        "done in 333s wall: roots 39200 (missing 0), boxes 16648752, certified 8222632, empty 121344, uncertified 0, max depth 24, cpu 643s",
+        "VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)",
+        "zmx2 full RECORDS CLEAN: every root certified",
+        "fresh census identical to the shipped zmx2_full/roots.log, root for root",
+        "s(45) bundle: OK"
+      ]
+    },
+    {
+      "check": "s21 fresh zmx2 --d4",
+      "receipt": "s21_zmx2_d4.log",
+      "command": "verify2/target/release/zmx2 cert certificates/s21/s21_mixed_cover_5.txt --d4 --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s21_zmx2_d4_roots.log",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-28T23:59:36Z",
+      "load_average_at_start": "7.75 8.57 5.97",
+      "ended_utc": "2026-09-28T23:59:58Z",
+      "exit": 0,
+      "wall_seconds": 22.1,
+      "cpu_seconds": 27.6,
+      "status_lines": [
+        "done in 22s wall: roots 2500 (missing 0), boxes 1826222, certified 888945, empty 25416, uncertified 0, max depth 26, cpu 43s",
+        "VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)"
+      ]
+    },
+    {
+      "check": "s21 fresh zmx2 --full",
+      "receipt": "s21_zmx2_full.log",
+      "command": "verify2/target/release/zmx2 cert certificates/s21/s21_mixed_cover_5.txt --full --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s21_zmx2_full_roots.log",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-28T23:59:58Z",
+      "load_average_at_start": "8.10 8.59 6.05",
+      "ended_utc": "2026-09-29T00:03:16Z",
+      "exit": 0,
+      "wall_seconds": 197.7,
+      "cpu_seconds": 223.2,
+      "status_lines": [
+        "done in 198s wall: roots 20000 (missing 0), boxes 14709448, certified 7164300, empty 200424, uncertified 0, max depth 27, cpu 386s",
+        "VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)"
+      ]
+    },
+    {
+      "check": "s45 fresh zmx2 --d4",
+      "receipt": "s45_zmx2_d4.log",
+      "command": "verify2/target/release/zmx2 cert certificates/s45/s45_mixed_cover_7.txt --d4 --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s45_zmx2_d4_roots.log",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-29T00:03:16Z",
+      "load_average_at_start": "9.31 9.04 6.73",
+      "ended_utc": "2026-09-29T00:03:52Z",
+      "exit": 0,
+      "wall_seconds": 36.5,
+      "cpu_seconds": 47.4,
+      "status_lines": [
+        "done in 36s wall: roots 4900 (missing 0), boxes 2071984, certified 1023340, empty 15102, uncertified 0, max depth 24, cpu 71s",
+        "VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)"
+      ]
+    },
+    {
+      "check": "s45 fresh zmx2 --full",
+      "receipt": "s45_zmx2_full.log.gz",
+      "command": "verify2/target/release/zmx2 cert certificates/s45/s45_mixed_cover_7.txt --full --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s45_zmx2_full_roots.log",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-29T00:03:52Z",
+      "load_average_at_start": "9.47 9.10 6.85",
+      "ended_utc": "2026-09-29T00:09:03Z",
+      "exit": 0,
+      "wall_seconds": 311.0,
+      "cpu_seconds": 393.8,
+      "status_lines": [
+        "done in 311s wall: roots 39200 (missing 0), boxes 16648752, certified 8222632, empty 121344, uncertified 0, max depth 24, cpu 602s",
+        "VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)"
+      ]
+    },
+    {
+      "check": "s21 zm_mixed.py sample, cell a",
+      "receipt": "s21_zm_mixed_sample_a.log",
+      "command": "python3 search/zm_mixed.py cert certificates/s21/s21_mixed_cover_5.txt --d4 --cert-mode --disj --chain-from 0 --depth 24 --pitch 1/20 --ubins 16 --nproc 2 --progress 4 --cx-lo 7/4 --cx-hi 9/5 --cy-lo 7/5 --cy-hi 29/20 --resume /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_a.jsonl --manifest /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_a_manifest.json",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3",
+      "started_utc": "2026-09-29T00:09:51Z",
+      "load_average_at_start": "8.33 8.97 7.52",
+      "ended_utc": "2026-09-29T00:10:10Z",
+      "exit": 0,
+      "wall_seconds": 19.1,
+      "cpu_seconds": 24.9,
+      "status_lines": [
+        "done in 18s: boxes 38, max depth 5, CPU 24 s",
+        "VERIFIED-D4 (PARTIAL)"
+      ]
+    },
+    {
+      "check": "s21 zm_mixed.py sample, cell b",
+      "receipt": "s21_zm_mixed_sample_b.log",
+      "command": "python3 search/zm_mixed.py cert certificates/s21/s21_mixed_cover_5.txt --d4 --cert-mode --disj --chain-from 0 --depth 24 --pitch 1/20 --ubins 16 --nproc 2 --progress 4 --cx-lo 19/10 --cx-hi 39/20 --cy-lo 3/2 --cy-hi 31/20 --resume /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_b.jsonl --manifest /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_b_manifest.json",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3",
+      "started_utc": "2026-09-29T00:10:10Z",
+      "load_average_at_start": "8.54 8.97 7.55",
+      "ended_utc": "2026-09-29T00:16:08Z",
+      "exit": 0,
+      "wall_seconds": 357.3,
+      "cpu_seconds": 391.1,
+      "status_lines": [
+        "done in 357s: boxes 1472, max depth 14, CPU 390 s",
+        "VERIFIED-D4 (PARTIAL)"
+      ]
+    },
+    {
+      "check": "s45 zm_mixed.py sample, cell a",
+      "receipt": "s45_zm_mixed_sample_a.log",
+      "command": "python3 search/zm_mixed.py cert certificates/s45/s45_mixed_cover_7.txt --d4 --cert-mode --disj --chain-from 0 --depth 24 --pitch 1/20 --ubins 16 --nproc 2 --progress 4 --cx-lo 5/2 --cx-hi 51/20 --cy-lo 67/20 --cy-hi 17/5 --resume /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_a.jsonl --manifest /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_a_manifest.json",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3",
+      "started_utc": "2026-09-29T00:16:09Z",
+      "load_average_at_start": "8.54 9.05 8.07",
+      "ended_utc": "2026-09-29T00:16:25Z",
+      "exit": 0,
+      "wall_seconds": 15.8,
+      "cpu_seconds": 17.5,
+      "status_lines": [
+        "done in 14s: boxes 60, max depth 3, CPU 16 s",
+        "VERIFIED-D4 (PARTIAL)"
+      ]
+    },
+    {
+      "check": "s45 zm_mixed.py sample, cell b",
+      "receipt": "s45_zm_mixed_sample_b.log",
+      "command": "python3 search/zm_mixed.py cert certificates/s45/s45_mixed_cover_7.txt --d4 --cert-mode --disj --chain-from 0 --depth 24 --pitch 1/20 --ubins 16 --nproc 2 --progress 4 --cx-lo 29/20 --cx-hi 3/2 --cy-lo 9/4 --cy-hi 23/10 --resume /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_b.jsonl --manifest /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_b_manifest.json",
+      "working_directory": "s12/ of a scratch export (git archive) of evand/square-packing 6aa82ba",
+      "python3": "3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3",
+      "started_utc": "2026-09-29T00:16:25Z",
+      "load_average_at_start": "8.48 9.02 8.07",
+      "ended_utc": "2026-09-29T00:21:25Z",
+      "exit": 0,
+      "wall_seconds": 299.6,
+      "cpu_seconds": 286.7,
+      "status_lines": [
+        "done in 298s: boxes 2194, max depth 17, CPU 285 s",
+        "VERIFIED-D4 (PARTIAL)"
+      ]
+    },
+    {
+      "check": "s13 point cover, zmx2 --d4",
+      "receipt": "s13_zmx2_d4.log",
+      "command": "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/overlay/s12/verify2/target/release/zmx2 cert certificates/rung2/s13_closed_cover_4.txt --d4 --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s13_zmx2_d4_roots.log",
+      "working_directory": "s12/ of the two packets overlaid",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-29T00:35:03Z",
+      "load_average_at_start": "11.19 9.47 8.78",
+      "ended_utc": "2026-09-29T00:35:14Z",
+      "exit": 0,
+      "wall_seconds": 10.9,
+      "cpu_seconds": 6.2,
+      "status_lines": [
+        "done in 11s wall: roots 1600 (missing 0), boxes 47162, certified 22136, empty 2245, uncertified 0, max depth 20, cpu 21s",
+        "VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)"
+      ]
+    },
+    {
+      "check": "s32 point cover, zmx2 --d4 --pair-points",
+      "receipt": "s32_zmx2_d4_pairpoints.log",
+      "command": "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/overlay/s12/verify2/target/release/zmx2 cert certificates/s32/s32_closed_cover_6.txt --d4 --pair-points --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s32_zmx2_d4_pairpoints_roots.log",
+      "working_directory": "s12/ of the two packets overlaid",
+      "python3": "not used by this command",
+      "started_utc": "2026-09-29T00:35:14Z",
+      "load_average_at_start": "11.54 9.60 8.83",
+      "ended_utc": "2026-09-29T01:20:19Z",
+      "exit": 0,
+      "wall_seconds": 2705.0,
+      "cpu_seconds": 2313.4,
+      "status_lines": [
+        "done in 2705s wall: roots 3600 (missing 0), boxes 1405342, certified 686886, empty 17585, uncertified 0, max depth 29, cpu 5365s",
+        "VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)"
+      ]
+    }
+  ],
+  "independent_audit": {
+    "command": "uv run --frozen --all-extras --group dev python -m devtools.audit_evand_mixed_covers check --output resources/web/evand-square-packing-2026-09-28/receipts/audit.json (from packing/)",
+    "wall_seconds": 5.1,
+    "cpu_seconds": 5.0,
+    "result": "clean: both covers (exact totals, D4 invariance entry by entry and as a measure, no point on a segment line); all six shipped records complete over their regions with no uncertified box; the four fresh zmx2 logs complete and identical to the shipped census for every one of 66,600 roots; the 64-root zm_mixed.py sample identical to the shipped census; the s13 and s32 point-cover zmx2 runs complete, with totals equal to the ones search/ZMX2.md reports",
+    "receipt": "audit.json"
+  },
+  "overlay_identity": "The 2026-09-26 and 2026-09-28 packets overlaid (square-packing/, .gz restored) hold 139 files, each with git hash-object equal to its blob at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3.",
+  "coordinator_checks": {
+    "zmx2_source_sha256_built": "6b7f0f79466bf25c9a85f8fe2f3866de734935f0521ea188136818c2fb5b3fed (post-fix parser), in both the scratch export and the overlay",
+    "zmx2_binary_sha256": "5ee58adea339e1a911712108aeec044d57b268ee3025821397c64c1c6476c39b from both builds (scratch export and overlay), rustc 1.94.1; the source build is 0247012e... with rustc 1.91.1",
+    "s21_fast_tier": "s(21) bundle: OK; fresh zmx2 --full VERIFIED, 20,000 roots, 14,709,448 boxes, 0 uncertified; fresh census identical to the shipped zmx2_full/roots.log, root for root",
+    "s45_fast_tier": "s(45) bundle: OK; fresh zmx2 --full VERIFIED, 39,200 roots, 16,648,752 boxes, 0 uncertified; fresh census identical to the shipped zmx2_full/roots.log, root for root",
+    "python3": "packing/.venv/bin/python3, CPython 3.14.7 with numpy 2.5.2, for the overlay fast tiers and the samples"
+  },
+  "reserved_for_the_coordinator": [
+    "receipts/zm-mixed-full-s21/",
+    "receipts/zm-mixed-full-s45/"
+  ]
+}

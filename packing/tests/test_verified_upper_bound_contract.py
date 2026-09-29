@@ -248,6 +248,24 @@ DECLARED_CONSUMERS = {
     "packing/tests/test_frontier_rigidity_assessment.py": (
         "exercises that two-sided pin, including the cases where it must refuse"
     ),
+    "packing/devtools/overview_sections.py": (
+        "prints n = 11's ceiling as the right side of the published bracket, written with "
+        "a less-than-or-equal sign, and the gap to the verified lower bound; it never "
+        "states the ceiling as s(n)"
+    ),
+    "packing/devtools/render_frontier_page.py": (
+        "shows each case's verified ceiling in its own column beside the verified lower "
+        "bound, links its evidence, and takes their difference as the open gap; a zero gap "
+        "is what the record already calls proved, and the page reads it no further"
+    ),
+    "packing/tests/test_frontier_page.py": (
+        "builds the frontier page's cells from the real records and asserts their text; "
+        "it reads the ceiling only as the page does"
+    ),
+    "docs/project/specs/active/plan-2026-09-29-github-pages-overview.md": (
+        "the plan for the overview and frontier pages, naming the field as the verified "
+        "ceiling those pages show beside the lower bound"
+    ),
 }
 
 # Prose, code and hand-written records. Generated artifacts are excluded because they

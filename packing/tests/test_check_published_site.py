@@ -35,7 +35,7 @@ REPOSITORY_LINKS = (
 def workbench_page(commit: str, *, home: str = "../") -> bytes:
     return (
         f'<meta name="squares-workbench-revision" content="{commit}">'
-        f'<div id="site-note"><a href="{home}">the explainer</a></div>'
+        f'<div id="site-note"><a href="{home}">the overview</a></div>'
     ).encode()
 
 

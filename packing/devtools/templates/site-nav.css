@@ -1,0 +1,74 @@
+/* ============================================================
+   The site navigation bar, shared by every page of the site, the explainer included.
+   Written in kpress tokens only. Hidden in print, so the explainer's PDF and its
+   print-layout checks do not move.
+   ============================================================ */
+/* ---------- Navigation bar ----------
+   Carried in kpress's own site-header slot, widened to the site's wide track so the
+   links sit on one line above a wide table. */
+.kpress-site-header {
+  max-width: calc(var(--kpress-measure) + 24rem);
+  padding: 0;
+}
+.kpress-page-main:has(.kpress-toc) .kpress-site-header {
+  padding-inline-start: 0;
+  max-width: none;
+}
+.site-nav {
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: calc(var(--kpress-font-size-base) * 19 / 18 * 0.95);
+}
+.site-nav-inner {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  margin-inline: auto;
+  max-width: calc(var(--kpress-measure) + 24rem);
+  padding: 0.8rem 1rem;
+}
+.site-nav .site-name {
+  color: var(--kpress-doc-text);
+  font-weight: 680;
+  letter-spacing: var(--kpress-caps-spacing);
+  margin-inline-end: auto;
+  text-decoration: none;
+  text-transform: var(--kpress-caps-transform);
+}
+.site-nav a {
+  color: var(--kpress-doc-muted);
+  font-weight: 550;
+  text-decoration: none;
+}
+.site-nav a:hover {
+  color: var(--kpress-doc-accent);
+}
+.site-nav a[aria-current="page"] {
+  color: var(--kpress-doc-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+.site-nav .site-edition {
+  color: var(--kpress-doc-muted);
+  font-weight: var(--kpress-font-weight-sans-regular);
+}
+
+@media print {
+  .site-nav,
+  .kpress-site-header {
+    display: none;
+  }
+}
+@media (width < 40rem) {
+  .site-nav .site-edition {
+    display: none;
+  }
+}
+/* On the explainer the bar is the first thing in the page, not in kpress's header slot. */
+.kpress-page-main > .site-nav {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  margin-inline: auto;
+  max-width: calc(var(--kpress-measure) + 24rem);
+}

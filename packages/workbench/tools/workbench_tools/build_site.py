@@ -2,8 +2,8 @@
 """Build the package workbench as a standalone page under `site/workbench/`.
 
 GitHub Pages serves `packing/site` whole, so a subdirectory is a URL: this puts the
-workbench at `/workbench/` beside the explainer at `/`, without touching the explainer.
-That separation is the point -- the explainer is already published and may be linked from
+workbench at `/workbench/` beside the overview at `/` and the explainer, touching neither.
+That separation is the point -- both are already published and may be linked from
 elsewhere, so nothing here moves `site/index.html`.
 
 The page is already self-contained, which is what makes it deployable at all: one file,
@@ -97,7 +97,7 @@ to cover it."""
 
 NOTE = """<div id="site-note">
 The animation model is still moving, so a number here is not evidence
-&mdash; <a href="../">the explainer</a> is the published work.
+&mdash; <a href="../">the overview</a> and the explainer beside it are the published work.
 </div>"""
 """The one thing a reader of the published page has to know, said once and quietly.
 

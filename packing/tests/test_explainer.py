@@ -32,6 +32,7 @@ from devtools.render_explainer import (
     GENERATOR,
     MARKDOWN_OUTPUT,
     OUTPUT,
+    PAGE_URL,
     RENDER_INPUTS,
     REPO,
     REPO_URL,
@@ -48,6 +49,7 @@ from devtools.render_explainer import (
 )
 from devtools.render_explainer import load_certificate as load
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.render_overview import SITE_PAGES
 from sqpack.release import (
     FIRST_PUBLISHED,
     PUBLICATION_DATE,
@@ -161,7 +163,7 @@ def test_the_page_is_self_contained(page: str) -> None:
     """
 
     assert_self_contained(page)
-    assert re.findall(r"<link[^>]*>", page) == [f'<link rel="canonical" href="{SITE_URL}">']
+    assert re.findall(r"<link[^>]*>", page) == [f'<link rel="canonical" href="{PAGE_URL}">']
     assert re.search(r"<script[^>]*\ssrc=", page) is None
 
 
@@ -376,8 +378,8 @@ def test_the_link_preview_is_complete_and_its_urls_are_absolute(page: str) -> No
     assert tags.keys() >= REQUIRED_CARD_TAGS, sorted(REQUIRED_CARD_TAGS - tags.keys())
     for key in ("og:url", "og:image", "twitter:image"):
         assert tags[key].startswith("https://"), (key, tags[key])
-    assert f'<link rel="canonical" href="{SITE_URL}">' in page
-    assert tags["og:url"] == SITE_URL
+    assert f'<link rel="canonical" href="{PAGE_URL}">' in page
+    assert tags["og:url"] == PAGE_URL
 
 
 def test_the_card_image_is_one_the_render_serves_beside_the_page(page: str) -> None:
@@ -558,7 +560,7 @@ def test_pages_installs_the_locked_package_before_building_the_workbench() -> No
 
 
 def test_workbench_navigation_resolves_to_the_pages_project_root() -> None:
-    href = re.search(r'<a href="([^"]+)">the explainer</a>', WORKBENCH_NOTE)
+    href = re.search(r'<a href="([^"]+)">the overview</a>', WORKBENCH_NOTE)
     assert href is not None
     workbench = "https://jlevy.github.io/squares/workbench/"
     assert urljoin(workbench, href.group(1)) == "https://jlevy.github.io/squares/"
@@ -860,6 +862,10 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
         MARKDOWN_OUTPUT.name,
         PDF_OUTPUT.name,
         *(asset.name for asset in COMPOSITE_ASSETS),
+        # The site's other pages, which the navigation bar links to. A directory index is
+        # linked as its directory.
+        *SITE_PAGES,
+        *(page.removesuffix("index.html") or "./" for page in SITE_PAGES),
     }
     # Markup only. The page inlines KaTeX and kpress's client, and a minified
     # `'+a(this.src)+'` in one of them reads as an attribute to a regex that does not

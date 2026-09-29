@@ -64,58 +64,6 @@ body {
   margin-block: calc(var(--kpress-font-size-base) * 2.8) 1.3rem;
 }
 
-/* ---------- Navigation bar ----------
-   Carried in kpress's own site-header slot, widened to the site's wide track so the
-   links sit on one line above a wide table. */
-.kpress-site-header {
-  max-width: var(--site-wide);
-  padding: 0;
-}
-.kpress-page-main:has(.kpress-toc) .kpress-site-header {
-  padding-inline-start: 0;
-  max-width: none;
-}
-.site-nav {
-  font-family: var(--kpress-font-sans);
-  font-feature-settings: var(--kpress-font-features-sans);
-  font-size: var(--site-font-size-support);
-}
-.site-nav-inner {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.1rem;
-  margin-inline: auto;
-  max-width: var(--site-wide);
-  padding: 0.8rem 1rem;
-}
-.site-nav .site-name {
-  color: var(--kpress-doc-text);
-  font-weight: var(--site-font-weight-sans-bold);
-  letter-spacing: var(--kpress-caps-spacing);
-  margin-inline-end: auto;
-  text-decoration: none;
-  text-transform: var(--kpress-caps-transform);
-}
-.site-nav a {
-  color: var(--kpress-doc-muted);
-  font-weight: var(--site-font-weight-sans-medium);
-  text-decoration: none;
-}
-.site-nav a:hover {
-  color: var(--kpress-doc-accent);
-}
-.site-nav a[aria-current="page"] {
-  color: var(--kpress-doc-accent);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.35em;
-}
-.site-nav .site-edition {
-  color: var(--kpress-doc-muted);
-  font-weight: var(--site-font-weight-sans-light);
-}
-
 /* ---------- Page body ---------- */
 .site-page {
   margin-inline: auto;

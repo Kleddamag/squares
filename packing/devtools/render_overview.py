@@ -40,7 +40,10 @@ REPO = PACKING.parent
 TEMPLATES = PACKING / "devtools" / "templates"
 SITE_CSS = TEMPLATES / "site.css"
 SITE_NAV = TEMPLATES / "site-nav.html"
+SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
+BROWSER = PACKING / "devtools" / "overview"
+FORWARD_SCRIPT = BROWSER / "forward.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -51,13 +54,26 @@ OVERVIEW_DESCRIPTION = (
     "and how each one is verified."
 )
 
+#: Every page the published site serves, by path under the site root, whichever build
+#: writes it. The navigation bar links only to these, and tests hold it to that.
+SITE_PAGES: tuple[str, ...] = (
+    "index.html",
+    "frontier.html",
+    "explainer.html",
+    "tutorial.html",
+    "synopsis.html",
+    "workbench/index.html",
+)
+
 #: Every file a render reads. The Pages workflow's deploy filter and the scope tool are
 #: checked against this list, so a page cannot go stale because an input moved unseen.
 RENDER_INPUTS: tuple[Path, ...] = (
     Path(__file__).resolve(),
     SITE_CSS,
     SITE_NAV,
+    SITE_NAV_CSS,
     OVERVIEW_ARTICLE,
+    BROWSER,
     PACKING / "src" / "sqpack" / "release.py",
 )
 
@@ -100,6 +116,7 @@ def page_assets() -> tuple[str, str]:
     head = (
         f"<style>{kpress_css(static)}{katex_css(static)}</style>\n"
         f"<style>{relation_face_css(static)}</style>\n"
+        f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>\n"
         f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>"
     )
     scripts = "\n".join(
@@ -146,6 +163,7 @@ def kpress_page(
     description: str,
     toc: bool,
     rewrite_body: Callable[[str], str] | None = None,
+    page_scripts: Sequence[Path] = (),
 ) -> Page:
     """One standalone kpress page with the site's layer, nav and colophon."""
     from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
@@ -179,7 +197,10 @@ def kpress_page(
     page = rendered.html.replace(prose + '"', prose + ' site-page"', 1)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    page = page.replace("</body>", f"{scripts}\n</body>", 1)
+    own = "".join(
+        f"\n<script>{path.read_text(encoding='utf-8')}</script>" for path in page_scripts
+    )
+    page = page.replace("</body>", f"{scripts}{own}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
 
@@ -223,6 +244,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
+        page_scripts=(FORWARD_SCRIPT,),
     )
 
 

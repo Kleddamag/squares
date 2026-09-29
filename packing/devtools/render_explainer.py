@@ -58,6 +58,7 @@ from strif import atomic_output_file
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
+from devtools.render_overview import SITE_NAV, SITE_NAV_CSS, nav_html
 from sqpack.fractional.certificate import (
     Certificate,
     closed_form_conditions,
@@ -300,6 +301,9 @@ REPO_URL = "https://github.com/jlevy/squares"
 # document -- so the deployment's own address has to be stated somewhere, and this
 # is that one place.
 SITE_URL = "https://jlevy.github.io/squares/"
+#: The page's own address. The site root is the overview; the explainer is served beside
+#: it as `explainer.html`, renamed at publish, and its assets stay beside it at the root.
+PAGE_URL = SITE_URL + "explainer.html"
 SITE_NAME = "Squares"
 #: The atlas the Figure 2 caption sends a reader to browse, linked as a directory.
 ATLAS = PACKING / "atlas" / "known-best"
@@ -2180,7 +2184,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     return {
         "PAGE_TITLE": title,
         "PAGE_DESCRIPTION": description,
-        "CANONICAL_URL": SITE_URL,
+        "CANONICAL_URL": PAGE_URL,
         "SITE_NAME": SITE_NAME,
         "CARD_IMAGE_URL": site_file(COMPOSITE_CARD),
         "CARD_IMAGE_WIDTH": str(width),
@@ -2349,6 +2353,8 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
             if key not in {"KPRESS_CLIENT_SCRIPT", "CERTIFICATE_SCRIPT"}
         },
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
+        "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
+        "SITE_NAV": nav_html("explainer"),
         **shared,
         "BODY_HTML": body,
     }
@@ -2610,6 +2616,9 @@ RENDER_INPUTS = (
     *COMPOSITE_ASSETS,
     TEMPLATE,
     MARKDOWN,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    PACKING / "devtools" / "render_overview.py",
     PACKING / "devtools" / "templates" / "fonts",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
@@ -2693,7 +2702,7 @@ _EDITION_NOTE = f"""
 > This is the Markdown edition, written by the same render that writes the page. The
 > argument is complete here, and every figure's caption states what its figure shows.
 > Only Figure 2 carries its image; the rest are drawn by [the page
-> itself]({SITE_URL})."""
+> itself]({PAGE_URL})."""
 
 
 def _with_edition_note(document: str) -> str:
@@ -2781,7 +2790,7 @@ def published_markdown(source: str, *, default_slug: str) -> str:
                 number = re.match(r"\*\*Figure (\d+)", text)
                 which = f"Figure {number.group(1)}" if number else "This figure"
                 parts.append(
-                    f"*{which} is drawn by [the page]({SITE_URL}); its caption follows.*"
+                    f"*{which} is drawn by [the page]({PAGE_URL}); its caption follows.*"
                 )
             parts.append(text)
         out.append("\n\n".join(part for part in parts if part))

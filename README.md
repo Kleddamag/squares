@@ -61,10 +61,11 @@ This repository contains:
   process: hypotheses registered before measurement, every claim graded, every defect
   logged.
 
-The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/) starts with an
-interactive point-certificate proof, then shows how threshold atoms and a dilation limit
-reach T-026’s `s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was
-developed from. Its figures are drawn from the point certificates they explain.
+The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/explainer.html) starts
+with an interactive point-certificate proof, then shows how threshold atoms and a
+dilation limit reach T-026’s `s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s
+`31/8` was developed from.
+Its figures are drawn from the point certificates they explain.
 
 [![One hundred known-best square packings arranged from n equals one through one hundred, each labeled with its best-known upper bound and, where the value is still open, the strongest verified lower bound.](packing/atlas/known-best/known-best-1-100.png)](https://jlevy.github.io/squares/known-best-1-100.pdf)
 
@@ -87,7 +88,7 @@ this repository has certified it:
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2) with the
 receipt that records what each file is and the page it was drawn from.
 GitHub strips `<video>` from Markdown, so these are links rather than an inline player;
-the [explainer page](https://jlevy.github.io/squares/) plays them.
+the [explainer page](https://jlevy.github.io/squares/explainer.html) plays them.
 
 The register now runs to `n = 324`, the end of the catalogue’s audited range, and a
 second, poster-sized composite draws all of it:

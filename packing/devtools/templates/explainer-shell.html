@@ -40,6 +40,9 @@
      the three, so without these the reader's own machine draws them: a different face
      for every reader, and outline paths in the PDF. See `relation_face_css`. -->
 <style>{{RELATION_CSS}}</style>
+<!-- The site's navigation bar, shared with every other page of the site and hidden in
+     print. See templates/site-nav.css. -->
+<style>{{SITE_NAV_CSS}}</style>
 <script>{{THEME_BOOTSTRAP}}</script>
 <script>{{NATIVE_MATH_METRICS}}</script>
 <style>
@@ -1147,6 +1150,7 @@ html[data-kpress-math-pending]
 </head>
 <body>
 <main class="kpress-page-main kpress-viewport">
+{{SITE_NAV}}
 <div class="kpress kpress-doc kpress-prose cert-page">
 {{BODY_HTML}}
 <p class="col colophon centred">Formatted and typeset with <a href="https://github.com/jlevy/flowmark"><strong>Flowmark</strong></a> and <a href="https://github.com/jlevy/kpress"><strong>KPress</strong></a></p>

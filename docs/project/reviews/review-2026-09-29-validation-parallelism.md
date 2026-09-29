@@ -45,8 +45,8 @@ The coordinator owns measurements, research-status records and publication.
 
 The local change must give the reachable pytest selection an exclusive CPU allocation
 while allowing independent edit checks to retain their existing concurrency.
-It must preserve the selected files and exact non-exhaustive test union, propagate
-failures, respect explicit resource overrides, and bound nested pools.
+It must preserve the selected files and the exact union of non-exhaustive tests,
+propagate failures, respect explicit resource overrides, and bound nested pools.
 Focused regressions must demonstrate these properties on both a single-CPU host and a
 multi-CPU host.
 
@@ -93,53 +93,99 @@ assertions.
 
 ## Results
 
-The frozen candidate `1afb75ca6` ran the default push tier against `5d276119c`. Changing
-a workflow selected the whole non-exhaustive suite: 7,714 tests passed and 9 skipped in
-968.77 seconds, using ten pytest workers with `PACK_JOBS=1`. The complete tier took
-1,034.70 seconds and failed one documentation check because this review was missing from
-the document map. The map is now corrected; the failed
-[run log](../../../packing/campaign/agent-sessions/session-164-efficiency-push.log)
-retains that omission rather than presenting the run as a passing gate.
-The earlier 2,959-test run selected a different workload, so these observations do not
-establish a speedup.
+The first local scheduler candidate `1afb75ca6` selected the whole non-exhaustive suite
+after a workflow change.
+Its pytest phase passed 7,714 tests with 9 skips in 968.77 seconds on ten workers with
+`PACK_JOBS=1`. The complete push tier took 1,034.70 seconds and failed one documentation
+check because this review was absent from the document map.
+The
+[failed run log](../../../packing/campaign/agent-sessions/session-164-efficiency-push.log)
+retains that result.
+The earlier 2,959-test run selected a different workload, so those two walls do not form
+a speedup comparison.
 
-The previous published checkpoint `5d276119c` passed required packing and page CI and
-the complete
-[deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36630574302). Those
-results certify the predecessor tree, not the new scheduling implementation.
-Published repair `9174140a8` passed all 51 selected push steps and 1,733 tests in 181.36
-seconds. The new
-[deferred run](https://github.com/jlevy/squares/actions/runs/36636552951) resolved PR
-merge commit `0376416ec9ab3220bb87e52888ddb72919d3e861` and started all nine workers
-concurrently; its final result and measured walls remain pending.
+The predecessor `5d276119c` passed required packing and page CI and the complete
+[deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36630574302). The
+published documentation repair `9174140a8` then passed 51 selected push steps and 1,733
+tests in 181.36 seconds.
+The new
+[deferred run 36636552951](https://github.com/jlevy/squares/actions/runs/36636552951)
+resolved PR merge commit `0376416ec9ab3220bb87e52888ddb72919d3e861`. All nine workers
+and the required aggregate passed on that merge tree.
+The wall from run start to the last required job was 1,133 seconds; `screen` completed
+last at 1,111 seconds.
 
-The local run also exposed an allocation limit: nine workers had drained their queues
-while one remained CPU-active.
-Its quiet output does not identify the active node.
-Retained earlier timings show that the whole-atlas composite test can take 1,327.87
-seconds in one call, and its existing per-case pool obeys `PACK_JOBS=1`. `think-14lz`
-adds child-pytest timing and live worker receipts; `think-ysvk` gives explicitly
-pool-heavy tests a separate, exclusive inner-worker phase while keeping the remaining
-tests parallel. Neither follow-up changes the test assertions.
-Post-merge and daily workflow parity is integrated after independent review under
-`think-08ht`; hosted validation remains pending.
-Child progress receipts and pool-heavy allocation are also integrated.
-Before the wall-reporting follow-up, collection at `fbf27b276` found 7,744 selected
-non-exhaustive nodes, partitioned into 7,743 ordinary nodes and the single whole-atlas
-node, with an exact union and no overlap.
-The integrated workflow, allocation, receipt and budget contracts passed 283 tests in
-54.36 seconds. The next full run will measure the allocation after the wall-reporting
-tests are added.
+| Hosted job | Wall |
+| --- | ---: |
+| `screen` | 1,111 s |
+| `deferred-slow-lane` | 1,015 s |
+| `exhaustive-1` | 957 s |
+| `exhaustive-2` | 953 s |
+| `exhaustive-3` | 858 s |
+| `deferred-threshold-1440` | 778 s |
+| `deferred-threshold-720-rigidity` | 623 s |
+| `deferred-controls-finer` | 621 s |
+| `deferred-atlas-grid` | 475 s |
+| `resolve-tree` | 17 s |
+| `deep-gate-required` aggregate | 32 s |
 
+The resolver and nine workers consumed 123.47 runner-minutes by the reported job walls,
+or 124 minutes including the aggregate.
+The predecessor checkpoint used approximately 100 runner-minutes including its
+aggregate. These are unpaired observations of different source trees and job layouts;
+neither difference establishes a speedup or regression caused by the fanout.
+The new per-job wall fields still need measurement admission into the budget register.
+
+The broad local push at `91bb57cb2` then failed before the pool-heavy phase.
+Its normal phase reported 7,703 passes, 9 skips, 14 failures and 23 setup errors in
+300.22 seconds; the full tier stopped at 366.08 seconds.
+The
+[retained failure log](../../../packing/campaign/agent-sessions/session-164-pool-phase-initial.log)
+shows that the pool phase was correctly skipped after the normal phase failed.
+The 23 errors came from adding the `pool_heavy` marker to `packing/pyproject.toml`, one
+of 19 frozen native proof inputs.
+That file’s original Git blob has been restored, and the marker is registered in
+`tests/conftest.py`; all 28 native parent-core receipt tests now pass, including the
+proof-input check.
+The 14 failures were runner-unit mocks inheriting the enclosing gate’s
+artifact variables. A test-only fixture clears those inherited variables; 51 runner and
+progress tests pass with the parent variables present.
+These focused results do not turn the failed `91bb57cb2` gate green.
+The repaired frozen candidate `a2b8e696c` passed all 51 selected push steps in 623.04
+seconds. Its normal phase passed 7,750 tests with 9 skips in 416.24 seconds; the pool
+phase passed its one atlas test, whose call took 132.83 seconds.
+Both phases carry the same source and run identity.
+The retained
+[receipt](../../../packing/campaign/agent-sessions/session-164-pool-phase-passed.log)
+records the outcome and allocation.
+
+The CPU-active tail in the first broad run was not identified by its quiet pytest
+output. Earlier retained timings show that the whole-atlas composite test can take
+1,327.87 seconds in one call while its per-case pool obeys `PACK_JOBS=1`. The later
+implementation gives this explicitly marked test a separate serial-pytest phase with the
+available CPUs assigned to its existing per-case pool.
+Other slow tests remain in the parallel phase, and the mathematical assertions are
+unchanged. A collect-only check of the non-exhaustive suite found 7,744 nodes: 7,743
+ordinary and one pool-heavy, with no overlap or omission.
+The completed split used ten normal pytest workers with `PACK_JOBS=1`, then one pytest
+process with `PACK_JOBS=10`. Live receipts also exposed a remaining normal-lane tail: at
+most four workers were active during the final 121 seconds and at most two during the
+final 62 seconds. `think-ii0r` tracks a measured scheduling follow-up, including
+fixture-preserving work stealing or long-first ordering.
+This observation alone does not establish which alternative will help.
+
+Main and daily workflow parity, child-pytest progress receipts, and the pool-heavy
+allocation are integrated locally.
+Explicit event-aware wall sampling is implemented at `902b959b4` but has not yet been
+published or measured on a hosted run.
 Post-merge wall reporting is integrated under `think-0atx`, with 74 focused tests and
-independent review. The reporter excludes unrelated workflow jobs, refuses missing or
-duplicated prerequisites, leaves unfinished walls unknown, and identifies the latest
-completing prerequisite as the critical endpoint.
-New wall entries name their pending measurement owner; derived ceilings are not recorded
-as observations. Recent-run sampling still assumes pull-request events; `think-2r96`
-tracks that separate limitation.
-Explicit run IDs support the first post-merge measurement.
+independent review. It refuses missing or duplicate prerequisites, excludes unrelated
+jobs, leaves unfinished walls unknown, and identifies the latest completing prerequisite
+as the critical endpoint.
+The integrated workflow, allocation, receipt and budget contracts previously passed 283
+focused tests in 54.36 seconds.
 
+No general speedup is claimed from these operational checks.
 The full native external rectangle replay and T-057 complete row-minimum census remain
 separate mathematical obligations; changing validation scheduling establishes neither.
 
@@ -152,8 +198,7 @@ conservative allocation while another gate holds it.
 It also refuses missing or extra selector-summary lines, preserves explicit worker
 settings, keeps edit failures in the ordered report, and releases the marker on
 interruption. Its 28 focused tests and clean lint and type checks cover those controls;
-the first integrated run is recorded above, and the later pool-heavy phase still needs
-its integrated measurement.
+the integrated runs above expose the remaining wall and pool-phase questions.
 
 The separate selector refinement has a narrow coverage claim: it may remove walker
 evidence that exists only in comments or in the exact benign
@@ -165,7 +210,8 @@ helper calls that an initial AST implementation could miss.
 The final selector parses and unparses source after removing only the exact benign
 metadata-version import, then applies the old marker scan to the executable text.
 The 54 focused selector tests, Ruff and BasedPyright passed.
-The integrated candidate push still needs to confirm its selected-file receipt.
+The integrated candidate selected the broad suite after the workflow change.
+The repaired pool split has the passing integrated receipt above.
 
 The hosted fanout resolves one immutable commit before workers start.
 Each worker checks its checkout against that commit and writes a tree receipt before
@@ -181,11 +227,15 @@ and attempt.
 The final focused workflow, shard and budget suite passed 93 tests with Ruff
 and BasedPyright clean.
 The separate pending-measurement budget contract passed 55 tests.
-The hosted jobs have started and still need to finish on the published candidate.
+The first hosted fanout passed on the resolved merge tree named above.
+Its worker and aggregate outcomes establish operational coverage for that tree only.
 
 New hosted ceilings are derived from predecessor Step or JUnit times plus setup.
-Their measured-wall fields remain null with `pending_measurement: think-tddk`; the first
-hosted run must record observed walls and clear that state.
+The new deep-gate jobs and whole wall now carry the single hosted observation above;
+spread remains unknown.
+Existing multi-run slow and screen baselines are preserved.
+Main/daily measurements remain pending under `think-0atx`. One run does not establish a
+stable performance baseline.
 Artifact upload remains advisory and may warn without failing a passing validation job;
 the in-job checkout equality test is fail-closed.
 For a manual pull-request dispatch, GitHub’s event SHA names the dispatch ref while

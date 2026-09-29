@@ -494,14 +494,20 @@ tiers:
   # ceiling on an outer-parallel tier is actually for.
   ceiling_seconds: 180.0
   # Hosted samples at the reference shape establish the baseline below.
-  measured_seconds: 102.73
-  measured_on: '2026-09-15'
+  measured_seconds: 98.07
+  measured_on: '2026-09-29'
   measured_where: >-
-    The geometric mean of seven readings at the reference shape -- 111.17, 110.47,
-    105.79, 114.21, 113.94, 84.17 and 84.84 -- across runs 34924677097, 34925616821,
-    34926777301, 34929890466, 34930296150, 35012847055 and 35013703659, each selecting
-    9 of the gate's 76 steps. Observed spread 1.36x. Refresh from the exact
-    reconciliation topology.
+    The geometric mean of fourteen hosted readings at the reference shape on 28 and 29
+    September, on unchanged steps: 114.71, 116.19, 112.54, 112.22, 83.84, 114.06,
+    115.66, 114.44, 113.48, 113.93 and 110.51 across runs 36526959043, 36526988663,
+    36527468932, 36528151533, 36529992978, 36535306115, 36539433074, 36541431891,
+    36544631396, 36546217991 and 36553628497, then 60.41 and 70.50 (run 36566071484,
+    attempts 1 and 2) and 58.75 (run 36575687339). The last three failed the 0.6x
+    stale rule against 102.73 while every step passed. The walls are two regimes about
+    2x apart, which no point record can hold inside 0.6x and 1.5x, so the tier records
+    their band (`think-be1s`, D-472): the stale rule reads its low edge and the drift
+    rule its high edge.
+  measured_band: {low: 58.75, high: 116.19}
   history:
   - measured_seconds: 91.55
     measured_on: '2026-09-06'
@@ -511,6 +517,13 @@ tiers:
       34040196689. Observed spread 1.38x. The centre of the band, not an edge: recording
       the maximum was tried first and left `geometry` 1.21x from failing the stale rule
       on a fast runner.
+  - measured_seconds: 102.73
+    measured_on: '2026-09-15'
+    measured_where: >-
+      The geometric mean of seven readings at the reference shape -- 111.17, 110.47,
+      105.79, 114.21, 113.94, 84.17 and 84.84 -- across runs 34924677097, 34925616821,
+      34926777301, 34929890466, 34930296150, 35012847055 and 35013703659, each
+      selecting 9 of the gate's 76 steps. Observed spread 1.36x.
   reference: {jobs: 3, inner_jobs: 1, cpus: 4}
   argument: >-
     The nine steps that re-derive geometry without the engine: the basin atlas and its

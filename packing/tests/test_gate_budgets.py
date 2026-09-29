@@ -83,10 +83,12 @@ def recorded_tier(register: Register) -> TierBudget:
     The register can legitimately carry none: a tier whose composition just changed has no
     valid record until the next run at its reference shape takes one. When that is the
     case the tier's own ceiling stands in, divided by the loosest headroom the policy
-    allows -- still the register's arithmetic, still no figure typed here.
+    allows -- still the register's arithmetic, still no figure typed here. A tier with a
+    `measured_band` is skipped: its rules sit at the band's edges, which the band tests
+    below exercise, and these tests are about a point record.
     """
     for tier in register.tiers:
-        if tier.measured_seconds is not None:
+        if tier.measured_seconds is not None and tier.measured_band is None:
             return tier
     tier = register.tiers[0]
     return replace(
@@ -787,3 +789,104 @@ def test_a_suite_record_can_be_attributed_from_two_per_file_reports(tmp_path: Pa
     assert "added test files: 1, 9 tests, 30.0 test-seconds" in lines[0]
     assert any("test_new.py" in line and "after: 30.00" in line for line in lines)
     assert any("test_old.py" in line and "before: 2.00" in line for line in lines)
+
+
+def banded_tier(register: Register) -> TierBudget:
+    """The live tier that records a `measured_band`; the register must carry one."""
+    tier = next((tier for tier in register.tiers if tier.measured_band is not None), None)
+    assert tier is not None, "no live tier records a measured_band"
+    return tier
+
+
+def test_a_band_places_the_stale_rule_at_its_low_edge_and_drift_at_its_high() -> None:
+    """think-be1s, D-472: the ratios stay the policy's, the band moves their edges.
+
+    A reading at the band's low edge passes; a reading under `stale_ratio` of the low edge
+    still fails, and so does one over `drift_ratio` of the high edge, inside a ceiling
+    loosened to leave the drift rule room. Every figure comes from the register.
+    """
+    register = live()
+    tier = banded_tier(register)
+    policy = register.policy
+    assert tier.measured_band is not None
+    low, high = tier.measured_band
+
+    at_low = judge_at_reference(register, tier, ((SLOW_STEP, low),))
+    assert at_low.failures == (), at_low.failures
+
+    stale = judge_at_reference(register, tier, ((SLOW_STEP, policy.stale_ratio * low * 0.9),))
+    assert stale.failed, stale
+    assert any("stale" in reason and "band" in reason for reason in stale.failures)
+
+    roomy = replace(tier, ceiling_seconds=high * policy.drift_ratio * 1.2)
+    wall = high * (policy.drift_ratio + 0.1)
+    drift = judge_at_reference(register, roomy, ((SLOW_STEP, wall),))
+    assert wall < roomy.ceiling_seconds
+    assert drift.failed, drift
+    assert any("band" in reason for reason in drift.failures), drift.failures
+
+
+def test_the_live_band_contains_every_reading_it_was_taken_from() -> None:
+    """The three fast hosted runs that failed the 102.73 s point record now pass."""
+    register = live()
+    tier = banded_tier(register)
+    assert tier.measured_band is not None
+    low, high = tier.measured_band
+    for wall in (low, (low + high) / 2, high):
+        verdict = judge_at_reference(register, tier, ((SLOW_STEP, wall),))
+        assert verdict.failures == (), (wall, verdict.failures)
+
+
+def test_a_band_that_does_not_bracket_its_record_is_refused() -> None:
+    register = live()
+    tier = banded_tier(register)
+    assert tier.measured_seconds is not None
+    measured = tier.measured_seconds
+    off = replace(tier, measured_band=(measured * 1.05, measured * 1.2))
+    problems = gate_budgets.band_problems(off, register.policy)
+    assert any("does not contain" in problem for problem in problems), problems
+
+
+def test_a_band_wider_than_the_policy_window_is_refused() -> None:
+    """A band may not switch the rules off: no wider than drift_ratio / stale_ratio."""
+    register = live()
+    tier = banded_tier(register)
+    policy = register.policy
+    assert tier.measured_seconds is not None
+    measured = tier.measured_seconds
+    window = policy.drift_ratio / policy.stale_ratio
+    wide = replace(tier, measured_band=(measured / window, measured * 1.01))
+    problems = gate_budgets.band_problems(wide, policy)
+    assert any("window" in problem for problem in problems), problems
+
+
+def test_a_band_whose_drift_edge_passes_the_ceiling_is_refused() -> None:
+    register = live()
+    tier = banded_tier(register)
+    policy = register.policy
+    assert tier.measured_band is not None
+    high = tier.measured_band[1]
+    tight = replace(tier, ceiling_seconds=policy.drift_ratio * high * 0.95)
+    problems = gate_budgets.band_problems(tight, policy)
+    assert any("drift edge" in problem for problem in problems), problems
+
+
+def test_a_band_without_a_record_is_refused(tmp_path: Path) -> None:
+    spec = tmp_path / "gate-budgets.yaml"
+    spec.write_text(
+        "policy:\n"
+        "  max_headroom: 2.0\n"
+        "  drift_ratio: 1.5\n"
+        "  stale_ratio: 0.6\n"
+        "  min_wall_seconds: 20.0\n"
+        "tiers:\n"
+        "- id: fast\n"
+        "  command: packing-validate --fast\n"
+        "  ceiling_seconds: 100\n"
+        "  measured_band: {low: 40, high: 60}\n"
+        "  reference: {jobs: 2, inner_jobs: 1, cpus: 2}\n"
+        "  argument: a fabricated register\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(BudgetError, match="measured_band without a measured_seconds"):
+        gate_budgets.load(spec)

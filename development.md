@@ -1221,6 +1221,7 @@ uv run --frozen python -m devtools.render_defects --check
 uv run --frozen python -m devtools.render_research_tables --check
 uv run --frozen python -m devtools.render_document_map
 uv run --frozen python -m devtools.render_results_headline
+uv run --frozen python -m devtools.render_recent_results --update
 ```
 
 **Creating any durable Markdown file is a two-step change.** Register it in

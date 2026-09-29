@@ -160,6 +160,10 @@ class Source:
     credit: str | None = None
     #: The source's own date for the version cited, where the bibliography gives one.
     dated: date | None = None
+    #: How the source stands to this project, where the bibliography types it:
+    #: `builds-on-project`, `credits-project` or `independent`. Read by the README's
+    #: recent-results table (`devtools.render_recent_results`); no line here prints it.
+    lineage: str | None = None
 
     @property
     def credited(self) -> str:
@@ -190,6 +194,7 @@ def load_register() -> Register:
             short_venue=entry.get("short_venue"),
             credit=entry.get("credit"),
             dated=date.fromisoformat(entry["dated"]) if "dated" in entry else None,
+            lineage=entry.get("lineage"),
         )
         for entry in bibliography["sources"]
     }
@@ -471,42 +476,74 @@ def _external(
     )
 
 
+@dataclass(frozen=True, slots=True)
+class LowerOrigin:
+    """Whose a lower bound is, read from its own evidence, and so whether it is recent.
+
+    Either this project's (`novel` names the first-party entries the register scores new,
+    and `source` is None) or one external source's. The star's test lives here once, so
+    the stage's line and the README's recent-results table, which asks it of the reported
+    lane as well as the verified one, cannot disagree about which bounds are new.
+    """
+
+    own: tuple[str, ...]
+    novel: tuple[str, ...]
+    source: Source | None
+
+    @property
+    def recent(self) -> bool:
+        # This project's own new bounds are recent by construction: its work began on
+        # RECENT_SINCE.
+        return self.source is None or is_recent(self.source)
+
+
+def lower_origin(
+    n: int, bound: Mapping[str, Any], register: Register, label: str = "lower"
+) -> LowerOrigin | None:
+    """Where a lower bound, of either lane, comes from; None where it is derived."""
+    own = own_evidence(bound["evidence"], register)
+    if not own:
+        return None
+    novel = [
+        item for item in own if is_novel_first_party(register.evidence[item], "lower-bound")
+    ]
+    if novel:
+        return LowerOrigin(own=tuple(own), novel=tuple(novel), source=None)
+    # A replay of a published bound is still that source's bound; the entries this project
+    # performed but did not originate carry the source's key like the author's own do.
+    keys = {register.evidence[item].get("source_key") for item in own}
+    if len(keys) != 1:
+        raise ValueError(f"n={n} {label}: evidence {own} names {len(keys)} sources, not one")
+    source = _source(keys.pop(), register, f"n={n} {label}")
+    return LowerOrigin(own=tuple(own), novel=(), source=source)
+
+
 def lower_citation(
     n: int, case: Mapping[str, Any], register: Register
 ) -> dict[str, Any] | None:
     """The line for the certified lower bound, or None where it is derived."""
     bound = case["verified_lower_bound"]
-    own = own_evidence(bound["evidence"], register)
-    if not own:
+    origin = lower_origin(n, bound, register)
+    if origin is None:
         return None
     value = str(bound["value"])
-    novel = [
-        item for item in own if is_novel_first_party(register.evidence[item], "lower-bound")
-    ]
-    if novel:
-        # This project's own new bounds are recent by construction: its work began on
-        # RECENT_SINCE.
+    if origin.source is None:
         own_line = _project(
-            n, "lower", novel, value=value, assurance="verified", register=register
+            n, "lower", origin.novel, value=value, assurance="verified", register=register
         )
-        return {**own_line, "recent": True}
-    # A replay of a published bound is still that source's bound; the entries this project
-    # performed but did not originate carry the source's key like the author's own do.
-    keys = {register.evidence[item].get("source_key") for item in own}
-    if len(keys) != 1:
-        raise ValueError(f"n={n} lower: evidence {own} names {len(keys)} sources, not one")
-    source = _source(keys.pop(), register, f"n={n} lower")
+        return {**own_line, "recent": origin.recent}
+    source = origin.source
     external = _external(
         n,
         "lower",
         source=source,
         credited=(source.credited, source.year),
-        own=own,
+        own=origin.own,
         value=value,
         assurance="verified",
         register=register,
     )
-    return {**external, "recent": is_recent(source)}
+    return {**external, "recent": origin.recent}
 
 
 def upper_citation(

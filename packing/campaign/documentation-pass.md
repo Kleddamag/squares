@@ -87,8 +87,8 @@ For each result, complete this sequence before declaring the change ready to lan
    uv run --frozen python -m devtools.check_results
    ```
 
-2. Render the result register, evidence inventory, frontier tables, and synopsis
-   headline from those records.
+2. Render the result register, evidence inventory, frontier tables, synopsis headline,
+   and README’s recent-results table from those records.
    From `packing/`:
 
    ```shell
@@ -96,6 +96,7 @@ For each result, complete this sequence before declaring the change ready to lan
    uv run --frozen python -m devtools.render_evidence_inventory --update
    uv run --frozen python -m devtools.render_research_tables
    uv run --frozen python -m devtools.render_results_headline
+   uv run --frozen python -m devtools.render_recent_results --update
    ```
 
 3. When a result changes an atlas value, badge, label, or geometry, regenerate both
@@ -242,8 +243,9 @@ because nobody rereads them.
 - Every drift either fixed or filed as a defect, with no third option.
 - Generated views regenerated: `packing-ledger render`, `devtools.render_agenda_map`,
   `devtools.close_session --render`, `devtools.render_results --update`,
-  `devtools.render_results_headline`, `devtools.render_research_tables`,
-  `devtools.render_defects`, and `devtools.render_document_map`.
+  `devtools.render_results_headline`, `devtools.render_recent_results --update`,
+  `devtools.render_research_tables`, `devtools.render_defects`, and
+  `devtools.render_document_map`.
 - `devtools.check_synopsis` and `devtools.check_readme` agree with those views,
   including the marked current-research snapshot and the single selected handoff.
 - `make format` clean, gate green, and a statement of what was checked *and what was

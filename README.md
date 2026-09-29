@@ -663,6 +663,78 @@ its printed route, so the case’s proved status rests on independent later proo
 The [`n = 7` case](packing/frontier/n-007.md) states that disposition and links the
 relevant source audit.
 
+### Recent Results, All Sources
+
+Every case up to `n = 100` whose lower bound, reported or verified, was proved since 22
+August 2026 has a row here: the verified bound, the reported one where it differs, and
+the [register](packing/frontier/RESULTS.md) entries that carry each, with their `V` and
+`C`. The table is generated from the case records and the register by
+`devtools.render_recent_results`, and each holder is the bibliography’s credit line, so
+the gate fails if a value or a credit here drifts from the record.
+Where both bounds are recent, the lineage and date columns read verified first.
+
+<!-- BEGIN GENERATED: recent-results (devtools.render_recent_results) -->
+
+| `n` | Verified lower bound | Holder | Result | Reported, where different | Holder | Result | Lineage | Published |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [11](packing/frontier/n-011.md) | `31/8` = 3.875 | Kleddamag after Levy | T-037 `V4/C4` |  |  |  | builds on | 2026-09-22 |
+| [12](packing/frontier/n-012.md) | `15680/3951` = 3.9686… | Daniel after Burns, Massaccesi | T-049 `V4/C4` |  |  |  | independent | 2026-08-25 |
+| [17](packing/frontier/n-017.md) | `116511/25000` = 4.66044 | Guzhou0806 after Kleddamag, Levy | T-043 `V4/C3` |  |  |  | builds on | 2026-09-28 |
+| [18](packing/frontier/n-018.md) | `4679/1000` = 4.679 | Squares Project (Levy) | T-030 `V4/C4` | `939/200` = 4.695 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | this project; builds on | 2026-09-19; 2026-09-27 |
+| [19](packing/frontier/n-019.md) | `24/5` = 4.8 | Squares Project (Levy) | T-020 `V4/C4` | `963/200` = 4.815 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | this project; builds on | 2026-09-04; 2026-09-27 |
+| [20](packing/frontier/n-020.md) | `97/20` = 4.85 | Squares Project (Levy) | T-021 `V4/C4` | `979/200` = 4.895 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | this project; builds on | 2026-09-05; 2026-09-27 |
+| [21](packing/frontier/n-021.md) | `5`, exact | Daniel after Burns, Massaccesi | T-052 `V4/C3` |  |  |  | independent | 2026-09-27 |
+| [26](packing/frontier/n-026.md) | `1377/250` = 5.508 | Tokoharu after Levy, wand125 | T-047 `V4/C3` | `553/100` = 5.53 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-27 |
+| [27](packing/frontier/n-027.md) | `28/5` = 5.6 | wand125 after Tokoharu, Levy | T-045 `V4/C3` |  |  |  | builds on | 2026-09-27 |
+| [28](packing/frontier/n-028.md) | `28/5` = 5.6 | wand125 after Tokoharu, Levy | T-045 `V4/C3` | `143/25` = 5.72 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-27; 2026-09-28 |
+| [29](packing/frontier/n-029.md) | `571/100` = 5.71 | Tokoharu after Levy, wand125 | T-047 `V4/C3` | `579/100` = 5.79 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-28 |
+| [30](packing/frontier/n-030.md) | `571/100` = 5.71 | Tokoharu after Levy, wand125 | T-047 `V4/C3` | `1173/200` = 5.865 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-27 |
+| [31](packing/frontier/n-031.md) | `148/25` = 5.92 | wand125 after Tokoharu, Levy | T-045 `V4/C3` | `1187/200` = 5.935 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-27; 2026-09-28 |
+| [32](packing/frontier/n-032.md) | `6`, exact | Daniel after Burns, Massaccesi | T-051 `V4/C3` |  |  |  | independent | 2026-09-26 |
+| [37](packing/frontier/n-037.md) | 6.0990… | Nagamochi | T-007 `V3/C1` | `257/40` = 6.425 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [38](packing/frontier/n-038.md) | 6.1961… | Nagamochi | T-007 `V3/C1` | `327/50` = 6.54 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [39](packing/frontier/n-039.md) | `13/2` = 6.5 | wand125 after Levy | T-044 `V4/C3` | `663/100` = 6.63 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [40](packing/frontier/n-040.md) | `13/2` = 6.5 | wand125 after Levy | T-044 `V4/C3` | `1339/200` = 6.695 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-27 |
+| [41](packing/frontier/n-041.md) | `13/2` = 6.5 | wand125 after Levy | T-044 `V4/C3` | `1351/200` = 6.755 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [42](packing/frontier/n-042.md) | 6.5677… | Nagamochi | T-007 `V3/C1` | `679/100` = 6.79 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [43](packing/frontier/n-043.md) | 6.6568… | Nagamochi | T-007 `V3/C1` | `1373/200` = 6.865 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [44](packing/frontier/n-044.md) | 6.7445… | Nagamochi | T-007 `V3/C1` | `1387/200` = 6.935 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [45](packing/frontier/n-045.md) | `7`, exact | Daniel after Burns, Massaccesi | T-053 `V4/C3` |  |  |  | independent | 2026-09-27 |
+| [50](packing/frontier/n-050.md) | 7.0827… | Nagamochi | T-007 `V3/C1` | `37/5` = 7.4 | wand125 after Daniel, Tokoharu | T-048 `V0/C0` | independent | 2026-09-28 |
+| [51](packing/frontier/n-051.md) | 7.1644… | Nagamochi | T-007 `V3/C1` | `2977/400` = 7.4425 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [52](packing/frontier/n-052.md) | `369/50` = 7.38 | wand125 after Levy | T-044 `V4/C3` | `1507/200` = 7.535 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [53](packing/frontier/n-053.md) | `369/50` = 7.38 | wand125 after Levy | T-044 `V4/C3` | `1519/200` = 7.595 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [54](packing/frontier/n-054.md) | 7.4031… | Nagamochi | T-007 `V3/C1` | `3067/400` = 7.6675 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [55](packing/frontier/n-055.md) | `377/50` = 7.54 | wand125 after Levy | T-044 `V4/C3` | `771/100` = 7.71 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [56](packing/frontier/n-056.md) | `381/50` = 7.62 | wand125 after Levy | T-044 `V4/C3` | `777/100` = 7.77 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [57](packing/frontier/n-057.md) | 7.6332… | Nagamochi | T-007 `V3/C1` | `1567/200` = 7.835 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [58](packing/frontier/n-058.md) | 7.7082… | Nagamochi | T-007 `V3/C1` | `789/100` = 7.89 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [59](packing/frontier/n-059.md) | 7.7823… | Nagamochi | T-007 `V3/C1` | `198/25` = 7.92 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [60](packing/frontier/n-060.md) | 7.8556… | Nagamochi | T-007 `V3/C1` | `397/50` = 7.94 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [61](packing/frontier/n-061.md) | 7.9282… | Nagamochi | T-007 `V3/C1` | `199/25` = 7.96 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-27 |
+| [66](packing/frontier/n-066.md) | 8.1414… | Nagamochi | T-007 `V3/C1` | `67/8` = 8.375 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [67](packing/frontier/n-067.md) | 8.2111… | Nagamochi | T-007 `V3/C1` | `1691/200` = 8.455 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [68](packing/frontier/n-068.md) | `841/100` = 8.41 | wand125 after Levy | T-044 `V4/C3` | `1699/200` = 8.495 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [69](packing/frontier/n-069.md) | `841/100` = 8.41 | wand125 after Levy | T-044 `V4/C3` | `343/40` = 8.575 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [70](packing/frontier/n-070.md) | `171/20` = 8.55 | wand125 after Levy | T-044 `V4/C3` | `431/50` = 8.62 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [71](packing/frontier/n-071.md) | `171/20` = 8.55 | wand125 after Levy | T-044 `V4/C3` | `1737/200` = 8.685 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [72](packing/frontier/n-072.md) | `861/100` = 8.61 | wand125 after Levy | T-044 `V4/C3` | `437/50` = 8.74 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
+| [73](packing/frontier/n-073.md) | 8.6157… | Nagamochi | T-007 `V3/C1` | `439/50` = 8.78 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [74](packing/frontier/n-074.md) | 8.6811… | Nagamochi | T-007 `V3/C1` | `221/25` = 8.84 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [75](packing/frontier/n-075.md) | 8.7459… | Nagamochi | T-007 `V3/C1` | `889/100` = 8.89 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-27 |
+| [76](packing/frontier/n-076.md) | 8.8102… | Nagamochi | T-007 `V3/C1` | `223/25` = 8.92 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [77](packing/frontier/n-077.md) | 8.8740… | Nagamochi | T-007 `V3/C1` | `223/25` = 8.92 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [78](packing/frontier/n-078.md) | 8.9372… | Nagamochi | T-007 `V3/C1` | `1791/200` = 8.955 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-27 |
+| [86](packing/frontier/n-086.md) | 9.3066… | Nagamochi | T-007 `V3/C1` | `1871/200` = 9.355 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [88](packing/frontier/n-088.md) | 9.4261… | Nagamochi | T-007 `V3/C1` | `189/20` = 9.45 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [89](packing/frontier/n-089.md) | 9.4852… | Nagamochi | T-007 `V3/C1` | `191/20` = 9.55 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [90](packing/frontier/n-090.md) | 9.5440… | Nagamochi | T-007 `V3/C1` | `191/20` = 9.55 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [91](packing/frontier/n-091.md) | 9.6023… | Nagamochi | T-007 `V3/C1` | `1929/200` = 9.645 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [94](packing/frontier/n-094.md) | 9.7749… | Nagamochi | T-007 `V3/C1` | `1959/200` = 9.795 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+| [95](packing/frontier/n-095.md) | 9.8317… | Nagamochi | T-007 `V3/C1` | `49209/5000` = 9.8418 | wand125 after Tokoharu, Levy | T-046 `V0/C0` | builds on | 2026-09-28 |
+
+<!-- END GENERATED: recent-results -->
+
 ## Repository Guide
 
 | Where | What |

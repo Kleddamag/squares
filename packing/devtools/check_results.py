@@ -17,8 +17,9 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from pathlib import Path, PurePosixPath
+from typing import Any
 
 from devtools.build_bound_citations import RECENT_SINCE
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
@@ -183,7 +184,7 @@ def scope_values(scope: dict) -> set[int]:
     return set(range(scope["n_min"], scope["n_max"] + 1))
 
 
-def _dated(source: dict | None) -> str | None:
+def _dated(source: Mapping[str, Any] | None) -> str | None:
     return str(source["dated"]) if source and source.get("dated") else None
 
 
@@ -211,6 +212,17 @@ def attribution_problems(record: dict, sources: dict[str, dict]) -> list[str]:
     return problems
 
 
+def recent_evidence(entry: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]) -> bool:
+    """Whether an evidence entry carries a result the register must hold: this project's
+    own new result, or another's from a source dated on or after `RECENT_SINCE`."""
+    if entry.get("novelty") in FIRST_PARTY_NOVELTY:
+        return True
+    if entry.get("novelty") == ATTRIBUTED_NOVELTY:
+        dated = _dated(sources.get(str(entry.get("source_key"))))
+        return dated is not None and dated >= RECENT_SINCE.isoformat()
+    return False
+
+
 def coverage_problems(
     results: list[dict],
     evidence_index: dict[str, dict],
@@ -232,14 +244,7 @@ def coverage_problems(
     problems: list[str] = []
     for n, ids in sorted(cases.items()):
         for ref in sorted(ids):
-            entry = evidence_index.get(ref) or {}
-            if entry.get("novelty") in FIRST_PARTY_NOVELTY:
-                recent = True
-            elif entry.get("novelty") == ATTRIBUTED_NOVELTY:
-                dated = _dated(sources.get(str(entry.get("source_key"))))
-                recent = dated is not None and dated >= RECENT_SINCE.isoformat()
-            else:
-                recent = False
+            recent = recent_evidence(evidence_index.get(ref) or {}, sources)
             if recent and n not in covered.get(ref, set()):
                 problems.append(
                     f"n-{n:03d}: its lower bound cites {ref}, and no registered result "

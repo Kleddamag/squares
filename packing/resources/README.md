@@ -499,11 +499,12 @@ Three packets of 29 September retain parallel upper bounds:
 for `n = 68…307`, which issue #227 asked this project to register,
 [Joost de Winter’s `s(211) < 15`](web/de-winter-square-packing-211-2026-09-16/README.md),
 and [Griffin Casson’s 39 packings](web/casson-square-packing-2026-09-23/README.md) for
-`n = 103…307`, each of which Couzo’s beats. The first two publish no licence, so their
-packets keep derived facts and metadata only, on the
-[known-best retention policy](web/known-best-packings/README.md); Casson’s packings are
-CC BY 4.0 and retained byte for byte. Every Couzo and de Winter packing is certified here
-by an exact rational replay whose certificates are under `packing/witnesses/`.
+`n = 103…307`, each of which Couzo’s beats.
+The first two publish no licence, so their packets keep derived facts and metadata only,
+on the [known-best retention policy](web/known-best-packings/README.md); Casson’s
+packings are CC BY 4.0 and retained byte for byte.
+Every Couzo and de Winter packing is certified here by an exact rational replay whose
+certificates are under `packing/witnesses/`.
 
 Since 22 August 2026 the archive has retained every public certificate that moved a
 lower bound here. Some build on this project’s certificates or pipeline (Kleddamag,

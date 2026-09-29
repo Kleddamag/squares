@@ -173,8 +173,8 @@ to credit it as carefully as this project’s own.
   Every other renderer prints the full line.
 - **Method credit travels with the result.** A result built with another author’s
   method, solver or checker credits them in the same line
-  (`wand125 after Tokoharu, Levy`). This project is credited as `after Levy` only where
-  the source itself says so.
+  (`wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi`). This
+  project is credited as `after Levy` only where the source itself says so.
 - **People and projects, never tools.** Credit names people, or the handles they publish
   under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
   inside another source’s credit line.

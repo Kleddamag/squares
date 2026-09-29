@@ -59,12 +59,13 @@ reason, so a gap is reported rather than filled.
 the current state of understanding ... and they should show recent changes to be new."
 The star says when, not whose. A line credits case by case: another's work under its
 authors, joint work that builds on this project as `credit` in the bibliography (`Kleddamag
-after Levy`), and this project's sole work as `Squares Project (Levy)`. Recent is a typed
-date, never a year or a source key read as text: this project's own new bounds are recent
-by construction, and an external bound is recent where its source's `dated` is on or after
-`RECENT_SINCE`. A source from that year that carries no date fails the build, so a recent
-bound cannot go unstarred because its key happens not to name the year, as n = 17's does
-not. The `recent` field is the lower citation's alone; the stage stars no upper bound.
+after Levy, Mira, Guzhou0806`), and this project's sole work as `Squares Project (Levy)`.
+Recent is a typed date, never a year or a source key read as text: this project's own new
+bounds are recent by construction, and an external bound is recent where its source's
+`dated` is on or after `RECENT_SINCE`. A source from that year that carries no date fails
+the build, so a recent bound cannot go unstarred because its key happens not to name the
+year, as n = 17's does not. The `recent` field is the lower citation's alone; the stage
+stars no upper bound.
 
 A line must fit in `TEXT_LIMIT` characters, the width the stage sets it in, the reference
 and its note together. Where it does not, the source's `short_venue` is used if the

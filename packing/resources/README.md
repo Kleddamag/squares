@@ -496,8 +496,9 @@ for `s(21)`, `s(45)` and `s(50)`,
 
 Since 22 August 2026 the archive has retained every public certificate that moved a
 lower bound here. Some build on this project’s certificates or pipeline (Kleddamag,
-Guzhou0806, Mira, wand125) or credit it second-hand (Tokoharu); others are independent
-of it (Evan Daniel, on Burns’s and Massaccesi’s method).
+Guzhou0806, Mira, wand125) or credit it second-hand (Tokoharu, and wand125’s point-only
+and mixed certificates); others are independent of it (Evan Daniel, on Burns’s and
+Massaccesi’s method).
 Each key’s `credit` in [`bibliography.yaml`](bibliography.yaml) names the authors and
 the work they build on, “after Levy” where the source credits this project, and its
 `lineage` records how the source stands to this project, as the source says; the policy

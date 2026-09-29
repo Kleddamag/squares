@@ -624,7 +624,7 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     68: (
         ("UnitSquare Project 2026, Results Release 1 (reported)", "external", "reported"),
-        ("wand125 after Levy 2026, GitHub (confirmed T-044)", "external", "verified"),
+        ("wand125 after Levy et al. 2026, GitHub (confirmed T-044)", "external", "verified"),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
     101: (
@@ -648,12 +648,10 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 @pytest.mark.parametrize(
     ("n", "author", "entry"),
     [
-        (11, "Kleddamag after Levy", "T-037"),
-        # The whole credit names Mira between them; with the confirmation it would run to
-        # 69 characters, so the stage prints the source's short credit.
+        (11, "Kleddamag after Levy et al.", "T-037"),
         (17, "Guzhou0806 after Kleddamag et al.", "T-043"),
-        (26, "Tokoharu after Levy, wand125", "T-047"),
-        (29, "Tokoharu after Levy, wand125", "T-047"),
+        (26, "Tokoharu after Levy, wand125 et al.", "T-047"),
+        (29, "Tokoharu after Levy, wand125 et al.", "T-047"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
@@ -664,7 +662,9 @@ def test_promoted_external_bounds_keep_the_sources_credit(
     Since 2026-09-29 the register holds others' results (epistemics.md, Results by
     Others), so a promoted external bound has an entry of its own that carries the
     replay: the credit stays the source's, the result id stays empty because the bound
-    is not this project's, and the entry is named as what confirms it.
+    is not this project's, and the entry is named as what confirms it. Each of these
+    credits names more links than the line has room for beside its confirmation, so the
+    stage prints the source's `short_credit`, and every other renderer the whole credit.
     """
     lower = _entry(n)["lower"]
     assert _line(lower) == (
@@ -675,7 +675,8 @@ def test_promoted_external_bounds_keep_the_sources_credit(
     assert lower["result"] is None
     assert lower["confirmed_by"] == [entry]
     source = _register().sources[lower["source_key"]]
-    assert author in {source.credited, source.short_credit}
+    assert author == source.short_credit
+    assert author in citations.short_credits(source.credited)
 
 
 def test_n29_credits_finder_and_optimizer_and_takes_the_registers_verdict() -> None:
@@ -863,7 +864,7 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     """
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
     assert lines[11]["recent"]
-    assert lines[11]["text"] == "Kleddamag after Levy 2026, GitHub"
+    assert lines[11]["text"] == "Kleddamag after Levy et al. 2026, GitHub"
     assert lines[12]["recent"]
     assert lines[12]["text"].startswith("Daniel after Burns")
     assert lines[18]["recent"]

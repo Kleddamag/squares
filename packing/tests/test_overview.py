@@ -56,6 +56,21 @@ def test_the_page_fetches_nothing(page: str) -> None:
     render_overview.assert_self_contained("index.html", page)
 
 
+def test_the_site_icon_is_case_11_and_fetches_nothing(page: str) -> None:
+    icon = render_overview.favicon_html()
+    assert page.count(icon) == 1
+    assert icon.startswith('<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,')
+    with pytest.raises(SystemExit):
+        render_overview.assert_self_contained("x.html", '<link rel="icon" href="icon.svg">')
+
+
+def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
+    n = overview_sections.HERO_CASE
+    hero = page.split('class="site-hero-figure', 1)[1].split("</figure>", 1)[0]
+    assert f'href="frontier.html#n-{n}"' in hero
+    assert hero.count("<svg ") == 1
+
+
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     article = re.sub(r"<script.*?</script>", "", page, flags=re.DOTALL).split("<article", 1)[1]
     assert not re.search(r"\{\{[A-Z0-9_]+\}\}", page)

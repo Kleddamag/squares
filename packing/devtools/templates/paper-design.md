@@ -97,6 +97,12 @@ it.
   same on every page. The current page is underlined in the accent.
   The site name is “Square Packing”; the edition appears only in the closing line.
 
+- **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
+  fill. The icon is case 11, the central open case, in the atlas ink on white, inlined as
+  a data URI on every page.
+  The homepage’s hero is case 53, centered under the title in the page’s ink and linked
+  to its row in the frontier atlas.
+
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
   Every card works the same way: pressing it opens a popover that shows where it leads,

@@ -2,6 +2,8 @@
 
 # Square Packing
 
+{{HERO}}
+
 </div>
 
 ## The Problem
@@ -10,6 +12,21 @@ How small can a square be and still hold $n$ unit squares that do not overlap?
 Call the answer $s(n)$. The squares may be rotated, and they may touch.
 The question is easy to state and open even at small $n$: the first case nobody has
 settled is eleven squares.
+
+This site collects what the project has proved, what others have proved alongside it,
+and how each claim was checked.
+
+{{PAGE_CARDS}}
+
+## Verification at a Glance
+
+{{VERIFICATION}}
+
+## Recently Registered
+
+{{RECENT}}
+
+## Headline Results
 
 For $n = 11$ the best packing known was found by {{S11_UPPER_BY}} in {{S11_UPPER_YEAR}},
 and with the strongest verified lower bound the case now stands at
@@ -21,20 +38,9 @@ $$
 a gap of about {{S11_GAP}}. Before this project the lower bound had stood at
 Stromquist’s $2 + 4/\sqrt{5} \approx 3.7889$ since 2003.
 
-This site collects what the project has proved, what others have proved alongside it,
-and how each claim was checked.
-
-{{PAGE_CARDS}}
-
-## Verification at a Glance
-
-{{VERIFICATION}}
-
-## Headline Results
-
 The results scored
 <span class="site-chip site-rung-fill" data-rung="S" data-level="5">S5</span>, for
-movement on the central open case:
+movement on this case:
 
 {{HEADLINE_CARDS}}
 
@@ -60,10 +66,6 @@ Open a row for the full claim, and follow the records to the case file, the evid
 the retained source and the review.
 
 {{RESULTS_TABLE}}
-
-## Recently Registered
-
-{{RECENT}}
 
 ## On GitHub
 

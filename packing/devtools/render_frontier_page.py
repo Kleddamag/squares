@@ -227,6 +227,19 @@ def thumbnail_svg(n: int) -> str:
     whole units of a 100-unit frame, half a pixel at
     that size, one path per fill colour, and nothing else.
     """
+    return f'<span class="site-thumb">{packing_svg(n)}</span>'
+
+
+def packing_svg(
+    n: int, *, units: int = 100, ink: str = "currentColor", paper: str = "none"
+) -> str:
+    """Case `n`'s atlas drawing as a bare `<svg>`: the frame and each square's outline at
+    whole units of a `units`-wide frame, drawn in `ink` on `paper`.
+
+    A table cell needs 100 units; a drawing shown large needs more, or the rounding shows
+    as uneven gaps. A drawing used outside the page, where `currentColor` means nothing,
+    names its ink.
+    """
     source = (RENDERINGS / f"n-{n:03d}.svg").read_text(encoding="utf-8")
     frame = re.search(
         r'<rect data-feature="container-outline" x="([\d.]+)" y="([\d.]+)" '
@@ -236,7 +249,7 @@ def thumbnail_svg(n: int) -> str:
     if frame is None:
         raise SystemExit(f"n-{n:03d}.svg has no container outline")
     x0, y0, width, _ = (Decimal(part) for part in frame.groups())
-    scale = Decimal(100) / width
+    scale = Decimal(units) / width
     paths: dict[str, list[str]] = {}
     squares = re.findall(
         r'<polygon data-feature="square-fill"[^>]*? points="([^"]+)" fill="(#[0-9a-f]{6})"',
@@ -253,11 +266,15 @@ def thumbnail_svg(n: int) -> str:
     body = "".join(
         f'<path fill="{fill}" d="{"".join(parts)}"/>' for fill, parts in sorted(paths.items())
     )
+    unit = Decimal(units) / 100
+    box = f"{-unit:g} {-unit:g} {units + 2 * unit:g} {units + 2 * unit:g}"
+    frame_width = (Decimal("1.2") * unit).normalize()
+    line_width = (Decimal("0.6") * unit).normalize()
     return (
-        '<span class="site-thumb"><svg viewBox="-1 -1 102 102" aria-hidden="true" '
-        'focusable="false"><rect x="0" y="0" width="100" height="100" fill="none" '
-        f'stroke="currentColor" stroke-width="1.2"/><g stroke="currentColor" '
-        f'stroke-width="0.6" stroke-linejoin="round">{body}</g></svg></span>'
+        f'<svg viewBox="{box}" aria-hidden="true" focusable="false">'
+        f'<rect x="0" y="0" width="{units}" height="{units}" fill="{paper}" '
+        f'stroke="{ink}" stroke-width="{frame_width:f}"/><g stroke="{ink}" '
+        f'stroke-width="{line_width:f}" stroke-linejoin="round">{body}</g></svg>'
     )
 
 

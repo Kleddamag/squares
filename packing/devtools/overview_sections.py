@@ -479,3 +479,21 @@ def page_cards() -> str:
             for href, label, title, note in PAGES
         ]
     )
+
+
+#: The case drawn large under the homepage's title.
+HERO_CASE = 53
+
+
+def hero() -> str:
+    """The homepage's picture: one known-best packing, drawn from its atlas rendering
+    and linked to its row in the frontier atlas."""
+    from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
+
+    n = HERO_CASE
+    return (
+        f'<figure class="site-hero-figure"><a href="frontier.html#n-{n}" '
+        f'aria-label="The best packing known for {n} squares, in the frontier atlas">'
+        f"{packing_svg(n, units=1000)}</a>"
+        f"<figcaption>The best packing known for {n} squares</figcaption></figure>"
+    )

@@ -155,15 +155,18 @@ def test_certificate_comparisons_match_the_rendered_certificates(
 def test_the_page_is_self_contained(page: str) -> None:
     """The renderer's own check passes on its own output; the workflow relies on this.
 
-    The page carries exactly one `<link>`, and it is the canonical URL. That is not a
-    fetch -- a browser reads it and does not request it -- but it is the one element in
-    the head that could become one, so it is counted rather than merely permitted: a
-    second `<link>` arriving here is a stylesheet, an icon or a preload, and the count
-    fails before the refusal has to.
+    The page carries exactly two `<link>`s: the canonical URL and the site icon as a
+    data URI. Neither is a fetch -- a browser reads the one and carries the other's bytes
+    -- but each could become one, so they are counted rather than merely permitted: a
+    third `<link>` arriving here is a stylesheet, an icon at an address or a preload,
+    and the count fails before the refusal has to.
     """
 
     assert_self_contained(page)
-    assert re.findall(r"<link[^>]*>", page) == [f'<link rel="canonical" href="{PAGE_URL}">']
+    assert re.findall(r"<link[^>]*>", page) == [
+        f'<link rel="canonical" href="{PAGE_URL}">',
+        render_overview.favicon_html(),
+    ]
     assert re.search(r"<script[^>]*\ssrc=", page) is None
 
 

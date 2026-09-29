@@ -30,8 +30,10 @@ import html
 import re
 import sys
 from collections.abc import Callable, Sequence
+from functools import cache
 from pathlib import Path
 from typing import Literal, NamedTuple
+from urllib.parse import quote
 
 from sqpack.release import PUBLICATION_EDITION
 
@@ -111,10 +113,10 @@ RENDER_INPUTS: tuple[Path, ...] = (
 )
 
 # The same refusal the explainer makes: a script or stylesheet with a source, a CSS
-# import, or a url() that is not a data URI or a fragment is a fetch.
+# import, or a url() or `<link>` that is not a data URI or a fragment is a fetch.
 _EXTERNAL_REFERENCE = re.compile(
     r"<script[^>]*\ssrc="
-    r'|<link(?![^>]*\srel="canonical")[^>]*\shref='
+    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)[^>]*\shref='
     r"|@import\b"
     r"""|url\(\s*(?!["']?(?:data:|#))"""
 )
@@ -202,6 +204,18 @@ def nav_html(current: str, *, root: str = "") -> str:
     return nav.replace(marker, f'{marker} aria-current="page"')
 
 
+@cache
+def favicon_html() -> str:
+    """The site's icon: case 11, the project's central open case, drawn small as a data
+    URI, so it costs no fetch. It names its ink and paper, since a tab has no page
+    colour to inherit."""
+    from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
+
+    svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff")
+    svg = svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ', 1)
+    return f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{quote(svg)}">'
+
+
 def colophon_html() -> str:
     """The closing line every page carries, as the explainer's does."""
     return (
@@ -251,7 +265,9 @@ def kpress_page(
         content_card=False,
         show_doc_header=False,
         include_toc="on" if toc else "off",
-        head_extra_html=f"{head}<script>{_script_text(EMBED_SCRIPT)}</script>",
+        head_extra_html=(
+            f"{favicon_html()}{head}<script>{_script_text(EMBED_SCRIPT)}</script>"
+        ),
         header_html=nav_html(current),
         footer_html=colophon_html(),
     )
@@ -306,6 +322,7 @@ def overview_page() -> Page:
     stats = overview_data.stats(overview)
     values = {
         "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
+        "HERO": overview_sections.hero(),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         **overview_sections.bracket_11(overview),

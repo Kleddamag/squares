@@ -766,3 +766,24 @@ body {
 .site-frontier .site-detail dd {
   overflow-wrap: anywhere;
 }
+
+/* The homepage's picture: one packing, centered under the title, in the page's ink. */
+.site-hero .site-hero-figure {
+  margin: 1.5rem auto 0;
+  max-inline-size: min(20rem, 70vw);
+}
+.site-hero .site-hero-figure a {
+  color: var(--kpress-doc-text);
+  display: block;
+}
+.site-hero .site-hero-figure svg {
+  block-size: auto;
+  display: block;
+  inline-size: 100%;
+}
+.site-hero .site-hero-figure figcaption {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: calc(var(--site-font-size-sans-base) * 0.85);
+  margin-block-start: 0.5rem;
+}

@@ -58,7 +58,7 @@ from strif import atomic_output_file
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
-from devtools.render_overview import SITE_NAV, SITE_NAV_CSS, nav_html
+from devtools.render_overview import SITE_NAV, SITE_NAV_CSS, favicon_html, nav_html
 from sqpack.fractional.certificate import (
     Certificate,
     closed_form_conditions,
@@ -2045,14 +2045,16 @@ def coarsening_verdict(rows: list[CoarseningRow] | None) -> str:
 # browser does not act on: it is a statement to a crawler about which URL this
 # document is, read from the markup and never resolved or requested while the page
 # is being viewed, so a page carrying one still opens from a file with the network
-# off. Every other `<link ... href=>` -- a stylesheet, an icon, a preload, a
-# manifest -- is a fetch and is still refused, and the exemption is written as the
-# exact quoted form the shell emits so nothing broader slips through it. The
+# off. A link whose href is a data URI, such as the site icon, carries its bytes and
+# fetches nothing. Every other `<link ... href=>` -- a stylesheet, an icon at an
+# address, a preload, a manifest -- is a fetch and is still refused, and the exemption
+# is written as the exact quoted form the shell emits so nothing broader slips through
+# it. The
 # `og:*` and `twitter:*` URLs need no exemption: they are `<meta content=>`, which
 # this pattern has never matched, and are likewise read rather than fetched.
 EXTERNAL_REFERENCE = re.compile(
     r"<script[^>]*\ssrc="
-    r'|<link(?![^>]*\srel="canonical")[^>]*\shref='
+    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)[^>]*\shref='
     r"|@import\b"
     r"|url\((?!\s*[\"']?(?:data:|#))",
     re.IGNORECASE,
@@ -2186,6 +2188,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
         "PAGE_TITLE": title,
         "PAGE_DESCRIPTION": description,
         "CANONICAL_URL": PAGE_URL,
+        "SITE_FAVICON": favicon_html(),
         "SITE_NAME": SITE_NAME,
         "CARD_IMAGE_URL": site_file(COMPOSITE_CARD),
         "CARD_IMAGE_WIDTH": str(width),

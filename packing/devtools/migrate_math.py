@@ -87,12 +87,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, cast
 
-import yaml
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
 from mdit_py_plugins.dollarmath import dollarmath_plugin
 
 from devtools.check_math_spans import check_file, pinned_formatter
+from sqpack.yamlio import load_yaml
 
 Kind = Literal["math", "identifier", "uncertain"]
 
@@ -799,7 +799,7 @@ def load_ledger(path: Path = LEDGER) -> dict[str, tuple[Keep, ...]]:
     the verification and confirmation ladders, say -- so neither this tool nor the
     ratchet converts it or complains about it.
     """
-    document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    document = load_yaml(path.read_text(encoding="utf-8")) or {}
     files = document.get("files") or {}
     if not isinstance(files, dict):
         raise TypeError(f"{path}: `files` must map a path to its settings")

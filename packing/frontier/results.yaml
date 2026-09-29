@@ -3611,3 +3611,107 @@ results:
       that run, and two frontier shards of 15,839 parents each were still running. C0
       because the 2026-09-28 point-only review is recorded as an external_review on the
       n = 45 replay entry only. The Lean build was not run here.
+
+  - id: T-056
+    headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified exactly"
+    claim: >-
+      For each of 49 counts n from 68 to 307 (68, 102, 103, 105, 106, 110, 123, 130, 131,
+      132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206 to 210, 228, 236 to 241,
+      259, 263, 268 to 273, 292, 297 and 301 to 307), s(n) is at most the verified upper
+      bound its case record carries: the side franciscouzo/square-packing prints at
+      f3c5a529 (27 September 2026), from 8.798795237222592 at n = 68 to
+      17.981030548643712 at n = 307, or, where the exact certificate's side rounds up past
+      it, that side plus one unit of its fifteenth decimal at 26 counts and 2, 3 and 2
+      units at n = 206, 259 and 305. Every printed side is below the best
+      known side this project recorded before, by 3.0e-8 at n = 172 up to 0.022 at
+      n = 301, and below the live catalogue of 29 September 2026. Each bound is certified
+      here by an exact rational packing, the source's decimal pose rounded to rationals at
+      centre dilation 1, decided pair by pair and wall by wall over Q by two checkers that
+      share no code. Francisco Couzo; the author said on jlevy/squares#227 that he found
+      the packings with the help of Claude. An externally produced, previously published
+      result, not peer reviewed; no new first-party mathematics is claimed.
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    verification: V4
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        Forty-nine substantive case results at once: each moves the best known side at its
+        count, 28 of them by more than 0.001, and each moves this repository's verified
+        ceiling off the integer grid onto a certified packing, so 46 cases stop trailing
+        their report. S3 by the anchor "a substantive case result"; the source publishes no
+        method, so nothing here is a reusable technique.
+      scored: '2026-09-29'
+      by: issue #227 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[franciscouzo square-packing 2026-09-27]']
+      published: '2026-09-27'
+    evidence:
+      - E-franciscouzo-2026-09-27-report
+      - E-franciscouzo-2026-09-27-exact-replay
+    artifacts:
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/acquisition/sources.json.gz
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/certification.json.gz
+      - packing/devtools/upper_bound_packets.py
+      - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/apply_upper_bound_packets.py
+    controls:
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/tests/test_upper_bound_packets.py
+    next_rung: >-
+      C4 by an interval route: an interval-certified replay of each packing, for example a
+      Krawczyk enclosure of its contact system as T-009 did at n = 29, recorded as a
+      second, method-distinct entry. At n = 206, 259 and 305 the printed side itself needs
+      a pose refined beyond the source's binary64 digits, or coordinates the source prints
+      at higher precision.
+
+  - id: T-057
+    headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid"
+    claim: >-
+      s(211) <= 14.99796070496771500150 < 15. JoostdeWinter/square-packing-211 at 702df9bb
+      (16 September 2026) reports 211 unit squares in a square of that side, with 21-digit
+      poses and the author's report of an outward interval check at 80 digits; it publishes
+      no interval boxes or checker. The bound is certified here by an exact rational
+      packing, the source's pose rounded to rationals at centre dilation 1, of side
+      74989803524838470007/5000000000000000000, 2.1e-14 below the printed side, decided
+      pair by pair and wall by wall over Q by two checkers that share no code. It is the
+      first packing of 211 squares below the 15 x 15 grid on record, so s(k^2 - k + 1) < k,
+      shown in the Kingbird catalogue for k = 16, 17 and 18 (n = 241, 273 and 307), holds
+      for k = 15 as well. Joost de Winter; the source says nothing about AI assistance. An
+      externally produced, previously published result, not peer reviewed; no new
+      first-party mathematics is claimed.
+    scope: {n_values: [211]}
+    verification: V4
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        A count whose best known packing was the trivial grid now has one below it, and
+        the smallest k for which s(k^2 - k + 1) < k is known drops from 16 to 15. S3 by
+        the anchor "a substantive case result"; the margin, about 0.002, changes nothing
+        beyond this count.
+      scored: '2026-09-29'
+      by: issue #227 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[de Winter n211 2026-09-16]']
+      published: '2026-09-16'
+    evidence:
+      - E-n211-de-winter-report
+      - E-n211-de-winter-exact-replay
+    artifacts:
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/acquisition/sources.json
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/certification.json
+      - packing/witnesses/de-winter-2026/n-211-rational.yaml.gz
+      - packing/devtools/upper_bound_packets.py
+      - packing/devtools/check_rational_witness_independent.py
+    controls:
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/tests/test_upper_bound_packets.py
+    next_rung: >-
+      C4 by an interval route: an interval-certified replay of the packing, from the
+      source's own 80-digit enclosures if it publishes them or from a Krawczyk enclosure of
+      its contact system here, recorded as a second, method-distinct entry.

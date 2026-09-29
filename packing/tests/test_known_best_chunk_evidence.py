@@ -30,7 +30,7 @@ def test_known_best_chunk_evidence_profile_replays_byte_for_byte() -> None:
     profile = retained["profile"]
     assert profile["aggregate"] == {
         "case_count": 36,
-        "contact_component_count": 169,
+        "contact_component_count": 166,
         "coverage_threshold_cases": {
             "at_least_50_percent": 35,
             "at_least_75_percent": 33,
@@ -47,8 +47,8 @@ def test_known_best_chunk_evidence_profile_replays_byte_for_byte() -> None:
         "sensitivity_comparison": {
             "changed_case_count": 3,
             "changed_ns": [68, 69, 71],
-            "primary_structured_square_count": 1780,
-            "sensitivity_structured_square_count": 1793,
+            "primary_structured_square_count": 1782,
+            "sensitivity_structured_square_count": 1797,
             "within_budget_flip_ns": [69],
         },
         "source_strata": [
@@ -62,20 +62,32 @@ def test_known_best_chunk_evidence_profile_replays_byte_for_byte() -> None:
                 "structured_square_count": 1666,
                 "within_six_components_and_three_free_cases": 25,
             },
+            # n = 68 moved from its UnitSquare rendering onto Francisco Couzo's
+            # packet facts on 2026-09-29.
             {
-                "case_count": 2,
+                "case_count": 1,
                 "fully_structured_cases": 0,
-                "sensitivity_changed_ns": [68, 69],
+                "sensitivity_changed_ns": [68],
+                "source_kind": "packet-derived-facts",
+                "square_count": 68,
+                "structured_fraction": "0.867647058824",
+                "structured_square_count": 59,
+                "within_six_components_and_three_free_cases": 0,
+            },
+            {
+                "case_count": 1,
+                "fully_structured_cases": 0,
+                "sensitivity_changed_ns": [69],
                 "source_kind": "unitsquare-rendering",
-                "square_count": 137,
-                "structured_fraction": "0.832116788321",
-                "structured_square_count": 114,
+                "square_count": 69,
+                "structured_fraction": "0.826086956522",
+                "structured_square_count": 57,
                 "within_six_components_and_three_free_cases": 0,
             },
         ],
         "square_count": 1860,
-        "structured_fraction": "0.956989247312",
-        "structured_square_count": 1780,
+        "structured_fraction": "0.958064516129",
+        "structured_square_count": 1782,
         "within_six_components_and_three_free_cases": 25,
     }
     assert "DESCRIPTIVE · NO VERDICT" in rendering
@@ -96,7 +108,7 @@ def test_known_best_chunk_evidence_profile_preserves_outliers_and_sensitivity() 
     assert by_n[5]["primary"]["contact_component_count"] == 0
     assert by_n[28]["primary"]["structured_square_count"] == 28
     assert by_n[89]["primary"]["largest_component_size"] == 49
-    assert by_n[68]["sensitivity_delta"]["structured_square_count"] == 3
+    assert by_n[68]["sensitivity_delta"]["structured_square_count"] == 5
     assert by_n[69]["sensitivity_delta"] == {
         "contact_component_count": 0,
         "free_square_count": -10,

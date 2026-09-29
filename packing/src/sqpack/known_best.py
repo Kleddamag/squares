@@ -24,6 +24,10 @@ NORMALIZATION_DIGITS = 100
 CHECK_DIGITS = 120
 KINGBIRD_TOLERANCE = "1e-8"
 UNITSQUARE_TOLERANCE = "2e-6"
+#: Source packets retain binary64 or 21-digit poses whose worst wall or pair margin is a
+#: few units of 1e-16 on the wrong side, so a check at 1e-12 still separates a real
+#: overlap from print rounding.
+PACKET_TOLERANCE = "1e-12"
 RETRIEVED_DATE = "2026-08-26"
 KINGBIRD_ATTRIBUTION = (
     "SVG and high-precision updates by David Ellsworth; catalogue based on "
@@ -1192,6 +1196,61 @@ def kingbird_derived_witness(
     }
     witness.pop("certificate", None)
     return _checked_witness(witness, tolerance=KINGBIRD_TOLERANCE, witness_path=witness_path)
+
+
+def packet_derived_witness(
+    n: int,
+    retained_witness: Mapping[str, Any],
+    *,
+    source_key: str,
+    source_path: str,
+    retrieved: str,
+    tolerance: str = PACKET_TOLERANCE,
+) -> dict[str, Any]:
+    """Recheck the derived facts a source packet retains in place of its upstream bytes.
+
+    The packet's own witness carries the source's centres and angles verbatim, with the
+    source's URL and pinned revision; this keeps them and renames the witness into the
+    atlas. Like the Kingbird facts, the replayed check establishes only
+    tolerance-bounded feasibility; whether the packing is certified is the case record's
+    business, through its own evidence.
+    """
+    if retained_witness.get("n") != n:
+        raise ValueError("retained packet witness does not describe the requested n")
+    if retained_witness.get("representation") != "center-angle":
+        raise ValueError("retained packet facts must use center-angle representation")
+    squares = retained_witness.get("squares")
+    if not isinstance(squares, list) or len(squares) != n:
+        raise ValueError("retained packet facts do not contain the requested square count")
+    upstream = retained_witness.get("source")
+    if not isinstance(upstream, Mapping) or not upstream.get("url"):
+        raise ValueError("retained packet facts must name their upstream file")
+    witness_path = f"witnesses/known-best/n-{n:03d}.yaml"
+    witness = deepcopy(dict(retained_witness))
+    witness["id"] = f"W-known-best-n{n:03d}"
+    witness["claim"] = {
+        "coordinate_provenance": "reported",
+        "method": "numerical-multiprecision",
+        "precision": {"decimal_digits": CHECK_DIGITS, "rounding": "nearest"},
+        "tolerance": tolerance,
+        "limitations": (
+            "Direct retained numerical center/angle facts from a source packet that keeps "
+            "derived facts only, because the source publishes no licence; the upstream "
+            "file is pinned by digest in the packet, not retained. This conservative "
+            "retention policy is not a legal conclusion. The replayed finite-precision "
+            "numerical check establishes only tolerance-bounded feasibility of these "
+            "facts, not exact geometry, an exact certificate, or optimality."
+        ),
+    }
+    witness["source"] = {
+        "key": source_key,
+        "path": source_path,
+        "url": str(upstream["url"]),
+        "retrieved": retrieved,
+        **({"revision": str(upstream["revision"])} if upstream.get("revision") else {}),
+    }
+    witness.pop("certificate", None)
+    return _checked_witness(witness, tolerance=tolerance, witness_path=witness_path)
 
 
 def unitsquare_witness(

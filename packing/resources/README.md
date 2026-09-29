@@ -494,6 +494,18 @@ for `s(21)`, `s(45)` and `s(50)`,
 `s(21) = 5` and `s(45) = 7`, and
 [Guzhou0806’s R067 and R068](web/n17-guzhou-r068-2026-09-28/README.md) at `n = 17`.
 
+Three packets of 29 September retain parallel upper bounds:
+[Francisco Couzo’s 49 packings](web/franciscouzo-square-packing-2026-09-27/README.md)
+for `n = 68…307`, which issue #227 asked this project to register,
+[Joost de Winter’s `s(211) < 15`](web/de-winter-square-packing-211-2026-09-16/README.md),
+and [Griffin Casson’s 39 packings](web/casson-square-packing-2026-09-23/README.md) for
+`n = 103…307`, each of which Couzo’s beats.
+The first two publish no licence, so their packets keep derived facts and metadata only,
+on the [known-best retention policy](web/known-best-packings/README.md); Casson’s
+packings are CC BY 4.0 and retained byte for byte.
+Every Couzo and de Winter packing is certified here by an exact rational replay whose
+certificates are under `packing/witnesses/`.
+
 Since 22 August 2026 the archive has retained every public certificate that moved a
 lower bound here. Some build on this project’s certificates or pipeline (Kleddamag,
 Guzhou0806, Mira, wand125) or credit it second-hand (Tokoharu, and wand125’s point-only
@@ -536,6 +548,9 @@ is [epistemics.md → Results by Others](../../epistemics.md#results-by-others).
 | **[MacIver 2026 papers]** | Three author-hosted manuscripts: a reported `s(17), s(18) > 4.450208382…`, the center-area lemma, and center-count bounds; original PDFs, faithful extractions, source revision, upstream CI receipt, and a reading aid with verification limits | github.com/DRMacIver; drmaciver.github.io | `maciver-square-packing-2026-09-07/` |
 | **[n26 current-source audit 2026]** | Current n26 catalogues, recent solver and proof projects, and an exact comparison of MinMax Arena’s reciprocal score; no smaller public upper bound found in the scoped search | primary catalogues; GitHub; minmaxarena.com | `n26-best-known-2026-09-07/` |
 | **[De Winter 2026]** | Mutable author report of proposed construction improvements at `n = 68, 126, 206`; coordinates unavailable and values unreplayed | researchgate.net | `de-winter-improved-packings-2026/` |
+| **[franciscouzo square-packing 2026-09-27]** | Francisco Couzo’s `square-packing` at `f3c5a529`, 27 September 2026: 49 packings for `n = 68…307`, each below both this project’s recorded side and the live catalogue on 29 September. No licence, so the packet keeps each packing as derived Witness/v2 facts with the upstream digests and the per-case commit history, never the files. Every packing certifies exactly over `ℚ` here at centre dilation 1 (`packing-witness promote --strategy robust-rational`, then the independent Fraction checker), the side moving by less than `2.2e-15` either way; rounded up at the printed 15 decimals it lands one unit above the printed side at 26 counts, which the record’s agreement rule accepts, and 2–3 units above at `n = 206, 259, 305`, recorded as conflicts. Registered as T-056 at `V4`/`C3`; issue #227 | github.com/franciscouzo | `franciscouzo-square-packing-2026-09-27/` |
+| **[de Winter n211 2026-09-16]** | Joost de Winter’s `square-packing-211` at `702df9bb`, 16 September 2026: 211 unit squares at side `14.99796070496771500150`, the first known `s(211) < 15`, with the author’s 80-digit interval verification summary. No licence, so derived facts only. Certified exactly over `ℚ` here, the certificate `2.1e-14` inside the printed side; registered as T-057 at `V4`/`C3` | github.com/JoostdeWinter | `de-winter-square-packing-211-2026-09-16/` |
+| **[griffcass square-packing 2026-09-23]** | Griffin Casson’s `square-packing` at `82661bc`, 23 September 2026 (UTC−6): 39 SLP-polished and annealed packings for `n = 103…307`, 50-digit checked by the author, with MIT code and CC BY 4.0 packings. The packings, summary, README, LICENSE and CITATION.cff are retained byte for byte and every other file pinned by digest. Couzo’s packings are smaller at all 39, so none holds a field here; published before Couzo’s at 36 of them by the authors’ clocks, not replayed here | github.com/griffcass | `casson-square-packing-2026-09-23/` |
 | **[Schadt n=29 repository]** | Thomas Schadt’s `n = 29` record repository: the packing, its Python verifier, the rendered SVG, and his four-sentence methodology note | github.com/BalthasarStrauss | `schadt-s29-2025/` |
 | **[Squarl n17 2026]** | Sam Burns’s open `n = 17` pipeline documentation at a pinned commit: the formulation and move set, the deep-polish architecture and its tolerances, the final nine-hour production search’s own accounting, and the earlier topology drain | github.com/sam-bee/squarl | `squarl-n17-2026/` |
 | **[Literature refresh 2026-09-05]** | Frozen arXiv, Crossref, OpenAlex, and Zenodo receipts; additions, currentness checks, and nearby-problem exclusions | primary sources and scholarly indexes | `literature-refresh-2026-09-05/` |

@@ -339,6 +339,53 @@ sources:
       web/wand125-point-and-mixed-2026-09-28/acquisition/sources.json pins revision
       39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of the five claim
       directories. Dated by that revision, 2026-09-28.
+  - key: '[franciscouzo square-packing 2026-09-27]'
+    authors: [Couzo]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-27'
+    credit: Couzo
+    lineage: independent
+    note: >-
+      franciscouzo/square-packing at f3c5a529, 2026-09-27: 49 packings for n = 68 to 307,
+      each smaller than the Kingbird catalogue fetched 2026-09-25, as its README says. The
+      repository has no LICENSE and its README names no author and no prior work, so the
+      author is read from the commit metadata ("Francisco Couzo") and nothing is credited
+      after him. Its author opened jlevy/squares#227 on 2026-09-23 saying he found the
+      packings "with the help of Claude"; the repository itself states no AI assistance.
+      Only derived facts are retained
+      (web/franciscouzo-square-packing-2026-09-27/README.md). Dated by that revision.
+  - key: '[de Winter n211 2026-09-16]'
+    authors: [de Winter]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-16'
+    credit: de Winter
+    lineage: independent
+    note: >-
+      JoostdeWinter/square-packing-211 at 702df9bb, 2026-09-16: one packing of 211 unit
+      squares at side 14.99796070496771500150, with the author's interval verification
+      summary. The repository has no LICENSE and its README names no author, so the author
+      is read from the commit metadata ("Joost de Winter"); it names no prior work and
+      states nothing about AI assistance. Only derived facts are retained
+      (web/de-winter-square-packing-211-2026-09-16/README.md). Distinct from
+      [De Winter 2026], the same author's ResearchGate report. Dated by that revision.
+  - key: '[griffcass square-packing 2026-09-23]'
+    authors: [Casson]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-24'
+    credit: Casson after Ellsworth, Friedman
+    lineage: independent
+    note: >-
+      griffcass/square-packing at 82661bc: 39 packings for n = 103 to 307. Its LICENSE and
+      CITATION.cff name Griffin Casson; its README's Credits section says it builds on the
+      catalogue maintained by David Ellsworth and started by Erich Friedman, whose record
+      packings seeded 37 of the 39, uses Ellsworth's checking tools, and was done "with
+      the help of Claude (Anthropic)". The commit is dated 2026-09-23 22:45 at UTC-6, which
+      is 2026-09-24 in UTC, the date given here; CITATION.cff gives 2026-09-23. Every
+      packing is superseded here by [franciscouzo square-packing 2026-09-27]; no field
+      holds it (web/casson-square-packing-2026-09-23/README.md).
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being
@@ -348,8 +395,11 @@ credited_names:
   David W. Cantrell: Cantrell
   Erich Friedman: Friedman
   Evert Stenlund: Stenlund
+  Francisco Couzo: Couzo
   Frits Göbel: Göbel
+  Griffin Casson: Casson
   Joe DeVincentis: DeVincentis
+  Joost de Winter: de Winter
   John Bidwell: Bidwell
   Károly Hajba: Hajba
   M.Z. Arslanov: Arslanov

@@ -26,7 +26,10 @@ Seven checks:
    identifiers must not survive elsewhere in repository-owned text.
 6. **New results are complete.** Every result classified as `apparently-novel` or
    `confirmed-novel` appears in the New Results section, and every concrete result ID
-   named there exists in the register.
+   named there exists in the register. The section's table is generated from the
+   register by `devtools.render_recent_results`, whose `--check` fails on a hand edit
+   inside it; this rule is the second guard, and it also holds the prose around the
+   table to ids the register knows.
 7. **The recent-result counts are derived.** The survey summary spells out how many of
    the hundred cases carry a recent lower bound, in how many the verified bound itself is
    recent, and how many of those are this project's and new exact values. Each is the

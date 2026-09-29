@@ -2926,9 +2926,11 @@ def _results_headline(context: Context) -> str:
 
 def _recent_results(context: Context) -> str:
     # About a second: a hundred case records, the register and the bibliography. Records
-    # tier because it checks a generated view of the record -- README's recent-results
-    # table, whose hand-kept predecessor and its counts drifted three times (think-ti71).
-    # The counts the survey summary quotes are held by `check_readme`.
+    # tier because it checks generated views of the record -- README's three results
+    # tables: New Results and Results by Others, which were a paragraph of prose per
+    # result, and the per-case recent-results table, whose hand-kept predecessor and its
+    # counts drifted three times (think-ti71). A hand edit inside any of the three fails
+    # here; the counts the survey summary quotes are held by `check_readme`.
     return _module(context, "devtools.render_recent_results", "--check")
 
 
@@ -4289,6 +4291,7 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/build_bound_citations.py",
             "packing/devtools/check_results.py",
             "packing/devtools/render_research_tables.py",
+            "packing/devtools/render_results.py",
         ),
     ),
     Step(

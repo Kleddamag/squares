@@ -24,7 +24,9 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import argparse
+from collections.abc import Mapping
 from pathlib import Path
+from typing import Any
 
 from strif import atomic_output_file
 
@@ -81,8 +83,12 @@ def _order(record: dict) -> tuple[int, int, str]:
     return (-record["significance"]["score"], -int(record["confirmation"][1]), record["id"])
 
 
-def _credit(record: dict, sources: dict[str, dict]) -> str:
-    """The sources' credit lines, each once, in the order the attribution names them."""
+def credit_line(record: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]) -> str:
+    """The sources' credit lines, each once, in the order the attribution names them.
+
+    README's Results by Others table (`devtools.render_recent_results`) prints the same
+    cell, so the two views cannot credit a result differently.
+    """
     lines = [
         sources[key].get("credit") or ", ".join(sources[key]["authors"])
         for key in record["attribution"]["source_keys"]
@@ -90,8 +96,13 @@ def _credit(record: dict, sources: dict[str, dict]) -> str:
     return "; ".join(dict.fromkeys(lines)).replace("|", r"\|")
 
 
-def _lineage(record: dict, sources: dict[str, dict]) -> str | None:
-    """The group an attributed result reads under: its sources' lineage, if recent."""
+def source_lineage(
+    record: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]
+) -> str | None:
+    """The group an attributed result reads under: its sources' lineage, if recent.
+
+    Also README's Results by Others relation column, read through the same function.
+    """
     attribution = record["attribution"]
     if attribution["published"] < RECENT_SINCE.isoformat():
         return None
@@ -141,7 +152,7 @@ def render() -> str:
         lines.append("")
         for lineage, title in OTHERS:
             group = sorted(
-                (record for record in others if _lineage(record, sources) == lineage),
+                (record for record in others if source_lineage(record, sources) == lineage),
                 key=lambda record: (int(record["confirmation"][1]) >= 3, *_order(record)),
             )
             if not group:
@@ -151,7 +162,7 @@ def render() -> str:
             lines.append("| id | n | credit | published | V | C | S | holds a bound | claim |")
             lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
-                f"| {record['id']} | {_scope(record)} | {_credit(record, sources)} "
+                f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
                 f"| {holds_a_bound(record, cases)} | {_claim(record)} |"

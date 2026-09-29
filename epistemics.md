@@ -174,8 +174,8 @@ to credit it as carefully as this project’s own.
   under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
   inside another source’s credit line.
   An AI agent is never a credited author.
-  Where a source states that AI assisted its work, its case record and the README say so
-  in the source’s own terms.
+  Where a source states that AI assisted its work, its case record or register entry
+  says so in the source’s own terms, and so does any README prose about the result.
 - **Our rung is not their credit.** `V` and `C` describe verification.
   A result replayed here remains its authors’ result, and a rung never changes a credit
   line. A defect found here goes back to the authors with the review that found it.
@@ -213,16 +213,18 @@ in the frontier README. Its three end points are fixed here.
 
 Each fact about the frontier has one home, and reader-facing lists of results are
 generated from these files (`OR-1`): `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, and the
-README’s recent results.
-The README’s hand-written results prose names the `T-NNN` it restates, so the register
-gate can find it.
+README’s three results tables, [New Results](README.md#new-results),
+[Results by Others](README.md#results-by-others) and the recent results by case.
+The README keeps a little prose around those tables, the `s(11)` thread and the results
+outside the register, and that prose names the `T-NNN` it restates, so the register gate
+can find it.
 
 | Record | Holds | Reader view |
 | --- | --- | --- |
-| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); README’s [recent results by case](README.md#recent-results-all-sources) |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); README’s [recent results by case](README.md#recent-results-all-sources); the standing column of README’s register tables |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
-| [`results.yaml`](packing/frontier/results.yaml) | Each result’s claim, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage |
-| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders in README’s recent results |
+| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; README’s New Results and Results by Others tables |
+| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders in README’s recent results; the credit and relation in README’s Results by Others |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
 
 ## Enforcement and Register

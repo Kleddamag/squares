@@ -89,6 +89,16 @@ DECLARED_CONSUMERS = {
         "registered result still holds a case bound; it takes no value from the field and "
         "never reads the ceiling as s(n)"
     ),
+    "packing/devtools/render_recent_results.py": (
+        "reads only the evidence ids a case's bound fields cite, to derive which register "
+        "entries hold a case bound for README's standing column; it takes no value from the "
+        "field and never reads the ceiling as s(n)"
+    ),
+    "docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md": (
+        "a dated review explaining why n = 206, 259 and 305 carry a verified ceiling above "
+        "the printed side; it reads the field as the certified ceiling and says it is "
+        "neither s(n) nor a different packing"
+    ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
         "6 is what makes that case proved; it reads the field as a ceiling, not as s(n)"
@@ -378,7 +388,9 @@ def test_every_trailing_case_says_so_in_the_record_a_reader_opens() -> None:
         with localcontext() as context:
             context.prec = 28
             gap = str(verified - reported)
-        assert gap in flat, n
+        # n = 29's hand-written section prints Decimal's `9.18...E-15`; the Couzo ceilings
+        # print the receipts' lowercase `2e-15`. Either spelling is the same number.
+        assert gap in flat or gap.replace("E", "e") in flat, n
         assert f"not the value of `s({n})`" in flat, n
         assert "`reported_upper_bound`" in flat, n
 

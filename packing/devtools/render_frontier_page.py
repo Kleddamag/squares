@@ -1,0 +1,490 @@
+#!/usr/bin/env python3
+"""Render the frontier atlas page: one table row for every case `n = 1…324`.
+
+Every row is read from the case's softschema record, the `packing:` envelope of
+`frontier/n-NNN.md` under the enforced `packing.squares:SquarePackingCase/v2` contract,
+and each file is validated against its declared schema before a cell is written, so an
+invalid record fails the render rather than rendering a blank. Nothing is read from
+`STATUS.md` and nothing is typed by hand: the formatting is `render_research_tables`'s
+(`latex`, `compact_bound`'s exact-form rule, `case_disposition`,
+`verification_origins`), and "shown once" is `bounds_agree_at_declared_precision`, the
+test `STATUS.md` applies.
+
+The page is one of `render_overview.PAGES`; render it with the rest of the site:
+
+    uv run --frozen --all-extras --group dev python -m devtools.render_overview --output DIR
+"""
+
+from __future__ import annotations
+
+import html
+import re
+from collections.abc import Callable, Iterable
+from decimal import Decimal
+from functools import cache
+from pathlib import Path
+from typing import Any, cast
+
+from devtools import render_research_tables as tables
+from devtools.build_bound_citations import RECENT_SINCE
+from devtools.build_bound_citations import RECORD as BOUND_CITATIONS
+from devtools.render_explainer import repo_file
+from devtools.validate_schemas import check as check_record
+from sqpack.assurance import bounds_agree_at_declared_precision
+
+PACKING = Path(__file__).resolve().parents[1]
+TEMPLATES = PACKING / "devtools" / "templates"
+FRONTIER_ARTICLE = TEMPLATES / "frontier-article.md"
+RENDERINGS = PACKING / "atlas" / "known-best" / "rendering"
+TABLE_SCRIPT = PACKING / "devtools" / "overview" / "table.js"
+STATUS = PACKING / "frontier" / "STATUS.md"
+
+#: Every file this page reads beyond the site shell's own inputs.
+FRONTIER_INPUTS: tuple[Path, ...] = (
+    Path(__file__).resolve(),
+    FRONTIER_ARTICLE,
+    TABLE_SCRIPT,
+    PACKING / "frontier",
+    RENDERINGS,
+    BOUND_CITATIONS,
+    PACKING / "devtools" / "render_research_tables.py",
+    PACKING / "devtools" / "build_bound_citations.py",
+    PACKING / "devtools" / "validate_schemas.py",
+    PACKING / "src" / "sqpack" / "assurance.py",
+)
+
+#: The digits a decimal cell shows before it is cut, with an ellipsis rather than rounded:
+#: a rounded bound can read as a different bound.
+DECIMAL_PLACES = 8
+#: A minimal polynomial longer than this is linked rather than typeset; the longest in the
+#: record runs to 18,000 characters.
+POLYNOMIAL_SHOWN = 160
+#: An exact gap longer than this, in TeX, is shown as its decimal: a difference of two
+#: long closed forms is exact and unreadable.
+GAP_SHOWN = 44
+#: A closed form longer than this, in TeX, is shown as its decimal. The longest structured
+#: form runs to 45 characters; a 30-digit rational certificate value does not read as one.
+VALUE_SHOWN = 56
+
+
+def math_html(tex: str) -> str:
+    """Inline math in kpress's own markup, which the page's KaTeX scripts enhance.
+
+    kpress turns `$…$` into math only in Markdown text, and a table here is an HTML
+    block, so the cell asks kpress's renderer for the same span it would have written:
+    the TeX for KaTeX and server MathML as the no-script fallback.
+    """
+    from kpress.format.markdown import (  # noqa: PLC0415
+        _render_math,  # pyright: ignore[reportPrivateUsage]
+    )
+
+    return _render_math(tex, display="inline", math="auto", env={})
+
+
+def decimal_text(value: object) -> str:
+    """A record's decimal, cut rather than rounded after `DECIMAL_PLACES`."""
+    text = str(value)
+    whole, _, fraction = text.partition(".")
+    if len(fraction) <= DECIMAL_PLACES:
+        return text
+    return f"{whole}.{fraction[:DECIMAL_PLACES]}…"
+
+
+def is_integer(text: str) -> bool:
+    return re.fullmatch(r"\d+", text) is not None
+
+
+def cell_tex(tex: str) -> str:
+    """A value's TeX as a table cell sets it: a lone fraction at full size.
+
+    Inline math sets `\\frac` in text style, where `31/8` reads at a subscript's size;
+    a fraction that is the whole value is the one a reader is looking for, so it gets
+    `\\dfrac`. A fraction inside a sum keeps text style and the row its height.
+    """
+    if re.fullmatch(r"\\frac\{\d+\}\{\d+\}", tex):
+        return "\\dfrac" + tex.removeprefix("\\frac")
+    return tex
+
+
+def value_html(bound: dict[str, Any]) -> str:
+    """A bound as a reader should see it: integers plain, closed forms as math."""
+    exact = bound.get("exact_form")
+    if isinstance(exact, str) and exact and not tables.ROOT_FORM.fullmatch(exact):
+        if is_integer(exact):
+            return html.escape(exact)
+        tex = tables.latex(exact)
+        if len(tex) <= VALUE_SHOWN:
+            return math_html(cell_tex(tex))
+    return f'<span class="site-decimal">{html.escape(decimal_text(bound["value"]))}</span>'
+
+
+def polynomial_html(case: dict[str, Any], case_url: str) -> str:
+    """The minimal polynomial behind a decimal, where the record gives one."""
+    upper = case["reported_upper_bound"]
+    polynomial = upper.get("minimal_polynomial")
+    if not polynomial:
+        return ""
+    degree = upper.get("algebraic_degree")
+    if len(polynomial) > POLYNOMIAL_SHOWN:
+        return (
+            f'<dt>Minimal polynomial</dt><dd>degree {degree}, <a href="{case_url}">'
+            "in the case record</a></dd>"
+        )
+    shown = tables.polynomial_latex(polynomial)
+    return f"<dt>Minimal polynomial</dt><dd>{math_html(shown)}</dd>"
+
+
+def credit(names: Iterable[str] | None, year: object) -> str:
+    who = ", ".join(names or [])
+    when = str(year) if year else ""
+    return html.escape(" ".join(part for part in (who, when) if part))
+
+
+def exact_value(form: str) -> Any:
+    """A sympy value for an exact form, or `None` for a polynomial root."""
+    import sympy  # noqa: PLC0415
+    from sympy.parsing.sympy_parser import (  # noqa: PLC0415
+        implicit_multiplication_application,
+        parse_expr,
+        standard_transformations,
+    )
+
+    if tables.ROOT_FORM.fullmatch(form):
+        return None
+    return parse_expr(
+        form,
+        transformations=(*standard_transformations, implicit_multiplication_application),
+        local_dict={"sqrt": sympy.sqrt, "floor": sympy.floor},
+    )
+
+
+def gap(case: dict[str, Any]) -> tuple[str, str]:
+    """Verified upper minus verified lower: `(cell HTML, decimal for sorting)`.
+
+    Exact where both bounds are closed forms and the difference is short enough to read
+    in a cell, with its decimal beneath when it is irrational; otherwise the decimal
+    difference, cut like every other decimal here.
+    """
+    import sympy  # noqa: PLC0415
+
+    upper, lower = case["verified_upper_bound"], case["verified_lower_bound"]
+    upper_exact = exact_value(upper["exact_form"]) if upper.get("exact_form") else None
+    lower_exact = exact_value(lower["exact_form"]) if lower.get("exact_form") else None
+    if upper_exact is not None and lower_exact is not None:
+        difference = cast("Any", sympy.radsimp(sympy.expand(upper_exact - lower_exact)))
+        numeric = Decimal(str(sympy.N(difference, 30)))
+        sort_value = "0" if numeric == 0 else f"{numeric:.30f}"
+        tex = sympy.latex(difference, order="rev-lex")
+        if difference.is_Integer:
+            return html.escape(str(difference)), sort_value
+        if len(tex) <= GAP_SHOWN:
+            shown = math_html(cell_tex(tex))
+            if not difference.is_Rational:
+                shown += f'<span class="site-frontier-approx">≈ {decimal_text(numeric)}</span>'
+            return shown, sort_value
+        return f'<span class="site-decimal">{decimal_text(numeric)}</span>', sort_value
+    numeric = Decimal(str(upper["value"])) - Decimal(str(lower["value"]))
+    return (
+        f'<span class="site-decimal">{html.escape(decimal_text(numeric))}</span>',
+        str(numeric),
+    )
+
+
+@cache
+def evidence_lines() -> dict[str, int]:
+    """Each evidence id's line in `evidence.yaml`, for a link to the entry itself."""
+    lines = (tables.FRONTIER / "evidence.yaml").read_text(encoding="utf-8").splitlines()
+    found = {}
+    for number, line in enumerate(lines, start=1):
+        match = re.fullmatch(r"\s*- id: (\S+)", line)
+        if match:
+            found[match.group(1)] = number
+    return found
+
+
+def evidence_links(refs: Iterable[str]) -> str:
+    base = repo_file(tables.FRONTIER / "evidence.yaml")
+    lines = evidence_lines()
+    links = []
+    for ref in dict.fromkeys(refs):
+        if ref not in lines:
+            raise SystemExit(f"evidence id {ref} is not in evidence.yaml")
+        links.append(f'<a href="{base}#L{lines[ref]}"><code>{html.escape(ref)}</code></a>')
+    return ", ".join(links)
+
+
+def thumbnail_svg(n: int) -> str:
+    """The atlas drawing of case `n`, reduced to its squares for a table cell.
+
+    The full drawing carries exact coordinates to 28 digits and a metadata block, about
+    51 MB over the corpus; a cell 50 pixels across needs the outline of each square at
+    whole units of a 100-unit frame, half a pixel at
+    that size, one path per fill colour, and nothing else.
+    """
+    source = (RENDERINGS / f"n-{n:03d}.svg").read_text(encoding="utf-8")
+    frame = re.search(
+        r'<rect data-feature="container-outline" x="([\d.]+)" y="([\d.]+)" '
+        r'width="([\d.]+)" height="([\d.]+)"',
+        source,
+    )
+    if frame is None:
+        raise SystemExit(f"n-{n:03d}.svg has no container outline")
+    x0, y0, width, _ = (Decimal(part) for part in frame.groups())
+    scale = Decimal(100) / width
+    paths: dict[str, list[str]] = {}
+    squares = re.findall(
+        r'<polygon data-feature="square-fill"[^>]*? points="([^"]+)" fill="(#[0-9a-f]{6})"',
+        source,
+    )
+    if len(squares) != n:
+        raise SystemExit(f"n-{n:03d}.svg draws {len(squares)} squares, not {n}")
+    for points, fill in squares:
+        corners = [
+            (round((Decimal(x) - x0) * scale), round((Decimal(y) - y0) * scale))
+            for x, y in (pair.split(",") for pair in points.split())
+        ]
+        paths.setdefault(fill, []).append(_square_path(corners))
+    body = "".join(
+        f'<path fill="{fill}" d="{"".join(parts)}"/>' for fill, parts in sorted(paths.items())
+    )
+    return (
+        '<span class="site-thumb"><svg viewBox="-1 -1 102 102" aria-hidden="true" '
+        'focusable="false"><rect x="0" y="0" width="100" height="100" fill="none" '
+        f'stroke="currentColor" stroke-width="1.2"/><g stroke="currentColor" '
+        f'stroke-width="0.6" stroke-linejoin="round">{body}</g></svg></span>'
+    )
+
+
+def _square_path(corners: list[tuple[int, int]]) -> str:
+    """One square as a closed path in whole units, relative after its first corner."""
+    (x, y), *rest = corners
+    steps = [f"M{x} {y}"]
+    for next_x, next_y in rest:
+        dx, dy = next_x - x, next_y - y
+        if dy == 0:
+            steps.append(f"h{dx}")
+        elif dx == 0:
+            steps.append(f"v{dy}")
+        else:
+            steps.append(f"l{dx}{'' if dy < 0 else ' '}{dy}")
+        x, y = next_x, next_y
+    return "".join(steps) + "z"
+
+
+def frontier_cases() -> list[dict[str, Any]]:
+    """Every case, each validated against its declared contract before it is read."""
+    paths = sorted(tables.FRONTIER.glob("n-*.md"))
+    for path in paths:
+        errors = check_record(path)
+        if errors:
+            raise SystemExit(f"{path.name} is not a valid case record: {'; '.join(errors[:3])}")
+    cases = tables.load_cases()
+    names = [f"n-{case['n']:03d}.md" for case in cases]
+    if names != [path.name for path in paths]:
+        raise SystemExit("frontier case numbers do not match their file names")
+    return cases
+
+
+def recent_lower_bounds() -> dict[int, bool]:
+    """Whether each case's verified lower bound is recent, as the atlas figure stars it."""
+    import json  # noqa: PLC0415
+
+    entries = json.loads(BOUND_CITATIONS.read_text(encoding="utf-8"))["citations"]["entries"]
+    return {entry["n"]: bool(entry["lower"] and entry["lower"]["recent"]) for entry in entries}
+
+
+def _cell(content: str, *, value: str | None = None, classes: str = "") -> str:
+    attributes = f' class="{classes}"' if classes else ""
+    if value is not None:
+        attributes += f' data-value="{html.escape(value)}"'
+    return f"<td{attributes}>{content}</td>"
+
+
+def _bound_cell(bound: dict[str, Any], note: str = "", details: str = "") -> str:
+    parts = [value_html(bound)]
+    if note:
+        parts.append(f'<span class="site-frontier-note">{note}</span>')
+    if details:
+        parts.append(
+            f'<details><summary>more</summary><dl class="site-detail">{details}</dl></details>'
+        )
+    return _cell("".join(parts), value=str(bound["value"]), classes="num")
+
+
+def _verified_cell(verified: dict[str, Any], reported: dict[str, Any]) -> str:
+    """A verified bound, or the mark that it is the reported one, shown once."""
+    if bounds_agree_at_declared_precision(reported, verified):
+        return _cell(
+            '<span class="site-frontier-same" title="Verified here at the reported value">'
+            "✓ same</span>",
+            value=str(verified["value"]),
+            classes="num",
+        )
+    return _cell(value_html(verified), value=str(verified["value"]), classes="num")
+
+
+def _upper_details(case: dict[str, Any], case_url: str) -> str:
+    upper = case["reported_upper_bound"]
+    construction = html.escape(tables.UB_LABEL[upper["construction_method"]])
+    if upper.get("catalogue_rigid") == "rigid":
+        construction += ", catalogue rigid"
+    return (
+        f"<dt>Construction</dt><dd>{construction}</dd>"
+        f"{polynomial_html(case, case_url)}"
+        f"<dt>Source</dt><dd>{html.escape(upper.get('source_key') or '—')}</dd>"
+    )
+
+
+def _lower_details(lower: dict[str, Any]) -> str:
+    kind = html.escape(tables.LB_LABEL[lower["kind"]].replace("`", ""))
+    return (
+        f"<dt>Kind</dt><dd>{kind}</dd>"
+        f"<dt>Source</dt><dd>{html.escape(lower.get('source_key') or '—')}</dd>"
+    )
+
+
+def _records(case: dict[str, Any], case_url: str, evidence: dict[str, dict[str, Any]]) -> str:
+    refs = list(
+        dict.fromkeys(
+            [
+                *case["reported_upper_bound"]["evidence"],
+                *case["verified_upper_bound"]["evidence"],
+                *case["reported_lower_bound"]["evidence"],
+                *case["verified_lower_bound"]["evidence"],
+            ]
+        )
+    )
+    origins = html.escape(tables.verification_origins(case, evidence))
+    notes = html.escape(tables.case_disposition(case))
+    return (
+        f'<a href="{case_url}">n-{case["n"]:03d}.md</a>'
+        f"<details><summary>{len(refs)} evidence</summary>"
+        f'<dl class="site-detail"><dt>Verification</dt><dd>{origins}</dd>'
+        f"<dt>Notes</dt><dd>{notes}</dd>"
+        f"<dt>Evidence</dt><dd>{evidence_links(refs)}</dd></dl></details>"
+    )
+
+
+def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recent: bool) -> str:
+    """One table row, every cell from the record."""
+    n = case["n"]
+    case_url = repo_file(tables.FRONTIER / f"n-{n:03d}.md")
+    upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
+    status = case["status"]
+    shown_status = html.escape(status)
+    if case["reported_status"] != status:
+        shown_status += f" (reported {html.escape(case['reported_status'])})"
+    if status == "proved":
+        shown_status = f'<span class="site-status-proved">{shown_status}</span>'
+    gap_html, gap_value = gap(case)
+    star = '<span class="site-star" title="Recent lower bound">★</span>' if recent else ""
+    cells = [
+        _cell(
+            f'<span class="site-frontier-n"><a href="{case_url}">{n}</a>'
+            f"{thumbnail_svg(n)}</span>",
+            value=str(n),
+            classes="num",
+        ),
+        _cell(shown_status, value=status),
+        _bound_cell(
+            upper,
+            credit(upper.get("found_by"), upper.get("found_year")),
+            _upper_details(case, case_url),
+        ),
+        _verified_cell(case["verified_upper_bound"], upper),
+        _bound_cell(
+            lower,
+            credit(lower.get("proved_by"), lower.get("proved_year")),
+            _lower_details(lower),
+        ),
+        _verified_cell(case["verified_lower_bound"], lower),
+        _cell(gap_html, value=gap_value, classes="num"),
+        _cell(star, value="1" if recent else "0"),
+        _cell(_records(case, case_url, evidence), classes="site-records"),
+    ]
+    flag = {True: "true", False: "false"}
+    attributes = (
+        f'data-n="{n}" data-status="{html.escape(status)}" '
+        f'data-open="{flag[status == "open"]}" data-recent="{flag[recent]}"'
+    )
+    return f"<tr {attributes}>{''.join(cells)}</tr>"
+
+
+#: The columns: heading, sort type (none for a column that does not sort), alignment.
+HEADERS: tuple[tuple[str, str, str], ...] = (
+    ("n", "num", "num"),
+    ("Status", "text", ""),
+    ("Best known packing", "num", "num"),
+    ("Verified upper", "num", "num"),
+    ("Reported lower", "num", "num"),
+    ("Verified lower", "num", "num"),
+    ("Gap", "num", "num"),
+    ("Recent", "num", ""),
+    ("Records", "", ""),
+)
+
+
+def _heading(label: str, kind: str, align: str) -> str:
+    sort = f' data-sort="{kind}"' if kind else ""
+    classes = f' class="{align}"' if align else ""
+    return f'<th scope="col"{sort}{classes}>{html.escape(label)}</th>'
+
+
+def _tools(count: int, last: int) -> str:
+    """The filter bar, hidden until the table script wires it up."""
+    number = f'type="number" data-filter="n" min="1" max="{last}" size="4"'
+    return (
+        '<div class="site-table-tools" data-table="frontier" hidden>'
+        '<label>Status <select data-filter="status"><option value="">all</option>'
+        '<option value="open">open</option><option value="proved">proved</option>'
+        "</select></label>"
+        '<label><input type="checkbox" data-filter="open"> open only</label>'
+        '<label><input type="checkbox" data-filter="recent"> recent only</label>'
+        f'<label><var>n</var> from <input {number} data-bound="min" placeholder="1"></label>'
+        f'<label>to <input {number} data-bound="max" placeholder="{last}"></label>'
+        f'<span class="site-count" aria-live="polite" data-noun="cases">{count} cases</span>'
+        "</div>"
+    )
+
+
+def table_html(cases: list[dict[str, Any]]) -> str:
+    """The controls and the table, as one HTML block with no blank line inside it."""
+    evidence = tables.load_evidence()
+    recent = recent_lower_bounds()
+    head = "".join(_heading(*column) for column in HEADERS)
+    rows = "\n".join(
+        case_row(case, evidence, recent=recent.get(case["n"], False)) for case in cases
+    )
+    return (
+        f"{_tools(len(cases), max(case['n'] for case in cases))}\n"
+        '<div class="site-table-wrap site-wide site-frontier" id="frontier-table">\n'
+        '<table class="kpress-table site-table">\n'
+        f"<thead><tr>{head}</tr></thead>\n<tbody>\n{rows}\n</tbody>\n</table>\n</div>"
+    )
+
+
+def frontier_markdown(fill: Callable[..., str], edition: str) -> str:
+    """The article with every count and link filled from the record."""
+    cases = frontier_cases()
+    recent = recent_lower_bounds()
+    values = {
+        "EDITION": html.escape(edition),
+        "COUNT": str(len(cases)),
+        "LAST_N": str(max(case["n"] for case in cases)),
+        "PROVED": str(sum(case["status"] == "proved" for case in cases)),
+        "OPEN": str(sum(case["status"] == "open" for case in cases)),
+        "RECENT": str(sum(recent.values())),
+        "RECENT_SINCE": f"{RECENT_SINCE:%B %Y}",
+        "STATUS_URL": repo_file(STATUS),
+        "TABLE": table_html(cases),
+    }
+    template = FRONTIER_ARTICLE.read_text(encoding="utf-8")
+    return fill(template, values, where=FRONTIER_ARTICLE.name)
+
+
+def table_script() -> str:
+    """The table behaviour, read from its checked file and placed in a script element."""
+    script = TABLE_SCRIPT.read_text(encoding="utf-8")
+    if "</script" in script.lower():
+        raise SystemExit(f"{TABLE_SCRIPT.name} contains a closing script tag")
+    return script

@@ -33,6 +33,7 @@ from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import NamedTuple
 
+from devtools.render_frontier_page import FRONTIER_INPUTS
 from sqpack.release import PUBLICATION_EDITION
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -50,6 +51,10 @@ OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
 )
+FRONTIER_DESCRIPTION = (
+    "Every tracked case of packing n unit squares in the smallest square, n = 1 to 324: "
+    "the best known packing, the reported and verified bounds, and the records behind them."
+)
 
 #: Every file a render reads. The Pages workflow's deploy filter and the scope tool are
 #: checked against this list, so a page cannot go stale because an input moved unseen.
@@ -59,6 +64,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     SITE_NAV,
     OVERVIEW_ARTICLE,
     PACKING / "src" / "sqpack" / "release.py",
+    *FRONTIER_INPUTS,
 )
 
 # The same refusal the explainer makes: a script or stylesheet with a source, a CSS
@@ -146,8 +152,13 @@ def kpress_page(
     description: str,
     toc: bool,
     rewrite_body: Callable[[str], str] | None = None,
+    scripts: Sequence[str] = (),
 ) -> Page:
-    """One standalone kpress page with the site's layer, nav and colophon."""
+    """One standalone kpress page with the site's layer, nav and colophon.
+
+    `scripts` are page programs read from their checked `.js` files, each placed in its own
+    script element after the math scripts; no script text is written here.
+    """
     from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
     from kpress.format.render import render_page  # noqa: PLC0415
 
@@ -160,7 +171,7 @@ def kpress_page(
         trust_mode="trusted",
         metadata={"description": description, "url": canonical, "site_name": SITE_NAME},
     )
-    head, scripts = page_assets()
+    head, math_scripts = page_assets()
     options = RenderOptions(
         asset_mode="inline",
         asset_policy="none",
@@ -179,7 +190,8 @@ def kpress_page(
     page = rendered.html.replace(prose + '"', prose + ' site-page"', 1)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    page = page.replace("</body>", f"{scripts}\n</body>", 1)
+    programs = "".join(f"\n<script>{script}</script>" for script in scripts)
+    page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
 
@@ -214,9 +226,28 @@ def overview_page() -> Page:
     )
 
 
+def frontier_page() -> Page:
+    """The frontier atlas: one row per case, from its `SquarePackingCase/v2` record."""
+    from devtools.render_frontier_page import (  # noqa: PLC0415
+        frontier_markdown,
+        table_script,
+    )
+
+    return kpress_page(
+        frontier_markdown(fill, PUBLICATION_EDITION),
+        name="frontier.html",
+        current="frontier",
+        title=f"The Frontier Atlas · {SITE_NAME}",
+        description=FRONTIER_DESCRIPTION,
+        toc=False,
+        scripts=(table_script(),),
+    )
+
+
 #: The pages this renderer owns, by served name.
 PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
+    "frontier.html": frontier_page,
 }
 
 

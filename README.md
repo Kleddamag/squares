@@ -361,6 +361,16 @@ accordingly.
 
 ## Results by Others
 
+The
+[maintained upstream repository index](packing/resources/README.md#recent-external-github-repositories)
+links the projects we integrate from and distinguishes their current development from
+the pinned revisions used as evidence.
+The new [wand125 tools intake](packing/resources/web/wand125-tools-2026-09-29/README.md)
+registers the disputed certificate-ceiling claim as T-056 and the reported independent
+n11 row scans as T-057. The
+[verification tooling overview](docs/project/verification-tooling.md) records what our
+native and source-replay checkers cover and the gaps that remain.
+
 Others have built on this repository’s certificates, credited them and taken the bounds
 further, and others have worked independently of it, one of them from the same weighted
 method. The theorems and the credit belong to their authors.

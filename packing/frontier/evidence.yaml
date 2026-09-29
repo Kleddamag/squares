@@ -4,6 +4,55 @@ softschema:
   status: enforced
 last_reviewed: '2026-09-29'
 evidence:
+  - id: E-wand125-tools-ceiling-report
+    claim: derived-structure
+    scope: {n_min: 1, n_max: 100}
+    assurance: reported
+    reported_method: published-proof
+    performed_by: source-author
+    relationship_to_generator: not-applicable
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    replay_status: not-attempted
+    external_review:
+      state: defect-found
+      date: '2026-09-29'
+      reviewed_by: GPT-6 Astra mathematical review with coordinator integration
+      note: >-
+        The B*UB argument requires net-aligned witness orientations; arbitrary orientations
+        need an additional containment factor. Rounded table floats are not rigorous upper
+        witness bounds. See review-2026-09-29-wand125-tools-mathematics.md; neither a
+        counterexample to the unrestricted inequality nor a completed ceiling proof is claimed.
+    limitations: >-
+      Source README and transfer/l_cap.py claim a general ceiling for the fixed B=9977/10000.
+      Reviewed by reading only; adopt as a heuristic until geometric and input premises are
+      discharged. Scope is the source's 1-100 upper-bound table. No frontier field changes.
+    blocker:
+      kind: mathematics
+      detail: Bind a rigorous packing witness and its orientations, or use the reviewed sufficient factor B*(1+83/40000); distinguish a sufficient ceiling from a sharp optimum.
+    source_reviewed: '2026-09-29'
+
+  - id: E-wand125-tools-n11-row-report
+    claim: derived-structure
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: independent-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    replay_status: not-attempted
+    limitations: >-
+      general_pose_tree/README.md reports all 12028 exact per-row minima agreeing with
+      Kleddamag's pinned n11 certificate, including witness replay. This intake has not
+      replayed that complete scan or audited every branch/enclosure predicate. The row
+      claim does not cover the global counting theorem and is not a rectangle verifier.
+    blocker:
+      kind: checker
+      detail: Audit the point/threshold row contract and replay the complete pinned row census, then separately bind angle containment, D4 folding and the global budget.
+    source_reviewed: '2026-09-29'
   - id: E-wand125-point-source-replay
     claim: lower-bound
     scope: {n_values: [26, 29, 39, 40, 41, 53, 55, 56, 69, 70, 71, 72]}

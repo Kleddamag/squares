@@ -176,6 +176,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-159](agent-sessions/session-159-n17-guzhou-r052-intake.md) | completed | contemporaneous | `factual-review` (correctness) | `review-planning-oversight` (insight) | 2 | think-ju2h | BC-386 (think-amx8): lift the native coverage ceilings and decide R052 natively, the first lane of the after-R052 order, with the n11 tilt-profile census and the ceiling search beside it. |
 | [session-160](agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | completed | contemporaneous | `factual-review` (correctness) | `factual-review` (correctness) | 3 | think-il68 | BC-390 (think-7c17): run the widened n = 11 rung 0 box on eight workers overnight, with the rectangle ladders and the queued wand125 and Daniel replays on the remaining workers, per the 2026-09-27 plan. |
 | [session-161](agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | in_progress | contemporaneous | `research-survey` (correctness) | `factual-review` (correctness) | 2 | think-1an7 | Register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the reported s(50) >= 37/5, publish them, and collect the replays listed under Recovery State as they land. |
+| [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Continue bounded native rectangle verification under think-bmf3: improve the translation-box bound and retain a complete external-certificate run before promoting any bound. |
 
 ### Workflow summary
 
@@ -184,13 +185,13 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | workflow | declared entries | retrospective entries | declared phases | retrospective phases |
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
-| `factual-review` | 11 | 0 | 63 | 2 |
+| `factual-review` | 11 | 1 | 63 | 3 |
 | `insight-iteration` | 27 | 1 | 84 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 37 | 1 |
 | `research-loop` | 31 | 4 | 108 | 8 |
-| `pipeline-improvement` | 36 | 2 | 154 | 5 |
-| `documentation-pass` | 1 | 0 | 25 | 1 |
+| `pipeline-improvement` | 36 | 2 | 154 | 6 |
+| `documentation-pass` | 1 | 0 | 25 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 35 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |

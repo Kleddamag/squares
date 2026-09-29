@@ -494,6 +494,26 @@ for `s(21)`, `s(45)` and `s(50)`,
 `s(21) = 5` and `s(45) = 7`, and
 [Guzhou0806’s R067 and R068](web/n17-guzhou-r068-2026-09-28/README.md) at `n = 17`.
 
+### Recent External GitHub Repositories
+
+The repository links below are the moving discovery points for current work.
+A branch head is not evidence for a registered claim: each claim, replay and review
+cites an immutable tag or full commit and a retained packet under `web/`. When an
+upstream branch moves, a dated intake may add a new pin; the older packet and citation
+key remain bound to the bytes they originally named.
+
+| Repository | Role in this record | Pinned record |
+| --- | --- | --- |
+| [wand125/square-packing-tools](https://github.com/wand125/square-packing-tools) | MIT-licensed drivers for moving rectangle-density certificates in `n` and `L`, performance variants around Tokoharu’s solver, and the exact `general_pose_tree` checker | **[wand125 tools 2026]**; [29 September packet](web/wand125-tools-2026-09-29/README.md) |
+| [wand125/square-packing-bounds](https://github.com/wand125/square-packing-bounds) | Point, rectangle-density and mixed certificate releases | **[wand125 point bounds 2026]**, **[wand125 rectangle bounds 2026-09-28]** and **[wand125 point and mixed bounds 2026-09-28]** |
+| [tokoharu/square-packing-density-bounds](https://github.com/tokoharu/square-packing-density-bounds) | Rectangle-density solver and the interval verifier used to accept its certificates | **[Tokoharu density 2026]**; [22 September packet](web/external-square-certificates-2026-09-22/README.md) |
+| [evand/square-packing](https://github.com/evand/square-packing) | Weighted point and mixed covers, exact verifiers and Lean reductions | **[evand square-packing 2026-09-28]**; [28 September packet](web/evand-square-packing-2026-09-28/README.md) |
+| [Kleddamag/11-squares-certified-bound](https://github.com/Kleddamag/11-squares-certified-bound) | The `s(11) > 31/8` certificate and its two source checkers | **[Kleddamag n11 2026]**; [retained source](web/external-square-certificates-2026-09-22/kleddamag-11/README.md) |
+| [Kleddamag/17-squares-certified-bound](https://github.com/Kleddamag/17-squares-certified-bound) | The `n = 17` mixed-charge certificate line through `466001/100000` | **[Kleddamag n17 4.66001]**; [27 September packet](web/n17-kleddamag-466001-2026-09-27/README.md) |
+| [Guzhou0806/n17-square-packing](https://github.com/Guzhou0806/n17-square-packing) | Parent-angle and mixed-charge certificates for `n = 17`, including R068 | **[Guzhou0806 n17 R068]**; [28 September packet](web/n17-guzhou-r068-2026-09-28/README.md) |
+| [Mira-acc/17squares](https://github.com/Mira-acc/17squares) | Exact point and weighted certificates used in the `n = 17` lineage | **[n17 weighted certificates 2026-09-20]**; [20 September packet](web/n17-weighted-certificates-2026-09-20/README.md) |
+| [sam-bee/squarl](https://github.com/sam-bee/squarl) | Search-pipeline documentation and exact-rational lower-bound sources | **[Squarl n17 2026]**; [retained source](web/squarl-n17-2026/README.md) |
+
 Since 22 August 2026 the archive has retained every public certificate that moved a
 lower bound here. Some build on this project’s certificates or pipeline (Kleddamag,
 Guzhou0806, Mira, wand125) or credit it second-hand (Tokoharu); others are independent

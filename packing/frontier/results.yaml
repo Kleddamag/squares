@@ -3518,3 +3518,61 @@ results:
       that run, and two frontier shards of 15,839 parents each were still running. C0
       because the 2026-09-28 point-only review is recorded as an external_review on the
       n = 45 replay entry only. The Lean build was not run here.
+
+  - id: T-056
+    claim: >-
+      wand125/square-packing-tools claims that rectangle-density certificates using
+      core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100
+      witness table. The unrestricted argument is disputed: the B-scaled witness
+      squares need net-aligned orientations, and the table's rounded floats are not
+      certified upper bounds. Recorded for review, with no adopted impossibility theorem.
+    scope: {n_min: 1, n_max: 100}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 2
+      rationale: A tooling limit that could prematurely stop searches; resolving its premises affects safe integration but establishes no new packing bound.
+      scored: '2026-09-29'
+      by: W2 tools intake (repository)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 tools 2026]']
+      published: '2026-09-29'
+    evidence: [E-wand125-tools-ceiling-report]
+    artifacts:
+      - packing/resources/web/wand125-tools-2026-09-29/README.md
+      - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+    next_rung: >-
+      think-xgjo: discharge net orientation and exact upper-witness assumptions, or
+      replace the ceiling with the reviewed sufficient angular-containment correction.
+      Keep l_cap a search heuristic until then.
+    notes: V0 records an unestablished source claim; C1 records a source-level review finding a missing premise, not a machine refutation or a verified theorem.
+
+  - id: T-057
+    claim: >-
+      wand125/square-packing-tools reports that its exact general_pose_tree checker
+      reproduces all 12028 per-row core minima of Kleddamag's n11 certificate at
+      commit 6a733f3, with global row minimum 999962528 units and all witnesses replayed.
+      This is the source's row-scan equality claim only, not a new proof of the global
+      counting theorem or independent rectangle-density coverage.
+    scope: {n_values: [11]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 2
+      rationale: A reusable independent row-checking implementation worth replaying; the existing n11 bound does not change.
+      scored: '2026-09-29'
+      by: W2 tools intake (repository)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 tools 2026]']
+      published: '2026-09-29'
+    evidence: [E-wand125-tools-n11-row-report]
+    artifacts:
+      - packing/resources/web/wand125-tools-2026-09-29/README.md
+      - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+    next_rung: >-
+      think-190a: review exact branch, enclosure and measure contracts and replay all
+      12028 rows against the pinned certificate. Retain complete census and exact witness
+      comparisons; partial samples do not promote this claim.
+    notes: V0/C0 because this registration records the reported exact replay without retained local complete replay or a completed audit of its checker.

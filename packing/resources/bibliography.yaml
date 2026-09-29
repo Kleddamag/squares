@@ -22,6 +22,22 @@ last_reviewed: '2026-09-29'
 # not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:
+  - key: '[wand125 tools 2026]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-29'
+    credit: wand125 after Tokoharu, Daniel
+    lineage: independent
+    note: >-
+      square-packing-tools at 0d33ab61726c2ab03e3eb8f457dabaf22db8571f, MIT,
+      retained in web/wand125-tools-2026-09-29/upstream.tar.gz. README.md,
+      solver/PROVENANCE.md and THIRD_PARTY_NOTICES.md give authorship and provenance;
+      the source discloses Codex and Claude assistance. Tool claims are separate from
+      the numerical bounds published in square-packing-bounds. Its own attribution names
+      Tokoharu and Evan Daniel; this entry does not infer a direct credit to this project
+      from those upstream projects' lineage. The general pose tree extends wand125's n21
+      checker to point and threshold-charge measures and tests Kleddamag's certificate.
   - key: '[Bentz 2010]'
     authors: [Bentz]
     year: 2010

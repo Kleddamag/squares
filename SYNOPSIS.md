@@ -205,7 +205,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-031](packing/frontier/RESULTS.md) | 11 | `V4` | `C3` | `S2` | `apparently-novel` | At L = 96/25 and B = 9977/10000 on the 181-direction net (half-tangents k*207107/90000000, k = 0..180), the D4-symmetric point measure of total mass 10868617/1000000 = 10.868617 in cases/n11_corner_class_certificate/certificate.json, the retained exp-220 covering (SHA-256 876820dde8d55c727dec73c85f245db27661556bb3c7aa06ffb15b01ec97a461) charges at least 2000013/2000000 to every closed B-square at a net direction whose minimum of x + y is at least 1/2 in each of the four corner frames, decided by the exact event-cell sweep and by the interval branch and bound, which agree at that value. |
 | [T-042](packing/frontier/RESULTS.md) | 17 | `V4` | `C3` | `S2` | `previously-published` | s(17) > 233009/50000 = 4.66018, by Guzhou0806 / N17 project’s R067 release (commit d4e2c287, 28 September 2026, named as made “with AI assistance”): Kleddamag’s 4.66001 charge (T-041) unchanged, budget 17000402008 units of 10^-9, at the larger parent side 32950/33287, with strict cores rebuilt over 2,808 parent-angle intervals whose endpoints contain every 4.66001 endpoint; seventeen cores at the minimum core charge 1000026844 exceed the budget by 54340. |
 | [T-054](packing/frontier/RESULTS.md) | 45 | `V4` | `C3` | `S2` | `previously-published` | s(45) = 7 by a second, point-only route. |
+| [T-056](packing/frontier/RESULTS.md) | 1-100 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools claims that rectangle-density certificates using core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100 witness table. |
 | [T-055](packing/frontier/RESULTS.md) | 21 | `V0` | `C0` | `S2` | `previously-published` | wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed at commit d38917c6 on 28 September 2026 with a Lean 4 reduction at b64f96e6: Evan Daniel’s s21_lower_4.9950.txt support (T-050) scaled by 1001/1000 and re-weighted, 4,604 D4-invariant entries of total 2624862500021/125000000000, with capture threshold q = 249987/250000 over every closed unit square in [0,5]^2, so that 21q exceeds the total by 999979/125000000000. |
+| [T-057](packing/frontier/RESULTS.md) | 11 | `V0` | `C0` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate at commit 6a733f3, with global row minimum 999962528 units and all witnesses replayed. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
 | --- | --- |
@@ -235,11 +237,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 161 | 101 completed; 59 stopped; 1 nonterminal |
+| Sessions | 162 | 101 completed; 60 stopped; 1 nonterminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 55 | 55 registered, 27 by others |
+| Frontier results | 57 | 57 registered, 29 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -968,6 +970,10 @@ case or experiment separately.
 | [Proof Review: Evan Daniel’s `s(32) = 6`, `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001`](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) | dated review record | record | retained | — |
 | [Review Addendum: The Ceiling Lemma, the `+0.006` Cap and H-248 in the Post-4.640020 Plan](docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md) | dated review record | record | retained | — |
 | [wand125 Rectangle Certificates: Does the Reviewed Checker Scale to Side 9?](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) | dated review record | record | retained | — |
+| [wand125 Tools: Mathematical and Admission Review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) | dated review record | record | retained | — |
+| [Native Rectangle-Density Verification Contract](docs/project/reviews/review-2026-09-29-native-rectangle-contract.md) | dated review record | record | retained | — |
+| [Verification Tooling and Its Boundaries](docs/project/verification-tooling.md) | component scope and use | record | retained | — |
+| [Native Rectangle Verification and wand125 Tools Intake](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md) | implementation plan | record | maintained | — |
 | [Proof Review: Evan Daniel’s `s(21) = 5` and `s(45) = 7` by Mixed Covers](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
@@ -1192,6 +1198,17 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
+[Session 162](packing/campaign/agent-sessions/session-162-wand125-tools-intake.md)
+closed the wand125 intake, native rectangle-verifier prototype and documentation slice
+with explicit certification debt.
+The push gate passed; the committed-source full checkpoint and PR publication remain
+pending. No complete retained external rectangle certificate has been independently
+verified.
+
+**Selected next entry:** `think-bmf3`: continue bounded native rectangle verification
+under the W7 plan, improve the translation-box bound, and retain a complete external
+certificate run before promoting any bound.
+
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
 asked again what improvement is left at low `n` and moved one bound.
 The frozen `T-025` threshold atoms re-certify at the 2880-step net, where the crossing
@@ -1367,10 +1384,10 @@ took in Kleddamag’s `s(17) > 232001/50000` at `V4/C3`, Evan Daniel’s `s(32) 
 rectangle bounds for n = 18 to 78, each after a Fable max review, and contained D-509’s
 explainer PDF wobble on PR 235.
 
-**Selected next entry:** `think-7c17`, BC-390: the widened n = 11 rung 0 box on eight
-workers overnight, with BC-394’s rectangle ladders (`think-pr2b`), the 41 queued wand125
-replays and Evan Daniel’s `s(32)` full sweep on the remaining workers; BC-393
-(`think-0rbj`), BC-388 and BC-387 follow their day builds.
+**Selected next entry at the earlier research cutoff:** `think-7c17`, BC-390: the
+widened n = 11 rung 0 box on eight workers overnight, with BC-394’s rectangle ladders
+(`think-pr2b`), the 41 queued wand125 replays and Evan Daniel’s `s(32)` full sweep on
+the remaining workers; BC-393 (`think-0rbj`), BC-388 and BC-387 follow their day builds.
 
 **Selected next entry at the Session 159 cutoff:** `think-amx8`, BC-386, since stopped
 in favour of BC-393.
@@ -3184,6 +3201,19 @@ candidates. Most public frontier entries still record side values without an imp
 geometry witness.
 
 ### Verification Capability Ladder
+
+The [verification tooling overview](docs/project/verification-tooling.md) maps feasible
+witnesses, point and threshold certificates, adaptive parent cores, rectangle densities,
+and mixed covers to their actual checkers and remaining gaps.
+Native point and threshold gates have complete distinct coverage methods.
+The native rectangle prototype passes a complete analytic control; existing retained
+rectangle-bound replays still use Tokoharu’s checker, with independent exact premises
+and input binding. Complete native coverage of a retained external rectangle certificate
+remains open under
+[W7 / think-bmf3](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md).
+The overview also separates the newer zero-margin mixed covers and modified n50 bundle
+from those formats, and distinguishes full replay, partial samples, receipt audits and
+formal-kernel evidence.
 
 | Capability | Current state | Boundary |
 | --- | --- | --- |
@@ -5328,14 +5358,15 @@ in separate tables: their units differ, and the same work can appear in both.
 | `codex-task-tree-session-155-creative.yaml` | session-155 | 188 | 1.52 h | 1.49 h | 1.72 h | no |
 | `codex-task-tree-session-155-integration.yaml` | session-155 | 634 | 3.31 h | 3.2 h | 3.2 h | yes |
 | `session-142-stack-correctness.yaml` | session-142 | 1,186 | 5.01 h | 2.29 h | 2.3 h | yes |
+| `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 107 |
+| measured | 108 |
 | unmeasured | 54 |
-| **total** | **161** |
+| **total** | **162** |
 
 <!-- END GENERATED: session-close-report -->
 

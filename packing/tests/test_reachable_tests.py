@@ -149,6 +149,8 @@ def test_running_selected_tests_preserves_coverage_and_uses_requested_workers(
             "-m",
             "not exhaustive_exact",
             *(("-n", "4") if workers == 4 else ()),
+            "--durations=0",
+            "--durations-min=0",
         )
     ]
 
@@ -209,11 +211,11 @@ def test_the_selection_runs_under_the_workers_the_caller_asks_for() -> None:
     """
     serial = pytest_command(["tests"], 1)
     assert "-n" not in serial
-    assert serial[-2:] == ("-m", "not exhaustive_exact")
+    assert serial[-4:] == ("-m", "not exhaustive_exact", "--durations=0", "--durations-min=0")
 
     parallel = pytest_command(["tests"], 4)
-    assert parallel[-2:] == ("-n", "4")
-    assert parallel[: len(serial)] == serial
+    assert parallel[-4:] == ("-n", "4", "--durations=0", "--durations-min=0")
+    assert parallel[: parallel.index("-n")] == serial[: serial.index("--durations=0")]
 
 
 def test_the_push_step_forwards_the_distribution_both_lanes_use(
@@ -289,5 +291,5 @@ def test_the_runner_wires_its_argument_to_the_command_it_builds(
     assert reachable_tests.main(["--run", "--since", "origin/main", "-n", "3"]) == 0
     assert reachable_tests.main(["--run", "--since", "origin/main"]) == 0
 
-    assert seen[0][-2:] == ("-n", "3"), seen[0]
+    assert seen[0][seen[0].index("-n") :][:2] == ("-n", "3"), seen[0]
     assert "-n" not in seen[1], seen[1]

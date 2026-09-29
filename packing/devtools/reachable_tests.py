@@ -43,6 +43,7 @@ from __future__ import annotations
 import argparse
 import ast
 import os
+import re
 import subprocess
 import sys
 from collections.abc import Sequence
@@ -295,7 +296,9 @@ def select_tests(changed: list[str]) -> TestSelection:
     return TestSelection(everything=False, reason=reason, tests=tests)
 
 
-def pytest_command(targets: Sequence[str], workers: int) -> tuple[str, ...]:
+def pytest_command(
+    targets: Sequence[str], workers: int, *, artifact_stem: Path | None = None
+) -> tuple[str, ...]:
     """The pytest invocation for a selection, under `workers` xdist processes.
 
     Split out from `main` so the distribution can be asserted without running a suite.
@@ -311,6 +314,11 @@ def pytest_command(targets: Sequence[str], workers: int) -> tuple[str, ...]:
     the quick lane and the slow lane together in a single process.
     """
     distribution = ("-n", str(workers)) if workers > 1 else ()
+    receipts = (
+        ("-p", "devtools.reachable_progress", f"--junitxml={artifact_stem}.junit.xml")
+        if artifact_stem is not None
+        else ()
+    )
     return (
         sys.executable,
         "-m",
@@ -320,6 +328,9 @@ def pytest_command(targets: Sequence[str], workers: int) -> tuple[str, ...]:
         "-m",
         "not exhaustive_exact",
         *distribution,
+        "--durations=0",
+        "--durations-min=0",
+        *receipts,
     )
 
 
@@ -377,8 +388,45 @@ def main(argv: Sequence[str] | None = None) -> int:
     # every test above the per-test ceiling because it pays for them on every pull
     # request, while `--push` pays only for the tests your own change reaches, and a slow
     # test your change reaches is exactly the one worth waiting for.
-    command = pytest_command(targets, namespace.numprocesses)
-    return subprocess.run(command, cwd=ROOT, check=False).returncode
+    parent_stem_value = os.environ.get("PACKING_REACHABLE_TEST_ARTIFACT_STEM")
+    child_stem: Path | None = None
+    child_environment: dict[str, str] | None = None
+    if parent_stem_value:
+        parent_stem = Path(parent_stem_value)
+        if not parent_stem.is_absolute():
+            parser.error("reachable-test artifact stem must be absolute")
+        parent_stem = parent_stem.resolve()
+        if parent_stem.is_relative_to(REPO.resolve()):
+            parser.error("reachable-test artifacts must stay outside the source checkout")
+        # Each child has its own prefix: a later two-phase run can keep both JUnit and
+        # progress receipts without overwriting the first child's partial evidence.
+        child_stem = Path(f"{parent_stem}.pytest-all")
+        git_environment = {
+            key: value for key, value in os.environ.items() if not key.startswith("GIT_")
+        }
+        source = subprocess.run(
+            ("git", "rev-parse", "HEAD"),
+            cwd=REPO,
+            check=False,
+            capture_output=True,
+            text=True,
+            env=git_environment,
+        )
+        source_commit = source.stdout.strip()
+        if source.returncode != 0 or re.fullmatch(r"[0-9a-f]{40}", source_commit) is None:
+            parser.error("cannot identify the reachable-test source commit")
+        parent_run_id = os.environ.get("PACKING_REACHABLE_TEST_RUN_ID")
+        if not parent_run_id:
+            parser.error("reachable-test artifacts need the parent run id")
+        child_environment = dict(os.environ)
+        child_environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] = str(child_stem)
+        child_environment["PACKING_REACHABLE_TEST_RUN_ID"] = parent_run_id
+        child_environment["PACKING_REACHABLE_TEST_SOURCE_COMMIT"] = source_commit
+        child_environment["PACKING_REACHABLE_TEST_WORKERS"] = str(namespace.numprocesses)
+    command = pytest_command(targets, namespace.numprocesses, artifact_stem=child_stem)
+    if child_environment is None:
+        return subprocess.run(command, cwd=ROOT, check=False).returncode
+    return subprocess.run(command, cwd=ROOT, check=False, env=child_environment).returncode
 
 
 if __name__ == "__main__":

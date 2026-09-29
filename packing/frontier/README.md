@@ -387,15 +387,16 @@ Six others use certificates already integrated into the register: current extern
 certificate bounds at `n = 11` (`31/8`), `n = 12` (`15680/3951`) and `n = 17`
 (`116511/25000`), plus the first-party bounds at `n = 18` (`4679/1000`), `n = 19`
 (`24/5`) and `n = 20` (`97/20`). Complete interval and exact replays add 18 more
-external-certificate cases: `n = 26,27,28` at `1377/250`; `n = 29,30,31` at `571/100`;
-`n = 39,40,41` at `13/2`; `n = 52,53` at `369/50`; `n = 55` at `377/50`; `n = 56` at
-`381/50`; `n = 68,69` at `841/100`; `n = 70,71` at `171/20`; and `n = 72` at `861/100`.
-`n = 32` left the open cases on 2026-09-27, when a replayed external closed cover proved
-`s(32) = 6`, and `n = 21` and `n = 45` on 2026-09-29, when replayed external mixed
-covers proved `s(21) = 5` and `s(45) = 7`. Within the original `n ≤ 100` corpus, the
-corresponding Nagamochi count is 38. The count is checked against the case records by
-`devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
-outlived their case promotions.
+external-certificate cases: `n = 26` at `1377/250` and `n = 29,30` at `571/100`
+(Tokoharu); `n = 27,28` at `28/5` and `n = 31` at `148/25` (wand125’s rectangle
+certificates); `n = 39,40,41` at `13/2`; `n = 52,53` at `369/50`; `n = 55` at `377/50`;
+`n = 56` at `381/50`; `n = 68,69` at `841/100`; `n = 70,71` at `171/20`; and `n = 72` at
+`861/100`. `n = 32` left the open cases on 2026-09-27, when a replayed external closed
+cover proved `s(32) = 6`, and `n = 21` and `n = 45` on 2026-09-29, when replayed
+external mixed covers proved `s(21) = 5` and `s(45) = 7`. Within the original `n ≤ 100`
+corpus, the corresponding Nagamochi count is 38. The count is checked against the case
+records by `devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained
+counts outlived their case promotions.
 
 Of the 262 open cases, 117 are still held by the trivial grid.
 The other 145 carry non-grid constructions.
@@ -439,9 +440,11 @@ Their small gaps and integer conjectured optima make them candidates for the exi
 technique; the retained source audit found little case-specific treatment.
 
 Among the cases with a *non-trivial* record, `n = 19` follows `n = 11` and `n = 17` at
-`0.0856`, then `n = 18` at `0.1439`. First-party certificates moved all four beginning
-on 2026-09-04; the retained `n = 18` ladder reached `4.679` on 2026-09-19, and external
-certificates now carry `n = 11` and `n = 17`.
+`0.0856`, then `n = 27` at `0.1071`, `n = 26` at `0.1133` and `n = 18` at `0.1439`.
+First-party certificates moved `n = 11`, `17`, `18` and `19` beginning on 2026-09-04;
+the retained `n = 18` ladder reached `4.679` on 2026-09-19. External certificates now
+carry `n = 11`, `17`, `26` and `27`, and wand125’s reported rectangle bounds stand above
+the verified values at `18` and `19` until their replays run.
 
 ## Cross-References
 

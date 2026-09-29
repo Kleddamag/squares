@@ -10,7 +10,10 @@
 //   <select data-filter="status">                 row's data-status equals the value
 //   <input type="checkbox" data-filter="open">     row's data-open is "true"
 //   <input type="number" data-filter="n" data-bound="min|max">  row's data-n in range
-// The bar's `.site-count` shows how many rows remain. The pure functions are published
+// The bar's `.site-count` shows how many rows remain. A link can open the table
+// filtered: each query parameter presets the control it names, `status=proved`,
+// `recent=true`, or `n-max=100` for a bound, so a card can point at a filtered view.
+// The pure functions are published
 // on `globalThis.SiteTable` for the Node tests; nothing else leaves this file.
 
 (() => {
@@ -101,6 +104,39 @@
    */
   function countText(shown, total, noun) {
     return shown === total ? `${total} ${noun}` : `${shown} of ${total} ${noun}`;
+  }
+
+  /**
+   * The query parameter that presets a filter control: its key, with its bound if any.
+   * @param {string} key
+   * @param {string | null} bound
+   * @returns {string}
+   */
+  function controlParam(key, bound) {
+    return bound ? `${key}-${bound}` : key;
+  }
+
+  /**
+   * Set a tools bar's controls from a page's query string.
+   * @param {Element} tools
+   * @param {URLSearchParams} params
+   */
+  function presetFilters(tools, params) {
+    for (const control of tools.querySelectorAll("[data-filter]")) {
+      const name = controlParam(
+        control.getAttribute("data-filter") ?? "",
+        control.getAttribute("data-bound"),
+      );
+      const value = params.get(name);
+      if (value === null) {
+        continue;
+      }
+      if (control instanceof HTMLInputElement && control.type === "checkbox") {
+        control.checked = value === "true";
+      } else if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) {
+        control.value = value;
+      }
+    }
   }
 
   /**
@@ -203,6 +239,7 @@
       tools.removeAttribute("hidden");
       tools.addEventListener("input", applyFilters);
       tools.addEventListener("change", applyFilters);
+      presetFilters(tools, new URLSearchParams(location.search));
       applyFilters();
     }
   }
@@ -220,7 +257,7 @@
     }
   }
 
-  globalThis.SiteTable = { compareKeys, sortOrder, rowMatches, countText, init };
+  globalThis.SiteTable = { compareKeys, sortOrder, rowMatches, countText, controlParam, init };
 
   if (typeof document === "undefined") {
     return;

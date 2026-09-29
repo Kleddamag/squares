@@ -20,6 +20,7 @@ interface SiteTableApi {
     filters: readonly SiteTableFilter[],
   ): boolean;
   countText(shown: number, total: number, noun: string): string;
+  controlParam(key: string, bound: string | null): string;
   init(): void;
 }
 

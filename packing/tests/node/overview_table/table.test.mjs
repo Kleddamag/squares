@@ -61,3 +61,8 @@ void test("the count names the total, and the share when filtered", () => {
   assert.equal(table.countText(324, 324, "cases"), "324 cases");
   assert.equal(table.countText(12, 324, "cases"), "12 of 324 cases");
 });
+
+void test("a query parameter names a filter by its key, and a bound by key and bound", () => {
+  assert.equal(table.controlParam("recent", null), "recent");
+  assert.equal(table.controlParam("n", "max"), "n-max");
+});

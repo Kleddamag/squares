@@ -146,10 +146,13 @@ CARD = re.compile(r'<a class="site-card" href="([^"]+)" data-go="(scroll|externa
 
 
 def test_every_card_names_where_it_goes_and_gets_there(page: str) -> None:
-    """A card's hover icon comes from `data-go`: a scroll lands on a row of this page, an
-    external card leaves the site, and a page card opens one the site serves."""
+    """Every card is a link, and its hover icon comes from `data-go`: a scroll lands on
+    an id of this page, an external card leaves the site, and a page card opens one the
+    site serves."""
     cards = CARD.findall(page)
     assert {kind for _, kind in cards} == {"scroll", "external", "page"}
+    # Every highlight leads somewhere: no card is plain text beside ones that link.
+    assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
     served = {*render_overview.SITE_PAGES, "workbench/"}
     for href, kind in cards:
@@ -157,7 +160,7 @@ def test_every_card_names_where_it_goes_and_gets_there(page: str) -> None:
         if kind == "scroll":
             assert href[1:] in ids, href
         elif kind == "page":
-            assert href.split("#", 1)[0] in served, href
+            assert re.split(r"[?#]", href, maxsplit=1)[0] in served, href
 
 
 CHIP = re.compile(r'<span class="site-chip( site-rung-fill)?"([^>]*)>([^<]+)</span>')

@@ -98,9 +98,13 @@ it.
   The site name is “Square Packing”; the edition appears only in the closing line.
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
-  A card that links is one `<a>`: it gains a gentle wash on hover and a gray icon in its
-  corner for where it goes, `↓` to a row on the page, `↗` off the site, `→` to another
-  page of the site. A card that only reports a count has neither.
+  Every card is a link to its details, so no highlight is plain text beside ones that
+  respond: a result goes to its row in the table, a count to what it counts (the table,
+  the frontier atlas filtered by a query such as `frontier.html?recent=true`, or the
+  definition of the rungs), and a page or document to itself.
+  A card is one `<a>`, with a gentle wash on hover and a gray icon in its corner for
+  where it goes: `↓` to a row on the page, `↗` off the site, `→` to another page of the
+  site.
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
   note size, a fill and no border.
   A plain chip is neutral gray; `data-tone="accent"` is an accent tint for a settled

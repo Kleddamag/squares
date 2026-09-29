@@ -249,36 +249,42 @@ def _bar(label: str, counts: dict[str, int]) -> str:
 
 
 def verification_block(stats: Stats) -> str:
-    """Counts of results and cases, and the confirmation bar by source."""
+    """Counts of results and cases, and the confirmation bar by source. Each count is a
+    card leading to what it counts: the results table, the frontier atlas filtered to
+    the cases or bounds it names, and the definition of the rungs."""
+    from devtools.render_explainer import repo_file  # noqa: PLC0415
+
     cards = [
-        (
+        card(
+            "#every-result",
             "Registered results",
-            str(stats.total),
-            f"{stats.ours} this project{APOSTROPHE}s, {stats.others} by others",
+            _esc(stats.total),
+            _esc(f"{stats.ours} this project{APOSTROPHE}s, {stats.others} by others"),
         ),
-        (
+        card(
+            "frontier.html?n-max=100",
             f"Cases n = 1{EN_DASH}100",
-            f"{stats.cases_1_100_proved} proved",
-            f"{stats.cases_1_100_open} still open",
+            _esc(f"{stats.cases_1_100_proved} proved"),
+            _esc(f"{stats.cases_1_100_open} still open"),
         ),
-        (
+        card(
+            "frontier.html?recent=true",
             "Recent lower bounds",
-            str(stats.recent_lower_total),
+            _esc(stats.recent_lower_total),
             "verified lower bounds proved since 22 August 2026",
         ),
-        (
+        card(
+            repo_file(REPO / "epistemics.md"),
             "Verification",
-            f"{stats.verification.get('V4', 0)} at V4",
-            ", ".join(f"{v} {k}" for k, v in sorted(stats.verification.items(), reverse=True)),
+            _esc(f"{stats.verification.get('V4', 0)} at V4"),
+            _esc(
+                ", ".join(
+                    f"{v} {k}" for k, v in sorted(stats.verification.items(), reverse=True)
+                )
+            ),
         ),
     ]
-    grid = "".join(
-        '<div class="site-card">'
-        f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<span class="site-card-value">{_esc(value)}</span>'
-        f'<span class="site-card-note">{_esc(note)}</span></div>'
-        for label, value, note in cards
-    )
+    grid = "".join(cards)
     legend = "".join(
         f'<span><i class="site-rung-fill" {_fill(c)}></i>{c}</span>' for c in C_RUNGS
     )

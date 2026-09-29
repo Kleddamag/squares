@@ -109,10 +109,10 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin-block: 1.5rem;
 }
-/* A card is a clean summary with square corners. A card that is a link gets a gentle
-   wash on hover, and a gray icon in its corner says what following it does: a down
-   arrow scrolls to a row on this page, a diagonal arrow leaves the site, and a right
-   arrow opens another page of it. A card that is not a link, a count, has neither. */
+/* A card is a clean summary with square corners, and every card is a link to its
+   details: it gets a gentle wash on hover, and a gray icon in its corner says what
+   following it does. A down arrow scrolls to a row on this page, a diagonal arrow
+   leaves the site, and a right arrow opens another page of it. */
 .kpress .site-card {
   border: 1px solid var(--kpress-doc-border);
   border-radius: 0;

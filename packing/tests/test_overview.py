@@ -102,3 +102,20 @@ def test_the_nav_links_only_to_served_pages() -> None:
     for href in re.findall(r'href="([^"]+)"', nav):
         assert href.startswith("https://") or href in served, href
     assert nav.count('aria-current="page"') == 1
+
+
+@pytest.mark.parametrize(
+    ("prose", "tex"),
+    [
+        ("s(11) >= 2 + 4/sqrt(5) by a repair", [r"s(11) \ge 2 + 4/\sqrt{5}"]),
+        ("s(17), s(18), s(19) >= 459/100 by", [r"s(17), s(18), s(19) \ge 459/100"]),
+        ("a bound on s(N) for every 4 <= N <= 100", ["s(N)", r"4 \le N \le 100"]),
+        ("s(46) = 7 from the 7 x 7 grid", ["s(46) = 7", r"7 \times 7"]),
+        ("need side >= 3.8770835..., equal", [r"\ge 3.8770835\ldots"]),
+        ("s(11) > 31/8 by a certificate", ["s(11) > 31/8"]),
+    ],
+)
+def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str]) -> None:
+    runs = [match.group(0) for match in overview_data.MATH.finditer(prose)]
+    assert [overview_data.prose_tex(run) for run in runs] == tex
+    assert overview_data.tex_bounds(prose).count("data-kpress-math") >= len(tex)

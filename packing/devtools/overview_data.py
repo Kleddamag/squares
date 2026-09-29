@@ -62,9 +62,26 @@ INPUTS: tuple[Path, ...] = (
 
 #: The ASCII relations the register's prose uses, and their LaTeX.
 _RELATIONS = {">=": r"\ge", "<=": r"\le", ">": ">", "<": "<", "=": "="}
-_BOUND = re.compile(
-    r"\bs\((\d+)\)\s*(>=|<=|>|<|=)\s*([0-9]+(?:/[0-9]+|\.[0-9]+(?:\.\.\.|…)?)?)"
+_NUMBER = r"[0-9]+(?:/[0-9]+|\.[0-9]+(?:\.\.\.|…)?)?"
+_VALUE = rf"{_NUMBER}(?:\s*\+\s*[0-9]+/sqrt\([0-9]+\))?"
+_RELATION = r"(?:>=|<=|>|<|=)"
+#: The runs of register prose that are mathematics: a bound on one or more `s(n)`, a
+#: range of `N`, a grid's `k x k`, a side compared with a value, and a bare `s(n)`.
+MATH = re.compile(
+    rf"(?:s\([0-9]+\),\s*)*s\([0-9]+\)\s*{_RELATION}\s*{_VALUE}"
+    rf"|\b[0-9]+\s*<=\s*N\s*<=\s*[0-9]+"
+    rf"|\b[0-9]+ x [0-9]+(?= grid)"
+    rf"|(?<=side )>=\s*{_VALUE}"
+    r"|\bs\((?:[0-9]+|N|n)\)"
 )
+
+
+def prose_tex(run: str) -> str:
+    """One run matched by `MATH`, rewritten from the register's ASCII into TeX."""
+    run = re.sub(r"([0-9]+)/sqrt\(([0-9]+)\)", r"\1/\\sqrt{\2}", run)
+    run = re.sub(r"(?<=[0-9]) x (?=[0-9])", r" \\times ", run)
+    run = re.sub(r"\s*(>=|<=|>|<|=)\s*", lambda m: f" {_RELATIONS[m.group(1)]} ", run)
+    return run.replace("...", r"\ldots").replace("…", r"\ldots").strip()
 
 
 def math_html(tex: str, *, display: bool = False) -> str:
@@ -82,17 +99,12 @@ def math_html(tex: str, *, display: bool = False) -> str:
 
 
 def tex_bounds(text: str) -> str:
-    """Escape prose for HTML and set each `s(n) >= a/b` run in it as inline math."""
-
-    def math(match: re.Match[str]) -> str:
-        value = match.group(3).replace("...", r"\ldots").replace("…", r"\ldots")
-        return math_html(f"s({match.group(1)}) {_RELATIONS[match.group(2)]} {value}")
-
+    """Escape register prose for HTML and set each mathematical run in it as inline math."""
     parts: list[str] = []
     last = 0
-    for match in _BOUND.finditer(text):
+    for match in MATH.finditer(text):
         parts.append(html.escape(text[last : match.start()], quote=False))
-        parts.append(math(match))
+        parts.append(math_html(prose_tex(match.group(0))))
         last = match.end()
     parts.append(html.escape(text[last:], quote=False))
     return "".join(parts)

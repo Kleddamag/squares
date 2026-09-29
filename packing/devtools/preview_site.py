@@ -34,12 +34,15 @@ from pathlib import Path
 
 from devtools import render_overview
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from sqpack.probes import probe
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 DEFAULT_OUTPUT = Path(tempfile.gettempdir()) / "squares-site-preview"
 BUILDS = ("explainer", "pages", "workbench")
 WIDTHS = (1280, 390)
+PROBES = PACKING / "devtools" / "probes"
+_OVERFLOW = probe(PROBES, "preview_site/overflow")
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
 
 
@@ -105,7 +108,8 @@ def serve(output: Path, port: int) -> ThreadingHTTPServer:
 
 
 def screenshots(output: Path, shots: Path, port: int) -> list[str]:
-    """A full-page screenshot of every built page at each width, and its console errors."""
+    """A full-page screenshot of every built page at each width, with what went wrong:
+    console errors, and any page wider than its viewport."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -128,6 +132,9 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
                         ),
                     )
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="networkidle")
+                    overflow = page.evaluate(_OVERFLOW)
+                    if overflow > 0:
+                        errors.append(f"{name} @{width}: {overflow}px wider than the viewport")
                     stem = name.replace("/index.html", "").removesuffix(".html")
                     target = shots / f"{stem}-{width}.png"
                     page.screenshot(path=str(target), full_page=True)
@@ -157,7 +164,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"missing: {problem}", file=sys.stderr)
     if args.shots:
         for error in screenshots(output, args.shots.resolve(), args.port):
-            print(f"console error: {error}", file=sys.stderr)
+            print(f"problem: {error}", file=sys.stderr)
             status = 1
     if args.serve:
         server = serve(output, args.port)

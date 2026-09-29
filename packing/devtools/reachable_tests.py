@@ -51,6 +51,7 @@ from functools import cache
 from pathlib import Path
 
 from sqpack.cli.validate import BEHAVIORAL_TEST_ROOTS, changed_paths
+from sqpack.release import DATA_PATHS as RELEASE_DATA_PATHS
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = ROOT.parent
@@ -216,6 +217,18 @@ def select_tests(changed: list[str]) -> TestSelection:
             changed_dotted.add(name)
         else:
             changed_basenames.add(Path(path).name)
+
+    # `release.data_revision` reads these Git paths rather than their file contents.
+    # Give that declared non-Python input the same import-closure treatment as an edit
+    # to `sqpack.release`; otherwise a new frontier record can stale the publication
+    # pin while the push tier omits the test that enforces it.
+    if any(
+        changed_path == data_path or changed_path.startswith(f"{data_path}/")
+        for changed_path in changed
+        for data_path in RELEASE_DATA_PATHS
+    ):
+        changed_modules.add("sqpack.release")
+        changed_dotted.add("sqpack.release")
 
     # Transitive closure: grow the changed-module set by everything that imports it.
     grew = True

@@ -365,6 +365,99 @@ The new bound journal contains only three rows, leaving 12,025 unreplayed there.
 The remaining T-057 work is complete source-bound row equality and the checker-specific
 minimum-search audit, not reconstruction of an already retained global packing proof.
 
+## Two-Level Refinement Readiness
+
+The next bounded diagnostic, **think-gfpf**, applies the unchanged common-core bound to
+two further subdivision levels of the 67 retained depth-20 leaves.
+The reviewer inspected
+[`refine_rectangle_density_frontier.py`](../../../packing/devtools/refine_rectangle_density_frontier.py)
+and its [focused tests](../../../packing/tests/test_rectangle_density_refinement.py)
+before target execution.
+This review found no remaining mathematical or admission blocker to that selected
+diagnostic. It does not authorize a complete certificate claim or a larger replay.
+
+Each longest-side bisection produces two closed rectangles whose union is the parent and
+whose interiors are disjoint.
+The tool checks their exact coordinates and depth, not merely their count or total area.
+Two bisections produce exactly four children.
+For a child center box $Y\subseteq X$, the common-core polygon for $X$ is contained in
+the common-core polygon for $Y$. Nonnegative density therefore makes each child bound at
+least its parent’s. If every child’s bound reaches one, every center in the parent has
+sufficient coverage.
+One successful child does not establish that conclusion.
+
+The analytic control uses $L=4$, $B=1/2$, density 16 on $[1,3]^2$, weight 64 and count
+65\. At $(\cos\theta,\sin\theta)=(4/5,3/5)$, every checking square centered in
+$[15/8,17/8]^2$ lies inside the density rectangle, so its actual coverage is four.
+The parent’s common-core half-width is $3/40$, giving bound $9/25$. After two bisections
+each child’s half-width is $13/80$, giving bound $169/100$. The test checks these exact
+values and drives the real four-child aggregation, replacing only the angle lookup with
+the specified rational rotation.
+It is a local geometric control, not full-net acceptance of that density.
+
+Before refinement, the command reruns the common-core traversal and matches the retained
+frontier’s exact boxes, counts, input and settings.
+It selects the expected 67 depth-capped leaves from all 78 pending boxes.
+It binds and rechecks the candidate, frontier receipt, native checker, refinement
+command and shared comparison helper.
+Binding the helper matters because that module supplies admission checks.
+The native verifier source is unchanged by this slice.
+
+Review fixes added the helper’s source identity, a bounded receipt read before JSON
+parsing, refusal of an empty expected census, and expected parent/child counts that
+remain visible when execution is incomplete.
+Bounds are checked against the deadline before and after evaluation.
+A bound finishing after the deadline is discarded; an interrupted parent retains its
+completed children without being counted as closed.
+Only four completed sufficient bounds close a parent.
+
+The frozen criterion requires all 67 parents and 268 child bounds, direct
+child-to-parent bound monotonicity, and at least one closed parent, within the selected
+cooperative 30-second ceiling.
+Complete output is always `DIAGNOSTIC_ONLY`; a complete zero-closure result is negative
+for this two-level refinement.
+A timeout is `PARTIAL_DIAGNOSTIC`, and identity, partition or monotonicity failures
+refuse. The other 11 queued boxes and the other net directions remain outside this local
+conclusion. In particular, the depth-1 queued box covers half the initial domain.
+Local success would supply no complete-angle cost estimate.
+
+The implementation lane reported nine focused tests passing in 0.11 seconds, with Ruff
+and BasedPyright clean.
+A public-command mutation control changes a stand-in comparison helper during replay and
+confirms refusal at the final source-identity check.
+The mathematical reviewer inspected those controls and the final source without
+duplicating their execution.
+No retained target refinement had been run at this readiness checkpoint, and this
+section records no measured target outcome or new packing proof.
+
+## Two-Level Refinement Result
+
+The subsequently selected
+[target receipt](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json)
+is `DIAGNOSTIC_ONLY`, with outcome `LOCAL_CLOSURE_OBSERVED`. It completed all 67
+selected parents and 268 child bounds, closed 15 parents, and recorded 7.713767125
+seconds including frontier replay, with no timeout.
+**The predeclared local usefulness criterion was met.**
+
+The reviewer independently checked the receipt’s exact rational arithmetic and census.
+Its replayed frontier equals the retained 1,000-node frontier; its parents are exactly
+the 67 depth-capped leaves, without duplicates.
+Every parent bound is below one.
+Each parent’s four depth-22 boxes form its exact partition, every child bound is at
+least its parent’s, and each closure flag agrees with all four child bounds reaching
+one. The candidate, native checker, refinement tool, shared comparison helper and input
+receipt hashes all match their recorded identities.
+The reviewer did not rerun the target or independently recompute its clipping bounds.
+
+The remaining 52 parents each have at least one child whose lower bound is insufficient;
+this is not a coverage counterexample.
+The original 11 queued boxes also remain outside the selected refinement, including the
+depth-1 box covering half the initial domain.
+The result demonstrates useful local subdivision on this fixed set of leaves.
+It neither replaces the original inconclusive angle verdict nor combines diagnostics
+into a complete proof, estimates whole-angle cost, or permits an automatic larger run.
+The other net directions and complete external-certificate acceptance remain open.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

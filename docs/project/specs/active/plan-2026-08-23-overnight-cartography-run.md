@@ -452,13 +452,15 @@ Do not repeat a completed experiment or create another candidate without a regis
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
 For the next supervised exact-research goal, continue native rectangle verification
-under `think-bmf3`: justify finer subdivision or a bound on total coverage before
-another external rectangle replay.
-The retained corner-bound comparison produced no new threshold crossing, and the
-1,000-node probe remains inconclusive with 67 depth-capped leaves and 11 queued boxes.
-PR 246’s implementation passed required and deferred checks, and Session 162’s
-certification debt is discharged.
-The prototype and controls do not establish complete coverage of an external
+under `think-bmf3`: design and cost a whole-angle traversal using the measured two-level
+refinement result before a complete external rectangle replay.
+The corner comparison produced no new threshold crossing.
+The two-level diagnostic evaluated all 268 children and closed 15 of 67 depth-capped
+parents; 52 parents and 11 originally queued boxes still prevent complete-angle
+coverage. PR 246’s earlier implementation at `c621b845f` passed required and deferred
+checks, and Session 162’s certification debt is discharged.
+Session 163 adds separately reviewed changes whose current validation is recorded in the
+handoff. The prototype and controls do not establish complete coverage of an external
 certificate. See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the
 current evidence and allocation boundaries.
 

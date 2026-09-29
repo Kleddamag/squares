@@ -114,6 +114,7 @@ The executed receipts distinguish their outcomes:
 | Tokoharu n11 certificate at `381/100` | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bounded.json) | Angle 1 only, capped at 100 nodes: 46 accepted leaves and 9 unresolved leaves; no complete coverage claim |
 | Same n11 input and exact pending frontier | [`DIAGNOSTIC_ONLY`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bound-comparison.json) | All 9 pending boxes compared; corner bounds improved 3 but produced no new threshold crossing. The predeclared usefulness criterion was not met. |
 | Same n11 input, angle 1 at 1,000 nodes and depth 20 | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-angle1-1000-nodes.json) | 428 accepted leaves; 67 depth-capped leaves and 11 queued boxes remain. No larger replay selected. |
+| Same n11 input, two further levels on all 67 depth-capped parents | [`DIAGNOSTIC_ONLY`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json) | All 268 children evaluated; 15 parents close completely. The other 52 parents and 11 originally queued boxes prevent complete-angle coverage. |
 
 A complete native coverage receipt for a retained external certificate remains
 outstanding. The

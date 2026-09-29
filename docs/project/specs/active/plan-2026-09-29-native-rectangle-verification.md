@@ -120,10 +120,10 @@ The retained n11 probe exhausted its 100-node budget at one angle with 9 boxes
 unresolved. That is an inconclusive computation, not a failed geometric claim and not
 independent confirmation of the published n11 certificate.
 
-**Next selected entry: W7, think-bmf3.** Improve or supplement the common-core lower
-bound enough to close a retained certificate, with the same exact acceptance contract.
-First compare the unresolved n11 boxes against tighter exact bounds and retain both the
-control and bounded target receipts.
+**Session 163 initial entry: W7, think-bmf3.** Improve or supplement the common-core
+lower bound enough to close a retained certificate, with the same exact acceptance
+contract. First compare the unresolved n11 boxes against tighter exact bounds and retain
+both the control and bounded target receipts.
 The selected candidate bound sums, for each rectangle separately, its density times the
 minimum of its exact overlap areas at the four center-box corners.
 Convexity and the planar
@@ -145,9 +145,10 @@ Completed engineering slices do not close their parent mathematical obligations.
 
 | Obligation | Bead | Completion evidence or dependency |
 | --- | --- | --- |
-| Native frontier diagnostics and corner bound | think-wjb2 | Exact capped diagnostics, analytic controls, reviewed implementation and identical-frontier comparison; active Sol lane |
+| Native frontier diagnostics and corner bound | think-wjb2 | Exact capped diagnostics, analytic controls, reviewed implementation and identical-frontier comparison; implemented and reviewed, with target results below |
+| Two-level depth refinement | think-gfpf | Reviewed diagnostic and complete 67/268 comparison; 15 parent closures, no complete-angle claim |
 | Complete native external certificate | think-aqne | Depends on think-wjb2 and its cost assessment; all 201 angles, no unresolved work, bound input/source receipt |
-| T-057 strict provenance and census admission | think-pgrx | Production-time identity binding, exact unique row inventory, explicit partial/unbound states and adversarial controls; active Sol lane |
+| T-057 strict provenance and census admission | think-pgrx | Production-time identity binding, exact unique row inventory, explicit partial/unbound states and adversarial controls; implemented and reviewed, with target results below |
 | T-057 full row replay | think-11z6 | Depends on think-pgrx; all 12,028 minima and witnesses reconciled |
 | T-057 global counting | think-4t1e | Reconcile the identical certificate with existing complete native parent-core evidence; the global argument is established, while wand125’s exact row equality remains separate |
 | Guard transformed-certificate admission | think-pegr | Exact count, positive scale, mass, geometry and source binding; refuse the retained false announcement |
@@ -224,6 +225,60 @@ Of the pending boxes, 67 reached depth 20 and 11 remained queued at the node cap
 No exact elapsed-time field was retained, so this receipt supports the work census and
 stop causes, not a measured runtime claim.
 No larger replay follows from this result.
+
+### Selected Two-Level Refinement Diagnostic
+
+**think-gfpf**, under **think-bmf3**, is the next selected experiment.
+GPT-6 Astra at max thinking reviewed this contract; it has not been executed.
+Freeze the retained 1,000-node receipt, exact candidate, checker source and settings,
+angle 1 and threshold 1. Reconstruct its complete pending census and select exactly the
+67 depth-20 leaves. Recompute each parent bound, then split twice by the existing
+longest-side rule and evaluate all four children with the unchanged common-core bound.
+The run evaluates 268 child bounds under one 30-second cooperative ceiling.
+
+Success requires all 67 parents processed, every child bound at least its parent’s, and
+at least one previously unresolved parent whose four child bounds all reach 1. Retain
+the complete parent/child census and exact partition checks.
+Missing work or a timeout yields `PARTIAL_DIAGNOSTIC`; identity, partition or
+monotonicity failures are refusals.
+A complete run with no closed parent is a negative depth-plus-two result.
+The diagnostic cannot accept a packing proof or trigger an automatic larger replay.
+
+Before target measurement, implement a reusable command with an exact local control:
+container side 4, core side 1/2, density 16 on the D4-invariant rectangle `[1,3]^2`,
+weight 64 and count 65. At rotation `(4/5,3/5)` on center box `[15/8,17/8]^2`, actual
+coverage is exactly 4. The common-core parent bound is `9/25`; each of the four children
+after two bisections has bound `169/100`. These are analytically derived expectations
+for the local control, not full-net acceptance.
+Exercise incomplete-child, timeout, stale-source and malformed-census refusals before
+the target run.
+
+The nine-box comparison does not predict this refinement’s result.
+The 1,000-node frontier includes an unprocessed depth-1 box covering half the initial
+domain, so even successful local refinement would not estimate complete-angle cost.
+
+### Two-Level Refinement Result
+
+The
+[retained diagnostic](../../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json)
+matched the frozen frontier and evaluated all 67 parents and 268 children in 7.714
+seconds, including the 1,000-node replay.
+Every child bound preserved monotonicity and 15 parents closed with all four child
+bounds at least 1. **The predeclared local usefulness criterion passed.** The other 52
+parents did not close completely, and the 11 originally queued boxes were outside this
+refinement. The result remains `DIAGNOSTIC_ONLY`; it supplies neither complete-angle
+coverage nor a full-run cost estimate.
+No larger run was automatically selected.
+
+The
+[reusable command](../../../../packing/devtools/refine_rectangle_density_frontier.py)
+binds the candidate, original frontier, native checker, comparison helper and its own
+source. Ten focused controls cover exact analytic aggregation, census, stale sources,
+missing children, bounded reads and partial timeouts.
+Astra-max reviewed readiness before the target run.
+Full external coverage remains **think-aqne** under **think-bmf3**; the next slice must
+design and cost a whole-angle traversal rather than aggregate this diagnostic into a
+proof.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -84,7 +84,7 @@ session:
     clock_role: work
     objective: Recover from interrupted scratch access, rerun required push validation, publish and verify
       the integrated PR.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: External scratch is visible and writable again; prior gate was interrupted without
       a result.
@@ -97,13 +97,35 @@ session:
     kill_condition: Scratch disappears again or a required validation failure remains unresolved.
     fallback: Stop local disk-heavy work if scratch is unavailable; retain source and explicit uncertified
       status.
-    outcome: Recovery gate completed with one snapshot-size contract failure and 1,813 passing tests.
-      Sol is repairing the snapshot boundary and census metadata; current evidence is preserved in commit
-      754a0342c.
+    outcome: Reviewed portable-journal and snapshot repairs published at 81141896a. Final push gate passed
+      all 51 selected steps and 1,820 reachable tests in 465.42 seconds.
     evidence:
-    - packing/campaign/agent-sessions/session-163-push-recovery.log
+    - packing/campaign/agent-sessions/session-163-push-final.log
+    - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+    stop_reason: Local integration and publication completed; hosted checks run in the next phase.
+    next_action: Verify new-head hosted CI, retain resource usage and close the integration slice.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: Verify hosted CI on the published implementation and, in a disjoint Sol lane, implement
+      the predeclared two-level refinement diagnostic for Astra-max readiness review; integrate only reviewed
+      evidence.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Final pre-push gate passed and implementation81141896a is published.
+    budget_minutes: 30
+    started_at: '2026-09-29T19:22:53Z'
+    deadline_at: '2026-09-29T19:52:53Z'
+    expected_output: Passing hosted required checks, updated PR review synopsis, retained resource record
+      and explicit open mathematical obligations.
+    validation_command: gh pr checks 246
+    kill_condition: A hosted failure or unresolved mathematical finding blocks acceptance.
+    fallback: Repair the named failure and rerun the affected gate; retain any incomplete status explicitly.
+    outcome: null
+    evidence: []
     stop_reason: null
-    next_action: Rerun validation using restored external scratch, then publish the reviewed source.
+    next_action: Inspect hosted runs36618835203 and36618835566 while finalizing records.
   budget:
     wall_minutes: 180
     max_cycles: 6
@@ -352,6 +374,70 @@ session:
     excluded_commands:
     - git commit
     - git push
+  - task: Implement think-gfpf two-level frontier refinement diagnostic
+    operator: GPT-6 Sol high (native_sol)
+    status: completed
+    recording: contemporaneous
+    outcome: 'Reusable command and ten focused controls pass; Ruff and BasedPyright clean. Native engine
+      unchanged. Root subsequently ran the admitted diagnostic: complete 67/268 census, 15 parent closures,
+      7.714 seconds.'
+    evidence:
+    - packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json
+    files:
+    - packing/devtools/refine_rectangle_density_frontier.py
+    - packing/tests/test_rectangle_density_refinement.py
+    checks: []
+    uncertainty: Target measurement is prohibited until Astra-max readiness review.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Integrate the reviewed result and retain complete external coverage as an open obligation.
+    phase: 4
+    budget_minutes: 15
+    started_at: '2026-09-29T19:25:27Z'
+    deadline_at: '2026-09-29T19:40:27Z'
+    expected_output: Reusable diagnostic command and tested exact analytic control; no native engine changes.
+    validation_command: cd packing && pytest -q tests/test_rectangle_density_refinement.py
+    kill_condition: Any identity, partition, monotonicity or incomplete-census acceptance defect blocks
+      target execution.
+    fallback: Retain review findings and do not execute the target.
+    write_scope:
+    - packing/devtools/refine_rectangle_density_frontier.py
+    - packing/tests/test_rectangle_density_refinement.py
+    excluded_commands:
+    - git commit
+    - git push
+    - packing-validate --fast
+  - task: Astra-max readiness review of two-level refinement
+    operator: GPT-6 Astra max (astra_max_verifier_review)
+    status: completed
+    recording: contemporaneous
+    outcome: Readiness approved before target execution. Subsequent receipt review confirms all 67 parents,
+      268 partitions, exact monotonicity and closure flags, 15 closures and all five source/input hashes.
+      The reviewer did not recompute clipping bounds; findings were saved before the lane reached a usage
+      limit.
+    evidence:
+    - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+    files:
+    - packing/devtools/refine_rectangle_density_frontier.py
+    - packing/tests/test_rectangle_density_refinement.py
+    checks: []
+    uncertainty: No target run is admitted before this review.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: No additional Astra review is pending for this bounded diagnostic.
+    phase: 4
+    budget_minutes: 10
+    started_at: '2026-09-29T19:28:10Z'
+    deadline_at: '2026-09-29T19:38:10Z'
+    expected_output: Explicit instrument-readiness verdict or actionable blockers.
+    validation_command: cd packing && pytest -q tests/test_rectangle_density_refinement.py
+    kill_condition: Any soundness, binding or completeness defect blocks target execution.
+    fallback: Repair and re-review the affected path without measuring the target.
+    write_scope:
+    - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+    excluded_commands:
+    - git commit
+    - git push
   outputs:
   - docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md
   - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
@@ -362,6 +448,8 @@ session:
   - packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-angle1-1000-nodes.json
   - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-summary.json
   - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json
+  - packing/devtools/refine_rectangle_density_frontier.py
+  - packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json
   checks:
   - 'Integrated native and census behavioral/golden tests: 31 passed in 3.18 seconds.'
   - 'Independent Sol census review: 10 passed in 1.62 seconds; atomic publication and typed-refusal fixes
@@ -380,10 +468,26 @@ session:
     stale T-037 registration sentence and parent-bead global-premise wording.
   - 'Snapshot fix: two focused tests pass in 25.34 seconds, Ruff and BasedPyright clean. Snapshot 167,182,901
     bytes with unchanged 167,772,160-byte cap; larger headroom work remains think-t1lk.'
-  resource_rollups: []
+  - 'Final pre-push gate: 51 selected steps passed; 1,820 reachable tests passed, 6 deselected; 465.42
+    seconds wall. This named tier is not the full gate.'
+  - Independent Sol static review confirmed the n32 snapshot exclusion removes no current mutation target
+    or checker input; future link/result dependencies force regression reconsideration.
+  - 'Hosted implementation81141896a: page run36618835566 passed; packing run36618835203 failed only the
+    release-data revision assertion in suite-b (3,479 other tests passed). A separate Sol lane repairs
+    the data pin, atlas stamp and missing local selector coverage.'
+  - 'Native/census/refinement integrated check: 39 tests passed in 3.93 seconds before two additional
+    focused guards; final refinement suite has 10 passing tests, Ruff and BasedPyright clean.'
+  - 'Predeclared refinement target: DIAGNOSTIC_ONLY, complete 67 parents and 268 children, 15 parent closures,
+    7.713767125 seconds including replay; no full-angle or full-certificate claim.'
+  - 'Release/selection repair: 44 tests passed in 8.37 seconds, Ruff clean, sampled atlas check passed;
+    data pin and live revision both81141896a.'
+  - 'Astra-max retained receipt audit: 67 parents and 268 exact partitions, 15 closure flags, monotonicity
+    and five source/input hashes agree; no independent recomputation of clipping bounds.'
+  resource_rollups:
+  - packing/campaign/resource-usage/session-163-codex-task-tree.yaml
   stop_reason: null
-  next_action: Under think-bmf3, select a mathematically justified finer-resolution or total-coverage
-    bound after the retained negative probes; complete T-057 row replay remains think-11z6.
+  next_action: Under think-bmf3, design and cost a whole-angle traversal using the local refinement result;
+    complete external coverage remains think-aqne. T-057 full exact row equality remains think-11z6.
 ---
 # Session 163 — Native Rectangle Bounds and T-057 Census Admission
 

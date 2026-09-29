@@ -1219,10 +1219,13 @@ certificate-page workflow passed at `c621b845f` and the documentation follow-up
 `c621b845f`. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-bmf3`, W7: justify finer subdivision or a bound on total
-coverage before another external rectangle replay.
-The retained corner comparison produced no new threshold crossing; the 1,000-node probe
-left 67 depth-capped leaves and 11 queued boxes.
+**Selected next entry:** `think-bmf3`, W7: design and cost a whole-angle traversal using
+the measured refinement result, before a complete external rectangle replay.
+The
+[two-level diagnostic](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md#two-level-refinement-result)
+evaluated all 268 children and closed 15 of 67 depth-capped parents in 7.714 seconds.
+The other 52 parents and 11 originally queued boxes remain outside a complete proof.
+The earlier corner comparison’s zero new threshold crossings remains a negative result.
 Complete external-certificate coverage remains required before assigning independent
 confirmation to that rectangle certificate.
 T-057’s complete source-row equality remains open; the identical point certificate’s
@@ -5379,13 +5382,14 @@ in separate tables: their units differ, and the same work can appear in both.
 | `codex-task-tree-session-155-integration.yaml` | session-155 | 634 | 3.31 h | 3.2 h | 3.2 h | yes |
 | `session-142-stack-correctness.yaml` | session-142 | 1,186 | 5.01 h | 2.29 h | 2.3 h | yes |
 | `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
+| `session-163-codex-task-tree.yaml` | session-163 | 693 | 3.87 h | 2.15 h | 2.25 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 108 |
-| unmeasured | 55 |
+| measured | 109 |
+| unmeasured | 54 |
 | **total** | **163** |
 
 <!-- END GENERATED: session-close-report -->

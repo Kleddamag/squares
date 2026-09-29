@@ -156,7 +156,7 @@ DATA_REVISION_LENGTH = 6
 #: The last data commit, pinned in full: what `data_revision` returned when it was last
 #: re-pinned. Full rather than six characters so the drift check compares a commit, not
 #: a prefix.
-DATA_REVISION = "3dab8e1ed1e5cb99b3601dfab8d86b3d3bf8e0fa"
+DATA_REVISION = "81141896ae137c77f2a7627b98b22fbef7ad7dd5"
 
 #: The version, written the one way it is ever written: `v0.4.1-f5e113`. Semver core,
 #: then the data revision, in the shape a build identifier takes everywhere else.

@@ -37,6 +37,12 @@ def test_a_changed_data_file_selects_the_test_that_names_it() -> None:
     assert "packing/tests/test_control_anchors.py" in selection.tests
 
 
+def test_changed_release_data_selects_the_release_contract() -> None:
+    selection = select_tests(["packing/frontier/results.yaml"])
+    assert not selection.everything
+    assert "packing/tests/test_release.py" in selection.tests
+
+
 def test_a_changed_test_file_selects_itself() -> None:
     selection = select_tests(["packing/tests/test_reachable_tests.py"])
     assert not selection.everything

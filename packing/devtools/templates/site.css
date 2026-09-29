@@ -1,13 +1,12 @@
 /* ============================================================
    The site's pages on top of the kpress design system.
 
-   The explainer is the reference: its paper typography (paper-design.md), its one
-   accent, and kpress for everything else. This layer carries the same tokens for the
-   overview, the frontier atlas, the tutorial and the synopsis, and adds only what kpress
-   has no component for: the site navigation bar, sortable and filterable tables,
-   expandable table rows, atlas thumbnails, and the verification bar. Every value is a
-   kpress token or derived from one, so the additions follow the theme and the print
-   rules. Written so each addition could move upstream into kpress unchanged.
+   The design system is written down in paper-design.md beside this file: colour,
+   typography, the math-face rule, cards, chips and tables. This stylesheet implements
+   its site layer for the overview, the frontier atlas and the tutorial, and the
+   navigation bar every page carries. Change the document first, then this file.
+   Every value is a kpress token or derived from one, so the additions follow the theme
+   and the print rules.
    ============================================================ */
 
 /* A standalone page scrolls the document, as the explainer does. */

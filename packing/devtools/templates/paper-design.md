@@ -1,15 +1,27 @@
-# Paper Design
+# Design System
+
+This is the one description of how every page of the site looks: the explainer, the
+overview, the frontier atlas and the tutorial.
+Each stylesheet implements what is written here and points back to it; when a page needs
+something new, it is added here first and then to the stylesheet that owns it.
+
+Three layers carry it, from the bottom up:
+
+| Layer | File | Owns |
+| --- | --- | --- |
+| KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
+| Paper | [explainer-shell.html](explainer-shell.html) | The explainer’s type proportions, reading measure and figures |
+| Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer included |
+
+The paper and site layers use the same values under their own prefixes, `--paper-` and
+`--site-`, so a site page and the explainer set a role at the same size and weight.
+Every site value is a KPress token or derived from one, so it follows the theme and the
+print rules.
 
 The explainer uses serif prose for sustained reading and sans serif text for figures,
 captions, notes, and controls.
 The web page and PDF share this hierarchy, with sizes scaled for each medium.
-Keep these conventions reusable across papers.
-
-[explainer-shell.html](explainer-shell.html) contains the local CSS layer above KPress;
-[explainer-article.md](explainer-article.md) contains the article.
-KPress supplies the fonts, Markdown typography, math, themes, and general print
-behavior. The local layer sets the paper’s type proportions, reading measure, and figure
-layout.
+[explainer-article.md](explainer-article.md) contains the explainer’s article.
 
 ## Typography Roles
 
@@ -40,6 +52,65 @@ Links have no persistent underline on the web or in print.
 Links within supporting text inherit its gray or black; links in the main prose retain
 the accent color. Caption leads use bold weight to distinguish the figure number without
 changing its size or color.
+
+## Color
+
+One accent, the teal `--kpress-doc-accent`, is the only link and emphasis color:
+`oklch(51.09% 0.0861 186.4)` in the light theme and `oklch(76.68% 0.0861 186.4)` in the
+dark. Both the paper and site layers alias KPress’s separate link blue to it.
+Supporting text uses KPress’s gray (`--kpress-doc-muted`, carried as
+`--site-support-color`) on the web and black in print.
+
+The packing palette is the fixed set of square fills in `SQUARE_HUE_PALETTE`
+(`packing/src/sqpack/render/style.py`), shaded by contact count in the figures.
+Page colors that are not the accent are desaturated shades of it:
+
+| Use | Hue | Chroma | Source in the palette |
+| --- | --- | --- | --- |
+| Verification rung (`V`) | 250 | 0.05 | The blue square, `#166eac` |
+| Confirmation rung (`C`) | 158 | 0.05 | The green square, `#158655` |
+| Significance rung (`S`) | 250 | 0.008 | Gray |
+
+A rung’s fill is `oklch(95% − 10% × level, chroma, hue)` for levels 0 to 5, so it
+darkens as the rung rises, with dark text through level 3 and white from level 4. The
+recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
+
+## Math
+
+Math takes the face of the text around it: serif math in serif prose, sans math in sans
+text.
+KPress chooses the face from a fixed list of sans contexts (a table, a `<details>`,
+a caption, a footnote), so a site style must not set text inside one of those contexts
+in the serif face, or the other way round; set the text in the face KPress will pick for
+its math. The outer math em follows the surrounding text in inline and display formulas;
+KaTeX still controls the internal sizes of scripts and nested expressions.
+Documents write math as LaTeX (`$…$`) rather than in code spans;
+`devtools.check_math_markup` holds the documents already migrated to it.
+Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
+
+## Site Components
+
+Each component is defined once in [site.css](site.css) and used on every page that needs
+it.
+
+- **Navigation bar.** One fixed-width row of sans links in the page’s header slot, the
+  same on every page. The current page is underlined in the accent.
+  The site name is “Square Packing”; the edition appears only in the closing line.
+- **Cards.** A card is a summary with square corners, a thin border, a caps label, a
+  value and a supporting note.
+  A card that links is one `<a>`: it gains a gentle wash on hover and a gray icon in its
+  corner for where it goes, `↓` to a row on the page, `↗` off the site, `→` to another
+  page of the site. A card that only reports a count has neither.
+- **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
+  note size, a fill and no border.
+  A plain chip is neutral gray; `data-tone="accent"` is an accent tint for a settled
+  state, such as a proved case.
+  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, which the
+  confirmation bar and its legend share.
+- **Tables.** KPress tables in the sans face, with sortable headers, filters above,
+  group rows, and an expandable row whose summary stays sans so its math does.
+  On a phone, the results table becomes one card per row.
+- **Confirmation bar.** One stacked bar per source, in the confirmation rung fills.
 
 ## Token Ownership
 
@@ -76,10 +147,6 @@ The 100-packing atlas is an explicit exception: it is a standalone SVG with its 
 dense grid, title, and labels.
 Enlarging every internal label to the figure-label size would obscure its cells.
 Its caption uses the shared role; the linked full-size PDF provides the detailed view.
-Math uses KPress’s matching serif or sans composite and metrics.
-The outer math em follows its surrounding text in inline and display formulas; KaTeX
-still controls the internal sizes of scripts and nested expressions.
-Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
 
 ## Print and Verification
 
@@ -115,6 +182,17 @@ Inspect the rendered page in both themes and the exported PDF, and check page br
 after changing type size.
 The generated editions live in `packing/site/`; publication and broader validation
 requirements are in [development.md](../../../development.md).
+
+The site pages are checked together by building the whole site and screenshotting every
+page at a desktop and a phone width:
+
+```shell
+uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots /tmp/shots
+```
+
+It fails on console errors, a page wider than its viewport, math left untypeset, and any
+formula whose face disagrees with the text around it.
+`tests/test_overview.py` holds the cards and chips to the rules above.
 
 The linear-program display is reflowed within the print column.
 `check_print_layout` guards its width so an overflowing equation cannot silently shrink

@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **138** evidence records. **99** are formal; **93** of those were established here.
-- **30** rest on an argument made elsewhere, of which **8** have been read by nobody here.
+- **143** evidence records. **101** are formal; **95** of those were established here.
+- **33** rest on an argument made elsewhere, of which **8** have been read by nobody here.
 - **36** claim to be first established here. **11** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -44,10 +44,10 @@ results, it is a statement about what this repository has itself examined.
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
 | `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | - | previously-published |
-| `E-kingbird-upper-register` | 221 | upper-bound | reported | - | - | - | previously-published |
-| `E-kingbird-grid-completeness` | 97 | upper-bound | reported | - | - | - | previously-published |
-| `E-unitsquare-release1-report` | 6 | upper-bound | reported | - | - | - | previously-published |
-| `E-basic-grid-upper` | 305 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
+| `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published |
+| `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published |
+| `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published |
+| `E-basic-grid-upper` | 255 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
 | `E-nagamochi-lower` | 287 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published |
 | `E-migrated-lower-report` | 6 | lower-bound | reported | - | - | - | *not assessed* |
@@ -158,12 +158,17 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-h236-rung0-reduction` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n011-trump-local-theorem-first-clause` | 0 | derived-structure | verified | whatever its theorem states | here | - | *not assessed* |
 | `E-wand125-n068-derived-lower` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
+| `E-franciscouzo-2026-09-27-report` | 49 | upper-bound | reported | - | elsewhere | - | previously-published |
+| `E-franciscouzo-2026-09-27-exact-replay` | 49 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
+| `E-n211-de-winter-report` | 1 | upper-bound | reported | - | elsewhere | - | previously-published |
+| `E-n211-de-winter-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
+| `E-casson-2026-09-23-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published |
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 35, verified 99
-- **method**: exact-algebraic 73, interval-certified 17, numerical-multiprecision 4, proof-audited 3, published-proof 6, reported 35
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 87
+- **assurance**: numerically-checked 4, reported 38, verified 101
+- **method**: exact-algebraic 75, interval-certified 17, numerical-multiprecision 4, proof-audited 3, published-proof 6, reported 38
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 92
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -214,11 +219,11 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
-| `E-basic-grid-upper` | 305 | here | - |
 | `E-nagamochi-lower` | 287 | elsewhere | informally-verified |
+| `E-basic-grid-upper` | 255 | here | - |
+| `E-franciscouzo-2026-09-27-exact-replay` | 49 | here | - |
 | `E-basic-area-lower` | 18 | here | - |
 | `E-perfect-square-tiling-rigid` | 18 | here | - |
-| `E-wand125-point-source-replay` | 10 | here | informally-verified |
 
 The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 287 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
 

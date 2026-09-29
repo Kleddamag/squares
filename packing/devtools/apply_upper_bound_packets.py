@@ -428,7 +428,8 @@ def ceiling_section(plan: Plan) -> str:
         "to rationals those poses close only at a side "
         f"{plan.receipt['units_above_printed']} units of the last place above the printed "
         "one, so the printed side itself is not certified here. The `replay-failure` "
-        "conflict and the `mathematics` blocker in the frontmatter record the difference."
+        "conflict and the `mathematics` blocker in the frontmatter record the difference. "
+        "Read `reported_upper_bound` for the best known side length."
     )
     return f"{CEILING_HEADING}\n\n{first}\n\n{second}\n\n"
 

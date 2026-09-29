@@ -451,18 +451,28 @@ H124 and restricted H036 remain unresolved, and that representation receives no 
 Do not repeat a completed experiment or create another candidate without a registered
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
-For the next supervised exact-research goal, continue native rectangle verification
-under `think-bmf3`: design and cost a whole-angle traversal using the measured two-level
-refinement result before a complete external rectangle replay.
+Session 161’s historical handoff selected `think-l6la`: complete the
+`zm_mixed.py --d4 --cert-mode` re-sweeps for `s(21)` and `s(45)` and record their
+confirmation.
+At that cutoff, Agenda 042’s BC-390 widened n = 11 rung 0 box stayed queued
+behind those re-sweeps with the rectangle ladders and remaining wand125 replays.
+The work remains tracked separately from this plan’s current handoff.
+After the current integration, the next supervised exact-research goal is native
+rectangle verification under `think-bmf3`: design and cost a whole-angle traversal using
+the measured two-level refinement result before a complete external rectangle replay.
 The corner comparison produced no new threshold crossing.
 The two-level diagnostic evaluated all 268 children and closed 15 of 67 depth-capped
 parents; 52 parents and 11 originally queued boxes still prevent complete-angle
 coverage. PR 246’s earlier implementation at `c621b845f` passed required and deferred
 checks, and Session 162’s certification debt is discharged.
-Session 163 adds separately reviewed changes whose current validation is recorded in the
-handoff. The prototype and controls do not establish complete coverage of an external
-certificate. See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the
-current evidence and allocation boundaries.
+Session 163 adds separately reviewed changes whose final merge validation belongs to
+`think-niqx`. The prototype and controls do not establish complete coverage of an
+external certificate.
+For the next supervised exact-research goal, the current prerequisite is `think-niqx`:
+merge the reviewed PR 246 work with `main` and certify the combined tree before
+launching the research continuation.
+See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current evidence
+and allocation boundaries.
 
 ## The numeric runner launch gate
 

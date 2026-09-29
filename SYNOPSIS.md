@@ -127,15 +127,16 @@ credit beside this repository’s `V` and `C`.
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
 weighted exact-rational covering method, proves `s(32) = 6` by a zero-margin weighted
-closed cover of `[0,6]²`, at `V4/C3` on a complete re-sweep here, and
-`s(12) ≥ 15680/3951` at `V4/C4`; its `s(21) ≥ 5000/1001` was superseded on 28 September
-by the same author’s mixed covers, weighted points plus mass on interior grid-line
-segments, which prove `s(21) = 5` and `s(45) = 7`, both `V4/C3`. Its case-free proof of
-Bentz’s `s(13) = 4` is recorded as a report.
-wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at `39d8ecc`
-for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s reviewed
-interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`, and
-reported at the other counts until their replays run.
+closed cover of `[0,6]²`, at `V4/C4` on complete replays here of its exact checker and
+its binary64-enclosure `zmx2`, which share their author, point test and symmetry fold
+and differ in how they close germs, and `s(12) ≥ 15680/3951` at `V4/C4`; its
+`s(21) ≥ 5000/1001` was superseded by the same author’s mixed covers of 27 September,
+weighted points plus mass on interior grid-line segments, which prove `s(21) = 5` and
+`s(45) = 7`, both `V4/C3`. Its case-free proof of Bentz’s `s(13) = 4` is recorded as a
+report. wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at
+`39d8ecc` for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s
+reviewed interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`,
+and reported at the other counts until their replays run.
 wand125’s point-only routes to `s(21) = 5` and `s(45) = 7`, the latter verified here as
 a second certificate, and its reported `s(50) ≥ 37/5` followed on 28 September.
 Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by `v1.1.0`, is
@@ -160,9 +161,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-017](packing/frontier/RESULTS.md) | 12 | `V4` | `C4` | `S4` | `apparently-novel` | s(12) >= 99/25, by a first-party weighted fractional unavoidable-set certificate at container side 99/25 = 3.96. |
 | [T-019](packing/frontier/RESULTS.md) | 17, 18, 19 | `V4` | `C4` | `S4` | `apparently-novel` | s(17) >= 459/100, and s(18) >= 459/100 and s(19) >= 459/100, from a first-party weighted fractional unavoidable-set certificate at container side 459/100 = 4.59. |
 | [T-020](packing/frontier/RESULTS.md) | 19, 20, 21 | `V4` | `C4` | `S4` | `apparently-novel` | s(19) >= 24/5, s(20) >= 24/5 and s(21) >= 24/5, from a first-party weighted fractional unavoidable-set certificate at container side 24/5 = 4.80. |
+| [T-051](packing/frontier/RESULTS.md) | 32 | `V4` | `C4` | `S4` | `previously-published` | s(32) = 6. |
 | [T-010](packing/frontier/RESULTS.md) | 11 | `V4` | `C3` | `S4` | `apparently-novel` | s(11) >= 2 + 4/sqrt(5), by a source-distinct repair of Stromquist 2003’s Figure 14 point set: the replacement G' = (79/100, 37/20) restores the complete Figure 13 localization, A-triple forcing, repaired unavoidability, and 3+9 capacity chain, certified exactly. |
 | [T-047](packing/frontier/RESULTS.md) | 11, 26, 27, 28, 29, 30, 31 | `V4` | `C3` | `S4` | `previously-published` | s(11) >= 381/100, s(26) >= 1377/250 and s(29) >= 571/100, by Tokoharu’s rectangle-density certificates in tokoharu/square-packing-density-bounds at commit b543990f (22 September 2026). |
-| [T-051](packing/frontier/RESULTS.md) | 32 | `V4` | `C3` | `S4` | `previously-published` | s(32) = 6. |
 | [T-052](packing/frontier/RESULTS.md) | 21 | `V4` | `C3` | `S4` | `previously-published` | s(21) = 5. |
 | [T-053](packing/frontier/RESULTS.md) | 45 | `V4` | `C3` | `S4` | `previously-published` | s(45) = 7. |
 | [T-014](packing/frontier/RESULTS.md) | 5 | `V3` | `C5` | `S3` | `apparently-novel` | For s = 2 + sqrt(2)/2 and Goebel’s labeled pose P0 in C = (R^2 x S^1)^5, P0 is an isolated point of Feas(s) -- closed unit squares in [0, s]^2, pairwise disjoint interiors -- equivalently there is no nonconstant continuous feasible path from P0 and no sequence of distinct feasible poses converging to it; hence the n = 5 optimum is rigid at fixed side in the catalogue’s sense. |
@@ -237,7 +238,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 163 | 101 completed; 61 stopped; 1 nonterminal |
+| Sessions | 164 | 101 completed; 62 stopped; 1 nonterminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1200,10 +1201,9 @@ controller, not permission to blur contracts.
 ### Current Handoff
 
 [Session 163](packing/campaign/agent-sessions/session-163-native-bounds-and-census.md)
-continues the verification pipeline on PR 246. Sol implementation lanes own exact
-rectangle bounds (`think-wjb2`) and T-057 receipt admission (`think-pgrx`); Astra at max
-thinking reviews the mathematics and verifier contracts.
-The
+completed the reviewed rectangle-bound, refinement, and T-057 receipt-admission slices
+on PR 246. The merge with `main` and final certification are the current operational
+handoff under `think-niqx`. The
 [dependency map](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md#continuing-work-and-bead-dependencies)
 separates these engineering slices from complete certificate replay, global counting,
 ceiling repair and accelerated-verifier validation.
@@ -1219,9 +1219,11 @@ certificate-page workflow passed at `c621b845f` and the documentation follow-up
 `c621b845f`. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-bmf3`, W7: design and cost a whole-angle traversal using
-the measured refinement result, before a complete external rectangle replay.
-The
+**Selected next entry:** `think-niqx`, merge the reviewed PR 246 work with `main` and
+certify the combined tree before resuming exact research.
+The later mathematical entry is `think-bmf3`, W7: design and cost a whole-angle
+traversal using the measured refinement result, before a complete external rectangle
+replay. The
 [two-level diagnostic](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md#two-level-refinement-result)
 evaluated all 268 children and closed 15 of 67 depth-capped parents in 8.994 seconds.
 The other 52 parents and 11 originally queued boxes remain outside a complete proof.
@@ -1407,8 +1409,21 @@ took in Kleddamag’s `s(17) > 232001/50000` at `V4/C3`, Evan Daniel’s `s(32) 
 rectangle bounds for n = 18 to 78, each after a Fable max review, and contained D-509’s
 explainer PDF wobble on PR 235.
 
-**Selected next entry at the earlier research cutoff:** `think-7c17`, BC-390: the
-widened n = 11 rung 0 box on eight workers overnight, with BC-394’s rectangle ladders
+[Session 161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md)
+took in wand125’s 28 September update and what it pointed to: Guzhou0806’s
+`s(17) > 116511/25000` (T-043), Evan Daniel’s mixed covers for `s(21) = 5` and
+`s(45) = 7` (T-052, T-053), wand125’s point-only routes to both (T-054, T-055) and its
+reported `s(50) ≥ 37/5` (T-048), each after a Fable max review, and recorded the
+retained `zmx2` run as a second method for `s(32) = 6` (jlevy/squares#245). It stopped
+at 07:12Z with the complete `zm_mixed.py` re-sweeps unfinished, so its handover is
+uncertified and named under `think-l6la`.
+
+**Selected next entry at the Session 161 cutoff:** `think-l6la`: the complete
+`zm_mixed.py --d4 --cert-mode` re-sweeps for `s(21)` and `s(45)`, recorded, raising
+T-052 and T-053 to `C4`.
+
+**Selected next entry at the Session 160 cutoff:** `think-7c17`, BC-390: the widened n =
+11 rung 0 box on eight workers overnight, with BC-394’s rectangle ladders
 (`think-pr2b`), the 41 queued wand125 replays and Evan Daniel’s `s(32)` full sweep on
 the remaining workers; BC-393 (`think-0rbj`), BC-388 and BC-387 follow their day builds.
 
@@ -5382,15 +5397,15 @@ in separate tables: their units differ, and the same work can appear in both.
 | `codex-task-tree-session-155-integration.yaml` | session-155 | 634 | 3.31 h | 3.2 h | 3.2 h | yes |
 | `session-142-stack-correctness.yaml` | session-142 | 1,186 | 5.01 h | 2.29 h | 2.3 h | yes |
 | `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
-| `session-163-codex-task-tree.yaml` | session-163 | 693 | 3.87 h | 2.15 h | 2.25 h | yes |
+| `session-163-codex-task-tree.yaml` | session-163 | 763 | 4.27 h | 2.53 h | 2.63 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 
 | Coverage | sessions |
 | --- | ---: |
 | measured | 109 |
-| unmeasured | 54 |
-| **total** | **163** |
+| unmeasured | 55 |
+| **total** | **164** |
 
 <!-- END GENERATED: session-close-report -->
 

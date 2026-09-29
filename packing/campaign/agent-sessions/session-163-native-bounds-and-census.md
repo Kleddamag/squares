@@ -11,9 +11,11 @@ session:
   date: '2026-09-29'
   started_at: '2026-09-29T17:27:04Z'
   deadline_at: '2026-09-29T20:27:04Z'
+  ended_at: '2026-09-29T20:05:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-8cps
-  status: in_progress
+  status: stopped
+  certification_pending: think-niqx
   goal: Advance independently reviewed native rectangle verification and trustworthy T-057 row admission,
     preserve exact evidence and mapped remaining obligations, and integrate validated slices on PR 246.
   workflow_phases:
@@ -137,7 +139,7 @@ session:
     clock_role: work
     objective: Validate and publish the final reviewed refinement, release-data repair and record updates;
       verify hosted required CI and close the integration slice.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: All scoped code and mathematical findings are resolved; final source-bound reproduction
       agrees exactly with the reviewed run. The initial unexecuted 30-minute plan entered the finalization
@@ -150,10 +152,25 @@ session:
     validation_command: cd packing && packing-validate --push --since 81141896ae137c77f2a7627b98b22fbef7ad7dd5
     kill_condition: A required check failure blocks completion of integration.
     fallback: Repair the named failure and rerun affected validation; preserve explicit incomplete evidence.
-    outcome: null
-    evidence: []
-    stop_reason: null
-    next_action: Freeze source, run the integrated push gate, publish and inspect hosted checks.
+    outcome: >-
+      The final local push tier passed all 51 selected steps and 2,289 reachable tests
+      in 742.30 seconds. Commit 132c209c0 published the reviewed source, receipt and
+      records. Main advanced while this work was in flight, so the hosted branch became
+      unmergeable and normal PR checks were withheld pending conflict resolution.
+      The refinement remains a local diagnostic: 15 of 67 parents close after 268
+      children; no complete external native rectangle replay or T-057 row census is
+      claimed.
+    evidence:
+    - packing/campaign/agent-sessions/session-163-push-refinement.log
+    - packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json
+    stop_reason: >-
+      Main advanced after publication and before a qualifying hosted gate could run on
+      the mergeable branch. The unresolved upstream merge and final-head certification
+      are tracked under think-niqx.
+    next_action: >-
+      Under think-niqx, merge current main, regenerate derived records and atlas, run
+      required local and hosted checks, then clear certification debt only on a
+      qualifying final-head pass.
   budget:
     wall_minutes: 180
     max_cycles: 6
@@ -169,7 +186,13 @@ session:
     metric: Reviewed implementation slices and complete versus partial evidence
     before: Native analytic control complete; retained n11 frontier unresolved; T-057 has three unbound
       legacy sample rows and no strict census wrapper.
-    after: null
+    after: >-
+      Reviewed exact native controls and a strict T-057 census wrapper were published.
+      The bounded native external probes and two-level refinement remain partial: 15
+      of 67 refined parents close, 52 do not, and 11 original frontier boxes are queued.
+      T-057 source row equality has been replayed for 3 of 12,028 rows. A 51-step push
+      gate passed at 132c209c0, while the later upstream conflict leaves hosted
+      certification pending under think-niqx.
   delegations:
   - task: Native diagnostics, exact corner bound and comparison tool
     operator: GPT-6 Sol high (native_sol)
@@ -514,11 +537,21 @@ session:
   - 'Formatting-only final-source reproduction: Python AST unchanged; decoded diagnostic exactly matches
     checkpoint43c66ec86 except elapsed time and tool source hash. Final receipt completes67/268 with15
     closures in8.994228833 seconds. Original reviewed evidence remains in Git history.'
+  - 'Final local push tier at 132c209c0: 51 selected steps passed, 2,289 reachable tests passed,
+    6 skipped, 19 deselected; wall 742.30 seconds. This is a push tier, not the full gate.'
+  - 'Hosted branch run 36623511400 failed because main advanced and PR 246 had merge conflicts;
+    a qualifying current-head fast/full check did not run.'
   resource_rollups:
   - packing/campaign/resource-usage/session-163-codex-task-tree.yaml
-  stop_reason: null
-  next_action: Under think-bmf3, design and cost a whole-angle traversal using the local refinement result;
-    complete external coverage remains think-aqne. T-057 full exact row equality remains think-11z6.
+  stop_reason: >-
+    The reviewed diagnostic and final local push gate were retained and published, but
+    upstream changed before hosted certification. This session stopped with the exact
+    integration debt under think-niqx; the remaining mathematical proof obligations
+    stay open under think-aqne and think-11z6.
+  next_action: >-
+    Under think-niqx, merge current main and certify the resulting PR head through
+    required local and hosted checks. The mathematical obligations identified above
+    remain separate after this integration debt is discharged.
 ---
 # Session 163 — Native Rectangle Bounds and T-057 Census Admission
 

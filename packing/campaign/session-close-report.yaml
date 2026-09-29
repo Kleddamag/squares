@@ -7,12 +7,12 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 163
+count: 164
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
   sessions_measured: 109
-  sessions_unmeasured: 54
+  sessions_unmeasured: 55
   attributed:
     rollups: 254
     turns: 63978
@@ -2799,7 +2799,7 @@ sessions:
     snapshot_incomplete: true
 - id: session-163
   title: "Native Rectangle Bounds and T-057 Census Admission"
-  status: in_progress
+  status: stopped
   primary_bead: think-8cps
   phases: 5
   measured: true
@@ -2812,8 +2812,18 @@ sessions:
   wall_hours: null
   codex_receipts:
   - path: packing/campaign/resource-usage/session-163-codex-task-tree.yaml
-    model_responses: 693
-    agent_hours: 3.87
-    active_union_hours: 2.15
-    wall_hours: 2.25
+    model_responses: 763
+    agent_hours: 4.27
+    active_union_hours: 2.53
+    wall_hours: 2.63
     snapshot_incomplete: true
+- id: session-164
+  title: "Upstream Merge and PR 246 Certification"
+  status: in_progress
+  primary_bead: think-niqx
+  phases: 1
+  measured: false
+  unmeasured_reason: >-
+    declares no resource measurement
+  rollups: []
+  codex_receipts: []

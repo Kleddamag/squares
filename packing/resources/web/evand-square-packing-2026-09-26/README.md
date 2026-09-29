@@ -259,6 +259,11 @@ for the rest. The regenerated `SUMMARY.txt` is not retained; its digest is in th
 This is a repository replay of the whole region, so the verified `n = 32` field stands
 at `V4/C3`. It is the source’s program run again, one method, so it is not `C4`; see
 [Routes to `C4`](#routes-to-c4-as-surveyed-on-2026-09-27).
+Superseded 2026-09-29 by `E-n032-evand-closed-cover-zmx2-replay`, a complete run here
+of the source’s `zmx2` on the same cover, retained with the
+[2026-09-28 packet](../evand-square-packing-2026-09-28/README.md); the field now stands
+at `V4/C4`, and T-051’s composition in
+[`results.yaml`](../../../frontier/results.yaml) says what the two checkers share.
 To repeat it, from `s12/` with `OUT` outside the packet and the compressed files
 restored ([Compressed Files](#compressed-files)):
 
@@ -294,6 +299,14 @@ its default `--zmcheck` binary is `verify2/target/release/zmcheck`.
 ([`epistemics.md`](../../../../epistemics.md#confirmation)). Two implementations of one
 method stay at `C3`. This survey covers the certificates taken in on 26 and 27
 September.
+
+**For `s(32)`, superseded 2026-09-29 by `E-n032-evand-closed-cover-zmx2-replay`; see
+T-051’s composition.** The source’s `zmx2`, from the
+[2026-09-28 packet](../evand-square-packing-2026-09-28/README.md), is recorded as
+`interval-certified` beside the `exact-algebraic` `zeromargin.py` replay, so the two meet
+`C4`’s literal predicate. It closes germs by its own pair lemma and shares the author,
+point test, `D4` fold, region and architecture with `zeromargin.py`. The survey below is
+kept as written.
 
 **Daniel’s `s(32)` closed cover: no native point-atom route.** The parent-core theorem
 behind the `s(12)` decision proves a strict `s(n) > L` from cores strictly inside their

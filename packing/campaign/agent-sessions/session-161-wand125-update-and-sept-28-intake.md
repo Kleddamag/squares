@@ -11,11 +11,11 @@ session:
   date: '2026-09-28'
   started_at: '2026-09-28T23:26:00Z'
   deadline_at: '2026-09-29T11:26:00Z'
-  ended_at: '2026-09-29T15:10:35Z'
   branch: claude/magical-davinci-ueqmu1
   primary_bead: think-1an7
   status: stopped
-  handoff_role: administrative_closeout
+  ended_at: '2026-09-29T07:12:33Z'
+  certification_pending: think-l6la
   goal: >-
     Retain the update wand125 sent the owner, then take in what it and the collaborating
     repositories published on 27 and 28 September: evand’s s(21) = 5 and s(45) = 7,
@@ -80,10 +80,13 @@ session:
     kill_condition: A replay fails or a review finds a gap the certificate does not close.
     fallback: Record the claim as reported but unverified, with the finding.
     outcome: >-
-      By the last retained checkpoint, this phase had produced the four source packets
-      and five dated reviews listed below. Recovery State handed the remaining replays
-      and publication work to their named beads; this disposition does not assert that
-      those remote processes stopped.
+      Registered s(17) > 116511/25000 (T-043), s(21) = 5 (T-052), s(45) = 7 (T-053),
+      wand125's point-only routes (T-054, T-055) and the reported s(50) >= 37/5 (T-048),
+      each after its Fable max review, and published them in README, SYNOPSIS and the
+      atlas through jlevy/squares#241 and jlevy/squares#243, both merged. The retained
+      zmx2 run on the s(32) point cover was recorded as a second method in
+      jlevy/squares#245, which a later session's review (2026-09-29) amended before
+      merge. The complete zm_mixed.py re-sweeps for s(21) and s(45) did not finish.
     evidence:
     - packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md
     - packing/resources/web/evand-square-packing-2026-09-28/README.md
@@ -95,13 +98,13 @@ session:
     - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
     - docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     stop_reason: >-
-      This branch observed the coordinator phase after its 2026-09-29T07:47:00Z
-      deadline. The phase record stops here; Recovery State and its open beads preserve
-      the remaining work.
+      The session ended at 07:12Z with jlevy/squares#245 open and its phase deadline
+      passed; the registrations it set out to make had landed, and the re-sweeps it
+      started had not finished. Stopped, not completed: no qualifying gate pass covers
+      the handover, so the debt is named under think-l6la.
     next_action: >-
-      Under think-1an7, register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the
-      reported s(50) >= 37/5; publish them in README, SYNOPSIS and the atlas; collect the
-      replays listed under Recovery State below as they land.
+      Under think-l6la: run the complete zm_mixed.py --d4 --cert-mode re-sweeps for
+      s(21) and s(45), record them, and raise T-052 and T-053 to C4.
   budget:
     wall_minutes: 720
     slice_minutes: 480
@@ -118,9 +121,10 @@ session:
       counts from n = 18 to 78, three of them verified; s(50) reported at Green’s
       7.317426.
     after: >-
-      Four source packets and five dated reviews were retained. The unfinished replays,
-      registration and publication remain assigned to the named Recovery State beads
-      under think-1an7.
+      s(17) > 116511/25000, s(21) = 5 and s(45) = 7 verified and registered (T-043,
+      T-052, T-053); wand125's point-only s(45) = 7 replayed as a second certificate
+      (T-054); s(21) point-only and s(50) >= 37/5 registered as reported (T-055, T-048);
+      wand125's rectangle bounds at 39d8ecc registered for 50 counts, three verified.
   resource_rollups:
   - packing/campaign/resource-usage/b85b7ecf-955c-5223-9481-e5200885a948.yaml
   - packing/campaign/resource-usage/agent-a1599f925da991e56.yaml
@@ -140,22 +144,14 @@ session:
   - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
   - packing/resources/web/n17-guzhou-r068-2026-09-28/README.md
   - docs/project/reviews/review-2026-09-28-density-solver-comparison.md
-  checks:
-  - At the administrative closeout, no qualifying fast or full gate had been retained;
-    certification remained pending under think-1an7.
-  - 'full gate: fast at c621b845f: passed (GitHub Actions run 36590984972; page run
-    36590984641; PR-tree artifact matched HEAD tree 1ff83617e958873e5f83379da4df0e56ae6f99e2
-    through merge commit 3947757)'
+  checks: []
   stop_reason: >-
-    At 2026-09-29T15:10:35Z this branch closed the expired coordinator record
-    administratively. The open epic and Recovery State beads retain unfinished work;
-    this does not say that the owner or any remote process stopped. The later hosted
-    fast gate certifies this checked record; it does not complete the epic or its replay
-    work.
+    Stopped at 07:12Z, when the session opened jlevy/squares#245 and ended; its
+    registrations are merged, and its unfinished replays and the uncertified handover
+    are named under think-l6la rather than reported as passed.
   next_action: >-
-    Under think-1an7, register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the
-    reported s(50) >= 37/5, publish them, and collect the replays listed under Recovery
-    State as they land.
+    Under think-l6la: run the complete zm_mixed.py --d4 --cert-mode re-sweeps for s(21)
+    and s(45), record them, and raise T-052 and T-053 to C4.
 ---
 # wand125’s Update and the 28 September Intake
 

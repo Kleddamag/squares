@@ -78,6 +78,10 @@ A classification attaches to the exact statement in a result’s `claim` field a
 declared scope.
 
 - A compound claim takes the minimum rung of its load-bearing parts.
+- An equality whose upper half is a packing replayed exactly (`E-basic-grid-upper` or a
+  witness replay) takes the `C` of its lower half; a construction is confirmed by its
+  replay, and no second method is asked of it.
+  The composition note says which half sets the rung.
 - A derived claim takes the minimum rung of its inputs and the derivation itself.
 - A construction’s feasibility, the sharpness of its parameter, and global optimality
   are separate claims.

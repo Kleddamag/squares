@@ -719,9 +719,14 @@ summarizes the ceilings; those values are not latency targets or GitHub job time
 A run at the reference shape, or with `--enforce-budget`, fails above its ceiling.
 With a recorded baseline it also fails above `drift_ratio` or below `stale_ratio`,
 subject to the declared noise floor.
-The records check independently rejects a ceiling above `max_headroom` times the
-baseline. A `null` baseline leaves those ratio checks unarmed; a measurement printed by
-CI does not update the file automatically.
+A tier whose hosted walls form a distribution records a `measured_band`, the lowest and
+highest readings at its reference shape, and the ratios are then applied to the band’s
+edges: the stale rule to the low edge and the drift rule to the high one.
+The band must contain the record and be no wider than `drift_ratio / stale_ratio`; a
+ceiling under its drift edge binds first (`think-be1s`, D-472). The records check
+independently rejects a ceiling above `max_headroom` times the baseline.
+A `null` baseline leaves those ratio checks unarmed; a measurement printed by CI does
+not update the file automatically.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.

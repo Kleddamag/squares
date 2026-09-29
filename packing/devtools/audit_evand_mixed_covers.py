@@ -24,6 +24,8 @@ not need a sweep, and re-reads the sweeps' records without the source's summaris
     uncertified and no capped box. ``d4``: centre cells of pitch 1/10 over
     ``[0, s/2]^2`` by four ``u`` bins of width 1/8 over ``[0, 1/2]``; ``full``: the same
     over ``[0, s]^2``, for pass 0 (the cover) and pass 1 (its mirror ``y -> s - y``).
+    ``--case`` also takes the source's point covers, ``13`` and ``32``, whose ``d4`` logs
+    must in addition reach the totals ``search/ZMX2.md`` section 9 reports.
 ``zm-mixed``
     A ``zm_mixed.py --resume`` record file names the retained checker files and cover by
     SHA-256, carries the certificate-mode D4 settings, covers exactly the root grid of
@@ -31,18 +33,22 @@ not need a sweep, and re-reads the sweeps' records without the source's summaris
     and has no uncertified box.
 ``compare-zmx2``, ``compare-zm-mixed``
     Root for root, a replay's census equals the source's record of the same root, timing
-    fields excepted. Source roots the replay did not run are counted, not failed, so a
-    sample or a partial re-sweep compares as cleanly as a complete one.
+    fields excepted, and a ``zmx2`` replay's header line equals the reference's. Source
+    roots the replay did not run are counted, not failed, so a sample or a partial
+    re-sweep compares as cleanly as a complete one. For the point covers the source ships
+    no log, so ``compare-zmx2 --case 13|32`` compares with this packet's retained run.
 ``check``
-    All of the above on the packet's retained files and receipts, and the fresh ``zmx2``
-    runs on the source's ``s(13)`` and ``s(32)`` point covers, whose totals must equal
-    the ones ``search/ZMX2.md`` reports; the source ships no log for those.
+    All of the above on the packet's retained files and receipts, and the retained
+    ``zmx2`` runs on the source's ``s(13)`` and ``s(32)`` point covers, which must be
+    present and whose totals must equal the ones ``search/ZMX2.md`` reports.
 
 Usage (from ``packing/``)::
 
     uv run --frozen --all-extras --group dev python -m devtools.audit_evand_mixed_covers check
     ... audit_evand_mixed_covers cover --case 45 [PATH]
     ... audit_evand_mixed_covers compare-zm-mixed --case 21 --records OUT/roots.jsonl
+    ... audit_evand_mixed_covers zmx2 --case 32 --mode d4 OUT/roots.log
+    ... audit_evand_mixed_covers compare-zmx2 --case 32 --records OUT/roots.log
 
 Every command prints JSON and exits 0 when the audit is clean, 1 otherwise. Files stored
 as deterministic gzip are read through `devtools.retained_data.read_retained_bytes`, so a
@@ -375,7 +381,7 @@ def zmx2_region(side: int, mode: str) -> set[tuple[int, str]]:
     }
 
 
-def audit_zmx2(case: Case, path: Path, mode: str) -> dict[str, Any]:
+def audit_zmx2(case: Case | PointCoverRun, path: Path, mode: str) -> dict[str, Any]:
     header, census, uncert_lines = read_zmx2(path)
     region = zmx2_region(case.side, mode)
     present = region & census.keys()
@@ -409,6 +415,11 @@ def zmx2_clean(result: dict[str, Any]) -> bool:
         and result["uncert_lines"] == 0
         and result["capped_roots"] == 0
     )
+
+
+def zmx2_comparison_clean(result: dict[str, Any]) -> bool:
+    """Every compared root's census equal, and the same header line: cover hash and settings."""
+    return comparison_clean(result) and result["headers_equal"]
 
 
 def compare_zmx2(shipped: Path, replay: Path) -> dict[str, Any]:
@@ -634,12 +645,15 @@ POINT_COVER_RUNS = (
     PointCoverRun(13, 4, "s13_zmx2_d4_roots.log", 47162, 22136, 2245, 20),
     PointCoverRun(32, 6, "s32_zmx2_d4_pairpoints_roots.log", 1405342, 686886, 17585, 29),
 )
+POINT_COVERS = {run.n: run for run in POINT_COVER_RUNS}
 
 
-def audit_point_cover_run(run: PointCoverRun) -> dict[str, Any]:
-    """Region completeness, and the census totals against the ones the source reports."""
-    case = Case(run.n, run.side, "", "", Fraction(0), 0, 0)
-    result = audit_zmx2(case, RECEIPTS / run.receipt, "d4")
+def audit_point_cover_run(run: PointCoverRun, path: Path | None = None) -> dict[str, Any]:
+    """Region completeness, and the census totals against the ones the source reports.
+
+    ``path`` defaults to the packet's retained log; a replayer passes their own.
+    """
+    result = audit_zmx2(run, path or RECEIPTS / run.receipt, "d4")
     result["totals_equal_source_report"] = (
         result["boxes"],
         result["certified_leaves"],
@@ -647,6 +661,28 @@ def audit_point_cover_run(run: PointCoverRun) -> dict[str, Any]:
         result["max_depth"],
     ) == (run.boxes, run.certified_leaves, run.empty_leaves, run.max_depth)
     return result
+
+
+def point_cover_clean(result: dict[str, Any]) -> bool:
+    return zmx2_clean(result) and result["totals_equal_source_report"]
+
+
+def check_point_cover_runs(
+    runs: Sequence[PointCoverRun] = POINT_COVER_RUNS,
+) -> tuple[dict[str, Any], bool]:
+    """Each retained point-cover log, which must exist: evidence entries replay from it."""
+    report: dict[str, Any] = {}
+    clean = True
+    for run in runs:
+        key = f"s{run.n}_point_cover_zmx2_d4"
+        log = RECEIPTS / run.receipt
+        if not retained_exists(log):
+            report[key] = {"log": _display(log), "missing": True}
+            clean = False
+            continue
+        report[key] = audit_point_cover_run(run)
+        clean &= point_cover_clean(report[key])
+    return report, clean
 
 
 def check_packet() -> dict[str, Any]:
@@ -664,13 +700,17 @@ def check_packet() -> dict[str, Any]:
             entry[f"shipped_zmx2_{mode}"] = audit_zmx2(case, shipped, mode)
             clean &= zmx2_clean(entry[f"shipped_zmx2_{mode}"])
             fresh = RECEIPTS / f"s{n}_zmx2_{mode}_roots.log"
-            if retained_exists(fresh):
-                entry[f"fresh_zmx2_{mode}"] = audit_zmx2(case, fresh, mode)
-                compared = compare_zmx2(shipped, fresh)
-                entry[f"fresh_zmx2_{mode}_vs_shipped"] = compared
-                clean &= zmx2_clean(entry[f"fresh_zmx2_{mode}"])
-                clean &= comparison_clean(compared)
-                clean &= compared["shipped_roots_not_replayed"] == 0
+            if not retained_exists(fresh):
+                # The evidence entries replay from these receipts, so absence is a failure.
+                entry[f"fresh_zmx2_{mode}"] = {"log": _display(fresh), "missing": True}
+                clean = False
+                continue
+            entry[f"fresh_zmx2_{mode}"] = audit_zmx2(case, fresh, mode)
+            compared = compare_zmx2(shipped, fresh)
+            entry[f"fresh_zmx2_{mode}_vs_shipped"] = compared
+            clean &= zmx2_clean(entry[f"fresh_zmx2_{mode}"])
+            clean &= zmx2_comparison_clean(compared)
+            clean &= compared["shipped_roots_not_replayed"] == 0
         samples = sample_records(n)
         if samples:
             entry["zm_mixed_sample_vs_shipped"] = compare_zm_mixed(
@@ -678,12 +718,9 @@ def check_packet() -> dict[str, Any]:
             )
             clean &= comparison_clean(entry["zm_mixed_sample_vs_shipped"])
         report[f"s{n}"] = entry
-    for run in POINT_COVER_RUNS:
-        if retained_exists(RECEIPTS / run.receipt):
-            result = audit_point_cover_run(run)
-            report[f"s{run.n}_point_cover_zmx2_d4"] = result
-            clean &= zmx2_clean(result) and result["totals_equal_source_report"]
-    report["clean"] = clean
+    point_covers, points_clean = check_point_cover_runs()
+    report.update(point_covers)
+    report["clean"] = clean and points_clean
     return report
 
 
@@ -695,7 +732,36 @@ def _emit(result: dict[str, Any], output: Path | None) -> None:
     print(text, end="")
 
 
-def main() -> int:
+def _zmx2_command(
+    parser: argparse.ArgumentParser, args: argparse.Namespace
+) -> tuple[dict[str, Any], bool]:
+    """``zmx2`` and ``compare-zmx2``, for a mixed cover or one of the point covers."""
+    run = POINT_COVERS.get(args.case)
+    if args.command == "zmx2":
+        if run is None:
+            result = audit_zmx2(CASES[args.case], args.log, args.mode)
+            return result, zmx2_clean(result)
+        if args.mode == "full":
+            # The source reports no unreduced run on a point cover, so no totals to meet.
+            result = audit_zmx2(run, args.log, args.mode)
+            return result, zmx2_clean(result)
+        result = audit_point_cover_run(run, args.log)
+        return result, point_cover_clean(result)
+    if args.shipped is not None:
+        shipped = args.shipped
+    elif run is None:
+        shipped = _bundle(CASES[args.case]) / f"zmx2_{args.mode}/roots.log"
+    elif args.mode == "d4":
+        shipped = RECEIPTS / run.receipt
+    else:
+        parser.error(f"s({args.case}) has no retained --full log; name one with --shipped")
+    if len(args.records) != 1:
+        parser.error("compare-zmx2 takes one replay log")
+    result = compare_zmx2(shipped, args.records[0])
+    return result, zmx2_comparison_clean(result)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -705,11 +771,12 @@ def main() -> int:
     commands.add_parser(
         "check", parents=[common], help="audit the packet's retained files and receipts"
     )
+    zmx2_cases = sorted({*CASES, *POINT_COVERS})
     cover = commands.add_parser("cover", parents=[common], help="audit one mixed cover")
     cover.add_argument("--case", type=int, choices=sorted(CASES), required=True)
     cover.add_argument("path", type=Path, nargs="?")
     zmx2 = commands.add_parser("zmx2", parents=[common], help="audit one zmx2 cert log")
-    zmx2.add_argument("--case", type=int, choices=sorted(CASES), required=True)
+    zmx2.add_argument("--case", type=int, choices=zmx2_cases, required=True)
     zmx2.add_argument("--mode", choices=("d4", "full"), required=True)
     zmx2.add_argument("log", type=Path)
     zm = commands.add_parser(
@@ -718,37 +785,35 @@ def main() -> int:
     zm.add_argument("--case", type=int, choices=sorted(CASES), required=True)
     zm.add_argument("records", type=Path)
     zm.add_argument("--checker-dir", type=Path, help="default: checker/ beside the records")
-    for name in ("compare-zmx2", "compare-zm-mixed"):
+    for name, choices in (("compare-zmx2", zmx2_cases), ("compare-zm-mixed", sorted(CASES))):
         compare = commands.add_parser(
             name, parents=[common], help="root-for-root census against the source"
         )
-        compare.add_argument("--case", type=int, choices=sorted(CASES), required=True)
+        compare.add_argument("--case", type=int, choices=choices, required=True)
         compare.add_argument("--mode", choices=("d4", "full"), default="d4")
         compare.add_argument(
             "--records", type=Path, nargs="+", required=True, help="the replay's file(s)"
         )
-        compare.add_argument("--shipped", type=Path, help="default: the packet's record")
-    args = parser.parse_args()
+        compare.add_argument(
+            "--shipped",
+            type=Path,
+            help="default: the packet's record, or for s(13) and s(32) its retained run",
+        )
+    args = parser.parse_args(argv)
     if args.command == "check":
         result = check_packet()
         _emit(result, args.output)
         return 0 if result["clean"] else 1
-    case = CASES[args.case]
-    if args.command == "cover":
-        result = audit_cover(case, args.path)
+    if args.command in {"zmx2", "compare-zmx2"}:
+        result, ok = _zmx2_command(parser, args)
+    elif args.command == "cover":
+        result = audit_cover(CASES[args.case], args.path)
         ok = cover_clean(result)
-    elif args.command == "zmx2":
-        result = audit_zmx2(case, args.log, args.mode)
-        ok = zmx2_clean(result)
     elif args.command == "zm-mixed":
-        result = audit_zm_mixed(case, args.records, args.checker_dir)
+        result = audit_zm_mixed(CASES[args.case], args.records, args.checker_dir)
         ok = zm_mixed_clean(result)
-    elif args.command == "compare-zmx2":
-        shipped = args.shipped or _bundle(case) / f"zmx2_{args.mode}/roots.log"
-        (records,) = args.records
-        result = compare_zmx2(shipped, records)
-        ok = comparison_clean(result)
     else:
+        case = CASES[args.case]
         shipped = args.shipped or _bundle(case) / "zm_mixed_d4/roots.jsonl"
         result = compare_zm_mixed(shipped, args.records)
         ok = comparison_clean(result)

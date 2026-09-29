@@ -1,0 +1,95 @@
+wand125 rectangle-density replay, batch b04 (packet 2026-09-28; n = 69, 53, 41, 86)
+checkout: jlevy/squares 65526c34dd0f6ba4b1e6027e8a1a8a23c969db57
+vendor/kpress submodule: 515f4a08aaf529f922b4380db7f7b7913b01abf5
+
+== commands ==
+python3 -m pip install --user --upgrade uv
+~/.local/bin/uv python install 3.14.7
+git submodule update --init --recursive
+(cd packing) ~/.local/bin/uv sync --frozen --all-extras --group dev
+(cd packing) mkdir -p /tmp/replay && .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 --out /tmp/replay/sep28 --resume --replay --workers 4 --n 69 --n 53 --n 41 --n 86 > /tmp/replay/sep28.log 2>&1
+(single run, no restart; exit status 0)
+
+== timing ==
+start UTC: 2026-09-29T00:58:49Z
+end UTC:   2026-09-29T06:55:07Z
+wall: 21378 s (5h56m18s)
+per-certificate wall_seconds (verification_summary.json): n69 8403.3, n53 6618.7, n41 2423.4, n86 3919.9
+
+== versions ==
+system python3: Python 3.11.15
+uv: uv 0.12.20 (x86_64-unknown-linux-gnu)
+project python: Python 3.14.7
+g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Linux vm 6.18.44-fc-v37 #1 SMP PREEMPT_DYNAMIC @0 x86_64 x86_64 x86_64 GNU/Linux
+
+== hardware ==
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           52 bits physical, 57 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Xeon(R) Processor @ 2.10GHz
+CPU family:                              6
+Model:                                   207
+Thread(s) per core:                      1
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                2
+BogoMIPS:                                4200.00
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 wbnoinvd arat avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid cldemote movdiri movdir64b fsrm md_clear serialize tsxldtrk amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities
+Hypervisor vendor:                       KVM
+Virtualization type:                     full
+L1d cache:                               192 KiB (4 instances)
+L1i cache:                               128 KiB (4 instances)
+L2 cache:                                8 MiB (4 instances)
+L3 cache:                                260 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-3
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI Vulnerable
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+
+nproc: 4
+               total        used        free      shared  buff/cache   available
+Mem:              15           0          12           0           3          15
+Swap:              0           0           0
+
+== sha256sum (paths relative to transfer/wand125-rect-b04) ==
+4b649a8f7dbc8a8e680a2847a68b1d4ea50535186c86d0b7e201930ebbe3f28f  ./sep28.log
+0b72958b31dabd50cac9cee2ea786047a12f10e8ba6baf73733dc1f819d5ab7e  ./sep28/audit.json
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./sep28/rect_n41_L6755/stderr.log
+0fa8388187758eefec1a590b97d729edbdc3a860128a0e965dd926e0aab80846  ./sep28/rect_n41_L6755/stdout.log
+f3668aa92146f5b5c6a098fad9ed21d29d25b364412ce467a89052c896f40c44  ./sep28/rect_n41_L6755/verification_summary.json
+24793cd0a5b03a41fe413410f088c0c04e0129059093722824bf6a5e8c2cc870  ./sep28/rect_n41_L6755/verified_angles.jsonl
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./sep28/rect_n53_L7595/stderr.log
+400273df21e58c16116a3fb9269c15b2142fc17224da9f30fbc7bae44b0baa62  ./sep28/rect_n53_L7595/stdout.log
+96d712fb6efbfe8429ead12eb7269cd8e1eea18c3dd398a81ce908a901d3ab0d  ./sep28/rect_n53_L7595/verification_summary.json
+28c74addbf7a014d109ddf8a296175aee54bf53d1cdc3079da0b83f6d54592d9  ./sep28/rect_n53_L7595/verified_angles.jsonl
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./sep28/rect_n69_L8575/stderr.log
+148f566c46d35522bff091b11b5298f01a03fc2991e609f88a4d7892508d2335  ./sep28/rect_n69_L8575/stdout.log
+c47d23a7fd56c873c3f019f567ee54d8d95bf1d7d7cac26e3572f09040bfa0f0  ./sep28/rect_n69_L8575/verification_summary.json
+0f502ba8a2855f5bcbbcf0d9c56bad8a498f581782da0c661ddc6057a7473dbd  ./sep28/rect_n69_L8575/verified_angles.jsonl
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./sep28/rect_n86_L9355/stderr.log
+5e9634cceddc0629b4fe28ac14ee2347165d6f311deafa88bea7efd58d9ea189  ./sep28/rect_n86_L9355/stdout.log
+e4e3083d58e2e536fd6b32f5e353f6d82ab4ac93102125039ef9b25083595916  ./sep28/rect_n86_L9355/verification_summary.json
+bf78dc15f10cf15b27fcc93872b53b87706ddfcc6a103e40520d147fc26c6079  ./sep28/rect_n86_L9355/verified_angles.jsonl
+7d8b1952139a21f4f94f7d35a1cddcb60b0d03c653e6cfac08f4dfd32c208944  ./setup.log

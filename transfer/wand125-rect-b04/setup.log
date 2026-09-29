@@ -1,0 +1,11 @@
+Successfully installed uv-0.12.20
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+uv 0.12.20 (x86_64-unknown-linux-gnu)
+Installed Python 3.14.7 in 1.87s
+ + cpython-3.14.7-linux-x86_64-gnu (python3.14)
+Cloning into '/home/user/squares/vendor/kpress'...
+Submodule path 'vendor/kpress': checked out '515f4a08aaf529f922b4380db7f7b7913b01abf5'
+ + typing-extensions==4.16.0
+ + webencodings==0.6.1
+ + zopfli==0.4.3
+Python 3.14.7

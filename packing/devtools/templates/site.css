@@ -65,9 +65,12 @@ body {
 }
 
 /* ---------- Page body ---------- */
+/* Capped at 100% as kpress caps its column: beside a TOC the column is a grid item with
+   auto margins, sized to its min-content, so a wide code block or table would otherwise
+   push it past a phone's viewport instead of scrolling inside it. */
 .site-page {
   margin-inline: auto;
-  max-width: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
+  max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));
   padding-block-end: calc(var(--kpress-font-size-base) * 5);
   padding-inline: 1rem;
 }

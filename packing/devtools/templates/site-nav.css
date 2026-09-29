@@ -61,8 +61,21 @@
     display: none;
   }
 }
+/* On a phone the links keep to one row that scrolls sideways rather than wrapping to
+   three lines; the site name goes, since "Overview" is the same link. */
 @media (width < 40rem) {
   .site-nav .site-edition {
+    display: none;
+  }
+  .site-nav-inner {
+    column-gap: 0.9rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-block: 0.6rem;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .site-nav .site-name {
     display: none;
   }
 }

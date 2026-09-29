@@ -622,9 +622,9 @@ class CiJobBudget:
     measured_seconds: float | None = None
     measured_on: str | None = None
     measured_where: str | None = None
-    #: Observed max/min across the readings behind `measured_seconds`. Recorded because a
-    #: hosted band has to be argued against the runner's own spread, not against a local
-    #: tier's; `None` when one reading is all there is, which is itself worth seeing.
+    #: Sample max/min across the readings behind `measured_seconds`. The sampler emits
+    #: 1.0 for one reading; that arithmetic ratio does not estimate runner variance.
+    #: `None` means no sample spread is recorded, as for a pending measurement.
     spread: float | None = None
     history: tuple[Record, ...] = ()
     attribution: Attribution | None = None

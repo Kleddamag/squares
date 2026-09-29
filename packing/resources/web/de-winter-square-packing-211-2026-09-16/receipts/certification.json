@@ -25,7 +25,7 @@
         "minimum_containment_clearance": "0",
         "failures": []
       },
-      "units_above_printed": -2100010,
+      "units_above_printed": 0,
       "verified_value": "14.99796070496771500150",
       "exact_form": "29995921409935430003/2000000000000000000",
       "wall_seconds": {

@@ -16,7 +16,7 @@ and metadata, never the upstream bytes (``raw_asset_retained: false``), on the
 known-best retention policy of ``resources/web/known-best-packings/README.md``. Casson
 licenses his packings CC BY 4.0, so they are retained raw.
 
-Four subcommands, run from ``packing/``:
+The main subcommands, run from ``packing/``:
 
 ``acquire --source ID --clone PATH``
     Read a local clone at the pinned revision and write the packet's
@@ -31,6 +31,11 @@ Four subcommands, run from ``packing/``:
     ``devtools.check_rational_witness_independent``, which shares no code with the
     generator, and write ``receipts/certification.json``. Negative controls on the
     smallest certificate go to ``receipts/negative-controls.json``.
+
+``restamp [--source ID]``
+    Re-derive each receipt row's units above the printed side, verified value and exact
+    form from its committed certificate, promoting nothing; for a change in how those
+    fields are derived.
 
 ``check``
     Fast and offline: facts, receipts, certificates' digests and sides, and the value
@@ -233,15 +238,31 @@ def verified_value(printed: str, certified: Fraction) -> str:
 
 
 def units_above(printed: str, certified: Fraction) -> int:
-    """How many units of the printed last place the rounded-up certificate sits above."""
+    """How many units of the printed last place the verified value sits above the side.
+
+    Zero where the certificate is at or inside the printed side. The signed distance is
+    the receipt's ``side_increase``; counted in units of each source's own last place it
+    would not compare across sources, since de Winter prints twenty decimals and his
+    ``2.1e-14`` margin would read as ``-2100010`` units.
+    """
     digits = places(printed)
     difference = ceiling_at(certified, digits) - Decimal(printed)
-    return int(difference.scaleb(digits))
+    return max(0, int(difference.scaleb(digits)))
 
 
 def exact_form(value: str) -> str:
     fraction = Fraction(value)
     return f"{fraction.numerator}/{fraction.denominator}"
+
+
+def derived(printed: str, certified: Fraction) -> dict[str, Any]:
+    """The receipt fields that follow from the printed side and the certificate's side."""
+    value = verified_value(printed, certified)
+    return {
+        "units_above_printed": units_above(printed, certified),
+        "verified_value": value,
+        "exact_form": exact_form(value),
+    }
 
 
 # --------------------------------------------------------------------------------------
@@ -700,9 +721,7 @@ def certify_one(unit: tuple[str, int]) -> dict[str, Any]:
             "minimum_containment_clearance": verdict["minimum_containment_clearance"],
             "failures": verdict["failures"],
         },
-        "units_above_printed": units_above(printed, side),
-        "verified_value": verified_value(printed, side),
-        "exact_form": exact_form(verified_value(printed, side)),
+        **derived(printed, side),
         "wall_seconds": {
             "promote": round(promote_seconds, 1),
             "independent": round(independent_seconds, 1),
@@ -777,6 +796,21 @@ def certify(sources: Sequence[Source], numbers: set[int] | None, workers: int) -
         if CONTROL_N in mine:
             _write_json(source.controls, negative_controls(source))
             print(f"{source.id}: negative controls written")
+
+
+def restamp(sources: Sequence[Source]) -> None:
+    """Rewrite each receipt row's `derived` fields from its committed certificate's side.
+
+    For a change in how those fields are derived: it promotes nothing, so the
+    certificates, their digests and the recorded walls stay as `certify` wrote them.
+    """
+    for source in sources:
+        record = json.loads(read_retained_text(source.certification))
+        for row in record["cases"]:
+            text = gzip.decompress(source.certificate(row["n"]).read_bytes()).decode("utf-8")
+            row.update(derived(cases(source)[row["n"]]["side"], _side(text)))
+        _write_json(source.certification, record)
+        print(f"{source.id}: restamped {len(record['cases'])} receipt rows")
 
 
 def shrink_side(text: str) -> str:
@@ -918,8 +952,8 @@ def _receipt_problems(source: Source, n: int, row: Mapping[str, Any]) -> list[st
         problems.append("certified side differs from its receipt")
     if side - Fraction(printed) > Fraction(MAX_SIDE_INCREASE):
         problems.append("certified side exceeds the allowed increase")
-    if row["verified_value"] != verified_value(printed, side):
-        problems.append("receipt's verified value does not follow from the certificate")
+    if {key: row.get(key) for key in derived(printed, side)} != derived(printed, side):
+        problems.append("receipt's verified value or units above do not follow from it")
     if not row["independent"]["verification_passed"]:
         problems.append("the independent checker refused the certificate")
     return problems
@@ -1109,6 +1143,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     commands.choices["check"].add_argument(
         "--replay", action="store_true", help="regenerate and re-decide every certificate"
     )
+    again = commands.add_parser("restamp", help="re-derive receipts' fields, promoting nothing")
+    again.add_argument("--source", choices=tuple(source.id for source in CERTIFIED))
     live = commands.add_parser("live", help="record the live catalogue's sides")
     live.add_argument("--catalogue", type=Path, required=True, help="a page fetched today")
     show = commands.add_parser("table", help="print a packet README's per-case table")
@@ -1126,8 +1162,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(priority_table() if source is CASSON else table(source), end="")
         return 0
     chosen = [BY_ID[args.source]] if args.source else list(CERTIFIED)
-    if args.command == "certify":
-        certify(chosen, _numbers(args.n), args.workers)
+    if args.command in {"certify", "restamp"}:
+        if args.command == "certify":
+            certify(chosen, _numbers(args.n), args.workers)
+        else:
+            restamp(chosen)
         return 0
     problems = [problem for source in (*chosen, CASSON) for problem in fast_problems(source)]
     if args.replay and not problems:

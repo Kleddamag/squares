@@ -22,7 +22,12 @@ def test_the_verified_value_is_the_larger_of_the_printed_and_certified_sides() -
     assert packets.verified_value("1.25", Fraction(124, 100)) == "1.25"
     assert packets.verified_value("1.25", Fraction(1250000001, 10**9)) == "1.26"
     assert packets.units_above("1.25", Fraction(1250000001, 10**9)) == 1
-    assert packets.units_above("1.25", Fraction(124, 100)) == -1
+    assert packets.units_above("1.25", Fraction(124, 100)) == 0
+    assert packets.derived("1.25", Fraction(124, 100)) == {
+        "units_above_printed": 0,
+        "verified_value": "1.25",
+        "exact_form": "5/4",
+    }
     assert packets.exact_form("1.26") == "63/50"
 
 

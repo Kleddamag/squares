@@ -193,10 +193,13 @@ def _decimal(value: Fraction, places: int) -> str:
 
 
 def difference(larger: str, smaller: str) -> str:
-    """``larger - smaller`` as the ceiling test renders it, at 28 digits."""
+    """``larger - smaller`` at 28 digits, a small one in the receipts' lowercase ``e`` form.
+
+    Decimal writes ``2E-15``; the receipts beside it write ``1.124e-15``.
+    """
     with localcontext() as context:
         context.prec = 28
-        return str(Decimal(larger) - Decimal(smaller))
+        return str(Decimal(larger) - Decimal(smaller)).replace("E", "e")
 
 
 def _link(source: packets.Source) -> str:
@@ -229,9 +232,10 @@ def reported_upper(plan: Plan, current: Mapping[str, Any]) -> dict[str, Any]:
         "algebraic_degree": None,
         "minimal_polynomial": None,
         "analytically_optimized": None,
-        # What the catalogue says about its own packing at this count, which this source
-        # does not change; check_source_coverage holds it to the catalogue.
-        "catalogue_rigid": current["catalogue_rigid"],
+        # The catalogue never described this packing, so it states nothing about its
+        # rigidity. At all 50 counts it states nothing about its own packing either, which
+        # is what check_source_coverage holds the field to.
+        "catalogue_rigid": "not-stated",
         "construction_method": "unknown",
         "tilt_angles_deg": None,
         "found_by": [registration.author],

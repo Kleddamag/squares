@@ -76,3 +76,17 @@
 .kpress-page-main > .site-nav {
   border-block-end: 1px solid var(--kpress-doc-border);
 }
+
+/* A page framed in a card's popover (`?view=embed`, set by overview/embed.js) shows the
+   document alone: no navigation bar. */
+:root[data-site-view="embed"] .kpress-site-header,
+:root[data-site-view="embed"] .site-nav {
+  display: none;
+}
+/* Nor the room left for it: the document starts at the frame's top edge. */
+:root[data-site-view="embed"] .kpress-page-main {
+  padding-block-start: 0;
+}
+:root[data-site-view="embed"] .kpress-page-main > .kpress-doc {
+  padding-block-start: 0.5rem;
+}

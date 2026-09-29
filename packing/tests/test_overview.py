@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import html
 import re
 from collections import Counter
 
@@ -151,31 +152,40 @@ ACTION = re.compile(
 )
 
 
-def test_every_card_previews_where_it_goes_and_gets_there(page: str) -> None:
-    """Every card opens a popover that previews its target and ends in one button that
-    goes there. The card's icon and the button's agree, and come from the target: a
-    scroll lands on an id of this page, an external button leaves the site, and a page
-    button opens one the site serves."""
+def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
+    """Every card opens a popover that shows its target and ends in one button that goes
+    there. Another page is rendered in a frame, in its embedded view, and the button
+    expands it; a place on this page is previewed, and the button scrolls there. The
+    card's icon and the button's agree, and every target exists."""
     cards = CARD.findall(page)
-    assert {kind for _, kind in cards} == {"scroll", "external", "page"}
+    assert {kind for _, kind in cards} == {"scroll", "page"}
     assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
     served = {*render_overview.SITE_PAGES, "workbench/"}
     for target, kind in cards:
         start = page.index(f'<div class="site-popover" id="{target}" popover')
-        panel = page[
-            start : page.index('<button type="button" class="site-card"', start)
-            if '<button type="button" class="site-card"' in page[start:]
-            else None
-        ]
-        assert 'class="site-popover-preview"' in panel, target
+        panel = page[start:].split('<button type="button" class="site-card"', 1)[0]
         (action,) = ACTION.findall(panel)
         href, action_kind = action
         assert action_kind == kind == overview_sections.card_kind(href), target
         if kind == "scroll":
+            assert 'class="site-popover-preview"' in panel, target
             assert href[1:] in ids, href
-        elif kind == "page":
+        else:
             assert re.split(r"[?#]", href, maxsplit=1)[0] in served, href
+            found = re.search(r'<iframe [^>]*src="([^"]+)"', panel)
+            assert found is not None, target
+            frame = html.unescape(found.group(1))
+            assert frame == overview_sections.embed_url(href), target
+            assert "view=embed" in frame, target
+
+
+def test_an_embedded_page_keeps_its_query_and_fragment() -> None:
+    embed = overview_sections.embed_url
+    assert embed("explainer.html") == "explainer.html?view=embed"
+    assert embed("frontier.html?recent=true") == "frontier.html?recent=true&view=embed"
+    assert embed("frontier.html#n-21") == "frontier.html?view=embed#n-21"
+    assert embed("workbench/") == "workbench/?view=embed"
 
 
 CHIP = re.compile(r'<span class="site-chip( site-rung-fill)?"([^>]*)>([^<]+)</span>')

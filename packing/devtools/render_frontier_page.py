@@ -409,7 +409,7 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
     ]
     flag = {True: "true", False: "false"}
     attributes = (
-        f'data-n="{n}" data-status="{html.escape(status)}" '
+        f'id="n-{n}" data-n="{n}" data-status="{html.escape(status)}" '
         f'data-open="{flag[status == "open"]}" data-recent="{flag[recent]}"'
     )
     return f"<tr {attributes}>{''.join(cells)}</tr>"

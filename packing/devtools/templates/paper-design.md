@@ -99,19 +99,21 @@ it.
 
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
-  Every card works the same way: pressing it opens a popover that previews where it
-  leads, and the popover ends in one button that goes there.
-  The preview is read from the target itself, so it cannot drift from it:
-  - a result: its claim, why it matters, its rungs and records; the button shows its row
-    in the table;
-  - a case: its two bounds and who proved each; the button opens it in the frontier
-    atlas;
-  - a count: what it counts (the result groups, the cases proved and open, the recent
-    cases, what each verification rung means); the button opens the table or the
-    frontier atlas filtered by a query such as `frontier.html?recent=true`, or the
-    definition of the rungs;
-  - a page or a document: its opening and the sections inside it; the button opens it.
+  Every card works the same way: pressing it opens a popover that shows where it leads,
+  and the popover ends in one button that goes there.
+  - When the card leads to another page of the site, the popover renders that page
+    itself, narrow, in a frame: the page at the same address with `?view=embed` added
+    before any fragment, so a filtered view such as `frontier.html?recent=true` or a
+    case such as `frontier.html#n-11` arrives as it will be seen.
+    The embed view drops the navigation bar and sends every link out of the frame to the
+    full window. The button is **Expand**, which opens the page at full size; a
+    repository document also offers its source “On GitHub”.
+  - When the card leads to a row on this page, the popover previews the row, read from
+    the same record: a result’s claim, why it matters, its rungs and records, or the
+    result groups a count counts.
+    The button shows the row in the table.
 
+  The frame loads only when its popover first opens, so the overview stays light.
   The popover is a native `popover` panel with square corners over a faint scrim, set in
   sans, closed by its `×`, by Escape, or by a click outside, and it works without
   scripting. A card gains a gentle wash on hover.

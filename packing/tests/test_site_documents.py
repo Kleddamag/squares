@@ -23,34 +23,37 @@ TREE = RepositoryTree(
     files=frozenset(
         {"README.md", "SYNOPSIS.md", "conventions.md", "packing/atlas/n5.svg", "docs/a b.md"}
     ),
-    directories=frozenset({"", "packing", "packing/atlas", "docs"}),
+    directories=frozenset({"", "packing", "packing/atlas", "docs", "vendor/kpress"}),
+    submodules={"vendor/kpress": ("https://github.com/jlevy/kpress", "1" * 40)},
 )
 
 
-def context(page: str = "tutorial.html") -> LinkContext:
-    return LinkContext(page, COMMIT, TREE, frozenset({"the-problem"}))
+def context(page: str = "tutorial.html", base: str = "") -> LinkContext:
+    return LinkContext(page, COMMIT, TREE, base)
 
 
-def rewrite(url: str, *, tag: str = "a", page: str = "tutorial.html") -> tuple[str, LinkReport]:
+def rewrite(
+    url: str, *, tag: str = "a", page: str = "tutorial.html", base: str = ""
+) -> tuple[str, LinkReport]:
     report = LinkReport()
-    return rewrite_link(url, tag=tag, context=context(page), report=report), report
+    return rewrite_link(url, tag=tag, context=context(page, base), report=report), report
 
 
 @pytest.mark.parametrize(
     ("url", "expected"),
     [
-        ("README.md", "./"),
-        ("README.md#the-problem", "./#the-problem"),
-        (
-            "README.md#results-by-others",
-            f"{REPO_URL}/blob/{COMMIT}/README.md#results-by-others",
-        ),
-        ("conventions.md#4-evidence", f"{REPO_URL}/blob/{COMMIT}/conventions.md#4-evidence"),
-        ("./conventions.md", f"{REPO_URL}/blob/{COMMIT}/conventions.md"),
+        ("README.md", "readme.html"),
+        ("README.md#the-problem", "readme.html#the-problem"),
+        ("conventions.md#4-evidence", "conventions.html#4-evidence"),
+        ("./conventions.md", "conventions.html"),
         ("packing/atlas/", f"{REPO_URL}/tree/{COMMIT}/packing/atlas"),
         ("packing", f"{REPO_URL}/tree/{COMMIT}/packing"),
         ("docs/a%20b.md", f"{REPO_URL}/blob/{COMMIT}/docs/a%20b.md"),
-        ("SYNOPSIS.md#terminology", f"{REPO_URL}/blob/{COMMIT}/SYNOPSIS.md#terminology"),
+        ("SYNOPSIS.md#terminology", "synopsis.html#terminology"),
+        (
+            "vendor/kpress/docs/x.md",
+            f"https://github.com/jlevy/kpress/blob/{'1' * 40}/docs/x.md",
+        ),
         ("TUTORIAL.md#start", "#start"),
         ("TUTORIAL.md", "tutorial.html"),
         ("#local", "#local"),
@@ -72,6 +75,16 @@ def test_an_image_becomes_a_raw_permalink() -> None:
 def test_anchors_into_the_documents_are_recorded_for_checking() -> None:
     _, report = rewrite("TUTORIAL.md#start", page="frontier.html")
     assert report.anchors == [("tutorial.html", "start", "TUTORIAL.md#start")]
+    _, report = rewrite("conventions.md#4-evidence")
+    assert report.anchors == [("conventions.html", "4-evidence", "conventions.md#4-evidence")]
+
+
+def test_a_relative_link_resolves_from_the_documents_directory() -> None:
+    rewritten, report = rewrite("../README.md", base="packing")
+    assert rewritten == "readme.html"
+    assert not report.missing
+    rewritten, _ = rewrite("n5.svg", tag="img", base="packing/atlas")
+    assert rewritten == f"{RAW_URL}/{COMMIT}/packing/atlas/n5.svg"
 
 
 @pytest.mark.parametrize("url", ["missing.md", "packing/nowhere/", "../outside.md"])
@@ -96,13 +109,13 @@ def test_unresolved_lists_missing_paths_and_anchors() -> None:
 def test_only_the_article_is_rewritten() -> None:
     page = (
         '<nav><a href="frontier.html">F</a></nav>'
-        '<article><a href="conventions.md">c</a>'
+        '<article><a href="docs/a%20b.md">c</a>'
         '<img src="packing/atlas/n5.svg" alt=""></article>'
         '<footer><a href="conventions.md">c</a></footer>'
     )
     out = rewrite_article(page, context=context(), report=LinkReport())
     assert '<a href="frontier.html">' in out
-    assert f'href="{REPO_URL}/blob/{COMMIT}/conventions.md"' in out
+    assert f'href="{REPO_URL}/blob/{COMMIT}/docs/a%20b.md"' in out
     assert f'src="{RAW_URL}/{COMMIT}/packing/atlas/n5.svg"' in out
     assert '<footer><a href="conventions.md">' in out
 
@@ -143,7 +156,7 @@ def test_the_pages_render_self_contained_with_a_toc(
 
 
 def test_no_relative_repository_link_survives(pages: dict[str, render_overview.Page]) -> None:
-    served = {"./", "tutorial.html"}
+    served = {"./", *render_overview.SITE_PAGES}
     for name, page in pages.items():
         article = re.search(r"<article\b.*?</article>", page.html, re.DOTALL)
         assert article is not None

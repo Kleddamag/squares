@@ -75,6 +75,12 @@ def test_every_case_file_is_a_row_and_every_row_a_case_file(rows) -> None:
     assert len(shown) == len(set(shown))
 
 
+def test_every_row_is_its_cases_anchor(rows) -> None:
+    """`frontier.html#n-11` lands on the case, which the overview's case cards open."""
+    for attributes, _ in rows:
+        assert attributes["id"] == f"n-{attributes['data-n']}"
+
+
 def test_every_value_cell_carries_the_records_value(rows, cases) -> None:
     for attributes, cells in rows:
         case = cases[int(attributes["data-n"] or 0)]

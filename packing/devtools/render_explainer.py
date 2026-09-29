@@ -108,6 +108,7 @@ INLINE_SCRIPT_ASSETS = {
     "EXPLAINER_PAGE_SCRIPT": EXPLAINER_SCRIPTS / "page.js",
     "CERTIFICATE_SCRIPT": EXPLAINER_SCRIPTS / "certificate.js",
     "FINISH_MATH": EXPLAINER_SCRIPTS / "finish-math.js",
+    "SITE_EMBED": PACKING / "devtools" / "overview" / "embed.js",
 }
 #: The browser code this module hands the page, one file each under `probes/`.
 PROBES = Path(__file__).resolve().parent / "probes"

@@ -1,21 +1,22 @@
-"""The tutorial as a site page, with every link made to work off GitHub.
+"""The reader documents as site pages, with every link made to work off GitHub.
 
-`TUTORIAL.md` is written to be read on GitHub, where a relative link to
-`conventions.md` or to a directory under `packing/` opens that file. Served as
-`tutorial.html`, the same links would point at pages that do not
-exist, so each one is rewritten in the rendered HTML, never in the Markdown, where a
-pattern would also match `](` inside a code span:
+The tutorial is a page in the navigation; the README, the synopsis, the result and
+frontier registers and the reference documents are pages the navigation does not list,
+reached from the overview's cards, whose popovers frame them. Each is written to be
+read on GitHub, where a relative link to `conventions.md` or to a directory under
+`packing/` opens that file. Served as pages, the same links would point at pages that
+do not exist, so each one is rewritten in the rendered HTML, never in the Markdown,
+where a pattern would also match `](` inside a code span:
 
-- `README.md` becomes the overview, `./`, with the anchor kept when the overview has a
-  heading of that id and the repository's README named otherwise;
-- `TUTORIAL.md#…` becomes `tutorial.html#…`;
+- a link to another rendered document becomes its page, anchor kept;
 - any other relative link becomes a permalink at the build commit, `blob/` for a file
   and `tree/` for a directory, and an image becomes its raw-file permalink.
 
-Every rewritten repository target is checked against the build commit's tree, read
-once with `git ls-tree`, and every anchor into the page against the ids the target
-page actually has. A target that does not resolve fails the render with the whole list,
-so a broken link is found when the page is built rather than by a reader.
+A relative link is resolved against the document's own directory, as GitHub resolves
+it. Every rewritten repository target is checked against the build commit's tree, read
+once with `git ls-tree`, and every anchor into a page against the ids the target page
+actually has. A target that does not resolve fails the render with the whole list, so a
+broken link is found when the page is built rather than by a reader.
 
 The build commit is `render_explainer.link_revision()`, the same commit the explainer's
 repository links name.
@@ -51,6 +52,12 @@ class SiteDocument:
     description: str
 
 
+def _document(path: str, name: str, title: str, description: str) -> SiteDocument:
+    """A repository document served as a page that the navigation does not list: it is
+    reached from its card's popover, which frames it, and from links in the others."""
+    return SiteDocument(REPO / path, name, "github", f"{title} · Square Packing", description)
+
+
 DOCUMENTS: tuple[SiteDocument, ...] = (
     SiteDocument(
         TUTORIAL,
@@ -59,6 +66,54 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
         "Tutorial · Square Packing",
         "A guided walk through square packing: the problem, the bounds and how each "
         "result here is checked.",
+    ),
+    _document(
+        "README.md",
+        "readme.html",
+        "The Squares Project",
+        "What the project is, how it works, and where to start.",
+    ),
+    _document(
+        "SYNOPSIS.md",
+        "synopsis.html",
+        "Synopsis",
+        "The full research record: methods, claims and status.",
+    ),
+    _document(
+        "packing/frontier/RESULTS.md",
+        "results.html",
+        "Results",
+        "Every registered result with its rungs.",
+    ),
+    _document(
+        "packing/frontier/STATUS.md",
+        "status.html",
+        "The Frontier",
+        "Every case to 324, with provenance.",
+    ),
+    _document(
+        "epistemics.md",
+        "epistemics.html",
+        "Epistemics",
+        "How each result is verified, confirmed and scored.",
+    ),
+    _document(
+        "conventions.md",
+        "conventions.html",
+        "Conventions",
+        "Record formats, identifiers and naming.",
+    ),
+    _document(
+        "development.md",
+        "development.html",
+        "Development",
+        "Building, testing and validating the code.",
+    ),
+    _document(
+        "defects.md",
+        "defects.html",
+        "Defect Log",
+        "Every defect found in the toolchain, one line each.",
     ),
 )
 
@@ -74,10 +129,12 @@ _EXTERNAL = re.compile(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//)")
 
 @dataclass(frozen=True)
 class RepositoryTree:
-    """The build commit's tracked files and directories, the root as `""`."""
+    """The build commit's tracked files and directories, the root as `""`, and its
+    submodules: each path with the repository and commit it pins."""
 
     files: frozenset[str]
     directories: frozenset[str]
+    submodules: dict[str, tuple[str, str]] = field(default_factory=dict)
 
 
 def _ls_tree(revision: str, *flags: str) -> frozenset[str]:
@@ -93,10 +150,37 @@ def _ls_tree(revision: str, *flags: str) -> frozenset[str]:
     return frozenset(name for name in found.stdout.split("\0") if name)
 
 
+def _submodules(revision: str) -> dict[str, tuple[str, str]]:
+    """Each submodule at `revision`: its path, its repository's URL and pinned commit."""
+    listed = subprocess.run(
+        ("git", "config", "--blob", f"{revision}:.gitmodules", "--get-regexp", "url"),
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    found: dict[str, tuple[str, str]] = {}
+    for line in listed.stdout.splitlines():
+        key, _, url = line.partition(" ")
+        path = key.removeprefix("submodule.").removesuffix(".url")
+        entry = subprocess.run(
+            ("git", "ls-tree", revision, path),
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout.split()
+        if len(entry) >= 3 and entry[1] == "commit":
+            found[path] = (url.removesuffix(".git"), entry[2])
+    return found
+
+
 @cache
 def repository_tree(revision: str) -> RepositoryTree:
-    """Every file and directory at `revision`, in two `git ls-tree` calls."""
-    return RepositoryTree(_ls_tree(revision), _ls_tree(revision, "-d") | {""})
+    """Every file and directory at `revision`, and its submodules."""
+    return RepositoryTree(
+        _ls_tree(revision), _ls_tree(revision, "-d") | {""}, _submodules(revision)
+    )
 
 
 @dataclass
@@ -110,21 +194,15 @@ class LinkReport:
 
 @dataclass(frozen=True)
 class LinkContext:
-    """What a rewrite needs: the page's own name, the commit, and the overview's ids."""
+    """What a rewrite needs: the page's own name, the commit and its tree, and where the
+    document sits."""
 
     page: str
     revision: str
     tree: RepositoryTree
-    overview_ids: frozenset[str]
-
-
-def _readme_link(anchor: str, context: LinkContext) -> str:
-    """The overview for `README.md`, or the repository's README for an anchor only it has."""
-    if not anchor:
-        return "./"
-    if unquote(anchor) in context.overview_ids:
-        return f"./#{anchor}"
-    return f"{REPO_URL}/blob/{context.revision}/README.md#{anchor}"
+    #: The document's directory in the repository, `""` at the root: what its relative
+    #: links are relative to.
+    base: str = ""
 
 
 def _permalink(path: str, fragment: str, *, tag: str, context: LinkContext) -> str | None:
@@ -137,22 +215,27 @@ def _permalink(path: str, fragment: str, *, tag: str, context: LinkContext) -> s
     if path in context.tree.directories:
         suffix = f"/{quoted}" if quoted else ""
         return f"{REPO_URL}/tree/{context.revision}{suffix}{fragment}"
+    for root, (url, commit) in context.tree.submodules.items():
+        if path.startswith(root + "/"):
+            # Inside a submodule: its own repository at the commit this one pins. The
+            # file is not in this tree to check, so it is linked as the pin names it.
+            inner = quote(path.removeprefix(root + "/"), safe="/")
+            return f"{url}/blob/{commit}/{inner}{fragment}"
     return None
 
 
 def rewrite_link(url: str, *, tag: str, context: LinkContext, report: LinkReport) -> str:
     """The served URL for one `href` or `src` found in a rendered reader document.
 
-    Both documents sit at the repository root, so a relative link is a repository path.
+    A relative link is relative to the document's own directory, as GitHub reads it.
     """
     if not url or url.startswith("#") or _EXTERNAL.match(url):
         return url
     target, _, anchor = url.partition("#")
-    path = posixpath.normpath(unquote(target.split("?", 1)[0])) if target else "."
+    relative = unquote(target.split("?", 1)[0]) if target else "."
+    path = posixpath.normpath(posixpath.join(context.base, relative))
     path = "" if path == "." else path
     fragment = f"#{anchor}" if anchor else ""
-    if path == "README.md":
-        return _readme_link(anchor, context)
     document = _BY_SOURCE.get(path)
     if document is not None:
         if anchor:
@@ -200,17 +283,12 @@ def element_ids(page: str) -> frozenset[str]:
     )
 
 
-@cache
-def overview_ids() -> frozenset[str]:
-    """The overview's heading ids, so a README anchor it also has stays on the site."""
-    return element_ids(render_overview.PAGES["index.html"]().html)
-
-
 def render_document(
     document: SiteDocument, *, revision: str, tree: RepositoryTree, report: LinkReport
 ) -> Page:
     """One reader document as a kpress page with its links rewritten."""
-    context = LinkContext(document.name, revision, tree, overview_ids())
+    base = posixpath.dirname(document.source.relative_to(REPO).as_posix())
+    context = LinkContext(document.name, revision, tree, base)
     return render_overview.kpress_page(
         document.source.read_text(encoding="utf-8"),
         name=document.name,
@@ -260,3 +338,8 @@ def site_documents() -> dict[str, Page]:
 def tutorial_page() -> Page:
     """`TUTORIAL.md` as `tutorial.html`."""
     return site_documents()["tutorial.html"]
+
+
+def document_page(name: str) -> Page:
+    """One repository document as its page, by served name."""
+    return site_documents()[name]

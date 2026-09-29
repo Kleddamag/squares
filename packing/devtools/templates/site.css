@@ -167,8 +167,8 @@ body {
   content: "\2192";
 }
 
-/* A card's popover previews where the card leads and ends in the button that goes
-   there: a plain sans panel with square corners over a faint scrim, closed by its
+/* A card's popover shows where the card leads, another page framed in its embed
+   view or a preview of a row here, and ends in the button that goes there: a plain sans panel with square corners over a faint scrim, closed by its
    cross, Escape, or a click outside. */
 .site-popover {
   background: var(--kpress-doc-bg);
@@ -205,6 +205,43 @@ body {
   font-size: var(--site-font-size-note);
   margin-block: 0.6rem 0;
 }
+/* A framed page takes most of the viewport, and the frame the height its heading and
+   buttons leave, so Expand never scrolls out of reach. */
+.site-popover[data-go="page"] {
+  inline-size: min(46rem, 100vw - 2rem);
+  max-inline-size: none;
+}
+.site-popover[data-go="page"]:popover-open {
+  block-size: min(88vh, 56rem);
+  display: flex;
+  flex-direction: column;
+  max-block-size: none;
+  max-height: none;
+  overflow: hidden;
+}
+.site-popover[data-go="page"] > * {
+  flex: none;
+}
+/* The target itself, framed narrow: the page shows its document alone (embed.js). */
+.site-popover .site-popover-frame {
+  border: 1px solid var(--kpress-doc-border);
+  display: block;
+  inline-size: 100%;
+}
+.site-popover[data-go="page"] > .site-popover-frame {
+  flex: 1 1 auto;
+  min-block-size: 0;
+}
+.site-popover .site-popover-actions {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-block: 0.8rem 0;
+}
+.site-popover .site-popover-also {
+  font-size: var(--site-font-size-note);
+}
 .site-popover .site-popover-preview {
   color: var(--site-support-color);
   font-size: var(--site-font-size-note);
@@ -230,7 +267,6 @@ body {
   display: inline-flex;
   font-weight: var(--site-font-weight-sans-medium);
   gap: 0.5rem;
-  margin-block-start: 0.6rem;
   padding: 0.45rem 0.9rem;
   text-decoration: none;
 }
@@ -654,6 +690,10 @@ body {
 /* Nine columns: the atlas takes a wider track than the site's other wide blocks. */
 .site-page .site-frontier {
   --site-wide: 86rem;
+}
+/* A case reached by its anchor (`frontier.html#n-11`) is marked with the card wash. */
+.site-frontier tr:target {
+  background: var(--kpress-doc-surface-hover);
 }
 .site-frontier .site-frontier-n {
   align-items: center;

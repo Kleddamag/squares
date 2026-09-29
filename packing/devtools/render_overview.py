@@ -47,6 +47,7 @@ FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
 MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
+EMBED_SCRIPT = BROWSER / "embed.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -61,6 +62,18 @@ FRONTIER_DESCRIPTION = (
     "the best known packing, the reported and verified bounds, and the records behind them."
 )
 
+#: The repository documents served as pages outside the navigation, reached from the
+#: overview's cards; `site_documents` renders them.
+DOCUMENT_PAGES: tuple[str, ...] = (
+    "readme.html",
+    "synopsis.html",
+    "results.html",
+    "status.html",
+    "epistemics.html",
+    "conventions.html",
+    "development.html",
+    "defects.html",
+)
 #: Every page the published site serves, by path under the site root, whichever build
 #: writes it. The navigation bar links only to these, and tests hold it to that.
 SITE_PAGES: tuple[str, ...] = (
@@ -69,6 +82,7 @@ SITE_PAGES: tuple[str, ...] = (
     "explainer.html",
     "tutorial.html",
     "workbench/index.html",
+    *DOCUMENT_PAGES,
 )
 
 #: Every file a render reads beside the record `overview_data.INPUTS` names; `inputs()`
@@ -86,6 +100,11 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
     REPO / "TUTORIAL.md",
+    REPO / "README.md",
+    REPO / "SYNOPSIS.md",
+    REPO / "conventions.md",
+    REPO / "development.md",
+    REPO / "defects.md",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
     PACKING / "uv.lock",
@@ -112,7 +131,7 @@ def inputs() -> tuple[Path, ...]:
     The page modules are imported here rather than at the top because
     `render_frontier_page` reads `render_explainer`, which imports this module.
     """
-    from devtools import overview_data, overview_previews  # noqa: PLC0415
+    from devtools import overview_data  # noqa: PLC0415
     from devtools.render_frontier_page import FRONTIER_INPUTS  # noqa: PLC0415
 
     return tuple(
@@ -120,7 +139,6 @@ def inputs() -> tuple[Path, ...]:
             (
                 *RENDER_INPUTS,
                 *overview_data.INPUTS,
-                *overview_previews.INPUTS,
                 *FRONTIER_INPUTS,
             )
         )
@@ -233,7 +251,7 @@ def kpress_page(
         content_card=False,
         show_doc_header=False,
         include_toc="on" if toc else "off",
-        head_extra_html=head,
+        head_extra_html=f"{head}<script>{_script_text(EMBED_SCRIPT)}</script>",
         header_html=nav_html(current),
         footer_html=colophon_html(),
     )
@@ -334,11 +352,21 @@ def frontier_page() -> Page:
     )
 
 
+def _document_page(name: str) -> Callable[[], Page]:
+    def build() -> Page:
+        from devtools.site_documents import document_page  # noqa: PLC0415
+
+        return document_page(name)
+
+    return build
+
+
 #: The pages this renderer owns, by served name.
 PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
     "frontier.html": frontier_page,
     "tutorial.html": tutorial_page,
+    **{name: _document_page(name) for name in DOCUMENT_PAGES},
 }
 
 

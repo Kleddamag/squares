@@ -16,7 +16,7 @@ own pair of `BEGIN GENERATED` markers:
 **A register row states nothing by hand.** The headline, the rungs, the significance and
 the date are the entry's own fields: `established` for this project's results,
 `attribution.published` for others'. The credit and the relation to this project are
-`render_results.credit_line` and `render_results.source_lineage`, the functions that
+`result_credit.credit_line` and `result_credit.source_lineage`, the functions that
 print them in `RESULTS.md`, so the two views cannot credit a result differently.
 The records cell links the retained packet READMEs and the reviews among the entry's
 `artifacts`, and its `review_artifact`.
@@ -96,7 +96,7 @@ from devtools.build_bound_citations import (
 )
 from devtools.check_results import recent_evidence, scope_values
 from devtools.render_research_tables import fold, keep_document_typography
-from devtools.render_results import credit_line, source_lineage
+from devtools.result_credit import credit_line, source_lineage
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent

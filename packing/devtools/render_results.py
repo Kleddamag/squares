@@ -12,9 +12,10 @@ sources state, read from the bibliography rather than restated: building on this
 project, crediting it second-hand, independent of it, and published before it began.
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
-rungs, with whether the result holds a case bound now: derived, never stored, as whether
-some case in its scope cites its evidence in a reported or verified bound. A result that
-no longer does was superseded, or is a second certificate for a value another holds.
+rungs, with the result's standing, derived from the case records and never stored by
+`devtools.render_recent_results.standing`, the same function README's tables use:
+whether a case bound rests on it now, and if not, whether it was superseded or is a
+second certificate for a value another result holds.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -24,14 +25,12 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import argparse
-from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
 
 from strif import atomic_output_file
 
-from devtools.build_bound_citations import RECENT_SINCE
-from devtools.check_results import BOUND_FIELDS, case_bound_evidence, scope_values
+from devtools.render_recent_results import load_records, standing
+from devtools.result_credit import OTHERS, credit_line, source_lineage
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -43,15 +42,6 @@ OUTPUT = ROOT / "frontier" / "RESULTS.md"
 #: reason `tests/test_generated_table_typography.py` gives: a literal one is invisible in a
 #: diff and ambiguous on sight.
 APOSTROPHE = "\u2019"
-
-#: The groups results by others fall into, in reading order, by the lineage their
-#: sources carry in the bibliography.
-OTHERS = (
-    ("builds-on-project", "Building on this project"),
-    ("credits-project", "Crediting this project second-hand"),
-    ("independent", "Independent of this project"),
-    (None, "Published before this project began"),
-)
 
 HEADER = """# Results
 
@@ -83,42 +73,6 @@ def _order(record: dict) -> tuple[int, int, str]:
     return (-record["significance"]["score"], -int(record["confirmation"][1]), record["id"])
 
 
-def credit_line(record: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]) -> str:
-    """The sources' credit lines, each once, in the order the attribution names them.
-
-    README's Results by Others table (`devtools.render_recent_results`) prints the same
-    cell, so the two views cannot credit a result differently.
-    """
-    lines = [
-        sources[key].get("credit") or ", ".join(sources[key]["authors"])
-        for key in record["attribution"]["source_keys"]
-    ]
-    return "; ".join(dict.fromkeys(lines)).replace("|", r"\|")
-
-
-def source_lineage(
-    record: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]
-) -> str | None:
-    """The group an attributed result reads under: its sources' lineage, if recent.
-
-    Also README's Results by Others relation column, read through the same function.
-    """
-    attribution = record["attribution"]
-    if attribution["published"] < RECENT_SINCE.isoformat():
-        return None
-    lineages = {sources[key].get("lineage") for key in attribution["source_keys"]}
-    for lineage, _ in OTHERS:
-        if lineage in lineages:
-            return lineage
-    return None
-
-
-def holds_a_bound(record: dict, cases: dict[int, set[str]]) -> str:
-    cited = set(record["evidence"])
-    held = any(cited & cases.get(n, set()) for n in scope_values(record["scope"]))
-    return "yes" if held else "no"
-
-
 def render() -> str:
     register = safe_load(RESULTS.read_text(encoding="utf-8"))
     sources = {
@@ -141,7 +95,7 @@ def render() -> str:
     )
     lines.append("")
     if others:
-        cases = case_bound_evidence(fields=BOUND_FIELDS)
+        records = load_records()
         lines.append("## Results by Others")
         lines.append("")
         lines.append(
@@ -159,13 +113,13 @@ def render() -> str:
                 continue
             lines.append(f"### {title}")
             lines.append("")
-            lines.append("| id | n | credit | published | V | C | S | holds a bound | claim |")
+            lines.append("| id | n | credit | published | V | C | S | standing | claim |")
             lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
                 f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {holds_a_bound(record, cases)} | {_claim(record)} |"
+                f"| {standing(record, records)} | {_claim(record)} |"
                 for record in group
             )
             lines.append("")

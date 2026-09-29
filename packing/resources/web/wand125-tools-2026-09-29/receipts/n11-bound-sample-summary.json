@@ -1,0 +1,27 @@
+{
+  "all_minima_match": true,
+  "binding_sha256": "f602d032891d95fc4ef24a93017745a488152edb90fa70d010507a166c1a8a2c",
+  "bound_at_production": true,
+  "complete": false,
+  "expected_rows": 12028,
+  "global_counting_theorem_verified": false,
+  "global_minimum": null,
+  "global_minimum_matches_reference": false,
+  "independent_exact_witness_replays": 3,
+  "independent_global_minimum_proof": false,
+  "independent_witness_evidence": "exact attainment at the reported point",
+  "journal_sha256": "0fb819b8db326b97a4bd68f7709537d2bfe1c576974576a921aa9b22c1444cac",
+  "minimum_search_evidence": "pinned source branch-and-bound",
+  "missing_ranges": [
+    "1-6013",
+    "6015-12026"
+  ],
+  "missing_rows": 12025,
+  "packing_bound_verified": false,
+  "process_outcome": "COMPLETE",
+  "producer_reported_witness_replays": 3,
+  "rows_checked": 3,
+  "sample_minimum": 1000047518,
+  "scope": "per-row exact minimum equality only",
+  "verdict": "PARTIAL_ROW_EQUALITY"
+}

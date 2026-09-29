@@ -9,7 +9,7 @@ Command: python -m devtools.verify_rectangle_density tests/fixtures/rectangle-de
 Exit: 1
 Input SHA-256: 80631b36018d8dd199382c1d709834fc1a8a1d88dd1463536dd3444217d2e5b2
 Input bytes: 301
-Stdout UTF-8 bytes: 963
+Stdout UTF-8 bytes: 1071
 Stderr UTF-8 bytes: 0
 Stdout begin:
 {
@@ -29,13 +29,15 @@ Stdout begin:
       "lower_bound": "0",
       "nodes": 1,
       "status": "COUNTEREXAMPLE",
+      "stop_cause": "counterexample_found",
       "unresolved_leaves": 8
     }
   ],
+  "bound_mode": "common-core",
   "candidate": "tests/fixtures/rectangle-density-cli/counterexample.json",
   "candidate_sha256": "80631b36018d8dd199382c1d709834fc1a8a1d88dd1463536dd3444217d2e5b2",
-  "checker": "sqpack.rectangle_density:native-exact-v1",
-  "checker_source_sha256": "eee2f2b05f7cde370c9ce7e0fe0c1aeb04a526604886bd7c0b5bdeb6bded6b78",
+  "checker": "sqpack.rectangle_density:native-exact-v2",
+  "checker_source_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
   "declared_rhs": null,
   "mass": "1683003/62500000",
   "mass_below_n": "185816997/62500000",
@@ -44,6 +46,7 @@ Stdout begin:
   "max_seconds": 30.0,
   "n": 3,
   "requested_angle_count": 1,
+  "retain_pending_boxes": false,
   "status": "COUNTEREXAMPLE",
   "threshold": "1"
 }

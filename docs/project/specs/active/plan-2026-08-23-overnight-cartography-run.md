@@ -452,8 +452,10 @@ Do not repeat a completed experiment or create another candidate without a regis
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
 For the next supervised exact-research goal, continue native rectangle verification
-under `think-bmf3`: retain the unresolved n11 boxes and compare tighter exact bounds on
-identical inputs under the plan’s 30-second ceiling before selecting a full replay.
+under `think-bmf3`: justify finer subdivision or a bound on total coverage before
+another external rectangle replay.
+The retained corner-bound comparison produced no new threshold crossing, and the
+1,000-node probe remains inconclusive with 67 depth-capped leaves and 11 queued boxes.
 PR 246’s implementation passed required and deferred checks, and Session 162’s
 certification debt is discharged.
 The prototype and controls do not establish complete coverage of an external

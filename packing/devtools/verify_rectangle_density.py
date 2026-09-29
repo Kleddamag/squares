@@ -57,6 +57,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-nodes-per-angle", type=int, default=1_000_000)
     parser.add_argument("--max-depth", type=int, default=48)
     parser.add_argument("--max-seconds", type=float, default=300.0)
+    parser.add_argument(
+        "--bound-mode", choices=("common-core", "corner-min"), default="common-core"
+    )
+    parser.add_argument("--retain-pending-boxes", action="store_true")
     return parser
 
 
@@ -79,6 +83,8 @@ def main(argv: list[str] | None = None) -> int:
             max_nodes_per_angle=args.max_nodes_per_angle,
             max_depth=args.max_depth,
             max_seconds=args.max_seconds,
+            bound_mode=args.bound_mode,
+            retain_pending_boxes=args.retain_pending_boxes,
         )
     except (CandidateError, OSError) as error:
         print(json.dumps({"status": "REFUSED", "error": str(error)}, sort_keys=True))
@@ -99,7 +105,7 @@ def main(argv: list[str] | None = None) -> int:
     result = report.as_dict()
     result["candidate"] = str(args.candidate)
     result["candidate_sha256"] = hashlib.sha256(candidate_bytes).hexdigest()
-    result["checker"] = "sqpack.rectangle_density:native-exact-v1"
+    result["checker"] = "sqpack.rectangle_density:native-exact-v2"
     result["checker_source_sha256"] = hashlib.sha256(checker_source).hexdigest()
     print(json.dumps(result, indent=2, sort_keys=True))
     if report.status == "VERIFIED":

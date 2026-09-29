@@ -128,13 +128,102 @@ The selected candidate bound sums, for each rectangle separately, its density ti
 minimum of its exact overlap areas at the four center-box corners.
 Convexity and the planar
 [Brunn–Minkowski inequality](https://faculty.gardner.wwu.edu/gorizia12.pdf) (Gardner,
-Corollary 5.3) make this a valid lower bound; taking the minimum of the total density at
-those corners would not be justified.
+Theorem 12.1, with zero overlap handled by nonnegativity) make this a valid lower bound;
+taking the minimum of the total density at those corners would not be justified.
 Retain the exact pending boxes first, then compare both bounds on identical boxes with a
 30-second cap. A useful first result closes at least one previously unresolved box
 without weakening any bound.
 Larger wand125 replays depend on this cost assessment; T-057’s complete row replay
 remains a separate W2 task, think-190a.
+
+## Continuing Work and Bead Dependencies
+
+The continuation uses Sol implementation lanes and GPT-6 Astra at max thinking for
+mathematical and verifier review.
+The coordinator owns records, integration and PR 246. Archived source remains immutable.
+Completed engineering slices do not close their parent mathematical obligations.
+
+| Obligation | Bead | Completion evidence or dependency |
+| --- | --- | --- |
+| Native frontier diagnostics and corner bound | think-wjb2 | Exact capped diagnostics, analytic controls, reviewed implementation and identical-frontier comparison; active Sol lane |
+| Complete native external certificate | think-aqne | Depends on think-wjb2 and its cost assessment; all 201 angles, no unresolved work, bound input/source receipt |
+| T-057 strict provenance and census admission | think-pgrx | Production-time identity binding, exact unique row inventory, explicit partial/unbound states and adversarial controls; active Sol lane |
+| T-057 full row replay | think-11z6 | Depends on think-pgrx; all 12,028 minima and witnesses reconciled |
+| T-057 global counting | think-4t1e | Reconcile the identical certificate with existing complete native parent-core evidence; the global argument is established, while wand125’s exact row equality remains separate |
+| Guard transformed-certificate admission | think-pegr | Exact count, positive scale, mass, geometry and source binding; refuse the retained false announcement |
+| Rigorous ceiling implementation | think-xl42 | Certified witness bounds, orientation allowance and outward rounding |
+| Cached-axis compiled equivalence | think-q4eo | Pinned builds, tangency/threshold differential controls and complete canonical replay |
+| Lazy zmx2 admission and build controls | think-lg4u | Bound identities, nonempty complete census, explicit optimized-Python refusals, fresh successful builds and checked indices |
+| Reproduced performance claims | think-wk08 | Depends on think-q4eo and think-lg4u; complete accelerated replay and matched measurements |
+| Broader first-party Rust contracts | think-cr8l | Support policy, dependency audit and CLI behavior; separate from mathematical coverage |
+
+### Frozen First Comparison
+
+The first comparison is an exact engineering determination, not a timing speed-up claim.
+The subject is Tokoharu’s retained n11 rectangle input at side 381/100, angle 1,
+threshold 1, with the common-core traversal capped at 100 nodes and depth 20. Capture
+its full unresolved frontier under the existing 30-second cooperative search limit,
+binding exact candidate bytes, checker source and settings.
+Do not replace the historical bounded receipt.
+A truncated frontier or failed identity/admission guard invalidates the comparison; it
+is not a negative scientific result.
+
+For each identical retained box, compute the common-core lower bound and the sum of
+per-rectangle minimum corner overlaps.
+Nonnegative density and the reviewed convexity argument must justify each term.
+Never take the minimum of total corner coverage.
+The acceptance criterion is fixed before target measurement: every completed comparison
+must preserve or increase the lower bound, and at least one previously unresolved box
+must reach threshold 1. The comparison has a 30-second ceiling; incomplete comparison
+records remain explicitly partial, and absence of a threshold crossing is retained.
+No change to the threshold, input, or selected frontier may rescue a failed criterion.
+
+Analytic correctness controls and independent Astra-max review precede target
+measurement. Timing fields describe that run only; a performance claim would require a
+separate paired experiment with repeated samples.
+Complete external verification remains think-aqne even if this narrower criterion
+passes. The reusable comparison command and its bound receipts supply the execution
+record; this plan and the owning bead supply the predeclared criterion.
+
+### First Comparison Result
+
+The
+[retained frontier](../../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-frontier-2026-09-29.json)
+contains all nine pending boxes after 100 common-core nodes at angle 1. The
+[comparison](../../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bound-comparison.json)
+matched that frontier and evaluated all nine boxes in 1.420 seconds, including replay,
+without reaching its 30-second cap.
+Every corner bound was at least the common-core bound; three increased strictly, but
+none crossed threshold 1 from below.
+**The frozen usefulness criterion was not met.**
+
+Four queued boxes already had a sufficient common-core bound when re-evaluated.
+All three strict improvements occurred among those four.
+The five boxes below threshold received no improvement.
+Pending means unfinished traversal work; it does not mean every queued box has already
+failed the old bound.
+The implementation and analytic controls are retained, but the result supplies no
+complete angle or external-certificate verification and no measured speed-up.
+
+### Fixed Traversal-Cost Probe
+
+**think-rrwv**, declared after the comparison and before execution, asks a different
+question: can the existing common-core traversal finish angle 1 at 1,000 nodes, depth 20
+and a 30-second cooperative ceiling?
+The candidate, side 381/100 and threshold 1 are unchanged.
+Retain all pending boxes and the stop cause.
+Success requires the angle’s complete domain and zero unresolved leaves; an incomplete
+result records the limit rather than prompting a larger rerun.
+No result from one angle licenses an estimate or acceptance of all 201 directions.
+The corner-bound usefulness criterion remains failed regardless of this probe’s result.
+
+The
+[probe receipt](../../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-angle1-1000-nodes.json)
+is `INCONCLUSIVE`: 1,000 nodes, 428 accepted leaves and 78 unresolved leaves.
+Of the pending boxes, 67 reached depth 20 and 11 remained queued at the node cap.
+No exact elapsed-time field was retained, so this receipt supports the work census and
+stop causes, not a measured runtime claim.
+No larger replay follows from this result.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

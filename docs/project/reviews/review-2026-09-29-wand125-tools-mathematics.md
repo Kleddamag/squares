@@ -192,9 +192,13 @@ Our retained
 checked rows 0, 6014, and 12027. Each independently recomputed minimum matched its
 recorded value, and each exact witness replayed.
 These probes establish agreement on those three rows; **T-057’s full 12,028-row census
-remains reported**. Its arithmetic, row enclosure, boundary semantics, $D_4$ folding,
-threshold budget, exact $11\Gamma>M$ inequality, and complete row census each require
-review or replay before we promote its result.
+remains reported**. The identical certificate already has a
+[complete native parent-core verification](review-2026-09-22-native-n11-parent-core.md),
+including exact enclosures, $D_4$ folding, threshold budget and $11\Gamma>M$. Those
+global premises are established evidence for the existing `V4/C4` bound `s(11) > 31/8`;
+they are not missing merely because wand125 supplies a new checker.
+The native threshold decision need not equal each exact row minimum, so the full wand125
+minimum-equality claim still requires its own replay and exact census.
 It does not verify rectangle densities or remove their current C++ dependency.
 
 Source review found no defect in the threshold-charge boundary argument, exact four-axis

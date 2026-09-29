@@ -29,6 +29,10 @@ class CandidateError(ValueError):
     """The candidate is malformed or fails an admission premise."""
 
 
+class _BoundDeadlineError(TimeoutError):
+    """A box bound was interrupted before its exact sum was complete."""
+
+
 @dataclass(frozen=True, slots=True)
 class DensityRectangle:
     """One axis-aligned rectangle with constant density."""
@@ -70,6 +74,30 @@ class Counterexample:
 
 
 @dataclass(frozen=True, slots=True)
+class PendingBox:
+    """An unproved centre box retained only for diagnosis, never for replay."""
+
+    angle: int
+    left: Fraction
+    bottom: Fraction
+    right: Fraction
+    top: Fraction
+    depth: int
+    stop_cause: str
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "angle": self.angle,
+            "left": str(self.left),
+            "bottom": str(self.bottom),
+            "right": str(self.right),
+            "top": str(self.top),
+            "depth": self.depth,
+            "stop_cause": self.stop_cause,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class AngleVerification:
     """The exact subdivision result for one rational net direction."""
 
@@ -80,6 +108,8 @@ class AngleVerification:
     unresolved_leaves: int
     lower_bound: Fraction
     counterexample: Counterexample | None = None
+    stop_cause: str | None = None
+    pending_boxes: tuple[PendingBox, ...] | None = None
 
     def as_dict(self) -> dict[str, object]:
         result: dict[str, object] = {
@@ -92,6 +122,10 @@ class AngleVerification:
         }
         if self.counterexample is not None:
             result["counterexample"] = self.counterexample.as_dict()
+        if self.stop_cause is not None:
+            result["stop_cause"] = self.stop_cause
+        if self.pending_boxes is not None:
+            result["pending_boxes"] = [box.as_dict() for box in self.pending_boxes]
         return result
 
 
@@ -106,6 +140,8 @@ class VerificationReport:
     max_depth: int
     max_seconds: float
     requested_angle_count: int
+    bound_mode: str
+    retain_pending_boxes: bool
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -124,6 +160,8 @@ class VerificationReport:
             "angle_step": str(ANGLE_STEP),
             "angle_count": len(self.angles),
             "requested_angle_count": self.requested_angle_count,
+            "bound_mode": self.bound_mode,
+            "retain_pending_boxes": self.retain_pending_boxes,
             "max_nodes_per_angle": self.max_nodes_per_angle,
             "max_depth": self.max_depth,
             "max_seconds": self.max_seconds,
@@ -138,6 +176,10 @@ class _CentreBox:
     right: Fraction
     top: Fraction
     depth: int
+
+
+def _box_coordinates(box: _CentreBox) -> tuple[Fraction, Fraction, Fraction, Fraction]:
+    return box.left, box.bottom, box.right, box.top
 
 
 def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -595,6 +637,72 @@ def _common_core(
     )
 
 
+def _corner_minimum(
+    candidate: RectangleDensityCandidate,
+    box: _CentreBox,
+    cosine: Fraction,
+    sine: Fraction,
+    deadline: float | None = None,
+) -> Fraction:
+    """Sum each rectangle's least corner overlap over a centre box.
+
+    For a fixed convex rectangle, the square-intersection area's square root is
+    concave on its positive-overlap support under translation (planar
+    Brunn--Minkowski). Every centre is a convex combination of the four corners;
+    if all corner overlaps are positive, concavity gives their minimum as a
+    lower bound. If a corner overlap is zero, nonnegativity gives the same
+    (zero) lower bound. Minima precede the sum of nonnegative densities.
+    """
+
+    polygons = tuple(
+        square_polygon(x, y, cosine, sine, candidate.core_side)
+        for x in (box.left, box.right)
+        for y in (box.bottom, box.top)
+    )
+    total = Fraction()
+    for rectangle in candidate.rectangles:
+        if deadline is not None and _expired(deadline):
+            raise _BoundDeadlineError
+        overlaps = (exact_intersection_area(rectangle, polygon) for polygon in polygons)
+        total += rectangle.density * min(overlaps)
+    return total
+
+
+def _box_lower_bound(
+    candidate: RectangleDensityCandidate,
+    box: _CentreBox,
+    cosine: Fraction,
+    sine: Fraction,
+    *,
+    bound_mode: str,
+    deadline: float,
+) -> Fraction:
+    common = _coverage_polygon(candidate, _common_core(candidate, box, cosine, sine))
+    if bound_mode == "common-core" or common >= candidate.target:
+        return common
+    return max(common, _corner_minimum(candidate, box, cosine, sine, deadline))
+
+
+def pending_common_core_bound(
+    candidate: RectangleDensityCandidate, pending: PendingBox
+) -> Fraction:
+    """Re-evaluate the old bound on a diagnostic box without proof authority."""
+
+    box = _CentreBox(pending.left, pending.bottom, pending.right, pending.top, pending.depth)
+    cosine, sine = _angle(pending.angle)
+    return _coverage_polygon(candidate, _common_core(candidate, box, cosine, sine))
+
+
+def pending_corner_min_bound(
+    candidate: RectangleDensityCandidate, pending: PendingBox, *, deadline: float
+) -> Fraction:
+    """Re-evaluate the stronger bound; a timeout has no usable partial sum."""
+
+    box = _CentreBox(pending.left, pending.bottom, pending.right, pending.top, pending.depth)
+    cosine, sine = _angle(pending.angle)
+    return _corner_minimum(candidate, box, cosine, sine, deadline)
+
+
 def _axis_events(
     candidate: RectangleDensityCandidate, lower: Fraction, upper: Fraction
 ) -> tuple[tuple[Fraction, ...], tuple[Fraction, ...]]:
@@ -629,6 +737,7 @@ def _verify_axis(
     for x in x_events:
         for y in y_events:
             if nodes >= max_nodes or _expired(deadline):
+                cause = "node_limit" if nodes >= max_nodes else "time_limit"
                 return AngleVerification(
                     0,
                     "INCONCLUSIVE",
@@ -636,6 +745,7 @@ def _verify_axis(
                     nodes,
                     event_count - nodes,
                     Fraction(),
+                    stop_cause=cause,
                 )
             value = coverage_at_point(candidate, x, y, Fraction(1), Fraction())
             nodes += 1
@@ -649,6 +759,7 @@ def _verify_axis(
                     event_count - nodes,
                     Fraction(),
                     Counterexample(x, y, value),
+                    stop_cause="counterexample_found",
                 )
     if minimum is None:
         raise CandidateError("axis event grid is empty")
@@ -678,6 +789,8 @@ def _verify_rotated(
     max_nodes: int,
     max_depth: int,
     deadline: float,
+    bound_mode: str,
+    retain_pending_boxes: bool,
 ) -> AngleVerification:
     cosine, sine = _angle(index)
     extent = candidate.core_side * (cosine + sine) / 2
@@ -689,15 +802,35 @@ def _verify_rotated(
     nodes = 0
     accepted = 0
     unresolved = 0
+    pending: list[PendingBox] | None = [] if retain_pending_boxes else None
+    stop_cause: str | None = None
     certified_minimum: Fraction | None = None
     while stack:
         if nodes >= max_nodes or _expired(deadline):
+            stop_cause = "node_limit" if nodes >= max_nodes else "time_limit"
             unresolved += len(stack)
+            if pending is not None:
+                pending.extend(
+                    PendingBox(index, *_box_coordinates(queued), queued.depth, stop_cause)
+                    for queued in stack
+                )
             break
         box = stack.pop()
         nodes += 1
-        polygon = _common_core(candidate, box, cosine, sine)
-        lower_bound = _coverage_polygon(candidate, polygon)
+        try:
+            lower_bound = _box_lower_bound(
+                candidate, box, cosine, sine, bound_mode=bound_mode, deadline=deadline
+            )
+        except _BoundDeadlineError:
+            stop_cause = "time_limit"
+            unresolved += 1 + len(stack)
+            if pending is not None:
+                pending.append(PendingBox(index, *_box_coordinates(box), box.depth, stop_cause))
+                pending.extend(
+                    PendingBox(index, *_box_coordinates(queued), queued.depth, stop_cause)
+                    for queued in stack
+                )
+            break
         if lower_bound >= candidate.target:
             accepted += 1
             certified_minimum = (
@@ -710,6 +843,16 @@ def _verify_rotated(
         midpoint_y = (box.bottom + box.top) / 2
         point_value = coverage_at_point(candidate, midpoint_x, midpoint_y, cosine, sine)
         if point_value < candidate.target:
+            if pending is not None:
+                pending.extend(
+                    PendingBox(
+                        index,
+                        *_box_coordinates(queued),
+                        queued.depth,
+                        "counterexample_found",
+                    )
+                    for queued in stack
+                )
             return AngleVerification(
                 index,
                 "COUNTEREXAMPLE",
@@ -718,9 +861,15 @@ def _verify_rotated(
                 unresolved + len(stack),
                 Fraction(),
                 Counterexample(midpoint_x, midpoint_y, point_value),
+                "counterexample_found",
+                tuple(pending) if pending is not None else None,
             )
         if box.depth >= max_depth or (box.left == box.right and box.bottom == box.top):
             unresolved += 1
+            cause = "depth_limit" if box.depth >= max_depth else "point_box"
+            stop_cause = cause if stop_cause is None else stop_cause
+            if pending is not None:
+                pending.append(PendingBox(index, *_box_coordinates(box), box.depth, cause))
             continue
         first, second = _split(box)
         stack.extend((second, first))
@@ -736,6 +885,8 @@ def _verify_rotated(
             if status == "VERIFIED" and certified_minimum is not None
             else Fraction()
         ),
+        stop_cause=stop_cause,
+        pending_boxes=tuple(pending) if pending is not None else None,
     )
 
 
@@ -746,6 +897,8 @@ def verify_candidate(
     max_nodes_per_angle: int = 1_000_000,
     max_depth: int = 48,
     max_seconds: float = 300.0,
+    bound_mode: str = "common-core",
+    retain_pending_boxes: bool = False,
 ) -> VerificationReport:
     """Verify selected net directions; only the complete 201-angle census can pass."""
 
@@ -776,6 +929,12 @@ def verify_candidate(
     max_seconds = float(max_seconds)
     if max_seconds < 0 or not math.isfinite(max_seconds):
         raise CandidateError("max_seconds must be a nonnegative finite number")
+    if bound_mode not in ("common-core", "corner-min"):
+        raise CandidateError("bound mode must be common-core or corner-min")
+    if type(retain_pending_boxes) is not bool:
+        raise CandidateError("retain_pending_boxes must be Boolean")
+    if retain_pending_boxes and max(1, max_nodes_per_angle) * len(indices) > 10_000:
+        raise CandidateError("pending-box retention requires at most 10000 total nodes")
     deadline = time.monotonic() + max_seconds
     results: list[AngleVerification] = []
     for index in indices:
@@ -788,6 +947,8 @@ def verify_candidate(
                 max_nodes=max_nodes_per_angle,
                 max_depth=max_depth,
                 deadline=deadline,
+                bound_mode=bound_mode,
+                retain_pending_boxes=retain_pending_boxes,
             )
         )
         results.append(result)
@@ -810,4 +971,6 @@ def verify_candidate(
         max_depth,
         max_seconds,
         len(indices),
+        bound_mode,
+        retain_pending_boxes,
     )

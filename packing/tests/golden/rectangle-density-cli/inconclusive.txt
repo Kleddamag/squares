@@ -9,7 +9,7 @@ Command: python -m devtools.verify_rectangle_density resources/web/wand125-tools
 Exit: 2
 Input SHA-256: bfd6e4dea67a048321836c69c9c9fe782687ffc512ccb1afc43249212ba5f01e
 Input bytes: 147
-Stdout UTF-8 bytes: 841
+Stdout UTF-8 bytes: 939
 Stderr UTF-8 bytes: 0
 Stdout begin:
 {
@@ -24,13 +24,15 @@ Stdout begin:
       "lower_bound": "0",
       "nodes": 0,
       "status": "INCONCLUSIVE",
+      "stop_cause": "node_limit",
       "unresolved_leaves": 1
     }
   ],
+  "bound_mode": "common-core",
   "candidate": "resources/web/wand125-tools-2026-09-29/native-analytic-control.json",
   "candidate_sha256": "bfd6e4dea67a048321836c69c9c9fe782687ffc512ccb1afc43249212ba5f01e",
-  "checker": "sqpack.rectangle_density:native-exact-v1",
-  "checker_source_sha256": "eee2f2b05f7cde370c9ce7e0fe0c1aeb04a526604886bd7c0b5bdeb6bded6b78",
+  "checker": "sqpack.rectangle_density:native-exact-v2",
+  "checker_source_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
   "declared_rhs": null,
   "mass": "1683003/625000",
   "mass_below_n": "191997/625000",
@@ -39,6 +41,7 @@ Stdout begin:
   "max_seconds": 30.0,
   "n": 3,
   "requested_angle_count": 1,
+  "retain_pending_boxes": false,
   "status": "INCONCLUSIVE",
   "threshold": "1"
 }

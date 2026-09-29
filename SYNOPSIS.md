@@ -237,7 +237,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 162 | 101 completed; 61 stopped; all terminal |
+| Sessions | 163 | 101 completed; 61 stopped; 1 nonterminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -972,6 +972,7 @@ case or experiment separately.
 | [wand125 Rectangle Certificates: Does the Reviewed Checker Scale to Side 9?](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) | dated review record | record | retained | — |
 | [wand125 Tools: Mathematical and Admission Review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) | dated review record | record | retained | — |
 | [Native Rectangle-Density Verification Contract](docs/project/reviews/review-2026-09-29-native-rectangle-contract.md) | dated review record | record | retained | — |
+| [Rectangle Corner Bound and Pending-Box Review](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) | dated review record | record | retained | — |
 | [Verification Tooling and Its Boundaries](docs/project/verification-tooling.md) | component scope and use | record | retained | — |
 | [Native Rectangle Verification and wand125 Tools Intake](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md) | implementation plan | record | maintained | — |
 | [Proof Review: Evan Daniel’s `s(21) = 5` and `s(45) = 7` by Mixed Covers](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) | dated review record | record | retained | — |
@@ -1198,6 +1199,16 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
+[Session 163](packing/campaign/agent-sessions/session-163-native-bounds-and-census.md)
+continues the verification pipeline on PR 246. Sol implementation lanes own exact
+rectangle bounds (`think-wjb2`) and T-057 receipt admission (`think-pgrx`); Astra at max
+thinking reviews the mathematics and verifier contracts.
+The
+[dependency map](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md#continuing-work-and-bead-dependencies)
+separates these engineering slices from complete certificate replay, global counting,
+ceiling repair and accelerated-verifier validation.
+These slices do not promote a packing bound.
+
 [Session 162](packing/campaign/agent-sessions/session-162-wand125-tools-intake.md)
 initially closed the wand125 intake, native rectangle-verifier prototype and
 documentation slice with explicit certification debt, since discharged by the hosted
@@ -1208,11 +1219,15 @@ certificate-page workflow passed at `c621b845f` and the documentation follow-up
 `c621b845f`. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-bmf3`, W7: retain the unresolved n11 boxes and compare
-tighter exact translation-box bounds on identical inputs under the plan’s 30-second
-ceiling. Complete external-certificate coverage is required before assigning independent
-confirmation to that certificate.
-PR integration is complete; no frontier bound was promoted.
+**Selected next entry:** `think-bmf3`, W7: justify finer subdivision or a bound on total
+coverage before another external rectangle replay.
+The retained corner comparison produced no new threshold crossing; the 1,000-node probe
+left 67 depth-capped leaves and 11 queued boxes.
+Complete external-certificate coverage remains required before assigning independent
+confirmation to that rectangle certificate.
+T-057’s complete source-row equality remains open; the identical point certificate’s
+global packing proof is already established as T-037 V4/C4. No frontier bound was
+promoted.
 
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
 asked again what improvement is left at low `n` and moved one bound.
@@ -5370,8 +5385,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | Coverage | sessions |
 | --- | ---: |
 | measured | 108 |
-| unmeasured | 54 |
-| **total** | **162** |
+| unmeasured | 55 |
+| **total** | **163** |
 
 <!-- END GENERATED: session-close-report -->
 

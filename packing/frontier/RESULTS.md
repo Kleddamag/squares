@@ -157,7 +157,7 @@ The next evidence-improving action or terminal rationale for each result:
 - **T-054** — The unreduced zmx2 --full sweep would remove the reliance on the D4 reduction (review F2). C4 would need a checker other than zmx2 to decide this point cover; the exact zeromargin.py route reads point covers and is the reachable one.
 - **T-056** — think-xgjo: discharge net orientation and exact upper-witness assumptions, or replace the ceiling with the reviewed sufficient angular-containment correction. Keep l_cap a search heuristic until then.
 - **T-055** — Finish the complete local replay (verify_portable.py --workers 2, which must end FRESH_ALL_DOMAIN_REPLAY_VERIFIED, then n21-compare against the pinned M1 linkage) and record it as an exact-algebraic replay entry, which would derive V4/C3 for the lower half. C1 before that, by recording the 2026-09-28 point-only review as an external_review on the report entry.
-- **T-057** — think-190a: review exact branch, enclosure and measure contracts and replay all 12028 rows against the pinned certificate. Retain complete census and exact witness comparisons; partial samples do not promote this claim.
+- **T-057** — think-11z6 under think-190a: replay all 12028 rows through the reviewed production-bound wrapper. Retain the complete unique census and exact witness comparisons; three freshly bound sample rows do not promote this claim.
 
 Register reviewed 2026-09-29.
 

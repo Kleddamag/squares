@@ -77,7 +77,11 @@ At axis alignment it enumerates all rectangle events and evaluates their grid ex
 At each oblique net direction it subdivides the admissible centre domain into rational
 boxes. A polygon contained in every checking square over one box supplies a lower bound
 on captured mass, computed by exact clipping against the density rectangles.
-The engine accepts an angle only after every box has a sufficient lower bound.
+The optional `corner-min` mode sums each rectangle’s least exact overlap at the four box
+corners. The [corner-bound review](reviews/review-2026-09-29-rectangle-corner-bound.md)
+proves this bound and explains why taking the minimum after summing the rectangles would
+be invalid. The default remains `common-core`. The engine accepts an angle only after
+every box has a sufficient lower bound.
 
 The [CLI](../../packing/devtools/verify_rectangle_density.py) rechecks exact admission
 premises, rejects inconsistent net metadata, and binds its receipt to the candidate
@@ -88,6 +92,14 @@ Only all 201 required angles can produce `VERIFIED`. A successful subset is `PAR
 an exhausted node, depth or cooperative search-time budget is `INCONCLUSIVE`; an exact
 core placement below the requested threshold is `COUNTEREXAMPLE` to that certificate.
 None of those other statuses establishes the packing bound.
+
+`--retain-pending-boxes` retains exact unresolved boxes for oblique directions, with a
+global 10,000-node request ceiling.
+It refuses oversized requests rather than silently truncating diagnostics.
+The [comparison command](../../packing/devtools/compare_rectangle_density_bounds.py)
+replays and matches a retained frontier before evaluating both bounds on identical
+boxes. Its output is always `DIAGNOSTIC_ONLY`; it supplies no trusted-resume or
+proof-aggregation mechanism.
 
 The [native controls](../../packing/tests/test_rectangle_density.py) include a complete
 analytic positive density, an underweight cover, malformed inputs, direct-construction
@@ -100,6 +112,8 @@ The executed receipts distinguish their outcomes:
 | [Analytic density](../../packing/resources/web/wand125-tools-2026-09-29/native-analytic-control.json), `n=3`, `L=3/2`, mass `1683003/625000` | [`VERIFIED`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-analytic.json) | All 201 angles at threshold `1`, with no unresolved leaves; a complete control for the new engine |
 | Retained source negative control, `n=1`, mass `289/10` | [`REFUSED`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-admission-refusal.json) | Rejected by the strict mass budget before coverage |
 | Tokoharu n11 certificate at `381/100` | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bounded.json) | Angle 1 only, capped at 100 nodes: 46 accepted leaves and 9 unresolved leaves; no complete coverage claim |
+| Same n11 input and exact pending frontier | [`DIAGNOSTIC_ONLY`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bound-comparison.json) | All 9 pending boxes compared; corner bounds improved 3 but produced no new threshold crossing. The predeclared usefulness criterion was not met. |
+| Same n11 input, angle 1 at 1,000 nodes and depth 20 | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-angle1-1000-nodes.json) | 428 accepted leaves; 67 depth-capped leaves and 11 queued boxes remain. No larger replay selected. |
 
 A complete native coverage receipt for a retained external certificate remains
 outstanding. The
@@ -128,6 +142,48 @@ Since `s(1)=1`, the announcement is false.
 Coverage succeeded, but the required `mass < n` check was absent.
 The native checker rejects that retained scaled input at admission, before attempting
 coverage.
+
+## T-057 Row Replay and Its Separate Global Argument
+
+T-057 concerns all 12,028 row minima of the Kleddamag n11 point and threshold-charge
+certificate. It is a different input and theorem from the Tokoharu rectangle example.
+The [row-census wrapper](../../packing/devtools/check_general_pose_tree_census.py) has
+three distinct operations: inspect legacy rows as unbound inventory, run the pinned
+source checker with production-time input and source binding, and validate the resulting
+row journal.
+Complete row equality requires each index from 0 through 12027 exactly once.
+Missing, repeated, stale or mixed rows cannot establish it.
+
+The wrapper independently evaluates each returned witness with exact arithmetic.
+This confirms the reported charge at that center; minimality over the entire row domain
+still relies on the pinned source’s search.
+A witness alone supplies an upper bound on the true minimum.
+The wrapper uses isolated Python execution so an inherited optimization setting cannot
+disable upstream assertions.
+
+The
+[fresh bound journal](../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample.jsonl)
+and
+[summary](../../packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-summary.json)
+cover rows 0, 6014 and 12027. All three source minima equal `1000047518`, and the
+independent evaluator confirms all three attaining witnesses.
+The result is `PARTIAL_ROW_EQUALITY`: 12,025 rows remain unreplayed by this wrapper, and
+this sample does not include the recorded global minimum.
+Its timing is a sample measurement, not a measured full-run cost.
+
+The global packing argument is a separate obligation, already established for this
+identical certificate by the
+[complete native parent-core review](reviews/review-2026-09-22-native-n11-parent-core.md)
+and its retained 12,028-row coverage decision.
+That evidence proves the angle cover, strict enclosures, D4 reduction, threshold-charge
+budget and positive counting gap, supporting the existing `V4/C4` bound `s(11) > 31/8`.
+It is reusable evidence, not a missing proof or a new promotion.
+Native threshold coverage need not reproduce each exact row minimum, so it does not
+settle T-057’s claimed minimum equalities.
+The
+[bead map](specs/active/plan-2026-09-29-native-rectangle-verification.md#continuing-work-and-bead-dependencies)
+tracks wrapper admission, complete replay and this prior-evidence reconciliation as
+`think-pgrx`, `think-11z6` and `think-4t1e`.
 
 ## Mixed Covers and External Replay
 

@@ -9,11 +9,17 @@ from pathlib import Path
 
 import pytest
 
+from devtools import compare_rectangle_density_bounds as comparison_cli
 from devtools import verify_rectangle_density as cli
+from sqpack import rectangle_density as density
 from sqpack.rectangle_density import (
     CandidateError,
+    DensityRectangle,
+    RectangleDensityCandidate,
+    _BoundDeadlineError,  # pyright: ignore[reportPrivateUsage]
     _CentreBox,  # pyright: ignore[reportPrivateUsage]
     _common_core,  # pyright: ignore[reportPrivateUsage]
+    _corner_minimum,  # pyright: ignore[reportPrivateUsage]
     coverage_at_point,
     exact_intersection_area,
     load_candidate,
@@ -53,6 +59,21 @@ def test_small_analytic_density_proves_every_net_angle() -> None:
     assert report.status == "VERIFIED"
     assert len(report.angles) == 201
     assert all(angle.status == "VERIFIED" for angle in report.angles)
+
+
+def test_corner_mode_preserves_exact_analytic_verification() -> None:
+    candidate = parse_candidate(_candidate(), n=3)
+    common = verify_candidate(candidate, max_nodes_per_angle=10_000, max_depth=20)
+    stronger = verify_candidate(
+        candidate, max_nodes_per_angle=10_000, max_depth=20, bound_mode="corner-min"
+    )
+
+    assert common.status == stronger.status == "VERIFIED"
+    assert len(stronger.angles) == 201
+    assert all(angle.status == "VERIFIED" for angle in stronger.angles)
+    assert sum(angle.nodes for angle in stronger.angles) <= sum(
+        angle.nodes for angle in common.angles
+    )
 
 
 def test_asymmetric_orbit_and_common_core_have_analytic_oracles() -> None:
@@ -102,6 +123,54 @@ def test_asymmetric_orbit_and_common_core_have_analytic_oracles() -> None:
                 assert abs(-sine * (px - x) + cosine * (py - y)) <= Fraction(1, 4)
 
 
+def test_corner_minimum_closes_an_analytic_box_with_no_common_core() -> None:
+    candidate = parse_candidate(
+        {
+            "n": 58,
+            "L": "4",
+            "B": "1/2",
+            "rectangles": [["1/10", "1/10", "39/10", "39/10"]],
+            "weights": ["1444/25"],
+        },
+        n=58,
+    )
+    box = _CentreBox(Fraction(2), Fraction(2), Fraction(3), Fraction(3), 0)
+    cosine, sine = Fraction(3, 5), Fraction(4, 5)
+
+    assert candidate.mass == Fraction(1444, 25) < 58
+    assert len(candidate.rectangles) == 1
+    assert candidate.rectangles[0].density == 4
+    assert _common_core(candidate, box, cosine, sine) == ()
+    assert _corner_minimum(candidate, box, cosine, sine) == 1
+    for x in (box.left, box.right):
+        for y in (box.bottom, box.top):
+            assert coverage_at_point(candidate, x, y, cosine, sine) == 1
+
+
+def test_corner_minimum_is_not_minimum_of_total_corner_coverage() -> None:
+    rectangles = (
+        DensityRectangle(
+            Fraction(3, 4), Fraction(3, 4), Fraction(5, 4), Fraction(5, 4), Fraction(1)
+        ),
+        DensityRectangle(
+            Fraction(7, 4), Fraction(3, 4), Fraction(9, 4), Fraction(5, 4), Fraction(1)
+        ),
+    )
+    candidate = RectangleDensityCandidate(
+        2, Fraction(4), Fraction(1, 2), Fraction(1), None, Fraction(1, 2), rectangles
+    )
+    box = _CentreBox(Fraction(1), Fraction(1), Fraction(2), Fraction(1), 0)
+
+    assert _corner_minimum(candidate, box, Fraction(1), Fraction()) == 0
+    assert min(
+        coverage_at_point(candidate, x, Fraction(1), Fraction(1), Fraction())
+        for x in (box.left, box.right)
+    ) == Fraction(1, 4)
+    assert (
+        coverage_at_point(candidate, Fraction(3, 2), Fraction(1), Fraction(1), Fraction()) == 0
+    )
+
+
 def test_selected_angles_and_resource_limits_never_become_full_verification() -> None:
     candidate = parse_candidate(_candidate(), n=3)
 
@@ -114,6 +183,82 @@ def test_selected_angles_and_resource_limits_never_become_full_verification() ->
     assert capped.angles[0].status == "INCONCLUSIVE"
     assert timed_out.status == "INCONCLUSIVE"
     assert timed_out.angles[0].lower_bound == 0
+
+
+def test_pending_boxes_retain_exact_frontier_and_stop_causes() -> None:
+    candidate = parse_candidate(_candidate(), n=3)
+    capped = verify_candidate(
+        candidate,
+        angle_indices=(1,),
+        max_nodes_per_angle=0,
+        retain_pending_boxes=True,
+    ).angles[0]
+    assert capped.status == "INCONCLUSIVE"
+    assert capped.stop_cause == "node_limit"
+    assert capped.pending_boxes is not None
+    assert len(capped.pending_boxes) == capped.unresolved_leaves == 1
+    assert capped.pending_boxes[0].angle == 1
+    assert capped.pending_boxes[0].depth == 0
+    assert capped.pending_boxes[0].stop_cause == "node_limit"
+    assert capped.pending_boxes[0].left == candidate.side / 2
+    assert capped.pending_boxes[0].right > capped.pending_boxes[0].left
+    assert capped.as_dict()["pending_boxes"] == [capped.pending_boxes[0].as_dict()]
+    with pytest.raises(CandidateError, match="at most 10000 total nodes"):
+        verify_candidate(candidate, angle_indices=(1,), retain_pending_boxes=True)
+    with pytest.raises(CandidateError, match="at most 10000 total nodes"):
+        verify_candidate(
+            candidate,
+            angle_indices=tuple(range(1, 102)),
+            max_nodes_per_angle=100,
+            retain_pending_boxes=True,
+        )
+
+    depth_capped = verify_candidate(
+        candidate,
+        angle_indices=(1,),
+        max_depth=0,
+        max_nodes_per_angle=1,
+        retain_pending_boxes=True,
+    ).angles[0]
+    assert depth_capped.stop_cause == "depth_limit"
+    assert depth_capped.pending_boxes is not None
+    assert len(depth_capped.pending_boxes) == depth_capped.unresolved_leaves == 1
+    assert depth_capped.pending_boxes[0].stop_cause == "depth_limit"
+
+
+def test_interrupted_corner_sum_keeps_current_box_unresolved(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls = 0
+
+    def interrupted(*_args: object) -> Fraction:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return Fraction()
+        raise _BoundDeadlineError
+
+    monkeypatch.setattr(density, "_corner_minimum", interrupted)
+    candidate = parse_candidate(_candidate(), n=3)
+    result = verify_candidate(
+        candidate,
+        angle_indices=(1,),
+        max_nodes_per_angle=2,
+        bound_mode="corner-min",
+        retain_pending_boxes=True,
+    ).angles[0]
+
+    assert result.status == "INCONCLUSIVE"
+    assert calls == 2
+    assert result.nodes == 2
+    assert result.accepted_leaves == 0
+    assert result.unresolved_leaves == 2
+    assert result.stop_cause == "time_limit"
+    assert result.pending_boxes is not None
+    assert len(result.pending_boxes) == 2
+    assert all(box.stop_cause == "time_limit" for box in result.pending_boxes)
+    assert result.pending_boxes[0].depth == result.pending_boxes[1].depth == 1
+    assert result.pending_boxes[0].right == result.pending_boxes[1].left
 
 
 def test_exact_point_below_target_is_a_certificate_counterexample() -> None:
@@ -236,3 +381,80 @@ def test_cli_reports_partial_selection_without_a_passing_exit(
     output = json.loads(capsys.readouterr().out)
     assert status == 2
     assert output["status"] == "PARTIAL"
+
+
+def test_comparison_cli_is_diagnostic_and_uses_one_exact_frontier(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    path = tmp_path / "candidate.json"
+    path.write_text(json.dumps(_candidate()))
+    receipt_path = tmp_path / "frontier.json"
+    receipt_status = cli.main(
+        [
+            str(path),
+            "--n",
+            "3",
+            "--angles",
+            "1",
+            "--max-nodes-per-angle",
+            "0",
+            "--max-depth",
+            "20",
+            "--max-seconds",
+            "30",
+            "--retain-pending-boxes",
+        ]
+    )
+    assert receipt_status == 2
+    receipt_path.write_text(capsys.readouterr().out)
+
+    status = comparison_cli.main(
+        [
+            str(path),
+            "--frontier-receipt",
+            str(receipt_path),
+            "--n",
+            "3",
+            "--angle",
+            "1",
+            "--max-nodes-per-angle",
+            "0",
+        ]
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    assert status == 0
+    assert output["status"] == "DIAGNOSTIC_ONLY"
+    assert output["frontier_complete"] is True
+    assert output["comparison_complete"] is True
+    assert output["pending_boxes"] == output["compared_boxes"] == 1
+    assert output["frontier"]["status"] == "INCONCLUSIVE"
+    assert output["comparisons"][0]["box"] == output["frontier"]["pending_boxes"][0]
+    assert Fraction(output["comparisons"][0]["corner_min_bound"]) >= Fraction(
+        output["comparisons"][0]["common_core_bound"]
+    )
+
+    refused = comparison_cli.main(
+        [str(path), "--frontier-receipt", str(receipt_path), "--n", "-1"]
+    )
+    refused_output = json.loads(capsys.readouterr().out)
+    assert refused == 1
+    assert refused_output["status"] == "REFUSED"
+
+    tampered = json.loads(receipt_path.read_text())
+    tampered["mass"] = "0"
+    receipt_path.write_text(json.dumps(tampered))
+    refused = comparison_cli.main(
+        [
+            str(path),
+            "--frontier-receipt",
+            str(receipt_path),
+            "--n",
+            "3",
+            "--max-nodes-per-angle",
+            "0",
+        ]
+    )
+    refused_output = json.loads(capsys.readouterr().out)
+    assert refused == 1
+    assert refused_output["status"] == "REFUSED"

@@ -3571,8 +3571,15 @@ results:
     artifacts:
       - packing/resources/web/wand125-tools-2026-09-29/README.md
       - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+      - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-summary.json
+      - docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
     next_rung: >-
-      think-190a: review exact branch, enclosure and measure contracts and replay all
-      12028 rows against the pinned certificate. Retain complete census and exact witness
-      comparisons; partial samples do not promote this claim.
-    notes: V0/C0 because this registration records the reported exact replay without retained local complete replay or a completed audit of its checker.
+      think-11z6 under think-190a: replay all 12028 rows through the reviewed production-bound
+      wrapper. Retain the complete unique census and exact witness comparisons; three
+      freshly bound sample rows do not promote this claim.
+    notes: >-
+      V0/C0 because the full claimed row-minimum equality has no retained local complete
+      replay. The identical certificate already has complete native threshold coverage
+      and reviewed global counting premises supporting the existing V4/C4 n11 bound;
+      that proof need not reproduce every exact row minimum and does not settle T-057.

@@ -552,6 +552,17 @@ body {
   grid-column: 1 / -1;
   margin: 0;
 }
+/* The film spans both columns under the posters, at its own 16:9. */
+.site-atlas .site-atlas-film {
+  grid-column: 1 / -1;
+}
+.site-atlas .site-film {
+  aspect-ratio: 16 / 9;
+  background: var(--kpress-doc-surface, var(--kpress-doc-bg));
+  display: block;
+  height: auto;
+  width: 100%;
+}
 .site-recent {
   font-size: 0.95em;
 }

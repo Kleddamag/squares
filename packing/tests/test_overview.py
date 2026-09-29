@@ -82,6 +82,19 @@ def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
     assert re.search(r"<a\b[^>]*\sdownload\b", page) is None
 
 
+def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:
+    """Muted, looping and inline, which is what lets a browser autoplay it; the script
+    that holds it still for reduced motion is on the page."""
+    (video,) = re.findall(r"<video\b[^>]*>", page)
+    for attribute in ("autoplay", "muted", "loop", "playsinline", "controls"):
+        assert re.search(rf"\s{attribute}\b", video), attribute
+    assert (
+        "ascent-n1-324-1080p60-citations.mp4"
+        in page.split(video, 1)[1].split("</video>", maxsplit=1)[0]
+    )
+    assert render_overview.FILM_SCRIPT.read_text(encoding="utf-8") in page
+
+
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     article = re.sub(r"<script.*?</script>", "", page, flags=re.DOTALL).split("<article", 1)[1]
     assert not re.search(r"\{\{[A-Z0-9_]+\}\}", page)

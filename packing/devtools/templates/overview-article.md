@@ -49,7 +49,14 @@ Every result registered recently, newest first:
 <a href="known-best-1-324.pdf" type="application/pdf"><img src="known-best-1-324.png" alt="Every tracked case, n = 1 to 324, each drawn as its best-known square packing." loading="lazy"></a>
 <figcaption>n = 1 to 324 · <a href="known-best-1-324.pdf" type="application/pdf">PDF</a></figcaption>
 </figure>
-<p class="site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a>, and every case is in the <a href="frontier.html">frontier atlas</a>.</p>
+<figure class="site-atlas-film">
+<video class="site-film" autoplay muted loop playsinline controls width="1920" height="1080" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">
+<source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
+<a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">The film of the ascent from 1 to 324</a>.
+</video>
+<figcaption>The ascent from n = 1 to 324, one square at a time, each step naming the bound it reaches and its source · 8 m 14 s · <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">open the film</a></figcaption>
+</figure>
+<p class="site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a>, and every case is in the <a href="frontier.html">frontier atlas</a>.</p>
 </div>
 
 ## Every Result

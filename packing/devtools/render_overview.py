@@ -49,6 +49,7 @@ FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
 MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
+FILM_SCRIPT = BROWSER / "film.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 OUTPUT = PACKING / "site"
 
@@ -341,7 +342,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        page_scripts=(FORWARD_SCRIPT, TABLE_SCRIPT, POPOVER_SCRIPT),
+        page_scripts=(FORWARD_SCRIPT, TABLE_SCRIPT, POPOVER_SCRIPT, FILM_SCRIPT),
     )
 
 

@@ -141,6 +141,9 @@ it.
 - **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
   on a phone. Each image and its caption link to that poster’s PDF, marked
   `type="application/pdf"` and never `download`, so the browser opens it in place.
+  Under them, across both columns, the n = 1 to 324 film plays by itself: muted,
+  looping, inline and with its controls, held still on its first frame for a reader who
+  asks for reduced motion (`overview/film.js`).
 
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.

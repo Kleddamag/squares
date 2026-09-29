@@ -28,6 +28,14 @@ ceiling and the recorded cost, not just the ceiling:
 Bounding the record from both sides is what stops a person having to remember it. The
 figure to write is printed by the run that discovers it.
 
+A tier whose hosted walls are a distribution rather than a point may also record its
+`measured_band`: the lowest and highest readings seen at its reference shape. The
+policy's ratios stay the policy's; the band only moves what they are measured against,
+so the stale rule reads the band's low edge and the drift rule its high edge. That is
+`think-be1s`'s answer to D-472. On 2026-09-29 the `geometry` tier read 110 to 116 s on
+eleven hosted runs and 58.75 to 70.50 s on the next three, on unchanged steps, and no
+single record can hold both regimes inside 0.6x and 1.5x.
+
 Nothing here prints or exits; `sqpack.cli.validate` renders the verdict and
 `devtools.check_gate_budgets` is the static check's command surface.
 """
@@ -131,6 +139,9 @@ class TierBudget:
     history: tuple[Record, ...] = ()
     #: Why the current record is higher than the records before it, when it is.
     attribution: Attribution | None = None
+    #: The lowest and highest readings at the reference shape, for a tier whose walls are
+    #: a distribution: the stale rule reads the low edge and the drift rule the high one.
+    measured_band: tuple[float, float] | None = None
 
     @property
     def records(self) -> tuple[Record, ...]:
@@ -332,6 +343,12 @@ def _tier_from(raw: object, index: int) -> TierBudget:
             f"{where} records a cost without a date or a date without a cost; a "
             "measurement nobody can place is not a measurement"
         )
+    band = _band_from(entry.get("measured_band"), where)
+    if band is not None and measured is None:
+        raise BudgetError(
+            f"{where} records a measured_band without a measured_seconds; a band is the "
+            "spread of the readings a record was taken from"
+        )
     return TierBudget(
         id=tier_id,
         command=_text(entry.get("command"), f"{where}.command"),
@@ -349,7 +366,19 @@ def _tier_from(raw: object, index: int) -> TierBudget:
         measured_where=_optional_text(entry.get("measured_where"), f"{where}.measured_where"),
         history=_history_from(entry.get("history"), where),
         attribution=_attribution_from(entry.get("attribution"), f"{where}.attribution"),
+        measured_band=band,
     )
+
+
+def _band_from(raw: object, where: str) -> tuple[float, float] | None:
+    if raw is None:
+        return None
+    entry = _require_mapping(raw, f"{where}.measured_band")
+    low = _positive(entry.get("low"), f"{where}.measured_band.low")
+    high = _positive(entry.get("high"), f"{where}.measured_band.high")
+    if low > high:
+        raise BudgetError(f"{where}.measured_band has low {low:g} above high {high:g}")
+    return low, high
 
 
 def load(path: Path | None = None) -> Register:
@@ -441,6 +470,45 @@ def declaration_problems(register: Register) -> list[str]:
                 f"recorded cost is {measured:g}s, so the tier is declared to fail every "
                 "time it runs"
             )
+        problems.extend(band_problems(tier, policy))
+    return problems
+
+
+def band_problems(tier: TierBudget, policy: Policy) -> list[str]:
+    """What is wrong with a tier's `measured_band`, read against its record and policy.
+
+    A band moves the edges the policy's ratios are applied to, so it must not become a
+    way to switch them off. It must bracket the record it was taken with, it may be no
+    wider than the window the policy already tolerates around a point record
+    (`drift_ratio / stale_ratio`), and its drift edge must sit inside the ceiling, or the
+    ceiling fails before the drift rule can name what moved.
+    """
+    if tier.measured_band is None or tier.measured_seconds is None:
+        return []
+    low, high = tier.measured_band
+    measured = tier.measured_seconds
+    label = f"tier {tier.id!r}"
+    problems: list[str] = []
+    if not low <= measured <= high:
+        problems.append(
+            f"{label}: measured_band [{low:g}, {high:g}] does not contain the recorded "
+            f"{measured:g}s it was taken with"
+        )
+    window = policy.drift_ratio / policy.stale_ratio
+    if high / low > window:
+        problems.append(
+            f"{label}: measured_band [{low:g}, {high:g}] is {high / low:.2f}x wide, wider "
+            f"than the {window:.2f}x window the policy tolerates around a point record "
+            "(drift_ratio / stale_ratio), so it would switch the rules off rather than "
+            "place them"
+        )
+    if policy.drift_ratio * high > tier.ceiling_seconds:
+        problems.append(
+            f"{label}: the drift edge, {policy.drift_ratio:g}x the band's high "
+            f"{high:g}s, is {policy.drift_ratio * high:.1f}s, above the "
+            f"{tier.ceiling_seconds:g}s ceiling; the ceiling would fail before the "
+            "drift rule could name what moved"
+        )
     return problems
 
 
@@ -872,6 +940,7 @@ def band_findings(
     attribution: str,
     register_path: Path | None,
     drift_ratio: float | None = None,
+    band: tuple[float, float] | None = None,
 ) -> tuple[list[str], list[str]]:
     """Rules 1, 3 and 4 over one wall, as `(failures, notes)`.
 
@@ -881,6 +950,8 @@ def band_findings(
     overrides `policy.drift_ratio` for a surface whose noise the policy figure was not
     measured on; nothing else is overridable, because a per-entry stale ratio or headroom
     is a tier declaring its own policy, which is what `policy` exists to prevent.
+    `band`, a recorded `(low, high)` of readings, changes what the ratios are applied to,
+    never the ratios: the stale rule reads its low edge and the drift rule its high edge.
     """
     failures: list[str] = []
     notes: list[str] = []
@@ -902,21 +973,31 @@ def band_findings(
             "the drift and stale rules were not applied"
         )
     else:
-        if wall_seconds > drift * measured_seconds:
+        low, high = band if band is not None else (measured_seconds, measured_seconds)
+        against = (
+            f"the recorded band [{low:g}, {high:g}]s"
+            if band is not None
+            else f"a recorded {measured_seconds:g}s"
+        )
+        if wall_seconds > drift * high:
             failures.append(
-                f"{subject} ran {wall_seconds:.1f}s against a recorded "
-                f"{measured_seconds:g}s ({wall_seconds / measured_seconds:.2f}x, where "
-                f"{drift:g}x fails): {attribution}"
+                f"{subject} ran {wall_seconds:.1f}s against {against} "
+                f"({wall_seconds / high:.2f}x, where {drift:g}x fails): {attribution}"
             )
-        if wall_seconds < policy.stale_ratio * measured_seconds:
+        if wall_seconds < policy.stale_ratio * low:
             tightened = min(ceiling_seconds, wall_seconds * policy.max_headroom)
-            failures.append(
-                f"{subject} ran {wall_seconds:.1f}s against a recorded "
-                f"{measured_seconds:g}s, which is "
-                f"{wall_seconds / measured_seconds:.2f}x. The record is "
-                f"stale in the flattering direction, which is how a ceiling stops "
-                f"detecting anything. Write `measured_seconds: {wall_seconds:.1f}` and "
+            advice = (
+                f"Widen measured_band's low to {wall_seconds:.1f} if the readings still "
+                f"span the band, or re-record the tier, in {register_path}."
+                if band is not None
+                else f"Write `measured_seconds: {wall_seconds:.1f}` and "
                 f"`ceiling_seconds: {tightened:.0f}` into {register_path}."
+            )
+            failures.append(
+                f"{subject} ran {wall_seconds:.1f}s against {against}, which is "
+                f"{wall_seconds / low:.2f}x. The record is "
+                f"stale in the flattering direction, which is how a ceiling stops "
+                f"detecting anything. {advice}"
             )
     return failures, notes
 
@@ -975,6 +1056,7 @@ def judge(
         policy=policy,
         attribution=attribution,
         register_path=register.path,
+        band=tier.measured_band,
     )
 
     if failures and not enforced:

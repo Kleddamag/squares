@@ -218,9 +218,10 @@ credited, is policy in
    checks. Then bring the README, synopsis and atlas up to date through the
    [documentation pass](../campaign/documentation-pass.md), with the source’s credit and
    the result’s `T-NNN`.
-8. Answer an author who asked for the registration. If they opened an issue here, reply
-   on it, at the owner’s request, with the `T-NNN`, the rung, what was replayed and what
-   remains, and leave it open while work they asked for is still queued.
+8. Answer an author who asked for the registration.
+   If they opened an issue here, reply on it, at the owner’s request, with the `T-NNN`,
+   the rung, what was replayed and what remains, and leave it open while work they asked
+   for is still queued.
 
 ## Registering a First-Party Result
 

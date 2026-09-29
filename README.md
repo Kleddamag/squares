@@ -372,8 +372,8 @@ mathematics. Each has an entry in the [results register](packing/frontier/RESULT
 which carries the source’s credit beside this repository’s `V` and `C` for it.
 The groups below follow the lineage each source’s own attribution gives, as the
 bibliography records it: sources that build on this project’s certificates, data or
-pipeline, whose credit line reads “after Levy”; a source that credits it second-hand,
-with a method of its own; and sources independent of it.
+pipeline, whose credit line names Levy; a source that credits it second-hand, with a
+method of its own; and sources independent of it.
 Each entry names its register entries.
 
 ### Building on This Project

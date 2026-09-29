@@ -125,8 +125,8 @@ identifiers and the same derived rungs, because the work this repository does on
 the same work: register the claim, replay its certificate, review its mathematics.
 It holds every result of this project, and every result by others published on or after
 22 August 2026, the day this project’s square-packing work began, that the record acts
-on: its bound is or was a case’s reported or verified lower bound, or it has been or is
-queued to be replayed or reviewed here.
+on: its bound is or was a case’s reported or verified lower or upper bound, or it has
+been or is queued to be replayed or reviewed here.
 Older results enter only when they hold or held a verified field here or are machine
 audits of the literature.
 Rungs of a ladder that the same release supersedes, publication records never replayed,
@@ -161,19 +161,21 @@ to credit it as carefully as this project’s own.
   records the new wording.
 - **Credit text has one home.** A source’s `credit` in
   [`bibliography.yaml`](packing/resources/bibliography.yaml) is written once: its
-  authors, then `after` and the work the source says it builds on, in the source’s order
+  authors, then `after` and the work the source says it builds on
   (`Daniel after Burns, Massaccesi`). The atlas citation line and the register renderers
-  print it, and hand-written prose may add to it but never drops or reorders a link.
-  A chain through an intermediate author names every link: Kleddamag’s `4.66001` builds
-  on Squares Project (Joshua Levy), Mira and Guzhou0806.
+  print it, and hand-written prose may add to it but never drops a link.
+  A chain through an intermediate author names every link the source names: Kleddamag’s
+  `4.66001` builds on Squares Project (Joshua Levy), Mira and Guzhou0806.
 - **Method credit travels with the result.** A result built with another author’s
   method, solver or checker credits them in the same line
   (`wand125 after Tokoharu, Levy`). This project is credited as `after Levy` only where
   the source itself says so.
 - **People and projects, never tools.** Credit names people, or the handles they publish
-  under, and this project as `Squares Project (Levy)`. An AI agent is never a credited
-  author. Where a source states that AI assisted its work, its case record and the README
-  say so in the source’s own terms.
+  under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
+  inside another source’s credit line.
+  An AI agent is never a credited author.
+  Where a source states that AI assisted its work, its case record and the README say so
+  in the source’s own terms.
 - **Our rung is not their credit.** `V` and `C` describe verification.
   A result replayed here remains its authors’ result, and a rung never changes a credit
   line. A defect found here goes back to the authors with the review that found it.
@@ -186,8 +188,8 @@ to credit it as carefully as this project’s own.
 - **Upper bounds count too.** A parallel packing that improves a best-known side enters
   its case’s reported upper lane from a retained source, with the same credit.
   It reaches the verified upper lane only after an exact or interval witness replay.
-  The coverage gate below checks lower bounds only, so a replayed or reviewed upper
-  bound by others is registered under the scope rule by hand.
+  The coverage gate below checks lower bounds only, so the register entry for an upper
+  bound by others is kept by hand.
 
 ### Intake, Integration, and Reply
 
@@ -209,9 +211,11 @@ in the frontier README. Its three end points are fixed here.
 
 ### Where the Frontier Is Recorded
 
-Each fact about the frontier has one home.
-Every reader-facing list of results is generated from these files or checked against
-them (`OR-1`). Hand-written prose that restates a bound or a credit cites its `T-NNN`.
+Each fact about the frontier has one home, and reader-facing lists of results are
+generated from these files (`OR-1`): `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, and the
+README’s recent results.
+The README’s hand-written results prose names the `T-NNN` it restates, so the register
+gate can find it.
 
 | Record | Holds | Reader view |
 | --- | --- | --- |

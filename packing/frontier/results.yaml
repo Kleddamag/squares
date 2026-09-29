@@ -248,9 +248,10 @@ results:
       published: '2010-09-13'
     composition: >-
       Compound: lower = T-004 (exact-algebraic audit), upper = the grid bound
-      replayed exactly by the basic-bounds checker; both halves are
-      machine-confirmed by the same method family, so the equality is C3, not
-      C4.
+      replayed exactly by the basic-bounds checker. Under epistemics.md's rule for
+      an equality whose upper half is an exactly replayed packing, the lower half
+      sets the rung: it stands on one exact-algebraic method, so the equality is C3,
+      not C4.
     evidence:
       - E-bentz46-theorem8-audit
       - E-basic-grid-upper

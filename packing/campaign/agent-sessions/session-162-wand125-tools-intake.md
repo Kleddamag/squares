@@ -211,26 +211,31 @@ session:
   - Push validation passed — 51 of 82 steps selected, 889.62 seconds; reachable behavioral tests
     2003 passed, 6 deselected, 842.01 seconds. This checked the feature source on base 8af542a9c
     before session-generated views were finalized; it is not a qualifying fast/full checkpoint.
-  - Full fast/full PR checkpoint and publication remained pending; this session is explicitly uncertified.
+  - At the 07:46:23Z closeout, the fast/full PR checkpoint and publication remained pending;
+    this was the historical uncertified checkpoint.
+  - 'full gate: fast at c621b845f: passed (GitHub Actions run 36590984972; page run
+    36590984641; PR-tree artifact matched HEAD tree 1ff83617e958873e5f83379da4df0e56ae6f99e2
+    through merge commit 3947757)'
   resource_rollups:
   - packing/campaign/resource-usage/session-162-codex-task-tree.yaml
-  stop_reason: Initial review, implementation and documentation slice closed; full fast/full checkpoint
-    and PR publication remain pending under think-8cps.
-  next_action: 'Finish certification and publication under think-8cps: repair the review findings,
-    run the qualifying full gate on committed source, publish and monitor the PR, and clear the recorded
-    certification debt.'
+  stop_reason: Initial review, implementation and documentation slice closed. The later hosted fast
+    and page checks certify c621b845f; deferred validation and PR integration remain under think-8cps.
+  next_action: 'Under think-8cps, collect the running deferred checkpoint 36590993493 and finish
+    integration.'
   ended_at: '2026-09-29T07:46:23Z'
-  certification_pending: think-8cps
 ---
 # Session 162 — wand125 Tools Review and Native Rectangle Verification
 
 The initial W2 review, W7 implementation and W8 documentation slice is closed.
-Certification and publication remain with the coordinator under `think-8cps`; the native
-verifier’s next bounded work remains open under `think-bmf3`. Focused validation
-reported 97 passing tests.
+At that closeout, certification and publication remained with the coordinator under
+`think-8cps`; the native verifier’s next bounded work remained open separately under
+`think-bmf3`. Focused validation reported 97 passing tests.
 The coordinator reported the push gate passing 51 of 82 selected steps in 889.62
 seconds, including 2003 passing reachable behavioral tests and 6 deselections in 842.01
-seconds. No fast/full checkpoint or publication success is claimed.
+seconds. Later, hosted fast run `36590984972` and page run `36590984641` passed at
+`c621b845f`; the downloaded PR-tree artifact matched HEAD tree
+`1ff83617e958873e5f83379da4df0e56ae6f99e2` through merge commit `3947757`. The running
+deferred checkpoint `36590993493` and final integration remain under `think-8cps`.
 
 This record was reconstructed at finalization.
 The task start and terminal checkpoint are observed; internal phase and delegation

@@ -15,7 +15,6 @@ session:
   branch: claude/magical-davinci-ueqmu1
   primary_bead: think-1an7
   status: stopped
-  certification_pending: think-1an7
   handoff_role: administrative_closeout
   goal: >-
     Retain the update wand125 sent the owner, then take in what it and the collaborating
@@ -141,11 +140,18 @@ session:
   - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
   - packing/resources/web/n17-guzhou-r068-2026-09-28/README.md
   - docs/project/reviews/review-2026-09-28-density-solver-comparison.md
-  checks: []
+  checks:
+  - At the administrative closeout, no qualifying fast or full gate had been retained;
+    certification remained pending under think-1an7.
+  - 'full gate: fast at c621b845f: passed (GitHub Actions run 36590984972; page run
+    36590984641; PR-tree artifact matched HEAD tree 1ff83617e958873e5f83379da4df0e56ae6f99e2
+    through merge commit 3947757)'
   stop_reason: >-
     At 2026-09-29T15:10:35Z this branch closed the expired coordinator record
     administratively. The open epic and Recovery State beads retain unfinished work;
-    this does not say that the owner or any remote process stopped.
+    this does not say that the owner or any remote process stopped. The later hosted
+    fast gate certifies this checked record; it does not complete the epic or its replay
+    work.
   next_action: >-
     Under think-1an7, register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the
     reported s(50) >= 37/5, publish them, and collect the replays listed under Recovery

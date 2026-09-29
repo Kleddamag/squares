@@ -1199,18 +1199,18 @@ controller, not permission to blur contracts.
 ### Current Handoff
 
 [Session 162](packing/campaign/agent-sessions/session-162-wand125-tools-intake.md)
-closed the wand125 intake, native rectangle-verifier prototype and documentation slice
-with explicit certification debt.
-The implementation and review are published in
-[PR 246](https://github.com/jlevy/squares/pull/246). CI integration and the
-committed-source full checkpoint remain pending.
+initially closed the wand125 intake, native rectangle-verifier prototype and
+documentation slice with explicit certification debt, since discharged by the hosted
+fast checkpoint. The implementation and review are published in
+[PR 246](https://github.com/jlevy/squares/pull/246). Required CI and the
+certificate-page workflow passed at `c621b845f`. The deferred portion of the full
+checkpoint is running.
 No complete retained external rectangle certificate has been independently verified.
 
-**Selected next entry:** `think-8cps`, W7: resolve the expired session-record and
-frontend timing failures, run the qualifying full gate on committed source, and clear
-the recorded certification debt.
-The native research continuation remains `think-bmf3`: improve the translation-box bound
-and retain a complete external-certificate run before promoting any bound.
+**Selected next entry:** `think-8cps`, W7: collect the deferred checkpoint and finish
+the integration handoff, retaining the passed fast checkpoint at `c621b845f`. The native
+research continuation remains `think-bmf3`: improve the translation-box bound and retain
+a complete external-certificate run before promoting any bound.
 
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
 asked again what improvement is left at low `n` and moved one bound.

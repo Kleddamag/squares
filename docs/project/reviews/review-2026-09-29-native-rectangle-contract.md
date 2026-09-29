@@ -273,8 +273,9 @@ one tracked-file snapshot test failed because the new files were unstaged, and t
 tests were deselected.
 After staging, that snapshot test and the final native controls passed together: 16
 tests in 24.05 seconds.
-The campaign-record check still reports the inherited Session 161 expired phase.
-Its owner status remains unresolved; this review does not claim a green full checkpoint.
+At that checkpoint, the campaign-record check still reported the inherited Session 161
+expired phase. Its disposition and certification were unresolved; the later integration
+review below records their resolution.
 
 Hosted run `36544631396` passed both behavioral shards, types, frontend, geometry,
 sweeps and macOS portability; the Rust gate passed in 10.09 seconds.
@@ -312,7 +313,7 @@ The coordinator owns the final diff, generated records, validation and publicati
 | Native mathematics | Astra-max review of mass, symmetry, angular containment, common-core geometry, clipping, axis events and exhaustive subdivision; analytic and refusal controls | Complete native coverage of a retained external certificate; no formal kernel proof claimed |
 | Native CLI | Five real subprocess decision goldens with byte-exact output and independent semantic assertions; normal CI behavioral coverage | Keep incomplete and refused runs separate from certificate acceptance |
 | Rust | Scoped source review, executed tests, strict Clippy, formatting, rustdoc and live lint rejection probes for the first-party search crate | Broader Rust support and CLI contracts remain in **think-cr8l**; archived Rust is not certified by this crate’s gate |
-| Repository integration | Hosted behavioral shards, types, geometry, sweeps, macOS portability and certificate-page checks passed | Resolve record and timing failures and obtain the full checkpoint |
+| Repository integration | Required hosted CI and certificate-page checks passed at `c621b845f`, including the repaired record and timing checks | Collect the deferred checkpoint and complete the integration handoff |
 | Review approval | Agent reviews retained here and in PR comments | GitHub has no submitted formal review or human approval at this checkpoint |
 
 The atlas regeneration changes the release stamp after the data revision moved to
@@ -321,8 +322,9 @@ This review does not claim an independent pixel comparison of every raster or PD
 export.
 
 The existing synopsis handoff incorrectly still described PR publication as pending.
-It now links the published PR and names CI integration and certification as the
-remaining work. The native research continuation remains **think-bmf3**.
+It now links the published PR and the passed required CI checkpoint, with deferred
+validation and final integration remaining.
+The native research continuation remains **think-bmf3**.
 
 The
 [integration review comment](https://github.com/jlevy/squares/pull/246#issuecomment-5893038192)
@@ -330,10 +332,12 @@ records this checkpoint.
 Session 161’s owner branch and `main` retain the same expired phase, with no subsequent
 disposition. At `2026-09-29T15:10:35Z`, the coordinator administratively stopped that
 recorded interval, preserving its original clocks and Recovery State.
-Its certification debt remains with the active **think-1an7** epic.
+Its certification debt initially remained with the active **think-1an7** epic.
 This does not declare remote jobs stopped or the research completed.
-The ledger, schema, session-clock and certification checks pass after this change; the
-certification check explicitly reports the session as uncertified.
+The ledger, schema, session-clock and certification checks passed after that change,
+with the certification check initially reporting the session as uncertified.
+Hosted fast run `36590984972` subsequently discharged the certification debt; the
+research epic remains active.
 
 The handoff selector previously distinguished administrative closeouts only when their
 resource usage was unmeasured.
@@ -363,7 +367,24 @@ Page builds took 18.22 and 19.05 seconds; the longest browser contract took 23.7
 performance guarantee.
 The reusable `workbench_tools.check_frontend --workers 1|2
 --timings PATH` command retains per-contract timings; the gate’s time thresholds remain
-unchanged. Hosted validation is still required.
+unchanged.
+
+The integration repair is committed as `c621b845f`. Its local push gate passed all 51
+selected steps in 769.29 seconds, including 2,418 behavioral tests with five deselected.
+Hosted packing run
+[36590984972](https://github.com/jlevy/squares/actions/runs/36590984972) passed every
+required job, including the previously failing record and frontend checks.
+The frontend tier took 101.68 seconds against its unchanged 85.25-second baseline and
+150-second ceiling. This cross-run observation is not a controlled speedup measurement.
+The certificate-page workflow also passed.
+The hosted tree artifact is `1ff83617e958873e5f83379da4df0e56ae6f99e2`, matching the
+pushed source tree exactly.
+The session records now name this actual fast checkpoint; their stopped status and
+unfinished mathematical work remain unchanged.
+The separately selected
+[deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36590993493) is
+still running. A passed fast checkpoint does not by itself establish full pre-merge
+coverage.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

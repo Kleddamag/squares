@@ -27,6 +27,7 @@ PACKETS = (
     "n17-kleddamag-4640020-2026-09-26",
     "n17-kleddamag-466001-2026-09-27",
     "wand125-rectangle-certificates-2026-09-27",
+    "wand125-rectangle-certificates-2026-09-28",
 )
 
 

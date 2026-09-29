@@ -237,7 +237,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 161 | 101 completed; 59 stopped; 1 nonterminal |
+| Sessions | 161 | 101 completed; 60 stopped; all terminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1369,10 +1369,22 @@ took in Kleddamag’s `s(17) > 232001/50000` at `V4/C3`, Evan Daniel’s `s(32) 
 rectangle bounds for n = 18 to 78, each after a Fable max review, and contained D-509’s
 explainer PDF wobble on PR 235.
 
-**Selected next entry:** `think-7c17`, BC-390: the widened n = 11 rung 0 box on eight
-workers overnight, with BC-394’s rectangle ladders (`think-pr2b`), the 41 queued wand125
-replays and Evan Daniel’s `s(32)` full sweep on the remaining workers; BC-393
-(`think-0rbj`), BC-388 and BC-387 follow their day builds.
+[Session 161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md)
+took in wand125’s 28 September update and what it pointed to: Guzhou0806’s
+`s(17) > 116511/25000` (T-043), Evan Daniel’s mixed covers for `s(21) = 5` and
+`s(45) = 7` (T-052, T-053), wand125’s point-only routes to both (T-054, T-055) and its
+reported `s(50) ≥ 37/5` (T-048), each after a Fable max review, and recorded the
+retained `zmx2` run as a second method for `s(32) = 6` (jlevy/squares#245). It stopped
+at 07:12Z with the complete `zm_mixed.py` re-sweeps unfinished, so its handover is
+uncertified and named under `think-l6la`.
+
+**Selected next entry:** `think-l6la`: the complete `zm_mixed.py --d4 --cert-mode`
+re-sweeps for `s(21)` and `s(45)`, recorded, raising T-052 and T-053 to `C4`.
+
+**Selected next entry at the Session 160 cutoff:** `think-7c17`, BC-390: the widened n =
+11 rung 0 box on eight workers overnight, with BC-394’s rectangle ladders
+(`think-pr2b`), the 41 queued wand125 replays and Evan Daniel’s `s(32)` full sweep on
+the remaining workers; BC-393 (`think-0rbj`), BC-388 and BC-387 follow their day builds.
 
 **Selected next entry at the Session 159 cutoff:** `think-amx8`, BC-386, since stopped
 in favour of BC-393.

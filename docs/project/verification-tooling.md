@@ -71,7 +71,8 @@ and
 [wand125 rectangle replay packet](../../packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md#receipts).
 
 The [native exact prototype](../../packing/src/sqpack/rectangle_density.py) implements a
-different complete decision procedure.
+different independent coverage procedure that can produce complete proofs.
+Equality at the acceptance threshold may remain unresolved under subdivision.
 At axis alignment it enumerates all rectangle events and evaluates their grid exactly.
 At each oblique net direction it subdivides the admissible centre domain into rational
 boxes. A polygon contained in every checking square over one box supplies a lower bound

@@ -15,6 +15,9 @@ This is a W2 factual review of
 retrieved on 2026-09-29. The admission defect was reproduced with the unchanged upstream
 checker, and three n11 row scans were replayed.
 The ceiling findings are source inspection and mathematical derivations.
+The
+[PR review comment](https://github.com/jlevy/squares/pull/246#issuecomment-5886292553)
+records the intake findings and their initial dispositions.
 No complete replay of the 12,028-row claim or reproduced speed measurement is claimed.
 The [existing rectangle review](review-2026-09-22-tokoharu-density-mathematics.md)
 supplies the detailed continuous coverage argument.
@@ -160,18 +163,23 @@ insufficient.
 
 For rectangle certificates, the existing independent rational preflight verifies the
 data conversion, mass, support, symmetry multiplicities, angular containment margin, and
-axis event set. The complete nonzero-angle continuous proof still depends on Tokoharu’s
-C++ checker. Replaying identical C++ through another wrapper is independent of the
-search, but not independent of that checker’s implementation.
+axis event set. The retained external-certificate replays still depend on Tokoharu’s C++
+checker for complete nonzero-angle coverage.
+Replaying identical C++ through another wrapper is independent of the search, but not
+independent of that checker’s implementation.
 
-A second rectangle checker must independently enclose every translated overlap over the
-full legal centre domain at every net angle, or check a complete subdivision certificate
-with independently derived leaf bounds.
+An independent rectangle checker must enclose every translated overlap over the full
+legal centre domain at every net angle, or check a complete subdivision certificate with
+independently derived leaf bounds.
 It also needs exact input binding, outward arithmetic, termination that refuses
 unresolved cells, and the same final continuous-angle and mass argument.
 Agreement on sampled centres cannot replace that coverage proof.
 Retain the present C++ replay while developing this second route; do not label the
 existing preflight a complete independent rectangle replay.
+The new [native prototype](../../../packing/src/sqpack/rectangle_density.py) implements
+that separate route using exact clipping and common-core bounds, under its
+[reviewed contract](review-2026-09-29-native-rectangle-contract.md).
+It has completed an analytic control, but its retained n11 probe is inconclusive.
 
 The new
 [`general_pose_tree` report](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/general_pose_tree/README.md)

@@ -1616,7 +1616,7 @@
   "candidate": "resources/web/wand125-tools-2026-09-29/native-analytic-control.json",
   "candidate_sha256": "bfd6e4dea67a048321836c69c9c9fe782687ffc512ccb1afc43249212ba5f01e",
   "checker": "sqpack.rectangle_density:native-exact-v1",
-  "checker_source_sha256": "7b8db2465d447270a5290e400abdb846833cdeaf3dc5afa8fba85a5282ce7181",
+  "checker_source_sha256": "eee2f2b05f7cde370c9ce7e0fe0c1aeb04a526604886bd7c0b5bdeb6bded6b78",
   "declared_rhs": null,
   "mass": "1683003/625000",
   "mass_below_n": "191997/625000",

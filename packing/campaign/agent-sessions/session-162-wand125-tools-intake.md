@@ -216,8 +216,9 @@ session:
   - packing/campaign/resource-usage/session-162-codex-task-tree.yaml
   stop_reason: Initial review, implementation and documentation slice closed; full fast/full checkpoint
     and PR publication remain pending under think-8cps.
-  next_action: 'Continue bounded native rectangle verification under think-bmf3: improve the translation-box
-    bound and retain a complete external-certificate run before promoting any bound.'
+  next_action: 'Finish certification and publication under think-8cps: repair the review findings,
+    run the qualifying full gate on committed source, publish and monitor the PR, and clear the recorded
+    certification debt.'
   ended_at: '2026-09-29T07:46:23Z'
   certification_pending: think-8cps
 ---

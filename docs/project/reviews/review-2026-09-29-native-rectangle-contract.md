@@ -184,6 +184,41 @@ The [`promote.interval` arithmetic](../../../packing/src/sqpack/promote/interval
 supports a future interval acceleration; it is unnecessary for the exact rational
 implementation specified here.
 
+## Astra-Max Adversarial Review
+
+A separate GPT-6 Astra subagent at max thinking reviewed the admission, mass, symmetry,
+angular containment, common-core bounds, clipping, axis events, subdivision and final
+angle-census conditions.
+It found no unsound acceptance path within that source review.
+The
+[PR review comment](https://github.com/jlevy/squares/pull/246#issuecomment-5886295719)
+records the findings before their fixes were pushed.
+This is not a formal correctness certificate or a complete replay of an external
+certificate.
+
+The review found two inaccurate counterexample receipts: the rotated path dropped
+previously depth-capped boxes, and the axis path reset prior accepted and unvisited
+vertex counts. Both exits already refused the certificate.
+The counts are now preserved and tested using a density on $[3/10,6/5]^2$ with mass
+$6/5$, at $n=3$, $L=3/2$, $B=9977/10000$. The rotated three-node run retains one
+unresolved box; the axis three-node run retains two accepted and six unvisited vertices.
+
+The [native tests](../../../packing/tests/test_rectangle_density.py) also include an
+asymmetric eight-image orbit: $n=2$, $L=4$, $B=1/2$, source rectangle
+$[9/20,11/20]\times[7/5,8/5]$, and mass 1. Each image has area $1/50$ and density
+$25/4$. At direction $(c,s)=(3/5,4/5)$, a core centred at $(1/2,3/2)$ contains exactly
+one whole image and misses the others, so its mass is exactly $1/8$. The same answer
+holds at the three quarter-turn images of that centre, without changing the direction
+coefficients.
+
+Over the centre box equal to that source rectangle, the common core has four vertices,
+area $21/250$, and captured mass $1/8$. Every polygon vertex satisfies both exact
+local-coordinate containment inequalities for each of the four box-corner squares.
+Their affine dependence on centre and polygon position extends containment throughout
+both convex hulls; the positive exact area prevents an empty polygon from passing the
+control vacuously. These analytic controls exercise asymmetric symmetry images and
+unequal projected box widths without treating sampled coverage as a global proof.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

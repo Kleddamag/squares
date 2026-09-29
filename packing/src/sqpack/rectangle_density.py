@@ -645,8 +645,8 @@ def _verify_axis(
                     0,
                     "COUNTEREXAMPLE",
                     nodes,
-                    0,
-                    0,
+                    nodes - 1,
+                    event_count - nodes,
                     Fraction(),
                     Counterexample(x, y, value),
                 )
@@ -715,7 +715,7 @@ def _verify_rotated(
                 "COUNTEREXAMPLE",
                 nodes,
                 accepted,
-                len(stack),
+                unresolved + len(stack),
                 Fraction(),
                 Counterexample(midpoint_x, midpoint_y, point_value),
             )

@@ -1205,9 +1205,11 @@ The push gate passed; the committed-source full checkpoint and PR publication re
 pending. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-bmf3`: continue bounded native rectangle verification
-under the W7 plan, improve the translation-box bound, and retain a complete external
-certificate run before promoting any bound.
+**Selected next entry:** `think-8cps`: repair the review findings, run the qualifying
+full gate on committed source, publish and monitor the PR, and clear the recorded
+certification debt. The native research continuation remains `think-bmf3`: improve the
+translation-box bound and retain a complete external-certificate run before promoting
+any bound.
 
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
 asked again what improvement is left at low `n` and moved one bound.

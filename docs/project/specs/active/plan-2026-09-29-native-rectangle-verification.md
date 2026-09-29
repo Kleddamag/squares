@@ -69,10 +69,13 @@ rule.
 
 ## First W7 Checkpoint
 
-The native library, candidate CLI and nine focused tests are implemented.
+The native library, candidate CLI and twelve focused test cases are implemented.
 Two review lanes checked geometry and admission separately; fixes include rechecking
 directly constructed library inputs, exact scalar validation, bounded axis traversal and
 binding the receipt to the input read for that run.
+A subsequent GPT-6 Astra review at max thinking found two early-exit receipt-accounting
+defects, both fixed with exact regression cases, and supplied asymmetric-orbit and
+common-core controls with analytically known answers.
 
 The
 [retained checkpoint receipts](../../../../packing/resources/web/wand125-tools-2026-09-29/README.md#native-rectangle-checkpoint)

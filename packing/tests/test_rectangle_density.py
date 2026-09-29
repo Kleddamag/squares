@@ -12,6 +12,9 @@ import pytest
 from devtools import verify_rectangle_density as cli
 from sqpack.rectangle_density import (
     CandidateError,
+    _CentreBox,  # pyright: ignore[reportPrivateUsage]
+    _common_core,  # pyright: ignore[reportPrivateUsage]
+    coverage_at_point,
     exact_intersection_area,
     load_candidate,
     parse_candidate,
@@ -52,6 +55,53 @@ def test_small_analytic_density_proves_every_net_angle() -> None:
     assert all(angle.status == "VERIFIED" for angle in report.angles)
 
 
+def test_asymmetric_orbit_and_common_core_have_analytic_oracles() -> None:
+    candidate = parse_candidate(
+        {
+            "n": 2,
+            "L": "4",
+            "B": "1/2",
+            "rectangles": [["9/20", "7/5", "11/20", "8/5"]],
+            "weights": ["1"],
+        },
+        n=2,
+    )
+    assert len(candidate.rectangles) == 8
+    assert candidate.mass == 1
+    assert all(rectangle.area == Fraction(1, 50) for rectangle in candidate.rectangles)
+    assert all(rectangle.density == Fraction(25, 4) for rectangle in candidate.rectangles)
+
+    # At each centre the core contains exactly one complete orbit rectangle.
+    # Its local half-projections are 11/100 and 1/10, both below B/2.
+    # Every other image is separated by coordinate range, so the mass is 1/8.
+    for x, y in ((1, 3), (5, 1), (7, 5), (3, 7)):
+        assert coverage_at_point(
+            candidate, Fraction(x, 2), Fraction(y, 2), Fraction(3, 5), Fraction(4, 5)
+        ) == Fraction(1, 8)
+
+    # Test the private proof primitive directly against independent containment
+    # inequalities, including unequal box widths and unequal sine/cosine.
+    box = _CentreBox(Fraction(9, 20), Fraction(7, 5), Fraction(11, 20), Fraction(8, 5), 0)
+    cosine, sine = Fraction(3, 5), Fraction(4, 5)
+    polygon = _common_core(candidate, box, cosine, sine)
+    assert len(polygon) == 4
+    assert exact_intersection_area((0, 0, 4, 4), polygon) == Fraction(21, 250)
+    lower_bound = sum(
+        (
+            rectangle.density * exact_intersection_area(rectangle, polygon)
+            for rectangle in candidate.rectangles
+        ),
+        Fraction(),
+    )
+    assert lower_bound == Fraction(1, 8)
+    for x in (box.left, box.right):
+        for y in (box.bottom, box.top):
+            assert coverage_at_point(candidate, x, y, cosine, sine) == Fraction(1, 8)
+            for px, py in polygon:
+                assert abs(cosine * (px - x) + sine * (py - y)) <= Fraction(1, 4)
+                assert abs(-sine * (px - x) + cosine * (py - y)) <= Fraction(1, 4)
+
+
 def test_selected_angles_and_resource_limits_never_become_full_verification() -> None:
     candidate = parse_candidate(_candidate(), n=3)
 
@@ -73,6 +123,35 @@ def test_exact_point_below_target_is_a_certificate_counterexample() -> None:
 
     assert report.status == "COUNTEREXAMPLE"
     assert report.angles[0].counterexample is not None
+
+
+@pytest.mark.parametrize(("index", "accepted", "unresolved"), [(0, 2, 6), (1, 0, 1)])
+def test_counterexample_receipt_preserves_coverage_accounting(
+    index: int, accepted: int, unresolved: int
+) -> None:
+    candidate = parse_candidate(
+        {
+            "n": 3,
+            "L": "3/2",
+            "B": "9977/10000",
+            "rectangles": [["3/10", "3/10", "6/5", "6/5"]],
+            "weights": ["6/5"],
+        },
+        n=3,
+    )
+
+    report = verify_candidate(
+        candidate,
+        angle_indices=(index,),
+        max_depth=1,
+        max_nodes_per_angle=10,
+    )
+
+    angle = report.angles[0]
+    assert report.status == "COUNTEREXAMPLE"
+    assert angle.nodes == 3
+    assert angle.accepted_leaves == accepted
+    assert angle.unresolved_leaves == unresolved
 
 
 def test_loader_preserves_decimal_rationals_and_rejects_malformed_candidates(

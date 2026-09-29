@@ -451,11 +451,11 @@ H124 and restricted H036 remain unresolved, and that representation receives no 
 Do not repeat a completed experiment or create another candidate without a registered
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
-For the next supervised exact-research goal, continue the bounded native rectangle
-verification plan under `think-bmf3`: improve the translation-box bound and retain a
-complete external-certificate run before promoting any bound.
-Session 162 retained the prototype and controls; its publication and certification debt
-remain separately recorded.
+For the next supervised exact-research goal, finish the intake checkpoint under
+`think-8cps`: repair the review findings, run the qualifying full gate on committed
+source, publish and monitor the PR, and clear Session 162’s certification debt.
+The bounded native rectangle continuation follows that checkpoint; the prototype and
+controls do not establish complete coverage of an external certificate.
 See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current evidence
 and allocation boundaries.
 

@@ -16,7 +16,7 @@
   "candidate": "resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
   "candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
   "checker": "sqpack.rectangle_density:native-exact-v1",
-  "checker_source_sha256": "7b8db2465d447270a5290e400abdb846833cdeaf3dc5afa8fba85a5282ce7181",
+  "checker_source_sha256": "eee2f2b05f7cde370c9ce7e0fe0c1aeb04a526604886bd7c0b5bdeb6bded6b78",
   "declared_rhs": "1001/1000",
   "mass": "68302371743812406989/6250000000000000000",
   "mass_below_n": "447628256187593011/6250000000000000000",

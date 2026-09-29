@@ -123,9 +123,9 @@ fully documented in [the repository](https://github.com/jlevy/squares).*
 
 This lower bound is one of {{N_RESULTS}} results the framework has registered so far,
 {{N_NOVEL}} of them apparently new.
-These include improved lower bounds for $n = 12$, $17$, and $19$, since raised by others
-at $n = 12$ and $17$.[^other-results] The atlas of best known packings for every $n$
-from 1 to 100 in Figure 2 comes from the same research agenda and currently includes
+These include improved lower bounds for $n = 12$, $17$, and $19$, two of which others
+have since raised.[^other-results] The atlas of best known packings for every $n$ from 1
+to 100 in Figure 2 comes from the same research agenda and currently includes
 {{N_PROVED_HERE}} new lower bounds proved here.
 
 The repository includes:

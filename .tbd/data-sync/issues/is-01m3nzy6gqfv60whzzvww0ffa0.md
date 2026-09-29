@@ -5,7 +5,7 @@ title: Review wand125 tools claims and maintain upstream repository references
 kind: task
 status: in_progress
 priority: 1
-version: 16
+version: 19
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -21,11 +21,11 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:09:19.247Z
-updated_at: 2026-09-29T09:09:58.178Z
+updated_at: 2026-09-29T15:40:37.409Z
 started_at: 2026-09-29T07:09:45.733Z
 ---
 W2 factual review and W8 documentation: pin square-packing-tools, register scoped claims, audit independent rectangle/point verification and tutorial coverage, track remaining proof obligations.
 
 ## Notes
 
-PR #246 is pushed through 45eaf8e75. Astra-max review applied the tbd Rust and golden-testing guidelines. Five byte-exact native CLI goldens have independent semantic guards; the Rust gate runs five Rust tests, rustdoc, Clippy, formatting, and one clean plus four negative lint probes. The narrow generated-rustdoc exclusion is verified locally and in hosted CI. Final push validation passed 1,598 tests with only the inherited Session 161 expired phase failing. Final hosted run 36546217991 passed all functional checks but remains red for Session 161 and frontend timing: 134.86 seconds versus the 127.875-second regression threshold, below the 150-second absolute ceiling. No threshold relaxation or retry was performed; timing diagnosis is think-sewp. Pages run 36546218002 passed. Final review and status are recorded at https://github.com/jlevy/squares/pull/246#issuecomment-5887118339 and in repository review documents. Rust-floor and golden children are closed. Parent remains in progress: native external-certificate completion think-bmf3, full T057 census think-190a, upstream admission fixes think-xgjo, broader Rust contracts think-cr8l, and test-selection efficiency think-xcij remain open. No complete external-certificate verification or green full checkpoint is claimed.
+Required packing run 36590984972 and certificate-page run 36590984641 PASS at c621b845fa49420b7b68bd84edb0b1f1459fd2db; hosted tree matches 1ff83617e958873e5f83379da4df0e56ae6f99e2. Frontend 101.68s with thresholds unchanged. Local push passed 51 selected steps, 2418 tests, 5 deselected in 769.29s. Session161 administrative closure and measured-admin handoff schema are integrated; Session161/162 now record the actual qualifying fast gate and have certification_pending removed, preserving stopped statuses and unfinished scientific work. Document-only certification update is undergoing push validation. Deferred checkpoint36590993493 remains running at the implementation source; no proof code changed afterward. Full native external-certificate coverage, T057 census and broader upstream/Rust gaps remain separate open work. Agent reviews are in repository and PR comments; no formal/human approval recorded.

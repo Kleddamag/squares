@@ -2380,7 +2380,7 @@ def test_push_tests_forward_the_shared_worker_allocation(
     ]
 
 
-def test_exclusive_push_forwards_all_ten_pytest_workers(
+def test_exclusive_push_forwards_pytest_and_pool_worker_allocations(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 10)
@@ -2404,10 +2404,11 @@ def test_exclusive_push_forwards_all_ten_pytest_workers(
         jobs=1,
         inner_jobs=1,
         environment=os.environ.copy(),
+        pool_workers=10,
     )
 
     assert validate._push_test_step("origin/main").action(context) == "selected tests passed"
-    assert commands[0][-2:] == ("-n", "10")
+    assert commands[0][-4:] == ("-n", "10", "--pool-workers", "10")
 
 
 @pytest.mark.parametrize(
@@ -2529,6 +2530,7 @@ def test_exclusive_push_phase_waits_for_parallel_edits_and_keeps_one_report_orde
         assert (context.jobs, context.inner_jobs) == (1, 1)
         assert context.environment["PACK_JOBS"] == "1"
         assert validate._pytest_workers(context.jobs) == 10
+        assert context.pool_workers == 10
         return "reachable tests ran"
 
     steps = [
@@ -2592,10 +2594,17 @@ def test_large_narrow_push_keeps_its_floor_when_a_full_gate_holds_the_marker(
     marker = tmp_path / ".gate-running"
     marker.mkdir()
     monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
-    observed: list[tuple[int, int, str]] = []
+    observed: list[tuple[int, int, str, int | None]] = []
 
     def selected(context: validate.Context) -> str:
-        observed.append((context.jobs, context.inner_jobs, context.environment["PACK_JOBS"]))
+        observed.append(
+            (
+                context.jobs,
+                context.inner_jobs,
+                context.environment["PACK_JOBS"],
+                context.pool_workers,
+            )
+        )
         return "selected tests passed"
 
     step = validate.Step("reachable behavioral tests", selected, fast=True)
@@ -2611,7 +2620,7 @@ def test_large_narrow_push_keeps_its_floor_when_a_full_gate_holds_the_marker(
     summary = validate._run_selected([step], context, [])
 
     assert summary.results[0].status == "passed"
-    assert observed == [(10, 3, "3")]
+    assert observed == [(10, 3, "3", None)]
     assert marker.is_dir()
 
 

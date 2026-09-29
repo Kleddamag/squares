@@ -448,6 +448,8 @@ class Context:
     step_name: str = ""
     exclusive_step_name: str = ""
     """An implicitly sized push-test step that runs after the edit pool drains."""
+    pool_workers: int | None = None
+    """Process-pool cap for the reserved push test phase; absent for explicit allocations."""
     exhaustive_shard: str = ""
     """One validated K/N whole-file shard of the exhaustive exact lane, or empty."""
     artifact_run_id: str = field(default_factory=lambda: uuid.uuid4().hex)
@@ -930,6 +932,11 @@ def _run(
     # Nested test subprocesses must not reuse this gate's artifact configuration.
     if arguments[1:3] != ["-m", "devtools.run_negative_controls"]:
         environment.pop("PACKING_VALIDATION_ARTIFACT_DIR", None)
+    if arguments[1:3] == ["-m", "devtools.reachable_tests"]:
+        # The wrapper launches pytest itself, so give that child this command's unique
+        # artifact stem without exposing the parent gate's artifact configuration.
+        environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] = str(stem)
+        environment["PACKING_REACHABLE_TEST_RUN_ID"] = context.artifact_run_id
     environment["PYTHONUNBUFFERED"] = "1"
     metadata = {
         "run_id": context.artifact_run_id,
@@ -4670,6 +4677,11 @@ def _push_test_step(base: str) -> Step:
                 # suite-configuration change, so the serial case was the whole non-exhaustive
                 # suite -- quick lane and slow lane together.
                 *_xdist_distribution(context.jobs),
+                *(
+                    ("--pool-workers", str(context.pool_workers))
+                    if context.pool_workers is not None
+                    else ()
+                ),
             ),
         )
 
@@ -5104,7 +5116,9 @@ def _run_selected(
             else:
                 print(
                     f"== reachable tests: exclusive pytest phase after edit checks; "
-                    f"{_pytest_workers(1)} pytest workers, PACK_JOBS=1 ==",
+                    f"normal lane {_pytest_workers(1)} pytest workers, PACK_JOBS=1; "
+                    f"pool-heavy lane if selected: serial pytest, "
+                    f"PACK_JOBS={_pytest_workers(1)} ==",
                     file=sys.stderr,
                 )
         setup_output = _build_engine(context, selected)
@@ -5133,6 +5147,7 @@ def _run_selected(
                 inner_jobs=1,
                 environment={**context.environment, "PACK_JOBS": "1"},
                 exclusive_step_name="",
+                pool_workers=_pytest_workers(1),
             )
             try:
                 by_name[exclusive.name] = _execute_step(exclusive, test_context)

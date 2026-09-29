@@ -365,4 +365,5 @@ addopts = ["--strict-config", "--strict-markers"]
 markers = [
   "exhaustive_exact: expensive exact-algebra tests retained by full and integration validation",
   "slow: measured above the pull-request surface's per-test ceiling; runs in the deep surface",
+  "pool_heavy: test that safely uses the per-case process pool when run in an exclusive phase",
 ]

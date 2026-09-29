@@ -475,6 +475,7 @@ def test_a_pool_worker_builds_the_same_bytes_as_this_process() -> None:
 
 
 @pytest.mark.slow
+@pytest.mark.pool_heavy
 def test_known_best_composite_contains_every_case_and_square() -> None:
     # Pooled rather than serial, and the count comes from the same policy every other
     # pool-backed step reads: `PACK_JOBS` where a gate has capped it, the machine where

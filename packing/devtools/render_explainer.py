@@ -2233,7 +2233,7 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         ),
         "N_STARRED": str(starred_lower_bounds()),
         "N_PROVED_HERE": str(lower_bounds_proved_here()),
-        "RECENT_SINCE_MONTH": f"{RECENT_SINCE:%B %Y}",
+        "RECENT_SINCE_DATE": f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}",
         "SOURCE_URL": MARKDOWN_OUTPUT.name,
         "REPO_URL": REPO_URL,
         # The top of the page names when the result was first published, when it was last

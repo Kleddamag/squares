@@ -123,9 +123,10 @@ fully documented in [the repository](https://github.com/jlevy/squares).*
 
 This lower bound is one of {{N_RESULTS}} results the framework has registered so far,
 {{N_NOVEL}} of them apparently new.
-These include improved lower bounds for $n = 12$, $17$, and $19$.[^other-results] The
-atlas of best known packings for every $n$ from 1 to 100 in Figure 2 comes from the same
-research agenda and currently includes {{N_PROVED_HERE}} new lower bounds proved here.
+These include improved lower bounds for $n = 12$, $17$, and $19$, since raised by others
+at $n = 12$ and $17$.[^other-results] The atlas of best known packings for every $n$
+from 1 to 100 in Figure 2 comes from the same research agenda and currently includes
+{{N_PROVED_HERE}} new lower bounds proved here.
 
 The repository includes:
 
@@ -193,8 +194,8 @@ the film</a>. </video>
   </div>
 
   <figcaption><strong>Figure 2.</strong> The best known packings of 1 through 100 unit squares, with upper bounds
-  and, for unsettled cases, the current lower bounds verified here. A crimson star marks a recent result, a lower bound
-  proved since {{RECENT_SINCE_MONTH}}: {{N_STARRED}} of the hundred, {{N_PROVED_HERE}} of them here. The <a href="{{ATLAS_URL}}">repository</a> records every witness and its
+  and, for unsettled cases, the current lower bounds verified here. A crimson star marks a recent result, a verified lower bound
+  proved since {{RECENT_SINCE_DATE}}: {{N_STARRED}} of the hundred, {{N_PROVED_HERE}} of them here. The <a href="{{ATLAS_URL}}">repository</a> records every witness and its
   provenance. PDFs are available for <a href="known-best-1-100.pdf">this figure</a> and the
   <a href="known-best-1-324.pdf">full 324-case poster</a>. The film below the atlas draws the same hundred
   packings one square at a time, each step naming the bound it reaches and where that bound comes from; the
@@ -893,7 +894,9 @@ in Memo III (private communication, September 2026). His suggestion prompted a
 [^other-results]: The [result register]({{RESULTS_URL}}) records $s(12) \ge 3.96$
     (`T-017`), $s(17) \ge 4.59$ (`T-019`), and $s(19) \ge 4.80$ (`T-020`), each
     supported by a retained weighted-point certificate and classified as apparently
-    novel.
+    novel. Evan Daniel’s independent $s(12) \ge 15680/3951$ and the line of $n = 17$
+    certificates that Kleddamag and Guzhou0806 built on this project’s have since
+    superseded the first two.
 
 [^burns]: Sam Burns,
     [Proposing a Better Lower Bound for n=17 Square Packing](https://sam-burns.com/posts/proposing-better-lower-bound-for-n17-square-packing/),

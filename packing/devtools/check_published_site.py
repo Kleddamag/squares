@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Check the explainer as GitHub Pages serves it, against the commit it should be built from.
+"""Check the site as GitHub Pages serves it, against the commit it should be built from.
 
-`pages.yml` renders the page, its Markdown edition and its PDF from `main` and deploys
-them. Nothing is checked in, so nothing in the repository says whether a deploy landed
-or what the page it served links to; this asks the live site. From `packing/`:
+`pages.yml` renders the overview and the pages beside it, the explainer with its Markdown
+edition and PDF, and the workbench from `main`, and deploys them. Nothing is checked in,
+so nothing in the repository says whether a deploy landed or what the pages it served
+link to; this asks the live site. From `packing/`:
 
     uv run --frozen --group dev python -m devtools.check_published_site --commit <sha>
 
@@ -11,9 +12,13 @@ With no `--commit` the checkout's `origin/main` is the expectation, which is the
 the last deploy built from once `git fetch` has run. One line per check, `ok` or
 `FAIL`, and the exit status is 0 only when every check passes:
 
-- the page is served and carries the edition stamp `sqpack.release` names;
-- every repository link in the page and in the Markdown edition names the expected
-  commit, and each resolves on GitHub;
+- every page `render_overview.PAGES` owns is served at its URL (the overview at the
+  root), and the explainer at `explainer.html`; each carries the edition stamp
+  `sqpack.release` names and the canonical URL its renderer wrote;
+- every repository link on every page and in the Markdown edition names the expected
+  commit, and each on the explainer, its Markdown edition, the overview and the frontier
+  atlas resolves on GitHub. The tutorial's and synopsis's 1,100-odd links are resolved
+  against the build commit when they are rendered, so they are not asked again here;
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
@@ -41,10 +46,11 @@ from urllib.parse import urljoin
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
+from devtools import render_overview
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
-    OUTPUT,
+    PAGE_URL,
     REPO,
     REPO_URL,
     SITE_URL,
@@ -60,8 +66,22 @@ PROBES = Path(__file__).resolve().parent / "probes"
 #: A link into this repository as GitHub spells one: the ref, then the path, under
 #: `blob/` for a file and `tree/` for a directory.
 REPOSITORY_LINK = re.compile(re.escape(REPO_URL) + r"/(blob|tree)/([^/\s\"<>)]+)/([^\s\"<>)]*)")
+CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
 
-#: Every file the deploy serves beside `index.html`, by name.
+#: Where the explainer is served. It is built as `index.html` and renamed when the site
+#: is assembled, because the root is the overview's.
+EXPLAINER = PAGE_URL.removeprefix(SITE_URL)
+
+#: The site's own pages, by served name, read from the renderer that owns them so a page
+#: added there is checked here without an edit. `index.html` is fetched as the root.
+SITE_PAGES = tuple(render_overview.PAGES)
+
+#: The pages whose repository links are each asked of GitHub. The tutorial and synopsis
+#: are left out: their links are checked offline, against the build commit's tree, when
+#: they are rendered, and asking again would be over a thousand requests per deploy.
+LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html"})
+
+#: Every file the deploy serves beside the explainer, by name.
 SERVED = (
     MARKDOWN_OUTPUT.name,
     PDF_OUTPUT.name,
@@ -195,22 +215,49 @@ def check(
     results: list[tuple[bool, str]] = []
     site = site.rstrip("/") + "/"
 
-    status, page = fetch(site + OUTPUT.name, timeout=timeout)
-    text = page.decode("utf-8", errors="replace")
-    results.append(
-        (status == 200, f"page {site}{OUTPUT.name}: HTTP {status}, {len(page)} bytes")
-    )
-    # The shared version (think-qsuu), pinned in release.py: the page names the data it was
-    # drawn from, as the atlas and the videos do, whatever commit built it. The commit is
-    # still what the page's links and the workbench's source revision must name.
-    edition = PUBLICATION_EDITION
-    stamped = edition in text
-    results.append(
-        (
-            stamped,
-            f"edition stamp {edition!r} is {'' if stamped else 'not '}on the page",
+    def served_page(name: str, url: str, canonical: str) -> tuple[bytes, str]:
+        """Fetch one page and check it is served, stamped and canonical; its bytes and text."""
+        status, body = fetch(url, timeout=timeout)
+        text = body.decode("utf-8", errors="replace")
+        results.append((status == 200, f"page {url}: HTTP {status}, {len(body)} bytes"))
+        # The shared version (think-qsuu), pinned in release.py: a page names the data it
+        # was drawn from, as the atlas and the videos do, whatever commit built it. The
+        # commit is still what its links and the workbench's source revision must name.
+        stamped = PUBLICATION_EDITION in text
+        where = f"{'' if stamped else 'not '}on {name}"
+        results.append((stamped, f"edition stamp {PUBLICATION_EDITION!r} is {where}"))
+        found = CANONICAL.search(text)
+        declared = found.group(1) if found is not None else None
+        results.append(
+            (
+                declared == canonical,
+                f"{name} names canonical URL {declared!r} against expected {canonical!r}",
+            )
         )
-    )
+        return body, text
+
+    def names_the_commit(name: str, links: set[tuple[str, str, str]]) -> None:
+        refs = sorted({ref for _, ref, _ in links})
+        results.append(
+            (
+                refs == [commit],
+                f"{name}: repository links name {refs} against expected {commit}"
+                if links
+                else f"{name}: no repository links found",
+            )
+        )
+
+    checked_links: set[tuple[str, str, str]] = set()
+    for name in SITE_PAGES:
+        url = site if name == "index.html" else site + name
+        _, text = served_page(name, url, render_overview.canonical_url(name))
+        links = repository_links(text)
+        names_the_commit(name, links)
+        if name in LINK_CHECKED_PAGES:
+            checked_links |= links
+
+    # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
+    page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)
 
     status, markdown = fetch(site + MARKDOWN_OUTPUT.name, timeout=timeout)
     results.append(
@@ -223,16 +270,9 @@ def check(
     links = repository_links(text) | repository_links(
         markdown.decode("utf-8", errors="replace")
     )
-    refs = sorted({ref for _, ref, _ in links})
-    results.append(
-        (
-            refs == [commit],
-            f"repository links name {refs} against expected {commit}"
-            if links
-            else "no repository links found",
-        )
-    )
-    for kind, ref, path in sorted(links):
+    names_the_commit(EXPLAINER, links)
+    checked_links |= links
+    for kind, ref, path in sorted(checked_links):
         url = f"{REPO_URL}/{kind}/{ref}/{path}"
         status, _ = fetch(url, head=True, timeout=timeout)
         results.append((status == 200, f"link HTTP {status}: {url}"))

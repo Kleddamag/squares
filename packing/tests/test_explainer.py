@@ -19,7 +19,7 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import render_explainer
+from devtools import render_explainer, render_overview
 from devtools.render_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -665,6 +665,34 @@ def test_the_workbench_input_guard_detects_an_omitted_input_class() -> None:
 def test_every_declared_workbench_input_exists() -> None:
     """The other half, for the workbench: a filter entry naming a file that is gone."""
     for declared in WORKBENCH_INPUTS:
+        assert declared.exists(), declared.relative_to(REPO).as_posix()
+
+
+def test_the_pages_filter_covers_every_overview_input() -> None:
+    """The site's own pages are the third build the workflow publishes; the same guard.
+
+    `render_overview.inputs()` is its declaration: the renderer's own `RENDER_INPUTS` and
+    the record `overview_data.INPUTS` reads. A register entry, a case record, the
+    bibliography or `SYNOPSIS.md` changed on `main` outside this filter would leave `/`
+    and the pages beside it showing the previous render with every check green.
+    """
+    declared = render_overview.inputs()
+    assert REPO / "SYNOPSIS.md" in declared
+    assert REPO / "packing/frontier/evidence.yaml" in declared
+    for event, patterns in pages_filters().items():
+        missing = [
+            path.relative_to(REPO).as_posix()
+            for path in declared
+            if not covered(path, patterns)
+        ]
+        assert not missing, f"{event}: overview inputs not covered by paths: {missing}"
+        without_documents = [p for p in patterns if p not in {"TUTORIAL.md", "SYNOPSIS.md"}]
+        exposed = [path for path in declared if not covered(path, without_documents)]
+        assert exposed == [REPO / "TUTORIAL.md", REPO / "SYNOPSIS.md"], event
+
+
+def test_every_declared_overview_input_exists() -> None:
+    for declared in render_overview.inputs():
         assert declared.exists(), declared.relative_to(REPO).as_posix()
 
 

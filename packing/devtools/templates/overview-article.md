@@ -49,10 +49,10 @@ And the cases a recent lower bound has closed, where the exact value is now know
 ## Every Result
 
 Each result has an identifier, a claim, and two ratings defined in
-[`epistemics.md`](https://github.com/jlevy/squares/blob/main/epistemics.md): **V**, the
-strongest verification its evidence supports, and **C**, what this repository has
-checked itself. A result by others is credited to its authors as their source states it;
-its `V` and `C` are this repository’s own verification of it.
+[`epistemics.md`]({{EPISTEMICS_URL}}): **V**, the strongest verification its evidence
+supports, and **C**, what this repository has checked itself.
+A result by others is credited to its authors as their source states it; its `V` and `C`
+are this repository’s own verification of it.
 Open a row for the full claim, and follow the records to the case file, the evidence,
 the retained source and the review.
 

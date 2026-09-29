@@ -65,8 +65,11 @@ SITE_PAGES: tuple[str, ...] = (
     "workbench/index.html",
 )
 
-#: Every file a render reads. The Pages workflow's deploy filter and the scope tool are
-#: checked against this list, so a page cannot go stale because an input moved unseen.
+#: Every file a render reads beside the record `overview_data.INPUTS` names; `inputs()`
+#: is the two together. The Pages workflow's deploy filter and the scope tool are checked
+#: against that, so a page cannot go stale because an input moved unseen. The record is
+#: read through `sqpack`'s loaders and the pages are kpress pages, so the package, the
+#: vendored kpress and the locked environment are inputs, as they are the explainer's.
 RENDER_INPUTS: tuple[Path, ...] = (
     Path(__file__).resolve(),
     SITE_CSS,
@@ -74,10 +77,13 @@ RENDER_INPUTS: tuple[Path, ...] = (
     SITE_NAV_CSS,
     OVERVIEW_ARTICLE,
     BROWSER,
-    PACKING / "src" / "sqpack" / "release.py",
+    PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
     REPO / "TUTORIAL.md",
     REPO / "SYNOPSIS.md",
+    REPO / "vendor" / "kpress",
+    PACKING / "pyproject.toml",
+    PACKING / "uv.lock",
 )
 
 # The same refusal the explainer makes: a script or stylesheet with a source, a CSS
@@ -88,6 +94,18 @@ _EXTERNAL_REFERENCE = re.compile(
     r"|@import\b"
     r"""|url\(\s*(?!["']?(?:data:|#))"""
 )
+
+
+def canonical_url(name: str) -> str:
+    """A served page's canonical URL: the site's root for the overview, else its name."""
+    return SITE_URL if name == "index.html" else SITE_URL + name
+
+
+def inputs() -> tuple[Path, ...]:
+    """Every file any page this module renders reads: its own inputs and the record's."""
+    from devtools import overview_data  # noqa: PLC0415
+
+    return (*RENDER_INPUTS, *overview_data.INPUTS)
 
 
 class Page(NamedTuple):
@@ -178,7 +196,7 @@ def kpress_page(
     from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
     from kpress.format.render import render_page  # noqa: PLC0415
 
-    canonical = SITE_URL if name == "index.html" else SITE_URL + name
+    canonical = canonical_url(name)
     document = DocumentInput(
         title=title,
         source_text=markdown,
@@ -234,11 +252,13 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record."""
     from devtools import overview_data, overview_sections  # noqa: PLC0415
+    from devtools.render_explainer import repo_file  # noqa: PLC0415
 
     overview = overview_data.load()
     stats = overview_data.stats(overview)
     values = {
         "EDITION": html.escape(PUBLICATION_EDITION),
+        "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
         **overview_sections.bracket_11(overview),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),

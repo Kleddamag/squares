@@ -25,6 +25,13 @@ name: Certificate page
   # RENDER_INPUTS, and test_the_pages_filter_covers_every_render_input compares
   # the two; add the input there and the test names what to add here. Four of the
   # entries above are the ones that comparison found already missing (think-bl0n).
+  #
+  # The site's own pages (the overview at `/`, the tutorial, the synopsis, the frontier
+  # atlas) are published from the same run, so their inputs are here too: the register,
+  # the case records and the evidence they cite, the bibliography that credits others'
+  # results, the two reader documents, and the modules that format them. They are
+  # declared by `render_overview.inputs()` and compared the same way, by
+  # test_the_pages_filter_covers_every_overview_input.
   push:
     branches: [main]
     paths:
@@ -62,6 +69,17 @@ name: Certificate page
       - packing/devtools/overview_data.py
       - packing/devtools/overview_sections.py
       - packing/devtools/overview/**
+      - packing/devtools/site_documents.py
+      - packing/devtools/render_results.py
+      - packing/devtools/render_research_tables.py
+      - packing/devtools/significance.py
+      - packing/devtools/check_results.py
+      - packing/devtools/build_bound_citations.py
+      - packing/frontier/**
+      - packing/resources/bibliography.yaml
+      - epistemics.md
+      - TUTORIAL.md
+      - SYNOPSIS.md
       - packing/devtools/templates/fonts/**
       - packing/atlas/known-best/known-best-1-100.svg
       - packing/atlas/known-best/known-best-1-100.png
@@ -104,7 +122,9 @@ concurrency:
 #
 #   scope ─┬─ explainer-unchanged                  (only when the explainer is skipped)
 #          ├─ workbench-unchanged                  (only when the workbench is skipped)
+#          ├─ overview-unchanged                   (only when the overview is skipped)
 #          ├─ workbench ───────────────────────────────┐
+#          ├─ overview ────────────────────────────────┤
 #          ├─ prepare ─┬─ pdf ─────────────────────────┼─ publish ─┐
 #          │           ├─ print-layout                 │           ├─ pages-required (gate + wall)
 #          │           ├─ typography                   │           │
@@ -127,12 +147,13 @@ concurrency:
 # than serializing it. Every check that ran before still runs, on the same prepared
 # artifact; nothing moved off the pull request (`OR-13`).
 jobs:
-  # Which of the two pages this change can affect. A pull request that touches neither
-  # page's inputs does no browser work at all, and a workbench-only change no longer
-  # pays for the explainer's checks (#178 did: ten workbench probe files, about 330 s of
-  # explainer Chromium). `devtools.pages_scope` derives each half's inputs from the
-  # builder's own `RENDER_INPUTS` and from the tools the jobs below run; see its
-  # docstring for the rule and its tests for the comparison.
+  # Which of the three builds this change can affect: the explainer, the workbench, and
+  # the site's own pages (the overview at `/` and the pages beside it). A pull request
+  # that touches none of their inputs does no browser work at all, and a workbench-only
+  # change no longer pays for the explainer's checks (#178 did: ten workbench probe
+  # files, about 330 s of explainer Chromium). `devtools.pages_scope` derives each half's
+  # inputs from the builder's own declaration and from the tools the jobs below run; see
+  # its docstring for the rule and its tests for the comparison.
   #
   # It sits on the critical path, so it checks out without `packing/resources` and
   # `packing/campaign` (523 MB of a 665 MB tree) and fetches no blob it does not read.
@@ -145,6 +166,8 @@ jobs:
       explainer_reason: ${{ steps.scope.outputs.explainer_reason }}
       workbench: ${{ steps.scope.outputs.workbench }}
       workbench_reason: ${{ steps.scope.outputs.workbench_reason }}
+      overview: ${{ steps.scope.outputs.overview }}
+      overview_reason: ${{ steps.scope.outputs.overview_reason }}
     defaults:
       run:
         working-directory: packing
@@ -152,7 +175,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # The declared inputs are read by importing the two builders, and kpress is
+          # The declared inputs are read by importing the three builders, and kpress is
           # installed from the submodule.
           submodules: true
           persist-credentials: false
@@ -212,6 +235,19 @@ jobs:
           test -n "$REASON"
           echo "The workbench is not built on this run: $REASON."
           echo "The workbench is not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+
+  overview-unchanged:
+    needs: scope
+    if: needs.scope.outputs.overview != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say why the overview is not built
+        env:
+          REASON: ${{ needs.scope.outputs.overview_reason }}
+        run: |
+          test -n "$REASON"
+          echo "The overview and the site's own pages are not built on this run: $REASON."
+          echo "The overview and the site's own pages are not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
 
   prepare:
     needs: scope
@@ -366,6 +402,74 @@ jobs:
         with:
           name: workbench-page
           path: packing/site/workbench
+          if-no-files-found: error
+          retention-days: 7
+
+  # The site's own pages: the overview at `/`, and every other page
+  # `devtools.render_overview` owns (its `PAGES`), beside it at the root. They read the
+  # register, the case records and the reader documents, never the explainer's build, so
+  # they render beside `prepare` rather than after it; the pull-request wall had four
+  # seconds to spare against its 180 s budget when this job was added, and a job queued
+  # behind `prepare` would have spent them. The overview's fragment forwarder sends old
+  # explainer deep links on to `explainer.html` from a script of its own, so nothing here
+  # waits for the explainer to exist.
+  overview:
+    needs: scope
+    if: needs.scope.outputs.overview == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      # The same partial checkout as `prepare`, for the same reason. The one file the
+      # render reads under `packing/resources` is `bibliography.yaml`, a top-level file the
+      # pattern keeps (2026-09-29, every file the render opened, audited). The tutorial's
+      # and synopsis's repository links are resolved against the build commit's tree with
+      # `git ls-tree`, which reads only tree objects: a blobless clone of depth one already
+      # holds every tree of that commit, so the render needs no history and fetches none.
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The pages are kpress pages, and kpress is installed from the submodule.
+          submodules: true
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/packing/resources/*/
+            !/packing/campaign/*/
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      # The pages are not checked in, so a render that does not reproduce itself would
+      # show only here: two renders, at once as `prepare`'s are, the second outside
+      # `site/`, have to agree on every file they write. The renderer refuses a page that
+      # would fetch anything at view time and a reader document with a link that does not
+      # resolve at the build commit, so those failures stop the build here too.
+      - name: Render the site's pages twice and require the renders to agree
+        run: |
+          twin="$RUNNER_TEMP/render-twin"
+          uv run --frozen --group dev python -m devtools.render_overview --output "$twin" &
+          twin_pid=$!
+          uv run --frozen --group dev python -m devtools.render_overview --output site
+          wait "$twin_pid"
+          diff --recursive site "$twin"
+          test -s site/index.html
+          echo "two renders agree; $(find site -type f | wc -l) files, $(du -sh site | cut -f1)"
+
+      - name: Share the site's pages with the publication
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: overview-pages
+          path: packing/site
           if-no-files-found: error
           retention-days: 7
 
@@ -1310,16 +1414,23 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # What the deployment publishes, assembled from the three jobs that produce it: the
+  # What the deployment publishes, assembled from the four jobs that produce it: the
   # prepared page and its Markdown edition and composite assets (`prepare`), the checked
-  # PDF (`pdf`), and the workbench at `/workbench/` (`workbench`). That is the same tree
-  # `build` uploaded when all three were written in one job. It runs on pull requests too
-  # -- a missing artifact fails review rather than the next deploy -- and lists every file
-  # with its size and digest so the tree can be compared across runs; only a push to
-  # `main` uploads it for Pages. It needs the producers and not the checks, so on a pull
-  # request it finishes beside the checks rather than after them.
+  # PDF (`pdf`), the site's own pages at the root (`overview`), and the workbench at
+  # `/workbench/` (`workbench`). It runs on pull requests too -- a missing artifact fails
+  # review rather than the next deploy -- and lists every file with its size and digest
+  # so the tree can be compared across runs; only a push to `main` uploads it for Pages.
+  # It needs the producers and not the checks, so on a pull request it finishes beside
+  # the checks rather than after them.
+  #
+  # It assembles only whole sites. A pull request that leaves any producer out of scope
+  # skips it with that producer, as one that skipped the workbench always has; each
+  # producer's own job has already built and checked what it would contribute, and the
+  # assembly itself is exercised on every push to `main` and on every pull request that
+  # touches an input all three builds share (the workflow, the scope tool, kpress, the
+  # lockfile). A partial tree is never a publication, so there is nothing to assemble.
   publish:
-    needs: [prepare, pdf, workbench]
+    needs: [prepare, pdf, overview, workbench]
     runs-on: ubuntu-latest
     steps:
       # With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the
@@ -1344,6 +1455,42 @@ jobs:
           name: explainer-pdf
           path: packing/site
 
+      # The explainer is built as `index.html` -- every check above reads it under that
+      # name, and the PDF's source receipt is the digest of those bytes -- and published
+      # as `explainer.html`, its canonical URL, because `/` is the overview's. The rename
+      # happens here, after every check and before the overview's `index.html` exists, so
+      # neither page can land on the other.
+      - name: Move the explainer to its own URL
+        working-directory: packing/site
+        run: |
+          test -s index.html
+          test ! -e explainer.html
+          mv index.html explainer.html
+
+      # Staged apart and merged by hand, because a download into `packing/site` would
+      # overwrite whatever it collided with and say nothing. The site's pages are served
+      # beside the explainer's composite assets, which the overview links by name, so a
+      # name both builds wrote is refused rather than resolved by download order.
+      - name: Use the site's pages
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: overview-pages
+          path: ${{ runner.temp }}/overview-pages
+
+      - name: Put the site's pages at the root, refusing any name already there
+        env:
+          STAGED: ${{ runner.temp }}/overview-pages
+        run: |
+          test -s "$STAGED/index.html"
+          for staged in "$STAGED"/*; do
+            name=$(basename "$staged")
+            if [ -e "packing/site/$name" ]; then
+              echo "::error::the site's pages and the explainer both publish $name"
+              exit 1
+            fi
+          done
+          cp -R "$STAGED"/. packing/site/
+
       - name: Use the workbench
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -1364,7 +1511,7 @@ jobs:
   # passed, and when a job was skipped because its page was out of scope; it fails on any
   # failure or cancellation, and on a skip whose cause was an upstream failure -- that
   # upstream job is also needed here, so its own failure is what fails the aggregate. The
-  # scope's two outputs must be exactly `true` or `false`, so a scope that wrote nothing
+  # scope's three outputs must be exactly `true` or `false`, so a scope that wrote nothing
   # cannot pass as a decision to skip everything.
   pages-required:
     if: always()
@@ -1372,8 +1519,10 @@ jobs:
       - scope
       - explainer-unchanged
       - workbench-unchanged
+      - overview-unchanged
       - prepare
       - workbench
+      - overview
       - pdf
       - print-layout
       - typography
@@ -1395,7 +1544,7 @@ jobs:
           jq -r 'to_entries[] | "\(.value.result)\t\(.key)"' <<< "$NEEDS"
           jq -e '
             .scope.result == "success"
-            and ([.scope.outputs.explainer, .scope.outputs.workbench] | all(. == "true" or . == "false"))
+            and ([.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview] | all(. == "true" or . == "false"))
             and ([.[].result] | all(. == "success" or . == "skipped"))
           ' <<< "$NEEDS" > /dev/null
 
@@ -1494,7 +1643,7 @@ jobs:
         working-directory: packing
         run: uv run --frozen --group dev python -m playwright install --with-deps --only-shell chromium
 
-      - name: Verify the deployed explainer and workbench
+      - name: Verify the deployed site
         working-directory: packing
         run: >-
           uv run --frozen --group dev python -m devtools.check_published_site

@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-from devtools import pages_scope, render_explainer
+from devtools import overview_data, pages_scope, render_explainer, render_overview
 from devtools.pages_scope import (
     REPO,
     WORKFLOW,
@@ -50,6 +50,8 @@ def in_scope(changed: list[str], declared: dict[str, tuple[Path, ...]]) -> set[s
     [
         ("explainer", lambda: render_explainer.RENDER_INPUTS),
         ("workbench", lambda: build_site.RENDER_INPUTS),
+        ("overview", lambda: render_overview.RENDER_INPUTS),
+        ("overview", lambda: overview_data.INPUTS),
     ],
 )
 def test_every_builder_input_puts_its_page_in_scope(
@@ -79,6 +81,12 @@ def test_the_scope_reads_each_builder_declaration_live(monkeypatch: pytest.Monke
     assert "explainer" in in_scope([probe(added)], declared_inputs())
     monkeypatch.setattr(build_site, "RENDER_INPUTS", (*build_site.RENDER_INPUTS, added))
     assert in_scope([probe(added)], declared_inputs()) == {"explainer", "workbench"}
+    monkeypatch.setattr(overview_data, "INPUTS", (*overview_data.INPUTS, added))
+    assert in_scope([probe(added)], declared_inputs()) == {
+        "explainer",
+        "workbench",
+        "overview",
+    }
 
 
 def test_every_tool_a_pull_request_runs_for_a_page_is_that_pages_input(
@@ -185,6 +193,36 @@ def test_pull_request_178_would_have_run_no_browser_work(
     }
 
 
+def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview(
+    declared: dict[str, tuple[Path, ...]],
+) -> None:
+    """The site's own pages read what neither other build does, and share what they do.
+
+    A register evidence entry, a case record, the bibliography, `epistemics.md` and the
+    two reader documents are the overview's alone, so a pull request changing only those
+    runs its job and no explainer Chromium. The register itself and the renderer module
+    are read by the explainer too, and kpress by all three.
+    """
+    for changed in (
+        "SYNOPSIS.md",
+        "TUTORIAL.md",
+        "epistemics.md",
+        "packing/frontier/evidence.yaml",
+        "packing/frontier/n-011.md",
+        "packing/resources/bibliography.yaml",
+        "packing/devtools/overview/forward.js",
+        "packing/devtools/templates/overview-article.md",
+    ):
+        assert in_scope([changed], declared) == {"overview"}, changed
+    assert in_scope(["packing/frontier/results.yaml"], declared) == {"explainer", "overview"}
+    assert in_scope(["packing/devtools/render_overview.py"], declared) == {
+        "explainer",
+        "overview",
+    }
+    assert in_scope(["vendor/kpress"], declared) == set(pages_scope.BUILDER_INPUTS)
+    assert in_scope(["README.md", "packing/resources/n11/source.md"], declared) == set()
+
+
 def test_a_matching_input_is_a_path_not_a_string_prefix() -> None:
     sqpack = REPO / "packing/src/sqpack"
     assert matches("packing/src/sqpack", sqpack)
@@ -263,8 +301,11 @@ def test_the_workflow_outputs_and_summary_are_written(
         "explainer_reason=every page is built on a test",
         "workbench=true",
         "workbench_reason=every page is built on a test",
+        "overview=true",
+        "overview_reason=every page is built on a test",
     ]
     assert "| explainer | builds and checks |" in summary.read_text(encoding="utf-8")
+    assert "| overview | builds and checks |" in summary.read_text(encoding="utf-8")
     assert "explainer: in scope" in capsys.readouterr().out
 
 

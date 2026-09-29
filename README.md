@@ -12,16 +12,20 @@ This repository contains:
   improve Stromquist’s `3.7888543…` bound, stated in
   [1984, Memo III, p. 10](packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf)
   and published in 2003; the recorded search found no improvement in between.
-  The strongest is `s(11) ≥ 3.8269975…`. With them come the first lower bounds located
-  in the public record for twelve, twenty and twenty-one squares, and bounds for
-  seventeen through twenty-one squares that improved on the published ones.
-  The bounds for eighteen, nineteen and twenty squares are still the verified ones; the
-  others have since been raised by the results below.
+  The strongest is `s(11) ≥ 3.8269975…`. With them come `s(12) ≥ 99/25`, reached
+  independently of Evan Daniel’s stronger `15680/3951`, which was in his repository from
+  25 August and was first seen here on 27 September; the first proved bounds specific to
+  twenty and twenty-one squares; and bounds for seventeen through twenty-one squares
+  that improved on the published ones.
+  The bounds for eighteen, nineteen and twenty squares are still the verified ones, with
+  wand125’s reported `939/200`, `963/200` and `979/200` above them until their replays
+  run; the others have since been raised by the results below.
 - **[Results by others](#results-by-others):** Others have built on these certificates,
   credited them and taken the bounds further, and one has worked in parallel from the
   same weighted method.
-  This repository takes in each result, replays its certificate, reviews its
-  mathematics, and registers the bound credited to its authors.
+  This repository registers each claimed bound as *reported* when it takes the source
+  in, and as *verified* only after a complete replay of its certificate and a review of
+  its mathematics, with the credit its authors give.
   - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
     [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
     It is the strongest verified lower bound for eleven squares, about `0.0021` below
@@ -29,23 +33,29 @@ This repository contains:
     [retained copy](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md),
     the [review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
     and the [case record](packing/frontier/n-011.md).
-  - **`s(17) > 466001/100000 = 4.66001`**, by Kleddamag, building on Squares Project
-    (Joshua Levy), Mira and Guzhou0806:
-    [Kleddamag/17-squares-certified-bound at `57519bb`](https://github.com/Kleddamag/17-squares-certified-bound/tree/57519bb74085157cb7047ae94c599bce4a006430/bounds/4.66001).
-    Six certificates at seventeen squares trace their support back to T-019’s atoms, and
-    this is the strongest; it is the verified lower bound, about `0.0155` below
-    Bidwell’s packing. Recorded here: the
-    [retained copy](packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md),
-    the [review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) and the
+  - **`s(17) > 116511/25000 = 4.66044`**, by Guzhou0806, continuing Kleddamag’s
+    `4.66001` charge (Kleddamag building on Squares Project (Joshua Levy), Mira and
+    Guzhou0806):
+    [Guzhou0806/n17-square-packing R068 at `815b162`](https://github.com/Guzhou0806/n17-square-packing/tree/815b16261f852e389968513eec94b4b9e5b3206d/certificates/R068-C010).
+    Eight replayed certificates at seventeen squares trace their support back to T-019’s
+    atoms, and this is the strongest; it is the verified lower bound, about `0.0151`
+    below Bidwell’s packing.
+    Recorded here: the
+    [retained copy](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md), the
+    [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) and the
     [case record](packing/frontier/n-017.md).
-  - Evan Daniel’s `s(32) = 6`, `s(21) ≥ 5000/1001` and `s(12) ≥ 15680/3951`, from
-    Burns’s and Massaccesi’s weighted method, and Tokoharu’s and wand125’s density and
-    point bounds for `n = 26` to `72`, are registered the same way.
+  - **`s(21) = 5`, `s(32) = 6` and `s(45) = 7`**, by Evan Daniel, independent of this
+    project and building on Burns’s and Massaccesi’s weighted method: the first exact
+    values of `s(k² − 4)` for `k ≥ 4`. His `s(12) ≥ 15680/3951`, wand125’s and
+    Tokoharu’s point and rectangle-density bounds for `n = 18` to `95`, and wand125’s
+    `s(50) ≥ 37/5` are registered the same way, most of wand125’s still as reported
+    bounds pending replay.
 - **[A comprehensive survey of all known square packing results](#survey):** Every case
   `n = 1…100`, the primary literature retained and transcribed, and the bound a source
-  *reports* kept apart from the bound this repository has *verified*. Twenty-six of the
-  lower bounds it shows are recent results, proved since August 2026; three of them are
-  this project’s.
+  *reports* kept apart from the bound this repository has *verified*. Fifty-five of its
+  hundred cases carry a lower bound proved since 22 August 2026, reported or verified;
+  in twenty-seven the verified bound itself is recent, three of those are this
+  project’s, and three are new exact values.
 - **[A set of tools and AI workflows for automated mathematical research](#autonomous-research-process):**
   The results and the survey are produced and checked by AI agents running a recorded
   process: hypotheses registered before measurement, every claim graded, every defect
@@ -61,8 +71,8 @@ developed from. Its figures are drawn from the point certificates they explain.
 *The retained `n = 1…100` atlas, with each packing normalized to its own container and
 labeled by its best-known side upper bound.
 For open cases, the strongest verified lower bound appears beneath it.
-A crimson star marks a recent result, a lower bound proved since August 2026; each
-bound’s source and credit are on the film’s citation line.
+A crimson star marks a recent result, a verified lower bound proved since 22 August
+2026; each bound’s source and credit are on the film’s citation line.
 The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.svg),
 [**PDF**](https://jlevy.github.io/squares/known-best-1-100.pdf), and
 [**high-resolution PNG**](packing/atlas/known-best/known-best-1-100@2x.png).*
@@ -205,8 +215,8 @@ Results first established here, as far as the recorded source searches show:
   before it would contradict the best-known packing.
   `T-021` has since raised the `n = 20` and `n = 21` bounds to `97/20`, leaving `0.1385`
   of room there, and `T-034` has raised `n = 21` again to `122/25`, leaving `0.1085`;
-  this `24/5` rung remains current for `n = 19`. Evan Daniel’s certificate at
-  `5000/1001`, below, now carries `n = 21`.
+  this `24/5` rung remains the verified bound for `n = 19`. Evan Daniel has since proved
+  `s(21) = 5`, below.
 - **T-017: `s(12) ≥ 99/25`, from nothing case-specific at all (`S4`).**
   [`n = 12`](packing/frontier/n-012.md) had only the `n = 11` bound inherited by
   monotonicity; the frontier record said in as many words that nothing specific to
@@ -217,9 +227,11 @@ Results first established here, as far as the recorded source searches show:
   At `99/25 = 3.96` it also separates the cases: `s(12) > s(11)`, since Trump’s 1979
   packing puts `s(11) ≤ 3.877084`. That did not follow from anything on record before.
   It left the case `0.04` from its conjectured optimum of `4`; Evan Daniel’s
-  `15680/3951`, below, has since narrowed that to about `0.0314`. On the retained
-  181-direction net, the proved ceiling for twelve squares is approximately `3.990816`;
-  refining the net can raise that ceiling.
+  `15680/3951`, below, has since narrowed that to about `0.0314`. His certificate was in
+  his repository from 25 August, before T-017, and T-017 was reached independently of
+  it; the retained corpus did not hold it until 27 September.
+  On the retained 181-direction net, the proved ceiling for twelve squares is
+  approximately `3.990816`; refining the net can raise that ceiling.
   Every finite net still has a ceiling strictly below `4`, so no single certificate of
   this shape can close the case.
   A family of certificates approaching `4` is not ruled out; whether one exists is a
@@ -245,8 +257,9 @@ erratum.
   total mass `19848723/1000000 = 19.848723`, so the same exact object proves both cases
   without a monotonicity step.
   It raises each bound by `0.05` above `T-020`; the heavier atom set does not apply to
-  `n = 19`. `T-034` has since raised `n = 21` to `122/25`, and Evan Daniel’s certificate
-  to `5000/1001`; `97/20` remains current for `n = 20`.
+  `n = 19`. `T-034` has since raised `n = 21` to `122/25`, and Evan Daniel has proved
+  `s(21) = 5`; `97/20` remains the verified bound for `n = 20`, below wand125’s reported
+  `979/200`.
 
 - **T-034: `s(21) ≥ 122/25` (`S3`).** A
   [certificate at `4.88`](packing/cases/n21_fractional_certificate/certificate.json) has
@@ -256,7 +269,8 @@ erratum.
   seed and no windows.
   A [review](docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md)
   re-decided the certificate by three routes and accepted it.
-  Evan Daniel’s `5000/1001`, below, has since superseded it on that case.
+  Evan Daniel’s `5000/1001` and then his proof of `s(21) = 5`, below, have since
+  superseded it on that case.
 
 - **T-035 / T-036: Trump’s packing is optimal at its own angle (`S3`).** Six squares
   stay axis-aligned and five share a tilt within `10^-6` of Trump’s in the half-tangent;
@@ -277,8 +291,9 @@ erratum.
 - **T-027 / T-028 / T-029 / T-030: `s(18) ≥ 4.67, 4.675, 4.6775, 4.679` (`S3`).** Four
   retained weighted fractional unavoidable-set certificates form the latest `n = 18`
   ladder. Each passed both the exact weighted-sum replay and an independent interval
-  coverage replay. The last rung, `T-030` at `4679/1000`, is the current survey lower
-  bound; the stronger `4.68` candidate did not certify and is not a result.
+  coverage replay. The last rung, `T-030` at `4679/1000`, is the current verified lower
+  bound, with wand125’s reported `939/200` above it until that certificate’s replay
+  runs; the stronger `4.68` candidate did not certify and is not a result.
 
 - **T-001 / T-002: `s(17) ≥ 4.426213` and `s(18) ≥ 4.426213`.** A sixteen-point
   unavoidable set is certified by exact rational cover verification and an independent
@@ -346,55 +361,15 @@ accordingly.
 ## Results by Others
 
 Others have built on this repository’s certificates, credited them and taken the bounds
-further, and one has worked in parallel from the same weighted method.
-The theorems and the credit belong to their authors.
-This repository takes in each result, replays its certificate completely, reviews its
-mathematics, and only then registers the bound, with its credit.
+further, and others have worked independently of it, one of them from the same weighted
+method. The theorems and the credit belong to their authors.
+This repository registers each claimed bound as *reported* when it takes the source in,
+and as *verified* only after a complete replay of its certificate and a review of its
+mathematics. The groups below follow each source’s own attribution, which the
+bibliography’s credit line records: “after Levy” marks a source that credits this
+project’s certificates, data or pipeline.
 
-- **Evan Daniel: `s(32) = 6`, `s(21) ≥ 5000/1001` and `s(12) ≥ 15680/3951`.** The
-  [`evand/square-packing` repository](packing/resources/web/evand-square-packing-2026-09-26/README.md),
-  building on Sam Burns’s and Gustavo Massaccesi’s weighted exact-rational covering
-  method, proves the first exact value of `s(k² − 4)` for any `k ≥ 4`. Its certificate
-  is a weighted closed cover of `[0,6]²`: 13,085 points of total weight
-  `31.713505354 < 32` that every closed unit square captures at least `1` of, checked at
-  margin zero by an exact subdivision of pose space.
-  The upper bound is the trivial `6 × 6` grid.
-  A Lean theorem derives `minSide 32 = 6` from exactly the statement the source’s
-  `zeromargin.py` sweep checks over all 7,200 roots of the cover’s symmetry-reduced
-  region. Here that sweep was run again in full, certifying all 7,200 roots with the
-  source’s census on every one; the Lean build and the source’s second checker,
-  `zmcheck`, were not run.
-  Its angle-net certificates at [twenty-one](packing/frontier/n-021.md) and
-  [twelve squares](packing/frontier/n-012.md) pass the source’s Rust verifier here too,
-  and are now the verified lower bounds there, above `T-034` and `T-017`; `s(21)` is
-  left within `5/1001` of the grid.
-  The two angle-net bounds are registered at `V4/C3`, replayed from the source’s own
-  checkers, and `s(32) = 6` at `V4/C3` on the complete re-sweep.
-  `s(12)` alone reaches `V4/C4`: this repository’s native parent-core interval route
-  decides all 2,486 rows of its certificate, a second method beside the source’s
-  arrangement sweep. The
-  [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) was written beside
-  the intake. The same repository’s case-free proof of Bentz’s `s(13) = 4`, one
-  zero-margin closed cover of `[0,4]²`, is recorded on
-  [thirteen squares](packing/frontier/n-013.md) as a report and moves nothing.
-  The source’s `CREDITS.md` says the work was produced with an AI agent under human
-  direction.
-
-- **wand125, building on Tokoharu’s rectangle-density method: `n = 18` to `78`.** The
-  [rectangle-density certificates](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md)
-  of 26 and 27 September 2026, 44 standing ones, were built with Tokoharu’s solver and
-  are decided by Tokoharu’s interval verifier, byte for byte the copy reviewed here on
-  22 September; wand125 added the driver that raises each count’s side one certified
-  rung at a time. Each improves the reported lower bound this record held for its count,
-  except at `n = 21` and `n = 32`, where Evan Daniel’s bounds are stronger.
-  Complete replays have passed here at `n = 27` and `31`, so `s(27) ≥ 28/5`,
-  `s(28) ≥ 28/5` by monotonicity and `s(31) ≥ 148/25` are verified lower bounds; the
-  other counts stay reported until their replays, about 102 CPU-hours in all, are run.
-  The
-  [scaling review](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md)
-  found the reviewed checker’s premises unchanged at the new sizes.
-  The source README says parts of the work were produced with AI assistance under human
-  direction.
+### Building on This Project
 
 - **Kleddamag: `s(11) > 31/8 = 3.875`.** The
   [certificate](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md)
@@ -412,6 +387,25 @@ mathematics, and only then registers the bound, with its credit.
   [eleven squares](packing/frontier/n-011.md), about `0.0021` below Trump’s packing and
   `0.048` above T-033.
 
+- **Guzhou0806, continuing Kleddamag’s `4.66001` charge:
+  `s(17) > 116511/25000 = 4.66044`.** The
+  [R068 release](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) of 28
+  September 2026, by Guzhou0806 / N17 project, keeps that charge’s 889 rule orbits and
+  their weights, moves one zero-weight site orbit and adds one weighted four-site point
+  orbit, over 4,991 orientation intervals, with a counting surplus of 7,404 units of
+  `10⁻⁹`. Its C++ checker is Guzhou0806’s own and its BigInt checker is Kleddamag’s. The
+  package credits Kleddamag for the charge, the proof and that checker, and discloses AI
+  assistance; its publisher ran no local validation.
+  Both checkers’ complete replays pass here and agree with the published ledgers on
+  every interval, and the
+  [proof review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) found
+  no mathematical defect.
+  The two sweeps are one event-cell method, so the rung is `V4/C3`. It is the verified
+  lower bound for [seventeen squares](packing/frontier/n-017.md), exactly `0.00043`
+  above `4.66001` and about `0.0151` below Bidwell’s packing.
+  The same day’s R067, `233009/50000`, ran the `4.66001` charge unchanged; it was
+  replayed here in full too and never held the verified field.
+
 - **Kleddamag, building on Squares Project (Joshua Levy), Mira and Guzhou0806:
   `s(17) > 466001/100000 = 4.66001`.** An exact weighted-certificate proof over 2,168
   orientation intervals, published on 27 September 2026 at an untagged commit as a
@@ -428,12 +422,12 @@ mathematics, and only then registers the bound, with its credit.
   BigInt, pass here and agree on every interval.
   They implement one event-cell method, and this repository’s native parent-core route
   cannot yet represent the weighted and winning-subset features, so the rung is `V4/C3`.
-  The proof review is a separate record,
-  `docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md`. It is the verified
-  lower bound for [seventeen squares](packing/frontier/n-017.md), exactly `0.01999`
-  above `v1.1.0` and `0.0155` below Bidwell’s packing.
+  The [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) is
+  a separate record. It was the verified lower bound for seventeen squares from 27 to 29
+  September 2026, exactly `0.01999` above `v1.1.0`, and it remains valid evidence.
 
-- **Kleddamag: `s(17) > 232001/50000 = 4.64002`, the previous `n = 17` bound.** The
+- **Kleddamag: `s(17) > 232001/50000 = 4.64002`, the `n = 17` bound before `4.66001`.**
+  The
   [`v1.1.0` release](packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md)
   of 26 September 2026, by Kleddamag, building on Squares Project (Joshua Levy), Mira
   and Guzhou0806, extends Kleddamag’s own `v1.0.0` architecture below with weighted
@@ -498,12 +492,129 @@ mathematics, and only then registers the bound, with its credit.
   The
   [proof review](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md)
   found no error and supplies two steps R012’s note omits.
-  It moved the `n = 17` bound `0.02305` above `T-019`. It was the first external bound
-  registered here and is the only one with a `T-NNN` identifier; the later external
-  bounds are recorded in their case files.
+  It moved the `n = 17` bound `0.02305` above `T-019`. Like Massaccesi’s T-015 and T-016
+  before it, it carries a `T-NNN` identifier; the external bounds registered since are
+  recorded in their case files.
   Guzhou0806’s later R038 reports `461300000000/99974999999 = 4.6141535…`, between T-032
   and Kleddamag’s bound; its published tree has been retained here since 22 September
   2026 and has not been replayed.
+
+- **wand125, from the generator described here: point bounds for `n = 39` to `72`.** The
+  [point certificates](packing/resources/web/external-square-certificates-2026-09-22/README.md)
+  of 15 to 22 September 2026 follow the generator this repository describes, row
+  generation by a separation oracle and dual-priced column generation, and are decided
+  by its exact verifier; the source says the method is not its own.
+  Complete exact replays pass here for `s(39), s(40) ≥ 13/2`, `s(53) ≥ 369/50`,
+  `s(55) ≥ 377/50`, `s(56) ≥ 381/50`, `s(69) ≥ 841/100`, `s(70) ≥ 171/20` and
+  `s(72) ≥ 861/100`, which with monotonicity and the certificates’ masses are the
+  verified lower bounds at twelve counts, `n = 39–41, 52, 53, 55, 56` and `68–72`, at
+  `V4/C3`. The
+  [integration review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
+  covers them. The same source’s `n = 26` and `29` certificates were superseded by
+  Tokoharu’s, below.
+
+- **Tokoharu: rectangle-density bounds `s(26) ≥ 1377/250` and `s(29) ≥ 571/100`.** The
+  [certificates](packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/README.md)
+  of September 2026 replace wand125’s point masses with uniform densities on
+  axis-aligned rectangles, symmetrised under the square’s symmetries and decided by an
+  outward-rounded interval verifier, `verify.cpp`, over a 201-direction net.
+  Tokoharu says the work was inspired by this project’s owner and by wand125, and
+  credits this repository second-hand, through wand125’s repository; the
+  rectangle-density basis and the verifier are his own.
+  Complete replays pass here, and the
+  [mathematical review](docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md)
+  found no blocking defect, so `s(26) ≥ 1377/250` and `s(29), s(30) ≥ 571/100` are
+  verified lower bounds at `V4/C3`. His `s(11) ≥ 381/100` equals T-018 and moves
+  nothing.
+
+- **wand125, building on Tokoharu’s rectangle-density method: `n = 18` to `95`.** The
+  rectangle-density certificates of
+  [26 and 27 September](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md)
+  and
+  [28 September 2026](packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md),
+  50 standing at `39d8ecc`, 38 of them new or raised and six at counts not reached
+  before (`n = 86, 88, 89, 91, 94, 95`), were built with Tokoharu’s solver and are
+  decided by Tokoharu’s interval verifier, byte for byte the copy reviewed here on 22
+  September; wand125 added the driver that raises each count’s side one certified rung
+  at a time, and says that nothing in the mathematics is its own.
+  Each improves the reported lower bound this record held for its count, except at
+  `n = 21`, `32` and `45`, where Evan Daniel’s exact values are stronger.
+  Complete replays have passed here at `n = 27` and `31`, so `s(27) ≥ 28/5`,
+  `s(28) ≥ 28/5` by monotonicity and `s(31) ≥ 148/25` are verified lower bounds; the
+  other counts stay reported until their replays, 47 certificates and about 134
+  CPU-hours, are run. The
+  [scaling review](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md)
+  found the reviewed checker’s premises unchanged at the new sizes, and the
+  [solver comparison](docs/project/reviews/review-2026-09-28-density-solver-comparison.md)
+  compares these tools with this repository’s. wand125 published the tools on 29
+  September as `wand125/square-packing-tools`. The source README says parts of the work
+  were produced with AI assistance under human direction.
+
+### Independent of This Project
+
+- **Evan Daniel: `s(21) = 5`, `s(32) = 6`, `s(45) = 7` and `s(12) ≥ 15680/3951`.** The
+  [`evand/square-packing` repository](packing/resources/web/evand-square-packing-2026-09-26/README.md)
+  builds on Sam Burns’s and Gustavo Massaccesi’s weighted exact-rational covering method
+  and lists this project as parallel work.
+  With the grid upper bounds its covers give the first exact values of `s(k² − 4)` for
+  `k ≥ 4`. Its `s(32)` certificate is a weighted closed cover of `[0,6]²`: 13,085 points
+  of total weight `31.713505354 < 32` that every closed unit square captures at least
+  `1` of, checked at margin zero by an exact subdivision of pose space.
+  A Lean theorem derives `minSide 32 = 6` from exactly the statement the source’s
+  `zeromargin.py` sweep checks over all 7,200 roots of the cover’s symmetry-reduced
+  region. Here that sweep was run again in full, certifying all 7,200 roots with the
+  source’s census on every one, so `s(32) = 6` is registered at `V4/C3`; the Lean build
+  and the source’s second checker, `zmcheck`, were not run.
+  On 28 September the
+  [same repository](packing/resources/web/evand-square-packing-2026-09-28/README.md)
+  proved `s(21) = 5` and `s(45) = 7` by *mixed covers*, weighted points plus mass spread
+  uniformly along interior grid-line segments, each certified at margin zero by two
+  checkers that share no code: `zm_mixed.py` in exact arithmetic and the Rust `zmx2` in
+  outward-widened binary64 intervals, with a Lean reduction for `s(21)`. Fresh `zmx2`
+  sweeps here reproduce the source’s census on every root, so both are registered at
+  `V4/C3`; recording a complete re-sweep by the exact checker would make them `C4`. The
+  [review](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) found
+  no defect. His earlier angle-net `s(21) ≥ 5000/1001` remains valid evidence.
+  His angle-net certificate at [twelve squares](packing/frontier/n-012.md), in his
+  repository from 25 August, passes the source’s Rust verifier here and is the verified
+  lower bound there, above T-017, at `V4/C4`: this repository’s native parent-core
+  interval route decides all 2,486 rows of it, a second method beside the source’s
+  arrangement sweep. It leaves that case about `0.0314` below the grid.
+  The
+  [review of `s(32)` and `s(12)`](docs/project/reviews/review-2026-09-27-evand-s32-s12.md)
+  was written beside that intake.
+  The same repository’s case-free proof of Bentz’s `s(13) = 4`, one zero-margin closed
+  cover of `[0,4]²`, is recorded on [thirteen squares](packing/frontier/n-013.md) as a
+  report and moves nothing, and its `s(11) ≥ 3040/797` is below the verified bound and
+  retained only as a statement.
+  The source’s `CREDITS.md` says the work was produced with an AI agent under human
+  direction.
+
+- **wand125, on Evan Daniel’s supports and Tokoharu’s solver: second routes to
+  `s(21) = 5` and `s(45) = 7`, and `s(50) ≥ 37/5`.** The
+  [28 September results](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md)
+  include point-only certificates for the two exact values, the `s(21)` support Evan
+  Daniel’s and `s(45)` decided by his `zmx2`; the source claims no priority for either
+  value. The `s(45)` certificate replays here with the source’s census and is a second
+  certificate at `V4/C3`; the `s(21)` replay is running.
+  Its `s(50) ≥ 37/5`, a mixed rectangle-density certificate decided by a research copy
+  of Tokoharu’s verifier with its acceptance threshold set to one, is the reported lower
+  bound for fifty squares, more than `0.0825` above Green’s reported bound; the
+  [review](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) found
+  the argument sound given a passing replay, which is running here.
+  The
+  [review of the point-only routes](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md)
+  found both sound.
+
+### Earlier in 2026
+
+Seven authors published lower bounds for seventeen squares, some also for eighteen,
+before this project’s square-packing work began on 22 August 2026, all independent of
+it: Brandwijk’s `89/20` (18 July), Burns’s `4.4811` (6 August), MacIver’s `4.4502…` (8
+August), Mira’s and Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s
+`4.57` and `9141/2000` (13 and 16 August), and Massaccesi’s `4.5058` (21 August), which
+this repository replayed and registered as T-015 and T-016. Each is archived with its
+source, and T-019, above, lists them; every one is superseded.
 
 ## Survey
 
@@ -516,9 +627,9 @@ Its source is one schema-validated case file under
 [status table](packing/frontier/STATUS.md) is the reader view, and the atlas above
 renders every retained known-best packing.
 The current `n = 18` survey row records the independently verified lower bound
-`4679/1000 = 4.679` from `T-030`, and the `n = 11` and `n = 17` rows record Kleddamag’s
-`n = 11` bound and Kleddamag’s `4.66001` `n = 17` bound under
-[Results by Others](#results-by-others).
+`4679/1000 = 4.679` from `T-030`; the `n = 11` row records Kleddamag’s `31/8`, the
+`n = 17` row Guzhou0806’s `116511/25000`, and the `n = 21`, `32` and `45` rows Evan
+Daniel’s exact values, all under [Results by Others](#results-by-others).
 The
 [September 22 external review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
 also verifies Tokoharu’s rectangle-density bounds `s(26) ≥ 5.508` and `s(29) ≥ 5.71`,

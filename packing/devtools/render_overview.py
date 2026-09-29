@@ -31,7 +31,7 @@ import re
 import sys
 from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import NamedTuple
+from typing import Literal, NamedTuple
 
 from sqpack.release import PUBLICATION_EDITION
 
@@ -59,6 +59,9 @@ RENDER_INPUTS: tuple[Path, ...] = (
     SITE_NAV,
     OVERVIEW_ARTICLE,
     PACKING / "src" / "sqpack" / "release.py",
+    PACKING / "devtools" / "site_documents.py",
+    REPO / "TUTORIAL.md",
+    REPO / "SYNOPSIS.md",
 )
 
 # The same refusal the explainer makes: a script or stylesheet with a source, a CSS
@@ -146,8 +149,14 @@ def kpress_page(
     description: str,
     toc: bool,
     rewrite_body: Callable[[str], str] | None = None,
+    trust_mode: Literal["trusted", "sanitized"] = "trusted",
+    strict_anchors: bool = False,
 ) -> Page:
-    """One standalone kpress page with the site's layer, nav and colophon."""
+    """One standalone kpress page with the site's layer, nav and colophon.
+
+    `strict_anchors` raises kpress's `broken_anchor` warning, an in-page `#…` link
+    with no target, to a failure; the reader documents are rendered that way.
+    """
     from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
     from kpress.format.render import render_page  # noqa: PLC0415
 
@@ -157,7 +166,7 @@ def kpress_page(
         source_text=markdown,
         source_path=name,
         body_markdown=markdown,
-        trust_mode="trusted",
+        trust_mode=trust_mode,
         metadata={"description": description, "url": canonical, "site_name": SITE_NAME},
     )
     head, scripts = page_assets()
@@ -172,7 +181,11 @@ def kpress_page(
         footer_html=colophon_html(),
     )
     rendered = render_page(document, options)
-    errors = [d for d in rendered.diagnostics if d.get("severity") == "error"]
+    errors = [
+        d
+        for d in rendered.diagnostics
+        if d.get("severity") == "error" or (strict_anchors and d.get("type") == "broken_anchor")
+    ]
     if errors:
         raise SystemExit(f"{name}: kpress reported errors: {errors[:3]}")
     prose = 'class="kpress-prose kpress-long-text'
@@ -214,9 +227,25 @@ def overview_page() -> Page:
     )
 
 
+def tutorial_page() -> Page:
+    """`TUTORIAL.md` as a page; `site_documents` rewrites and checks its links."""
+    from devtools.site_documents import tutorial_page as build  # noqa: PLC0415
+
+    return build()
+
+
+def synopsis_page() -> Page:
+    """`SYNOPSIS.md` as a page; `site_documents` rewrites and checks its links."""
+    from devtools.site_documents import synopsis_page as build  # noqa: PLC0415
+
+    return build()
+
+
 #: The pages this renderer owns, by served name.
 PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
+    "tutorial.html": tutorial_page,
+    "synopsis.html": synopsis_page,
 }
 
 

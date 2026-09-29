@@ -109,22 +109,36 @@ The same day `s(17) > 466001/100000 = 4.66001` followed, `0.01999` above it: Kle
 building on Squares Project (Joshua Levy), Mira and Guzhou0806, an exact
 weighted-certificate proof over 2,168 orientation intervals on the same two checkers.
 Both pass here and agree on every interval, with a counting surplus of 54,340 units of
-`10⁻⁹`, again at `V4/C3`. It supplies the verified Frontier bound for `n = 17`, `0.0155`
-below Bidwell’s packing; its proof review is a separate record,
-`docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md`. Like the earlier
-external bounds, neither carries a `T-NNN` identifier.
+`10⁻⁹`, again at `V4/C3`. It supplied the verified Frontier bound for `n = 17` from 27
+to 29 September; its
+[proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) is a
+separate record.
+Guzhou0806’s R068 of 28 September, continuing that charge with one added
+four-site point orbit over 4,991 intervals, proves `s(17) > 116511/25000 = 4.66044`,
+exactly `0.00043` higher; its two checkers’ complete replays pass here and agree with
+the published ledgers, at `V4/C3`, and it supplies the verified bound, `0.0151` below
+Bidwell’s packing
+([review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md)). R067,
+`233009/50000`, was replayed beside it.
+Like the external bounds registered after T-032, none of these carries a `T-NNN`
+identifier.
 
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
 weighted exact-rational covering method, proves `s(32) = 6` by a zero-margin weighted
-closed cover of `[0,6]²`, at `V4/C1` until its complete re-sweep runs here, and its
-angle-net certificates `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001` pass the source’s
-verifier here at `V4/C3`; its case-free proof of Bentz’s `s(13) = 4` is recorded as a
-report. wand125’s 44 rectangle-density certificates for `n = 18` to `78`, built with
-Tokoharu’s solver and decided by Tokoharu’s reviewed interval verifier, are verified at
-`n = 27`, `28` by monotonicity, and `31`, and reported at the other counts until their
-replays run. Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by
-`v1.1.0`, is retained as a publication record.
+closed cover of `[0,6]²`, at `V4/C3` on a complete re-sweep here, and
+`s(12) ≥ 15680/3951` at `V4/C4`; its `s(21) ≥ 5000/1001` was superseded on 28 September
+by the same author’s mixed covers, weighted points plus mass on interior grid-line
+segments, which prove `s(21) = 5` and `s(45) = 7`, both `V4/C3`. Its case-free proof of
+Bentz’s `s(13) = 4` is recorded as a report.
+wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at `39d8ecc`
+for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s reviewed
+interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`, and
+reported at the other counts until their replays run.
+wand125’s point-only routes to `s(21) = 5` and `s(45) = 7`, the latter verified here as
+a second certificate, and its reported `s(50) ≥ 37/5` followed on 28 September.
+Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by `v1.1.0`, is
+retained as a publication record.
 [Results by Others](README.md#results-by-others) gives the credit for each.
 
 Every result this project has registered, in the reading order its significance scores
@@ -500,6 +514,7 @@ case or experiment separately.
 | [Plan: Certify the Reported Upper Bounds, One Validation Block at a Time](docs/project/specs/active/plan-2026-09-22-upper-bound-certification-blocks.md) | implementation plan | current | transient | — |
 | [Plan: What R052 and Rung 0 Change at n = 11 and n = 17](docs/project/specs/active/plan-2026-09-25-after-r052-planning.md) | implementation plan | current | transient | — |
 | [Plan: An Overnight Queue After s(17) > 4.640020](docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md) | implementation plan | current | transient | — |
+| [Plan: Others’ Results in the Results Register](docs/project/specs/active/plan-2026-09-29-third-party-results-register.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |
 | [BC329 Reader F6/F7: Exact-Commit Admission Review](docs/project/reviews/review-2026-09-13-n11-bc329-reader-f6f7-overflow.md) | dated review record | record | retained | — |
@@ -3773,7 +3788,7 @@ Where the program has spent effort, and what came of it.
 | 16 | proved, `4` | `4` | proved not-below control | The valid replacement for the old `n=12` guard: any reported side below `4` is known to be invalid |
 | 17 | open | `4.67553009…` (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of `0°`, `+39.80496°`, and `−36.62379°`. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports `5.0`, the trivial `5×5` grid, on all five binary64 screening seeds |
 | 61, 78, 97 | open, `m² − 3` | `8`, `9`, `10` (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at `arctan(3/4)` is registered and **not yet made** |
-| 1–100 | 36 proved, 64 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
+| 1–100 | 38 proved, 62 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
 
 Three facts about this table drive the strategy.
 
@@ -6501,24 +6516,25 @@ family, while the current verified case bound is the stronger external strict re
 theorem or assurance level.
 The result retains its historical S5 registration; its current significance is S3 as
 method and calibration evidence, while the external certificate supplies the current
-case bound. `s(12) >= 99/25` is [T-017](packing/frontier/RESULTS.md), the first bound
-located that was proved about twelve squares rather than inherited from eleven; the case
-bound is now Evan Daniel’s third-party `15680/3951`, replayed here on 2026-09-27
-([`n-012`](packing/frontier/n-012.md)). `s(17) >= 459/100`, and `n = 18` and `n = 19` at
-the same side without a monotonicity step, is [T-019](packing/frontier/RESULTS.md) and
-displaces Massaccesi’s published `4.5058` by `0.0842`. `s(19)`, `s(20)` and
-`s(21) >= 24/5` is [T-020](packing/frontier/RESULTS.md), which carries `n = 19` past
-`T-019` the same evening and displaces Nagamochi’s 2005 closed form at the other two —
-`1 + sqrt(13)` and `1 + sqrt(14)` — by `0.194449` and `0.058343`. Its `0.21` at `n = 19`
-is the largest single-case movement in the register, and twenty and twenty-one had never
-carried a bound of their own at all.
-The `n = 21` case bound is now Evan Daniel’s third-party `5000/1001`, replayed here on
-2026-09-27 ([`n-021`](packing/frontier/n-021.md)). Between them those two are the only
-values in print this project has replaced.
-All four stand at V4: each was decided twice from frozen bytes by an exact event-cell
-sweep and by an interval branch and bound with directed rounding — two routes that share
-the certificate and the closed-form conditions but decide Condition 5 by different
-methods, which fail differently — agreeing on the least covered mass to the digit.
+case bound.
+`s(12) >= 99/25` is [T-017](packing/frontier/RESULTS.md), proved about twelve
+squares rather than inherited from eleven, and reached independently of Evan Daniel’s
+stronger `15680/3951`, which was in his repository from 25 August; that is now the case
+bound, replayed here on 2026-09-27 ([`n-012`](packing/frontier/n-012.md)).
+`s(17) >= 459/100`, and `n = 18` and `n = 19` at the same side without a monotonicity
+step, is [T-019](packing/frontier/RESULTS.md) and displaces Massaccesi’s published
+`4.5058` by `0.0842`. `s(19)`, `s(20)` and `s(21) >= 24/5` is
+[T-020](packing/frontier/RESULTS.md), which carries `n = 19` past `T-019` the same
+evening and displaces Nagamochi’s 2005 closed form at the other two — `1 + sqrt(13)` and
+`1 + sqrt(14)` — by `0.194449` and `0.058343`. Its `0.21` at `n = 19` is the largest
+single-case movement in the register, and twenty and twenty-one had never carried a
+proved bound of their own.
+Between them T-019 and T-020 are the only values in print this project has replaced.
+Evan Daniel has since proved `s(21) = 5` ([`n-021`](packing/frontier/n-021.md)). All
+four stand at V4: each was decided twice from frozen bytes by an exact event-cell sweep
+and by an interval branch and bound with directed rounding — two routes that share the
+certificate and the closed-form conditions but decide Condition 5 by different methods,
+which fail differently — agreeing on the least covered mass to the digit.
 Three of them stand at C4, and T-018 at C5 — the rung epistemics.md defines as
 review-ready, a mapped and non-superseded review artifact, which the adversarial review
 of PR 78 supplies. None of the four has been read by anyone outside the project, which
@@ -6563,7 +6579,8 @@ than over a direction net, and it certifies the grid value directly
 runways are `0.1808` and `0.3985`, and both truths sit below their grid bounds.
 At `n = 19`, `20` and `21` the ceiling is `5B = 4.9885`, so `T-020` has `0.1885` above
 it at twenty and twenty-one; at nineteen the best known packing binds first and the
-runway is `0.0856`.
+runway is `0.0856`. `s(21) = 5` was reached by a mixed cover, a certificate of a
+different shape, which puts mass on the grid lines as well as on points.
 
 **Joining that ceiling against the register says the lane has been looking in the wrong
 place.** [`CERTIFICATE-REACH.md`](packing/frontier/CERTIFICATE-REACH.md) ranks all 100

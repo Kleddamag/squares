@@ -1139,6 +1139,33 @@ pages:
     measured_where: run 35039355763, the scope demonstration
     ceiling_seconds: 8.0
     argument: The same notice for the workbench half.
+  # The two entries below are the only unmeasured ones, and they are unmeasured because
+  # no hosted run of their jobs exists yet: the plan in
+  # `docs/project/specs/active/plan-2026-09-29-github-pages-overview.md` makes the first
+  # pull-request run of `overview` its measurement. A cost written before that run would
+  # be a number no runner produced. So each carries a ceiling and no measurement, as the
+  # tiers' unmeasured entries do, and the budget test accepts that only when every
+  # measured field is null together; the run that measures them replaces the nulls.
+  - id: overview
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    ceiling_seconds: 79.0
+    argument: >-
+      Renders the site's own pages twice, at once, and requires the renders to agree, then
+      shares them with `publish`. Its setup is `prepare`'s without the browser: the same
+      sparse, blobless checkout and the same uv and Python. The twin render took 13 s on a
+      four-cpu development box on 2026-09-29, against the 18 s of `prepare`'s own twin
+      render, so the ceiling is `prepare`'s until a hosted run gives this job its own. It
+      runs beside `prepare`, not after it, so it is not on the wall's critical path.
+  - id: overview-unchanged
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    ceiling_seconds: 8.0
+    argument: >-
+      The same notice for the site's own pages: one shell step, the shape of the two
+      notices above, which measured 4.0 s each, and the same ceiling.
   - id: pages-required
     measured_seconds: 3.0
     measured_on: 2026-09-16

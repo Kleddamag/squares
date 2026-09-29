@@ -72,6 +72,20 @@ def test_every_record_link_is_a_permalink_or_a_site_page() -> None:
             assert "/blob/main/" not in link.url, (result.id, link)
 
 
+def test_every_repository_link_on_the_page_names_the_build_commit(page: str) -> None:
+    """The deployed-site check requires one ref across the page: the commit it was built at.
+
+    The template's prose linked `epistemics.md` at `blob/main/`, which that check would
+    have failed on the first deploy; this asks the same question of the render here.
+    """
+    from devtools.check_published_site import repository_links  # noqa: PLC0415
+    from devtools.render_explainer import link_revision  # noqa: PLC0415
+
+    links = repository_links(page)
+    assert links
+    assert {ref for _, ref, _ in links} == {link_revision()}
+
+
 def test_record_line_links_point_at_their_entry() -> None:
     lines = overview_data.RESULTS.read_text(encoding="utf-8").splitlines()
     for result in overview_data.load().results:

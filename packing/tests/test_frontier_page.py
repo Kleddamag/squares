@@ -10,8 +10,9 @@ from typing import Any
 import pytest
 
 from devtools import render_frontier_page as frontier
+from devtools import render_overview
 from devtools import render_research_tables as tables
-from devtools.render_overview import PAGES, RENDER_INPUTS, assert_self_contained
+from devtools.render_overview import PAGES, assert_self_contained
 from sqpack.yamlio import safe_load
 
 #: Measured at 3.6 MB on 2026-09-29 (324 cases): 1.6 MB is the site shell every page
@@ -133,7 +134,7 @@ def test_no_math_is_left_as_source_text_in_the_table(page: str) -> None:
 
 def test_the_frontier_inputs_are_render_inputs() -> None:
     for path in frontier.FRONTIER_INPUTS:
-        assert path in RENDER_INPUTS
+        assert path in render_overview.inputs()
         assert path.exists(), path
 
 

@@ -933,6 +933,7 @@ case or experiment separately.
 | [Proof Review: Evan Daniel’s `s(32) = 6`, `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001`](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) | dated review record | record | retained | — |
 | [Review Addendum: The Ceiling Lemma, the `+0.006` Cap and H-248 in the Post-4.640020 Plan](docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md) | dated review record | record | retained | — |
 | [wand125 Rectangle Certificates: Does the Reviewed Checker Scale to Side 9?](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) | dated review record | record | retained | — |
+| [wand125 n = 50 Mixed Certificates: The Threshold-One Verifier and the Containment Argument](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) | dated review record | record | retained | — |
 | [The Three-Lane Research Method](docs/project/three-lane-research-method.md) | component scope and use | record | retained | — |
 | [Handoff — 2026-09-04, close of the fractional-certificate block](docs/project/handoff-2026-09-04-block-close.md) | dated handoff record | record | retained | — |
 | [Handoff: Post-3.81 Portfolio at T+2](docs/project/handoff-2026-09-06-post-381-t2-commissioning.md) | dated handoff record | record | retained | — |

@@ -3669,7 +3669,7 @@ results:
       at higher precision.
 
   - id: T-057
-    headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid"
+    headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record"
     claim: >-
       s(211) <= 14.99796070496771500150 < 15. JoostdeWinter/square-packing-211 at 702df9bb
       (16 September 2026) reports 211 unit squares in a square of that side, with 21-digit
@@ -3689,10 +3689,11 @@ results:
     significance:
       score: 3
       rationale: >-
-        A count whose best known packing was the trivial grid now has one below it, and
-        the smallest k for which s(k^2 - k + 1) < k is known drops from 16 to 15. S3 by
-        the anchor "a substantive case result"; the margin, about 0.002, changes nothing
-        beyond this count.
+        A count whose best known packing was the trivial grid now has one below it. On the
+        Kingbird catalogue and this record, which show s(k^2 - k + 1) < k at n = 241, 273
+        and 307 (k = 16 to 18) and hold the grid at n = 31 to 183 (k = 6 to 14), the
+        smallest k shown to satisfy it drops from 16 to 15. S3 by the anchor "a substantive
+        case result"; the margin, about 0.002, changes nothing beyond this count.
       scored: '2026-09-29'
       by: issue #227 intake (repository; draft)
     novelty: previously-published

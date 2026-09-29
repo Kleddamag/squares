@@ -553,7 +553,9 @@ def _de_winter_paragraph(plan: Plan) -> str:
         "publishes no boxes or checker, and it says nothing about AI assistance. With the "
         "catalogue’s packings at `n = 241, 273, 307`, found by Arslanov, Mustafin and "
         "Shangitbayev in 2019, it shows `s(k² − k + 1) < k` for `k = 15` as well as `16`, "
-        "`17` and `18`: the smallest `k` for which that is known moves from 16 to 15."
+        "`17` and `18`. The records at `n = 31, 43, …, 183` (`k = 6…14`) still hold the "
+        "grid, so on the catalogue and this record the smallest `k` shown to satisfy it "
+        "moves from 16 to 15."
     )
 
 

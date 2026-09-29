@@ -1,0 +1,17 @@
+# Markdown files whose mathematics is written as LaTeX math rather than as code spans.
+#
+# `devtools.check_math_markup` fails when a file listed here holds a code span that
+# `devtools.migrate_math` classifies as mathematics, so a migrated file stays migrated.
+# It never reads a file that is not listed; it only counts them, so the backlog is
+# visible. Paths are repository-relative.
+#
+# `keep` names span contents a person read in context and decided are not mathematics
+# in that file -- a single letter used as a label, say -- so they stay code there. An
+# entry is the span's content, or `{span: ..., where: ...}` to keep it only in a
+# paragraph containing that text. Say why beside each one.
+#
+# Migrate a file, then add it here:
+#
+#   uv run --frozen --group dev python -m devtools.migrate_math FILE --report
+#   uv run --frozen --group dev python -m devtools.migrate_math FILE --apply
+files: {}

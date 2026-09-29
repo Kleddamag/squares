@@ -2756,6 +2756,11 @@ def _readme(context: Context) -> str:
     return _module(context, "devtools.check_readme")
 
 
+def _math_markup(context: Context) -> str:
+    """A file the math migration has done keeps its mathematics out of code spans."""
+    return _module(context, "devtools.check_math_markup")
+
+
 def _archive_annotations(context: Context) -> str:
     """Every archive transcription's annotation count says the same thing three times.
 
@@ -4021,6 +4026,23 @@ STEPS: tuple[Step, ...] = (
     Step("synopsis agrees with the artifacts", _synopsis, fast=True, records=True),
     Step("README agrees with the directory", _readme, fast=True, records=True),
     Step(
+        "migrated Markdown writes its math as LaTeX",
+        _math_markup,
+        fast=True,
+        records=True,
+        touches=(
+            # Any Markdown file can be listed in the ledger, and `fnmatch` lets `*`
+            # cross separators, so this claims every one of them.
+            "*.md",
+            "packing/devtools/check_math_markup.py",
+            "packing/devtools/migrate_math.py",
+            "packing/devtools/math-migrated.yaml",
+            "packing/devtools/repo_scope.py",
+            "packing/pyproject.toml",
+            "packing/uv.lock",
+        ),
+    ),
+    Step(
         "archive annotation census agrees with the archive",
         _archive_annotations,
         fast=True,
@@ -4659,6 +4681,8 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "X-027 mathematics parses with pinned KaTeX",
         "synopsis agrees with the artifacts",
         "README agrees with the directory",
+        # Reads the ledger and the listed files, and counts `git ls-files`; nothing else.
+        "migrated Markdown writes its math as LaTeX",
         "AGENTS.md mirrors the operating rules",
         "agenda map agrees with the agendas",
         "D-034's n=5 identity pair still reproduces",

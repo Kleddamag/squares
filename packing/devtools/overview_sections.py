@@ -165,17 +165,20 @@ def results_table(overview: Overview) -> str:
                 f'<tr id="{_esc(result.id.lower())}" '
                 f'data-source="{"ours" if result.ours else "others"}" '
                 f'data-c="{_esc(record["confirmation"])}">'
-                f'<td data-value="{_esc(result.id)}">{_esc(result.id)}</td>'
-                f'<td class="num" data-value="{result.first_n}">{_esc(result.scope)}</td>'
+                f'<td class="site-col-id" data-value="{_esc(result.id)}">{_esc(result.id)}</td>'
+                f'<td class="num site-col-n" data-value="{result.first_n}">'
+                f"{_esc(result.scope)}</td>"
                 f'<td class="site-col-result"><details><summary>'
                 f"{tex_bounds(result.summary)}</summary>"
                 f"{_detail(result)}</details></td>"
-                f'<td data-value="{_esc(result.credit)}">{_esc(result.credit)}</td>'
+                f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
+                f"{_esc(result.credit)}</td>"
                 f'<td class="site-rungs" '
                 f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
                 f"{_rung(record['verification'])} {_rung(record['confirmation'])} "
                 f"{_rung('S' + str(record['significance']['score']))}</td>"
-                f'<td data-value="{_esc(result.date)}">{_esc(result.date)}</td>'
+                f'<td class="site-col-date" data-value="{_esc(result.date)}">'
+                f"{_esc(result.date)}</td>"
                 f'<td class="site-records">{_records(result)}</td>'
                 "</tr>"
             )
@@ -193,7 +196,7 @@ def results_table(overview: Overview) -> str:
     )
     return (
         f'<div class="site-wide">{tools}<div class="site-table-wrap">'
-        f'<table class="kpress-table site-table" data-site-table>{head}'
+        f'<table class="kpress-table site-table site-results" data-site-table>{head}'
         f"<tbody>{''.join(body)}</tbody></table></div></div>"
     )
 

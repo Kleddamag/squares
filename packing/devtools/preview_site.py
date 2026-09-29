@@ -86,7 +86,9 @@ def missing_links(output: Path) -> list[str]:
             continue
         nav = HREF.search(path.read_text(encoding="utf-8"))
         if nav is None:
-            missing.append(f"{name}: no site nav")
+            # The workbench is its own application; it links back in a note, not the nav.
+            if not name.startswith("workbench/"):
+                missing.append(f"{name}: no site nav")
             continue
         base = path.parent
         for href in re.findall(r'href="([^"#?]+)', nav.group(0)):
@@ -100,8 +102,23 @@ def missing_links(output: Path) -> list[str]:
     return missing
 
 
+class _Handler(SimpleHTTPRequestHandler):
+    """A quiet static server. `/favicon.ico` gets an empty answer: no page declares an
+    icon, so a browser's automatic request would otherwise log a 404 as a page error."""
+
+    def do_GET(self) -> None:
+        if self.path == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
+        super().do_GET()
+
+    def log_message(self, format: str, *args: object) -> None:  # noqa: A002
+        pass
+
+
 def serve(output: Path, port: int) -> ThreadingHTTPServer:
-    handler = functools.partial(SimpleHTTPRequestHandler, directory=str(output))
+    handler = functools.partial(_Handler, directory=str(output))
     server = ThreadingHTTPServer(("127.0.0.1", port), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     return server

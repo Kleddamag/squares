@@ -113,6 +113,7 @@ def test_the_nav_links_only_to_served_pages() -> None:
         ("s(46) = 7 from the 7 x 7 grid", ["s(46) = 7", r"7 \times 7"]),
         ("need side >= 3.8770835..., equal", [r"\ge 3.8770835\ldots"]),
         ("s(11) > 31/8 by a certificate", ["s(11) > 31/8"]),
+        ("Goebel's n = 5 packing", ["n = 5"]),
     ],
 )
 def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str]) -> None:

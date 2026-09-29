@@ -68,13 +68,14 @@ _NUMBER = r"[0-9]+(?:/[0-9]+|\.[0-9]+(?:\.\.\.|…)?)?"
 _VALUE = rf"{_NUMBER}(?:\s*\+\s*[0-9]+/sqrt\([0-9]+\))?"
 _RELATION = r"(?:>=|<=|>|<|=)"
 #: The runs of register prose that are mathematics: a bound on one or more `s(n)`, a
-#: range of `N`, a grid's `k x k`, a side compared with a value, and a bare `s(n)`.
+#: range of `N`, a grid's `k x k`, a side compared with a value, a bare `s(n)`, and `n = 5`.
 MATH = re.compile(
     rf"(?:s\([0-9]+\),\s*)*s\([0-9]+\)\s*{_RELATION}\s*{_VALUE}"
     rf"|\b[0-9]+\s*<=\s*N\s*<=\s*[0-9]+"
     rf"|\b[0-9]+ x [0-9]+(?= grid)"
     rf"|(?<=side )>=\s*{_VALUE}"
     r"|\bs\((?:[0-9]+|N|n)\)"
+    r"|\b[nN] = [0-9]+\b"
 )
 
 

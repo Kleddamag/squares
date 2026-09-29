@@ -1363,7 +1363,8 @@ ci_gates:
       Workflow dispatch run 36636552951 at 9174140a, testing merge
       0376416ec9ab3220bb87e52888ddb72919d3e861; run start to last gating job.
       One complete observation; declared workers total 7408 seconds (123.47 runner-minutes).
-    spread: null
+    # One reading gives sample max/min = 1.00; runner-to-runner variance is unknown.
+    spread: 1.00
     ceiling_seconds: 1900.0
     argument: >-
       The first complete fanout measured 1133s of wall and 7408 declared worker-seconds
@@ -1385,7 +1386,7 @@ ci_gates:
     measured_seconds: 17.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 30.0
     argument: >-
       Resolves a moving dispatch merge ref once. The first hosted wall was 17s; the
@@ -1395,7 +1396,7 @@ ci_gates:
     measured_seconds: 778.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 1150.0
     argument: >-
       One whole threshold replay, with its prior process shape unchanged. The first
@@ -1406,7 +1407,7 @@ ci_gates:
     measured_seconds: 475.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 900.0
     argument: >-
       The atlas rebuild, 720-step finer-net replay and grid replay remain whole and run
@@ -1418,7 +1419,7 @@ ci_gates:
     measured_seconds: 621.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 965.0
     argument: >-
       Negative controls and the 1440-step finer-net replay remain whole and run
@@ -1430,7 +1431,7 @@ ci_gates:
     measured_seconds: 623.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 955.0
     argument: >-
       The 720-step threshold replay and n=40 rigidity bracket remain whole and run
@@ -1442,7 +1443,7 @@ ci_gates:
     measured_seconds: 957.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 1550.0
     argument: >-
       The largest whole-file exhaustive shard. The marker and test bodies are unchanged;
@@ -1453,7 +1454,7 @@ ci_gates:
     measured_seconds: 953.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 1380.0
     argument: >-
       A whole-file exhaustive shard selected by the checked three-way cost record. The
@@ -1464,7 +1465,7 @@ ci_gates:
     measured_seconds: 858.0
     measured_on: '2026-09-29'
     measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
-    spread: null
+    spread: 1.00
     ceiling_seconds: 1380.0
     argument: >-
       A whole-file exhaustive shard selected by the checked three-way cost record. The

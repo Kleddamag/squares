@@ -405,9 +405,9 @@ No new constants, and no second copy of the builder.
 
 Two things are worth knowing before adding one.
 The palette does not widen: the renderer holds 20 hues and wraps class registrations
-onto the 18 unpinned slots, and the corpus already asks for 106 angle classes in one
-frame (`n = 273`) where the first hundred asked for 14. Feeding a class count to
-`square_fill_palette` would leave its closest pair 0.04 degrees apart, so the wrap is
+onto the 18 unpinned slots, and the corpus already asks for 52 angle classes in one
+frame (`n = 301`) where the first hundred asked for 14. Feeding a class count to
+`square_fill_palette` would leave its closest pair 0.43 degrees apart, so the wrap is
 the answer and `tests/test_render_colors.py` measures both halves of that.
 And the corpus, not the drawing, is the constraint: a card needs a frontier record whose
 facts are sourced to the same standard as the rest, which is why nothing above `n = 324`

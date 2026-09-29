@@ -79,28 +79,61 @@ def _rung(label: str) -> str:
     return f'<span class="site-rung">{_esc(label)}</span>'
 
 
+def card_kind(href: str) -> str:
+    """What following a card does, which its hover icon shows: scroll to a row on this
+    page, open another site, or go to another page of this one."""
+    if href.startswith("#"):
+        return "scroll"
+    if href.startswith("https://"):
+        return "external"
+    return "page"
+
+
+def card(href: str, label: str, value: str, note: str) -> str:
+    """A card that is one link: a caps label, the summary, and a line under it. The
+    label and note are escaped here; the value is HTML, so it may carry math."""
+    return (
+        f'<a class="site-card" href="{_esc(href)}" data-go="{card_kind(href)}">'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-note">{note}</span></a>'
+    )
+
+
+def _cards(cards: list[str]) -> str:
+    return '<div class="site-cards site-wide">' + "".join(cards) + "</div>"
+
+
 def headline_cards(overview: Overview) -> str:
-    """One card per `S5` result, this project's and others' alike."""
+    """One card per `S5` result, this project's and others' alike; each scrolls to its
+    row in the results table."""
     cards = []
     for result in overview.results:
         if result.record["significance"]["score"] < 5:
             continue
         record = result.record
-        cards.append(
-            '<div class="site-card">'
-            f'<div class="site-card-label">{_esc(result.id)} · {_esc(result.credit)}</div>'
-            f'<div class="site-card-value">{tex_bounds(result.summary)}</div>'
-            '<div class="site-card-note">'
-            f"{_rung(record['verification'])} {_rung(record['confirmation'])} "
-            f"{_rung('S' + str(record['significance']['score']))} · "
-            f'<a href="#{_esc(result.id.lower())}">in the table</a></div>'
-            "</div>"
+        rungs = " ".join(
+            _rung(rung)
+            for rung in (
+                record["verification"],
+                record["confirmation"],
+                "S" + str(record["significance"]["score"]),
+            )
         )
-    return '<div class="site-cards site-wide">' + "".join(cards) + "</div>"
+        cards.append(
+            card(
+                f"#{result.id.lower()}",
+                f"{result.id} · {result.credit}",
+                tex_bounds(result.summary),
+                rungs,
+            )
+        )
+    return _cards(cards)
 
 
 def exact_value_cards(overview: Overview) -> str:
-    """Cases now proved by a recent verified lower bound: the new exact values."""
+    """Cases now proved by a recent verified lower bound: the new exact values, each
+    going to its case in the frontier atlas."""
     cards = []
     for n in sorted(overview.recent_lower):
         case = overview.cases[n]
@@ -109,14 +142,14 @@ def exact_value_cards(overview: Overview) -> str:
         lower = case["verified_lower_bound"]
         value = lower.get("exact_form") or lower.get("value")
         cards.append(
-            '<div class="site-card">'
-            f'<div class="site-card-label">n = {n} · exact value</div>'
-            f'<div class="site-card-value">{math_html(f"s({n}) = {value}")}</div>'
-            '<div class="site-card-note">'
-            f'<a href="frontier.html#n-{n}">frontier record</a></div>'
-            "</div>"
+            card(
+                f"frontier.html#n-{n}",
+                f"n = {n} · exact value",
+                math_html(f"s({n}) = {value}"),
+                "Proved; the case in the frontier atlas.",
+            )
         )
-    return '<div class="site-cards site-wide">' + "".join(cards) + "</div>"
+    return _cards(cards)
 
 
 def _detail(result: Result) -> str:
@@ -295,11 +328,46 @@ def document_cards() -> str:
     """One card per reader document, each a permalink to the file on GitHub."""
     from devtools.render_explainer import repo_file  # noqa: PLC0415
 
-    cards = "".join(
-        f'<a class="site-card site-doc-card" href="{_esc(repo_file(REPO / path))}">'
-        f'<span class="site-card-label">{_esc(path.rsplit("/", 1)[-1])}</span>'
-        f'<span class="site-card-value">{_esc(label)}</span>'
-        f'<span class="site-card-note">{_esc(note)}</span></a>'
-        for path, label, note in DOCUMENTS
+    return _cards(
+        [
+            card(repo_file(REPO / path), path.rsplit("/", 1)[-1], _esc(label), _esc(note))
+            for path, label, note in DOCUMENTS
+        ]
     )
-    return f'<div class="site-cards site-wide">{cards}</div>'
+
+
+#: The site's other pages, as the overview's cards show them: the page, a label, its
+#: title, and one line on what a reader finds there.
+PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "explainer.html",
+        "Explainer",
+        "The n = 11 lower bound",
+        "The proof, with the certificate drawn and checkable in the page.",
+    ),
+    (
+        "tutorial.html",
+        "Tutorial",
+        "Square packing from first principles",
+        "The problem, its configuration space, exact algebra and the search.",
+    ),
+    (
+        "workbench/",
+        "Visualizer",
+        "Pack squares by hand",
+        "Move squares yourself and watch the known packings.",
+    ),
+    (
+        "frontier.html",
+        "Frontier atlas",
+        "Every case from n = 1 to 324",
+        "Reported and verified bounds side by side, with their sources.",
+    ),
+)
+
+
+def page_cards() -> str:
+    """One card per page of the site other than this one."""
+    return _cards(
+        [card(href, label, tex_bounds(title), _esc(note)) for href, label, title, note in PAGES]
+    )

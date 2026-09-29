@@ -7,7 +7,7 @@ from collections import Counter
 
 import pytest
 
-from devtools import overview_data, render_overview
+from devtools import overview_data, overview_sections, render_overview
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
 from sqpack.yamlio import safe_load
@@ -140,3 +140,21 @@ def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str])
 def test_every_site_page_retries_untypeset_math(name: str) -> None:
     page = render_overview.PAGES[name]().html
     assert render_overview.MATH_RETRY_SCRIPT.read_text(encoding="utf-8") in page
+
+
+CARD = re.compile(r'<a class="site-card" href="([^"]+)" data-go="(scroll|external|page)"')
+
+
+def test_every_card_names_where_it_goes_and_gets_there(page: str) -> None:
+    """A card's hover icon comes from `data-go`: a scroll lands on a row of this page, an
+    external card leaves the site, and a page card opens one the site serves."""
+    cards = CARD.findall(page)
+    assert {kind for _, kind in cards} == {"scroll", "external", "page"}
+    ids = set(ID.findall(page))
+    served = {*render_overview.SITE_PAGES, "workbench/"}
+    for href, kind in cards:
+        assert kind == overview_sections.card_kind(href), href
+        if kind == "scroll":
+            assert href[1:] in ids, href
+        elif kind == "page":
+            assert href.split("#", 1)[0] in served, href

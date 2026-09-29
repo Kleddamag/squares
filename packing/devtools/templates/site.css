@@ -110,12 +110,49 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin-block: 1.5rem;
 }
-.site-card {
+/* A card is one link: a clean summary with square corners and a gentle wash on hover.
+   A gray icon in its corner says what following it does: a down arrow scrolls to a row
+   on this page, a diagonal arrow leaves the site, and a right arrow opens another page
+   of it. */
+.kpress a.site-card {
   border: 1px solid var(--kpress-doc-border);
-  border-radius: var(--kpress-radius-md, 6px);
-  padding: 0.9rem 1rem;
+  border-radius: 0;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 2.2rem 0.9rem 1rem;
+  position: relative;
+  text-decoration: none;
+  transition: background-color 120ms ease;
 }
-.site-card .site-card-label {
+.kpress a.site-card:hover,
+.kpress a.site-card:focus-visible {
+  background: var(--kpress-doc-surface-hover);
+}
+.kpress a.site-card::after {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  inset-block-start: 0.7rem;
+  inset-inline-end: 0.8rem;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 120ms ease;
+}
+.kpress a.site-card:hover::after,
+.kpress a.site-card:focus-visible::after {
+  opacity: 1;
+}
+.kpress a.site-card[data-go="scroll"]::after {
+  content: "\2193";
+}
+.kpress a.site-card[data-go="external"]::after {
+  content: "\2197";
+}
+.kpress a.site-card[data-go="page"]::after {
+  content: "\2192";
+}
+.kpress a.site-card .site-card-label {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: var(--kpress-caps-label-size, 0.8rem);
@@ -123,11 +160,10 @@ body {
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
 }
-.site-card .site-card-value {
+.kpress a.site-card .site-card-value {
   font-size: 1.15em;
-  margin-block: 0.3rem;
 }
-.site-card .site-card-note {
+.kpress a.site-card .site-card-note {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -560,20 +596,4 @@ body {
 }
 .site-frontier .site-detail dd {
   overflow-wrap: anywhere;
-}
-
-/* A document card is one link: the whole card is the target. */
-.kpress a.site-doc-card {
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  text-decoration: none;
-}
-.kpress a.site-doc-card:hover,
-.kpress a.site-doc-card:focus-visible {
-  border-color: var(--kpress-doc-accent);
-}
-.kpress a.site-doc-card .site-card-value {
-  color: var(--kpress-doc-accent);
 }

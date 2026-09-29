@@ -25,9 +25,8 @@ Stromquist’s $2 + 4/\sqrt{5} \approx 3.7889$ since 2003.
 
 This site collects what the project has proved, what others have proved alongside it,
 and how each claim was checked.
-The [explainer](explainer.html) walks through the $n = 11$ proof with interactive
-figures, the [tutorial](tutorial.html) introduces the problem from first principles, and
-the [synopsis]({{SYNOPSIS_URL}}) on GitHub is the full research record.
+
+{{PAGE_CARDS}}
 
 ## Headline Results
 
@@ -65,15 +64,6 @@ the retained source and the review.
 ## Recently Registered
 
 {{RECENT}}
-
-## Read Further
-
-- [**The explainer**](explainer.html): the $n = 11$ lower bound, with the certificate
-  drawn and checkable in the page.
-- [**The frontier atlas**](frontier.html): every case from $n = 1$ to $324$, with the
-  reported and verified bounds side by side.
-- [**The tutorial**](tutorial.html): square packing from first principles.
-- [**The workbench**](workbench/): pack squares by hand and watch the known packings.
 
 ## On GitHub
 

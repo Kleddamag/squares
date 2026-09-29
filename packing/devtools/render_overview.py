@@ -279,8 +279,8 @@ def overview_page() -> Page:
     values = {
         "EDITION": html.escape(PUBLICATION_EDITION),
         "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
-        "SYNOPSIS_URL": repo_file(REPO / "SYNOPSIS.md"),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
+        "PAGE_CARDS": overview_sections.page_cards(),
         **overview_sections.bracket_11(overview),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),

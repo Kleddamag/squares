@@ -180,7 +180,9 @@ to credit it as carefully as this project’s own.
   inside another source’s credit line.
   An AI agent is never a credited author.
   Where a source states that AI assisted its work, its case record or register entry
-  says so in the source’s own terms, and so does any README prose about the result.
+  says so in the source’s own terms, and so does any README prose about the result;
+  `devtools.state_ai_assistance` names a case record that cites such a source without
+  saying so.
 - **Our rung is not their credit.** `V` and `C` describe verification.
   A result replayed here remains its authors’ result, and a rung never changes a credit
   line. A defect found here goes back to the authors with the review that found it.

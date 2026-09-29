@@ -35,7 +35,8 @@ It also records:
   checked in outward interval arithmetic at 80 decimal digits over 22,155 pairs and 844
   wall inequalities, with least wall clearance `1.000005e-14` and least separating-axis
   gap `2.10001e-14`;
-- the author’s previous side for this count, `14.99879247655475100150`; and
+- a previous side for this count, `14.99879247655475100150`, under the key
+  `previous_verified_s`, which the record does not attribute to anyone; and
 - the method, in the author’s words: “Full-packing adaptive search followed by
   grouped-angle local refinement and interval-verified decimal export.”
 

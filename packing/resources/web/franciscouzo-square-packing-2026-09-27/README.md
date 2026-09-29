@@ -20,7 +20,7 @@ the live catalogue of 29 September 2026, and every one certifies exactly here.
 | Revision | `f3c5a529c255b546db18605702b8da298132309f`, tree `2ca0583ce143d1639ae2a8aef60be00bf8e26bba`, committed 2026-09-27T21:46:41Z |
 | History | Twelve commits. The first eight, authored between 2026-09-23T01:35Z and 2026-09-24T10:28Z, were committed again on 2026-09-24 between 10:33 and 10:34 UTC; the last four carry one clock. Early files were named by side (`n102_s10.607902017700.txt`) and renamed on 2026-09-24 |
 | Author | Francisco Couzo, read from the commit metadata: the repository has no LICENSE and its README names no author |
-| Credit | The README names no prior work beyond the catalogue it compares against, so nothing is credited after the author. The repository states no AI assistance; its author’s issue says the packings were found “with the help of Claude” |
+| Credit | The README names no prior work beyond the catalogue it compares against, so nothing is credited after the author. The repository itself states no AI assistance; its author said on issue #227 that he found the 102 and 103 packings “with the help of Claude” |
 | Licence | None published |
 | Retrieved | 2026-09-29, a full clone |
 | Retained here | Derived facts and metadata only: [`facts/`](facts/), one Witness/v2 witness per count with the source’s centres and angles carried verbatim, and [`acquisition/sources.json.gz`](acquisition/sources.json.gz), which pins all 99 upstream files by SHA-256 and records each count’s commit history with every side it has printed |
@@ -175,7 +175,7 @@ plain path and decompress through `devtools.retained_data.read_retained_bytes`;
 | Stored | Origin | Git blob (decompressed) | SHA-256 (decompressed) |
 | --- | --- | --- | --- |
 | `acquisition/sources.json.gz` | receipt | `ce3c27311e608eb915aba43e28bbe8bf990ffdec` | `7edda23724cfd6eab92c36a7697d99b26c34dcdde7cf0e0ccb28afa40164328f` |
-| `receipts/certification.json.gz` | receipt | `212646b8d0059b3b83b5d58f6a83c6877455991b` | `5f21ddfc2ec8f3c25bf242ee3c8dde2dc44adb95d3f5d655b643c7bc303694b5` |
+| `receipts/certification.json.gz` | receipt | `f535559251db4083eb38ae040bcc1ba4df3bc6e8` | `5d15b341ec41e40dc8cfcc01d04bb5a7dd8269244000855bea2d0f2261391678` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

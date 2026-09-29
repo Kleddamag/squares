@@ -3628,8 +3628,9 @@ results:
       here by an exact rational packing, the source's decimal pose rounded to rationals at
       centre dilation 1, decided pair by pair and wall by wall over Q by two checkers that
       share no code. Francisco Couzo; the author said on jlevy/squares#227 that he found
-      the packings with the help of Claude. An externally produced, previously published
-      result, not peer reviewed; no new first-party mathematics is claimed.
+      the 102 and 103 packings "with the help of Claude", and the repository itself states
+      no AI assistance. An externally produced, previously published result, not peer
+      reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
     verification: V4
     confirmation: C3
@@ -3657,6 +3658,7 @@ results:
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
       - packing/devtools/apply_upper_bound_packets.py
+      - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
       - packing/tests/test_upper_bound_packets.py
@@ -3668,7 +3670,7 @@ results:
       at higher precision.
 
   - id: T-057
-    headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid"
+    headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record"
     claim: >-
       s(211) <= 14.99796070496771500150 < 15. JoostdeWinter/square-packing-211 at 702df9bb
       (16 September 2026) reports 211 unit squares in a square of that side, with 21-digit
@@ -3688,10 +3690,11 @@ results:
     significance:
       score: 3
       rationale: >-
-        A count whose best known packing was the trivial grid now has one below it, and
-        the smallest k for which s(k^2 - k + 1) < k is known drops from 16 to 15. S3 by
-        the anchor "a substantive case result"; the margin, about 0.002, changes nothing
-        beyond this count.
+        A count whose best known packing was the trivial grid now has one below it. On the
+        Kingbird catalogue and this record, which show s(k^2 - k + 1) < k at n = 241, 273
+        and 307 (k = 16 to 18) and hold the grid at n = 31 to 183 (k = 6 to 14), the
+        smallest k shown to satisfy it drops from 16 to 15. S3 by the anchor "a substantive
+        case result"; the margin, about 0.002, changes nothing beyond this count.
       scored: '2026-09-29'
       by: issue #227 intake (repository; draft)
     novelty: previously-published
@@ -3708,6 +3711,7 @@ results:
       - packing/witnesses/de-winter-2026/n-211-rational.yaml.gz
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
+      - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
       - packing/tests/test_upper_bound_packets.py

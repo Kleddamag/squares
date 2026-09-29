@@ -2420,7 +2420,6 @@ results:
       - E-n011-kleddamag-3875-native-parent-core
     artifacts:
       - packing/resources/web/external-square-certificates-2026-09-22/README.md
-      - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/global-certificate.json
       - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md
       - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/ATTRIBUTION.md
       - packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json
@@ -2481,7 +2480,6 @@ results:
       - E-n017-kleddamag-461300-99853-source-replay
     artifacts:
       - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md
-      - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/global-certificate.json
       - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/PROOF.md
       - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/RESULT.json
       - packing/campaign/agent-sessions/session-150-n17-consolidation-and-correctness.md
@@ -2537,7 +2535,6 @@ results:
       - E-n017-guzhou-r052-source-replay
     artifacts:
       - packing/resources/web/n17-guzhou-r052-2026-09-25/README.md
-      - packing/resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/certificates/R052/certificate/R052_CERTIFICATE.json.gz
       - packing/resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/certificates/R052/PROOF.md
       - packing/resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/certificates/R052/verify.py
       - packing/resources/web/n17-guzhou-r052-2026-09-25/receipts/replays.json
@@ -2594,7 +2591,6 @@ results:
       - E-n017-kleddamag-4640020-source-replay
     artifacts:
       - packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md
-      - packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/certificate.json
       - packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/PROOF.md
       - packing/resources/web/n17-kleddamag-4640020-2026-09-26/receipts/replays.json
       - docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md
@@ -2651,7 +2647,6 @@ results:
       - E-n017-kleddamag-466001-source-replay
     artifacts:
       - packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md
-      - packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/certificate.json
       - packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/PROOF.md
       - packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/ATTRIBUTION.md
       - packing/resources/web/n17-kleddamag-466001-2026-09-27/receipts/replays.json
@@ -2704,7 +2699,6 @@ results:
       - E-n017-guzhou-r067-source-replay
     artifacts:
       - packing/resources/web/n17-guzhou-r068-2026-09-28/README.md
-      - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/certificate.json.gz
       - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/PROOF.md
       - packing/resources/web/n17-guzhou-r068-2026-09-28/receipts/replays.json
       - packing/devtools/audit_guzhou_r068.py
@@ -2760,7 +2754,6 @@ results:
       - E-n017-guzhou-r068-source-replay
     artifacts:
       - packing/resources/web/n17-guzhou-r068-2026-09-28/README.md
-      - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/accepted/4.66044/certificate.json.gz
       - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/PROOF.md
       - packing/resources/web/n17-guzhou-r068-2026-09-28/receipts/replays.json
       - packing/devtools/audit_guzhou_r068.py
@@ -2825,9 +2818,6 @@ results:
       - packing/resources/web/external-square-certificates-2026-09-22/README.md
       - packing/resources/web/external-square-certificates-2026-09-22/wand125-points/README.md
       - packing/resources/web/external-square-certificates-2026-09-22/wand125-points/src/check_with_sqpack.py
-      - packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n39_L650.json
-      - packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n53_L738.json
-      - packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n69_L841.json
       - packing/resources/web/external-square-certificates-2026-09-22/receipts/wand125-points/sqpack-exact-replay.log
       - packing/src/sqpack/fractional/certificate.py
       - docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md
@@ -2887,11 +2877,7 @@ results:
       - E-wand125-rectangle-source-replay
     artifacts:
       - packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md
-      - packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/certificates/rect_n27_L56/certified_candidate.json.gz
-      - packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/certificates/rect_n31_L592/certified_candidate.json.gz
-      - packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/certificates/rect_n32_L595/certified_candidate.json.gz
       - packing/resources/web/wand125-rectangle-certificates-2026-09-27/receipts/replay/audit.json
-      - packing/resources/web/wand125-rectangle-certificates-2026-09-27/receipts/preflight/audit.json
       - packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/src/verify.cpp
       - packing/devtools/audit_wand125_rectangles.py
       - docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
@@ -2968,7 +2954,6 @@ results:
     artifacts:
       - packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md
       - packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md
-      - packing/resources/web/wand125-rectangle-certificates-2026-09-27/receipts/preflight/audit.json
       - packing/resources/web/wand125-rectangle-certificates-2026-09-28/receipts/preflight/audit.json.gz
       - packing/devtools/audit_wand125_rectangles.py
       - packing/devtools/apply_wand125_rectangles.py
@@ -3037,7 +3022,6 @@ results:
     artifacts:
       - packing/resources/web/external-square-certificates-2026-09-22/README.md
       - packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/README.md
-      - packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       - packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/src/verify.cpp
       - packing/resources/web/external-square-certificates-2026-09-22/acquisition/x-tokoharu.txt
       - packing/resources/web/external-square-certificates-2026-09-22/receipts/density/audit.json
@@ -3093,7 +3077,6 @@ results:
       - E-n050-wand125-mixed-740-report
     artifacts:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
-      - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/candidate.json.gz
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/completion-audit.json
@@ -3278,7 +3261,6 @@ results:
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/evand-square-packing-2026-09-26/README.md
-      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt.gz
       - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/README.md
       - packing/resources/web/evand-square-packing-2026-09-26/receipts/replays.json
       - packing/resources/web/evand-square-packing-2026-09-26/receipts/s32_sweep_comparison.json
@@ -3342,10 +3324,8 @@ results:
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/evand-square-packing-2026-09-28/README.md
-      - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/s21_mixed_cover_5.txt.gz
       - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/README.md
       - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/lean/Sqpack/S21.lean
-      - packing/resources/web/evand-square-packing-2026-09-28/receipts/replays.json
       - packing/resources/web/evand-square-packing-2026-09-28/receipts/audit.json
       - packing/devtools/audit_evand_mixed_covers.py
       - packing/devtools/check_basic_bounds.py
@@ -3405,9 +3385,7 @@ results:
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/evand-square-packing-2026-09-28/README.md
-      - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/s45_mixed_cover_7.txt.gz
       - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/README.md
-      - packing/resources/web/evand-square-packing-2026-09-28/receipts/replays.json
       - packing/resources/web/evand-square-packing-2026-09-28/receipts/audit.json
       - packing/devtools/audit_evand_mixed_covers.py
       - packing/devtools/check_basic_bounds.py
@@ -3463,7 +3441,6 @@ results:
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
-      - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/cover.txt.gz
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/verify.sh
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n45/comparison.json

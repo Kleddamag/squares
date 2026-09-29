@@ -70,6 +70,11 @@ DECLARED_CONSUMER_TREES = {
 }
 
 DECLARED_CONSUMERS = {
+    "packing/devtools/check_results.py": (
+        "reads only the evidence ids a case's bound fields cite, to derive whether a "
+        "registered result still holds a case bound; it takes no value from the field and "
+        "never reads the ceiling as s(n)"
+    ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
         "6 is what makes that case proved; it reads the field as a ceiling, not as s(n)"

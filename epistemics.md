@@ -215,10 +215,10 @@ them (`OR-1`). Hand-written prose that restates a bound or a credit cites its `T
 
 | Record | Holds | Reader view |
 | --- | --- | --- |
-| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md) |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); README’s [recent results by case](README.md#recent-results-all-sources) |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
 | [`results.yaml`](packing/frontier/results.yaml) | Each result’s claim, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage |
-| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line |
+| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders in README’s recent results |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
 
 ## Enforcement and Register

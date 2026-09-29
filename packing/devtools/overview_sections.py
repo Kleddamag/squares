@@ -276,7 +276,11 @@ def recent_list(overview: Overview, count: int = 8) -> str:
 #: The repository's reader documents, as the overview's cards show them: the file, a
 #: label, and one line on what a reader finds there. README and the synopsis lead.
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
-    ("README.md", "The project", "What the project is, how it works, and where to start."),
+    (
+        "README.md",
+        "The Squares Project",
+        "What the project is, how it works, and where to start.",
+    ),
     ("SYNOPSIS.md", "The synopsis", "The full research record: methods, claims and status."),
     ("packing/frontier/RESULTS.md", "Results", "Every registered result with its rungs."),
     ("packing/frontier/STATUS.md", "The frontier", "Every case to 324, with provenance."),

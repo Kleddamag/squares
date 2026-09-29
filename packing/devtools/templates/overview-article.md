@@ -78,6 +78,6 @@ the retained source and the review.
 ## On GitHub
 
 The code, the certificates, the literature archive and the documents that record all of
-this live in the [repository](https://github.com/jlevy/squares).
+this live in the Squares Project’s [repository](https://github.com/jlevy/squares).
 
 {{DOCUMENT_CARDS}}

@@ -5,7 +5,7 @@ title: "Integrate wand125's 2026-09-28 update: evand s(21)=5 and s(45)=7, wand12
 kind: epic
 status: in_progress
 priority: 1
-version: 14
+version: 15
 labels:
   - packing
   - low-n
@@ -24,7 +24,8 @@ child_order_hints:
   - is-01m3n5xqt5ca8emaba3jv2aa21
   - is-01m3n5y05cdnsnkspf7e4vg5jp
   - is-01m3n6ndjxgzymxyck9br0dc7s
+  - is-01m3nd90kj9vhmn6ezaqhd7s44
 created_at: 2026-09-28T23:34:01.698Z
-updated_at: 2026-09-28T23:47:41.935Z
+updated_at: 2026-09-29T01:43:10.706Z
 ---
 Owner-supplied X messages from @wand_125 (GitHub wand125), retained verbatim with a byte capture of their n <= 100 lower-bound table in packing/resources/web/wand125-x-update-2026-09-28/. They report that the known-best PDF lags: evand has proved s(21) = 5 and s(45) = 7 (the atlas still draws the verified 5000/1001 and Nagamochi's 6.830951), and wand125's rectangle-density certificates improve most counts from n = 18 to 95 (s(37) >= 6.425, s(50) >= 7.35 then 7.40, s(91) >= 9.645). The retained table also credits s(17) >= 233009/50000 to Guzhou0806, above the register's verified 466001/100000. Children: intake and replay each claim at its honest V/C rung, review the new trust boundaries (n = 50's own verifier, the Lean overlay), compare the solvers with ours, and only then run the new-result publication sequence (frontier, README, survey, atlas exports) per OR-7. Workflow: W1/W2 intake per claim, W8 for the documents.

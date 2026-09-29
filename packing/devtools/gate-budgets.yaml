@@ -1503,3 +1503,135 @@ ci_gates:
       The single-square translation escape screen alone, split out under `D-484` because
       it is a process pool sized by `PACK_JOBS` and two workers were not enough. 1240s is
       1.36x of the record and well under `SCREEN_BUDGET_SECONDS` (1800s).
+
+- id: post-merge
+  file: .github/workflows/packing-validation.yml
+  aggregate: post-merge-required
+  selected_by: >-
+    A push to `main`, the daily schedule or a `workflow_dispatch`. Pull requests keep
+    their seven-job fast surface and leave this aggregate skipped.
+  reference: {runner: ubuntu-latest, cpus: 4}
+  drift_ratio: 1.25
+  enforcement: reporting
+  tracking_bead: think-0atx
+  reporting_reason: >-
+    The post-merge fanout has no hosted reading in its current ten-worker shape. Report
+    every job and the critical-path wall until think-0atx replaces the derived ceilings
+    with observations from complete main or scheduled runs.
+  argument: >-
+    The complete integration checkpoint after a merge and on the daily backstop. Its
+    aggregate requires the integration worker plus nine deferred workers; pull requests
+    continue to use packing-required and are outside this gate.
+  wall:
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 3430.0
+    argument: >-
+      Derived reporting estimate from the predecessor complete-checkpoint wall and the
+      deep-gate runner spread. No hosted run has measured the new post-merge fanout; the
+      first complete run must replace this estimate with its critical-path observation.
+  jobs:
+  - id: validate
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 2400.0
+    argument: >-
+      Derived reporting estimate from the predecessor integration worker's 24m19s wall
+      on run 34025346801, setup cost and hosted-runner variance. The current narrowed
+      integration worker has not been observed in this topology.
+  - id: deferred-threshold-1440
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 1150.0
+    argument: >-
+      Derived reporting estimate from the retained 695.757s Step time, setup cost and
+      hosted-runner spread. This post-merge worker has no current hosted wall.
+  - id: deferred-atlas-grid
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 980.0
+    argument: >-
+      Derived reporting estimate from retained atlas, finer-net and grid Step times,
+      setup cost and hosted-runner spread. This worker has no current hosted wall.
+  - id: deferred-controls-finer
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 965.0
+    argument: >-
+      Derived reporting estimate from retained negative-control and finer-net Step times,
+      setup cost and hosted-runner spread. This worker has no current hosted wall.
+  - id: deferred-threshold-720-rigidity
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 955.0
+    argument: >-
+      Derived reporting estimate from retained threshold and rigidity Step times, setup
+      cost and hosted-runner spread. This worker has no current hosted wall.
+  - id: slow-lane
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 1250.0
+    argument: >-
+      Derived reporting estimate from the identically shaped deep-gate slow worker. That
+      proxy is not an observation of this workflow's post-merge worker.
+  - id: exhaustive-1
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 1550.0
+    argument: >-
+      Derived reporting estimate from retained whole-file exhaustive costs, setup and
+      hosted-runner spread. This shard has no current post-merge hosted wall.
+  - id: exhaustive-2
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 1380.0
+    argument: >-
+      Derived reporting estimate from retained whole-file exhaustive costs, setup and
+      hosted-runner spread. This shard has no current post-merge hosted wall.
+  - id: exhaustive-3
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 1380.0
+    argument: >-
+      Derived reporting estimate from retained whole-file exhaustive costs, setup and
+      hosted-runner spread. This shard has no current post-merge hosted wall.
+  - id: screen
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 1240.0
+    argument: >-
+      Derived reporting estimate from the identically shaped deep-gate screen worker.
+      That proxy is not an observation of this workflow's post-merge worker.

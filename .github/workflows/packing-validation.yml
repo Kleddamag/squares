@@ -1282,6 +1282,9 @@ jobs:
       - exhaustive-3
       - screen
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Require every complete-checkpoint prerequisite
         env:
@@ -1306,6 +1309,39 @@ jobs:
           test "$EXHAUSTIVE_2_RESULT" = "success"
           test "$EXHAUSTIVE_3_RESULT" = "success"
           test "$SCREEN_RESULT" = "success"
+
+      # Report the ten prerequisite walls and their critical path after the verdict has
+      # already been decided. Every reporting step continues on error: an API or setup
+      # failure is not allowed to turn a successful complete checkpoint red, while the
+      # register remains reporting-only under think-0atx until this topology is measured.
+      - name: Check out the post-merge wall register and reader
+        if: always()
+        continue-on-error: true
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          submodules: true
+
+      - name: Install uv and Python 3.14 for wall reporting
+        if: always()
+        continue-on-error: true
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Report every post-merge wall against its declared ceiling
+        if: always()
+        continue-on-error: true
+        working-directory: packing
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          uv run --frozen --all-extras --group dev
+          python -m devtools.check_ci_gate_walls --gate post-merge
 
   packing-required:
     # `!cancelled()` rather than `always()`. With `always()`, a run superseded by the next

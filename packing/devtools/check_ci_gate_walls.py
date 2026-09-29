@@ -52,6 +52,7 @@ import json
 import math
 import os
 import sys
+from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -169,25 +170,54 @@ def measure(
 ) -> GateRun:
     """The gate's wall, from the run starting to its last gating job completing.
 
-    The aggregate is excluded from the wall's endpoint for the reason it has no ceiling:
-    it is four seconds of `test` that cannot move, and a wall measured to it would credit
-    the gate's cost to the wrong job. It is measured and printed all the same, because a
-    step added to an aggregate is exactly how a cheap job stops being cheap.
+    The declared jobs define the endpoint. A workflow may contain another surface beside
+    the gate -- `packing-validation` has both post-merge workers and macOS portability --
+    and letting an unrelated job extend this wall would measure a different contract.
+    The aggregate is retained in the table but excluded from the endpoint because it has
+    no ceiling and runs only after every declared prerequisite.
     """
-    walls = [job_wall(job, policy) for job in jobs]
-    gating = [job for job in walls if job.name != gate.aggregate]
+    counts = Counter(str(job.get("name", "")) for job in jobs)
+    missing = [name for name in gate.ids if counts[name] == 0]
+    duplicates = [name for name in gate.ids if counts[name] > 1]
+    if missing or duplicates:
+        details: list[str] = []
+        if missing:
+            details.append(f"missing declared jobs: {', '.join(missing)}")
+        if duplicates:
+            details.append(f"duplicate declared jobs: {', '.join(duplicates)}")
+        raise GateWallError(
+            f"run {run.get('id')} cannot measure {gate.id}: {'; '.join(details)}"
+        )
+
+    retained = [job for job in jobs if str(job.get("name", "")) in {*gate.ids, gate.aggregate}]
+    walls = [job_wall(job, policy) for job in retained]
+    gating = [job for job in walls if job.name in gate.ids]
     start = _instant(run.get("run_started_at") or run.get("created_at"))
     ends = [
         _instant(job.get("completed_at"))
-        for job in jobs
-        if str(job["name"]) != gate.aggregate and job.get("completed_at")
+        for job in retained
+        if str(job.get("name", "")) in gate.ids and job.get("completed_at")
     ]
     finished = [end for end in ends if end is not None]
-    wall = (max(finished) - start).total_seconds() if start and finished else None
-    longest = max(
-        (job for job in gating if job.wall_seconds is not None),
-        key=lambda job: job.wall_seconds or 0.0,
-        default=None,
+    complete = len(finished) == len(gate.ids) and all(
+        job.wall_seconds is not None for job in gating
+    )
+    wall = (max(finished) - start).total_seconds() if start and complete else None
+    endpoint = (
+        max(
+            (
+                job
+                for job in retained
+                if str(job.get("name", "")) in gate.ids
+                and _instant(job.get("completed_at")) is not None
+            ),
+            key=lambda job: (
+                _instant(job.get("completed_at")) or datetime.min.replace(tzinfo=UTC)
+            ),
+            default=None,
+        )
+        if complete
+        else None
     )
     return GateRun(
         run_id=int(run["id"]),
@@ -195,7 +225,7 @@ def measure(
         conclusion=run.get("conclusion"),
         jobs=tuple(walls),
         wall_seconds=wall,
-        critical_job=longest.name if longest else None,
+        critical_job=str(endpoint["name"]) if endpoint is not None else None,
     )
 
 
@@ -252,6 +282,22 @@ def verdicts(
                 ),
                 runner=gate.reference.runner,
                 enforce=enforce,
+            )
+        )
+    else:
+        found.append(
+            Verdict(
+                tier="wall",
+                wall_seconds=0.0,
+                status="unknown",
+                ceiling_seconds=gate.wall.ceiling_seconds,
+                measured_seconds=gate.wall.measured_seconds,
+                notes=(
+                    (
+                        f"run {measured.run_id} has no complete declared-job inventory, "
+                        "so its gate wall was not measured"
+                    ),
+                ),
             )
         )
     return found
@@ -394,6 +440,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         policy = load_walls().policy
         identifiers = _run_ids(arguments, client, gate)
         payloads = [(client.run(run_id), client.jobs(run_id)) for run_id in identifiers]
+        measured = (
+            []
+            if arguments.dump
+            else [measure(run, jobs, gate, policy) for run, jobs in payloads]
+        )
     except (GateWallError, WallError, OSError) as error:
         print(f"check_ci_gate_walls: {error}", file=sys.stderr)
         return 2
@@ -401,7 +452,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         for run, jobs in payloads:
             print(json.dumps(trim(run, jobs), indent=2))
         return 0
-    measured = [measure(run, jobs, gate, policy) for run, jobs in payloads]
     if arguments.sample:
         today = datetime.now(UTC).date().isoformat()
         print("\n".join(render_sample(gate, measured, today=today)))

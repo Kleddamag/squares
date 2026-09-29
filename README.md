@@ -24,8 +24,8 @@ This repository contains:
   credited them and taken the bounds further, and others have worked in parallel, one
   from the same weighted method and two on smaller packings.
   This repository registers each claimed bound as *reported* when it takes the source
-  in, and as *verified* only after a complete replay of its certificate here and, for a
-  lower bound, a review of its mathematics, with the credit its authors give.
+  in, and as *verified* only after a complete replay of its certificate here and a
+  review of its mathematics, with the credit its authors give.
   - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
     [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
     It is the strongest verified lower bound for eleven squares, about `0.0021` below

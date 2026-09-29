@@ -4,20 +4,20 @@
    print-layout checks do not move.
    ============================================================ */
 /* ---------- Navigation bar ----------
-   Carried in kpress's own site-header slot, widened to the site's wide track so the
-   links sit on one line above a wide table. */
-.kpress-site-header {
-  max-width: calc(var(--kpress-measure) + 24rem);
-  padding: 0;
-}
+   Carried in kpress's own site-header slot, which spans the window, with its links in
+   one fixed-width track so the bar sits in the same place on every page: the pages set
+   different reading measures, and a track sized from the measure moved it. */
+.kpress-site-header,
 .kpress-page-main:has(.kpress-toc) .kpress-site-header {
-  padding-inline-start: 0;
   max-width: none;
+  padding: 0;
 }
 .site-nav {
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
-  font-size: calc(var(--kpress-font-size-base) * 19 / 18 * 0.95);
+  /* In rem, not from kpress's base size: the explainer sets a larger base than the site
+     pages, and the bar should not change size between them. */
+  font-size: 1rem;
 }
 .site-nav-inner {
   align-items: baseline;
@@ -25,7 +25,7 @@
   flex-wrap: wrap;
   gap: 0.25rem 1.1rem;
   margin-inline: auto;
-  max-width: calc(var(--kpress-measure) + 24rem);
+  max-width: 70rem;
   padding: 0.8rem 1rem;
 }
 .site-nav .site-name {
@@ -82,6 +82,4 @@
 /* On the explainer the bar is the first thing in the page, not in kpress's header slot. */
 .kpress-page-main > .site-nav {
   border-block-end: 1px solid var(--kpress-doc-border);
-  margin-inline: auto;
-  max-width: calc(var(--kpress-measure) + 24rem);
 }

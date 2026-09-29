@@ -26,6 +26,10 @@ and how each claim was checked.
 
 {{PAGE_CARDS}}
 
+## Verification at a Glance
+
+{{VERIFICATION}}
+
 ## Headline Results
 
 The results scored `S5`, for movement on the central open case:
@@ -54,10 +58,6 @@ Open a row for the full claim, and follow the records to the case file, the evid
 the retained source and the review.
 
 {{RESULTS_TABLE}}
-
-## Verification at a Glance
-
-{{VERIFICATION}}
 
 ## Recently Registered
 

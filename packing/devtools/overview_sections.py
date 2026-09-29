@@ -277,9 +277,9 @@ def verification_block(stats: Stats) -> str:
     ]
     grid = "".join(
         '<div class="site-card">'
-        f'<div class="site-card-label">{_esc(label)}</div>'
-        f'<div class="site-card-value">{_esc(value)}</div>'
-        f'<div class="site-card-note">{_esc(note)}</div></div>'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<span class="site-card-value">{_esc(value)}</span>'
+        f'<span class="site-card-note">{_esc(note)}</span></div>'
         for label, value, note in cards
     )
     legend = "".join(

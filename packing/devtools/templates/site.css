@@ -110,18 +110,21 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   margin-block: 1.5rem;
 }
-/* A card is one link: a clean summary with square corners and a gentle wash on hover.
-   A gray icon in its corner says what following it does: a down arrow scrolls to a row
-   on this page, a diagonal arrow leaves the site, and a right arrow opens another page
-   of it. */
-.kpress a.site-card {
+/* A card is a clean summary with square corners. A card that is a link gets a gentle
+   wash on hover, and a gray icon in its corner says what following it does: a down
+   arrow scrolls to a row on this page, a diagonal arrow leaves the site, and a right
+   arrow opens another page of it. A card that is not a link, a count, has neither. */
+.kpress .site-card {
   border: 1px solid var(--kpress-doc-border);
   border-radius: 0;
-  color: inherit;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0.9rem 2.2rem 0.9rem 1rem;
+  padding: 0.9rem 1rem;
+}
+.kpress a.site-card {
+  color: inherit;
+  padding-inline-end: 2.2rem;
   position: relative;
   text-decoration: none;
   transition: background-color 120ms ease;
@@ -152,7 +155,7 @@ body {
 .kpress a.site-card[data-go="page"]::after {
   content: "\2192";
 }
-.kpress a.site-card .site-card-label {
+.kpress .site-card .site-card-label {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: var(--kpress-caps-label-size, 0.8rem);
@@ -160,10 +163,10 @@ body {
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
 }
-.kpress a.site-card .site-card-value {
+.kpress .site-card .site-card-value {
   font-size: 1.15em;
 }
-.kpress a.site-card .site-card-note {
+.kpress .site-card .site-card-note {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);

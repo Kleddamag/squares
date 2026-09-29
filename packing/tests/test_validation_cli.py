@@ -285,9 +285,7 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
                     tokens[tokens.index("packing-validate") + 1 :]
                 )
                 only = namespace.only or []
-                if (
-                    workflow.name == "deep-gate.yml" and name.startswith("deferred-")
-                ) or only == ["slow behavioral tests"]:
+                if name.startswith("deferred-") or only == ["slow behavioral tests"]:
                     assert (namespace.jobs, namespace.inner_jobs) == ("1", "2")
                 elif len(only) == 1:
                     assert (namespace.jobs, namespace.inner_jobs) == ("1", "4")
@@ -297,10 +295,16 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
                     continue
                 checked.add((workflow.name, name))
     assert checked == {
-        ("packing-validation.yml", "exhaustive"),
+        ("packing-validation.yml", "exhaustive-1"),
+        ("packing-validation.yml", "exhaustive-2"),
+        ("packing-validation.yml", "exhaustive-3"),
         ("packing-validation.yml", "screen"),
         ("packing-validation.yml", "slow-lane"),
         ("packing-validation.yml", "validate"),
+        ("packing-validation.yml", "deferred-threshold-1440"),
+        ("packing-validation.yml", "deferred-atlas-grid"),
+        ("packing-validation.yml", "deferred-controls-finer"),
+        ("packing-validation.yml", "deferred-threshold-720-rigidity"),
         ("deep-gate.yml", "exhaustive-1"),
         ("deep-gate.yml", "exhaustive-2"),
         ("deep-gate.yml", "exhaustive-3"),

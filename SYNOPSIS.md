@@ -5399,7 +5399,7 @@ in separate tables: their units differ, and the same work can appear in both.
 | `session-142-stack-correctness.yaml` | session-142 | 1,186 | 5.01 h | 2.29 h | 2.3 h | yes |
 | `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
 | `session-163-codex-task-tree.yaml` | session-163 | 763 | 4.27 h | 2.53 h | 2.63 h | yes |
-| `session-164-codex-task-tree.yaml` | session-164 | 1,700 | 5.24 h | 1.93 h | 1.93 h | yes |
+| `session-164-codex-task-tree.yaml` | session-164 | 2,423 | 7.51 h | 2.73 h | 2.74 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 

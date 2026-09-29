@@ -2821,7 +2821,7 @@ sessions:
   title: "Upstream Merge and PR 246 Certification"
   status: in_progress
   primary_bead: think-niqx
-  phases: 7
+  phases: 8
   measured: true
   rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
@@ -2832,8 +2832,8 @@ sessions:
   wall_hours: null
   codex_receipts:
   - path: packing/campaign/resource-usage/session-164-codex-task-tree.yaml
-    model_responses: 1700
-    agent_hours: 5.24
-    active_union_hours: 1.93
-    wall_hours: 1.93
+    model_responses: 2423
+    agent_hours: 7.51
+    active_union_hours: 2.73
+    wall_hours: 2.74
     snapshot_incomplete: true

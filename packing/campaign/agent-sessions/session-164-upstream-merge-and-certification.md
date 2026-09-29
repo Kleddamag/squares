@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-29T23:30:05Z'
+  deadline_at: '2026-09-29T23:45:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-niqx
   status: in_progress
@@ -210,7 +210,7 @@ session:
     bead: think-xcij
     objective: Validate the repaired worker allocation and receipts, publish the integrated source, and
       run the main/daily fanout while recording hosted measurements and independent review.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Both integration defects have reviewed fixes; the first nine-worker hosted deferred
       run passed with 1,133 seconds gating wall.
@@ -224,15 +224,49 @@ session:
       or a receipt bound to the wrong source prevents publication.
     fallback: Retain the last passing published checkpoint and repair the named failing contract without
       deleting mathematical checks.
+    outcome: 'Frozen a2b8e696c passed all 51 selected push steps in 623.04 seconds: normal phase 7,750
+      passed and 9 skipped in 416.24 seconds, then one pool-heavy atlas test passed in 140.99 seconds
+      with ten inner workers. Publication delta 0ce06bfd9 passed 1,778 tests but failed two in 263.93
+      seconds total: a single-sample spread declaration mismatch and a live-checkout cache probe race
+      adding exactly 1,000,003 bytes to a concurrent snapshot count.'
+    evidence:
+    - docs/project/reviews/review-2026-09-29-validation-parallelism.md
+    - packing/campaign/agent-sessions/session-164-pool-phase-passed.log
+    - packing/campaign/agent-sessions/session-164-publication-initial.log
+    stop_reason: The allocation receipt passed; two subsequent publication defects require focused repairs
+      before publication.
+    next_action: Integrate the sample ratio correction and isolate the cache probe without changing the
+      snapshot cap, then rerun affected publication checks.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-xcij
+    objective: Repair the publication contract mismatch and live-checkout test race, publish the reviewed
+      efficiency block, and validate the main/daily hosted fanout.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: The passing allocation run is retained; publication checks exposed two additional isolated
+      integration defects.
+    budget_minutes: 30
+    started_at: '2026-09-29T22:51:37Z'
+    deadline_at: '2026-09-29T23:21:37Z'
+    expected_output: Reviewed integrated source, a complete local push receipt with phase allocation and
+      node timing, and source-specific hosted results or explicit failures.
+    validation_command: cd packing && packing-validate --push --since 9174140a8
+    kill_condition: Missing or duplicated test coverage, hidden child failures, uncontrolled worker multiplication
+      or a receipt bound to the wrong source prevents publication.
+    fallback: Retain the last passing published checkpoint and repair the named failing contract without
+      deleting mathematical checks.
     outcome: null
     evidence:
     - docs/project/reviews/review-2026-09-29-validation-parallelism.md
     stop_reason: null
-    next_action: Run the repaired push gate; publish on pass and dispatch the main/daily workflow against
-      the same source.
+    next_action: Complete focused repairs, publish after affected push checks pass, and dispatch the hosted
+      complete checkpoint.
   budget:
-    wall_minutes: 205
-    max_cycles: 7
+    wall_minutes: 220
+    max_cycles: 8
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
@@ -475,6 +509,9 @@ session:
   - Read-only full-census feasibility found serial execution ready but no wrapper resume or shard merging,
     and a full-journal retention gap. The plan and think-11z6 retain these limits; no full replay was
     started.
+  - 'Repaired allocation candidate a2b8e696c: 51 selected steps passed in 623.04 seconds; 7,751 tests
+    passed and 9 skipped across normal and pool phases. All child receipts finish against one source and
+    run identity. Remaining normal-worker tail is tracked by think-ii0r.'
   resource_rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
   stop_reason: null

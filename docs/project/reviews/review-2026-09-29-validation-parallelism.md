@@ -189,6 +189,28 @@ No general speedup is claimed from these operational checks.
 The full native external rectangle replay and T-057 complete row-minimum census remain
 separate mathematical obligations; changing validation scheduling establishes neither.
 
+### Publication Contract and Concurrent Probe Repair
+
+The subsequent `0ce06bfd9` publication delta passed 1,778 tests but failed two in 263.93
+seconds total. The
+[failure excerpt](../../../packing/campaign/agent-sessions/session-164-publication-initial.log)
+retains both findings.
+The single-observation wall entries needed the sampler’s max/min ratio of 1.00, with
+runner variance still unknown.
+The correction preserves the workflow contract and existing ceilings.
+
+The second failure was a concurrent test race (`think-4u84`). A cache-copy test wrote an
+ordinary 1,000,003-byte probe into the live checkout while a different pytest worker
+measured its snapshot size.
+The failing count exceeded the clean count by exactly that probe size.
+The clean snapshot measured 167,549,239 bytes, below the unchanged 167,772,160-byte cap.
+No new linked evidence caused the overage.
+The repair runs the same probe and copy assertions inside a private source snapshot,
+binds its subprocess imports to that snapshot, and checks that the live checkout stays
+free of the probe. The concurrent two-worker regression passed both affected tests.
+The broader source-headroom task `think-t1lk` remains open.
+Publication still requires the repaired integrated push and hosted evidence.
+
 ### Independent Review
 
 The first local scheduler candidate gave large narrow pushes exclusive pytest workers
@@ -231,9 +253,9 @@ The first hosted fanout passed on the resolved merge tree named above.
 Its worker and aggregate outcomes establish operational coverage for that tree only.
 
 New hosted ceilings are derived from predecessor Step or JUnit times plus setup.
-The new deep-gate jobs and whole wall now carry the single hosted observation above;
-spread remains unknown.
-Existing multi-run slow and screen baselines are preserved.
+The new deep-gate jobs and whole wall now carry the single hosted observation above; the
+sample max/min ratio is 1.00 for that one observation, while runner variance remains
+unknown. Existing multi-run slow and screen baselines are preserved.
 Main/daily measurements remain pending under `think-0atx`. One run does not establish a
 stable performance baseline.
 Artifact upload remains advisory and may warn without failing a passing validation job;

@@ -199,10 +199,22 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record."""
+    from devtools import overview_data, overview_sections  # noqa: PLC0415
+
+    overview = overview_data.load()
+    stats = overview_data.stats(overview)
+    values = {
+        "EDITION": html.escape(PUBLICATION_EDITION),
+        **overview_sections.bracket_11(overview),
+        "HEADLINE_CARDS": overview_sections.headline_cards(overview),
+        "EXACT_CARDS": overview_sections.exact_value_cards(overview),
+        "RESULTS_TABLE": overview_sections.results_table(overview),
+        "VERIFICATION": overview_sections.verification_block(stats),
+        "RECENT": overview_sections.recent_list(overview),
+    }
+    values.pop("S11_LOWER_DECIMAL")
     markdown = fill(
-        OVERVIEW_ARTICLE.read_text(encoding="utf-8"),
-        {"EDITION": html.escape(PUBLICATION_EDITION)},
-        where=OVERVIEW_ARTICLE.name,
+        OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name
     )
     return kpress_page(
         markdown,

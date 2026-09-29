@@ -49,7 +49,7 @@ body {
   --site-font-size-support: calc(var(--site-font-size-sans-base) * 0.95);
   --site-font-size-note: calc(var(--site-font-size-sans-base) * 0.92);
   --site-support-color: var(--kpress-doc-muted);
-  --site-wide: calc(var(--kpress-measure) + 18rem);
+  --site-wide: calc(var(--kpress-measure) + 24rem);
 }
 .site-page a,
 .kpress-tooltip a {
@@ -367,4 +367,84 @@ body {
   .site-bar-row {
     grid-template-columns: 1fr;
   }
+}
+.site-atlas img {
+  display: block;
+  margin-inline: auto;
+  max-width: min(100%, 52rem);
+  height: auto;
+}
+.site-atlas figcaption {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  text-align: center;
+}
+.site-recent {
+  font-size: 0.95em;
+}
+.site-recent .site-date,
+.site-recent .site-credit {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+}
+
+/* kpress draws a <details> as a bordered disclosure with a caps label; inside a table
+   row the summary is the result itself, so it reads as prose with only the chevron. */
+.kpress .site-table details {
+  border: 0;
+  font-family: inherit;
+  font-weight: inherit;
+  margin: 0;
+}
+.kpress .site-table summary {
+  color: var(--kpress-doc-text);
+  display: block;
+  font-family: var(--kpress-font-prose);
+  font-size: inherit;
+  font-variant-caps: normal;
+  font-weight: inherit;
+  letter-spacing: normal;
+  line-height: 1.4;
+  padding: 0;
+  text-transform: none;
+}
+.kpress .site-table summary::before {
+  color: var(--kpress-doc-accent);
+  display: inline-block;
+  margin-inline-end: 0.3rem;
+}
+.kpress .site-table details[open] summary {
+  border-bottom: 0;
+}
+.kpress .site-table details > :not(summary) {
+  padding: 0.3rem 0 0;
+}
+.kpress .site-table {
+  font-size: var(--site-font-size-note);
+}
+.kpress .site-table :is(th, td) {
+  padding: 0.45rem 0.5rem;
+}
+/* The result column carries the reading; the rest stay as narrow as their content. */
+.site-table .site-col-result {
+  min-width: 18rem;
+}
+.site-table .site-records {
+  min-width: 10rem;
+}
+.kpress .site-table .site-group-row th {
+  background: var(--kpress-doc-surface-hover, transparent);
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  padding-block: 0.6rem;
+  text-align: start;
+}
+
+.site-table .site-rungs {
+  white-space: nowrap;
+}
+.site-table .site-records a {
+  white-space: nowrap;
 }

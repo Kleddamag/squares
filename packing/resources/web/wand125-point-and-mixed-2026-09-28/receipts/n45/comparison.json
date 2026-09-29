@@ -1,0 +1,40 @@
+{
+  "status": "MATCHES_SOURCE_REFERENCE",
+  "replay": {
+    "root_lines": 4900,
+    "distinct_roots": 4900,
+    "boxes": 1295460,
+    "certified_leaves": 629884,
+    "empty_leaves": 20296,
+    "uncertified": 0,
+    "max_depth": 38,
+    "capped": 0,
+    "root_ms_sum": 2534423,
+    "verdict_line": "VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)",
+    "not_verified_lines": 0,
+    "roots_log_sha256": "45c1c221013b019062b8d43e985886604656f8b4b1ff398853ab32fa2ef505bd"
+  },
+  "reference": {
+    "checker": "evand/square-packing 6e1223cf7ef2be4c70baaa36c0e7e7197076735a s12/verify2 zmx2, unmodified, rustc 1.86.0 x86_64-apple-darwin",
+    "binary_sha256": "4d2e0d3e5a294c61e64f45d56bb0625735d5c88f727d44bd44a7c8cffd5ed9b7",
+    "command": "zmx2 cert cover.txt --d4 --pair-points --threads 8",
+    "result": "VERIFIED-D4",
+    "roots": 4900,
+    "uncertified": 0,
+    "capped": 0,
+    "boxes": 1295460,
+    "max_depth": 38,
+    "seconds": 204.4,
+    "host": "Apple M4 (Rosetta)",
+    "roots_sha256": "a353a0ca945241f2f6dc46bb3d5b2beb91720b42ba7b9637620b280d66df746b"
+  },
+  "agreement": {
+    "roots": true,
+    "uncertified": true,
+    "capped": true,
+    "boxes": true,
+    "max_depth": true,
+    "verdict": true
+  },
+  "note": "The roots log carries per-root milliseconds, so its digest cannot equal the source's roots_sha256; the box and depth totals are compared instead."
+}

@@ -1,0 +1,10 @@
+{
+  "status": "BYTE_PRESERVING_DISTRIBUTION_BUILT",
+  "files": 75130,
+  "raw_bytes": 2540625860,
+  "original_files": 133134,
+  "source_assembly_sha256": "0607392efac50004bdc99f5d9300ecaafeedc275f6e9b3527705e8ae25ca211c",
+  "distribution_manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+  "numerical_replay_performed_by_builder": false,
+  "published": false
+}

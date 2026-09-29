@@ -1,0 +1,10 @@
+{
+  "status": "COLLECTED_FULL_REPLAY_BINDINGS_VERIFIED",
+  "source_files": 75130,
+  "output_files": 45446,
+  "result_sha256": "117eaffa1b5acee3de444446a1289bfb649900e9868cdf5d6376eb84d98ec9c0",
+  "linkage_sha256": "6efc5fe539db5a37ec1ac0851271cee4c51dc5912d886d059ef253769bf7e0dc",
+  "numerical_replay_performed_by_collector": false,
+  "full_runner_status": "FRESH_ALL_DOMAIN_REPLAY_VERIFIED",
+  "archive_sha256": "ba02b2db304e774fe4c0f9af3a214cce5485f549409406d902b6c4eb9c61d308"
+}

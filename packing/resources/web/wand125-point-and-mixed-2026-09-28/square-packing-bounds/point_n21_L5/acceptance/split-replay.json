@@ -1,0 +1,63 @@
+{
+  "status": "PORTABLE_COMPLETE_REPLAY_LINKAGE",
+  "candidate_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+  "root_count": 5000,
+  "sieve_count": 8758,
+  "frontier_count": 31678,
+  "excluded_count": 7052,
+  "mass": "2624862500021/125000000000",
+  "threshold": "249987/250000",
+  "strict_gap": "999979/125000000000",
+  "minimum_frontier_leaf": "249987033421/250000000000",
+  "numerical_replay_must_precede_assembly": true,
+  "independent_external_review": false,
+  "formal_verification": false,
+  "split_linkage_sha256": "0607392efac50004bdc99f5d9300ecaafeedc275f6e9b3527705e8ae25ca211c",
+  "compressed_linkage_sha256": "54a155da8dd177ef9deae35269f92c5af8c35c4a19c220f46bd2526b3b0b59ef",
+  "workers": [
+    {
+      "name": "n21_portable_final_codexb_s0",
+      "exit_code": 0,
+      "parents": 5279,
+      "result_sha256": "082535275a5726d67146c4fda261876493719918ac3cb8fe67318a8e225d5ef8",
+      "seconds": 7234.2620668411255
+    },
+    {
+      "name": "n21_portable_final_codexb_s1",
+      "exit_code": 0,
+      "parents": 5278,
+      "result_sha256": "5c9dd3e8219001db869af9766e9149f87ab70672bfa77efb2c04b35dc9e7ceb6",
+      "seconds": 7386.461798191071
+    },
+    {
+      "name": "n21_portable_final_codexb_s2",
+      "exit_code": 0,
+      "parents": 5276,
+      "result_sha256": "e840bedbdbd20e011b06a960f408ad41ac8f42056b9c32822e3237c04ce198a9",
+      "seconds": 7264.918954133987
+    },
+    {
+      "name": "n21_portable_final_codexb_s3",
+      "exit_code": 0,
+      "parents": 5276,
+      "result_sha256": "569f7e481b031da69ff9c820f24635db6f796a28c6365e8a2b58b10f28fc64ab",
+      "seconds": 7507.75261592865
+    },
+    {
+      "name": "n21_portable_final_codexb_s4",
+      "exit_code": 0,
+      "parents": 5287,
+      "result_sha256": "e6a7f3b09a3b3229c1fa55a655e1fd7546362336f0d1f4af08fa943d08fbd0d3",
+      "seconds": 7431.978141069412
+    },
+    {
+      "name": "n21_portable_final_codexb_s5",
+      "exit_code": 0,
+      "parents": 5282,
+      "result_sha256": "9576624af015042ff2dd29f541cf4b2c10fb1617e7358826fb9181fe4970b583",
+      "seconds": 7219.343865871429
+    }
+  ],
+  "scope": "Fresh split replay plus exact assembly; not the still-pending public one-command run",
+  "all_public_one_command_stages_completed": false
+}

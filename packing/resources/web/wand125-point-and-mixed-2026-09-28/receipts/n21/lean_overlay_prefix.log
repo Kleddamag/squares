@@ -1,0 +1,9 @@
+# command: sh /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/lean_overlay_prefix.sh
+# cwd: /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/lean
+# start_utc: 2026-09-29T00:00:49Z
+SQPACK_LEAN_SHA_OK
+Sqpack/N21PtsData.lean matches source
+Source SHA256: 84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679
+N21PtsData.lean sha256 1e6559c182bb27b648156ed8183064495b9bb4affe296606b3325ce0bbb1376c
+LEAN_OVERLAY_PREFIX_OK_LAKE_NOT_RUN
+# end_utc: 2026-09-29T00:00:49Z exit=0 wall_s=0.3 cpu_user_s=0.1 cpu_sys_s=0.0 maxrss_kb=20604

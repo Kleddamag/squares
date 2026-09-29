@@ -1,0 +1,12 @@
+{
+  "status": "PORTABLE_PREFIX_IDENTICAL",
+  "stage": "sieve",
+  "parents": 8758,
+  "all_proof_objects_equal": true,
+  "result_equal_except_elapsed_seconds": true,
+  "seconds": 731.1127992500551,
+  "original_tree_access_blocked": true,
+  "result_sha256": "9409088518d90b380139a4cfc7e64bf2847c55ccc495705f065076b559b2ae3e",
+  "portable_read_manifest_sha256": "31ca8d99dc321216d71242c655e0b0605fcf99eeac887ae8a7c164fb63bc6e95",
+  "all_frontier_portable_replay_verified": false
+}

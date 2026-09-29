@@ -1,0 +1,14 @@
+{
+  "upstream_commit": "6e1223cf7ef2be4c70baaa36c0e7e7197076735a",
+  "upstream_path": "s12/certificates/s21/s21_lower_4.9950.txt",
+  "upstream_sha256": "c8e8f878205f2da9c213e4a87c06f17c5a759dce7e695e676dd5c50e0994f2ef",
+  "candidate_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+  "coordinate_scale": "1001/1000",
+  "ordered_support_entries": 4604,
+  "support_order_exactly_matches": true,
+  "weights_reoptimized": true,
+  "not_a_transfer_of_the_upstream_coverage_proof": true,
+  "distinct_coordinate_entries": 4604,
+  "positive_weight_coordinates": 4520,
+  "zero_weight_entries": 84
+}

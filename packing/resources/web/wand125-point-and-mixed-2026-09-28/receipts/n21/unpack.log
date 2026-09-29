@@ -1,0 +1,10 @@
+# command: /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/venv/bin/python unpack_bundle.py
+# cwd: /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5
+# start_utc: 2026-09-28T23:47:50Z
+{
+  "status": "BUNDLE_BYTES_VERIFIED",
+  "files": 75130,
+  "manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+  "mathematical_verification_performed": false
+}
+# end_utc: 2026-09-28T23:48:42Z exit=0 wall_s=51.3 cpu_user_s=27.1 cpu_sys_s=20.2 maxrss_kb=162624

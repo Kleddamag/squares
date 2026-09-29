@@ -18,6 +18,7 @@ from sqpack.cli import validate
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPO = PROJECT_ROOT.parent
 TEST_ROOTS = (PROJECT_ROOT / "tests", REPO / "packages/workbench/tests")
+EXHAUSTIVE_COSTS = PROJECT_ROOT / "devtools/exhaustive-file-costs.json"
 
 
 def _test_files() -> set[str]:
@@ -51,6 +52,33 @@ def test_the_suite_shards_partition_every_test_file() -> None:
     assert set().union(*shards) == files
     assert sum(len(shard) for shard in shards) == len(files)
     assert all(shards)
+
+
+def test_the_exhaustive_shards_partition_current_files_and_new_arrivals() -> None:
+    """Three runners cover every eligible test file once before marker selection.
+
+    Pytest applies ``-m exhaustive_exact`` after the file partition. Partitioning the
+    complete discovery roots therefore preserves module, class, parametrized, inherited
+    and dynamically applied marker forms without guessing how the mark is expressed.
+    """
+    costs = suite_files.load_costs(EXHAUSTIVE_COSTS)
+    assert costs.shards == 3
+    packed = suite_files.pack(costs)
+    files = _test_files()
+    assert set(costs.seconds) <= files
+    shards = [
+        {name for name in files if suite_files.shard_of(name, costs, packed) == index}
+        for index in range(1, costs.shards + 1)
+    ]
+    assert set().union(*shards) == files
+    assert sum(len(shard) for shard in shards) == len(files)
+    assert all(shards)
+
+    arrival = "packing/tests/test_new_exhaustive_decision.py"
+    assert arrival not in costs.seconds
+    assigned = suite_files.shard_of(arrival, costs, packed)
+    assert assigned == suite_files.unrecorded_shard(arrival, costs.shards)
+    assert 1 <= assigned <= costs.shards
 
 
 def test_the_record_names_only_files_under_the_behavioural_roots() -> None:
@@ -128,6 +156,23 @@ def test_record_takes_each_files_geometric_mean_and_names_its_sources() -> None:
     ]
     assert reports[0]["tests"] == 4
     assert reports[0]["seconds"] == 2.0
+
+
+def test_a_report_records_the_resolved_validated_tree() -> None:
+    report = suite_files.report_document(
+        {"packing/tests/test_a.py": (1, 0.25)},
+        shard=Shard(1, 3),
+        environment={
+            "PACKING_VALIDATED_SHA": "resolved-merge-sha",
+            "GITHUB_SHA": "dispatch-ref-sha",
+        },
+        exit_status=0,
+    )
+
+    assert report["provenance"] == {
+        "PACKING_VALIDATED_SHA": "resolved-merge-sha",
+        "GITHUB_SHA": "dispatch-ref-sha",
+    }
 
 
 def _shard_report(

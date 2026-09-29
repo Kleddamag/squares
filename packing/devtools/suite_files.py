@@ -68,6 +68,7 @@ COSTS_SCHEMA: Final = "packing.squares:SuiteFileCosts/1"
 REPORT_SCHEMA: Final = "packing.squares:TestFileCosts/2"
 #: The GitHub environment a report carries, so a record can name the runs it came from.
 _PROVENANCE_ENVIRONMENT: Final = (
+    "PACKING_VALIDATED_SHA",
     "GITHUB_RUN_ID",
     "GITHUB_RUN_ATTEMPT",
     "GITHUB_JOB",

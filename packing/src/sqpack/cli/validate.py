@@ -133,6 +133,10 @@ TIER_IDS = (*TIER_FLAGS, "full")
 #: The measured quick-lane partition.  Keep the public tier names (`suite_a` and
 #: `suite_b`) stable; this count is the shared contract with `devtools.suite_files`.
 SUITE_SHARDS = 2
+#: Whole-file shards for the deferred exhaustive lane. The alternate cost record is
+#: derived from the retained 58-test hosted JUnit receipt on run 35579234418.
+EXHAUSTIVE_SHARDS = 3
+EXHAUSTIVE_FILE_COSTS = "devtools/exhaustive-file-costs.json"
 #: The pull-request run whose required gate succeeded on this exact tracked tree.
 TREE_VERIFIED_ENVIRONMENT = "PACKING_VALIDATE_TREE_VERIFIED_BY_RUN"
 #: Homebrew's two default prefixes. CairoSVG loads `libcairo` through ctypes, which
@@ -442,6 +446,10 @@ class Context:
     this run, and a step quietly opting out of that is the bug, not the feature."""
 
     step_name: str = ""
+    exclusive_step_name: str = ""
+    """An implicitly sized push-test step that runs after the edit pool drains."""
+    exhaustive_shard: str = ""
+    """One validated K/N whole-file shard of the exhaustive exact lane, or empty."""
     artifact_run_id: str = field(default_factory=lambda: uuid.uuid4().hex)
     processes: _ProcessRegistry = field(
         default_factory=_ProcessRegistry, compare=False, repr=False
@@ -682,6 +690,13 @@ class Step:
     """Prefer this step within its budget class to reduce a measured late tail.
 
     This is only a submission hint; it changes neither timeout nor report order.
+    """
+
+    reachable_test_files: int | None = None
+    """File count from the pre-push selector; None means its whole-suite fallback.
+
+    Only the transient reachable-test step sets this. It informs scheduling, never
+    selection or the step's timeout.
     """
 
     def reachable_from(self, path: str) -> bool:
@@ -1560,6 +1575,16 @@ def _slow_tests(context: Context) -> str:
 
 
 def _exhaustive_exact_tests(context: Context) -> str:
+    shard = (
+        (
+            "-p",
+            _SUITE_FILES_PLUGIN,
+            f"--suite-shard={context.exhaustive_shard}",
+            f"--suite-file-costs={EXHAUSTIVE_FILE_COSTS}",
+        )
+        if context.exhaustive_shard
+        else ()
+    )
     return _run(
         context,
         (
@@ -1570,6 +1595,7 @@ def _exhaustive_exact_tests(context: Context) -> str:
             *BEHAVIORAL_TEST_ROOTS,
             "-m",
             EXHAUSTIVE_TESTS,
+            *shard,
             "--durations=0",
             "--durations-min=0",
         ),
@@ -4616,7 +4642,15 @@ def _push_test_step(base: str) -> Step:
     if probe.returncode != 0:
         detail = probe.stderr.strip() or probe.stdout.strip() or "selector failed"
         raise UsageError(f"--push could not resolve the change against {base!r}: {detail}")
-    everything = probe.stdout.strip().splitlines()[-1] == "everything"
+    report = probe.stdout.strip()
+    if report == "everything":
+        everything = True
+        reachable_test_files = None
+    elif match := re.fullmatch(r"narrow ([1-9][0-9]*)", report):
+        everything = False
+        reachable_test_files = int(match.group(1))
+    else:
+        raise UsageError(f"--push selector returned no valid summary for {base!r}: {report!r}")
 
     def action(context: Context) -> str:
         return _run(
@@ -4644,6 +4678,7 @@ def _push_test_step(base: str) -> Step:
         action=action,
         fast=True,
         broad=everything,
+        reachable_test_files=reachable_test_files,
         # When the selector expands to everything this is the whole non-exhaustive suite,
         # and it takes that fallback's budget. D-432 is the run that did not: the
         # whole-suite fallback died at the shared 900s cap at 84%, and the
@@ -4971,6 +5006,26 @@ def _validation_activity(marker: Path) -> Iterator[None]:
             marker.rmdir()
 
 
+@contextmanager
+def _optional_validation_activity(marker: Path) -> Iterator[bool]:
+    """Reserve the host for a narrow push, or keep its existing floor behavior.
+
+    An edit-floor push cannot be refused just because a full gate holds the load lock.
+    The atomic mkdir decides which allocation is safe: an uncontended push may give
+    pytest the host; a contended one retains its ordinary outer worker allocation.
+    """
+    try:
+        marker.mkdir()
+    except FileExistsError:
+        yield False
+        return
+    try:
+        yield True
+    finally:
+        with suppress(FileNotFoundError):
+            marker.rmdir()
+
+
 def _selection_needs_marker(selected: Sequence[Step]) -> bool:
     """Does this selection contend for the machine the way a gate does?
 
@@ -5019,18 +5074,46 @@ def _run_selected(
     skipped: Sequence[str] = (),
 ) -> RunSummary:
     started = time.perf_counter()
-    if _selection_needs_marker(selected):
+    exclusive = next(
+        (step for step in selected if step.name == context.exclusive_step_name), None
+    )
+    if context.exclusive_step_name and exclusive is None:
+        raise StepFailureError(
+            f"exclusive step is absent from the selection: {context.exclusive_step_name}"
+        )
+    mandatory_marker = _selection_needs_marker(selected)
+    if mandatory_marker:
         activity = _validation_activity(ACTIVITY_MARKER)
+    elif exclusive is not None:
+        activity = _optional_validation_activity(ACTIVITY_MARKER)
     else:
         print("== no gate marker: every selected step is read-only and edit-tier ==")
-        activity = nullcontext()
-    with activity:
+        activity = nullcontext(enter_result=False)
+    with activity as reserved:
+        if exclusive is not None and not mandatory_marker and not reserved:
+            # A full gate already owns the load lock. Preserve the narrow floor's
+            # non-refusal and its prior conservative pytest allocation.
+            exclusive = None
+        if context.exclusive_step_name:
+            if exclusive is None:
+                print(
+                    "== reachable tests: another gate holds the load marker; "
+                    "using the ordinary conservative worker allocation ==",
+                    file=sys.stderr,
+                )
+            else:
+                print(
+                    f"== reachable tests: exclusive pytest phase after edit checks; "
+                    f"{_pytest_workers(1)} pytest workers, PACK_JOBS=1 ==",
+                    file=sys.stderr,
+                )
         setup_output = _build_engine(context, selected)
         by_name: dict[str, StepResult] = {}
         with ThreadPoolExecutor(max_workers=context.jobs) as pool:
             futures = {
                 pool.submit(_execute_step, step, context): step.name
                 for step in _submission_order(selected)
+                if step is not exclusive
             }
             try:
                 for future in as_completed(futures):
@@ -5039,6 +5122,21 @@ def _run_selected(
             except BaseException:
                 for future in futures:
                     future.cancel()
+                context.processes.stop()
+                raise
+        if exclusive is not None:
+            # All edit work has finished, including nested command pools, before pytest
+            # claims the host. Its own descendants receive a one-worker PACK_JOBS cap.
+            test_context = replace(
+                context,
+                jobs=1,
+                inner_jobs=1,
+                environment={**context.environment, "PACK_JOBS": "1"},
+                exclusive_step_name="",
+            )
+            try:
+                by_name[exclusive.name] = _execute_step(exclusive, test_context)
+            except BaseException:
                 context.processes.stop()
                 raise
     ordered = [by_name[step.name] for step in selected]
@@ -5323,6 +5421,14 @@ def _parser() -> ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--exhaustive-shard",
+        metavar="K/N",
+        help=(
+            "run one whole-file shard of the exhaustive exact step; requires exactly "
+            "--only 'exhaustive exact behavioral tests'"
+        ),
+    )
+    parser.add_argument(
         "--strict", action="store_true", help="run deep checks and fail on skips"
     )
     parser.add_argument(
@@ -5380,6 +5486,7 @@ def _validate_invocation(
     since: str | None = None,
     push: bool = False,
     skip: Sequence[str] = (),
+    exhaustive_shard: str = "",
 ) -> None:
     parts = checks or frontend or sweeps or suite_a or suite_b or geometry or typecheck
     narrowed = only or skip or fast or records or edit or parts or since or push
@@ -5410,6 +5517,39 @@ def _validate_invocation(
             "--push is its own tier: the edit tier plus reachable tests; "
             "combine it only with --since to change the base ref"
         )
+    if exhaustive_shard and (
+        only != ["exhaustive exact behavioral tests"]
+        or skip
+        or fast
+        or records
+        or edit
+        or parts
+        or since
+        or push
+    ):
+        raise UsageError(
+            "--exhaustive-shard requires exactly --only "
+            "'exhaustive exact behavioral tests' and no other tier or narrowing"
+        )
+
+
+def _exhaustive_shard(value: str | None) -> str:
+    if value is None:
+        return ""
+    match = re.fullmatch(r"([1-9][0-9]*)/([1-9][0-9]*)", value)
+    if match is None:
+        raise UsageError(f"--exhaustive-shard is written K/N, not {value!r}")
+    index, count = (int(part) for part in match.groups())
+    if count != EXHAUSTIVE_SHARDS:
+        raise UsageError(
+            f"--exhaustive-shard asks for {count} shards; the recorded exhaustive "
+            f"partition has {EXHAUSTIVE_SHARDS}"
+        )
+    if index > count:
+        raise UsageError(
+            f"--exhaustive-shard {value!r} is outside 1/{count} .. {count}/{count}"
+        )
+    return f"{index}/{count}"
 
 
 def _validate_runtime() -> None:
@@ -5422,6 +5562,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = _parser()
     try:
         namespace = parser.parse_args(argv)
+        exhaustive_shard = _exhaustive_shard(namespace.exhaustive_shard)
         strict = namespace.strict or _environment_flag("PACKING_VALIDATE_STRICT")
         deep = namespace.deep or _environment_flag("PACKING_VALIDATE_DEEP") or strict
         _validate_invocation(
@@ -5440,6 +5581,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             since=namespace.since,
             push=namespace.push,
             skip=namespace.skip,
+            exhaustive_shard=exhaustive_shard,
         )
         jobs_value = namespace.jobs or os.environ.get("PACKING_VALIDATE_JOBS")
         jobs = (
@@ -5482,18 +5624,26 @@ def main(argv: Sequence[str] | None = None) -> int:
             skip=namespace.skip,
         )
         selected = _unless_verified(namespace, selected)
+        exclusive_step_name = ""
         if namespace.push:
             base = namespace.since or "origin/main"
             step = _push_test_step(base)
-            # A broad fallback is one test step followed by a short tail.  With the
-            # ordinary cpu-wide outer default, that step receives one pytest worker and
-            # leaves the machine idle after the tail finishes.  Give only the implicit
-            # broad shape one outer slot; narrow selections and explicit resource choices
-            # retain their existing shape.
-            if step.broad and jobs_value is None:
+            # A large proper subset can cost as much as the whole fallback. When both
+            # resource settings are implicit and there are enough selected files to
+            # occupy the host, let the edit pool drain, then give pytest the host. The
+            # edit floor retains its usual outer parallelism; explicit settings keep
+            # their exact existing allocation.
+            if step.broad and jobs_value is None and inner_value is not None:
+                # Keep the caller's explicit inner cap and the old broad allocation;
+                # only fully implicit settings enter the new two-phase scheduler.
                 jobs = 1
-                if inner_value is None:
-                    inner_jobs = 1
+            if (
+                jobs > 1
+                and jobs_value is None
+                and inner_value is None
+                and (step.broad or (step.reachable_test_files or 0) >= jobs)
+            ):
+                exclusive_step_name = step.name
             selected = [*selected, step]
             scope = "the whole suite" if step.broad else "a reachable subset"
             print(f"== pre-push floor against {base}: tests select {scope} ==\n")
@@ -5525,6 +5675,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             jobs=jobs,
             inner_jobs=inner_jobs,
             environment=environment,
+            exclusive_step_name=exclusive_step_name,
+            exhaustive_shard=exhaustive_shard,
             timeout_seconds=timeout_seconds,
             timeout_is_explicit=timeout_is_explicit,
         )

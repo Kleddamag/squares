@@ -1351,69 +1351,127 @@ ci_gates:
     judge against; an enforcing band built on one reading would fail runs for the
     machine rather than for the change.
   argument: >-
-    The deferred surface, run against a pull request before it merges. Its four jobs are
-    disjoint by construction and their union is every step no pull-request job selects,
+    The deferred surface, run against a pull request before it merges. Its workers preserve
+    every deferred Step; only the exhaustive Step repeats across three disjoint file shards,
     which `test_the_deep_gate_runs_exactly_what_the_pull_request_surface_defers` holds.
     The aggregate has no entry: it is four seconds of `test` commands, and putting a
     four-second script under the same band as a 44-minute tier measures nothing.
   wall:
-    measured_seconds: 2540.6
-    measured_on: '2026-09-22'
-    measured_where: >-
-      In order, run 35632055808, 35627075872, 35579234418, 35480905141, 35213757305,
-      35078581840, 35012089923 and 34997041426, read by `devtools.check_ci_gate_walls`
-      on 2026-09-22 and reduced to their geometric mean.
-      Each reading is the run starting to its last gating job completing: 2611, 2773,
-      2762, 1882, 2590, 2635, 2581 and 2618 s.
-    spread: 1.47
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
     ceiling_seconds: 3430.0
     argument: >-
-      What a reviewer waits for once the label is applied, queue included, which no job
-      entry measures on its own. It is `exhaustive-tier` plus its queue on every one of
-      the eight runs. 3430s is 1.35x of the record: above the largest reading observed
-      (2773s, 1.09x) and above the 1.25x drift band, so the drift rule speaks first, and
-      well inside `policy.max_headroom`. It is a blow-up detector, not the ceiling
-      `OR-17` wants on the merge path -- 42 minutes is already past that, and no band
-      around a measurement can say so.
+      No hosted run has measured the new fanout. The ceiling is inherited from the
+      predecessor topology as a conservative reporting bound until the first candidate
+      run records both critical-path wall and runner-minutes.
+    history:
+    - measured_seconds: 2540.6
+      measured_on: '2026-09-22'
+      measured_where: >-
+        In order, run 35632055808, 35627075872, 35579234418, 35480905141, 35213757305,
+        35078581840, 35012089923 and 34997041426, read by `devtools.check_ci_gate_walls`
+        on 2026-09-22 and reduced to their geometric mean.
+        Each reading is the run starting to its last gating job completing: 2611, 2773,
+        2762, 1882, 2590, 2635, 2581 and 2618 s.
   jobs:
-  - id: exhaustive-tier
-    measured_seconds: 2518.8
-    measured_on: '2026-09-22'
-    measured_where: >-
-      In order, run 35632055808, 35627075872, 35579234418, 35480905141, 35213757305,
-      35078581840, 35012089923 and 34997041426, read by `devtools.check_ci_gate_walls`
-      on 2026-09-22 and reduced to their geometric mean.
-      Job wall: 2608, 2771, 2674, 1879, 2588, 2606, 2576 and 2568 s. The 1879 s is run
-      35480905141, and it is a faster runner rather than a smaller tier: its JUnit
-      record has the same 58 tests, each one faster by a near-uniform 1.43x.
-    spread: 1.47
-    ceiling_seconds: 3400.0
+  - id: resolve-tree
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 36.0
     argument: >-
-      The exhaustive exact tier alone, at `--inner-jobs 4` on its own runner. It sets
-      the gate's wall on all eight runs. 3400s is 1.35x of the record and deliberately
-      under `EXHAUSTIVE_SUITE_BUDGET_SECONDS` (3600s): the job ceiling should report
-      before the step's own subprocess timeout kills it, because `D-456` is what the
-      timeout firing looks like -- the tier killed with its output in an unflushed pipe
-      and three merges red saying nothing about the sixty other steps.
-  - id: deferred-steps
-    measured_seconds: 2226.9
-    measured_on: '2026-09-22'
-    measured_where: >-
-      In order, run 35632055808, 35627075872, 35579234418, 35480905141, 35213757305,
-      35078581840, 35012089923 and 34997041426, read by `devtools.check_ci_gate_walls`
-      on 2026-09-22 and reduced to their geometric mean.
-      Job wall: 2465, 2492, 2469, 1713, 2467, 2462, 1578 and 2429 s. Both low readings
-      are runner speed rather than a smaller selection: run 35012089923 ran the same
-      eight steps as run 35579234418 for 1543.5s of step time against 2435.7s.
-    spread: 1.58
-    ceiling_seconds: 3000.0
+      Ceiling derived conservatively from the predecessor run 35579234418 setup; no
+      new-job wall has been observed.
+      Resolves a moving dispatch merge ref once. Reporting-only until hosted evidence
+      replaces the conservative predecessor-derived estimate.
+  - id: deferred-threshold-1440
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 1150.0
     argument: >-
-      The eight deferrals outside the slow lane, the exhaustive tier and the screen, run
-      serially at `--jobs 1 --inner-jobs 2`. Second-longest job and within 12 per cent of
-      the longest, which is why the gate's wall barely falls if only one of them is
-      fixed. Its own steps are the attribution a verdict prints: on run 35579234418 the
-      1440-step threshold dilation-limit record was 695.8s of it, the atlas rebuild
-      482.9s and the negative controls 420.0s.
+      Ceiling derived from run 35579234418 Step time (695.757 s), its 24 s setup, and
+      the observed runner spread; no new-job wall has been observed.
+      One whole threshold replay, with its prior process shape unchanged. The ceiling
+      covers the slower hosted-runner class while the gate remains reporting-only.
+  - id: deferred-atlas-grid
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 980.0
+    argument: >-
+      Ceiling derived from run 35579234418 Step times (482.896, 80.889 and 26.019 s),
+      its 24 s setup, and the observed runner spread; no new-job wall has been
+      observed.
+      The atlas rebuild, 720-step finer-net replay and grid replay remain whole and run
+      serially with the predecessor job's process allocation.
+  - id: deferred-controls-finer
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 965.0
+    argument: >-
+      Ceiling derived from run 35579234418 Step times (420.033 and 158.098 s), its 24 s
+      setup, and the observed runner spread; no new-job wall has been observed.
+      Negative controls and the 1440-step finer-net replay remain whole and run
+      serially with the predecessor job's process allocation.
+  - id: deferred-threshold-720-rigidity
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 955.0
+    argument: >-
+      Ceiling derived from run 35579234418 Step times (346.467 and 225.506 s), its 24 s
+      setup, and the observed runner spread; no new-job wall has been observed.
+      The 720-step threshold replay and n=40 rigidity bracket remain whole and run
+      serially with the predecessor job's process allocation.
+  - id: exhaustive-1
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 1550.0
+    argument: >-
+      Ceiling derived from run 35579234418 JUnit file time (945.802 s), its 24 s setup,
+      and the observed runner spread; no new-job wall has been observed.
+      The largest whole-file exhaustive shard. The marker and test bodies are unchanged;
+      only file assignment across runners differs.
+  - id: exhaustive-2
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 1380.0
+    argument: >-
+      Ceiling derived from run 35579234418 JUnit file time (837.700 s), its 24 s setup,
+      and the observed runner spread; no new-job wall has been observed.
+      A whole-file exhaustive shard selected by the checked three-way cost record.
+  - id: exhaustive-3
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-tddk
+    ceiling_seconds: 1380.0
+    argument: >-
+      Ceiling derived from run 35579234418 JUnit file time (837.940 s), its 24 s setup,
+      and the observed runner spread; no new-job wall has been observed.
+      A whole-file exhaustive shard selected by the checked three-way cost record.
   - id: deferred-slow-lane
     measured_seconds: 921.7
     measured_on: '2026-09-22'

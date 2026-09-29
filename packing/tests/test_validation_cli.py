@@ -19,6 +19,7 @@ from collections.abc import Callable
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from textwrap import dedent
+from threading import Barrier, Lock
 
 import pytest
 
@@ -284,7 +285,9 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
                     tokens[tokens.index("packing-validate") + 1 :]
                 )
                 only = namespace.only or []
-                if only == ["slow behavioral tests"]:
+                if (
+                    workflow.name == "deep-gate.yml" and name.startswith("deferred-")
+                ) or only == ["slow behavioral tests"]:
                     assert (namespace.jobs, namespace.inner_jobs) == ("1", "2")
                 elif len(only) == 1:
                     assert (namespace.jobs, namespace.inner_jobs) == ("1", "4")
@@ -298,8 +301,13 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
         ("packing-validation.yml", "screen"),
         ("packing-validation.yml", "slow-lane"),
         ("packing-validation.yml", "validate"),
-        ("deep-gate.yml", "exhaustive-tier"),
-        ("deep-gate.yml", "deferred-steps"),
+        ("deep-gate.yml", "exhaustive-1"),
+        ("deep-gate.yml", "exhaustive-2"),
+        ("deep-gate.yml", "exhaustive-3"),
+        ("deep-gate.yml", "deferred-threshold-1440"),
+        ("deep-gate.yml", "deferred-atlas-grid"),
+        ("deep-gate.yml", "deferred-controls-finer"),
+        ("deep-gate.yml", "deferred-threshold-720-rigidity"),
         ("deep-gate.yml", "screen"),
         ("deep-gate.yml", "deferred-slow-lane"),
     }
@@ -605,6 +613,49 @@ def test_list_applies_the_same_fast_and_name_filters_as_execution() -> None:
     assert status == 0
     assert stderr == ""
     assert stdout.splitlines() == ["negative controls [full]"]
+
+
+def test_exhaustive_shard_is_confined_to_the_exact_exhaustive_selection() -> None:
+    status, stdout, stderr = _invoke(
+        "--list",
+        "--only",
+        "exhaustive exact behavioral tests",
+        "--exhaustive-shard",
+        "2/3",
+    )
+    assert status == 0
+    assert stderr == ""
+    assert stdout.splitlines() == ["exhaustive exact behavioral tests [full]"]
+
+    invalid = (
+        ("--list", "--exhaustive-shard", "1/3"),
+        ("--list", "--fast", "--exhaustive-shard", "1/3"),
+        (
+            "--list",
+            "--only",
+            "exhaustive exact behavioral tests",
+            "--exhaustive-shard",
+            "1/2",
+        ),
+        (
+            "--list",
+            "--only",
+            "exhaustive exact behavioral tests",
+            "--exhaustive-shard",
+            "4/3",
+        ),
+        (
+            "--list",
+            "--only",
+            "exhaustive exact behavioral tests",
+            "--exhaustive-shard",
+            "one/3",
+        ),
+    )
+    for arguments in invalid:
+        status, _, stderr = _invoke(*arguments)
+        assert status == 2
+        assert "--exhaustive-shard" in stderr
 
 
 def test_skip_is_only_read_the_other_way_round() -> None:
@@ -1227,6 +1278,46 @@ def test_full_exhaustive_behavioral_step_selects_only_exhaustive_exact_tests(
         *validate.BEHAVIORAL_TEST_ROOTS,
         "-m",
         "exhaustive_exact",
+        "--durations=0",
+        "--durations-min=0",
+    )
+
+
+def test_exhaustive_shard_uses_the_recorded_whole_file_partition(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed: tuple[str, ...] | None = None
+
+    def capture(context: validate.Context, command: tuple[str, ...], **_kwargs: object) -> str:
+        del context
+        nonlocal observed
+        observed = command
+        return ""
+
+    monkeypatch.setattr(validate, "_run", capture)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=1,
+        inner_jobs=4,
+        environment=os.environ.copy(),
+        exhaustive_shard="2/3",
+    )
+
+    validate._exhaustive_exact_tests(context)
+
+    assert observed == (
+        sys.executable,
+        "-m",
+        "pytest",
+        "-q",
+        *validate.BEHAVIORAL_TEST_ROOTS,
+        "-m",
+        "exhaustive_exact",
+        "-p",
+        "devtools.suite_files",
+        "--suite-shard=2/3",
+        "--suite-file-costs=devtools/exhaustive-file-costs.json",
         "--durations=0",
         "--durations-min=0",
     )
@@ -2211,6 +2302,7 @@ def test_push_tests_take_the_whole_suite_budget_only_when_the_selector_expands(
     step = validate._push_test_step("origin/main")
 
     assert step.broad is (expected_scope == "whole")
+    assert step.reachable_test_files == (None if expected_scope == "whole" else 7)
     assert step.budget_seconds == expected_budget
     assert (
         validate.STEPS[
@@ -2218,6 +2310,23 @@ def test_push_tests_take_the_whole_suite_budget_only_when_the_selector_expands(
         ].budget_seconds
         == validate.FAST_SUITE_BUDGET_SECONDS
     )
+
+
+@pytest.mark.parametrize(
+    "summary", ["", "narrow", "narrow 0", "narrow nope", "other", "noise\nnarrow 7"]
+)
+def test_push_refuses_a_missing_or_malformed_selector_summary(
+    monkeypatch: pytest.MonkeyPatch, summary: str
+) -> None:
+    monkeypatch.setattr(
+        validate.subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=("reachable-tests",), returncode=0, stdout=f"{summary}\n", stderr=""
+        ),
+    )
+    with pytest.raises(validate.UsageError, match="no valid summary"):
+        validate._push_test_step("origin/main")
 
 
 @pytest.mark.parametrize("summary", ["everything", "narrow 7"])
@@ -2271,32 +2380,77 @@ def test_push_tests_forward_the_shared_worker_allocation(
     ]
 
 
+def test_exclusive_push_forwards_all_ten_pytest_workers(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 10)
+    monkeypatch.setattr(
+        validate.subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=("reachable-tests",), returncode=0, stdout="narrow 114\n", stderr=""
+        ),
+    )
+    commands: list[tuple[str, ...]] = []
+
+    def capture(_context: validate.Context, command: tuple[str, ...]) -> str:
+        commands.append(command)
+        return "selected tests passed"
+
+    monkeypatch.setattr(validate, "_run", capture)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=1,
+        inner_jobs=1,
+        environment=os.environ.copy(),
+    )
+
+    assert validate._push_test_step("origin/main").action(context) == "selected tests passed"
+    assert commands[0][-2:] == ("-n", "10")
+
+
 @pytest.mark.parametrize(
-    ("broad", "arguments", "environment_jobs", "expected_jobs", "expected_inner_jobs"),
+    (
+        "cpus",
+        "broad",
+        "selected_files",
+        "arguments",
+        "environment_jobs",
+        "expected_jobs",
+        "expected_inner_jobs",
+        "exclusive",
+    ),
     [
-        (True, (), None, 1, 1),
-        (False, (), None, 8, 2),
-        (True, ("--jobs", "3"), None, 3, 1),
-        (True, (), "3", 3, 1),
-        (True, ("--inner-jobs", "7"), None, 1, 7),
+        (8, True, None, (), None, 8, 2, True),
+        (8, False, 7, (), None, 8, 2, False),
+        (8, False, 8, (), None, 8, 2, True),
+        (8, False, 114, (), None, 8, 2, True),
+        (1, False, 114, (), None, 1, 1, False),
+        (8, True, None, ("--jobs", "3"), None, 3, 1, False),
+        (8, True, None, (), "3", 3, 1, False),
+        (8, True, None, ("--inner-jobs", "7"), None, 1, 7, False),
     ],
 )
-def test_only_an_implicit_broad_push_gives_the_test_step_the_machine(
+def test_implicit_large_push_reserves_an_exclusive_test_phase(
     monkeypatch: pytest.MonkeyPatch,
     *,
+    cpus: int,
     broad: bool,
+    selected_files: int | None,
     arguments: tuple[str, ...],
     environment_jobs: str | None,
     expected_jobs: int,
     expected_inner_jobs: int,
+    exclusive: bool,
 ) -> None:
-    """The expensive fallback gets every cpu without slowing ordinary narrow pushes."""
+    """Large implicit selections reserve pytest; explicit resource choices still win."""
     if environment_jobs is None:
         monkeypatch.delenv("PACKING_VALIDATE_JOBS", raising=False)
     else:
         monkeypatch.setenv("PACKING_VALIDATE_JOBS", environment_jobs)
     monkeypatch.delenv("PACKING_VALIDATE_INNER_JOBS", raising=False)
-    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 8)
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: cpus)
     monkeypatch.setattr(
         validate,
         "_push_test_step",
@@ -2305,6 +2459,7 @@ def test_only_an_implicit_broad_push_gives_the_test_step_the_machine(
             action=lambda _context: "",
             fast=True,
             broad=broad,
+            reachable_test_files=selected_files,
         ),
     )
     monkeypatch.setattr(validate, "_begin_artifacts", lambda _context, _selected: None)
@@ -2332,6 +2487,209 @@ def test_only_an_implicit_broad_push_gives_the_test_step_the_machine(
     assert len(observed) == 1
     assert observed[0].jobs == expected_jobs
     assert observed[0].inner_jobs == expected_inner_jobs
+    assert observed[0].exclusive_step_name == (
+        "reachable behavioral tests" if exclusive else ""
+    )
+
+
+def test_exclusive_push_phase_waits_for_parallel_edits_and_keeps_one_report_order(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The edit pool drains before pytest gets the host, with one final verdict."""
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 10)
+    marker = tmp_path / ".gate-running"
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
+    rendezvous = Barrier(2, timeout=10)
+    lock = Lock()
+    active = 0
+    completed: set[str] = set()
+
+    def edit(name: str) -> validate.Step:
+        def action(_context: validate.Context) -> str:
+            nonlocal active
+            with lock:
+                active += 1
+            try:
+                rendezvous.wait()
+                with lock:
+                    completed.add(name)
+                return name
+            finally:
+                with lock:
+                    active -= 1
+
+        return validate.Step(name, action, fast=True)
+
+    def tests(context: validate.Context) -> str:
+        assert marker.is_dir()
+        with lock:
+            assert active == 0
+            assert completed == {"first edit", "second edit"}
+        assert (context.jobs, context.inner_jobs) == (1, 1)
+        assert context.environment["PACK_JOBS"] == "1"
+        assert validate._pytest_workers(context.jobs) == 10
+        return "reachable tests ran"
+
+    steps = [
+        edit("first edit"),
+        validate.Step("reachable behavioral tests", tests, fast=True),
+        edit("second edit"),
+    ]
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=10,
+        inner_jobs=3,
+        environment={"PACK_JOBS": "3"},
+        exclusive_step_name="reachable behavioral tests",
+    )
+
+    summary = validate._run_selected(steps, context, [])
+
+    assert [result.name for result in summary.results] == [step.name for step in steps]
+    assert [result.status for result in summary.results] == ["passed"] * 3
+    assert context.environment["PACK_JOBS"] == "3"
+    assert not marker.exists()
+
+
+def test_exclusive_push_phase_keeps_edit_failures_and_runs_the_remaining_check(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", tmp_path / ".gate-running")
+
+    def failed(_context: validate.Context) -> str:
+        raise validate.StepFailureError("edit check refused")
+
+    def selected(_context: validate.Context) -> str:
+        return "selected tests passed"
+
+    steps = [
+        validate.Step("edit check", failed, fast=True),
+        validate.Step("reachable behavioral tests", selected, fast=True),
+    ]
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=2,
+        inner_jobs=1,
+        environment={"PACK_JOBS": "1"},
+        exclusive_step_name="reachable behavioral tests",
+    )
+
+    summary = validate._run_selected(steps, context, [])
+
+    assert [(result.name, result.status) for result in summary.results] == [
+        ("edit check", "failed"),
+        ("reachable behavioral tests", "passed"),
+    ]
+    assert "edit check refused" in summary.results[0].reason
+
+
+def test_large_narrow_push_keeps_its_floor_when_a_full_gate_holds_the_marker(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    marker = tmp_path / ".gate-running"
+    marker.mkdir()
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
+    observed: list[tuple[int, int, str]] = []
+
+    def selected(context: validate.Context) -> str:
+        observed.append((context.jobs, context.inner_jobs, context.environment["PACK_JOBS"]))
+        return "selected tests passed"
+
+    step = validate.Step("reachable behavioral tests", selected, fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=10,
+        inner_jobs=3,
+        environment={"PACK_JOBS": "3"},
+        exclusive_step_name=step.name,
+    )
+
+    summary = validate._run_selected([step], context, [])
+
+    assert summary.results[0].status == "passed"
+    assert observed == [(10, 3, "3")]
+    assert marker.is_dir()
+
+
+def test_exclusive_push_command_receipt_records_its_effective_worker_allocation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", tmp_path / ".gate-running")
+    artifacts = tmp_path / "artifacts"
+
+    def selected(context: validate.Context) -> str:
+        return validate._run(context, (sys.executable, "-c", "print('selected')"))
+
+    step = validate.Step("reachable behavioral tests", selected, fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=10,
+        inner_jobs=3,
+        environment={
+            **os.environ,
+            "PACK_JOBS": "3",
+            "PACKING_VALIDATION_ARTIFACT_DIR": str(artifacts),
+        },
+        exclusive_step_name=step.name,
+    )
+
+    summary = validate._run_selected([step], context, [])
+
+    assert [(result.status, result.output) for result in summary.results] == [
+        ("passed", "selected")
+    ]
+    start = json.loads(next(artifacts.glob("command-*.start.json")).read_text())
+    assert (start["jobs"], start["inner_jobs"], start["step_name"]) == (
+        1,
+        1,
+        step.name,
+    )
+    assert start["run_id"] == context.artifact_run_id
+
+
+def test_exclusive_push_interrupt_stops_run_and_releases_marker(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    marker = tmp_path / ".gate-running"
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
+
+    def interrupt(_context: validate.Context) -> str:
+        raise KeyboardInterrupt
+
+    step = validate.Step("reachable behavioral tests", interrupt, fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=2,
+        inner_jobs=1,
+        environment={"PACK_JOBS": "1"},
+        exclusive_step_name=step.name,
+    )
+
+    with pytest.raises(KeyboardInterrupt):
+        validate._run_selected([step], context, [])
+    assert context.processes.stopping
+    assert not marker.exists()
+
+
+def test_exclusive_push_refuses_an_absent_selected_step() -> None:
+    step = validate.Step("edit check", lambda _context: "passed", fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=2,
+        inner_jobs=1,
+        environment={},
+        exclusive_step_name="reachable behavioral tests",
+    )
+
+    with pytest.raises(validate.StepFailureError, match="absent from the selection"):
+        validate._run_selected([step], context, [])
 
 
 def test_the_edit_tier_cannot_under_run() -> None:

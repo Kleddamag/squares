@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-29T22:05:05Z'
+  deadline_at: '2026-09-29T22:35:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-niqx
   status: in_progress
@@ -81,7 +81,7 @@ session:
     clock_role: work
     objective: Checkpoint reviewed integration repairs, rerun push validation, publish the merged head
       and begin hosted certification.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: The initial push gate identified an uncommitted-atlas comparison and a live-session
       fixture dependency. Both have scoped remedies; the overall window is prospectively extended to include
@@ -95,12 +95,87 @@ session:
     kill_condition: Any required failure prevents certification.
     fallback: Repair the named failure and rerun affected checks; retain explicit certification debt until
       a qualifying gate passes.
+    outcome: >-
+      Commit 5d276119c retains the regenerated atlas, release pin, reviewed fixture
+      repair and source-minimum clarification. The rerun passed all 51 selected push
+      steps: 2,959 tests passed, 6 skipped and 19 deselected in 856.20 seconds wall.
+      The merged branch was published; hosted certification remains in progress.
+    evidence:
+    - packing/campaign/agent-sessions/session-164-push-final.log
+    - packing/tests/test_synopsis_handoff.py
+    stop_reason: Local merged-source push validation passed and was published.
+    next_action: Run the supervised efficiency slice beside hosted certification, then
+      reconcile its results before the final checkpoint.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-xcij
+    objective: >-
+      Review local validation scheduling under think-xcij and hosted job fanout under
+      think-tddk for preserved coverage, fail-closed errors and bounded resource use
+      while final PR checks run.
+    status: completed
+    entered_by: user_request
+    switch_reason: >-
+      The merged push tier passed and the user authorized an efficiency block while
+      hosted certification proceeds in parallel.
+    budget_minutes: 30
+    started_at: '2026-09-29T21:06:56Z'
+    deadline_at: '2026-09-29T21:36:56Z'
+    expected_output: >-
+      Reviewed efficiency changes with focused tests and an explicit before/after
+      coverage and resource account, or retained findings that block integration.
+    validation_command: cd packing && packing-validate --push --since 5d276119c
+    kill_condition: >-
+      Any missing validation step, false successful job, lost error propagation or
+      uncontrolled worker oversubscription blocks the optimization.
+    fallback: Keep the current scheduler and workflow behavior, retain the measured
+      finding, and repair only after a failing control names the fault.
+    outcome: >-
+      The local scheduler, conservative selector follow-up and hosted fanout passed
+      focused review. Local scheduler tests passed 28, selector tests passed 54, and
+      hosted workflow, shard and budget tests passed 93. The pending-measurement budget
+      contract passed 55 tests. All three source lanes passed Ruff and BasedPyright.
+      Actual collect-only coverage found 60 exhaustive nodes partitioned 2, 30 and 28
+      without overlap or omission. No speedup is claimed; the integrated candidate
+      push and hosted fanout have not run yet.
+    evidence:
+    - docs/project/reviews/review-2026-09-29-validation-parallelism.md
+    - packing/tests/test_deep_gate_workflow.py
+    - packing/tests/test_reachable_walker_evidence.py
+    stop_reason: Source review and focused contract checks completed; integrated validation is next.
+    next_action: Run the integrated default push tier on the frozen candidate, publish only after it
+      passes, and obtain hosted evidence for the new workflow.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-niqx
+    objective: Validate the frozen efficiency candidate with the default push tier, publish it only after
+      that tier passes, and start the hosted fast and deferred workflows on the new PR head.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Focused scheduler, selector, shard and budget contracts passed; their end-to-end behavior
+      now needs a qualifying candidate gate and hosted source-bound execution.
+    budget_minutes: 30
+    started_at: '2026-09-29T21:30:18Z'
+    deadline_at: '2026-09-29T22:00:18Z'
+    expected_output: A passing default push-tier receipt, published candidate commit and new hosted run
+      identifiers bound to that commit.
+    validation_command: cd packing && packing-validate --push --since 5d276119c
+    kill_condition: A changed selected test is omitted, any push step fails, or source receipts do not
+      match the candidate commit.
+    fallback: Retain the failed receipt, repair the named defect and rerun affected focused checks before
+      another integrated push attempt.
     outcome: null
-    evidence: []
+    evidence:
+    - docs/project/reviews/review-2026-09-29-validation-parallelism.md
     stop_reason: null
-    next_action: Commit the reviewed repair and generated artifacts, then rerun the push gate.
+    next_action: Run the default push tier, compare its selected files with the retained baseline, then
+      publish the passing candidate and inspect required hosted checks.
   budget:
-    wall_minutes: 120
+    wall_minutes: 150
     max_cycles: 6
     slice_minutes: 30
     finalization_minutes: 15
@@ -185,8 +260,130 @@ session:
     excluded_commands:
     - git commit
     - git push
+  - task: Give large reachable pre-push tests an exclusive, bounded CPU phase
+    operator: GPT-6 Sol high (native_sol)
+    status: completed
+    recording: contemporaneous
+    outcome: The scheduler runs parallel edit checks first, then grants a large implicitly sized reachable
+      pytest selection the host. An occupied load marker retains the former narrow-push allocation, and
+      explicit resource settings remain authoritative. The scheduler requires one valid selector summary,
+      runs every file the selector returns, and preserves failure propagation and command receipts.
+    evidence:
+    - packing/src/sqpack/cli/validate.py
+    - packing/tests/test_validation_cli.py
+    files:
+    - packing/src/sqpack/cli/validate.py
+    - packing/tests/test_validation_cli.py
+    checks:
+    - 'Focused scheduler tests: 28 passed; Ruff and BasedPyright clean, reported by the implementation
+      agent.'
+    - Independent review confirmed atomic marker fallback, interrupt release, effective worker allocation
+      and strict one-line selector parsing.
+    uncertainty: Integrated push validation and a hosted run of this changed source are pending; no speedup
+      has been measured on a matched workload. A separate selector-pruning follow-up under think-6izq
+      must preserve conservative reachability.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Run the integrated candidate push gate and compare its test identities and operational
+      wall with the retained baseline.
+    phase: 4
+    write_scope:
+    - packing/src/sqpack/cli/validate.py
+    - packing/tests/test_validation_cli.py
+    excluded_commands:
+    - git commit
+    - git push
+  - task: Split deferred hosted validation with one immutable source and exact coverage
+    operator: GPT-6 Sol high (reference_audit)
+    status: completed
+    recording: contemporaneous
+    outcome: >-
+      A resolver pins one commit for every worker. Four jobs partition the remaining
+      whole deferred Steps; three exhaustive jobs partition complete test files with
+      the existing pre-collection plugin and a stable fallback for new files. Workers
+      compare HEAD with the resolved SHA before validation, and the aggregate requires
+      every prerequisite to succeed. Per-job ceilings are declared as pending first
+      measurements under think-tddk rather than fabricated observed walls.
+    evidence:
+    - .github/workflows/deep-gate.yml
+    - packing/tests/test_deep_gate_workflow.py
+    - packing/devtools/exhaustive-file-costs.json
+    files:
+    - .github/workflows/deep-gate.yml
+    - packing/devtools/gate-budgets.yaml
+    - packing/devtools/exhaustive-file-costs.json
+    - packing/devtools/suite_files.py
+    - packing/src/sqpack/cli/validate.py
+    - packing/tests/test_deep_gate_workflow.py
+    - packing/tests/test_suite_files.py
+    - packing/tests/test_validation_cli.py
+    checks:
+    - 'Focused workflow, shard and budget tests: 93 passed; Ruff and BasedPyright clean, reported by the
+      implementation agent.'
+    - 'Actual exhaustive collect-only proof: 60 nodes split 2, 30 and 28, with disjoint exact union.'
+    - Independent review checked all worker checkouts, HEAD receipt order, exact shard flags, deferred
+      Step ownership, aggregate verdicts and unique artifact names.
+    uncertainty: The new hosted jobs have not yet run on the published candidate; ceilings await measured
+      job walls. Artifact upload warns rather than gates, while the in-job HEAD equality check fails closed.
+      A dispatch run's GitHub event SHA may differ from its validated pull-request merge SHA; worker receipts
+      name the resolved SHA.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Publish the reviewed candidate, run every hosted shard and aggregate, then replace pending
+      cost estimates with observed job wall and runner-minute records.
+    phase: 4
+    write_scope:
+    - .github/workflows/deep-gate.yml
+    - packing/tests/test_deep_gate_workflow.py
+    - packing/devtools/gate-budgets.yaml
+    - packing/devtools/exhaustive-file-costs.json
+    - packing/devtools/suite_files.py
+    - packing/src/sqpack/cli/validate.py
+    - packing/tests/test_suite_files.py
+    - packing/tests/test_validation_cli.py
+    excluded_commands:
+    - git commit
+    - git push
+  - task: Bound conservative push-selector walker evidence under think-6izq
+    operator: GPT-6 Sol high (native_sol)
+    status: completed
+    recording: contemporaneous
+    outcome: >-
+      The selector parses and unparses test source after removing only the exact benign
+      metadata-version import, then applies the old raw walker-marker rule. This drops
+      comments while retaining strings, bytes, helper calls and dynamic-import names.
+      A read-only comparison found exactly two existing files no longer selected by
+      the old raw-marker rule: test_change_scoped_selection.py has only a comment,
+      and test_command_help.py imports importlib.metadata.version. The attack-string
+      test remains selected. The retained-path selection is 81 of 388 test files,
+      versus 82 of 387 before this change and its new regression test file.
+    evidence:
+    - packing/devtools/reachable_tests.py
+    - packing/tests/test_reachable_walker_evidence.py
+    files:
+    - packing/devtools/reachable_tests.py
+    - packing/tests/test_reachable_walker_evidence.py
+    checks:
+    - 'Final focused selector tests: 54 passed; Ruff and BasedPyright clean, reported by the implementation
+      agent.'
+    - Independent old-versus-new marker audit over both configured Python test roots found only the two
+      intentional removals.
+    uncertainty: The final candidate push receipt and integrated gate are pending; this reachability
+      refinement is no mathematical or performance proof.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: Compare the candidate push selected-file receipt to its predecessor and run the integrated
+      push gate before publication.
+    phase: 4
+    write_scope:
+    - packing/devtools/reachable_tests.py
+    - packing/tests/test_reachable_walker_evidence.py
+    excluded_commands:
+    - git commit
+    - git push
   outputs:
   - packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
+  - docs/project/reviews/review-2026-09-29-validation-parallelism.md
   checks:
   - 'Merged gate-budget unit tests: 49 passed; declaration checker passed.'
   - 'Merged n32 mixed-cover checker tests: 27 passed in 3.01 seconds.'
@@ -200,6 +397,8 @@ session:
   - 'Records gate: 35 of 82 steps passed in 16.65 seconds; this is not full certification.'
   - 'Initial merged push: 2,957 tests passed, 2 failed, 6 skipped, 19 deselected; 818.46 seconds wall.
     Both failures are retained explicitly.'
+  - 'Final merged push at 5d276119c: 51 of 82 selected steps passed; 2,959 tests passed,
+    6 skipped, 19 deselected; 856.20 seconds wall. This named tier is not the full gate.'
   - 'Sol synthetic-fixture repair: all 39 synopsis-handoff tests passed in 5.38 seconds; Ruff and BasedPyright
     clean.'
   - Final read-only Sol gap audit identified one stale minimum-independence sentence; the corrected review

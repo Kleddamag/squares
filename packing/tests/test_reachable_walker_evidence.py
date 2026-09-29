@@ -1,0 +1,54 @@
+# pyright: reportPrivateUsage=false
+"""The push selector keeps code-like strings and real repository walkers conservative."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from devtools import reachable_tests
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        ("# Path('repo').rglob('*')\n", False),
+        ("from importlib.metadata import version\nversion('sqpack')\n", False),
+        ("from importlib.metadata import version as package_version\n", True),
+        ("attack = \"__import__('os')\"\n", True),
+        ("payload = b\"__import__('x')\"\n", True),
+        ("from pathlib import Path\nPath('repo').rglob('*')\n", True),
+        ("rglob('repo')\n", True),
+        ("iterdir('repo')\n", True),
+        ("my_rglob('repo')\n", True),
+        ("repo_listdir('repo')\n", True),
+        ("from os import listdir\nlistdir('repo')\n", True),
+        ("import importlib.util\n", True),
+        ("from helper_importlib_adapter import version\n", True),
+        ("__import__('module')\n", True),
+        ("import builtins\nbuiltins.__import__('module')\n", True),
+        ("from helper import importlib\nimportlib.import_module(name)\n", True),
+        ("def f():\n    global importlib_cache\n", True),
+        ("try: pass\nexcept Exception as __import__error: pass\n", True),
+        ("import subprocess as sp\nsp.run(['python', '-c', \"__import__('x')\"])\n", True),
+        ("def run_code(script): pass\nrun_code(\"__import__('x')\")\n", True),
+        ("script = f\"__import__('pathlib').Path({1!r})\"\n", True),
+        ("def broken(:\n", True),
+    ],
+)
+def test_walker_evidence_discards_comments_but_keeps_executable_inputs(
+    tmp_path: Path, source: str, *, expected: bool
+) -> None:
+    test = tmp_path / "test_walker.py"
+    test.write_text(source, encoding="utf-8")
+    assert reachable_tests._walker_evidence(test) is expected  # noqa: SLF001
+
+
+def test_benign_metadata_import_no_longer_expands_an_unrelated_frontier_change() -> None:
+    selection = reachable_tests.select_tests(["packing/frontier/n-011.md"])
+    assert not selection.everything
+    assert "packing/tests/test_command_help.py" not in selection.tests
+    assert "packing/tests/test_verified_upper_bound_contract.py" in selection.tests
+    # The parser attack literal remains in the conservative walker set.
+    assert "packing/tests/test_audit_ds7_lower_bounds.py" in selection.tests

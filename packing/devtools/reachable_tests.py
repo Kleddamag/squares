@@ -87,8 +87,22 @@ SUITE_WIDE = (
     ".python-version",
 )
 
-#: Source markers that give a test the repository's whole path space as its input.
 WALKER_MARKERS = ("rglob(", "iterdir(", ".glob(", "listdir(", "importlib", "__import__")
+
+
+class _WithoutBenignMetadataVersion(ast.NodeTransformer):
+    """Remove only the metadata lookup that cannot import repository code."""
+
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> ast.ImportFrom | None:
+        if (
+            node.level == 0
+            and node.module == "importlib.metadata"
+            and len(node.names) == 1
+            and node.names[0].name == "version"
+            and node.names[0].asname is None
+        ):
+            return None
+        return node
 
 
 @dataclass(frozen=True)
@@ -184,6 +198,22 @@ def _reaches(imported: set[str], targets: set[str]) -> bool:
     return False
 
 
+@cache
+def _walker_evidence(path: Path) -> bool:
+    """Apply the old conservative marker scan, ignoring comments and one benign import.
+
+    Unparsing preserves calls, aliases, module names, and string or bytes literals.
+    It also handles indirect execution without guessing its dataflow. If parsing or
+    unparsing fails, select the test rather than risk dropping a repository walker.
+    """
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        source = ast.unparse(_WithoutBenignMetadataVersion().visit(tree))
+    except OSError, SyntaxError, UnicodeDecodeError, RecursionError, ValueError:
+        return True
+    return any(marker in source for marker in WALKER_MARKERS)
+
+
 def select_tests(changed: list[str]) -> TestSelection:
     """The test files a change to `changed` (repo-relative paths) can reach."""
     if not changed:
@@ -248,7 +278,7 @@ def select_tests(changed: list[str]) -> TestSelection:
             selected.setdefault(relative, "import closure")
             continue
         text = file.read_text(encoding="utf-8")
-        if any(marker in text for marker in WALKER_MARKERS):
+        if _walker_evidence(file):
             selected.setdefault(relative, "walks the repository or imports dynamically")
             continue
         if any(dotted in text for dotted in changed_dotted):

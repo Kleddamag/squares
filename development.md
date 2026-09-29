@@ -401,11 +401,17 @@ These are the eleven steps outside the [PR fast surface](#validation-tiers).
 [D-470](defects.md) records why checking them only after a merge is insufficient: a
 stale certificate test left main red across three merges despite green PR checks.
 
-It runs them in four jobs, mirroring the post-merge gate: `deferred-slow-lane`,
-`exhaustive-tier`, and [D-484](defects.md)’s `screen`, with `deferred-steps` carrying
-the other eight checks.
-`deep-gate-required` waits on all four — a split job that nothing waits on is an
-advisory check, which is [D-380](defects.md)’s shape.
+The deferred workflow resolves one immutable checkout and distributes the work over nine
+jobs: a slow-test job, a screen job, three exhaustive-test shards, and four groups of
+whole deferred checks.
+Exhaustive shards partition test files using retained costs; new files receive a
+deterministic assignment.
+Every shard keeps the same exhaustive marker and complete test bodies.
+`deep-gate-required` waits on every job and the source resolver; a missing, skipped or
+unsuccessful prerequisite fails the aggregate.
+Timing artifacts have distinct job names and record the checked-out commit.
+For a dispatched PR, that resolved merge commit can differ from the workflow dispatch
+ref; the checkout receipt identifies the source actually validated.
 
 The last three joined on 2026-09-07 because the corpus tripled, not because the gate
 changed its mind about them.
@@ -607,20 +613,21 @@ defensible. Each of 2026-08-30’s three red pushes broke a test reachable this 
 the changed paths ([D-381, D-393](defects.md)), and the floor would have caught all
 three.
 
-**A broad diff receives one outer job automatically.** A changed workflow file or suite
-configuration expands the selector to everything, and everything here is the quick lane
-and the slow lane in one step, against `FAST_SUITE_BUDGET_SECONDS`. With the normal
-CPU-wide outer default that single step would receive one pytest worker because the
-distribution is `cpus - jobs + 1`; the short outer-check tail would finish and leave the
-host idle. When the broad selection and resource settings are both implicit, the CLI
-therefore uses one outer job so pytest can use the host.
-Narrow selections keep the CPU-wide outer default, and explicit `--jobs` or
-`PACKING_VALIDATE_JOBS` choices remain authoritative.
+**Large implicit push selections receive a separate pytest phase.** A changed workflow
+file or suite configuration expands the selector to everything: the quick and slow lanes
+together, against `FAST_SUITE_BUDGET_SECONDS`. A large proper subset can also dominate
+the run. When resource settings are implicit, the edit checks run with their normal
+concurrency, then the reachable tests use the available pytest workers after the edit
+pool has drained. Nested tool pools are capped at one during that phase.
+This prevents the CPU-wide outer default from leaving pytest with one worker after the
+other checks finish.
+It also prevents two internally parallel checks from each claiming the same CPUs.
+Explicit resource settings remain authoritative.
 
 [D-488](defects.md) is that timeout, and what it fixed is narrower than the failure:
 until it, `_xdist_distribution`’s flag never reached the selector’s pytest at all, so
 `--jobs 1` was serial too and there was no shape that worked.
-There is one now, and the implicit broad selection chooses it.
+There is one now, and the implicit large-selection phase uses it.
 The historical 1403-second reading used that one-outer-job shape and finished inside the
 cap; the reconciliation branch still owes its final-source push and full-checkpoint
 receipts before closeout.
@@ -628,10 +635,14 @@ receipts before closeout.
 The `.gate-running` marker is a load lock protecting calibrated step budgets, not a
 correctness lock — no step mutates the working tree.
 The floor tiers say so: `--records`, `--edit`, and a `--push` whose test selection is
-narrow take no marker and run even while a full gate holds it, because a floor the lock
-can refuse is a floor that gets skipped.
-Selections containing a broad or full-tier step still take the marker and still refuse a
-second gate.
+narrow remain runnable while a full gate holds it, because a floor the lock can refuse
+is a floor that gets skipped.
+A large narrow push opportunistically reserves the load lock for its exclusive pytest
+phase. If the lock is already held, it retains its conservative worker allocation
+instead. Whole-suite fallback still requires the lock.
+The CLI reports which allocation it selected, and command receipts record the effective
+worker settings. Selections containing a broad or full-tier step still take the marker
+and still refuse a second gate.
 
 Every validation subprocess has a finite 900-second default deadline.
 Override it with `--timeout-seconds SECONDS` or `PACKING_VALIDATE_TIMEOUT_SECONDS`;
@@ -687,21 +698,22 @@ lanes and gave xdist to the quick half only, leaving the half selected for costi
 most as the one place in the gate that ran a test suite serially.
 Avoid assuming that either flag alone caps total host concurrency.
 
-The screen and exhaustive jobs use `--jobs 1 --inner-jobs 4` on the hosted four-CPU
-runners. The slow lane also has its own job, using `--jobs 1 --inner-jobs 2`: xdist
-supplies four test workers, while tests that create their own pools retain two inner
-workers. The remaining integration and deferred numeric checks run one step at a time
-with `--jobs 1 --inner-jobs 2`, preserving PR #120’s response to the concurrent
+The screen and exhaustive shard jobs use `--jobs 1 --inner-jobs 4` on the hosted
+four-CPU runners. The slow lane also has its own job, using `--jobs 1 --inner-jobs 2`:
+xdist supplies four test workers, while tests that create their own pools retain two
+inner workers. Each hosted deferred-check group runs one whole step at a time on its own
+runner with `--jobs 1 --inner-jobs 2`, preserving PR #120’s response to the concurrent
 corpus-pool timeout in
 [run 34181619739](https://github.com/jlevy/squares/actions/runs/34181619739). The
 workflow tests derive selections through the CLI and require complete, disjoint coverage
 in both workflows. They also require full Git history wherever the slow retained-theorem
 review runs.
 
-These allocations preserve both integration fixes; their combined wall time needs fresh
-hosted validation.
-They do not establish a total process bound when tests spawn pools, or
-a speedup. Certificate pools still enforce actual CPU availability, the four-worker
+The efficiency review records the
+[allocation and measurement contract](docs/project/reviews/review-2026-09-29-validation-parallelism.md).
+Fresh hosted results, rather than the predecessor jobs’ durations, establish the new
+combined wall time. They do not establish a total process bound when tests spawn pools,
+or a speedup. Certificate pools still enforce actual CPU availability, the four-worker
 maximum, and the grid-memory budget.
 
 CPU observations are diagnostic only.

@@ -143,6 +143,14 @@ mathematical and verifier review.
 The coordinator owns records, integration and PR 246. Archived source remains immutable.
 Completed engineering slices do not close their parent mathematical obligations.
 
+The bounded diagnostic and admission slices `think-wjb2`, `think-rrwv`, `think-gfpf`,
+`think-pgrx`, and snapshot repair `think-r5x7` are closed after publication and passing
+required CI at `5d276119c`. Their negative or partial mathematical outcomes below are
+unchanged. The concurrent
+[validation efficiency block](../../reviews/review-2026-09-29-validation-parallelism.md)
+is tracked by `think-xcij`, with hosted fanout `think-tddk`, selector precision
+`think-6izq`, and post-merge workflow parity `think-08ht`.
+
 | Obligation | Bead | Completion evidence or dependency |
 | --- | --- | --- |
 | Native frontier diagnostics and corner bound | think-wjb2 | Exact capped diagnostics, analytic controls, reviewed implementation and identical-frontier comparison; implemented and reviewed, with target results below |

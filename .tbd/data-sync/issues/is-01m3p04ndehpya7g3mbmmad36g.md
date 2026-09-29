@@ -5,7 +5,7 @@ title: "W7: implement native exact rectangle-density coverage verifier"
 kind: feature
 status: in_progress
 priority: 1
-version: 9
+version: 11
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -14,10 +14,11 @@ child_order_hints:
   - is-01m3q3330ehfw8jkg6n2jjkz76
   - is-01m3q333efvqtrjzbncve0efps
   - is-01m3q3yck931awc12wrdfjtc8b
+  - is-01m3q9nxx8t416wr59nsvcve5z
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:12:51.117Z
-updated_at: 2026-09-29T17:38:34.207Z
+updated_at: 2026-09-29T19:19:13.773Z
 started_at: 2026-09-29T07:14:10.458Z
 ---
 W7 block in docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md. Exact rational common-core polygon subdivision and axis event sweep, source-distinct from verify.cpp; library, CLI, refusal controls, proof contract review. Analytic full-net control and bounded retained input probe required before first checkpoint. Full large-certificate independent confirmation remains separate.
@@ -37,3 +38,5 @@ Narrow next slice: add diagnostic retention of every exact pending centre box, i
 Proposed analytic control, not executed: n=58, L=4, B=1/2, one source rectangle [1/10,1/10,39/10,39/10] with weight 1444/25. Its coincident D4 images give constant density 4 and mass 1444/25 < 58. For cosine 3/5 and sine 4/5 over the local centre box [2,3]^2, every core is inside the support, so exact coverage and the per-rectangle corner bound are 1. The current common core is empty because both local halfwidths are -9/20, giving lower bound 0. This is a local proof-primitive control, not an assertion that this candidate passes full-domain verification. Also retain a regression that rejects replacing the sum of per-rectangle minima with a minimum of summed corner values.
 
 Full independent acceptance still requires one bound input to pass exact mass/admission and all 201 required angles with zero unresolved work, plus a complete source-bound receipt and an executable replay command. Target 1 suffices for the packing obstruction; the candidate's stored rhs=1001/1000 is not a proof of coverage. An actual uniform positive coverage margin would make common-core subdivision converge in principle, but does not predict a practical node budget. After a complete run, register new exact-algebraic evidence scoped only to the certificate/count actually checked and retain the existing interval-certified source replay separately. A native n11 success must not promote the entire n11/n26/n29 composite or the unrelated T-057 row claim.
+
+Final Astra-max next-step review selected think-gfpf: exactly two refinement levels on each of the 67 retained depth-capped boxes, unchanged common-core bound, 268 child evaluations and 30-second cooperative cap. Exact analytic control has parent 9/25 and each child 169/100. This experiment is predeclared but unexecuted. The queued depth-1 box prevents inferring full-angle cost from the 1000-node prefix.

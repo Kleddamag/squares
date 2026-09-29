@@ -5,14 +5,16 @@ title: "W7: retain rectangle frontier and compare exact corner bounds"
 kind: task
 status: in_progress
 priority: 1
-version: 4
+version: 5
 labels: []
 dependencies:
   - type: blocks
     target: is-01m3q333efvqtrjzbncve0efps
+  - type: blocks
+    target: is-01m3q9nxx8t416wr59nsvcve5z
 parent_id: is-01m3p04ndehpya7g3mbmmad36g
 created_at: 2026-09-29T17:23:39.650Z
-updated_at: 2026-09-29T17:40:36.305Z
+updated_at: 2026-09-29T19:18:48.485Z
 ---
 Implement bounded exact pending-box diagnostics without trusted resume, per-rectangle corner-minimum bound and independent analytic controls. Compare the same retained n11 frontier under a 30-second ceiling; acceptance requires at least one formerly unresolved box certified without weakening threshold or admission. Sol implementation and Astra-max mathematical review.
 

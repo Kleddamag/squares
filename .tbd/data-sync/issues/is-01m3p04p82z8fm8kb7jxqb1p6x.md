@@ -5,7 +5,7 @@ title: Replay wand125 general pose tree n11 row claim independently
 kind: task
 status: in_progress
 priority: 2
-version: 7
+version: 8
 labels: []
 dependencies: []
 parent_id: is-01m3nzy6gqfv60whzzvww0ffa0
@@ -14,9 +14,9 @@ child_order_hints:
   - is-01m3q3346jb4mfsg5c35w99eyw
   - is-01m3q334jhatak7q9xkaey3pdd
 created_at: 2026-09-29T07:12:51.969Z
-updated_at: 2026-09-29T17:24:51.512Z
+updated_at: 2026-09-29T19:09:38.540Z
 ---
-T-057 remains source-reported equality of all12028 n11 minima. New source tests9 pass1 skipped; rows0,6014,12027 replay exactly with matching witnesses, receipts in wand125-tools-2026-09-29. Remaining: audit full branch/enclosure/measure contract, complete census replay and exact output matching, separately bind global counting theorem. Partial samples are not complete proof.
+T-057 remains the source-reported equality of all 12,028 n11 minima. Three fresh production-bound rows match, with independent exact witness attainment; 12,025 remain. Remaining work: audit the full branch/enclosure/measure contract, complete the unique census replay and compare every exact output. The identical certificate already has T-037 V4/C4 native threshold coverage and global counting, D4, enclosure and budget evidence; think-4t1e closed after reconciling all 19 frozen proof inputs. That prior proof need not reproduce exact per-row minima and does not settle T-057.
 
 ## Notes
 

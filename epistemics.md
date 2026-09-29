@@ -165,7 +165,7 @@ The checker:
   novel one, resolves its source keys in the bibliography, and requires a `lineage` on
   the sources of a result by others published since 22 August 2026;
 - fails when a case’s reported or verified lower bound cites evidence from a source
-  dated on or after 22 August 2026 that no register entry covering that `n` cites; and
+  dated on or after 22 August 2026 that no register entry covering that $n$ cites; and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s

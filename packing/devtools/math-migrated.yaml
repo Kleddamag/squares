@@ -14,4 +14,30 @@
 #
 #   uv run --frozen --group dev python -m devtools.migrate_math FILE --report
 #   uv run --frozen --group dev python -m devtools.migrate_math FILE --apply
-files: {}
+files:
+  README.md:
+    keep:
+      - V # the verification ladder's name, not a variable
+      - C # the confirmation ladder's name
+  TUTORIAL.md: {}
+  SYNOPSIS.md:
+    keep:
+      - V # the verification ladder's name; SYNOPSIS never uses V as a variable
+      # `C` is also a cell and `S` a point set here, so they are kept only where they
+      # name the confirmation ladder and the significance axis.
+      - {span: C, where: credit beside this repository’s}
+      - {span: C, where: axes are defined in}
+      - {span: C, where: rung, numerically observed}
+      - {span: S, where: axes are defined in}
+      - +W # names a coefficient direction, paired with the `-W` bridge
+  conventions.md:
+    keep:
+      - V # the three rung axes, named
+      - C
+      - S
+  epistemics.md:
+    keep:
+      - V # the four axes, named
+      - C
+      - S
+      - N

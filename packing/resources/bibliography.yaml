@@ -70,6 +70,7 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-20'
+    credit: Guzhou0806, Mira after Levy
     note: >-
       The two repositories the packet retains, by their authors' GitHub names
       (web/n17-weighted-certificates-2026-09-20/README.md): Guzhou0806's R012
@@ -80,6 +81,7 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-21'
+    credit: Kleddamag after Levy, Mira, Guzhou0806
     note: >-
       The retained v1.0.0 release; its AUTHORS.md names Kleddamag as the project's
       director and says the work was produced with AI agents (OpenAI Codex) under that
@@ -117,6 +119,7 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-25'
+    credit: Guzhou0806 after Kleddamag, Levy
     note: >-
       The R052 release of Guzhou0806/n17-square-packing at 3bf1095c, 2026-09-25,
       which names itself as produced by "Guzhou0806 / N17 project with AI
@@ -127,7 +130,7 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: Guzhou0806 after Kleddamag
+    credit: Guzhou0806 after Kleddamag, Levy
     note: >-
       The R068 release of Guzhou0806/n17-square-packing at 815b1626, 2026-09-28, whose
       certificates/R068-C010/accepted/4.66044/ proves s(17) > 116511/25000. Guzhou0806 /
@@ -141,7 +144,7 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: Guzhou0806 after Kleddamag
+    credit: Guzhou0806 after Kleddamag, Levy
     note: >-
       The R067 release of Guzhou0806/n17-square-packing at d4e2c287, 2026-09-28, whose
       certificates/R067-4.66018/ proves s(17) > 233009/50000 on Kleddamag's 4.66001

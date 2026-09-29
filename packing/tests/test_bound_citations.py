@@ -496,7 +496,7 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
     ("n", "author"),
     [
         (11, "Kleddamag after Levy"),
-        (17, "Guzhou0806 after Kleddamag"),
+        (17, "Guzhou0806 after Kleddamag, Levy"),
         (26, "Tokoharu after Levy, wand125"),
         (29, "Tokoharu after Levy, wand125"),
     ],

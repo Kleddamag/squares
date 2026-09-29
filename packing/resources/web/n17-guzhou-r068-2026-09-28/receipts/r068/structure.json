@@ -1,0 +1,99 @@
+{
+  "schema": "GuzhouR068PacketStructure/v1",
+  "release": "R068",
+  "source_commit": "815b16261f852e389968513eec94b4b9e5b3206d",
+  "certificate_sha256": "cf70f74ddb47071b1d7333d8a43885d2915f43d45f26f6084a106dfdb0c5205f",
+  "baseline_sha256": "280af3d46150ca990917d714d83ee73baf4e6c45a0563090bf35588fb22de6e5",
+  "target": "116511/25000",
+  "parent_side": "115325/116511",
+  "baseline_parent_side": "461300/466001",
+  "point_orbits": 2621,
+  "baseline_point_orbits": 2620,
+  "sites": 20860,
+  "baseline_sites": 20856,
+  "point_orbit_changes": [
+    {
+      "index": 1480,
+      "old": [
+        9897067092,
+        9898744747,
+        0
+      ],
+      "new": [
+        9897067092,
+        9897944747,
+        0
+      ],
+      "weight": 0,
+      "images": 8,
+      "sites": [
+        11832,
+        11840
+      ],
+      "rule_orbits_referencing": 1,
+      "budget_units": 0,
+      "delta": [
+        0,
+        -800000
+      ],
+      "old_budget_units": 0,
+      "same_image_order": true
+    },
+    {
+      "index": 2620,
+      "old": null,
+      "new": [
+        13400000000,
+        13400000000,
+        11734
+      ],
+      "weight": 11734,
+      "images": 4,
+      "sites": [
+        20856,
+        20860
+      ],
+      "rule_orbits_referencing": 0,
+      "budget_units": 46936
+    }
+  ],
+  "rule_orbits": 889,
+  "rule_orbits_unchanged": true,
+  "budget_units": 17000448944,
+  "baseline_budget_units": 17000402008,
+  "budget_delta_units": 46936,
+  "point_orbit_budget_delta_units": 46936,
+  "budget_delta_accounted": true,
+  "requested_minimum_units": 1000026409,
+  "requested_surplus_units": 9,
+  "angle_chain": {
+    "original_intervals": 2168,
+    "new_intervals": 4991,
+    "pieces_per_original": {
+      "1": 825,
+      "2": 994,
+      "3": 48,
+      "4": 164,
+      "5": 10,
+      "6": 5,
+      "7": 7,
+      "8": 85,
+      "9": 3,
+      "10": 2,
+      "11": 1,
+      "12": 2,
+      "13": 1,
+      "14": 1,
+      "16": 11,
+      "21": 1,
+      "22": 1,
+      "23": 1,
+      "24": 2,
+      "32": 1,
+      "38": 1,
+      "45": 1,
+      "55": 1
+    },
+    "exact_bisections": 994
+  }
+}

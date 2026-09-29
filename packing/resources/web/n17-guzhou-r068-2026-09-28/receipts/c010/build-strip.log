@@ -1,0 +1,5 @@
+# command: g++ -O3 -std=c++17 src/strip_sweep.cpp -o .recheck/bin/strip
+# cwd: WORK/certificates/R068-C010
+# affinity: taskset -c 2,3; N17_TIMEOUT_MINUTES=unset
+# started_utc: 2026-09-28T23:54:19Z; load 10.42 8.56 4.83
+# ended_utc: 2026-09-28T23:54:34Z; exit 0; wall_seconds 15.397; user_seconds 12.111; system_seconds 1.049; load 10.47 8.66 4.93

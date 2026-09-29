@@ -1,0 +1,6 @@
+# command: node assert_ci.js local
+# cwd: WORK/certificates/R068-C010
+# affinity: taskset -c 2,3; N17_TIMEOUT_MINUTES=unset
+# started_utc: 2026-09-28T23:55:24Z; load 10.51 8.95 5.22
+PASS_FRESH_EXPECTED_RESULTS / 新运行结果符合预期
+# ended_utc: 2026-09-28T23:55:24Z; exit 0; wall_seconds 0.034; user_seconds 0.030; system_seconds 0.004; load 10.51 8.95 5.22

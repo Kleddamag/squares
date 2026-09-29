@@ -1,0 +1,5 @@
+# command: g++ -O3 -std=c++17 upstream/cpp/probe.cpp -o .recheck/bin/probe
+# cwd: WORK/certificates/R068-C010
+# affinity: taskset -c 2,3; N17_TIMEOUT_MINUTES=unset
+# started_utc: 2026-09-28T23:54:34Z; load 10.47 8.66 4.93
+# ended_utc: 2026-09-28T23:54:48Z; exit 0; wall_seconds 13.722; user_seconds 11.051; system_seconds 0.885; load 10.30 8.71 5.00

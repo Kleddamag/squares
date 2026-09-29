@@ -5,7 +5,7 @@ title: Review wand125 tools claims and maintain upstream repository references
 kind: task
 status: in_progress
 priority: 1
-version: 22
+version: 28
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -18,22 +18,20 @@ child_order_hints:
   - is-01m3p4qcde9qgwr3dyp1b6v8fe
   - is-01m3p5wj25knm7rbx0g4a4tpvg
   - is-01m3p6krj8zr6a0956x7de4xfv
+  - is-01m3q336f2n7q1dhpmbrvy7gr4
+  - is-01m3q99abfyys0pkhy5w7g8m3j
+  - is-01m3qa5y5c3d51w29cysefsb56
+  - is-01m3qcan8g6wnnpkvaemzt7rfm
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:09:19.247Z
-updated_at: 2026-09-29T16:57:54.044Z
+updated_at: 2026-09-29T20:05:04.906Z
 started_at: 2026-09-29T07:09:45.733Z
 ---
 W2 factual review, W7 verification pipeline, and W8 documentation: pin square-packing-tools, register scoped claims, audit independent rectangle/point verification, and update synopsis and tooling coverage. Track remaining mathematical and complete-replay obligations separately.
 
 ## Notes
 
-CI integration completed on 2026-09-29. Final head 4296edced passed required run 36598843922, page run 36598843719 and mergeability. Its hosted tree 951b5a754baa2723d9119e29ee55c44bbf3c13cd matches the clean local tree.
+Session163: Sol implementation and cross-review, Astra-max math. Exact native frontier/corner bound and pinned T057 census wrapper delivered;31 integrated tests pass. Native same-frontier criterion failed(0new thresholdcrossings);1000node probe remains inconclusive. Fresh3-row T057 replay is partial. Reconciled identical Kleddamag input with existing T037V4/C4 complete global proof;4t1e closed. First push gate interrupted when external disk disappeared; no result claimed. Disk restored and user confirmed continuation; recovery validation phase starts18:54:30Z. PR comments5895342898 and5895571765 retain review trail. Pending push/new-head CI and final records.
 
-Implementation c621b845f passed required CI and full deferred checkpoint 36590993493: all four lanes and the aggregate. Clean merge 3947757186fa9fcc13fd17e9f03d581323a3e964 matches that implementation tree. Receipts: 60 exhaustive tests, 155 slow tests, eight numeric checks and 318 translation-screen records passed. No thresholds were relaxed. Later changes are records/prose and the handoff control anchor; all 167 anchors resolve and the changed wrong-bead mutation passed in 2.606 seconds. The final local selection passed its other checks, including 1,735 tests, before that focused anchor correction.
-
-Session 161's administrative closure preserves owner research and clocks. Session 161/162 certification debt is discharged. Synopsis, Session 162, active launch plan and control agree on the next W7 entry: think-bmf3, retain unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling.
-
-Scoped Astra-max mathematical/verifier reviews and Rust/golden guideline review are in the repository and PR comments, including full-checkpoint conclusion 5894326705. No formal GitHub/human approval or formal-kernel proof is claimed. The native analytic control passes all 201 angles; the external n11 probe remains inconclusive. T-056 V0/C1 and T-057 V0/C0 are unchanged. Complete native external acceptance, T-057's full census, upstream admission/ceiling repairs and broader Rust contracts remain open.
-
-PR mathematical synopsis clarification: added a prominent verified-versus-open matrix covering native controls and external coverage, earlier V4/C3 source replays, T-056, T-057, wrapper admission, cached-axis and lazy-zmx2 obligations, transformations/speed claims, and broader format/formal boundaries. Fresh read-only Astra-max mathematical check plus coverage and editorial cross-checks completed. No new computation, claim promotion or source edit; detailed arguments remain in the linked repository reviews. PR body and review comment record the distinction between CI success and mathematical verification.
+Published81141896a passed the local push tier (51 steps,1820 tests), but hosted CI found the data-release stamp was stale after the frontier record edit. Sol repaired the pin/atlas and added release-data reachability;44 focused tests pass. Separately, think-gfpf now has reviewed positive local refinement evidence (15/67 parents closed), with full native coverage and T057 minima replay still open. Final integration and CI are in progress.

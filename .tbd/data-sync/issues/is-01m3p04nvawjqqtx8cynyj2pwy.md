@@ -5,12 +5,17 @@ title: Resolve wand125 tools ceiling and certificate admission findings
 kind: task
 status: open
 priority: 1
-version: 5
+version: 9
 labels: []
 dependencies: []
 parent_id: is-01m3nzy6gqfv60whzzvww0ffa0
+child_order_hints:
+  - is-01m3q334yhrpa4nzahc9e8sw67
+  - is-01m3q335am18z87zzbvvshk1c1
+  - is-01m3q335pvv0mr0bgr5623m3bb
+  - is-01m3q3362x0jttkppzvf27tabm
 created_at: 2026-09-29T07:12:51.561Z
-updated_at: 2026-09-29T08:54:49.214Z
+updated_at: 2026-09-29T17:23:42.812Z
 ---
 W2 tools review retained: T-056 general B*UB ceiling lacks net-orientation premise and rigorous UB rounding. Admission defect executed: unchanged source scale_and_verify/certify/verify.cpp passes all201 then falsely prints s(1)>=1.5 for mass289/10. Reproducer devtools.audit_wand125_tools and receipts in wand125-tools-2026-09-29. Native checker must refuse same input. Remaining: corrected ceiling tooling and safe integration; do not send external maintainer messages without authorization.
 

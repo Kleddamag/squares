@@ -711,10 +711,12 @@ A tier whose hosted walls form a distribution records a `measured_band`, the low
 highest readings at its reference shape, and the ratios are then applied to the band’s
 edges: the stale rule to the low edge and the drift rule to the high one.
 The band must contain the record and be no wider than `drift_ratio / stale_ratio`; a
-ceiling under its drift edge binds first (`think-be1s`, D-472). The records check
-independently rejects a ceiling above `max_headroom` times the baseline.
-A `null` baseline leaves those ratio checks unarmed; a measurement printed by CI does
-not update the file automatically.
+ceiling under its drift edge binds first (`think-be1s`, D-472). The price is sensitivity
+in the fast regime: a run from the band’s low end can grow to the drift edge, or the
+ceiling if lower, before a rule fires, and each banded tier’s record states that figure.
+The records check independently rejects a ceiling above `max_headroom` times the
+baseline. A `null` baseline leaves those ratio checks unarmed; a measurement printed by
+CI does not update the file automatically.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.

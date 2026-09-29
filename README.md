@@ -62,8 +62,8 @@ This repository contains:
 - **[A comprehensive survey of all known square packing results](#survey):** Every case
   `n = 1…100`, the primary literature retained and transcribed, and the bound a source
   *reports* kept apart from the bound this repository has *verified*. Fifty-five of its
-  hundred cases carry a lower bound proved since 22 August 2026, reported or verified;
-  in twenty-seven the verified bound itself is recent, three of those are this
+  hundred cases carry a lower bound published since 22 August 2026, reported or
+  verified; in twenty-seven the verified bound itself is recent, three of those are this
   project’s, and three are new exact values.
 - **[A set of tools and AI workflows for automated mathematical research](#autonomous-research-process):**
   The results and the survey are produced and checked by AI agents running a recorded
@@ -229,7 +229,7 @@ column the retained source packet and this repository’s reviews.
 
 | Published | Result | `n` | Headline | Credit | Relation | V/C | Standing | Records |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-09-28 | [T-055](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5` by a point-only route, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | second certificate | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
+| 2026-09-28 | [T-055](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5` by a point-only route, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | second certificate, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
 | 2026-09-28 | [T-054](packing/frontier/RESULTS.md) | [45](packing/frontier/n-045.md) | `s(45) = 7` by a second, point-only route | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V4/C3 | second certificate | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
 | 2026-09-28 | [T-048](packing/frontier/RESULTS.md) | [50](packing/frontier/n-050.md) | `s(50) ≥ 37/5 = 7.4`, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | holds, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) |
 | 2026-09-28 | [T-043](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 116511/25000 = 4.66044` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | holds | [packet](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) |

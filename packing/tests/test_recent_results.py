@@ -351,6 +351,8 @@ def test_standing_agrees_with_the_per_case_table(readme: str, rows: list[view.Ro
         ("T-014", view.NOT_A_BOUND),
         # A second proof of s(45) = 7, whose bound Evan Daniel's cover holds.
         ("T-054", view.SECOND_CERTIFICATE),
+        # A second route to s(21) = 5 that is reported and not yet replayed here.
+        ("T-055", view.SECOND_CERTIFICATE_REPORTED),
     ],
 )
 def test_standing_is_read_from_the_case_records(

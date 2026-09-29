@@ -221,7 +221,7 @@ def spelled(n: int) -> str:
 #: apostrophe may be curled or not.
 RECENT_COUNT = re.compile(
     r"(?P<cases>[A-Za-z0-9-]+)\s+of\s+its\s+hundred\s+cases\s+carry\s+a\s+lower\s+bound\s+"
-    r"proved\s+since\s+(?P<since>\d{1,2}\s+[A-Z][a-z]+\s+\d{4}),\s+reported\s+or\s+"
+    r"published\s+since\s+(?P<since>\d{1,2}\s+[A-Z][a-z]+\s+\d{4}),\s+reported\s+or\s+"
     r"verified;\s+in\s+(?P<verified>[A-Za-z0-9-]+)\s+the\s+verified\s+bound\s+itself\s+is\s+"
     r"recent,\s+(?P<ours>[A-Za-z0-9-]+)\s+of\s+those\s+are\s+this\s+project[\u2019']s,\s+"
     r"and\s+(?P<exact>[A-Za-z0-9-]+)\s+are\s+new\s+exact\s+values"
@@ -439,7 +439,7 @@ def recent_count_problems(text: str, counts: RecentCounts) -> list[str]:
     if match is None:
         return [
             (
-                "README.md: no 'N of its hundred cases carry a lower bound proved since "
+                "README.md: no 'N of its hundred cases carry a lower bound published since "
                 "...' recent-result sentence to check"
             )
         ]

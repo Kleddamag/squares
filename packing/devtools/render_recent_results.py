@@ -160,8 +160,20 @@ NOT_A_BOUND = "\u2014"
 HOLDS = "holds"
 HOLDS_REPORTED = "holds, reported"
 SECOND_CERTIFICATE = "second certificate"
+#: A second route to a proved value that this repository has not replayed: the same word
+#: as a replayed one would say it had been checked here.
+SECOND_CERTIFICATE_REPORTED = "second certificate, reported"
 SUPERSEDED = "superseded"
-STANDINGS = (HOLDS, HOLDS_REPORTED, SECOND_CERTIFICATE, SUPERSEDED, NOT_A_BOUND)
+STANDINGS = (
+    HOLDS,
+    HOLDS_REPORTED,
+    SECOND_CERTIFICATE,
+    SECOND_CERTIFICATE_REPORTED,
+    SUPERSEDED,
+    NOT_A_BOUND,
+)
+#: The confirmation rungs at which a certificate has been replayed here (epistemics.md).
+REPLAYED_RUNGS = frozenset({"C3", "C4", "C5"})
 #: The evidence claims that make an entry a bound on `s(n)`, as the evidence schema types
 #: them; `derived-structure` and the witness claims are not bounds.
 BOUND_CLAIMS = frozenset({"lower-bound", "upper-bound", "exact-value"})
@@ -500,7 +512,9 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     if not claims & BOUND_CLAIMS:
         return NOT_A_BOUND
     if "lower-bound" in claims and any(case.proved and cited & case.upper for case in cases):
-        return SECOND_CERTIFICATE
+        if str(record["confirmation"]) in REPLAYED_RUNGS:
+            return SECOND_CERTIFICATE
+        return SECOND_CERTIFICATE_REPORTED
     return SUPERSEDED
 
 

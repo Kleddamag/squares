@@ -7,8 +7,11 @@ refuses unsupported promotion or unexplained understatement. It also resolves
 evidence, repository-file and `produced_by` references -- the campaign records a
 result came out of, which must exist -- requires retained controls at C3 and
 above, restricts C5 to mapped review artifacts, and rejects unknown result ids
-in the reader tier. Human review owns evidence relevance, claim coverage,
-composition, significance, and novelty.
+in the reader tier. It holds every `headline` to one table cell that states no
+number its claim does not, and dates every result of this project by
+`established` and every result by others by `attribution.published`, never
+both. Human review owns evidence relevance, claim coverage, composition,
+significance, novelty, and whether a headline says what its claim says.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.check_results
@@ -18,6 +21,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Mapping
+from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -50,6 +54,12 @@ DECLARED_ONLY_V = {"V0", "V2"}
 # Others"). `common-knowledge` results owe no citation either way.
 ATTRIBUTED_NOVELTY = "previously-published"
 FIRST_PARTY_NOVELTY = {"apparently-novel", "confirmed-novel"}
+#: A headline is one table cell in the README and `RESULTS.md`, so it has a width.
+HEADLINE_LIMIT = 100
+#: A number as a headline or claim writes it: an integer, or a decimal.
+_NUMBER = re.compile(r"\d+(?:\.\d+)?")
+#: What marks a decimal cut short of the one the claim writes.
+TRUNCATION = "…"
 
 
 def _rank(rung: str) -> int:
@@ -223,6 +233,74 @@ def recent_evidence(entry: Mapping[str, Any], sources: Mapping[str, Mapping[str,
     return False
 
 
+def headline_problems(record: dict) -> list[str]:
+    """What is wrong with a result's `headline`, read against its own claim.
+
+    The headline is what a table shows in place of the claim, so it may shorten the claim
+    but not add to it: every number it writes is one the claim writes, or a decimal the
+    claim writes cut short and marked with an ellipsis. Whether the words say what the
+    claim says, and keep its relation, is review's.
+    """
+    rid = record["id"]
+    headline = record.get("headline")
+    if not isinstance(headline, str) or not headline.strip():
+        return [f"{rid}: states no headline"]
+    problems: list[str] = []
+    if len(headline) > HEADLINE_LIMIT:
+        problems.append(
+            f"{rid}: headline is {len(headline)} characters, over the {HEADLINE_LIMIT} "
+            "a table cell takes"
+        )
+    if headline != headline.strip() or "\n" in headline:
+        problems.append(f"{rid}: headline is not one trimmed line")
+    claimed = set(_NUMBER.findall(str(record.get("claim", ""))))
+    for match in _NUMBER.finditer(headline):
+        number = match.group()
+        truncated = headline[match.end() : match.end() + 1] == TRUNCATION and any(
+            "." in number and written.startswith(number) for written in claimed
+        )
+        if number not in claimed and not truncated:
+            problems.append(f"{rid}: headline states {number}, which its claim does not")
+    return problems
+
+
+def established_problems(record: dict, last_reviewed: str) -> list[str]:
+    """What is wrong with the date a result carries, given whose result it is.
+
+    A result of this project is dated by `established`, the day its certificate or proof
+    first passed here, which cannot precede the project's start or follow the register's
+    last review. A result by others is dated by its source in `attribution.published`,
+    and a second date beside that one would be a second answer to one question.
+    """
+    established = record.get("established")
+    if record.get("attribution"):
+        problem = (
+            "a result by others is dated by attribution.published and carries no established"
+            if established is not None
+            else None
+        )
+    elif established is None:
+        problem = "a result of this project names the day it was established"
+    else:
+        problem = _established_date_problem(str(established), str(last_reviewed))
+    return [f"{record['id']}: {problem}"] if problem else []
+
+
+def _established_date_problem(established: str, last_reviewed: str) -> str | None:
+    try:
+        day = date.fromisoformat(established)
+    except ValueError:
+        return f"established {established} is not a date"
+    if day < RECENT_SINCE:
+        return (
+            f"established {established} is before {RECENT_SINCE.isoformat()}, "
+            "when this project's work began"
+        )
+    if day > date.fromisoformat(last_reviewed):
+        return f"established {established} is after the register's last review, {last_reviewed}"
+    return None
+
+
 def coverage_problems(
     results: list[dict],
     evidence_index: dict[str, dict],
@@ -321,6 +399,8 @@ def main() -> int:
             )
 
         problems.extend(attribution_problems(record, sources))
+        problems.extend(headline_problems(record))
+        problems.extend(established_problems(record, register["last_reviewed"]))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):
@@ -401,7 +481,8 @@ def main() -> int:
     print(
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
-        "recent case lower bound is covered, every reader-tier mention exists"
+        "headline and date holds, every recent case lower bound is covered, every "
+        "reader-tier mention exists"
     )
     return 0
 

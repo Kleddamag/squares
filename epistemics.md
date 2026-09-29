@@ -243,15 +243,21 @@ The checker:
 - requires `attribution` on every `previously-published` result and refuses it on a
   novel one, resolves its source keys in the bibliography, and requires a `lineage` on
   the sources of a result by others published since 22 August 2026;
+- requires a `headline` of at most 100 characters on every result, stating no number its
+  claim does not, and an `established` date on every result without `attribution`, the
+  day its certificate or proof first passed here, which it refuses beside `attribution`
+  and before 22 August 2026;
 - fails when a case’s reported or verified lower bound cites evidence from a source
   dated on or after 22 August 2026 that no register entry covering that `n` cites; and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s
-claim, scope, classifications, evidence, artifacts, and `next_rung`. That final field
-records the next evidence-improving action or explains why no independent rung change
-applies. [`packing/frontier/RESULTS.md`](packing/frontier/RESULTS.md) is generated from
-the register and sorted for readers.
+headline, claim, scope, classifications, evidence, artifacts, and `next_rung`. The
+headline is the claim shortened for a table cell; the claim stays the statement the
+rungs attach to. That final field records the next evidence-improving action or explains
+why no independent rung change applies.
+[`packing/frontier/RESULTS.md`](packing/frontier/RESULTS.md) is generated from the
+register and sorted for readers.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

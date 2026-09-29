@@ -49,6 +49,7 @@ $defs:
     additionalProperties: false
     required:
       - id
+      - headline
       - claim
       - scope
       - verification
@@ -58,8 +59,34 @@ $defs:
       - evidence
       - artifacts
       - next_rung
+    # A result of this project carries the day it was established; a result by others
+    # carries its source's date in attribution.published instead, and never both.
+    if: {required: [attribution]}
+    then: {not: {required: [established]}}
+    else: {required: [established]}
     properties:
       id: {type: string, pattern: '^T-[0-9]{3}$'}
+      headline:
+        type: string
+        minLength: 1
+        maxLength: 100
+        pattern: '^\S(.*\S)?$'
+        description: >-
+          The result stated short enough for a table cell, one line of inline Markdown
+          with the mathematics in backticks. It keeps the claim's relation exactly (`≥`
+          is not `>`), its exact form with the claim's decimal or a truncation of it
+          marked `…`, and its n values, and states no number the claim does not; the
+          checker holds it to that and to 100 characters. The claim stays the statement
+          the rungs attach to.
+      established:
+        type: string
+        pattern: '^\d{4}-\d{2}-\d{2}$'
+        description: >-
+          The day this result was first established in this repository: the day its
+          certificate or proof first passed here, read from the commit that landed it.
+          Required on every result without `attribution` and refused on one with it,
+          whose date is `attribution.published`. Never before 22 August 2026, the day
+          this project's square-packing work began.
       claim:
         type: string
         minLength: 1

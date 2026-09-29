@@ -32,16 +32,34 @@ REPO = ROOT.parent
 RESULTS = ROOT / "frontier" / "results.yaml"
 EPISTEMICS = REPO / "epistemics.md"
 
-#: `| `S3` | A substantive case result or machine audit |`, the rubric's own row shape.
-_ANCHOR_ROW = re.compile(r"^\|\s*`S(\d)`\s*\|\s*(.+?)\s*\|\s*$", re.MULTILINE)
+#: The axes whose rung tables `epistemics.md` writes, and what each is called in a refusal.
+AXES = {"S": "significance", "V": "verification", "C": "confirmation"}
 
 
-def anchors() -> dict[int, str]:
-    """The significance rubric, read from `epistemics.md` at the moment of use."""
+def _anchor_row(axis: str) -> re.Pattern[str]:
+    """One rung's row in the axis's table, as `epistemics.md` writes all three.
+
+    `| `S3` | A substantive case result or machine audit |` for significance, and
+    `| `C2` | Replayed | Repository-origin evidence with ... |` for verification and
+    confirmation, whose tables add a predicate column. The first text cell is the
+    rung's own name in both shapes, and it is what is returned.
+    """
+    return re.compile(rf"^\|\s*`{axis}(\d)`\s*\|\s*([^|\n]+?)\s*\|", re.MULTILINE)
+
+
+def anchors(axis: str = "S") -> dict[int, str]:
+    """One axis's rung names, read from `epistemics.md` at the moment of use.
+
+    `S` (the default, and what every caller before the overview meant) gives the
+    significance rubric's anchors; `V` and `C` give the verification and confirmation
+    rungs' names from their tables, for a legend or a tooltip.
+    """
+    if axis not in AXES:
+        raise ValueError(f"unknown axis {axis!r}; expected one of {sorted(AXES)}")
     text = EPISTEMICS.read_text(encoding="utf-8")
-    found = {int(score): anchor for score, anchor in _ANCHOR_ROW.findall(text)}
+    found = {int(rung): anchor for rung, anchor in _anchor_row(axis).findall(text)}
     if not found:
-        raise SystemExit(f"{EPISTEMICS}: no significance anchors found; the rubric moved")
+        raise SystemExit(f"{EPISTEMICS}: no {AXES[axis]} anchors found; the rubric moved")
     return found
 
 

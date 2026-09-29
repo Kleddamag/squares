@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from devtools import check_results, render_results
+from devtools import backfill_result_registration, check_results, render_results
 from devtools.check_results import (
     derive_confirmation,
     derive_verification,
@@ -377,3 +377,105 @@ def test_a_sources_credit_and_lineage_agree() -> None:
             continue
         names_project = "Levy" in (source.get("credit") or "")
         assert names_project == (lineage != "independent"), source["key"]
+
+
+def test_every_result_carries_a_registration_date(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    record = next(result for result in register["results"] if result["id"] == "T-007")
+    del record["registered"]
+    target = tmp_path / "results.yaml"
+    target.write_text(
+        yaml.safe_dump(register, sort_keys=False, allow_unicode=True, width=96),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(check_results, "RESULTS", target)
+    assert check_results.main() == 1
+    assert "T-007: registered is required" in capsys.readouterr().out
+
+
+def test_a_registration_date_is_a_date_no_later_than_the_review() -> None:
+    record = {"id": "T-009", "registered": "2026-09-01"}
+    assert check_results.entry_field_problems(record, "2026-09-29") == []
+    assert check_results.entry_field_problems(record, "2026-09-01") == []
+    assert check_results.entry_field_problems(
+        {**record, "registered": "2026-02-30"}, "2026-09-29"
+    ) == ["T-009: registered is not a calendar date: 2026-02-30"]
+    assert check_results.entry_field_problems(
+        {**record, "registered": "2026-10-01"}, "2026-09-29"
+    ) == ["T-009: registered 2026-10-01 is after the register's last_reviewed 2026-09-29"]
+
+
+def test_a_headline_fits_a_table_cell(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    record = {"id": "T-009", "registered": "2026-09-01"}
+    at_limit = "s" * check_results.HEADLINE_MAX
+    fits = {**record, "headline": at_limit}
+    assert check_results.entry_field_problems(fits, "2026-09-29") == []
+    assert check_results.entry_field_problems(
+        {**record, "headline": "two\nlines"}, "2026-09-29"
+    ) == ["T-009: headline must be one non-empty line"]
+    long = _changed_result(tmp_path, "T-009", headline=at_limit + "s")
+    monkeypatch.setattr(check_results, "RESULTS", long)
+    assert check_results.main() == 1
+    assert "T-009: headline is 91 characters, above 90" in capsys.readouterr().out
+
+
+def test_every_live_result_has_a_headline_within_the_ceiling() -> None:
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    for record in register["results"]:
+        assert 0 < len(record["headline"]) <= check_results.HEADLINE_MAX, record["id"]
+
+
+def test_grouped_results_lists_every_result_once_in_the_rendered_order() -> None:
+    """`grouped_results` is the grouping `RESULTS.md` is written from, not a copy of it.
+
+    Every entry appears exactly once, and reading the groups in order gives the ids in
+    the order the committed `RESULTS.md` tables list them, group headings included.
+    """
+    register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
+    groups = render_results.grouped_results(register)
+    grouped = [record["id"] for _, group in groups for record in group]
+    assert sorted(grouped) == sorted(record["id"] for record in register["results"])
+    assert len(grouped) == len(set(grouped))
+
+    committed = render_results.OUTPUT.read_text(encoding="utf-8")
+    tables = committed.split("## Next actions")[0]
+    assert grouped == re.findall(r"^\| (T-\d{3}) \|", tables, re.MULTILINE)
+    headings = re.findall(r"^##+ (.+)$", tables, re.MULTILINE)
+    titles = [title for title, _ in groups]
+    assert titles[0] == headings[0] == render_results.OURS
+    assert [h for h in headings if h in dict(render_results.OTHERS).values()] == titles[1:]
+
+
+def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:
+    register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
+    for title, group in render_results.grouped_results(register)[1:]:
+        replayed = [int(record["confirmation"][1]) >= 3 for record in group]
+        assert replayed == sorted(replayed), title
+
+
+def test_the_registration_backfill_inserts_only_missing_dates() -> None:
+    text = (
+        "results:\n"
+        "  - id: T-001\n"
+        "    registered: '2026-08-31'\n"
+        "    claim: a\n"
+        "  - id: T-002\n"
+        "    claim: b\n"
+    )
+    assert backfill_result_registration.insert_dates(text, {"T-002": "2026-09-03"}) == (
+        "results:\n"
+        "  - id: T-001\n"
+        "    registered: '2026-08-31'\n"
+        "    claim: a\n"
+        "  - id: T-002\n"
+        "    registered: '2026-09-03'\n"
+        "    claim: b\n"
+    )

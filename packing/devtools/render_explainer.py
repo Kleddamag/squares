@@ -1822,7 +1822,7 @@ class VerifiedLowerBound:
 
     value: Fraction
     decimal: str
-    #: The reference without its venue, `Kleddamag after Levy 2026`: who and when, which
+    #: The reference without its venue, `Kleddamag after Levy et al. 2026`: who and when, which
     #: is what the figure's other sources print (`Stromquist 1984/2003`).
     credit: str
 

@@ -170,7 +170,8 @@ to credit it as carefully as this project’s own.
   the source’s `short_credit`: the same authors and the first of the same links, ending
   in `et al.` (`Tokoharu after Levy, wand125 et al.`), a shape
   `devtools.build_bound_citations` enforces.
-  Every other renderer prints the full line.
+  The explainer’s figure, which prints the atlas’s own citation line, shows the same
+  shortened form; every other renderer prints the full line.
 - **Method credit travels with the result.** A result built with another author’s
   method, solver or checker credits them in the same line
   (`wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi`). This

@@ -180,7 +180,7 @@
             "T-037"
           ],
           "source_key": "[Kleddamag n11 2026]",
-          "text": "Kleddamag after Levy 2026, GitHub",
+          "text": "Kleddamag after Levy et al. 2026, GitHub",
           "value": "3.875"
         },
         "n": 11,
@@ -313,7 +313,7 @@
             "T-043"
           ],
           "source_key": "[Guzhou0806 n17 R068]",
-          "text": "Guzhou0806 after Kleddamag, Levy 2026, GitHub",
+          "text": "Guzhou0806 after Kleddamag et al. 2026, GitHub",
           "value": "4.66044"
         },
         "n": 17,
@@ -516,7 +516,7 @@
             "T-047"
           ],
           "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 2026, GitHub",
+          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
           "value": "5.508"
         },
         "n": 26,
@@ -547,7 +547,7 @@
             "T-045"
           ],
           "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy 2026, GitHub",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
           "value": "5.6"
         },
         "n": 27,
@@ -578,7 +578,7 @@
             "T-045"
           ],
           "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy 2026, GitHub",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
           "value": "5.6"
         },
         "n": 28,
@@ -609,7 +609,7 @@
             "T-047"
           ],
           "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 2026, GitHub",
+          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
           "value": "5.71"
         },
         "n": 29,
@@ -644,7 +644,7 @@
             "T-047"
           ],
           "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 2026, GitHub",
+          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
           "value": "5.71"
         },
         "n": 30,
@@ -665,7 +665,7 @@
             "T-045"
           ],
           "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy 2026, GitHub",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
           "value": "5.92"
         },
         "n": 31,
@@ -839,7 +839,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "6.5"
         },
         "n": 39,
@@ -870,7 +870,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "6.5"
         },
         "n": 40,
@@ -901,7 +901,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "6.5"
         },
         "n": 41,
@@ -1148,7 +1148,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.38"
         },
         "n": 52,
@@ -1179,7 +1179,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.38"
         },
         "n": 53,
@@ -1239,7 +1239,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.54"
         },
         "n": 55,
@@ -1270,7 +1270,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.62"
         },
         "n": 56,
@@ -1530,7 +1530,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.41"
         },
         "n": 68,
@@ -1561,7 +1561,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.41"
         },
         "n": 69,
@@ -1592,7 +1592,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.55"
         },
         "n": 70,
@@ -1623,7 +1623,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.55"
         },
         "n": 71,
@@ -1654,7 +1654,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.61"
         },
         "n": 72,

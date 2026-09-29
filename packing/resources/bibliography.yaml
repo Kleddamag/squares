@@ -20,8 +20,9 @@ last_reviewed: '2026-09-29'
 # agent, and every link the source names. Where `credit year, venue`, or the line with this
 # project's note, would not fit the atlas stage's 66 characters, `short_credit` is what the
 # stage prints instead: the same authors, `after`, the first of the same links, and
-# `et al.` (`Tokoharu after Levy, wand125 et al.`). The atlas stage alone shortens; every
-# other renderer prints `credit` whole. `devtools.build_bound_citations` checks both the
+# `et al.` (`Tokoharu after Levy, wand125 et al.`). Only the atlas stage shortens, and the
+# explainer's figure, which prints the stage's own line; every other renderer prints
+# `credit` whole. `devtools.build_bound_citations` checks both the
 # width and that shape. `lineage`, required on the source of a result
 # by others published on or after 22 August 2026, is `builds-on-project`,
 # `credits-project` or `independent`, as the source's own attribution files say; the

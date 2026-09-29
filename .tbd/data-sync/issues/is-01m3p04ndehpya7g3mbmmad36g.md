@@ -5,7 +5,7 @@ title: "W7: implement native exact rectangle-density coverage verifier"
 kind: feature
 status: in_progress
 priority: 1
-version: 11
+version: 12
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -18,7 +18,7 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:12:51.117Z
-updated_at: 2026-09-29T19:19:13.773Z
+updated_at: 2026-09-29T19:43:23.889Z
 started_at: 2026-09-29T07:14:10.458Z
 ---
 W7 block in docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md. Exact rational common-core polygon subdivision and axis event sweep, source-distinct from verify.cpp; library, CLI, refusal controls, proof contract review. Analytic full-net control and bounded retained input probe required before first checkpoint. Full large-certificate independent confirmation remains separate.
@@ -40,3 +40,5 @@ Proposed analytic control, not executed: n=58, L=4, B=1/2, one source rectangle 
 Full independent acceptance still requires one bound input to pass exact mass/admission and all 201 required angles with zero unresolved work, plus a complete source-bound receipt and an executable replay command. Target 1 suffices for the packing obstruction; the candidate's stored rhs=1001/1000 is not a proof of coverage. An actual uniform positive coverage margin would make common-core subdivision converge in principle, but does not predict a practical node budget. After a complete run, register new exact-algebraic evidence scoped only to the certificate/count actually checked and retain the existing interval-certified source replay separately. A native n11 success must not promote the entire n11/n26/n29 composite or the unrelated T-057 row claim.
 
 Final Astra-max next-step review selected think-gfpf: exactly two refinement levels on each of the 67 retained depth-capped boxes, unchanged common-core bound, 268 child evaluations and 30-second cooperative cap. Exact analytic control has parent 9/25 and each child 169/100. This experiment is predeclared but unexecuted. The queued depth-1 box prevents inferring full-angle cost from the 1000-node prefix.
+
+The two-level diagnostic think-gfpf met its predeclared local criterion: 15 of 67 depth-capped parents close after all 268 children are evaluated. This is diagnostic evidence only; complete native external coverage remains think-aqne. Next: design and cost a whole-angle traversal without treating the 1000-node prefix as a full-angle cost estimate.

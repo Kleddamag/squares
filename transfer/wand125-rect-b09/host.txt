@@ -1,0 +1,98 @@
+wand125 rectangle-certificate interval replay, batch b09 (think-20mv, Session 161 delegate)
+
+== exact commands (from packing/) ==
+python3 -m pip install --user --upgrade uv
+~/.local/bin/uv python install 3.14.7
+git submodule update --init --recursive   # vendor/kpress, required by uv sync
+~/.local/bin/uv sync --frozen --all-extras --group dev
+mkdir -p /tmp/replay && .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 --out /tmp/replay/sep28 --resume --replay --workers 4 --n 52 --n 59 --n 71 --n 39 > /tmp/replay/sep28.log 2>&1
+(one earlier launch wrapped the command in /usr/bin/time, which is absent; it exited 127 before running anything and /tmp/replay was deleted before the run recorded here)
+exit=0
+
+== timing (UTC) ==
+start: 2026-09-29T00:58:56Z
+end:   2026-09-29T07:04:26Z
+wall:  21930 s
+
+== per-case (audit.json) ==
+39 rect_n39_L663 PASS replay PASS VERIFIED angles 201 nodes 18162666 elapsed_s 3869.9370902869996
+52 rect_n52_L7535 PASS replay PASS VERIFIED angles 201 nodes 24539623 elapsed_s 3223.098805492
+59 rect_n59_L792 PASS replay PASS VERIFIED angles 201 nodes 28400348 elapsed_s 7008.324681166
+71 rect_n71_L8685 PASS replay PASS VERIFIED angles 201 nodes 26773005 elapsed_s 7826.599862772
+
+== versions ==
+checkout: 65526c34dd0f6ba4b1e6027e8a1a8a23c969db57 (branch claude/replay-wand125-rect-b09)
+vendor/kpress: 515f4a08aaf529f922b4380db7f7b7913b01abf5
+Python 3.14.7
+uv 0.12.20 (x86_64-unknown-linux-gnu)
+g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Linux vm 6.18.44-fc-v49 #1 SMP PREEMPT_DYNAMIC @0 x86_64 x86_64 x86_64 GNU/Linux
+
+== hardware ==
+nproc: 4
+               total        used        free      shared  buff/cache   available
+Mem:              15           0          12           0           2          15
+Swap:              0           0           0
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           52 bits physical, 57 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Xeon(R) Processor @ 2.10GHz
+CPU family:                              6
+Model:                                   207
+Thread(s) per core:                      1
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                2
+BogoMIPS:                                4200.00
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 wbnoinvd arat avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid cldemote movdiri movdir64b fsrm md_clear serialize tsxldtrk amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities
+Hypervisor vendor:                       KVM
+Virtualization type:                     full
+L1d cache:                               192 KiB (4 instances)
+L1i cache:                               128 KiB (4 instances)
+L2 cache:                                8 MiB (4 instances)
+L3 cache:                                260 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-3
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI Vulnerable
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+
+== sha256sum (all files in this directory except host.txt) ==
+385b89d0b0b5184eaee8c09aff6fd80416e524cfc368f3628a085c7bc02c96da  ./audit.json
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./rect_n39_L663/stderr.log
+6d758360d427e369431c782d456b023cf789b31a4f5a2f9dd050bd87b75e2d98  ./rect_n39_L663/stdout.log
+ed50837fe8fc87664b080f210ac22b31d833c388cf5e5711fa8c232c996a3bb9  ./rect_n39_L663/verification_summary.json
+40e4d94817f106e827e43eba74197643157d332c0eca2ea13b4431fe0d48f2f5  ./rect_n39_L663/verified_angles.jsonl
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./rect_n52_L7535/stderr.log
+70c1422ad1278bb3032a7869cd9815e7f725aac43c086e545eb09a7b301bee17  ./rect_n52_L7535/stdout.log
+a7757a36387e43ebe26c2b1bd2fb5dbfc063ccff55558eaaa903b7043e7a6ad0  ./rect_n52_L7535/verification_summary.json
+364290816e63f77d1d1c008c12b556ccc2660380d92ad3efed292b25f9465e6e  ./rect_n52_L7535/verified_angles.jsonl
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./rect_n59_L792/stderr.log
+7793033665eed6b410a03b8f0e220d4203a0101d28360ff87e48ac62b1f8d8af  ./rect_n59_L792/stdout.log
+d0595886661395b1d8c112fc4d0f39d67c422f8a1e705b4a7c235678299041a2  ./rect_n59_L792/verification_summary.json
+c6c726d9b95609bf235c0771a946bf9e79779be2d0c8da85addeab9837087777  ./rect_n59_L792/verified_angles.jsonl
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./rect_n71_L8685/stderr.log
+de87f5f4596669d700b365927bd993dda1819c465842dda89c9c6b05d6fb4e97  ./rect_n71_L8685/stdout.log
+3c2ef0ea7a2563462164765b4fc918e27f42514eeb0acda9fb4fc6689499268d  ./rect_n71_L8685/verification_summary.json
+88ab622f9292548407cae5a42c82d441f12bcf12d7dcf5a954dbf546a99ab6bd  ./rect_n71_L8685/verified_angles.jsonl
+a6e0f74083186bee09bca863c9da6f75cee5e6bbd89ff9b75ed78aa04e64d35c  ./sep28.log

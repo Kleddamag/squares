@@ -30,7 +30,6 @@ from devtools import render_results
 from devtools.render_explainer import repo_file
 from devtools.render_research_tables import load_cases
 from devtools.significance import headline as first_sentence
-from devtools.significance import scope_label
 from sqpack.yamlio import safe_load
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -59,6 +58,9 @@ INPUTS: tuple[Path, ...] = (
     PACKING / "devtools" / "render_research_tables.py",
     REPO / "epistemics.md",
 )
+
+#: A result about more cases than this links to the frontier atlas, not to each case.
+CASE_LINKS = 4
 
 #: The ASCII relations the register's prose uses, and their LaTeX.
 _RELATIONS = {">=": r"\ge", "<=": r"\le", ">": ">", "<": "<", "=": "="}
@@ -159,7 +161,30 @@ class Result:
 
     @property
     def scope(self) -> str:
-        return scope_label(self.record)
+        """The result's `n`, with runs of three or more consecutive counts as ranges."""
+        scope = self.record["scope"]
+        if "n_values" not in scope:
+            return f"{scope['n_min']}{EN_DASH}{scope['n_max']}"
+        return compress(scope["n_values"])
+
+    @property
+    def first_n(self) -> int:
+        scope = self.record["scope"]
+        return min(scope["n_values"]) if "n_values" in scope else scope["n_min"]
+
+
+def compress(values: list[int]) -> str:
+    """`18, 19, 20, 21, 26` as `18-21, 26` (en dash): a run of three or more becomes a range."""
+    runs: list[list[int]] = []
+    for n in sorted(values):
+        if runs and n == runs[-1][-1] + 1:
+            runs[-1].append(n)
+        else:
+            runs.append([n])
+    return ", ".join(
+        f"{run[0]}{EN_DASH}{run[-1]}" if len(run) >= 3 else ", ".join(map(str, run))
+        for run in runs
+    )
 
 
 @dataclass
@@ -190,7 +215,9 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
     """The places a reader checks a result: case files, evidence, sources, reviews."""
     links: list[Link] = []
     scope = record["scope"]
-    if "n_values" in scope:
+    if "n_values" in scope and len(scope["n_values"]) > CASE_LINKS:
+        links.append(Link(f"{len(scope['n_values'])} cases", "frontier.html"))
+    elif "n_values" in scope:
         links.extend(
             Link(f"n = {n}", repo_file(FRONTIER / f"n-{n:03d}.md")) for n in scope["n_values"]
         )
@@ -217,7 +244,13 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
     review = record.get("review_artifact")
     if review and review not in seen and (resolved := _repo_path(review)) is not None:
         extra.append(Link("review", repo_file(resolved), review))
-    links.extend(sorted(extra, key=lambda link: link.label == "review"))
+    extra.sort(key=lambda link: link.label == "review")
+    for label in ("source", "review"):
+        same = [i for i, link in enumerate(extra) if link.label == label]
+        if len(same) > 1:
+            for number, i in enumerate(same, start=1):
+                extra[i] = Link(f"{label} {number}", extra[i].url, extra[i].title)
+    links.extend(extra)
     return links
 
 

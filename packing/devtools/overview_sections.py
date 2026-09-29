@@ -161,13 +161,12 @@ def results_table(overview: Overview) -> str:
         )
         for result in members:
             record = result.record
-            first_n = result.scope.split(",")[0].split("-")[0].strip()
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" '
                 f'data-source="{"ours" if result.ours else "others"}" '
                 f'data-c="{_esc(record["confirmation"])}">'
                 f'<td data-value="{_esc(result.id)}">{_esc(result.id)}</td>'
-                f'<td class="num" data-value="{_esc(first_n)}">{_esc(result.scope)}</td>'
+                f'<td class="num" data-value="{result.first_n}">{_esc(result.scope)}</td>'
                 f'<td class="site-col-result"><details><summary>'
                 f"{tex_bounds(result.summary)}</summary>"
                 f"{_detail(result)}</details></td>"

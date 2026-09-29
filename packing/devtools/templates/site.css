@@ -342,7 +342,9 @@ body {
 }
 
 /* kpress draws a <details> as a bordered disclosure with a caps label; inside a table
-   row the summary is the result itself, so it reads as prose with only the chevron. */
+   row the summary is the result itself, so it reads as plain text with only the chevron.
+   It stays in the sans face: kpress sets math in a <details> or a table in sans, and
+   math matches the text around it. */
 .kpress .site-table details {
   border: 0;
   font-family: inherit;
@@ -352,7 +354,7 @@ body {
 .kpress .site-table summary {
   color: var(--kpress-doc-text);
   display: block;
-  font-family: var(--kpress-font-prose);
+  font-family: var(--kpress-font-sans);
   font-size: inherit;
   font-variant-caps: normal;
   font-weight: inherit;

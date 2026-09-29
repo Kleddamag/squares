@@ -48,6 +48,7 @@ WIDTHS = (1280, 390)
 PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
 _MATH_PENDING = probe(PROBES, "preview_site/math_pending")
+_MATH_FACE = probe(PROBES, "preview_site/math_face")
 #: How long a page may take to typeset all its math before it is shot as it stands.
 MATH_WAIT_MS = 20_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
@@ -146,7 +147,8 @@ def _settle_math(page: Page) -> int:
 
 def screenshots(output: Path, shots: Path, port: int) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
-    console errors, and any page wider than its viewport."""
+    console errors, math left untypeset or set in the other face from its text, and any
+    page wider than its viewport."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -172,6 +174,9 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
                     pending = _settle_math(page)
                     if pending:
                         errors.append(f"{name} @{width}: {pending} math spans never typeset")
+                    errors.extend(
+                        f"{name} @{width}: {mismatch}" for mismatch in page.evaluate(_MATH_FACE)
+                    )
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
                         errors.append(f"{name} @{width}: {overflow}px wider than the viewport")

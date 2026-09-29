@@ -1,5 +1,5 @@
 ---
-title: Session 164 — Upstream Merge and PR 246 Certification
+title: "Session 164 \u2014 Upstream Merge and PR 246 Certification"
 softschema:
   contract: packing.squares:AgentSession/v2
   schema: ../schemas/agent-session.schema.yaml
@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-29T22:50:05Z'
+  deadline_at: '2026-09-29T23:30:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-niqx
   status: in_progress
@@ -95,58 +95,50 @@ session:
     kill_condition: Any required failure prevents certification.
     fallback: Repair the named failure and rerun affected checks; retain explicit certification debt until
       a qualifying gate passes.
-    outcome: >-
-      Commit 5d276119c retains the regenerated atlas, release pin, reviewed fixture
-      repair and source-minimum clarification. The rerun passed all 51 selected push
-      steps: 2,959 tests passed, 6 skipped and 19 deselected in 856.20 seconds wall.
-      The merged branch was published; hosted certification remains in progress.
+    outcome: 'Commit 5d276119c retains the regenerated atlas, release pin, reviewed fixture repair and
+      source-minimum clarification. The rerun passed all 51 selected push steps: 2,959 tests passed, 6
+      skipped and 19 deselected in 856.20 seconds wall. The merged branch was published; hosted certification
+      remains in progress.'
     evidence:
     - packing/campaign/agent-sessions/session-164-push-final.log
     - packing/tests/test_synopsis_handoff.py
     stop_reason: Local merged-source push validation passed and was published.
-    next_action: Run the supervised efficiency slice beside hosted certification, then
-      reconcile its results before the final checkpoint.
+    next_action: Run the supervised efficiency slice beside hosted certification, then reconcile its results
+      before the final checkpoint.
   - workflow: pipeline-improvement
     focus: efficiency
     recording: contemporaneous
     clock_role: work
     bead: think-xcij
-    objective: >-
-      Review local validation scheduling under think-xcij and hosted job fanout under
-      think-tddk for preserved coverage, fail-closed errors and bounded resource use
-      while final PR checks run.
+    objective: Review local validation scheduling under think-xcij and hosted job fanout under think-tddk
+      for preserved coverage, fail-closed errors and bounded resource use while final PR checks run.
     status: completed
     entered_by: user_request
-    switch_reason: >-
-      The merged push tier passed and the user authorized an efficiency block while
-      hosted certification proceeds in parallel.
+    switch_reason: The merged push tier passed and the user authorized an efficiency block while hosted
+      certification proceeds in parallel.
     budget_minutes: 30
     started_at: '2026-09-29T21:06:56Z'
     deadline_at: '2026-09-29T21:36:56Z'
-    expected_output: >-
-      Reviewed efficiency changes with focused tests and an explicit before/after
-      coverage and resource account, or retained findings that block integration.
+    expected_output: Reviewed efficiency changes with focused tests and an explicit before/after coverage
+      and resource account, or retained findings that block integration.
     validation_command: cd packing && packing-validate --push --since 5d276119c
-    kill_condition: >-
-      Any missing validation step, false successful job, lost error propagation or
-      uncontrolled worker oversubscription blocks the optimization.
-    fallback: Keep the current scheduler and workflow behavior, retain the measured
-      finding, and repair only after a failing control names the fault.
-    outcome: >-
-      The local scheduler, conservative selector follow-up and hosted fanout passed
-      focused review. Local scheduler tests passed 28, selector tests passed 54, and
-      hosted workflow, shard and budget tests passed 93. The pending-measurement budget
-      contract passed 55 tests. All three source lanes passed Ruff and BasedPyright.
-      Actual collect-only coverage found 60 exhaustive nodes partitioned 2, 30 and 28
-      without overlap or omission. No speedup is claimed; the integrated candidate
-      push and hosted fanout have not run yet.
+    kill_condition: Any missing validation step, false successful job, lost error propagation or uncontrolled
+      worker oversubscription blocks the optimization.
+    fallback: Keep the current scheduler and workflow behavior, retain the measured finding, and repair
+      only after a failing control names the fault.
+    outcome: The local scheduler, conservative selector follow-up and hosted fanout passed focused review.
+      Local scheduler tests passed 28, selector tests passed 54, and hosted workflow, shard and budget
+      tests passed 93. The pending-measurement budget contract passed 55 tests. All three source lanes
+      passed Ruff and BasedPyright. Actual collect-only coverage found 60 exhaustive nodes partitioned
+      2, 30 and 28 without overlap or omission. No speedup is claimed; the integrated candidate push and
+      hosted fanout have not run yet.
     evidence:
     - docs/project/reviews/review-2026-09-29-validation-parallelism.md
     - packing/tests/test_deep_gate_workflow.py
     - packing/tests/test_reachable_walker_evidence.py
     stop_reason: Source review and focused contract checks completed; integrated validation is next.
-    next_action: Run the integrated default push tier on the frozen candidate, publish only after it
-      passes, and obtain hosted evidence for the new workflow.
+    next_action: Run the integrated default push tier on the frozen candidate, publish only after it passes,
+      and obtain hosted evidence for the new workflow.
   - workflow: pipeline-improvement
     focus: correctness
     recording: contemporaneous
@@ -168,50 +160,79 @@ session:
       match the candidate commit.
     fallback: Retain the failed receipt, repair the named defect and rerun affected focused checks before
       another integrated push attempt.
-    outcome: >-
-      Candidate 1afb75ca6 passed all 7,714 selected tests with 9 skips, but failed the
-      new review's missing document-map entry. Documentation-only repair 9174140a8
-      passed all 51 selected steps and 1,733 tests in 181.36 seconds and was published.
-      Required packing 36636555656, page 36636555705 and deferred 36636552951 began
-      concurrently. The deferred resolver selected merge commit
-      0376416ec9ab3220bb87e52888ddb72919d3e861, and all nine workers started.
+    outcome: Candidate 1afb75ca6 passed all 7,714 selected tests with 9 skips, but failed the new review's
+      missing document-map entry. Documentation-only repair 9174140a8 passed all 51 selected steps and
+      1,733 tests in 181.36 seconds and was published. Required packing 36636555656, page 36636555705
+      and deferred 36636552951 began concurrently. The deferred resolver selected merge commit 0376416ec9ab3220bb87e52888ddb72919d3e861,
+      and all nine workers started.
     evidence:
     - docs/project/reviews/review-2026-09-29-validation-parallelism.md
     - packing/campaign/agent-sessions/session-164-efficiency-push.log
     stop_reason: The repaired candidate is published and its hosted checks are running.
-    next_action: Integrate the independently reviewed parallel follow-ups and measure the new
-      worker allocation while the hosted fanout runs.
+    next_action: Integrate the independently reviewed parallel follow-ups and measure the new worker allocation
+      while the hosted fanout runs.
   - workflow: pipeline-improvement
     focus: efficiency
     recording: contemporaneous
     clock_role: work
     bead: think-xcij
-    objective: Integrate main/daily workflow parity, child-pytest timing receipts and exclusive
-      pool-heavy test allocation, retaining exact coverage and measuring the resulting gate.
-    status: in_progress
+    objective: Integrate main/daily workflow parity, child-pytest timing receipts and exclusive pool-heavy
+      test allocation, retaining exact coverage and measuring the resulting gate.
+    status: stopped
     entered_by: evidence_checkpoint
-    switch_reason: The broad gate exposed a CPU-active tail and missing node timing; the
-      first hosted fanout can run while these isolated follow-ups complete.
+    switch_reason: The broad gate exposed a CPU-active tail and missing node timing; the first hosted
+      fanout can run while these isolated follow-ups complete.
     budget_minutes: 30
     started_at: '2026-09-29T21:58:08Z'
     deadline_at: '2026-09-29T22:28:08Z'
-    expected_output: Reviewed integrated source, a complete local push receipt with phase
-      allocation and node timing, and source-specific hosted results or explicit failures.
+    expected_output: Reviewed integrated source, a complete local push receipt with phase allocation and
+      node timing, and source-specific hosted results or explicit failures.
     validation_command: cd packing && packing-validate --push --since 9174140a8
-    kill_condition: Missing or duplicated test coverage, hidden child failures, uncontrolled
-      worker multiplication or a receipt bound to the wrong source prevents publication.
-    fallback: Retain the last passing published checkpoint and repair the named failing
-      contract without deleting mathematical checks.
+    kill_condition: Missing or duplicated test coverage, hidden child failures, uncontrolled worker multiplication
+      or a receipt bound to the wrong source prevents publication.
+    fallback: Retain the last passing published checkpoint and repair the named failing contract without
+      deleting mathematical checks.
+    outcome: 'Candidate 91bb57cb2 failed its push gate in 366.08 seconds: 7,703 tests passed, 9 skipped,
+      14 failed and 23 setup errors. The normal phase stopped the pool phase. The two causes were frozen
+      pyproject marker bytes and inherited receipt variables in runner unit tests. Independently reviewed
+      repairs restore all 19 proof inputs and isolate only unit-test environments; 28 receipt tests and
+      51 runner/progress tests pass.'
+    evidence:
+    - docs/project/reviews/review-2026-09-29-validation-parallelism.md
+    - packing/campaign/agent-sessions/session-164-pool-phase-initial.log
+    stop_reason: Integrated validation found two test-configuration failures; both fixes are committed
+      for a new frozen run.
+    next_action: Validate the repaired candidate and publish, then exercise the main/daily fanout.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-xcij
+    objective: Validate the repaired worker allocation and receipts, publish the integrated source, and
+      run the main/daily fanout while recording hosted measurements and independent review.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Both integration defects have reviewed fixes; the first nine-worker hosted deferred
+      run passed with 1,133 seconds gating wall.
+    budget_minutes: 30
+    started_at: '2026-09-29T22:29:36Z'
+    deadline_at: '2026-09-29T22:59:36Z'
+    expected_output: Reviewed integrated source, a complete local push receipt with phase allocation and
+      node timing, and source-specific hosted results or explicit failures.
+    validation_command: cd packing && packing-validate --push --since 9174140a8
+    kill_condition: Missing or duplicated test coverage, hidden child failures, uncontrolled worker multiplication
+      or a receipt bound to the wrong source prevents publication.
+    fallback: Retain the last passing published checkpoint and repair the named failing contract without
+      deleting mathematical checks.
     outcome: null
     evidence:
     - docs/project/reviews/review-2026-09-29-validation-parallelism.md
     stop_reason: null
-    next_action: Measure the integrated think-08ht, think-14lz, think-ysvk and think-0atx
-      candidate while hosted checks continue; use explicit run IDs until think-2r96
-      completes event-aware recent-run sampling.
+    next_action: Run the repaired push gate; publish on pass and dispatch the main/daily workflow against
+      the same source.
   budget:
-    wall_minutes: 165
-    max_cycles: 6
+    wall_minutes: 205
+    max_cycles: 7
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
@@ -332,13 +353,11 @@ session:
     operator: GPT-6 Sol high (reference_audit)
     status: completed
     recording: contemporaneous
-    outcome: >-
-      A resolver pins one commit for every worker. Four jobs partition the remaining
-      whole deferred Steps; three exhaustive jobs partition complete test files with
-      the existing pre-collection plugin and a stable fallback for new files. Workers
-      compare HEAD with the resolved SHA before validation, and the aggregate requires
-      every prerequisite to succeed. Per-job ceilings are declared as pending first
-      measurements under think-tddk rather than fabricated observed walls.
+    outcome: A resolver pins one commit for every worker. Four jobs partition the remaining whole deferred
+      Steps; three exhaustive jobs partition complete test files with the existing pre-collection plugin
+      and a stable fallback for new files. Workers compare HEAD with the resolved SHA before validation,
+      and the aggregate requires every prerequisite to succeed. Per-job ceilings are declared as pending
+      first measurements under think-tddk rather than fabricated observed walls.
     evidence:
     - .github/workflows/deep-gate.yml
     - packing/tests/test_deep_gate_workflow.py
@@ -383,15 +402,13 @@ session:
     operator: GPT-6 Sol high (native_sol)
     status: completed
     recording: contemporaneous
-    outcome: >-
-      The selector parses and unparses test source after removing only the exact benign
-      metadata-version import, then applies the old raw walker-marker rule. This drops
-      comments while retaining strings, bytes, helper calls and dynamic-import names.
-      A read-only comparison found exactly two existing files no longer selected by
-      the old raw-marker rule: test_change_scoped_selection.py has only a comment,
-      and test_command_help.py imports importlib.metadata.version. The attack-string
-      test remains selected. The retained-path selection is 81 of 388 test files,
-      versus 82 of 387 before this change and its new regression test file.
+    outcome: 'The selector parses and unparses test source after removing only the exact benign metadata-version
+      import, then applies the old raw walker-marker rule. This drops comments while retaining strings,
+      bytes, helper calls and dynamic-import names. A read-only comparison found exactly two existing
+      files no longer selected by the old raw-marker rule: test_change_scoped_selection.py has only a
+      comment, and test_command_help.py imports importlib.metadata.version. The attack-string test remains
+      selected. The retained-path selection is 81 of 388 test files, versus 82 of 387 before this change
+      and its new regression test file.'
     evidence:
     - packing/devtools/reachable_tests.py
     - packing/tests/test_reachable_walker_evidence.py
@@ -403,8 +420,8 @@ session:
       agent.'
     - Independent old-versus-new marker audit over both configured Python test roots found only the two
       intentional removals.
-    uncertainty: The final candidate push receipt and integrated gate are pending; this reachability
-      refinement is no mathematical or performance proof.
+    uncertainty: The final candidate push receipt and integrated gate are pending; this reachability refinement
+      is no mathematical or performance proof.
     elapsed_seconds: null
     elapsed_quality: unavailable
     next_action: Compare the candidate push selected-file receipt to its predecessor and run the integrated
@@ -432,27 +449,25 @@ session:
   - 'Records gate: 35 of 82 steps passed in 16.65 seconds; this is not full certification.'
   - 'Initial merged push: 2,957 tests passed, 2 failed, 6 skipped, 19 deselected; 818.46 seconds wall.
     Both failures are retained explicitly.'
-  - 'Final merged push at 5d276119c: 51 of 82 selected steps passed; 2,959 tests passed,
-    6 skipped, 19 deselected; 856.20 seconds wall. This named tier is not the full gate.'
-  - 'Published 5d276119c passed required packing run 36630523514, page run 36630523486,
-    and deferred run 36630574302; the latter completed all four workers and its aggregate
-    at 2026-09-29T21:35:54Z. These results certify the predecessor integration tree.'
-  - 'Efficiency candidate 1afb75ca6: default broad push passed 7,714 tests with 9 skips
-    in 968.77 seconds; total wall 1,034.70 seconds. The sole failed step was an unmapped
-    new review document. The document-map omission is repaired separately; the original
-    failed log is retained as session-164-efficiency-push.log. Different selection from
-    the earlier 2,959-test run prevents a matched speedup claim.'
-  - 'Parallel efficiency follow-ups: think-08ht main/daily fanout passed independent Sol
-    review and five focused tests in an isolated checkout; think-14lz child-pytest
-    observability and think-ysvk pool-heavy allocation are in implementation and review.'
-  - 'Integrated follow-up contracts: 283 passed in 54.36 seconds. At fbf27b276, actual
-    collection partitions 7,744 non-exhaustive nodes into 7,743 normal nodes and one
-    pool-heavy atlas node with no omission or overlap. The later wall reporter adds
-    its own tests; final execution counts will be recorded separately.'
-  - 'Post-merge reporting think-0atx passed 74 focused tests, budget checks, Ruff and
-    BasedPyright, and independent Sol review. Review corrected unrelated-job inclusion,
-    missing or duplicated prerequisite inventory, unfinished walls, and critical endpoint
-    attribution. Automatic recent sampling remains think-2r96; explicit run IDs work.'
+  - 'Final merged push at 5d276119c: 51 of 82 selected steps passed; 2,959 tests passed, 6 skipped, 19
+    deselected; 856.20 seconds wall. This named tier is not the full gate.'
+  - Published 5d276119c passed required packing run 36630523514, page run 36630523486, and deferred run
+    36630574302; the latter completed all four workers and its aggregate at 2026-09-29T21:35:54Z. These
+    results certify the predecessor integration tree.
+  - 'Efficiency candidate 1afb75ca6: default broad push passed 7,714 tests with 9 skips in 968.77 seconds;
+    total wall 1,034.70 seconds. The sole failed step was an unmapped new review document. The document-map
+    omission is repaired separately; the original failed log is retained as session-164-efficiency-push.log.
+    Different selection from the earlier 2,959-test run prevents a matched speedup claim.'
+  - 'Parallel efficiency follow-ups: think-08ht main/daily fanout passed independent Sol review and five
+    focused tests in an isolated checkout; think-14lz child-pytest observability and think-ysvk pool-heavy
+    allocation are in implementation and review.'
+  - 'Integrated follow-up contracts: 283 passed in 54.36 seconds. At fbf27b276, actual collection partitions
+    7,744 non-exhaustive nodes into 7,743 normal nodes and one pool-heavy atlas node with no omission
+    or overlap. The later wall reporter adds its own tests; final execution counts will be recorded separately.'
+  - Post-merge reporting think-0atx passed 74 focused tests, budget checks, Ruff and BasedPyright, and
+    independent Sol review. Review corrected unrelated-job inclusion, missing or duplicated prerequisite
+    inventory, unfinished walls, and critical endpoint attribution. Automatic recent sampling remains
+    think-2r96; explicit run IDs work.
   - 'Sol synthetic-fixture repair: all 39 synopsis-handoff tests passed in 5.38 seconds; Ruff and BasedPyright
     clean.'
   - Final read-only Sol gap audit identified one stale minimum-independence sentence; the corrected review

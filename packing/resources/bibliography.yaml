@@ -161,7 +161,8 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: Guzhou0806 after Kleddamag, Levy
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
+    short_credit: Guzhou0806 after Kleddamag et al.
     lineage: builds-on-project
     note: >-
       The R068 release of Guzhou0806/n17-square-packing at 815b1626, 2026-09-28, whose
@@ -169,20 +170,25 @@ sources:
       N17 project, continuing Kleddamag's public 4.66001 charge (Kleddamag building on
       Squares Project (Joshua Levy), Mira and Guzhou0806): the package credits Kleddamag
       for the charge, proof and Node BigInt checker, and its C++ checker is Guzhou0806's
-      own. It discloses AI assistance and says its publisher ran no local validation and
-      did not observe CI (web/n17-guzhou-r068-2026-09-28/README.md).
+      own. Its ATTRIBUTION.md keeps the historical attribution in upstream/notices, whose
+      ATTRIBUTION.md credits Mira-acc/17squares, Guzhou0806's R038 and Joshua Levy, the
+      squares project (R068-C010/upstream/notices/ATTRIBUTION.md, lines 7-52). It
+      discloses AI assistance and says its publisher ran no local validation and did not
+      observe CI (web/n17-guzhou-r068-2026-09-28/README.md).
   - key: '[Guzhou0806 n17 R067]'
     authors: [Guzhou0806]
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: Guzhou0806 after Kleddamag, Levy
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
     lineage: builds-on-project
     note: >-
       The R067 release of Guzhou0806/n17-square-packing at d4e2c287, 2026-09-28, whose
       certificates/R067-4.66018/ proves s(17) > 233009/50000 on Kleddamag's 4.66001
-      charge unchanged, named by "Guzhou0806 / N17 project with AI assistance"; superseded
-      by R068 the same day and retained in the same packet
+      charge unchanged, named by "Guzhou0806 / N17 project with AI assistance"; its
+      ATTRIBUTION.md retains the "historical notices for Mira, Joshua Levy and this
+      project" in upstream_notices (R067-4.66018/ATTRIBUTION.md, line 9). Superseded by
+      R068 the same day and retained in the same packet
       (web/n17-guzhou-r068-2026-09-28/README.md).
   - key: '[evand square-packing 2026]'
     authors: [Daniel]

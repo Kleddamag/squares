@@ -649,7 +649,9 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
     ("n", "author", "entry"),
     [
         (11, "Kleddamag after Levy", "T-037"),
-        (17, "Guzhou0806 after Kleddamag, Levy", "T-043"),
+        # The whole credit names Mira between them; with the confirmation it would run to
+        # 69 characters, so the stage prints the source's short credit.
+        (17, "Guzhou0806 after Kleddamag et al.", "T-043"),
         (26, "Tokoharu after Levy, wand125", "T-047"),
         (29, "Tokoharu after Levy, wand125", "T-047"),
     ],
@@ -672,6 +674,8 @@ def test_promoted_external_bounds_keep_the_sources_credit(
     )
     assert lower["result"] is None
     assert lower["confirmed_by"] == [entry]
+    source = _register().sources[lower["source_key"]]
+    assert author in {source.credited, source.short_credit}
 
 
 def test_n29_credits_finder_and_optimizer_and_takes_the_registers_verdict() -> None:

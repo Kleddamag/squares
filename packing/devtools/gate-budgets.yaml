@@ -727,17 +727,36 @@ tiers:
   # on a four-cpu runner; moving it to a one-step job gives it the runner without changing
   # the edit tier, which still contains the same type floor.
   ceiling_seconds: 111.0
-  measured_seconds: 60.16
-  measured_on: '2026-09-22'
+  measured_seconds: 76.5
+  measured_on: '2026-09-29'
   measured_where: >-
-    Geometric mean of two consecutive hosted packing-validate --typecheck walls on PR
-    222: 44.55 s in run 35803857967 and 81.25 s in run 35805712899, job typecheck. Both
-    passed BasedPyright with zero findings and failed only the cost band, first as stale
-    against 82.58 s and then as drift against the one-reading 44.5 s repair. Their 1.82x
-    spread demonstrates why neither endpoint is a stable record. The 111 s ceiling is
-    restored from the pre-incident declaration; at 1.85x of the two-reading record it
-    remains inside the register's 2.0x maximum headroom without narrowing the wall around
-    one unusually fast runner.
+    Geometric mean of eighteen hosted walls of job typecheck at the reference shape on
+    2026-09-29, every one passing BasedPyright with zero findings: 84.65, 64.81 and 85.95
+    s (runs 36509127227, 36509367543, 36509633134), 84.81 (36525330636), 87.65
+    (36526959043), 56.67 (36526988663), 75.84 (36527468932), 70.65 (36528151533), 81.52
+    (36529992978), 72.66 (36535306115), 86.06 (36539433074), 86.29 (36541431891), 86.91
+    (36544631396), 64.62 (36546217991), 62.02 (36553628497), 85.64 (36566071484), 62.44
+    (36575687339) and 92.27 (36589358102), the last failing the drift rule at 1.53x
+    against 60.16 s. Two runner regimes, about 62 and 86 s, on unchanged steps; the
+    record has been re-based four times since 2026-09-16 (67.26, 55.67, 82.58, 60.16)
+    because each point sat in one regime and the next run came from the other. So the
+    tier records its band (`think-be1s`, D-472), and the 111 s ceiling stays where it was
+    held on purpose: it binds before the band's 138.4 s drift edge, which the register
+    allows.
+  measured_band: {low: 56.67, high: 92.27}
+  attribution:
+    cause: >-
+      No step grew. The record it supersedes, 60.16 s, was the mean of one fast and one
+      slow reading (44.55 and 81.25 s), so it sat under the slow regime by construction;
+      eighteen readings on one day at the reference shape put the tier's centre at 76.5 s
+      with a 1.63x spread, which the band now carries. The rise is a re-centring on more
+      evidence, not a regression; the one step's wall is the tier's wall.
+    unit: step-seconds
+    source: >-
+      The `TOTAL (wall)` line of job typecheck in the eighteen runs named in
+      measured_where; the tier runs one step, so its wall is that step's.
+    grew:
+    - {name: type floor (basedpyright), before: 60.16, after: 76.5}
   history:
   - measured_seconds: 67.26
     measured_on: '2026-09-16'
@@ -786,6 +805,15 @@ tiers:
         (after); the tier runs one step, so its wall is that step's.
       grew:
       - {name: type floor (basedpyright), before: 65.33, after: 82.58}
+  - measured_seconds: 60.16
+    measured_on: '2026-09-22'
+    measured_where: >-
+      Geometric mean of two consecutive hosted packing-validate --typecheck walls on PR
+      222: 44.55 s in run 35803857967 and 81.25 s in run 35805712899, job typecheck.
+      Both passed BasedPyright with zero findings and failed only the cost band, first as
+      stale against 82.58 s and then as drift against the one-reading 44.5 s repair.
+      Their 1.82x spread demonstrates why neither endpoint is a stable record. The 111 s
+      ceiling is restored from the pre-incident declaration.
   reference: {jobs: 1, inner_jobs: 1, cpus: 4}
   argument: >-
     The type floor, isolated because it is one of the checks queue's largest units and no

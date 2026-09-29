@@ -6,7 +6,8 @@ derives C0 through C5, requires explanations for declared-only V0 and V2, and
 refuses unsupported promotion or unexplained understatement. It also resolves
 evidence, repository-file and `produced_by` references -- the campaign records a
 result came out of, which must exist -- requires retained controls at C3 and
-above, restricts C5 to mapped review artifacts, and rejects unknown result ids
+above, restricts C5 to mapped review artifacts, requires each entry's
+`registered` date and bounds its `headline`, and rejects unknown result ids
 in the reader tier. Human review owns evidence relevance, claim coverage,
 composition, significance, and novelty.
 
@@ -18,6 +19,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable
+from datetime import date
 from pathlib import Path, PurePosixPath
 
 from devtools.build_bound_citations import RECENT_SINCE
@@ -49,6 +51,8 @@ DECLARED_ONLY_V = {"V0", "V2"}
 # Others"). `common-knowledge` results owe no citation either way.
 ATTRIBUTED_NOVELTY = "previously-published"
 FIRST_PARTY_NOVELTY = {"apparently-novel", "confirmed-novel"}
+#: The longest `headline` a table cell takes; the schema carries the same ceiling.
+HEADLINE_MAX = 90
 
 
 def _rank(rung: str) -> int:
@@ -248,6 +252,42 @@ def coverage_problems(
     return problems
 
 
+def _iso_date(value: object) -> date | None:
+    try:
+        return date.fromisoformat(str(value))
+    except ValueError:
+        return None
+
+
+def entry_field_problems(record: dict, last_reviewed: str) -> list[str]:
+    """What is wrong with a result's `registered` date and `headline`.
+
+    A registration is a real calendar date no later than the register's own
+    `last_reviewed`, since a result cannot enter a record reviewed before it existed.
+    A headline is one line, short enough for a table cell.
+    """
+    rid = record["id"]
+    problems: list[str] = []
+    registered = record.get("registered")
+    if registered is None:
+        problems.append(f"{rid}: registered is required")
+    elif (when := _iso_date(registered)) is None:
+        problems.append(f"{rid}: registered is not a calendar date: {registered}")
+    elif (reviewed := _iso_date(last_reviewed)) is not None and when > reviewed:
+        problems.append(
+            f"{rid}: registered {when.isoformat()} is after the register's "
+            f"last_reviewed {reviewed.isoformat()}"
+        )
+    headline = record.get("headline")
+    if headline is not None:
+        text = str(headline)
+        if not text.strip() or "\n" in text:
+            problems.append(f"{rid}: headline must be one non-empty line")
+        elif len(text) > HEADLINE_MAX:
+            problems.append(f"{rid}: headline is {len(text)} characters, above {HEADLINE_MAX}")
+    return problems
+
+
 def derive_verification(entries: list[dict]) -> str:
     if any(entry.get("method") == "proof-assistant-checked" for entry in entries):
         return "V5"
@@ -316,6 +356,7 @@ def main() -> int:
             )
 
         problems.extend(attribution_problems(record, sources))
+        problems.extend(entry_field_problems(record, str(register["last_reviewed"])))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):

@@ -520,17 +520,37 @@ body {
     grid-template-columns: 1fr;
   }
 }
-.site-atlas img {
-  display: block;
-  margin-inline: auto;
-  max-width: min(100%, 52rem);
-  height: auto;
+/* The two posters side by side, each opening its PDF; stacked on a phone. */
+.site-atlas {
+  display: grid;
+  gap: 1.5rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+/* The posters differ in shape, so each caption keeps to the foot of its column and the
+   two line up. */
+.site-atlas figure {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 .site-atlas figcaption {
+  margin-block-start: auto;
+  padding-block-start: 0.5rem;
+}
+.site-atlas img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.site-atlas :is(figcaption, .site-atlas-note) {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   text-align: center;
+}
+.site-atlas .site-atlas-note {
+  grid-column: 1 / -1;
+  margin: 0;
 }
 .site-recent {
   font-size: 0.95em;

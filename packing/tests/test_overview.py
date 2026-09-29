@@ -71,6 +71,17 @@ def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
     assert hero.count("<svg ") == 1
 
 
+def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
+    """The PDFs open in the browser: typed as PDF, and never marked for download."""
+    atlas = page.split('class="site-wide site-atlas"', 1)[1].split(
+        'class="site-atlas-note"', maxsplit=1
+    )[0]
+    for stem in ("known-best-1-100", "known-best-1-324"):
+        assert f'<img src="{stem}.png"' in atlas
+        assert atlas.count(f'<a href="{stem}.pdf" type="application/pdf">') == 2
+    assert re.search(r"<a\b[^>]*\sdownload\b", page) is None
+
+
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     article = re.sub(r"<script.*?</script>", "", page, flags=re.DOTALL).split("<article", 1)[1]
     assert not re.search(r"\{\{[A-Z0-9_]+\}\}", page)

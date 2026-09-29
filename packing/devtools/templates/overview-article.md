@@ -40,10 +40,17 @@ Every result registered recently, newest first:
 
 ## The Atlas
 
-<figure class="site-wide site-atlas">
-<a href="known-best-1-100.pdf"><img src="known-best-1-100.png" alt="One hundred known-best square packings, n = 1 to 100, each labelled with its best-known side and, where the case is open, its strongest verified lower bound." loading="lazy"></a>
-<figcaption>The best packings known for n = 1 to 100. A star marks a verified lower bound proved since 22 August 2026. Also as a <a href="known-best-1-100.pdf">PDF</a>, the full <a href="known-best-1-324.pdf">n = 1 to 324 poster</a>, and a film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a>. Every case is in the <a href="frontier.html">frontier atlas</a>.</figcaption>
+<div class="site-wide site-atlas">
+<figure>
+<a href="known-best-1-100.pdf" type="application/pdf"><img src="known-best-1-100.png" alt="One hundred known-best square packings, n = 1 to 100, each labelled with its best-known side and, where the case is open, its strongest verified lower bound." loading="lazy"></a>
+<figcaption>n = 1 to 100 · <a href="known-best-1-100.pdf" type="application/pdf">PDF</a></figcaption>
 </figure>
+<figure>
+<a href="known-best-1-324.pdf" type="application/pdf"><img src="known-best-1-324.png" alt="Every tracked case, n = 1 to 324, each drawn as its best-known square packing." loading="lazy"></a>
+<figcaption>n = 1 to 324 · <a href="known-best-1-324.pdf" type="application/pdf">PDF</a></figcaption>
+</figure>
+<p class="site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a>, and every case is in the <a href="frontier.html">frontier atlas</a>.</p>
+</div>
 
 ## Every Result
 

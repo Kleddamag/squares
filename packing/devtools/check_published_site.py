@@ -17,7 +17,7 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   `sqpack.release` names and the canonical URL its renderer wrote;
 - every repository link on every page and in the Markdown edition names the expected
   commit, and each on the explainer, its Markdown edition, the overview and the frontier
-  atlas resolves on GitHub. The tutorial's and synopsis's 1,100-odd links are resolved
+  atlas resolves on GitHub. The tutorial's links are resolved
   against the build commit when they are rendered, so they are not asked again here;
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
@@ -76,9 +76,9 @@ EXPLAINER = PAGE_URL.removeprefix(SITE_URL)
 #: added there is checked here without an edit. `index.html` is fetched as the root.
 SITE_PAGES = tuple(render_overview.PAGES)
 
-#: The pages whose repository links are each asked of GitHub. The tutorial and synopsis
-#: are left out: their links are checked offline, against the build commit's tree, when
-#: they are rendered, and asking again would be over a thousand requests per deploy.
+#: The pages whose repository links are each asked of GitHub. The tutorial is left
+#: out: its links are checked offline, against the build commit's tree, when it is
+#: rendered, and asking again would cost a request per link on every deploy.
 LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html"})
 
 #: Every file the deploy serves beside the explainer, by name.

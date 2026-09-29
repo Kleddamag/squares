@@ -559,3 +559,19 @@ body {
 .site-frontier .site-detail dd {
   overflow-wrap: anywhere;
 }
+
+/* A document card is one link: the whole card is the target. */
+.kpress a.site-doc-card {
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-decoration: none;
+}
+.kpress a.site-doc-card:hover,
+.kpress a.site-doc-card:focus-visible {
+  border-color: var(--kpress-doc-accent);
+}
+.kpress a.site-doc-card .site-card-value {
+  color: var(--kpress-doc-accent);
+}

@@ -16,6 +16,7 @@ from fractions import Fraction
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
+    REPO,
     Overview,
     Result,
     Stats,
@@ -270,3 +271,31 @@ def recent_list(overview: Overview, count: int = 8) -> str:
         for r in newest
     )
     return f'<ul class="site-recent">{items}</ul>'
+
+
+#: The repository's reader documents, as the overview's cards show them: the file, a
+#: label, and one line on what a reader finds there. README and the synopsis lead.
+DOCUMENTS: tuple[tuple[str, str, str], ...] = (
+    ("README.md", "The project", "What the project is, how it works, and where to start."),
+    ("SYNOPSIS.md", "The synopsis", "The full research record: methods, claims and status."),
+    ("packing/frontier/RESULTS.md", "Results", "Every registered result with its rungs."),
+    ("packing/frontier/STATUS.md", "The frontier", "Every case to 324, with provenance."),
+    ("epistemics.md", "Epistemics", "How each result is verified, confirmed and scored."),
+    ("conventions.md", "Conventions", "Record formats, identifiers and naming."),
+    ("development.md", "Development", "Building, testing and validating the code."),
+    ("defects.md", "Defect log", "Every defect found in the toolchain, one line each."),
+)
+
+
+def document_cards() -> str:
+    """One card per reader document, each a permalink to the file on GitHub."""
+    from devtools.render_explainer import repo_file  # noqa: PLC0415
+
+    cards = "".join(
+        f'<a class="site-card site-doc-card" href="{_esc(repo_file(REPO / path))}">'
+        f'<span class="site-card-label">{_esc(path.rsplit("/", 1)[-1])}</span>'
+        f'<span class="site-card-value">{_esc(label)}</span>'
+        f'<span class="site-card-note">{_esc(note)}</span></a>'
+        for path, label, note in DOCUMENTS
+    )
+    return f'<div class="site-cards site-wide">{cards}</div>'

@@ -26,8 +26,7 @@ name: Certificate page
   # the two; add the input there and the test names what to add here. Four of the
   # entries above are the ones that comparison found already missing (think-bl0n).
   #
-  # The site's own pages (the overview at `/`, the tutorial, the synopsis, the frontier
-  # atlas) are published from the same run, so their inputs are here too: the register,
+  # The site's own pages (the overview at `/`, the tutorial, the frontier atlas) are published from the same run, so their inputs are here too: the register,
   # the case records and the evidence they cite, the bibliography that credits others'
   # results, the two reader documents, and the modules that format them. They are
   # declared by `render_overview.inputs()` and compared the same way, by
@@ -82,7 +81,6 @@ name: Certificate page
       - packing/resources/bibliography.yaml
       - epistemics.md
       - TUTORIAL.md
-      - SYNOPSIS.md
       - packing/devtools/templates/fonts/**
       - packing/atlas/known-best/known-best-1-100.svg
       - packing/atlas/known-best/known-best-1-100.png
@@ -427,7 +425,7 @@ jobs:
       # The same partial checkout as `prepare`, for the same reason. The one file the
       # render reads under `packing/resources` is `bibliography.yaml`, a top-level file the
       # pattern keeps (2026-09-29, every file the render opened, audited). The tutorial's
-      # and synopsis's repository links are resolved against the build commit's tree with
+      # repository links are resolved against the build commit's tree with
       # `git ls-tree`, which reads only tree objects: a blobless clone of depth one already
       # holds every tree of that commit, so the render needs no history and fetches none.
       - name: Check out the repository

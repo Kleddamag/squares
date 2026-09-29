@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the site's own pages: the overview, the frontier atlas, the tutorial and the synopsis.
+"""Render the site's own pages: the overview, the frontier atlas and the tutorial.
 
 The published site used to have one top-level page, the n = 11 explainer. This renderer
 adds the front door and the pages around it, as the plan in
@@ -9,7 +9,7 @@ adds the front door and the pages around it, as the plan in
   the verification statistics, generated from the register;
 - `frontier.html`, the frontier atlas: one row for every case, from its
   `SquarePackingCase/v2` record;
-- `tutorial.html` and `synopsis.html`, the two reader documents rendered as pages.
+- `tutorial.html`, the tutorial rendered as a page.
 
 Every page is a kpress standalone page with its assets inlined, so it opens the same
 way from a file, from GitHub Pages and from an artifact host. The explainer's paper
@@ -50,7 +50,7 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 REPO_URL = "https://github.com/jlevy/squares"
-SITE_NAME = "The Squares Project"
+SITE_NAME = "Square Packing"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
@@ -67,7 +67,6 @@ SITE_PAGES: tuple[str, ...] = (
     "frontier.html",
     "explainer.html",
     "tutorial.html",
-    "synopsis.html",
     "workbench/index.html",
 )
 
@@ -86,7 +85,6 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
     REPO / "TUTORIAL.md",
-    REPO / "SYNOPSIS.md",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
     PACKING / "uv.lock",
@@ -281,6 +279,8 @@ def overview_page() -> Page:
     values = {
         "EDITION": html.escape(PUBLICATION_EDITION),
         "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
+        "SYNOPSIS_URL": repo_file(REPO / "SYNOPSIS.md"),
+        "DOCUMENT_CARDS": overview_sections.document_cards(),
         **overview_sections.bracket_11(overview),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),
@@ -310,13 +310,6 @@ def tutorial_page() -> Page:
     return build()
 
 
-def synopsis_page() -> Page:
-    """`SYNOPSIS.md` as a page; `site_documents` rewrites and checks its links."""
-    from devtools.site_documents import synopsis_page as build  # noqa: PLC0415
-
-    return build()
-
-
 def frontier_page() -> Page:
     """The frontier atlas: one row per case, from its `SquarePackingCase/v2` record."""
     from devtools.render_frontier_page import frontier_markdown  # noqa: PLC0415
@@ -337,7 +330,6 @@ PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
     "frontier.html": frontier_page,
     "tutorial.html": tutorial_page,
-    "synopsis.html": synopsis_page,
 }
 
 

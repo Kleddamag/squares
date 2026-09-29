@@ -199,12 +199,11 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     """The site's own pages read what neither other build does, and share what they do.
 
     A register evidence entry, a case record, the bibliography, `epistemics.md` and the
-    two reader documents are the overview's alone, so a pull request changing only those
+    tutorial are the overview's alone, so a pull request changing only those
     runs its job and no explainer Chromium. The register itself and the renderer module
     are read by the explainer too, and kpress by all three.
     """
     for changed in (
-        "SYNOPSIS.md",
         "TUTORIAL.md",
         "epistemics.md",
         "packing/frontier/evidence.yaml",

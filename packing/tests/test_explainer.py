@@ -673,11 +673,11 @@ def test_the_pages_filter_covers_every_overview_input() -> None:
 
     `render_overview.inputs()` is its declaration: the renderer's own `RENDER_INPUTS` and
     the record `overview_data.INPUTS` reads. A register entry, a case record, the
-    bibliography or `SYNOPSIS.md` changed on `main` outside this filter would leave `/`
+    bibliography or `TUTORIAL.md` changed on `main` outside this filter would leave `/`
     and the pages beside it showing the previous render with every check green.
     """
     declared = render_overview.inputs()
-    assert REPO / "SYNOPSIS.md" in declared
+    assert REPO / "TUTORIAL.md" in declared
     assert REPO / "packing/frontier/evidence.yaml" in declared
     for event, patterns in pages_filters().items():
         missing = [
@@ -686,9 +686,9 @@ def test_the_pages_filter_covers_every_overview_input() -> None:
             if not covered(path, patterns)
         ]
         assert not missing, f"{event}: overview inputs not covered by paths: {missing}"
-        without_documents = [p for p in patterns if p not in {"TUTORIAL.md", "SYNOPSIS.md"}]
+        without_documents = [p for p in patterns if p != "TUTORIAL.md"]
         exposed = [path for path in declared if not covered(path, without_documents)]
-        assert exposed == [REPO / "TUTORIAL.md", REPO / "SYNOPSIS.md"], event
+        assert exposed == [REPO / "TUTORIAL.md"], event
 
 
 def test_every_declared_overview_input_exists() -> None:

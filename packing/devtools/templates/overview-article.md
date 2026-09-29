@@ -1,6 +1,6 @@
 <div class="site-hero">
 
-# The Squares Project
+# Square Packing
 
 <p class="subtitle">Packing unit squares in the smallest square · {{EDITION}}</p>
 
@@ -27,7 +27,7 @@ This site collects what the project has proved, what others have proved alongsid
 and how each claim was checked.
 The [explainer](explainer.html) walks through the $n = 11$ proof with interactive
 figures, the [tutorial](tutorial.html) introduces the problem from first principles, and
-the [synopsis](synopsis.html) is the full research record.
+the [synopsis]({{SYNOPSIS_URL}}) on GitHub is the full research record.
 
 ## Headline Results
 
@@ -73,7 +73,11 @@ the retained source and the review.
 - [**The frontier atlas**](frontier.html): every case from $n = 1$ to $324$, with the
   reported and verified bounds side by side.
 - [**The tutorial**](tutorial.html): square packing from first principles.
-- [**The synopsis**](synopsis.html): the research program, its results and its status.
 - [**The workbench**](workbench/): pack squares by hand and watch the known packings.
-- [**The repository**](https://github.com/jlevy/squares): the code, the certificates,
-  the literature archive and the process that produced all of this.
+
+## On GitHub
+
+The code, the certificates, the literature archive and the documents that record all of
+this live in the [repository](https://github.com/jlevy/squares).
+
+{{DOCUMENT_CARDS}}

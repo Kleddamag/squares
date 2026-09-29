@@ -785,7 +785,7 @@ def test_publication_moves_the_explainer_before_the_overview_lands(tmp_path: Pat
         (site / "t-018-explainer.pdf").write_text("pdf", encoding="utf-8")
         pages = root / "overview-pages"
         pages.mkdir()
-        for page in ("index.html", "tutorial.html", "synopsis.html"):
+        for page in ("index.html", "frontier.html", "tutorial.html"):
             (pages / page).write_text(f"overview {page}", encoding="utf-8")
         if renamed:
             subprocess.run((bash, "-e", "-c", steps[rename]["run"]), cwd=site, check=True)
@@ -805,8 +805,8 @@ def test_publication_moves_the_explainer_before_the_overview_lands(tmp_path: Pat
     assert (site / "index.html").read_text(encoding="utf-8") == "overview index.html"
     assert sorted(path.name for path in site.iterdir()) == [
         "explainer.html",
+        "frontier.html",
         "index.html",
-        "synopsis.html",
         "t-018-explainer.pdf",
         "tutorial.html",
     ]

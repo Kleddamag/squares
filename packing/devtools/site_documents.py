@@ -1,19 +1,19 @@
-"""The tutorial and the synopsis as site pages, with every link made to work off GitHub.
+"""The tutorial as a site page, with every link made to work off GitHub.
 
-`TUTORIAL.md` and `SYNOPSIS.md` are written to be read on GitHub, where a relative link
-to `conventions.md` or to a directory under `packing/` opens that file. Served as
-`tutorial.html` and `synopsis.html`, the same links would point at pages that do not
+`TUTORIAL.md` is written to be read on GitHub, where a relative link to
+`conventions.md` or to a directory under `packing/` opens that file. Served as
+`tutorial.html`, the same links would point at pages that do not
 exist, so each one is rewritten in the rendered HTML, never in the Markdown, where a
 pattern would also match `](` inside a code span:
 
 - `README.md` becomes the overview, `./`, with the anchor kept when the overview has a
   heading of that id and the repository's README named otherwise;
-- `TUTORIAL.md#…` and `SYNOPSIS.md#…` become `tutorial.html#…` and `synopsis.html#…`;
+- `TUTORIAL.md#…` becomes `tutorial.html#…`;
 - any other relative link becomes a permalink at the build commit, `blob/` for a file
   and `tree/` for a directory, and an image becomes its raw-file permalink.
 
 Every rewritten repository target is checked against the build commit's tree, read
-once with `git ls-tree`, and every anchor into the two pages against the ids the target
+once with `git ls-tree`, and every anchor into the page against the ids the target
 page actually has. A target that does not resolve fails the render with the whole list,
 so a broken link is found when the page is built rather than by a reader.
 
@@ -36,7 +36,6 @@ from devtools import render_overview
 from devtools.render_overview import REPO, REPO_URL, Page
 
 TUTORIAL = REPO / "TUTORIAL.md"
-SYNOPSIS = REPO / "SYNOPSIS.md"
 
 RAW_URL = "https://raw.githubusercontent.com/jlevy/squares"
 
@@ -57,17 +56,9 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
         TUTORIAL,
         "tutorial.html",
         "tutorial",
-        "Tutorial · The Squares Project",
+        "Tutorial · Square Packing",
         "A guided walk through square packing: the problem, the bounds and how each "
         "result here is checked.",
-    ),
-    SiteDocument(
-        SYNOPSIS,
-        "synopsis.html",
-        "synopsis",
-        "Synopsis · The Squares Project",
-        "The project's synopsis: every method, claim, tool and record, with links into "
-        "the repository.",
     ),
 )
 
@@ -247,7 +238,7 @@ def unresolved(pages: dict[str, Page], report: LinkReport) -> list[str]:
 
 @cache
 def site_documents() -> dict[str, Page]:
-    """Both pages, rendered once and checked together, since each links into the other."""
+    """Every reader document, rendered once and checked together."""
     from devtools.render_explainer import link_revision  # noqa: PLC0415
 
     revision = link_revision()
@@ -269,8 +260,3 @@ def site_documents() -> dict[str, Page]:
 def tutorial_page() -> Page:
     """`TUTORIAL.md` as `tutorial.html`."""
     return site_documents()["tutorial.html"]
-
-
-def synopsis_page() -> Page:
-    """`SYNOPSIS.md` as `synopsis.html`."""
-    return site_documents()["synopsis.html"]

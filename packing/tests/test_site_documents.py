@@ -1,4 +1,4 @@
-"""The tutorial and synopsis pages: links rewritten for the site, and every one resolved."""
+"""The tutorial page: links rewritten for the site, and every one resolved."""
 
 from __future__ import annotations
 
@@ -20,7 +20,9 @@ from devtools.site_documents import (
 REPO_URL = render_overview.REPO_URL
 COMMIT = "0" * 40
 TREE = RepositoryTree(
-    files=frozenset({"README.md", "conventions.md", "packing/atlas/n5.svg", "docs/a b.md"}),
+    files=frozenset(
+        {"README.md", "SYNOPSIS.md", "conventions.md", "packing/atlas/n5.svg", "docs/a b.md"}
+    ),
     directories=frozenset({"", "packing", "packing/atlas", "docs"}),
 )
 
@@ -48,7 +50,7 @@ def rewrite(url: str, *, tag: str = "a", page: str = "tutorial.html") -> tuple[s
         ("packing/atlas/", f"{REPO_URL}/tree/{COMMIT}/packing/atlas"),
         ("packing", f"{REPO_URL}/tree/{COMMIT}/packing"),
         ("docs/a%20b.md", f"{REPO_URL}/blob/{COMMIT}/docs/a%20b.md"),
-        ("SYNOPSIS.md#terminology", "synopsis.html#terminology"),
+        ("SYNOPSIS.md#terminology", f"{REPO_URL}/blob/{COMMIT}/SYNOPSIS.md#terminology"),
         ("TUTORIAL.md#start", "#start"),
         ("TUTORIAL.md", "tutorial.html"),
         ("#local", "#local"),
@@ -68,8 +70,8 @@ def test_an_image_becomes_a_raw_permalink() -> None:
 
 
 def test_anchors_into_the_documents_are_recorded_for_checking() -> None:
-    _, report = rewrite("SYNOPSIS.md#terminology")
-    assert report.anchors == [("synopsis.html", "terminology", "SYNOPSIS.md#terminology")]
+    _, report = rewrite("TUTORIAL.md#start", page="frontier.html")
+    assert report.anchors == [("tutorial.html", "start", "TUTORIAL.md#start")]
 
 
 @pytest.mark.parametrize("url", ["missing.md", "packing/nowhere/", "../outside.md"])
@@ -81,12 +83,12 @@ def test_an_unresolved_target_is_reported(url: str) -> None:
 
 def test_unresolved_lists_missing_paths_and_anchors() -> None:
     report = LinkReport(
-        missing=["missing.md"], anchors=[("synopsis.html", "gone", "SYNOPSIS.md#gone")]
+        missing=["missing.md"], anchors=[("tutorial.html", "gone", "TUTORIAL.md#gone")]
     )
-    page = render_overview.Page("synopsis.html", '<article><h2 id="here">x</h2></article>')
-    problems = unresolved({"synopsis.html": page}, report)
+    page = render_overview.Page("tutorial.html", '<article><h2 id="here">x</h2></article>')
+    problems = unresolved({"tutorial.html": page}, report)
     assert problems == [
-        "no heading #gone in synopsis.html: SYNOPSIS.md#gone",
+        "no heading #gone in tutorial.html: TUTORIAL.md#gone",
         "no such path at the build commit: missing.md",
     ]
 
@@ -128,10 +130,10 @@ def test_the_build_fails_on_an_unresolved_link(monkeypatch: pytest.MonkeyPatch) 
 
 @pytest.fixture(scope="module")
 def pages() -> dict[str, render_overview.Page]:
-    return {name: render_overview.PAGES[name]() for name in ("tutorial.html", "synopsis.html")}
+    return {name: render_overview.PAGES[name]() for name in ("tutorial.html",)}
 
 
-def test_both_pages_render_self_contained_with_a_toc(
+def test_the_pages_render_self_contained_with_a_toc(
     pages: dict[str, render_overview.Page],
 ) -> None:
     for name, page in pages.items():
@@ -141,7 +143,7 @@ def test_both_pages_render_self_contained_with_a_toc(
 
 
 def test_no_relative_repository_link_survives(pages: dict[str, render_overview.Page]) -> None:
-    served = {"./", "tutorial.html", "synopsis.html"}
+    served = {"./", "tutorial.html"}
     for name, page in pages.items():
         article = re.search(r"<article\b.*?</article>", page.html, re.DOTALL)
         assert article is not None
@@ -151,9 +153,8 @@ def test_no_relative_repository_link_survives(pages: dict[str, render_overview.P
             assert url.split("#")[0] in served, f"{name}: {url}"
 
 
-def test_the_synopsis_math_is_kpress_math(pages: dict[str, render_overview.Page]) -> None:
+def test_the_tutorial_math_is_kpress_math(pages: dict[str, render_overview.Page]) -> None:
     """Each `$…$` span reaches the page as kpress math markup, which KaTeX renders on load."""
-    body = pages["synopsis.html"].html
+    body = pages["tutorial.html"].html
     assert len(re.findall(r'data-kpress-math="inline"', body)) >= 14
-    assert len(re.findall(r'data-kpress-math="display"', body)) >= 1
     assert 'data-kpress-math-error="true">' not in body

@@ -1,0 +1,31 @@
+{
+  "status": "STAGE_FILES_COMPARED",
+  "stages": {
+    "root": {
+      "files_here": 5004,
+      "files_m1": 5004,
+      "identical": 5000,
+      "differing": [
+        "root/inputs.json",
+        "root/portable-reads.json",
+        "root/progress.json",
+        "root/result.json"
+      ],
+      "only_here": [],
+      "only_m1": []
+    },
+    "sieve": {
+      "files_here": 8762,
+      "files_m1": 8762,
+      "identical": 8758,
+      "differing": [
+        "sieve/inputs.json",
+        "sieve/portable-reads.json",
+        "sieve/progress.json",
+        "sieve/result.json"
+      ],
+      "only_here": [],
+      "only_m1": []
+    }
+  }
+}

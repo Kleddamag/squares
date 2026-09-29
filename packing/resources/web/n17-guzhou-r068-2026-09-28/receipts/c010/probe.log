@@ -1,0 +1,6 @@
+# command: .recheck/bin/probe research/fit02/model.json research/fit02/failure_poses.json .recheck/failure-cpp.json 9321/2000
+# cwd: WORK/certificates/R068-C010
+# affinity: taskset -c 2,3; N17_TIMEOUT_MINUTES=unset
+# started_utc: 2026-09-28T23:55:21Z; load 10.51 8.95 5.22
+EXACT_FINITE_PARENT_PROBES_ONLY
+# ended_utc: 2026-09-28T23:55:24Z; exit 0; wall_seconds 2.008; user_seconds 1.766; system_seconds 0.064; load 10.51 8.95 5.22

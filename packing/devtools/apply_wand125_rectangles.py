@@ -3,22 +3,41 @@
 # apostrophes and the corpus's other non-ASCII marks.
 """Carry wand125's rectangle-density bounds into the Frontier records.
 
-The reported lane takes every standing certificate at the pinned source revision, and
-its monotone consequences, wherever it beats the case's current report. The verified
-lane takes only certificates whose complete coverage replay is in the retained receipt
-``receipts/replay/audit.json``, again with monotone consequences. Replays are expensive
-(about a hundred CPU hours for all 44), so they arrive in batches: rerun this after each
-batch and it promotes exactly what the receipt now covers. It is idempotent.
+Each retained packet of the source (`devtools.audit_wand125_rectangles.PACKETS`) is one
+`Registration`: its source key and its three evidence entries. The newest registration
+any case record cites is the registered one, and a run without ``--packet`` repeats it.
+A later packet is registered by naming it; an earlier one is refused, because the later
+one raised its bounds and writing it again would lower them.
+
+The reported lane takes every standing certificate at the chosen packet's revision, and
+its monotone consequences, wherever it beats the case's current report. A certificate
+byte-identical to one an earlier packet retains belongs to that packet's registration,
+which already wrote it, so a later registration writes only the counts its own new or
+raised certificates carry. The verified lane takes only certificates whose complete
+coverage replay is in a retained receipt, ``receipts/replay/audit.json`` of this packet
+or an earlier one, again with monotone consequences. Replays are expensive (hours each),
+so they arrive in batches: rerun this after each batch and it promotes exactly what the
+receipts now cover. It is idempotent, and it never lowers a bound.
 
 What it writes: each affected case's ``reported_lower_bound``, ``verified_lower_bound``,
 top-level ``evidence`` and ``resources`` entries, ``source_reviewed``, and one intake
-paragraph under the title; and the replay evidence entry's scope and command. Other
-prose in a promoted case can still describe the superseded bound, which
-``check_case_prose`` reports, and is edited by hand.
+paragraph under the title, and it retires the claims an earlier registration's paragraph
+makes once they stop being current. In ``evidence.yaml`` it inserts the registration's
+report entries when they are missing, keeps every wand125 rectangle entry's scope equal to
+the cases that cite it, and keeps each replay entry's command. Other prose in a promoted
+case can still describe the superseded bound, which ``check_case_prose`` reports, and is
+edited by hand.
+
+``--frontier`` points every read and write at a copy of the Frontier directory, for a
+dry run. ``--plan`` prints the per-count decision table without writing, and
+``--replay-plan`` the standing certificates whose replay would raise a verified bound,
+largest rise first, with the upstream per-angle CPU time as the cost.
 
 Usage, from ``packing/``:
     uv run --frozen --all-extras --group dev python -m devtools.apply_wand125_rectangles
     uv run --frozen --all-extras --group dev python -m devtools.apply_wand125_rectangles --check
+    uv run --frozen --all-extras --group dev python -m devtools.apply_wand125_rectangles \\
+        --packet 2026-09-28 --frontier /tmp/frontier-copy
 """
 
 from __future__ import annotations
@@ -27,6 +46,7 @@ import argparse
 import json
 import re
 import sys
+from collections.abc import Mapping
 from dataclasses import dataclass
 from decimal import Decimal
 from fractions import Fraction
@@ -36,45 +56,200 @@ from typing import Any
 import yaml
 from strif import atomic_write_text
 
-from devtools.audit_wand125_rectangles import CASES, PACKET, REVISION, monotone_bounds
+from devtools.audit_wand125_rectangles import (
+    PACKETS,
+    SEPTEMBER_27,
+    SEPTEMBER_28,
+    SOURCE_URL,
+    Packet,
+    monotone_bounds,
+)
 from devtools.generate_frontier_case import display_gap
+from devtools.retained_data import read_retained_text, retained_exists
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
-EVIDENCE = FRONTIER / "evidence.yaml"
-REPLAY_AUDIT = PACKET / "receipts/replay/audit.json"
-PREFLIGHT_AUDIT = PACKET / "receipts/preflight/audit.json"
-REVIEW_DATE = "2026-09-27"
-SOURCE_KEY = "[wand125 rectangle bounds 2026]"
-REPORT = "E-wand125-rectangle-report"
-MONOTONE_REPORT = "E-wand125-rectangle-monotone-report"
-REPLAY = "E-wand125-rectangle-source-replay"
-OURS = {REPORT, MONOTONE_REPORT, REPLAY}
-RESOURCE = {
-    "key": SOURCE_KEY,
-    "role": "lower-bound-proof",
-    "local": str(PACKET.relative_to(ROOT / "resources")) + "/wand125-rectangles",
-    "url": "https://github.com/wand125/square-packing-bounds",
-    "retrieved": True,
-}
-PACKET_LINK = "../resources/web/" + PACKET.name + "/README.md"
-INTAKE = "**External intake, 2026-09-27.**"
 SCOPE = "Unrestricted square packing with independent rotations and disjoint interiors."
-#: Counts where a stronger bound from another source is registered separately, so this
-#: source's certificate is a superseded prior there and moves neither lane: evand's
-#: reviewed s(21) >= 5000/1001 and s(32) = 6 (coordinator, 2026-09-27).
-SUPERSEDED_PRIORS: dict[int, str] = {
-    21: "evand/square-packing s(21) >= 5000/1001 supersedes 997/200",
-    32: "evand/square-packing s(32) = 6 supersedes 119/20",
-}
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True, eq=False)
+class Registration:
+    """How one packet's certificates are cited in the Frontier records."""
+
+    packet: Packet
+    source_key: str
+    report: str
+    monotone_report: str
+    replay: str
+    #: Counts where a stronger bound from another source is registered separately, so
+    #: this packet's certificate there is a superseded prior and moves neither lane.
+    superseded_priors: Mapping[int, str]
+    #: The report entries to insert into ``evidence.yaml`` when missing; ``{scope}`` is
+    #: filled with the cases that cite each one, and ``{certificate}`` with the packet's
+    #: certificate directory. Empty for a registration whose entries were written by hand.
+    entries: Mapping[str, str]
+
+    @property
+    def date(self) -> str:
+        return self.packet.date
+
+    @property
+    def intake(self) -> str:
+        return f"**External intake, {self.date}.**"
+
+    @property
+    def link(self) -> str:
+        return f"../resources/web/{self.packet.directory.name}/README.md"
+
+    @property
+    def ids(self) -> frozenset[str]:
+        return frozenset({self.report, self.monotone_report, self.replay})
+
+    @property
+    def resource(self) -> dict[str, Any]:
+        return {
+            "key": self.source_key,
+            "role": "lower-bound-proof",
+            "local": f"web/{self.packet.directory.name}/wand125-rectangles",
+            "url": SOURCE_URL,
+            "retrieved": True,
+        }
+
+    @property
+    def replay_audit(self) -> Path:
+        return self.packet.directory / "receipts/replay/audit.json"
+
+    @property
+    def preflight_audit(self) -> Path:
+        return self.packet.directory / "receipts/preflight/audit.json"
+
+
+_REPORT_2026_09_28 = """\
+  - id: E-wand125-rectangle-2026-09-28-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-09-28]'
+    certificate: {certificate}
+    replay_status: not-attempted
+    limitations: >-
+      Source 39d8ecc74d651b54ec977c331c8f2015b442a6c4, pushed between 2026-09-27 and
+      2026-09-28 (UTC), reports one standing rectangle-density certificate in Tokoharu's
+      format for each listed count, each new or raised since ad43d29, accepted there by
+      Tokoharu's unchanged interval checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The listed
+      sides run from 399/80 at n21 to 49209/5000 at n95; the complete list is the
+      CASES_2026_09_28 table of devtools/audit_wand125_rectangles.py and the source's own
+      README. The twelve standing certificates the revision left unchanged, at n18, 19,
+      20, 26, 27, 30, 32, 40, 45, 61, 75 and 78, are byte-identical to those
+      E-wand125-rectangle-report records, and their cases stay on that entry. Each
+      certificate's weights were multiplied by one exact rational factor, between
+      1.00021 and 1.02697, to bring its mass to n - 1/100 (n - 1/1000 at n21) before the
+      recorded run, which checked the scaled data. The source's direct n77 claim,
+      891/100, is weaker than the n76 transfer recorded separately. Lower rungs,
+      matching certificates, the point certificates and the point-only and mixed-measure
+      bundles at the same revision are pinned by digest only. This is the public-claim
+      entry, not a local verification receipt. At n21 the claim 399/80 is a superseded
+      prior: the bound registered there separately, Evan Daniel's s(21) >= 5000/1001 when
+      this entry was written, is stronger, so the case record does not cite this entry.
+    source_reviewed: '2026-09-28'
+"""
+_MONOTONE_2026_09_28 = """\
+  - id: E-wand125-rectangle-2026-09-28-monotone-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-09-28]'
+    replay_status: not-attempted
+    limitations: >-
+      Reported-lane transfer at 39d8ecc: a certificate whose exact mass is below k
+      refutes k squares as well, and deleting squares proves monotonicity, so each listed
+      count takes the strongest smaller-count certificate below whose mass it lies. The
+      n76 certificate at 223/25, of mass 7599/100, gives s(77) >= 223/25, above the
+      direct n77 claim 891/100; the n89 certificate at 191/20, of mass 8899/100, gives
+      s(90) >= 191/20; the source README marks the n76 and n89 lines "(also n = 77)" and
+      "(also n = 90)". The listed counts are those where the transfer beats every other
+      registered report. This derivation does not strengthen the assurance of its
+      source premise or substitute for its complete replay.
+    source_reviewed: '2026-09-28'
+"""
+
+SEPTEMBER_27_REGISTRATION = Registration(
+    packet=SEPTEMBER_27,
+    source_key="[wand125 rectangle bounds 2026]",
+    report="E-wand125-rectangle-report",
+    monotone_report="E-wand125-rectangle-monotone-report",
+    replay="E-wand125-rectangle-source-replay",
+    # evand's reviewed s(21) >= 5000/1001 and s(32) = 6 (coordinator, 2026-09-27).
+    superseded_priors={
+        21: "evand/square-packing s(21) >= 5000/1001 supersedes 997/200",
+        32: "evand/square-packing s(32) = 6 supersedes 119/20",
+    },
+    entries={},
+)
+SEPTEMBER_28_REGISTRATION = Registration(
+    packet=SEPTEMBER_28,
+    source_key="[wand125 rectangle bounds 2026-09-28]",
+    report="E-wand125-rectangle-2026-09-28-report",
+    monotone_report="E-wand125-rectangle-2026-09-28-monotone-report",
+    replay="E-wand125-rectangle-2026-09-28-source-replay",
+    # evand's s(21) and s(32) as before, and s(45) = 7, which the 2026-09-28 intake
+    # takes in separately; the n32 and n45 certificates are unchanged since ad43d29.
+    superseded_priors={
+        21: "evand/square-packing s(21) >= 5000/1001 supersedes 399/80",
+        32: "evand/square-packing s(32) = 6 supersedes 119/20",
+        45: "evand/square-packing s(45) = 7 supersedes 1391/200",
+    },
+    entries={
+        "E-wand125-rectangle-2026-09-28-report": _REPORT_2026_09_28,
+        "E-wand125-rectangle-2026-09-28-monotone-report": _MONOTONE_2026_09_28,
+    },
+)
+#: Oldest first; the order is the order of the packets' pins.
+REGISTRATIONS = (SEPTEMBER_27_REGISTRATION, SEPTEMBER_28_REGISTRATION)
+BY_DATE = {registration.date: registration for registration in REGISTRATIONS}
+OURS = frozenset().union(*(registration.ids for registration in REGISTRATIONS))
+if set(BY_DATE) != set(PACKETS):
+    raise RuntimeError("every retained packet needs exactly one registration")
+
+
+@dataclass(frozen=True, slots=True)
+class Bound:
+    """A side, the count whose certificate proves it, and the registration citing it."""
+
+    side: Fraction
+    source: int
+    registration: Registration
+
+
+@dataclass(frozen=True, slots=True)
 class Plan:
     n: int
-    reported: tuple[Fraction, int] | None
-    verified: tuple[Fraction, int] | None
+    reported: Bound | None
+    verified: Bound | None
+
+
+def _index(registration: Registration) -> int:
+    return REGISTRATIONS.index(registration)
+
+
+def owner(name: str) -> Registration:
+    """The registration of the first packet that retains this certificate."""
+    for registration in REGISTRATIONS:
+        if any(name == held for held, _side in registration.packet.cases.values()):
+            return registration
+    raise KeyError(name)
 
 
 def _loose(phrase: str) -> str:
@@ -107,11 +282,12 @@ def _decimal(side: Fraction) -> str:
     return text.rstrip("0").rstrip(".") if "." in text else text
 
 
-def replayed() -> dict[int, Fraction]:
-    """Cases whose complete coverage replay the retained receipt records as passed."""
-    if not REPLAY_AUDIT.exists():
+def replayed(registration: Registration) -> dict[int, Fraction]:
+    """Cases whose complete coverage replay this packet's receipt records as passed."""
+    if not retained_exists(registration.replay_audit):
         return {}
-    record = json.loads(REPLAY_AUDIT.read_text())
+    cases = registration.packet.cases
+    record = json.loads(read_retained_text(registration.replay_audit))
     result: dict[int, Fraction] = {}
     for case in record.get("cases", []):
         replay = case.get("replay") or {}
@@ -122,49 +298,110 @@ def replayed() -> dict[int, Fraction]:
             and replay.get("status") == "PASS"
             and summary.get("status") == "VERIFIED"
             and summary.get("angle_cases") == 201
-            and Fraction(case["L"]) == CASES[n][1]
+            and n in cases
+            and Fraction(case["L"]) == cases[n][1]
         ):
-            result[n] = CASES[n][1]
+            result[n] = cases[n][1]
     return result
 
 
-def _front(n: int) -> tuple[str, dict[str, Any], str]:
-    text = (FRONTIER / f"n-{n:03d}.md").read_text(encoding="utf-8")
+def replays(registration: Registration) -> dict[int, tuple[Fraction, Registration]]:
+    """The strongest replayed side at each count over this and every earlier packet."""
+    best: dict[int, tuple[Fraction, Registration]] = {}
+    for earlier in REGISTRATIONS[: _index(registration) + 1]:
+        for n, side in replayed(earlier).items():
+            if n not in best or side > best[n][0]:
+                best[n] = (side, earlier)
+    return best
+
+
+def _case_path(frontier: Path, n: int) -> Path:
+    return frontier / f"n-{n:03d}.md"
+
+
+def _front(frontier: Path, n: int) -> tuple[str, dict[str, Any], str]:
+    text = _case_path(frontier, n).read_text(encoding="utf-8")
     _, front, body = text.split("---\n", 2)
     return front, safe_load(front)["packing"], body
 
 
-def _held_by_us(field: dict[str, Any] | None) -> bool:
+def registered(frontier: Path = FRONTIER) -> Registration:
+    """The newest registration whose evidence any case record cites."""
+    texts = [path.read_text(encoding="utf-8") for path in frontier.glob("n-*.md")]
+    held = [
+        registration
+        for registration in REGISTRATIONS
+        if any(f"- {item}\n" in text for text in texts for item in registration.ids)
+    ]
+    return held[-1] if held else REGISTRATIONS[0]
+
+
+def _held_by_us(field: Mapping[str, Any] | None) -> bool:
     return bool(field) and bool(set(field.get("evidence") or []) & OURS)
 
 
-def _superseded_by_record(field: dict[str, Any] | None, candidate: Fraction) -> bool:
-    """A field another source holds at least as high as ``candidate`` stays as it is."""
-    if field is None or _held_by_us(field):
+def _superseded_by_record(field: Mapping[str, Any] | None, candidate: Fraction) -> bool:
+    """Whether the field already holds a bound this one must not replace.
+
+    Another source's bound at least as high stays; so does any higher wand125 bound, so
+    a registration never lowers what a later one wrote.
+    """
+    if field is None:
         return False
-    return Fraction(Decimal(str(field["value"]))) >= candidate
+    value = Fraction(Decimal(str(field["value"])))
+    return value > candidate if _held_by_us(field) else value >= candidate
 
 
-def plans() -> list[Plan]:
-    reported = monotone_bounds({n: side for n, (_name, side) in CASES.items()})
-    passed = replayed()
-    verified = monotone_bounds(passed) if passed else {}
+def plans(registration: Registration, frontier: Path = FRONTIER) -> list[Plan]:
+    current = registered(frontier)
+    if _index(registration) < _index(current):
+        raise ValueError(
+            f"the records hold the {current.date} registration; the {registration.date} "
+            "one is older, and writing it would lower bounds"
+        )
+    cases = registration.packet.cases
+    reported = monotone_bounds({n: side for n, (_name, side) in cases.items()})
+    proofs = replays(registration)
+    verified = (
+        monotone_bounds({n: side for n, (side, _) in proofs.items()}, upto=max(cases))
+        if proofs
+        else {}
+    )
     result = []
     for n in sorted(reported):
-        if n in SUPERSEDED_PRIORS:
+        if n in registration.superseded_priors:
             continue
-        _front_text, payload, _body = _front(n)
-        report: tuple[Fraction, int] | None = reported[n]
-        if _superseded_by_record(payload.get("reported_lower_bound"), reported[n][0]):
-            report = None
-        proof = verified.get(n)
-        if proof is not None and _superseded_by_record(
-            payload.get("verified_lower_bound"), proof[0]
+        _front_text, payload, _body = _front(frontier, n)
+        side, source = reported[n]
+        report: Bound | None = Bound(side, source, owner(cases[source][0]))
+        if owner(cases[source][0]) is not registration or _superseded_by_record(
+            payload.get("reported_lower_bound"), side
         ):
-            proof = None
-        if report is not None or proof is not None:
+            report = None
+        proof: Bound | None = None
+        if n in verified:
+            side, source = verified[n]
+            proof = Bound(side, source, proofs[source][1])
+            if _superseded_by_record(payload.get("verified_lower_bound"), side):
+                proof = None
+        if report is not None or (
+            proof is not None
+            and (
+                proof.registration is registration
+                or not _written(payload.get("verified_lower_bound"), proof)
+            )
+        ):
             result.append(Plan(n, report, proof))
     return result
+
+
+def _written(field: Mapping[str, Any] | None, proof: Bound) -> bool:
+    """Whether the verified field already records exactly this replayed bound."""
+    return (
+        field is not None
+        and field.get("exact_form") == str(proof.side)
+        and field.get("evidence") == [proof.registration.replay]
+    )
 
 
 def _block(name: str, value: dict[str, Any]) -> str:
@@ -186,80 +423,105 @@ def _prepend_list(front: str, name: str, items: list[str]) -> str:
     return front[:index] + "".join(items) + front[index:]
 
 
-def reported_field(n: int, side: Fraction, source: int) -> dict[str, Any]:
-    direct = source == n
+def reported_field(n: int, bound: Bound) -> dict[str, Any]:
+    registration = bound.registration
+    revision = registration.packet.revision[:7]
+    direct = bound.source == n
     note = (
         "Rectangle-density certificate in Tokoharu's format, reported in the retained source "
-        f"at {REVISION[:7]} and accepted there by Tokoharu's unchanged interval checker. The "
+        f"at {revision} and accepted there by Tokoharu's unchanged interval checker. The "
         "verified lane records the local replay separately."
         if direct
-        else f"wand125's n={source} rectangle-density certificate has mass below {n}, so "
-        f"monotonicity carries its bound to n={n}. The verified lane records the local "
+        else f"wand125's n={bound.source} rectangle-density certificate has mass below {n}, "
+        f"so monotonicity carries its bound to n={n}. The verified lane records the local "
         "replay separately."
     )
     return {
-        "value": _decimal(side),
-        "exact_form": str(side),
+        "value": _decimal(bound.side),
+        "exact_form": str(bound.side),
         "kind": "counting" if direct else "monotonicity",
         "proved_by": ["wand125"],
         "proved_year": 2026,
-        "source_key": SOURCE_KEY,
+        "source_key": registration.source_key,
         "note": note,
         "scope": SCOPE,
-        "evidence": [REPORT if direct else MONOTONE_REPORT],
+        "evidence": [registration.report if direct else registration.monotone_report],
     }
 
 
-def _mass(n: int) -> Fraction:
-    record = json.loads(PREFLIGHT_AUDIT.read_text())
+def _mass(registration: Registration, n: int) -> Fraction:
+    record = json.loads(read_retained_text(registration.preflight_audit))
     return next(Fraction(case["mass_exact"]) for case in record["cases"] if case["n"] == n)
 
 
-def intake(plan: Plan) -> str:
+def _verified_sentence(plan: Plan, registration: Registration) -> str | None:
+    n, proof = plan.n, plan.verified
+    cases = registration.packet.cases
+    if proof is None:
+        if n in cases:
+            return (
+                "The first-party exact audit binds the regenerated checker input to the "
+                "published digest and checks the mass and net premises; the complete "
+                "coverage replay has not yet run here, so the verified lower bound is "
+                "unchanged."
+            )
+        if plan.reported is None:
+            return None
+        return (
+            f"The n{plan.reported.source} certificate’s complete coverage replay has not yet "
+            "run here, so the verified lower bound is unchanged."
+        )
+    claim = f"`s({n}) >= {proof.side} = {_decimal(proof.side)}`"
+    if proof.source != n:
+        return (
+            f"The replayed n{proof.source} certificate carries {claim} here by monotonicity, "
+            "which is the verified lower bound."
+        )
+    if proof.side == cases[n][1]:
+        return (
+            "The complete 201-direction coverage replay here accepted it again, after the "
+            "first-party exact audit bound the regenerated checker input to the published "
+            "digest and checked the mass and net premises, so it is also verified."
+        )
+    earlier = proof.registration.packet.revision[:7]
+    return (
+        "Its complete coverage replay has not yet run here; the verified lower bound is "
+        f"{claim}, from the source’s `{earlier}` certificate for this count, whose "
+        "complete 201-direction replay passed here."
+    )
+
+
+def intake(plan: Plan, registration: Registration) -> str:
     n = plan.n
-    link = f"[rectangle-density source]({PACKET_LINK})"
+    cases = registration.packet.cases
+    link = f"[rectangle-density source]({registration.link})"
+    head = f"{registration.intake} wand125’s {link} at `{registration.packet.revision[:7]}`"
     sentences: list[str] = []
-    if n in CASES:
-        side = CASES[n][1]
-        mass = _mass(n)
+    monotone = plan.reported is not None and plan.reported.source != n
+    if n in cases:
+        side = cases[n][1]
+        mass = _mass(registration, n)
         claim = f"`s({n}) >= {side} = {_decimal(side)}`"
-        if plan.reported is not None and plan.reported[1] != n:
+        if monotone:
             claim = f"a direct `{side} = {_decimal(side)}` certificate for this case"
         sentences.append(
-            f"{INTAKE} wand125’s {link} at `{REVISION[:7]}` reports {claim}, with total "
-            f"mass `{mass} = {_decimal(mass)} < {n}`, accepted by Tokoharu’s unchanged "
-            "interval checker."
+            f"{head} reports {claim}, with total mass "
+            f"`{mass} = {_decimal(mass)} < {n}`, accepted by Tokoharu’s unchanged interval "
+            "checker."
         )
     else:
+        sentences.append(f"{head} has no certificate at `n = {n}`.")
+    if plan.reported is not None and monotone:
+        side, source = plan.reported.side, plan.reported.source
+        stronger = "the stronger " if n in cases else ""
         sentences.append(
-            f"{INTAKE} wand125’s {link} at `{REVISION[:7]}` has no certificate at `n = {n}`."
+            f"Its n{source} certificate, of mass `{_mass(registration, source)} < {n}`, gives "
+            f"{stronger}`s({n}) >= {side} = {_decimal(side)}` by monotonicity, the reported "
+            "lower bound."
         )
-    if plan.reported is not None and plan.reported[1] != n:
-        side, source = plan.reported
-        sentences.append(
-            f"Its n{source} certificate, of mass `{_mass(source)} < {n}`, gives the stronger "
-            f"`s({n}) >= {side} = {_decimal(side)}` by monotonicity, the reported lower bound."
-        )
-    if plan.verified is not None:
-        side, source = plan.verified
-        if source == n:
-            sentences.append(
-                "The complete 201-direction coverage replay here accepted it again, after the "
-                "first-party exact audit bound the regenerated checker input to the published "
-                "digest and checked the mass and net premises, so it is also verified."
-            )
-        else:
-            sentences.append(
-                f"The replayed n{source} certificate carries "
-                f"`s({n}) >= {side} = {_decimal(side)}` here by monotonicity, which is the "
-                "verified lower bound."
-            )
-    elif n in CASES:
-        sentences.append(
-            "The first-party exact audit binds the regenerated checker input to the published "
-            "digest and checks the mass and net premises; the complete coverage replay has not "
-            "yet run here, so the verified lower bound is unchanged."
-        )
+    verified = _verified_sentence(plan, registration)
+    if verified is not None:
+        sentences.append(verified)
     return " ".join(sentences)
 
 
@@ -295,7 +557,7 @@ def _retire_selected_report(rest: str, plan: Plan) -> str:
 def _retire_nagamochi_prose(rest: str, plan: Plan, upper: str) -> str:
     """Point a Nagamochi-form body's summary at the promoted verified lower bound."""
     assert plan.verified is not None
-    side, source = plan.verified
+    side, source = plan.verified.side, plan.verified.source
     origin = (
         "wand125’s rectangle-density certificate"
         if source == plan.n
@@ -319,56 +581,143 @@ def _retire_nagamochi_prose(rest: str, plan: Plan, upper: str) -> str:
     )
 
 
-def apply_case(plan: Plan) -> str:
-    front, payload, body = _front(plan.n)
+_FIGURE = r"`s\({n}\)\s+>=\s+(?P<exact>\d+/\d+)\s+=\s+(?P<decimal>[0-9.]+)`"
+
+
+def _retire_earlier_intake(paragraph: str, plan: Plan, registration: Registration) -> str:
+    """Put an earlier registration's intake claims in the past once this one moves them.
+
+    Only claims this plan makes stale are touched: the reported ones when it writes the
+    reported field, the verified ones when its own packet's replay raises that field.
+    Each rewrite drops the ``s(n) >=`` form, which ``check_case_prose`` holds to the
+    current fields, and the rewritten sentence no longer matches, so a rerun is a no-op.
+    """
+    n, later = plan.n, f"the {registration.date} intake above"
+    figure = _FIGURE.format(n=n)
+    if plan.reported is not None:
+        paragraph = re.sub(
+            r"reports\s+" + figure + r",\s+with\s+total\s+mass",
+            lambda match: (
+                f"reports a direct `{match['exact']} = {match['decimal']}` certificate for "
+                f"this case, whose reported bound {later} raises, with total mass"
+            ),
+            paragraph,
+            count=1,
+        )
+        paragraph = re.sub(
+            r"Its\s+n(?P<source>\d+)\s+certificate,\s+of\s+mass\s+`(?P<mass>[^`]+)`,\s+"
+            r"gives\s+(?:the\s+stronger\s+)?"
+            + figure
+            + r"\s+by\s+monotonicity,\s+the\s+reported\s+lower\s+bound\.",
+            lambda match: (
+                f"Its n{match['source']} certificate, of mass `{match['mass']}`, gave "
+                f"`{match['exact']} = {match['decimal']}` by monotonicity, the reported "
+                f"lower bound until {later}."
+            ),
+            paragraph,
+            count=1,
+        )
+    if plan.verified is not None and plan.verified.registration is registration:
+        paragraph = re.sub(
+            _loose("so it is also verified."),
+            f"so it was also the verified lower bound until {later}.",
+            paragraph,
+            count=1,
+        )
+        paragraph = re.sub(
+            r"The\s+replayed\s+n(?P<source>\d+)\s+certificate\s+carries\s+"
+            + figure
+            + r"\s+here\s+by\s+monotonicity,\s+which\s+is\s+the\s+verified\s+lower\s+bound\.",
+            lambda match: (
+                f"The replayed n{match['source']} certificate carried "
+                f"`{match['exact']} = {match['decimal']}` here by monotonicity, the verified "
+                f"lower bound until {later}."
+            ),
+            paragraph,
+            count=1,
+        )
+        paragraph = re.sub(
+            r"the\s+verified\s+lower\s+bound\s+is\s+" + figure + r",\s+from",
+            lambda match: (
+                f"the verified lower bound was `{match['exact']} = {match['decimal']}` "
+                f"until {later}, from"
+            ),
+            paragraph,
+            count=1,
+        )
+    return paragraph
+
+
+def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER) -> str:
+    front, payload, body = _front(frontier, plan.n)
     if plan.reported is not None:
         front = _replace_block(
             front,
             "reported_lower_bound",
-            _block("reported_lower_bound", reported_field(plan.n, *plan.reported)),
+            _block("reported_lower_bound", reported_field(plan.n, plan.reported)),
         )
     if plan.verified is not None:
-        side = plan.verified[0]
+        side = plan.verified.side
         front = _replace_block(
             front,
             "verified_lower_bound",
             _block(
                 "verified_lower_bound",
-                {"value": _decimal(side), "exact_form": str(side), "evidence": [REPLAY]},
+                {
+                    "value": _decimal(side),
+                    "exact_form": str(side),
+                    "evidence": [plan.verified.registration.replay],
+                },
             ),
         )
     front = re.sub(
         r"^  source_reviewed: .*$",
-        f"  source_reviewed: '{REVIEW_DATE}'",
+        f"  source_reviewed: '{registration.date}'",
         front,
         count=1,
         flags=re.MULTILINE,
     )
-    wanted = []
+    cases = registration.packet.cases
+    wanted: list[str] = []
+    cited: list[Registration] = []
     if plan.reported is not None:
-        wanted.append(REPORT if plan.reported[1] == plan.n else MONOTONE_REPORT)
-        if plan.reported[1] != plan.n and plan.n in CASES:
-            wanted.append(REPORT)
+        cited.append(plan.reported.registration)
+        if plan.reported.source == plan.n:
+            wanted.append(plan.reported.registration.report)
+        else:
+            wanted.append(plan.reported.registration.monotone_report)
+            if plan.n in cases:
+                direct = owner(cases[plan.n][0])
+                wanted.append(direct.report)
+                cited.append(direct)
     if plan.verified is not None:
-        wanted.append(REPLAY)
+        wanted.append(plan.verified.registration.replay)
+        cited.append(plan.verified.registration)
     existing = payload.get("evidence") or []
     front = _prepend_list(
-        front, "evidence", [f"  - {item}\n" for item in wanted if item not in existing]
+        front,
+        "evidence",
+        [f"  - {item}\n" for item in dict.fromkeys(wanted) if item not in existing],
     )
-    if not any(
-        resource.get("key") == SOURCE_KEY for resource in payload.get("resources") or []
-    ):
-        dumped = yaml.safe_dump([RESOURCE], allow_unicode=True, sort_keys=False, width=100)
+    keys = {resource.get("key") for resource in payload.get("resources") or []}
+    missing = [item.resource for item in dict.fromkeys(cited) if item.source_key not in keys]
+    for resource in reversed(missing):
+        dumped = yaml.safe_dump([resource], allow_unicode=True, sort_keys=False, width=100)
         front = _prepend_list(
             front, "resources", ["".join("  " + line + "\n" for line in dumped.splitlines())]
         )
-    paragraph = intake(plan)
+    paragraph = intake(plan, registration)
     title, _, rest = body.partition("\n\n")
-    if rest.startswith(INTAKE):
-        existing, _, rest = rest.partition("\n\n")
+    if rest.startswith(registration.intake):
+        existing_paragraph, _, rest = rest.partition("\n\n")
         # Flowmark rewraps the paragraph at commit; the same words are the same paragraph.
-        if " ".join(existing.split()) == paragraph:
-            paragraph = existing
+        if " ".join(existing_paragraph.split()) == paragraph:
+            paragraph = existing_paragraph
+    earlier = tuple(item.intake for item in REGISTRATIONS[: _index(registration)])
+    rest = "\n\n".join(
+        _retire_earlier_intake(part, plan, registration) if part.startswith(earlier) else part
+        for part in rest.split("\n\n")
+    )
     if plan.reported is not None:
         rest = _retire_selected_report(rest, plan)
     if plan.verified is not None:
@@ -379,58 +728,268 @@ def apply_case(plan: Plan) -> str:
     return f"---\n{front}---\n{body}"
 
 
-def update_evidence_scope(text: str, verified: dict[int, tuple[Fraction, int]]) -> str:
-    start = text.index(f"  - id: {REPLAY}\n")
+def _entry_span(text: str, identifier: str) -> tuple[int, int] | None:
+    start = text.find(f"  - id: {identifier}\n")
+    if start < 0:
+        return None
     end = text.find("\n  - id: ", start + 1)
-    entry = text[start:end]
-    scope = ", ".join(str(n) for n in sorted(verified))
+    return start, len(text) if end < 0 else end
+
+
+def _scope(values: list[int]) -> str:
+    return "{n_values: [" + ", ".join(str(n) for n in sorted(values)) + "]}"
+
+
+def _set_scope(text: str, identifier: str, values: list[int]) -> str:
+    span = _entry_span(text, identifier)
+    assert span is not None
+    start, end = span
     entry = re.sub(
         r"^    scope: .*$",
-        f"    scope: {{n_values: [{scope}]}}",
-        entry,
+        f"    scope: {_scope(values)}",
+        text[start:end],
         count=1,
         flags=re.MULTILINE,
     )
-    direct = " ".join(
-        f"--n {n}" for n in sorted({source for _side, source in verified.values()})
-    )
+    return text[:start] + entry + text[end:]
+
+
+def _replay_command(text: str, registration: Registration, sources: list[int]) -> str:
+    span = _entry_span(text, registration.replay)
+    assert span is not None
+    start, end = span
+    packet = "" if registration.packet is SEPTEMBER_27 else f"--packet {registration.date} "
+    direct = " ".join(f"--n {n}" for n in sorted(sources))
     command = (
         "    replay: >-\n"
         '      wand125_replay_output="$(mktemp -d '
         '"${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&\n'
         "      .venv/bin/python3 -m devtools.audit_wand125_rectangles "
-        '--out "$wand125_replay_output"\n'
+        f'{packet}--out "$wand125_replay_output"\n'
         f"      --replay --workers 2 {direct}\n"
     )
     entry = re.sub(
-        r"^    replay: >-\n(?:^      .*\n)+", command, entry, count=1, flags=re.MULTILINE
+        r"^    replay: >-\n(?:^      .*\n)+",
+        command,
+        text[start:end],
+        count=1,
+        flags=re.MULTILINE,
     )
     return text[:start] + entry + text[end:]
+
+
+def _citing(texts: Mapping[int, str], identifier: str) -> list[int]:
+    """The cases whose front matter cites ``identifier`` anywhere.
+
+    A case keeps an entry in its top-level evidence list after a field stops citing it,
+    and every entry a case lists must cover it, so the scope is every such case.
+    """
+    return sorted(
+        n for n, text in texts.items() if f"- {identifier}\n" in text.split("---\n", 2)[1]
+    )
+
+
+def update_evidence(text: str, registration: Registration, texts: Mapping[int, str]) -> str:
+    """Insert the registration's missing entries, and keep each scope and replay command."""
+    for item in REGISTRATIONS[: _index(registration) + 1]:
+        citing = _citing(texts, item.replay)
+        if _entry_span(text, item.replay) is None:
+            if citing:
+                raise ValueError(
+                    f"add {item.replay} to evidence.yaml before promoting {citing}"
+                )
+            continue
+        own = replayed(item)
+        if not citing or not own:
+            continue
+        carried = monotone_bounds(own, upto=max(registration.packet.cases))
+        sources = sorted({carried[n][1] for n in citing if n in carried})
+        text = _replay_command(_set_scope(text, item.replay, citing), item, sources)
+    owned = [
+        n
+        for n, (name, _side) in registration.packet.cases.items()
+        if owner(name) is registration
+    ]
+    wanted = {
+        registration.report: sorted(set(owned) | set(_citing(texts, registration.report))),
+        registration.monotone_report: _citing(texts, registration.monotone_report),
+    }
+    for identifier, values in wanted.items():
+        if _entry_span(text, identifier) is not None:
+            text = _set_scope(text, identifier, values) if values else text
+            continue
+        if not values:
+            continue
+        if identifier not in registration.entries:
+            raise ValueError(f"add {identifier} to evidence.yaml")
+        anchors = [
+            span
+            for earlier in REGISTRATIONS
+            for item in (*sorted(earlier.ids), *earlier.entries)
+            if (span := _entry_span(text, item)) is not None
+        ]
+        end = max(anchors, key=lambda span: span[0])[1]
+        entry = (
+            registration.entries[identifier]
+            .replace("{scope}", _scope(values))
+            .replace(
+                "{certificate}",
+                f"{registration.packet.relative.relative_to('packing')}"
+                "/wand125-rectangles/certificates",
+            )
+        )
+        text = text[:end] + "\n" + entry + text[end:]
+    return text
+
+
+def _field(payload: Mapping[str, Any], name: str) -> str:
+    field = payload.get(name) or {}
+    exact = field.get("exact_form")
+    source = field.get("source_key") or ",".join(field.get("evidence") or [])
+    shown = f"{field.get('value')}" + (f" ({exact})" if exact else "")
+    return f"{shown} {source}".strip()
+
+
+def decision_table(registration: Registration, frontier: Path) -> str:
+    """Every count this packet's certificates reach, and what the registration does there."""
+    selected = {plan.n: plan for plan in plans(registration, frontier)}
+    cases = registration.packet.cases
+    reported = monotone_bounds({n: side for n, (_name, side) in cases.items()})
+    rows = [
+        "| n | current reported | current verified | certificate bound | decision |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for n, (side, source) in sorted(reported.items()):
+        _front_text, payload, _body = _front(frontier, n)
+        name = cases[source][0]
+        via = f"`{name}`" + ("" if source == n else f" by mass, n{source}")
+        plan = selected.get(n)
+        field = payload.get("reported_lower_bound")
+        held = Fraction(Decimal(str(field["value"]))) if field else None
+        if plan is not None and plan.reported is not None:
+            decision = "write reported"
+        elif n in registration.superseded_priors:
+            decision = f"superseded prior: {registration.superseded_priors[n]}"
+        elif held is not None and not _held_by_us(field) and held >= side:
+            decision = f"current reported stronger by {_decimal(held - side)}"
+        elif owner(name) is not registration:
+            decision = f"held by the {owner(name).date} registration, certificate unchanged"
+        else:
+            decision = "current reported at least as strong"
+        if plan is not None and plan.verified is not None:
+            decision += f"; verified {plan.verified.side} ({plan.verified.registration.date})"
+        rows.append(
+            f"| {n} | {_field(payload, 'reported_lower_bound')} | "
+            f"{_field(payload, 'verified_lower_bound')} | "
+            f"`{side} = {_decimal(side)}` {via} | {decision} |"
+        )
+    return "\n".join(rows) + "\n"
+
+
+def _cpu_hours(registration: Registration, name: str) -> float:
+    path = registration.packet.locate(Path("certificates") / name / "verified_angles.jsonl")
+    if path is None:
+        raise ValueError(f"no packet retains {name}")
+    rows = [json.loads(line) for line in read_retained_text(path).splitlines()]
+    return sum(float(row["seconds"]) for row in rows) / 3600
+
+
+def replay_plan(registration: Registration, frontier: Path) -> str:
+    """Standing certificates not yet replayed, by how far a replay raises the verified lane.
+
+    Each is replayed into the packet that retains it, so a certificate unchanged since an
+    earlier packet is promoted under that packet's replay entry.
+    """
+    cases = registration.packet.cases
+    done = replays(registration)
+    verified: dict[int, Fraction] = {}
+    for n in range(min(cases), max(cases) + 1):
+        field = _front(frontier, n)[1].get("verified_lower_bound")
+        verified[n] = Fraction(Decimal(str(field["value"]))) if field else Fraction(0)
+    rows = []
+    for n, (name, side) in cases.items():
+        if n in done and done[n][0] >= side:
+            continue
+        carried = [m for m in range(n + 1, max(cases) + 1) if verified[m] < side]
+        own = side - verified[n]
+        if own <= 0 and not carried:
+            continue
+        home = owner(name)
+        rows.append((own, n, name, side, carried, _cpu_hours(home, name), home))
+    rows.sort(key=lambda row: (-row[0], row[5]))
+    lines = [
+        (
+            "| order | n | certificate | packet | side | current verified | rise at n | "
+            "also raises | upstream CPU-h | cumulative CPU-h | note |"
+        ),
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    total = 0.0
+    for order, (own, n, name, side, carried, hours, home) in enumerate(rows, 1):
+        total += hours
+        others = ", ".join(f"n{m} +{float(side - verified[m]):.4f}" for m in carried)
+        note = registration.superseded_priors.get(n, "")
+        lines.append(
+            f"| {order} | {n} | `{name}` | {home.date} | `{side} = {_decimal(side)}` | "
+            f"{float(verified[n]):.6f} | {float(own):+.4f} | {others} | {hours:.2f} | "
+            f"{total:.1f} | {note} |"
+        )
+    lines.extend(
+        ["", "Replay commands, from `packing/`, one `--n` per count, in the order above:", ""]
+    )
+    for home in dict.fromkeys(row[6] for row in rows):
+        counts = " ".join(f"--n {row[1]}" for row in rows if row[6] is home)
+        lines.append(
+            f"    .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet {home.date} "
+            f"--out resources/web/{home.packet.directory.name}/receipts/replay "
+            f"--resume --replay --workers 2 {counts}"
+        )
+    return "\n".join(lines) + "\n"
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="report drift without writing")
+    parser.add_argument(
+        "--packet", choices=tuple(BY_DATE), help="default: the registration the records hold"
+    )
+    parser.add_argument("--frontier", type=Path, default=FRONTIER, help="for a dry run")
+    parser.add_argument("--plan", action="store_true", help="print the decision table")
+    parser.add_argument("--replay-plan", action="store_true", help="print the replay order")
     args = parser.parse_args()
+    frontier: Path = args.frontier
+    registration = registered(frontier) if args.packet is None else BY_DATE[args.packet]
+    if args.plan or args.replay_plan:
+        print(
+            decision_table(registration, frontier)
+            if args.plan
+            else replay_plan(registration, frontier)
+        )
+        return 0
     drift: list[str] = []
-    selected = plans()
+    selected = plans(registration, frontier)
+    texts = {
+        int(path.stem.removeprefix("n-")): path.read_text(encoding="utf-8")
+        for path in frontier.glob("n-*.md")
+    }
     for plan in selected:
-        path = FRONTIER / f"n-{plan.n:03d}.md"
-        rendered = apply_case(plan)
+        path = _case_path(frontier, plan.n)
+        rendered = apply_case(plan, registration, frontier)
+        texts[plan.n] = rendered
         if rendered != path.read_text(encoding="utf-8"):
-            drift.append(str(path.relative_to(ROOT)))
+            drift.append(str(path))
             if not args.check:
                 atomic_write_text(path, rendered)
-    verified = {plan.n: plan.verified for plan in selected if plan.verified is not None}
-    text = EVIDENCE.read_text(encoding="utf-8")
-    if f"  - id: {REPLAY}\n" in text and verified:
-        updated = update_evidence_scope(text, verified)
-        if updated != text:
-            drift.append(str(EVIDENCE.relative_to(ROOT)))
-            if not args.check:
-                atomic_write_text(EVIDENCE, updated)
+    evidence = frontier / "evidence.yaml"
+    text = evidence.read_text(encoding="utf-8")
+    updated = update_evidence(text, registration, texts)
+    if updated != text:
+        drift.append(str(evidence))
+        if not args.check:
+            atomic_write_text(evidence, updated)
     for item in drift:
-        print(("drift: " if args.check else "wrote: ") + item)
+        shown = Path(item).relative_to(ROOT) if Path(item).is_relative_to(ROOT) else item
+        print(("drift: " if args.check else "wrote: ") + str(shown))
     return 1 if args.check and drift else 0
 
 

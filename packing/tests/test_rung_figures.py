@@ -697,7 +697,7 @@ def test_every_case_page_binds_the_certificate_its_own_evidence_names() -> None:
     """
     #: n -> why this case's bound cannot be bound to a certificate object at that side.
     external_reduction = {
-        17: "4.66001, after v1.1.0, R052, R012 (T-032): parent rescaling; L/A is no side",
+        17: "R068, after 4.66001, v1.1.0, R052, R012 (T-032): parent rescaling; L/A is no side",
     }
     superseded_current_bound = {
         11: (

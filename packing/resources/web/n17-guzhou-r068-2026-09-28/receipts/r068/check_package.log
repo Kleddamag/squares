@@ -1,0 +1,6 @@
+# command: node check_package.js
+# cwd: WORK/certificates/R068-C010
+# affinity: taskset -c 2,3; N17_TIMEOUT_MINUTES=unset
+# started_utc: 2026-09-28T23:48:06Z; load 2.89 2.14 1.74
+PASS_PACKAGE_BYTES_ONLY / 仅文件身份通过
+# ended_utc: 2026-09-28T23:48:06Z; exit 0; wall_seconds 0.144; user_seconds 0.039; system_seconds 0.019; load 2.89 2.14 1.74

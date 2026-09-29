@@ -1,0 +1,175 @@
+{
+  "kind": "wand125-point-and-mixed-exact-audit/v1",
+  "source_revision": "39d8ecc74d651b54ec977c331c8f2015b442a6c4",
+  "provenance": {
+    "revision": "39d8ecc74d651b54ec977c331c8f2015b442a6c4",
+    "git_tree": "936e2524c09ca137cf9e02dcd955d6737549253b",
+    "subtree_files": 517,
+    "retained_files": 64,
+    "retained_bytes": 1367112,
+    "pinned_only_files": 453
+  },
+  "n45": {
+    "sha256": "f7d706aa07506c351d9c4b76082cc391ae3f1fd20f6759496bd7c601bb0ca192",
+    "entries": 12645,
+    "distinct_points": 12645,
+    "positive_points": 12645,
+    "coordinate_denominator": 2000,
+    "weight_denominator": 562949953421312,
+    "total": "12666371418707823/281474976710656",
+    "total_float": 44.99999100001099,
+    "margin_below_45": "2533271697/281474976710656",
+    "d4_invariant": true,
+    "coverage_decided_here": false
+  },
+  "n21": {
+    "hashes": {
+      "n21-original.txt": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+      "n21-capture-one.txt": "9f631fbae420e0376ea636a232b7680e937deebe205dc035cfb9c43a3d74b456",
+      "upstream-s21-lower-4.9950.txt": "c8e8f878205f2da9c213e4a87c06f17c5a759dce7e695e676dd5c50e0994f2ef"
+    },
+    "entries": 4604,
+    "positive_entries": 4520,
+    "zero_entries": 84,
+    "threshold": "249987/250000",
+    "mass": "2624862500021/125000000000",
+    "normalized_mass": "2624862500021/124993500000",
+    "strict_gap": "999979/125000000000",
+    "strict_gap_float": 7.999832e-06,
+    "d4_invariant": true,
+    "support_is_evand_s21_scaled_by": "1001/1000",
+    "evand_packet_copy_identical": true,
+    "coverage_decided_here": false
+  },
+  "n50": {
+    "L740": {
+      "side": "37/5",
+      "side_float": 7.4,
+      "core": "9977/10000",
+      "rectangles": 553,
+      "total_mass": "4999999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda",
+      "digest_recomputed": true,
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "exceeds_green": true,
+      "excess_over_green_lower": "2064349721023423403164317592549/25000000000000000000000000000000",
+      "excess_over_green_lower_float": 0.08257398884093693,
+      "green_interval_30_digits": [
+        7.317426011159063,
+        7.317426011159063
+      ],
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[37/10, 69/10]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "recorded_minimum_lower": 1.0000000004625813,
+      "recorded_minimum_at": "150",
+      "source_audit": {
+        "file": "completion-audit.json",
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_checked": true,
+        "green_upper_is_upper_bound": true,
+        "improvement_lower_float": 0.08257398884093693
+      },
+      "coverage_decided_here": false
+    },
+    "L735": {
+      "side": "147/20",
+      "side_float": 7.35,
+      "core": "9977/10000",
+      "rectangles": 499,
+      "total_mass": "4999999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "441c2612d81472a79f949f5cd453d2eb171c37faf0c34314ad309f77c0db0836",
+      "digest_recomputed": false,
+      "checker_sha256": "0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d",
+      "exceeds_green": true,
+      "excess_over_green_lower": "814349721023423403164317592549/25000000000000000000000000000000",
+      "excess_over_green_lower_float": 0.032573988840936936,
+      "green_interval_30_digits": [
+        7.317426011159063,
+        7.317426011159063
+      ],
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[147/40, 137/20]^2"
+      },
+      "certificate_status": "ALL_LINEAR_ANGLES_VERIFIED_AND_REPLAYED",
+      "recorded_minimum_lower": null,
+      "recorded_minimum_at": null,
+      "source_audit": {
+        "file": "final-audit.json",
+        "status": "FINAL_CERTIFICATE_AUDITED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_checked": false,
+        "green_upper_is_upper_bound": true,
+        "improvement_lower_float": 0.032573988840936936
+      },
+      "coverage_decided_here": false
+    },
+    "L7318": {
+      "side": "3659/500",
+      "side_float": 7.318,
+      "core": "9977/10000",
+      "rectangles": 355,
+      "total_mass": "4999999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "c0f46b688122f43b73e9ee63729900d6f2370b912452489ef2dd681ef9a67088",
+      "digest_recomputed": true,
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "exceeds_green": true,
+      "excess_over_green_lower": "14349721023423403164317592549/25000000000000000000000000000000",
+      "excess_over_green_lower_float": 0.0005739888409369361,
+      "green_interval_30_digits": [
+        7.317426011159063,
+        7.317426011159063
+      ],
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[3659/1000, 3409/500]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "recorded_minimum_lower": 1.0000000069521284,
+      "recorded_minimum_at": "81",
+      "source_audit": null,
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only: digests, formats, nonnegativity, totals and strict budgets, D4 invariance of the point measures, the n21 threshold algebra, the n50 net containment and Green comparison. Coverage is decided by the source checkers, whose replays are recorded separately."
+}

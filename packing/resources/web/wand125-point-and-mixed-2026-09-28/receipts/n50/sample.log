@@ -1,0 +1,90 @@
+# command: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-replay /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n50/n50-L7.40-proof-bundle --index 0 --index 1 --index 150 --index 200 --workers 2 --out /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n50-sample.json
+# cwd: /home/user/squares/packing
+# start_utc: 2026-09-29T00:10:29Z
+{"status": "AXIS_CERTIFICATE_REPLAYED", "digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda", "cells": 13205956, "gamma": "1", "integer_minimum": 1.0084468491077132, "scope": "Net angle zero only, no full packing certification."}
+{
+  "status": "SAMPLE_REPLAYED",
+  "candidate_digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda",
+  "indices": [
+    0,
+    1,
+    150,
+    200
+  ],
+  "rows": [
+    {
+      "index": 0,
+      "status": "AXIS_CERTIFICATE_REPLAYED",
+      "cells": 13205956,
+      "integer_minimum": 1.0084468491077132,
+      "upstream": {
+        "status": "AXIS_CERTIFICATE_REPLAYED",
+        "digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda",
+        "cells": 13205956,
+        "gamma": "1",
+        "integer_minimum": 1.0084468491077132,
+        "scope": "Net angle zero only, no full packing certification."
+      },
+      "matches_upstream": true,
+      "wall_seconds": 118.54436386899988,
+      "cpu_seconds": 105.937027
+    },
+    {
+      "index": 1,
+      "status": "ANGLE_RESULT_REPLAYED",
+      "nodes": 252065,
+      "lower": 1.0000002481875527,
+      "upstream_nodes": 252065,
+      "upstream_lower": 1.0000002481875527,
+      "upstream_seconds": 49.956864892,
+      "matches_upstream": true,
+      "wall_seconds": 151.32768595400012,
+      "cpu_seconds": 71.57956899999999
+    },
+    {
+      "index": 150,
+      "status": "ANGLE_RESULT_REPLAYED",
+      "nodes": 486389,
+      "lower": 1.0000000004625813,
+      "upstream_nodes": 486389,
+      "upstream_lower": 1.0000000004625813,
+      "upstream_seconds": 183.887431806,
+      "matches_upstream": true,
+      "wall_seconds": 547.881169927,
+      "cpu_seconds": 276.021353
+    },
+    {
+      "index": 200,
+      "status": "ANGLE_RESULT_REPLAYED",
+      "nodes": 605563,
+      "lower": 1.0000000708015935,
+      "upstream_nodes": 605563,
+      "upstream_lower": 1.0000000708015935,
+      "upstream_seconds": 294.758923288,
+      "matches_upstream": true,
+      "wall_seconds": 580.1896782490003,
+      "cpu_seconds": 360.543227
+    }
+  ],
+  "wall_seconds": 851.6909415790001,
+  "bundle_records": {
+    "oblique_records": 200,
+    "gammas": [
+      "1"
+    ],
+    "statuses": [
+      "ANGLE_VERIFIED"
+    ],
+    "axis_status": "AXIS_VERIFIED",
+    "frontier_boxes": 0,
+    "nodes": 80719306,
+    "least_lower": 1.0000000004625813,
+    "upstream_oblique_seconds": 28350.385797951,
+    "upstream_axis_seconds": 59.079910436994396
+  },
+  "upstream_oblique_seconds_total": 28350.385797951,
+  "sample_cpu_over_upstream_seconds": 1.339651599206594,
+  "estimated_full_oblique_cpu_hours": 10.549899908985823,
+  "scope": "The source's per-angle replay functions and unchanged C++ checker on the listed indices, after the full driver's preconditions; not a complete replay."
+}
+# end_utc: 2026-09-29T00:24:41Z exit=0 wall_s=852.1 cpu_user_s=104.4 cpu_sys_s=3.1 maxrss_kb=609680

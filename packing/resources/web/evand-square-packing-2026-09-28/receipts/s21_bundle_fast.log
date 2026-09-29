@@ -1,0 +1,47 @@
+# command: env NPROC=2 CARGO_BUILD_JOBS=2 sh certificates/s21/verify.sh
+# cwd: s12/ of the two packets overlaid (2026-09-26 then 2026-09-28 square-packing/, .gz restored); NPROC=2, CARGO_BUILD_JOBS=2
+# python3: 3.14.7 prefix /home/user/squares/packing/.venv via /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/bin/python3 -> /home/user/squares/packing/.venv/bin/python3
+# host: 4 cores; load 8.92 8.94 8.29; started 2026-09-29T00:21:25Z
+--- hashes
+s21_lower_4.9950.txt: OK
+s21_mixed_cover_5.txt: OK
+zm_mixed_d4/checker/zm_mixed.py: OK
+zm_mixed_d4/checker/mixed_cover.py: OK
+zm_mixed_d4/checker/zeromargin.py: OK
+zm_mixed_d4/roots.jsonl: OK
+zmx2_d4/roots.log: OK
+zmx2_full/roots.log: OK
+--- the cover: well-formed, exact total < 21, D4-invariant measure (search/s21_records.py, own parser)
+cover: s = 5, D = 1000, W = 100000000000: 7536 points, 1872 segments (1872 axis-parallel), 0 polygons; all in [0,5]^2, masses >= 0
+total = 522368729933/25000000000 = 20.894749197320  (< 21: True)
+measure invariant under x -> 5-x: True, under x <-> y: True (these generate D4)
+COVER CLEAN
+--- Lean data (lean/Sqpack/S21Data.lean) is s21_mixed_cover_5.txt
+lean/Sqpack/S21Data.lean matches certificates/s21/s21_mixed_cover_5.txt (sha256 8b415ceeb5f20b02c4e338ce2feb21bc206051ef6bc5c7e433bebae2ef39fc23)
+--- shipped zm_mixed.py run (zm_mixed_d4/): header shas = checker/ + cover, settings, all 40,000 roots certified
+    header: zm_mixed.py ee3e2915349b8795…, mixed_cover.py bb89de15ecf5821d…, zeromargin.py 640fe453c1a32f4a… (= checker/), input 8b415ceeb5f20b02… (= cover); settings D4, cert mode, depth 24, CHAIN True from 0, theta-bias 4, SPLIT True
+    region: 40000 roots = [0,5/2]^2 x u in [0,1/2]; present 40000, missing 0, extra 0, with uncertified boxes 0
+    totals: boxes 461204, max depth 21, leaves ADM 146017 CHAIN 23518 SPLIT 53951 PIECE 9058 P1 0 MIX 0 EMPTY 18058 UNCERTIFIED 0; T' closures 0; CPU 12.90 h
+    zm_mixed D4 RECORDS CLEAN: every root of the D4 region certified
+--- shipped zmx2 runs (zmx2_d4/, zmx2_full/): every root of each region certified
+    header: zmx2 cert hash=20610030026555f9 mode=d4 atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-24,y0-24,bins0-3
+    region: 2500 roots = [0,5/2]^2 x u in [0,1/2]; present 2500, missing 0, extra 0
+    totals: boxes 1826222, certified 888945, empty 25416, uncertified 0 (UNCERT lines 0), capped 0, max depth 26, CPU 27 s
+    zmx2 d4 RECORDS CLEAN: every root certified
+    header: zmx2 cert hash=20610030026555f9 mode=full atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-49,y0-49,bins0-3
+    region: 20000 roots = [0,5]^2 x u in [0,1/2], cover and its y -> 5-y mirror; present 20000, missing 0, extra 0
+    totals: boxes 14709448, certified 7164300, empty 200424, uncertified 0 (UNCERT lines 0), capped 0, max depth 27, CPU 183 s
+    zmx2 full RECORDS CLEAN: every root certified
+--- fresh zmx2 run: the whole pose space, no symmetry assumed (--full: cover + mirror, 20,000 roots)
+    Finished `release` profile [optimized] target(s) in 16.31s
+D4: measure invariant under x->s-x and x<->y (exact)
+cover: s = 5/1, 7536 points, 1872 segments, total 522368729933/25000000000 = 20.89474919732
+done in 251s wall: roots 20000 (missing 0), boxes 14709448, certified 7164300, empty 200424, uncertified 0, max depth 27, cpu 486s
+VERIFIED: every closed unit square in [0,s]^2 has mu >= 1 (unreduced sweep, all roots)
+    header: zmx2 cert hash=20610030026555f9 mode=full atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-49,y0-49,bins0-3
+    region: 20000 roots = [0,5]^2 x u in [0,1/2], cover and its y -> 5-y mirror; present 20000, missing 0, extra 0
+    totals: boxes 14709448, certified 7164300, empty 200424, uncertified 0 (UNCERT lines 0), capped 0, max depth 27, CPU 486 s
+    zmx2 full RECORDS CLEAN: every root certified
+    fresh census identical to the shipped zmx2_full/roots.log, root for root
+s(21) bundle: OK
+# finished 2026-09-29T00:25:56Z; exit 0; wall 271.583 s; CPU 236.3 s (user 235.104 + sys 1.167); load 7.78 8.12 8.11

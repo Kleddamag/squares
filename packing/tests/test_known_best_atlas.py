@@ -533,7 +533,7 @@ def test_known_best_composite_contains_every_case_and_square() -> None:
     assert len(bounds) == 100
     # A proved optimum is stated as an equality, a best-known bound as <=.
     assert all(re.fullmatch(r"s\(\d+\) [=≤] .+", bound) for bound in bounds)
-    assert sum(" = " in bound for bound in bounds) == 36
+    assert sum(" = " in bound for bound in bounds) == 38
 
 
 def test_known_best_composite_png_is_derived_from_current_svg() -> None:
@@ -902,12 +902,12 @@ def test_the_poster_badges_every_perfect_square_and_counts_them_in_its_legend() 
         if node.attrib.get("text-anchor") is None
     ]
     assert labels == [
-        "proved optimal (60)",
+        "proved optimal (62)",
         "exact value known (287)",
         "only known numerically (37)",
         "rigid (established here) (20)",
         "annotated rigid by the catalogue (2)",
-        "recent result, since Aug 2026 (26)",
+        "recent result, since Aug 2026 (27)",
         "colors indicate distinct tilt angles",
         "shade indicates number of full-side contacts",
     ]
@@ -921,7 +921,7 @@ def test_the_poster_badges_every_perfect_square_and_counts_them_in_its_legend() 
         for node in figure_legend.findall("svg:text", SVG)
         if node.attrib.get("text-anchor") is None
     ][:5] == [
-        "proved optimal (36)",
+        "proved optimal (38)",
         "exact value known (95)",
         "only known numerically (5)",
         "rigid (established here) (12)",

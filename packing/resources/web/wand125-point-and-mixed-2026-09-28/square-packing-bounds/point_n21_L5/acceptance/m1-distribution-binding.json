@@ -1,0 +1,10 @@
+{
+  "status": "M1_FULL_RUN_READS_PRESENT_BYTE_IDENTICAL_IN_DISTRIBUTION",
+  "source_reads": 75130,
+  "distribution_manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+  "result_sha256": "117eaffa1b5acee3de444446a1289bfb649900e9868cdf5d6376eb84d98ec9c0",
+  "linkage_sha256": "6efc5fe539db5a37ec1ac0851271cee4c51dc5912d886d059ef253769bf7e0dc",
+  "compressed_linkage_sha256": "0d93072b65c1b162e1cba99db64a14b7f85e21f50b98da720247d3234c665f02",
+  "seconds": 8577.313336874999,
+  "scope": "Full numerical run used original frozen bundle; all actual reads are preserved byte-for-byte in the trimmed distribution. This staging check performs no numerical replay."
+}

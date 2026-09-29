@@ -1,0 +1,10 @@
+# command: sh verify.sh /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n45-verify 2
+# cwd: /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n45_L7
+# start_utc: 2026-09-28T23:49:00Z
+COVER_OK points=12645 total=12666371418707823/281474976710656 (44.999991000011) < 45, D4-invariant
+D4: measure invariant under x->s-x and x<->y (exact)
+done in 1269s wall: roots 4900 (missing 0), boxes 1295460, certified 629884, empty 20296, uncertified 0, max depth 38, cpu 2534s
+VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)
+ROOTS_OK 4900 roots, uncertified 0, capped 0
+N45_POINT_COVER_VERIFIED
+# end_utc: 2026-09-29T00:10:28Z exit=0 wall_s=1287.2 cpu_user_s=1489.4 cpu_sys_s=4.9 maxrss_kb=285924

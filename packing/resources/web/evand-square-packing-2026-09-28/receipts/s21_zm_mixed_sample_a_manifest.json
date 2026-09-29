@@ -1,0 +1,100 @@
+{
+ "header": {
+  "kind": "zm_mixed cert header",
+  "version": 2,
+  "sha256": {
+   "zm_mixed.py": "ee3e2915349b8795128417bca6414b205d526db9f01f88cd4cd32c32e8d760ac",
+   "mixed_cover.py": "bb89de15ecf5821dd7e1a36ebab8a50d792a406b7fb0f5cb38059f99ef74aae5",
+   "zeromargin.py": "640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab",
+   "input": "8b415ceeb5f20b02c4e338ce2feb21bc206051ef6bc5c7e433bebae2ef39fc23"
+  },
+  "input": "certificates/s21/s21_mixed_cover_5.txt",
+  "total": "522368729933/25000000000",
+  "settings": {
+   "mode": "D4",
+   "depth": 24,
+   "pitch": "1/20",
+   "ubins": 16,
+   "chain": true,
+   "chain_from": 0,
+   "theta_bias": 4,
+   "clip": true,
+   "lemma_T": true,
+   "lemma_L": true,
+   "split": true,
+   "cert_mode": true,
+   "tprime": false,
+   "split_maxchain": 400,
+   "reach": "442/625",
+   "region": {
+    "cx_lo": "7/4",
+    "cx_hi": "9/5",
+    "cy_lo": "7/5",
+    "cy_hi": "29/20",
+    "u_lo": null,
+    "u_hi": null
+   }
+  }
+ },
+ "argv": [
+  "search/zm_mixed.py",
+  "cert",
+  "certificates/s21/s21_mixed_cover_5.txt",
+  "--d4",
+  "--cert-mode",
+  "--disj",
+  "--chain-from",
+  "0",
+  "--depth",
+  "24",
+  "--pitch",
+  "1/20",
+  "--ubins",
+  "16",
+  "--nproc",
+  "2",
+  "--progress",
+  "4",
+  "--cx-lo",
+  "7/4",
+  "--cx-hi",
+  "9/5",
+  "--cy-lo",
+  "7/5",
+  "--cy-hi",
+  "29/20",
+  "--resume",
+  "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_a.jsonl",
+  "--manifest",
+  "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_a_manifest.json"
+ ],
+ "created": "2026-09-29 00:10:10",
+ "result": {
+  "roots": 16,
+  "census": {
+   "ADM": 9,
+   "CORE": 0,
+   "P1": 0,
+   "MIX": 0,
+   "CHAIN": 10,
+   "TRI": 0,
+   "PIECE": 0,
+   "EMPTY": 0,
+   "UNCERT": 0,
+   "boxes": 38,
+   "maxdepth": 5,
+   "THR": 2,
+   "LIN": 25,
+   "TPTS": 0,
+   "SPLIT": 8,
+   "cpu": 24.150915021000003
+  },
+  "uncertified": 0,
+  "wall_s": 18.2,
+  "verdict": "VERIFIED-D4 (PARTIAL)"
+ },
+ "records": {
+  "path": "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s21_zm_mixed_sample_a.jsonl",
+  "sha256": "915f176aaf30d629b1d4054763804efc07ad8b19999dcf89d3d52e01067b804e"
+ }
+}

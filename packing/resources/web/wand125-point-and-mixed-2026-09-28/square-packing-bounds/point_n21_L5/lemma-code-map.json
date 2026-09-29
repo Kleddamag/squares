@@ -1,0 +1,29 @@
+{
+  "appendix_sha256": "0c8cb94f163f4571277ad77645747530aeda4fe3165cebb74e459699f8ecc5db",
+  "source_bindings": {
+    "src/nagamochi_research/certify_near_axis_sweep.py": "fc14522778c461764473c285f6d8c20edfe1f6ccd7dc7bfc6bd0e11c2edc11aa",
+    "src/nagamochi_research/closed_cover_bridge.py": "8b713832646205eb982af8f683d4bfed4520c17012569f989212c1fbd9b5dbcd",
+    "src/nagamochi_research/compile_box_capture_rows.py": "37d936239674006d28b2b2a6958265c86d499dda8354d434dd490e18d994fe94",
+    "src/nagamochi_research/exact_fixed_angle_separator.py": "2ed151b652d55895fa56a3da3faab1fdab166a050d97df300621359f4a5128ad",
+    "src/nagamochi_research/extend_reweighted_physical_tree.py": "0c1da1ff89870a4629c5a373b1f7f376bcc5244cf38dc5fb0d493573ddbbf73c",
+    "runs/evand_n21_n32_bridge_20260927/results/n21_L5_refit29_final_replay/frontier.py": "22f624e7b5d93c7ec68668e0e762d9df8cd8a1dfde60faf1f0d83f1d298ff45f",
+    "src/nagamochi_research/near_axis_partition_bridge.py": "72660a85a010e97e9726a3a52f84f8b5c5ac5539dbf28fb4d22afdc89bf1d0fa",
+    "src/nagamochi_research/near_axis_projection.py": "21fafcacf4a983018f5579953faa46492d83d2595a9c0ef0f4b3b623f3c1d084",
+    "src/nagamochi_research/physical_pose_enclosure.py": "f65167d7cffde54ddbbb3b516eb1d19d497949e7a6d50c088bc76c6ec49c5122",
+    "src/nagamochi_research/physical_predicate_branch.py": "237edf2f8c50863116d4d82e9583192d7a5e9cb2a33d26ea388c961ef3e0fdf4",
+    "src/nagamochi_research/physical_predicate_conflict.py": "0ca7bd7b22724395386f74bf17e8e073dc5ad5fb281bff5a0ace6d1cd5ace394",
+    "src/nagamochi_research/point_box_sieve.py": "01108b4a7e81131ea0bb025aa45cfb5284b0fe6699b4c2e3d6f0b44afe14ab75",
+    "src/nagamochi_research/predicate_branch.py": "1925d3dc708a713aa81738c5f34259ad8c86e518b2048d45ca687916bc427ce8",
+    "src/nagamochi_research/predicate_conflict.py": "6424ae453eda7b71e2405bacb8c56f2bf4ec684aecd5b95a7beaf7b55920cffd",
+    "src/nagamochi_research/predicate_lp_capture.py": "5a5c7ad598bc531e769c8ba0aab96db74102e47045478e3cb270543daecc8a99",
+    "src/nagamochi_research/reoptimize_capture_weights.py": "a3bbb0b73a87a6a1e79dfe7308f37bcdba3d53c9ce8b60a643587b4029c03cc9",
+    "src/nagamochi_research/reoptimize_physical_tree_weights.py": "073a61221c08b727864226701e05c21ce49a581e525343c1549451e1a2b67c3b",
+    "src/nagamochi_research/replay_capture_margin.py": "e9209d4f4afd0c0620522f6a29d24f6bcbfd3102a9d44329199f5d9b1d45a4c7",
+    "src/nagamochi_research/replay_physical_point_witness.py": "e7bec2c351b165797031d4f5daeaeb237329e53b7ed8b0913341a9757c1d1658",
+    "runs/evand_n21_n32_bridge_20260927/results/n21_L5_refit29_final_replay/run_prefix.py": "39851809609eb563733dabeabf9be3ed16bf7a7bc7f8cf12af7a64146c07b1e2",
+    "src/nagamochi_research/stratified_box_cover.py": "d62cc5495d3cf4a55dd2247a2eb75bfdacbe5e8da93b314d19974c91eb012306",
+    "src/nagamochi_research/transfer_point_capture.py": "40dae24d2616387a225a5670df010cf5d31f10f54c0051ef5ce1b3a9436b5d74",
+    "src/nagamochi_research/verify_angle_clip.py": "0d080f8232c6a71e22e10548cd168c75b357be8a217de7dfdcea1b2d9f2369c8"
+  },
+  "scope": "Source identities for the written mathematical appendix; not a formal proof"
+}

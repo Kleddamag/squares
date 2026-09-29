@@ -1,0 +1,85 @@
+{
+  "status": "FRESH_ALL_DOMAIN_REPLAY_VERIFIED",
+  "candidate_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+  "root_count": 5000,
+  "sieve_count": 8758,
+  "frontier_count": 31678,
+  "excluded_count": 7052,
+  "threshold": "249987/250000",
+  "mass": "2624862500021/125000000000",
+  "strict_gap": "999979/125000000000",
+  "worker_exits": [
+    {
+      "stage": "root",
+      "shard": null,
+      "argv": [
+        "/Users/Hosono_1/SquarePacking/.venv/bin/python",
+        "-u",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/bundle/portable_replay.py",
+        "--stage",
+        "root",
+        "--out",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/results/n21_L5_portable_codexb_trial/replay/root"
+      ],
+      "exit_code": 0,
+      "seconds": 139.45580649998737
+    },
+    {
+      "stage": "sieve",
+      "shard": null,
+      "argv": [
+        "/Users/Hosono_1/SquarePacking/.venv/bin/python",
+        "-u",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/bundle/portable_replay.py",
+        "--stage",
+        "sieve",
+        "--out",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/results/n21_L5_portable_codexb_trial/replay/sieve"
+      ],
+      "exit_code": 0,
+      "seconds": 412.11077858298086
+    },
+    {
+      "stage": "frontier",
+      "shard": 0,
+      "argv": [
+        "/Users/Hosono_1/SquarePacking/.venv/bin/python",
+        "-u",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/bundle/portable_replay.py",
+        "--stage",
+        "frontier",
+        "--out",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/results/n21_L5_portable_codexb_trial/replay/frontier-s0",
+        "--shard",
+        "0",
+        "--shards",
+        "2"
+      ],
+      "exit_code": 0,
+      "seconds": 7873.12403079198
+    },
+    {
+      "stage": "frontier",
+      "shard": 1,
+      "argv": [
+        "/Users/Hosono_1/SquarePacking/.venv/bin/python",
+        "-u",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/bundle/portable_replay.py",
+        "--stage",
+        "frontier",
+        "--out",
+        "/Users/Hosono_1/SquarePacking/runs/n21_L5_portable_codexb_trial/results/n21_L5_portable_codexb_trial/replay/frontier-s1",
+        "--shard",
+        "1",
+        "--shards",
+        "2"
+      ],
+      "exit_code": 0,
+      "seconds": 7967.529389625008
+    }
+  ],
+  "seconds": 8577.313336874999,
+  "linkage_sha256": "6efc5fe539db5a37ec1ac0851271cee4c51dc5912d886d059ef253769bf7e0dc",
+  "independent_external_review": false,
+  "formal_verification": false
+}

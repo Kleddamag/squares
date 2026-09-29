@@ -1,0 +1,33 @@
+{
+  "schema": "GuzhouR068PacketStructure/v1",
+  "release": "R067",
+  "source_commit": "d4e2c287408b416683f7d1b7f19e69fb7c592d73",
+  "certificate_sha256": "101dd164906c7b71dc1397eaa32e25626548cd71995e532113823f434f8e5d26",
+  "baseline_sha256": "280af3d46150ca990917d714d83ee73baf4e6c45a0563090bf35588fb22de6e5",
+  "target": "233009/50000",
+  "parent_side": "32950/33287",
+  "baseline_parent_side": "461300/466001",
+  "point_orbits": 2620,
+  "baseline_point_orbits": 2620,
+  "sites": 20856,
+  "baseline_sites": 20856,
+  "point_orbit_changes": [],
+  "rule_orbits": 889,
+  "rule_orbits_unchanged": true,
+  "budget_units": 17000402008,
+  "baseline_budget_units": 17000402008,
+  "budget_delta_units": 0,
+  "point_orbit_budget_delta_units": 0,
+  "budget_delta_accounted": true,
+  "requested_minimum_units": 1000023648,
+  "requested_surplus_units": 8,
+  "angle_chain": {
+    "original_intervals": 2168,
+    "new_intervals": 2808,
+    "pieces_per_original": {
+      "1": 1528,
+      "2": 640
+    },
+    "exact_bisections": 640
+  }
+}

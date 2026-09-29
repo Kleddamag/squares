@@ -284,3 +284,96 @@ def test_produced_by_resolves_every_kind_of_campaign_record(
     )
     monkeypatch.setattr(check_results, "RESULTS", linked)
     assert check_results.main() == 0
+
+
+def test_a_previously_published_result_names_its_source(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A result by others without its source would be credit restated nowhere."""
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    record = next(result for result in register["results"] if result["id"] == "T-032")
+    record.pop("attribution")
+    target = tmp_path / "results.yaml"
+    target.write_text(yaml.safe_dump(register, sort_keys=False, allow_unicode=True))
+    monkeypatch.setattr(check_results, "RESULTS", target)
+    assert check_results.main() == 1
+    assert "T-032: a previously-published result names its source in attribution" in (
+        capsys.readouterr().out
+    )
+
+
+def test_a_novel_result_is_this_projects_and_names_no_source(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    claimed = _changed_result(
+        tmp_path,
+        "T-017",
+        attribution={"source_keys": ["[evand square-packing 2026]"], "published": "2026-08-25"},
+    )
+    monkeypatch.setattr(check_results, "RESULTS", claimed)
+    assert check_results.main() == 1
+    assert "T-017: an apparently-novel result is this project's" in capsys.readouterr().out
+
+
+def test_an_attribution_key_resolves_in_the_bibliography(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    dangling = _changed_result(
+        tmp_path,
+        "T-032",
+        attribution={"source_keys": ["[nobody 2026]"], "published": "2026-09-20"},
+    )
+    monkeypatch.setattr(check_results, "RESULTS", dangling)
+    assert check_results.main() == 1
+    assert "T-032: attribution names [nobody 2026], which bibliography.yaml lacks" in (
+        capsys.readouterr().out
+    )
+
+
+def test_a_recent_result_by_others_needs_its_sources_lineage() -> None:
+    record = {
+        "id": "T-999",
+        "novelty": "previously-published",
+        "attribution": {"source_keys": ["[a]", "[b]"], "published": "2026-09-01"},
+    }
+    sources = {"[a]": {"lineage": "independent"}, "[b]": {}}
+    assert check_results.attribution_problems(record, sources) == [
+        "T-999: [b] has no lineage, which a result by others published since 2026-08-22 needs"
+    ]
+    record["attribution"]["published"] = "2026-08-21"
+    assert check_results.attribution_problems(record, sources) == []
+
+
+def test_a_recent_case_lower_bound_is_covered_for_its_own_n() -> None:
+    """The entry that covers a case must cite its evidence and name its `n`.
+
+    A monotone consequence is part of the result it follows from, so the scope carries
+    it; an entry that cites the evidence at another `n` does not cover this one.
+    """
+    evidence = {"E-x": {"novelty": "previously-published", "source_key": "[s]"}}
+    sources = {"[s]": {"dated": "2026-09-28"}}
+    cases = {27: {"E-x"}, 28: {"E-x"}}
+    narrow = [{"evidence": ["E-x"], "scope": {"n_values": [27]}}]
+    assert check_results.coverage_problems(narrow, evidence, sources, cases) == [
+        "n-028: its lower bound cites E-x, and no registered result citing it covers n = 28"
+    ]
+    wide = [{"evidence": ["E-x"], "scope": {"n_min": 27, "n_max": 28}}]
+    assert check_results.coverage_problems(wide, evidence, sources, cases) == []
+    sources["[s]"]["dated"] = "2026-08-21"
+    assert check_results.coverage_problems(narrow, evidence, sources, cases) == []
+
+
+def test_a_sources_credit_and_lineage_agree() -> None:
+    """`lineage` is typed so no tool parses `credit`; the two must still say one thing.
+
+    A source that builds on this project or credits it is printed "X after ..., Levy";
+    an independent one never names this project. The four `n = 17` keys the W8 audit
+    of 2026-09-29 found without that credit would have failed here.
+    """
+    bibliography = safe_load(check_results.BIBLIOGRAPHY.read_text(encoding="utf-8"))
+    for source in bibliography["sources"]:
+        lineage = source.get("lineage")
+        if lineage is None:
+            continue
+        names_project = "Levy" in (source.get("credit") or "")
+        assert names_project == (lineage != "independent"), source["key"]

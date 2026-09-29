@@ -1,0 +1,7 @@
+{
+  "status": "ALL_INPUTS_ENCLOSE_THE_CANDIDATE",
+  "inputs": 200,
+  "rectangle_images": 4424,
+  "gamma": "1",
+  "scope": "Each oblique input hashes to its recorded digest and every interval encloses the exact datum recomputed from the candidate; coverage is not decided here."
+}

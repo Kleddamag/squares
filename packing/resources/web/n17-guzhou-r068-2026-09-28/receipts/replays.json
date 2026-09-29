@@ -1,0 +1,459 @@
+{
+  "schema": "ExternalCertificateReplayReceipts/v1",
+  "source": {
+    "url": "https://github.com/Guzhou0806/n17-square-packing",
+    "commits": {
+      "R067": "d4e2c287408b416683f7d1b7f19e69fb7c592d73",
+      "R068": "815b16261f852e389968513eec94b4b9e5b3206d"
+    },
+    "tree_at_R068": "2f71d01b259c294fee553636121b28d8d0b8d02c",
+    "certificates_sha256": {
+      "R067 certificates/R067-4.66018/certificate.json": "101dd164906c7b71dc1397eaa32e25626548cd71995e532113823f434f8e5d26",
+      "R068 certificates/R068-C010/accepted/4.66044/certificate.json": "cf70f74ddb47071b1d7333d8a43885d2915f43d45f26f6084a106dfdb0c5205f",
+      "C010 research/fit02/model.json": "b9d9ec28b5a56681e0b0d9f083d6f723cab700ccfedc9cca1ff0f0ce85318da4"
+    },
+    "package_manifests_sha256": {
+      "certificates/R067-4.66018/MANIFEST.json": "c2c1b20c2c301079cc1c9b77c7dc6b615f28d4682eebf3d720bc38b00590424c",
+      "certificates/R068-C010/MANIFEST.json": "0f85f7092ec27e5b552c434749f41a1f5500a6a26628afdf0ebc95ac11c3a666"
+    },
+    "checker_sources_sha256": {
+      "verify.cpp": "3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c",
+      "native_geometry.hpp": "ade0091aa238e2d6dd078f89c9877dce6e0d80f3bb22aedc7e19d6fd85a7ec22",
+      "replay.js": "1125e5969fe0a22e92ea42845ac0dfe68aae5a2a0110550591a01fa43f297712",
+      "reference/verify_global_variable.js": "c22091862df631f8cfd1f1bb8e5013f0b9c216f20be268fcd7104768919c49b7",
+      "C010 src/strip_sweep.cpp": "80a9cc5a2801cce796f4d2ec42fac8daaa8537e2b49c2bc282a2113fafff0a0c",
+      "C010 upstream/cpp/probe.cpp": "44723fa7216c86276227b6a584612def97971d2af6858c19718674cffa8e00ce",
+      "C010 src/verify_strip.js": "9cb933d05a3c7acad85abdf0f96e4afab4f1a780334e0621edcfb66b8e081e31",
+      "C010 tools/verify_finite.js": "297b7ee4ffd2277408984f83082d20420de40e9b33656e166c82a316cb035442"
+    }
+  },
+  "host": {
+    "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39, Ubuntu 24.04.4 LTS container",
+    "cpu_model": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cpus": 4,
+    "memory": "16 GB",
+    "cores_used": "every command pinned to two cores with taskset -c 2,3",
+    "contention": "Three other agent lanes ran on the same four cores throughout (one-minute load averages between about 3 and 13, recorded per run); walls are contended readings, not benchmarks."
+  },
+  "toolchain": {
+    "compiler": "/usr/bin/g++, g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, flags -O3 -std=c++17 as the source gives them",
+    "boost": "libboost1.83-dev 1.83.0-2.1ubuntu3.2 (Boost 1.83 headers), installed with apt-get install -y libboost-dev through the session proxy for this replay",
+    "node": "v24.18.0; the source asks for Node.js 22, its CI pins 22 and its own runs used 22.16.0",
+    "project_interpreter": "packing/.venv/bin/python3, CPython 3.14.7, for devtools.audit_guzhou_r068 only",
+    "executable_sha256": "cf761bb5d19ba01be76853c7e6bd47648a8ff5c29624d02f9cc02d730cc719d5",
+    "executable_note": "R068's .recheck/bin/verify and R067's ./verify built from the same sources are byte-identical; the source's own build was 8f4d59aca9b133efb8743643022eb592443068f65417373ea2042f0cd495aa42 (GCC 14.2.0).",
+    "strip_executable_sha256": "74a52fd80be87feb0fbc20a47d9aa141a7916c23ee160a1ddf6bc07e1e3346f3",
+    "probe_executable_sha256": "11893fa49ed6afa3240b51ac8c2f4ad6c130eda8979ade5556033b6721b8d0ed"
+  },
+  "working_directory": "WORK: a clean clone of the source at 815b1626, outside this repository and not retained; its two packages are byte-identical to this packet's after gunzip -k",
+  "environment": "N17_TIMEOUT_MINUTES=600 for the two replay.js runs (the launcher's documented per-process timeout, default 60 minutes); nothing else set",
+  "timing_method": "bash time around each command (wall; user and system CPU of the command and all its waited-for children); the timed logs are the per-run *.log files",
+  "runs": [
+    {
+      "mode": "r068-package",
+      "command": "node check_package.js",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:48:06Z",
+      "ended_utc": "2026-09-28T23:48:06Z",
+      "wall_seconds": 0.144,
+      "user_seconds": 0.039,
+      "system_seconds": 0.019,
+      "cpu_seconds": 0.058,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "2.89 2.14 1.74",
+        "end": "2.89 2.14 1.74"
+      },
+      "status": "PASS_PACKAGE_BYTES_ONLY",
+      "receipt": "r068/check_package.log"
+    },
+    {
+      "mode": "r068-build",
+      "command": "g++ -O3 -std=c++17 upstream/cpp/verify.cpp -o .recheck/bin/verify",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:48:06Z",
+      "ended_utc": "2026-09-28T23:48:23Z",
+      "wall_seconds": 16.947,
+      "user_seconds": 10.788,
+      "system_seconds": 3.14,
+      "cpu_seconds": 13.928,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "2.89 2.14 1.74",
+        "end": "3.36 2.28 1.80"
+      },
+      "executable_sha256": "cf761bb5d19ba01be76853c7e6bd47648a8ff5c29624d02f9cc02d730cc719d5",
+      "receipt": "r068/build.log"
+    },
+    {
+      "mode": "r068-global",
+      "command": "N17_TIMEOUT_MINUTES=600 taskset -c 2,3 node upstream/cpp/replay.js accepted/4.66044/certificate.json .recheck/global .recheck/bin/verify 2",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:48:27Z",
+      "ended_utc": "2026-09-29T01:05:56Z",
+      "wall_seconds": 4648.508,
+      "user_seconds": 3972.751,
+      "system_seconds": 120.219,
+      "cpu_seconds": 4092.97,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "3.49 2.32 1.81",
+        "end": "6.70 8.20 9.83"
+      },
+      "theorem": {
+        "status": "PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION",
+        "target": "116511/25000",
+        "intervals": 4991,
+        "budget_units": "17000448944",
+        "minimum_units": "1000026844",
+        "surplus": "7404"
+      },
+      "process_seconds": {
+        "cpp-0": 1671.8,
+        "cpp-1": 1965.42,
+        "node-0": 4520.446,
+        "node-1": 4648.11
+      },
+      "outputs_sha256": {
+        "INPUTS.json": "83a821e5db0cadd25411109001641b27cbac5b388afd7496c1c13674e849dca4",
+        "THEOREM.json": "0204ca41eca3c0a9de1f051f4946dfd451bd2c3c4d7a91151b18d90121509ab9",
+        "cpp-0.json": "75251c7d66792a043fa5b20fdc18b4d080e89979adf8309a86e1954226739dcd",
+        "cpp-0.log": "ac5eafb8d06a5f543d939d0668abf24e5e9a7e83ae31b5883eafab9075b50cae",
+        "cpp-1.json": "998d3c7f32285dbdaeeda898049b2ee4fcc1135d714bd53e443176186513a76c",
+        "cpp-1.log": "70e531a2645134335803c75602424f8cc98fa5b8e04e95d2a93f815db28e5eda",
+        "node-0.json": "b7618d0055617873b31bdb0914bf533ce6e48048abe45f3bc56d6e60e221abc8",
+        "node-0.log": "ea0b62f4b6372bcb8d8567b9282ec9516e17fa2a1cc96a9858ccd97222613c48",
+        "node-1.json": "c678409d9e9314acc58d0fb05797dabb2f868f75e040e967d1ddd7d4249c0405",
+        "node-1.log": "ff79791b07ea5484a55c184091fde23cb780e3fa6f49947052375f96dad877c2"
+      },
+      "receipt": "r068/replay/"
+    },
+    {
+      "mode": "r068-assert-global",
+      "command": "node assert_ci.js global",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-29T01:06:05Z",
+      "ended_utc": "2026-09-29T01:06:05Z",
+      "wall_seconds": 0.074,
+      "user_seconds": 0.032,
+      "system_seconds": 0.0,
+      "cpu_seconds": 0.032,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "7.13 8.24 9.82",
+        "end": "7.13 8.24 9.82"
+      },
+      "status": "PASS_FRESH_EXPECTED_RESULTS",
+      "receipt": "r068/assert-global.log"
+    },
+    {
+      "mode": "r067-records",
+      "command": "node check_records.js",
+      "cwd": "WORK/certificates/R067-4.66018",
+      "started_utc": "2026-09-29T00:35:40Z",
+      "ended_utc": "2026-09-29T00:35:40Z",
+      "wall_seconds": 0.164,
+      "user_seconds": 0.04,
+      "system_seconds": 0.022,
+      "cpu_seconds": 0.062,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "11.85 9.83 8.92",
+        "end": "11.85 9.83 8.92"
+      },
+      "status": "PASS_RECORDED_FULL_COVERAGE",
+      "receipt": "r067/check_records.log"
+    },
+    {
+      "mode": "r067-build",
+      "command": "g++ -O3 -std=c++17 src/verify.cpp -o verify",
+      "cwd": "WORK/certificates/R067-4.66018",
+      "started_utc": "2026-09-29T00:35:40Z",
+      "ended_utc": "2026-09-29T00:36:04Z",
+      "wall_seconds": 24.041,
+      "user_seconds": 10.453,
+      "system_seconds": 0.445,
+      "cpu_seconds": 10.898,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "11.85 9.83 8.92",
+        "end": "12.65 10.18 9.07"
+      },
+      "executable_sha256": "cf761bb5d19ba01be76853c7e6bd47648a8ff5c29624d02f9cc02d730cc719d5",
+      "receipt": "r067/build.log"
+    },
+    {
+      "mode": "r067-replay",
+      "command": "N17_TIMEOUT_MINUTES=600 taskset -c 2,3 node src/replay.js certificate.json fresh-paired-run ./verify 2",
+      "cwd": "WORK/certificates/R067-4.66018",
+      "started_utc": "2026-09-29T01:05:58Z",
+      "ended_utc": "2026-09-29T01:31:49Z",
+      "wall_seconds": 1550.867,
+      "user_seconds": 2046.18,
+      "system_seconds": 58.976,
+      "cpu_seconds": 2105.156,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "6.70 8.20 9.83",
+        "end": "5.96 5.79 7.22"
+      },
+      "theorem": {
+        "status": "PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION",
+        "target": "233009/50000",
+        "intervals": 2808,
+        "budget_units": "17000402008",
+        "minimum_units": "1000026844",
+        "surplus": "54340"
+      },
+      "process_seconds": {
+        "cpp-0": 878.403,
+        "cpp-1": 892.859,
+        "node-0": 1546.764,
+        "node-1": 1550.492
+      },
+      "outputs_sha256": {
+        "INPUTS.json": "240bf7b52a505688f9cceeb8a4c95437d327cca9f63f4b07464b4c4ca6310a4d",
+        "THEOREM.json": "6ab795650e80cb42364e6d140cee3d58b7a303e88de222f19251ff36a00739ef",
+        "cpp-0.json": "18987be5846f208aa4a85db8f1cb5a678c6f40d79e3bd32d5e18463a51f4e976",
+        "cpp-0.log": "d51ff46e1c6ea5cefce93c360ad667473c3cbe2540363c81c112d68ed88120c6",
+        "cpp-1.json": "fedc636e134290cb1912a85087dc712e06ad9beb694d614ce73c2e7d559b11e9",
+        "cpp-1.log": "0e55d05fab49b3470897441d181f229e771ff5fb23ed9ef67890947d50359a1a",
+        "node-0.json": "176171add713a66c8a2e13337664d081538bebce88ce1c71e2fffec7281855c7",
+        "node-0.log": "88d226f8d0d81af305aeedc44961e954746acb0e63c22c9d651c284555f191e6",
+        "node-1.json": "4d524de287afca1562850d211c4b90d3b08783e8da1836797b046bf41b0848d7",
+        "node-1.log": "79b44d87a8026da0944864110eea42d4f6caaa288f6c7c13616cc85cc46302a7"
+      },
+      "receipt": "r067/replay/"
+    },
+    {
+      "mode": "c010-build-strip",
+      "command": "g++ -O3 -std=c++17 src/strip_sweep.cpp -o .recheck/bin/strip",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:54:19Z",
+      "ended_utc": "2026-09-28T23:54:34Z",
+      "wall_seconds": 15.397,
+      "user_seconds": 12.111,
+      "system_seconds": 1.049,
+      "cpu_seconds": 13.16,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.42 8.56 4.83",
+        "end": "10.47 8.66 4.93"
+      },
+      "receipt": "c010/build-strip.log"
+    },
+    {
+      "mode": "c010-build-probe",
+      "command": "g++ -O3 -std=c++17 upstream/cpp/probe.cpp -o .recheck/bin/probe",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:54:34Z",
+      "ended_utc": "2026-09-28T23:54:48Z",
+      "wall_seconds": 13.722,
+      "user_seconds": 11.051,
+      "system_seconds": 0.885,
+      "cpu_seconds": 11.936,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.47 8.66 4.93",
+        "end": "10.30 8.71 5.00"
+      },
+      "receipt": "c010/build-probe.log"
+    },
+    {
+      "mode": "c010-strip",
+      "command": ".recheck/bin/strip research/fit02/model.json research/strip/jobs.json .recheck/strip.json .recheck/strip-poses.json 32",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:54:48Z",
+      "ended_utc": "2026-09-28T23:55:00Z",
+      "wall_seconds": 12.688,
+      "user_seconds": 11.186,
+      "system_seconds": 0.28,
+      "cpu_seconds": 11.466,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.30 8.71 5.00",
+        "end": "10.47 8.81 5.07"
+      },
+      "outputs_sha256": {
+        "strip.json": "437322b87bebc03344b05e8eea41f848d383c4e443746cf15918a3a24ad20c8a",
+        "strip-poses.json": "111f78d8e4e070063eb90ed3c90a8a456875364c17b26537e63e7ede11f3d81a"
+      },
+      "receipt": "c010/strip.log"
+    },
+    {
+      "mode": "c010-verify-strip",
+      "command": "node src/verify_strip.js research/fit02/model.json research/strip/jobs.json .recheck/strip.json .recheck/strip-independent.json",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:55:00Z",
+      "ended_utc": "2026-09-28T23:55:21Z",
+      "wall_seconds": 21.056,
+      "user_seconds": 18.303,
+      "system_seconds": 0.283,
+      "cpu_seconds": 18.586,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.47 8.81 5.07",
+        "end": "10.51 8.95 5.22"
+      },
+      "status": "PASS_PAIRED_LOCAL_CONTINUOUS_ANGLE_WALL_STRIP_MINIMA",
+      "outputs_sha256": {
+        "strip-independent.json": "725640be56dd06bf22134c973a5e3efc06943b364dc1f334eedd542151cdebfa"
+      },
+      "receipt": "c010/verify-strip.log"
+    },
+    {
+      "mode": "c010-probe",
+      "command": ".recheck/bin/probe research/fit02/model.json research/fit02/failure_poses.json .recheck/failure-cpp.json 9321/2000",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:55:21Z",
+      "ended_utc": "2026-09-28T23:55:24Z",
+      "wall_seconds": 2.008,
+      "user_seconds": 1.766,
+      "system_seconds": 0.064,
+      "cpu_seconds": 1.83,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.51 8.95 5.22",
+        "end": "10.51 8.95 5.22"
+      },
+      "status": "EXACT_FINITE_PARENT_PROBES_ONLY",
+      "outputs_sha256": {
+        "failure-cpp.json": "754b4721e1782d094d8d6002751b37c7ce5b703358561c2de2c54ebf4f3e49ef"
+      },
+      "receipt": "c010/probe.log"
+    },
+    {
+      "mode": "c010-finite",
+      "command": "node tools/verify_finite.js research/fit02/model.json research/fit02/failure_spec.json .recheck/failure-bigint.json",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:55:24Z",
+      "ended_utc": "2026-09-28T23:55:24Z",
+      "wall_seconds": 0.157,
+      "user_seconds": 0.109,
+      "system_seconds": 0.038,
+      "cpu_seconds": 0.147,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.51 8.95 5.22",
+        "end": "10.51 8.95 5.22"
+      },
+      "status": "PASS_EXACT_ACTUAL_PARENT_COUNTEREXAMPLE",
+      "outputs_sha256": {
+        "failure-bigint.json": "deb2b87152c071dc46c71c69a48285993750e17dd2292a5eed819a908cc55bf4"
+      },
+      "receipt": "c010/finite.log"
+    },
+    {
+      "mode": "c010-assert-local",
+      "command": "node assert_ci.js local",
+      "cwd": "WORK/certificates/R068-C010",
+      "started_utc": "2026-09-28T23:55:24Z",
+      "ended_utc": "2026-09-28T23:55:24Z",
+      "wall_seconds": 0.034,
+      "user_seconds": 0.03,
+      "system_seconds": 0.004,
+      "cpu_seconds": 0.034,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "10.51 8.95 5.22",
+        "end": "10.51 8.95 5.22"
+      },
+      "status": "PASS_FRESH_EXPECTED_RESULTS",
+      "receipt": "c010/assert-local.log"
+    },
+    {
+      "mode": "packet-r068-package",
+      "command": "node check_package.js",
+      "cwd": "PACKET_COPY/n17-square-packing/certificates/R068-C010, a copy of this packet's n17-square-packing/ with every .gz decompressed",
+      "started_utc": "2026-09-28T23:53:32Z",
+      "ended_utc": "2026-09-28T23:53:33Z",
+      "wall_seconds": 0.161,
+      "user_seconds": 0.032,
+      "system_seconds": 0.014,
+      "cpu_seconds": 0.046,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "12.14 8.51 4.63",
+        "end": "12.14 8.51 4.63"
+      },
+      "status": "PASS_PACKAGE_BYTES_ONLY",
+      "receipt": "packet/r068-check_package.log"
+    },
+    {
+      "mode": "packet-r067-records",
+      "command": "node check_records.js",
+      "cwd": "PACKET_COPY/n17-square-packing/certificates/R067-4.66018, the same restored copy",
+      "started_utc": "2026-09-28T23:53:33Z",
+      "ended_utc": "2026-09-28T23:53:33Z",
+      "wall_seconds": 0.099,
+      "user_seconds": 0.038,
+      "system_seconds": 0.021,
+      "cpu_seconds": 0.059,
+      "exit": 0,
+      "load_average_1_5_15": {
+        "start": "12.14 8.51 4.63",
+        "end": "12.14 8.51 4.63"
+      },
+      "status": "PASS_RECORDED_FULL_COVERAGE",
+      "receipt": "packet/r067-check_records.log"
+    }
+  ],
+  "cross_checks": [
+    {
+      "check": "R068: fresh C++, fresh Node, published C++ and published Node ledgers reduced to (interval, minimum_units, cells) and compared row by row",
+      "command": "packing/.venv/bin/python3 -m devtools.audit_guzhou_r068 compare R068 PACKET/receipts/r068/replay --output PACKET/receipts/r068/compare.json, from packing/, with PACKET = resources/web/n17-guzhou-r068-2026-09-28",
+      "output": {
+        "ledgers_compared": 4,
+        "rows_per_ledger": 4991,
+        "mismatches": 0,
+        "minimum_units": 1000026844,
+        "intervals_at_minimum": 4991,
+        "cells": 2210145745763,
+        "surplus_units": 7404,
+        "triples_sha256": [
+          "d2c47f4adcce9a3fa64dd280a0ea4ed04bbb37d8b3347a471e560980de937407"
+        ],
+        "canonical_rows_sha256": [
+          "3baf8875b61a8d0946d85491b6364f78e11fe9a768c7d2244ff727f71974bbcc"
+        ],
+        "cpp_header_fresh_equals_published": true
+      }
+    },
+    {
+      "check": "R067: the same comparison",
+      "command": "packing/.venv/bin/python3 -m devtools.audit_guzhou_r068 compare R067 PACKET/receipts/r067/replay --output PACKET/receipts/r067/compare.json",
+      "output": {
+        "ledgers_compared": 4,
+        "rows_per_ledger": 2808,
+        "mismatches": 0,
+        "minimum_units": 1000026844,
+        "intervals_at_minimum": 2808,
+        "cells": 1249459677392,
+        "surplus_units": 54340,
+        "triples_sha256": [
+          "5fe449f6b2740278cb8d1e36e84ca639df0790c1e70e68bdee340e2c2c342d00"
+        ],
+        "canonical_rows_sha256": [
+          "924b5f5104231de884539d98aaef43fe20d9f7d415359bb0cfeaa7887a1e1b92"
+        ],
+        "cpp_header_fresh_equals_published": true
+      }
+    },
+    {
+      "check": "Each fresh partition record equals its published counterpart apart from seconds and verified_utc; each fresh THEOREM.json and INPUTS.json apart from those and executable_sha256",
+      "command": "diff <(jq -S 'del(.seconds, .verified_utc)' FRESH) <(jq -S 'del(.seconds, .verified_utc)' PUBLISHED), per file, for both releases",
+      "exit": 0
+    },
+    {
+      "check": "C010: the fresh strip-independent.json, failure-cpp.json and failure-bigint.json are byte-identical to the published research/fit02/strip_independent.json, failure_cpp.json and failure_bigint.json; the fresh strip.json has the cpp_sha256 the published strip_independent.json binds",
+      "command": "cmp and sha256sum",
+      "exit": 0
+    },
+    {
+      "check": "Structure of each certificate against Kleddamag's 4.66001",
+      "command": "packing/.venv/bin/python3 -m devtools.audit_guzhou_r068 structure R067|R068 --output PACKET/receipts/r067|r068/structure.json",
+      "exit": 0
+    }
+  ],
+  "upstream_ci": "Not observed: the GitHub API for this repository is not reachable from this session."
+}

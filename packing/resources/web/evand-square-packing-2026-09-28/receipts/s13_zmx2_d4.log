@@ -1,0 +1,75 @@
+# command: /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/overlay/s12/verify2/target/release/zmx2 cert certificates/rung2/s13_closed_cover_4.txt --d4 --threads 2 --log /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/fresh/s13_zmx2_d4_roots.log
+# cwd: s12/ of the two packets overlaid
+# python3: not used by this command
+# host: 4 cores; load 11.19 9.47 8.78; started 2026-09-29T00:35:03Z
+D4: measure invariant under x->s-x and x<->y (exact)
+# zmx2 cert hash=03f63a017bfb3a7a mode=d4 atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-19,y0-19,bins0-3
+cover: s = 4/1, 3621 points, 0 segments, total 2591194431/200000000 = 12.95597215500
+roots: 1600 in region, 0 already done (log), 1600 to run, 2 threads
+progress 25/1600 roots, 0s
+progress 50/1600 roots, 0s
+progress 75/1600 roots, 0s
+progress 100/1600 roots, 0s
+progress 125/1600 roots, 0s
+progress 150/1600 roots, 0s
+progress 175/1600 roots, 0s
+progress 200/1600 roots, 0s
+progress 225/1600 roots, 0s
+progress 250/1600 roots, 0s
+progress 275/1600 roots, 0s
+progress 300/1600 roots, 0s
+progress 325/1600 roots, 0s
+progress 350/1600 roots, 0s
+progress 375/1600 roots, 0s
+progress 400/1600 roots, 0s
+progress 425/1600 roots, 0s
+progress 450/1600 roots, 0s
+progress 475/1600 roots, 0s
+progress 500/1600 roots, 0s
+progress 525/1600 roots, 0s
+progress 550/1600 roots, 0s
+progress 575/1600 roots, 0s
+progress 600/1600 roots, 0s
+progress 625/1600 roots, 0s
+progress 650/1600 roots, 0s
+progress 675/1600 roots, 0s
+progress 700/1600 roots, 0s
+progress 725/1600 roots, 1s
+progress 750/1600 roots, 1s
+progress 775/1600 roots, 1s
+progress 800/1600 roots, 1s
+progress 825/1600 roots, 1s
+progress 850/1600 roots, 1s
+progress 875/1600 roots, 1s
+progress 900/1600 roots, 1s
+progress 925/1600 roots, 1s
+progress 950/1600 roots, 1s
+progress 975/1600 roots, 1s
+progress 1000/1600 roots, 1s
+progress 1025/1600 roots, 2s
+progress 1050/1600 roots, 2s
+progress 1075/1600 roots, 2s
+progress 1100/1600 roots, 3s
+progress 1125/1600 roots, 3s
+progress 1150/1600 roots, 3s
+progress 1175/1600 roots, 4s
+progress 1200/1600 roots, 5s
+progress 1225/1600 roots, 5s
+progress 1250/1600 roots, 5s
+progress 1275/1600 roots, 6s
+progress 1300/1600 roots, 7s
+progress 1325/1600 roots, 7s
+progress 1350/1600 roots, 9s
+progress 1375/1600 roots, 9s
+progress 1400/1600 roots, 9s
+progress 1425/1600 roots, 10s
+progress 1450/1600 roots, 10s
+progress 1475/1600 roots, 10s
+progress 1500/1600 roots, 10s
+progress 1525/1600 roots, 11s
+progress 1550/1600 roots, 11s
+progress 1575/1600 roots, 11s
+progress 1600/1600 roots, 11s
+done in 11s wall: roots 1600 (missing 0), boxes 47162, certified 22136, empty 2245, uncertified 0, max depth 20, cpu 21s
+VERIFIED-D4: every closed unit square in [0,s]^2 has mu >= 1 (D4-reduced sweep, all roots)
+# finished 2026-09-29T00:35:14Z; exit 0; wall 10.905 s; CPU 6.2 s (user 6.153 + sys 0.022); load 11.54 9.60 8.83

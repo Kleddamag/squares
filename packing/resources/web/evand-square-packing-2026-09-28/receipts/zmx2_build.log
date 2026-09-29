@@ -1,0 +1,7 @@
+# command: cargo build --release --bin zmx2 -j 2
+# cwd: s12/verify2 of a scratch export (git archive) of evand/square-packing 6aa82ba
+# python3: not used by this command
+# host: 4 cores; load 1.77 1.85 1.64; started 2026-09-28T23:47:34Z
+   Compiling verify2 v0.1.0 (/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/s12/verify2)
+    Finished `release` profile [optimized] target(s) in 17.16s
+# finished 2026-09-28T23:47:51Z; exit 0; wall 17.192 s; CPU 11.2 s (user 10.188 + sys 1.039); load 2.94 2.11 1.73

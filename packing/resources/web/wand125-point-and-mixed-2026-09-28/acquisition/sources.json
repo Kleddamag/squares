@@ -1,0 +1,170 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-09-28T23:41Z",
+  "git_scope": "A blob-filtered clone of the single public branch, sparse over README.md, docs/, src/ and the five claim directories; every file under the claim directories is digested, the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "wand125-point-and-mixed",
+      "source_url": "https://github.com/wand125/square-packing-bounds",
+      "source_ref": "refs/heads/main",
+      "source_commit": "39d8ecc74d651b54ec977c331c8f2015b442a6c4",
+      "git_tree": "936e2524c09ca137cf9e02dcd955d6737549253b",
+      "archived_path": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds",
+      "subtree_manifest": "packing/resources/web/wand125-point-and-mixed-2026-09-28/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "README.md",
+        "LICENSE",
+        "point_n45_L7",
+        "point_n21_L5",
+        "certificates/mixed_n50_L740",
+        "certificates/mixed_n50_L735",
+        "certificates/mixed_n50_L7318"
+      ],
+      "subtree_file_count": 517,
+      "subtree_total_bytes": 530471182,
+      "retained_file_count": 64,
+      "retained_total_bytes": 1367112,
+      "compressed": [
+        "square-packing-bounds/certificates/mixed_n50_L7318/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n50_L7318/certificate.json.gz",
+        "square-packing-bounds/certificates/mixed_n50_L735/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n50_L735/certificate.json.gz",
+        "square-packing-bounds/certificates/mixed_n50_L735/final-audit.json.gz",
+        "square-packing-bounds/certificates/mixed_n50_L740/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n50_L740/certificate.json.gz",
+        "square-packing-bounds/point_n21_L5/certificates/n21-capture-one.txt.gz",
+        "square-packing-bounds/point_n21_L5/certificates/n21-original.txt.gz",
+        "square-packing-bounds/point_n21_L5/certificates/upstream-s21-lower-4.9950.txt.gz",
+        "square-packing-bounds/point_n45_L7/cover.txt.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": "LICENSE",
+          "bytes": 1064,
+          "sha256": "c0dd43e7892932c81335f74a2fdbf1a98f5977bab14c0c4c30e3abcc97c34904",
+          "reason": "retained byte-identical by the 2026-09-27 rectangle packet"
+        },
+        {
+          "path": "README.md",
+          "bytes": 37650,
+          "sha256": "5f67b9c8da2fcf0249e865ac75d3e62e0c649e4d0e306de595defe75171f74ce",
+          "reason": "retained byte-identical by the 2026-09-28 rectangle packet"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/endpoint_cells.py",
+          "bytes": 3030,
+          "sha256": "090c336dec73d94998df5b402d58801dc0c647673df1750eda099562706554d9",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/mixed_axis_cells.py",
+          "bytes": 2173,
+          "sha256": "9243ba6c7605f1989f36124f01786400f0da0c6a01ff17ff82512700c3e87406",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/mixed_density_check.py",
+          "bytes": 4528,
+          "sha256": "22cc5cd626c0e56e65c88a610663689fb92d36d29f5fad09929dbaa859efefbb",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/mixed_net_audit.py",
+          "bytes": 3908,
+          "sha256": "ac95a85685b24caba90bc742685f4eaa48f2b913467dc1e3a870a4058ebea62d",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/mixed_rotated_verify.cpp",
+          "bytes": 7894,
+          "sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/mixed_rotated_verify.py",
+          "bytes": 4302,
+          "sha256": "a5aef414bf3aaf3cb79da9423c44a6ceba7a76e05c59b8da6ac75b970fcb88c1",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/score.py",
+          "bytes": 2930,
+          "sha256": "fa8c293a81815971df11e8fe258ef2b451589a88e4200491e81e7bcf141909bc",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/verify_axis_certificate.py",
+          "bytes": 4427,
+          "sha256": "ed68a256c614b44cdd5e04b075845dc7e17014eeab0ce181900f5dc355c03c91",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/verify_mixed_full_proof.py",
+          "bytes": 3602,
+          "sha256": "2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/code/verify_rotated_result.py",
+          "bytes": 1820,
+          "sha256": "dace4a5f941c926da388702ab8a8e7b196d782501205d6642be7667ab1306082",
+          "reason": "byte-identical to certificates/mixed_n50_L740/code/"
+        },
+        {
+          "path": "certificates/mixed_n50_L7318/n50-L7.318-proof-bundle.tar.gz",
+          "bytes": 12829854,
+          "sha256": "239e4ac5c4b756811708ca78140394d1c4d99d56b066b9fd2eafb90f239b06bd",
+          "reason": "complete proof bundle (12.8 to 21.8 MB)"
+        },
+        {
+          "path": "certificates/mixed_n50_L735/n50-L7.35-proof-bundle.tar.gz",
+          "bytes": 18691881,
+          "sha256": "b7e8ac3184738953312946648e889543ad4cefb4901465761203a166363bd387",
+          "reason": "complete proof bundle (12.8 to 21.8 MB)"
+        },
+        {
+          "path": "certificates/mixed_n50_L740/n50-L7.40-proof-bundle.tar.gz",
+          "bytes": 21752211,
+          "sha256": "90621d1a7ceb27267ef7b4bf3ffb5906f50e259ac28c955ec6679e64c604638f",
+          "reason": "complete proof bundle (12.8 to 21.8 MB)"
+        },
+        {
+          "path": "point_n21_L5/acceptance/m1-full-linkage.json.gz",
+          "bytes": 5310470,
+          "sha256": "0d93072b65c1b162e1cba99db64a14b7f85e21f50b98da720247d3234c665f02",
+          "reason": "historical linkage record (about 5 MB compressed each)"
+        },
+        {
+          "path": "point_n21_L5/acceptance/split-linkage.json.gz",
+          "bytes": 5391595,
+          "sha256": "54a155da8dd177ef9deae35269f92c5af8c35c4a19c220f46bd2526b3b0b59ef",
+          "reason": "historical linkage record (about 5 MB compressed each)"
+        },
+        {
+          "path": "point_n21_L5/lean/Sqpack/N21PtsData.lean",
+          "bytes": 160919,
+          "sha256": "1e6559c182bb27b648156ed8183064495b9bb4affe296606b3325ce0bbb1376c",
+          "reason": "generated from n21-original.txt by the retained gen_n21pts_data.py"
+        }
+      ],
+      "pinned_only_groups": {
+        "point_n21_L5/data": {
+          "files": 14,
+          "bytes": 463568316
+        },
+        "point_n21_L5/verifier-source": {
+          "files": 421,
+          "bytes": 1321496
+        }
+      },
+      "license": "MIT (wand125); point_n21_L5/UPSTREAM-LICENSE.txt is Evan Daniel's MIT",
+      "claims": [
+        "s(45) = 7 (point_n45_L7)",
+        "s(21) = 5 (point_n21_L5)",
+        "s(50) >= 37/5 (certificates/mixed_n50_L740)",
+        "s(50) >= 147/20 (certificates/mixed_n50_L735, superseded)",
+        "s(50) >= 3659/500 (certificates/mixed_n50_L7318, superseded)"
+      ]
+    }
+  ]
+}

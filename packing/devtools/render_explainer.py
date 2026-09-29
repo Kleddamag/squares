@@ -1835,12 +1835,19 @@ def verified_lower_bound(n: int) -> VerifiedLowerBound:
     `verified_lower_bound`, carried by `bound-citations.json`; the credit is that line's
     reference, `authors year, venue` as `build_bound_citations.cite` writes it, cut at
     the venue. A line of another shape, a bound the register has not verified, or one
-    carrying a note of this project's fails the render rather than being cut somewhere
-    else.
+    whose note says anything but which register entry confirms it fails the render
+    rather than being cut somewhere else. The confirmation is allowed because since
+    2026-09-29 every replayed external bound has an entry of its own that confirms it,
+    and the figure prints the source's credit, not the register's.
     """
     entries = json.loads(BOUND_CITATIONS.read_text(encoding="utf-8"))["citations"]["entries"]
     lower = next((entry["lower"] for entry in entries if entry["n"] == n), None)
-    if lower is None or lower["assurance"] != "verified" or lower["note"] is not None:
+    confirmation = f"(confirmed {', '.join(lower['confirmed_by'])})" if lower else None
+    if (
+        lower is None
+        or lower["assurance"] != "verified"
+        or lower["note"] not in (None, confirmation)
+    ):
         raise SystemExit(
             f"{BOUND_CITATIONS.name}: n = {n} has no verified lower bound without a note "
             f"for Figure 3 to mark: {lower!r}"
@@ -2233,7 +2240,7 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         ),
         "N_STARRED": str(starred_lower_bounds()),
         "N_PROVED_HERE": str(lower_bounds_proved_here()),
-        "RECENT_SINCE_MONTH": f"{RECENT_SINCE:%B %Y}",
+        "RECENT_SINCE_DATE": f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}",
         "SOURCE_URL": MARKDOWN_OUTPUT.name,
         "REPO_URL": REPO_URL,
         # The top of the page names when the result was first published, when it was last

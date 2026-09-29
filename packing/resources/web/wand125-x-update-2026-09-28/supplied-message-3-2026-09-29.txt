@@ -1,0 +1,9 @@
+Source: a third message from @wand_125 on X (Twitter), following up the first two
+Supplied: 2026-09-29, pasted by the project owner into a Claude Code session; displayed time "5:32 PM"
+URL: not supplied; no status link or publication timestamp was given
+Method: the text below is the supplied text, unedited
+
+Message 3
+
+Following up on the tools I mentioned: the first part is now public at github.com/wand125/square-packing-tools (MIT).
+It covers moving rectangle-density certificates in n and L (transfer to a larger n, budget-recovery rungs, the B·UB(n) ceiling, rescaling) and the speed-ups around tokoharu's solver (working-row LP with basis reuse, batched and angle-parallel counterexample screening, a cached-axis verifier for search, and a faster zmx2 for point certificates). Certificates are still accepted only by tokoharu's unchanged verify.cpp.

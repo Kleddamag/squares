@@ -73,7 +73,14 @@ For each result, complete this sequence before declaring the change ready to lan
    `results.yaml`, as applicable, with the accepted claim, verification level,
    provenance, and retained receipts.
    Preserve earlier rungs and historical decisions.
-   Validate those source records before rendering, from `packing/`:
+   A result by others is registered too, when the case record acts on it: add a `T-NNN`
+   entry with its `attribution` (source keys and published date) at intake, or extend
+   the entry that already covers its release, and give each new source key a `lineage`
+   in `resources/bibliography.yaml`
+   ([epistemics.md → Results by Others](../../epistemics.md#results-by-others)). It
+   enters as reported (`V0/C0`, or `C1` once a review has read it) and its rungs rise
+   with the replay and review; `check_results` fails while a recent case lower bound has
+   no entry. Validate those source records before rendering, from `packing/`:
 
    ```shell
    uv run --frozen python -m devtools.validate_schemas
@@ -104,8 +111,9 @@ For each result, complete this sequence before declaring the change ready to lan
    If a result does not affect those figures, record that disposition instead of
    rebuilding unchanged geometry.
 
-4. Reconcile the README’s New Results and Survey sections, the synopsis’s current
-   claims, and affected tutorial or survey prose against the refreshed artifacts.
+4. Reconcile the README’s New Results, Results by Others and Survey sections, the
+   synopsis’s current claims, and affected tutorial or survey prose against the
+   refreshed artifacts.
    Each result marked `apparently-novel` or `confirmed-novel` needs an explicit result
    ID and a scoped summary in the README; related rungs may share a paragraph.
    Check older summaries that still call a superseded bound current.

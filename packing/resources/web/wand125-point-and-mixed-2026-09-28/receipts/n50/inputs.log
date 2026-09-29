@@ -1,0 +1,11 @@
+# command: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-inputs /tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n50-pristine/n50-L7.40-proof-bundle --out resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/inputs.json
+# cwd: /home/user/squares/packing
+# start_utc: 2026-09-29T00:25:03Z
+{
+  "status": "ALL_INPUTS_ENCLOSE_THE_CANDIDATE",
+  "inputs": 200,
+  "rectangle_images": 4424,
+  "gamma": "1",
+  "scope": "Each oblique input hashes to its recorded digest and every interval encloses the exact datum recomputed from the candidate; coverage is not decided here."
+}
+# end_utc: 2026-09-29T00:25:29Z exit=0 wall_s=25.5 cpu_user_s=18.2 cpu_sys_s=0.1 maxrss_kb=33228

@@ -1,0 +1,49 @@
+{
+  "schema": "GuzhouR068ReplayComparison/v1",
+  "release": "R067",
+  "certificate_sha256": "101dd164906c7b71dc1397eaa32e25626548cd71995e532113823f434f8e5d26",
+  "partitions": {
+    "fresh": {
+      "cpp": 2,
+      "node": 2
+    },
+    "published": {
+      "cpp": 3,
+      "node": 3
+    }
+  },
+  "ledgers_compared": 4,
+  "rows_per_ledger": 2808,
+  "mismatches": 0,
+  "first_mismatches": [],
+  "canonical_rows_sha256": {
+    "fresh-cpp": "924b5f5104231de884539d98aaef43fe20d9f7d415359bb0cfeaa7887a1e1b92",
+    "fresh-node": "924b5f5104231de884539d98aaef43fe20d9f7d415359bb0cfeaa7887a1e1b92",
+    "published-cpp": "924b5f5104231de884539d98aaef43fe20d9f7d415359bb0cfeaa7887a1e1b92",
+    "published-node": "924b5f5104231de884539d98aaef43fe20d9f7d415359bb0cfeaa7887a1e1b92"
+  },
+  "triples_sha256": {
+    "fresh-cpp": "5fe449f6b2740278cb8d1e36e84ca639df0790c1e70e68bdee340e2c2c342d00",
+    "fresh-node": "5fe449f6b2740278cb8d1e36e84ca639df0790c1e70e68bdee340e2c2c342d00",
+    "published-cpp": "5fe449f6b2740278cb8d1e36e84ca639df0790c1e70e68bdee340e2c2c342d00",
+    "published-node": "5fe449f6b2740278cb8d1e36e84ca639df0790c1e70e68bdee340e2c2c342d00"
+  },
+  "cpp_headers": {
+    "fresh": {
+      "sites": 20856,
+      "signed_terms": 49204,
+      "minimum_strict_margin": "392478867597353819118463778084255632092881/392474616038972119614931587776706448092881000000000000"
+    },
+    "published": {
+      "sites": 20856,
+      "signed_terms": 49204,
+      "minimum_strict_margin": "392478867597353819118463778084255632092881/392474616038972119614931587776706448092881000000000000"
+    }
+  },
+  "minimum_units": 1000026844,
+  "intervals_at_minimum": 2808,
+  "next_minimum_units": null,
+  "cells": 1249459677392,
+  "budget_units": 17000402008,
+  "surplus_units": 54340
+}

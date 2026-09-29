@@ -1,0 +1,21 @@
+# Lean toolchain and Mathlib cache reachability from this session, 2026-09-29T00:05:02Z
+# s12/lean pins leanprover/lean4:v4.33.1 and mathlib v4.33.1 (rev 0df444a360eaa60ab8c11dca51a86af692955474)
+# elan: not installed  lake: not installed
+GET (first KiB) https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -> HTTP 206, 1024 B 
+GET (first KiB) https://github.com/leanprover/elan/releases/latest/download/elan-x86_64-unknown-linux-gnu.tar.gz -> HTTP 206, 1024 B 
+GET (first KiB) https://github.com/leanprover/lean4/releases/download/v4.33.1/lean-4.33.1-linux.tar.zst -> HTTP 206, 1024 B 
+GET (first KiB) https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.33.1/Cache/Infra.lean -> HTTP 206, 1024 B 
+GET (first KiB) https://lakecache.blob.core.windows.net/mathlib4-master?comp=list&restype=container&maxresults=1 -> curl: (56) CONNECT tunnel failed, response 403 HTTP 000, 0 B 
+GET (first KiB) https://lakecache.blob.core.windows.net/mathlib4?comp=list&restype=container&maxresults=1 -> curl: (56) CONNECT tunnel failed, response 403 HTTP 000, 0 B 
+HEAD lean-4.33.1-linux.tar.zst Content-Length: Content-Length: 570405234
+git ls-remote mathlib4 v4.33.1 -> 0df444a360eaa60ab8c11dca51a86af692955474	refs/tags/v4.33.1
+# Mathlib v4.33.1 Cache/Infra.lean: azureURL = https://lakecache.blob.core.windows.net/{mathlib4-master | mathlib4}; MATHLIB_CACHE_GET_URL overrides it
+# proxy status, recent relay failures for lakecache:
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "lakecache.blob.core.windows.net:443"
+    },
+--
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "lakecache.blob.core.windows.net:443"

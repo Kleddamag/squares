@@ -138,6 +138,10 @@ BODY_NOT_REPRODUCED = {
         "a sentence about the parent's degree-82 polynomial being dropped, written for "
         "this one case, and a shorter paraphrase of the release's verification claims"
     ),
+    50: (
+        "the 2026-09-28 intake of wand125's reported 37/5, whose replay was still running, "
+        "and the history of Green's DS7 report it displaced from the reported lane"
+    ),
 }
 
 #: How the source map would classify a record the register already carries.
@@ -996,8 +1000,20 @@ def test_the_summary_counts_the_methods_and_names_what_is_left_unknown() -> None
 
 
 def test_reported_green_bound_preserves_the_verified_nagamochi_precision() -> None:
-    """The source lane can improve without changing the certified theorem's digits."""
-    payload = safe_load(_regenerate(50).split("---\n")[1])["packing"]
+    """The source lane can improve without changing the certified theorem's digits.
+
+    Read from the generator's own draft, before the reviewed promotion is applied: since
+    2026-09-28 the committed record's reported lane carries wand125's 37/5, a promotion
+    the generator preserves rather than derives.
+    """
+    committed = _committed(50)[0]["packing"]
+    arguments = {
+        "availability": {50: _availability(50, _source_kind(committed))},
+        "catalogue": {50: _injected_facts(50)},
+        "review_date": str(committed["source_reviewed"]),
+        "retrieved_date": str(committed["reported_upper_bound"]["retrieved_date"]),
+    }
+    payload = safe_load(generate_record(50, **arguments).split("---\n")[1])["packing"]
     assert payload["reported_lower_bound"]["value"] == "7.317426011159"
     assert payload["reported_lower_bound"]["evidence"] == [
         "E-green-ds7-theorem9-reported-lower"

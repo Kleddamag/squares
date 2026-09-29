@@ -1,0 +1,100 @@
+{
+ "header": {
+  "kind": "zm_mixed cert header",
+  "version": 2,
+  "sha256": {
+   "zm_mixed.py": "ee3e2915349b8795128417bca6414b205d526db9f01f88cd4cd32c32e8d760ac",
+   "mixed_cover.py": "bb89de15ecf5821dd7e1a36ebab8a50d792a406b7fb0f5cb38059f99ef74aae5",
+   "zeromargin.py": "640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab",
+   "input": "5da180d18434ec52a48b05e8ae0ce70453a280dd482df01d997f73bfbc627c6c"
+  },
+  "input": "certificates/s45/s45_mixed_cover_7.txt",
+  "total": "2238676387/50000000",
+  "settings": {
+   "mode": "D4",
+   "depth": 24,
+   "pitch": "1/20",
+   "ubins": 16,
+   "chain": true,
+   "chain_from": 0,
+   "theta_bias": 4,
+   "clip": true,
+   "lemma_T": true,
+   "lemma_L": true,
+   "split": true,
+   "cert_mode": true,
+   "tprime": false,
+   "split_maxchain": 400,
+   "reach": "442/625",
+   "region": {
+    "cx_lo": "5/2",
+    "cx_hi": "51/20",
+    "cy_lo": "67/20",
+    "cy_hi": "17/5",
+    "u_lo": null,
+    "u_hi": null
+   }
+  }
+ },
+ "argv": [
+  "search/zm_mixed.py",
+  "cert",
+  "certificates/s45/s45_mixed_cover_7.txt",
+  "--d4",
+  "--cert-mode",
+  "--disj",
+  "--chain-from",
+  "0",
+  "--depth",
+  "24",
+  "--pitch",
+  "1/20",
+  "--ubins",
+  "16",
+  "--nproc",
+  "2",
+  "--progress",
+  "4",
+  "--cx-lo",
+  "5/2",
+  "--cx-hi",
+  "51/20",
+  "--cy-lo",
+  "67/20",
+  "--cy-hi",
+  "17/5",
+  "--resume",
+  "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_a.jsonl",
+  "--manifest",
+  "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_a_manifest.json"
+ ],
+ "created": "2026-09-29 00:16:25",
+ "result": {
+  "roots": 16,
+  "census": {
+   "ADM": 22,
+   "CORE": 0,
+   "P1": 0,
+   "MIX": 0,
+   "CHAIN": 16,
+   "TRI": 0,
+   "PIECE": 0,
+   "EMPTY": 0,
+   "UNCERT": 0,
+   "boxes": 60,
+   "maxdepth": 3,
+   "THR": 3,
+   "LIN": 35,
+   "TPTS": 0,
+   "SPLIT": 0,
+   "cpu": 16.167970439999998
+  },
+  "uncertified": 0,
+  "wall_s": 14.2,
+  "verdict": "VERIFIED-D4 (PARTIAL)"
+ },
+ "records": {
+  "path": "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/l2/work/sample/s45_zm_mixed_sample_a.jsonl",
+  "sha256": "a2564d71722531edd67c766c32106f8c34b4c06d8c6f9d46589c0dfc279f622d"
+ }
+}

@@ -1,0 +1,4 @@
+bundle/
+.venv/
+__pycache__/
+.n21-unpack-*/

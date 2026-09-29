@@ -1,0 +1,78 @@
+{
+  "format": "n21-gzip-tar-parts-v1",
+  "archive_bytes": 463568316,
+  "archive_sha256": "aeba18074b7fc9c8893d4fa9cd4ca796952a3b2274060404fc31a3a6b495442e",
+  "manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+  "parts": [
+    {
+      "name": "bundle.tar.gz.part-000",
+      "bytes": 33554432,
+      "sha256": "6199f688ecc3581943f4b460cb1df128d9cc4ef4b3e37484b8d1ff137aeb1e21"
+    },
+    {
+      "name": "bundle.tar.gz.part-001",
+      "bytes": 33554432,
+      "sha256": "ebf548ff2b266a886d65c14b99da2bd0ad25c2403a0a1d70652bd8e0b3a4c621"
+    },
+    {
+      "name": "bundle.tar.gz.part-002",
+      "bytes": 33554432,
+      "sha256": "e0bae46b6d4ab432815410b0d855e6f28557c6db060989ac7612eed0f32cc32b"
+    },
+    {
+      "name": "bundle.tar.gz.part-003",
+      "bytes": 33554432,
+      "sha256": "25932d8115fdb1381f5665c96e072fc8e7ae113e6f80274aa9e16acf53bbecd6"
+    },
+    {
+      "name": "bundle.tar.gz.part-004",
+      "bytes": 33554432,
+      "sha256": "1dd72201578183ba222389416217f648c5d6a5d2901c72f4b5c0d734173b89fc"
+    },
+    {
+      "name": "bundle.tar.gz.part-005",
+      "bytes": 33554432,
+      "sha256": "9f59c43709b4b8b1bbd06f42e0f29ea6e18c5f3c44c89659def914b7b621c871"
+    },
+    {
+      "name": "bundle.tar.gz.part-006",
+      "bytes": 33554432,
+      "sha256": "ede46e3471be00a0e3a81f6f4751dfeb3397c14c994ab74622de1922f48affc7"
+    },
+    {
+      "name": "bundle.tar.gz.part-007",
+      "bytes": 33554432,
+      "sha256": "37f9a693ed4bbb904ca9faaa5761748317f277d49db0202529d288ba2da58113"
+    },
+    {
+      "name": "bundle.tar.gz.part-008",
+      "bytes": 33554432,
+      "sha256": "d316f846a44139a2e35060ab871c9c394ad776ea1aa67385dd3c41430361bd10"
+    },
+    {
+      "name": "bundle.tar.gz.part-009",
+      "bytes": 33554432,
+      "sha256": "efe128eb0362dc8a6d6b2d971120f6ff38e26717c3a331f94e66b4b6574df2b5"
+    },
+    {
+      "name": "bundle.tar.gz.part-010",
+      "bytes": 33554432,
+      "sha256": "761a6363684bf305e6436e97ce894c889b0915c06f857ebe7e13c774cd3fcbea"
+    },
+    {
+      "name": "bundle.tar.gz.part-011",
+      "bytes": 33554432,
+      "sha256": "53fcaff9dc144a1a1c5cf6455bf27f57a967a0dde1ea330bf86880fc98260e54"
+    },
+    {
+      "name": "bundle.tar.gz.part-012",
+      "bytes": 33554432,
+      "sha256": "e0d4908d2a084356780cbe56ca85858d43519c683f86018cfc90600c8e96170f"
+    },
+    {
+      "name": "bundle.tar.gz.part-013",
+      "bytes": 27360700,
+      "sha256": "bf09cedb27d8d080e4c29b98df56d34ee614ac96ef4c1c53b362330d72595002"
+    }
+  ]
+}

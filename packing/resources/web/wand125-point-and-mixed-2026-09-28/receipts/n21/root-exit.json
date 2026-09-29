@@ -1,0 +1,15 @@
+{
+  "stage": "root",
+  "shard": null,
+  "argv": [
+    "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/venv/bin/python",
+    "-u",
+    "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable_replay.py",
+    "--stage",
+    "root",
+    "--out",
+    "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n21-replay/root"
+  ],
+  "exit_code": 0,
+  "seconds": 299.50265143199977
+}

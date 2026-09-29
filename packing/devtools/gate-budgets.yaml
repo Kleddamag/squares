@@ -1357,16 +1357,20 @@ ci_gates:
     The aggregate has no entry: it is four seconds of `test` commands, and putting a
     four-second script under the same band as a 44-minute tier measures nothing.
   wall:
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 1133.0
+    measured_on: '2026-09-29'
+    measured_where: >-
+      Workflow dispatch run 36636552951 at 9174140a, testing merge
+      0376416ec9ab3220bb87e52888ddb72919d3e861; run start to last gating job.
+      One complete observation; declared workers total 7408 seconds (123.47 runner-minutes).
     spread: null
-    pending_measurement: think-tddk
-    ceiling_seconds: 3430.0
+    ceiling_seconds: 1900.0
     argument: >-
-      No hosted run has measured the new fanout. The ceiling is inherited from the
-      predecessor topology as a conservative reporting bound until the first candidate
-      run records both critical-path wall and runner-minutes.
+      The first complete fanout measured 1133s of wall and 7408 declared worker-seconds
+      on run 36636552951. The 1900s reporting ceiling is 1.68x that single reading,
+      within the 2x headroom rule; runner spread and a repeat-run baseline remain unknown.
+      The predecessor topology's eight-run 2540.6s record stays in history below and is
+      not a like-for-like speedup control.
     history:
     - measured_seconds: 2540.6
       measured_on: '2026-09-22'
@@ -1378,100 +1382,95 @@ ci_gates:
         2762, 1882, 2590, 2635, 2581 and 2618 s.
   jobs:
   - id: resolve-tree
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 17.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
-    ceiling_seconds: 36.0
+    ceiling_seconds: 30.0
     argument: >-
-      Ceiling derived conservatively from the predecessor run 35579234418 setup; no
-      new-job wall has been observed.
-      Resolves a moving dispatch merge ref once. Reporting-only until hosted evidence
-      replaces the conservative predecessor-derived estimate.
+      Resolves a moving dispatch merge ref once. The first hosted wall was 17s; the
+      30s reporting ceiling is 1.76x that reading and replaces a predecessor-derived
+      36s estimate that would exceed the 2x headroom rule.
   - id: deferred-threshold-1440
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 778.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
     ceiling_seconds: 1150.0
     argument: >-
-      Ceiling derived from run 35579234418 Step time (695.757 s), its 24 s setup, and
-      the observed runner spread; no new-job wall has been observed.
-      One whole threshold replay, with its prior process shape unchanged. The ceiling
-      covers the slower hosted-runner class while the gate remains reporting-only.
+      One whole threshold replay, with its prior process shape unchanged. The first
+      hosted wall was 778s. The 1150s reporting ceiling was derived from predecessor
+      run 35579234418 Step time (695.757s), its 24s setup, and prior runner spread;
+      it is 1.48x this single new-topology reading.
   - id: deferred-atlas-grid
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 475.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
-    ceiling_seconds: 980.0
+    ceiling_seconds: 900.0
     argument: >-
-      Ceiling derived from run 35579234418 Step times (482.896, 80.889 and 26.019 s),
-      its 24 s setup, and the observed runner spread; no new-job wall has been
-      observed.
       The atlas rebuild, 720-step finer-net replay and grid replay remain whole and run
-      serially with the predecessor job's process allocation.
+      serially with the predecessor job's process allocation. The first hosted wall was
+      475s. The 900s reporting ceiling is 1.89x that reading; the prior 980s estimate,
+      derived from predecessor run 35579234418 Step times (482.896, 80.889 and
+      26.019s), 24s setup and runner spread, exceeded the 2x headroom rule.
   - id: deferred-controls-finer
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 621.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
     ceiling_seconds: 965.0
     argument: >-
-      Ceiling derived from run 35579234418 Step times (420.033 and 158.098 s), its 24 s
-      setup, and the observed runner spread; no new-job wall has been observed.
       Negative controls and the 1440-step finer-net replay remain whole and run
-      serially with the predecessor job's process allocation.
+      serially with the predecessor job's process allocation. The first hosted wall was
+      621s; the 965s reporting ceiling is 1.55x that reading, originally derived from
+      predecessor run 35579234418 Step times (420.033 and 158.098s), 24s setup and
+      runner spread.
   - id: deferred-threshold-720-rigidity
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 623.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
     ceiling_seconds: 955.0
     argument: >-
-      Ceiling derived from run 35579234418 Step times (346.467 and 225.506 s), its 24 s
-      setup, and the observed runner spread; no new-job wall has been observed.
       The 720-step threshold replay and n=40 rigidity bracket remain whole and run
-      serially with the predecessor job's process allocation.
+      serially with the predecessor job's process allocation. The first hosted wall was
+      623s; the 955s reporting ceiling is 1.53x that reading, originally derived from
+      predecessor run 35579234418 Step times (346.467 and 225.506s), 24s setup and
+      runner spread.
   - id: exhaustive-1
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 957.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
     ceiling_seconds: 1550.0
     argument: >-
-      Ceiling derived from run 35579234418 JUnit file time (945.802 s), its 24 s setup,
-      and the observed runner spread; no new-job wall has been observed.
       The largest whole-file exhaustive shard. The marker and test bodies are unchanged;
-      only file assignment across runners differs.
+      only file assignment across runners differs. The first hosted wall was 957s; the
+      1550s reporting ceiling is 1.62x that reading, originally derived from predecessor
+      run 35579234418 JUnit file time (945.802s), 24s setup and runner spread.
   - id: exhaustive-2
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 953.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
     ceiling_seconds: 1380.0
     argument: >-
-      Ceiling derived from run 35579234418 JUnit file time (837.700 s), its 24 s setup,
-      and the observed runner spread; no new-job wall has been observed.
-      A whole-file exhaustive shard selected by the checked three-way cost record.
+      A whole-file exhaustive shard selected by the checked three-way cost record. The
+      first hosted wall was 953s; the 1380s reporting ceiling is 1.45x that reading,
+      originally derived from predecessor run 35579234418 JUnit file time (837.700s),
+      24s setup and runner spread.
   - id: exhaustive-3
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
+    measured_seconds: 858.0
+    measured_on: '2026-09-29'
+    measured_where: Workflow dispatch run 36636552951 at 9174140a; one complete reading.
     spread: null
-    pending_measurement: think-tddk
     ceiling_seconds: 1380.0
     argument: >-
-      Ceiling derived from run 35579234418 JUnit file time (837.940 s), its 24 s setup,
-      and the observed runner spread; no new-job wall has been observed.
-      A whole-file exhaustive shard selected by the checked three-way cost record.
+      A whole-file exhaustive shard selected by the checked three-way cost record. The
+      first hosted wall was 858s; the 1380s reporting ceiling is 1.61x that reading,
+      originally derived from predecessor run 35579234418 JUnit file time (837.940s),
+      24s setup and runner spread.
   - id: deferred-slow-lane
     measured_seconds: 921.7
     measured_on: '2026-09-22'

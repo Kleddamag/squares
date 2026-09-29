@@ -886,59 +886,59 @@ Use the structured form to query or plot; use these tables to read.
 | 21 | 5 | grid | — | 4.995004 | elementary | 0.005 |
 | 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.53 | elementary | 0.0913 |
 | 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6 | elementary | 0.1071 |
-| 28 | 5.82444462 | annealing | 6 | 5.695 | elementary | 0.1294 |
-| 29 | 5.93383346 | annealing | — | 5.785 | elementary | 0.1488 |
+| 28 | 5.82444462 | annealing | 6 | 5.72 | elementary | 0.1044 |
+| 29 | 5.93383346 | annealing | — | 5.79 | elementary | 0.1438 |
 | 30 | 6 | grid | — | 5.865 | elementary | 0.135 |
-| 31 | 6 | grid | — | 5.92 | elementary | 0.08 |
-| 37 | 6.59861961 | hand | 8 | 6.4 | elementary | 0.1986 |
-| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.52 | elementary | 0.1871 |
-| 39 | 6.81072208 | annealing | 5 | 6.62 | elementary | 0.1907 |
+| 31 | 6 | grid | — | 5.935 | elementary | 0.065 |
+| 37 | 6.59861961 | hand | 8 | 6.425 | elementary | 0.1736 |
+| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.54 | elementary | 0.1671 |
+| 39 | 6.81072208 | annealing | 5 | 6.63 | elementary | 0.1807 |
 | 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.695 | elementary | 0.1334 |
-| 41 | 6.92669309 | annealing | 42 | 6.745 | elementary | 0.1817 |
-| 42 | 7 | grid | — | 6.76 | elementary | 0.24 |
-| 43 | 7 | grid | — | 6.855 | elementary | 0.145 |
-| 44 | 7 | grid | — | 6.925 | elementary | 0.075 |
+| 41 | 6.92669309 | annealing | 42 | 6.755 | elementary | 0.1717 |
+| 42 | 7 | grid | — | 6.79 | elementary | 0.21 |
+| 43 | 7 | grid | — | 6.865 | elementary | 0.135 |
+| 44 | 7 | grid | — | 6.935 | elementary | 0.065 |
 | 45 | 7 | grid | — | 6.955 | elementary | 0.045 |
 | 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.317426 | unavoidable points | 0.254 |
-| 51 | 7.70079924 | annealing | 12 | 7.43 | elementary | 0.2708 |
-| 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.505 | elementary | 0.2021 |
-| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.58 | elementary | 0.2429 |
-| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.665 | elementary | 0.1817 |
-| 55 | 7.94577101 | annealing | — | 7.7 | elementary | 0.2458 |
-| 56 | 8 | grid | — | 7.76 | elementary | 0.24 |
-| 57 | 8 | grid | — | 7.8 | elementary | 0.2 |
-| 58 | 8 | grid | — | 7.88 | elementary | 0.12 |
-| 59 | 8 | grid | — | 7.905 | elementary | 0.095 |
-| 60 | 8 | grid | — | 7.92 | elementary | 0.08 |
+| 51 | 7.70079924 | annealing | 12 | 7.4425 | elementary | 0.2583 |
+| 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.535 | elementary | 0.1721 |
+| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.595 | elementary | 0.2279 |
+| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.6675 | elementary | 0.1792 |
+| 55 | 7.94577101 | annealing | — | 7.71 | elementary | 0.2358 |
+| 56 | 8 | grid | — | 7.77 | elementary | 0.23 |
+| 57 | 8 | grid | — | 7.835 | elementary | 0.165 |
+| 58 | 8 | grid | — | 7.89 | elementary | 0.11 |
+| 59 | 8 | grid | — | 7.92 | elementary | 0.08 |
+| 60 | 8 | grid | — | 7.94 | elementary | 0.06 |
 | 61 | 8 | grid | — | 7.96 | elementary | 0.04 |
 | 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.289966 | unavoidable points | 0.2456 |
-| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.345 | elementary | 0.3119 |
-| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.44 | elementary | 0.2671 |
-| 68 | 8.80338307 | — | — | 8.46 | elementary | 0.3434 |
-| 69 | 8.82720551 | — | — | 8.545 | elementary | 0.2822 |
-| 70 | 8.88166676 | hand | 4 | 8.61 | elementary | 0.2717 |
-| 71 | 8.94407156 | annealing | — | 8.645 | elementary | 0.2991 |
-| 72 | 9 | grid | — | 8.705 | elementary | 0.295 |
-| 73 | 9 | grid | — | 8.74 | elementary | 0.26 |
-| 74 | 9 | grid | — | 8.815 | elementary | 0.185 |
+| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.375 | elementary | 0.2819 |
+| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | elementary | 0.2521 |
+| 68 | 8.80338307 | — | — | 8.495 | elementary | 0.3084 |
+| 69 | 8.82720551 | — | — | 8.575 | elementary | 0.2522 |
+| 70 | 8.88166676 | hand | 4 | 8.62 | elementary | 0.2617 |
+| 71 | 8.94407156 | annealing | — | 8.685 | elementary | 0.2591 |
+| 72 | 9 | grid | — | 8.74 | elementary | 0.26 |
+| 73 | 9 | grid | — | 8.78 | elementary | 0.22 |
+| 74 | 9 | grid | — | 8.84 | elementary | 0.16 |
 | 75 | 9 | grid | — | 8.89 | elementary | 0.11 |
-| 76 | 9 | grid | — | 8.9 | elementary | 0.1 |
-| 77 | 9 | grid | — | 8.9 | monotone | 0.1 |
+| 76 | 9 | grid | — | 8.92 | elementary | 0.08 |
+| 77 | 9 | grid | — | 8.92 | monotone | 0.08 |
 | 78 | 9 | grid | — | 8.955 | elementary | 0.045 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
 | 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.266734 | monotone | 0.4404 |
 | 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.266734 | monotone | 0.4759 |
-| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.306624 | Nagamochi | 0.5163 |
+| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.355 | elementary | 0.4679 |
 | 87 | 9.83881744 | annealing | 44 | 9.3666 | Nagamochi | 0.4722 |
-| 88 | 9.88815305 | hand | 20 | 9.42615 | Nagamochi | 0.462 |
-| 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.485281 | Nagamochi | 0.4645 |
-| 90 | 10 | grid | — | 9.544004 | Nagamochi | 0.456 |
-| 91 | 10 | grid | — | 9.602325 | Nagamochi | 0.3977 |
+| 88 | 9.88815305 | hand | 20 | 9.45 | elementary | 0.4382 |
+| 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.55 | elementary | 0.3997 |
+| 90 | 10 | grid | — | 9.55 | monotone | 0.45 |
+| 91 | 10 | grid | — | 9.645 | elementary | 0.355 |
 | 92 | 10 | grid | — | 9.660254 | Nagamochi | 0.3397 |
 | 93 | 10 | grid | — | 9.717798 | Nagamochi | 0.2822 |
-| 94 | 10 | grid | — | 9.774964 | Nagamochi | 0.225 |
-| 95 | 10 | grid | — | 9.831761 | Nagamochi | 0.1682 |
+| 94 | 10 | grid | — | 9.795 | elementary | 0.205 |
+| 95 | 10 | grid | — | 9.8418 | elementary | 0.1582 |
 | 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
 | 97 | 10 | grid | — | 9.944272 | Nagamochi | 0.0557 |
 | 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.246736 | unavoidable points | 0.2888 |

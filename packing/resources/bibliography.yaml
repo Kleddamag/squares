@@ -189,6 +189,18 @@ sources:
       pins revision ad43d29d96d0d9740b34643b5ac3fb960909cf9c and every file of its tree.
       Its README keeps the point-bounds credit to jlevy/squares for the method lineage, so
       the credit names this project after Tokoharu. Dated by that revision, 2026-09-27.
+  - key: '[wand125 rectangle bounds 2026-09-28]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-28'
+    credit: wand125 after Tokoharu, Levy
+    note: >-
+      The rectangle-density certificates wand125/square-packing-bounds added or raised
+      between 2026-09-27 and 2026-09-28, built with and checked by Tokoharu's solver and
+      interval verifier; web/wand125-rectangle-certificates-2026-09-28/acquisition/sources.json
+      pins revision 39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of its tree.
+      Credited as the September 27 key is. Dated by that revision, 2026-09-28.
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being

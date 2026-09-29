@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **125** evidence records. **94** are formal; **88** of those were established here.
-- **23** rest on an argument made elsewhere, of which **8** have been read by nobody here.
+- **127** evidence records. **94** are formal; **88** of those were established here.
+- **24** rest on an argument made elsewhere, of which **8** have been read by nobody here.
 - **36** claim to be first established here. **11** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -22,9 +22,11 @@ results, it is a statement about what this repository has itself examined.
 | --- | ---: | --- | --- | --- | --- | --- | --- |
 | `E-wand125-point-source-replay` | 10 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-wand125-n052-derived-lower` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
-| `E-wand125-rectangle-report` | 41 | lower-bound | reported | - | elsewhere | - | previously-published |
-| `E-wand125-rectangle-monotone-report` | 1 | lower-bound | reported | - | here | - | previously-published |
+| `E-wand125-rectangle-report` | 11 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-rectangle-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-rectangle-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
+| `E-wand125-rectangle-2026-09-28-report` | 36 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-rectangle-2026-09-28-monotone-report` | 2 | lower-bound | reported | - | here | - | previously-published |
 | `E-n011-kleddamag-3875-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
@@ -148,9 +150,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 27, verified 94
-- **method**: exact-algebraic 71, interval-certified 14, numerical-multiprecision 4, proof-audited 3, published-proof 6, reported 27
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 74
+- **assurance**: numerically-checked 4, reported 29, verified 94
+- **method**: exact-algebraic 71, interval-certified 14, numerical-multiprecision 4, proof-audited 3, published-proof 6, reported 29
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 76
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

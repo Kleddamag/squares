@@ -204,6 +204,63 @@ evidence:
       partial output directory.
     source_reviewed: '2026-09-27'
 
+  - id: E-wand125-rectangle-2026-09-28-report
+    claim: lower-bound
+    scope: {n_values: [21, 28, 29, 31, 37, 38, 39, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77, 86, 88, 89, 91, 94, 95]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-09-28]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles/certificates
+    replay_status: not-attempted
+    limitations: >-
+      Source 39d8ecc74d651b54ec977c331c8f2015b442a6c4, pushed between 2026-09-27 and
+      2026-09-28 (UTC), reports one standing rectangle-density certificate in Tokoharu's
+      format for each listed count, each new or raised since ad43d29, accepted there by
+      Tokoharu's unchanged interval checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The listed
+      sides run from 399/80 at n21 to 49209/5000 at n95; the complete list is the
+      CASES_2026_09_28 table of devtools/audit_wand125_rectangles.py and the source's own
+      README. The twelve standing certificates the revision left unchanged, at n18, 19,
+      20, 26, 27, 30, 32, 40, 45, 61, 75 and 78, are byte-identical to those
+      E-wand125-rectangle-report records, and their cases stay on that entry. Each
+      certificate's weights were multiplied by one exact rational factor, between
+      1.00021 and 1.02697, to bring its mass to n - 1/100 (n - 1/1000 at n21) before the
+      recorded run, which checked the scaled data. The source's direct n77 claim,
+      891/100, is weaker than the n76 transfer recorded separately. Lower rungs,
+      matching certificates, the point certificates and the point-only and mixed-measure
+      bundles at the same revision are pinned by digest only. This is the public-claim
+      entry, not a local verification receipt. At n21 the claim 399/80 is a superseded
+      prior: the bound registered there separately, Evan Daniel's s(21) >= 5000/1001 when
+      this entry was written, is stronger, so the case record does not cite this entry.
+    source_reviewed: '2026-09-28'
+
+  - id: E-wand125-rectangle-2026-09-28-monotone-report
+    claim: lower-bound
+    scope: {n_values: [77, 90]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-09-28]'
+    replay_status: not-attempted
+    limitations: >-
+      Reported-lane transfer at 39d8ecc: a certificate whose exact mass is below k
+      refutes k squares as well, and deleting squares proves monotonicity, so each listed
+      count takes the strongest smaller-count certificate below whose mass it lies. The
+      n76 certificate at 223/25, of mass 7599/100, gives s(77) >= 223/25, above the
+      direct n77 claim 891/100; the n89 certificate at 191/20, of mass 8899/100, gives
+      s(90) >= 191/20; the source README marks the n76 and n89 lines "(also n = 77)" and
+      "(also n = 90)". The listed counts are those where the transfer beats every other
+      registered report. This derivation does not strengthen the assurance of its
+      source premise or substitute for its complete replay.
+    source_reviewed: '2026-09-28'
+
   - id: E-n011-kleddamag-3875-source-replay
     claim: lower-bound
     scope: {n_values: [11]}

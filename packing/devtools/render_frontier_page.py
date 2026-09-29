@@ -469,12 +469,11 @@ def table_html(cases: list[dict[str, Any]]) -> str:
     )
 
 
-def frontier_markdown(fill: Callable[..., str], edition: str) -> str:
+def frontier_markdown(fill: Callable[..., str]) -> str:
     """The article with every count and link filled from the record."""
     cases = frontier_cases()
     recent = recent_lower_bounds()
     values = {
-        "EDITION": html.escape(edition),
         "COUNT": str(len(cases)),
         "LAST_N": str(max(case["n"] for case in cases)),
         "PROVED": str(sum(case["status"] == "proved" for case in cases)),

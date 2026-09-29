@@ -2,8 +2,6 @@
 
 # Square Packing
 
-<p class="subtitle">Packing unit squares in the smallest square · {{EDITION}}</p>
-
 </div>
 
 ## The Problem

@@ -167,7 +167,7 @@ def assert_self_contained(name: str, page: str) -> None:
 def nav_html(current: str, *, root: str = "") -> str:
     """The navigation bar, with the current page marked."""
     nav = SITE_NAV.read_text(encoding="utf-8")
-    nav = nav.replace("{{ROOT}}", root).replace("{{EDITION}}", html.escape(PUBLICATION_EDITION))
+    nav = nav.replace("{{ROOT}}", root)
     marker = f'data-page="{current}"'
     if marker not in nav:
         raise SystemExit(f"site-nav.html has no entry for {current!r}")
@@ -277,7 +277,6 @@ def overview_page() -> Page:
     overview = overview_data.load()
     stats = overview_data.stats(overview)
     values = {
-        "EDITION": html.escape(PUBLICATION_EDITION),
         "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
@@ -315,7 +314,7 @@ def frontier_page() -> Page:
     from devtools.render_frontier_page import frontier_markdown  # noqa: PLC0415
 
     return kpress_page(
-        frontier_markdown(fill, PUBLICATION_EDITION),
+        frontier_markdown(fill),
         name="frontier.html",
         current="frontier",
         title=f"The Frontier Atlas · {SITE_NAME}",

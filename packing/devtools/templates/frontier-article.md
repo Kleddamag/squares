@@ -2,7 +2,7 @@
 
 # The Frontier Atlas
 
-<p class="subtitle">Every tracked case, <var>n</var> = 1 to {{LAST_N}} · {{EDITION}}</p>
+<p class="subtitle">Every tracked case, <var>n</var> = 1 to {{LAST_N}}</p>
 
 </div>
 

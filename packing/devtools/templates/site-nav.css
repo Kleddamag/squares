@@ -50,10 +50,6 @@
   text-decoration-thickness: 2px;
   text-underline-offset: 0.35em;
 }
-.site-nav .site-edition {
-  color: var(--kpress-doc-muted);
-  font-weight: var(--kpress-font-weight-sans-regular);
-}
 
 @media print {
   .site-nav,
@@ -64,9 +60,6 @@
 /* On a phone the links keep to one row that scrolls sideways rather than wrapping to
    three lines; the site name goes, since "Overview" is the same link. */
 @media (width < 40rem) {
-  .site-nav .site-edition {
-    display: none;
-  }
   .site-nav-inner {
     column-gap: 0.9rem;
     flex-wrap: nowrap;

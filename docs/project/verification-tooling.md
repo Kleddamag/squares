@@ -191,6 +191,16 @@ These tests check the tools’ contracts; their passing does not replay every la
 certificate. The [validation tiers](../../development.md#validation-tiers) distinguish
 routine checks from deliberately scheduled full computations.
 
+The
+[native verifier plan](specs/active/plan-2026-09-29-native-rectangle-verification.md#implementation-and-review-standards)
+requires tbd’s language, testing and code-review guidelines, including the Rust rules
+for Rust implementations and the golden-testing rules for CLI receipts.
+Golden outputs preserve a reviewed decision trace; analytic controls and mathematical
+review establish why the expected decision is justified.
+The Rust `sqsearch` quality gate applies to the search crate.
+It does not compile or test archived standalone `zmx2` sources, whose replay and
+arithmetic obligations belong to their retained source packets.
+
 For the new tools intake, transformation tests must include invalid target counts,
 exhausted budgets, altered scales and nets, and stale metadata.
 Search-acceleration tests need to exercise cached-axis invalidation, reused LP bases,

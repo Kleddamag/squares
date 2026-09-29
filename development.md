@@ -1000,11 +1000,29 @@ uv run --frozen --all-extras --group dev basedpyright
 cargo test --locked --manifest-path sqsearch/Cargo.toml
 cargo clippy --locked --release --all-targets --manifest-path sqsearch/Cargo.toml -- -D warnings
 cargo fmt --manifest-path sqsearch/Cargo.toml --check
+RUSTDOCFLAGS="-D warnings" cargo doc --locked --manifest-path sqsearch/Cargo.toml --no-deps
 
 cd ..
 npm ci --ignore-scripts
 npm run check --workspace @squares/workbench
 ```
+
+The `lint floor (rust)` validation step runs formatting, all-target Clippy, the crate’s
+unit and integration tests, and rustdoc under the pinned Rust toolchain.
+The manifest denies warnings, missing documentation, pedantic lints and `unwrap_used`,
+with the geometry-specific exceptions documented beside their settings.
+The crate forbids unsafe code.
+These checks cover `sqsearch`; archived third-party verifier sources require their own
+source-bound builds and replay checks.
+
+The native rectangle CLI has
+[five golden scenarios](packing/tests/golden/rectangle-density-cli/) covering complete,
+partial, capped, counterexample and admission-refusal results.
+Run `uv run --frozen pytest tests/test_rectangle_density_cli_golden.py` from `packing/`.
+To approve an intentional output change, set `UPDATE_RECTANGLE_DENSITY_CLI_GOLDEN=1` for
+that command, then review the full fixture diff.
+The tests separately check mass, angle census, exact counterexample values and
+input/source binding; approving output does not replace those assertions.
 
 Ruff must be clean. BasedPyright runs in standard mode and must report zero diagnostics
 across maintained and retained Python.

@@ -219,6 +219,74 @@ both convex hulls; the positive exact area prevents an empty polygon from passin
 control vacuously. These analytic controls exercise asymmetric symmetry images and
 unequal projected box widths without treating sampled coverage as a global proof.
 
+## Rust and Golden-Testing Review
+
+The
+[PR review record](https://github.com/jlevy/squares/pull/246#issuecomment-5886554596)
+applies tbd’s general code-review and testing rules, Rust language, lint, testing and
+review rules, and golden-testing guidelines.
+The review separates the Python exact rectangle checker, the floating-point Rust search
+engine and the retained standalone upstream Rust verifier.
+Cargo validation of one cannot establish correctness of the others.
+
+Two **Medium** gate findings concern the first-party search crate:
+`packing/sqsearch/Cargo.toml` left missing documentation and pedantic lints at warning
+level despite a pinned compiler, and `_rust_quality` in
+`packing/src/sqpack/cli/validate.py` compiled tests under Clippy without running them.
+The repair denies those lints, warnings and unchecked unwraps in the manifest, and adds
+the five existing Rust tests and warnings-as-errors rustdoc to the validation step.
+Worker-pool initialization reports an error and exits before producing search output.
+This changes the failure path without altering search arithmetic.
+The expanded Rust gate passed with five Rust tests, rustdoc, Clippy, formatting, one
+clean compiler control and four deliberately rejected lint probes.
+It took 8.85 seconds on its first measured expansion and 1.67 seconds warm; those runs
+are not a before/after performance comparison.
+The gate refuses a missing compiler or an empty Rust test run.
+Its 134 focused Python contract and validation tests passed.
+
+The [CLI golden tests](../../../packing/tests/test_rectangle_density_cli_golden.py)
+capture all five decision outcomes through real subprocesses, preserving complete
+receipts, exit status and both output streams.
+Expected source and candidate hashes remain exact.
+Separate assertions check the full direction census, strict mass margin, exact
+counterexample and unresolved work.
+The read-only comparison rejects a changed fixture; only an explicit update can write
+one. The [analytic controls](../../../packing/tests/test_rectangle_density.py) provide
+mathematical oracles independently of the golden approval process.
+The existing native controls and new golden tests passed together: 15 tests in 1.60
+seconds. A final Astra-max review caught newline translation in the test capture; the
+harness now captures bytes and reads fixtures without newline translation.
+The largest golden has 1,648 lines, including all 201 angle results.
+Each session also captures the input bytes before launch, checks that they remain
+unchanged, and records their hash and size, including the refusal case whose CLI receipt
+carries only the error.
+The final read-only golden check passed all three tests in 0.95 seconds after adding
+these headers. The harness uses the project’s pytest lane and typed session records
+rather than adding Tryscript to Python-only CI jobs.
+This keeps the existing test entry point and exact rational assertions together without
+another runtime dependency.
+The text fixtures retain portable commands and full outputs for reuse by a later
+implementation.
+
+The follow-up push selection finished in 618.13 seconds: 2,039 behavioral tests passed,
+one tracked-file snapshot test failed because the new files were unstaged, and three
+tests were deselected.
+After staging, that snapshot test and the final native controls passed together: 16
+tests in 24.05 seconds.
+The campaign-record check still reports the inherited Session 161 expired phase.
+Its owner status remains unresolved; this review does not claim a green full checkpoint.
+
+Broader search-CLI contracts, an explicit platform and minimum-Rust support policy,
+dependency auditing and review of existing lint exceptions remain in **think-cr8l**. The
+scoped repair does not claim full adoption of every Rust guideline across the repository
+or its archived sources.
+
+The review found no reason to introduce a Rust port solely to apply the Rust rules.
+The exact Python implementation remains the independently implemented rectangle checker;
+a future port must satisfy the same geometric contract and account explicitly for
+integer overflow. Complete independent coverage of a retained external certificate
+remains the open acceptance criterion in **think-bmf3**.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

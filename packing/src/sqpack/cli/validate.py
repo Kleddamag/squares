@@ -2257,16 +2257,44 @@ def _search_engine(context: Context) -> str:
 
 
 def _rust_quality(context: Context) -> str:
-    cargo = _optional_tool(context, "cargo")
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("Rust quality gate requires cargo")
+    # Keep the documentation floor on the same pinned toolchain as clippy. The
+    # copied environment leaves concurrent validation steps untouched.
+    environment = dict(context.environment)
+    environment["RUSTDOCFLAGS"] = f"{environment.get('RUSTDOCFLAGS', '')} -D warnings".strip()
     output = _commands(
-        context,
+        # Warm 1.60s / first run 8.85s on the pinned toolchain (think-k8hl).
+        # The per-child ceiling leaves cold compiler headroom without a hung gate.
+        replace(
+            context, environment=environment, timeout_seconds=min(context.timeout_seconds, 120)
+        ),
         (
-            (cargo, "clippy", "--release", "--all-targets", "--quiet", "--", "-D", "warnings"),
-            (cargo, "fmt", "--check"),
+            (
+                cargo,
+                "clippy",
+                "--locked",
+                "--release",
+                "--all-targets",
+                "--quiet",
+                "--",
+                "-D",
+                "warnings",
+            ),
+            (cargo, "fmt", "--all", "--check"),
+            (cargo, "test", "--locked", "--all-targets", "--quiet"),
+            (cargo, "doc", "--locked", "--no-deps", "--quiet"),
+            (sys.executable, str(PROJECT_ROOT / "devtools" / "check_rust_floor.py")),
         ),
         cwd=PROJECT_ROOT / "sqsearch",
     )
-    return f"{output}\n  clippy clean at warnings-as-errors; rustfmt clean".strip()
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("Rust quality gate ran no passing Rust tests")
+    return (
+        f"{output}\n  clippy and rustdoc clean at warnings-as-errors; "
+        "rustfmt clean; Rust tests passed"
+    ).strip()
 
 
 def _trump_cones(context: Context) -> str:
@@ -3775,7 +3803,17 @@ STEPS: tuple[Step, ...] = (
         needs_engine=True,
         touches=_ENGINE_SRC,
     ),
-    Step("lint floor (rust)", _rust_quality, fast=True, broad=True, touches=_ENGINE_SRC),
+    Step(
+        "lint floor (rust)",
+        _rust_quality,
+        fast=True,
+        broad=True,
+        touches=(
+            *_ENGINE_SRC,
+            "packing/devtools/check_rust_floor.py",
+            "packing/tests/test_rust_floor_contract.py",
+        ),
+    ),
     # 13.82s.
     Step(
         "Trump exact branchwise linearized cones",

@@ -16,6 +16,7 @@ inventory of available checks and gaps.
 | --- | --- | --- | --- |
 | Source intake and claim review | W2 factual-review | think-8cps, think-xgjo | Pin the MIT source, cite its maintained repository, register T-056 and T-057 without frontier promotion, retain the ceiling and admission findings |
 | Native rectangle verifier | W7 pipeline-improvement | think-bmf3 | Exact rational coverage engine, standalone candidate CLI, refusal controls, independently reviewed mathematical contract, and retained complete or explicitly inconclusive receipts |
+| Verifier golden tests and Rust gate review | W7 pipeline-improvement | think-v4dn, think-k8hl | Complete CLI decision goldens with separate semantic checks; live Rust lint probes, executed Rust tests and rustdoc; scoped review and validation evidence |
 | General pose-tree replay | W2 factual-review | think-190a | Audit branch/enclosure/measure premises and replay all 12,028 n11 rows; separately bind global counting before any whole-bound promotion |
 | Reader documentation | W8 documentation-pass | think-8cps | Maintained repository index, synopsis summary, and tooling inventory naming actual independence and remaining gaps |
 
@@ -49,6 +50,40 @@ over-budget input, malformed or unsupported geometry/net metadata, and an exhaus
 search budget. Check clipping at tangencies and box boundaries.
 Bind every receipt to the exact input and implementation revision, record the required
 and decided angle census, and distinguish coverage from the full packing-bound decision.
+
+### Implementation and Review Standards
+
+Load `tbd guidelines general-eng-agent-principles code-review-rules` before a verifier
+review and `tbd guidelines general-testing-rules golden-testing-guidelines` before
+changing its tests. For Rust code, also load `rust-rules`, `rust-lint-format-rules`,
+`rust-testing-rules` and `rust-code-review-rules`. Record the applicable rules, findings
+and actual gate results in the review and PR comments.
+A passing lint gate does not establish the geometric theorem.
+
+The current native rectangle implementation uses Python exact rational arithmetic.
+A Rust implementation must preserve that contract, with explicit handling of integer
+overflow or arbitrary-precision arithmetic, input validation, complete angle and box
+inventories, and distinct refusal, incomplete and verified outcomes.
+Review unsafe and FFI invariants, panic paths and arithmetic bounds before performance
+changes. Use the pinned Rust toolchain, all-target Clippy with denied warnings, tests,
+format checks and documentation checks; any missing gate or justified departure needs a
+tracked disposition.
+The floating-point `sqsearch` engine remains a search tool.
+
+Golden scenarios exercise the production CLI and retain complete output, exit status,
+arguments and input identity.
+Normalize only documented unstable fields, preserve exact mathematical values, and
+require explicit regeneration followed by diff review.
+Keep semantic assertions for strict mass, complete angle coverage and unresolved work
+outside the approved output: an updated golden must not weaken those acceptance rules.
+Analytic geometric controls and independent mathematical review remain necessary because
+a golden can preserve a wrong answer.
+Fast scenarios run in the ordinary CI test lane; large certificate replays retain their
+own receipts and resource ceilings.
+The
+[guideline review](../../reviews/review-2026-09-29-native-rectangle-contract.md#rust-and-golden-testing-review)
+records the implemented controls and measured checks.
+Broader Rust support and search-CLI contracts remain in **think-cr8l**.
 
 ## Integration Order
 

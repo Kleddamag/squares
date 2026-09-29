@@ -257,6 +257,35 @@ receipts, empty or incomplete logs, input mutation and optimized-Python executio
 The reported private n32/n45 timings and full censuses remain unreplayed here.
 The follow-up is tracked in `think-xgjo`.
 
+A subsequent GPT-6 Astra review at max thinking applied tbd’s Rust review and testing
+rules to the retained `zmx2` source and lazy patch.
+The patch introduces no unsafe code or FFI; each `OnceCell` belongs to one
+`family_bound` call, and the pair calculation still initializes both endpoint bounds.
+The zero-density singleton branch removes only an identically zero continuum term.
+This remains a static equivalence review; the standalone Rust source was not compiled by
+the first-party `sqsearch` Cargo gate.
+
+The same review found a **High** integration risk in retained shell build wrappers:
+[`zmx2_run.sh`](../../../packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/search/zmx2_run.sh)
+pipes a build through `tail` under `set -eu` without preserving the build status, while
+[`zmx2_tests.sh`](../../../packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/search/zmx2_tests.sh)
+uses a text match to decide whether the build failed.
+A build failure can therefore reach an old executable.
+Integration under **think-xgjo** must inspect the actual compiler exit code, use a fresh
+output location and bind the executable to reviewed source bytes.
+The archived wrappers remain unchanged; this finding alone does not refute a retained
+run whose independent provenance checks established the binary it used.
+
+One **Medium** input-admission hardening gap also remains outside the retained input
+sizes: `zmx2.rs` stores point indices with `i as u32` without bounding the surviving
+point count. Above $2^{32}$ distinct points, indices can alias and the candidate sum can
+count an aliased weight twice.
+This is a static path analysis requiring enormous input and memory, not an executed
+counterexample or a finding against the retained certificates.
+A first-party importer must cap the point count or use checked index conversion before
+claiming support for arbitrary parser-admitted files; **think-xgjo** tracks this
+integration requirement.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

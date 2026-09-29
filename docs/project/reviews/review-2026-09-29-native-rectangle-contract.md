@@ -298,6 +298,73 @@ a future port must satisfy the same geometric contract and account explicitly fo
 integer overflow. Complete independent coverage of a retained external certificate
 remains the open acceptance criterion in **think-bmf3**.
 
+## End-to-End Integration Review
+
+The W7 continuation under **think-8cps** reviews PR 246 at `45eaf8e75` and repairs its
+remaining CI failures.
+Three parallel lanes inspect frontend timing (**think-sewp**), the inherited Session 161
+record, and verifier integration (GPT-6 Astra, max thinking).
+The coordinator owns the final diff, generated records, validation and publication.
+
+| Review surface | Completed evidence | Remaining obligation |
+| --- | --- | --- |
+| Upstream intake | Pinned MIT source, maintained-repository citations, T-056 and T-057 registration, transformation and admission review | Repair the upstream ceiling/admission gaps; replay T-057’s complete 12,028-row census |
+| Native mathematics | Astra-max review of mass, symmetry, angular containment, common-core geometry, clipping, axis events and exhaustive subdivision; analytic and refusal controls | Complete native coverage of a retained external certificate; no formal kernel proof claimed |
+| Native CLI | Five real subprocess decision goldens with byte-exact output and independent semantic assertions; normal CI behavioral coverage | Keep incomplete and refused runs separate from certificate acceptance |
+| Rust | Scoped source review, executed tests, strict Clippy, formatting, rustdoc and live lint rejection probes for the first-party search crate | Broader Rust support and CLI contracts remain in **think-cr8l**; archived Rust is not certified by this crate’s gate |
+| Repository integration | Hosted behavioral shards, types, geometry, sweeps, macOS portability and certificate-page checks passed | Resolve record and timing failures and obtain the full checkpoint |
+| Review approval | Agent reviews retained here and in PR comments | GitHub has no submitted formal review or human approval at this checkpoint |
+
+The atlas regeneration changes the release stamp after the data revision moved to
+`3dab8e`; the two SVG trees retain the same geometry.
+This review does not claim an independent pixel comparison of every raster or PDF
+export.
+
+The existing synopsis handoff incorrectly still described PR publication as pending.
+It now links the published PR and names CI integration and certification as the
+remaining work. The native research continuation remains **think-bmf3**.
+
+The
+[integration review comment](https://github.com/jlevy/squares/pull/246#issuecomment-5893038192)
+records this checkpoint.
+Session 161’s owner branch and `main` retain the same expired phase, with no subsequent
+disposition. At `2026-09-29T15:10:35Z`, the coordinator administratively stopped that
+recorded interval, preserving its original clocks and Recovery State.
+Its certification debt remains with the active **think-1an7** epic.
+This does not declare remote jobs stopped or the research completed.
+The ledger, schema, session-clock and certification checks pass after this change; the
+certification check explicitly reports the session as uncertified.
+
+The handoff selector previously distinguished administrative closeouts only when their
+resource usage was unmeasured.
+A top-level `handoff_role: administrative_closeout` now also represents a stopped
+interval with retained usage receipts.
+The schema and selector require stopped status and a nonblank disposition; active and
+completed sessions cannot use it.
+Resource accounting and certification gates still apply.
+This prevents closing an old record from replacing Session 162’s current work handoff.
+
+Frontend timing receipts from the failed hosted run and its predecessor show similar
+slowdown across browser work, lint liveness and independent TypeScript commands.
+That supports runner-wide slowdown without identifying its cause.
+The frontend runner also serialized eight independent browser contracts after one page
+build. Each contract owns its Playwright driver, browser and temporary output; the
+completed page is read-only shared input.
+The repair allows at most two contracts concurrently, preserves result order and
+propagates any failure.
+The validation entry point chooses one worker on smaller or fully occupied hosts and two
+when the outer topology leaves room.
+
+A sequential same-host comparison on the Mac, based on `45eaf8e75` with the scheduling
+change uncommitted, passed the identical eight contracts in 67.331 seconds with one
+worker and 49.606 seconds with two (26.3 percent less wall time).
+Page builds took 18.22 and 19.05 seconds; the longest browser contract took 23.76 and
+24.54 seconds. This measures reduced serial waiting, not removed checks or a hosted
+performance guarantee.
+The reusable `workbench_tools.check_frontend --workers 1|2
+--timings PATH` command retains per-contract timings; the gate’s time thresholds remain
+unchanged. Hosted validation is still required.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

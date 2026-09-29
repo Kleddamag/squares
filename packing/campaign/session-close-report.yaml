@@ -2756,7 +2756,7 @@ sessions:
   codex_receipts: []
 - id: session-161
   title: "wand125’s Update and the 28 September Intake"
-  status: in_progress
+  status: stopped
   primary_bead: think-1an7
   phases: 2
   measured: true

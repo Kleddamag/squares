@@ -211,6 +211,18 @@ toolchain. Each shard writes a per-file cost report beside its JUnit and timing
 artifacts; the recorder accepts complete coherent cohorts and rejects failed, partial,
 duplicated, coverage-mismatched, and mixed-provenance evidence.
 The current declared ceilings are 168 seconds for suite A and 154 seconds for suite B.
+
+The frontend browser runner builds one page and runs eight isolated browser contracts.
+The gate permits two contracts concurrently when the CPU count and outer job count leave
+room; otherwise it uses one.
+Both routes run the same checks and propagate failures.
+For a same-host comparison, run `python -m workbench_tools.check_frontend --workers 1
+--timings PATH` and then `--workers 2` with a different receipt path, using the project
+interpreter. Receipts include per-check times and source identity.
+The
+[PR 246 integration review](docs/project/reviews/review-2026-09-29-native-rectangle-contract.md#end-to-end-integration-review)
+records the initial comparison; it does not change the frontend gate’s thresholds.
+
 The first PR 188 integration run at exact head `c5a33270` measured 84.00 and 143.98
 seconds, respectively, over the complete 6,345-item quick selection: 2,362 passes in
 suite A, and 3,977 passes with 6 skips in suite B. `c4f0660d` rebuilt the cost record

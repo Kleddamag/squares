@@ -3,10 +3,12 @@ other reconciliations against artifacts the document restates."""
 
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 
 import pytest
+from jsonschema_rs import Draft202012Validator
 
 from devtools import check_synopsis
 from devtools.check_synopsis import (
@@ -16,6 +18,7 @@ from devtools.check_synopsis import (
     check_experiment_scope_claims,
     check_round_effort_claims,
     check_unprotected_fix_claims,
+    is_administrative_closeout,
     is_administrative_unmeasured_closeout,
     load_agenda_items,
     reported_covering_sides,
@@ -27,6 +30,13 @@ from devtools.check_synopsis import (
     spell,
     terminal_end_time_problems,
 )
+from sqpack.yamlio import safe_load
+
+REPO = Path(__file__).resolve().parents[2]
+SESSION_161 = (
+    REPO / "packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md"
+)
+SESSION_SCHEMA = REPO / "packing/campaign/schemas/agent-session.schema.yaml"
 
 
 def test_current_research_status_rejects_a_stale_source_count() -> None:
@@ -59,6 +69,22 @@ def _unmeasured_handoff(role: str = "administrative_closeout") -> dict:
         "resource_rollups": [],
         "stop_reason": "The historical session was closed without reconstructing usage.",
         "next_action": "Preserve the explicit unmeasured disposition.",
+    }
+
+
+def _measured_administrative_closeout() -> dict:
+    return {
+        "id": "session-161",
+        "status": "stopped",
+        "started_at": "2026-09-28T23:26:00Z",
+        "deadline_at": "2026-09-29T11:26:00Z",
+        "ended_at": "2026-09-29T15:10:35Z",
+        "handoff_role": "administrative_closeout",
+        "resource_rollups": [
+            "packing/campaign/resource-usage/b85b7ecf-955c-5223-9481-e5200885a948.yaml"
+        ],
+        "stop_reason": "The expired coordinator record was closed administratively.",
+        "next_action": "Continue the work under think-1an7.",
     }
 
 
@@ -153,6 +179,62 @@ def test_late_administrative_closeout_does_not_displace_research_handoff() -> No
             (Path("session-124-research.md"), research),
         ]
     ) == (Path("session-124-research.md"), research)
+
+
+def test_measured_administrative_closeout_does_not_displace_research_handoff() -> None:
+    research = {
+        "id": "session-162",
+        "status": "stopped",
+        "started_at": "2026-09-29T08:00:00Z",
+        "ended_at": "2026-09-29T12:00:00Z",
+    }
+    administrative = _measured_administrative_closeout()
+
+    assert is_administrative_closeout(administrative)
+    assert select_latest_terminal_session(
+        [
+            (Path("session-161-administrative.md"), administrative),
+            (Path("session-162-research.md"), research),
+        ]
+    ) == (Path("session-162-research.md"), research)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("status", "completed"),
+        ("status", "in_progress"),
+        ("stop_reason", ""),
+        ("handoff_role", "work_handoff"),
+    ],
+)
+def test_invalid_general_administrative_marker_cannot_hide_a_handoff(
+    field: str, value: str
+) -> None:
+    candidate = _measured_administrative_closeout()
+    candidate[field] = value
+
+    assert not is_administrative_closeout(candidate)
+
+
+def test_session_schema_accepts_only_a_stopped_general_administrative_closeout() -> None:
+    document = safe_load(SESSION_161.read_text(encoding="utf-8").split("---\n", 2)[1])
+    session = document["session"]
+    schema = safe_load(SESSION_SCHEMA.read_text(encoding="utf-8"))
+    validator = Draft202012Validator(schema)
+
+    assert list(validator.iter_errors(session)) == []
+
+    for field, value in (
+        ("status", "completed"),
+        ("status", "in_progress"),
+        ("stop_reason", ""),
+        ("handoff_role", "work_handoff"),
+    ):
+        invalid = copy.deepcopy(session)
+        invalid.pop("certification_pending", None)
+        invalid[field] = value
+        assert list(validator.iter_errors(invalid)), field
 
 
 def test_unmeasured_work_handoff_keeps_observed_end_ordering() -> None:

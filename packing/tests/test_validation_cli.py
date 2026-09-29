@@ -3322,3 +3322,30 @@ def test_the_activity_marker_still_refuses_a_second_gate(tmp_path: Path) -> None
         validate._validation_activity(marker),
     ):
         pass  # pragma: no cover - the context manager refuses to enter
+
+
+@pytest.mark.parametrize(("cpus", "jobs", "workers"), [(4, 2, "2"), (2, 2, "1"), (4, 4, "1")])
+def test_frontend_browser_workers_fit_outer_topology(
+    monkeypatch: pytest.MonkeyPatch, cpus: int, jobs: int, workers: str
+) -> None:
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: cpus)
+    captured: list[tuple[str, ...]] = []
+
+    def commands(_context, commands, **_kwargs):
+        captured.extend(commands)
+        return "passed"
+
+    monkeypatch.setattr(validate, "_commands", commands)
+    context = validate.Context(
+        deep=False, strict=False, jobs=jobs, inner_jobs=1, environment={}
+    )
+    validate._workbench_frontend(context)
+    assert (
+        sys.executable,
+        "-m",
+        "workbench_tools.check_frontend",
+        "--workers",
+        workers,
+    ) in captured
+    assert any("devtools.check_probes" in command for command in captured)
+    assert any("devtools.check_motion_lab_pages" in command for command in captured)

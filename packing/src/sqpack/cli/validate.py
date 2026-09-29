@@ -1754,11 +1754,21 @@ def _workbench_frontend(context: Context) -> str:
     The Motion Lab pages run here too, because this is the job with Chromium: four seconds
     for both labs, and until think-6o9n nothing loaded them in a browser at all.
     """
+    # On the four-CPU frontend runner two outer gate slots leave room for two
+    # isolated browser owners plus the source floor. Smaller or busier topologies
+    # keep the serial route. Same-host control/candidate: 67.33s / 49.61s (think-sewp).
+    browser_workers = min(2, max(1, (os.process_cpu_count() or 1) - context.jobs))
     return _commands(
         context,
         (
             (sys.executable, "-m", "devtools.check_probes"),
-            (sys.executable, "-m", "workbench_tools.check_frontend"),
+            (
+                sys.executable,
+                "-m",
+                "workbench_tools.check_frontend",
+                "--workers",
+                str(browser_workers),
+            ),
             (
                 sys.executable,
                 "-m",

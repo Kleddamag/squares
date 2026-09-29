@@ -237,7 +237,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 162 | 101 completed; 60 stopped; 1 nonterminal |
+| Sessions | 162 | 101 completed; 61 stopped; all terminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1201,15 +1201,16 @@ controller, not permission to blur contracts.
 [Session 162](packing/campaign/agent-sessions/session-162-wand125-tools-intake.md)
 closed the wand125 intake, native rectangle-verifier prototype and documentation slice
 with explicit certification debt.
-The push gate passed; the committed-source full checkpoint and PR publication remain
-pending. No complete retained external rectangle certificate has been independently
-verified.
+The implementation and review are published in
+[PR 246](https://github.com/jlevy/squares/pull/246). CI integration and the
+committed-source full checkpoint remain pending.
+No complete retained external rectangle certificate has been independently verified.
 
-**Selected next entry:** `think-8cps`: repair the review findings, run the qualifying
-full gate on committed source, publish and monitor the PR, and clear the recorded
-certification debt. The native research continuation remains `think-bmf3`: improve the
-translation-box bound and retain a complete external-certificate run before promoting
-any bound.
+**Selected next entry:** `think-8cps`, W7: resolve the expired session-record and
+frontend timing failures, run the qualifying full gate on committed source, and clear
+the recorded certification debt.
+The native research continuation remains `think-bmf3`: improve the translation-box bound
+and retain a complete external-certificate run before promoting any bound.
 
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
 asked again what improvement is left at low `n` and moved one bound.

@@ -3229,11 +3229,14 @@ results:
       an AI agent under human direction as its CREDITS.md says. The complete zeromargin.py
       sweep was replayed here on 2026-09-27 with the source's runner, checker and settings:
       all 7,200 roots certified, 164,130 boxes, every root's census equal to the source's.
+      The source's separately written zmx2 checker, deciding in outward-widened binary64
+      intervals, was run here on the same cover on 2026-09-29 with --pair-points: all 3,600
+      roots of the D4 region certified, 1,405,342 boxes, none uncertified.
       An externally produced, previously published result, not peer reviewed; no new
       first-party mathematics is claimed.
     scope: {n_values: [32]}
     verification: V4
-    confirmation: C3
+    confirmation: C4
     significance:
       score: 4
       rationale: >-
@@ -3249,15 +3252,19 @@ results:
       source_keys: ['[evand square-packing 2026]']
       published: '2026-09-26'
     composition: >-
-      Compound: the lower half is E-n032-evand-closed-cover-source-run (exact-algebraic, the
-      source's own program replayed here), the upper half the grid replayed exactly by the
-      basic-bounds checker (E-basic-grid-upper). Both are exact-algebraic, one method family,
-      so the equality is C3, not C4, as for T-008.
+      Compound: the lower half rests on two replays here of separately written
+      implementations of the zero-margin subdivision, E-n032-evand-closed-cover-source-run
+      (zeromargin.py, exact-algebraic) and E-n032-evand-closed-cover-zmx2-replay (zmx2,
+      interval-certified), which is C4 by the distinct-method rule; the upper half is the
+      grid replayed exactly by the basic-bounds checker (E-basic-grid-upper). The lower half
+      sets the minimum, so the equality is C4. The residual common-mode risk is the shared
+      pose-space architecture and D4 fold.
     produced_by:
       session: session-160
     evidence:
       - E-n032-evand-closed-cover-report
       - E-n032-evand-closed-cover-source-run
+      - E-n032-evand-closed-cover-zmx2-replay
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/evand-square-packing-2026-09-26/README.md
@@ -3265,18 +3272,19 @@ results:
       - packing/resources/web/evand-square-packing-2026-09-26/receipts/replays.json
       - packing/resources/web/evand-square-packing-2026-09-26/receipts/s32_sweep_comparison.json
       - packing/devtools/compare_evand_s32_sweep.py
+      - packing/resources/web/evand-square-packing-2026-09-28/README.md
+      - packing/devtools/audit_evand_mixed_covers.py
       - packing/devtools/check_basic_bounds.py
       - docs/project/reviews/review-2026-09-27-evand-s32-s12.md
     controls:
       - packing/tests/test_evand_square_packing.py
+      - packing/tests/test_evand_mixed_covers.py
     next_rung: >-
-      C4 by recording the complete zmx2 --d4 --pair-points run on this same cover, made here
-      on 2026-09-28 (VERIFIED-D4 on all 3,600 roots, 1,405,342 boxes, none uncertified;
-      receipts/s32_zmx2_d4_pairpoints.log in the 2026-09-28 evand packet), as its own
-      interval-certified evidence entry: its method value differs, though both routes are
-      pose-space subdivisions of one kind. V5 would need the checker programs formalised;
-      the source reports a hypothesis-free kernel check of minSide 32 = 6 that was not built
-      here.
+      C5 by citing a mapped review artifact for the complete claim (the owner's question in
+      think-9ec5 on same-repository reviews). V5 would need the checker programs formalised;
+      the source reports a hypothesis-free kernel check of minSide 32 = 6 (Lean, commit
+      92cc5bb5) that was not built here, because Mathlib's build cache is unreachable from
+      this session (think-angg).
 
   - id: T-052
     claim: >-

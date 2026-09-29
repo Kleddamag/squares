@@ -402,6 +402,9 @@ by a third implementation of the zero-margin method, after `zeromargin.py` and
 `zmcheck`; for `s(13)` it is the first repository replay of any checker on the case-free
 cover. Neither moves a bound: `s(13) = 4` is Bentz’s, and `s(32) = 6` already stands at
 `V4`/`C3` on the `zeromargin.py` re-sweep.
+On 29 September the `s(32)` run was recorded as its own evidence entry,
+`E-n032-evand-closed-cover-zmx2-replay`, a second method beside the `zeromargin.py`
+re-sweep, which raises `s(32) = 6` to `V4/C4` (jlevy/squares#238).
 
 ## Replay From the Packets
 

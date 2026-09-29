@@ -567,9 +567,10 @@ or pipeline.
   A Lean theorem derives `minSide 32 = 6` from exactly the statement the source’s
   `zeromargin.py` sweep checks over all 7,200 roots of the cover’s symmetry-reduced
   region. Here that sweep was run again in full, certifying all 7,200 roots with the
-  source’s census on every one, so `s(32) = 6` is registered at `V4/C3`; the Lean build
-  and the source’s second checker, `zmcheck`, were not run.
-  On 28 September the
+  source’s census on every one, and the source’s separately written `zmx2`, deciding in
+  outward-widened binary64 intervals, certified all 3,600 roots of the same region, so
+  `s(32) = 6` is registered at `V4/C4`; the Lean build and a third checker, `zmcheck`,
+  were not run. On 28 September the
   [same repository](packing/resources/web/evand-square-packing-2026-09-28/README.md)
   proved `s(21) = 5` and `s(45) = 7` by *mixed covers*, weighted points plus mass spread
   uniformly along interior grid-line segments, each certified at margin zero by two

@@ -2690,6 +2690,78 @@ evidence:
       as the previous best; before it the case carried Nagamochi's 1 + sqrt(23).
     source_reviewed: '2026-09-27'
 
+  - id: E-n032-evand-closed-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [32]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, the 2026-09-26 packet's
+      square-packing/ and then the 2026-09-28 packet's, with every .gz restored (the
+      2026-09-28 packet README, Replay From the Packets), and cargo on PATH: build
+      zmx2 with cargo build --release --bin zmx2 in verify2/, then
+      verify2/target/release/zmx2 cert certificates/s32/s32_closed_cover_6.txt --d4
+      --pair-points --threads 2 --log OUT, which must print VERIFIED-D4. Then, from
+      packing/, .venv/bin/python3 -m devtools.audit_evand_mixed_covers check must
+      exit 0 with the retained log; it re-reads receipts/s32_zmx2_d4_pairpoints_roots.log.gz
+      and requires every root of the D4 region present, none uncertified or capped,
+      and the totals the source reports.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/README.md
+      theorem: No 32 unit squares fit in a square of side below 6; with the 6 x 6 grid, s(32) = 6.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        certificates/s32/README.md, "The proof in one paragraph"; search/ZMX2.md
+        sections 2 to 7, section 5 (Lemma R) and section 9 (the point covers and
+        --pair-points); search/ZMX2_AUDIT.md; the 2026-09-28 packet README, "The
+        previous packet's point covers, by zmx2"; receipts/s32_zmx2_d4_pairpoints.log
+        and its roots log.
+      assumptions:
+        - The weighted cover is exactly D4-invariant, weights included, which zmx2 d4 and the 2026-09-26 replay re-check exactly.
+        - Every closed unit square in [0,6]^2 with centre in the D4 region captures weight at least 1; zmx2 --d4 --pair-points certifies the region in 3,600 root boxes.
+        - The D4 reduction carries that region to every centre and angle (proved in Lean upstream, not built here).
+        - Scaling a packing at side s < 6 by 6/s makes 32 pairwise disjoint closed unit squares, so a total weight below 32 excludes it.
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic without contraction on the host; the program is not formally verified. --pair-points couples points one unit apart; without it the source reports 38 uncertified boxes on this cover.
+      audit_record: docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: Fable max review (docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md), for the zmx2 checker; the s(32) cover's own review is docs/project/reviews/review-2026-09-27-evand-s32-s12.md.
+      note: >-
+        The 2026-09-28 review re-derived zmx2's lemmas against its code, including
+        the outward rounding (Lemma R), for the mixed covers; this entry applies the
+        same program to the point cover of the 2026-09-27 review. Findings F4 (the
+        IEEE-754 model zmx2 needs) and F5 (the checkers' lemma layer is not
+        machine-checked) apply unchanged.
+    limitations: >-
+      Run here on 2026-09-29 (finished 01:20:19Z) from the retained bytes, with
+      zmx2 built from the retained source by rustc 1.94.1 (binary 5ee58ade...), two
+      threads on a shared four-core host: VERIFIED-D4, all 3,600 roots of the D4
+      region, 1,405,342 boxes, 686,886 certified and 17,585 empty leaves, maximum
+      depth 29, none uncertified or capped (2,705 s wall, 2,313 CPU-s).
+      devtools.audit_evand_mixed_covers finds the log complete over its region and
+      its totals equal to the ones the source reports; the source shipped no
+      per-root log for this run (search/ZMX2.md section 9), so the comparison is of
+      totals, not root by root. zmx2 is a second, separately written
+      implementation of the zero-margin pose-space subdivision beside the source's
+      zeromargin.py (E-n032-evand-closed-cover-source-run, exact-algebraic),
+      deciding in binary64 enclosures rather than exact rationals, so the two
+      entries support C4, with the shared pose-space architecture and the shared
+      D4 fold as the residual common-mode risk (the 2026-09-28 review, section 9).
+      It assumes correctly rounded binary64 arithmetic on the host. zmcheck, a third
+      implementation, certifies 3,595 of its 3,600 roots on this cover and was not
+      run here; the Lean build was not run (Mathlib's build cache is unreachable
+      from this session), and the checker programs are not formalised. Registration
+      requested by the author in jlevy/squares#238.
+    source_reviewed: '2026-09-29'
+
   - id: E-n012-evand-15680-3951-report
     claim: lower-bound
     scope: {n_values: [12]}

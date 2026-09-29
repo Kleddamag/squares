@@ -248,9 +248,9 @@ CORNER_DUAL_SALVAGE_RECEIPT = (
     / "campaign/series/series-000-smoke-and-calibration/results/agenda-032"
     / "exp-137-corner-dual-salvage.json.gz"
 )
-# One temporary directory under `packing/`, where the walk counts it, holding a file
-# the count must see and four caches it must not. Removed in `finally`, and named so a
-# leftover from a killed run says what it was.
+# The historical live-checkout location remains a guard: the test uses this relative
+# path only inside its private worker snapshot, then asserts no concurrent test planted
+# it under the real `packing/` root. Its name also makes a killed private run legible.
 CACHE_PROBE_ROOT = ROOT / ".negative-control-cache-probe"
 # Spelled out rather than derived from `BUILD_CACHES`, which would make the test move
 # with the thing it checks: a name dropped from the set would simply stop being planted,
@@ -597,6 +597,7 @@ def test_math_startup_reports_are_pruned_but_record_sources_survive(
 @pytest.mark.slow
 def test_build_caches_leave_the_counted_surface_and_the_worker_trees(
     tmp_path: Path,
+    control_snapshot: tuple[Path, set[Path]],
 ) -> None:
     """Bytecode and tool state move neither the guard's number nor a worker tree.
 
@@ -618,22 +619,56 @@ def test_build_caches_leave_the_counted_surface_and_the_worker_trees(
     """
     assert {Path(name).name for name in CACHE_PROBE_DIRECTORIES} >= BUILD_CACHES
 
-    shutil.rmtree(CACHE_PROBE_ROOT, ignore_errors=True)
-    caches = [CACHE_PROBE_ROOT / name / "probe.bin" for name in CACHE_PROBE_DIRECTORIES]
-    counted = CACHE_PROBE_ROOT / "counted.bin"
+    source, _copied = control_snapshot
+    tree = tmp_path / "snapshot"
+    environment = os.environ.copy()
+    environment["PYTHONPATH"] = os.pathsep.join(
+        (str(source / HERE / "src"), str(source / HERE))
+    )
+    script = """
+import shutil
+import sys
+from pathlib import Path
 
-    before = snapshot_source_bytes()
-    try:
-        for probe in (*caches, counted):
-            probe.parent.mkdir(parents=True, exist_ok=True)
-            probe.write_bytes(CACHE_PROBE_BYTES)
+from devtools import run_negative_controls as controls
 
-        assert snapshot_source_bytes() == before + len(CACHE_PROBE_BYTES)
-
-        tree = tmp_path / "snapshot"
-        clone_tree(tree)
-    finally:
-        shutil.rmtree(CACHE_PROBE_ROOT, ignore_errors=True)
+destination = Path(sys.argv[1])
+probe_bytes = b"n" * int(sys.argv[2])
+probe_root = controls.ROOT / ".negative-control-cache-probe"
+caches = [probe_root / name / "probe.bin" for name in sys.argv[3:]]
+counted = probe_root / "counted.bin"
+if controls.ROOT != Path.cwd():
+    raise RuntimeError(f"loaded controls from {controls.ROOT}, expected {Path.cwd()}")
+shutil.rmtree(probe_root, ignore_errors=True)
+before = controls.snapshot_source_bytes()
+try:
+    for probe in (*caches, counted):
+        probe.parent.mkdir(parents=True, exist_ok=True)
+        probe.write_bytes(probe_bytes)
+    after = controls.snapshot_source_bytes()
+    if after != before + len(probe_bytes):
+        raise AssertionError((before, after, len(probe_bytes)))
+    controls.clone_tree(destination)
+finally:
+    shutil.rmtree(probe_root, ignore_errors=True)
+"""
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            script,
+            str(tree),
+            str(len(CACHE_PROBE_BYTES)),
+            *CACHE_PROBE_DIRECTORIES,
+        ],
+        cwd=source / HERE,
+        env=environment,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=180,
+    )
+    assert completed.returncode == 0, completed.stderr
 
     # The whole worker tree, not just the probe: the point of the sweep in `clone_tree`
     # is that no cache reaches a worker from any of its three copiers. `os.walk` does
@@ -645,7 +680,9 @@ def test_build_caches_leave_the_counted_surface_and_the_worker_trees(
         if name in BUILD_CACHES
     ]
     assert surviving == []
-    assert (tree / HERE / counted.relative_to(ROOT)).is_file()
+    counted = tree / HERE / ".negative-control-cache-probe/counted.bin"
+    assert counted.read_bytes() == CACHE_PROBE_BYTES
+    assert not CACHE_PROBE_ROOT.exists()
 
 
 def test_results_register_dependencies_survive_snapshot_pruning() -> None:

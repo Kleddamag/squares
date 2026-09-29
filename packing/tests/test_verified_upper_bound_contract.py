@@ -35,7 +35,11 @@ from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.known_best import KNOWN_BEST_CORPUS
 
 #: Cases whose verified ceiling trails the reported side, per corpus (think-93on).
-TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 18, "n=1..200": 68, "n=1..324": 129}
+#: Lowered on 2026-09-29 by 46: Francisco Couzo's 49 packings (T-056) replaced 49 trailing
+#: reports with certified ones, three of which, n = 206, 259 and 305, still trail by 2 or
+#: 3 units of the printed fifteenth decimal; de Winter's n = 211 (T-057) moved a report
+#: and its ceiling together off the grid.
+TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 17, "n=1..200": 48, "n=1..324": 83}
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # The consumers of this field now span the repository: it is named in SYNOPSIS.md and
@@ -70,10 +74,30 @@ DECLARED_CONSUMER_TREES = {
 }
 
 DECLARED_CONSUMERS = {
+    "packing/devtools/apply_upper_bound_packets.py": (
+        "writes the ceiling a parallel packing's exact certificate proves, the printed side "
+        "or the certified side rounded up at its precision, and the ceiling section, conflict "
+        "and blocker wherever that trails the report; it reads the field as a ceiling and "
+        "never as s(n)"
+    ),
+    "packing/tests/test_upper_bound_packets.py": (
+        "checks that each certified case's ceiling cites its replay and agrees with the "
+        "report exactly where the receipt says it does; it asserts nothing about s(n)"
+    ),
     "packing/devtools/check_results.py": (
         "reads only the evidence ids a case's bound fields cite, to derive whether a "
         "registered result still holds a case bound; it takes no value from the field and "
         "never reads the ceiling as s(n)"
+    ),
+    "packing/devtools/render_recent_results.py": (
+        "reads only the evidence ids a case's bound fields cite, to derive which register "
+        "entries hold a case bound for README's standing column; it takes no value from the "
+        "field and never reads the ceiling as s(n)"
+    ),
+    "docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md": (
+        "a dated review explaining why n = 206, 259 and 305 carry a verified ceiling above "
+        "the printed side; it reads the field as the certified ceiling and says it is "
+        "neither s(n) nor a different packing"
     ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
@@ -325,13 +349,15 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     assert worst > Decimal("0.42")
 
     # And in those cases `exact_form` is exact about the ceiling and says nothing about
-    # s(n): for all but n = 29 it is literally the integer grid bound.
+    # s(n): for all but four it is literally the integer grid bound. n = 29 carries an
+    # interval certificate's endpoint, and n = 206, 259 and 305 the rounded-up side of an
+    # exact rational certificate of Couzo's packing (T-056).
     grids = {
         n
         for n in trailing
         if loaded_cases[n]["verified_upper_bound"]["exact_form"] == str(math.isqrt(n - 1) + 1)
     }
-    assert sorted(set(trailing) - grids) == [29]
+    assert sorted(set(trailing) - grids) == [29, 206, 259, 305]
 
     # Every case carrying an exact_form on the ceiling, split by whether s(n) is known.
     exact_forms = sum(
@@ -362,7 +388,9 @@ def test_every_trailing_case_says_so_in_the_record_a_reader_opens() -> None:
         with localcontext() as context:
             context.prec = 28
             gap = str(verified - reported)
-        assert gap in flat, n
+        # n = 29's hand-written section prints Decimal's `9.18...E-15`; the Couzo ceilings
+        # print the receipts' lowercase `2e-15`. Either spelling is the same number.
+        assert gap in flat or gap.replace("E", "e") in flat, n
         assert f"not the value of `s({n})`" in flat, n
         assert "`reported_upper_bound`" in flat, n
 

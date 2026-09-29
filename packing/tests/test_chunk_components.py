@@ -89,16 +89,21 @@ def test_retained_census_reports_source_stratified_coverage() -> None:
     assert registered["name"] == "registered-angle-contact"
     non_grid = registered["summary"]["non_grid"]
     assert non_grid["records"] == 36
-    assert (non_grid["structured_squares"], non_grid["total_squares"]) == (1780, 1860)
+    # 1782, not 1780, since the #227 intake: Couzo's n = 68 (T-056) structures two more
+    # squares at the registered tolerance than the UnitSquare packing it replaced.
+    assert (non_grid["structured_squares"], non_grid["total_squares"]) == (1782, 1860)
     assert non_grid["within_six_chunks_and_three_free"] == 25
 
+    # The relaxed sweep still structures more of n = 68 and merges its angle classes; the
+    # counts are Couzo's packing's, where the UnitSquare one gave 57 and 60, 13 and 7.
     relaxed = document["contact_sweeps"][1]
     strict_n68 = registered["entries"][67]
     relaxed_n68 = relaxed["entries"][67]
-    assert strict_n68["structured_square_count"] == 57
-    assert relaxed_n68["structured_square_count"] == 60
-    assert strict_n68["angle_class_count"] == 13
-    assert relaxed_n68["angle_class_count"] == 7
+    assert strict_n68["n"] == relaxed_n68["n"] == 68
+    assert strict_n68["structured_square_count"] == 59
+    assert relaxed_n68["structured_square_count"] == 64
+    assert strict_n68["angle_class_count"] == 12
+    assert relaxed_n68["angle_class_count"] == 8
 
     partitions = json.loads(
         (ROOT / "atlas/known-best/chunk-partitions.json").read_text(encoding="utf-8")

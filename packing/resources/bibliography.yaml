@@ -16,9 +16,17 @@ last_reviewed: '2026-09-29'
 # when this project's "(confirmed, T-NNN)" would not otherwise fit. `credit`, where given,
 # is printed in place of the joined authors, for a source whose credit is joint with the
 # lineage it builds on: last names, or handles where no name is published, this project
-# as "Squares Project (Levy)" where that fits and "Levy" where it does not, and never an
-# AI agent. `credit year, venue` must fit the stage's 66 characters, which
-# `devtools.build_bound_citations` checks. A web source's authors are
+# as "Squares Project (Levy)" where that fits and "Levy" where it does not, never an AI
+# agent, and every link the source names. Where `credit year, venue`, or the line with this
+# project's note, would not fit the atlas stage's 66 characters, `short_credit` is what the
+# stage prints instead: the same authors, `after`, the first of the same links, and
+# `et al.` (`Tokoharu after Levy, wand125 et al.`). Only the atlas stage shortens, and the
+# explainer's figure, which prints the stage's own line; every other renderer prints
+# `credit` whole. `devtools.build_bound_citations` checks both the
+# width and that shape. `lineage`, required on the source of a result
+# by others published on or after 22 August 2026, is `builds-on-project`,
+# `credits-project` or `independent`, as the source's own attribution files say; the
+# policy is epistemics.md, Results by Others. A web source's authors are
 # not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:
@@ -89,13 +97,18 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-20'
-    credit: Guzhou0806, Mira after Levy
+    credit: Guzhou0806, Mira after Levy, Burns, Massaccesi
     lineage: builds-on-project
     note: >-
       The two repositories the packet retains, by their authors' GitHub names
       (web/n17-weighted-certificates-2026-09-20/README.md): Guzhou0806's R012
       parent-angle catalogue, 2026-09-20, over Mira's 1620-atom measure of 2026-09-07.
-      The bound the register verifies from them, 461300/99999, is R012's.
+      The bound the register verifies from them, 461300/99999, is R012's. R012's
+      ATTRIBUTION.md credits Mira's measure and Joshua Levy, the squares project; Mira's
+      ATTRIBUTION.md starts from Levy's certificate and says the weighted covering
+      principle is not claimed as new, crediting Sam Burns's 6 August post and Gustavo
+      Massaccesi's LP note (mira-17squares/certificates/lower_bound_4p613/ATTRIBUTION.md,
+      lines 26-29).
   - key: '[Kleddamag n17 certified bound]'
     authors: [Kleddamag]
     year: 2026
@@ -142,7 +155,7 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-25'
-    credit: Guzhou0806 after Kleddamag, Levy
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
     lineage: builds-on-project
     note: >-
       The R052 release of Guzhou0806/n17-square-packing at 3bf1095c, 2026-09-25,
@@ -154,7 +167,8 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: Guzhou0806 after Kleddamag, Levy
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
+    short_credit: Guzhou0806 after Kleddamag et al.
     lineage: builds-on-project
     note: >-
       The R068 release of Guzhou0806/n17-square-packing at 815b1626, 2026-09-28, whose
@@ -162,20 +176,25 @@ sources:
       N17 project, continuing Kleddamag's public 4.66001 charge (Kleddamag building on
       Squares Project (Joshua Levy), Mira and Guzhou0806): the package credits Kleddamag
       for the charge, proof and Node BigInt checker, and its C++ checker is Guzhou0806's
-      own. It discloses AI assistance and says its publisher ran no local validation and
-      did not observe CI (web/n17-guzhou-r068-2026-09-28/README.md).
+      own. Its ATTRIBUTION.md keeps the historical attribution in upstream/notices, whose
+      ATTRIBUTION.md credits Mira-acc/17squares, Guzhou0806's R038 and Joshua Levy, the
+      squares project (R068-C010/upstream/notices/ATTRIBUTION.md, lines 7-52). It
+      discloses AI assistance and says its publisher ran no local validation and did not
+      observe CI (web/n17-guzhou-r068-2026-09-28/README.md).
   - key: '[Guzhou0806 n17 R067]'
     authors: [Guzhou0806]
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: Guzhou0806 after Kleddamag, Levy
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
     lineage: builds-on-project
     note: >-
       The R067 release of Guzhou0806/n17-square-packing at d4e2c287, 2026-09-28, whose
       certificates/R067-4.66018/ proves s(17) > 233009/50000 on Kleddamag's 4.66001
-      charge unchanged, named by "Guzhou0806 / N17 project with AI assistance"; superseded
-      by R068 the same day and retained in the same packet
+      charge unchanged, named by "Guzhou0806 / N17 project with AI assistance"; its
+      ATTRIBUTION.md retains the "historical notices for Mira, Joshua Levy and this
+      project" in upstream_notices (R067-4.66018/ATTRIBUTION.md, line 9). Superseded by
+      R068 the same day and retained in the same packet
       (web/n17-guzhou-r068-2026-09-28/README.md).
   - key: '[evand square-packing 2026]'
     authors: [Daniel]
@@ -208,7 +227,8 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-09-22'
-    credit: Kleddamag after Levy
+    credit: Kleddamag after Levy, Guzhou0806, Mira
+    short_credit: Kleddamag after Levy et al.
     lineage: builds-on-project
     note: >-
       The v1.0.2 release of Kleddamag/11-squares-certified-bound, pinned in
@@ -216,72 +236,91 @@ sources:
       and the author's September 22 announcement retained in acquisition/x-kleddamag.txt.
       Joint with this project: its ATTRIBUTION.md says the work "builds on Joshua Levy,
       the squares project", and that global-certificate.json was developed from Levy's
-      T-026 certificate (kleddamag-11/ATTRIBUTION.md). Dated by the release commit
-      6a733f33, 2026-09-22.
+      T-026 certificate; its reconstructed JavaScript checker adapts Guzhou0806 / N17
+      project's R038 checker, and it records the Levy/Guzhou/Mira lineage inherited
+      through the s(17) work (kleddamag-11/ATTRIBUTION.md, lines 3, 15 and 16). Its
+      AUTHORS.md says OpenAI Codex developed the continuation under Kleddamag's
+      direction. Dated by the release commit 6a733f33, 2026-09-22.
   - key: '[Tokoharu density 2026]'
     authors: [Tokoharu]
     year: 2026
     venue: GitHub
     dated: '2026-09-22'
-    credit: Tokoharu after Levy, wand125
+    credit: Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: Tokoharu after Levy, wand125 et al.
     lineage: credits-project
     note: >-
       The tokoharu/square-packing-density-bounds repository, pinned in
       web/external-square-certificates-2026-09-22/acquisition/sources.json,
       and the author's September 22 announcement retained in acquisition/x-tokoharu.txt.
       Joint with this project and wand125, in the author's order: the announcement says
-      it was inspired "by @ojoshe and @wand125", and tokoharu-density/README.md credits
-      jlevy/squares, through wand125's attribution, for row and column generation and
-      branch-and-bound. The rectangle-density method is Tokoharu's. Dated by the pinned
-      commit b543990f, 2026-09-22.
+      it was inspired "by @ojoshe and @wand125", and tokoharu-density/README.md, which
+      generalizes wand125's argument, credits through wand125's attribution the
+      underlying method to Walter Stromquist, Hiroshi Nagamochi, Sam Burns and Gustavo
+      Massaccesi, and to jlevy/squares for row and column generation and
+      branch-and-bound (lines 169-183). The rectangle-density method is Tokoharu's. The
+      README says parts of the work were produced with AI assistance under human
+      direction. Dated by the pinned commit b543990f, 2026-09-22.
   - key: '[wand125 point bounds 2026]'
     authors: [wand125]
     year: 2026
     venue: GitHub
     dated: '2026-09-22'
-    credit: wand125 after Levy
+    credit: wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Levy et al.
     lineage: builds-on-project
     note: >-
       The wand125/square-packing-bounds repository and its 2026 certificate claims,
       retained under web/external-square-certificates-2026-09-22/wand125-points/;
       acquisition/sources.json pins the complete source tree.
       Joint with this project: wand125-points/README.md says "The method is not ours" and
-      credits jlevy/squares for the generator, and src/check_with_sqpack.py verifies with
-      this project's verifier. Dated by the pinned commit 1398e42f, 2026-09-22.
+      attributes it to Walter Stromquist, Hiroshi Nagamochi, Sam Burns and Gustavo
+      Massaccesi, and to jlevy/squares for row generation, column generation and
+      branch-and-bound (lines 199-214), and src/check_with_sqpack.py verifies with this
+      project's verifier. The README says parts of the work were produced with AI
+      assistance under human direction. Dated by the pinned commit 1398e42f, 2026-09-22.
   - key: '[wand125 rectangle bounds 2026]'
     authors: [wand125]
     year: 2026
     venue: GitHub
     dated: '2026-09-27'
-    credit: wand125 after Tokoharu, Levy
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
     lineage: builds-on-project
     note: >-
       The rectangle-density certificates wand125/square-packing-bounds added on
       2026-09-26 and 2026-09-27, built with and checked by Tokoharu's solver and
       interval verifier; web/wand125-rectangle-certificates-2026-09-27/acquisition/sources.json
       pins revision ad43d29d96d0d9740b34643b5ac3fb960909cf9c and every file of its tree.
-      Its README keeps the point-bounds credit to jlevy/squares for the method lineage, so
-      the credit names this project after Tokoharu. Dated by that revision, 2026-09-27.
+      Its README says the verifier's argument is Tokoharu's (wand125-rectangles/README.md,
+      lines 340-345) and keeps the point bounds' "The method is not ours" attribution to
+      Stromquist, Nagamochi, Burns and Massaccesi, and jlevy/squares (lines 559-575), so
+      the credit names this project and the method's authors after Tokoharu. The README
+      says parts of the work were produced with AI assistance under human direction.
+      Dated by that revision, 2026-09-27.
   - key: '[wand125 rectangle bounds 2026-09-28]'
     authors: [wand125]
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: wand125 after Tokoharu, Levy
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
     lineage: builds-on-project
     note: >-
       The rectangle-density certificates wand125/square-packing-bounds added or raised
       between 2026-09-27 and 2026-09-28, built with and checked by Tokoharu's solver and
       interval verifier; web/wand125-rectangle-certificates-2026-09-28/acquisition/sources.json
       pins revision 39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of its tree.
-      Credited as the September 27 key is. Dated by that revision, 2026-09-28.
+      Credited as the September 27 key is, on the same README attribution
+      (wand125-rectangles/README.md, lines 635-650). Dated by that revision, 2026-09-28.
   - key: '[wand125 point and mixed bounds 2026-09-28]'
     authors: [wand125]
     year: 2026
     venue: GitHub
     dated: '2026-09-28'
-    credit: wand125 after Daniel, Tokoharu
-    lineage: independent
+    credit: wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Daniel, Tokoharu, Levy et al.
+    lineage: credits-project
     note: >-
       The point-only s(21) = 5 and s(45) = 7 certificates and the mixed-rectangle
       s(50) >= 37/5 certificate (with the superseded 147/20 and 3659/500 rungs) that
@@ -290,10 +329,64 @@ sources:
       is decided by Daniel's unmodified zmx2; the n = 50 checker is a research copy of
       Tokoharu's verify.cpp. The source claims no priority for s(21) or s(45), which
       Daniel published first with mixed covers, and says parts of the work were produced
-      with AI assistance under human direction.
+      with AI assistance under human direction; the s(21) write-up says its code was
+      developed with Codex. The repository README at the same revision calls this "the
+      weighted fractional unavoidable-set method" and says "The method is not ours",
+      attributing it to Stromquist, Nagamochi, Burns and Massaccesi, and to jlevy/squares
+      for row and column generation and branch-and-bound
+      (web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles/README.md, lines
+      528-529 and 635-650), so this project is credited second-hand.
       web/wand125-point-and-mixed-2026-09-28/acquisition/sources.json pins revision
       39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of the five claim
       directories. Dated by that revision, 2026-09-28.
+  - key: '[franciscouzo square-packing 2026-09-27]'
+    authors: [Couzo]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-27'
+    credit: Couzo
+    lineage: independent
+    note: >-
+      franciscouzo/square-packing at f3c5a529, 2026-09-27: 49 packings for n = 68 to 307,
+      each smaller than the Kingbird catalogue fetched 2026-09-25, as its README says. The
+      repository has no LICENSE and its README names no author and no prior work, so the
+      author is read from the commit metadata ("Francisco Couzo") and nothing is credited
+      after him. Its author opened jlevy/squares#227 on 2026-09-23 saying he found the 102
+      and 103 packings "with the help of Claude"; the repository itself states no AI
+      assistance.
+      Only derived facts are retained
+      (web/franciscouzo-square-packing-2026-09-27/README.md). Dated by that revision.
+  - key: '[de Winter n211 2026-09-16]'
+    authors: [de Winter]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-16'
+    credit: de Winter
+    lineage: independent
+    note: >-
+      JoostdeWinter/square-packing-211 at 702df9bb, 2026-09-16: one packing of 211 unit
+      squares at side 14.99796070496771500150, with the author's interval verification
+      summary. The repository has no LICENSE and its README names no author, so the author
+      is read from the commit metadata ("Joost de Winter"); it names no prior work and
+      states nothing about AI assistance. Only derived facts are retained
+      (web/de-winter-square-packing-211-2026-09-16/README.md). Distinct from
+      [De Winter 2026], the same author's ResearchGate report. Dated by that revision.
+  - key: '[griffcass square-packing 2026-09-23]'
+    authors: [Casson]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-24'
+    credit: Casson after Ellsworth, Friedman
+    lineage: independent
+    note: >-
+      griffcass/square-packing at 82661bc: 39 packings for n = 103 to 307. Its LICENSE and
+      CITATION.cff name Griffin Casson; its README's Credits section says it builds on the
+      catalogue maintained by David Ellsworth and started by Erich Friedman, whose record
+      packings seeded 37 of the 39, uses Ellsworth's checking tools, and was done "with
+      the help of Claude (Anthropic)". The commit is dated 2026-09-23 22:45 at UTC-6, which
+      is 2026-09-24 in UTC, the date given here; CITATION.cff gives 2026-09-23. Every
+      packing is superseded here by [franciscouzo square-packing 2026-09-27]; no field
+      holds it (web/casson-square-packing-2026-09-23/README.md).
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being
@@ -303,8 +396,11 @@ credited_names:
   David W. Cantrell: Cantrell
   Erich Friedman: Friedman
   Evert Stenlund: Stenlund
+  Francisco Couzo: Couzo
   Frits Göbel: Göbel
+  Griffin Casson: Casson
   Joe DeVincentis: DeVincentis
+  Joost de Winter: de Winter
   John Bidwell: Bidwell
   Károly Hajba: Hajba
   M.Z. Arslanov: Arslanov

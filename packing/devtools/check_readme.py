@@ -7,7 +7,7 @@ counts owned by `defects.yaml` and went stale behind them both times. The counts
 gone now, moved to the generated view that owns them. What is left is the part a
 checker can hold: the layout tree, the report index, the links, and the work model.
 
-Six checks:
+Seven checks:
 
 1. **Every link resolves**, including anchors into other documents. README and SYNOPSIS
    cross-reference each other heavily and a dead link between them is invisible until
@@ -26,7 +26,16 @@ Six checks:
    identifiers must not survive elsewhere in repository-owned text.
 6. **New results are complete.** Every result classified as `apparently-novel` or
    `confirmed-novel` appears in the New Results section, and every concrete result ID
-   named there exists in the register.
+   named there exists in the register. The section's table is generated from the
+   register by `devtools.render_recent_results`, whose `--check` fails on a hand edit
+   inside it; this rule is the second guard, and it also holds the prose around the
+   table to ids the register knows.
+7. **The recent-result counts are derived.** The survey summary spells out how many of
+   the hundred cases carry a recent lower bound, in how many the verified bound itself is
+   recent, and how many of those are this project's and new exact values. Each is the
+   count of rows `devtools.render_recent_results` generates, in the shape
+   `check_nagamochi_bounds._README_COUNT` holds the Nagamochi count; the listing and its
+   counts drifted three times by hand (`think-ti71`).
 
 Every one of those that asks what is in the directory asks git, not the filesystem. A
 README cannot be wrong about a file the repository does not hold, so such a file cannot
@@ -50,7 +59,9 @@ import sys
 from pathlib import Path
 from typing import NamedTuple
 
+from devtools.build_bound_citations import RECENT_SINCE
 from devtools.check_synopsis import check_links
+from devtools.render_recent_results import RecentCounts, recent_counts, recent_rows
 from devtools.repo_scope import tracked_files, vendored_directories
 from sqpack.yamlio import safe_load
 
@@ -180,6 +191,47 @@ _SPELLED = {
     18: "eighteen",
     19: "nineteen",
     20: "twenty",
+}
+_TENS = {
+    2: "twenty",
+    3: "thirty",
+    4: "forty",
+    5: "fifty",
+    6: "sixty",
+    7: "seventy",
+    8: "eighty",
+    9: "ninety",
+}
+
+
+def spelled(n: int) -> str:
+    """The word README uses for a count below a hundred: `fifty-five`, `three`."""
+    if n in _SPELLED:
+        return _SPELLED[n]
+    if not 0 <= n < 100:
+        return str(n)
+    if n == 0:
+        return "zero"
+    tens, units = divmod(n, 10)
+    return _TENS[tens] if units == 0 else f"{_TENS[tens]}-{_SPELLED[units]}"
+
+
+#: The survey summary's recent-result sentence, whose four counts are the generated
+#: table's. Every space is `\s+` because the formatter owns the line breaks, and the
+#: apostrophe may be curled or not.
+RECENT_COUNT = re.compile(
+    r"(?P<cases>[A-Za-z0-9-]+)\s+of\s+its\s+hundred\s+cases\s+carry\s+a\s+lower\s+bound\s+"
+    r"published\s+since\s+(?P<since>\d{1,2}\s+[A-Z][a-z]+\s+\d{4}),\s+reported\s+or\s+"
+    r"verified;\s+in\s+(?P<verified>[A-Za-z0-9-]+)\s+the\s+verified\s+bound\s+itself\s+is\s+"
+    r"recent,\s+(?P<ours>[A-Za-z0-9-]+)\s+of\s+those\s+are\s+this\s+project[\u2019']s,\s+"
+    r"and\s+(?P<exact>[A-Za-z0-9-]+)\s+are\s+new\s+exact\s+values"
+)
+#: What each of those counts is, for the refusal message.
+RECENT_COUNT_MEANS = {
+    "cases": "cases with a recent lower bound, reported or verified",
+    "verified": "cases whose verified bound is recent",
+    "ours": "of those this project's",
+    "exact": "of those new exact values",
 }
 
 
@@ -377,6 +429,39 @@ def result_coverage_problems(text: str, results: list[dict[str, object]]) -> lis
     return problems
 
 
+def recent_count_problems(text: str, counts: RecentCounts) -> list[str]:
+    """The survey summary's recent-result counts against the generated table's.
+
+    A sentence deleted rather than corrected is a count nothing checks, so its absence
+    fails too. The date it names is `RECENT_SINCE`, the day the star and the table read.
+    """
+    match = RECENT_COUNT.search(text)
+    if match is None:
+        return [
+            (
+                "README.md: no 'N of its hundred cases carry a lower bound published since "
+                "...' recent-result sentence to check"
+            )
+        ]
+    problems: list[str] = []
+    since = f"{RECENT_SINCE.day} {RECENT_SINCE:%B} {RECENT_SINCE.year}"
+    if " ".join(match.group("since").split()) != since:
+        problems.append(
+            f"README.md: dates recent results from {match.group('since')}; they begin {since}"
+        )
+    for field, means in RECENT_COUNT_MEANS.items():
+        said, expected = match.group(field), getattr(counts, field)
+        if said.lower() not in {spelled(expected), str(expected)}:
+            problems.append(
+                f"README.md says {said} {means}; the records say {spelled(expected)}"
+            )
+    return problems
+
+
+def check_recent_counts(text: str) -> list[str]:
+    return recent_count_problems(text, recent_counts(recent_rows()))
+
+
 def check_result_coverage(text: str) -> list[str]:
     """Load the results register and check the curated reader-facing section."""
     register = safe_load(RESULTS.read_text(encoding="utf-8"))
@@ -528,6 +613,7 @@ def main() -> int:
         + check_reports(text)
         + check_defect_summary(text)
         + check_result_coverage(text)
+        + check_recent_counts(text)
         + check_work_model(text)
         + scan.problems
     )
@@ -540,7 +626,7 @@ def main() -> int:
         return 1
     print(
         "  README.md agrees with the directory, reports, defect and result sources, "
-        "work model and its own links"
+        "recent-result counts, work model and its own links"
     )
     return 0
 

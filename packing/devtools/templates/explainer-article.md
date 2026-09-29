@@ -235,11 +235,11 @@ The figures below illustrate this certificate.
     <g fill="var(--kpress-doc-muted)" text-anchor="middle">
       <text x="20" y="100" text-anchor="start">3.75</text><text x="460" y="100">3.85</text><text x="680" y="100" text-anchor="end">3.90</text>
     </g>
-    <line x1="{{PRIOR_X}}" y1="56" x2="{{PRIOR_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
+    <line x1="{{PRIOR_X}}" y1="24" x2="{{PRIOR_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
     <circle cx="{{PRIOR_X}}" cy="76" r="3.2" fill="var(--kpress-doc-muted)"/>
     <g text-anchor="middle">
-      <text x="{{PRIOR_X}}" y="52" fill="var(--kpress-doc-text)">{{PRIOR_LOWER_DEC}}</text>
-      <text x="{{PRIOR_X}}" y="20" fill="var(--kpress-doc-muted)">{{PRIOR_SOURCE}}</text>
+      <text x="{{PRIOR_X}}" y="20" fill="var(--kpress-doc-text)">{{PRIOR_LOWER_DEC}}</text>
+      <text x="{{PRIOR_X}}" y="-12" fill="var(--kpress-doc-muted)">{{PRIOR_SOURCE}}</text>
       <text x="{{BEST_X}}" y="20" fill="var(--kpress-doc-text)">{{BEST_PACKING_DEC}}</text>
       <text x="{{BEST_X}}" y="-12" fill="var(--kpress-doc-muted)">{{BEST_SOURCE}}</text>
     </g>

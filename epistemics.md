@@ -1,7 +1,8 @@
 # Epistemics
 
 This document defines the four classifications attached to whole results in this
-repository. [`conventions.md`](conventions.md) owns field formats and identifiers;
+repository, and the policy for results by others: their scope, credit and intake.
+[`conventions.md`](conventions.md) owns field formats and identifiers;
 [`packing/frontier/evidence.yaml`](packing/frontier/evidence.yaml) holds the evidence
 entries; and the results register holds each classified claim in
 [`results.yaml`](packing/frontier/results.yaml), with a generated reader view in
@@ -128,8 +129,8 @@ identifiers and the same derived rungs, because the work this repository does on
 the same work: register the claim, replay its certificate, review its mathematics.
 It holds every result of this project, and every result by others published on or after
 22 August 2026, the day this project’s square-packing work began, that the record acts
-on: its bound is or was a case’s reported or verified lower bound, or it has been or is
-queued to be replayed or reviewed here.
+on: its bound is or was a case’s reported or verified lower or upper bound, or it has
+been or is queued to be replayed or reviewed here.
 Older results enter only when they hold or held a verified field here or are machine
 audits of the literature.
 Rungs of a ladder that the same release supersedes, publication records never replayed,
@@ -150,6 +151,94 @@ as this project’s own results.
 Whether an entry is current or superseded is derived from the case records and never
 stored.
 
+### Parallel Projects and Their Credit
+
+Other people work on `s(n)` alongside this project: some from its certificates, some
+crediting it second-hand, and some independently.
+The policy is to take in every result of theirs that the scope rule above reaches, and
+to credit it as carefully as this project’s own.
+
+- **The source says who did what.** Credit and lineage are read from the source’s own
+  attribution files (README, CREDITS, NOTICE, ATTRIBUTION) at the pinned revision, never
+  inferred here from whose method a result resembles.
+  When a later release changes its attribution, the bibliography key for that release
+  records the new wording.
+- **Credit text has one home.** A source’s `credit` in
+  [`bibliography.yaml`](packing/resources/bibliography.yaml) is written once: its
+  authors, then `after` and the work the source says it builds on
+  (`Daniel after Burns, Massaccesi`). The atlas citation line and the register renderers
+  print it, and hand-written prose may add to it but never drops a link.
+  A chain through an intermediate author names every link the source names: Kleddamag’s
+  `4.66001` builds on Squares Project (Joshua Levy), Mira and Guzhou0806. The atlas
+  stage sets each line in 66 characters, so where the whole line does not fit it prints
+  the source’s `short_credit`: the same authors and the first of the same links, ending
+  in `et al.` (`Tokoharu after Levy, wand125 et al.`), a shape
+  `devtools.build_bound_citations` enforces.
+  The explainer’s figure, which prints the atlas’s own citation line, shows the same
+  shortened form; every other renderer prints the full line.
+- **Method credit travels with the result.** A result built with another author’s
+  method, solver or checker credits them in the same line
+  (`wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi`). This
+  project is credited as `after Levy` only where the source itself says so.
+- **People and projects, never tools.** Credit names people, or the handles they publish
+  under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
+  inside another source’s credit line.
+  An AI agent is never a credited author.
+  Where a source states that AI assisted its work, its case record or register entry
+  says so in the source’s own terms, and so does any README prose about the result;
+  `devtools.state_ai_assistance` names a case record that cites such a source without
+  saying so.
+- **Our rung is not their credit.** `V` and `C` describe verification.
+  A result replayed here remains its authors’ result, and a rung never changes a credit
+  line. A defect found here goes back to the authors with the review that found it.
+- **Priority is stated, not defended.** When a parallel result predates or matches one
+  of this project’s, the other result’s date is stated beside ours.
+  Our entry keeps its dated source search and gains a dated annotation that it was
+  reached independently.
+  When a parallel result supersedes ours, the case records move to it, and the register
+  derives the supersession from them.
+- **Upper bounds count too.** A parallel packing that improves a best-known side enters
+  its case’s reported upper lane from a retained source, with the same credit.
+  It reaches the verified upper lane only after an exact or interval witness replay.
+  The coverage gate below checks lower bounds only, so the register entry for an upper
+  bound by others is kept by hand.
+
+### Intake, Integration, and Reply
+
+The procedure is
+[Adding or Reviewing a Result](packing/frontier/README.md#adding-or-reviewing-a-result)
+in the frontier README. Its three end points are fixed here.
+
+1. **Taken in.** The source is retained at a pinned revision, with a coverage entry.
+   Its bibliography key carries `dated`, `credit` and `lineage`. Its literal claim is in
+   the reported lane, and its register entry is at the derived rung with a `next_rung`.
+2. **Integrated.** A complete replay here and a review of the mathematics have
+   discharged the certificate’s assumptions, and the verified lane carries the bound.
+   The reader documents (README, synopsis, atlas) state it with its credit and its
+   `T-NNN`.
+3. **Answered.** An author who asked for the registration, on an issue here or
+   otherwise, has been told what was registered, at which rung, what was replayed, and
+   what remains. The answer goes on their issue, which stays open while work they asked
+   for is still queued; the owner posts it, or an agent does at the owner’s request.
+
+### Where the Frontier Is Recorded
+
+Each fact about the frontier has one home, and reader-facing lists of results are
+generated from these files (`OR-1`): `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, and the
+README’s three results tables, [New Results](README.md#new-results),
+[Results by Others](README.md#results-by-others) and the recent results by case.
+The README keeps a little prose around those tables, the `s(11)` thread and the results
+outside the register, and that prose names the `T-NNN` it restates, so the register gate
+can find it.
+
+| Record | Holds | Reader view |
+| --- | --- | --- |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); README’s [recent results by case](README.md#recent-results-all-sources); the standing column of README’s register tables |
+| [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
+| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; README’s New Results and Results by Others tables |
+| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders in README’s recent results; the credit and relation in README’s Results by Others |
+| [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
+
 ## Enforcement and Register
 
 Run the executable contract from `packing/` with:
@@ -168,15 +257,21 @@ The checker:
 - requires `attribution` on every `previously-published` result and refuses it on a
   novel one, resolves its source keys in the bibliography, and requires a `lineage` on
   the sources of a result by others published since 22 August 2026;
+- requires a `headline` of at most 100 characters on every result, stating no number its
+  claim does not, and an `established` date on every result without `attribution`, the
+  day its certificate or proof first passed here, which it refuses beside `attribution`
+  and before 22 August 2026;
 - fails when a case’s reported or verified lower bound cites evidence from a source
   dated on or after 22 August 2026 that no register entry covering that `n` cites; and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s
-claim, scope, classifications, evidence, artifacts, and `next_rung`. That final field
-records the next evidence-improving action or explains why no independent rung change
-applies. [`packing/frontier/RESULTS.md`](packing/frontier/RESULTS.md) is generated from
-the register and sorted for readers.
+headline, claim, scope, classifications, evidence, artifacts, and `next_rung`. The
+headline is the claim shortened for a table cell; the claim stays the statement the
+rungs attach to. That final field records the next evidence-improving action or explains
+why no independent rung change applies.
+[`packing/frontier/RESULTS.md`](packing/frontier/RESULTS.md) is generated from the
+register and sorted for readers.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

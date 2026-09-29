@@ -35,18 +35,34 @@ from sqpack.witness import load_witness
 from sqpack.workers import worker_count
 
 #: Catalogue-derived witnesses above the hand-audited hundred, per corpus (think-93on).
-GOLDEN_DERIVED_ABOVE_100: dict[str, int] = {"n=1..100": 0, "n=1..200": 46, "n=1..324": 107}
+GOLDEN_DERIVED_ABOVE_100: dict[str, int] = {"n=1..100": 0, "n=1..200": 31, "n=1..324": 63}
 #: The cases whose retained upstream rendering is the UnitSquare release, per corpus.
 GOLDEN_UNITSQUARE: dict[str, set[int]] = {
-    "n=1..100": {68, 69},
-    "n=1..200": {68, 69, 103, 105, 110, 131},
-    "n=1..324": {68, 69, 103, 105, 110, 131},
+    # 68, 103, 105, 110 and 131 moved onto Francisco Couzo's packet on 2026-09-29.
+    "n=1..100": {69},
+    "n=1..200": {69},
+    "n=1..324": {69},
 }
 #: How the corpus splits by source kind at each corpus; a case switching kind fails here.
 GOLDEN_SOURCE_KINDS: dict[str, dict[str, int]] = {
-    "n=1..100": {"exact-grid": 64, "kingbird-derived-facts": 34, "unitsquare-rendering": 2},
-    "n=1..200": {"exact-grid": 114, "kingbird-derived-facts": 80, "unitsquare-rendering": 6},
-    "n=1..324": {"exact-grid": 177, "kingbird-derived-facts": 141, "unitsquare-rendering": 6},
+    "n=1..100": {
+        "exact-grid": 64,
+        "kingbird-derived-facts": 34,
+        "packet-derived-facts": 1,
+        "unitsquare-rendering": 1,
+    },
+    "n=1..200": {
+        "exact-grid": 114,
+        "kingbird-derived-facts": 65,
+        "packet-derived-facts": 20,
+        "unitsquare-rendering": 1,
+    },
+    "n=1..324": {
+        "exact-grid": 176,
+        "kingbird-derived-facts": 97,
+        "packet-derived-facts": 50,
+        "unitsquare-rendering": 1,
+    },
 }
 
 #: What the poster's vector may cost a clone. Eight mebibytes is the ceiling the
@@ -197,9 +213,9 @@ def test_kingbird_sources_are_metadata_only_derived_facts() -> None:
 def test_known_best_rejects_corrupted_retained_unitsquare_svg(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    source = SOURCES / "unitsquare/n068.svg"
+    source = SOURCES / "unitsquare/n069.svg"
     monkeypatch.setattr(known_best_builder, "UNITSQUARE_ROOT", tmp_path)
-    (tmp_path / "n068.svg").write_bytes(source.read_bytes() + b"\n")
+    (tmp_path / "n069.svg").write_bytes(source.read_bytes() + b"\n")
 
     with pytest.raises(ValueError, match="upstream-declared SVG SHA-256"):
         known_best_builder.expected_outputs()
@@ -400,6 +416,12 @@ def _assert_witness_agrees_with_entry(entry: dict, release_by_n: dict) -> None:
         assert entry["source"]["path"] == ("resources/web/known-best-packings/sources.json")
         assert witness["source"]["key"] == "Kingbird derived numerical facts"
         assert witness["source"]["path"] == entry["source"]["path"]
+        assert "not a legal conclusion" in witness["claim"]["limitations"]
+    elif entry["source"]["kind"] == "packet-derived-facts":
+        assert entry["source"]["path"].startswith("resources/web/")
+        assert entry["source"]["path"].endswith(f"/facts/n-{n:03d}.yaml")
+        assert witness["source"]["path"] == entry["source"]["path"]
+        assert witness["source"]["url"] == entry["source"]["url"]
         assert "not a legal conclusion" in witness["claim"]["limitations"]
     elif entry["source"]["kind"] == "unitsquare-rendering":
         assert witness["source"]["revision"] == (
@@ -903,8 +925,8 @@ def test_the_poster_badges_every_perfect_square_and_counts_them_in_its_legend() 
     ]
     assert labels == [
         "proved optimal (62)",
-        "exact value known (287)",
-        "only known numerically (37)",
+        "exact value known (269)",
+        "only known numerically (55)",
         "rigid (established here) (20)",
         "annotated rigid by the catalogue (2)",
         "recent result, since Aug 2026 (27)",
@@ -1315,6 +1337,21 @@ def test_a_unitsquare_case_is_chosen_by_its_record_rather_than_by_its_number() -
     assert plans[68].path == ROOT / "resources/web/known-best-packings/unitsquare/n068.svg"
     assert plans[103].path == ROOT / "resources/web/prospective-packings/unitsquare/n103.svg"
     assert plans[103].upstream_declared_sha256 == _unitsquare_digests()[103]
+
+
+def test_a_packet_case_is_drawn_from_the_packets_retained_facts() -> None:
+    # n = 211 was the grid until Joost de Winter's packing; a record naming his packet's
+    # key moves the case onto that packet's facts, and a count the packet does not hold
+    # is refused rather than sent back to the catalogue.
+    key = "[de Winter n211 2026-09-16]"
+    plan = _plan_for(_case(211, "14.99796070496771500150", key))
+    assert plan.kind == "packet-derived-facts"
+    assert plan.path == (
+        ROOT / "resources/web/de-winter-square-packing-211-2026-09-16/facts/n-211.yaml"
+    )
+    assert plan.url.endswith("/n211__record.json")
+    with pytest.raises(ValueError, match="retains no facts"):
+        _plan_for(_case(212, "14.99", key))
 
 
 def test_a_record_naming_the_release_the_release_does_not_carry_is_refused() -> None:

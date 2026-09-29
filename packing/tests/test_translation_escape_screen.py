@@ -41,41 +41,61 @@ from sqpack.known_best import KNOWN_BEST_CORPUS
 from sqpack.verify import float_sign, verify_packing
 
 FRONTIER = ROOT / "frontier"
-GOLDEN_SCREENED = {"n=1..100": 98, "n=1..200": 194, "n=1..324": 318}
+GOLDEN_SCREENED = {"n=1..100": 99, "n=1..200": 199, "n=1..324": 323}
 #: The UnitSquare renderings expose six-decimal polygon coordinates, so their shape
 #: residual exceeds the screen's limit and they are excluded by measurement (think-ecqk).
+#: n = 68, 103, 105, 110 and 131 were excluded the same way until their records moved to
+#: Couzo's binary64 packings (T-056) on 2026-09-29; n = 69 is the one rendering left.
 GOLDEN_EXCLUDED = {
-    "n=1..100": [68, 69],
-    "n=1..200": [68, 69, 103, 105, 110, 131],
-    "n=1..324": [68, 69, 103, 105, 110, 131],
+    "n=1..100": [69],
+    "n=1..200": [69],
+    "n=1..324": [69],
 }
 #: Cases whose movable-square count differs between the screen's four tolerances; each
-#: still carries a replayed hit at the primary tolerance.
+#: still carries a replayed hit at the primary tolerance. Couzo's and de Winter's poses
+#: carry binary64 coordinates, so a contact gap near the tightest tolerance moves more
+#: of them than it moved the 28-digit records they replaced.
 GOLDEN_UNSTABLE = {
-    "n=1..100": [],
-    "n=1..200": [132, 154, 155, 156, 179, 180, 181, 182],
+    "n=1..100": [68],
+    "n=1..200": [68, 102, 105, 106, 110, 123, 130, 132, 155, 172, 177, 179, 199],
     "n=1..324": [
+        68,
+        102,
+        105,
+        106,
+        110,
+        123,
+        130,
         132,
-        154,
         155,
-        156,
+        172,
+        177,
         179,
-        180,
-        181,
-        182,
+        199,
         206,
         207,
         208,
         209,
         210,
+        211,
+        236,
+        237,
         238,
-        239,
-        240,
         241,
+        259,
+        263,
+        268,
+        269,
         270,
+        271,
+        272,
         273,
+        292,
         297,
         301,
+        302,
+        303,
+        304,
         305,
         307,
     ],
@@ -207,7 +227,7 @@ def test_no_record_the_catalogue_calls_rigid_has_any_play() -> None:
 
 
 def test_exclusions_are_measured_rather_than_asserted() -> None:
-    """n=68 and n=69 are dropped by a measurement, and it is not a close call."""
+    """n=69 is dropped by a measurement, and it is not a close call."""
     excluded = _screen()["excluded"]
     assert [item["n"] for item in excluded] == GOLDEN_EXCLUDED[KNOWN_BEST_CORPUS.label]
     for item in excluded:
@@ -332,7 +352,7 @@ def test_a_pool_worker_screens_at_the_same_precision_as_this_process() -> None:
         mp.mp.dps = DIGITS
     assert lowered != at_working_precision
 
-    entries = [entry for entry in manifest_entries() if entry["n"] in {10, 68}]
+    entries = [entry for entry in manifest_entries() if entry["n"] in {10, 69}]
     original = screen_translation_escape.manifest_entries
     screen_translation_escape.manifest_entries = lambda: entries
     try:
@@ -342,5 +362,5 @@ def test_a_pool_worker_screens_at_the_same_precision_as_this_process() -> None:
         screen_translation_escape.manifest_entries = original
 
     assert [case["n"] for case in serial[0]] == [10]
-    assert [item["n"] for item in serial[1]] == [68]
+    assert [item["n"] for item in serial[1]] == [69]
     assert pooled == serial

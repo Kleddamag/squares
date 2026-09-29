@@ -6261,3 +6261,133 @@ evidence:
       The replay command runs from the repository root. The source is pinned at
       1398e42f17f23fe3744bc54425a589fab1f3542c in the acquisition manifest.
     source_reviewed: '2026-09-22'
+
+  - id: E-franciscouzo-2026-09-27-report
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: reported
+    reported_method: numerical-f64
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    replay_status: not-attempted
+    limitations: >-
+      Source f3c5a529c255b546db18605702b8da298132309f (2026-09-27) prints one packing per
+      listed count as a text file of binary64 centres and angles, with the side on its
+      second line, and a README table comparing each with the Kingbird catalogue fetched
+      2026-09-25. It states no method, tolerance or checker. The side of each case is the
+      one its text file prints; the per-case commit history, including earlier and
+      superseded sides, is in the packet's acquisition/sources.json. This is the
+      public-claim entry; the exact replay here is E-franciscouzo-2026-09-27-exact-replay.
+      No optimality is claimed by the source or here.
+    source_reviewed: '2026-09-29'
+
+  - id: E-franciscouzo-2026-09-27-exact-replay
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    certificate: witnesses/franciscouzo-2026/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_packets
+      check --replay --source franciscouzo-square-packing --workers 4, which regenerates
+      every certificate from the packet's retained facts by robust rational promotion
+      (36 rational digits, side increase at most 1e-9), requires its bytes to equal the
+      committed one, and decides the committed one again with
+      devtools.check_rational_witness_independent; it must report every case VERIFIED.
+    replay_status: passed
+    limitations: >-
+      Proves, for each listed count, s(n) at most the side of an exact rational packing
+      decided pair by pair and wall by wall over Q, twice, by the promotion's exact
+      separating-axis test and by an independent Fraction checker that shares no code
+      with it. Each certificate is the source's decimal pose rounded to rationals at
+      centre dilation 1, so it is the author's packing and not a relabelled witness; its
+      side differs from the printed side by less than 2.2e-15 either way, and the verified
+      lane carries the larger of the printed side and the certified side rounded up at
+      the printed precision. That is the printed side at 20 counts and one unit of the
+      fifteenth decimal above it at 26, which bounds_agree_at_declared_precision accepts.
+      At n = 206, 259 and 305 it lies 2, 3 and 2 units above, which the case records keep
+      as conflicts; the reported sides there are not certified. Two negative controls on the
+      n = 68 certificate, its side cut by 1e-15 and one square moved by 1e-6, are refused
+      by both checkers (receipts/negative-controls.json). One exact method, so no C4; no
+      optimality at any count.
+    source_reviewed: '2026-09-29'
+
+  - id: E-n211-de-winter-report
+    claim: upper-bound
+    scope: {n_values: [211]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[de Winter n211 2026-09-16]'
+    replay_status: public-certificate-missing
+    limitations: >-
+      Source 702df9bb3b1e7fe13279a61a1fa89722aa2d496a (2026-09-16) reports 211 unit squares
+      in a square of side 14.99796070496771500150, with 21-digit decimal poses and a
+      verification summary: outward interval arithmetic at 80 decimal digits over 22,155
+      pairs and 844 wall inequalities, least wall clearance 1.000005e-14 and least
+      separating-axis gap 2.10001e-14. It publishes no interval boxes or checker, so its
+      own interval claim cannot be replayed; the exact replay here is
+      E-n211-de-winter-exact-replay. Its previous side, 14.99879247655475100150, is named
+      in the same record. No optimality is claimed.
+    source_reviewed: '2026-09-29'
+
+  - id: E-n211-de-winter-exact-replay
+    claim: upper-bound
+    scope: {n_values: [211]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[de Winter n211 2026-09-16]'
+    certificate: witnesses/de-winter-2026/n-211-rational.yaml.gz
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_packets
+      check --replay --source de-winter-square-packing-211, which regenerates the
+      certificate from the packet's retained facts, requires its bytes to equal the
+      committed one, and decides it again with devtools.check_rational_witness_independent;
+      it must report VERIFIED.
+    replay_status: passed
+    limitations: >-
+      Proves s(211) <= 14.99796070496771500150, the printed side, from an exact rational
+      packing of side 74989803524838470007/5000000000000000000, which is 2.1e-14 below it:
+      the source's own clearances survive rounding its 21-digit poses to rationals at
+      centre dilation 1. Every pair and wall is decided over Q twice, by the promotion's
+      exact test and by an independent Fraction checker. The first packing of 211 squares
+      below the grid side 15; nothing about optimality, and the lower bound is untouched.
+      One exact method, so no C4.
+    source_reviewed: '2026-09-29'
+
+  - id: E-casson-2026-09-23-report
+    claim: upper-bound
+    scope: {n_values: [103, 105, 106, 123, 131, 132, 152, 154, 155, 156, 180, 181, 182, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 268, 269, 270, 271, 272, 273, 292, 297, 301, 303, 304, 305, 306, 307]}
+    assurance: reported
+    reported_method: numerical-multiprecision
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[griffcass square-packing 2026-09-23]'
+    replay_status: not-attempted
+    limitations: >-
+      Source 82661bc8777beeecf458312e8aca9179a969da4f, committed 2026-09-23 at 22:45
+      UTC-6, reports 39 packings with at least 1e-10 pair clearance and 5e-12 wall
+      clearance, each accepted by Ellsworth's check_packing.py at 16 digits and the
+      author's 50-digit separating-axis checker, and each refused by that checker with its
+      side shrunk by 2e-11. Every one is larger than the side
+      E-franciscouzo-2026-09-27-report records at the same count, so none holds a field
+      here and none was replayed; the retained files and the dates of both sources are in
+      the packets. No optimality is claimed.
+    source_reviewed: '2026-09-29'

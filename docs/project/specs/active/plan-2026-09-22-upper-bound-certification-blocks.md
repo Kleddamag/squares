@@ -340,6 +340,16 @@ These sub-groups sum to 39. With group A, they account for all 57 closed forms.
 
 #### Group R: decimal records without a closed form (65 cases)
 
+**Update, 2026-09-29.** 42 of these 65 were resolved by a route this plan did not
+foresee: Francisco Couzo’s smaller packings (T-056, issue #227) became the reported
+bound, and rational promotion certifies each of them at centre dilation 1. They are 102,
+106, 123, 130, 152, 172, 177, 199, 228, 236, 259, 268, 269, 292 and 302 among the
+minimal-polynomial cases, and every numerical-only case except 55, 71 and 179. At 206,
+259 and 305 the certified ceiling still trails the printed side by 2 to 3 units of its
+fifteenth decimal, so those three stay queued, with a much smaller gap; the other 39
+left the queue. The same intake takes 237 and 263 out of group B and five of group C’s
+six. The tables below are the queue as it stood on 2026-09-22.
+
 The 35 cases with a minimal polynomial, by degree:
 
 | Degree | Cases |
@@ -379,6 +389,10 @@ Two routes certify group R. Which one clears the stage’s mark depends on the r
   rational promotion.
 
 #### Group C: UnitSquare (6 cases)
+
+**Update, 2026-09-29.** At 68, 103, 105, 110 and 131 Francisco Couzo’s smaller packings
+superseded the release and certify exactly here (T-056); only `n = 69` remains in this
+group.
 
 68, 69, 103, 105, 110 and 131. These six alone carry no mathematics blocker; the source
 reports an interval certificate it has not published.

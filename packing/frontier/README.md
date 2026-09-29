@@ -124,9 +124,13 @@ The ones that carry the most weight:
 - `verified_upper_bound` and `verified_lower_bound` contain only formally supported
   bounds. They are a ceiling and a floor, not the value of `s(n)`. The certified ceiling
   may be a weaker rational construction or the exact grid when the tighter public pose
-  is only numerical: for 145 of the 324 cases it is *larger* than the best-known side
-  recorded two fields above it, by up to `0.46`, and each of those cases says so in its
-  own body and carries a `mathematics` blocker.
+  is only numerical: for 83 of the 324 cases it is *larger* than the best-known side
+  recorded two fields above it by more than that side’s printed precision allows, by up
+  to `0.46`, and each of those cases says so in its own body and carries a `mathematics`
+  blocker. In 44 more it sits above the printed side by no more than one unit of its last
+  place, which `bounds_agree_at_declared_precision` reads as the same bound: 26 of them
+  are Couzo’s packings certified here (T-056), whose exact sides round up past the
+  fifteen decimals the source prints.
   An `exact_form` on the ceiling is the exact form of the ceiling; `s(n)` is known
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
@@ -165,10 +169,16 @@ It records each source’s scope, review date, retained first-party material, ev
 replay disposition, in-horizon overrides, and relevant claims beyond `n = 324`.
 
 The current baseline reparses the retained Kingbird catalogue through `n = 324`, applies
-the newer UnitSquare reports at `n = 68, 69, 103, 105, 110, 131`, and records the Schadt
-`n = 29` repository as a superseded numerical witness.
-All six UnitSquare cases are now inside the corpus; the selected source register has no
-remaining beyond-horizon claims.
+the newer UnitSquare report at `n = 69`, Francisco Couzo’s certified packings at 49
+counts from `n = 68` to `307` (T-056) and Joost de Winter’s at `n = 211` (T-057), and
+records the Schadt `n = 29` repository as a superseded numerical witness.
+UnitSquare’s reports at `n = 68, 103, 105, 110, 131` and Griffin Casson’s 39 packings,
+each larger than Couzo’s at its count, are listed as superseded reports.
+Overrides may come from any retained source: each must beat the catalogue baseline, and
+every claim a source’s retained record makes — the UnitSquare release, or a packet’s
+acquisition record — is reparsed and accounted for exactly once, as selected, superseded
+or beyond the horizon.
+The selected source register has no remaining beyond-horizon claims.
 The check is local and deterministic; refreshing a public source is a dated W1 research
 survey, not a network operation hidden inside ordinary validation.
 
@@ -189,17 +199,41 @@ This is an audit of those named sources, not every publication.
 
 ## Adding or Reviewing a Result
 
-1. Retain the first-party source and add or update its dated coverage entry.
-2. Put the literal public claim in the reported lane and give it typed evidence.
-3. If geometry is available, adapt it once to
+This is the procedure for a result from any source, this project’s parallel projects
+included.
+What counts as taken in, integrated and answered, and how a result by others is
+credited, is policy in
+[epistemics.md → Results by Others](../../epistemics.md#results-by-others).
+
+1. Retain the first-party source at a pinned revision, in a dated packet under
+   [`../resources/web/`](../resources/README.md), and add or update its dated coverage
+   entry.
+2. Give the source a bibliography key with `dated`, `credit` and `lineage`, read from
+   its own attribution files.
+3. Put the literal public claim in the reported lane and give it typed evidence.
+   A result by others that the record acts on gets its `T-NNN` register entry now, at
+   its derived rung, with a `headline`, `attribution` and a `next_rung` naming the
+   replay and review it waits on.
+   Its date is `attribution.published`; `established` is this project’s own results’
+   date and the checker refuses it here.
+4. If geometry is available, adapt it once to
    [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
    or `check` with explicit arithmetic, precision, and tolerance.
-4. Put a value in the verified lane only after an exact proof, exact witness replay, or
+5. Put a value in the verified lane only after an exact proof, exact witness replay, or
    rigorous interval certificate discharges its assumptions.
-   Record external evidence and a local replay separately.
-5. Preserve disagreement as a conflict or typed blocker.
+   For a result by others, that is a complete replay here and a review of its
+   mathematics under [`docs/project/reviews/`](../../docs/project/reviews/). Record
+   external evidence and a local replay separately.
+6. Preserve disagreement as a conflict or typed blocker.
    Do not edit the source claim to match the checker.
-6. Render the reader views and run the schema, source-coverage, and exact-replay checks.
+7. Render the reader views and run the schema, source-coverage, results and exact-replay
+   checks. Then bring the README, synopsis and atlas up to date through the
+   [documentation pass](../campaign/documentation-pass.md), with the source’s credit and
+   the result’s `T-NNN`.
+8. Answer an author who asked for the registration.
+   If they opened an issue here, reply on it, at the owner’s request, with the `T-NNN`,
+   the rung, what was replayed and what remains, and leave it open while work they asked
+   for is still queued.
 
 ## Registering a First-Party Result
 
@@ -259,8 +293,8 @@ certificate’s replay command.
    row’s `artifacts` alike.
    That is convention, not a predicate: the checker reads only that a `certificate` is
    named, and `E-side2-center-lower` cites one under `campaign/series/…/results/`. The
-   package is what readers are pointed at: the root README’s New Results entries link
-   into it, and the self-contained verifiable-claim documents live there.
+   package is what readers are pointed at: the register row’s `artifacts` name it, and
+   the self-contained verifiable-claim documents live there.
 
    A **verifiable-claim document is a separate deliverable, not a registration step.**
    `T-025` and `T-026` each carry one, and
@@ -286,8 +320,15 @@ certificate’s replay command.
    Preserve earlier evidence and decisions.
 
 5. **Write the row** with what [`results.schema.yaml`](results.schema.yaml) requires:
-   `id`, `claim`, `scope`, `verification`, `confirmation`, `significance`, `novelty`,
-   `evidence`, `artifacts`, and `next_rung`, plus `controls` at `C3` or above.
+   `id`, `headline`, `established`, `claim`, `scope`, `verification`, `confirmation`,
+   `significance`, `novelty`, `evidence`, `artifacts`, and `next_rung`, plus `controls`
+   at `C3` or above. `headline` and `established` come right after `id`. `headline` is
+   the claim shortened for a table cell, at most 100 characters of inline Markdown with
+   the mathematics in backticks: the claim’s relation exactly (`≥` is not `>`), its
+   exact form with its decimal or a truncation of it marked `…`, and its `n` values.
+   The checker refuses a number the claim does not state.
+   `established` is the day the certificate or proof first passed here, read from the
+   commit that landed it, not from the day of registration.
    `claim` is the one statement the rungs attach to, in full and with exact values where
    established; `devtools.check_rung_figures` checks recognized `a/b = d.ddd`
    expressions and supported mass, atom-count, and margin phrases against the local
@@ -339,18 +380,21 @@ certificate’s replay command.
    [New Result Publication](../campaign/documentation-pass.md#new-result-publication)
    gives: `validate_schemas` and `check_results` on the records, then
    `render_results --update`, `render_evidence_inventory --update`,
-   `render_research_tables`, and `render_results_headline`. `packing-validate --records`
-   runs those checks and the related record checks; it does not replace certificate
-   replay or the full checkpoint.
+   `render_research_tables`, `render_results_headline`, and
+   `render_recent_results --update`, which re-renders the root README’s New Results,
+   Results by Others and recent-results tables from the register; never edit inside
+   their markers. `packing-validate --records` runs those checks and the related record
+   checks; it does not replace certificate replay or the full checkpoint.
    Complete the remaining publication steps too: regenerate affected atlas exports,
-   reconcile the README, synopsis, and affected prose, and run the applicable
+   reconcile the synopsis and the README prose around its tables, and run the applicable
    [validation tiers](../../development.md#validation-tiers), including the full
    checkpoint before final review.
    Retain the checked source/base and state which publication surfaces were updated or
-   checked current. Each `apparently-novel` or `confirmed-novel` result must be named in
-   the root README’s New Results section, which `check_readme` requires.
-   A `T-id` may not appear there or in the synopsis before its row exists, since the
-   checker rejects unknown ids in that tier.
+   checked current. Each `apparently-novel` or `confirmed-novel` result gets its row in
+   the root README’s New Results table from the register, which both
+   `render_recent_results --check` and `check_readme` require.
+   A `T-id` may not appear in the README or the synopsis before its row exists, since
+   the checker rejects unknown ids in that tier.
 
 ## The Strategy Catalogues
 

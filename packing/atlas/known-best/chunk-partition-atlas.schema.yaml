@@ -174,7 +174,7 @@ $defs:
     properties:
       n: {type: integer, minimum: 1, maximum: 100}
       witness_id: {type: string, pattern: '^W-known-best-n[0-9]{3}$'}
-      source_kind: {enum: [exact-grid, kingbird-derived-facts, unitsquare-rendering]}
+      source_kind: {enum: [exact-grid, kingbird-derived-facts, packet-derived-facts, unitsquare-rendering]}
       adjacency_tolerance: {type: string, minLength: 1}
       angle_tolerance_radians: {type: string, minLength: 1}
       candidate_count: {type: integer, minimum: 0}

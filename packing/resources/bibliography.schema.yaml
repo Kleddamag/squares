@@ -41,11 +41,17 @@ properties:
         # The venue a line falls back to when this project's confirmation would not fit.
         short_venue: {type: string, minLength: 1}
         # Printed in place of the joined authors where the credit is joint with the lineage
-        # the source builds on: last names or published handles, never an AI agent.
-        # Printable ASCII, since the stage sets citations in Latin faces and counts them
-        # against a fixed width; devtools.build_bound_citations fails a credit whose line
-        # `credit year, venue` is wider than that stage's 66 characters.
-        credit: {type: string, minLength: 1, maxLength: 58, pattern: '^[ -~]+$'}
+        # the source builds on: last names or published handles, never an AI agent, and
+        # every link the source names, however long that makes it. Printable ASCII, since
+        # the stage sets citations in Latin faces and counts them against a fixed width;
+        # devtools.build_bound_citations fails a credit whose line `credit year, venue` is
+        # wider than that stage's 66 characters unless `short_credit` fits instead.
+        credit: {type: string, minLength: 1, maxLength: 200, pattern: '^[ -~]+$'}
+        # The stage's fallback where the whole credit does not fit its line: the credit's
+        # authors, `after`, a proper prefix of its links, and `et al.`. The atlas stage
+        # alone prints it; every other renderer prints `credit`. The shape is checked by
+        # devtools.build_bound_citations, which fails anything else.
+        short_credit: {type: string, minLength: 1, maxLength: 58, pattern: '^[ -~]+ et al\.$'}
         lineage:
           enum: [builds-on-project, credits-project, independent]
           description: >-

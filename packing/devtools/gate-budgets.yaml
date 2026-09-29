@@ -506,7 +506,9 @@ tiers:
     stale rule against 102.73 while every step passed. The walls are two regimes about
     2x apart, which no point record can hold inside 0.6x and 1.5x, so the tier records
     their band (`think-be1s`, D-472): the stale rule reads its low edge and the drift
-    rule its high edge.
+    rule its high edge. The cost is sensitivity in the fast regime: a run from it can
+    grow to the 174.3 s drift edge, about 2.97x its 58.75 s low edge, before any rule
+    fires.
   measured_band: {low: 58.75, high: 116.19}
   history:
   - measured_seconds: 91.55
@@ -742,7 +744,8 @@ tiers:
     because each point sat in one regime and the next run came from the other. So the
     tier records its band (`think-be1s`, D-472), and the 111 s ceiling stays where it was
     held on purpose: it binds before the band's 138.4 s drift edge, which the register
-    allows.
+    allows, so a run from the fast regime fails at the ceiling, about 1.96x its 56.67 s
+    low edge.
   measured_band: {low: 56.67, high: 92.27}
   attribution:
     cause: >-

@@ -399,6 +399,17 @@ session:
     Both failures are retained explicitly.'
   - 'Final merged push at 5d276119c: 51 of 82 selected steps passed; 2,959 tests passed,
     6 skipped, 19 deselected; 856.20 seconds wall. This named tier is not the full gate.'
+  - 'Published 5d276119c passed required packing run 36630523514, page run 36630523486,
+    and deferred run 36630574302; the latter completed all four workers and its aggregate
+    at 2026-09-29T21:35:54Z. These results certify the predecessor integration tree.'
+  - 'Efficiency candidate 1afb75ca6: default broad push passed 7,714 tests with 9 skips
+    in 968.77 seconds; total wall 1,034.70 seconds. The sole failed step was an unmapped
+    new review document. The document-map omission is repaired separately; the original
+    failed log is retained as session-164-efficiency-push.log. Different selection from
+    the earlier 2,959-test run prevents a matched speedup claim.'
+  - 'Parallel efficiency follow-ups: think-08ht main/daily fanout passed independent Sol
+    review and five focused tests in an isolated checkout; think-14lz child-pytest
+    observability and think-ysvk pool-heavy allocation are in implementation and review.'
   - 'Sol synthetic-fixture repair: all 39 synopsis-handoff tests passed in 5.38 seconds; Ruff and BasedPyright
     clean.'
   - Final read-only Sol gap audit identified one stale minimum-independence sentence; the corrected review

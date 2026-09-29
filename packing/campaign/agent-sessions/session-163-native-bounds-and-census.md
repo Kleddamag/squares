@@ -502,7 +502,7 @@ session:
   - packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json
   checks:
   - 'full gate: fast at 5d276119c52b98ac6770b08bc9b1e582746abe02: passed (follow-up in Session 164: hosted Packing validation run 36630523514 and Certificate page run 36630523486; native checker and retained diagnostic sources unchanged by the merge)'
-  - 'Follow-up certification clears the earlier pending fast-gate debt; deferred checkpoint 36630574302 is still running. This does not complete external native rectangle coverage or the T-057 row-minimum census.'
+  - 'Follow-up certification clears the earlier pending fast-gate debt; deferred checkpoint 36630574302 passed all four workers and its aggregate at 2026-09-29T21:35:54Z on 5d276119c. This does not certify later efficiency changes or complete external native rectangle coverage or the T-057 row-minimum census.'
   - 'Integrated native and census behavioral/golden tests: 31 passed in 3.18 seconds.'
   - 'Independent Sol census review: 10 passed in 1.62 seconds; atomic publication and typed-refusal fixes
     confirmed.'

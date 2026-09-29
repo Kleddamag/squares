@@ -707,6 +707,10 @@ documents:
     role: review
     authority: record
     lifecycle: retained
+  - path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
+    role: review
+    authority: record
+    lifecycle: retained
   - path: docs/project/verification-tooling.md
     role: component-guide
     authority: record

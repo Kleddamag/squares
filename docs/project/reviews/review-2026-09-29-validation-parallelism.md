@@ -93,9 +93,33 @@ assertions.
 
 ## Results
 
-The local scheduler has 28 passing focused tests and clean Ruff and BasedPyright
-results. The hosted implementation and integrated measurements are in progress.
-No speedup is claimed yet.
+The frozen candidate `1afb75ca6` ran the default push tier against `5d276119c`. Changing
+a workflow selected the whole non-exhaustive suite: 7,714 tests passed and 9 skipped in
+968.77 seconds, using ten pytest workers with `PACK_JOBS=1`. The complete tier took
+1,034.70 seconds and failed one documentation check because this review was missing from
+the document map. The map is now corrected; the failed
+[run log](../../../packing/campaign/agent-sessions/session-164-efficiency-push.log)
+retains that omission rather than presenting the run as a passing gate.
+The earlier 2,959-test run selected a different workload, so these observations do not
+establish a speedup.
+
+The previous published checkpoint `5d276119c` passed required packing and page CI and
+the complete
+[deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36630574302). Those
+results certify the predecessor tree, not the new scheduling implementation.
+Hosted execution of the new fanout remains pending.
+
+The local run also exposed an allocation limit: nine workers had drained their queues
+while one remained CPU-active.
+Its quiet output does not identify the active node.
+Retained earlier timings show that the whole-atlas composite test can take 1,327.87
+seconds in one call, and its existing per-case pool obeys `PACK_JOBS=1`. `think-14lz`
+adds child-pytest timing and live worker receipts; `think-ysvk` gives explicitly
+pool-heavy tests a separate, exclusive inner-worker phase while keeping the remaining
+tests parallel. Neither follow-up changes the test assertions.
+Post-merge and daily workflow parity is implemented and independently reviewed in an
+isolated checkout under `think-08ht`; it awaits integration and hosted validation.
+
 The full native external rectangle replay and T-057 complete row-minimum census remain
 separate mathematical obligations; changing validation scheduling establishes neither.
 

@@ -389,6 +389,15 @@ PRUNE = frozenset(
         ROOT / "resources",
         ROOT / "sqsearch/target",
         ROOT / "witnesses/prospective",
+        # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
+        # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
+        # 167,772,160 cap. They are generator-owned (`devtools.upper_bound_packets
+        # certify` writes them; `check --replay` regenerates them byte for byte), they
+        # are decided in full by `tests/test_upper_bound_packets.py` in the ordinary
+        # suite, and no control in `controls.yaml` names them. 7.9 MB of every private
+        # worker's snapshot, answered by pruning under an unchanged cap.
+        ROOT / "witnesses/franciscouzo-2026",
+        ROOT / "witnesses/de-winter-2026",
     }
 )
 # Build caches: excluded from the counted surface and from every worker tree, by

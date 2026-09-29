@@ -264,6 +264,10 @@ The native analytic control verifies all 201 angles; the retained n11 probe rema
 inconclusive. T-056’s ceiling and T-057’s full row census retain the limitations in the
 mathematical review.
 
+The wand125 claims recorded here under provisional T-056/T-057 are registered as
+T-058/T-059 after integration with the published Couzo and de Winter claims.
+The historical labels and retained receipt bytes are unchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -36,6 +36,7 @@ import sys
 from collections.abc import Mapping
 from decimal import Decimal
 
+from devtools.retained_data import read_retained_text, retained_exists
 from sqpack.kingbird_catalogue import (
     NOT_STATED,
     RIGIDITY_STATES,
@@ -55,6 +56,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
 COVERAGE = FRONTIER / "source-coverage.yaml"
 EVIDENCE = FRONTIER / "evidence.yaml"
+#: The acquisition record `devtools.upper_bound_packets` writes into a packet.
+ACQUISITION_FORMAT = "external-source-acquisition-v1"
 
 #: Significant digits the exact-form reconciliation agrees to. The catalogue prints 14
 #: places, and a wrong radical usually agrees to the printed precision, so comparing at
@@ -356,6 +359,122 @@ def catalogue_transcription_errors(
     return errors, compared, facts
 
 
+def load_claims(path: pathlib.Path) -> dict[int, str]:
+    """A source's upper-bound claims by `n`, reparsed from its own retained record.
+
+    Two shapes are read: a UnitSquare results release, whose `results` carry
+    `offered_side`, and an acquisition record written by `devtools.upper_bound_packets`,
+    whose one source's `cases` carry the `side` each retained packing file prints.
+    """
+    record = json.loads(read_retained_text(path))
+    if isinstance(record.get("results"), list):
+        return {int(entry["n"]): str(entry["offered_side"]) for entry in record["results"]}
+    if record.get("format") == ACQUISITION_FORMAT:
+        (entry,) = record["sources"]
+        return {int(case["n"]): str(case["side"]) for case in entry["cases"]}
+    raise ValueError(f"{path.name} is not a claims record this check can reparse")
+
+
+def selection_errors(
+    coverage: Mapping, kingbird: Mapping[int, str], claims: Mapping[str, Mapping[int, str]]
+) -> list[str]:
+    """Reconcile the selected overrides and superseded reports with their sources.
+
+    An override may come from any retained source. It must lie in that source's scope,
+    use evidence the source declares, report a side strictly below the catalogue
+    baseline it replaces, and, where the source's claims are reparsed here, equal the
+    side the source itself prints. A superseded report is a retained claim that a
+    selected override at the same `n` beats: it must equal its own source's printed side
+    and exceed the override's. Every reparsed claim is then accounted for exactly once,
+    as a selected override, a superseded report, or a claim tracked beyond the corpus.
+    """
+    errors: list[str] = []
+    n_min = coverage["case_corpus"]["n_min"]
+    n_max = coverage["case_corpus"]["n_max"]
+    sources = {source["id"]: source for source in coverage["sources"]}
+    overrides = {entry["n"]: entry for entry in coverage["selected_overrides"]}
+    if len(overrides) != len(coverage["selected_overrides"]):
+        errors.append("selected override n values are not unique")
+    accounted: dict[str, set[int]] = {}
+    for entry in coverage["selected_overrides"]:
+        n, source_id = entry["n"], entry["source_id"]
+        where = f"selected override n={n}"
+        if not n_min <= n <= n_max:
+            errors.append(f"{where} lies outside the case corpus")
+        source = sources.get(source_id)
+        if source is None:
+            errors.append(f"{where} names unknown source {source_id}")
+            continue
+        if not scope_contains(source["scope"], n):
+            errors.append(f"{where} is outside {source_id}'s scope")
+        if entry["evidence"] not in source["evidence"]:
+            errors.append(
+                f"{where} uses evidence {entry['evidence']} not declared by {source_id}"
+            )
+        if n in kingbird and Decimal(entry["value"]) >= Decimal(kingbird[n]):
+            errors.append(f"{where} does not beat the catalogue baseline {kingbird[n]}")
+        errors.extend(_claim_errors(where, source_id, n, entry["value"], claims))
+        accounted.setdefault(source_id, set()).add(n)
+    for entry in coverage["superseded_reports"]:
+        n, source_id = entry["n"], entry["source_id"]
+        where = f"superseded report n={n} from {source_id}"
+        source = sources.get(source_id)
+        if source is None:
+            errors.append(f"{where} names an unknown source")
+            continue
+        if not scope_contains(source["scope"], n):
+            errors.append(f"{where} is outside that source's scope")
+        if n in accounted.get(source_id, set()):
+            errors.append(f"{where} is listed twice")
+        accounted.setdefault(source_id, set()).add(n)
+        errors.extend(_claim_errors(where, source_id, n, entry["value"], claims))
+        selected = overrides.get(n)
+        if selected is None or selected["source_id"] != entry["superseded_by"]:
+            errors.append(f"{where} names {entry['superseded_by']}, not the selected source")
+        elif Decimal(selected["value"]) >= Decimal(entry["value"]):
+            errors.append(f"{where} is not beaten by the selected {selected['value']}")
+    inventory: dict[str, set[int]] = {}
+    beyond = [entry["n"] for entry in coverage["beyond_horizon_claims"]]
+    if len(beyond) != len(set(beyond)):
+        errors.append("beyond-horizon n values are not unique")
+    for entry in coverage["beyond_horizon_claims"]:
+        n, source_id = entry["n"], entry["source_id"]
+        if n_min <= n <= n_max:
+            errors.append(f"beyond-horizon claim n={n} lies inside the case corpus")
+        if source_id not in sources:
+            errors.append(f"beyond-horizon n={n} names unknown source {source_id}")
+            continue
+        if not scope_contains(sources[source_id]["scope"], n):
+            errors.append(f"beyond-horizon n={n} is outside {source_id}'s scope")
+        errors.extend(
+            _claim_errors(f"beyond-horizon n={n}", source_id, n, entry["value"], claims)
+        )
+        inventory.setdefault(source_id, set()).add(n)
+    for source_id, claimed in sorted(claims.items()):
+        held = accounted.get(source_id, set()) | inventory.get(source_id, set())
+        if set(claimed) != held:
+            missing = sorted(set(claimed) - held)
+            extra = sorted(held - set(claimed))
+            errors.append(
+                f"{source_id}: reparsed claims differ from the selected, superseded and "
+                f"beyond-horizon inventory (unaccounted {missing}, not claimed {extra})"
+            )
+    return errors
+
+
+def _claim_errors(
+    where: str, source_id: str, n: int, value: str, claims: Mapping[str, Mapping[int, str]]
+) -> list[str]:
+    if source_id not in claims:
+        return []
+    printed = claims[source_id].get(n)
+    if printed is None:
+        return [f"{where}: {source_id}'s retained record makes no claim at n={n}"]
+    if Decimal(printed) != Decimal(value):
+        return [f"{where}: {source_id} prints {printed}, the inventory says {value}"]
+    return []
+
+
 def main() -> int:
     coverage = safe_load(COVERAGE.read_text(encoding="utf-8"))
     n_min = coverage["case_corpus"]["n_min"]
@@ -375,6 +494,11 @@ def main() -> int:
         f"{source['id']}: local source does not exist: {source['local']}"
         for source in coverage["sources"]
         if not (ROOT / source["local"]).exists()
+    )
+    errors.extend(
+        f"{source['id']}: claims record does not exist: {source['claims_record']}"
+        for source in coverage["sources"]
+        if source.get("claims_record") and not retained_exists(ROOT / source["claims_record"])
     )
 
     evidence_document = safe_load(EVIDENCE.read_text(encoding="utf-8"))
@@ -399,23 +523,12 @@ def main() -> int:
     kingbird_source = source_by_id(coverage, "kingbird-current")
     kingbird = parse_kingbird(ROOT / kingbird_source["local"], n_min, n_max)
     overrides = {entry["n"]: entry for entry in coverage["selected_overrides"]}
-    if len(overrides) != len(coverage["selected_overrides"]):
-        errors.append("selected override n values are not unique")
-    for entry in coverage["selected_overrides"]:
-        n = entry["n"]
-        if not n_min <= n <= n_max:
-            errors.append(f"selected override n={n} lies outside the case corpus")
-        if entry["source_id"] not in source_ids:
-            errors.append(f"selected override n={n} names unknown source {entry['source_id']}")
-            continue
-        source = source_by_id(coverage, entry["source_id"])
-        if not scope_contains(source["scope"], n):
-            errors.append(f"selected override n={n} is outside {source['id']}'s scope")
-        if entry["evidence"] not in source["evidence"]:
-            errors.append(
-                f"selected override n={n} uses evidence {entry['evidence']} "
-                f"not declared by {source['id']}"
-            )
+    claims = {
+        source["id"]: load_claims(ROOT / source["claims_record"])
+        for source in coverage["sources"]
+        if source.get("claims_record")
+    }
+    errors.extend(selection_errors(coverage, kingbird, claims))
 
     cases = {
         case["n"]: case
@@ -466,36 +579,16 @@ def main() -> int:
     except CatalogueParseError as error:
         errors.append(f"retained catalogue: {error}")
 
-    unit_source = source_by_id(coverage, "unitsquare-release1")
-    release = json.loads((ROOT / unit_source["local"]).read_text(encoding="utf-8"))
-    release_values = {entry["n"]: entry["offered_side"] for entry in release["results"]}
     inventory = {entry["n"]: entry["value"] for entry in coverage["beyond_horizon_claims"]}
-    if len(inventory) != len(coverage["beyond_horizon_claims"]):
-        errors.append("beyond-horizon n values are not unique")
-    for entry in coverage["beyond_horizon_claims"]:
-        n = entry["n"]
-        if n_min <= n <= n_max:
-            errors.append(f"beyond-horizon claim n={n} lies inside the case corpus")
-        if entry["source_id"] not in source_ids:
-            errors.append(f"beyond-horizon n={n} names unknown source {entry['source_id']}")
-            continue
-        source = source_by_id(coverage, entry["source_id"])
-        if not scope_contains(source["scope"], n):
-            errors.append(f"beyond-horizon n={n} is outside {source['id']}'s scope")
-    for n, expected in release_values.items():
-        recorded = overrides.get(n, {}).get("value") if n <= n_max else inventory.get(n)
-        if recorded != expected:
-            errors.append(f"UnitSquare n={n}: source {expected} != inventory {recorded}")
-    if set(release_values) != set(overrides) | set(inventory):
-        errors.append("UnitSquare result set differs from in- and beyond-horizon inventory")
-
     if errors:
         for error in errors:
             print(f"FAIL {error}", file=sys.stderr)
         return 1
     print(
         f"  source coverage reconciled: {n_max - n_min + 1} cases, "
-        f"{len(overrides)} newer in-horizon reports, {len(inventory)} tracked beyond horizon"
+        f"{len(overrides)} newer in-horizon reports from {len(claims)} reparsed claim "
+        f"records, {len(coverage['superseded_reports'])} superseded reports, "
+        f"{len(inventory)} tracked beyond horizon"
     )
     print(
         f"  catalogue transcription reconciled: {len(entries)} entries reparsed, "

@@ -186,6 +186,12 @@ precedes it. `n-053.md` and `n-087.md` are hand-written and are left as written.
   `LowerBoundPromotion` preserves the reviewed lower-bound fields and only the evidence
   and resources added around them. The promotion is bound to its source `n`; upper-bound
   and source fields remain regenerated and checked.
+- The certified upper-bound packets are another tool's. `devtools.apply_upper_bound_packets`
+  writes the upper lane, and the prose around it, of each count a certified packet covers
+  (Couzo's 49 and de Winter's `n = 211`, from 2026-09-29), over the catalogue or release
+  record this tool drafts. So at those counts a draft is this tool's record with that
+  intake applied (`adopt_upper_bound_packet`), and `--check` compares it with whitespace
+  collapsed, as the intake's own `--check` does, since the formatter rewraps what it writes.
 - Other case-specific evidence is editorial. `priority_notes` is written only for the
   second lineage above, and is otherwise empty.
 
@@ -215,6 +221,7 @@ import tempfile
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from decimal import ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_UP, Context, Decimal, localcontext
+from functools import cache
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -1909,6 +1916,34 @@ def apply_lower_bound_promotion(
     payload["resources"] = _insert_additions(payload["resources"], promotion.resource_additions)
 
 
+@cache
+def _upper_bound_packets() -> tuple[Any, Mapping[int, Any], Mapping[int, Mapping[str, str]]]:
+    """The packet intake, its plan per certified count, and the reports each replaced.
+
+    Imported late and by name, as the catalogue parser is: the intake imports this module's
+    display helpers, so importing it at the top would be circular.
+    """
+    intake = importlib.import_module("devtools.apply_upper_bound_packets")
+    return intake, {plan.n: plan for plan in intake.plans()}, intake.earlier_reports()
+
+
+def packet_adopted_counts() -> frozenset[int]:
+    """The counts whose upper lane a certified packet owns."""
+    return frozenset(_upper_bound_packets()[1])
+
+
+def adopt_upper_bound_packet(n: int, text: str) -> str:
+    """The drafted record with the certified packet's intake applied, where one covers `n`.
+
+    Unchanged elsewhere. The intake writes over the upper lane, its blockers, evidence,
+    resources and priority notes, the opening sentence, the ceiling section and the packing
+    section, and keeps the drafted packing's paragraph as the previous best known packing.
+    """
+    intake, plans, earlier = _upper_bound_packets()
+    plan = plans.get(n)
+    return text if plan is None else intake.apply_case(plan, text, earlier[n])
+
+
 def generate_record(
     n: int,
     *,
@@ -2193,11 +2228,18 @@ def check_records(
                     retrieved_date=retrieved,
                     lower_bound_promotion=promotion,
                 )
+            adopted = n in packet_adopted_counts()
+            if adopted:
+                generated = adopt_upper_bound_packet(n, generated)
             write_record(generated, record_path(scratch_dir, n))
             checked += 1
             comparable = without_rigidity(existing)
             drafted = without_rigidity(generated)
-            if drafted != comparable:
+            if adopted:
+                agrees = " ".join(drafted.split()) == " ".join(comparable.split())
+            else:
+                agrees = drafted == comparable
+            if not agrees:
                 problems += 1
                 print("\n".join(diff_record(comparable, drafted, existing_path.name)))
     print(f"checked {checked} record(s); {problems} disagree with the generator")
@@ -2231,7 +2273,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 review_date=args.review_date,
                 retrieved_date=retrieved,
             )
-            write_record(text, record_path(args.out, n))
+            write_record(adopt_upper_bound_packet(n, text), record_path(args.out, n))
             written += 1
     except GenerationError as error:
         print(f"error: {error}")

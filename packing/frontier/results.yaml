@@ -5,6 +5,8 @@ softschema:
 last_reviewed: '2026-09-29'
 results:
   - id: T-001
+    headline: "`s(17) ≥ 4426213/1000000 = 4.426213`, from a sixteen-point unavoidable set"
+    established: '2026-08-31'
     claim: >-
       Sixteen points make [0, 4426213/1000000]^2 unavoidable for open squares of
       side above one, so s(17) >= 4426213/1000000 = 4.426213.
@@ -35,6 +37,8 @@ results:
       narrative, code map, replays); V5 by a proof-assistant port. The stronger
       side at the exact ceiling is T-003's business.
   - id: T-002
+    headline: "`s(18) ≥ 4426213/1000000`, by monotonicity from T-001"
+    established: '2026-08-31'
     claim: >-
       s(18) >= 4426213/1000000, by monotonicity from T-001 (a packing of 18
       unit squares contains a packing of 17).
@@ -68,6 +72,8 @@ results:
       Rises with T-001; a bespoke n = 18 set stronger than the inherited bound
       would be a new result, not a rung change.
   - id: T-003
+    headline: "The sixteen-point set's unavoidability ceiling lies in `[4426213/1000000, 4427/1000)`"
+    established: '2026-08-31'
     claim: >-
       The sixteen-point set's unavoidability ceiling lies in
       [4426213/1000000, 4427/1000): certification at the left endpoint,
@@ -104,6 +110,7 @@ results:
       certifies at the ceiling exactly and an exact escape family above it
       turns the bracket into an equality at C3.
   - id: T-004
+    headline: "Bentz 2010, Theorem 8 (`s(46) ≥ 7`) is correct as printed, machine-audited in full"
     claim: >-
       Bentz 2010, Theorem 8: the printed 45-point unavoidable-set argument for
       s(46) >= 7 is correct as printed, machine-audited in full.
@@ -134,6 +141,8 @@ results:
       V5 by a proof-assistant port; C4 by a second independent mechanism such
       as the pose-space interval audit generalized to Q(sqrt 2, sqrt 3) sides.
   - id: T-005
+    headline: "Bentz 2010, Lemma 10 is false as printed and true as corrected to `(1.74, 1)`"
+    established: '2026-08-31'
     claim: >-
       Bentz 2010, Lemma 10 is false as printed -- the middle replacement point
       (1, 1.74) is refuted by an exact escape certificate, and the published
@@ -164,6 +173,7 @@ results:
       Communicate the erratum to the author or journal; nothing mechanical
       remains on our side.
   - id: T-006
+    headline: "`s(13) = 4`"
     claim: >-
       s(13) = 4 (Bentz 2010, Theorem 9).
     scope: {n_values: [13]}
@@ -197,6 +207,7 @@ results:
       think-1o1f), which would also make this the second fully audited theorem
       of the paper.
   - id: T-007
+    headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100`"
     claim: >-
       For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives
       s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1).
@@ -229,6 +240,7 @@ results:
       reported context and are not current bounds. C3 means machine-checking Theorem 1's
       unavoidable-set capacity argument.
   - id: T-008
+    headline: "`s(46) = 7`"
     claim: >-
       s(46) = 7: the lower half by T-004's audited unavoidable set, the upper
       half by the exact 7 x 7 grid packing of 46 squares.
@@ -265,6 +277,8 @@ results:
       C4 by a method-independent second confirmation of the lower half; rises
       with T-004.
   - id: T-009
+    headline: "`s(29) ≤ 5.933833…`, by a Krawczyk interval certificate"
+    established: '2026-08-29'
     claim: >-
       s(29) <= 5.93383346267692918974379895098, by a Krawczyk interval
       certificate over the retained rational 29-square witness at a declared
@@ -293,6 +307,8 @@ results:
       reported-value promotion question is the owner's evidence-contract
       decision, not a rung.
   - id: T-010
+    headline: "`s(11) ≥ 2 + 4/√5`, by a repair of Stromquist 2003's Figure 14 point set"
+    established: '2026-08-24'
     claim: >-
       s(11) >= 2 + 4/sqrt(5), by a source-distinct repair of Stromquist
       2003's Figure 14 point set: the replacement G' = (79/100, 37/20)
@@ -325,6 +341,7 @@ results:
       built for T-001, run at side 2 + 4/sqrt(5) over the repaired
       twelve-point set; V5 by a proof-assistant port.
   - id: T-011
+    headline: "Trump's 1979 packing is exactly valid, so `s(11) ≤ 3.877083590022814…`"
     claim: >-
       Trump's 1979 packing is exactly valid: 11 unit squares in a square of
       side the published degree-8 algebraic number 3.877083590022814..., with
@@ -357,6 +374,8 @@ results:
       witness (the retained rational control proves a slightly weaker side
       and does not confirm this claim); V5 by a proof-assistant port.
   - id: T-012
+    headline: "Goebel's `n = 5` packing is second-order rigid at fixed side"
+    established: '2026-08-30'
     claim: >-
       Goebel's n = 5 optimal packing is not infinitesimally rigid but is
       second-order rigid at fixed side: the cone of infinitesimal motions is
@@ -390,6 +409,8 @@ results:
       BC-153 and registered as T-014, which is where the n = 5 frontier
       property now rests. What remains here is V5 by a proof-assistant port.
   - id: T-013
+    headline: "Goebel's `n = 40` packing: seven verified first-order flexes, each refused at second order"
+    established: '2026-08-30'
     claim: >-
       Goebel's n = 40 packing is infinitesimally flexible -- seven verified
       independent first-order flexes turn the sixteen-square tilted block --
@@ -421,6 +442,8 @@ results:
       branch obstruction, D-391) or establish local rigidity by another
       route; the rigidity property stays undetermined until then.
   - id: T-014
+    headline: "Goebel's `n = 5` optimum is rigid at fixed side: its pose is an isolated feasible point"
+    established: '2026-09-03'
     claim: >-
       For s = 2 + sqrt(2)/2 and Goebel's labeled pose P0 in C = (R^2 x S^1)^5,
       P0 is an isolated point of Feas(s) -- closed unit squares in [0, s]^2,
@@ -500,6 +523,7 @@ results:
       classical and the Connelly-Whiteley 1996 Theorem 4.3.1 proof shape is not
       new.
   - id: T-015
+    headline: "`s(17) ≥ 22529/5000 = 4.5058`"
     claim: >-
       s(17) >= 22529/5000 = 4.5058, by Massaccesi's 168-atom fractional
       unavoidable-set certificate (2026) on Burns's architecture: total mass 203/12
@@ -560,6 +584,7 @@ results:
       longer reads 22529/5000 as the strongest available at this size.
 
   - id: T-016
+    headline: "`s(n) ≥ 22529/5000` for `n = 18, 19`, by monotonicity from T-015"
     claim: >-
       s(18) >= 22529/5000 and s(19) >= 22529/5000, by monotonicity from T-015 (a
       packing of n >= 17 unit squares contains a packing of 17). At n = 19 this
@@ -606,6 +631,8 @@ results:
       from a larger base. This result stays true as stated and keeps its rungs.
 
   - id: T-017
+    headline: "`s(12) ≥ 99/25 = 3.96`"
+    established: '2026-09-04'
     claim: >-
       s(12) >= 99/25, by a first-party weighted fractional unavoidable-set
       certificate at container side 99/25 = 3.96. This is the first lower bound
@@ -713,7 +740,19 @@ results:
       an earlier version of this sentence overstated the ceiling into a method-wide
       impossibility (PR 78's adversarial review, F14). What remains is how close to 4 a
       certificate can get.
+    notes: >-
+      Reached independently (annotated 2026-09-29). Evan Daniel's s(12) >= 15680/3951
+      (T-049), stronger than this bound, was in evand/square-packing from 2026-08-25,
+      before this result was established on 2026-09-04; it was outside the retained
+      corpus when the source search behind this entry was made, and was first seen here
+      on 2026-09-27. The claim's "first lower bound specific to n = 12 in the retained
+      corpus" and "separates the two cases for the first time" hold for that corpus at
+      that date and not for the literature: Daniel's certificate, above Trump's 3.877084,
+      separated s(12) from s(11) first. The novelty label stays apparently-novel under
+      epistemics.md's rule that priority is stated rather than defended.
   - id: T-018
+    headline: "`s(11) ≥ 381/100 = 3.81`"
+    established: '2026-09-04'
     claim: >-
       s(11) >= 381/100, by a first-party weighted fractional unavoidable-set
       certificate at container side 381/100 = 3.81. This improves Stromquist's
@@ -830,6 +869,8 @@ results:
       decimals is evidence about the restricted optima, not a proof that tau* equals
       eleven, and nothing here rules out a site set neither run found.
   - id: T-019
+    headline: "`s(n) ≥ 459/100 = 4.59` for `n = 17, 18, 19`"
+    established: '2026-09-04'
     claim: >-
       s(17) >= 459/100, and s(18) >= 459/100 and s(19) >= 459/100, from a first-party
       weighted fractional unavoidable-set certificate at container side 459/100 = 4.59.
@@ -965,6 +1006,8 @@ results:
       remains as the previous rung. 117/25 remains the open probe this next_rung named.
 
   - id: T-020
+    headline: "`s(n) ≥ 24/5 = 4.80` for `n = 19, 20, 21`"
+    established: '2026-09-04'
     claim: >-
       s(19) >= 24/5, s(20) >= 24/5 and s(21) >= 24/5, from a first-party weighted
       fractional unavoidable-set certificate at container side 24/5 = 4.80. Two of the
@@ -1072,6 +1115,8 @@ results:
       and replays by name. This result stays true as stated at all three of its sizes.
 
   - id: T-021
+    headline: "`s(n) ≥ 97/20 = 4.85` for `n = 20, 21`"
+    established: '2026-09-05'
     claim: >-
       s(20) >= 97/20 and s(21) >= 97/20, from a first-party weighted fractional
       unavoidable-set certificate at container side 97/20 = 4.85. Both sizes held 24/5
@@ -1160,6 +1205,8 @@ results:
       sizes.
 
   - id: T-022
+    headline: "`s(11) ≥ 38100√(8100042893309449)/899996306539 = 3.8100257…`"
+    established: '2026-09-06'
     claim: >-
       s(11) >= 38100*sqrt(8100042893309449)/899996306539 =
       3.810025723614703, proved by an exact dilation-limit corollary of T-018's retained
@@ -1217,6 +1264,8 @@ results:
       fixed-atom core shrinkage might extract more from the same data; the present
       argument does not establish s(11) greater than the displayed bound.
   - id: T-023
+    headline: "Conditional exclusion: no eleven-square packing in the four-owner branch at `q = 96/25`"
+    established: '2026-09-08'
     claim: >-
       At q = 96/25, if four distinct unit squares have selected strict cores of side
       B = 9977/10000 containing, respectively, the four closed rational patches in
@@ -1288,6 +1337,8 @@ results:
       search was performed. The subsequent independent exp145 replay passed in
       Session115 with its own process cost and preserved the original claim and grades.
   - id: T-024
+    headline: "`s(11) ≥ 3175000√(518400042893309449)/598960960743657 = 3.8166095…`"
+    established: '2026-09-09'
     claim: >-
       s(11) >= 3175000*sqrt(518400042893309449)/598960960743657 = 3.816609502788862,
       proved by an exact dilation-limit corollary of T-018's retained atoms re-certified
@@ -1381,6 +1432,8 @@ results:
       dilation-limit argument rather than one individual-side certificate at the
       algebraic value.
   - id: T-025
+    headline: "`s(11) ≥ 191/50 = 3.82`, by a threshold certificate"
+    established: '2026-09-09'
     claim: >-
       s(11) >= 191/50 = 3.82, by a threshold certificate: 584 point atoms of mass
       271052551/31250000 and 320 threshold atoms, every one 2-of-3, of budget
@@ -1460,6 +1513,8 @@ results:
       The self-contained T-025 claim embeds its standard-library verifier and certificate
       bytes. T-025 needs no limit argument, so no dilation record belongs at this rung.
   - id: T-026
+    headline: "`s(11) ≥ 955000√(518400042893309449)/179696714646249 = 3.8264474…`"
+    established: '2026-09-09'
     claim: >-
       s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.826447410572939,
       proved by an exact dilation-limit corollary of T-025's threshold certificate
@@ -1561,6 +1616,8 @@ results:
       formalization, external review, or an independently reproduced full decision.
 
   - id: T-027
+    headline: "`s(18) ≥ 467/100 = 4.67`"
+    established: '2026-09-18'
     claim: >-
       s(18) >= 467/100 = 4.67, from a first-party weighted fractional unavoidable-set
       certificate at container side 467/100. The case previously held 459/100 = 4.59
@@ -1621,6 +1678,8 @@ results:
       written for this result.
 
   - id: T-028
+    headline: "`s(18) ≥ 187/40 = 4.675`"
+    established: '2026-09-19'
     claim: >-
       s(18) >= 187/40 = 4.675, from a first-party weighted fractional unavoidable-set
       certificate at container side 187/40. The case previously held 467/100 = 4.67
@@ -1682,6 +1741,8 @@ results:
       been written for this result.
 
   - id: T-029
+    headline: "`s(18) ≥ 1871/400 = 4.6775`"
+    established: '2026-09-19'
     claim: >-
       s(18) >= 1871/400 = 4.6775, from a first-party weighted fractional unavoidable-set
       certificate at container side 1871/400. The case previously held 187/40 = 4.675
@@ -1744,6 +1805,8 @@ results:
       been written for this result.
 
   - id: T-030
+    headline: "`s(18) ≥ 4679/1000 = 4.679`"
+    established: '2026-09-19'
     claim: >-
       s(18) >= 4679/1000 = 4.679, from a first-party weighted fractional unavoidable-set
       certificate at container side 4679/1000. The case previously held 1871/400 = 4.6775
@@ -1810,6 +1873,8 @@ results:
       review-ready under epistemics.md -- a mapped, non-superseded review artifact
       -- and none has been written for this result.
   - id: T-031
+    headline: "The octagon corner class (threshold `1/2`) holds no eleven-square packing at side `96/25`"
+    established: '2026-09-20'
     claim: >-
       At L = 96/25 and B = 9977/10000 on the 181-direction net (half-tangents
       k*207107/90000000, k = 0..180), the D4-symmetric point measure of total mass
@@ -1914,6 +1979,7 @@ results:
       performed. The statement itself is unconditional about every packing at 96/25;
       the exclusion of the class is what is conditional.
   - id: T-032
+    headline: "`s(17) ≥ 461300/99999 = 4.61304613…`, and beneath it Mira's `s(17) ≥ 4613/1000`"
     claim: >-
       s(17) >= 461300/99999 = 4.61304613..., by Guzhou0806's R012 parent-angle
       certificate of 20 September 2026, replayed here by the source's exact checker and
@@ -2000,6 +2066,8 @@ results:
       unrestricted test.
 
   - id: T-033
+    headline: "`s(11) ≥ 955000√(2073600042893309449)/359341754646249 = 3.8269975…`"
+    established: '2026-09-22'
     claim: >-
       s(11) >= 955000*sqrt(2073600042893309449)/359341754646249 = 3.826997548829543624,
       proved by an exact dilation-limit corollary of T-025's threshold certificate
@@ -2127,6 +2195,8 @@ results:
       independently reproduced full decision.
 
   - id: T-034
+    headline: "`s(21) ≥ 122/25 = 4.88`"
+    established: '2026-09-23'
     claim: >-
       s(21) >= 122/25, from a first-party weighted fractional unavoidable-set certificate
       at container side 122/25 = 4.88. The case held 97/20 = 4.85 from T-021 in this
@@ -2213,6 +2283,8 @@ results:
       C5 is reached; V5 would need a proof-assistant port of the five-condition theorem.
 
   - id: T-035
+    headline: "Six-plus-five packings near Trump's tilt with side `≤ U_hi` lie within `rho` of his pose"
+    established: '2026-09-24'
     claim: >-
       Every packing of eleven unit squares in a square container, six at orientation 0
       and five sharing one orientation modulo pi/2 with half-tangent in
@@ -2285,6 +2357,8 @@ results:
       1.7e8 nodes comes before more boxes.
 
   - id: T-036
+    headline: "Trump's pose is optimal among six-plus-five packings near its tilt, unique up to symmetry"
+    established: '2026-09-24'
     claim: >-
       Every packing of eleven unit squares in a square container, six at orientation 0
       and five sharing one orientation modulo pi/2 with half-tangent in
@@ -2371,6 +2445,7 @@ results:
       from distinct source are the closure review's two bounded residual tasks.
 
   - id: T-037
+    headline: "`s(11) > 31/8 = 3.875`"
     claim: >-
       s(11) > 31/8 = 3.875, by Kleddamag's 11-squares-certified-bound v1.0.2 release of 22
       September 2026. Kleddamag, building on Squares Project (Joshua Levy): the release's
@@ -2442,6 +2517,7 @@ results:
       The exact value remains open; a certificate above 31/8 has 0.0020836 of runway.
 
   - id: T-038
+    headline: "`s(17) > 461300/99853 = 4.6197910929…`"
     claim: >-
       s(17) > 461300/99853 = 4.6197910929..., by Kleddamag's 17-squares-certified-bound
       v1.0.0 release (commit a499e2c7, 21 September 2026), in the lineage the release names
@@ -2498,6 +2574,7 @@ results:
       stays true as stated.
 
   - id: T-039
+    headline: "`s(17) > 231001/50000 = 4.62002`"
     claim: >-
       s(17) > 231001/50000 = 4.62002, by Guzhou0806 / N17 project's R052 release (commit
       3bf1095c, 25 September 2026), which names itself as produced "with AI assistance" on
@@ -2552,6 +2629,7 @@ results:
       stays true as stated.
 
   - id: T-040
+    headline: "`s(17) > 232001/50000 = 4.64002`"
     claim: >-
       s(17) > 232001/50000 = 4.64002, by Kleddamag's 17-squares-certified-bound v1.1.0
       release (commit 13821ddf, 26 September 2026): Kleddamag, building on Squares Project
@@ -2609,6 +2687,7 @@ results:
       (T-041); stays true as stated.
 
   - id: T-041
+    headline: "`s(17) > 466001/100000 = 4.66001`"
     claim: >-
       s(17) > 466001/100000 = 4.66001, by the bounds/4.66001/ package of Kleddamag's
       17-squares-certified-bound at commit 57519bb7 (27 September 2026, untagged): Kleddamag,
@@ -2666,6 +2745,7 @@ results:
       which continues this charge; stays true as stated.
 
   - id: T-042
+    headline: "`s(17) > 233009/50000 = 4.66018`"
     claim: >-
       s(17) > 233009/50000 = 4.66018, by Guzhou0806 / N17 project's R067 release (commit
       d4e2c287, 28 September 2026, named as made "with AI assistance"): Kleddamag's 4.66001
@@ -2714,6 +2794,7 @@ results:
       held the verified field; stays true as stated.
 
   - id: T-043
+    headline: "`s(17) > 116511/25000 = 4.66044`"
     claim: >-
       s(17) > 116511/25000 = 4.66044, by Guzhou0806 / N17 project's R068 release (commit
       815b1626, 28 September 2026), continuing Kleddamag's public 4.66001 charge (T-041;
@@ -2771,6 +2852,7 @@ results:
       mapped 2026-09-28 review as review_artifact. V5 by a proof-assistant port.
 
   - id: T-044
+    headline: "Weighted point lower bounds for ten counts in `n = 26…72`, plus four from the same files"
     claim: >-
       Ten exact weighted point certificates of wand125/square-packing-bounds at commit
       1398e42f (22 September 2026) prove s(26) >= 109/20, s(29) >= 557/100, s(39) >= 13/2,
@@ -2834,6 +2916,7 @@ results:
       certificates (T-047), before either held the verified field; stays true as stated.
 
   - id: T-045
+    headline: "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
     claim: >-
       s(27) >= 28/5, s(28) >= 28/5, s(31) >= 148/25 and s(32) >= 119/20, by three
       rectangle-density certificates of wand125/square-packing-bounds at revision ad43d29
@@ -2895,6 +2978,7 @@ results:
       it held the verified field; stays true as stated.
 
   - id: T-046
+    headline: "Rectangle-density lower bounds reported for 48 counts in `n = 18…95`"
     claim: >-
       wand125/square-packing-bounds reports one standing rectangle-density certificate for
       each of 48 counts from n = 18 to n = 95, at revisions ad43d29 (added 26 and 27
@@ -2977,6 +3061,7 @@ results:
       entry while its verified field cites the replay.
 
   - id: T-047
+    headline: "`s(11) ≥ 381/100`; `s(n) ≥ 1377/250` for `n = 26…28`; `s(n) ≥ 571/100` for `n = 29…31`"
     claim: >-
       s(11) >= 381/100, s(26) >= 1377/250 and s(29) >= 571/100, by Tokoharu's
       rectangle-density certificates in tokoharu/square-packing-density-bounds at commit
@@ -3041,6 +3126,7 @@ results:
       Kleddamag's 31/8 (T-037). Stays true as stated.
 
   - id: T-048
+    headline: "`s(50) ≥ 37/5 = 7.4`, reported"
     claim: >-
       wand125/square-packing-bounds (introduced at commit 75dd0952, 28 September 2026;
       pinned at 39d8ecc) reports s(50) >= 37/5 = 7.4 from a D4-expanded rectangle density of
@@ -3101,6 +3187,7 @@ results:
       registered.
 
   - id: T-049
+    headline: "`s(12) ≥ 15680/3951 = 3.9686155…`"
     claim: >-
       s(12) >= 15680/3951 = 3.9686155..., by Evan Daniel's weighted point certificate in
       evand/square-packing (formerly square-packing-12), which entered the source at commit
@@ -3168,6 +3255,7 @@ results:
       proof-assistant port. The exact value remains open; the conjecture is s(12) = 4.
 
   - id: T-050
+    headline: "`s(21) ≥ 5000/1001 = 4.995004995…`"
     claim: >-
       s(21) >= 5000/1001 = 4.995004995..., by Evan Daniel's weighted point certificate in
       evand/square-packing, introduced at commit 0eee6bae on 23 September 2026 by the
@@ -3216,6 +3304,7 @@ results:
       (T-052); stays true as stated.
 
   - id: T-051
+    headline: "`s(32) = 6`"
     claim: >-
       s(32) = 6. The lower half is Evan Daniel's weighted closed cover in
       evand/square-packing, certified at commit c8b36419 on 26 September 2026 by the
@@ -3299,6 +3388,7 @@ results:
       this session (think-angg).
 
   - id: T-052
+    headline: "`s(21) = 5`, by a mixed cover of points and grid-line segments"
     claim: >-
       s(21) = 5. The lower half is Evan Daniel's mixed cover in evand/square-packing, bundle
       commit 086a129a of 27 September 2026 by the author's clock: 7,536 weighted points of
@@ -3359,6 +3449,7 @@ results:
       run here.
 
   - id: T-053
+    headline: "`s(45) = 7`, by a mixed cover of points and grid-line segments"
     claim: >-
       s(45) = 7. The lower half is Evan Daniel's mixed cover in evand/square-packing, bundle
       commit d2001582 of 27 September 2026 by the author's clock: 19,989 weighted points of
@@ -3419,6 +3510,7 @@ results:
       finding. V5 would need a top theorem and the checker programs formalised.
 
   - id: T-054
+    headline: "`s(45) = 7` by a second, point-only route"
     claim: >-
       s(45) = 7 by a second, point-only route. The lower half is wand125's point-only measure
       in wand125/square-packing-bounds at commit 39d8ecc (28 September 2026): 12,645
@@ -3476,6 +3568,7 @@ results:
       zeromargin.py route reads point covers and is the reachable one.
 
   - id: T-055
+    headline: "`s(21) = 5` by a point-only route, reported"
     claim: >-
       wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed at
       commit d38917c6 on 28 September 2026 with a Lean 4 reduction at b64f96e6: Evan Daniel's
@@ -3540,6 +3633,115 @@ results:
       n = 45 replay entry only. The Lean build was not run here.
 
   - id: T-056
+    headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified exactly"
+    claim: >-
+      For each of 49 counts n from 68 to 307 (68, 102, 103, 105, 106, 110, 123, 130, 131,
+      132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206 to 210, 228, 236 to 241,
+      259, 263, 268 to 273, 292, 297 and 301 to 307), s(n) is at most the verified upper
+      bound its case record carries: the side franciscouzo/square-packing prints at
+      f3c5a529 (27 September 2026), from 8.798795237222592 at n = 68 to
+      17.981030548643712 at n = 307, or, where the exact certificate's side rounds up past
+      it, that side plus one unit of its fifteenth decimal at 26 counts and 2, 3 and 2
+      units at n = 206, 259 and 305. Every printed side is below the best
+      known side this project recorded before, by 3.0e-8 at n = 172 up to 0.022 at
+      n = 301, and below the live catalogue of 29 September 2026. Each bound is certified
+      here by an exact rational packing, the source's decimal pose rounded to rationals at
+      centre dilation 1, decided pair by pair and wall by wall over Q by two checkers that
+      share no code. Francisco Couzo; the author said on jlevy/squares#227 that he found
+      the 102 and 103 packings "with the help of Claude", and the repository itself states
+      no AI assistance. An externally produced, previously published result, not peer
+      reviewed; no new first-party mathematics is claimed.
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    verification: V4
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        Forty-nine substantive case results at once: each moves the best known side at its
+        count, 28 of them by more than 0.001, and each moves this repository's verified
+        ceiling off the integer grid onto a certified packing, so 46 cases stop trailing
+        their report. S3 by the anchor "a substantive case result"; the source publishes no
+        method, so nothing here is a reusable technique.
+      scored: '2026-09-29'
+      by: issue #227 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[franciscouzo square-packing 2026-09-27]']
+      published: '2026-09-27'
+    evidence:
+      - E-franciscouzo-2026-09-27-report
+      - E-franciscouzo-2026-09-27-exact-replay
+    artifacts:
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/acquisition/sources.json.gz
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/certification.json.gz
+      - packing/devtools/upper_bound_packets.py
+      - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/apply_upper_bound_packets.py
+      - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+    controls:
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/tests/test_upper_bound_packets.py
+    next_rung: >-
+      C4 by an interval route: an interval-certified replay of each packing, for example a
+      Krawczyk enclosure of its contact system as T-009 did at n = 29, recorded as a
+      second, method-distinct entry. At n = 206, 259 and 305 the printed side itself needs
+      a pose refined beyond the source's binary64 digits, or coordinates the source prints
+      at higher precision.
+
+  - id: T-057
+    headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record"
+    claim: >-
+      s(211) <= 14.99796070496771500150 < 15. JoostdeWinter/square-packing-211 at 702df9bb
+      (16 September 2026) reports 211 unit squares in a square of that side, with 21-digit
+      poses and the author's report of an outward interval check at 80 digits; it publishes
+      no interval boxes or checker. The bound is certified here by an exact rational
+      packing, the source's pose rounded to rationals at centre dilation 1, of side
+      74989803524838470007/5000000000000000000, 2.1e-14 below the printed side, decided
+      pair by pair and wall by wall over Q by two checkers that share no code. It is the
+      first packing of 211 squares below the 15 x 15 grid on record, so s(k^2 - k + 1) < k,
+      shown in the Kingbird catalogue for k = 16, 17 and 18 (n = 241, 273 and 307), holds
+      for k = 15 as well. Joost de Winter; the source says nothing about AI assistance. An
+      externally produced, previously published result, not peer reviewed; no new
+      first-party mathematics is claimed.
+    scope: {n_values: [211]}
+    verification: V4
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        A count whose best known packing was the trivial grid now has one below it. On the
+        Kingbird catalogue and this record, which show s(k^2 - k + 1) < k at n = 241, 273
+        and 307 (k = 16 to 18) and hold the grid at n = 31 to 183 (k = 6 to 14), the
+        smallest k shown to satisfy it drops from 16 to 15. S3 by the anchor "a substantive
+        case result"; the margin, about 0.002, changes nothing beyond this count.
+      scored: '2026-09-29'
+      by: issue #227 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[de Winter n211 2026-09-16]']
+      published: '2026-09-16'
+    evidence:
+      - E-n211-de-winter-report
+      - E-n211-de-winter-exact-replay
+    artifacts:
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/acquisition/sources.json
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/certification.json
+      - packing/witnesses/de-winter-2026/n-211-rational.yaml.gz
+      - packing/devtools/upper_bound_packets.py
+      - packing/devtools/check_rational_witness_independent.py
+      - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+    controls:
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/tests/test_upper_bound_packets.py
+    next_rung: >-
+      C4 by an interval route: an interval-certified replay of the packing, from the
+      source's own 80-digit enclosures if it publishes them or from a Krawczyk enclosure of
+      its contact system here, recorded as a second, method-distinct entry.
+
+  - id: T-058
+    headline: "Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises"
     claim: >-
       wand125/square-packing-tools claims that rectangle-density certificates using
       core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100
@@ -3566,9 +3768,15 @@ results:
       think-xgjo: discharge net orientation and exact upper-witness assumptions, or
       replace the ceiling with the reviewed sufficient angular-containment correction.
       Keep l_cap a search heuristic until then.
-    notes: V0 records an unestablished source claim; C1 records a source-level review finding a missing premise, not a machine refutation or a verified theorem.
+    notes: >-
+      V0 records an unestablished source claim; C1 records a source-level review
+      finding a missing premise, not a machine refutation or a verified theorem.
+      This claim was drafted as T-056 before the merge; T-058 is canonical because
+      the merged upstream had already allocated T-056. Archived intake evidence
+      retains its original provisional label.
 
-  - id: T-057
+  - id: T-059
+    headline: "Reported equality of 12028 n11 row minima awaits a complete bound replay"
     claim: >-
       wand125/square-packing-tools reports that its exact general_pose_tree checker
       reproduces all 12028 per-row core minima of Kleddamag's n11 certificate at
@@ -3602,4 +3810,7 @@ results:
       V0/C0 because the full claimed row-minimum equality has no retained local complete
       replay. The identical certificate already has complete native threshold coverage
       and reviewed global counting premises supporting the existing V4/C4 n11 bound;
-      that proof need not reproduce every exact row minimum and does not settle T-057.
+      that proof need not reproduce every exact row minimum and does not settle T-059.
+      This claim was drafted as T-057 before the merge; T-059 is canonical because
+      the merged upstream had already allocated T-057. Archived intake evidence
+      retains its original provisional label.

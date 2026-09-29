@@ -33,6 +33,7 @@ import mpmath as mp
 from strif import atomic_output_file
 
 from devtools import build_composite_figure_data, render_composite_pdf
+from devtools import upper_bound_packets as packets
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from sqpack.known_best import (
@@ -50,6 +51,7 @@ from sqpack.known_best import (
     catalogue_source_map,
     exact_grid_witness,
     kingbird_derived_witness,
+    packet_derived_witness,
     parse_unitsquare_svg,
     rational_integer,
     sampled_numbers,
@@ -124,6 +126,11 @@ USER_AGENT = "thinking-scratchpad-known-best-atlas/1.0"
 #: record is what selects the source layer, so a case moves onto a UnitSquare rendering
 #: by having its bound sourced there, never by being listed in a set of case numbers.
 UNITSQUARE_SOURCE_KEY = "[UnitSquare 2026]"
+#: The source packets that keep derived facts for a case in place of upstream bytes, by
+#: the source key a record's reported upper bound names: a case moves onto a packet's
+#: facts, as onto a UnitSquare rendering, by having its bound sourced there.
+PACKET_SOURCES = {source.key: source for source in packets.CERTIFIED}
+PACKET_KIND = "packet-derived-facts"
 
 #: The cases this build covers, end to end: sources, witnesses, house renderings,
 #: frontier back-links and manifest entries.
@@ -670,6 +677,20 @@ def _source_plan(
             (case.n,),
             upstream_digest,
         )
+    packet = PACKET_SOURCES.get(case.reported_source_key)
+    if packet is not None:
+        # As for the release: a record naming a packet that holds no facts for its `n`
+        # is a refusal, never a fall-through to the catalogue.
+        upstream = packets.cases(packet).get(case.n)
+        if upstream is None or not packet.fact(case.n).is_file():
+            raise ValueError(f"n={case.n}: {packet.key} retains no facts for this case")
+        return SourcePlan(
+            PACKET_KIND,
+            packet.fact(case.n),
+            packet.blob_url(str(upstream["file"])),
+            case.n,
+            (case.n,),
+        )
     if case.n not in catalogue:
         raise ValueError(f"n={case.n}: non-grid frontier value has no catalogue geometry")
     filename, source_n, listed_n = catalogue[case.n]
@@ -723,10 +744,10 @@ def _check_upstream_svg_digest(plan: SourcePlan, content: bytes) -> None:
 def _fetch_one(plan: SourcePlan, *, refresh: bool) -> str:
     if plan.kind == "exact-grid":
         return "grid"
-    if plan.kind == "kingbird-derived-facts":
+    if plan.kind in {"kingbird-derived-facts", PACKET_KIND}:
         if not plan.path.is_file():
             raise FileNotFoundError(
-                f"retained Kingbird derived facts are missing: {_relative(plan.path)}"
+                f"retained derived facts are missing: {_relative(plan.path)}"
             )
         return "derived"
     if plan.path.is_file() and not refresh:
@@ -791,6 +812,26 @@ def _source_index(plans: dict[int, SourcePlan]) -> dict:
                 }
             )
             continue
+        if plan.kind == PACKET_KIND:
+            packet = next(
+                item for item in packets.CERTIFIED if plan.path.is_relative_to(item.facts)
+            )
+            sources.append(
+                {
+                    "attribution": f"{packet.author}, {packet.url} at {packet.revision}",
+                    "kind": plan.kind,
+                    "license_status": "no-licence-published",
+                    "listed_n": list(plan.listed_n),
+                    "n": n,
+                    "path": _relative(plan.path),
+                    "raw_asset_retained": False,
+                    "retention_policy": KINGBIRD_RETENTION_POLICY,
+                    "retrieved": packets.RETRIEVED,
+                    "source_n": plan.source_n,
+                    "url": plan.url,
+                }
+            )
+            continue
         if not plan.path.is_file():
             raise FileNotFoundError(f"retained source is missing: {_relative(plan.path)}")
         content = plan.path.read_bytes()
@@ -843,6 +884,16 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
                 source_n=plan.source_n,
                 source_path=_relative(SOURCE_MANIFEST),
                 source_url=plan.url,
+            )
+        if plan.kind == PACKET_KIND:
+            retained = load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)
+            _assert_side_matches(case, str(retained["side"]))
+            return packet_derived_witness(
+                case.n,
+                retained,
+                source_key=case.reported_source_key,
+                source_path=_relative(plan.path),
+                retrieved=packets.RETRIEVED,
             )
         source_text = plan.path.read_text(encoding="utf-8")
         source_path = _relative(plan.path)
@@ -1953,6 +2004,8 @@ def _manifest_entry(built: BuiltCase) -> dict:
         derivation = "canonical row-major subset of an exact integer grid"
     elif plan.kind == "kingbird-derived-facts":
         derivation = "deterministic reuse of retained Witness/v2 numerical center/angle facts"
+    elif plan.kind == PACKET_KIND:
+        derivation = "deterministic reuse of a source packet's retained Witness/v2 facts"
     elif n == plan.source_n:
         derivation = "direct normalization of complete source geometry"
     else:
@@ -2038,7 +2091,8 @@ def _manifest_document(entries: list[dict], composites: list[dict]) -> dict:
             "policy": {
                 "source_layer": (
                     "exact canonical grids, retained Kingbird derived numerical facts, "
-                    "or immutable UnitSquare renderings"
+                    "source packets' retained derived facts, or immutable UnitSquare "
+                    "renderings"
                 ),
                 "witness_layer": "lossless where possible; limitations explicit otherwise",
                 "rendering_layer": "repository deterministic house renderer",

@@ -535,6 +535,13 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "/packing/resources/web/known-best-packings/",
         "/packing/resources/web/prospective-packings/",
         "/packing/resources/web/unitsquare-release1-2026/",
+        # The atlas draws the certified parallel packings of T-056 and T-057 from their
+        # packets' derived facts, and `known-best atlas records and sample` reads each
+        # packet's `acquisition/sources.json` to plan them, so both packets ride in the
+        # slice; without them the step fails on a missing file, as it did on
+        # jlevy/squares#248's first run.
+        "/packing/resources/web/franciscouzo-square-packing-2026-09-27/",
+        "/packing/resources/web/de-winter-square-packing-211-2026-09-16/",
         "/packing/resources/papers/kingbird-square-29-provenance.svg",
         "/packages/workbench/",
         "/vendor/kpress/",

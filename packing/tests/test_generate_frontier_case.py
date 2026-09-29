@@ -20,7 +20,10 @@ correctness someone already argued:
   catalogue: a forty-five figure reported side, a `source-evidence` blocker instead of a
   `mathematics` one, a fourth resource, and a null `conjectured_optimum`. They are the
   only two records of that shape at `n <= 100`, and `n = 103, 105, 110` and `131` will be
-  generated from the same branch.
+  generated from the same branch. Since the #227 intake Couzo's certified packing holds
+  `n = 68`'s upper lane, which `devtools.apply_upper_bound_packets` writes over the
+  release draft, so `n = 68` is regenerated as that draft with the intake applied, and
+  `n = 69` is the one record whose upper lane the release branch alone produces.
 
 **Nothing is skipped quietly.** Every key of the front matter is compared. The three
 kinds of mismatch a reader would want to know about are named separately:
@@ -57,6 +60,7 @@ from typing import Any
 import pytest
 
 from devtools import validate_schemas
+from devtools.apply_upper_bound_packets import PREVIOUS_HEADING, earlier_reports
 from devtools.check_basic_bounds import check_case_basic_bounds
 from devtools.check_case_prose import check_case_file
 from devtools.generate_frontier_case import (
@@ -72,6 +76,7 @@ from devtools.generate_frontier_case import (
     LowerBoundPromotion,
     PreservedListItem,
     SourceAvailability,
+    adopt_upper_bound_packet,
     analytically_optimized_from_credit,
     build_payload,
     check_records,
@@ -85,6 +90,7 @@ from devtools.generate_frontier_case import (
     lower_bound_promotion_from_records,
     main,
     method_summary,
+    packet_adopted_counts,
     record_path,
     refuse_reason,
     render_record,
@@ -131,8 +137,9 @@ NOT_REPRODUCED = {
 BODY_NOT_REPRODUCED = {
     100: "an editorial section about the edge of the corpus, written for this one case",
     68: (
-        "one figure: the body prints the Nagamochi lower bound to five places where every "
-        "other record in the corpus, and the generator, print six"
+        "the lower-bound prose: wand125's two intake paragraphs, and the n68 floor deduced "
+        "from wand125's n69 certificate, in place of the Nagamochi opener and section; the "
+        "packing section, which the #227 intake writes over the release draft, reproduces"
     ),
     69: (
         "a sentence about the parent's degree-82 polynomial being dropped, written for "
@@ -151,6 +158,11 @@ UNITSQUARE = "unitsquare"
 
 
 def _source_kind(payload: Mapping[str, Any]) -> str:
+    n = int(payload["n"])
+    if n in packet_adopted_counts():
+        # A certified packet's intake writes over the draft of the report it replaced, and
+        # names that report: the release's where the release had this count.
+        return UNITSQUARE if "unitsquare" in earlier_reports()[n] else CATALOGUE
     reported = payload["reported_upper_bound"]
     if reported["source_key"] == UNITSQUARE_SOURCE_KEY:
         return UNITSQUARE
@@ -226,7 +238,8 @@ def _regenerate(n: int, *, facts: CatalogueFacts | None = None) -> str:
     generated = generate_record(n, **arguments)
     generated_payload = safe_load(generated.split("---\n", 2)[1])["packing"]
     promotion = lower_bound_promotion_from_records(payload, generated_payload)
-    return generate_record(n, **arguments, lower_bound_promotion=promotion)
+    drafted = generate_record(n, **arguments, lower_bound_promotion=promotion)
+    return adopt_upper_bound_packet(n, drafted)
 
 
 PROMOTED_LOWER_CASES = (
@@ -678,19 +691,26 @@ def test_a_unitsquare_case_takes_its_bound_and_its_blocker_from_the_release() ->
 
 
 def test_the_unitsquare_prose_names_the_parent_the_release_improved_on() -> None:
-    """The one sentence of that paragraph the release itself does not carry."""
+    """The one sentence of that paragraph the release itself does not carry.
+
+    Since the #227 intake that paragraph describes `n = 68`'s previous best known packing:
+    Couzo's certified packing replaced the release's, and the intake keeps the release
+    draft's paragraph under its own heading, in the regeneration and the record alike.
+    """
     assert credited_surnames(_parsed_facts(68).credit_line) == (
         "Brendberg",
         "Schadt",
         "Ellsworth",
     )
     assert credited_surnames(_parsed_facts(69).credit_line) == ("Morandi", "Cantrell")
-    # Compared with the wrapping collapsed: the formatter breaks lines where it likes.
-    body = re.sub(r"\s+", " ", _regenerate(68).split("---\n", 2)[2])
-    assert (
+    sentence = (
         "The UnitSquare Project’s 29 July 2026 release improves the public "  # noqa: RUF001
-        "Brendberg-Schadt-Ellsworth parent by `0.0000768618004216131`." in body
+        "Brendberg-Schadt-Ellsworth parent by `0.0000768618004216131`."
     )
+    for text in (_regenerate(68).split("---\n", 2)[2], _committed(68)[1]):
+        # Compared with the wrapping collapsed: the formatter breaks lines where it likes.
+        body = re.sub(r"\s+", " ", text)
+        assert sentence in body[body.index(PREVIOUS_HEADING) :]
 
 
 @pytest.mark.parametrize(

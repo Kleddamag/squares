@@ -251,10 +251,10 @@ The existing whole-certificate path is preferable to adding resume or shard aggr
 during this slice; either would introduce another completeness contract needing review.
 Success would establish independent native coverage for that specific rectangle
 certificate.
-It would not replay other target counts, verify the distinct T-057 point and
+It would not replay other target counts, verify the distinct T-059 point and
 threshold-charge format, or establish that format’s global counting premises.
 
-## Separate T-057 Admission Review
+## Separate T-059 Admission Review
 
 The reviewer also inspected
 [`check_general_pose_tree_census.py`](../../../packing/devtools/check_general_pose_tree_census.py)
@@ -310,7 +310,7 @@ A fresh three-row run binds the portable journal to the corrected wrapper.
 
 ## Reusing the Existing T-037 Global Premises
 
-**think-4t1e** reconciles the new T-057 row checker with the already retained proof of
+**think-4t1e** reconciles the new T-059 row checker with the already retained proof of
 T-037. The certificate is identical: the wrapper’s mandatory input pin, the original
 source replay and the complete native parent-core receipt all name SHA-256
 `57e9927da5c13f42dd8bcbf8f08c84363635fece626657ee63a810c61cd44458`. The reviewer checked
@@ -350,19 +350,19 @@ command. The original review’s receipt-authentication limitations still apply.
 The [claim register](../../../packing/frontier/results.yaml) already records **T-037 at
 V4/C4** on this composition of evidence.
 The global orientation, containment, symmetry, budget and strict-transfer premises are
-therefore available for reuse; they are not newly unresolved merely because the T-057
+therefore available for reuse; they are not newly unresolved merely because the T-059
 wrapper intentionally lacks a packing-acceptance path.
 No new result promotion or additional confirmation method follows from this
 reconciliation.
 
-**T-057 remains a different, incomplete claim:** wand125’s checker is reported to
+**T-059 remains a different, incomplete claim:** wand125’s checker is reported to
 reproduce every exact row minimum and attaining witness.
 The complete native run proves sufficient lower bounds at $\Gamma$; it need not find
 those exact minima. For example, its row 12027 lower bound is 1,000,030,057 units,
 whereas the exact reference minimum and newly replayed source minimum are 1,000,047,518.
 Both exceed $\Gamma$, but their distinction matters.
 The new bound journal contains only three rows, leaving 12,025 unreplayed there.
-The remaining T-057 work is complete source-bound row equality and the checker-specific
+The remaining T-059 work is complete source-bound row equality and the checker-specific
 minimum-search audit, not reconstruction of an already retained global packing proof.
 
 ## Two-Level Refinement Readiness

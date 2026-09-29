@@ -144,9 +144,14 @@ Coverage succeeded, but the required `mass < n` check was absent.
 The native checker rejects that retained scaled input at admission, before attempting
 coverage.
 
-## T-057 Row Replay and Its Separate Global Argument
+## T-059 Row Replay and Its Separate Global Argument
 
-T-057 concerns all 12,028 row minima of the Kleddamag n11 point and threshold-charge
+The wand125 entries are T-058 (ceiling) and T-059 (row replay).
+Their September 29 intake and archived receipts used provisional labels T-056/T-057; the
+merge retained those published IDs for Couzo and de Winter and assigned these new IDs to
+wand125. Historical receipts keep their original labels and bytes.
+
+T-059 concerns all 12,028 row minima of the Kleddamag n11 point and threshold-charge
 certificate. It is a different input and theorem from the Tokoharu rectangle example.
 The [row-census wrapper](../../packing/devtools/check_general_pose_tree_census.py) has
 three distinct operations: inspect legacy rows as unbound inventory, run the pinned
@@ -180,7 +185,7 @@ That evidence proves the angle cover, strict enclosures, D4 reduction, threshold
 budget and positive counting gap, supporting the existing `V4/C4` bound `s(11) > 31/8`.
 It is reusable evidence, not a missing proof or a new promotion.
 Native threshold coverage need not reproduce each exact row minimum, so it does not
-settle T-057’s claimed minimum equalities.
+settle T-059’s claimed minimum equalities.
 The
 [bead map](specs/active/plan-2026-09-29-native-rectangle-verification.md#continuing-work-and-bead-dependencies)
 tracks wrapper admission, complete replay and this prior-evidence reconciliation as

@@ -165,20 +165,20 @@ alone is not full pre-merge evidence.
 
 | Tier | Who runs it, and when | Steps | Ceiling | Cost when last measured |
 | --- | --- | ---: | ---: | --- |
-| `--records` | contributor, before touching a registry; also every pull request | 35 of 82 | 300 s | 11.0 s |
-| `--edit` | contributor, in the edit loop | 50 of 82 | 240 s | 59.4 s |
+| `--records` | contributor, before touching a registry; also every pull request | 36 of 83 | 300 s | 11.0 s |
+| `--edit` | contributor, in the edit loop | 51 of 83 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the seven tiers below | 71 of 82 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 52 of 82 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 82 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 82 | 111 s | 55.67 s on CI, the mean of three readings |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 82 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 82 | 168 s | 109.92 s on exact head `be28ad5a`, the geometric mean of attempts 1–3 of run 35182460400 |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 82 | 154 s | 102.91 s, the geometric mean of five readings spanning 73.90–133.81 s (1.81x) across runs 35182460400, 35634463193, 35637674151 and 35638434973 |
-| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 82 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 82 of 82 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
+| `--fast` | contributor, at a block boundary; the union of the seven tiers below | 72 of 83 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 53 of 83 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 83 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 83 | 111 s | 55.67 s on CI, the mean of three readings |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 83 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 83 | 168 s | 109.92 s on exact head `be28ad5a`, the geometric mean of attempts 1–3 of run 35182460400 |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 83 | 154 s | 102.91 s, the geometric mean of five readings spanning 73.90–133.81 s (1.81x) across runs 35182460400, 35634463193, 35637674151 and 35638434973 |
+| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 83 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
+| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 83 of 83 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
-Step counts describe the current 82-step registry.
+Step counts describe the current 83-step registry.
 Dated costs retain their measured source and resource shape; they are not fresh
 measurements of the new scheduling.
 
@@ -756,10 +756,12 @@ A tier whose hosted walls form a distribution records a `measured_band`, the low
 highest readings at its reference shape, and the ratios are then applied to the band’s
 edges: the stale rule to the low edge and the drift rule to the high one.
 The band must contain the record and be no wider than `drift_ratio / stale_ratio`; a
-ceiling under its drift edge binds first (`think-be1s`, D-472). The records check
-independently rejects a ceiling above `max_headroom` times the baseline.
-A `null` baseline leaves those ratio checks unarmed; a measurement printed by CI does
-not update the file automatically.
+ceiling under its drift edge binds first (`think-be1s`, D-472). The price is sensitivity
+in the fast regime: a run from the band’s low end can grow to the drift edge, or the
+ceiling if lower, before a rule fires, and each banded tier’s record states that figure.
+The records check independently rejects a ceiling above `max_headroom` times the
+baseline. A `null` baseline leaves those ratio checks unarmed; a measurement printed by
+CI does not update the file automatically.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.
@@ -1288,8 +1290,15 @@ uv run --frozen packing-ledger render
 uv run --frozen python -m devtools.render_defects --check
 uv run --frozen python -m devtools.render_research_tables --check
 uv run --frozen python -m devtools.render_document_map
+uv run --frozen python -m devtools.render_results --update
 uv run --frozen python -m devtools.render_results_headline
+uv run --frozen python -m devtools.render_recent_results --update
 ```
+
+The last one writes README’s three results tables, New Results, Results by Others and
+the recent results by case, from the register, the case records and the bibliography.
+Edit the records and re-render; a hand edit inside a table’s markers fails its
+`--check`.
 
 **Creating any durable Markdown file is a two-step change.** Register it in
 [`docs/project/document-map.yaml`](docs/project/document-map.yaml) with its `role`,

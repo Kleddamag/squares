@@ -43,6 +43,22 @@ licensed alternative to prefer.
 Express permission from the catalogue's author would allow raw retention and is an
 owner action, not a prerequisite here.
 
+## Source Packets’ Derived Facts
+
+From 2026-09-29 the best known packing at 50 counts comes from two repositories that
+publish no licence: Francisco Couzo’s 49 packings for `n = 68…307` and Joost de Winter’s
+packing of 211 squares. The same policy applies to them.
+Each source’s packet keeps the centres and angles as Witness/v2 facts under its own
+`facts/` directory, with the upstream files pinned by digest in its
+`acquisition/sources.json`, and retains no upstream byte:
+[Couzo’s](../franciscouzo-square-packing-2026-09-27/README.md) and
+[de Winter’s](../de-winter-square-packing-211-2026-09-16/README.md).
+The atlas builder reads those facts wherever a case record’s reported upper bound names
+the packet’s source key, and [`sources.json`](sources.json) lists each such case as
+`packet-derived-facts` with `raw_asset_retained: false`. At those counts the retained
+Kingbird facts, which described the superseded catalogue packing, are no longer the
+atlas’s witness; Git keeps them.
+
 ## Retained UnitSquare Renderings
 
 The `unitsquare/` files are retained public evidence renderings for the newer `n = 68`

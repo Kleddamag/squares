@@ -483,6 +483,11 @@ def band_problems(tier: TierBudget, policy: Policy) -> list[str]:
     (`drift_ratio / stale_ratio`). A ceiling under the band's drift edge is not refused:
     the ceiling then binds first, as it may for a point record (`typecheck`'s 111 s
     ceiling, held on purpose under `OR-17`, does).
+
+    What a band gives up is sensitivity in its fast regime: a run from the low end can
+    grow to the drift edge, `drift_ratio` times the high edge, or to the ceiling if that
+    is lower, before any rule fires. That is the price of not failing on which runner a
+    job drew, and each banded tier's `measured_where` states its own figure.
     """
     if tier.measured_band is None or tier.measured_seconds is None:
         return []

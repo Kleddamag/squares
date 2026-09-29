@@ -1,0 +1,82 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved": "2026-09-29",
+  "sources": [
+    {
+      "id": "de-winter-square-packing-211",
+      "source_url": "https://github.com/JoostdeWinter/square-packing-211",
+      "source_commit": "702df9bb3b1e7fe13279a61a1fa89722aa2d496a",
+      "git_tree": "7216964baa956748913ce20f5f2790a803354921",
+      "commit_author": "Joost de Winter",
+      "authored_utc": "2026-09-16T08:00:56Z",
+      "committed_utc": "2026-09-16T08:00:56Z",
+      "author": "Joost de Winter",
+      "author_read_from": "commit metadata; the repository has no LICENSE and its README names no author",
+      "licence": null,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "raw_asset_retained": false,
+      "ai_statement": null,
+      "history": [
+        {
+          "commit": "7d000e1a671fc94ebfd6250e7a867d45eac218bf",
+          "authored_utc": "2026-09-16T07:57:18Z",
+          "committed_utc": "2026-09-16T07:57:18Z"
+        },
+        {
+          "commit": "702df9bb3b1e7fe13279a61a1fa89722aa2d496a",
+          "authored_utc": "2026-09-16T08:00:56Z",
+          "committed_utc": "2026-09-16T08:00:56Z"
+        }
+      ],
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 84,
+          "sha256": "680eca079044eeb4058d464b84751306d556cfdeacd11562b46af323312104a0",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n211__record.json",
+          "bytes": 27719,
+          "sha256": "94b206475442caade4892a393251c9d464341b3327e58c6ef21076fea3dad372",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n211__record.svg",
+          "bytes": 40254,
+          "sha256": "da29b188efbb565d5c295b2ec1bb8533d89c928be511800e443dbcf75ad642ca",
+          "raw_asset_retained": false
+        }
+      ],
+      "cases": [
+        {
+          "n": 211,
+          "side": "14.99796070496771500150",
+          "file": "n211__record.json",
+          "first_authored_utc": "2026-09-16T08:00:56Z",
+          "current_since_authored_utc": "2026-09-16T08:00:56Z",
+          "current_since_committed_utc": "2026-09-16T08:00:56Z",
+          "current_since_commit": "702df9bb3b1e7fe13279a61a1fa89722aa2d496a",
+          "record_improvement": true,
+          "previous_verified_s": "14.99879247655475100150",
+          "method": "Full-packing adaptive search followed by grouped-angle local refinement and interval-verified decimal export.",
+          "verification": {
+            "n": 211,
+            "all_unit_squares_inside": true,
+            "all_square_interiors_disjoint": true,
+            "interval_precision_decimal_digits": 80,
+            "checked_pairs": 22155,
+            "checked_wall_inequalities": 844,
+            "minimum_wall_clearance_lower_bound": "1.000005e-14",
+            "minimum_pair_separating_axis_gap_lower_bound": "2.10001e-14",
+            "closest_wall_square_zero_based": 65,
+            "closest_pair_zero_based": [
+              79,
+              81
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

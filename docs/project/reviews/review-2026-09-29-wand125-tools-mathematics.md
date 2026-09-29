@@ -7,8 +7,8 @@ Two claims need qualification before we adopt the tooling: the general $B\,UB(n)
 ceiling omits an orientation condition, and `scale_and_verify.py` can announce a packing
 bound without checking the target count’s mass budget.
 
-The disputed ceiling is tracked as **T-056**. The separately reported equality of the
-n11 row scans is **T-057**.
+The disputed ceiling is tracked as **T-058**. The separately reported equality of the
+n11 row scans is **T-059**.
 
 This is a W2 factual review of
 [wand125/square-packing-tools at `0d33ab61726c2ab03e3eb8f457dabaf22db8571f`](https://github.com/wand125/square-packing-tools/tree/0d33ab61726c2ab03e3eb8f457dabaf22db8571f),
@@ -194,7 +194,7 @@ and its
 cover rows 0, 6014, and 12027. The pinned source search returned minima matching the
 reference values, and a separate exact evaluator confirmed all three attaining
 witnesses. Minimality remains evidence from the source search; witness attainment alone
-does not prove it. These probes establish agreement on those three rows; **T-057’s full
+does not prove it. These probes establish agreement on those three rows; **T-059’s full
 12,028-row census remains reported**. The identical certificate already has a
 [complete native parent-core verification](review-2026-09-22-native-n11-parent-core.md),
 including exact enclosures, $D_4$ folding, threshold budget and $11\Gamma>M$. Those
@@ -296,6 +296,19 @@ counterexample or a finding against the retained certificates.
 A first-party importer must cap the point count or use checked index conversion before
 claiming support for arbitrary parser-admitted files; **think-xgjo** tracks this
 integration requirement.
+
+## Frozen-Source Scope Audit
+
+A further GPT-6 Astra review at max thinking checked the synopsis, verification
+overview, plan, retained receipt contents, and Git identities at `03efb3702`. It found
+no unsupported mathematical promotion.
+The analytic 201-angle result, inconclusive external probe, 15/67 diagnostic refinement,
+and 3/12,028 partial minimum replay agree with their stated scopes.
+All 19 existing T-037 proof-input paths match `c183cc9`. This audit did not rerun
+coverage or premise checks and does not certify the subsequent upstream merge.
+
+The provisional wand125 labels T-056/T-057 in archived receipts map to T-058/T-059 after
+that merge; published Couzo/de Winter claims retain T-056/T-057.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

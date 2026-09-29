@@ -37,13 +37,13 @@
         "square_count": 52650,
         "stem": "known-best-1-324",
         "totals": {
-          "degree_derived_here": 251,
-          "degree_known": 287,
-          "degree_recorded_upstream": 36,
-          "exact_value_known": 287,
+          "degree_derived_here": 248,
+          "degree_known": 269,
+          "degree_recorded_upstream": 21,
+          "exact_value_known": 269,
           "lower_bound_first_proved_here": 3,
           "lower_bound_recent_result": 27,
-          "only_known_numerically": 37,
+          "only_known_numerically": 55,
           "proved_optimal": 62,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 20
@@ -3332,10 +3332,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(68) ≤ 8.803384",
+          "display": "s(68) ≤ 8.798796",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "8.803383074716108386903836683375989697670063329"
+          "value": "8.798795237222592"
         }
       },
       {
@@ -4866,18 +4866,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "24s^4-(1400+352sqrt(2))s^3+(27061+10102sqrt(2))s^2-(218629+97462sqrt(2))s+641430+317240sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(102) ≥ 10.110433",
@@ -4902,10 +4902,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(102) ≤ 10.611389",
+          "display": "s(102) ≤ 10.607175",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "10.61138823373863"
+          "value": "10.607174680178947"
         }
       },
       {
@@ -4947,10 +4947,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(103) ≤ 10.703791",
+          "display": "s(103) ≤ 10.703517",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "10.703790283762427"
+          "value": "10.703516755580015"
         }
       },
       {
@@ -5037,27 +5037,27 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(105) ≤ 10.807848",
+          "display": "s(105) ≤ 10.806078",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "10.807847913867976"
+          "value": "10.806077865540567"
         }
       },
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 32,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "2401s^{32}-701092s^{31}+96532058s^{30}-8317521660s^{29}+501462496833s^{28}-22376320364004s^{27}+760407348527794s^{26}-19848555869936524s^{25}+391901782318184024s^{24}-5471444559723346548s^{23}+39629249963743971218s^{22}+353696512578770314160s^{21}-16715802829777049603255s^{20}+292780863461637719269068s^{19}-3146950297418725382386108s^{18}+17996731060753457271434416s^{17}+58068494391477930003466013s^{16}-2710032149344351718373370304s^{15}+35897708426171881544444261010s^{14}-321777454480517334707593455472s^{13}+2318288875965343221612347387046s^{12}-15552954072951813301922897418028s^{11}+110324583017828739076547861980256s^{10}-814314195444111054964406531808040s^9+5535691601850017528577776913992458s^8-31551366481166818299554205010301876s^7+144126073330457054877480503221027356s^6-514883701839008702934553147517634876s^5+1404879821405123399570947930851054697s^4-2828245713344639081326540531975430356s^3+3961424449372054137804580730689208222s^2-3448216591537867586914544066365388952s+1404226509074988020217588819457924033=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(106) ≥ 10.327379",
@@ -5082,10 +5082,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(106) ≤ 10.822980",
+          "display": "s(106) ≤ 10.822909",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "10.82297973416944"
+          "value": "10.822908044141968"
         }
       },
       {
@@ -5262,10 +5262,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(110) ≤ 10.996798",
+          "display": "s(110) ≤ 10.996784",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "10.996797773597706"
+          "value": "10.996783396634358"
         }
       },
       {
@@ -5831,18 +5831,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 12,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "196s^{12}-26488s^{11}+1651440s^{10}-62766716s^9+1618595997s^8-29815750560s^7+402059235258s^6-3996945599928s^5+29059125001479s^4-150620866376828s^3+528127756018414s^2-1124357849826920s+1098765914618225=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(123) ≥ 11.099504",
@@ -5867,10 +5867,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(123) ≤ 11.601400",
+          "display": "s(123) ≤ 11.601385",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "11.60139979378801"
+          "value": "11.601384658385687"
         }
       },
       {
@@ -6146,18 +6146,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "5617s^4-(259504+12612sqrt(2))s^3+(4502202+422478sqrt(2))s^2-(34773984+4731588sqrt(2))s+100926915+17726970sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(130) ≥ 11.440306",
@@ -6182,10 +6182,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(130) ≤ 11.911191",
+          "display": "s(130) ≤ 11.911188",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "11.91119052015898"
+          "value": "11.911187706548755"
         }
       },
       {
@@ -6227,10 +6227,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(131) ≤ 11.956544",
+          "display": "s(131) ≤ 11.954917",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "11.956543108124773261501115489978287643498579738"
+          "value": "11.954916830219048"
         }
       },
       {
@@ -6272,10 +6272,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(132) ≤ 11.991437",
+          "display": "s(132) ≤ 11.991328",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "11.99143643966336"
+          "value": "11.991327887694469"
         }
       },
       {
@@ -7156,18 +7156,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 84,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "15197358585941502961s^{84}-14964876021186235227298s^{83}+7272595222812913346894003s^{82}-2325304163405568837985711872s^{81}+550199014011902976417247729787s^{80}-102744907802613577303858434436162s^{79}+15770698108244892301462590278910373s^{78}-2046188803886728893706559592846166940s^{77}+229043365901827791271124033850409760904s^{76}-22465861798723536733581343377318969312880s^{75}+1954663063042408634836851737534542472988316s^{74}-152349951255709169941326823887066293346193624s^{73}+10723829667261655134952521210622665945643784968s^{72}-686326223380322052977518105478585500875790507640s^{71}+40166977336061074256998638756973363193038422762460s^{70}-2160190971013429916138221567315873809290109191227128s^{69}+107210371553542169414048201729669662441830314197024226s^{68}-4928367697648782759676964001463807238961374648608591036s^{67}+210520282427005491506665365123774698375707578804045991166s^{66}-8380048643861127985429658865920308979713621168800528636888s^{65}+311642979584387473990467919553614272825113220053872893167686s^{64}-10851807764621222577237269161423835499294065873227886719724876s^{63}+354529200442735318891489329639289130837080983716609686105844682s^{62}-10886472654344044554989820001276664684754352275834326626073676952s^{61}+314707830740258412075262705001018514633277114685570369659228230886s^{60}-8577131365576184973326383639361903919077060020501484349486798462044s^{59}+220676659864024529834222826550027169451751436159279143212643304100750s^{58}-5366108560854773099323062782542881689148622349128272868132841503304592s^{57}+123455035085747414638373053783111838415779807885794670228653620606756656s^{56}-2689771757042576617382266796760465801989789910549251473683839639432673824s^{55}+55545344660722669971771487790593823603421739027747117357084896573560148132s^{54}-1088014439077084998878807873686497414222608555337013172037085789785737027128s^{53}+20228760646280093419477169754640747236777672568049390223893488286064642987733s^{52}-357199319350132942687604624139422297924839641572382189922202437482576762356002s^{51}+5993578492259294457183648659781874954535555138522882079496926437004560861449475s^{50}-95607888374734158621452463758465962667527766889151119870233929745815458197870464s^{49}+1450449889734808340651325100183427866248693256913059099309145940155004921623663049s^{48}-20934174377970907243549394685205967930306737373954662348822439943609230423042271998s^{47}+287521214531466154844493934641558475944025274728304204144868014752283863593850841071s^{46}-3758693037139824522492196965950225707948971038134502497610180651441239588793706153212s^{45}+46776156166368620484370637225042926774946526631884418623684508412824264790410695322622s^{44}-554213498552523069017939780278197270272937025886205771218096298876624373232634030307268s^{43}+6251950732475223994427997225766260343105672057938693543298710223719438546214455983422174s^{42}-67148743958288503662262110524028512420572740818205612649788782970039163837877122850002224s^{41}+686624504976838308996418090639964921283797740974390943510927597462462930108635451388956672s^{40}-6683624210795197215545578694769827454378481281503786991205805051093122539577000607518492112s^{39}+61922038451063372274525115664711614781745351857035675107097735737909228871958371309771201252s^{38}-545914626236899516397451030889695660434986026741727925639735898323422010790358226899471142192s^{37}+4578596394614695256434177101284715486045596223316501591974779425322438106683698243945133312657s^{36}-36519557390596147521078972913970989194289986313602140505586138261168362886227188120613809866274s^{35}+276908452084060463131678792053749272309227620650243616383774652462199807972600272617027105313715s^{34}-1995125618573564239441569968811948768877908975264805329921557835273555692406902924736432832072656s^{33}+13652302794929101077954196396097847995447641729570461853834329101037063785834852682999232389861183s^{32}-88673260640330913380557229503418078388290914029958962882747927428883329136607168216172985057506786s^{31}+546323078740762777551499851151749299500660383154079131025685851053212263193896570529297338202937057s^{30}-3190532419019051137207920527310810985363082905053938554402580063971581164010258646801817355978728172s^{29}+17647597956569345600264156757559024534779396494222803173516820647844865659043181903919579547455993405s^{28}-92370185046480996167766003031798069104355227778256861958172638341670501748986559657158143287384201746s^{27}+457063596008246343843246947652497192740604188316726144667941077879214729203288916667939807194976754475s^{26}-2135754321030318339803946148640432723925062036840170746475770465651607920747496502359936750118636877936s^{25}+9413245107777963706229663058434971410824508757077884118452667020417078901491483099639931354293862639251s^{24}-39081567129013269416348118385885630160005422872090989882489179092615712699596245833330552131314742641914s^{23}+152623748753623567775238681507133061671421661548557325363509181608802271715863896420772452309156580126893s^{22}-559755021749304754461642532733408124950018980895075585999339578832360136778923426307553163340902938629628s^{21}+1924575434803718372008270042897715699164358183917612079945858652072146738653167981508516336683663859061599s^{20}-6191354447775618609836439234314634277309179603333612701552040527406315440826478331716065451128871996534670s^{19}+18595526459860121841165340574719138895821326772209658546058960991768583728860803392397281925779742313102481s^{18}-52017877357788563455349165010925854251068156661668439408177886419332674892024542973348383001969034647203800s^{17}+135157501868692938192366500327069236098923290104122566272833032709737094637647438296644161923551840062478047s^{16}-325194345405021237494009612258086437235941593129725154570748027251348017358438973985857832818544091573466890s^{15}+722027337085845458293091421627894365163696335388182663348454109292879460761558869358682885259404296739097605s^{14}-1473490515445565711145580914132319537412939207599828450536062468067653025235732598973121176466499270242277300s^{13}+2751263110572258451275788319799047606274296134838009812884081346353904687815554600474281715625532788431857500s^{12}-4675004465981033004681427309219791294001064124937869088877001968417898773888626422941020050924220157893424000s^{11}+7183663179262068580520363661753568724897226652642552988417888182903983412500744464905921688273238836620034000s^{10}-9906503785168325598131719638667321753622423751680769939351178446313898592975073862661742325684296198395800000s^9+12146944042621050502155105222176120253288451344101362562568904240946898405180038535485859612413971290688600000s^8-13090089533045063828551500666675702412696959576885680069538751766268511536417556308969034651288724717832000000s^7+12214708422409722054795434067910885386456675508392415014637505990855532116097110284775444747515260212130400000s^6-9676741582044228838733364917804914719594151753924645775721115515700953860674142281619525345349780994608000000s^5+6333689917226114819893572648325901156172023728019394254226767788794528703035140896587138185275926267216000000s^4-3291213620680948097795240144789699630837845626207176614176801595943955328302192020992095429065402069760000000s^3+1274139733072931259621243156734865080962818490295409701367431118912261529814385684303575896038896856000000000s^2-326961724135799194553082826640306328403985650565477078726674395723377915426470127881664726913341548800000000s+41749176420191321903553288073015514269407918838782863228971623490248342604054718097305744082801772800000000=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(152) ≥ 12.357816",
@@ -7192,10 +7192,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(152) ≤ 12.831003",
+          "display": "s(152) ≤ 12.830719",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "12.83100282216725"
+          "value": "12.830718800982252"
         }
       },
       {
@@ -7282,10 +7282,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(154) ≤ 12.931712",
+          "display": "s(154) ≤ 12.931664",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "12.93171183926903"
+          "value": "12.931663721169976"
         }
       },
       {
@@ -7327,10 +7327,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(155) ≤ 12.958514",
+          "display": "s(155) ≤ 12.955620",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "12.95851388606690"
+          "value": "12.955619592137850"
         }
       },
       {
@@ -7372,10 +7372,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(156) ≤ 12.982192",
+          "display": "s(156) ≤ 12.982083",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "12.98219172354800"
+          "value": "12.982082698520427"
         }
       },
       {
@@ -8076,18 +8076,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "54s^4-(3936+864sqrt(2))s^3+(98658+33466sqrt(2))s^2-(1047336+434398sqrt(2))s+4049739+1891234sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(172) ≥ 13.124355",
@@ -8115,7 +8115,7 @@
           "display": "s(172) ≤ 13.618989",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "13.61898898660160"
+          "value": "13.618988956935731"
         }
       },
       {
@@ -8301,18 +8301,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 32,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "2401s^{32}-931588s^{31}+169658874s^{30}-19231837912s^{29}+1515206475113s^{28}-87554613482844s^{27}+3800602014647796s^{26}-123749571598485028s^{25}+2895774212866682688s^{24}-40503170127651197920s^{23}-85797782465034115616s^{22}+22358489056150565928884s^{21}-670371983793922205889766s^{20}+11585516453329663611601440s^{19}-107946265554474207035275274s^{18}-325416702082583543878844088s^{17}+31678001381593454789856242308s^{16}-627531463707625262161828471384s^{15}+7738051841906036676459384893372s^{14}-65825971528188631650991553430380s^{13}+390859965437244296776723867974104s^{12}-1981263185614787515387345660456708s^{11}+20697660792797450992561898119685608s^{10}-341458570720939415832614447938585072s^9+4331777593881436240458282284914909233s^8-39425956807257141453494313251818730308s^7+265332233224572263186725591178500406376s^6-1341713349412185465951061216890867086592s^5+5078477010422928472451310243101300746580s^4-14041240100101609173845558593200611383568s^3+26892648324465918884312724426364749628480s^2-31980711702815550619890642368200074811200s+17821422876028786503270705680802036472000=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(177) ≥ 13.328828",
@@ -8337,10 +8337,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(177) ≤ 13.823029",
+          "display": "s(177) ≤ 13.822980",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "13.82302875075647"
+          "value": "13.822979734183507"
         }
       },
       {
@@ -8472,10 +8472,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(180) ≤ 13.935140",
+          "display": "s(180) ≤ 13.927889",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "13.93513929847193"
+          "value": "13.927888140501693"
         }
       },
       {
@@ -8517,10 +8517,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(181) ≤ 13.956985",
+          "display": "s(181) ≤ 13.953749",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "13.95698416446504"
+          "value": "13.953748821957927"
         }
       },
       {
@@ -8562,10 +8562,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(182) ≤ 13.974430",
+          "display": "s(182) ≤ 13.974091",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "13.97442960739443"
+          "value": "13.974090713124822"
         }
       },
       {
@@ -9311,18 +9311,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "54s^4-(4152+864sqrt(2))s^3+(110790+36058sqrt(2))s^2-(1256676+503922sqrt(2))s+5199723+2359962sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(199) ≥ 14.114877",
@@ -9350,7 +9350,7 @@
           "display": "s(199) ≤ 14.618989",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "14.61898898660160"
+          "value": "14.618988956907218"
         }
       },
       {
@@ -9662,10 +9662,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(206) ≤ 14.872532",
+          "display": "s(206) ≤ 14.860159",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "14.87253189075152"
+          "value": "14.860158663395859"
         }
       },
       {
@@ -9707,10 +9707,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(207) ≤ 14.893979",
+          "display": "s(207) ≤ 14.893955",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "14.89397859563780"
+          "value": "14.893954634242480"
         }
       },
       {
@@ -9752,10 +9752,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(208) ≤ 14.937831",
+          "display": "s(208) ≤ 14.937019",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "14.93783044811097"
+          "value": "14.937018796984567"
         }
       },
       {
@@ -9797,10 +9797,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(209) ≤ 14.958683",
+          "display": "s(209) ≤ 14.955042",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "14.95868244078260"
+          "value": "14.955041639430016"
         }
       },
       {
@@ -9842,27 +9842,27 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(210) ≤ 14.974214",
+          "display": "s(210) ≤ 14.973002",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "14.97421396826961"
+          "value": "14.973001116591412"
         }
       },
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 1,
-          "degree_provenance": "derived",
+          "degree": null,
+          "degree_provenance": "absent",
           "degree_recorded_upstream": false,
-          "exact_form": "15",
-          "minimal_polynomial": "s - 15 = 0",
-          "state": "closed-form"
+          "exact_form": null,
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(211) ≥ 14.564659",
@@ -9887,10 +9887,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(211) ≤ 15",
+          "display": "s(211) ≤ 14.997961",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.0"
+          "value": "14.99796070496771500150"
         }
       },
       {
@@ -10636,18 +10636,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 12,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "24s^6-(3008+632sqrt(2))s^5+(143990+46836sqrt(2))s^4-(3498934+1393560sqrt(2))s^3+(46342192+20798868sqrt(2))s^2-(320302448+155625644sqrt(2))s+907787225+466763736sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(228) ≥ 15.106735",
@@ -10672,10 +10672,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(228) ≤ 15.609023",
+          "display": "s(228) ≤ 15.604639",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.60902282132495"
+          "value": "15.604638007678682"
         }
       },
       {
@@ -10996,18 +10996,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 12,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "6596s^6-(619856+19000sqrt(2))s^5+(24226944+1444540sqrt(2))s^4-(504036792+43818500sqrt(2))s^3+(5886496273+662906450sqrt(2))s^2-(36585732598+5001593450sqrt(2))s+94529982167+15055629320sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(236) ≥ 15.387494",
@@ -11032,27 +11032,27 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(236) ≤ 15.876077",
+          "display": "s(236) ≤ 15.872220",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.87607676541001"
+          "value": "15.872219025616040"
         }
       },
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 2,
-          "degree_provenance": "derived",
+          "degree": null,
+          "degree_provenance": "absent",
           "degree_recorded_upstream": false,
-          "exact_form": "(29/2) + sqrt(2)",
-          "minimal_polynomial": "4*s**2 - 116*s + 833 = 0",
-          "state": "closed-form"
+          "exact_form": null,
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(237) ≥ 15.422205",
@@ -11077,10 +11077,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(237) ≤ 15.914214",
+          "display": "s(237) ≤ 15.911192",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.91421356237309"
+          "value": "15.911191683008479"
         }
       },
       {
@@ -11122,10 +11122,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(238) ≤ 15.939847",
+          "display": "s(238) ≤ 15.931726",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.93984676308969"
+          "value": "15.931725503598480"
         }
       },
       {
@@ -11167,10 +11167,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(239) ≤ 15.956434",
+          "display": "s(239) ≤ 15.953820",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.95643304058435"
+          "value": "15.953819333484685"
         }
       },
       {
@@ -11212,10 +11212,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(240) ≤ 15.975595",
+          "display": "s(240) ≤ 15.969686",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.97559404379946"
+          "value": "15.969685337536875"
         }
       },
       {
@@ -11257,10 +11257,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(241) ≤ 15.990917",
+          "display": "s(241) ≤ 15.988133",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "15.99091684780193"
+          "value": "15.988132439537539"
         }
       },
       {
@@ -12051,18 +12051,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "150s^4-(11600+1720sqrt(2))s^3+(324554+80686sqrt(2))s^2-(3938328+1264082sqrt(2))s+6617328sqrt(2)+17614577=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(259) ≥ 16.099668",
@@ -12087,10 +12087,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(259) ≤ 16.602572",
+          "display": "s(259) ≤ 16.602569",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.60257141234448"
+          "value": "16.602568490497649"
         }
       },
       {
@@ -12231,18 +12231,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 2,
-          "degree_provenance": "derived",
+          "degree": null,
+          "degree_provenance": "absent",
           "degree_recorded_upstream": false,
-          "exact_form": "(25/2) + 3 sqrt(2)",
-          "minimal_polynomial": "4*s**2 - 100*s + 553 = 0",
-          "state": "closed-form"
+          "exact_form": null,
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(263) ≥ 16.231546",
@@ -12267,10 +12267,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(263) ≤ 16.742641",
+          "display": "s(263) ≤ 16.742281",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.74264068711928"
+          "value": "16.742280159187313"
         }
       },
       {
@@ -12456,18 +12456,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 6,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "2s^6-176s^5+6280s^4-115238s^3+1129107s^2-5432722s+9316447=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(268) ≥ 16.394804",
@@ -12492,27 +12492,27 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(268) ≤ 16.879333",
+          "display": "s(268) ≤ 16.878815",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.87933209237563"
+          "value": "16.878814821018413"
         }
       },
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "1338s^4-(92136+4180sqrt(2))s^3+(2378600+206890sqrt(2))s^2-(27290208+3419060sqrt(2))s+18867680sqrt(2)+117431679=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(269) ≥ 16.427248",
@@ -12540,7 +12540,7 @@
           "display": "s(269) ≤ 16.905968",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.90596764828402"
+          "value": "16.905967058598858"
         }
       },
       {
@@ -12582,10 +12582,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(270) ≤ 16.940736",
+          "display": "s(270) ≤ 16.937811",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.94073593015457"
+          "value": "16.937810329390629"
         }
       },
       {
@@ -12627,10 +12627,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(271) ≤ 16.955095",
+          "display": "s(271) ≤ 16.950821",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.95509447506437"
+          "value": "16.950820792633813"
         }
       },
       {
@@ -12672,10 +12672,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(272) ≤ 16.969808",
+          "display": "s(272) ≤ 16.968280",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.96980702828259"
+          "value": "16.968279785326896"
         }
       },
       {
@@ -12717,10 +12717,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(273) ≤ 16.988321",
+          "display": "s(273) ≤ 16.983926",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "16.98832058897683"
+          "value": "16.983925962660670"
         }
       },
       {
@@ -13556,18 +13556,18 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 8,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "150s^4-(12200+1720sqrt(2))s^3+(360254+85846sqrt(2))s^2-(4622836+1430614sqrt(2))s+21889209+7963816sqrt(2)=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(292) ≥ 17.093476",
@@ -13592,10 +13592,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(292) ≤ 17.602572",
+          "display": "s(292) ≤ 17.597250",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.60257141234448"
+          "value": "17.597249391199519"
         }
       },
       {
@@ -13817,10 +13817,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(297) ≤ 17.741170",
+          "display": "s(297) ≤ 17.740418",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.74116992948972"
+          "value": "17.740417287548325"
         }
       },
       {
@@ -13997,27 +13997,27 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(301) ≤ 17.868992",
+          "display": "s(301) ≤ 17.846668",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.86899185179999"
+          "value": "17.846667192848074"
         }
       },
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
-            "style": "solid"
+            "glyph": "≈",
+            "meaning": "only known numerically",
+            "style": "muted"
           }
         ],
         "exactness": {
-          "degree": 4,
-          "degree_provenance": "frontier",
-          "degree_recorded_upstream": true,
+          "degree": null,
+          "degree_provenance": "absent",
+          "degree_recorded_upstream": false,
           "exact_form": null,
-          "minimal_polynomial": "s^4-66s^3+1631s^2-17882s+73369=0",
-          "state": "minimal-polynomial"
+          "minimal_polynomial": null,
+          "state": "numeric-only"
         },
         "lower": {
           "display": "s(302) ≥ 17.401219",
@@ -14042,10 +14042,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(302) ≤ 17.886747",
+          "display": "s(302) ≤ 17.885994",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.88674602860566"
+          "value": "17.885993892536710"
         }
       },
       {
@@ -14087,10 +14087,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(303) ≤ 17.931279",
+          "display": "s(303) ≤ 17.924350",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.93127894394689"
+          "value": "17.924349265547932"
         }
       },
       {
@@ -14132,10 +14132,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(304) ≤ 17.949173",
+          "display": "s(304) ≤ 17.934651",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.94917201919110"
+          "value": "17.934650018395903"
         }
       },
       {
@@ -14177,10 +14177,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(305) ≤ 17.960756",
+          "display": "s(305) ≤ 17.952960",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.96075558628675"
+          "value": "17.952959459023539"
         }
       },
       {
@@ -14222,10 +14222,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(306) ≤ 17.969270",
+          "display": "s(306) ≤ 17.963450",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.96926975248972"
+          "value": "17.963449907261179"
         }
       },
       {
@@ -14267,10 +14267,10 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(307) ≤ 17.982816",
+          "display": "s(307) ≤ 17.981031",
           "provenance": "frontier",
           "relation": "upper-bound",
-          "value": "17.98281564631754"
+          "value": "17.981030548643712"
         }
       },
       {
@@ -15072,13 +15072,13 @@
       "last_n": 324
     },
     "totals": {
-      "degree_derived_here": 251,
-      "degree_known": 287,
-      "degree_recorded_upstream": 36,
-      "exact_value_known": 287,
+      "degree_derived_here": 248,
+      "degree_known": 269,
+      "degree_recorded_upstream": 21,
+      "exact_value_known": 269,
       "lower_bound_first_proved_here": 3,
       "lower_bound_recent_result": 27,
-      "only_known_numerically": 37,
+      "only_known_numerically": 55,
       "proved_optimal": 62,
       "rigidity_catalogue_annotated": 2,
       "rigidity_established": 20

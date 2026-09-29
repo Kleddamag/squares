@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-29T23:45:05Z'
+  deadline_at: '2026-09-30T00:15:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-niqx
   status: in_progress
@@ -244,7 +244,7 @@ session:
     bead: think-xcij
     objective: Repair the publication contract mismatch and live-checkout test race, publish the reviewed
       efficiency block, and validate the main/daily hosted fanout.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: The passing allocation run is retained; publication checks exposed two additional isolated
       integration defects.
@@ -258,15 +258,47 @@ session:
       or a receipt bound to the wrong source prevents publication.
     fallback: Retain the last passing published checkpoint and repair the named failing contract without
       deleting mathematical checks.
-    outcome: null
+    outcome: Repaired publication candidate 03efb3702 passed 51 selected push steps and 2,262 tests in
+      273.60 seconds and was published. Complete main/daily workflow 36642969918 started on that exact
+      commit. Current main advanced to 886b1783a (PR 248), causing generated atlas, result registry and
+      release-pin merge conflicts and withholding PR workflows. The published Couzo/de Winter T-056/T-057
+      IDs also collide with the provisional wand125 labels.
     evidence:
     - docs/project/reviews/review-2026-09-29-validation-parallelism.md
+    stop_reason: Published candidate is locally validated; current upstream must be integrated before
+      PR merge-head certification.
+    next_action: Preserve both source records, register wand125 as T-058/T-059 with historical mapping,
+      regenerate atlas/release outputs, and validate the merged source.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-niqx
+    objective: Integrate upstream PR 248 without losing evidence, resolve provisional claim ID collisions,
+      regenerate release-bound atlas outputs, and obtain merged-head validation.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Upstream data and published claim IDs changed during hosted validation.
+    budget_minutes: 30
+    started_at: '2026-09-29T23:11:35Z'
+    deadline_at: '2026-09-29T23:41:35Z'
+    expected_output: Reviewed integrated source, a complete local push receipt with phase allocation and
+      node timing, and source-specific hosted results or explicit failures.
+    validation_command: cd packing && packing-validate --push --since 9174140a8
+    kill_condition: Missing or duplicated test coverage, hidden child failures, uncontrolled worker multiplication
+      or a receipt bound to the wrong source prevents publication.
+    fallback: Retain the last passing published checkpoint and repair the named failing contract without
+      deleting mathematical checks.
+    outcome: null
+    evidence:
+    - packing/frontier/results.yaml
+    - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
     stop_reason: null
-    next_action: Complete focused repairs, publish after affected push checks pass, and dispatch the hosted
-      complete checkpoint.
+    next_action: Commit the resolved merged data, repin its publication revision, regenerate artifacts
+      and run the affected gate before publishing.
   budget:
-    wall_minutes: 220
-    max_cycles: 8
+    wall_minutes: 250
+    max_cycles: 9
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
@@ -512,6 +544,10 @@ session:
   - 'Repaired allocation candidate a2b8e696c: 51 selected steps passed in 623.04 seconds; 7,751 tests
     passed and 9 skipped across normal and pool phases. All child receipts finish against one source and
     run identity. Remaining normal-worker tail is tracked by think-ii0r.'
+  - 'Repaired publication at 03efb3702: 51 selected steps passed, 2,262 tests passed, 273.60 seconds total.
+    Complete hosted workflow 36642969918 runs on that source. Fresh Astra-max static scope audit found
+    no unsupported mathematical promotion and all 19 T-037 inputs unchanged; the later merge requires
+    its own checks.'
   resource_rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
   stop_reason: null

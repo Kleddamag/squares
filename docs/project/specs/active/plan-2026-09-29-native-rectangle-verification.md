@@ -14,7 +14,7 @@ inventory of available checks and gaps.
 
 | Block | Workflow | Bead | Deliverable and completion criterion |
 | --- | --- | --- | --- |
-| Source intake and claim review | W2 factual-review | think-8cps, think-xgjo | Pin the MIT source, cite its maintained repository, register T-056 and T-057 without frontier promotion, retain the ceiling and admission findings |
+| Source intake and claim review | W2 factual-review | think-8cps, think-xgjo | Pin the MIT source, cite its maintained repository, register T-058 and T-059 without frontier promotion, retain the ceiling and admission findings |
 | Native rectangle verifier | W7 pipeline-improvement | think-bmf3 | Exact rational coverage engine, standalone candidate CLI, refusal controls, independently reviewed mathematical contract, and retained complete or explicitly inconclusive receipts |
 | Verifier golden tests and Rust gate review | W7 pipeline-improvement | think-v4dn, think-k8hl | Complete CLI decision goldens with separate semantic checks; live Rust lint probes, executed Rust tests and rustdoc; scoped review and validation evidence |
 | PR integration and certification | W7 pipeline-improvement | think-8cps, think-sewp | Reconcile the expired inherited session record, reduce frontend runtime without dropping checks, and obtain passing CI and full-checkpoint evidence |
@@ -98,7 +98,7 @@ Broader Rust support and search-CLI contracts remain in **think-cr8l**.
 4. Broaden to the standing wand125 certificates with per-input receipts.
    Keep unknown results and unreplayed cases explicit in the overview and beads.
 
-T-056’s ceiling repair and admission controls are tracked in **think-xgjo**; the new
+T-058’s ceiling repair and admission controls are tracked in **think-xgjo**; the new
 checker must enforce its own budget regardless of upstream driver behavior.
 Speed claims need matched benchmarks if adopted and do not alter the proof acceptance
 rule.
@@ -133,7 +133,7 @@ taking the minimum of the total density at those corners would not be justified.
 Retain the exact pending boxes first, then compare both bounds on identical boxes with a
 30-second cap. A useful first result closes at least one previously unresolved box
 without weakening any bound.
-Larger wand125 replays depend on this cost assessment; T-057’s complete row replay
+Larger wand125 replays depend on this cost assessment; T-059’s complete row replay
 remains a separate W2 task, think-190a.
 
 ## Continuing Work and Bead Dependencies
@@ -159,9 +159,9 @@ the mathematical completion conditions below.
 | Native frontier diagnostics and corner bound | think-wjb2 | Exact capped diagnostics, analytic controls, reviewed implementation and identical-frontier comparison; implemented and reviewed, with target results below |
 | Two-level depth refinement | think-gfpf | Reviewed diagnostic and complete 67/268 comparison; 15 parent closures, no complete-angle claim |
 | Complete native external certificate | think-aqne | Depends on think-wjb2 and its cost assessment; all 201 angles, no unresolved work, bound input/source receipt |
-| T-057 strict provenance and census admission | think-pgrx | Production-time identity binding, exact unique row inventory, explicit partial/unbound states and adversarial controls; implemented and reviewed, with target results below |
-| T-057 full row replay | think-11z6 | Depends on think-pgrx; all 12,028 minima and witnesses reconciled |
-| T-057 global counting | think-4t1e | Reconcile the identical certificate with existing complete native parent-core evidence; the global argument is established, while wand125’s exact row equality remains separate |
+| T-059 strict provenance and census admission | think-pgrx | Production-time identity binding, exact unique row inventory, explicit partial/unbound states and adversarial controls; implemented and reviewed, with target results below |
+| T-059 full row replay | think-11z6 | Depends on think-pgrx; all 12,028 minima and witnesses reconciled |
+| T-059 global counting | think-4t1e | Reconcile the identical certificate with existing complete native parent-core evidence; the global argument is established, while wand125’s exact row equality remains separate |
 | Guard transformed-certificate admission | think-pegr | Exact count, positive scale, mass, geometry and source binding; refuse the retained false announcement |
 | Rigorous ceiling implementation | think-xl42 | Certified witness bounds, orientation allowance and outward rounding |
 | Cached-axis compiled equivalence | think-q4eo | Pinned builds, tangency/threshold differential controls and complete canonical replay |
@@ -292,7 +292,7 @@ Full external coverage remains **think-aqne** under **think-bmf3**; the next sli
 design and cost a whole-angle traversal rather than aggregate this diagnostic into a
 proof.
 
-### Full T-057 Replay Readiness
+### Full T-059 Replay Readiness
 
 The reviewed census wrapper can run rows `0-12027` without changing the source search.
 It runs one serial subprocess and requires a finite whole-process time limit.

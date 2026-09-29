@@ -578,6 +578,10 @@ The first comparison criterion is recorded in the native verification plan befor
 measurement. Raw exact receipt values determine its verdict.
 Wall time from one run is diagnostic evidence only, not a performance claim.
 
+The wand125 claims recorded here under provisional T-056/T-057 are registered as
+T-058/T-059 after integration with the published Couzo and de Winter claims.
+The historical labels and retained receipt bytes are unchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

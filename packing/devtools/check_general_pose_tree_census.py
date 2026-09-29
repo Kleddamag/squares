@@ -1,4 +1,4 @@
-"""Run and admit the pinned T-057 per-row minimum comparison.
+"""Run and admit the pinned T-059 per-row minimum comparison.
 
 This tool checks one narrow claim: equality between minima computed by the pinned
 source search and the retained Kleddamag row minima.  Its separate direct evaluator
@@ -324,12 +324,12 @@ def snapshot_sources(
     if expected_certificate_sha256 is not None:
         _require(
             certificate_sha256 == expected_certificate_sha256,
-            "certificate differs from the retained T-057 pin",
+            "certificate differs from the retained T-059 pin",
         )
     if expected_reference_sha256 is not None:
         _require(
             reference_sha256 == expected_reference_sha256,
-            "reference differs from the retained T-057 pin",
+            "reference differs from the retained T-059 pin",
         )
     _require(
         reference.get("certificate_sha256") == certificate_sha256,
@@ -568,11 +568,11 @@ def inspect_legacy(
     _require(isinstance(reference, dict), "reference must be a JSON object")
     _require(
         _sha256(certificate_bytes) == PINNED_CERTIFICATE_SHA256,
-        "certificate differs from the retained T-057 pin",
+        "certificate differs from the retained T-059 pin",
     )
     _require(
         _sha256(reference_bytes) == PINNED_REFERENCE_SHA256,
-        "reference differs from the retained T-057 pin",
+        "reference differs from the retained T-059 pin",
     )
     _require(
         reference.get("certificate_sha256") == _sha256(certificate_bytes),

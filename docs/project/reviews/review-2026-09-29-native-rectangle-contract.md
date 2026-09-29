@@ -309,7 +309,7 @@ The coordinator owns the final diff, generated records, validation and publicati
 
 | Review surface | Completed evidence | Remaining obligation |
 | --- | --- | --- |
-| Upstream intake | Pinned MIT source, maintained-repository citations, T-056 and T-057 registration, transformation and admission review | Repair the upstream ceiling/admission gaps; replay T-057’s complete 12,028-row census |
+| Upstream intake | Pinned MIT source, maintained-repository citations, T-058 and T-059 registration, transformation and admission review | Repair the upstream ceiling/admission gaps; replay T-059’s complete 12,028-row census |
 | Native mathematics | Astra-max review of mass, symmetry, angular containment, common-core geometry, clipping, axis events and exhaustive subdivision; analytic and refusal controls | Complete native coverage of a retained external certificate; no formal kernel proof claimed |
 | Native CLI | Five real subprocess decision goldens with byte-exact output and independent semantic assertions; normal CI behavioral coverage | Keep incomplete and refused runs separate from certificate acceptance |
 | Rust | Scoped source review, executed tests, strict Clippy, formatting, rustdoc and live lint rejection probes for the first-party search crate | Broader Rust support and CLI contracts remain in **think-cr8l**; archived Rust is not certified by this crate’s gate |
@@ -409,8 +409,8 @@ The integration block is complete.
 The next **think-bmf3** slice retains exact unresolved n11 boxes and compares tighter
 bounds on identical inputs under the planned 30-second ceiling.
 No new geometric experiment was run during this integration review.
-Complete external-certificate acceptance and T-057’s full census remain open, and
-T-056/T-057 retain their existing epistemic statuses.
+Complete external-certificate acceptance and T-059’s full census remain open, and
+T-058/T-059 retain their existing epistemic statuses.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

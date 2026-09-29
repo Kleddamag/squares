@@ -186,7 +186,7 @@ The integrated workflow, allocation, receipt and budget contracts previously pas
 focused tests in 54.36 seconds.
 
 No general speedup is claimed from these operational checks.
-The full native external rectangle replay and T-057 complete row-minimum census remain
+The full native external rectangle replay and T-059 complete row-minimum census remain
 separate mathematical obligations; changing validation scheduling establishes neither.
 
 ### Publication Contract and Concurrent Probe Repair

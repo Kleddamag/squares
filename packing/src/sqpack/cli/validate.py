@@ -72,17 +72,22 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     "n=1..200": (150, 150, 126),
     "n=1..324": (262, 262, 238),
 }
+#: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
+#: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
+#: one rendering left.
 SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
-    "n=1..100": ("n=68", "n=69"),
-    "n=1..200": ("n=68", "n=69", "n=103", "n=105", "n=110", "n=131"),
-    "n=1..324": ("n=68", "n=69", "n=103", "n=105", "n=110", "n=131"),
+    "n=1..100": ("n=69",),
+    "n=1..200": ("n=69",),
+    "n=1..324": ("n=69",),
 }
 #: (records with a separating square, those squares, records with any translating
-#: square, those squares).
+#: square, those squares). Re-measured on 2026-09-29 for the 50 records T-056 and T-057
+#: moved onto Couzo's and de Winter's packings, whose optimized poses leave fewer squares
+#: free to separate than the catalogue packings they replaced.
 SCREEN_FINDINGS: dict[str, tuple[int, int, int, int]] = {
-    "n=1..100": (25, 76, 84, 496),
-    "n=1..200": (60, 678, 176, 1933),
-    "n=1..324": (114, 2714, 296, 5323),
+    "n=1..100": (26, 87, 85, 518),
+    "n=1..200": (65, 606, 181, 1883),
+    "n=1..324": (120, 1906, 301, 4512),
 }
 UNDETERMINED_BY_MISS = (28,)
 #: The cases the two sampled sweeps re-derive on every pull request, computed here from
@@ -2995,6 +3000,16 @@ def _results_headline(context: Context) -> str:
     return _module(context, "devtools.render_results_headline", "--check")
 
 
+def _recent_results(context: Context) -> str:
+    # About a second: a hundred case records, the register and the bibliography. Records
+    # tier because it checks generated views of the record -- README's three results
+    # tables: New Results and Results by Others, which were a paragraph of prose per
+    # result, and the per-case recent-results table, whose hand-kept predecessor and its
+    # counts drifted three times (think-ti71). A hand edit inside any of the three fails
+    # here; the counts the survey summary quotes are held by `check_readme`.
+    return _module(context, "devtools.render_recent_results", "--check")
+
+
 def _certificate_citations(context: Context) -> str:
     # Sub-second: it ast-parses five modules and reads a hundred frontmatter blocks. Records
     # tier because it checks the record, not the mathematics -- that every exact certificate
@@ -4347,6 +4362,25 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "README's recent results agree with the records",
+        _recent_results,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "README.md",
+            "packing/frontier/n-*.md",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
+            "packing/resources/bibliography.yaml",
+            "packing/devtools/render_recent_results.py",
+            "packing/devtools/build_bound_citations.py",
+            "packing/devtools/check_results.py",
+            "packing/devtools/render_research_tables.py",
+            "packing/devtools/render_results.py",
+        ),
+    ),
+    Step(
         "exact certificates are named by their records",
         _certificate_citations,
         fast=True,
@@ -4770,6 +4804,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",
+        "README's recent results agree with the records",
         "exact certificates are named by their records",
         "rung figures agree with their certificates",
         "case prose agrees with its own front matter",

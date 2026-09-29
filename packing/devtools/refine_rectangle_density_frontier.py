@@ -296,9 +296,12 @@ def main(argv: list[str] | None = None) -> int:
     result = {
         "status": "DIAGNOSTIC_ONLY" if complete else "PARTIAL_DIAGNOSTIC",
         "outcome": (
-            "LOCAL_CLOSURE_OBSERVED" if any(row["all_children_closed"] for row in rows)
+            "LOCAL_CLOSURE_OBSERVED"
+            if any(row["all_children_closed"] for row in rows)
             else "NO_LOCAL_CLOSURES"
-        ) if complete else "INCOMPLETE",
+        )
+        if complete
+        else "INCOMPLETE",
         "candidate_sha256": candidate_sha256,
         "frontier_receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest(),
         "checker_source_sha256": checker_sha256,

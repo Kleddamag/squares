@@ -2801,7 +2801,7 @@ sessions:
   title: "Native Rectangle Bounds and T-057 Census Admission"
   status: in_progress
   primary_bead: think-8cps
-  phases: 4
+  phases: 5
   measured: true
   rollups:
   - packing/campaign/resource-usage/session-163-codex-task-tree.yaml

@@ -111,7 +111,7 @@ session:
     objective: Verify hosted CI on the published implementation and, in a disjoint Sol lane, implement
       the predeclared two-level refinement diagnostic for Astra-max readiness review; integrate only reviewed
       evidence.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Final pre-push gate passed and implementation81141896a is published.
     budget_minutes: 30
@@ -122,10 +122,38 @@ session:
     validation_command: gh pr checks 246
     kill_condition: A hosted failure or unresolved mathematical finding blocks acceptance.
     fallback: Repair the named failure and rerun the affected gate; retain any incomplete status explicitly.
+    outcome: 'Reviewed refinement completed and met its local criterion: 15 of67 parents closed. Hosted
+      release-stamp failure repaired with atlas regeneration and a new selector edge. Original source/receipt
+      checkpoint43c66ec86 preserved; formatting-only reproduction has identical exact result.'
+    evidence:
+    - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+    - packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json
+    stop_reason: Implementation, review and bounded measurement complete; final integration validation
+      follows.
+    next_action: Run the required push gate and publish all repairs, then verify hosted CI.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: Validate and publish the final reviewed refinement, release-data repair and record updates;
+      verify hosted required CI and close the integration slice.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: All scoped code and mathematical findings are resolved; final source-bound reproduction
+      agrees exactly with the reviewed run. The initial unexecuted 30-minute plan entered the finalization
+      reserve; it was prospectively narrowed to20 minutes before the gate started.
+    budget_minutes: 20
+    started_at: '2026-09-29T19:45:29Z'
+    deadline_at: '2026-09-29T20:05:29Z'
+    expected_output: Passing push and hosted checks, final PR synopsis and synced beads, retained review
+      and cost records.
+    validation_command: cd packing && packing-validate --push --since 81141896ae137c77f2a7627b98b22fbef7ad7dd5
+    kill_condition: A required check failure blocks completion of integration.
+    fallback: Repair the named failure and rerun affected validation; preserve explicit incomplete evidence.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Inspect hosted runs36618835203 and36618835566 while finalizing records.
+    next_action: Freeze source, run the integrated push gate, publish and inspect hosted checks.
   budget:
     wall_minutes: 180
     max_cycles: 6
@@ -483,6 +511,9 @@ session:
     data pin and live revision both81141896a.'
   - 'Astra-max retained receipt audit: 67 parents and 268 exact partitions, 15 closure flags, monotonicity
     and five source/input hashes agree; no independent recomputation of clipping bounds.'
+  - 'Formatting-only final-source reproduction: Python AST unchanged; decoded diagnostic exactly matches
+    checkpoint43c66ec86 except elapsed time and tool source hash. Final receipt completes67/268 with15
+    closures in8.994228833 seconds. Original reviewed evidence remains in Git history.'
   resource_rollups:
   - packing/campaign/resource-usage/session-163-codex-task-tree.yaml
   stop_reason: null

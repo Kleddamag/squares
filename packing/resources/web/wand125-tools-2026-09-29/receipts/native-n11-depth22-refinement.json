@@ -4,7 +4,7 @@
   "checker_source_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
   "closed_parents": 15,
   "comparison_tool_sha256": "ae78e3b397027cefacbf31e313305e828547eacfa87ace1688013b221ce48df1",
-  "elapsed_seconds": 7.71376712503843,
+  "elapsed_seconds": 8.994228833005764,
   "evaluated_children": 268,
   "expected_children": 268,
   "expected_parents": 67,
@@ -729,7 +729,7 @@
   "max_seconds": 30.0,
   "outcome": "LOCAL_CLOSURE_OBSERVED",
   "processed_parents": 67,
-  "refinement_tool_sha256": "aef1df6e6ae82ea7ecc47d9765c48a1d310f158437883c1ec6e402806f0d6d5d",
+  "refinement_tool_sha256": "808be05dfd7c968149379fcdb692aa3580725ff9a8a8ae67b4e8025ff111eac2",
   "refinements": [
     {
       "all_children_closed": true,

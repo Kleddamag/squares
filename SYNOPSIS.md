@@ -1223,7 +1223,7 @@ verified.
 the measured refinement result, before a complete external rectangle replay.
 The
 [two-level diagnostic](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md#two-level-refinement-result)
-evaluated all 268 children and closed 15 of 67 depth-capped parents in 7.714 seconds.
+evaluated all 268 children and closed 15 of 67 depth-capped parents in 8.994 seconds.
 The other 52 parents and 11 originally queued boxes remain outside a complete proof.
 The earlier corner comparison’s zero new threshold crossings remains a negative result.
 Complete external-certificate coverage remains required before assigning independent

@@ -433,7 +433,7 @@ section records no measured target outcome or new packing proof.
 ## Two-Level Refinement Result
 
 The subsequently selected
-[target receipt](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json)
+[first target receipt](https://github.com/jlevy/squares/blob/43c66ec86/packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json)
 is `DIAGNOSTIC_ONLY`, with outcome `LOCAL_CLOSURE_OBSERVED`. It completed all 67
 selected parents and 268 child bounds, closed 15 parents, and recorded 7.713767125
 seconds including frontier replay, with no timeout.
@@ -457,6 +457,19 @@ The result demonstrates useful local subdivision on this fixed set of leaves.
 It neither replaces the original inconclusive angle verdict nor combines diagnostics
 into a complete proof, estimates whole-angle cost, or permits an automatic larger run.
 The other net directions and complete external-certificate acceptance remain open.
+
+### Final Source Formatting and Reproduction
+
+The repository-wide format check required a formatting-only change after this review.
+Commit `43c66ec86` retains the reviewed tool and first receipt.
+The coordinator checked that formatting left the tool’s parsed Python AST unchanged,
+then repeated the same bounded diagnostic to bind the final source bytes.
+The
+[final receipt](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json)
+records 8.994228833 seconds and the same complete 67/268 census and 15 closures.
+Its entire decoded result matches the first receipt except elapsed time and the tool’s
+source hash. This is a reproduction for final-source binding, not a larger experiment or
+a new Astra review. The native checker and mathematical algorithm are unchanged.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

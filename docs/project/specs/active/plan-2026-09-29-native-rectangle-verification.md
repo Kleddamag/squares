@@ -261,7 +261,7 @@ domain, so even successful local refinement would not estimate complete-angle co
 
 The
 [retained diagnostic](../../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json)
-matched the frozen frontier and evaluated all 67 parents and 268 children in 7.714
+matched the frozen frontier and evaluated all 67 parents and 268 children in 8.994
 seconds, including the 1,000-node replay.
 Every child bound preserved monotonicity and 15 parents closed with all four child
 bounds at least 1. **The predeclared local usefulness criterion passed.** The other 52

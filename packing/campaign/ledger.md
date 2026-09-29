@@ -177,7 +177,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-160](agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | completed | contemporaneous | `factual-review` (correctness) | `factual-review` (correctness) | 3 | think-il68 | BC-390 (think-7c17): run the widened n = 11 rung 0 box on eight workers overnight, with the rectangle ladders and the queued wand125 and Daniel replays on the remaining workers, per the 2026-09-27 plan. |
 | [session-161](agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | stopped | contemporaneous | `research-survey` (correctness) | `factual-review` (correctness) | 2 | think-1an7 | Under think-1an7, register s(17) > 116511/25000, s(21) = 5, s(45) = 7 and the reported s(50) >= 37/5, publish them, and collect the replays listed under Recovery State as they land. |
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
-| [session-163](agent-sessions/session-163-native-bounds-and-census.md) | in_progress | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 4 | think-8cps | Under think-bmf3, design and cost a whole-angle traversal using the local refinement result; complete external coverage remains think-aqne. T-057 full exact row equality remains think-11z6. |
+| [session-163](agent-sessions/session-163-native-bounds-and-census.md) | in_progress | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-bmf3, design and cost a whole-angle traversal using the local refinement result; complete external coverage remains think-aqne. T-057 full exact row equality remains think-11z6. |
 
 ### Workflow summary
 
@@ -191,7 +191,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 37 | 1 |
 | `research-loop` | 31 | 4 | 108 | 8 |
-| `pipeline-improvement` | 37 | 2 | 158 | 6 |
+| `pipeline-improvement` | 37 | 2 | 159 | 6 |
 | `documentation-pass` | 1 | 0 | 25 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 35 | 2 |

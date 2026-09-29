@@ -41,8 +41,7 @@ def _local_bound(
     )
     return sum(
         (
-            rectangle.density
-            * density.exact_intersection_area(rectangle, polygon)
+            rectangle.density * density.exact_intersection_area(rectangle, polygon)
             for rectangle in candidate.rectangles
         ),
         Fraction(),
@@ -52,7 +51,12 @@ def _local_bound(
 def test_analytic_two_level_partition_and_bounds(monkeypatch: pytest.MonkeyPatch) -> None:
     candidate = density.parse_candidate(_candidate_data(), n=65)
     parent = density.PendingBox(
-        1, Fraction(15, 8), Fraction(15, 8), Fraction(17, 8), Fraction(17, 8), 0,
+        1,
+        Fraction(15, 8),
+        Fraction(15, 8),
+        Fraction(17, 8),
+        Fraction(17, 8),
+        0,
         "depth_limit",
     )
     children = refinement._four_children(parent)  # pyright: ignore[reportPrivateUsage]
@@ -63,9 +67,7 @@ def test_analytic_two_level_partition_and_bounds(monkeypatch: pytest.MonkeyPatch
     assert len(children) == 4
     assert all(child.depth == 2 for child in children)
     assert _local_bound(candidate, parent) == Fraction(9, 25)
-    assert [_local_bound(candidate, child) for child in children] == [
-        Fraction(169, 100)
-    ] * 4
+    assert [_local_bound(candidate, child) for child in children] == [Fraction(169, 100)] * 4
 
     # Drive the real parent/child aggregation with the exact local rotation.
     # Only the angle lookup is injected; clipping and all four bounds stay exact.
@@ -112,12 +114,18 @@ def synthetic_frontier(tmp_path: Path) -> tuple[Path, Path]:
 def _argv(candidate_path: Path, receipt_path: Path) -> list[str]:
     return [
         str(candidate_path),
-        "--frontier-receipt", str(receipt_path),
-        "--n", "65",
-        "--max-nodes-per-angle", "1",
-        "--max-depth", "0",
-        "--expected-pending-boxes", "1",
-        "--expected-depth-leaves", "1",
+        "--frontier-receipt",
+        str(receipt_path),
+        "--n",
+        "65",
+        "--max-nodes-per-angle",
+        "1",
+        "--max-depth",
+        "0",
+        "--expected-pending-boxes",
+        "1",
+        "--expected-depth-leaves",
+        "1",
     ]
 
 

@@ -32,7 +32,9 @@ and how each claim was checked.
 
 ## Headline Results
 
-The results scored `S5`, for movement on the central open case:
+The results scored
+<span class="site-chip site-rung-fill" data-rung="S" data-level="5">S5</span>, for
+movement on the central open case:
 
 {{HEADLINE_CARDS}}
 

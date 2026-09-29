@@ -73,7 +73,7 @@ def _fill(rung: str) -> str:
 
 
 def _rung(label: str) -> str:
-    return f'<span class="site-rung site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
+    return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
 def card_kind(href: str) -> str:

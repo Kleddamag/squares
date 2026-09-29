@@ -377,11 +377,10 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
     case_url = repo_file(tables.FRONTIER / f"n-{n:03d}.md")
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     status = case["status"]
-    shown_status = html.escape(status)
+    tone = ' data-tone="accent"' if status == "proved" else ""
+    shown_status = f'<span class="site-chip"{tone}>{html.escape(status)}</span>'
     if case["reported_status"] != status:
         shown_status += f" (reported {html.escape(case['reported_status'])})"
-    if status == "proved":
-        shown_status = f'<span class="site-status-proved">{shown_status}</span>'
     gap_html, gap_value = gap(case)
     star = '<span class="site-star" title="Recent lower bound">★</span>' if recent else ""
     cells = [

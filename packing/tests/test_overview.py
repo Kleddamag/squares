@@ -158,3 +158,20 @@ def test_every_card_names_where_it_goes_and_gets_there(page: str) -> None:
             assert href[1:] in ids, href
         elif kind == "page":
             assert href.split("#", 1)[0] in served, href
+
+
+CHIP = re.compile(r'<span class="site-chip( site-rung-fill)?"([^>]*)>([^<]+)</span>')
+
+
+@pytest.mark.parametrize("name", ["index.html", "frontier.html"])
+def test_every_small_label_is_one_chip(name: str) -> None:
+    """Rungs and case statuses share one chip; a rung chip carries its scale and level,
+    which the stylesheet colours, and names the rung it shows."""
+    html = render_overview.PAGES[name]().html
+    chips = CHIP.findall(html)
+    assert chips, name
+    for fill, attributes, label in chips:
+        if fill:
+            assert f'data-rung="{label[0]}" data-level="{label[1:]}"' in attributes, label
+    assert "site-rung " not in html
+    assert "site-status-proved" not in html

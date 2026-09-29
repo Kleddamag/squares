@@ -477,12 +477,29 @@ candidate and upstream run record, digests every other file of the source tree, 
 keeps the first-party preflight and coverage-replay receipts.
 
 The [September 28 wand125 update](web/wand125-x-update-2026-09-28/README.md), under
-**[wand125 X update 2026-09-28]**, keeps two messages wand125 sent the owner on X and a
-byte capture of the `n ≤ 100` lower-bound table they link.
+**[wand125 X update 2026-09-28]**, keeps three messages wand125 sent the owner on X, two
+on 28 September and one on 29 September, and a byte capture of the `n ≤ 100` lower-bound
+table the first two link.
 They report evand’s `s(21) = 5` and `s(45) = 7`, rectangle-density bounds to `n = 95`
 and `s(50) ≥ 37/5`, none of it acquired here when they arrived; the packet maps each
 claim to the record and to the bead that owns its intake, and each has since been
-retained in its own packet, listed below.
+retained in its own packet.
+The third announces `wand125/square-packing-tools`, the tools behind those certificates.
+
+Four packets of 28 September retain those results:
+[wand125’s 50 standing rectangle certificates at `39d8ecc`](web/wand125-rectangle-certificates-2026-09-28/README.md),
+[its point-only and mixed certificates](web/wand125-point-and-mixed-2026-09-28/README.md)
+for `s(21)`, `s(45)` and `s(50)`,
+[Evan Daniel’s mixed covers](web/evand-square-packing-2026-09-28/README.md) for
+`s(21) = 5` and `s(45) = 7`, and
+[Guzhou0806’s R067 and R068](web/n17-guzhou-r068-2026-09-28/README.md) at `n = 17`.
+
+Since 22 August 2026 the archive has retained every public certificate that moved a
+lower bound here. Some build on this project’s certificates or pipeline (Kleddamag,
+Guzhou0806, Mira, wand125) or credit it second-hand (Tokoharu); others are independent
+of it (Evan Daniel, on Burns’s and Massaccesi’s method).
+Each key’s `credit` in [`bibliography.yaml`](bibliography.yaml) names the lineage,
+“after Levy” where the source credits this project.
 
 | Key | What | Source | File stem (in `web/`) |
 | --- | --- | --- | --- |

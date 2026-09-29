@@ -1,7 +1,8 @@
 # wand125 Update on X, Supplied 2026-09-28
 
-This packet keeps two messages from wand125 (X: `@wand_125`, GitHub: `wand125`) to the
-project owner, and a byte capture of the lower-bound table they link.
+This packet keeps three messages from wand125 (X: `@wand_125`, GitHub: `wand125`) to
+the project owner, two on 28 September and one on 29 September 2026, and a byte capture
+of the lower-bound table the first two link.
 Its citation key is **[wand125 X update 2026-09-28]**.
 
 The messages report results this repository has not yet taken in, and list the tools

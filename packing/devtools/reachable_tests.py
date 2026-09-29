@@ -297,7 +297,11 @@ def select_tests(changed: list[str]) -> TestSelection:
 
 
 def pytest_command(
-    targets: Sequence[str], workers: int, *, artifact_stem: Path | None = None
+    targets: Sequence[str],
+    workers: int,
+    *,
+    marker: str = "not exhaustive_exact",
+    artifact_stem: Path | None = None,
 ) -> tuple[str, ...]:
     """The pytest invocation for a selection, under `workers` xdist processes.
 
@@ -326,7 +330,7 @@ def pytest_command(
         "-q",
         *targets,
         "-m",
-        "not exhaustive_exact",
+        marker,
         *distribution,
         "--durations=0",
         "--durations-min=0",
@@ -361,9 +365,22 @@ def main(argv: Sequence[str] | None = None) -> int:
             " are already busy: `packing-validate` passes `cpus - jobs + 1`."
         ),
     )
+    parser.add_argument(
+        "--pool-workers",
+        metavar="N",
+        type=int,
+        help=(
+            "split the selected tests into disjoint normal and pool_heavy marker lanes; "
+            "the latter runs serially with PACK_JOBS=N"
+        ),
+    )
     namespace = parser.parse_args(argv)
     if namespace.numprocesses < 1:
         parser.error("--numprocesses must be at least 1")
+    if namespace.pool_workers is not None and namespace.pool_workers < 1:
+        parser.error("--pool-workers must be at least 1")
+    if namespace.pool_workers is not None and not namespace.run:
+        parser.error("--pool-workers requires --run")
 
     selection = select_tests(changed_paths(namespace.since))
     if namespace.summary:
@@ -389,7 +406,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     # request, while `--push` pays only for the tests your own change reaches, and a slow
     # test your change reaches is exactly the one worth waiting for.
     parent_stem_value = os.environ.get("PACKING_REACHABLE_TEST_ARTIFACT_STEM")
-    child_stem: Path | None = None
+    parent_stem: Path | None = None
     child_environment: dict[str, str] | None = None
     if parent_stem_value:
         parent_stem = Path(parent_stem_value)
@@ -400,7 +417,6 @@ def main(argv: Sequence[str] | None = None) -> int:
             parser.error("reachable-test artifacts must stay outside the source checkout")
         # Each child has its own prefix: a later two-phase run can keep both JUnit and
         # progress receipts without overwriting the first child's partial evidence.
-        child_stem = Path(f"{parent_stem}.pytest-all")
         git_environment = {
             key: value for key, value in os.environ.items() if not key.startswith("GIT_")
         }
@@ -419,14 +435,49 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not parent_run_id:
             parser.error("reachable-test artifacts need the parent run id")
         child_environment = dict(os.environ)
-        child_environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] = str(child_stem)
         child_environment["PACKING_REACHABLE_TEST_RUN_ID"] = parent_run_id
         child_environment["PACKING_REACHABLE_TEST_SOURCE_COMMIT"] = source_commit
-        child_environment["PACKING_REACHABLE_TEST_WORKERS"] = str(namespace.numprocesses)
-    command = pytest_command(targets, namespace.numprocesses, artifact_stem=child_stem)
-    if child_environment is None:
-        return subprocess.run(command, cwd=ROOT, check=False).returncode
-    return subprocess.run(command, cwd=ROOT, check=False, env=child_environment).returncode
+
+    def run_phase(name: str, marker: str, workers: int, pack_jobs: int | None) -> int:
+        stem = Path(f"{parent_stem}.{name}") if parent_stem is not None else None
+        command = pytest_command(targets, workers, marker=marker, artifact_stem=stem)
+        if child_environment is None and pack_jobs is None:
+            return subprocess.run(command, cwd=ROOT, check=False).returncode
+        environment = dict(os.environ if child_environment is None else child_environment)
+        if stem is not None:
+            environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] = str(stem)
+            environment["PACKING_REACHABLE_TEST_WORKERS"] = str(workers)
+        if pack_jobs is not None:
+            environment["PACK_JOBS"] = str(pack_jobs)
+        return subprocess.run(command, cwd=ROOT, check=False, env=environment).returncode
+
+    if namespace.pool_workers is None:
+        return run_phase("pytest-all", "not exhaustive_exact", namespace.numprocesses, None)
+
+    def empty_lane(marker: str) -> bool:
+        # xdist's exit 5 could hide a collection mismatch. Only a separate serial
+        # collection that also finds no tests permits this lane to be omitted.
+        probe = (
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            *targets,
+            "-m",
+            marker,
+            "--collect-only",
+        )
+        return subprocess.run(probe, cwd=ROOT, check=False).returncode == 5
+
+    normal_marker = "not exhaustive_exact and not pool_heavy"
+    pool_marker = "not exhaustive_exact and pool_heavy"
+    normal_status = run_phase("pytest-normal", normal_marker, namespace.numprocesses, 1)
+    if normal_status != 0 and (normal_status != 5 or not empty_lane(normal_marker)):
+        return normal_status
+    pool_status = run_phase("pytest-pool", pool_marker, 1, namespace.pool_workers)
+    if pool_status != 0 and (pool_status != 5 or not empty_lane(pool_marker)):
+        return pool_status
+    return 5 if normal_status == 5 and pool_status == 5 else 0
 
 
 if __name__ == "__main__":

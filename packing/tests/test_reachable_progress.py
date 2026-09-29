@@ -261,3 +261,44 @@ def test_parent_artifact_runner_gives_wrapper_its_own_command_stem(
     assert child["PACKING_REACHABLE_TEST_RUN_ID"] == context.artifact_run_id
     assert Path(child["PACKING_REACHABLE_TEST_ARTIFACT_STEM"]).parent == artifacts
     assert len(list(artifacts.glob("command-*.start.json"))) == 1
+
+
+def test_pool_phases_have_distinct_receipts_and_effective_resource_identity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    parent_stem = tmp_path / "command-pool"
+    monkeypatch.setenv("PACKING_REACHABLE_TEST_ARTIFACT_STEM", str(parent_stem))
+    monkeypatch.setenv("PACKING_REACHABLE_TEST_RUN_ID", "parent-pool-run")
+    monkeypatch.setattr(reachable_tests, "changed_paths", lambda _since: ["known"])
+    monkeypatch.setattr(
+        reachable_tests,
+        "select_tests",
+        lambda _changed: reachable_tests.TestSelection(
+            everything=False, reason="fixture", tests=("packing/tests/test_reachable_tests.py",)
+        ),
+    )
+    children: list[tuple[tuple[str, ...], dict[str, str]]] = []
+    git_calls = 0
+
+    def run(command: tuple[str, ...], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        nonlocal git_calls
+        if command[:2] == ("git", "rev-parse"):
+            git_calls += 1
+            return subprocess.CompletedProcess(command, 0, stdout=SOURCE + "\n")
+        children.append((command, cast("dict[str, str]", kwargs["env"])))
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(reachable_tests.subprocess, "run", run)
+    assert reachable_tests.main(["--run", "-n", "3", "--pool-workers", "3"]) == 0
+    assert git_calls == 1
+    assert len(children) == 2
+    for (command, environment), name, workers, pack_jobs in zip(
+        children, ("normal", "pool"), ("3", "1"), ("1", "3"), strict=True
+    ):
+        stem = f"{parent_stem}.pytest-{name}"
+        assert f"--junitxml={stem}.junit.xml" in command
+        assert environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] == stem
+        assert environment["PACKING_REACHABLE_TEST_RUN_ID"] == "parent-pool-run"
+        assert environment["PACKING_REACHABLE_TEST_SOURCE_COMMIT"] == SOURCE
+        assert environment["PACKING_REACHABLE_TEST_WORKERS"] == workers
+        assert environment["PACK_JOBS"] == pack_jobs

@@ -15,6 +15,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 from types import SimpleNamespace
+from typing import cast
 
 import pytest
 
@@ -293,3 +294,156 @@ def test_the_runner_wires_its_argument_to_the_command_it_builds(
 
     assert seen[0][seen[0].index("-n") :][:2] == ("-n", "3"), seen[0]
     assert "-n" not in seen[1], seen[1]
+
+
+@pytest.mark.parametrize(
+    ("normal_status", "normal_probe", "pool_status", "pool_probe", "expected", "phases"),
+    [
+        (0, None, 0, None, 0, ("normal", "pool")),
+        (5, 5, 0, None, 0, ("normal", "probe", "pool")),
+        (0, None, 5, 5, 0, ("normal", "pool", "probe")),
+        (5, 5, 5, 5, 5, ("normal", "probe", "pool", "probe")),
+        (1, None, 0, None, 1, ("normal",)),
+        (-15, None, 0, None, -15, ("normal",)),
+        (5, 0, 0, None, 5, ("normal", "probe")),
+        (0, None, 5, 2, 5, ("normal", "pool", "probe")),
+    ],
+)
+def test_pool_phases_preserve_complements_failures_and_proved_empty_lanes(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    normal_status: int,
+    normal_probe: int | None,
+    pool_status: int,
+    pool_probe: int | None,
+    expected: int,
+    phases: tuple[str, ...],
+) -> None:
+    selection = reachable_tests.TestSelection(
+        everything=False,
+        reason="fixture",
+        tests=("packing/tests/test_reachable_tests.py",),
+    )
+    monkeypatch.setattr(reachable_tests, "changed_paths", lambda _since: ["changed"])
+    monkeypatch.setattr(reachable_tests, "select_tests", lambda _changed: selection)
+    seen: list[str] = []
+
+    def capture(command: tuple[str, ...], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        assert kwargs["cwd"] == reachable_tests.ROOT
+        marker = command[command.index("-m", 2) + 1]
+        assert "tests/test_reachable_tests.py" in command
+        if "--collect-only" in command:
+            seen.append("probe")
+            status = normal_probe if "not pool_heavy" in marker else pool_probe
+            assert status is not None
+            assert "-n" not in command
+            return subprocess.CompletedProcess(command, status)
+        environment = cast("dict[str, str]", kwargs["env"])
+        if "not pool_heavy" in marker:
+            seen.append("normal")
+            assert command[command.index("-n") :][:2] == ("-n", "4")
+            assert environment["PACK_JOBS"] == "1"
+            return subprocess.CompletedProcess(command, normal_status)
+        seen.append("pool")
+        assert marker == "not exhaustive_exact and pool_heavy"
+        assert "-n" not in command
+        assert environment["PACK_JOBS"] == "4"
+        return subprocess.CompletedProcess(command, pool_status)
+
+    monkeypatch.setattr(reachable_tests.subprocess, "run", capture)
+    assert reachable_tests.main(["--run", "-n", "4", "--pool-workers", "4"]) == expected
+    assert tuple(seen) == phases
+
+
+def test_pool_interruption_does_not_launch_the_second_phase(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(reachable_tests, "changed_paths", lambda _since: ["changed"])
+    monkeypatch.setattr(
+        reachable_tests,
+        "select_tests",
+        lambda _changed: reachable_tests.TestSelection(
+            everything=False,
+            reason="fixture",
+            tests=("packing/tests/test_reachable_tests.py",),
+        ),
+    )
+    seen: list[tuple[str, ...]] = []
+
+    def interrupted(
+        command: tuple[str, ...], **_kwargs: object
+    ) -> subprocess.CompletedProcess[str]:
+        seen.append(command)
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(reachable_tests.subprocess, "run", interrupted)
+    with pytest.raises(KeyboardInterrupt):
+        reachable_tests.main(["--run", "--pool-workers", "2"])
+    assert len(seen) == 1
+    assert "not pool_heavy" in seen[0][seen[0].index("-m", 2) + 1]
+
+
+@pytest.mark.parametrize("workers", ["0", "-1"])
+def test_invalid_pool_worker_counts_refuse_before_selection(
+    monkeypatch: pytest.MonkeyPatch, workers: str
+) -> None:
+    monkeypatch.setattr(
+        reachable_tests, "changed_paths", lambda _since: pytest.fail("must not select")
+    )
+    with pytest.raises(SystemExit) as error:
+        reachable_tests.main(["--run", "--pool-workers", workers])
+    assert error.value.code == 2
+
+
+def test_pool_split_executes_the_exact_selected_tests_once_each(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    test_file = tmp_path / "test_pool_split.py"
+    test_file.write_text(
+        "import os\n"
+        "from pathlib import Path\n"
+        "import pytest\n"
+        "def test_normal():\n"
+        "    Path(os.environ['SPLIT_OUTPUT']).joinpath('normal')"
+        ".write_text(os.environ['PACK_JOBS'])\n"
+        "@pytest.mark.pool_heavy\n"
+        "def test_pool():\n"
+        "    Path(os.environ['SPLIT_OUTPUT']).joinpath('pool')"
+        ".write_text(os.environ['PACK_JOBS'])\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("SPLIT_OUTPUT", str(tmp_path))
+    monkeypatch.delenv("PACKING_REACHABLE_TEST_ARTIFACT_STEM", raising=False)
+    monkeypatch.setattr(reachable_tests, "REPO", tmp_path)
+    monkeypatch.setattr(reachable_tests, "changed_paths", lambda _since: ["changed"])
+    monkeypatch.setattr(
+        reachable_tests,
+        "select_tests",
+        lambda _changed: reachable_tests.TestSelection(
+            everything=False, reason="fixture", tests=("test_pool_split.py",)
+        ),
+    )
+    assert reachable_tests.main(["--run", "-n", "2", "--pool-workers", "2"]) == 0
+    assert (tmp_path / "normal").read_text(encoding="utf-8") == "1"
+    assert (tmp_path / "pool").read_text(encoding="utf-8") == "2"
+
+
+def test_whole_atlas_pool_heavy_collection_is_one_canonical_node() -> None:
+    command = (
+        sys.executable,
+        "-m",
+        "pytest",
+        "-q",
+        "--collect-only",
+        "-m",
+        "pool_heavy",
+        "tests/test_known_best_atlas.py",
+    )
+    result = subprocess.run(
+        command, cwd=reachable_tests.ROOT, check=False, capture_output=True, text=True
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    collected = {line for line in result.stdout.splitlines() if "::test_" in line}
+    assert collected == {
+        "tests/test_known_best_atlas.py::test_known_best_composite_contains_every_case_and_square"
+    }

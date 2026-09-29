@@ -165,7 +165,12 @@ to credit it as carefully as this project’s own.
   (`Daniel after Burns, Massaccesi`). The atlas citation line and the register renderers
   print it, and hand-written prose may add to it but never drops a link.
   A chain through an intermediate author names every link the source names: Kleddamag’s
-  `4.66001` builds on Squares Project (Joshua Levy), Mira and Guzhou0806.
+  `4.66001` builds on Squares Project (Joshua Levy), Mira and Guzhou0806. The atlas
+  stage sets each line in 66 characters, so where the whole line does not fit it prints
+  the source’s `short_credit`: the same authors and the first of the same links, ending
+  in `et al.` (`Tokoharu after Levy, wand125 et al.`), a shape
+  `devtools.build_bound_citations` enforces.
+  Every other renderer prints the full line.
 - **Method credit travels with the result.** A result built with another author’s
   method, solver or checker credits them in the same line
   (`wand125 after Tokoharu, Levy`). This project is credited as `after Levy` only where

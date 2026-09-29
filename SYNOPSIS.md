@@ -933,6 +933,7 @@ case or experiment separately.
 | [Proof Review: Evan Daniel’s `s(32) = 6`, `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001`](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) | dated review record | record | retained | — |
 | [Review Addendum: The Ceiling Lemma, the `+0.006` Cap and H-248 in the Post-4.640020 Plan](docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md) | dated review record | record | retained | — |
 | [wand125 Rectangle Certificates: Does the Reviewed Checker Scale to Side 9?](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) | dated review record | record | retained | — |
+| [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [wand125 n = 50 Mixed Certificates: The Threshold-One Verifier and the Containment Argument](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) | dated review record | record | retained | — |
 | [The Three-Lane Research Method](docs/project/three-lane-research-method.md) | component scope and use | record | retained | — |

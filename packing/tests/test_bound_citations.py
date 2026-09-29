@@ -469,8 +469,10 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
+    # A parallel packing certified here: the finder's line, confirmed by the register
+    # entry whose replay it is (T-056), where the UnitSquare release stood until then.
     68: (
-        ("UnitSquare Project 2026, Results Release 1 (reported)", "external", "reported"),
+        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
         ("wand125 after Levy 2026, GitHub (confirmed T-044)", "external", "verified"),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
@@ -478,9 +480,20 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
         ("Friedman & Ellsworth, Squares in Squares (reported)", "external", "reported"),
         ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
     ),
-    # Three finders and two improvers: the first and et al., and no year.
+    # Three finders and two improvers gave "Arslanov et al." with no year here until
+    # Couzo's certified packing took the case; the synthetic test above keeps that shape.
     132: (
-        ("Arslanov et al., Squares in Squares (reported)", "external", "reported"),
+        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+    ),
+    # A certified ceiling that trails its report by two units of the printed place is
+    # still cited as reported, with the register entry that confirms the packing.
+    206: (
+        ("Couzo 2026, GitHub (reported; confirmed T-056)", "external", "reported"),
+        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+    ),
+    211: (
+        ("de Winter 2026, GitHub (confirmed T-057)", "external", "verified"),
         ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
     ),
 }

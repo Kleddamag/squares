@@ -2,9 +2,10 @@
   "residue": {
     "by_source": {
       "exact-grid": 44,
-      "kingbird-derived-facts": 65
+      "kingbird-derived-facts": 65,
+      "packet-derived-facts": 1
     },
-    "components": 109,
+    "components": 110,
     "detail": [
       {
         "is_the_whole_record": true,
@@ -536,6 +537,14 @@
       },
       {
         "is_the_whole_record": false,
+        "n": 68,
+        "size": 5,
+        "source": "packet-derived-facts",
+        "tilted": false,
+        "walls_touched": 1
+      },
+      {
+        "is_the_whole_record": false,
         "n": 70,
         "size": 21,
         "source": "kingbird-derived-facts",
@@ -906,7 +915,7 @@
       "46": 1,
       "47": 1,
       "48": 1,
-      "5": 3,
+      "5": 4,
       "57": 1,
       "58": 1,
       "59": 1,
@@ -937,6 +946,7 @@
     },
     "tilted": 0,
     "walls_touched": {
+      "1": 1,
       "2": 65,
       "4": 44
     },
@@ -946,13 +956,14 @@
   "sizes_by_shape": {
     "L": {
       "3": 23,
-      "4": 7,
+      "4": 8,
       "5": 2
     },
     "bar": {
       "10": 1,
-      "2": 72,
-      "3": 6,
+      "2": 75,
+      "3": 11,
+      "4": 1,
       "5": 1,
       "6": 1,
       "8": 1,
@@ -985,7 +996,7 @@
       "46": 1,
       "47": 1,
       "48": 1,
-      "5": 3,
+      "5": 4,
       "57": 1,
       "58": 1,
       "59": 1,
@@ -1035,7 +1046,7 @@
       "90": 1
     },
     "singleton": {
-      "1": 335
+      "1": 301
     }
   },
   "strata": {
@@ -1063,13 +1074,24 @@
       },
       "tilted_components": 237
     },
-    "unitsquare-rendering": {
-      "components": 137,
-      "records": 2,
+    "packet-derived-facts": {
+      "components": 45,
+      "records": 1,
       "shapes": {
-        "singleton": 137
+        "L": 1,
+        "bar": 9,
+        "other-polyomino": 1,
+        "singleton": 34
       },
-      "tilted_components": 58
+      "tilted_components": 25
+    },
+    "unitsquare-rendering": {
+      "components": 69,
+      "records": 1,
+      "shapes": {
+        "singleton": 69
+      },
+      "tilted_components": 25
     }
   },
   "subject": {
@@ -1119,16 +1141,18 @@
   "wall_seating_by_shape": {
     "L": {
       "0": 6,
+      "1": 1,
       "2": 25,
       "4": 1
     },
     "bar": {
-      "0": 72,
-      "1": 3,
-      "2": 7,
+      "0": 79,
+      "1": 4,
+      "2": 8,
       "3": 1
     },
     "other-polyomino": {
+      "1": 1,
       "2": 65,
       "4": 44
     },
@@ -1139,8 +1163,8 @@
       "4": 9
     },
     "singleton": {
-      "0": 254,
-      "1": 43,
+      "0": 223,
+      "1": 40,
       "2": 37,
       "4": 1
     }

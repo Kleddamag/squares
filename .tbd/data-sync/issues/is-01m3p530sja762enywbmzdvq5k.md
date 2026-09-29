@@ -3,9 +3,9 @@ type: is
 id: is-01m3p530sja762enywbmzdvq5k
 title: render_overview skeleton, site-nav partial and site.css layered on kpress tokens
 kind: task
-status: open
+status: closed
 priority: 2
-version: 5
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -19,5 +19,5 @@ dependencies:
     target: is-01m3p533hh8gexgt38be69tqsk
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T08:39:20.114Z
-updated_at: 2026-09-29T08:39:22.929Z
+updated_at: 2026-09-29T08:47:57.320Z
 ---

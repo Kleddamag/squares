@@ -7,7 +7,9 @@ checker. The sweeps that decide coverage take minutes (``zmx2``) to many CPU-hou
 true: the retained bytes are the pinned ones; each cover is well formed, weighs exactly
 what the packet states and less than the count it excludes, and is invariant under the
 square's symmetries; the shipped records cover their regions with no uncertified box;
-and the replays' censuses equal the source's, root for root.
+and the replays' censuses equal the source's, root for root. The same commands audit a
+replayer's own ``zmx2`` log of the ``s(32)`` point cover against the retained run, and
+a mutated, dropped or differently configured root fails them.
 
 Coverage itself, every closed unit square capturing mass at least one, is not decided
 here. `devtools.audit_evand_mixed_covers` does the reading, with its own parser.
@@ -17,9 +19,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
+from collections.abc import Callable
 from dataclasses import replace
 from fractions import Fraction
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -27,6 +32,7 @@ from devtools.audit_evand_mixed_covers import (
     CASES,
     PACKET,
     POINT_COVER_RUNS,
+    POINT_COVERS,
     RECEIPTS,
     Case,
     PointCoverRun,
@@ -34,13 +40,17 @@ from devtools.audit_evand_mixed_covers import (
     audit_point_cover_run,
     audit_zm_mixed,
     audit_zmx2,
+    check_point_cover_runs,
     compare_zm_mixed,
     compare_zmx2,
     comparison_clean,
     cover_clean,
+    main,
+    point_cover_clean,
     sample_records,
     zm_mixed_clean,
     zmx2_clean,
+    zmx2_comparison_clean,
 )
 from devtools.retained_data import (
     candidates,
@@ -103,8 +113,7 @@ def test_fresh_zmx2_run_matches_the_shipped_census(n: int, mode: str) -> None:
     fresh = RECEIPTS / f"s{n}_zmx2_{mode}_roots.log"
     assert zmx2_clean(audit_zmx2(CASES[n], fresh, mode))
     result = compare_zmx2(BUNDLES / f"s{n}" / f"zmx2_{mode}" / "roots.log", fresh)
-    assert comparison_clean(result), result
-    assert result["headers_equal"]
+    assert zmx2_comparison_clean(result), result
     assert result["shipped_roots_not_replayed"] == 0
 
 
@@ -122,8 +131,17 @@ def test_zm_mixed_sample_matches_the_shipped_census(n: int) -> None:
 @pytest.mark.parametrize("run", POINT_COVER_RUNS, ids=lambda run: f"s{run.n}")
 def test_point_cover_zmx2_run_matches_the_source_report(run: PointCoverRun) -> None:
     result = audit_point_cover_run(run)
-    assert zmx2_clean(result), result
-    assert result["totals_equal_source_report"], result
+    assert point_cover_clean(result), result
+
+
+def test_the_point_cover_logs_are_required() -> None:
+    report, clean = check_point_cover_runs()
+    assert clean, report
+    assert set(report) == {f"s{run.n}_point_cover_zmx2_d4" for run in POINT_COVER_RUNS}
+    absent = replace(POINT_COVERS[32], receipt="s32_no_such_run_roots.log")
+    report, clean = check_point_cover_runs((POINT_COVERS[13], absent))
+    assert not clean
+    assert report["s32_point_cover_zmx2_d4"]["missing"]
 
 
 # --- the audit fails closed ---------------------------------------------------------------
@@ -194,3 +212,89 @@ def test_a_missing_or_uncertified_root_is_refused(tmp_path: Path) -> None:
     compared = compare_zmx2(shipped, uncertified)
     assert compared["roots_whose_census_differs"]
     assert not comparison_clean(compared)
+
+
+# --- a replayer's own s(32) log -----------------------------------------------------------
+
+S32_LOG = RECEIPTS / POINT_COVERS[32].receipt
+
+
+def _s32_replay(
+    tmp_path: Path, name: str, edit: Callable[[list[str]], list[str]] | None = None
+) -> Path:
+    """The retained run as a replayer might write it: other timings, roots in another order.
+
+    ``edit`` maps the list of ROOT lines to a changed list, for the negative controls.
+    """
+    lines = read_retained_text(S32_LOG, encoding="ascii").splitlines()
+    header = [line for line in lines if not line.startswith("ROOT ")]
+    roots = [re.sub(r" ms \d+$", " ms 7", line) for line in lines if line.startswith("ROOT ")]
+    roots.reverse()
+    if edit is not None:
+        roots = edit(roots)
+    path = tmp_path / name
+    path.write_text("\n".join([*header, *roots]) + "\n", encoding="ascii")
+    return path
+
+
+def _run(capsys: pytest.CaptureFixture[str], *argv: str) -> tuple[int, dict[str, Any]]:
+    code = main(list(argv))
+    return code, json.loads(capsys.readouterr().out)
+
+
+def test_a_fresh_s32_log_is_audited_root_for_root(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    fresh = str(_s32_replay(tmp_path, "fresh.log"))
+    code, audited = _run(capsys, "zmx2", "--case", "32", "--mode", "d4", fresh)
+    assert code == 0, audited
+    assert audited["roots_present"] == 3600
+    assert audited["totals_equal_source_report"]
+    code, compared = _run(capsys, "compare-zmx2", "--case", "32", "--records", fresh)
+    assert code == 0, compared
+    assert compared["headers_equal"]
+    assert compared["roots_identical"] == compared["roots_compared"] == 3600
+    assert compared["shipped_roots_not_replayed"] == 0
+
+
+def _deepen_one_root(roots: list[str]) -> list[str]:
+    """One certified leaf split once more: two more boxes, one more certified leaf."""
+    index = next(i for i, line in enumerate(roots) if " cert 1 " in line)
+    fields = roots[index].split()
+    boxes, cert = fields.index("boxes") + 1, fields.index("cert") + 1
+    fields[boxes] = str(int(fields[boxes]) + 2)
+    fields[cert] = str(int(fields[cert]) + 1)
+    return [*roots[:index], " ".join(fields), *roots[index + 1 :]]
+
+
+def test_a_mutated_s32_root_fails_the_audit_and_the_comparison(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    mutated = str(_s32_replay(tmp_path, "mutated.log", _deepen_one_root))
+    code, audited = _run(capsys, "zmx2", "--case", "32", "--mode", "d4", mutated)
+    assert code == 1
+    assert audited["roots_present"] == 3600
+    assert not audited["totals_equal_source_report"]
+    code, compared = _run(capsys, "compare-zmx2", "--case", "32", "--records", mutated)
+    assert code == 1
+    assert len(compared["roots_whose_census_differs"]) == 1
+    # A dropped root is caught by the audit; the comparison counts it and stays silent.
+    dropped = str(_s32_replay(tmp_path, "dropped.log", lambda roots: roots[1:]))
+    code, audited = _run(capsys, "zmx2", "--case", "32", "--mode", "d4", dropped)
+    assert code == 1
+    assert audited["roots_missing"] == 1
+
+
+def test_an_s32_log_without_pair_points_is_refused(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    fresh = _s32_replay(tmp_path, "fresh.log")
+    grid = tmp_path / "grid.log"
+    grid.write_text(
+        fresh.read_text(encoding="ascii").replace("atoms=pairpts", "atoms=grid"),
+        encoding="ascii",
+    )
+    code, compared = _run(capsys, "compare-zmx2", "--case", "32", "--records", str(grid))
+    assert code == 1
+    assert not compared["headers_equal"]
+    assert comparison_clean(compared)

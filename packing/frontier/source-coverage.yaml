@@ -31,6 +31,7 @@ sources:
     evidence:
       - E-n032-evand-closed-cover-report
       - E-n032-evand-closed-cover-source-run
+      - E-n032-evand-closed-cover-zmx2-replay
       - E-n012-evand-15680-3951-report
       - E-n012-evand-15680-3951-source-replay
       - E-n012-evand-15680-3951-native-parent-core
@@ -45,13 +46,16 @@ sources:
       passed here at N = 6000, so s(12) >= 15680/3951 and s(21) >= 5000/1001
       are registered at V4/C3; this repository's native parent-core interval
       route then decided all 2,486 rows of the s(12) certificate, a second
-      method, so s(12) is at V4/C4. s(32) = 6 is registered at V4/C3: the
+      method, so s(12) is at V4/C4. s(32) = 6 is registered at V4/C4: the
       complete zeromargin.py re-sweep here certified all 7,200 roots of the D4
       region (D4 RECHECK CLEAN), every per-root census identical to the
       source's shipped record, and the 2026-09-27 review found no mathematical
-      defect. Neither zmcheck sweep, the
-      Lean build, the exhaustive xcheck.py passes nor the case-free s(13) cover
-      was replayed. The source's s(11) >= 3040/797
+      defect; on 2026-09-29 a complete run here of the source's zmx2, from the
+      2026-09-28 release, on the same cover was recorded beside it as a second,
+      interval-certified method (E-n032-evand-closed-cover-zmx2-replay, which
+      states what the two checkers share). Neither zmcheck sweep, the Lean
+      build nor the exhaustive xcheck.py passes were replayed, and the
+      case-free s(13) cover only by zmx2. The source's s(11) >= 3040/797
       is below the verified 31/8 and is retained in the packet but not registered.
       On 2026-09-29 the same repository's s(21) = 5
       (evand-square-packing-2026-09-28) superseded its s(21) >= 5000/1001,
@@ -73,6 +77,7 @@ sources:
       - E-n021-evand-mixed-cover-zmx2-replay
       - E-n045-evand-mixed-cover-report
       - E-n045-evand-mixed-cover-zmx2-replay
+      - E-n032-evand-closed-cover-zmx2-replay
     notes: >-
       Evan Daniel's repository at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3,
       retained on 2026-09-28 as the 91 files that changed or were added since
@@ -90,7 +95,9 @@ sources:
       method and C4, run separately. The Lean build was not run (Mathlib's
       cache is unreachable from this session). The source's hypothesis-free
       Lean checks of s(13) = 4 and s(32) = 6 are reported, not built, and move
-      no bound.
+      no bound. Its zmx2, run here on the 2026-09-26 release's s(32) cover, is
+      the evidence E-n032-evand-closed-cover-zmx2-replay, which raised s(32) = 6
+      to V4/C4 on 2026-09-29.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository

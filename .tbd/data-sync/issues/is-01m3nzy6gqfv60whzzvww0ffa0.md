@@ -5,7 +5,7 @@ title: Review wand125 tools claims and maintain upstream repository references
 kind: task
 status: in_progress
 priority: 1
-version: 22
+version: 23
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -18,10 +18,11 @@ child_order_hints:
   - is-01m3p4qcde9qgwr3dyp1b6v8fe
   - is-01m3p5wj25knm7rbx0g4a4tpvg
   - is-01m3p6krj8zr6a0956x7de4xfv
+  - is-01m3q336f2n7q1dhpmbrvy7gr4
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:09:19.247Z
-updated_at: 2026-09-29T16:57:54.044Z
+updated_at: 2026-09-29T17:23:43.201Z
 started_at: 2026-09-29T07:09:45.733Z
 ---
 W2 factual review, W7 verification pipeline, and W8 documentation: pin square-packing-tools, register scoped claims, audit independent rectangle/point verification, and update synopsis and tooling coverage. Track remaining mathematical and complete-replay obligations separately.

@@ -3,14 +3,18 @@ type: is
 id: is-01m3p04p82z8fm8kb7jxqb1p6x
 title: Replay wand125 general pose tree n11 row claim independently
 kind: task
-status: open
+status: in_progress
 priority: 2
-version: 3
+version: 7
 labels: []
 dependencies: []
 parent_id: is-01m3nzy6gqfv60whzzvww0ffa0
+child_order_hints:
+  - is-01m3q333tfsge5198fmdspqyvn
+  - is-01m3q3346jb4mfsg5c35w99eyw
+  - is-01m3q334jhatak7q9xkaey3pdd
 created_at: 2026-09-29T07:12:51.969Z
-updated_at: 2026-09-29T07:37:09.225Z
+updated_at: 2026-09-29T17:24:51.512Z
 ---
 T-057 remains source-reported equality of all12028 n11 minima. New source tests9 pass1 skipped; rows0,6014,12027 replay exactly with matching witnesses, receipts in wand125-tools-2026-09-29. Remaining: audit full branch/enclosure/measure contract, complete census replay and exact output matching, separately bind global counting theorem. Partial samples are not complete proof.
 

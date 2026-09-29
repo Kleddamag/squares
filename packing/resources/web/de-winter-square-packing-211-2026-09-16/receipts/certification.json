@@ -1,0 +1,37 @@
+{
+  "tool": "python -m devtools.upper_bound_packets certify",
+  "promotion": {
+    "strategy": "robust-rational",
+    "rational_digits": 36,
+    "max_side_increase": "1e-9"
+  },
+  "independent_checker": "devtools.check_rational_witness_independent",
+  "cases": [
+    {
+      "n": 211,
+      "printed_side": "14.99796070496771500150",
+      "certificate": "witnesses/de-winter-2026/n-211-rational.yaml.gz",
+      "certificate_sha256": "e80ac2ba2aa2a5ff7f4d9f78d4fdfca36ef3e7861952125479a226aa72b0d916",
+      "stored_sha256": "43001d7e43634551bb4c723adf3492d9d741df2c5bfe9361403aa2b041279bdb",
+      "certified_side": "74989803524838470007/5000000000000000000",
+      "certified_side_decimal": "14.9979607049676940014000000000000000000000",
+      "side_increase": "-2.100e-14",
+      "center_dilation": "1",
+      "pairs_tested": 22155,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 22155,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": -2100010,
+      "verified_value": "14.99796070496771500150",
+      "exact_form": "29995921409935430003/2000000000000000000",
+      "wall_seconds": {
+        "promote": 6.2,
+        "independent": 10.3
+      }
+    }
+  ]
+}

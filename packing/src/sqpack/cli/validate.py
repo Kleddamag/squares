@@ -65,10 +65,12 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # (formal-open, reported-open, Nagamochi-bounded). 40 since 2026-09-22: exact and
     # interval replays promoted 18 external-certificate cases beyond the seven earlier
     # first-party replacements. 39 since 2026-09-27: a replayed external closed cover
-    # proved s(32) = 6, so n = 32 left the open cases in both lanes.
-    "n=1..100": (64, 64, 39),
-    "n=1..200": (152, 152, 127),
-    "n=1..324": (264, 264, 239),
+    # proved s(32) = 6, so n = 32 left the open cases in both lanes. 38 since
+    # 2026-09-29: replayed external mixed covers proved s(21) = 5 and s(45) = 7, so both
+    # left the open cases; n = 45 was Nagamochi-bounded, n = 21 carried a certificate.
+    "n=1..100": (62, 62, 38),
+    "n=1..200": (150, 150, 126),
+    "n=1..324": (262, 262, 238),
 }
 SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
     "n=1..100": ("n=68", "n=69"),

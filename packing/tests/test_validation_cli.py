@@ -29,9 +29,9 @@ from sqpack.yamlio import safe_load
 
 #: (proved, open) at each corpus the frontier-corpus step has summarized.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (36, 64),
-    "n=1..200": (48, 152),
-    "n=1..324": (60, 264),
+    "n=1..100": (38, 62),
+    "n=1..200": (50, 150),
+    "n=1..324": (62, 262),
 }
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"

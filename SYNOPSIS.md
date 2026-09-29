@@ -1203,14 +1203,16 @@ initially closed the wand125 intake, native rectangle-verifier prototype and
 documentation slice with explicit certification debt, since discharged by the hosted
 fast checkpoint. The implementation and review are published in
 [PR 246](https://github.com/jlevy/squares/pull/246). Required CI and the
-certificate-page workflow passed at `c621b845f`. The deferred portion of the full
-checkpoint is running.
-No complete retained external rectangle certificate has been independently verified.
+certificate-page workflow passed at `c621b845f` and the documentation follow-up
+`c5490f783`. The full deferred checkpoint also passed on the unchanged implementation at
+`c621b845f`. No complete retained external rectangle certificate has been independently
+verified.
 
-**Selected next entry:** `think-8cps`, W7: collect the deferred checkpoint and finish
-the integration handoff, retaining the passed fast checkpoint at `c621b845f`. The native
-research continuation remains `think-bmf3`: improve the translation-box bound and retain
-a complete external-certificate run before promoting any bound.
+**Selected next entry:** `think-bmf3`, W7: retain the unresolved n11 boxes and compare
+tighter exact translation-box bounds on identical inputs under the plan’s 30-second
+ceiling. Complete external-certificate coverage is required before assigning independent
+confirmation to that certificate.
+PR integration is complete; no frontier bound was promoted.
 
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
 asked again what improvement is left at low `n` and moved one bound.

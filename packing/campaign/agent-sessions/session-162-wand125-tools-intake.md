@@ -218,10 +218,11 @@ session:
     through merge commit 3947757)'
   resource_rollups:
   - packing/campaign/resource-usage/session-162-codex-task-tree.yaml
-  stop_reason: Initial review, implementation and documentation slice closed. The later hosted fast
-    and page checks certify c621b845f; deferred validation and PR integration remain under think-8cps.
-  next_action: 'Under think-8cps, collect the running deferred checkpoint 36590993493 and finish
-    integration.'
+  stop_reason: Initial review, implementation and documentation slice closed. Later hosted fast,
+    page and deferred checks passed on c621b845f; the documentation follow-up c5490f783 also passed
+    required CI. PR integration is complete; native external-certificate coverage remains open.
+  next_action: 'Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds
+    on identical inputs under the planned 30-second ceiling before selecting a full replay.'
   ended_at: '2026-09-29T07:46:23Z'
 ---
 # Session 162 — wand125 Tools Review and Native Rectangle Verification
@@ -234,8 +235,12 @@ The coordinator reported the push gate passing 51 of 82 selected steps in 889.62
 seconds, including 2003 passing reachable behavioral tests and 6 deselections in 842.01
 seconds. Later, hosted fast run `36590984972` and page run `36590984641` passed at
 `c621b845f`; the downloaded PR-tree artifact matched HEAD tree
-`1ff83617e958873e5f83379da4df0e56ae6f99e2` through merge commit `3947757`. The running
-deferred checkpoint `36590993493` and final integration remain under `think-8cps`.
+`1ff83617e958873e5f83379da4df0e56ae6f99e2` through merge commit `3947757`. Deferred
+checkpoint `36590993493` subsequently passed all four lanes and its aggregate gate on
+that same clean implementation tree.
+Required CI `36594161608` and page checks `36594161933` also passed for the
+documentation-only follow-up `c5490f783`. Integration is complete; the selected
+continuation returns to `think-bmf3` without promoting a mathematical claim.
 
 This record was reconstructed at finalization.
 The task start and terminal checkpoint are observed; internal phase and delegation

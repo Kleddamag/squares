@@ -313,7 +313,7 @@ The coordinator owns the final diff, generated records, validation and publicati
 | Native mathematics | Astra-max review of mass, symmetry, angular containment, common-core geometry, clipping, axis events and exhaustive subdivision; analytic and refusal controls | Complete native coverage of a retained external certificate; no formal kernel proof claimed |
 | Native CLI | Five real subprocess decision goldens with byte-exact output and independent semantic assertions; normal CI behavioral coverage | Keep incomplete and refused runs separate from certificate acceptance |
 | Rust | Scoped source review, executed tests, strict Clippy, formatting, rustdoc and live lint rejection probes for the first-party search crate | Broader Rust support and CLI contracts remain in **think-cr8l**; archived Rust is not certified by this crate’s gate |
-| Repository integration | Required hosted CI and certificate-page checks passed at `c621b845f`, including the repaired record and timing checks | Collect the deferred checkpoint and complete the integration handoff |
+| Repository integration | Required hosted CI, certificate-page checks and the full deferred checkpoint passed on the reviewed implementation; the documentation follow-up also passed required CI | No integration blocker remains at this checkpoint; future implementation changes need fresh validation |
 | Review approval | Agent reviews retained here and in PR comments | GitHub has no submitted formal review or human approval at this checkpoint |
 
 The atlas regeneration changes the release stamp after the data revision moved to
@@ -322,9 +322,8 @@ This review does not claim an independent pixel comparison of every raster or PD
 export.
 
 The existing synopsis handoff incorrectly still described PR publication as pending.
-It now links the published PR and the passed required CI checkpoint, with deferred
-validation and final integration remaining.
-The native research continuation remains **think-bmf3**.
+It now links the published PR and passed required and deferred checkpoints.
+The selected continuation returns to native research under **think-bmf3**.
 
 The
 [integration review comment](https://github.com/jlevy/squares/pull/246#issuecomment-5893038192)
@@ -382,9 +381,36 @@ pushed source tree exactly.
 The session records now name this actual fast checkpoint; their stopped status and
 unfinished mathematical work remain unchanged.
 The separately selected
-[deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36590993493) is
-still running. A passed fast checkpoint does not by itself establish full pre-merge
-coverage.
+[deferred checkpoint](https://github.com/jlevy/squares/actions/runs/36590993493) passed
+all four lanes and its aggregate gate.
+Its clean checkout was merge commit `3947757`, the same implementation tree as the
+required run. The exhaustive lane passed 60 tests in 2,756.27 seconds; the slow lane
+passed 155 tests. All eight deferred numeric checks passed, as did the 318-record
+translation screen. The exhaustive job’s 2,800-second wall was slightly above the
+register’s prior maximum of 2,771 seconds, but below its existing ceiling; no budget was
+changed.
+
+The documentation-only certification follow-up `c5490f783` passed required packing run
+[36594161608](https://github.com/jlevy/squares/actions/runs/36594161608), page checks
+and mergeability. Its local push gate passed all 51 selected steps in 390.41 seconds,
+including 1,735 tests with five deselected.
+The first local attempt caught a terminal handoff naming two beads; the corrected record
+names one selected action.
+No verifier, numeric fixture or gate code changed after the fully checked
+implementation.
+The final handoff also updates its registered negative-control anchor and
+expected diagnostic to the newly selected bead, preserving the wrong-bead mutation.
+All 167 anchors resolve, and the changed control was executed in an isolated snapshot:
+it rejected the wrong bead as expected in 2.606 seconds.
+The final closeout push selection passed its other checks, including 1,735 tests with
+five deselected, before that focused anchor correction.
+
+The integration block is complete.
+The next **think-bmf3** slice retains exact unresolved n11 boxes and compares tighter
+bounds on identical inputs under the planned 30-second ceiling.
+No new geometric experiment was run during this integration review.
+Complete external-certificate acceptance and T-057’s full census remain open, and
+T-056/T-057 retain their existing epistemic statuses.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -30,6 +30,9 @@ files:
       - {span: C, where: rung, numerically observed}
       - {span: S, where: axes are defined in}
       - +W # names a coefficient direction, paired with the `-W` bridge
+      # A 67-digit exact side: typeset math cannot break it, so it ran 1142px wide and
+      # pushed the page sideways; a code span wraps.
+      - 2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000
   conventions.md:
     keep:
       - V # the three rung axes, named

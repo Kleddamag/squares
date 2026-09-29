@@ -134,3 +134,9 @@ def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str])
     runs = [match.group(0) for match in overview_data.MATH.finditer(prose)]
     assert [overview_data.prose_tex(run) for run in runs] == tex
     assert overview_data.tex_bounds(prose).count("data-kpress-math") >= len(tex)
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_every_site_page_retries_untypeset_math(name: str) -> None:
+    page = render_overview.PAGES[name]().html
+    assert render_overview.MATH_RETRY_SCRIPT.read_text(encoding="utf-8") in page

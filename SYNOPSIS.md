@@ -3138,7 +3138,7 @@ The retained Schadt $n = 29$ pose is the regression case.
 The source decimal geometry passes its declared 300-digit calculation at tolerance
 $10^{-100}$, with thirteen slightly negative best pair gaps hidden by that tolerance.
 Robust promotion produces a different, slightly relaxed rational packing at
-$2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000$,
+`2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000`,
 an increase of about $4.93 \times 10^{-31}$ in the container side.
 The generic exact verifier and a small independent rational checker both accept all 29
 squares and 406 pairs.

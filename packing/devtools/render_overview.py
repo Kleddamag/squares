@@ -45,6 +45,7 @@ OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
+MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -240,7 +241,10 @@ def kpress_page(
     page = rendered.html.replace(prose + '"', prose + ' site-page"', 1)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    programs = "".join(f"\n<script>{_script_text(path)}</script>" for path in page_scripts)
+    programs = "".join(
+        f"\n<script>{_script_text(path)}</script>"
+        for path in (MATH_RETRY_SCRIPT, *page_scripts)
+    )
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)

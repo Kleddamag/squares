@@ -82,9 +82,15 @@ def math_html(tex: str) -> str:
 
 
 def decimal_text(value: object) -> str:
-    """A record's decimal, cut rather than rounded after `DECIMAL_PLACES`."""
+    """A record's decimal, cut rather than rounded after `DECIMAL_PLACES`.
+
+    A whole number the record writes as `3.0` prints as `3`, as the best-known side
+    beside it does.
+    """
     text = str(value)
     whole, _, fraction = text.partition(".")
+    if fraction and not fraction.strip("0"):
+        return whole
     if len(fraction) <= DECIMAL_PLACES:
         return text
     return f"{whole}.{fraction[:DECIMAL_PLACES]}…"

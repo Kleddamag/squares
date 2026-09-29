@@ -31,8 +31,12 @@ import tempfile
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from devtools import render_overview
+
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
@@ -43,6 +47,9 @@ BUILDS = ("explainer", "pages", "workbench")
 WIDTHS = (1280, 390)
 PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
+_MATH_PENDING = probe(PROBES, "preview_site/math_pending")
+#: How long a page may take to typeset all its math before it is shot as it stands.
+MATH_WAIT_MS = 20_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
 
 
@@ -124,6 +131,19 @@ def serve(output: Path, port: int) -> ThreadingHTTPServer:
     return server
 
 
+def _settle_math(page: Page) -> int:
+    """Scroll the page through once so kpress typesets every formula, then return to the
+    top; returns how many were still untypeset when the wait ran out."""
+    waited = 0
+    while (pending := page.evaluate(_MATH_PENDING)) and waited < MATH_WAIT_MS:
+        page.mouse.wheel(0, 2000)
+        page.wait_for_timeout(100)
+        waited += 100
+    page.mouse.wheel(0, -10_000_000)
+    page.wait_for_timeout(200)
+    return pending
+
+
 def screenshots(output: Path, shots: Path, port: int) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, and any page wider than its viewport."""
@@ -149,6 +169,9 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
                         ),
                     )
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="networkidle")
+                    pending = _settle_math(page)
+                    if pending:
+                        errors.append(f"{name} @{width}: {pending} math spans never typeset")
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
                         errors.append(f"{name} @{width}: {overflow}px wider than the viewport")

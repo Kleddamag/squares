@@ -24,3 +24,6 @@ interface SiteTableApi {
 }
 
 declare var SiteTable: SiteTableApi;
+
+/** kpress's math enhancement, a classic script's top-level function. */
+declare function enhanceMath(): Promise<void> | undefined;

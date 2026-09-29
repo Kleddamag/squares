@@ -1,0 +1,156 @@
+{
+  "kind": "wand125-rectangle-audit/v1",
+  "source_revision": "39d8ecc74d651b54ec977c331c8f2015b442a6c4",
+  "source": "/home/user/squares/packing/resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles",
+  "python": "3.14.7 (main, Sep 24 2026, 17:58:18) [Clang 22.1.3 ]",
+  "scope": "Independent exact preconditions and input binding; optional upstream global interval replay",
+  "cases": [
+    {
+      "status": "PASS",
+      "n": 29,
+      "L": "579/100",
+      "B": "9977/10000",
+      "mass_exact": "2899/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 185,
+      "expanded_rectangles": 1480,
+      "axis_event_count": 1328,
+      "axis_vertex_count": 1763584,
+      "certificate": "rect_n29_L579",
+      "input_sha256": "a2af85c24bb05edf95de645aec79c36fde331e03e686d968a40a72f05102fce7",
+      "input_bytes": 366702,
+      "upstream_nodes": 12223906,
+      "upstream_wall_seconds": "1795469694852829/1000000000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python3",
+          "run_verify.py",
+          "--workers",
+          "4"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 924.1931513889995,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 12223906,
+          "leaves": 6993845,
+          "minimum_printed_leaf_lower_bound": "500050002198989/500000000000000",
+          "wall_seconds": "9228466920852661/10000000000000",
+          "input_sha256": "a2af85c24bb05edf95de645aec79c36fde331e03e686d968a40a72f05102fce7",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
+    },
+    {
+      "status": "PASS",
+      "n": 38,
+      "L": "327/50",
+      "B": "9977/10000",
+      "mass_exact": "3799/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 377,
+      "expanded_rectangles": 3016,
+      "axis_event_count": 1631,
+      "axis_vertex_count": 2660161,
+      "certificate": "rect_n38_L654",
+      "input_sha256": "93cc9d84668bbdb754b8865ca2e8de1549f62cfefa3a4cf648b81a70997d6a26",
+      "input_bytes": 702004,
+      "upstream_nodes": 20270571,
+      "upstream_wall_seconds": "6417660523891449/2000000000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python3",
+          "run_verify.py",
+          "--workers",
+          "4"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 2207.0097731430005,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 20270571,
+          "leaves": 11465466,
+          "minimum_printed_leaf_lower_bound": "10001000004805667/10000000000000000",
+          "wall_seconds": "2205408611059189/1000000000000",
+          "input_sha256": "93cc9d84668bbdb754b8865ca2e8de1549f62cfefa3a4cf648b81a70997d6a26",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
+    },
+    {
+      "status": "PASS",
+      "n": 67,
+      "L": "1691/200",
+      "B": "9977/10000",
+      "mass_exact": "6699/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 785,
+      "expanded_rectangles": 6280,
+      "axis_event_count": 2073,
+      "axis_vertex_count": 4297329,
+      "certificate": "rect_n67_L8455",
+      "input_sha256": "d9cc8e5a924523baac33ddc27af5566835cefd93bd639f19cba349ee8cd4fe25",
+      "input_bytes": 1405960,
+      "upstream_nodes": 25217361,
+      "upstream_wall_seconds": "5463010437965393/500000000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python3",
+          "run_verify.py",
+          "--workers",
+          "4"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 6440.702416702,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 25217361,
+          "leaves": 14757445,
+          "minimum_printed_leaf_lower_bound": "10001000013541381/10000000000000000",
+          "wall_seconds": "3218786241412163/500000000000",
+          "input_sha256": "d9cc8e5a924523baac33ddc27af5566835cefd93bd639f19cba349ee8cd4fe25",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
+    }
+  ],
+  "provenance": {
+    "kind": "verified-retained-subset",
+    "revision": "39d8ecc74d651b54ec977c331c8f2015b442a6c4",
+    "tree_manifest": "packing/resources/web/wand125-rectangle-certificates-2026-09-28/acquisition/upstream-tree.sha256",
+    "upstream_files": 2295,
+    "files_verified": 153,
+    "bytes_verified": 14798207,
+    "checker": "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n29_L571",
+    "referenced_path": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles",
+    "files_referenced": 55,
+    "bytes_referenced": 4452712
+  },
+  "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "status": "PASS"
+}

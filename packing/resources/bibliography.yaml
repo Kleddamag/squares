@@ -18,7 +18,10 @@ last_reviewed: '2026-09-29'
 # lineage it builds on: last names, or handles where no name is published, this project
 # as "Squares Project (Levy)" where that fits and "Levy" where it does not, and never an
 # AI agent. `credit year, venue` must fit the stage's 66 characters, which
-# `devtools.build_bound_citations` checks. A web source's authors are
+# `devtools.build_bound_citations` checks. `lineage`, required on the source of a result
+# by others published on or after 22 August 2026, is `builds-on-project`,
+# `credits-project` or `independent`, as the source's own attribution files say; the
+# policy is epistemics.md, Results by Others. A web source's authors are
 # not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:

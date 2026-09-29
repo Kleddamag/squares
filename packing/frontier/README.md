@@ -189,17 +189,38 @@ This is an audit of those named sources, not every publication.
 
 ## Adding or Reviewing a Result
 
-1. Retain the first-party source and add or update its dated coverage entry.
-2. Put the literal public claim in the reported lane and give it typed evidence.
-3. If geometry is available, adapt it once to
+This is the procedure for a result from any source, this project’s parallel projects
+included.
+What counts as taken in, integrated and answered, and how a result by others is
+credited, is policy in
+[epistemics.md → Results by Others](../../epistemics.md#results-by-others).
+
+1. Retain the first-party source at a pinned revision, in a dated packet under
+   [`../resources/web/`](../resources/README.md), and add or update its dated coverage
+   entry.
+2. Give the source a bibliography key with `dated`, `credit` and `lineage`, read from
+   its own attribution files.
+3. Put the literal public claim in the reported lane and give it typed evidence.
+   A result by others that the record acts on gets its `T-NNN` register entry now, at
+   its derived rung, with `attribution` and a `next_rung` naming the replay and review
+   it waits on.
+4. If geometry is available, adapt it once to
    [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
    or `check` with explicit arithmetic, precision, and tolerance.
-4. Put a value in the verified lane only after an exact proof, exact witness replay, or
+5. Put a value in the verified lane only after an exact proof, exact witness replay, or
    rigorous interval certificate discharges its assumptions.
-   Record external evidence and a local replay separately.
-5. Preserve disagreement as a conflict or typed blocker.
+   For a result by others, that is a complete replay here and a review of its
+   mathematics under [`docs/project/reviews/`](../../docs/project/reviews/). Record
+   external evidence and a local replay separately.
+6. Preserve disagreement as a conflict or typed blocker.
    Do not edit the source claim to match the checker.
-6. Render the reader views and run the schema, source-coverage, and exact-replay checks.
+7. Render the reader views and run the schema, source-coverage, results and exact-replay
+   checks. Then bring the README, synopsis and atlas up to date through the
+   [documentation pass](../campaign/documentation-pass.md), with the source’s credit and
+   the result’s `T-NNN`.
+8. Answer an author who asked for the registration. If they opened an issue here, reply
+   on it, at the owner’s request, with the `T-NNN`, the rung, what was replayed and what
+   remains, and leave it open while work they asked for is still queued.
 
 ## Registering a First-Party Result
 

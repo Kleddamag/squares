@@ -363,18 +363,22 @@ accordingly.
 
 Others have built on this repository’s certificates, credited them and taken the bounds
 further, and others have worked independently of it, one of them from the same weighted
-method. The theorems and the credit belong to their authors.
+method. The theorems and the credit belong to their authors; how this repository takes
+their work in, credits it and answers them is the policy in
+[epistemics.md → Results by Others](epistemics.md#results-by-others).
 This repository registers each claimed bound as *reported* when it takes the source in,
 and as *verified* only after a complete replay of its certificate and a review of its
 mathematics. Each has an entry in the [results register](packing/frontier/RESULTS.md),
 which carries the source’s credit beside this repository’s `V` and `C` for it.
-The groups below follow each source’s own attribution, which the bibliography’s credit
-line records: “after Levy” marks a source that credits this project’s certificates, data
-or pipeline.
+The groups below follow the lineage each source’s own attribution gives, as the
+bibliography records it: sources that build on this project’s certificates, data or
+pipeline, whose credit line reads “after Levy”; a source that credits it second-hand,
+with a method of its own; and sources independent of it.
+Each entry names its register entries.
 
 ### Building on This Project
 
-- **Kleddamag: `s(11) > 31/8 = 3.875`.** The
+- **Kleddamag: `s(11) > 31/8 = 3.875` ([T-037](packing/frontier/RESULTS.md)).** The
   [certificate](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md)
   of September 2026 was developed from T-026’s threshold certificate, and its second
   checker adapts Guzhou0806’s R038. It works at T-025’s container side `191/50` with
@@ -391,7 +395,7 @@ or pipeline.
   `0.048` above T-033.
 
 - **Guzhou0806, continuing Kleddamag’s `4.66001` charge:
-  `s(17) > 116511/25000 = 4.66044`.** The
+  `s(17) > 116511/25000 = 4.66044` ([T-043](packing/frontier/RESULTS.md)).** The
   [R068 release](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) of 28
   September 2026, by Guzhou0806 / N17 project, keeps that charge’s 889 rule orbits and
   their weights, moves one zero-weight site orbit and adds one weighted four-site point
@@ -410,8 +414,9 @@ or pipeline.
   replayed here in full too and never held the verified field.
 
 - **Kleddamag, building on Squares Project (Joshua Levy), Mira and Guzhou0806:
-  `s(17) > 466001/100000 = 4.66001`.** An exact weighted-certificate proof over 2,168
-  orientation intervals, published on 27 September 2026 at an untagged commit as a
+  `s(17) > 466001/100000 = 4.66001` ([T-041](packing/frontier/RESULTS.md)).** An exact
+  weighted-certificate proof over 2,168 orientation intervals, published on 27 September
+  2026 at an untagged commit as a
   [new package](packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md) beside
   the `v1.1.0` release below, whose two checkers it keeps byte for byte.
   It combines two completed charge candidates into 889 charge orbits — point,
@@ -429,8 +434,8 @@ or pipeline.
   a separate record. It was the verified lower bound for seventeen squares from 27 to 29
   September 2026, exactly `0.01999` above `v1.1.0`, and it remains valid evidence.
 
-- **Kleddamag: `s(17) > 232001/50000 = 4.64002`, the `n = 17` bound before `4.66001`.**
-  The
+- **Kleddamag: `s(17) > 232001/50000 = 4.64002`, the `n = 17` bound before `4.66001`
+  ([T-040](packing/frontier/RESULTS.md)).** The
   [`v1.1.0` release](packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md)
   of 26 September 2026, by Kleddamag, building on Squares Project (Joshua Levy), Mira
   and Guzhou0806, extends Kleddamag’s own `v1.0.0` architecture below with weighted
@@ -446,8 +451,9 @@ or pipeline.
   separate record. It was the verified lower bound for seventeen squares on 27 September
   2026, exactly `0.02` above R052, and it remains valid evidence.
 
-- **Guzhou0806: `s(17) > 231001/50000 = 4.62002`, the `n = 17` bound before `v1.1.0`.**
-  The [R052 release](packing/resources/web/n17-guzhou-r052-2026-09-25/README.md) of 25
+- **Guzhou0806: `s(17) > 231001/50000 = 4.62002`, the `n = 17` bound before `v1.1.0`
+  ([T-039](packing/frontier/RESULTS.md)).** The
+  [R052 release](packing/resources/web/n17-guzhou-r052-2026-09-25/README.md) of 25
   September 2026, by Guzhou0806 / N17 project with AI assistance, is built on
   Kleddamag’s `v1.0.0` mixed point/threshold parent-core architecture below and extends
   its own R050 with enlarged resources: 2,354 point orbits and 514 two-of-three and 54
@@ -469,8 +475,8 @@ or pipeline.
   `s(17) > 462003/100000 = 4.62003`, superseded by `v1.1.0`, is retained the same way,
   with the receipts of one run of its C++ entry kept beside it.
 
-- **Kleddamag: `s(17) > 461300/99853 = 4.6197910…`, the `n = 17` bound before R052.**
-  The
+- **Kleddamag: `s(17) > 461300/99853 = 4.6197910…`, the `n = 17` bound before R052
+  ([T-038](packing/frontier/RESULTS.md)).** The
   [certificate](packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md)
   of September 2026 takes its spatial support from Mira’s `4613/1000` certificate below,
   and its attribution credits this repository’s parent-centre contract and T-025
@@ -503,7 +509,8 @@ or pipeline.
   and Kleddamag’s bound; its published tree has been retained here since 22 September
   2026 and has not been replayed.
 
-- **wand125, from the generator described here: point bounds for `n = 39` to `72`.** The
+- **wand125, from the generator described here: point bounds for `n = 39` to `72`
+  ([T-044](packing/frontier/RESULTS.md)).** The
   [point certificates](packing/resources/web/external-square-certificates-2026-09-22/README.md)
   of 15 to 22 September 2026 follow the generator this repository describes, row
   generation by a separation oracle and dual-priced column generation, and are decided
@@ -517,22 +524,9 @@ or pipeline.
   covers them. The same source’s `n = 26` and `29` certificates were superseded by
   Tokoharu’s, below.
 
-- **Tokoharu: rectangle-density bounds `s(26) ≥ 1377/250` and `s(29) ≥ 571/100`.** The
-  [certificates](packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/README.md)
-  of September 2026 replace wand125’s point masses with uniform densities on
-  axis-aligned rectangles, symmetrised under the square’s symmetries and decided by an
-  outward-rounded interval verifier, `verify.cpp`, over a 201-direction net.
-  Tokoharu says the work was inspired by this project’s owner and by wand125, and
-  credits this repository second-hand, through wand125’s repository; the
-  rectangle-density basis and the verifier are his own.
-  Complete replays pass here, and the
-  [mathematical review](docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md)
-  found no blocking defect, so `s(26) ≥ 1377/250` and `s(29), s(30) ≥ 571/100` are
-  verified lower bounds at `V4/C3`. His `s(11) ≥ 381/100` equals T-018 and moves
-  nothing.
-
-- **wand125, building on Tokoharu’s rectangle-density method: `n = 18` to `95`.** The
-  rectangle-density certificates of
+- **wand125, building on Tokoharu’s rectangle-density method: `n = 18` to `95`
+  ([T-045](packing/frontier/RESULTS.md) replayed, [T-046](packing/frontier/RESULTS.md)
+  reported).** The rectangle-density certificates of
   [26 and 27 September](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md)
   and
   [28 September 2026](packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md),
@@ -554,9 +548,27 @@ or pipeline.
   September as `wand125/square-packing-tools`. The source README says parts of the work
   were produced with AI assistance under human direction.
 
+### Crediting This Project Second-Hand
+
+- **Tokoharu: rectangle-density bounds `s(26) ≥ 1377/250` and `s(29) ≥ 571/100`
+  ([T-047](packing/frontier/RESULTS.md)).** The
+  [certificates](packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/README.md)
+  of September 2026 replace wand125’s point masses with uniform densities on
+  axis-aligned rectangles, symmetrised under the square’s symmetries and decided by an
+  outward-rounded interval verifier, `verify.cpp`, over a 201-direction net.
+  Tokoharu says the work was inspired by this project’s owner and by wand125, and
+  credits this repository second-hand, through wand125’s repository; the
+  rectangle-density basis and the verifier are his own.
+  Complete replays pass here, and the
+  [mathematical review](docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md)
+  found no blocking defect, so `s(26) ≥ 1377/250` and `s(29), s(30) ≥ 571/100` are
+  verified lower bounds at `V4/C3`. His `s(11) ≥ 381/100` equals T-018 and moves
+  nothing.
+
 ### Independent of This Project
 
-- **Evan Daniel: `s(21) = 5`, `s(32) = 6`, `s(45) = 7` and `s(12) ≥ 15680/3951`.** The
+- **Evan Daniel: `s(21) = 5`, `s(32) = 6`, `s(45) = 7` and `s(12) ≥ 15680/3951`
+  ([T-049](packing/frontier/RESULTS.md) to [T-053](packing/frontier/RESULTS.md)).** The
   [`evand/square-packing` repository](packing/resources/web/evand-square-packing-2026-09-26/README.md)
   builds on Sam Burns’s and Gustavo Massaccesi’s weighted exact-rational covering method
   and lists this project as parallel work.
@@ -595,7 +607,8 @@ or pipeline.
   direction.
 
 - **wand125, on Evan Daniel’s supports and Tokoharu’s solver: second routes to
-  `s(21) = 5` and `s(45) = 7`, and `s(50) ≥ 37/5`.** The
+  `s(21) = 5` and `s(45) = 7`, and `s(50) ≥ 37/5` ([T-054](packing/frontier/RESULTS.md),
+  [T-055](packing/frontier/RESULTS.md), [T-048](packing/frontier/RESULTS.md)).** The
   [28 September results](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md)
   include point-only certificates for the two exact values, the `s(21)` support Evan
   Daniel’s and `s(45)` decided by his `zmx2`; the source claims no priority for either
@@ -1048,7 +1061,9 @@ Changing agents changes the driver, not the record or the evidence required for 
 
 [`conventions.md`](conventions.md) owns identifiers, filenames, artifact discipline,
 evidence fields, provenance, corrections, and the boundary between machine checks and
-review. [`epistemics.md`](epistemics.md) owns whole-result classifications.
+review.
+[`epistemics.md`](epistemics.md) owns whole-result classifications and the policy
+for results by others: their scope, credit, intake and reply.
 [`operating-rules.md`](operating-rules.md) owns how sessions are conducted, and
 [`development.md`](development.md) owns the engineering and validation workflow.
 

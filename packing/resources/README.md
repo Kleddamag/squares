@@ -498,8 +498,10 @@ Since 22 August 2026 the archive has retained every public certificate that move
 lower bound here. Some build on this project’s certificates or pipeline (Kleddamag,
 Guzhou0806, Mira, wand125) or credit it second-hand (Tokoharu); others are independent
 of it (Evan Daniel, on Burns’s and Massaccesi’s method).
-Each key’s `credit` in [`bibliography.yaml`](bibliography.yaml) names the lineage,
-“after Levy” where the source credits this project.
+Each key’s `credit` in [`bibliography.yaml`](bibliography.yaml) names the authors and
+the work they build on, “after Levy” where the source credits this project, and its
+`lineage` records how the source stands to this project, as the source says; the policy
+is [epistemics.md → Results by Others](../../epistemics.md#results-by-others).
 
 | Key | What | Source | File stem (in `web/`) |
 | --- | --- | --- | --- |

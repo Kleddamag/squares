@@ -739,6 +739,16 @@ results:
       an earlier version of this sentence overstated the ceiling into a method-wide
       impossibility (PR 78's adversarial review, F14). What remains is how close to 4 a
       certificate can get.
+    notes: >-
+      Reached independently (annotated 2026-09-29). Evan Daniel's s(12) >= 15680/3951
+      (T-049), stronger than this bound, was in evand/square-packing from 2026-08-25,
+      before this result was established on 2026-09-04; it was outside the retained
+      corpus when the source search behind this entry was made, and was first seen here
+      on 2026-09-27. The claim's "first lower bound specific to n = 12 in the retained
+      corpus" and "separates the two cases for the first time" hold for that corpus at
+      that date and not for the literature: Daniel's certificate, above Trump's 3.877084,
+      separated s(12) from s(11) first. The novelty label stays apparently-novel under
+      epistemics.md's rule that priority is stated rather than defended.
   - id: T-018
     headline: "`s(11) ≥ 381/100 = 3.81`"
     established: '2026-09-04'

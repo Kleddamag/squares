@@ -2785,7 +2785,16 @@ evidence:
       (outward-rounded binary64 enclosures on an integer grid for chord geometry,
       against exact rationals). The two entries meet C4's literal predicate; the
       shared author, agent, point test, fold, region and architecture are the
-      common mode. zmcheck, the source's second checker, certifies 3,595 of its
+      common mode. The fold cannot be dropped from zmx2's side: a no-symmetry run
+      here, zmx2 --full --pair-points (2026-09-29, 09:03 to 11:58Z, all 28,800 roots
+      of the cover and its mirror, 11,433,048 boxes,
+      receipts/s32_zmx2_full_pairpoints.log), is NOT VERIFIED, with 152 boxes
+      uncertified at the depth cap: 38 in each of four roots, the images near
+      centres (0.50, 4.50) and (5.50, 1.50) at 0.18 to 0.32 degrees of a germ the
+      --d4 run certifies near (0.50, 1.50). Their float mass is at least 1.0115, so
+      they are not counterexamples; the pair lemma closes that germ in the
+      orientation the D4 region keeps and not in its reflections, so zmx2 certifies
+      this cover only through the fold. zmcheck, the source's second checker, certifies 3,595 of its
       3,600 roots on this cover and was not run here; the Lean build was not run
       (Mathlib's build cache is unreachable from this session), and the checker
       programs are not formalised. Registration requested by the author in

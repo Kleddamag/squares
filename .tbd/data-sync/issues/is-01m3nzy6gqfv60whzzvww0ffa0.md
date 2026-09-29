@@ -5,7 +5,7 @@ title: Review wand125 tools claims and maintain upstream repository references
 kind: task
 status: in_progress
 priority: 1
-version: 11
+version: 12
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -19,11 +19,11 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:09:19.247Z
-updated_at: 2026-09-29T08:32:58.797Z
+updated_at: 2026-09-29T08:45:26.614Z
 started_at: 2026-09-29T07:09:45.733Z
 ---
 W2 factual review and W8 documentation: pin square-packing-tools, register scoped claims, audit independent rectangle/point verification and tutorial coverage, track remaining proof obligations.
 
 ## Notes
 
-PR246 head31864e4d1. Source intake, GPT-6 Astra max audit, fix closure and final CI attached as PR comments; durable reviews linked bidirectionally. Max found no unsound acceptance within reviewedscope; both receipt-countbugs fixed+reviewed;12native/100focused/13release tests pass, atlas samplepass. Native201analyticVERIFIED, falsebudgetREFUSED, retainedn11angle1INCONCLUSIVE46/9. Final CI run36541431891: bothbehavioralshards,geometry,sweeps,types,frontend,macOS,pagespass. Sole directfailure inheritedsession161phase2deadline07:47UTC, otherworkstillactive. Userstatus requested; recorduntouched, fullcheckpointnotpassed. LibrarySHAeee2f2b05f7cde370c9ce7e0fe0c1aeb04a526604886bd7c0b5bdeb6bded6b78. Continuations bmf3,xgjo,190a open.
+PR246 head5d4e26de1. Guideline follow-up completed with Astra-max review: byte-exact five-scenario verifier goldens and semantic guards, input identities including refusal, Rustmanifest floor and5actualRusttests/rustdoc/livenessprobes.15native+golden and134gate/validation tests pass. Push618.13s:2039passed3deselected1unstagedsnapshotfailure; afterstaging snapshot+native16pass24.05s. Rustgate1.67swarm. Source-review findings archivedbuildstatusloss andunboundedu32pointindices retained inthink-xgjo; generalRustsupport/CLI debtthink-cr8l. Reviews onPR5886554596 and5886791270 plusrepo. Hostednewheadpending; inheritedSession161expiredphase07:47UTC remains untouched pendingownerstatus. Fullcheckpoint notpassed. Nativeexternalcertificatefullcoverage remains think-bmf3, T057fullcensus think-190a.

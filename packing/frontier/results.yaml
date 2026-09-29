@@ -3229,11 +3229,13 @@ results:
       an AI agent under human direction as its CREDITS.md says. The complete zeromargin.py
       sweep was replayed here on 2026-09-27 with the source's runner, checker and settings:
       all 7,200 roots certified, 164,130 boxes, every root's census equal to the source's.
-      The source's separately written zmx2 checker, deciding in outward-widened binary64
-      intervals, was run here on the same cover on 2026-09-29 with --pair-points: all 3,600
-      roots of the D4 region certified, 1,405,342 boxes, none uncertified.
-      An externally produced, previously published result, not peer reviewed; no new
-      first-party mathematics is claimed.
+      The source's third checker, zmx2, a second implementation of the same subdivision by
+      the same author and agent, which shares zeromargin.py's point test, D4 fold and region
+      but closes germs by its own pair lemma and decides by exact integer tests on
+      outward-rounded binary64 enclosures of chord ends, was run here on the same cover on
+      2026-09-29 with --pair-points: all 3,600 roots of the D4 region certified, 1,405,342
+      boxes, none uncertified. An externally produced, previously published result, not
+      peer reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [32]}
     verification: V4
     confirmation: C4
@@ -3252,13 +3254,18 @@ results:
       source_keys: ['[evand square-packing 2026]']
       published: '2026-09-26'
     composition: >-
-      Compound: the lower half rests on two replays here of separately written
-      implementations of the zero-margin subdivision, E-n032-evand-closed-cover-source-run
+      Compound. The upper half is the 6 x 6 grid replayed exactly by the basic-bounds
+      checker (E-basic-grid-upper), a construction confirmed by its replay, so under
+      epistemics.md's Scope and Composition the equality takes the C of its lower half,
+      which sets the rung. The lower half rests on two complete replays here of the source's
+      zero-margin pose-space subdivision, E-n032-evand-closed-cover-source-run
       (zeromargin.py, exact-algebraic) and E-n032-evand-closed-cover-zmx2-replay (zmx2,
-      interval-certified), which is C4 by the distinct-method rule; the upper half is the
-      grid replayed exactly by the basic-bounds checker (E-basic-grid-upper). The lower half
-      sets the minimum, so the equality is C4. The residual common-mode risk is the shared
-      pose-space architecture and D4 fold.
+      interval-certified), whose method values differ, so it is C4. The two checkers differ
+      in how germs are closed (zmx2's pair lemma Z and pair dynamic programme over lines one
+      unit apart, against zeromargin.py's monotone chains) and in arithmetic. They share the
+      author and AI agent, the point-in-square test (zmx2's Lemma P is zeromargin.py's
+      G0-G3), the D4 fold, the region and the branch-and-bound architecture, which are the
+      common mode.
     produced_by:
       session: session-160
     evidence:
@@ -3273,17 +3280,21 @@ results:
       - packing/resources/web/evand-square-packing-2026-09-26/receipts/s32_sweep_comparison.json
       - packing/devtools/compare_evand_s32_sweep.py
       - packing/resources/web/evand-square-packing-2026-09-28/README.md
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/s32_zmx2_d4_pairpoints.log
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/audit.json
       - packing/devtools/audit_evand_mixed_covers.py
       - packing/devtools/check_basic_bounds.py
       - docs/project/reviews/review-2026-09-27-evand-s32-s12.md
+      - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
     controls:
       - packing/tests/test_evand_square_packing.py
       - packing/tests/test_evand_mixed_covers.py
     next_rung: >-
-      C5 by citing a mapped review artifact for the complete claim (the owner's question in
-      think-9ec5 on same-repository reviews). V5 would need the checker programs formalised;
-      the source reports a hypothesis-free kernel check of minSide 32 = 6 (Lean, commit
-      92cc5bb5) that was not built here, because Mathlib's build cache is unreachable from
+      C5 would follow the owner's decision on citing a mapped review as review_artifact for
+      others' results. V5 by building the source's hypothesis-free Lean theorem s32_eq_6
+      (commit 92cc5bb5), which decides a generated box tree in the kernel with zeromargin.py
+      only as the tree generator's untrusted oracle; the cost is compute, 13.8 CPU-hours and
+      up to 15.2 GB per process at the source, and Mathlib's build cache is unreachable from
       this session (think-angg).
 
   - id: T-052

@@ -45,11 +45,11 @@ This repository contains:
     [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) and the
     [case record](packing/frontier/n-017.md).
   - **`s(21) = 5`, `s(32) = 6` and `s(45) = 7`**, by Evan Daniel, independent of this
-    project and building on Burns’s and Massaccesi’s weighted method: the first exact
-    values of `s(k² − 4)` for `k ≥ 4`. His `s(12) ≥ 15680/3951`, wand125’s and
-    Tokoharu’s point and rectangle-density bounds for `n = 18` to `95`, and wand125’s
-    `s(50) ≥ 37/5` are registered the same way, most of wand125’s still as reported
-    bounds pending replay.
+    project and building on Burns’s and Massaccesi’s weighted method: the exact values
+    of `s(k² − 4)` for `k = 5, 6, 7`, the first for any `k ≥ 4`; `s(12)` remains open.
+    His `s(12) ≥ 15680/3951`, wand125’s and Tokoharu’s point and rectangle-density
+    bounds for `n = 18` to `95`, and wand125’s `s(50) ≥ 37/5` are registered the same
+    way, most of wand125’s still as reported bounds pending replay.
 - **[A comprehensive survey of all known square packing results](#survey):** Every case
   `n = 1…100`, the primary literature retained and transcribed, and the bound a source
   *reports* kept apart from the bound this repository has *verified*. Fifty-five of its
@@ -560,24 +560,28 @@ or pipeline.
   [`evand/square-packing` repository](packing/resources/web/evand-square-packing-2026-09-26/README.md)
   builds on Sam Burns’s and Gustavo Massaccesi’s weighted exact-rational covering method
   and lists this project as parallel work.
-  With the grid upper bounds its covers give the first exact values of `s(k² − 4)` for
-  `k ≥ 4`. Its `s(32)` certificate is a weighted closed cover of `[0,6]²`: 13,085 points
-  of total weight `31.713505354 < 32` that every closed unit square captures at least
-  `1` of, checked at margin zero by an exact subdivision of pose space.
+  With the grid upper bounds its covers give the exact values of `s(k² − 4)` for
+  `k = 5, 6, 7`, the first for any `k ≥ 4`; `s(12)` remains open.
+  Its `s(32)` certificate is a weighted closed cover of `[0,6]²`: 13,085 points of total
+  weight `31.713505354 < 32` that every closed unit square captures at least `1` of,
+  checked at margin zero by an exact subdivision of pose space.
   A Lean theorem derives `minSide 32 = 6` from exactly the statement the source’s
   `zeromargin.py` sweep checks over all 7,200 roots of the cover’s symmetry-reduced
   region. Here that sweep was run again in full, certifying all 7,200 roots with the
-  source’s census on every one, and the source’s separately written `zmx2`, deciding in
-  outward-widened binary64 intervals, certified all 3,600 roots of the same region, so
-  `s(32) = 6` is registered at `V4/C4`; the Lean build and a third checker, `zmcheck`,
-  were not run. On 28 September the
+  source’s census on every one, and the source’s third checker, `zmx2`, certified all
+  3,600 roots of the same region by exact integer mass tests on outward-rounded binary64
+  enclosures of chord ends, so `s(32) = 6` is registered at `V4/C4`, the two checkers
+  sharing their author, point test and symmetry fold but not how they close germs.
+  The Lean build and the second checker, `zmcheck`, were not run.
+  On 27 September, taken in here the next day, the
   [same repository](packing/resources/web/evand-square-packing-2026-09-28/README.md)
   proved `s(21) = 5` and `s(45) = 7` by *mixed covers*, weighted points plus mass spread
   uniformly along interior grid-line segments, each certified at margin zero by two
-  checkers that share no code: `zm_mixed.py` in exact arithmetic and the Rust `zmx2` in
-  outward-widened binary64 intervals, with a Lean reduction for `s(21)`. Fresh `zmx2`
-  sweeps here reproduce the source’s census on every root, so both are registered at
-  `V4/C3`; recording a complete re-sweep by the exact checker would make them `C4`. The
+  checkers that share no code: `zm_mixed.py` in exact arithmetic and the Rust `zmx2` by
+  exact integer tests on outward-rounded binary64 enclosures, with a Lean reduction for
+  `s(21)`. Fresh `zmx2` sweeps here reproduce the source’s census on every root, so both
+  are registered at `V4/C3`; recording a complete re-sweep by the exact checker would
+  make them `C4`. The
   [review](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) found
   no defect. His earlier angle-net `s(21) ≥ 5000/1001` remains valid evidence.
   His angle-net certificate at [twelve squares](packing/frontier/n-012.md), in his

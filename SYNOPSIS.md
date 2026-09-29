@@ -127,15 +127,16 @@ credit beside this repository’s `V` and `C`.
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
 weighted exact-rational covering method, proves `s(32) = 6` by a zero-margin weighted
-closed cover of `[0,6]²`, at `V4/C4` on complete replays here of two separately written
-checkers, and `s(12) ≥ 15680/3951` at `V4/C4`; its `s(21) ≥ 5000/1001` was superseded on
-28 September by the same author’s mixed covers, weighted points plus mass on interior
-grid-line segments, which prove `s(21) = 5` and `s(45) = 7`, both `V4/C3`. Its case-free
-proof of Bentz’s `s(13) = 4` is recorded as a report.
-wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at `39d8ecc`
-for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s reviewed
-interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`, and
-reported at the other counts until their replays run.
+closed cover of `[0,6]²`, at `V4/C4` on complete replays here of its exact checker and
+its binary64-enclosure `zmx2`, which share their author, point test and symmetry fold
+and differ in how they close germs, and `s(12) ≥ 15680/3951` at `V4/C4`; its
+`s(21) ≥ 5000/1001` was superseded by the same author’s mixed covers of 27 September,
+weighted points plus mass on interior grid-line segments, which prove `s(21) = 5` and
+`s(45) = 7`, both `V4/C3`. Its case-free proof of Bentz’s `s(13) = 4` is recorded as a
+report. wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at
+`39d8ecc` for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s
+reviewed interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`,
+and reported at the other counts until their replays run.
 wand125’s point-only routes to `s(21) = 5` and `s(45) = 7`, the latter verified here as
 a second certificate, and its reported `s(50) ≥ 37/5` followed on 28 September.
 Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by `v1.1.0`, is

@@ -400,11 +400,18 @@ and their totals equal the ones the source reports: 47,162 boxes, 22,136 certifi
 maximum depth 29, for `s(32)`. Each is a complete certification of the cover’s D4 region
 by a third implementation of the zero-margin method, after `zeromargin.py` and
 `zmcheck`; for `s(13)` it is the first repository replay of any checker on the case-free
-cover. Neither moves a bound: `s(13) = 4` is Bentz’s, and `s(32) = 6` already stands at
-`V4`/`C3` on the `zeromargin.py` re-sweep.
-On 29 September the `s(32)` run was recorded as its own evidence entry,
-`E-n032-evand-closed-cover-zmx2-replay`, a second method beside the `zeromargin.py`
-re-sweep, which raises `s(32) = 6` to `V4/C4` (jlevy/squares#238).
+cover. Neither moves a bound: `s(13) = 4` is Bentz’s, and `s(32) = 6` was already
+verified by the `zeromargin.py` re-sweep.
+The `s(32)` run does move that result’s confirmation. On 29 September it was recorded
+as its own evidence entry, `E-n032-evand-closed-cover-zmx2-replay`, an
+`interval-certified` method beside the `exact-algebraic` `zeromargin.py` re-sweep, which
+raises `s(32) = 6` from `V4/C3` to `V4/C4` (jlevy/squares#238); the entry and T-051’s
+composition say what the two checkers share.
+A replayer audits their own log of that run, `OUT`, from `packing/`, with
+`devtools.audit_evand_mixed_covers zmx2 --case 32 --mode d4 OUT`, which requires the
+whole region and the source’s totals, and
+`devtools.audit_evand_mixed_covers compare-zmx2 --case 32 --records OUT`, which requires
+the retained run’s header and every root’s census.
 
 ## Replay From the Packets
 

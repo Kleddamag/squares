@@ -5,10 +5,12 @@ title: Review wand125 tools claims and maintain upstream repository references
 kind: task
 status: in_progress
 priority: 1
-version: 31
+version: 32
+spec_path: explorations/packing/docs/project/reviews/review-2026-08-23-square-packing-program-and-pr14.md
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
+parent_id: is-01m3qw8b5q2xgjp85cxx24134c
 child_order_hints:
   - is-01m3p04ndehpya7g3mbmmad36g
   - is-01m3p04nvawjqqtx8cynyj2pwy
@@ -28,7 +30,7 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:09:19.247Z
-updated_at: 2026-09-30T00:43:26.262Z
+updated_at: 2026-09-30T00:55:26.880Z
 started_at: 2026-09-29T07:09:45.733Z
 ---
 W2 factual review, W7 verification pipeline, and W8 documentation: pin square-packing-tools, register scoped claims, audit independent rectangle/point verification, and update synopsis and tooling coverage. Track remaining mathematical and complete-replay obligations separately.

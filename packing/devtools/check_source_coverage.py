@@ -33,11 +33,14 @@ import pathlib
 import re
 import shlex
 import sys
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from decimal import Decimal
 
 from devtools.retained_data import read_retained_text, retained_exists
 from sqpack.kingbird_catalogue import (
+    INTAKE_CAPTURE_DATE,
+    INTAKE_CATALOGUE_HTML,
+    INTAKE_CATALOGUE_MARKDOWN,
     NOT_STATED,
     RIGIDITY_STATES,
     CatalogueEntry,
@@ -359,6 +362,79 @@ def catalogue_transcription_errors(
     return errors, compared, facts
 
 
+def pending_intake_errors(
+    pending: Sequence[Mapping],
+    current: Mapping[int, str],
+    earlier: Mapping[int, str],
+    cases: Mapping[int, Mapping],
+) -> list[str]:
+    """Hold each declared pending catalogue intake to both captures and to its record.
+
+    A declaration says: the current capture prints a side below the one this record
+    reports, the record still transcribes the earlier capture, and moving it is an intake
+    of its own -- a result by others that the register must hold first. So the current
+    capture must print exactly the declared side, the earlier capture must print
+    something else, the declared side must beat the record's, and the record must still
+    report the side it declared. Once the intake lands the record reports the current
+    side, and the declaration then fails here until it is removed.
+    """
+    errors: list[str] = []
+    seen: set[int] = set()
+    for entry in pending:
+        n = int(entry["n"])
+        where = f"pending catalogue intake n={n}"
+        if n in seen:
+            errors.append(f"{where} is declared twice")
+        seen.add(n)
+        if entry["capture"] != INTAKE_CAPTURE_DATE:
+            errors.append(
+                f"{where} names capture {entry['capture']}; the one retained earlier "
+                f"capture is {INTAKE_CAPTURE_DATE}"
+            )
+            continue
+        printed = current.get(n)
+        if printed is None or Decimal(printed) != Decimal(entry["catalogue_value"]):
+            errors.append(
+                f"{where}: the current capture prints {printed}, not the declared "
+                f"{entry['catalogue_value']}"
+            )
+        before = earlier.get(n)
+        if printed is not None and before is not None and Decimal(printed) == Decimal(before):
+            errors.append(f"{where}: both captures print {printed}; nothing is pending")
+        if Decimal(entry["catalogue_value"]) >= Decimal(entry["record_value"]):
+            errors.append(f"{where}: {entry['catalogue_value']} does not beat the record")
+        case = cases.get(n)
+        reported = None if case is None else case["reported_upper_bound"]["value"]
+        if reported is None or Decimal(str(reported)) != Decimal(entry["record_value"]):
+            errors.append(
+                f"{where}: the record reports {reported}, not the declared "
+                f"{entry['record_value']}; remove the declaration once the intake lands"
+            )
+    return errors
+
+
+def record_catalogue(
+    current: Mapping[int, CatalogueEntry], pending: Sequence[Mapping]
+) -> dict[int, CatalogueEntry]:
+    """The catalogue entry each record transcribes, by count.
+
+    The current capture's, except at a count declared pending intake, whose record still
+    transcribes the earlier capture and is reconciled against that capture's entry.
+    """
+    indexed = dict(current)
+    if not pending:
+        return indexed
+    earlier_text = (ROOT / INTAKE_CATALOGUE_MARKDOWN).read_text(encoding="utf-8")
+    earlier = index_entries(parse_entries(earlier_text))
+    for entry in pending:
+        n = int(entry["n"])
+        if n in earlier:
+            indexed[n] = earlier[n]
+        else:
+            indexed.pop(n, None)
+    return indexed
+
+
 def load_claims(path: pathlib.Path) -> dict[int, str]:
     """A source's upper-bound claims by `n`, reparsed from its own retained record.
 
@@ -522,18 +598,25 @@ def main() -> int:
 
     kingbird_source = source_by_id(coverage, "kingbird-current")
     kingbird = parse_kingbird(ROOT / kingbird_source["local"], n_min, n_max)
+    # A count declared pending intake is still read against the capture its record
+    # transcribes; `pending_intake_errors` holds the declaration to both captures.
+    pending = coverage.get("pending_catalogue_intake", [])
+    earlier = parse_kingbird(ROOT / INTAKE_CATALOGUE_HTML, n_min, n_max) if pending else {}
+    baseline = dict(kingbird)
+    baseline.update({int(entry["n"]): earlier[int(entry["n"])] for entry in pending})
     overrides = {entry["n"]: entry for entry in coverage["selected_overrides"]}
     claims = {
         source["id"]: load_claims(ROOT / source["claims_record"])
         for source in coverage["sources"]
         if source.get("claims_record")
     }
-    errors.extend(selection_errors(coverage, kingbird, claims))
+    errors.extend(selection_errors(coverage, baseline, claims))
 
     cases = {
         case["n"]: case
         for case in (parse_case(path) for path in sorted(FRONTIER.glob("n-[0-9][0-9][0-9].md")))
     }
+    errors.extend(pending_intake_errors(pending, kingbird, earlier, cases))
     expected_ns = set(range(n_min, n_max + 1))
     if set(cases) != expected_ns:
         errors.append(f"case corpus is not exactly n={n_min}..{n_max}")
@@ -548,7 +631,7 @@ def main() -> int:
             if expected["evidence"] not in bound["evidence"]:
                 errors.append(f"n={n}: selected evidence {expected['evidence']} is absent")
         else:
-            expected_value = kingbird[n]
+            expected_value = baseline[n]
             expected_key = kingbird_source["source_key"]
         if Decimal(bound["value"]) != Decimal(expected_value):
             errors.append(
@@ -571,7 +654,7 @@ def main() -> int:
         errors.extend(cross_check_html(entries, catalogue_html.read_text(encoding="utf-8")))
         transcription, compared, facts = catalogue_transcription_errors(
             cases,
-            index_entries(entries),
+            record_catalogue(index_entries(entries), pending),
             kingbird_source["source_key"],
             completeness_bound_from_text(transcription_text),
         )
@@ -588,7 +671,8 @@ def main() -> int:
         f"  source coverage reconciled: {n_max - n_min + 1} cases, "
         f"{len(overrides)} newer in-horizon reports from {len(claims)} reparsed claim "
         f"records, {len(coverage['superseded_reports'])} superseded reports, "
-        f"{len(inventory)} tracked beyond horizon"
+        f"{len(inventory)} tracked beyond horizon, "
+        f"{len(pending)} catalogue count{'' if len(pending) == 1 else 's'} pending intake"
     )
     print(
         f"  catalogue transcription reconciled: {len(entries)} entries reparsed, "

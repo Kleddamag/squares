@@ -117,5 +117,52 @@ def test_both_claims_record_shapes_are_reparsed(tmp_path: Path) -> None:
     assert coverage_check.load_claims(acquisition) == {7: "2.95"}
 
 
+#: A count the current capture moved below its record: the earlier capture printed 3.
+PENDING = {
+    "n": 6,
+    "record_value": "2.9",
+    "catalogue_value": "2.85",
+    "capture": coverage_check.INTAKE_CAPTURE_DATE,
+    "reason": "a result the register holds first",
+}
+CURRENT = {5: "2.9", 6: "2.85", 7: "3"}
+EARLIER = {5: "2.9", 6: "3", 7: "3"}
+CASES = {6: {"reported_upper_bound": {"value": "2.9"}}}
+
+
+def _pending_errors(**change: str) -> list[str]:
+    entry = {**PENDING, **change}
+    return coverage_check.pending_intake_errors([entry], CURRENT, EARLIER, CASES)
+
+
+def test_a_declared_pending_intake_that_both_captures_bear_out_passes() -> None:
+    assert _pending_errors() == []
+
+
+def test_a_pending_intake_must_name_the_side_the_current_capture_prints() -> None:
+    (error,) = _pending_errors(catalogue_value="2.84")
+    assert "the current capture prints 2.85, not the declared 2.84" in error
+
+
+def test_a_pending_intake_is_refused_once_the_record_has_moved() -> None:
+    """The declaration exists to be removed; an intake that landed leaves it stale."""
+    moved = {6: {"reported_upper_bound": {"value": "2.85"}}}
+    (error,) = coverage_check.pending_intake_errors([PENDING], CURRENT, EARLIER, moved)
+    assert "remove the declaration once the intake lands" in error
+
+
+def test_a_pending_intake_needs_a_capture_that_changed_and_a_side_that_beats() -> None:
+    same = coverage_check.pending_intake_errors([PENDING], CURRENT, CURRENT, CASES)
+    assert same == [
+        "pending catalogue intake n=6: both captures print 2.85; nothing is pending"
+    ]
+    higher = {6: "2.95"}
+    beaten = coverage_check.pending_intake_errors(
+        [{**PENDING, "catalogue_value": "2.95"}], higher, EARLIER, CASES
+    )
+    assert beaten == ["pending catalogue intake n=6: 2.95 does not beat the record"]
+    assert "the one retained earlier capture" in _pending_errors(capture="2026-01-01")[0]
+
+
 def test_the_recorded_coverage_reconciles() -> None:
     assert coverage_check.main() == 0

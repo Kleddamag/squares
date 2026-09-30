@@ -57,13 +57,17 @@ from devtools.generate_frontier_case import (
     load_unitsquare_release,
 )
 from sqpack.assurance import bounds_agree_at_declared_precision
+from sqpack.kingbird_catalogue import INTAKE_CATALOGUE_HTML
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
 COVERAGE = FRONTIER / "source-coverage.yaml"
 EVIDENCE = FRONTIER / "evidence.yaml"
-CATALOGUE = ROOT / "resources/web/kingbird-squares-in-squares.html"
+#: The capture this intake read, not whichever one is current: the sides it records as
+#: replaced are the ones the records held on 2026-09-29, and a later capture of the page
+#: must not rewrite them.
+CATALOGUE = ROOT / INTAKE_CATALOGUE_HTML
 INTAKE = "2026-09-29"
 ISSUE = "https://github.com/jlevy/squares/issues/227"
 #: The counts issue #227 names, in its author's words "the 102 and 103 problems".

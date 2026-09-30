@@ -305,6 +305,65 @@ def test_an_already_retained_witness_is_skipped_rather_than_refetched(
 
 
 @pytest.mark.usefixtures("synthetic_corpus")
+def test_a_refresh_replaces_only_a_witness_whose_side_the_catalogue_left(
+    tmp_path: Path, offline: list[str]
+) -> None:
+    """After the page is captured again, a moved side is re-derived and nothing else is."""
+    stale = "witness:\n  side: '2.6'\n"
+    current = "witness:\n  side: '2.5'\n"
+    (tmp_path / "n-003.yaml").write_text(stale, encoding="utf-8")
+    (tmp_path / "n-004.yaml").write_text(current, encoding="utf-8")
+
+    status = derive_tool.derive([3, 4], out_root=tmp_path, refresh=True, retrieved="2026-09-30")
+
+    assert status == 0
+    assert offline == [SYNTHETIC_URL]
+    assert (tmp_path / "n-004.yaml").read_text(encoding="utf-8") == current
+    rewritten = safe_load((tmp_path / "n-003.yaml").read_text(encoding="utf-8"))["witness"]
+    assert rewritten["side"] == SYNTHETIC_SIDE
+    assert rewritten["source"]["retrieved"] == "2026-09-30"
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_refresh_leaves_a_count_whose_record_reports_another_source(
+    tmp_path: Path, offline: list[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A certified packet's count keeps that packet's witness, whatever the page prints."""
+    frontier = tmp_path / "frontier"
+    frontier.mkdir()
+    (frontier / "n-003.md").write_text(
+        "---\npacking:\n  n: 3\n  reported_upper_bound:\n    value: '2.4'\n"
+        "    source_key: '[Elsewhere]'\n---\nbody\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(derive_tool, "FRONTIER", frontier)
+    out = tmp_path / "witnesses"
+    out.mkdir()
+    packet = "witness:\n  side: '2.4'\n"
+    (out / "n-003.yaml").write_text(packet, encoding="utf-8")
+
+    plans, skipped, refusals = derive_tool.derivation_plans([3], out_root=out, refresh=True)
+
+    assert (plans, refusals) == ([], [])
+    assert [(case.n, case.reason) for case in skipped] == [(3, "other-source")]
+    assert offline == []
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_without_refresh_a_stale_witness_is_still_left_alone(
+    tmp_path: Path, offline: list[str]
+) -> None:
+    stale = "witness:\n  side: '2.6'\n"
+    for name in ("n-003.yaml", "n-004.yaml"):
+        (tmp_path / name).write_text(stale, encoding="utf-8")
+
+    assert derive_tool.derive([3, 4], out_root=tmp_path) == 0
+
+    assert offline == []
+    assert (tmp_path / "n-003.yaml").read_text(encoding="utf-8") == stale
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
 def test_one_picture_serving_two_counts_is_fetched_once(
     tmp_path: Path, offline: list[str]
 ) -> None:
@@ -421,6 +480,20 @@ def test_a_response_that_is_not_svg_is_a_refusal(monkeypatch: pytest.MonkeyPatch
         derive_tool.fetch_svg(SYNTHETIC_URL)
 
     assert refusal.value.kind == "not-svg"
+
+
+def test_an_svg_behind_a_long_comment_is_still_svg(monkeypatch: pytest.MonkeyPatch) -> None:
+    """`square-179.svg` puts 166,839 bytes of polynomial comment ahead of its `<svg>`."""
+    preamble = b'<?xml version="1.0"?>\n<!--' + b"x" * 200_000 + b"-->\n"
+
+    def long_urlopen(request: urllib.request.Request, timeout: float = 0) -> FakeResponse:
+        del request, timeout
+        return FakeResponse(preamble + SYNTHETIC_SVG.encode("utf-8"))
+
+    monkeypatch.setattr(urllib.request, "urlopen", long_urlopen)
+    monkeypatch.setattr(derive_tool.time, "sleep", lambda _seconds: None)
+
+    assert derive_tool.fetch_svg(SYNTHETIC_URL).endswith(SYNTHETIC_SVG)
 
 
 @pytest.mark.usefixtures("synthetic_corpus")

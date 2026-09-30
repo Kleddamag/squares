@@ -40,6 +40,15 @@ from sqpack.project import require_project_root
 CATALOGUE_MARKDOWN = "resources/web/kingbird-squares-in-squares.md"
 CATALOGUE_HTML = "resources/web/kingbird-squares-in-squares.html"
 
+#: The capture of 2026-08-22, kept under a dated name when the page was captured again on
+#: 2026-09-30; both files are byte-identical to what the undated names held until then.
+#: The UnitSquare intake of 2026-08-25 and the certified-packet intake of 2026-09-29 read
+#: it, so what they wrote about the packing each one replaced is drafted from it and does
+#: not move when the page is captured again.
+INTAKE_CAPTURE_DATE = "2026-08-22"
+INTAKE_CATALOGUE_MARKDOWN = "resources/web/kingbird-squares-in-squares-2026-08-22.md"
+INTAKE_CATALOGUE_HTML = "resources/web/kingbird-squares-in-squares-2026-08-22.html"
+
 #: The glyph the catalogue prints where a root's degree is known but its form is not.
 LOCK_GLYPH = "\N{LOCK}"
 
@@ -206,6 +215,16 @@ def default_catalogue_path() -> Path:
 def default_catalogue_html_path() -> Path:
     """Return the retained original HTML beside the transcription."""
     return require_project_root() / CATALOGUE_HTML
+
+
+def intake_catalogue_path() -> Path:
+    """Return the transcription of the capture the 2026 intakes read (`INTAKE_CAPTURE_DATE`)."""
+    return require_project_root() / INTAKE_CATALOGUE_MARKDOWN
+
+
+def intake_catalogue_html_path() -> Path:
+    """Return the original HTML of the capture the 2026 intakes read."""
+    return require_project_root() / INTAKE_CATALOGUE_HTML
 
 
 def _convert_latex(latex: str, line: int | None) -> str:

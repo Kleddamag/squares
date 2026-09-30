@@ -116,9 +116,10 @@ early 1979", and adds the augmentation as an afterthought -- and this rule reads
 the opening sentence, so it does not reach `n = 82` and `n-082.md` is left as written.
 
 `analytically_optimized` is `false` where the line says "Not yet analytically optimized"
-(32 entries, every one of them above `n = 100`), `null` where it ends "Further
-improvement pending" (9 entries, `102, 130, 172, 199, 228, 259, 269, 292, 302`, and
-again all above `n = 100`), and `true` otherwise, which is what all sixty
+(37 entries in the capture of 2026-09-30, and `n = 68`, whose record takes its bound from
+a certified packet, the only one at `n <= 100`), `null` where it ends "Further
+improvement pending" (8 entries, `130, 172, 199, 228, 259, 269, 292, 302`, all above
+`n = 100`), and `true` otherwise, which is what all sixty
 hand-transcribed catalogue-sourced pictured entries say. The null is `D-354`'s rule:
 "further improvement pending" says the entry is still moving and says nothing about
 whether its current side has been analytically optimized, and `true` there would be a
@@ -127,8 +128,10 @@ different sentence, is not read as this one, and `n-088.md` keeps its `true`. A 
 has no credit line and keeps `null`.
 
 **A printed form that disagrees with its printed decimal is not transcribed.** The
-catalogue's `n = 179` entry prints a January-2025 closed form beside a January-2026
+capture of 2026-08-22 printed `n = 179`'s January-2025 closed form beside a January-2026
 decimal it does not equal: the record was improved and the stale form was left standing.
+The capture of 2026-09-30 prints a consistent root there and no entry contradicts
+itself, but the rule stands for the next one that does.
 So every form is evaluated against the decimal beside it, and where the two disagree
 `exact_form`, `algebraic_degree` and `minimal_polynomial` are all `null` and the case
 carries a `stale-source` conflict naming both printed values. The decimal is what the
@@ -136,7 +139,7 @@ page's own credit line dates; the form is what it forgot to update.
 
 **`improved_by` is the page's dated "Improved by" sentences, and nothing else.** A
 sentence-initial "Improved by <names> in <month> <year>" is recorded, names split on
-"and" and on commas and each improver kept once in page order; it reaches 33 records in
+"and" and on commas and each improver kept once in page order; it reaches 32 records in
 range. Measured over the 46 catalogue-sourced pictured records at `n <= 100`, the rule
 reproduces 45 of them. The one miss is `n = 29`, where the hand pass read an "Optimized
 by" sentence as an improvement and `n = 39, 41, 50, 51, 71` did not read the same
@@ -243,6 +246,10 @@ ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
 AVAILABILITY = ROOT / "atlas" / "prospective" / "source-availability-101-324.json"
 UNITSQUARE_RELEASE = ROOT / "resources" / "web" / "unitsquare-release1-2026" / "results.json"
+#: The catalogue capture the UnitSquare intake and the certified-packet intake read,
+#: `sqpack.kingbird_catalogue.INTAKE_CATALOGUE_MARKDOWN`, spelled out here because that
+#: module is imported late on purpose. See `drafting_capture`.
+INTAKE_CATALOGUE = ROOT / "resources" / "web" / "kingbird-squares-in-squares-2026-08-22.md"
 
 #: `n <= 100` is hand-authored. The generator refuses to write into the register there,
 #: and the golden test is the one caller that generates those cases at all -- into a
@@ -1041,6 +1048,43 @@ def load_catalogue(path: Path | None = None) -> dict[int, CatalogueFacts]:
     """
     parsed: Mapping[int, CatalogueEntryLike] = _catalogue_module().parse_catalogue(path)
     return {n: facts_from_catalogue_entry(entry, n=n) for n, entry in parsed.items()}
+
+
+def drafting_capture(n: int, source: SourceAvailability | None) -> Path | None:
+    """The catalogue capture a draft of `n` reads, or `None` for the current one.
+
+    The current capture, except where the draft's packing paragraph describes a packing
+    that an intake has since replaced. At a count a certified packet adopted, the intake
+    keeps the draft's paragraph as the record's "previous best known packing"; at a count
+    the UnitSquare release reports, the paragraph names the parent the release improved
+    on. Both intakes read the capture of 2026-08-22, so both drafts read it too, and
+    capturing the page again does not rewrite what a record says the replaced packing was.
+    """
+    if n in packet_adopted_counts() or (source is not None and source.is_unitsquare):
+        return INTAKE_CATALOGUE
+    return None
+
+
+def load_drafting_catalogue(
+    cases: Iterable[int],
+    availability: Mapping[int, SourceAvailability],
+    path: Path | None = None,
+) -> dict[int, CatalogueFacts]:
+    """Catalogue facts for drafting `cases`, each count's from the capture it drafts from.
+
+    `path` overrides the current capture only; a count `drafting_capture` assigns to the
+    intake capture reads that capture whatever `path` says.
+    """
+    catalogue = load_catalogue(path)
+    earlier = [n for n in cases if drafting_capture(n, availability.get(n)) is not None]
+    if earlier:
+        intake = load_catalogue(INTAKE_CATALOGUE)
+        for n in earlier:
+            if n in intake:
+                catalogue[n] = intake[n]
+            else:
+                catalogue.pop(n, None)
+    return catalogue
 
 
 # --------------------------------------------------------------------------------------
@@ -2155,10 +2199,19 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--force", action="store_true", help="overwrite records that already exist"
     )
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
         "--check",
         action="store_true",
         help="regenerate into a temporary directory and report any drift; writes nothing",
+    )
+    mode.add_argument(
+        "--refresh",
+        action="store_true",
+        help=(
+            "redraft existing generated records from the current inputs on the given "
+            "dates, keeping each one's lower-bound promotion, intake and rigidity block"
+        ),
     )
     parser.add_argument(
         "--review-date",
@@ -2188,6 +2241,117 @@ def selected(args: argparse.Namespace) -> list[int]:
     return list(range(first, last + 1))
 
 
+def redraft(
+    n: int,
+    existing: str,
+    *,
+    availability: Mapping[int, SourceAvailability],
+    catalogue: Mapping[int, CatalogueFacts] | None,
+    review_date: str,
+    retrieved_date: str,
+) -> str:
+    """Draft `n` again as the register holds it: its lower-bound promotion and its intake.
+
+    The two things a later step adds to a record and a fresh draft does not know about,
+    the reviewed lower-bound promotion and a certified packet's intake, are carried from
+    the existing record, so the result differs from it only where the inputs moved.
+    """
+    generated = generate_record(
+        n,
+        availability=availability,
+        catalogue=catalogue,
+        review_date=review_date,
+        retrieved_date=retrieved_date,
+    )
+    reviewed_payload = safe_load(existing.split("---\n", 2)[1])["packing"]
+    generated_payload = safe_load(generated.split("---\n", 2)[1])["packing"]
+    promotion = lower_bound_promotion_from_records(reviewed_payload, generated_payload)
+    if promotion is not None:
+        generated = generate_record(
+            n,
+            availability=availability,
+            catalogue=catalogue,
+            review_date=review_date,
+            retrieved_date=retrieved_date,
+            lower_bound_promotion=promotion,
+        )
+    return adopt_upper_bound_packet(n, generated)
+
+
+def _rigidity_block(text: str) -> str | None:
+    """The `packing.rigidity` block of one record's text, verbatim, or `None` if null."""
+    lines = text.splitlines(keepends=True)
+    for index, line in enumerate(lines):
+        if not line.startswith("  rigidity:"):
+            continue
+        if line.strip() == "rigidity: null":
+            return None
+        end = index + 1
+        while end < len(lines) and lines[end].startswith("    "):
+            end += 1
+        return "".join(lines[index:end])
+    return None
+
+
+def with_rigidity_of(existing: str, generated: str) -> str:
+    """The generated record carrying the existing record's `packing.rigidity` block.
+
+    A draft writes `rigidity: null`, which means "not assessed", and the promotion path
+    fills it in afterwards. A refresh redrafts a record that path has already assessed,
+    so it keeps the assessment until the path runs again rather than dropping the record
+    out of the assessed set; the block names its own certificate and replay, which say
+    which retained witness it was made from.
+    """
+    block = _rigidity_block(existing)
+    if block is None:
+        return generated
+    if generated.count("  rigidity: null\n") != 1:
+        raise GenerationError("the draft does not carry exactly one `rigidity: null` line")
+    return generated.replace("  rigidity: null\n", block, 1)
+
+
+def refresh_records(
+    cases: Iterable[int],
+    args: argparse.Namespace,
+    availability: Mapping[int, SourceAvailability],
+    catalogue: Mapping[int, CatalogueFacts] | None,
+) -> int:
+    """Redraft existing records from the current inputs, on the given dates.
+
+    For a record whose source moved -- the catalogue captured again, printing a new side
+    -- this is the draft the record would have had, with the promotion, the intake and
+    the rigidity assessment carried over. A record that does not exist, or is
+    hand-authored, is refused: a refresh changes what a record says, and only a record
+    this tool wrote is one it may rewrite.
+    """
+    retrieved = args.retrieved_date or args.review_date
+    written = 0
+    for n in cases:
+        reason = refuse_reason(n, args.out, force=True)
+        path = record_path(args.out, n)
+        if reason is None and not path.exists():
+            reason = f"{path} does not exist; --refresh rewrites a record and drafts none"
+        if reason is not None:
+            print(f"refused: {reason}")
+            return 1
+        existing = path.read_text(encoding="utf-8")
+        generated = redraft(
+            n,
+            existing,
+            availability=availability,
+            catalogue=catalogue,
+            review_date=args.review_date,
+            retrieved_date=retrieved,
+        )
+        refreshed = with_rigidity_of(existing, generated)
+        if refreshed != existing:
+            write_record(refreshed, path)
+            written += 1
+            print(f"n={n}: refreshed {path.name}")
+    print(f"refreshed {written} record(s)")
+    return 0
+
+
 def check_records(
     cases: Iterable[int],
     args: argparse.Namespace,
@@ -2209,28 +2373,15 @@ def check_records(
             review, retrieved = _existing_dates(
                 existing_path, args.review_date, args.retrieved_date or args.review_date
             )
-            generated = generate_record(
+            generated = redraft(
                 n,
+                existing,
                 availability=availability,
                 catalogue=catalogue,
                 review_date=review,
                 retrieved_date=retrieved,
             )
-            reviewed_payload = safe_load(existing.split("---\n", 2)[1])["packing"]
-            generated_payload = safe_load(generated.split("---\n", 2)[1])["packing"]
-            promotion = lower_bound_promotion_from_records(reviewed_payload, generated_payload)
-            if promotion is not None:
-                generated = generate_record(
-                    n,
-                    availability=availability,
-                    catalogue=catalogue,
-                    review_date=review,
-                    retrieved_date=retrieved,
-                    lower_bound_promotion=promotion,
-                )
             adopted = n in packet_adopted_counts()
-            if adopted:
-                generated = adopt_upper_bound_packet(n, generated)
             write_record(generated, record_path(scratch_dir, n))
             checked += 1
             comparable = without_rigidity(existing)
@@ -2252,10 +2403,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         cases = selected(args)
         availability = load_availability(args.availability)
         needs_catalogue = any(n in availability and not availability[n].is_grid for n in cases)
-        catalogue = load_catalogue(args.catalogue) if needs_catalogue else None
+        catalogue = (
+            load_drafting_catalogue(cases, availability, args.catalogue)
+            if needs_catalogue
+            else None
+        )
 
         if args.check:
             return check_records(cases, args, availability, catalogue)
+        if args.refresh:
+            return refresh_records(cases, args, availability, catalogue)
 
         for line in method_summary(cases, availability, catalogue):
             print(line)

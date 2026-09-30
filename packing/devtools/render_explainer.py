@@ -2268,7 +2268,8 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
             "lower bounds, and one exact optimum endpoint shared by the T-060 lower "
             f"proof and Trump's packing, displayed approximately as {verified.display}"
         )
-        verified_mark = ""
+        # Keep the raw SVG block contiguous for Markdown's HTML-block parser.
+        verified_mark = "<!-- T-060 shares the packing endpoint tick. -->"
         figure_end = (
             f"T-060, by {verified.credit}, closes the remaining gap: its independently "
             "checked lower bound "

@@ -13,6 +13,7 @@ import pytest
 
 from devtools import suite_files
 from devtools.suite_files import RecordedCosts, Shard, SuiteFilesError
+from sqpack import gate_budgets
 from sqpack.cli import validate
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -100,7 +101,11 @@ def test_the_packing_depends_only_on_the_record() -> None:
     costs = suite_files.load_costs()
     items = list(costs.seconds.items())
     random.Random(20260915).shuffle(items)
-    shuffled = RecordedCosts(shards=costs.shards, seconds=dict(items))
+    shuffled = RecordedCosts(
+        shards=costs.shards,
+        seconds=dict(items),
+        target_ceiling_seconds=costs.target_ceiling_seconds,
+    )
     assert suite_files.pack(shuffled) == suite_files.pack(costs)
 
     packed = suite_files.pack(costs)
@@ -121,6 +126,64 @@ def test_the_greedy_packing_balances_within_its_largest_file() -> None:
     totals = suite_files.shard_totals(costs)
     assert totals == [12.0, 10.0]
     assert max(totals) - min(totals) <= max(costs.seconds.values())
+
+
+def test_capacity_weighted_packing_is_deterministic_and_matches_declared_budgets() -> None:
+    """The quick shards target equal ceiling utilization without losing a test file."""
+    costs = suite_files.load_costs()
+    register = gate_budgets.load()
+    declared = [register.tier(tier) for tier in ("suite_a", "suite_b")]
+    assert all(tier is not None for tier in declared)
+    assert costs.target_ceiling_seconds == tuple(
+        tier.ceiling_seconds for tier in declared if tier is not None
+    )
+    totals = suite_files.shard_totals(costs)
+    assert costs.target_ceiling_seconds is not None
+    normalized = [
+        total / ceiling
+        for total, ceiling in zip(totals, costs.target_ceiling_seconds, strict=True)
+    ]
+    assert max(normalized) / min(normalized) <= 1.01
+    weighted = RecordedCosts(
+        shards=2,
+        seconds={"a.py": 9.0, "b.py": 5.0, "c.py": 4.0, "d.py": 3.0, "e.py": 1.0},
+        target_ceiling_seconds=(2.0, 1.0),
+    )
+    assert suite_files.pack(weighted) == {
+        "a.py": 1,
+        "b.py": 2,
+        "c.py": 1,
+        "d.py": 2,
+        "e.py": 1,
+    }
+    assert suite_files.shard_totals(weighted) == [14.0, 8.0]
+
+
+@pytest.mark.parametrize(
+    "targets",
+    [(0.0, 1.0), (-1.0, 1.0), (float("nan"), 1.0), (float("inf"), 1.0), (1.0,)],
+)
+def test_invalid_capacity_targets_refuse(targets: tuple[float, ...]) -> None:
+    with pytest.raises(SuiteFilesError, match="target ceilings"):
+        suite_files.pack(
+            RecordedCosts(shards=2, seconds={"a.py": 1.0}, target_ceiling_seconds=targets)
+        )
+
+
+def test_json_boolean_capacity_refuses(tmp_path: Path) -> None:
+    path = tmp_path / "costs.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema": suite_files.COSTS_SCHEMA,
+                "shards": 2,
+                "target_ceiling_seconds": [True, 154],
+                "files": {"packing/tests/test_a.py": 1.0},
+            }
+        )
+    )
+    with pytest.raises(SuiteFilesError, match="target ceilings"):
+        suite_files.load_costs(path)
 
 
 @pytest.mark.parametrize("text", ["2", "0/2", "3/2", "a/b", "1/"])

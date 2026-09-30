@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T15:00:00Z'
+  deadline_at: '2026-09-30T15:30:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -969,7 +969,7 @@ session:
     clock_role: work
     bead: think-niqx
     objective: Finish reviewed solved-case consumers, commit the stable release artifacts and obtain final-head CI.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Proof execution is complete; the remaining obligations are publication and integration.
     budget_minutes: 30
@@ -979,17 +979,45 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --push --since 249d42c3765bdf18a0fb0373bdb7a2a9d601e5ca
     kill_condition: Any correctness failure prevents certification of the final head.
     fallback: Repair the failing component without rerunning accepted proof geometry or relaxing timing budgets.
-    outcome: null
-    evidence: []
-    stop_reason: null
+    outcome: >-
+      Published 6c8542175 with the reviewed T-060 result and Rust tooling. The local delta gate
+      passed 52 selected steps and 1639 tests in 164.87 seconds. Hosted behavioral correctness
+      passed all 7940 tests, but shard B took 167.41 seconds against its 154-second ceiling;
+      shard A took 137.23 seconds against 168. Pages exposed an omitted SVG tick leaving a
+      blank raw-HTML line, which rendered following SVG elements as code and broke print/PDF.
+    evidence:
+    - packing/tests/test_verified_upper_bound_contract.py
+    - packing/devtools/suite-file-costs.json
+    - packing/tests/test_explainer.py
+    stop_reason: Two concrete hosted integration failures require focused repair at 2026-09-30T14:29:59Z.
     next_action: >-
       Publish after the focused repair gate and inspect hosted results. The combined gate at
       249d42c37 took 329.30 seconds, with 8148 tests passed, 9 skipped and one consumer-declaration
       failure; campaign validation also rejected a prose validation-command field. Both are repaired
       without changing proof or renderer behavior. Validate the repair delta instead of repeating
       the whole behavioral batch.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-fjdd
+    objective: Fix the measured hosted shard imbalance and solved-state SVG rendering, then certify the published head.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Complete geometric verification is unchanged; actual hosted timings and print diagnostics identify the remaining integration work. Extend the session prospectively to retain its finalization reserve while repairing these failures.
+    budget_minutes: 30
+    started_at: '2026-09-30T14:29:59Z'
+    deadline_at: '2026-09-30T14:59:59Z'
+    expected_output: A measured shard rebalance, structurally valid rendered SVG and passing final-head hosted checks.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_suite_files.py tests/test_explainer.py
+    kill_condition: Missing test coverage, weakened timing or layout guards, or changed proof premises prevent acceptance.
+    fallback: Preserve the completed mathematical result and repair the measured integration defect under think-hvrd and think-fjdd.
+    outcome: null
+    evidence: []
+    stop_reason: null
+    next_action: Run Sol lanes for shard measurements and rendered print/PDF checks in parallel; publish the reviewed fixes and inspect the complete hosted run.
   budget:
-    wall_minutes: 1135
+    wall_minutes: 1165
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15

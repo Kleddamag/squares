@@ -300,6 +300,10 @@ def test_figure_three_marks_the_verified_lower_bound_beside_the_packing(
     assert f'<line x1="{best_x}" y1="24" x2="{best_x}" y2="76"' in page
     assert f'<line x1="{best_x}" y1="56"' not in page
     assert "one exact optimum endpoint shared by the T-060 lower proof" in page
+    figure = page.split('<div class="line-fig kpress-diagram">', 1)[1].split("</div>", 1)[0]
+    assert "<pre" not in figure
+    assert "<code" not in figure
+    assert '<line x1="356" y1="76.0"' in figure
 
     caption = " ".join(document.split())
     assert (
@@ -327,6 +331,28 @@ def test_equal_display_digits_cannot_admit_solved_figure_without_t060(
     monkeypatch.setattr(render_explainer, "FRONTIER_N11", case)
     with pytest.raises(SystemExit, match="matching exact T-060"):
         render_explainer.n11_solved(verified)
+
+
+def test_omitting_the_solved_tick_does_not_split_the_svg_html_block(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An empty replacement turns the following indented SVG into Markdown code."""
+    original = render_explainer.shared_substitutions
+
+    def blank_tick(
+        facts: list[render_explainer.Facts],
+        headline: render_explainer.Facts,
+        default: render_explainer.Facts,
+    ) -> dict[str, str]:
+        values = original(facts, headline, default)
+        values["VERIFIED_MARK"] = ""
+        return values
+
+    monkeypatch.setattr(render_explainer, "shared_substitutions", blank_tick)
+    broken = render(WALKTHROUGH).page
+    figure = broken.split('<div class="line-fig kpress-diagram">', 1)[1].split("</div>", 1)[0]
+    assert "<pre" in figure
+    assert "<code" in figure
 
 
 def test_historical_open_bracket_keeps_its_separate_tick_and_gap(

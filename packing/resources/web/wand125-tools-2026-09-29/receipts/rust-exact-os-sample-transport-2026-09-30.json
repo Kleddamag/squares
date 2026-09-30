@@ -1,0 +1,97 @@
+{
+  "created_utc": "2026-09-30T18:04:01.933093+00:00",
+  "criterion": "batch query wall <= 0.75 * singleton query wall in all three pairs",
+  "criterion_met": false,
+  "observations": [
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "singleton",
+        "batch"
+      ],
+      "pair": 0,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.556959,
+          "coordinator_cpu_seconds": 0.007460999999999995,
+          "query_wall_seconds": 0.5704466250026599,
+          "session_wall_seconds": 0.8233119579963386
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.580252,
+          "coordinator_cpu_seconds": 0.027099000000000012,
+          "query_wall_seconds": 0.7302463750020252,
+          "session_wall_seconds": 1.290085790999001
+        }
+      }
+    },
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "batch",
+        "singleton"
+      ],
+      "pair": 1,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.5572010000000002,
+          "coordinator_cpu_seconds": 0.006929999999999992,
+          "query_wall_seconds": 0.5838380829954986,
+          "session_wall_seconds": 0.8398381250008242
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.5596729999999999,
+          "coordinator_cpu_seconds": 0.022381000000000012,
+          "query_wall_seconds": 0.6008056249993388,
+          "session_wall_seconds": 0.8644203330040909
+        }
+      }
+    },
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "singleton",
+        "batch"
+      ],
+      "pair": 2,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.5549699999999996,
+          "coordinator_cpu_seconds": 0.007157999999999998,
+          "query_wall_seconds": 0.5690664580033626,
+          "session_wall_seconds": 0.862039209001523
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.5619110000000002,
+          "coordinator_cpu_seconds": 0.02394400000000002,
+          "query_wall_seconds": 0.5966717089977465,
+          "session_wall_seconds": 0.8975561670013121
+        }
+      }
+    }
+  ],
+  "paired_batch_over_singleton_query_wall": [
+    0.7811700879734979,
+    0.9717586831783426,
+    0.9537346071916942
+  ],
+  "scope": "Exact area queries only. Session wall includes child startup/shutdown; query wall includes JSON encode/write/read/decode and Rust arithmetic. Child CPU excludes coordinator; no verifier proof or speed claim.",
+  "source_sha256": {
+    "/Users/levy/wrk/github/squares/packing/benchmarks/bench_rectangle_rust_transport.py": "85dad5a9c0422e21bc5a6a6ce2ca159b35874ee3989cc17ca2d074b533328bd2",
+    "/Users/levy/wrk/github/squares/packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/lib.rs": "07fc7c68c1a13a498f88a31f893b7703b51b2499cb9f8441982a8a2669e1a6d0",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/main.rs": "fd45fbf50871c9380dad4614354c40a868da258c2c70d54aa5c80662abd53243",
+    "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py": "1cc7ae158856a443fe9c51be2e9b9b04f4d7dc40fe663bfbd7337cb6fe7e1c7c",
+    "/Users/levy/wrk/github/squares/packing/src/sqpack/rust_rectangle_geometry.py": "b32ca2bdfd79f61986c787901e94bbba1bb725a40866f2642b051640e335a4c0",
+    "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/cargo-sqverify-exact/release/sqverify-exact": "407021f046a3a5f4758ba9c560252955a3802dacf0a147feb3b33e0c978afb1f"
+  },
+  "status": "FIXED_WORK_TRANSPORT_DIAGNOSTIC_ONLY",
+  "work": {
+    "angle_index": 1,
+    "pairs": 3,
+    "polygons": 128
+  }
+}

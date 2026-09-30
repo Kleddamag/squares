@@ -1,0 +1,116 @@
+{
+  "B": "9977/10000",
+  "L": "381/100",
+  "angle_count": 1,
+  "angle_step": "83/40000",
+  "angles": [
+    {
+      "accepted_leaves": 46,
+      "index": 1,
+      "lower_bound": "0",
+      "nodes": 100,
+      "pending_boxes": [
+        {
+          "angle": 1,
+          "bottom": "381/200",
+          "depth": 1,
+          "left": "166851408864253/64000275560000",
+          "right": "105891146393353/32000137780000",
+          "stop_cause": "node_limit",
+          "top": "105891146393353/32000137780000"
+        },
+        {
+          "angle": 1,
+          "bottom": "166851408864253/64000275560000",
+          "depth": 2,
+          "left": "381/200",
+          "right": "166851408864253/64000275560000",
+          "stop_cause": "node_limit",
+          "top": "105891146393353/32000137780000"
+        },
+        {
+          "angle": 1,
+          "bottom": "381/200",
+          "depth": 3,
+          "left": "288771933806053/128000551120000",
+          "right": "166851408864253/64000275560000",
+          "stop_cause": "node_limit",
+          "top": "166851408864253/64000275560000"
+        },
+        {
+          "angle": 1,
+          "bottom": "622474751534559/256001102240000",
+          "depth": 6,
+          "left": "532612983689653/256001102240000",
+          "right": "288771933806053/128000551120000",
+          "stop_cause": "node_limit",
+          "top": "166851408864253/64000275560000"
+        },
+        {
+          "angle": 1,
+          "bottom": "288771933806053/128000551120000",
+          "depth": 7,
+          "left": "1110156851301759/512002204480000",
+          "right": "288771933806053/128000551120000",
+          "stop_cause": "node_limit",
+          "top": "622474751534559/256001102240000"
+        },
+        {
+          "angle": 1,
+          "bottom": "240003723829333/102400440896000",
+          "depth": 8,
+          "left": "532612983689653/256001102240000",
+          "right": "1110156851301759/512002204480000",
+          "stop_cause": "node_limit",
+          "top": "622474751534559/256001102240000"
+        },
+        {
+          "angle": 1,
+          "bottom": "2355106354370877/1024004408960000",
+          "depth": 11,
+          "left": "4395696521284583/2048008817920000",
+          "right": "1110156851301759/512002204480000",
+          "stop_cause": "node_limit",
+          "top": "240003723829333/102400440896000"
+        },
+        {
+          "angle": 1,
+          "bottom": "4755143592664207/2048008817920000",
+          "depth": 12,
+          "left": "435076563736213/204800881792000",
+          "right": "4395696521284583/2048008817920000",
+          "stop_cause": "node_limit",
+          "top": "240003723829333/102400440896000"
+        },
+        {
+          "angle": 1,
+          "bottom": "30361029578775/13107256434688",
+          "depth": 16,
+          "left": "17537855201215879/8192035271680000",
+          "right": "4395696521284583/2048008817920000",
+          "stop_cause": "node_limit",
+          "top": "4755143592664207/2048008817920000"
+        }
+      ],
+      "status": "INCONCLUSIVE",
+      "stop_cause": "node_limit",
+      "unresolved_leaves": 9
+    }
+  ],
+  "bound_mode": "common-core",
+  "candidate": "resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
+  "candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+  "checker": "sqpack.rectangle_density:native-exact-v2",
+  "checker_source_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
+  "declared_rhs": "1001/1000",
+  "mass": "68302371743812406989/6250000000000000000",
+  "mass_below_n": "447628256187593011/6250000000000000000",
+  "max_depth": 20,
+  "max_nodes_per_angle": 100,
+  "max_seconds": 30.0,
+  "n": 11,
+  "requested_angle_count": 1,
+  "retain_pending_boxes": true,
+  "status": "INCONCLUSIVE",
+  "threshold": "1"
+}

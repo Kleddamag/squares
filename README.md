@@ -2,9 +2,21 @@
 
 The Squares Project studies `s(n)`, the side of the smallest square that holds `n`
 non-overlapping unit squares.
-The problem is elementary to state and remains open even at small `n`. Its central case
-is eleven squares, where the verified bracket is `3.875000003… < s(11) ≤ 3.8770835…`, a
-gap of about `0.0021`.
+The problem is elementary to state and remains open even at small `n`. Its central case,
+eleven squares, is now settled: `s(11) = T = 3.877083590022814…`, the exact side of
+Walter Trump’s 1979 packing.
+
+[T-060](packing/frontier/RESULTS.md) records the global lower bound from the
+Astra-assisted
+[11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
+Queuingtheorydotcom, building on this project and Kleddamag.
+This repository independently replayed the pinned exact proof inputs and audited their
+mathematical composition (`V4/C5/S5`); [T-011](packing/frontier/RESULTS.md) verifies
+Trump’s matching witness.
+The [case record](packing/frontier/n-011.md),
+[review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
+[retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
+method’s shared dependencies and the publisher’s four stale cached-audit digests.
 
 This repository contains:
 
@@ -26,12 +38,20 @@ This repository contains:
   This repository registers each claimed bound as *reported* when it takes the source
   in, and as *verified* only after a complete replay of its certificate here and a
   review of its mathematics, with the credit its authors give.
+  - **`s(11) = T = 3.877083590022814…`**, by Queuingtheorydotcom, building on this
+    project and Kleddamag.
+    The independently replayed global proof meets Trump’s exact witness.
+    The [case record](packing/frontier/n-011.md) gives the endpoint and
+    [review](docs/project/reviews/review-2026-09-29-n11-optimality.md) gives the proof
+    boundary.
   - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
     [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
     About `0.0021` below Trump’s packing.
     Ke Wang and Can Li have since reweighted and scaled its certificate to
-    `s(11) > 3875000000/999999999`, `3.9e-9` higher, which is now the verified bound
-    ([T-058](packing/frontier/RESULTS.md); jlevy/squares#247). Recorded here: the
+    `s(11) > 3875000000/999999999`, `3.9e-9` higher
+    ([T-061](packing/frontier/RESULTS.md); jlevy/squares#247); T-060’s equality has
+    since made both historical lower bounds.
+    Recorded here: the
     [retained copy](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md),
     the [review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
     and the [case record](packing/frontier/n-011.md).
@@ -67,7 +87,7 @@ This repository contains:
   *reports* kept apart from the bound this repository has *verified*. Fifty-five of its
   hundred cases carry a lower bound published since 22 August 2026, reported or
   verified; in twenty-seven the verified bound itself is recent, three of those are this
-  project’s, and three are new exact values.
+  project’s, and four are new exact values.
 - **[A set of tools and AI workflows for automated mathematical research](#autonomous-research-process):**
   The results and the survey are produced and checked by AI agents running a recorded
   process: hypotheses registered before measurement, every claim graded, every defect
@@ -134,14 +154,14 @@ Each result also carries **S**, a significance score from `1` to `5` against the
 file’s rubric: `S4` is its anchor for a reusable technique, bound family or resolved
 disputed value, and `S5` for movement on a central open case.
 
-The central thread is `s(11)`, the smallest open case.
+The central thread is `s(11)`, now solved at Trump’s exact side.
 T-010 repaired the printed argument behind Stromquist’s `2 + 4/√5 = 3.788854…`; T-018
 passed it with a weighted fractional certificate at `381/100 = 3.81`, whose
 [proof card](packing/cases/n11_fractional_certificate/t-018-proof-card.md) states the
 whole proof and the one command that checks it; threshold atoms and exact dilation
 limits then carried this project’s bound to T-033’s `3.8269975…`. Kleddamag’s `31/8`,
-developed from T-026’s threshold certificate, now holds the case and is listed under
-[Results by Others](#results-by-others).
+developed from T-026’s threshold certificate, preceded the exact global result and
+remains listed under [Results by Others](#results-by-others).
 
 Every result first established here, as far as the recorded source searches show, has a
 row below, highest `S` first and then newest.
@@ -198,6 +218,11 @@ check.
 - **T-011:** exact verification of Trump’s 1979 `n = 11` record witness over its
   degree-eight field, including the zero-gap contacts that finite precision cannot
   certify.
+- **T-060:** independent exact replay and audit of the global lower-bound proof at
+  Trump’s algebraic side, matching T-011’s upper bound.
+  The publisher’s cached audits contain four stale final-state digests; the retained
+  first-party replay uses the pinned source inputs and does not depend on those cached
+  PASS strings.
 
 The complete statements, scopes, evidence, limitations, classifications, and next
 actions live in the register.
@@ -205,6 +230,16 @@ Results that still rest on a source read rather than a machine check are labeled
 accordingly.
 
 ## Results by Others
+
+The
+[maintained upstream repository index](packing/resources/README.md#recent-external-github-repositories)
+links the projects we integrate from and distinguishes their current development from
+the pinned revisions used as evidence.
+The new [wand125 tools intake](packing/resources/web/wand125-tools-2026-09-29/README.md)
+registers the disputed certificate-ceiling claim as T-058 and the reported independent
+n11 row scans as T-059. The
+[verification tooling overview](docs/project/verification-tooling.md) records what our
+native and source-replay checkers cover and the gaps that remain.
 
 Others have built on this repository’s certificates, credited them and taken the bounds
 further, and others have worked independently of it, one of them from the same weighted
@@ -232,7 +267,10 @@ column the retained source packet and this repository’s reviews.
 
 | Published | Result | `n` | Headline | Credit | Relation | V/C | Standing | Records |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-09-29 | [T-058](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8` | Wang, Li after Kleddamag, Levy | builds on | V4/C4 | holds | [packet](packing/resources/web/wang-li-n11-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md) |
+| 2026-09-29 | [T-061](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8` | Wang, Li after Kleddamag, Levy | builds on | V4/C4 | superseded | [packet](packing/resources/web/wang-li-n11-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md) |
+| 2026-09-29 | [T-060](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Trump’s eleven-square packing is globally optimal | Queuingtheorydotcom after Levy, Kleddamag | builds on | V4/C5 | holds | [packet](packing/resources/web/n11-optimality-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-n11-optimality.md) · [review 2](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) |
+| 2026-09-29 | [T-059](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Reported equality of 12028 n11 row minima awaits a complete bound replay | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) · [review 3](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
+| 2026-09-29 | [T-058](packing/frontier/RESULTS.md) | 1–100 | Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) |
 | 2026-09-28 | [T-055](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5` by a point-only route, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | second certificate, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
 | 2026-09-28 | [T-054](packing/frontier/RESULTS.md) | [45](packing/frontier/n-045.md) | `s(45) = 7` by a second, point-only route | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V4/C3 | second certificate | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
 | 2026-09-28 | [T-048](packing/frontier/RESULTS.md) | [50](packing/frontier/n-050.md) | `s(50) ≥ 37/5 = 7.4`, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | holds, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) |
@@ -280,8 +318,8 @@ Its source is one schema-validated case file under
 [status table](packing/frontier/STATUS.md) is the reader view, and the atlas above
 renders every retained known-best packing.
 The current `n = 18` survey row records the independently verified lower bound
-`4679/1000 = 4.679` from `T-030`; the `n = 11` row records Kleddamag’s `31/8`, the
-`n = 17` row Guzhou0806’s `116511/25000`, and the `n = 21`, `32` and `45` rows Evan
+`4679/1000 = 4.679` from `T-030`; the `n = 11` row records T-060’s exact Trump value,
+the `n = 17` row Guzhou0806’s `116511/25000`, and the `n = 21`, `32` and `45` rows Evan
 Daniel’s exact values, all under [Results by Others](#results-by-others).
 The
 [September 22 external review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
@@ -313,7 +351,7 @@ Where both bounds are recent, the lineage and date columns read verified first.
 
 | `n` | Verified lower bound | Holder | Result | Reported, where different | Holder | Result | Lineage | Published |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [11](packing/frontier/n-011.md) | `3875000000/999999999` = 3.8750… | Wang, Li after Kleddamag, Levy | T-058 `V4/C4` |  |  |  | builds on | 2026-09-29 |
+| [11](packing/frontier/n-011.md) | 3.8770…, exact | Queuingtheorydotcom after Levy, Kleddamag | T-060 `V4/C5` | 3.8770… | Queuingtheorydotcom after Levy, Kleddamag | T-060 `V4/C5` | builds on | 2026-09-29 |
 | [12](packing/frontier/n-012.md) | `15680/3951` = 3.9686… | Daniel after Burns, Massaccesi | T-049 `V4/C4` |  |  |  | independent | 2026-08-25 |
 | [17](packing/frontier/n-017.md) | `116511/25000` = 4.66044 | Guzhou0806 after Kleddamag, Mira, Levy | T-043 `V4/C3` |  |  |  | builds on | 2026-09-28 |
 | [18](packing/frontier/n-018.md) | `4679/1000` = 4.679 | Squares Project (Levy) | T-030 `V4/C4` | `939/200` = 4.695 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | this project; builds on | 2026-09-19; 2026-09-27 |
@@ -537,10 +575,11 @@ The Motion Lab is an exploratory instrument, not a citable research result.
 
 ## Reports
 
-These 20 research reports are the durable topical syntheses:
+These 21 research reports are the durable topical syntheses:
 
 | Report | Scope |
 | --- | --- |
+| [Exact Arithmetic for Independent Verifiers](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | Source-level comparison of Python and Rust rational arithmetic, native-library options, sampled profiles, and a controlled experiment measuring redundant normalization |
 | [Fractional Packing, Duality, and the Next N11 Discriminators](docs/project/research/research-2026-09-10-x027-fractional-duality.md) | Exact full-unit transport, interior duality and density equivalence, finite witnesses, and the limits of fractional obstructions |
 | [Seven Corner Marks, Contact Components, and Relational Helpers](docs/project/research/research-2026-09-10-x027-structural-helpers.md) | New ownership and contact-component deductions, shared-owner consistency, and bounded segment-helper comparisons |
 | [Certificate Mechanisms After the N11 Fractional Ceilings](docs/project/research/research-2026-09-10-x027-certificate-mechanisms.md) | Recent bound gains, weighted and floor charges, geometric expressiveness tests, and the finite optimal-dual-face criterion |
@@ -549,7 +588,7 @@ These 20 research reports are the durable topical syntheses:
 | [BC303 T2: From the Accepted Pose Domains to Exact Charge Tests](docs/project/research/research-2026-09-13-bc303-t2-charge-bridge.md) | Accepted C open-cell reduction and S first-owner sufficient test, with exact sweep and witness conditions; no charge or T2 verdict |
 | [N11 Definitions, Findings, and the Inference Chain](docs/project/research/research-2026-09-09-n11-evidence-and-inference.md) | First-principles interpretation through exp153, exact scope of results, remaining proof obligations, and unranked alternatives |
 | [N11 Inference Audit](docs/project/research/research-2026-09-09-n11-inference-audit.md) | Corrections to overbroad summaries, physical-versus-relaxed quantifiers, and missing evidence |
-| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | What is proved for `s(11)`, what remains conjectural, and why the available proof techniques do not close the gap |
+| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | Dated account of the former `s(11)` gap and earlier proof techniques; T-060 and the current case record supersede its status summary |
 | [Algorithms and Tooling for Square Packing](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) | Search, numerical-to-exact promotion, verification, and the record landscape |
 | [FrankenSim as a Rust Toolkit for Square Packing](docs/project/research/research-2026-08-22-frankensim-rust-toolkit-for-square-packing.md) | Assessment of certified-arithmetic and determinism components in a larger Rust framework |
 | [Infrastructure for Square-Packing Exploration](docs/project/research/research-2026-08-22-infrastructure-for-packing-exploration.md) | Build order, latency tiers, language boundaries, and symbolic tooling |
@@ -682,11 +721,11 @@ transition contracts.
 
 | ID | Workflow | Enter when | Durable result | Usual handoff |
 | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | The sourced state of knowledge is incomplete | A sourced survey, source notes, conflicts, and explicit gaps | W2 |
-| W2 | `factual-review` | Existing claims need a correctness-only audit | Findings, authorized bounded corrections, or defects; no new theory smuggled into the review | W3 or W4 |
+| W1 | `research-survey` | The sourced state of knowledge is incomplete | A pinned source packet, claim IDs, proof obligations, source notes, conflicts, and explicit gaps | W2 |
+| W2 | `factual-review` | Existing claims need efficient confirmation and a correctness audit | Focused proof receipts, explicit unresolved obligations, measured cost, and findings; no new theory smuggled into the review | W5 for bottlenecks; W3 or W4 otherwise |
 | W3 | `insight-iteration` | Current evidence needs new explanations or hypotheses | Candidate `X-NNN`/`H-NNN` items with mechanisms, falsifiers, and information value | W6 |
 | W4 | `process-review` | Work is hard to reconstruct or the discipline itself needs review | Process findings, beads, and narrowly scoped contract or check changes | W5 or the next owning workflow |
-| W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | W6 |
+| W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | Return to the originating workflow (W2, W6 or W7) |
 | W6 | `research-loop` | A registered hypothesis has a fixed criterion, regime, budget, and instrument contract | A frozen instrument and one or more `exp-NNN` records, raw evidence, verdicts, and a current ledger | W2 for promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | A named packing-pipeline surface or research consumer needs a new, stronger, simpler, or repaired capability | A bounded implementation or refactor, executable controls, explicit evidence limits, cost receipt, and readiness decision; no scientific verdict | W2 before a materially changed trust boundary reaches W6; otherwise W5 or W6 |
 | W8 | `documentation-pass` | A period of research has left the reader-facing documents behind what the record now says | Reconciled root documents—README, tutorial, synopsis—checked against the artifacts and against each other, with every drift either fixed or logged as a defect; no new claim introduced | W2 for any claim the pass could not verify; otherwise the next owning workflow |

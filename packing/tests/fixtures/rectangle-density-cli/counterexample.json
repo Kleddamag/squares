@@ -1,0 +1,10 @@
+{
+  "_comment": "The analytic control weight divided by 100 gives density 3/250; at the axis midpoint the exact value is (3/250)(9977/10000)^2.",
+  "n": 3,
+  "L": "3/2",
+  "B": "9977/10000",
+  "rectangles": [
+    ["1/1000", "1/1000", "1499/1000", "1499/1000"]
+  ],
+  "weights": ["1683003/62500000"]
+}

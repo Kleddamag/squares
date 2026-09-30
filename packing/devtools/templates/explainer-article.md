@@ -47,18 +47,14 @@ Thus eleven unit squares cannot fit in any square whose side is smaller than $L$
 is T-026’s historical lower bound, explained in this v0.4 proof edition.
 
 The project’s initial improvement appears to have been the first in
-{{YEARS_SINCE_PRIOR}} years on the smallest open case of the square packing
-problem.[^novelty] Stromquist published the previous bound of {{PRIOR_LOWER_DEC}} in
+{{YEARS_SINCE_PRIOR}} years on what was then the smallest open case of the square
+packing problem.[^novelty] Stromquist published the previous bound of
+{{PRIOR_LOWER_DEC}} in
 {{PRIOR_YEAR}}.[^stromquist-history][^repair] The tightest known packing, due to Trump
 in 1979 (Figure 1), shows
 <span class="math-reference">$s(11) \le {{BEST_PACKING_TEX}}$.[^trump]</span>
 
-**Frontier update, September 30, 2026:** We have verified Kleddamag’s stronger lower
-bound `31/8`, developed from the T-026 certificate below, and Wang and Li’s scaling of
-that certificate, `3.9e-9` higher, so the [current bracket]({{FRONTIER_N11_URL}}) is
-${{VERIFIED_LOWER_TEX}} < s(11) \le {{BEST_PACKING_TEX}}$. The
-[mathematical review]({{FRONTIER_N11_REVIEW_URL}}) records the replays and proof.
-This article retains the T-018, T-025, and T-026 proofs below.
+{{FRONTIER_UPDATE}}
 
 <figure>
   <div class="stage trump"><a href="{{BEST_RENDER_URL}}" aria-label="The rendering in the repository">{{TRUMP_SVG}}</a></div>
@@ -159,9 +155,9 @@ problems.
 
 The **square packing problem** asks, for each $n$, for the side $s(n)$ of the smallest
 square that holds $n$ unit squares, which are free to rotate and must have disjoint
-interiors.[^survey] The value of $s(n)$ is known for $n \le 10$. Stromquist proved
-$s(10) = 3 + 1/\sqrt{2}$.[^stromquist-memos] The case $n = 11$ is the smallest still
-open.
+interiors.[^survey] Stromquist proved $s(10) = 3 + 1/\sqrt{2}$.[^stromquist-memos] The
+case $n = 11$ was the smallest open case when the certificates explained here were
+developed. The frontier update above records its current status.
 
 For values of $n$ where $s(n)$ is still unknown, results generally take the form of
 upper or lower bounds.
@@ -225,7 +221,7 @@ The figures below illustrate this certificate.
 
 <figure>
   <div class="line-fig kpress-diagram">
-  <svg viewBox="0 -32 700 292" role="img" aria-label="Number line from 3.75 to 3.90 showing the previous lower bound {{PRIOR_LOWER_DEC}}, the point and threshold bounds proved here up to {{CURRENT_BOUND_DEC}}, the current verified lower bound {{VERIFIED_LOWER_DEC}} ({{VERIFIED_SOURCE}}), and the best known packing at {{BEST_PACKING_DEC}}">
+  <svg viewBox="0 -32 700 292" role="img" aria-label="{{FIGURE3_ARIA}}">
     <rect x="{{BAND_X}}" y="69.5" width="{{BAND_W}}" height="13" fill="var(--cert-accent-wash)"/>
     <line x1="20" y1="76" x2="680" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1"/>
     <g stroke="var(--kpress-doc-muted)" stroke-width="1">
@@ -245,16 +241,13 @@ The figures below illustrate this certificate.
     </g>
     <line x1="{{BEST_X}}" y1="24" x2="{{BEST_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
     <circle cx="{{BEST_X}}" cy="76" r="3.2" fill="var(--kpress-doc-muted)"/>
-    <line x1="{{VERIFIED_X}}" y1="56" x2="{{VERIFIED_X}}" y2="76" stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>
-    <circle cx="{{VERIFIED_X}}" cy="76" r="3.2" fill="var(--kpress-doc-muted)"/>
-    <text x="{{VERIFIED_X}}" y="52" dx="-6" text-anchor="end" fill="var(--kpress-doc-text)">{{VERIFIED_LOWER_DEC}}, {{VERIFIED_SOURCE}}</text>
+    {{VERIFIED_MARK}}
     {{NUMBER_LINE_MARKS}}
   </svg>
   </div>
   <figcaption><strong>Figure 3.</strong> Bounds on <span class="tex">s(11)</span>. The shaded band is the gap left by the certificates explained here. At T-026’s bound the gap is
   <span class="tex">{{CURRENT_GAP}}</span> wide, down from <span class="tex">{{GAP_BEFORE}}</span> at Stromquist’s bound.
-  The current verified lower bound, <span class="tex">{{VERIFIED_LOWER_TEX}}</span>
-  ({{VERIFIED_SOURCE}}), leaves a gap of <span class="tex">{{VERIFIED_GAP}}</span> beside Trump’s packing.</figcaption>
+  {{FIGURE3_END}}</figcaption>
 </figure>
 
 ## The Five Conditions for a Point Certificate

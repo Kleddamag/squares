@@ -1,0 +1,39 @@
+{
+  "candidate_capture_proved": false,
+  "capture_tree_proved": false,
+  "checker_sha256": "2a81de9bbd20602f81e03f351a08b1def4a831a0cfc2abd576491e8c1b1cfb6b",
+  "child_node_state_checked": false,
+  "child_source_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+  "constraints": [
+    {
+      "axis": 1,
+      "bound_centered_unit": "5/4",
+      "keep": "ge",
+      "normal": [
+        0,
+        -1
+      ],
+      "owner": 15,
+      "upper_field": "-121802296569435750786621/38770835900228141773100"
+    },
+    {
+      "bound_half_angle": "147/512",
+      "keep": "ge",
+      "kind": "half_angle",
+      "owner": 13
+    }
+  ],
+  "error": "outer-support inventory",
+  "global_optimality_proved": false,
+  "max_events_per_cover": 20000,
+  "max_seconds": 1800.0,
+  "node": "r11",
+  "node_id": "r11-portable-v1",
+  "parent_result_sha256": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
+  "parent_source_sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+  "status": "REFUSED",
+  "steps": [],
+  "terminal_empty_pose_checked": false,
+  "wall_seconds": 2.8166143340058625,
+  "workers": 1
+}

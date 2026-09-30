@@ -171,17 +171,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-058"
+            "T-060"
           ],
-          "note": "(confirmed T-058)",
+          "note": "(confirmed T-060)",
           "recent": true,
           "result": null,
           "results": [
-            "T-058"
+            "T-060"
           ],
-          "source_key": "[Wang Li n11 2026]",
-          "text": "Wang, Li after Kleddamag, Levy 2026, Zenodo",
-          "value": "3.875000003875000003"
+          "source_key": "[Queuingtheorydotcom n11 optimality 2026]",
+          "text": "Queuingtheorydotcom after Levy et al. 2026, Web",
+          "value": "3.87708359002281417730789706010096"
         },
         "n": 11,
         "record": "n-011",

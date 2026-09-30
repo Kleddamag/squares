@@ -1,0 +1,46 @@
+{
+  "upstream_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "upstream_commit": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "near_state": {
+    "indexed_path": "evidence/research/candidate-capture/near-refined1024-240.json",
+    "index_object_key": "73ddd73ce616ecb4a74d08c18a17f7eaff044df2111b0e500636b073e43ee970",
+    "object_path": "data/objects/49/491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc.gz",
+    "pinned_object_url": "https://media.githubusercontent.com/media/Queuingtheorydotcom/11SquaresOptimal/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/data/objects/49/491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc.gz",
+    "compressed_sha256_lfs_oid": "5d74352c6c05fd4e0ea4d4842915061603669a54205af2a59cf2303051a48949",
+    "compressed_bytes": 27653954,
+    "decoded_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc",
+    "decoded_bytes": 185901535,
+    "external_cache": "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-pose/near.json"
+  },
+  "role_guard": {
+    "indexed_path": "evidence/research/phase3/current/research/optimality/global_capture/local-capture-guards.json",
+    "object_path": "data/objects/0b/0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0.gz",
+    "pinned_object_url": "https://media.githubusercontent.com/media/Queuingtheorydotcom/11SquaresOptimal/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/data/objects/0b/0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0.gz",
+    "compressed_sha256_lfs_oid": "13b0aa2153484dc689f0c7b48295e91c5ba91b45c0e9c5921c6e7ba1b23866e3",
+    "compressed_bytes": 2894,
+    "decoded_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0",
+    "decoded_bytes": 37904,
+    "retained_decoded": "guard.json"
+  },
+  "accepted_local_result_sha256": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
+  "focused_radii_sha256": "9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3",
+  "checker_sha256": "72347b983423a9f527e88151544632b40b29c53f3d5e5fc6d644525bcb591aa5",
+  "jq_version": "jq-1.7.1",
+  "derived_state_sha256": "d519f3a4eb35e5064151daab265aa7d6d5a952a1657c8e4a33b9eeb9c783c6b5",
+  "derived_state_gzip_sha256": "7fccb88e8037f15c7c207c3848fac0c32ea987075c242d215a4db2762824772e",
+  "bounded_run": {
+    "checker_max_seconds": 30,
+    "supervisor_max_seconds": 60,
+    "outer_real_seconds": 3.38,
+    "outer_user_seconds": 2.73,
+    "outer_system_seconds": 0.54,
+    "checker_wall_seconds": 3.2998697080001875,
+    "checker_process_cpu_seconds": 0.418086,
+    "checker_process_cpu_excludes_jq_child": true,
+    "stdout": "stdout.json",
+    "outer_time": "outer-time.txt",
+    "result": "result.json"
+  },
+  "scope": "Conditional pose inclusion only. The 185 MB decoded and 27 MB compressed near-state source objects remain in external scratch; the 266 KB live-row derivation is retained here. Source geometry ancestry, case-438 capture, and global optimality are separate obligations."
+}

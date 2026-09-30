@@ -502,8 +502,11 @@ None.
 
 ## Disposition
 
-- **Registered** on 2026-09-30 as T-058, at `V4/C4`, `S2`, credited “Wang, Li after
+- **Registered** on 2026-09-30 as T-061, at `V4/C4`, `S2`, credited “Wang, Li after
   Kleddamag, Levy” with `lineage: builds-on-project`, as this review recommends.
+  The intake branch (jlevy/squares#249) first registered it as T-058; it became T-061
+  when that branch took in jlevy/squares#246, which had already allocated T-058 to
+  T-060. T-060 has since confirmed `s(11) = T`, so this bound is historical.
 
 - **The replays in the intake packet** (`packing/resources/web/wang-li-n11-2026-09-29/`)
   completed and passed:

@@ -1,0 +1,126 @@
+{
+  "accepted_rows": [
+    {
+      "cover": {
+        "edge_segments": 242,
+        "events": 87,
+        "probes": 173
+      },
+      "edge_segments": 242,
+      "event_speedup": 4.125732098998679,
+      "events": 87,
+      "indexed_process_cpu_seconds": 0.021171999999999996,
+      "reference_process_cpu_seconds": 0.08735000000000001,
+      "row": 0,
+      "status": "MATCHED_EXACT_EVENTS"
+    },
+    {
+      "cover": {
+        "edge_segments": 295,
+        "events": 120,
+        "probes": 239
+      },
+      "edge_segments": 295,
+      "event_speedup": 3.202236529989837,
+      "events": 120,
+      "indexed_process_cpu_seconds": 0.04426499999999994,
+      "reference_process_cpu_seconds": 0.14174699999999996,
+      "row": 22,
+      "status": "MATCHED_EXACT_EVENTS"
+    },
+    {
+      "cover": {
+        "edge_segments": 206,
+        "events": 77,
+        "probes": 153
+      },
+      "edge_segments": 206,
+      "event_speedup": 3.9386965893241523,
+      "events": 77,
+      "indexed_process_cpu_seconds": 0.015774000000000177,
+      "reference_process_cpu_seconds": 0.06212899999999988,
+      "row": 31,
+      "status": "MATCHED_EXACT_EVENTS"
+    }
+  ],
+  "max_seconds": 30.0,
+  "proposed_row": {
+    "case": 1383,
+    "full_proposal": {
+      "edge_segments": 1738,
+      "event_speedup": 4.806384950735683,
+      "events": 613,
+      "indexed_process_cpu_seconds": 1.6820489999999992,
+      "reference_process_cpu_seconds": 8.084575000000001,
+      "status": "MATCHED_EXACT_EVENTS"
+    },
+    "full_proposal_region_counts": {
+      "collision": 5,
+      "forbidden": 10,
+      "residual": 380
+    },
+    "node": 0,
+    "residual_samples": [
+      {
+        "edge_segments": 133,
+        "event_speedup": 1.540291885580848,
+        "events": 63,
+        "indexed_process_cpu_seconds": 0.04282500000000011,
+        "reference_process_cpu_seconds": 0.065963,
+        "residual_regions": 32,
+        "status": "MATCHED_EXACT_EVENTS"
+      },
+      {
+        "edge_segments": 256,
+        "event_speedup": 1.7292361896850499,
+        "events": 100,
+        "indexed_process_cpu_seconds": 0.13964200000000027,
+        "reference_process_cpu_seconds": 0.2414740000000002,
+        "residual_regions": 64,
+        "status": "MATCHED_EXACT_EVENTS"
+      },
+      {
+        "edge_segments": 504,
+        "event_speedup": 2.0895377105847937,
+        "events": 193,
+        "indexed_process_cpu_seconds": 0.421208,
+        "reference_process_cpu_seconds": 0.8801299999999999,
+        "residual_regions": 128,
+        "status": "MATCHED_EXACT_EVENTS"
+      },
+      {
+        "edge_segments": 1009,
+        "event_speedup": 2.9189960904775214,
+        "events": 330,
+        "indexed_process_cpu_seconds": 1.1459199999999998,
+        "reference_process_cpu_seconds": 3.3449360000000006,
+        "residual_regions": 256,
+        "status": "MATCHED_EXACT_EVENTS"
+      },
+      {
+        "edge_segments": 1478,
+        "event_speedup": 4.514757590778222,
+        "events": 509,
+        "indexed_process_cpu_seconds": 1.4222849999999987,
+        "reference_process_cpu_seconds": 6.421271999999998,
+        "residual_regions": 380,
+        "status": "MATCHED_EXACT_EVENTS"
+      }
+    ],
+    "row": 2,
+    "step": 1
+  },
+  "schema": "n11_indexed_cover_benchmark_v1",
+  "scope": "The 1383 row is source-proposal geometry, not an accepted proof row.",
+  "source_sha256": {
+    "accepted_receipt": "2aa9c3819e4f39d9f4f489a25d1885b2a1c5a6f6c21099f42821d1165d608f88",
+    "accepted_source": "68adba943c66ee60c65caf8094dfc18f68a622379acf506ed40558f87602f8aa",
+    "benchmark": "f63869023d74b603d1e64d82cc2bdeb10c22cad48f738e72502e9cc525ff60f1",
+    "fast": "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904",
+    "indexed": "68580e324e56c555ea0587b6f396b208fb66563d1e10bd449b446c97b7667ccd",
+    "proposed_manifest": "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c0184520",
+    "proposed_source": "34eca8dda7d8a97602b7eb0ee795b3674c52d10b9330fbd76d6f469be8f5cff1"
+  },
+  "status": "DIAGNOSTIC_ONLY",
+  "wall_seconds": 26.241917750005086
+}

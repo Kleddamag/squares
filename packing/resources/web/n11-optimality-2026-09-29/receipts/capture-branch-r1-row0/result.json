@@ -1,0 +1,22 @@
+{
+  "branch_capture_proved": false,
+  "candidate_capture_proved": false,
+  "checker_sha256": "f75b7ef718cc301833770128dd2f9b2bab3473b5dd01f59583e70fc2bb84abf9",
+  "common_core_planes": 8,
+  "complete_step_checked": false,
+  "coverage_events": 9,
+  "coverage_probes": 17,
+  "global_optimality_proved": false,
+  "max_events": 20000,
+  "max_seconds": 30.0,
+  "partner_cover_rows": 0,
+  "r1_source_sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+  "root_checker_sha256": "2804989aff9414e712855d099aab659bb645f05cd9b2f72259b97a1d22cefcb8",
+  "root_result_sha256": "0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4",
+  "root_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "row_index": 0,
+  "selected_row_geometry_checked": true,
+  "status": "PASS_R1_SELECTED_ROW_DIAGNOSTIC",
+  "universal_facet_vertex_checks": 0,
+  "wall_seconds": 2.7064757909975015
+}

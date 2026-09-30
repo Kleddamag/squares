@@ -13,15 +13,18 @@ partition is a function of a file's repository-relative path and nothing else, s
 file lands in exactly one shard by construction:
 
 * a file named in `suite-file-costs.json` takes the shard a greedy longest-first packing
-  of the recorded costs gives it. The packing reads only the record, so it moves when
-  someone re-records and never because a file elsewhere was added or removed;
+  of the recorded costs gives it. The record's `target_ceiling_seconds` are historical
+  planning capacities for this measured assignment, separate from the gate's live
+  enforcement ceilings. Packing balances cost divided by those capacities; a generic
+  record without them balances raw cost. The packing reads only the record, so it moves
+  when someone re-records and never because a file elsewhere was added or removed;
 * a file the record does not name -- a new test, or a renamed one -- takes
   `crc32(path) mod N`. That is stable across runs and machines, needs no edit to land,
   and spreads new files as a uniform hash does rather than piling them on one side.
 
 The filter runs in `pytest_ignore_collect`, before a module is imported, so each shard
-pays for collecting its own half rather than all of it; the CI audit measured collection
-at 10-16 s per process, most of the lane's fixed cost.
+pays for collecting only its assigned files. The CI audit measured collection at 10-16 s
+per process, most of the lane's fixed cost.
 
 `--test-file-costs PATH` writes one JSON document per run: for every test file that
 reported, its repository-relative path, how many tests it ran, and the sum of their
@@ -68,6 +71,7 @@ COSTS_SCHEMA: Final = "packing.squares:SuiteFileCosts/1"
 REPORT_SCHEMA: Final = "packing.squares:TestFileCosts/2"
 #: The GitHub environment a report carries, so a record can name the runs it came from.
 _PROVENANCE_ENVIRONMENT: Final = (
+    "PACKING_VALIDATED_SHA",
     "GITHUB_RUN_ID",
     "GITHUB_RUN_ATTEMPT",
     "GITHUB_JOB",
@@ -102,11 +106,23 @@ class Shard:
 
 @dataclass(frozen=True)
 class RecordedCosts:
-    """Seconds per repository-relative test file, and the shard count they pack into."""
+    """Seconds per test file and optional historical shard planning capacities."""
 
     shards: int
     seconds: Mapping[str, float]
     recorded_from: tuple[str, ...] = ()
+    target_ceiling_seconds: tuple[float, ...] | None = None
+
+
+def _targets(targets: tuple[float, ...] | None, shards: int) -> tuple[float, ...]:
+    """A valid capacity vector, with equal capacities for a generic record."""
+    if targets is None:
+        return (1.0,) * shards
+    if len(targets) != shards or any(
+        isinstance(x, bool) or not math.isfinite(x) or x <= 0 for x in targets
+    ):
+        raise SuiteFilesError("target ceilings must be positive finite seconds for every shard")
+    return targets
 
 
 def load_costs(path: Path = COSTS) -> RecordedCosts:
@@ -126,23 +142,38 @@ def load_costs(path: Path = COSTS) -> RecordedCosts:
             raise SuiteFilesError(f"{path}: {name} records {value!r}, not seconds")
         seconds[str(name)] = float(value)
     sources = document.get("recorded_from", [])
+    raw_targets = document.get("target_ceiling_seconds")
+    if raw_targets is not None and (
+        not isinstance(raw_targets, list)
+        or any(
+            isinstance(value, bool) or not isinstance(value, int | float)
+            for value in raw_targets
+        )
+    ):
+        raise SuiteFilesError(f"{path}: target ceilings must be a numeric list")
+    targets = None if raw_targets is None else tuple(float(value) for value in raw_targets)
+    _ = _targets(targets, shards)
     return RecordedCosts(
         shards=shards,
         seconds=seconds,
         recorded_from=tuple(str(source) for source in sources),
+        target_ceiling_seconds=targets,
     )
 
 
 def pack(costs: RecordedCosts) -> dict[str, int]:
-    """The recorded files' shards: longest first, each into the lightest shard so far.
+    """The recorded files' shards: longest first, each into the least-loaded capacity.
 
     Ties break on path and then on the lower shard, so the answer depends on the record's
     contents and on nothing about the order it was read in.
     """
+    targets = _targets(costs.target_ceiling_seconds, costs.shards)
     totals = [0.0] * costs.shards
     assigned: dict[str, int] = {}
     for name, seconds in sorted(costs.seconds.items(), key=lambda item: (-item[1], item[0])):
-        lightest = min(range(costs.shards), key=lambda shard: (totals[shard], shard))
+        lightest = min(
+            range(costs.shards), key=lambda shard: (totals[shard] / targets[shard], shard)
+        )
         totals[lightest] += seconds
         assigned[name] = lightest + 1
     return assigned
@@ -414,7 +445,12 @@ def _require_same_coverage(coverages: Sequence[tuple[str, set[str]]]) -> None:
         )
 
 
-def record(reports: Iterable[Mapping[str, Any]], *, shards: int) -> dict[str, Any]:
+def record(
+    reports: Iterable[Mapping[str, Any]],
+    *,
+    shards: int,
+    target_ceiling_seconds: tuple[float, ...] | None = None,
+) -> dict[str, Any]:
     """Combine reports into a record: each file's geometric mean over the reports naming it.
 
     A geometric mean because hosted runners differ by a factor rather than an offset --
@@ -427,6 +463,7 @@ def record(reports: Iterable[Mapping[str, Any]], *, shards: int) -> dict[str, An
         raise SuiteFilesError("record needs at least one cost report")
     if shards < 1:
         raise SuiteFilesError(f"record needs a positive shard count, found {shards}")
+    _ = _targets(target_ceiling_seconds, shards)
     validated = [
         _validated_files(report, position=position)
         for position, report in enumerate(reports, start=1)
@@ -515,7 +552,15 @@ def record(reports: Iterable[Mapping[str, Any]], *, shards: int) -> dict[str, An
         else 0.0
         for name, values in sorted(observed.items())
     }
-    return {"schema": COSTS_SCHEMA, "shards": shards, "recorded_from": sources, "files": files}
+    document = {
+        "schema": COSTS_SCHEMA,
+        "shards": shards,
+        "recorded_from": sources,
+        "files": files,
+    }
+    if target_ceiling_seconds is not None:
+        document["target_ceiling_seconds"] = list(target_ceiling_seconds)
+    return document
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -529,12 +574,29 @@ def main(argv: Sequence[str] | None = None) -> int:
     _ = recording.add_argument("reports", nargs="+", type=Path)
     _ = recording.add_argument("--shards", type=int, default=None)
     _ = recording.add_argument("--output", type=Path, default=COSTS)
+    _ = recording.add_argument(
+        "--target-ceilings",
+        metavar="SECONDS,...",
+        help="positive per-shard wall ceilings, e.g. 168,154; omit for equal capacities",
+    )
     _ = commands.add_parser("show", help="print the recorded partition's shard totals")
     arguments = parser.parse_args(argv)
     try:
         if arguments.command == "record":
             shards = int(arguments.shards or load_costs().shards)
-            document = record([read_report(path) for path in arguments.reports], shards=shards)
+            try:
+                targets = (
+                    None
+                    if arguments.target_ceilings is None
+                    else tuple(float(part) for part in arguments.target_ceilings.split(","))
+                )
+            except ValueError as error:
+                raise SuiteFilesError("target ceilings must be numeric seconds") from error
+            document = record(
+                [read_report(path) for path in arguments.reports],
+                shards=shards,
+                target_ceiling_seconds=targets,
+            )
             output = Path(arguments.output)
             _ = output.write_text(json.dumps(document, indent=2) + "\n", encoding="utf-8")
             costs = load_costs(output)

@@ -1,0 +1,18 @@
+{
+  "checker_sha256": "ebbc83b0a92913234cd701d53557bab52305d1755727976f283a22d1fc3dbf0f",
+  "child_source_sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+  "input_source_reacquisition": "packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json records pinned publication object and decoded SHA; local decoded cache is disposable",
+  "internal_seconds": 3600,
+  "original_final_state_canonical_sha256": "b0404ffa1c808d1d03c8fb174c25584041b0d22f96f416149e14dcf965b36226",
+  "parent_result_sha256": "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4",
+  "parent_source_sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+  "process_cpu_seconds": "unmeasured",
+  "replay": "From packing after acquiring and SHA-verifying pinned r1/near13 sources: timeout 3630s .venv/bin/python3 -m devtools.check_n11_capture_child_node --node near13 --parent-source <decoded-r1> --child-source <decoded-near13> --parent-result resources/web/n11-optimality-2026-09-29/receipts/capture-branch-r1-full/result.json --workers 1 --max-seconds 3600 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-child-near13/result.json",
+  "result_sha256": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
+  "scope": "Near13 child node state conditional on accepted r1 state; no entire tree/candidate/global conclusion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "7776eb8f9069b2eef41975e8a3c9cfba71a36e5887d8396620fa117d6ef02415",
+  "supervisor_seconds": 3630,
+  "wall_seconds_reported_by_checker": 623.3283710410033,
+  "workers": 1
+}

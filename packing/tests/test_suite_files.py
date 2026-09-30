@@ -18,6 +18,7 @@ from sqpack.cli import validate
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPO = PROJECT_ROOT.parent
 TEST_ROOTS = (PROJECT_ROOT / "tests", REPO / "packages/workbench/tests")
+EXHAUSTIVE_COSTS = PROJECT_ROOT / "devtools/exhaustive-file-costs.json"
 
 
 def _test_files() -> set[str]:
@@ -33,7 +34,7 @@ def _test_files() -> set[str]:
 def test_the_suite_shards_partition_every_test_file() -> None:
     """Each test file on disk is in exactly one shard, and every shard has files.
 
-    This is the property that lets two runners divide the lane without a test running
+    This is the property that lets three runners divide the lane without a test running
     twice or not at all. It holds by construction -- a file's shard is a function of its
     path -- so what this checks is the construction against the real tree and the real
     record: that the recorded count is the one the CLI and the register use, and that
@@ -51,6 +52,33 @@ def test_the_suite_shards_partition_every_test_file() -> None:
     assert set().union(*shards) == files
     assert sum(len(shard) for shard in shards) == len(files)
     assert all(shards)
+
+
+def test_the_exhaustive_shards_partition_current_files_and_new_arrivals() -> None:
+    """Three runners cover every eligible test file once before marker selection.
+
+    Pytest applies ``-m exhaustive_exact`` after the file partition. Partitioning the
+    complete discovery roots therefore preserves module, class, parametrized, inherited
+    and dynamically applied marker forms without guessing how the mark is expressed.
+    """
+    costs = suite_files.load_costs(EXHAUSTIVE_COSTS)
+    assert costs.shards == 3
+    packed = suite_files.pack(costs)
+    files = _test_files()
+    assert set(costs.seconds) <= files
+    shards = [
+        {name for name in files if suite_files.shard_of(name, costs, packed) == index}
+        for index in range(1, costs.shards + 1)
+    ]
+    assert set().union(*shards) == files
+    assert sum(len(shard) for shard in shards) == len(files)
+    assert all(shards)
+
+    arrival = "packing/tests/test_new_exhaustive_decision.py"
+    assert arrival not in costs.seconds
+    assigned = suite_files.shard_of(arrival, costs, packed)
+    assert assigned == suite_files.unrecorded_shard(arrival, costs.shards)
+    assert 1 <= assigned <= costs.shards
 
 
 def test_the_record_names_only_files_under_the_behavioural_roots() -> None:
@@ -72,7 +100,11 @@ def test_the_packing_depends_only_on_the_record() -> None:
     costs = suite_files.load_costs()
     items = list(costs.seconds.items())
     random.Random(20260915).shuffle(items)
-    shuffled = RecordedCosts(shards=costs.shards, seconds=dict(items))
+    shuffled = RecordedCosts(
+        shards=costs.shards,
+        seconds=dict(items),
+        target_ceiling_seconds=costs.target_ceiling_seconds,
+    )
     assert suite_files.pack(shuffled) == suite_files.pack(costs)
 
     packed = suite_files.pack(costs)
@@ -93,6 +125,59 @@ def test_the_greedy_packing_balances_within_its_largest_file() -> None:
     totals = suite_files.shard_totals(costs)
     assert totals == [12.0, 10.0]
     assert max(totals) - min(totals) <= max(costs.seconds.values())
+
+
+def test_capacity_weighted_packing_preserves_the_measured_assignment() -> None:
+    """Historical capacities retain the reviewed partition as live ceilings evolve."""
+    costs = suite_files.load_costs()
+    assert costs.target_ceiling_seconds == (168.0, 154.0, 154.0)
+    totals = suite_files.shard_totals(costs)
+    assert costs.target_ceiling_seconds is not None
+    normalized = [
+        total / ceiling
+        for total, ceiling in zip(totals, costs.target_ceiling_seconds, strict=True)
+    ]
+    assert max(normalized) / min(normalized) <= 1.01
+    weighted = RecordedCosts(
+        shards=2,
+        seconds={"a.py": 9.0, "b.py": 5.0, "c.py": 4.0, "d.py": 3.0, "e.py": 1.0},
+        target_ceiling_seconds=(2.0, 1.0),
+    )
+    assert suite_files.pack(weighted) == {
+        "a.py": 1,
+        "b.py": 2,
+        "c.py": 1,
+        "d.py": 2,
+        "e.py": 1,
+    }
+    assert suite_files.shard_totals(weighted) == [14.0, 8.0]
+
+
+@pytest.mark.parametrize(
+    "targets",
+    [(0.0, 1.0), (-1.0, 1.0), (float("nan"), 1.0), (float("inf"), 1.0), (1.0,)],
+)
+def test_invalid_capacity_targets_refuse(targets: tuple[float, ...]) -> None:
+    with pytest.raises(SuiteFilesError, match="target ceilings"):
+        suite_files.pack(
+            RecordedCosts(shards=2, seconds={"a.py": 1.0}, target_ceiling_seconds=targets)
+        )
+
+
+def test_json_boolean_capacity_refuses(tmp_path: Path) -> None:
+    path = tmp_path / "costs.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema": suite_files.COSTS_SCHEMA,
+                "shards": 2,
+                "target_ceiling_seconds": [True, 154],
+                "files": {"packing/tests/test_a.py": 1.0},
+            }
+        )
+    )
+    with pytest.raises(SuiteFilesError, match="target ceilings"):
+        suite_files.load_costs(path)
 
 
 @pytest.mark.parametrize("text", ["2", "0/2", "3/2", "a/b", "1/"])
@@ -128,6 +213,23 @@ def test_record_takes_each_files_geometric_mean_and_names_its_sources() -> None:
     ]
     assert reports[0]["tests"] == 4
     assert reports[0]["seconds"] == 2.0
+
+
+def test_a_report_records_the_resolved_validated_tree() -> None:
+    report = suite_files.report_document(
+        {"packing/tests/test_a.py": (1, 0.25)},
+        shard=Shard(1, 3),
+        environment={
+            "PACKING_VALIDATED_SHA": "resolved-merge-sha",
+            "GITHUB_SHA": "dispatch-ref-sha",
+        },
+        exit_status=0,
+    )
+
+    assert report["provenance"] == {
+        "PACKING_VALIDATED_SHA": "resolved-merge-sha",
+        "GITHUB_SHA": "dispatch-ref-sha",
+    }
 
 
 def _shard_report(
@@ -175,6 +277,15 @@ def test_record_requires_one_complete_coherent_shard_cohort() -> None:
         suite_files.record([complete[0], _shard_report(2, attempt="2")], shards=2)
     with pytest.raises(SuiteFilesError, match="each sharded cohort"):
         suite_files.record([complete[0], _shard_report(2, sha="def")], shards=2)
+
+
+def test_three_shard_record_requires_all_three_reports() -> None:
+    complete = [_shard_report(index, count=3) for index in (1, 2, 3)]
+    document = suite_files.record(complete, shards=3, target_ceiling_seconds=(168, 154, 154))
+    assert len(document["files"]) == 3
+    assert document["target_ceiling_seconds"] == [168, 154, 154]
+    with pytest.raises(SuiteFilesError, match="each shard exactly once"):
+        suite_files.record(complete[:2], shards=3)
 
 
 def test_record_refuses_reports_cut_for_another_shard_count() -> None:
@@ -412,8 +523,8 @@ def test_the_report_uses_the_actual_location_for_a_test_outside_rootdir(tmp_path
 @pytest.mark.parametrize(
     ("arguments", "message"),
     [
-        (["--suite-a", "--suite-b"], "seven parts"),
-        (["--checks", "--typecheck"], "seven parts"),
+        (["--suite-a", "--suite-b"], "eight parts"),
+        (["--checks", "--typecheck"], "eight parts"),
     ],
 )
 def test_the_cli_refuses_more_than_one_public_fast_part(

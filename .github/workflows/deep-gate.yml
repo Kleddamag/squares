@@ -4,15 +4,13 @@ name: Deferred checkpoint
 # merges rather than after it. Not on every build, and that is the point: the selection
 # here is 1943.05s in one step.
 #
-# **1943.05s is step time on one class of runner, and this file used to read as though it
-# were the job's cost.** The job costs about 42 minutes of wall, and `ci_gates` in
-# `devtools/gate-budgets.yaml` is where that is now recorded, argued and judged, one
-# entry per job below plus the gate's whole wall. `deep-gate-required` reads a finished
-# run against those numbers on every invocation, so the figure is no longer one nothing
-# looks at -- which is what `OR-17` means by clocking the CI jobs the way local tiers are
-# clocked. The 1.38x that started that rule turned out to be the hosted pool rather than
-# drift: the same 58 tests run 1.43x slower on the slower class of runner, measured from
-# the JUnit records of runs 35480905141 and 35579234418.
+# **1943.05s is step time on one class of runner, not a job wall.** The predecessor
+# workflow cost about 42 minutes of wall. This revision fans out the measured work while
+# preserving every Step and exact test; `ci_gates` in `devtools/gate-budgets.yaml`
+# retains that predecessor wall until a hosted run measures the new shape. The 1.38x
+# that started the budget rule turned out to be the hosted pool rather than drift: the
+# same 58 tests ran 1.43x slower on the slower class of runner in the JUnit records of
+# runs 35480905141 and 35579234418.
 #
 # **The hole this closes, and it is measured rather than feared.** The header of
 # `packing-validation.yml` already concedes it in one sentence -- "a pull request can be
@@ -83,7 +81,7 @@ env:
 concurrency:
   # Deliberately *not* `packing-validation-...`. Concurrency groups are repository-wide
   # strings, and that group carries `cancel-in-progress` on pull requests: sharing it
-  # would let an ordinary push cancel a 32-minute deep run and leave the label attesting
+  # would let an ordinary push cancel a deep run and leave the label attesting
   # to a run that never finished. Different prefix, no interaction in either direction.
   #
   # Keyed by event as well as ref: a pull-request run uses `refs/pull/N/merge`,
@@ -100,71 +98,44 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  deferred-steps:
-    # Eight of the eleven deferrals: negative controls, the n=40 rigidity bracket,
-    # the known-best atlas rebuild, exact rational grid replay, T-024's two
-    # finer-net dilation-limit records (173s and 352s on one core, each a full
-    # five-condition replay of a 721- or 1441-direction certificate) and T-026's two
-    # threshold ones (618s and 919s, six conditions by the threshold exact sweep).
-    # The slow lane, exhaustive tier and translation screen each have a separate job
-    # below.
-    #
-    # The three new ones are here on their own measurements, taken at n=1..324 on an idle
-    # ten-cpu box and retained in `packing/benchmarks/gate-cost-at-324/`: 691.19s for the
-    # rebuild and 766.26s for the screen, against the 210s ceiling on the pull-request
-    # job that used to carry both; and 34.81s for the grid replay, inside a step that was
-    # 133.4s of a `checks` job running 189.09s against a 195s ceiling. None is deferred
-    # without a stand-in -- `known-best atlas records and sample`, `translation escape
-    # screen records and sample` and the sampled replay inside `exact verification` run
-    # on every pull request -- and this selection is the exact complement of those, not a
-    # rerun of them.
-    #
-    # The slow lane runs in `deferred-slow-lane` and the screen has its own job;
-    # the four remaining numeric checks run here. Grid replay's prior pooled reading was 18.79s over 36.65s of cpu for all
-    # 305 witnesses. The serial schedule below adds its wall instead of hiding it.
-    #
-    # `--only` rather than a tier flag, and unlike in `packing-validation.yml` that is
-    # the correct instrument here. There, `--only` on a pull-request job would have left
-    # part of the surface with no declared ceiling, which is `D-466`. Here the selection is
-    # by construction not a tier: it is the *complement* of one, it has no entry in
-    # `devtools/gate-budgets.yaml`, and `_tier_id` returns `None` for an `--only` run so
-    # nothing is judged against a ceiling it does not have. What bounds these steps is
-    # their own `budget_seconds`, which `_execute_step` raises the subprocess timeout to
-    # -- 1800s for the negative controls; the screen carries its own cap in its job.
-    # The exhaustive job in `packing-validation.yml` uses the same arrangement.
-    #
-    # The names are typed here and cannot drift silently:
-    # `test_the_deep_gate_runs_exactly_what_the_pull_request_defers` parses these commands
-    # with the CLI's own parser, resolves them through its own selector, and requires the
-    # union to equal the set no pull-request job runs. Another deferral added tomorrow
-    # fails that test until it is added here, which is the property the daily backstop
-    # never had. It also requires the four job selections to be pairwise disjoint.
-    #
-    # Run 34181619739, on PR #121's branch after it took this job split from PR #116,
-    # killed the escape screen at its 1800s budget while the atlas rebuild and negative
-    # controls shared the other outer slot. Two pools of two workers did not finish within
-    # their caps on that hosted runner. The serial replay in run 34183723509 completed
-    # these five checks in 2174.84s of step time, including 1069.84s for the screen. Keep
-    # `--jobs 1 --inner-jobs 2`.
+  resolve-tree:
+    # Resolve a dispatch's moving pull-request merge ref once. Pull-request events and
+    # ordinary dispatches already carry their immutable event commit in `github.sha`.
+    # Every worker below checks out only this output, so one run cannot mix trees.
     if: >-
       github.event_name == 'workflow_dispatch'
       || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.tree.outputs.sha }}
+    steps:
+      - name: Check out the requested tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.inputs.pull_request && format('refs/pull/{0}/merge', github.event.inputs.pull_request) || github.sha }}
+          persist-credentials: false
+
+      - name: Publish the immutable tree
+        id: tree
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  deferred-threshold-1440:
+    # The four explicit deferred jobs preserve every whole Step and the inherited
+    # `--jobs 1 --inner-jobs 2` process shape. Run 35579234418 supplies the retained Step
+    # timings used for the longest-first grouping below; no new job-wall claim is made.
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: packing
     steps:
-      - name: Check out the repository
+      - name: Check out the immutable tree
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Blank on every event but `workflow_dispatch`, where it names the pull
-          # request's merge ref so a dispatch tests what a merge would produce rather
-          # than a branch tip.
-          # `github.event.inputs` rather than the `inputs` context: the latter is
-          # documented as available only to a dispatched or reusable workflow, and
-          # this step also runs on `pull_request`, where the event
-          # payload simply carries no inputs and this renders empty.
-          ref: ${{ github.event.inputs.pull_request && format('refs/pull/{0}/merge', github.event.inputs.pull_request) || '' }}
+          ref: ${{ needs.resolve-tree.outputs.sha }}
           # Preserve the existing full-history checkout for this numeric selection.
           fetch-depth: 0
           # kpress is installed from the vendored submodule.
@@ -182,18 +153,184 @@ jobs:
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
 
-      - name: Run the deferred steps outside the slow lane and the exhaustive tier
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run the 1440-step threshold replay
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --only "threshold dilation-limit record, 1440 steps"
+          --jobs 1 --inner-jobs 2
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  # Run 35579234418 measured 2435.7s across the eight Steps formerly serialized in
+  # `deferred-steps`. The four explicit jobs keep each Step whole and balance their
+  # measured work at 695.8s, 589.8s, 578.1s and 572.0s.
+  deferred-atlas-grid:
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.resolve-tree.outputs.sha }}
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run the atlas and small exact replays
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate
+          --only "known-best n=1..324 atlas rebuild"
+          --only "finer-net dilation-limit record, 720 steps"
+          --only "exact rational grid replay"
+          --jobs 1 --inner-jobs 2
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  deferred-controls-finer:
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.resolve-tree.outputs.sha }}
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run controls and the 1440-step finer-net replay
         run: >-
           uv run --frozen --all-extras --group dev
           packing-validate
           --only "negative controls"
-          --only "n=40 rigidity bracket still reproduces"
-          --only "known-best n=1..324 atlas rebuild"
-          --only "exact rational grid replay"
-          --only "finer-net dilation-limit record, 720 steps"
           --only "finer-net dilation-limit record, 1440 steps"
+          --jobs 1 --inner-jobs 2
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  deferred-threshold-720-rigidity:
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.resolve-tree.outputs.sha }}
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run the 720-step threshold and rigidity replays
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate
           --only "threshold dilation-limit record, 720 steps"
-          --only "threshold dilation-limit record, 1440 steps"
+          --only "n=40 rigidity bracket still reproduces"
           --jobs 1 --inner-jobs 2
 
       - name: Preserve validation timings and partial logs
@@ -211,15 +348,16 @@ jobs:
     if: >-
       github.event_name == 'workflow_dispatch'
       || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: packing
     steps:
-      - name: Check out the repository
+      - name: Check out the immutable tree
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event.inputs.pull_request && format('refs/pull/{0}/merge', github.event.inputs.pull_request) || '' }}
+          ref: ${{ needs.resolve-tree.outputs.sha }}
           # Retained-theorem reviews read historical Git objects.
           fetch-depth: 0
           submodules: true
@@ -236,6 +374,14 @@ jobs:
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
 
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
       - name: Run the slow behavioural lane
         run: >-
           uv run --frozen --all-extras --group dev
@@ -251,40 +397,29 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-  exhaustive-tier:
-    # The exhaustive exact tier alone, on its own runner, for the reason think-tr2z split
-    # it out of the post-merge gate: at 1943.05s of step time it is the one step that
-    # decides whether the *other* steps get reported at all. As a hosted job it is
-    # recorded at 2518.8s of wall over eight runs, spread 1.47x, in `ci_gates` in
-    # `devtools/gate-budgets.yaml`; it sets the gate's wall on every one of them. `D-456` is what that looked like -- the tier
-    # outgrew its budget, the gate killed it with its output in an unflushed pipe, and
-    # three consecutive merges went red saying nothing about the sixty other steps. Run
-    # beside `deferred-steps` in one job it would do that here too, and the deep gate's
-    # whole value is naming *which* deferral broke before the merge rather than after it.
-    #
-    # Its separate runner preserves a verdict independent of the other two jobs.
-    # Serial numeric work can now determine the gate's wall: run 34183723509 recorded
-    # 2174.84s there, 1370.06s here and 1288.54s in the isolated slow lane.
-    #
-    # Hosted provenance reports four available CPUs. This isolated job gives its
-    # certificate pool up to four workers; actual CPU and grid-memory caps still apply.
-    # This restores its prior allowed parallelism, without claiming a measured speedup.
+  exhaustive-1:
+    # The predecessor `exhaustive-tier` job ran 58 independent exact tests serially and
+    # set the wall on every measured deep run. The retained JUnit receipt from run
+    # 35579234418 packs whole files into three 945.8s, 837.7s and 837.9s shards. Each
+    # shard keeps the exact marker, test bodies and four-worker inner cap; only their
+    # runner assignment changes.
     if: >-
       github.event_name == 'workflow_dispatch'
       || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: packing
     steps:
-      - name: Check out the repository
+      - name: Check out the immutable tree
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # `github.event.inputs` rather than the `inputs` context: the latter is
           # documented as available only to a dispatched or reusable workflow, and
           # this step also runs on `pull_request`, where the event
           # payload simply carries no inputs and this renders empty.
-          ref: ${{ github.event.inputs.pull_request && format('refs/pull/{0}/merge', github.event.inputs.pull_request) || '' }}
+          ref: ${{ needs.resolve-tree.outputs.sha }}
           # This selection has no historical-content review. Keep its shallow checkout;
           # the vendored submodule is still required to resolve the environment.
           submodules: true
@@ -301,10 +436,141 @@ jobs:
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
 
-      - name: Run the exhaustive exact tier
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run exhaustive exact shard 1 of 3
+        env:
+          PACKING_VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
         run: >-
           uv run --frozen --all-extras --group dev
           packing-validate --only "exhaustive exact behavioral tests"
+          --exhaustive-shard 1/3
+          --jobs 1 --inner-jobs 4
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  exhaustive-2:
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `github.event.inputs` rather than the `inputs` context: the latter is
+          # documented as available only to a dispatched or reusable workflow, and
+          # this step also runs on `pull_request`, where the event
+          # payload simply carries no inputs and this renders empty.
+          ref: ${{ needs.resolve-tree.outputs.sha }}
+          # This selection has no historical-content review. Keep its shallow checkout;
+          # the vendored submodule is still required to resolve the environment.
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run exhaustive exact shard 2 of 3
+        env:
+          PACKING_VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --only "exhaustive exact behavioral tests"
+          --exhaustive-shard 2/3
+          --jobs 1 --inner-jobs 4
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  exhaustive-3:
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `github.event.inputs` rather than the `inputs` context: the latter is
+          # documented as available only to a dispatched or reusable workflow, and
+          # this step also runs on `pull_request`, where the event
+          # payload simply carries no inputs and this renders empty.
+          ref: ${{ needs.resolve-tree.outputs.sha }}
+          # This selection has no historical-content review. Keep its shallow checkout;
+          # the vendored submodule is still required to resolve the environment.
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run exhaustive exact shard 3 of 3
+        env:
+          PACKING_VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --only "exhaustive exact behavioral tests"
+          --exhaustive-shard 3/3
           --jobs 1 --inner-jobs 4
 
       - name: Preserve validation timings and partial logs
@@ -338,19 +604,20 @@ jobs:
     if: >-
       github.event_name == 'workflow_dispatch'
       || contains(github.event.pull_request.labels.*.name, 'deep-gate')
+    needs: resolve-tree
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: packing
     steps:
-      - name: Check out the repository
+      - name: Check out the immutable tree
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # `github.event.inputs` rather than the `inputs` context: the latter is
           # documented as available only to a dispatched or reusable workflow, and
           # this step also runs on `pull_request`, where the event
           # payload simply carries no inputs and this renders empty.
-          ref: ${{ github.event.inputs.pull_request && format('refs/pull/{0}/merge', github.event.inputs.pull_request) || '' }}
+          ref: ${{ needs.resolve-tree.outputs.sha }}
           # This selection has no historical-content review. Keep its shallow checkout;
           # the vendored submodule is still required to resolve the environment.
           submodules: true
@@ -366,6 +633,14 @@ jobs:
 
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ needs.resolve-tree.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
 
       - name: Run the single-square translation escape screen
         run: >-
@@ -391,7 +666,7 @@ jobs:
     # required context" as the condition for allowing any job split at all, and this
     # workflow is a job split, so it inherits the condition. A reviewer watches
     # `packing-required` and, when the deep surface is in play, `deep-gate-required`.
-    # Never four contexts.
+    # Never a separately required context per worker.
     #
     # **This adds no always-pending context to an ordinary pull request**, which is the
     # other half of the `D-380` failure mode and the one a new workflow is most likely to
@@ -403,7 +678,7 @@ jobs:
     #      condition rather than in the `pull_request` trigger's filters.
     #   2. This workflow does not become a prerequisite of `packing-required`.
     #      If it did, every pull request would
-    #      wait 32 minutes for the surface this file exists to keep off every pull
+    #      wait for the surface this file exists to keep off every pull
     #      request.
     #
     # `!cancelled()` rather than `always()`, again for `D-380`: `cancel-in-progress` is
@@ -413,7 +688,17 @@ jobs:
     if: >-
       !cancelled() && (github.event_name == 'workflow_dispatch'
       || contains(github.event.pull_request.labels.*.name, 'deep-gate'))
-    needs: [deferred-steps, deferred-slow-lane, exhaustive-tier, screen]
+    needs:
+      - resolve-tree
+      - deferred-threshold-1440
+      - deferred-atlas-grid
+      - deferred-controls-finer
+      - deferred-threshold-720-rigidity
+      - deferred-slow-lane
+      - exhaustive-1
+      - exhaustive-2
+      - exhaustive-3
+      - screen
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -422,35 +707,47 @@ jobs:
     steps:
       - name: Require every deep-gate prerequisite
         env:
-          DEFERRED_RESULT: ${{ needs.deferred-steps.result }}
+          RESOLVE_RESULT: ${{ needs.resolve-tree.result }}
+          THRESHOLD_1440_RESULT: ${{ needs.deferred-threshold-1440.result }}
+          ATLAS_GRID_RESULT: ${{ needs.deferred-atlas-grid.result }}
+          CONTROLS_FINER_RESULT: ${{ needs.deferred-controls-finer.result }}
+          THRESHOLD_720_RIGIDITY_RESULT: ${{ needs.deferred-threshold-720-rigidity.result }}
           SLOW_RESULT: ${{ needs.deferred-slow-lane.result }}
-          EXHAUSTIVE_RESULT: ${{ needs.exhaustive-tier.result }}
+          EXHAUSTIVE_1_RESULT: ${{ needs.exhaustive-1.result }}
+          EXHAUSTIVE_2_RESULT: ${{ needs.exhaustive-2.result }}
+          EXHAUSTIVE_3_RESULT: ${{ needs.exhaustive-3.result }}
           SCREEN_RESULT: ${{ needs.screen.result }}
         run: |
-          test "$DEFERRED_RESULT" = "success"
+          test "$RESOLVE_RESULT" = "success"
+          test "$THRESHOLD_1440_RESULT" = "success"
+          test "$ATLAS_GRID_RESULT" = "success"
+          test "$CONTROLS_FINER_RESULT" = "success"
+          test "$THRESHOLD_720_RIGIDITY_RESULT" = "success"
           test "$SLOW_RESULT" = "success"
-          test "$EXHAUSTIVE_RESULT" = "success"
+          test "$EXHAUSTIVE_1_RESULT" = "success"
+          test "$EXHAUSTIVE_2_RESULT" = "success"
+          test "$EXHAUSTIVE_3_RESULT" = "success"
           test "$SCREEN_RESULT" = "success"
 
       # **The walls, read against the ceilings that declare them** (`OR-17`: a price
       # nothing reads is not a budget). `ci_gates` in `devtools/gate-budgets.yaml` carries
       # one entry per job above plus the gate's own wall, and this is what compares a
-      # finished run against them -- the same four rules `packing-validate` is judged by,
+      # finished run against them -- the same rules `packing-validate` is judged by,
       # through `gate_budgets.band_findings`.
       #
       # It costs about 21s: checkout, uv and `uv sync` on a warm cache, measured on the
-      # deep jobs' own step timings. That is 0.8 per cent of a gate whose wall is 42
-      # minutes, and it does not move the recorded wall, which is measured to the last
+      # deep jobs' own step timings. It does not move the recorded predecessor wall,
+      # which is measured to the last
       # *gating* job and deliberately excludes this one.
       #
       # `always()` because a run whose deep job died slowly is exactly the one whose
       # walls are worth reading, and the verdict above has already been decided by then.
       #
       # **Every step below is `continue-on-error`, including its checkout and its
-      # toolchain**, and that is the whole of what keeps this addition safe. A 45-minute
+      # toolchain**, and that is the whole of what keeps this addition safe. A long
       # pre-merge gate must never go red for the measurement tool: an unreachable API, a
       # cache miss or a checkout failure is not a regression, and a false red here costs
-      # another 45 minutes to clear. The verdict this job reports is decided entirely by
+      # rerun to clear. The verdict this job reports is decided entirely by
       # the step above. The register's own `enforcement: reporting` is a separate and
       # separately argued relaxation, of the *bands* rather than of the step;
       # `think-haam` owns removing both.
@@ -459,7 +756,7 @@ jobs:
         continue-on-error: true
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event.inputs.pull_request && format('refs/pull/{0}/merge', github.event.inputs.pull_request) || '' }}
+          ref: ${{ needs.resolve-tree.outputs.sha }}
           # kpress is installed from the vendored submodule, so `uv sync` needs it.
           submodules: true
 

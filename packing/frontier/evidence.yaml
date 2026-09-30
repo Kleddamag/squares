@@ -2,8 +2,163 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-09-29'
+last_reviewed: '2026-09-30'
 evidence:
+  - id: E-n011-global-optimality-report
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: not-applicable
+    origin: external
+    novelty: previously-published
+    source_key: '[Queuingtheorydotcom n11 optimality 2026]'
+    replay_status: not-attempted
+    external_review:
+      state: defect-found
+      date: '2026-09-29'
+      reviewed_by: GPT-6 Astra at max reasoning, with coordinator integration
+      note: >-
+        Astra-max mathematical review and first-party checks accept conditional D4,
+        fixed-T local isolation, conditional near-pose inclusion and 459 exclusions
+        from one field certificate. The complete case census is checked as metadata.
+        Independent calculations find the actual near final-state digest differs
+        from its pinned B7 audit. The publisher's fresh replay and complete capture
+        consumer require equality and would reject that binding (think-gzju).
+        This is a public proof-packet defect, not a geometric refutation. See
+        docs/project/reviews/review-2026-09-29-n11-optimality.md and its retained receipts.
+    limitations: >-
+      This entry preserves the publisher's claim and the initial source-review
+      defect, not a successful execution of the publisher's driver. Four stale
+      B4-B7 final-state digests prevent that advertised binding. All required
+      payloads were subsequently acquired and independently checked; the completed
+      exact execution ensemble is E-n011-global-optimality-independent below.
+      These reproducibility defects do not refute the geometric theorem.
+    blocker:
+      kind: checker
+      detail: The publisher's B4-B7 audit bindings need correction before its advertised fresh replay can pass unchanged.
+    source_reviewed: '2026-09-30'
+  - id: E-n011-global-optimality-independent
+    claim: exact-value
+    scope: {n_values: [11]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[Queuingtheorydotcom n11 optimality 2026]'
+    certificate: packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
+    replay: >-
+      Replay the geometric components with the frozen commands in
+      packing/resources/web/n11-optimality-2026-09-29/README.md and the linked
+      per-component provenance records; these completed executions are the
+      evidence. Then, from packing, run .venv/bin/python3 -m
+      devtools.check_n11_final_composition --out /tmp/n11-final-composition.json
+      to reconcile their reviewed bindings. The composition command alone does
+      not rerun geometry.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md
+      theorem: Global optimality of Trump's eleven-square packing
+      scope: s(11)=T for eleven congruent unit squares with independent rotations and boundary contact.
+      pinpoints: >-
+        Final composition eaad8f14cf3404e8abe1bfee18cbd7f12a2fed2094f46f021d4e3bfb3088b141
+        binds 2180 exact exclusions, the complete 10-node capture graph, the
+        14-round root induction, all three far contradictions, 136-row near-pose
+        inclusion, 128 local branches with 66 strict margins each, the D4 bridge,
+        and the exact matching witness. The observed geometric executions and
+        mapped mathematical review establish these premises; receipt consistency
+        alone would not establish them.
+      assumptions:
+        - All 2184 canonical patterns cover packings in the cap U, including every smaller-container packing by embedding; four survivors reduce to case 438 by exact symmetry.
+        - Exact closed branch covers, complete owner updates and strict seed ownership support the complete capture induction.
+        - The accepted near state lies in the reviewed local neighborhood in the correct frame.
+        - Any smaller container embeds concentrically in the cap and recenters into the fixed-T local problem, where local isolation forces the exact witness span T, a contradiction.
+      audit_record: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: GPT-6 Astra at max reasoning, with Sol implementation and coordinator integration
+      note: >-
+        Reviewed every component family, actual complete execution bindings,
+        adverse controls and the full endpoint argument. Independently reproduced
+        the final composition with no pending obligations. V4/C5 records exact
+        computation with mapped mathematical review, not a distinct-method C4
+        proof or proof-assistant V5 certification.
+    limitations: >-
+      Independent source ingestion and geometric replay share disclosed local
+      arithmetic and construction primitives with the source; this is not fully
+      disjoint implementation or a second mathematical method. The publisher's
+      four stale final-state digests remain defects in its advertised replay.
+      Fresh whole-ensemble orchestration needs state-equivalence rebinding because
+      child checkers pin historical parent receipts including timings (think-e2ot).
+      Completed observed runs with those reviewed premises establish this result;
+      the fast final composer is only an evidence reconciler. Neither uniqueness
+      nor a broader rigidity classification is claimed.
+    source_reviewed: '2026-09-30'
+  - id: E-wand125-tools-ceiling-report
+    claim: derived-structure
+    scope: {n_min: 1, n_max: 100}
+    assurance: reported
+    reported_method: published-proof
+    performed_by: source-author
+    relationship_to_generator: not-applicable
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    replay_status: not-attempted
+    external_review:
+      state: defect-found
+      date: '2026-09-29'
+      reviewed_by: GPT-6 Astra mathematical review with coordinator integration
+      note: >-
+        The B*UB argument requires net-aligned witness orientations; arbitrary orientations
+        need an additional containment factor. Rounded table floats are not rigorous upper
+        witness bounds. See review-2026-09-29-wand125-tools-mathematics.md; neither a
+        counterexample to the unrestricted inequality nor a completed ceiling proof is claimed.
+    limitations: >-
+      Source README and transfer/l_cap.py claim a general ceiling for the fixed B=9977/10000.
+      Reviewed by reading only; adopt as a heuristic until geometric and input premises are
+      discharged. Scope is the source's 1-100 upper-bound table. No frontier field changes.
+    blocker:
+      kind: mathematics
+      detail: Bind a rigorous packing witness and its orientations, or use the reviewed sufficient factor B*(1+83/40000); distinguish a sufficient ceiling from a sharp optimum.
+    source_reviewed: '2026-09-29'
+
+  - id: E-wand125-tools-n11-row-report
+    claim: derived-structure
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: independent-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    replay_status: not-attempted
+    external_review:
+      state: defect-found
+      date: '2026-09-29'
+      reviewed_by: GPT-6 Astra mathematical review with coordinator integration
+      note: >-
+        Read the pinned general_pose_tree row claim and source replay harness.
+        run_n11.py skips existing output by row number without binding it to the
+        certificate or checker; summarize_n11.py counts repeated records and does
+        not enforce the exact unique 0..12027 census. These source admission defects
+        do not refute the reported minimum equalities. The first-party bound journal
+        covers only rows 0, 6014 and 12027; a complete source-bound minimum replay
+        remains outstanding. See review-2026-09-29-wand125-tools-mathematics.md.
+    limitations: >-
+      general_pose_tree/README.md reports all 12028 exact per-row minima agreeing with
+      Kleddamag's pinned n11 certificate, including witness replay. This intake has not
+      replayed that complete scan or audited every branch/enclosure predicate. The row
+      claim does not cover the global counting theorem and is not a rectangle verifier.
+    blocker:
+      kind: checker
+      detail: Audit the point/threshold row contract and replay the complete pinned row census, then separately bind angle containment, D4 folding and the global budget.
+    source_reviewed: '2026-09-29'
   - id: E-wand125-point-source-replay
     claim: lower-bound
     scope: {n_values: [26, 29, 39, 40, 41, 53, 55, 56, 69, 70, 71, 72]}

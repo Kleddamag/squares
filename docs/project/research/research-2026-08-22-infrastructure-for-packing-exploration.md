@@ -1,6 +1,6 @@
 # Research: Infrastructure for Square-Packing Exploration
 
-**Date:** 2026-08-22 (last updated 2026-08-25)
+**Date:** 2026-08-22 (last updated 2026-09-30)
 
 **Author:** Claude (agent), for samanthadrakova@gmail.com
 
@@ -25,6 +25,15 @@ The broad filtered kernel, automatic source-corpus import, and a general interva
 existence certifier remain unbuilt.
 The design below is therefore a rationale and roadmap, not a claim that every described
 layer is still missing.
+
+**Performance and proof-contract update (2026-09-30).** The
+[exact-arithmetic verifier study](research-2026-09-30-exact-arithmetic-verifier-performance.md)
+finds different costs in scalar rational clipping than in the predicate and number-field
+benchmarks below. It separates program execution from agent analysis time: “free” below
+describes a latency judgment, not zero resource cost.
+It also distinguishes a shared geometric formula from the separate correctness contracts
+for approximate values, certified intervals, exact predicates, and exact constructions;
+one scalar-generic implementation does not by itself establish all four contracts.
 
 The design principle is Alan Kay’s: **simple things should be simple, complex things
 should be possible.** For this project that has a precise reading.

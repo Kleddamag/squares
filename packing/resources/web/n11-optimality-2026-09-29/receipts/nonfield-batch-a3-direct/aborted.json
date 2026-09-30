@@ -1,0 +1,47 @@
+{
+  "status": "ABORTED_EXECUTOR_BOOKKEEPING",
+  "geometry_credit": false,
+  "excluded_case_ids": [],
+  "global_optimality_proved": false,
+  "checker_commit": "7a2705461",
+  "checker_sha256": "da09d08d0e2d6c40755a15a9e9b4a47ae874513463acc9fb44e29f5a821afa2b",
+  "reason": "Shared-source path was admitted, but post-execution invocation serialization used execution-checkout relative_to and raised ValueError. Per-process exit metadata was lost. Supervisors and active children stopped; rerun required before inventory credit. Existing checker records retained without credit.",
+  "records": [
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-direct/case-1530.json.gz",
+      "sha256": "d29c14dcb78a9c0efbc24065f6a87ea4c2edd305026ea18268e953b1d70b3323",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-direct/case-1538.json.gz",
+      "sha256": "a5404de933f68742bd65c3e190912088615a76834d781150a67c83252b1f178d",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-direct/case-1628.json.gz",
+      "sha256": "60f2facde6d0d8b1d91e35c1ee0ebcb1f21a9bfc90e2a5e2bb7fea4c6bd8940c",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-direct/case-1831.json.gz",
+      "sha256": "97701bbc554702c31d9ce6923a6d7a8bfd9883b20692d3a845a08e18a052575f",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-direct/case-2130.json.gz",
+      "sha256": "0e9874f82a337e58e6edb7902161d0f71eec770f3599ab7f7a013e8aa1f3cf63",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-direct/case-2133.json.gz",
+      "sha256": "d64790c649585ceb30e4dc8c5a31b8e4ffa0b308e79df193908af4c957c39471",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    }
+  ]
+}

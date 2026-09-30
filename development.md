@@ -165,20 +165,25 @@ alone is not full pre-merge evidence.
 
 | Tier | Who runs it, and when | Steps | Ceiling | Cost when last measured |
 | --- | --- | ---: | ---: | --- |
-| `--records` | contributor, before touching a registry; also every pull request | 33 of 80 | 300 s | 11.0 s |
-| `--edit` | contributor, in the edit loop | 48 of 80 | 240 s | 59.4 s |
+| `--records` | contributor, before touching a registry; also every pull request | 36 of 85 | 300 s | 11.0 s |
+| `--edit` | contributor, in the edit loop | 51 of 85 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the seven tiers below | 69 of 80 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 50 of 80 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 80 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 80 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 80 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 80 | 168 s | 109.92 s on exact head `be28ad5a`, the geometric mean of attempts 1–3 of run 35182460400 |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 80 | 154 s | 102.91 s, the geometric mean of five readings spanning 73.90–133.81 s (1.81x) across runs 35182460400, 35634463193, 35637674151 and 35638434973 |
-| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 80 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 80 of 80 | 3600 s | split across four jobs; not clocked whole |
+| `--fast` | contributor, at a block boundary; the union of the eight tiers below | 74 of 85 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 54 of 85 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 85 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 85 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 85 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 85 | 131 s | 85.03 s geometric mean of the three-shard observations 65.67/110.09 s in runs 36739024277 and 36740609969 |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 85 | 154 s | 104.65 s on the three-shard partition, run 36739024277, job 109968163416 |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 85 | 154 s | 88.59 s on the three-shard partition, run 36739024277, job 109968163208 |
+| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 85 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
+| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 85 of 85 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
-`--geometry`’s current cost is the geometric mean of seven readings at the reference
+Step counts describe the current 85-step registry.
+Dated costs retain their measured source and resource shape; they are not fresh
+measurements of the new scheduling.
+
+`--geometry`’s recorded cost is the geometric mean of seven readings at the reference
 shape. The earlier four-reading baseline remains in the register’s history.
 The superseded `--suite` tier’s final record was a single reading: merging PR 137
 brought sixteen test files and the threshold work four more, taking that quick selection
@@ -211,6 +216,18 @@ toolchain. Each shard writes a per-file cost report beside its JUnit and timing
 artifacts; the recorder accepts complete coherent cohorts and rejects failed, partial,
 duplicated, coverage-mismatched, and mixed-provenance evidence.
 The current declared ceilings are 168 seconds for suite A and 154 seconds for suite B.
+
+The frontend browser runner builds one page and runs eight isolated browser contracts.
+The gate permits two contracts concurrently when the CPU count and outer job count leave
+room; otherwise it uses one.
+Both routes run the same checks and propagate failures.
+For a same-host comparison, run `python -m workbench_tools.check_frontend --workers 1
+--timings PATH` and then `--workers 2` with a different receipt path, using the project
+interpreter. Receipts include per-check times and source identity.
+The
+[PR 246 integration review](docs/project/reviews/review-2026-09-29-native-rectangle-contract.md#end-to-end-integration-review)
+records the initial comparison; it does not change the frontend gate’s thresholds.
+
 The first PR 188 integration run at exact head `c5a33270` measured 84.00 and 143.98
 seconds, respectively, over the complete 6,345-item quick selection: 2,362 passes in
 suite A, and 3,977 passes with 6 skips in suite B. `c4f0660d` rebuilt the cost record
@@ -260,13 +277,32 @@ After `main` merged into the stack, #160 read 200.68 s and 199.74 s at `72629c03
   representation.
 
 **The pull-request surface is `--checks`, `--frontend`, `--typecheck`, `--geometry`,
-`--suite-a`, `--suite-b`, and `--sweeps` together, run as seven concurrent CI jobs**, so
-a pull request waits for the longest part rather than for their sum.
-All seven feed the stable `packing-required` aggregate context.
+`--suite-a`, `--suite-b`, `--suite-c`, and `--sweeps` together, run as eight concurrent
+CI jobs**, so a pull request waits for the longest part rather than for their sum.
+All eight feed the stable `packing-required` aggregate context.
 Repository protection settings determine whether GitHub requires that context before a
 merge. `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks
 that they are pairwise disjoint and that they cover every step of `--fast` — so the
 split cannot lose a check the way a set of independent filters could.
+
+The three behavioral shards use a source-bound file-cost record and deterministic
+partitioning weighted by the historical planning capacities 168/154/154. Those frozen
+weights define the measured assignment; the live enforcement ceilings are separately
+calibrated at 131/154/154 seconds.
+Each test file belongs to exactly one shard.
+The third shard supplies capacity after
+[run 36735084578](https://github.com/jlevy/squares/actions/runs/36735084578) measured
+156.19 and 165.06 seconds for the two-shard partition: their combined 321.25 seconds
+left less than one second against the combined ceilings.
+The first three-shard cohort,
+[run 36739024277](https://github.com/jlevy/squares/actions/runs/36739024277), passed
+7,958 behavioral tests with seven skips at 65.67/104.65/88.59 seconds.
+These are hosted observations, not a controlled speedup estimate.
+Calibration tightens shard A while preserving the observed file assignment.
+The unchanged shard A then passed the same 2,213 tests with seven skips in 110.09
+seconds in [run 36740609969](https://github.com/jlevy/squares/actions/runs/36740609969).
+Its declared timing band retains both observations, 65.67–110.09 seconds, with a
+geometric mean of 85.03 seconds; its absolute limit remains 131 seconds.
 
 The merged [PR95](https://github.com/jlevy/squares/pull/95) implementation pools the
 known-best census and prospective-atlas rebuilds through the shared worker policy.
@@ -298,6 +334,11 @@ start of the wall-check step inside its required aggregator, `packing-required` 
 `pages-required`. That includes prerequisite queues, checkout, setup, work, artifact
 transfer, and the aggregator’s queue, result assertion, blobless checkout, and pinned
 Python setup; it excludes the wall check itself and subsequent teardown.
+If GitHub withholds the running step’s timestamp, the live check can instead use its own
+process invocation time as a labeled conservative upper bound.
+This requires the matching run, attempt and aggregator, complete prerequisites, and
+ordered timestamps; it can charge extra wall time but cannot reduce the measured wait.
+Historical and sample measurements continue to use API timestamps.
 
 `packing/devtools/check_pr_wall.py` runs inside both aggregators and judges the wall
 against OR-14’s absolute 180-second budget.
@@ -305,8 +346,8 @@ Once a pull-request kind (`main` or `stacked`) has at least 15 recorded samples,
 judges the wall against 1.2 times that kind’s median.
 An unmeasurable current run fails closed.
 A missing or undersampled median produces an explicit warning while the absolute budget
-still applies. Partial reruns, missing jobs or timestamps, an incomplete jobs-API page,
-and non-finite register values cannot produce a passing measurement.
+still applies. Partial reruns, missing jobs or required timestamps, an incomplete
+jobs-API page, and non-finite register values cannot produce a passing measurement.
 
 **Both walls are currently advisory under `think-g4n9`.** Each workflow’s entry in
 `pull_request_walls` declares its `enforcement`. Absent means `enforcing`: a wall over
@@ -348,15 +389,16 @@ test satisfies exactly one, so no test can be in two lanes and none can be in ze
 
 | Lane | Marker | Tests at last count | Runs in | Bound |
 | --- | --- | ---: | --- | --- |
-| quick | neither | 6,345 selected (6,339 passed; 6 skipped) | PR fast surface: file shards in `suite-a` and `suite-b`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
+| quick | neither | 7,962 file-shard tests (7,955 passed; 7 skipped) | PR fast surface: file shards in `suite-a`, `suite-b` and `suite-c`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
 | slow | `slow` | 97 | full checkpoint, under xdist in CI | fails a test whose `call` phase is under 1 s |
 | exhaustive | `exhaustive_exact` | 55 | its own CI job | its own 3600 s budget |
 
-The quick count is from PR 188 run 35128357992 on 2026-09-16, after the first
-recorded-cost repartition.
-The slow and exhaustive counts are `--collect-only` readings from 2026-09-08 against the
-n = 1..324 corpus. These are measurements rather than fixed membership; marker
-expressions determine the three lanes, and counts move with the corpus.
+The quick file-shard count is from PR 246 run 36735084578 on 2026-09-30, before the
+third shard was added; the separate browser-floor controls are not included in that
+count. The slow and exhaustive counts are `--collect-only` readings from 2026-09-08
+against the n = 1..324 corpus.
+These are measurements rather than fixed membership; marker expressions determine the
+three lanes, and counts move with the corpus.
 A stale quick count in this table is how [D-488](defects.md)’s cause stayed invisible,
 since the tests grew and the budget bounding them did not.
 [Main run 34025346801](https://github.com/jlevy/squares/actions/runs/34025346801)
@@ -389,11 +431,20 @@ These are the eleven steps outside the [PR fast surface](#validation-tiers).
 [D-470](defects.md) records why checking them only after a merge is insufficient: a
 stale certificate test left main red across three merges despite green PR checks.
 
-It runs them in four jobs, mirroring the post-merge gate: `deferred-slow-lane`,
-`exhaustive-tier`, and [D-484](defects.md)’s `screen`, with `deferred-steps` carrying
-the other eight checks.
-`deep-gate-required` waits on all four — a split job that nothing waits on is an
-advisory check, which is [D-380](defects.md)’s shape.
+The deferred workflow resolves one immutable checkout and distributes the work over nine
+jobs: a slow-test job, a screen job, three exhaustive-test shards, and four groups of
+whole deferred checks.
+Exhaustive shards partition test files using retained costs; new files receive a
+deterministic assignment.
+Every shard keeps the same exhaustive marker and complete test bodies.
+`deep-gate-required` waits on every job and the source resolver; a missing, skipped or
+unsuccessful prerequisite fails the aggregate.
+Timing artifacts have distinct job names and record the checked-out commit.
+For a dispatched PR, that resolved merge commit can differ from the workflow dispatch
+ref; the checkout receipt identifies the source actually validated.
+Main, daily and manually dispatched packing validation use the same deferred groups.
+Their separate `post-merge-required` aggregate requires the integration job and all nine
+deferred workers to succeed; the seven-job PR aggregate remains separate.
 
 The last three joined on 2026-09-07 because the corpus tripled, not because the gate
 changed its mind about them.
@@ -509,18 +560,19 @@ uv run --frozen --all-extras --group dev packing-validate --edit
 uv run --frozen --all-extras --group dev packing-validate --push
 
 # The pull-request surface: the edit tier plus every behavioral test under the
-# per-test ceiling. CI runs it as the seven parts below, one per runner; run it whole
+# per-test ceiling. CI runs it as the eight parts below, one per runner; run it whole
 # here, where there is only one machine and nothing to overlap with.
 uv run --frozen --all-extras --group dev packing-validate --fast
 
-# The seven parts CI runs concurrently on a pull request. They partition --fast, so
-# running all seven is running the surface and running one is running a part of it.
+# The eight parts CI runs concurrently on a pull request. They partition --fast, so
+# running all eight is running the surface and running one is running a part of it.
 uv run --frozen --all-extras --group dev packing-validate --checks
 uv run --frozen --all-extras --group dev packing-validate --frontend
 uv run --frozen --all-extras --group dev packing-validate --typecheck
 uv run --frozen --all-extras --group dev packing-validate --geometry
 uv run --frozen --all-extras --group dev packing-validate --suite-a
 uv run --frozen --all-extras --group dev packing-validate --suite-b
+uv run --frozen --all-extras --group dev packing-validate --suite-c
 uv run --frozen --all-extras --group dev packing-validate --sweeps
 
 # One named component. --only is repeatable and matches displayed step names.
@@ -595,20 +647,28 @@ defensible. Each of 2026-08-30’s three red pushes broke a test reachable this 
 the changed paths ([D-381, D-393](defects.md)), and the floor would have caught all
 three.
 
-**A broad diff receives one outer job automatically.** A changed workflow file or suite
-configuration expands the selector to everything, and everything here is the quick lane
-and the slow lane in one step, against `FAST_SUITE_BUDGET_SECONDS`. With the normal
-CPU-wide outer default that single step would receive one pytest worker because the
-distribution is `cpus - jobs + 1`; the short outer-check tail would finish and leave the
-host idle. When the broad selection and resource settings are both implicit, the CLI
-therefore uses one outer job so pytest can use the host.
-Narrow selections keep the CPU-wide outer default, and explicit `--jobs` or
-`PACKING_VALIDATE_JOBS` choices remain authoritative.
+**Large implicit push selections receive a separate pytest phase.** A changed workflow
+file or suite configuration expands the selector to everything: the quick and slow lanes
+together, against `FAST_SUITE_BUDGET_SECONDS`. A large proper subset can also dominate
+the run. When resource settings are implicit, the edit checks run with their normal
+concurrency, then the reachable tests use the available pytest workers after the edit
+pool has drained. Nested tool pools are capped at one during the parallel pytest phase.
+Tests marked `pool_heavy` run afterward in a separate serial pytest process with the
+reserved CPUs assigned to their internal pool.
+The whole-atlas composite test uses this allocation; its per-case builder and global
+assertions are unchanged.
+Both phases use the same selected files and complementary markers, so every selected
+non-exhaustive test belongs to exactly one phase.
+Other slow tests remain parallel.
+This prevents the CPU-wide outer default from leaving pytest with one worker after the
+other checks finish.
+It also prevents two internally parallel checks from each claiming the same CPUs.
+Explicit resource settings remain authoritative.
 
 [D-488](defects.md) is that timeout, and what it fixed is narrower than the failure:
 until it, `_xdist_distribution`’s flag never reached the selector’s pytest at all, so
 `--jobs 1` was serial too and there was no shape that worked.
-There is one now, and the implicit broad selection chooses it.
+There is one now, and the implicit large-selection phase uses it.
 The historical 1403-second reading used that one-outer-job shape and finished inside the
 cap; the reconciliation branch still owes its final-source push and full-checkpoint
 receipts before closeout.
@@ -616,10 +676,21 @@ receipts before closeout.
 The `.gate-running` marker is a load lock protecting calibrated step budgets, not a
 correctness lock — no step mutates the working tree.
 The floor tiers say so: `--records`, `--edit`, and a `--push` whose test selection is
-narrow take no marker and run even while a full gate holds it, because a floor the lock
-can refuse is a floor that gets skipped.
-Selections containing a broad or full-tier step still take the marker and still refuse a
-second gate.
+narrow remain runnable while a full gate holds it, because a floor the lock can refuse
+is a floor that gets skipped.
+A large narrow push opportunistically reserves the load lock for its exclusive pytest
+phase. If the lock is already held, it retains its conservative worker allocation
+instead. Whole-suite fallback still requires the lock.
+The CLI reports which allocation it selected, and command receipts record the effective
+worker settings. Selections containing a broad or full-tier step still take the marker
+and still refuse a second gate.
+
+When command artifacts are enabled, the reachable-test wrapper records separate JUnit
+and duration reports for each child phase.
+Flushed per-worker JSONL progress identifies the source commit, run, test node and
+effective worker allocation; an interrupted test leaves its start event available before
+JUnit can finish. These are operational timing receipts, not mathematical acceptance
+evidence. Artifacts stay outside the source tree.
 
 Every validation subprocess has a finite 900-second default deadline.
 Override it with `--timeout-seconds SECONDS` or `PACKING_VALIDATE_TIMEOUT_SECONDS`;
@@ -675,21 +746,22 @@ lanes and gave xdist to the quick half only, leaving the half selected for costi
 most as the one place in the gate that ran a test suite serially.
 Avoid assuming that either flag alone caps total host concurrency.
 
-The screen and exhaustive jobs use `--jobs 1 --inner-jobs 4` on the hosted four-CPU
-runners. The slow lane also has its own job, using `--jobs 1 --inner-jobs 2`: xdist
-supplies four test workers, while tests that create their own pools retain two inner
-workers. The remaining integration and deferred numeric checks run one step at a time
-with `--jobs 1 --inner-jobs 2`, preserving PR #120’s response to the concurrent
+The screen and exhaustive shard jobs use `--jobs 1 --inner-jobs 4` on the hosted
+four-CPU runners. The slow lane also has its own job, using `--jobs 1 --inner-jobs 2`:
+xdist supplies four test workers, while tests that create their own pools retain two
+inner workers. Each hosted deferred-check group runs one whole step at a time on its own
+runner with `--jobs 1 --inner-jobs 2`, preserving PR #120’s response to the concurrent
 corpus-pool timeout in
 [run 34181619739](https://github.com/jlevy/squares/actions/runs/34181619739). The
 workflow tests derive selections through the CLI and require complete, disjoint coverage
 in both workflows. They also require full Git history wherever the slow retained-theorem
 review runs.
 
-These allocations preserve both integration fixes; their combined wall time needs fresh
-hosted validation.
-They do not establish a total process bound when tests spawn pools, or
-a speedup. Certificate pools still enforce actual CPU availability, the four-worker
+The efficiency review records the
+[allocation and measurement contract](docs/project/reviews/review-2026-09-29-validation-parallelism.md).
+Fresh hosted results, rather than the predecessor jobs’ durations, establish the new
+combined wall time. They do not establish a total process bound when tests spawn pools,
+or a speedup. Certificate pools still enforce actual CPU availability, the four-worker
 maximum, and the grid-memory budget.
 
 CPU observations are diagnostic only.
@@ -1007,11 +1079,47 @@ uv run --frozen --all-extras --group dev basedpyright
 cargo test --locked --manifest-path sqsearch/Cargo.toml
 cargo clippy --locked --release --all-targets --manifest-path sqsearch/Cargo.toml -- -D warnings
 cargo fmt --manifest-path sqsearch/Cargo.toml --check
+RUSTDOCFLAGS="-D warnings" cargo doc --locked --manifest-path sqsearch/Cargo.toml --no-deps
 
 cd ..
 npm ci --ignore-scripts
 npm run check --workspace @squares/workbench
 ```
+
+The `lint floor (rust)` validation step runs formatting, all-target Clippy, the crate’s
+unit and integration tests, and rustdoc under the pinned Rust toolchain.
+The manifest denies warnings, missing documentation, pedantic lints and `unwrap_used`,
+with the geometry-specific exceptions documented beside their settings.
+The crate forbids unsafe code.
+These checks cover `sqsearch`; archived third-party verifier sources require their own
+source-bound builds and replay checks.
+
+The separate `sqverify_exact` crate implements optional exact rational rectangle
+geometry. From `packing/`, after setting the task scratch environment required by
+`AGENTS.md`, run its complete focused gate:
+
+```bash
+uv run --frozen --all-extras --group dev packing-validate --only "exact rectangle Rust geometry"
+```
+
+That gate uses the crate’s pinned toolchain, runs rustfmt, Clippy, tests, rustdoc and a
+locked release build, then compares exact results with the Python reference.
+It leaves the binary at `$CARGO_TARGET_DIR/release/sqverify-exact` when the target
+directory is absolute.
+Pass that path to `devtools.verify_rectangle_density` with
+`--backend rust --rust-binary PATH`; Python remains the default.
+The [tooling overview](docs/project/verification-tooling.md) records the supported
+inputs, refusal behavior, golden controls and measured performance limits.
+This crate verifies rectangle geometry, a separate contract from the global n11 proof.
+
+The native rectangle CLI has
+[five golden scenarios](packing/tests/golden/rectangle-density-cli/) covering complete,
+partial, capped, counterexample and admission-refusal results.
+Run `uv run --frozen pytest tests/test_rectangle_density_cli_golden.py` from `packing/`.
+To approve an intentional output change, set `UPDATE_RECTANGLE_DENSITY_CLI_GOLDEN=1` for
+that command, then review the full fixture diff.
+The tests separately check mass, angle census, exact counterexample values and
+input/source binding; approving output does not replace those assertions.
 
 Ruff must be clean. BasedPyright runs in standard mode and must report zero diagnostics
 across maintained and retained Python.

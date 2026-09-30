@@ -1,0 +1,20 @@
+{
+  "accepted_step0_result_sha256": "8ca86cc3f119c1dc42e14b142d04cf6863934b799b8e8b6818e54830b1d22b78",
+  "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "backend": "integer",
+  "checker_sha256": "2804989aff9414e712855d099aab659bb645f05cd9b2f72259b97a1d22cefcb8",
+  "integer_collision_sha256": "4a1f71cdc96134af1083c84717912b73801b07933a8f7cd2eff8b998b31eab98",
+  "internal_seconds": 180.0,
+  "observed_rows_checked": 149,
+  "process_cpu_seconds": "unmeasured",
+  "replay": "From packing after decoding and SHA-verifying the pinned root and adaptive source: timeout 200s .venv/bin/python3 -m devtools.check_n11_capture_root_node --root-source <decoded-root> --adaptive <decoded-adaptive> --step0-result resources/web/n11-optimality-2026-09-29/receipts/capture-step0/result.json --stop-step 1 --workers 1 --collision-backend integer --max-seconds 180 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-step1-integer/result.json",
+  "result_sha256": "ba2b7a053c6626e3be3af87ca2bd2492b2c276e1df86705a3f3588f4377d03e8",
+  "root_decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "row_limit": 0,
+  "scope": "Complete root-self capture step1 selected; no full-node/tree/candidate/global promotion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "9d8cd981efd11bd69f1b52010f54af801990f4eade4e3df440c1c2cbdcc2a3f0",
+  "supervisor_seconds": 200,
+  "wall_seconds_reported_by_checker": 125.82401091700012,
+  "workers": 1
+}

@@ -1,0 +1,29 @@
+{
+  "adaptive_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "bridge_result_sha256": "ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d",
+  "candidate_capture_proved": false,
+  "capture_step_proved": false,
+  "checker_sha256": "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309",
+  "collision_vertices": 23,
+  "common_core_planes_checked": 8,
+  "coverage_events": 44,
+  "coverage_probes": 87,
+  "dependency_sha256s": {
+    "bridge": "2bbddc8f27575eb6a61e0a4f97e0cb71194357fbd6a341ec1d710a6a2c1ae9a5",
+    "degenerate": "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385",
+    "geometry": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+    "pilot": "1abfc9244d19fcb38a131c3bee676c8973de991998c1e7ab224fae8196259737"
+  },
+  "first_row_collision_checked": true,
+  "first_row_full_geometry_checked": true,
+  "global_optimality_proved": false,
+  "live_partner_rows": 93,
+  "max_events_per_cover": 20000,
+  "max_seconds": 35.0,
+  "partner_cover_rows": 149,
+  "root_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "scope_requested": "row",
+  "status": "PASS_FIRST_CAPTURE_ROW_GEOMETRY",
+  "universal_facet_vertex_checks": 34224,
+  "wall_seconds": 5.170048290998238
+}

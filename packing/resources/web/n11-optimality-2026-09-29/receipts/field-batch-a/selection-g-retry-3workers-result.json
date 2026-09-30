@@ -1,0 +1,58 @@
+{
+  "attempt_name": "retry-3workers",
+  "field_workers": 3,
+  "fields": [
+    {
+      "canonical_cases_excluded": 53,
+      "invocation_wall_seconds": 24.80216825000025,
+      "mask_index": 1809,
+      "process_cpu_seconds": 4.060675,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 24.669813250002335
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 27.55553854199752,
+      "mask_index": 1662,
+      "process_cpu_seconds": 4.0025200000000005,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 27.41810600000099
+    },
+    {
+      "canonical_cases_excluded": 6,
+      "invocation_wall_seconds": 12.512562500000058,
+      "mask_index": 1304,
+      "process_cpu_seconds": 3.654527,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 12.383351749998837
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 17.55066354200244,
+      "mask_index": 1802,
+      "process_cpu_seconds": 3.3952750000000003,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 17.421175791001588
+    },
+    {
+      "canonical_cases_excluded": 1,
+      "invocation_wall_seconds": 11.141915415999392,
+      "mask_index": 1294,
+      "process_cpu_seconds": 4.336384,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 10.993138459001784
+    },
+    {
+      "canonical_cases_excluded": 1,
+      "invocation_wall_seconds": 10.400217624999641,
+      "mask_index": 1596,
+      "process_cpu_seconds": 3.9500900000000003,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 10.276839292000659
+    }
+  ],
+  "global_optimality_proved": false,
+  "jobs": 1,
+  "status": "COMPLETE_SELECTED_FIELDS",
+  "wall_seconds": 103.96968141599791
+}

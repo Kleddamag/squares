@@ -1,0 +1,21 @@
+{
+  "adaptive_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "candidate_capture_proved": false,
+  "checker_sha256": "bba990b883e7686fd450f95d87d6f4d272192e7cf04d7a055e76224da4925bc8",
+  "cover_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+  "global_optimality_proved": false,
+  "last_row_cover": {
+    "edge_segments": 115,
+    "events": 45,
+    "probes": 89
+  },
+  "root_induction_proved": false,
+  "rows_checked": 1,
+  "scope": "row",
+  "seed_points_checked": 130,
+  "seed_sha256": "b93be3358f7dfbf063d4109c52fd3bbbbfff9b34cb468c3123598b54cea72a56",
+  "selected_sha256": "4f3060237ecf529ce60cfca670310d5c198851c0c447e2119569a57e31e721b0",
+  "shared_geometry_sha256": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+  "status": "PASS_ONE_ROW_DIAGNOSTIC",
+  "wall_seconds": 5.741130999998859
+}

@@ -1,0 +1,48 @@
+{
+  "status": "REPORTED_CAPTURE_METADATA_CONSISTENT_SOURCE_BINDING_REFUSED",
+  "reported_capture_metadata_consistent": true,
+  "near_source_binding_accepted": false,
+  "complete_source_ancestry_proved": false,
+  "geometric_capture_proved": false,
+  "candidate_mask_capture_proved": false,
+  "global_optimality_proved": false,
+  "scope": "Small packet inventory and closed branch predicates checked; actual source graph and geometry remain separate. A stale final-state digest blocks this published certificate binding, not the packing theorem.",
+  "checker_sha256": "0db9902b9686618bf58bebcaacffbba53e69443e2bf5cc823a7ae53e3b54ba9b",
+  "upstream_commit": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "packet_decoded_sha256": {
+    "B1": "f5c66ab125f7a4695039197ae52b5ce5ee2dd2365142e4cf8488a220f250f5d5",
+    "B2": "dd192f1a95fe23d0ae63112ef8f6f78ee31ba2f81241c47abf2b48299e430f45",
+    "B3": "8e369168774ba97721ba49efcff2d35cbe5f0d86f3e01a37b419a800e047d7e4",
+    "B4": "c68188a3ecd68ae865c139347cf5d4234f3e99e69c16709c806f4d307e732689",
+    "B5": "6088857994ed2fae2e5de5f27c0fccbeb7aac668736506fa81b6afdfefeed7e3",
+    "B6": "cc9b3d39e30bcf76a27956a7c453476d9364f6c3d2cc9864d66506ec65306832",
+    "B7": "4a93b7c841b4380fb0bd481b6d57e595d9f4ae84fe3ce86fc57bad7374c765a3"
+  },
+  "reported_geometry_nodes": 10,
+  "reported_bound_premises": 24,
+  "reported_root_owner_rounds": 154,
+  "closed_leaves": [
+    "far15",
+    "far13",
+    "far2",
+    "near"
+  ],
+  "reported_cached_audit_chain": [
+    "c68188a3ecd68ae865c139347cf5d4234f3e99e69c16709c806f4d307e732689",
+    "6088857994ed2fae2e5de5f27c0fccbeb7aac668736506fa81b6afdfefeed7e3",
+    "cc9b3d39e30bcf76a27956a7c453476d9364f6c3d2cc9864d66506ec65306832",
+    "4a93b7c841b4380fb0bd481b6d57e595d9f4ae84fe3ce86fc57bad7374c765a3"
+  ],
+  "near_parent_sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+  "near_source_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc",
+  "near_actual_parent_sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+  "near_final_state_actual_sha256": "a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80",
+  "near_final_state_reported_sha256": "810027063afb57bda360cc16eced4bf0e62c6cb29f112237f945cabab8613f9f",
+  "near_final_state_digest_matches": false,
+  "pose_inclusion_result_sha256": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
+  "reported_metadata_wall_seconds": 0.0013997500000186847,
+  "reported_metadata_process_cpu_seconds": 0.0013999999999999985,
+  "wall_seconds": 1.5905029579998882,
+  "process_cpu_seconds": 1.588378,
+  "max_seconds": 15.0
+}

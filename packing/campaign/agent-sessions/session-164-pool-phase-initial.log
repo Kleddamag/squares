@@ -1,0 +1,71 @@
+EXCERPTS from the failed 91bb57cb23b4b2ac7b1adb2479f786a73b57efd3 push run.
+The original full stdout is not reproduced here. This retains unique exception
+messages, every failed/error test identity, the pytest summary and gate timing.
+The normal phase failed; the pool-heavy phase was not executed.
+
+UNIQUE EXCEPTION MESSAGES
+E           ValueError: proof input differs from frozen Git blob: packing/pyproject.toml
+E           TypeError: test_running_selected_tests_preserves_coverage_and_uses_requested_workers.<locals>.capture() got an unexpected keyword argument 'capture_output'
+E           AttributeError: 'NoneType' object has no attribute 'strip'
+E       AssertionError: assert PosixPath('/Users/levy/wrk/github/squares') == PosixPath('/Users/levy/wrk/github/squares/packing')
+E       ValueError: tuple.index(x): x not in tuple
+
+FAILED/ERROR TEST IDENTITIES
+FAILED tests/test_reachable_tests.py::test_running_selected_tests_preserves_coverage_and_uses_requested_workers[1-False]
+FAILED tests/test_reachable_tests.py::test_running_selected_tests_preserves_coverage_and_uses_requested_workers[1-True]
+FAILED tests/test_reachable_tests.py::test_running_selected_tests_preserves_coverage_and_uses_requested_workers[4-False]
+FAILED tests/test_reachable_tests.py::test_running_selected_tests_preserves_coverage_and_uses_requested_workers[4-True]
+FAILED tests/test_reachable_tests.py::test_the_runner_wires_its_argument_to_the_command_it_builds
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[0-None-0-None-0-phases0]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[5-5-0-None-0-phases1]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[0-None-5-5-0-phases2]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[5-5-5-5-5-phases3]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[1-None-0-None-1-phases4]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[-15-None-0-None--15-phases5]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[5-0-0-None-5-phases6]
+FAILED tests/test_reachable_tests.py::test_pool_phases_preserve_complements_failures_and_proved_empty_lanes[0-None-5-2-5-phases7]
+FAILED tests/test_reachable_tests.py::test_pool_interruption_does_not_launch_the_second_phase
+ERROR tests/test_native_parent_core_receipt.py::test_complete_retained_run_reconciles_in_normal_ci
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path0-PASS_PARTIAL-not PASS_COMPLETE]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path1-False-not accepted]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path2-1-not accepted]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path3-0000000000000000000000000000000000000000-unexpected proof commit]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path4-True-source was dirty]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path5-0000000000000000000000000000000000000000000000000000000000000000-wrong source identity]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path6--interpreter disagrees]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path7-1-minimum_charge disagrees]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path8-1-parent_side disagrees]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path9-11-budget disagrees]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path10-3-batch disagrees]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path11-False-row index must be]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path12-0-wrong row order or identity]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path13-11963-wrong row label]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path14-999962527-below Gamma]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path15-999962528.0-lower bound must be]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path16-1-has stalls]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path17-True-exhausted its budget]
+ERROR tests/test_native_parent_core_receipt.py::test_claim_and_outcome_mutations_are_refused[path18-undecided-is not certified]
+ERROR tests/test_native_parent_core_receipt.py::test_missing_final_row_cannot_be_hidden_by_complete_flags
+ERROR tests/test_native_parent_core_receipt.py::test_journal_must_agree_with_final_receipt
+ERROR tests/test_native_parent_core_receipt.py::test_reconciliation_does_not_authenticate_coordinated_invented_data
+
+14 failed, 7703 passed, 9 skipped, 6 warnings, 23 errors in 300.22s (0:05:00)
+
+== where the time went ==
+   301.42s  reachable behavioral tests
+    64.64s  type floor (basedpyright)
+    55.97s  exact verification
+    35.18s  browser floor (biome, eslint, tsc, node:test)
+    23.10s  browser code lives in files (embedded JavaScript, probes)
+    20.06s  soft-schema validation
+    19.54s  every session's cost is attributed
+    10.44s  synopsis agrees with the artifacts
+   366.08s  TOTAL (wall)
+
+== the tier against its ceiling ==
+   366.08s  wall of a 1800s ceiling (20%), never recorded at this shape
+  note: no cost is recorded for the push tier at 2 cpus, --jobs 2 --inner-jobs 1; write `measured_seconds: 366.1` into /Users/levy/wrk/github/squares/packing/devtools/gate-budgets.yaml to arm the drift rule
+  note: within the declared band, but this run's shape (10 cpus, 10 jobs, 3 inner) is not the push tier's reference (2 cpus, --jobs 2 --inner-jobs 1), so the band was reported and not enforced
+
+1 STEP FAILED:
+  - reachable behavioral tests

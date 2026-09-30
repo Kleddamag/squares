@@ -30,6 +30,39 @@ last_reviewed: '2026-09-29'
 # not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:
+  - key: '[Queuingtheorydotcom n11 optimality 2026]'
+    authors: [Queuingtheorydotcom]
+    year: 2026
+    venue: GitHub
+    short_venue: Web
+    dated: '2026-09-29'
+    credit: Queuingtheorydotcom after Levy, Kleddamag
+    short_credit: Queuingtheorydotcom after Levy et al.
+    lineage: builds-on-project
+    note: >-
+      11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, announced by
+      Square Packing Fan (@MathCompSciFTW) as an Astra-assisted global optimality proof.
+      README and THIRD_PARTY_NOTICES credit jlevy/squares at c55726e1e885227f63110131c0a914665175ff89,
+      Walter Trump's construction and David Ellsworth's reconstruction diagram; the
+      announcement credits Kleddamag. No blanket license covers the collection.
+      The public derivative has not had a fresh full geometric replay according to
+      docs/PUBLICATION.md. Retained intake: web/n11-optimality-2026-09-29/.
+  - key: '[wand125 tools 2026]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-29'
+    credit: wand125 after Tokoharu, Daniel
+    lineage: independent
+    note: >-
+      square-packing-tools at 0d33ab61726c2ab03e3eb8f457dabaf22db8571f, MIT,
+      retained in web/wand125-tools-2026-09-29/upstream.tar.gz. README.md,
+      solver/PROVENANCE.md and THIRD_PARTY_NOTICES.md give authorship and provenance;
+      the source discloses Codex and Claude assistance. Tool claims are separate from
+      the numerical bounds published in square-packing-bounds. Its own attribution names
+      Tokoharu and Evan Daniel; this entry does not infer a direct credit to this project
+      from those upstream projects' lineage. The general pose tree extends wand125's n21
+      checker to point and threshold-charge measures and tests Kleddamag's certificate.
   - key: '[Bentz 2010]'
     authors: [Bentz]
     year: 2010

@@ -1,0 +1,21 @@
+{
+  "scope": "Root-self step 0 row 0 collision, residual coverage, common-core planes, and outer support only; no step ownership compression or capture promotion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "checker_path": "packing/devtools/check_n11_capture_transition_pilot.py",
+  "checker_sha256": "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309",
+  "test_sha256": "612ae6802591de0b0c9b7e5d240bb124977484e6ec3e613c92f7cb67c096b881",
+  "test_observed": "4 passed; Ruff and BasedPyright zero findings",
+  "result_sha256": "7a46c8bf3ef348ddcf5061785728a5e507ae2bc3ed70fc991fd3f16e70efeb0d",
+  "stdout_sha256": "899c8695eb93be32a2afce9ad393c68c362bd5a05372165126e81f83f2d45fe6",
+  "source_inputs": {
+    "root_decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+    "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+    "bridge_result_sha256": "ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d"
+  },
+  "root_source_cache": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects/f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4.gz",
+  "root_source_compressed_sha256": "7ad9ce56d377129d75a18b62a800898c0d123ffa3539a5b186b7f8c5f9df6809",
+  "supervisor_seconds": 45,
+  "internal_seconds": 35,
+  "max_events_per_cover": 20000,
+  "replay": "From packing after decoding/verifying pinned root and adaptive gzips into external scratch: timeout 45s .venv/bin/python3 -m devtools.check_n11_capture_transition_pilot --root-source <decoded-root> --adaptive <decoded-adaptive> --bridge-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-bridge-final2/result.json --scope row --max-seconds 35 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-transition-row0/result.json"
+}

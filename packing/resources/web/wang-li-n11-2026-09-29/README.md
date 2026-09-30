@@ -13,6 +13,8 @@ XiaoLiaoShe on 2026-09-29 at 13:38 UTC.
 This packet holds the Zenodo record’s two files byte-identical, the replay receipts made
 here, and one minimally adapted copy of Kleddamag’s launcher.
 Retention registers the claim for review; it does not move a Frontier bound.
+The result register records it as [T-061](../../../frontier/RESULTS.md), at `V4/C4`, a
+strict bound that T-060’s exact `s(11) = T` has since made historical.
 
 ## Provenance
 

@@ -181,6 +181,31 @@ jobs:
         if: "steps.engine-cache.outputs.cache-hit == 'true'"
         run: git ls-files -z -- sqsearch | xargs -0 touch -t 200001010000
 
+      # The exact verifier is a separate crate. Its cold compilation was included in
+      # the 39.3s gate on run 36686375268. Cache only an identical source/compiler pair;
+      # no prefix restore can associate an older binary with this exact key.
+      # All fmt/clippy/test/doc/build and differential checks still run on every gate.
+      - name: Key the exact verifier cache on its sources and compiler
+        id: exact-key
+        working-directory: packing/sqverify_exact
+        run: |
+          rustc_vv="$(rustc -vV)"
+          echo "tree=$(git rev-parse HEAD:packing/sqverify_exact)" >> "$GITHUB_OUTPUT"
+          echo "rustc=$(printf '%s' "$rustc_vv" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the exact verifier build
+        id: exact-cache
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_exact/target
+          key: >-
+            ${{ runner.os }}-sqverify-exact-${{ steps.exact-key.outputs.rustc }}-${{
+            steps.exact-key.outputs.tree }}
+
+      - name: Date exact verifier sources before their identical cached build
+        if: "steps.exact-cache.outputs.cache-hit == 'true'"
+        run: git ls-files -z -- sqverify_exact | xargs -0 touch -t 200001010000
+
       # `--fast` is the pull-request surface, and two separate pieces of work in one day
       # made it what it is. They pull in opposite directions on purpose.
       #
@@ -221,8 +246,8 @@ jobs:
       # `prospective n=101..324 source map and safe seed` 213.19s. Reverting the promotion
       # was refused on coverage grounds, so the cost is bought with more runners instead:
       # `--checks` here, then `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
-      # `--suite-b`, and `--sweeps` below. The seven are a partition of `--fast`, they run
-      # concurrently, and a pull request waits for the longest rather than their sum. All seven
+      # `--suite-b`, `--suite-c`, and `--sweeps` below. The eight partition `--fast` and run
+      # concurrently, and a pull request waits for the longest rather than their sum. All eight
       # are required through `packing-required`.
       #
       # **Two runners were not enough, and the second cut is measured too.** Run
@@ -274,7 +299,7 @@ jobs:
       # measured, so a second core of headroom would cost this job more than the fourth
       # worker ever cost it.
       #
-      # Nothing left the surface to buy any of this. The seven jobs still select every
+      # Nothing left the surface to buy any of this. The eight jobs still select every
       # step `--fast` does, which is what
       # `test_the_pull_request_jobs_partition_the_surface` checks -- `OR-13`, and the
       # same refusal recorded two paragraphs up.
@@ -284,15 +309,15 @@ jobs:
       # been judged against `--fast`'s recorded 502.3s and failed for finishing early;
       # `--only` reports no tier at all and would have left every part of the
       # pull-request surface with no declared ceiling, which is `D-466` exactly.
-      # `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`, `--suite-b`,
+      # `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`, `--suite-b`, `--suite-c`,
       # and `--sweeps` each carry an entry in `devtools/gate-budgets.yaml`.
       #
       # `test_the_pull_request_jobs_partition_the_surface` reads this file, parses these
-      # seven commands with the CLI's own parser and resolves them through its own
-      # selector, and requires the seven selections to be pairwise disjoint and to cover
+      # eight commands with the CLI's own parser and resolves them through its own
+      # selector, and requires the eight selections to be pairwise disjoint and to cover
       # every step outside the four
       # `test_the_pull_request_surface_defers_only_what_was_measured` pins. A step added
-      # tomorrow lands in one of the seven jobs or fails that test.
+      # tomorrow lands in one of the eight jobs or fails that test.
       - name: Run the required pull-request checks
         if: "github.event_name == 'pull_request'"
         run: >-
@@ -334,6 +359,14 @@ jobs:
           packing-validate --skip "exhaustive exact behavioral tests"
           --skip "slow behavioral tests"
           --skip "single-square translation escape screen"
+          --skip "threshold dilation-limit record, 1440 steps"
+          --skip "known-best n=1..324 atlas rebuild"
+          --skip "finer-net dilation-limit record, 720 steps"
+          --skip "exact rational grid replay"
+          --skip "negative controls"
+          --skip "finer-net dilation-limit record, 1440 steps"
+          --skip "threshold dilation-limit record, 720 steps"
+          --skip "n=40 rigidity bracket still reproduces"
           --jobs 1 --inner-jobs 2
 
       - name: Save the Rust build for the exact engine tree
@@ -347,6 +380,229 @@ jobs:
             packing/sqsearch/target
           key: >-
             ${{ steps.engine-cache.outputs.cache-primary-key }}
+
+      # Keep same-source build intermediates even when another check or the tier wall
+      # fails. This cache has no prefix restore, so it can never re-label an older
+      # source's binary. Cargo and the complete exact verifier gate still validate it.
+      - name: Save the exact verifier build intermediates
+        if: >-
+          always() && steps.exact-cache.outcome == 'success' &&
+          steps.exact-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_exact/target
+          key: ${{ steps.exact-cache.outputs.cache-primary-key }}
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  deferred-threshold-1440:
+    # The four explicit deferred jobs preserve every whole Step and the inherited
+    # `--jobs 1 --inner-jobs 2` process shape. Run 35579234418 supplies the retained Step
+    # timings used for the longest-first grouping below; no new job-wall claim is made.
+    if: "github.event_name != 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          # Preserve the existing full-history checkout for this numeric selection.
+          fetch-depth: 0
+          # kpress is installed from the vendored submodule.
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run the 1440-step threshold replay
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --only "threshold dilation-limit record, 1440 steps"
+          --jobs 1 --inner-jobs 2
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  # Run 35579234418 measured 2435.7s across the eight Steps formerly serialized in
+  # `deferred-steps`. The four explicit jobs keep each Step whole and balance their
+  # measured work at 695.8s, 589.8s, 578.1s and 572.0s.
+  deferred-atlas-grid:
+    if: "github.event_name != 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run the atlas and small exact replays
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate
+          --only "known-best n=1..324 atlas rebuild"
+          --only "finer-net dilation-limit record, 720 steps"
+          --only "exact rational grid replay"
+          --jobs 1 --inner-jobs 2
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  deferred-controls-finer:
+    if: "github.event_name != 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run controls and the 1440-step finer-net replay
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate
+          --only "negative controls"
+          --only "finer-net dilation-limit record, 1440 steps"
+          --jobs 1 --inner-jobs 2
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  deferred-threshold-720-rigidity:
+    if: "github.event_name != 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run the 720-step threshold and rigidity replays
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate
+          --only "threshold dilation-limit record, 720 steps"
+          --only "n=40 rigidity bracket still reproduces"
+          --jobs 1 --inner-jobs 2
 
       - name: Preserve validation timings and partial logs
         if: always()
@@ -369,6 +625,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.sha }}
           # Retained-theorem reviews read historical Git objects.
           fetch-depth: 0
           submodules: true
@@ -384,6 +641,14 @@ jobs:
 
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
 
       - name: Run the slow behavioural lane
         run: >-
@@ -402,7 +667,7 @@ jobs:
 
   suite-a:
     # The measured per-file partition filters before collection, so each runner imports
-    # only its own complete and disjoint half of the quick lane. Every run also emits the
+    # only its own complete and disjoint third of the quick lane. Every run also emits the
     # costs needed to refresh that partition.
     if: "github.event_name == 'pull_request'"
     runs-on: ubuntu-latest
@@ -481,6 +746,45 @@ jobs:
         run: >-
           uv run --frozen --all-extras --group dev
           packing-validate --suite-b --jobs 1 --inner-jobs 1
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  suite-c:
+    if: "github.event_name == 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Run required pull-request behavioral shard C
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --suite-c --jobs 1 --inner-jobs 1
 
       - name: Preserve validation timings and partial logs
         if: always()
@@ -790,33 +1094,28 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-  exhaustive:
-    # The exhaustive exact tier, on its own runner, reporting its own verdict against its
-    # own budget (think-tr2z).
-    #
-    # It was 1943s of the complete surface's 2755s, sharing a two-core runner with the
-    # behavioural suite. When it outgrew its budget on 2026-09-05 the gate killed it with
-    # its output still in an unflushed pipe (D-456), so `validate` went red on three
-    # consecutive merges while saying nothing at all about the sixty other steps, and a
-    # real failure arriving behind it would have looked identical. Split, this job answers
-    # one question -- do the complete finite certificate decisions still pass -- and the
-    # job above answers the rest.
-    #
-    # No `packing-required` dependency: it does not run on pull requests, because at half
-    # an hour it is the one step whose cost rules it out of the pull-request tier. The
-    # workflow-level concurrency group still cancels it with the rest of a superseded run.
+  exhaustive-1:
+    # The predecessor `exhaustive-tier` job ran 58 independent exact tests serially and
+    # set the wall on every measured deep run. The retained JUnit receipt from run
+    # 35579234418 packs whole files into three 945.8s, 837.7s and 837.9s shards. Each
+    # shard keeps the exact marker, test bodies and four-worker inner cap; only their
+    # runner assignment changes.
     if: "github.event_name != 'pull_request'"
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: packing
     steps:
-      - name: Check out the repository
+      - name: Check out the immutable tree
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        # Shallow is enough: the provenance step that needs full history is not in this
-        # selection. kpress is vendored at vendor/kpress and installed from that path, so
-        # the environment does not resolve without the submodule checked out.
         with:
+          # `github.event.inputs` rather than the `inputs` context: the latter is
+          # documented as available only to a dispatched or reusable workflow, and
+          # this step also runs on `pull_request`, where the event
+          # payload simply carries no inputs and this renders empty.
+          ref: ${{ github.sha }}
+          # This selection has no historical-content review. Keep its shallow checkout;
+          # the vendored submodule is still required to resolve the environment.
           submodules: true
 
       - name: Install uv and Python 3.14
@@ -831,13 +1130,135 @@ jobs:
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
 
-      # Hosted provenance reports four available CPUs. This isolated step can use four
-      # certificate workers, still under actual CPU and grid-memory caps. Concurrent
-      # checkpoint steps retain their two-worker allowance. Speedup is not yet measured.
-      - name: Run the exhaustive exact tier
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run exhaustive exact shard 1 of 3
+        env:
+          PACKING_VALIDATED_SHA: ${{ github.sha }}
         run: >-
           uv run --frozen --all-extras --group dev
           packing-validate --only "exhaustive exact behavioral tests"
+          --exhaustive-shard 1/3
+          --jobs 1 --inner-jobs 4
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  exhaustive-2:
+    if: "github.event_name != 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `github.event.inputs` rather than the `inputs` context: the latter is
+          # documented as available only to a dispatched or reusable workflow, and
+          # this step also runs on `pull_request`, where the event
+          # payload simply carries no inputs and this renders empty.
+          ref: ${{ github.sha }}
+          # This selection has no historical-content review. Keep its shallow checkout;
+          # the vendored submodule is still required to resolve the environment.
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run exhaustive exact shard 2 of 3
+        env:
+          PACKING_VALIDATED_SHA: ${{ github.sha }}
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --only "exhaustive exact behavioral tests"
+          --exhaustive-shard 2/3
+          --jobs 1 --inner-jobs 4
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  exhaustive-3:
+    if: "github.event_name != 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the immutable tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `github.event.inputs` rather than the `inputs` context: the latter is
+          # documented as available only to a dispatched or reusable workflow, and
+          # this step also runs on `pull_request`, where the event
+          # payload simply carries no inputs and this renders empty.
+          ref: ${{ github.sha }}
+          # This selection has no historical-content review. Keep its shallow checkout;
+          # the vendored submodule is still required to resolve the environment.
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
+
+      - name: Run exhaustive exact shard 3 of 3
+        env:
+          PACKING_VALIDATED_SHA: ${{ github.sha }}
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --only "exhaustive exact behavioral tests"
+          --exhaustive-shard 3/3
           --jobs 1 --inner-jobs 4
 
       - name: Preserve validation timings and partial logs
@@ -886,6 +1307,7 @@ jobs:
         # selection. kpress is vendored at vendor/kpress and installed from that path, so
         # the environment does not resolve without the submodule checked out.
         with:
+          ref: ${{ github.sha }}
           submodules: true
 
       - name: Install uv and Python 3.14
@@ -899,6 +1321,14 @@ jobs:
 
       - name: Synchronize the locked development environment
         run: uv sync --frozen --all-extras --group dev
+
+      - name: Bind the receipt to the immutable tree
+        env:
+          VALIDATED_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"
+          mkdir -p "$PACKING_VALIDATION_ARTIFACT_DIR"
+          printf '%s\n' "$VALIDATED_SHA" > "$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"
 
       - name: Run the single-square translation escape screen
         run: >-
@@ -914,6 +1344,82 @@ jobs:
           path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
           if-no-files-found: warn
           retention-days: 30
+
+  post-merge-required:
+    # Separate complete-checkpoint verdict. Pull requests retain exactly eight fast jobs.
+    if: "!cancelled() && github.event_name != 'pull_request'"
+    needs:
+      - validate
+      - deferred-threshold-1440
+      - deferred-atlas-grid
+      - deferred-controls-finer
+      - deferred-threshold-720-rigidity
+      - slow-lane
+      - exhaustive-1
+      - exhaustive-2
+      - exhaustive-3
+      - screen
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Require every complete-checkpoint prerequisite
+        env:
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+          THRESHOLD_1440_RESULT: ${{ needs.deferred-threshold-1440.result }}
+          ATLAS_GRID_RESULT: ${{ needs.deferred-atlas-grid.result }}
+          CONTROLS_FINER_RESULT: ${{ needs.deferred-controls-finer.result }}
+          THRESHOLD_720_RIGIDITY_RESULT: ${{ needs.deferred-threshold-720-rigidity.result }}
+          SLOW_RESULT: ${{ needs.slow-lane.result }}
+          EXHAUSTIVE_1_RESULT: ${{ needs.exhaustive-1.result }}
+          EXHAUSTIVE_2_RESULT: ${{ needs.exhaustive-2.result }}
+          EXHAUSTIVE_3_RESULT: ${{ needs.exhaustive-3.result }}
+          SCREEN_RESULT: ${{ needs.screen.result }}
+        run: |
+          test "$VALIDATE_RESULT" = "success"
+          test "$THRESHOLD_1440_RESULT" = "success"
+          test "$ATLAS_GRID_RESULT" = "success"
+          test "$CONTROLS_FINER_RESULT" = "success"
+          test "$THRESHOLD_720_RIGIDITY_RESULT" = "success"
+          test "$SLOW_RESULT" = "success"
+          test "$EXHAUSTIVE_1_RESULT" = "success"
+          test "$EXHAUSTIVE_2_RESULT" = "success"
+          test "$EXHAUSTIVE_3_RESULT" = "success"
+          test "$SCREEN_RESULT" = "success"
+
+      # Report the ten prerequisite walls and their critical path after the verdict has
+      # already been decided. Every reporting step continues on error: an API or setup
+      # failure is not allowed to turn a successful complete checkpoint red, while the
+      # register remains reporting-only under think-0atx until this topology is measured.
+      - name: Check out the post-merge wall register and reader
+        if: always()
+        continue-on-error: true
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          submodules: true
+
+      - name: Install uv and Python 3.14 for wall reporting
+        if: always()
+        continue-on-error: true
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Report every post-merge wall against its declared ceiling
+        if: always()
+        continue-on-error: true
+        working-directory: packing
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          uv run --frozen --all-extras --group dev
+          python -m devtools.check_ci_gate_walls --gate post-merge
 
   packing-required:
     # `!cancelled()` rather than `always()`. With `always()`, a run superseded by the next
@@ -933,14 +1439,14 @@ jobs:
     # single required context is the reason the split is allowed to exist: `BC-218` set
     # that as the condition for any fan-out, because `D-380` records what a fan-out of
     # separately required checks did to this repository once. A reviewer still watches one
-    # context; it just has seven prerequisites now.
+    # context; it has eight prerequisites now.
     #
     # `needs` alone is not enough, which is why every prerequisite also has a `test` line
     # below. This job runs under `!cancelled()`, so it is reached even when a prerequisite
     # failed, and it is the shell that decides -- a job named in `needs` and missing from
     # the script is an advisory check nothing blocks on.
     if: "!cancelled() && github.event_name == 'pull_request'"
-    needs: [validate, frontend, typecheck, geometry, suite-a, suite-b, sweeps]
+    needs: [validate, frontend, typecheck, geometry, suite-a, suite-b, suite-c, sweeps]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -954,6 +1460,7 @@ jobs:
           GEOMETRY_RESULT: ${{ needs.geometry.result }}
           SUITE_A_RESULT: ${{ needs.suite-a.result }}
           SUITE_B_RESULT: ${{ needs.suite-b.result }}
+          SUITE_C_RESULT: ${{ needs.suite-c.result }}
           SWEEPS_RESULT: ${{ needs.sweeps.result }}
         run: |
           test "$VALIDATE_RESULT" = "success"
@@ -962,6 +1469,7 @@ jobs:
           test "$GEOMETRY_RESULT" = "success"
           test "$SUITE_A_RESULT" = "success"
           test "$SUITE_B_RESULT" = "success"
+          test "$SUITE_C_RESULT" = "success"
           test "$SWEEPS_RESULT" = "success"
 
       - name: Check out the wall budget and its register

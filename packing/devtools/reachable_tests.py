@@ -43,6 +43,7 @@ from __future__ import annotations
 import argparse
 import ast
 import os
+import re
 import subprocess
 import sys
 from collections.abc import Sequence
@@ -51,6 +52,7 @@ from functools import cache
 from pathlib import Path
 
 from sqpack.cli.validate import BEHAVIORAL_TEST_ROOTS, changed_paths
+from sqpack.release import DATA_PATHS as RELEASE_DATA_PATHS
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = ROOT.parent
@@ -86,8 +88,22 @@ SUITE_WIDE = (
     ".python-version",
 )
 
-#: Source markers that give a test the repository's whole path space as its input.
 WALKER_MARKERS = ("rglob(", "iterdir(", ".glob(", "listdir(", "importlib", "__import__")
+
+
+class _WithoutBenignMetadataVersion(ast.NodeTransformer):
+    """Remove only the metadata lookup that cannot import repository code."""
+
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> ast.ImportFrom | None:
+        if (
+            node.level == 0
+            and node.module == "importlib.metadata"
+            and len(node.names) == 1
+            and node.names[0].name == "version"
+            and node.names[0].asname is None
+        ):
+            return None
+        return node
 
 
 @dataclass(frozen=True)
@@ -136,7 +152,15 @@ def _imports_of(path: Path) -> set[str] | None:
     except OSError, SyntaxError, UnicodeDecodeError:
         return None
     found: set[str] = set()
-    for node in ast.walk(tree):
+    pending: list[ast.AST] = [tree]
+    while pending:
+        node = pending.pop()
+        # Import statements can occur in compound-statement suites, but never
+        # inside expressions. Skip large literal/geometry expressions while
+        # retaining every suite, including exception handlers and match cases.
+        pending.extend(
+            child for child in ast.iter_child_nodes(node) if not isinstance(child, ast.expr)
+        )
         if isinstance(node, ast.Import):
             found.update(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom):
@@ -183,6 +207,25 @@ def _reaches(imported: set[str], targets: set[str]) -> bool:
     return False
 
 
+@cache
+def _walker_evidence(path: Path) -> bool:
+    """Apply the old conservative marker scan, ignoring comments and one benign import.
+
+    Unparsing preserves calls, aliases, module names, and string or bytes literals.
+    It also handles indirect execution without guessing its dataflow. If parsing or
+    unparsing fails, select the test rather than risk dropping a repository walker.
+    """
+    try:
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        if "importlib" in source:
+            tree = _WithoutBenignMetadataVersion().visit(tree)
+        source = ast.unparse(tree)
+    except OSError, SyntaxError, UnicodeDecodeError, RecursionError, ValueError:
+        return True
+    return any(marker in source for marker in WALKER_MARKERS)
+
+
 def select_tests(changed: list[str]) -> TestSelection:
     """The test files a change to `changed` (repo-relative paths) can reach."""
     if not changed:
@@ -217,6 +260,18 @@ def select_tests(changed: list[str]) -> TestSelection:
         else:
             changed_basenames.add(Path(path).name)
 
+    # `release.data_revision` reads these Git paths rather than their file contents.
+    # Give that declared non-Python input the same import-closure treatment as an edit
+    # to `sqpack.release`; otherwise a new frontier record can stale the publication
+    # pin while the push tier omits the test that enforces it.
+    if any(
+        changed_path == data_path or changed_path.startswith(f"{data_path}/")
+        for changed_path in changed
+        for data_path in RELEASE_DATA_PATHS
+    ):
+        changed_modules.add("sqpack.release")
+        changed_dotted.add("sqpack.release")
+
     # Transitive closure: grow the changed-module set by everything that imports it.
     grew = True
     while grew:
@@ -235,7 +290,7 @@ def select_tests(changed: list[str]) -> TestSelection:
             selected.setdefault(relative, "import closure")
             continue
         text = file.read_text(encoding="utf-8")
-        if any(marker in text for marker in WALKER_MARKERS):
+        if _walker_evidence(file):
             selected.setdefault(relative, "walks the repository or imports dynamically")
             continue
         if any(dotted in text for dotted in changed_dotted):
@@ -252,7 +307,13 @@ def select_tests(changed: list[str]) -> TestSelection:
     return TestSelection(everything=False, reason=reason, tests=tests)
 
 
-def pytest_command(targets: Sequence[str], workers: int) -> tuple[str, ...]:
+def pytest_command(
+    targets: Sequence[str],
+    workers: int,
+    *,
+    marker: str = "not exhaustive_exact",
+    artifact_stem: Path | None = None,
+) -> tuple[str, ...]:
     """The pytest invocation for a selection, under `workers` xdist processes.
 
     Split out from `main` so the distribution can be asserted without running a suite.
@@ -268,6 +329,11 @@ def pytest_command(targets: Sequence[str], workers: int) -> tuple[str, ...]:
     the quick lane and the slow lane together in a single process.
     """
     distribution = ("-n", str(workers)) if workers > 1 else ()
+    receipts = (
+        ("-p", "devtools.reachable_progress", f"--junitxml={artifact_stem}.junit.xml")
+        if artifact_stem is not None
+        else ()
+    )
     return (
         sys.executable,
         "-m",
@@ -275,8 +341,11 @@ def pytest_command(targets: Sequence[str], workers: int) -> tuple[str, ...]:
         "-q",
         *targets,
         "-m",
-        "not exhaustive_exact",
+        marker,
         *distribution,
+        "--durations=0",
+        "--durations-min=0",
+        *receipts,
     )
 
 
@@ -307,9 +376,22 @@ def main(argv: Sequence[str] | None = None) -> int:
             " are already busy: `packing-validate` passes `cpus - jobs + 1`."
         ),
     )
+    parser.add_argument(
+        "--pool-workers",
+        metavar="N",
+        type=int,
+        help=(
+            "split the selected tests into disjoint normal and pool_heavy marker lanes; "
+            "the latter runs serially with PACK_JOBS=N"
+        ),
+    )
     namespace = parser.parse_args(argv)
     if namespace.numprocesses < 1:
         parser.error("--numprocesses must be at least 1")
+    if namespace.pool_workers is not None and namespace.pool_workers < 1:
+        parser.error("--pool-workers must be at least 1")
+    if namespace.pool_workers is not None and not namespace.run:
+        parser.error("--pool-workers requires --run")
 
     selection = select_tests(changed_paths(namespace.since))
     if namespace.summary:
@@ -334,8 +416,79 @@ def main(argv: Sequence[str] | None = None) -> int:
     # every test above the per-test ceiling because it pays for them on every pull
     # request, while `--push` pays only for the tests your own change reaches, and a slow
     # test your change reaches is exactly the one worth waiting for.
-    command = pytest_command(targets, namespace.numprocesses)
-    return subprocess.run(command, cwd=ROOT, check=False).returncode
+    parent_stem_value = os.environ.get("PACKING_REACHABLE_TEST_ARTIFACT_STEM")
+    parent_stem: Path | None = None
+    child_environment: dict[str, str] | None = None
+    if parent_stem_value:
+        parent_stem = Path(parent_stem_value)
+        if not parent_stem.is_absolute():
+            parser.error("reachable-test artifact stem must be absolute")
+        parent_stem = parent_stem.resolve()
+        if parent_stem.is_relative_to(REPO.resolve()):
+            parser.error("reachable-test artifacts must stay outside the source checkout")
+        # Each child has its own prefix: a later two-phase run can keep both JUnit and
+        # progress receipts without overwriting the first child's partial evidence.
+        git_environment = {
+            key: value for key, value in os.environ.items() if not key.startswith("GIT_")
+        }
+        source = subprocess.run(
+            ("git", "rev-parse", "HEAD"),
+            cwd=REPO,
+            check=False,
+            capture_output=True,
+            text=True,
+            env=git_environment,
+        )
+        source_commit = source.stdout.strip()
+        if source.returncode != 0 or re.fullmatch(r"[0-9a-f]{40}", source_commit) is None:
+            parser.error("cannot identify the reachable-test source commit")
+        parent_run_id = os.environ.get("PACKING_REACHABLE_TEST_RUN_ID")
+        if not parent_run_id:
+            parser.error("reachable-test artifacts need the parent run id")
+        child_environment = dict(os.environ)
+        child_environment["PACKING_REACHABLE_TEST_RUN_ID"] = parent_run_id
+        child_environment["PACKING_REACHABLE_TEST_SOURCE_COMMIT"] = source_commit
+
+    def run_phase(name: str, marker: str, workers: int, pack_jobs: int | None) -> int:
+        stem = Path(f"{parent_stem}.{name}") if parent_stem is not None else None
+        command = pytest_command(targets, workers, marker=marker, artifact_stem=stem)
+        if child_environment is None and pack_jobs is None:
+            return subprocess.run(command, cwd=ROOT, check=False).returncode
+        environment = dict(os.environ if child_environment is None else child_environment)
+        if stem is not None:
+            environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] = str(stem)
+            environment["PACKING_REACHABLE_TEST_WORKERS"] = str(workers)
+        if pack_jobs is not None:
+            environment["PACK_JOBS"] = str(pack_jobs)
+        return subprocess.run(command, cwd=ROOT, check=False, env=environment).returncode
+
+    if namespace.pool_workers is None:
+        return run_phase("pytest-all", "not exhaustive_exact", namespace.numprocesses, None)
+
+    def empty_lane(marker: str) -> bool:
+        # xdist's exit 5 could hide a collection mismatch. Only a separate serial
+        # collection that also finds no tests permits this lane to be omitted.
+        probe = (
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            *targets,
+            "-m",
+            marker,
+            "--collect-only",
+        )
+        return subprocess.run(probe, cwd=ROOT, check=False).returncode == 5
+
+    normal_marker = "not exhaustive_exact and not pool_heavy"
+    pool_marker = "not exhaustive_exact and pool_heavy"
+    normal_status = run_phase("pytest-normal", normal_marker, namespace.numprocesses, 1)
+    if normal_status != 0 and (normal_status != 5 or not empty_lane(normal_marker)):
+        return normal_status
+    pool_status = run_phase("pytest-pool", pool_marker, 1, namespace.pool_workers)
+    if pool_status != 0 and (pool_status != 5 or not empty_lane(pool_marker)):
+        return pool_status
+    return 5 if normal_status == 5 and pool_status == 5 else 0
 
 
 if __name__ == "__main__":

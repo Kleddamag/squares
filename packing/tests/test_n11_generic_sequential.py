@@ -33,6 +33,7 @@ def _args(
         max_seconds=30,
         max_events=50_000,
         cover_backend="reference",
+        collision_backend="reference",
         out=tmp_path / "result.json",
     )
 
@@ -73,6 +74,15 @@ def test_multinode_case_remains_unproved(tmp_path: Path) -> None:
     assert "multi-node" in result["error"]
     assert result["geometry_verified"] is False
     assert result["excluded_case_ids"] == []
+
+
+def test_integer_collision_backend_refuses_case_without_collision_work(tmp_path: Path) -> None:
+    args = _args(tmp_path, 2135)
+    args.collision_backend = "integer"
+    result = generic.run(args)
+    assert result["status"] == "REFUSED"
+    assert result["excluded_case_ids"] == []
+    assert "no collision work" in result["error"]
 
 
 def test_expired_case_has_no_promoted_exclusion(tmp_path: Path) -> None:

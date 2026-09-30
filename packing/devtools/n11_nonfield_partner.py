@@ -19,6 +19,7 @@ from typing import Any
 from devtools import check_n11_capture_transition_pilot as collision
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
+from devtools import n11_integer_collision as integer_collision
 
 Polygon = frozen.Polygon
 
@@ -103,8 +104,15 @@ def admitted_collision_regions(
     query_pre_wall_domain: Polygon,
     partners: dict[int, list[tuple[Polygon, Polygon]]],
     budget: geometry.Budget,
+    backend: str = "reference",
 ) -> tuple[list[Polygon], int]:
     """Prove every selected source region lies in a universal core collision set."""
+    require(backend in ("reference", "integer"), "collision backend")
+    kernel = (
+        integer_collision.universal_collision
+        if backend == "integer"
+        else collision.universal_collision
+    )
     regions: list[Polygon] = []
     seen: set[int] = set()
     checks = 0
@@ -119,7 +127,7 @@ def admitted_collision_regions(
             "collision source scope",
         )
         region = frozen.convex(item["vertices"])
-        checks += collision.universal_collision(
+        checks += kernel(
             query_core, query_pre_wall_domain, partners[owner], region, budget=budget
         )
         regions.append(region)

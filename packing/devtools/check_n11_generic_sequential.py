@@ -31,6 +31,7 @@ from devtools import check_n11_closed_degenerate_cover as degenerate_cover
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
 from devtools import n11_fast_exact_cover as fast_cover
+from devtools import n11_integer_collision as integer_collision
 from devtools import n11_nonfield_assignment as a2_assignment
 from devtools import n11_nonfield_partner as partner
 
@@ -42,8 +43,9 @@ FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f
 FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
 DEGENERATE_COVER_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 A2_HELPER_SHA = "f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac7265"
-PARTNER_HELPER_SHA = "2928f0371a6442ca405f0d13c01c52022da87a1ef0b8dfaf0ae77613b7987a0d"
+PARTNER_HELPER_SHA = "0bfbac5f09e366622ac324a776daa9a51829d3c3fb2aa24ec1a6627f31ea72ae"
 COLLISION_KERNEL_SHA = "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309"
+INTEGER_COLLISION_SHA = "4a1f71cdc96134af1083c84717912b73801b07933a8f7cd2eff8b998b31eab98"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -251,6 +253,7 @@ def check_row(
     bins: int,
     budget: geometry.Budget,
     cover_backend: str = "reference",
+    collision_backend: str = "reference",
     partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None,
 ) -> tuple[dict[str, int], Polygon, list[tuple[Q, Q, Q]], dict[str, Any]]:
     row = step["rows"][row_index]
@@ -311,6 +314,7 @@ def check_row(
             query_pre_wall_domain=pre_wall_domain,
             partners=partner_live or {},
             budget=budget,
+            backend=collision_backend,
         )
     forbidden = [
         frozen.hull([(p[0] - q[0], p[1] - q[1]) for p in group for q in core])
@@ -371,6 +375,7 @@ class _WorkerState:
     world: list[Polygon] | None = None
     bins: int | None = None
     cover_backend: str = "reference"
+    collision_backend: str = "reference"
     partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None
 
 
@@ -403,11 +408,11 @@ def _worker_init(
     source: dict[str, Any],
     world: list[Polygon],
     bins: int,
-    cover_backend: str,
+    backends: tuple[str, str],
     partner_live: dict[int, list[tuple[Polygon, Polygon]]],
 ) -> None:
     _WorkerState.source, _WorkerState.world, _WorkerState.bins = source, world, bins
-    _WorkerState.cover_backend = cover_backend
+    _WorkerState.cover_backend, _WorkerState.collision_backend = backends
     _WorkerState.partner_live = partner_live
 
 
@@ -432,6 +437,7 @@ def _worker_row(
         bins=bins,
         budget=budget,
         cover_backend=_WorkerState.cover_backend,
+        collision_backend=_WorkerState.collision_backend,
         partner_live=_WorkerState.partner_live,
     )
     return (
@@ -457,6 +463,7 @@ def replay_one_node(
     budget: geometry.Budget,
     workers: int,
     cover_backend: str = "reference",
+    collision_backend: str = "reference",
 ) -> None:
     require(source["schema"] == "exact_generic_owned_hull_v1", "source schema")
     require(
@@ -527,6 +534,7 @@ def replay_one_node(
                     bins=bins,
                     budget=budget,
                     cover_backend=cover_backend,
+                    collision_backend=collision_backend,
                     partner_live=partner_live,
                 )
                 completed.append(
@@ -544,7 +552,13 @@ def replay_one_node(
                 max_workers=workers,
                 mp_context=multiprocessing.get_context("spawn"),
                 initializer=_worker_init,
-                initargs=(source, world, bins, cover_backend, partner_live),
+                initargs=(
+                    source,
+                    world,
+                    bins,
+                    (cover_backend, collision_backend),
+                    partner_live,
+                ),
             ) as pool:
                 futures = {
                     pool.submit(
@@ -687,6 +701,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     require(type(args.max_events) is int and args.max_events > 0, "event ceiling")
     cover_backend = getattr(args, "cover_backend", "reference")
     require(cover_backend in ("reference", "fast"), "unsupported cover backend")
+    collision_backend = getattr(args, "collision_backend", "reference")
+    require(collision_backend in ("reference", "integer"), "unsupported collision backend")
     started, cpu_started = time.monotonic(), time.process_time()
     children_before = resource.getrusage(resource.RUSAGE_CHILDREN)
     budget = geometry.Budget(started + args.max_seconds, args.max_events)
@@ -711,6 +727,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "max_events": args.max_events,
         "workers": args.workers,
         "cover_backend": cover_backend,
+        "collision_backend": collision_backend,
         "current_node": None,
         "current_step": None,
         "current_row": None,
@@ -775,6 +792,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         source = load_object(recipe["source_sha256"], manifest, args.objects)
         seed = load_object(recipe["seed_sha256"], manifest, args.objects)
         audit = load_object(recipe["audit_sha256"], manifest, args.objects)
+        has_collision = any(
+            row["collision_regions"] for step in source["steps"] for row in step["rows"]
+        )
+        if collision_backend == "integer":
+            require(has_collision, "integer collision backend has no collision work")
         if any(
             step["prior_partner_pose_covers"]
             or any(row["collision_regions"] for row in step["rows"])
@@ -782,6 +804,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         ):
             paths["partner_helper"] = Path(partner.__file__)
             paths["collision_kernel"] = Path(collision_kernel.__file__)
+            if collision_backend == "integer":
+                paths["integer_collision"] = Path(integer_collision.__file__)
             for name in ("partner_helper", "collision_kernel"):
                 before[name] = digest(paths[name])
                 result["source_sha256"][name] = before[name]
@@ -790,6 +814,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 before["collision_kernel"] == COLLISION_KERNEL_SHA,
                 "collision kernel changed",
             )
+            if collision_backend == "integer":
+                require(
+                    before["integer_collision"] == INTEGER_COLLISION_SHA,
+                    "integer collision kernel changed",
+                )
             require(
                 collision_kernel.dependencies_unchanged(),
                 "collision kernel dependency changed",
@@ -834,6 +863,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             budget=budget,
             workers=args.workers,
             cover_backend=cover_backend,
+            collision_backend=collision_backend,
         )
         remaining(budget)
         require(
@@ -877,6 +907,9 @@ def main() -> int:
     parser.add_argument("--max-seconds", type=float, default=30)
     parser.add_argument("--max-events", type=int, default=50_000)
     parser.add_argument("--cover-backend", choices=("reference", "fast"), default="reference")
+    parser.add_argument(
+        "--collision-backend", choices=("reference", "integer"), default="reference"
+    )
     parser.add_argument("--out", type=Path, required=True)
     result = run(parser.parse_args())
     print(

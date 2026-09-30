@@ -318,17 +318,17 @@ Session 153 independently certifies every one of the 12,028 parent-angle interva
 directed-rounding box coverage, with no stalled or exhausted boxes.
 The event-sweep replay remains C3 by itself; the complete native decision and reviewed
 transfer theorem provide method-distinct C4 confirmation of the strict bound.
-Research below 3.875 must now justify its value as a simpler certificate or method
-development, rather than a public bound advance.
-The pure point/density ceiling $38200/9977 \approx 3.8288$ lies only about $0.00236$
-above T-026, so additional heavy work for microscopic gains in that language is paused.
-T-033 remains the controlled first-party net-refinement result: it moved T-026 by
-$0.00055013825660$, but the unchanged family’s ceiling $955000/249507 \approx 3.82755$
-is already below $3.875$ and cannot improve the current global bound.
-Changed weights, sites, parent domains, or charge atoms remain separate hypotheses.
-H-160/exp-158 and H-162/exp-160 are registered but blocked before target invocation.
-H-163 is registered and unresolved via exp-161; its target-blind instrument merged in PR
-182\. Encode-only timed out with no JSON. `--search` did not run.
+Research on $s(11)$ lower bounds is now method development only: T-060 settles the
+value. The pure point/density ceiling $38200/9977 \approx 3.8288$ lies only about
+$0.00236$ above T-026, so additional heavy work for microscopic gains in that language
+is paused.
+T-033 remains the controlled first-party net-refinement result: it moved T-026
+by $0.00055013825660$, but the unchanged family’s ceiling
+$955000/249507 \approx 3.82755$ is already below $3.875$ and cannot improve the current
+global bound. Changed weights, sites, parent domains, or charge atoms remain separate
+hypotheses. H-160/exp-158 and H-162/exp-160 are registered but blocked before target
+invocation. H-163 is registered and unresolved via exp-161; its target-blind instrument
+merged in PR 182. Encode-only timed out with no JSON. `--search` did not run.
 `think-ufmk` registered that experiment; a scientific target still requires the live
 `--check`, `--authorize-target exp-161`, and a coverage-encoding search that is not an
 admission-control manifest.
@@ -359,7 +359,7 @@ What that closure did not carry is the 180-second hosted wall: by owner decision
 pull-request walls are advisory under the open `think-g4n9` until they hold on hosted
 runners, so BC-355’s agenda cell still records `in_progress`. The block ran no
 scientific target and changed no theorem, hypothesis verdict, n=11 bound, or frontier
-record. The current order is:
+record. The order as it stood before T-060 settled $s(11)$, kept as a record, was:
 
 1. BC-361 / `think-pogj` is the active block, opened by Session 143’s review in
    [agenda-040](packing/campaign/agendas/agenda-040-overnight-lower-bound-loop.md).
@@ -1795,8 +1795,9 @@ future complete Route A representation.
 
 For the n = 11 Route A/Route S decision, the scientific evidence cutoff remains main
 revision `80bcdbb0819504354e1278c37f211dd8cc2158fb`. Later merged campaign, CI and
-workbench records are included in the repository-wide roll-up above; none promotes a
-frontier result at n = 11, so T-026 remains the n = 11 lower-bound frontier.
+workbench records are included in the repository-wide roll-up above; none of them
+promoted a frontier result at n = 11, so T-026 was then the n = 11 lower-bound frontier.
+T-037 and then T-060 have since superseded it.
 
 The older BC329, weighted-atom stages 3–4, and BC303 H-160/H-162 target lanes are
 paused. Their admitted implementations, registrations, and controls remain evidence; no
@@ -3978,19 +3979,20 @@ Where the program has spent effort, and what came of it.
 | 5 | proved, $2 + \tfrac{1}{2}\sqrt{2}$ | $2.70710678\ldots$ | positive control | `sqsearch --selftest` recovers it on every run. [exp-007](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md): the bracketing quench refines annealer output to $2.22 \times 10^{-15}$—the analytic value to machine precision |
 | 8 | proved, $3$ | $3$ | census kill line | The $n$ at which [H-011](packing/campaign/hypotheses/H-011-small-n-census.md)’s discovery curve must plateau, or enumeration is abandoned. No rounds |
 | **10** | **proved**, $3 + \tfrac{1}{2}\sqrt{2}$ | $3.70710678\ldots$ | **positive control** | Five rounds. The annealer stops $4.19 \times 10^{-4}$ short ([exp-002](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-002-baseline-n10-positive-control.md)); [exp-008](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md) closes it to $1.33 \times 10^{-15}$; exp-031 returns all four source perturbations within $2.221 \times 10^{-15}$ |
-| **11** | **open**: $3.875 < s(11) \le 3.87708359\ldots$ | $3.87708359\ldots$ (Trump 1979) | **target** | The whole account is [`n = 11`, End to End](#n--11-end-to-end). Exact verification over $\mathbb{Q}(u)$ (**T-1**); the cell decomposition (**T-2**), corner (**T-3**), and repaired lower-bound certificate (**T-4**); nine rounds. Search remains $\approx 6 \times 10^{-2}$ short, exp-013 proves Trump’s exact pose locally isolated, exp-016 rejects Stromquist’s printed proof, and exp-017 independently restores its numerical bound |
+| **11** | **proved**: $s(11) = T = 3.87708359\ldots$ ([T-060](packing/frontier/RESULTS.md)) | $3.87708359\ldots$ (Trump 1979) | **settled target** | The former open-case account is [`n = 11`, End to End](#n--11-end-to-end). Exact verification over $\mathbb{Q}(u)$ (**T-1**); the cell decomposition (**T-2**), corner (**T-3**), and repaired lower-bound certificate (**T-4**); nine rounds. Search remains $\approx 6 \times 10^{-2}$ short, exp-013 proves Trump’s exact pose locally isolated, exp-016 rejects Stromquist’s printed proof, and exp-017 independently restores its numerical bound |
 | **12** | open; $4$ believed optimal | $4$ | **open-case calibration** | Two rounds. Returns exactly $4.0$ on all five seeds, which is baseline evidence rather than a known-answer guard. Also where the search and proof lanes are planned to meet |
 | 16 | proved, $4$ | $4$ | proved not-below control | The valid replacement for the old $n=12$ guard: any reported side below $4$ is known to be invalid |
 | 17 | open | $4.67553009\ldots$ (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of $0^{\circ}$, $+39.80496^{\circ}$, and $-36.62379^{\circ}$. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports $5.0$, the trivial $5\times5$ grid, on all five binary64 screening seeds |
 | 61, 78, 97 | open, $m^2 - 3$ | $8$, $9$, $10$ (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at $\arctan(3/4)$ is registered and **not yet made** |
-| 1–100 | 38 proved, 62 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
+| 1–100 | 39 proved, 61 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
 
 Three facts about this table drive the strategy.
 
-**Every proved case in the ladder is a 45° mechanism.** $n = 5$ and $n = 10$ are
+**Every proved control in the ladder is a 45° mechanism.** $n = 5$ and $n = 10$ are
 symmetric arrangements that blind search reaches without help.
-$n = 11$ needs an oblique core at an irrational angle, which **no proved case
-exercises**, so the ladder validates *machinery*, not *strategy*.
+$n = 11$ needs an oblique core at an irrational angle, which **neither control
+exercises**, so the ladder validates *machinery*, not *strategy*. T-060’s later proof of
+$s(11)$ is a lower-bound argument, not a search, and does not change this.
 
 **The ladder now discriminates sharply, and the target does not move.** The bracketing
 quench takes $n = 5$ and $n = 10$ to machine precision and leaves $n = 11$ essentially

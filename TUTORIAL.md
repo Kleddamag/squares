@@ -53,11 +53,11 @@ the next grid side can require tilted structure.
 
 ![Walter Trump’s exact packing of eleven unit squares.](packing/atlas/rendering/trump11-overview.svg)
 
-*The best-known $n = 11$ construction.
-Six squares are axis-aligned; five form an oblique block tilted by about
-$40.18^{\circ}$. Segments mark shared edge intervals and dots mark point contacts, all
-computed in the construction’s exact number field and clipped to their participating
-squares. The picture certifies a construction, not its global optimality.*
+*Walter Trump’s packing of eleven unit squares, optimal by T-060. Six squares are
+axis-aligned; five form an oblique block tilted by about $40.18^{\circ}$. Segments mark
+shared edge intervals and dots mark point contacts, all computed in the construction’s
+exact number field and clipped to their participating squares.
+The picture certifies the construction; T-060 supplies its global optimality.*
 
 Three features make this different from most optimisation problems.
 
@@ -90,9 +90,10 @@ motivate its search strategy.
 |  | value | status |
 | --- | --- | --- |
 | best-known packing (upper bound) | $3.8770835\ldots$ | Trump 1979, a construction |
-| strongest verified lower bound | $31/8 = 3.875$, strict | Kleddamag 2026, [developed from T-026’s certificate](packing/frontier/RESULTS.md) and confirmed here by two complete coverage methods |
+| verified lower bound | $3.8770835\ldots$, Trump’s side exactly | Queuingtheorydotcom 2026, Astra-assisted and building on this project and Kleddamag; machine-verified here and reviewed ([T-060](packing/frontier/RESULTS.md), `V4/C5`) |
+| earlier verified lower bound | $31/8 = 3.875$, strict | Kleddamag 2026, [developed from T-026’s certificate](packing/frontier/RESULTS.md) and confirmed here by two complete coverage methods (T-037); superseded by T-060 |
 | strongest first-party lower bound | $3.8269975\ldots$ | T-033, T-026’s atoms on a finer net; the point-only T-018 proof is explained [below](#how-a-weighted-atomic-lower-bound-proof-works) |
-| gap between the verified bounds | about $0.002084$ | still open |
+| gap between the verified bounds | $0$ | settled: $s(11)$ is Trump’s side |
 
 [T-022](packing/cases/n11_fractional_certificate/t-022-dilation-limit-proof.md) refines
 the point-certificate bound to $3.8100257\ldots$.
@@ -139,10 +140,11 @@ verifier and the exact certificate bytes it checks; T-026 also embeds and re-der
 dilation record.
 
 Two different quantities get called a gap in this subject, and this document keeps them
-apart. The **bound gap** is the distance between the best upper and lower bounds, which
-is what remains unknown about $s(11)$. A **search gap** is `best_side − standing best`,
-the signed distance from one packing this project found to the best one anybody has
-published, and it is what [§3](#3-cells-basins-and-two-traps) onward measures.
+apart. The **bound gap** is the distance between the best upper and lower bounds, the
+part of $s(n)$ still unknown; for $s(11)$ it is now zero.
+A **search gap** is `best_side − standing best`, the signed distance from one packing
+this project found to the best one anybody has published, and it is what
+[§3](#3-cells-basins-and-two-traps) onward measures.
 The first is a property of the problem; the second is a property of a run.
 
 **The previous lower bound also led to a proof repair.** Stromquist stated
@@ -463,9 +465,10 @@ covering claim.
 
 To follow $n = 11$ past this tutorial’s scope, read the synopsis’s
 [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end).
+That section is a dated account of the case before T-060 settled it.
 It covers the ceilings these certificate languages reach, the external certificate that
-now holds the verified lower bound, and why no counting certificate can prove $s(11)$
-equal to Trump’s side.
+held the verified lower bound before T-060, and why no counting certificate can prove
+$s(11)$ equal to Trump’s side.
 
 ## 2. The Configuration Space
 
@@ -1141,10 +1144,13 @@ The capability boundary is stable even as individual tools change:
 - a fixed-angle LP settles only its declared cell and angles; and
 - stationarity, rigidity, and fixed-side local isolation do not prove global optimality.
 
-No listed capability proves that Trump’s construction is the global $n = 11$ optimum.
-A complete typed-stationary enumeration would additionally need every support branch,
-including ties, abnormal Fritz–John cases, zero multipliers, inactive inequalities, and
-rattlers, followed by a global completeness argument.
+None of the listed capabilities proves global optimality by itself.
+[T-060](packing/frontier/RESULTS.md) proves it at $n = 11$ by composing exact exclusions
+over a complete pattern cover, a symmetry reduction, a root induction with a capture
+graph, and exact local isolation; it is machine-verified here and reviewed.
+A different route, a complete typed-stationary enumeration, would additionally need
+every support branch, including ties, abnormal Fritz–John cases, zero multipliers,
+inactive inequalities, and rattlers, followed by a global completeness argument.
 Describing that proof object does not establish it.
 
 The [synopsis capability ladder](SYNOPSIS.md#verification-capability-ladder) owns the
@@ -1291,9 +1297,10 @@ its formal assurance.
 The synopsis’s
 [Assurance, Methods, and Claims](SYNOPSIS.md#assurance-methods-and-claims) owns the
 definition and the one-place list of apparently novel results.
-For $n = 11$ in particular, [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) keeps
-the current bracket, what each result does and does not prove, and the hypotheses and
-ideas still open, under the same distinctions.
+For $n = 11$ in particular, [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) keeps,
+as a dated account from before T-060 settled the case, the bracket as it then stood,
+what each result does and does not prove, and the hypotheses and ideas then open, under
+the same distinctions.
 
 ### Established
 
@@ -1303,6 +1310,7 @@ ideas still open, under the same distinctions.
 | Trump’s 1979 packing is valid, over $\mathbb{Q}(u)$ of degree 8, with 14 pairs at exactly zero separation | verified (`exact-algebraic`); a published construction, confirmed here | Nothing about optimality; it is an upper bound |
 | [`s(11) ≥ 2 + 4/√5`](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | verified (`exact-algebraic`) | Not attributed to Stromquist, not externally peer-reviewed, and it does not close the gap to Trump |
 | [T-025](packing/cases/n11_threshold_certificate/t-025-verifiable-claim-191-50.md) proves $s(11) \ge 191/50 = 3.82$; [T-026](packing/cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md) proves $s(11) \ge 3.8264474\ldots$ | Both are `V4/C5`: machine-verified exact and interval-certified evidence with passing replay, distinct exact event-cell and interval coverage decisions, and mapped non-superseded reviews | Neither result determines $s(11)$ or closes the gap to the best-known packing; V5 or external review would be a separate assurance step |
+| [T-060](packing/frontier/RESULTS.md): Trump’s packing is optimal, so $s(11) = 3.8770835\ldots$, his side exactly | `V4/C5`: machine-verified here and reviewed. Queuingtheorydotcom’s proof, Astra-assisted and building on this project and Kleddamag; a published result confirmed here | It does not assert that the optimal packing is unique, and it is not `V5`. The checks here share arithmetic and construction primitives with the source, so they are not a fully independent implementation |
 | [Stromquist’s *printed* 2003 argument fails](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md): an exact **open** box of side $10001/10000$ fits the claimed container and avoids all twelve printed Figure 14 points | verified (`exact-algebraic`) | It refutes the printed derivation, not the inequality, which the repaired cover independently certifies. Both this falsification and the adjacent repair are this project’s findings |
 | [Trump’s pose is locally isolated at fixed side](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-013-h-026-trump-tangent.md): 128 branchwise linearized systems, each of exact rank 33 with a strictly positive exact stress | verified (`exact-algebraic`) | Consequently, it is a strict local minimum of side in the anchored pose–side chart, modulo finite symmetries. This is not global optimality or an explicit isolation radius. Apparently novel here, not externally peer-reviewed |
 | The one-dimensional class-angle optimum is a corner, with signed one-sided derivatives of about $-0.1747$ and $+0.384$ per radian | numerically checked (`numerical-f64`) | It is one slice. It is not a rigidity proof, and not a theorem that every derivative-free method fails. This project’s measurement |
@@ -1333,10 +1341,8 @@ $n = 17$ the annealer returns the trivial $5\times5$ grid on every seed against 
 of $4.6755$. What is unknown is whether the named alternatives, none of which is built,
 would do better.
 
-**4. What $s(11)$ actually is.** The bounds above leave a gap of about $0.002084$, and
-neither end is known to be tight.
-The upper end is a construction nobody has beaten since 1979; the lower bound excludes
-smaller containers without establishing the optimum.
+**4. A simpler proof of $s(11)$.** T-060 settles $s(11)$ at Trump’s side at `V4/C5`;
+what stays open is a shorter argument, and a check at `V5`.
 
 **5. What a floating LP result means below $10^{-11}$.** The floor comes from HiGHS’s
 own feasibility tolerance—pinned at $10^{-10}$, the strictest value it accepts—under
@@ -1355,8 +1361,9 @@ being separated into different surfaces.
 
 Items 1 and 2 decide whether the cartography strategy is sound.
 Items 3, 5, and 6 have concrete experimental or engineering paths.
-Item 4—determining $s(11)$—is the central open mathematical problem, not an engineering
-task whose tractability is established.
+Item 4 is what remains of the central problem now that T-060 has determined $s(11)$: a
+shorter proof is mathematical work, not an engineering task whose tractability is
+established.
 
 ## 9. A Vocabulary Card
 
@@ -1593,7 +1600,7 @@ An optional system is used only to rederive one constant.
 | the mutable size-by-size experiment priority queue | [Basin confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
 | what has gone wrong and what now stops it recurring | [`defects.md`](defects.md) |
 | the mathematics of $s(11)$ in depth | [Packing 11 Unit Squares](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) |
-| the whole $n = 11$ story, from what a proof must do to what is left | [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) |
+| the whole $n = 11$ story before T-060, from what a proof must do to what was left | [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) |
 | how packings are found, refined and verified | [Algorithms and Tooling](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) |
 | why pointing should beat scaling | [A Search Philosophy](docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md) |
 | what is known for every $n \le 100$ | [`frontier/`](packing/frontier/README.md) |

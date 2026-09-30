@@ -171,7 +171,12 @@ def test_empty_and_closed_segment_legal_rows_are_handled_exactly() -> None:
         )
 
     coverage, vertices, planes, accepted = check()
-    assert coverage == {"events": 0, "probes": 0, "edge_segments": 0}
+    assert coverage == {
+        "events": 0,
+        "probes": 0,
+        "edge_segments": 0,
+        "collision_facet_checks": 0,
+    }
     assert vertices == planes == accepted["residual_polygons"] == []
     base_row["core_vertices"] = [["0", "0"]]
     with pytest.raises(ValueError, match="empty legal row"):
@@ -257,7 +262,7 @@ def test_missing_angular_row_and_changed_source_state_refuse() -> None:
         )
 
 
-def test_preflight_allows_repeated_owner_but_refuses_unproved_partner_cover() -> None:
+def test_preflight_allows_repeated_owner_and_supported_partner_cover_shape() -> None:
     manifest, recipe = _recipe(2135)
     source = generic.load_object(recipe["source_sha256"], manifest, generic.OBJECTS)
     mask = tuple(recipe["mask"])
@@ -267,8 +272,7 @@ def test_preflight_allows_repeated_owner_but_refuses_unproved_partner_cover() ->
     repeated["steps"].append(extra)
     generic.capability_preflight(repeated, mask, 8)
     repeated["steps"][0]["prior_partner_pose_covers"] = {"1": []}
-    with pytest.raises(ValueError, match="partner-pose"):
-        generic.capability_preflight(repeated, mask, 8)
+    generic.capability_preflight(repeated, mask, 8)
 
 
 @pytest.mark.slow

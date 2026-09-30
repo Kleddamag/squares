@@ -26,11 +26,13 @@ from typing import Any
 
 from strif import atomic_write_text
 
+from devtools import check_n11_capture_transition_pilot as collision_kernel
 from devtools import check_n11_closed_degenerate_cover as degenerate_cover
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
 from devtools import n11_fast_exact_cover as fast_cover
 from devtools import n11_nonfield_assignment as a2_assignment
+from devtools import n11_nonfield_partner as partner
 
 PACKET = geometry.PACKET
 MANIFEST = PACKET / "receipts/nonfield-manifest/manifest.json.gz"
@@ -40,6 +42,8 @@ FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f
 FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
 DEGENERATE_COVER_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 A2_HELPER_SHA = "f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac7265"
+PARTNER_HELPER_SHA = "2928f0371a6442ca405f0d13c01c52022da87a1ef0b8dfaf0ae77613b7987a0d"
+COLLISION_KERNEL_SHA = "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -247,6 +251,7 @@ def check_row(
     bins: int,
     budget: geometry.Budget,
     cover_backend: str = "reference",
+    partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None,
 ) -> tuple[dict[str, int], Polygon, list[tuple[Q, Q, Q]], dict[str, Any]]:
     row = step["rows"][row_index]
     owner = step["owner"]
@@ -281,7 +286,7 @@ def check_row(
         )
         remaining(budget)
         return (
-            {"events": 0, "probes": 0, "edge_segments": 0},
+            {"events": 0, "probes": 0, "edge_segments": 0, "collision_facet_checks": 0},
             [],
             [],
             {
@@ -294,7 +299,19 @@ def check_row(
     domain = covering_input_domain(required_domain, row["input_domain"])
     core = frozen.convex(row["core_vertices"])
     frozen._strict_core(core, lo, hi)
-    require(row["collision_regions"] == [], "unsupported collision region")
+    collision_regions: list[Polygon] = []
+    collision_checks = 0
+    if row["collision_regions"]:
+        pre_wall_domain = geometry.intersect(
+            frozen.hull(frozen.points(predecessor["outer_domain"])), cuts
+        )
+        collision_regions, collision_checks = partner.admitted_collision_regions(
+            row["collision_regions"],
+            query_core=core,
+            query_pre_wall_domain=pre_wall_domain,
+            partners=partner_live or {},
+            budget=budget,
+        )
     forbidden = [
         frozen.hull([(p[0] - q[0], p[1] - q[1]) for p in group for q in core])
         for other, group in prior.items()
@@ -305,12 +322,13 @@ def check_row(
         fast_cover.exact_union_cover if cover_backend == "fast" else geometry.exact_union_cover
     )
     coverage = (
-        cover(domain, forbidden + residual, budget=budget)
+        cover(domain, forbidden + residual + collision_regions, budget=budget)
         if geometry.area2(domain) > 0
         else degenerate_cover.exact_cover_closed_degenerate(
-            domain, forbidden + residual, budget=budget
+            domain, forbidden + residual + collision_regions, budget=budget
         )
     )
+    coverage["collision_facet_checks"] = collision_checks
     vertices = [point for poly in residual for point in poly]
     expected: list[tuple[Q, Q, Q]] = []
     if vertices:
@@ -353,6 +371,7 @@ class _WorkerState:
     world: list[Polygon] | None = None
     bins: int | None = None
     cover_backend: str = "reference"
+    partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None
 
 
 def capability_preflight(source: dict[str, Any], mask: tuple[int, ...], bins: int) -> None:
@@ -372,22 +391,24 @@ def capability_preflight(source: dict[str, Any], mask: tuple[int, ...], bins: in
             "step owner/order",
         )
         require(step["allowed_half_angle"] == ["0", "1"], "unsupported angle scope")
-        require(
-            step["prior_partner_pose_covers"] == {},
-            "unsupported prior partner-pose cover premise",
-        )
+        require(isinstance(step["prior_partner_pose_covers"], dict), "partner cover map")
         require(len(step["rows"]) == bins, "step angular inventory")
         require(
-            all(row["collision_regions"] == [] for row in step["rows"]),
-            "unsupported collision-region grammar",
+            all(isinstance(row["collision_regions"], list) for row in step["rows"]),
+            "collision-region inventory",
         )
 
 
 def _worker_init(
-    source: dict[str, Any], world: list[Polygon], bins: int, cover_backend: str
+    source: dict[str, Any],
+    world: list[Polygon],
+    bins: int,
+    cover_backend: str,
+    partner_live: dict[int, list[tuple[Polygon, Polygon]]],
 ) -> None:
     _WorkerState.source, _WorkerState.world, _WorkerState.bins = source, world, bins
     _WorkerState.cover_backend = cover_backend
+    _WorkerState.partner_live = partner_live
 
 
 def _worker_row(
@@ -411,6 +432,7 @@ def _worker_row(
         bins=bins,
         budget=budget,
         cover_backend=_WorkerState.cover_backend,
+        partner_live=_WorkerState.partner_live,
     )
     return (
         row_index,
@@ -467,7 +489,6 @@ def replay_one_node(
         )
         require(
             step["allowed_half_angle"] == ["0", "1"]
-            and step["prior_partner_pose_covers"] == {}
             and set(step["prior_owned_hulls"]) == set(map(str, mask))
             and all(
                 frozen._same(frozen.points(step["prior_owned_hulls"][str(i)]), state_groups[i])
@@ -476,6 +497,18 @@ def replay_one_node(
             "step previous accepted state",
         )
         require(len(step["rows"]) == bins, "step angular inventory")
+        if step["prior_partner_pose_covers"]:
+            partner_live, partner_counts = partner.admitted_partner_covers(
+                step["prior_partner_pose_covers"],
+                query_owner=owner,
+                mask=mask,
+                accepted_groups=state_groups,
+                accepted_rows=state_rows,
+                budget=budget,
+            )
+        else:
+            partner_live = {}
+            partner_counts = {"rows": 0, "empty_rows": 0, "live_rows": 0}
         result["pending_row_indices"] = list(range(bins))
         result["checked_row_indices_current_step"] = []
         if workers == 1:
@@ -494,6 +527,7 @@ def replay_one_node(
                     bins=bins,
                     budget=budget,
                     cover_backend=cover_backend,
+                    partner_live=partner_live,
                 )
                 completed.append(
                     (
@@ -510,7 +544,7 @@ def replay_one_node(
                 max_workers=workers,
                 mp_context=multiprocessing.get_context("spawn"),
                 initializer=_worker_init,
-                initargs=(source, world, bins, cover_backend),
+                initargs=(source, world, bins, cover_backend, partner_live),
             ) as pool:
                 futures = {
                     pool.submit(
@@ -548,6 +582,7 @@ def replay_one_node(
                     "probes": coverage["probes"],
                     "wall_seconds": wall,
                     "process_cpu_seconds": cpu,
+                    "collision_facet_checks": coverage["collision_facet_checks"],
                 }
             )
             result["rows_checked"] += 1
@@ -575,6 +610,7 @@ def replay_one_node(
                 "row_process_cpu_seconds": sum(
                     item["process_cpu_seconds"] for item in row_timings
                 ),
+                "partner_cover": partner_counts,
             }
         )
         result["current_row"] = None
@@ -739,6 +775,25 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         source = load_object(recipe["source_sha256"], manifest, args.objects)
         seed = load_object(recipe["seed_sha256"], manifest, args.objects)
         audit = load_object(recipe["audit_sha256"], manifest, args.objects)
+        if any(
+            step["prior_partner_pose_covers"]
+            or any(row["collision_regions"] for row in step["rows"])
+            for step in source["steps"]
+        ):
+            paths["partner_helper"] = Path(partner.__file__)
+            paths["collision_kernel"] = Path(collision_kernel.__file__)
+            for name in ("partner_helper", "collision_kernel"):
+                before[name] = digest(paths[name])
+                result["source_sha256"][name] = before[name]
+            require(before["partner_helper"] == PARTNER_HELPER_SHA, "partner helper changed")
+            require(
+                before["collision_kernel"] == COLLISION_KERNEL_SHA,
+                "collision kernel changed",
+            )
+            require(
+                collision_kernel.dependencies_unchanged(),
+                "collision kernel dependency changed",
+            )
         require(
             source["node_id"] == nodes[0]["node_id"]
             and source["mask_index"] == args.case_id
@@ -785,6 +840,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             all(digest(path) == before[name] for name, path in paths.items()),
             "source changed during replay",
         )
+        if "collision_kernel" in paths:
+            require(
+                collision_kernel.dependencies_unchanged(),
+                "collision kernel dependency changed during replay",
+            )
         result["status"] = "PASS_ONE_GENERIC_EXCLUSION"
         result["geometry_verified"] = True
         result["excluded_case_ids"] = [args.case_id]

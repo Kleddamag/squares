@@ -53,6 +53,10 @@ class FieldSpec:
     weighted_features: tuple[tuple[tuple[int, ...], int, int], ...] = ()
     point_charges: tuple[tuple[int, int], ...] = ()
     cell_charge: int = 1
+    cell_charges: tuple[tuple[int, int], ...] = ()
+
+    def charge_for(self, cell: int) -> int:
+        return dict(self.cell_charges).get(cell, self.cell_charge)
 
     @property
     def features(self) -> tuple[tuple[tuple[int, ...], int, int], ...]:
@@ -225,7 +229,7 @@ def admit(
 ) -> None:
     """Admit pinned nonnegative point and odd-site majority charges."""
     require(
-        all(len(indices) in (3, 5) for indices, _, _ in spec.features),
+        all(len(indices) in (3, 5, 7) for indices, _, _ in spec.features),
         "unsupported majority-site arity",
     )
     require(
@@ -288,10 +292,13 @@ def admit(
         ],
         "unsupported field feature",
     )
-    require(cert.get("budget_units") == spec.charge_budget, "field budget changed")
+    require(
+        type(cert.get("budget_units")) is int and cert["budget_units"] == spec.charge_budget,
+        "field budget changed",
+    )
     require(
         packet.get("threshold_units")
-        == [spec.cell_charge * int(i in spec.positive_cells) for i in range(16)],
+        == [spec.charge_for(i) * int(i in spec.positive_cells) for i in range(16)],
         "positive cell charges changed",
     )
     require(
@@ -337,7 +344,7 @@ def derive_spec(
         require(
             feature["kind"] == "majority_hull"
             and isinstance(indices, list)
-            and len(indices) in (3, 5)
+            and len(indices) in (3, 5, 7)
             and len(set(indices)) == len(indices)
             and all(type(index) is int and 0 <= index < len(sites) for index in indices)
             and type(feature["threshold"]) is int
@@ -361,10 +368,7 @@ def derive_spec(
         "invalid cell thresholds",
     )
     positive = tuple(cell for cell, value in enumerate(thresholds) if value > 0)
-    require(
-        bool(positive) and len({thresholds[cell] for cell in positive}) == 1,
-        "unsupported nonuniform cell thresholds",
-    )
+    require(bool(positive), "no positive cell thresholds")
     owners = packet["conditional_owner_support"]
     require(
         isinstance(owners, list)
@@ -395,6 +399,9 @@ def derive_spec(
         tuple(features),
         tuple((index, weight) for index, weight in enumerate(weights) if weight),
         thresholds[positive[0]],
+        tuple((cell, thresholds[cell]) for cell in positive)
+        if len({thresholds[cell] for cell in positive}) > 1
+        else (),
     )
     # This is an entire closed-domain census, independent of the audit's PASS fields.
     proposed_rows(spec, audit)
@@ -439,6 +446,10 @@ def descriptor_spec(path: Path, object_dir: Path, mask_index: int) -> FieldSpec:
         and entry.get("source_sha256") == packet_pin.decoded_sha
     ]
     require(len(entries) == 1, "descriptor packet absent or ambiguous in pinned A1")
+    require(
+        audit_pin.decoded_sha == entries[0]["fresh_audit_sha256"],
+        "descriptor audit differs from pinned A1",
+    )
     return derive_spec(
         mask_index=mask_index,
         packet_pin=packet_pin,
@@ -451,7 +462,7 @@ def descriptor_spec(path: Path, object_dir: Path, mask_index: int) -> FieldSpec:
 
 def majority_halfplanes(sites: list[Point], radius: Q) -> list[tuple[Q, Q, Q]]:
     """Exact finite median-strip normals for a supported odd-site feature."""
-    require(len(sites) in (3, 5), "unsupported majority-site arity")
+    require(len(sites) in (3, 5, 7), "unsupported majority-site arity")
     normals = {(Q(1), Q(0)), (Q(0), Q(1))}
     for number, p in enumerate(sites):
         for q in sites[number + 1 :]:
@@ -603,6 +614,7 @@ def row_geometry(
     budget: kernel.Budget,
 ) -> dict[str, Any]:
     require(cell in spec.positive_cells, "row outside positive cells")
+    charge = spec.charge_for(cell)
     core, halfwidth, cosine, sine = kernel.row_envelope(interval)
     world = [
         (kernel.B / 2 + (kernel.L - kernel.B) * x, kernel.B / 2 + (kernel.L - kernel.B) * y)
@@ -662,10 +674,8 @@ def row_geometry(
         candidates = candidates[: spec.max_regions]
     try:
         if spec.weighted_features:
-            atoms = physical_atoms + [
-                (spec.cell_charge, name, region) for _, name, region in candidates
-            ]
-            proof = weighted_union_cover(domain, atoms, spec.cell_charge, budget=budget)
+            atoms = physical_atoms + [(charge, name, region) for _, name, region in candidates]
+            proof = weighted_union_cover(domain, atoms, charge, budget=budget)
         else:
             proof = kernel.exact_union_cover(
                 domain, [row[2] for row in candidates], budget=budget
@@ -690,7 +700,7 @@ def row_geometry(
         "selected_regions": len(candidates),
         "selected_region_ids": [row[1] for row in candidates],
         "physical_atom_ids": [name for _, name, _ in physical_atoms],
-        "required_charge": spec.cell_charge,
+        "required_charge": charge,
         **proof,
     }
 

@@ -161,7 +161,7 @@ def main() -> None:
             for value in results
         ],
     }
-    (args.selection.parent / "batch-result.json").write_text(
+    args.selection.with_name(args.selection.stem + "-result.json").write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n"
     )
     print(json.dumps(report, indent=2))

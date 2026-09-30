@@ -142,6 +142,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkout", type=Path, default=REPO / "attic/11SquaresOptimal")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--selection-name", default="selection.json")
+    parser.add_argument("--retry-incomplete", action="store_true")
     parser.add_argument("--limit", type=int, default=6, choices=range(1, 61))
     args = parser.parse_args()
     output = args.output.resolve()
@@ -156,13 +158,15 @@ def main() -> None:
     )
     covered: set[int] = set()
     imported: set[str] = set()
-    for path in RECEIPTS.glob("*/result.json.gz"):
+    for path in RECEIPTS.glob("**/result.json.gz"):
         value = kernel.strict_json(gzip.decompress(path.read_bytes()))
         if (
             value.get("status") == "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER"
             and value.get("geometry_verified") is True
         ):
             covered.update(value["transfer"]["transferred_case_ids"])
+            imported.add(value["packet_sha256"])
+        elif value.get("packet_sha256") and not args.retry_incomplete:
             imported.add(value["packet_sha256"])
     candidates = [
         entry
@@ -191,7 +195,9 @@ def main() -> None:
         "source_revision": kernel.SOURCE_REVISION,
         "fields": results,
     }
-    (output / "selection.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    (output / args.selection_name).write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n"
+    )
     for result in results:
         print(
             json.dumps(

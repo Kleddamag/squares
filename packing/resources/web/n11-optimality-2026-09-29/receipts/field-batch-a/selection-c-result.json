@@ -1,0 +1,72 @@
+{
+  "fields": [
+    {
+      "canonical_cases_excluded": 28,
+      "invocation_wall_seconds": 15.680511082999146,
+      "mask_index": 2090,
+      "process_cpu_seconds": 11.456487999999998,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 15.556307500002731
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.14346154099985,
+      "mask_index": 1139,
+      "process_cpu_seconds": 47.762896,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.000792708997324
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 28.193687417002366,
+      "mask_index": 1664,
+      "process_cpu_seconds": 22.363153999999998,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 28.015949374999764
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 25.746018333000393,
+      "mask_index": 1240,
+      "process_cpu_seconds": 23.022641,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 25.614181541001017
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 37.95431079099944,
+      "mask_index": 1017,
+      "process_cpu_seconds": 35.393948,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 37.73750341699997
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 18.841999917000066,
+      "mask_index": 1480,
+      "process_cpu_seconds": 17.632722,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 18.664442875000532
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 25.193488249999064,
+      "mask_index": 786,
+      "process_cpu_seconds": 23.794658000000002,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 24.848646375001408
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.15943816700019,
+      "mask_index": 246,
+      "process_cpu_seconds": 53.189225,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.00766354199732
+    }
+  ],
+  "global_optimality_proved": false,
+  "jobs": 3,
+  "status": "BATCH_RECEIPTS_RETAINED",
+  "wall_seconds": 115.43250466600148
+}

@@ -7,6 +7,7 @@ import gzip
 import time
 from dataclasses import replace
 from fractions import Fraction as Q
+from itertools import combinations
 from typing import Any
 
 import pytest
@@ -62,7 +63,7 @@ def test_unsupported_feature_and_row_gap_refuse(
     extra["certificate"]["features"].append({"kind": "unproved"})
     with pytest.raises(ValueError, match="unsupported field feature"):
         shared.admit(spec, extra, audit, cover)
-    unsupported = replace(spec, site_count=7)
+    unsupported = replace(spec, site_count=6)
     with pytest.raises(ValueError, match="unsupported majority-site arity"):
         shared.admit(unsupported, packet, audit, cover)
     gap = copy.deepcopy(audit)
@@ -354,3 +355,49 @@ def test_descriptor_derivation_refuses_a_missing_whole_cell_and_bad_charges() ->
     )
     with pytest.raises(ValueError, match="invalid owner support"):
         derive(bad, audit)
+
+
+def test_seven_site_median_region_equals_all_four_subset_hulls() -> None:
+    def cross(a: kernel.Point, b: kernel.Point, c: kernel.Point) -> Q:
+        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
+
+    def hull(points: list[kernel.Point]) -> kernel.Polygon:
+        ordered = sorted(set(points))
+        lower: kernel.Polygon = []
+        upper: kernel.Polygon = []
+        for chain, sequence in ((lower, ordered), (upper, list(reversed(ordered)))):
+            for point in sequence:
+                while len(chain) >= 2 and cross(chain[-2], chain[-1], point) <= 0:
+                    chain.pop()
+                chain.append(point)
+        return lower[:-1] + upper[:-1]
+
+    def planes(polygon: kernel.Polygon) -> list[tuple[Q, Q, Q]]:
+        return [
+            (b[1] - a[1], a[0] - b[0], (b[1] - a[1]) * a[0] + (a[0] - b[0]) * a[1])
+            for a, b in zip(polygon, polygon[1:] + polygon[:1], strict=True)
+        ]
+
+    domain = [(Q(-4), Q(-4)), (Q(4), Q(-4)), (Q(4), Q(4)), (Q(-4), Q(4))]
+    sites = [
+        (Q(-1), Q(0)),
+        (Q(-1, 2), Q(-1, 2)),
+        (Q(0), Q(0)),
+        (Q(1, 2), Q(-1, 2)),
+        (Q(1), Q(0)),
+        (Q(1, 2), Q(1, 2)),
+        (Q(-1, 2), Q(1, 2)),
+    ]
+    corners = [(Q(x), Q(y)) for x in (-1, 1) for y in (-1, 1)]
+    reference = domain
+    for subset in combinations(sites, 4):
+        expanded = hull([(x + dx, y + dy) for x, y in subset for dx, dy in corners])
+        reference = kernel.intersect(reference, planes(expanded))
+    median = kernel.intersect(domain, shared.majority_halfplanes(sites, Q(1)))
+    assert kernel.area2(reference) == kernel.area2(median) > 0
+    assert all(a * x + b * y <= c for x, y in median for a, b, c in planes(hull(reference)))
+    assert all(a * x + b * y <= c for x, y in reference for a, b, c in planes(hull(median)))
+    collinear = kernel.intersect(
+        domain, shared.majority_halfplanes([(Q(x), Q(0)) for x in range(-3, 4)], Q(1))
+    )
+    assert set(collinear) == set(corners)

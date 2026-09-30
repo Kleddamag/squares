@@ -10,6 +10,7 @@ import pytest
 from devtools import overview_sections, render_case_pages, render_overview
 from devtools import render_research_tables as tables
 from devtools.render_overview import PAGES, assert_self_contained
+from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links
 
 #: Measured at 9.1 MB on 2026-09-30 (324 records): 1.6 MB of site shell, 1.3 MB of large
 #: drawings, 2.1 MB of formulas (TeX and its MathML fallback) and the rest the records'
@@ -114,20 +115,19 @@ def test_case_11_carries_its_polynomial_results_and_links(page: str) -> None:
     for result in ("T-018", "T-026", "T-033"):
         assert f'<a href="index.html#{result.lower()}">{result}</a>' in record
     assert '<a href="frontier.html#n-11">' in record
-    branch = f"{render_overview.REPO_URL}/blob/{render_overview.DEFAULT_BRANCH}/"
+    branch = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/"
     assert f'class="site-case-github" href="{branch}packing/frontier/n-011.md"' in record
     assert 'href="#n-10" rel="prev"' in record
     assert 'href="#n-12" rel="next"' in record
 
 
-def test_repository_links_name_the_build_commit_except_on_github(page: str) -> None:
-    from devtools.check_published_site import branch_links, repository_links  # noqa: PLC0415
-    from devtools.render_explainer import link_revision  # noqa: PLC0415
+def test_every_repository_link_names_main(page: str) -> None:
+    from devtools.check_published_site import repository_links  # noqa: PLC0415
 
-    branch = branch_links(page)
-    assert {ref for _, ref, _ in branch} == {render_overview.DEFAULT_BRANCH}
-    links = repository_links(page) - branch
-    assert {ref for _, ref, _ in links} == {link_revision()}
+    assert not hash_pinned_links(page)
+    links = repository_links(page)
+    assert links
+    assert {ref for _, ref, _ in links} == {DEFAULT_BRANCH}
 
 
 def test_a_link_to_another_case_file_opens_its_record_here(page: str) -> None:

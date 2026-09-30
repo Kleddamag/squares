@@ -185,8 +185,8 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: this repository's short length. It is pinned for the reason `DATA_REVISION` is: those
 #: documents are compared byte for byte with a fresh render, so a link naming the build
 #: commit would fail their drift check forever. It is in no version string. It moves
-#: when the claim documents are regenerated for an edition, while the page's own links
-#: name the commit it is built from (`render_explainer.link_revision`).
+#: when the claim documents are regenerated for an edition. It must be a commit on
+#: `main`; the site's own links name `main` itself (`devtools.repo_links`).
 PUBLICATION_REVISION = "0d7bb0fa"
 
 

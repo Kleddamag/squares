@@ -37,6 +37,8 @@ from pathlib import Path
 from typing import Literal, NamedTuple
 from urllib.parse import quote
 
+from devtools import repo_links
+from devtools.repo_links import repo_url
 from sqpack.release import PUBLICATION_EDITION
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -59,17 +61,6 @@ CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
-REPO_URL = "https://github.com/jlevy/squares"
-#: The branch an "On GitHub" link names, so a reader opens the file as it is now rather
-#: than as it was at the build. Every other repository link is a permalink.
-DEFAULT_BRANCH = "main"
-
-
-def branch_file(relative: str) -> str:
-    """A repository file's URL on the default branch: the latest version of it."""
-    return f"{REPO_URL}/blob/{DEFAULT_BRANCH}/{relative}"
-
-
 SITE_NAME = "Square Packing"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
@@ -118,12 +109,13 @@ RENDER_INPUTS: tuple[Path, ...] = (
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
-    REPO / "TUTORIAL.md",
-    REPO / "README.md",
-    REPO / "SYNOPSIS.md",
-    REPO / "conventions.md",
-    REPO / "development.md",
-    REPO / "defects.md",
+    REPO / repo_links.TUTORIAL,
+    REPO / repo_links.README,
+    REPO / repo_links.SYNOPSIS,
+    REPO / repo_links.CONVENTIONS,
+    REPO / repo_links.DEVELOPMENT,
+    REPO / repo_links.DEFECTS,
+    PACKING / "devtools" / "repo_links.py",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
     PACKING / "uv.lock",
@@ -335,11 +327,10 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record."""
     from devtools import overview_data, overview_sections  # noqa: PLC0415
-    from devtools.render_explainer import repo_file  # noqa: PLC0415
 
     overview = overview_data.load()
     values = {
-        "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
+        "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "HERO": overview_sections.hero(),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
@@ -356,11 +347,11 @@ def overview_page() -> Page:
     markdown = fill(
         OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name
     )
-    # The prose names a repository file as `repo:PATH`, which becomes its permalink at
-    # the build commit, the one form of repository link the deployed-site check accepts.
+    # The prose names a repository file as `repo:PATH`, which becomes its link on `main`
+    # through the one helper every page links the repository with (`repo_links`).
     markdown = re.sub(
         r'(\]\(|href=")repo:([^)"\s#]+)',
-        lambda match: match[1] + repo_file(REPO / match[2]),
+        lambda match: match[1] + repo_url(match[2]),
         markdown,
     )
     return kpress_page(

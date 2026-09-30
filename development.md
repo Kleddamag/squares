@@ -901,12 +901,19 @@ parameter startup and neighboring text movement are measured by
 comparisons are retained in the
 [math startup campaign](packing/benchmarks/math-startup/README.md).
 
-**Merging is the whole publish.** Every repository link on the page is a permalink to
-the commit the page was built from, read from the checkout at render time
-(`link_revision()`), so no merge leaves the deployed page linking to files older than
-the ones it describes, and nothing has to be bumped for the links to be right.
-After a merge, wait for the “Certificate page” workflow on `main` and confirm the deploy
-from the checkout:
+**Merging is the whole publish.** Every repository link on the site names `main`, the
+branch the site deploys from, through one helper
+([`packing/devtools/repo_links.py`](packing/devtools/repo_links.py)), and nothing has to
+be bumped for the links to be right.
+A link to the commit a page was built from 404s once a squash merge leaves that commit
+on no branch, so `check_published_site` refuses any repository link that names a commit
+hash, and checks that every path linked on `main` is in the deployed commit’s tree.
+The reader documents the site links by name (the status table, the results register,
+`epistemics.md` and the rest) are constants in that module, so each has one stable path.
+The committed claim documents are the one exception: they are not site pages, and they
+pin the verifier at the edition’s revision (`render_explainer.edition_file`). After a
+merge, wait for the “Certificate page” workflow on `main` and confirm the deploy from
+the checkout:
 
 ```shell
 uv run --frozen --all-extras --group dev python -m devtools.check_published_site --commit <merge commit>

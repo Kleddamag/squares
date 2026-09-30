@@ -42,7 +42,6 @@ import json
 import re
 import shutil
 import struct
-import subprocess
 import sys
 from collections import Counter
 from collections.abc import Mapping, Sequence
@@ -55,10 +54,12 @@ from typing import Any, Final, NamedTuple, TypedDict
 
 from strif import atomic_output_file
 
+from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
 from devtools.render_overview import SITE_NAV, SITE_NAV_CSS, favicon_html, nav_html
+from devtools.repo_links import REPO_URL, repo_url
 from sqpack.fractional.certificate import (
     Certificate,
     closed_form_conditions,
@@ -283,18 +284,18 @@ PRIOR_MEMO_YEAR = 1984
 
 # Where the page sends a reader for more: the sources the n = 11 record cites
 # (frontier/n-011.md, keys [Friedman DS7], [Kingbird] and [Stromquist 2003]) and
-# the repository files behind the words, linked at the commit the page is built from
-# rather than on `main`, which the page deploys from but which does not stand still.
-# The certificate digests identify the data; the permalinks are what identify the
-# verifier, the generator and the exposition a reported run used (review of
-# 2026-09-05, Finding 8).
+# the repository files behind the words, linked on `main`, the branch the page deploys
+# from (`repo_links`). A permalink at the build commit was the rule until those links
+# began to 404: a squash merge leaves the commit a page was built from on no branch.
+# The certificate digests and the edition stamp identify the data; the committed claim
+# documents still name the verifier at the edition's revision (`edition_file`), which
+# is where a reported run's exact verifier is pinned (review of 2026-09-05, Finding 8).
 PROBLEM_URL = "https://erich-friedman.github.io/papers/squares/squares.html"
 BEST_URL = "https://kingbird.myphotos.cc/packing/squares_in_squares.html"
 PRIOR_URL = "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v10i1r8"
 PRIOR_MEMO_URL = "https://walterstromquist.com/papers/squares3.pdf"
 PRIOR_SIX_MEMO_URL = "https://walterstromquist.com/papers/squares1.pdf"
 PRIOR_TEN_MEMO_URL = "https://walterstromquist.com/papers/squares2.pdf"
-REPO_URL = "https://github.com/jlevy/squares"
 # Where the deploy serves this page: the GitHub Pages site for the repository, at
 # the project subpath, with the trailing slash the directory URL actually resolves
 # to. A link preview is the one part of the page that cannot be relative -- a
@@ -373,28 +374,6 @@ THIRDPARTY = CASE / "thirdparty" / "README.md"
 THIRDPARTY_CERTIFICATE = THIRDPARTY.with_name("certificate.json")
 
 
-@cache
-def link_revision() -> str:
-    """The commit the page's repository links name: the one the page is built from.
-
-    Read from the checkout at render time, not pinned. A pinned revision is right on the
-    day it is cut and wrong after the next merge that touches a linked file, and every
-    merge would then owe the page a republish before its links told the truth. `HEAD`
-    of the checkout the deploy renders from is the commit whose files the page
-    describes, so the links name it, in full, as GitHub's own permalinks do. The page's
-    credits do not: they print the shared version, `sqpack.release.PUBLICATION_EDITION`,
-    which names the last data commit and is the string the atlas footer carries. Where
-    git cannot answer (a source tarball) the edition's revision stands in.
-    """
-    found = subprocess.run(
-        ("git", "rev-parse", "HEAD"), cwd=REPO, capture_output=True, text=True, check=False
-    )
-    revision = found.stdout.strip()
-    if found.returncode != 0 or not re.fullmatch(r"[0-9a-f]{40}", revision):
-        return PUBLICATION_REVISION
-    return revision
-
-
 def publication_history_markdown() -> str:
     """Every edition, newest first, each with the date it was first published."""
     return "\n".join(
@@ -403,39 +382,16 @@ def publication_history_markdown() -> str:
     )
 
 
-def repo_file(path: Path, revision: str | None = None) -> str:
-    """The file's URL at the commit the page is built from; none outside the repository.
-
-    A permalink, not a branch link: `blob/main/` names whatever is on `main` when the
-    reader clicks. A path that does not exist at the linked commit is a link that 404s
-    from the day it is published, so a test checks each linked path against the
-    revision through git; the renderer itself does not, so that a render never depends
-    on more history than the deploy's shallow checkout has.
-
-    `revision` is for the documents that are checked in: a claim document that named
-    the build commit would change with every commit and fail its own drift check
-    forever, so those name the edition's revision instead, through `edition_file`.
-    """
-    try:
-        relative = path.resolve().relative_to(REPO)
-    except ValueError:
-        raise SystemExit(f"{path} is outside the repository and cannot be linked") from None
-    # GitHub serves a directory under `tree/` and a file under `blob/`, and redirects
-    # the other way round; the canonical one is written so no link is a redirect.
-    kind = "tree" if path.is_dir() else "blob"
-    return f"{REPO_URL}/{kind}/{revision or link_revision()}/{relative.as_posix()}"
-
-
 def edition_file(path: Path) -> str:
     """The file's URL at the edition's pinned revision, for documents that are checked in.
 
     The verifiable-claim documents and the proof card are generated, committed, and
-    compared byte for byte with a fresh render, so their links have to be stable between
-    editions; `sqpack.release.PUBLICATION_REVISION` is bumped when an edition is cut
-    and they are regenerated with it. The page itself is not checked in and names the
-    commit it is built from.
+    compared byte for byte with a fresh render, and they are not site pages: each pins
+    the verifier and the evidence a reported run used, so their links name
+    `sqpack.release.PUBLICATION_REVISION`, a commit on `main` that is bumped when an
+    edition is cut. Every link on the site itself names `main` (`repo_links`).
     """
-    return repo_file(path, PUBLICATION_REVISION)
+    return repo_url(path, ref=PUBLICATION_REVISION)
 
 
 def site_file(path: Path) -> str:
@@ -2143,14 +2099,14 @@ def claim_substitutions(headline: Facts, default: Facts) -> dict[str, str]:
     values = {}
     for role, f in (("DEFAULT", default), ("HEADLINE", headline)):
         values[f"{role}_CLAIM_NAME"] = claim_path(f).name
-        values[f"{role}_CLAIM_URL"] = repo_file(claim_path(f))
+        values[f"{role}_CLAIM_URL"] = repo_url(claim_path(f))
         values[f"{role}_N_ATOMS"] = f"{len(f.atoms):,}"
         values[f"{role}_N_DIRECTIONS"] = str(f.steps + 1)
         values[f"{role}_RUNTIME"] = runtime_phrase(f)
     values["HEADLINE_PINNED_RUNTIME"] = runtime_phrase(headline, pinned=True)
     values["PINNED_VERIFIER_LINES"] = source_lines_phrase(PINNED_VERIFIER)
-    values["PINNED_VERIFIER_URL"] = repo_file(PINNED_VERIFIER)
-    values["PROOF_CARD_URL"] = repo_file(CASE / f"{RESULT_ID}-proof-card.md")
+    values["PINNED_VERIFIER_URL"] = repo_url(PINNED_VERIFIER)
+    values["PROOF_CARD_URL"] = repo_url(CASE / f"{RESULT_ID}-proof-card.md")
     return values
 
 
@@ -2227,7 +2183,7 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "HEADLINE_N_ATOMS": f"{len(headline.atoms):,}",
         "HEADLINE_N_DIRECTIONS": str(headline.steps + 1),
         "REFINEMENT_URL": (
-            repo_file(CASE / "t-022-dilation-limit-proof.md")
+            repo_url(CASE / "t-022-dilation-limit-proof.md")
             if headline.n == 11 and headline.outer_side == Fraction(381, 100)
             else ""
         ),
@@ -2238,12 +2194,12 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "DEFAULT_ID": default.identifier,
         # Print shows one certificate deterministically, and this names which.
         "DEFAULT_SLUG": slug(default),
-        "DEFAULT_CERT_URL": repo_file(default.source),
+        "DEFAULT_CERT_URL": repo_url(default.source),
         "N_RESULTS": str(registered_results()),
         "N_NOVEL": str(novel_results()),
-        "RESULTS_URL": repo_file(PACKING / "frontier/RESULTS.md"),
-        "FRONTIER_N11_URL": repo_file(PACKING / "frontier/n-011.md"),
-        "FRONTIER_N11_REVIEW_URL": repo_file(
+        "RESULTS_URL": repo_url(repo_links.RESULTS),
+        "FRONTIER_N11_URL": repo_url(PACKING / "frontier/n-011.md"),
+        "FRONTIER_N11_REVIEW_URL": repo_url(
             REPO / "docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md"
         ),
         "N_STARRED": str(starred_lower_bounds()),
@@ -2272,21 +2228,21 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "PROBLEM_URL": PROBLEM_URL,
         "BEST_URL": BEST_URL,
         "BEST_SOURCE": BEST_SOURCE,
-        "BEST_RENDER_URL": repo_file(BEST_RENDERING),
-        "ATLAS_URL": repo_file(ATLAS),
-        "ARCHIVE_URL": repo_file(REPO / "packing/resources"),
-        "NAGAMOCHI_URL": repo_file(
+        "BEST_RENDER_URL": repo_url(BEST_RENDERING),
+        "ATLAS_URL": repo_url(ATLAS),
+        "ARCHIVE_URL": repo_url(REPO / "packing/resources"),
+        "NAGAMOCHI_URL": repo_url(
             REPO
             / "packing/resources/papers"
             / "nagamochi-2005-packing-unit-squares-in-a-rectangle.pdf"
         ),
-        "TUTORIAL_URL": repo_file(REPO / "TUTORIAL.md"),
-        "STROMQUIST_N26_REVIEW_URL": repo_file(
+        "TUTORIAL_URL": repo_url(repo_links.TUTORIAL),
+        "STROMQUIST_N26_REVIEW_URL": repo_url(
             REPO / "docs/project/research/research-2026-09-07-stromquist-n26-verification.md"
         ),
-        "WORKFLOWS_URL": repo_file(REPO / "SYNOPSIS.md") + "#workflow-entry-contracts",
-        "PRINCIPLES_URL": repo_file(REPO / "README.md") + "#operating-principles",
-        "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
+        "WORKFLOWS_URL": repo_url(repo_links.SYNOPSIS, "#workflow-entry-contracts"),
+        "PRINCIPLES_URL": repo_url(repo_links.README, "#operating-principles"),
+        "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "TRUMP_SVG": best_packing_svg(),
         "CURRENT_BOUND_DEC": current.bounded_side_decimal,
         "CURRENT_BOUND_TEX": current.bounded_side_tex,
@@ -2303,9 +2259,9 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T025_LEAST_EXCESS": frac_inline_tex(current.least_charge - 1),
         "T025_DIRECTIONS": str(current.coarse_directions),
         "T025_INTERVAL_DIRECTIONS": str(current.coarse_interval_directions),
-        "T025_CERT_URL": repo_file(THRESHOLD_CERTIFICATE),
-        "T025_PROOF_URL": repo_file(THRESHOLD_PROOF),
-        "T025_CLAIM_URL": repo_file(T025_CLAIM),
+        "T025_CERT_URL": repo_url(THRESHOLD_CERTIFICATE),
+        "T025_PROOF_URL": repo_url(THRESHOLD_PROOF),
+        "T025_CLAIM_URL": repo_url(T025_CLAIM),
         "T026_FINE_B": frac_inline_tex(current.fine_square_side),
         "T026_TOTAL_BUDGET": decimal_or_rational(current.fine_total_budget),
         "T026_TOTAL_DEC": truncated(current.fine_total_budget),
@@ -2314,11 +2270,11 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T026_HALF_GAP": frac_inline_tex(current.fine_half_gap),
         "T026_NORMALIZATION": frac_inline_tex(current.normalization),
         "T026_FACTOR": current.dilation_factor_tex,
-        "T026_CERT_URL": repo_file(THRESHOLD_FINE_CERTIFICATE),
-        "T026_PROOF_URL": repo_file(THRESHOLD_CASE / "t-026-dilation-limit-proof.md"),
-        "T026_CLAIM_URL": repo_file(T026_CLAIM),
-        "T026_REVIEW_URL": repo_file(T026_REVIEW),
-        "T026_RECORD_URL": repo_file(CURRENT_BOUND_RECORD),
+        "T026_CERT_URL": repo_url(THRESHOLD_FINE_CERTIFICATE),
+        "T026_PROOF_URL": repo_url(THRESHOLD_CASE / "t-026-dilation-limit-proof.md"),
+        "T026_CLAIM_URL": repo_url(T026_CLAIM),
+        "T026_REVIEW_URL": repo_url(T026_REVIEW),
+        "T026_RECORD_URL": repo_url(CURRENT_BOUND_RECORD),
         "NUMBER_LINE_MARKS": number_line_marks(facts, headline, current),
         "VERIFIED_LOWER_DEC": verified.decimal,
         "VERIFIED_SOURCE": verified.credit,
@@ -2450,11 +2406,11 @@ def certificate_substitutions(facts: Facts, *, default: Facts, toggle: str) -> d
         "BEST_SOURCE": BEST_SOURCE,
         "BEST_URL": BEST_URL,
         "DEFAULT_L_FRAC": f"{default.outer_side.numerator}/{default.outer_side.denominator}",
-        "CERT_URL": repo_file(facts.source),
-        "RENDERER_URL": repo_file(Path(__file__).resolve()),
-        "VERIFIER_URL": repo_file(VERIFIER),
-        "GENERATOR_URL": repo_file(GENERATOR),
-        "THIRDPARTY_URL": repo_file(THIRDPARTY),
+        "CERT_URL": repo_url(facts.source),
+        "RENDERER_URL": repo_url(Path(__file__).resolve()),
+        "VERIFIER_URL": repo_url(VERIFIER),
+        "GENERATOR_URL": repo_url(GENERATOR),
+        "THIRDPARTY_URL": repo_url(THIRDPARTY),
         "GAP_NOW": truncated(gap_now, tex=True),
         "GAP_BEFORE": truncated(gap_before, tex=True),
         "HALVING_B_DROP": halving_b,

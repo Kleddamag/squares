@@ -20,9 +20,10 @@ from devtools.check_published_site import (
     pdf_pages,
     repository_links,
 )
-from devtools.render_explainer import COMPOSITE_ASSETS, MARKDOWN_OUTPUT, PAGE_URL, REPO_URL
+from devtools.render_explainer import COMPOSITE_ASSETS, MARKDOWN_OUTPUT, PAGE_URL
 from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, RepositoryTree
 from sqpack.release import PUBLICATION_EDITION
 
 #: A page's text linking into the repository four ways: from markup, from Markdown, from plain
@@ -36,6 +37,12 @@ REPOSITORY_LINKS = (
 )
 
 COMMIT = "0123456789abcdef0123456789abcdef01234567"
+
+#: The tree `main` holds at the deploy: every path a fixture page links on `main`.
+TREE = RepositoryTree(
+    files=frozenset({"README.md", *(f"packing/{name}.md" for name in SITE_PAGES)}),
+    directories=frozenset({"", "packing"}),
+)
 
 Fetch = Callable[..., tuple[int, bytes]]
 
@@ -54,14 +61,14 @@ def source_receipt(page: bytes) -> bytes:
 def page(
     canonical: str,
     *,
-    commit: str = COMMIT,
+    ref: str = DEFAULT_BRANCH,
     stamp: str = PUBLICATION_EDITION,
     link: str = "README.md",
 ) -> bytes:
     """A served page as the check reads one: a canonical link, the stamp, a repository link."""
     return (
         f'<link rel="canonical" href="{canonical}">'
-        f'<p>({stamp})</p><a href="{REPO_URL}/blob/{commit}/{link}">Repository</a>'
+        f'<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>'
     ).encode()
 
 
@@ -113,6 +120,11 @@ def failures(
     browser: bool = False,
 ) -> list[str]:
     monkeypatch.setattr(check_published_site, "fetch", fetch)
+    monkeypatch.setattr(
+        check_published_site,
+        "repository_tree",
+        lambda commit: TREE if commit == COMMIT else None,
+    )
     return [
         line
         for passed, line in check_published_site.check(site, COMMIT, timeout=1, browser=browser)
@@ -218,27 +230,61 @@ def test_check_requires_each_page_to_name_its_own_canonical_url(
     assert any("index.html names canonical URL None" in line for line in found), found
 
 
-def test_check_requires_every_page_to_link_the_build_commit(
+def test_check_refuses_a_repository_link_pinned_to_a_commit(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """A `blob/main/` link on any page names whatever `main` is when a reader clicks.
+    """A link to the commit a page was built from 404s once a squash merge leaves that
+    commit on no branch, so every page, full hash or short, is held to `main`.
 
-    Every page is held to the commit; only the overview, the frontier atlas and the
-    explainer have each link asked of GitHub.
+    Only the overview, the frontier atlas and the explainer have each link asked of
+    GitHub as well.
     """
     for name in SITE_PAGES:
-        drifting = page(render_overview.canonical_url(name), commit="main")
-        found = failures(monkeypatch, fake_site(site_pages(**{name: drifting})))
-        assert found == [f"{name}: repository links name ['main'] against expected {COMMIT}"], (
-            name
-        )
+        for ref in (COMMIT, COMMIT[:8]):
+            pinned = page(render_overview.canonical_url(name), ref=ref)
+            found = failures(monkeypatch, fake_site(site_pages(**{name: pinned})))
+            url = f"{REPO_URL}/blob/{ref}/README.md"
+            assert found == [f"{name}: 1 repository links pinned to a commit: [{url!r}]"], (
+                name,
+                found,
+            )
 
     requested: list[str] = []
     assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
-    asked = {url.removeprefix(f"{REPO_URL}/blob/{COMMIT}/") for url in requested}
+    asked = {url.removeprefix(f"{REPO_URL}/blob/{DEFAULT_BRANCH}/") for url in requested}
     for name in SITE_PAGES:
         assert (f"packing/{name}.md" in asked) == (name in LINK_CHECKED_PAGES), name
     assert "README.md" in asked, "the explainer's links are still asked"
+
+
+def test_check_requires_every_path_linked_on_main_to_be_in_the_commit(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A path on `main` that the deployed commit's tree lacks is a 404 from the start."""
+    for name in SITE_PAGES:
+        gone = page(render_overview.canonical_url(name), link="packing/gone.md")
+        found = failures(monkeypatch, fake_site(site_pages(**{name: gone})))
+        assert found == [
+            f"{name}: linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
+        ], name
+
+
+def test_check_fails_when_the_commit_tree_cannot_be_read(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def unreadable(commit: str) -> RepositoryTree:
+        raise SystemExit(f"git ls-tree {commit} failed")
+
+    monkeypatch.setattr(check_published_site, "fetch", fake_site(site_pages()))
+    monkeypatch.setattr(check_published_site, "repository_tree", unreadable)
+    found = [
+        line
+        for passed, line in check_published_site.check(
+            "https://example.org", COMMIT, timeout=1, browser=False
+        )
+        if not passed
+    ]
+    assert found == [f"the tree of {COMMIT} cannot be read here: git ls-tree {COMMIT} failed"]
 
 
 def test_check_rejects_a_deployed_pdf_that_crossed_a_page_boundary(

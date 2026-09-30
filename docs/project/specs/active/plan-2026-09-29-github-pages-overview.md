@@ -268,8 +268,10 @@ shared `grouped_results()`.
 | Records | the case file (or the frontier atlas filtered to the scope, for ranges such as `18–95`), each `evidence` entry at its line in `evidence.yaml`, the entry’s line in `results.yaml`, `review_artifact` where set, and the retained source copy through the evidence entry’s `certificate` or `proof.source` path |
 
 The expanded row adds `composition`, `next_rung`, `artifacts` and `controls`, each
-linked. Every repository link is a permalink at the build commit, which
-`check_published_site` already requires.
+linked. Every repository link names `main` (`devtools/repo_links.py`); the deployed-site
+check refuses one pinned to a commit hash.
+Amended 2026-09-30: build-commit permalinks 404ed once a squash merge left the commit on
+no branch.
 
 Behaviour: the table works with JavaScript off (all rows present, `<details>` for
 expansion). A small script adds sorting by column and filters by source, `n` and `C`
@@ -332,14 +334,15 @@ regular expression over the Markdown, which would also match `](` inside code sp
 - a link to another rendered document (`README.md#…`, `SYNOPSIS.md#…`, `TUTORIAL.md#…`)
   becomes the site page (`README.md` maps to the overview, with a fallback to the
   repository for README-only anchors);
-- any other relative link becomes a permalink at the build commit, `blob/` or `tree/`
-  according to whether the target is a file or a directory;
-- images under the repository become raw-file permalinks, or served assets when they
+- any other relative link becomes its link on `main`, `blob/` or `tree/` according to
+  whether the target is a file or a directory (amended 2026-09-30, formerly a permalink
+  at the build commit);
+- images under the repository become raw files on `main`, or served assets when they
   already are.
 
 The synopsis has 1,655 relative links to 1,143 targets.
-They are checked offline, against the build commit’s git objects (`git ls-tree` and
-`git cat-file -e`), and kpress’s `broken_anchor` diagnostic is raised to a failure.
+They are checked offline, against the rendered commit’s tree (`git ls-tree`), which is
+`main` at the deploy, and kpress’s `broken_anchor` diagnostic is raised to a failure.
 `check_published_site`’s per-link HTTP check stays on the overview and frontier pages
 only, so the deployed-site check does not send over a thousand requests to GitHub.
 

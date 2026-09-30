@@ -11,6 +11,7 @@ import pytest
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
+from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
 from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
 
@@ -127,44 +128,33 @@ def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     assert not re.search(r"(?<![\w\\])\$[^$\s][^$<]*\$", article)
 
 
-def test_every_record_link_is_a_permalink_or_a_site_page() -> None:
+def test_every_record_link_is_on_main_or_a_site_page() -> None:
     for result in overview_data.load().results:
         for link in result.records:
             assert (
-                link.url.startswith(render_overview.REPO_URL + "/blob/")
+                link.url.startswith(f"{REPO_URL}/blob/{DEFAULT_BRANCH}/")
                 or link.url == "frontier.html"
             ), (result.id, link)
-            assert "/blob/main/" not in link.url, (result.id, link)
 
 
-def test_every_repository_link_on_the_page_names_the_build_commit(page: str) -> None:
-    """The deployed-site check requires one ref across the page, the commit it was built
-    at, besides the "On GitHub" links, which name the default branch.
+def test_every_repository_link_on_the_page_names_main(page: str) -> None:
+    """The deployed-site check refuses a repository link pinned to a commit: every one
+    names `main`, the prose's `repo:` links and the "On GitHub" links alike."""
+    from devtools.check_published_site import repository_links  # noqa: PLC0415
 
-    The template's prose linked `epistemics.md` at `blob/main/`, which that check would
-    have failed on the first deploy; this asks the same question of the render here.
-    """
-    from devtools.check_published_site import branch_links, repository_links  # noqa: PLC0415
-    from devtools.render_explainer import link_revision  # noqa: PLC0415
-
-    links = repository_links(page) - branch_links(page)
+    assert not hash_pinned_links(page)
+    links = repository_links(page)
     assert links
-    assert {ref for _, ref, _ in links} == {link_revision()}
+    assert {ref for _, ref, _ in links} == {DEFAULT_BRANCH}
 
 
 def test_on_github_links_open_the_latest_version() -> None:
-    """Each "On GitHub" link names the default branch, and only those do."""
+    """Each document card and rubric card has an "On GitHub" link on `main`."""
     page = render_overview.overview_page().html
-    branch = f"{render_overview.REPO_URL}/blob/{render_overview.DEFAULT_BRANCH}/"
+    branch = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/"
     also = re.findall(r'<a class="site-popover-also" href="([^"]+)"[^>]*>On GitHub</a>', page)
     assert len(also) == len(overview_sections.DOCUMENTS) + len(overview_sections.DIMENSIONS)
     assert all(url.startswith(branch) for url in also)
-    assert page.count(branch) == len(also)
-
-    from devtools.check_published_site import branch_links  # noqa: PLC0415
-
-    assert {ref for _, ref, _ in branch_links(page)} == {render_overview.DEFAULT_BRANCH}
-    assert len(branch_links(page)) == len(set(also))
 
 
 def test_other_projects_include_every_source_repository_the_record_reviews() -> None:
@@ -304,9 +294,9 @@ def test_every_small_label_is_one_chip(name: str) -> None:
     assert "site-status-proved" not in html
 
 
-def test_the_prose_links_repository_files_at_the_build_commit(page: str) -> None:
-    """Every `repo:` link in the template becomes a permalink to a file that exists."""
-    from devtools.render_explainer import REPO, repo_file  # noqa: PLC0415
+def test_the_prose_links_repository_files_on_main(page: str) -> None:
+    """Every `repo:` link in the template becomes a link on `main` to a file that exists."""
+    from devtools.render_explainer import REPO  # noqa: PLC0415
 
     article = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     paths = re.findall(r'(?:\]\(|href=")repo:([^)"\s#]+)', article)
@@ -314,7 +304,7 @@ def test_the_prose_links_repository_files_at_the_build_commit(page: str) -> None
     assert 'href="repo:' not in page
     for path in paths:
         assert (REPO / path).exists(), path
-        assert f'href="{repo_file(REPO / path)}"' in page, path
+        assert f'href="{repo_url(path)}"' in page, path
 
 
 # ---------- What the page shares with the register's views (think-o0om) ----------

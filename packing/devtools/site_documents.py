@@ -9,17 +9,16 @@ do not exist, so each one is rewritten in the rendered HTML, never in the Markdo
 where a pattern would also match `](` inside a code span:
 
 - a link to another rendered document becomes its page, anchor kept;
-- any other relative link becomes a permalink at the build commit, `blob/` for a file
-  and `tree/` for a directory, and an image becomes its raw-file permalink.
+- any other relative link becomes the file's link on `main`, `blob/` for a file and
+  `tree/` for a directory, and an image becomes its raw file on `main`, all through
+  `repo_links`, the one place the site's repository links are made.
 
 A relative link is resolved against the document's own directory, as GitHub resolves
-it. Every rewritten repository target is checked against the build commit's tree, read
-once with `git ls-tree`, and every anchor into a page against the ids the target page
-actually has. A target that does not resolve fails the render with the whole list, so a
-broken link is found when the page is built rather than by a reader.
-
-The build commit is `render_explainer.link_revision()`, the same commit the explainer's
-repository links name.
+it. Every rewritten repository target is checked against the tree being rendered, which
+is the tree `main` holds when the site deploys, read once from git, and every anchor
+into a page against the ids the target page actually has. A target that does not
+resolve fails the render with the whole list, so a broken link is found when the page is
+built rather than by a reader.
 """
 
 from __future__ import annotations
@@ -27,18 +26,16 @@ from __future__ import annotations
 import html
 import posixpath
 import re
-import subprocess
 from dataclasses import dataclass, field
 from functools import cache
 from pathlib import Path
 from urllib.parse import quote, unquote
 
-from devtools import render_overview
-from devtools.render_overview import REPO, REPO_URL, Page
+from devtools import render_overview, repo_links
+from devtools.render_overview import REPO, Page
+from devtools.repo_links import RepositoryTree, repo_url, repository_tree
 
-TUTORIAL = REPO / "TUTORIAL.md"
-
-RAW_URL = "https://raw.githubusercontent.com/jlevy/squares"
+TUTORIAL = REPO / repo_links.TUTORIAL
 
 
 @dataclass(frozen=True)
@@ -68,49 +65,49 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
         "result here is checked.",
     ),
     _document(
-        "README.md",
+        repo_links.README,
         "readme.html",
         "The Squares Project",
         "What the project is, how it works, and where to start.",
     ),
     _document(
-        "SYNOPSIS.md",
+        repo_links.SYNOPSIS,
         "synopsis.html",
         "Synopsis",
         "The full research record: methods, claims and status.",
     ),
     _document(
-        "packing/frontier/RESULTS.md",
+        repo_links.RESULTS,
         "results.html",
         "Results",
         "Every registered result with its rungs.",
     ),
     _document(
-        "packing/frontier/STATUS.md",
+        repo_links.STATUS,
         "status.html",
         "The Frontier",
         "Every case to 324, with provenance.",
     ),
     _document(
-        "epistemics.md",
+        repo_links.EPISTEMICS,
         "epistemics.html",
         "Epistemics",
         "How each result is verified, confirmed and scored.",
     ),
     _document(
-        "conventions.md",
+        repo_links.CONVENTIONS,
         "conventions.html",
         "Conventions",
         "Record formats, identifiers and naming.",
     ),
     _document(
-        "development.md",
+        repo_links.DEVELOPMENT,
         "development.html",
         "Development",
         "Building, testing and validating the code.",
     ),
     _document(
-        "defects.md",
+        repo_links.DEFECTS,
         "defects.html",
         "Defect Log",
         "Every defect found in the toolchain, one line each.",
@@ -127,65 +124,9 @@ _ID_ATTR = re.compile(r'\s(?:id|name)="([^"]*)"')
 _EXTERNAL = re.compile(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//)")
 
 
-@dataclass(frozen=True)
-class RepositoryTree:
-    """The build commit's tracked files and directories, the root as `""`, and its
-    submodules: each path with the repository and commit it pins."""
-
-    files: frozenset[str]
-    directories: frozenset[str]
-    submodules: dict[str, tuple[str, str]] = field(default_factory=dict)
-
-
-def _ls_tree(revision: str, *flags: str) -> frozenset[str]:
-    found = subprocess.run(
-        ("git", "ls-tree", "-r", *flags, "--name-only", "-z", revision),
-        cwd=REPO,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if found.returncode != 0:
-        raise SystemExit(f"git ls-tree {revision} failed: {found.stderr.strip()}")
-    return frozenset(name for name in found.stdout.split("\0") if name)
-
-
-def _submodules(revision: str) -> dict[str, tuple[str, str]]:
-    """Each submodule at `revision`: its path, its repository's URL and pinned commit."""
-    listed = subprocess.run(
-        ("git", "config", "--blob", f"{revision}:.gitmodules", "--get-regexp", "url"),
-        cwd=REPO,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    found: dict[str, tuple[str, str]] = {}
-    for line in listed.stdout.splitlines():
-        key, _, url = line.partition(" ")
-        path = key.removeprefix("submodule.").removesuffix(".url")
-        entry = subprocess.run(
-            ("git", "ls-tree", revision, path),
-            cwd=REPO,
-            capture_output=True,
-            text=True,
-            check=False,
-        ).stdout.split()
-        if len(entry) >= 3 and entry[1] == "commit":
-            found[path] = (url.removesuffix(".git"), entry[2])
-    return found
-
-
-@cache
-def repository_tree(revision: str) -> RepositoryTree:
-    """Every file and directory at `revision`, and its submodules."""
-    return RepositoryTree(
-        _ls_tree(revision), _ls_tree(revision, "-d") | {""}, _submodules(revision)
-    )
-
-
 @dataclass
 class LinkReport:
-    """What the rewrite found: targets missing at the commit and anchors with no id."""
+    """What the rewrite found: targets missing from the tree and anchors with no id."""
 
     missing: list[str] = field(default_factory=list)
     #: (target page, anchor, as written): checked once every page is rendered.
@@ -194,11 +135,10 @@ class LinkReport:
 
 @dataclass(frozen=True)
 class LinkContext:
-    """What a rewrite needs: the page's own name, the commit and its tree, and where the
-    document sits."""
+    """What a rewrite needs: the page's own name, the tree its links must exist in, and
+    where the document sits."""
 
     page: str
-    revision: str
     tree: RepositoryTree
     #: The document's directory in the repository, `""` at the root: what its relative
     #: links are relative to.
@@ -211,20 +151,19 @@ class LinkContext:
     aliases: dict[str, str] = field(default_factory=dict)
 
 
-def _permalink(path: str, fragment: str, *, tag: str, context: LinkContext) -> str | None:
-    """A file's or directory's permalink at the build commit; `None` if it has neither."""
-    quoted = quote(path, safe="/")
+def _repository_link(path: str, fragment: str, *, tag: str, context: LinkContext) -> str | None:
+    """A file's or directory's link on `main`; `None` if the tree has neither."""
     if path in context.tree.files:
         if tag == "img":
-            return f"{RAW_URL}/{context.revision}/{quoted}"
-        return f"{REPO_URL}/blob/{context.revision}/{quoted}{fragment}"
+            return repo_url(path, kind="raw")
+        return repo_url(path, fragment, kind="blob")
     if path in context.tree.directories:
-        suffix = f"/{quoted}" if quoted else ""
-        return f"{REPO_URL}/tree/{context.revision}{suffix}{fragment}"
+        return repo_url(path, fragment, kind="tree")
     for root, (url, commit) in context.tree.submodules.items():
         if path.startswith(root + "/"):
-            # Inside a submodule: its own repository at the commit this one pins. The
-            # file is not in this tree to check, so it is linked as the pin names it.
+            # Inside a submodule: its own repository at the commit this one pins, since a
+            # vendored file is only known to exist at the pin. That is another
+            # repository's permalink, not one of this repository's.
             inner = quote(path.removeprefix(root + "/"), safe="/")
             return f"{url}/blob/{commit}/{inner}{fragment}"
     return None
@@ -238,7 +177,8 @@ def rewrite_link(url: str, *, tag: str, context: LinkContext, report: LinkReport
     target, _, anchor = url.partition("#")
     if not url or url.startswith("#") or _EXTERNAL.match(url) or target in context.served:
         return url
-    relative = unquote(target.split("?", 1)[0]) if target else "."
+    target, _, query = target.partition("?")
+    relative = unquote(target) if target else "."
     path = posixpath.normpath(posixpath.join(context.base, relative))
     path = "" if path == "." else path
     fragment = f"#{anchor}" if anchor else ""
@@ -255,7 +195,10 @@ def rewrite_link(url: str, *, tag: str, context: LinkContext, report: LinkReport
         link = (
             None
             if path.startswith("../") or path == ".."
-            else _permalink(path, fragment, tag=tag, context=context)
+            # A query is GitHub's (`?plain=1` before a `#L12` line anchor), so it is kept.
+            else _repository_link(
+                path, (f"?{query}" if query else "") + fragment, tag=tag, context=context
+            )
         )
     if link is None:
         report.missing.append(url)
@@ -293,11 +236,11 @@ def element_ids(page: str) -> frozenset[str]:
 
 
 def render_document(
-    document: SiteDocument, *, revision: str, tree: RepositoryTree, report: LinkReport
+    document: SiteDocument, *, tree: RepositoryTree, report: LinkReport
 ) -> Page:
     """One reader document as a kpress page with its links rewritten."""
     base = posixpath.dirname(document.source.relative_to(REPO).as_posix())
-    context = LinkContext(document.name, revision, tree, base)
+    context = LinkContext(document.name, tree, base)
     return render_overview.kpress_page(
         document.source.read_text(encoding="utf-8"),
         name=document.name,
@@ -316,7 +259,7 @@ def render_document(
 def unresolved(pages: dict[str, Page], report: LinkReport) -> list[str]:
     """Every link the render could not resolve, missing files and anchors together."""
     ids = {name: element_ids(page.html) for name, page in pages.items()}
-    problems = [f"no such path at the build commit: {url}" for url in report.missing]
+    problems = [f"no such path in the tree: {url}" for url in report.missing]
     problems += [
         f"no heading #{anchor} in {name}: {url}"
         for name, anchor, url in report.anchors
@@ -328,15 +271,9 @@ def unresolved(pages: dict[str, Page], report: LinkReport) -> list[str]:
 @cache
 def site_documents() -> dict[str, Page]:
     """Every reader document, rendered once and checked together."""
-    from devtools.render_explainer import link_revision  # noqa: PLC0415
-
-    revision = link_revision()
-    tree = repository_tree(revision)
+    tree = repository_tree()
     report = LinkReport()
-    pages = {
-        doc.name: render_document(doc, revision=revision, tree=tree, report=report)
-        for doc in DOCUMENTS
-    }
+    pages = {doc.name: render_document(doc, tree=tree, report=report) for doc in DOCUMENTS}
     problems = unresolved(pages, report)
     if problems:
         listing = "\n  ".join(problems)

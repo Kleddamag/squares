@@ -31,7 +31,6 @@ from pathlib import Path
 
 from devtools import render_results
 from devtools.migrate_math import classify
-from devtools.render_explainer import repo_file
 from devtools.render_recent_results import (
     RecentCounts,
     Row,
@@ -41,6 +40,7 @@ from devtools.render_recent_results import (
     standing,
 )
 from devtools.render_research_tables import load_cases
+from devtools.repo_links import repo_url
 from devtools.result_credit import credit_line
 from devtools.significance import headline as first_sentence
 from sqpack.yamlio import safe_load
@@ -160,7 +160,7 @@ def tex_bounds(text: str) -> str:
 
 
 def _line_of(path: Path, needle: str) -> int:
-    """The 1-based line of the first line containing `needle`, for a permalink anchor."""
+    """The 1-based line of the first line containing `needle`, for a line anchor."""
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         if needle in line:
             return number
@@ -168,8 +168,9 @@ def _line_of(path: Path, needle: str) -> int:
 
 
 def line_link(path: Path, needle: str) -> str:
-    """A permalink to the line of `path` where `needle` first appears."""
-    return f"{repo_file(path)}?plain=1#L{_line_of(path, needle)}"
+    """A link on `main` to the line of `path` where `needle` first appears, as it is
+    in the tree the page is rendered from."""
+    return f"{repo_url(path)}?plain=1#L{_line_of(path, needle)}"
 
 
 @dataclass(frozen=True)
@@ -302,7 +303,7 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
         links.append(Link(f"{len(scope['n_values'])} cases", "frontier.html"))
     elif "n_values" in scope:
         links.extend(
-            Link(f"n = {n}", repo_file(FRONTIER / f"n-{n:03d}.md")) for n in scope["n_values"]
+            Link(f"n = {n}", repo_url(FRONTIER / f"n-{n:03d}.md")) for n in scope["n_values"]
         )
     else:
         links.append(Link(f"n = {scope['n_min']}{EN_DASH}{scope['n_max']}", "frontier.html"))
@@ -323,10 +324,10 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
         ):
             if path and path not in seen and (resolved := _repo_path(path)) is not None:
                 seen.add(path)
-                extra.append(Link(label, repo_file(resolved), path))
+                extra.append(Link(label, repo_url(resolved), path))
     review = record.get("review_artifact")
     if review and review not in seen and (resolved := _repo_path(review)) is not None:
-        extra.append(Link("review", repo_file(resolved), review))
+        extra.append(Link("review", repo_url(resolved), review))
     extra.sort(key=lambda link: link.label == "review")
     for label in ("source", "review"):
         same = [i for i, link in enumerate(extra) if link.label == label]

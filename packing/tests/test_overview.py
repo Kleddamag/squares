@@ -112,7 +112,8 @@ def test_the_page_fetches_nothing(page: str) -> None:
 def test_the_bar_leads_with_case_11_beside_the_name(page: str) -> None:
     """The bar's home link carries case 11, the tab's icon, in the bar's own ink."""
     link = page.split('<a class="site-name"', 1)[1].split("</a>", 1)[0]
-    assert '<svg class="site-logo" aria-hidden="true"' in link
+    assert '<svg class="site-logo" ' in link
+    assert 'aria-hidden="true"' in link.split("<svg", 1)[1].split(">", 1)[0]
     assert '<span class="site-name-text">Square Packing</span>' in link
     assert render_overview.site_logo() in link
 
@@ -854,3 +855,23 @@ def test_section_headings_share_one_space_above() -> None:
     shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
     for css in (render_overview.SITE_CSS.read_text(encoding="utf-8"), shell):
         assert "margin-block: var(--paper-section-space) 1.3rem;" in css
+
+
+def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
+    """The logo and the favicon draw case 11's container as one whole pixel at the size
+    each is shown, with its outer edge on the drawing's edge: (200 + w) / px = w."""
+    from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
+
+    for px in (render_overview.SITE_LOGO_PX, render_overview.FAVICON_PX):
+        svg = packing_svg(11, units=200, frame_px=px)
+        view = re.search(r'viewBox="([^"]+)"', svg)
+        stroke = re.search(r'<rect [^>]*stroke-width="([\d.]+)"', svg)
+        assert view is not None
+        assert stroke is not None
+        box = [float(v) for v in view.group(1).split()]
+        width = float(stroke.group(1))
+        assert box[2] / px == pytest.approx(width, abs=1e-3)
+        assert box[0] == pytest.approx(-width / 2, abs=1e-3)
+        assert 'shape-rendering="crispEdges"' in svg
+    assert "block-size: 18px;" in render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert render_overview.SITE_LOGO_PX == 18

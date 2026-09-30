@@ -95,10 +95,12 @@
   display: inline-flex;
   gap: 0.45rem;
 }
+/* 18px, whole pixels, the size `render_overview.SITE_LOGO_PX` draws its one-pixel frame
+   for, so the container's outline is one crisp pixel (two on a 2x screen). */
 .site-nav .site-logo {
-  block-size: 1.15em;
+  block-size: 18px;
   flex: none;
-  inline-size: 1.15em;
+  inline-size: 18px;
 }
 .site-nav .site-name:is(:hover, :focus-visible) {
   color: var(--kpress-doc-text);

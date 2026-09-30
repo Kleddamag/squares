@@ -341,16 +341,21 @@ def visualize_tabs(current: str, *, root: str = "") -> str:
     return f'<nav class="site-tabs" aria-label="Visualize">{links}</nav>'
 
 
+#: The logo's size in the bar and the icon's in a tab, in CSS pixels: whole pixels, so
+#: each drawing's one-pixel frame (`packing_svg(frame_px=)`) lands on the pixel grid.
+#: `site-nav.css` sets the logo to the same size.
+SITE_LOGO_PX = 18
+FAVICON_PX = 16
+
+
 @cache
 def site_logo() -> str:
     """The site's mark beside its name in the bar: case 11, the drawing the tab's icon
     is, in the bar's own ink so it turns over with the theme."""
     from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
 
-    svg = packing_svg(11, units=200)
-    return svg.replace(
-        "<svg ", '<svg class="site-logo" aria-hidden="true" focusable="false" ', 1
-    )
+    svg = packing_svg(11, units=200, frame_px=SITE_LOGO_PX)
+    return svg.replace("<svg ", '<svg class="site-logo" ', 1)
 
 
 @cache
@@ -360,7 +365,7 @@ def favicon_html() -> str:
     colour to inherit."""
     from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
 
-    svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff")
+    svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff", frame_px=FAVICON_PX)
     svg = svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ', 1)
     return f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{quote(svg)}">'
 

@@ -232,14 +232,21 @@ def thumbnail_svg(n: int) -> str:
 
 
 def packing_svg(
-    n: int, *, units: int = 100, ink: str = "currentColor", paper: str = "none"
+    n: int,
+    *,
+    units: int = 100,
+    ink: str = "currentColor",
+    paper: str = "none",
+    frame_px: int | None = None,
 ) -> str:
     """Case `n`'s atlas drawing as a bare `<svg>`: the frame and each square's outline at
     whole units of a `units`-wide frame, drawn in `ink` on `paper`.
 
     A table cell needs 100 units; a drawing shown large needs more, or the rounding shows
     as uneven gaps. A drawing used outside the page, where `currentColor` means nothing,
-    names its ink.
+    names its ink. An icon drawn `frame_px` pixels square (the site's logo and favicon)
+    gets a frame exactly one of those pixels wide, its outer edge on the drawing's edge,
+    so the container reads as a square at icon size and lands on the pixel grid.
     """
     source = (RENDERINGS / f"n-{n:03d}.svg").read_text(encoding="utf-8")
     frame = re.search(
@@ -270,11 +277,20 @@ def packing_svg(
     unit = Decimal(units) / 100
     box = f"{-unit:g} {-unit:g} {units + 2 * unit:g} {units + 2 * unit:g}"
     frame_width = (Decimal("1.2") * unit).normalize()
+    crisp = ""
+    if frame_px is not None:
+        # One pixel of a `frame_px`-pixel drawing whose box is the frame plus half its
+        # stroke on each side: (units + w) / frame_px = w.
+        pixel = Decimal(units) / (frame_px - 1)
+        half = pixel / 2
+        box = f"{-half:.4f} {-half:.4f} {units + pixel:.4f} {units + pixel:.4f}"
+        frame_width = pixel.quantize(Decimal("0.0001"))
+        crisp = ' shape-rendering="crispEdges"'
     line_width = (Decimal("0.6") * unit).normalize()
     return (
         f'<svg viewBox="{box}" aria-hidden="true" focusable="false">'
         f'<rect x="0" y="0" width="{units}" height="{units}" fill="{paper}" '
-        f'stroke="{ink}" stroke-width="{frame_width:f}"/><g stroke="{ink}" '
+        f'stroke="{ink}" stroke-width="{frame_width:f}"{crisp}/><g stroke="{ink}" '
         f'stroke-width="{line_width:f}" stroke-linejoin="round">{body}</g></svg>'
     )
 

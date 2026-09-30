@@ -236,8 +236,8 @@ it.
   same on every page, the explainer and the workbench included, led by the site name,
   “Square Packing”, set in capitals by CSS (`text-transform`, lightly tracked) so its
   text is unchanged, and a step heavier.
-  Case 11, the site’s icon, sits before the name as its mark, at 1.15 times the bar’s
-  text, inside the same link, so it takes the same hover.
+  Case 11, the site’s icon, sits before the name as its mark, 18px square, inside the
+  same link, so it takes the same hover.
   Narrower than 56rem, where the bar with the name would wrap, the name gives way and
   the mark alone leads home, labelled “Square Packing home” for a screen reader.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
@@ -332,7 +332,11 @@ it.
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
   fill. The icon is case 11, the central open case, in the atlas ink on white, inlined as
   a data URI on every page, the workbench included; the same drawing is the mark in the
-  navigation bar, drawn there in the bar’s ink.
+  navigation bar, drawn there in the bar’s ink, so it is light in dark mode.
+  In both, the container’s frame is exactly one pixel of the drawing at its size (16px
+  in a tab, 18px in the bar; `packing_svg(frame_px=)`), its outer edge on the drawing’s
+  edge and snapped to the pixel grid, so the container reads as a square: one crisp
+  pixel on a 1x screen, two on a 2x screen.
   The homepage’s hero is case 53, centered under the title in the page’s ink and linked
   to its row in the frontier atlas.
 

@@ -9,7 +9,7 @@ author: Claude (agent), for the repository owner
 
 **Author:** Claude (agent), for the repository owner
 
-**Status:** Revised and reviewed; the rebuild has not started
+**Status:** Revised, reviewed and approved by the owner on 2026-09-30; in implementation
 
 **Tracking:** `think-xjq4` (epic) and its child beads
 
@@ -40,6 +40,8 @@ This revision:
   [synopsis of the research documents](#research-documents);
 - folds in an adversarial review of the revision against the code at the baseline (see
   [Technical Review](#technical-review));
+- records the owner’s answers to its open questions (see
+  [Owner Decisions](#owner-decisions-of-30-september-2026));
 - requires the implementation branch to be pushed at every slice boundary.
   A branch push runs no Pages deploy (see [Non-Goals](#non-goals)), so reviewing a
   preview before deploying never required keeping the work local.
@@ -340,19 +342,35 @@ Sections, top to bottom:
    project’s and others’, with the rung definitions from `epistemics.md`. Beside them,
    the atlas totals: how many of the hundred cases are proved, how many remain open, and
    how many carry a recent verified lower bound.
-6. **The Atlas and Its Films.** Two preview images side by side, `n = 1…100` and
-   `n = 1…324`, each linking to its PDF; below them, the two film posters side by side,
-   each linking to its MP4. The captions give the page size or duration, the file size,
-   and the edition each file carries.
-   [Published Media](#published-media) describes the files.
+6. **The Atlas and Its Film.** Two preview images side by side, `n = 1…100` and
+   `n = 1…324`, each linking to its PDF; below them, one embedded player for the full
+   `n = 1…324` ascent film, with native controls, `preload="none"`, its poster frame,
+   and no autoplay, and a link that opens the MP4 itself.
+   The `n = 1…100` film stays in the explainer and is not repeated here.
+   The captions give the page size or duration, the file size, and the edition each file
+   carries. [Published Media](#published-media) describes the files.
 7. **Results.** The full table, described [below](#the-results-table).
 8. **Read Further.** Page cards for the explainer (with its
    [edition note](#the-explainer-as-an-earlier-edition)), the tutorial, the frontier
    atlas and the Visualizer; then cards for the documents on GitHub and the research
    reports, described under [Research Documents](#research-documents).
-9. **Other Square Packing Projects.** A card for each GitHub project that
-   `source-coverage.yaml` records as a source, crediting its author as the bibliography
-   does, and linking the repository and the case records that cite it.
+9. **Other Square Packing Projects.** The notable websites and repositories on square
+   packing, one card per project or site, read from a registry of notable sources (see
+   [Data Changes](#data-changes)). It holds every reviewed source the research frontier
+   uses (the 20 entries `source-coverage.yaml` records at the baseline: releases from
+   ten GitHub repositories, Kingbird’s Squares in Squares catalogue and the UnitSquare
+   release), and the major websites and other notable repositories retained in the
+   literature archive’s Web Sources table: Friedman’s Packing Center and his dynamic
+   survey, Wikipedia’s overview, Burns’s and Massaccesi’s posts and Burns’s Squarl
+   pipeline, MacIver’s manuscripts, Mira’s, Fort’s and anabologyco-maker’s certificate
+   repositories, and Brandwijk’s capsule.
+   Each card credits its author as the bibliography or archive credits them, says in one
+   sentence what the source is, and links the source and its retained copy.
+   A card for a frontier source also lists its reviewed releases with their review
+   dates, marks those the record treats as superseded
+   (`disposition: superseded-covered`), and links the case records that cite it
+   (`represented_by`). The cards are grouped: websites and catalogues first, then
+   repositories.
 10. **Footer.** Edition, data revision, build commit, and the licence.
 
 **Drawings.** The hero, the favicon and the frontier thumbnails are generated at build
@@ -565,8 +583,8 @@ No per-file limit is documented for artifact deploys, so the first deploy is the
 measurement, and an oversize failure is answered by the web encode in the
 [open questions](#open-questions).
 Pages’ soft bandwidth limit is 100 GB a month, about 480 complete viewings of the
-`n = 1…324` film; the posters link rather than autoplay, so nothing is downloaded until
-a reader asks for it.
+`n = 1…324` film; its player has `preload="none"` and never autoplays, so nothing is
+downloaded until a reader presses play.
 
 The explainer’s `<video>` source, its download link and the caption’s link to the
 `n = 1…324` film, all in `templates/explainer-article.md`, move to the same-origin
@@ -577,8 +595,8 @@ and the release stays linked as the archive of record with its receipts.
 default), cut from the film by `workbench_tools.poster` at the step its receipt names.
 The `n = 1…324` poster is cut by the same tool with `--n 324 --out`, from that film’s
 receipt, and committed as `packages/workbench/assets/ascent-n1-324-poster.png`; it shows
-the whole atlas at the last step’s settled end.
-The play icon over each poster is drawn in CSS, not baked into the PNG.
+the whole atlas at the last step’s settled end, and is the overview player’s poster
+frame.
 
 **Editions on media.** The films and posters carry the stamp they were cut with
 (`v0.4.2-a48ad1`), which stays true of those files after later re-pins.
@@ -590,10 +608,11 @@ caption never claims a newer edition than the frames show.
 - A render test fails on any media `href` or `src` on the overview that is not
   site-relative: a release download, a `raw.githubusercontent.com` URL, or a `/blob/`
   URL to a PDF, MP4 or PNG.
-- After deploy, a media check requests one byte of every media file the overview links
-  and requires status 200 or 206, the exact `Content-Type` (`application/pdf`,
-  `video/mp4` or `image/png`), no `attachment` disposition, `accept-ranges: bytes` for
-  the films, and a total length equal to the pinned byte count.
+- After deploy, a media check requests one byte of every media file the overview and the
+  explainer link and requires status 200 or 206, the exact `Content-Type`
+  (`application/pdf`, `video/mp4` or `image/png`), no `attachment` disposition,
+  `accept-ranges: bytes` for the films, and a total length equal to the pinned byte
+  count.
 
 ### The Explainer as an Earlier Edition
 
@@ -744,6 +763,8 @@ explainer” at `../` to the overview.
   them.
 - `packing/resources/bibliography.yaml` and its schema: the `ai_assistance` field (see
   [Data Changes](#data-changes)).
+- `packing/resources/notable-sources.yaml`, its schema, and
+  `devtools/check_notable_sources.py`, run in `packing-validate`’s fast tiers.
 - `packing/devtools/check_results.py`: `READER_TIER` gains the overview template.
 - `.gitignore`: `packing/site-overview/`.
 - `.github/workflows/pages.yml` and its tests, in one change:
@@ -806,6 +827,18 @@ Outside `DATA_PATHS`, and so without a re-pin:
   statement has one structured home that the page, the table and the case-record tool
   all read.
 - the document map’s `summary` field, `PUBLISHED_FILMS`, and the second poster.
+- **`packing/resources/notable-sources.yaml`** (`NotableSources/v1`), the registry
+  behind Other Square Packing Projects: one entry per project or site, with `id`,
+  `title`, `kind` (`website`, `catalogue`, `release` or `repository`), `url`, the
+  bibliography or archive keys that credit it, the retained copy under
+  `packing/resources/web/`, the `source-coverage.yaml` ids it covers, and a one-sentence
+  `summary` that states no bound.
+  `check_notable_sources` fails when a `source-coverage.yaml` source belongs to no entry
+  or to two, when a credit key resolves nowhere, or when a retained copy is missing, so
+  a reviewed frontier source can never drop off the page.
+  The other entries start from the archive’s Web Sources table, which is the reviewed
+  list of retained websites and repositories, and the owner reviews the list in the
+  preview.
 
 Phase 3’s groups 2 and 4 change files under `packing/frontier/` (`RESULTS.md`,
 `STATUS.md`, case files’ bodies) that `DATA_EXCLUDED` does not exclude, so each is a
@@ -826,7 +859,7 @@ integration, commits and the beads.
 
 | Lane | Deliverable | Files it owns |
 | --- | --- | --- |
-| A. Data | `registered`, `ai_assistance`, `grouped_results()`, `overview_data.py` | `results.schema.yaml`, `results.yaml`, `bibliography.yaml` and its schema, `state_ai_assistance.py`, `check_results.py`, `render_results.py`, `significance.py`, `overview_data.py`, `test_overview_data.py` |
+| A. Data | `registered`, `ai_assistance`, the notable-sources registry, `grouped_results()`, `overview_data.py` | `results.schema.yaml`, `results.yaml`, `bibliography.yaml` and its schema, `notable-sources.yaml` and its schema, `check_notable_sources.py`, `state_ai_assistance.py`, `check_results.py`, `render_results.py`, `significance.py`, `overview_data.py`, `test_overview_data.py` |
 | B. Overview page and design system | the overview’s sections, cards, popovers, chips, nav, hero and favicon, `site-design.md` | the overview-page part of `render_overview.py`, `overview-article.md`, `site-nav.html`, `site.css`, `site-design.md`, `overview/*.js`, `tsconfig.overview.json`, `test_overview_page.py` |
 | C. Media | `PUBLISHED_FILMS`, the second poster, previews and drawings, the same-origin rule, the media check | `release.py`, the poster asset, `overview_media.py`, `published_media.py`, `test_overview_media.py` |
 | D. Other pages | the frontier atlas and tutorial pages, the explainer’s move, notice and film links, the document-map summaries | `site_pages.py`, `frontier-article.md`, `render_explainer.py`, `explainer-article.md`, `explainer-shell.html`, `build_site.py`, `document-map.*`, `check_documentation.py`, `test_site_pages.py` |
@@ -844,6 +877,8 @@ The branch is pushed at the end of every slice.
   `DATA_REVISION` re-pin
 - [ ] Bibliography field `ai_assistance`, backfilled from `STATEMENTS`, which then reads
   it
+- [ ] The notable-sources registry, its schema and `check_notable_sources`, populated
+  from `source-coverage.yaml` and the archive’s Web Sources table
 - [ ] `grouped_results()` and the public helpers from `render_results` and
   `significance`
 - [ ] `overview_data.py`: the typed model, with the statistics and Recent Results
@@ -993,27 +1028,23 @@ path.
    measures the artifact, and `verify-deployment` checks the live site, media types
    included.
 
+## Owner Decisions of 30 September 2026
+
+- **URL layout:** the overview takes the site root, and the explainer moves to
+  `/explainer.html` with fragment forwarding.
+- **The film on the overview:** no autoplay.
+  The overview shows the two atlas PDF previews and one embedded player for the full
+  `n = 1…324` film.
+- **Other projects:** every reviewed source the research frontier uses, as
+  `source-coverage.yaml` records them, and the major websites and other notable
+  repositories among the archive’s retained web sources.
+
 ## Open Questions
 
-- **URL layout.** The plan puts the overview at `/` and moves the explainer to
-  `/explainer.html` with fragment forwarding.
-  The alternative is to leave the explainer at `/` and put the overview at `/overview/`,
-  which keeps every existing link exact but does not give the site a front door.
-  Recommended: the plan as written.
-- **An autoplaying film.** The owner’s review of the first preview asked for the
-  `n = 1…324` film embedded and autoplaying muted (`think-tkxl`); the request of 30
-  September asks for posters linking to the films.
-  Autoplay streams the 206 MB film to every reader who stays on the page, against the
-  100 GB monthly soft limit.
-  Recommended: posters only; if an embed is wanted, autoplay the 38 MB `n = 1…100` film.
 - **A web encode of the `n = 1…324` film.** A third delivery profile (for example 1080p
   at 30 frames a second and a higher CRF) would cut its 206 MB several times over.
   Recommended: serve the archive encode its receipt describes, and add the profile only
   if the first deploy or the bandwidth says so.
-- **Projects mentioned but not reviewed.** Other Square Packing Projects lists the
-  projects `source-coverage.yaml` records as sources.
-  Whether to add repositories that sources mention but this repository has not reviewed
-  is still open from `think-lt7k`. Recommended: reviewed sources only.
 - **Math style for fractions.** Inline `31/8` can become `\frac{31}{8}` or stay `31/8`
   in math italics. Recommended: keep the slash inline in running text and use `\frac` in
   display math and tables, which reads better at small sizes.

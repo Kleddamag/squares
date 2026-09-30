@@ -63,7 +63,7 @@ from devtools import validate_schemas
 from devtools.apply_upper_bound_packets import PREVIOUS_HEADING, earlier_reports
 from devtools.check_basic_bounds import check_case_basic_bounds
 from devtools.check_case_prose import check_case_file
-from devtools.check_source_coverage import COVERAGE, record_catalogue
+from devtools.check_source_coverage import COVERAGE, pending_intake_blocker, record_catalogue
 from devtools.generate_frontier_case import (
     AI_STATEMENT,
     CATALOGUE_CLASSIFICATION,
@@ -420,6 +420,15 @@ def _flatten(value: object, prefix: str = "") -> dict[str, object]:
 def _compare(n: int) -> tuple[dict[str, object], list[str]]:
     """Every front-matter path, with a verdict, plus the paths that failed."""
     committed_document, _ = _committed(n)
+    # A blocker declaring a pending catalogue intake is the coverage register's to add and
+    # remove (`check_source_coverage.pending_intake_errors`), never a draft's: `n = 69`
+    # carries one while David Ellsworth's September 2026 side waits to be registered.
+    packing = committed_document["packing"]
+    packing["blockers"] = [
+        blocker
+        for blocker in packing.get("blockers", [])
+        if pending_intake_blocker({"blockers": [blocker]}) is None
+    ]
     generated_document = safe_load(_regenerate(n).split("---\n", 2)[1])
     committed = _flatten(committed_document)
     generated = _flatten(generated_document)

@@ -62,8 +62,9 @@ properties:
       the record reports, and taking it is an intake of its own because the register must
       first hold the result. Each names the side the record still reports, the side the
       current capture prints, and the capture the record still transcribes;
-      check_source_coverage reads that capture for the count and fails the declaration
-      once either capture or the record stops agreeing with it.
+      check_source_coverage reads that capture for the count, requires the record to
+      carry a source-evidence blocker naming pending_catalogue_intake and the newer side,
+      and fails the declaration once either capture or the record stops agreeing with it.
     type: array
     items:
       type: object

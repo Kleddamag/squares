@@ -362,6 +362,22 @@ def catalogue_transcription_errors(
     return errors, compared, facts
 
 
+#: What a record's `source-evidence` blocker names while its count is declared pending
+#: catalogue intake. The record says so where a reader and `STATUS.md` see it, rather
+#: than only in this register, which has no reader view.
+PENDING_INTAKE_MARKER = "pending_catalogue_intake"
+
+
+def pending_intake_blocker(case: Mapping) -> Mapping | None:
+    """The record's blocker declaring a pending catalogue intake, if it carries one."""
+    for blocker in case.get("blockers") or ():
+        if blocker.get("kind") == "source-evidence" and PENDING_INTAKE_MARKER in str(
+            blocker.get("detail", "")
+        ):
+            return blocker
+    return None
+
+
 def pending_intake_errors(
     pending: Sequence[Mapping],
     current: Mapping[int, str],
@@ -375,8 +391,10 @@ def pending_intake_errors(
     of its own -- a result by others that the register must hold first. So the current
     capture must print exactly the declared side, the earlier capture must print
     something else, the declared side must beat the record's, and the record must still
-    report the side it declared. Once the intake lands the record reports the current
-    side, and the declaration then fails here until it is removed.
+    report the side it declared, with a `source-evidence` blocker naming
+    `PENDING_INTAKE_MARKER` and the newer side, so the record itself says it trails the
+    source; no record may carry that blocker undeclared. Once the intake lands the record
+    reports the current side, and the declaration then fails here until it is removed.
     """
     errors: list[str] = []
     seen: set[int] = set()
@@ -410,6 +428,18 @@ def pending_intake_errors(
                 f"{where}: the record reports {reported}, not the declared "
                 f"{entry['record_value']}; remove the declaration once the intake lands"
             )
+        blocker = None if case is None else pending_intake_blocker(case)
+        if blocker is None or entry["catalogue_value"] not in str(blocker.get("detail")):
+            errors.append(
+                f"{where}: the record carries no source-evidence blocker naming "
+                f"{PENDING_INTAKE_MARKER} and the side {entry['catalogue_value']}"
+            )
+    errors.extend(
+        f"n={n}: the record declares a pending catalogue intake that "
+        f"source-coverage.yaml does not list"
+        for n in sorted(cases)
+        if n not in seen and pending_intake_blocker(cases[n]) is not None
+    )
     return errors
 
 

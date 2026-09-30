@@ -26,6 +26,7 @@ from decimal import Decimal
 
 from strif import atomic_output_file
 
+from devtools.check_source_coverage import pending_intake_blocker
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 
@@ -173,6 +174,10 @@ def case_disposition(case: dict) -> str:
         notes.append("proof audit pending")
     if case["conflicts"]:
         notes.append(f"{len(case['conflicts'])} conflict")
+    if pending_intake_blocker(case) is not None:
+        # The catalogue prints a smaller side the record waits to take: say so here, so
+        # the table does not present the older side as the best known one.
+        notes.append("catalogue ahead, intake pending")
     return "; ".join(notes) or "—"
 
 

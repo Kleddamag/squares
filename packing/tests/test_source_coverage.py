@@ -127,7 +127,11 @@ PENDING = {
 }
 CURRENT = {5: "2.9", 6: "2.85", 7: "3"}
 EARLIER = {5: "2.9", 6: "3", 7: "3"}
-CASES = {6: {"reported_upper_bound": {"value": "2.9"}}}
+BLOCKER = {
+    "kind": "source-evidence",
+    "detail": "The catalogue now prints 2.85; see pending_catalogue_intake.",
+}
+CASES = {6: {"reported_upper_bound": {"value": "2.9"}, "blockers": [BLOCKER]}}
 
 
 def _pending_errors(**change: str) -> list[str]:
@@ -140,15 +144,28 @@ def test_a_declared_pending_intake_that_both_captures_bear_out_passes() -> None:
 
 
 def test_a_pending_intake_must_name_the_side_the_current_capture_prints() -> None:
-    (error,) = _pending_errors(catalogue_value="2.84")
-    assert "the current capture prints 2.85, not the declared 2.84" in error
+    errors = _pending_errors(catalogue_value="2.84")
+    assert "the current capture prints 2.85, not the declared 2.84" in errors[0]
+    # The record's blocker names 2.85, so it no longer bears out the declaration either.
+    assert "blocker naming pending_catalogue_intake and the side 2.84" in errors[1]
 
 
 def test_a_pending_intake_is_refused_once_the_record_has_moved() -> None:
     """The declaration exists to be removed; an intake that landed leaves it stale."""
-    moved = {6: {"reported_upper_bound": {"value": "2.85"}}}
+    moved = {6: {"reported_upper_bound": {"value": "2.85"}, "blockers": [BLOCKER]}}
     (error,) = coverage_check.pending_intake_errors([PENDING], CURRENT, EARLIER, moved)
     assert "remove the declaration once the intake lands" in error
+
+
+def test_the_record_itself_must_say_it_trails_the_catalogue_and_only_when_declared() -> None:
+    """The register has no reader view, so the record carries the pending state too."""
+    silent = {6: {"reported_upper_bound": {"value": "2.9"}, "blockers": []}}
+    (error,) = coverage_check.pending_intake_errors([PENDING], CURRENT, EARLIER, silent)
+    assert "carries no source-evidence blocker naming pending_catalogue_intake" in error
+
+    stray = {**CASES, 5: {"reported_upper_bound": {"value": "2.9"}, "blockers": [BLOCKER]}}
+    (error,) = coverage_check.pending_intake_errors([PENDING], CURRENT, EARLIER, stray)
+    assert error.startswith("n=5: the record declares a pending catalogue intake")
 
 
 def test_a_pending_intake_needs_a_capture_that_changed_and_a_side_that_beats() -> None:
@@ -160,7 +177,7 @@ def test_a_pending_intake_needs_a_capture_that_changed_and_a_side_that_beats() -
     beaten = coverage_check.pending_intake_errors(
         [{**PENDING, "catalogue_value": "2.95"}], higher, EARLIER, CASES
     )
-    assert beaten == ["pending catalogue intake n=6: 2.95 does not beat the record"]
+    assert beaten[0] == "pending catalogue intake n=6: 2.95 does not beat the record"
     assert "the one retained earlier capture" in _pending_errors(capture="2026-01-01")[0]
 
 

@@ -76,7 +76,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`66`](n-066.md) | `3 + 4 √2` | `3 + 4 √2` | `67/8` | `1 + √51` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`67`](n-067.md) | `8 + (1/2)√2` | `8 + (1/2)√2` | `1691/200` | `1 + √52` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`68`](n-068.md) | `8.798795237222592` | `137481175581603/15625000000000` | `1699/200` | `841/100` | open | replayed here, audited here | formal lower differs from report | 2026-09-29 |
-| [`69`](n-069.md) | `8.827205507815920656880680735618736931225314831` | `9` | `343/40` | `841/100` | open | replayed here | formal upper trails report; formal lower differs from report | 2026-09-28 |
+| [`69`](n-069.md) | `8.827205507815920656880680735618736931225314831` | `9` | `343/40` | `841/100` | open | replayed here | formal upper trails report; formal lower differs from report; catalogue ahead, intake pending | 2026-09-30 |
 | [`70`](n-070.md) | `8.88166675700900` | `9` | `431/50` | `171/20` | open | replayed here | formal upper trails report; formal lower differs from report | 2026-09-28 |
 | [`71`](n-071.md) | `8.94407155757031` | `9` | `1737/200` | `171/20` | open | replayed here | formal upper trails report; formal lower differs from report | 2026-09-28 |
 | [`72`](n-072.md) | `9` | `9` | `437/50` | `861/100` | open | replayed here | formal lower differs from report | 2026-09-28 |
@@ -90,11 +90,11 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`80`](n-080.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`81`](n-081.md) | `9` | `9` | `9.0` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`82`](n-082.md) | `6 + (5/2)√2` | `6 + (5/2)√2` | `94*√2/41 + 247/41` | `1 + √65` | open | replayed here, external proof | formal lower differs from report | 2026-09-07 |
-| [`83`](n-083.md) | `9.63482562092335` | `10` | `94*√2/41 + 247/41` | `1 + √66` | open | replayed here, external proof | formal upper trails report; formal lower differs from report | 2026-09-07 |
+| [`83`](n-083.md) | `9.63482562092335` | `10` | `94*√2/41 + 247/41` | `1 + √66` | open | replayed here, external proof | formal upper trails report; formal lower differs from report; catalogue ahead, intake pending | 2026-09-30 |
 | [`84`](n-084.md) | `9 + (1/2)√2` | `9 + (1/2)√2` | `94*√2/41 + 247/41` | `1 + √67` | open | replayed here, external proof | formal lower differs from report | 2026-09-07 |
 | [`85`](n-085.md) | `(11/2) + 3 √2` | `(11/2) + 3 √2` | `94*√2/41 + 247/41` | `1 + √68` | open | replayed here, external proof | formal lower differs from report | 2026-09-07 |
 | [`86`](n-086.md) | `(17/2) + (1/2)√7` | `(17/2) + (1/2)√7` | `1871/200` | `1 + √69` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
-| [`87`](n-087.md) | `9.83881743996618` | `10` | `9.366600265341` | `1 + √70` | open | replayed here, external proof | formal upper trails report | 2026-08-24 |
+| [`87`](n-087.md) | `9.83881743996618` | `10` | `9.366600265341` | `1 + √70` | open | replayed here, external proof | formal upper trails report; catalogue ahead, intake pending | 2026-09-30 |
 | [`88`](n-088.md) | `9.88815305375857` | `10` | `189/20` | `1 + √71` | open | replayed here, external proof | formal upper trails report; formal lower differs from report | 2026-09-28 |
 | [`89`](n-089.md) | `5 + (7/2)√2` | `5 + (7/2)√2` | `191/20` | `1 + √72` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`90`](n-090.md) | `10` | `10` | `191/20` | `1 + √73` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |

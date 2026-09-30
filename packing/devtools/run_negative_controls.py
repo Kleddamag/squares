@@ -407,6 +407,7 @@ PRUNE = frozenset(
         "/exp-137-corner-dual-salvage.json.gz",
         ROOT / "resources",
         ROOT / "sqsearch/target",
+        ROOT / "sqverify_exact/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -454,7 +455,7 @@ PRUNE = frozenset(
 BUILD_CACHES = frozenset(
     {"__pycache__", ".pytest_cache", ".ruff_cache", "dist", "node_modules"}
 )
-LINK_BACK = (Path(".venv"), Path("sqsearch/target"))
+LINK_BACK = (Path(".venv"), Path("sqsearch/target"), Path("sqverify_exact/target"))
 # Individual files rescued from `PRUNE` because a check that runs inside a worker reads
 # that exact path. `clone_tree` copies precisely this tuple and `snapshot_source_bytes`
 # counts precisely this tuple, so the two cannot drift; adding a rescue is one line.
@@ -725,15 +726,22 @@ def _clone_into(src: Path, dst: Path) -> None:
 
 
 INLINE_LINK = re.compile(r"\]\(([^)#\s]+)\)")
-# Omitted sources a checked document may legitimately link into. `.venv` and
-# `sqsearch/target` are symlinked back whole, and `.gate-running` is a marker,
-# so the linked-file copy covers only the content prunes and referenced workflows.
+# Omitted sources a checked document may legitimately link into. `.venv` and the two
+# cargo `target` directories are symlinked back whole, and `.gate-running` is a
+# marker, so the linked-file copy covers only the content prunes and referenced
+# workflows.
 # Workflow evidence lives outside `packing/`; copying only links keeps it bounded.
 LINKED_PRUNE_ROOTS = (
     *(
         path
         for path in sorted(PRUNE)
-        if path not in {ROOT / ".gate-running", ROOT / ".venv", ROOT / "sqsearch/target"}
+        if path
+        not in {
+            ROOT / ".gate-running",
+            ROOT / ".venv",
+            ROOT / "sqsearch/target",
+            ROOT / "sqverify_exact/target",
+        }
     ),
     REPO / ".github/workflows",
 )

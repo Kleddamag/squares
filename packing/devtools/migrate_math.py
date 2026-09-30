@@ -1257,23 +1257,37 @@ GITHUB_SAFE_TEX = {
 _TEX_ESCAPE = re.compile(r"\\\\\[|\\[!-/:-@\[-`{-~]")
 
 
-def github_safe_tex(tex: str) -> tuple[str, list[str]]:
-    """`tex` with every escape GitHub would strip replaced by its letter-named equivalent.
+#: A star in TeX, which GitHub pairs with a star in another formula of the same paragraph
+#: as Markdown emphasis, leaving every formula between them as dollars (the probe's
+#: c_70 to c_76). As a script it is braced, `L_{\ast}`; `\*`, an escape, is not a star.
+_TEX_STAR = re.compile(r"(?<!\\)([_^]?)\*")
 
+
+def github_safe_tex(tex: str) -> tuple[str, list[str]]:
+    """`tex` with every escape GitHub would strip, and every star, in a form it keeps.
+
+    An escape becomes its letter-named equivalent (`GITHUB_SAFE_TEX`) and a star `\\ast`.
     Returns the rewritten TeX and the escapes that have no safe equivalent, in order. A
     command gains a space when a letter follows it, so `\\,b` is `\\thinspace b`.
     """
     left: list[str] = []
+
+    def spaced(command: str, source: str, end: int) -> str:
+        return command + (" " if source[end : end + 1].isalpha() else "")
 
     def safe(match: re.Match[str]) -> str:
         replacement = GITHUB_SAFE_TEX.get(match[0])
         if replacement is None:
             left.append(match[0])
             return match[0]
-        after = tex[match.end() : match.end() + 1]
-        return replacement + (" " if after.isalpha() else "")
+        return spaced(replacement, tex, match.end())
 
-    return _TEX_ESCAPE.sub(safe, tex), left
+    escaped = _TEX_ESCAPE.sub(safe, tex)
+
+    def star(match: re.Match[str]) -> str:
+        return f"{match[1]}{{\\ast}}" if match[1] else spaced("\\ast", escaped, match.end())
+
+    return _TEX_STAR.sub(star, escaped), left
 
 
 @dataclass(frozen=True)
@@ -1413,7 +1427,10 @@ def github_unsafe_math(text: str) -> list[UnsafeMath]:
         safe, left = github_safe_tex(tex)
         if safe != tex or left:
             escapes = ", ".join(sorted({m[0] for m in _TEX_ESCAPE.finditer(tex)}))
-            reason = f"GitHub strips the backslash from {escapes}"
+            why = [f"GitHub strips the backslash from {escapes}"] if escapes else []
+            if _TEX_STAR.search(tex):
+                why.append("GitHub pairs a star with another formula's as emphasis")
+            reason = "; ".join(why)
             whole = text[start:end]
             replacement = None if left else whole.replace(tex, safe, 1)
             if left:

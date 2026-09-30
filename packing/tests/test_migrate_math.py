@@ -299,12 +299,16 @@ def test_every_formula_github_alters_holds_what_to_latex_never_writes() -> None:
 def test_every_escape_github_alters_is_rewritten_and_every_safe_formula_left_alone() -> None:
     """The probe's `[altered]` formulas come out of `github_safe_tex` with no escape GitHub
     strips, unless they hold one with no safe form; its `[math]` formulas come out as they
-    went in."""
+    went in, stars aside."""
     cases = probe_cases(GITHUB_PROBE.read_text("utf-8"))
     for case in cases:
         safe, left = github_safe_tex(case.tex)
         if case.recorded == "math":
-            assert (safe, left) == (case.tex, []), case
+            # A star is always written as `\ast`, which GitHub draws; nothing else moves.
+            def stars(tex: str) -> str:
+                return tex.replace("{\\ast}", "*").replace("\\ast ", "*").replace("\\ast", "*")
+
+            assert (stars(safe), left) == (stars(case.tex), []), case
         elif case.recorded == "altered":
             assert safe != case.tex or left, case
             assert left or not re.search(r"\\[!-/:-@\[-`{-~]", safe), case
@@ -321,6 +325,8 @@ def test_the_safe_forms_are_the_letter_named_commands() -> None:
         [],
     )
     assert github_safe_tex(r"27\%") == (r"27\%", [r"\%"])
+    assert github_safe_tex(r"L_* + a^*b * c") == (r"L_{\ast} + a^{\ast}b \ast c", [])
+    assert github_safe_tex(r"\*x") == (r"\*x", [r"\*"])
     assert github_safe_tex(r"a \\[2pt] b")[1] == [r"\\["]
 
 

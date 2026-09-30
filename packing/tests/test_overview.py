@@ -832,3 +832,15 @@ def test_the_bar_sits_close_to_the_top_of_every_page() -> None:
     every page carries, so the explainer, the KPress pages and the workbench all agree."""
     css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
     assert "--kpress-page-margin-block-start: 1rem;" in css
+
+
+def test_every_page_starts_one_shared_space_below_the_bar() -> None:
+    """The space from the bar's rule to a page's first block is one token, declared in the
+    stylesheet every page carries and read by the site's column and the explainer's hero."""
+    nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert "--site-page-top: 2rem;" in nav
+    assert "padding-block-start: var(--site-page-top);" in render_overview.SITE_CSS.read_text(
+        encoding="utf-8"
+    )
+    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
+    assert "padding-block-start: var(--site-page-top);" in shell

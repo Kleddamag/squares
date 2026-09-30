@@ -246,10 +246,16 @@ it.
   on every page at every width.
   It sits 1rem below the top of the window on every page, the explainer and the
   workbench included: `site-nav.css` narrows KPress’s page top margin
-  (`--kpress-page-margin-block-start`) from 2.5rem. Its entries are Overview, Frontier,
-  Results, Explainer, Tutorial, Visualize and GitHub.
-  Visualize leads to the film (`visualize.html`) and is current on both pages of the
-  Visualize section, the film and the workbench.
+  (`--kpress-page-margin-block-start`) from 2.5rem. Below the bar, every page’s first
+  block starts one shared space under its rule, `--site-page-top` (2rem, in
+  `site-nav.css`): KPress’s document padding above the column is dropped on screen, the
+  column’s own top padding is the token, and the first block (a hero or a document’s
+  title) adds no margin of its own.
+  On the explainer the source chips sit in that space and the title starts the token
+  below them. Print keeps KPress’s spacing, so the explainer’s PDF does not move.
+  Its entries are Overview, Frontier, Results, Explainer, Tutorial, Visualize and
+  GitHub. Visualize leads to the film (`visualize.html`) and is current on both pages of
+  the Visualize section, the film and the workbench.
   The workbench is an application rather than a KPress page, so its build
   (`workbench_tools.build_site`) takes the bar, its stylesheet, the theme bootstrap and
   the gear’s script from `render_overview.nav_shell`, in a shell that gives it the page

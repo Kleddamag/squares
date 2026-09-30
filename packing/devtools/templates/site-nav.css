@@ -16,6 +16,17 @@
 .kpress,
 .kpress-page-main {
   --kpress-page-margin-block-start: 1rem;
+  --site-page-top: 2rem;
+}
+/* The space from the bar's rule to the top of a page's first block (its title, its hero,
+   or the explainer's hero), one token for every page: kpress's document padding above
+   the column is dropped on screen, and the column (site.css) or the explainer's hero
+   (explainer-shell.html) starts `--site-page-top` below the rule instead. Print keeps
+   kpress's own spacing, so the explainer's PDF does not move. */
+@media screen {
+  .kpress-page-main > .kpress-doc {
+    padding-block-start: 0;
+  }
 }
 :root:where([data-kpress-resolved-theme="dark"]),
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),

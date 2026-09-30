@@ -94,8 +94,20 @@ body {
   max-width: min(var(--site-wide), 100vw - 2rem);
 }
 .site-hero {
-  padding-block-start: calc(var(--kpress-font-size-base) * 2);
   text-align: center;
+}
+/* A page's first block starts `--site-page-top` below the bar's rule (site-nav.css): the
+   column's own top padding is that token, and its first block, a hero or a document's
+   title, brings no margin of its own. */
+@media screen {
+  .kpress-page-main > .kpress-doc > .kpress-doc-layout > .kpress-long-text {
+    padding-block-start: var(--site-page-top);
+  }
+  .kpress-long-text > :first-child,
+  .kpress-long-text > :first-child > .site-hero:first-child,
+  .site-hero:first-child > :first-child {
+    margin-block-start: 0;
+  }
 }
 /* The page title: the sans face in upright caps (never KPress's italic h2) at 1.5 times
    the sans base, centred. A page's `h1` in its hero takes it, and so does any heading

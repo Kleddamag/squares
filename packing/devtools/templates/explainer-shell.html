@@ -322,6 +322,14 @@ body {
 .intro .section-head { margin-block-start: 0; }
 
 .hero { padding-block-start: calc(var(--kpress-font-size-base) * 3); }
+/* On screen the page's first block is the source chips' row, a little below the bar's
+   rule, and the hero starts the site's shared `--site-page-top` below that row
+   (site-nav.css), as every page's title does; print keeps the space above. */
+@media screen {
+  .cert-page .doc-links { margin-block-start: 0.5rem; }
+  .hero { clear: both; padding-block-start: var(--site-page-top); }
+  .cert-page .hero h1 { margin-block-start: 0; }
+}
 /* The heading is set in caps by kpress; its s(n) run is mathematics and keeps both
    mathematical italic and lowercase rather than inheriting the heading transform. */
 .hero h1 .tex { letter-spacing: 0; text-transform: none; }

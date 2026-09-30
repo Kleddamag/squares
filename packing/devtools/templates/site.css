@@ -284,7 +284,7 @@ body {
   background: color-mix(in oklch, var(--kpress-doc-accent) 85%, var(--kpress-doc-text));
 }
 
-.kpress :is(.site-card, .site-popover) .site-card-label {
+.kpress :is(.site-card, .site-popover, .site-case) .site-card-label {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: var(--kpress-caps-label-size, 0.8rem);
@@ -873,4 +873,218 @@ body {
   color: var(--site-support-color);
   display: block;
   font-style: normal;
+}
+
+/* ---------- Case records ----------
+   One record per case on cases.html, opened from the atlas grid and the frontier atlas
+   in the shared case popover. With scripts (overview/case-view.js) the page shows the
+   record its fragment names, or the index when it names none; without them it lists
+   every record. */
+.site-case {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  margin-block-start: 3rem;
+  padding-block-start: 1.5rem;
+}
+:root[data-case-current] .site-case {
+  border-block-start: 0;
+  margin-block-start: 0;
+}
+:root[data-case-view]:not([data-case-current]) .site-case,
+:root[data-case-current] .site-case:not([data-current]),
+:root[data-case-current] .site-case-front {
+  display: none;
+}
+.site-case-head {
+  font-family: var(--kpress-font-sans);
+  text-align: center;
+}
+.site-case-steps {
+  display: flex;
+  font-size: var(--site-font-size-note);
+  gap: 1rem;
+  justify-content: space-between;
+  margin-block-end: 1rem;
+}
+.kpress .site-case-title {
+  font-size: calc(var(--site-font-size-sans-base) * 1.6);
+  margin-block: 0.2rem 0.3rem;
+}
+.site-case-title b {
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-inline-end: 0.4rem;
+}
+.site-case-title .site-chip {
+  vertical-align: middle;
+}
+.kpress .site-case-interval {
+  font-size: calc(var(--site-font-size-sans-base) * 1.25);
+  margin-block: 0 1.5rem;
+  overflow-wrap: anywhere;
+}
+/* The drawing beside the bounds on a wide screen; stacked, drawing first, when narrow. */
+.site-case-top {
+  align-items: start;
+  display: grid;
+  gap: 1.5rem 2rem;
+  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+}
+@media (width < 44rem) {
+  .site-case-top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.site-case-figure {
+  margin: 0 auto;
+  max-inline-size: min(20rem, 100%);
+}
+.site-case-figure svg {
+  block-size: auto;
+  color: var(--kpress-doc-text);
+  display: block;
+  inline-size: 100%;
+}
+.site-case-figure figcaption {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  margin-block-start: 0.5rem;
+  text-align: center;
+}
+.site-case-bounds {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+}
+.site-case-bound,
+.site-case-note {
+  border: 1px solid var(--kpress-doc-border);
+  font-family: var(--kpress-font-sans);
+  min-inline-size: 0;
+  padding: 0.7rem 0.9rem;
+}
+.site-case-note {
+  margin-block-start: 1rem;
+}
+.kpress .site-case-value {
+  font-size: 1.2em;
+  margin-block: 0.2rem 0;
+  overflow-wrap: anywhere;
+}
+.site-case-decimal,
+.site-case-same {
+  color: var(--site-support-color);
+  display: block;
+  font-size: var(--site-font-size-note);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.kpress .site-case-same {
+  margin-block: 0.2rem 0;
+}
+.site-case .site-detail {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  line-height: 1.45;
+  margin-block: 0.5rem 0;
+}
+.site-case .site-detail dt {
+  color: var(--kpress-doc-text);
+  font-weight: var(--site-font-weight-sans-medium);
+}
+.site-case .site-detail dd {
+  margin: 0 0 0.35rem;
+  overflow-wrap: anywhere;
+}
+.site-case-polynomial {
+  font-size: var(--site-font-size-note);
+  overflow-wrap: anywhere;
+}
+.site-case-more {
+  font-family: var(--kpress-font-sans);
+  margin-block-start: 1.5rem;
+}
+.kpress .site-case-heading {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-sans-base);
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-block: 1.5rem 0.5rem;
+  text-align: start;
+}
+.site-case-results,
+.site-case-list {
+  font-size: var(--site-font-size-note);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-case-list li {
+  margin-block: 0.25rem;
+}
+.kpress-prose :is(.site-case-results, .site-case-list) > li {
+  padding-inline-start: 0;
+}
+.kpress-prose :is(.site-case-results, .site-case-list) > li::before {
+  content: none;
+}
+.site-case-result {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  padding-block: 0.6rem;
+}
+.kpress .site-case-result p {
+  margin-block: 0 0.3rem;
+}
+.site-case-result-head .site-chip {
+  margin-inline-start: 0.2rem;
+}
+.site-case .site-credit,
+.site-case-empty {
+  color: var(--site-support-color);
+}
+.site-case-links {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--site-font-size-note);
+  gap: 0.4rem 1.5rem;
+  margin-block: 1.2rem 0;
+}
+.kpress .site-case details {
+  border: 0;
+  margin: 0.3rem 0 0;
+}
+.kpress .site-case details > summary {
+  display: inline-flex;
+  font-size: var(--site-font-size-note);
+  font-variant-caps: normal;
+  letter-spacing: normal;
+  padding: 0;
+  text-transform: none;
+}
+.kpress .site-case details[open] summary {
+  border-bottom: 0;
+}
+.kpress .site-case details > :not(summary) {
+  padding: 0;
+}
+/* The index: every case as a small link, a proved case in the accent. */
+.site-case-index {
+  display: grid;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(2.6rem, 1fr));
+  margin-block: 1.5rem;
+}
+.kpress .site-case-index a {
+  border: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-muted);
+  padding-block: 0.2rem;
+  text-align: center;
+}
+.kpress .site-case-index a[data-status="proved"] {
+  color: var(--kpress-doc-accent);
+}
+.kpress .site-case-index a:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  text-decoration: none;
 }

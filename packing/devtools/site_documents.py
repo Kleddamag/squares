@@ -203,6 +203,12 @@ class LinkContext:
     #: The document's directory in the repository, `""` at the root: what its relative
     #: links are relative to.
     base: str = ""
+    #: Served pages a link may already name, such as `frontier.html#n-11` in a page
+    #: built from the record rather than from a document: kept as written.
+    served: frozenset[str] = frozenset()
+    #: Repository files the page itself serves, and where: a case file linked from a
+    #: case record is that case's record on the same page.
+    aliases: dict[str, str] = field(default_factory=dict)
 
 
 def _permalink(path: str, fragment: str, *, tag: str, context: LinkContext) -> str | None:
@@ -229,25 +235,28 @@ def rewrite_link(url: str, *, tag: str, context: LinkContext, report: LinkReport
 
     A relative link is relative to the document's own directory, as GitHub reads it.
     """
-    if not url or url.startswith("#") or _EXTERNAL.match(url):
-        return url
     target, _, anchor = url.partition("#")
+    if not url or url.startswith("#") or _EXTERNAL.match(url) or target in context.served:
+        return url
     relative = unquote(target.split("?", 1)[0]) if target else "."
     path = posixpath.normpath(posixpath.join(context.base, relative))
     path = "" if path == "." else path
     fragment = f"#{anchor}" if anchor else ""
     document = _BY_SOURCE.get(path)
-    if document is not None:
+    if path in context.aliases:
+        link = context.aliases[path]
+    elif document is not None:
         if anchor:
             report.anchors.append((document.name, unquote(anchor), url))
         if document.name == context.page:
             return fragment or document.name
-        return document.name + fragment
-    link = (
-        None
-        if path.startswith("../") or path == ".."
-        else _permalink(path, fragment, tag=tag, context=context)
-    )
+        link = document.name + fragment
+    else:
+        link = (
+            None
+            if path.startswith("../") or path == ".."
+            else _permalink(path, fragment, tag=tag, context=context)
+        )
     if link is None:
         report.missing.append(url)
         return url

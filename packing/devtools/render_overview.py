@@ -9,6 +9,8 @@ adds the front door and the pages around it, as the plan in
   the verification statistics, generated from the register;
 - `frontier.html`, the frontier atlas: one row for every case, from its
   `SquarePackingCase/v2` record;
+- `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
+  the atlas grid and the frontier atlas both open (`render_case_pages`);
 - `tutorial.html`, the tutorial rendered as a page.
 
 Every page is a kpress standalone page with its assets inlined, so it opens the same
@@ -52,6 +54,8 @@ POPOVER_SCRIPT = BROWSER / "popover.js"
 FILM_SCRIPT = BROWSER / "film.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
+CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
+CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -93,6 +97,7 @@ DOCUMENT_PAGES: tuple[str, ...] = (
 SITE_PAGES: tuple[str, ...] = (
     "index.html",
     "frontier.html",
+    "cases.html",
     "explainer.html",
     "tutorial.html",
     "workbench/index.html",
@@ -146,6 +151,7 @@ def inputs() -> tuple[Path, ...]:
     `render_frontier_page` reads `render_explainer`, which imports this module.
     """
     from devtools import overview_data  # noqa: PLC0415
+    from devtools.render_case_pages import CASES_INPUTS  # noqa: PLC0415
     from devtools.render_frontier_page import FRONTIER_INPUTS  # noqa: PLC0415
 
     return tuple(
@@ -154,6 +160,7 @@ def inputs() -> tuple[Path, ...]:
                 *RENDER_INPUTS,
                 *overview_data.INPUTS,
                 *FRONTIER_INPUTS,
+                *CASES_INPUTS,
             )
         )
     )
@@ -367,6 +374,7 @@ def overview_page() -> Page:
             POPOVER_SCRIPT,
             FILM_SCRIPT,
             ATLAS_GRID_SCRIPT,
+            CASE_POPOVER_SCRIPT,
         ),
     )
 
@@ -389,8 +397,15 @@ def frontier_page() -> Page:
         title=f"The Frontier Atlas · {SITE_NAME}",
         description=FRONTIER_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT,),
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
     )
+
+
+def cases_page() -> Page:
+    """Every case's record, one page, one address per case (`cases.html#n-11`)."""
+    from devtools.render_case_pages import cases_page as build  # noqa: PLC0415
+
+    return build()
 
 
 def _document_page(name: str) -> Callable[[], Page]:
@@ -406,6 +421,7 @@ def _document_page(name: str) -> Callable[[], Page]:
 PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
     "frontier.html": frontier_page,
+    "cases.html": cases_page,
     "tutorial.html": tutorial_page,
     **{name: _document_page(name) for name in DOCUMENT_PAGES},
 }

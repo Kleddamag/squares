@@ -83,11 +83,11 @@ def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
 
 
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
-    """One cell per tracked case, each linking to its frontier row and carrying its
+    """One cell per tracked case, each linking to its case record and carrying its
     details, all inside a template the script places when the grid comes near."""
     grid = page.split("data-atlas-grid>", 1)[1]
     template = grid.split("<template>", 1)[1].split("</template>", maxsplit=1)[0]
-    cells = re.findall(r'<a class="site-atlas-cell" href="frontier\.html#n-(\d+)"', template)
+    cells = re.findall(r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)"', template)
     assert [int(n) for n in cells] == list(range(1, 325))
     assert template.count('class="site-atlas-detail" hidden') == 324
     assert template.count("<svg ") == 324

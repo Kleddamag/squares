@@ -156,11 +156,31 @@ it.
 
 - **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a small
   square drawing in the page’s ink with its n beneath, in as many columns as fit.
-  A cell washes on hover and links to its row in the frontier atlas.
+  A cell washes on hover and opens its case record.
   Pointing at or focusing a cell shows one hover card below it, kept inside the window:
   the status chip, the best-known side and the lower bound, each with its credit.
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
   (`overview/atlas-grid.js`), so they add nothing to the first paint.
+
+- **Case records.** Every case has one record at one address, `cases.html#n-11`, and
+  every place that names a case by its n opens it the same way: a cell of the atlas grid
+  and the n of a frontier-atlas row.
+  A press opens the one case popover the page carries, a page-kind popover framing the
+  record in its embed view, with **Expand** to the full record
+  (`overview/case-popover.js`); without scripting the link goes to the record itself.
+  A record leads with a caps label, the n, its status chip and recent star, and the
+  verified interval as display-size math; then the known-best packing drawn large beside
+  a grid of bordered sans panels, one per bound (best known, verified upper, reported
+  lower, verified lower) and the gap.
+  Each panel shows its value as math when it has a closed form (a lone fraction at full
+  size) and as figures when it is a decimal, the recorded decimal in full beneath, then
+  its credit, source, minimal polynomial as math and evidence.
+  Below come the register’s results for the case, each a line with its rungs as chips,
+  then rigidity, open questions, evidence and sources, the links to the frontier row and
+  to the case file “On GitHub”, and the case file’s own prose, whose formulas are set as
+  LaTeX. The records share one page, since every page inlines the shell: the page shows
+  only the record its fragment names (`overview/case-view.js`) and typesets that
+  record’s math when it is shown; without scripting it lists every record.
 
 - **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
   on a phone. Each image and its caption link to that poster’s PDF, marked

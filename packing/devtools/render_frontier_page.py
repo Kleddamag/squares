@@ -389,7 +389,9 @@ def _records(case: dict[str, Any], case_url: str, evidence: dict[str, dict[str, 
 
 
 def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recent: bool) -> str:
-    """One table row, every cell from the record."""
+    """One table row, every cell from the record. Its `n` opens the case's record."""
+    from devtools.render_case_pages import case_link  # noqa: PLC0415
+
     n = case["n"]
     case_url = repo_file(tables.FRONTIER / f"n-{n:03d}.md")
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
@@ -402,8 +404,12 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
     star = '<span class="site-star" title="Recent lower bound">★</span>' if recent else ""
     cells = [
         _cell(
-            f'<span class="site-frontier-n"><a href="{case_url}">{n}</a>'
-            f"{thumbnail_svg(n)}</span>",
+            case_link(
+                n,
+                f"{n}{thumbnail_svg(n)}",
+                classes="site-frontier-n",
+                label=f"n = {n}: open its case record",
+            ),
             value=str(n),
             classes="num",
         ),
@@ -470,7 +476,10 @@ def _tools(count: int, last: int) -> str:
 
 
 def table_html(cases: list[dict[str, Any]]) -> str:
-    """The controls and the table, as one HTML block with no blank line inside it."""
+    """The controls, the table and the popover its cases open in, as one HTML block with
+    no blank line inside it."""
+    from devtools.render_case_pages import case_popover  # noqa: PLC0415
+
     evidence = tables.load_evidence()
     recent = recent_lower_bounds()
     head = "".join(_heading(*column) for column in HEADERS)
@@ -481,7 +490,8 @@ def table_html(cases: list[dict[str, Any]]) -> str:
         f"{_tools(len(cases), max(case['n'] for case in cases))}\n"
         '<div class="site-table-wrap site-wide site-frontier" id="frontier-table">\n'
         '<table class="kpress-table site-table">\n'
-        f"<thead><tr>{head}</tr></thead>\n<tbody>\n{rows}\n</tbody>\n</table>\n</div>"
+        f"<thead><tr>{head}</tr></thead>\n<tbody>\n{rows}\n</tbody>\n</table>\n</div>\n"
+        f"{case_popover()}"
     )
 
 

@@ -70,6 +70,8 @@ name: Certificate page
       - packing/devtools/overview/**
       - packing/devtools/render_frontier_page.py
       - packing/devtools/templates/frontier-article.md
+      - packing/devtools/render_case_pages.py
+      - packing/devtools/templates/cases-article.md
       - packing/devtools/validate_schemas.py
       - packing/devtools/site_documents.py
       - packing/devtools/render_results.py

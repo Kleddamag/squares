@@ -3,17 +3,17 @@ type: is
 id: is-01m3q2fb3hy688p1pjh2am412w
 title: "Rung badges: background darkens with the level; V blue, C green, S gray, desaturated to the packing palette"
 kind: feature
-status: open
+status: closed
 priority: 2
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T17:12:52.593Z
-updated_at: 2026-09-30T02:47:51.504Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T05:16:47.121Z
+closed_at: 2026-09-30T05:16:47.121Z
+close_reason: Overview page and design system (lane B), verified in f4346c9a1 on top of checkpoint cb8222602, with the data (8c24872ae), media (764a5ac90) and reader documents (14cb1c051) it renders.
 resolution: null
 duplicate_of: null
 ---

@@ -3,17 +3,17 @@ type: is
 id: is-01m3r3d1k8mnf4cnjkaht018a1
 title: "Credit on the site per epistemics.md: whole bibliography credit, a structured ai_assistance field on bibliography entries, overview template in check_results.READER_TIER"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 4
+version: 5
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-30T02:48:20.328Z
-updated_at: 2026-09-30T05:04:42.889Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T05:16:47.086Z
+closed_at: 2026-09-30T05:16:47.086Z
+close_reason: Overview page and design system (lane B), verified in f4346c9a1 on top of checkpoint cb8222602, with the data (8c24872ae), media (764a5ac90) and reader documents (14cb1c051) it renders.
 resolution: null
 duplicate_of: null
 ---

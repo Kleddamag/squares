@@ -103,6 +103,8 @@ def run_case(
         str(args.workers),
         "--cover-backend",
         args.cover_backend,
+        "--collision-backend",
+        args.collision_backend,
         "--max-seconds",
         str(available),
         "--max-events",
@@ -137,6 +139,7 @@ def run_case(
             **args.objects_reference,
             "workers": args.workers,
             "cover_backend": args.cover_backend,
+            "collision_backend": args.collision_backend,
             "max_seconds": available,
             "max_events": 50000,
         },
@@ -175,6 +178,9 @@ def main() -> int:
     parser.add_argument("--jobs", type=int, choices=range(1, 9), default=2)
     parser.add_argument("--workers", type=int, choices=range(1, 4), default=1)
     parser.add_argument("--cover-backend", choices=("reference", "fast"), default="reference")
+    parser.add_argument(
+        "--collision-backend", choices=("reference", "integer"), default="reference"
+    )
     parser.add_argument("--cpu-budget", type=int, default=min(8, available_cpus))
     parser.add_argument("--seconds", type=float, default=55)
     parser.add_argument("--batch-seconds", type=float, default=300)

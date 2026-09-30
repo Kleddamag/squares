@@ -2551,7 +2551,8 @@ results:
       case record took the bound without a C5 claim, so whether a same-project review of
       another author's certificate qualifies is the owner's decision rather than missing
       work. V5 by a proof-assistant port of the transfer theorem and the counting argument.
-      The exact value remains open; a certificate above 31/8 has 0.0020836 of runway.
+      T-060 has since settled the exact value, so a certificate above 31/8 no longer
+      moves the lower bound.
 
   - id: T-038
     registered: '2026-09-29'
@@ -3879,9 +3880,8 @@ results:
     registered: '2026-09-29'
     headline: "Trump's eleven-square packing is globally optimal"
     claim: >-
-      s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601...,
-      where u is the unique root in (9/25,37/100) of
-      5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0.
+      `s(11) = T = (6u+4)/(1+2u−u²) = 3.8770835900228141773078970601…`, where `u` is
+      the unique root in `(9/25, 37/100)` of `5u⁸−10u⁷−2u⁶+14u⁵+12u⁴−6u³+2u²+2u−1 = 0`.
       Independent rotations and boundary contact are allowed. The external proof
       from Queuingtheorydotcom/11SquaresOptimal at
       f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c is confirmed through complete
@@ -3893,7 +3893,7 @@ results:
     confirmation: C5
     significance:
       score: 5
-      rationale: Resolves global optimality for the central n=11 case by closing the gap to Trump's exact construction, beyond the previous strict T-037 lower bound.
+      rationale: Resolves global optimality for the central n = 11 case by closing the gap to Trump's exact construction, beyond the previous strict T-037 lower bound.
       scored: '2026-09-30'
       by: Astra-max complete mathematical review and coordinator integration
     novelty: previously-published
@@ -3906,8 +3906,8 @@ results:
       survivors. The D4 bridge reduces these to case 438; the 14-round root
       induction and complete 10-node capture graph eliminate all far branches and
       force the near state into the reviewed local region. Exact local isolation
-      and the endpoint embedding argument exclude every side below T. The exact
-      Trump witness attains T. All premises have completed exact executions and
+      and the endpoint embedding argument exclude every side below `T`. The exact
+      Trump witness attains `T`. All premises have completed exact executions and
       the mapped review, supporting V4/C5; no distinct-method C4 claim is made.
     review_artifact: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
     controls:

@@ -42,7 +42,7 @@ For each of the eleven squares, define
 $$
 e_i=(\cos\theta_i,\sin\theta_i),\quad
 f_i=(-\sin\theta_i,\cos\theta_i),\quad
-Q_i=\{\alpha e_i+\beta f_i:|\alpha|,|\beta|\le1/2\},
+Q_i=\lbrace\alpha e_i+\beta f_i:|\alpha|,|\beta|\le1/2\rbrace,
 $$
 
 $$
@@ -55,7 +55,7 @@ Impose all containment conditions $h_i\le C_{i,x},C_{i,y}\le q-h_i$ and, for eac
 55 pairs $i<j$, the complete weak disjunction
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n).
 $$
 
@@ -69,7 +69,7 @@ It is a set of four poses, without any assertion about the other seven squares.
 Let
 
 $$
-D_0=P_{0,I,\pi}\cap\{\text{the selected four poses belong to }\Gamma_0\}.
+D_0=P_{0,I,\pi}\cap\lbrace\text{the selected four poses belong to }\Gamma_0\rbrace.
 $$
 
 The future question $D_0=\varnothing$ keeps every parameter of the seven other squares
@@ -86,7 +86,7 @@ capacity conclusion.
 Put
 
 $$
-\mathcal D(m)=\{(X,Y):|X|+|Y|\le m\},\qquad
+\mathcal D(m)=\lbrace(X,Y):|X|+|Y|\le m\rbrace,\qquad
 m_i=\frac1{2\max(|e_{i,x}|,|e_{i,y}|,|f_{i,x}|,|f_{i,y}|)}.
 $$
 
@@ -94,7 +94,7 @@ For each actual selected square, $\mathcal D(m_i)\subseteq Q_i$, with
 $1/2\le m_i\le1/\sqrt2$. The fixed closed octagon
 
 $$
-E=\{(X,Y):|X|,|Y|\le2/5,\quad |X|+|Y|\le699/1000\}
+E=\lbrace(X,Y):|X|,|Y|\le2/5,\quad |X|+|Y|\le699/1000\rbrace
 $$
 
 lies strictly inside the radius-`1/2` disk: its vertex squared norm is
@@ -207,7 +207,7 @@ For each fixed lower parent, retain $D_0$ and, for every listed guard $g$, the c
 failure child
 
 $$
-P_{0,I,\pi}\cap\{g\le0\}.
+P_{0,I,\pi}\cap\lbrace g\le0\rbrace.
 $$
 
 The children cover the parent: if a point fails the success conjunction, some guard is

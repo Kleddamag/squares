@@ -118,7 +118,7 @@ For any nonnegative point measure `mu` charging every such core at least one,
 
 $$
 11\leq\sum_i y_i\mu(P_i')
-=\int\sum_i y_i\mathbf 1_{P_i'}\,d\mu\leq\mu([0,q]^2).
+=\int\sum_i y_i\mathbf 1_{P_i'}\thinspace d\mu\leq\mu([0,q]^2).
 $$
 
 This argument requires no symmetry of `mu` when coverage is imposed on the full

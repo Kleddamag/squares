@@ -129,11 +129,11 @@ $s=r(1+2t-t^{2})$. Then $C=c/D$ and $S=s/D$, with $D>0$. The positive-denominato
 polynomials $D F$ and $D^{2} G$ have ascending coefficients
 
 $$
-DF:\quad (1-3Wr/2,\;Wr,\;1+3Wr/2),
+DF:\quad (1-3Wr/2,\thickspace Wr,\thickspace1+3Wr/2),
 $$
 
 $$
-D^2G:\quad (r-3W/4,\;-W,\;5W/2,\;W,\;-r-3W/4).
+D^2G:\quad (r-3W/4,\thickspace-W,\thickspace5W/2,\thickspace W,\thickspace-r-3W/4).
 $$
 
 The

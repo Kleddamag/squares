@@ -42,7 +42,7 @@ exact necessary translation bounds
 
 $$
 \begin{aligned}
-h&\le p_x\le L-h-(a+1)c-(1-b)s,\\
+h&\le p_x\le L-h-(a+1)c-(1-b)s,\cr
 h+c-as&\le p_y\le L-h-s-bc.
 \end{aligned}
 $$

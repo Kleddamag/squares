@@ -224,9 +224,15 @@ def probe_cases(source: str) -> list[Case]:
         for number in _CASE.findall(tex)
     }
     cases = []
+    introduced: Outcome | None = None
     for item in items:
         recorded = _RECORDED.match(item)
-        outcome = cast("Outcome", recorded.group("outcome")) if recorded else None
+        if recorded:
+            introduced = cast("Outcome", recorded.group("outcome"))
+        elif item.startswith(("- ", "#")):
+            introduced = None
+        # A display block's own lines carry no record; it takes its introducing item's.
+        outcome = introduced if recorded or not item.startswith(("- ", "| ", "> ")) else None
         cases.extend(
             Case(int(number), formulas[int(number)], item, outcome)
             for number in _CASE.findall(item)

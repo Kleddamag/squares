@@ -56,9 +56,9 @@ For $S\in O_j$, each member of $O_j$ appears $8/d_j$ times among $g^{-1}S$. Ther
 $$
 \begin{aligned}
 \int_S\bar\rho
-&=\frac1{d_j}\sum_{T\in O_j}\int_T\rho_0\\
+&=\frac1{d_j}\sum_{T\in O_j}\int_T\rho_0\cr
 &=\frac1{d_j}\sum_r\frac{\lambda_r}{|B_r|}
-                 \sum_{T\in O_j}|T\cap B_r|\\
+                 \sum_{T\in O_j}|T\cap B_r|\cr
 &\ge\frac1{d_j}\sum_r\lambda_rR_{rj}=1.
 \end{aligned}
 $$
@@ -114,9 +114,10 @@ sufficient reason to commission a complete expanded-depth verifier.
 
 For a simple symbolic counterexample, let two unit squares $A,B$ have both $|A\cap B|>0$
 and $|A\setminus B|>0$. A mass-one density supported on $A\setminus B$ covers the old
-support $\{A\}$ and gives coverage zero on $B$. Nevertheless, any feasible weights on
-$\{A,B\}$ have sum at most one, by the necessary depth inequality on their positive-area
-intersection. The expanded optimum is still one.
+support $\lbrace A\rbrace$ and gives coverage zero on $B$. Nevertheless, any feasible
+weights on $\lbrace A,B\rbrace$ have sum at most one, by the necessary depth inequality
+on their positive-area intersection.
+The expanded optimum is still one.
 No particular source placement is evaluated in this example.
 
 Neither a deficient pose nor a subsequently verified $D>11$ at $U$ improves the global

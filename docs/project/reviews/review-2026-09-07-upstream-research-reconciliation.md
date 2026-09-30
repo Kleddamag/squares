@@ -82,7 +82,7 @@ There are two ways the retained geometry could establish such a result:
 - A global structural theorem reduces the problem to tractable families.
   The
   [H121 proposal](../../../packing/campaign/hypotheses/H-121-axis-plus-one-minimizer.md)
-  says some minimizer has orientations $\{0,\theta\}$ modulo square symmetry.
+  says some minimizer has orientations $\lbrace0,\theta\rbrace$ modulo square symmetry.
   Even that would require handling every multiplicity, beyond the six-plus-five Trump
   family. A broader low-angle/dispersed-angle dichotomy is another possible route, but
   both branches would need proofs.
@@ -124,7 +124,7 @@ Two poses with the same color overlap.
 Define
 
 $$
-K(P,Q)=9\,\mathbf{1}_{c(P)=c(Q)}.
+K(P,Q)=9\thinspace\mathbf{1}_{c(P)=c(Q)}.
 $$
 
 Its diagonal is nine, and compatible pairs have value zero.
@@ -154,7 +154,7 @@ Numerical infeasibility is insufficient.
 
 A concrete proposed certificate would give nonnegative $\alpha_i$ and edge weights
 $\beta_{ij}$ with $\sum_i\alpha_i=1$ and
-$M=\operatorname{diag}(\alpha)+\tfrac12\sum_{\{i,j\}}\beta_{ij}(e_ie_j^T+e_je_i^T)\succeq0$.
+$M=\operatorname{diag}(\alpha)+\tfrac12\sum_{\lbrace i,j\rbrace}\beta_{ij}(e_ie_j^T+e_je_i^T)\succeq0$.
 The finite constraints imply
 $b\ge\langle M,K\rangle\ge\langle M,J\rangle=1+\sum\beta_{ij}$. Thus an exact
 certificate with $\sum\beta_{ij}\ge10$ would settle the method obstruction.

@@ -71,11 +71,11 @@ cores containing a specified number of sites.
 A **fractional family** permits overlapping cores with nonnegative weights.
 It obstructs a certificate language only after every capacity inequality of that
 language is verified.
-For a fractional family $\{(C_i,\lambda_i)\}$, its **mass** is $\sum_i\lambda_i$, and
-its **point depth** at $x$ is the sum of the weights of the cores containing $x$. A
-core’s **trace** on a finite site set is the subset of those sites that it contains.
-An **owner** of a marked site is a selected core containing it; the core’s physical
-unit-square parent contains the mark as well.
+For a fractional family $\lbrace(C_i,\lambda_i)\rbrace$, its **mass** is
+$\sum_i\lambda_i$, and its **point depth** at $x$ is the sum of the weights of the cores
+containing $x$. A core’s **trace** on a finite site set is the subset of those sites
+that it contains. An **owner** of a marked site is a selected core containing it; the
+core’s physical unit-square parent contains the mark as well.
 A **placement support** is the finite list of core placements used as the rows of a
 finite linear program.
 A result on that list need not hold after other placements are added.

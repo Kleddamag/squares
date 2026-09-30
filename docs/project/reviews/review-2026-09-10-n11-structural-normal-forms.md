@@ -148,7 +148,7 @@ The separating-axis theorem gives the exact pairwise disjunction
 
 $$
 a\cdot(z_j-z_i)\ge h_i(a)+h_j(a),
-\qquad a\in\{\pm u_i,\pm v_i,\pm u_j,\pm v_j\}.
+\qquad a\in\lbrace\pm u_i,\pm v_i,\pm u_j,\pm v_j\rbrace.
 $$
 
 At fixed orientations, selecting one alternative per pair and adding four containment

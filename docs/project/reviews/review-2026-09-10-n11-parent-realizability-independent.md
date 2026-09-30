@@ -77,7 +77,7 @@ This is stronger than satisfying the conservative necessary parent box.
 Writing `T=||r_x|-|r_y||`, its admitted extent is
 
 $$
-e(r,d)=\max\left\{BS/2,\;1/2,\;\frac{S-Td}{2+d^2}\right\}\le S/2
+e(r,d)=\max\left\lbrace BS/2,\thickspace1/2,\thickspace\frac{S-Td}{2+d^2}\right\rbrace\le S/2
 \quad(0\le d<1).
 $$
 
@@ -179,7 +179,7 @@ domain containing these translated cores by at least one,
 
 $$
 11\le\sum_i y_i\mu(P_i')
-=\int d'(x)\,d\mu(x)
+=\int d'(x)\thinspace d\mu(x)
 \le\mu([0,q]^2).
 $$
 

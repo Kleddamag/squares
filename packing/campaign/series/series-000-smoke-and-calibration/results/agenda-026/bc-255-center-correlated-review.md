@@ -40,8 +40,8 @@ The three formal world-frame vertices are
 
 $$
 \begin{aligned}
-v_E&=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\\
-v_L&=\left(v_{E,x}-\frac CS\Delta,\ h\right),\\
+v_E&=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\cr
+v_L&=\left(v_{E,x}-\frac CS\Delta,\ h\right),\cr
 v_R&=\left(v_{E,x}+\frac SC\Delta,\ h\right).
 \end{aligned}
 $$
@@ -136,9 +136,9 @@ Every coordinate derivative therefore has absolute value less than $1/4$. The me
 theorem, on the interval between $\theta$ and $\pi/4$, proves
 
 $$
-\boxed{\ \|v_i(\theta)-v_i^0\|_\infty
+\boxed{\ \Vert v_i(\theta)-v_i^0\Vert_\infty
 <\frac14\frac1{180}=\frac1{720}<\frac1{500}=\varepsilon,
-\qquad i\in\{E,L,R\}.\ }
+\qquad i\in\lbrace E,L,R\rbrace.\ }
 $$
 
 This includes both angle signs and the actual band endpoints.
@@ -193,32 +193,32 @@ Set $M_*=B_{45}+B_0$. It is the convex Minkowski sum of two centrally symmetric 
 Its eight facet normals can be taken without normalization as
 
 $$
-N=\{\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\}.
+N=\lbrace\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\rbrace.
 $$
 
 For $n=(n_x,n_y)$, its support function, the maximum of $n\cdot x$ over $x\in M_*$, is
 
 $$
-H_*(n)=\alpha\|n\|_1+\alpha\sqrt2\|n\|_\infty.
+H_*(n)=\alpha\Vert n\Vert_1+\alpha\sqrt2\Vert n\Vert_\infty.
 $$
 
 This follows by adding the support functions of $B_0$ and $B_{45}$. The normals listed
 above are complete because every edge of a polygon Minkowski sum is parallel to an edge
 of one of its summands.
-Thus $M_*=\{x:n\cdot x\le H_*(n)\text{ for every }n\in N\}$.
+Thus $M_*=\lbrace x:n\cdot x\le H_*(n)\text{ for every }n\in N\rbrace$.
 
 The coordinate displacement bound gives, for every listed normal and vertex,
 
 $$
-n\cdot v_i(\theta)\ge n\cdot v_i^0-\varepsilon\|n\|_1.
+n\cdot v_i(\theta)\ge n\cdot v_i^0-\varepsilon\Vert n\Vert_1.
 $$
 
 Define the fixed closed region
 
 $$
-C^*=\left\{z:
-n\cdot z\le H_*(n)+\min_{i\in\{E,L,R\}}n\cdot v_i^0
--\varepsilon\|n\|_1\quad\text{for every }n\in N\right\}.
+C^*=\left\lbrace z:
+n\cdot z\le H_*(n)+\min_{i\in\lbrace E,L,R\rbrace}n\cdot v_i^0
+-\varepsilon\Vert n\Vert_1\quad\text{for every }n\in N\right\rbrace.
 $$
 
 The axis support values are $\alpha(1+\sqrt2)$, with penalty $\varepsilon$. The

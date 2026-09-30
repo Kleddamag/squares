@@ -45,7 +45,7 @@ c_i^2+s_i^2=1,\quad c_i\ge0,\quad -c_i\le s_i\le c_i,
 $$
 
 $$
-Q_i=\{\alpha e_i+\beta f_i:|\alpha|,|\beta|\le1/2\},\quad
+Q_i=\lbrace\alpha e_i+\beta f_i:|\alpha|,|\beta|\le1/2\rbrace,\quad
 H_i(n)=\tfrac12(|n\cdot e_i|+|n\cdot f_i|),\quad
 h_i=(c_i+|s_i|)/2.
 $$
@@ -54,7 +54,7 @@ Containment is $h_i\le C_{i,x},C_{i,y}\le q-h_i$. For every pair of actual squar
 complete weak SAT condition is
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n).
 \tag{1}
 $$
@@ -93,8 +93,8 @@ Neither it, its minimum nor the scatter is a free favorable bound.
 The eight conditions are the original geometric guards, with no new capacity, area,
 diameter or pose-box premise.
 
-Let $D_0=P_{0,I,\pi}\cap\{G\in\Gamma_0\}$, still with all eleven actual squares and all
-55 clauses (1). It is a distinct full-square question.
+Let $D_0=P_{0,I,\pi}\cap\lbrace G\in\Gamma_0\rbrace$, still with all eleven actual
+squares and all 55 clauses (1). It is a distinct full-square question.
 BC279 introduces a necessary relaxation of its 28 cross and 21 residual clauses; it does
 not redefine $D_0$ as a core configuration.
 
@@ -149,7 +149,7 @@ so no degenerate normal decomposition is needed at the endpoints.
 The support function for every $n$ is consequently
 
 $$
-h_K(n)=\max\bigl(\|n\|/2,\ a(|n_x|+|n_y|)\bigr).
+h_K(n)=\max\bigl(\Vert n\Vert/2,\ a(|n_x|+|n_y|)\bigr).
 \tag{5}
 $$
 
@@ -177,12 +177,12 @@ normal, all four inequalities
 
 $$
 \begin{aligned}
-n_{jk}\cdot(P_k-P_j)&\ge1,\\
-n_{jk}\cdot(P_k-P_j)&\ge1/2+a_jL_{jk},\\
-n_{jk}\cdot(P_k-P_j)&\ge1/2+a_kL_{jk},\\
+n_{jk}\cdot(P_k-P_j)&\ge1,\cr
+n_{jk}\cdot(P_k-P_j)&\ge1/2+a_jL_{jk},\cr
+n_{jk}\cdot(P_k-P_j)&\ge1/2+a_kL_{jk},\cr
 n_{jk}\cdot(P_k-P_j)&\ge(a_j+a_k)L_{jk},
 \end{aligned}
-\qquad \|n_{jk}\|^2=1.
+\qquad \Vert n_{jk}\Vert^2=1.
 \tag{6}
 $$
 
@@ -192,10 +192,10 @@ require both
 
 $$
 \begin{aligned}
-v_{ij}\cdot(P_j-C_i)&\ge H_i(v_{ij})+1/2,\\
+v_{ij}\cdot(P_j-C_i)&\ge H_i(v_{ij})+1/2,\cr
 v_{ij}\cdot(P_j-C_i)&\ge H_i(v_{ij})+a_jM_{ij},
 \end{aligned}
-\qquad \|v_{ij}\|^2=1.
+\qquad \Vert v_{ij}\Vert^2=1.
 \tag{7}
 $$
 
@@ -276,8 +276,8 @@ without such a bound can be unsound.
 No cell approximation or engine is authorized by this document.
 
 For every fixed lower parent retain its guarded child and all eight closed failure
-children $P_{0,I,\pi}\cap\{g\le0\}$, where $g$ ranges over (2). If success fails, a
-guard is strictly negative, so these children cover the remainder.
+children $P_{0,I,\pi}\cap\lbrace g\le0\rbrace$, where $g$ ranges over (2). If success
+fails, a guard is strictly negative, so these children cover the remainder.
 A success point with $g=0$ belongs to both corresponding children.
 An equality point with another negative guard need not be in success.
 All subsets and weak orders remain present.

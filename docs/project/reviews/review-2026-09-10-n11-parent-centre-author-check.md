@@ -44,7 +44,7 @@ Set `T=abs(abs(r.x)-abs(r.y))`, so `S>=1` and `0<=T<=1`. A sign vector sigma att
 zero. With `t=tan(abs(delta))`, the positive-cosine premise gives
 
 $$
-\|w\|_1\geq S\cos\delta-T|\sin\delta|
+\Vert w\Vert_1\geq S\cos\delta-T|\sin\delta|
 =\frac{S-Tt}{\sqrt{1+t^2}}.
 $$
 

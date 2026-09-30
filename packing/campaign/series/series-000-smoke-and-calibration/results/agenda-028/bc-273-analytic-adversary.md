@@ -63,8 +63,8 @@ The retained equations give
 
 $$
 \begin{aligned}
-x_7&=p_x+ac+s,&y_7&=p_y+as-c,\\
-x_8&=p_x+c-bs,&y_8&=p_y+s+bc,\\
+x_7&=p_x+ac+s,&y_7&=p_y+as-c,\cr
+x_8&=p_x+c-bs,&y_8&=p_y+s+bc,\cr
 x_9&=x_7+c-bs=x_8+ac+s,&y_9&=y_7+s+bc=y_8+as-c.
 \end{aligned}
 $$
@@ -243,7 +243,7 @@ There is a strict incompatibility between (12) and (7) on the entire target:
 $$
 \begin{aligned}
 J-M
-&=2+2c+3s-L(c+s)\\
+&=2+2c+3s-L(c+s)\cr
 &\ge\frac{96t^2-42t+4}{25(1+t^2)}
 \ge\frac{2}{87}>0.
 \end{aligned}

@@ -77,8 +77,8 @@ $$
 Define the closed diamond
 
 $$
-D=\{(1+X,b+Y):0\le X\le W,\quad
-|Y|\le\kappa\min(X,W-X)\}.
+D=\lbrace(1+X,b+Y):0\le X\le W,\quad
+|Y|\le\kappa\min(X,W-X)\rbrace.
 $$
 
 Its vertices are A1, A2 and `(1+W/2,b +/- kappa W/2)`. Every near-45-degree square
@@ -92,8 +92,8 @@ In the square’s orthonormal frame, the two anchors have relative coordinates $
 rectangle is equivalent to
 
 $$
--\cot\theta\,X\le Y\le\tan\theta\,X,\qquad
--\tan\theta\,(W-X)\le Y\le\cot\theta\,(W-X).
+-\cot\theta\thinspace X\le Y\le\tan\theta\thinspace X,\qquad
+-\tan\theta\thinspace(W-X)\le Y\le\cot\theta\thinspace(W-X).
 $$
 
 Throughout the angle band, both tan(theta) and cot(theta) exceed kappa.

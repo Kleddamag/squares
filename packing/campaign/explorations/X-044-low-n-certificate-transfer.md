@@ -284,7 +284,7 @@ the thin overlap windows of a nearly four-across grid of $B$-squares.
 For axis position $j$, such windows have endpoints of the form
 
 $$
-[L-(4-j)B,\;jB],\qquad j=1,2,3,
+[L-(4-j)B,\thickspace jB],\qquad j=1,2,3,
 $$
 
 and width $4B-L$ when positive.
@@ -327,7 +327,7 @@ density on the actual parent:
 
 $$
 q(P)=\mu(Q(P))+\int_P g+\sum_a w_a
-\mathbf1_{\{|F_a\cap Q(P)|\ge k_a\}},
+\mathbf1_{\lbrace|F_a\cap Q(P)|\ge k_a\rbrace},
 \qquad
 M=\mu(K)+\int_K g+\sum_a w_a\lfloor |F_a|/k_a\rfloor.
 \tag{3}
@@ -496,11 +496,11 @@ $$
 
 | Count and source | Required new charge, strictly greater than | Relative charge loss allowed from the recorded minimum, strictly less than |
 | --- | --- | --- |
-| n12, T-017 | $149987/150000=0.99991333\ldots$ | $0.0166653\%$ |
-| n18, T-030 | $71573611/72000000=0.99407793\ldots$ | $0.592704\%$ |
-| n19, T-020 | $946131/950000=0.99592737\ldots$ | $0.421204\%$ |
-| n20, T-021 | $19848723/20000000=0.99243615$ | $0.756881\%$ |
-| n21, T-021 | $6616241/7000000=0.94517729\ldots$ | $5.482744\%$ |
+| n12, T-017 | $149987/150000=0.99991333\ldots$ | 0.0166653% |
+| n18, T-030 | $71573611/72000000=0.99407793\ldots$ | 0.592704% |
+| n19, T-020 | $946131/950000=0.99592737\ldots$ | 0.421204% |
+| n20, T-021 | $19848723/20000000=0.99243615$ | 0.756881% |
+| n21, T-021 | $6616241/7000000=0.94517729\ldots$ | 5.482744% |
 
 These are charge tolerances, **not side tolerances**. No continuity estimate converts
 them into an achievable side.

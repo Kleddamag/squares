@@ -78,7 +78,7 @@ R(X,Y)=(L-Y,X),\qquad F(X,Y)=(L-X,Y).
 \]
 
 The full labelled source consists of the 88 triples $(i,f,r)$ with $0\leq i<11$,
-$f\in\{0,1\}$ and $0\leq r<4$, representing $R^rF^fQ_i$. The archive uses
+$f\in\lbrace0,1\rbrace$ and $0\leq r<4$, representing $R^rF^fQ_i$. The archive uses
 representatives
 
 \[

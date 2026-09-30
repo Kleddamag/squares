@@ -6,7 +6,8 @@ accepted. Each item records what GitHub did, as measured on 30 September 2026: `
 drawn as written; `[altered]`, drawn with different TeX; `[code]`, left as dollars.
 `devtools.check_github_math --probe` fetches this file’s page and reports every case that
 has moved from its record, and `tests/test_migrate_math.py` holds `devtools.migrate_math`
-to leaving a span as code in every context recorded `[code]` or `[altered]`.
+to leaving a span as code in every context recorded `[code]` or `[altered]`. A display
+block takes the record of the list item that introduces it.
 
 ## Before the Opening Dollar
 
@@ -76,56 +77,56 @@ to leaving a span as code in every context recorded `[code]` or `[altered]`.
 - [math] a less-than before a letter: x $c_{48} < b$ y
 - [math] a less-than touching a letter: x $c_{49}<b$ y
 - [altered] an ampersand: x $c_{50} \& b$ y
-- a thin space: x $c_{51}\,b$ y
-- a thick space: x $c_{52}\;b$ y
-- a medium space: x $c_{53}\:b$ y
-- a negative thin space: x $c_{54}\!b$ y
-- a double bar: x $\|c_{55}\|$ y
-- an escaped underscore: x $c_{56}\_b$ y
-- a subscript star: x $c_{57}L_*$ y
-- a closing brace escape alone: x $c_{58}\}$ y
-- the brace commands: x $\lbrace c_{59} \rbrace$ y
-- the space commands: x $c_{60}\thinspace b\medspace c\thickspace d$ y
-- the double bar command: x $\Vert c_{61} \Vert$ y
+- [altered] a thin space: x $c_{51}\,b$ y
+- [altered] a thick space: x $c_{52}\;b$ y
+- [altered] a medium space: x $c_{53}\:b$ y
+- [altered] a negative thin space: x $c_{54}\!b$ y
+- [altered] a double bar: x $\|c_{55}\|$ y
+- [altered] an escaped underscore: x $c_{56}\_b$ y
+- [math] a subscript star: x $c_{57}L_*$ y
+- [altered] a closing brace escape alone: x $c_{58}\}$ y
+- [math] the brace commands: x $\lbrace c_{59} \rbrace$ y
+- [math] the space commands: x $c_{60}\thinspace b\medspace c\thickspace d$ y
+- [math] the double bar command: x $\Vert c_{61} \Vert$ y
 
 ## Display Math
 
-- a display block on its own lines:
+- [math] a display block on its own lines:
 
 $$
 c_{62} + \frac{1}{2}
 $$
 
-- a display block with a line break:
+- [altered] a display block with a line break:
 
 $$
 \begin{aligned} c_{63} &= 1 \\ d &= 2 \end{aligned}
 $$
 
-- a display block with an escaped brace:
+- [altered] a display block with an escaped brace:
 
 $$
 \{c_{64}\}
 $$
 
-- a display block with a thin space:
+- [altered] a display block with a thin space:
 
 $$
 c_{65}\,b
 $$
 
-- a display block inside one line: $$c_{66} + 1$$
+- [math] a display block inside one line: $$c_{66} + 1$$
 
-- a display block breaking lines with `\cr`:
+- [math] a display block breaking lines with `\cr`:
 
 $$
 \begin{aligned} c_{67} &= 1 \cr d &= 2 \end{aligned}
 $$
 
-- a display block breaking lines with `\newline`:
+- [math] a display block breaking lines with `\newline`:
 
 $$
 \begin{aligned} c_{68} &= 1 \newline d &= 2 \end{aligned}
 $$
 
-- an inline formula breaking an array with `\cr`: x $\begin{smallmatrix} c_{69} \cr d \end{smallmatrix}$ y
+- [code] an inline formula breaking an array with `\cr`: x $\begin{smallmatrix} c_{69} \cr d \end{smallmatrix}$ y

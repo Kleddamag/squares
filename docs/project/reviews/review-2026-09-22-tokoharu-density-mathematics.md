@@ -165,8 +165,8 @@ continuous on coordinate lines.
 Almost everywhere,
 
 $$
-\partial_xH_R=\operatorname{length}(Q\cap\{x=a\}\cap R)
--\operatorname{length}(Q\cap\{x=d\}\cap R),
+\partial_xH_R=\operatorname{length}(Q\cap\lbrace x=a\rbrace\cap R)
+-\operatorname{length}(Q\cap\lbrace x=d\rbrace\cap R),
 $$
 
 with the analogous bottom-minus-top expression for $\partial_yH_R$. These signs match

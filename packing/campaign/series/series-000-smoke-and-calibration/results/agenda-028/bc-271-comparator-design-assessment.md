@@ -123,8 +123,8 @@ The accepted source list exists; its independent descriptor-to-row translation d
 
 Min, max and absolute values have exact finite closed descriptions after selecting their
 active arms. For $a=\lvert r\rvert$, use $a=\sigma r$ and $\sigma r\ge0$ for
-$\sigma\in\{-1,1\}$. For a minimum use an active equality together with all weak
-comparisons; reverse the comparisons for a maximum.
+$\sigma\in\lbrace-1,1\rbrace$. For a minimum use an active equality together with all
+weak comparisons; reverse the comparisons for a maximum.
 Scatter uses the same construction on the actual row deviations.
 Retain every tied arm.
 If these arms are not branched, their relaxation must be an explicitly bounded
@@ -140,7 +140,7 @@ For a square $z=x^2$ on $[l,u]$, a concrete rational policy is
 
 $$
 z\le(l+u)x-lu,\qquad
-z\ge2rx-r^2\quad\text{for }r\in\{l,(l+u)/2,u\},
+z\ge2rx-r^2\quad\text{for }r\in\lbrace l,(l+u)/2,u\rbrace,
 $$
 
 together with the exact interval range of $x^2$. Further tangents or subdivisions must

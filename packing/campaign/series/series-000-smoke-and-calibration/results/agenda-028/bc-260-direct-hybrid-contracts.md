@@ -48,11 +48,11 @@ their quarter-turn seams.
 Equal class angles and axis angles remain included.
 
 For each square, let its four offsets be $v_i^{st}(\theta_i)=\tfrac12(su_i+tv_i)$, where
-$s,t\in\{-1,1\}$ and $u_i=(\cos\theta_i,\sin\theta_i)$,
+$s,t\in\lbrace-1,1\rbrace$ and $u_i=(\cos\theta_i,\sin\theta_i)$,
 $v_i=(-\sin\theta_i,\cos\theta_i)$. Containment consists of the four corners satisfying
 each of the four wall inequalities.
-For a pair, choose a directed axis from $\{\pm u_i,\pm v_i,\pm u_j,\pm v_j\}$ and
-require
+For a pair, choose a directed axis from $\lbrace\pm u_i,\pm v_i,\pm u_j,\pm v_j\rbrace$
+and require
 
 $$
 n\cdot(c_j+v_j^{ab}-c_i-v_i^{st})\ge0
@@ -124,7 +124,7 @@ A rational certificate can use exact rational arithmetic throughout; an algebrai
 certificate additionally needs exact field and sign evidence.
 
 For a uniform combination of the original rows, put $r(t)=A(t)^T\lambda$ and
-$h_B(r)=\sum_j\max\{r_j\ell_j,r_ju_j\}$. Feasibility implies
+$h_B(r)=\sum_j\max\lbrace r_j\ell_j,r_ju_j\rbrace$. Feasibility implies
 $\lambda^Tb(t)\le r(t)^Tz\le h_B(r(t))$. Thus it suffices to prove
 
 $$
@@ -148,7 +148,7 @@ every real $t$. Indeed $c'=-4t/(1+t^2)^2$ and $s'=2(1-t^2)/(1+t^2)^2$. Each sine
 deviation is therefore at most $2\delta$. This is a chart-coordinate radius, not a
 radian radius. For square $i$ with radius $\delta_i$, either corner-offset coordinate
 changes by at most $2\delta_i$, so a wall row needs error at most $2\delta_i$. For a
-pair normal owned by square $k\in\{i,j\}$, let $D_x,D_y$ bound the absolute
+pair normal owned by square $k\in\lbrace i,j\rbrace$, let $D_x,D_y$ bound the absolute
 center-coordinate differences over the node.
 Since normal coordinates have absolute value at most one and corner-offset coordinates
 at most one, a conservative complete pair-row error is
@@ -259,9 +259,9 @@ The retained six segments are $(3,4),(3,5),(6,7),(6,8),(7,9),(8,9)$. The nine fl
 incidences are square 0 at left/bottom; 1 at bottom/right; 2 at top; 3 at left/top; 4 at
 top; and 5 at left. Positive-length segments force equal actual orientations modulo
 quarter turns, and flush edges force the axis orientation.
-The retained graph has wall component $\{0,\ldots,5,*\}$ and unanchored components
-$\{6,7,8,9\}$ and $\{10\}$, hence rank nine by a spanning forest.
-This is the retained equality graph’s rank.
+The retained graph has wall component $\lbrace0,\ldots,5,*\rbrace$ and unanchored
+components $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$, hence rank nine by a spanning
+forest. This is the retained equality graph’s rank.
 Recontacts or new contacts can raise the full contact graph’s rank, and distinct
 components can have coincident actual angles.
 Neither rank nor nullity proves a feasible motion.
@@ -296,7 +296,7 @@ $$
 Consequently
 
 $$
-\|z-z_*\|_\infty\ge U-L
+\Vert z-z_*\Vert_\infty\ge U-L
 \ge\frac{1925}{497}-\frac{96}{25}
 =\frac{413}{12425}>\frac3{100}
 >\frac{808514697}{200000000000}=\rho_{\rm row}.

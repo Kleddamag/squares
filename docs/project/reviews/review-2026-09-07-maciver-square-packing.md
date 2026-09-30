@@ -90,7 +90,7 @@ For $g\ge0,\kappa>0$, evaluating the three vertices of a triangular region gives
 
 $$
 \max_{0\le y\le g,\ |z|\le y/\kappa}(ay+bz)
-=g\max\{0,a+|b|/\kappa\}.
+=g\max\lbrace0,a+|b|/\kappa\rbrace.
 $$
 
 This exact elimination avoids replacing the triangle by a larger coordinate box.

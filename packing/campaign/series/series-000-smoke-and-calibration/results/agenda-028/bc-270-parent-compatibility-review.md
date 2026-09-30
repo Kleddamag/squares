@@ -58,8 +58,8 @@ The Minkowski-sum octagon is exactly
 
 $$
 \mathcal D(m_i)+E
-=\{(x,y):|x|,|y|\le m_i+2/5,
-\quad |x|+|y|\le m_i+699/1000\}.
+=\lbrace(x,y):|x|,|y|\le m_i+2/5,
+\quad |x|+|y|\le m_i+699/1000\rbrace.
 $$
 
 The forward inclusion follows from the triangle inequalities.

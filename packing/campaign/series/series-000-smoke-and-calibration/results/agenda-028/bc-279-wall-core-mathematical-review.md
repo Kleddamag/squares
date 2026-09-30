@@ -74,7 +74,7 @@ directions.
 Call the proposed hull $H$. For any normal $n$, its exact support is
 
 $$
-h_H(n)=\max\left(\|n\|/2,\ a(|n_x|+|n_y|)\right).
+h_H(n)=\max\left(\Vert n\Vert/2,\ a(|n_x|+|n_y|)\right).
 $$
 
 For a unit normal in an allowed arc, $|n_x|+|n_y|\le c+s=2t$, so $h_H(n)=1/2$. Every

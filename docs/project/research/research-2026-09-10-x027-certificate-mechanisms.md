@@ -33,8 +33,8 @@ It is not a mathematical premise of this report.
 Let $K_L=[0,L]^2$ be a square container of side $L>0$. A **pose** specifies a square’s
 center and orientation.
 Write $S_p$ for the closed unit square in pose $p$. A **physical packing**
-$\mathcal P=\{S_{p_1},\ldots,S_{p_{11}}\}$ consists of eleven squares contained in $K_L$
-with pairwise disjoint interiors; their boundaries may touch.
+$\mathcal P=\lbrace S_{p_1},\ldots,S_{p_{11}}\rbrace$ consists of eleven squares
+contained in $K_L$ with pairwise disjoint interiors; their boundaries may touch.
 
 A **strict core** $C_i$ is a closed smaller square lying in the interior of $S_{p_i}$.
 Strict cores selected from a physical packing are therefore disjoint as closed sets.
@@ -61,13 +61,13 @@ $$
 
 for every disjoint family of admissible closed cores.
 The index $j$ labels atoms.
-A **point atom** at a site $x$ has charge $\mathbf 1_{\{x\in C\}}$ and budget one, where
-$\mathbf 1_E$ is one when condition $E$ holds and zero otherwise.
+A **point atom** at a site $x$ has charge $\mathbf 1_{\lbrace x\in C\rbrace}$ and budget
+one, where $\mathbf 1_E$ is one when condition $E$ holds and zero otherwise.
 An **ordinary binary threshold atom** chooses a nonempty site support $R\subseteq V$ and
 an integer threshold $k$ with $1\le k\le\lvert R\rvert$:
 
 $$
-f_{R,k}(C)=\mathbf 1_{\{\lvert R\cap C\rvert\ge k\}},
+f_{R,k}(C)=\mathbf 1_{\lbrace\lvert R\cap C\rvert\ge k\rbrace},
 \qquad
 b_{R,k}=\left\lfloor\frac{\lvert R\rvert}{k}\right\rfloor.
 $$
@@ -103,7 +103,7 @@ The finite covering problem and its dual are
 $$
 \begin{aligned}
 \text{cover:}\quad&\min_{\alpha\ge0} b^T\alpha
-&&\text{subject to }A\alpha\ge\mathbf 1_N,\\
+&&\text{subject to }A\alpha\ge\mathbf 1_N,\cr
 \text{dual:}\quad&\max_{y\ge0}\mathbf 1_N^T y
 &&\text{subject to }A^T y\le b.
 \end{aligned}
@@ -122,7 +122,7 @@ becomes a global certificate.
 With all point atoms allowed, the capacity condition is **point depth at most one**:
 
 $$
-\sum_i y_i\mathbf 1_{\{x\in C_i\}}\le1
+\sum_i y_i\mathbf 1_{\lbrace x\in C_i\rbrace}\le1
 \qquad\text{for every point }x\in K_L.
 $$
 
@@ -196,7 +196,7 @@ least charge over the proposed core domain.
 A common positive multiplier $a$ exists exactly when $m>M/11$:
 
 $$
-\bigl(\exists a>0:\;a m\ge1\ \text{and}\ aM<11\bigr)
+\bigl(\exists a>0:\thickspace a m\ge1\ \text{and}\ aM<11\bigr)
 \quad\Longleftrightarrow\quad
 m>\frac M{11}.
 $$
@@ -304,7 +304,7 @@ $$
 For a positive integer threshold $t$, define
 
 $$
-f_{\mathrm{binary}}(C)=\mathbf 1_{\{h(C)\ge t\}},
+f_{\mathrm{binary}}(C)=\mathbf 1_{\lbrace h(C)\ge t\rbrace},
 \qquad
 f_{\mathrm{floor}}(C)=\left\lfloor\frac{h(C)}t\right\rfloor.
 $$
@@ -344,7 +344,7 @@ ordinary atoms that dominate its charge on those traces.
 There are at most $2^5=32$ traces and exactly 80 ordinary atom types on five sites:
 
 $$
-\sum_{\varnothing\ne R\subseteq\{1,\ldots,5\}}\lvert R\rvert
+\sum_{\varnothing\ne R\subseteq\lbrace1,\ldots,5\rbrace}\lvert R\rvert
 =5\cdot2^4=80.
 $$
 
@@ -377,10 +377,10 @@ $$
 \begin{aligned}
 \min_{\alpha_{R,k}\ge0}\quad&
 \sum_{\varnothing\ne R\subseteq V}\sum_{k=1}^{\lvert R\rvert}
-\alpha_{R,k}\left\lfloor\frac{\lvert R\rvert}{k}\right\rfloor\\
+\alpha_{R,k}\left\lfloor\frac{\lvert R\rvert}{k}\right\rfloor\cr
 \text{subject to}\quad&
 \sum_{\varnothing\ne R\subseteq V}\sum_{k=1}^{\lvert R\rvert}
-\alpha_{R,k}\mathbf 1_{\{\lvert R\cap T\rvert\ge k\}}
+\alpha_{R,k}\mathbf 1_{\lbrace\lvert R\cap T\rvert\ge k\rbrace}
 \ge\left\lfloor\frac{\lvert T\rvert}{2}\right\rfloor
 \qquad(T\subseteq V).
 \end{aligned}
@@ -416,7 +416,7 @@ support size $r=\lvert R\rvert$ and threshold $k$. The full capacity check is:
 For example, a three-site, threshold-two atom charges three two-site traces and all five
 four-site traces, giving $3(3/20)+5(1/10)=19/20$. A point atom charges four traces of
 each size, giving one.
-For either trace size $\ell\in\{2,4\}$, the number charged is
+For either trace size $\ell\in\lbrace2,4\rbrace$, the number charged is
 
 $$
 N_{r,k,\ell}=\sum_{j=k}^{\ell}\binom rj\binom{5-r}{\ell-j}.
@@ -447,7 +447,7 @@ For integer $h\ge0$ and threshold $t\ge1$, the identity
 
 $$
 \left\lfloor\frac ht\right\rfloor
-=\sum_{j\ge1}\mathbf 1_{\{h\ge jt\}}
+=\sum_{j\ge1}\mathbf 1_{\lbrace h\ge jt\rbrace}
 $$
 
 is useful for evaluation; only finitely many terms are nonzero.

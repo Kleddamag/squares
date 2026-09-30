@@ -123,7 +123,7 @@ still the question.
 
 For each lower parent, success means all eight guards are nonnegative.
 Outside success at least one guard is strictly negative, so the eight closed failure
-children $P_{0,I,\pi}\cap\{g\le0\}$ cover every remaining parent point.
+children $P_{0,I,\pi}\cap\lbrace g\le0\rbrace$ cover every remaining parent point.
 Every listed guard is strictly positive at the fixture; none is an identity of the
 four-pose parameterization.
 This does not assert that all failure children are distinct, nonempty or proper subsets
@@ -132,8 +132,8 @@ Establishing that a strictly guarded four-pose fixture extends to that full pare
 remains part of the unanswered target question.
 
 **Wording qualification:** the design’s sentence “Equality belongs to both children”
-applies to $D_0\cap\{g=0\}$. If another guard is negative, a point with $g=0$ belongs to
-the corresponding failure child but need not belong to success.
+applies to $D_0\cap\lbrace g=0\rbrace$. If another guard is negative, a point with $g=0$
+belongs to the corresponding failure child but need not belong to success.
 The formal definitions already give the correct closed cover.
 No boundary needs to be removed or reassigned.
 

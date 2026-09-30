@@ -162,7 +162,7 @@ Use frame coordinates $U=Cx+Sy$ and $V=-Sx+Cy$ for the center.
 The preceding inequalities and bottom containment place it inside the closed triangle
 
 $$
-K_\theta=\{U\le u_*,\ V\le v_*,\ SU+CV\ge h\},\qquad
+K_\theta=\lbrace U\le u_*,\ V\le v_*,\ SU+CV\ge h\rbrace,\qquad
 u_*=Cm+S-1/2,\quad v_*=C-S-1/2.
 $$
 
@@ -192,12 +192,12 @@ $$
 Since $CS\le1/2$, we have $\Delta\le23/400$. Each rectangle half-side is at least
 $1291/2812>459/1000$. Also $|C-S|<1/125$, $(2h-1)^2<9/49$ and $4CS>49/25$ bound the
 horizontal displacement of $p_\theta$ from $(k,r)$ by $1/1000$. The vertical
-displacement is less than $1/90000$, so $\|p_\theta-(k,r)\|_1<1/800$.
+displacement is less than $1/90000$, so $\Vert p_\theta-(k,r)\Vert_1<1/800$.
 
 It follows that the fixed diamond
 
 $$
-K_1=\{(X,Y):|X-k|+|Y-r|\le16/25\}
+K_1=\lbrace(X,Y):|X-k|+|Y-r|\le16/25\rbrace
 $$
 
 lies in the interior of every admissible Q: either frame projection relative to
@@ -221,7 +221,7 @@ Let T be the accepted outer tangent-half-angle endpoint $110880/50803079$ and se
 
 $$
 \alpha=\frac{1+T^2}{2(1+2T-T^2)},\qquad
-B_\phi=R_\phi[-\alpha,\alpha]^2,\quad\phi\in\{0,\pi/4\}.
+B_\phi=R_\phi[-\alpha,\alpha]^2,\quad\phi\in\lbrace0,\pi/4\rbrace.
 $$
 
 Here $R_\phi$ rotates a point by $\phi$. For S’s orientation $\psi$, put
@@ -232,7 +232,7 @@ The largest required projection is therefore bounded by
 $\alpha(\cos\delta+\sin\delta)\le1/2$. A complete cover of all possible S centers by
 
 $$
-(E+B_\phi)\ \cup\ \bigcup_{p\in\{B,\ldots,J\}}(p+B_\phi)
+(E+B_\phi)\ \cup\ \bigcup_{p\in\lbrace B,\ldots,J\rbrace}(p+B_\phi)
 $$
 
 would prove H124 for that whole band.

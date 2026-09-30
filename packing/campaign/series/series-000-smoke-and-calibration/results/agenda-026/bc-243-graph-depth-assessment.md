@@ -19,7 +19,7 @@ The finite boundary union has area zero.
 A nonempty intersection of these open interiors contains a small open disk, so
 
 $$
-\operatorname*{ess\,sup}_x\sum_i w_i\mathbf1_{S_i}(x)
+\operatorname*{ess\thinspace sup}_x\sum_i w_i\mathbf1_{S_i}(x)
 =\max_{\bigcap_{i\in I}K_i\ne\varnothing}\sum_{i\in I}w_i.
 $$
 

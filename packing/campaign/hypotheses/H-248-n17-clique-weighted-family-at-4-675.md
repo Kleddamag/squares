@@ -73,7 +73,7 @@ certificate whose every atom has capacity one is itself a proof that no triangle
 family of 34 squares fits at $4.640020$ or below.
 Kleddamag’s $4.66001$ certificate, again with every rule of capacity one, did the same
 to this hypothesis’s first targets, $4.65$ and $4.66$, on 2026-09-27. The ceiling lies
-in $[4.66001,\,s(17)]$, inside $[4.66001,\,4.67553]$.
+in $[4.66001,\thinspace s(17)]$, inside $[4.66001,\thinspace4.67553]$.
 
 The sharp form of the lemma weights a family by any $y\ge 0$ with $y(K)\le 1$ on every
 clique of the overlap graph, since every set of cores that fires one atom is pairwise

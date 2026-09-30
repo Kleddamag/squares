@@ -51,16 +51,16 @@ do not satisfy this theorem.
 ## An Exact Obstruction Before Any Solver
 
 For any $L\ge3$, place nine axis-aligned unit squares at centers $(L/2+i,L/2+j)$, where
-$i,j\in\{-1,0,1\}$. They are contained and pairwise compatible, including their legal
-touching pairs. This is a generic symbolic control, not a measurement of a scientific
-candidate.
+$i,j\in\lbrace-1,0,1\rbrace$. They are contained and pairwise compatible, including
+their legal touching pairs.
+This is a generic symbolic control, not a measurement of a scientific candidate.
 
 Let $a=(1,-2,1)$ and $z_{ij}=a_i a_j$. The tensor second difference annihilates every
 center monomial of total degree at most three: at least one coordinate exponent is at
 most one. Consequently
 
 $$
-\sum_{i,j}z_{ij}\,\phi(P_{ij})=0
+\sum_{i,j}z_{ij}\thinspace\phi(P_{ij})=0
 $$
 
 for any feature vector whose restriction to this fixed-angle fiber has that degree
@@ -81,8 +81,8 @@ Every pair across the two parts is distinct and compatible, so its feature inner
 is at most $-1$. Therefore
 
 $$
-0\le\|u\|^2
-=\sum_{p,q}z_p^+z_q^-\,v_p\mathbin{\cdot}v_q
+0\le\Vert u\Vert^2
+=\sum_{p,q}z_p^+z_q^-\thinspace v_p\mathbin{\cdot}v_q
 \le-64,
 $$
 
@@ -111,8 +111,8 @@ The family is
 $$
 \begin{aligned}
 K(P,Q)=1
-&+z_P^T A z_Q+a_s s_Ps_Q+a_d d_Pd_Q+a_w w_Pw_Q\\
-&+\sum_{i,j=0}^{1}B_{ij}\,V_i(P)\mathbin{\cdot}V_j(Q),
+&+z_P^T A z_Q+a_s s_Ps_Q+a_d d_Pd_Q+a_w w_Pw_Q\cr
+&+\sum_{i,j=0}^{1}B_{ij}\thinspace V_i(P)\mathbin{\cdot}V_j(Q),
 \end{aligned}
 $$
 
@@ -160,12 +160,12 @@ supplies no non-grid diagonal or pair claim and is not a second proposed family.
 ## One Future Finite Discriminator
 
 If this family is adopted prospectively, first use only axis-aligned poses.
-Take the four translated grids with centers $(a+i,b+j)$, where $i,j\in\{0,1,2\}$ and
-$a,b\in\{1/2,L-5/2\}$. Add the centered tight grid from the obstruction and deduplicate
-physical poses. This gives at most forty-five poses, forty-five diagonal constraints and
-990 unordered pair candidates.
-Include a pair inequality only when $|x_i-x_j|\ge1$ or $|y_i-y_j|\ge1$, the exact
-compatibility condition for axis-aligned unit squares.
+Take the four translated grids with centers $(a+i,b+j)$, where
+$i,j\in\lbrace0,1,2\rbrace$ and $a,b\in\lbrace1/2,L-5/2\rbrace$. Add the centered tight
+grid from the obstruction and deduplicate physical poses.
+This gives at most forty-five poses, forty-five diagonal constraints and 990 unordered
+pair candidates. Include a pair inequality only when $|x_i-x_j|\ge1$ or $|y_i-y_j|\ge1$,
+the exact compatibility condition for axis-aligned unit squares.
 Thus walls and legal touching remain in the control.
 This prospective pool has not been constructed or evaluated.
 
@@ -245,9 +245,9 @@ $$
 \frac{1+|\cos(\theta-\varphi)|+|\sin(\theta-\varphi)|}{2},
 $$
 
-where $\sigma\in\{-1,1\}$ and $n$ runs through the two unit edge axes of each square.
-In the quarter-turn chart the cosine difference is nonnegative; splitting the sign of
-the sine difference gives at most sixteen closed branches.
+where $\sigma\in\lbrace-1,1\rbrace$ and $n$ runs through the two unit edge axes of each
+square. In the quarter-turn chart the cosine difference is nonnegative; splitting the
+sign of the sine difference gives at most sixteen closed branches.
 Touching is the equality case.
 Branch overlaps and duplicate orientation endpoints do not permit omitting any branch.
 
@@ -325,7 +325,7 @@ $T_{rs}=\operatorname{tr}(M^V_{rs})$. Consequently the vector contribution is
 $\langle T,B\rangle$, with no extra factor of one-half.
 The symmetrization factor one-half is already present in each pair term.
 The mixed-vector control, whose exact $T$ is
-$\left(\begin{smallmatrix}34&62\\62&106\end{smallmatrix}\right)$, exercises this
+$\left(\begin{smallmatrix}34&62\cr62&106\end{smallmatrix}\right)$, exercises this
 distinction. The three scalar contributions are checked separately.
 
 Exact Schur elimination rejects negative pivots and rejects a zero pivot with a nonzero
@@ -420,12 +420,12 @@ A source-free review on September7,22:28:34–22:33:23 UTC (289 seconds) establi
 following conditional extension, checked by the coordinator.
 Exp129 never ran; there is no biquadratic obstruction to promote yet.
 
-Let $\mathcal B=\operatorname{span}\{u^iv^j:0\le i,j\le2\}$. Suppose an enriched kernel
-has $K-1=\psi(P)^TQ\psi(Q)$, with $Q\succeq0$, and every axis restriction
-$\psi_j(u,v,0)$ lies in $\mathcal B$. Writing those restrictions as $F\eta$ gives the
-PSD axis coefficient matrix $F^TQF$ in the basis $\eta=(1,r,p,d,w,V_0,V_1)$ defined
-above. Jointly average this axis kernel over container $D_4$. PSD, the same diagonal
-bound and all compatible-pair inequalities survive, including touching.
+Let $\mathcal B=\operatorname{span}\lbrace u^iv^j:0\le i,j\le2\rbrace$. Suppose an
+enriched kernel has $K-1=\psi(P)^TQ\psi(Q)$, with $Q\succeq0$, and every axis
+restriction $\psi_j(u,v,0)$ lies in $\mathcal B$. Writing those restrictions as $F\eta$
+gives the PSD axis coefficient matrix $F^TQF$ in the basis $\eta=(1,r,p,d,w,V_0,V_1)$
+defined above. Jointly average this axis kernel over container $D_4$. PSD, the same
+diagonal bound and all compatible-pair inequalities survive, including touching.
 The enriched family need not itself be closed under symmetry, and no independent folding
 is allowed.
 

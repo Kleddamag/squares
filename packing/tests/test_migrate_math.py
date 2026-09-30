@@ -30,6 +30,7 @@ from devtools.migrate_math import (
     classify,
     demote_unsafe,
     flowmark_safety,
+    github_safe_tex,
     github_unsafe_math,
     kpress_math,
     main,
@@ -293,6 +294,47 @@ def test_every_formula_github_alters_holds_what_to_latex_never_writes() -> None:
     assert altered
     for case in altered:
         assert re.search(r"\\[^A-Za-z]", case.tex), case
+
+
+def test_every_escape_github_alters_is_rewritten_and_every_safe_formula_left_alone() -> None:
+    """The probe's `[altered]` formulas come out of `github_safe_tex` with no escape GitHub
+    strips, unless they hold one with no safe form; its `[math]` formulas come out as they
+    went in."""
+    cases = probe_cases(GITHUB_PROBE.read_text("utf-8"))
+    for case in cases:
+        safe, left = github_safe_tex(case.tex)
+        if case.recorded == "math":
+            assert (safe, left) == (case.tex, []), case
+        elif case.recorded == "altered":
+            assert safe != case.tex or left, case
+            assert left or not re.search(r"\\[!-/:-@\[-`{-~]", safe), case
+
+
+def test_the_safe_forms_are_the_letter_named_commands() -> None:
+    assert github_safe_tex(r"\{x\}") == (r"\lbrace x\rbrace", [])
+    assert github_safe_tex(r"a\,b\;c\:d\!e") == (
+        r"a\thinspace b\thickspace c\medspace d\negthinspace e",
+        [],
+    )
+    assert github_safe_tex(r"\begin{aligned} a &= 1 \\ b &= 2 \end{aligned}") == (
+        r"\begin{aligned} a &= 1 \cr b &= 2 \end{aligned}",
+        [],
+    )
+    assert github_safe_tex(r"27\%") == (r"27\%", [r"\%"])
+    assert github_safe_tex(r"a \\[2pt] b")[1] == [r"\\["]
+
+
+def test_a_rewrite_keeps_its_delimiters_and_a_kept_span_is_never_converted() -> None:
+    text = "The set $\\{x\\}$ and\n\n$$\na\\,b\n$$\n\nwith `n = 11` kept.\n"
+    safe, changed, left = demote_unsafe(text)
+    assert (
+        safe
+        == "The set $\\lbrace x\\rbrace$ and\n\n$$\na\\thinspace b\n$$\n\nwith `n = 11` kept.\n"
+    )
+    assert len(changed) == 2
+    assert left == []
+    assert [d.converts for d in plan(safe).decisions] == [True]
+    assert [d.converts for d in plan(safe, keep=frozenset({"n = 11"})).decisions] == [False]
 
 
 def test_math_github_would_not_draw_goes_back_to_code_when_this_tool_wrote_it() -> None:

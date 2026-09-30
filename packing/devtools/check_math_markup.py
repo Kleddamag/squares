@@ -47,6 +47,7 @@ from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
 from devtools.migrate_math import (
+    UnsafeMath,
     github_unsafe_math,
     has_math_spans,
     open_math_spans,
@@ -254,14 +255,19 @@ def _check_file(path: str, text: str, keeps: set[str], outcome: Outcome) -> None
     )
     if "$" in text:
         outcome.problems.extend(
-            f"{path}:{item.line}: ${item.tex}$ is shown as dollars on GitHub -- {item.reason}; "
-            + (
-                f"write {item.code}, or run `python -m devtools.migrate_math --apply {path}`"
-                if item.code is not None
-                else "move it where GitHub draws math, or rephrase"
-            )
+            f"{path}:{item.line}: ${item.tex}$ is not drawn as written on GitHub -- "
+            f"{item.reason}; {_remedy(path, item)}"
             for item in github_unsafe_math(text)
         )
+
+
+def _remedy(path: str, item: UnsafeMath) -> str:
+    apply = f"`python -m devtools.migrate_math --apply --github {path}`"
+    if item.code is not None:
+        return f"write {item.code}, or run {apply}"
+    if item.replacement is not None:
+        return f"run {apply}, which writes the TeX GitHub keeps"
+    return "move it where GitHub draws math, or rephrase it"
 
 
 def check(register: Register, repo: Path = REPO, files: Scope | None = None) -> Outcome:

@@ -67,9 +67,9 @@ In ordinary coordinates the block centers are
 
 $$
 \begin{aligned}
-C_6&=(p_x,p_y),\\
-C_7&=(p_x-\alpha c+s,\ p_y-\alpha s-c),\\
-C_8&=(p_x+c+\beta s,\ p_y+s-\beta c),\\
+C_6&=(p_x,p_y),\cr
+C_7&=(p_x-\alpha c+s,\ p_y-\alpha s-c),\cr
+C_8&=(p_x+c+\beta s,\ p_y+s-\beta c),\cr
 C_9&=(p_x+(1-\alpha)c+(1+\beta)s,
        \ p_y+(1-\alpha)s-(1+\beta)c).
 \end{aligned}
@@ -225,8 +225,8 @@ Their gap is uniformly positive on the frozen box:
 $$
 \begin{aligned}
 J-K_5
-&=2+3c+2s-L(c+s)\\
-&\ge2-\frac{21}{25}c-\frac{46}{25}s\\
+&=2+3c+2s-L(c+s)\cr
+&\ge2-\frac{21}{25}c-\frac{46}{25}s\cr
 &\ge2-\frac{21}{25}\frac45-\frac{46}{25}\frac7{10}
 =\frac1{25}>0.
 \end{aligned}
@@ -293,7 +293,7 @@ If the horizontal-left alternative holds, $\xi_9\ge D$, then
 $$
 \begin{aligned}
 s\xi_9+cY_9-D
-&\ge sD+c(h+s-\beta c-1/2)-D\\
+&\ge sD+c(h+s-\beta c-1/2)-D\cr
 &=c(2s-1-\beta c)\ge0.
 \end{aligned}
 \tag{16}
@@ -350,7 +350,7 @@ If negative-`e` separation holds, $c\xi_7-sY_7\ge D$, then
 $$
 \begin{aligned}
 s\xi_7+cY_7
-&\ge\frac{sD+Y_7}{c}\\
+&\ge\frac{sD+Y_7}{c}\cr
 &\ge\frac{D(1+s)-s+\beta c}{c}
 =D+\frac{s^2+\beta c}{c}>D.
 \end{aligned}
@@ -418,7 +418,7 @@ reduction therefore forces the stronger row $B-\beta\ge J$. The bound $p_x\ge h+
 
 $$
 \begin{aligned}
-A&\ge c(h+1)+s(h+c+\alpha s)\\
+A&\ge c(h+1)+s(h+c+\alpha s)\cr
 &=u+\frac12+s(2c-1)+\alpha s^2
 \ge u+\frac12.
 \end{aligned}

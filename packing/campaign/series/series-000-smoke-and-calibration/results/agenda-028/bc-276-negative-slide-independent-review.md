@@ -55,8 +55,8 @@ The block equations independently reconstruct as
 
 $$
 \begin{aligned}
-x_7&=p_x-\alpha c+s,& y_7&=p_y-\alpha s-c,\\
-x_8&=p_x+c+\beta s,& y_8&=p_y+s-\beta c,\\
+x_7&=p_x-\alpha c+s,& y_7&=p_y-\alpha s-c,\cr
+x_8&=p_x+c+\beta s,& y_8&=p_y+s-\beta c,\cr
 x_9&=p_x+(1-\alpha)c+(1+\beta)s,
 &y_9&=y_8-\alpha s-c=y_7+s-\beta c.
 \end{aligned}

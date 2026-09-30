@@ -296,7 +296,7 @@ These conditions keep the selected mass disjoint even when the packed squares to
 
 $$
 \sum_a z_a=11,\qquad
-\sum_a m_{ja}z_a\le M_j,\qquad z_a\in\{0,1\}.
+\sum_a m_{ja}z_a\le M_j,\qquad z_a\in\lbrace0,1\rbrace.
 $$
 
 Uniformly proved cell conflicts and small-subsystem no-goods add compatibility.

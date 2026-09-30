@@ -108,9 +108,9 @@ along the binding direction most rows keep decreasing at second order, so the un
 remainder model, not the geometry, is what stops at $0.004$. A second-order-exact
 isolation theorem is the follow-up, as a W7 improvement of the radius tool.
 X-046’s growth floor of $0.0057$ per radian also used a far-row constant; the corrected
-uniform-ball floor is $\sigma\ge0.0111\,t$. A larger radius was always going to shorten
-the H-112 ladder modestly, by about three refinement levels on each side of Trump’s box,
-not tenfold.
+uniform-ball floor is $\sigma\ge0.0111\thinspace t$. A larger radius was always going to
+shorten the H-112 ladder modestly, by about three refinement levels on each side of
+Trump’s box, not tenfold.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

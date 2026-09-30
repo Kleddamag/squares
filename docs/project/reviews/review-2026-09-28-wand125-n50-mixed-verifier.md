@@ -94,14 +94,14 @@ inequality actually certifies.
 At a leaf with normalized box $(u,v,d_u,d_v)$ the checker returns
 
 $$
-\text{lower}=\downarrow\!\big(\downarrow\!(f-r_x)-r_y\big),\qquad
-f=\sum_j\downarrow\!\big(\rho_j^{\,l}\,A_j\big),\qquad
-r_x=\uparrow\!\big(d_x^{\,h}\,\sup_{X\times Y}|\partial_xF|\big),
+\text{lower}=\downarrow\negthinspace\big(\downarrow\negthinspace(f-r_x)-r_y\big),\qquad
+f=\sum_j\downarrow\negthinspace\big(\rho_j^{\thinspace l}\thinspace A_j\big),\qquad
+r_x=\uparrow\negthinspace\big(d_x^{\thinspace h}\thinspace\sup_{X\times Y}|\partial_xF|\big),
 $$
 
-where $\downarrow,\uparrow$ are `nextafter` roundings, $\rho_j^{\,l}$ is the lower end
-of the density enclosure, $A_j$ is `area_lower`, and $X\times Y$ is the outward-rounded
-enclosure of the physical box.
+where $\downarrow,\uparrow$ are `nextafter` roundings, $\rho_j^{\thinspace l}$ is the
+lower end of the density enclosure, $A_j$ is `area_lower`, and $X\times Y$ is the
+outward-rounded enclosure of the physical box.
 Each factor is a proven bound in the safe direction:
 
 - **Input enclosures.** `certify.py:18–24` converts every rational to two adjacent
@@ -211,15 +211,17 @@ loop.
 replaces the interval vertex loop by integer tables and verifies the tables rather than
 trusting them:
 
-- lines 18–28 rebuild the event set $\{x_0\pm B/2,\ x_1\pm B/2\}\cap(L/2,\ L-1/2)$ over
-  all 4,424 images for each axis, add the two domain endpoints, and require the stored
-  axis lists to equal it (3,635 events per axis, 13,205,956 cells);
+- lines 18–28 rebuild the event set
+  $\lbrace x_0\pm B/2,\ x_1\pm B/2\rbrace\cap(L/2,\ L-1/2)$ over all 4,424 images for
+  each axis, add the two domain endpoints, and require the stored axis lists to equal it
+  (3,635 events per axis, 13,205,956 cells);
 - lines 29–39 require integer coordinates after scaling by $D=5\times10^{16}$, weights
-  $w_j\le 2^{24}\,m_j$ per image (checked exactly), and $(\sum w_j)\,2^{32}<2^{63}$ so
-  that the `int64` products cannot overflow;
-- lines 40–52 check every table entry: $f_{ij}\,(x_1-x_0)\le 2^{16}\,\ell_{ij}$ with
-  $\ell_{ij}$ the exact overlap of $[x_i-B/2,x_i+B/2]$ with $[x_0,x_1]$, so
-  $f_{ij}/2^{16}$ is a lower approximation of the overlap fraction;
+  $w_j\le 2^{24}\thinspace m_j$ per image (checked exactly), and
+  $(\sum w_j)\thinspace2^{32}<2^{63}$ so that the `int64` products cannot overflow;
+- lines 40–52 check every table entry:
+  $f_{ij}\thinspace(x_1-x_0)\le 2^{16}\thinspace\ell_{ij}$ with $\ell_{ij}$ the exact
+  overlap of $[x_i-B/2,x_i+B/2]$ with $[x_0,x_1]$, so $f_{ij}/2^{16}$ is a lower
+  approximation of the overlap fraction;
 - lines 53–61 form $\sum_j f_{ij}w_jf'_{kj}$ by integer matrix product, take the cell
   minimum over its four corners, compare with $\lceil\Gamma\cdot 2^{56}\rceil$, and
   require every failing cell to appear in `exact_patches` with an exact rational
@@ -227,7 +229,7 @@ trusting them:
 
 The product is at most $2^{56}$ times the exact corner coverage, so the integer minimum
 is a lower bound; here it is $277199759147/274877906944\approx1.00845$ with no patches,
-a margin of $0.8\%$ that none of the oblique directions has.
+a margin of 0.8% that none of the oblique directions has.
 This is a different implementation from the C++ for one of the 201 directions.
 It does not make a second method for the claim.
 

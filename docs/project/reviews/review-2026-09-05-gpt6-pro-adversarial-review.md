@@ -114,9 +114,9 @@ If \(d>0\), then \(d<\pi/2\) and \(\cos d<1\), giving
 $$
 \begin{aligned}
 B(\cos d+\sin d)
-&=B\cos d(1+\tan d)\\
-&<B(1+\tan d)\\
-&\le B(1+D)\\
+&=B\cos d(1+\tan d)\cr
+&<B(1+\tan d)\cr
+&\le B(1+D)\cr
 &\le1.
 \end{aligned}
 $$

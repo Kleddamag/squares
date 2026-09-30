@@ -28,8 +28,8 @@ research allocation is **A, S, B, C, D**, with D treated as a separately budgete
 background search.
 This is a judgment from the retained evidence and prerequisites, not a
 measured success probability.
-A global lower bound of $3.84$ would remove approximately $27\%$ of the current
-interval; $3.85$ would remove approximately $47\%$. Either would also prove a physical
+A global lower bound of $3.84$ would remove approximately 27% of the current interval;
+$3.85$ would remove approximately 47%. Either would also prove a physical
 fractional-packing gap beyond the known point/density ceiling.
 Route S offers a different authorized outcome: a substantially simpler proof of the
 existing $3.82$ bound.
@@ -433,7 +433,7 @@ its strict core, and its selected folded source index.
 Put
 
 $$
-f_J(Q,C,j)=\mathbf1_{\{j\in J\}}.
+f_J(Q,C,j)=\mathbf1_{\lbrace j\in J\rbrace}.
 $$
 
 If $j\in J$, the parent’s folded angle belongs to the union of the corresponding

@@ -42,7 +42,7 @@ Denote the second square by $\mathcal S$ below.
 The accepted H124 reduction places every admissible distinguished-square center in
 
 $$
-K_\theta=\{(x,y):U\le u_*,\ V\le v_*,\ SU+CV\ge h\},
+K_\theta=\lbrace(x,y):U\le u_*,\ V\le v_*,\ SU+CV\ge h\rbrace,
 $$
 
 where
@@ -72,11 +72,11 @@ Applying $(U,V)\mapsto(CU-SV,SU+CV)$ gives the world-frame vertices
 $$
 \begin{aligned}
 v_E(\theta)
- &=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\\
+ &=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\cr
 v_L(\theta)
- &=\left(v_{Ex}(\theta)-\cot\theta\,\Delta,\ h\right),\\
+ &=\left(v_{Ex}(\theta)-\cot\theta\thinspace\Delta,\ h\right),\cr
 v_R(\theta)
- &=\left(v_{Ex}(\theta)+\tan\theta\,\Delta,\ h\right).
+ &=\left(v_{Ex}(\theta)+\tan\theta\thinspace\Delta,\ h\right).
 \end{aligned}
 $$
 
@@ -99,7 +99,7 @@ Use the already reviewed endpoint
 
 $$
 T=\frac{110880}{50803079},\qquad
-\Theta=\{\pi/4+2\arctan t:-T\le t\le T\}.
+\Theta=\lbrace\pi/4+2\arctan t:-T\le t\le T\rbrace.
 $$
 
 The [angle-instrument derivation](bc-255-angle-instrument-design.md) proves
@@ -128,10 +128,10 @@ $$
 \begin{aligned}
 C,S
  &>\frac{707}{1000}\left(1-\frac1{64800}-\frac1{180}\right)
- >\frac{703}{1000},\\
+ >\frac{703}{1000},\cr
 C,S
  &<\frac{708}{1000}\left(1+\frac1{180}\right)
- <\frac{89}{125},\\
+ <\frac{89}{125},\cr
 \frac{353}{500}
  &<\frac{707}{1000}\left(1-\frac1{64800}\right)
  <h\le r<\frac57.
@@ -176,11 +176,11 @@ Differentiating the exact expressions yields
 
 $$
 \begin{aligned}
-v_{Ex}'&=h-2WCS,\\
-v_{Ey}'&=(C-S)\left(W(C+S)-\frac12\right),\\
-\Delta'&=(C-S)\left(W(C+S)-1\right),\\
-v_{Lx}'&=v_{Ex}'+\csc^2\theta\,\Delta-\cot\theta\,\Delta',\\
-v_{Rx}'&=v_{Ex}'+\sec^2\theta\,\Delta+\tan\theta\,\Delta',\\
+v_{Ex}'&=h-2WCS,\cr
+v_{Ey}'&=(C-S)\left(W(C+S)-\frac12\right),\cr
+\Delta'&=(C-S)\left(W(C+S)-1\right),\cr
+v_{Lx}'&=v_{Ex}'+\csc^2\theta\thinspace\Delta-\cot\theta\thinspace\Delta',\cr
+v_{Rx}'&=v_{Ex}'+\sec^2\theta\thinspace\Delta+\tan\theta\thinspace\Delta',\cr
 v_{Ly}'&=v_{Ry}'=h'.
 \end{aligned}
 $$
@@ -212,7 +212,7 @@ $$
 |v_{Lx}'|,|v_{Rx}'|
 &<\frac{233}{1000}
   +\frac{81}{40}\frac{23}{400}
-  +\frac{41}{40}\frac7{2500}\\
+  +\frac{41}{40}\frac7{2500}\cr
 &=\frac{140923}{400000}<\frac9{25}.
 \end{aligned}
 $$
@@ -223,10 +223,10 @@ proves
 
 $$
 \boxed{\quad
-\|v_i(\theta)-v_i^0\|_\infty
+\Vert v_i(\theta)-v_i^0\Vert_\infty
 <\frac9{25}\frac1{180}
 =\frac1{500}=\varepsilon,
-\qquad i\in\{E,L,R\},\quad\theta\in\Theta.
+\qquad i\in\lbrace E,L,R\rbrace,\quad\theta\in\Theta.
 \quad}
 $$
 
@@ -237,7 +237,7 @@ The same fixed epsilon covers both signs; it was not selected by a radius sweep.
 
 Let $R_\eta$ denote rotation through $\eta$ and let $U_\eta=R_\eta[-1/2,1/2]^2$ be the
 centered closed unit-square kernel.
-For a near-axis orientation $\psi\in\{2\arctan t:-T\le t\le T\}$, a square
+For a near-axis orientation $\psi\in\lbrace2\arctan t:-T\le t\le T\rbrace$, a square
 $\mathcal S=z+U_\psi$ intersects the square $v+U_\theta$ exactly when
 
 $$
@@ -250,7 +250,7 @@ For nonempty $K_\theta$, convexity gives
 $$
 \mathcal C_{\theta,\psi}
 :=\bigcap_{v\in K_\theta}(v+U_\theta+U_\psi)
-=\bigcap_{i\in\{E,L,R\}}(v_i(\theta)+U_\theta+U_\psi).
+=\bigcap_{i\in\lbrace E,L,R\rbrace}(v_i(\theta)+U_\theta+U_\psi).
 $$
 
 Indeed, if $z-v_i$ lies in the convex set $U_\theta+U_\psi$ for each vertex, then
@@ -288,7 +288,7 @@ For $n=(n_x,n_y)$, write $h_A(n)=\sup_{a\in A}n\cdot a$ for a support function.
 The complete set of outward facet directions of $M^*$ is
 
 $$
-\mathcal N=\{\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\}.
+\mathcal N=\lbrace\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\rbrace.
 $$
 
 These normals are not normalized.
@@ -311,9 +311,9 @@ Define the fixed closed set
 $$
 \boxed{\quad
 C^*=\bigcap_{n\in\mathcal N}
-\left\{z:n\cdot z\le
-h_{M^*}(n)+\min_{i\in\{E,L,R\}}n\cdot v_i^0
--\varepsilon\|n\|_1\right\}.
+\left\lbrace z:n\cdot z\le
+h_{M^*}(n)+\min_{i\in\lbrace E,L,R\rbrace}n\cdot v_i^0
+-\varepsilon\Vert n\Vert_1\right\rbrace.
 \quad}
 $$
 
@@ -325,8 +325,8 @@ For every $i,n,\theta$, the displacement theorem gives
 
 $$
 n\cdot v_i(\theta)
-\ge n\cdot v_i^0-\varepsilon\|n\|_1
-\ge\min_j n\cdot v_j^0-\varepsilon\|n\|_1.
+\ge n\cdot v_i^0-\varepsilon\Vert n\Vert_1
+\ge\min_j n\cdot v_j^0-\varepsilon\Vert n\Vert_1.
 $$
 
 If $z\in C^*$, subtracting this inequality from the corresponding bound on $n\cdot z$

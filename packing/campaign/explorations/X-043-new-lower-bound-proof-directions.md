@@ -213,7 +213,7 @@ $$
 For a threshold feature $(F,k,w)$ with distinct sites $F$ and $w\ge0$,
 
 $$
-q_F(Q)=w\mathbf1_{\{|F\cap Q|\ge k\}},\qquad
+q_F(Q)=w\mathbf1_{\lbrace|F\cap Q|\ge k\rbrace},\qquad
 M_F=w\lfloor |F|/k\rfloor.
 $$
 
@@ -478,7 +478,7 @@ $(F,k)$ has reduced cost
 
 $$
 \lfloor|F|/k\rfloor-
-\sum_i y_i\mathbf1_{\{|F\cap Q_i|\ge k\}}.
+\sum_i y_i\mathbf1_{\lbrace|F\cap Q_i|\ge k\rbrace}.
 \tag{4}
 $$
 
@@ -603,7 +603,7 @@ $$
 $$
 
 Nonnegative weighted combinations have a valid global budget.
-A binary version $\mathbf1_{\{\nu_j(P)\ge t_j\}}$ has the same budget.
+A binary version $\mathbf1_{\lbrace\nu_j(P)\ge t_j\rbrace}$ has the same budget.
 These are continuous counterparts of token and floor resources, but the parents
 themselves can be evaluated: there is no site mass on a shared boundary and no
 strict-core shrink needed for the resource argument.

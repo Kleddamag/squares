@@ -275,7 +275,7 @@ For a parent with centre $z$ and physical rotation $\theta$, define for each sou
 $p$
 
 $$
-F_p(z,\theta)=\left\|R_{-\theta}(p-z)\right\|_\infty-\frac12.
+F_p(z,\theta)=\left\Vert R_{-\theta}(p-z)\right\Vert_\infty-\frac12.
 $$
 
 Closed parent membership is $F_p\le0$. At the literal pose $z0=(1/2,1/2), \theta=0$,

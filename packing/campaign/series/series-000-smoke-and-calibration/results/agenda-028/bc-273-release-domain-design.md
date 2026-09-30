@@ -47,8 +47,8 @@ The six axis-square centers are
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\\
+C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\cr
 C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2).
 \end{aligned}
 $$
@@ -65,10 +65,10 @@ For the source choice of contact sides in the oblique component, write
 
 $$
 \begin{aligned}
-C_6&=p,\\
-C_7&=p+a e-f,\\
-C_8&=p+e+b f,\\
-C_9&=p+(a+1)e+(b-1)f,\\
+C_6&=p,\cr
+C_7&=p+a e-f,\cr
+C_8&=p+e+b f,\cr
+C_9&=p+(a+1)e+(b-1)f,\cr
 C_{10}&=w.
 \end{aligned}
 $$
@@ -87,8 +87,8 @@ the opposite slides, giving exactly $a,b$. This fixes the source contact-side pa
 other assignments of contact sides are sibling feature domains, not silently covered by
 these equations. No equality is imposed on pair 9–10.
 
-The retained angular equality graph has wall component $\{0,\ldots,5,*\}$ and free
-components $\{6,7,8,9\}$ and $\{10\}$. Its rank is nine.
+The retained angular equality graph has wall component $\lbrace0,\ldots,5,*\rbrace$ and
+free components $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$. Its rank is nine.
 Two angular parameters remain before other geometric restrictions; rank alone gives no
 feasible motion.
 
@@ -111,7 +111,7 @@ $$
 Impose, separately for every one of the 55 unordered pairs $i<j$,
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \left[\sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n)\right].
 $$
 
@@ -195,9 +195,9 @@ $$
 
 Require $p,w\in[1/2,7/2]^2$; all other centers are explicitly defined above and obey the
 same bound by containment.
-Define the target $T_+=P_+\cap\{L\le96/25\}$. All its centers additionally belong to
-$[1/2,167/50]^2$. The four retained oblique segments have length at least $3/4$; the two
-axis segments have length one.
+Define the target $T_+=P_+\cap\lbrace L\le96/25\rbrace$. All its centers additionally
+belong to $[1/2,167/50]^2$. The four retained oblique segments have length at least
+$3/4$; the two axis segments have length one.
 These bounds are a selected source-feature pilot, not necessary bounds for the whole
 rank-nine family.
 
@@ -256,7 +256,7 @@ packing.
 The first proposed target is the closed middle-angle child
 
 $$
-T_{\rm mid}=T_+\cap\{1/3\le v\le2/5\}.
+T_{\rm mid}=T_+\cap\lbrace1/3\le v\le2/5\rbrace.
 $$
 
 Both actual oblique angles range over $[2\arctan(1/3),2\arctan(2/5)]$. This retains

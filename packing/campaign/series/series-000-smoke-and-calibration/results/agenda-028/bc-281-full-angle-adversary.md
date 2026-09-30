@@ -201,7 +201,7 @@ The complete disjunction reduces to
 $$
 \begin{aligned}
 H_7:&\quad x_7\le L-1-h,\qquad
-V_7:\quad y_7\ge1+h,\\
+V_7:\quad y_7\ge1+h,\cr
 F_7:&\quad B\ge J:=3/2+u-sL,\qquad
 E_7:\quad A+a\le Q:=cL-c-1/2.
 \end{aligned} \tag{8}

@@ -31,7 +31,7 @@ $[0,q]^{2}$. Its selected closed B-core has the same centre, side $B=9977/10000$
 half-side $h=B/2$, and exact unit axis r. Choose equivalent square-axis representatives
 so that
 
-$$w=\cos\delta\,r+\sin\delta\,Jr,\qquad
+$$w=\cos\delta\thinspace r+\sin\delta\thinspace Jr,\qquad
 |\delta|<\pi/4,\qquad 0\leq\tan|\delta|\leq d<1.$$
 
 The mismatch bound must cover every parent source represented by this core frame.
@@ -49,7 +49,7 @@ Set `S=|r.x|+|r.y|` and `T=||r.x|-|r.y||`. The unit-ray condition gives `S>=1` a
 With `t=tan|delta|`,
 
 $$
-\|w\|_1\geq\sigma\cdot w
+\Vert w\Vert_1\geq\sigma\cdot w
 \geq S\cos\delta-T|\sin\delta|
 =\frac{S-Tt}{\sqrt{1+t^2}}.
 $$
@@ -79,7 +79,7 @@ $$Z_B(r)=[hS,q-hS]^2\cap\bigl(m+[0,h]r+[0,h]Jr\bigr).$$
 
 Intersecting all necessary bounds yields
 
-$$e(r,d)=\max\{hS,1/2,L(r,d)\},\qquad
+$$e(r,d)=\max\lbrace hS,1/2,L(r,d)\rbrace,\qquad
 Z_{\rm parent}(r)=Z_B(r)\cap[e,q-e]^2.$$
 
 This direction of intersection is correct.

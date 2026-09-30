@@ -76,7 +76,7 @@ Thus, in square-frame coordinates `U=Cx+Sy`, `V=-Sx+Cy`, every square avoiding L
 under these hypotheses has its center in the closed enlargement
 
 $$
-K_\theta=\{U\le u_*,\ V\le v_*,\ SU+CV\ge h\},\qquad
+K_\theta=\lbrace U\le u_*,\ V\le v_*,\ SU+CV\ge h\rbrace,\qquad
 u_*=Cq/2+S-1/2,\quad v_*=C-S-1/2.
 $$
 

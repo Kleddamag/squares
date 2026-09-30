@@ -333,8 +333,8 @@ minimizing packings.
 The wall attachments and retained segments are substantial restrictions.
 
 H-121 states the larger question precisely: **some global minimizer has orientations in
-$\{0,\theta\}$ modulo quarter turns**. A low-angle representative theorem plus H-112
-alone is insufficient: H-112 covers only multiplicity five.
+$\lbrace0,\theta\rbrace$ modulo quarter turns**. A low-angle representative theorem plus
+H-112 alone is insufficient: H-112 covers only multiplicity five.
 The remaining axis-plus-one multiplicities require a complete bound, or H-113 could
 supply a stronger complete family bound.
 The review’s trimming reduces the one-angle candidate family to oblique multiplicities

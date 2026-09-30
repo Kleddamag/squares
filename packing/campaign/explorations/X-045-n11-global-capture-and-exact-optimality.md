@@ -152,7 +152,7 @@ A theorem relating objective slack to pose distance is missing.
 
 Even the packet’s inequality
 
-$$S-U\ge -C\|z-z_*\|_\infty^2$$
+$$S-U\ge -C\Vert z-z_*\Vert_\infty^2$$
 
 is a local inequality with an already-assumed chart domain.
 For $S<U$ it gives a lower bound on a possible displacement, not an upper bound forcing
@@ -209,7 +209,7 @@ For a feasible coordinate vector $x$, local minimality is the first-order condit
 
 $$
 \exists r>0\ \forall y\in\mathcal F:
-\quad \|y-x\|^2<r^2\ \Longrightarrow\ S(y)\ge S(x).
+\quad \Vert y-x\Vert^2<r^2\ \Longrightarrow\ S(y)\ge S(x).
 \tag{1}
 $$
 
@@ -223,7 +223,7 @@ its derivative is zero on each piece.
 Continuity joins the constant values.
 Therefore $S$ is constant on each component of $\mathcal M$, and
 
-$$\mathcal V=\{S(x):x\in\mathcal M\}$$
+$$\mathcal V=\lbrace S(x):x\in\mathcal M\rbrace$$
 
 is finite. Because the definition is over the rationals, these isolated objective values
 are real algebraic numbers.
@@ -633,7 +633,7 @@ A certificate for the missing quantitative bridge would have the form
 
 $$
 V(P)\le E(S),\qquad
-V(P)\ge c\,d(P,Z)^p,
+V(P)\ge c\thinspace d(P,Z)^p,
 \qquad
 \sup_{S\in[L,U]}E(S)<c\rho^p,
 \tag{9}
@@ -796,7 +796,7 @@ replaced by an implicit assumption that the normal form or family bound is avail
 Define the actual orientation count
 
 $$
-\kappa(P)=\#\{\theta_i\bmod\pi/2:i=1,\ldots,11\}.
+\kappa(P)=\lvert\lbrace\theta_i\bmod\pi/2:i=1,\ldots,11\rbrace\rvert.
 $$
 
 The sufficient reduction is **there exists a global minimizing packing with
@@ -992,8 +992,8 @@ Instead seek a theorem that every relevant minimizing packing lies in a finite u
 quantitative tubes
 
 $$
-\mathcal T_a=\{P:\ d_{\pi/2}(\theta_i,\alpha_{a,c(i)})\le\delta_a,
-\quad (x_i,y_i)\in R_{a,i}\ \text{for every }i\},
+\mathcal T_a=\lbrace P:\ d_{\pi/2}(\theta_i,\alpha_{a,c(i)})\le\delta_a,
+\quad (x_i,y_i)\in R_{a,i}\ \text{for every }i\rbrace,
 $$
 
 with all necessary assignments, angle parameters, physical alternatives and boundary

@@ -123,8 +123,8 @@ The checker has four absolute constants:
 - **`1e-14` hull cutoff** — compared against the plain double cross product `cr`. The
   measurement here over 200,000 random triples of points within a unit square of a point
   near side $S$ gives a rounding error of at most $2.6 \times 10^{-16}$ for every $S$ in
-  $\{4.7, 5.6, 9, 16, 32\}$: once $S \ge 2$, the coordinate differences are exact
-  (Sterbenz) and only the two products round.
+  $\lbrace4.7, 5.6, 9, 16, 32\rbrace$: once $S \ge 2$, the coordinate differences are
+  exact (Sterbenz) and only the two products round.
   The cutoff stays forty times above the noise at every side in question, and a wrong
   hull can only return area zero, because the interval `cross` at line 68 must be
   strictly positive for every edge before an area is trusted.
@@ -182,9 +182,9 @@ There is no Lipschitz constant assumed in advance and no margin that grows with 
 larger $E$ makes the initial box physically larger, so the subdivision goes deeper and
 the node counts rise, which the table above shows.
 At $r = 0$ the coverage is bilinear on each cell of the event grid, its minimum is at a
-vertex, and the grid is $\{a \pm B/2, d \pm B/2\} \cap [L/2, L - B/2]$ over all expanded
-rectangles, with both domain endpoints; the preflight rebuilds that set from all four
-edges and requires the checker input to list exactly it.
+vertex, and the grid is $\lbrace a \pm B/2, d \pm B/2\rbrace \cap [L/2, L - B/2]$ over
+all expanded rectangles, with both domain endpoints; the preflight rebuilds that set
+from all four edges and requires the checker input to list exactly it.
 None of this changes with $L$.
 
 The first-party replay of n78 at three directions reproduces the upstream rows exactly

@@ -92,9 +92,9 @@ def test_math_github_shows_as_dollars_fails_with_the_code_to_write(repo: Path) -
     )
     problems = check(Register(("guide.md",), ()), repo).problems
     assert [problem.split(" -- ")[0] for problem in problems] == [
-        "guide.md:3: $B$ is shown as dollars on GitHub",
-        "guide.md:3: $n = 7$ is shown as dollars on GitHub",
-        "guide.md:3: $n = 11$ is shown as dollars on GitHub",
+        "guide.md:3: $B$ is not drawn as written on GitHub",
+        "guide.md:3: $n = 7$ is not drawn as written on GitHub",
+        "guide.md:3: $n = 11$ is not drawn as written on GitHub",
     ]
     assert "write `B`" in problems[0]
     assert "a link's text" in problems[1]
@@ -128,8 +128,10 @@ def test_an_exempt_file_leaves_the_backlog_and_cannot_also_be_migrated(repo: Pat
     assert "math-markup.yaml: notes.md is both migrated and exempt" in both
     outside = check(Register((), (), (Exempt("STATUS.md", "generated"),)), repo).problems
     assert outside == [
-        "math-markup.yaml: `exempt` names STATUS.md, which is not a hand-written Markdown "
-        "file the ratchet could read"
+        (
+            "math-markup.yaml: `exempt` names STATUS.md, which is not a hand-written Markdown "
+            "file the ratchet could read"
+        )
     ]
 
 

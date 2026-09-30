@@ -22,10 +22,11 @@ import sys
 import time
 from fractions import Fraction as Q
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from strif import atomic_write_text
 
+from devtools import check_n11_baseline_d4_cuts as d4_cuts
 from devtools import check_n11_capture_transition_pilot as collision_kernel
 from devtools import check_n11_closed_degenerate_cover as degenerate_cover
 from devtools import check_n11_generic_fresh as frozen
@@ -34,8 +35,10 @@ from devtools import n11_fast_exact_cover as fast_cover
 from devtools import n11_integer_collision as integer_collision
 from devtools import n11_nonfield_ancestry as ancestry
 from devtools import n11_nonfield_assignment as a2_assignment
+from devtools import n11_nonfield_d4_admission as d4_admission
 from devtools import n11_nonfield_partner as partner
 from devtools import n11_nonfield_refinement as refinement
+from devtools import n11_nonfield_special_assignment as special_assignment
 
 PACKET = geometry.PACKET
 MANIFEST = PACKET / "receipts/nonfield-manifest/manifest.json.gz"
@@ -45,15 +48,19 @@ FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f
 FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
 DEGENERATE_COVER_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 A2_HELPER_SHA = "f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac7265"
-PARTNER_HELPER_SHA = "39f58aa5e83438009ca3a01c950f7d2668e37bedfda4cb8e55bd309c79bad850"
+PARTNER_HELPER_SHA = "1722c6e3e93b53885342516f42a2e094991c34fa938f1befef3b947ff8daa0fa"
 COLLISION_KERNEL_SHA = "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309"
 INTEGER_COLLISION_SHA = "4a1f71cdc96134af1083c84717912b73801b07933a8f7cd2eff8b998b31eab98"
 ANCESTRY_HELPER_SHA = "f1d113d9d5c382933f3939d7481ecec6e486cc04890f417f7025af8e54264264"
 REFINEMENT_HELPER_SHA = "937d36d64bf385d94d8dad9e6de5c1f8c487f07955cdbc826987dd63dea3464c"
+D4_CHECKER_SHA = "338fb431d381502fa1a9721647f231f1a3e9db73a3c6337c3561e69d16bf5d32"
+D4_ADMISSION_SHA = "621106a4855da5ca4bbc75985890561e80656cc7fb85dbcea95cf792b965ce28"
+SPECIAL_ASSIGNMENT_SHA = "a01986779d54a80804b4ed9572c5448aa90e287c1dadae9b6b3f5377233aa4f7"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
 Polygon = frozen.Polygon
+Plane = tuple[Q, Q, Q]
 
 
 def require(condition: object, message: str) -> None:
@@ -258,6 +265,7 @@ def check_row(
     cover_backend: str = "reference",
     collision_backend: str = "reference",
     partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None,
+    center_planes: dict[int, list[Plane]] | None = None,
 ) -> tuple[dict[str, int], Polygon, list[tuple[Q, Q, Q]], dict[str, Any]]:
     row = step["rows"][row_index]
     owner = step["owner"]
@@ -266,6 +274,7 @@ def check_row(
     old_lo, old_hi = (Q(value) for value in predecessor["interval"])
     require(old_lo <= lo < hi <= old_hi, "row interval escaped predecessor")
     cuts = necessary_self_cuts(row, prior[owner], lo, hi)
+    cuts.extend((center_planes or {}).get(owner, []))
     required_domain = geometry.intersect(
         frozen.hull(frozen.points(predecessor["outer_domain"])),
         frozen._wall_lines(lo, hi) + cuts,
@@ -377,10 +386,16 @@ class _WorkerState:
     cover_backend: str = "reference"
     collision_backend: str = "reference"
     partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None
+    center_planes: dict[int, list[Plane]] | None = None
 
 
 def capability_preflight(
-    source: dict[str, Any], mask: tuple[int, ...], max_rows: int, parent_sha: str | None = None
+    source: dict[str, Any],
+    mask: tuple[int, ...],
+    max_rows: int,
+    parent_sha: str | None = None,
+    *,
+    admitted_constraints: bool = False,
 ) -> None:
     """Reject known unsupported source grammar before expensive seed ownership."""
     require(
@@ -391,7 +406,7 @@ def capability_preflight(
             else isinstance(source["parent"], dict)
             and source["parent"].get("sha256") == parent_sha
         )
-        and source["constraints"] == []
+        and (admitted_constraints or source["constraints"] == [])
         and source["guard_source"] is None,
         "unsupported parent/guard grammar",
     )
@@ -421,10 +436,12 @@ def _worker_init(
     world: list[Polygon],
     backends: tuple[str, str],
     partner_live: dict[int, list[tuple[Polygon, Polygon]]],
+    center_planes: dict[int, list[Plane]],
 ) -> None:
     _WorkerState.source, _WorkerState.world = source, world
     _WorkerState.cover_backend, _WorkerState.collision_backend = backends
     _WorkerState.partner_live = partner_live
+    _WorkerState.center_planes = center_planes
 
 
 def _worker_row(
@@ -449,6 +466,7 @@ def _worker_row(
         cover_backend=_WorkerState.cover_backend,
         collision_backend=_WorkerState.collision_backend,
         partner_live=_WorkerState.partner_live,
+        center_planes=_WorkerState.center_planes,
     )
     return (
         row_index,
@@ -458,6 +476,25 @@ def _worker_row(
         accepted,
         time.monotonic() - started,
         time.process_time() - cpu_started,
+    )
+
+
+def admit_terminal_contradiction(
+    source: dict[str, Any], state_rows: dict[int, list[dict[str, Any]]]
+) -> None:
+    """The accepted empty pose cover proves closure regardless of producer flag."""
+    contradiction = source["contradiction"]
+    require(
+        isinstance(contradiction, dict)
+        and contradiction["kind"] == "all_parent_poses_forbidden"
+        and contradiction["step"] == len(source["steps"]) - 1
+        and contradiction["owner"] == source["steps"][-1]["owner"]
+        and all(not row["residual_polygons"] for row in state_rows[contradiction["owner"]]),
+        "terminal contradiction not independently shown",
+    )
+    require(
+        type(source["terminal"]) is bool and source["closed"] is True,
+        "source nonterminal",
     )
 
 
@@ -475,6 +512,7 @@ def replay_one_node(
     collision_backend: str = "reference",
     parent_sha: str | None = None,
     final_node: bool = True,
+    center_planes: dict[int, list[Plane]] | None = None,
 ) -> tuple[dict[int, Polygon], dict[int, list[dict[str, Any]]]]:
     require(source["schema"] == "exact_generic_owned_hull_v1", "source schema")
     require(
@@ -484,7 +522,7 @@ def replay_one_node(
             else isinstance(source["parent"], dict)
             and source["parent"].get("sha256") == parent_sha
         )
-        and source["constraints"] == []
+        and (center_planes is not None or source["constraints"] == [])
         and source["guard_source"] is None,
         "unsupported parent/guard",
     )
@@ -542,6 +580,7 @@ def replay_one_node(
                 accepted_groups=state_groups,
                 accepted_rows=state_rows,
                 budget=budget,
+                center_planes=center_planes,
             )
         else:
             partner_live = {}
@@ -565,6 +604,7 @@ def replay_one_node(
                     cover_backend=cover_backend,
                     collision_backend=collision_backend,
                     partner_live=partner_live,
+                    center_planes=center_planes,
                 )
                 completed.append(
                     (
@@ -586,6 +626,7 @@ def replay_one_node(
                     world,
                     (cover_backend, collision_backend),
                     partner_live,
+                    center_planes or {},
                 ),
             ) as pool:
                 futures = {
@@ -664,7 +705,7 @@ def replay_one_node(
         and final["mask"] == source["mask"]
         and Q(final["U"]) == geometry.U
         and Q(final["B"]) == geometry.B
-        and final["constraints"] == []
+        and final["constraints"] == source["constraints"]
         and final["guard"] == {}
         and final["guard_source"] is None
         and final["source"] == source["source"],
@@ -709,16 +750,7 @@ def replay_one_node(
                 "final row differs from accepted state",
             )
     if final_node:
-        contradiction = source["contradiction"]
-        require(
-            isinstance(contradiction, dict)
-            and contradiction["kind"] == "all_parent_poses_forbidden"
-            and contradiction["step"] == len(source["steps"]) - 1
-            and contradiction["owner"] == source["steps"][-1]["owner"]
-            and all(not row["residual_polygons"] for row in state_rows[contradiction["owner"]]),
-            "terminal contradiction not independently shown",
-        )
-        require(source["terminal"] is True and source["closed"] is True, "source nonterminal")
+        admit_terminal_contradiction(source, state_rows)
     else:
         require(
             source["terminal"] is True
@@ -793,13 +825,20 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         recipes = [case for case in manifest["cases"] if case["mask_index"] == args.case_id]
         require(len(recipes) == 1, "missing/duplicate case recipe")
         recipe = recipes[0]
-        require(recipe["adapter"] == "sequential_wall_seed", "unsupported adapter")
+        special_d4 = recipe["adapter"] == "baseline_necessary_d4"
+        require(
+            special_d4 or recipe["adapter"] == "sequential_wall_seed",
+            "unsupported adapter",
+        )
         require(
             1 <= len(recipe["ordered_ancestry_proposal"]) <= 8,
             "unsupported ancestry length",
         )
         require(
-            recipe["source_profile"] in ("direct_v6", "direct_v9"), "unsupported source profile"
+            recipe["source_profile"] == "necessary_D4_cuts_and_independent_geometry"
+            if special_d4
+            else recipe["source_profile"] in ("direct_v6", "direct_v9", "native_cached_v9"),
+            "unsupported source profile",
         )
         nodes = recipe["ordered_ancestry_proposal"]
         require(
@@ -820,6 +859,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         if len(nodes) > 1:
             paths["ancestry_helper"] = Path(ancestry.__file__)
             bound_inputs.append("ancestry_helper")
+        if special_d4:
+            paths["special_assignment"] = Path(special_assignment.__file__)
+            paths["d4_admission"] = Path(d4_admission.__file__)
+            paths["d4_cut_checker"] = Path(d4_cuts.__file__)
+            bound_inputs.extend(("special_assignment", "d4_admission", "d4_cut_checker"))
         for name in bound_inputs:
             before[name] = digest(paths[name])
             result["source_sha256"][name] = before[name]
@@ -829,6 +873,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             require(
                 before["ancestry_helper"] == ANCESTRY_HELPER_SHA,
                 "ancestry helper changed",
+            )
+        if special_d4:
+            require(
+                before["special_assignment"] == SPECIAL_ASSIGNMENT_SHA
+                and before["d4_admission"] == D4_ADMISSION_SHA
+                and before["d4_cut_checker"] == D4_CHECKER_SHA
+                and d4_cuts.dependencies_unchanged(),
+                "special D4 source dependency changed",
             )
         cover = load_object(
             geometry.COVER_SHA, manifest, geometry.PACKET / "receipts/d4-independent/objects"
@@ -889,6 +941,54 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 collision_kernel.dependencies_unchanged(),
                 "collision kernel dependency changed",
             )
+        center_planes: dict[int, list[Plane]] | None = None
+        if special_d4:
+            baseline = load_object(manifest["input_sha256s"]["A1"], manifest, METADATA_OBJECTS)
+            special_assignment.admit_special_audit(recipe, audit, baseline)
+            supplied_inventory = getattr(args, "baseline_inventory", None)
+            inventory_sha = getattr(args, "baseline_inventory_sha256", None)
+            require(
+                isinstance(supplied_inventory, Path) and isinstance(inventory_sha, str),
+                "D4 baseline inventory arguments",
+            )
+            inventory = cast(Path, supplied_inventory)
+            paths["baseline_execution_inventory"] = inventory
+            before["baseline_execution_inventory"] = digest(inventory)
+            result["source_sha256"]["baseline_execution_inventory"] = before[
+                "baseline_execution_inventory"
+            ]
+            require(
+                before["baseline_execution_inventory"] == inventory_sha,
+                "D4 baseline inventory SHA",
+            )
+            provided_report = getattr(args, "d4_report_out", None)
+            require(
+                provided_report is None or isinstance(provided_report, Path), "D4 report path"
+            )
+            report_out = (
+                cast(Path, provided_report)
+                if provided_report is not None
+                else args.out.with_name(f"{args.out.stem}-d4-cuts.json")
+            )
+            require(not report_out.exists(), "D4 report output already exists")
+            remaining(budget)
+            cut_report = d4_cuts.run(
+                argparse.Namespace(
+                    case=[args.case_id],
+                    baseline_inventory=inventory,
+                    baseline_inventory_sha256=inventory_sha,
+                    max_seconds=min(60.0, budget.deadline - time.monotonic()),
+                    max_nodes=5_000_000,
+                    out=report_out,
+                )
+            )
+            paths["d4_report"] = report_out
+            before["d4_report"] = digest(report_out)
+            result["source_sha256"]["d4_report"] = before["d4_report"]
+            result["d4_report_path"] = str(report_out)
+            center_planes = d4_admission.admitted_constraint_planes(
+                sources[0], recipe, cut_report
+            )
         for index, (node, source) in enumerate(zip(nodes, sources, strict=True)):
             require(
                 source["node_id"] == node["node_id"]
@@ -907,16 +1007,18 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 mask,
                 budget.max_nodes,
                 nodes[index - 1]["source_sha256"] if index else None,
+                admitted_constraints=special_d4,
             )
-        require(
-            audit["source_sha256"] == recipe["source_sha256"]
-            and audit["root_sha256"] == recipe["seed_sha256"]
-            and audit["cover_sha256"] == geometry.COVER_SHA
-            and audit["mask_index"] == args.case_id
-            and audit["mask"] == list(mask)
-            and audit["transferred_canonical_mask_indices"] == [args.case_id],
-            "audit source/case binding",
-        )
+        if not special_d4:
+            require(
+                audit["source_sha256"] == recipe["source_sha256"]
+                and audit["root_sha256"] == recipe["seed_sha256"]
+                and audit["cover_sha256"] == geometry.COVER_SHA
+                and audit["mask_index"] == args.case_id
+                and audit["mask"] == list(mask)
+                and audit["transferred_canonical_mask_indices"] == [args.case_id],
+                "audit source/case binding",
+            )
         seed_started, seed_cpu = time.monotonic(), time.process_time()
         groups, rows, world, bins = seed_state(seed, cover, args.case_id, mask, budget=budget)
         result["seed_wall_seconds"] = time.monotonic() - seed_started
@@ -949,6 +1051,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 collision_backend=collision_backend,
                 parent_sha=nodes[index - 1]["source_sha256"] if index else None,
                 final_node=index == len(nodes) - 1,
+                center_planes=center_planes,
             )
             result["nodes_completed"] = index + 1
         remaining(budget)
@@ -961,6 +1064,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 collision_kernel.dependencies_unchanged(),
                 "collision kernel dependency changed during replay",
             )
+        if special_d4:
+            require(d4_cuts.dependencies_unchanged(), "D4 cut dependency changed during replay")
         result["status"] = "PASS_ONE_GENERIC_EXCLUSION"
         result["geometry_verified"] = True
         result["excluded_case_ids"] = [args.case_id]
@@ -996,6 +1101,9 @@ def main() -> int:
     parser.add_argument(
         "--collision-backend", choices=("reference", "integer"), default="reference"
     )
+    parser.add_argument("--baseline-inventory", type=Path)
+    parser.add_argument("--baseline-inventory-sha256")
+    parser.add_argument("--d4-report-out", type=Path)
     parser.add_argument("--out", type=Path, required=True)
     result = run(parser.parse_args())
     print(

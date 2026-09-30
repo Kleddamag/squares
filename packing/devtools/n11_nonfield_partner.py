@@ -42,6 +42,7 @@ def admitted_partner_covers(
     accepted_groups: dict[int, Polygon],
     accepted_rows: dict[int, list[dict[str, Any]]],
     budget: geometry.Budget,
+    center_planes: dict[int, list[tuple[Q, Q, Q]]] | None = None,
 ) -> tuple[dict[int, list[tuple[Polygon, Polygon]]], dict[str, int]]:
     """Return every live pre-wall domain and whole-angle strict partner core."""
     require(isinstance(proposed, dict), "partner cover map")
@@ -83,7 +84,9 @@ def admitted_partner_covers(
             cuts = collision.necessary_self_cuts(
                 row.get("self_hull_cuts", []), accepted_groups[owner], lo, hi
             )
-            required = geometry.intersect(previous_outer, cuts)
+            required = geometry.intersect(
+                previous_outer, cuts + (center_planes or {}).get(owner, [])
+            )
             if not required:
                 require(row["domain"] == [] and row["core"] == [], "empty partner row")
                 empty += 1

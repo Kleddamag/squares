@@ -191,6 +191,24 @@ def test_incomplete_last_step_is_unpromoted_and_cannot_close_case() -> None:
         )
 
 
+def test_false_producer_terminal_flag_cannot_override_checked_empty_cover() -> None:
+    source = {
+        "steps": [{"owner": 4}],
+        "contradiction": {"kind": "all_parent_poses_forbidden", "step": 0, "owner": 4},
+        "terminal": False,
+        "closed": True,
+    }
+    rows = {4: [{"residual_polygons": []}]}
+    generic.admit_terminal_contradiction(source, rows)
+    rows[4][0]["residual_polygons"] = [[[["0", "0"]]]]
+    with pytest.raises(ValueError, match="terminal contradiction"):
+        generic.admit_terminal_contradiction(source, rows)
+    rows[4][0]["residual_polygons"] = []
+    source["closed"] = False
+    with pytest.raises(ValueError, match="source nonterminal"):
+        generic.admit_terminal_contradiction(source, rows)
+
+
 def test_expired_case_has_no_promoted_exclusion(tmp_path: Path) -> None:
     args = _args(tmp_path, 2135)
     args.max_seconds = 0.001

@@ -88,10 +88,12 @@ _CREDIT = re.compile(
     r"\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
 )
 #: A sentence boundary inside one block's joined annotation lines. A period ends a
-#: sentence only where it does not follow a single capital letter, which is what keeps
-#: "David W. Cantrell" and "M.Z. Arslanov" whole. `devtools/generate_frontier_case.py`
-#: carries the same three lines, for the reason its `CatalogueEntryLike` gives.
-_SENTENCE_BREAK = re.compile(r"(?<![A-Z])\.\s+")
+#: sentence only where it does not follow a lone capital -- an initial, which starts a
+#: word -- which is what keeps "David W. Cantrell" and "M.Z. Arslanov" whole while "...
+#: working with unspecified AI." still ends one (`n = 68`, 2026-09-30).
+#: `devtools/generate_frontier_case.py` carries the same lines, for the reason its
+#: `CatalogueEntryLike` gives.
+_SENTENCE_BREAK = re.compile(r"(?<!\b[A-Z])\.\s+")
 _COMPLETENESS = re.compile(
     r"For the \$n\s*(?:\u2264|<=|\\le(?:q)?\b)\s*(\d+)\$\s*not pictured", re.IGNORECASE
 )

@@ -24,6 +24,17 @@ as such, since where the sentence belongs is then a question for the record rath
 this tool. Statements that differ release by release, as `n-017`'s five successive
 external bounds do, are written by hand and are not in `STATEMENTS`.
 
+**The Kingbird catalogue states AI assistance entry by entry**, a different sentence at
+each count that carries one ("Found by Joost de Winter in August 2026, working with
+unspecified AI, ..."), so it is not a `Statement` either. A record whose reported side
+is the catalogue's owes every AI statement of the entry it transcribes -- the current
+capture's, or the earlier one's at a count pending intake -- quoted whole, and
+`--check` holds it to that (`catalogue_owed`).
+`devtools.generate_frontier_case` writes those quotations into the packing paragraph of
+the records it drafts, which above `n = 100` is all of them; `--apply` does not write
+them, so a hand-written record that comes to owe one fails `--check` until its author
+places the sentence.
+
 Usage, from `packing/`:
 
     uv run --frozen --all-extras --group dev python -m devtools.state_ai_assistance --check
@@ -36,11 +47,17 @@ from __future__ import annotations
 import argparse
 import re
 import sys
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Protocol
 
 from strif import atomic_output_file
+
+from devtools.check_source_coverage import COVERAGE, record_catalogue
+from devtools.generate_frontier_case import ai_statements_from_credit, quoted_catalogue_sentence
+from sqpack.kingbird_catalogue import parse_catalogue
+from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
@@ -140,6 +157,39 @@ STATEMENTS: tuple[Statement, ...] = (
 )
 
 
+#: How a case record names the Kingbird catalogue as the source of its reported side.
+CATALOGUE_KEY = "[Kingbird]"
+
+
+class _CreditLined(Protocol):
+    @property
+    def credit_line(self) -> str | None: ...
+
+
+def catalogue_owed(text: str, catalogue: Mapping[int, _CreditLined]) -> tuple[str, ...]:
+    """The catalogue AI statements a record owes and does not make, as it would quote them."""
+    front, lines = split_record(text)
+    packing = safe_load(front).get("packing") or {}
+    upper = packing.get("reported_upper_bound") or {}
+    entry = catalogue.get(int(packing.get("n", 0)))
+    if upper.get("source_key") != CATALOGUE_KEY or entry is None:
+        return ()
+    body = " ".join(" ".join(lines).split())
+    quotations = (
+        quoted_catalogue_sentence(sentence)
+        for sentence in ai_statements_from_credit(entry.credit_line)
+    )
+    return tuple(quote for quote in quotations if " ".join(quote.split()) not in body)
+
+
+def record_catalogue_entries() -> Mapping[int, _CreditLined]:
+    """The catalogue entry each record transcribes, as `check_source_coverage` reads it."""
+    pending = safe_load(COVERAGE.read_text(encoding="utf-8")).get(
+        "pending_catalogue_intake", []
+    )
+    return record_catalogue(parse_catalogue(), pending)
+
+
 @dataclass(frozen=True, slots=True)
 class Paragraph:
     """A run of prose lines in a record's body, by its first and last line index."""
@@ -220,12 +270,19 @@ def records(below: int | None) -> list[Path]:
     return found
 
 
-def report(paths: Iterable[Path]) -> tuple[list[str], list[str]]:
+def report(
+    paths: Iterable[Path], catalogue: Mapping[int, _CreditLined] | None = None
+) -> tuple[list[str], list[str]]:
     """The statements still missing, and the ones no paragraph gives a place to."""
     missing: list[str] = []
     unanchored: list[str] = []
+    entries = record_catalogue_entries() if catalogue is None else catalogue
     for path in paths:
-        front, lines = split_record(path.read_text(encoding="utf-8"))
+        text = path.read_text(encoding="utf-8")
+        missing.extend(
+            f"{path.name}: {CATALOGUE_KEY} {quote}" for quote in catalogue_owed(text, entries)
+        )
+        front, lines = split_record(text)
         for statement, paragraph, said in owed(front, lines):
             cited = ", ".join(sorted(key for key in statement.keys if key in front))
             label = f"{path.name}: {cited}"

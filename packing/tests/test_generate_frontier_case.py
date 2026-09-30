@@ -65,6 +65,7 @@ from devtools.check_basic_bounds import check_case_basic_bounds
 from devtools.check_case_prose import check_case_file
 from devtools.check_source_coverage import COVERAGE, record_catalogue
 from devtools.generate_frontier_case import (
+    AI_STATEMENT,
     CATALOGUE_CLASSIFICATION,
     GRID_CLASSIFICATION,
     GRID_COMPLETENESS_EVIDENCE,
@@ -78,6 +79,7 @@ from devtools.generate_frontier_case import (
     PreservedListItem,
     SourceAvailability,
     adopt_upper_bound_packet,
+    ai_statements_from_credit,
     analytically_optimized_from_credit,
     build_payload,
     check_records,
@@ -552,11 +554,12 @@ def _record_facts() -> dict[int, CatalogueFacts]:
 
 
 def _regenerate_in_range(n: int) -> str:
-    """Draft a case past the hand-authored range, on the register's own review date."""
+    """Draft a case past the hand-authored range, from the capture the register reads."""
+    availability = load_availability()
     return generate_record(
         n,
-        availability=load_availability(),
-        catalogue=_catalogue_facts(),
+        availability=availability,
+        catalogue=load_drafting_catalogue([n], availability),
         review_date="2026-09-07",
         retrieved_date="2026-09-07",
     )
@@ -1080,6 +1083,37 @@ def test_a_refresh_keeps_the_assessment_and_rewrites_only_what_moved(tmp_path: P
     )
     assert "  rigidity: null\n" in drafted
     assert with_rigidity_of(committed, drafted) == committed
+
+
+def test_an_optimizer_the_line_credits_nowhere_else_is_credited_and_dated() -> None:
+    """`n = 179`'s side is Tej Stead's June 2026 optimization; `n = 129`'s optimizer is
+    its finder, already credited, so only the dated sentence is added there."""
+    facts = _catalogue_facts()
+    assert facts[179].uncredited_optimizers == ("Tej Stead",)
+    assert facts[129].uncredited_optimizers == ()
+    # The "Improved by" rule the hand transcription is measured against is unchanged.
+    assert "Tej Stead" not in facts[179].improved_by
+
+    draft = _regenerate_in_range(179)
+    payload = safe_load(draft.split("---\n", 2)[1])["packing"]
+    assert payload["reported_upper_bound"]["improved_by"] == ["David Ellsworth", "Tej Stead"]
+    body = re.sub(r"\s+", " ", _regenerate_in_range(129).split("---\n", 2)[2])
+    assert "Optimized by David Ellsworth in January 2026." in body
+
+
+def test_the_catalogue_s_ai_statement_is_quoted_whole_in_the_packing_paragraph() -> None:
+    """epistemics.md: an AI statement goes into the record in the source's own terms."""
+    body = re.sub(r"\s+", " ", _regenerate_in_range(126).split("---\n", 2)[2])
+    assert (
+        "In the catalogue’s words: “Found by Joost de Winter in August 2026, working with "  # noqa: RUF001
+        "unspecified AI, using an evolutionary beam search with simulated annealing, "
+        "starting from the latest s(105) as of December 2025.”"
+    ) in body
+    # Quoted once, not also as a plain "Optimized by" line.
+    body_179 = re.sub(r"\s+", " ", _regenerate_in_range(179).split("---\n", 2)[2])
+    assert body_179.count("Optimized by Tej Stead in June 2026") == 1
+    assert ai_statements_from_credit(None) == ()
+    assert AI_STATEMENT.search("Found by A. Name in 1979, via simulated annealing.") is None
 
 
 def test_a_refresh_refuses_the_hand_authored_range_and_a_missing_record(

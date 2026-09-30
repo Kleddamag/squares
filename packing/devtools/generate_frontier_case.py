@@ -149,6 +149,22 @@ schema closes `additionalProperties` on `reported_upper_bound`, so the improveme
 date has nowhere to live in the front matter and reaches the reader through the body
 sentence instead. `found_year` stays the year the packing was *found*.
 
+**An optimizer the line credits nowhere else is credited too, and every "Optimized by"
+and AI statement is transcribed.** A draft's `improved_by` adds the names of a
+sentence-initial "Optimized by <names> in <date>" that no finder or "Improved by"
+sentence names: the optimization produced the printed side, and the schema has no other
+field for its author. In the capture of 2026-09-30 that reaches one record, `n = 179`,
+whose side is Tej Stead's June 2026 optimization; at `n = 129` the optimizer is the
+finder. `CatalogueFacts.improved_by` itself stays the "Improved by" rule above, since that
+is what the hand transcription is measured against, and the hand-written records below
+`n = 100` still read an "Optimized by" at `n = 29` only. The packing paragraph also
+writes each "Optimized by" sentence with its date, and quotes whole every sentence that
+says AI assisted a step (`AI_STATEMENT`), because epistemics.md asks for that statement
+in the source's own terms; `devtools.state_ai_assistance` checks that the quotation is
+there. In the capture of 2026-09-30 the quotations reach `n = 126` and `179`, and the
+dated sentence `n = 129`; the counts an intake adopted draft from the capture of
+2026-08-22, which carries neither kind of sentence at them.
+
 **Two lineages in one entry.** Five entries in range describe two packings, and the
 printed decimal is the side of only one of them. At `170`, `257` and `260` the pictured
 file is the page's alternative (`square-170b.svg`, `square-257a.svg`, `square-260b.svg`),
@@ -458,9 +474,10 @@ _CREDIT_CHAIN = re.compile(
 #: A credit line's sentences, and the parenthesised spans inside one. Both are three
 #: lines duplicated from `sqpack.kingbird_catalogue` rather than imported, for the reason
 #: `CatalogueEntryLike` gives: this module stays importable, and testable, without the
-#: catalogue parser. A period ends a sentence only where it does not follow a single
-#: capital letter, which keeps "David W. Cantrell" and "M.Z. Arslanov" whole.
-_SENTENCE_BREAK = re.compile(r"(?<![A-Z])\.\s+")
+#: catalogue parser. A period ends a sentence only where it does not follow a lone
+#: capital -- an initial -- which keeps "David W. Cantrell" and "M.Z. Arslanov" whole and
+#: still ends one after "unspecified AI.".
+_SENTENCE_BREAK = re.compile(r"(?<!\b[A-Z])\.\s+")
 #: A parenthesis the page opened, which is never a Markdown link's target: `credit_line`
 #: keeps link syntax because "[Explore group](squares_in_squares__Göbel_strips.html)" is
 #: the only thing separating the Göbel strips from the Göbel squares, and blanking what
@@ -477,6 +494,25 @@ _PARENTHESISED = re.compile(r"(?<!\])\([^()]*\)")
 _IMPROVED_BY = re.compile(
     r"^Improved by\s+(?P<names>.+?)\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
 )
+
+#: A sentence-initial "Optimized by <names> in <date>": the page's word for an analytic
+#: optimization, which moves the printed side. `improved_by` still reads only
+#: `_IMPROVED_BY`, which is the rule the hand transcription at `n <= 100` is measured
+#: against; a draft transcribes these sentences into the packing paragraph, and credits
+#: in `improved_by` an optimizer the line names nowhere else. In the capture of
+#: 2026-09-30 that is `n = 179`, whose side is Tej Stead's June 2026 optimization; at
+#: `n = 129` the optimizer is the finder, already credited.
+_OPTIMIZED_BY = re.compile(
+    r"^Optimized by\s+(?P<names>.+?)\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
+)
+
+#: The words in which the catalogue says AI assisted a step: "working with unspecified
+#: AI", "working with <model>", "using <model>", "with <model>", "(probably with AI)".
+#: Measured over both retained captures: in the capture of 2026-09-30 it matches ten
+#: sentences, every one an AI statement, and in the capture of 2026-08-22 none.
+#: epistemics.md, Results by Others, asks for such a statement in the source's own
+#: terms, so a draft quotes each matching sentence whole.
+AI_STATEMENT = re.compile(r"working with|\bAI\b|GPT|Claude|Codex|Gemini|\bLLM\b")
 
 #: The two lineage shapes the page prints where one entry carries two packings, and the
 #: `found by` clause read out of either. Both are structural, both reach exactly the
@@ -675,6 +711,23 @@ class CatalogueFacts:
     stale_exact_form: str | None = None
     improvements: tuple[CreditImprovement, ...] = ()
     priority_notes: tuple[PriorityNote, ...] = ()
+    optimizations: tuple[CreditImprovement, ...] = ()
+    """Every dated, sentence-initial "Optimized by ... in ...", in page order."""
+    ai_statements: tuple[str, ...] = ()
+    """The credit line's sentences that say AI assisted a step, verbatim, in page order."""
+
+    @property
+    def uncredited_optimizers(self) -> tuple[str, ...]:
+        """Optimizers the line names in no finder or improver credit, each once."""
+        credited = {*self.found_by, *self.improved_by}
+        names: list[str] = []
+        for optimization in self.optimizations:
+            names.extend(
+                name
+                for name in optimization.names
+                if name not in credited and name not in names
+            )
+        return tuple(names)
 
 
 class CatalogueEntryLike(Protocol):
@@ -791,6 +844,29 @@ def improvements_from_credit(credit_line: str | None) -> tuple[CreditImprovement
     return tuple(found)
 
 
+def optimizations_from_credit(credit_line: str | None) -> tuple[CreditImprovement, ...]:
+    """Every dated, sentence-initial "Optimized by <names> in <date>", in page order."""
+    found: list[CreditImprovement] = []
+    for index, sentence in enumerate(credit_sentences(credit_line)):
+        match = _OPTIMIZED_BY.search(sentence)
+        if match is None:
+            continue
+        when = f"{match.group('when').strip()} {match.group('year')}".strip()
+        found.append(
+            CreditImprovement(
+                names=_split_names(match.group("names")), when=when, sentence=index
+            )
+        )
+    return tuple(found)
+
+
+def ai_statements_from_credit(credit_line: str | None) -> tuple[str, ...]:
+    """The credit line's sentences that say AI assisted a step, verbatim, in page order."""
+    return tuple(
+        sentence for sentence in credit_sentences(credit_line) if AI_STATEMENT.search(sentence)
+    )
+
+
 def improved_by_from_credit(credit_line: str | None) -> tuple[str, ...]:
     """Every improver the credit line names, in page order, each kept once."""
     names: list[str] = []
@@ -835,6 +911,15 @@ def _quoted_phrase(sentence: str) -> str:
     say nothing, so they come out and the name stays.
     """
     return _MATH_DELIMITER.sub("", sentence).strip().rstrip(".")
+
+
+def quoted_catalogue_sentence(sentence: str) -> str:
+    """One catalogue sentence as a record quotes it whole, in the packing paragraph.
+
+    `devtools.state_ai_assistance` looks for exactly this text, whitespace aside, in a
+    record that owes the catalogue's AI statement.
+    """
+    return f"In the catalogue’s words: “{_quoted_phrase(sentence)}.”"
 
 
 def _lineage(
@@ -980,6 +1065,8 @@ def facts_from_catalogue_entry(
         stale_exact_form=stale_exact_form,
         improvements=improvements,
         priority_notes=priority_notes,
+        optimizations=optimizations_from_credit(entry.credit_line),
+        ai_statements=ai_statements_from_credit(entry.credit_line),
     )
 
 
@@ -1516,7 +1603,9 @@ def _catalogue_reported_upper(
         "tilt_angles_deg": None,
         "found_by": list(facts.found_by),
         "found_year": facts.found_year,
-        "improved_by": list(facts.improved_by),
+        # An optimizer the line credits nowhere else produced the printed side too, and
+        # the schema has no other field for one (`_OPTIMIZED_BY`).
+        "improved_by": [*facts.improved_by, *facts.uncredited_optimizers],
         "catalogue_pictured": facts.catalogue_pictured,
         "source_key": KINGBIRD_SOURCE_KEY,
         "source_date": None,
@@ -1695,6 +1784,16 @@ def _packing_section(
         # are on record and their dates are not, which is the sentence the corpus wrote
         # before the dates were read.
         lines.append(f"Later improved by {_join_names(reported['improved_by'])}.")
+    if facts is not None:
+        # The page's own "Optimized by" sentences, and every sentence that says AI helped,
+        # quoted whole: epistemics.md asks for an AI statement in the source's own terms.
+        sentences = credit_sentences(facts.credit_line)
+        for optimization in facts.optimizations:
+            if sentences[optimization.sentence] in facts.ai_statements:
+                continue
+            optimized = _join_names(optimization.names)
+            lines.append(f"Optimized by {optimized} in {optimization.when}.")
+        lines.extend(quoted_catalogue_sentence(sentence) for sentence in facts.ai_statements)
     if owner is None:
         subject = CONSTRUCTION_SUBJECTS[reported["construction_method"]]
         lines.append(f"The recorded construction method is {subject}.")

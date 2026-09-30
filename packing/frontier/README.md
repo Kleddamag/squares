@@ -518,7 +518,10 @@ Adding editorial to a case is just editing its body; nothing regenerates over it
 
 **Known limits.** The Kingbird catalogue is parsed as annotation text, so an entry
 phrased unusually can be miscounted; `improved_by` in particular under-reports where it
-uses “Refound”, “Optimized by”, or prose.
+uses “Refound” or prose.
+Above `n = 100` it also credits an “Optimized by” author the entry names nowhere else
+(Tej Stead at `n = 179`), and the packing paragraph quotes the catalogue’s own
+AI-assistance sentences; the hand-written records below read neither.
 Tilt angles are recorded only for the handful of cases where this research established
 them. The coverage inventory is dated and named; a newly published source still requires
 a new research survey and disposition.

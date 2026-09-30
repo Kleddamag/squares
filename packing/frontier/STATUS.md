@@ -136,7 +136,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`126`](n-126.md) | `11.77473513240654` | `12` | `11.24695076596` | `1 + √105` | open | replayed here, external proof | formal upper trails report | 2026-09-30 |
 | [`127`](n-127.md) | `(21/2) + (1/2)√7` | `12` | `11.29563014099` | `1 + √106` | open | replayed here, external proof | formal upper trails report | 2026-09-07 |
 | [`128`](n-128.md) | `11.82509196821368` | `12` | `11.34408043279` | `1 + √107` | open | replayed here, external proof | formal upper trails report | 2026-09-07 |
-| [`129`](n-129.md) | `11.88130621809000` | `12` | `11.39230484541` | `1 + √108` | open | replayed here, external proof | formal upper trails report | 2026-09-07 |
+| [`129`](n-129.md) | `11.88130621809000` | `12` | `11.39230484541` | `1 + √108` | open | replayed here, external proof | formal upper trails report | 2026-09-30 |
 | [`130`](n-130.md) | `11.911187706548755` | `2977796926637189/250000000000000` | `11.44030650891` | `1 + √109` | open | replayed here, external proof | — | 2026-09-29 |
 | [`131`](n-131.md) | `11.954916830219048` | `11954916830219049/1000000000000000` | `11.4880884817` | `1 + √110` | open | replayed here, external proof | — | 2026-09-29 |
 | [`132`](n-132.md) | `11.991327887694469` | `11991327887694469/1000000000000000` | `11.53565375285` | `1 + √111` | open | replayed here, external proof | — | 2026-09-29 |

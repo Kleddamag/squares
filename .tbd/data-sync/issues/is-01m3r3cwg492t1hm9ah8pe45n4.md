@@ -5,7 +5,7 @@ title: "Films on the site: PUBLISHED_FILMS pin and a publish step that fetches, 
 kind: task
 status: open
 priority: 2
-version: 4
+version: 5
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -17,6 +17,10 @@ dependencies:
     target: is-01m3qr6wqssd2sm32twemg0tpy
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-30T02:48:15.108Z
-updated_at: 2026-09-30T02:48:32.866Z
+updated_at: 2026-09-30T03:05:25.499Z
 ---
 Spec: Published Media. Pin release tag, asset name, bytes and SHA-256 (the receipts' video_sha256) in sqpack/release.py; publish downloads both films into site/films/, fails on any mismatch (OR-16 trust boundary), caches by hash; pull requests never fetch. The explainer's <video> source moves to the same-origin copy.
+
+## Notes
+
+Reviewed design: publish runs for pull requests (only its upload is gated), so the fetch, verify and cache steps carry the upload's main-only condition. Pull requests never download the films.

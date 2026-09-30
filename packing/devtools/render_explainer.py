@@ -339,11 +339,16 @@ POSTER_STEM = PACKING / "atlas" / "known-best" / "known-best-1-324"
 #: with the workbench, whose stage drew it, rather than in the atlas: the atlas directory
 #: is a data path, and a file added there would move the version every artifact prints.
 FILM_POSTER = REPO / "packages" / "workbench" / "assets" / "ascent-n1-100-poster.png"
+#: The overview's film poster, the n = 1..324 film's n = 290 at the same 1280x720, since
+#: 2026-09-30. The overview links the assets served beside the explainer by name rather
+#: than publishing its own, so its poster travels here with the rest.
+OVERVIEW_FILM_POSTER = FILM_POSTER.with_name("ascent-n1-324-poster.png")
 COMPOSITE_ASSETS = (
     *(COMPOSITE_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     COMPOSITE_STEM.with_name(f"{COMPOSITE_STEM.name}-card.png"),
     *(POSTER_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     FILM_POSTER,
+    OVERVIEW_FILM_POSTER,
 )
 #: The full-canvas raster, which the published Markdown shows to a reader whose context
 #: cannot render the vector. The 1x rather than the committed `@2x`: every consumer
@@ -768,33 +773,39 @@ KPRESS_API = {
 CLIENT_PLACEHOLDER = "__SQUARES_KPRESS_CLIENT_JS__();"
 
 
-def kpress_client_modules() -> str:
+def kpress_client_modules(modules: Sequence[str] = KPRESS_MODULES) -> str:
     """The modules the shell's comment names as the client script's sources, in order."""
-    return ", ".join(f"js/{name}" for name in KPRESS_MODULES)
+    return ", ".join(f"js/{name}" for name in modules)
 
 
-def client_script_frame() -> tuple[str, str]:
+def client_script_frame(frame: Path | None = None) -> tuple[str, str]:
     """The checked script asset around the sentinel where flattened modules land.
 
     The whole asset is read so the closing-tag guard below also checks the frame around
     the generated bundle.
     """
-    source = INLINE_SCRIPT_ASSETS["KPRESS_CLIENT_SCRIPT"].read_text(encoding="utf-8")
+    frame = frame or INLINE_SCRIPT_ASSETS["KPRESS_CLIENT_SCRIPT"]
+    source = frame.read_text(encoding="utf-8")
     if source.count(CLIENT_PLACEHOLDER) != 1:
-        raise SystemExit(
-            f"{INLINE_SCRIPT_ASSETS['KPRESS_CLIENT_SCRIPT'].name} must carry "
-            f"{CLIENT_PLACEHOLDER} exactly once"
-        )
+        raise SystemExit(f"{frame.name} must carry {CLIENT_PLACEHOLDER} exactly once")
     at = source.index(CLIENT_PLACEHOLDER)
     after = at + len(CLIENT_PLACEHOLDER)
     return source[:at], source[after:]
 
 
-def kpress_client_js(static: Path) -> str:
+def kpress_client_js(
+    static: Path,
+    *,
+    modules: Sequence[str] = KPRESS_MODULES,
+    api: Mapping[str, str] = KPRESS_API,
+    frame: Path | None = None,
+) -> str:
     """kpress's client modules inside the checked classic-script frame.
 
-    Concatenates `KPRESS_MODULES` in order, dropping the imports (every name they
-    bind is already in scope by the time it is used) and the `export` keyword. The
+    The explainer's modules and frame by default; the site's report pages pass their
+    own (`render_overview.kpress_client_script`). Concatenates `modules` in order,
+    dropping the imports (every name they bind is already in scope by the time it is
+    used) and the `export` keyword. The
     checked asset writes the rest of the script around one sentinel: the IIFE the modules
     share and the epilogue that exposes the two boots. Refuses to produce a
     bundle it cannot vouch for: an import or export form it does not rewrite, an
@@ -807,7 +818,7 @@ def kpress_client_js(static: Path) -> str:
     declared: dict[str, str] = {}
     parts: list[str] = []
 
-    for name in KPRESS_MODULES:
+    for name in modules:
         path = static / "js" / name
         if not path.is_file():
             raise SystemExit(f"kpress has no js/{name}; the client modules have moved")
@@ -866,16 +877,18 @@ def kpress_client_js(static: Path) -> str:
                 )
         parts.append(f"/* kpress: js/{name} */\n{body.strip()}\n")
 
-    for module, wanted in KPRESS_API.items():
+    for module, wanted in api.items():
         if wanted not in exported.get(module, frozenset()):
             raise SystemExit(
                 f"js/{module} no longer exports `{wanted}`; the page cannot boot it"
             )
 
     bundle = "\n".join(parts)
-    before, after = client_script_frame()
+    before, after = client_script_frame(frame)
     element = (
-        before.replace("{{KPRESS_CLIENT_MODULES}}", kpress_client_modules()) + bundle + after
+        before.replace("{{KPRESS_CLIENT_MODULES}}", kpress_client_modules(modules))
+        + bundle
+        + after
     )
     if re.search(r"</script", element, re.IGNORECASE):
         raise SystemExit(

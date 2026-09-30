@@ -6,7 +6,7 @@
 
 <!-- The explainer has a section of this name, and an old explainer link to it must
      still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
-<h2 id="the-problem">The Square Packing Problem</h2>
+<h2 id="the-problem" class="site-title">The Square Packing Problem</h2>
 
 How small can a square be and still hold $n$ unit squares that do not overlap?
 Call the answer $s(n)$. The squares may be rotated, and they may touch.
@@ -83,8 +83,9 @@ squares.
 
 ## The Atlas
 
-The best packings known for every tracked case, n = 1 to 324. Point at one for its
-bounds and who found them, or open it in the frontier atlas.
+The best packings known for every tracked case, n = 1 to 324. Press one to see what the
+film below shows for it: its bounds, where each comes from, and what is still open,
+beside the packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
@@ -98,7 +99,7 @@ bounds and who found them, or open it in the frontier atlas.
 <figcaption>n = 1 to 324 · <a href="known-best-1-324.pdf" type="application/pdf">PDF</a></figcaption>
 </figure>
 <figure class="site-atlas-film">
-<video class="site-film" autoplay muted loop playsinline controls width="1920" height="1080" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">
+<video class="site-film" controls preload="none" playsinline width="1920" height="1080" poster="ascent-n1-324-poster.png" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">
 <source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
 <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">The film of the ascent from 1 to 324</a>.
 </video>
@@ -158,7 +159,7 @@ author.
 
 {{OTHER_PROJECTS}}
 
-## On GitHub
+## Squares Project Documentation
 
 The code, the certificates, the literature archive and the documents that record all of
 this live in the Squares Project’s [repository](https://github.com/jlevy/squares).

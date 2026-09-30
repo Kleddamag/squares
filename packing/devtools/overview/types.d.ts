@@ -25,3 +25,22 @@ interface SiteTableApi {
 }
 
 declare var SiteTable: SiteTableApi;
+
+/** One bound's source as the film cites it: the reference and this project's note. */
+interface AtlasCitation {
+  text: string;
+  note: string | null;
+}
+
+/** What the ascent film's panel says about one case, as `atlas_film_facts` writes it. */
+interface AtlasFact {
+  n: number;
+  exact: boolean;
+  upper: string;
+  lower: string | null;
+  star: boolean;
+  badges: [glyph: string, style: string, label: string][];
+  open: string[];
+  record: string;
+  cite: { lower: AtlasCitation | null; upper: AtlasCitation | null };
+}

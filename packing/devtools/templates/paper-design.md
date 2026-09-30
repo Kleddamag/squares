@@ -69,17 +69,19 @@ Page colors that are not the accent are desaturated shades of it:
 
 | Use | Hue | Chroma | Source in the palette |
 | --- | --- | --- | --- |
-| Verification rung (`V`) | 250 | 0.08 | The blue square, `#166eac` |
-| Confirmation rung (`C`) | 158 | 0.08 | The green square, `#158655` |
+| Verification rung (`V`) | 250 | 0.06 | The blue square, `#166eac` |
+| Confirmation rung (`C`) | 158 | 0.06 | The green square, `#158655` |
 | Significance rung (`S`) | 250 | 0.008 | Gray |
 
-Every chip carries light text on a dark fill, and in dark mode dark text on a light
-fill: its text is the page’s background colour.
-A rung’s fill is `oklch(base + step × level, chroma, hue)` for levels 0 to 5, with base
-50% and step −4% in light mode, so it darkens from 50% to 30% as the rung rises, and
-base 75% and step +4% in dark mode, so it lightens from 75% to 95%. The two are
-`--site-rung-base` and `--site-rung-step`. The recent-bound star is the one warm mark,
-`oklch(52% 0.19 25)`.
+Every chip carries the page’s own text colour, black in light mode, on a light fill, and
+in dark mode light text on a dark fill.
+A rung’s fill is `oklch(base + step × level, 0.06, hue)` for levels 0 to 5, with base
+96% and step −3.5% in light mode, so level 0 sits close to the page background and it
+darkens to 78.5% as the rung rises, and base 25% and step +4% in dark mode, so it
+lightens from near the dark background at 25% to 45%. The two are `--site-rung-base` and
+`--site-rung-step`. A plain chip is a 16% tint of the muted gray over the page
+background, and an accent chip a 22% tint of the accent.
+The recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
 
 Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
 defined in `site-nav.css` because every page carries it: KPress’s hover surface in light
@@ -271,7 +273,14 @@ it.
   icons.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
-  sections are `h2`s.
+  sections are `h2`s. A page that has a title (the frontier atlas, the case records)
+  sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
+  = 1 to 324”. The subtitle is the sans face at 1.25 times the sans base, as the
+  explainer’s is, in the page’s own text colour, never gray, with the same space above
+  it and below it (`--site-subtitle-space`, 1.25rem). The page title style (every hero
+  `h1`, and `.site-title`) is the sans face in caps at 1.5 times the sans base, centred.
+  The homepage’s first section, The Square Packing Problem, takes it through
+  `.site-title`, so it reads as the frontier atlas’s title does.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
@@ -293,8 +302,13 @@ it.
 
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
+  A card section is one grid in the wide track, in a `.site-cards-frame` the grid
+  measures itself against.
+  Four or more cards fill its columns from the left, as many 16rem columns as fit.
+  Three or fewer centre as a group, each card as wide as it would be in a full row, so a
+  short section lines up with a long one; below four columns the row holds them anyway.
   Every card works the same way: pressing it opens a popover that shows where it leads,
-  and the popover ends in one button that goes there.
+  and the popover ends in one button that goes there, centred at its foot.
   - When the card leads to another page of the site, the popover renders that page
     itself, narrow, in a frame: the page at the same address with `?view=embed` added
     before any fragment, so a filtered view such as `frontier.html?recent=true` or a
@@ -318,9 +332,9 @@ it.
   a row on this page, `↗` off the site, `→` to another page of the site.
 
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
-  note size, a solid fill and no border, lettered in the page’s background colour.
-  A plain chip is the muted gray; `data-tone="accent"` is the accent, for a settled
-  state such as a proved case.
+  note size, a solid light fill and no border, lettered in the page’s own text colour.
+  A plain chip is a light gray tint; `data-tone="accent"` is an accent tint, for a
+  settled state such as a proved case.
   A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`. A standing chip
   carries `data-standing` and adds no style of its own: `holds` takes the accent, as a
   settled state, and every other standing (`holds, reported`, `second certificate`,
@@ -333,20 +347,40 @@ it.
   every level as its chip and the rubric’s meaning, read from the tables in
   `epistemics.md`. Each opens that section of `epistemics.md`.
 
-- **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a small
-  square drawing in the page’s ink with its n beneath, in as many columns as fit.
-  A cell washes on hover and opens its case record.
-  Pointing at or focusing a cell shows one hover card below it, kept inside the window:
-  the status chip, the best-known side and the lower bound, each with its credit.
+- **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a square
+  drawing in the page’s ink with its n beneath.
+  The grid bleeds past the wide track as the window grows, to 140rem less the page
+  gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
+  wider screen shows more cases per row: 4 at 390 pixels, 11 at 1280, 17 at 1920 and 20
+  at 2560. A cell washes on hover and is a link to its case record.
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
-  (`overview/atlas-grid.js`), so they add nothing to the first paint.
+  (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
+  400 units across, fine enough to show large.
 
-- **Case records.** Every case has one record at one address, `cases.html#n-11`, and
-  every place that names a case by its n opens it the same way: a cell of the atlas grid
-  and the n of a frontier-atlas row.
-  A press opens the one case popover the page carries, a page-kind popover framing the
-  record in its embed view, with **Expand** to the full record
-  (`overview/case-popover.js`); without scripting the link goes to the record itself.
+- **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
+  card popover in every other way (square corners, the scrim, the caps label, the close
+  cross, Escape and a click outside).
+  It shows what the ascent film’s panel shows for the case, beside the drawing large:
+  the gap bar (a number line from one below $\lceil\sqrt{n}\,\rceil$ to two above it,
+  the integers and the values of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two bounds as
+  bold rules with their values above and the open span between them shaded); under
+  PROVEN the bound as one statement, the proved lower bound in scarlet and the best
+  known side in green, with the star for a recent lower bound; the badges; the citation,
+  one line per bound with this project’s note; and what is OPEN. The facts are the
+  film’s own, read from the atlas figure and `bound-citations.json` into one JSON
+  element (`atlas_film_facts`), and the script fills the popover from them with kpress’s
+  math nodes, never HTML strings.
+  It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,
+  and the arrow keys, step to the neighbouring case.
+  Opening moves focus to the close cross; closing returns it to the case’s cell.
+  On a phone the panel takes the width less half a rem each side, scrolls inside, keeps
+  its button in a sticky foot, and has a 2.75rem close target.
+
+- **Case records.** Every case has one record at one address, `cases.html#n-11`. The n
+  of a frontier-atlas row opens it in the one case popover that page carries, a
+  page-kind popover framing the record in its embed view, with **Expand** to the full
+  record (`overview/case-popover.js`); an atlas-grid cell reaches it through the atlas
+  popover’s button. Without scripting either link goes to the record itself.
   A record leads with a caps label, the n, its status chip and recent star, and the
   verified interval as display-size math; then the known-best packing drawn large beside
   a grid of bordered sans panels, one per bound (best known, verified upper, reported
@@ -364,9 +398,11 @@ it.
 - **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
   on a phone. Each image and its caption link to that poster’s PDF, marked
   `type="application/pdf"` and never `download`, so the browser opens it in place.
-  Under them, across both columns, the n = 1 to 324 film plays by itself: muted,
-  looping, inline and with its controls, held still on its first frame for a reader who
-  asks for reduced motion (`overview/film.js`).
+  Under them, across both columns, is the n = 1 to 324 film, embedded as the explainer
+  embeds its film: inline, with its controls, fetching nothing until a reader presses
+  play (`preload="none"`), and showing its poster until then, a frame of the film at n =
+  290 (`ascent-n1-324-poster.png`) at the video’s own 16:9, so starting playback moves
+  nothing. Nothing moves by itself, so reduced motion needs no script.
 
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.

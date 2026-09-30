@@ -48,6 +48,19 @@ def test_a_step_outside_the_cut_is_refused() -> None:
         poster.poster_frame(RECEIPT, 88)
 
 
+def test_each_published_cut_writes_its_own_poster() -> None:
+    """The n = 1..324 cut must not overwrite the explainer's n = 1..100 poster."""
+    assert poster.published_poster({"range": [2, 100]}) == (poster.POSTER, poster.POSTER_N)
+    long_out, long_n = poster.published_poster({"range": [2, 324]})
+    assert long_out != poster.POSTER
+    assert long_n == 290
+    for out, _ in poster.POSTERS.values():
+        with Image.open(out) as image:
+            assert image.size == (poster.POSTER_WIDTH, poster.POSTER_HEIGHT)
+    with pytest.raises(ValueError, match="n = 5"):
+        poster.published_poster(RECEIPT)
+
+
 def test_the_seek_lands_half_a_frame_early() -> None:
     assert poster.seek_seconds(0, 60) == 0.0
     assert poster.seek_seconds(7864, 60) == pytest.approx(7863.5 / 60)

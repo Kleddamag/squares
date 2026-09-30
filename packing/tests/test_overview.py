@@ -9,6 +9,7 @@ from collections import Counter
 import pytest
 
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
+from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
@@ -85,28 +86,104 @@ def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
 
 
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
-    """One cell per tracked case, each linking to its case record and carrying its
-    details, all inside a template the script places when the grid comes near."""
+    """One cell per tracked case, each linking to its case record, all inside a
+    template the script places when the grid comes near."""
     grid = page.split("data-atlas-grid>", 1)[1]
     template = grid.split("<template>", 1)[1].split("</template>", maxsplit=1)[0]
-    cells = re.findall(r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)"', template)
-    assert [int(n) for n in cells] == list(range(1, 325))
-    assert template.count('class="site-atlas-detail" hidden') == 324
+    cells = re.findall(
+        r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', template
+    )
+    assert [int(n) for n, _ in cells] == list(range(1, 325))
+    assert all(n == cell for n, cell in cells)
     assert template.count("<svg ") == 324
+    assert re.findall(r'aria-label="n = 11, [a-z]+"', template)
     assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
 
 
-def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:
-    """Muted, looping and inline, which is what lets a browser autoplay it; the script
-    that holds it still for reduced motion is on the page."""
+def _atlas_facts(page: str) -> dict[int, dict]:
+    import json  # noqa: PLC0415
+
+    body = page.split('<script type="application/json" data-atlas-facts>', 1)[1]
+    return {fact["n"]: fact for fact in json.loads(body.split("</script>", 1)[0])}
+
+
+def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) -> None:
+    """The one atlas popover is filled from the grid's facts: for n = 11, the film's
+    chained bound, its star and badges, both bounds' sources with this project's notes,
+    and what is open, read from the atlas figure and `bound-citations.json`."""
+    facts = _atlas_facts(page)
+    assert sorted(facts) == list(range(1, 325))
+    eleven = facts[11]
+    assert eleven["exact"] is False
+    assert (eleven["lower"], eleven["upper"]) == ("3.875000", "3.877084")
+    assert eleven["star"] is True
+    assert [label for _, _, label in eleven["badges"]] == ["exact", "rigid"]
+    assert eleven["open"] == ["optimality"]
+    assert eleven["record"] == "n-011"
+    assert eleven["cite"]["lower"] == {
+        "text": "Kleddamag after Levy et al. 2026, GitHub",
+        "note": "(confirmed T-037)",
+    }
+    assert eleven["cite"]["upper"]["text"] == "Trump 1979, Squares in Squares"
+    assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
+    assert page.count('id="pop-atlas" popover') == 1
+    assert page.count(" data-atlas-popover ") == 1
+
+
+def test_the_atlas_popover_sets_its_math_and_leads_to_the_record(page: str) -> None:
+    """Its math is kpress's own math node (the formulas under the gap bar, and the
+    template every value is typeset from), never raw TeX; its button is Expand to the
+    case record, which the script points at `cases.html#n-N` for the case shown."""
+    popover = page.split('id="pop-atlas" popover', 1)[1].split("</template></div>", 1)[0]
+    assert popover.count('class="kpress-math kpress-math-inline"') == 3
+    assert r"\sqrt{n} + 1" in popover
+    assert "$" not in popover
+    (action,) = re.findall(r'<a class="site-popover-action"[^>]*>([^<]*)</a>', popover)
+    assert action == "See All Cases"
+    assert "data-atlas-expand" in popover
+    script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    assert 'expand.setAttribute("href", cell.getAttribute("href")' in script
+    assert "site-atlas-tip" not in page
+
+
+def test_the_atlas_film_waits_for_the_reader_behind_its_poster(page: str) -> None:
+    """Embedded as the explainer embeds its film: controls, inline, nothing fetched and
+    nothing moving until a reader presses play, and a poster that is a frame of the film
+    served beside the page."""
     (video,) = re.findall(r"<video\b[^>]*>", page)
-    for attribute in ("autoplay", "muted", "loop", "playsinline", "controls"):
+    for attribute in ("controls", "playsinline"):
         assert re.search(rf"\s{attribute}\b", video), attribute
+    for attribute in ("autoplay", "loop", "muted"):
+        assert not re.search(rf"\s{attribute}\b", video), attribute
+    assert 'preload="none"' in video
+    assert f'poster="{OVERVIEW_FILM_POSTER.name}"' in video
+    assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
+    assert OVERVIEW_FILM_POSTER.is_file()
     assert (
         "ascent-n1-324-1080p60-citations.mp4"
         in page.split(video, 1)[1].split("</video>", maxsplit=1)[0]
     )
-    assert render_overview.FILM_SCRIPT.read_text(encoding="utf-8") in page
+
+
+def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str) -> None:
+    """A site page scrolls the document, so the document is the element kpress watches:
+    with `<main>` marked instead, the contents rail's scroll-spy observed a pane that
+    never scrolls. kpress's contents-rail and history modules ride on every page, since
+    without them nothing marks the section in view."""
+    assert page.count("<html data-kpress-viewport ") == 1
+    assert '<main class="kpress-page-main kpress-viewport">' in page
+    for module in render_overview.KPRESS_CLIENT_MODULES:
+        assert f"/* kpress: js/{module} */" in page, module
+
+
+def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
+    """A section of three cards or fewer centres them only when its grid can ask how many
+    columns its frame fits, so every grid is the only child of a `.site-cards-frame`."""
+    grids = re.findall(r'<div class="([^"]*)"><div class="(site-cards[^"]*)">', page)
+    every = re.findall(r'<div class="site-cards[" ]', page)
+    assert len(grids) == len(every), "a card grid outside a frame"
+    assert all(frame == "site-cards-frame site-wide" for frame, _ in grids)
+    assert any("site-cards-dimensions" in grid for _, grid in grids)
 
 
 def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:

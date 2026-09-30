@@ -3,9 +3,9 @@ type: is
 id: is-01m3razbt8p1kktnnzvqbdjv74
 title: Build a shared exact field runner and verify its frozen controls
 kind: task
-status: open
+status: in_progress
 priority: 0
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies:
@@ -15,6 +15,10 @@ dependencies:
     target: is-01m3rb0t4zqdze43drjkx9cqx2
 parent_id: is-01m3ra1hjvn4bdh3h13aggqgvb
 created_at: 2026-09-30T05:00:40.647Z
-updated_at: 2026-09-30T05:04:27.429Z
+updated_at: 2026-09-30T05:28:25.479Z
 ---
 Extract only first-party exact field primitives and complete/partial orchestration into a typed field runner. Preserve published mask0/mask202 checker bytes and receipts. Inventory all field feature shapes; explicit supported capabilities, no fallback acceptance. New independently reviewed runs must reproduce exact459/764 case sets, union1112,55/136 and50/439 obligations, and refusal/partial controls. Enables remaining exclusions; no upstream verifier imports or rewrite solely for native speed.
+
+## Notes
+
+Inventorying frozen mask0/mask202 boundaries for a new first-party exact field runner. Published sources/receipts remain unchanged; initial slice will share only source-independent geometry and all-or-incomplete orchestration, with explicit packet specs and focused controls before any full replay.

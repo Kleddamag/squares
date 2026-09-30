@@ -343,6 +343,8 @@ def overview_page() -> Page:
         "RESULTS_TABLE": overview_sections.results_table(overview),
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_list(overview),
+        "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
+        "SURVEY_COUNTS": overview_sections.survey_counts(overview),
     }
     markdown = fill(
         OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name

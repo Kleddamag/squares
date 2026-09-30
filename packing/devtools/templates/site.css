@@ -534,6 +534,33 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
 }
+/* A standing chip trails its line quietly: the recent list and a card's rung line. */
+.site-recent .site-chip[data-standing] {
+  margin-inline-start: 0.2rem;
+}
+/* A date says what it dates, "published" or "established", in the support colour, on
+   its own line above the date so the column stays narrow. */
+.site-table .site-date-kind {
+  color: var(--site-support-color);
+  display: block;
+}
+.site-table .site-col-date {
+  white-space: nowrap;
+}
+/* A result's standing sits under its rungs, on a line of its own. */
+.site-table .site-standing {
+  display: block;
+  margin-block-start: 0.3rem;
+  white-space: normal;
+}
+/* A long standing ("second certificate, reported") wraps between its words, inside the
+   chip, rather than widening the rungs column. */
+.site-table .site-standing .site-chip {
+  max-width: 6.5rem;
+  overflow-wrap: normal;
+  white-space: normal;
+  word-break: normal;
+}
 
 /* kpress draws a <details> as a bordered disclosure with a caps label; inside a table
    row the summary is the result itself, so it reads as plain text with only the chevron.
@@ -599,7 +626,8 @@ body {
 /* ---------- The results table on a phone ----------
    Seven columns do not fit 390px, and scrolling a table sideways to read one claim is
    the wrong trade: each row becomes a small card, id, cases and rungs on its first line,
-   then the claim, the credit and date, and the records. */
+   then the claim, the credit and date, and the records; the standing sits under the
+   rungs. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -660,6 +688,9 @@ body {
     grid-column: 3;
     text-align: end;
   }
+  .site-results .site-date-kind {
+    display: inline;
+  }
   .site-results :is(.site-col-credit, .site-col-date) {
     color: var(--kpress-doc-muted);
     font-size: 0.9em;
@@ -677,6 +708,57 @@ body {
   margin: 0;
   transform: none;
   width: 100%;
+}
+
+/* ---------- Reported, awaiting replay ----------
+   A closed disclosure under the recent list: its summary names how many cases and which,
+   and opens a compact table grouped by holder, each case linking to the frontier atlas. */
+.kpress details.site-replay {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+}
+/* The summary is a sentence, not kpress's caps label: its math stays lower case. */
+.kpress details.site-replay > summary {
+  color: var(--kpress-doc-text);
+  cursor: pointer;
+  display: list-item;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-variant-caps: normal;
+  font-weight: var(--site-font-weight-sans-medium);
+  letter-spacing: normal;
+  text-transform: none;
+}
+/* Four short columns: the table keeps to its content rather than the wide track. */
+.kpress .site-replay .site-replay-table {
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+  width: auto;
+}
+.kpress .site-replay .site-replay-table th {
+  text-align: start;
+}
+.kpress .site-replay .site-replay-table td {
+  white-space: nowrap;
+}
+/* On a phone the dates give way, so a case's two bounds fit on one line. */
+@media (width < 40rem) {
+  .kpress .site-replay .site-replay-table :is(thead th, td):nth-child(4) {
+    display: none;
+  }
+  .kpress .site-replay .site-replay-table :is(th, td) {
+    min-width: 0;
+    padding-inline: 0.35rem;
+  }
+}
+.kpress .site-replay .site-group-row th {
+  font-variant-caps: normal;
+  font-weight: var(--site-font-weight-sans-medium);
+  letter-spacing: normal;
+  text-transform: none;
+}
+.site-replay .site-group-row .site-chip {
+  margin-inline-start: 0.15rem;
 }
 
 /* ---------- Frontier atlas ---------- */

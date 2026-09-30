@@ -8,13 +8,14 @@ from collections import Counter
 
 import pytest
 
-from devtools import overview_data, overview_sections, render_overview
+from devtools import overview_data, overview_sections, render_overview, render_recent_results
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
+from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
 
 ID = re.compile(r'\sid="([^"]+)"')
-ROW = re.compile(r'<tr id="(t-\d{3})" data-source="(ours|others)" data-c="(C\d)">')
+ROW = re.compile(r'<tr id="(t-\d{3})" data-source="(ours|others)" data-c="(C\d)"[^>]*>')
 
 
 @pytest.fixture(scope="module")
@@ -314,3 +315,160 @@ def test_the_prose_links_repository_files_at_the_build_commit(page: str) -> None
     for path in paths:
         assert (REPO / path).exists(), path
         assert f'href="{repo_file(REPO / path)}"' in page, path
+
+
+# ---------- What the page shares with README's generated tables (think-o0om) ----------
+
+
+@pytest.fixture(scope="module")
+def overview() -> overview_data.Overview:
+    return overview_data.load()
+
+
+@pytest.fixture(scope="module")
+def records() -> render_recent_results.Records:
+    return render_recent_results.load_records()
+
+
+def _row(page: str, result_id: str) -> str:
+    match = re.search(rf'<tr id="{result_id.lower()}"[^>]*>.*?</tr>', page, re.DOTALL)
+    assert match, result_id
+    return match.group(0)
+
+
+def test_every_result_shows_the_standing_readme_derives(
+    page: str, overview: overview_data.Overview, records: render_recent_results.Records
+) -> None:
+    """Standing is `render_recent_results.standing`, never restated: every table row
+    carries it as an attribute and a chip, and only `holds` takes the accent."""
+    for result in overview.results:
+        expected = render_recent_results.standing(result.record, records)
+        assert result.standing == expected, result.id
+        row = _row(page, result.id)
+        assert f'data-standing="{overview_sections.standing_key(expected)}"' in row, result.id
+        assert overview_sections.standing_chip(expected) in row, result.id
+    held = overview_sections.standing_chip(render_recent_results.HOLDS)
+    assert 'data-tone="accent">holds</span>' in held
+    for other in render_recent_results.STANDINGS[1:]:
+        assert "data-tone" not in overview_sections.standing_chip(other), other
+    recent = overview_sections.recent_list(overview)
+    assert recent in page
+    assert recent.count('data-standing="') == recent.count("<li>")
+
+
+def test_the_s5_cards_say_which_still_hold(overview: overview_data.Overview) -> None:
+    headline = overview_sections.headline_cards(overview)
+    s5 = [r for r in overview.results if r.record["significance"]["score"] >= 5]
+    assert s5
+    for result in s5:
+        button = re.search(
+            rf'<button[^>]*popovertarget="pop-{result.id.lower()}"[^>]*>.*?</button>',
+            headline,
+            re.DOTALL,
+        )
+        assert button, result.id
+        assert overview_sections.standing_chip(result.standing) in button.group(0), result.id
+    holding = {r.id for r in s5 if r.standing == render_recent_results.HOLDS}
+    # The audit's reading of the record; update it when the record moves on.
+    assert holding == {"T-037"}
+
+
+def test_the_standing_filter_offers_each_standing_on_the_page(
+    page: str, overview: overview_data.Overview
+) -> None:
+    tools = re.search(r'<select data-filter="standing">(.*?)</select>', page, re.DOTALL)
+    assert tools
+    offered = re.findall(r'<option value="([^"]*)">', tools.group(1))
+    present = {overview_sections.standing_key(r.standing) for r in overview.results}
+    assert offered[0] == ""
+    assert set(offered[1:]) == present
+
+
+def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overview) -> None:
+    counts = render_recent_results.recent_counts(render_recent_results.recent_rows())
+    assert overview.counts == counts
+    sentence = overview_sections.survey_counts(overview)
+    for number in counts:
+        assert f" {number} " in sentence, number
+    text = re.sub(r"<[^>]+>", "", page)
+    assert f"{counts.cases} have a lower bound published or proved since 22 August 2026" in text
+
+
+def test_reported_bounds_awaiting_replay_are_listed(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """Every recent case whose reported lane differs from the verified one has a row
+    linking its frontier record, with the reported value set as math, not code."""
+    waiting = [row.n for row in overview.recent if row.shows_reported]
+    assert waiting
+    assert waiting == [row.n for row in overview.awaiting_replay]
+    block = overview_sections.awaiting_replay(overview)
+    assert '<details class="site-wide site-replay">' in page
+    for n in waiting:
+        assert f'<tr id="replay-n-{n}"' in page, n
+    listed = [int(n) for n in re.findall(r'<tr id="replay-n-(\d+)"', block)]
+    assert sorted(listed) == waiting
+    for n in waiting:
+        assert f'<a href="frontier.html#n-{n}">{n}</a>' in block, n
+    assert "`" not in block
+    assert "<code>" not in block
+    assert {18, 19, 20} <= set(listed)
+    eighteen = re.search(r'<tr id="replay-n-18".*?</tr>', block, re.DOTALL)
+    assert eighteen
+    assert "939/200" in eighteen.group(0)
+    assert "kpress-math" in eighteen.group(0)
+    assert "wand125" in block
+
+
+def test_results_by_others_show_their_publication_date(
+    page: str, overview: overview_data.Overview
+) -> None:
+    for result in overview.results:
+        row = _row(page, result.id)
+        attribution = result.record.get("attribution")
+        if attribution:
+            published = str(attribution["published"])
+            assert result.dated == ("published", published)
+            assert f'<span class="site-date-kind">published</span> {published}' in row
+        else:
+            assert result.dated[0] == "established"
+    recent = overview_sections.recent_list(overview)
+    dates = re.findall(r'<span class="site-date">(\w+) ([\d-]+)</span>', recent)
+    assert dates
+    assert [d for _, d in dates] == sorted((d for _, d in dates), reverse=True)
+    assert max(r.dated[1] for r in overview.results) == dates[0][1]
+
+
+def test_grouping_agrees_with_readmes_relation(
+    overview: overview_data.Overview, records: render_recent_results.Records
+) -> None:
+    """The table's groups are `source_lineage`'s, the lineage README's relation column
+    prints, so wand125's T-048, T-054 and T-055 read as crediting this project
+    second-hand in both."""
+    titles = dict(OTHERS)
+    for title, members in overview.groups[1:]:
+        for result in members:
+            lineage = source_lineage(result.record, records.sources)
+            assert titles[lineage] == title, result.id
+            if render_recent_results.is_recent_by_others(result.record):
+                relation = render_recent_results.relation(result.record, records)
+                assert render_recent_results.LINEAGES[str(lineage)] == relation, result.id
+    group = {r.id: title for title, members in overview.groups for r in members}
+    for result_id in ("T-048", "T-054", "T-055"):
+        assert group[result_id] == "Crediting this project second-hand", result_id
+        relation = render_recent_results.relation(records.results[result_id], records)
+        assert relation == "credits second-hand", result_id
+
+
+def test_each_row_detail_names_its_novelty_label(
+    page: str, overview: overview_data.Overview
+) -> None:
+    labels = overview_sections.novelty_labels()
+    assert labels["apparently-novel"].startswith("Not found in the recorded search")
+    assert labels["confirmed-novel"].startswith("Priority confirmed")
+    for result in overview.results:
+        chip = (
+            f'<dt>Novelty</dt><dd><span class="site-chip" data-novelty="{result.novelty}">'
+            f"{result.novelty}</span> {html.escape(labels[result.novelty])}</dd>"
+        )
+        assert chip in _row(page, result.id), result.id

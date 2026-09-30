@@ -12,7 +12,9 @@ from __future__ import annotations
 import html
 import re
 
+from devtools.build_bound_citations import RECENT_SINCE
 from devtools.overview_data import (
+    APOSTROPHE,
     EN_DASH,
     REPO,
     Overview,
@@ -21,6 +23,7 @@ from devtools.overview_data import (
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, branch_file
+from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane
 
 #: Confirmation rungs from strongest to weakest.
 C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
@@ -38,6 +41,32 @@ def _fill(rung: str) -> str:
 
 def _rung(label: str) -> str:
     return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
+
+
+#: What the table and its filter call an entry that is no bound on `s(n)`: README's
+#: table leaves the cell as a dash, which a filter cannot name.
+NOT_A_BOUND_LABEL = "not a bound"
+
+
+def standing_label(standing: str) -> str:
+    """The words a standing chip shows: `render_recent_results`'s own, the dash spelled."""
+    return NOT_A_BOUND_LABEL if standing == NOT_A_BOUND else standing
+
+
+def standing_key(standing: str) -> str:
+    """A standing as a row attribute and a filter value: `holds, reported` is
+    `holds-reported`."""
+    return re.sub(r"[^a-z]+", "-", standing_label(standing)).strip("-")
+
+
+def standing_chip(standing: str) -> str:
+    """A result's standing as a chip: the accent where a case bound rests on it now,
+    the plain gray otherwise, so a reader sees at a glance which results still hold."""
+    tone = ' data-tone="accent"' if standing == HOLDS else ""
+    return (
+        f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}"{tone}>'
+        f"{_esc(standing_label(standing))}</span>"
+    )
 
 
 def card_kind(href: str) -> str:
@@ -125,8 +154,9 @@ def _dl(rows: list[tuple[str, str]]) -> str:
 
 
 def headline_cards(overview: Overview) -> str:
-    """One card per `S5` result, this project's and others' alike. Its popover previews
-    the result, its claim, rationale, rungs and records, and goes to its table row."""
+    """One card per `S5` result, this project's and others' alike, with its rungs and its
+    standing. Its popover previews the result, its claim, rationale, rungs, standing and
+    records, and goes to its table row."""
     cards = []
     for result in overview.results:
         if result.record["significance"]["score"] < 5:
@@ -140,6 +170,7 @@ def headline_cards(overview: Overview) -> str:
                 "S" + str(record["significance"]["score"]),
             )
         )
+        rungs += " " + standing_chip(result.standing)
         preview = (
             f"{_detail(result, full=False)}"
             f'<p class="site-popover-links">{rungs}</p>'
@@ -183,8 +214,8 @@ def exact_value_cards(overview: Overview) -> str:
 
 
 def _detail(result: Result, *, full: bool = True) -> str:
-    """A result's claim and why it matters; `full` adds its composition and next rung,
-    which the table row carries and a card's popover leaves to the row."""
+    """A result's claim and why it matters; `full` adds its composition, next rung and
+    novelty label, which the table row carries and a card's popover leaves to the row."""
     record = result.record
     rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
@@ -193,6 +224,17 @@ def _detail(result: Result, *, full: bool = True) -> str:
     rows.append(
         ("Significance", tex_bounds(" ".join(str(record["significance"]["rationale"]).split())))
     )
+    if full:
+        meaning = novelty_labels().get(result.novelty, "")
+        rows.append(
+            (
+                "Novelty",
+                (
+                    f'<span class="site-chip" data-novelty="{_esc(result.novelty)}">'
+                    f"{_esc(result.novelty)}</span> {_esc(meaning)}"
+                ),
+            )
+        )
     body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
     return f'<dl class="site-detail">{body}</dl>'
 
@@ -207,15 +249,20 @@ def _records(result: Result) -> str:
 
 
 def results_table(overview: Overview) -> str:
-    """Every registered result, grouped as `RESULTS.md` groups them."""
+    """Every registered result, grouped as `RESULTS.md` groups them, which is by the
+    relation README's Results by Others prints (`result_credit.source_lineage`), with its
+    standing and, for a result by others, the date it was published."""
+    present = {result.standing for result in overview.results}
     head = (
         "<thead><tr>"
         '<th data-sort="text">ID</th>'
         '<th data-sort="num">n</th>'
         '<th class="site-col-result">Result</th>'
         '<th data-sort="text">Credit</th>'
-        '<th data-sort="text" title="Verification, confirmation and significance">Rungs</th>'
-        '<th data-sort="text">Date</th>'
+        '<th data-sort="text" title="Verification, confirmation and significance, then '
+        'whether a case bound rests on the result now">Rungs</th>'
+        '<th data-sort="text" title="Published, for a result by others; established, for '
+        f'this project{APOSTROPHE}s">Date</th>'
         "<th>Records</th>"
         "</tr></thead>"
     )
@@ -227,10 +274,12 @@ def results_table(overview: Overview) -> str:
         )
         for result in members:
             record = result.record
+            kind, date = result.dated
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" '
                 f'data-source="{"ours" if result.ours else "others"}" '
-                f'data-c="{_esc(record["confirmation"])}">'
+                f'data-c="{_esc(record["confirmation"])}" '
+                f'data-standing="{_esc(standing_key(result.standing))}">'
                 f'<td class="site-col-id" data-value="{_esc(result.id)}">{_esc(result.id)}</td>'
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
@@ -242,9 +291,10 @@ def results_table(overview: Overview) -> str:
                 f'<td class="site-rungs" '
                 f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
                 f"{_rung(record['verification'])} {_rung(record['confirmation'])} "
-                f"{_rung('S' + str(record['significance']['score']))}</td>"
-                f'<td class="site-col-date" data-value="{_esc(result.date)}">'
-                f"{_esc(result.date)}</td>"
+                f"{_rung('S' + str(record['significance']['score']))}"
+                f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
+                f'<td class="site-col-date" data-value="{_esc(date)}">'
+                f'<span class="site-date-kind">{_esc(kind)}</span> {_esc(date)}</td>'
                 f'<td class="site-records">{_records(result)}</td>'
                 "</tr>"
             )
@@ -256,6 +306,15 @@ def results_table(overview: Overview) -> str:
         '<label>Confirmation <select data-filter="c">'
         '<option value="">all</option>'
         + "".join(f'<option value="{c}">{c}</option>' for c in C_RUNGS)
+        + "</select></label>"
+        '<label>Standing <select data-filter="standing">'
+        '<option value="">all</option>'
+        + "".join(
+            f'<option value="{_esc(standing_key(standing))}">'
+            f"{_esc(standing_label(standing))}</option>"
+            for standing in STANDINGS
+            if standing in present
+        )
         + "</select></label>"
         '<span class="site-count" data-count></span>'
         "</div>"
@@ -291,6 +350,21 @@ def rubric_levels() -> dict[str, list[tuple[int, str]]]:
     return levels
 
 
+_NOVELTY_ROW = re.compile(r"^\| `([a-z]+(?:-[a-z]+)+)` \| ([^|]+?) \|$", re.MULTILINE)
+
+
+def novelty_labels() -> dict[str, str]:
+    """Each novelty label and its one-line meaning, read from the table in
+    `epistemics.md` as `rubric_levels` reads the scored dimensions."""
+    text = (REPO / "epistemics.md").read_text(encoding="utf-8")
+    section = text.split("Novelty uses four labels", 1)[-1]
+    labels = {label: meaning.strip() for label, meaning in _NOVELTY_ROW.findall(section)}
+    for label in ("apparently-novel", "confirmed-novel", "previously-published"):
+        if label not in labels:
+            raise SystemExit(f"epistemics.md defines no novelty label {label}")
+    return labels
+
+
 def verification_block() -> str:
     """One card per dimension of the rubric: its question and every level, as the chip
     the tables use and the rubric's meaning. Each card's popover renders that section of
@@ -320,15 +394,86 @@ def verification_block() -> str:
 
 
 def recent_list(overview: Overview, count: int = 8) -> str:
-    """The newest results by date, newest first."""
-    newest = sorted(overview.results, key=lambda r: (r.date, r.id), reverse=True)[:count]
+    """The newest results, newest first, each with its standing. A result by others is
+    dated by its publication, as README's Results by Others dates it, and this project's
+    by the day it was established; the label says which."""
+    newest = sorted(overview.results, key=lambda r: (r.dated[1], r.id), reverse=True)[:count]
     items = "".join(
-        f'<li><span class="site-date">{_esc(r.date)}</span> · '
+        f'<li><span class="site-date">{_esc(r.dated[0])} {_esc(r.dated[1])}</span> · '
         f'<a href="#{_esc(r.id.lower())}">{_esc(r.id)}</a> · {tex_bounds(r.summary)} '
-        f'<span class="site-credit">({_esc(r.credit)})</span></li>'
+        f'<span class="site-credit">({_esc(r.credit)})</span> {standing_chip(r.standing)}</li>'
         for r in newest
     )
     return f'<ul class="site-recent">{items}</ul>'
+
+
+def _since() -> str:
+    """`RECENT_SINCE` as prose: 22 August 2026."""
+    return f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}"
+
+
+def survey_counts(overview: Overview) -> str:
+    """The survey's four counts as one Markdown sentence, from
+    `render_recent_results.recent_counts`, the numbers README's summary quotes."""
+    counts = overview.counts
+    return (
+        f"Of the hundred cases $n \\le 100$, {counts.cases} have a lower bound published or "
+        f"proved since {_since()}, reported or verified; {counts.verified} of those have "
+        f"a recent verified lower bound, the cases the atlas stars; {counts.ours} of the "
+        f"{counts.verified} are this project{APOSTROPHE}s, and {counts.exact} are new "
+        "exact values."
+    )
+
+
+_LANE_RESULT = re.compile(r"(T-\d{3}) `(V\d)/(C\d)`")
+
+
+def _lane_math(lane: Lane) -> str:
+    """A lane's value, as `render_recent_results.shown` writes it, set as math."""
+    return math_html(lane.shown.replace("`", "").replace("\u2026", r"\ldots"))
+
+
+def _lane_results(results: str) -> str:
+    """A lane's results cell, the register entries carrying its bound as
+    `render_recent_results.rungs` writes them, each linked to its row with its rungs."""
+    return " ".join(
+        f'<a href="#{_esc(entry.lower())}">{_esc(entry)}</a> {_rung(v)} {_rung(c)}'
+        for entry, v, c in _LANE_RESULT.findall(results)
+    )
+
+
+def awaiting_replay(overview: Overview) -> str:
+    """The recent cases whose reported lower bound differs from the verified one: a
+    source's bound waiting on a replay here. One row per case, grouped by holder and the
+    entries that carry the claim, each case linked to its row in the frontier atlas."""
+    rows = overview.awaiting_replay
+    if not rows:
+        return ""
+    groups: dict[tuple[str, str], list[str]] = {}
+    for row in rows:
+        reported = row.reported
+        groups.setdefault((reported.holder, reported.results), []).append(
+            f'<tr id="replay-n-{row.n}" data-n="{row.n}">'
+            f'<td class="num"><a href="frontier.html#n-{row.n}">{row.n}</a></td>'
+            f"<td>{_lane_math(reported)}</td>"
+            f"<td>{_lane_math(row.verified)}</td>"
+            f'<td class="site-col-date">{_esc(reported.published or "")}</td></tr>'
+        )
+    body = "".join(
+        f'<tr class="site-group-row"><th colspan="4" scope="colgroup">{_esc(holder)} · '
+        f"{_lane_results(results)}</th></tr>{''.join(members)}"
+        for (holder, results), members in groups.items()
+    )
+    first, last = rows[0].n, rows[-1].n
+    return (
+        '<details class="site-wide site-replay">'
+        f"<summary>Reported, awaiting replay: {len(rows)} cases, "
+        f"{math_html(f'n = {first}')} to {last}</summary>"
+        '<div class="site-table-wrap">'
+        '<table class="kpress-table site-table site-replay-table">'
+        "<thead><tr><th>n</th><th>Reported</th><th>Verified here</th><th>Published</th>"
+        f"</tr></thead><tbody>{body}</tbody></table></div></details>"
+    )
 
 
 #: The repository's reader documents, as the overview's cards show them: the file, a

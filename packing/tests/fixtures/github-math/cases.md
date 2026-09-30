@@ -133,10 +133,12 @@ $$
 
 ## Across Formulas in One Paragraph
 
-- [math] two starred subscripts, one formula each: x $c_{70}L_*$ y and z $c_{71}L_*$ w
+- [code] two starred subscripts, one formula each: x $c_{70}L_*$ y and z $c_{71}L_*$ w
 - [math] a starred superscript, then a subscript: x $c_{72}\tau^*(L)$ y and z $c_{73}w_a$ w
-- [math] two stars across three formulas: x $c_{74}a^*$ y, $c_{75}$ and $c_{76}b^*$ w
+- [code] two stars across three formulas: x $c_{74}a^*$ y, $c_{75}$ and $c_{76}b^*$ w
 - [math] underscores across formulas: x $c_{77}t_2$ y and $c_{78}t_1$ w
 - [math] a closing curly quote after: “for every $c_{79}$” y
 - [math] inside parentheses after a word: the degree (x $c_{80}$) and y
 - [math] a starred formula then a star in prose: x $c_{81}L_*$ y *z* w
+- [math] the same with the star command: x $c_{82}L_{\ast}$ y and z $c_{83}L_{\ast}$ w
+- [math] three formulas with the star command: x $c_{84}a^{\ast}$ y, $c_{85}$ and $c_{86}b^{\ast}$ w

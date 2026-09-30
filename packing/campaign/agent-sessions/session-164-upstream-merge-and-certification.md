@@ -976,13 +976,18 @@ session:
     started_at: '2026-09-30T14:02:38Z'
     deadline_at: '2026-09-30T14:32:38Z'
     expected_output: Reviewed integration commit, passing incremental push tier and published PR with hosted checks.
-    validation_command: Focused consumer tests, incremental packing-validate --push and hosted PR checks.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --push --since 249d42c3765bdf18a0fb0373bdb7a2a9d601e5ca
     kill_condition: Any correctness failure prevents certification of the final head.
     fallback: Repair the failing component without rerunning accepted proof geometry or relaxing timing budgets.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Finish explainer review, freeze and commit, run the incremental push gate, publish and inspect hosted results.
+    next_action: >-
+      Publish after the focused repair gate and inspect hosted results. The combined gate at
+      249d42c37 took 329.30 seconds, with 8148 tests passed, 9 skipped and one consumer-declaration
+      failure; campaign validation also rejected a prose validation-command field. Both are repaired
+      without changing proof or renderer behavior. Validate the repair delta instead of repeating
+      the whole behavioral batch.
   budget:
     wall_minutes: 1135
     max_cycles: 40

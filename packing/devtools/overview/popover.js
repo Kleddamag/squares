@@ -1,7 +1,7 @@
 // The overview's card popovers. They open and close natively (`popovertarget`), so the
 // page works without this script; it adds two things the platform does not:
-//   - a formula inside a popover is typeset when the popover opens, since kpress may
-//     pass over math that was hidden when it ran;
+//   - a formula inside a popover is typeset when the popover opens, since the math driver
+//     leaves hidden math until it is shown;
 //   - following a link in a popover closes it, so a reader sent to a row on this page
 //     lands on the row rather than behind the panel.
 (() => {
@@ -10,13 +10,8 @@
       continue;
     }
     popover.addEventListener("toggle", (event) => {
-      const enhance = globalThis.enhanceMath;
-      if (
-        event instanceof ToggleEvent &&
-        event.newState === "open" &&
-        typeof enhance === "function"
-      ) {
-        void enhance();
+      if (event instanceof ToggleEvent && event.newState === "open") {
+        void globalThis.siteMath?.typeset(popover, true);
       }
     });
     for (const link of popover.querySelectorAll("a[href]")) {

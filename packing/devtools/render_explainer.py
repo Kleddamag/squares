@@ -58,7 +58,13 @@ from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
-from devtools.render_overview import SITE_NAV, SITE_NAV_CSS, favicon_html, nav_html
+from devtools.render_overview import (
+    PAPER_TYPE_CSS,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    favicon_html,
+    nav_html,
+)
 from devtools.repo_links import REPO_URL, repo_url
 from sqpack.fractional.certificate import (
     Certificate,
@@ -2319,6 +2325,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         "MONO_FONT": MONO_FONT,
         "KPRESS_CSS": kpress_css(static) + katex_css(static),
         "RELATION_CSS": relation_face_css(static),
+        "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": theme_bootstrap(static),
         "KATEX_JS": katex_js(static),
         **{
@@ -2592,6 +2599,7 @@ RENDER_INPUTS = (
     MARKDOWN,
     SITE_NAV,
     SITE_NAV_CSS,
+    PAPER_TYPE_CSS,
     PACKING / "devtools" / "render_overview.py",
     PACKING / "devtools" / "templates" / "fonts",
     REPO / "vendor" / "kpress",

@@ -41,6 +41,9 @@
      the three, so without these the reader's own machine draws them: a different face
      for every reader, and outline paths in the PDF. See `relation_face_css`. -->
 <style>{{RELATION_CSS}}</style>
+<!-- The text tokens every page of the site shares: type base, reading measure, heading
+     scale, the paper's roles, and the site's own faces. See templates/paper-type.css. -->
+<style>{{PAPER_TYPE_CSS}}</style>
 <!-- The site's navigation bar, shared with every other page of the site and hidden in
      print. See templates/site-nav.css. -->
 <style>{{SITE_NAV_CSS}}</style>
@@ -98,9 +101,9 @@ body {
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
 }
+/* The reading measure (forty of the base) and the h2 scale (1.2) are in paper-type.css,
+   shared with every page of the site. */
 .cert-page {
-  --kpress-measure: calc(var(--kpress-font-size-base) * 40);
-  --kpress-font-size-h2: calc(var(--kpress-font-size-base) * 1.2);
   padding-block-end: calc(var(--kpress-font-size-base) * 6);
 }
 /* Paper typography profile; see paper-design.md beside this template.
@@ -117,17 +120,13 @@ body {
    declaration behind each request, and it is how a fourth weight is found. Two used
    to be there: the caption label sat at the medium while the title credits were bold,
    and the footnote controls at KPress's literal 600, which is neither token. */
+/* The values, and the `--paper-*` role scales, are in paper-type.css, shared with every
+   page of the site; this page reads them under its own names. */
 :root {
-  --cert-font-scale-sans: calc(19 / 18);
+  --cert-font-scale-sans: var(--paper-font-scale-sans);
   --cert-font-weight-sans-light: var(--kpress-font-weight-sans-regular);
-  --cert-font-weight-sans-medium: 550;
-  --cert-font-weight-sans-bold: 680;
-  --paper-title-scale: 1.5;
-  --paper-subtitle-scale: 1.25;
-  --paper-support-scale: 0.95;
-  --paper-note-scale: 0.92;
-  --paper-note-inset: 1.4rem;
-  --paper-support-leading: 1.4;
+  --cert-font-weight-sans-medium: var(--paper-font-weight-sans-medium);
+  --cert-font-weight-sans-bold: var(--paper-font-weight-sans-bold);
 }
 /* Resolve the sans base in the prose scope so nested sans components all use
    the same size instead of multiplying the scale at each level. */
@@ -175,10 +174,6 @@ body {
 }
 .cert-page :is(.line-fig, .chart) [font-weight="650"] {
   font-weight: var(--cert-font-weight-sans-bold);
-}
-@media print {
-  /* Keep small sans text compact as its letter size increases. */
-  :root { --paper-support-leading: 1.32; }
 }
 .cert-page a, .cert-page .kpress-footnote-ref a, .cert-page a.kpress-footnote-backref,
 .cert-page a:hover, .kpress a.kpress-footnote-backref:hover,
@@ -788,9 +783,7 @@ body {
 /* One role kpress has no token for: the square the reader drags, which must
    read as a separate instrument from the mass it measures. */
 :root {
-  /* kpress derives every size from this one token, so the page reads larger
-     everywhere without any element being restyled. */
-  --kpress-host-font-size-base: 18px;
+  /* The type base, 18px, is paper-type.css's, shared with every page of the site. */
   --cert-probe: oklch(55% 0.145 52);
   --cert-below: {{BELOW_ONE}};
   --cert-near: {{NEAR_LIMIT}};

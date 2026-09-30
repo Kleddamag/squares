@@ -26,9 +26,6 @@ interface SiteTableApi {
 
 declare var SiteTable: SiteTableApi;
 
-/** kpress's math enhancement, a classic script's top-level function. */
-declare function enhanceMath(): Promise<void> | undefined;
-
 /** One bound's source as the film cites it: the reference and this project's note. */
 interface AtlasCitation {
   text: string;

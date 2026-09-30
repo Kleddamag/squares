@@ -303,11 +303,12 @@
   /** @type {HTMLAnchorElement | null} */
   let current = null;
 
+  // The site's math driver (overview/math.js) typesets the panel's fresh formulas.
   const typeset = () => {
-    const enhance = globalThis.enhanceMath;
     fitGap();
-    if (typeof enhance === "function") {
-      Promise.resolve(enhance()).then(fitGap, fitGap);
+    const site = globalThis.siteMath;
+    if (site !== undefined) {
+      site.typeset(popover, true).then(fitGap, fitGap);
     }
   };
 

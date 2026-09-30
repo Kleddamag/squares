@@ -5,16 +5,18 @@ overview, the frontier atlas and the tutorial.
 Each stylesheet implements what is written here and points back to it; when a page needs
 something new, it is added here first and then to the stylesheet that owns it.
 
-Three layers carry it, from the bottom up:
+Three layers carry it, from the bottom up, with the paper’s text tokens shared by all:
 
 | Layer | File | Owns |
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
-| Paper | [explainer-shell.html](explainer-shell.html) | The explainer’s type proportions, reading measure and figures |
+| Text | [paper-type.css](paper-type.css) | The type base, reading measure, heading scale, role scales and pinned faces every page shares |
+| Paper | [explainer-shell.html](explainer-shell.html) | The explainer’s figures, panels and print rules |
 | Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the Visualizer included |
 
-The paper and site layers use the same values under their own prefixes, `--paper-` and
-`--site-`, so a site page and the explainer set a role at the same size and weight.
+The paper and site layers read the same values from `paper-type.css`, under their own
+prefixes, `--cert-` and `--site-`, so a site page and the explainer set a role at the
+same size and weight.
 Every site value is a KPress token or derived from one, so it follows the theme and the
 print rules.
 
@@ -86,6 +88,59 @@ defined in `site-nav.css` because every page carries it: KPress’s hover surfac
 mode, and a 9% tint of the text in dark mode, where KPress’s own is a light gray that
 light text cannot sit on.
 
+## Text
+
+Every page sets its reading text as the explainer does, from one file,
+[paper-type.css](paper-type.css), which the explainer’s shell, every KPress page and the
+Visualizer’s navigation shell inline right after KPress’s stylesheets.
+No page declares these tokens itself; `tests/test_overview.py` fails a layer that does,
+and `tests/test_site_text_tokens.py` pins what they resolve to in Chromium.
+
+| Token | Value | Resolves to |
+| --- | --- | --- |
+| `--kpress-host-font-size-base` | `18px` | Every KPress size, from `--kpress-font-size-base` |
+| `--kpress-measure` | 40 of the base | 720px, the width KPress’s default 45 gives at 16px |
+| `--kpress-font-size-h2` | 1.2 of the base | 21.6px at every width; KPress steps it to 1.4 from a 64rem pane |
+| `--paper-font-scale-sans` | 19/18 | The 19px sans base of captions, cards and notes |
+| `--paper-font-weight-sans-medium`, `-bold` | 550, 680 | The sans medium and bold |
+| `--paper-title-scale`, `-subtitle-`, `-support-`, `-note-`, `-colophon-` | 1.5, 1.25, 0.95, 0.92, 0.85 | The roles in the table above |
+
+What a reader sees, measured with `devtools.measure_site_pages type` on the explainer,
+the tutorial, the readme and the homepage, identical on all four where the role occurs:
+
+| Role | Face | Size / line height at 1280px | At 390px |
+| --- | --- | --- | --- |
+| Paragraph and list item | PT Serif | 18 / 27px | Same |
+| h1 (a report’s title) | PT Serif | 30.6 / 36.72px (1.7 of the base) | Same |
+| h2 | PT Serif italic | 21.6 / 25.92px | Same |
+| h3 | Source Sans 3, 550 | 21.6px | 20.7px |
+| h4 | Source Sans 3 italic, 540 | 21.6px | 20.16px |
+| Table cell | Source Sans 3, 410 | 17.1px | 16.2px |
+| Inline code | Planetaire Mono Text | 14.76 / 22.14px | Same |
+| Inline math | KPress Math Text (serif) | 18px, the text’s own em | Same |
+| Text line | — | 800px: the measure and both 2.5rem insets | The column less the page margin |
+
+h3 and h4 keep KPress’s own step up at a 64rem pane.
+The explainer’s title is its own role (sans caps, 28.5px); a report’s h1 is the Markdown
+title and keeps KPress’s ratio of the same base.
+The homepage sets its summary lists and tables a step smaller, in `site.css`.
+
+**Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
+punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
+composites), because every page takes them from the same functions,
+`render_explainer.kpress_css`, `katex_css` and `relation_face_css`;
+`devtools.measure_site_pages faces` compares them block by block.
+KPress leads each family token with an embedding host’s hook, `--kpress-host-font-sans`
+and its siblings, so an application embedding a KPress fragment can supply its own face.
+The site does not honor those hooks: a viewer that injects one would draw the page in a
+face it does not ship, which is the rule every text run here is held to.
+`paper-type.css` sets each hook to `initial`, important, on KPress’s own scopes, so
+KPress’s stack, led by the inlined face, always applies.
+A reader’s own choice of system fonts still works: KPress’s `data-kpress-font-set`
+switch sets the family tokens themselves, not the hooks.
+Its system stack (`style-tokens.css`, the block for `[data-kpress-font-set="system"]`)
+applies only under that attribute, which only a saved reader preference stamps.
+
 ## Math
 
 Math takes the face of the text around it: serif math in serif prose, sans math in sans
@@ -98,6 +153,78 @@ KaTeX still controls the internal sizes of scripts and nested expressions.
 Documents write math as LaTeX (`$…$`) rather than in code spans;
 `devtools.check_math_markup` holds the documents already migrated to it.
 Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
+
+## Math Loading
+
+Every page loads its mathematics through the explainer’s pipeline, from the same code:
+
+- **Faces and styles.** KaTeX’s faces pruned to those a page can reach, inlined as data
+  URIs and switched from `font-display: swap` to `block`, so no formula is drawn in a
+  host face and redrawn; KPress’s math composites; the three relation glyphs
+  (`relation_face_css`).
+- **Scripts.** `render_explainer.katex_js`: KaTeX, KPress’s metric tables and shared
+  runtime, and the explainer’s host adapter, `squaresMath`
+  (`probes/render_explainer/host_math_init.js`). KPress’s own entry points,
+  `auto-render.min.js` and `katex-init.js`, are left out: `katex-init.js` typesets every
+  formula on the page in one task at DOMContentLoaded.
+- **Per-formula readiness.** The runtime lays a formula out hidden, waits for the faces
+  its glyphs need, and reveals that formula alone; a formula whose faces fail keeps its
+  readable fallback.
+- **Batching.** `squaresMath.batch` submits sixteen formulas per task, so a formula that
+  is ready shows while later ones are still being submitted.
+
+The explainer adds what only a single published page can: its formulas are typeset,
+measured and written into the HTML at publication (`render_explainer --prepare-math`),
+so the client hydrates rather than lays out, and its queue puts the interactive panels
+first. The KPress pages are rendered without a browser, so they typeset in the client,
+driven by `overview/math.js`: the formulas within two screens of the viewport first, the
+rest as the reader scrolls toward them or opens what hides them, and, once the page has
+loaded, one at a time in the browser’s idle time.
+A formula whose faces missed the runtime’s wait is retried twice after the page and its
+fonts load, which a long page needed when every face decoded at once.
+Both mark the end of their load-time work with `math-ready`.
+
+Each client layout costs a style pass over the whole document, 6ms a formula on the
+synopsis against 0.9ms with KPress’s `:has(.kpress-toc)` layout rules removed: those
+selectors make every change inside the column re-match the page’s grid.
+The rules are KPress’s, so the fix belongs upstream (a class stamped by the renderer,
+which KPress already accepts as `.has-toc`, tracked as think-csiv); until then the
+synopsis’s 1,357 formulas cost about eight seconds of idle time in all.
+
+`devtools.measure_site_pages load` measures a built site in cold Chromium contexts
+(median of three loads, milliseconds from navigation start; “visible math” is the first
+frame at which every formula in the first viewport is typeset and showing, “blocking”
+the long tasks’ time over 50ms). Before is the site at `3e8274909`, after is this
+pipeline:
+
+| Page | Width | DOMContentLoaded | Visible math | Load-time math done | Longest task | Blocking |
+| --- | --- | --- | --- | --- | --- | --- |
+| `explainer.html` | 1280 | 712 → 993 | 727 → 1,008 | 947 → 1,238 | 132 → 128 | 211 → 263 |
+| `tutorial.html` | 1280 | 2,233 → 594 | 2,235 → 595 | 2,458 → 741 | 1,875 → 198 | 2,101 → 182 |
+| `synopsis.html` | 1280 | 14,040 → 1,089 | 14,704 → 1,668 | 14,704 → 1,758 | 13,002 → 847 | 16,123 → 1,179 |
+| `results.html` | 1280 | 568 → 236 | 600 → 387 | 600 → 387 | 82 → 75 | 32 → 25 |
+| `readme.html` | 1280 | 608 → 233 | 642 → 297 | 642 → 322 | 74 → 98 | 28 → 48 |
+| `index.html` | 1280 | 3,331 → 686 | 3,595 → 811 | 3,595 → 903 | 2,152 → 152 | 2,507 → 219 |
+| `cases.html#n-11` | 1280 | 7,958 → 5,362 | 8,106 → 5,386 | 8,106 → 5,509 | 3,773 → 2,399 | 7,247 → 4,130 |
+| `explainer.html` | 390 | 696 → 1,156 | 710 → 1,171 | 932 → 1,421 | 121 → 128 | 205 → 263 |
+| `tutorial.html` | 390 | 2,336 → 651 | 2,338 → 652 | 2,541 → 743 | 1,924 → 191 | 2,163 → 175 |
+| `synopsis.html` | 390 | 14,969 → 1,361 | 15,657 → 1,363 | 15,657 → 1,525 | 13,922 → 326 | 17,132 → 880 |
+| `results.html` | 390 | 166 → 190 | 214 → 240 | 214 → 240 | 79 → 87 | 29 → 37 |
+| `readme.html` | 390 | 213 → 202 | 278 → 276 | 278 → 285 | 75 → 79 | 29 → 29 |
+| `index.html` | 390 | 2,455 → 775 | 2,687 → 855 | 2,687 → 897 | 1,940 → 236 | 2,198 → 248 |
+| `cases.html#n-11` | 390 | 8,118 → 5,100 | 8,266 → 5,190 | 8,266 → 5,275 | 3,925 → 2,566 | 7,416 → 3,810 |
+
+“Load-time math done” is the frame at which every displayed formula is typeset or, on a
+page that defers the rest, the frame that page marks `math-ready`. The explainer’s own
+output changed only by its stylesheet, so its row is the run-to-run noise of the shared
+host the two runs were measured on, a few hundred milliseconds; an earlier run of the
+same after-build measured it at 705 to 743ms.
+
+The case records page (`cases.html`) is still slow before any math runs: it carries
+every case’s record in one 9MB document, and parsing and styling that takes several
+seconds on its own (think-cy3a). Publication-time preparation for the KPress pages,
+which would remove the client layout and the fallback-to-KaTeX reflow as it did for the
+explainer, is not done: it needs a browser in the pages’ build (think-89lw).
 
 ## Site Components
 
@@ -309,18 +436,20 @@ Change that token and regenerate the fonts, metrics, and prepared page together.
 The loading and generation contract is documented in the
 [KPress font and math architecture](../../../vendor/kpress/docs/project/architecture/arch-2026-09-08-font-and-math-loading.md).
 
-The local typography block owns the sans/prose size ratio and the paper’s medium and
-bold weights. `--paper-font-size-support` sizes figure labels; `--paper-font-size-note`
-and `--paper-note-inset` size and inset captions and endnotes.
+`paper-type.css` owns the type base, the reading measure, the h2 scale, the sans/prose
+size ratio, the paper’s medium and bold weights and the role scales; the explainer’s
+shell and `site.css` alias them and never restate them.
+`--paper-font-size-support` sizes figure labels; `--paper-font-size-note` and
+`--paper-note-inset` size and inset captions and endnotes.
 They share `--paper-support-color` and `--paper-support-leading`. Resolve the sans base
 once in the prose scope: nested sans components must inherit the resolved size without
 multiplying the ratio again.
 Apply print overrides at the same scopes as KPress theme declarations, including
 footnote popovers.
 
-The paper’s role sizes, heading scale, and reading measure remain explicit local
-choices. Certificate selection, interactive panels, and diagram geometry stay with the
-explainer.
+The paper’s role sizes, heading scale, and reading measure are explicit choices, made
+once for every page.
+Certificate selection, interactive panels, and diagram geometry stay with the explainer.
 
 An SVG’s declared font size is in its own coordinate system.
 Audit the effective size after its `viewBox` and rendered dimensions scale the drawing;

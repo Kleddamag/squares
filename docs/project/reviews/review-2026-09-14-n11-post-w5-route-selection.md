@@ -42,7 +42,7 @@ repeated record checks without a known rollup tail dominating the pull-request g
 The three Astra Max reviews used the same criteria as the September 14 audit:
 
 - potential for a material $n=11$ bound, a much simpler proof of $s(11)\ge3.82$, or a
-  transferable small-$n$ theorem;
+  transferable small-`n` theorem;
 - a complete and falsifiable first discriminator rather than a large program title;
 - exact controls and a matched standing baseline;
 - a representation-level kill rule that does not turn a finite negative into a

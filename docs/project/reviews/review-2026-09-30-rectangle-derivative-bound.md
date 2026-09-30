@@ -38,7 +38,7 @@ certificate acceptance or C++ performance parity.
 
 Freeze a fresh run from the current committed verifier source before comparing bounds:
 angle 1, 1,000 visited nodes, maximum depth 48, exact cutoff
-`2252024993666617/2251799813685248`, 30-second internal limit and 40-second outer limit.
+$2252024993666617/2251799813685248$, 30-second internal limit and 40-second outer limit.
 Use the retained n11 candidate from the
 [parity packet](../../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/).
 The complete pending-box inventory produced by that run is the diagnostic input; its
@@ -60,11 +60,11 @@ Chord endpoints are minima and maxima of rational affine functions of the center
 Enclose each affine function over the entire center box before taking those extrema;
 chord values at the box corners alone do not bound an interior maximum.
 
-If `Gx` and `Gy` enclose those signed derivatives everywhere in the box, `m` is its
+If `Gx` and `Gy` enclose those signed derivatives everywhere in the box, $m$ is its
 midpoint and `hx`, `hy` are its half-widths, the lower bound is
 
 $$
-\max\{0,L_{\mathrm{common}},F(m)-h_x\max|G_x|-h_y\max|G_y|\}.
+\max\lbrace0,L_{\mathrm{common}},F(m)-h_x\max|G_x|-h_y\max|G_y|\rbrace.
 $$
 
 Coverage is absolutely continuous along coordinate segments.

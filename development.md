@@ -7,7 +7,7 @@ This guide owns runtime support, code placement, validation, and refactoring pra
 
 The governing rule is assurance proportional to reuse and consequence.
 Shared code and research-state boundaries are designed, typed, tested, and kept easy to
-orient around. A retained checker for one value of `n` may stay direct and specialized.
+orient around. A retained checker for one value of $n$ may stay direct and specialized.
 Do not turn a one-off investigation into a framework without a second real consumer.
 
 ## Supported Environment
@@ -59,7 +59,7 @@ is.
 | Class | Location | Contract |
 | --- | --- | --- |
 | **E0 scratch** | Untracked scratch space or the repository `attic/` | Optimize for learning. Do not import it or cite it as evidence. Delete it or promote it when the investigation ends. |
-| **E1 retained case code** | `cases/<case>/` | Scope the code to a named `n`, source, theorem, hypothesis, or experiment. State its evidence limits and retain enough input and output for replay. General APIs are optional. |
+| **E1 retained case code** | `cases/<case>/` | Scope the code to a named $n$, source, theorem, hypothesis, or experiment. State its evidence limits and retain enough input and output for replay. General APIs are optional. |
 | **E2 reusable research code** | `src/sqpack/research/` and shared helpers such as `workers.py` | Serve multiple research loops through typed contracts, deterministic tests, explicit errors, and case-free policy. Optimize only from representative measurements. |
 | **E3 trust and persistence code** | `src/sqpack/field.py`, `verify.py`, `witness.py`, `src/sqpack/campaign/`, and `src/sqpack/cli/` | Meet E2 expectations plus independent or mutation checks, tested failures, atomic durable writes, and fail-fast persisted-format handling. Campaign and CLI modules are repository applications, not general library APIs. |
 
@@ -1180,29 +1180,29 @@ pose, `side_leak`, and what `close` does — where `close` supplies conditions, 
 and residual are re-measured on the closed system, so “it closed” is a measurement
 rather than a count of conditions.
 `--walk` steps a direction the equations leave free and reads the violation’s **order in
-`t`** — `O(t²)` is an ordinary second-order obstruction, `O(t)` means an equation is not
-describing its constraint.
+$t$** — $O(t^2)$ is an ordinary second-order obstruction, $O(t)$ means an equation is
+not describing its constraint.
 That distinction is the whole of `D-361`. Which direction it walked is printed, because
 there are two: the steepest side-changing one where the null space contains such a
-direction, and the free direction itself where it does not, as at Göbel’s `n = 5`.
+direction, and the free direction itself where it does not, as at Göbel’s $n = 5$.
 
 [`probe_minimal_polynomial`](packing/devtools/probe_minimal_polynomial.py) runs the
 integer-relation search under the promotion spec’s frozen margin rule and reports which
 clause decided each degree.
 It sweeps to the degree the digits reach rather than to a fixed ceiling.
 Clause 3 read backwards at the search’s own coefficient bound puts that at **degree 35**
-for the `n = 29` refinement at a thousand digits, where the flag used to stop at twenty
+for the $n = 29$ refinement at a thousand digits, where the flag used to stop at twenty
 for no reason but the default; `--max-degree` still stops it earlier, which is usually
 what you want, because the cost is almost all `pslq` and it climbs steeply with the
 degree.
 
 [`probe_system_degree`](packing/devtools/probe_system_degree.py) rationalises the
-`n = 29` system by the half-angle substitution and reports what bounds the algebraic
+$n = 29$ system by the half-angle substitution and reports what bounds the algebraic
 degree of the Kingbird solution, which is what says whether an integer-relation refusal
 at a given degree surveyed the space or a corner of it.
-`--eliminate-side` also solves the smallest equation for `s` and reports the
+`--eliminate-side` also solves the smallest equation for $s$ and reports the
 five-unknown system that leaves.
-The `n = 29` sweep takes about twelve minutes, which is why it is a tool with a recorded
+The $n = 29$ sweep takes about twelve minutes, which is why it is a tool with a recorded
 result rather than a test.
 
 Both pin their working precision per case and print it beside the number it bounds.

@@ -462,7 +462,7 @@ The coordinator batches integration and concrete CI repairs alongside these lane
 without gating proof work on unrelated tests.
 
 A source-level reviewer found no critical flaw in the examined center-cover, strict-core
-inclusion, focused-local, frame-bridge and $U$-to-$T$ implications, conditional on their
+inclusion, focused-local, frame-bridge and $U$-to-`T` implications, conditional on their
 exact geometric and dual premises.
 That review did not replay the 1,931 baseline exclusions or the full candidate
 instances; the baseline spans earlier v4/v5/v6 geometry, not only the inspected v9

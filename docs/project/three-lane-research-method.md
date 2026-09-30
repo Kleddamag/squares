@@ -1,6 +1,6 @@
 # The Three-Lane Research Method
 
-How the 2026-09-04 block produced `T-017` and `T-018` — the first movement of `s(11)`
+How the 2026-09-04 block produced `T-017` and `T-018` — the first movement of $s(11)$
 since 2003 — in about six hours, after the preceding three and a half hours of planning
 produced nothing. Written so the next agent can run the same loop rather than rediscover
 it.
@@ -9,13 +9,13 @@ it.
 
 The planning session before this block wrote 1,768 lines of agenda, dispatched three
 independent plan reviews, and got the theorem wrong: it recorded the certificate as
-proving `s(n) ≥ L/B` when it proves `s(n) ≥ L`. Three reviewers read that line and
+proving $s(n) \ge L/B$ when it proves $s(n) \ge L$. Three reviewers read that line and
 passed it. Ten minutes of *running the instrument* caught it, because the n = 17 control
 returned 4.51799 where the published value is 4.5058.
 
 The lesson is not that planning is useless.
 It is that **for a live instrument, the highest-value analysis is adversarial execution,
-not more review**. Every real error in this block — the `L/B` misreading, the rounding
+not more review**. Every real error in this block — the $L/B$ misreading, the rounding
 direction, the oracle’s cell set, the “negatives” that were grid artefacts — was found
 by running something and comparing against a number that was already known.
 
@@ -63,7 +63,7 @@ declare target ──► lane runs ──► coordinator verifies FROM DISK ─�
 Seven rules make it work.
 
 **Run the control before the target.** The generator reproduced Massaccesi’s published
-`n = 17` optimum (203/12, from zero weights, never told the answer) before any new bound
+$n = 17$ optimum (203/12, from zero weights, never told the answer) before any new bound
 was attempted. A falsifying control ran too: at a side where twelve unit squares
 demonstrably fit, the same pipeline must refuse, and it did — converging to exactly 16.
 An instrument that has not refused something has not been tested.
@@ -74,25 +74,25 @@ decides again. That second verifier must reproduce a *published* result as its o
 control, or it is only agreeing with itself.
 Checksum the retained bytes against what the second verifier read.
 
-**Round numbers are artefacts.** An LP optimum of exactly `18.0`, `25.0`, or `200/11` is
+**Round numbers are artefacts.** An LP optimum of exactly $18.0$, $25.0$, or $200/11$ is
 almost never the quantity you want; it is the site set.
-Four “negatives” in this block were grid artefacts, and one of them — `n = 11` — was
+Four “negatives” in this block were grid artefacts, and one of them — $n = 11$ — was
 reported as dead when the project’s own retained certificate already gave a better value
 at that side. Before recording a negative, check it against every bound already in the
 record.
 
-**A refused candidate is a diagnosis, not a failure.** Two `n = 12` pushes converged
+**A refused candidate is a diagnosis, not a failure.** Two $n = 12$ pushes converged
 *below* the threshold and were refused by a hair.
 That pattern — converged, then refused narrowly — is the signature of the search
 optimising against a weaker constraint set than the verifier enforces.
-It was, and fixing it (`D-434`) unlocked four rungs and the `n = 11` result within the
+It was, and fixing it (`D-434`) unlocked four rungs and the $n = 11$ result within the
 hour.
 
 **Check what the loop stopped on before diagnosing why the verifier refused.** That
 signature has a twin which looks identical from outside and means the opposite.
-At `n = 11`, side `3.81`, a program with 25,022 rows reported an objective of `10.8603`
+At $n = 11$, side $3.81$, a program with 25,022 rows reported an objective of $10.8603$
 — comfortably below eleven — and the exact sweep refused it at directions 55 to 63,
-least cell `199531/200000`. Converged, then refused by a hair: the `D-434` pattern
+least cell $199531/200000$. Converged, then refused by a hair: the `D-434` pattern
 exactly.
 Except the row loop’s own last line read `least 0.9999`, so it was still finding
 violated placements when it stopped.
@@ -101,16 +101,16 @@ verifier was deciding cells the loop had not finished covering.
 Neither component was wrong; the run was simply unfinished.
 A candidate is a candidate only when the row loop stopped because it could find no
 violated placement. Report the loop’s final `least` alongside its objective — an
-objective below `n` with `least` short of `1` is not a result.
+objective below $n$ with `least` short of $1$ is not a result.
 
 **A verdict must mean one thing in every mode the verifier runs in.** The interval
 verifier decides coverage by branch and bound against a threshold it takes from its
-mode: mass `1` when asked whether the certificate holds, the best value seen so far when
+mode: mass $1$ when asked whether the certificate holds, the best value seen so far when
 asked to enclose the minimum.
 Both are right. Reading the same `certified` status out of both was not.
 Under enclosure that status says the minimum was pinned, not that the pinned value
-reaches `1` — so the verifier accepted atoms whose least covered mass it had itself
-measured, correctly, at `99993/100000` (`D-435`). The defect sat in the property whose
+reaches $1$ — so the verifier accepted atoms whose least covered mass it had itself
+measured, correctly, at $99993/100000$ (`D-435`). The defect sat in the property whose
 name is the whole contract, and no test caught it, because every retained certificate
 passes under either reading.
 Read the acceptance path itself before registering an instrument as evidence; passing
@@ -122,10 +122,10 @@ available. Four from a single block, none of them subtle in hindsight.
 
 A certificate’s mass was read as the covering value at its side.
 It is only an upper bound on it — a better certificate carries less, which is what
-climbing a ladder *means* — so `n = 12` was declared exhausted at `3.94` on the strength
-of `11.992825` sitting `0.0072` below twelve.
+climbing a ladder *means* — so $n = 12$ was declared exhausted at $3.94$ on the strength
+of $11.992825$ sitting $0.0072$ below twelve.
 The probe built to prove the exhaustion disproved it within four rounds and produced
-`3.95`.
+$3.95$.
 
 A CI run was read as having gone 31 minutes when the clock said 20, so a push that was
 believed to follow it in fact cancelled it, and the verdict everyone was waiting for was
@@ -192,7 +192,7 @@ Its errors are recoverable because every result it accepts is re-decided from di
    designing a new certificate object.
    The test: *would being wrong here produce a confident wrong number rather than an
    error?* Every real defect in the founding block was of that kind.
-   `L/B` in place of `L` would have overstated a published result; a verifier that
+   $L/B$ in place of $L$ would have overstated a published result; a verifier that
    narrowed its cell set would have accepted false certificates.
    Neither fails loudly.
 2. **Careful technical review** — an independent check written from the theorem
@@ -265,8 +265,8 @@ A feature branch loses nothing by carrying an honest checkpoint.
 - **Do not sweep incomparable settings.** Grid counts and insets explored as a product
   grid move the optimum in both directions, because those site sets are not nested.
   Take unions, which are monotone: adding sites can only lower a covering optimum.
-- **Do not stop column generation at a round cap.** Both `n = 12` failures and the first
-  `n = 11` stall were caps, not ceilings.
+- **Do not stop column generation at a round cap.** Both $n = 12$ failures and the first
+  $n = 11$ stall were caps, not ceilings.
   Run until the dual is near feasible.
 - **Do not let the coordinator plan instead of verify.** The failure mode of the
   preceding session was 96 of 212 minutes spent re-reading a CI failure already

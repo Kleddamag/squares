@@ -19,8 +19,8 @@ A heredoc control in [D-023](defects.md) restored its mutation with `git checkou
 discarding an uncommitted backfill and invalidating two probes.
 A script in
 [session-043](packing/campaign/agent-sessions/session-043-block9-degree-bound.md)
-reported a Bézout bound of `12,690,480` where the answer is `1,039,500`, and it was said
-out loud before the guarded tool that refused it existed.
+reported a Bézout bound of $12{,}690{,}480$ where the answer is $1{,}039{,}500$, and it
+was said out loud before the guarded tool that refused it existed.
 
 **The rate is measured and nobody reads it.** `ClaudeEfficiencyRollup/v1` has always
 counted `one_off_code`, and session-047 is the first to look: 954 of 3416 tool calls,

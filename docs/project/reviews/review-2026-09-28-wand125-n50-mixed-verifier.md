@@ -86,7 +86,7 @@ Tokoharu’s checker fixes the threshold at
 [`verify.cpp:99`](../../../packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/src/verify.cpp),
 `threshold = up(10001./10000.)`, compares against it at lines 110 (axis vertices) and
 118 (branch-and-bound leaves), and `run_verify.py:8` asserts the printed bound is at
-least `1.0001` again.
+least $1.0001$ again.
 Nothing else in the checker mentions it.
 To decide whether the margin absorbs an error term, one has to ask what the accepted
 inequality actually certifies.
@@ -94,14 +94,14 @@ inequality actually certifies.
 At a leaf with normalized box $(u,v,d_u,d_v)$ the checker returns
 
 $$
-\text{lower}=\downarrow\!\big(\downarrow\!(f-r_x)-r_y\big),\qquad
-f=\sum_j\downarrow\!\big(\rho_j^{\,l}\,A_j\big),\qquad
-r_x=\uparrow\!\big(d_x^{\,h}\,\sup_{X\times Y}|\partial_xF|\big),
+\text{lower}=\downarrow\negthinspace\big(\downarrow\negthinspace(f-r_x)-r_y\big),\qquad
+f=\sum_j\downarrow\negthinspace\big(\rho_j^{\thinspace l}\thinspace A_j\big),\qquad
+r_x=\uparrow\negthinspace\big(d_x^{\thinspace h}\thinspace\sup_{X\times Y}|\partial_xF|\big),
 $$
 
-where $\downarrow,\uparrow$ are `nextafter` roundings, $\rho_j^{\,l}$ is the lower end
-of the density enclosure, $A_j$ is `area_lower`, and $X\times Y$ is the outward-rounded
-enclosure of the physical box.
+where $\downarrow,\uparrow$ are `nextafter` roundings, $\rho_j^{\thinspace l}$ is the
+lower end of the density enclosure, $A_j$ is `area_lower`, and $X\times Y$ is the
+outward-rounded enclosure of the physical box.
 Each factor is a proven bound in the safe direction:
 
 - **Input enclosures.** `certify.py:18–24` converts every rational to two adjacent
@@ -158,7 +158,7 @@ Every change is in `bound`’s interface and in `main`:
 | --- | --- | --- |
 | `bound` takes interval `cx, cy, dx, dy` and an atom list instead of `(u, v, du, dv, L)` (81) | `E` is no longer computed as $L/2-B(c+s)/2$ inside C++; it is read from the input (110) and applied at 130 | Preserved: the enclosure of the exact centre is unchanged, and the input `E` is the exact per-node value enclosed by `interval()` (below) |
 | Point-mass term (97–103): a point counts only if inside the core for every centre of the box | Adds a nonnegative certain-capture term; one extra `dn` | Preserved; unexercised here, `points` is empty in all three candidates |
-| `c, s` read from the input (110) rather than formed from `83r` and `40000` in C++ (Tokoharu 113) | Exact rationals $(1-t^2)/(1+t^2)$, $2t/(1+t^2)$ enclosed in Python | Preserved: both are enclosures; the Python one is asserted |
+| $c, s$ read from the input (110) rather than formed from $83r$ and $40000$ in C++ (Tokoharu 113) | Exact rationals $(1-t^2)/(1+t^2)$, $2t/(1+t^2)$ enclosed in Python | Preserved: both are enclosures; the Python one is asserted |
 | `gamma` read from the input; leaf test `b.lower >= gamma.h` (131) | Threshold $10001/10000$ becomes an input; here `0x1p+0 0x1p+0`, so `gamma.h` is exactly $1$ | Preserved: `lower` is a rigorous bound, `gamma.h` $\ge\Gamma$ |
 | `assert(r.rho.l >= 0)`, `assert(p.w.l >= 0)` on input (112, 114) | Refuses negative densities and weights | Strengthening |
 | Node limit from `argv[2]` (121, 128) instead of $10^7$; depth floor $2^{-40}$ instead of $2^{-45}$ (132) | Resource limits; a breach pushes the box back and stops | Preserved: an unresolved box is reported, never certified |
@@ -199,7 +199,7 @@ $\Gamma\ge1$ match, then hands it to `verify_rotated_result.replay`, which regen
 the input, requires byte equality with the saved one, re-runs the binary with the saved
 node count as the limit and requires `status`, `nodes`, `leaves`, `lower` and `frontier`
 to be equal. `expand` itself refuses a candidate whose masses do not sum to `total_mass`
-or whose sum is not below `n` (`mixed_density_check.py:28–29`), so the mass inequality
+or whose sum is not below $n$ (`mixed_density_check.py:28–29`), so the mass inequality
 is machine-checked on every path that touches the candidate.
 
 ### The axis direction: an integer-table checker
@@ -211,15 +211,17 @@ loop.
 replaces the interval vertex loop by integer tables and verifies the tables rather than
 trusting them:
 
-- lines 18–28 rebuild the event set $\{x_0\pm B/2,\ x_1\pm B/2\}\cap(L/2,\ L-1/2)$ over
-  all 4,424 images for each axis, add the two domain endpoints, and require the stored
-  axis lists to equal it (3,635 events per axis, 13,205,956 cells);
+- lines 18–28 rebuild the event set
+  $\lbrace x_0\pm B/2,\ x_1\pm B/2\rbrace\cap(L/2,\ L-1/2)$ over all 4,424 images for
+  each axis, add the two domain endpoints, and require the stored axis lists to equal it
+  (3,635 events per axis, 13,205,956 cells);
 - lines 29–39 require integer coordinates after scaling by $D=5\times10^{16}$, weights
-  $w_j\le 2^{24}\,m_j$ per image (checked exactly), and $(\sum w_j)\,2^{32}<2^{63}$ so
-  that the `int64` products cannot overflow;
-- lines 40–52 check every table entry: $f_{ij}\,(x_1-x_0)\le 2^{16}\,\ell_{ij}$ with
-  $\ell_{ij}$ the exact overlap of $[x_i-B/2,x_i+B/2]$ with $[x_0,x_1]$, so
-  $f_{ij}/2^{16}$ is a lower approximation of the overlap fraction;
+  $w_j\le 2^{24}\thinspace m_j$ per image (checked exactly), and
+  $(\sum w_j)\thinspace2^{32}<2^{63}$ so that the `int64` products cannot overflow;
+- lines 40–52 check every table entry:
+  $f_{ij}\thinspace(x_1-x_0)\le 2^{16}\thinspace\ell_{ij}$ with $\ell_{ij}$ the exact
+  overlap of $[x_i-B/2,x_i+B/2]$ with $[x_0,x_1]$, so $f_{ij}/2^{16}$ is a lower
+  approximation of the overlap fraction;
 - lines 53–61 form $\sum_j f_{ij}w_jf'_{kj}$ by integer matrix product, take the cell
   minimum over its four corners, compare with $\lceil\Gamma\cdot 2^{56}\rceil$, and
   require every failing cell to appear in `exact_patches` with an exact rational
@@ -227,7 +229,7 @@ trusting them:
 
 The product is at most $2^{56}$ times the exact corner coverage, so the integer minimum
 is a lower bound; here it is $277199759147/274877906944\approx1.00845$ with no patches,
-a margin of $0.8\%$ that none of the oblique directions has.
+a margin of 0.8% that none of the oblique directions has.
 This is a different implementation from the C++ for one of the 201 directions.
 It does not make a second method for the claim.
 
@@ -394,14 +396,14 @@ place to keep it.
 ### MV-5 — Note: the L7318 README’s minimum is not the minimum
 
 The L7318 README and the source README give the lowest oblique leaf bound as
-`1.0000019…`. The certificate records $1.0000000069521284$ at net index 81; the quoted
-figure is the printed bound of other angles (it appears in the records of indices 28, 57
-and 79). The L740 (`1.0000000004…`, index 150) and L735 (`1.0000000005…`, index 149)
-figures are right.
-The printed minimum is a branch-and-bound artefact in any case, as the
-2026-09-27 review explains: a leaf is accepted the moment it clears $\Gamma$, so the
-least accepted bound always sits just above the threshold and says nothing about the
-true minimum, which a 120-point random probe here never saw below $1.0098$.
+$1.0000019\ldots$. The certificate records $1.0000000069521284$ at net index 81; the
+quoted figure is the printed bound of other angles (it appears in the records of indices
+28, 57 and 79). The L740 ($1.0000000004\ldots$, index 150) and L735
+($1.0000000005\ldots$, index 149) figures are right.
+The printed minimum is a branch-and-bound artefact in any case, as the 2026-09-27 review
+explains: a leaf is accepted the moment it clears $\Gamma$, so the least accepted bound
+always sits just above the threshold and says nothing about the true minimum, which a
+120-point random probe here never saw below $1.0098$.
 
 ### MV-6 — Note: dependency statements and dead paths in L735
 

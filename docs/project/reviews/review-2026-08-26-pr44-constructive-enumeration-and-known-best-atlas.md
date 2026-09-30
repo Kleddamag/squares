@@ -58,7 +58,7 @@ receipts, renderings, manifest, and frontier links.
 | UnitSquare public SVG rendering | 2 | Rendering-derived numerical check |
 | **Total** | **100** | No missing or guessed case |
 
-The two UnitSquare witnesses, `n = 68` and `n = 69`, are intentionally weaker than the
+The two UnitSquare witnesses, $n = 68$ and $n = 69$, are intentionally weaker than the
 other imports. Their public SVG polygons carry only six displayed decimals; the stored
 witnesses verify those displayed polygons and do not pretend to replay the unavailable
 interval boxes named in the source metadata.
@@ -88,7 +88,7 @@ Three deliberately different views are retained in
 
 The regularized row uses fitted angle classes rather than transitive pairwise clusters.
 An adversarial angle-chain control found that the first implementation joined a chain
-whose endpoints did not fit one angle; correcting it reduced the `n = 68` regularized
+whose endpoints did not fit one angle; correcting it reduced the $n = 68$ regularized
 structured count from 65 to 60 and the non-grid aggregate from 1,798 to 1,793.
 
 The 169 multi-square non-grid contact components comprise 55 chains and 114 cyclic
@@ -102,7 +102,7 @@ the slides.
 The source-stratified count matters.
 Reporting only 4,969 of 5,050 would make the ansatz look almost tautological because 64
 records are exact grids.
-On the 36 non-grid cases, only `n = 5`, `n = 11`, and `n = 17` have less than 80 percent
+On the 36 non-grid cases, only $n = 5$, $n = 11$, and $n = 17$ have less than 80 percent
 of their squares in broad assemblies at the registered tolerances.
 Those three are precisely the kind of small exceptional constructions that should guide
 the next grammar, not be hidden in the aggregate.
@@ -114,12 +114,12 @@ and its
 make every non-grid case inspectable in one table.
 Ten of 36 cases are fully covered by the registered contact census; 27 cover at least 90
 percent, 33 cover at least 75 percent, and 35 cover at least half.
-`n = 5` is the lone zero-contact outlier.
+$n = 5$ is the lone zero-contact outlier.
 The 34 Kingbird normalizations account for 1,666 of 1,723 contact-covered squares, while
 the two six-decimal UnitSquare imports account for 114 of 137 and carry most of the
 detector sensitivity.
-Only `n = 68`, `69`, and `71` change on the registered-to-regularized row metrics; only
-`n = 69` crosses the broad `C <= 6, F <= 3` budget.
+Only $n = 68$, $69$, and $71$ change on the registered-to-regularized row metrics; only
+$n = 69$ crosses the broad `C <= 6, F <= 3` budget.
 These source and sensitivity splits make the broad assembly case substantially more
 credible without turning it into a rigidity or completeness claim.
 
@@ -152,14 +152,14 @@ Its negative and capped outcomes therefore remain “not established,” not
 
 ### Revise
 
-- **F1 — `K` conflates different quantities (high).** H-044 uses `K` for chunk count,
-  while X-003 justifies six with the six angle classes measured at `n = 29`. Chunk count
-  `C`, fitted-angle count `A`, and free-square count `F` are different variables.
-  Exp-037 constrains `A`; it says nothing by itself about `C`.
+- **F1 — $K$ conflates different quantities (high).** H-044 uses $K$ for chunk count,
+  while X-003 justifies six with the six angle classes measured at $n = 29$. Chunk count
+  `C`, fitted-angle count $A$, and free-square count $F$ are different variables.
+  Exp-037 constrains $A$; it says nothing by itself about `C`.
 - **F2 — the detector objective was incomplete (high; bounded repair implemented).**
-  “Emit minimal `K`” did not specify candidate chunks, overlapping candidates, tie
+  “Emit minimal $K$” did not specify candidate chunks, overlapping candidates, tie
   order, or how free squares trade against chunks.
-  The retained bounded solver minimizes `F` first, then `C`, and uses maximum residual
+  The retained bounded solver minimizes $F$ first, then `C`, and uses maximum residual
   plus a declared deterministic minimum-remaining-values traversal for ties.
   A tempting global lexicographic tie search was rejected during review because it made
   dense-grid replay impractical; the retained traversal rule is explicit and
@@ -170,7 +170,7 @@ Its negative and capped outcomes therefore remain “not established,” not
 - **F3 — the original calibration split is no longer clean (high).** The full 1–100
   corpus has now been inspected while designing the instrument.
   It is valuable calibration evidence, but it cannot also be an unseen validation set.
-  H-044 should remain undisposed, and H-045’s `n = 11` run can at most be a
+  H-044 should remain undisposed, and H-045’s $n = 11$ run can at most be a
   retrospective replay.
   A later confirmatory claim needs a prospectively frozen corpus, provisionally public
   cases `n = 101..324` if complete geometry can be retained and normalized.
@@ -209,7 +209,7 @@ Its negative and capped outcomes therefore remain “not established,” not
   measured complexity budget exist.
 - H-045 through H-048 execution, until each instrument amendment is explicit and has
   focused negative controls.
-- Any `n = 11` or `n = 17` rediscovery headline.
+- Any $n = 11$ or $n = 17$ rediscovery headline.
   The current work is infrastructure and retrospective calibration, not a clean target
   trial.
 
@@ -270,12 +270,12 @@ The five review follow-ups were dispositioned as follows:
 
 1. **Partition classification corrected.** Every allowed exact free-square count is now
    evaluated. The selector first prefers any certificate within `C <= 6`, then minimizes
-   `F`, `C`, residual, and the deterministic certificate key.
+   $F$, `C`, residual, and the deterministic certificate key.
    The corrected non-grid aggregate is 3 established, 2 conclusively outside the
    registered budget, 23 without a partition in the registered universe, and 8
    search-capped and therefore indeterminate.
-   `n = 26` is established at `F = 2, C = 6`; the later capped slices prevent conclusive
-   outside-budget classifications at `n = 65,66,82,85,89`.
+   $n = 26$ is established at $F = 2, C = 6$; the later capped slices prevent conclusive
+   outside-budget classifications at $n = 65,66,82,85,89$.
 2. **Kingbird retention narrowed.** No express terms covering redistribution of the
    catalogue SVGs were located.
    The candidate working tree removes the 34 raw SVGs added for this atlas acquisition.

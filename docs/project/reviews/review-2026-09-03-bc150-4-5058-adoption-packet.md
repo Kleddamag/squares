@@ -10,7 +10,7 @@ repository, which does not survive the session -- and modified no repository fil
 the frontier patch its own verdict authorised.
 It is installed here so that the evidence the records cite outlives that directory.
 
-The source was `836` lines with SHA-256
+The source was $836$ lines with SHA-256
 `d88d47b3d0add7822f106c4d0d80af83a7bd99a8ff12f18498589d5fb57b8413`, and that hash names
 the scratchpad source rather than this file.
 The installation added this preface; it altered no classification, verdict, finding,
@@ -38,9 +38,9 @@ It records three determinations, kept separate, and one proposed patch that it d
 ## Recommendation
 
 **ADOPTION**, at source-backed scope: record `s(17) >= 22529/5000 = 4.5058` as the
-verified lower bound at `n = 17`, and by monotonicity at `n = 18` and `n = 19`, as an
+verified lower bound at $n = 17$, and by monotonicity at $n = 18$ and $n = 19$, as an
 externally proposed, previously-published result replayed and audited here (`V4/C3`,
-`novelty: previously-published`), leaving `n = 20` unchanged.
+`novelty: previously-published`), leaving $n = 20$ unchanged.
 
 **The single strongest reason against.** Every artifact on the retained record — the
 source verifier, the repository instrument, exp-059 and the BC-149 review — belongs to
@@ -63,7 +63,7 @@ The three determinations in one line each:
 | --- | --- |
 | (a) Checker status | **Exact pass.** Retained verifier replays; exp-059 accepted and independently reviewed; a fourth from-scratch implementation reproduces all 181 rows, cell counts and hashes, and finds minimum exactly 1 at 380 further angles with the true unit square. |
 | (b) Assurance / adoption | **Adoption recommended, source-backed.** Every shared lemma is discharged in this packet; no source ambiguity reaches the certificate; the evidence meets the present contract for `assurance: verified`, `method: exact-algebraic`, `origin: replayed-here`, deriving `V4/C3`. |
-| (c) Monotone consequences | `n = 17, 18`: `4426213/1000000 -> 22529/5000` (+`79587/1000000`). `n = 19`: `1 + sqrt(12) -> 22529/5000` (+`0.0416984`). `n = 20`: unchanged, `22529/5000 < 1 + sqrt(13)`. All exact. |
+| (c) Monotone consequences | $n = 17, 18$: `4426213/1000000 -> 22529/5000` (+`79587/1000000`). $n = 19$: `1 + sqrt(12) -> 22529/5000` (+`0.0416984`). $n = 20$: unchanged, `22529/5000 < 1 + sqrt(13)`. All exact. |
 
 ## 1. Frozen Inputs
 
@@ -82,9 +82,9 @@ Source URLs:
 `https://gus-massa.blogspot.com/2026/08/another-better-lower-bound-for-n17.html`,
 `https://gus-massa.blogspot.com/2026/08/linear-programing-for-square-packing.html`.
 
-The certificate is the verifier’s literal data, not the prose: `L = 45058/10000`,
-`M = 15513/10000`, `B = 9973/10000`, `T = 207107/500000`, `KMAX = 180`,
-`WEIGHT_SCALE = 576`, `NGRID = 29`, and 23 `(i, j, w)` orbit seeds.
+The certificate is the verifier’s literal data, not the prose: $L = 45058/10000$,
+$M = 15513/10000$, $B = 9973/10000$, $T = 207107/500000$, `KMAX = 180`,
+`WEIGHT_SCALE = 576`, `NGRID = 29`, and 23 $(i, j, w)$ orbit seeds.
 
 ### 1.2 The repository instrument and the H-052 result
 
@@ -117,7 +117,7 @@ The certificate is the verifier’s literal data, not the prose: `L = 45058/1000
 Values the record carries and this packet relies on: atom count 168, atom hash
 `37d35da00625967f9e61d3c5f098da1a6583933c8c39979d6b6927a50546cf5a`, direction count 181,
 direction hash `cc789e1a16d190064a0eda2fe5e4bf0399d939362c85fb448f1162ef5cac4e79`, total
-weight `203/12`, all 181 row minima `1/1`, global minimum `1/1`, `preconditions_pass`,
+weight $203/12$, all 181 row minima $1/1$, global minimum $1/1$, `preconditions_pass`,
 `shrink_and_scaling.all_hold`, `all_mutations_rejected`, `instrument_valid` and
 `decision: accepted`, all derived from emitted fields.
 
@@ -170,10 +170,10 @@ Because three of the patch targets are under concurrent edit by another lane, th
 proposed patch (section 6) is keyed by content, not by byte offsets, and names the next
 free identifiers conditionally (`T-015`, `T-016` if `T-014` lands as H-060’s).
 
-Current verified lower bounds: `n = 17`: `4426213/1000000`
-(E-green17-sixteen-point-lower, E-green17-interval-audit); `n = 18`: the same by
-monotonicity; `n = 19`: `sqrt(19 - 2*floor(sqrt(19)) + 1) + 1 = 1 + sqrt(12)`
-(E-nagamochi-lower); `n = 20`: `1 + sqrt(13)` (E-nagamochi-lower).
+Current verified lower bounds: $n = 17$: $4426213/1000000$
+(E-green17-sixteen-point-lower, E-green17-interval-audit); $n = 18$: the same by
+monotonicity; $n = 19$: `sqrt(19 - 2*floor(sqrt(19)) + 1) + 1 = 1 + sqrt(12)`
+(E-nagamochi-lower); $n = 20$: `1 + sqrt(13)` (E-nagamochi-lower).
 
 ## 2. Determination (a): Checker Status — Exact Pass
 
@@ -182,30 +182,30 @@ Their independence differs, and the table says at which layer each is fresh.
 
 | Path | Where | Reduction | Per-cell mass | Result |
 | --- | --- | --- | --- | --- |
-| Retained source verifier (Burns’s, modified by Massaccesi) | `resources/…/massaccesi-verify-n17-lower-bound-4_5058.py` | source’s own (slab clip + v-range superset) | int64 difference array, two cumulative passes | 168 atoms, `9744/576`, 181 directions, `B(1+D) = 899635478111/900000000000 < 1`, minimum `576/576`, “CERTIFICATE CONDITIONS VERIFIED” |
-| Repository source-faithful path (exp-049 package) | `cases/n17_weighted_certificate/source_faithful.py` | shared `reduce_event_cells` (transcription of the source’s) | Fraction difference array | 181 rows, all `1/1` |
-| Repository independent path (exp-049 package) | `cases/n17_weighted_certificate/target_independent.py` + `independent.py` | shared `reduce_event_cells` | direct membership sum over 168 atoms at each cell centre | 181 rows, all `1/1`, byte-identical manifests (exp-059) |
+| Retained source verifier (Burns’s, modified by Massaccesi) | `resources/…/massaccesi-verify-n17-lower-bound-4_5058.py` | source’s own (slab clip + v-range superset) | int64 difference array, two cumulative passes | 168 atoms, $\frac{9744}{576}$, 181 directions, $B(1+D) = \frac{899635478111}{900000000000} < 1$, minimum $\frac{576}{576}$, “CERTIFICATE CONDITIONS VERIFIED” |
+| Repository source-faithful path (exp-049 package) | `cases/n17_weighted_certificate/source_faithful.py` | shared `reduce_event_cells` (transcription of the source’s) | Fraction difference array | 181 rows, all $\frac{1}{1}$ |
+| Repository independent path (exp-049 package) | `cases/n17_weighted_certificate/target_independent.py` + `independent.py` | shared `reduce_event_cells` | direct membership sum over 168 atoms at each cell centre | 181 rows, all $\frac{1}{1}$, byte-identical manifests (exp-059) |
 | BC-149 third path (scratch) | `scratchpad/bc149/my_eval.py`, no repository imports | own events and clipping | integer product of membership matrices | all 181 rows: events, cell counts, minima, witnesses reproduced |
-| **BC-150 fourth path (scratch, this block)** | `scratchpad/bc150/independent_audit.py`, no repository imports | **own cell rule**: polygon v-range over each slab from vertices and edge crossings, no Sutherland–Hodgman clip | **whole-cell containment** (`p_U - h <= u_i` and `u_{i+1} <= p_U + h`), no midpoints, no difference arrays; plus closed membership on every selected cell’s edges and corners | all 181 rows minimum `576/576`; selected cells `16,562,293`, equal row by row to the record’s `event_cell_count`; atom hash and direction hash rebuilt from the literals equal the record’s |
+| **BC-150 fourth path (scratch, this block)** | `scratchpad/bc150/independent_audit.py`, no repository imports | **own cell rule**: polygon v-range over each slab from vertices and edge crossings, no Sutherland–Hodgman clip | **whole-cell containment** (`p_U - h <= u_i` and `u_{i+1} <= p_U + h`), no midpoints, no difference arrays; plus closed membership on every selected cell’s edges and corners | all 181 rows minimum $\frac{576}{576}$; selected cells $16{,}562{,}293$, equal row by row to the record’s `event_cell_count`; atom hash and direction hash rebuilt from the literals equal the record’s |
 
 Replays executed in this block, all from `scratchpad/bc150/`:
 
 | Check | Result |
 | --- | --- |
 | Retained verifier, normal Python, 5.3 s | output as the README recorded; log SHA-256 `68b925923c7a6b54cb6bc391642b6eea1f759c503afa4abc12275ecc7094358a` |
-| Part A: 23 seeds expand to 168 atoms (19 orbits of size 8, 4 of size 4); integer total 9744; `9744/576 = 203/12 < 17`, margin `1/12`; weights in `[3, 246]`; every atom strictly inside `[0, L]^2`; grid symmetric about `L/2`; **the weighted multiset is invariant under all eight symmetries of the container** | all true |
-| Part B: 181 exactly-unit directions in the first quadrant, `k = 0` axis-aligned; `(T+1)^2 > 2` so `psi_180 = 2 arctan T > pi/4`; final pair brackets the quarter turn; all 180 half-gap tangents `<= D = 207107/90000000`, all positive; `B(1+D) = 899635478111/900000000000 < 1`, slack `364521889/900000000000` | all true |
+| Part A: 23 seeds expand to 168 atoms (19 orbits of size 8, 4 of size 4); integer total 9744; $\frac{9744}{576} = \frac{203}{12} < 17$, margin $\frac{1}{12}$; weights in $[3, 246]$; every atom strictly inside $[0, L]^{2}$; grid symmetric about $L/2$; **the weighted multiset is invariant under all eight symmetries of the container** | all true |
+| Part B: 181 exactly-unit directions in the first quadrant, $k = 0$ axis-aligned; $(T+1)^{2} > 2$ so `psi_180 = 2 arctan T > pi/4`; final pair brackets the quarter turn; all 180 half-gap tangents `<= D = 207107/90000000`, all positive; $B(1+D) = \frac{899635478111}{900000000000} < 1$, slack $\frac{364521889}{900000000000}$ | all true |
 | Part C: exact monotone arithmetic (section 4) | all as stated |
-| Part D: 181 `B`-square sweeps, own reduction and own membership rule; closed-boundary evaluation on all edges and corners of all `16,562,293` selected cells | every row minimum `576`, boundary minimum `576`, never below the open-cell minimum; 181 pairwise-distinct witnesses; tight cells per direction from 172 to 7,272 |
-| Part E: **true unit square** (side 1, not `B`), exact sweeps at 180 net-midpoint angles and 200 pseudo-random rational angles in `[0, pi/4]` (seed `0x5058`) | minimum exactly `576/576` at all 380 angles; never below 1 |
+| Part D: 181 $B$-square sweeps, own reduction and own membership rule; closed-boundary evaluation on all edges and corners of all $16{,}562{,}293$ selected cells | every row minimum $576$, boundary minimum $576$, never below the open-cell minimum; 181 pairwise-distinct witnesses; tight cells per direction from 172 to 7,272 |
+| Part E: **true unit square** (side 1, not $B$), exact sweeps at 180 net-midpoint angles and 200 pseudo-random rational angles in `[0, pi/4]` (seed `0x5058`) | minimum exactly $\frac{576}{576}$ at all 380 angles; never below 1 |
 | Cross-check against exp-059 (`crosscheck_record.py`) | atom hash `37d35da0…` and direction hash `cc789e1a…` reproduced from the literals; all 181 selected-cell counts equal `event_cell_count`; all 181 minima equal |
 
 Part E is the check no earlier path made: it evaluates the theorem’s conclusion — every
 unit square at that angle has mass at least one — directly at angles that are not in the
 net, so it does not pass through the angle-net or containment step at all.
 That the minimum is exactly 1 rather than above it is the expected shape of a tight LP
-certificate: the extra `0.0027` of side over `B` rarely captures a grid atom at spacing
-`2.9545/28`.
+certificate: the extra $0.0027$ of side over $B$ rarely captures a grid atom at spacing
+$2.9545/28$.
 
 What agreement can and cannot see (carried from BC-149, confirmed here): a defect that
 only raises masses at non-minimizing cells is invisible to a comparison of minima; the
@@ -231,11 +231,11 @@ means an exact rational computation in this block decides it for this instance.
 
 **Theorem (Massaccesi 2026, on Burns’s architecture).** `s(17) >= 22529/5000 = 4.5058`.
 
-Let `C = [0, L]^2` with `L = 22529/5000`, and let `mu` be the atomic measure placing
-mass `w/576` at each of the 168 atoms.
+Let $C = [0, L]^{2}$ with $L = 22529/5000$, and let `mu` be the atomic measure placing
+mass $w/576$ at each of the 168 atoms.
 The argument has two halves.
 
-*Half one (finite check, computer-assisted).* Every closed unit square `Q` contained in
+*Half one (finite check, computer-assisted).* Every closed unit square $Q$ contained in
 `C`, at every position and orientation, has `mu(Q) >= 1`.
 
 *Half two (the fractional-unavoidable-set lemma).* If every unit square in `C` has mass
@@ -247,34 +247,34 @@ at least 1 and `mu(C) < 17`, then `s(17) >= L`.
 with pairwise disjoint interiors lie in a closed square of side `L' < L`. Scale by
 `L/L' > 1` and translate: the container becomes `C`, the squares `P_1..P_17` have side
 `L/L' > 1` and still have pairwise disjoint interiors.
-Let `Q_i` be the concentric unit square inside `P_i` with the same orientation; `Q_i`
-lies in the interior of `P_i`. For `i != j`, `Q_i` is inside `int(P_i)`, `Q_j` inside
-`int(P_j)`, and those interiors are disjoint, so the closed sets `Q_i, Q_j` are
+Let $Q_i$ be the concentric unit square inside $P_i$ with the same orientation; $Q_i$
+lies in the interior of $P_i$. For `i != j`, $Q_i$ is inside `int(P_i)`, $Q_j$ inside
+`int(P_j)`, and those interiors are disjoint, so the closed sets $Q_i, Q_j$ are
 disjoint: no atom lies in two of them, even on boundaries.
-Each `Q_i` is inside `C`, so by half one `mu(Q_i) >= 1`, and by disjointness and
+Each $Q_i$ is inside `C`, so by half one `mu(Q_i) >= 1`, and by disjointness and
 non-negativity of the weights
 `17 <= sum mu(Q_i) = mu(union Q_i) <= mu(C) = 203/12 < 17`, a contradiction.
-So no packing exists at any side below `L`. Since the achievable sides form a closed set
+So no packing exists at any side below $L$. Since the achievable sides form a closed set
 and the minimum is attained (`TUTORIAL.md` §1, citing Martin 2000), `s(17) >= L`. The
 argument uses interior disjointness of closed squares in a closed container, which is
 exactly the repository’s convention ("Disjointness is required of interiors only",
 touching legal); under an open-container convention the statement is only stronger, so
 no convention mismatch is possible.
 Strictness sits in `mu(C) < 17`; `mu(Q) >= 1` need not be strict.
-Checked exactly: `mu(C) = 203/12`, margin `1/12`, all weights positive.
+Checked exactly: `mu(C) = 203/12`, margin $1/12$, all weights positive.
 
 **L2 — Reduction of orientations to `[0, pi/4]`.** *Proved here; symmetry checked
 exactly.* A square’s orientation is defined modulo `pi/2`. For an orientation in
-`(pi/4, pi/2)`, reflect the configuration across the diagonal `x = y` of `C`: the
-container maps to itself, the direction `(cos t, sin t)` maps to `(sin t, cos t)`, so
-the orientation becomes `pi/2 - t` in `(0, pi/4)`, and `mu` is unchanged because the
+`(pi/4, pi/2)`, reflect the configuration across the diagonal $x = y$ of `C`: the
+container maps to itself, the direction $(\cos t, \sin t)$ maps to $(\sin t, \cos t)$,
+so the orientation becomes `pi/2 - t` in `(0, pi/4)`, and `mu` is unchanged because the
 weighted atom multiset is invariant under all eight symmetries of `C` (Part A verified
 this on the reconstructed atoms, not assumed from the orbit construction).
 Hence it suffices to prove half one for orientations in `[0, pi/4]`.
 
 **L3 — The angle net covers `[0, pi/4]` within `epsilon < D`.** *Proved here; checked
-exactly.* With `t_k = kT/180`, `psi_k = 2 arctan t_k` runs from `0` to `2 arctan T`, and
-`2 arctan T > pi/4` because `T > tan(pi/8) = sqrt(2) - 1`, which is `(T+1)^2 > 2`
+exactly.* With `t_k = kT/180`, `psi_k = 2 arctan t_k` runs from $0$ to $2 \arctan T$,
+and `2 arctan T > pi/4` because `T > tan(pi/8) = sqrt(2) - 1`, which is $(T+1)^{2} > 2$
 (exact: true). For adjacent net angles, half the gap is
 `arctan t_{k+1} - arctan t_k = arctan(D / (1 + t_k t_{k+1})) <= arctan D < D` (exact:
 all 180 tangents `<= D`, positive).
@@ -284,82 +284,83 @@ minimal, only to cover with a gap small enough for L4, and it does; 181 is the c
 `k = 0..180` and every one of the 181 directions is used.
 
 **L4 — Concentric containment.** *Proved here; checked exactly.* A closed square of side
-`B` concentric with a unit square and rotated by `epsilon` relative to it has vertices
+$B$ concentric with a unit square and rotated by `epsilon` relative to it has vertices
 at distance `(B/2)(cos epsilon + sin epsilon)` along each of the unit square’s axes, so
 it is contained in the unit square iff `B(cos epsilon + sin epsilon) <= 1`. For
 `0 <= epsilon < D < 1`: `cos epsilon <= 1` and `sin epsilon <= epsilon` give
 `B(cos epsilon + sin epsilon) <= B(1 + epsilon) < B(1 + D) = 899635478111/900000000000 < 1`
-(exact: strict, slack `364521889/900000000000`). Therefore every unit square in `C`
-contains a concentric closed `B`-square at one of the 181 net directions, and half one
-follows from: **every closed `B`-square at a net direction and contained in `C` has mass
-at least 1.** The unit square’s mass is at least the `B`-square’s because the weights
+(exact: strict, slack $364521889/900000000000$). Therefore every unit square in `C`
+contains a concentric closed $B$-square at one of the 181 net directions, and half one
+follows from: **every closed $B$-square at a net direction and contained in `C` has mass
+at least 1.** The unit square’s mass is at least the $B$-square’s because the weights
 are non-negative.
 
-**L5 — Centre domain.** *Proved here.* For a direction `(c, s)` with `c, s >= 0`, the
-`B`-square’s extent from its centre along `x` and along `y` is `h = B(c + s)/2`, so it
-lies in `[0, L]^2` iff its centre lies in `[h, L - h]^2`; in the square’s own frame
+**L5 — Centre domain.** *Proved here.* For a direction $(c, s)$ with `c, s >= 0`, the
+$B$-square’s extent from its centre along $x$ and along $y$ is $h = B(c + s)/2$, so it
+lies in $[0, L]^{2}$ iff its centre lies in $[h, L - h]^{2}$; in the square’s own frame
 `U = cx + sy`, `V = -sx + cy` that is a rotated square, the domain polygon.
-Every net direction has `c, s >= 0` (exact), including `k = 180`, where `s > c`
-slightly; the formula is symmetric in `c` and `s`.
+Every net direction has `c, s >= 0` (exact), including $k = 180$, where $s > c$
+slightly; the formula is symmetric in $c$ and $s$.
 
 **L6 — Membership rectangles and constancy on open cells.** *Proved here; established
-constructively in Part D.* An atom `p` lies in the closed `B`-square centred at `(U, V)`
-iff `|U - p_U| <= B/2` and `|V - p_V| <= B/2`, an axis-aligned closed rectangle `R_p` in
+constructively in Part D.* An atom $p$ lies in the closed $B$-square centred at $(U, V)$
+iff `|U - p_U| <= B/2` and `|V - p_V| <= B/2`, an axis-aligned closed rectangle $R_p$ in
 centre coordinates.
-The event lines `U = p_U +- B/2`, `V = p_V +- B/2` (plus the domain’s
+The event lines $U = p_U +- B/2$, $V = p_V +- B/2$ (plus the domain’s
 extreme coordinates) cut the plane into open cells on which no membership changes.
 Part D does not assume this: it decides membership on a cell by whole-cell containment
 (`p_U - B/2 <= u_i` and `u_{i+1} <= p_U + B/2`, and likewise in `V`), which is the
-statement that the cell lies inside `R_p`, and since no event line crosses an open cell,
-a cell not inside `R_p` is disjoint from it.
+statement that the cell lies inside $R_p$, and since no event line crosses an open cell,
+a cell not inside $R_p$ is disjoint from it.
 
 **L7 — Completeness of the cell enumeration.** *Proved here; checked exactly by an
 independent rule.* Any open cell meeting the domain must be examined.
-The source (and the shared `reduce_event_cells`) keeps a `u`-slab iff `u_{i+1} > u_min`
+The source (and the shared `reduce_event_cells`) keeps a $u$-slab iff `u_{i+1} > u_min`
 and `u_i < u_max`, clips the domain to the closed slab, takes its `V`-range
-`[v_lo, v_hi]`, and keeps every `v`-cell with `v_j < v_hi` and `v_{j+1} > v_lo`. If an
-open cell meets the domain, some domain point has `U` in `(u_i, u_{i+1})`, so the slab
-is kept, the clipped polygon is non-degenerate, and the point’s `V` lies in
-`[v_lo, v_hi]` and in `(v_j, v_{j+1})`, which forces `v_j < v_hi` and `v_{j+1} > v_lo`.
-So the kept set is a superset of the cells that meet the domain, and a superset only
-lowers the minimum, which is conservative for a lower bound.
-Part D computes `[v_lo, v_hi]` by a different rule (vertices inside the slab plus edge
-crossings of `U = u_i` and `U = u_{i+1}`) and reproduces exactly the record’s 181 cell
-counts, `16,562,293` in total.
+$[v_{lo}, v_{hi}]$, and keeps every $v$-cell with $v_j < v_{hi}$ and `v_{j+1} > v_lo`.
+If an open cell meets the domain, some domain point has $U$ in `(u_i, u_{i+1})`, so the
+slab is kept, the clipped polygon is non-degenerate, and the point’s `V` lies in
+$[v_{lo}, v_{hi}]$ and in `(v_j, v_{j+1})`, which forces $v_j < v_{hi}$ and
+`v_{j+1} > v_lo`. So the kept set is a superset of the cells that meet the domain, and a
+superset only lowers the minimum, which is conservative for a lower bound.
+Part D computes $[v_{lo}, v_{hi}]$ by a different rule (vertices inside the slab plus
+edge crossings of $U = u_i$ and `U = u_{i+1}`) and reproduces exactly the record’s 181
+cell counts, $16{,}562{,}293$ in total.
 
 **L8 — Boundary points.** *Proved here; and made unnecessary for this instance by Part
-D.* Membership sets are closed rectangles, so for a point `x_0` on an event line and any
-`x` close enough to it, `{p : x in R_p}` is a subset of `{p : x_0 in R_p}`: the mass is
+D.* Membership sets are closed rectangles, so for a point $x_0$ on an event line and any
+$x$ close enough to it, `{p : x in R_p}` is a subset of `{p : x_0 in R_p}`: the mass is
 upper semicontinuous, and its minimum over the domain is attained on open cells whose
 closure meets the domain — all of which L7 keeps.
 Part D additionally evaluated closed membership at every edge and corner of every
-selected cell and found minimum `576`, never below the open-cell minimum, so the
+selected cell and found minimum $576$, never below the open-cell minimum, so the
 semicontinuity lemma is not relied on for this instance.
 
 **L9 — Exact weight normalization and the global minimum.** *Checked exactly.* Integer
-weights sum to 9744; `9744/576 = 203/12 = 16.91666…`; the registered minimum
-`576/576 = 1` is exactly the row minimum on all 181 rows (source verifier, both
+weights sum to 9744; $9744/576 = 203/12 = 16.91666\ldots$; the registered minimum
+$576/576 = 1$ is exactly the row minimum on all 181 rows (source verifier, both
 repository paths, BC-149’s path and Part D); `17 * 1 = 17 > 203/12`. The certificate is
 tight: every row minimum is exactly 1, with 172 to 7,272 tight cells per direction and
 pairwise distinct witnesses, which is what an LP-optimized certificate rounded up with
-`ceil` looks like and is why the `weight_mutation_rejected` guard (any `+1/576` on one
+`ceil` looks like and is why the `weight_mutation_rejected` guard (any $+1/576$ on one
 atom changes the total) is meaningful.
 
 **L10 — Exactness of arithmetic.** *Checked.* The source verifier keeps all geometry in
 `fractions.Fraction`; its only integer arithmetic is an int64 difference array whose
-entries are bounded by `4 * 9744`, far below `2^63`. The repository paths use `Fraction`
-throughout. Part D uses int64 products of 0/1 matrices with weights, bounded by 9744. No
+entries are bounded by `4 * 9744`, far below $2^{63}$. The repository paths use
+`Fraction` throughout.
+Part D uses int64 products of 0/1 matrices with weights, bounded by 9744. No
 floating-point value decides any inequality anywhere in the chain.
 
-**L11 — Monotonicity to `n = 18, 19`.** *Proved here.* A packing of `n >= 17` unit
+**L11 — Monotonicity to $n = 18, 19$.** *Proved here.* A packing of `n >= 17` unit
 squares contains a packing of 17 of them, so `s(n) >= s(17)` for `n >= 17`. Section 4
-computes the consequences exactly and shows `n = 20` does not move.
+computes the consequences exactly and shows $n = 20$ does not move.
 
 ### 3.3 Shared assumptions and how each is discharged
 
 | Shared by every implementation | Discharged by |
 | --- | --- |
-| The fixture reconstruction (grid `M/2 + (L - M) i/28`, orbit expansion, `w/576`) | Rebuilt from the literals in Part A with its own code; reproduces the record’s atom hash `37d35da0…`; D4 invariance and strict interiority verified |
+| The fixture reconstruction (grid $M/2 + (L - M) i/28$, orbit expansion, $w/576$) | Rebuilt from the literals in Part A with its own code; reproduces the record’s atom hash `37d35da0…`; D4 invariance and strict interiority verified |
 | The direction net (181 exact unit directions) | Rebuilt in Part B; reproduces `cc789e1a…`; L3 |
 | The projection convention `U = cx + sy`, `V = -sx + cy` and the centre-domain formula | L5; identical convention for atoms and domain, checked in Part D’s code by construction |
 | The event-cell reduction and its cell selection | L6, L7 proved; Part D’s independent rule reproduces all 181 counts |
@@ -377,19 +378,19 @@ proof-assistant check, and it awaits BC-151.
 The prose has defects the README already records; none reaches the certificate, because
 the certificate is the verifier’s literal data, which is unambiguous and hash-pinned:
 
-- “internal grid has a total side of 3.9545” versus the code’s `L - M = 2.9545`;
-- “L=4.45058” in the LP post versus `L = 45058/10000`;
+- “internal grid has a total side of 3.9545” versus the code’s $L - M = 2.9545$;
+- “L=4.45058” in the LP post versus $L = 45058/10000$;
 - the blog drawing spaces the grid by `/29` where the verifier uses 28 intervals;
 - the separate floating-point LP generator’s `range(j0, j1)` omits an inclusive endpoint
   that the final verifier handles with `j0:j1 + 1`. The LP generator produced candidate
-  weights at `L = 4.5000, M = 1.5500`; the author then pushed the geometry by decimal
+  weights at $L = 4.5000, M = 1.5500$; the author then pushed the geometry by decimal
   search while keeping the rounded-up weights.
   The generator is not part of the proof and is not replayed; the verifier at the final
   geometry is the proof.
 
-The proof narrative for `4.5058` exists at the source only by reference: “making the
+The proof narrative for $4.5058$ exists at the source only by reference: “making the
 obvious changes to the explanation posted by Sam Burns proves(?) the new bound.”
-Those changes are the margin `M` (grid offset `M/2` instead of `1/2`) and the constants,
+Those changes are the margin $M$ (grid offset $M/2$ instead of $1/2$) and the constants,
 and section 3.2 is the narrative with those changes made and every step proved.
 The author’s own “(?)” and the absence of peer review are recorded in the limitations
 and in the proposed evidence text; they do not change the assurance of an exact
@@ -414,32 +415,32 @@ accumulation-independent instrument, and this audit.
 
 ## 4. Determination (c): Exact Monotone Consequences
 
-`L = 22529/5000`; `(L - 1)^2 = 307265841/25000000 = 12.29063364`.
+$L = 22529/5000$; $(L - 1)^{2} = 307265841/25000000 = 12.29063364$.
 
-| `n` | Current verified lower bound | Proposed | Exact comparison | Change |
+| $n$ | Current verified lower bound | Proposed | Exact comparison | Change |
 | ---: | --- | --- | --- | --- |
-| 17 | `4426213/1000000 = 4.426213` | `22529/5000 = 4.5058` | `22529/5000 - 4426213/1000000 = 79587/1000000 > 0` | +`0.079587` |
-| 18 | `4426213/1000000` (monotone from 17) | `22529/5000` (monotone from 17) | same | +`0.079587` |
-| 19 | `1 + sqrt(12) = 4.46410161514…` | `22529/5000` | `(L - 1)^2 = 12.29063364 > 12` | +`0.0416983849` |
-| 20 | `1 + sqrt(13) = 4.60555127546…` | unchanged | `(L - 1)^2 = 12.29063364 < 13`, so `L < 1 + sqrt(13)` | none |
+| 17 | $\frac{4426213}{1000000} = 4.426213$ | $\frac{22529}{5000} = 4.5058$ | $\frac{22529}{5000} - \frac{4426213}{1000000} = \frac{79587}{1000000} > 0$ | +`0.079587` |
+| 18 | $\frac{4426213}{1000000}$ (monotone from 17) | $\frac{22529}{5000}$ (monotone from 17) | same | +`0.079587` |
+| 19 | `1 + sqrt(12) = 4.46410161514…` | $\frac{22529}{5000}$ | $(L - 1)^{2} = 12.29063364 > 12$ | +`0.0416983849` |
+| 20 | `1 + sqrt(13) = 4.60555127546…` | unchanged | $(L - 1)^{2} = 12.29063364 < 13$, so `L < 1 + sqrt(13)` | none |
 
-Consistency checks, all exact: `L` exceeds Nagamochi’s `1 + sqrt(10)` at 17 and
+Consistency checks, all exact: $L$ exceeds Nagamochi’s `1 + sqrt(10)` at 17 and
 `1 + sqrt(11)` at 18; exceeds Green’s reported, sourceless `(40 sqrt 2 + 19)/17`
-(`(17L - 19)^2 = 3317.6… > 3200`); and lies below every reported upper bound it would
-sit under: `4.67553…` at 17, `(7 + sqrt 7)/2` at 18 (`(2L - 7)^2 < 7`), and
-`3 + (4/3) sqrt 2` at 19 (`9(L - 3)^2 < 32`). No conflict field is created.
+($(17L - 19)^{2} = 3317.6\ldots > 3200$); and lies below every reported upper bound it
+would sit under: $4.67553\ldots$ at 17, `(7 + sqrt 7)/2` at 18 ($(2L - 7)^{2} < 7$), and
+`3 + (4/3) sqrt 2` at 19 ($9(L - 3)^{2} < 32$). No conflict field is created.
 
-Gap to the reported record after adoption: `n = 17`: `0.1697` (was `0.2493`); `n = 18`:
-`0.3171` (was `0.3967`); `n = 19`: `0.3798` (was `0.4215`).
+Gap to the reported record after adoption: $n = 17$: $0.1697$ (was $0.2493$); $n = 18$:
+$0.3171$ (was $0.3967$); $n = 19$: $0.3798$ (was $0.4215$).
 
 The frontier’s Nagamochi-governed count of open cases drops from 61 to 60, because
-`n = 19` stops citing `E-nagamochi-lower` in its verified lane; `validate.py` asserts
+$n = 19$ stops citing `E-nagamochi-lower` in its verified lane; `validate.py` asserts
 that count (section 6.6).
 
 ## 5. Limitations
 
 1. **One method family on the record.** Every retained artifact is an event-cell sweep
-   of the `B`-square over the rational net.
+   of the $B$-square over the rational net.
    The method-distinct evidence — this packet’s proofs and its off-net unit-square
    sweeps — is scratch and unreviewed.
    The result would be `C3`; `C4` needs a second method (a pose-space interval
@@ -694,7 +695,7 @@ Frontmatter deltas (content-keyed):
 
 Add both evidence ids to the case-level `evidence` list; keep `E-nagamochi-lower`,
 `E-green17-sixteen-point-lower` and `E-green17-interval-audit` there.
-BC-151 may instead leave `reported_lower_bound` on Nagamochi (as `n = 18` was left after
+BC-151 may instead leave `reported_lower_bound` on Nagamochi (as $n = 18$ was left after
 green17); the verified-lane change is the substance of this patch, the reported-lane
 change follows the README’s “strongest literal claims in the named source set” and is
 offered for the reviewer’s discretion.
@@ -702,23 +703,23 @@ offered for the reviewer’s discretion.
 Body: replace the paragraph beginning “The verified lower bound is first-party since
 2026-08-31” with:
 
-> The verified lower bound is `s(17) ≥ 22529/5000 = 4.5058`, adopted `<apply-date>` from
-> Gustavo Massaccesi’s August 2026 certificate (`[Burns–Massaccesi n17]`): 168
-> rationally weighted atoms of total mass `203/12 < 17` in `[0, 4.5058]²`, every unit
+> The verified lower bound is $s(17) \ge 22529/5000 = 4.5058$, adopted `<apply-date>`
+> from Gustavo Massaccesi’s August 2026 certificate (`[Burns–Massaccesi n17]`): 168
+> rationally weighted atoms of total mass $203/12 < 17$ in $[0, 4.5058]^2$, every unit
 > square capturing mass at least one, reduced exactly to 181 rational directions and
-> `16,562,293` event cells.
+> $16{,}562{,}293$ event cells.
 > It is externally proposed and source-backed — a blog post, not peer reviewed — and it
 > is replayed here twice: by the retained source verifier and by an
 > accumulation-independent repository instrument that agrees on every direction cell
 > (H-052, exp-059), with the argument itself audited lemma by lemma (BC-150). The
-> repository’s own sixteen-point certificate (`cases/green17`, `s(17) ≥ 4.426213`,
+> repository’s own sixteen-point certificate (`cases/green17`, $s(17) \ge 4.426213$,
 > `T-001`) remains a first-party theorem confirmed by two methods and is now the second
-> strongest bound. The bound gap to the reported record is `0.1697`.
+> strongest bound. The bound gap to the reported record is $0.1697$.
 
-Replace the sentence “so `s(17) ≥ 4.426213`, above Nagamochi’s general `4.162278` and a
-hair below Green’s reported but sourceless `(40√2 + 19)/17 ≈ 4.4452`” accordingly
-(Massaccesi’s value is above Green’s reported number), and keep the `think-iye2`
-follow-on sentence for the green17 ceiling.
+Replace the sentence “so $s(17) \ge 4.426213$, above Nagamochi’s general $4.162278$ and
+a hair below Green’s reported but sourceless $(40\sqrt{2} + 19)/17 \approx 4.4452$”
+accordingly (Massaccesi’s value is above Green’s reported number), and keep the
+`think-iye2` follow-on sentence for the green17 ceiling.
 
 ### 6.4 `packing/frontier/n-018.md`
 
@@ -734,10 +735,10 @@ follow-on sentence for the green17 ceiling.
 Add both ids to the case `evidence` list.
 `reported_lower_bound` stays Nagamochi (the precedent after green17). Body, opening
 paragraph and “The lower bound” section: state that the operative bound is inherited by
-monotonicity from the adopted `n = 17` Massaccesi certificate
-(`s(18) ≥ s(17) ≥ 4.5058`), source-backed and replayed here, that the first-party
-sixteen-point certificate (`4.426213`, `T-002`) is now the second strongest, and that
-the gap to the reported record is `0.3171`. No `n = 18`-specific theorem is claimed.
+monotonicity from the adopted $n = 17$ Massaccesi certificate
+($s(18) \ge s(17) \ge 4.5058$), source-backed and replayed here, that the first-party
+sixteen-point certificate ($4.426213$, `T-002`) is now the second strongest, and that
+the gap to the reported record is $0.3171$. No $n = 18$-specific theorem is claimed.
 
 ### 6.5 `packing/frontier/n-019.md`
 
@@ -752,25 +753,26 @@ the gap to the reported record is `0.3171`. No `n = 18`-specific theorem is clai
 
 `E-nagamochi-lower` leaves the verified lane’s `evidence` only; it stays in
 `reported_lower_bound` and in the case `evidence` list.
-Body: the opening sentence “the best proved lower bound is `4.464102` from Nagamochi’s
-general theorem, leaving a gap of `0.4215`” becomes the adopted `4.5058` by monotonicity
-from `n = 17` with gap `0.3798`; “The lower bound” section replaces “Nothing specific to
-this `n` has ever been proved” with the inheritance statement and keeps Nagamochi’s
-closed form as the external published baseline (`1 + √12 ≈ 4.4641`, now weaker).
-Do not carry the stale “63 of the 65 open cases” sentence into the rewritten body.
+Body: the opening sentence “the best proved lower bound is $4.464102$ from Nagamochi’s
+general theorem, leaving a gap of $0.4215$” becomes the adopted $4.5058$ by monotonicity
+from $n = 17$ with gap $0.3798$; “The lower bound” section replaces “Nothing specific to
+this $n$ has ever been proved” with the inheritance statement and keeps Nagamochi’s
+closed form as the external published baseline ($1 + \sqrt{12} \approx 4.4641$, now
+weaker). Do not carry the stale “63 of the 65 open cases” sentence into the rewritten
+body.
 
 ### 6.6 `packing/frontier/n-020.md`
 
-No change. Optional one-line body note that the adopted `n = 17` certificate gives
-`4.5058 < 1 + √13`, so Nagamochi remains operative here.
+No change. Optional one-line body note that the adopted $n = 17$ certificate gives
+$4.5058 < 1 + \sqrt{13}$, so Nagamochi remains operative here.
 The frontmatter must not change.
 
 ### 6.7 `packing/src/sqpack/cli/validate.py` — required companion change
 
 The “frontier corpus” full-gate step asserts
-`(formal_open, reported_open, nagamochi_count) == (65, 65, 61)`. After `n = 19` stops
+`(formal_open, reported_open, nagamochi_count) == (65, 65, 61)`. After $n = 19$ stops
 citing `E-nagamochi-lower` in its verified lane the count is 60. Change the tuple to
-`(65, 65, 60)` and extend the comment: “60 since `<apply-date>`: the adopted Massaccesi
+$(65, 65, 60)$ and extend the comment: “60 since `<apply-date>`: the adopted Massaccesi
 certificate took over the verified lower bound at n = 19.” This file is under concurrent
 edit by the H-060 lane; apply against whatever lands.
 
@@ -788,7 +790,7 @@ edit by the H-060 lane; apply against whatever lands.
   retained” and “no independent implementation has checked the same certificate”, both
   now false. The source HTML and `.py` files must not change.
 - Reader tier: `README.md` line 57 (the `T-001`/`T-002` bullet) and `SYNOPSIS.md` around
-  lines 517–584 ("`verified_lower_bound` at `n = 17` and `n = 18` moved to `4.426213`")
+  lines 517–584 ("`verified_lower_bound` at $n = 17$ and $n = 18$ moved to $4.426213$")
   need one sentence each on the adoption; `SYNOPSIS.md` line 1847 and
   `frontier/README.md` say “63 of the 65 open cases” and would read 60 after adoption
   (already stale at 61). The “synopsis agrees with the artifacts” and “README agrees
@@ -814,23 +816,23 @@ uv run --frozen --all-extras --group dev packing-validate --only "frontier corpu
 
 Expected `STATUS.md` rows after regeneration:
 
-| `n` | verified lower before | verified lower after | gap-or-conflict column after |
+| $n$ | verified lower before | verified lower after | gap-or-conflict column after |
 | ---: | --- | --- | --- |
-| 17 | `4426213/1000000` | `22529/5000` | “formal upper trails report” (the “formal lower differs from report” flag clears if the reported lane moves with it; stays if not) |
-| 18 | `4426213/1000000` | `22529/5000` | “formal lower differs from report” (reported stays Nagamochi) |
-| 19 | `1 + √12` | `22529/5000` | “formal lower differs from report” (reported stays Nagamochi) |
-| 20 | `1 + √13` | `1 + √13` | unchanged |
+| 17 | $\frac{4426213}{1000000}$ | $\frac{22529}{5000}$ | “formal upper trails report” (the “formal lower differs from report” flag clears if the reported lane moves with it; stays if not) |
+| 18 | $\frac{4426213}{1000000}$ | $\frac{22529}{5000}$ | “formal lower differs from report” (reported stays Nagamochi) |
+| 19 | $1 + \sqrt{12}$ | $\frac{22529}{5000}$ | “formal lower differs from report” (reported stays Nagamochi) |
+| 20 | $1 + \sqrt{13}$ | $1 + \sqrt{13}$ | unchanged |
 
-`check_nagamochi_bounds` skips `n = 19` after the change (it only checks cases whose
+`check_nagamochi_bounds` skips $n = 19$ after the change (it only checks cases whose
 verified lane cites `E-nagamochi-lower`); `check_results` must derive `V4/C3` for both
 new results; the frontier-corpus step must report 60 Nagamochi-bounded open cases.
 
 ## 7. Claim Boundary
 
 What this route establishes: the repository adopts an externally proposed, exact,
-replayed and audited certificate as its verified lower bound at `n = 17, 18, 19`. What
+replayed and audited certificate as its verified lower bound at $n = 17, 18, 19$. What
 it does not establish: any first-party theorem, any independent proof method, any
-generalization of the LP construction to other `n`, or peer-reviewed status for the
+generalization of the LP construction to other $n$, or peer-reviewed status for the
 source. H-052’s acceptance and this adoption are different decisions; the first is
 assurance evidence about two implementations, the second is a source-backed frontier
 change that this packet recommends and BC-151 decides.
@@ -845,7 +847,7 @@ they read the retained verifier only for its hash-pinned literal data.
 | Path | Purpose | SHA-256 |
 | --- | --- | --- |
 | `retained-verifier.sha256`, `retained-verifier-replay.log` | replay of the retained verifier under normal Python, 5.3 s | log `68b925923c7a6b54cb6bc391642b6eea1f759c503afa4abc12275ecc7094358a` |
-| `independent_audit.py` | Parts A–E (fixture, net, monotone arithmetic, 181 `B`-square sweeps with boundary evaluation, 380 unit-square sweeps off the net); about 3.5 min | `517941b5f8cfdf9e941f6c747e455f1ce207052f176a87fe5e4687e048431025` |
+| `independent_audit.py` | Parts A–E (fixture, net, monotone arithmetic, 181 $B$-square sweeps with boundary evaluation, 380 unit-square sweeps off the net); about 3.5 min | `517941b5f8cfdf9e941f6c747e455f1ce207052f176a87fe5e4687e048431025` |
 | `independent-audit.json`, `independent-audit.log` | its complete output, every row | `f5c47fc69241914c20fa229a97a49eb4883b039a1435f498b473516feb0578b4`, `a6257d7053bf047db446de8075848a793c6ab5aa05f8f3f3567f89c05a831971` |
 | `crosscheck_record.py`, `crosscheck-record.json` | atom and direction hashes, 181 cell counts and minima against exp-059 | `92b54c8cf581e835ce5752887c06e0ce866d55e92cc5fb7a9cc9e9a0cfde8139`, `fbc29f22b54f77caf1a000dbfe9612a07d63b0c6c303fc6e698b2def9cba6ad1` |
 

@@ -92,8 +92,8 @@ dispositions before claiming completion.
 
 Independent controls now reject completion in these cases.
 The two owner controls used real exact synthetic evaluator results: B-only
-incompatibility with maximum `-14931/20000`, and a matched owner-domain gain with B-only
-maximum `23/40000` and parent maximum `-23/40000`. Advancing the outer clock past the
+incompatibility with maximum $-14931/20000$, and a matched owner-domain gain with B-only
+maximum $23/40000$ and parent maximum $-23/40000$. Advancing the outer clock past the
 deadline leaves both outcomes partial.
 The checkpoint-overrun variant also remains partial.
 
@@ -233,7 +233,7 @@ revision to agree.
 strict escape, augments the sixth-site input, and replays the saved six-dot strict
 escape before binding inputs.
 It independently rebuilds the full 361-orientation residual manifest and sixteen local
-owner classes. The four selected owners retain the tuple `(0,0,0,7)` in BL, BR, TL, TR
+owner classes. The four selected owners retain the tuple $(0,0,0,7)$ in BL, BR, TL, TR
 order, with 181 expected signed frames per selected class.
 Each frame binds its exact ray, orientation index, quarter-turn selector, and complete
 folded-index/reflection source tuple.
@@ -247,7 +247,7 @@ expected-frame counts.
 
 ## Parent Geometry and Physical Transport
 
-For a retained unit direction `r`, let `S=|r.x|+|r.y|` and `T=||r.x|-|r.y||`. The
+For a retained unit direction $r$, let `S=|r.x|+|r.y|` and `T=||r.x|-|r.y||`. The
 admitted rule is exactly
 
 ```text
@@ -259,7 +259,7 @@ e(r,D) = max((B/2)*S, 1/2, (S-T*D)/(2+D^2))
 
 The mismatch assumption is the nearest retained direction selected before owner routing.
 It is not inferred from concentricity alone.
-The retained transfer proof gives `B*(1+D)=899996306539/900000000000 < 1`, so the
+The retained transfer proof gives $B\cdot(1+D)=899996306539/900000000000 < 1$, so the
 selected closed core lies strictly inside its unit parent.
 For `0<=d<1`, `S>=1` and `T<=1` make `S-T*d` positive.
 The signed L1 lower bound and `sqrt(1+d*d)<=1+d*d/2` therefore justify the rational
@@ -267,7 +267,7 @@ angular term without reversing an inequality.
 The old strict-core wall extent remains in the maximum.
 
 An independent exact control checked 361 retained rays at each of three rational parent
-rotations: half-tangents `-1/900`, `0`, and `1/900`. All 1,083 cases satisfy the
+rotations: half-tangents $-1/900$, $0$, and $1/900$. All 1,083 cases satisfy the
 declared mismatch bound, and the derived extent never exceeds the literal unit-parent
 coordinate half-extent.
 This is a formula control, not an all-angle proof or a retained-pose measurement; the
@@ -276,7 +276,7 @@ analytic argument supplies the universal statement.
 The adapter reconstructs the original anchored centre domain
 `Z_B=K_B intersect (mark+[0,B/2]r+[0,B/2]Jr)` before restricting it.
 It rejects stale polygons, dimensions, supports, and common rectangles.
-It intersects the reconstructed domain with the closed box `[e,q-e]^2` and recomputes
+It intersects the reconstructed domain with the closed box $[e,q-e]^{2}$ and recomputes
 the consumed support fields and common rectangle.
 Empty, point, segment, and area results remain distinct.
 The original exp146 frame identity and derived geometry are recorded separately.
@@ -285,15 +285,15 @@ The physical maps are exact:
 
 | Physical owner | Map | Determinant | Corner permutation |
 | --- | --- | --- | --- |
-| BL | `(x,y)` | `+1` | `(0,1,2,3)` |
-| BR | `(q-x,y)` | `-1` | `(1,0,3,2)` |
-| TL | `(x,q-y)` | `-1` | `(2,3,0,1)` |
-| TR | `(q-x,q-y)` | `+1` | `(3,2,1,0)` |
+| BL | $(x,y)$ | $+1$ | $(0,1,2,3)$ |
+| BR | $(q-x,y)$ | $-1$ | $(1,0,3,2)$ |
+| TL | $(x,q-y)$ | $-1$ | $(2,3,0,1)$ |
+| TR | $(q-x,q-y)$ | $+1$ | $(3,2,1,0)$ |
 
 The wrapper checks coefficients, translations, target-family field, and permutations
 against these four maps.
 The symmetric parent box is invariant.
-For determinant `+1`, the transported owner axes are `(Lr,LJr)`; for determinant `-1`,
+For determinant $+1$, the transported owner axes are `(Lr,LJr)`; for determinant $-1$,
 they are `(LJr,Lr)`. The latter exchanges the two nonnegative displacement coordinates
 and restores a right-handed frame.
 Local class labels remain unchanged under physical placement.

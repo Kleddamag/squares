@@ -153,13 +153,13 @@ $q-2=46/25>0$. They are therefore disjoint even as closed sets.
 Weighted D4 invariance gives
 
 $$
-\mu\!\left(\bigcup_cF_c(Q_0)\right)=4\mu(Q_0).
+\mu\negthinspace\left(\bigcup_cF_c(Q_0)\right)=4\mu(Q_0).
 $$
 
 Each transported core remains concentric, strict, and admitted.
 In the corresponding reflected local chart it co-owns both marks and has the original
-labels $\{3,4,11,12\}$. Directly at BL, the mark-to-centre coordinate differences are
-$(-3129/6350,-1497/6350)$ and the swapped pair.
+labels $\lbrace3,4,11,12\rbrace$. Directly at BL, the mark-to-centre coordinate
+differences are $(-3129/6350,-1497/6350)$ and the swapped pair.
 Both are strictly southwest, so the west-first proper frame yields closed bins 3 and 4
 for each mark. Transporting the whole corner chart preserves this calculation.
 Reflections must transport the ordered frame as specified by the

@@ -26,16 +26,16 @@ $L_0=191/50$. Rescaling both their positions and their sides by $1/B$ gives unit
 of total mass eleven in a container of side
 
 $$
-L_*=\frac{L_0}{B}
+L_{\ast}=\frac{L_0}{B}
 =\frac{191/50}{9977/10000}
 =\frac{38200}{9977}
 \approx3.8288.
 $$
 
-Here $L_*$ names the side supplied by this particular witness; it is not a claimed
-optimum. Ordinary point covers of budget below eleven are therefore impossible at $L_*$
-and every larger side, including the interval $[3.83,3.85]$. Section 1 proves the
-rescaling and its scope.
+Here $L_{\ast}$ names the side supplied by this particular witness; it is not a claimed
+optimum. Ordinary point covers of budget below eleven are therefore impossible at
+$L_{\ast}$ and every larger side, including the interval $[3.83,3.85]$. Section 1 proves
+the rescaling and its scope.
 A search for that existence result would duplicate retained evidence.
 
 Two further results explain what to do with that obstruction.
@@ -57,8 +57,8 @@ $$
 3.877083590022814\ldots.
 $$
 
-The lower endpoint is below $L_*$. Thus the retained fractional witness does not yet
-prove that eleven physical unit squares need a strictly larger container than eleven
+The lower endpoint is below $L_{\ast}$. Thus the retained fractional witness does not
+yet prove that eleven physical unit squares need a strictly larger container than eleven
 units of fractional mass.
 
 ## Inputs, Outputs, and Reading Order
@@ -73,7 +73,7 @@ This report supplies their definitions, derivations, examples, and limitations.
 | [Retained 88-core family](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/ceiling-family-191-50.json) and [independent exact receipt](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/ceiling-family-191-50-independent-reader.json) | Geometric premises for §1: contained cores, their weights, and depth at most one at every point |
 | [BC-242 density contract](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-242-full-size-density-proof-contract.md) | Baseline continuous problem for §§2–3, including continuity of coverage for integrable densities; this report supplies the value-equality argument |
 | [T-025 proof packet](../../../packing/cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md) | Premise for the matched core-model gap in §5: the specified core family has a threshold cover of budget below eleven |
-| [A6 scope and exact evidence](research-2026-09-09-n11-evidence-and-inference.md#13-the-later-a6-and-h157-results-what-has-been-checked), [current physical bracket](../../../SYNOPSIS.md#current-handoff), and [the $n=6$ case](../../../packing/frontier/n-006.md) | Retained results used to distinguish conclusions about fixed families from physical packing claims in §§5–7 |
+| [A6 scope and exact evidence](research-2026-09-09-n11-evidence-and-inference.md#13-the-later-a6-and-h157-results-what-has-been-checked), [current physical bracket](../../../SYNOPSIS.md#current-handoff), and [the `n=6` case](../../../packing/frontier/n-006.md) | Retained results used to distinguish conclusions about fixed families from physical packing claims in §§5–7 |
 | [Stromquist correspondence](../../../packing/resources/private-correspondence/email-stromquist-2026-09-07.md), [X-023](../../../packing/campaign/explorations/X-023-three-losses-and-a-new-atom.md), and [X-026](../../../packing/campaign/explorations/X-026-what-conditioning-does-and-does-not-buy.md) | Motivation and research context; the letter and strategic summaries are not proofs of the new derivations |
 
 An exact **receipt** is a retained record of a verifier’s checks.
@@ -125,7 +125,7 @@ $$
 $$
 
 **Analytic derivation.** Define the unit squares $U_i=B^{-1}C_i$, meaning that every
-coordinate is multiplied by $1/B$. They lie in $K_{L_*}$ and satisfy
+coordinate is multiplied by $1/B$. They lie in $K_{L_{\ast}}$ and satisfy
 
 $$
 \sum_{i=1}^{88}a_i\mathbf 1_{U_i}(x)
@@ -139,7 +139,7 @@ membership. The same squares can be placed unchanged in a larger container.
 Also
 
 $$
-\frac{383}{100}-L_*=\frac{1191}{997700}>0,
+\frac{383}{100}-L_{\ast}=\frac{1191}{997700}>0,
 $$
 
 so this witness exists below $3.83$.
@@ -165,8 +165,8 @@ If $\mu(U_i)\geq1$ for every $i$, finite summation gives
 $$
 11
 \leq\sum_{i=1}^{88}a_i\mu(U_i)
-=\int_{K_{L_*}}\sum_{i=1}^{88}a_i\mathbf 1_{U_i}(x)\,d\mu(x)
-\leq\mu(K_{L_*}).
+=\int_{K_{L_{\ast}}}\sum_{i=1}^{88}a_i\mathbf 1_{U_i}(x)\thinspace d\mu(x)
+\leq\mu(K_{L_{\ast}}).
 $$
 
 The integral means mass-weighted addition over points.
@@ -205,7 +205,7 @@ in radians. The rotation by that angle is the matrix
 $$
 R_\theta=
 \begin{pmatrix}
-\cos\theta&-\sin\theta\\
+\cos\theta&-\sin\theta\cr
 \sin\theta&\cos\theta
 \end{pmatrix}.
 $$
@@ -218,7 +218,7 @@ A pose $p=(c,\theta)$ represents the closed unit square $S_p=c+R_\theta Q$. The 
 pose space** is
 
 $$
-P_L=\{(c,\theta)\in K_L\times\mathbb T_4:S_p\subseteq K_L\}.
+P_L=\lbrace(c,\theta)\in K_L\times\mathbb T_4:S_p\subseteq K_L\rbrace.
 $$
 
 A space is **compact** when every cover by open sets has a finite subcover.
@@ -241,12 +241,13 @@ A **point atom** of mass $a\geq0$ at a point $x$ is written $a\delta_x$: its mas
 is $a$ if $x\in E$, and zero otherwise.
 A **finite atomic measure** is a finite sum of such atoms.
 A measure can also spread mass continuously.
-An **absolutely continuous measure** has the form $\mu(E)=\int_E\rho(x)\,dx$, where $dx$
-denotes ordinary two-dimensional area and the **density** $\rho$ is nonnegative and
-integrable. The notation $L^1$ denotes integrable functions.
-Their norm, measuring total absolute mass, is $\|\rho\|_1=\int_{K_L}|\rho(x)|\,dx$. A
-**singular measure** has all its mass concentrated on a set of zero area; a point atom
-is an example.
+An **absolutely continuous measure** has the form $\mu(E)=\int_E\rho(x)\thinspace dx$,
+where $dx$ denotes ordinary two-dimensional area and the **density** $\rho$ is
+nonnegative and integrable.
+The notation $L^1$ denotes integrable functions.
+Their norm, measuring total absolute mass, is
+$\Vert\rho\Vert_1=\int_{K_L}|\rho(x)|\thinspace dx$. A **singular measure** has all its
+mass concentrated on a set of zero area; a point atom is an example.
 
 Use $\lambda\in\mathcal M_+(P_L)$ for a packing measure on poses and
 $\mu\in\mathcal M_+(K_L)$ for a covering measure on container points.
@@ -266,10 +267,10 @@ persists under small changes of both point and pose.
 Define the interior and closed depths of $\lambda$ by
 
 $$
-d_\lambda^\circ(x)=\int_{P_L}A(x,p)\,d\lambda(p),
+d_\lambda^\circ(x)=\int_{P_L}A(x,p)\thinspace d\lambda(p),
 \qquad
 d_\lambda^{\mathrm{cl}}(x)
-=\int_{P_L}\mathbf 1_{S_p}(x)\,d\lambda(p).
+=\int_{P_L}\mathbf 1_{S_p}(x)\thinspace d\lambda(p).
 $$
 
 ### The two optimization problems
@@ -287,13 +288,13 @@ one for every legal pose:
 $$
 \begin{aligned}
 \nu_\circ(L)
-&=\sup\{\lambda(P_L):
+&=\sup\lbrace\lambda(P_L):
 \lambda\in\mathcal M_+(P_L),\
-d_\lambda^\circ(x)\leq1\text{ for every }x\in K_L\},\\
+d_\lambda^\circ(x)\leq1\text{ for every }x\in K_L\rbrace,\cr
 \tau_\circ(L)
-&=\inf\{\mu(K_L):
+&=\inf\lbrace\mu(K_L):
 \mu\in\mathcal M_+(K_L),\
-\mu(\operatorname{int}S_p)\geq1\text{ for every }p\in P_L\}.
+\mu(\operatorname{int}S_p)\geq1\text{ for every }p\in P_L\rbrace.
 \end{aligned}
 $$
 
@@ -311,20 +312,20 @@ It gives
 $$
 \begin{aligned}
 \lambda(P_L)
-&\leq\int_{P_L}\mu(\operatorname{int}S_p)\,d\lambda(p)\\
-&=\int_{K_L}\int_{P_L}A(x,p)\,d\lambda(p)\,d\mu(x)\\
+&\leq\int_{P_L}\mu(\operatorname{int}S_p)\thinspace d\lambda(p)\cr
+&=\int_{K_L}\int_{P_L}A(x,p)\thinspace d\lambda(p)\thinspace d\mu(x)\cr
 &\leq\mu(K_L).
 \end{aligned}
 $$
 
 Consequently $\nu_\circ(L)\leq\tau_\circ(L)$. A physical packing
-$\mathcal P=\{p_1,\ldots,p_n\}$ gives the measure
+$\mathcal P=\lbrace p_1,\ldots,p_n\rbrace$ gives the measure
 $\lambda_{\mathcal P}=\sum_{i=1}^n\delta_{p_i}$, of mass $n$. Its interior depth is at
 most one even when squares touch.
 Integrating the depth of any feasible packing measure over area also gives
 
 $$
-\lambda(P_L)=\int_{K_L}d_\lambda^\circ(x)\,dx\leq L^2,
+\lambda(P_L)=\int_{K_L}d_\lambda^\circ(x)\thinspace dx\leq L^2,
 $$
 
 because every unit square has area one.
@@ -372,7 +373,7 @@ The proof below reduces the relevant intermediate problems to such finite LPs.
 For each container point $x$, let
 
 $$
-V_x=\{p\in P_L:x\in\operatorname{int}S_p\}.
+V_x=\lbrace p\in P_L:x\in\operatorname{int}S_p\rbrace.
 $$
 
 Each $V_x$ is open. Together they cover $P_L$, since every legal square has an interior
@@ -401,7 +402,8 @@ $$
 \lambda(V_x)\leq\liminf_{j\to\infty}\lambda_j(V_x).
 $$
 
-Thus the capacity set $\{\lambda:\lambda(V_x)\leq1\}$ is closed under weak limits.
+Thus the capacity set $\lbrace\lambda:\lambda(V_x)\leq1\rbrace$ is closed under weak
+limits.
 The standard compactness theorem for measures on a compact metric space says that
 nonnegative measures of uniformly bounded mass form a compact space in the weak
 topology. Apply it with the common bound $|F_0|$. Intersecting its closed capacity sets
@@ -416,7 +418,7 @@ Let $F\subset K_L$ be any finite point set containing $F_0$, and impose only the
 capacities at points of $F$. A pose has **incidence mask**
 
 $$
-I(p)=\{x\in F:x\in\operatorname{int}S_p\},
+I(p)=\lbrace x\in F:x\in\operatorname{int}S_p\rbrace,
 $$
 
 the subset of tested points it contains.
@@ -430,23 +432,23 @@ realized mask turns any such list of masses into a finite atomic pose measure.
 Therefore the relaxed packing problem has exactly the finite LP value
 
 $$
-v_F=\max\left\{
+v_F=\max\left\lbrace
 \sum_{I\in\mathcal I_F}b_I:
 b_I\geq0,\
-\sum_{\substack{I\in\mathcal I_F\\x\in I}}b_I\leq1
+\sum_{\substack{I\in\mathcal I_F\cr x\in I}}b_I\leq1
 \text{ for every }x\in F
-\right\}.
+\right\rbrace.
 $$
 
 Its dual assigns point weights $a_x\geq0$ to $x\in F$ and has value
 
 $$
-v_F=\min\left\{
+v_F=\min\left\lbrace
 \sum_{x\in F}a_x:
 a_x\geq0,\
 \sum_{x\in I}a_x\geq1
 \text{ for every }I\in\mathcal I_F
-\right\}.
+\right\rbrace.
 $$
 
 Both programs are feasible and have finite optimal values.
@@ -465,7 +467,7 @@ Compactness then gives a solution to all of them together, contradicting the def
 of $\nu_\circ(L)$. Hence
 
 $$
-\inf_{\substack{F\supseteq F_0\\F\text{ finite}}}v_F=\nu_\circ(L).
+\inf_{\substack{F\supseteq F_0\cr F\text{ finite}}}v_F=\nu_\circ(L).
 $$
 
 The finite dual covers imply $\tau_{\mathrm{fin}}(L)\leq\nu_\circ(L)$. Weak duality and
@@ -525,15 +527,15 @@ interior depth is
 
 $$
 b_\lambda(x)=d_\lambda^{\mathrm{cl}}(x)-d_\lambda^\circ(x)
-=\int_{P_L}\mathbf 1_{\partial S_p}(x)\,d\lambda(p).
+=\int_{P_L}\mathbf 1_{\partial S_p}(x)\thinspace d\lambda(p).
 $$
 
 Every square boundary has area zero.
 Tonelli therefore gives
 
 $$
-\int_{K_L}b_\lambda(x)\,dx
-=\int_{P_L}\left(\int_{K_L}\mathbf 1_{\partial S_p}(x)\,dx\right)d\lambda(p)
+\int_{K_L}b_\lambda(x)\thinspace dx
+=\int_{P_L}\left(\int_{K_L}\mathbf 1_{\partial S_p}(x)\thinspace dx\right)d\lambda(p)
 =0.
 $$
 
@@ -561,9 +563,9 @@ Normalize a nonnegative density $\rho$ and a pose measure $\eta$ to total mass o
 A measure of total mass one is called a **probability measure**. Define
 
 $$
-F_\rho(p)=\int_{S_p}\rho(x)\,dx,
+F_\rho(p)=\int_{S_p}\rho(x)\thinspace dx,
 \qquad
-\Phi(\rho,\eta)=\int_{P_L}F_\rho(p)\,d\eta(p).
+\Phi(\rho,\eta)=\int_{P_L}F_\rho(p)\thinspace d\eta(p).
 $$
 
 Both normalized classes are **convex**: mixing two members with nonnegative coefficients
@@ -588,7 +590,7 @@ Let both the point space $X$ and pose space $P$ be $[0,1]$, and define incidence
 $$
 A(x,p)=
 \begin{cases}
-1,&x\ne p,\\
+1,&x\ne p,\cr
 0,&x=p.
 \end{cases}
 $$
@@ -651,8 +653,8 @@ A bounded search restricted to $k=2$ or $k=4$ is therefore not a complete decisi
 At the exact side, the following equivalence remains unproved: $\nu_\circ(L)\geq n$ if
 and only if some positive integer $k$ admits a finite $k$-fold family of $nk$ unit
 squares in $K_L$. Finite attainment there needs another argument.
-The retained family already supplies the particular case $k=8$, $n=11$ at $L_*$, without
-relying on general exact-side attainment.
+The retained family already supplies the particular case $k=8$, $n=11$ at $L_{\ast}$,
+without relying on general exact-side attainment.
 
 ## 5. Integrality Gaps and Threshold Capacities
 
@@ -667,8 +669,8 @@ $$
 
 A fractional mass-eleven family proves such a physical gap at a side only after a
 separate theorem gives $m(L)\leq10$. The current lower bound does not supply that
-theorem at $L_*$. A physical exclusion at $L_*$ or a larger side would establish a gap
-there when combined with the retained fractional family.
+theorem at $L_{\ast}$. A physical exclusion at $L_{\ast}$ or a larger side would
+establish a gap there when combined with the retained fractional family.
 
 ### The matched core-model gap
 
@@ -684,7 +686,7 @@ The
 is the premise for that core exclusion.
 Its physical theorem uses strict core containment.
 A gap between closed-core packing and closed-core fractional packing does not itself
-give the unresolved full-unit gap at $L_*$, where physical boundaries may touch.
+give the unresolved full-unit gap at $L_{\ast}$, where physical boundaries may touch.
 
 ### How a threshold adds a capacity
 
@@ -698,7 +700,7 @@ its interior version by
 
 $$
 q_{S,k}(p)=
-\mathbf 1_{\{|S\cap\operatorname{int}S_p|\geq k\}},
+\mathbf 1_{\lbrace|S\cap\operatorname{int}S_p|\geq k\rbrace},
 \qquad
 c_{S,k}=\left\lfloor\frac{|S|}{k}\right\rfloor.
 $$
@@ -713,11 +715,11 @@ $$
 $$
 
 A **threshold atom** multiplies this charge by a nonnegative weight $a$ and contributes
-$a\,c_{S,k}$ to a certificate’s budget.
+$a\thinspace c_{S,k}$ to a certificate’s budget.
 A fractional packing measure can violate
 
 $$
-\int_{P_L}q_{S,k}(p)\,d\lambda(p)\leq c_{S,k}
+\int_{P_L}q_{S,k}(p)\thinspace d\lambda(p)\leq c_{S,k}
 $$
 
 while respecting every point capacity.
@@ -745,8 +747,8 @@ empty. Each pair nevertheless intersects in its interior, as shown by these poin
 
 $$
 \begin{aligned}
-x_{12}&=(13/10,13/10)\in\operatorname{int}S_1\cap\operatorname{int}S_2,\\
-x_{13}&=(7/5,7/10)\in\operatorname{int}S_1\cap\operatorname{int}S_3,\\
+x_{12}&=(13/10,13/10)\in\operatorname{int}S_1\cap\operatorname{int}S_2,\cr
+x_{13}&=(7/5,7/10)\in\operatorname{int}S_1\cap\operatorname{int}S_3,\cr
 x_{23}&=(19/10,6/5)\in\operatorname{int}S_2\cap\operatorname{int}S_3.
 \end{aligned}
 $$
@@ -757,9 +759,9 @@ Its depth is at most one and its mass is $3/2$. On this **fixed support**, meani
 only these three square placements are allowed, a physical packing has size at most one
 because every pair overlaps.
 
-Each square contains exactly two points of the set $\{x_{12},x_{13},x_{23}\}$. The
-two-of-three capacity is one, but the fractional family charges it $3/2$. This is the
-rational control retained in
+Each square contains exactly two points of the set
+$\lbrace x_{12},x_{13},x_{23}\rbrace$. The two-of-three capacity is one, but the
+fractional family charges it $3/2$. This is the rational control retained in
 [the plateau-reader tests](../../../packing/tests/test_plateau_reader.py), with its
 geometry made explicit.
 
@@ -792,11 +794,11 @@ These two outcomes are retained together in
 
 ## 6. N6 Is a Cleaner Physical-Gap Control
 
-The retained [$n=6$ case](../../../packing/frontier/n-006.md) has $s(6)=3$, with a
+The retained [`n=6` case](../../../packing/frontier/n-006.md) has $s(6)=3$, with a
 published proof and archived earlier work.
 Any exact full-unit fractional family of mass six at a side below three would therefore
 prove a physical integrality gap immediately.
-For eleven squares, the corresponding physical exclusion at $L_*$ is still missing.
+For eleven squares, the corresponding physical exclusion at $L_{\ast}$ is still missing.
 
 The correspondence’s five-dot failure concerns five unweighted sites: each chosen site
 has weight one. It does not concern arbitrary positive weights on arbitrary numbers of
@@ -804,7 +806,7 @@ sites. An abstract example shows why the distinction matters.
 Take three disjoint copies of the three-site set system with sites $a,b,c$ and subsets
 
 $$
-\{a,b\},\qquad\{b,c\},\qquad\{c,a\}.
+\lbrace a,b\rbrace,\qquad\lbrace b,c\rbrace,\qquad\lbrace c,a\rbrace.
 $$
 
 A hitting set must choose at least two sites in each copy, hence six in all.
@@ -845,13 +847,13 @@ requirement fails.
 | Question or mechanism | First useful decision | Prerequisite and scope of a negative result |
 | --- | --- | --- |
 | Does fractional mass eleven exist for full units in $[3.83,3.85]$? | The rescaling in §1 already proves existence at $38200/9977$ | Export the unit family and replay it independently if a program needs to consume it; no search is required |
-| Does the ordinary point obstruction begin below $L_*$? | Freeze a smaller target and obtain an exact finite witness or a globally certified cover below eleven | An interior/a.e. arrangement reader must accept touching controls and reject excess depth on positive area; a fixed-support value below eleven does not refute existence |
+| Does the ordinary point obstruction begin below $L_{\ast}$? | Freeze a smaller target and obtain an exact finite witness or a globally certified cover below eleven | An interior/a.e. arrangement reader must accept touching controls and reject excess depth on positive area; a fixed-support value below eleven does not refute existence |
 | Do additional atoms improve the covering problem at a fixed side? | Add an exactly violated atom, then require globally verified better coverage or a valid obstruction for the enlarged catalog | Alternate support and atom changes with full point-depth checks; a candidate with depth above one can suggest cuts but is not an obstruction |
 | Does a retained obstruction satisfy conditional ownership? | Check the witness’s membership in the actual residual domain and the proposed ownership inequalities | Parent, mark, patch, joint-compatibility, and selection requirements must all be stated and checked |
 | Is there a physical fractional gap for six squares below side three? | Exact fractional mass six proves a gap; a cover below six excludes such mass at the chosen side | Use integral controls at $L=3$ and a frozen target below three; bounded failure to find a family is inconclusive |
 | Can the duality theorem become an admitted premise for later tools? | Retain the independent checks of the finite hitting set, weak closedness, mask LP, and smearing margin | This supplies value equality, not a numerical optimum, equality classification, or automatically complete separation algorithm |
 
-Past $L_*$, the direct eleven-square problem needs counting capacities or geometric
+Past $L_{\ast}$, the direct eleven-square problem needs counting capacities or geometric
 relations beyond ordinary point depth.
 Threshold charges already demonstrate that mechanism on the matched core model.
 The next comparison must measure their effect on a globally covered pose domain or an

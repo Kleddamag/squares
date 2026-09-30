@@ -24,9 +24,9 @@ H157 and the unresolved V3 source are outside scope.
 
 ## Fixed Atoms and Arbitrary Point Sites
 
-Let the admitted core family have nonnegative weights `t_K` of total eleven and depth
+Let the admitted core family have nonnegative weights $t_K$ of total eleven and depth
 `d(x) = sum_K t_K * 1_K(x) <= 1` everywhere.
-For each retained threshold atom `a`, let `h_a(K)` be its binary charge and `b_a` its
+For each retained threshold atom $a$, let `h_a(K)` be its binary charge and $b_a$ its
 unweighted budget. Assume its capacity row `sum_K t_K * h_a(K) <= b_a` holds.
 
 Any nonnegative point measure `mu` and nonnegative atom weights `lambda_a` that charge
@@ -56,7 +56,7 @@ directly addresses 35 tied orbit variables, representing 280 placements.
 Its seven rows are six point-depth rows and one complete D4 orbit of a three-of-five
 atom. The latter has aggregate budget eight; each individual atom image has budget one.
 Subject to the separate coefficient replay, nonnegative multipliers with `A^T u >= cost`
-establish `2605263163/250000000` as an upper bound for that tied finite program.
+establish $2605263163/250000000$ as an upper bound for that tied finite program.
 
 **Required clarification:** extending this bound to arbitrary untied weights on the same
 support needs the following averaging argument.
@@ -65,9 +65,9 @@ and the target constraints must be invariant under D4. Full point-depth constrai
 invariant. Complete atom image families, or their invariant orbit-sum capacity rows,
 supply the needed atom invariance.
 
-For any feasible untied vector `t`, define `t_bar(K) = (1/8) * sum_g t(g^-1 K)`. This
+For any feasible untied vector $t$, define `t_bar(K) = (1/8) * sum_g t(g^-1 K)`. This
 vector stays on the same support, preserves total weight and has equal weights within
-each orbit. Its point depth at `x` is the average of the original depths at `g^-1 x`,
+each orbit. Its point depth at $x$ is the average of the original depths at $g^{-1} x$,
 hence is at most one.
 Its atom constraints remain satisfied by invariance.
 The tied upper certificate applies to `t_bar`, so it bounds the original untied total as
@@ -78,8 +78,8 @@ No symmetry check on the original finite site list is needed for this transfer f
 An untied problem imposing only an arbitrary finite site list needs its own invariance
 argument. The bound also has no automatic extension to a larger placement support.
 
-The reported lower value `325657893/31250000` belongs only to the selected finite rows:
-the family’s reported full depth `105263157/100000000` exceeds one.
+The reported lower value $325657893/31250000$ belongs only to the selected finite rows:
+the family’s reported full depth $105263157/100000000$ exceeds one.
 Its unmodified weight is consequently no lower certificate for the full-depth problem.
 The upper and lower endpoints have different transfer properties, as the dated overlay
 now states. For precision, describe the six seeded additions as **six threshold-atom
@@ -88,7 +88,7 @@ orbits**, with budget one per image.
 ## Larger Containers and the Planned Continuation
 
 The plan’s larger-container persistence argument is valid for `q' >= 153/40` when the
-old container is embedded in the new one, the core side remains `9977/10000`, and the
+old container is embedded in the new one, the core side remains $9977/10000$, and the
 new admissible orientation set still includes the retained orientations.
 Keeping the same placements and the actual atom coordinates preserves all point depths
 and atom charges. Added sites outside the old container have zero depth.
@@ -99,7 +99,7 @@ Regenerating saved representatives under D4 about the new container centre usual
 changes their images and requires a new capacity check.
 Moving placements and atoms together by an isometry preserves incidences; a change of
 side alone supplies no new reason to expect a cover below eleven.
-The prospective comparison at `383/100` must bind any changed atoms, core side,
+The prospective comparison at $383/100$ must bind any changed atoms, core side,
 orientation domain or transport, as the plan requires.
 
 The joint support-and-atom route is a valid prospective experiment.

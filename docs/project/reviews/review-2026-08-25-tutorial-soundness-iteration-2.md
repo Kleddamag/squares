@@ -19,7 +19,7 @@ rather than against other prose; plus the record reconciliation the check forced
 research-ID reconciliation, the Rust toolchain pin, and frontier transparency).
 The merge itself is part of the reviewed object: it surfaced the two branches’
 conflicting dispositions of H-024, and resolving that honestly was a precondition for
-checking the tutorial’s `n = 29` material at all.
+checking the tutorial’s $n = 29$ material at all.
 
 ## The Merge, and Two Dispositions It Forced
 
@@ -52,20 +52,21 @@ hypothesis artifacts.
 Most of the tutorial survives adversarial checking, including every place its numbers
 could be traced to a primary artifact:
 
-- The corner: one-sided slopes `0.1747`/`0.3839` at ratio `2.1973` and `0.1747`/`0.3841`
-  at ratio `2.198` match the synopsis’s convergence table digit for digit, and the D-029
+- The corner: one-sided slopes $0.1747$/`0.3839` at ratio $2.1973$ and $0.1747$/`0.3841`
+  at ratio $2.198$ match the synopsis’s convergence table digit for digit, and the D-029
   story’s `+5.6440e-04` / `+4.4409e-16` pair matches its table.
-- The LP: `8^C(11,2) ≈ 4.7 × 10⁴⁹` recomputes; the `1,056 = 16 × (11 + 55)` row count is
-  the literal assert in `cases/trump11/independent_lp_cell.py`; the `1.28 ms` solve, the
-  `4.4e-16` side agreement, and the loose-tolerance record-“beating” incident all match
-  their sources, the last with the measured overlap (`9.876e-08`, pair 4–8) in
-  `quench.py`’s own comment.
+- The LP: $8^{C(11,2)} \approx 4.7 \times 10^{49}$ recomputes; the
+  $1{,}056 = 16 \times (11 + 55)$ row count is the literal assert in
+  `cases/trump11/independent_lp_cell.py`; the `1.28 ms` solve, the `4.4e-16` side
+  agreement, and the loose-tolerance record-“beating” incident all match their sources,
+  the last with the measured overlap (`9.876e-08`, pair 4–8) in `quench.py`’s own
+  comment.
 - The record facts: 14 of 55 pairs at exactly zero and 20 boundary corner coordinates
-  (T-1); the bound gap `0.088229208023` recomputes from the exact endpoints; the
-  2,001-point `[38°, 42°]` scan and the five-seeds-in-a-narrow-band claim match the
-  synopsis; exp-011’s five seeds at `5.0` against Bidwell’s `4.67553009…` match the
-  ledger and frontier; Bidwell’s three orientation classes (`0°`, `+39.80496°`,
-  `−36.62379°`) confirm “three unknowns at `n = 17`”.
+  (T-1); the bound gap $0.088229208023$ recomputes from the exact endpoints; the
+  2,001-point $[38^\circ, 42^\circ]$ scan and the five-seeds-in-a-narrow-band claim
+  match the synopsis; exp-011’s five seeds at $5.0$ against Bidwell’s $4.67553009\ldots$
+  match the ledger and frontier; Bidwell’s three orientation classes ($0^\circ$,
+  $+39.80496^\circ$, $-36.62379^\circ$) confirm “three unknowns at $n = 17$”.
 - The quench description (nested loops, cell fixed point read back, golden-section class
   bracketing, optional free-angle pass, typed unsettled stops) matches
   `sqpack/research/quench.py`.
@@ -125,20 +126,21 @@ could be traced to a primary artifact:
   that closes the wrap class outright, so no separate entry remains and `think-57x3`’s
   durability proposal is resolved by that landed fix.
 - **SR-9** (D-335, `think-ao4o`, raised by the user reading the figure cold) — §3’s
-  `F₃(2)` quotient-map figure used six symbols the document never defines, its `λ` axis
-  silently collided with the text’s slider `t`, and its significance — the exact
-  known-answer control behind exp-032’s component-identity gate and §8’s open question 1
-  — was never claimed, so the section’s strongest evidence read as decoration.
-  A significance passage now walks each quotient stage as the wrong identity it kills,
-  states `λ = min(t − 1/2, 3/2 − t)`, and wires the figure to exp-032’s seven rejected
-  false policies; the notation card gains `F₃(2)`, `S₃`/`D₄`, and `λ` rows.
+  $F_3(2)$ quotient-map figure used six symbols the document never defines, its
+  $\lambda$ axis silently collided with the text’s slider $t$, and its significance —
+  the exact known-answer control behind exp-032’s component-identity gate and §8’s open
+  question 1 — was never claimed, so the section’s strongest evidence read as
+  decoration. A significance passage now walks each quotient stage as the wrong identity
+  it kills, states $\lambda = \min(t - 1/2, 3/2 - t)$, and wires the figure to exp-032’s
+  seven rejected false policies; the notation card gains $F_3(2)$, $S_3$/`D₄`, and
+  $\lambda$ rows.
 
 **Precision, no defect entry.**
 
 - §4’s improvement figures now say they are medians over the five tested seeds, with the
-  worst `n = 5` seed (`6.2e-08`) named — exp-007’s range makes the unqualified form
+  worst $n = 5$ seed (`6.2e-08`) named — exp-007’s range makes the unqualified form
   overstate.
-- §2 now says “six, numerically, at `n = 29`” where the class count rode without its
+- §2 now says “six, numerically, at $n = 29$” where the class count rode without its
   assurance.
 - Two sourced figures disagree across documents without either being wrong in context:
   the synopsis’s `129 ms` exact verification against the benchmark doc’s `0.35 s`

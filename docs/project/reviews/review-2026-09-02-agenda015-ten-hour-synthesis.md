@@ -133,7 +133,7 @@ opened.
 | --- | --- |
 | Proved | No new mathematical theorem, optimum or bound. Existing exact algebra and guard proofs are unchanged. |
 | Repository-verified | The 170-row n = 17 chain, n = 54 synthetic contracts, named mutations, absences, canonical bytes and independent reviews reproduce. |
-| Source-backed | The release prints the literal n = 68 token `8.80345993651653`; the retained source record does not assign it six-decimal coordinate semantics. |
+| Source-backed | The release prints the literal n = 68 token $8.80345993651653$; the retained source record does not assign it six-decimal coordinate semantics. |
 | Measured negative/process stop | Exp-056 missed completion in its fixed lease; W5 produced typed refusals rather than admissible comparisons. |
 | Unresolved | H-052, H-055 and H-058; all packing bounds and frontier facts named by the agenda. |
 

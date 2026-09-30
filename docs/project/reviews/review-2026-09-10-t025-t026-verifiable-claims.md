@@ -93,7 +93,7 @@ Coverage gives total core charge at least $n$, while the atom budgets give a tot
 strictly below $n$, a contradiction.
 
 This excludes a packing at side $L$. A packing at any smaller side would embed in the
-side-$L$ container, so the infimum definition yields $s(n)\geq L$. No compactness claim
+side-`L` container, so the infimum definition yields $s(n)\geq L$. No compactness claim
 is needed.
 
 ## Exact Sweep and Its Boundary Conventions
@@ -180,20 +180,21 @@ condition in the scaled family.
 The retained test includes a rational $q$ that fails the coarse test but passes this
 sharpened one, so the distinction is exercised.
 
-Set $c_*:=\sqrt{1+D^2}/(B(1+D))>0$ and $C=Lc_*$. Direct rational calculation gives
+Set $c_{\ast}:=\sqrt{1+D^2}/(B(1+D))>0$ and $C=Lc_{\ast}$. Direct rational calculation
+gives
 
 $$
-c_*^2=\frac{32400002680831840562500000000}{32290909254655439869209770001},
+c_{\ast}^2=\frac{32400002680831840562500000000}{32290909254655439869209770001},
 \qquad
 C^2=\frac{472793799119770550224225000000}{32290909254655439869209770001}.
 $$
 
 The reported radical is positive and has that square.
-Every positive rational $q<c_*$ therefore excludes a packing at side $qL$. For every
-positive real $x<C$, choose a rational $x/L<q<c_*$. A packing at side $x$ would embed at
-side $qL$, contradicting the finite certificate.
+Every positive rational $q<c_{\ast}$ therefore excludes a packing at side $qL$. For
+every positive real $x<C$, choose a rational $x/L<q<c_{\ast}$. A packing at side $x$
+would embed at side $qL$, contradicting the finite certificate.
 Hence all sides below $C$ are excluded and $s(11)\geq C$. Equality in the uniform
-containment test at $q=c_*$ does not weaken that conclusion.
+containment test at $q=c_{\ast}$ does not weaken that conclusion.
 The proof asserts neither a certificate at the endpoint nor a strict `>` theorem.
 
 ## Data Binding and Controls

@@ -20,11 +20,11 @@ implementing agent should be able to build from it without asking what a term me
 
 ### The problem
 
-`s(n)` is the side of the smallest square that holds `n` unit squares.
-It is trivial when `n` is a perfect square and hard otherwise; the best known packings
-for most `n` are constructions nobody has proved optimal.
+$s(n)$ is the side of the smallest square that holds $n$ unit squares.
+It is trivial when $n$ is a perfect square and hard otherwise; the best known packings
+for most $n$ are constructions nobody has proved optimal.
 
-A *packing* here is `n` unit squares placed by centre and angle inside `[0, s]^2` with
+A *packing* here is $n$ unit squares placed by centre and angle inside $[0, s]^{2}$ with
 pairwise-disjoint interiors.
 A *witness* is a serialized packing.
 This repository stores witnesses under a soft schema called `Witness/v2` and verifies
@@ -50,7 +50,7 @@ Turning a float vector into a certified algebraic number goes:
    touches which wall, which squares share an angle.
    This is a *discrete* hypothesis.
 3. **Write and reduce the contact equations.** The raw system contains all centres; a
-   good contact graph lets you eliminate them and keep only `s` and the distinct angles.
+   good contact graph lets you eliminate them and keep only $s$ and the distinct angles.
 4. **Close the system.** It is underdetermined until you add the conditions that make
    the solution an extremum — Lagrange or Fritz-John conditions in determinant form.
    The determinant form matters because it keeps the problem *root-finding*, which
@@ -71,17 +71,17 @@ bridge is out of scope here — it is agenda-005’s BC-045, not a phase of this
 Two facts a reviewer should hold onto:
 
 - Every exact entry in this repository today was either derived by hand or supplied by a
-  publication. `n = 11` is exact because Trump published the degree-8 minimal polynomial
+  publication. $n = 11$ is exact because Trump published the degree-8 minimal polynomial
   in 1979; `cases/trump11/derive_field.py` takes “only the published minimal polynomial”
   and re-derives from it.
   That is step 6 work, not steps 2–5.
-- `n = 29`’s best known packing has **no exact form anywhere**. Its evidence record
+- $n = 29$’s best known packing has **no exact form anywhere**. Its evidence record
   carries `replay_status: public-certificate-missing` and the note that the public SVG
   “serializes a FindRoot result and supplies no formal certificate”.
 
 ### Two corrections that shaped this design, both from measurement
 
-**Contact inference is not the blocker at `n = 29`.** It was first ranked as the hardest
+**Contact inference is not the blocker at $n = 29$.** It was first ranked as the hardest
 step, on an ambiguity risk taken from D-021 — the float LP solver’s `1e-11` noise floor.
 That floor governs *this project’s quench output*. It does not govern a published source
 carrying ~99 digits per coordinate.
@@ -110,9 +110,9 @@ A genuine minimal polynomial vanishes to full input precision.
 **Ninety-eight digits cannot identify the polynomial**, so precision must be
 *manufactured from the closed system*.
 
-At `n = 29` that system does not have to be built.
+At $n = 29$ that system does not have to be built.
 The archived provenance SVG publishes all nine slide scalars and all six equations
-`f1 … f6` in `{s, a, b, c, d, i}`, and
+`f1 … f6` in $\lbrace s, a, b, c, d, i\rbrace$, and
 [`cases.kingbird29.verify_svg`](../../../../packing/cases/kingbird29/verify_svg.py)
 already transcribes every one of them — using them only to evaluate residuals at the
 serialized pose, never to solve.
@@ -121,23 +121,23 @@ published digits and reaches a residual of `8.85e-421` in about two seconds.
 
 So the phase order still holds — solve needs precision, precision needs refinement,
 refinement needs the closed system — but phases 1 and 2 are **not** what unblocks
-`n = 29`. They are what makes the route apply to sizes where no system was published.
-`n = 29` can be driven from phase 3 onward today, and this spec’s phase order should be
+$n = 29$. They are what makes the route apply to sizes where no system was published.
+$n = 29$ can be driven from phase 3 onward today, and this spec’s phase order should be
 read as building generality, not as clearing a blocker.
 
 ## Goals
 
-- Extract and freeze a contact structure, reproducing the known `n = 11` structure.
-- Assemble, reduce and close the contact system, reproducing the known `n = 11` form.
+- Extract and freeze a contact structure, reproducing the known $n = 11$ structure.
+- Assemble, reduce and close the contact system, reproducing the known $n = 11$ form.
 - Refine to precision far past the source, with a reported residual bound.
 - Recover a minimal polynomial and discharge it through the existing exact machinery.
-- Close the round trip, then run the whole chain at `n = 29`.
+- Close the round trip, then run the whole chain at $n = 29$.
 - Remove the `1e-11` float-LP floor so poses this project generates become promotable.
 
 ## Non-Goals
 
-- **Optimality.** Certifying an upper bound leaves the `n = 29` bound gap of about
-  `0.46` untouched. A lower bound is separate mathematics.
+- **Optimality.** Certifying an upper bound leaves the $n = 29$ bound gap of about
+  $0.46$ untouched. A lower bound is separate mathematics.
 - **Record improvement.** This certifies an existing construction.
   Searching for a better one is the proposer layer, where H-002, H-016, H-018 and H-020
   are all refuted.
@@ -160,7 +160,7 @@ The existing back end is the oracle:
 | `sqpack.verify.corners_from_poses(x, y, theta)` | Pose to corner polygon |
 | `sqpack.witness.load_witness(path)` | `Witness/v2` loading with schema checks |
 | `cases.n5.tangent_cones.LinearRow(label, coefficients)` | The existing linear-row shape, reused rather than reinvented |
-| `cases.kingbird29.verify_svg` | The `n = 29` reconstruction that already computes contacts |
+| `cases.kingbird29.verify_svg` | The $n = 29$ reconstruction that already computes contacts |
 
 Third-party: SymPy 1.14 provides `groebner` and `resultant`; mpmath 1.3 provides `pslq`
 and arbitrary-precision arithmetic.
@@ -225,7 +225,7 @@ A corner-edge contact contributes one scalar equation and one free slide paramet
 the edge; an edge-edge contact contributes an angle identity plus an overlap-interval
 condition, which is a different equation and not a single scalar; a corner-corner
 contact is a codimension-two coincidence.
-At `n = 29` fifteen of the twenty-nine squares are axis-aligned, so edge-edge contacts
+At $n = 29$ fifteen of the twenty-nine squares are axis-aligned, so edge-edge contacts
 are common rather than exceptional and cannot be folded into the corner-edge case.
 Extraction must therefore identify the realising feature pair, and must refuse when the
 realising pair is not unique.
@@ -241,11 +241,12 @@ class ContactSystem:
 ```
 
 `centre_map` is the elimination: every square’s centre is written as an anchor plus a
-chain of rotations, so the unknowns reduce to `s`, the distinct angles, and the slide
-scalars. The archived `n = 29` source is a worked instance of exactly this shape — nine
-slide scalars `r1..rD`, each a closed-form expression in `{s, a, b, c, d, i}`, and six
-closing equations `f1..f6` written as one rotated component of a difference of two
-corner positions. `assemble` and `close` should be checked against it directly.
+chain of rotations, so the unknowns reduce to $s$, the distinct angles, and the slide
+scalars. The archived $n = 29$ source is a worked instance of exactly this shape — nine
+slide scalars `r1..rD`, each a closed-form expression in
+$\lbrace s, a, b, c, d, i\rbrace$, and six closing equations `f1..f6` written as one
+rotated component of a difference of two corner positions.
+`assemble` and `close` should be checked against it directly.
 
 ### API changes
 
@@ -259,12 +260,12 @@ precision and novelty are recorded rather than asserted in prose.
 
 - [ ] `promote/contacts.py` with `ContactStructure` and
   `extract_contacts(squares, side, *, floor_ratio)`.
-- [ ] Classify each of the `n(n-1)/2` pairs and `4n` wall relations by exact or
+- [ ] Classify each of the $n(n-1)/2$ pairs and $4n$ wall relations by exact or
   high-precision margin; group squares into angle classes.
 - [ ] Populate `ambiguous` for any incidence within `floor_ratio` of the strict floor.
-- [ ] Extract `n = 29` from the existing reconstruction; assert 52 pair contacts, 37
+- [ ] Extract $n = 29$ from the existing reconstruction; assert 52 pair contacts, 37
   wall contacts, 6 angle classes, empty `ambiguous`.
-- [ ] Extract `n = 11` from `cases.trump11.packing` and compare against the known
+- [ ] Extract $n = 11$ from `cases.trump11.packing` and compare against the known
   structure.
 - [ ] Retain both as soft-schema artifacts under `atlas/`.
 - [ ] Negative control: perturb one margin to straddle the floor and require a refusal.
@@ -274,12 +275,12 @@ precision and novelty are recorded rather than asserted in prose.
 - [ ] `promote/system.py` with `assemble(structure, unknowns)` producing equations in
   SymPy symbols, and `close(system)` adding Jacobian-determinant conditions.
 - [ ] Eliminate centres where the contact graph permits; report which unknowns survive.
-- [ ] Reproduce the known `n = 11` system: two unknowns after reduction.
+- [ ] Reproduce the known $n = 11$ system: two unknowns after reduction.
 - [ ] Refuse, with the specific incidence named, when the graph does not admit
   elimination.
 - [ ] Negative control, two parts.
   Dropping an incidence is **not** a valid control: the raw system is redundant — 89
-  incidences plus angle identities against 88 raw unknowns at `n = 29` — so removing one
+  incidences plus angle identities against 88 raw unknowns at $n = 29$ — so removing one
   equation leaves it exactly as solvable, and a control that cannot fail is not a
   control. Instead:
   1. **Underdetermination.** Withhold `close()` and require the unclosed system to be
@@ -295,7 +296,7 @@ precision and novelty are recorded rather than asserted in prose.
   the serialized pose, returning the solution and a **reported residual bound**.
 - [ ] Verify the residual falls with precision as a Newton step should; a residual that
   plateaus indicates a wrong system and must be reported as such.
-- [ ] Reach 1000+ digits at `n = 11` and `n = 29`.
+- [ ] Reach 1000+ digits at $n = 11$ and $n = 29$.
 - [ ] Negative control: seed far from the root and require non-convergence to be typed,
   not silently returned.
 
@@ -308,15 +309,15 @@ precision and novelty are recorded rather than asserted in prose.
   not the search’s `maxcoeff` bound, which overstates it — and let the manufacturable
   budget be `B = (d + 1) * log10(C)`. A candidate is accepted only when all three hold:
   1. **Budget.** The relative residual is below `10^-(B + M)`, with the margin fixed at
-     `M = 200` decimal digits for this project.
-  2. **Stability under precision.** Re-evaluated at `2B + 2M` digits, the residual keeps
+     $M = 200$ decimal digits for this project.
+  2. **Stability under precision.** Re-evaluated at $2B + 2M$ digits, the residual keeps
      falling to the evaluation floor instead of resting at `10^-B`. A spurious relation
      is pinned to the budget that produced it; a genuine one is not.
      This is the cheap decisive test and it is mandatory.
   3. **Independent digits.** The value is supplied by a phase-3 refinement whose
      *reported residual bound* is below `10^-(B + M)`. “Digits available” always means
      that bound — never the number of digits a source happens to print.
-     Record `d`, `C`, `B`, `M`, the residual at `B`, and the residual at `2B + 2M`.
+     Record $d$, `C`, $B$, $M$, the residual at $B$, and the residual at $2B + 2M$.
      Clause 2 is what the planning probe lacked, and it is why that probe’s degree-8
      “relation” was reported as spurious.
 - [ ] `promote/roundtrip.py`: build a `NumberField` from the candidate, prove
@@ -325,9 +326,9 @@ precision and novelty are recorded rather than asserted in prose.
 - [ ] Compare the reconstructed side against the input pose, not merely validity — a
   wrong contact structure can yield a *valid but suboptimal* packing, which verification
   alone does not catch.
-- [ ] Recover Trump’s degree-8 polynomial at `n = 11` and close the loop against
+- [ ] Recover Trump’s degree-8 polynomial at $n = 11$ and close the loop against
   `cases.trump11.packing`.
-- [ ] Run the chain at `n = 29` and record whatever it returns, including a refusal.
+- [ ] Run the chain at $n = 29$ and record whatever it returns, including a refusal.
 - [ ] Negative controls: a plausible wrong polynomial must fail back-substitution; a
   perturbed contact structure must fail the side comparison.
 
@@ -344,7 +345,7 @@ precision and novelty are recorded rather than asserted in prose.
 
 ## Testing Strategy
 
-**`n = 11` is the test harness, not just a case.** Every stage has a published answer
+**$n = 11$ is the test harness, not just a case.** Every stage has a published answer
 that no implementation here can influence: the extraction against the known contact
 structure, the assembly against the known two-unknown system, the solve against Trump’s
 degree-8 polynomial, the round trip against `cases.trump11.packing`.
@@ -370,7 +371,7 @@ runs at every phase boundary rather than only before merge.
 
 Phases land in order behind the existing gate.
 Nothing enters `frontier/` from this work without passing the witness and evidence
-contracts; a promoted `n = 29` certificate is a deliberate reviewed change, never a
+contracts; a promoted $n = 29$ certificate is a deliberate reviewed change, never a
 result written straight into the record.
 
 An unattended runner may not write an accepting verdict from this chain.
@@ -379,12 +380,12 @@ human. That rule is unchanged and applied to exp-045 already.
 
 ## Open Questions
 
-- **What degree is `s(29)`'s minimal polynomial?** Unknown, and it decides whether
+- **What degree is $s(29)$'s minimal polynomial?** Unknown, and it decides whether
   integer relation is viable and at what precision.
   The planning probe bounds only what 98 digits can reach, not the true degree.
-- **Does elimination terminate at 6 unknowns?** `n = 11` reduces to 2 and `n = 17` to 3.
-  `n = 29` has 6 orientation classes of which one is the axis class, so 5 tilted angles
-  plus `s` gives 6 — settled by the source’s own six-by-six solve rather than estimated.
+- **Does elimination terminate at 6 unknowns?** $n = 11$ reduces to 2 and $n = 17$ to 3.
+  $n = 29$ has 6 orientation classes of which one is the axis class, so 5 tilted angles
+  plus $s$ gives 6 — settled by the source’s own six-by-six solve rather than estimated.
   Gröbner cost is severe in variable count.
   This is why phase 4 builds *two* routes rather than a route and a fallback.
 - **Do the 5 tilted angle classes collapse to fewer exact relations**, lowering the
@@ -392,7 +393,7 @@ human. That rule is unchanged and applied to exp-045 already.
 - **Is the exact LP purely rational for the cells that matter**, or does it need
   algebraic coefficients?
   It is rational only for rational-coefficient cells.
-- **What `floor_ratio` makes `ambiguous` meaningful?** At `n = 29` the separation is 99
+- **What `floor_ratio` makes `ambiguous` meaningful?** At $n = 29$ the separation is 99
   orders of magnitude and any sane value works.
   On a quenched pose near the `1e-11` floor it is the whole question, and phase 5 may
   change the answer.

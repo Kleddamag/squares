@@ -3,18 +3,22 @@ type: is
 id: is-01m3q1wwj45wkjdgq0vt1v6dx7
 title: "Overview: page cards for the explainer, tutorial and visualizer"
 kind: feature
-status: closed
+status: open
 priority: 2
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T17:02:47.876Z
-updated_at: 2026-09-29T17:06:16.995Z
-closed_at: 2026-09-29T17:06:16.995Z
-close_reason: Done in 85f6387dc on claude/overview-page-impl; in the private preview, awaiting RC's review and the push.
+updated_at: 2026-09-30T02:47:51.486Z
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
 RC 2026-09-29 (overview preview review).
+
+## Notes
+
+Reopened: Done only on claude/overview-page-impl, which was never pushed; the owner asked on 2026-09-30 that it be treated as lost. The decision is carried in the revised spec (plan-2026-09-29-github-pages-overview.md) and the work is to be redone.

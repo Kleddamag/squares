@@ -349,9 +349,9 @@ site set, as the generator uses, or all points).
   as on $L$ and $B$. The register entry for this result records two site sets at side
   3.82 whose optima differ, which is the dependence the sentence denies.
 - If the program is the idealised one over all sites and all angles, then $\tau^{\ast}$
-  does depend on `L` and `B` alone, but “exactly when” fails in one direction: a
-  certificate needs mass at least 1 only for `B`-squares at net angles, so a certificate
-  can exist while the all-angle `B`-square program has $\tau^{\ast} \ge n$.
+  does depend on $L$ and $B$ alone, but “exactly when” fails in one direction: a
+  certificate needs mass at least 1 only for $B$-squares at net angles, so a certificate
+  can exist while the all-angle $B$-square program has $\tau^{\ast} \ge n$.
 
 The sentence’s point, that $n$ never enters the program, is right under either reading.
 Also, “exactly when” glosses the rationalisation step: the search runs in floating

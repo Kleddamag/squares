@@ -86,29 +86,14 @@ squares.
 ## The Atlas
 
 The best packings known for every tracked case, n = 1 to 324. Press one to see what the
-film below shows for it: its bounds, where each comes from, and what is still open,
-beside the packing drawn large, with a link to its case record.
+film shows for it: its bounds, where each comes from, and what is still open, beside the
+packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
-<div class="site-wide site-atlas">
-<figure>
-<a href="known-best-1-100.pdf" type="application/pdf"><img src="known-best-1-100.png" alt="One hundred known-best square packings, n = 1 to 100, each labelled with its best-known side and, where the case is open, its strongest verified lower bound." loading="lazy"></a>
-<figcaption>n = 1 to 100 · <a href="known-best-1-100.pdf" type="application/pdf">PDF</a></figcaption>
-</figure>
-<figure>
-<a href="known-best-1-324.pdf" type="application/pdf"><img src="known-best-1-324.png" alt="Every tracked case, n = 1 to 324, each drawn as its best-known square packing." loading="lazy"></a>
-<figcaption>n = 1 to 324 · <a href="known-best-1-324.pdf" type="application/pdf">PDF</a></figcaption>
-</figure>
-<figure class="site-atlas-film">
-<video class="site-film" controls preload="none" playsinline width="1920" height="1080" poster="ascent-n1-324-poster.png" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">
-<source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
-<a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">The film of the ascent from 1 to 324</a>.
-</video>
-<figcaption>The ascent from n = 1 to 324, one square at a time, each step naming the bound it reaches and its source · 8 m 14 s · <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">open the film</a></figcaption>
-</figure>
-<p class="site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>); the larger prints at 44 by 51 inches. The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
-</div>
+{{ATLAS_CARDS}}
+
+<p class="site-wide site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>). The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
 
 ## The Survey
 

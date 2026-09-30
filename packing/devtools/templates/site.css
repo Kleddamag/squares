@@ -39,6 +39,7 @@ body {
      the lowest close to the page's own dark background. */
   --site-rung-base: 25%;
   --site-rung-step: 4%;
+  --site-hero-filter: brightness(0.88);
 }
 /* Chips are light fills carrying the page's own text colour, darkening with the level
    from close to the page background; dark mode turns the scale over (above). */
@@ -159,23 +160,28 @@ body {
     grid-template-columns: repeat(auto-fit, calc((100% - 4rem) / 5));
   }
 }
-/* A card is a clean summary with square corners. Every card is a button that opens a
-   popover previewing where it leads, which ends in the one button that goes there. A
+/* A card is a clean summary with square corners. Most cards are a button that opens a
+   popover previewing where it leads, which ends in the one button that goes there; a
+   direct card is the link itself and opens its target in a new tab. A
    card gets a gentle wash on hover, and a gray icon in its corner, repeated on the
    popover's button, says where that is: a down arrow scrolls to a row on this page, a
    diagonal arrow leaves the site, and a right arrow opens another page of it. The rule
    is in paper-design.md. */
 .kpress .site-card {
+  --site-card-pad-block: 0.9rem;
+  --site-card-pad-start: 1rem;
+  --site-card-pad-end: 1rem;
   border: 1px solid var(--kpress-doc-border);
   border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0.9rem 1rem;
+  padding: var(--site-card-pad-block) var(--site-card-pad-end) var(--site-card-pad-block)
+    var(--site-card-pad-start);
 }
 .kpress :is(a, button).site-card {
+  --site-card-pad-end: 2.2rem;
   color: inherit;
-  padding-inline-end: 2.2rem;
   position: relative;
   text-decoration: none;
   transition: background-color 120ms ease;
@@ -215,6 +221,38 @@ body {
 .kpress .site-card[data-go="page"]::after,
 .kpress .site-popover-action[data-go="page"]::after {
   content: "\2192";
+}
+
+/* A card's optional hero: a small picture heading it, edge to edge above its label, in
+   a 16:9 box it covers from its top edge, so cards with pictures of any shape line up
+   in a row. A hairline parts it from the text. Dark mode dims it a little, since the
+   pictures are prints on white. The corner icon sits over the picture on a chip of the
+   page's background, so it reads on any image. The rule is in paper-design.md. */
+.kpress .site-card .site-card-hero {
+  aspect-ratio: 16 / 9;
+  background: var(--site-wash);
+  border-block-end: 1px solid var(--kpress-doc-border);
+  display: block;
+  margin-block: calc(-1 * var(--site-card-pad-block)) 0.55rem;
+  margin-inline: calc(-1 * var(--site-card-pad-start)) calc(-1 * var(--site-card-pad-end));
+  overflow: hidden;
+}
+.kpress .site-card .site-card-hero img {
+  block-size: 100%;
+  display: block;
+  filter: var(--site-hero-filter, none);
+  inline-size: 100%;
+  margin: 0;
+  max-inline-size: none;
+  object-fit: cover;
+  object-position: top;
+}
+.kpress :is(a, button).site-card:has(.site-card-hero)::after {
+  background: var(--kpress-doc-bg);
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  line-height: 1;
+  padding: 0.2rem 0.35rem;
 }
 
 /* A card's popover shows where the card leads, another page framed in its embed
@@ -550,48 +588,12 @@ body {
     display: none;
   }
 }
-/* The two posters side by side, each opening its PDF; stacked on a phone. */
-.site-atlas {
-  display: grid;
-  gap: 1.5rem 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-}
-/* The posters differ in shape, so each caption keeps to the foot of its column and the
-   two line up. */
-.site-atlas figure {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-}
-.site-atlas figcaption {
-  margin-block-start: auto;
-  padding-block-start: 0.5rem;
-}
-.site-atlas img {
-  display: block;
-  height: auto;
-  width: 100%;
-}
-.site-atlas :is(figcaption, .site-atlas-note) {
+/* The atlas's closing note, under its poster and film cards, in the support gray. */
+.site-atlas-note {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   text-align: center;
-}
-.site-atlas .site-atlas-note {
-  grid-column: 1 / -1;
-  margin: 0;
-}
-/* The film spans both columns under the posters, at its own 16:9. */
-.site-atlas .site-atlas-film {
-  grid-column: 1 / -1;
-}
-.site-atlas .site-film {
-  aspect-ratio: 16 / 9;
-  background: var(--kpress-doc-surface, var(--kpress-doc-bg));
-  display: block;
-  height: auto;
-  width: 100%;
 }
 .site-recent {
   font-size: 0.95em;
@@ -929,7 +931,7 @@ body {
   display: block;
   inline-size: 100%;
 }
-.site-hero .site-hero-figure figcaption {
+.site-hero-figure figcaption {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * 0.85);

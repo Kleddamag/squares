@@ -332,8 +332,14 @@ it.
   Four or more cards fill its columns from the left, as many 16rem columns as fit.
   Three or fewer centre as a group, each card as wide as it would be in a full row, so a
   short section lines up with a long one; below four columns the row holds them anyway.
-  Every card works the same way: pressing it opens a popover that shows where it leads,
-  and the popover ends in one button that goes there, centred at its foot.
+  A card works one of two ways.
+  Most cards open a popover that shows where they lead, and the popover ends in one
+  button that goes there, centred at its foot.
+  A direct card is instead itself the link (`link_card`), for a target whose address or
+  picture is the whole of what a preview would say.
+  **A direct card always opens its target in a new tab** (`target="_blank"`,
+  `rel="noopener noreferrer"`), whether it is a page or file of this site or a place off
+  it, so the page the reader chose it from stays where they left it.
   - When the card leads to another page of the site, the popover renders that page
     itself, narrow, in a frame: the page at the same address with `?view=embed` added
     before any fragment, so a filtered view such as `frontier.html?recent=true` or a
@@ -343,12 +349,14 @@ it.
     repository document also offers its source “On GitHub”, which opens it on `main`.
     Every repository link on the site names `main`, never a commit, and is made by
     `devtools/repo_links.py`.
-  - When the card leads to another project off the site, the card is the link itself and
-    has no popover: its address is the whole of what a preview would say.
+  - When the card leads to another project off the site, it is a direct card.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
     and inlined, since the page fetches nothing), and opens it in a new tab.
-    This is the one exception to the popover rule.
+  - When the card leads to a poster’s PDF or to the Visualize page, it is a direct card
+    headed by the picture it opens (below).
+    A PDF card is typed `application/pdf` and never marked `download`, so the browser
+    opens it in place.
   - When the card leads to a row, the popover previews the row, read from the same
     record: a result’s claim, why it matters, its rungs and records.
     A result’s row is on the results page, so its card is a page card, with `→` for its
@@ -362,6 +370,16 @@ it.
   scripting. A card gains a gentle wash on hover.
   Its gray corner icon and the popover’s button both show where the button goes: `↓` to
   a row on this page, `↗` off the site, `→` to another page of the site.
+
+- **Card heroes.** Any card, popover or direct, may be headed by a small picture
+  (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
+  edge above the caps label in a fixed 16:9 box, covering it from the picture’s top
+  edge, so pictures of any shape line up across a row; a hairline parts it from the
+  text. It is a file served beside the page, never an address off the site, loads lazily,
+  and is decorative (`alt=""`), since the card’s label and value already say what it
+  shows. Dark mode dims it slightly (`--site-hero-filter`), since the pictures are prints
+  on white. On a hero card the corner icon sits over the picture on a small chip of the
+  page background, so it reads on any image.
 
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
   note size, a solid light fill and no border, lettered in the page’s own text colour.
@@ -427,14 +445,13 @@ it.
   only the record its fragment names (`overview/case-view.js`) and typesets that
   record’s math when it is shown; without scripting it lists every record.
 
-- **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
-  on a phone. Each image and its caption link to that poster’s PDF, marked
-  `type="application/pdf"` and never `download`, so the browser opens it in place.
-  Under them, across both columns, is the n = 1 to 324 film, embedded as the explainer
-  embeds its film: inline, with its controls, fetching nothing until a reader presses
-  play (`preload="none"`), and showing its poster until then, a frame of the film at n =
-  290 (`ascent-n1-324-poster.png`) at the video’s own 16:9, so starting playback moves
-  nothing. Nothing moves by itself, so reduced motion needs no script.
+- **Atlas cards.** Under the grid, the atlas’s posters and film are three direct hero
+  cards side by side, one card section (`atlas_cards`): the n = 1 to 100 poster, headed
+  by its landscape card image, opens its PDF; the n = 1 to 324 poster, headed by the top
+  of the poster itself, opens its PDF; and **Visualize**, headed by a frame of the n = 1
+  to 324 film at n = 290 (`ascent-n1-324-poster.png`), opens `visualize.html`, the film
+  alone at full size. The overview embeds no video, so nothing on it moves or fetches a
+  film.
 
 - **The film.** The Visualize section’s Film tab, `visualize.html`, is the n = 1 to 324
   film at full size under the section tabs and a page title, “Visualize”, with the

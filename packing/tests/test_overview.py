@@ -158,6 +158,16 @@ def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:
     assert render_overview.FILM_SCRIPT.read_text(encoding="utf-8") in page
 
 
+def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
+    """A section of three cards or fewer centres them only when its grid can ask how many
+    columns its frame fits, so every grid is the only child of a `.site-cards-frame`."""
+    grids = re.findall(r'<div class="([^"]*)"><div class="(site-cards[^"]*)">', page)
+    every = re.findall(r'<div class="site-cards[" ]', page)
+    assert len(grids) == len(every), "a card grid outside a frame"
+    assert all(frame == "site-cards-frame site-wide" for frame, _ in grids)
+    assert any("site-cards-dimensions" in grid for _, grid in grids)
+
+
 def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:
     levels = overview_sections.rubric_levels()
     assert [len(levels[scale]) for scale in "VCS"] == [6, 6, 5]

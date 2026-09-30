@@ -147,7 +147,8 @@ def card(
 
 
 def _cards(cards: list[str]) -> str:
-    return '<div class="site-cards site-wide">' + "".join(cards) + "</div>"
+    frame = '<div class="site-cards-frame site-wide"><div class="site-cards">'
+    return frame + "".join(cards) + "</div></div>"
 
 
 def _dl(rows: list[tuple[str, str]]) -> str:
@@ -392,7 +393,10 @@ def verification_block() -> str:
                 also=(branch_file(repo_links.EPISTEMICS, f"#{section}"), "On GitHub"),
             )
         )
-    return f'<div class="site-cards site-cards-dimensions site-wide">{"".join(cards)}</div>'
+    return (
+        '<div class="site-cards-frame site-wide"><div class="site-cards site-cards-dimensions">'
+        f"{''.join(cards)}</div></div>"
+    )
 
 
 def recent_list(overview: Overview, count: int = 8) -> str:

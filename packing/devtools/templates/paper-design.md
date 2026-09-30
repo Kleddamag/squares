@@ -168,6 +168,11 @@ it.
 
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
+  A card section is one grid in the wide track, in a `.site-cards-frame` the grid
+  measures itself against.
+  Four or more cards fill its columns from the left, as many 16rem columns as fit.
+  Three or fewer centre as a group, each card as wide as it would be in a full row, so a
+  short section lines up with a long one; below four columns the row holds them anyway.
   Every card works the same way: pressing it opens a popover that shows where it leads,
   and the popover ends in one button that goes there.
   - When the card leads to another page of the site, the popover renders that page

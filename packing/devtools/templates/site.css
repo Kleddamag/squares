@@ -113,11 +113,34 @@ body {
 }
 
 /* ---------- Cards ---------- */
+/* A card section is a frame the width of the wide track holding the grid, so the grid
+   can ask how many columns its frame fits. Four or more cards fill the columns as they
+   come. Three or fewer centre as a group, each card the width it would have had in a
+   full row: four columns from 67rem (four 16rem tracks and three gaps), five from 84rem.
+   Below that the row holds three or fewer anyway. */
+.site-cards-frame {
+  container-type: inline-size;
+  margin-block: 1.5rem;
+}
 .site-cards {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  margin-block: 1.5rem;
+}
+@container (width >= 67rem) {
+  .site-cards:not(
+    :has(> :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover))
+  ) {
+    grid-template-columns: repeat(auto-fit, calc((100% - 3rem) / 4));
+    justify-content: center;
+  }
+}
+@container (width >= 84rem) {
+  .site-cards:not(
+    :has(> :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover))
+  ) {
+    grid-template-columns: repeat(auto-fit, calc((100% - 4rem) / 5));
+  }
 }
 /* A card is a clean summary with square corners. Every card is a button that opens a
    popover previewing where it leads, which ends in the one button that goes there. A

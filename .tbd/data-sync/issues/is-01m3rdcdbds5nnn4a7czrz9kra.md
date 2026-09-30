@@ -5,14 +5,14 @@ title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
 status: open
 priority: 1
-version: 2
+version: 3
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T11:28:02.642Z
+updated_at: 2026-09-30T13:31:54.304Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -45,3 +45,5 @@ Both PRs are merged with T-058 to T-061 intact, `n-011.md` states both lines con
 ## Notes
 
 2026-09-30 correction: check_results requires contiguous register IDs, so T-061 could not be reserved. The Wang–Li result is T-058 on claude/determined-goldberg-ura2ed (jlevy/squares#249, commit 827e70b68). #246 also uses T-058 to T-060. Whichever PR merges second renumbers its new entries to follow the other's; if #249 is second, Wang–Li becomes T-061. The comment on #246 was edited to say so.
+
+2026-09-30 PR246 completion update: T-060 now independently confirms global equality at Trump's exact endpoint, S5/V4/C5, after all2180 exclusions and ten capture nodes plus final Astra-max composition review. Final receipt eaad8f14; PR review https://github.com/jlevy/squares/pull/246#issuecomment-5912106554. The verified lower frontier is being promoted on that evidence. Wang–Li remains a separately credited historical improvement; preserve its intake and generalized native parent-core tool. Current origin/main was fetched and is included; PR249 was still open at the prior check. The later-merging PR must reconcile IDs as above and repin generated artifacts.

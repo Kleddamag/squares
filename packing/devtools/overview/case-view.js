@@ -48,6 +48,13 @@
     }
   };
 
+  // A record opens at the top of the page with the navigation in view. KPress scrolls
+  // its viewport pane rather than the window, so both are reset.
+  const toTop = () => {
+    document.querySelector(".kpress-viewport")?.scrollTo(0, 0);
+    window.scrollTo(0, 0);
+  };
+
   const show = () => {
     const id = decodeURIComponent(location.hash.slice(1));
     const current = records.get(id);
@@ -63,7 +70,9 @@
     release(current);
     const label = current.dataset.n ? `n = ${current.dataset.n}` : id;
     document.title = `${label} · ${title}`;
-    window.scrollTo(0, 0);
+    toTop();
+    // The browser's own jump to the fragment can land after this runs, so settle once more.
+    requestAnimationFrame(toTop);
   };
 
   page.setAttribute("data-case-view", "");
@@ -72,4 +81,9 @@
   }
   show();
   window.addEventListener("hashchange", show);
+  window.addEventListener("load", () => {
+    if (records.has(decodeURIComponent(location.hash.slice(1)))) {
+      toTop();
+    }
+  });
 })();

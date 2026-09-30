@@ -115,6 +115,15 @@ def test_unjustified_2135_input_shrink_is_refused() -> None:
         )
 
 
+def test_input_domain_may_conservatively_enlarge_but_never_shrink() -> None:
+    required = generic.frozen.hull([(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(1)), (Q(0), Q(1))])
+    larger = [["-1", "-1"], ["2", "-1"], ["2", "2"], ["-1", "2"]]
+    assert generic.covering_input_domain(required, larger) == generic.frozen.convex(larger)
+    smaller = [["0", "0"], ["1/2", "0"], ["1/2", "1/2"], ["0", "1/2"]]
+    with pytest.raises(ValueError, match="row input domain"):
+        generic.covering_input_domain(required, smaller)
+
+
 def test_imported_frozen_helper_pin_mismatch_refuses(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -169,6 +178,20 @@ def test_missing_angular_row_and_changed_source_state_refuse() -> None:
             budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
             workers=1,
         )
+
+
+def test_preflight_allows_repeated_owner_but_refuses_unproved_partner_cover() -> None:
+    manifest, recipe = _recipe(2135)
+    source = generic.load_object(recipe["source_sha256"], manifest, generic.OBJECTS)
+    mask = tuple(recipe["mask"])
+    repeated = copy.deepcopy(source)
+    extra = copy.deepcopy(repeated["steps"][0])
+    extra["index"] = len(repeated["steps"])
+    repeated["steps"].append(extra)
+    generic.capability_preflight(repeated, mask, 8)
+    repeated["steps"][0]["prior_partner_pose_covers"] = {"1": []}
+    with pytest.raises(ValueError, match="partner-pose"):
+        generic.capability_preflight(repeated, mask, 8)
 
 
 @pytest.mark.slow

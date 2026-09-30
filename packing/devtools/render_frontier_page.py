@@ -279,6 +279,7 @@ def packing_svg(
     box = f"{-unit:g} {-unit:g} {units + 2 * unit:g} {units + 2 * unit:g}"
     frame_width = (Decimal("1.2") * unit).normalize()
     crisp = ""
+    line_width = (Decimal("0.6") * unit).normalize()
     if frame_px is not None:
         # One pixel of a `frame_px`-pixel drawing whose box is the frame plus half its
         # stroke on each side: (units + w) / frame_px = w.
@@ -287,8 +288,6 @@ def packing_svg(
         box = f"{-half:.4f} {-half:.4f} {units + pixel:.4f} {units + pixel:.4f}"
         frame_width = pixel.quantize(Decimal("0.0001"))
         crisp = ' shape-rendering="crispEdges"'
-    line_width = (Decimal("0.6") * unit).normalize()
-    if frame_px is not None:
         # At icon size the page's hairline all but vanishes, so the squares' outlines
         # take half a pixel: one device pixel on a 2x screen, and still lighter than
         # the frame.

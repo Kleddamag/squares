@@ -218,6 +218,69 @@ Reusing a field through a larger container symmetry requires an independently ch
 permutation of the complete closed cover and transformed ownership and charge premises.
 Only the already checked whole-packing half-turn is presently part of field transfer.
 
+### Source-Bound Non-Field Recipes
+
+The maintained
+[recipe builder](../../../packing/devtools/prepare_n11_nonfield_manifest.py) now freezes
+all 276 non-field cases in a
+[compact manifest](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz),
+with a readable
+[summary](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/summary.json).
+Each recipe binds its canonical mask, seed, proposed ordered ancestry, exact cap, source
+and audit identities, and individual index/LFS object sizes and hashes.
+A3 member recipes also match the indexed archive members and assigned jobs; their
+individual blobs can be acquired without downloading a ZIP. Ten focused controls cover
+omissions, duplicate ancestors, wrong identities and sizes, unsafe member paths, and
+unsupported member types.
+
+The recipes comprise 273 sequential wall-seed cases, one closed center-partition case
+(1383), and two cases requiring earlier-baseline symmetry cuts (2175 and 2176). Case
+1839’s cached source is listed with all four proposed ancestors, so the consumer can
+replay them rather than accept the cache’s verdict.
+Published audit order supplies a proposed dependency list; actual source-parent edges,
+inherited predicates, and geometric transitions still require independent acceptance.
+The manifest’s geometry, actual-parent, and global-proof flags are all false.
+
+The 924 unique declared proof objects total 2,121,265,805 compressed bytes and
+10,063,719,433 decoded bytes.
+These are inventory sizes, not a download request or a replay-cost estimate.
+The final build read 285 small metadata objects in 12.13 seconds and retained a
+186,249-byte compressed manifest.
+Select bounded source closures from this inventory before scheduling geometry.
+
+Inspecting complete ancestry changes the first-pilot choice from terminal-size ranking.
+Case 2095 has one fresh node with five sequential 32-row updates and no self-hull cuts,
+partner covers, branch predicate, or guard.
+Its first row and complete 77-point, 352-row wall seed are checked as diagnostics; no
+case exclusion follows from that pilot.
+Case 2135 is a small follow-on: one fresh node, six eight-row updates, and 75 seed
+points. Its complete declared closure, including cover and audit, is 492,515 compressed
+bytes and 3,168,742 decoded bytes.
+It additionally requires self-hull center cuts, but no partner-cover or branch adapter.
+
+The shared transition contract starts from independently accepted strict owned hulls
+$H_j$, a complete closed angular partition, and accepted outer center domains.
+For every row, prove the proposed core $Q$ lies strictly inside every physical square
+orientation in that row; then $H_j-Q$ forbids the querying square’s center for each
+other occupied owner $j$. Prove that the complete legal center domain is covered by
+those forbidden regions and the proposed closed residual polygons, preserving points and
+segments.
+New ownership points must lie in every translate $z+Q$ for all residual centers
+$z$; exact facet minima and convex-combination witnesses establish this implication.
+Each sequential update consumes the preceding accepted state, and acceptance of an
+exclusion requires a complete empty pose cover for an occupied square.
+Normalize accepted polygons before later clipping; equal convex hulls do not justify
+clipping an unnormalized source vertex sequence.
+
+For a proposed self-owned-hull cut $n\cdot c\le h$, set $E=h-\min_{p\in H}n\cdot p$. For
+each pair of signs $\sigma_1,\sigma_2\in\{-1,1\}$, define $A=\sigma_1n_x+\sigma_2n_y$
+and $D=\sigma_1n_y-\sigma_2n_x$. Require $(E-BA/2)-BDt+(E+BA/2)t^2\ge0$ throughout the
+row’s closed half-angle interval.
+Checking endpoints and any interior quadratic minimum proves the full physical square’s
+support is at most $E$, making the center cut necessary.
+This uses an upper bound on the full square; the smaller strict collision core cannot
+supply that bound.
+
 ### First Independent Field Exclusion: Mask 0
 
 `think-fi4w` takes the first substantive geometric slice after the case census.
@@ -573,6 +636,16 @@ Focused refusal controls for missing owners, changed worker bindings, and invali
 weights accompany acceptance of this runner.
 Neither receipt accepts all fourteen rounds, the later transition tree, candidate
 capture, or global optimality; all those verdict flags remain false.
+
+Later-round acceptance is conditional on the preceding independently accepted geometry.
+Every current closed angle interval must lie within its cited prior interval, and each
+inherited support bound must contain every prior residual vertex, including degenerate
+residuals. An excluded prior interval stays explicitly excluded.
+A receipt-only chain audit must bind all fourteen aggregate results and owner files back
+to the pinned first result and declare the actual local geometric executions as its
+premise. Matching status fields and checker hashes cannot establish that execution
+occurred. Full root acceptance requires those observed, reviewed executions and their
+complete joins; it does not follow from the last round number alone.
 
 The ten later source nodes are already acquired.
 Their first node, `root.json` in the local source-graph cache, records a later

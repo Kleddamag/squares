@@ -478,7 +478,19 @@ sources:
       certified-packet intakes read it. devtools.diff_kingbird_catalogue compares the two:
       41 counts at n <= 324 print a new side, all of them lower. At 36 a certified packet
       already reports a smaller side; n = 126 and 179 now take the catalogue's new side;
-      n = 69, 83 and 87 are pending intake below. Its values supply the baseline report;
+      n = 69, 83 and 87 are pending intake below. The two that moved were published
+      before 22 August 2026, so the register's rule for results by others does not hold
+      them back. n = 126 is Joost de Winter's packing: the retained de Winter packet
+      (resources/web/de-winter-improved-packings-2026/results.json, observed 2026-09-05,
+      before the catalogue carried it) records his report "Improved packings of 68, 126
+      and 206 unit squares in a square", dated 2026-08-14, with s(126) =
+      11.774735132406546, of which the catalogue's 11.77473513240654 is the truncation;
+      and the attribution comment of https://kingbird.myphotos.cc/packing/square-126.svg,
+      read 2026-09-30, says "Improved by Joost de Winter on August 14, 2026, working with
+      unspecified AI" and "Source: Private communication from Joost de Winter to David
+      Ellsworth, on August 14, 2026". n = 179 is dated by the page itself ("June 2026"),
+      and https://kingbird.myphotos.cc/packing/square-179.svg says "Improved by Tej Stead
+      on June 17, 2026". Its values supply the baseline report;
       newer first-party releases can override individual cases. SVG geometry has
       case-specific replay status and is not made formal by appearing here.
   - id: unitsquare-release1

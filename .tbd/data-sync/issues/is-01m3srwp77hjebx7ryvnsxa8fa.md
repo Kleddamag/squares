@@ -3,17 +3,17 @@ type: is
 id: is-01m3srwp77hjebx7ryvnsxa8fa
 title: Keep terminal synopsis handoff and mutation anchor aligned after formatting
 kind: bug
-status: in_progress
+status: closed
 priority: 2
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3sk1aq5e7wm2hzghg3wf499
 created_at: 2026-09-30T18:23:07.481Z
-updated_at: 2026-09-30T19:27:16.436Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T23:49:13.770Z
+closed_at: 2026-09-30T23:49:13.766Z
+close_reason: PR253 merged as 5ddb1cda; fresh main Packing validation run 36765676235 completed successfully, including deferred-controls-finer and post-merge-required. Focused local negative control also passed. This confirms the expected-error repair, not a new proof replay.
 resolution: null
 duplicate_of: null
 ---

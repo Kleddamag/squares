@@ -12,7 +12,7 @@ labels:
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T05:47:21.587Z
+updated_at: 2026-09-30T11:28:02.642Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -44,4 +44,4 @@ Both PRs are merged with T-058 to T-061 intact, `n-011.md` states both lines con
 
 ## Notes
 
-PR246 coordinator read the coordination comment5904905961 and issue247 on2026-09-30. Agreed ownership: retain T058/T059/T060; reserve T061 for Wang-Li intake; do not modify their verify_n11_parent_core_native/verify_kleddamag_n11_native path during rectangle exact-kernel work. Our current code changes are rectangle_density.py, its tests, and independent T060 field tools. Important evidence boundary: T059 is the source-reported complete12028-row minima equality; our bound source-replay sample remains3rows, distinct from already complete T037 native parent-core coverage. T060 is unconfirmedS5/V0/C1 and does not supersede any accepted bound yet. Later merger fetches/merges main and regenerates DATA_REVISION/release artifacts with both claim histories intact. Parent coordination remainsopen until both integrations land.
+2026-09-30 correction: check_results requires contiguous register IDs, so T-061 could not be reserved. The Wang–Li result is T-058 on claude/determined-goldberg-ura2ed (jlevy/squares#249, commit 827e70b68). #246 also uses T-058 to T-060. Whichever PR merges second renumbers its new entries to follow the other's; if #249 is second, Wang–Li becomes T-061. The comment on #246 was edited to say so.

@@ -20,8 +20,11 @@ stored hashes. Start with the [claim](source/README.md),
 
 The published data store uses Git LFS.
 [`lfs-pointer-inventory.json.gz`](lfs-pointer-inventory.json.gz) lists 2,638 unresolved
-pointer files representing 2,344,331,966 declared bytes; this packet does not contain
-those certificate payloads.
+pointer files representing 2,344,331,966 declared bytes at initial intake.
+The subsequent [independent symmetry receipt](receipts/d4-independent/result.json)
+retains three selected compressed objects totaling 102,046 bytes, with provenance and a
+replay script beside it. The remaining payloads have not been acquired for this packet.
+The symmetry check passed conditionally; it does not establish global optimality.
 The source’s publication note says the privacy-normalized public derivative has not had
 a fresh full geometric replay.
 No fetched checker has been executed for this intake.

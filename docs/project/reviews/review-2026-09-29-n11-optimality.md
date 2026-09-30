@@ -38,8 +38,10 @@ All 2,638 unique Git LFS blob paths are reachable from the index, with 2,344,331
 declared compressed bytes; the publisher estimates about 11.3 GB after decoding.
 The
 [pointer inventory](../../../packing/resources/web/n11-optimality-2026-09-29/lfs-pointer-inventory.json.gz)
-records their identities, but this intake has not acquired their payloads.
-No fetched proof code or certificate has been executed here.
+records their identities.
+Initial intake acquired no payloads; the independent symmetry check below subsequently
+acquired three, totaling 102,046 compressed bytes.
+The publisher’s proof checker has not been executed here.
 The publisher’s
 [publication note](../../../packing/resources/web/n11-optimality-2026-09-29/source/docs/PUBLICATION.md)
 says the privacy-normalized public derivative has **not** had a fresh full geometric
@@ -96,16 +98,41 @@ public derivative has been measured here.
 A successful composition checker alone would be a source-dependent consistency check,
 not independent geometric confirmation.
 
+## Independently Checked Symmetry Lemma
+
+The first-party [exact checker](../../../packing/devtools/check_n11_optimality_d4.py)
+returned `PASS_INDEPENDENT_CONDITIONAL_D4_BRIDGE`. Its
+[retained receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json)
+and adjacent provenance and replay script bind the checker and all three input objects.
+It imports no upstream verifier: rational arithmetic reconstructs the closed cover,
+enumerates 4,368 masks and 2,184 half-turn representatives, and constructs the four-view
+overlay with 212 polygons and eight singleton cells.
+It checks 1,572 strict distance bans and independently exhausts the three residual
+constraint problems, using 75, 61 and 31 search nodes respectively.
+
+This proves the symmetry reduction **conditional on the four surviving masks and the
+case-438 conclusion**. It does not check the 2,180 preceding exclusions or the case-438
+capture. The receipt explicitly records `global_optimality_proved: false`. Seven focused
+tests cover boundary and rejection behavior; Astra-max mathematical review found no
+blocker in this checker.
+The retained execution took 0.927 seconds wall and 0.923 seconds CPU inside the checker,
+1.00 seconds wall including interpreter startup.
+The selected ceiling was 45 seconds inside a 55-second process timeout.
+No native-code optimization is justified by this measurement.
+
 ## Next Bounded Checks
 
 The next slice under `think-pqg7` should bind the exact source and selected input
-hashes, then check a small, decisive obligation independently before acquiring the whole
-data store. The three small $D_4$ source payloads identified in the plan are a starting
-set: reconstruct closed-cell coverage and symmetry mapping, enumerate the 2,184
-canonical masks, and test boundary cases and omitted or duplicated masks against a
-first-party checker.
-Record refusals and counterexamples as carefully as passes, with wall and CPU time and
-complete-domain scope.
+hashes, then check local isolation independently before acquiring the whole data store.
+The next two proposal payloads total 1,560,204 compressed bytes.
+Acceptance requires recomputing 8,448 dual inequalities and 88 negative-feature margins,
+including the complete contact-branch mapping; supplied success receipts are not
+acceptance evidence.
+Any reuse of our exact construction primitives must disclose that they are
+byte-identical to source components.
+Local isolation would still leave pose inclusion and complete geometric capture
+unchecked. Record refusals and counterexamples as carefully as passes, with wall and CPU
+time and complete-domain scope.
 
 A source-level reviewer found no critical flaw in the examined center-cover, strict-core
 inclusion, focused-local, frame-bridge and $U$-to-$T$ implications, conditional on their
@@ -118,9 +145,10 @@ field-counting rules, without finding a critical mathematical defect.
 Exact instance and ancestry acceptance remains unchecked.
 For the 59 field certificates in particular, the conditional counting obligations
 include capacity one for strict-core points, capacity $\lfloor m/k\rfloor$ for a
-threshold atom, and capacity one for a true odd-majority median strip by convex
-separation. Each transferred mask must retain its supported owners, and total per-cell
-lower charge must exceed the global budget.
+threshold or floor atom, and capacity one for the complete TRUE odd-majority
+median-strip region by convex separation.
+Each transferred mask must retain its supported owners, and total per-cell lower charge
+must exceed the global budget.
 These rules were read at source level; none of their certificate instances has been
 independently run in this intake.
 

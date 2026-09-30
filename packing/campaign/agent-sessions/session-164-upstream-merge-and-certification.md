@@ -654,6 +654,21 @@ dependency map. Schedule complete replay when the premises and runtime/storage p
 support it; the source warns it can take hours.
 Record actual start times for subsequent slices.
 
+The first selected check is complete: independent exact D4 reduction passed in 0.927
+seconds of checker wall time (1.00 seconds including startup), with seven focused
+controls and Astra-max review.
+The local-isolation lane now targets 8,448 dual inequalities and 88 negative-feature
+margins; exclusion census and case-438 capture remain open.
+This is component progress, not confirmation of T-060.
+
+Optimization is a supporting dependency, not a competing deliverable.
+Each W5 task must name the proof obligation it accelerates, measure the current cost,
+and specify a correctness-preserving acceptance criterion.
+Keep setup, execution and orchestration times separate.
+Use native code where measurements justify it; the one-second D4 check needs no rewrite.
+Batch repository integration separately, and never make an unrelated slow CI job a
+prerequisite for the next independent proof check.
+
 The attic checkout initially contains 2,638 Git LFS pointers: roughly 2.34 GB compressed
 and 11.3 GB decoded, before replay output.
 Do not mistake checkout success or package integrity for proof verification.

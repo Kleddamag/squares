@@ -992,17 +992,24 @@ def atlas_popover() -> str:
     )
 
 
+#: The directions of the site's one arrow (paper-design.md, Arrows): each is the one
+#: drawing, `--site-arrow` in site.css, turned or mirrored by `data-arrow`.
+ARROW_DIRECTIONS = ("right", "left", "down", "up", "external")
+
+
+def arrow_icon(direction: str = "right") -> str:
+    """The site's arrow pointing `direction`, as inline markup: an empty, hidden span that
+    site.css paints with the one arrow drawing in the text colour. It is never a typed
+    `→`: the site's text face has no arrow glyphs, and each browser fell back to a
+    different font for them, so no two arrows matched."""
+    if direction not in ARROW_DIRECTIONS:
+        raise ValueError(f"unknown arrow direction {direction!r}")
+    return f'<span class="site-icon-arrow" data-arrow="{direction}" aria-hidden="true"></span>'
+
+
 def step_arrow(*, back: bool = False) -> str:
-    """The stepper's arrow, one drawing for both directions, the back one mirrored, so
-    the pair always match: the site's text face has no arrow glyphs, and each browser
-    fell back to a different font for `←` and `→`."""
-    flip = " site-arrow-back" if back else ""
-    return (
-        f'<svg class="site-arrow{flip}" viewBox="0 0 16 16" aria-hidden="true" '
-        'focusable="false"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" '
-        'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
-        'stroke-linejoin="round"/></svg>'
-    )
+    """The atlas stepper's arrow: the site's arrow, left for the previous case."""
+    return arrow_icon("left" if back else "right")
 
 
 def atlas_grid() -> str:

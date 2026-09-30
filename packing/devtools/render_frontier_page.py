@@ -246,7 +246,8 @@ def packing_svg(
     as uneven gaps. A drawing used outside the page, where `currentColor` means nothing,
     names its ink. An icon drawn `frame_px` pixels square (the site's logo and favicon)
     gets a frame exactly one of those pixels wide, its outer edge on the drawing's edge,
-    so the container reads as a square at icon size and lands on the pixel grid.
+    so the container reads as a square at icon size and lands on the pixel grid, and
+    its squares' outlines half a pixel, so each square stays distinct.
     """
     source = (RENDERINGS / f"n-{n:03d}.svg").read_text(encoding="utf-8")
     frame = re.search(
@@ -287,6 +288,11 @@ def packing_svg(
         frame_width = pixel.quantize(Decimal("0.0001"))
         crisp = ' shape-rendering="crispEdges"'
     line_width = (Decimal("0.6") * unit).normalize()
+    if frame_px is not None:
+        # At icon size the page's hairline all but vanishes, so the squares' outlines
+        # take half a pixel: one device pixel on a 2x screen, and still lighter than
+        # the frame.
+        line_width = (pixel / 2).quantize(Decimal("0.0001"))
     return (
         f'<svg viewBox="{box}" aria-hidden="true" focusable="false">'
         f'<rect x="0" y="0" width="{units}" height="{units}" fill="{paper}" '

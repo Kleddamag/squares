@@ -975,6 +975,9 @@ def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
         assert box[2] / px == pytest.approx(width, abs=1e-3)
         assert box[0] == pytest.approx(-width / 2, abs=1e-3)
         assert 'shape-rendering="crispEdges"' in svg
+        lines = re.search(r'<g stroke="[^"]+" stroke-width="([\d.]+)"', svg)
+        assert lines is not None
+        assert float(lines.group(1)) == pytest.approx(width / 2, abs=1e-3)
     assert "block-size: 18px;" in render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
     assert render_overview.SITE_LOGO_PX == 18
 

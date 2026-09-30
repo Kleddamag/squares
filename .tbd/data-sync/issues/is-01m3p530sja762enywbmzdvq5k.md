@@ -3,9 +3,9 @@ type: is
 id: is-01m3p530sja762enywbmzdvq5k
 title: render_overview skeleton, site-nav partial and site.css layered on kpress tokens
 kind: task
-status: open
+status: closed
 priority: 2
-version: 12
+version: 14
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -25,9 +25,9 @@ dependencies:
     target: is-01m3r3d0rn6pz4erdkf087r8ke
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T08:39:20.114Z
-updated_at: 2026-09-30T03:05:26.632Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T04:02:49.237Z
+closed_at: 2026-09-30T04:02:49.236Z
+close_reason: "Skeleton in d41abc7b2: render_overview.py (registry, shell, own output dir packing/site-overview/, --update/--check/--output, RENDER_INPUTS), site_kit.py (nav, Page, Asset), overview/site-math.js under tsconfig.overview.json, test_render_overview.py."
 resolution: null
 duplicate_of: null
 ---

@@ -925,7 +925,7 @@ def test_the_poster_badges_every_perfect_square_and_counts_them_in_its_legend() 
         if node.attrib.get("text-anchor") is None
     ]
     assert labels == [
-        "proved optimal (62)",
+        "proved optimal (63)",
         "exact value known (269)",
         "only known numerically (55)",
         "rigid (established here) (20)",
@@ -944,7 +944,7 @@ def test_the_poster_badges_every_perfect_square_and_counts_them_in_its_legend() 
         for node in figure_legend.findall("svg:text", SVG)
         if node.attrib.get("text-anchor") is None
     ][:5] == [
-        "proved optimal (38)",
+        "proved optimal (39)",
         "exact value known (95)",
         "only known numerically (5)",
         "rigid (established here) (12)",

@@ -35,6 +35,8 @@ from typing import Any
 import sympy as sp
 import yaml
 
+from cases.trump11.packing import S_MIN_POLY
+from sqpack.field import NumberField
 from sqpack.yamlio import load_yaml
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -429,6 +431,35 @@ def n11_report_without_parser_identity(case: Mapping[str, Any], lane: str) -> bo
     )
 
 
+def n11_verified_root_comparison(
+    case: Mapping[str, Any], candidate: sp.Expr
+) -> dict[str, Any] | None:
+    """Compare the verified named root without assigning its display hint an exact value."""
+    bound = case["verified_lower_bound"]
+    if not (
+        case["n"] == 11
+        and case.get("status") == "proved"
+        and bound.get("exact_form") == "root(P_trump11, 3.87708359002281417730789706010096)"
+        and "E-n011-global-optimality-independent" in bound.get("evidence", [])
+    ):
+        return None
+    # The fixed polynomial and isolating interval define T. NumberField proves
+    # there is exactly one root here; neither decimal field selects its value.
+    field = NumberField(S_MIN_POLY, ("387/100", "388/100"))
+    for digits in (8, 16, 32, 64, 128):
+        candidate_lo, candidate_hi = enclosure(candidate, digits)
+        field.refine_to(digits)
+        root_lo, root_hi = field.root_bounds()
+        lo, hi = candidate_lo - root_hi, candidate_hi - root_lo
+        if lo > 0 or hi < 0:
+            return {
+                "sign": 1 if lo > 0 else -1,
+                "difference_interval": [str(lo), str(hi)],
+                "digits": digits,
+            }
+    raise ValueError(f"exact sign against the Trump side not separated: {candidate}")
+
+
 def read_case(repo: Path, revision: str | None, n: int) -> dict[str, Any]:
     path = f"packing/frontier/n-{n:03d}.md"
     source = (
@@ -713,6 +744,19 @@ def audit(
                     "comparison": {"sign": None, "difference_interval": None, "digits": None},
                 }
                 continue
+            if lane == "verified_lower_bound":
+                root_comparison = n11_verified_root_comparison(case, best)
+                if root_comparison is not None:
+                    comparisons[lane] = {
+                        "current_record_value": str(case[lane]["value"]),
+                        "current_exact": case[lane]["exact_form"],
+                        "exact_identity_basis": (
+                            "unique root of P_trump11 in (387/100, 388/100); "
+                            "display decimal not used"
+                        ),
+                        "comparison": root_comparison,
+                    }
+                    continue
             current, basis = field_expression(case, lane)
             comparisons[lane] = {
                 "current_record_value": str(case[lane]["value"]),

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+from dataclasses import replace
 from fnmatch import fnmatchcase
 from fractions import Fraction
 from pathlib import Path
@@ -284,36 +285,67 @@ def test_figure_two_counts_stars_in_its_own_composite(monkeypatch: pytest.Monkey
 def test_figure_three_marks_the_verified_lower_bound_beside_the_packing(
     page: str, document: str
 ) -> None:
-    """Figure 3 marks s(11)'s current verified lower bound, credited as the atlas credits it.
-
-    Asked for on 2026-09-28. The value is the frontier record's `verified_lower_bound`,
-    read through the citation record rather than typed, and the credit is that record's
-    reference. Its tick sits 0.0021 left of Trump's, so its label hangs to the left of
-    its own tick while Trump's labels move up a row, and neither crosses the other.
-    """
+    """T-060's exact endpoint joins Trump's tick; older certificates keep their band."""
     header = (REPO / "packing/frontier/n-011.md").read_text(encoding="utf-8").split("---", 2)
-    recorded = safe_load(header[1])["packing"]["verified_lower_bound"]
+    packing = safe_load(header[1])["packing"]
+    recorded = packing["verified_lower_bound"]
     verified = render_explainer.verified_lower_bound(11)
-    assert verified.value == Fraction(recorded["value"]) == Fraction(recorded["exact_form"])
-    assert (verified.decimal, verified.credit) == ("3.875", "Kleddamag after Levy et al. 2026")
+    assert verified.value == Fraction(recorded["value"])
+    assert recorded["exact_form"] == packing["verified_upper_bound"]["exact_form"]
+    assert render_explainer.n11_solved(verified)
+    assert verified.display == "3.8770835…"
+    assert verified.credit == "Queuingtheorydotcom after Levy et al. 2026"
 
-    x = round(render_explainer.line_x(float(verified.value)))
     best_x = round(render_explainer.line_x(float(render_explainer.BEST_PACKING)))
-    assert 0 < best_x - x < 20, "the two ticks are the reason the labels are staggered"
-    assert (
-        f'<text x="{x}" y="52" dx="-6" text-anchor="end" fill="var(--kpress-doc-text)">'
-        f"3.875, Kleddamag after Levy et al. 2026</text>"
-    ) in page
-    # Trump's value takes the row the verified label would otherwise collide with.
     assert f'<line x1="{best_x}" y1="24" x2="{best_x}" y2="76"' in page
-    assert "the current verified lower bound 3.875 (Kleddamag after Levy et al. 2026)" in page
+    assert f'<line x1="{best_x}" y1="56"' not in page
+    assert "one exact optimum endpoint shared by the T-060 lower proof" in page
 
     caption = " ".join(document.split())
     assert (
-        "The current verified lower bound, $3.875$ (Kleddamag after Levy et al. 2026), "
-        "leaves a gap of $0.0020835\\ldots$ beside "
-        "Trump\N{RIGHT SINGLE QUOTATION MARK}s packing." in caption
+        "T-060, by Queuingtheorydotcom after Levy et al. 2026, closes the remaining gap"
+        in caption
     )
+    assert "the exact algebraic side $T$" in caption
+    assert "a truncated decimal display of $T$" in caption
+    assert "leaves a gap of $0.0000000" not in caption
+
+
+def test_equal_display_digits_cannot_admit_solved_figure_without_t060(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    verified = render_explainer.verified_lower_bound(11)
+    with pytest.raises(SystemExit, match="matching exact T-060"):
+        render_explainer.n11_solved(replace(verified, confirmed_by=()))
+    changed = render_explainer.FRONTIER_N11.read_text(encoding="utf-8").replace(
+        "root(P_trump11, 3.87708359002281417730789706010096)",
+        "root(P_other, 3.87708359002281417730789706010096)",
+        1,
+    )
+    case = tmp_path / "n-011.md"
+    case.write_text(changed, encoding="utf-8")
+    monkeypatch.setattr(render_explainer, "FRONTIER_N11", case)
+    with pytest.raises(SystemExit, match="matching exact T-060"):
+        render_explainer.n11_solved(verified)
+
+
+def test_historical_open_bracket_keeps_its_separate_tick_and_gap(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    old = render_explainer.VerifiedLowerBound(
+        value=Fraction(31, 8),
+        display="3.875",
+        credit="Kleddamag after Levy et al. 2026",
+        confirmed_by=("T-037",),
+    )
+    monkeypatch.setattr(render_explainer, "verified_lower_bound", lambda _n: old)
+    monkeypatch.setattr(render_explainer, "n11_solved", lambda _bound: False)
+    historical = render(WALKTHROUGH)
+    x = round(render_explainer.line_x(float(old.value)))
+    assert f'<line x1="{x}" y1="56" x2="{x}" y2="76"' in historical.page
+    assert "September 22, 2026" in historical.markdown
+    assert "leaves a gap of $0.0020835\\ldots$" in historical.markdown
+    assert "T-060 closes the remaining gap" not in historical.markdown
 
 
 def test_the_published_document_sets_mathematics_without_typesetting_kerns(

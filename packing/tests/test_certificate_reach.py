@@ -192,8 +192,8 @@ def test_n11_cap_reproduces_x014_and_the_current_bound_forecloses_it() -> None:
 
     The shrink is read from the retained certificate rather than typed here, and the
     net-level cap must sit at or above the shrink-level one -- `1 / (1 + D)` exceeds
-    the retained `B` -- and strictly below the packing. The later external lower bound
-    exceeds that cap, so the fixed-net method is now foreclosed for the current case.
+    the retained `B` -- and strictly below the packing. The now-proved exact optimum
+    exceeds that cap, so the fixed-net method is foreclosed for this solved case.
     """
     row = next(row for row in cases() if row["n"] == 11)
     record, _ = load_certificate(CASES / "n11_fractional_certificate" / "certificate.json")
@@ -202,7 +202,16 @@ def test_n11_cap_reproduces_x014_and_the_current_bound_forecloses_it() -> None:
     at_shrink = packing_side_cap(row["upper"], row["tilts"], NET, shrink)
     assert f"{at_shrink:.6f}" == "3.868983"
     assert at_shrink <= row["cap"] < row["upper"]
-    assert row["cap"] < row["lower"] < row["upper"]
+    case = reach.case_record(reach.FRONTIER / "n-011.md")
+    assert case["status"] == "proved"
+    assert (
+        case["verified_lower_bound"]["exact_form"] == case["verified_upper_bound"]["exact_form"]
+    )
+    assert Fraction(case["verified_lower_bound"]["value"]) == Fraction(
+        case["verified_upper_bound"]["value"]
+    )
+    # The reported upper is a shorter display decimal than either verified endpoint.
+    assert row["cap"] < row["lower"]
     assert row["bound"] == "cap"
     assert row["verdict"] == "foreclosed"
     assert row["prize"] == 0.0
@@ -252,9 +261,9 @@ def test_the_cap_forecloses_solved_tilted_cases_and_the_new_n11_bound() -> None:
     """n = 5 and n = 10 are solved and their packings carry a 45-degree tilt.
 
     The cap sits strictly below the proved value, so nothing was ever on offer there,
-    and the table now says so instead of listing a `+0.0000` prize. The current n = 11
-    lower bound also exceeds its first-party fixed-net cap while remaining below its
-    packing bound.
+    and the table now says so instead of listing a `+0.0000` prize. The proved n = 11
+    endpoint also exceeds its first-party fixed-net cap. Its rounded reported upper
+    need not order above the more precise verified lower when parsed as binary64.
     """
     rows = cases()
     by_cap = {
@@ -266,7 +275,7 @@ def test_the_cap_forecloses_solved_tilted_cases_and_the_new_n11_bound() -> None:
             assert row["lower"] == pytest.approx(row["upper"])
             assert row["cap"] < row["lower"]
     n11 = next(row for row in rows if row["n"] == 11)
-    assert n11["cap"] < n11["lower"] < n11["upper"]
+    assert n11["cap"] < n11["lower"]
 
 
 def test_an_empty_tilt_inventory_is_refused() -> None:

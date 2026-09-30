@@ -936,7 +936,7 @@ session:
     bead: think-3i74
     objective: Integrate the confirmed n11 theorem, exact Rust tooling evidence and reader summaries;
       run focused registry checks, regenerate data artifacts and resolve hosted CI.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: All mathematical components and the final composition are accepted.
     budget_minutes: 45
@@ -946,10 +946,43 @@ session:
     validation_command: Focused composition controls, record tier, data artifact regeneration and hosted CI.
     kill_condition: Unsupported promotion, stale generated views or failing correctness checks prevent completion.
     fallback: Preserve the mathematical verdict and fix the specific integration defect without rerunning expensive geometry.
+    outcome: >-
+      Published mathematical review and committed the complete proof, V4/C5 registry and
+      reader views. The first incremental push took 206.42 seconds and exposed solved-case
+      integration assumptions. DS7 exact-root repairs pass 25 focused tests; atlas release,
+      reach and legend repairs pass 34. The existing explainer adaptation is in final review.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
+    - packing/tests/test_audit_ds7_lower_bounds.py
+    - packing/tests/test_certificate_reach.py
+    stop_reason: Integration repairs are identified and assigned; final-head publication begins at 2026-09-30T14:02:38Z.
+    next_action: >-
+      Repair solved-case consumers under think-hvrd in parallel (Sol explainer and atlas,
+      Astra-max DS7 exact comparison), then rerun focused integration checks and publish. The initial
+      incremental push gate at 41af4f3c1 took 206.42 seconds: 3405 tests passed, 6 skipped, 11 failed
+      and 30 setup errors exposed algebraic display/parser assumptions, obsolete open-case assertions
+      and the atlas data pin. Proof receipts remain frozen. Cost baseline reconciliation is separately
+      tracked by think-wvwx because historical task-tree coverage changed.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-niqx
+    objective: Finish reviewed solved-case consumers, commit the stable release artifacts and obtain final-head CI.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Proof execution is complete; the remaining obligations are publication and integration.
+    budget_minutes: 30
+    started_at: '2026-09-30T14:02:38Z'
+    deadline_at: '2026-09-30T14:32:38Z'
+    expected_output: Reviewed integration commit, passing incremental push tier and published PR with hosted checks.
+    validation_command: Focused consumer tests, incremental packing-validate --push and hosted PR checks.
+    kill_condition: Any correctness failure prevents certification of the final head.
+    fallback: Repair the failing component without rerunning accepted proof geometry or relaxing timing budgets.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol finishes reader docs and controls, Astra reviews registry scope, root integrates and publishes.
+    next_action: Finish explainer review, freeze and commit, run the incremental push gate, publish and inspect hosted results.
   budget:
     wall_minutes: 1135
     max_cycles: 40

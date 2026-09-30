@@ -68,10 +68,10 @@ def test_a2_assignment_is_bound_before_geometry(
     assert result["excluded_case_ids"] == []
 
 
-def test_multinode_case_remains_unproved(tmp_path: Path) -> None:
+def test_unhandled_multinode_refinement_remains_unproved(tmp_path: Path) -> None:
     result = generic.run(_args(tmp_path, 2053))
     assert result["status"] == "REFUSED"
-    assert "multi-node" in result["error"]
+    assert "step angular inventory" in result["error"]
     assert result["geometry_verified"] is False
     assert result["excluded_case_ids"] == []
 

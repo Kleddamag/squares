@@ -32,6 +32,7 @@ from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
 from devtools import n11_fast_exact_cover as fast_cover
 from devtools import n11_integer_collision as integer_collision
+from devtools import n11_nonfield_ancestry as ancestry
 from devtools import n11_nonfield_assignment as a2_assignment
 from devtools import n11_nonfield_partner as partner
 
@@ -46,6 +47,7 @@ A2_HELPER_SHA = "f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac726
 PARTNER_HELPER_SHA = "0bfbac5f09e366622ac324a776daa9a51829d3c3fb2aa24ec1a6627f31ea72ae"
 COLLISION_KERNEL_SHA = "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309"
 INTEGER_COLLISION_SHA = "4a1f71cdc96134af1083c84717912b73801b07933a8f7cd2eff8b998b31eab98"
+ANCESTRY_HELPER_SHA = "f1d113d9d5c382933f3939d7481ecec6e486cc04890f417f7025af8e54264264"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -379,11 +381,18 @@ class _WorkerState:
     partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None
 
 
-def capability_preflight(source: dict[str, Any], mask: tuple[int, ...], bins: int) -> None:
+def capability_preflight(
+    source: dict[str, Any], mask: tuple[int, ...], bins: int, parent_sha: str | None = None
+) -> None:
     """Reject known unsupported source grammar before expensive seed ownership."""
     require(
         source["schema"] == "exact_generic_owned_hull_v1"
-        and source["parent"] is None
+        and (
+            source["parent"] is None
+            if parent_sha is None
+            else isinstance(source["parent"], dict)
+            and source["parent"].get("sha256") == parent_sha
+        )
         and source["constraints"] == []
         and source["guard_source"] is None,
         "unsupported parent/guard grammar",
@@ -464,10 +473,17 @@ def replay_one_node(
     workers: int,
     cover_backend: str = "reference",
     collision_backend: str = "reference",
-) -> None:
+    parent_sha: str | None = None,
+    final_node: bool = True,
+) -> tuple[dict[int, Polygon], dict[int, list[dict[str, Any]]]]:
     require(source["schema"] == "exact_generic_owned_hull_v1", "source schema")
     require(
-        source["parent"] is None
+        (
+            source["parent"] is None
+            if parent_sha is None
+            else isinstance(source["parent"], dict)
+            and source["parent"].get("sha256") == parent_sha
+        )
         and source["constraints"] == []
         and source["guard_source"] is None,
         "unsupported parent/guard",
@@ -484,8 +500,9 @@ def replay_one_node(
             "source initial state differs from proved seed",
         )
     state_groups, state_rows = dict(groups), dict(rows)
-    result["steps_completed"] = result["rows_checked"] = 0
-    result["step_timings"] = []
+    result.setdefault("steps_completed", 0)
+    result.setdefault("rows_checked", 0)
+    result.setdefault("step_timings", [])
     for step_index, step in enumerate(source["steps"]):
         step_started = time.monotonic()
         result["current_step"] = step_index
@@ -613,10 +630,11 @@ def replay_one_node(
         else:
             require("inner_grid_compression" not in step, "empty terminal has compression")
         state_rows[owner] = accepted_rows
-        result["steps_completed"] = step_index + 1
+        result["steps_completed"] += 1
         result["step_timings"].append(
             {
                 "step": step_index,
+                "node": result["current_node"],
                 "owner": owner,
                 "rows": bins,
                 "row_timings": row_timings,
@@ -680,18 +698,28 @@ def replay_one_node(
                 ),
                 "final row differs from accepted state",
             )
-    contradiction = source["contradiction"]
-    require(
-        contradiction["kind"] == "all_parent_poses_forbidden"
-        and contradiction["step"] == len(source["steps"]) - 1
-        and contradiction["owner"] == source["steps"][-1]["owner"]
-        and all(not row["residual_polygons"] for row in state_rows[contradiction["owner"]]),
-        "terminal contradiction not independently shown",
-    )
-    require(source["terminal"] is True and source["closed"] is True, "source nonterminal")
+    if final_node:
+        contradiction = source["contradiction"]
+        require(
+            isinstance(contradiction, dict)
+            and contradiction["kind"] == "all_parent_poses_forbidden"
+            and contradiction["step"] == len(source["steps"]) - 1
+            and contradiction["owner"] == source["steps"][-1]["owner"]
+            and all(not row["residual_polygons"] for row in state_rows[contradiction["owner"]]),
+            "terminal contradiction not independently shown",
+        )
+        require(source["terminal"] is True and source["closed"] is True, "source nonterminal")
+    else:
+        require(
+            source["terminal"] is True
+            and source["closed"] is False
+            and source["contradiction"] is None,
+            "open ancestry checkpoint asserted a contradiction",
+        )
     require(source["global_optimality_proved"] is False, "source scope changed")
     result["current_step"] = result["current_row"] = None
     remaining(budget)
+    return state_groups, state_rows
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
@@ -752,16 +780,18 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         recipe = recipes[0]
         require(recipe["adapter"] == "sequential_wall_seed", "unsupported adapter")
         require(
-            len(recipe["ordered_ancestry_proposal"]) == 1,
-            "multi-node ancestry awaits explicit join",
+            1 <= len(recipe["ordered_ancestry_proposal"]) <= 8,
+            "unsupported ancestry length",
         )
         require(
             recipe["source_profile"] in ("direct_v6", "direct_v9"), "unsupported source profile"
         )
         nodes = recipe["ordered_ancestry_proposal"]
         require(
-            nodes[0]["position"] == 0 and nodes[0]["source_sha256"] == recipe["source_sha256"],
-            "source node identity",
+            all(node["position"] == index for index, node in enumerate(nodes))
+            and nodes[-1]["source_sha256"] == recipe["source_sha256"]
+            and len({node["source_sha256"] for node in nodes}) == len(nodes),
+            "ancestry source order or identity",
         )
         mask = tuple(recipe["mask"])
         metadata_sha = manifest["input_sha256s"][recipe["family"]]
@@ -772,11 +802,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             paths["a2_baseline"] = METADATA_OBJECTS / f"{manifest['input_sha256s']['A1']}.gz"
             paths["a2_helper"] = Path(a2_assignment.__file__)
             bound_inputs.extend(("a2_baseline", "a2_helper"))
+        if len(nodes) > 1:
+            paths["ancestry_helper"] = Path(ancestry.__file__)
+            bound_inputs.append("ancestry_helper")
         for name in bound_inputs:
             before[name] = digest(paths[name])
             result["source_sha256"][name] = before[name]
         if recipe["family"] == "A2":
             require(before["a2_helper"] == A2_HELPER_SHA, "A2 assignment helper changed")
+        if len(nodes) > 1:
+            require(
+                before["ancestry_helper"] == ANCESTRY_HELPER_SHA,
+                "ancestry helper changed",
+            )
         cover = load_object(
             geometry.COVER_SHA, manifest, geometry.PACKET / "receipts/d4-independent/objects"
         )
@@ -789,17 +827,27 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             paths[role] = args.objects / f"{sha}.gz"
             before[role] = digest(paths[role])
             result["source_sha256"][role] = before[role]
-        source = load_object(recipe["source_sha256"], manifest, args.objects)
+        sources = []
+        for index, node in enumerate(nodes):
+            name = f"source_node_{index}"
+            paths[name] = args.objects / f"{node['source_sha256']}.gz"
+            before[name] = digest(paths[name])
+            result["source_sha256"][name] = before[name]
+            sources.append(load_object(node["source_sha256"], manifest, args.objects))
         seed = load_object(recipe["seed_sha256"], manifest, args.objects)
         audit = load_object(recipe["audit_sha256"], manifest, args.objects)
         has_collision = any(
-            row["collision_regions"] for step in source["steps"] for row in step["rows"]
+            row["collision_regions"]
+            for source in sources
+            for step in source["steps"]
+            for row in step["rows"]
         )
         if collision_backend == "integer":
             require(has_collision, "integer collision backend has no collision work")
         if any(
             step["prior_partner_pose_covers"]
             or any(row["collision_regions"] for row in step["rows"])
+            for source in sources
             for step in source["steps"]
         ):
             paths["partner_helper"] = Path(partner.__file__)
@@ -826,18 +874,25 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 collision_kernel.dependencies_unchanged(),
                 "collision kernel dependency changed",
             )
-        require(
-            source["node_id"] == nodes[0]["node_id"]
-            and source["mask_index"] == args.case_id
-            and source["mask"] == list(mask),
-            "node/case identity",
-        )
-        require(
-            Q(source["U"]) == geometry.U
-            and Q(source["B"]) == geometry.B
-            and source["source"]["sha256"] == recipe["seed_sha256"],
-            "source premise",
-        )
+        for index, (node, source) in enumerate(zip(nodes, sources, strict=True)):
+            require(
+                source["node_id"] == node["node_id"]
+                and source["mask_index"] == args.case_id
+                and source["mask"] == list(mask),
+                "node/case identity",
+            )
+            require(
+                Q(source["U"]) == geometry.U
+                and Q(source["B"]) == geometry.B
+                and source["source"]["sha256"] == recipe["seed_sha256"],
+                "source premise",
+            )
+            capability_preflight(
+                source,
+                mask,
+                seed["bins"],
+                nodes[index - 1]["source_sha256"] if index else None,
+            )
         require(
             audit["source_sha256"] == recipe["source_sha256"]
             and audit["root_sha256"] == recipe["seed_sha256"]
@@ -847,27 +902,41 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             and audit["transferred_canonical_mask_indices"] == [args.case_id],
             "audit source/case binding",
         )
-        capability_preflight(source, mask, seed["bins"])
         seed_started, seed_cpu = time.monotonic(), time.process_time()
         groups, rows, world, bins = seed_state(seed, cover, args.case_id, mask, budget=budget)
         result["seed_wall_seconds"] = time.monotonic() - seed_started
         result["seed_process_cpu_seconds"] = time.process_time() - seed_cpu
         result["owned_seed_points_checked"] = sum(len(seed["groups"][str(i)]) for i in mask)
         result["seed_rows_checked"] = len(mask) * bins
-        result["current_node"] = 0
-        replay_one_node(
-            source,
-            groups,
-            rows,
-            world=world,
-            bins=bins,
-            mask=mask,
-            result=result,
-            budget=budget,
-            workers=args.workers,
-            cover_backend=cover_backend,
-            collision_backend=collision_backend,
-        )
+        result["nodes_completed"] = 0
+        for index, (_node, source) in enumerate(zip(nodes, sources, strict=True)):
+            result["current_node"] = index
+            if index:
+                groups, rows = ancestry.admit_child_state(
+                    source,
+                    parent_source_sha256=nodes[index - 1]["source_sha256"],
+                    seed_sha256=recipe["seed_sha256"],
+                    case_id=args.case_id,
+                    mask=mask,
+                    accepted_groups=groups,
+                    accepted_rows=rows,
+                )
+            groups, rows = replay_one_node(
+                source,
+                groups,
+                rows,
+                world=world,
+                bins=bins,
+                mask=mask,
+                result=result,
+                budget=budget,
+                workers=args.workers,
+                cover_backend=cover_backend,
+                collision_backend=collision_backend,
+                parent_sha=nodes[index - 1]["source_sha256"] if index else None,
+                final_node=index == len(nodes) - 1,
+            )
+            result["nodes_completed"] = index + 1
         remaining(budget)
         require(
             all(digest(path) == before[name] for name, path in paths.items()),

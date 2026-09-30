@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import functools
 import html
 import html.parser
 import re
 from collections import Counter
+from collections.abc import Callable
 from html.parser import HTMLParser
 
 import pytest
@@ -35,6 +37,24 @@ def results() -> str:
 @pytest.fixture(scope="module")
 def register() -> list[dict]:
     return safe_load(overview_data.RESULTS.read_text(encoding="utf-8"))["results"]
+
+
+@functools.cache
+def _rendered(name: str) -> str:
+    """One render of each site page per test process. Rendering is deterministic
+    (`test_the_render_is_deterministic`), so the checks below that only read a page share
+    it; `cases.html` alone is about 9 MB and several seconds, and was rendered afresh by
+    each of them."""
+    return render_overview.PAGES[name]().html
+
+
+@pytest.fixture(scope="module")
+def rendered() -> Callable[[str], str]:
+    """`_rendered`, with `cases.html` rendered during setup rather than inside whichever
+    test reaches it first, so no single check carries that page's render in its own
+    call time."""
+    _rendered("cases.html")
+    return _rendered
 
 
 def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> None:
@@ -81,7 +101,9 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     assert '<a href="all-results.html">See all results' in recent
 
 
-def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
+def test_every_link_to_a_result_goes_to_its_row(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
     """The overview's recent table and replay table, and the case records, link a
     result at its row on the results page, never at a fragment of their own page."""
     rows = {row_id for row_id, _, _ in ROW.findall(results)}
@@ -89,7 +111,7 @@ def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None
     assert linked
     assert set(linked) <= rows
     assert not re.search(r'href="#t-\d+"', page)
-    cases = render_overview.cases_page().html
+    cases = rendered("cases.html")
     assert set(re.findall(r'href="all-results\.html#([^"]+)"', cases)) <= rows
     assert 'href="index.html#t-' not in cases
 
@@ -469,13 +491,15 @@ def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str])
 
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
-def test_every_site_page_loads_math_through_the_explainers_pipeline(name: str) -> None:
+def test_every_site_page_loads_math_through_the_explainers_pipeline(
+    name: str, rendered: Callable[[str], str]
+) -> None:
     """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
     site's queue, and neither of kpress's whole-page entry points (auto-render and its
     native initializer), which typeset every formula in one task at DOMContentLoaded."""
     from devtools.render_explainer import katex_js, kpress_static  # noqa: PLC0415
 
-    page = render_overview.PAGES[name]().html
+    page = rendered(name)
     static = kpress_static()
     assert katex_js(static) in page
     assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in page
@@ -484,10 +508,12 @@ def test_every_site_page_loads_math_through_the_explainers_pipeline(name: str) -
 
 
 @pytest.mark.parametrize("name", ["index.html", "tutorial.html"])
-def test_every_site_page_carries_the_explainers_text_tokens(name: str) -> None:
+def test_every_site_page_carries_the_explainers_text_tokens(
+    name: str, rendered: Callable[[str], str]
+) -> None:
     """The type base, measure and heading scale come from the one file the explainer
     inlines too, after kpress's stylesheets so they win at kpress's own scopes."""
-    page = render_overview.PAGES[name]().html
+    page = rendered(name)
     tokens = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
     assert tokens in page
     assert page.index(tokens) > page.index("/* kpress: css/style-tokens.css */")
@@ -536,8 +562,10 @@ def test_the_nav_ends_in_an_accessible_theme_control() -> None:
 
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
-def test_every_site_page_carries_the_theme_control(name: str) -> None:
-    page = render_overview.PAGES[name]().html
+def test_every_site_page_carries_the_theme_control(
+    name: str, rendered: Callable[[str], str]
+) -> None:
+    page = rendered(name)
     script = render_overview.THEME_SCRIPT.read_text(encoding="utf-8")
     assert page.count('class="site-theme-button"') == 1
     assert script in page
@@ -567,14 +595,16 @@ def _workbench_page() -> str:
 
 
 @pytest.mark.parametrize("name", [*sorted(render_overview.PAGES), "workbench/index.html"])
-def test_every_site_page_carries_the_same_bar(name: str) -> None:
+def test_every_site_page_carries_the_same_bar(
+    name: str, rendered: Callable[[str], str]
+) -> None:
     """Every page the Python build renders carries the bar byte for byte as the partial
     writes it, but for which item is current and the prefix that reaches the site's root."""
     assert name in render_overview.SITE_PAGES
     if name == "workbench/index.html":
         page, root = _workbench_page(), "../"
     else:
-        page, root = render_overview.PAGES[name]().html, ""
+        page, root = rendered(name), ""
     partial = (
         render_overview.SITE_NAV.read_text(encoding="utf-8")
         .replace("{{ROOT}}", "")
@@ -583,13 +613,15 @@ def test_every_site_page_carries_the_same_bar(name: str) -> None:
     assert _the_bar(page, root=root) == SITE_NAV_BLOCK.findall(partial)[0]
 
 
-def test_the_visualize_section_is_marked_current_on_both_its_pages() -> None:
+def test_the_visualize_section_is_marked_current_on_both_its_pages(
+    rendered: Callable[[str], str],
+) -> None:
     """The bar's Visualize entry leads to the film and is current on the film's page and
     on the workbench, which share one tab bar with their own tab current."""
     nav = render_overview.nav_html("overview")
     assert '<a data-page="visualize" href="visualize.html">Visualize</a>' in nav
     assert "Visualizer" not in nav
-    film = render_overview.PAGES["visualize.html"]().html
+    film = rendered("visualize.html")
     for page, root, tab in ((film, "", "film"), (_workbench_page(), "../", "workbench")):
         assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["visualize"]
         tabs = render_overview.visualize_tabs(tab, root=root)
@@ -603,10 +635,12 @@ def test_the_visualize_section_is_marked_current_on_both_its_pages() -> None:
         render_overview.visualize_tabs("stills")
 
 
-def test_the_film_page_embeds_the_film_at_its_own_proportions() -> None:
+def test_the_film_page_embeds_the_film_at_its_own_proportions(
+    rendered: Callable[[str], str],
+) -> None:
     """The film is inline with its controls, fetches nothing until played, and shows a
     poster at the video's own 16:9, so starting playback moves nothing."""
-    page = render_overview.PAGES["visualize.html"]().html
+    page = rendered("visualize.html")
     video = re.search(r"<video [^>]*>", page)
     assert video is not None
     for attribute in (
@@ -690,10 +724,10 @@ CHIP = re.compile(r'<span class="site-chip( site-rung-fill)?"([^>]*)>([^<]+)</sp
 
 
 @pytest.mark.parametrize("name", ["index.html", "frontier.html", "all-results.html"])
-def test_every_small_label_is_one_chip(name: str) -> None:
+def test_every_small_label_is_one_chip(name: str, rendered: Callable[[str], str]) -> None:
     """Rungs and case statuses share one chip; a rung chip carries its scale and level,
     which the stylesheet colours, and names the rung it shows."""
-    html = render_overview.PAGES[name]().html
+    html = rendered(name)
     chips = CHIP.findall(html)
     assert chips, name
     for fill, attributes, label in chips:
@@ -996,14 +1030,16 @@ def test_the_explainer_card_names_the_earlier_bound_it_proves(page: str) -> None
     assert "&gt;=" not in note
 
 
-def test_the_film_note_says_the_films_predate_t060(register: list[dict]) -> None:
+def test_the_film_note_says_the_films_predate_t060(
+    register: list[dict], rendered: Callable[[str], str]
+) -> None:
     """The films were cut before T-060, so the film page says what they show at n = 11,
     dated from the release; a film cut after T-060 fails here until the note goes."""
     from datetime import datetime  # noqa: PLC0415
 
     from sqpack.release import PUBLICATION_HISTORY  # noqa: PLC0415
 
-    page = render_overview.PAGES["visualize.html"]().html
+    page = rendered("visualize.html")
     assert render_overview.film_release_date() == "28 September"
     text = re.sub(r"<[^>]+>", "", page)
     assert (
@@ -1262,14 +1298,16 @@ def _visible_text(page: str) -> str:
 
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
-def test_no_arrow_on_a_site_page_is_a_typed_character(name: str) -> None:
+def test_no_arrow_on_a_site_page_is_a_typed_character(
+    name: str, rendered: Callable[[str], str]
+) -> None:
     """Every arrow a site page shows is the one drawn icon set. The one exception is a
     repository document's own prose, where its author writes an arrow as notation
     (`experiment → series` in conventions.md): its article may show no more arrows than
     its Markdown source has, and the page around the article none."""
     from devtools.site_documents import DOCUMENTS  # noqa: PLC0415
 
-    page = render_overview.PAGES[name]().html
+    page = rendered(name)
     sources = {doc.name: doc.source for doc in DOCUMENTS}
     if name in sources:
         body = re.search(r"<article\b.*?</article>", page, re.DOTALL)
@@ -1281,10 +1319,12 @@ def test_no_arrow_on_a_site_page_is_a_typed_character(name: str) -> None:
 
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
-def test_every_arrow_icon_comes_from_the_one_set(name: str) -> None:
+def test_every_arrow_icon_comes_from_the_one_set(
+    name: str, rendered: Callable[[str], str]
+) -> None:
     """Every inline arrow is `arrow_icon`'s markup, hidden from assistive technology, and
     no page draws an arrow of its own."""
-    page = render_overview.PAGES[name]().html
+    page = rendered(name)
     icons = re.findall(r"<span class=\"site-icon-arrow\"[^>]*></span>", page)
     allowed = {overview_sections.arrow_icon(d) for d in overview_sections.ARROW_DIRECTIONS}
     assert set(icons) <= allowed, name

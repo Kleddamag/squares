@@ -313,3 +313,44 @@ def test_collision_pruning_preserves_maximal_boxes_and_one_equal_copy() -> None:
         assert kernel.covers_vertical(
             domain, [p for _, _, p in regions], x
         ) == kernel.covers_vertical(domain, [p for _, _, p in reduced], x)
+
+
+def test_descriptor_derivation_refuses_a_missing_whole_cell_and_bad_charges() -> None:
+    spec = shared.SPECS[612]
+    packet, audit, cover = shared.load_sources(spec, RECEIPTS / "field-mask612/objects", COVER)
+
+    def derive(p: dict[str, Any], a: dict[str, Any]) -> shared.FieldSpec:
+        return shared.derive_spec(
+            mask_index=612,
+            packet_pin=spec.packet,
+            audit_pin=spec.audit,
+            packet=p,
+            audit=a,
+            expected_cases=459,
+        )
+
+    generated = derive(packet, audit)
+    assert replace(generated, expected_direct=453) == spec
+    shared.admit(generated, packet, audit, cover)
+    missing = copy.deepcopy(audit)
+    missing["independent_row_proofs"] = [
+        row for row in missing["independent_row_proofs"] if row["cell"] != 2
+    ]
+    with pytest.raises(ValueError, match="positive cell has no proposed rows"):
+        derive(packet, missing)
+    bad = copy.deepcopy(packet)
+    bad["certificate"]["features"][0]["weight"] = True
+    with pytest.raises(ValueError, match="unsupported weighted feature"):
+        derive(bad, audit)
+    bad = copy.deepcopy(packet)
+    bad["certificate"]["features"][0]["indices"][0] = bad["certificate"]["features"][0][
+        "indices"
+    ][1]
+    with pytest.raises(ValueError, match="unsupported weighted feature"):
+        derive(bad, audit)
+    bad = copy.deepcopy(packet)
+    bad["conditional_owner_support"].append(
+        next(owner for owner in range(16) if owner not in bad["mask"])
+    )
+    with pytest.raises(ValueError, match="invalid owner support"):
+        derive(bad, audit)

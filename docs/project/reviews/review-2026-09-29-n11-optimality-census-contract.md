@@ -517,6 +517,77 @@ progress. For these later transitions, extend the root kernel with these obligat
 The far-branch contradictions, near capture, and final composition remain open until
 these root and transition checks accept their complete dependency closure.
 
+## Generic Weighted Field Admission
+
+A pinned manifest may replace hand-written field descriptors without changing the proof
+rule. The manifest binds each packet and audit proposal to the source revision, index
+key, compressed and decoded identities and sizes, and A1 certificate identity.
+Feature indices, ownership counts, and row subdivisions are proposal data; extracting
+them supplies no geometric acceptance.
+
+Admit only exact rational sites at the declared scale, nonnegative integer point
+weights, and positive integer weighted `majority_hull` features with three or five
+distinct valid site indices.
+Reject booleans and floats where integers are required.
+Each feature must have threshold $(m+1)/2$ for its odd arity $m$ and a unique atom
+identifier.
+Recompute the global budget as the sum of point and feature weights and match
+the packet’s declaration.
+Require at least one charged resource.
+Other feature kinds need a separately reviewed capacity proof.
+
+The capacity-one argument is independent of a producer’s feature table.
+For $2k-1$ sites and a closed square core $Q$, the majority region consists of centers
+$z$ for which $z+Q$ intersects the convex hull of every $k$-subset of sites.
+Its inequalities are median projection strips, with core support $r(|n_x|+|n_y|)$ for a
+square of half-side $r$ in its own frame.
+Square axes and normals perpendicular to site pairs supply all required facet
+directions; exact ties and collinear sites remain admissible.
+Two disjoint physical square interiors have a separating projection.
+The same site median cannot belong to both projected cores when each core lies strictly
+inside its physical square, so a majority resource can charge at most one square.
+A point resource also has capacity one.
+Different resources may share sites; summing their weighted capacities remains valid.
+
+Require exactly sixteen nonnegative integer cell thresholds.
+The first generic consumer may require one uniform positive threshold among them.
+Derive the positive cells from all sixteen packet thresholds, never from the cells
+present in the audit proposal.
+Every positive cell requires a nonempty exact closed partition of $[0,1]$, with no
+omitted endpoint, gap, interior overlap, duplicate interval, or extra cell.
+Deriving both row counts and positive cells from an incomplete audit would lose this
+obligation.
+Ownership support must contain distinct valid cells in the packet mask; check
+every point used by the geometric argument under that support before transfer.
+The cover, cap, scale, and packet-to-audit bindings remain mandatory.
+
+For each row, reconstruct one convex region per physical atom and count its weight once.
+An owned-point collision region is an infeasibility alternative and may carry the local
+cell threshold in the coverage check; it contributes nothing to the global physical
+budget. Check the weighted sum at every exact polygon-edge crossing and vertex abscissa,
+between consecutive abscissae, and at every resulting vertical endpoint and open
+interval. Affine endpoint order between events proves the complete closed domain.
+Closed membership is safe only with the strict whole-angle core and ownership margins
+already checked by the geometric kernel.
+
+Owned collision alternatives may be pruned by bounding-box containment when both regions
+are intersections of the same closed domain with axis-aligned capture boxes.
+If $A=D\cap Q_A$ and $B=D\cap Q_B$, then
+$\operatorname{bbox}(A)\subseteq\operatorname{bbox}(B)$ implies $A\subseteq B$. Keep one
+representative on equality.
+Do not apply that argument to majority regions or discard distinct physical charges.
+
+After complete geometry, recompute applicable canonical masks from occupied support and
+a cell-threshold sum strictly greater than the independently derived budget, including
+the whole-packing half-turn alternative.
+Compare the exact resulting IDs with the pinned A1 certificate set.
+Partial, unsupported, or interrupted fields exclude zero cases; aggregate accepted
+fields by set union.
+Controls must include deletion of an entire positive-cell row group, a missing owner,
+budget equality, duplicate atoms, insufficient charge, a closed seam, and a sloped gap
+between coarse probes.
+Parallel scheduling changes neither these premises nor the complete acceptance rule.
+
 ## Bounded Execution and Refusal Controls
 
 Implement the checks in retained tools and exercise only their affected contracts.

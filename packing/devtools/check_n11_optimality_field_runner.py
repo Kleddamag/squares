@@ -311,6 +311,144 @@ def admit(
     )
 
 
+def derive_spec(
+    *,
+    mask_index: int,
+    packet_pin: ObjectPin,
+    audit_pin: ObjectPin,
+    packet: dict[str, Any],
+    audit: dict[str, Any],
+    expected_cases: int,
+) -> FieldSpec:
+    """Treat pinned field syntax as proposals; derive every supported obligation."""
+    cert = packet["certificate"]
+    sites = cert["sites"]
+    require(isinstance(sites, list) and 0 < len(sites) <= 64, "unsupported site inventory")
+    weights = cert["point_weights"]
+    require(
+        isinstance(weights, list)
+        and len(weights) == len(sites)
+        and all(type(weight) is int and weight >= 0 for weight in weights),
+        "invalid point weights",
+    )
+    features = []
+    for feature in cert["features"]:
+        indices = feature["indices"]
+        require(
+            feature["kind"] == "majority_hull"
+            and isinstance(indices, list)
+            and len(indices) in (3, 5)
+            and len(set(indices)) == len(indices)
+            and all(type(index) is int and 0 <= index < len(sites) for index in indices)
+            and type(feature["threshold"]) is int
+            and feature["threshold"] == len(indices) // 2 + 1
+            and type(feature["weight"]) is int
+            and feature["weight"] > 0
+            and type(feature["source_physical_feature"]) is int,
+            "unsupported weighted feature",
+        )
+        features.append((tuple(indices), feature["weight"], feature["source_physical_feature"]))
+    require(0 < len(features) <= 16, "unsupported feature inventory")
+    require(
+        len({source for _, _, source in features}) == len(features),
+        "duplicate feature identity",
+    )
+    thresholds = packet["threshold_units"]
+    require(
+        isinstance(thresholds, list)
+        and len(thresholds) == 16
+        and all(type(value) is int and value >= 0 for value in thresholds),
+        "invalid cell thresholds",
+    )
+    positive = tuple(cell for cell, value in enumerate(thresholds) if value > 0)
+    require(
+        bool(positive) and len({thresholds[cell] for cell in positive}) == 1,
+        "unsupported nonuniform cell thresholds",
+    )
+    owners = packet["conditional_owner_support"]
+    require(
+        isinstance(owners, list)
+        and bool(owners)
+        and len(set(owners)) == len(owners)
+        and all(type(owner) is int and 0 <= owner < 16 for owner in owners)
+        and set(owners).issubset(packet["mask"]),
+        "invalid owner support",
+    )
+    groups = packet["ownership_points_field"]
+    require(isinstance(groups, list) and len(groups) == 16, "ownership inventory changed")
+    row_counts = tuple(
+        (cell, sum(row["cell"] == cell for row in audit["independent_row_proofs"]))
+        for cell in positive
+    )
+    require(all(count > 0 for _, count in row_counts), "positive cell has no proposed rows")
+    spec = FieldSpec(
+        mask_index,
+        packet_pin,
+        audit_pin,
+        len(sites),
+        0,
+        tuple((owner, len(groups[owner])) for owner in owners),
+        row_counts,
+        0,
+        expected_cases,
+        None,
+        tuple(features),
+        tuple((index, weight) for index, weight in enumerate(weights) if weight),
+        thresholds[positive[0]],
+    )
+    # This is an entire closed-domain census, independent of the audit's PASS fields.
+    proposed_rows(spec, audit)
+    return spec
+
+
+def descriptor_spec(path: Path, object_dir: Path, mask_index: int) -> FieldSpec:
+    descriptor = kernel.strict_json(path.read_bytes())
+    require(descriptor.get("version") == 1, "unsupported descriptor version")
+    require(descriptor.get("mask_index") == mask_index, "descriptor mask differs")
+    pins = []
+    for name in ("packet", "audit"):
+        value = descriptor[name]
+        require(
+            all(
+                isinstance(value[key], str)
+                and len(value[key]) == 64
+                and all(c in "0123456789abcdef" for c in value[key])
+                for key in ("decoded_sha", "compressed_sha")
+            )
+            and all(
+                type(value[key]) is int and 0 < value[key] <= 20_000_000
+                for key in ("decoded_bytes", "compressed_bytes")
+            ),
+            "invalid object pin",
+        )
+        pins.append(ObjectPin(**value))
+    packet_pin, audit_pin = pins
+    packet = _pinned(object_dir / f"{packet_pin.decoded_sha}.gz", packet_pin)
+    audit = _pinned(object_dir / f"{audit_pin.decoded_sha}.gz", audit_pin)
+    baseline = kernel.pinned_gzip(
+        PACKET_ROOT / "receipts/case-census/objects" / f"{kernel.A1_SHA}.gz",
+        packed_bytes=26100,
+        packed_sha=kernel.A1_LFS_SHA,
+        raw_bytes=122029,
+        raw_sha=kernel.A1_SHA,
+    )
+    entries = [
+        entry
+        for entry in baseline["certificates"]
+        if entry.get("family") == "field"
+        and entry.get("source_sha256") == packet_pin.decoded_sha
+    ]
+    require(len(entries) == 1, "descriptor packet absent or ambiguous in pinned A1")
+    return derive_spec(
+        mask_index=mask_index,
+        packet_pin=packet_pin,
+        audit_pin=audit_pin,
+        packet=packet,
+        audit=audit,
+        expected_cases=len(entries[0]["cases"]),
+    )
+
+
 def majority_halfplanes(sites: list[Point], radius: Q) -> list[tuple[Q, Q, Q]]:
     """Exact finite median-strip normals for a supported odd-site feature."""
     require(len(sites) in (3, 5), "unsupported majority-site arity")
@@ -710,7 +848,8 @@ def all_geometry(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mask-index", type=int, choices=tuple(SPECS), required=True)
+    parser.add_argument("--mask-index", type=int, required=True)
+    parser.add_argument("--descriptor", type=Path)
     parser.add_argument("--objects", type=Path, required=True)
     parser.add_argument("--cover", type=Path, required=True)
     parser.add_argument("--all", action="store_true")
@@ -725,12 +864,17 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if not math.isfinite(args.max_seconds) or args.max_seconds <= 0 or args.max_work <= 0:
         parser.error("ceilings must be positive and finite")
-    spec = SPECS[args.mask_index]
     checker_source = Path(__file__).read_bytes()
     child_start = resource.getrusage(resource.RUSAGE_CHILDREN)
     start, cpu = time.monotonic(), time.process_time()
     result: dict[str, Any]
+    spec: FieldSpec | None = None
     try:
+        spec = (
+            descriptor_spec(args.descriptor, args.objects, args.mask_index)
+            if args.descriptor
+            else SPECS[args.mask_index]
+        )
         packet, audit, cover = load_sources(spec, args.objects, args.cover)
         admit(spec, packet, audit, cover)
         kernel.admit_d4_receipt()
@@ -789,10 +933,10 @@ def main(argv: list[str] | None = None) -> int:
     result.setdefault("geometry_verified", False)
     result.setdefault("canonical_cases_excluded", 0)
     result.update(
-        mask_index=spec.mask_index,
+        mask_index=args.mask_index,
         upstream_source_revision=kernel.SOURCE_REVISION,
-        packet_sha256=spec.packet.decoded_sha,
-        audit_proposal_sha256=spec.audit.decoded_sha,
+        packet_sha256=spec.packet.decoded_sha if spec is not None else None,
+        audit_proposal_sha256=spec.audit.decoded_sha if spec is not None else None,
         cover_sha256=kernel.COVER_SHA,
         d4_receipt_sha256=kernel.D4_RESULT_SHA,
         frozen_geometry_kernel_sha256=KERNEL_SHA,

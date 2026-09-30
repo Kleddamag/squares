@@ -30,6 +30,7 @@ from devtools import check_n11_closed_degenerate_cover as degenerate_cover
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
 from devtools import n11_fast_exact_cover as fast_cover
+from devtools import n11_nonfield_assignment as a2_assignment
 
 PACKET = geometry.PACKET
 MANIFEST = PACKET / "receipts/nonfield-manifest/manifest.json.gz"
@@ -38,6 +39,7 @@ MANIFEST_SHA = "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b
 FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3"
 FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
 DEGENERATE_COVER_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
+A2_HELPER_SHA = "f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac7265"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -115,7 +117,15 @@ def admit_assignment(case_id: int, recipe: dict[str, Any], manifest: dict[str, A
             "A3 case/job assignment differs from pinned source",
         )
     else:
-        raise ValueError("A2 assignment adapter awaits exact extension binding")
+        baseline_sha = manifest["input_sha256s"]["A1"]
+        baseline = load_object(baseline_sha, manifest, METADATA_OBJECTS)
+        a2_assignment.admit_a2_extension(
+            case_id,
+            recipe,
+            baseline,
+            metadata,
+            baseline_object_sha256=baseline_sha,
+        )
 
 
 def seed_state(
@@ -704,9 +714,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         metadata_sha = manifest["input_sha256s"][recipe["family"]]
         paths["assignment"] = METADATA_OBJECTS / f"{metadata_sha}.gz"
         paths["cover"] = PACKET / "receipts/d4-independent/objects" / f"{geometry.COVER_SHA}.gz"
-        for name in ("assignment", "cover"):
+        bound_inputs = ["assignment", "cover"]
+        if recipe["family"] == "A2":
+            paths["a2_baseline"] = METADATA_OBJECTS / f"{manifest['input_sha256s']['A1']}.gz"
+            paths["a2_helper"] = Path(a2_assignment.__file__)
+            bound_inputs.extend(("a2_baseline", "a2_helper"))
+        for name in bound_inputs:
             before[name] = digest(paths[name])
             result["source_sha256"][name] = before[name]
+        if recipe["family"] == "A2":
+            require(before["a2_helper"] == A2_HELPER_SHA, "A2 assignment helper changed")
         cover = load_object(
             geometry.COVER_SHA, manifest, geometry.PACKET / "receipts/d4-independent/objects"
         )

@@ -26,6 +26,15 @@ from devtools.prepare_n11_nonfield_manifest import PACKET, REPO, REVISION, requi
 CHECKER = REPO / "packing/devtools/check_n11_generic_sequential.py"
 
 
+def source_archive_allowed(path: Path, repo: Path, common_dir: Path) -> bool:
+    """Allow local inputs or the same Git repository's pinned shared archive."""
+    resolved = path.resolve()
+    shared = common_dir.resolve().parent / "attic/n11-proof-inputs" / REVISION / "objects"
+    return resolved.is_relative_to(repo.resolve()) or (
+        common_dir.name == ".git" and resolved.is_relative_to(shared.resolve())
+    )
+
+
 def retain_receipt(path: Path, raw: bytes, *, remove_original: bool = True) -> tuple[Path, str]:
     """Losslessly compress large row ledgers while retaining their exact bytes."""
     if len(raw) < 16_384:
@@ -164,7 +173,18 @@ def main() -> int:
     require(1 <= len(args.cases) <= 32 and len(set(args.cases)) == len(args.cases), "case list")
     require(all(0 <= case < 2184 for case in args.cases), "case index outside census")
     require(args.manifest.resolve().is_relative_to(PACKET), "manifest outside pinned packet")
-    require(args.objects.resolve().is_relative_to(REPO), "objects outside repository archive")
+    common = subprocess.run(
+        ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
+        cwd=REPO,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=5,
+    )
+    require(
+        source_archive_allowed(args.objects, REPO, Path(common.stdout.strip())),
+        "objects outside repository archive",
+    )
     args.out_dir = args.out_dir.resolve()
     require(args.out_dir.is_relative_to(PACKET), "retain receipts in the source packet")
     require(not args.out_dir.exists(), "use a new attempt directory")

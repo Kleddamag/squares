@@ -9,7 +9,28 @@ from typing import Any
 
 import pytest
 
-from devtools.run_n11_nonfield_batch import complete_case, retain_receipt
+from devtools.run_n11_nonfield_batch import (
+    REVISION,
+    complete_case,
+    retain_receipt,
+    source_archive_allowed,
+)
+
+
+def test_worktree_reuses_only_same_repository_pinned_archive(tmp_path: Path) -> None:
+    primary = tmp_path / "primary"
+    worktree = tmp_path / "worktree"
+    common = primary / ".git"
+    shared = primary / "attic/n11-proof-inputs" / REVISION / "objects"
+    assert source_archive_allowed(shared, worktree, common)
+    assert source_archive_allowed(worktree / "local-inputs", worktree, common)
+    assert not source_archive_allowed(primary / "other-inputs", worktree, common)
+    assert not source_archive_allowed(shared.parent.parent / "wrong-revision", worktree, common)
+    assert not source_archive_allowed(shared, worktree, tmp_path / "unrelated/.git")
+    shared.mkdir(parents=True)
+    escaped = shared / "escape"
+    escaped.symlink_to(tmp_path)
+    assert not source_archive_allowed(escaped, worktree, common)
 
 
 def test_large_receipt_retains_exact_bytes_in_deterministic_compression(tmp_path: Path) -> None:

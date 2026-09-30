@@ -1245,6 +1245,31 @@ ancestry and branch geometry remain to be read and replayed.
 The A2 assignment helper separately checks source/census identity only; its six focused
 controls pass in 0.23 seconds and grant no exclusion or baseline geometry.
 
+## First Complete Capture Owner Update
+
+The [complete-step checker](../../../packing/devtools/check_n11_capture_step0.py),
+SHA-256 `3e8180817ffedff6406c13e1e98ac5beacad54a2d8bd9695c8a238b4467f78af`, gives all
+217 rows the same accepted root hulls and independently checked partner cover.
+Their closed angular intervals partition $[0,1]$. Only after every row accepts does the
+ordered join test the proposed common kernel against all residual ownership planes and
+verify the additions as exact convex combinations of the accepted hull and kernel.
+All eleven prior owned hulls recorded for the following step match the resulting state.
+The acceptance flag is set only after final source, dependency, and deadline checks.
+
+The
+[complete execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/result.json),
+SHA-256 `8ca86cc3f119c1dc42e14b142d04cf6863934b799b8e8b6818e54830b1d22b78`, checks 149
+partner rows, including 93 live domains, and 3,173,632 universal facet-vertex
+inequalities. The 217 query rows require 3,546 coverage events and 6,919 probes.
+All 1,320 common-core planes accept the 60-vertex kernel and ten compressed additions.
+The observed execution takes 64.918 seconds with three workers; the focused kernel and
+compression control independently passes in 0.07 seconds.
+This accepts the first capture owner update conditional on the accepted root chain and
+bridge.
+Subsequent updates must still consume the accepted pose rows as well as the owned
+hulls.
+No complete source node, candidate capture, or global conclusion is accepted here.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

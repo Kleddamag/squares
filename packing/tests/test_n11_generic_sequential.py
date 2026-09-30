@@ -51,6 +51,22 @@ def test_manifest_and_case_assignment_are_pinned(tmp_path: Path) -> None:
     assert result["excluded_case_ids"] == []
 
 
+def test_a2_assignment_is_bound_before_geometry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    manifest, recipe = _recipe(221)
+    generic.admit_assignment(221, recipe, manifest)
+    changed = copy.deepcopy(recipe)
+    changed["audit_sha256"] = "0" * 64
+    with pytest.raises(ValueError, match="A2 extension differs"):
+        generic.admit_assignment(221, changed, manifest)
+    monkeypatch.setattr(generic, "A2_HELPER_SHA", "0" * 64)
+    result = generic.run(_args(tmp_path, 221))
+    assert result["status"] == "REFUSED"
+    assert "A2 assignment helper" in result["error"]
+    assert result["excluded_case_ids"] == []
+
+
 def test_multinode_case_remains_unproved(tmp_path: Path) -> None:
     result = generic.run(_args(tmp_path, 2053))
     assert result["status"] == "REFUSED"

@@ -240,6 +240,48 @@ def test_every_site_page_retries_untypeset_math(name: str) -> None:
     assert render_overview.MATH_RETRY_SCRIPT.read_text(encoding="utf-8") in page
 
 
+def test_the_nav_ends_in_an_accessible_theme_control() -> None:
+    """The gear is a named button that opens a menu of three radio items, System, Light
+    and Dark, and it is the bar's last item."""
+    nav = render_overview.nav_html("overview")
+    gear = re.search(r'<button type="button" class="site-theme-button"[^>]*>', nav)
+    assert gear, "the nav has no theme gear"
+    for attribute in (
+        'aria-label="Color theme"',
+        'aria-haspopup="menu"',
+        'aria-expanded="false"',
+        'popovertarget="site-theme-menu"',
+    ):
+        assert attribute in gear[0], attribute
+    assert '<div class="site-theme-menu" id="site-theme-menu" popover role="menu"' in nav
+    choices = re.findall(
+        r'<button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" '
+        r'data-theme-choice="(\w+)">.*?<span>(\w+)</span>',
+        nav,
+    )
+    assert choices == [("system", "System"), ("light", "Light"), ("dark", "Dark")]
+    assert nav.index("site-theme") > nav.rindex('data-page="')
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_every_site_page_carries_the_theme_control(name: str) -> None:
+    page = render_overview.PAGES[name]().html
+    script = render_overview.THEME_SCRIPT.read_text(encoding="utf-8")
+    assert page.count('class="site-theme-button"') == 1
+    assert script in page
+    # kpress's own bootstrap applies the stored choice before first paint, and the
+    # control stores into the key that bootstrap reads.
+    assert 'stored("kpress.theme")' in page
+    assert 'storageKey = "kpress.theme"' in script
+
+
+def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:
+    """An explicit Light or Dark choice must win over the system theme, so the site's
+    styles key on kpress's resolved theme, never on `prefers-color-scheme`."""
+    for sheet in (render_overview.SITE_CSS, render_overview.SITE_NAV_CSS, EXPLAINER_SHELL):
+        assert "prefers-color-scheme" not in sheet.read_text(encoding="utf-8"), sheet.name
+
+
 CARD = re.compile(
     r'<button type="button" class="site-card" popovertarget="([^"]+)" '
     r'data-go="(scroll|external|page)">'

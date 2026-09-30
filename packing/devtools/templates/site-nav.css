@@ -69,6 +69,90 @@
   text-underline-offset: 0.35em;
 }
 
+/* ---------- Theme control ----------
+   A small gray gear at the end of the bar opens a compact menu of three choices, System,
+   Light and Dark, the current one checked. The choice is kpress's own reader preference
+   (`kpress.theme`), which kpress's head bootstrap applies before first paint, so the
+   stylesheets only ever key on `data-kpress-resolved-theme`; overview/theme.js wires the
+   menu. The gear takes the nav items' wash and never underlines. */
+.site-theme {
+  align-self: center;
+  display: flex;
+  flex: 0 0 auto;
+}
+.site-theme-button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--kpress-doc-muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  padding: 0.3rem 0.45rem;
+}
+.site-theme-button svg {
+  block-size: 1.05rem;
+  inline-size: 1.05rem;
+}
+.site-theme-button:is(:hover, :focus-visible, [aria-expanded="true"]) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-text);
+}
+/* The menu is a native popover, so it sits in the top layer above the bar's sideways
+   scroll on a phone and closes on Escape or an outside click by itself; the script
+   places it under the gear. The place below is only where it opens without the script. */
+.site-theme-menu {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border);
+  box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: 0.9rem;
+  inset: 3rem 1rem auto auto;
+  margin: 0;
+  min-inline-size: 8.5rem;
+  padding: 0.25rem;
+  position: fixed;
+}
+.site-theme-menu:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+.site-theme-menu [role="menuitemradio"] {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--kpress-doc-muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-weight: 550;
+  gap: 0.55rem;
+  padding: 0.35rem 0.55rem;
+  text-align: start;
+}
+.site-theme-menu [role="menuitemradio"]:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-text);
+  outline: none;
+}
+.site-theme-menu [role="menuitemradio"][aria-checked="true"] {
+  color: var(--kpress-doc-accent);
+}
+.site-theme-menu svg {
+  block-size: 1em;
+  flex: 0 0 auto;
+  inline-size: 1em;
+}
+.site-theme-menu .site-theme-check {
+  margin-inline-start: auto;
+  visibility: hidden;
+}
+.site-theme-menu [aria-checked="true"] .site-theme-check {
+  visibility: visible;
+}
+
 @media print {
   .site-nav,
   .kpress-site-header {
@@ -88,6 +172,13 @@
   }
   .site-nav .site-name {
     display: none;
+  }
+  /* The gear stays at the right edge while the links scroll under it. */
+  .site-theme {
+    background: var(--kpress-doc-bg);
+    inset-inline-end: 0;
+    margin-inline-start: auto;
+    position: sticky;
   }
 }
 /* On the explainer the bar is the first thing in the page, not in kpress's header slot. */

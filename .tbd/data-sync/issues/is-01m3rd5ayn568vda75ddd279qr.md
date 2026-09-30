@@ -5,7 +5,7 @@ title: "Exact mixed-cover checker: faster options, and what a re-run of identica
 kind: feature
 status: open
 priority: 2
-version: 3
+version: 4
 labels:
   - packing
   - pipeline
@@ -13,7 +13,7 @@ labels:
   - efficiency
 dependencies: []
 created_at: 2026-09-30T05:38:53.517Z
-updated_at: 2026-09-30T05:42:18.665Z
+updated_at: 2026-09-30T05:48:24.107Z
 ---
 ## Question
 
@@ -46,8 +46,8 @@ Those are real, but small, in a non-adversarial setting. Agreement of the same c
 Per `OR-16` and `tbd guidelines general-coding-rules` → Cryptographic Hash Checks:
 
 - **Not a constraint.** `zm_mixed.py`'s resume header records the SHA-256 of its three source files and the cover, and `--resume` refuses a file with a different header. That stops one resumed run from mixing records written by two versions of the checker. It does not stop anyone improving the checker: a changed checker writes its own records file. "Changing the checker's bytes makes its resume check refuse" is not a reason to avoid improving it. The session that said so on 2026-09-30 was wrong.
-- **Ceremony to remove.** `packing/devtools/audit_evand_mixed_covers.py` hashes files that live in git on both sides: `header_sha256_match_retained_files`, `shipped_sha256`, `replay_sha256`, `header_sha256_equal`. So does each evand packet's `retained-files.sha256`. Git revision and path identify those bytes. Replace the header-digest equality with a check that the settings and total are equal, and compare content or regenerated censuses where drift matters. This is `think-jyf4`'s class of debt.
-- **Legitimate.** Comparing a downloaded artifact with a value its publisher supplies independently. An example is the SHA-256 the #247 authors published for their certificate, checked against the Zenodo download.
+- **Ceremony to remove.** `packing/devtools/audit_evand_mixed_covers.py` reports the SHA-256 of files that live in git: the `sha256`, `shipped_sha256` and `replays[].sha256` fields in its JSON. The same goes for each evand packet's `retained-files.sha256`. Git revision and path already identify those bytes, and development.md says not to add such fields. Drop the fields the next time the audit's receipt is regenerated, which happens when the `think-l6la` re-sweeps are recorded. Leave the existing packets' manifests as frozen evidence (`OR-16`), but add no new ones.
+- **Legitimate, and named.** `header_sha256_match_retained_files` compares the digests the source's own run wrote into its records header with the checker files the source published. That value is independently supplied, and the check detects shipped records produced by a different version of the checker than the one shipped: stale records after an edit, which did happen between `ebf8bbc3` and `ee3e2915`. `header_sha256_equal` in `compare-zm-mixed` confirms that a replay ran the same checker version as the source, which is what makes a census difference meaningful. Keep both, and have the code name the boundary. Likewise, comparing a download with a value its publisher supplies independently is legitimate: for example, the SHA-256 the #247 authors published for their certificate, checked against the Zenodo download.
 
 ## Options
 

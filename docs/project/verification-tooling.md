@@ -539,6 +539,21 @@ The Rust primitive already precomputes polygon bounds and skips disjoint rectang
 adding that optimization again would not improve it.
 The retained benchmark makes both findings reproducible.
 
+The
+[exact-arithmetic performance study](research/research-2026-09-30-exact-arithmetic-verifier-performance.md)
+compares the pinned Python and Rust arithmetic algorithms and native-library options.
+Its retained Rust sample places most query stacks in coverage computation, with GCD and
+rational normalization prominent.
+Source review identifies extra reductions in `num-rational` and different integer GCD
+algorithms in `num-bigint` and CPython.
+On 128 fixed queries, two otherwise identical experimental multiplication variants
+isolate the final redundant reduction: omitting it reduced median Rust child CPU by
+12.9%, with nonoverlapping ranges and identical exact answers in three interleaved
+pairs. The candidate still used about 1.52 times the Python primitive’s CPU on that
+workload. The default implementation is unchanged; this is neither a whole-verifier
+speedup nor native/C++ parity, and the remaining library and allocation costs are not
+yet isolated. `think-i5x7` tracks this investigation under the native-performance work.
+
 ## T-059 Row Replay and Its Separate Global Argument
 
 The wand125 entries are T-058 (ceiling) and T-059 (row replay).

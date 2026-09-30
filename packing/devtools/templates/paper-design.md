@@ -589,14 +589,21 @@ it.
   chips keep their fills.
 
 - **Recent results.** The overview’s Recent Results section is one table, not cards or a
-  list: the newest results, newest first, one row each, the same `.site-table` in the
-  sans face as the results page, without sorting or filters (`recent_table`). Its five
-  columns are the date, which says what it dates (`published` or `established`); the
-  result, its math linking to its row on the results page, with the id beside it quiet;
-  the method, the phrase the summary gives after the formula (“by a point-only route”
-  reads “point-only route”), empty when there is none; the credit, the finder first and
-  “after …” quiet, the list cut after three names with the whole of it in the cell’s
-  `title`; and the status, every chip in one cell side by side.
+  list: every result dated on or after 1 August 2026 (`RECENT_FROM`), by the date the
+  table shows, newest first, one row each, the same `.site-table` in the sans face as
+  the results page, without sorting (`recent_table`). One filter sits above it in the
+  results page’s tools bar (`.site-table-tools`, driven by `overview/table.js`): a
+  labelled Significance select over the row’s S rung (`data-s`), read as a lower bound,
+  offering S3 and up (the default), S4 and up, S5 and All, with the count of rows shown
+  out of the total at the bar’s end.
+  A row below the default is `hidden` in the HTML and the count is written there too, so
+  the first paint is already the filtered table and never flashes every row.
+  Its five columns are the date, which says what it dates (`published` or
+  `established`); the result, its math linking to its row on the results page, with the
+  id beside it quiet; the method, the phrase the summary gives after the formula (“by a
+  point-only route” reads “point-only route”), empty when there is none; the credit, the
+  finder first and “after …” quiet, the list cut after three names with the whole of it
+  in the cell’s `title`; and the status, every chip in one cell side by side.
   The status cell holds the V, C and S rung chips and then one chip per part of the
   standing (`second certificate, reported` is two chips), left to right a space apart,
   wrapping only where the cell is too narrow, with the chips’ own block margin between

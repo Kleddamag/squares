@@ -125,7 +125,7 @@ def rendered_math(rich: str) -> list[str]:
         if delimited is None:
             out.append(text)
             continue
-        out.append(next(group for group in delimited.groups() if group is not None))
+        out.append(next(group for group in delimited.groups() if group is not None).strip())
     return out
 
 

@@ -115,3 +115,17 @@ c_{65}\,b
 $$
 
 - a display block inside one line: $$c_{66} + 1$$
+
+- a display block breaking lines with `\cr`:
+
+$$
+\begin{aligned} c_{67} &= 1 \cr d &= 2 \end{aligned}
+$$
+
+- a display block breaking lines with `\newline`:
+
+$$
+\begin{aligned} c_{68} &= 1 \newline d &= 2 \end{aligned}
+$$
+
+- an inline formula breaking an array with `\cr`: x $\begin{smallmatrix} c_{69} \cr d \end{smallmatrix}$ y

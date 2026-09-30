@@ -200,8 +200,9 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
 
     A register evidence entry, a case record, the bibliography, `epistemics.md` and the
     tutorial are the overview's alone, so a pull request changing only those
-    runs its job and no explainer Chromium. The register itself and the renderer module
-    are read by the explainer too, and kpress by all three.
+    runs its job and no explainer Chromium. The register itself is read by the explainer
+    too; the renderer module by all three, since it also writes the navigation bar the
+    Visualizer's build takes (`nav_shell`); and kpress by all three.
     """
     for changed in (
         "TUTORIAL.md",
@@ -214,10 +215,9 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     ):
         assert in_scope([changed], declared) == {"overview"}, changed
     assert in_scope(["packing/frontier/results.yaml"], declared) == {"explainer", "overview"}
-    assert in_scope(["packing/devtools/render_overview.py"], declared) == {
-        "explainer",
-        "overview",
-    }
+    assert in_scope(["packing/devtools/render_overview.py"], declared) == set(
+        pages_scope.BUILDER_INPUTS
+    )
     assert in_scope(["vendor/kpress"], declared) == set(pages_scope.BUILDER_INPUTS)
     assert in_scope(["AGENTS.md", "packing/resources/n11/source.md"], declared) == set()
 

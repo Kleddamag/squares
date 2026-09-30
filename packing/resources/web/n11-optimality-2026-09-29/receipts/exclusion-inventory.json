@@ -1,5 +1,5 @@
 {
-  "accepted_case_count": 1918,
+  "accepted_case_count": 1923,
   "accepted_case_ids": [
     0,
     1,
@@ -221,6 +221,7 @@
     217,
     218,
     219,
+    220,
     222,
     223,
     224,
@@ -1532,6 +1533,7 @@
     1706,
     1707,
     1708,
+    1709,
     1710,
     1711,
     1712,
@@ -1610,6 +1612,7 @@
     1797,
     1798,
     1799,
+    1800,
     1801,
     1802,
     1803,
@@ -1874,6 +1877,7 @@
     2126,
     2127,
     2128,
+    2129,
     2131,
     2132,
     2134,
@@ -1915,6 +1919,7 @@
     2170,
     2171,
     2172,
+    2173,
     2177,
     2179,
     2180,
@@ -1930,12 +1935,24 @@
       "sha256": "ecd3b2cd820ae92c0770641031a789b25ee9739cdba5f2064232f7b7ace234be"
     },
     {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2129-repeated/attempt-3.json",
+      "sha256": "69a65557ab5c8b15f90087ecd20c0faca4a983982adc7a509f983d33c8bcea31"
+    },
+    {
       "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-1/summary.json",
-      "sha256": "e3f7b3f7be3a4b944ac6d1bf0e771f058ce681c035fc943c12613cd455929ca0"
+      "sha256": "a67cd7753a2d60e49b029f5741ceb56677442ec0f84e4e12b63d6a594b0d6286"
     },
     {
       "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/summary.json",
-      "sha256": "aada6092c27710d8df98a91648e4dbfe8cc37a7dac662f4b054af1a4280c6981"
+      "sha256": "2c60661b7f6cc22eb1810cef99ff4bc5c52870953bc9386e492e794c2d4596cf"
+    },
+    {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-repeated/summary.json",
+      "sha256": "6fdd51159c1a1a3db6650689a51738f7a6cbebf593d7064c3886321887d3949c"
+    },
+    {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-required/summary.json",
+      "sha256": "59ccff14021874afde503db2e2bab6e461244ce6060dc165863c48d7d90020d1"
     }
   ],
   "field_inventory_sha256": "768b7110548ce9200d1a8887e417985d79109e5987ff8e0b2b7dd998976d260e",
@@ -1944,22 +1961,18 @@
   "nonfield_manifest_sha256": "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c0184520",
   "remaining_by_family": {
     "A1": [
-      220,
       1652,
       1658,
       1681,
       1687,
       1690,
       1692,
-      1709,
       1723,
       1727,
       1776,
-      1800,
       1816,
       1841,
-      1876,
-      2173
+      1876
     ],
     "A2": [
       221,
@@ -2207,14 +2220,12 @@
       2119,
       2122,
       2125,
-      2129,
       2130,
       2133
     ]
   },
-  "remaining_case_count": 262,
+  "remaining_case_count": 257,
   "remaining_case_ids": [
-    220,
     221,
     247,
     248,
@@ -2388,7 +2399,6 @@
     1694,
     1695,
     1696,
-    1709,
     1716,
     1722,
     1723,
@@ -2401,7 +2411,6 @@
     1775,
     1776,
     1783,
-    1800,
     1805,
     1810,
     1816,
@@ -2466,10 +2475,8 @@
     2119,
     2122,
     2125,
-    2129,
     2130,
     2133,
-    2173,
     2174,
     2175,
     2176,

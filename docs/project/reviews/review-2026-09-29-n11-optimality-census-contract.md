@@ -1056,6 +1056,85 @@ Transition consumers must still resolve every referenced domain from its accepte
 and prove the complete geometric update.
 Focused bridge and singleton-slice controls pass in 0.07 seconds.
 
+## Endpoint and Final-Composition Readiness
+
+Static review confirms that the accepted
+[local-isolation execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json)
+already discharges the exact construction and endpoint prerequisites.
+Its [checker](../../../packing/devtools/check_n11_optimality_local_isolation.py) invokes
+[the witness loader](../../../packing/cases/trump11/isolation_radius.py), which verifies
+all eleven unit-square shapes, all 44 vertices against the container, and all 55 pairs
+with weak separating axes through the
+[exact packing verifier](../../../packing/src/sqpack/verify.py).
+The same execution isolates the specified root $u\in(9/25,37/100)$, encloses
+$T=(6u+4)/(1+2u-u^2)$ strictly below $U$, and checks exact contacts with both opposite
+walls in each coordinate.
+The current construction and arithmetic source identities match those retained in the
+accepted local receipt.
+A separate upper-witness replay is therefore not a missing premise of this composition.
+
+For any putative packing of side $S<T$, centering its container at $(U/2,U/2)$ embeds it
+into the cap without changing the unit squares.
+Every $D_4$ image preserves that concentric side-$S$ container.
+The accepted inclusion map is exactly $Q^{-1}(p_f/B-(U/2,U/2))+(T/2,T/2)$, so it places
+the image in $[(T-S)/2,(T+S)/2]^2\subset[0,T]^2$. The same labeled centers and
+orientation charts then satisfy the fixed-$T$ local theorem once the near-state ancestry
+is proved. That theorem forces the exact construction, whose span $T$ contradicts
+containment in side $S<T$. Once the pending exclusion and capture premises are accepted,
+the verified witness at $T$ supplies the matching upper bound.
+No compactness or limiting argument is needed.
+
+The remaining final implication is conditional: the exact exclusion union must leave
+only cases 438, 999, 1462, and 1659; the accepted symmetry lemma must then supply a
+case-438 image; and complete capture must bind that image to the already accepted
+pose-inclusion and local-isolation states.
+Every exclusion assumption and reused ancestry must be discharged without cycles.
+The final consumer must preserve these distinct scopes: noncandidate exclusions hold at
+$U$, whereas the candidate conclusion excludes sides below $T$. No additional analytic
+premise was found in this composition review.
+
+## Repeated Owners and the Coverage Target
+
+Sequential induction may revisit an owner when every prior owned hull still matches the
+current accepted state and every row consumes that owner’s current accepted predecessor.
+All row results must join before the next promotion.
+Removing a one-visit restriction does not weaken those obligations.
+An early capability check may refuse unsupported partner covers, guards, or source
+grammar before doing the ownership work.
+
+The pinned
+[`audit_capture_v9.py`](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/src/evidence/research/phase3/work/phase3/hull/audit_capture_v9.py#L118-L127)
+distinguishes two domains: `row.input_domain` is recorded after inherited and self-hull
+cuts, while `residual_cover` additionally clips it by the full-angle legal-wall bounds.
+Consequently the source input can properly contain the actual coverage target.
+A failed attempt to cover the entire source input is not itself a certificate defect.
+
+For independent replay, let $D$ be the accepted predecessor outer domain intersected
+with independently necessary wall and self-hull cuts.
+The induction already proves that every feasible center lies in $D$. One may therefore
+check exact forbidden-plus-residual coverage directly on $D$ while retaining the
+compatibility check $D\subseteq\operatorname{conv}(P)$ for the source input $P$.
+Validate $P$ as convex and normalize it; retain the positive-area requirement on $D$ in
+this adapter. Keep all proposed residual polygons and compute ownership minima and
+support bounds over all their vertices, including vertices outside $D$. That
+overapproximation makes those subsequent obligations stronger and preserves every legal
+pose. This mathematical rule grants no exclusion until a complete source-bound execution
+accepts the case.
+
+The reviewed implementation is shared checker
+`6294b3eb43727c08635fde1407de6629946e2c2138f6c712150f0b9cf2a8114d`. It defaults to the
+reference sweep and optionally uses the pinned compiled sweep, propagating the selected
+backend to every row worker and binding its source when used.
+The accepted
+[case-2129 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2129-repeated/attempt-3.json),
+SHA-256 `69a65557ab5c8b15f90087ecd20c0faca4a983982adc7a509f983d33c8bcea31`, uses the
+reference backend. It checks 70 strict seed points and 88 seed rows, then 18 complete
+sequential updates and all 144 rows, including repeated owners.
+Terminal owner 10 has empty residuals in all eight rows; no node, step, or row remains
+pending. The receipt accepts exactly case 2129 and retains false global optimality.
+Its costs are 22.598 seconds wall, 4.269 seconds coordinator CPU, and 43.823 seconds
+child CPU. The two earlier refused attempts retain zero credit.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

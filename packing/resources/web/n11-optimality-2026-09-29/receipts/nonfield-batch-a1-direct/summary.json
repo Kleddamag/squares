@@ -76,10 +76,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "c9694fe9852ec512233e329120b279a7097c4fcefcccb59535d12da8f81d6cd0",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-220.json",
+      "receipt_sha256": "ac5cfe033fad41742efad0dc39e17886feb24dcb0520ecaae18797007e58e675",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-220.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "c9694fe9852ec512233e329120b279a7097c4fcefcccb59535d12da8f81d6cd0"
     },
     {
       "mask_index": 1652,
@@ -99,7 +100,8 @@
       "receipt_sha256": "cc73da1dad07669d580c7c3e943e7833fa0cd11ee13e31f0a65361c7e71d9452",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1652.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "cc73da1dad07669d580c7c3e943e7833fa0cd11ee13e31f0a65361c7e71d9452"
     },
     {
       "mask_index": 1658,
@@ -119,7 +121,8 @@
       "receipt_sha256": "c20c01fe74938810a184ad0a8c2aa1f632f362eae3a340fd2e61296d17d8ed3b",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1658.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "c20c01fe74938810a184ad0a8c2aa1f632f362eae3a340fd2e61296d17d8ed3b"
     },
     {
       "mask_index": 1681,
@@ -136,10 +139,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "ac8644753eed244c14ca172b47c5bde56dcda4fcc5bf0a003c63d06350037865",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1681.json",
+      "receipt_sha256": "a6ed18cebcd2939b799a9848ee66718fbcc7abc13cd6904161c1e2df2644a013",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1681.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "ac8644753eed244c14ca172b47c5bde56dcda4fcc5bf0a003c63d06350037865"
     },
     {
       "mask_index": 1687,
@@ -159,7 +163,8 @@
       "receipt_sha256": "593e3e43420cdd52b3e245127653215f4b88708f6bf5b2a66fb864595f71f940",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1687.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "593e3e43420cdd52b3e245127653215f4b88708f6bf5b2a66fb864595f71f940"
     },
     {
       "mask_index": 1690,
@@ -176,10 +181,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "9534d6939b8592fa86416533eb712157a2e2f73c119f2d30829b9bedca74a2ac",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1690.json",
+      "receipt_sha256": "d20be2fba226548321bc3aa5bbc425ed5db2c8d342feabdd3f04e9f4fd86df0d",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1690.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "9534d6939b8592fa86416533eb712157a2e2f73c119f2d30829b9bedca74a2ac"
     },
     {
       "mask_index": 1692,
@@ -196,10 +202,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "798b82c101c3e644f4a4a1c7229f8b281a2d56675f4ab64a87b1cbe6c47407a0",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1692.json",
+      "receipt_sha256": "c69aef47604d172614bdc768da2c724815f5c27dc9e9617b48da52cece5e5bb5",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1692.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "798b82c101c3e644f4a4a1c7229f8b281a2d56675f4ab64a87b1cbe6c47407a0"
     },
     {
       "mask_index": 1709,
@@ -216,10 +223,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "bf15bbf17843ed9ac17d42703d89f91dddc3680e4c5de92a3d7a1d56ae95bb07",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1709.json",
+      "receipt_sha256": "d899ac8f0c927106688a1df48352f7322f5fa46bbf5b2aa4baffa326b0edf573",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1709.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "bf15bbf17843ed9ac17d42703d89f91dddc3680e4c5de92a3d7a1d56ae95bb07"
     },
     {
       "mask_index": 1727,
@@ -236,10 +244,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "7117ca18bd05fd132c4c59e417e03c522079ea92e0f3781e711de2d0f26398db",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1727.json",
+      "receipt_sha256": "084617e806145ea9d8c6722c81631a78d1fbda22782ab2e7435807f01353d822",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1727.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "7117ca18bd05fd132c4c59e417e03c522079ea92e0f3781e711de2d0f26398db"
     },
     {
       "mask_index": 1776,
@@ -259,7 +268,8 @@
       "receipt_sha256": "5de9c213ee61b3faafd830992de3facace6ddc9aeee68a88a39ab77024e5a20d",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1776.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "5de9c213ee61b3faafd830992de3facace6ddc9aeee68a88a39ab77024e5a20d"
     },
     {
       "mask_index": 1800,
@@ -276,10 +286,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "e79b777e92b01cfd34d1c2931d3f329f503c2aa228dc1fa580796f47f1d2c361",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1800.json",
+      "receipt_sha256": "d99d53b7beeb3c69c4509e1e5ea329c39535323c21fca411c63beec35fc7ddb1",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1800.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "e79b777e92b01cfd34d1c2931d3f329f503c2aa228dc1fa580796f47f1d2c361"
     },
     {
       "mask_index": 1816,
@@ -299,7 +310,8 @@
       "receipt_sha256": "5a73a191e26b8bc9a3dfa490c83aeaec657fad1251b7640add09f02b10a32bce",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1816.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "5a73a191e26b8bc9a3dfa490c83aeaec657fad1251b7640add09f02b10a32bce"
     },
     {
       "mask_index": 1841,
@@ -319,7 +331,8 @@
       "receipt_sha256": "28203a9c5f78118a29eb6a678cc792da031f518f2447ce2551033825ec6c953f",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1841.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "28203a9c5f78118a29eb6a678cc792da031f518f2447ce2551033825ec6c953f"
     },
     {
       "mask_index": 1876,
@@ -339,7 +352,8 @@
       "receipt_sha256": "bc0ae43b5e339a6e1dff7b17478cfe55b6cf2b195ed512072bdac6735284f943",
       "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1876.json",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "bc0ae43b5e339a6e1dff7b17478cfe55b6cf2b195ed512072bdac6735284f943"
     },
     {
       "mask_index": 2054,
@@ -358,8 +372,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "ec3cd817aaacb501cfd81a94f56de6207577a7030cf3768c69b9f6aae7b590aa",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2054.json"
+      "receipt_sha256": "4cc39dc30f17defa404459b18f3fea257d7bc485903879bf3b4c19fa84e06fb0",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2054.json.gz",
+      "receipt_decoded_sha256": "ec3cd817aaacb501cfd81a94f56de6207577a7030cf3768c69b9f6aae7b590aa"
     },
     {
       "mask_index": 2099,
@@ -378,8 +393,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "0396fa1dec490fba16b5bc862fe1ec801529cb5ec6a31729bcb719574df29ac9",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2099.json"
+      "receipt_sha256": "efdc2a7da14a9531fc2f47d59a24213e47088d8e32af27396ef71db26a34ca52",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2099.json.gz",
+      "receipt_decoded_sha256": "0396fa1dec490fba16b5bc862fe1ec801529cb5ec6a31729bcb719574df29ac9"
     },
     {
       "mask_index": 2104,
@@ -398,8 +414,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "ad4cb0f7a7cd4428f8a4978778c9a4ca1715a196ba96c1fc887ea5f8152da493",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2104.json"
+      "receipt_sha256": "9f01f892d4c1ea4ab0369e87ed1d6bd58e579bd90fddee21148f66ef4e60ec01",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2104.json.gz",
+      "receipt_decoded_sha256": "ad4cb0f7a7cd4428f8a4978778c9a4ca1715a196ba96c1fc887ea5f8152da493"
     },
     {
       "mask_index": 2108,
@@ -418,8 +435,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "76bc6d2699a39c7de20d48a463f54f0c2683e2db822e0e2de40c2ae93e884d38",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2108.json"
+      "receipt_sha256": "d8441a1b1120bf917930c9f5863b36300959a5e7afd34ec0e555de1801cd5b79",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2108.json.gz",
+      "receipt_decoded_sha256": "76bc6d2699a39c7de20d48a463f54f0c2683e2db822e0e2de40c2ae93e884d38"
     },
     {
       "mask_index": 2117,
@@ -438,8 +456,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "f2dcd19965c8c539ccdcc43d42ff4bdbafddca25ed2052d5051d177ad7f392e0",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2117.json"
+      "receipt_sha256": "0a48345f75bfd93bf9b3e878866e16544cdb21fc112a8b67f490d2a63907e2e2",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2117.json.gz",
+      "receipt_decoded_sha256": "f2dcd19965c8c539ccdcc43d42ff4bdbafddca25ed2052d5051d177ad7f392e0"
     },
     {
       "mask_index": 2123,
@@ -458,8 +477,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "3c914325f9705982662c89278ca30cccaeaaa2d923077ff14ae6cef15eb83f70",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2123.json"
+      "receipt_sha256": "281ea372da92a55125c5055c70f06148375f004a986b5857d7150f76f0c56ba3",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2123.json.gz",
+      "receipt_decoded_sha256": "3c914325f9705982662c89278ca30cccaeaaa2d923077ff14ae6cef15eb83f70"
     },
     {
       "mask_index": 2127,
@@ -478,8 +498,9 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "d71dc2e3aa8d33c3ccc05ecf4a4a914ff47453a86e5b0ee1cc5ff4583176d07a",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2127.json"
+      "receipt_sha256": "fac8a610e7d77a70549c6e5df8f91c4fae9b8f88bddd4b51ef96282d2f69b332",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2127.json.gz",
+      "receipt_decoded_sha256": "d71dc2e3aa8d33c3ccc05ecf4a4a914ff47453a86e5b0ee1cc5ff4583176d07a"
     },
     {
       "mask_index": 2173,
@@ -496,10 +517,11 @@
         "max_seconds": 900.0,
         "max_events": 50000
       },
-      "receipt_sha256": "efb58186e6c7e391e253042b96f770584caba9fcd4319f9bdf07afe3ded99380",
-      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2173.json",
+      "receipt_sha256": "58dffd17359caaee2b0cfd8aaeb22e37a796d274312bbd180e17c463ef053b13",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2173.json.gz",
       "checker_status": "REFUSED",
-      "reason": null
+      "reason": null,
+      "receipt_decoded_sha256": "efb58186e6c7e391e253042b96f770584caba9fcd4319f9bdf07afe3ded99380"
     }
   ]
 }

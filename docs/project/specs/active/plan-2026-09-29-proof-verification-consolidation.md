@@ -57,8 +57,8 @@ result/stdout lines are duplicated; three JSON receipts contain 15,240 lines, an
 session logs contribute 7,212. These are storage/review targets, not reasons to discard
 evidence. Compression reduces review noise; it does not simplify mathematics.
 
-Acceptance is **1,918 cases**, comprising all 1,904 cases in the source
-field-certificate union and fourteen generic cases; 262 of the claimed 2,180 exclusions
+Acceptance is **1,923 cases**, comprising all 1,904 cases in the source
+field-certificate union and nineteen generic cases; 257 of the claimed 2,180 exclusions
 remain. All 14 capture-root rounds pass, with a reviewed chain joining their actual
 geometric executions.
 Subsequent capture transitions and final composition remain open.

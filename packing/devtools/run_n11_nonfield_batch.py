@@ -7,6 +7,7 @@ not replace mathematical review of the checker or establish global optimality.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import os
@@ -18,11 +19,28 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
-from strif import atomic_write_text
+from strif import atomic_write_bytes, atomic_write_text
 
 from devtools.prepare_n11_nonfield_manifest import PACKET, REPO, REVISION, require
 
 CHECKER = REPO / "packing/devtools/check_n11_generic_sequential.py"
+
+
+def retain_receipt(path: Path, raw: bytes, *, remove_original: bool = True) -> tuple[Path, str]:
+    """Losslessly compress large row ledgers while retaining their exact bytes."""
+    if len(raw) < 16_384:
+        return path, hashlib.sha256(raw).hexdigest()
+    require(path.read_bytes() == raw, "receipt changed before retention")
+    packed = gzip.compress(raw, mtime=0)
+    target = path.with_suffix(path.suffix + ".gz")
+    if target.exists():
+        require(target.read_bytes() == packed, "different compressed receipt already exists")
+    else:
+        atomic_write_bytes(target, packed)
+    require(gzip.decompress(target.read_bytes()) == raw, "receipt compression changed bytes")
+    if remove_original:
+        path.unlink()
+    return target, hashlib.sha256(packed).hexdigest()
 
 
 def complete_case(record: dict[str, Any], case: int, checker_sha: str, exit_code: int) -> bool:
@@ -60,6 +78,8 @@ def run_case(
         str(args.objects.resolve()),
         "--workers",
         str(args.workers),
+        "--cover-backend",
+        args.cover_backend,
         "--max-seconds",
         str(available),
         "--max-events",
@@ -93,6 +113,7 @@ def run_case(
             "manifest": args.manifest.resolve().relative_to(REPO).as_posix(),
             "objects": args.objects.resolve().relative_to(REPO).as_posix(),
             "workers": args.workers,
+            "cover_backend": args.cover_backend,
             "max_seconds": available,
             "max_events": 50000,
         },
@@ -101,8 +122,10 @@ def run_case(
         summary["stderr"] = error.decode(errors="replace")[-4000:]
     if target.is_file() and target.stat().st_size <= 10_000_000:
         raw = target.read_bytes()
-        summary["receipt_sha256"] = hashlib.sha256(raw).hexdigest()
-        summary["receipt"] = target.relative_to(REPO).as_posix()
+        retained, retained_sha = retain_receipt(target, raw)
+        summary["receipt_sha256"] = retained_sha
+        summary["receipt_decoded_sha256"] = hashlib.sha256(raw).hexdigest()
+        summary["receipt"] = retained.relative_to(REPO).as_posix()
         try:
             record = json.loads(raw)
             accepted = not error and complete_case(
@@ -113,7 +136,7 @@ def run_case(
                 summary["excluded_case_ids"] = [case]
             else:
                 summary["checker_status"] = record.get("status")
-                summary["reason"] = record.get("reason")
+                summary["reason"] = record.get("reason", record.get("error"))
         except (ValueError, AttributeError, TypeError) as exc:
             summary["reason"] = str(exc)
     return summary
@@ -128,6 +151,7 @@ def main() -> int:
     available_cpus = os.process_cpu_count() or 1
     parser.add_argument("--jobs", type=int, choices=range(1, 9), default=2)
     parser.add_argument("--workers", type=int, choices=range(1, 4), default=1)
+    parser.add_argument("--cover-backend", choices=("reference", "fast"), default="reference")
     parser.add_argument("--cpu-budget", type=int, default=min(8, available_cpus))
     parser.add_argument("--seconds", type=float, default=55)
     parser.add_argument("--batch-seconds", type=float, default=300)

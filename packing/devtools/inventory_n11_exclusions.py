@@ -17,11 +17,15 @@ from typing import Any
 from strif import atomic_write_text
 
 from devtools.prepare_n11_nonfield_manifest import PACKET, REPO, REVISION, require
-from devtools.run_n11_nonfield_batch import complete_case
+from devtools.run_n11_nonfield_batch import complete_case, retain_receipt
 
 FIELD_SHA = "768b7110548ce9200d1a8887e417985d79109e5987ff8e0b2b7dd998976d260e"
 MANIFEST_SHA = "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c0184520"
-REVIEWED_CHECKERS = {"820f35f7dfeb5ec9dd0cd276305f3e86a230abfccb94ee2a70463682f69d6e15"}
+REVIEWED_CHECKERS = {
+    "820f35f7dfeb5ec9dd0cd276305f3e86a230abfccb94ee2a70463682f69d6e15",
+    "ac833d5d5e7aa24465697bec14095ac6e5245f35d8ba4993b6375f38370739ab",
+    "6294b3eb43727c08635fde1407de6629946e2c2138f6c712150f0b9cf2a8114d",
+}
 PILOTS = {
     "generic-mask2095-intake/full-result.json": (
         2095,
@@ -30,6 +34,10 @@ PILOTS = {
     "generic-case2135-pilot/final-result.json": (
         2135,
         "ecd3b2cd820ae92c0770641031a789b25ee9739cdba5f2064232f7b7ace234be",
+    ),
+    "generic-case2129-repeated/attempt-3.json": (
+        2129,
+        "69a65557ab5c8b15f90087ecd20c0faca4a983982adc7a509f983d33c8bcea31",
     ),
 }
 
@@ -71,6 +79,33 @@ def admitted_batch(summary: dict[str, Any], repo: Path = REPO) -> set[int]:
     )
     require(summary["global_optimality_proved"] is False, "batch scope")
     return accepted
+
+
+def compact_batch(path: Path, repo: Path = REPO) -> None:
+    """Rebind losslessly compressed ledgers without changing execution credit."""
+    summary = json.loads(path.read_bytes())
+    before = admitted_batch(summary, repo)
+    originals: list[tuple[Path, str]] = []
+    for row in summary["results"]:
+        if "receipt" not in row:
+            continue
+        receipt = (repo / row["receipt"]).resolve()
+        require(receipt.is_relative_to(repo.resolve()), "receipt outside repository")
+        raw = receipt.read_bytes()
+        require(hashlib.sha256(raw).hexdigest() == row["receipt_sha256"], "receipt changed")
+        if receipt.suffix == ".gz":
+            continue
+        retained, fingerprint = retain_receipt(receipt, raw, remove_original=False)
+        if retained != receipt:
+            originals.append((receipt, hashlib.sha256(raw).hexdigest()))
+        row["receipt"] = retained.relative_to(repo.resolve()).as_posix()
+        row["receipt_sha256"] = fingerprint
+        row["receipt_decoded_sha256"] = hashlib.sha256(raw).hexdigest()
+    require(admitted_batch(summary, repo) == before, "compaction changed accepted IDs")
+    atomic_write_text(path, json.dumps(summary, indent=2) + "\n")
+    for original, fingerprint in originals:
+        if hashlib.sha256(original.read_bytes()).hexdigest() == fingerprint:
+            original.unlink()
 
 
 def inventory(batches: list[Path]) -> dict[str, Any]:
@@ -130,8 +165,16 @@ def inventory(batches: list[Path]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--batch", type=Path, action="append", default=[])
+    parser.add_argument(
+        "--compact-batches",
+        action="store_true",
+        help="losslessly compress large selected receipts",
+    )
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
+    if args.compact_batches:
+        for path in args.batch:
+            compact_batch(path)
     result = inventory(args.batch)
     atomic_write_text(args.out, json.dumps(result, indent=2, sort_keys=True) + "\n")
     print(

@@ -53,9 +53,9 @@ adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
 Subsequent complete field batches establish the entire 1,904-case field union.
-The independent generic checkers accept fourteen further cases, including reviewed
-pilots 2095 and 2135 and twelve complete executions in parallel batches.
-The exact union contains 1,918 exclusions, leaving 262. All 14 capture-root rounds pass,
+The independent generic checkers accept nineteen further cases, including reviewed
+pilots 2095, 2135 and 2129 and sixteen complete executions in parallel batches.
+The exact union contains 1,923 exclusions, leaving 257. All 14 capture-root rounds pass,
 including 154 owner updates, 16,551 closed rows and 1,060 owned additions.
 Actual geometric executions plus the Astra-reviewed source and receipt chain establish
 conditional root ownership; subsequent capture remains open.

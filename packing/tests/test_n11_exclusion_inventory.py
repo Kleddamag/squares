@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 from copy import deepcopy
@@ -10,7 +11,12 @@ from typing import Any
 
 import pytest
 
-from devtools.inventory_n11_exclusions import REVIEWED_CHECKERS, REVISION, admitted_batch
+from devtools.inventory_n11_exclusions import (
+    REVIEWED_CHECKERS,
+    REVISION,
+    admitted_batch,
+    compact_batch,
+)
 
 
 def fixture_batch(tmp_path: Path) -> dict[str, Any]:
@@ -55,6 +61,23 @@ def test_complete_record_admits_only_its_exact_case(tmp_path: Path) -> None:
     (tmp_path / "result.json").write_text("{}")
     with pytest.raises(ValueError, match="binding differs"):
         admitted_batch(batch, tmp_path)
+
+
+def test_compaction_preserves_union_and_exact_decoded_receipt(tmp_path: Path) -> None:
+    batch = fixture_batch(tmp_path)
+    receipt = tmp_path / "result.json"
+    raw = receipt.read_bytes() + b" " * 20_000
+    receipt.write_bytes(raw)
+    batch["results"][0]["receipt_sha256"] = hashlib.sha256(raw).hexdigest()
+    path = tmp_path / "summary.json"
+    path.write_text(json.dumps(batch))
+    compact_batch(path, tmp_path)
+    updated = json.loads(path.read_text())
+    assert admitted_batch(updated, tmp_path) == {2132}
+    assert gzip.decompress((tmp_path / updated["results"][0]["receipt"]).read_bytes()) == raw
+    before = path.read_bytes()
+    compact_batch(path, tmp_path)
+    assert path.read_bytes() == before
 
 
 @pytest.mark.parametrize(

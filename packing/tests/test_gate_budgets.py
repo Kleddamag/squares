@@ -25,7 +25,6 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import replace
-from datetime import date
 from pathlib import Path
 
 import pytest
@@ -499,25 +498,6 @@ def test_a_tier_a_pull_request_runs_may_not_have_an_empty_record() -> None:
     problems = unrecorded_problems(emptied, {tier.id: "a job"})
     assert any("no recorded cost" in problem for problem in problems)
     assert unrecorded_problems(register, {tier.id: "a job"}) == []
-
-
-def test_new_shard_pending_calibration_is_bounded_and_expires() -> None:
-    register = live()
-    shard = register.tier("suite_c")
-    assert shard is not None
-    assert shard.measured_seconds is None
-    assert shard.pending_measurement == "think-o18s"
-    assert shard.pending_until == date(2026, 10, 1)
-    assert unrecorded_problems(register, {"suite_c": "suite-c"}, today=date(2026, 9, 30)) == []
-    assert unrecorded_problems(register, {"suite_c": "suite-c"}, today=date(2026, 10, 2))
-    too_loose = with_tier(register, replace(shard, ceiling_seconds=155.0))
-    assert unrecorded_problems(too_loose, {"suite_c": "suite-c"}, today=date(2026, 9, 30))
-    arbitrary = replace(
-        register, tiers=(*register.tiers, replace(shard, id="unmeasured_new_tier"))
-    )
-    assert unrecorded_problems(
-        arbitrary, {"unmeasured_new_tier": "new-job"}, today=date(2026, 9, 30)
-    )
 
 
 def test_a_pull_request_record_must_name_the_run_it_was_read_from() -> None:

@@ -13,10 +13,11 @@ partition is a function of a file's repository-relative path and nothing else, s
 file lands in exactly one shard by construction:
 
 * a file named in `suite-file-costs.json` takes the shard a greedy longest-first packing
-  of the recorded costs gives it. When the record names shard ceilings, packing balances
-  cost divided by each ceiling; otherwise it balances raw cost. The packing reads only
-  the record, so it moves when someone re-records and never because a file elsewhere was
-  added or removed;
+  of the recorded costs gives it. The record's `target_ceiling_seconds` are historical
+  planning capacities for this measured assignment, separate from the gate's live
+  enforcement ceilings. Packing balances cost divided by those capacities; a generic
+  record without them balances raw cost. The packing reads only the record, so it moves
+  when someone re-records and never because a file elsewhere was added or removed;
 * a file the record does not name -- a new test, or a renamed one -- takes
   `crc32(path) mod N`. That is stable across runs and machines, needs no edit to land,
   and spreads new files as a uniform hash does rather than piling them on one side.
@@ -105,7 +106,7 @@ class Shard:
 
 @dataclass(frozen=True)
 class RecordedCosts:
-    """Seconds per test file and optional relative shard capacity ceilings."""
+    """Seconds per test file and optional historical shard planning capacities."""
 
     shards: int
     seconds: Mapping[str, float]

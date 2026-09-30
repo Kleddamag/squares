@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T16:10:00Z'
+  deadline_at: '2026-09-30T16:40:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -1059,7 +1059,7 @@ session:
     clock_role: work
     bead: think-o18s
     objective: Add a third parallel behavioral shard so routine validation has measured headroom.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Two passing behavioral suites exceed their combined usable capacity; minor transfers cannot provide stable headroom.
     budget_minutes: 30
@@ -1069,12 +1069,41 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_suite_files.py tests/test_pr_wall.py
     kill_condition: Lost coverage, an optional shard, false timing provenance or weakened existing ceilings prevents acceptance.
     fallback: Retain the confirmed proof and explicit integration cost debt while repairing only the failed contract.
+    outcome: >-
+      Published 84dc39d7e after 224 focused CLI/budget contracts and 33 partition tests.
+      Hosted run 36739024277 passed all 7958 behavioral tests with seven skips;
+      A/B/C walls were 65.67/104.65/88.59 seconds. A failed only the stale-fast
+      baseline; the frontend contract missed the new suite-c selector. All mathematical,
+      Rust and other validation lanes passed. Astra confirmed complete mathematical
+      closure and approved keeping this observed partition fixed during calibration.
+    evidence:
+    - packing/devtools/suite_files.py
+    - packing/tests/test_suite_files.py
+    - .github/workflows/packing-validation.yml
+    stop_reason: At 2026-09-30T15:51:12Z, observed hosted timings require final calibration and a browser-floor selector repair.
+    next_action: Record actual baselines, tighten A, remove temporary calibration machinery and certify the final head.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-o18s
+    objective: Calibrate the observed three-shard partition and complete final PR integration.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: The new partition passed every behavioral test; only a stale baseline and selector contract remain.
+    budget_minutes: 30
+    started_at: '2026-09-30T15:51:12Z'
+    deadline_at: '2026-09-30T16:21:12Z'
+    expected_output: Observed baselines without temporary exceptions, fixed selector coverage and passing required CI.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_gate_budgets.py tests/test_suite_files.py
+    kill_condition: Changed test coverage, invented timings or weakened enforcement prevent acceptance.
+    fallback: Keep the confirmed theorem and explicit integration status while repairing the failing contract.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol lanes own partitioning and CI wiring concurrently; Astra reviews complete coverage and required failure propagation.
+    next_action: Sol lanes fix calibration and selector contracts; root updates documentation and final PR evidence.
   budget:
-    wall_minutes: 1205
+    wall_minutes: 1235
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15

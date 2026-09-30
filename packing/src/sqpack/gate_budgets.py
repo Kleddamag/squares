@@ -46,7 +46,6 @@ import itertools
 import math
 import re
 from dataclasses import dataclass, field
-from datetime import date
 from pathlib import Path
 from typing import Any, Literal
 
@@ -143,9 +142,6 @@ class TierBudget:
     #: The lowest and highest readings at the reference shape, for a tier whose walls are
     #: a distribution: the stale rule reads the low edge and the drift rule the high one.
     measured_band: tuple[float, float] | None = None
-    #: A new PR shard may have an explicitly tracked, short-lived unmeasured first run.
-    pending_measurement: str | None = None
-    pending_until: date | None = None
 
     @property
     def records(self) -> tuple[Record, ...]:
@@ -342,24 +338,6 @@ def _tier_from(raw: object, index: int) -> TierBudget:
     reference = _require_mapping(entry.get("reference"), f"{where}.reference")
     measured = _optional_positive(entry.get("measured_seconds"), f"{where}.measured_seconds")
     measured_on = _optional_text(entry.get("measured_on"), f"{where}.measured_on")
-    pending = _optional_text(entry.get("pending_measurement"), f"{where}.pending_measurement")
-    pending_until_text = _optional_text(entry.get("pending_until"), f"{where}.pending_until")
-    if pending is not None:
-        if re.fullmatch(r"think-[a-z0-9]{4}", pending) is None:
-            raise BudgetError(f"{where}.pending_measurement must name a `think-xxxx` bead")
-        if pending_until_text is None:
-            raise BudgetError(f"{where}.pending_measurement requires pending_until")
-        if any(
-            entry.get(field) is not None
-            for field in ("measured_seconds", "measured_on", "measured_where", "measured_band")
-        ):
-            raise BudgetError(f"{where} cannot be pending and measured at once")
-    elif pending_until_text is not None:
-        raise BudgetError(f"{where}.pending_until requires pending_measurement")
-    try:
-        pending_until = date.fromisoformat(pending_until_text) if pending_until_text else None
-    except ValueError as error:
-        raise BudgetError(f"{where}.pending_until must be an ISO date") from error
     if (measured is None) != (measured_on is None):
         raise BudgetError(
             f"{where} records a cost without a date or a date without a cost; a "
@@ -389,8 +367,6 @@ def _tier_from(raw: object, index: int) -> TierBudget:
         history=_history_from(entry.get("history"), where),
         attribution=_attribution_from(entry.get("attribution"), f"{where}.attribution"),
         measured_band=band,
-        pending_measurement=pending,
-        pending_until=pending_until,
     )
 
 

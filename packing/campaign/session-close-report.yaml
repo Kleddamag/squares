@@ -2819,7 +2819,7 @@ sessions:
     snapshot_incomplete: true
 - id: session-164
   title: "Upstream Merge and PR 246 Certification"
-  status: in_progress
+  status: completed
   primary_bead: think-3i74
   phases: 39
   measured: true

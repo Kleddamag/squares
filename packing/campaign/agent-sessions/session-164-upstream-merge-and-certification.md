@@ -13,7 +13,8 @@ session:
   deadline_at: '2026-09-30T18:25:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
-  status: in_progress
+  status: completed
+  ended_at: '2026-09-30T17:46:50Z'
   goal: Independently validate or refute T-060, the proposed global n11 optimum, by building and
     applying the necessary W7 audit machinery efficiently; integrate its source, classifications and
     evidence while keeping unrelated CI off the proof-review critical path.
@@ -1199,7 +1200,7 @@ session:
     clock_role: work
     bead: think-pd17
     objective: Finish scoped checkpoint repairs and required final-head CI before merging PR 246.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: The prior packaging slice ended with named deferred failures; a scoped repair slice now tracks their checkpoint and final-head CI.
     budget_minutes: 40
@@ -1211,16 +1212,21 @@ session:
     fallback: Repair only named regressions; retain passing checkpoint evidence without promoting failed or interrupted runs.
     outcome: >-
       Required CI on ebbfec10e failed only the expired Session 164 clock and changed
-      generic node-inventory expectation. The node-inventory repair passes its focused
-      contract and review; this session-clock repair is in progress. Final-head CI and
-      the combined checkpoint verdict remain pending.
+      generic node-inventory expectation. Both received focused repairs and review.
+      The eight required fast-tier jobs and packing-required passed in hosted Packing
+      validation run 36752689669 on 424b6be3a; Certificate page run 36752689663 also
+      passed. The retained deferred run still has a failed aggregate: its eight passing
+      workers and 156 passing slow tests, together with reviewed scoped repairs, form
+      the separate combined checkpoint accepted for this merge. PR 246 merged as
+      d44ec04086cffd5498fd69e54ee58415365910c7 at 17:41:19Z.
     evidence:
     - packing/tests/test_n11_generic_fresh.py
     - packing/tests/test_known_best_atlas.py
     - packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
-    stop_reason: null
-    next_action: Publish the scoped fixes, await required final-head checks and merge
-      only after the combined checkpoint is reviewed as sufficient.
+    stop_reason: Reviewed scoped fixes, the hosted fast tier and combined checkpoint
+      satisfied the merge conditions; PR 246 merged.
+    next_action: Continue reusable-tool consolidation in the separate helper follow-up
+      and reconcile PR 249 against merged main without changing T-060's accepted scope.
   budget:
     wall_minutes: 1340
     max_cycles: 40
@@ -1235,7 +1241,8 @@ session:
     metric: Reviewed workflow contracts and attributable proof diagnostics, with explicit readiness and integration debt.
     before: Commit 132c209c0 passed the local push tier and was published, but current main made PR 246
       unmergeable and withheld its normal hosted checks.
-    after: null
+    after: Independent exact verification confirmed T-060 at S5/V4/C5, and PR 246
+      merged after the eight-part hosted fast tier and its required aggregate passed.
   delegations:
   - task: Resolve release revision and generated atlas after the data merge
     operator: GPT-5.6 Sol high (reference_audit)
@@ -1481,38 +1488,55 @@ session:
     both have scoped repairs, and final-head CI remains pending.'
   - 'An attempted broad push selection was interrupted before a verdict because it repeated slow work;
     think-ufhu tracks selection visibility and unaffected-checkpoint reuse. It grants no pass credit.'
+  - 'full gate: fast at 424b6be3a8aca12bc6ea227f0f7f0f2609167e8d: passed (hosted Packing validation run 36752689669; all eight PR fast-tier jobs and packing-required passed)'
+  - 'Certificate page run 36752689663 passed. Deferred run 36746969192 remains a failed aggregate; its eight passing workers and 156 passing slow tests, together with reviewed scoped repairs, support only the separately assessed combined checkpoint.'
   resource_rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
-  stop_reason: null
-  next_action: Mathematical confirmation is complete at V4/C5. Await the combined retained-and-targeted
-    checkpoint review and green required CI before merging PR 246; keep PR 249 cross-branch reconciliation
-    separate. Fresh-ensemble orchestration think-e2ot and optional Rust performance think-3cwg remain
-    outside the accepted proof.
+  stop_reason: T-060's independent mathematical validation and PR 246's reviewed integration
+    completed; the hosted fast tier and required aggregate passed before merge.
+  next_action: After the reviewed helper cleanup lands, implement the bounded
+    fresh-ensemble replay entry point under think-e2ot; preserve the accepted
+    historical evidence. PR 249 reconciliation, optional Rust performance and
+    later exposition remain separate tracks.
 ---
 # Upstream Merge and PR 246 Certification
 
-## Current Status — 2026-09-30 17:31 UTC
+## Current Status — 2026-09-30 17:41 UTC
 
-T-060’s mathematical obligations are complete at S5/V4/C5; PR 246 has not merged.
-Deferred run 36746969192 had eight passing workers and 156 passing slow tests, while two
-slow tests failed. Reviewed scoped repairs pass, and the next CI run found only a
-session-clock expiry and node-inventory expectation; their focused repairs are in
-progress. Required final-head CI and the combined checkpoint verdict remain pending.
-The chronology below retains earlier statements that global proof components were open;
-those are dated checkpoints, not current proof status.
+T-060’s mathematical obligations are complete at S5/V4/C5. PR 246 merged at 17:41:19Z
+after all eight hosted fast-tier jobs and their required aggregate passed on 424b6be3a.
+The separate deferred run 36746969192 remains failed: eight workers and 156 slow tests
+passed, while two slow tests failed.
+Reviewed scoped repairs and those retained passing executions support the combined
+checkpoint accepted for this merge.
+PR 249 and reusable tool consolidation remain separate follow-ups.
+The remaining tracked work is PR 249 reconciliation (think-d15x), optional Rust
+performance (think-3cwg), simplification (think-uz2x) and the later explainer
+(think-08pw); the next handoff is think-e2ot. The chronology below retains earlier
+statements that global proof components were open; those are dated checkpoints, not
+current proof status.
+
+After closeout, automatic main run
+[36753195024](https://github.com/jlevy/squares/actions/runs/36753195024) at merge
+`d44ec0408` passed 157 other slow tests but the positive case-2095 replay returned
+`INCOMPLETE` at its 60-second test clock (60.12 seconds).
+A test-only follow-up raises that golden’s finite operational ceiling to 300 seconds;
+its eight focused controls pass in 39.32 seconds.
+The production checker, accepted proof receipts and session’s hosted fast-tier pass are
+unchanged. The main slow-lane follow-up has not yet run on this change.
 
 The session began with integration of the s(32) point-cover qualification and
 gate-budget controls alongside PR 246’s independent rectangle verification and T-059
 census tools, provisionally labeled T-057 before upstream claim IDs were reconciled.
-Final merged-head certification remains integration debt under think-niqx.
+PR 246’s merged-head integration and hosted fast-tier certification are complete.
 
 ## Current Checkpoint
 
 The independent geometric executions and final Astra-max review confirm T-060:
 $s(11)=T$, at S5/V4/C5. All 2,180 exclusions and ten capture nodes are accepted;
 `final-composition.json` has no pending obligations.
-Registry and reader integration, data artifact regeneration and hosted CI are the active
-final slice. The plan below records the original dependency order; it does not describe
+Registry and reader integration, data artifact regeneration and hosted CI are complete
+for PR 246. The plan below records the original dependency order; it does not describe
 unexecuted mathematics.
 
 ## Priority and Goal Hierarchy

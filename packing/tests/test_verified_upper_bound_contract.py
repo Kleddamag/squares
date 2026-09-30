@@ -272,11 +272,6 @@ DECLARED_CONSUMERS = {
     "packing/tests/test_frontier_rigidity_assessment.py": (
         "exercises that two-sided pin, including the cases where it must refuse"
     ),
-    "packing/devtools/overview_sections.py": (
-        "prints n = 11's ceiling as the right side of the published bracket, written with "
-        "a less-than-or-equal sign, and the gap to the verified lower bound; it never "
-        "states the ceiling as s(n)"
-    ),
     "packing/devtools/render_frontier_page.py": (
         "shows each case's verified ceiling in its own column beside the verified lower "
         "bound, links its evidence, and takes their difference as the open gap; a zero gap "

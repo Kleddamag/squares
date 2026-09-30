@@ -1,0 +1,25 @@
+{
+  "schema": "packing.squares:SuiteFileCosts/1",
+  "shards": 3,
+  "recorded_from": [
+    "GITHUB_JOB=exhaustive-tier, GITHUB_RUN_ATTEMPT=1, GITHUB_RUN_ID=35579234418, GITHUB_SHA=2cd99b1b632a40ff01de0467ed8b5fd7c6e45a04"
+  ],
+  "files": {
+    "packing/tests/test_decide_certificate.py": 33.667,
+    "packing/tests/test_exact_jets.py": 21.482,
+    "packing/tests/test_fractional_certificate.py": 117.958,
+    "packing/tests/test_fractional_interval.py": 353.334,
+    "packing/tests/test_fractional_sweep_integer.py": 214.836,
+    "packing/tests/test_minimal_verify.py": 71.762,
+    "packing/tests/test_minus_w_owner4.py": 27.261,
+    "packing/tests/test_minus_w_row_inventory.py": 27.821,
+    "packing/tests/test_minus_w_row_jets.py": 68.88,
+    "packing/tests/test_minus_w_scale.py": 28.248,
+    "packing/tests/test_minus_w_sheet.py": 26.765,
+    "packing/tests/test_minus_w_stress.py": 145.227,
+    "packing/tests/test_n11_thirdparty_verify.py": 27.679,
+    "packing/tests/test_n40_rigidity.py": 267.738,
+    "packing/tests/test_verify_claim.py": 242.982,
+    "packing/tests/test_verify_threshold_claim.py": 945.802
+  }
+}

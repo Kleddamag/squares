@@ -1,0 +1,62 @@
+{
+  "captured_files": {
+    "PROOF.md": {
+      "sha256": "a431a62bb4ae04dba49848bbce64a839627e28d20abb15bd58745ea953856ce3",
+      "size_bytes": 42005
+    },
+    "README.md": {
+      "sha256": "260a8344beeb240004440fd7da089919c81c1c5b58e2b4d5916d3ebe7eb8f54f",
+      "size_bytes": 4018
+    },
+    "THIRD_PARTY_NOTICES.md": {
+      "sha256": "04e4f46c06b19a37bc62174469026d7fb682648c4d40d0f76ea4f73c879b5366",
+      "size_bytes": 932
+    },
+    "VERIFY.py": {
+      "sha256": "14ce28b3cbebb4c8c43316beeb43c69460ae243e752de218ca1fa378c439c5e1",
+      "size_bytes": 2101
+    },
+    "data/INDEX.json": {
+      "compression": "gzip-mtime-0",
+      "sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+      "size_bytes": 1316778,
+      "stored_path": "source/data/INDEX.json.gz",
+      "stored_sha256": "db97af749ab39e1212d9708efb9ad435e9f74a4901f668532a32d4a87495f440",
+      "stored_size_bytes": 333313
+    },
+    "docs/PUBLICATION.md": {
+      "sha256": "4ca3e64ae7be2707c3381959e555e2376bb0f4de708ca7bd4693bf4a36203116",
+      "size_bytes": 4808
+    },
+    "docs/REPRODUCING.md": {
+      "sha256": "cb3632e401459f273fca68d29de4fb1dd43e9267be97b530430d6a90574dddb8",
+      "size_bytes": 2626
+    },
+    "docs/SOURCE_GUIDE.md": {
+      "sha256": "cd29bc35083c783208502146fd5618cf2dbcb80e2ee255f03d8b875917ce17c0",
+      "size_bytes": 2114
+    },
+    "requirements.txt": {
+      "sha256": "dbadfa0339005bb3d8ecbc1822de22156cfb3f6af03f624696884825f5a587f3",
+      "size_bytes": 54
+    }
+  },
+  "lfs_pointer_inventory": {
+    "compression": "gzip-mtime-0",
+    "decoded_sha256": "f6dafc3e01f314141a8f5d34ae6ee125a9c97ac0e75f56725b49fd630f1d5f32",
+    "decoded_size_bytes": 624725,
+    "stored_path": "lfs-pointer-inventory.json.gz",
+    "stored_sha256": "b25cead6a7a26962f30501f14435c4b83c99d8c1ce9cf7e7ff1c1349ad97cd9d",
+    "stored_size_bytes": 221806
+  },
+  "lfs_pointer_inventory_sha256": "f6dafc3e01f314141a8f5d34ae6ee125a9c97ac0e75f56725b49fd630f1d5f32",
+  "retrieved_at_utc": "2026-09-30T00:48:28+00:00",
+  "schema": "sqpack.external-source-packet.v1",
+  "scope": "Verbatim selected source files and LFS pointer inventory; no certificate payloads, checker execution, or independent mathematical validation.",
+  "source_commit_author": "Queuingtheorydotcom <95144395+Queuingtheorydotcom@users.noreply.github.com>",
+  "source_commit_date": "2026-09-28T23:08:57-04:00",
+  "source_commit_subject": "Publish proposed eleven-square proof and certificates",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "source_tree": "3fed944c5a0c1dda5e61cb9f45f0dd3d4dc6360c"
+}

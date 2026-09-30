@@ -171,17 +171,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-037"
+            "T-060"
           ],
-          "note": "(confirmed T-037)",
+          "note": "(confirmed T-060)",
           "recent": true,
           "result": null,
           "results": [
-            "T-037"
+            "T-060"
           ],
-          "source_key": "[Kleddamag n11 2026]",
-          "text": "Kleddamag after Levy et al. 2026, GitHub",
-          "value": "3.875"
+          "source_key": "[Queuingtheorydotcom n11 optimality 2026]",
+          "text": "Queuingtheorydotcom after Levy et al. 2026, Web",
+          "value": "3.87708359002281417730789706010096"
         },
         "n": 11,
         "record": "n-011",

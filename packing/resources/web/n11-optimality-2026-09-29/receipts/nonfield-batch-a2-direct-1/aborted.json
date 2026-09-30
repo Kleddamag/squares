@@ -1,0 +1,53 @@
+{
+  "status": "ABORTED_EXECUTOR_BOOKKEEPING",
+  "geometry_credit": false,
+  "excluded_case_ids": [],
+  "global_optimality_proved": false,
+  "checker_commit": "7a2705461",
+  "checker_sha256": "da09d08d0e2d6c40755a15a9e9b4a47ae874513463acc9fb44e29f5a821afa2b",
+  "reason": "Shared-source path was admitted, but post-execution invocation serialization used execution-checkout relative_to and raised ValueError. Per-process exit metadata was lost. Supervisors and active children stopped; rerun required before inventory credit. Existing checker records retained without credit.",
+  "records": [
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-1049.json.gz",
+      "sha256": "3c7b9efc28a55c896cb91fb65f51c6c1b3c85644950393465ac1b0d54fddc09b",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-2174.json",
+      "sha256": "45280db8e6c9916a05cea41f36efa6067d1e7c4471787a4dd4f3272ec92db6e9",
+      "reported_checker_status": "REFUSED",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-778.json.gz",
+      "sha256": "a10f27c35ac55ce02640e3fb7ba6161b59b511fe5cc8d4701722f93c368f6509",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-817.json.gz",
+      "sha256": "8f858bf657b9f6c48afef62935b2d5e2bdc04bf2571df17a8da1945d81e9e466",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-868.json.gz",
+      "sha256": "7c49e3c3b4d34bf87d6ef9ecdb726648a8afc0102210289d21b21b172c79ebc3",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-958.json.gz",
+      "sha256": "305163a04118f86705ac4a4f238d33b73299bd0e1368b7836013abfc3c0cb39c",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-1/case-991.json.gz",
+      "sha256": "2a0ad1f00b3fd305c91b34e8a95ce49864a1ef7bcf5c4363579ece17d65bc7d4",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    }
+  ]
+}

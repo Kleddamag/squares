@@ -197,6 +197,12 @@ See
 [OR-13](../../../operating-rules.md#or-13-every-fast-check-runs-in-ci-only-the-unavoidably-slow-ones-leave)
 for the unchanged full pre-merge obligation.
 
+Terminal sessions ordinarily become candidates for the current work handoff in observed
+`ended_at` order. Set the top-level `handoff_role: administrative_closeout` only on a
+stopped, measured session whose update closes administration without replacing that
+handoff. It requires an explicit `stop_reason` and the ordinary certification
+disposition; never use it on active or completed work.
+
 Resource measurement has one corresponding stopped state for native harness data that is
 no longer available.
 Declare `resource_rollups: []` and a `resource_usage_unmeasured` object whose reason is

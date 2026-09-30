@@ -1,0 +1,19 @@
+{
+  "checker_commit": "29fbcd25d",
+  "checker_sha256": "69a38da43ce599be5222b321de0a2c820d6e35180fa8032890bd368a1e984c2f",
+  "child_source_sha256": "79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576",
+  "input_source_reacquisition": "packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json records pinned publication object and decoded SHA; local decoded cache is disposable",
+  "internal_seconds": 1800,
+  "original_final_state_canonical_sha256": "11d4a28e176ed885dbd650854426704ec280b08b275e556765d68c49f4108e6c",
+  "parent_result_sha256": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
+  "parent_source_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+  "process_cpu_seconds": "unmeasured",
+  "replay": "From packing at detached worktree commit 29fbcd25d after SHA-verifying pinned r11/r110 sources: timeout 1830s <Python 3.14> -m devtools.check_n11_capture_child_node --node far2 --parent-source <decoded-r11> --child-source <decoded-r110> --parent-result <main-repository>/packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-r11/result.json --workers 1 --max-seconds 1800 --max-events 20000 --out <main-repository>/packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-far2/result.json",
+  "result_sha256": "e7deeb0249e0688bc371436f4e18513e7b397d5479164db6546e151311c18442",
+  "scope": "Far2 closed child branch contradiction conditional on accepted r11 state; no entire tree/candidate/global conclusion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "dd03334de8bfd3561b64531e321fa9e84ceaa5aeb3bc2dd3302a59ac90982f88",
+  "supervisor_seconds": 1830,
+  "wall_seconds_reported_by_checker": 225.85199454100075,
+  "workers": 1
+}

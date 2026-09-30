@@ -68,9 +68,12 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # proved s(32) = 6, so n = 32 left the open cases in both lanes. 38 since
     # 2026-09-29: replayed external mixed covers proved s(21) = 5 and s(45) = 7, so both
     # left the open cases; n = 45 was Nagamochi-bounded, n = 21 carried a certificate.
-    "n=1..100": (62, 62, 38),
-    "n=1..200": (150, 150, 126),
-    "n=1..324": (262, 262, 238),
+    # T-060's independent exact audit proves n=11, reducing both open lanes by one
+    # in every corpus. Its previous reported-only status had already removed n=11
+    # from the n=1..324 reported-open count.
+    "n=1..100": (61, 61, 38),
+    "n=1..200": (149, 149, 126),
+    "n=1..324": (261, 261, 238),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
@@ -103,6 +106,7 @@ PROJECT_ROOT = configured_project_root()
 REPOSITORY_ROOT = PROJECT_ROOT.parent
 WORKBENCH_ROOT = REPOSITORY_ROOT / "packages/workbench"
 ENGINE = PROJECT_ROOT / "sqsearch/target/release/sqsearch"
+EXACT_GEOMETRY_CRATE = PROJECT_ROOT / "sqverify_exact"
 RESULTS = Path("campaign/series/series-000-smoke-and-calibration/results")
 ACTIVITY_MARKER = PROJECT_ROOT / ".gate-running"
 DEFAULT_CPU_COUNT = 4
@@ -128,6 +132,7 @@ TIER_FLAGS = (
     "frontend",
     "suite_a",
     "suite_b",
+    "suite_c",
     "checks",
     "sweeps",
     "geometry",
@@ -135,9 +140,13 @@ TIER_FLAGS = (
     "fast",
 )
 TIER_IDS = (*TIER_FLAGS, "full")
-#: The measured quick-lane partition.  Keep the public tier names (`suite_a` and
-#: `suite_b`) stable; this count is the shared contract with `devtools.suite_files`.
-SUITE_SHARDS = 2
+#: The quick-lane partition. Keep the public tier names stable; this count is the
+#: shared contract with `devtools.suite_files`. The three-way wall is pending CI measurement.
+SUITE_SHARDS = 3
+#: Whole-file shards for the deferred exhaustive lane. The alternate cost record is
+#: derived from the retained 58-test hosted JUnit receipt on run 35579234418.
+EXHAUSTIVE_SHARDS = 3
+EXHAUSTIVE_FILE_COSTS = "devtools/exhaustive-file-costs.json"
 #: The pull-request run whose required gate succeeded on this exact tracked tree.
 TREE_VERIFIED_ENVIRONMENT = "PACKING_VALIDATE_TREE_VERIFIED_BY_RUN"
 #: Homebrew's two default prefixes. CairoSVG loads `libcairo` through ctypes, which
@@ -447,6 +456,12 @@ class Context:
     this run, and a step quietly opting out of that is the bug, not the feature."""
 
     step_name: str = ""
+    exclusive_step_name: str = ""
+    """An implicitly sized push-test step that runs after the edit pool drains."""
+    pool_workers: int | None = None
+    """Process-pool cap for the reserved push test phase; absent for explicit allocations."""
+    exhaustive_shard: str = ""
+    """One validated K/N whole-file shard of the exhaustive exact lane, or empty."""
     artifact_run_id: str = field(default_factory=lambda: uuid.uuid4().hex)
     processes: _ProcessRegistry = field(
         default_factory=_ProcessRegistry, compare=False, repr=False
@@ -503,10 +518,10 @@ class Step:
     enough that the pull request runs it on its own runner rather than beside the rest.
 
     `fast` says *whether* a pull request runs a step; this field, `frontend`,
-    `suite_a`, `suite_b`, `geometry`, and `typecheck` say *which pull-request job* runs
-    it. Every sweep is also `fast`, the seven selections are complements within `--fast`, and
+    `suite_a`, `suite_b`, `suite_c`, `geometry`, and `typecheck` say *which pull-request
+    job* runs it. Every sweep is also `fast`, the eight selections complement `--fast`, and
     `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks all
-    seven against what CI actually invokes -- so a step cannot land in no job, and no
+    eight against what CI actually invokes -- so a step cannot land in no job, and no
     step is paid for twice.
 
     The boundary is a measurement, not a topic. Four steps carry it, and on CI's
@@ -552,10 +567,10 @@ class Step:
     """Assigns this step to shard B of the pull request's behavioural lane.
 
     ``devtools.suite_files`` assigns each test file to one shard from recorded costs and
-    filters before collection. The two selections are complete and disjoint, and each
+    filters before collection. The three selections are complete and disjoint, and each
     runs alone so xdist can use every cpu while module-scoped fixtures remain reusable.
 
-    Two step instances carry these fields, one per measured file shard.
+    Three step instances carry these fields, one per file shard.
     Their separate runners follow from arithmetic rather than kind. `_pytest_workers`
     sizes the lane to `cpus - jobs + 1`, because a lane that asks for every cpu beside
     two other steps oversubscribes the runner and fails ordinary tests against the
@@ -572,9 +587,12 @@ class Step:
     does not buy is coverage -- the step runs on every pull request either way, which is
     the distinction `test_the_pull_request_surface_defers_only_what_was_measured` keeps.
 
-    Like `sweep` both fields default to False, so forgetting one makes the `checks` job
+    Like `sweep` all three fields default to False, so forgetting one makes the `checks` job
     slower rather than leaving a step unrun. Their membership is pinned by the workflow
     partition contracts."""
+
+    suite_c: bool = False
+    """Assigns this step to shard C of the pull request's behavioural lane."""
 
     typecheck: bool = False
     """Assigns the type floor to its own pull-request runner.
@@ -586,7 +604,7 @@ class Step:
     geometry: bool = False
     """This step runs in the pull request's second half of `checks`, on a fourth runner.
 
-    `sweep` and the two suite shards were split out on a kind and on a floor. This one is
+    `sweep` and the suite shards were split out on a kind and on a floor. This one is
     split out on a queue, and saying so plainly is the honest description: what was left
     in `checks` after the behavioural lane moved out was 57 steps of pure outer-parallel
     work with no single unit large enough to floor it, and a queue that size is shortened
@@ -623,7 +641,7 @@ class Step:
     there. `test_the_pull_request_runs_its_sweeps_and_its_suite_apart` is where a name
     added here has to be typed next to a number.
 
-    Like `sweep` and both suite-shard fields it defaults to False, so the failure mode of
+    Like `sweep` and the suite-shard fields it defaults to False, so the failure mode of
     forgetting it is a slower `checks` job rather than a step nobody runs."""
 
     touches: tuple[str, ...] = ()
@@ -660,7 +678,7 @@ class Step:
     Measured on 2026-08-30 over the 42 steps: an edit to the rigidity assessor selects 11,
     one root document 9, one agenda 10, the Rust engine 12, and one unrecognised file
     still selects all 42. That surface had six deliberately unattributed steps. The
-    current surface has seven because `fast behavioral tests` is now represented by two
+    current surface has eight because `fast behavioral tests` is now represented by three
     shard steps; both walk `REPO.rglob("*")`. The other five remain `negative controls`,
     which snapshots nearly everything, plus `synopsis`, `README`, `soft-schema
     validation`, and the exhaustive test step, each of which resolves or enumerates
@@ -689,6 +707,13 @@ class Step:
     This is only a submission hint; it changes neither timeout nor report order.
     """
 
+    reachable_test_files: int | None = None
+    """File count from the pre-push selector; None means its whole-suite fallback.
+
+    Only the transient reachable-test step sets this. It informs scheduling, never
+    selection or the step's timeout.
+    """
+
     def reachable_from(self, path: str) -> bool:
         """Can a change to `path` affect this step?
 
@@ -710,6 +735,8 @@ class Step:
             tags.append("suite-a")
         elif self.suite_b:
             tags.append("suite-b")
+        elif self.suite_c:
+            tags.append("suite-c")
         elif self.typecheck:
             tags.append("typecheck")
         elif self.geometry:
@@ -920,6 +947,11 @@ def _run(
     # Nested test subprocesses must not reuse this gate's artifact configuration.
     if arguments[1:3] != ["-m", "devtools.run_negative_controls"]:
         environment.pop("PACKING_VALIDATION_ARTIFACT_DIR", None)
+    if arguments[1:3] == ["-m", "devtools.reachable_tests"]:
+        # The wrapper launches pytest itself, so give that child this command's unique
+        # artifact stem without exposing the parent gate's artifact configuration.
+        environment["PACKING_REACHABLE_TEST_ARTIFACT_STEM"] = str(stem)
+        environment["PACKING_REACHABLE_TEST_RUN_ID"] = context.artifact_run_id
     environment["PYTHONUNBUFFERED"] = "1"
     metadata = {
         "run_id": context.artifact_run_id,
@@ -1488,6 +1520,11 @@ def _fast_tests_b(context: Context) -> str:
     return _fast_tests(context, 2)
 
 
+def _fast_tests_c(context: Context) -> str:
+    """Run pre-collection shard C of the quick lane."""
+    return _fast_tests(context, 3)
+
+
 #: Under xdist, exit 5 can also mean every worker failed before collection. Only a
 #: separate serial collection can establish that the slow lane is actually empty.
 _PYTEST_NOTHING_SELECTED = "command exited 5:"
@@ -1565,6 +1602,16 @@ def _slow_tests(context: Context) -> str:
 
 
 def _exhaustive_exact_tests(context: Context) -> str:
+    shard = (
+        (
+            "-p",
+            _SUITE_FILES_PLUGIN,
+            f"--suite-shard={context.exhaustive_shard}",
+            f"--suite-file-costs={EXHAUSTIVE_FILE_COSTS}",
+        )
+        if context.exhaustive_shard
+        else ()
+    )
     return _run(
         context,
         (
@@ -1575,6 +1622,7 @@ def _exhaustive_exact_tests(context: Context) -> str:
             *BEHAVIORAL_TEST_ROOTS,
             "-m",
             EXHAUSTIVE_TESTS,
+            *shard,
             "--durations=0",
             "--durations-min=0",
         ),
@@ -1771,11 +1819,21 @@ def _workbench_frontend(context: Context) -> str:
     The Motion Lab pages run here too, because this is the job with Chromium: four seconds
     for both labs, and until think-6o9n nothing loaded them in a browser at all.
     """
+    # On the four-CPU frontend runner two outer gate slots leave room for two
+    # isolated browser owners plus the source floor. Smaller or busier topologies
+    # keep the serial route. Same-host control/candidate: 67.33s / 49.61s (think-sewp).
+    browser_workers = min(2, max(1, (os.process_cpu_count() or 1) - context.jobs))
     return _commands(
         context,
         (
             (sys.executable, "-m", "devtools.check_probes"),
-            (sys.executable, "-m", "workbench_tools.check_frontend"),
+            (
+                sys.executable,
+                "-m",
+                "workbench_tools.check_frontend",
+                "--workers",
+                str(browser_workers),
+            ),
             (
                 sys.executable,
                 "-m",
@@ -2274,16 +2332,125 @@ def _search_engine(context: Context) -> str:
 
 
 def _rust_quality(context: Context) -> str:
-    cargo = _optional_tool(context, "cargo")
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("Rust quality gate requires cargo")
+    # Keep the documentation floor on the same pinned toolchain as clippy. The
+    # copied environment leaves concurrent validation steps untouched.
+    environment = dict(context.environment)
+    environment["RUSTDOCFLAGS"] = f"{environment.get('RUSTDOCFLAGS', '')} -D warnings".strip()
     output = _commands(
-        context,
+        # Warm 1.60s / first run 8.85s on the pinned toolchain (think-k8hl).
+        # The per-child ceiling leaves cold compiler headroom without a hung gate.
+        replace(
+            context, environment=environment, timeout_seconds=min(context.timeout_seconds, 120)
+        ),
         (
-            (cargo, "clippy", "--release", "--all-targets", "--quiet", "--", "-D", "warnings"),
-            (cargo, "fmt", "--check"),
+            (
+                cargo,
+                "clippy",
+                "--locked",
+                "--release",
+                "--all-targets",
+                "--quiet",
+                "--",
+                "-D",
+                "warnings",
+            ),
+            (cargo, "fmt", "--all", "--check"),
+            (cargo, "test", "--locked", "--all-targets", "--quiet"),
+            (cargo, "doc", "--locked", "--no-deps", "--quiet"),
+            (sys.executable, str(PROJECT_ROOT / "devtools" / "check_rust_floor.py")),
         ),
         cwd=PROJECT_ROOT / "sqsearch",
     )
-    return f"{output}\n  clippy clean at warnings-as-errors; rustfmt clean".strip()
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("Rust quality gate ran no passing Rust tests")
+    return (
+        f"{output}\n  clippy and rustdoc clean at warnings-as-errors; "
+        "rustfmt clean; Rust tests passed"
+    ).strip()
+
+
+def _rust_exact_geometry(context: Context) -> str:
+    """Check the diagnostic exact batch kernel against the Python area oracle."""
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("exact Rust geometry gate requires cargo")
+    environment = dict(context.environment)
+    environment["RUSTDOCFLAGS"] = f"{environment.get('RUSTDOCFLAGS', '')} -D warnings".strip()
+    child = replace(
+        context, environment=environment, timeout_seconds=min(context.timeout_seconds, 120)
+    )
+    output = _commands(
+        child,
+        (
+            (cargo, "fmt", "--all", "--check"),
+            (cargo, "clippy", "--locked", "--release", "--all-targets", "--", "-D", "warnings"),
+            (cargo, "test", "--locked", "--all-targets", "--quiet"),
+            (
+                cargo,
+                "clippy",
+                "--locked",
+                "--all-targets",
+                "--features",
+                "experimental-normalized-mul",
+                "--",
+                "-D",
+                "warnings",
+            ),
+            (
+                cargo,
+                "test",
+                "--locked",
+                "--all-targets",
+                "--features",
+                "experimental-normalized-mul",
+                "--quiet",
+            ),
+            (
+                cargo,
+                "clippy",
+                "--locked",
+                "--all-targets",
+                "--features",
+                "experimental-coprime-mul",
+                "--",
+                "-D",
+                "warnings",
+            ),
+            (
+                cargo,
+                "test",
+                "--locked",
+                "--all-targets",
+                "--features",
+                "experimental-coprime-mul",
+                "--quiet",
+            ),
+            (cargo, "doc", "--locked", "--no-deps", "--quiet"),
+            (cargo, "build", "--locked", "--release", "--quiet"),
+        ),
+        cwd=EXACT_GEOMETRY_CRATE,
+    )
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("exact Rust geometry gate ran no passing Rust tests")
+    target = Path(environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = EXACT_GEOMETRY_CRATE / target
+    binary = target / "release/sqverify-exact"
+    differential = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "devtools.check_exact_rust_kernel",
+            "--binary",
+            str(binary),
+        ),
+    )
+    _require_text(differential, "EXACT RUST GEOMETRY DIFFERENTIAL PASSED")
+    return f"{output}\n{differential}"
 
 
 def _trump_cones(context: Context) -> str:
@@ -3179,6 +3346,13 @@ _TOOLCHAIN = ("packing/pyproject.toml", "packing/uv.lock", "packing/.python-vers
 # per-file devtools pattern, so it belongs with the shared core rather than repeated.
 _CORE = ("packing/src/sqpack/*", "packing/devtools/__init__.py", *_TOOLCHAIN)
 _ENGINE_SRC = ("packing/sqsearch/*",)
+_EXACT_GEOMETRY_SRC = (
+    "packing/sqverify_exact/*",
+    "packing/devtools/check_exact_rust_kernel.py",
+    "packing/src/sqpack/rectangle_density.py",
+    "packing/resources/web/wand125-tools-2026-09-29/native-analytic-control.json",
+    "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
+)
 _ANY_PYTHON = ("*.py", "*.pyi", *_TOOLCHAIN)
 _CASES = ("packing/cases/*",)
 # The retained replay archives. Whole subtree, not the named files: several steps
@@ -3219,8 +3393,9 @@ _WORKBENCH_INPUTS = (
 # What `fast` means since 2026-09-05: the tier a pull request runs, and therefore the
 # tier that has to hold everything a merge would otherwise be the first to check. Since
 # 2026-09-06 a pull request runs it as concurrent jobs rather than one. The current
-# partition is `--checks`, `--frontend`, `--geometry`, `--suite-a`, `--suite-b`, and
-# `--sweeps`, argued on the corresponding `Step` fields; the tier is unchanged and what
+# partition is `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
+# `--suite-b`, `--suite-c`, and `--sweeps`, argued on the corresponding `Step` fields;
+# the tier is unchanged and what
 # a pull request waits for is its longest part rather than their sum.
 #
 # The three-way split was the second cut and it was taken on the two-job surface's own
@@ -3710,6 +3885,13 @@ STEPS: tuple[Step, ...] = (
         broad=True,
         suite_b=True,
     ),
+    Step(
+        "fast behavioral tests, shard C",
+        _fast_tests_c,
+        fast=True,
+        broad=True,
+        suite_c=True,
+    ),
     # The half of the behavioural suite that costs the wall. It is the same tests under
     # the same runner, selected by the `slow` marker instead of against it, and it runs
     # in the full gate -- so nothing the pull-request surface stopped running stopped
@@ -3803,7 +3985,24 @@ STEPS: tuple[Step, ...] = (
         needs_engine=True,
         touches=_ENGINE_SRC,
     ),
-    Step("lint floor (rust)", _rust_quality, fast=True, broad=True, touches=_ENGINE_SRC),
+    Step(
+        "lint floor (rust)",
+        _rust_quality,
+        fast=True,
+        broad=True,
+        touches=(
+            *_ENGINE_SRC,
+            "packing/devtools/check_rust_floor.py",
+            "packing/tests/test_rust_floor_contract.py",
+        ),
+    ),
+    Step(
+        "exact rectangle Rust geometry",
+        _rust_exact_geometry,
+        fast=True,
+        broad=True,
+        touches=(*_EXACT_GEOMETRY_SRC, "packing/tests/test_validation_cli.py"),
+    ),
     # 13.82s.
     Step(
         "Trump exact branchwise linearized cones",
@@ -4613,7 +4812,15 @@ def _push_test_step(base: str) -> Step:
     if probe.returncode != 0:
         detail = probe.stderr.strip() or probe.stdout.strip() or "selector failed"
         raise UsageError(f"--push could not resolve the change against {base!r}: {detail}")
-    everything = probe.stdout.strip().splitlines()[-1] == "everything"
+    report = probe.stdout.strip()
+    if report == "everything":
+        everything = True
+        reachable_test_files = None
+    elif match := re.fullmatch(r"narrow ([1-9][0-9]*)", report):
+        everything = False
+        reachable_test_files = int(match.group(1))
+    else:
+        raise UsageError(f"--push selector returned no valid summary for {base!r}: {report!r}")
 
     def action(context: Context) -> str:
         return _run(
@@ -4633,6 +4840,11 @@ def _push_test_step(base: str) -> Step:
                 # suite-configuration change, so the serial case was the whole non-exhaustive
                 # suite -- quick lane and slow lane together.
                 *_xdist_distribution(context.jobs),
+                *(
+                    ("--pool-workers", str(context.pool_workers))
+                    if context.pool_workers is not None
+                    else ()
+                ),
             ),
         )
 
@@ -4641,6 +4853,7 @@ def _push_test_step(base: str) -> Step:
         action=action,
         fast=True,
         broad=everything,
+        reachable_test_files=reachable_test_files,
         # When the selector expands to everything this is the whole non-exhaustive suite,
         # and it takes that fallback's budget. D-432 is the run that did not: the
         # whole-suite fallback died at the shared 900s cap at 84%, and the
@@ -4677,6 +4890,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "fixed-angle cell is an LP, rebuilt independently",
         "fast behavioral tests, shard A",
         "fast behavioral tests, shard B",
+        "fast behavioral tests, shard C",
         "golden basin maps (proved cases, checked against mathematics)",
         "basin identity",
         "soft-schema validation",
@@ -4689,6 +4903,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "derivation (needs sympy)",
         "search engine (sqsearch)",
         "lint floor (rust)",
+        # Locked Rust sources and tracked exact differential fixtures determine the
+        # verdict; no repository history, remote state, or stored result is consulted.
+        "exact rectangle Rust geometry",
         "Trump exact branchwise linearized cones",
         "H-041 Stromquist repaired-cover exact certificate",
         "H-010 Stromquist printed-cover exact rejection",
@@ -4744,19 +4961,20 @@ def _select_steps(
     sweeps: bool = False,
     suite_a: bool = False,
     suite_b: bool = False,
+    suite_c: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
     skip: Sequence[str] = (),
 ) -> list[Step]:
     """The steps a tier and its name filters select.
 
-    `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--sweeps`, `--geometry`, and
-    `--typecheck` are the parts of `--fast`, and they exist because the pull request runs
-    them as concurrent GitHub jobs. They are a partition by construction here: six
+    `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--suite-c`, `--sweeps`,
+    `--geometry`, and `--typecheck` are the parts of `--fast`, and they exist because CI runs
+    them as concurrent GitHub jobs. They are a partition by construction here: seven
     select their placement field and `--checks` selects fast steps marked with none of
     them. No step can be in two parts or in none.
 
-    Seven jobs could have divided the tier with `--only` and `--skip` instead, and that
+    Eight jobs could have divided the tier with `--only` and `--skip` instead, and that
     was rejected on the register rather than on taste. A subset of a tier has no
     declared cost: `--only` reports no tier at all, and `--skip` reports the tier it
     narrowed, so a part-tier run would have been judged against the whole tier's
@@ -4791,6 +5009,8 @@ def _select_steps(
         selected = [step for step in STEPS if step.suite_a]
     elif suite_b:
         selected = [step for step in STEPS if step.suite_b]
+    elif suite_c:
+        selected = [step for step in STEPS if step.suite_c]
     elif geometry:
         selected = [step for step in STEPS if step.geometry]
     elif typecheck:
@@ -4805,6 +5025,7 @@ def _select_steps(
                 or step.sweep
                 or step.suite_a
                 or step.suite_b
+                or step.suite_c
                 or step.geometry
                 or step.typecheck
             )
@@ -4970,6 +5191,26 @@ def _validation_activity(marker: Path) -> Iterator[None]:
             marker.rmdir()
 
 
+@contextmanager
+def _optional_validation_activity(marker: Path) -> Iterator[bool]:
+    """Reserve the host for a narrow push, or keep its existing floor behavior.
+
+    An edit-floor push cannot be refused just because a full gate holds the load lock.
+    The atomic mkdir decides which allocation is safe: an uncontended push may give
+    pytest the host; a contended one retains its ordinary outer worker allocation.
+    """
+    try:
+        marker.mkdir()
+    except FileExistsError:
+        yield False
+        return
+    try:
+        yield True
+    finally:
+        with suppress(FileNotFoundError):
+            marker.rmdir()
+
+
 def _selection_needs_marker(selected: Sequence[Step]) -> bool:
     """Does this selection contend for the machine the way a gate does?
 
@@ -5018,18 +5259,48 @@ def _run_selected(
     skipped: Sequence[str] = (),
 ) -> RunSummary:
     started = time.perf_counter()
-    if _selection_needs_marker(selected):
+    exclusive = next(
+        (step for step in selected if step.name == context.exclusive_step_name), None
+    )
+    if context.exclusive_step_name and exclusive is None:
+        raise StepFailureError(
+            f"exclusive step is absent from the selection: {context.exclusive_step_name}"
+        )
+    mandatory_marker = _selection_needs_marker(selected)
+    if mandatory_marker:
         activity = _validation_activity(ACTIVITY_MARKER)
+    elif exclusive is not None:
+        activity = _optional_validation_activity(ACTIVITY_MARKER)
     else:
         print("== no gate marker: every selected step is read-only and edit-tier ==")
-        activity = nullcontext()
-    with activity:
+        activity = nullcontext(enter_result=False)
+    with activity as reserved:
+        if exclusive is not None and not mandatory_marker and not reserved:
+            # A full gate already owns the load lock. Preserve the narrow floor's
+            # non-refusal and its prior conservative pytest allocation.
+            exclusive = None
+        if context.exclusive_step_name:
+            if exclusive is None:
+                print(
+                    "== reachable tests: another gate holds the load marker; "
+                    "using the ordinary conservative worker allocation ==",
+                    file=sys.stderr,
+                )
+            else:
+                print(
+                    f"== reachable tests: exclusive pytest phase after edit checks; "
+                    f"normal lane {_pytest_workers(1)} pytest workers, PACK_JOBS=1; "
+                    f"pool-heavy lane if selected: serial pytest, "
+                    f"PACK_JOBS={_pytest_workers(1)} ==",
+                    file=sys.stderr,
+                )
         setup_output = _build_engine(context, selected)
         by_name: dict[str, StepResult] = {}
         with ThreadPoolExecutor(max_workers=context.jobs) as pool:
             futures = {
                 pool.submit(_execute_step, step, context): step.name
                 for step in _submission_order(selected)
+                if step is not exclusive
             }
             try:
                 for future in as_completed(futures):
@@ -5038,6 +5309,22 @@ def _run_selected(
             except BaseException:
                 for future in futures:
                     future.cancel()
+                context.processes.stop()
+                raise
+        if exclusive is not None:
+            # All edit work has finished, including nested command pools, before pytest
+            # claims the host. Its own descendants receive a one-worker PACK_JOBS cap.
+            test_context = replace(
+                context,
+                jobs=1,
+                inner_jobs=1,
+                environment={**context.environment, "PACK_JOBS": "1"},
+                exclusive_step_name="",
+                pool_workers=_pytest_workers(1),
+            )
+            try:
+                by_name[exclusive.name] = _execute_step(exclusive, test_context)
+            except BaseException:
                 context.processes.stop()
                 raise
     ordered = [by_name[step.name] for step in selected]
@@ -5268,6 +5555,11 @@ def _parser() -> ArgumentParser:
         help=("run measured file shard B of the quick behavioral lane"),
     )
     parser.add_argument(
+        "--suite-c",
+        action="store_true",
+        help=("run file shard C of the quick behavioral lane"),
+    )
+    parser.add_argument(
         "--typecheck",
         action="store_true",
         help=(
@@ -5319,6 +5611,14 @@ def _parser() -> ArgumentParser:
         help=(
             "run everything the tier selects except step names containing TEXT; "
             "repeat for more than one pattern, and a TEXT naming no step is refused"
+        ),
+    )
+    parser.add_argument(
+        "--exhaustive-shard",
+        metavar="K/N",
+        help=(
+            "run one whole-file shard of the exhaustive exact step; requires exactly "
+            "--only 'exhaustive exact behavioral tests'"
         ),
     )
     parser.add_argument(
@@ -5374,41 +5674,76 @@ def _validate_invocation(
     sweeps: bool = False,
     suite_a: bool = False,
     suite_b: bool = False,
+    suite_c: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
     since: str | None = None,
     push: bool = False,
     skip: Sequence[str] = (),
+    exhaustive_shard: str = "",
 ) -> None:
-    parts = checks or frontend or sweeps or suite_a or suite_b or geometry or typecheck
+    parts = any((checks, frontend, sweeps, suite_a, suite_b, suite_c, geometry, typecheck))
     narrowed = only or skip or fast or records or edit or parts or since or push
     if strict and narrowed:
         raise UsageError(
             "--strict cannot be combined with --only, --skip, --fast, --checks, "
-            "--frontend, --suite-a, --suite-b, --sweeps, --geometry, --typecheck, "
+            "--frontend, --suite-a, --suite-b, --suite-c, --sweeps, --geometry, --typecheck, "
             "--records, --edit, --push, or --since"
         )
     if edit and fast:
         raise UsageError(
             "--edit and --fast select different tiers; --fast is the wider of the two"
         )
-    if [checks, frontend, sweeps, suite_a, suite_b, geometry, typecheck].count(True) > 1:
+    if sum((checks, frontend, sweeps, suite_a, suite_b, suite_c, geometry, typecheck)) > 1:
         raise UsageError(
-            "--checks, --frontend, --geometry, --suite-a, --suite-b, --sweeps and "
-            "--typecheck are the seven parts of --fast; ask for --fast to run them all, "
+            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --sweeps and "
+            "--typecheck are the eight parts of --fast; ask for --fast to run them all, "
             "or for one of them to run that part"
         )
     if parts and (fast or records or edit or push):
         raise UsageError(
-            "--checks, --frontend, --geometry, --suite-a, --suite-b, --sweeps and "
+            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --sweeps and "
             "--typecheck are parts of --fast and are not combined with another tier; "
-            "--fast is all seven of them"
+            "--fast is all eight of them"
         )
     if push and (fast or records or edit):
         raise UsageError(
             "--push is its own tier: the edit tier plus reachable tests; "
             "combine it only with --since to change the base ref"
         )
+    if exhaustive_shard and (
+        only != ["exhaustive exact behavioral tests"]
+        or skip
+        or fast
+        or records
+        or edit
+        or parts
+        or since
+        or push
+    ):
+        raise UsageError(
+            "--exhaustive-shard requires exactly --only "
+            "'exhaustive exact behavioral tests' and no other tier or narrowing"
+        )
+
+
+def _exhaustive_shard(value: str | None) -> str:
+    if value is None:
+        return ""
+    match = re.fullmatch(r"([1-9][0-9]*)/([1-9][0-9]*)", value)
+    if match is None:
+        raise UsageError(f"--exhaustive-shard is written K/N, not {value!r}")
+    index, count = (int(part) for part in match.groups())
+    if count != EXHAUSTIVE_SHARDS:
+        raise UsageError(
+            f"--exhaustive-shard asks for {count} shards; the recorded exhaustive "
+            f"partition has {EXHAUSTIVE_SHARDS}"
+        )
+    if index > count:
+        raise UsageError(
+            f"--exhaustive-shard {value!r} is outside 1/{count} .. {count}/{count}"
+        )
+    return f"{index}/{count}"
 
 
 def _validate_runtime() -> None:
@@ -5421,6 +5756,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = _parser()
     try:
         namespace = parser.parse_args(argv)
+        exhaustive_shard = _exhaustive_shard(namespace.exhaustive_shard)
         strict = namespace.strict or _environment_flag("PACKING_VALIDATE_STRICT")
         deep = namespace.deep or _environment_flag("PACKING_VALIDATE_DEEP") or strict
         _validate_invocation(
@@ -5434,11 +5770,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             sweeps=namespace.sweeps,
             suite_a=namespace.suite_a,
             suite_b=namespace.suite_b,
+            suite_c=namespace.suite_c,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
             since=namespace.since,
             push=namespace.push,
             skip=namespace.skip,
+            exhaustive_shard=exhaustive_shard,
         )
         jobs_value = namespace.jobs or os.environ.get("PACKING_VALIDATE_JOBS")
         jobs = (
@@ -5476,23 +5814,32 @@ def main(argv: Sequence[str] | None = None) -> int:
             sweeps=namespace.sweeps,
             suite_a=namespace.suite_a,
             suite_b=namespace.suite_b,
+            suite_c=namespace.suite_c,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
             skip=namespace.skip,
         )
         selected = _unless_verified(namespace, selected)
+        exclusive_step_name = ""
         if namespace.push:
             base = namespace.since or "origin/main"
             step = _push_test_step(base)
-            # A broad fallback is one test step followed by a short tail.  With the
-            # ordinary cpu-wide outer default, that step receives one pytest worker and
-            # leaves the machine idle after the tail finishes.  Give only the implicit
-            # broad shape one outer slot; narrow selections and explicit resource choices
-            # retain their existing shape.
-            if step.broad and jobs_value is None:
+            # A large proper subset can cost as much as the whole fallback. When both
+            # resource settings are implicit and there are enough selected files to
+            # occupy the host, let the edit pool drain, then give pytest the host. The
+            # edit floor retains its usual outer parallelism; explicit settings keep
+            # their exact existing allocation.
+            if step.broad and jobs_value is None and inner_value is not None:
+                # Keep the caller's explicit inner cap and the old broad allocation;
+                # only fully implicit settings enter the new two-phase scheduler.
                 jobs = 1
-                if inner_value is None:
-                    inner_jobs = 1
+            if (
+                jobs > 1
+                and jobs_value is None
+                and inner_value is None
+                and (step.broad or (step.reachable_test_files or 0) >= jobs)
+            ):
+                exclusive_step_name = step.name
             selected = [*selected, step]
             scope = "the whole suite" if step.broad else "a reachable subset"
             print(f"== pre-push floor against {base}: tests select {scope} ==\n")
@@ -5524,6 +5871,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             jobs=jobs,
             inner_jobs=inner_jobs,
             environment=environment,
+            exclusive_step_name=exclusive_step_name,
+            exhaustive_shard=exhaustive_shard,
             timeout_seconds=timeout_seconds,
             timeout_is_explicit=timeout_is_explicit,
         )

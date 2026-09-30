@@ -1,0 +1,34 @@
+{
+  "status": "RUST_CHILD_SAMPLING_DIAGNOSTIC_ONLY",
+  "scope": "A bounded macOS sampling profile of the unchanged exact Rust child during the existing 128-polygon transport benchmark. This identifies hot stacks, not a causal speedup or a certificate result.",
+  "binary_sha256": "407021f046a3a5f4758ba9c560252955a3802dacf0a147feb3b33e0c978afb1f",
+  "candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+  "retained_matched_receipt": "native-rust-backend-matched-2026-09-30.json",
+  "retained_transport_receipt": "rust-transport-fixed-2026-09-30.json",
+  "fresh_transport_receipt_sha256": "905cb773a0e204aa10bfdcf4da3b71f7308ae5958a6eca904462f03bbe6dda8c",
+  "fresh_transport_receipt": "rust-exact-os-sample-transport-2026-09-30.json",
+  "raw_sample_sha256": "e5f42d76c5533d297a1b72bad9f31923619213680a78b5970b45261e1267db23",
+  "raw_sample_gzip_sha256": "79c0d0638e5a45137f05af3ccabae90daa1977ba7154719f8194f9e8d13427a3",
+  "raw_sample_gzip": "rust-exact-os-sample-2026-09-30.txt.gz",
+  "command": "sample -wait sqverify-exact 2 1 -mayDie -file <external-scratch>/rust-child.sample.txt",
+  "work": {
+    "density_rectangles": 184,
+    "polygons": 128,
+    "polygon_vertices": 4,
+    "angle_index": 1
+  },
+  "stack_samples": {
+    "query_session": 538,
+    "coverage_branch": 524,
+    "parse_polygons_branch": 12,
+    "dyld_startup_thread": 186,
+    "top_of_stack_biguint_gcd": 181,
+    "top_of_stack_biguint_shift_right": 84,
+    "top_of_stack_biguint_subtraction": 81
+  },
+  "limitations": [
+    "The child finished before the requested two-second sample duration; the sample contains startup and idle stacks and is not a calibrated CPU-time breakdown.",
+    "Coverage includes exact clipping, area accumulation, rational normalization, and allocation; sampled symbols alone cannot assign the observed Python/Rust wall difference to one operation.",
+    "Sampling perturbed this transport benchmark. Use the unsampled retained transport receipt for batching ratios and the retained matched receipt for verifier wall comparisons."
+  ]
+}

@@ -1,0 +1,518 @@
+{
+  "angle": 1,
+  "candidate_bytes": 186243,
+  "candidate_git_blob": "07342b487967413e6e491970692d2c6b6d0b651c",
+  "candidate_path": "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
+  "candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+  "cli_sha256": "db18d19c434ad17370521c4a3d88ba74ebf4e61515ff3861ea636f0265e3a538",
+  "command": [
+    "/Users/levy/wrk/github/squares/packing/.venv/bin/python3",
+    "-m",
+    "cProfile",
+    "-o",
+    "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmpbymmrn9o/profile.prof",
+    "-m",
+    "devtools.verify_rectangle_density",
+    "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmpbymmrn9o/candidate.json",
+    "--n",
+    "11",
+    "--side",
+    "381/100",
+    "--threshold",
+    "2252024993666617/2251799813685248",
+    "--angles",
+    "1",
+    "--max-nodes-per-angle",
+    "10000000",
+    "--max-depth",
+    "48",
+    "--max-seconds",
+    "10.0",
+    "--bound-mode",
+    "common-core"
+  ],
+  "exit_code": 0,
+  "internal_seconds": 10.0,
+  "kernel_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
+  "outer_seconds": 15.0,
+  "outer_wall_seconds": 10.236439125001198,
+  "profile_decoded_sha256": "b17439e85d50013f829fe7d52435eabb23752c315b9b922ae6b7ee89f429d447",
+  "profile_gzip_sha256": "6d3129e05730a2970fa23bf210a9d3d897064087d0685e04be1cc8596e8e9431",
+  "profiled_not_baseline": true,
+  "profiled_process_cpu_seconds": 9.557166000000002,
+  "profiled_process_system_seconds": 0.102044,
+  "profiled_process_user_seconds": 9.455122000000001,
+  "profiled_wall_seconds": 10.184613166999043,
+  "profiler_sha256": "44a88aad9e744169e05cb9382f0fcfd8c7282fb3b7ca3f538310a766362e8de8",
+  "speed_parity_established": false,
+  "status": "PROFILE_RETAINED",
+  "stdout_decoded_sha256": "9a40e98eacb33739770de82cbe9a485a7be6c1d2df29b14ca60824abada8a530",
+  "threshold": "2252024993666617/2251799813685248",
+  "timed_out": false,
+  "top_functions": {
+    "cumulative": [
+      {
+        "cumulative_seconds": 10.134206667,
+        "function": "<built-in method builtins.exec>",
+        "line": 0,
+        "primitive_calls": 1,
+        "self_seconds": 0.005205372000000001,
+        "source": "~",
+        "total_calls": 47
+      },
+      {
+        "cumulative_seconds": 10.134149125,
+        "function": "run_module",
+        "line": 206,
+        "primitive_calls": 1,
+        "self_seconds": 8.459e-06,
+        "source": "<frozen runpy>",
+        "total_calls": 1
+      },
+      {
+        "cumulative_seconds": 10.132566916,
+        "function": "_run_code",
+        "line": 65,
+        "primitive_calls": 1,
+        "self_seconds": 4.583e-06,
+        "source": "<frozen runpy>",
+        "total_calls": 1
+      },
+      {
+        "cumulative_seconds": 10.132535208,
+        "function": "<module>",
+        "line": 1,
+        "primitive_calls": 1,
+        "self_seconds": 7.175000000000001e-05,
+        "source": "/Users/levy/wrk/github/squares/packing/devtools/verify_rectangle_density.py",
+        "total_calls": 1
+      },
+      {
+        "cumulative_seconds": 10.099049,
+        "function": "main",
+        "line": 118,
+        "primitive_calls": 1,
+        "self_seconds": 0.000224164,
+        "source": "/Users/levy/wrk/github/squares/packing/devtools/verify_rectangle_density.py",
+        "total_calls": 1
+      },
+      {
+        "cumulative_seconds": 10.056253625,
+        "function": "verify_candidate",
+        "line": 893,
+        "primitive_calls": 1,
+        "self_seconds": 5.7627e-05,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 1
+      },
+      {
+        "cumulative_seconds": 10.0353695,
+        "function": "_verify_rotated",
+        "line": 785,
+        "primitive_calls": 1,
+        "self_seconds": 0.002224872,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 1
+      },
+      {
+        "cumulative_seconds": 9.948724572000001,
+        "function": "_coverage_polygon",
+        "line": 577,
+        "primitive_calls": 511,
+        "self_seconds": 0.083050528,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 511
+      },
+      {
+        "cumulative_seconds": 9.261139761,
+        "function": "exact_intersection_area",
+        "line": 464,
+        "primitive_calls": 21481,
+        "self_seconds": 0.12088506600000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 21481
+      },
+      {
+        "cumulative_seconds": 8.062327072,
+        "function": "_clip_axis",
+        "line": 441,
+        "primitive_calls": 85735,
+        "self_seconds": 0.7915356250000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 85735
+      },
+      {
+        "cumulative_seconds": 6.437303847000001,
+        "function": "_box_lower_bound",
+        "line": 671,
+        "primitive_calls": 338,
+        "self_seconds": 0.0009936160000000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 338
+      },
+      {
+        "cumulative_seconds": 5.4300611320000005,
+        "function": "forward",
+        "line": 697,
+        "primitive_calls": 2205232,
+        "self_seconds": 0.930123596,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 2205232
+      },
+      {
+        "cumulative_seconds": 3.5863334630000003,
+        "function": "coverage_at_point",
+        "line": 597,
+        "primitive_calls": 173,
+        "self_seconds": 0.00035421400000000005,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 173
+      },
+      {
+        "cumulative_seconds": 2.015991295,
+        "function": "_sub",
+        "line": 810,
+        "primitive_calls": 1024633,
+        "self_seconds": 0.9775356620000001,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 1024633
+      },
+      {
+        "cumulative_seconds": 1.606281585,
+        "function": "_richcmp",
+        "line": 1021,
+        "primitive_calls": 1261178,
+        "self_seconds": 0.669923802,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 1261178
+      },
+      {
+        "cumulative_seconds": 1.6019019220000001,
+        "function": "__ge__",
+        "line": 1055,
+        "primitive_calls": 1117027,
+        "self_seconds": 0.272804965,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 1117027
+      },
+      {
+        "cumulative_seconds": 1.594977112,
+        "function": "_mul",
+        "line": 826,
+        "primitive_calls": 967255,
+        "self_seconds": 0.740055584,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 967255
+      },
+      {
+        "cumulative_seconds": 1.415325908,
+        "function": "reverse",
+        "line": 711,
+        "primitive_calls": 428911,
+        "self_seconds": 0.314525979,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 428911
+      },
+      {
+        "cumulative_seconds": 1.3057733470000001,
+        "function": "<built-in method math.gcd>",
+        "line": 0,
+        "primitive_calls": 5165802,
+        "self_seconds": 1.3057733470000001,
+        "source": "~",
+        "total_calls": 5165802
+      },
+      {
+        "cumulative_seconds": 1.2569761560000001,
+        "function": "<built-in method builtins.isinstance>",
+        "line": 0,
+        "primitive_calls": 3968150,
+        "self_seconds": 0.644348541,
+        "source": "~",
+        "total_calls": 3968150
+      },
+      {
+        "cumulative_seconds": 1.256313548,
+        "function": "_from_coprime_ints",
+        "line": 361,
+        "primitive_calls": 2656759,
+        "self_seconds": 0.912280156,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 2656759
+      },
+      {
+        "cumulative_seconds": 0.941450387,
+        "function": "<built-in method builtins.sum>",
+        "line": 0,
+        "primitive_calls": 21273,
+        "self_seconds": 0.044175686000000006,
+        "source": "~",
+        "total_calls": 21273
+      },
+      {
+        "cumulative_seconds": 0.86549081,
+        "function": "_add",
+        "line": 794,
+        "primitive_calls": 449504,
+        "self_seconds": 0.42238681800000005,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 449504
+      },
+      {
+        "cumulative_seconds": 0.6990868640000001,
+        "function": "<genexpr>",
+        "line": 495,
+        "primitive_calls": 106361,
+        "self_seconds": 0.10442364900000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 106361
+      },
+      {
+        "cumulative_seconds": 0.6126276150000001,
+        "function": "__instancecheck__",
+        "line": 117,
+        "primitive_calls": 1726139,
+        "self_seconds": 0.338819611,
+        "source": "<frozen abc>",
+        "total_calls": 1726139
+      }
+    ],
+    "self": [
+      {
+        "cumulative_seconds": 1.3057733470000001,
+        "function": "<built-in method math.gcd>",
+        "line": 0,
+        "primitive_calls": 5165802,
+        "self_seconds": 1.3057733470000001,
+        "source": "~",
+        "total_calls": 5165802
+      },
+      {
+        "cumulative_seconds": 2.015991295,
+        "function": "_sub",
+        "line": 810,
+        "primitive_calls": 1024633,
+        "self_seconds": 0.9775356620000001,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 1024633
+      },
+      {
+        "cumulative_seconds": 5.4300611320000005,
+        "function": "forward",
+        "line": 697,
+        "primitive_calls": 2205232,
+        "self_seconds": 0.930123596,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 2205232
+      },
+      {
+        "cumulative_seconds": 1.256313548,
+        "function": "_from_coprime_ints",
+        "line": 361,
+        "primitive_calls": 2656759,
+        "self_seconds": 0.912280156,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 2656759
+      },
+      {
+        "cumulative_seconds": 8.062327072,
+        "function": "_clip_axis",
+        "line": 441,
+        "primitive_calls": 85735,
+        "self_seconds": 0.7915356250000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 85735
+      },
+      {
+        "cumulative_seconds": 1.594977112,
+        "function": "_mul",
+        "line": 826,
+        "primitive_calls": 967255,
+        "self_seconds": 0.740055584,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 967255
+      },
+      {
+        "cumulative_seconds": 1.606281585,
+        "function": "_richcmp",
+        "line": 1021,
+        "primitive_calls": 1261178,
+        "self_seconds": 0.669923802,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 1261178
+      },
+      {
+        "cumulative_seconds": 1.2569761560000001,
+        "function": "<built-in method builtins.isinstance>",
+        "line": 0,
+        "primitive_calls": 3968150,
+        "self_seconds": 0.644348541,
+        "source": "~",
+        "total_calls": 3968150
+      },
+      {
+        "cumulative_seconds": 0.86549081,
+        "function": "_add",
+        "line": 794,
+        "primitive_calls": 449504,
+        "self_seconds": 0.42238681800000005,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 449504
+      },
+      {
+        "cumulative_seconds": 0.40564368300000003,
+        "function": "<built-in method __new__ of type object at 0x100ce0908>",
+        "line": 0,
+        "primitive_calls": 3138419,
+        "self_seconds": 0.405178517,
+        "source": "~",
+        "total_calls": 3138457
+      },
+      {
+        "cumulative_seconds": 0.6126276150000001,
+        "function": "__instancecheck__",
+        "line": 117,
+        "primitive_calls": 1726139,
+        "self_seconds": 0.338819611,
+        "source": "<frozen abc>",
+        "total_calls": 1726139
+      },
+      {
+        "cumulative_seconds": 1.415325908,
+        "function": "reverse",
+        "line": 711,
+        "primitive_calls": 428911,
+        "self_seconds": 0.314525979,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 428911
+      },
+      {
+        "cumulative_seconds": 0.273808004,
+        "function": "<built-in method _abc._abc_instancecheck>",
+        "line": 0,
+        "primitive_calls": 1726139,
+        "self_seconds": 0.273784629,
+        "source": "~",
+        "total_calls": 1726139
+      },
+      {
+        "cumulative_seconds": 1.6019019220000001,
+        "function": "__ge__",
+        "line": 1055,
+        "primitive_calls": 1117027,
+        "self_seconds": 0.272804965,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 1117027
+      },
+      {
+        "cumulative_seconds": 0.26864075800000004,
+        "function": "__new__",
+        "line": 206,
+        "primitive_calls": 481542,
+        "self_seconds": 0.20335197600000002,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 481542
+      },
+      {
+        "cumulative_seconds": 0.40163279500000004,
+        "function": "_div",
+        "line": 842,
+        "primitive_calls": 192751,
+        "self_seconds": 0.187101757,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 192751
+      },
+      {
+        "cumulative_seconds": 9.261139761,
+        "function": "exact_intersection_area",
+        "line": 464,
+        "primitive_calls": 21481,
+        "self_seconds": 0.12088506600000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 21481
+      },
+      {
+        "cumulative_seconds": 0.108647459,
+        "function": "<built-in method _operator.ge>",
+        "line": 0,
+        "primitive_calls": 1117027,
+        "self_seconds": 0.108647459,
+        "source": "~",
+        "total_calls": 1117027
+      },
+      {
+        "cumulative_seconds": 0.6990868640000001,
+        "function": "<genexpr>",
+        "line": 495,
+        "primitive_calls": 106361,
+        "self_seconds": 0.10442364900000001,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 106361
+      },
+      {
+        "cumulative_seconds": 9.948724572000001,
+        "function": "_coverage_polygon",
+        "line": 577,
+        "primitive_calls": 511,
+        "self_seconds": 0.083050528,
+        "source": "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py",
+        "total_calls": 511
+      },
+      {
+        "cumulative_seconds": 0.045329405,
+        "function": "<method 'append' of 'list' objects>",
+        "line": 0,
+        "primitive_calls": 346237,
+        "self_seconds": 0.045329405,
+        "source": "~",
+        "total_calls": 346237
+      },
+      {
+        "cumulative_seconds": 0.941450387,
+        "function": "<built-in method builtins.sum>",
+        "line": 0,
+        "primitive_calls": 21273,
+        "self_seconds": 0.044175686000000006,
+        "source": "~",
+        "total_calls": 21273
+      },
+      {
+        "cumulative_seconds": 0.297149235,
+        "function": "__le__",
+        "line": 1051,
+        "primitive_calls": 136237,
+        "self_seconds": 0.034029302000000004,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 136237
+      },
+      {
+        "cumulative_seconds": 0.030511687000000003,
+        "function": "<built-in method builtins.len>",
+        "line": 0,
+        "primitive_calls": 262322,
+        "self_seconds": 0.030482973000000003,
+        "source": "~",
+        "total_calls": 262464
+      },
+      {
+        "cumulative_seconds": 0.020976613,
+        "function": "numerator",
+        "line": 441,
+        "primitive_calls": 239792,
+        "self_seconds": 0.020976613,
+        "source": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/fractions.py",
+        "total_calls": 239792
+      }
+    ]
+  },
+  "verifier_angle_summary": {
+    "accepted_leaves": 165,
+    "index": 1,
+    "nodes": 338,
+    "status": "INCONCLUSIVE",
+    "stop_cause": "time_limit",
+    "unresolved_leaves": 9
+  },
+  "verifier_candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+  "verifier_status": "INCONCLUSIVE"
+}

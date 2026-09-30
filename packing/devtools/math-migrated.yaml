@@ -26,6 +26,9 @@ files:
       - {span: C, where: axes are defined in}
       - {span: C, where: rung, numerically observed}
       - {span: S, where: axes are defined in}
+      # W1/W2 intake names the three rungs an imported result receives.
+      - {span: C, where: "confirmation (`C`), significance (`S`)"}
+      - {span: S, where: "confirmation (`C`), significance (`S`)"}
       - +W # names a coefficient direction, paired with the `-W` bridge
       # A 67-digit exact side: typeset math cannot break it, so it ran 1142px wide and
       # pushed the page sideways; a code span wraps.

@@ -1,0 +1,16 @@
+{
+  "audit": {
+    "compressed_bytes": 22617,
+    "compressed_sha": "dda59ad8fec2e1bb4ab50e24b1ae940a707611b27a287c75c1e11ab9ba2fe10f",
+    "decoded_bytes": 306377,
+    "decoded_sha": "ad793cd3bd3397d9e9e2e8d9a6fede50049a8d7abe148e87b470a35e02142c82"
+  },
+  "mask_index": 1239,
+  "packet": {
+    "compressed_bytes": 5487,
+    "compressed_sha": "0862331a763c15a269262619d4d11136cb3177c252be8113ff786a5a3bb45fa5",
+    "decoded_bytes": 49083,
+    "decoded_sha": "ef0003f22625807b08c17065b7374d92782c07dc39cb0bfc13fe0e1487978015"
+  },
+  "version": 1
+}

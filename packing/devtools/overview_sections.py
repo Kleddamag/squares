@@ -718,6 +718,11 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "A packing of 211 squares in a square of side under 15.",
     ),
     (
+        "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+        "Queuingtheorydotcom",
+        "A global optimality proof for eleven squares, at Trump's packing.",
+    ),
+    (
         "https://github.com/Kleddamag/11-squares-certified-bound",
         "Kleddamag",
         "A certified lower bound for eleven squares.",

@@ -451,14 +451,29 @@ H124 and restricted H036 remain unresolved, and that representation receives no 
 Do not repeat a completed experiment or create another candidate without a registered
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
-For the next supervised exact-research goal, take `think-l6la`, the handoff Session 161
-stopped on: run the complete `zm_mixed.py --d4 --cert-mode` re-sweeps for `s(21)` and
-`s(45)`, record them, and raise T-052 and T-053 to `C4`. Agenda-042’s BC-390, the
-widened n = 11 rung 0 box that leads
-[the after-4.640020 plan](plan-2026-09-27-after-4640020-overnight.md), stays queued
-behind it with the rectangle ladders and the remaining wand125 replays.
-See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current evidence
-and allocation boundaries.
+Session 161’s historical handoff selected `think-l6la`: complete the
+`zm_mixed.py --d4 --cert-mode` re-sweeps for `s(21)` and `s(45)` and record their
+confirmation.
+At that cutoff, Agenda 042’s BC-390 widened n = 11 rung 0 box stayed queued
+behind those re-sweeps with the rectangle ladders and remaining wand125 replays.
+The work remains tracked separately from this plan’s current handoff.
+After the current integration, the next supervised exact-research goal is native
+rectangle verification under `think-bmf3`: design and cost a whole-angle traversal using
+the measured two-level refinement result before a complete external rectangle replay.
+The corner comparison produced no new threshold crossing.
+The two-level diagnostic evaluated all 268 children and closed 15 of 67 depth-capped
+parents; 52 parents and 11 originally queued boxes still prevent complete-angle
+coverage. PR 246’s earlier implementation at `c621b845f` passed required and deferred
+checks, and Session 162’s certification debt is discharged.
+Session 163 adds separately reviewed changes; PR 246 has since merged with hosted
+fast-tier certification.
+The prototype and controls do not establish complete coverage of an external rectangle
+certificate.
+
+For the next supervised exact-research goal, the current handoff is `think-e2ot`: build
+a bounded fresh-ensemble replay entry point while preserving the accepted historical
+evidence. See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current
+evidence and allocation boundaries.
 
 ## The numeric runner launch gate
 

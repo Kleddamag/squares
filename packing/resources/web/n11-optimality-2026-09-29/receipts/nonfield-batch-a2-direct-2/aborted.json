@@ -1,0 +1,29 @@
+{
+  "status": "ABORTED_EXECUTOR_BOOKKEEPING",
+  "geometry_credit": false,
+  "excluded_case_ids": [],
+  "global_optimality_proved": false,
+  "checker_commit": "7a2705461",
+  "checker_sha256": "da09d08d0e2d6c40755a15a9e9b4a47ae874513463acc9fb44e29f5a821afa2b",
+  "reason": "Shared-source path was admitted, but post-execution invocation serialization used execution-checkout relative_to and raised ValueError. Per-process exit metadata was lost. Supervisors and active children stopped; rerun required before inventory credit. Existing checker records retained without credit.",
+  "records": [
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-2/case-651.json.gz",
+      "sha256": "8362c02bb4bdfcc44493363c13de4c85f776ebde3fcf5998f6927fc0e54d703b",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-2/case-654.json.gz",
+      "sha256": "719ec898d2df73b319c85017f0940d9ec652720c6431565fe14e40d48b91b666",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    },
+    {
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-direct-2/case-659.json.gz",
+      "sha256": "d61765f8f6b83e3c5d2832fbb637728607e2807253c223d35db15c81e1212fcc",
+      "reported_checker_status": "PASS_ONE_GENERIC_EXCLUSION",
+      "excluded_case_ids": []
+    }
+  ]
+}

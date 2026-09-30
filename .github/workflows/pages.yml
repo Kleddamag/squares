@@ -54,6 +54,7 @@ name: Certificate page
       - packing/devtools/sans_instances.py
       - packing/src/sqpack/**
       - packing/frontier/results.yaml
+      - packing/frontier/n-011.md
       - packing/atlas/known-best/composite-figure.json
       - packing/atlas/known-best/bound-citations.json
       - packing/atlas/known-best/rendering/**

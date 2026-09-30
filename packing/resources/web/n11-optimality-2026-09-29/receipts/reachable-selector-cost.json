@@ -1,0 +1,48 @@
+{
+  "scope": "cProfile measurement of one failing hosted dependency-selector test; profiler overhead included; no proof geometry run",
+  "host": "local macOS, concurrent proof workers active",
+  "baseline_commit": "00e1ba2248c7f70df9b276a1f604542c2126f333",
+  "baseline_source_sha256": "4ab4712105374bfffa506715d16d5c1dbf97bf1ac82caff803e1172f03c3295a",
+  "candidate_source_sha256": "3c2a547fb2960ccb758e16461806867a3cb35167d418ebae6c1f9d7e9d5c5c4c",
+  "command": "python -m cProfile -o PROFILE -m pytest tests/test_reachable_walker_evidence.py::test_benign_metadata_import_no_longer_expands_an_unrelated_frontier_change -q",
+  "measurements": [
+    {
+      "variant": "before",
+      "profiled_process_seconds": 14.820822255999882,
+      "phases": {
+        "_walker_evidence": {
+          "calls": 402,
+          "cumulative_seconds": 2.895993917
+        },
+        "_imports_of": {
+          "calls": 1133,
+          "cumulative_seconds": 10.348584865000001
+        },
+        "select_tests": {
+          "calls": 1,
+          "cumulative_seconds": 13.932981916000001
+        }
+      }
+    },
+    {
+      "variant": "after",
+      "profiled_process_seconds": 7.978564983000075,
+      "phases": {
+        "_imports_of": {
+          "calls": 1133,
+          "cumulative_seconds": 3.6747300380000003
+        },
+        "_walker_evidence": {
+          "calls": 402,
+          "cumulative_seconds": 2.917953502
+        },
+        "select_tests": {
+          "calls": 1,
+          "cumulative_seconds": 7.259042000000001
+        }
+      }
+    }
+  ],
+  "focused_validation": "68 selector tests passed in6.83seconds; Ruff and BasedPyright clean",
+  "mathematical_credit": false
+}

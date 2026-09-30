@@ -269,23 +269,32 @@ def _atlas_facts(page: str) -> dict[int, dict]:
 
 
 def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) -> None:
-    """The one atlas popover is filled from the grid's facts: for n = 11, the film's
-    chained bound, its star and badges, both bounds' sources with this project's notes,
-    and what is open, read from the atlas figure and `bound-citations.json`."""
+    """The one atlas popover is filled from the grid's facts: for n = 11, settled by
+    T-060, the exact value, its star and badges and both bounds' sources with this
+    project's notes; for n = 17, still open, the film's chained bound and what is open;
+    all read from the atlas figure and `bound-citations.json`."""
     facts = _atlas_facts(page)
     assert sorted(facts) == list(range(1, 325))
     eleven = facts[11]
-    assert eleven["exact"] is False
-    assert (eleven["lower"], eleven["upper"]) == ("3.875000", "3.877084")
+    assert eleven["exact"] is True
+    assert (eleven["lower"], eleven["upper"]) == (None, "3.877084")
     assert eleven["star"] is True
-    assert [label for _, _, label in eleven["badges"]] == ["exact", "rigid"]
-    assert eleven["open"] == ["optimality"]
+    assert [label for _, _, label in eleven["badges"]] == ["optimal", "exact", "rigid"]
+    assert eleven["open"] == []
     assert eleven["record"] == "n-011"
     assert eleven["cite"]["lower"] == {
-        "text": "Kleddamag after Levy et al. 2026, GitHub",
-        "note": "(confirmed T-037)",
+        "text": "Queuingtheorydotcom after Levy et al. 2026, Web",
+        "note": "(confirmed T-060)",
     }
-    assert eleven["cite"]["upper"]["text"] == "Trump 1979, Squares in Squares"
+    assert eleven["cite"]["upper"] == {
+        "text": "Trump 1979, Squares in Squares",
+        "note": "(confirmed T-011)",
+    }
+    seventeen = facts[17]
+    assert seventeen["exact"] is False
+    assert (seventeen["lower"], seventeen["upper"]) == ("4.660440", "4.675531")
+    assert seventeen["open"] == ["optimality"]
+    assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
     assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
     assert page.count('id="pop-atlas" popover') == 1
     assert page.count(" data-atlas-popover ") == 1
@@ -878,11 +887,12 @@ def test_the_recent_table_splits_method_credit_and_standing() -> None:
     assert 'data-standing="reported">reported</span>' in held
 
 
-def test_only_t037_of_the_s5_results_still_holds(overview: overview_data.Overview) -> None:
+def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overview) -> None:
     s5 = [r for r in overview.results if r.record["significance"]["score"] >= 5]
     holding = {r.id for r in s5 if r.standing == render_recent_results.HOLDS}
-    # The audit's reading of the record; update it when the record moves on.
-    assert holding == {"T-037"}
+    # The audit's reading of the record; update it when the record moves on. T-060's
+    # exact n = 11 value superseded T-037's 31/8.
+    assert holding == {"T-060"}
 
 
 def test_the_standing_filter_offers_each_standing_on_the_page(

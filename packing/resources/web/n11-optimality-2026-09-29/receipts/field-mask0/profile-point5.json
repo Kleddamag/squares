@@ -1,0 +1,26 @@
+{
+  "audit_proposal_sha256": "1a56056ad4d19786e41e248f0ef60866ad2021370e9ef809faa471fb679f8a54",
+  "canonical_cases_excluded": 0,
+  "checker_sha256": "70b0001ecadfa0eaf1741e6882a45c2fb68c2fafea5bf2ab5b2ce40701055d14",
+  "cover_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "node_ceiling": 10000,
+  "owner": 0,
+  "packet_sha256": "14164a3d91117055000ae78cd15a4e8ad5d6bb2c27ce24ff080605b873a93340",
+  "point": 5,
+  "process_cpu_seconds": 0.059351,
+  "proof": {
+    "deepest": 9,
+    "empty_leaves": 0,
+    "leaves": 72,
+    "maximum_vertex_distance_squared": "7952769227843408097869003249637987420800537954955212434435241/19870866405625000000000000000000000000000000000000000000000000",
+    "method": "strict_wall_interval_bound",
+    "minimum_margin": "8519202790736938186339272672462008316493/379054165499012763275000000000000000000000000",
+    "nodes": 143
+  },
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PASS_ONE_OWNERSHIP_POINT_ONLY",
+  "wall_ceiling_seconds": 30.0,
+  "wall_seconds": 0.05954395899971132
+}

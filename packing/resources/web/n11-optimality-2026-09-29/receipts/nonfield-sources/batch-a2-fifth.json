@@ -1,0 +1,90 @@
+{
+  "compressed_bytes": 76849669,
+  "decoded_bytes": 337889153,
+  "excluded_case_ids": [],
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "intake_tool_sha256": "5372ef692cd1b6737052acbf5bdc5994fb049bb6016b14c16b6c1747c087ad33",
+  "manifest_helper_sha256": "e85c3806ceef4fce64cccc359f964f0cade40924bba33d7ad5f9ba47a1efa815",
+  "manifest_sha256": "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b",
+  "objects": [
+    {
+      "downloaded_bytes": 90838,
+      "sha256": "0b0c83d04a55108ac53648413746c70355b4c13745a3b0ce12af3ad645b1b19f"
+    },
+    {
+      "downloaded_bytes": 256085,
+      "sha256": "1081fc886e5877024e02cdf644acb50da8a7c688fa6bb0e014c230b4ee7ab307"
+    },
+    {
+      "downloaded_bytes": 5777,
+      "sha256": "1d156ab33b298d173f491950b980f30c524cfcbca50cbbc6404c0029483075c3"
+    },
+    {
+      "downloaded_bytes": 18669681,
+      "sha256": "2a9f074bc7677dcad6738fbebb7abb68ba0eaf87ce4b48247a88390cff0bf1b5"
+    },
+    {
+      "downloaded_bytes": 91345,
+      "sha256": "441d20fc4e35c2fd5e52ff1f341ec9f4618695b9dbf36f0327acc64092eeac98"
+    },
+    {
+      "downloaded_bytes": 9893959,
+      "sha256": "5a13a36d78274f63c8c5e8e938176935fd4e4defede8b9d1861fc9b6604a8a2d"
+    },
+    {
+      "downloaded_bytes": 99881,
+      "sha256": "60528a3aed03312b3b7058164f346050b4f2582973288879649cab40328ba3e8"
+    },
+    {
+      "downloaded_bytes": 5774,
+      "sha256": "63674468cc4a753aae817031c124d5474a8e1c782551fa19a1e6a02140acf9ee"
+    },
+    {
+      "downloaded_bytes": 5766,
+      "sha256": "73e2b7572ba57272012a1f3278b4c7ce31b2ef4d188914ce97333867b3e4efdd"
+    },
+    {
+      "downloaded_bytes": 12200374,
+      "sha256": "7736a860e2d2a01b0a4504e51191356a4246c4510c8d76fc614f916bfdbc8631"
+    },
+    {
+      "downloaded_bytes": 758681,
+      "sha256": "7dcca75a660ae6a26a6968cd5220b439ed65651e25f516d26743630f4960ce7f"
+    },
+    {
+      "downloaded_bytes": 15460506,
+      "sha256": "88765292ce91f10f0e6dc10861f0790868b92c1109a4c5d42d7365730499e311"
+    },
+    {
+      "downloaded_bytes": 100348,
+      "sha256": "8b1e6bec24fd02a48dc9a197380d9e5073dbb8cce1360a599a6d6b9a2390737e"
+    },
+    {
+      "downloaded_bytes": 5944287,
+      "sha256": "9aae2f72ca7c6ef6252fa1429e1a5e0f4d4a69e2ad4b42657eccbc6c4fe0f27f"
+    },
+    {
+      "downloaded_bytes": 13235641,
+      "sha256": "be14f496441e82faae63de541f4feffdff770dd731a9e1450a739ba7805690c3"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e"
+    },
+    {
+      "downloaded_bytes": 5710,
+      "sha256": "e1123d69b2e91ab2e1b3185d207dd2bbef5f59b522625476e50fd5062b116dd2"
+    }
+  ],
+  "objects_directory": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+  "selected_case_ids": [
+    655,
+    998,
+    927,
+    761
+  ],
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PINNED_PROPOSALS_ACQUIRED",
+  "wall_seconds": 9.59065745800035
+}

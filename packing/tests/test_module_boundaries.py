@@ -311,7 +311,15 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "validate",
         "suite-a",
         "suite-b",
-        "exhaustive",
+        "suite-c",
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
+        "slow-lane",
+        "exhaustive-1",
+        "exhaustive-2",
+        "exhaustive-3",
         "screen",
         "macos-portability",
     ):
@@ -366,9 +374,9 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     validate_steps = _mapping(jobs["validate"])["steps"]
     assert isinstance(validate_steps, list)
     # The pull-request surface is seven concurrent jobs after the workbench package took
-    # its frontend contracts out of the checks queue and the suite became two shards:
+    # its frontend contracts out of the checks queue and the suite became three shards:
     # `--checks` here, `--frontend` in the `frontend` job, `--geometry` in the `geometry`
-    # job, `--suite-a` and `--suite-b` in their shard jobs, and `--sweeps` in the
+    # job, `--suite-a`, `--suite-b`, and `--suite-c` in their shard jobs, and `--sweeps` in the
     # `sweeps` job, so a pull request waits for the longest of them rather than their sum.
     # That they partition
     # `--fast` is proved against the CLI's own selector by
@@ -463,7 +471,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         if str(_mapping(step).get("uses", "")).startswith("actions/checkout@")
     )
     assert "fetch-depth" not in _mapping(geometry_checkout["with"])
-    for suffix in ("a", "b"):
+    for suffix in ("a", "b", "c"):
         suite_job = _mapping(jobs[f"suite-{suffix}"])
         assert suite_job["if"] == "github.event_name == 'pull_request'"
         suite_steps = suite_job["steps"]
@@ -545,39 +553,57 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         if _mapping(step).get("name") == "Run the complete integration surface"
     )
     assert full_step["if"] == "github.event_name != 'pull_request'"
-    # Three `--skip`s, one per step that has its own runner: the exhaustive exact tier,
-    # slow lane and translation escape screen (`D-484`). The four selections partition
-    # `STEPS`, checked
-    # against the CLI's own selector in `test_the_post_merge_jobs_partition_the_gate`;
-    # what is pinned here is that this command leaves all three out.
-    assert " ".join(str(full_step["run"]).split()) == (
-        'uv run --frozen --all-extras --group dev packing-validate --skip "exhaustive '
-        'exact behavioral tests" --skip "slow behavioral tests" '
-        '--skip "single-square translation escape screen" --jobs 1 --inner-jobs 2'
-    )
-
-    # The exhaustive exact tier, split onto its own runner on 2026-09-05 (think-tr2z) so
-    # that a step which had been half the complete surface's wall time reports its own
-    # verdict against its own budget. D-456 is what that fixes: killed at its budget with
-    # its output still in an unflushed pipe, it turned `validate` red on three
-    # consecutive merges while saying nothing about the sixty steps beside it.
-    exhaustive_job = _mapping(jobs["exhaustive"])
-    assert exhaustive_job["if"] == "github.event_name != 'pull_request'"
-    assert "continue-on-error" not in exhaustive_job
-    exhaustive_steps = exhaustive_job["steps"]
-    assert isinstance(exhaustive_steps, list)
-    exhaustive_commands = [
-        " ".join(str(_mapping(step)["run"]).split())
-        for step in exhaustive_steps
-        if isinstance(_mapping(step).get("run"), str)
-        and "packing-validate" in str(_mapping(step)["run"])
+    # The complete integration runner omits every Step assigned to a deferred runner.
+    # The CLI/workflow partition contract also checks exact coverage and disjointness.
+    command = shlex.split(str(full_step["run"]))
+    assert command[: command.index("packing-validate") + 1] == [
+        "uv",
+        "run",
+        "--frozen",
+        "--all-extras",
+        "--group",
+        "dev",
+        "packing-validate",
     ]
-    assert exhaustive_commands == [
-        (
-            'uv run --frozen --all-extras --group dev packing-validate --only "exhaustive '
-            'exact behavioral tests" --jobs 1 --inner-jobs 4'
+    assert command[command.index("packing-validate") + 1 :] == [
+        flag
+        for name in (
+            "exhaustive exact behavioral tests",
+            "slow behavioral tests",
+            "single-square translation escape screen",
+            "threshold dilation-limit record, 1440 steps",
+            "known-best n=1..324 atlas rebuild",
+            "finer-net dilation-limit record, 720 steps",
+            "exact rational grid replay",
+            "negative controls",
+            "finer-net dilation-limit record, 1440 steps",
+            "threshold dilation-limit record, 720 steps",
+            "n=40 rigidity bracket still reproduces",
         )
-    ]
+        for flag in ("--skip", name)
+    ] + ["--jobs", "1", "--inner-jobs", "2"]
+
+    # The exhaustive exact tier is partitioned by whole test files across three
+    # isolated runners. Each remains one logical validation Step.
+    for index in (1, 2, 3):
+        exhaustive_job = _mapping(jobs[f"exhaustive-{index}"])
+        assert exhaustive_job["if"] == "github.event_name != 'pull_request'"
+        assert "continue-on-error" not in exhaustive_job
+        exhaustive_steps = exhaustive_job["steps"]
+        assert isinstance(exhaustive_steps, list)
+        exhaustive_commands = [
+            " ".join(str(_mapping(step)["run"]).split())
+            for step in exhaustive_steps
+            if isinstance(_mapping(step).get("run"), str)
+            and "packing-validate" in str(_mapping(step)["run"])
+        ]
+        assert exhaustive_commands == [
+            (
+                "uv run --frozen --all-extras --group dev packing-validate "
+                '--only "exhaustive exact behavioral tests" '
+                f"--exhaustive-shard {index}/3 --jobs 1 --inner-jobs 4"
+            )
+        ]
 
     # The translation escape screen, split onto its own runner by `D-484`. The reason is
     # not the exhaustive tier's: the screen reports a single verdict either way, and what
@@ -615,6 +641,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "geometry",
         "suite-a",
         "suite-b",
+        "suite-c",
         "sweeps",
     ]
     # `!cancelled()`, not `always()`, and the difference is D-380. With `always()` a run
@@ -628,7 +655,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     assert "continue-on-error" not in required_job
     required_job_steps = required_job["steps"]
     assert isinstance(required_job_steps, list)
-    # One `test` per prerequisite, and all seven of them, because `needs` alone does not
+    # One `test` per prerequisite, and all eight of them, because `needs` alone does not
     # make a job's failure fatal here: this job runs under `!cancelled()`, so it is reached
     # even when a prerequisite failed, and it is the shell that decides. A missing line
     # would leave that part of the surface green whatever it reported.
@@ -638,6 +665,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         'test "$TYPECHECK_RESULT" = "success" '
         'test "$GEOMETRY_RESULT" = "success" test "$SUITE_A_RESULT" = "success" '
         'test "$SUITE_B_RESULT" = "success" '
+        'test "$SUITE_C_RESULT" = "success" '
         'test "$SWEEPS_RESULT" = "success"'
     )
     required_env = _mapping(_mapping(required_job_steps[0])["env"])
@@ -648,6 +676,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "GEOMETRY_RESULT": "${{ needs.geometry.result }}",
         "SUITE_A_RESULT": "${{ needs.suite-a.result }}",
         "SUITE_B_RESULT": "${{ needs.suite-b.result }}",
+        "SUITE_C_RESULT": "${{ needs.suite-c.result }}",
         "SWEEPS_RESULT": "${{ needs.sweeps.result }}",
     }
     wall_step = next(
@@ -1045,6 +1074,19 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         # or decide a small fixture and cost 2.7s between them -- so this pays only for
         # itself, and the two-route gate it is half of is a command in the proof packet
         # rather than a test at all.
+        # Full independent 2095 replay: 23.75s wall with three row workers in the
+        # retained 2026-09-30 receipt; fast geometry/state mutations stay in PR CI.
+        "test_n11_generic_fresh.py": {
+            "test_complete_2095_receipt_has_every_step_and_no_pending_row",
+        },
+        # Full 2135 replay: 8.71s in the retained source-bound receipt. Its eight
+        # fast admission and geometry controls remain in the required PR suite.
+        "test_n11_generic_sequential.py": {
+            "test_complete_2135_exclusion",
+            # Both complete exact backends, 22.32s under the retained concurrent
+            # research run; small differential/mutation controls remain fast.
+            "test_reference_and_fast_complete_2135_results_match",
+        },
         "test_n11_threshold_certificate.py": {
             "test_the_case_package_replays_the_retained_bytes_by_the_interval_route",  # 46.7s
         },

@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-09-29'
+last_reviewed: '2026-09-30'
 results:
   - id: T-001
     registered: '2026-08-31'
@@ -3796,3 +3796,140 @@ results:
       C4 by an interval route: an interval-certified replay of the packing, from the
       source's own 80-digit enclosures if it publishes them or from a Krawczyk enclosure of
       its contact system here, recorded as a second, method-distinct entry.
+
+  - id: T-058
+    registered: '2026-09-29'
+    headline: "Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises"
+    claim: >-
+      wand125/square-packing-tools claims that rectangle-density certificates using
+      core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100
+      witness table. The unrestricted argument is disputed: the B-scaled witness
+      squares need net-aligned orientations, and the table's rounded floats are not
+      certified upper bounds. Recorded for review, with no adopted impossibility theorem.
+    scope: {n_min: 1, n_max: 100}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 2
+      rationale: A tooling limit that could prematurely stop searches; resolving its premises affects safe integration but establishes no new packing bound.
+      scored: '2026-09-29'
+      by: W2 tools intake (repository)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 tools 2026]']
+      published: '2026-09-29'
+    evidence: [E-wand125-tools-ceiling-report]
+    artifacts:
+      - packing/resources/web/wand125-tools-2026-09-29/README.md
+      - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+    next_rung: >-
+      think-xgjo: discharge net orientation and exact upper-witness assumptions, or
+      replace the ceiling with the reviewed sufficient angular-containment correction.
+      Keep l_cap a search heuristic until then.
+    notes: >-
+      V0 records an unestablished source claim; C1 records a source-level review
+      finding a missing premise, not a machine refutation or a verified theorem.
+      This claim was drafted as T-056 before the merge; T-058 is canonical because
+      the merged upstream had already allocated T-056. Archived intake evidence
+      retains its original provisional label.
+
+  - id: T-059
+    registered: '2026-09-29'
+    headline: "Reported equality of 12028 n11 row minima awaits a complete bound replay"
+    claim: >-
+      wand125/square-packing-tools reports that its exact general_pose_tree checker
+      reproduces all 12028 per-row core minima of Kleddamag's n11 certificate at
+      commit 6a733f3, with global row minimum 999962528 units and all witnesses replayed.
+      This is the source's row-scan equality claim only, not a new proof of the global
+      counting theorem or independent rectangle-density coverage.
+    scope: {n_values: [11]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 2
+      rationale: A reusable independent row-checking implementation worth replaying; the existing n11 bound does not change.
+      scored: '2026-09-29'
+      by: W2 tools intake (repository)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 tools 2026]']
+      published: '2026-09-29'
+    evidence: [E-wand125-tools-n11-row-report]
+    artifacts:
+      - packing/resources/web/wand125-tools-2026-09-29/README.md
+      - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+      - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json
+      - docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    next_rung: >-
+      think-11z6 under think-190a: replay all 12028 rows through the reviewed production-bound
+      wrapper. Retain the complete unique census and exact witness comparisons; three
+      freshly bound sample rows do not promote this claim.
+    notes: >-
+      V0 because the full claimed row-minimum equality has no retained complete replay;
+      C1 records the scoped source review and its journal-admission defects, not confirmation
+      of all row minima. The identical certificate already has complete native threshold coverage
+      and reviewed global counting premises supporting the existing V4/C4 n11 bound;
+      that proof need not reproduce every exact row minimum and does not settle T-059.
+      This claim was drafted as T-057 before the merge; T-059 is canonical because
+      the merged upstream had already allocated T-057. Archived intake evidence
+      retains its original provisional label.
+
+  - id: T-060
+    registered: '2026-09-29'
+    headline: "Trump's eleven-square packing is globally optimal"
+    claim: >-
+      s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601...,
+      where u is the unique root in (9/25,37/100) of
+      5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0.
+      Independent rotations and boundary contact are allowed. The external proof
+      from Queuingtheorydotcom/11SquaresOptimal at
+      f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c is confirmed through complete
+      repository geometric executions and a mapped mathematical audit.
+      Credit remains with the source's Astra-assisted work building on
+      Squares Project and Kleddamag, and Trump's matching construction.
+    scope: {n_values: [11]}
+    verification: V4
+    confirmation: C5
+    significance:
+      score: 5
+      rationale: Resolves global optimality for the central n=11 case by closing the gap to Trump's exact construction, beyond the previous strict T-037 lower bound.
+      scored: '2026-09-30'
+      by: Astra-max complete mathematical review and coordinator integration
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Queuingtheorydotcom n11 optimality 2026]']
+      published: '2026-09-29'
+    evidence: [E-n011-global-optimality-report, E-n011-global-optimality-independent]
+    composition: >-
+      The complete 2184-pattern cover and 2180 exclusions leave four symmetric
+      survivors. The D4 bridge reduces these to case 438; the 14-round root
+      induction and complete 10-node capture graph eliminate all far branches and
+      force the near state into the reviewed local region. Exact local isolation
+      and the endpoint embedding argument exclude every side below T. The exact
+      Trump witness attains T. All premises have completed exact executions and
+      the mapped review, supporting V4/C5; no distinct-method C4 claim is made.
+    review_artifact: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    controls:
+      - packing/tests/test_n11_composition_joins.py
+      - packing/tests/test_n11_completion_inventory.py
+      - packing/tests/test_n11_exclusion_inventory.py
+    artifacts:
+      - packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md
+      - packing/resources/web/n11-optimality-2026-09-29/README.md
+      - packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
+      - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
+      - packing/resources/web/n11-optimality-2026-09-29/receipts/completion-inventory.json
+      - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    next_rung: >-
+      V5 requires a proof-assistant formalization. Engineering follow-up think-e2ot
+      will orchestrate fresh whole-ensemble replay through reviewed state-equivalence
+      bindings. Simplification precedes the separately tracked n11 explainer.
+    notes: >-
+      Confirmed 2026-09-30 after all 2180 exclusions, ten capture nodes and final
+      composition passed and received Astra-max review. Source credit is unchanged.
+      The publisher's four stale B4-B7 digest bindings remain reproducibility
+      defects; confirmation uses independently observed geometric executions.
+      Shared local arithmetic and construction primitives are disclosed in the
+      evidence. The composer reconciles receipts and does not itself rerun geometry.
+      T-037 is the earlier strict lower bound; T-059's row-minimum equality is separate.

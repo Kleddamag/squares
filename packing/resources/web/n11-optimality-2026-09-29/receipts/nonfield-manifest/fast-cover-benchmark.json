@@ -1,0 +1,79 @@
+{
+  "median_of_row_speedups": 1.9221701904220958,
+  "rounds_per_row": 3,
+  "rows": [
+    {
+      "coverage": {
+        "edge_segments": 242,
+        "events": 87,
+        "probes": 173
+      },
+      "fast_cpu_seconds": [
+        0.12196099999999999,
+        0.12179499999999999,
+        0.12147299999999994
+      ],
+      "fast_median_cpu_seconds": 0.12179499999999999,
+      "frozen_cpu_seconds": [
+        0.22599000000000002,
+        0.22828499999999996,
+        0.2267180000000001
+      ],
+      "frozen_median_cpu_seconds": 0.2267180000000001,
+      "median_speedup": 1.8614721458187948,
+      "row": 0
+    },
+    {
+      "coverage": {
+        "edge_segments": 295,
+        "events": 120,
+        "probes": 239
+      },
+      "fast_cpu_seconds": [
+        0.20779199999999998,
+        0.2080630000000001,
+        0.2173090000000002
+      ],
+      "fast_median_cpu_seconds": 0.2080630000000001,
+      "frozen_cpu_seconds": [
+        0.4013850000000001,
+        0.4016160000000002,
+        0.40474900000000025
+      ],
+      "frozen_median_cpu_seconds": 0.4016160000000002,
+      "median_speedup": 1.9302615073319138,
+      "row": 22
+    },
+    {
+      "coverage": {
+        "edge_segments": 206,
+        "events": 77,
+        "probes": 153
+      },
+      "fast_cpu_seconds": [
+        0.093858,
+        0.09231799999999968,
+        0.09331900000000015
+      ],
+      "fast_median_cpu_seconds": 0.09331900000000015,
+      "frozen_cpu_seconds": [
+        0.18023800000000012,
+        0.17903599999999997,
+        0.17937499999999984
+      ],
+      "frozen_median_cpu_seconds": 0.17937499999999984,
+      "median_speedup": 1.9221701904220958,
+      "row": 31
+    }
+  ],
+  "schema": "n11_fast_exact_cover_benchmark_v1",
+  "scope": "Three first-step rows of one accepted case; no corpus forecast.",
+  "source_sha256": {
+    "fast": "1a06b0822e12ea2168c4158d99a943c64fd465cb81e004974f9eb51702c3e9b4",
+    "frozen": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+    "generic": "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3",
+    "pilot_receipt": "2aa9c3819e4f39d9f4f489a25d1885b2a1c5a6f6c21099f42821d1165d608f88",
+    "pilot_source": "68adba943c66ee60c65caf8094dfc18f68a622379acf506ed40558f87602f8aa"
+  },
+  "status": "DIAGNOSTIC_MATCHED_EXACT_RESULTS"
+}

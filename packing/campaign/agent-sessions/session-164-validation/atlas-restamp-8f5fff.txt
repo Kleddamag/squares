@@ -1,0 +1,7 @@
+composite figure record already current: composite-figure.json
+composite PDF updated: known-best-1-100.pdf (81043 bytes)
+composite PDF updated: known-best-1-324.pdf (511108 bytes)
+known-best atlas updated: 324 witnesses, 324 house renderings, 2 composites (SVG, 4 PNG rasters, PDF), 324 frontier links
+real 245.08
+user 872.93
+sys 1.74

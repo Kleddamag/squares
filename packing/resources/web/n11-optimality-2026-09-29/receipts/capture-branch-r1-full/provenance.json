@@ -1,0 +1,18 @@
+{
+  "branch_pilot_sha256": "f75b7ef718cc301833770128dd2f9b2bab3473b5dd01f59583e70fc2bb84abf9",
+  "checker_sha256": "3e1bfc6471acc48ccbbce00a5c546f4f7e1e4e0cdd1bb3ce51247bfc94b10ce1",
+  "internal_seconds": 1800,
+  "process_cpu_seconds": "unmeasured",
+  "r1_final_state_canonical_sha256": "fd24cc9ef4e3c6a0e61707516e608fe6b4dbb66e791ffd9cc8048b35f812330a",
+  "r1_source_sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+  "replay": "From packing after decoding and SHA-verifying pinned root and r1 sources: timeout 1830s .venv/bin/python3 -m devtools.check_n11_capture_branch_r1_node --root-source <decoded-root> --r1-source <decoded-r1> --root-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-full-integer/result.json --workers 2 --max-seconds 1800 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-branch-r1-full/result.json",
+  "result_sha256": "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4",
+  "root_result_sha256": "0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4",
+  "root_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "scope": "Complete r1 child capture-node state, conditional on accepted root-self state; excludes sibling branches, tree capture, candidate capture, and global optimality",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "282dde7917a33d03f6623768086f9e0e530f417b4a10ea46adfaa8bf1cb97373",
+  "supervisor_seconds": 1830,
+  "wall_seconds_reported_by_checker": 117.12796150000213,
+  "workers": 2
+}

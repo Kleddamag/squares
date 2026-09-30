@@ -1,0 +1,32 @@
+{
+  "schema": "sqpack.n11-local-dual-residual-receipt.v1",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "source_index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "objects": {
+    "weighted": {
+      "indexed_path": "evidence/research/recovered-checkpoint/research/classical/trump-local-weighted-coordinate-radius.json",
+      "index_object_key": "ffe9f89d40a9538ec9a10d8700999f05483d0ccfad17b84d430590da7dd65889",
+      "decoded_sha256": "ffe9f89d40a9538ec9a10d8700999f05483d0ccfad17b84d430590da7dd65889",
+      "decoded_bytes": 11017145,
+      "stored_path": "objects/ffe9f89d40a9538ec9a10d8700999f05483d0ccfad17b84d430590da7dd65889.gz",
+      "lfs_oid_sha256": "25f7ca79130e14bf63a2a08f2246bc6b02b53effd85b87b3831207539014ba1c",
+      "stored_bytes": 1532021
+    },
+    "focused": {
+      "indexed_path": "evidence/research/global-math/focused1024-local-box-independent.json",
+      "index_object_key": "8e11a0ff747195a84a79c30f49f919c76314770cbe14a201dfe9bdf730bdd0bf",
+      "decoded_sha256": "9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3",
+      "decoded_bytes": 103426,
+      "stored_path": "objects/9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3.gz",
+      "lfs_oid_sha256": "cb67f9e3b0d473f1a6c32c561cd9a2f03bf002118d335e7ec73e5eea4051d610",
+      "stored_bytes": 28183
+    }
+  },
+  "checker_path": "packing/devtools/check_n11_optimality_local_dual.py",
+  "checker_sha256": "2078773593607d3da54f4d6fe7088c5fed224309837d712b030c75d9be04e1f1",
+  "result_sha256": "eb4823d69809483c55643c6e9cf9ba7c7ac1a57e93cb8d71972cb8af94dbc6a3",
+  "executed_from": "packing/",
+  "executed_command": "source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh; /usr/bin/time -p /opt/homebrew/bin/timeout 30s .venv/bin/python3 -B -m devtools.check_n11_optimality_local_dual --weighted /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/weighted.json --focused /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/focused.json --branch-limit 128 --max-seconds 25 --output resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/result.json",
+  "scope": "All 8448 signed-coordinate matrix and integer residual checks only; curvature, feature gaps, local isolation, pose inclusion, and global theorem remain unchecked."
+}

@@ -212,6 +212,34 @@ PRUNE = frozenset(
         ROOT
         / "campaign/agent-sessions/session-106-validation"
         / "full-46ee41af-validate.tar.gz",
+        # Session 152's 499,501-byte timing archive is historical generated output.
+        # Its session lists the path as an output, but no checked document links it
+        # inline and no mutation control, code reader, or results-register entry uses
+        # it. Keep the session record and archive in Git while omitting only this
+        # compressed byproduct from private mutation workers. The dependency-copy
+        # rules still take precedence if a checked link or registered use is added.
+        ROOT
+        / "campaign/agent-sessions/session-152-validation"
+        / "validation-timings-validate-1.zip",
+        # Two earlier validation byproducts are retained in Git but are not inputs to
+        # any mutation control. The Session 106 fast archive is named as a plain output
+        # path; Session 152's initial diagnostic log has no reader. Neither is inline
+        # linked or registered as a result dependency, and both remain recoverable.
+        # Their 338,778 bytes restore headroom after the n=11 source intake crossed the
+        # unchanged 160 MiB private-worker cap. Dependency copy-back still takes
+        # precedence if a checked document later links either file.
+        ROOT / "campaign/agent-sessions/session-106-validation" / "fast-3deb90fc.tar.gz",
+        ROOT / "campaign/agent-sessions/session-152-validation" / "full-initial-diagnostic.log",
+        # The n=21 orbit inventory and Session 105 full-gate JSON are older generated
+        # byproducts, named only in historical prose/output fields. Neither is a
+        # registered result dependency, inline link, control target, or control input.
+        # Keep both in Git while the private mutation workers omit their 458,698
+        # bytes. This absorbs the source-bound atlas export and subsequent reviewed
+        # proof-receipt links without widening the portable snapshot ceiling.
+        ROOT
+        / "campaign/series/series-000-smoke-and-calibration/results/agenda-040"
+        / "one-spare-inventory-n21-orbits.json.gz",
+        ROOT / "campaign/agent-sessions/session-105-validation/full-48a4544f.json",
         # Agenda 024's commissioning outputs and its two manager roots are retained
         # research evidence, not mutation-control inputs. Long numerical logs and warm
         # states can grow while the gate is running; copying them into every private
@@ -285,6 +313,16 @@ PRUNE = frozenset(
         # start, so its bulk never enters the ~107 KB of headroom PR 230 left. No control
         # names it; its Markdown receipts return through linked_pruned_targets.
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-042",
+        # The n=32 one-spare inventory is a 3,344,052-byte generated research result.
+        # Its receipt and experiment cite the path in command text and prose, not as
+        # an inline link or a registered result dependency. No mutation control names
+        # or opens it. Keep the evidence in Git, but omit it from every throwaway
+        # worker: the 2026-09-29 push counted 170,442,934 bytes against the unchanged
+        # 160 MiB cap, and this exact output accounts for more than that breach.
+        # Agenda 040 itself stays: other checks read its retained families and patches.
+        ROOT
+        / "campaign/series/series-000-smoke-and-calibration/results/agenda-040"
+        / "one-spare-inventory-n32.json",
         # The per-log cost rollups are 4.7 MB of harness telemetry, and every session adds
         # a dozen. No control names a file under them, and validate_schemas only globs the
         # directory, so a worker without them validates fewer datasets rather than failing.
@@ -555,7 +593,14 @@ ROOT_DOCUMENTS = (
 # the next breach does not spend its first hour taking it a third time. `think-t1lk`
 # survives this branch narrowed rather than discharged: its nominated starting point is
 # disproved, and what remains is a link scan that can tolerate a pruned target.
-SNAPSHOT_MAX_BYTES = 160 * 1024 * 1024
+# 2026-09-30, T-060's reviewed local/census/inclusion receipts: 167,821,919 bytes,
+# 49,759 beyond 160 MiB even after four measured historical non-input prunes.
+# The remaining linked proof receipts are required evidence, not cache drift. Stop
+# making each small receipt trigger another archive hunt: restore roughly 32 MiB
+# operating headroom at 192 MiB while think-t1lk owns dependency-aware selection.
+# This changes no copied bytes or time limit. At three portable workers the storage
+# ceiling is 576 MiB; the current measured payload remains about 160.05 MiB per tree.
+SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0
 # Directories that must be walked into rather than bulk-copied, because something
@@ -694,6 +739,11 @@ LINKED_PRUNE_ROOTS = (
 )
 
 
+def in_pruned_roots(path: Path, roots: frozenset[Path]) -> bool:
+    """Test resolved ancestry once, rather than rebuilding it for every prune root."""
+    return path in roots or any(parent in roots for parent in path.parents)
+
+
 def linked_pruned_targets() -> list[Path]:
     """Omitted files the checked documents link to inline, resolved and existing.
 
@@ -721,12 +771,11 @@ def linked_pruned_targets() -> list[Path]:
         elif document.is_file() and document.suffix == ".md":
             documents.append(document)
     targets: set[Path] = set()
+    roots = frozenset(LINKED_PRUNE_ROOTS)
     for document in documents:
         for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
             resolved = (document.parent / raw).resolve()
-            if resolved.is_file() and any(
-                resolved.is_relative_to(root) for root in LINKED_PRUNE_ROOTS
-            ):
+            if resolved.is_file() and in_pruned_roots(resolved, roots):
                 targets.add(resolved)
     return sorted(targets)
 
@@ -735,15 +784,14 @@ def result_pruned_targets() -> list[Path]:
     """Pruned files named structurally by the results register."""
     register = safe_load((ROOT / "frontier/results.yaml").read_text(encoding="utf-8"))
     targets: set[Path] = set()
+    roots = frozenset(LINKED_PRUNE_ROOTS)
     for record in register["results"]:
         raw_paths = [*(record.get("artifacts") or []), *(record.get("controls") or [])]
         if review := record.get("review_artifact"):
             raw_paths.append(review)
         for raw in raw_paths:
             resolved = (REPO / raw).resolve()
-            if resolved.is_file() and any(
-                resolved.is_relative_to(root) for root in LINKED_PRUNE_ROOTS
-            ):
+            if resolved.is_file() and in_pruned_roots(resolved, roots):
                 targets.add(resolved)
     return sorted(targets)
 

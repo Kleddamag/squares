@@ -37,7 +37,6 @@ import json
 import re
 import shlex
 from contextlib import redirect_stdout
-from itertools import combinations
 from pathlib import Path
 from typing import Any
 
@@ -162,19 +161,43 @@ def test_the_deep_gate_runs_exactly_what_the_pull_request_surface_defers() -> No
     }
 
     assert set(selections) == {
-        "deferred-steps",
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
         "deferred-slow-lane",
-        "exhaustive-tier",
+        "exhaustive-1",
+        "exhaustive-2",
+        "exhaustive-3",
         "screen",
     }
     assert selections["deferred-slow-lane"] == {"slow behavioral tests"}
-    assert selections["exhaustive-tier"] == {"exhaustive exact behavioral tests"}
+    exhaustive_jobs = {f"exhaustive-{index}" for index in range(1, 4)}
+    for job in exhaustive_jobs:
+        assert selections[job] == {"exhaustive exact behavioral tests"}
     assert selections["screen"] == {"single-square translation escape screen"}
-    for left, right in combinations(sorted(selections), 2):
-        assert not selections[left] & selections[right], f"{left} and {right} overlap"
+    ownership: dict[str, set[str]] = {}
+    for job, selected in selections.items():
+        for step in selected:
+            ownership.setdefault(step, set()).add(job)
+    assert ownership["exhaustive exact behavioral tests"] == exhaustive_jobs
+    assert all(
+        len(jobs) == 1
+        for step, jobs in ownership.items()
+        if step != "exhaustive exact behavioral tests"
+    )
 
-    covered: set[str] = set().union(*selections.values())
-    assert len(covered) == sum(len(selected) for selected in selections.values())
+    commands = _gate_commands(DEEP_GATE)
+    for index in range(1, 4):
+        job = f"exhaustive-{index}"
+        tokens = shlex.split(commands[job])
+        shard_positions = [
+            position for position, token in enumerate(tokens) if token == "--exhaustive-shard"
+        ]
+        assert len(shard_positions) == 1, job
+        assert tokens[shard_positions[0] + 1] == f"{index}/3", job
+
+    covered = set(ownership)
     assert covered == {step.name for step in validate.STEPS if not step.fast}
 
 
@@ -240,11 +263,86 @@ def test_the_deep_gate_reports_one_context_and_never_leaves_it_pending() -> None
     aggregate = jobs[AGGREGATE_JOB]
 
     assert set(aggregate["needs"]) == set(jobs) - {AGGREGATE_JOB}
-    assert [name for name, job in jobs.items() if job.get("needs")] == [AGGREGATE_JOB]
+    for name, job in jobs.items():
+        if name == "resolve-tree":
+            assert not job.get("needs")
+        elif name == AGGREGATE_JOB:
+            assert set(job["needs"]) == set(jobs) - {AGGREGATE_JOB}
+        else:
+            assert job.get("needs") == "resolve-tree", name
     # `!cancelled()` rather than `always()`: `cancel-in-progress` is on for pull requests,
     # so supersession is routine and must leave this unreported rather than failing hard.
     assert str(aggregate["if"]).lstrip().startswith("!cancelled()")
     assert "always()" not in str(aggregate["if"])
+
+
+def test_every_deep_worker_and_receipt_are_bound_to_one_immutable_tree() -> None:
+    """A moving dispatch ref is resolved once and never re-read by a worker."""
+    jobs = _workflow(DEEP_GATE)["jobs"]
+    resolver = jobs["resolve-tree"]
+    assert resolver["outputs"] == {"sha": "${{ steps.tree.outputs.sha }}"}
+    resolver_checkout = next(
+        step
+        for step in resolver["steps"]
+        if str(step.get("uses", "")).startswith("actions/checkout@")
+    )
+    resolver_ref = str(resolver_checkout["with"]["ref"])
+    assert "github.sha" in resolver_ref
+    assert "refs/pull/{0}/merge" in resolver_ref
+
+    for job_name, job in jobs.items():
+        if job_name == "resolve-tree":
+            continue
+        checkouts = [
+            step
+            for step in job["steps"]
+            if str(step.get("uses", "")).startswith("actions/checkout@")
+        ]
+        assert checkouts
+        assert all(
+            checkout["with"]["ref"] == "${{ needs.resolve-tree.outputs.sha }}"
+            for checkout in checkouts
+        ), job_name
+        if job_name == AGGREGATE_JOB:
+            continue
+        receipts = [
+            step
+            for step in job["steps"]
+            if step.get("name") == "Bind the receipt to the immutable tree"
+        ]
+        assert len(receipts) == 1, job_name
+        receipt = receipts[0]
+        assert receipt["env"] == {"VALIDATED_SHA": "${{ needs.resolve-tree.outputs.sha }}"}
+        command = str(receipt["run"])
+        assert 'test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"' in command
+        assert '"$PACKING_VALIDATION_ARTIFACT_DIR/tree-sha.txt"' in command
+        validate_indexes = [
+            index
+            for index, step in enumerate(job["steps"])
+            if "packing-validate" in str(step.get("run", ""))
+        ]
+        assert len(validate_indexes) == 1, job_name
+        assert job["steps"].index(receipt) < validate_indexes[0], job_name
+
+
+def test_every_deep_worker_publishes_one_uniquely_named_receipt() -> None:
+    jobs = _workflow(DEEP_GATE)["jobs"]
+    expected_name = "validation-timings-${{ github.job }}-${{ github.run_attempt }}"
+
+    for job_name, job in jobs.items():
+        if job_name in {"resolve-tree", AGGREGATE_JOB}:
+            continue
+        uploads = [
+            step
+            for step in job["steps"]
+            if str(step.get("uses", "")).startswith("actions/upload-artifact@")
+        ]
+        assert len(uploads) == 1, job_name
+        assert uploads[0]["if"] == "always()", job_name
+        assert uploads[0]["with"]["name"] == expected_name, job_name
+        assert uploads[0]["with"]["path"] == ("${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}"), (
+            job_name
+        )
 
 
 def test_every_deep_gate_prerequisite_decides_the_aggregate_verdict() -> None:
@@ -405,10 +503,12 @@ def test_every_deep_gate_job_is_clocked_against_a_declared_wall() -> None:
     fails a local tier, and read by no rule at all, because `gate-budgets.yaml` clocked
     `packing-validate`'s own wall and nothing clocked a workflow job's.
 
-    So the tiers' own rule, asked of these four jobs: every job the gate runs has an
-    entry, every entry names a job that exists, every entry carries a wall measured on
-    named runs, and every ceiling is inside `policy.max_headroom` of it. The same shape
-    `test_every_page_job_a_pull_request_runs_is_budgeted` holds over `pages`.
+    So the tiers' own rule, asked of every worker: every job the gate runs has an
+    entry and a concrete ceiling. Existing job shapes carry hosted measurements. New
+    worker shapes carry an explicit pending-measurement bead and predecessor-derived
+    ceiling until their first candidate run; they cannot be mistaken for observed
+    walls. The same shape `test_every_page_job_a_pull_request_runs_is_budgeted` holds
+    over `pages`.
 
     Enforcement against a live run belongs to `devtools.check_ci_gate_walls`; this is the
     declaration check, and like `check_gate_budgets` it needs no clock.
@@ -428,17 +528,25 @@ def test_every_deep_gate_job_is_clocked_against_a_declared_wall() -> None:
     headroom = register.policy.max_headroom
     for budget in (*gate.jobs, gate.wall):
         where = budget.id
-        assert budget.measured_seconds is not None, where
-        assert budget.measured_on, where
-        assert budget.measured_where is not None, where
-        assert re.search(r"run \d{8,}", budget.measured_where), where
-        assert budget.ceiling_seconds >= budget.measured_seconds, where
-        assert budget.ceiling_seconds <= headroom * budget.measured_seconds, where
         assert budget.argument.strip(), where
-        # A hosted band has to be argued against the runner's own variance, so the
-        # spread the readings showed is recorded beside the mean of them.
-        assert budget.spread is not None, where
-        assert budget.spread >= 1.0, where
+        if budget.measured_seconds is None:
+            assert budget.measured_seconds is None, where
+            assert budget.measured_on is None, where
+            assert budget.measured_where is None, where
+            assert budget.spread is None, where
+            assert re.fullmatch(r"think-[a-z0-9]{4}", budget.pending_measurement or ""), where
+        else:
+            assert budget.pending_measurement is None, where
+            assert budget.measured_seconds is not None, where
+            assert budget.measured_on, where
+            assert budget.measured_where is not None, where
+            assert re.search(r"run \d{8,}", budget.measured_where), where
+            assert budget.ceiling_seconds >= budget.measured_seconds, where
+            assert budget.ceiling_seconds <= headroom * budget.measured_seconds, where
+            # A hosted band has to be argued against the runner's own variance, so the
+            # spread the readings showed is recorded beside the mean of them.
+            assert budget.spread is not None, where
+            assert budget.spread >= 1.0, where
 
     # The gate declares its own band rather than inheriting the policy's, because the
     # policy's 1.5x was measured against local tiers. It may be tighter, never looser.
@@ -446,9 +554,7 @@ def test_every_deep_gate_job_is_clocked_against_a_declared_wall() -> None:
     # A relaxation with no bead behind it is a permanent one.
     assert gate.reports_only
     assert gate.tracking_bead
-    longest = max(budget.measured_seconds or 0.0 for budget in gate.jobs)
-    wall = gate.wall.measured_seconds or 0.0
-    assert wall >= longest, "the wall is at least the longest job"
+    assert gate.wall.history[-1].seconds == 2540.6
 
 
 def test_the_deep_gate_aggregate_reads_the_walls_it_is_budgeted_against() -> None:
@@ -477,7 +583,8 @@ def test_the_deep_gate_aggregate_reads_the_walls_it_is_budgeted_against() -> Non
     # error. A measurement tool that can redden a 45-minute pre-merge gate is worse than
     # no measurement tool.
     verdict = all_steps[0]
-    assert "needs." in str(verdict.get("env", {}).get("EXHAUSTIVE_RESULT", ""))
+    for index in range(1, 4):
+        assert "needs." in str(verdict.get("env", {}).get(f"EXHAUSTIVE_{index}_RESULT", ""))
     for step in all_steps[1:]:
         assert step.get("continue-on-error") is True, step.get("name")
     (step,) = reporting

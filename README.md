@@ -1,24 +1,24 @@
 # The Squares Project
 
-The Squares Project studies `s(n)`, the side of the smallest square that holds `n`
+The Squares Project studies $s(n)$, the side of the smallest square that holds $n$
 non-overlapping unit squares.
-The problem is elementary to state and remains open even at small `n`. Its central case
-is eleven squares, where the verified bracket is `3.875 < s(11) ≤ 3.8770835…`, a gap of
-about `0.0021`.
+The problem is elementary to state and remains open even at small $n$. Its central case
+is eleven squares, where the verified bracket is $3.875 < s(11) \le 3.8770835\ldots$, a
+gap of about $0.0021$.
 
 This repository contains:
 
-- **[New results from this project](#new-results):** Lower bounds on `s(11)` that
-  improve Stromquist’s `3.7888543…` bound, stated in
+- **[New results from this project](#new-results):** Lower bounds on $s(11)$ that
+  improve Stromquist’s $3.7888543\ldots$ bound, stated in
   [1984, Memo III, p. 10](packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf)
   and published in 2003; the recorded search found no improvement in between.
-  The strongest is `s(11) ≥ 3.8269975…`. With them come `s(12) ≥ 99/25`, reached
-  independently of Evan Daniel’s stronger `15680/3951`, which was in his repository from
-  25 August and was first seen here on 27 September; the first proved bounds specific to
-  twenty and twenty-one squares; and bounds for seventeen through twenty-one squares
-  that improved on the published ones.
+  The strongest is $s(11) \ge 3.8269975\ldots$. With them come $s(12) \ge 99/25$,
+  reached independently of Evan Daniel’s stronger $15680/3951$, which was in his
+  repository from 25 August and was first seen here on 27 September; the first proved
+  bounds specific to twenty and twenty-one squares; and bounds for seventeen through
+  twenty-one squares that improved on the published ones.
   The bounds for eighteen, nineteen and twenty squares are still the verified ones, with
-  wand125’s reported `939/200`, `963/200` and `979/200` above them until their replays
+  wand125’s reported $939/200$, $963/200$ and $979/200$ above them until their replays
   run; the others have since been raised by the results below.
 - **[Results by others](#results-by-others):** Others have built on these certificates,
   credited them and taken the bounds further, and others have worked in parallel, one
@@ -26,43 +26,43 @@ This repository contains:
   This repository registers each claimed bound as *reported* when it takes the source
   in, and as *verified* only after a complete replay of its certificate here and a
   review of its mathematics, with the credit its authors give.
-  - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
+  - **$s(11) > 31/8 = 3.875$**, by Kleddamag, developed from T-026’s certificate:
     [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
-    It is the strongest verified lower bound for eleven squares, about `0.0021` below
+    It is the strongest verified lower bound for eleven squares, about $0.0021$ below
     Trump’s packing. Recorded here: the
     [retained copy](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md),
     the [review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
     and the [case record](packing/frontier/n-011.md).
-  - **`s(17) > 116511/25000 = 4.66044`**, by Guzhou0806, continuing Kleddamag’s
-    `4.66001` charge (Kleddamag building on Squares Project (Joshua Levy), Mira and
+  - **$s(17) > 116511/25000 = 4.66044$**, by Guzhou0806, continuing Kleddamag’s
+    $4.66001$ charge (Kleddamag building on Squares Project (Joshua Levy), Mira and
     Guzhou0806):
     [Guzhou0806/n17-square-packing R068 at `815b162`](https://github.com/Guzhou0806/n17-square-packing/tree/815b16261f852e389968513eec94b4b9e5b3206d/certificates/R068-C010).
     Eight replayed certificates at seventeen squares trace their support back to T-019’s
-    atoms, and this is the strongest; it is the verified lower bound, about `0.0151`
+    atoms, and this is the strongest; it is the verified lower bound, about $0.0151$
     below Bidwell’s packing.
     Recorded here: the
     [retained copy](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md), the
     [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) and the
     [case record](packing/frontier/n-017.md).
-  - **`s(21) = 5`, `s(32) = 6` and `s(45) = 7`**, by Evan Daniel, independent of this
+  - **$s(21) = 5$, $s(32) = 6$ and $s(45) = 7$**, by Evan Daniel, independent of this
     project and building on Burns’s and Massaccesi’s weighted method: the exact values
-    of `s(k² − 4)` for `k = 5, 6, 7`, the first for any `k ≥ 4`; `s(12)` remains open.
-    His `s(12) ≥ 15680/3951`, wand125’s and Tokoharu’s point and rectangle-density
-    bounds for `n = 18` to `95`, and wand125’s `s(50) ≥ 37/5` are registered the same
-    way, most of wand125’s still as reported bounds pending replay.
-  - **Smaller packings at fifty counts**, by Francisco Couzo, 49 counts from `n = 68` to
-    `307` ([T-056](packing/frontier/RESULTS.md)), and Joost de Winter,
-    `s(211) ≤ 14.9979607… < 15`, the first packing of 211 squares below the grid
+    of $s(k^2 - 4)$ for $k = 5, 6, 7$, the first for any $k \ge 4$; $s(12)$ remains
+    open. His $s(12) \ge 15680/3951$, wand125’s and Tokoharu’s point and
+    rectangle-density bounds for $n = 18$ to $95$, and wand125’s $s(50) \ge 37/5$ are
+    registered the same way, most of wand125’s still as reported bounds pending replay.
+  - **Smaller packings at fifty counts**, by Francisco Couzo, 49 counts from $n = 68$ to
+    $307$ ([T-056](packing/frontier/RESULTS.md)), and Joost de Winter,
+    $s(211) \le 14.9979607\ldots < 15$, the first packing of 211 squares below the grid
     ([T-057](packing/frontier/RESULTS.md)). Each is certified exactly here by two
-    checkers that share no code, and at `n = 206`, `259` and `305` the certified side
+    checkers that share no code, and at $n = 206$, $259$ and $305$ the certified side
     trails the printed one by at most three units of its fifteenth decimal.
     Griffin Casson had published packings at 39 of Couzo’s counts earlier; Couzo’s are
     smaller at all of them.
     Couzo’s came to this record through jlevy/squares#227.
 - **[A comprehensive survey of all known square packing results](#survey):** Every case
-  `n = 1…100`, the primary literature retained and transcribed, and the bound a source
-  *reports* kept apart from the bound this repository has *verified*. Fifty-five of its
-  hundred cases carry a lower bound published since 22 August 2026, reported or
+  $n = 1\ldots100$, the primary literature retained and transcribed, and the bound a
+  source *reports* kept apart from the bound this repository has *verified*. Fifty-five
+  of its hundred cases carry a lower bound published since 22 August 2026, reported or
   verified; in twenty-seven the verified bound itself is recent, three of those are this
   project’s, and three are new exact values.
 - **[A set of tools and AI workflows for automated mathematical research](#autonomous-research-process):**
@@ -72,19 +72,19 @@ This repository contains:
 
 The [**Square Packing site**](https://jlevy.github.io/squares/) opens on an overview of
 the problem and every current result, by this project and by others, with how far each
-is verified, the atlas and its film, a frontier atlas of every case to `n = 324`, and
+is verified, the atlas and its film, a frontier atlas of every case to $n = 324$, and
 the tutorial.
 
 The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/explainer.html), an
 earlier edition than the current bounds, starts with an interactive point-certificate
 proof, then shows how threshold atoms and a dilation limit reach T-026’s
-`s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was developed from.
-Its figures are drawn from the point certificates they explain.
+$s(11) \ge 3.8264474\ldots$ bound, the certificate Kleddamag’s $31/8$ was developed
+from. Its figures are drawn from the point certificates they explain.
 
 [![One hundred known-best square packings arranged from n equals one through one hundred, each labeled with its best-known upper bound and, where the value is still open, the strongest verified lower bound.](packing/atlas/known-best/known-best-1-100.png)](https://jlevy.github.io/squares/known-best-1-100.pdf)
 
-*The retained `n = 1…100` atlas, with each packing normalized to its own container and
-labeled by its best-known side upper bound.
+*The retained $n = 1\ldots100$ atlas, with each packing normalized to its own container
+and labeled by its best-known side upper bound.
 For open cases, the strongest verified lower bound appears beneath it.
 A crimson star marks a recent result, a verified lower bound proved since 22 August
 2026; each bound’s source and credit are on the film’s citation line.
@@ -95,9 +95,9 @@ The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.sv
 **The atlas is also a film.** The same drawing is built one square at a time, at
 1080p60, each step naming the bound it reaches, where that bound comes from, and whether
 this repository has certified it:
-[**`n = 1…100`**](https://jlevy.github.io/squares/films/ascent-n1-100-1080p60-citations.mp4)
+[**$n = 1\ldots100$**](https://jlevy.github.io/squares/films/ascent-n1-100-1080p60-citations.mp4)
 (2m 20s, 38 MB) and the
-[**full `n = 1…324` ascent**](https://jlevy.github.io/squares/films/ascent-n1-324-1080p60-citations.mp4)
+[**full $n = 1\ldots324$ ascent**](https://jlevy.github.io/squares/films/ascent-n1-324-1080p60-citations.mp4)
 (8m 14s, 206 MB), served from the site so they play in the browser, and archived on the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2) with the
 receipt that records what each file is and the page it was drawn from.
@@ -105,7 +105,7 @@ GitHub strips `<video>` from Markdown, so these are links rather than an inline 
 the [overview](https://jlevy.github.io/squares/) plays the full ascent and the
 [explainer page](https://jlevy.github.io/squares/explainer.html) the first hundred.
 
-The register now runs to `n = 324`, the end of the catalogue’s audited range, and a
+The register now runs to $n = 324$, the end of the catalogue’s audited range, and a
 second, poster-sized composite draws all of it:
 [**`known-best-1-324`**](packing/atlas/known-best/known-best-1-324.png), an 18-by-18
 grid with the same cards, badges and legend, available as
@@ -134,23 +134,24 @@ it is not a claim of priority.
 `confirmed-novel` means priority was confirmed outside this repository.
 The New Results section covers both labels.
 
-Each result also carries **S**, a significance score from `1` to `5` against the same
+Each result also carries **S**, a significance score from $1$ to $5$ against the same
 file’s rubric: `S4` is its anchor for a reusable technique, bound family or resolved
 disputed value, and `S5` for movement on a central open case.
 
-The central thread is `s(11)`, the smallest open case.
-T-010 repaired the printed argument behind Stromquist’s `2 + 4/√5 = 3.788854…`; T-018
-passed it with a weighted fractional certificate at `381/100 = 3.81`, whose
+The central thread is $s(11)$, the smallest open case.
+T-010 repaired the printed argument behind Stromquist’s
+$2 + 4/\sqrt{5} = 3.788854\ldots$; T-018 passed it with a weighted fractional
+certificate at $381/100 = 3.81$, whose
 [proof card](packing/cases/n11_fractional_certificate/t-018-proof-card.md) states the
 whole proof and the one command that checks it; threshold atoms and exact dilation
-limits then carried this project’s bound to T-033’s `3.8269975…`. Kleddamag’s `31/8`,
-developed from T-026’s threshold certificate, now holds the case and is listed under
-[Results by Others](#results-by-others).
+limits then carried this project’s bound to T-033’s $3.8269975\ldots$. Kleddamag’s
+$31/8$, developed from T-026’s threshold certificate, now holds the case and is listed
+under [Results by Others](#results-by-others).
 
 Every result first established here, as far as the recorded source searches show, has a
 row below, highest `S` first and then newest.
 The table is generated from the register by `devtools.render_recent_results`; the
-register and the case records the `n` column links hold each result’s full statement,
+register and the case records the $n$ column links hold each result’s full statement,
 evidence and limitations.
 **Standing** is derived from the case records, never stored: `holds` where a case’s
 verified bound rests on the result, `holds, reported` where only a reported bound does,
@@ -198,8 +199,8 @@ not a bound.
 In each case, the theorem belongs to the source; this repository adds an exact machine
 check.
 
-- **T-004 / T-008:** Bentz 2010, Theorem 8, including both halves of `s(46) = 7`.
-- **T-011:** exact verification of Trump’s 1979 `n = 11` record witness over its
+- **T-004 / T-008:** Bentz 2010, Theorem 8, including both halves of $s(46) = 7$.
+- **T-011:** exact verification of Trump’s 1979 $n = 11$ record witness over its
   degree-eight field, including the zero-gap contacts that finite precision cannot
   certify.
 
@@ -229,7 +230,7 @@ Each row is one register entry.
 The table holds every register entry by others published since 22 August 2026, newest
 first, generated from the register by `devtools.render_recent_results`. The credit is
 the bibliography’s credit line and standing is derived as under
-[New Results](#new-results); the `n` column links the case record, and the records
+[New Results](#new-results); the $n$ column links the case record, and the records
 column the retained source packet and this repository’s reviews.
 
 <!-- BEGIN GENERATED: results-by-others (devtools.render_recent_results) -->
@@ -265,9 +266,9 @@ column the retained source packet and this repository’s reviews.
 
 Seven authors published lower bounds for seventeen squares, some also for eighteen,
 before this project’s square-packing work began on 22 August 2026, all independent of
-it: Brandwijk’s `89/20` (18 July), Burns’s `4.4811` (6 August), MacIver’s `4.4502…` (8
-August), Mira’s and Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s
-`4.57` and `9141/2000` (13 and 16 August), and Massaccesi’s `4.5058` (21 August), which
+it: Brandwijk’s $89/20$ (18 July), Burns’s $4.4811$ (6 August), MacIver’s $4.4502\ldots$
+(8 August), Mira’s and Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s
+$4.57$ and $9141/2000$ (13 and 16 August), and Massaccesi’s $4.5058$ (21 August), which
 this repository replayed and registered as T-015 and T-016. Each is archived with its
 source, and the [seventeen-square record](packing/frontier/n-017.md) lists them; every
 one is superseded.
@@ -275,21 +276,21 @@ one is superseded.
 ## Survey
 
 The survey records the best-known packing and strongest verified lower bound for every
-`n ≤ 324`, with provenance and separate reported and verified fields.
+$n \le 324$, with provenance and separate reported and verified fields.
 Complete external certificate replays qualify when their mathematical assumptions are
 discharged; each record states who performed the checks and their independence limits.
 Its source is one schema-validated case file under
 [`packing/frontier/`](packing/frontier/README.md); the generated
 [status table](packing/frontier/STATUS.md) is the reader view, and the atlas above
 renders every retained known-best packing.
-The current `n = 18` survey row records the independently verified lower bound
-`4679/1000 = 4.679` from `T-030`; the `n = 11` row records Kleddamag’s `31/8`, the
-`n = 17` row Guzhou0806’s `116511/25000`, and the `n = 21`, `32` and `45` rows Evan
+The current $n = 18$ survey row records the independently verified lower bound
+$4679/1000 = 4.679$ from `T-030`; the $n = 11$ row records Kleddamag’s $31/8$, the
+$n = 17$ row Guzhou0806’s $116511/25000$, and the $n = 21$, $32$ and $45$ rows Evan
 Daniel’s exact values, all under [Results by Others](#results-by-others).
 The
 [September 22 external review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
-also verifies Tokoharu’s rectangle-density bounds `s(26) ≥ 5.508` and `s(29) ≥ 5.71`,
-which the survey carries as verified lower bounds.
+also verifies Tokoharu’s rectangle-density bounds $s(26) \ge 5.508$ and
+$s(29) \ge 5.71$, which the survey carries as verified lower bounds.
 
 The [literature archive](packing/resources/README.md) retains each primary source, a
 cleaned Markdown transcription, and the unedited extraction used to check it.
@@ -297,14 +298,14 @@ The generated [evidence inventory](packing/frontier/INVENTORY.md) shows what eac
 recorded claim rests on, who performed the work, and how far it has been checked.
 
 The survey audits rather than merely transcribes.
-For example, the earliest published proof of `s(7) = 3` carries four recorded defects in
+For example, the earliest published proof of $s(7) = 3$ carries four recorded defects in
 its printed route, so the case’s proved status rests on independent later proofs.
-The [`n = 7` case](packing/frontier/n-007.md) states that disposition and links the
+The [$n = 7$ case](packing/frontier/n-007.md) states that disposition and links the
 relevant source audit.
 
 ### Recent Results, All Sources
 
-Every case up to `n = 100` whose lower bound, reported or verified, was proved since 22
+Every case up to $n = 100$ whose lower bound, reported or verified, was proved since 22
 August 2026 has a row here: the verified bound, the reported one where it differs, and
 the [register](packing/frontier/RESULTS.md) entries that carry each, with their `V` and
 `C`. The table is generated from the case records and the register by
@@ -381,7 +382,7 @@ Where both bounds are recent, the lineage and date columns read verified first.
 | [**Tutorial**](TUTORIAL.md) | First-principles introduction to the objects, bounds, cells, stationary branches, search, and proof obligations |
 | [**Synopsis**](SYNOPSIS.md) | Current research status and roadmap, established results, terminology, workflow contracts, and handoff |
 | [**Results register**](packing/frontier/RESULTS.md) | Whole-result bounds, audits, structural theorems, and errata graded under [`epistemics.md`](epistemics.md) |
-| [**Frontier**](packing/frontier/STATUS.md) | One record per case for `n = 1…324`, with reported and verified bounds kept separate |
+| [**Frontier**](packing/frontier/STATUS.md) | One record per case for $n = 1\ldots324$, with reported and verified bounds kept separate |
 | [**Atlas**](packing/atlas/README.md) | Known-best and prospective packings, contact-scaffold enumeration, and deterministic renderings |
 | [**Literature**](packing/resources/README.md) | Retained primary sources, cleaned transcriptions, and raw extractions |
 | [**Reports**](#reports) | Research reports on the mathematics, algorithms, infrastructure, formal proof, and search strategy |
@@ -431,13 +432,13 @@ The [synopsis terminology](SYNOPSIS.md#terminology) gives the full definitions.
 
 | Term | Meaning |
 | --- | --- |
-| **configuration** | A placement of all `n` squares plus the container side: `3n + 1` coordinates |
+| **configuration** | A placement of all $n$ squares plus the container side: $3n + 1$ coordinates |
 | **cell** | A separating axis and order for every pair of squares; with angles fixed, one cell is one linear program |
 | **quench** | Deterministic refinement from a configuration to a local optimum |
 | **basin** | The preimage of one returned pose under a fixed deterministic quench; one connected terminal component may contain several point-basins |
 | **polish** | Refinement within the current basin |
 | **exploration** | Work intended to reach a different basin; the term implies no assurance level |
-| **standing best** | The best published side for that `n`, hence an upper bound rather than known optimality in open cases |
+| **standing best** | The best published side for that $n$, hence an upper bound rather than known optimality in open cases |
 | **gap** | `best_side − standing_best`, always signed |
 | **assurance** | `reported`, `numerically-checked`, or `verified`; method, arithmetic, origin, limitations, and novelty are recorded separately |
 
@@ -552,7 +553,7 @@ These 20 research reports are the durable topical syntheses:
 | [BC303 T2: From the Accepted Pose Domains to Exact Charge Tests](docs/project/research/research-2026-09-13-bc303-t2-charge-bridge.md) | Accepted C open-cell reduction and S first-owner sufficient test, with exact sweep and witness conditions; no charge or T2 verdict |
 | [N11 Definitions, Findings, and the Inference Chain](docs/project/research/research-2026-09-09-n11-evidence-and-inference.md) | First-principles interpretation through exp153, exact scope of results, remaining proof obligations, and unranked alternatives |
 | [N11 Inference Audit](docs/project/research/research-2026-09-09-n11-inference-audit.md) | Corrections to overbroad summaries, physical-versus-relaxed quantifiers, and missing evidence |
-| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | What is proved for `s(11)`, what remains conjectural, and why the available proof techniques do not close the gap |
+| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | What is proved for $s(11)$, what remains conjectural, and why the available proof techniques do not close the gap |
 | [Algorithms and Tooling for Square Packing](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) | Search, numerical-to-exact promotion, verification, and the record landscape |
 | [FrankenSim as a Rust Toolkit for Square Packing](docs/project/research/research-2026-08-22-frankensim-rust-toolkit-for-square-packing.md) | Assessment of certified-arithmetic and determinism components in a larger Rust framework |
 | [Infrastructure for Square-Packing Exploration](docs/project/research/research-2026-08-22-infrastructure-for-packing-exploration.md) | Build order, latency tiers, language boundaries, and symbolic tooling |
@@ -560,7 +561,7 @@ These 20 research reports are the durable topical syntheses:
 | [A Search Philosophy for Square Packing](docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md) | Basin cartography, structural diversity, relaxation ladders, and search strategy |
 | [Public Sources Beyond n = 100](docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md) | Which catalogues carry geometry above 100, their reuse terms, and why 324 is a source boundary |
 | [Stromquist’s 1984 Memos and Systematic Dots Proofs](docs/project/research/research-2026-09-07-stromquist-memos-and-helper-arguments.md) | Historical corrections, the three memo arguments, and a reusable conditional counting control |
-| [Annealing for Square Packing, and How Far It Actually Reaches](docs/project/research/research-2026-09-08-annealing-for-square-packing.md) | What “solve to `n = 100`” actually asks for, what the record engines do, and why the move set rather than the cooling schedule is the binding constraint |
+| [Annealing for Square Packing, and How Far It Actually Reaches](docs/project/research/research-2026-09-08-annealing-for-square-packing.md) | What “solve to $n = 100$” actually asks for, what the record engines do, and why the move set rather than the cooling schedule is the binding constraint |
 | [Physics and Simulation Mechanisms for Square Packing](docs/project/research/research-2026-09-09-simulation-mechanisms-for-packing.md) | Inflation, shrinking cells, constraint projection, contact solvers, smoothing continuation and differentiable simulation, and which of them could recover a record cold |
 | [Stromquist’s Twenty-Six-Square Packing](docs/project/research/research-2026-09-07-stromquist-n26-verification.md) | Exact verification, comparison with the current record, source attribution, and bounded follow-up |
 | [The Best-Known n = 26 Packing](docs/project/research/research-2026-09-07-n26-best-known-audit.md) | Dated literature and source search, exact score normalization, and the limits of the best-known claim |
@@ -604,12 +605,12 @@ The synopsis explains the full argument in
 [Why Exactness Is Not Optional](SYNOPSIS.md#why-exactness-is-not-optional).
 
 Two retained examples show the boundary.
-The Schadt `n = 29` decimal pose passes its declared 300-digit numerical check, while
+The Schadt $n = 29$ decimal pose passes its declared 300-digit numerical check, while
 the separately promoted interval witness establishes a slightly weaker side rigorously.
-Trump’s `n = 11` witness is verified exactly over a degree-eight number field, including
+Trump’s $n = 11$ witness is verified exactly over a degree-eight number field, including
 fourteen zero-gap contacts.
-The per-case records ([`n = 29`](packing/frontier/n-029.md),
-[`n = 11`](packing/frontier/n-011.md)) state exactly which bound each artifact proves.
+The per-case records ([$n = 29$](packing/frontier/n-029.md),
+[$n = 11$](packing/frontier/n-011.md)) state exactly which bound each artifact proves.
 
 Verification answers whether a proposed packing is valid.
 Proving it optimal is a different problem and requires a matching lower bound.
@@ -822,6 +823,7 @@ for results by others: their scope, credit, intake and reply.
 ├── tsconfig.explainer.json The checked classic scripts in the standalone explainer
 ├── tsconfig.json           The bundled workbench application's entry module
 ├── tsconfig.motion-lab.json  The motion lab's assets and the slideshow harness
+├── tsconfig.overview.json  The site's own pages' classic scripts
 └── tsconfig.probes.json    The workbench checkers' probes
 ```
 

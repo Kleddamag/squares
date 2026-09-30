@@ -24,7 +24,9 @@ FOOTER = "This document follows common-doc-guidelines.md."
 # `site` is the explainer's render output, gitignored and rebuilt by every run. It is
 # not durable, so it has nothing to be mapped to; the page and the Markdown document
 # beside it are checked by the renderer's own `--check`, which compares them byte for
-# byte against a fresh render.
+# byte against a fresh render. `site-overview` is the site pages' render output on the
+# same terms, and `site-preview` the whole site `devtools.preview_site` assembles from
+# the two, the explainer's Markdown document included.
 #
 # Vendored trees are not here. They are skipped by `devtools.repo_scope`, which reads
 # `.gitmodules`, and they used to be a `vendor/**/*.md` exclusion in the document map
@@ -40,6 +42,8 @@ IGNORED_PARTS = {
     "node_modules",
     "attic",
     "site",
+    "site-overview",
+    "site-preview",
 }
 REPOSITORY_ROOT = REPO
 RETIRED_PHRASES = (

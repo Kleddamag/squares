@@ -153,7 +153,7 @@ stored.
 
 ### Parallel Projects and Their Credit
 
-Other people work on `s(n)` alongside this project: some from its certificates, some
+Other people work on $s(n)$ alongside this project: some from its certificates, some
 crediting it second-hand, and some independently.
 The policy is to take in every result of theirs that the scope rule above reaches, and
 to credit it as carefully as this project’s own.
@@ -169,7 +169,7 @@ to credit it as carefully as this project’s own.
   (`Daniel after Burns, Massaccesi`). The atlas citation line and the register renderers
   print it, and hand-written prose may add to it but never drops a link.
   A chain through an intermediate author names every link the source names: Kleddamag’s
-  `4.66001` builds on Squares Project (Joshua Levy), Mira and Guzhou0806. The atlas
+  $4.66001$ builds on Squares Project (Joshua Levy), Mira and Guzhou0806. The atlas
   stage sets each line in 66 characters, so where the whole line does not fit it prints
   the source’s `short_credit`: the same authors and the first of the same links, ending
   in `et al.` (`Tokoharu after Levy, wand125 et al.`), a shape
@@ -227,7 +227,7 @@ Each fact about the frontier has one home, and reader-facing lists of results ar
 generated from these files (`OR-1`): `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, and the
 README’s three results tables, [New Results](README.md#new-results),
 [Results by Others](README.md#results-by-others) and the recent results by case.
-The README keeps a little prose around those tables, the `s(11)` thread and the results
+The README keeps a little prose around those tables, the $s(11)$ thread and the results
 outside the register, and that prose names the `T-NNN` it restates, so the register gate
 can find it.
 
@@ -262,7 +262,7 @@ The checker:
   day its certificate or proof first passed here, which it refuses beside `attribution`
   and before 22 August 2026;
 - fails when a case’s reported or verified lower bound cites evidence from a source
-  dated on or after 22 August 2026 that no register entry covering that `n` cites; and
+  dated on or after 22 August 2026 that no register entry covering that $n$ cites; and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s

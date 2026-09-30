@@ -34,26 +34,27 @@ to learn it properly.
 
 ## 1. The Problem
 
-`s(n)` is the side of the smallest square that contains `n` non-overlapping unit
+$s(n)$ is the side of the smallest square that contains $n$ non-overlapping unit
 squares, each free to translate **and rotate**. Here, “smallest” is exact rather than
 approximate: the set of achievable sides is closed, so the infimum is attained and a
 best packing exists ([Martin 2000](#11-further-reading)).
 
 Two bounds are immediate:
 
-- **Area:** `s(n) ≥ √n`, because `n` unit squares have area `n`.
-- **Grid:** `s(n) ≤ ⌈√n⌉`, by the axis-aligned grid packing.
+- **Area:** $s(n) \ge \sqrt{n}$, because $n$ unit squares have area $n$.
+- **Grid:** $s(n) \le \lceil\sqrt{n}\rceil$, by the axis-aligned grid packing.
 
-At `n = 11` those give `3.3166… ≤ s(11) ≤ 4`, and the whole subject lives in that
-interval. For a perfect square `s(m²) = m`, since the two bounds meet, and there is
+At $n = 11$ those give $3.3166\ldots \le s(11) \le 4$, and the whole subject lives in
+that interval.
+For a perfect square $s(m^2) = m$, since the two bounds meet, and there is
 nothing to say about the side value.
 Some of the most interesting cases lie just above a perfect square, where improving on
 the next grid side can require tilted structure.
 
 ![Walter Trump’s exact packing of eleven unit squares.](packing/atlas/rendering/trump11-overview.svg)
 
-*The best-known `n = 11` construction.
-Six squares are axis-aligned; five form an oblique block tilted by about `40.18°`.
+*The best-known $n = 11$ construction.
+Six squares are axis-aligned; five form an oblique block tilted by about $40.18^\circ$.
 Segments mark shared edge intervals and dots mark point contacts, all computed in the
 construction’s exact number field and clipped to their participating squares.
 The picture certifies a construction, not its global optimality.*
@@ -62,7 +63,7 @@ Three features make this different from most optimisation problems.
 
 **Touching is legal, and good packings touch constantly.** Disjointness is required of
 *interiors* only.
-In the best-known `n = 11` packing, 14 of the 55 pairs are separated by
+In the best-known $n = 11$ packing, 14 of the 55 pairs are separated by
 exactly zero and 20 corner coordinates lie exactly on the container boundary.
 Optimal packings are boundary-constrained.
 Some have a **jammed backbone**, a contact-constrained subset that cannot move
@@ -76,11 +77,11 @@ non-constructive upper bound has ever been obtained.
 So “searching for a better packing” is not one method among several for improving the
 upper bound—it is the only one anybody has.
 
-**`n = 11` is the first case where genuinely oblique tilt is proved to improve on the
-`0°`/`45°` class.** Stromquist proved that packings restricted to those two orientation
-classes cannot beat `2 + (4/3)√2 ≈ 3.885618`, which is *worse* than the best-known
-packing at `≈ 3.877084`. Stromquist’s result gives a concrete reason that `n = 11`
-differs from the proved tilted cases at `n = 5` and `n = 10`.
+**$n = 11$ is the first case where genuinely oblique tilt is proved to improve on the
+$0^\circ$/$45^\circ$ class.** Stromquist proved that packings restricted to those two
+orientation classes cannot beat $2 + (4/3)\sqrt{2} \approx 3.885618$, which is *worse*
+than the best-known packing at $\approx 3.877084$. Stromquist’s result gives a concrete
+reason that $n = 11$ differs from the proved tilted cases at $n = 5$ and $n = 10$.
 [Section 7](#7-how-the-search-is-approached-and-why) uses that distinction to motivate
 its search strategy.
 
@@ -88,23 +89,23 @@ its search strategy.
 
 |  | value | status |
 | --- | --- | --- |
-| best-known packing (upper bound) | `3.8770835…` | Trump 1979, a construction |
-| strongest verified lower bound | `31/8 = 3.875`, strict | Kleddamag 2026, [developed from T-026’s certificate](README.md#results-by-others) and confirmed here by two complete coverage methods |
-| strongest first-party lower bound | `3.8269975…` | T-033, T-026’s atoms on a finer net; the point-only T-018 proof is explained [below](#how-a-weighted-atomic-lower-bound-proof-works) |
-| gap between the verified bounds | about `0.002084` | still open |
+| best-known packing (upper bound) | $3.8770835\ldots$ | Trump 1979, a construction |
+| strongest verified lower bound | $\frac{31}{8} = 3.875$, strict | Kleddamag 2026, [developed from T-026’s certificate](README.md#results-by-others) and confirmed here by two complete coverage methods |
+| strongest first-party lower bound | $3.8269975\ldots$ | T-033, T-026’s atoms on a finer net; the point-only T-018 proof is explained [below](#how-a-weighted-atomic-lower-bound-proof-works) |
+| gap between the verified bounds | about $0.002084$ | still open |
 
 [T-022](packing/cases/n11_fractional_certificate/t-022-dilation-limit-proof.md) refines
-the point-certificate bound to `3.8100257…`.
+the point-certificate bound to $3.8100257\ldots$.
 [T-024](packing/cases/n11_fractional_certificate/t-024-dilation-limit-proof.md) rechecks
-the point atoms on a finer direction net and proves `s(11) ≥ 3.8166095…`.
+the point atoms on a finer direction net and proves $s(11) \ge 3.8166095\ldots$.
 [T-025](packing/cases/n11_threshold_certificate/t-025-verifiable-claim-191-50.md)
-introduces threshold atoms and directly proves `s(11) ≥ 191/50 = 3.82`.
+introduces threshold atoms and directly proves $s(11) \ge 191/50 = 3.82$.
 [T-026](packing/cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md)
 proves `s(11) ≥ 955000*sqrt(518400042893309449)/179696714646249 = 3.8264474…`, those
 same atoms re-certified on a finer direction net and dilated; T-033 repeats it on a net
-twice as fine for `3.8269975…`. Kleddamag’s `s(11) > 31/8` starts from T-026’s
-certificate and restricts coverage to what a real parent square needs; it lies `0.048`
-above T-033 and about `0.0021` below Trump’s packing.
+twice as fine for $3.8269975\ldots$. Kleddamag’s $s(11) > 31/8$ starts from T-026’s
+certificate and restricts coverage to what a real parent square needs; it lies $0.048$
+above T-033 and about $0.0021$ below Trump’s packing.
 T-026 checks a finite certificate on the finer net, proves that common scaling preserves
 its coverage and budget whenever the strict containment inequality holds, and uses
 rational density to establish the displayed `≥` bound.
@@ -128,7 +129,7 @@ the proved lower bound above.
 The detailed lesson below starts with the simpler point-only T-018 certificate;
 [the standalone v0.4.2 explainer](https://jlevy.github.io/squares/explainer.html#proof-of-the-new-lower-bound)
 uses it as a visual worked example, then gives the threshold-counting and dilation proof
-of T-025 and T-026. The numerical `3.81` result is not a premise of T-026. Keeping the
+of T-025 and T-026. The numerical $3.81$ result is not a premise of T-026. Keeping the
 T-018 proof in full also gives readers an assurance bridge: its short standard-library
 checker exposes the shared geometry and counting mechanism end to end.
 That point-certificate checker does not verify the threshold certificates.
@@ -138,26 +139,26 @@ dilation record.
 
 Two different quantities get called a gap in this subject, and this document keeps them
 apart. The **bound gap** is the distance between the best upper and lower bounds, which
-is what remains unknown about `s(11)`. A **search gap** is `best_side − standing best`,
+is what remains unknown about $s(11)$. A **search gap** is `best_side − standing best`,
 the signed distance from one packing this project found to the best one anybody has
 published, and it is what [§3](#3-cells-basins-and-two-traps) onward measures.
 The first is a property of the problem; the second is a property of a run.
 
 **The previous lower bound also led to a proof repair.** Stromquist stated
-`2 + 4/√5 = 3.788854382…` in his
+$2 + 4/\sqrt{5} = 3.788854382\ldots$ in his
 [1984 Memo III, p. 10](packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf),
 without supplying the unrestricted proof there.
 His 2003 Theorem 2 was the published presentation, and this repository found that its
-printed proof is **false as printed**: an exact open box of side `10001/10000` fits the
+printed proof is **false as printed**: an exact open box of side $10001/10000$ fits the
 claimed container and strictly avoids all twelve printed Figure 14 points.
-A separately preregistered, source-distinct repair—moving one point from `(.8, 1.85)` to
-`(.79, 1.85)`—restores the whole argument and certifies the same inequality exactly
+A separately preregistered, source-distinct repair—moving one point from $(.8, 1.85)$ to
+$(.79, 1.85)$—restores the whole argument and certifies the same inequality exactly
 ([exp-016](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md),
 [exp-017](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md)).
 The inequality stands; the printed derivation of it does not.
 The synopsis records the repair as **T-4** and the falsification as the round that
 terminally refuted the hypothesis it was registered against.
-That value is no longer the best lower bound for `n = 11`; displacing it was the point
+That value is no longer the best lower bound for $n = 11$; displacing it was the point
 of the certificate below.
 
 The episode is why this repository treats published proofs as source claims and tests
@@ -176,21 +177,21 @@ definitions.
 Every upper bound in this subject is a construction, and a construction can be handed
 over and checked. A lower bound has to exclude every packing at once, and this is the
 only place in this document where one is proved rather than quoted.
-The proof of `s(11) ≥ 3.81`, [T-018](packing/frontier/RESULTS.md), uses a finite exact
+The proof of $s(11) \ge 3.81$, [T-018](packing/frontier/RESULTS.md), uses a finite exact
 certificate and is short enough to follow from first principles.
 
-Fix a candidate container `K = [0, L]²`—here `L = 381/100`. An **atom** is an exact
-point `z` in `K` together with a nonnegative rational **weight** `w(z)`. An atom has no
+Fix a candidate container $K = [0, L]^2$—here $L = 381/100$. An **atom** is an exact
+point $z$ in $K$ together with a nonnegative rational **weight** $w(z)$. An atom has no
 width and blocks nothing: it is bookkeeping mass, not a packed square.
-For a region `Q`, the **atomic measure** `μ` assigns the mass
+For a region $Q$, the **atomic measure** $\mu$ assigns the mass
 
 ```text
 μ(Q) = Σ { w(z) : the atom z lies in Q }
 ```
 
-and a closed square **covers mass** `m` when the weights of the atoms on or inside it
-sum to `m`. *Atomic* means every unit of mass sits at one of finitely many points rather
-than being spread continuously across the container: the retained `n = 11` certificate
+and a closed square **covers mass** $m$ when the weights of the atoms on or inside it
+sum to $m$. *Atomic* means every unit of mass sits at one of finitely many points rather
+than being spread continuously across the container: the retained $n = 11$ certificate
 puts its mass on 1,121 distinct rational sites, all weights positive.
 
 This is a fractional version of an unavoidable point set—the device Stromquist’s own
@@ -209,19 +210,19 @@ generator that found it are this project’s. The finished proof uses none of th
 search—only the frozen rational atoms, the nonnegativity premise, and five exact
 conditions.
 
-| Condition | Exact fact in the `n = 11` certificate | Its job in the proof |
+| Condition | Exact fact in the $n = 11$ certificate | Its job in the proof |
 | --- | --- | --- |
-| **Condition 1** | The weighted atoms are invariant under the container’s `D₄` symmetries (the four rotations and four reflections of a square) | Reflect an orientation onto the net’s arc without changing any covered mass |
+| **Condition 1** | The weighted atoms are invariant under the container’s $D_4$ symmetries (the four rotations and four reflections of a square) | Reflect an orientation onto the net’s arc without changing any covered mass |
 | **Condition 2** | `μ(K) = 434547/40000 = 10.863675`, which is below 11 | Supply less total mass than eleven packed squares would have to consume |
-| **Condition 3** | A net of 181 exact directions reaches `π/4` | Put every reduced square orientation between two checked directions |
-| **Condition 4** | `B(1 + D) < 1`, for `B = 9977/10000` and `D = 207107/90000000` | Fit a closed side-`B` square at a nearby net direction strictly inside any unit square |
-| **Condition 5** | Every admissible side-`B` square, at every net direction, covers mass at least `4001/4000` | Give each inner square strictly more than one unit of mass |
+| **Condition 3** | A net of 181 exact directions reaches $\pi/4$ | Put every reduced square orientation between two checked directions |
+| **Condition 4** | $B(1 + D) < 1$, for $B = \frac{9977}{10000}$ and $D = \frac{207107}{90000000}$ | Fit a closed side-$B$ square at a nearby net direction strictly inside any unit square |
+| **Condition 5** | Every admissible side-$B$ square, at every net direction, covers mass at least $\frac{4001}{4000}$ | Give each inner square strictly more than one unit of mass |
 
-**The counting contradiction.** Suppose eleven unit squares did fit in `K` with disjoint
-interiors. Inside each one put the side-`B` square that **Conditions 3 and 4** supply.
+**The counting contradiction.** Suppose eleven unit squares did fit in $K$ with disjoint
+interiors. Inside each one put the side-$B$ square that **Conditions 3 and 4** supply.
 Those inner squares are closed but lie strictly inside their parents’ interiors, so they
 are pairwise disjoint and no atom is counted twice.
-**Condition 5** gives each of them mass at least `4001/4000`. Nonnegativity and
+**Condition 5** gives each of them mass at least $4001/4000$. Nonnegativity and
 **Condition 2** then force a chain that cannot hold:
 
 ```text
@@ -229,17 +230,17 @@ are pairwise disjoint and no atom is counted twice.
 yet μ(K) = 434547/40000 = 10.863675.
 ```
 
-So eleven unit squares do not fit at side `381/100`. Any packing in a smaller container
-would also fit inside `K`, and therefore `s(11) ≥ 381/100`.
+So eleven unit squares do not fit at side $381/100$. Any packing in a smaller container
+would also fit inside $K$, and therefore $s(11) \ge 381/100$.
 
 **How 181 directions cover every orientation.** A square is unchanged by a quarter turn,
-and a diagonal reflection reduces its angle into `[0, π/4]` while **Condition 1** leaves
-every covered mass alone.
-The net directions are `θᵣ = 2 arctan(tᵣ)`, carried as rational half-angle tangents `tᵣ`
-so that their sines and cosines stay rational.
+and a diagonal reflection reduces its angle into $[0, \pi/4]$ while **Condition 1**
+leaves every covered mass alone.
+The net directions are $\theta_r = 2 \arctan(t_r)$, carried as rational half-angle
+tangents $t_r$ so that their sines and cosines stay rational.
 For an arbitrary reduced angle, take the nearer endpoint of the net interval containing
-it and call the angular error `d`; the net’s spacing bounds `tan d ≤ D` exactly.
-Measured along the unit square’s own axes, a side-`B` square at that net direction
+it and call the angular error $d$; the net’s spacing bounds $\tan d \le D$ exactly.
+Measured along the unit square’s own axes, a side-$B$ square at that net direction
 reaches from the shared centre by at most
 
 ```text
@@ -254,7 +255,7 @@ one.
 **How event cells cover every centre.** Even at one fixed direction the inner square has
 continuously many admissible centres.
 Rotate the frame to align with that square.
-For a single atom, the centres whose closed side-`B` square covers it form a closed
+For a single atom, the centres whose closed side-$B$ square covers it form a closed
 axis-aligned rectangle.
 The edges of all 1,121 rectangles cut the region of admissible centres into finitely
 many open **event cells**, and inside one event cell exactly the same atoms are covered,
@@ -278,7 +279,7 @@ endpoint and the shrink are short rational calculations a reader can redo by han
 **Condition 5** is the large finite lemma, and it is what the exact event-cell sweep and
 the method-distinct interval branch and bound in
 [`sqpack.fractional`](packing/src/sqpack/fractional/certificate.py) each decide from the
-certificate’s frozen bytes, agreeing on `4001/4000` to the digit.
+certificate’s frozen bytes, agreeing on $4001/4000$ to the digit.
 
 ![The T-018 certificate’s 1,121 weighted atoms with one exact Condition 5 witness, beside the shrink-and-snap containment step.](packing/cases/n11_fractional_certificate/t-018-proof-visual.svg)
 
@@ -287,9 +288,10 @@ certificate’s frozen bytes, agreeing on `4001/4000` to the digit.
 A **site** and a square **pose** play different roles.
 A site is a point where the search may put an atom.
 A pose is one square at one centre and angle.
-In the proof regime above, the admissible side-`B` net squares form a family containing
+In the proof regime above, the admissible side-$B$ net squares form a family containing
 all the strict inner cores used by the proof.
-Choose a finite site set `𝒳` and a finite pose set `𝒫`. The covering linear program is
+Choose a finite site set $\mathcal{X}$ and a finite pose set $\mathcal{P}$. The covering
+linear program is
 
 ```text
 minimise    Σ { w(x) : x ∈ 𝒳 }
@@ -312,34 +314,34 @@ Adding a row can raise the covering objective.
 objective can fall or stay fixed.
 The finished certificate still needs the shrink, boundary, and all-angle arguments
 already given above.
-In particular, its closed side-`B` cores lie strictly inside the physical unit squares;
+In particular, its closed side-$B$ cores lie strictly inside the physical unit squares;
 otherwise two touching physical squares could share a boundary atom and invalidate the
 counting sum.
 
 The dual program explains which missing site to try.
-It puts a nonnegative weight `y(Q)` on each held pose and maximises their total weight,
+It puts a nonnegative weight $y(Q)$ on each held pose and maximises their total weight,
 subject to
 
 ```text
 depth_y(x) = Σ { y(Q) : Q ∈ 𝒫 and x ∈ Q } ≤ 1    for every held site x ∈ 𝒳.
 ```
 
-The poses with `y(Q) > 0` form the dual’s **support**. The dual can be read as a
+The poses with $y(Q) > 0$ form the dual’s **support**. The dual can be read as a
 **fractional packing**: poses may overlap, and fractions of many poses may pass through
 one point, provided their total depth at each held site is at most one.
 This is not a physical packing of disjoint unit squares.
 Duality says its total weight lower-bounds the minimum covering mass for the same finite
 rows and columns.
 
-Now evaluate `depth_y(x)` at a site not yet in `𝒳`. If it exceeds one, the current dual
-violates the constraint that this missing column would impose.
+Now evaluate `depth_y(x)` at a site not yet in $\mathcal{X}$. If it exceeds one, the
+current dual violates the constraint that this missing column would impose.
 Its reduced cost is `1 − depth_y(x)`, so negative reduced cost identifies a useful
 candidate atom location.
 This search for a missing site is called **pricing**. The symmetric implementation adds
-the point’s entire `D₄` orbit `O`, obtained by the container’s rotations and
+the point’s entire $D_4$ orbit $O$, obtained by the container’s rotations and
 reflections, and checks that the whole orbit is absent.
 One orbit variable assigns the same per-point weight to its images: its objective cost
-is `|O|`, and its coefficient in pose row `Q` is the number of orbit points inside `Q`.
+is $|O|$, and its coefficient in pose row $Q$ is the number of orbit points inside $Q$.
 The symmetrised dual has equal depth at all orbit images, so the orbit’s reduced cost is
 `|O|(1 − depth_y(x))` and has the same sign as the pointwise expression.
 Adding the orbit creates one primal orbit variable and one aggregated dual constraint.
@@ -347,9 +349,9 @@ It need not force a strict objective change: a different old dual optimum may su
 Determining the new optimum requires resolving the enlarged LP.
 
 A support cap can hide that signal.
-For a toy point, suppose the first 32 support rows contribute depth `0.94` and the
-remaining positive rows contribute `0.12`. The capped family reports `0.94 ≤ 1`, while
-the full family reports `1.06 > 1` at the same point.
+For a toy point, suppose the first 32 support rows contribute depth $0.94$ and the
+remaining positive rows contribute $0.12$. The capped family reports $0.94 \le 1$, while
+the full family reports $1.06 > 1$ at the same point.
 Those numbers are illustrative, not a measured result.
 
 [H-135](packing/campaign/hypotheses/H-135-paired-full-support-pricing.md) turns that
@@ -357,7 +359,7 @@ example into a controlled test.
 It uses **one** finite LP solve and one largest-first sequence of positive dual entries
 retained under the protocol’s selection threshold, rationalised once; `paired32` takes
 the first 32 entries and `full` takes them all.
-Success requires one new point whose complete `D₄` orbit is absent and whose exact
+Success requires one new point whose complete $D_4$ orbit is absent and whose exact
 rational depths at the same point satisfy
 
 ```text
@@ -373,7 +375,7 @@ in the continuum. The dated
 [exp-134 protocol](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-134-paired-full-support-pricing.md)
 is published but unrun, so it carries no verdict.
 That experiment transports the retained state to unit-square poses for a pricing
-mechanism test; it is not the side-`B` primal-cover theorem used by T-018.
+mechanism test; it is not the side-$B$ primal-cover theorem used by T-018.
 
 The threshold explains what either side can eventually prove.
 An exact atomic cover of all admissible strict cores with total mass below 11, together
@@ -383,15 +385,15 @@ most one at **every** possible atom location would rule out that unconditional c
 route for the fixed core family.
 It would not exhibit a physical packing or rule out other proofs.
 The
-[retained side-`B` depth-one baseline](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-disposition.md)
-at `L = 191/50` has mass `21342289572/2055263195 ≈ 10.3842`, below 11, so it is
+[retained side-$B$ depth-one baseline](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-disposition.md)
+at $L = 191/50$ has mass $21342289572/2055263195 \approx 10.3842$, below 11, so it is
 inconclusive: it is neither the desired cover below 11 nor an obstruction at that
 threshold. A later
 [88-core family](docs/project/research/research-2026-09-10-x027-fractional-duality.md)
 at the same side and core size has total mass exactly 11 and point depth at most one.
 It therefore obstructs every unconditional point-atom cover below mass 11 on that fixed
-core domain. Scaling the cores and placements by `10000/9977` gives a mass-eleven family
-of full unit squares in side `38200/9977`; selecting any individually defined core
+core domain. Scaling the cores and placements by $10000/9977$ gives a mass-eleven family
+of full unit squares in side $38200/9977$; selecting any individually defined core
 inside each parent preserves the point-depth inequality.
 This extends the point-only obstruction to those selections at that side and above.
 It does not apply below that side or to threshold charges, conditional domains, or
@@ -406,7 +408,7 @@ Only proved restrictions on corner ownership, wall contacts, angles, or compatib
 may remove poses. Every hypothetical packing must belong to a case, and its certificate
 must cover every legal core throughout that case’s continuous parameter range.
 
-A **strict core** is a slightly smaller square—side `9977/10000` here—placed strictly
+A **strict core** is a slightly smaller square—side $9977/10000$ here—placed strictly
 inside a physical unit square.
 The strict inset makes the closed cores of non-overlapping physical squares disjoint,
 including at their boundaries.
@@ -420,7 +422,7 @@ unknown.
 
 ![Diagram of four green guaranteed footprints and five red dots: eleven squares minus four owners leaves seven residual cores, but disjoint cores cannot share any of the five dots.](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/four-owner-five-dot.svg)
 
-*The proved five-dot exclusion for one selected four-owner branch at `L = 96/25`. The
+*The proved five-dot exclusion for one selected four-owner branch at $L = 96/25$. The
 corner shapes are the regions guaranteed to lie in the four owner cores; the five dots
 pierce every selected remaining net core.
 The drawing explains the logic; the linked records supply the exact check and the
@@ -429,7 +431,7 @@ geometric proof that extends it to every physical angle.*
 Here is the counting argument for that branch.
 
 1. Four distinct corner owners are already identified, so an eleven-square packing would
-   have `11 − 4 = 7` other squares.
+   have $11 - 4 = 7$ other squares.
 2. Every strict core of a remaining square must avoid the four guaranteed footprints.
 3. Use the five fixed dots shown in the figure.
    Their exact coordinates and the full worked example are in the
@@ -446,9 +448,9 @@ Here is the counting argument for that branch.
    Five dots can therefore meet at most five residual cores, fewer than the seven the
    branch requires.
 
-This proves that an eleven-square packing at side `96/25` cannot belong to this selected
+This proves that an eleven-square packing at side $96/25$ cannot belong to this selected
 branch. The result is registered as [T-023](packing/frontier/RESULTS.md).
-It does not prove a new lower bound for `s(11)`. The corner-owner theorem permits other
+It does not prove a new lower bound for $s(11)$. The corner-owner theorem permits other
 owner classes and sectors, so a global result would need to prove that every
 hypothetical packing admits at least one valid selection excluded by a conditional
 certificate. Excluding every raw label or every permitted combination is sufficient but
@@ -458,27 +460,28 @@ The
 records how the five dots were found; the exact replay and transfer review establish the
 covering claim.
 
-To follow `n = 11` past this tutorial’s scope, read the synopsis’s
-[`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end).
+To follow $n = 11$ past this tutorial’s scope, read the synopsis’s
+[$n = 11$, End to End](SYNOPSIS.md#n--11-end-to-end).
 It covers the ceilings these certificate languages reach, the external certificate that
-now holds the verified lower bound, and why no counting certificate can prove `s(11)`
+now holds the verified lower bound, and why no counting certificate can prove $s(11)$
 equal to Trump’s side.
 
 ## 2. The Configuration Space
 
 A **configuration** places every square and fixes the container.
-Square `i` has a centre `(xᵢ, yᵢ) ∈ ℝ²` and an angle `θᵢ ∈ [0, π/2)`, and the container
-has side `s`. Angles stop at `π/2` because a unit square is unchanged by a quarter turn,
-so larger angles name poses already counted.
+Square $i$ has a centre $(x_i, y_i) \in \mathbb{R}^2$ and an angle
+$\theta_i \in [0, \pi/2)$, and the container has side $s$. Angles stop at $\pi/2$
+because a unit square is unchanged by a quarter turn, so larger angles name poses
+already counted.
 
-Throughout, a subscript `i` picks out one square and a bare letter is the whole
-`n`-vector: `θ = (θ₁, …, θₙ)` is all `n` angles at once, and `x` and `y` are the `n`
-centre coordinates each.
-So “fix the angles” always means fix all `n` of them.
-Counting scalars, a configuration is `3n + 1` real numbers—**34 at `n = 11`**.
+Throughout, a subscript $i$ picks out one square and a bare letter is the whole
+$n$-vector: $\theta = (\theta_1, \ldots, \theta_n)$ is all $n$ angles at once, and $x$
+and $y$ are the $n$ centre coordinates each.
+So “fix the angles” always means fix all $n$ of them.
+Counting scalars, a configuration is $3n + 1$ real numbers—**34 at $n = 11$**.
 [§10](#10-a-notation-card) collects every symbol used in this document.
 
-Read naively, this is a 34-dimensional nonconvex problem with `C(11,2) = 55` disjunctive
+Read naively, this is a 34-dimensional nonconvex problem with $C(11,2) = 55$ disjunctive
 constraints, and it is not obvious where to push.
 The central structural insight of this project is that the naive reading is the wrong
 decomposition.
@@ -492,32 +495,34 @@ A square has two distinct edge normals, since opposite edges are parallel, so ea
 of squares has four candidate axes, and for each axis a choice of which square lies on
 the low side.
 
-> A **cell** of configuration space is a choice, for each of the `C(n,2)` pairs, of one
+> A **cell** of configuration space is a choice, for each of the $C(n,2)$ pairs, of one
 > candidate separating axis together with an order.
 > A configuration *lies in* a cell when those choices genuinely separate those pairs in
 > that order.
 
-Four axes times two orders is eight choices per pair, so there are at most `8^C(n,2)`
-cells—about `4.7 × 10⁴⁹` at `n = 11`. Most are empty, because the choices must be
-jointly realisable by an actual configuration, but even as a crude bound the number says
-what kind of difficulty the discrete half carries.
+Four axes times two orders is eight choices per pair, so there are at most $8^{C(n,2)}$
+cells—about $4.7 \times 10^{49}$ at $n = 11$. Most are empty, because the choices must
+be jointly realisable by an actual configuration, but even as a crude bound the number
+says what kind of difficulty the discrete half carries.
 
-Now fix the angle vector `θ` **and** fix a cell.
-Write `Rᵢ` for rotation by `θᵢ`, so the four corners of square `i` are
-`(xᵢ, yᵢ) + Rᵢ·(±½, ±½)`, and write `oᵢₖ ∈ ℝ²` for those four corner offsets, `k = 1…4`.
-Four things become true at once:
+Now fix the angle vector $\theta$ **and** fix a cell.
+Write $R_i$ for rotation by $\theta_i$, so the four corners of square $i$ are
+$(x_i, y_i) + R_i\cdot(\pm\tfrac{1}{2}, \pm\tfrac{1}{2})$, and write
+$o_{ik} \in \mathbb{R}^2$ for those four corner offsets, $k = 1\ldots4$. Four things
+become true at once:
 
-1. Once `θᵢ` is fixed, the offsets `oᵢₖ` are **constants**, so every corner is an affine
-   function of the centre alone.
-2. Containment is **linear**: each corner satisfies `0 ≤ xᵢ + oᵢₖ,ₓ ≤ s` and
-   `0 ≤ yᵢ + oᵢₖ,ᵧ ≤ s`, writing `oᵢₖ,ₓ` and `oᵢₖ,ᵧ` for the two components of `oᵢₖ`.
-   Note `s` appears here, and only here, as a variable.
+1. Once $\theta_i$ is fixed, the offsets $o_{ik}$ are **constants**, so every corner is
+   an affine function of the centre alone.
+2. Containment is **linear**: each corner satisfies $0 \le x_i + o_{ik,x} \le s$ and
+   $0 \le y_i + o_{ik,\gamma} \le s$, writing $o_{ik,x}$ and $o_{ik,\gamma}$ for the two
+   components of $o_{ik}$. Note $s$ appears here, and only here, as a variable.
 3. Separation along a *fixed* axis is a **linear** inequality.
-   For axis `ν` and the order `i` before `j`, every corner of `i` projects at or before
-   every corner of `j`: `⟨ν, (xᵢ,yᵢ) + oᵢₖ⟩ ≤ ⟨ν, (xⱼ,yⱼ) + oⱼₗ⟩` for all `k, l`.
-   Because the cell fixes both `ν` and the order, there is no absolute value and no case
-   split left.
-4. The objective is `s` itself, which is **linear**.
+   For axis $\nu$ and the order $i$ before $j$, every corner of $i$ projects at or
+   before every corner of $j$:
+   $\langle\nu, (x_i,y_i) + o_{ik}\rangle \le \langle\nu, (x_j,y_j) + o_{jl}\rangle$ for
+   all $k, l$. Because the cell fixes both $\nu$ and the order, there is no absolute
+   value and no case split left.
+4. The objective is $s$ itself, which is **linear**.
 
 So the whole problem, restricted to one cell at fixed angles, is
 
@@ -529,8 +534,8 @@ subject to  0 ≤ xᵢ + oᵢₖ,ₓ ≤ s       for every square i and corner k
             ⟨ν_ij, (xᵢ,yᵢ) + oᵢₖ⟩ ≤ ⟨ν_ij, (xⱼ,yⱼ) + oⱼₗ⟩   for every pair (i,j)
 ```
 
-with every `oᵢₖ` and every axis `ν_ij` a constant, determined by `θ` and the cell.
-That is the result the synopsis calls **T-2**.
+with every $o_{ik}$ and every axis $\nu_{ij}$ a constant, determined by $\theta$ and the
+cell. That is the result the synopsis calls **T-2**.
 
 **Why that is good news.** A **linear program** minimises a linear objective over linear
 inequalities. Its feasible region is a polyhedron.
@@ -565,10 +570,11 @@ premise underneath almost everything else here.
 The two independent formulations use different constraint assemblies but describe the
 same feasible set. `sqpack.research.quench` uses one separation row per pair;
 `cases.trump11.independent_lp_cell` uses sixteen, one per ordered corner pair, for
-`1,056 = 16 × (11 + 55)` rows at `n = 11`. They share no constraint-assembly code.
+$1{,}056 = 16 \times (11 + 55)$ rows at $n = 11$. They share no constraint-assembly
+code.
 
 The check that makes it concrete: read the cell off the exact certificate for the best
-known `n = 11` packing (eleven angles and fifty-five axis choices, and nothing else),
+known $n = 11$ packing (eleven angles and fifty-five axis choices, and nothing else),
 rebuild the linear program from scratch, and solve it.
 **The centres are never given to the solver**—they are what it reconstructs.
 It returns the published side to `4.4e-16` and every centre to `1.3e-15`.
@@ -576,26 +582,26 @@ It returns the published side to `4.4e-16` and every centre to `1.3e-15`.
 ### Thirty-four dimensions become one
 
 An **angle class** is a set of squares constrained to share one angle.
-Trump’s packing uses only **two**: six squares at `0°`, and five sharing a single
-oblique angle. Call that shared angle `a`, so the full angle vector is
-`θ = (0, 0, 0, 0, 0, 0, a, a, a, a, a)` up to relabelling—one free number in place of
-eleven.
+Trump’s packing uses only **two**: six squares at $0^\circ$, and five sharing a single
+oblique angle. Call that shared angle $a$, so the full angle vector is
+$\theta = (0, 0, 0, 0, 0, 0, a, a, a, a, a)$ up to relabelling—one free number in place
+of eleven.
 
-Hold the cell fixed, vary `a`, and solve the linear program of the previous section at
+Hold the cell fixed, vary $a$, and solve the linear program of the previous section at
 each value. That defines a function of one real variable,
 
 ```
 φ(a) = the optimal side s of Trump's cell, with the five tilted squares at angle a
 ```
 
-so `φ: [0, π/2) → ℝ`, and it is the entire problem restricted to this cell.
-Write `a*` for the angle that minimises it.
-A `*` marks a distinguished value of a symbol rather than one fixed relation: `a*` is a
-minimiser, and `s*` in [§7](#7-how-the-search-is-approached-and-why) is the standing
-best for an `n`, which is not known to be a minimum in the open cases.
-A 2,001-point scan of `[38°, 42°]` independently puts the lowest grid sample within one
-step of Trump’s published tilt and locates the neighbourhood of the minimiser
-`a* ≈ 40.18°`.
+so $\varphi: [0, \pi/2) \to \mathbb{R}$, and it is the entire problem restricted to this
+cell. Write $a^{\ast}$ for the angle that minimises it.
+A `*` marks a distinguished value of a symbol rather than one fixed relation: $a^{\ast}$
+is a minimiser, and $s^{\ast}$ in [§7](#7-how-the-search-is-approached-and-why) is the
+standing best for an $n$, which is not known to be a minimum in the open cases.
+A 2,001-point scan of $[38^\circ, 42^\circ]$ independently puts the lowest grid sample
+within one step of Trump’s published tilt and locates the neighbourhood of the minimiser
+$a^{\ast} \approx 40.18^\circ$.
 
 Trump’s angle is not an input to that computation.
 It is **the argument that minimises a one-dimensional function anyone can plot.** In
@@ -603,12 +609,12 @@ this particular structured cell, the centres remain LP variables and only one no
 angle parameter remains.
 This is evidence that angle-class models can compress record cells dramatically; it is
 not a theorem that class count equals the local dimension of the full packing problem.
-Other records already use more classes—six, numerically, at `n = 29`—and every proposed
+Other records already use more classes—six, numerically, at $n = 29$—and every proposed
 compression must be checked on its own contact structure.
 
 ![The high-precision Kingbird packing of twenty-nine unit squares.](packing/atlas/rendering/kingbird29-overview.svg)
 
-*The reported `n = 29` record is a useful larger-scale check: six orientation classes
+*The reported $n = 29$ record is a useful larger-scale check: six orientation classes
 across 29 squares. The retained roughly 100-digit source is evaluated at 160 decimal
 digits of working precision and passes all 406 pair checks at tolerance `1e-80`; that
 numerically checks the construction without verifying it or turning it into an exact
@@ -634,20 +640,21 @@ It has two nested loops, not one.
 *read off it*: for each pair, take the candidate axis of greatest separation, together
 with the sign saying which square is low.
 That cell defines the linear program of [§2](#2-the-configuration-space), which is
-solved in the `2n + 1` centre-and-side variables.
+solved in the $2n + 1$ centre-and-side variables.
 But the solution may lie in a *different* cell from the one it was solved in, so its
 value is an upper bound that depends on where the caller started.
-That path dependence would make `s(θ)` ill-defined and leave any angle search optimising
-a moving target. So the loop re-reads the cell from the solution and re-solves until the
-cell it reads back is the cell it was given—a **cell fixed point**. It can also stop
-unsettled, with a typed reason, and an unsettled result is exploratory data rather than
-a converged endpoint.
+That path dependence would make $s(\theta)$ ill-defined and leave any angle search
+optimising a moving target.
+So the loop re-reads the cell from the solution and re-solves until the cell it reads
+back is the cell it was given—a **cell fixed point**. It can also stop unsettled, with a
+typed reason, and an unsettled result is exploratory data rather than a converged
+endpoint.
 
 **The outer loop moves the angles.** It works one angle class at a time, minimising each
 by golden-section bracketing inside a window that narrows only when a whole sweep fails
 to improve.
 No derivative is used—deliberately, for the reason [§4](#4-the-corner) gives.
-A final optional pass brackets each of the `n` angles individually, to test whether a
+A final optional pass brackets each of the $n$ angles individually, to test whether a
 class-converged pose is genuinely stationary or an artifact of the tolerance that
 decided which angles count as one class.
 The sweeps stop when none improves, or a tolerance, sweep cap, or wall-clock budget is
@@ -667,7 +674,7 @@ Two derived words carry the project’s central diagnostic:
 - **Polish:** refinement *within* the basin you are already in.
   This is what the quench does, and all it does.
 - **Exploration:** reaching a *different* basin.
-  Nothing in the toolkit does this reliably at `n = 11`.
+  Nothing in the toolkit does this reliably at $n = 11$.
 
 A gap therefore decomposes into a **polish failure** (right region, weak refinement) or
 an **exploration failure** (wrong region, and refinement cannot help).
@@ -689,7 +696,7 @@ concluding “wrong basin” is exactly what the *right* basin looks like when t
 is angular.
 
 An agent built a fixed-angle probe, called it “the quench”, and **retracted a correct
-finding** when it stalled ([D-029](defects.md)). On one `n = 10` start: the annealer
+finding** when it stalled ([D-029](defects.md)). On one $n = 10$ start: the annealer
 output and the fixed-angle solve agree to every digit at `+5.6440e-04`, and the full
 quench with its angle half reaches `+4.4409e-16`.
 
@@ -704,8 +711,8 @@ A deterministic quench still returns an individual pose.
 The problem is that its local optimum can lie on a connected terminal family, so
 point-preimages split the component-level object the programme actually wants to count.
 
-At `n = 3` the exact side-2 optimum contains a connected **sliding family**: centres
-`(1/2,1/2)`, `(3/2,1/2)`, and `(t, 3/2)` for `t ∈ [1/2, 3/2]`. One connected optimal
+At $n = 3$ the exact side-2 optimum contains a connected **sliding family**: centres
+$(1/2,1/2)$, $(3/2,1/2)$, and $(t, 3/2)$ for $t \in [1/2, 3/2]$. One connected optimal
 component, infinitely many distinct coordinate keys.
 The quench lands wherever in the flat region it happened to enter, and every symptom
 mimics a real discovery—distinct coordinates, distinct keys, two rows in the store—while
@@ -713,18 +720,19 @@ the side agrees exactly and, along the family’s open stratum, so does the cont
 certificate (the wall endpoints carry a different one).
 
 The object that survives this trap has been computed exactly, and the figure below is
-its map. `F₃(2)` is the space of *all* packings of three unit squares in the side-2
-container—and since `s(3) = 2` is proved, that is the complete optimum space, not a
+its map. $F_3(2)$ is the space of *all* packings of three unit squares in the side-2
+container—and since $s(3) = 2$ is proved, that is the complete optimum space, not a
 sample of it. With the squares labelled, the space is two disjoint circles, each a cycle
 through twelve discrete states, cross-checked against the published hard-squares
 computation of the same space.
-Forgetting the labels—quotienting by the symmetric group `S₃`—merges the two circles
+Forgetting the labels—quotienting by the symmetric group $S_3$—merges the two circles
 into one: relabelling was separating configurations the mathematics does not
-distinguish. Quotienting also by the container’s eight symmetries `D₄` folds that circle
-to the closed interval `λ ∈ [0, 1/2]`, where `λ = min(t − 1/2, 3/2 − t)` is the slider
-parameter above with the reflection `t ↔ 2 − t` divided out.
-Three strata remain: the corner pose at `λ = 0`, the generic slide, and the centred pose
-at `λ = 1/2`.
+distinguish.
+Quotienting also by the container’s eight symmetries $D_4$ folds that circle
+to the closed interval $\lambda \in [0, 1/2]$, where $\lambda = \min(t - 1/2, 3/2 - t)$
+is the slider parameter above with the reflection $t \leftrightarrow 2 - t$ divided out.
+Three strata remain: the corner pose at $\lambda = 0$, the generic slide, and the
+centred pose at $\lambda = 1/2$.
 
 ![The exact quotient map of optimal configurations for three unit squares.](packing/atlas/n-003-optimal-moduli.svg)
 
@@ -735,15 +743,15 @@ component.*
 
 That is why this object is a permanent known-answer control rather than an illustration.
 A frozen component-assignment policy is accepted only if it recovers this interval, and
-the `n = 4` quotient point, exactly while rejecting every shortcut:
+the $n = 4$ quotient point, exactly while rejecting every shortcut:
 [exp-032](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-032-h-021-terminal-component-controls.md)
 proposed geometric keys, contact signatures, finite samples, labelled states, and
 floating-point matches as component identities, and all seven such mutations were
-refused. Passing that gate is what admitted the bounded `n = 5` connectivity work below,
+refused. Passing that gate is what admitted the bounded $n = 5$ connectivity work below,
 and this map is the only exact ground truth behind open question 1 in
 [§8](#8-what-is-known-and-what-is-not).
 
-The same phenomenon appears at `n = 5`. After one symmetry action and relabelling, two
+The same phenomenon appears at $n = 5$. After one symmetry action and relabelling, two
 retained poses with different coordinate keys lie on one exact continuous family in a
 fixed-angle cell.
 An apparent escape direction is ruled out, but the remaining directions
@@ -755,7 +763,7 @@ The project’s term for this is a **terminal family**. The nullity of the appro
 independent active-constraint Jacobian, after quotienting symmetries and accounting for
 inequalities and stratum changes, is its **linearized dimension**. It equals local
 dimension only on a regular constant-rank stratum, or after a separate integrability
-argument. At a singular constraint, nullity can overstate the local dimension: `x² = 0`
+argument. At a singular constraint, nullity can overstate the local dimension: $x^2 = 0$
 has Jacobian nullity one at zero but local dimension zero.
 **Raw contact counts cannot supply even the linearized rank**—contacts may be dependent,
 one contact description may encode several scalar conditions, and angles and cells may
@@ -777,29 +785,29 @@ not documented.
 
 ## 4. The Corner
 
-`φ(a)` is not smooth at its minimum.
-Refined finite differences give one-sided rise rates of about `0.1747` to the left and
-`0.384` to the right per radian, stable over five decades.
-In the conventional signed derivative, these are about `−0.1747` and `+0.384`. Two
-independent LP formulations agree: `0.1747`/`0.3839` at a ratio of `2.1973`, and
-`0.1747`/`0.3841` at a ratio of `2.198`. **The derivative does not vanish at the
+$\varphi(a)$ is not smooth at its minimum.
+Refined finite differences give one-sided rise rates of about $0.1747$ to the left and
+$0.384$ to the right per radian, stable over five decades.
+In the conventional signed derivative, these are about $-0.1747$ and $+0.384$. Two
+independent LP formulations agree: $0.1747$/$0.3839$ at a ratio of $2.1973$, and
+$0.1747$/$0.3841$ at a ratio of $2.198$. **The derivative does not vanish at the
 optimum; it jumps.**
 
-**Why.** Where the LP’s optimal *basis* is locally constant, `φ` is smooth and its
+**Why.** Where the LP’s optimal *basis* is locally constant, $\varphi$ is smooth and its
 derivative reads off that basis.
-A corner occurs where the optimal basis switches as the angle crosses `a*`. Because a
-basis is only a subset of the active rows, a basis switch alone does not show that the
-full active-contact set changed.
+A corner occurs where the optimal basis switches as the angle crosses $a^{\ast}$.
+Because a basis is only a subset of the active rows, a basis switch alone does not show
+that the full active-contact set changed.
 
 **What it bought.** Replacing smooth descent with a **bracketing search over merged
 angle classes**—a method that tolerates non-smoothness—and changing nothing else took
-`n = 5` from descent’s `3.2e-08` to `2.2e-15`, and `n = 10` from `4.5e-03` to `1.3e-15`.
+$n = 5$ from descent’s `3.2e-08` to `2.2e-15`, and $n = 10$ from `4.5e-03` to `1.3e-15`.
 Measured from the annealer output both quenches start from, that is `3.4e-08` and
 `5.3e-03` respectively.
-All four figures are medians over the five tested seeds; the worst `n = 5` seed stays at
+All four figures are medians over the five tested seeds; the worst $n = 5$ seed stays at
 `6.2e-08`.
 
-**What it did not buy.** Nothing at `n = 11`, where the same substitution moves the
+**What it did not buy.** Nothing at $n = 11$, where the same substitution moves the
 annealer’s `8.8e-02` only to `6.3e-02`. And it is *not* a theorem that derivative-free
 methods must fail: Powell and Nelder–Mead did worse than descent on the tested starts,
 in this implementation, which is method-selection evidence and not an impossibility
@@ -830,7 +838,7 @@ Generic interval evaluation does not by itself fix this identification problem.
 An enclosure lying strictly above zero *is* a proof of strict separation, while a
 finite-width enclosure of an unrecognised near-contact normally cannot distinguish exact
 zero from a tiny violation.
-Structural simplification can produce `[0,0]`, and certified root methods can prove
+Structural simplification can produce $[0,0]$, and certified root methods can prove
 existence and uniqueness of a solution satisfying contact equations.
 What interval evaluation alone cannot do is promote an approximate coordinate residual
 to an unknown exact contact.
@@ -857,9 +865,9 @@ expensive. The representative measurements below come from the
 | --- | --- |
 | Separating-axis pair test, `f64`, compiled | 57 ns |
 | The same test, Python float backend | 2,726 ns |
-| One `ℚ(α)` multiplication at degree 8, the `n = 11` field, pure Python | 215.5 µs |
+| One $\mathbb{Q}(\alpha)$ multiplication at degree 8, the $n = 11$ field, pure Python | 215.5 µs |
 | The same, with a compiled bignum backend (benchmarked; not integrated) | 1.2 µs |
-| One `ℚ(α)` multiplication at degree 62 | 13 ms |
+| One $\mathbb{Q}(\alpha)$ multiplication at degree 62 | 13 ms |
 | Complete exact verification of Trump’s packing, all 55 pairs | 0.35 s |
 
 At current sizes, complete exact verification costs less than a second, so it is not the
@@ -878,64 +886,64 @@ Screen in floating point, refine in floating point, decide in the number field.
 
 ### The number field
 
-A **real algebraic number field** `ℚ(α)` is what you get by adjoining one real algebraic
-number `α` to the rationals.
+A **real algebraic number field** $\mathbb{Q}(\alpha)$ is what you get by adjoining one
+real algebraic number $\alpha$ to the rationals.
 The procedure:
 
-1. **Recover the field.** Put the configuration in `ℚ(α)` for a single **primitive
-   element** `α`, with a known minimal polynomial `f` and an isolating interval that
-   contains the intended real root of `f` and no other.
-2. **Represent** elements as polynomials in `α` of degree `< deg f` with rational
-   coefficients, reduced modulo `f`. Arithmetic is exact.
-3. **Decide equality exactly.** For an element `β`, `β = 0` exactly when its reduced
-   representative is the zero polynomial.
+1. **Recover the field.** Put the configuration in $\mathbb{Q}(\alpha)$ for a single
+   **primitive element** $\alpha$, with a known minimal polynomial $f$ and an isolating
+   interval that contains the intended real root of $f$ and no other.
+2. **Represent** elements as polynomials in $\alpha$ of degree $< \deg f$ with rational
+   coefficients, reduced modulo $f$. Arithmetic is exact.
+3. **Decide equality exactly.** For an element $\beta$, $\beta = 0$ exactly when its
+   reduced representative is the zero polynomial.
    *This is where touching contacts get certified.*
 4. **Decide sign exactly**—evaluate that representative on the isolating interval with
    rational interval arithmetic, bisecting when the enclosure straddles zero.
-   This terminates because a nonzero representative of degree `< deg f` cannot vanish at
-   `α`, since `f` is the minimal polynomial.
+   This terminates because a nonzero representative of degree $< \deg f$ cannot vanish
+   at $\alpha$, since $f$ is the minimal polynomial.
 5. **Run separation and containment** using only those two decisions.
    No floating point appears anywhere.
 
-For Trump’s packing the field is `ℚ(u)` with `u = tan(a/2)`, of degree 8. A useful
-subtlety: `cos a`, `sin a`, `tan(a/2)` and `s` are all algebraic, but **the angle `a`
-itself, in radians, is transcendental** by Lindemann–Weierstrass.
+For Trump’s packing the field is $\mathbb{Q}(u)$ with $u = \tan(a/2)$, of degree 8. A
+useful subtlety: $\cos a$, $\sin a$, $\tan(a/2)$ and $s$ are all algebraic, but **the
+angle $a$ itself, in radians, is transcendental** by Lindemann–Weierstrass.
 The algebra lives in the trigonometric values, never in the angle.
 
 ### How many roots does a packing need?
 
 Step 1 says “a single primitive element” as though one always suffices.
 It does, and the reason is worth stating, because the obvious guess—that a configuration
-with `3n + 1` algebraic coordinates might need many—is wrong.
+with $3n + 1$ algebraic coordinates might need many—is wrong.
 
-**One, always.** By the primitive element theorem every finite extension of `ℚ` is
-simple, since characteristic zero makes every finite extension separable.
+**One, always.** By the primitive element theorem every finite extension of $\mathbb{Q}$
+is simple, since characteristic zero makes every finite extension separable.
 So however many algebraic coordinates a packing has, each with its own degree, there is
-a single `α` whose powers express all of them, and every coordinate becomes a polynomial
-in `α` with rational coefficients.
-Only one *root* of `f` is the intended one, which is why an isolating interval is part
+a single $\alpha$ whose powers express all of them, and every coordinate becomes a
+polynomial in $\alpha$ with rational coefficients.
+Only one *root* of $f$ is the intended one, which is why an isolating interval is part
 of the field data rather than an optimisation.
 
 **Of what degree, though, is not bounded.** The theorem gives no bound; the degree is
 whatever the active contact system forces after elimination.
-It is 8 for Trump’s `n = 11` packing, and reaches 62 elsewhere in the record table.
-It is not a function of `n`: at a Pythagorean tilt such as `arctan(3/4)` every
+It is 8 for Trump’s $n = 11$ packing, and reaches 62 elsewhere in the record table.
+It is not a function of $n$: at a Pythagorean tilt such as $\arctan(3/4)$ every
 coordinate is rational and the degree is 1. Which fields and degrees actually occur, and
 how they follow from the contact mechanism, is an open question in the registry rather
 than something known.
 
 **And the guarantee is not pointwise.** The optimal *side* is algebraic, by a standard
 argument this directory does not otherwise use.
-The half-angle substitution `u = tan(θ/2)` turns `cos θ` and `sin θ` into rational
-functions of `u`, so validity defines a semialgebraic set over `ℚ` with no
-transcendental functions anywhere.
+The half-angle substitution $u = \tan(\theta/2)$ turns $\cos \theta$ and $\sin \theta$
+into rational functions of $u$, so validity defines a semialgebraic set over
+$\mathbb{Q}$ with no transcendental functions anywhere.
 The set of achievable sides is a projection of that set, and by the Tarski–Seidenberg
 theorem a projection of a semialgebraic set is semialgebraic—hence a finite union of
 points and intervals with algebraic endpoints, whose infimum is algebraic.
 An individual optimal *configuration* need not be.
 Where the optimum is a positive-dimensional family, the family is cut out by polynomials
-but a point on it carries a free parameter: the `n = 3` sliding family in
-[§3](#3-cells-basins-and-two-traps) is `(t, 3/2)` for `t ∈ [1/2, 3/2]`, and `t` may be
+but a point on it carries a free parameter: the $n = 3$ sliding family in
+[§3](#3-cells-basins-and-two-traps) is $(t, 3/2)$ for $t \in [1/2, 3/2]$, and $t$ may be
 transcendental.
 
 So “recover the field” is well posed for a **rigid** optimum, whose active constraints
@@ -1001,24 +1009,24 @@ Write the configuration vector as
 q = (s, x_1, y_1, theta_1, ..., x_n, y_n, theta_n)
 ```
 
-and its clearance inequalities as `g_j(q) >= 0`. Row `j` is **active** when
+and its clearance inequalities as `g_j(q) >= 0`. Row $j$ is **active** when
 `g_j(q) = 0`. A **feature tie** occurs when several support descriptions apply at the
 same geometry, as at a corner-corner touch admitted by more than one owner-axis choice.
 The model must keep every applicable branch at a tie rather than choose whichever type a
 floating-point residual happens to prefer.
 
 Fritz–John stationarity supplies the first-order equation on one branch.
-At a branch minimum there are nonnegative multipliers `η` for the side objective and
-`κ_j` for the constraints, not all zero, such that
+At a branch minimum there are nonnegative multipliers $\eta$ for the side objective and
+$\kappa_j$ for the constraints, not all zero, such that
 
 ```text
 η ∇_q s - sum_j κ_j ∇_q g_j = 0,    κ_j g_j(q) = 0.
 ```
 
 Here `∇_q` means the gradient with respect to the side, centres, and angles collected in
-`q`. When `η > 0`, rescaling it to one gives the **normal**, or ordinary, Fritz–John
+$q$. When $\eta > 0$, rescaling it to one gives the **normal**, or ordinary, Fritz–John
 branch and a **Karush–Kuhn–Tucker (KKT)** multiplier certificate.
-When `η = 0`, the objective drops out and a nontrivial dependence among active
+When $\eta = 0$, the objective drops out and a nontrivial dependence among active
 constraint gradients gives an **abnormal Fritz–John branch**. A proved **constraint
 qualification**—a suitable local regularity condition on those gradients—can rule
 abnormal branches out.
@@ -1028,8 +1036,8 @@ certificates, so the two cases classify multiplier certificates rather than disj
 sets of geometries.
 
 Activity and multiplier support are different.
-An active row may have `κ_j = 0`: this is a **zero multiplier**, a tight contact that
-carries no first-order balance in that particular certificate.
+An active row may have $\kappa_j = 0$: this is a **zero multiplier**, a tight contact
+that carries no first-order balance in that particular certificate.
 The rows with positive multipliers form the **positive multiplier support**. The contact
 graph induced by those rows may be smaller than the active contact graph and need not be
 connected.
@@ -1079,10 +1087,10 @@ algebra can solve and the complete packing can be independently rechecked.
 3. **Write and reduce the contact equations.** The unreduced system still contains the
    centres. In several published rigid constructions, the chosen typed contact
    structure—often reported informally as a contact graph—lets one eliminate those
-   centres and leave only `s` and the distinct non-axis-aligned angles: two unknowns at
-   `n = 11`, three at `n = 17`. That reduction must be derived from the particular
+   centres and leave only $s$ and the distinct non-axis-aligned angles: two unknowns at
+   $n = 11$, three at $n = 17$. That reduction must be derived from the particular
    contact equations; angle-class count alone does not perform it.
-4. **Close an underdetermined system analytically.** A local extremum of `s` on the
+4. **Close an underdetermined system analytically.** A local extremum of $s$ on the
    constraint manifold forces a rank drop, so the missing equations are
    Jacobian-determinant conditions—Lagrange/Fritz–John in determinant form.
    The condition is necessary rather than sufficient; roots that are not extrema are
@@ -1104,8 +1112,8 @@ algebra can solve and the complete packing can be independently rechecked.
   correctness.
 - *The minimal polynomial.* Integer relation finds a **relation**, not a proof.
   A degree-8 relation holding to 500 digits is overwhelming evidence and zero proof.
-  Irreducibility over `ℚ` must be checked, the intended real root must be isolated from
-  the others, and the result substituted back exactly.
+  Irreducibility over $\mathbb{Q}$ must be checked, the intended real root must be
+  isolated from the others, and the result substituted back exactly.
 
 Certified numerics—interval-Newton, Krawczyk, Smale’s α-theory—can discharge an
 existence-and-uniqueness claim for a root of the declared contact equations.
@@ -1130,7 +1138,7 @@ The capability boundary is stable even as individual tools change:
 - a fixed-angle LP settles only its declared cell and angles; and
 - stationarity, rigidity, and fixed-side local isolation do not prove global optimality.
 
-No listed capability proves that Trump’s construction is the global `n = 11` optimum.
+No listed capability proves that Trump’s construction is the global $n = 11$ optimum.
 A complete typed-stationary enumeration would additionally need every support branch,
 including ties, abnormal Fritz–John cases, zero multipliers, inactive inequalities, and
 rattlers, followed by a global completeness argument.
@@ -1153,7 +1161,7 @@ this project actually adopted.
 Twenty-eight search strategies in four families, each cited by the hypotheses that use
 them, so the ledger can report which whole families remain untried:
 
-- **Constructive:** grids, hand geometric insight, `45°` tilted families, diagonal
+- **Constructive:** grids, hand geometric insight, $45^\circ$ tilted families, diagonal
   strips, strip-plus-L augmentation, rational-slope tilts, composition and
   self-similarity, parametric families, asymptotic border constructions.
   *Every record before 2000 came from here.*
@@ -1224,8 +1232,8 @@ solutions along the parameter instead of searching for them cold.
 
 | Ladder | Parameter | Easy end | What to watch |
 | --- | --- | --- | --- |
-| container inflation | slack `δ` in side `s* + δ` | large `δ`: hypothesized broader accessibility | basin splits and merges; the first observed or certified `δ` at which a named target is reachable |
-| superdisk | exponent `p` in `|x|^(2p) + |y|^(2p) <= 1` | `p = 1`: circles, orientation-free; `p -> infinity`: the square limit | where orientation symmetry breaks |
+| container inflation | slack $\delta$ in side $s^{\ast} + \delta$ | large $\delta$: hypothesized broader accessibility | basin splits and merges; the first observed or certified $\delta$ at which a named target is reachable |
+| superdisk | exponent $p$ in `|x|^(2p) + |y|^(2p) <= 1` | `p = 1`: circles, orientation-free; `p -> infinity`: the square limit | where orientation symmetry breaks |
 | boundary layer | frozen grid bulk | the pure grid | whether a sheared band re-synchronizes |
 
 Container inflation is the primary one, and it can pay three ways from one computation:
@@ -1239,10 +1247,10 @@ exclude the true optimum, and that risk is stated rather than hidden.
 
 ### Calibration must match mechanism, not just difficulty
 
-The proved cases used as positive controls, `n = 5` and `n = 10`, are both `45°`
+The proved cases used as positive controls, $n = 5$ and $n = 10$, are both $45^\circ$
 mechanisms (the other proved small cases are plain grids).
 They validate **machinery**, not **strategy**—an engine can take them to machine
-precision and remain structurally blind to the irrational oblique tilt that `n = 11`
+precision and remain structurally blind to the irrational oblique tilt that $n = 11$
 demands and that no proved case exercises.
 
 So record-*finding* needs its own targets, chosen by mechanism: the nearest case whose
@@ -1251,11 +1259,11 @@ graded progress metric along a tracked branch, without assuming continuity acros
 bifurcations), and basin-entry tests that separate “search cannot find the region” from
 “the refiner cannot hold it”—two failures with identical symptoms and different fixes.
 
-The result that most sharpened this: the annealer, pointed at `n = 17`, reported `5.0`—
+The result that most sharpened this: the annealer, pointed at $n = 17$, reported $5.0$—
 the trivial grid—on every one of five binary64 screening seeds
 ([exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md)),
-against Bidwell’s 1998 record of `4.6755`. Because that miss is at a second, independent
-cell whose record needs oblique structure, the failure is not specific to `n = 11`;
+against Bidwell’s 1998 record of $4.6755$. Because that miss is at a second, independent
+cell whose record needs oblique structure, the failure is not specific to $n = 11$;
 whether it covers every oblique target is an inference the registry states as such, not
 a theorem.
 
@@ -1280,7 +1288,7 @@ its formal assurance.
 The synopsis’s
 [Assurance, Methods, and Claims](SYNOPSIS.md#assurance-methods-and-claims) owns the
 definition and the one-place list of apparently novel results.
-For `n = 11` in particular, [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) keeps
+For $n = 11$ in particular, [$n = 11$, End to End](SYNOPSIS.md#n--11-end-to-end) keeps
 the current bracket, what each result does and does not prove, and the hypotheses and
 ideas still open, under the same distinctions.
 
@@ -1288,20 +1296,20 @@ ideas still open, under the same distinctions.
 
 | Result | Assurance or basis | What it does *not* say |
 | --- | --- | --- |
-| Fixing the angles and every pair’s separating axis makes minimising `s` a linear program | proved | Nothing about *which* cell is best; that choice is the combinatorial hard part |
-| Trump’s 1979 packing is valid, over `ℚ(u)` of degree 8, with 14 pairs at exactly zero separation | verified (`exact-algebraic`); a published construction, confirmed here | Nothing about optimality; it is an upper bound |
-| [`s(11) ≥ 2 + 4/√5`](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | verified (`exact-algebraic`) | Not attributed to Stromquist, not externally peer-reviewed, and it does not close the gap to Trump |
-| [T-025](packing/cases/n11_threshold_certificate/t-025-verifiable-claim-191-50.md) proves `s(11) ≥ 191/50 = 3.82`; [T-026](packing/cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md) proves `s(11) ≥ 3.8264474…` | Both are `V4/C5`: machine-verified exact and interval-certified evidence with passing replay, distinct exact event-cell and interval coverage decisions, and mapped non-superseded reviews | Neither result determines `s(11)` or closes the gap to the best-known packing; V5 or external review would be a separate assurance step |
-| [Stromquist’s *printed* 2003 argument fails](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md): an exact **open** box of side `10001/10000` fits the claimed container and avoids all twelve printed Figure 14 points | verified (`exact-algebraic`) | It refutes the printed derivation, not the inequality, which the repaired cover independently certifies. Both this falsification and the adjacent repair are this project’s findings |
+| Fixing the angles and every pair’s separating axis makes minimising $s$ a linear program | proved | Nothing about *which* cell is best; that choice is the combinatorial hard part |
+| Trump’s 1979 packing is valid, over $\mathbb{Q}(u)$ of degree 8, with 14 pairs at exactly zero separation | verified (`exact-algebraic`); a published construction, confirmed here | Nothing about optimality; it is an upper bound |
+| [$s(11) \ge 2 + 4/\sqrt{5}$](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | verified (`exact-algebraic`) | Not attributed to Stromquist, not externally peer-reviewed, and it does not close the gap to Trump |
+| [T-025](packing/cases/n11_threshold_certificate/t-025-verifiable-claim-191-50.md) proves $s(11) \ge \frac{191}{50} = 3.82$; [T-026](packing/cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md) proves $s(11) \ge 3.8264474\ldots$ | Both are `V4/C5`: machine-verified exact and interval-certified evidence with passing replay, distinct exact event-cell and interval coverage decisions, and mapped non-superseded reviews | Neither result determines $s(11)$ or closes the gap to the best-known packing; V5 or external review would be a separate assurance step |
+| [Stromquist’s *printed* 2003 argument fails](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md): an exact **open** box of side $\frac{10001}{10000}$ fits the claimed container and avoids all twelve printed Figure 14 points | verified (`exact-algebraic`) | It refutes the printed derivation, not the inequality, which the repaired cover independently certifies. Both this falsification and the adjacent repair are this project’s findings |
 | [Trump’s pose is locally isolated at fixed side](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-013-h-026-trump-tangent.md): 128 branchwise linearized systems, each of exact rank 33 with a strictly positive exact stress | verified (`exact-algebraic`) | Consequently, it is a strict local minimum of side in the anchored pose–side chart, modulo finite symmetries. This is not global optimality or an explicit isolation radius. Apparently novel here, not externally peer-reviewed |
-| The one-dimensional class-angle optimum is a corner, with signed one-sided derivatives of about `−0.1747` and `+0.384` per radian | numerically checked (`numerical-f64`) | It is one slice. It is not a rigidity proof, and not a theorem that every derivative-free method fails. This project’s measurement |
-| The exact optimal configuration spaces at [`n = 3`](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-014-h-032-n3-optimal-moduli.md) and [`n = 4`](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-015-h-032-n4-optimal-moduli.md) | verified (`exact-algebraic`) | Only those two moduli spaces are classified here; the optimal side values at `n = 5` and `n = 6` are proved, but their optimal configuration spaces are not classified here. The labelled and unlabelled `n = 3` pieces agree with published computations; the rotation exclusion and full quotients are established here, with no novelty claim |
-| Refinement is not the current bottleneck: the same floating-point LP refiner takes the tested proved-control starts to the analytic optima (residuals `≈1e-15`) and leaves the tested `n = 11` starts `6e-02` short | numerically checked (`numerical-f64`) | The solver floor is about `1e-11` in the side, so read smaller residuals as “at the floor”; and it does not establish *why* the `n = 11` starts are far away |
+| The one-dimensional class-angle optimum is a corner, with signed one-sided derivatives of about $-0.1747$ and $+0.384$ per radian | numerically checked (`numerical-f64`) | It is one slice. It is not a rigidity proof, and not a theorem that every derivative-free method fails. This project’s measurement |
+| The exact optimal configuration spaces at [$n = 3$](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-014-h-032-n3-optimal-moduli.md) and [$n = 4$](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-015-h-032-n4-optimal-moduli.md) | verified (`exact-algebraic`) | Only those two moduli spaces are classified here; the optimal side values at $n = 5$ and $n = 6$ are proved, but their optimal configuration spaces are not classified here. The labelled and unlabelled $n = 3$ pieces agree with published computations; the rotation exclusion and full quotients are established here, with no novelty claim |
+| Refinement is not the current bottleneck: the same floating-point LP refiner takes the tested proved-control starts to the analytic optima (residuals `≈1e-15`) and leaves the tested $n = 11$ starts `6e-02` short | numerically checked (`numerical-f64`) | The solver floor is about `1e-11` in the side, so read smaller residuals as “at the floor”; and it does not establish *why* the $n = 11$ starts are far away |
 
 ### Open
 
 **1. How to identify terminal components.** Point-basins are well-defined, but at
-`n = 3` an exact connected sliding family shows that they can split one connected
+$n = 3$ an exact connected sliding family shows that they can split one connected
 terminal component into infinitely many endpoint keys.
 The store therefore counts endpoint keys, which may split one component into several
 rows, and the denominator of “rare” is not yet a number.
@@ -1317,12 +1325,12 @@ ten times the modal basin’s, the strategy stands down and the campaign reverts
 throughput.
 
 **3. Whether any proposer can reach an oblique record.** Two negative measurements: at
-`n = 11` five seeds land in a band five times narrower than the remaining gap, and at
-`n = 17` the annealer returns the trivial `5×5` grid on every seed against a record of
-`4.6755`. What is unknown is whether the named alternatives, none of which is built,
+$n = 11$ five seeds land in a band five times narrower than the remaining gap, and at
+$n = 17$ the annealer returns the trivial $5\times5$ grid on every seed against a record
+of $4.6755$. What is unknown is whether the named alternatives, none of which is built,
 would do better.
 
-**4. What `s(11)` actually is.** The bounds above leave a gap of about `0.002084`, and
+**4. What $s(11)$ actually is.** The bounds above leave a gap of about $0.002084$, and
 neither end is known to be tight.
 The upper end is a construction nobody has beaten since 1979; the lower bound excludes
 smaller containers without establishing the optimum.
@@ -1344,7 +1352,7 @@ being separated into different surfaces.
 
 Items 1 and 2 decide whether the cartography strategy is sound.
 Items 3, 5, and 6 have concrete experimental or engineering paths.
-Item 4—determining `s(11)`—is the central open mathematical problem, not an engineering
+Item 4—determining $s(11)$—is the central open mathematical problem, not an engineering
 task whose tractability is established.
 
 ## 9. A Vocabulary Card
@@ -1365,15 +1373,15 @@ Three words carry controlled multiple senses—**cell**, **quench** and
 
 | Term | Means |
 | --- | --- |
-| **configuration** | A placement of all `n` squares plus the container: `3n + 1` coordinates |
+| **configuration** | A placement of all $n$ squares plus the container: $3n + 1$ coordinates |
 | **cell** | A choice of separating axis and order for every pair. Always the configuration-space object; write *instance cell* for a sweep position and *event cell* for a region of centres, never bare “cell” for either |
 | **atom** / **weight** | An exact point in a candidate container, and the nonnegative rational amount of bookkeeping mass assigned to it. An atom has no area and is not a packed square |
 | **atomic measure** / **mass** | The rule assigning a region the sum of the weights of its atoms, boundary atoms included; the mass is what that rule returns |
 | **site** / **pose** | A candidate atom location, and one square at one centre and angle. In the covering LP, sites are columns and poses are rows |
 | **direction net** | The finite set of exact square orientations a certificate checks. A strict shrink condition lets a nearby net direction stand in for any orientation at all |
 | **event cell** | One open region of admissible centres on which the set of atoms a square covers is constant. Not a configuration-space cell, and never written bare |
-| **weighted fractional unavoidable-set certificate** | A finite weighted atom set whose total mass is below `n` but whose mass is at least one in every prescribed inner square; with the direction and shrink conditions, that tension is a lower bound on `s(n)` |
-| **individual-side certificate** / **dilation-limit proof** | An individual-side certificate instantiates one finite certificate at its named container side. A dilation-limit proof combines exact certificates at approaching sides with a density argument to prove the displayed `s(n) ≥ L`. Both yield proved lower bounds; the terms distinguish proof constructions, not verification levels |
+| **weighted fractional unavoidable-set certificate** | A finite weighted atom set whose total mass is below $n$ but whose mass is at least one in every prescribed inner square; with the direction and shrink conditions, that tension is a lower bound on $s(n)$ |
+| **individual-side certificate** / **dilation-limit proof** | An individual-side certificate instantiates one finite certificate at its named container side. A dilation-limit proof combines exact certificates at approaching sides with a density argument to prove the displayed $s(n) \ge L$. Both yield proved lower bounds; the terms distinguish proof constructions, not verification levels |
 | **core** / **trace** / **charge** | A core is the shrunken closed square selected inside a physical unit square. Its trace on a finite site set `S` is the subset of `S` it contains. Its charge is the sum contributed by the point and threshold atoms it triggers |
 | **row generation** / **column generation** | Adding a deficient square-pose constraint, or adding a candidate atom site. Rows restrict the cover; columns give it more choices |
 | **dual depth** / **pricing** | The sum of dual pose weights covering one point, and the search for an absent site where that depth exceeds one |
@@ -1402,74 +1410,74 @@ Three words carry controlled multiple senses—**cell**, **quench** and
 | **corner** / **kink** | A point where one-sided derivatives differ, so the derivative fails to exist rather than becoming large |
 | **angle class** | A set of squares constrained to share one angle |
 | **descriptor** | A structural coordinate of a packing—contacts, angle classes, symmetry—used to steer search toward diversity rather than toward loss |
-| **bound gap** | The distance between the best-known upper and lower bounds for an `n`; a property of the problem |
+| **bound gap** | The distance between the best-known upper and lower bounds for an $n$; a property of the problem |
 | **search gap** | `best_side − standing best`, signed; a property of one run |
-| **standing best** | The best side ever published for that `n`—an upper bound, not known to be optimal in the open cases |
+| **standing best** | The best side ever published for that $n$—an upper bound, not known to be optimal in the open cases |
 | **feasibility tolerance** | The margin by which HiGHS may let a returned solution violate its own constraints. Pinned at the strictest value it accepts, and the origin of the `1e-11` floor—a property of the solver, not of the hardware |
 | **assurance** | `reported`, `numerically-checked`, or `verified`; method, actual precision, tolerance, and origin stay separate |
-| **atlas** | The deduplicated store of endpoints for an `n`. Code exists; it stores endpoint keys, which are not certified terminal components |
-| **census** | An enumeration of an `n`’s basins run to saturation. Code exists; saturation is unreachable while the counted object is undefined |
+| **atlas** | The deduplicated store of endpoints for an $n$. Code exists; it stores endpoint keys, which are not certified terminal components |
+| **census** | An enumeration of an $n$’s basins run to saturation. Code exists; saturation is unreachable while the counted object is undefined |
 
 ## 10. A Notation Card
 
 Symbols are grouped by topic.
-A subscript `i` always picks out one square; a bare letter is the whole `n`-vector.
-`i` and `j` index squares and `r` indexes net directions; none of the three has a row
-below. `k` and `l`, which index the four corners of one square, get one because they
-appear inside `oᵢₖ`.
+A subscript $i$ always picks out one square; a bare letter is the whole $n$-vector.
+$i$ and $j$ index squares and $r$ indexes net directions; none of the three has a row
+below. $k$ and $l$, which index the four corners of one square, get one because they
+appear inside $o_{ik}$.
 
 | Symbol | Type | Means |
 | --- | --- | --- |
-| `n` | integer | How many unit squares are being packed |
-| `s(n)` | real | The optimal side: the smallest container that fits `n` unit squares |
-| `m` | integer | A perfect-square root, in `s(m²) = m` |
-| `K` | square | The candidate container `[0, L]²` a lower-bound certificate rules out |
-| `L` | positive rational | A candidate container side; `381/100` in T-018 and `96/25` in the cited ownership work |
-| `z`, `w(z)` | point, nonnegative rational | An atom’s location and its weight |
-| `Q` | region | A region whose atomic mass is being measured, usually a closed side-`B` square |
-| `μ` | atomic measure | `μ(Q)` is the sum of `w(z)` over the atoms `z` in `Q` |
-| `𝒳`, `𝒫` | finite sets | The held atom sites and held square poses in a covering LP |
-| `y(Q)` | nonnegative real | The dual weight assigned to held pose `Q` |
-| `depth_y(x)` | nonnegative real | The sum of `y(Q)` over held poses containing point `x`; pricing searches for an absent site where it exceeds one |
-| `B` | positive rational | The shrunken square side in a certificate; `9977/10000` in T-018 |
-| `Pⱼ` | square | The closed side-`B` square placed strictly inside packed unit square `j` |
-| `tᵣ`, `θᵣ` | rational, angle | A net direction’s half-angle tangent and the direction itself: `θᵣ = 2 arctan(tᵣ)` |
-| `d` | angle | The difference between a square’s reduced orientation and the nearest net direction |
-| `D` | nonnegative rational | The largest tangent of a half-gap between adjacent net directions |
-| `k`, `l` | integer | Corner indices, `1…4`, as in `oᵢₖ` and `oⱼₗ` |
-| `s` | real, variable | The container side being minimised. Distinct from `s(n)`, which is the answer; `s` is what the program solves for |
-| `(xᵢ, yᵢ)` | `ℝ²` per square | The centre of square `i` |
-| `x`, `y` | `ℝⁿ` each | All `n` centre coordinates |
-| `θᵢ` | `[0, π/2)` | The angle of square `i` |
-| `θ` | `ℝⁿ` | The angle vector `(θ₁, …, θₙ)`—all `n` angles at once |
-| `Rᵢ` | `2×2` matrix | Rotation by `θᵢ` |
-| `oᵢₖ` | `ℝ²` | Corner offset: corner `k` of square `i` sits at `(xᵢ, yᵢ) + oᵢₖ`. Constant once `θᵢ` is fixed. `oᵢₖ,ₓ` and `oᵢₖ,ᵧ` are its components |
-| `ν` | unit `ℝ²` | A separating axis; `ν_ij` is the one a cell assigns to the pair `(i, j)` |
-| `C(n,2)` | integer | The number of unordered pairs of squares |
-| `a` | real | The angle shared by one angle class; at `n = 11`, the tilt of Trump’s five-square block |
-| `a*` | real | The value of `a` minimising `φ` |
-| `φ` | `[0, π/2) → ℝ` | The optimal side of a fixed cell as a function of its one free class angle |
-| `s*` | real | The standing-best side for an `n`, used as the base of an inflation ladder `s* + δ`. Not a minimiser: whether it equals `s(n)` is the open question |
-| `t` | real | The slider parameter of the `n = 3` terminal family |
-| `F₃(2)` | space | All packings of three unit squares in the side-2 container—the complete `n = 3` optimum space |
-| `S₃`, `D₄` | groups | The six relabellings of three squares, and the eight symmetries of the square container |
-| `λ` | `[0, 1/2]` | The `n = 3` family’s coordinate after both quotients: `λ = min(t − 1/2, 3/2 − t)` |
-| `α` | algebraic | A primitive element: the single number generating a packing’s field `ℚ(α)` |
-| `f` | polynomial | The minimal polynomial of `α`; `deg f` is the field’s degree |
-| `β` | element of `ℚ(α)` | An arbitrary field element, represented by a polynomial in `α` of degree `< deg f` |
-| `u` | algebraic | The primitive element for Trump’s packing, `u = tan(a/2)`, of degree 8 |
-| `q` | `ℝ^(3n+1)` | The support-branch configuration vector collecting `s` and every square’s centre and angle |
-| `g_j` | real-valued function | Clearance in support-branch row `j`; feasibility is `g_j(q) >= 0` and the row is active when `g_j(q) = 0` |
-| `η` | nonnegative real | The objective multiplier in the tutorial’s Fritz–John equation |
-| `κ_j` | nonnegative real | The multiplier on branch constraint `g_j` in that equation |
-| `δ` | real | Slack in a container-inflation ladder |
-| `p` | real | The exponent in the superdisk family `|x|^(2p) + |y|^(2p) <= 1`; `p = 1` is a circle and `p -> infinity` approaches a square |
+| $n$ | integer | How many unit squares are being packed |
+| $s(n)$ | real | The optimal side: the smallest container that fits $n$ unit squares |
+| $m$ | integer | A perfect-square root, in $s(m^2) = m$ |
+| $K$ | square | The candidate container $[0, L]^2$ a lower-bound certificate rules out |
+| $L$ | positive rational | A candidate container side; $\frac{381}{100}$ in T-018 and $\frac{96}{25}$ in the cited ownership work |
+| $z$, $w(z)$ | point, nonnegative rational | An atom’s location and its weight |
+| $Q$ | region | A region whose atomic mass is being measured, usually a closed side-$B$ square |
+| $\mu$ | atomic measure | $\mu(Q)$ is the sum of $w(z)$ over the atoms $z$ in $Q$ |
+| $\mathcal{X}$, $\mathcal{P}$ | finite sets | The held atom sites and held square poses in a covering LP |
+| $y(Q)$ | nonnegative real | The dual weight assigned to held pose $Q$ |
+| `depth_y(x)` | nonnegative real | The sum of $y(Q)$ over held poses containing point $x$; pricing searches for an absent site where it exceeds one |
+| $B$ | positive rational | The shrunken square side in a certificate; $\frac{9977}{10000}$ in T-018 |
+| $P_j$ | square | The closed side-$B$ square placed strictly inside packed unit square $j$ |
+| $t_r$, $\theta_r$ | rational, angle | A net direction’s half-angle tangent and the direction itself: $\theta_r = 2 \arctan(t_r)$ |
+| $d$ | angle | The difference between a square’s reduced orientation and the nearest net direction |
+| $D$ | nonnegative rational | The largest tangent of a half-gap between adjacent net directions |
+| $k$, $l$ | integer | Corner indices, $1\ldots4$, as in $o_{ik}$ and $o_{jl}$ |
+| $s$ | real, variable | The container side being minimised. Distinct from $s(n)$, which is the answer; $s$ is what the program solves for |
+| $(x_i, y_i)$ | $\mathbb{R}^2$ per square | The centre of square $i$ |
+| $x$, $y$ | $\mathbb{R}^n$ each | All $n$ centre coordinates |
+| $\theta_i$ | $[0, \pi/2)$ | The angle of square $i$ |
+| $\theta$ | $\mathbb{R}^n$ | The angle vector $(\theta_1, \ldots, \theta_n)$—all $n$ angles at once |
+| $R_i$ | $2\times2$ matrix | Rotation by $\theta_i$ |
+| $o_{ik}$ | $\mathbb{R}^2$ | Corner offset: corner $k$ of square $i$ sits at $(x_i, y_i) + o_{ik}$. Constant once $\theta_i$ is fixed. $o_{ik,x}$ and $o_{ik,\gamma}$ are its components |
+| $\nu$ | unit $\mathbb{R}^2$ | A separating axis; $\nu_{ij}$ is the one a cell assigns to the pair $(i, j)$ |
+| $C(n,2)$ | integer | The number of unordered pairs of squares |
+| $a$ | real | The angle shared by one angle class; at $n = 11$, the tilt of Trump’s five-square block |
+| $a^{\ast}$ | real | The value of $a$ minimising $\varphi$ |
+| $\varphi$ | $[0, \pi/2) \to \mathbb{R}$ | The optimal side of a fixed cell as a function of its one free class angle |
+| $s^{\ast}$ | real | The standing-best side for an $n$, used as the base of an inflation ladder $s^{\ast} + \delta$. Not a minimiser: whether it equals $s(n)$ is the open question |
+| $t$ | real | The slider parameter of the $n = 3$ terminal family |
+| $F_3(2)$ | space | All packings of three unit squares in the side-2 container—the complete $n = 3$ optimum space |
+| $S_3$, $D_4$ | groups | The six relabellings of three squares, and the eight symmetries of the square container |
+| $\lambda$ | $[0, \frac{1}{2}]$ | The $n = 3$ family’s coordinate after both quotients: $\lambda = \min(t - \frac{1}{2}, \frac{3}{2} - t)$ |
+| $\alpha$ | algebraic | A primitive element: the single number generating a packing’s field $\mathbb{Q}(\alpha)$ |
+| $f$ | polynomial | The minimal polynomial of $\alpha$; $\deg f$ is the field’s degree |
+| $\beta$ | element of $\mathbb{Q}(\alpha)$ | An arbitrary field element, represented by a polynomial in $\alpha$ of degree $< \deg f$ |
+| $u$ | algebraic | The primitive element for Trump’s packing, $u = \tan(a/2)$, of degree 8 |
+| $q$ | $\mathbb{R}^{3n+1}$ | The support-branch configuration vector collecting $s$ and every square’s centre and angle |
+| $g_j$ | real-valued function | Clearance in support-branch row $j$; feasibility is `g_j(q) >= 0` and the row is active when `g_j(q) = 0` |
+| $\eta$ | nonnegative real | The objective multiplier in the tutorial’s Fritz–John equation |
+| $\kappa_j$ | nonnegative real | The multiplier on branch constraint $g_j$ in that equation |
+| $\delta$ | real | Slack in a container-inflation ladder |
+| $p$ | real | The exponent in the superdisk family `|x|^(2p) + |y|^(2p) <= 1`; `p = 1` is a circle and `p -> infinity` approaches a square |
 
 Two collisions are worth naming because they come from outside this document.
 Smale’s **α-theory**, in [§5](#5-algebra-versus-numerics), has nothing to do with the
-primitive element `α`. And the neighbouring research reports use `θ` for what this
-document calls `a`, and `u_i` for a per-square half-angle parameter rather than a single
-primitive element.
+primitive element $\alpha$. And the neighbouring research reports use $\theta$ for what
+this document calls $a$, and $u_i$ for a per-square half-angle parameter rather than a
+single primitive element.
 
 ## 11. Further Reading
 
@@ -1521,7 +1529,7 @@ on jamming, stresses, and rattlers provide the method language collected in the
 archive’s
 [rigidity sources](packing/resources/README.md#rigidity-and-verification-method-sources).
 They are analogues whose hypotheses must be re-established for rotating squares and
-their nonsmooth feature ties, not imported theorems about `s(11)`.
+their nonsmooth feature ties, not imported theorems about $s(11)$.
 
 **Energy landscapes** ([§7](#7-how-the-search-is-approached-and-why)). Stillinger and
 Weber’s inherent-structure decomposition, which the quench map is borrowed from; and
@@ -1537,19 +1545,19 @@ Trump’s 1979 packing is documented there and by this directory’s exact certi
 records, while the original 1979 communication is not, and Bidwell’s 1998 record
 likewise has no retained first-party document:
 
-- Stromquist (2003), *Packing 10 or 11 unit squares in a square*—the `s(10)` proof, the
-  `s(11)` lower-bound value, and the `0°`/`45°` class bound
-- Trump (1979), the `n = 11` construction that is still the standing upper bound
+- Stromquist (2003), *Packing 10 or 11 unit squares in a square*—the $s(10)$ proof, the
+  $s(11)$ lower-bound value, and the $0^\circ$/$45^\circ$ class bound
+- Trump (1979), the $n = 11$ construction that is still the standing upper bound
 - Friedman, *Packing Unit Squares in Squares: A Survey and New Results* (DS7)—the survey
   the frontier corpus is checked against
 - Erdős and Graham (1975), the asymptotic waste line of work
 - Nagamochi (2005), the general lower bound covering most open cases in the corpus
-- Bidwell (1998), the `n = 17` record, the nearest genuinely oblique one
+- Bidwell (1998), the $n = 17$ record, the nearest genuinely oblique one
 - Montanher et al. (2018), the only rigorous computer-assisted optimality proof for
   rotatable unit squares in any container—three squares in a circle
 - Martin (2000), the compactness results behind “the infimum is attained”
 - Dewar (2024), direction-typed contact graphs for homothetic oriented squares—useful
-  combinatorial method evidence, not a completeness theorem for the global `n = 11`
+  combinatorial method evidence, not a completeness theorem for the global $n = 11$
   search
 
 ### What does the arithmetic here
@@ -1557,10 +1565,10 @@ likewise has no retained first-party document:
 The exact algebra does not require a computer algebra system.
 An optional system is used only to rederive one constant.
 
-- **Exact `ℚ(α)` arithmetic is hand-rolled and standard library only.** Elements are
-  polynomials with exact rational coefficients reduced modulo the minimal polynomial;
-  equality is a zero-representative test and sign is rational-interval bisection.
-  No floating point appears in either decision.
+- **Exact $\mathbb{Q}(\alpha)$ arithmetic is hand-rolled and standard library only.**
+  Elements are polynomials with exact rational coefficients reduced modulo the minimal
+  polynomial; equality is a zero-representative test and sign is rational-interval
+  bisection. No floating point appears in either decision.
 - **A computer algebra system is optional**, used in one place to rederive a constant
   the verifier already carries.
 - **The linear programs go through HiGHS**, called from SciPy, whose feasibility
@@ -1581,11 +1589,11 @@ An optional system is used only to rederive one constant.
 | every rule the directory runs on, and which are machine-checked | [`conventions.md`](conventions.md) |
 | the mutable size-by-size experiment priority queue | [Basin confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
 | what has gone wrong and what now stops it recurring | [`defects.md`](defects.md) |
-| the mathematics of `s(11)` in depth | [Packing 11 Unit Squares](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) |
-| the whole `n = 11` story, from what a proof must do to what is left | [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) |
+| the mathematics of $s(11)$ in depth | [Packing 11 Unit Squares](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) |
+| the whole $n = 11$ story, from what a proof must do to what is left | [$n = 11$, End to End](SYNOPSIS.md#n--11-end-to-end) |
 | how packings are found, refined and verified | [Algorithms and Tooling](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) |
 | why pointing should beat scaling | [A Search Philosophy](docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md) |
-| what is known for every `n ≤ 100` | [`frontier/`](packing/frontier/README.md) |
+| what is known for every $n \le 100$ | [`frontier/`](packing/frontier/README.md) |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -25,6 +25,11 @@
 #             says why. An entry whose span is no longer in its file fails the check, so
 #             the list only shrinks.
 
-migrated: []
+migrated:
+- README.md
+- SYNOPSIS.md
+- TUTORIAL.md
+- conventions.md
+- epistemics.md
 
 keep: []

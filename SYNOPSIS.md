@@ -20,9 +20,9 @@ The record-state and validation revisions are retained in
 
 ## The Program at a Glance
 
-`s(n)` is the side of the smallest square that contains `n` non-overlapping unit
+$s(n)$ is the side of the smallest square that contains $n$ non-overlapping unit
 squares, which may be rotated freely.
-The motivating case is `n = 11`, the smallest instance nobody has solved.
+The motivating case is $n = 11$, the smallest instance nobody has solved.
 
 This project works under four independent principles, defined at the top level in
 [`README.md`](README.md#operating-principles): **Correctness** (Soundness) owns
@@ -39,8 +39,8 @@ and contribute to the work.
 Those principles govern four capabilities built so far:
 
 1. **Know the frontier.** A schema-validated reported and formal claim register for
-   every `n ≤ 100`, reconciled against a dated named-source inventory, with a generated
-   reader-first status view and a local archive of the primary literature.
+   every $n \le 100$, reconciled against a dated named-source inventory, with a
+   generated reader-first status view and a local archive of the primary literature.
 2. **Inspect, check, and verify witnesses.** One interchange accepts supported decimal,
    rational, and algebraic geometry.
    Decimal data can be inspected or numerically checked under explicit arithmetic;
@@ -72,7 +72,7 @@ T-026 established the earlier first-party bound
 `s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.8264474...` at `V4/C5`.
 T-033 tightens the same retained family to
 `s(11) >= 955000*sqrt(2073600042893309449)/359341754646249 = 3.8269975...` at `V4/C3`.
-The current verified lower bound is the stronger external result `s(11) > 31/8 = 3.875`.
+The current verified lower bound is the stronger external result $s(11) > 31/8 = 3.875$.
 Future research follows the
 [payoff policy](docs/project/handoff-2026-09-06-post-381-t2-t10-continuation.md#research-payoff-and-exposition):
 prioritize substantial bound improvements and methods or theorems that make them
@@ -80,7 +80,7 @@ possible.
 
 The
 [September 22 external intake](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
-verifies Kleddamag’s stronger `s(11) > 3.875` bound and Tokoharu’s rectangle-density
+verifies Kleddamag’s stronger $s(11) > 3.875$ bound and Tokoharu’s rectangle-density
 certificates at `s(26) >= 5.508` and `s(29) >= 5.71`, with pinned sources, mathematical
 reviews and complete replays.
 These now supply the verified Frontier bounds; the records retain literal source reports
@@ -88,58 +88,58 @@ and state the verification methods separately.
 The
 [complete native n11 decision](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)
 adds a distinct interval coverage method and supports `V4/C4` for Kleddamag’s strict
-`3.875` bound, with no new bound or C5 claim.
+$3.875$ bound, with no new bound or C5 claim.
 The
 [R052 review of 25 September](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md)
-verifies Guzhou0806’s strict `s(17) > 231001/50000 = 4.62002`, built with AI assistance
+verifies Guzhou0806’s strict $s(17) > 231001/50000 = 4.62002$, built with AI assistance
 on Kleddamag’s `v1.0.0` mixed point/threshold architecture, at `V4/C3`. All four of the
 source’s replay modes pass here, but both full sweeps are one event-cell method and the
 native interval route refuses the certificate at its engine ceilings, so there is no
 method-distinct decision.
-It supplied the verified Frontier bound for `n = 17` from 25 to 27 September, about
-`0.000229` above Kleddamag’s `461300/99853`. Kleddamag’s `v1.1.0` of 26 September then
-proved `s(17) > 232001/50000 = 4.64002`, exactly `0.02` above R052, on the same author’s
+It supplied the verified Frontier bound for $n = 17$ from 25 to 27 September, about
+$0.000229$ above Kleddamag’s $461300/99853$. Kleddamag’s `v1.1.0` of 26 September then
+proved $s(17) > 232001/50000 = 4.64002$, exactly $0.02$ above R052, on the same author’s
 architecture extended with weighted thresholds and pairwise-intersecting winning-subset
 rules. Both of its complete checkers pass here and agree on all 2,048 intervals, with a
-counting surplus of 5,629 units of `10⁻⁹`; they share one event-cell method, and the
+counting surplus of 5,629 units of $10^{-9}$; they share one event-cell method, and the
 native parent-core route cannot yet represent the new features, so it is `V4/C3`, and
 its [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) is a
-separate record. It supplied the verified Frontier bound for `n = 17` on 27 September.
-The same day `s(17) > 466001/100000 = 4.66001` followed, `0.01999` above it: Kleddamag,
+separate record. It supplied the verified Frontier bound for $n = 17$ on 27 September.
+The same day $s(17) > 466001/100000 = 4.66001$ followed, $0.01999$ above it: Kleddamag,
 building on Squares Project (Joshua Levy), Mira and Guzhou0806, an exact
 weighted-certificate proof over 2,168 orientation intervals on the same two checkers.
 Both pass here and agree on every interval, with a counting surplus of 54,340 units of
-`10⁻⁹`, again at `V4/C3`. It supplied the verified Frontier bound for `n = 17` from 27
-to 29 September; its
+$10^{-9}$, again at `V4/C3`. It supplied the verified Frontier bound for $n = 17$ from
+27 to 29 September; its
 [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) is a
 separate record.
 Guzhou0806’s R068 of 28 September, continuing that charge with one added
-four-site point orbit over 4,991 intervals, proves `s(17) > 116511/25000 = 4.66044`,
-exactly `0.00043` higher; its two checkers’ complete replays pass here and agree with
-the published ledgers, at `V4/C3`, and it supplies the verified bound, `0.0151` below
+four-site point orbit over 4,991 intervals, proves $s(17) > 116511/25000 = 4.66044$,
+exactly $0.00043$ higher; its two checkers’ complete replays pass here and agree with
+the published ledgers, at `V4/C3`, and it supplies the verified bound, $0.0151$ below
 Bidwell’s packing
 ([review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md)). R067,
-`233009/50000`, was replayed beside it.
+$233009/50000$, was replayed beside it.
 Each now has an entry in the results register (`T-038` to `T-043`), which since 29
 September 2026 holds every result by others that this record acts on, with the source’s
 credit beside this repository’s `V` and `C`.
 
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
-weighted exact-rational covering method, proves `s(32) = 6` by a zero-margin weighted
-closed cover of `[0,6]²`, at `V4/C4` on complete replays here of its exact checker and
+weighted exact-rational covering method, proves $s(32) = 6$ by a zero-margin weighted
+closed cover of $[0,6]^2$, at `V4/C4` on complete replays here of its exact checker and
 its binary64-enclosure `zmx2`, which share their author, point test and symmetry fold
-and differ in how they close germs, and `s(12) ≥ 15680/3951` at `V4/C4`; its
-`s(21) ≥ 5000/1001` was superseded by the same author’s mixed covers of 27 September,
-weighted points plus mass on interior grid-line segments, which prove `s(21) = 5` and
-`s(45) = 7`, both `V4/C3`. Its case-free proof of Bentz’s `s(13) = 4` is recorded as a
+and differ in how they close germs, and $s(12) \ge 15680/3951$ at `V4/C4`; its
+$s(21) \ge 5000/1001$ was superseded by the same author’s mixed covers of 27 September,
+weighted points plus mass on interior grid-line segments, which prove $s(21) = 5$ and
+$s(45) = 7$, both `V4/C3`. Its case-free proof of Bentz’s $s(13) = 4$ is recorded as a
 report. wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at
-`39d8ecc` for `n = 18` to `95`, built with Tokoharu’s solver and decided by Tokoharu’s
-reviewed interval verifier, are verified at `n = 27`, `28` by monotonicity, and `31`,
+`39d8ecc` for $n = 18$ to $95$, built with Tokoharu’s solver and decided by Tokoharu’s
+reviewed interval verifier, are verified at $n = 27$, $28$ by monotonicity, and $31$,
 and reported at the other counts until their replays run.
-wand125’s point-only routes to `s(21) = 5` and `s(45) = 7`, the latter verified here as
-a second certificate, and its reported `s(50) ≥ 37/5` followed on 28 September.
-Guzhou0806’s continuation of R052, `s(17) > 4.62003`, superseded by `v1.1.0`, is
+wand125’s point-only routes to $s(21) = 5$ and $s(45) = 7$, the latter verified here as
+a second certificate, and its reported $s(50) \ge 37/5$ followed on 28 September.
+Guzhou0806’s continuation of R052, $s(17) > 4.62003$, superseded by `v1.1.0`, is
 retained as a publication record.
 [Results by Others](README.md#results-by-others) gives the credit for each.
 
@@ -251,7 +251,7 @@ Agendas 001–010 built the campaign record, controls, constructive search, and 
 exact-promotion machinery.
 Agendas 011–017 made verification and result disposition routine.
 Agendas 018–023 tested scaling, restricted covering programs, and the validation loop.
-Agendas 024–028 built on the `3.81` result with adaptive and structural routes.
+Agendas 024–028 built on the $3.81$ result with adaptive and structural routes.
 Agendas 029–033 and 035 developed conditional-owner geometry, T-025/T-026, and the
 now-paused incremental follow-ups.
 [Agenda 036](packing/campaign/agendas/agenda-036-n11-strategy-reset-roadmap.md) is the
@@ -315,11 +315,11 @@ The event-sweep replay remains C3 by itself; the complete native decision and re
 transfer theorem provide method-distinct C4 confirmation of the strict bound.
 Research below 3.875 must now justify its value as a simpler certificate or method
 development, rather than a public bound advance.
-The pure point/density ceiling `38200/9977 ≈ 3.8288` lies only about `0.00236` above
-T-026, so additional heavy work for microscopic gains in that language is paused.
+The pure point/density ceiling $38200/9977 \approx 3.8288$ lies only about $0.00236$
+above T-026, so additional heavy work for microscopic gains in that language is paused.
 T-033 remains the controlled first-party net-refinement result: it moved T-026 by
-`0.00055013825660`, but the unchanged family’s ceiling `955000/249507 ≈ 3.82755` is
-already below `3.875` and cannot improve the current global bound.
+$0.00055013825660$, but the unchanged family’s ceiling $955000/249507 \approx 3.82755$
+is already below $3.875$ and cannot improve the current global bound.
 Changed weights, sites, parent domains, or charge atoms remain separate hypotheses.
 H-160/exp-158 and H-162/exp-160 are registered but blocked before target invocation.
 H-163 is registered and unresolved via exp-161; its target-blind instrument merged in PR
@@ -385,10 +385,10 @@ record. The current order is:
    candidate. Encode-only timed out unresolved.
    `--search` did not run.
 4. Treat A, S, global angular resources, and B as the first advisory tier.
-   A is the strongest route to a material `n = 11` lower bound; S is the best bounded
+   A is the strongest route to a material $n = 11$ lower bound; S is the best bounded
    deliverable; angular resources offer a cheap optimal-face screen; and B is the
    strongest alternative mechanism after its soundness controls.
-5. Retain stronger charge algebra, geometry-dependent budgets, an `n = 12` exact-value
+5. Retain stronger charge algebra, geometry-dependent budgets, an $n = 12$ exact-value
    program, and orientation structure as second-tier candidates whose first blocks must
    pay for missing premises.
 6. Keep constructive search separately budgeted after an oblique proposer control, and
@@ -409,7 +409,7 @@ it. Each block starts from the preceding merge on a fresh branch and gets its ow
 session, bead disposition, validation receipt, and pull request.
 
 The audit’s linear advisory order is A, S, angular resources, B, stronger charge
-algebra, geometry-dependent budgets, `n = 12`, C, D, then geometric waste.
+algebra, geometry-dependent budgets, $n = 12$, C, D, then geometric waste.
 That is a readiness-and-information judgment, not a measured probability of success or
 an execution decision.
 
@@ -444,19 +444,19 @@ The detailed implementation statuses remain in [What Is Built](#what-is-built).
 | --- | --- | --- | --- |
 | Research record and process | Reconstruct hypotheses, experiments, sessions, effort, and known failures | A closed bead or plausible output is not evidence until the artifact, landed tree, and generated views agree | [Ledger](packing/campaign/ledger.md), [defect log](defects.md), and [confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
 | Agent loop and throughput | Run bounded phases with declared clocks, checkpoint each result, and select the next dependency-ready bead | Portable recovery and final receipts remain incomplete; wall-clock budgets do not define equal scientific work under load | [Campaign runbook](packing/campaign/README.md), [launch agenda](docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md#the-autonomous-agent-loop), and [D-126](defects.md) |
-| Frontier and literature | Read reported and verified bounds side by side through `n = 100`; reconcile the named public sources and retain conflicts | Most reported records still lack a public formal witness; dated named-source coverage is not universal web completeness | [`frontier/STATUS.md`](packing/frontier/STATUS.md), [`frontier/`](packing/frontier/README.md), and [`resources/`](packing/resources/README.md) |
+| Frontier and literature | Read reported and verified bounds side by side through $n = 100$; reconcile the named public sources and retain conflicts | Most reported records still lack a public formal witness; dated named-source coverage is not universal web completeness | [`frontier/STATUS.md`](packing/frontier/STATUS.md), [`frontier/`](packing/frontier/README.md), and [`resources/`](packing/resources/README.md) |
 | Witness inspection and verification | Inspect or numerically check supported decimal geometry; verify rational and certified algebraic witnesses exactly | Generic interval-certification components are built, but the arbitrary-`Witness/v2` public command is not exposed | [Exact layer](#the-exact-layerbuilt) and [capability ladder](#verification-capability-ladder) |
 | Numerical refinement | Polish and compare fixed-cell controls above the measured solver floor | A stopped quench is neither certified stationary nor comparable by wall-clock budget under load | [Refinement layer](#the-refinement-layerbuilt-with-a-floor) and [D-021, D-052, D-126](defects.md) |
-| Exact local geometry and proof | Run the specialized small-`n`, Trump, and Stromquist checkers; this is the most productive mathematical lane so far | There is no generic proof-synthesis or interval branch-and-bound pipeline | [Proof lane](#the-proof-lanebuilt-and-producing-theorems) |
+| Exact local geometry and proof | Run the specialized small-$n$, Trump, and Stromquist checkers; this is the most productive mathematical lane so far | There is no generic proof-synthesis or interval branch-and-bound pipeline | [Proof lane](#the-proof-lanebuilt-and-producing-theorems) |
 | Proposal and search | Use the stock annealer for calibration and candidate generation; its two search paths emit exact pair-test work | Pair-budget enforcement, the proposer interface, campaign-wide aggregation, and mechanism-diverse proposers are unbuilt | [Proposer layer](#the-proposer-layerone-instrument-and-the-interface-is-unbuilt) |
 | Event capture and replay | Retain and independently replay watched control events | A valid terminal event is an observation, not a connected terminal component | [Map layer](#the-map-layerbuilt-not-admissible) and [confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
-| Basin identity, census, and atlas | Use exact `n = 3` and `n = 4` models as identity controls | Component counting is not admissible until the `n = 5` ambiguity is bounded and the classifier is validated successively | [Map layer](#the-map-layerbuilt-not-admissible) and [confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
-| Numerical-to-formal promotion | Robustify suitable decimal center-angle poses into explicitly relaxed rational witnesses, infer and assemble a contact system, recover a minimal polynomial under a decidable margin rule, certify a root by Krawczyk, and receive typed failures throughout | The `n = 29` interval certificate has passed review and now carries the verified upper bound; the tighter reported value remains uncertified. Robust rational promotion certifies parallel projects’ packings at centre dilation 1: Francisco Couzo’s at 49 counts from `n = 68` to `307` (T-056) and Joost de Winter’s `s(211) < 15` (T-057), each certified side within one unit of the last printed place except at `n = 206, 259, 305`, which trail by 2, 3 and 2 units. Most catalogue decimals remain uncertified | [Promotion pipeline](#the-promotion-pipelinebuilt-end-to-end-with-the-promotion-itself-withheld) |
-| Visualization | Inspect the exact `n = 3` moduli SVG and design evidence-typed views from retained artifacts | The scalable basin atlas and the first `n = 5` ambiguity view are unbuilt; endpoint rows must not be pictured as components | [Visualization ladder](docs/project/reviews/review-2026-08-23-mathematical-frontier-strategy.md#basin-ontology-and-visualization-ladder) |
+| Basin identity, census, and atlas | Use exact $n = 3$ and $n = 4$ models as identity controls | Component counting is not admissible until the $n = 5$ ambiguity is bounded and the classifier is validated successively | [Map layer](#the-map-layerbuilt-not-admissible) and [confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
+| Numerical-to-formal promotion | Robustify suitable decimal center-angle poses into explicitly relaxed rational witnesses, infer and assemble a contact system, recover a minimal polynomial under a decidable margin rule, certify a root by Krawczyk, and receive typed failures throughout | The $n = 29$ interval certificate has passed review and now carries the verified upper bound; the tighter reported value remains uncertified. Robust rational promotion certifies parallel projects’ packings at centre dilation 1: Francisco Couzo’s at 49 counts from $n = 68$ to $307$ (T-056) and Joost de Winter’s $s(211) < 15$ (T-057), each certified side within one unit of the last printed place except at $n = 206, 259, 305$, which trail by 2, 3 and 2 units. Most catalogue decimals remain uncertified | [Promotion pipeline](#the-promotion-pipelinebuilt-end-to-end-with-the-promotion-itself-withheld) |
+| Visualization | Inspect the exact $n = 3$ moduli SVG and design evidence-typed views from retained artifacts | The scalable basin atlas and the first $n = 5$ ambiguity view are unbuilt; endpoint rows must not be pictured as components | [Visualization ladder](docs/project/reviews/review-2026-08-23-mathematical-frontier-strategy.md#basin-ontology-and-visualization-ladder) |
 | Unattended numerical execution | Run bounded supervised slices and let an agent resume dependency-ready work | The numerical runner remains **NO-GO** until its independent validity, recovery, receipt, and capacity gates pass | [Numeric launch agenda](docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md#the-numeric-runner-launch-gate) |
 
 Its active confidence ladder has completed the exact and event controls up to the first
-nontrivial identity question; the next scientific transition is from specialized `n = 5`
+nontrivial identity question; the next scientific transition is from specialized $n = 5$
 local geometry to a defensible component relation, not to a larger raw census.
 
 #### Refresh rule
@@ -1198,19 +1198,19 @@ controller, not permission to blur contracts.
 ### Current Handoff
 
 [Session 151](packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md)
-asked again what improvement is left at low `n` and moved one bound.
+asked again what improvement is left at low $n$ and moved one bound.
 The frozen `T-025` threshold atoms re-certify at the 2880-step net, where the crossing
 shrink does not rise, so the dilation-limit supremum rises to
-`955000*sqrt(2073600042893309449)/359341754646249 = 3.826997548829544`, `+0.00055` over
+`955000*sqrt(2073600042893309449)/359341754646249 = 3.826997548829544`, $+0.00055$ over
 `T-026`. Both retention routes accept the frozen bytes and agree at exactly 1, and the
 limit record is replayed and written.
 Session 151 deliberately left the register entry unwritten, which is why that session
 remains stopped with certification debt rather than being rewritten after the fact.
 PR 221 later registered the result as T-033; Session 154 reconciles it with the stronger
-external `s(11) > 31/8` bound.
-Four cells returned measured negatives with witnesses — the `n = 17` triples and the
+external $s(11) > 31/8$ bound.
+Four cells returned measured negatives with witnesses — the $n = 17$ triples and the
 parent-centre restriction are both load-bearing, re-pricing that support is capped at
-about `+0.0034`, and the first grid-capable search at `n = 12`, `20` and `21` returned
+about $+0.0034$, and the first grid-capable search at $n = 12$, $20$ and $21$ returned
 the grid exactly on every run.
 Its `X-042` contradicts `X-041` in nine places, and the block corrected itself three
 times, including reverting an `H-228` refutation that an adversarial lane caught after
@@ -1221,11 +1221,11 @@ landed the agenda-040 overnight stack and the n = 17 intake on main, repairing f
 confirmed review findings at the integration point rather than after it, and left the
 session’s own analysis as records: `X-041`’s ranked slate and the 2026-09-21
 derived-artifact currency review.
-It also replayed and reviewed a fifth external n = 17 value, Kleddamag’s `461300/99853`,
+It also replayed and reviewed a fifth external n = 17 value, Kleddamag’s $461300/99853$,
 which reproduced byte-identically through both of its own checkers and drew no Blocker
 and no High from an adversarial proof review.
 That artifact is retained at V4/C3 with C4 blocked, and **no bound moved for it**: the
-registered n = 17 lower bound is `T-032` at `461300/99999`.
+registered n = 17 lower bound is `T-032` at $461300/99999$.
 
 Three process defects came out of the block and are tracked rather than worked around:
 `think-fqut`, where GitHub’s stacked-PR merge orphans declared gate commits;
@@ -1258,7 +1258,7 @@ This supplies C4 confirmation by a method independent of the source implementati
 **[Session 154](packing/campaign/agent-sessions/session-154-pr221-pr222-reconciliation.md)**
 reconciled PR 221 with the final PR 222 head.
 T-033 and its three evidence records remain the retained first-party 2880-step rung,
-while the external strict `s(11) > 31/8` result remains the current case bound and all
+while the external strict $s(11) > 31/8$ result remains the current case bound and all
 twenty promoted fields remain current.
 BC-373 is complete on the retained T-033 receipt and full-gate evidence; Session 151
 stays stopped as the historical record of its cutoff.
@@ -1278,21 +1278,21 @@ method, and `think-c0xc` owns the continuation-driver admission guard.
 **[Session 156](packing/campaign/agent-sessions/session-156-w3-overnight-n11-settlement.md)**
 answered that prioritization overnight, stacked on PR 230 as PR 231. Four reviews of
 X-043 to X-045 found no fatal error and changed what counts as progress at n11: with
-`s(11) > 31/8` known, closing the gap to Trump’s `U` is the whole problem, and no
+$s(11) > 31/8$ known, closing the gap to Trump’s $U$ is the whole problem, and no
 counting certificate can prove equality there.
 [X-046](packing/campaign/explorations/X-046-n11-settlement-program.md) therefore lays
 out a ladder of restricted-family theorems, and
 [X-047](packing/campaign/explorations/X-047-low-n-angles-after-the-parent-core-advance.md)
-maps where the additive route dies at each low `n`;
+maps where the additive route dies at each low $n$;
 [agenda-042](packing/campaign/agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md)
 registered H-236 to H-241. **One bound moved:** T-034, `s(21) >= 122/25`, from a
 window-free point certificate that a Fable max review accepted on three routes.
 At n11, rung 0 of the ladder (Trump globally optimal at its own angle) closed 198 of 256
 subtrees on `1.19e8` nodes with every checked certificate accepted and no leaf below
-`U`; the tree is about a thousand times X-046’s estimate, so rung 1 needs a stronger
+$U$; the tree is about a thousand times X-046’s estimate, so rung 1 needs a stronger
 relaxation. The capture-radius route is exhausted at the BC-199 modulus, and a
 descent-filtered census found no third-orientation minimum below Stromquist’s value but
-two new minima within `U + 0.02`. The n12 ceiling run ended unsettled, and the
+two new minima within $U + 0.02$. The n12 ceiling run ended unsettled, and the
 ParentClip build never opened: the harness session quota stopped every agent from about
 03:15 to 08:45 PT. Session 156 is closed and certified by hosted full run 35960673750 at
 `a08ce5289`.
@@ -1303,11 +1303,11 @@ closed.** The last 58 subtrees ran with the unchanged frozen instrument and the
 independent reader accepted the complete tree: 119,556,859 leaf certificates, three
 Trump-degenerate leaves, no unresolved leaf
 ([exp-232](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md)).
-`H-236` is confirmed: at Trump’s own angle, no packing of eleven unit squares beats `U`,
+`H-236` is confirmed: at Trump’s own angle, no packing of eleven unit squares beats $U$,
 the first optimality statement with an equality case for a family containing Trump’s
-packing (Stromquist 2003’s `0°`/`45°` bound is an earlier restricted-orientation
-statement), pending BC-241 for the local theorem its terminal leaves use.
-The n12 cutting loop converged at `11.980175 < 12`, rejecting `H-241`
+packing (Stromquist 2003’s $0^\circ$/$45^\circ$ bound is an earlier
+restricted-orientation statement), pending BC-241 for the local theorem its terminal
+leaves use. The n12 cutting loop converged at $11.980175 < 12$, rejecting `H-241`
 ([exp-233](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md)).
 D-508 corrects exp-231’s certificate count, which had included branch nodes.
 Hosted full run 36003435328 certified the closed session.
@@ -1330,16 +1330,16 @@ per-node bound comes before H-112. Hosted full run 36075268969 certified the clo
 session.
 
 **[Session 159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md)**
-took in Guzhou0806’s R052, `s(17) > 231001/50000 = 4.62002`, built on Kleddamag’s
+took in Guzhou0806’s R052, $s(17) > 231001/50000 = 4.62002$, built on Kleddamag’s
 architecture. All four of the source’s replay modes pass here, both full sweeps
 reproducing its row ledgers exactly, and a Fable max review found no mathematical defect
 ([review](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md)). It became the
-verified n = 17 lower bound at `V4/C3`, until Kleddamag’s `v1.1.0` `232001/50000`
+verified n = 17 lower bound at `V4/C3`, until Kleddamag’s `v1.1.0` $232001/50000$
 superseded it on 27 September; the native interval route refuses it at its engine
 ceilings, so there is no method-distinct decision yet.
 A planning block then asked what R052 and the closed rung 0 make possible
 ([plan](docs/project/specs/active/plan-2026-09-25-after-r052-planning.md)). At n = 17,
-R052’s certificate is nearly saturated, so a first-party increment of `10^-4` is not
+R052’s certificate is nearly saturated, so a first-party increment of $10^{-4}$ is not
 worth building; an unreviewed lemma says a triangle-free overlap family of 34 squares at
 side `S` caps every capacity-one certificate at `S`, which a cheap search can price.
 At n = 11 the retained trees show the separating-axis LP reaches any target until about
@@ -1350,43 +1350,44 @@ certified the closed session.
 
 **The 27 September planning block** (BC-392,
 [plan](docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md)) followed
-Kleddamag v1.1.0’s `s(17) > 232001/50000 = 4.640020` and wand125’s rectangle
+Kleddamag v1.1.0’s $s(17) > 232001/50000 = 4.640020$ and wand125’s rectangle
 certificates for n = 18 to 78. Every atom of v1.1.0 has capacity one, so the certificate
-itself refutes H-243’s `4.63` family and the ceiling search moves to `4.65` in
-clique-weighted form (H-248); a reweighting of its dictionary is worth of order `10⁻³`
-in charge, an unmeasured amount of side (the
+itself refutes H-243’s $4.63$ family and the ceiling search moves to $4.65$ in
+clique-weighted form (H-248); a reweighting of its dictionary is worth of order
+$10^{-3}$ in charge, an unmeasured amount of side (the
 [lemma check](docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md)
-withdrew the plan’s `+0.006` cap).
+withdrew the plan’s $+0.006$ cap).
 BC-386 is superseded by BC-393, the same cap lift aimed at v1.1.0 through a
-winning-subset atom; BC-391 is superseded by wand125’s `4.985`. The overnight queue is
+winning-subset atom; BC-391 is superseded by wand125’s $4.985$. The overnight queue is
 BC-390 on eight workers beside rectangle-density ladders at n = 82 and n = 50 (BC-394,
 H-250 and H-251) and n = 12 (BC-395, H-249), the rows the external certificates left
 weakest; BC-393, BC-388 and BC-387 follow their day builds.
-evand/square-packing’s claims (`s(32) = 6` by a zero-margin closed cover, `s(12) ≥
-3.968616`, `s(21) ≥ 4.995`), reviewed and registered by other lanes, retarget H-249 to
-`3.99` and add BC-396 (H-252): the same cover carried upward to `n = 45`, side `7`.
+evand/square-packing’s claims ($s(32) = 6$ by a zero-margin closed cover,
+$s(12) \ge 3.968616$, $s(21) \ge 4.995$), reviewed and registered by other lanes,
+retarget H-249 to $3.99$ and add BC-396 (H-252): the same cover carried upward to
+$n = 45$, side $7$.
 
 [Session 160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md)
-took in Kleddamag’s `s(17) > 232001/50000` at `V4/C3`, Evan Daniel’s `s(32) = 6` at
-`V4/C1` with `s(12) ≥ 15680/3951` and `s(21) ≥ 5000/1001` at `V4/C3`, and wand125’s
+took in Kleddamag’s $s(17) > 232001/50000$ at `V4/C3`, Evan Daniel’s $s(32) = 6$ at
+`V4/C1` with $s(12) \ge 15680/3951$ and $s(21) \ge 5000/1001$ at `V4/C3`, and wand125’s
 rectangle bounds for n = 18 to 78, each after a Fable max review, and contained D-509’s
 explainer PDF wobble on PR 235.
 
 [Session 161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md)
 took in wand125’s 28 September update and what it pointed to: Guzhou0806’s
-`s(17) > 116511/25000` (T-043), Evan Daniel’s mixed covers for `s(21) = 5` and
-`s(45) = 7` (T-052, T-053), wand125’s point-only routes to both (T-054, T-055) and its
-reported `s(50) ≥ 37/5` (T-048), each after a Fable max review, and recorded the
-retained `zmx2` run as a second method for `s(32) = 6` (jlevy/squares#245). It stopped
+$s(17) > 116511/25000$ (T-043), Evan Daniel’s mixed covers for $s(21) = 5$ and
+$s(45) = 7$ (T-052, T-053), wand125’s point-only routes to both (T-054, T-055) and its
+reported $s(50) \ge 37/5$ (T-048), each after a Fable max review, and recorded the
+retained `zmx2` run as a second method for $s(32) = 6$ (jlevy/squares#245). It stopped
 at 07:12Z with the complete `zm_mixed.py` re-sweeps unfinished, so its handover is
 uncertified and named under `think-l6la`.
 
 **Selected next entry:** `think-l6la`: the complete `zm_mixed.py --d4 --cert-mode`
-re-sweeps for `s(21)` and `s(45)`, recorded, raising T-052 and T-053 to `C4`.
+re-sweeps for $s(21)$ and $s(45)$, recorded, raising T-052 and T-053 to `C4`.
 
 **Selected next entry at the Session 160 cutoff:** `think-7c17`, BC-390: the widened n =
 11 rung 0 box on eight workers overnight, with BC-394’s rectangle ladders
-(`think-pr2b`), the 41 queued wand125 replays and Evan Daniel’s `s(32)` full sweep on
+(`think-pr2b`), the 41 queued wand125 replays and Evan Daniel’s $s(32)$ full sweep on
 the remaining workers; BC-393 (`think-0rbj`), BC-388 and BC-387 follow their day builds.
 
 **Selected next entry at the Session 159 cutoff:** `think-amx8`, BC-386, since stopped
@@ -1412,7 +1413,7 @@ the shaped W3 candidates from X-043 through X-045, fulfilled by Session 156. Ses
 153’s earlier `think-d010` publication handoff is fulfilled by PR 223’s merge.
 
 **Selected next entry at the Session 151 cutoff:** `think-gvlg`, registering the
-`n = 11` rung Session 151 left accepted and unregistered.
+$n = 11$ rung Session 151 left accepted and unregistered.
 Its threshold certificate at the 2880-step net is `RETAINABLE` by both retention routes,
 which agree at exactly 1, and its dilation-limit record is replayed and written.
 That cutoff debt is now discharged by T-033 in PR 221; this paragraph preserves the
@@ -1424,10 +1425,10 @@ The agenda-040 closeout under `OR-11` remains outstanding and is not this entry.
 
 [Session 149](packing/campaign/agent-sessions/session-149-n17-external-intake.md)
 adopted `s(17) >= 461300/99999` as `T-032` from Guzhou0806’s R012 certificate, with
-Mira’s `4613/1000` beneath it, after four passing replays and a proof review that found
+Mira’s $4613/1000$ beneath it, after four passing replays and a proof review that found
 no error. It is the first verified bound at this size that came from outside, and both
 certificates descend from this repository’s own `T-019`. The identifier was contended:
-pull request 208 claimed `T-031` from the open overnight stack for the `n = 11` octagon
+pull request 208 claimed `T-031` from the open overnight stack for the $n = 11$ octagon
 corner class, the stack merged into `main` first and kept it, and this result took
 `T-032` when `main` was merged into the intake branch.
 
@@ -1739,10 +1740,10 @@ The
 and [PR139](https://github.com/jlevy/squares/pull/139) carry finalization evidence.
 The post-merge daytime checkpoint adds no new global bound or target measurement.
 It proves that the translated 88-core obstruction has exact, zero-mismatch individual
-unit parents from `3.82345`, and independently verifies the analogous A6 statement from
-`3.82845`; contact, ownership and joint feasibility remain separate conditions.
+unit parents from $3.82345$, and independently verifies the analogous A6 statement from
+$3.82845$; contact, ownership and joint feasibility remain separate conditions.
 It also retains the fixed-angle adjacent-wall contact normal form, the correction that
-an arbitrary tight SAT row need not be physical contact, and the abstract `4/3`
+an arbitrary tight SAT row need not be physical contact, and the abstract $4/3$
 weighted-atom separation.
 The parent-domain adapter and production runner passed target-free independent
 admission, including deadline, timeout, failed-readback and source-closure adversaries.
@@ -1758,13 +1759,13 @@ This complete old-model finding leaves H-158 unresolved and changes no global bo
 BC329 remains the next direct global-bound target.
 BC337 is a secondary parallel lane, blocked on admission of a source-bound half-plane
 constructor, exact clipping, bounded runner and independent reader.
-It keeps exp151 direction 6 and open residual-centre domain `C°`. The control uses the
-existing TR centre-space obstacle `P_TR + (-R)` with the same nine other closed
-obstacles; the candidate substitutes the exact all-owner-incompatible obstacle `K_TR`
+It keeps exp151 direction 6 and open residual-centre domain $C^\circ$. The control uses
+the existing TR centre-space obstacle $P_{TR} + (-R)$ with the same nine other closed
+obstacles; the candidate substitutes the exact all-owner-incompatible obstacle $K_{TR}$
 directly, with no second Minkowski expansion.
 Thus `U0` and `U1` remove the respective TR obstacles and the same other nine obstacles
-from open `C°`. The target would accept only exact `area(U1) = 0` with independent union
-confirmation; because `U1` remains open, that establishes emptiness.
+from open $C^\circ$. The target would accept only exact `area(U1) = 0` with independent
+union confirmation; because `U1` remains open, that establishes emptiness.
 The [strategy review](docs/project/reviews/review-2026-09-10-n11-strategy-frontier.md)
 puts the conditional parent comparison first and one frozen 2880-step core/net packet
 next, while multiplicity admission, contact-conditioned domains and mixed angle-profile
@@ -1772,7 +1773,7 @@ charges proceed as separate blocks.
 The packet’s
 [target-free preflight](docs/project/reviews/review-2026-09-10-n11-bc329-packet-preflight.md)
 verifies its exact geometric headroom but identifies two prerequisites: test the raw
-least charge against `M/11 = 685457679/687500000`, then normalize by the frozen rule
+least charge against $M/11 = 685457679/687500000$, then normalize by the frozen rule
 `alpha = 1/m`; and admit a bounded fixed-core runner because the existing refinement CLI
 runs a different adaptive experiment.
 Coverage remains unmeasured, so this is a readiness result rather than a new bound.
@@ -1781,7 +1782,7 @@ Historical handoffs below retain their original context.
 
 [Session113](packing/campaign/agent-sessions/session-113-conditional-owner-sprint.md)
 closed Agenda032 with [T-023](packing/frontier/RESULTS.md), the five-dot exclusion of
-one specified four-owner branch at side `96/25 = 3.84`. The composed result is V3/C3,
+one specified four-owner branch at side $96/25 = 3.84$. The composed result is V3/C3,
 significance S3: exact full-net coverage plus audited geometric transfer, with no change
 to the global bound.
 The
@@ -1821,16 +1822,16 @@ PR 135 subsequently landed on `main` at `171bba33`; its post-merge CI, Pages dep
 live publication checks, and delayed-font smoke test passed, closing the release work
 under `think-qcmi`. The research priorities below are unchanged.
 
-**Parallel structural lanes at `n = 11`, first wave terminal.**
+**Parallel structural lanes at $n = 11$, first wave terminal.**
 [X-021](packing/campaign/explorations/X-021-what-can-be-proved-about-eleven-squares.md)
 pursued X-019’s exploration with four Fable lanes in parallel and reports what can be
 proved about eleven-square packings today: seven corner and wall lemmas, exact-verified
-angle counts at `96/25` on the rational cell unions specified in H-131 (rounded degree
+angle counts at $96/25$ on the rational cell unions specified in H-131 (rounded degree
 labels are approximations, not theorem endpoints), Stromquist’s Theorem 3 transported to
-`0.68°` bands at `96/25`, the spanning and chain lemmas, a weighted ownership lemma that
-would make four-corner containment a theorem from one LP, and a duality lemma that
+$0.68^\circ$ bands at $96/25$, the spanning and chain lemmas, a weighted ownership lemma
+that would make four-corner containment a theorem from one LP, and a duality lemma that
 prices every conditional and capture certificate — including a retained-net cap below
-`U` with the strict endpoint corrected in the handoff review.
+$U$ with the strict endpoint corrected in the handoff review.
 It also records what cannot be forced (corner penetration, blocker angles,
 positive-length contacts, a bound on orientation classes) and prices the three closing
 architectures.
@@ -1841,49 +1842,50 @@ including the unmet scopes inherited from Agenda 029. H-127–H-134 register the
 claims. The lane reports and every script they ran are retained under
 [`results/agenda-030/`](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/README.md).
 No bound has changed.
-The owner started the wave on 2026-09-08: sessions 100 to 104 run BC-294 (the `B = 1`
+The owner started the wave on 2026-09-08: sessions 100 to 104 run BC-294 (the $B = 1$
 value and the kill tests), BC-293 (the corner-skeleton measure), BC-295 (the band replay
-and widening), BC-297 (the `3.82` plateau) and BC-302 (the eleven-mark ownership set),
+and widening), BC-297 (the $3.82$ plateau) and BC-302 (the eleven-mark ownership set),
 each in its own worktree on `claude/squares-n11-constraints-wl9atd`; `exp-130` was the
 next experiment id at launch.
 [Session-103](packing/campaign/agent-sessions/session-103-plateau-artefact-at-3-82.md)
-is the first terminal lane: the exactly-eleven plateau at `191/50` is not a Trump-strip
+is the first terminal lane: the exactly-eleven plateau at $191/50$ is not a Trump-strip
 artefact (45 grid-seed sites and 822 of BC-200’s retained sites lie in two or more of
 the scaled cores), the general site-invisible-overlap mechanism holds, adding strip
-sites left the value at `11.07` with the generator stopping on its 32-row pricing cap,
-and an exact census at the different mass `11.118805` exceeds one million near-tight
+sites left the value at $11.07$ with the generator stopping on its 32-row pricing cap,
+and an exact census at the different mass $11.118805$ exceeds one million near-tight
 cells with no clustering on Trump’s cores.
 This rejects the proposed strip explanation; it does not prove an obstruction at mass
 eleven or decide full-dual pricing.
 [Session-102](packing/campaign/agent-sessions/session-102-angle-band-theorems-at-q.md)
 replayed every count in H-131 exactly and widened the robust end band far past H-130’s
-`3°`: no packing at `96/25` has every folded angle in Theorem C’s exact end-cell union
-(degree boundaries approximately `10.387466°` and `43.0737°`) (Theorem C, grid 119, mass
-`11083/1024`), with `[0°, 1.7139°] ∪ [43.5293°, 45°]` the first rung on grid 79; the
-dual of the band toward `40.19°` puts its weight near the axis, not at Trump’s angle,
-and `ceiling.py` decides that none of those duals is a continuum obstruction, so the
-band’s true value stays open from below.
+$3^\circ$: no packing at $96/25$ has every folded angle in Theorem C’s exact end-cell
+union (degree boundaries approximately $10.387466^\circ$ and $43.0737^\circ$) (Theorem
+C, grid 119, mass $11083/1024$), with
+$[0^\circ, 1.7139^\circ] \cup [43.5293^\circ, 45^\circ]$ the first rung on grid 79; the
+dual of the band toward $40.19^\circ$ puts its weight near the axis, not at Trump’s
+angle, and `ceiling.py` decides that none of those duals is a continuum obstruction, so
+the band’s true value stays open from below.
 [Session-104](packing/campaign/agent-sessions/session-104-ownership-set-at-q.md) met
-H-134 in segment form: ten horizontal segments of length `1/10` centred on Stromquist’s
-ten Figure-13 points at `96/25` are a robust unavoidable set at tolerance `3/500`,
+H-134 in segment form: ten horizontal segments of length $1/10$ centred on Stromquist’s
+ten Figure-13 points at $96/25$ are a robust unavoidable set at tolerance $3/500$,
 certified by an interval reader over pose space with every one of its 184,756 leaves
 re-decided in exact arithmetic, while every point-mark set built from the atom skeleton
 has an exact escape; every contained unit square is therefore localised near one of ten
 known segments, which is the premise route (a) needed, though not exactly-one ownership.
 [Session-101](packing/campaign/agent-sessions/session-101-corner-skeleton-ownership.md)
-found H-128 unsuccessful on its tested finite support at `96/25`: the corner-bounded
-measure sweeps exactly at mass `11.798` against `11.262` free, and the corner atom’s
+found H-128 unsuccessful on its tested finite support at $96/25$: the corner-bounded
+measure sweeps exactly at mass $11.798$ against $11.262$ free, and the corner atom’s
 position, not the bound, is the obstacle on that support.
 H-128 remains open over the retained net; it proved the corner-pair form instead, that
-every packing at `96/25` has four distinct squares each containing one of its corner’s
+every packing at $96/25$ has four distinct squares each containing one of its corner’s
 two marks, so the anchor for BC-299 is a corner pair.
 [Session-100](packing/campaign/agent-sessions/session-100-duality-kill-tests-and-unit-value.md)
-left H-129 undecided: the `B = 1` family at `96/25` verifies exactly at `8.918` on a
+left H-129 undecided: the $B = 1$ family at $96/25$ verifies exactly at $8.918$ on a
 203-direction net, with its weight diffuse in angle and mostly outside Trump’s
 neighbourhood. The handoff review found a stronger retained control: exp-070’s family
-transports by `10000/9977` to unit squares at side `38200/9977 < 96/25`, preserving
-depth one and mass `21342289572/2055263195 ≈ 10.3842`. A smaller feasible family does
-not certify an upper bound.
+transports by $10000/9977$ to unit squares at side $38200/9977 < 96/25$, preserving
+depth one and mass $21342289572/2055263195 \approx 10.3842$. A smaller feasible family
+does not certify an upper bound.
 The depth polisher will start from that retained control; its missing scratch state is
 not a runnable handoff.
 
@@ -1909,7 +1911,7 @@ was partial. The separate
 [Exp-149](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-149-selected-wall-tuple-cover.md)
 refutes H-147 at its first required direction: owner-000 has a positive exact uncovered
 area and a retained rational strict escape for the selected four-patch relaxation
-labelled by tuple `(0,0,0,7)`. This refutes fixed D as a cover of that relaxation, not
+labelled by tuple $(0,0,0,7)$. This refutes fixed D as a cover of that relaxation, not
 the physical tuple. H-146 remains unresolved over other labels.
 
 BC-320 then tested the saved escape and every one-site extension of fixed D on that same
@@ -1926,7 +1928,7 @@ is the completed refutation of every one-site extension of fixed D on the select
 four-patch relaxation.
 [exp-154](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-154-h157-sixteen-sector-refinement-limit.md)
 refuted `H-157`: six of its eight refined subclasses retain survivor weight ten, while
-two improve to `19/2`. The two improved patches intersect their fixed target cores, so
+two improve to $19/2$. The two improved patches intersect their fixed target cores, so
 their old positive distance explanation was invalid; the six neutral children retain the
 reported positive distance.
 The corrected T1 and T2 statements concern the retained finite ray universe and the
@@ -1936,10 +1938,10 @@ owner-selection routing, and they do not establish that the conditional strategy
 Separately, the retrospective
 [BC303 T1 literal replay](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-157-bc303-literal-t1-witness.md)
 rejects the named bottom-left role-C universal local surplus inequality: one admissible
-parent has closed labels `{3,4,11,12}` and surplus `3/800000 < epsilon`. It decides no
-continuous-domain minimum, T2 forced-type case, global routing, or new `s(11)` bound.
-Exp150’s compatibility result does not establish continuous unit parents or simultaneous
-owners, and exp153 does not exclude the physical tuple.
+parent has closed labels $\lbrace3,4,11,12\rbrace$ and surplus `3/800000 < epsilon`. It
+decides no continuous-domain minimum, T2 forced-type case, global routing, or new
+$s(11)$ bound. Exp150’s compatibility result does not establish continuous unit parents
+or simultaneous owners, and exp153 does not exclude the physical tuple.
 
 [Session121](packing/campaign/agent-sessions/session-121-owner-core-compatibility.md)
 and
@@ -2006,7 +2008,7 @@ the [handoff review](docs/project/reviews/review-2026-09-08-pr127-research-readi
 preserve the original stack review and its separately tallied cost.
 
 Full-support pricing H-135 remains an unrun reserve under `think-7lp3`. Exp134’s exact
-transport control passed with depth one and unchanged mass `21342289572/2055263195` in
+transport control passed with depth one and unchanged mass $21342289572/2055263195$ in
 135.91 seconds, but the pricing target was never invoked.
 Neither that administrative stop nor the deferred H-125 kernel is a negative scientific
 result. The owner-case continuation above takes priority.
@@ -2020,7 +2022,7 @@ guarded central-parent exclusion, the signed short-slide exclusions, partial ful
 exclusions, exact counterexamples to the proposed disk and octagon capacity-six
 shortcuts, and the ten-square residual skeleton’s exact translation-fiber reduction.
 They apply only under their declared wall, contact, angle, or skeleton conditions and do
-not change the global `n = 11` bracket.
+not change the global $n = 11$ bracket.
 The matched H-118 coupled-LP comparison and H-120 residual-family determination remain
 open, and Agenda 028 stays paused.
 Its dated
@@ -2031,12 +2033,12 @@ new work.
 **Agenda 030’s selection, made.**
 [Session-107](packing/campaign/agent-sessions/session-107-first-wave-selection.md)
 replayed the first wave’s three strongest claims with readers written from their
-statements, and all three agree: the segment cover at `96/25`, the corner-pair
+statements, and all three agree: the segment cover at $96/25$, the corner-pair
 containment theorem, and the band exclusion at grid 119. Two corrections came with it:
-the segment length threshold is in `(7/100, 8/100]`, and the cover’s certified domain
+the segment length threshold is in $(7/100, 8/100]$, and the cover’s certified domain
 now closes a far-wall sliver.
 BC-303 funds the segment cover toward an ownership argument as the next sustained block,
-with the `B = 1` depth polisher as the efficiency block and the plateau’s full-dual
+with the $B = 1$ depth polisher as the efficiency block and the plateau’s full-dual
 pricing as its first task; it retains the band ladder as filler and defers the
 corner-pair anchored certificate until the restricted fractional packing value is
 measured, since X-021’s duality lemma bounds any conditional certificate by it.
@@ -2059,7 +2061,7 @@ The same block repaired the deferred checkpoint (a third label-gated job for the
 behavioural lane and a declared budget for the escape screen) and amended OR-2, OR-3 and
 OR-6.
 
-**Atlas expansion to `n = 324`, owner-directed, beside the research line.**
+**Atlas expansion to $n = 324$, owner-directed, beside the research line.**
 [The plan](docs/project/specs/active/plan-2026-09-07-atlas-expansion-to-324.md) under
 epic `think-0juv` and
 [session-099](packing/campaign/agent-sessions/session-099-atlas-expansion-to-324.md)
@@ -2161,7 +2163,7 @@ density, typed stationarity, and Trump capture in
 
 Research and tooling have separate continuation work.
 [Session 087](packing/campaign/agent-sessions/session-087-agenda022-continuation.md)
-completed Session 086’s `BC-213` rung and accepted `H-062` at bracket width `0.015`.
+completed Session 086’s `BC-213` rung and accepted `H-062` at bracket width $0.015$.
 Session 089 retains the finite-row density candidate, its complete pair exclusion, the
 exact-angle auxiliary result, and the next complete-method assessments.
 
@@ -2197,14 +2199,14 @@ retains the remaining geometric replay under `think-0krc`; the selected target-r
 entry remains BC-264. All 66 full-checkpoint steps passed at `dd92b2a0`.
 
 [Session105](packing/campaign/agent-sessions/session-105-stromquist-n26-verification.md)
-follows the author’s clarification about `n=26`. Its
+follows the author’s clarification about $n=26$. Its
 [verification report](docs/project/research/research-2026-09-07-stromquist-n26-verification.md)
 checks Stromquist’s historical packing exactly and confirms that Friedman’s current
 upper bound is smaller.
 A scoped support argument closes rigid central-block rotation with two fixed corner
 separations.
 Green’s stronger source-reported lower bound is now recorded separately from
-the verified one at `n=26–27`; proof recovery is `think-0x08`, the remaining
+the verified one at $n=26\text{–}27$; proof recovery is `think-0x08`, the remaining
 source-table audit is `think-4g6w`, and `think-z0fi` implements and controls the
 [specified contact-release family](docs/project/reviews/review-2026-09-07-stromquist-n26-directions.md).
 The [MacIver review](docs/project/reviews/review-2026-09-07-maciver-square-packing.md)
@@ -2351,7 +2353,7 @@ The renderer’s standing exact-motion control remains independently replayable:
 [agenda-008](packing/campaign/agendas/agenda-008-queue-repair-and-the-discriminating-control.md)
 is closed with all four commitments terminal;
 [session-045](packing/campaign/agent-sessions/session-045-agenda008-queue-and-identity.md)
-then ran nine unplanned phases on `BC-049` at `n = 40` and carries a handoff at its end
+then ran nine unplanned phases on `BC-049` at $n = 40$ and carries a handoff at its end
 that is the authoritative summary, and
 [session-046](packing/campaign/agent-sessions/session-046-gobel-family-constructions.md)
 took the cheapest thing that handoff named.
@@ -2372,11 +2374,11 @@ pre-push floor `BC-086` asked for (`packing-validate --push`, 58s against `--fas
 646s), and ran the `BC-088` reassessment whose sequenced plan is
 [X-009](packing/campaign/explorations/X-009-where-a-new-packing-is-reachable.md) — then
 executed that plan’s first block: **twelve verified ceilings moved off the integer grid
-onto exact sides** at `n = 18, 19, 26, 27, 38, 52, 66, 67, 82, 84, 85, 86`, every one
+onto exact sides** at $n = 18, 19, 26, 27, 38, 52, 66, 67, 82, 84, 85, 86$, every one
 decided by exact sign — ten over `Q(sqrt 2)` and the last two over `Q(sqrt 7)`, the
 first exact verification outside `Q(sqrt 2)` — from a published rule or a coordinate
-lift, about `3.2` of aggregate gap.
-The widest trailing ceiling is now `n = 50`’s `3/7`.
+lift, about $3.2$ of aggregate gap.
+The widest trailing ceiling is now $n = 50$’s $3/7$.
 
 [session-050](packing/campaign/agent-sessions/session-050-exp045-audit-and-acceptance.md)
 then performed the independent audit `exp-045` had waited on since registration, built
@@ -2401,10 +2403,10 @@ checkpoint
 resequenced the tentative half;
 [session-053](packing/campaign/agent-sessions/session-053-block3-bentz-machine-check.md)
 closed block 3 on `BC-099` under `think-1o1f` with the run’s first research result:
-Bentz 2010, Theorem 8 (`s(46) = 7`) machine-certifies as printed** — 92 exact cells over
+Bentz 2010, Theorem 8 ($s(46) = 7$) machine-certifies as printed** — 92 exact cells over
 `Q(sqrt 2, sqrt 3)`, the Lemma 5 threshold by a rigorous rational subdivision bound of
-`0.955390`, all 45 points charged — held `unresolved` with `needs_review` under the
-unattended rules that night (resolved by the review below), with the `m = 4` remainder
+$0.955390$, all 45 points charged — held `unresolved` with `needs_review` under the
+unattended rules that night (resolved by the review below), with the $m = 4$ remainder
 typed on `think-1o1f` and one candidate printed gap flagged for replay.
 The same session absorbed a mid-run merge from `main` (the parallel audit session had
 taken `session-050` and `D-404`, so block 1’s record is `session-054` and the
@@ -2415,7 +2417,7 @@ surface to two stacked control defects, `D-407` and `D-408`, both fixed on this 
 `BC-100`): the `H-044` chunk-expressibility verdict exists as `exp-046`, exploratory by
 the hypothesis’s own calibration-only amendment, held `unresolved` with `needs_review`
 that night (resolved below) — the criterion is **missed under both denominator
-readings** the registered text supports (23/30 = 0.7667 over all records at `n ≤ 30`;
+readings** the registered text supports (23/30 = 0.7667 over all records at $n \le 30$;
 3/10 = 0.30 over the non-grid sweep records), identically in both bands, every miss
 typed and determinate.
 The measured mechanism: the lattice grammar expresses the grid stratum completely and
@@ -2429,31 +2431,31 @@ Two results landed on first complete runs, both held that night for review (reso
 below): **Figure 2’s sixteen-point base configuration is machine-certified** (30 exact
 rational cells: 4 Lemma 1 corner pentagons, 8 Lemma 4 wall rectangles, 18 Lemma 2
 triangles; 16/16 charged), and **Lemma 10 is machine-settled both ways** — the printed
-replacement point `(1, 1.74)` is refuted by an exact escape certificate, and all three
-corrected replacement sets (`(1.12, 1)`, `(1.74, 1)`, `(1.87, 0.76)`) certify exactly,
+replacement point $(1, 1.74)$ is refuted by an exact escape certificate, and all three
+corrected replacement sets ($(1.12, 1)$, $(1.74, 1)$, $(1.87, 0.76)$) certify exactly,
 their Lemma 5 quadrilaterals landing inside the very parameter families the paper’s
 Section 1 lists. The certifier gained subset semantics, margin and near cells, and the
-rational-`a` threshold bound along the way.
+rational-$a$ threshold bound along the way.
 **Block 6
 ([session-057](packing/campaign/agent-sessions/session-057-block6-green-sizes.md),
 `BC-101`) then moved the verified lower lane for the first time since 2005:
-`s(17) ≥ 17/4 = 4.25` and `s(18) ≥ 17/4`, certified exactly** by a sixteen-point
-unavoidable set in `[0, 17/4]²` (`cases/green17`) — above Nagamochi’s `≈ 4.1623`, below
-Green’s unadoptable `≈ 4.4452` — the cell plan pinned to `17/4` by an `11/1000000`
-slack, the falsifier corroborating by saturation, and the verdict held that night for
-review; the review’s independent audit then showed `17/4` was the plan’s ceiling rather
-than the set’s, and the upgrade below carries the adopted bound.
+$s(17) \ge 17/4 = 4.25$ and $s(18) \ge 17/4$, certified exactly** by a sixteen-point
+unavoidable set in $[0, 17/4]^2$ (`cases/green17`) — above Nagamochi’s $\approx 4.1623$,
+below Green’s unadoptable $\approx 4.4452$ — the cell plan pinned to $17/4$ by an
+$11/1000000$ slack, the falsifier corroborating by saturation, and the verdict held that
+night for review; the review’s independent audit then showed $17/4$ was the plan’s
+ceiling rather than the set’s, and the upgrade below carries the adopted bound.
 **The run then discharged the checkpoint’s two authorized fillers and closed early.**
 [Session-058](packing/campaign/agent-sessions/session-058-block7-m8-sizing.md)
-(`BC-103`) sized the `m = 8` attempt exactly and parked it: the m = 7 pattern’s ceiling
-`7√3/2 + 2√2 − 1 ≈ 7.8906` sits below both side 8 and the standing `7.9282` at `n = 61`,
-with the lattice dilemma exact (8 rows overrun the Lemma 2 pitch cap by `0.0157`; 9 rows
-overrun the 60-point budget by 7).
+(`BC-103`) sized the $m = 8$ attempt exactly and parked it: the m = 7 pattern’s ceiling
+$7\sqrt{3}/2 + 2\sqrt{2} - 1 \approx 7.8906$ sits below both side 8 and the standing
+$7.9282$ at $n = 61$, with the lattice dilemma exact (8 rows overrun the Lemma 2 pitch
+cap by $0.0157$; 9 rows overrun the 60-point budget by 7).
 [Session-059](packing/campaign/agent-sessions/session-059-block8-tau-star-pilot.md)
 (`BC-102`) built the τ* pilot and read the method diagnostic: the eleven-crossing sits
-near side `3.83` (uncertified, typed), so a pure eleven-point set has at most a
-`~0.04`-wide window above `2 + 4/√5` and any ambitious bespoke `s(12)` bound forces the
-threshold/segment/moving-resource machinery.
+near side $3.83$ (uncertified, typed), so a pure eleven-point set has at most a
+`~0.04`-wide window above $2 + 4/\sqrt{5}$ and any ambitious bespoke $s(12)$ bound
+forces the threshold/segment/moving-resource machinery.
 Everything mathematical from the run was held `unresolved` with `needs_review` overnight
 per the unattended rules; the verification review below resolved every hold the same
 day.
@@ -2467,7 +2469,7 @@ The determinations, each grounded in [conventions.md §4](conventions.md#4-evide
 the frontier evidence contract: **Theorem 8’s audit is verified** and fully
 machine-checked (`E-bentz46-theorem8-audit`); **the Lemma 10 settlement is verified and
 now source-settled** — the published page image itself prints the transposed
-`(1, 1.74)`, so the defect is the journal’s, recorded as `defect-found` on
+$(1, 1.74)$, so the defect is the journal’s, recorded as `defect-found` on
 `E-bentz-2010-proof` with the partial Theorem 9 audit in `E-bentz13-figure2-audit`;
 **exp-046’s hold is cleared with H-044 undisposed by its own registered amendment** (the
 miss is determinate under both readings); **the m = 8 parking statement stands as exact
@@ -2477,13 +2479,13 @@ The green17 determination became an upgrade: the independent interval certifier 
 for the review (`cases/green17/interval_audit.py` — exhaustive exact integer
 branch-and-bound over the full pose space, pair-handoff and wall-tightened discharge
 rules, negative controls refuting tampered sets and oversized sides with exact
-witnesses) proved the run’s `17/4` was the cell plan’s ceiling, not the set’s: the same
-sixteen points certify at `4426213/1000000 = 4.426213`, the cell certificate was rebuilt
+witnesses) proved the run’s $17/4$ was the cell plan’s ceiling, not the set’s: the same
+sixteen points certify at $4426213/1000000 = 4.426213$, the cell certificate was rebuilt
 there (right-wall Lemma 4 rectangles replacing the near-slabs), and
-**`verified_lower_bound` at `n = 17` and `n = 18` moved to `4.426213` on two independent
+**`verified_lower_bound` at $n = 17$ and $n = 18$ moved to $4.426213$ on two independent
 formal methods** (`E-green17-sixteen-point-lower`, `E-green17-interval-audit`), the
-set’s exact ceiling `753/250 + √2 ≈ 4.42621356` bracketed by certification at `4.426213`
-and refutation at `4.427` and typed as follow-on.
+set’s exact ceiling $753/250 + \sqrt{2} \approx 4.42621356$ bracketed by certification
+at $4.426213$ and refutation at $4.427$ and typed as follow-on.
 The assembled case is the 2026-08-31 verification review under `docs/project/reviews/`;
 the owner reviews the PR as a whole.
 Follow-ons stay on their beads (`think-1o1f`, `think-q6vy`, `think-07t7` paused,
@@ -2504,7 +2506,7 @@ gates, and a scoped novelty classification — and the results register
 whose declared rungs `devtools/check_results.py` checks against cited evidence, required
 notes, and review metadata on every validation run.
 Unsupported promotion and unexplained understatement fail the build.
-The register subsumes the review’s determinations (the `s(17)`/`s(18)` upgrade is
+The register subsumes the review’s determinations (the $s(17)$/$s(18)$ upgrade is
 `T-001`/`T-002` at `V4`/`C4`) and the legacy first-party theorems (the Stromquist repair
 is `T-010`; this document’s own `T-1`–`T-4` below remain declared shorthand).
 softschema is upgraded to `0.8.0` across the schema toolchain in the same slice.
@@ -2517,14 +2519,14 @@ again. Research follow-ons are unchanged on their beads.
 
 **As of 2026-08-31, late evening — historical agenda-012/013 launch record.**
 [X-011](packing/campaign/explorations/X-011-controls-are-not-targets.md) reconciles the
-new `n = 17` weighted certificates, the `n = 68/69` precision gap, the medium-case
-construction ladder, and the opportunity cost of a thirteenth open-ended `n = 5` round.
+new $n = 17$ weighted certificates, the $n = 68/69$ precision gap, the medium-case
+construction ladder, and the opportunity cost of a thirteenth open-ended $n = 5$ round.
 [Agenda-012](packing/campaign/agendas/agenda-012-weighted-proof-precision-bridge-and-cross-scale-controls.md)
 turns that synthesis into three disjoint first-wave blocks with real beads and 15--30
 minute check-in cells: `BC-108` runs an independent-implementation agreement check on
-the proposed `4.5058` certificate while naming shared assumptions; `BC-109` builds the
-hash-verified parent-child serialization bridge at `n = 68/69`; and `BC-110` decides
-whether `n = 50` can become the rational exact-promotion control.
+the proposed $4.5058$ certificate while naming shared assumptions; `BC-109` builds the
+hash-verified parent-child serialization bridge at $n = 68/69$; and `BC-110` decides
+whether $n = 50$ can become the rational exact-promotion control.
 They were scheduled to run in parallel, followed by `BC-111`’s bounded checkpoint.
 The dependency-linked successors are already filed.
 [Agenda-013](packing/campaign/agendas/agenda-013-nine-hour-autonomous-run.md) is the
@@ -2535,7 +2537,7 @@ measure throughput again and freeze review packets, 90 minutes for three indepen
 reviewers, and 45 minutes for synthesis and final validation.
 Every wave boundary requires a commit, tbd and generated-view reconciliation, validation
 receipt, push, and PR update.
-Existing `BC-010` gets one final 90-minute discriminator with a matched `n = 10`
+Existing `BC-010` gets one final 90-minute discriminator with a matched $n = 10$
 transfer under dedicated bead `think-iivb`. Its first cell freezes both fixtures, the
 observable, threshold, and refusal conditions before measurement.
 Only a passing transfer may remove `BC-011`’s blocked hold; a refusal stops the
@@ -2545,33 +2547,33 @@ not the queue gate. Those launch instructions are retained as chronology; use th
 
 **The parallel recognition slice remains `BC-089` on `think-d0j1`** in
 [agenda-009](packing/campaign/agendas/agenda-009-pipeline-hygiene-and-the-search-reassessment.md):
-agenda-012 transfers `n = 50` to `BC-110`, leaving thirteen disjoint cases on BC-089;
-`n = 54` follows only if that result shows nested-radical representation is the next
-missing seam. The robust-rational sweep and typed `n = 53` refusal remain on the parent
+agenda-012 transfers $n = 50$ to `BC-110`, leaving thirteen disjoint cases on BC-089;
+$n = 54$ follows only if that result shows nested-radical representation is the next
+missing seam. The robust-rational sweep and typed $n = 53$ refusal remain on the parent
 bead. `BC-049` on `think-xdly` is the research cell all of the mathematics below sits
 under, and it stays open.
 
-**`n = 40` is infinitesimally flexible**, exactly, over `Q(sqrt 2)`: seven retained
+**$n = 40$ is infinitesimally flexible**, exactly, over `Q(sqrt 2)`: seven retained
 directions turn the sixteen squares of its tilted block and leave the frame fixed, and
 every one is refused at second order by a verified self-stress.
 The property stays `undetermined` because an infinitesimal flex is not a motion — the
-gaps curve shut at order `t²` — so what is settled is that no *first-order* argument can
-establish rigidity there.
+gaps curve shut at order $t^2$ — so what is settled is that no *first-order* argument
+can establish rigidity there.
 Getting further needs an instrument this repository does not have: the cone is bounded
 to dimension 45 against six dimensions of anything found admissible, and closing that
-gap means reasoning about `2^42` corner disjunctions without enumerating them.
+gap means reasoning about $2^{42}$ corner disjunctions without enumerating them.
 
 The correction underneath it generalized.
-Göbel’s published family is *exactly* the best known at `n = 5`, `40`, `65` and `89`;
+Göbel’s published family is *exactly* the best known at $n = 5$, $40$, $65$ and $89$;
 all four now have exact constructions here, and the last two turn out to be what their
 retained decimal witnesses were all along — agreement to `5e-33` identifies rather than
-merely permits. `n = 28` is the near miss that stops the obvious guess: the family gives
-it a valid packing `0.004` worse than the best known, whose optimum is at algebraic
+merely permits. $n = 28$ is the near miss that stops the obvious guess: the family gives
+it a valid packing $0.004$ worse than the best known, whose optimum is at algebraic
 degree 6 and is not in the family at all.
 Take the next slice from [`agenda-map.md`](packing/campaign/agenda-map.md).
 
 `BC-017` delivered its readiness input and stopped there.
-The `n = 3` full-cell control already retained the target-free execution-plan receipt
+The $n = 3$ full-cell control already retained the target-free execution-plan receipt
 the commitment asked for, so the slice produced what that receipt authorizes instead: on
 the same three-square subject the structural plan reports 4 seated-wall equalities and 8
 open-wall inequalities against 2 contact equalities and 1 non-edge inequality, while
@@ -2601,7 +2603,7 @@ and the corroborating `-W` bridge are the experiment record’s Amendment and `D
 `exp-045` now records `decision: accepted`, `BC-029` is complete, and `BC-010`’s
 readiness on the map is genuine.
 
-**`n = 5` is second-order rigid, and that is a first-party result.**
+**$n = 5$ is second-order rigid, and that is a first-party result.**
 [X-007](packing/campaign/explorations/X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md)
 settles the question `BC-049` asked, exactly, over `Q(sqrt 2)` at Göbel’s construction
 rather than at the retained decimal witness — which is `2.4e-30` off the diagonal and so
@@ -2620,12 +2622,12 @@ is a curve-selection argument that `X-007` writes out as prose and no replay che
 the property enum has no word for what was actually established.
 What did change is everything saying why — `verified` rather than `numerically-checked`,
 `exact-algebraic` rather than `numerical-multiprecision`, and a first-party evidence id
-in place of the screen’s — which takes `n = 5` out of the assessment tool’s ownership,
-so it joins `n = 11` as left to a stronger argument.
+in place of the screen’s — which takes $n = 5$ out of the assessment tool’s ownership,
+so it joins $n = 11$ as left to a stronger argument.
 Both `D-354` guards stayed green without being edited, which was the test the change was
 held to.
 
-For `n = 5` that stronger argument arrived on 2026-09-03. `BC-152` wrote the
+For $n = 5$ that stronger argument arrived on 2026-09-03. `BC-152` wrote the
 curve-selection step out in full and checked it against an exact accounting of all 400
 local inequalities, `BC-153` reviewed it independently, and the property now reads
 `locally-rigid` at fixed side on a second first-party evidence record — see
@@ -2644,12 +2646,12 @@ broader H-023 research owner.
 declares `contact + closure` the relation the atlas should count, but `D-375` records
 that it had scored the atlas’s own relation at the wrong level — both of that relation’s
 inputs are canonical under relabelling and `D4` by construction, so it is a quotient
-statement, and the `n = 4` labelled control it was refuted on can refute no
+statement, and the $n = 4$ labelled control it was refuted on can refute no
 relabelling-invariant relation at all.
 
 [X-006](packing/campaign/explorations/X-006-the-discriminating-control-at-n5.md) then
 answers the question this handoff previously posed.
-`n = 5` **does** admit a discriminating control, and it is the pair `D-034` has been
+$n = 5$ **does** admit a discriminating control, and it is the pair `D-034` has been
 quoting since 2026-08-23 without ever retaining: two endpoints sharing a contact
 certificate, differing in geometric key, at a side difference of `8.9e-16`. It is
 retained now, and it discriminates whichever way its component count resolves — the
@@ -2664,18 +2666,18 @@ Block A is **closed**: `BC-047` under `think-y85e` and `BC-042` under `think-zmh
 met their declared exits in
 [session 035](packing/campaign/agent-sessions/session-035-agenda005-block-a.md), which
 is terminal. Precision is now manufactured in-repository rather than read off a source —
-the published `n = 29` system refines to 1000 declared digits with a reported residual
-bound of `1.09829e-1039` — and the `n = 29` contact structure is frozen with 89
-incidences, six orientation classes, an empty ambiguity report and `97.5013` decades of
-separation, with the same extractor reproducing the known `n = 11` structure exactly
+the published $n = 29$ system refines to 1000 declared digits with a reported residual
+bound of `1.09829e-1039` — and the $n = 29$ contact structure is frozen with 89
+incidences, six orientation classes, an empty ambiguity report and $97.5013$ decades of
+separation, with the same extractor reproducing the known $n = 11$ structure exactly
 under exact arithmetic.
 `BC-045` is now closed at all four phases, in
 [session 036](packing/campaign/agent-sessions/session-036-block1-interval-operator.md)
 and
 [session 037](packing/campaign/agent-sessions/session-037-block2-interval-calibration.md),
 under [agenda-006](packing/campaign/agendas/agenda-006-overnight-research-blocks.md).
-The interval route is built, calibrated against `n = 5`, `n = 10` and `n = 11`, and run
-at `n = 29`, where it certifies `s(29) <= 5.93383346267692918974379895098` at a declared
+The interval route is built, calibrated against $n = 5$, $n = 10$ and $n = 11$, and run
+at $n = 29$, where it certifies `s(29) <= 5.93383346267692918974379895098` at a declared
 relaxation of `1e-20`. That certificate is retained `unresolved` with
 `needs_review: true` and promotes nothing: it sits `5.23371e-5` below the standing
 verified ceiling, and whether it moves `verified_upper_bound` is a reviewed human
@@ -2686,41 +2688,41 @@ contacts now identify which features meet, and assembly turns a structure into e
 that vanish at the packing they came from.
 Three findings there went against the promotion spec — counting rows cannot say whether
 a system determines the pose, an angle class does not license an angle identity, and
-seven of the `n = 29` squares are reflected and refused by name.
+seven of the $n = 29$ squares are reflected and refused by name.
 The rank half of the first was later found to be measuring a bug rather than the
 packings: see the `BC-059` paragraph below and [D-361](defects.md).
 `BC-056` closed that first stretch, and the run then resumed rather than ending: a
 review of the commit timestamps showed it had misread its own clock and stopped with
 most of its budget unspent ([D-358](defects.md)). `BC-057` is closed in
 [session 039](packing/campaign/agent-sessions/session-039-block5-witness-plumbing.md),
-which built the interval checker and recorded the `n = 29` certificate as evidence
+which built the interval checker and recorded the $n = 29$ certificate as evidence
 without promoting it.
 `BC-058` is closed in
 [session 040](packing/campaign/agent-sessions/session-040-block6-chirality.md): a pose
 is now a centre, an angle **and** a chirality, so the reflected squares are assembled
-rather than refused and the `n = 29` residual falls from `2.0` to `1.3e-15` with the
-`n = 11` calibration unmoved.
+rather than refused and the $n = 29$ residual falls from $2.0$ to `1.3e-15` with the
+$n = 11$ calibration unmoved.
 The feature-renaming cost that commitment was written to weigh was not paid — reflecting
 the local axis leaves the corner indices alone.
 `BC-059` is closed in
 [session 041](packing/campaign/agent-sessions/session-041-block7-collinearity.md), and
 the answer was that there were no stationarity conditions to derive.
-The shortfall `close` had been reporting — four at `n = 11`, seven at `n = 29` — was a
+The shortfall `close` had been reporting — four at $n = 11$, seven at $n = 29$ — was a
 bug in assembly rather than a property of the packings: an `edge-edge` contact was
 written as one equation where collinearity in the plane is two, which left one square
 free to pivot about the shared point and drive its neighbour open at first order.
 With both endpoints of the edge on the line the contact Jacobian reaches **full rank at
-both sizes** — `34` of `34` at `n = 11` and `88` of `88` at `n = 29` — residuals unmoved
+both sizes** — $34$ of $34$ at $n = 11$ and $88$ of $88$ at $n = 29$ — residuals unmoved
 at `8.9e-16` and `1.3e-15`, and `close` now refuses at both.
 It is [D-361](defects.md), class `soundness`, direction `conservative`: it made the
 pipeline look further from a solvable system than it was.
-Göbel’s `n = 5` has no `edge-edge` contact, is untouched by the repair, and kept a
+Göbel’s $n = 5$ has no `edge-edge` contact, is untouched by the repair, and kept a
 genuine shortfall of one.
 `BC-069` closes it, and the answer corrects the form the pipeline had been promising.
 The condition is not first-order: `side_leak` reads `1.00e-16` there, so “no admissible
 motion decreases the side” is already true and adds a dependent row.
 The single free direction is a rotation of the centre square about its own centre, and
-the contacts fail along it at `−0.25 t²` in both signs — an ordinary second-order
+the contacts fail along it at $-0.25 t^2$ in both signs — an ordinary second-order
 obstruction, so the pose is infinitesimally flexible and second-order rigid, and the
 shortfall is a degenerate root rather than an unpinned optimum.
 Differentiating the contact map along that direction takes the rank to **16 of 16** with
@@ -2733,35 +2735,36 @@ The misnaming is [D-363](defects.md).
 `BC-060` is closed in
 [session 042](packing/campaign/agent-sessions/session-042-block8-exact-solve.md), with
 one answer and one refusal.
-At `n = 11` the promotion spec’s frozen margin rule recovers Trump’s published
-degree-eight minimal polynomial from digits alone — `C = 12420`, `B = 36.85`, `M = 200`,
-a relative residual of `4.99e-338` at `B + M` still falling to `3.38e-412` at `2B + 2M`
-— and discharges it as irreducible over `Q` with an isolating interval containing the
-refined value. At `n = 29`, on a thousand digits with a reported residual bound of
+At $n = 11$ the promotion spec’s frozen margin rule recovers Trump’s published
+degree-eight minimal polynomial from digits alone — $C = 12420$, $B = 36.85$, $M = 200$,
+a relative residual of `4.99e-338` at $B + M$ still falling to `3.38e-412` at $2B + 2M$
+— and discharges it as irreducible over $Q$ with an isolating interval containing the
+refined value. At $n = 29$, on a thousand digits with a reported residual bound of
 `1.09829e-1039`, `pslq` returns **nothing at any degree from 2 through 20** below a
-coefficient bound of `10^22`: not one degree reached a clause.
+coefficient bound of $10^{22}$: not one degree reached a clause.
 The contrast is the finding, because the planning probe on the ~98 serialized digits got
 relations at almost every degree from 8 to 21. A search that answers when under-fed and
 falls silent when fed properly is evidence about the number, and what it bounds is
 concrete: if the Kingbird solution has degree twenty or less, some coefficient of its
-minimal polynomial is at least `10^22`. That is the measured reason the interval route
-carries the `n = 29` bound.
+minimal polynomial is at least $10^{22}$. That is the measured reason the interval route
+carries the $n = 29$ bound.
 `BC-065` is closed in
 [session 043](packing/campaign/agent-sessions/session-043-block9-degree-bound.md), and
 it says how to read that refusal.
-Under `u = tan(θ/2)` the published system rationalises over `Q` into six polynomials
-with total degrees `[11, 15, 10, 15, 7, 6]`, so the Bézout bound on the solution variety
-is `1,039,500`: **degree twenty surveyed a corner of the space, not the space.** Every
-equation is degree one in `s`, and solving the smallest for it gives `s` as a rational
-function of two half-angles alone, leaving five equations in five unknowns.
-Eliminating those is where the exact-algebraic route either succeeds or is shown to be
-out of reach at `n = 29`, and it is left to its own budget on `think-obgk`. The bound
-reads as “not small” rather than “this large” — Bézout is loose for a structured system.
-The next slice is **`BC-066` under `think-obgk`** — eliminate the five equations in five
-half-angles that `BC-065` left, inside a declared cap, because it is the only remaining
-block that can change what this run concludes about `n = 29`. `BC-061`, `BC-069`,
-`BC-067`, `BC-068`, `BC-062` and `BC-063` follow, with `BC-064` reserved and last; the
-ordering and its reasons are the
+Under $u = \tan(\theta/2)$ the published system rationalises over $Q$ into six
+polynomials with total degrees $[11, 15, 10, 15, 7, 6]$, so the Bézout bound on the
+solution variety is $1{,}039{,}500$: **degree twenty surveyed a corner of the space, not
+the space.** Every equation is degree one in $s$, and solving the smallest for it gives
+$s$ as a rational function of two half-angles alone, leaving five equations in five
+unknowns. Eliminating those is where the exact-algebraic route either succeeds or is
+shown to be out of reach at $n = 29$, and it is left to its own budget on `think-obgk`.
+The bound reads as “not small” rather than “this large” — Bézout is loose for a
+structured system.
+The next slice is **`BC-066` under `think-obgk`** — eliminate the five
+equations in five half-angles that `BC-065` left, inside a declared cap, because it is
+the only remaining block that can change what this run concludes about $n = 29$.
+`BC-061`, `BC-069`, `BC-067`, `BC-068`, `BC-062` and `BC-063` follow, with `BC-064`
+reserved and last; the ordering and its reasons are the
 [continuation schedule](packing/campaign/agendas/agenda-006-overnight-research-blocks.md#the-continuation-schedule),
 and
 [run-002](packing/campaign/research-loop-logbook/run-002-2026-08-29-overnight-promotion-blocks.md#where-to-resume)
@@ -2784,43 +2787,43 @@ defect rather than a rewrite.
 
 `BC-066` attempted the elimination and reached **a measured wall rather than an
 eliminant**, which is the exit that commitment names.
-Three `msolve` runs on the six-equation system: over `Q` in an elimination order, F4 was
+Three `msolve` runs on the six-equation system: over $Q$ in an elimination order, F4 was
 OOM-killed at degree 32 after 25m09s with `13.8 GB` resident, having completed degree 31
-on a `656126 × 1670545` matrix; mod `1073741827` in the same order the matrix dimensions
-were identical degree for degree; and mod the same prime in plain grevlex — an order of
-magnitude cheaper per matrix — the pair list still grew monotonically to 21,661 with no
-basis inside a declared 25-minute cap.
+on a $656126 \times 1670545$ matrix; mod `1073741827` in the same order the matrix
+dimensions were identical degree for degree; and mod the same prime in plain grevlex —
+an order of magnitude cheaper per matrix — the pair list still grew monotonically to
+21,661 with no basis inside a declared 25-minute cap.
 **Neither predicted failure mode is what stopped it.** Coefficients cannot swell over
-`F_p`, and the cheapest monomial order did not terminate either, so what the runs
+$F_p$, and the cheapest monomial order did not terminate either, so what the runs
 measure is the size of the ideal rather than the arithmetic carried through it.
 The claim is narrower than “out of reach”: two threads and 15 GB is not a proof of
 intractability.
-What it establishes is that the interval route carries the `n = 29` bound
+What it establishes is that the interval route carries the $n = 29$ bound
 for a measured reason, and that the next thing to try is a smaller question rather than
 a bigger computer.
 
 That is `BC-070`, and its first half has landed.
 Homotopy continuation needs no basis at all, and the mixed volume of the Newton
-polytopes bounds the isolated solutions at **`15,744`** — sixty-six times tighter than
-the Bézout bound of `1,039,500`, computed in nine seconds.
+polytopes bounds the isolated solutions at **$15{,}744$** — sixty-six times tighter than
+the Bézout bound of $1{,}039{,}500$, computed in nine seconds.
 The stable mixed volume is equal to it, so the bound covers every isolated solution
 rather than only those in the torus.
-So **the Kingbird solution has algebraic degree at most `15,744`**. Kingbird’s, not
-`s(29)`'s: `s(29)` is the optimum, Kingbird’s packing is the best known and is not
-proved optimal, and the bound gap there is about `0.46`. That is still far beyond what
+So **the Kingbird solution has algebraic degree at most $15{,}744$**. Kingbird’s, not
+$s(29)$'s: $s(29)$ is the optimum, Kingbird’s packing is the best known and is not
+proved optimal, and the bound gap there is about $0.46$. That is still far beyond what
 an integer-relation search can reach, and saying otherwise would overstate it: what it
 replaces is an unusable bound with a merely large one, computed from the system rather
 than guessed.
 
-`BC-067` closed the exact route’s loop at `n = 11`, where the answer is published.
+`BC-067` closed the exact route’s loop at $n = 11$, where the answer is published.
 `discharge` stops at the side, which is a claim about a *number*; the round trip carries
 it back to a claim about a *packing* — eleven squares, fourteen touching pairs, valid
 under `exact_sign`, and the reconstructed side equal to the field generator **exactly**.
-The obstacle is real and `n = 11` is where it is avoidable: a pose unknown `t_i` is an
-angle and has no representation in `Q(s)` at all, but Trump’s construction is already
-over `Q(u)` with `u = tan(a/2)`, so the question reduces to recovering `u` from `s`.
-That recovery is a derivation rather than a search — `Q(s) = Q(u)`, both degree eight,
-so writing each `s^i` in the power basis of `Q(u)` gives a square rational system with
+The obstacle is real and $n = 11$ is where it is avoidable: a pose unknown $t_i$ is an
+angle and has no representation in $Q(s)$ at all, but Trump’s construction is already
+over $Q(u)$ with $u = \tan(a/2)$, so the question reduces to recovering $u$ from $s$.
+That recovery is a derivation rather than a search — $Q(s) = Q(u)$, both degree eight,
+so writing each $s^i$ in the power basis of $Q(u)$ gives a square rational system with
 one solution, and a singular one is refused rather than fitted.
 The continuation runs the missing middle layers first, with the efficiency and research
 cells deliberately last.
@@ -2833,35 +2836,35 @@ superseded by this paragraph.
 
 The replan followed a correction recorded in
 [X-004](packing/campaign/explorations/X-004-n29-exact-promotion.md).
-The retained `n = 29` SVG does not merely serialize a `FindRoot` result: it publishes
+The retained $n = 29$ SVG does not merely serialize a `FindRoot` result: it publishes
 the **complete closed system** — nine slide scalars in closed form and six equations
-`f1 … f6` in `{s, a, b, c, d, i}` — **and the layout map**, whose `<use>` transforms are
-written symbolically in those same names.
+$f1 \ldots f6$ in $\lbrace s, a, b, c, d, i\rbrace$ — **and the layout map**, whose
+`<use>` transforms are written symbolically in those same names.
 [`cases.kingbird29.verify_svg`](packing/cases/kingbird29/verify_svg.py) had already
 transcribed all of it and used it only to evaluate residuals, never to solve.
 Solving that same transcription reproduces the record to all fifteen published digits
 and reaches a maximum equation residual of `1.11e-1200` in about six seconds.
-So `BC-042` and `BC-043` gate nothing at `n = 29`; they generalize the route to sizes
+So `BC-042` and `BC-043` gate nothing at $n = 29$; they generalize the route to sizes
 with no published system.
 
-That moved the prize onto `BC-045`. Certifying the reported `n = 29` value would move
+That moved the prize onto `BC-045`. Certifying the reported $n = 29$ value would move
 `verified_upper_bound` from the Schadt rational to Kingbird’s, closing `5.23e-5`. Two
 routes reach it: `BC-044` recovers a minimal polynomial and discharges it exactly, which
 is stronger but of uncertain feasibility — a completed sweep found no integer relation
-through degree twenty with coefficients below `10^22` — while `BC-045` needs no
+through degree twenty with coefficients below $10^{22}$ — while `BC-045` needs no
 polynomial at all. The robust route was the one with no specification, so that
 specification now exists.
 The witness contract already named `interval-certified` as a method that may carry
 `verified`, and the checker is now built: `scalar.kind` gains `interval-enclosure`,
 `exact_verify` replays an interval witness instead of raising `checker-not-built`, and
-the `n = 29` certificate is retained as
+the $n = 29$ certificate is retained as
 [`kingbird-n029-2026-interval`](packing/witnesses/kingbird-n029-2026-interval.yaml)
 under [`E-n029-interval-certified-upper`](packing/frontier/evidence.yaml).
 Recording is not promotion: `verified_upper_bound` has not moved to it.
 
 The standing rule is unchanged and applies to every block: an unattended runner may
 apply the accept rule only conservatively.
-A round that certifies `n = 29` is recorded `unresolved` with `needs_review: true`, and
+A round that certifies $n = 29$ is recorded `unresolved` with `needs_review: true`, and
 a human makes the accept decision.
 
 PR 45 is merged and
@@ -2896,7 +2899,7 @@ negative control. Negative controls rise from 76 to 80. The next bounded slice i
 `BC-038` under `think-kdil`, the row-jet inventory reuse, which exp-045’s terminal
 disposition unfroze.
 Both declared determinations report `criterion_met` — canonical pure `-W` is excluded at
-A, the interior, and B, and the `-W` coefficients equal the separately derived `+W`
+A, the interior, and B, and the `-W` coefficients equal the separately derived $+W$
 values — and record-and-replay agree.
 The round is recorded `unresolved` with `needs_review`, not accepted: an unattended
 runner may apply the accept rule only conservatively, and the sixth admission condition,
@@ -2916,7 +2919,7 @@ sequenced behind exp-045. The outstanding work is now carried by
 [agenda-004](packing/campaign/agendas/agenda-004-guard-repair-and-instrument-unblock.md),
 which gives each remaining item its own workflow entry.
 `BC-027` is complete.
-The `n = 5` H-023 successor under `BC-029`, `think-whwc`, and `think-1s0h` is no longer
+The $n = 5$ H-023 successor under `BC-029`, `think-whwc`, and `think-1s0h` is no longer
 an instrument blocker: exp-045 has run and is terminal — `accepted` since 2026-08-31,
 after the independent audit its registration required — excluding canonical pure `-W` at
 all three strata while every connectivity, component, isolation and terminality claim
@@ -2953,7 +2956,7 @@ BC-016 prerequisite instrumentation remains blocked, so the next boundary is BC-
 target-free tagged structural execution plan and derived accounting.
 Actual numerical compilation remains blocked on unfrozen open-wall, nonedge, and
 contact-overlap semantics.
-This is not an H-044 verdict or an `n = 11` run on the inspected calibration corpus.
+This is not an H-044 verdict or an $n = 11$ run on the inspected calibration corpus.
 
 The H-023 line shows why the distinction matters.
 Session 004 used W3 to turn an ambiguous terminal-family observation into the
@@ -3053,12 +3056,12 @@ here.
 
 | Component | What it does |
 | --- | --- |
-| [`sqpack.field`](packing/src/sqpack/field.py) | Exact arithmetic in `ℚ(α)`: exact zero and sign, modular or complete supported-quartic irreducibility certificates, and Sturm certification that an interval isolates one real root |
+| [`sqpack.field`](packing/src/sqpack/field.py) | Exact arithmetic in $\mathbb{Q}(\alpha)$: exact zero and sign, modular or complete supported-quartic irreducibility certificates, and Sturm certification that an interval isolates one real root |
 | [`sqpack.verify`](packing/src/sqpack/verify.py) | Separating-axis validity generic over scalar type; exact predicates support verification and numerical predicates support checks |
 | [`sqpack.witness`](packing/src/sqpack/witness.py) | `Witness/v2` loading, inspection, finite numerical checks, rational/algebraic verification, SVG rendering, and robust rational promotion |
-| [`cases.trump11.packing`](packing/cases/trump11/packing.py) | The `n = 11` witness, exactly, in `ℚ(u)` |
-| [`cases.gobel5`](packing/cases/gobel5/) and [`cases.gobel10`](packing/cases/gobel10/) | Exact degree-two constructions and negative controls at `n = 5` and `n = 10` |
-| [`cases.trump11.derive_field`](packing/cases/trump11/derive_field.py) | Re-derives the degree-8 field from the published polynomial, factors over `ℚ`, and selects the root by isolating interval |
+| [`cases.trump11.packing`](packing/cases/trump11/packing.py) | The $n = 11$ witness, exactly, in $\mathbb{Q}(u)$ |
+| [`cases.gobel5`](packing/cases/gobel5/) and [`cases.gobel10`](packing/cases/gobel10/) | Exact degree-two constructions and negative controls at $n = 5$ and $n = 10$ |
+| [`cases.trump11.derive_field`](packing/cases/trump11/derive_field.py) | Re-derives the degree-8 field from the published polynomial, factors over $\mathbb{Q}$, and selects the root by isolating interval |
 | [`cases.trump11.verifier_limits`](packing/cases/trump11/verifier_limits.py) | Demonstrates both float failure modes against the same packing |
 
 [D-053](defects.md) is fixed.
@@ -3112,7 +3115,7 @@ neighbour-transfer seeding, MAP-Elites retention, and billiard/inflation.
 
 This is the record-finding lane’s live bottleneck.
 The refiner takes the tested proved-control starts to residuals of `1e-15` and leaves
-the tested `n = 11` starts at `6e-02`, so proposal is where the gap is—and proposal is
+the tested $n = 11$ starts at `6e-02`, so proposal is where the gap is—and proposal is
 the layer with the fewest built parts.
 
 ### The map layer—built, not admissible
@@ -3124,13 +3127,13 @@ the layer with the fewest built parts.
 | [`cases.campaign_smoke.basin_events`](packing/cases/campaign_smoke/basin_events.py) | yes | An admissible `BasinEvent/v3` event certifies the producer contract and a terminal outcome, not a terminal component—identity stays blocked ([D-034](defects.md), [D-048](defects.md)). The twelve historical v2 poses remain inadmissible under the since-fixed [D-165](defects.md) |
 
 **`distinct_basins` is a count of endpoint keys, not of connected terminal components.**
-The exact `n = 3` sliding family shows one connected optimal set producing many keys, so
+The exact $n = 3$ sliding family shows one connected optimal set producing many keys, so
 the store can split a single component.
 Until [D-034](defects.md) is resolved the discovery curve cannot plateau, the census
 cannot saturate, and the rarity premise is **untestable rather than untested**.
 
 Cheap endpoint summaries such as angle signatures and contact counts exist.
-Exp-032 now supplies an exact known-answer boundary: complete `n = 3` and `n = 4`
+Exp-032 now supplies an exact known-answer boundary: complete $n = 3$ and $n = 4$
 quotient models may assign components, while unsupported numerical observations remain
 unresolved. A scalable retained-pose classifier is still unbuilt, so steering strategies
 that depend on sampled component identity or descriptor distances remain unbuilt too.
@@ -3143,11 +3146,11 @@ It rationalizes centers and rotations, tries an explicitly bounded dilation, wri
 every corner as a rational, and verifies the result exactly before emitting it.
 Failure is typed and leaves the source witness unchanged.
 
-The retained Schadt `n = 29` pose is the regression case.
+The retained Schadt $n = 29$ pose is the regression case.
 The source decimal geometry passes its declared 300-digit calculation at tolerance
 `1e-100`, with thirteen slightly negative best pair gaps hidden by that tolerance.
 Robust promotion produces a different, slightly relaxed rational packing at
-`2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000`,
+$2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000$,
 an increase of about `4.93e-31` in the container side.
 The generic exact verifier and a small independent rational checker both accept all 29
 squares and 406 pairs.
@@ -3174,10 +3177,10 @@ the recovered field and compares the reconstructed side against the input, which
 catches a contact structure that is valid but suboptimal.
 
 The contingencies that made this look unbuildable are reported rather than assumed away.
-At `n = 29` the Jacobian turned out well-conditioned enough to contract in two
+At $n = 29$ the Jacobian turned out well-conditioned enough to contract in two
 iterations, which was an open question rather than a given, and the contact Jacobian
-reaches full rank at both determined sizes — `34` of `34` at `n = 11` and `88` of `88`
-at `n = 29`. The shortfall that had suggested otherwise was [D-361](defects.md), a bug
+reaches full rank at both determined sizes — $34$ of $34$ at $n = 11$ and $88$ of $88$
+at $n = 29$. The shortfall that had suggested otherwise was [D-361](defects.md), a bug
 in assembly rather than a property of the packings.
 
 **One integration boundary remains.** The public
@@ -3193,7 +3196,7 @@ relaxation of `1e-20`. Review adopted that certificate as the case’s
 `verified_upper_bound` and as T-009. It remains `9.18974379895098e-15` above the tighter
 reported value, which is still uncertified at its declared precision.
 
-Exp-033 remains a distinct dedicated result: it bound two retained `n = 5` float poses
+Exp-033 remains a distinct dedicated result: it bound two retained $n = 5$ float poses
 to exact endpoints on one certified fixed-angle optimal face and supplied an exact dual
 for that cell. The early quench archives still lack complete centers, and current
 `BasinEvent/v3` controls are known-answer material rather than open-case record
@@ -3221,18 +3224,18 @@ not only instruments.
 
 | Tool | What it establishes |
 | --- | --- |
-| [`cases.stromquist.printed_cover`](packing/cases/stromquist/printed_cover.py) | The printed `n = 11` lower-bound proof is false as printed (exp-016) |
-| [`cases.stromquist.repaired_cover`](packing/cases/stromquist/repaired_cover.py) | A source-distinct repair certifies `s(11) ≥ 2 + 4/√5` exactly (**T-4**, exp-017) |
+| [`cases.stromquist.printed_cover`](packing/cases/stromquist/printed_cover.py) | The printed $n = 11$ lower-bound proof is false as printed (exp-016) |
+| [`cases.stromquist.repaired_cover`](packing/cases/stromquist/repaired_cover.py) | A source-distinct repair certifies $s(11) \ge 2 + 4/\sqrt{5}$ exactly (**T-4**, exp-017) |
 | [`cases.trump11.tangent_cones`](packing/cases/trump11/tangent_cones.py) | Trump’s pose is locally isolated in the anchored chart (exp-013) |
-| [`cases.small_n.optimal_moduli`](packing/cases/small_n/optimal_moduli.py) | Exact optimal configuration spaces at `n = 3, 4` (exp-014, exp-015) |
-| [`cases.n5.equal_side_face`](packing/cases/n5/equal_side_face.py) | Two retained equal-side `n = 5` poses share one exact fixed-angle optimal face (exp-033) |
-| [`cases.n5.angle_sheet`](packing/cases/n5/angle_sheet.py) | That face lies in an exact two-parameter angle-and-slide sheet of optima, at side `1 + 5√2/4`, above `s(5)` (exp-034) |
+| [`cases.small_n.optimal_moduli`](packing/cases/small_n/optimal_moduli.py) | Exact optimal configuration spaces at $n = 3, 4$ (exp-014, exp-015) |
+| [`cases.n5.equal_side_face`](packing/cases/n5/equal_side_face.py) | Two retained equal-side $n = 5$ poses share one exact fixed-angle optimal face (exp-033) |
+| [`cases.n5.angle_sheet`](packing/cases/n5/angle_sheet.py) | That face lies in an exact two-parameter angle-and-slide sheet of optima, at side $1 + 5\sqrt{2}/4$, above $s(5)$ (exp-034) |
 | [`cases.n5.tangent_cones`](packing/cases/n5/tangent_cones.py) | Complete active first-order systems admit one displayed non-sheet direction (exp-035) |
 | [`cases.n5.second_order_obstruction`](packing/cases/n5/second_order_obstruction.py) | That displayed direction is excluded from the true Bouligand tangent cone (exp-036) |
 | [`cases.n5.tangent_inventory`](packing/cases/n5/tangent_inventory.py) | Both owner branches have the same complete first-order V-representation at A, the interior, and B (exp-038) |
 | [`cases.n5.fixed_angle_polytope`](packing/cases/n5/fixed_angle_polytope.py) | Four release classes have exact paths in one connected five-dimensional cell-local LP-optimal position polytope, with positive pathwise first-order stresses (exp-039) |
 | [`sqpack.local_rigidity`](packing/src/sqpack/local_rigidity/instrument.py) | The exact local system behind `T-014`: one injective half-angle chart, all 400 elementary inequalities, and a 128-condition neighbourhood on which the local feasible set is exactly the twenty active rows, carrying `T-012`’s first- and second-order data (exp-058, proof in X-012). It does not decide isolation — `isolation_decided` is false unconditionally — and X-012’s proof, not this package, closes the argument |
-| [`cases.kingbird29.verify_svg`](packing/cases/kingbird29/verify_svg.py) | A 160-digit numerical reconstruction of the `n = 29` SVG, rejecting H-042’s serialization-scoped three-class claim (exp-037). H-024’s formal prerequisite remains unresolved; the SVG is not a formal feasibility or optimality certificate |
+| [`cases.kingbird29.verify_svg`](packing/cases/kingbird29/verify_svg.py) | A 160-digit numerical reconstruction of the $n = 29$ SVG, rejecting H-042’s serialization-scoped three-class claim (exp-037). H-024’s formal prerequisite remains unresolved; the SVG is not a formal feasibility or optimality certificate |
 
 **Unbuilt on this lane:** the `PoseBox` scalar and the interval branch-and-bound hook,
 LP duals as unavoidable-set generators, and any Lean formalization.
@@ -3315,7 +3318,7 @@ Four of the six external proofs the register carries are `not-reviewed`. The two
 have been read are [Nagamochi 2005], the register’s most load-bearing external argument,
 read on 2026-08-30 and recorded `informally-verified`, and [Bentz 2010], recorded
 `defect-found` after the machine audit found Lemma 10’s replacement point transposed in
-print. The distinction is not hypothetical: [Stromquist 2003]'s `n = 11` argument needed
+print. The distinction is not hypothetical: [Stromquist 2003]'s $n = 11$ argument needed
 a source-distinct repair, which `E-n011-repaired-lower` supplies without repairing the
 printed proof. An external certificate and a repository replay remain separate evidence
 records. Running the generator’s own checker is not an independent implementation.
@@ -3330,8 +3333,8 @@ record overall is the Kingbird register at 98, which is the catalogue everyone r
 from and is labelled `reported`. The dependency that matters is the most-cited argument
 this repository did not produce — `E-nagamochi-lower`, cited by 88 of the hundred cases
 and carrying the verified lower bound in 83 of them, the difference being the cases this
-project’s own certificates have since taken off it: `n = 11`, `n = 12`, and `n = 17`
-through `n = 21`. Being cited that heavily is a reason to open an argument, not a reason
+project’s own certificates have since taken off it: $n = 11$, $n = 12$, and $n = 17$
+through $n = 21$. Being cited that heavily is a reason to open an argument, not a reason
 to trust it, so it was read here on 2026-08-30; its record carries what was re-derived
 and the four things that were not.
 
@@ -3355,9 +3358,9 @@ Every formal conclusion names its object:
 
 | Claim | Verification establishes | It does not establish |
 | --- | --- | --- |
-| witness feasibility | The supplied placement contains `n` non-overlapping unit squares | best-known status or optimality |
-| upper bound | `s(n) ≤ u`, normally from a verified feasible witness | a matching lower bound |
-| lower bound | `s(n) ≥ l` under the proof’s stated scope | a construction at `l` |
+| witness feasibility | The supplied placement contains $n$ non-overlapping unit squares | best-known status or optimality |
+| upper bound | $s(n) \le u$, normally from a verified feasible witness | a matching lower bound |
+| lower bound | $s(n) \ge l$ under the proof’s stated scope | a construction at $l$ |
 | exact value | verified upper and lower bounds coincide exactly | uniqueness or rigidity |
 | derived structure | the named property, such as an orientation-class count | feasibility unless that is an explicit prerequisite |
 
@@ -3452,20 +3455,20 @@ operation below.
 
 ### The objects
 
-**Configuration.** A placement of all `n` squares: a centre `(xᵢ, yᵢ)` and an angle
-`θᵢ ∈ [0, π/2)` for each, together with a container side `s`. That is `3n + 1` real
-coordinates, 34 at `n = 11`. A configuration is *valid* when the interiors are pairwise
-disjoint and all squares lie in `[0, s]²`; touching is valid.
+**Configuration.** A placement of all $n$ squares: a centre $(x_i, y_i)$ and an angle
+$\theta_i \in [0, \pi/2)$ for each, together with a container side $s$. That is $3n + 1$
+real coordinates, 34 at $n = 11$. A configuration is *valid* when the interiors are
+pairwise disjoint and all squares lie in $[0, s]^2$; touching is valid.
 
-**Cell**—always a *cell of configuration space*: a choice, for each of the `C(n,2)`
+**Cell**—always a *cell of configuration space*: a choice, for each of the $C(n,2)$
 pairs, of one candidate separating axis together with an order (which square is on the
 low side). A configuration *lies in* a cell when those choices genuinely separate those
 pairs in that order.
 Fixing the angles and a cell turns the problem into a linear program; that is
 [T-2](#the-cell-decomposition).
 
-**Instance cell**—an `n` carrying a declared role in the sweep: `n = 10` positive
-control, `n = 11` target, `n = 12` open-case calibration, `n = 17` mechanism-matched
+**Instance cell**—an $n$ carrying a declared role in the sweep: $n = 10$ positive
+control, $n = 11$ target, $n = 12$ open-case calibration, $n = 17$ mechanism-matched
 calibration.
 A **control cell** is an instance cell whose answer is known before the run,
 and a breach of one rejects the round regardless of outcome.
@@ -3473,7 +3476,7 @@ and a breach of one rejects the round regardless of outcome.
 > Three senses collide, and all three appear in this document.
 > **Write “cell” for the configuration-space object, “instance cell” for a sweep
 > position, and “event cell” for a region of admissible centres—never bare “cell” for
-> either of the last two.** In running prose about a round, prefer naming the `n`. The
+> either of the last two.** In running prose about a round, prefer naming the $n$. The
 > three are unrelated objects: one is where the LP is solved, one is what a round is run
 > on, and one is where a certificate’s covered mass is constant.
 
@@ -3494,10 +3497,10 @@ Different neutral coordinates then produce different point-preimages and keys in
 terminal component. D-034 records why a component census must quotient that family using
 independently validated connectivity rather than declare the quench map undefined.
 
-**The ladder.** The proved instances used as controls—`n = 5` and `n = 10`, both `45°`
-mechanisms with closed-form optima.
+**The ladder.** The proved instances used as controls—$n = 5$ and $n = 10$, both
+$45^\circ$ mechanisms with closed-form optima.
 The ladder validates *machinery*: no proved case exercises an irrational oblique angle,
-so passing it says nothing about strategy at `n = 11`.
+so passing it says nothing about strategy at $n = 11$.
 
 ### The weighted-certificate objects
 
@@ -3508,11 +3511,11 @@ five from first principles.
 
 | Term | Controlled meaning | Where it is defined |
 | --- | --- | --- |
-| **atom** / **weight** | An exact point of a candidate container `[0, L]²`, and the nonnegative rational bookkeeping mass assigned to it. An atom has no area, blocks nothing, and is never a packed square | [`fractional.certificate`](packing/src/sqpack/fractional/certificate.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
+| **atom** / **weight** | An exact point of a candidate container $[0, L]^2$, and the nonnegative rational bookkeeping mass assigned to it. An atom has no area, blocks nothing, and is never a packed square | [`fractional.certificate`](packing/src/sqpack/fractional/certificate.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
 | **atomic measure** / **mass** | The rule assigning a region the sum of the weights of the atoms lying in it, boundary atoms included; a region’s *mass* is what that rule returns. *Atomic* because all of it sits at finitely many points rather than spread over the container | [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
-| **direction net** | The finite set of exact square orientations a certificate checks, carried as rational half-angle tangents and reaching `π/4`. The strict shrink condition is what lets a nearby net direction stand in for an unchecked orientation, so the net is not a sample | [`fractional.certificate`](packing/src/sqpack/fractional/certificate.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
+| **direction net** | The finite set of exact square orientations a certificate checks, carried as rational half-angle tangents and reaching $\pi/4$. The strict shrink condition is what lets a nearby net direction stand in for an unchecked orientation, so the net is not a sample | [`fractional.certificate`](packing/src/sqpack/fractional/certificate.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
 | **event cell** | One open region of admissible centres, at one net direction, on which the set of atoms a shrunken square covers is constant. A third sense of *cell*, unrelated to the two under [The objects](#the-objects), and never written bare | [`fractional.sweep`](packing/src/sqpack/fractional/sweep.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
-| **weighted fractional unavoidable-set certificate** | A finite weighted atom set whose total mass is below `n` (`Condition 2`) but whose mass is at least one in every admissible shrunken square (`Condition 5`); with the symmetry, net and shrink conditions it proves `s(n) >= L`. Burns’s and Massaccesi’s object; the instances here are this project’s | [`fractional.certificate`](packing/src/sqpack/fractional/certificate.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
+| **weighted fractional unavoidable-set certificate** | A finite weighted atom set whose total mass is below $n$ (`Condition 2`) but whose mass is at least one in every admissible shrunken square (`Condition 5`); with the symmetry, net and shrink conditions it proves `s(n) >= L`. Burns’s and Massaccesi’s object; the instances here are this project’s | [`fractional.certificate`](packing/src/sqpack/fractional/certificate.py), [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-works) |
 
 `Condition 1` to `Condition 5` name the five conditions a certificate must satisfy and
 are stated in the module above; they are not the confirmation rungs `C0` to `C5`, which
@@ -3534,7 +3537,7 @@ This is what the quench does, and all it does.
 
 **Exploration**—without a qualifier, the operation of reaching a different basin.
 No amount of polish performs it, and nothing currently in the toolkit does it reliably
-at `n = 11`. Write **packing exploration** for the project directory and **exploration
+at $n = 11$. Write **packing exploration** for the project directory and **exploration
 report** for an `X-NNN` artifact.
 
 **Proposer** and **refiner**. The two halves of the loop, named separately because the
@@ -3544,14 +3547,14 @@ refiner is the quench.
 Building a better refiner cannot fix a proposer failure.
 
 **Angle class.** A set of squares constrained to share one angle.
-Trump’s packing has two classes at `n = 11`: six squares at `0°`, five at `a*`. **Class
-bracketing** is the angle search that optimises over merged classes by bracketing rather
-than by gradient, which is what a corner requires; `class_tol` is the tolerance that
-decides which angles merge into one class.
+Trump’s packing has two classes at $n = 11$: six squares at $0^\circ$, five at
+$a^{\ast}$. **Class bracketing** is the angle search that optimises over merged classes
+by bracketing rather than by gradient, which is what a corner requires; `class_tol` is
+the tolerance that decides which angles merge into one class.
 
 **Corner** (equivalently *kink*). A point where the LP optimum as a function of the
 angles has distinct one-sided derivatives, so no method assuming a smooth local model
-converges to it. Measured at `n = 11`: `0.1747` and `0.384` per radian, through two
+converges to it. Measured at $n = 11$: $0.1747$ and $0.384$ per radian, through two
 independent implementations ([T-3](#the-corner-and-the-method-it-forced)). Not a synonym
 for “sharp minimum”—the derivative does not become large, it fails to exist.
 
@@ -3571,10 +3574,10 @@ changes. Raw contact counts cannot supply that rank: contacts may be dependent, 
 contact description may encode several scalar conditions, and angles and separating
 cells may change along a motion.
 
-At `n = 3`, the exact family with centres `(1/2,1/2)`, `(3/2,1/2)`, and `(t,3/2)` for
-`t ∈ [1/2,3/2]` proves that terminal continua occur and that the current endpoint key
+At $n = 3$, the exact family with centres $(1/2,1/2)$, $(3/2,1/2)$, and $(t,3/2)$ for
+$t \in [1/2,3/2]$ proves that terminal continua occur and that the current endpoint key
 splits one connected optimum component.
-At `n = 5`, exp-033 proves that the two equal-side rows with different geometric keys
+At $n = 5$, exp-033 proves that the two equal-side rows with different geometric keys
 share one exact connected fixed-angle LP optimal face.
 Its fixed-side active nullity is one in the interior and zero at the two boundary
 strata. Exp-034 proves that face lies in a two-parameter angle-and-slide sheet of
@@ -3593,7 +3596,7 @@ classification of the complete nonsmooth stationary component ([D-034](defects.m
 **This distinction should have existed from the first day.** “Rigidity” was treated as
 an informal visual property of the target while the census silently assumed every
 terminal was isolated.
-The exact `n = 3` control falsifies that assumption directly.
+The exact $n = 3$ control falsifies that assumption directly.
 That is a documentation failure before it is a code one, and it is why
 [D-034](defects.md) was found by reading a census output rather than by reading the
 plan.
@@ -3603,18 +3606,18 @@ plan.
 **Gap.** Always `best_side − standing_best`, in units of the container side, and always
 signed. A *negative* gap from a numerical method is solver noise, never a discovery.
 
-**Standing best.** The best side ever published for that `n`, read from
+**Standing best.** The best side ever published for that $n$, read from
 [`frontier/`](packing/frontier/README.md)—an upper bound, and for the open cases not
 known to be optimal.
 Distinct from the **analytic optimum**, which exists only where the case is proved.
-At `n = 5` and `n = 10` they coincide; at `n = 11` the standing best is Trump’s
+At $n = 5$ and $n = 10$ they coincide; at $n = 11$ the standing best is Trump’s
 construction and the optimum is unknown.
 
 **Polish failure** and **exploration failure.** The decomposition of a gap, and the
 campaign’s central diagnostic.
-A **polish failure** is a gap that the declared refiner closes, as `n = 10` was, from
+A **polish failure** is a gap that the declared refiner closes, as $n = 10$ was, from
 `4.19e-04` to `1.33e-15`. An **exploration-or-model failure** is a gap that remains
-after that local procedure, as the tested `n = 11` starts did, from `8.85e-02` to
+after that local procedure, as the tested $n = 11$ starts did, from `8.85e-02` to
 `6.29e-02`. Neither numerical behavior proves a terminal-component relation.
 “Right basin” and “wrong basin” require the component evidence tracked by H-021 through
 H-023.
@@ -3660,19 +3663,19 @@ Two now have code behind them and two do not, and neither pair has yet produced 
 object the word promises.
 [What Is Built](#what-is-built) is the component-level view.
 
-**Atlas.** The deduplicated store of known basins for an `n`, keyed by canonical basin
+**Atlas.** The deduplicated store of known basins for an $n$, keyed by canonical basin
 identity. The stated deliverable of the cartography strategy.
 *Code exists; it stores endpoint keys, which are not certified terminal components.* The
 atlas is also the flagship cross-focus instrument: Insight specifies views that could
 expose mathematical structure—symmetry orbits, terminal components, contact types,
-transitions, continuation across `n`, proposer-conditioned frequency with uncertainty;
+transitions, continuation across $n$, proposer-conditioned frequency with uncertainty;
 Efficiency makes those views responsive and reproducible; Process owns the event and
 provenance contract; and Correctness decides which relations are observed, inferred, or
 certified.
 A visual embedding is never evidence by itself that two basins are adjacent or
 that a sampled cluster is a connected component.
 
-**Census.** An enumeration of the basins at one `n`, run to saturation.
+**Census.** An enumeration of the basins at one $n$, run to saturation.
 *Code exists; saturation is unreachable while the thing being counted is undefined.*
 
 **Descriptors.** Structural coordinates of a packing—contact counts, angle classes,
@@ -3729,25 +3732,25 @@ introduces it—not doing so is how [D-014](defects.md) was possible.
 
 ## The Problem
 
-A **packing** of `n` unit squares in a container square of side `s` is a placement of
-the `n` squares, each free to translate and rotate, whose interiors are pairwise
+A **packing** of $n$ unit squares in a container square of side $s$ is a placement of
+the $n$ squares, each free to translate and rotate, whose interiors are pairwise
 disjoint and which all lie inside the container.
-`s(n)` is the infimum of the `s` for which one exists.
+$s(n)$ is the infimum of the $s$ for which one exists.
 Touching is allowed, and in good packings it is pervasive.
 
-For most `n` the answer is uninteresting: `s(m²) = m` by the grid.
+For most $n$ the answer is uninteresting: $s(m^2) = m$ by the grid.
 It becomes interesting just above a perfect square, where the leftovers must be tilted
 in.
 
-At `n = 11` the upper end has not moved since 1979. On 2026-09-04 the lower end improved
+At $n = 11$ the upper end has not moved since 1979. On 2026-09-04 the lower end improved
 on Stromquist’s bound, stated in 1984 and published in 2003; the recorded search found
 no intervening improvement:
 
 |  | value | source |
 | --- | --- | --- |
-| Best known packing (upper bound) | `3.8770835…` | Walter Trump, 1979 |
-| Best certified lower bound | `31/8 = 3.875` (strict) | [Native n11 review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md), complete exact and interval coverage with the reviewed transfer theorem; C4 |
-| Bound gap | `0.0020836` | difference between the two bounds; the exact optimum remains open |
+| Best known packing (upper bound) | $3.8770835\ldots$ | Walter Trump, 1979 |
+| Best certified lower bound | $\frac{31}{8} = 3.875$ (strict) | [Native n11 review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md), complete exact and interval coverage with the reviewed transfer theorem; C4 |
+| Bound gap | $0.0020836$ | difference between the two bounds; the exact optimum remains open |
 
 ![Walter Trump’s exact eleven-square packing.](packing/atlas/rendering/trump11-overview.svg)
 
@@ -3755,7 +3758,8 @@ no intervening improvement:
 separated from the independently certified lower bound.
 The segment and dot contact marks are exact, not tolerance-based visual guesses.*
 
-The value `T-018` displaces is Stromquist’s `2 + 4/√5 = 3.788854382…`, stated in
+The value `T-018` displaces is Stromquist’s $2 + 4/\sqrt{5} = 3.788854382\ldots$, stated
+in
 [Memo III, p. 10](packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf)
 on November 15, 1984, and published in 2003. The memo states the unrestricted bound
 without supplying its proof.
@@ -3765,20 +3769,20 @@ records the source distinctions and the helper-argument followup.
 The current audit found an explicit strict box avoiding all twelve printed Figure 14
 points, so the paper’s unavoidability subclaim is false as printed
 ([D-152](defects.md)). Exp-017 independently certifies the same numerical inequality by
-moving only `G=(.8,1.85)` to the source-distinct `G'=(.79,1.85)` and replaying the
+moving only $G=(.8,1.85)$ to the source-distinct `G'=(.79,1.85)` and replaying the
 complete finite cover and capacity argument ([T-010](packing/frontier/RESULTS.md)). The
 repaired coordinate and certificate are results of this repository, not claims
 attributed to Stromquist.
 
 Trump’s packing is six axis-aligned squares plus a block of five tilted at
-`a* ≈ 40.181937290329714°`. The container side is an algebraic number of degree 8, the
-root of
+$a^{\ast} \approx 40.181937290329714^\circ$. The container side is an algebraic number
+of degree 8, the root of
 
 ```
 s⁸ − 20s⁷ + 178s⁶ − 842s⁵ + 1923s⁴ − 496s³ − 6754s² + 12420s − 6865 = 0
 ```
 
-lying in `[3.87, 3.88]`. Exp-013 exactly certifies every complete branchwise fixed-side
+lying in $[3.87, 3.88]$. Exp-013 exactly certifies every complete branchwise fixed-side
 linearized cone and proves the pose locally isolated by a finite-branch subsequence
 argument. This qualitative local theorem does not provide an explicit radius or explain
 the global search difficulty.
@@ -3815,41 +3819,41 @@ that beating the record means you have a bug).
 
 Where the program has spent effort, and what came of it.
 
-| `n` | Status | Standing best | Role here | What has been done |
+| $n$ | Status | Standing best | Role here | What has been done |
 | --- | --- | --- | --- | --- |
-| 5 | proved, `2 + ½√2` | `2.70710678…` | positive control | `sqsearch --selftest` recovers it on every run. [exp-007](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md): the bracketing quench refines annealer output to `2.22e-15`—the analytic value to machine precision |
-| 8 | proved, `3` | `3` | census kill line | The `n` at which [H-011](packing/campaign/hypotheses/H-011-small-n-census.md)’s discovery curve must plateau, or enumeration is abandoned. No rounds |
-| **10** | **proved**, `3 + ½√2` | `3.70710678…` | **positive control** | Five rounds. The annealer stops `4.19e-04` short ([exp-002](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-002-baseline-n10-positive-control.md)); [exp-008](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md) closes it to `1.33e-15`; exp-031 returns all four source perturbations within `2.221e-15` |
-| **11** | **open**: `3.875 < s(11) ≤ 3.87708359…` | `3.87708359…` (Trump 1979) | **target** | The whole account is [`n = 11`, End to End](#n--11-end-to-end). Exact verification over `ℚ(u)` (**T-1**); the cell decomposition (**T-2**), corner (**T-3**), and repaired lower-bound certificate (**T-4**); nine rounds. Search remains `≈ 6e-02` short, exp-013 proves Trump’s exact pose locally isolated, exp-016 rejects Stromquist’s printed proof, and exp-017 independently restores its numerical bound |
-| **12** | open; `4` believed optimal | `4` | **open-case calibration** | Two rounds. Returns exactly `4.0` on all five seeds, which is baseline evidence rather than a known-answer guard. Also where the search and proof lanes are planned to meet |
-| 16 | proved, `4` | `4` | proved not-below control | The valid replacement for the old `n=12` guard: any reported side below `4` is known to be invalid |
-| 17 | open | `4.67553009…` (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of `0°`, `+39.80496°`, and `−36.62379°`. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports `5.0`, the trivial `5×5` grid, on all five binary64 screening seeds |
-| 61, 78, 97 | open, `m² − 3` | `8`, `9`, `10` (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at `arctan(3/4)` is registered and **not yet made** |
+| 5 | proved, $2 + \tfrac{1}{2}\sqrt{2}$ | $2.70710678\ldots$ | positive control | `sqsearch --selftest` recovers it on every run. [exp-007](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md): the bracketing quench refines annealer output to `2.22e-15`—the analytic value to machine precision |
+| 8 | proved, $3$ | $3$ | census kill line | The $n$ at which [H-011](packing/campaign/hypotheses/H-011-small-n-census.md)’s discovery curve must plateau, or enumeration is abandoned. No rounds |
+| **10** | **proved**, $3 + \tfrac{1}{2}\sqrt{2}$ | $3.70710678\ldots$ | **positive control** | Five rounds. The annealer stops `4.19e-04` short ([exp-002](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-002-baseline-n10-positive-control.md)); [exp-008](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md) closes it to `1.33e-15`; exp-031 returns all four source perturbations within `2.221e-15` |
+| **11** | **open**: $3.875 < s(11) \le 3.87708359\ldots$ | $3.87708359\ldots$ (Trump 1979) | **target** | The whole account is [$n = 11$, End to End](#n--11-end-to-end). Exact verification over $\mathbb{Q}(u)$ (**T-1**); the cell decomposition (**T-2**), corner (**T-3**), and repaired lower-bound certificate (**T-4**); nine rounds. Search remains `≈ 6e-02` short, exp-013 proves Trump’s exact pose locally isolated, exp-016 rejects Stromquist’s printed proof, and exp-017 independently restores its numerical bound |
+| **12** | open; $4$ believed optimal | $4$ | **open-case calibration** | Two rounds. Returns exactly $4.0$ on all five seeds, which is baseline evidence rather than a known-answer guard. Also where the search and proof lanes are planned to meet |
+| 16 | proved, $4$ | $4$ | proved not-below control | The valid replacement for the old $n=12$ guard: any reported side below $4$ is known to be invalid |
+| 17 | open | $4.67553009\ldots$ (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of $0^\circ$, $+39.80496^\circ$, and $-36.62379^\circ$. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports $5.0$, the trivial $5\times5$ grid, on all five binary64 screening seeds |
+| 61, 78, 97 | open, $m^2 - 3$ | $8$, $9$, $10$ (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at $\arctan(\frac{3}{4})$ is registered and **not yet made** |
 | 1–100 | 38 proved, 62 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
 
 Three facts about this table drive the strategy.
 
-**Every proved case in the ladder is a 45° mechanism.** `n = 5` and `n = 10` are
+**Every proved case in the ladder is a 45° mechanism.** $n = 5$ and $n = 10$ are
 symmetric arrangements that blind search reaches without help.
-`n = 11` needs an oblique core at an irrational angle, which **no proved case
+$n = 11$ needs an oblique core at an irrational angle, which **no proved case
 exercises**, so the ladder validates *machinery*, not *strategy*.
 
 **The ladder now discriminates sharply, and the target does not move.** The bracketing
-quench takes `n = 5` and `n = 10` to machine precision and leaves `n = 11` essentially
+quench takes $n = 5$ and $n = 10$ to machine precision and leaves $n = 11$ essentially
 where the annealer put it.
 That is the cleanest statement of where the difficulty lives: the refiner is not the
 problem.
 
-**`n = 17` adds one mechanism-matched negative result.** It was the only registered
+**$n = 17$ adds one mechanism-matched negative result.** It was the only registered
 instance cell testing record-*finding* rather than machinery, and it was the last one
 never run.
 [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md)
-ran it: the annealer reports `5.0` on all five binary64 screening seeds—the trivial
-`5×5` grid—against Bidwell’s `4.67553`, a gap of `+0.324`. The retained final states do
-not leave the grid basin.
+ran it: the annealer reports $5.0$ on all five binary64 screening seeds—the trivial
+$5\times5$ grid—against Bidwell’s $4.67553$, a gap of $+0.324$. The retained final
+states do not leave the grid basin.
 
 That scopes one failure at a second cell: this implementation, five seeds, and the
-registered `1e8` moves per chain did not reach Bidwell’s oblique record at `n = 17`. The
+registered `1e8` moves per chain did not reach Bidwell’s oblique record at $n = 17$. The
 retained final best does not show which orientations the trajectory visited, and a
 single budget cannot establish that no larger budget or related proposer can reach
 oblique records as a class
@@ -3864,25 +3868,25 @@ on 2026-09-23, and the linked artifacts are authoritative where the two differ.
 Claims keep the distinctions [`epistemics.md`](epistemics.md) draws: proved,
 machine-verified at a stated `V`/`C` rung, numerically observed, or conjectured.
 
-**The verified bracket is `3.875 < s(11) ≤ 3.87708359002281417…`**, a gap of
-`0.002083590022814177…` ([`n-011`](packing/frontier/n-011.md)). The lower end is
+**The verified bracket is $3.875 < s(11) \le 3.87708359002281417\ldots$**, a gap of
+$0.002083590022814177\ldots$ ([`n-011`](packing/frontier/n-011.md)). The lower end is
 Kleddamag’s external certificate, replayed here by two complete methods; the upper end
 is Trump’s 1979 packing, verified exactly.
-Every first-party counting family is capped below `3.875`, no counting certificate can
+Every first-party counting family is capped below $3.875$, no counting certificate can
 reach the upper end, and the first measured step toward settling the value by verified
 global optimization built a search tree about a thousand times larger than estimated.
 
 ### What a proof has to do
 
-**An upper bound is a witness.** One packing in a container of side `L` proves
-`s(11) ≤ L`. Trump’s packing, six axis-aligned squares and five sharing a tilt of about
-`40.18°`, fits at `U = 3.87708359002281417730789706010096…`, the root of the degree-8
-polynomial under [The Problem](#the-problem).
-[T-011](packing/frontier/RESULTS.md) verifies it exactly over `ℚ(u)` at `V4/C3`, and
-[Why exactness is not optional](#why-exactness-is-not-optional) explains why its 14
-zero-gap contacts put it beyond any floating-point checker.
+**An upper bound is a witness.** One packing in a container of side $L$ proves
+$s(11) \le L$. Trump’s packing, six axis-aligned squares and five sharing a tilt of
+about $40.18^\circ$, fits at $U = 3.87708359002281417730789706010096\ldots$, the root of
+the degree-8 polynomial under [The Problem](#the-problem).
+[T-011](packing/frontier/RESULTS.md) verifies it exactly over $\mathbb{Q}(u)$ at
+`V4/C3`, and [Why exactness is not optional](#why-exactness-is-not-optional) explains
+why its 14 zero-gap contacts put it beyond any floating-point checker.
 
-**A lower bound excludes every packing at some side, and at `n = 11` only counting
+**A lower bound excludes every packing at some side, and at $n = 11$ only counting
 arguments have done that.** A weighted certificate places atoms of total weight below
 eleven in the container and shows that every admissible shrunken copy of a unit square
 captures weight at least one; disjoint squares capture disjoint weight, so eleven cannot
@@ -3891,10 +3895,10 @@ terms, and the [tutorial](TUTORIAL.md#how-a-weighted-atomic-lower-bound-proof-wo
 proves the point-atom version from first principles.
 Two refinements carry the rest of the story:
 
-- **Threshold atoms**, from `T-025` onward, charge a core that captures at least `k` of
-  a finite point set `S`. Disjoint cores divide `S` between them, so at most `⌊|S|/k⌋`
-  cores are charged and the atom costs that multiple of its weight: a 2-of-3 atom buys
-  two points’ coverage for one point’s budget.
+- **Threshold atoms**, from `T-025` onward, charge a core that captures at least $k$ of
+  a finite point set `S`. Disjoint cores divide `S` between them, so at most
+  $\lfloor|S|/k\rfloor$ cores are charged and the atom costs that multiple of its
+  weight: a 2-of-3 atom buys two points’ coverage for one point’s budget.
   The charge is not additive in the points a core captures.
 - **Parent-core charges**, Kleddamag’s form, replace one shrink and one direction net by
   a catalogue of rows.
@@ -3905,11 +3909,11 @@ Two refinements carry the rest of the story:
 
 **Point certificates have a proved ceiling.** An exact depth-one family of eighty-eight
 closed shrunken squares at six net directions, of total weight exactly eleven, shows
-that no D4-symmetric point-atom measure of mass below eleven exists at `191/50` for the
+that no D4-symmetric point-atom measure of mass below eleven exists at $191/50$ for the
 retained shrink; scaled to unit squares, the same family caps the one-body point method
-at `38200/9977 ≈ 3.8288` ([`n-011`](packing/frontier/n-011.md)). Threshold charges are
-not bound by it: `T-025` proves `191/50` where point atoms are foreclosed, and
-Kleddamag’s certificate reaches `3.875`.
+at $38200/9977 \approx 3.8288$ ([`n-011`](packing/frontier/n-011.md)). Threshold charges
+are not bound by it: `T-025` proves $191/50$ where point atoms are foreclosed, and
+Kleddamag’s certificate reaches $3.875$.
 
 **Trump’s pose is machine-verified to be locally optimal, and that says nothing far from
 it.**
@@ -3919,18 +3923,19 @@ pose is locally isolated and strictly locally side-optimal.
 The BC-240 [isolation theorem](packing/cases/trump11/isolation-theorem.md) quantifies
 this in one labelled, anchored 33-coordinate sup-norm chart: within
 `ρ_row = 808514697/200000000000 ≈ 0.0040426` of Trump’s pose, the only labelled packing
-at side at most `U` is Trump’s own.
+at side at most $U$ is Trump’s own.
 The source-distinct BC-241 review accepted the packet, and a full radius-generator
 replay on 2026-09-24 reproduced it value-for-value, with the method-distinct
 `capture_radius` control agreeing on every face; its first clause is verified and exact
 ([BC-241 closure](docs/project/reviews/review-2026-09-24-bc241-closure.md)). It does not
 bear on a different contact class.
 
-**Settling `s(11) = U` is a different kind of statement.** Trump’s packing is feasible
-at `U`, so a counting certificate can only exclude sides strictly below `U`. Equality
-needs every part of the feasible set `{S ≤ U}`, over eleven centres and eleven angles,
-closed by infeasibility, a side inequality, a feasible descent, or capture in Trump’s
-ball. That is verified global optimization
+**Settling $s(11) = U$ is a different kind of statement.** Trump’s packing is feasible
+at $U$, so a counting certificate can only exclude sides strictly below $U$. Equality
+needs every part of the feasible set $\lbrace S \le U\rbrace$, over eleven centres and
+eleven angles, closed by infeasibility, a side inequality, a feasible descent, or
+capture in Trump’s ball.
+That is verified global optimization
 ([PR 230 review](docs/project/reviews/review-2026-09-23-pr230-w3-directions.md),
 findings 1 and 2). [The Cell Decomposition](#the-cell-decomposition) is why the centres
 are the easy half: at fixed angles and separating axes the problem is a linear program,
@@ -3938,35 +3943,36 @@ so the eleven angles are the bottleneck.
 
 ### The first-party ladder, and where it stopped
 
-Stromquist’s published `2 + 4/√5 = 3.788854…`, independently restored here as `T-010`,
-was the bound until 2026-09-04. Every rung of the first-party ladder beyond it is
-machine-verified ([results register](packing/frontier/RESULTS.md),
+Stromquist’s published $2 + 4/\sqrt{5} = 3.788854\ldots$, independently restored here as
+`T-010`, was the bound until 2026-09-04. Every rung of the first-party ladder beyond it
+is machine-verified ([results register](packing/frontier/RESULTS.md),
 [`n-011`](packing/frontier/n-011.md)):
 
 | Result | Bound | Mechanism | Rung |
 | --- | --- | --- | --- |
-| `T-018` | `381/100 = 3.81` | 1,121 point atoms of mass `434547/40000`; least covered mass `4001/4000` | `V4/C5` |
-| `T-022` | `3.810025723614703…` | exact dilation-limit corollary of `T-018` | `V4/C5` |
-| `T-024` | `3.816609502788862…` | `T-018`’s atoms on the 1440-step net, dilated | `V4/C3` |
-| `T-025` | `191/50 = 3.82` | 584 point atoms and 320 2-of-3 threshold atoms; least charge `100000203/100000000` | `V4/C5` |
-| `T-026` | `3.826447410572939…` | `T-025`’s atoms on the 1440-step net, dilated | `V4/C5` |
-| `T-033` | `3.826997548829543…` | the same atoms on the 2880-step net, dilated | `V4/C3` |
+| `T-018` | $\frac{381}{100} = 3.81$ | 1,121 point atoms of mass $\frac{434547}{40000}$; least covered mass $\frac{4001}{4000}$ | `V4/C5` |
+| `T-022` | $3.810025723614703\ldots$ | exact dilation-limit corollary of `T-018` | `V4/C5` |
+| `T-024` | $3.816609502788862\ldots$ | `T-018`’s atoms on the 1440-step net, dilated | `V4/C3` |
+| `T-025` | $\frac{191}{50} = 3.82$ | 584 point atoms and 320 2-of-3 threshold atoms; least charge $\frac{100000203}{100000000}$ | `V4/C5` |
+| `T-026` | $3.826447410572939\ldots$ | `T-025`’s atoms on the 1440-step net, dilated | `V4/C5` |
+| `T-033` | $3.826997548829543\ldots$ | the same atoms on the 2880-step net, dilated | `V4/C3` |
 
-Together they moved the bound about `+0.038143` past Stromquist.
+Together they moved the bound about $+0.038143$ past Stromquist.
 By mid-September three ceilings bounded the retained languages, and the verified bound
 now sits above all three:
 
-1. **The frozen family’s refinement ceiling**, `955000/249507 ≈ 3.82755`. `T-033` moved
-   `T-026` by `0.000550`, half of what the previous net doubling bought.
-2. **The point-only ceiling**, `38200/9977 ≈ 3.8288`, about `0.00236` above `T-026`.
+1. **The frozen family’s refinement ceiling**, $955000/249507 \approx 3.82755$. `T-033`
+   moved `T-026` by $0.000550$, half of what the previous net doubling bought.
+2. **The point-only ceiling**, $38200/9977 \approx 3.8288$, about $0.00236$ above
+   `T-026`.
 3. **The retained 181-direction fixed-core point model’s packing-side cap**, about
-   `3.869` ([certificate reach](packing/frontier/CERTIFICATE-REACH.md)).
+   $3.869$ ([certificate reach](packing/frontier/CERTIFICATE-REACH.md)).
 
-A structural program at `96/25 = 3.84` split packings by corner class.
+A structural program at $96/25 = 3.84$ split packings by corner class.
 It produced two conditional exclusions — `T-023`, one four-owner class, at `V3/C3`, and
 `T-031`, the all-free octagon class, at `V4/C3` — and showed the all-deep class to lie
 outside the point language, so the corner tree cannot close at that side by clipping
-alone. No packing was excluded at `3.84` unconditionally.
+alone. No packing was excluded at $3.84$ unconditionally.
 
 **The owner’s 2026-09-14 strategy reset turned this into policy.**
 [Agenda 036](packing/campaign/agendas/agenda-036-n11-strategy-reset-roadmap.md) keeps
@@ -3974,27 +3980,27 @@ paused incremental lanes out of the execution queue unless new evidence changes 
 expected value; [Current Handoff](#current-handoff) names them, and Session 156 carried
 the hold forward as a stop condition.
 The routes chosen after the reset did not move the bound: Route A, a complete physical
-corner root at `3.84`, stopped at its representation boundary with no target run, and
+corner root at $3.84$, stopped at its representation boundary with no target run, and
 Route S’s `exp-161` encode-only run timed out unresolved
 ([route selection](docs/project/reviews/review-2026-09-14-n11-post-w5-route-selection.md),
 [Research Program Status and Roadmap](#research-program-status-and-roadmap)). The
 agenda-040 loop registered `T-031` and `H-232` and moved no bound.
-At the intake the verified bracket was `3.826997548829543… ≤ s(11) ≤ U`, a gap of about
-`0.0501`.
+At the intake the verified bracket was $3.826997548829543\ldots \le s(11) \le U$, a gap
+of about $0.0501$.
 
 ### What the external intake changed
 
-**Kleddamag’s certificate proves `s(11) > 31/8 = 3.875`.**
+**Kleddamag’s certificate proves $s(11) > 31/8 = 3.875$.**
 [Session 152](packing/campaign/agent-sessions/session-152-external-density-and-n11-review.md)
-retained the pinned `v1.0.2` source on 2026-09-22. The container side is `L = 191/50`
-and the parent side `A = 764/775`, so the bound is `L/A = 31/8`. 679 site orbits expand
+retained the pinned `v1.0.2` source on 2026-09-22. The container side is $L = 191/50$
+and the parent side $A = 764/775$, so the bound is $L/A = 31/8$. 679 site orbits expand
 to 5,284 sites, and 350 positive feature orbits to 2,716 physical features of four
-kinds: ordinary points, 2-of-3, 2-of-5 and 3-of-5. In units of `10⁻⁹` the budget is
-`10,999,479,944`; every core must receive at least `999,962,528`, so eleven cores need
-`107,864` units more than the budget holds.
-The 12,028 parent half-angle intervals run from `0` to `207107/500000`, past `tan(π/8)`.
-A 2-of-5 feature costs twice its weight, and the review checked that the source’s proof
-and its budget computation both charge it so
+kinds: ordinary points, 2-of-3, 2-of-5 and 3-of-5. In units of $10^{-9}$ the budget is
+$10{,}999{,}479{,}944$; every core must receive at least $999{,}962{,}528$, so eleven
+cores need $107{,}864$ units more than the budget holds.
+The 12,028 parent half-angle intervals run from $0$ to $207107/500000$, past
+$\tan(\pi/8)$. A 2-of-5 feature costs twice its weight, and the review checked that the
+source’s proof and its budget computation both charge it so
 ([Kleddamag review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)).
 The source credits this repository’s `T-026`.
 
@@ -4010,19 +4016,19 @@ ablation attributes the improvement to any one of them.
 | Layer | What ran | Standing in the record |
 | --- | --- | --- |
 | Source replay, Session 152 | Both complete source sweeps, Python exact (86,299,918 slabs) and JavaScript BigInt (86,275,862 slabs), with exact premise and boundary controls and a first-party audit of all 48,112 containment inequalities and 12,028 centre envelopes | `V4/C3` by itself: the two scanners implement one event-cell method |
-| Native decision, [Session 153](packing/campaign/agent-sessions/session-153-native-n11-parent-core.md) | All 12,028 rows certified by directed-rounding box coverage and direct threshold counting on clean commit `c183cc9ab`: 136,081,500 boxes, none stalled, 6,197.381 s on two workers, least certified charge exactly `999,962,528` ([native review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)) | A second complete method; with the first, `V4/C4` for the strict bound |
+| Native decision, [Session 153](packing/campaign/agent-sessions/session-153-native-n11-parent-core.md) | All 12,028 rows certified by directed-rounding box coverage and direct threshold counting on clean commit `c183cc9ab`: 136,081,500 boxes, none stalled, 6,197.381 s on two workers, least certified charge exactly $999{,}962{,}528$ ([native review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)) | A second complete method; with the first, `V4/C4` for the strict bound |
 | Mathematical review | Threshold counting, strict core containment, coverage of every legal centre, exact arithmetic, boundaries and strictness | No blocking mathematical defect |
 
 The case record holds `verified_lower_bound: 31/8` on both evidence entries and states
 that this confirms Kleddamag’s published bound without a new result identifier or a C5
 claim ([`n-011`](packing/frontier/n-011.md)). There is no `T-` row because it is not a
-first-party result. The certificate closes `95.89%` of the interval from `T-026` to `U`;
+first-party result. The certificate closes `95.89%` of the interval from `T-026` to $U$;
 the review is explicit that the percentage is not a probability of optimality.
 
-**The other external results bear on `n = 11` only lightly.** Tokoharu’s
-rectangle-density certificate proves the weaker `381/100` here, fully replayed
+**The other external results bear on $n = 11$ only lightly.** Tokoharu’s
+rectangle-density certificate proves the weaker $381/100$ here, fully replayed
 ([integration review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md));
-wand125’s ten point certificates concern other `n`; and Guzhou0806’s R038 scanner enters
+wand125’s ten point certificates concern other $n$; and Guzhou0806’s R038 scanner enters
 only as the pinned lineage of Kleddamag’s JavaScript sweep.
 
 **The first-party record was reconciled to it.**
@@ -4031,7 +4037,7 @@ kept `T-033` registered at `V4/C3`, rescored from `S5` to `S3` as method and cal
 evidence, and corrected `T-024` from `C4` to `C3`, because a derived dilation claim
 takes the minimum rung over its single exact-algebraic derivation.
 The integration review’s instruction for research is that a first-party rung below
-`3.875` is controlled evidence or a simpler certificate, not a public lower-bound
+$3.875$ is controlled evidence or a simpler certificate, not a public lower-bound
 advance.
 
 ### After the intake: explorations, reviews, and the settlement ladder
@@ -4049,37 +4055,37 @@ no hypothesis.
   Its token-group spike on Kleddamag’s ten 2-of-5 orbits found zero budget saving in all
   four eligible unions.
 - [X-044](packing/campaign/explorations/X-044-low-n-certificate-transfer.md) maps what
-  transfers between the low open cases, keeps `n = 11` first and makes `n = 12` the next
+  transfers between the low open cases, keeps $n = 11$ first and makes $n = 12$ the next
   mathematical target.
 - [X-045](packing/campaign/explorations/X-045-n11-global-capture-and-exact-optimality.md)
   aims at the exact value.
-  Its **cutoff composition theorem**: given a witness at `U`, attainment, a verified
-  `s(11) ≥ L`, and every local side minimum with side in `[L, U]` having side `U`, then
-  `s(11) = U`. It proves that there are **finitely many local-minimum side values**,
-  since the local minimizers form a semialgebraic set with finitely many components on
-  each of which the side is constant, so some cutoff `L < U` exists, with no effective
-  value. Throughout `[31/8, U]`, at most three squares touch any wall.
+  Its **cutoff composition theorem**: given a witness at $U$, attainment, a verified
+  $s(11) \ge L$, and every local side minimum with side in $[L, U]$ having side $U$,
+  then $s(11) = U$. It proves that there are **finitely many local-minimum side
+  values**, since the local minimizers form a semialgebraic set with finitely many
+  components on each of which the side is constant, so some cutoff $L < U$ exists, with
+  no effective value. Throughout $[31/8, U]$, at most three squares touch any wall.
   An exact audit adds two negatives: Trump’s top-right corner is empty, so an
-  all-four-corners premise is false, and Kleddamag’s first row already fails at `U`, its
-  unchanged core capping that row near `3.8750124`.
+  all-four-corners premise is false, and Kleddamag’s first row already fails at $U$, its
+  unchanged core capping that row near $3.8750124$.
 
 **Session 156’s reviews changed what counts as progress.** Four independent reviews of
 PR 230 found no fatal error
 ([PR 230 review](docs/project/reviews/review-2026-09-23-pr230-w3-directions.md)):
 
-1. No counting certificate can prove `s(11) = U`. With `31/8` known, X-045’s cutoff
-   statement is equivalent to `s(11) = U` rather than a partial result; its operational
+1. No counting certificate can prove $s(11) = U$. With $31/8$ known, X-045’s cutoff
+   statement is equivalent to $s(11) = U$ rather than a partial result; its operational
    residue is that first-order descent is an admissible leaf.
-2. Settling `n = 11` is verified global optimization, and the angles are the bottleneck;
+2. Settling $n = 11$ is verified global optimization, and the angles are the bottleneck;
    the X-045 reviewer proposed a rigorous `H-112` as the first theorem milestone.
 3. Kleddamag’s certificate has no side headroom.
-   Its least core collar `A − B` is `3.26e-9`, so the unchanged-core ceiling is
+   Its least core collar $A - B$ is `3.26e-9`, so the unchanged-core ceiling is
    `31/8 + 1e-8`, and 11,981 of its rows attain their minimum at the corner-flush parent
-   pose. Any certificate gain at `n = 11` needs an adaptive parent-core producer with
+   pose. Any certificate gain at $n = 11$ needs an adaptive parent-core producer with
    2-of-5 and 3-of-5 features, which the record does not have; the cheapest sound next
    form is `H-155`’s corner two-band count.
    Session 156 records these collar and corner-pose figures as exploratory computations.
-4. Frozen-weight low-`n` transfers are arithmetically dead at the old direction nets.
+4. Frozen-weight low-$n$ transfers are arithmetically dead at the old direction nets.
 5. The retained evidence is sound: all seven receipts replay to identical exact values.
 
 **X-046 turns settlement into a ladder.**
@@ -4088,37 +4094,40 @@ dimension-reduction lemma that is both provable with current tools and strong en
 remove angle dimensions.
 The angle-merging normal form `H-121` is the conjecture in another form, not a lemma on
 the way to it. What can be proved is a ladder of restricted-family theorems, each
-strengthening Stromquist’s Theorem 3, which puts every packing oriented only at `0°` and
-`45°` at side at least `2 + (4/3)√2 ≈ 3.885618`, `U + 0.008534`:
+strengthening Stromquist’s Theorem 3, which puts every packing oriented only at
+$0^\circ$ and $45^\circ$ at side at least $2 + (4/3)\sqrt{2} \approx 3.885618$,
+$U + 0.008534$:
 
 | Rung | Family | Angle parameters | Cost as X-046 estimated it |
 | --- | --- | --- | --- |
 | 0 | six axis squares and five at Trump’s tilt, within `1e-6` in half-tangent (`H-236`) | 0 | one cell tree |
-| 1 | six axis squares and five at any common tilt (`H-112`) | 1 | `10²`–`10³` boxes |
+| 1 | six axis squares and five at any common tilt (`H-112`) | 1 | $10^2$–$10^3$ boxes |
 | 2 | axis plus one angle, at every multiplicity | 1 each | eleven rungs like rung 1 |
-| 3 | two arbitrary orientations (`H-113`) | 2 | `10⁴`–`10⁵` boxes per multiplicity |
+| 3 | two arbitrary orientations (`H-113`) | 2 | $10^4$–$10^5$ boxes per multiplicity |
 | 4 | three orientations, the first rung to meet the far region | 3 | priced by two unmeasured constants |
 
 Each box is decided by replacing every square with its **rotational core**, the
 intersection of the square over its angle window, so that each leaf is an exact rational
 Farkas or dual certificate with no interval arithmetic inside the linear program.
-A full search is priced by two constants: `c`, the side lost per radian of box width by
-the relaxation, and `V(ε)`, the volume of `{f ≤ U + ε}` modulo symmetry.
+A full search is priced by two constants: $c$, the side lost per radian of box width by
+the relaxation, and $V(\varepsilon)$, the volume of
+$\lbrace f \le U + \varepsilon\rbrace$ modulo symmetry.
 Until both are measured, X-046 prices “settle by search” as between a week and never.
 Its four unretained `f64` probes include one showing that Kleddamag’s per-row minimum
-charge falls by 68.2% at the axis angle when the container grows to ratio `3.877084`, so
-the certificate carries no transferable slack to `U`.
+charge falls by 68.2% at the axis angle when the container grows to ratio $3.877084$, so
+the certificate carries no transferable slack to $U$.
 
 **Three experiments ran the ladder’s first lanes the same night.**
 
 - **[exp-227](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-227-h237-trump-growth-cone-capture-radius.md),
   `H-237`: the growth-cone route cannot beat Trump’s radius.** The exact minimum growth
-  of the side over the whole direction sphere is `0.0517714532056682325…`, 4.5 times the
-  isolation packet’s uniform modulus `κ ≈ 0.01148`. But an exhaustion lemma shows that
-  any certificate bounding each row’s second-order remainder separately is capped by the
-  BC-199 weighted modulus, which is where `ρ` came from; the computation confirms it on
-  all 8,448 faces. Along the binding direction 36 of 42 rows do not recover at second
-  order, so what binds is the remainder model, not the geometry.
+  of the side over the whole direction sphere is $0.0517714532056682325\ldots$, 4.5
+  times the isolation packet’s uniform modulus $\kappa \approx 0.01148$. But an
+  exhaustion lemma shows that any certificate bounding each row’s second-order remainder
+  separately is capped by the BC-199 weighted modulus, which is where $\rho$ came from;
+  the computation confirms it on all 8,448 faces.
+  Along the binding direction 36 of 42 rows do not recover at second order, so what
+  binds is the remainder model, not the geometry.
   `H-237` is exhausted; its successor is idea 246.
 - **[exp-228](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-228-h238-descent-filtered-census.md),
   `H-238`: the census found no third orientation below Stromquist’s value.** 1,000
@@ -4126,9 +4135,9 @@ the certificate carries no transferable slack to `U`.
   a new [descent filter](packing/src/sqpack/research/descent_filter.py), which rejects
   an endpoint only with an exact rational packing verified at least `1e-8` below it.
   It refuted all 85 quench stops with three or more orientation classes below
-  `3.885618`. Two descent-stable minima within `U + 0.02` are new to the record: a
-  two-orientation packing at `0°` and `41.56°` with side `3.8867460286`, and a
-  three-orientation packing with no free squares at `3.8943218738`. Only 94 quenches
+  $3.885618$. Two descent-stable minima within $U + 0.02$ are new to the record: a
+  two-orientation packing at $0^\circ$ and $41.56^\circ$ with side $3.8867460286$, and a
+  three-orientation packing with no free squares at $3.8943218738$. Only 94 quenches
   converged under host load, and the census cannot be replayed bit for bit.
   `H-238` is confirmed at its declared census scope only: numerical observation, not
   proof.
@@ -4137,21 +4146,21 @@ the certificate carries no transferable slack to `U`.
   producer [`fixed_angle_tree.py`](packing/cases/trump11/fixed_angle_tree.py) and the
   independent reader
   [`fixed_angle_tree_check.py`](packing/cases/trump11/fixed_angle_tree_check.py) passed
-  their controls, among them the `n = 5` family closing at `s(5) − 1e-3` in 229 nodes.
+  their controls, among them the $n = 5$ family closing at `s(5) − 1e-3` in 229 nodes.
   A W2 review found the certificate contract sound, with one material finding: the
-  registered `n = 11` negative control is met only at producer level
+  registered $n = 11$ negative control is met only at producer level
   ([rung-0 review](docs/project/reviews/review-2026-09-23-rung0-certificate-contract.md)).
   In about 6.4 hours of wall, 198 of 256 subtrees closed on `1.19e8` nodes; 58 remain at
   the wall cap. The reader accepted all 84,777,070 exact leaf certificates and 14,041,104
   branch nodes, the three Trump-degenerate leaves close through the BC-240 local
-  theorem, and no leaf below `U` has appeared.
+  theorem, and no leaf below $U$ has appeared.
   [Exp-232](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md)
   then ran the last 58 with the same bytes, and the reader closed the complete tree:
   119,556,859 leaf certificates and 19,883,887 branch nodes, three Trump-degenerate
   leaves, no unresolved leaf.
-  **`H-236` is confirmed**: at Trump’s own angle, within `10^-6` in the half-tangent, no
-  packing beats `U`; its terminal leaves use BC-240’s first clause, verified and exact
-  since the BC-241 closure.
+  **`H-236` is confirmed**: at Trump’s own angle, within $10^{-6}$ in the half-tangent,
+  no packing beats $U$; its terminal leaves use BC-240’s first clause, verified and
+  exact since the BC-241 closure.
   After a Fable max review it is registered as `T-035`, the machine-verified reduction
   to the BC-240 ball, and `T-036`, the composed optimality theorem.
   The whole tree cost about `1.7e8` nodes.
@@ -4162,16 +4171,16 @@ the certificate carries no transferable slack to `U`.
 
 | Item | Outcome | Evidence |
 | --- | --- | --- |
-| External intake: pin, replay, audit, native re-decision | Worked: two complete methods and a mathematical review in about a day, leaving an `n`-general native parent-core verifier | [Kleddamag review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md), [native review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
+| External intake: pin, replay, audit, native re-decision | Worked: two complete methods and a mathematical review in about a day, leaving an $n$-general native parent-core verifier | [Kleddamag review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md), [native review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
 | Rung-0 cell tree and independent reader | The instrument worked; the relaxation did not, at about a thousand times the estimated tree | [exp-231](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-231-h236-rung-zero-cell-tree.md), [rung-0 review](docs/project/reviews/review-2026-09-23-rung0-certificate-contract.md) |
 | [`capture_radius.py`](packing/cases/trump11/capture_radius.py) | Worked as a tool, reproducing BC-199’s modulus to 32 digits, and proved a negative | [exp-227](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-227-h237-trump-growth-cone-capture-radius.md) |
 | Descent filter | Worked: it made the quench census readable and found two new minima | [exp-228](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-228-h238-descent-filtered-census.md) |
-| Kleddamag’s certificate as slack at `U`; counting as a route to `s(11) = U` | Did not work: the certificate is corner-pinned with a collar of `3.26e-9`, and counting cannot exclude the feasible side `U` | [PR 230 review](docs/project/reviews/review-2026-09-23-pr230-w3-directions.md), [X-046](packing/campaign/explorations/X-046-n11-settlement-program.md) |
-| First-party languages: frozen-family refinement, point-only certificates, the corner tree at `96/25` | Exhausted below the bound, at `3.82755` and by lemma at `3.8288`; the corner tree cannot close by clipping | [`n-011`](packing/frontier/n-011.md) |
+| Kleddamag’s certificate as slack at $U$; counting as a route to $s(11) = U$ | Did not work: the certificate is corner-pinned with a collar of `3.26e-9`, and counting cannot exclude the feasible side $U$ | [PR 230 review](docs/project/reviews/review-2026-09-23-pr230-w3-directions.md), [X-046](packing/campaign/explorations/X-046-n11-settlement-program.md) |
+| First-party languages: frozen-family refinement, point-only certificates, the corner tree at $\frac{96}{25}$ | Exhausted below the bound, at $3.82755$ and by lemma at $3.8288$; the corner tree cannot close by clipping | [`n-011`](packing/frontier/n-011.md) |
 | Routes A and S | Stopped at the representation boundary; encode-only timed out | [Research Program Status and Roadmap](#research-program-status-and-roadmap) |
-| X-046’s estimate of `10³`–`10⁵` LPs per rung-0 box | Wrong by about three orders of magnitude | [exp-231](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-231-h236-rung-zero-cell-tree.md) |
-| X-046’s growth floor of `0.0057` per radian | Used a far-row constant; the corrected floor is `σ ≥ 0.0111 t`, and a larger ball would shorten the ladder by about three refinement levels per side, not tenfold | [exp-227](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-227-h237-trump-growth-cone-capture-radius.md) |
-| Basin-hopping census of verified minima in `(U, U + 0.02)` | Not runnable as proposed: uniform starts do not reach the region, and the quench’s convergence flag is not local minimality | [X-046](packing/campaign/explorations/X-046-n11-settlement-program.md) |
+| X-046’s estimate of $10^3$–$10^5$ LPs per rung-0 box | Wrong by about three orders of magnitude | [exp-231](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-231-h236-rung-zero-cell-tree.md) |
+| X-046’s growth floor of $0.0057$ per radian | Used a far-row constant; the corrected floor is $\sigma \ge 0.0111 t$, and a larger ball would shorten the ladder by about three refinement levels per side, not tenfold | [exp-227](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-227-h237-trump-growth-cone-capture-radius.md) |
+| Basin-hopping census of verified minima in $(U, U + 0.02)$ | Not runnable as proposed: uniform starts do not reach the region, and the quench’s convergence flag is not local minimality | [X-046](packing/campaign/explorations/X-046-n11-settlement-program.md) |
 | X-045’s cutoff framing as two partial results; X-044’s frozen-weight transfers | Overstated, and arithmetically dead at the old nets | [PR 230 review](docs/project/reviews/review-2026-09-23-pr230-w3-directions.md) |
 
 One dependency sits outside the record: the rung-0 tree is 5.5 GB in the Session 156
@@ -4185,84 +4194,84 @@ Statuses below are the [ledger](packing/campaign/ledger.md)’s and the
 [idea board](packing/campaign/ideas.md)’s; blockers and next steps are those the records
 name.
 
-**Registered `n = 11` hypotheses that are open, blocked or stopped:**
+**Registered $n = 11$ hypotheses that are open, blocked or stopped:**
 
 | Hypothesis | Ledger status | What it would establish | Blocker, and the next step the record names |
 | --- | --- | --- | --- |
 | [H-236](packing/campaign/hypotheses/H-236-n11-fixed-angle-global-optimality-at-trump.md) | confirmed | Trump is globally optimal at its own angle, the first optimality statement with an equality case for a family containing Trump’s packing | Confirmed by [exp-232](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md); after the Fable max review, registered as `T-035` (the reduction, `V4/C5`) and `T-036` (the composed theorem, `V3/C0` until the BC-241 checker’s replay passes again) |
-| [H-239](packing/campaign/hypotheses/H-239-n11-rotational-core-relaxation-constant.md) | open question | Whether a full verified angle search is a bounded program, by measuring `c` and `V(ε)` | Registered to run on the `H-236` cell-tree driver once admitted (prerequisite `think-nbij`), at an estimated hour |
+| [H-239](packing/campaign/hypotheses/H-239-n11-rotational-core-relaxation-constant.md) | open question | Whether a full verified angle search is a bounded program, by measuring $c$ and $V(\varepsilon)$ | Registered to run on the `H-236` cell-tree driver once admitted (prerequisite `think-nbij`), at an estimated hour |
 | [H-112](packing/campaign/hypotheses/H-112-six-axis-five-common-angle-optimum.md) | blocked | Rung 1: any improvement on Trump has a different multiplicity or more orientation classes | Priced out by exp-231 with the present relaxation; needs a per-node bound that closes rung 0’s box in far fewer nodes |
-| [H-113](packing/campaign/hypotheses/H-113-at-most-two-angle-optimum.md) | blocked | Rung 3: Stromquist’s Theorem 3 with `{0°, 45°}` replaced by every pair of orientations | Depends on rungs 0–2 |
-| [H-155](packing/campaign/hypotheses/H-155-conditional-threshold-cover-on-an-owner-class.md) | blocked | A conditional threshold cover on one owner class: the corner two-band count the PR 230 review calls the cheapest sound next form | Not instrument-ready; needs the adaptive parent-core producer; posed at `96/25` |
+| [H-113](packing/campaign/hypotheses/H-113-at-most-two-angle-optimum.md) | blocked | Rung 3: Stromquist’s Theorem 3 with $\lbrace0^\circ, 45^\circ\rbrace$ replaced by every pair of orientations | Depends on rungs 0–2 |
+| [H-155](packing/campaign/hypotheses/H-155-conditional-threshold-cover-on-an-owner-class.md) | blocked | A conditional threshold cover on one owner class: the corner two-band count the PR 230 review calls the cheapest sound next form | Not instrument-ready; needs the adaptive parent-core producer; posed at $\frac{96}{25}$ |
 | [H-103](packing/campaign/hypotheses/H-103-complete-typed-global-capture.md) | open question | Every minimizer captured or excluded by a complete typed cover | The BC-245 to BC-247 contract, endpoint and completeness controls are not ready; price one nontrivial complete branch |
-| [H-117](packing/campaign/hypotheses/H-117-forced-angle-complexity.md) | open question | At most `k < 11` orientation classes in some minimizer | No complete structural argument; X-046 finds no provable reduction |
+| [H-117](packing/campaign/hypotheses/H-117-forced-angle-complexity.md) | open question | At most $k < 11$ orientation classes in some minimizer | No complete structural argument; X-046 finds no provable reduction |
 | [H-121](packing/campaign/hypotheses/H-121-axis-plus-one-minimizer.md) | blocked | Reduces the angle dimension to one | X-046 judges it the conjecture restated; owner disposition pending |
-| [H-120](packing/campaign/hypotheses/H-120-rank-nine-release-exclusion.md) | open question | A closed exclusion of part of Trump’s rank-nine released-segment family | Instrument-ready, but posed between `381/100` and `96/25`, below the bracket; needs a fresh domain in `[31/8, U]` |
-| [H-232](packing/campaign/hypotheses/H-232-n11-all-deep-class-ring-centre-atom.md) | blocked | Closes the all-deep corner class at `96/25` with the ring-centre 2-of-3 atom | Below the bound; blocked on the non-convex box cut, the refund and the 2-of-3 reader |
-| [H-163](packing/campaign/hypotheses/H-163-route-s-threshold-compression.md) | unresolved | A much simpler certificate for `3.82` (Route S) | Encode-only timed out; needs the live `--check` and `--search` |
-| [H-217](packing/campaign/hypotheses/H-217-route-f1-majority-floor-at-153-40.md) | blocked | Weighted-majority and floor atoms beat ordinary thresholds at `153/40` (Route F1) | Below the bound; the `think-g3j7` reader has not landed |
-| [H-160](packing/campaign/hypotheses/H-160-bc303-t2-charge-filters.md), [H-162](packing/campaign/hypotheses/H-162-bc303-floor-normalized-t2-filter.md) | blocked | Corner-pair owner inequalities at `96/25` (BC303) | Paused by the owner’s hold |
-| `H-153`, `H-093`, `H-095`, `H-124`, `H-128`, `H-146`, `H-158` | `H-153` open; `H-095` blocked; the rest unresolved | Point-language and `96/25` structural questions | All posed below `3.875`, so useful only as controls or method evidence |
+| [H-120](packing/campaign/hypotheses/H-120-rank-nine-release-exclusion.md) | open question | A closed exclusion of part of Trump’s rank-nine released-segment family | Instrument-ready, but posed between $\frac{381}{100}$ and $\frac{96}{25}$, below the bracket; needs a fresh domain in $[\frac{31}{8}, U]$ |
+| [H-232](packing/campaign/hypotheses/H-232-n11-all-deep-class-ring-centre-atom.md) | blocked | Closes the all-deep corner class at $\frac{96}{25}$ with the ring-centre 2-of-3 atom | Below the bound; blocked on the non-convex box cut, the refund and the 2-of-3 reader |
+| [H-163](packing/campaign/hypotheses/H-163-route-s-threshold-compression.md) | unresolved | A much simpler certificate for $3.82$ (Route S) | Encode-only timed out; needs the live `--check` and `--search` |
+| [H-217](packing/campaign/hypotheses/H-217-route-f1-majority-floor-at-153-40.md) | blocked | Weighted-majority and floor atoms beat ordinary thresholds at $\frac{153}{40}$ (Route F1) | Below the bound; the `think-g3j7` reader has not landed |
+| [H-160](packing/campaign/hypotheses/H-160-bc303-t2-charge-filters.md), [H-162](packing/campaign/hypotheses/H-162-bc303-floor-normalized-t2-filter.md) | blocked | Corner-pair owner inequalities at $\frac{96}{25}$ (BC303) | Paused by the owner’s hold |
+| `H-153`, `H-093`, `H-095`, `H-124`, `H-128`, `H-146`, `H-158` | `H-153` open; `H-095` blocked; the rest unresolved | Point-language and $\frac{96}{25}$ structural questions | All posed below $3.875$, so useful only as controls or method evidence |
 | [H-231](packing/campaign/hypotheses/H-231-theta-on-pose-cells.md) | open question | An SDP (Lovász theta) occupancy bound on pose cells | No instrument: the dual matrix is dense and the cell count exceeds its own kill line; the route stays retired |
-| [H-237](packing/campaign/hypotheses/H-237-n11-trump-angular-capture-radius.md) | exhausted | A capture ball larger than `ρ` from the growth cone | Capped by lemma; the successor is idea 246 |
+| [H-237](packing/campaign/hypotheses/H-237-n11-trump-angular-capture-radius.md) | exhausted | A capture ball larger than $\rho$ from the growth cone | Capped by lemma; the successor is idea 246 |
 
 **Idea-board rows not yet registered**, from X-043, X-045, X-046 and exp-227, with the
-older `n = 11` rows they touch:
+older $n = 11$ rows they touch:
 
 | Row | Status | Idea | Blocker or first discriminator |
 | --- | --- | --- | --- |
 | 246 | shaped | A second-order-exact isolation theorem, enlarging Trump’s ball past the BC-199 modulus | Needs exact row Hessians, a certified cubic remainder and a face-wise enclosure |
 | 240 | shaped | The ladder beyond rung 1: axis plus one angle at every multiplicity, then two orientations | Priced by `H-236`’s node count and `H-239`’s constant |
-| 239 | shaped | An angle-profile counting certificate excluding angle sets away from Trump’s | Unwritten; the minima at `3.8867` and `3.8943` set the sharpness required. Write the profile LP on `T-025`’s atoms and read its dual |
+| 239 | shaped | An angle-profile counting certificate excluding angle sets away from Trump’s | Unwritten; the minima at $3.8867$ and $3.8943$ set the sharpness required. Write the profile LP on `T-025`’s atoms and read its dual |
 | 204–207 | shaped | Charge-deficit covers and low-charge occupancy; centre-dependent and polygonal cores | Blocked on the missing adaptive parent-core producer; the review reads 204–205 as `H-136`/`H-155` in parent-core language |
 | 210–212 | shaped | Geometry-aware trace groups; rectangle-reservoir floors | The spike found zero trace-group saving and the review no headroom; the floors are one-body and share the threshold family’s ceiling |
 | 213 | shaped | A coarse class impossible or captured by Trump neighbourhoods | Needs a complete class proof; BC-241 is now closed |
 | 214 | shaped | A low-degree PSD kernel on the residual pose domain | Needs an exact PSD certificate that beats a control-strength optimum |
 | 215 | shaped | Jointly infeasible pair-compatible triples or quadruples | Needs complete local separation branches; one validated compatible tuple kills it |
-| 224 | shaped | An explicit local-minimum cutoff below `U` | The review: equivalent to the whole problem |
-| 225 | shaped | A redesigned mixed certificate at `U` forcing a role profile | Unpriced: it needs a non-flat, near-tight certificate at `U`, Kleddamag’s rows spread only `8.5e-5`, and X-046 finds no in-repository optimizer for one |
+| 224 | shaped | An explicit local-minimum cutoff below $U$ | The review: equivalent to the whole problem |
+| 225 | shaped | A redesigned mixed certificate at $U$ forcing a role profile | Unpriced: it needs a non-flat, near-tight certificate at $U$, Kleddamag’s rows spread only `8.5e-5`, and X-046 finds no in-repository optimizer for one |
 | 226 | shaped | Joint corner and contact information | One complete positive-width two-parent class; X-045 names Trump’s top-right pair as the necessary positive control |
 | 227 | shaped | Descent certificates for surviving families | exp-228’s filter is a first instrument, not yet a leaf type in the tree |
 | 228–230 | shaped | Charge profiles into charts; critical-value polynomials; a corner-chain alternative | Each needs one complete family; row 230’s all-four-corners premise is already false |
 | 231–234 | shaped | Angle-class reduction, sliding assembly covers, angle and position tubes, an exact map of one restricted family | X-046: none removes an angle dimension by proof |
 | 50 | raw | Certified restricted-class optimality over an angle sweep, the successor shape to Stromquist’s Theorem 3 that X-046’s ladder takes | The row records it as blocked on the exact LP that is D-021’s named general fix |
-| 78 | shaped | The handshake: a conditional certificate at `U − 0.01` with all squares boxed near Trump | Needs the domain generalisation and a quarter-turn net; time one node first with a coarse net |
+| 78 | shaped | The handshake: a conditional certificate at $U - 0.01$ with all squares boxed near Trump | Needs the domain generalisation and a quarter-turn net; time one node first with a coarse net |
 | 154 | raw | Iterating support and atoms together | Carried as `think-yc80`; needs lane A4’s gate bypass |
 
 Three directions the PR 230 review lists as missed are not yet rows: symmetry
 canonicalization on the cover side of a verified search; a threshold-language ceiling
-family near `3.876`, to bound how far counting can reach; and the pruning tests of the
+family near $3.876$, to bound how far counting can reach; and the pruning tests of the
 verified-global-optimization literature, from Markót and Csendes’s circle packings to
 Montanher and coauthors’ unit squares in a circle.
 
 ### The road to settling `n = 11`
 
-**What is established.** `s(11) > 31/8`, machine-verified by two complete methods, at
+**What is established.** $s(11) > 31/8$, machine-verified by two complete methods, at
 `V4/C4` as the case record states it.
-`s(11) ≤ U`, machine-verified as `T-011`. Trump’s pose is strictly locally side-optimal
-(machine-verified, `exp-013`), with a quantified radius of about `0.004`, verified and
-exact since the BC-241 closure.
-With six squares axis-aligned and five at a common tilt within `10^-6` of Trump’s in the
-half-tangent, no packing beats `U` and only Trump’s pose attains it: `T-036`, composed
-from the machine-verified reduction `T-035` and BC-240’s first clause.
-Packings oriented only at `0°` and `45°` need side at least `3.885618` (Stromquist’s
-Theorem 3, from the literature).
+$s(11) \le U$, machine-verified as `T-011`. Trump’s pose is strictly locally
+side-optimal (machine-verified, `exp-013`), with a quantified radius of about $0.004$,
+verified and exact since the BC-241 closure.
+With six squares axis-aligned and five at a common tilt within $10^{-6}$ of Trump’s in
+the half-tangent, no packing beats $U$ and only Trump’s pose attains it: `T-036`,
+composed from the machine-verified reduction `T-035` and BC-240’s first clause.
+Packings oriented only at $0^\circ$ and $45^\circ$ need side at least $3.885618$
+(Stromquist’s Theorem 3, from the literature).
 X-045 proves that at most three squares touch any wall in the bracket and that there are
 finitely many local-minimum side values; the PR 230 review found no fatal error in it,
 and neither statement is registered as a result.
 
 **What is observed, not proved.** No descent-stable minimum with three or more
 orientation classes below Stromquist’s value among 1,000 jolted starts (`exp-228`); no
-side below `3.897` among 200 refined uniform starts (`exp-204`, as X-046 reads it).
+side below $3.897$ among 200 refined uniform starts (`exp-204`, as X-046 reads it).
 
-**What is conjectured.** `s(11) = U`: Trump’s packing has stood since 1979.
+**What is conjectured.** $s(11) = U$: Trump’s packing has stood since 1979.
 
 The road has three segments, and only the first is priced in the record.
 
 1. **Rung 0 is done; re-price the ladder.** Exp-232 closed the tree, so `H-236` is
    confirmed at “verified, exact”, now that BC-241 is closed: the first optimality
    statement with an equality case for a family containing Trump’s packing, about
-   Trump’s own angle only; Stromquist’s `0°`/`45°` bound is an earlier
+   Trump’s own angle only; Stromquist’s $0^\circ$/$45^\circ$ bound is an earlier
    restricted-orientation statement.
    After the Fable max review it is registered as `T-035` and `T-036`. The consequential
    work is the stronger per-node bound exp-231 calls for.
@@ -4270,29 +4279,30 @@ The road has three segments, and only the first is priced in the record.
    fixed dual at the box centre (X-046), descent leaves (idea 227), and symmetry
    canonicalization (the PR 230 review); idea 246’s larger ball would save about three
    refinement levels on each side of Trump’s box.
-   `H-239`’s measurement of `c` is estimated at an hour once the driver is admitted.
+   `H-239`’s measurement of $c$ is estimated at an hour once the driver is admitted.
 2. **Rungs 1 to 3.** Each is a restricted-family theorem that strengthens Stromquist’s
    Theorem 3, and every box closed with a positive margin yields a tube of positive
    angular width around its exact angle pattern.
-   The two new minima from exp-228, at `3.8867` with two orientation classes and at
-   `3.8943` with three, set the sharpness any such theorem must resolve.
+   The two new minima from exp-228, at $3.8867$ with two orientation classes and at
+   $3.8943$ with three, set the sharpness any such theorem must resolve.
    **This segment is unpriced:** X-046’s box counts predate exp-231’s measurement, and
    the record holds no revised figure.
 3. **The far region.** Closing the eleven-dimensional angle space away from the
    few-angle families is what settles the case.
-   **This segment is also unpriced:** X-046 ties it to `c` and `V(ε)`, both unmeasured
-   (`H-239`), and finds that the far region can be closed only by counting-type profile
-   theorems (idea 239) or by a search whose relaxation is coarse enough, neither of them
-   priced. A profile theorem shows that no packing at side at most `U` uses an
-   orientation in a given angle set; X-046 counts Stromquist’s Theorem 3, for the
-   profile `{0°, 45°}`, as the only known success.
+   **This segment is also unpriced:** X-046 ties it to $c$ and $V(\varepsilon)$, both
+   unmeasured (`H-239`), and finds that the far region can be closed only by
+   counting-type profile theorems (idea 239) or by a search whose relaxation is coarse
+   enough, neither of them priced.
+   A profile theorem shows that no packing at side at most $U$ uses an orientation in a
+   given angle set; X-046 counts Stromquist’s Theorem 3, for the profile
+   $\lbrace0^\circ, 45^\circ\rbrace$, as the only known success.
 
 **The record offers no route to a first-party lower-bound gain with the instruments it
-holds.** The frozen families are exhausted below `3.875`, the point language is capped
-at `3.8288`, Kleddamag’s own certificate has a collar of `3.26e-9`, and the PR 230
+holds.** The frozen families are exhausted below $3.875$, the point language is capped
+at $3.8288$, Kleddamag’s own certificate has a collar of `3.26e-9`, and the PR 230
 review makes a producer the record does not have the prerequisite for any gain.
-Even a move to `3.876` would remove only about 48% of the remaining gap (X-044) and
-prove nothing about `U`.
+Even a move to $3.876$ would remove only about 48% of the remaining gap (X-044) and
+prove nothing about $U$.
 
 ## Theoretical Results
 
@@ -4311,24 +4321,25 @@ qualification.
 ### Results relied on from the literature
 
 Cited near the claims they support in the
-[`n = 11` report](docs/project/research/research-2026-08-22-packing-11-unit-squares.md);
+[$n = 11$ report](docs/project/research/research-2026-08-22-packing-11-unit-squares.md);
 listed here so the dependencies of this program are explicit.
 
-- **`s(10) = 3 + ½√2`**, Stromquist 2003, Theorem 1. Ten unavoidable points, then case
-  analysis. Not pigeonhole alone.
-- **The published statement `s(11) ≥ 2 + 4/√5`**, Stromquist 2003, Theorem 2. D-152 and
-  exp-016 give a strict counterexample to the printed Figure 14 unavoidability claim, so
-  the published proof is not relied on as complete.
+- **$s(10) = 3 + \tfrac{1}{2}\sqrt{2}$**, Stromquist 2003, Theorem 1. Ten unavoidable
+  points, then case analysis.
+  Not pigeonhole alone.
+- **The published statement $s(11) \ge 2 + 4/\sqrt{5}$**, Stromquist 2003, Theorem 2.
+  D-152 and exp-016 give a strict counterexample to the printed Figure 14 unavoidability
+  claim, so the published proof is not relied on as complete.
   The same inequality is established independently as **T-4** below, using H-041’s
   separately preregistered source-distinct repaired point set.
-- **`s(11) ≤ 3.877083590022814…`**, Trump 1979, by construction.
+- **$s(11) \le 3.877083590022814\ldots$**, Trump 1979, by construction.
   Every upper bound in this subject is a construction; no non-constructive upper bound
   has ever been obtained.
-- **The `0°`/`45°` class cannot achieve it.** Stromquist bounds that orientation class
-  below at `2 + (4/3)√2 ≈ 3.885618`, which Trump’s oblique packing beats.
-  This makes `n = 11` the first case where genuinely oblique tilt is proved to improve
-  on the `0°`/`45°` class, and is the sharpest available statement of why the target
-  differs structurally from the ladder.
+- **The $0^\circ$/$45^\circ$ class cannot achieve it.** Stromquist bounds that
+  orientation class below at $2 + (4/3)\sqrt{2} \approx 3.885618$, which Trump’s oblique
+  packing beats. This makes $n = 11$ the first case where genuinely oblique tilt is
+  proved to improve on the $0^\circ$/$45^\circ$ class, and is the sharpest available
+  statement of why the target differs structurally from the ladder.
 
 ### Results established here
 
@@ -4338,16 +4349,16 @@ The authoritative, prioritized list of whole results is now the
 verification and confirmation ladders [`epistemics.md`](epistemics.md) defines and
 re-derived by `devtools/check_results.py` on every validation run; the repair below is
 registered there as `T-010`, the Trump validity check as `T-011`. This section keeps the
-original `n = 11` statements with their replay commands — the single-digit `T-N` ids are
+original $n = 11$ statements with their replay commands — the single-digit `T-N` ids are
 this document’s declared shorthand, retained where the surrounding prose cites them, and
 the structural results `T-2` and `T-3` live only here and in their registry artifacts.
 
 | Id | Statement | Assurance or basis | Where it lives | Reproduce with |
 | --- | --- | --- | --- | --- |
-| **T-1** | Trump’s 1979 packing is valid: 11 unit squares in a square of side `s`, the degree-8 algebraic number above, with 14 of 55 pairs touching at exactly zero separation and 20 corner coordinates exactly on the boundary | **verified** (`exact-algebraic`; a published construction, confirmed here) | `sqpack` | `uv run --frozen python -m cases.trump11.verify_exact` |
+| **T-1** | Trump’s 1979 packing is valid: 11 unit squares in a square of side $s$, the degree-8 algebraic number above, with 14 of 55 pairs touching at exactly zero separation and 20 corner coordinates exactly on the boundary | **verified** (`exact-algebraic`; a published construction, confirmed here) | `sqpack` | `uv run --frozen python -m cases.trump11.verify_exact` |
 | **T-2** | Fixing every angle and every pair’s separating axis reduces the problem to a **linear program** in the centres and the side. All nonconvexity lives in the angles and in the combinatorial choice of cell | **proved**; instantiated numerically | [R-2](docs/project/reviews/review-2026-08-23-toolkit-docs-and-first-experiments.md#r-2), built as [`sqpack.research.quench`](packing/src/sqpack/research/quench.py) | `uv run --frozen python -m cases.trump11.independent_lp_cell` |
 | **T-3** | On Trump’s fixed contact cell, the one-dimensional LP optimum obtained by varying the five tilted squares’ shared angle has a **corner** at the published tilt—distinct one-sided slopes—so a smooth local model is misspecified on that slice | **numerically checked** (`numerical-f64`) | [H-019](packing/campaign/hypotheses/H-019-angle-optimum-is-a-kink.md), confirmed by [exp-010](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md) | `uv run --frozen python -m cases.trump11.independent_lp_cell` |
-| **T-4** | The source-distinct replacement `G=(.8,1.85) → G'=(.79,1.85)` restores the complete Figure 13 localization, A-triple forcing, repaired Figure 14 unavoidability, and `3+9` capacity chain, proving `s(11) ≥ 2 + 4/√5` | **verified** (`exact-algebraic`; apparently novel here, not externally peer-reviewed) | [H-041](packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md), confirmed by [exp-017](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | `uv run --frozen python -m cases.stromquist.repaired_cover --replay campaign/series/series-000-smoke-and-calibration/results/exp-017-h-041-stromquist-repaired-figure14.json` |
+| **T-4** | The source-distinct replacement `G=(.8,1.85) → G'=(.79,1.85)` restores the complete Figure 13 localization, A-triple forcing, repaired Figure 14 unavoidability, and $3+9$ capacity chain, proving $s(11) \ge 2 + 4/\sqrt{5}$ | **verified** (`exact-algebraic`; apparently novel here, not externally peer-reviewed) | [H-041](packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md), confirmed by [exp-017](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | `uv run --frozen python -m cases.stromquist.repaired_cover --replay campaign/series/series-000-smoke-and-calibration/results/exp-017-h-041-stromquist-repaired-figure14.json` |
 
 **T-1** is also an independent check of the published record: the 33 digits on the
 *Squares in Squares* record page agree with the value computed here from the field.
@@ -4357,22 +4368,22 @@ exact contacts.
 **T-2** originated in the standing review as observation R-2 and has now been
 implemented twice, independently—see below for why that matters.
 
-**`T-014`, the newest whole result: Goebel’s `n = 5` optimum is locally rigid at fixed
-side, proved exactly.** For `s = 2 + √2/2` and Goebel’s labeled pose `P⁰` in
-`C = (ℝ² × S¹)⁵`, `P⁰` is an isolated point of `Feas(s)` — closed unit squares in
-`[0, s]²`, pairwise disjoint interiors — equivalently there is no nonconstant continuous
-feasible path from `P⁰` and no sequence of distinct feasible poses converging to it, so
-the packing is rigid at fixed side in the catalogue’s sense.
-The proof is exact over `Q(√2)`: one intrinsic half-angle chart, all 400 elementary
-inequalities classified by exact sign, a neighbourhood cut out by 128 strict conditions
-on which the local feasible set is exactly twenty active rows, `T-012`’s first-order
-cone and non-negative self-stress transferred to that chart, then semialgebraic curve
-selection on the punctured feasible set and an induction on a putative arc’s Taylor
-coefficients that the self-stress contradicts at order `2m`. It is registered at
-`V3`/`C5` — the exact quantities are machine-confirmed here, the two steps that close
-the argument are an audited proof, no instrument decides isolation, and that `C3` is
-raised to `C5` by the mapped review artifact below, rather than to `C4` by a second
-method — and `apparently-novel` at `S3` on
+**`T-014`, the newest whole result: Goebel’s $n = 5$ optimum is locally rigid at fixed
+side, proved exactly.** For $s = 2 + \sqrt{2}/2$ and Goebel’s labeled pose $P^0$ in
+$C = (\mathbb{R}^2 \times S^1)^5$, $P^0$ is an isolated point of `Feas(s)` — closed unit
+squares in $[0, s]^2$, pairwise disjoint interiors — equivalently there is no
+nonconstant continuous feasible path from $P^0$ and no sequence of distinct feasible
+poses converging to it, so the packing is rigid at fixed side in the catalogue’s sense.
+The proof is exact over $Q(\sqrt{2})$: one intrinsic half-angle chart, all 400
+elementary inequalities classified by exact sign, a neighbourhood cut out by 128 strict
+conditions on which the local feasible set is exactly twenty active rows, `T-012`’s
+first-order cone and non-negative self-stress transferred to that chart, then
+semialgebraic curve selection on the punctured feasible set and an induction on a
+putative arc’s Taylor coefficients that the self-stress contradicts at order $2m$. It is
+registered at `V3`/`C5` — the exact quantities are machine-confirmed here, the two steps
+that close the argument are an audited proof, no instrument decides isolation, and that
+`C3` is raised to `C5` by the mapped review artifact below, rather than to `C4` by a
+second method — and `apparently-novel` at `S3` on
 [`BC-153`](packing/campaign/agendas/agenda-016-results-first-continuation-rigidity-and-remediation.md)’s
 independent review, which rebuilt every exact quantity from scratch in code sharing
 nothing with the author, replayed the instrument from clean roots, and accepted the
@@ -4380,7 +4391,7 @@ novelty basis: Kingbird asserts the property with no argument, Goebel does not s
 and Friedman does not annotate it.
 **Not claimed:** any isolation radius; rigidity with the container side free, which
 [X-007](packing/campaign/explorations/X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md)
-measured to be false; global uniqueness; any other `n = 5` optimum; applicability of the
+measured to be false; global uniqueness; any other $n = 5$ optimum; applicability of the
 Connelly–Whiteley tensegrity theorems as stated; and any novelty of method — the closing
 principle is the classical second-order sufficient optimality condition, and the proof
 shape is Connelly–Whiteley 1996 Theorem 4.3.1’s. The proof is
@@ -4393,14 +4404,14 @@ curve-selection lemma.
 
 **Apparently novel here**, in the qualified sense above: the falsification of
 Stromquist’s printed Figure 14 argument and the source-distinct repaired certificate for
-`s(11) ≥ 2 + 4/√5` (exp-016, exp-017); the corner at Trump’s cell (T-3, exp-010); the
-local-isolation theorem for Trump’s pose (exp-013); and the exact `n = 5`
+$s(11) \ge 2 + 4/\sqrt{5}$ (exp-016, exp-017); the corner at Trump’s cell (T-3,
+exp-010); the local-isolation theorem for Trump’s pose (exp-013); and the exact $n = 5$
 terminal-family chain—shared optimal face, two-parameter sheet, second-order
 obstruction, complete first-order inventory, and connected position polytope (exp-033
-through exp-039); and the verified relaxed rational witness at `n = 29`
+through exp-039); and the verified relaxed rational witness at $n = 29$
 (E-n029-schadt-rational-upper), a new construction proving a slightly weaker bound than
 the reported record.
-The `n = 3` and `n = 4` quotient classifications are established here with no novelty
+The $n = 3$ and $n = 4$ quotient classifications are established here with no novelty
 claim: the published hard-squares computations cover their labelled and unlabelled
 pieces, and the record declines to call the quotient refinements new.
 **T-3** was found while building the quench, registered as `H-019` *before* the round
@@ -4414,55 +4425,61 @@ The result the refiner rests on, stated so it can be checked.
 
 ### Setup
 
-Fix `n` unit squares.
+Fix $n$ unit squares.
 A configuration is
 
-- a **centre** `(xᵢ, yᵢ) ∈ ℝ²` and an **angle** `θᵢ ∈ [0, π/2)` for each square `i`, and
-- the container side `s`,
+- a **centre** $(x_i, y_i) \in \mathbb{R}^2$ and an **angle** $\theta_i \in [0, \pi/2)$
+  for each square $i$, and
+- the container side $s$,
 
-so `3n + 1` real coordinates in all, which is 34 at `n = 11`.
+so $3n + 1$ real coordinates in all, which is 34 at $n = 11$.
 
-The four corners of square `i` are `(xᵢ, yᵢ) + Rᵢ·(±½, ±½)` where `Rᵢ` is rotation by
-`θᵢ`. Write `oᵢₖ ∈ ℝ²` for the four corner offsets, `k = 1…4`. **Once `θᵢ` is fixed the
-`oᵢₖ` are constants**, and every corner is an affine function of the centre alone.
+The four corners of square $i$ are
+$(x_i, y_i) + R_i\cdot(\pm\tfrac{1}{2}, \pm\tfrac{1}{2})$ where $R_i$ is rotation by
+$\theta_i$. Write $o_{ik} \in \mathbb{R}^2$ for the four corner offsets, $k = 1\ldots4$.
+**Once $\theta_i$ is fixed the $o_{ik}$ are constants**, and every corner is an affine
+function of the centre alone.
 
 Two squares have disjoint interiors exactly when some line separates them, and for
 convex polygons it suffices to test lines parallel to their edges.
 A square has two distinct edge normals (opposite edges are parallel), so a pair has four
 candidate axes; these too are functions of the angles alone.
 
-Define a **cell** of the configuration space to be a choice, for each of the `C(n,2)`
+Define a **cell** of the configuration space to be a choice, for each of the $C(n,2)$
 pairs, of one candidate axis together with an order (which square lies on the low side).
 A configuration lies in a cell when that axis genuinely separates that pair in that
 order.
 
 ### Statement
 
-> **T-2.** Fix the angle vector `θ` and fix a cell `C`. Then
+> **T-2.** Fix the angle vector $\theta$ and fix a cell `C`. Then
 > 
 > ```
 > minimise   s
 > subject to  the configuration lies in cell C and inside [0, s]²
 > ```
 > 
-> is a linear program in the `2n + 1` variables `(x₁,…,xₙ, y₁,…,yₙ, s)`.
+> is a linear program in the $2n + 1$ variables $(x_1,\ldots,x_n, y_1,\ldots,y_n, s)$.
 
 ### Why
 
 Four observations, each immediate once the angles are fixed.
 
-1. **Corners are affine in the centres.** Corner `k` of square `i` is `(xᵢ, yᵢ) + oᵢₖ`
-   with `oᵢₖ` constant.
-2. **Containment is linear.** Each corner must satisfy `0 ≤ xᵢ + oᵢₖ,ₓ ≤ s` and
-   `0 ≤ yᵢ + oᵢₖ,ᵧ ≤ s`. Note that `s` appears here, and only here, as a variable.
-3. **Separation along a *fixed* axis is linear.** For axis `ν` and order `(i before j)`,
-   separation says every corner of `i` projects at or before every corner of `j`:
-   `⟨ν, (xᵢ,yᵢ) + oᵢₖ⟩ ≤ ⟨ν, (xⱼ,yⱼ) + oⱼₗ⟩` for all `k, l`. Since `ν` is a constant
-   vector, each is a linear inequality in four of the variables.
-4. **The objective is linear**, being `s` itself.
+1. **Corners are affine in the centres.** Corner $k$ of square $i$ is
+   $(x_i, y_i) + o_{ik}$ with $o_{ik}$ constant.
+2. **Containment is linear.** Each corner must satisfy $0 \le x_i + o_{ik,x} \le s$ and
+   $0 \le y_i + o_{ik,\gamma} \le s$. Note that $s$ appears here, and only here, as a
+   variable.
+3. **Separation along a *fixed* axis is linear.** For axis $\nu$ and order
+   `(i before j)`, separation says every corner of $i$ projects at or before every
+   corner of $j$:
+   $\langle\nu, (x_i,y_i) + o_{ik}\rangle \le \langle\nu, (x_j,y_j) + o_{jl}\rangle$ for
+   all $k, l$. Since $\nu$ is a constant vector, each is a linear inequality in four of
+   the variables.
+4. **The objective is linear**, being $s$ itself.
 
 The nonlinearity of the original problem is entirely in two places: the trigonometric
-dependence of `oᵢₖ` and `ν` on the angles, and the *discrete* choice of cell.
+dependence of $o_{ik}$ and $\nu$ on the angles, and the *discrete* choice of cell.
 Neither is present once both are fixed.
 
 Note what the statement does **not** claim.
@@ -4505,7 +4522,7 @@ Checking exp-001’s polish/exploration split, an agent built a probe doing one 
 at fixed angles, called it “the quench”, and retracted a correct finding when it stalled
 ([D-029](defects.md)). On exp-002’s seed 2:
 
-|  | gap to `s(10) = 3 + ½√2` |
+|  | gap to $s(10) = 3 + \tfrac{1}{2}\sqrt{2}$ |
 | --- | ---: |
 | annealer output, as found | `+5.6440e-04` |
 | fixed-angle solve, carried to its cell fixed point | `+5.6440e-04`—*no improvement at all* |
@@ -4520,7 +4537,7 @@ question. `devtools.check_regressions` pins this discrimination under D-029.
 The row count depends on how separation is written, and this directory now has both
 forms:
 
-| Implementation | Separation rows per pair | Total rows at `n = 11` |
+| Implementation | Separation rows per pair | Total rows at $n = 11$ |
 | --- | --- | --- |
 | [`sqpack.research.quench`](packing/src/sqpack/research/quench.py) | 1, from projected half-extents | small |
 | [`cases.trump11.independent_lp_cell`](packing/cases/trump11/independent_lp_cell.py) | 16, one per ordered corner pair | 1,056 = 16 × (11 + 55) |
@@ -4585,8 +4602,8 @@ defect. Three corrections, recorded in the
 
 ### Thirty-four dimensions become one
 
-Trump’s packing uses two distinct angles: `0°` on six squares and `a*` on five.
-Holding the cell fixed and varying the single free angle gives a function
+Trump’s packing uses two distinct angles: $0^\circ$ on six squares and $a^{\ast}$ on
+five. Holding the cell fixed and varying the single free angle gives a function
 
 ```
 φ(a) = the LP optimum of Trump's cell with the five tilted squares at angle a
@@ -4594,7 +4611,7 @@ Holding the cell fixed and varying the single free angle gives a function
 
 which is the entire problem, restricted to this cell, in **one** variable.
 
-| `a` (deg) | `φ(a)` | `φ(a) − s*` |
+| $a$ (deg) | $\varphi(a)$ | $\varphi(a) - s^{\ast}$ |
 | --- | --- | --- |
 | 39.000000 | 3.880706142326 | `+3.623e-03` |
 | 39.500000 | 3.879169268857 | `+2.086e-03` |
@@ -4606,8 +4623,8 @@ which is the entire problem, restricted to this cell, in **one** variable.
 | 41.000000 | 3.882703521786 | `+5.620e-03` |
 | 42.000000 | 3.889950463054 | `+1.287e-02` |
 
-A 2,001-point scan of `[38°, 42°]` puts the minimum at `40.182°`, one grid step
-(`0.002°`) from `a*`.
+A 2,001-point scan of $[38^\circ, 42^\circ]$ puts the minimum at $40.182^\circ$, one
+grid step ($0.002^\circ$) from $a^{\ast}$.
 
 Trump’s angle is not an input to this computation.
 It is **the argument that minimises a one-dimensional function anyone can plot.** For
@@ -4624,32 +4641,32 @@ measurement, a mechanism, a prediction, and a method built on the prediction tha
 
 ### The measurement
 
-`φ` is not smooth at its minimum.
+$\varphi$ is not smooth at its minimum.
 Measuring one-sided slopes and refining the step:
 
-| `h` (deg) | left, per deg | right, per deg | left, per rad | right, per rad |
+| $h$ (deg) | left, per deg | right, per deg | left, per rad | right, per rad |
 | --- | --- | --- | --- | --- |
-| `1e-02` | `3.049623e-03` | `6.702833e-03` | `0.1747` | `0.3840` |
-| `1e-03` | `3.049503e-03` | `6.700977e-03` | `0.1747` | `0.3839` |
-| `1e-04` | `3.049491e-03` | `6.700791e-03` | `0.1747` | `0.3839` |
-| `1e-05` | `3.049490e-03` | `6.700772e-03` | `0.1747` | `0.3839` |
+| `1e-02` | `3.049623e-03` | `6.702833e-03` | $0.1747$ | $0.3840$ |
+| `1e-03` | `3.049503e-03` | `6.700977e-03` | $0.1747$ | $0.3839$ |
+| `1e-04` | `3.049491e-03` | `6.700791e-03` | $0.1747$ | $0.3839$ |
+| `1e-05` | `3.049490e-03` | `6.700772e-03` | $0.1747$ | $0.3839$ |
 
-Both converge, and they converge to **different** values, ratio `2.1973`. The derivative
-does not vanish at `a*`; it jumps.
+Both converge, and they converge to **different** values, ratio $2.1973$. The derivative
+does not vanish at $a^{\ast}$; it jumps.
 
 [exp-010](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md)
 measured the same quantity through `sqpack.quench`—a different LP formulation, a
-different code path—and recorded `0.1747` and `0.3841`, ratio `2.198`, stable over five
+different code path—and recorded $0.1747$ and $0.3841$, ratio $2.198$, stable over five
 decades on each side.
 Two implementations, one number.
 
 ### The mechanism
 
-Where the LP’s optimal basis is locally constant, `φ` is smooth and its derivative is
-read off that basis.
-A corner occurs where the optimal basis switches as `a` crosses `a*`. Because a basis is
-only a subset of the active rows, a basis switch alone does not show that the full
-active-contact set changed.
+Where the LP’s optimal basis is locally constant, $\varphi$ is smooth and its derivative
+is read off that basis.
+A corner occurs where the optimal basis switches as $a$ crosses $a^{\ast}$. Because a
+basis is only a subset of the active rows, a basis switch alone does not show that the
+full active-contact set changed.
 The switch at the minimum establishes a kink in this one-dimensional class-angle
 objective.
 It does not by itself prove rigidity of the full packing; that requires ruling
@@ -4670,14 +4687,14 @@ Replace the smooth descent with a **bracketing search over merged angle classes*
 method that tolerates non-smoothness—and hold everything else fixed.
 On the same annealer output:
 
-| `n` | annealer | + angle descent | + class bracketing |
+| $n$ | annealer | + angle descent | + class bracketing |
 | ---: | ---: | ---: | ---: |
 | 5 | `3.4274e-08` | `3.1875e-08` | **`2.2204e-15`** |
 | 10 | `5.318e-03` | `4.507e-03` | **`1.3323e-15`** |
 | 11 | `8.846e-02` | `6.999e-02` | `6.2894e-02` |
 
-Seven orders at `n = 5` and twelve at `n = 10`, from changing only *how the angle half
-searches*. At `n = 5` both quenches find the same contact structure and the same two
+Seven orders at $n = 5$ and twelve at $n = 10$, from changing only *how the angle half
+searches*. At $n = 5$ both quenches find the same contact structure and the same two
 angle classes, so the difference is entirely in whether the search can land on the
 corner.
 
@@ -4689,7 +4706,7 @@ that every derivative-free method fails or that bracketing is necessary.
 
 ### And what it did not buy
 
-Nothing at `n = 11`. The bracketing quench moves the target from `8.85e-02` to
+Nothing at $n = 11$. The bracketing quench moves the target from `8.85e-02` to
 `6.29e-02`
 ([exp-009](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md)),
 against machine precision on both proved instance cells.
@@ -4705,7 +4722,7 @@ distinct terminal component.
 - **Terminal endpoint observations become inspectable.** The free-angle pass removes one
   merge-tolerance artifact and returns a pose with side length good to `≈1e-11`, so
   retained endpoints can be compared and replayed.
-  It does not make local minima discrete or define component identity: the exact `n = 3`
+  It does not make local minima discrete or define component identity: the exact $n = 3$
   continuum proves that one connected stationary family can produce many endpoint keys.
   A census, atlas, or basin statistic remains inadmissible until the component relation
   is resolved ([D-020](defects.md), [D-034](defects.md)).
@@ -4715,9 +4732,9 @@ distinct terminal component.
   concrete prior, since the class-constrained search reached the solver floor in **70 LP
   solves** where free descent needed **1,024** and landed five orders worse.
 - **Rational-slope tilts would need no number field.** At a Pythagorean angle such as
-  `arctan(3/4)` every coordinate and the cell optimum are rational, so exact
-  verification would be `ℚ`-arithmetic at degree 1. Realising that needs the exact
-  rational LP, which is unbuilt.
+  $\arctan(3/4)$ every coordinate and the cell optimum are rational, so exact
+  verification would be $\mathbb{Q}$-arithmetic at degree 1. Realising that needs the
+  exact rational LP, which is unbuilt.
 
 ### Reproducing all of it
 
@@ -4739,9 +4756,9 @@ Deliberately historical: it records the order in which things were done and why,
 several decisions were made by measurement and the measurements are why later work is
 shaped as it is.
 
-**Establish the frontier, then the mathematics.** The `n ≤ 100` corpus was built first,
-one validated artifact per case, so that “the standing best” is a fact read from a file
-rather than a number retyped into a paragraph.
+**Establish the frontier, then the mathematics.** The $n \le 100$ corpus was built
+first, one validated artifact per case, so that “the standing best” is a fact read from
+a file rather than a number retyped into a paragraph.
 Retrieving the primary sources corrected the record in ways secondary summaries had not:
 one widely-repeated explicit constant appears in no primary paper at all.
 That episode is why the grounding rule for every later lane is that nothing enters a
@@ -4786,7 +4803,7 @@ would refute it ([H-012](packing/campaign/hypotheses/H-012-record-basins-are-rar
 is registered in the cheapest tier and scheduled early.
 
 *Ask what the premise silently assumes about its denominator.* Optima need not be
-isolated: the exact `n = 3` terminal family proves that one connected optimal component
+isolated: the exact $n = 3$ terminal family proves that one connected optimal component
 can produce many endpoint keys.
 So the census that is supposed to establish rarity is counting representation-dependent
 objects, and the denominator of “rare” is not yet a number ([D-034](defects.md)). The
@@ -4801,7 +4818,7 @@ decades with no threshold, and halves when effort is multiplied by ten.
 What was measured is the refiner’s convergence rate, not a basin radius.
 The sharper result was incidental—started `1e-5` from a configuration that has stood
 since 1979, the campaign’s **default annealing schedule wanders off and lands with a
-median side gap of `0.27`**, worse than it reaches from cold starts.
+median side gap of $0.27$**, worse than it reaches from cold starts.
 
 **Build the quench, and have it beat the record.** The first working version reported a
 side *below* Trump’s. The runbook’s pre-registered rule held—a run that beats the record
@@ -4834,8 +4851,8 @@ preregistered criteria and method-specific controls.
   margins actually used.
   Basin or terminal-component identity requires its own evidence.
   **`beat_record: true` may only be written for a verified result.**
-- **Five standing instance roles**: `n = 10` positive control, `n = 11` target, `n = 12`
-  open-case calibration, `n = 16` proved not-below control, and `n = 17`
+- **Five standing instance roles**: $n = 10$ positive control, $n = 11$ target, $n = 12$
+  open-case calibration, $n = 16$ proved not-below control, and $n = 17$
   mechanism-matched calibration.
   A guard breach rejects a round regardless of outcome, because it means the instrument
   is wrong rather than the strategy good.
@@ -4868,73 +4885,73 @@ round that names the hypothesis, control roles included.
 | [H-002](packing/campaign/hypotheses/H-002-lp-in-cell-polish.md) | **refuted** as stated | LP-in-cell polish refines *any* annealer output to the analytic value | 5 | 195m agent, 5.1m wall |
 | [H-016](packing/campaign/hypotheses/H-016-stock-annealer-reaches-standing-best.md) | **refuted** | The stock annealer reaches the standing best on every instance cell | 4 | 10.2m wall |
 | [H-018](packing/campaign/hypotheses/H-018-basin-entry.md) | **refuted** as stated | Perturbed starts return to Trump’s packing at least half the time | 1 | 75m agent, 1.3m wall |
-| [H-020](packing/campaign/hypotheses/H-020-oblique-record-finding-n17.md) | **refuted** | The annealer reaches the standing best at `n = 17`, the nearest oblique record | 1 | 6.6m wall |
+| [H-020](packing/campaign/hypotheses/H-020-oblique-record-finding-n17.md) | **refuted** | The annealer reaches the standing best at $n = 17$, the nearest oblique record | 1 | 6.6m wall |
 | [H-001](packing/campaign/hypotheses/H-001-angle-class-reduction.md) | blocked | An angle-class proposer beats free-coordinate annealing | 0 | — |
 | [H-003](packing/campaign/hypotheses/H-003-basin-frequency-and-contacts.md) | blocked | Contact count predicts component attraction frequency on held-out data | 0 | — |
-| [H-004](packing/campaign/hypotheses/H-004-neighbor-transfer-seeding.md) | blocked | Neighbor-transfer seeds improve paired `n=11` search | 0 | — |
+| [H-004](packing/campaign/hypotheses/H-004-neighbor-transfer-seeding.md) | blocked | Neighbor-transfer seeds improve paired $n=11$ search | 0 | — |
 | [H-005](packing/campaign/hypotheses/H-005-m2-minus-3-construction.md) | blocked | A 3-4-5-tilt construction packs 97 squares below side 10 | 0 | — |
 | [H-006](packing/campaign/hypotheses/H-006-lp-dual-unavoidable-sets.md) | blocked | LP dual support yields refinement-stable proof candidates | 0 | — |
 | [H-007](packing/campaign/hypotheses/H-007-saturation-curves.md) | blocked | Coverage models predict held-out component discovery | 0 | — |
-| [H-008](packing/campaign/hypotheses/H-008-false-basin-rate.md) | blocked | The stronger-verifier rejection rate is measurable across `n` | 0 | — |
+| [H-008](packing/campaign/hypotheses/H-008-false-basin-rate.md) | blocked | The stronger-verifier rejection rate is measurable across $n$ | 0 | — |
 | [H-009](packing/campaign/hypotheses/H-009-symmetry-dedup-ratio.md) | blocked | Symmetry quotienting materially changes endpoint counts | 0 | — |
 | [H-010](packing/campaign/hypotheses/H-010-stromquist-triple.md) | **refuted** | Stromquist’s five-node Theorem 2 mechanism reproduces | 1 | 180m agent, 0.55s wall |
-| [H-011](packing/campaign/hypotheses/H-011-small-n-census.md) | blocked | The small-`n` landscape is censusable | 0 | — |
+| [H-011](packing/campaign/hypotheses/H-011-small-n-census.md) | blocked | The small-$n$ landscape is censusable | 0 | — |
 | [H-012](packing/campaign/hypotheses/H-012-record-basins-are-rare.md) | blocked | Record basins are rare in quench measure | 0 | — |
 | [H-013](packing/campaign/hypotheses/H-013-delta-continuation.md) | blocked | Delta-continuation improves target-component arrival | 0 | — |
 | [H-014](packing/campaign/hypotheses/H-014-superdisk-continuation.md) | blocked | Superdisk continuation imports new square components | 0 | — |
 | [H-015](packing/campaign/hypotheses/H-015-map-elites-illumination.md) | blocked | MAP-Elites improves certified component discovery rate | 0 | — |
 | [H-017](packing/campaign/hypotheses/H-017-budget-scaling.md) | open | 100× the budget reaches Trump’s basin | 0 | — |
-| [H-021](packing/campaign/hypotheses/H-021-endpoint-identifiability.md) | blocked | At least 95% of small-`n` endpoint support is classifiable | 14 | 106m agent, 4.0m wall |
+| [H-021](packing/campaign/hypotheses/H-021-endpoint-identifiability.md) | blocked | At least 95% of small-$n$ endpoint support is classifiable | 14 | 106m agent, 4.0m wall |
 | [H-022](packing/campaign/hypotheses/H-022-trump-local-geometry.md) | open question | What quantitative neighborhood and transferable stress structure follow after exp-013’s local-isolation theorem? | 0 | — |
-| [H-023](packing/campaign/hypotheses/H-023-n5-terminal-connectivity.md) | open question | How are the observed `n=5` endpoint candidates connected after the complete first-order inventory, one obstructed direction, known sheet lifts, and twelve fixed-angle paths? | 12 | 243m agent, 2.5m wall |
-| [H-024](packing/campaign/hypotheses/H-024-record-angle-class-count.md) | unresolved | Formally supported record packings through `n=30` use at most three angle classes; the retained `n=29` SVG has no formal witness | 1 | 12m agent, 0.158s wall |
+| [H-023](packing/campaign/hypotheses/H-023-n5-terminal-connectivity.md) | open question | How are the observed $n=5$ endpoint candidates connected after the complete first-order inventory, one obstructed direction, known sheet lifts, and twelve fixed-angle paths? | 12 | 243m agent, 2.5m wall |
+| [H-024](packing/campaign/hypotheses/H-024-record-angle-class-count.md) | unresolved | Formally supported record packings through $n=30$ use at most three angle classes; the retained $n=29$ SVG has no formal witness | 1 | 12m agent, 0.158s wall |
 | [H-025](packing/campaign/hypotheses/H-025-record-angle-compressibility.md) | blocked | At least 80% of reported record configurations are approximated by three angle classes within `1e-4` side loss | 0 | — |
 | [H-026](packing/campaign/hypotheses/H-026-trump-first-order-rigidity.md) | **confirmed** | Trump has no nonzero direction in any branchwise fixed-side linearized cone | 1 | 100m agent, 57.308s wall |
-| [H-027](packing/campaign/hypotheses/H-027-record-angle-cones.md) | blocked | The imported `n=11,17` record cells have positive class-angle directional cones | 0 | — |
+| [H-027](packing/campaign/hypotheses/H-027-record-angle-cones.md) | blocked | The imported $n=11,17$ record cells have positive class-angle directional cones | 0 | — |
 | [H-028](packing/campaign/hypotheses/H-028-reference-cell-angle-sheets.md) | blocked | Each published point is the sole refined local minimum on its declared reference-cell angle sheet, with a boundary margin | 0 | — |
 | [H-029](packing/campaign/hypotheses/H-029-adaptive-splitting.md) | blocked | Calibrated adaptive splitting beats restarts on rare target events | 0 | — |
 | [H-030](packing/campaign/hypotheses/H-030-public-parent-surgery.md) | blocked | Construction surgery reproduces at least two of six hidden public record improvements | 0 | — |
 | [H-031](packing/campaign/hypotheses/H-031-load-guided-block-moves.md) | blocked | LP-load-guided block moves beat coordinate-only moves per pair-test | 0 | — |
-| [H-032](packing/campaign/hypotheses/H-032-small-n-optimal-moduli.md) | open question | What are the exact optimal configuration spaces for `n=3…6`, given that `n=3,4` are solved? | 2 | 35m agent, 1.28s wall |
-| [H-033](packing/campaign/hypotheses/H-033-m2-minus-3-at-n61.md) | open question | Can the `m²−3` theorem be extended to `s(61)=8`? | 0 | — |
+| [H-032](packing/campaign/hypotheses/H-032-small-n-optimal-moduli.md) | open question | What are the exact optimal configuration spaces for $n=3\ldots6$, given that $n=3,4$ are solved? | 2 | 35m agent, 1.28s wall |
+| [H-033](packing/campaign/hypotheses/H-033-m2-minus-3-at-n61.md) | open question | Can the $m^2-3$ theorem be extended to $s(61)=8$? | 0 | — |
 | [H-034](packing/campaign/hypotheses/H-034-fractional-piercing-ceiling.md) | blocked | The fractional piercing value at Trump’s side is greater than ten | 0 | — |
 | [H-035](packing/campaign/hypotheses/H-035-asymptotic-primitive-finite-transfer.md) | blocked | Current asymptotic construction primitives improve a finite public parent | 0 | — |
-| [H-036](packing/campaign/hypotheses/H-036-robust-restricted-orientation.md) | blocked | Stromquist’s restricted-orientation gap survives a `0.25°` neighborhood | 0 | — |
-| [H-037](packing/campaign/hypotheses/H-037-asymptotic-waste-exponent.md) | open question | What is the asymptotic waste exponent between `1/2` and `3/5`? | 0 | — |
+| [H-036](packing/campaign/hypotheses/H-036-robust-restricted-orientation.md) | blocked | Stromquist’s restricted-orientation gap survives a $0.25^\circ$ neighborhood | 0 | — |
+| [H-037](packing/campaign/hypotheses/H-037-asymptotic-waste-exponent.md) | open question | What is the asymptotic waste exponent between $\frac{1}{2}$ and $\frac{3}{5}$? | 0 | — |
 | [H-038](packing/campaign/hypotheses/H-038-record-number-fields.md) | open question | Which exact fields and elimination mechanisms occur in verified records? | 0 | — |
-| [H-039](packing/campaign/hypotheses/H-039-s12-proof-frontier.md) | open question | Can the lower bound for `s(12)` be improved and ultimately closed at four? | 0 | — |
+| [H-039](packing/campaign/hypotheses/H-039-s12-proof-frontier.md) | open question | Can the lower bound for $s(12)$ be improved and ultimately closed at four? | 0 | — |
 | [H-040](packing/campaign/hypotheses/H-040-active-cell-neighbor-walk.md) | blocked | Active-cell neighbor walks beat multistart in new validated cells per LP solve | 0 | — |
-| [H-041](packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md) | **confirmed** | Moving Figure 14 point `G.x` from `.8` to `.79` restores the complete lower-bound mechanism | 1 | 90m agent, 0.70s wall |
-| [H-042](packing/campaign/hypotheses/H-042-n29-numerical-angle-classes.md) | **refuted** | The retained `n=29` SVG serialization has at most three numerical angle classes under the declared 160-digit regime | 1 | 15m agent, 0.165s wall |
+| [H-041](packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md) | **confirmed** | Moving Figure 14 point `G.x` from $.8$ to $.79$ restores the complete lower-bound mechanism | 1 | 90m agent, 0.70s wall |
+| [H-042](packing/campaign/hypotheses/H-042-n29-numerical-angle-classes.md) | **refuted** | The retained $n=29$ SVG serialization has at most three numerical angle classes under the declared 160-digit regime | 1 | 15m agent, 0.165s wall |
 | [H-043](packing/campaign/hypotheses/H-043-trump-incidence-rigidity-cores.md) | blocked | Every one of the 128 derivative-distinct fixed-side branches at Trump’s witness has a proper incidence rigidity core | 0 | — |
 | [H-044](packing/campaign/hypotheses/H-044-chunk-expressibility-of-records.md) | unresolved | Standing records are already chunk-structured: at most six one-angle bar/L/rectangle groups plus at most two free squares | 1 | 25m agent, 1.1s wall |
-| [H-045](packing/campaign/hypotheses/H-045-chunk-grammar-rediscovery.md) | blocked | A grammar frozen on the proved cells ranks the standing best first at `n = 11` | 0 | — |
+| [H-045](packing/campaign/hypotheses/H-045-chunk-grammar-rediscovery.md) | blocked | A grammar frozen on the proved cells ranks the standing best first at $n = 11$ | 0 | — |
 | [H-046](packing/campaign/hypotheses/H-046-regular-predecessor-continuation.md) | blocked | A class-angle path runs from Trump’s aligned chunk form to the record without chunk fission | 0 | — |
 | [H-047](packing/campaign/hypotheses/H-047-chunk-regular-predecessors.md) | blocked | Rounding a pose to its chunk-regular predecessor and re-quenching returns the pose | 0 | — |
 | [H-048](packing/campaign/hypotheses/H-048-glued-screen-fidelity.md) | blocked | The glued-chunk screen keeps the soft-mode winning stratum in its top decile | 0 | — |
 | [H-049](packing/campaign/hypotheses/H-049-squeezable-20-in-4x6.md) | blocked | Twenty unit squares pack squeezably in a 4 by 6 rectangle, opening s(90) < 10 via Arslanov’s decomposition | 0 | — |
 | [H-050](packing/campaign/hypotheses/H-050-n71-angle-split-load-bearing.md) | blocked | The n = 71 incumbent’s 0.0358-degree angle split survives a bracketed single-angle LP sweep | 0 | — |
 | [H-051](packing/campaign/hypotheses/H-051-n68-blinded-surgery-calibration.md) | blocked | A blinded tier-S n = 68 public-parent surgery pilot matches the released child under the frozen grammar | 0 | — |
-| [H-052](packing/campaign/hypotheses/H-052-n17-independent-certificate-agreement.md) | confirmed | The fixed retained `n = 17`, `L = 4.5058` certificate agrees under an independently written exact accumulator | 4 | 304.6m agent + 528.8m wall |
-| [H-053](packing/campaign/hypotheses/H-053-unitsquare-rigid-pose-serialization.md) | blocked | Each fixed UnitSquare `n = 68, 69` parent-child pair admits compatible rigid poses under at least one declared serialization model | 2 | 114m agent + 107.2m wall |
-| [H-054](packing/campaign/hypotheses/H-054-n50-exact-rational-reconstruction.md) | unresolved | The reported `n = 50`, `L = 53/7` construction admits a complete exact rational reconstruction | 2 | 38m agent + 30.0m wall |
-| [H-055](packing/campaign/hypotheses/H-055-n54-nested-radical-promotion.md) | blocked | If selected, the `n = 54` witness admits complete exact promotion in the reported nested-radical field | 0 | — |
-| [H-056](packing/campaign/hypotheses/H-056-n39-degree-five-interval-certificate.md) | blocked | If selected, the `n = 39` witness admits a complete interval certificate tied to the designated degree-five root | 0 | — |
+| [H-052](packing/campaign/hypotheses/H-052-n17-independent-certificate-agreement.md) | confirmed | The fixed retained $n = 17$, $L = 4.5058$ certificate agrees under an independently written exact accumulator | 4 | 304.6m agent + 528.8m wall |
+| [H-053](packing/campaign/hypotheses/H-053-unitsquare-rigid-pose-serialization.md) | blocked | Each fixed UnitSquare $n = 68, 69$ parent-child pair admits compatible rigid poses under at least one declared serialization model | 2 | 114m agent + 107.2m wall |
+| [H-054](packing/campaign/hypotheses/H-054-n50-exact-rational-reconstruction.md) | unresolved | The reported $n = 50$, $L = \frac{53}{7}$ construction admits a complete exact rational reconstruction | 2 | 38m agent + 30.0m wall |
+| [H-055](packing/campaign/hypotheses/H-055-n54-nested-radical-promotion.md) | blocked | If selected, the $n = 54$ witness admits complete exact promotion in the reported nested-radical field | 0 | — |
+| [H-056](packing/campaign/hypotheses/H-056-n39-degree-five-interval-certificate.md) | blocked | If selected, the $n = 39$ witness admits a complete interval certificate tied to the designated degree-five root | 0 | — |
 | [H-057](packing/campaign/hypotheses/H-057-n17-parent-bound-parallel-speedup.md) | unresolved | A parent-bound three-process runner preserves exact output and reaches the fixed useful-speedup threshold on three exp-052 ordinals | 1 | — |
 | [H-058](packing/campaign/hypotheses/H-058-n68-one-parent-production-serialization.md) | unresolved | One fixed UnitSquare n = 68 parent admits a compatible rigid pose through a complete provenance-bound production adapter | 2 | — |
 | [H-059](packing/campaign/hypotheses/H-059-n50-producer-refusal-ordering.md) | confirmed | The frozen n = 50 producer refuses an existing result before every downstream observation and evaluation seam | 1 | — |
-| [H-060](packing/campaign/hypotheses/H-060-n5-local-rigidity.md) | confirmed | Goebel’s exact `n = 5` optimum is locally rigid when the container side is fixed | 1 | 11s wall |
-| [H-061](packing/campaign/hypotheses/H-061-n12-first-party-fractional-certificate.md) | result registered | A first-party fractional unavoidable-set certificate at side `19/5` proves `s(12) ≥ 3.8`, the first `n = 12`-specific bound; carried well past its own claim to `393/100` ([T-017](packing/frontier/RESULTS.md)) and to `s(11) ≥ 19/5` ([T-018](packing/frontier/RESULTS.md)), with the whole ladder retained and verified, and the round that closes the hypothesis is not yet written | 0 | — |
-| [H-062](packing/campaign/hypotheses/H-062-n20-covering-wall.md) | confirmed | The `m = 5` covering wall — the side at which a converged restricted optimum at `n = 20` first reaches twenty — lies strictly below the ceiling `5B = 4.9885`, and the pre-registered rungs bracket it to within `0.02`; accepted at `[97/20, 973/200]`, width `0.015`, by Agenda 021’s `BC-197` and Agenda 022’s `BC-213` | 2 | 109.8m wall |
-| [H-063](packing/campaign/hypotheses/H-063-n11-class-certificate.md) | refuted | A two-cell `{0°, 45°}` class certificate refutes the composition `(11, 0)` at or above Trump’s `3.877084`, and every near-axis class inside `θ₀` closes the compositions with at most one tilted square; blocked on the two-threshold program `BC-198` builds | 1 | 27.8m wall |
-| [H-064](packing/campaign/hypotheses/H-064-n11-fractional-packing-floor.md) | abandoned | An exact-depth fractional packing at `77/20` with total weight at least eleven puts `τ*(3.85)` at or above eleven, so the `n = 11` certificate ladder’s top lies below `3.85`; registered for `BC-200` | 2 | 96m agent, 175.3m wall |
-| [H-065](packing/campaign/hypotheses/H-065-n11-near-tight-cell-census.md) | confirmed | The near-tight cells (mass at most `1 + 1/20`) on the retained `381/100` certificate are fewer than one fifth of the reachable cells — measured at `0.040754` by `BC-201`, a fifth of the registered threshold. The clause the claim attached to that number does not follow: the cover is a search, not a check | 1 | 16.1m wall |
-| [H-070](packing/campaign/hypotheses/H-070-n11-inset-seed-release.md) | **refuted** | At side `191/50`, the best eligible inset-screen seed improves exact rational mass after unrestricted release versus an equal-stop unseeded control | 1 | 8.2m wall |
-| [H-090](packing/campaign/hypotheses/H-090-n11-fixed-atom-core-shrink.md) | refuted | The fixed T-018 atoms retain enough covered mass after shrinking the core to `99769/100000` to certify side `3.8100381`; an exact corner witness rejects this side and every core side below `1849127/1853400`, leaving a narrower shrink interval open | 1 | 30s wall |
-| [H-091](packing/campaign/hypotheses/H-091-n11-narrow-core-shrink.md) | refuted | Core side `997696/1000000` retains minimum mass above `M/11`; its measured minimum `96377/100000` instead supplies an interior witness excluding every fixed-weight core shrink that could beat T-022 using ordinary containment | 1 | 31s wall |
-| [H-093](packing/campaign/hypotheses/H-093-n11-scalar-61-16-certificate.md) | unresolved | The retained scalar core and net admit an exact mass-below-eleven certificate at side `61/16` | 1 | 59.3m wall |
+| [H-060](packing/campaign/hypotheses/H-060-n5-local-rigidity.md) | confirmed | Goebel’s exact $n = 5$ optimum is locally rigid when the container side is fixed | 1 | 11s wall |
+| [H-061](packing/campaign/hypotheses/H-061-n12-first-party-fractional-certificate.md) | result registered | A first-party fractional unavoidable-set certificate at side $\frac{19}{5}$ proves $s(12) \ge 3.8$, the first $n = 12$-specific bound; carried well past its own claim to $\frac{393}{100}$ ([T-017](packing/frontier/RESULTS.md)) and to $s(11) \ge \frac{19}{5}$ ([T-018](packing/frontier/RESULTS.md)), with the whole ladder retained and verified, and the round that closes the hypothesis is not yet written | 0 | — |
+| [H-062](packing/campaign/hypotheses/H-062-n20-covering-wall.md) | confirmed | The $m = 5$ covering wall — the side at which a converged restricted optimum at $n = 20$ first reaches twenty — lies strictly below the ceiling $5B = 4.9885$, and the pre-registered rungs bracket it to within $0.02$; accepted at $[\frac{97}{20}, \frac{973}{200}]$, width $0.015$, by Agenda 021’s `BC-197` and Agenda 022’s `BC-213` | 2 | 109.8m wall |
+| [H-063](packing/campaign/hypotheses/H-063-n11-class-certificate.md) | refuted | A two-cell $\lbrace0^\circ, 45^\circ\rbrace$ class certificate refutes the composition $(11, 0)$ at or above Trump’s $3.877084$, and every near-axis class inside $\theta_0$ closes the compositions with at most one tilted square; blocked on the two-threshold program `BC-198` builds | 1 | 27.8m wall |
+| [H-064](packing/campaign/hypotheses/H-064-n11-fractional-packing-floor.md) | abandoned | An exact-depth fractional packing at $\frac{77}{20}$ with total weight at least eleven puts $\tau^{\ast}(3.85)$ at or above eleven, so the $n = 11$ certificate ladder’s top lies below $3.85$; registered for `BC-200` | 2 | 96m agent, 175.3m wall |
+| [H-065](packing/campaign/hypotheses/H-065-n11-near-tight-cell-census.md) | confirmed | The near-tight cells (mass at most $1 + \frac{1}{20}$) on the retained $\frac{381}{100}$ certificate are fewer than one fifth of the reachable cells — measured at $0.040754$ by `BC-201`, a fifth of the registered threshold. The clause the claim attached to that number does not follow: the cover is a search, not a check | 1 | 16.1m wall |
+| [H-070](packing/campaign/hypotheses/H-070-n11-inset-seed-release.md) | **refuted** | At side $\frac{191}{50}$, the best eligible inset-screen seed improves exact rational mass after unrestricted release versus an equal-stop unseeded control | 1 | 8.2m wall |
+| [H-090](packing/campaign/hypotheses/H-090-n11-fixed-atom-core-shrink.md) | refuted | The fixed T-018 atoms retain enough covered mass after shrinking the core to $\frac{99769}{100000}$ to certify side $3.8100381$; an exact corner witness rejects this side and every core side below $\frac{1849127}{1853400}$, leaving a narrower shrink interval open | 1 | 30s wall |
+| [H-091](packing/campaign/hypotheses/H-091-n11-narrow-core-shrink.md) | refuted | Core side $\frac{997696}{1000000}$ retains minimum mass above $M/11$; its measured minimum $\frac{96377}{100000}$ instead supplies an interior witness excluding every fixed-weight core shrink that could beat T-022 using ordinary containment | 1 | 31s wall |
+| [H-093](packing/campaign/hypotheses/H-093-n11-scalar-61-16-certificate.md) | unresolved | The retained scalar core and net admit an exact mass-below-eleven certificate at side $\frac{61}{16}$ | 1 | 59.3m wall |
 | [H-094](packing/campaign/hypotheses/H-094-n11-weight-and-site-redesign.md) | open question | Which relative weights and site changes improve the fractional certificate beyond the fixed-weight shrink obstruction? | 0 | — |
-| [H-095](packing/campaign/hypotheses/H-095-n11-adaptive-core-certificate.md) | blocked | Nonconstant direction-specific cores admit an exact mass-below-eleven certificate at side `61/16` | 0 | — |
+| [H-095](packing/campaign/hypotheses/H-095-n11-adaptive-core-certificate.md) | blocked | Nonconstant direction-specific cores admit an exact mass-below-eleven certificate at side $\frac{61}{16}$ | 0 | — |
 | [H-096](packing/campaign/hypotheses/H-096-n11-angle-cell-kernels.md) | open question | Can whole-angle-cell kernels cover more useful positive mass with a tractable exact verifier? | 0 | — |
 | [H-097](packing/campaign/hypotheses/H-097-n11-existential-witness-menus.md) | open question | Can pose-dependent witness choice beat a universal witness while retaining complete pose-box coverage? | 0 | — |
 | [H-098](packing/campaign/hypotheses/H-098-n11-segment-measures.md) | open question | Can segment-supported measures improve the bound with exact intersection-length coverage? | 0 | — |
@@ -4986,7 +5003,7 @@ round that names the hypothesis, control roles included.
 | [H-144](packing/campaign/hypotheses/H-144-wall-aware-owner-footprint-gain.md) | confirmed | Container walls strictly enlarge twelve of sixteen coarse owner footprints | 1 | 25.69s wall |
 | [H-145](packing/campaign/hypotheses/H-145-wall-owner-containment-expansion.md) | refuted | Wall-aware footprints extend a five-dot exclusion by component containment | 1 | 40.88s wall |
 | [H-146](packing/campaign/hypotheses/H-146-fixed-five-dot-wall-expansion.md) | unresolved | The fixed five dots exclude another wall-owner tuple | 1 | 74.03s wall |
-| [H-147](packing/campaign/hypotheses/H-147-selected-wall-tuple-cover.md) | refuted | The unchanged five-dot pattern covers the selected wall-owner tuple `(0,0,0,7)` | 1 | 11.41s wall |
+| [H-147](packing/campaign/hypotheses/H-147-selected-wall-tuple-cover.md) | refuted | The unchanged five-dot pattern covers the selected wall-owner tuple $(0,0,0,7)$ | 1 | 11.41s wall |
 | [H-148](packing/campaign/hypotheses/H-148-wall-owner-escape-compatibility.md) | refuted | At least one selected owner-core class excludes the exact exp149 escape | 1 | Four independently replayed compatible class witnesses; 9.01s |
 | [H-149](packing/campaign/hypotheses/H-149-selected-six-dot-cover.md) | refuted | D plus the saved escape centre covers the same selected tuple on all 361 directions | 1 | First deficit at owner-006; 13.45s |
 | [H-150](packing/campaign/hypotheses/H-150-sixth-site-two-core-screen.md) | confirmed | One replacement site hits both exact escaping cores | 1 | Nonempty two-dimensional quadrilateral; 9.84s |
@@ -4996,11 +5013,11 @@ round that names the hypothesis, control roles included.
 | [H-154](packing/campaign/hypotheses/H-154-where-the-point-atom-ceiling-begins.md) | open question | Where does the point-atom ceiling begin in side, and does any weight-eleven family at 191/50 survive a larger shrink? | 0 | — |
 | [H-155](packing/campaign/hypotheses/H-155-conditional-threshold-cover-on-an-owner-class.md) | blocked | A conditional threshold certificate of budget below seven exists on an owner class whose residual point cover is stuck at seven or above; the joined domain-restricted gate does not exist yet | 0 | — |
 | [H-156](packing/campaign/hypotheses/H-156-threshold-certificate-past-3-82.md) | confirmed | T-026 confirms the finer-net disjunct by proving `s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.8264474...`; the result is now V4/C5 | 1 | 111.9m wall |
-| [H-157](packing/campaign/hypotheses/H-157-refined-owner-sector-patch-breaks-neutrality.md) | refuted | Sixteen owner sectors instead of eight fatten every guaranteed patch past the `0.014978` separating gap, so no neutral class survives the refinement | 1 | exp-154: six of eight refined subclasses still read exactly 10 and two read `19/2`; this refutes the all-subclasses claim, while broader conditioning and changed charges remain open |
+| [H-157](packing/campaign/hypotheses/H-157-refined-owner-sector-patch-breaks-neutrality.md) | refuted | Sixteen owner sectors instead of eight fatten every guaranteed patch past the $0.014978$ separating gap, so no neutral class survives the refinement | 1 | exp-154: six of eight refined subclasses still read exactly 10 and two read $\frac{19}{2}$; this refutes the all-subclasses claim, while broader conditioning and changed charges remain open |
 | [H-158](packing/campaign/hypotheses/H-158-unit-parent-domain-excludes-saved-residual.md) | unresolved | Exp151’s direction-6 residual fails its own necessary parent box, or one selected owner has a newly replayed positive B-only witness and no positive witness after the complete parent restriction | 1 | exp-156: residual survives; TR is B-only incompatible after 181 frames, making parent gain impossible there; BL, BR and TL were not run; 20.63s external wall |
-| [H-159](packing/campaign/hypotheses/H-159-bc303-one-corner-surplus.md) | refuted | Every bottom-left role-C selected core with labels 0 and 15 absent has surplus above the BC303 shared allowance | 1 | exp-157: the disclosed literal parent has labels `{3,4,11,12}` and exact surplus `3/800000 < epsilon`; 1.92s replay wall |
+| [H-159](packing/campaign/hypotheses/H-159-bc303-one-corner-surplus.md) | refuted | Every bottom-left role-C selected core with labels 0 and 15 absent has surplus above the BC303 shared allowance | 1 | exp-157: the disclosed literal parent has labels $\lbrace3,4,11,12\rbrace$ and exact surplus `3/800000 < epsilon`; 1.92s replay wall |
 | [H-160](packing/campaign/hypotheses/H-160-bc303-t2-charge-filters.md) | blocked | Every frozen BC303 C charge is at least 4524200 and every S first-owner strip charge is at least 4524185 | 1 | exp-158 paused before target invocation; no scientific verdict |
-| [H-161](packing/campaign/hypotheses/H-161-bc303-literal-parent-union.md) | refuted | The frozen literal closed Q0 has integer mass `N>=4262074`, excluding the named four-corner tuple under the imported BC303 floor | 1 | exp-159: `N=4000015`; neither the four-corner nor one-parent threshold rejects |
+| [H-161](packing/campaign/hypotheses/H-161-bc303-literal-parent-union.md) | refuted | The frozen literal closed Q0 has integer mass `N>=4262074`, excluding the named four-corner tuple under the imported BC303 floor | 1 | exp-159: $N=4000015$; neither the four-corner nor one-parent threshold rejects |
 | [H-162](packing/campaign/hypotheses/H-162-bc303-floor-normalized-t2-filter.md) | blocked | Frozen BC303 C and S first-owner strip minima are each at least 4524132 | 1 | exp-160 paused without an exp-158 receipt; no scientific verdict |
 | [H-163](packing/campaign/hypotheses/H-163-route-s-threshold-compression.md) | unresolved | T-025’s exact support universe admits a certificate with at most 23 positive D4 orbit representatives | 1 | exp-161 encode-only timeout; 180.1m wall |
 | [H-201](packing/campaign/hypotheses/H-201-simultaneous-perturbation-move.md) | refuted | A collective move takes n = 17 from the trivial grid to within 0.002 of Bidwell cold, and is inert above n = 26 | 2 | 105.7m wall |
@@ -5066,10 +5083,10 @@ It is the campaign’s first confirmed claim, and the one that changed a method.
 
 **[H-016](packing/campaign/hypotheses/H-016-stock-annealer-reaches-standing-best.md).**
 The null: a serious budget on a general-purpose annealer finds the best known packing.
-Within `1e-4` only at `n = 12`. The refutation is not the interesting part—the two
+Within `1e-4` only at $n = 12$. The refutation is not the interesting part—the two
 failures were different in kind.
-At `n = 10` later cell polishing showed the candidate had the record’s declared
-structure and stopped `4.19e-04` short (**polish**); at `n = 11` it remained `3.73e-02`
+At $n = 10$ later cell polishing showed the candidate had the record’s declared
+structure and stopped `4.19e-04` short (**polish**); at $n = 11$ it remained `3.73e-02`
 above Trump and no terminal-component relation was measured.
 That operational distinction set the next four rounds without proving a topological one.
 
@@ -5079,9 +5096,9 @@ analytic value. Refuted as stated, and the cell-level split is the result:
 
 | Cell | Round | Outcome |
 | --- | --- | --- |
-| `n = 5` | [exp-007](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md) | **accepted**—`2.22e-15`, machine precision |
-| `n = 10` | [exp-008](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md) | **accepted**—`1.33e-15`, twelve orders of improvement |
-| `n = 11` | [exp-009](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md) | **rejected**—`6.29e-02`; tested starts remain far from Trump after the local procedure |
+| $n = 5$ | [exp-007](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md) | **accepted**—`2.22e-15`, machine precision |
+| $n = 10$ | [exp-008](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md) | **accepted**—`1.33e-15`, twelve orders of improvement |
+| $n = 11$ | [exp-009](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md) | **rejected**—`6.29e-02`; tested starts remain far from Trump after the local procedure |
 | all three | [exp-006](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-006-lp-quench-n5-n10-n11.md) | **rejected**—the original free-angle descent, 1.1–1.3× everywhere |
 
 The word that failed is *any*. The quench is a **polisher, not a rescue**: it makes the
@@ -5089,11 +5106,11 @@ declared cell optimum reproducible to solver precision, which is an input to the
 and atlas, and it does not lift the burden of finding a competitive region off the
 proposer.
 
-**[H-018](packing/campaign/hypotheses/H-018-basin-entry.md).** Predicted an `ε` at which
-the return rate collapses, which would be the basin’s radius.
+**[H-018](packing/campaign/hypotheses/H-018-basin-entry.md).** Predicted an
+$\varepsilon$ at which the return rate collapses, which would be the basin’s radius.
 Observed rate at the registered `ε = 1e-3`: 0 of 40 in every arm.
-The residual scaled approximately linearly with `ε` under the tested finite schedules
-and decreased with more effort.
+The residual scaled approximately linearly with $\varepsilon$ under the tested finite
+schedules and decreased with more effort.
 That diagnoses incomplete convergence of this refiner; it does not prove an attracting
 basin through `ε = 1e-1`, distinguish an isolated endpoint from a terminal family, or
 establish component membership for the perturbed trajectories.
@@ -5107,12 +5124,13 @@ estimation, independent validity, and a named proposer regime.
 The proof lane now has both halves of its calibration: exp-016 falsifies Stromquist’s
 printed certificate, while exp-017 certifies a complete source-distinct repair.
 The same two-sided falsifier/certificate architecture can now target a new lower bound
-at `n=12`.
+at $n=12$.
 
-- **[H-011](packing/campaign/hypotheses/H-011-small-n-census.md)** (census at `n ≤ 10`)
-  needs H-021’s classification evidence, event records, and a coverage estimator.
+- **[H-011](packing/campaign/hypotheses/H-011-small-n-census.md)** (census at
+  $n \le 10$) needs H-021’s classification evidence, event records, and a coverage
+  estimator.
 - **[H-012](packing/campaign/hypotheses/H-012-record-basins-are-rare.md)** (the premise
-  the cartography programme rests on) needs H-011’s machinery plus an explicit `n=11`
+  the cartography programme rests on) needs H-011’s machinery plus an explicit $n=11$
   sampling cell. Kill: record-basin probability within ~10× of the modal basin’s, in
   which case the cartography program stands down and the campaign reverts to throughput.
   **Still untested**, which is the largest open question about the strategy.
@@ -5126,7 +5144,7 @@ at `n=12`.
   printed Figure 14 point, so the five-node conjunction fails at its fourth node.
   The result rejects the published proof as printed, not the numerical lower bound.
 - **[H-041](packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md)** (proof
-  repair) is confirmed by exp-017 after moving only `G.x` from `.8` to `.79`. The
+  repair) is confirmed by exp-017 after moving only `G.x` from $.8$ to $.79$. The
   complete exact repair proves the same lower bound with 26 repaired Figure 14 faces and
   thirteen passing mutations; it does not make the published proof correct as printed.
 
@@ -5171,15 +5189,15 @@ The mutable size-by-size run order lives in the
 [basin-map confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md),
 not in this status document.
 It labels every cell as tool validation, measurement validation, or genuine research.
-The event-retention controls through `n = 8` and the bounded `n = 9` performance cell
+The event-retention controls through $n = 8$ and the bounded $n = 9$ performance cell
 are complete. The random-start size ladder stops there.
-BC-008’s source-bound `n = 10` seeded-pose entry point now passes replay and a bounded
+BC-008’s source-bound $n = 10$ seeded-pose entry point now passes replay and a bounded
 run-path smoke test.
 Exp-031 completes its four-perturbation known-answer experiment at 4/4 converged,
 independently valid, and admissible.
-Exp-032 completes BC-009: exact `n = 3` and `n = 4` component controls pass while all 16
+Exp-032 completes BC-009: exact $n = 3$ and $n = 4$ component controls pass while all 16
 retained f64 observations remain unresolved.
-Exp-033 completes the first bounded BC-010 `n = 5` connectivity slice: the equal-side
+Exp-033 completes the first bounded BC-010 $n = 5$ connectivity slice: the equal-side
 pair shares one exact fixed-angle optimal face.
 Exp-034 embeds that face in an exact two-parameter angle-and-slide sheet, but complete
 stationary identity and the unequal-side rows remain open.
@@ -5387,7 +5405,7 @@ has cost. Their instruments are `sqsearch` 0.1.0 (the `f64` screening annealer),
 high-precision Kingbird SVG reconstruction, the exact Trump linearized-cone checker, the
 exact small-moduli checker, the exact Stromquist printed-set falsifier, and the exact
 repaired-cover certificate, the exact terminal-component known-answer checker, and the
-exact `n = 5` fixed-angle face, angle-sheet, full-angle tangent, and second-order
+exact $n = 5$ fixed-angle face, angle-sheet, full-angle tangent, and second-order
 obstruction checkers, plus the exact branchwise tangent-inventory checker.
 Exp-058 alone used no repository instrument: its numbers come from read-only sympy
 scripts retained verbatim in its results record, which is why it is not a receipt.
@@ -5401,7 +5419,7 @@ Neither round certifies the source geometry or optimality.
 
 ![The high-precision Kingbird packing of twenty-nine unit squares.](packing/atlas/rendering/kingbird29-overview.svg)
 
-*The roughly 100-digit retained `n = 29` witness is evaluated at 160 decimal digits of
+*The roughly 100-digit retained $n = 29$ witness is evaluated at 160 decimal digits of
 working precision and passes all 406 pair checks at tolerance `1e-80`. The figure
 therefore says “numerically checked,” not “verified,” “exact,” or “proved optimum.”*
 
@@ -5410,24 +5428,24 @@ therefore says “numerically checked,” not “verified,” “exact,” or �
 Every figure is lifted from the round’s frontmatter, which is lifted from the JSONL
 archive beside it.
 
-| Round | `n` | Role | H | Instrument | Headline number | Verdict |
+| Round | $n$ | Role | H | Instrument | Headline number | Verdict |
 | --- | --- | --- | --- | --- | --- | --- |
-| [exp-001](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-001-baseline-sweep.md) | 10, 11, 12 | sweep | H-016 | annealer | gaps `+4.19e-04`, `+3.73e-02`, `0` | rejected |
-| [exp-002](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-002-baseline-n10-positive-control.md) | 10 | positive control | H-016 | annealer | `3.7075262001`, gap `+4.194e-04` | rejected |
-| [exp-003](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-003-baseline-n11-target.md) | 11 | target | H-016 | annealer | `3.9144165418`, gap `+3.733e-02` | rejected |
-| [exp-004](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-004-baseline-n12-negative-control.md) | 12 | open-case calibration | H-016 | annealer | exactly `4.0`, all five seeds | accepted |
+| [exp-001](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-001-baseline-sweep.md) | 10, 11, 12 | sweep | H-016 | annealer | gaps `+4.19e-04`, `+3.73e-02`, $0$ | rejected |
+| [exp-002](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-002-baseline-n10-positive-control.md) | 10 | positive control | H-016 | annealer | $3.7075262001$, gap `+4.194e-04` | rejected |
+| [exp-003](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-003-baseline-n11-target.md) | 11 | target | H-016 | annealer | $3.9144165418$, gap `+3.733e-02` | rejected |
+| [exp-004](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-004-baseline-n12-negative-control.md) | 12 | open-case calibration | H-016 | annealer | exactly $4.0$, all five seeds | accepted |
 | [exp-005](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-005-basin-entry-n11.md) | 11 | target | H-018 | annealer | 0/40 returns; `max_dev ≈ 11·ε`, no threshold | rejected |
 | [exp-006](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-006-lp-quench-n5-n10-n11.md) | 5, 10, 11 | sweep | H-002 | quench 0.1.0 | 1.1–1.3× only; single cell `4.441e-16` | rejected |
 | [exp-007](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md) | 5 | positive control | H-002 | quench 0.2.0 | `3.19e-08 → 2.2204e-15` | **accepted** |
 | [exp-008](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md) | 10 | positive control | H-002 | quench 0.2.0 | `4.507e-03 → 1.3323e-15` | **accepted** |
 | [exp-009](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md) | 11 | target | H-002 | quench 0.2.0 | `6.999e-02 → 6.2894e-02` | rejected |
-| [exp-010](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md) | 11 | target | H-019 | quench 0.2.0 | slopes `0.1747` / `0.3841`, ratio `2.198` | **accepted** |
-| [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) | 17 | mechanism-matched | H-020 | annealer | reported `5.0` on all five binary64 search seeds, gap `+3.245e-01` | rejected |
+| [exp-010](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md) | 11 | target | H-019 | quench 0.2.0 | slopes $0.1747$ / $0.3841$, ratio $2.198$ | **accepted** |
+| [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) | 17 | mechanism-matched | H-020 | annealer | reported $5.0$ on all five binary64 search seeds, gap `+3.245e-01` | rejected |
 | [exp-012](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-012-h-024-n29-angle-classes.md) | 29 | target | H-024 | SVG reconstruction + SAT | six classes numerically; formal prerequisite missing | **unresolved** |
 | [exp-013](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-013-h-026-trump-tangent.md) | 11 | target | H-026 | exact branchwise linearization | 128/128 exact zero-cone certificates | **accepted** |
 | [exp-014](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-014-h-032-n3-optimal-moduli.md) | 3 | positive control | H-032 | exact configuration space | two labelled circles → one quotient interval | **accepted** |
 | [exp-015](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-015-h-032-n4-optimal-moduli.md) | 4 | positive control | H-032 | exact configuration space | 24 labelled points → one quotient point | **accepted** |
-| [exp-016](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md) | 11 | proof calibration | H-010 | exact source-bound falsifier | strict side `1.0001` box avoids all 12 printed points | **rejected** |
+| [exp-016](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md) | 11 | proof calibration | H-010 | exact source-bound falsifier | strict side $1.0001$ box avoids all 12 printed points | **rejected** |
 | [exp-017](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | 11 | proof calibration | H-041 | exact repaired cover | 26-face cover; complete five-node certificate | **accepted** |
 | [exp-018](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-018-h-021-n3-basin-event-calibration.md) | 3 | positive control | H-021 | full-pose event replay | 4 valid; 3 producer-converged; 0 admissible | **blocked** |
 | [exp-019](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-019-h-021-n4-basin-event-calibration.md) | 4 | positive control | H-021 | full-pose event replay | 4 valid; 2 producer-converged; 0 admissible | **blocked** |
@@ -5444,12 +5462,12 @@ archive beside it.
 | [exp-030](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-030-h-021-n9-basin-event-v3.md) | 9 | positive control | H-021 | BasinEvent/v3 semantic replay | 1 retained/valid typed time-budget stop; full command 21.36 s | **baseline** |
 | [exp-031](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-031-h-002-n10-source-return.md) | 10 | positive control | H-002 | source-bound BasinEvent/v3 replay | 4/4 admissible; max proved-side error `2.221e-15` | **baseline** |
 | [exp-032](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-032-h-021-terminal-component-controls.md) | 3 | positive control | H-021 | exact component-policy replay | one n=3 interval; one n=4 point; 7/7 false policies rejected | **baseline** |
-| [exp-033](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-033-h-023-n5-equal-side-face.md) | 5 | target | H-023 | exact fixed-angle face test | one segment; nullities `0/1/0`; five controls pass | **accepted** |
+| [exp-033](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-033-h-023-n5-equal-side-face.md) | 5 | target | H-023 | exact fixed-angle face test | one segment; nullities $0/1/0$; five controls pass | **accepted** |
 | [exp-034](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-034-h-023-n5-angle-sheet.md) | 5 | target | H-023 | exact angle-and-slide sheet | dimension at least two; four fixtures and four controls pass | **accepted** |
 | [exp-035](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-035-h-023-n5-tangent-cones.md) | 5 | target | H-023 | exact full-angle active systems | non-sheet direction at A/interior/B; six controls pass | **accepted** |
 | [exp-036](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-036-h-023-n5-second-order-obstruction.md) | 5 | target | H-023 | exact second-order branch obstruction | displayed direction excluded at A/interior/B; six controls pass | **accepted** |
-| [exp-037](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-037-h-042-n29-numerical-angle-classes.md) | 29 | target | H-042 | multiprecision SVG reconstruction | six classes; minimum class gap `0.296067°` | **rejected** |
-| [exp-038](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-038-h-023-n5-tangent-inventory.md) | 5 | target | H-023 | exact branchwise linearization-cone inventory | identical owner branches; endpoint/interior rays `8/6/8`; ten controls pass | **accepted** |
+| [exp-037](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-037-h-042-n29-numerical-angle-classes.md) | 29 | target | H-042 | multiprecision SVG reconstruction | six classes; minimum class gap $0.296067^\circ$ | **rejected** |
+| [exp-038](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-038-h-023-n5-tangent-inventory.md) | 5 | target | H-023 | exact branchwise linearization-cone inventory | identical owner branches; endpoint/interior rays $8/6/8$; ten controls pass | **accepted** |
 | [exp-039](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-039-h-023-n5-fixed-angle-polytope.md) | 5 | target | H-023 | exact fixed-angle optimal-position polytope | dimension 5; 12 sharp paths; ten controls pass | **accepted** |
 | [exp-040](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-040-h-023-n5-rotating-release-paths.md) | 5 | target | H-023 | exact rotating-path draft | five audited proof gaps; no retained result | **unresolved** |
 | [exp-041](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-041-h-023-n5-rotating-release-proof-perimeter.md) | 5 | target | H-023 | exact rotating-path proof perimeter | endpoint-only axis falsifies complete zero inventory | **rejected** |
@@ -5457,7 +5475,7 @@ archive beside it.
 | [exp-043](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-043-h-023-n5-minus-w-obstruction.md) | 5 | target | H-023 | exact pure -W second-order test | five instrument blockers; no retained result | **unresolved** |
 | [exp-044](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-044-h-023-n5-minus-w-row-jets.md) | 5 | target | H-023 | exact pure -W row-jet test | reviewed row builder; no retained target | **unresolved** |
 | [exp-045](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-045-h-023-n5-minus-w-scale-and-controls.md) | 5 | target | H-023 | exact pure -W scale and control test | pure -W excluded at A, interior and B; sign symmetry holds; accepted 2026-08-31 after the independent audit and -W bridge corroboration | **accepted** |
-| [exp-046](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-046-h-044-chunk-expressibility-verdict.md) | 11 | target | H-044 | chunk-expressibility verdict at `n ≤ 30` | criterion missed under both denominator readings (23/30 and 3/10, both bands); every miss typed; calibration corpus, review resolved 2026-08-31 with H-044 undisposed per its amendment | unresolved |
+| [exp-046](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-046-h-044-chunk-expressibility-verdict.md) | 11 | target | H-044 | chunk-expressibility verdict at $n \le 30$ | criterion missed under both denominator readings (23/30 and 3/10, both bands); every miss typed; calibration corpus, review resolved 2026-08-31 with H-044 undisposed per its amendment | unresolved |
 | [exp-047](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-047-h-053-unitsquare-rigid-pose-serialization.md) | 68 | target | H-053 | binary64 precision-bridge prototype | interval-enclosure and complete-runner guards fire before parent retrieval or target access | blocked |
 | [exp-048](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-048-h-054-n50-exact-rational-reconstruction.md) | 50 | target | H-054 | exact-reconstruction admission gate | E1 source semantics absent; no reconstruction, target sample, or result | unresolved |
 | [exp-049](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-049-h-052-n17-independent-certificate-agreement.md) | 17 | target | H-052 | exact independent accumulator | 3,920-second timebox; no canonical comparison or checkpoint | unresolved |
@@ -5475,11 +5493,11 @@ archive beside it.
 | [exp-061](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-061-h-062-m5-covering-wall.md) | 20 | target | H-062 | pre-registered bisection of [24/5, 9977/2000], two site sets per rung, refutation on a crossing and confirmation only by a converged row loop | certificates at 97/20 (T-021) and 193/40, walls at 39/8, 979/200 and 997/200, so the m = 5 covering wall is bracketed to width 0.025 against the 0.02 registered; the exactly round 25.000000 at 997/200 is explained by the overlap-strip geometry | unresolved |
 | [exp-062](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-062-h-062-m5-midpoint-rung.md) | 20 | target | H-062 | the one remaining pre-registered rung, at the schedule’s own midpoint 973/200, on the same two site-set rules | both constructions wall — the grids at LP round 16 (20.001502, 543 violated) and the certificate-seeded set at round 34 (20.000223, 213 violated) — closing the bracket to [97/20, 973/200], width 0.015, its upper end 0.1235 below the ceiling | accepted |
 | [exp-063](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-063-h-065-n11-near-tight-cell-census.md) | 11 | target | H-065 | census the reachable event cells within four margins of covered mass one, per direction, through the same mass grid the retention decision reads | the epsilon = 1/20 tight set is 0.040754 of 567,130,649 reachable cells, a fifth of the registered 0.20 — and still a search rather than a check: positive area, a bounding box equal to the centre domain’s in all 181 directions, 22,132 extended components | accepted |
-| [exp-064](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-064-h-063-two-threshold-class-program.md) | 11 | target | H-063 | build X-014’s Lemma 3 as per-direction-class thresholds and run its two pre-registered controls | the nine-point bound is exactly nine, but the two-end-cell class cannot refute (11, 0) at Trump’s side and provably never could: `B(2 + (4/3)√2) = 3.876681` sits `0.000403` below the side the control was asked to reach | rejected |
-| [exp-070](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-070-h-064-n11-fractional-resume.md) | 11 | target | H-064 | one retained-state, exact-depth fractional cutting leg at side `191/50` | raised the verified exact lower endpoint to `21342289572/2055263195 ≈ 10.384212408377215`; the only row-converged computational upper endpoint remains `11.055616942909783`, and the four-CPU-hour routing gate remains open | abandoned |
-| [exp-071](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-071-h-070-n11-inset-seed-release.md) | 11 | target | H-070 | three inset screens followed, when eligible, by matched released-seed and unseeded arms | released and unseeded arms converged after eight rounds to byte-identical candidates of exact mass `11142893/1000000`, missing the strict-improvement criterion | rejected |
-| [exp-110](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-110-h-090-core-shrink.md) | 11 | target | H-090 | exact source and smaller-core sweeps on frozen T-018 atoms, with normalization accepted above `M/11` | minimum `85353/100000` at an axis-aligned corner cell falls below `434547/440000`; a direct atom sum excludes all core sides below `1849127/1853400` | rejected |
-| [exp-111](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-111-h-091-core-shrink.md) | 11 | target | H-091 | exact fixed-atom replay above exp-110’s corner event, followed by direct witness-event inspection | minimum `96377/100000` at net direction 97; the witness’s first usable event exceeds the entire ordinary-containment improvement window, closing that fixed-weight route | rejected |
+| [exp-064](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-064-h-063-two-threshold-class-program.md) | 11 | target | H-063 | build X-014’s Lemma 3 as per-direction-class thresholds and run its two pre-registered controls | the nine-point bound is exactly nine, but the two-end-cell class cannot refute (11, 0) at Trump’s side and provably never could: $B(2 + \frac{4}{3}\sqrt{2}) = 3.876681$ sits $0.000403$ below the side the control was asked to reach | rejected |
+| [exp-070](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-070-h-064-n11-fractional-resume.md) | 11 | target | H-064 | one retained-state, exact-depth fractional cutting leg at side $\frac{191}{50}$ | raised the verified exact lower endpoint to $\frac{21342289572}{2055263195} \approx 10.384212408377215$; the only row-converged computational upper endpoint remains $11.055616942909783$, and the four-CPU-hour routing gate remains open | abandoned |
+| [exp-071](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-071-h-070-n11-inset-seed-release.md) | 11 | target | H-070 | three inset screens followed, when eligible, by matched released-seed and unseeded arms | released and unseeded arms converged after eight rounds to byte-identical candidates of exact mass $\frac{11142893}{1000000}$, missing the strict-improvement criterion | rejected |
+| [exp-110](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-110-h-090-core-shrink.md) | 11 | target | H-090 | exact source and smaller-core sweeps on frozen T-018 atoms, with normalization accepted above $M/11$ | minimum $\frac{85353}{100000}$ at an axis-aligned corner cell falls below $\frac{434547}{440000}$; a direct atom sum excludes all core sides below $\frac{1849127}{1853400}$ | rejected |
+| [exp-111](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-111-h-091-core-shrink.md) | 11 | target | H-091 | exact fixed-atom replay above exp-110’s corner event, followed by direct witness-event inspection | minimum $\frac{96377}{100000}$ at net direction 97; the witness’s first usable event exceeds the entire ordinary-containment improvement window, closing that fixed-weight route | rejected |
 | [exp-113](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-113-h-099-trump-support-screen.md) | 11 | target | H-099 | exact necessary-row ceiling on the frozen Trump D4 support | independently replayed ceiling56/5; complete a.e.-depth still unverified | unresolved |
 | [exp-114](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-114-h-104-fixed-side-auxiliaries.md) | 11 | target | H-104 | seven fixed-formula exact-angle auxiliary clauses at1939/500 | all seven clauses hold in the reviewed exact computation and independent input/receipt replay | accepted |
 | [exp-115](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-115-h-105-fixed-candidate-pair-obstruction.md) | 11 | target | H-105 | exact overweight-pair obstruction for exp113’s unchanged weights | all 134 eligible pairs have independently checked separating axes | rejected |
@@ -5516,7 +5534,7 @@ archive beside it.
 | [exp-146](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-146-wall-owner-footprints.md) | 11 | target | H-144 | Exact container-clipped support rectangles over every retained frame | Complete16:12 enlarged,4equal,0impossible | accepted |
 | [exp-147](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-147-wall-owner-containment.md) | 11 | target | H-145 | Exact 128-slot component containment and union-of-products count | All128 complete; only2baseline tuples;0new | rejected |
 | [exp-148](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-148-fixed-five-dot-wall-expansion.md) | 11 | target | H-146 | Nine-seed witness bank and one surviving tuple full-net check | Partial seed bank;49152 labels rejected;no candidate | unresolved |
-| [exp-149](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-149-selected-wall-tuple-cover.md) | 11 | target | H-147 | Exact complete-net cover of the selected wall tuple `(0,0,0,7)` | First direction has exact positive deficit and strict escape | rejected |
+| [exp-149](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-149-selected-wall-tuple-cover.md) | 11 | target | H-147 | Exact complete-net cover of the selected wall tuple $(0,0,0,7)$ | First direction has exact positive deficit and strict escape | rejected |
 | [exp-150](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-150-wall-owner-escape-compatibility.md) | 11 | target | H-148 | Exact compatibility of the saved escape with entire allowed owner cores | Four classes admit individually compatible cores | rejected |
 | [exp-151](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-151-selected-six-dot-cover.md) | 11 | target | H-149 | Six fixed dots and four selected wall patches on the full net | Six covered directions then a strict escape at owner-006 | rejected |
 | [exp-152](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-152-sixth-site-two-core-screen.md) | 11 | target | H-150 | Exact closed intersection of two escaping cores | Nonempty two-core quadrilateral and verified common site | accepted |
@@ -5524,9 +5542,9 @@ archive beside it.
 | [exp-154](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-154-h157-sixteen-sector-refinement-limit.md) | 11 | target | H-157 | Exact sixteen-bin and singleton-ray owner-sector screen of the mass-eleven ceiling family | Six of eight refined subclasses still read survivor weight exactly 10; the two that break read 19/2, not 79/8 | **rejected** |
 | [exp-155](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-155-h156-finer-net-threshold-dilation.md) | 11 | target | H-156 | Frozen T-025 atoms on the 1440-step direction net and exact dilation corollary | Proved `s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.8264474...`; the result is now V4/C5 | **accepted** |
 | [exp-156](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-156-unit-parent-saved-residual.md) | 11 | target | H-158 | Exact residual parent-box check followed by matched B-only and parent-restricted owner comparisons in TR, BL, BR, TL order | Residual inside parent box; TR / bottom-left:m1:j7 has exact negative B-only maximum after 181 frames, which also precludes parent gain there; BL, BR and TL unrun | unresolved |
-| [exp-157](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-157-bc303-literal-t1-witness.md) | 11 | target | H-159 | Retrospective source-bound replay of one disclosed bottom-left role-C parent across all 377 atoms | Labels `{3,4,11,12}`; 19 captured atoms give `S(X)=3/800000 < epsilon`, rejecting only the named local inequality | rejected |
+| [exp-157](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-157-bc303-literal-t1-witness.md) | 11 | target | H-159 | Retrospective source-bound replay of one disclosed bottom-left role-C parent across all 377 atoms | Labels $\lbrace3,4,11,12\rbrace$; 19 captured atoms give `S(X)=3/800000 < epsilon`, rejecting only the named local inequality | rejected |
 | [exp-158](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-158-bc303-t2-charge-filters.md) | 11 | target | H-160 | Prospective exact all-chart C and S first-owner charge filters after source and synthetic-control admission | Paused by strategy reset before target invocation; no scientific result | blocked |
-| [exp-159](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-159-bc303-literal-parent-union.md) | 11 | target | H-161 | Source-bound exact mass of closed `Q0=[0,1]^2` against frozen one-parent and four-corner budgets | `N=4000015`; both tests retain `1048233` units of slack | rejected |
+| [exp-159](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-159-bc303-literal-parent-union.md) | 11 | target | H-161 | Source-bound exact mass of closed $Q0=[0,1]^{2}$ against frozen one-parent and four-corner budgets | $N=4000015$; both tests retain `1048233` units of slack | rejected |
 | [exp-160](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-160-bc303-floor-normalized-t2-filter-analysis.md) | 11 | target | H-162 | Prospective receipt-only comparison of admitted exp-158 C and S-strip minima with 4524132 | Paused without an exp-158 receipt; no comparison or scientific result | blocked |
 | [exp-161](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-161-h163-route-s-threshold-compression.md) | 11 | target | H-163 | T-025 U025 reweighting to at most 23 positive D4 orbits | Encode-only timed out with no JSON; no --search | unresolved |
 | [exp-162](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-162-h218-stock-colgen-small-n-floors.md) | 20 | target | H-218 | Restricted covering optima at n in {12, 17, 19, 20} on named stock-colgen site sets | Session-140 wall expired; no H-218 RETAINABLE freeze | abandoned |
@@ -5637,7 +5655,7 @@ archive beside it.
 | exp-055 | one fixed 15-minute W6 cell | 0.72 s | 92 m | criterion | `909efafa+sha256-9c90a04e5691f168` |
 | exp-056 | one fixed 356-minute elapsed lease | 21,360 s | — | timebox | `11ce70ee+sha256-f45227508b28f377` |
 | exp-057 | one 150-minute target-blind BC-138 lane | 1,000 s | 16.6667 m | guard | `11ce70ee` |
-| exp-058 | the 360-minute BC-152 `n = 5` lane of agenda-016 | 11.33 s | — | criterion | — (no engine; exact sympy replay) |
+| exp-058 | the 360-minute BC-152 $n = 5$ lane of agenda-016 | 11.33 s | — | criterion | — (no engine; exact sympy replay) |
 | exp-059 | one fixed BC-148 process-exclusive lease, 08:58Z–09:58Z | 1991 s | 33 m | criterion | `2796174b` |
 | exp-060 | Lane B of Agenda 021, BC-200, one core, 07:39Z–09:15Z | 3960 s | 96 m | timebox | `26e8a6e3` |
 | exp-061 | Lane A of Agenda 021, BC-197, one core, 07:53Z–09:21Z | 5000 s | 88 m | guard | `5d07a24a` |
@@ -5721,7 +5739,7 @@ archive beside it.
 | exp-204 | 20 refined optima per seed, seeds 1-5 | 4871.0 s | 40 m | criterion | `9ae7700` |
 | exp-205 | 1.25e9 pair tests per chain, 8 chains, 5 seeds, 11 cells, two arms | 4281.0 s | 45 m | criterion | `9ae7700` |
 | exp-206 | 48 to 95 solver calls per ratchet run, 28 runs over two arms | 937.0 s | 95 m | criterion | `ffa6d01` |
-| exp-207 | 900 s harness default, in the recorded command; 39,871 of 40,000 seeds at `n = 5` | unrecorded | unrecorded | dependency: timing receipt lost (D-067) | `e9d13c1d` (mapped source) |
+| exp-207 | 900 s harness default, in the recorded command; 39,871 of 40,000 seeds at $n = 5$ | unrecorded | unrecorded | dependency: timing receipt lost (D-067) | `e9d13c1d` (mapped source) |
 | exp-208 | 900 s harness default per run, in the recorded command | unrecorded | unrecorded | dependency: timing receipt lost (D-067) | `88d452f1` (mapped source) |
 | exp-209 | not recorded | unrecorded | unrecorded | dependency: timing receipt lost (D-067) | `f91fc7d4` (mapped source) |
 | exp-210 | 900 s harness default, in the recorded command | unrecorded | unrecorded | dependency: timing receipt lost (D-067) | `d3c3a778` (mapped source) |
@@ -5753,28 +5771,28 @@ Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is 
 separately in Session089.
 
 **The numerical basin event trust boundary now retains complete declared blocks through
-`n = 8` plus one bounded `n = 9` performance event; exact component controls pass only
-at `n = 3` and `n = 4`.** Exp-018 through exp-020 retain twelve independently valid
-historical v2 poses at `n=3` through `n=5`, including four at the proved `n=3` and `n=4`
+$n = 8$ plus one bounded $n = 9$ performance event; exact component controls pass only
+at $n = 3$ and $n = 4$.** Exp-018 through exp-020 retain twelve independently valid
+historical v2 poses at $n=3$ through $n=5$, including four at the proved $n=3$ and $n=4$
 optima, but D-165 correctly remains recorded on those artifacts.
-Exp-021 adds one v3 `n=3` event whose 2,037 fixed-point evaluations are all retained and
+Exp-021 adds one v3 $n=3$ event whose 2,037 fixed-point evaluations are all retained and
 settled, whose pose independently verifies, and whose admissibility claim replays.
 Exp-022 completes the four-seed v3 block at 4/4 admissible: three endpoints reach side 2
 and one reaches the valid nonoptimal side 2.362735797795. These events are evidence for
 the producer contract and terminal outcomes, not terminal-component counts.
-Exp-032 freezes the missing evidence rule: the complete exact `n = 3` quotient is one
+Exp-032 freezes the missing evidence rule: the complete exact $n = 3$ quotient is one
 interval across four geometric keys and two contact signatures, and the complete exact
-`n = 4` quotient is one point.
+$n = 4$ quotient is one point.
 All current f64 events remain unresolved because none carries an exact
 component-membership witness.
-Exp-033 adds the first exact relation between sampled `n = 5` source poses: after one D4
+Exp-033 adds the first exact relation between sampled $n = 5$ source poses: after one D4
 action and relabelling, two different golden keys share a one-dimensional fixed-angle
 optimal face at side `1 + 5sqrt(2)/4`. It does not assign a full terminal component.
 Exp-034 embeds that face in an exact two-parameter angle-and-slide sheet.
 Exp-035 then retains six exact active-system matrices across A, the interior, and B and
 verifies a non-sheet direction against every row.
 Exp-036 proves that displayed direction cannot be a nonlinear path tangent: the only two
-nearby pair `(3,4)` owner-axis branches have exact second-order obstruction margins.
+nearby pair $(3,4)$ owner-axis branches have exact second-order obstruction margins.
 Exp-038 then certifies the complete first-order inventory and both pointed-quotient face
 vectors. This strict linearized-versus-true-tangent gap and finite inventory do not
 classify transverse or mixed nonlinear realization or assign a component.
@@ -5788,11 +5806,11 @@ fourth event’s post-check rejection.
 That stop exposed D-171: two rows were already outside the screen before an argmax-only
 retry. Exp-024 applies one complete offending-set retry and reaches side 2 on all four
 starts, with 14,301 of 14,301 evaluations settled and all four events admissible.
-Exp-025 extends the unchanged event path to `n=5`: all four starts independently replay,
+Exp-025 extends the unchanged event path to $n=5$: all four starts independently replay,
 all 14,219 fixed-point evaluations settle, and the run observes three descriptors at two
 nonoptimal side values.
 Those descriptors are not component identities, and none of the four starts finds the
-proved optimum. Exp-026 then finds the next retention boundary: three `n=6` events reach
+proved optimum. Exp-026 then finds the next retention boundary: three $n=6$ events reach
 side 3 and replay, but seed 3 fails independent validity and is censored when event
 validation raises before writing it.
 D-183 now routes independently invalid endpoints through the same atomic retention path
@@ -5801,18 +5819,18 @@ Exp-027 retains all four starts: three admissible side-3 events and one independ
 valid, non-admissible time-budget stop at side 3.040392660291. The earlier invalid
 endpoint does not reproduce because open D-126 makes wall-clock-limited work
 load-dependent; neither round supports frequency or component claims.
-Exp-028 retains four independently valid `n=7` outcomes but only one converges; three
+Exp-028 retains four independently valid $n=7$ outcomes but only one converges; three
 carry typed time-budget stops.
-This validates the event path at `n=7` while showing that the ten-second cell is already
+This validates the event path at $n=7$ while showing that the ten-second cell is already
 too censored for landscape statistics.
-Exp-029 retains four independently valid `n=8` outcomes: one admissible side-3 event,
+Exp-029 retains four independently valid $n=8$ outcomes: one admissible side-3 event,
 one typed unsettled cell-cycle stop, and two typed time-budget stops.
 Its bounded cost audit measures median four-event independent screening at 0.000684
 seconds and canonical key computation at 0.004956 seconds, versus 38.004 seconds of
 retained quench wall.
 Canonicalization is therefore not yet the event-loop bottleneck at n=8, while the 3/4
 typed-stop rate again bars landscape statistics.
-Exp-030 retains one independently valid `n=9` time-budget stop and completes the frozen
+Exp-030 retains one independently valid $n=9$ time-budget stop and completes the frozen
 command in 21.36 seconds, below its 30-second profile trigger.
 Median one-event keying costs 0.001074 seconds versus 20.062 seconds of quench wall, so
 canonicalization remains negligible at n=9. This one censored event is a performance
@@ -5826,7 +5844,7 @@ Exp-031 then converges on all four preregistered perturbations: every endpoint v
 and replays, all 6,631 fixed-point evaluations settle, and the maximum proved-side error
 is `2.221e-15`. This is a local known-answer control, not a random-search or component
 claim. The exact small-moduli controls remain valid; component identity is the next
-blocked layer. The `n=12` calibration returns exactly `4.0`, but that is not a
+blocked layer. The $n=12$ calibration returns exactly $4.0$, but that is not a
 known-answer guard. The runner’s full-pose independent verification boundary is repaired
 but not closed under [D-044](defects.md): a scored line must carry the pose, `record`
 re-checks the archived geometry in a separate process before writing a round, and an
@@ -5838,19 +5856,19 @@ verified. A producer-reported overlap scalar still does not close it.
 
 **Trump’s exact pose is locally isolated.** Exp-013 retains all 512 raw active-feature
 selections as 128 derivative-distinct matrices.
-Every matrix has exact rank 33 and a strictly positive exact `Q(u)` stress, so every
+Every matrix has exact rank 33 and a strictly positive exact $Q(u)$ stress, so every
 branchwise fixed-side linearized cone is zero.
 A finite-branch subsequence argument upgrades that result to local isolation and strict
 local side optimality in the anchored pose–side chart, modulo finite symmetries.
 It does not prove global optimality or give an explicit isolation radius.
 
-**Goebel’s `n = 5` optimum is locally rigid at fixed side, and that is a first-party
+**Goebel’s $n = 5$ optimum is locally rigid at fixed side, and that is a first-party
 result.** Exp-058 registers the BC-152 proof packet: an intrinsic half-angle chart
-injective on all of `R^15`, all 400 elementary wall-corner and pair inequalities
+injective on all of $R^{15}$, all 400 elementary wall-corner and pair inequalities
 classified by exact sign (confirming the agenda’s 16/64 and 4/6 counts with no
 discrepancy), a neighbourhood cut out by 128 strict sign conditions on which the local
 feasible system is exactly the twenty active rows, T-012’s 28 Farkas certificates and
-self-stress replaying on the chart with `w · q_chart = -2√2 < 0`, and an order-`2m`
+self-stress replaying on the chart with `w · q_chart = -2√2 < 0`, and an order-$2m$
 coefficient induction that contradicts a nonconstant analytic feasible arc.
 `H-060` is **confirmed** on `BC-153`’s independent review, which returned PASS on
 2026-09-03 against a criterion frozen before the target work and met as written: the
@@ -5858,19 +5876,19 @@ reviewer replayed the instrument from clean roots under both interpreters and go
 chart’s neighbourhood back exactly, and rebuilt every exact quantity from scratch in
 code sharing nothing with the author before accepting each step from nonisolation to the
 second-order contradiction.
-What is established, exactly: for `s = 2 + √2/2` and Goebel’s labeled pose `P⁰` in
-`C = (ℝ² × S¹)⁵`, `P⁰` is an isolated point of `Feas(s)`, so no nonconstant continuous
-feasible path leaves it and no sequence of distinct feasible poses converges to it —
-hence rigid at fixed side in the catalogue’s sense.
+What is established, exactly: for $s = 2 + \sqrt{2}/2$ and Goebel’s labeled pose $P^0$
+in $C = (\mathbb{R}^2 \times S^1)^5$, $P^0$ is an isolated point of `Feas(s)`, so no
+nonconstant continuous feasible path leaves it and no sequence of distinct feasible
+poses converges to it — hence rigid at fixed side in the catalogue’s sense.
 Registered as `T-014` at `V3`/`C5`, apparently-novel at `S3`: the exact quantities are
 machine-confirmed here, the curve-selection lemma and the induction that close the
 argument are an audited proof, and no instrument decides isolation — `isolation_decided`
 is false unconditionally, by design.
 Not claimed: an isolation radius, the side as a variable (false, X-007), global
-uniqueness, any other `n = 5` optimum, applicability of Connelly–Whiteley as stated, or
+uniqueness, any other $n = 5$ optimum, applicability of Connelly–Whiteley as stated, or
 novelty of method. Exp-034’s two-parameter feasible family is not a counterexample: it
-lives at side `1 + 5√2/4`, disjoint from the feasible set at Goebel’s side, and X-012
-runs it as the `C8` control on which the instrument must refuse a receipt.
+lives at side $1 + 5\sqrt{2}/4$, disjoint from the feasible set at Goebel’s side, and
+X-012 runs it as the `C8` control on which the instrument must refuse a receipt.
 Six gaps stay named and none is a condition of the pass — the printed BCR page behind
 the curve-selection citation is still unread, and the review replaces it with a
 derivation from primary-text Basu–Pollack–Roy plus the one-variable Puiseux fact rather
@@ -5878,41 +5896,42 @@ than closing it. The corroborating second-order-sufficiency proof in the packet 
 the same conclusion from weaker hypotheses and discharges nothing, because acceptance
 was preregistered on the curve-selection route.
 
-**The optimal configuration spaces at `n = 3,4` are now exact controls.** Exp-014 proves
+**The optimal configuration spaces at $n = 3,4$ are now exact controls.** Exp-014 proves
 that `F_3(2)` is two labelled circles, its `S3` quotient is one circle, and its
-`D4 x S3` quotient is an interval whose corner endpoint changes the active signature and
+$D4 x S3$ quotient is an interval whose corner endpoint changes the active signature and
 whose midpoint only changes the stabilizer.
 Exp-015 proves that `F_4(2)` is 24 isolated labelled grids and both declared quotients
 are one point. Arbitrary rotations add no side-2 configurations in either case.
 Generation plus complete replay costs 1.28 wall seconds, so both controls belong in
-every gate. H-032 remains open at `n = 5,6`.
+every gate. H-032 remains open at $n = 5,6$.
 
-**The published `n = 11` lower-bound proof is false as printed.** Exp-016 exactly
-certifies an open box of side `10001/10000` that fits Stromquist’s claimed container and
+**The published $n = 11$ lower-bound proof is false as printed.** Exp-016 exactly
+certifies an open box of side $10001/10000$ that fits Stromquist’s claimed container and
 strictly avoids all twelve printed Figure 14 points.
 This rejects the registered five-node H-010 conjunction but not the numerical lower
 bound itself.
 
 **The numerical lower bound now has an independent exact certificate.** Exp-017 moves
-only Figure 14 point `G.x` from `.8` to `.79` and exactly certifies the complete
+only Figure 14 point `G.x` from $.8$ to $.79$ and exactly certifies the complete
 five-node argument. Its 18-cell Figure 13 cover plus four Klein-four-related exceptions,
-26-face repaired Figure 14 tiling, exact lemma premises, and `3+9` count prove
-`s(11) ≥ 2 + 4/√5`. This source-distinct computer-assisted result is not attributed to
-Stromquist, is not externally peer-reviewed, and does not close the gap to Trump.
+26-face repaired Figure 14 tiling, exact lemma premises, and $3+9$ count prove
+$s(11) \ge 2 + 4/\sqrt{5}$. This source-distinct computer-assisted result is not
+attributed to Stromquist, is not externally peer-reviewed, and does not close the gap to
+Trump.
 
 **The tested class-bracketing refiner separates the proved controls from the target.**
-It takes the tested `n = 5` and `n = 10` starts to `1e-15` and leaves the tested
-`n = 11` starts at `6e-02`. That makes proposer quality the next empirical bottleneck;
+It takes the tested $n = 5$ and $n = 10$ starts to `1e-15` and leaves the tested
+$n = 11$ starts at `6e-02`. That makes proposer quality the next empirical bottleneck;
 it does not certify general local optimality or finish the quench contract (D-052).
 
-**The `n = 11` failure is consistent with an exploration problem.** Five annealer seeds
+**The $n = 11$ failure is consistent with an exploration problem.** Five annealer seeds
 land in a band five times narrower than the remaining gap and the local quench improves
 those tested starts by only 1.3×. Starting near Trump’s reference, the default schedule
 moves far away; that is refinement evidence, not a certified basin-membership test.
 
 **Two rounds have been re-read by later ones.** `exp-005`’s finite-quench residual is
 now scoped to the tested refiner and no longer called component attraction (D-083).
-`exp-003`’s `n = 11` result is therefore a combined proposer/refinement observation, not
+`exp-003`’s $n = 11$ result is therefore a combined proposer/refinement observation, not
 a pure basin-finding diagnosis.
 
 ### Known defects in the record
@@ -5943,10 +5962,10 @@ table above.
   `--records` rather than a faster suite.
 - **[D-405](defects.md) and [D-406](defects.md) are the reassessment auditing itself.**
   `BC-088`’s entry sequenced X-009 on an unmeasured gap claim — the measured spread is
-  `0.056`–`0.536`, structured by `k = m² − n`, and `devtools/gap_ranking.py` now carries
-  it — and `BC-092` was stopped on an enumeration price quoted without its artifact and
-  against that artifact’s own isomorph-free decision at `n = 5`. X-010 carries the
-  corrected sequencing input; the repricing is open on the `x-010` beads.
+  $0.056$–$0.536$, structured by $k = m^2 - n$, and `devtools/gap_ranking.py` now
+  carries it — and `BC-092` was stopped on an enumeration price quoted without its
+  artifact and against that artifact’s own isomorph-free decision at $n = 5$. X-010
+  carries the corrected sequencing input; the repricing is open on the $x-010$ beads.
 
 ## The Defect Record
 
@@ -6030,9 +6049,9 @@ screens a retained depth-one family against an owner class’s guaranteed patch 
 the survivor weight as a weak-duality lower bound on that class’s residual cover value.
 Its source predicate requires the source receipt’s `failures` to be exactly
 `["K3 total weight at least n"]` — the failure a family records when its total weight is
-*below* `n` — so it accepts only a family that falls short of the mass the bound is made
+*below* $n$ — so it accepts only a family that falls short of the mass the bound is made
 of, and refuses every proved ceiling family.
-Exp137 and exp138 deliberately named a source family about `0.6158` short of eleven;
+Exp137 and exp138 deliberately named a source family about $0.6158$ short of eleven;
 exp141 independently confirmed their exact negative results on that source.
 Those results remain valid.
 They do not establish that no other fractional family obstructs the residual problem, or
@@ -6062,7 +6081,7 @@ The push-triggered `git merge-tree` guard now detects that state after every bra
 push; an idle branch can still become conflicted when `main` moves underneath it.
 
 **[D-478](defects.md) records a missing witness for BC-206’s reported cutting floor.**
-The value near `10.845594` at side `3.97` survives only in a text log.
+The value near $10.845594$ at side $3.97$ survives only in a text log.
 Its generating family is unavailable for replay after the cutting-screen repairs, so it
 is qualified as an unreplayed historical report.
 `think-aenh` owns recovery or recomputation with a retained exact witness.
@@ -6078,8 +6097,8 @@ that is a union: two squares meeting at a single corner are held apart by two ax
 non-overlap asks that *either* keep separating, so the linearized feasible set is a
 union of half-spaces and not a polyhedron.
 Intersecting them is a subset of every branch, so a pose reads as more rigid than it is.
-`n = 5`, the only size this instrument had produced a retained claim about, has no such
-pair; Göbel’s `n = 40` has 42 of its 98 touching pairs, and there the error inverts the
+$n = 5$, the only size this instrument had produced a retained claim about, has no such
+pair; Göbel’s $n = 40$ has 42 of its 98 touching pairs, and there the error inverts the
 answer rather than merely weakening it.
 That pose has an infinitesimal motion — all sixteen squares of its tilted block turning
 together, each about its own centre — which gives up one separating axis at 24 of the 42
@@ -6087,7 +6106,7 @@ corner contacts and keeps the other, which is all non-overlap asks.
 An assessor that intersects reads those given-up rows as violations and certifies every
 one of the 120 coordinates as pinned, reporting a packing rigid that is not.
 Removing the defect is what found the witness.
-It is still not a *motion*: the gaps curve shut at order `t²`, so `n = 40`’s record
+It is still not a *motion*: the gaps curve shut at order $t^2$, so $n = 40$’s record
 stays `undetermined` and the catalogue’s annotation stands.
 
 Four agenda-015 review findings are also open.
@@ -6115,7 +6134,7 @@ covering program’s separation oracle scores a placement cell by its centre, wh
 exact sweep that decides the certificate scores every cell whose slab meets the
 admissible domain — 1.1 to 1.2 per cent more cells away from the axes.
 The search therefore optimises against a weaker constraint set than the verifier
-enforces, and two `n = 12` pushes to side `39/10` converged below twelve and were then
+enforces, and two $n = 12$ pushes to side $39/10$ converged below twelve and were then
 refused on placements they were never shown.
 The gap is one-sided, so every accepted certificate stands and
 [`T-017`](packing/frontier/RESULTS.md) is untouched; what it costs is candidates.
@@ -6166,7 +6185,7 @@ baseline for one of the forty distinct control commands, and the general form st
 open.
 
 [D-428](defects.md) is a record claiming a check that is not there.
-The `n = 17` successor’s `validate_result` rebuilds all 181 hash-chain links from the
+The $n = 17$ successor’s `validate_result` rebuilds all 181 hash-chain links from the
 two certificate summaries and compares them with the emitted spine, but never compares
 that rebuild with the carried boundary it is supposed to terminate on, so a carried row
 altered identically in both summaries — with the spine and last row hash recomputed
@@ -6182,7 +6201,7 @@ before it ever fired.
 Generated blocks inside formatted documents are compared by what a line *says* rather
 than by its bytes, so flowmark may own the typography inside them; the fold that makes
 that comparison work maps `…` back to `...` but not the space flowmark inserts before
-it. No generated cell has carried an ellipsis until the results headline, whose `n = 17`
+it. No generated cell has carried an ellipsis until the results headline, whose $n = 17$
 row does, so the failure has never happened — a render and the formatter would have
 rewritten each other on every commit, which is the churn `.flowmarkignore` exists to
 stop, reappearing inside a block the formatter is allowed to touch.
@@ -6202,10 +6221,10 @@ witness centre at the midpoint of the attaining event cell, which on most direct
 lies outside the admissible domain; the value was right and the point was not a witness.
 The witness is now a point of the cell’s intersection with the domain on both routes,
 held there on every direction of every retained certificate.
-[D-431](defects.md) is open: `T-009`’s significance rationale compares its `n = 29`
+[D-431](defects.md) is open: `T-009`’s significance rationale compares its $n = 29$
 interval certificate against a rational certificate on Schadt’s packing rather than
 Kingbird’s, and the shipped rational promotion run on the Kingbird witness lands about
-`5.4 × 10⁻²⁰` below the interval bound, the opposite of what the rationale says.
+$5.4 \times 10^{-20}$ below the interval bound, the opposite of what the rationale says.
 Agenda 017’s `BC-165` registers that certificate, rewrites the comparison on one
 packing, and takes `T-009` to `C4` through the results checker.
 [D-432](defects.md) was found by the same branch’s own pre-push tier: when the change
@@ -6225,13 +6244,13 @@ the fact. The tiers are right; using one of them as though it were the other was
 
 [D-398](defects.md) is the record being behind its own toolchain rather than wrong about
 it.
-`n = 40`, `n = 65` and `n = 89` each declared a blocker of kind `mathematics` reading
+$n = 40$, $n = 65$ and $n = 89$ each declared a blocker of kind `mathematics` reading
 “No formal certificate currently supports the tighter reported upper bound”, and each
-kept its verified ceiling at the integer grid — `7`, `9`, `10`. All three certificates
-existed and ran in the gate the whole time: 780 pairs decided by exact sign over `Q(√2)`
-at `n = 40`, 2080 at `n = 65`, 3916 at `n = 89`. A feasible packing at side `s`, decided
-exactly, is a proof that `s(n) ≤ s`, so the mathematics the blocker called missing was
-done and what was missing was an evidence record naming it.
+kept its verified ceiling at the integer grid — $7$, $9$, $10$. All three certificates
+existed and ran in the gate the whole time: 780 pairs decided by exact sign over
+$Q(\sqrt{2})$ at $n = 40$, 2080 at $n = 65$, 3916 at $n = 89$. A feasible packing at
+side $s$, decided exactly, is a proof that $s(n) \le s$, so the mathematics the blocker
+called missing was done and what was missing was an evidence record naming it.
 
 The promotion is made: all three now cite Göbel’s construction, and the count of cases
 whose verified ceiling exceeds their best known falls from 33 to 30. The direction was
@@ -6263,7 +6282,7 @@ The harness that proves those checks fire has a blind spot of its own.
 [D-356](defects.md) records that `run_negative_controls` prunes the literature archive
 and the atlas renderings from its snapshot to stay under a portable size cap, so any
 check reading one of them fails there on a missing file rather than on the mutation.
-Three controls written for the `n = 29` chain were withdrawn for that reason, and the
+Three controls written for the $n = 29$ chain were withdrawn for that reason, and the
 guards they would have exercised are asserted directly in their test instead.
 [D-357](defects.md) is the companion, and it is a correction: a synopsis control that
 failed four times running, including against a clean tree, later fired correctly with
@@ -6297,8 +6316,8 @@ promises rather than a rounding to choose in passing.
 A control that does not reach its known answer is the third of these, and it took the
 first full strict run in a while to see it.
 [D-365](defects.md) records that `check_golden_basins --deep` fails three oracles at
-`n = 10`: the quench reaches `3.735634792931` and refuses to certify convergence, and
-anneal-plus-quench lands `2.85e-02` above the proved `s(10) = (6 + √2)/2`. Nothing
+$n = 10$: the quench reaches $3.735634792931$ and refuses to certify convergence, and
+anneal-plus-quench lands `2.85e-02` above the proved $s(10) = (6 + \sqrt{2})/2$. Nothing
 downstream reads the failing value, so no result rests on it; what is lost is the
 control itself, at the one size in the ladder where the answer is proved and the packing
 is not trivially a grid.
@@ -6326,7 +6345,7 @@ job rather than the operator’s discretion.
 
 A control can also be wrong by being unable to fail.
 [D-378](defects.md) records that the declared surviving identity relation,
-`contact + closure`, has exactly one distinguishing verdict — `agrees` on the `n = 3`
+`contact + closure`, has exactly one distinguishing verdict — `agrees` on the $n = 3$
 quotient control — and that this verdict cannot test it.
 The record carries one closure set, `closure(G) = [C, G, M]`, and it covers every
 stratum that control has, so any faithful implementation returns one there whatever the
@@ -6362,10 +6381,10 @@ source equations; it does not certify the remaining construction.
 H-037 keeps the source-forced finite range and replays the resulting exact square count;
 the geometric construction and its asymptotic theorem remain open.
 [D-344](defects.md), [D-345](defects.md), [D-346](defects.md), and [D-347](defects.md)
-record four independent gaps in El Moumni’s printed `n = 7` proof.
+record four independent gaps in El Moumni’s printed $n = 7$ proof.
 The source-distinct Case 1 branch repair and Figure 4 coordinate prerequisite are exact,
 but the printed length remains defective, the cross-section names `o1` where its
-premises require `o4`, and the diameter display uses undefined `i` with only a
+premises require `o4`, and the diameter display uses undefined $i$ with only a
 separately tagged midpoint candidate.
 No surrounding incidence is verified, so the complete source-faithful replay stays
 blocked under `think-trkj`.
@@ -6378,8 +6397,8 @@ found the endpoint-isolation assumption; D-035 found destructive negative-contro
 residue; D-036 found a timeout reported as convergence; and D-037 separated real census
 counts from a checker’s synthetic re-offers.
 D-038 separated scalar recognition from an oracle; D-039 separated side precision from
-component resolution; D-040 made rarity conditional on a durable `P/Q/E` regime; D-041
-rejected rank-free rigidity and dimension claims; and D-042 exposed `n = 12` as an open
+component resolution; D-040 made rarity conditional on a durable $P/Q/E$ regime; D-041
+rejected rank-free rigidity and dimension claims; and D-042 exposed $n = 12$ as an open
 target masquerading as a negative control.
 
 The systematic crosswalk then records every remaining technical finding from the PR #14
@@ -6390,18 +6409,18 @@ D-047 closes contact-key reflection; D-048 retains unstable tolerance/equality
 semantics; D-049 tracks factorial canonicalization; D-050 and D-051 separate observation
 promotion from regime-safe merging; D-052 narrows quench stationarity; D-053 now
 enforces the generic exact-field preconditions; D-054 separates budgets and final-best
-records from trajectory claims; D-055 and D-056 correct the angle and `m²-3` theorems;
+records from trajectory claims; D-055 and D-056 correct the angle and $m^2-3$ theorems;
 D-057 scopes H-020; D-058 reconciles the local handover; D-059 keeps the golden
 oracle/characterization split open; D-060 restores producer-level strict checks; and
 D-061 preserves evidence for unrecognised endpoints.
-D-062 catches the executable `n=12` rejection that survived the first D-042 correction;
+D-062 catches the executable $n=12$ rejection that survived the first D-042 correction;
 D-063 removes a false contrapositive from the rigidity premise; and D-064 keeps a
 read-only runner preflight executable inside the gate that mutation-tests it without
 opening the gate to live campaign execution.
 D-065 removes the last repeated numeric gate claim from the README and reconciles its
 remaining qualitative claim to the defect source.
 
-D-066 catches the active baseline script repeating the stale `n=12` control claim.
+D-066 catches the active baseline script repeating the stale $n=12$ control claim.
 D-067 and D-068 restore the omitted eleventh-round wall time and stop calling elapsed
 time CPU time; D-069 reconciles H-002 with the four rounds that already measured its
 quench; and D-070 restores exp-011’s execution revision and makes future timing and
@@ -6414,14 +6433,14 @@ and D-073 wires those new session artifacts into the filename/id invariant.
 D-074 corrects the first D-070 regression claim: receipt parsing alone did not exercise
 the terminal artifact mapping, which is now centralized and mutation-tested.
 D-075 narrows PR #16’s cross-environment mismatch to what its aggregate output actually
-establishes; D-076 keeps the `n=5` six-of-six observation from deciding among identity,
+establishes; D-076 keeps the $n=5$ six-of-six observation from deciding among identity,
 landscape, stationarity, and numerical explanations; D-077 replaces a stale serial
 handoff with current parallel lanes; and D-078/D-079 complete the rank and implication
 corrections in that response.
 D-080 replaces a vacuous neighbor-transfer target; D-081 keeps a nonempty but
 underfilled queue from counting as overnight readiness; D-082 records the second
 overgeneralization of H-020; D-083 retracts an attraction claim inferred from a finite-
-quench residual; D-084 removes unsupported rigidity and gap-rank facts from the `n=11`
+quench residual; D-084 removes unsupported rigidity and gap-rank facts from the $n=11$
 frontier artifact; D-085 freezes living uv commands; and D-086 replaces stale overnight
 and handoff state with the current launch agenda.
 D-087 separates the angle-class algorithm, corpus law, and single-cell kink claims.
@@ -6440,7 +6459,7 @@ checker children, and a nonunique mutation-control anchor, followed by a lint fl
 accepted type-checker warnings and a fixed-cell solver that does not expose whether it
 settled or hit its cap ([D-132](defects.md)), then the search-only determination
 vocabulary that could not represent H-024’s missing formal prerequisite, the omitted
-`n=29` source provenance that the falsifier exposed, the roll-up’s obsolete blanket
+$n=29$ source provenance that the falsifier exposed, the roll-up’s obsolete blanket
 claim about exploratory record evidence, the distinction between a branch linearization
 and a true Bouligand motion, and a certificate replay that did not require one-to-one
 branch coverage. The next tranche, D-139 through D-171, records the missing hard-square
@@ -6459,9 +6478,9 @@ attached H-010’s regression text to D-002 before an ID-scoped correction resto
 D-161 records the stale forty-hypothesis synopsis count exposed when H-041 became the
 forty-first artifact; the current consistency check now derives that count from the
 registry. D-162 records the first consequence exposed by typed fixed-cell termination: a
-deep rebuild reduces the converged totals at `n=3`, `n=4`, and `n=5`, and exposes
-unsettled ladder evaluations at `n=9` and `n=10`. Their full poses remain useful
-evidence, but the small-`n` convergence totals must be rebuilt before any such event can
+deep rebuild reduces the converged totals at $n=3$, $n=4$, and $n=5$, and exposes
+unsettled ladder evaluations at $n=9$ and $n=10$. Their full poses remain useful
+evidence, but the small-$n$ convergence totals must be rebuilt before any such event can
 be promoted to a terminal component.
 D-163 records the gate failure that first hid that evidence: the historical-regression
 step continued after its checker failed and returned the status of a later successful
@@ -6483,7 +6502,7 @@ older exp-018 through exp-020 artifacts remain correctly blocked under their his
 v2 contract. D-166 removes the resulting false certificate from BasinEvent/v1. Version 2
 retains the full stopping event and independent validity screen but marks every current
 event promotion-blocked by D-165, and replay refuses a forged admissible flag.
-D-167 adds the missing per-event wall time, so subsequent seed blocks and larger `n`
+D-167 adds the missing per-event wall time, so subsequent seed blocks and larger $n$
 values can be selected from measured throughput rather than command-level guesses.
 D-168 separates an equal-objective finite cell closure from a genuinely unresolved
 cycle. The n=10 control closes after enumerating at most eight adjacent cells; exp-021
@@ -6497,8 +6516,8 @@ D-171 records why the former argmax-only repair left one n=4 event unsettled: ro
 and 21 already violated the screen together.
 The complete offending-set retry closes the exact regression, and exp-024 completes the
 n=4 v3 block at 4/4 admissible without weakening the screen.
-D-194 and D-195 record two pre-measurement corrections to exp-035: pair `(0,4)` is
-regenerated at each slide stratum, and pair `(3,4)` has two owner-axis branches whose
+D-194 and D-195 record two pre-measurement corrections to exp-035: pair $(0,4)$ is
+regenerated at each slide stratum, and pair $(3,4)$ has two owner-axis branches whose
 tied support rows are conjunctive within each branch.
 The frozen controls now execute and both defects are fixed.
 D-196 records the integration recurrence caught before commit when a context-poor edit
@@ -6524,7 +6543,7 @@ agrees, and new components inheriting the perimeter—that apply to code not yet
 
 **As of 2026-09-22 the current state and execution order are the checked
 [Research Program Status and Roadmap](#research-program-status-and-roadmap) above.** The
-verified external bound is `s(11) > 31/8 = 3.875`; the first-party point and threshold
+verified external bound is $s(11) > 31/8 = 3.875$; the first-party point and threshold
 families below remain historical method evidence, and their ceilings leave no route to
 that current bound by net refinement alone.
 The owner has selected material bound improvement or proof simplification as the
@@ -6537,11 +6556,11 @@ This project’s instances and generator moved seven registered cases in one day
 `2 + 4/sqrt(5)`, stated in 1984 and published in 2003; the recorded search found no
 intervening improvement.
 [T-022](packing/frontier/RESULTS.md) proves a small exact refinement to
-`3.810025723614703…`, and [T-024](packing/frontier/RESULTS.md) re-certifies the same
-atoms on a finer direction net and proves `s(11) >= 3.816609502788862…`; both use exact
-dilation-limit arguments.
+$3.810025723614703\ldots$, and [T-024](packing/frontier/RESULTS.md) re-certifies the
+same atoms on a finer direction net and proves `s(11) >= 3.816609502788862…`; both use
+exact dilation-limit arguments.
 `s(11) >= 191/50` is [T-025](packing/frontier/RESULTS.md), a certificate of a new kind:
-threshold atoms, which charge a core holding at least `k` of a set’s points and cost
+threshold atoms, which charge a core holding at least $k$ of a set’s points and cost
 only `floor(|S| / k)` of the budget, carry the side past the exact ceiling that the
 point-atom method provably cannot pass.
 [T-026](packing/frontier/RESULTS.md) then re-certifies those atoms on a 1440-step net
@@ -6549,25 +6568,25 @@ and proves `s(11) >= 3.826447410572939…` by an exact dilation-limit argument, 
 [T-033](packing/frontier/RESULTS.md) repeats that on a 2880-step net for
 `s(11) >= 3.826997548829543…`. T-033 is the strongest retained first-party rung in this
 family, while the current verified case bound is the stronger external strict result
-`s(11) > 31/8`. “Dilation-limit” describes T-033’s proof construction, not a weaker
+$s(11) > 31/8$. “Dilation-limit” describes T-033’s proof construction, not a weaker
 theorem or assurance level.
 The result retains its historical S5 registration; its current significance is S3 as
 method and calibration evidence, while the external certificate supplies the current
 case bound.
 `s(12) >= 99/25` is [T-017](packing/frontier/RESULTS.md), proved about twelve
 squares rather than inherited from eleven, and reached independently of Evan Daniel’s
-stronger `15680/3951`, which was in his repository from 25 August; that is now the case
+stronger $15680/3951$, which was in his repository from 25 August; that is now the case
 bound, replayed here on 2026-09-27 ([`n-012`](packing/frontier/n-012.md)).
-`s(17) >= 459/100`, and `n = 18` and `n = 19` at the same side without a monotonicity
+`s(17) >= 459/100`, and $n = 18$ and $n = 19$ at the same side without a monotonicity
 step, is [T-019](packing/frontier/RESULTS.md) and displaces Massaccesi’s published
-`4.5058` by `0.0842`. `s(19)`, `s(20)` and `s(21) >= 24/5` is
-[T-020](packing/frontier/RESULTS.md), which carries `n = 19` past `T-019` the same
+$4.5058$ by $0.0842$. $s(19)$, $s(20)$ and `s(21) >= 24/5` is
+[T-020](packing/frontier/RESULTS.md), which carries $n = 19$ past `T-019` the same
 evening and displaces Nagamochi’s 2005 closed form at the other two — `1 + sqrt(13)` and
-`1 + sqrt(14)` — by `0.194449` and `0.058343`. Its `0.21` at `n = 19` is the largest
+`1 + sqrt(14)` — by $0.194449$ and $0.058343$. Its $0.21$ at $n = 19$ is the largest
 single-case movement in the register, and twenty and twenty-one had never carried a
 proved bound of their own.
 Between them T-019 and T-020 are the only values in print this project has replaced.
-Evan Daniel has since proved `s(21) = 5` ([`n-021`](packing/frontier/n-021.md)). All
+Evan Daniel has since proved $s(21) = 5$ ([`n-021`](packing/frontier/n-021.md)). All
 four stand at V4: each was decided twice from frozen bytes by an exact event-cell sweep
 and by an interval branch and bound with directed rounding — two routes that share the
 certificate and the closed-form conditions but decide Condition 5 by different methods,
@@ -6577,151 +6596,151 @@ review-ready, a mapped and non-superseded review artifact, which the adversarial
 of PR 78 supplies. None of the four has been read by anyone outside the project, which
 that rung does not ask for; a self-contained package for third-party checking ships at
 `packing/cases/n11_fractional_certificate/thirdparty/` so that a stranger can decide the
-`19/5` rung without trusting this repository.
+$19/5$ rung without trusting this repository.
 
 **That lane also has a measured edge, which is the more useful thing to carry.**
-`n = 11` at `3.82` is closed to both pre-registered routes and the closure was checked
+$n = 11$ at $3.82$ is closed to both pre-registered routes and the closure was checked
 rather than assumed.
 The covering LP was run on two independent site sets and both converged to an objective
-of exactly `11.000000` from above, where a certificate needs mass strictly below eleven;
+of exactly $11.000000$ from above, where a certificate needs mass strictly below eleven;
 the rejection route was then built and decided exactly, and its maximum pointwise depth
-of `1925/1152` caps the feasible total at `1152/175 = 6.58` against the eleven a ceiling
+of $1925/1152$ caps the feasible total at $1152/175 = 6.58$ against the eleven a ceiling
 needs. Where the two routes fail by an infinitesimal at the same value, neither closes.
 That is a limit on the method’s reach at that side, recorded as measurement and not as a
 claim about `tau*`.
 
 **The method also has a ceiling that is structural rather than measured, and it
-forecloses one of the three cases outright.** No certificate for `n` can exist at a
+forecloses one of the three cases outright.** No certificate for $n$ can exist at a
 container side above `ceil(sqrt(n)) * B`: a wider container holds `ceil(sqrt(n))^2`
-pairwise disjoint axis-parallel `B`-squares, direction `0` is always in the net, so
-`Condition 5` gives each of them mass at least `1` and the total passes `n`, which
+pairwise disjoint axis-parallel $B$-squares, direction $0$ is always in the net, so
+`Condition 5` gives each of them mass at least $1$ and the total passes $n$, which
 `Condition 2` forbids.
-With `Condition 4` bounding `B` below `1 / (1 + D)`, the ceiling over every shrink a net
-admits is `ceil(sqrt(n)) / (1 + D)`, and refining the net raises it only as fast as `D`
-falls — about `T / K`, so twice the directions for half the gap, and twice the cost of
+With `Condition 4` bounding $B$ below $1 / (1 + D)$, the ceiling over every shrink a net
+admits is `ceil(sqrt(n)) / (1 + D)`, and refining the net raises it only as fast as $D$
+falls — about $T / K$, so twice the directions for half the gap, and twice the cost of
 every decision taken over them.
 Since the grid packing gives `s(n) <= ceil(sqrt(n))` for free, this ceiling always sits
 strictly below the trivial upper bound: no single certificate of this shape certifies
-the grid value. For `n = 12` that bites: the ceiling is `4B = 3.9908`, the conjectured
-value is `4`, and `99/25` has `0.0308` of runway to the ceiling and that is all there is
+the grid value. For $n = 12$ that bites: the ceiling is $4B = 3.9908$, the conjectured
+value is $4$, and $99/25$ has $0.0308$ of runway to the ceiling and that is all there is
 for one certificate.
 What the ceiling does not exclude is a proved family of certificates with sides tending
-to `4` and a limit argument on top of it; whether such a family exists is a question
+to $4$ and a limit argument on top of it; whether such a family exists is a question
 about the covering value, which nothing here settles.
 Nor does it bind a certificate of a different shape.
-Evan Daniel’s third-party `s(32) = 6` is a weighted cover of the closed container
-`[0,6]²` itself, decided at margin zero by an exact subdivision of pose space rather
+Evan Daniel’s third-party $s(32) = 6$ is a weighted cover of the closed container
+$[0,6]^2$ itself, decided at margin zero by an exact subdivision of pose space rather
 than over a direction net, and it certifies the grid value directly
-([`n-032`](packing/frontier/n-032.md)). `n = 11` and `n = 17` are not foreclosed: their
-runways are `0.1808` and `0.3985`, and both truths sit below their grid bounds.
-At `n = 19`, `20` and `21` the ceiling is `5B = 4.9885`, so `T-020` has `0.1885` above
+([`n-032`](packing/frontier/n-032.md)). $n = 11$ and $n = 17$ are not foreclosed: their
+runways are $0.1808$ and $0.3985$, and both truths sit below their grid bounds.
+At $n = 19$, $20$ and $21$ the ceiling is $5B = 4.9885$, so `T-020` has $0.1885$ above
 it at twenty and twenty-one; at nineteen the best known packing binds first and the
-runway is `0.0856`. `s(21) = 5` was reached by a mixed cover, a certificate of a
+runway is $0.0856$. $s(21) = 5$ was reached by a mixed cover, a certificate of a
 different shape, which puts mass on the grid lines as well as on points.
 
 **Joining that ceiling against the register says the lane has been looking in the wrong
 place.** [`CERTIFICATE-REACH.md`](packing/frontier/CERTIFICATE-REACH.md) ranks all 100
 cases by the most a certificate could add.
-The two this program has spent itself on are near the bottom: `n = 11` has `+0.0590` to
-its packing-side cap (`+0.0671` to Trump’s packing itself, which the cap says no
-certificate on this net reaches) and `n = 17` has `+0.0810`. The largest are all just
+The two this program has spent itself on are near the bottom: $n = 11$ has $+0.0590$ to
+its packing-side cap ($+0.0671$ to Trump’s packing itself, which the cap says no
+certificate on this net reaches) and $n = 17$ has $+0.0810$. The largest are all just
 above a perfect square, where the lower bound is Nagamochi’s closed form and the gap to
-the best known packing runs near half a unit — eleven cases above `+0.49`, headed by
-`n = 51` at `+0.5364`, then `68`, `84`, `39`, `86`, `66`, `38`, `83`, `37`, `53` and
-`26`. Two cautions travel with that ranking.
+the best known packing runs near half a unit — eleven cases above $+0.49$, headed by
+$n = 51$ at $+0.5364$, then $68$, $84$, $39$, $86$, $66$, $38$, $83$, $37$, $53$ and
+$26$. Two cautions travel with that ranking.
 The prize is what the *ceiling* allows; the real limit is the covering value at that
-side. 46 values have been reported for the restricted program, at sides `2.99`, `3.81`,
-`3.82`, `3.83`, `3.84`, `3.85`, `3.875`, `3.95`, `3.96`, `3.965`, `3.969`, `3.97`,
-`3.98`, `3.985`, `3.99`, `4.58`, `4.59`, `4.6`, `4.61`, `4.67`, `4.675`, `4.6775`,
-`4.679`, `4.68`, `4.69`, `4.7`, `4.80`, `4.81`, `4.82`, `4.825`, `4.85`, `4.855`,
-`4.86`, `4.865`, `4.875`, `4.88`, `4.895`, `4.985`, `5.13`, `5.25`, `5.48`, `5.59`,
-`5.7`, `5.8`, `6.75` and `6.84` — the first eight reports, not measurements this
+side. 46 values have been reported for the restricted program, at sides $2.99$, $3.81$,
+$3.82$, $3.83$, $3.84$, $3.85$, $3.875$, $3.95$, $3.96$, $3.965$, $3.969$, $3.97$,
+$3.98$, $3.985$, $3.99$, $4.58$, $4.59$, $4.6$, $4.61$, $4.67$, $4.675$, $4.6775$,
+$4.679$, $4.68$, $4.69$, $4.7$, $4.80$, $4.81$, $4.82$, $4.825$, $4.85$, $4.855$,
+$4.86$, $4.865$, $4.875$, $4.88$, $4.895$, $4.985$, $5.13$, $5.25$, $5.48$, $5.59$,
+$5.7$, $5.8$, $6.75$ and $6.84$ — the first eight reports, not measurements this
 repository can reproduce, since no covering-search run log or solver checkpoint was
 retained for any of them; the ten added on 2026-09-05 by Agenda 021’s `BC-200` and
-`BC-197` and Agenda 022’s `BC-213` and `BC-206` carry run logs; the `2.99` pair added on
-2026-09-18 by session-139 is H-216 calibration at n=6 (covering `6.08216` and `6.07724`
-on two named site sets, both ≥ 6, not a bound); `3.81` is the session-139 T-025-seeded
-auto-plus-60 at 381/100, covering `11.000000` unconverged on the eleven plateau, site
-set refuted, side open; `3.82` also has the session-139 T-025-seeded auto-plus-60 plus
-`--seed-windows 5` at 191/50, covering `11.018646` converged, closest session-139
+`BC-197` and Agenda 022’s `BC-213` and `BC-206` carry run logs; the $2.99$ pair added on
+2026-09-18 by session-139 is H-216 calibration at n=6 (covering $6.08216$ and $6.07724$
+on two named site sets, both ≥ 6, not a bound); $3.81$ is the session-139 T-025-seeded
+auto-plus-60 at 381/100, covering $11.000000$ unconverged on the eleven plateau, site
+set refuted, side open; $3.82$ also has the session-139 T-025-seeded auto-plus-60 plus
+`--seed-windows 5` at 191/50, covering $11.018646$ converged, closest session-139
 point-atom construction, site set refuted; T-026-seeded auto-plus-60 at the same side
-converged `11.033743`, worse than the threshold seed; `3.83` is the session-139 n=11
-probes at 383/100, covering `11.192598` (auto grids), `11.142857` (four-grid), and
-`11.140351` (T-025-seeded four-grid), all site sets refuted, side open; `3.84` is the
-same T-025-seeded auto-plus-60 construction at 96/25, covering `11.371819` converged,
-site set refuted; `3.85` also has the session-139 T-025-seeded auto-plus-60 at 77/20,
-covering `11.456576` converged, site set refuted; `3.875` is the same construction at
-31/8, covering `11.561186` converged, site set refuted, 0.002 below the packing; `3.965`
+converged $11.033743$, worse than the threshold seed; $3.83$ is the session-139 n=11
+probes at 383/100, covering $11.192598$ (auto grids), $11.142857$ (four-grid), and
+$11.140351$ (T-025-seeded four-grid), all site sets refuted, side open; $3.84$ is the
+same T-025-seeded auto-plus-60 construction at 96/25, covering $11.371819$ converged,
+site set refuted; $3.85$ also has the session-139 T-025-seeded auto-plus-60 at 77/20,
+covering $11.456576$ converged, site set refuted; $3.875$ is the same construction at
+31/8, covering $11.561186$ converged, site set refuted, 0.002 below the packing; $3.965$
 is the session-141 n=12 T-017-seeded auto plus windows 7 at 793/200, covering
-`12.067502` unconverged, still above twelve, the first first-party covering row at that
-side; a session-141 T-017-seeded four-grid plus windows 7 finished at `12.066995`
-unconverged, still above twelve; `3.969` T-017-seeded auto-grid dropped to `12.118036`
+$12.067502$ unconverged, still above twelve, the first first-party covering row at that
+side; a session-141 T-017-seeded four-grid plus windows 7 finished at $12.066995$
+unconverged, still above twelve; $3.969$ T-017-seeded auto-grid dropped to $12.118036$
 unconverged, still above twelve; T-017-seeded four-grid at the same side dropped to
-`12.116115` unconverged; a session-140 leftover T-017-seeded four-grid plus windows 7
-finished at `12.091168` unconverged, still above twelve; `4.6` is the session-139 n=17
-auto-grid probe at 23/5, covering `17.331710` unconverged, site set refuted, side open;
-the T-019-seeded auto grid at the same side dropped to `17.049597` unconverged, still
-above seventeen; T-019-seeded auto plus `--seed-windows 5` dropped to `17.042346`
-unconverged; a session-140 T-019-seeded four-grid plus windows 8 finished at `17.120106`
-unconverged, still above seventeen; `4.61` is the session-140 leftover n=17 T-019-seeded
-auto plus windows 5 at 461/100, covering `17.195968` unconverged, one cent above `23/5`;
-`4.67` is the session-139 n=18 auto-grid probe at 467/100, covering `18.000000`
+$12.116115$ unconverged; a session-140 leftover T-017-seeded four-grid plus windows 7
+finished at $12.091168$ unconverged, still above twelve; $4.6$ is the session-139 n=17
+auto-grid probe at 23/5, covering $17.331710$ unconverged, site set refuted, side open;
+the T-019-seeded auto grid at the same side dropped to $17.049597$ unconverged, still
+above seventeen; T-019-seeded auto plus `--seed-windows 5` dropped to $17.042346$
+unconverged; a session-140 T-019-seeded four-grid plus windows 8 finished at $17.120106$
+unconverged, still above seventeen; $4.61$ is the session-140 leftover n=17 T-019-seeded
+auto plus windows 5 at 461/100, covering $17.195968$ unconverged, one cent above $23/5$;
+$4.67$ is the session-139 n=18 auto-grid probe at 467/100, covering $18.000000$
 unconverged, cannot confirm; the T-019-seeded auto grid at the same side converged
-`17.875567` with least_covered 1, freeze-then-decide retained `T-027` at
-`s(18) >= 467/100`; `4.675` is the session-140 T-027-seeded auto plus windows 5 at
-187/40, freeze-then-decide retained `T-028` at `s(18) >= 187/40`; `4.6775` is the
+$17.875567$ with least_covered 1, freeze-then-decide retained `T-027` at
+`s(18) >= 467/100`; $4.675$ is the session-140 T-027-seeded auto plus windows 5 at
+187/40, freeze-then-decide retained `T-028` at `s(18) >= 187/40`; $4.6775$ is the
 session-141 leftover T-028-seeded auto plus windows 5 at 1871/400, freeze-then-decide
-retained `T-029` at `s(18) >= 1871/400`; `4.679` is the session-141 T-029-seeded auto
+retained `T-029` at `s(18) >= 1871/400`; $4.679$ is the session-141 T-029-seeded auto
 plus windows 5 at 4679/1000, freeze-then-decide retained `T-030` at
-`s(18) >= 4679/1000`; `4.68` T-019-seeded auto-grid locked at exact mass `18.000043`
-converged, cannot confirm; T-019-seeded auto plus `--seed-windows 5` at `4.68` locked
-`18.000000` unconverged; T-027-seeded auto at the same side locked `18.000000`
-unconverged; `4.69` T-019-seeded auto-grid locked `18.000000` unconverged; `4.7`
-T-019-seeded auto-grid converged `18.165413`, cannot confirm; retained checkpoint and
+`s(18) >= 4679/1000`; $4.68$ T-019-seeded auto-grid locked at exact mass $18.000043$
+converged, cannot confirm; T-019-seeded auto plus `--seed-windows 5` at $4.68$ locked
+$18.000000$ unconverged; T-027-seeded auto at the same side locked $18.000000$
+unconverged; $4.69$ T-019-seeded auto-grid locked $18.000000$ unconverged; $4.7$
+T-019-seeded auto-grid converged $18.165413$, cannot confirm; retained checkpoint and
 frozen-certificate availability differs by row.
-`4.81` is the session-140 n=19 T-020-seeded auto plus windows 6 at 481/100, covering
-`19.132115` unconverged, closer than the same construction at `4.85` (`19.808958`); a
-session-141 T-020-seeded four-grid plus windows 7 finished at `19.111435` unconverged,
+$4.81$ is the session-140 n=19 T-020-seeded auto plus windows 6 at 481/100, covering
+$19.132115$ unconverged, closer than the same construction at $4.85$ ($19.808958$); a
+session-141 T-020-seeded four-grid plus windows 7 finished at $19.111435$ unconverged,
 still above nineteen.
-`4.82` is the session-140 leftover n=19 T-020-seeded auto plus windows 6 at 241/50,
-covering `19.247109` unconverged, farther than `4.81` on the same site set; a
-session-141 T-020-seeded four-grid plus windows 7 finished at `19.224565` unconverged,
+$4.82$ is the session-140 leftover n=19 T-020-seeded auto plus windows 6 at 241/50,
+covering $19.247109$ unconverged, farther than $4.81$ on the same site set; a
+session-141 T-020-seeded four-grid plus windows 7 finished at $19.224565$ unconverged,
 still above nineteen.
-`4.855` is the session-140 leftover n=20 T-021-seeded auto plus windows 6 at 971/200,
-covering `19.910044` unconverged, still below 20. `4.86` is the session-141 n=20
-T-021-seeded four-grid plus windows 7 at 243/50, covering `19.887914` unconverged, still
-below 20. `4.88` is the session-156 n=21 exp-229 trio at 122/25: a T-021-seeded auto
-plus windows 6 stopped at its deadline at `20.040960` unconverged; seedless auto plus
-windows 5 converged at `20.131946`, but the interval route stalled on a seam where
-window rows sit exactly `B` apart and refused the freeze, which decides nothing;
-seedless auto with no windows converged at `20.145556`, and freeze-then-decide retained
-`T-034` at `s(21) >= 122/25`. `5.13` is the session-141 n=26 seedless auto plus windows
-5 at 513/100, covering `25.000000` unconverged, still below 26, the first first-party
+$4.855$ is the session-140 leftover n=20 T-021-seeded auto plus windows 6 at 971/200,
+covering $19.910044$ unconverged, still below 20. $4.86$ is the session-141 n=20
+T-021-seeded four-grid plus windows 7 at 243/50, covering $19.887914$ unconverged, still
+below 20. $4.88$ is the session-156 n=21 exp-229 trio at 122/25: a T-021-seeded auto
+plus windows 6 stopped at its deadline at $20.040960$ unconverged; seedless auto plus
+windows 5 converged at $20.131946$, but the interval route stalled on a seam where
+window rows sit exactly $B$ apart and refused the freeze, which decides nothing;
+seedless auto with no windows converged at $20.145556$, and freeze-then-decide retained
+`T-034` at `s(21) >= 122/25`. $5.13$ is the session-141 n=26 seedless auto plus windows
+5 at 513/100, covering $25.000000$ unconverged, still below 26, the first first-party
 covering row at that size.
-`5.25` is the session-141 n=27 seedless auto plus windows 5 at 525/100, covering
-`25.000000` unconverged, still below 27, the first first-party covering row at that
-size. `5.48` is the session-141 n=29 seedless auto plus windows 5 at 548/100, covering
-`26.040745` converged with freeze mass `26.0409395`; the interval route refused the
+$5.25$ is the session-141 n=27 seedless auto plus windows 5 at 525/100, covering
+$25.000000$ unconverged, still below 27, the first first-party covering row at that
+size. $5.48$ is the session-141 n=29 seedless auto plus windows 5 at 548/100, covering
+$26.040745$ converged with freeze mass $26.0409395$; the interval route refused the
 freeze, the first first-party covering row at that size.
-`5.59` is the session-141 n=30 seedless auto plus windows 5 at 559/100, covering
-`27.178193` unconverged, still below 30, the first first-party covering row at that
-size. `5.7` is the session-141 n=31 seedless auto plus windows 5 at 57/10, covering
-`28.331329` unconverged, still below 31, the first first-party covering row at that
-size. `5.8` is the session-141 n=32 seedless auto plus windows 5 at 29/5, covering
-`29.803318` unconverged, still below 32, the first first-party covering row at that
-size. `6.75` is the session-141 n=44 seedless auto plus windows 5 at 675/100, covering
-`41.236782` unconverged, still below 44, the first first-party covering row at that
-size. `6.84` is the session-141 n=45 seedless auto plus windows 5 at 684/100, covering
-`42.137360` unconverged, still below 45, the first first-party covering row at that
+$5.59$ is the session-141 n=30 seedless auto plus windows 5 at 559/100, covering
+$27.178193$ unconverged, still below 30, the first first-party covering row at that
+size. $5.7$ is the session-141 n=31 seedless auto plus windows 5 at 57/10, covering
+$28.331329$ unconverged, still below 31, the first first-party covering row at that
+size. $5.8$ is the session-141 n=32 seedless auto plus windows 5 at 29/5, covering
+$29.803318$ unconverged, still below 32, the first first-party covering row at that
+size. $6.75$ is the session-141 n=44 seedless auto plus windows 5 at 675/100, covering
+$41.236782$ unconverged, still below 44, the first first-party covering row at that
+size. $6.84$ is the session-141 n=45 seedless auto plus windows 5 at 684/100, covering
+$42.137360$ unconverged, still below 45, the first first-party covering row at that
 size. Several sides are reported more than once from site sets built differently, which
-is the point of reporting them that way: at `4.85` the difference is between a wall and
-the certificate `T-021` rests on, at `4.865` it is two independent walls plus a
-session-140 four-grid-plus-windows-7 construction that stopped at `19.930198`
-unconverged without crossing, and at `3.97` it is a converged grid optimum of
-`12.364038` above a cutting-plane row LP of `12.248227` and a session-140 T-017-seeded
-four-grid-plus-windows-7 freeze at `12.133391`, and a session-141 T-017-seeded
-auto-plus-windows-7 row at `12.097146` unconverged, with a historical reported floor of
-`10.845594`. That floor cannot currently be replayed because its generating family and
+is the point of reporting them that way: at $4.85$ the difference is between a wall and
+the certificate `T-021` rests on, at $4.865$ it is two independent walls plus a
+session-140 four-grid-plus-windows-7 construction that stopped at $19.930198$
+unconverged without crossing, and at $3.97$ it is a converged grid optimum of
+$12.364038$ above a cutting-plane row LP of $12.248227$ and a session-140 T-017-seeded
+four-grid-plus-windows-7 freeze at $12.133391$, and a session-141 T-017-seeded
+auto-plus-windows-7 row at $12.097146$ unconverged, with a historical reported floor of
+$10.845594$. That floor cannot currently be replayed because its generating family and
 state are missing; [D-478](defects.md) records the evidence gap.
 
 The middle tier is built and works within the explicit boundaries above.
@@ -6746,17 +6765,17 @@ records rests on record basins being rare in quench measure, and
 [H-012](packing/campaign/hypotheses/H-012-record-basins-are-rare.md) is the measurement
 that would refute it.
 The independent proof, construction, exact-value, and asymptotic lanes do not depend on
-that premise. The quench supplies one needed instrument, and exact `n = 3`/`n = 4`
-identity controls now pass, but sampled terminal identity at `n = 5` is not ready.
+that premise. The quench supplies one needed instrument, and exact $n = 3$/$n = 4$
+identity controls now pass, but sampled terminal identity at $n = 5$ is not ready.
 What is not settled is what a basin *is*.
 
 [D-034](defects.md) is the open defect that says so.
-The exact `n=3` side-2 sliding family proves that one connected optimal set produces
+The exact $n=3$ side-2 sliding family proves that one connected optimal set produces
 many geometric keys.
 Its open stratum retains one contact certificate, but the wall endpoint has a different
 certificate after node attributes were restored; exp-014 fixes the stale closed-family
 claim recorded as [D-140](defects.md).
-At `n=5`, exp-033 replaces the matching-summary conjecture with a narrow exact result.
+At $n=5$, exp-033 replaces the matching-summary conjecture with a narrow exact result.
 After one D4 action and relabelling, four squares coincide and the fifth slides through
 an exact side-constant segment in one fixed-angle cell.
 An exact dual proves optimality within that cell, while active fixed-side nullity
@@ -6778,11 +6797,11 @@ rather than a finding.
 The
 [mathematical-frontier review](docs/project/reviews/review-2026-08-23-mathematical-frontier-strategy.md)
 now keeps several independent routes alive rather than making the census spine the whole
-program: Trump’s nonsmooth local geometry, exact small-`n` quotient spaces, held-out
+program: Trump’s nonsmooth local geometry, exact small-$n$ quotient spaces, held-out
 construction surgery, pure-point piercing limits, robust restricted-angle proofs,
-`s(12)`, `s(61)`, exact record fields, and the asymptotic waste exponent.
+$s(12)$, $s(61)$, exact record fields, and the asymptotic waste exponent.
 
-**The small-`n` lane was missing its direct prior art.** [D-139](defects.md) records the
+**The small-$n$ lane was missing its direct prior art.** [D-139](defects.md) records the
 omission. Two primary hard-square configuration-space papers are now archived; the
 Plakhta paper remains explicitly publisher-blocked, so no novelty language is permitted
 until its scope is checked from a lawful primary copy.
@@ -6790,8 +6809,8 @@ until its scope is checked from a lawful primary copy.
 **The first fast rotation is cheap and high-information.** Exp-012 exposed that H-024’s
 formal prerequisite was missing, while exp-037 separately rejected the corresponding
 numerical claim H-042. Exp-013 confirmed H-026 and locally isolated Trump’s pose, and
-exp-014/015 solved the exact `n=3,4` quotient controls in 1.28 wall seconds.
-Exp-033 then certified the `n = 5` equal-side pair’s exact fixed-angle face in 0.24 wall
+exp-014/015 solved the exact $n=3,4$ quotient controls in 1.28 wall seconds.
+Exp-033 then certified the $n = 5$ equal-side pair’s exact fixed-angle face in 0.24 wall
 seconds of generation plus replay.
 Exp-034 through exp-036 then certify an exact angle-and-slide sheet, a non-sheet
 first-order direction, and an exact second-order obstruction to that displayed direction
@@ -6799,7 +6818,7 @@ in 0.76 further wall-seconds.
 Exp-038 adds the complete branchwise first-order inventory in 1.06 wall-seconds.
 Next certify the discovered fixed-angle optimal-position polytope, test transverse and
 mixed nonlinear realization, bound clearance between the unequal-side rows, and hide the
-UnitSquare `n = 68,69` children for the first parent-surgery test.
+UnitSquare $n = 68,69$ children for the first parent-surgery test.
 The quantitative Trump successor is an explicit isolation radius or minimal-support
 stress analysis, not another rank count.
 No hour-scale lane is promoted without a known-answer response, independent validity,
@@ -6807,13 +6826,13 @@ and a result that changes a decision.
 
 **The normal checkpoint and blocking macOS deep golden are green; broader unattended
 launch is not yet authorized.** At that checkpoint the tree passed all 31 normal-gate
-steps in 97.68 wall-seconds, including seven exact small-`n` replays, 59 pytest
+steps in 97.68 wall-seconds, including seven exact small-$n$ replays, 59 pytest
 contracts, and all 62 mutation controls.
 The gate has since grown to 59 steps, of which the pull-request tier runs 35; the
 sentence is dated rather than restated because no check guards this number, so a
 current-tense figure here silently goes stale — as it did twice on 2026-09-03, once when
 a second step budget landed and once when the results-headline check did.
-The first deep regeneration had reproduced one unsettled `n=4` proposal and an `n=10`
+The first deep regeneration had reproduced one unsettled $n=4$ proposal and an $n=10$
 `1.503e-10` pair-row residual.
 [D-199](defects.md) identifies and fixes the n=10 cause: repairing first-call offenders
 49 and 66 exposes previously clean row 61, which a third conservative call settles with
@@ -6821,7 +6840,7 @@ zero all-original-row residual.
 All seven ladder rungs now converge at pool widths 10 and 1. [D-203](defects.md)
 isolated the remaining n=4 seed-0 stop as a distinct HiGHS status-4 Solve error.
 Its retained LP is not malformed or globally ill-conditioned: independent exact
-primal/dual certificates prove the finite optimum `2.00103283426408968`, rank 9, and
+primal/dual certificates prove the finite optimum $2.00103283426408968$, rank 9, and
 zero duality gap. The failure is dual-simplex presolve/postsolve instability on a thin
 near-degenerate optimal face.
 Strict `highs-ipm` solves the identical LP with zero original-row residual; default
@@ -6829,7 +6848,7 @@ tolerances and presolve-off simplex are rejected because their residuals exceed 
 The status-4-only fallback keeps the same LP, tolerances, four-call cap, and all-row
 screen. The bounded seed-0 replay reaches proved side 2 with all 3,692 fixed-point
 evaluations settled; the independent verifier accepts every square and pair.
-The direct blocking macOS deep golden then rebuilds `n=4` at 4/4 converged and passes
+The direct blocking macOS deep golden then rebuilds $n=4$ at 4/4 converged and passes
 all seven proved ladder rungs.
 [D-272](defects.md) records the removal of the temporary expected-failure wrapper after
 that recovery, with Linux and macOS green at `b582fe1`. [D-266](defects.md) records a
@@ -6849,7 +6868,7 @@ The exact named-status audit restored D-034 and closed only D-260 through D-263.
 [D-225](defects.md) preserves the decision boundary: a normal no-skip gate and owned
 limitations suffice for a checkpoint merge, while unattended execution requires fresh
 strict/deep evidence.
-It does not turn this repaired small-`n` result into a general producer-health claim.
+It does not turn this repaired small-$n$ result into a general producer-health claim.
 [D-202](defects.md) separately keeps final-receipt capture open after one delegated long
 command terminated without returning its output; the evidentiary rerun used a durable
 parent-owned session.
@@ -6860,7 +6879,7 @@ portable yielded-command and terminal-polling rehearsal.
 review: an explicitly excluded strict run was terminated by exact process group, its
 partial output discarded, and `think-ysz2` owns explicit command and wall ceilings for
 future bounded delegations.
-The repaired small-`n` path no longer blocks the campaign, but unattended numerical work
+The repaired small-$n$ path no longer blocks the campaign, but unattended numerical work
 still lacks a reproducible work-based quench budget ([D-126](defects.md)), a bound
 around pure-Python validation workers and the aggregate duration of multi-command steps
 ([D-239](defects.md)), and portable terminal-receipt discipline for delegated long
@@ -6921,11 +6940,11 @@ the citation keys below resolve there and in the per-case
 Each entry names what this project relies on it for.
 
 - Stromquist, W. (2003). *Packing 10 or 11 unit squares in a square.* Electronic Journal
-  of Combinatorics 10(1), R8. Supplies `s(10)`, states the `s(11)` lower-bound value,
-  and proves the `0°`/`45°` class bound.
+  of Combinatorics 10(1), R8. Supplies $s(10)$, states the $s(11)$ lower-bound value,
+  and proves the $0^\circ$/$45^\circ$ class bound.
   Exp-016 refutes its printed unrestricted Figure 14 cover; exp-017 independently
   certifies the same value with a source-distinct repair.
-- Trump, W. (1979). The `n = 11` packing, as published on the *Squares in Squares*
+- Trump, W. (1979). The $n = 11$ packing, as published on the *Squares in Squares*
   record page with Ellsworth’s exact solution in the SVG source.
   The standing upper bound.
 - Friedman, E. (2009). *Packing Unit Squares in Squares: A Survey and New Results.*

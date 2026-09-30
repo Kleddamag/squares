@@ -46,6 +46,7 @@ from decimal import ROUND_HALF_UP, Decimal, InvalidOperation, localcontext
 from pathlib import Path
 
 from devtools.check_rung_figures import round_to
+from devtools.migrate_math import plain
 from devtools.check_session_rollups import unmeasured_resource_problems
 from devtools.render_certificate_reach import reported_covering_values
 from sqpack.yamlio import safe_load
@@ -875,16 +876,24 @@ def check_unprotected_fix_claims(text: str, expected: int) -> list[str]:
     ]
 
 
-#: "at side `4.68`" / "at sides `3.82`, `3.95` and `4.80`" -- the shape the synopsis uses
-#: to attach a covering-value report to the side it was reported at. Backticked decimals
-#: only, which is what keeps this off the other "at side" phrases in the document: the
-#: exact ones are written as fractions or surds (`19/5`, `1 + 5√2/4`) and the unbackticked
-#: ones are not quotations of a reported value at all.
-_AT_SIDES = re.compile(r"\bat sides?\s+((?:`\d+\.\d+`(?:,\s+|\s+and\s+)?)+)")
+#: "at side $4.68$" / "at sides $3.82$, $3.95$ and $4.80$" -- the shape the synopsis
+#: uses to attach a covering-value report to the side it was reported at. A decimal set
+#: off as math, or as code before the file's math moved to LaTeX (`devtools.migrate_math`),
+#: and only that, which is what keeps this off the other "at side" phrases in the
+#: document: the exact ones are written as fractions or surds ($19/5$, $1 + 5\sqrt{2}/4$)
+#: and the bare ones are not quotations of a reported value at all.
+_AT_SIDES = re.compile(r"\bat sides?\s+((?:([`$])\d+\.\d+\2(?:,\s+|\s+and\s+)?)+)")
 
-#: "`11.9706` at `3.95`" and its neighbours; a backticked decimal inside an `_AT_SIDES`
-#: run.
-_QUOTED_DECIMAL = re.compile(r"`(\d+\.\d+)`")
+#: "$11.9706$ at $3.95$" and its neighbours; a set-off decimal inside an `_AT_SIDES` run.
+_QUOTED_DECIMAL = re.compile(r"([`$])(\d+\.\d+)\1")
+
+#: A figure in a fact-table row: a math span, or a code span in a file not yet migrated.
+_FIGURE = re.compile(r"`([^`]*)`|\$([^$]+)\$")
+
+
+def figures_in(row: str) -> list[str]:
+    """Every figure a row states, in order, math read back to the text it was written from."""
+    return [code or plain(math) for code, math in _FIGURE.findall(row)]
 
 
 def reported_covering_sides() -> tuple[list[str], list[str]]:
@@ -949,7 +958,10 @@ def check_covering_value_reports(text: str) -> list[str]:
             'in the form "<n> values have been reported"'
         )
 
-    named = [set(_QUOTED_DECIMAL.findall(run.group(1))) for run in _AT_SIDES.finditer(text)]
+    named = [
+        {side for _, side in _QUOTED_DECIMAL.findall(run.group(1))}
+        for run in _AT_SIDES.finditer(text)
+    ]
     for quoted in named:
         stray = sorted(quoted - set(sides))
         if stray:
@@ -963,13 +975,13 @@ def check_covering_value_reports(text: str) -> list[str]:
             f"sides ({', '.join(sides)})"
         )
 
-    for sentence in re.split(r"(?<=[a-z0-9)`])\.\s+(?=[A-Z])", text):
+    for sentence in re.split(r"(?<=[a-z0-9)`$])\.\s+(?=[A-Z])", text):
         if "recomputable" not in sentence:
             continue
         claimed = {
             side
             for run in _AT_SIDES.finditer(sentence)
-            for side in _QUOTED_DECIMAL.findall(run.group(1))
+            for _, side in _QUOTED_DECIMAL.findall(run.group(1))
         }
         if claimed and claimed != set(recomputable):
             problems.append(
@@ -1018,7 +1030,7 @@ def check_case_interval(
         return [f"SYNOPSIS.md: fact table has no '{label}' row" for label in sorted(missing)]
 
     rows = {key: row for key, row in found.items() if row is not None}
-    figures = {key: re.findall(r"`([^`]*)`", row) for key, row in rows.items()}
+    figures = {key: figures_in(row) for key, row in rows.items()}
     if empty := [labels[key] for key, found in figures.items() if not found]:
         return [f"SYNOPSIS.md: '{label}' row states no figure" for label in sorted(empty)]
 

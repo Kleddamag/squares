@@ -936,6 +936,40 @@ def to_latex(source: str, *, frac: bool = False) -> str:
     return latex
 
 
+#: Every control word this module writes, back to the character it came from. Where two
+#: characters share a command (`·` and `⋅`, `−` and `-`), the first listed is the answer.
+_PLAIN_WORDS = {
+    **{latex: char for char, (latex, _) in reversed(SYMBOLS.items()) if latex.startswith("\\")},
+    **{latex: letter for letter, latex in GREEK.items()},
+}
+_FRACTION = re.compile(r"\\t?frac\{([^{}]*)\}\{([^{}]*)\}")
+_SQRT = re.compile(r"\\sqrt\{([^{}]*)\}")
+_TEXT = re.compile(r"\\text\{([^{}]*)\}")
+_WORD = re.compile(r"\\[A-Za-z]+")
+
+
+def plain(latex: str) -> str:
+    """The expression `to_latex` was given, near enough to read a figure back from.
+
+    A checker that holds prose to a record reads its figures out of the prose, and once a
+    file is migrated those figures are `$…$` rather than code. This undoes the conversions
+    `to_latex` makes -- control words to their characters, `\\frac{a}{b}` to `a/b`,
+    `\\sqrt{x}` to `√x` or `√(…)`, `\\text{–}` to `–` -- so `$\\frac{31}{8} = 3.875$` reads
+    `31/8 = 3.875` and `$3.8770835\\ldots$` reads `3.8770835…`. Spacing is the LaTeX's,
+    so the space `to_latex` puts after a control word before a letter stays.
+    """
+    def root(match: re.Match[str]) -> str:
+        return f"√{match[1]}" if match[1].isalnum() else f"√({match[1]})"
+
+    text = _TEXT.sub(r"\1", latex)
+    # Innermost first, until nothing is left to fold: `\\sqrt{2 + \\sqrt{2}}`.
+    while (folded := _SQRT.sub(root, _FRACTION.sub(r"\1/\2", text))) != text:
+        text = folded
+    text = text.replace("^\\circ", "°").replace("^{\\prime\\prime}", "″")
+    text = text.replace("^{\\prime}", "′")
+    return _WORD.sub(lambda m: _PLAIN_WORDS.get(m[0], m[0]), text)
+
+
 # ---------------------------------------------------------------------------------------
 # Planning a file
 # ---------------------------------------------------------------------------------------

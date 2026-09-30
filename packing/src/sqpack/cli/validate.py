@@ -4830,6 +4830,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "derivation (needs sympy)",
         "search engine (sqsearch)",
         "lint floor (rust)",
+        # Locked Rust sources and tracked exact differential fixtures determine the
+        # verdict; no repository history, remote state, or stored result is consulted.
+        "exact rectangle Rust geometry",
         "Trump exact branchwise linearized cones",
         "H-041 Stromquist repaired-cover exact certificate",
         "H-010 Stromquist printed-cover exact rejection",

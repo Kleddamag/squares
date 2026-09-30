@@ -42,8 +42,8 @@ The remaining obligations have different acceptance rules:
 | Obligation | Accepted scope | Remaining scope |
 | --- | --- | --- |
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
-| Other exclusions | Source census only | 27 baseline generic cases, 76 extension cases, and 173 returned cases: 276 distinct cases requiring independent geometric checks. |
-| Capture root | All 130 strict seed points and the first complete round: 11 owners, 777 closed rows, 100 new owned points | Thirteen further rounds must join their owner updates from accepted prior states. Even all 14 rounds establish conditional root ownership, not complete capture. |
+| Other exclusions | Source census and pinned dependency manifest | 27 baseline generic cases, 76 extension cases, and 173 returned cases: 276 distinct cases requiring independent geometric checks. The manifest assigns 273 sequential checks and three special adapters. |
+| Capture root | All 130 strict seed points and seven complete rounds: 77 owner updates, 5,439 closed rows | Seven further rounds must join their owner updates from accepted prior states. Round eight requires exact point/segment domain coverage. Even all 14 rounds establish conditional root ownership, not complete capture. |
 | Capture branches | Structural graph and conditional pose inclusion | Actual geometric transitions, branch coverage, ancestry, and final-state binding. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
 
@@ -52,6 +52,17 @@ The
 [first-round receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round1-final/result.json)
 records exact agreement with the next round’s prior state in 35.98 seconds wall;
 Astra-max also reviewed the common-prior join and exact convex compression.
+The
+[seventh-round receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round7-final/result.json)
+continues this conditional induction using the frozen checker at `0f6b1e2d1`. Round
+eight refused an unsupported lower-dimensional legal domain; that refusal accepts no
+additional round and does not refute the source proof.
+The
+[non-field manifest](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/summary.json)
+binds all 276 remaining case recipes to immutable source objects.
+Their 924 distinct required objects total 2.12 GB compressed; bounded acquisition places
+bulk reproducible inputs in `attic/n11-proof-inputs/`, retaining their pins and
+validation receipts here.
 The [coverage and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
 records their mathematical premises.
 No global confirmation or counterexample has been established.

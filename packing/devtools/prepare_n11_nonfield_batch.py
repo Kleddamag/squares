@@ -107,7 +107,8 @@ def main() -> None:
     )
     require(not args.out.exists(), "use a new receipt path")
     require(
-        object_directory_allowed(args.objects), "source objects require packet or pinned archive"
+        object_directory_allowed(args.objects),
+        "source objects require packet or pinned archive",
     )
     require(args.out.resolve().is_relative_to(PACKET), "retain intake receipt in packet")
     started = time.monotonic()

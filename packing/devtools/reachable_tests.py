@@ -208,8 +208,11 @@ def _walker_evidence(path: Path) -> bool:
     unparsing fails, select the test rather than risk dropping a repository walker.
     """
     try:
-        tree = ast.parse(path.read_text(encoding="utf-8"))
-        source = ast.unparse(_WithoutBenignMetadataVersion().visit(tree))
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        if "importlib" in source:
+            tree = _WithoutBenignMetadataVersion().visit(tree)
+        source = ast.unparse(tree)
     except OSError, SyntaxError, UnicodeDecodeError, RecursionError, ValueError:
         return True
     return any(marker in source for marker in WALKER_MARKERS)

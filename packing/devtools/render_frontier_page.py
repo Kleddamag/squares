@@ -170,11 +170,15 @@ def gap(case: dict[str, Any]) -> tuple[str, str]:
 
     Exact where both bounds are closed forms and the difference is short enough to read
     in a cell, with its decimal beneath when it is irrational; otherwise the decimal
-    difference, cut like every other decimal here.
+    difference, cut like every other decimal here. Both bounds written as the same exact
+    form -- one polynomial root, as for n = 11 since T-060 -- are one number, so the gap
+    is zero without evaluating the root.
     """
     import sympy  # noqa: PLC0415
 
     upper, lower = case["verified_upper_bound"], case["verified_lower_bound"]
+    if upper.get("exact_form") and upper["exact_form"] == lower.get("exact_form"):
+        return "0", "0"
     upper_exact = exact_value(upper["exact_form"]) if upper.get("exact_form") else None
     lower_exact = exact_value(lower["exact_form"]) if lower.get("exact_form") else None
     if upper_exact is not None and lower_exact is not None:

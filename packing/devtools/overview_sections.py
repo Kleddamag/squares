@@ -720,7 +720,7 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     (
         "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
         "Queuingtheorydotcom",
-        "A global optimality proof for eleven squares, at Trump's packing.",
+        "A computer-assisted proof that Trump's packing of eleven squares is optimal.",
     ),
     (
         "https://github.com/Kleddamag/11-squares-certified-bound",

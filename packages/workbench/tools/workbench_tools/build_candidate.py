@@ -283,16 +283,32 @@ Loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
 # --------------------------------------------------------------------------- witnesses
 
 
+def _angle_degrees(value: str, unit: str) -> float:
+    """A center-angle witness's angle in degrees, read in the unit the witness declares.
+
+    The witness contract allows either unit (`sqpack.witness` checks it), and the frames the
+    #227 intake draws from packet-derived facts declare radians. Reading those as degrees
+    turned n = 68's squares by a factor of 180/pi and overlapped 53 pairs by up to 0.16.
+    """
+    angle = float(Fraction(value))
+    if unit == "degrees":
+        return angle
+    if unit == "radians":
+        return math.degrees(angle)
+    raise ValueError(f"center-angle witness declares angle_unit {unit!r}")
+
+
 def load_witness(n: int) -> dict:
     data = yaml.load((WITNESSES / f"n-{n:03d}.yaml").read_text(), Loader=Loader)["witness"]
     representation = data["representation"]
+    angle_unit = data["coordinates"]["angle_unit"]
     side = float(Fraction(data["side"]))
     squares = []
     keys = []
     for square in data["squares"]:
         if representation == "center-angle":
             cx, cy = (float(Fraction(value)) for value in square["center"])
-            angle = float(Fraction(square["angle"])) % 90.0
+            angle = _angle_degrees(square["angle"], angle_unit) % 90.0
             keys.append(("ca", square["center"][0], square["center"][1], square["angle"]))
         else:
             corners = [(Fraction(x), Fraction(y)) for x, y in square["corners"]]

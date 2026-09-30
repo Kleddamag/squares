@@ -27,8 +27,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from devtools import render_results
+from devtools.migrate_math import classify
 from devtools.render_explainer import repo_file
 from devtools.render_research_tables import load_cases
+from devtools.result_credit import credit_line
 from devtools.significance import headline as first_sentence
 from sqpack.yamlio import safe_load
 
@@ -54,6 +56,9 @@ INPUTS: tuple[Path, ...] = (
     CITATIONS,
     FRONTIER,
     PACKING / "devtools" / "render_results.py",
+    PACKING / "devtools" / "result_credit.py",
+    PACKING / "devtools" / "render_recent_results.py",
+    PACKING / "devtools" / "migrate_math.py",
     PACKING / "devtools" / "significance.py",
     PACKING / "devtools" / "render_research_tables.py",
     REPO / "epistemics.md",
@@ -101,8 +106,13 @@ def math_html(tex: str, *, display: bool = False) -> str:
     return _render_math(tex, display="display" if display else "inline", math="auto", env={})
 
 
-def tex_bounds(text: str) -> str:
-    """Escape register prose for HTML and set each mathematical run in it as inline math."""
+#: One inline code span in register prose. Headlines write their mathematics this way
+#: (`s(11) ≥ 31/8`), as README and `RESULTS.md` print them.
+_CODE_SPAN = re.compile(r"`([^`\n]+)`")
+
+
+def _prose_html(text: str) -> str:
+    """Escape plain register prose, setting each ASCII mathematical run as inline math."""
     parts: list[str] = []
     last = 0
     for match in MATH.finditer(text):
@@ -110,6 +120,31 @@ def tex_bounds(text: str) -> str:
         parts.append(math_html(prose_tex(match.group(0))))
         last = match.end()
     parts.append(html.escape(text[last:], quote=False))
+    return "".join(parts)
+
+
+def _code_span_html(content: str) -> str:
+    """A code span as math when `migrate_math` reads it as mathematics, else as code."""
+    classified = classify(content)
+    if classified.kind == "math" and classified.latex:
+        return math_html(classified.latex)
+    return f"<code>{html.escape(content, quote=False)}</code>"
+
+
+def tex_bounds(text: str) -> str:
+    """Escape register prose for HTML and set each mathematical run in it as inline math.
+
+    A code span is judged by `devtools.migrate_math.classify`, the rule the reader
+    documents were migrated by, so a headline's `` `s(11) ≥ 31/8` `` is set as math and
+    an identifier stays code; prose outside code spans is read as before.
+    """
+    parts: list[str] = []
+    last = 0
+    for match in _CODE_SPAN.finditer(text):
+        parts.append(_prose_html(text[last : match.start()]))
+        parts.append(_code_span_html(match.group(1)))
+        last = match.end()
+    parts.append(_prose_html(text[last:]))
     return "".join(parts)
 
 
@@ -268,7 +303,7 @@ def load() -> Overview:
                 r,
                 group=title,
                 credit=(
-                    render_results.credit(r, sources).replace(r"\|", "|")
+                    credit_line(r, sources).replace(r"\|", "|")
                     if r.get("attribution")
                     else "This project"
                 ),

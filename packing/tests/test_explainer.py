@@ -300,24 +300,24 @@ def test_figure_three_marks_the_verified_lower_bound_beside_the_packing(
     recorded = safe_load(header[1])["packing"]["verified_lower_bound"]
     verified = render_explainer.verified_lower_bound(11)
     assert verified.value == Fraction(recorded["value"]) == Fraction(recorded["exact_form"])
-    assert (verified.decimal, verified.credit) == ("3.875", "Kleddamag after Levy 2026")
+    assert (verified.decimal, verified.credit) == ("3.875", "Kleddamag after Levy et al. 2026")
 
     x = round(render_explainer.line_x(float(verified.value)))
     best_x = round(render_explainer.line_x(float(render_explainer.BEST_PACKING)))
     assert 0 < best_x - x < 20, "the two ticks are the reason the labels are staggered"
     assert (
         f'<text x="{x}" y="52" dx="-6" text-anchor="end" fill="var(--kpress-doc-text)">'
-        f"3.875, Kleddamag after Levy 2026</text>"
+        f"3.875, Kleddamag after Levy et al. 2026</text>"
     ) in page
     # Trump's value takes the row the verified label would otherwise collide with.
     assert f'<line x1="{best_x}" y1="24" x2="{best_x}" y2="76"' in page
-    assert "the current verified lower bound 3.875 (Kleddamag after Levy 2026)" in page
+    assert "the current verified lower bound 3.875 (Kleddamag after Levy et al. 2026)" in page
 
     caption = " ".join(document.split())
     assert (
-        "The current verified lower bound, $3.875$ (Kleddamag after Levy 2026), leaves a "
-        "gap of $0.0020835\\ldots$ beside Trump\N{RIGHT SINGLE QUOTATION MARK}s packing."
-        in caption
+        "The current verified lower bound, $3.875$ (Kleddamag after Levy et al. 2026), "
+        "leaves a gap of $0.0020835\\ldots$ beside "
+        "Trump\N{RIGHT SINGLE QUOTATION MARK}s packing." in caption
     )
 
 

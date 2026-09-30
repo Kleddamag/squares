@@ -20,11 +20,13 @@ so they arrive in batches: rerun this after each batch and it promotes exactly w
 receipts now cover. It is idempotent, and it never lowers a bound.
 
 What it writes: each affected case's ``reported_lower_bound``, ``verified_lower_bound``,
-top-level ``evidence`` and ``resources`` entries, ``source_reviewed``, and one intake
-paragraph under the title, and it retires the claims an earlier registration's paragraph
-makes once they stop being current. In ``evidence.yaml`` it inserts the registration's
-report entries when they are missing, keeps every wand125 rectangle entry's scope equal to
-the cases that cite it, and keeps each replay entry's command. Other prose in a promoted
+top-level ``evidence`` and ``resources`` entries, ``source_reviewed`` (never moved
+earlier), and one intake paragraph under the title, ending in wand125's AI-assistance
+statement as ``devtools.state_ai_assistance`` words it, and it retires the claims an
+earlier registration's paragraph makes once they stop being current. In ``evidence.yaml``
+it inserts the registration's report entries when they are missing, keeps every wand125
+rectangle entry's scope equal to the cases that cite it, and keeps each replay entry's
+command. Other prose in a promoted
 case can still describe the superseded bound, which ``check_case_prose`` reports, and is
 edited by hand.
 
@@ -66,6 +68,7 @@ from devtools.audit_wand125_rectangles import (
 )
 from devtools.generate_frontier_case import display_gap
 from devtools.retained_data import read_retained_text, retained_exists
+from devtools.state_ai_assistance import WAND125
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -522,6 +525,9 @@ def intake(plan: Plan, registration: Registration) -> str:
     verified = _verified_sentence(plan, registration)
     if verified is not None:
         sentences.append(verified)
+    # The first paragraph describing wand125 is where `devtools.state_ai_assistance` says
+    # what wand125's README says of AI assistance; this paragraph is that one.
+    sentences.append(WAND125.sentence)
     return " ".join(sentences)
 
 
@@ -670,9 +676,13 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
                 },
             ),
         )
+    # Never earlier than a later intake's review: `devtools.apply_upper_bound_packets`
+    # reviewed n = 68 on 2026-09-29, after this registration's 2026-09-28. ISO dates
+    # order as text.
+    reviewed = max(str(payload.get("source_reviewed") or ""), registration.date)
     front = re.sub(
         r"^  source_reviewed: .*$",
-        f"  source_reviewed: '{registration.date}'",
+        f"  source_reviewed: '{reviewed}'",
         front,
         count=1,
         flags=re.MULTILINE,

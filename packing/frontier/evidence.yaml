@@ -2683,12 +2683,123 @@ evidence:
       program run again, so the entry supports V4/C3 and not C4; zmcheck is a
       second implementation of the same pose-space subdivision, and the native
       parent-core route cannot decide a zero-margin cover (the packet README's
-      C4 survey). The zmcheck sweeps (3,595 of 3,600 roots on this cover; all
+      C4 survey). Since 2026-09-29 E-n032-evand-closed-cover-zmx2-replay, an
+      interval-certified run of the source's zmx2 on the same cover, stands
+      beside this entry, and the two together put T-051 at C4 (its composition
+      says what they share). The zmcheck sweeps (3,595 of 3,600 roots on this cover; all
       3,600 on s32_shift_v1.txt with ZM_MIXPAIR=1) and the Lean build were not
       run here, and the checker programs are not formalised. The upper bound is the trivial grid
       (E-basic-grid-upper). The source reports wand125's 119/20 of 2026-09-26
       as the previous best; before it the case carried Nagamochi's 1 + sqrt(23).
     source_reviewed: '2026-09-27'
+
+  - id: E-n032-evand-closed-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [32]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, the 2026-09-26 packet's
+      square-packing/ and then the 2026-09-28 packet's, with every .gz restored (the
+      2026-09-28 packet README, Replay From the Packets), and cargo on PATH: build
+      zmx2 with cargo build --release --bin zmx2 in verify2/, then
+      verify2/target/release/zmx2 cert certificates/s32/s32_closed_cover_6.txt --d4
+      --pair-points --threads 2 --log OUT, with OUT a new file outside the overlay,
+      which must print VERIFIED-D4. Then, from packing/, .venv/bin/python3 -m
+      devtools.audit_evand_mixed_covers zmx2 --case 32 --mode d4 OUT must exit 0,
+      which requires every root of the D4 region present once, none uncertified or
+      capped, and the totals search/ZMX2.md section 9 reports; and
+      devtools.audit_evand_mixed_covers compare-zmx2 --case 32 --records OUT must
+      exit 0, which requires the header line and every root's census equal to the
+      retained receipts/s32_zmx2_d4_pairpoints_roots.log.gz. devtools.audit_evand_mixed_covers
+      check re-reads the retained log and fails if it is missing.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/README.md
+      theorem: No 32 unit squares fit in a square of side below 6; with the 6 x 6 grid, s(32) = 6.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        certificates/s32/README.md, "The proof in one paragraph"; search/ZMX2.md
+        sections 2 to 7, in particular 4.2 to 4.5 (pair lemma Z, the exact infimum,
+        Lemma DP over lines one unit apart, and the line atoms that --pair-points
+        extends to partner lines) and 5 (Lemma R), and section 9 (the point covers,
+        --pair-points and the 38 boxes left without it); search/ZMX2_AUDIT.md; the
+        2026-09-28 packet README, "The previous packet's point covers, by zmx2";
+        receipts/s32_zmx2_d4_pairpoints.log and its roots log.
+      assumptions:
+        - The weighted cover is exactly D4-invariant, weights included, which zmx2 d4 and the 2026-09-26 replay re-check exactly.
+        - Every closed unit square in [0,6]^2 with centre in the D4 region captures weight at least 1; zmx2 --d4 --pair-points certifies the region in 3,600 root boxes.
+        - The D4 reduction carries that region to every centre and angle (proved in Lean upstream, not built here).
+        - Scaling a packing at side s < 6 by 6/s makes 32 pairwise disjoint closed unit squares, so a total weight below 32 excludes it.
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic without contraction on the host; the program is not formally verified.
+        - --pair-points makes every abscissa or ordinate with a partner point one unit away a line of atoms (search/ZMX2.md section 4.5); without it the source reports 38 uncertified boxes on this cover.
+      audit_record: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: >-
+        Fable max reviews: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+        section 3.3 for zmx2 --d4 --pair-points on a point cover, and
+        docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md for zmx2's
+        lemma layer; the s(32) cover's own review is
+        docs/project/reviews/review-2026-09-27-evand-s32-s12.md.
+      note: >-
+        The point-only review, section 3.3, read what --pair-points does in zmx2's
+        code, the partner lines of build_cover and the pair bound, and checked the
+        closedness of the atom tests, the theta = 0 case (Lemma H) and the wall
+        grants (Lemma W) for a point cover; it did so for wand125's s(45) cover, and
+        this entry applies the same program and mode to the point cover of the
+        2026-09-27 review. The mixed-covers review re-derived zmx2's lemmas against
+        its code, including the outward rounding (Lemma R); its findings F4 (the
+        IEEE-754 model zmx2 needs) and F5 (the checkers' lemma layer is not
+        machine-checked) apply unchanged.
+    limitations: >-
+      Run here on 2026-09-29 (finished 01:20:19Z) from the retained bytes, with
+      zmx2 from the 2026-09-28 packet built by rustc 1.94.1 (binary 5ee58ade...),
+      two threads on a shared four-core host: VERIFIED-D4, all 3,600 roots of the D4
+      region, 1,405,342 boxes, 686,886 certified and 17,585 empty leaves, maximum
+      depth 29, none uncertified or capped, in 2,705 s wall and 2,313 s of process
+      CPU time, user plus system (zmx2's own cpu line, 5,365 s, sums its roots'
+      elapsed times; search/ZMX2.md section 9 gives 873 s for the source's run).
+      source_key names the 2026-09-26 release because the certificate is its; the
+      checker and ZMX2.md exist only in the 2026-09-28 packet.
+      devtools.audit_evand_mixed_covers finds the log complete over its region and
+      its totals equal to the ones the source reports; the source shipped no
+      per-root log for this run (search/ZMX2.md section 9), so the comparison with
+      the source is of totals. The review of jlevy/squares#245 rebuilt the same
+      binary and re-ran it, reproducing the retained log root for root; that re-run
+      is not retained. zmx2 is a second implementation, by the source's own agent,
+      of the same pose-space subdivision as zeromargin.py
+      (E-n032-evand-closed-cover-source-run, exact-algebraic). It shares with
+      zeromargin.py the point-in-square test (Lemma P is zeromargin.py's G0-G3 with
+      the same corner and vertex rule), the D4 fold read from S32_EXACT.md section
+      7, the region and the branch-and-bound architecture. It differs in how germs
+      are closed (pair lemma Z and the pair dynamic programme over lines one unit
+      apart, against zeromargin.py's monotone chains) and in its arithmetic
+      (outward-rounded binary64 enclosures on an integer grid for chord geometry,
+      against exact rationals). The two entries meet C4's literal predicate; the
+      shared author, agent, point test, fold, region and architecture are the
+      common mode. The fold cannot be dropped from zmx2's side: a no-symmetry run
+      here, zmx2 --full --pair-points (2026-09-29, 09:03 to 11:58Z, all 28,800 roots
+      of the cover and its mirror, 11,433,048 boxes,
+      receipts/s32_zmx2_full_pairpoints.log), is NOT VERIFIED, with 152 boxes
+      uncertified at the depth cap: 38 in each of four roots, the images near
+      centres (0.50, 4.50) and (5.50, 1.50) at 0.18 to 0.32 degrees of a germ the
+      --d4 run certifies near (0.50, 1.50). Their float mass is at least 1.0115, so
+      they are not counterexamples; the pair lemma closes that germ in the
+      orientation the D4 region keeps and not in its reflections, so zmx2 certifies
+      this cover only through the fold. zmcheck, the source's second checker, certifies 3,595 of its
+      3,600 roots on this cover and was not run here; the Lean build was not run
+      (Mathlib's build cache is unreachable from this session), and the checker
+      programs are not formalised. Registration requested by the author in
+      jlevy/squares#238.
+    source_reviewed: '2026-09-29'
 
   - id: E-n012-evand-15680-3951-report
     claim: lower-bound
@@ -6150,3 +6261,133 @@ evidence:
       The replay command runs from the repository root. The source is pinned at
       1398e42f17f23fe3744bc54425a589fab1f3542c in the acquisition manifest.
     source_reviewed: '2026-09-22'
+
+  - id: E-franciscouzo-2026-09-27-report
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: reported
+    reported_method: numerical-f64
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    replay_status: not-attempted
+    limitations: >-
+      Source f3c5a529c255b546db18605702b8da298132309f (2026-09-27) prints one packing per
+      listed count as a text file of binary64 centres and angles, with the side on its
+      second line, and a README table comparing each with the Kingbird catalogue fetched
+      2026-09-25. It states no method, tolerance or checker. The side of each case is the
+      one its text file prints; the per-case commit history, including earlier and
+      superseded sides, is in the packet's acquisition/sources.json. This is the
+      public-claim entry; the exact replay here is E-franciscouzo-2026-09-27-exact-replay.
+      No optimality is claimed by the source or here.
+    source_reviewed: '2026-09-29'
+
+  - id: E-franciscouzo-2026-09-27-exact-replay
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    certificate: witnesses/franciscouzo-2026/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_packets
+      check --replay --source franciscouzo-square-packing --workers 4, which regenerates
+      every certificate from the packet's retained facts by robust rational promotion
+      (36 rational digits, side increase at most 1e-9), requires its bytes to equal the
+      committed one, and decides the committed one again with
+      devtools.check_rational_witness_independent; it must report every case VERIFIED.
+    replay_status: passed
+    limitations: >-
+      Proves, for each listed count, s(n) at most the side of an exact rational packing
+      decided pair by pair and wall by wall over Q, twice, by the promotion's exact
+      separating-axis test and by an independent Fraction checker that shares no code
+      with it. Each certificate is the source's decimal pose rounded to rationals at
+      centre dilation 1, so it is the author's packing and not a relabelled witness; its
+      side differs from the printed side by less than 2.2e-15 either way, and the verified
+      lane carries the larger of the printed side and the certified side rounded up at
+      the printed precision. That is the printed side at 20 counts and one unit of the
+      fifteenth decimal above it at 26, which bounds_agree_at_declared_precision accepts.
+      At n = 206, 259 and 305 it lies 2, 3 and 2 units above, which the case records keep
+      as conflicts; the reported sides there are not certified. Two negative controls on the
+      n = 68 certificate, its side cut by 1e-15 and one square moved by 1e-6, are refused
+      by both checkers (receipts/negative-controls.json). One exact method, so no C4; no
+      optimality at any count.
+    source_reviewed: '2026-09-29'
+
+  - id: E-n211-de-winter-report
+    claim: upper-bound
+    scope: {n_values: [211]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[de Winter n211 2026-09-16]'
+    replay_status: public-certificate-missing
+    limitations: >-
+      Source 702df9bb3b1e7fe13279a61a1fa89722aa2d496a (2026-09-16) reports 211 unit squares
+      in a square of side 14.99796070496771500150, with 21-digit decimal poses and a
+      verification summary: outward interval arithmetic at 80 decimal digits over 22,155
+      pairs and 844 wall inequalities, least wall clearance 1.000005e-14 and least
+      separating-axis gap 2.10001e-14. It publishes no interval boxes or checker, so its
+      own interval claim cannot be replayed; the exact replay here is
+      E-n211-de-winter-exact-replay. Its previous side, 14.99879247655475100150, is named
+      in the same record. No optimality is claimed.
+    source_reviewed: '2026-09-29'
+
+  - id: E-n211-de-winter-exact-replay
+    claim: upper-bound
+    scope: {n_values: [211]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[de Winter n211 2026-09-16]'
+    certificate: witnesses/de-winter-2026/n-211-rational.yaml.gz
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_packets
+      check --replay --source de-winter-square-packing-211, which regenerates the
+      certificate from the packet's retained facts, requires its bytes to equal the
+      committed one, and decides it again with devtools.check_rational_witness_independent;
+      it must report VERIFIED.
+    replay_status: passed
+    limitations: >-
+      Proves s(211) <= 14.99796070496771500150, the printed side, from an exact rational
+      packing of side 74989803524838470007/5000000000000000000, which is 2.1e-14 below it:
+      the source's own clearances survive rounding its 21-digit poses to rationals at
+      centre dilation 1. Every pair and wall is decided over Q twice, by the promotion's
+      exact test and by an independent Fraction checker. The first packing of 211 squares
+      below the grid side 15; nothing about optimality, and the lower bound is untouched.
+      One exact method, so no C4.
+    source_reviewed: '2026-09-29'
+
+  - id: E-casson-2026-09-23-report
+    claim: upper-bound
+    scope: {n_values: [103, 105, 106, 123, 131, 132, 152, 154, 155, 156, 180, 181, 182, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 268, 269, 270, 271, 272, 273, 292, 297, 301, 303, 304, 305, 306, 307]}
+    assurance: reported
+    reported_method: numerical-multiprecision
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[griffcass square-packing 2026-09-23]'
+    replay_status: not-attempted
+    limitations: >-
+      Source 82661bc8777beeecf458312e8aca9179a969da4f, committed 2026-09-23 at 22:45
+      UTC-6, reports 39 packings with at least 1e-10 pair clearance and 5e-12 wall
+      clearance, each accepted by Ellsworth's check_packing.py at 16 digits and the
+      author's 50-digit separating-axis checker, and each refused by that checker with its
+      side shrunk by 2e-11. Every one is larger than the side
+      E-franciscouzo-2026-09-27-report records at the same count, so none holds a field
+      here and none was replayed; the retained files and the dates of both sources are in
+      the packets. No optimality is claimed.
+    source_reviewed: '2026-09-29'

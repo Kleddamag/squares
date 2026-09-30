@@ -45,7 +45,7 @@ properties:
       properties:
         n: {type: integer, minimum: 1, maximum: 100}
         selection_rule: {type: string, minLength: 1}
-        source_kind: {enum: [kingbird-derived-facts, unitsquare-rendering]}
+        source_kind: {enum: [kingbird-derived-facts, packet-derived-facts, unitsquare-rendering]}
         rendering: {type: string, pattern: '^contact-overlays/n-[0-9]{3}\.svg$'}
         component_count: {type: integer, minimum: 1}
         contact_edge_count: {type: integer, minimum: 1}

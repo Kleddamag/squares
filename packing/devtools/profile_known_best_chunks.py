@@ -42,6 +42,15 @@ GENERATOR = "python -m devtools.profile_known_best_chunks"
 PRIMARY_SWEEP = "registered-angle-contact"
 SENSITIVITY_SWEEP = "regularized-angle-contact"
 PARTITION_BAND = "exact"
+#: The non-grid source kinds, in the order the profile states them. A third joined the
+#: two on 2026-09-29, when `n = 68` moved from its UnitSquare rendering onto Francisco
+#: Couzo's packet facts.
+SOURCE_KINDS = ("kingbird-derived-facts", "packet-derived-facts", "unitsquare-rendering")
+SOURCE_LETTERS = {
+    "kingbird-derived-facts": "K",
+    "packet-derived-facts": "P",
+    "unitsquare-rendering": "U",
+}
 
 
 def manifest_entries(manifest: Path = MANIFEST) -> tuple[dict[str, Any], ...]:
@@ -254,11 +263,7 @@ def render_profile(profile: dict[str, Any]) -> str:
                 )
                 or delta["within_budget_changed"]
             )
-            source_color = (
-                color_for_square(0)
-                if row["source_kind"] == "kingbird-derived-facts"
-                else color_for_square(1)
-            )
+            source_color = color_for_square(SOURCE_KINDS.index(row["source_kind"]))
             sub(
                 root,
                 "rect",
@@ -293,7 +298,7 @@ def render_profile(profile: dict[str, Any]) -> str:
                 root,
                 x=x + 84,
                 y=y + 24,
-                value="K" if row["source_kind"] == "kingbird-derived-facts" else "U",
+                value=SOURCE_LETTERS[row["source_kind"]],
                 size=11,
                 fill=PAPER_THEME.muted,
             )
@@ -524,7 +529,7 @@ def profile_errors(profile: dict[str, Any]) -> list[str]:
     if sensitivity != expected_sensitivity:
         errors.append("aggregate sensitivity comparison mismatch")
     source_strata = []
-    for source_kind in ("kingbird-derived-facts", "unitsquare-rendering"):
+    for source_kind in SOURCE_KINDS:
         selected_rows = [row for row in rows if row["source_kind"] == source_kind]
         stratum_squares = sum(row["square_count"] for row in selected_rows)
         stratum_structured = sum(
@@ -658,7 +663,7 @@ def expected_outputs() -> tuple[dict[str, Any], str]:
         or row["sensitivity_delta"]["within_budget_changed"]
     ]
     source_strata = []
-    for source_kind in ("kingbird-derived-facts", "unitsquare-rendering"):
+    for source_kind in SOURCE_KINDS:
         selected = [row for row in rows if row["source_kind"] == source_kind]
         square_count = sum(row["square_count"] for row in selected)
         structured = sum(row["primary"]["structured_square_count"] for row in selected)

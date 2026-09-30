@@ -758,6 +758,8 @@ jobs:
             /packing/resources/web/known-best-packings/
             /packing/resources/web/prospective-packings/
             /packing/resources/web/unitsquare-release1-2026/
+            /packing/resources/web/franciscouzo-square-packing-2026-09-27/
+            /packing/resources/web/de-winter-square-packing-211-2026-09-16/
             /packing/resources/papers/
             !/packing/resources/papers/*
             /packing/resources/papers/kingbird-square-29-provenance.svg

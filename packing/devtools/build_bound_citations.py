@@ -28,8 +28,9 @@ states is how `D-385` happened, and the same four questions recur for each bound
 3. *Otherwise, whose is it?* A lower bound's previously-published entries must share one
    source key, and that key's authors, year and short venue come from
    `resources/bibliography.yaml`. Where the source's credit is joint with the work it
-   builds on, the entry's `credit` is printed in place of the joined authors, and it must
-   fit the line with its year and venue however the case uses it. An upper bound credits
+   builds on, the entry's `credit` is printed in place of the joined authors, and it, or
+   where it is too wide its `short_credit`, must fit the line with its year and venue
+   however the case uses it. An upper bound credits
    the case's own `found_by` and `improved_by`, with the venue of its `source_key`; where
    the register credits nobody, the line cites the source itself.
 4. *What has this project recorded about it?* Every result for this `n` that carries one
@@ -58,17 +59,22 @@ reason, so a gap is reported rather than filled.
 the current state of understanding ... and they should show recent changes to be new."
 The star says when, not whose. A line credits case by case: another's work under its
 authors, joint work that builds on this project as `credit` in the bibliography (`Kleddamag
-after Levy`), and this project's sole work as `Squares Project (Levy)`. Recent is a typed
-date, never a year or a source key read as text: this project's own new bounds are recent
-by construction, and an external bound is recent where its source's `dated` is on or after
-`RECENT_SINCE`. A source from that year that carries no date fails the build, so a recent
-bound cannot go unstarred because its key happens not to name the year, as n = 17's does
-not. The `recent` field is the lower citation's alone; the stage stars no upper bound.
+after Levy, Mira, Guzhou0806`), and this project's sole work as `Squares Project (Levy)`.
+Recent is a typed date, never a year or a source key read as text: this project's own new
+bounds are recent by construction, and an external bound is recent where its source's
+`dated` is on or after `RECENT_SINCE`. A source from that year that carries no date fails
+the build, so a recent bound cannot go unstarred because its key happens not to name the
+year, as n = 17's does not. The `recent` field is the lower citation's alone; the stage
+stars no upper bound.
 
 A line must fit in `TEXT_LIMIT` characters, the width the stage sets it in, the reference
-and its note together. Where the note leaves too little room, the source's `short_venue`
-is used if the bibliography gives one; a line that still does not fit fails the build
-rather than being cut, and `--review` names every line that was shortened.
+and its note together. Where it does not, the source's `short_venue` is used if the
+bibliography gives one, and then its `short_credit`: the credit's authors and the first of
+its links, ending in `et al.`, a shape `check_short_credit` holds so that a shortened line
+can drop links from the end but never an author, and never misstate a link. The stage is
+the only surface that shortens a credit; every other renderer prints it whole. A line that
+still does not fit fails the build rather than being cut, `--review` names every line that
+was shortened, and `--check` names every line a bibliography edit has moved.
 
 Usage, from `packing/`:
 
@@ -141,6 +147,12 @@ FIRST_PARTY = "repository"
 #: whose source is dated on or after it is starred, whoever proved it.
 RECENT_SINCE = date(2026, 8, 22)
 
+#: What joins a credit's authors to the work they build on: `Daniel after Burns, Massaccesi`.
+AFTER = " after "
+
+#: What ends a shortened credit: the links it leaves out, as a citation says of authors.
+ET_AL = "et al."
+
 
 @dataclass(frozen=True, slots=True)
 class Source:
@@ -158,12 +170,25 @@ class Source:
     #: (the owner, 2026-09-27). Last names, or handles where no name is published; human
     #: authors and projects only, since an AI agent is never a credited author.
     credit: str | None = None
+    #: What the stage prints where the whole `credit` does not fit its line: the credit's
+    #: authors and the first of its links, ending in `et al.` (`Tokoharu after Levy,
+    #: wand125 et al.`). The stage's alone; every other renderer prints `credit` whole.
+    #: `check_short_credit` holds it to that shape.
+    short_credit: str | None = None
     #: The source's own date for the version cited, where the bibliography gives one.
     dated: date | None = None
+    #: How the source stands to this project, where the bibliography types it:
+    #: `builds-on-project`, `credits-project` or `independent`. Read by the README's
+    #: recent-results table (`devtools.render_recent_results`); no line here prints it.
+    lineage: str | None = None
 
     @property
     def credited(self) -> str:
-        """Who a line citing this source names: its `credit`, else its joined authors."""
+        """Who a citation of this source names: its `credit`, else its joined authors.
+
+        Always the whole credit. The stage alone may fall back to `short_credit`, through
+        `compose`, and only where the whole line does not fit.
+        """
         return self.credit if self.credit is not None else join_authors(self.authors)
 
 
@@ -189,7 +214,9 @@ def load_register() -> Register:
             venue=str(entry["venue"]),
             short_venue=entry.get("short_venue"),
             credit=entry.get("credit"),
+            short_credit=entry.get("short_credit"),
             dated=date.fromisoformat(entry["dated"]) if "dated" in entry else None,
+            lineage=entry.get("lineage"),
         )
         for entry in bibliography["sources"]
     }
@@ -205,20 +232,74 @@ def load_register() -> Register:
     )
 
 
-def check_credits(sources: Iterable[Source]) -> None:
-    """Fail on a `credit` whose own line, `credit year, venue`, would not fit the stage.
+def credit_parts(credit: str) -> tuple[str, list[str]]:
+    """A credit's authors and its links, in order: `A, B after C, D` is `A, B` and C, D."""
+    authors, after, links = credit.partition(AFTER)
+    return authors, links.split(", ") if after else []
 
-    Checked for every credited source, not only the ones a case cites today, so a joint
-    credit is known to fit before a bound first carries it. The note is left out: it is
-    this project's to shorten, through `short_venue`, and `_checked` still counts it.
+
+def short_credits(credit: str) -> list[str]:
+    """Every shortening the stage may print for `credit`, longest first.
+
+    The credit's authors whole, then `after` and a proper prefix of its links, at least
+    one, then `et al.`: `Tokoharu after Levy, wand125 et al.` for `Tokoharu after Levy,
+    wand125, Stromquist, Nagamochi, Burns, Massaccesi`. A shortened line therefore keeps
+    every author, names each link it keeps in the place the credit names it, and says that
+    links follow. A credit with one link or none has no shortening: `A et al.` would read
+    as coauthors.
+    """
+    authors, links = credit_parts(credit)
+    return [
+        f"{authors}{AFTER}{', '.join(links[:kept])} {ET_AL}"
+        for kept in range(len(links) - 1, 0, -1)
+    ]
+
+
+def check_short_credit(source: Source) -> None:
+    """Fail on a `short_credit` that is not one of its credit's `short_credits`.
+
+    Held here rather than trusted to whoever writes the bibliography, because the stage
+    prints the short form in the credit's place: one that dropped an author, or named a
+    link out of order or not at all in the credit, would misstate the credit on the one
+    surface a reader cannot check against the full line.
+    """
+    if source.short_credit is None:
+        return
+    if source.credit is None:
+        raise ValueError(f"{source.key}: `short_credit` shortens a `credit` it does not have")
+    allowed = short_credits(source.credit)
+    if source.short_credit not in allowed:
+        raise ValueError(
+            f"{source.key}: `short_credit` {source.short_credit!r} is not the credit's "
+            f"authors and a prefix of its links ending in {ET_AL!r}; it may be one of "
+            f"{allowed}"
+        )
+
+
+def check_credits(sources: Iterable[Source]) -> None:
+    """Fail on a `credit` whose line, `credit year, venue`, would not fit the stage.
+
+    The whole credit, or where that is too wide its `short_credit`, must fit. Checked for
+    every credited source, not only the ones a case cites today, so a joint credit is known
+    to fit before a bound first carries it. The note is left out: it is this project's to
+    shorten, through `short_venue` and `short_credit`, and `_checked` still counts it.
     """
     for source in sources:
+        check_short_credit(source)
         if source.credit is None:
             continue
         line = cite(source.credit, source.year, source.venue)
-        if len(line) > TEXT_LIMIT:
+        if len(line) <= TEXT_LIMIT:
+            continue
+        if source.short_credit is None:
             raise ValueError(
                 f"{source.key}: credit line {line!r} is {len(line)} characters, "
+                f"over {TEXT_LIMIT}, and the source gives no `short_credit`"
+            )
+        short = cite(source.short_credit, source.year, source.venue)
+        if len(short) > TEXT_LIMIT:
+            raise ValueError(
+                f"{source.key}: short credit line {short!r} is {len(short)} characters, "
                 f"over {TEXT_LIMIT}"
             )
 
@@ -294,16 +375,24 @@ def note(assurance: str, confirmed_by: Sequence[str]) -> str | None:
     return f"({'; '.join(said)})" if said else None
 
 
-def compose(authors: str | None, year: int | None, source: Source, room: int) -> str:
+def compose(
+    authors: str | None,
+    year: int | None,
+    source: Source,
+    room: int,
+    short_authors: str | None = None,
+) -> str:
     """The reference alone: authors, year and venue, with nothing of this project's in it.
 
-    In the source's full venue where that fits the `room` the note leaves, and its short
-    venue where it does not; the caller fails a line that fits neither.
+    The first form that fits the `room` the note leaves: the whole credit with the source's
+    full venue, then with its short venue, then the `short_authors` with each venue in
+    turn. Who did the work outranks where it appeared, so a venue gives way before a credit
+    does. Where no form fits, the narrowest is returned and the caller fails it.
     """
-    text = cite(authors, year, source.venue)
-    if len(text) > room and source.short_venue is not None:
-        text = cite(authors, year, source.short_venue)
-    return text
+    who = [authors] if short_authors is None else [authors, short_authors]
+    where = [source.venue] if source.short_venue is None else [source.venue, source.short_venue]
+    forms = [cite(name, year, venue) for name in who for venue in where]
+    return next((text for text in forms if len(text) <= room), forms[-1])
 
 
 def credit(
@@ -446,19 +535,25 @@ def _external(
     value: str,
     assurance: str,
     register: Register,
+    short_credit: str | None = None,
 ) -> dict[str, Any]:
-    """An external source's line, and what this project has recorded about the bound."""
+    """An external source's line, and what this project has recorded about the bound.
+
+    `short_credit` is the shortening of `credited`'s names the line may fall back to, which
+    only a line that credits the source's own `credit` has.
+    """
     performed = [
         item for item in own if register.evidence[item].get("performed_by") == FIRST_PARTY
     ]
     confirmed_by = results_carrying(n, performed, register.results)
     authors, year = credited
     said = note(assurance, confirmed_by)
+    room = TEXT_LIMIT - len(said or "") - bool(said)
     return _checked(
         n,
         label,
         {
-            "text": compose(authors, year, source, TEXT_LIMIT - len(said or "") - bool(said)),
+            "text": compose(authors, year, source, room, short_credit),
             "note": said,
             "basis": "external",
             "assurance": assurance,
@@ -471,42 +566,75 @@ def _external(
     )
 
 
+@dataclass(frozen=True, slots=True)
+class LowerOrigin:
+    """Whose a lower bound is, read from its own evidence, and so whether it is recent.
+
+    Either this project's (`novel` names the first-party entries the register scores new,
+    and `source` is None) or one external source's. The star's test lives here once, so
+    the stage's line and the README's recent-results table, which asks it of the reported
+    lane as well as the verified one, cannot disagree about which bounds are new.
+    """
+
+    own: tuple[str, ...]
+    novel: tuple[str, ...]
+    source: Source | None
+
+    @property
+    def recent(self) -> bool:
+        # This project's own new bounds are recent by construction: its work began on
+        # RECENT_SINCE.
+        return self.source is None or is_recent(self.source)
+
+
+def lower_origin(
+    n: int, bound: Mapping[str, Any], register: Register, label: str = "lower"
+) -> LowerOrigin | None:
+    """Where a lower bound, of either lane, comes from; None where it is derived."""
+    own = own_evidence(bound["evidence"], register)
+    if not own:
+        return None
+    novel = [
+        item for item in own if is_novel_first_party(register.evidence[item], "lower-bound")
+    ]
+    if novel:
+        return LowerOrigin(own=tuple(own), novel=tuple(novel), source=None)
+    # A replay of a published bound is still that source's bound; the entries this project
+    # performed but did not originate carry the source's key like the author's own do.
+    keys = {register.evidence[item].get("source_key") for item in own}
+    if len(keys) != 1:
+        raise ValueError(f"n={n} {label}: evidence {own} names {len(keys)} sources, not one")
+    source = _source(keys.pop(), register, f"n={n} {label}")
+    return LowerOrigin(own=tuple(own), novel=(), source=source)
+
+
 def lower_citation(
     n: int, case: Mapping[str, Any], register: Register
 ) -> dict[str, Any] | None:
     """The line for the certified lower bound, or None where it is derived."""
     bound = case["verified_lower_bound"]
-    own = own_evidence(bound["evidence"], register)
-    if not own:
+    origin = lower_origin(n, bound, register)
+    if origin is None:
         return None
     value = str(bound["value"])
-    novel = [
-        item for item in own if is_novel_first_party(register.evidence[item], "lower-bound")
-    ]
-    if novel:
-        # This project's own new bounds are recent by construction: its work began on
-        # RECENT_SINCE.
+    if origin.source is None:
         own_line = _project(
-            n, "lower", novel, value=value, assurance="verified", register=register
+            n, "lower", origin.novel, value=value, assurance="verified", register=register
         )
-        return {**own_line, "recent": True}
-    # A replay of a published bound is still that source's bound; the entries this project
-    # performed but did not originate carry the source's key like the author's own do.
-    keys = {register.evidence[item].get("source_key") for item in own}
-    if len(keys) != 1:
-        raise ValueError(f"n={n} lower: evidence {own} names {len(keys)} sources, not one")
-    source = _source(keys.pop(), register, f"n={n} lower")
+        return {**own_line, "recent": origin.recent}
+    source = origin.source
     external = _external(
         n,
         "lower",
         source=source,
         credited=(source.credited, source.year),
-        own=own,
+        own=origin.own,
         value=value,
         assurance="verified",
         register=register,
+        short_credit=source.short_credit,
     )
-    return {**external, "recent": is_recent(source)}
+    return {**external, "recent": origin.recent}
 
 
 def upper_citation(
@@ -540,6 +668,8 @@ def upper_citation(
         value=value,
         assurance=assurance,
         register=register,
+        # The register's finders are not the source's credit, so they have no shortening.
+        short_credit=None if names else source.short_credit,
     )
 
 
@@ -601,11 +731,43 @@ def update() -> None:
     print(f"bound citations updated: {RECORD.name}")
 
 
+def stale_lines(committed: Mapping[str, Any], built: Mapping[str, Any]) -> list[str]:
+    """Each line the committed record states differently from a fresh build, as drawn.
+
+    A bibliography edit moves stage lines that are rendered into the atlas, and the
+    atlas is re-rendered once for many edits; this names the lines that re-render will
+    change, so the check says which rather than only that some did.
+    """
+    before = {entry["n"]: entry for entry in committed["entries"]}
+    after = {entry["n"]: entry for entry in built["entries"]}
+    found: list[str] = []
+    for n in sorted(before.keys() | after.keys()):
+        for label in ("upper", "lower"):
+            old = (before.get(n) or {}).get(label)
+            new = (after.get(n) or {}).get(label)
+            if old == new:
+                continue
+            shown = [None if line is None else drawn(line) for line in (old, new)]
+            if shown[0] == shown[1]:
+                fields = sorted(
+                    key
+                    for key in (old or {}).keys() | (new or {}).keys()
+                    if (old or {}).get(key) != (new or {}).get(key)
+                )
+                found.append(f"n={n} {label}: {shown[0]!r}, fields {fields} changed")
+            else:
+                found.append(f"n={n} {label}: {shown[0]!r} -> {shown[1]!r}")
+    return found
+
+
 def check() -> None:
     if not RECORD.is_file():
         raise ValueError(f"missing {RECORD.relative_to(ROOT)}; run with --update")
-    if RECORD.read_text(encoding="utf-8") != _text(build_record()):
-        raise ValueError(f"stale {RECORD.relative_to(ROOT)}; re-run with --update")
+    built = build_record()
+    if RECORD.read_text(encoding="utf-8") != _text(built):
+        lines = stale_lines(load_record(), built["citations"])
+        listed = "".join(f"\n  {line}" for line in lines)
+        raise ValueError(f"stale {RECORD.relative_to(ROOT)}; re-run with --update{listed}")
     print("bound citations check passed: matches the frontier register and bibliography")
 
 
@@ -676,15 +838,21 @@ def linked_results(entries: Sequence[Mapping[str, Any]]) -> dict[str, dict[int, 
 
 
 def shortened(entries: Sequence[Mapping[str, Any]], register: Register) -> list[str]:
-    """The lines set in their source's short venue so the confirmation would fit."""
+    """The lines set in their source's short venue or short credit, so they would fit."""
     found: list[str] = []
     for entry in entries:
         for label in ("upper", "lower"):
             line = entry[label]
             if line is None or line["source_key"] is None:
                 continue
-            if register.sources[line["source_key"]].venue not in line["text"]:
-                found.append(f"n={entry['n']} {label}: {line['text']!r}")
+            source = register.sources[line["source_key"]]
+            where = f"n={entry['n']} {label}: {line['text']!r}"
+            if source.venue not in line["text"]:
+                found.append(f"to the source's short venue: {where}")
+            if source.short_credit is not None and line["text"].startswith(
+                f"{source.short_credit} "
+            ):
+                found.append(f"to the source's short credit: {where}")
     return found
 
 
@@ -723,7 +891,7 @@ def review() -> None:
             )
             print(f"{kind} {', '.join(ids)}: {span}")
     for line in shortened(entries, register):
-        print(f"shortened to the source's short venue: {line}")
+        print(f"shortened {line}")
 
 
 def main(argv: Sequence[str] | None = None) -> int:

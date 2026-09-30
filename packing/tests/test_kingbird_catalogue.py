@@ -50,9 +50,11 @@ CASE_MAXIMUM = 100
 #: What the reconciliation reached at each corpus: (cases matched to a pictured block,
 #: printed facts checked). Pinned so a parser that quietly stopped matching still fails.
 GOLDEN_RECONCILED: dict[str, tuple[int, int]] = {
+    # Lowered on 2026-09-29: Couzo's packings (T-056) took 44 catalogue-sourced cases, 15 of
+    # them at n <= 200, off the catalogue, and de Winter's (T-057) took n = 211's grid.
     "n=1..100": (60, 206),
-    "n=1..200": (114, 409),
-    "n=1..324": (183, 648),
+    "n=1..200": (99, 393),
+    "n=1..324": (139, 615),
 }
 
 #: A block whose printed form uses LaTeX this parser does not read. It must raise rather

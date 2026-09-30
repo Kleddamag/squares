@@ -180,7 +180,7 @@
             "T-037"
           ],
           "source_key": "[Kleddamag n11 2026]",
-          "text": "Kleddamag after Levy 2026, GitHub",
+          "text": "Kleddamag after Levy et al. 2026, GitHub",
           "value": "3.875"
         },
         "n": 11,
@@ -313,7 +313,7 @@
             "T-043"
           ],
           "source_key": "[Guzhou0806 n17 R068]",
-          "text": "Guzhou0806 after Kleddamag, Levy 2026, GitHub",
+          "text": "Guzhou0806 after Kleddamag et al. 2026, GitHub",
           "value": "4.66044"
         },
         "n": 17,
@@ -516,7 +516,7 @@
             "T-047"
           ],
           "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 2026, GitHub",
+          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
           "value": "5.508"
         },
         "n": 26,
@@ -547,7 +547,7 @@
             "T-045"
           ],
           "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy 2026, GitHub",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
           "value": "5.6"
         },
         "n": 27,
@@ -578,7 +578,7 @@
             "T-045"
           ],
           "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy 2026, GitHub",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
           "value": "5.6"
         },
         "n": 28,
@@ -609,7 +609,7 @@
             "T-047"
           ],
           "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 2026, GitHub",
+          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
           "value": "5.71"
         },
         "n": 29,
@@ -644,7 +644,7 @@
             "T-047"
           ],
           "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 2026, GitHub",
+          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
           "value": "5.71"
         },
         "n": 30,
@@ -665,7 +665,7 @@
             "T-045"
           ],
           "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy 2026, GitHub",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
           "value": "5.92"
         },
         "n": 31,
@@ -839,7 +839,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "6.5"
         },
         "n": 39,
@@ -870,7 +870,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "6.5"
         },
         "n": 40,
@@ -901,7 +901,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "6.5"
         },
         "n": 41,
@@ -1148,7 +1148,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.38"
         },
         "n": 52,
@@ -1179,7 +1179,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.38"
         },
         "n": 53,
@@ -1239,7 +1239,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.54"
         },
         "n": 55,
@@ -1270,7 +1270,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "7.62"
         },
         "n": 56,
@@ -1530,21 +1530,25 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.41"
         },
         "n": 68,
         "record": "n-068",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[UnitSquare 2026]",
-          "text": "UnitSquare Project 2026, Results Release 1",
-          "value": "8.803383074716108386903836683375989697670063329"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "8.798795237222592"
         }
       },
       {
@@ -1561,7 +1565,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.41"
         },
         "n": 69,
@@ -1592,7 +1596,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.55"
         },
         "n": 70,
@@ -1623,7 +1627,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.55"
         },
         "n": 71,
@@ -1654,7 +1658,7 @@
             "T-044"
           ],
           "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy 2026, GitHub",
+          "text": "wand125 after Levy et al. 2026, GitHub",
           "value": "8.61"
         },
         "n": 72,
@@ -2316,15 +2320,19 @@
         "n": 102,
         "record": "n-102",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Hajba et al., Squares in Squares",
-          "value": "10.61138823373863"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "10.607174680178947"
         }
       },
       {
@@ -2343,15 +2351,19 @@
         "n": 103,
         "record": "n-103",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[UnitSquare 2026]",
-          "text": "UnitSquare Project 2026, Results Release 1",
-          "value": "10.703790283762427"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "10.703516755580015"
         }
       },
       {
@@ -2397,15 +2409,19 @@
         "n": 105,
         "record": "n-105",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[UnitSquare 2026]",
-          "text": "UnitSquare Project 2026, Results Release 1",
-          "value": "10.807847913867976"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "10.806077865540567"
         }
       },
       {
@@ -2424,15 +2440,19 @@
         "n": 106,
         "record": "n-106",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth & Cantrell, Squares in Squares",
-          "value": "10.82297973416944"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "10.822908044141968"
         }
       },
       {
@@ -2532,15 +2552,19 @@
         "n": 110,
         "record": "n-110",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[UnitSquare 2026]",
-          "text": "UnitSquare Project 2026, Results Release 1",
-          "value": "10.996797773597706"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "10.996783396634358"
         }
       },
       {
@@ -2773,15 +2797,19 @@
         "n": 123,
         "record": "n-123",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth & Cantrell, Squares in Squares",
-          "value": "11.60139979378801"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "11.601384658385687"
         }
       },
       {
@@ -2962,15 +2990,19 @@
         "n": 130,
         "record": "n-130",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth & Cantrell, Squares in Squares",
-          "value": "11.91119052015898"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "11.911187706548755"
         }
       },
       {
@@ -2989,15 +3021,19 @@
         "n": 131,
         "record": "n-131",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[UnitSquare 2026]",
-          "text": "UnitSquare Project 2026, Results Release 1",
-          "value": "11.956543108124773261501115489978287643498579738"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "11.954916830219048"
         }
       },
       {
@@ -3016,15 +3052,19 @@
         "n": 132,
         "record": "n-132",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "11.99143643966336"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "11.991327887694469"
         }
       },
       {
@@ -3436,15 +3476,19 @@
         "n": 152,
         "record": "n-152",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth & Cantrell 2025, Squares in Squares",
-          "value": "12.83100282216725"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "12.830718800982252"
         }
       },
       {
@@ -3490,15 +3534,19 @@
         "n": 154,
         "record": "n-154",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth & Cantrell, Squares in Squares",
-          "value": "12.93171183926903"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "12.931663721169976"
         }
       },
       {
@@ -3517,15 +3565,19 @@
         "n": 155,
         "record": "n-155",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "12.95851388606690"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "12.955619592137850"
         }
       },
       {
@@ -3544,15 +3596,19 @@
         "n": 156,
         "record": "n-156",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "12.98219172354800"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "12.982082698520427"
         }
       },
       {
@@ -3846,15 +3902,19 @@
         "n": 172,
         "record": "n-172",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Hajba & Ellsworth, Squares in Squares",
-          "value": "13.61898898660160"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "13.618988956935731"
         }
       },
       {
@@ -3981,15 +4041,19 @@
         "n": 177,
         "record": "n-177",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2024, Squares in Squares",
-          "value": "13.82302875075647"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "13.822979734183507"
         }
       },
       {
@@ -4062,15 +4126,19 @@
         "n": 180,
         "record": "n-180",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "13.93513929847193"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "13.927888140501693"
         }
       },
       {
@@ -4089,15 +4157,19 @@
         "n": 181,
         "record": "n-181",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "13.95698416446504"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "13.953748821957927"
         }
       },
       {
@@ -4116,15 +4188,19 @@
         "n": 182,
         "record": "n-182",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "13.97442960739443"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "13.974090713124822"
         }
       },
       {
@@ -4435,15 +4511,19 @@
         "n": 199,
         "record": "n-199",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Friedman & Ellsworth, Squares in Squares",
-          "value": "14.61898898660160"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "14.618988956907218"
         }
       },
       {
@@ -4626,13 +4706,17 @@
         "upper": {
           "assurance": "reported",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(reported; confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "14.87253189075152"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "14.860158663395859"
         }
       },
       {
@@ -4651,15 +4735,19 @@
         "n": 207,
         "record": "n-207",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "14.89397859563780"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "14.893954634242480"
         }
       },
       {
@@ -4678,15 +4766,19 @@
         "n": 208,
         "record": "n-208",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "14.93783044811097"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "14.937018796984567"
         }
       },
       {
@@ -4705,15 +4797,19 @@
         "n": 209,
         "record": "n-209",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "14.95868244078260"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "14.955041639430016"
         }
       },
       {
@@ -4732,15 +4828,19 @@
         "n": 210,
         "record": "n-210",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "14.97421396826961"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "14.973001116591412"
         }
       },
       {
@@ -4758,7 +4858,21 @@
         },
         "n": 211,
         "record": "n-211",
-        "upper": null
+        "upper": {
+          "assurance": "verified",
+          "basis": "external",
+          "confirmed_by": [
+            "T-057"
+          ],
+          "note": "(confirmed T-057)",
+          "result": null,
+          "results": [
+            "T-057"
+          ],
+          "source_key": "[de Winter n211 2026-09-16]",
+          "text": "de Winter 2026, GitHub",
+          "value": "14.99796070496771500150"
+        }
       },
       {
         "lower": {
@@ -5068,15 +5182,19 @@
         "n": 228,
         "record": "n-228",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "15.60902282132495"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.604638007678682"
         }
       },
       {
@@ -5284,15 +5402,19 @@
         "n": 236,
         "record": "n-236",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "15.87607676541001"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.872219025616040"
         }
       },
       {
@@ -5311,15 +5433,19 @@
         "n": 237,
         "record": "n-237",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2024, Squares in Squares",
-          "value": "15.91421356237309"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.911191683008479"
         }
       },
       {
@@ -5338,15 +5464,19 @@
         "n": 238,
         "record": "n-238",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "15.93984676308969"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.931725503598480"
         }
       },
       {
@@ -5365,15 +5495,19 @@
         "n": 239,
         "record": "n-239",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "15.95643304058435"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.953819333484685"
         }
       },
       {
@@ -5392,15 +5526,19 @@
         "n": 240,
         "record": "n-240",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "15.97559404379946"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.969685337536875"
         }
       },
       {
@@ -5419,15 +5557,19 @@
         "n": 241,
         "record": "n-241",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "15.99091684780193"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "15.988132439537539"
         }
       },
       {
@@ -5757,13 +5899,17 @@
         "upper": {
           "assurance": "reported",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(reported; confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "16.60257141234448"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.602568490497649"
         }
       },
       {
@@ -5863,15 +6009,19 @@
         "n": 263,
         "record": "n-263",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2025, Squares in Squares",
-          "value": "16.74264068711928"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.742280159187313"
         }
       },
       {
@@ -5998,15 +6148,19 @@
         "n": 268,
         "record": "n-268",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth & Cantrell, Squares in Squares",
-          "value": "16.87933209237563"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.878814821018413"
         }
       },
       {
@@ -6025,15 +6179,19 @@
         "n": 269,
         "record": "n-269",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "16.90596764828402"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.905967058598858"
         }
       },
       {
@@ -6052,15 +6210,19 @@
         "n": 270,
         "record": "n-270",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "16.94073593015457"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.937810329390629"
         }
       },
       {
@@ -6079,15 +6241,19 @@
         "n": 271,
         "record": "n-271",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "16.95509447506437"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.950820792633813"
         }
       },
       {
@@ -6106,15 +6272,19 @@
         "n": 272,
         "record": "n-272",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "16.96980702828259"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.968279785326896"
         }
       },
       {
@@ -6133,15 +6303,19 @@
         "n": 273,
         "record": "n-273",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "16.98832058897683"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "16.983925962660670"
         }
       },
       {
@@ -6486,15 +6660,19 @@
         "n": 292,
         "record": "n-292",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Friedman & Ellsworth, Squares in Squares",
-          "value": "17.60257141234448"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.597249391199519"
         }
       },
       {
@@ -6621,15 +6799,19 @@
         "n": 297,
         "record": "n-297",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth, Squares in Squares",
-          "value": "17.74116992948972"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.740417287548325"
         }
       },
       {
@@ -6729,15 +6911,19 @@
         "n": 301,
         "record": "n-301",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2025, Squares in Squares",
-          "value": "17.86899185179999"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.846667192848074"
         }
       },
       {
@@ -6756,15 +6942,19 @@
         "n": 302,
         "record": "n-302",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2024, Squares in Squares",
-          "value": "17.88674602860566"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.885993892536710"
         }
       },
       {
@@ -6783,15 +6973,19 @@
         "n": 303,
         "record": "n-303",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "17.93127894394689"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.924349265547932"
         }
       },
       {
@@ -6810,15 +7004,19 @@
         "n": 304,
         "record": "n-304",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "17.94917201919110"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.934650018395903"
         }
       },
       {
@@ -6839,13 +7037,17 @@
         "upper": {
           "assurance": "reported",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(reported; confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "17.96075558628675"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.952959459023539"
         }
       },
       {
@@ -6864,15 +7066,19 @@
         "n": 306,
         "record": "n-306",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Ellsworth 2026, Squares in Squares",
-          "value": "17.96926975248972"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.963449907261179"
         }
       },
       {
@@ -6891,15 +7097,19 @@
         "n": 307,
         "record": "n-307",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": "(reported)",
+          "confirmed_by": [
+            "T-056"
+          ],
+          "note": "(confirmed T-056)",
           "result": null,
-          "results": [],
-          "source_key": "[Kingbird]",
-          "text": "Arslanov et al., Squares in Squares",
-          "value": "17.98281564631754"
+          "results": [
+            "T-056"
+          ],
+          "source_key": "[franciscouzo square-packing 2026-09-27]",
+          "text": "Couzo 2026, GitHub",
+          "value": "17.981030548643712"
         }
       },
       {

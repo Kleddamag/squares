@@ -87,15 +87,19 @@ For each result, complete this sequence before declaring the change ready to lan
    uv run --frozen python -m devtools.check_results
    ```
 
-2. Render the result register, evidence inventory, frontier tables, and synopsis
-   headline from those records.
-   From `packing/`:
+2. Render the result register, evidence inventory, frontier tables, synopsis headline,
+   and README’s three results tables (New Results, Results by Others and the recent
+   results by case) from those records.
+   The README tables are re-rendered, never hand-edited: a result’s row, headline,
+   rungs, date, credit and standing all come from the register, the case records and the
+   bibliography. From `packing/`:
 
    ```shell
    uv run --frozen python -m devtools.render_results --update
    uv run --frozen python -m devtools.render_evidence_inventory --update
    uv run --frozen python -m devtools.render_research_tables
    uv run --frozen python -m devtools.render_results_headline
+   uv run --frozen python -m devtools.render_recent_results --update
    ```
 
 3. When a result changes an atlas value, badge, label, or geometry, regenerate both
@@ -111,11 +115,13 @@ For each result, complete this sequence before declaring the change ready to lan
    If a result does not affect those figures, record that disposition instead of
    rebuilding unchanged geometry.
 
-4. Reconcile the README’s New Results, Results by Others and Survey sections, the
-   synopsis’s current claims, and affected tutorial or survey prose against the
-   refreshed artifacts.
-   Each result marked `apparently-novel` or `confirmed-novel` needs an explicit result
-   ID and a scoped summary in the README; related rungs may share a paragraph.
+4. Reconcile the README prose around its generated tables (the introduction’s summaries,
+   the `s(11)` thread under New Results, the machine audits, Earlier in 2026 and the
+   Survey section), the synopsis’s current claims, and affected tutorial or survey prose
+   against the refreshed artifacts.
+   Each result marked `apparently-novel` or `confirmed-novel` gets its row in the New
+   Results table from the register; its scoped summary is the register entry and its
+   case record, and README prose adds to it only where a reader needs the thread.
    Check older summaries that still call a superseded bound current.
    Link to the record for detail, and distinguish a new bound from a solved case.
    Append dated updates to historical reports instead of rewriting their original
@@ -130,8 +136,8 @@ For each result, complete this sequence before declaring the change ready to lan
    checked current in the closeout.
    A stacked PR must publish the results present at its own layer.
 
-README result-ID coverage catches an omitted novel result; it does not prove its
-handwritten summary correct.
+The generated tables and README result-ID coverage catch an omitted or stale result;
+they do not prove the hand-written prose around them correct.
 The editorial comparison and generated-artifact checks remain separate obligations.
 
 ## Synopsis Research-Status Roll-Up
@@ -242,8 +248,9 @@ because nobody rereads them.
 - Every drift either fixed or filed as a defect, with no third option.
 - Generated views regenerated: `packing-ledger render`, `devtools.render_agenda_map`,
   `devtools.close_session --render`, `devtools.render_results --update`,
-  `devtools.render_results_headline`, `devtools.render_research_tables`,
-  `devtools.render_defects`, and `devtools.render_document_map`.
+  `devtools.render_results_headline`, `devtools.render_recent_results --update`,
+  `devtools.render_research_tables`, `devtools.render_defects`, and
+  `devtools.render_document_map`.
 - `devtools.check_synopsis` and `devtools.check_readme` agree with those views,
   including the marked current-research snapshot and the single selected handoff.
 - `make format` clean, gate green, and a statement of what was checked *and what was

@@ -29,6 +29,10 @@
 #             tool would retype. They leave the backlog; listing one as migrated too fails.
 
 migrated:
+- README.md
+- SYNOPSIS.md
+- TUTORIAL.md
+- conventions.md
 - development.md
 - docs/project/handoff-2026-08-23-basin-identity-and-two-reviews.md
 - docs/project/handoff-2026-08-23-quench-spine.md
@@ -233,6 +237,7 @@ migrated:
 - docs/project/verification-tooling.md
 - docs/tbd/shortcuts/create-or-update-pr-simple.md
 - docs/tbd/shortcuts/create-or-update-pr-with-validation-plan.md
+- epistemics.md
 - operating-rules.md
 - packages/workbench/README.md
 - packages/workbench/probes/README.md
@@ -1094,6 +1099,12 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-115-h-105-fixed-candidate-pair-obstruction/independent-review.md
 
 keep:
+- path: SYNOPSIS.md
+  span: "+W"
+  reason: "names a coefficient direction, paired with the `-W` bridge, which stays code"
+- path: SYNOPSIS.md
+  span: "2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000"
+  reason: "a 67-digit exact side: typeset math cannot break it, so it ran 1142px wide on the site and pushed the page sideways; a code span wraps"
 - path: development.md
   span: "3.14"
   reason: "the Python version this project runs, not a number"

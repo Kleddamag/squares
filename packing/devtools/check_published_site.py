@@ -15,10 +15,12 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
 - every page `render_overview.PAGES` owns is served at its URL (the overview at the
   root), and the explainer at `explainer.html`; each carries the edition stamp
   `sqpack.release` names and the canonical URL its renderer wrote;
-- every repository link on every page and in the Markdown edition names the expected
-  commit, and each on the explainer, its Markdown edition, the overview and the frontier
-  atlas resolves on GitHub. The tutorial's links are resolved
-  against the build commit when they are rendered, so they are not asked again here;
+- no page and not the Markdown edition links a repository file at a commit hash: every
+  repository link names `main` (`repo_links`), because a permalink to the commit a page
+  was built from 404s once a squash merge leaves that commit on no branch. Every path a
+  page links on `main` exists in the expected commit's tree, which is `main` when the
+  deploy runs, and each link on the explainer, its Markdown edition, the overview and
+  the frontier atlas is also asked of GitHub;
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
@@ -52,11 +54,17 @@ from devtools.render_explainer import (
     MARKDOWN_OUTPUT,
     PAGE_URL,
     REPO,
-    REPO_URL,
     SITE_URL,
 )
 from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.repo_links import (
+    REPO_URL,
+    RepositoryTree,
+    branch_paths,
+    hash_pinned_links,
+    repository_tree,
+)
 from sqpack.probes import probe
 from sqpack.release import PUBLICATION_EDITION
 
@@ -76,9 +84,10 @@ EXPLAINER = PAGE_URL.removeprefix(SITE_URL)
 #: added there is checked here without an edit. `index.html` is fetched as the root.
 SITE_PAGES = tuple(render_overview.PAGES)
 
-#: The pages whose repository links are each asked of GitHub. The tutorial is left
-#: out: its links are checked offline, against the build commit's tree, when it is
-#: rendered, and asking again would cost a request per link on every deploy.
+#: The pages whose repository links are each asked of GitHub as well. The rest are
+#: checked against the commit's tree alone, which is offline, as the reader documents'
+#: links already are when they are rendered; asking GitHub would cost a request per link
+#: on every deploy.
 LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html"})
 
 #: Every file the deploy serves beside the explainer, by name.
@@ -94,21 +103,6 @@ WORKBENCH_REVISION = re.compile(
     r'<meta\s+name="squares-workbench-revision"\s+content="([0-9a-f]{40})">'
 )
 WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the overview</a>')
-
-
-#: An "On GitHub" link, an overview card's or a case record's, which names the default
-#: branch on purpose: it opens the file as it is now. It is the one repository link held
-#: to the branch rather than the build commit, and it is still asked of GitHub.
-ON_GITHUB_LINK = re.compile(
-    r'<a class="(?:site-popover-also|site-case-github)" href="'
-    + re.escape(f"{REPO_URL}/blob/{render_overview.DEFAULT_BRANCH}/")
-    + r'[^"]*"[^>]*>On GitHub</a>'
-)
-
-
-def branch_links(text: str) -> set[tuple[str, str, str]]:
-    """The text's "On GitHub" links, as `repository_links` spells them."""
-    return repository_links("".join(ON_GITHUB_LINK.findall(text)))
 
 
 def repository_links(text: str) -> set[tuple[str, str, str]]:
@@ -237,7 +231,7 @@ def check(
         results.append((status == 200, f"page {url}: HTTP {status}, {len(body)} bytes"))
         # The shared version (think-qsuu), pinned in release.py: a page names the data it
         # was drawn from, as the atlas and the videos do, whatever commit built it. The
-        # commit is still what its links and the workbench's source revision must name.
+        # commit is still what the workbench's source revision must name.
         stamped = PUBLICATION_EDITION in text
         where = f"{'' if stamped else 'not '}on {name}"
         results.append((stamped, f"edition stamp {PUBLICATION_EDITION!r} is {where}"))
@@ -251,14 +245,32 @@ def check(
         )
         return body, text
 
-    def names_the_commit(name: str, links: set[tuple[str, str, str]]) -> None:
-        refs = sorted({ref for _, ref, _ in links})
+    try:
+        tree: RepositoryTree | None = repository_tree(commit)
+    except SystemExit as error:
+        tree = None
+        results.append((False, f"the tree of {commit} cannot be read here: {error}"))
+
+    def links_main(name: str, text: str) -> None:
+        """No link names a commit, and every path linked on `main` is in the tree."""
+        pinned = hash_pinned_links(text)
         results.append(
             (
-                refs == [commit],
-                f"{name}: repository links name {refs} against expected {commit}"
-                if links
-                else f"{name}: no repository links found",
+                not pinned,
+                f"{name}: {len(pinned)} repository links pinned to a commit: {pinned[:5]}"
+                if pinned
+                else f"{name}: no repository link is pinned to a commit",
+            )
+        )
+        if tree is None:
+            return
+        missing = tree.missing(branch_paths(text))
+        results.append(
+            (
+                not missing,
+                f"{name}: linked on main but not in {commit[:12]}: {missing[:5]}"
+                if missing
+                else f"{name}: every path linked on main is in {commit[:12]}",
             )
         )
 
@@ -266,10 +278,9 @@ def check(
     for name in SITE_PAGES:
         url = site if name == "index.html" else site + name
         _, text = served_page(name, url, render_overview.canonical_url(name))
-        links = repository_links(text)
-        names_the_commit(name, links - branch_links(text))
+        links_main(name, text)
         if name in LINK_CHECKED_PAGES:
-            checked_links |= links
+            checked_links |= repository_links(text)
 
     # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
     page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)
@@ -282,11 +293,10 @@ def check(
         )
     )
 
-    links = repository_links(text) | repository_links(
-        markdown.decode("utf-8", errors="replace")
-    )
-    names_the_commit(EXPLAINER, links)
-    checked_links |= links
+    markdown_text = markdown.decode("utf-8", errors="replace")
+    links_main(EXPLAINER, text)
+    links_main(MARKDOWN_OUTPUT.name, markdown_text)
+    checked_links |= repository_links(text) | repository_links(markdown_text)
     for kind, ref, path in sorted(checked_links):
         url = f"{REPO_URL}/{kind}/{ref}/{path}"
         status, _ = fetch(url, head=True, timeout=timeout)

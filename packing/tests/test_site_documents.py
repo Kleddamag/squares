@@ -7,18 +7,17 @@ import re
 import pytest
 
 from devtools import render_overview, site_documents
+from devtools.repo_links import RAW_URL, REPO_URL, RepositoryTree
 from devtools.site_documents import (
-    RAW_URL,
     LinkContext,
     LinkReport,
-    RepositoryTree,
     rewrite_article,
     rewrite_link,
     unresolved,
 )
 
-REPO_URL = render_overview.REPO_URL
-COMMIT = "0" * 40
+#: Every repository link on the site names the default branch, never a commit.
+BRANCH = "main"
 TREE = RepositoryTree(
     files=frozenset(
         {"README.md", "SYNOPSIS.md", "conventions.md", "packing/atlas/n5.svg", "docs/a b.md"}
@@ -29,7 +28,7 @@ TREE = RepositoryTree(
 
 
 def context(page: str = "tutorial.html", base: str = "") -> LinkContext:
-    return LinkContext(page, COMMIT, TREE, base)
+    return LinkContext(page, TREE, base)
 
 
 def rewrite(
@@ -46,9 +45,10 @@ def rewrite(
         ("README.md#the-problem", "readme.html#the-problem"),
         ("conventions.md#4-evidence", "conventions.html#4-evidence"),
         ("./conventions.md", "conventions.html"),
-        ("packing/atlas/", f"{REPO_URL}/tree/{COMMIT}/packing/atlas"),
-        ("packing", f"{REPO_URL}/tree/{COMMIT}/packing"),
-        ("docs/a%20b.md", f"{REPO_URL}/blob/{COMMIT}/docs/a%20b.md"),
+        ("packing/atlas/", f"{REPO_URL}/tree/{BRANCH}/packing/atlas"),
+        ("packing", f"{REPO_URL}/tree/{BRANCH}/packing"),
+        ("docs/a%20b.md?plain=1#L3", f"{REPO_URL}/blob/{BRANCH}/docs/a%20b.md?plain=1#L3"),
+        ("docs/a%20b.md", f"{REPO_URL}/blob/{BRANCH}/docs/a%20b.md"),
         ("SYNOPSIS.md#terminology", "synopsis.html#terminology"),
         (
             "vendor/kpress/docs/x.md",
@@ -67,9 +67,9 @@ def test_a_link_is_rewritten_for_the_site(url: str, expected: str) -> None:
     assert not report.missing
 
 
-def test_an_image_becomes_a_raw_permalink() -> None:
+def test_an_image_becomes_its_raw_file_on_main() -> None:
     rewritten, _ = rewrite("packing/atlas/n5.svg", tag="img")
-    assert rewritten == f"{RAW_URL}/{COMMIT}/packing/atlas/n5.svg"
+    assert rewritten == f"{RAW_URL}/{BRANCH}/packing/atlas/n5.svg"
 
 
 def test_anchors_into_the_documents_are_recorded_for_checking() -> None:
@@ -84,7 +84,7 @@ def test_a_relative_link_resolves_from_the_documents_directory() -> None:
     assert rewritten == "readme.html"
     assert not report.missing
     rewritten, _ = rewrite("n5.svg", tag="img", base="packing/atlas")
-    assert rewritten == f"{RAW_URL}/{COMMIT}/packing/atlas/n5.svg"
+    assert rewritten == f"{RAW_URL}/{BRANCH}/packing/atlas/n5.svg"
 
 
 @pytest.mark.parametrize("url", ["missing.md", "packing/nowhere/", "../outside.md"])
@@ -102,7 +102,7 @@ def test_unresolved_lists_missing_paths_and_anchors() -> None:
     problems = unresolved({"tutorial.html": page}, report)
     assert problems == [
         "no heading #gone in tutorial.html: TUTORIAL.md#gone",
-        "no such path at the build commit: missing.md",
+        "no such path in the tree: missing.md",
     ]
 
 
@@ -115,8 +115,8 @@ def test_only_the_article_is_rewritten() -> None:
     )
     out = rewrite_article(page, context=context(), report=LinkReport())
     assert '<a href="frontier.html">' in out
-    assert f'href="{REPO_URL}/blob/{COMMIT}/docs/a%20b.md"' in out
-    assert f'src="{RAW_URL}/{COMMIT}/packing/atlas/n5.svg"' in out
+    assert f'href="{REPO_URL}/blob/{BRANCH}/docs/a%20b.md"' in out
+    assert f'src="{RAW_URL}/{BRANCH}/packing/atlas/n5.svg"' in out
     assert '<footer><a href="conventions.md">' in out
 
 
@@ -133,9 +133,7 @@ def test_the_build_fails_on_an_unresolved_link(monkeypatch: pytest.MonkeyPatch) 
     site_documents.site_documents.cache_clear()
     monkeypatch.setattr(site_documents, "render_document", with_a_broken_link)
     try:
-        with pytest.raises(
-            SystemExit, match=r"no such path at the build commit: no/such/file\.md"
-        ):
+        with pytest.raises(SystemExit, match=r"no such path in the tree: no/such/file\.md"):
             site_documents.site_documents()
     finally:
         site_documents.site_documents.cache_clear()

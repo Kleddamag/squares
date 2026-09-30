@@ -26,9 +26,10 @@ from pathlib import Path
 from typing import Any, cast
 
 from devtools import render_research_tables as tables
+from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_bound_citations import RECORD as BOUND_CITATIONS
-from devtools.render_explainer import repo_file
+from devtools.repo_links import repo_url
 from devtools.validate_schemas import check as check_record
 from sqpack.assurance import bounds_agree_at_declared_precision
 
@@ -37,7 +38,7 @@ TEMPLATES = PACKING / "devtools" / "templates"
 FRONTIER_ARTICLE = TEMPLATES / "frontier-article.md"
 RENDERINGS = PACKING / "atlas" / "known-best" / "rendering"
 TABLE_SCRIPT = PACKING / "devtools" / "overview" / "table.js"
-STATUS = PACKING / "frontier" / "STATUS.md"
+STATUS = repo_links.REPO / repo_links.STATUS
 
 #: Every file this page reads beyond the site shell's own inputs.
 FRONTIER_INPUTS: tuple[Path, ...] = (
@@ -209,7 +210,7 @@ def evidence_lines() -> dict[str, int]:
 
 
 def evidence_links(refs: Iterable[str]) -> str:
-    base = repo_file(tables.FRONTIER / "evidence.yaml")
+    base = repo_url(tables.FRONTIER / "evidence.yaml")
     lines = evidence_lines()
     links = []
     for ref in dict.fromkeys(refs):
@@ -393,7 +394,7 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
     from devtools.render_case_pages import case_link  # noqa: PLC0415
 
     n = case["n"]
-    case_url = repo_file(tables.FRONTIER / f"n-{n:03d}.md")
+    case_url = repo_url(tables.FRONTIER / f"n-{n:03d}.md")
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     status = case["status"]
     tone = ' data-tone="accent"' if status == "proved" else ""
@@ -506,7 +507,7 @@ def frontier_markdown(fill: Callable[..., str]) -> str:
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
         "RECENT": str(sum(recent.values())),
         "RECENT_SINCE": f"{RECENT_SINCE:%B %Y}",
-        "STATUS_URL": repo_file(STATUS),
+        "STATUS_URL": repo_url(STATUS),
         "TABLE": table_html(cases),
     }
     template = FRONTIER_ARTICLE.read_text(encoding="utf-8")

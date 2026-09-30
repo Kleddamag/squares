@@ -680,7 +680,7 @@ def _sources(case: dict[str, Any]) -> str:
 
 def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
     """The record's head and its structured part, as one HTML block."""
-    from devtools.render_overview import branch_file  # noqa: PLC0415
+    from devtools.repo_links import branch_file  # noqa: PLC0415
 
     n = case["n"]
     status = case["status"]
@@ -791,18 +791,16 @@ def cases_page() -> Any:
 
     The prose's links are rewritten as a reader document's are (`site_documents`): a
     link to another case file becomes that case's record on this page, a link to a
-    rendered document its page, and anything else a permalink at the build commit; a
+    rendered document its page, and anything else its link on `main`; a
     link the record itself writes to a served page is kept.
     """
     from devtools import render_overview, site_documents  # noqa: PLC0415
-    from devtools.render_explainer import link_revision  # noqa: PLC0415
+    from devtools.repo_links import repository_tree  # noqa: PLC0415
 
-    revision = link_revision()
     numbers = [int(path.stem.split("-")[1]) for path in tables.FRONTIER.glob("n-*.md")]
     context = site_documents.LinkContext(
         CASES_PAGE,
-        revision,
-        site_documents.repository_tree(revision),
+        repository_tree(),
         "packing/frontier",
         served=frozenset({*render_overview.SITE_PAGES, "./"}),
         aliases={f"packing/frontier/n-{n:03d}.md": f"#n-{n}" for n in numbers},

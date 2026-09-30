@@ -10,7 +10,6 @@ substitution, and nothing in the page is a reference outside it.
 from __future__ import annotations
 
 import re
-import subprocess
 from fnmatch import fnmatchcase
 from fractions import Fraction
 from pathlib import Path
@@ -43,7 +42,6 @@ from devtools.render_explainer import (
     WALKTHROUGH,
     assert_self_contained,
     current_bound_facts,
-    link_revision,
     png_size,
     render,
 )
@@ -939,26 +937,29 @@ def repository_links(text: str) -> set[tuple[str, str]]:
     return {(ref, path.rstrip("/")) for ref, path in REPOSITORY_LINK.findall(markup)}
 
 
-def test_every_repository_link_is_a_permalink_to_the_commit_the_page_is_built_from(
-    page: str, document: str
-) -> None:
-    """A link on `main` names whatever is there when the reader clicks, not this build.
+def test_every_repository_link_names_main_and_exists_there(page: str, document: str) -> None:
+    """Each link into the repository names `main`, and each linked path is in `HEAD`.
 
-    The certificate digests the page prints identify the data; the links are what
-    identify the verifier, the generator, the checking package and the exposition a
-    reported run used, and every one of them was built as `blob/main/...` (review of
-    2026-09-05, Finding 8). So each link into the repository names the commit the page
-    is rendered from, in full, in the page and in the Markdown edition alike, and that
-    commit is read from the checkout rather than pinned, so that no merge leaves the
-    deployed page linking to files older than the ones it describes. The set of linked
-    paths is checked with it: a permalink to the wrong file is pinned just as firmly.
+    The page used to link the commit it was built from, so that a link identified the
+    verifier, the generator and the exposition a reported run used (review of
+    2026-09-05, Finding 8). Those permalinks 404ed once a squash merge left the build
+    commit on no branch, so the page now links `main`, where it deploys from, and the
+    committed claim documents are what pin a run's verifier at the edition's revision.
+    Every piece of evidence the page walks through is still linked, and every linked
+    path is asked of git at `HEAD`, the tree `main` holds when the page deploys.
     """
-    revision = link_revision()
-    assert re.fullmatch(r"[0-9a-f]{40}", revision), revision
+    from devtools.repo_links import (  # noqa: PLC0415
+        DEFAULT_BRANCH,
+        hash_pinned_links,
+        repository_tree,
+    )
+
+    assert not hash_pinned_links(page)
+    assert not hash_pinned_links(document)
     links = repository_links(page) | repository_links(document)
     assert links, "the page links nothing in the repository"
-    unpinned = sorted(f"{ref}/{path}" for ref, path in links if ref != revision)
-    assert not unpinned, f"repository links not pinned to {revision}: {unpinned}"
+    elsewhere = sorted(f"{ref}/{path}" for ref, path in links if ref != DEFAULT_BRANCH)
+    assert not elsewhere, f"repository links not on {DEFAULT_BRANCH}: {elsewhere}"
     linked = {path for _, path in links}
     evidence = (
         VERIFIER,
@@ -975,40 +976,16 @@ def test_every_repository_link_is_a_permalink_to_the_commit_the_page_is_built_fr
     )
     for path in evidence:
         assert path.resolve().relative_to(REPO).as_posix() in linked, path.name
-
-
-def test_every_permalinked_path_exists_at_the_linked_commit(page: str, document: str) -> None:
-    """A permalink to a path the commit does not have is a 404 from the day it is published.
-
-    The linked commit is the checkout's `HEAD` and the paths are resolved against the
-    working tree, so what this catches is a linked file that is new and not yet
-    committed, or renamed in the tree but not in the commit. Asked of git rather than of
-    the working tree, since the working tree is exactly what a permalink does not point
-    at. Skipped where git cannot answer for the commit, which a source tarball cannot.
-    """
-
-    def exists(spec: str) -> bool:
-        result = subprocess.run(
-            ["git", "cat-file", "-e", spec], cwd=REPO, capture_output=True, check=False
-        )
-        return result.returncode == 0
-
-    revision = link_revision()
-    if not exists(f"{revision}^{{commit}}"):
-        pytest.skip(f"{revision} is not in this clone; the check needs git")
-    links = repository_links(page) | repository_links(document)
-    pinned = sorted(path for ref, path in links if ref == revision)
-    assert pinned, "nothing is linked at the build commit"
-    missing = [path for path in pinned if not exists(f"{revision}:{path}")]
-    assert not missing, f"linked at {revision} but not in that commit: {missing}"
+    tree = repository_tree()
+    missing = sorted(path for path in linked if path not in tree.files | tree.directories)
+    assert not missing, f"linked on {DEFAULT_BRANCH} but not in HEAD: {missing}"
 
 
 def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, document: str) -> None:
     """The credits print the version the atlas footer prints, not the build commit.
 
     One version names the data both are drawn from, so a reader holding the page and
-    the atlas sees one string on each. The build commit is still on the page, in every
-    repository link.
+    the atlas sees one string on each.
     """
     for composite in (path for path in COMPOSITE_ASSETS if path.suffix == ".svg"):
         footer = re.search(

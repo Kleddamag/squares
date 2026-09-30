@@ -12,6 +12,7 @@ from __future__ import annotations
 import html
 import re
 
+from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.overview_data import (
     APOSTROPHE,
@@ -22,8 +23,9 @@ from devtools.overview_data import (
     math_html,
     tex_bounds,
 )
-from devtools.render_overview import DOCUMENT_PAGES, branch_file
+from devtools.render_overview import DOCUMENT_PAGES
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane
+from devtools.repo_links import branch_file
 
 #: Confirmation rungs from strongest to weakest.
 C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
@@ -340,7 +342,7 @@ _LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)
 def rubric_levels() -> dict[str, list[tuple[int, str]]]:
     """Each dimension's levels and their one-line meanings, read from the tables in
     `epistemics.md`, so a card cannot drift from the rubric it summarizes."""
-    text = (REPO / "epistemics.md").read_text(encoding="utf-8")
+    text = (REPO / repo_links.EPISTEMICS).read_text(encoding="utf-8")
     levels: dict[str, list[tuple[int, str]]] = {}
     for scale, level, meaning in _LEVEL_ROW.findall(text):
         levels.setdefault(scale, []).append((int(level), meaning.strip()))
@@ -356,7 +358,7 @@ _NOVELTY_ROW = re.compile(r"^\| `([a-z]+(?:-[a-z]+)+)` \| ([^|]+?) \|$", re.MULT
 def novelty_labels() -> dict[str, str]:
     """Each novelty label and its one-line meaning, read from the table in
     `epistemics.md` as `rubric_levels` reads the scored dimensions."""
-    text = (REPO / "epistemics.md").read_text(encoding="utf-8")
+    text = (REPO / repo_links.EPISTEMICS).read_text(encoding="utf-8")
     section = text.split("Novelty uses four labels", 1)[-1]
     labels = {label: meaning.strip() for label, meaning in _NOVELTY_ROW.findall(section)}
     for label in ("apparently-novel", "confirmed-novel", "previously-published"):
@@ -387,7 +389,7 @@ def verification_block() -> str:
                 f'<span class="site-level-question">{_esc(question)}</span>{ladder}',
                 href=f"epistemics.html#{section}",
                 action=f"Expand {name} in epistemics.md",
-                also=(f"{branch_file('epistemics.md')}#{section}", "On GitHub"),
+                also=(branch_file(repo_links.EPISTEMICS, f"#{section}"), "On GitHub"),
             )
         )
     return f'<div class="site-cards site-cards-dimensions site-wide">{"".join(cards)}</div>'
@@ -480,17 +482,21 @@ def awaiting_replay(overview: Overview) -> str:
 #: label, and one line on what a reader finds there. README and the synopsis lead.
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
     (
-        "README.md",
+        repo_links.README,
         "The Squares Project",
         "What the project is, how it works, and where to start.",
     ),
-    ("SYNOPSIS.md", "The synopsis", "The full research record: methods, claims and status."),
-    ("packing/frontier/RESULTS.md", "Results", "Every registered result with its rungs."),
-    ("packing/frontier/STATUS.md", "The frontier", "Every case to 324, with provenance."),
-    ("epistemics.md", "Epistemics", "How each result is verified, confirmed and scored."),
-    ("conventions.md", "Conventions", "Record formats, identifiers and naming."),
-    ("development.md", "Development", "Building, testing and validating the code."),
-    ("defects.md", "Defect log", "Every defect found in the toolchain, one line each."),
+    (
+        repo_links.SYNOPSIS,
+        "The synopsis",
+        "The full research record: methods, claims and status.",
+    ),
+    (repo_links.RESULTS, "Results", "Every registered result with its rungs."),
+    (repo_links.STATUS, "The frontier", "Every case to 324, with provenance."),
+    (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
+    (repo_links.CONVENTIONS, "Conventions", "Record formats, identifiers and naming."),
+    (repo_links.DEVELOPMENT, "Development", "Building, testing and validating the code."),
+    (repo_links.DEFECTS, "Defect log", "Every defect found in the toolchain, one line each."),
 )
 
 

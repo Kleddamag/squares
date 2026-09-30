@@ -74,6 +74,7 @@ name: Certificate page
       - packing/devtools/templates/cases-article.md
       - packing/devtools/validate_schemas.py
       - packing/devtools/site_documents.py
+      - packing/devtools/repo_links.py
       - packing/devtools/render_results.py
       - packing/devtools/result_credit.py
       - packing/devtools/render_recent_results.py
@@ -434,10 +435,11 @@ jobs:
     steps:
       # The same partial checkout as `prepare`, for the same reason. The one file the
       # render reads under `packing/resources` is `bibliography.yaml`, a top-level file the
-      # pattern keeps (2026-09-29, every file the render opened, audited). The tutorial's
-      # repository links are resolved against the build commit's tree with
-      # `git ls-tree`, which reads only tree objects: a blobless clone of depth one already
-      # holds every tree of that commit, so the render needs no history and fetches none.
+      # pattern keeps (2026-09-29, every file the render opened, audited). The reader
+      # documents' repository links, which name `main`, are resolved against the checked-out
+      # commit's tree with `git ls-tree`, which reads only tree objects: a blobless clone of
+      # depth one already holds every tree of that commit, so the render needs no history
+      # and fetches none.
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -463,8 +465,8 @@ jobs:
       # The pages are not checked in, so a render that does not reproduce itself would
       # show only here: two renders, at once as `prepare`'s are, the second outside
       # `site/`, have to agree on every file they write. The renderer refuses a page that
-      # would fetch anything at view time and a reader document with a link that does not
-      # resolve at the build commit, so those failures stop the build here too.
+      # would fetch anything at view time and a reader document with a link to a path the
+      # checked-out tree lacks, so those failures stop the build here too.
       - name: Render the site's pages twice and require the renders to agree
         run: |
           twin="$RUNNER_TEMP/render-twin"

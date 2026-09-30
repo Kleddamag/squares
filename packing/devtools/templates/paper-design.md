@@ -257,6 +257,8 @@ it.
   `site-nav.css`): KPress’s document padding above the column is dropped on screen, the
   column’s own top padding is the token, and the first block (a hero or a document’s
   title) adds no margin of its own.
+  A page that opens on a picture, the homepage’s packing, starts it `--site-hero-lift`
+  (0.5rem) nearer the bar, since a drawing has no line spacing above its edge.
   On the explainer the source chips sit in that space and the title starts the token
   below them. Print keeps KPress’s spacing, so the explainer’s PDF does not move.
   Its entries are Overview, Frontier, Results, Explainer, Tutorial, Visualize and

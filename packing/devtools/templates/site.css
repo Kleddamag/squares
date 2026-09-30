@@ -70,6 +70,9 @@ body {
   --site-table-max: 100rem;
   --site-subtitle-space: 1.25rem;
   --site-subtitle-scale: 1.1;
+  /* How much nearer the bar a page's opening picture sits than a title would: a drawing
+     has no line spacing above its edge, so the same space reads larger. */
+  --site-hero-lift: 0.5rem;
 }
 .site-page a,
 .kpress-tooltip a {
@@ -1054,6 +1057,12 @@ body {
 .site-hero .site-hero-figure {
   margin: 1.5rem auto 0;
   max-inline-size: min(20rem, 70vw);
+}
+/* Opening the page, it starts `--site-hero-lift` above the page's first-block line. */
+@media screen {
+  .kpress-long-text > .site-hero:first-child > .site-hero-figure:first-child {
+    margin-block-start: calc(-1 * var(--site-hero-lift));
+  }
 }
 .site-hero .site-hero-figure a {
   color: var(--kpress-doc-text);

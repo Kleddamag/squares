@@ -941,6 +941,13 @@ def test_every_page_starts_one_shared_space_below_the_bar() -> None:
     assert "padding-block-start: var(--site-page-top);" in shell
 
 
+def test_an_opening_picture_sits_one_token_nearer_the_bar() -> None:
+    """The homepage's packing opens the page a token nearer the bar than a title does."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert "--site-hero-lift: 0.5rem;" in css
+    assert "margin-block-start: calc(-1 * var(--site-hero-lift));" in css
+
+
 def test_section_headings_share_one_space_above() -> None:
     """The space above an `h2` is one token in the text layer both the site and the
     explainer read, narrower on screen than in print."""

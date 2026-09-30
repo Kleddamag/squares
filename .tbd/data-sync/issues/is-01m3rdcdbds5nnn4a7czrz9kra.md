@@ -5,14 +5,14 @@ title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
 status: open
 priority: 1
-version: 6
+version: 7
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T17:44:28.920Z
+updated_at: 2026-09-30T17:45:26.211Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -44,4 +44,4 @@ Both PRs are merged with distinct contiguous IDs and complete source credit, `n-
 
 ## Notes
 
-PR246 merged first at d44ec04086cffd5498fd69e54ee58415365910c7 on2026-09-30T17:41:19Z after all required424b6be3a checks passed. PR249 owner advanced to c6f51ce6b with passing pre-integration checks and still-draft pending s21/s45 re-sweeps. Next integrate newmain whenownerready; Wang-Li T058 becomesT061, preserve T060 equality and all providercredits/V-C classifications, nativeparent-corechecker and three-shardCI; resolve sharedrecords, rebuildatlas/readers, repinDATA_REVISION, run affectedpluscheckpoint validation. Prior36sharedpaths/39texthunks/6binaryconflicts is a planning baseline; reassess currenthead. PR249 body and comment now record the actualmerge and why oldgreenchecks do not certify combinedsource.
+PR #246 merged first at d44ec04086cffd5498fd69e54ee58415365910c7 on 2026-09-30 at 17:41:19 UTC, after all required checks passed on 424b6be3a. PR #249 advanced to c6f51ce6b with passing pre-integration checks; it remains draft while its owner finishes the s(21)/s(45) re-sweeps. When ready, merge the new main into that branch and rename Wang–Li T-058 to T-061. Preserve T-060 equality, every provider credit and V/C assignment, the native parent-core checker, and the three-shard CI topology. Reconcile shared records, regenerate atlas/readers, repin DATA_REVISION, and run the affected integration checks and checkpoint. The earlier 36 shared paths, 39 text hunks and six binary conflicts are a planning baseline; reassess the current head. PR body and comment5916559023 now record the actual merge and why earlier green checks do not certify the combined source.

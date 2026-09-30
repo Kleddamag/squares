@@ -5,7 +5,7 @@ title: Consolidate proof verification and decouple the validation pipeline
 kind: epic
 status: in_progress
 priority: 1
-version: 18
+version: 19
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
@@ -23,8 +23,9 @@ child_order_hints:
   - is-01m3sken298psm0jfn7tmbcqp9
   - is-01m3snf059ca48fjmqh0vrb7e8
   - is-01m3sp12jsvbfsveyd1cqq2msj
+  - is-01m3sq5aphftxdvr0spvz9sbny
 created_at: 2026-09-30T04:44:23.504Z
-updated_at: 2026-09-30T17:33:05.495Z
+updated_at: 2026-09-30T17:52:53.445Z
 ---
 Consolidate the independently confirmed n11 proof and its reusable verification tools, with separate contracts for proof geometry, source/receipt admission, evidence composition, and repository CI. Initial size audit at0dda2856e found 59,419 added lines across240 files; that is a planning baseline, not current scope. Completed work includes lossless evidence compression (93,389 plaintext ledger lines removed), shared field and exact geometry kernels, all T060 mathematical executions/review atS5/V4/C5, a first-principles tooling overview, and measured CI/diagnostic improvements. Final integration/merge is think-pd17; shared diagnostic admission think-nxd8 is implemented/reviewed in an isolated follow-up; fresh chained replay think-e2ot, rectangle native performance think-3cwg, and cross-provider PR249 reconciliation think-d15x remain separately tracked. Preserve accepted source and evidence identities; no blanket verifier rewrite, unique evidence deletion, or new framework is required.
 

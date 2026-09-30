@@ -74,6 +74,34 @@ def test_pin_requires_actual_parent_checker_and_scope() -> None:
         child.admit_parent({**accepted, "steps_checked": 8}, pin)
 
 
+def test_grandchild_requires_complete_reviewed_parent_shape() -> None:
+    pin = child.PINS["far13"]
+    accepted = {
+        "status": pin.parent_status,
+        "child_node_state_checked": True,
+        "terminal_empty_pose_checked": False,
+        "capture_tree_proved": False,
+        "candidate_capture_proved": False,
+        "global_optimality_proved": False,
+        "checker_sha256": pin.parent_checker_sha,
+        "child_source_sha256": pin.parent_source_sha,
+        "final_state_canonical_sha256": pin.parent_final_sha,
+        "node_id": "r10-portable-v1",
+        "steps_checked": 13,
+        "steps": [{"index": index, "complete": index < 12} for index in range(13)],
+    }
+    child.admit_parent(accepted, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent({**accepted, "node_id": "near13-self-180"}, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent({**accepted, "steps": accepted["steps"][:-1]}, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent(
+            {**accepted, "steps": [*accepted["steps"][:-1], {"index": 12, "complete": True}]},
+            pin,
+        )
+
+
 def test_last_complete_update_uses_final_state_instead_of_missing_successor() -> None:
     pin = child.PINS["near13"]
     groups = {owner: [(Q(owner), Q())] for owner in pilot.MASK}

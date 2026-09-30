@@ -232,9 +232,9 @@ checks it.
 
 | Record | Holds | Reader view |
 | --- | --- | --- |
-| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [survey](https://jlevy.github.io/squares/#the-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/#every-result) |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [survey](https://jlevy.github.io/squares/#the-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
-| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/#every-result) |
+| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders, credit and relation in `RESULTS.md` and on the site’s [overview](https://jlevy.github.io/squares/#recent-results) |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
 

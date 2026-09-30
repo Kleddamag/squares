@@ -612,12 +612,13 @@ def _results_by_case() -> dict[int, list[Any]]:
 
 def results_block(n: int) -> str:
     """Every result in the register that concerns case `n`: its rungs, summary, claim
-    and records, and a link to its row in the overview's table."""
+    and records, and a link to its row in the results table."""
     from devtools.overview_data import tex_bounds  # noqa: PLC0415
     from devtools.overview_sections import (  # noqa: PLC0415
         _detail,  # pyright: ignore[reportPrivateUsage]
         _records,  # pyright: ignore[reportPrivateUsage]
         _rung,  # pyright: ignore[reportPrivateUsage]
+        result_url,
     )
 
     results = sorted(_results_by_case().get(n, []), key=lambda r: r.id)
@@ -655,7 +656,7 @@ def results_block(n: int) -> str:
         )
         items.append(
             f'<li class="site-case-result" data-result="{_esc(result.id)}">'
-            f'<p class="site-case-result-head"><a href="index.html#{_esc(result.id.lower())}">'
+            f'<p class="site-case-result-head"><a href="{_esc(result_url(result.id))}">'
             f"{_esc(result.id)}</a> {rungs} "
             f'<span class="site-credit">{_esc(result.credit)} · {_esc(result.date)} · '
             f"{where}</span></p>"

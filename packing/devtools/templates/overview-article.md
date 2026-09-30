@@ -51,6 +51,8 @@ case bound rests on it now, and otherwise why not.
 
 {{RECENT}}
 
+<p class="site-more"><a href="all-results.html">See all results →</a></p>
+
 A reported bound counts here only once its certificate is replayed.
 These are the cases up to $n = 100$ where a source reports a recent lower bound above
 the one verified so far, each linked to its case in the frontier atlas:
@@ -107,21 +109,6 @@ beside the packing drawn large, with a link to its case record.
 </figure>
 <p class="site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>); the larger prints at 44 by 51 inches. The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
 </div>
-
-## Every Result
-
-Each result has an identifier, a claim, and two ratings defined in
-[`epistemics.md`]({{EPISTEMICS_URL}}): **V**, the strongest verification its evidence
-supports, and **C**, what this repository has checked itself.
-A result by others is credited to its authors as their source states it; its `V` and `C`
-are this repository’s own verification of it.
-Its standing says whether a case bound rests on it now: it *holds* a verified bound, or
-only a reported one; it is a *second certificate* for an exact value another result
-holds; it is *superseded*; or it is not a bound at all, such as a rigidity or an
-erratum. Open a row for the full claim and its novelty label, and follow the records to
-the case file, the evidence, the retained source and the review.
-
-{{RESULTS_TABLE}}
 
 ## The Survey
 

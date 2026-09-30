@@ -12,8 +12,8 @@ gap of about $0.0021$.
 others with their credit, the
 [verification ratings](https://jlevy.github.io/squares/#verification-at-a-glance),
 [the atlas](https://jlevy.github.io/squares/#the-atlas) of known-best packings and its
-films, the table of [every result](https://jlevy.github.io/squares/#every-result), and
-[the survey](https://jlevy.github.io/squares/#the-survey) of every case
+films, the table of [every result](https://jlevy.github.io/squares/all-results.html),
+and [the survey](https://jlevy.github.io/squares/#the-survey) of every case
 $n = 1\ldots324$, all generated from the record in this repository.
 The in-repository record is the [results register](packing/frontier/RESULTS.md), the
 per-case [status table](packing/frontier/STATUS.md), and

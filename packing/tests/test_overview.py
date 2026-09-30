@@ -26,12 +26,17 @@ def page() -> str:
 
 
 @pytest.fixture(scope="module")
+def results() -> str:
+    return render_overview.results_page().html
+
+
+@pytest.fixture(scope="module")
 def register() -> list[dict]:
     return safe_load(overview_data.RESULTS.read_text(encoding="utf-8"))["results"]
 
 
-def test_every_register_entry_is_one_row(page: str, register: list[dict]) -> None:
-    rows = ROW.findall(page)
+def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> None:
+    rows = ROW.findall(results)
     assert sorted(row_id for row_id, _, _ in rows) == sorted(r["id"].lower() for r in register)
     declared = {r["id"].lower(): r for r in register}
     for row_id, source, confirmation in rows:
@@ -51,8 +56,53 @@ def test_counts_are_the_declared_rungs(register: list[dict]) -> None:
     assert stats.cases_1_100_proved + stats.cases_1_100_open == 100
 
 
-def test_the_render_is_deterministic(page: str) -> None:
+def test_the_render_is_deterministic(page: str, results: str) -> None:
     assert render_overview.overview_page().html == page
+    assert render_overview.results_page().html == results
+
+
+def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
+    page: str, results: str
+) -> None:
+    """The table is on `all-results.html`, marked current in the bar, with its sorting
+    and filters; the overview keeps no row of it, only a pointer beside the recent list."""
+    assert render_overview.RESULTS_PAGE == "all-results.html"
+    assert "all-results.html" in render_overview.SITE_PAGES
+    assert "results.html" in render_overview.DOCUMENT_PAGES
+    assert 'aria-current="page" href="all-results.html">Results</a>' in results
+    assert "data-site-table" in results
+    assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in results
+    assert '<h1 id="every-result">' in results
+    assert not ROW.findall(page)
+    assert 'id="every-result"' not in page
+    recent = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    assert '<a href="all-results.html">See all results' in recent
+
+
+def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
+    """The overview's cards, recent list and replay table, and the case records, link a
+    result at its row on the results page, never at a fragment of their own page."""
+    rows = {row_id for row_id, _, _ in ROW.findall(results)}
+    linked = re.findall(r'href="all-results\.html#([^"]+)"', page)
+    assert linked
+    assert set(linked) <= rows
+    assert not re.search(r'href="#t-\d+"', page)
+    cases = render_overview.cases_page().html
+    assert set(re.findall(r'href="all-results\.html#([^"]+)"', cases)) <= rows
+    assert 'href="index.html#t-' not in cases
+
+
+def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: str) -> None:
+    """`forward.js` sends `#every-result` and a row's id from the overview to the results
+    page (`tests/node/overview_forward` runs it): every row id is of the form it
+    recognises, the section's lands on the page's title, and no id the overview keeps is."""
+    forward = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
+    assert 'id === "every-result" || /^t-\\d+$/.test(id)' in forward
+    assert "all-results.html" in forward
+    moved = re.compile(r"every-result|t-\d+")
+    assert all(moved.fullmatch(row_id) for row_id, _, _ in ROW.findall(results))
+    assert 'id="every-result"' in results
+    assert not [i for i in ID.findall(page) if moved.fullmatch(i)]
 
 
 def test_the_page_fetches_nothing(page: str) -> None:
@@ -294,6 +344,9 @@ def test_overview_ids_never_shadow_an_explainer_anchor(page: str) -> None:
     }
     ours = {i for i in ID.findall(page) if not i.startswith("kpress-")}
     assert not ours & explainer_ids
+    moved = {i for i in ID.findall(render_overview.results_page().html) if i.startswith("t-")}
+    assert moved
+    assert not moved & explainer_ids
 
 
 def test_the_nav_links_only_to_served_pages() -> None:
@@ -457,13 +510,16 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
     """Every card opens a popover that shows its target and ends in one button that goes
     there. Another page is rendered in a frame, in its embedded view, and the button
     expands it; a place on this page, or another site, is previewed, and the button goes
-    there. The card's icon and the button's agree, and every target on the site exists.
+    there; a row on another page, such as a result's on the results page, is previewed
+    too, and the button goes to that page. The card's icon and the button's agree, and
+    every target on the site exists.
     An other project's card is the exception, the link itself with no popover (its own
     test above)."""
     cards = CARD.findall(page)
-    assert {"scroll", "page"} <= {kind for _, kind in cards} <= {"scroll", "page", "external"}
+    assert "page" in {kind for _, kind in cards} <= {"scroll", "page", "external"}
     assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
+    rows = set(ID.findall(render_overview.results_page().html))
     served = {*render_overview.SITE_PAGES, "workbench/"}
     for target, kind in cards:
         start = page.index(f'<div class="site-popover" id="{target}" popover')
@@ -476,6 +532,11 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
             assert href[1:] in ids, href
         elif kind == "external":
             assert 'class="site-popover-preview"' in panel, target
+        elif 'class="site-popover-preview"' in panel:
+            base, _, row = href.partition("#")
+            assert base == render_overview.RESULTS_PAGE, href
+            assert row in rows, href
+            assert "<iframe" not in panel, target
         else:
             assert re.split(r"[?#]", href, maxsplit=1)[0] in served, href
             found = re.search(r'<iframe [^>]*src="([^"]+)"', panel)
@@ -496,7 +557,7 @@ def test_an_embedded_page_keeps_its_query_and_fragment() -> None:
 CHIP = re.compile(r'<span class="site-chip( site-rung-fill)?"([^>]*)>([^<]+)</span>')
 
 
-@pytest.mark.parametrize("name", ["index.html", "frontier.html"])
+@pytest.mark.parametrize("name", ["index.html", "frontier.html", "all-results.html"])
 def test_every_small_label_is_one_chip(name: str) -> None:
     """Rungs and case statuses share one chip; a rung chip carries its scale and level,
     which the stylesheet colours, and names the rung it shows."""
@@ -543,14 +604,17 @@ def _row(page: str, result_id: str) -> str:
 
 
 def test_every_result_shows_the_standing_readme_derives(
-    page: str, overview: overview_data.Overview, records: render_recent_results.Records
+    page: str,
+    results: str,
+    overview: overview_data.Overview,
+    records: render_recent_results.Records,
 ) -> None:
     """Standing is `render_recent_results.standing`, never restated: every table row
     carries it as an attribute and a chip, and only `holds` takes the accent."""
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
-        row = _row(page, result.id)
+        row = _row(results, result.id)
         assert f'data-standing="{overview_sections.standing_key(expected)}"' in row, result.id
         assert overview_sections.standing_chip(expected) in row, result.id
     held = overview_sections.standing_chip(render_recent_results.HOLDS)
@@ -580,9 +644,9 @@ def test_the_s5_cards_say_which_still_hold(overview: overview_data.Overview) -> 
 
 
 def test_the_standing_filter_offers_each_standing_on_the_page(
-    page: str, overview: overview_data.Overview
+    results: str, overview: overview_data.Overview
 ) -> None:
-    tools = re.search(r'<select data-filter="standing">(.*?)</select>', page, re.DOTALL)
+    tools = re.search(r'<select data-filter="standing">(.*?)</select>', results, re.DOTALL)
     assert tools
     offered = re.findall(r'<option value="([^"]*)">', tools.group(1))
     present = {overview_sections.standing_key(r.standing) for r in overview.results}
@@ -627,10 +691,10 @@ def test_reported_bounds_awaiting_replay_are_listed(
 
 
 def test_results_by_others_show_their_publication_date(
-    page: str, overview: overview_data.Overview
+    results: str, overview: overview_data.Overview
 ) -> None:
     for result in overview.results:
-        row = _row(page, result.id)
+        row = _row(results, result.id)
         attribution = result.record.get("attribution")
         if attribution:
             published = str(attribution["published"])
@@ -667,7 +731,7 @@ def test_grouping_agrees_with_readmes_relation(
 
 
 def test_each_row_detail_names_its_novelty_label(
-    page: str, overview: overview_data.Overview
+    results: str, overview: overview_data.Overview
 ) -> None:
     labels = overview_sections.novelty_labels()
     assert labels["apparently-novel"].startswith("Not found in the recorded search")
@@ -677,4 +741,4 @@ def test_each_row_detail_names_its_novelty_label(
             f'<dt>Novelty</dt><dd><span class="site-chip" data-novelty="{result.novelty}">'
             f"{result.novelty}</span> {html.escape(labels[result.novelty])}</dd>"
         )
-        assert chip in _row(page, result.id), result.id
+        assert chip in _row(results, result.id), result.id

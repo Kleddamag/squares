@@ -142,7 +142,8 @@ a second certificate, and its reported $s(50) \ge 37/5$ followed on 28 September
 Guzhou0806’s continuation of R052, $s(17) > 4.62003$, superseded by `v1.1.0`, is
 retained as a publication record.
 The [results register](packing/frontier/RESULTS.md) and the site’s
-[results table](https://jlevy.github.io/squares/#every-result) give the credit for each.
+[results table](https://jlevy.github.io/squares/all-results.html) give the credit for
+each.
 
 Every result this project has registered, in the reading order its significance scores
 set. The full claims, the rationale behind each score, and the next evidence-improving

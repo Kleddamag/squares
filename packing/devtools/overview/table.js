@@ -185,6 +185,8 @@
       return;
     }
     const rows = Array.from(body.rows);
+    // A group row heads the rows under it and is not one of the rows counted.
+    const counted = new Set(rows.filter((row) => !row.classList.contains("site-group-row")));
     const count = tools?.querySelector(".site-count") ?? null;
     const noun = count?.getAttribute("data-noun") ?? "rows";
 
@@ -197,10 +199,10 @@
       for (const row of rows) {
         const visible = rowMatches(rowData(row), filters);
         row.hidden = !visible;
-        shown += Number(visible);
+        shown += Number(visible && counted.has(row));
       }
       if (count) {
-        count.textContent = countText(shown, rows.length, noun);
+        count.textContent = countText(shown, counted.size, noun);
       }
     };
 

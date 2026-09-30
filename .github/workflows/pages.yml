@@ -65,6 +65,7 @@ name: Certificate page
       - packing/devtools/templates/paper-type.css
       - packing/devtools/templates/site.css
       - packing/devtools/templates/overview-article.md
+      - packing/devtools/templates/all-results-article.md
       - packing/devtools/render_overview.py
       - packing/devtools/overview_data.py
       - packing/devtools/overview_sections.py

@@ -26,7 +26,7 @@ from devtools.overview_data import (
     math_html,
     tex_bounds,
 )
-from devtools.render_overview import DOCUMENT_PAGES
+from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane
 from devtools.repo_links import branch_file
 
@@ -74,6 +74,11 @@ def standing_chip(standing: str) -> str:
     )
 
 
+def result_url(result_id: str) -> str:
+    """A result's row in the results table, on its own page."""
+    return f"{RESULTS_PAGE}#{result_id.lower()}"
+
+
 def card_kind(href: str) -> str:
     """Where a card's popover leads, which its icons show: a row on this page, another
     site, or another page of this one."""
@@ -110,8 +115,9 @@ def card(
     What the popover shows depends on the target. Another page of the site, a document
     among them, is rendered in the popover itself: framed narrow, without its site
     chrome, and the button expands it to the full page. A place on this page is
-    previewed from `preview`, and the button scrolls there. `also` adds a second, quiet
-    link, such as the document on GitHub.
+    previewed from `preview`, and the button scrolls there; so is a row on another page,
+    such as a result's in the results table, and the button goes to that page. `also`
+    adds a second, quiet link, such as the document on GitHub.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
     and follows its button with no script. It is set in sans, and its attribute tells
@@ -119,7 +125,7 @@ def card(
     note and preview are HTML, so they may carry math.
     """
     kind = card_kind(href)
-    if kind == "page":
+    if kind == "page" and not preview:
         body = (
             f'<iframe class="site-popover-frame" src="{_esc(embed_url(href))}" '
             f'loading="lazy" title="{_esc(label)}"></iframe>'
@@ -162,7 +168,7 @@ def _dl(rows: list[tuple[str, str]]) -> str:
 def headline_cards(overview: Overview) -> str:
     """One card per `S5` result, this project's and others' alike, with its rungs and its
     standing. Its popover previews the result, its claim, rationale, rungs, standing and
-    records, and goes to its table row."""
+    records, and goes to its row on the results page."""
     cards = []
     for result in overview.results:
         if result.record["significance"]["score"] < 5:
@@ -189,8 +195,8 @@ def headline_cards(overview: Overview) -> str:
                 tex_bounds(result.summary),
                 rungs,
                 preview=preview,
-                href=f"#{result.id.lower()}",
-                action=f"Show {result.id} in the table",
+                href=result_url(result.id),
+                action=f"Open {result.id} in the results table",
             )
         )
     return _cards(cards)
@@ -322,7 +328,7 @@ def results_table(overview: Overview) -> str:
             if standing in present
         )
         + "</select></label>"
-        '<span class="site-count" data-count></span>'
+        '<span class="site-count" data-count data-noun="results"></span>'
         "</div>"
     )
     return (
@@ -409,7 +415,7 @@ def recent_list(overview: Overview, count: int = 8) -> str:
     newest = sorted(overview.results, key=lambda r: (r.dated[1], r.id), reverse=True)[:count]
     items = "".join(
         f'<li><span class="site-date">{_esc(r.dated[0])} {_esc(r.dated[1])}</span> · '
-        f'<a href="#{_esc(r.id.lower())}">{_esc(r.id)}</a> · {tex_bounds(r.summary)} '
+        f'<a href="{_esc(result_url(r.id))}">{_esc(r.id)}</a> · {tex_bounds(r.summary)} '
         f'<span class="site-credit">({_esc(r.credit)})</span> {standing_chip(r.standing)}</li>'
         for r in newest
     )
@@ -446,7 +452,7 @@ def _lane_results(results: str) -> str:
     """A lane's results cell, the register entries carrying its bound as
     `render_recent_results.rungs` writes them, each linked to its row with its rungs."""
     return " ".join(
-        f'<a href="#{_esc(entry.lower())}">{_esc(entry)}</a> {_rung(v)} {_rung(c)}'
+        f'<a href="{_esc(result_url(entry))}">{_esc(entry)}</a> {_rung(v)} {_rung(c)}'
         for entry, v, c in _LANE_RESULT.findall(results)
     )
 

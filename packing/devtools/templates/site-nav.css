@@ -216,10 +216,10 @@
     padding-inline: 0.45rem;
   }
 }
-/* Narrower than the whole bar fits in one row with the name (50rem), the name gives
+/* Narrower than the whole bar fits in one row with the name (56rem), the name gives
    way and the mark alone leads home, so the links keep one row down to a phone. The
    link keeps its label, "Square Packing home", for a screen reader. */
-@media (width < 50rem) {
+@media (width < 56rem) {
   .site-nav .site-name-text {
     display: none;
   }

@@ -119,7 +119,7 @@ def test_case_11_carries_its_polynomial_results_and_links(page: str) -> None:
     assert "Minimal polynomial, degree 8" in record
     assert "s^8 - 20s^7" in record
     for result in ("T-018", "T-026", "T-033"):
-        assert f'<a href="index.html#{result.lower()}">{result}</a>' in record
+        assert f'<a href="all-results.html#{result.lower()}">{result}</a>' in record
     assert '<a href="frontier.html#n-11">' in record
     branch = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/"
     assert f'class="site-case-github" href="{branch}packing/frontier/n-011.md"' in record

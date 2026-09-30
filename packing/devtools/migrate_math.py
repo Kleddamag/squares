@@ -1150,12 +1150,25 @@ def _in_context(
     return verdict
 
 
-def plan(text: str) -> Plan:
-    """Classify every code span in `text` and decide, in context, which ones convert."""
+#: Why a span the register keeps stays code, whatever it reads as.
+KEPT = "kept as code in math-markup.yaml"
+
+
+def plan(text: str, *, keep: frozenset[str] = frozenset()) -> Plan:
+    """Classify every code span in `text` and decide, in context, which ones convert.
+
+    `keep` holds the spans, spacing collapsed, that the register records as staying code in
+    this file: they are planned `uncertain`, so a re-run never converts what a person kept.
+    """
     prose, generated = mask(text)
     blocks = block_context(text)
     spans = [span for span in code_spans(prose) if blocks.lines[span.line - 1] != "raw"]
-    verdicts = [classify(span.content) for span in spans]
+    verdicts = [
+        Verdict("uncertain", "kept", reason=KEPT)
+        if " ".join(span.content.split()) in keep
+        else classify(span.content)
+        for span in spans
+    ]
     # Only a span that would otherwise convert needs its inline markup read.
     candidates = [
         (span.start, span.end, span.content)
@@ -1223,33 +1236,85 @@ def rewrite(text: str, decisions: Iterable[Decision]) -> str:
 # ---------------------------------------------------------------------------------------
 
 
+#: What GitHub does to TeX before drawing it, measured by the probe: every backslash
+#: before ASCII punctuation is read as a Markdown escape and loses its backslash, inline
+#: and in display blocks alike, so `\{` draws `{`, `\,` a comma, and `\\` a backslash
+#: instead of a line break. Each of these has a letter-named equivalent that KaTeX and
+#: GitHub both read unchanged; the rest (`\#`, `\%`, `\&`, `\_`, `\$`) have none that
+#: is safe in math mode, and are left for a person.
+GITHUB_SAFE_TEX = {
+    "\\\\": "\\cr",
+    "\\{": "\\lbrace",
+    "\\}": "\\rbrace",
+    "\\,": "\\thinspace",
+    "\\:": "\\medspace",
+    "\\;": "\\thickspace",
+    "\\!": "\\negthinspace",
+    "\\|": "\\Vert",
+}
+#: A backslash before ASCII punctuation, the pair GitHub reads as an escape. `\\[`, a
+#: line break with a spacing argument, is matched whole: `\cr` takes no argument.
+_TEX_ESCAPE = re.compile(r"\\\\\[|\\[!-/:-@\[-`{-~]")
+
+
+def github_safe_tex(tex: str) -> tuple[str, list[str]]:
+    """`tex` with every escape GitHub would strip replaced by its letter-named equivalent.
+
+    Returns the rewritten TeX and the escapes that have no safe equivalent, in order. A
+    command gains a space when a letter follows it, so `\\,b` is `\\thinspace b`.
+    """
+    left: list[str] = []
+
+    def safe(match: re.Match[str]) -> str:
+        replacement = GITHUB_SAFE_TEX.get(match[0])
+        if replacement is None:
+            left.append(match[0])
+            return match[0]
+        after = tex[match.end() : match.end() + 1]
+        return replacement + (" " if after.isalpha() else "")
+
+    return _TEX_ESCAPE.sub(safe, tex), left
+
+
 @dataclass(frozen=True)
 class UnsafeMath:
-    """An inline formula GitHub leaves as dollars where it sits, and why."""
+    """A formula GitHub will not draw as written, why, and what to write instead.
+
+    `replacement` is the text to put in place of the whole span, delimiters included:
+    the code span this tool would have left, for a formula it wrote where GitHub draws no
+    math; the same formula with GitHub-safe TeX, for escapes GitHub would strip; `None`
+    when only a person can fix it.
+    """
 
     start: int
     end: int
     tex: str
     line: int
     reason: str
+    replacement: str | None
 
     @property
     def code(self) -> str | None:
-        """The code span this tool would have left in its place, or `None`.
+        """The replacement when it is a code span, the form the ratchet asks for."""
+        return self.replacement if (self.replacement or "").startswith("`") else None
 
-        `None` when the formula is not one `to_latex` writes -- hand-written TeX, which
-        only a person can move into a context GitHub draws, or rephrase.
-        """
-        source = plain(self.tex)
-        if "`" in source or "\n" in source:
-            return None
-        for frac in (False, True):
-            try:
-                if to_latex(source, frac=frac) == self.tex:
-                    return f"`{source}`"
-            except UnconvertibleError:
-                continue
+
+def _tool_code(tex: str) -> str | None:
+    """The code span this tool would have left in a formula's place, or `None`.
+
+    `None` when the formula is not one `to_latex` writes -- hand-written TeX, which only a
+    person can move into a context GitHub draws, or rephrase.
+    """
+    source = plain(tex)
+    if "`" in source or "\n" in source:
         return None
+    for frac in (False, True):
+        try:
+            if to_latex(source, frac=frac) == tex:
+                return f"`{source}`"
+        except UnconvertibleError:
+            continue
+    return None
 
 
 #: A blank line: emphasis and links never cross one, so a paragraph is parsed alone.
@@ -1319,52 +1384,89 @@ def _markup_reasons(
 
 
 def github_unsafe_math(text: str) -> list[UnsafeMath]:
-    """Every inline formula in `text`'s prose that GitHub would show as dollars.
+    """Every formula in `text`'s prose that GitHub would not draw as written.
 
-    The same rules `plan` applies before converting, read off a `$…$` instead of a code
-    span: the character before the opening dollar (`GITHUB_OPENS_AFTER`), a letter or
-    digit after the closing one, and a link's text or italics around it (`_markup_reasons`).
-    Formulas in raw HTML blocks are left out: GitHub does not read Markdown there at all.
-    It runs on every migrated file in the edit tier, so the block parse happens only when
-    something was found, and the inline parse only on paragraphs that could hold markup.
+    Two kinds. Where it sits: the same rules `plan` applies before converting, read off an
+    inline `$…$` instead of a code span -- the character before the opening dollar
+    (`GITHUB_OPENS_AFTER`), a letter or digit after the closing one, and a link's text or
+    italics around it (`_markup_reasons`). What it holds: a backslash before punctuation,
+    which GitHub strips (`GITHUB_SAFE_TEX`), inline or display. Formulas in raw HTML
+    blocks are left out: GitHub does not read Markdown there at all. It runs on every
+    migrated file in the edit tier, so the block parse happens only when something was
+    found, and the inline parse only on paragraphs that could hold markup.
     """
     prose, _generated = mask(text)
+    every = located_math_spans(prose)
     located = [
-        (start, end, tex)
-        for start, end, tex in located_math_spans(prose)
-        if not prose.startswith("$$", start)
+        (start, end, tex) for start, end, tex in every if not prose.startswith("$$", start)
     ]
     reasons = _markup_reasons(prose, located, delimiter="$")
-    found = [
-        (start, end, tex, reason)
-        for start, end, tex in located
-        if (reason := _adjacency_reason(text, start, end) or reasons.get(start)) is not None
-    ]
+    found: list[tuple[int, int, str, str, str | None]] = []
+    for start, end, tex in every:
+        inline = not prose.startswith("$$", start)
+        context = (
+            (_adjacency_reason(text, start, end) or reasons.get(start)) if inline else None
+        )
+        if context is not None:
+            found.append((start, end, tex, context, _tool_code(tex.strip())))
+            continue
+        safe, left = github_safe_tex(tex)
+        if safe != tex or left:
+            escapes = ", ".join(sorted({m[0] for m in _TEX_ESCAPE.finditer(tex)}))
+            reason = f"GitHub strips the backslash from {escapes}"
+            whole = text[start:end]
+            replacement = None if left else whole.replace(tex, safe, 1)
+            if left:
+                reason += f"; {', '.join(sorted(set(left)))} has no safe form"
+            found.append((start, end, tex, reason, replacement))
     if not found:
         return []
     lines = block_context(text).lines
     return [
-        UnsafeMath(start, end, tex.strip(), text.count("\n", 0, start) + 1, reason)
-        for start, end, tex, reason in found
+        UnsafeMath(start, end, tex.strip(), text.count("\n", 0, start) + 1, reason, replacement)
+        for start, end, tex, reason, replacement in found
         if lines[text.count("\n", 0, start)] != "raw"
     ]
 
 
 def demote_unsafe(text: str) -> tuple[str, list[UnsafeMath], list[UnsafeMath]]:
-    """`text` with every formula this tool wrote where GitHub draws none put back as code.
+    """`text` with every formula GitHub would not draw as written put right where it can be.
 
-    Returns the text, the formulas demoted, and the unsafe ones left as they are because
-    this tool did not write them.
+    A formula this tool wrote where GitHub draws no math goes back to code; one whose TeX
+    GitHub would strip is rewritten with `github_safe_tex`, and kept only if the pinned
+    KaTeX still parses it. Returns the text, the formulas changed, and those left for a
+    person: hand-written TeX in a place GitHub draws none, or an escape with no safe form.
     """
     unsafe = github_unsafe_math(text)
-    demoted = [item for item in unsafe if item.code is not None]
+    fixable = [item for item in unsafe if item.replacement is not None]
+    rewritten = [item for item in fixable if not item.code]
+    if rewritten:
+        refused = (
+            katex_refusals(
+                _replaced(text, rewritten),
+                [github_safe_tex(item.tex)[0] for item in rewritten],
+            )
+            or set()
+        )
+        fixable = [
+            item for item in fixable if item.code or github_safe_tex(item.tex)[0] not in refused
+        ]
+    changed = {item.start for item in fixable}
+    return (
+        _replaced(text, fixable),
+        fixable,
+        [item for item in unsafe if item.start not in changed],
+    )
+
+
+def _replaced(text: str, items: Sequence[UnsafeMath]) -> str:
     pieces: list[str] = []
     position = 0
-    for item in demoted:
-        pieces.extend((text[position : item.start], item.code or ""))
+    for item in sorted(items, key=lambda item: item.start):
+        pieces.extend((text[position : item.start], item.replacement or ""))
         position = item.end
     pieces.append(text[position:])
-    return "".join(pieces), demoted, [item for item in unsafe if item.code is None]
+    return "".join(pieces)
 
 
 # ---------------------------------------------------------------------------------------
@@ -1586,14 +1688,16 @@ def _kpress_round(
     return current, True
 
 
-def prove(path: Path, text: str, *, safety: SafetyCheck | None) -> Migration:
+def prove(
+    path: Path, text: str, *, safety: SafetyCheck | None, keep: frozenset[str] = frozenset()
+) -> Migration:
     """Plan `text`, then demote or refuse until every rewrite is proved safe.
 
     kpress must read each converted span as exactly one inline math span it can render,
     and KaTeX must accept it; a span that fails either is demoted and the plan proved
     again. `safety`, when given, is the pinned formatter's span check on the final text.
     """
-    current = plan(text)
+    current = plan(text, keep=keep)
     migration = Migration(path, current, text, text)
     if current.converting():
         baseline = kpress_math(text).sources
@@ -1726,6 +1830,23 @@ def print_report(report: FileReport, *, listing: bool) -> None:
         print(f"  REFUSED: {refusal}")
 
 
+#: The register of migrated files, whose `keep` entries a re-run honours.
+REGISTER = Path(__file__).resolve().parent / "math-markup.yaml"
+
+
+def register_keeps(register: Path = REGISTER) -> dict[str, frozenset[str]]:
+    """The spans the register keeps as code, spacing collapsed, by repository path."""
+    from sqpack.yamlio import load_yaml  # noqa: PLC0415
+
+    if not register.is_file():
+        return {}
+    data = load_yaml(register.read_text(encoding="utf-8"))
+    keeps: dict[str, set[str]] = {}
+    for item in (data or {}).get("keep") or []:
+        keeps.setdefault(item["path"], set()).add(" ".join(str(item["span"]).split()))
+    return {path: frozenset(spans) for path, spans in keeps.items()}
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="migrate_math",
@@ -1734,6 +1855,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("files", nargs="+", type=Path, metavar="FILE")
     parser.add_argument(
         "--apply", action="store_true", help="rewrite the math spans in place, once proved"
+    )
+    parser.add_argument(
+        "--github",
+        action="store_true",
+        help="with --apply, only make the existing formulas GitHub-safe; convert nothing",
     )
     parser.add_argument("--report", type=Path, metavar="PATH", help="also write JSON here")
     parser.add_argument("--list", action="store_true", help="print every conversion")
@@ -1749,6 +1875,7 @@ def _parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = _parser().parse_args(argv)
     safety = pinned_safety(arguments.flowmark) if arguments.apply else None
+    keeps = register_keeps()
     reports: list[FileReport] = []
     refused = 0
     for path in arguments.files:
@@ -1756,13 +1883,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"no such file: {path.as_posix()}", file=sys.stderr)
             return 2
         text = path.read_text(encoding="utf-8")
+        keep = keeps.get(display_path(path), frozenset())
         demoted_text, demoted, unsafe = demote_unsafe(text)
-        if arguments.apply:
-            migration = prove(path, demoted_text, safety=safety)
+        if arguments.apply and arguments.github:
+            migration = Migration(path, plan(text, keep=keep), text, demoted_text)
+        elif arguments.apply:
+            migration = prove(path, demoted_text, safety=safety, keep=keep)
         else:
-            migration = Migration(path, plan(text), text, text)
+            migration = Migration(path, plan(text, keep=keep), text, text)
         migration.notes.extend(
-            f"L{item.line}: ${item.tex}$ back to code -- {item.reason}" for item in demoted
+            f"L{item.line}: ${item.tex}$ -> {item.replacement} -- {item.reason}"
+            for item in demoted
         )
         migration.notes.extend(
             f"L{item.line}: ${item.tex}$ is not this tool's and GitHub will not draw it -- "
@@ -1777,9 +1908,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif arguments.apply and migration.converted != text:
             with atomic_output_file(path) as temporary:
                 Path(temporary).write_text(migration.converted, encoding="utf-8")
+            converted = 0 if arguments.github else len(migration.plan.converting())
             print(
-                f"  wrote {len(migration.plan.converting())} math spans"
-                + (f", {len(demoted)} back to code" if demoted else "")
+                f"  wrote {converted} math spans"
+                + (f", {len(demoted)} made GitHub-safe" if demoted else "")
             )
     totals: Counter[str] = Counter()
     for report in reports:

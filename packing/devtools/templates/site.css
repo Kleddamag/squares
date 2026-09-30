@@ -1175,3 +1175,42 @@ body {
   background: var(--site-wash);
   text-decoration: none;
 }
+
+/* A document page with a contents rail keeps the rail at the left edge but centres its
+   reading column on the page once the pane is wide enough, so the text sits under the
+   centred navigation rather than drifting left of it. The two outer tracks share the
+   spare width: the rail's never drops below its own 15rem, so on a pane too narrow to
+   centre, the column simply sits as close to centre as the rail allows. */
+@container kpress-doc (min-width: 75rem) {
+  .kpress .kpress-content-with-toc:has(.kpress-toc) {
+    grid-template-columns:
+      minmax(15rem, 1fr)
+      min(calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)), calc(100cqw - 20rem))
+      minmax(0, 1fr);
+    justify-content: stretch;
+  }
+  .kpress .kpress-content-with-toc:has(.kpress-toc) > .kpress-toc {
+    grid-column: 1;
+    inline-size: 15rem;
+    justify-self: start;
+  }
+}
+
+/* The contents rail is plain text: no frame, only the underlined Contents label, and
+   entries that change colour on hover or when current rather than gaining a fill or
+   a bar. */
+.kpress .kpress-toc {
+  border: 0;
+  padding-inline: 0;
+}
+.kpress .kpress-toc a {
+  border-left: 0;
+}
+.kpress .kpress-toc a:hover {
+  background: none;
+  color: var(--kpress-doc-text);
+}
+.kpress .kpress-toc a:is([data-active="true"], .active) {
+  background: none;
+  color: var(--kpress-doc-link);
+}

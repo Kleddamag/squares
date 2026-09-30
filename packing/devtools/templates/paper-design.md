@@ -111,6 +111,12 @@ it.
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
   sections are `h2`s.
 
+- **Document pages with contents.** On a wide screen the contents rail stays at the left
+  edge and the reading column is centred on the page, under the centred navigation.
+  Where the pane is too narrow to centre, the column sits as near centre as the 15rem
+  rail allows. The rail is plain text: no frame, only the underlined Contents label, and
+  entries that change colour on hover or when current, with no fill or side bar.
+
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
   fill. The icon is case 11, the central open case, in the atlas ink on white, inlined as
   a data URI on every page.

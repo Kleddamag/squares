@@ -52,3 +52,26 @@ def test_benign_metadata_import_no_longer_expands_an_unrelated_frontier_change()
     assert "packing/tests/test_verified_upper_bound_contract.py" in selection.tests
     # The parser attack literal remains in the conservative walker set.
     assert "packing/tests/test_audit_ds7_lower_bounds.py" in selection.tests
+
+
+def test_import_scan_keeps_nested_suites_and_ignores_literal_code(tmp_path: Path) -> None:
+    source = tmp_path / "imports.py"
+    source.write_text(
+        "payload = ['import imaginary.module', {'nested': 'from fake import thing'}]\n"
+        "async def f():\n"
+        "    try:\n"
+        "        import genuine.module\n"
+        "    except Exception:\n"
+        "        from error_path import handler\n"
+        "    match payload:\n"
+        "        case []:\n"
+        "            from match_path import leaf\n",
+        encoding="utf-8",
+    )
+    assert reachable_tests._imports_of(source) == {  # noqa: SLF001
+        "genuine.module",
+        "error_path",
+        "error_path.handler",
+        "match_path",
+        "match_path.leaf",
+    }

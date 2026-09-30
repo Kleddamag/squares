@@ -152,7 +152,15 @@ def _imports_of(path: Path) -> set[str] | None:
     except OSError, SyntaxError, UnicodeDecodeError:
         return None
     found: set[str] = set()
-    for node in ast.walk(tree):
+    pending: list[ast.AST] = [tree]
+    while pending:
+        node = pending.pop()
+        # Import statements can occur in compound-statement suites, but never
+        # inside expressions. Skip large literal/geometry expressions while
+        # retaining every suite, including exception handlers and match cases.
+        pending.extend(
+            child for child in ast.iter_child_nodes(node) if not isinstance(child, ast.expr)
+        )
         if isinstance(node, ast.Import):
             found.update(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom):

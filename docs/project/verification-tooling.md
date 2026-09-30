@@ -87,6 +87,18 @@ measured process CPU falls from 235.45 to 134.63 seconds (1.75 times).
 The runs had different host load, so their wall-time difference is observational.
 These are kernel measurements, not whole-proof speedups.
 This path is separate from the optional Rust rectangle verifier described below.
+The [batch cost reporter](../../packing/devtools/summarize_n11_nonfield_costs.py)
+separates executor elapsed time from overlapping case-wall sums, checker CPU, and
+invocation overhead.
+Its
+[17-batch measurement](../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-reviewed-costs-2147.json.gz)
+uses retained executions; absent historical metrics remain unknown.
+For example, the latest 24-case batch used 4,453.66 CPU seconds over 1,771.40 seconds of
+executor wall time. This measures compute utilization, not agent analysis time.
+The separate center-1383 diagnostic used 118.05 CPU seconds in 120.01 wall seconds,
+including 6.08 seconds of admission and 3.65 seconds of seed checking.
+Exact segment event construction is the next measured optimization target; this
+incomplete run accepts no exclusion.
 The
 [current verification checkpoint](reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 separates these obligations and their evidence.

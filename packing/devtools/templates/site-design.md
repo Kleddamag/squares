@@ -242,10 +242,10 @@ Until then the reader has KPress’s MathML. A print sets every formula first, a
 pixels of the viewport when the page opens has been set: what the reader can see, and a
 screen or two beyond it, is typeset.
 It does not mean every formula on the page is set.
-A check that reads every formula’s face opens the page with `?typeset=all`, which sets
-every formula, closed rows included, before `math-ready`; `devtools.preview_site` does
-this for `devtools.check_math_faces`. The explainer keeps its own `page.js` and its own
-meaning of the class.
+A check that reads every formula’s face calls `siteMath.typeset(document)` after
+`math-ready` and waits for it, which sets the rest, closed rows included;
+`devtools.preview_site` does this before its face walk and its screenshots.
+The explainer keeps its own `page.js` and its own meaning of the class.
 
 ## Media
 

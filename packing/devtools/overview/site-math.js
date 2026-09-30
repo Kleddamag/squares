@@ -17,7 +17,8 @@
    contract for the preview and layout checks that wait for the class.
 
    `siteMath.typeset(root)` sets every formula under one element at once: the popover
-   calls it for content it has just shown. */
+   calls it for content it has just shown, and `devtools.preview_site` for the whole
+   document before it reads every formula's face. */
 (() => {
   const math = squaresMath;
   const runtime = kpressMathText;
@@ -74,13 +75,6 @@
   };
 
   const formulas = [...document.querySelectorAll(".kpress-math")];
-  /* `?typeset=all` sets every formula before `math-ready`, closed rows included: the
-     math-face check (`devtools.preview_site`) reads every formula on the page, which lazy
-     setting would leave as MathML. */
-  if (new URLSearchParams(globalThis.location?.search ?? "").get("typeset") === "all") {
-    void setAll(formulas).then(finish);
-    return;
-  }
   let opening = true;
   const observer = new IntersectionObserver(
     (entries) => {

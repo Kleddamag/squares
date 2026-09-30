@@ -17,9 +17,18 @@ and checks each page for what a reader would notice first and a render test cann
 - By default it assembles `packing/site-preview/` from the builders' directories (with
   `--build` it renders the explainer and the overview first), serves it, runs the smoke
   checks on every page in light and dark, resolves every relative link and embedded
-  resource against the assembled tree, runs the explainer's own math-face check
-  (`devtools.check_math_faces`) on each of the site's pages, and saves full-page
-  screenshots at 1,280 and 390 pixels wide in both themes to `--screenshots`.
+  resource against the assembled tree, and saves full-page screenshots at 1,280 and 390
+  pixels wide in both themes to `--screenshots`.
+
+Both modes report a request the site answers with an error status, and every formula whose
+face disagrees with the words around it (`probes/preview_site/math_face.js`): a formula in
+a sans table cell set in the serif, or the reverse. Site pages set their math lazily, so
+each page is asked to set every formula first (`typeset_all.js`); the screenshots then show
+KaTeX all the way down rather than the MathML a reader sees only before scrolling. That is
+the face walk of `devtools.check_math_faces` alone, on the site's own pages. The explainer
+is left to the whole of that check in its own gate, which knows the variants it draws for
+each reading preference; the metric tables, the first paint and the init's coverage are
+about that page too.
 
 The films are copied into the site only on `main`, so locally a link to `films/…` is
 reported as expected-missing unless `--films DIR` names a directory holding them.
@@ -50,6 +59,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
+from devtools.render_explainer import MATH_WRAPPERS
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
@@ -71,6 +81,14 @@ READY_TIMEOUT_MS = 30_000
 OVERFLOW_TOLERANCE = 1
 #: Present only on `main`, where `publish` copies the release's films into the site.
 FILMS_PREFIX = "films/"
+#: The Visualizer is its own application with its own checks, and carries no kpress math.
+WORKBENCH_PREFIX = "workbench/"
+#: The explainer draws each formula once per reading preference and shows one; its gate
+#: runs the whole of `check_math_faces`, which knows the variants, so the walk skips it.
+EXPLAINER_PAGE = "explainer.html"
+#: Chromium's console line for a failed load. It names no URL; the response handler
+#: reports the same failure with the URL and status, so the console copy is dropped.
+FAILED_LOAD = "Failed to load resource"
 
 
 @dataclass
@@ -105,7 +123,7 @@ def pages_under(root: Path) -> list[str]:
     return sorted(path.relative_to(root).as_posix() for path in root.rglob("*.html"))
 
 
-def _resolve(page: str, reference: str) -> str | None:
+def resolve(page: str, reference: str) -> str | None:
     """A site-relative path for a relative reference on `page`, or None if it is not one."""
     parts = urlsplit(reference)
     if parts.scheme or parts.netloc or not parts.path:
@@ -123,7 +141,7 @@ def missing_references(
 ) -> None:
     """Report every relative reference on `page` that the assembled site does not hold."""
     for reference in references:
-        target = _resolve(page, reference)
+        target = resolve(page, reference)
         if target is None:
             continue
         if target.startswith(".."):
@@ -137,6 +155,11 @@ def missing_references(
         findings.problems.append(f"{page}: {reference} names {target}, which the site lacks")
 
 
+def site_math(page: str) -> bool:
+    """Whether the math-face walk covers `page`: the site's own pages, not the two others."""
+    return page != EXPLAINER_PAGE and not page.startswith(WORKBENCH_PREFIX)
+
+
 def open_pages(
     base_url: str,
     root: Path,
@@ -147,6 +170,7 @@ def open_pages(
     screenshots: Path | None = None,
     check_links: bool = False,
     films: bool = False,
+    math_faces: bool = True,
 ) -> None:
     """Open every page at each width and scheme, and record what it objects to."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
@@ -154,6 +178,8 @@ def open_pages(
     overflow = probe(PROBES, "preview_site/overflow")
     ready = probe(PROBES, "preview_site/ready")
     links = probe(PROBES, "preview_site/links")
+    typeset_all = probe(PROBES, "preview_site/typeset_all")
+    math_face = probe(PROBES, "preview_site/math_face")
     with sync_playwright() as driver:
         browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
         try:
@@ -178,6 +204,15 @@ def open_pages(
                                 lambda message, errors=errors: (
                                     errors.append(message.text)
                                     if message.type == "error"
+                                    and not message.text.startswith(FAILED_LOAD)
+                                    else None
+                                ),
+                            )
+                            page.on(
+                                "response",
+                                lambda response, errors=errors: (
+                                    errors.append(f"{response.status} for {response.url}")
+                                    if response.status >= 400
                                     else None
                                 ),
                             )
@@ -186,6 +221,12 @@ def open_pages(
                                 page.wait_for_function(ready, timeout=READY_TIMEOUT_MS)
                             except Exception:  # noqa: BLE001 -- Playwright's timeout, reported
                                 findings.problems.append(f"{where}: math never finished")
+                            if math_faces and site_math(page_path):
+                                page.evaluate(typeset_all)
+                                faces = page.evaluate(math_face, {"wrappers": MATH_WRAPPERS})
+                                findings.problems.extend(
+                                    f"{where}: {finding}" for finding in faces["findings"]
+                                )
                             box = page.evaluate(overflow)
                             if box["scrollWidth"] > box["clientWidth"] + OVERFLOW_TOLERANCE:
                                 findings.problems.append(
@@ -204,10 +245,15 @@ def open_pages(
                                 )
                             if screenshots is not None:
                                 name = page_path.replace("/", "_").removesuffix(".html")
-                                page.screenshot(
-                                    path=screenshots / f"{name}-{width}-{scheme}.png",
-                                    full_page=True,
-                                )
+                                try:
+                                    page.screenshot(
+                                        path=screenshots / f"{name}-{width}-{scheme}.png",
+                                        full_page=True,
+                                    )
+                                except Exception as error:  # noqa: BLE001 -- reported
+                                    findings.problems.append(
+                                        f"{where}: no screenshot ({str(error).splitlines()[0]})"
+                                    )
                             page.close()
                     finally:
                         context.close()
@@ -270,7 +316,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not pages:
             raise SystemExit(f"{root} holds no pages")
         with served(root) as url:
-            open_pages(url, root, pages, findings)
+            open_pages(url, root, pages, findings, math_faces=not args.no_math_faces)
         return report(findings)
 
     if args.build:
@@ -290,20 +336,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             screenshots=screenshots,
             check_links=True,
             films=args.films is not None,
+            math_faces=not args.no_math_faces,
         )
-        if not args.no_math_faces:
-            from devtools import check_math_faces  # noqa: PLC0415
-
-            for page_path in pages:
-                if page_path.startswith("workbench/"):
-                    continue
-                # Site pages set their math lazily; `?typeset=all` asks site-math.js to set
-                # every formula first, so the check reads all of them. The explainer
-                # ignores the parameter.
-                result = check_math_faces.check(url + page_path + "?typeset=all")
-                findings.problems.extend(
-                    f"{page_path}: {finding}" for finding in result["findings"]
-                )
     print(f"screenshots in {screenshots}")
     return report(findings)
 

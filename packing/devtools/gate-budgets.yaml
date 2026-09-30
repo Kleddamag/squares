@@ -1098,6 +1098,20 @@ pages:
       blobless sparse checkout omits 504 MB in `packing/resources/` and
       `packing/campaign/`; a contract test proves those omitted trees contain no declared
       workbench or explainer build input.
+  - id: overview
+    measured_seconds: 69.0
+    measured_on: 2026-09-30
+    measured_where: >-
+      run 36673264695, job 109752793038, dispatched on the branch that added the job: 69 s
+      from the job's start to its end, of which 37 s was the runner starting and 30 s the
+      steps (10 s for the two renders, 5 s for the smoke check)
+    ceiling_seconds: 110.0
+    argument: >-
+      Renders the site's own pages -- the overview, the frontier atlas and the tutorial --
+      twice, requires the two renders to agree byte for byte, and opens every page at
+      desktop and phone widths. It runs beside `prepare` and `workbench`, needs neither,
+      and is far shorter than `prepare` and the explainer's checks after it, so it does not
+      set the wall.
   - id: pdf
     measured_seconds: 73.3
     measured_on: 2026-09-16
@@ -1183,6 +1197,15 @@ pages:
     measured_where: run 35039355763, the scope demonstration
     ceiling_seconds: 8.0
     argument: The same notice for the workbench half.
+  - id: overview-unchanged
+    measured_seconds: 2.0
+    measured_on: 2026-09-30
+    measured_where: >-
+      run 36676368250, where the two notices of the same shape -- `explainer-unchanged`
+      and `workbench-unchanged`, one `echo` step each -- took 2 s apiece; no pull request
+      has yet left the overview's inputs untouched on a head that carries this job
+    ceiling_seconds: 4.0
+    argument: The same notice for the overview half.
   - id: pages-required
     measured_seconds: 3.0
     measured_on: 2026-09-16

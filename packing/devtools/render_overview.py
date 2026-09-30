@@ -13,7 +13,10 @@ adds the front door and the pages around it, as the plan in
   `SquarePackingCase/v2` record;
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
   the atlas grid and the frontier atlas both open (`render_case_pages`);
-- `tutorial.html`, the tutorial rendered as a page.
+- `tutorial.html`, the tutorial rendered as a page;
+- `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
+  size. Its second tab is the workbench at `workbench/`, which
+  `workbench_tools.build_site` builds and gives the same tab bar (`visualize_tabs`).
 
 Every page is a kpress standalone page with its assets inlined, so it opens the same
 way from a file, from GitHub Pages and from an artifact host. The explainer's paper
@@ -54,6 +57,7 @@ SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 PAPER_TYPE_CSS = TEMPLATES / "paper-type.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
 RESULTS_ARTICLE = TEMPLATES / "all-results-article.md"
+VISUALIZE_ARTICLE = TEMPLATES / "visualize-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
@@ -82,6 +86,24 @@ OVERVIEW_DESCRIPTION = (
 RESULTS_DESCRIPTION = (
     "Every registered result on packing unit squares in the smallest square, this "
     "project's and others', with its verification, confirmation, standing and records."
+)
+VISUALIZE_DESCRIPTION = (
+    "The best packings known of n unit squares, n = 1 to 324, built one square at a "
+    "time in an eight-minute film, and a workbench to move the squares yourself."
+)
+#: The release the films are published on, and the two films on it.
+FILM_RELEASE = "v0.4.2"
+FILM_RELEASE_URL = f"https://github.com/jlevy/squares/releases/tag/{FILM_RELEASE}"
+FILM_URL = (
+    f"https://github.com/jlevy/squares/releases/download/{FILM_RELEASE}/"
+    "ascent-n1-324-1080p60-citations.mp4"
+)
+SHORT_FILM_URL = FILM_URL.replace("n1-324", "n1-100")
+#: The Visualize section's tabs, each its own page: its key, where it is served from the
+#: site's root, and its label. The film is the section's first tab and the bar's target.
+VISUALIZE_TABS: tuple[tuple[str, str, str], ...] = (
+    ("film", "visualize.html", "Film"),
+    ("workbench", "workbench/", "Workbench"),
 )
 FRONTIER_DESCRIPTION = (
     "Every tracked case of packing n unit squares in the smallest square, n = 1 to 324: "
@@ -113,6 +135,7 @@ SITE_PAGES: tuple[str, ...] = (
     "cases.html",
     "explainer.html",
     "tutorial.html",
+    "visualize.html",
     "workbench/index.html",
     *DOCUMENT_PAGES,
 )
@@ -130,6 +153,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PAPER_TYPE_CSS,
     OVERVIEW_ARTICLE,
     RESULTS_ARTICLE,
+    VISUALIZE_ARTICLE,
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
@@ -245,7 +269,8 @@ class NavShell(NamedTuple):
     `head` opens the page's `<head>`: kpress's pre-paint theme bootstrap, kpress's design
     tokens with the one face the bar is set in, the text tokens every page shares
     (`paper-type.css`), and `site-nav.css`. `header` is the bar
-    in the shell `site-nav.css` gives an application page, for the start of `<body>`.
+    in the shell `site-nav.css` gives an application page, for the start of `<body>`,
+    with the page's section tabs after the bar when it has them.
     `script` is the gear's program, `overview/theme.js`, for the end of `<body>`.
     """
 
@@ -259,15 +284,16 @@ class NavShell(NamedTuple):
 _NAV_FACE = re.compile(r'font-family:\s*"Source Sans 3 Variable";\s*font-style:\s*normal;')
 
 
-def nav_shell(current: str, *, root: str) -> NavShell:
-    """The site's navigation bar, gear included, for an application page: the Visualizer.
+def nav_shell(current: str, *, root: str, tabs: str = "") -> NavShell:
+    """The site's navigation bar, gear included, for an application page: the workbench.
 
     The same partial, stylesheet and theme program every kpress page carries, with the
     theme bootstrap kpress's standalone page runs before first paint, so the bar sits
     where it does on every page and one stored choice, `kpress.theme`, drives the theme
     on all of them. kpress's tokens come whole but for their faces, of which only the
     bar's own is kept and inlined; the page's own stylesheet, placed after them, keeps
-    any of its own custom properties the tokens also name.
+    any of its own custom properties the tokens also name. `tabs`, a section's tab bar
+    (`visualize_tabs`), follows the bar in the header, as on a kpress page.
     """
     from devtools.render_explainer import (  # noqa: PLC0415
         FONT_FACE_BLOCK,
@@ -293,9 +319,26 @@ def nav_shell(current: str, *, root: str) -> NavShell:
     )
     header = (
         '<div class="site-app-shell">\n<header class="kpress-site-header">\n'
-        f"{nav_html(current, root=root)}</header>\n</div>"
+        f"{nav_html(current, root=root)}{tabs}</header>\n</div>"
     )
     return NavShell(head, header, f"<script>{_script_text(THEME_SCRIPT)}</script>")
+
+
+def visualize_tabs(current: str, *, root: str = "") -> str:
+    """The Visualize section's tab bar, with the current tab marked.
+
+    Each tab is a real link to its own page, so the bar needs no script and a tab can be
+    opened, bookmarked and shared. Its look is `.site-tabs` in `site-nav.css`, the one
+    stylesheet both the film's page and the workbench carry.
+    """
+    if current not in {key for key, _, _ in VISUALIZE_TABS}:
+        raise SystemExit(f"the Visualize section has no tab {current!r}")
+    links = "".join(
+        f'<a data-tab="{key}"{' aria-current="page"' if key == current else ""} '
+        f'href="{root}{href}">{html.escape(label)}</a>'
+        for key, href, label in VISUALIZE_TABS
+    )
+    return f'<nav class="site-tabs" aria-label="Visualize">{links}</nav>'
 
 
 @cache
@@ -344,8 +387,13 @@ def kpress_page(
     page_scripts: Sequence[Path] = (),
     trust_mode: Literal["trusted", "sanitized"] = "trusted",
     strict_anchors: bool = False,
+    tabs: str = "",
 ) -> Page:
     """One standalone kpress page with the site's layer, nav and colophon.
+
+    `tabs`, a section's tab bar (`visualize_tabs`), follows the navigation bar in the
+    header slot, where the workbench's shell also puts it, so it sits in one place on
+    every page of its section.
 
     `page_scripts` are page programs in checked `.js` files, each placed in its own
     script element after the math scripts and the navigation bar's theme control
@@ -375,7 +423,7 @@ def kpress_page(
         head_extra_html=(
             f"{favicon_html()}{head}<script>{_script_text(EMBED_SCRIPT)}</script>"
         ),
-        header_html=nav_html(current),
+        header_html=nav_html(current) + tabs,
         footer_html=colophon_html(),
     )
     rendered = render_page(document, options)
@@ -556,6 +604,28 @@ def cases_page() -> Page:
     return build()
 
 
+def visualize_page() -> Page:
+    """The Visualize section's first tab: the film of the ascent at full size."""
+    values = {
+        "FILM_URL": FILM_URL,
+        "SHORT_FILM_URL": SHORT_FILM_URL,
+        "RELEASE_URL": FILM_RELEASE_URL,
+        "RELEASE": FILM_RELEASE,
+    }
+    markdown = fill(
+        VISUALIZE_ARTICLE.read_text(encoding="utf-8"), values, where=VISUALIZE_ARTICLE.name
+    )
+    return kpress_page(
+        markdown,
+        name="visualize.html",
+        current="visualize",
+        title=f"Visualize · {SITE_NAME}",
+        description=VISUALIZE_DESCRIPTION,
+        toc=False,
+        tabs=visualize_tabs("film"),
+    )
+
+
 def _document_page(name: str) -> Callable[[], Page]:
     def build() -> Page:
         from devtools.site_documents import document_page  # noqa: PLC0415
@@ -572,6 +642,7 @@ PAGES: dict[str, Callable[[], Page]] = {
     RESULTS_PAGE: results_page,
     "cases.html": cases_page,
     "tutorial.html": tutorial_page,
+    "visualize.html": visualize_page,
     **{name: _document_page(name) for name in DOCUMENT_PAGES},
 }
 

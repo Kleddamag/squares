@@ -549,7 +549,7 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
     ),
     (
         "workbench/",
-        "Visualizer",
+        "Workbench",
         "Pack squares by hand",
         "Move squares yourself and watch the known packings.",
     ),

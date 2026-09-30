@@ -26,6 +26,13 @@ interface SiteTableApi {
 
 declare var SiteTable: SiteTableApi;
 
+/** The render-time sentinel `kpress-client.js` stands in for kpress's flattened client
+ * (`render_overview.kpress_client_script`), as the explainer's own frame declares it. */
+declare function __SQUARES_KPRESS_CLIENT_JS__(): void;
+
+/** kpress's math enhancement, a classic script's top-level function. */
+declare function enhanceMath(): Promise<void> | undefined;
+
 /** One bound's source as the film cites it: the reference and this project's note. */
 interface AtlasCitation {
   text: string;

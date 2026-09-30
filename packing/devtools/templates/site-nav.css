@@ -15,7 +15,7 @@
   --site-wash: color-mix(in oklch, var(--kpress-doc-text) 9%, transparent);
 }
 /* The site's accent in dark mode, here rather than in site.css because every page carries
-   this file, the Visualizer included, and the bar's current item is drawn in it. kpress
+   this file, the workbench included, and the bar's current item is drawn in it. kpress
    declares the light value. */
 :root:where([data-kpress-resolved-theme="dark"]),
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
@@ -233,7 +233,7 @@
 }
 
 /* ---------- On an application page ----------
-   The Visualizer is an application rather than a kpress page, so nothing around the bar
+   The workbench is an application rather than a kpress page, so nothing around the bar
    gives it the margins kpress's standalone page gives every other page, nor the rule under
    its header slot. Its shell (`render_overview.nav_shell`) takes both itself, from the same
    tokens, so the bar has the same box on every page at every width. The shell is the
@@ -260,8 +260,51 @@
   }
 }
 
+/* ---------- Section tabs ----------
+   A section of the site that spans pages, the Visualize section's Film and Workbench,
+   carries one small tab bar in the header slot under the navigation bar, in the same
+   place on each of its pages: a centred, bordered strip of links, one per page, the
+   current one filled with an accent tint. Each tab is a real link to its own page, so
+   the bar needs no script. It is here rather than in site.css because the workbench
+   carries only this stylesheet, and the tabs must look the same on both pages. The tint
+   is mixed in sRGB, since an oklch mix with the near-neutral page takes that page's
+   hue and drew the light tab lavender rather than teal. */
+.site-tabs {
+  border: 1px solid var(--kpress-doc-border);
+  display: flex;
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: 0.9rem;
+  inline-size: fit-content;
+  margin: 0.15rem auto 0.7rem;
+}
+nav.site-tabs a {
+  color: var(--kpress-doc-muted);
+  font-weight: 550;
+  padding: 0.3rem 1.1rem;
+  text-decoration: none;
+}
+nav.site-tabs a + a {
+  border-inline-start: 1px solid var(--kpress-doc-border);
+}
+nav.site-tabs a:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-accent);
+  text-decoration: none;
+}
+nav.site-tabs a[aria-current="page"] {
+  background: color-mix(in srgb, var(--kpress-doc-accent) 16%, var(--kpress-doc-bg));
+  color: var(--kpress-doc-text);
+}
+@media print {
+  .site-tabs {
+    display: none;
+  }
+}
+
 /* A page framed in a card's popover (`?view=embed`, set by overview/embed.js) shows the
-   document alone: no navigation bar. */
+   document alone: no navigation bar, and no section tabs. */
+:root[data-site-view="embed"] .site-tabs,
 :root[data-site-view="embed"] .kpress-site-header,
 :root[data-site-view="embed"] .site-nav {
   display: none;

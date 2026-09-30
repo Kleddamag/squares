@@ -465,8 +465,8 @@ def _the_bar(page: str, *, root: str) -> str:
     return bars[0].replace(' aria-current="page"', "").replace(f'href="{root}', 'href="')
 
 
-def _visualizer_page() -> str:
-    """The Visualizer's page as `build_site` gives it the bar, on its own template."""
+def _workbench_page() -> str:
+    """The workbench page as `build_site` gives it the bar, on its own template."""
     from workbench_tools import build_site  # noqa: PLC0415
 
     template = build_site.WORKBENCH_PACKAGE / "assets" / "template.html"
@@ -479,7 +479,7 @@ def test_every_site_page_carries_the_same_bar(name: str) -> None:
     writes it, but for which item is current and the prefix that reaches the site's root."""
     assert name in render_overview.SITE_PAGES
     if name == "workbench/index.html":
-        page, root = _visualizer_page(), "../"
+        page, root = _workbench_page(), "../"
     else:
         page, root = render_overview.PAGES[name]().html, ""
     partial = (
@@ -488,6 +488,45 @@ def test_every_site_page_carries_the_same_bar(name: str) -> None:
         .replace("{{LOGO}}", render_overview.site_logo())
     )
     assert _the_bar(page, root=root) == SITE_NAV_BLOCK.findall(partial)[0]
+
+
+def test_the_visualize_section_is_marked_current_on_both_its_pages() -> None:
+    """The bar's Visualize entry leads to the film and is current on the film's page and
+    on the workbench, which share one tab bar with their own tab current."""
+    nav = render_overview.nav_html("overview")
+    assert '<a data-page="visualize" href="visualize.html">Visualize</a>' in nav
+    assert "Visualizer" not in nav
+    film = render_overview.PAGES["visualize.html"]().html
+    for page, root, tab in ((film, "", "film"), (_workbench_page(), "../", "workbench")):
+        assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["visualize"]
+        tabs = render_overview.visualize_tabs(tab, root=root)
+        assert page.count('class="site-tabs"') == 1
+        assert tabs in page
+        assert re.findall(r'<a data-tab="(\w+)" aria-current="page"', tabs) == [tab]
+        # In the header slot, after the bar, on both pages alike.
+        header = page.split('class="kpress-site-header"', 1)[1].split("</header>", 1)[0]
+        assert header.index('class="site-nav"') < header.index(tabs)
+    with pytest.raises(SystemExit):
+        render_overview.visualize_tabs("stills")
+
+
+def test_the_film_page_embeds_the_film_at_its_own_proportions() -> None:
+    """The film is inline with its controls, fetches nothing until played, and shows a
+    poster at the video's own 16:9, so starting playback moves nothing."""
+    page = render_overview.PAGES["visualize.html"]().html
+    video = re.search(r"<video [^>]*>", page)
+    assert video is not None
+    for attribute in (
+        'class="site-film"',
+        "controls",
+        'preload="none"',
+        "playsinline",
+        'width="1920" height="1080"',
+        'poster="ascent-n1-324-poster.png"',
+    ):
+        assert attribute in video[0], attribute
+    assert f'<source src="{render_overview.FILM_URL}" type="video/mp4' in page
+    assert page.index('class="site-tabs"') < page.index("<h1") < page.index("<video")
 
 
 def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:

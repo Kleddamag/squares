@@ -34,7 +34,7 @@ body {
 :root:where([data-kpress-resolved-theme="dark"]),
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
-  /* The accent's dark value is in site-nav.css, which every page carries, the Visualizer
+  /* The accent's dark value is in site-nav.css, which every page carries, the workbench
      included. Chips turn over with the page: dark fills that lighten with the level,
      the lowest close to the page's own dark background. */
   --site-rung-base: 25%;
@@ -1551,4 +1551,34 @@ body {
 .kpress .kpress-toc a:is([data-active="true"], .active) {
   background: none;
   color: var(--kpress-doc-link);
+}
+
+/* ---------- The film (Visualize) ----------
+   The Visualize page's film at full size: as wide as the window allows less the page
+   gutters, but never so tall that it will not fit the window whole, at the video's own
+   16:9, which the poster shares, so starting playback moves nothing. */
+.site-page .site-film-frame {
+  --site-film-width: min(100vw - 2rem, (100svh - 5rem) * 16 / 9, 120rem);
+  inline-size: var(--site-film-width);
+  margin-block: 1.5rem;
+  margin-inline: calc((var(--site-film-width) - 100%) / -2);
+}
+.site-page .site-film-frame .site-film {
+  aspect-ratio: 16 / 9;
+  background: var(--kpress-doc-surface, var(--kpress-doc-bg));
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.site-page .site-film-frame figcaption,
+.site-page .site-film-note {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  margin-inline: auto;
+  max-inline-size: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
+  text-align: center;
+}
+.site-page .site-film-frame figcaption {
+  margin-block-start: 0.6rem;
 }

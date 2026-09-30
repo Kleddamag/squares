@@ -50,7 +50,7 @@ from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from devtools.render_overview import nav_shell
+from devtools.render_overview import nav_shell, visualize_tabs
 from workbench_tools.self_contained import assert_self_contained_html
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
@@ -128,7 +128,10 @@ the window's floor so their last row is never under it.
 """
 
 #: The page's entry in the site's navigation bar, which marks it as the current page.
-NAV_PAGE = "workbench"
+NAV_PAGE = "visualize"
+#: The page's tab in the Visualize section, whose first tab is the film at
+#: `visualize.html`: the bar under the navigation marks it current.
+SECTION_TAB = "workbench"
 #: Where the site's root is from the page: it is served at `workbench/index.html`.
 NAV_ROOT = "../"
 
@@ -137,14 +140,16 @@ def with_nav(page: str) -> str:
     """Give the page the site's navigation bar, as every page of the site has it.
 
     The bar is the site's own, rendered from its one partial by `render_overview.nav_shell`
-    rather than written again here, with this page marked current and its links reaching
-    the site's root. Its stylesheet and kpress's theme bootstrap open the head, so the
-    reader's stored theme is on the root before anything is drawn; the page's own
-    stylesheet follows them. The bar opens the body, above `#viewport`, which
+    rather than written again here, with Visualize marked current and its links reaching
+    the site's root, and under it the Visualize section's tabs with Workbench current, so
+    this page and the film's (`visualize.html`) read as one section and every existing
+    `workbench/` link lands on its tab. Its stylesheet and kpress's theme bootstrap open
+    the head, so the reader's stored theme is on the root before anything is drawn; the
+    page's own stylesheet follows them. The bar opens the body, above `#viewport`, which
     `assets/workbench.css` then lays out below it, and the gear's program closes the body.
     Like the note, it is a property of the published page: `body.capture` hides it.
     """
-    shell = nav_shell(NAV_PAGE, root=NAV_ROOT)
+    shell = nav_shell(NAV_PAGE, root=NAV_ROOT, tabs=visualize_tabs(SECTION_TAB, root=NAV_ROOT))
     head = HEAD.search(page)
     body = BODY.search(page)
     if head is None or body is None or "</body>" not in page:

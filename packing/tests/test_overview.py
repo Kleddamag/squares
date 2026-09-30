@@ -920,6 +920,14 @@ def test_the_bar_sits_close_to_the_top_of_every_page() -> None:
     assert "--kpress-page-margin-block-start: 1rem;" in css
 
 
+def test_the_gear_sits_level_with_the_tab_text() -> None:
+    """The gear's centre is set at the middle of the tab text's capitals by one token, on
+    every page and at every width, rather than at the middle of the bar's row."""
+    css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert "--site-gear-drop: 0.11em;" in css
+    assert "translate: 0 var(--site-gear-drop);" in css
+
+
 def test_every_page_starts_one_shared_space_below_the_bar() -> None:
     """The space from the bar's rule to a page's first block is one token, declared in the
     stylesheet every page carries and read by the site's column and the explainer's hero."""

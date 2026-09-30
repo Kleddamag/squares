@@ -17,6 +17,7 @@
 .kpress-page-main {
   --kpress-page-margin-block-start: 1rem;
   --site-page-top: 2rem;
+  --site-gear-drop: 0.11em;
 }
 /* The space from the bar's rule to the top of a page's first block (its title, its hero,
    or the explainer's hero), one token for every page: kpress's document padding above
@@ -119,10 +120,14 @@
    (`kpress.theme`), which kpress's head bootstrap applies before first paint, so the
    stylesheets only ever key on `data-kpress-resolved-theme`; overview/theme.js wires the
    menu. The gear takes the nav items' wash and never underlines. */
+/* The bar centres the gear on its row, but the eye reads a row of text at the middle of
+   its capitals, which sits lower than the middle of its line box, so the gear drops by
+   `--site-gear-drop` to put its centre there, level with the tab text at every width. */
 .site-theme {
   align-self: center;
   display: flex;
   flex: 0 0 auto;
+  translate: 0 var(--site-gear-drop);
 }
 /* On a wide screen the links keep their centred track and the gear leaves it for the
    bar's far right, its edge over the right end of the rule under the bar. From 80rem

@@ -288,11 +288,12 @@ it.
   page, the explainer and the workbench included.
   From 80rem wide it leaves the links’ centred track for the bar’s far right, its edge
   over the right end of the rule under the bar; narrower, it ends the row of links.
-  It takes the nav items’ wash on hover and while its menu is open, and never
-  underlines. Pressing it opens a compact menu, a native popover under the gear with
-  square corners and the cards’ border and shadow, of three choices, each an icon and a
-  word: System, Light and Dark.
-  The current choice is in the accent with a check at its end.
+  At every width its centre is level with the middle of the tab text’s capitals, which
+  sits lower than the middle of the row, so it drops by `--site-gear-drop` (0.11em). It
+  takes the nav items’ wash on hover and while its menu is open, and never underlines.
+  Pressing it opens a compact menu, a native popover under the gear with square corners
+  and the cards’ border and shadow, of three choices, each an icon and a word: System,
+  Light and Dark. The current choice is in the accent with a check at its end.
   Choosing applies at once, closes the menu and keeps the choice across pages and
   visits; the menu also closes on Escape, an outside click or tabbing away.
   The gear is a button named “Color theme” with `aria-haspopup="menu"` and

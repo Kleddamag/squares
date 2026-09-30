@@ -992,6 +992,12 @@
   white-space: nowrap;
 }
 
+/* The expand button is a link, and the popover is a kpress scope, whose links take the
+   link colour; a button keeps the text colour. */
+.site-popover a.site-popover-button {
+  color: var(--kpress-doc-text);
+}
+
 .site-popover-button:hover {
   background: var(--kpress-doc-surface-hover);
   text-decoration: none;

@@ -92,6 +92,19 @@ def embed_url(href: str) -> str:
     return joined + hash_mark + fragment
 
 
+def card_hero(src: str) -> str:
+    """A card's optional hero: a small picture at its head, in a fixed 16:9 box the
+    picture covers from its top edge. It is decorative (`alt=""`), since the card's own
+    label and value say what it shows, and loads lazily. `src` is a file served beside
+    the page, never an address off the site."""
+    if "://" in src or src.startswith("//"):
+        raise SystemExit(f"{src}: a card's hero is served beside the page, never fetched")
+    return (
+        '<span class="site-card-hero">'
+        f'<img src="{_esc(src)}" alt="" loading="lazy" decoding="async"></span>'
+    )
+
+
 def card(
     target: str,
     label: str,
@@ -102,6 +115,7 @@ def card(
     action: str,
     preview: str = "",
     also: tuple[str, str] | None = None,
+    hero: str = "",
 ) -> str:
     """A card and the popover it opens. The card is a caps label, the summary and a line
     under it; pressing it opens a popover that repeats the label and summary, shows
@@ -111,7 +125,8 @@ def card(
     among them, is rendered in the popover itself: framed narrow, without its site
     chrome, and the button expands it to the full page. A place on this page is
     previewed from `preview`, and the button scrolls there. `also` adds a second, quiet
-    link, such as the document on GitHub.
+    link, such as the document on GitHub. `hero` heads the card with a picture
+    (`card_hero`).
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
     and follows its button with no script. It is set in sans, and its attribute tells
@@ -134,6 +149,7 @@ def card(
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
         f'data-go="{kind}">'
+        f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value">{value}</span>'
         f'<span class="site-card-note">{note}</span></button>'
@@ -708,18 +724,33 @@ def _breakable(address: str) -> str:
     return "/<wbr>".join(_esc(part) for part in address.split("/"))
 
 
-def link_card(url: str, label: str, value: str, note: str) -> str:
-    """A card that is itself the link to a place off the site: no popover, since the
-    address it shows is the whole of what a preview would say. It carries the label,
-    the value and note, and the address under them beside the host's mark."""
-    shown = url.removeprefix("https://").removeprefix("http://").rstrip("/")
+def link_card(url: str, label: str, value: str, note: str, *, hero: str = "") -> str:
+    """A card that is itself the link, with no popover: for a place whose address, or
+    whose picture, is the whole of what a preview would say. It carries the label, the
+    value and note, and `hero` heads it with a picture (`card_hero`).
+
+    Every card that navigates directly opens its target in a new tab, whether that is a
+    page or file of this site or a place off it, so the page the reader chose it from
+    stays where they left it. An address off the site is shown under the note beside
+    the host's mark; a PDF is typed as one, so the browser opens it in place.
+    """
+    kind = card_kind(url)
+    typed = ' type="application/pdf"' if url.endswith(".pdf") else ""
+    address = ""
+    if kind == "external":
+        shown = url.removeprefix("https://").rstrip("/")
+        address = (
+            f'<span class="site-card-url">{link_icon(url)}'
+            f"<span>{_breakable(shown)}</span></span>"
+        )
     return (
-        f'<a class="site-card site-card-link" href="{_esc(url)}" data-go="external" '
+        f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
         'target="_blank" rel="noopener noreferrer">'
+        f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value">{value}</span>'
         f'<span class="site-card-note">{note}</span>'
-        f'<span class="site-card-url">{link_icon(url)}<span>{_breakable(shown)}</span></span>'
+        f"{address}"
         "</a>"
     )
 
@@ -732,6 +763,56 @@ def other_project_cards() -> str:
         name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
         cards.append(link_card(url, f"By {author}", _esc(name), _esc(note)))
     return _cards(cards)
+
+
+#: The page the atlas's film card opens: the film alone, at full size.
+VISUALIZE_PAGE = "visualize.html"
+
+#: The atlas's three direct cards: where each goes, the picture heading it (a file
+#: served beside the page), its label, value and note.
+ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
+    (
+        "known-best-1-100.pdf",
+        "known-best-1-100-card.png",
+        "Poster \u00b7 PDF",
+        "n = 1 to 100",
+        (
+            "The first hundred, each labelled with its best-known side and, where the case is "
+            "open, its strongest verified lower bound."
+        ),
+    ),
+    (
+        "known-best-1-324.pdf",
+        "known-best-1-324.png",
+        "Poster \u00b7 PDF",
+        "n = 1 to 324",
+        (
+            "Every tracked case as its best-known packing, on one sheet that prints at 44 by "
+            "51 inches."
+        ),
+    ),
+    (
+        VISUALIZE_PAGE,
+        "ascent-n1-324-poster.png",
+        "Visualize",
+        "The ascent to n = 324",
+        (
+            "The atlas built one square at a time, each step naming the bound it reaches and "
+            "its source. 8\u00a0m\u00a014\u00a0s."
+        ),
+    ),
+)
+
+
+def atlas_cards() -> str:
+    """The atlas's posters and film as three cards side by side, each headed by its
+    picture and itself the link: a poster opens its PDF, the film its own page."""
+    return _cards(
+        [
+            link_card(href, label, tex_bounds(value), _esc(note), hero=hero)
+            for href, hero, label, value, note in ATLAS_CARDS
+        ]
+    )
 
 
 #: The atlas grid's drawings, in units across the frame. One drawing serves the cell and

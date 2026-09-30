@@ -82,15 +82,70 @@ def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
     assert hero.count("<svg ") == 1
 
 
-def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
-    """The PDFs open in the browser: typed as PDF, and never marked for download."""
-    atlas = page.split('class="site-wide site-atlas"', 1)[1].split(
-        'class="site-atlas-note"', maxsplit=1
-    )[0]
-    for stem in ("known-best-1-100", "known-best-1-324"):
-        assert f'<img src="{stem}.png"' in atlas
-        assert atlas.count(f'<a href="{stem}.pdf" type="application/pdf">') == 2
+def _atlas_cards(page: str) -> list[tuple[str, str]]:
+    """The atlas's direct cards, between its grid and its note: each href and body."""
+    section = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
+    after_grid = section.split('class="site-cards-frame', 1)[1]
+    return re.findall(
+        r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', after_grid, re.DOTALL
+    )
+
+
+def test_the_atlas_posters_are_hero_cards_each_opening_its_pdf(page: str) -> None:
+    """Each poster is a card headed by its picture that is itself the link to its PDF,
+    typed as PDF and never marked for download, so the browser opens it in place."""
+    cards = dict(_atlas_cards(page))
+    for stem, hero in (
+        ("known-best-1-100", "known-best-1-100-card.png"),
+        ("known-best-1-324", "known-best-1-324.png"),
+    ):
+        body = cards[f"{stem}.pdf"]
+        assert body.startswith(' type="application/pdf"'), stem
+        assert f'<span class="site-card-hero"><img src="{hero}" alt=""' in body, stem
+        assert (COMPOSITE_ASSETS[0].parent / hero).is_file(), hero
     assert re.search(r"<a\b[^>]*\sdownload\b", page) is None
+
+
+def test_the_atlas_film_is_a_hero_card_opening_the_visualize_page(page: str) -> None:
+    """The film is no longer embedded here: its card, headed by a frame of the film served
+    beside the page, opens the Visualize page, which shows the film alone."""
+    cards = _atlas_cards(page)
+    assert [href for href, _ in cards] == [
+        "known-best-1-100.pdf",
+        "known-best-1-324.pdf",
+        overview_sections.VISUALIZE_PAGE,
+    ]
+    body = dict(cards)[overview_sections.VISUALIZE_PAGE]
+    assert f'<img src="{OVERVIEW_FILM_POSTER.name}" alt=""' in body
+    assert '<span class="site-card-label">Visualize</span>' in body
+    assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
+    assert OVERVIEW_FILM_POSTER.is_file()
+    assert "<video" not in page
+
+
+def test_every_direct_card_opens_in_a_new_tab(page: str) -> None:
+    """A card that is itself the link opens its target in a new tab, on the site or off
+    it, and never hands the new tab a way back to this one."""
+    direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
+    assert len(direct) == len(overview_sections.OTHER_PROJECTS) + len(
+        overview_sections.ATLAS_CARDS
+    )
+    for tag in direct:
+        assert 'target="_blank"' in tag, tag
+        assert 'rel="noopener noreferrer"' in tag, tag
+
+
+def test_a_card_hero_is_served_beside_the_page_never_fetched() -> None:
+    hero = overview_sections.card_hero("known-best-1-100-card.png")
+    assert hero.startswith('<span class="site-card-hero"><img ')
+    assert 'loading="lazy"' in hero
+    for address in ("https://example.org/x.png", "//example.org/x.png"):
+        with pytest.raises(SystemExit):
+            overview_sections.card_hero(address)
+    button = overview_sections.card(
+        "pop-x", "Label", "Value", "Note", href="#x", action="Go", hero="x.png"
+    )
+    assert button.index('class="site-card-hero"') < button.index('class="site-card-label"')
 
 
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
@@ -152,25 +207,6 @@ def test_the_atlas_popover_sets_its_math_and_leads_to_the_record(page: str) -> N
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
     assert 'expand.setAttribute("href", cell.getAttribute("href")' in script
     assert "site-atlas-tip" not in page
-
-
-def test_the_atlas_film_waits_for_the_reader_behind_its_poster(page: str) -> None:
-    """Embedded as the explainer embeds its film: controls, inline, nothing fetched and
-    nothing moving until a reader presses play, and a poster that is a frame of the film
-    served beside the page."""
-    (video,) = re.findall(r"<video\b[^>]*>", page)
-    for attribute in ("controls", "playsinline"):
-        assert re.search(rf"\s{attribute}\b", video), attribute
-    for attribute in ("autoplay", "loop", "muted"):
-        assert not re.search(rf"\s{attribute}\b", video), attribute
-    assert 'preload="none"' in video
-    assert f'poster="{OVERVIEW_FILM_POSTER.name}"' in video
-    assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
-    assert OVERVIEW_FILM_POSTER.is_file()
-    assert (
-        "ascent-n1-324-1080p60-citations.mp4"
-        in page.split(video, 1)[1].split("</video>", maxsplit=1)[0]
-    )
 
 
 def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str) -> None:

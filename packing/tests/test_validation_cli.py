@@ -3707,6 +3707,7 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "search engine (sqsearch)",  # 2.19s, but needs that same build
         "differential: search energy vs validity oracle",  # 0.34s, likewise
         "lint floor (rust)",  # 14.94s of cargo clippy and rustfmt
+        "exact rectangle Rust geometry",  # exact crate lint/tests and Python oracle
         # The four record sweeps, split at their measured seams on 2026-09-06 so the pull
         # request's second runner can schedule them. The figures beside them are the
         # 148.50s and 102.56s above, divided by the same measurement that split them:
@@ -3726,6 +3727,61 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "basin atlas",  # 9.63s
         "basin event record and replay",  # 7.89s
     }
+
+
+def test_exact_rust_geometry_is_fast_and_runs_the_differential_oracle(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    step = next(step for step in validate.STEPS if step.name == "exact rectangle Rust geometry")
+    assert step.fast
+    assert step.broad
+    assert not step.needs_engine
+    assert "packing/sqverify_exact/*" in step.touches
+    calls: list[tuple[str, ...]] = []
+
+    def commands(
+        context: validate.Context,
+        commands: tuple[tuple[str, ...], ...],
+        *,
+        cwd: Path,
+    ) -> str:
+        assert cwd == validate.EXACT_GEOMETRY_CRATE
+        assert context.environment["RUSTDOCFLAGS"] == "old -D warnings"
+        calls.extend(commands)
+        return "test result: ok. 2 passed; 0 failed"
+
+    def run(context: validate.Context, command: tuple[str, ...], **_: object) -> str:
+        assert context.environment["RUSTDOCFLAGS"] == "old -D warnings"
+        calls.append(command)
+        return "EXACT RUST GEOMETRY DIFFERENTIAL PASSED"
+
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_commands", commands)
+    monkeypatch.setattr(validate, "_run", run)
+    environment = {"RUSTDOCFLAGS": "old", "CARGO_TARGET_DIR": "/scratch/exact-target"}
+    context = validate.Context(
+        deep=False, strict=True, jobs=1, inner_jobs=1, environment=environment
+    )
+    assert "DIFFERENTIAL PASSED" in step.action(context)
+    assert environment == {"RUSTDOCFLAGS": "old", "CARGO_TARGET_DIR": "/scratch/exact-target"}
+    assert any(command[:3] == ("cargo", "clippy", "--locked") for command in calls)
+    assert ("cargo", "test", "--locked", "--all-targets", "--quiet") in calls
+    assert ("cargo", "build", "--locked", "--release", "--quiet") in calls
+    assert calls[-1][-1] == "/scratch/exact-target/release/sqverify-exact"
+
+
+def test_exact_rust_geometry_refuses_missing_compiler_or_empty_tests(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    step = next(step for step in validate.STEPS if step.name == "exact rectangle Rust geometry")
+    context = validate.Context(deep=False, strict=False, jobs=1, inner_jobs=1, environment={})
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: None)
+    with pytest.raises(validate.StepFailureError, match="requires cargo"):
+        step.action(context)
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_commands", lambda *_, **__: "test result: ok. 0 passed")
+    with pytest.raises(validate.StepFailureError, match="no passing Rust tests"):
+        step.action(context)
 
 
 def test_edit_and_fast_are_not_silently_combinable() -> None:

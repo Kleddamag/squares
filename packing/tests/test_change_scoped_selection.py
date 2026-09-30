@@ -33,6 +33,7 @@ PATTERN_PROBES = (
     "packing/src/sqpack/verify.py",
     "packing/src/sqpack/research/canonical.py",
     "packing/sqsearch/src/main.rs",
+    "packing/sqverify_exact/src/lib.rs",
     "packing/cases/small_n/optimal_moduli.py",
     "packing/devtools/render_defects.py",
     "packing/devtools/assess_frontier_rigidity.py",
@@ -97,6 +98,15 @@ def test_an_unclaimed_path_selects_the_whole_gate() -> None:
     selection = select_for_paths(["packing/some/file/nobody/attributed.xyz"])
     assert selection.is_whole_gate
     assert selection.unattributed_paths == ("packing/some/file/nobody/attributed.xyz",)
+
+
+def test_exact_rust_source_selects_its_own_gate_without_search_engine_build() -> None:
+    selection = select_for_paths(["packing/sqverify_exact/src/lib.rs"])
+    assert not selection.is_whole_gate
+    names = {step.name for step in selection.steps}
+    assert "exact rectangle Rust geometry" in names
+    assert "search engine (sqsearch)" not in names
+    assert "lint floor (rust)" not in names
 
 
 def test_one_unclaimed_path_poisons_an_otherwise_narrow_selection() -> None:

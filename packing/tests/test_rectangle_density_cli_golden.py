@@ -291,6 +291,9 @@ def test_timing_is_opt_in_and_preserves_cli_decisions(sessions: tuple[Session, .
         assert "timing" not in original.payload
         assert timing["wall_clock"] == "perf_counter"
         assert timing["cpu_clock"] == "process_time"
+        assert (
+            timing["process_cpu_scope"] == "Python coordinator including native exact geometry"
+        )
         assert timing["excluded"] == [
             "module_startup_and_argument_parsing",
             "receipt_build_serialization_and_output",

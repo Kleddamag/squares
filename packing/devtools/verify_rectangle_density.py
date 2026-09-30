@@ -12,7 +12,7 @@ from contextlib import contextmanager
 from fractions import Fraction
 from pathlib import Path
 
-from sqpack import rectangle_density
+from sqpack import rectangle_density, rust_rectangle_geometry
 from sqpack.rectangle_density import (
     ANGLE_COUNT,
     CandidateError,
@@ -63,6 +63,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--bound-mode", choices=("common-core", "corner-min"), default="common-core"
     )
+    parser.add_argument("--backend", choices=("python", "rust"), default="python")
+    parser.add_argument("--rust-binary", type=Path)
     parser.add_argument("--retain-pending-boxes", action="store_true")
     parser.add_argument(
         "--timing",
@@ -76,8 +78,9 @@ def _parser() -> argparse.ArgumentParser:
 
 
 class _PhaseTiming:
-    def __init__(self, *, enabled: bool) -> None:
+    def __init__(self, *, enabled: bool, backend: str) -> None:
         self.enabled = enabled
+        self.backend = backend
         self.phases: dict[str, dict[str, float]] = {}
 
     @contextmanager
@@ -97,9 +100,15 @@ class _PhaseTiming:
 
     def attach(self, result: dict[str, object]) -> None:
         if self.enabled:
+            rust_backend = self.backend == "rust"
             result["timing"] = {
                 "wall_clock": "perf_counter",
                 "cpu_clock": "process_time",
+                "process_cpu_scope": (
+                    "Python coordinator only; Rust child CPU excluded"
+                    if rust_backend
+                    else "Python coordinator including native exact geometry"
+                ),
                 "excluded": [
                     "module_startup_and_argument_parsing",
                     "receipt_build_serialization_and_output",
@@ -118,13 +127,15 @@ def _refused(error: Exception | str, timing: _PhaseTiming) -> int:
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     checker_path = Path(rectangle_density.__file__)
-    timing = _PhaseTiming(enabled=args.timing)
+    adapter_path = Path(rust_rectangle_geometry.__file__)
+    timing = _PhaseTiming(enabled=args.timing, backend=args.backend)
     try:
         with timing.phase("input_read_hash"):
             checker_source = checker_path.read_bytes()
             candidate_bytes = args.candidate.read_bytes()
             candidate_sha256 = hashlib.sha256(candidate_bytes).hexdigest()
             checker_sha256 = hashlib.sha256(checker_source).hexdigest()
+            adapter_source = adapter_path.read_bytes() if args.backend == "rust" else None
         with timing.phase("admission"):
             candidate = load_candidate_bytes(
                 candidate_bytes,
@@ -142,21 +153,32 @@ def main(argv: list[str] | None = None) -> int:
                 max_seconds=args.max_seconds,
                 bound_mode=args.bound_mode,
                 retain_pending_boxes=args.retain_pending_boxes,
+                backend=args.backend,
+                rust_binary=args.rust_binary,
             )
     except (CandidateError, OSError) as error:
         return _refused(error, timing)
     try:
         with timing.phase("source_recheck"):
             checker_changed = checker_path.read_bytes() != checker_source
+            adapter_changed = (
+                adapter_source is not None and adapter_path.read_bytes() != adapter_source
+            )
     except OSError as error:
         return _refused(error, timing)
-    if checker_changed:
+    if checker_changed or adapter_changed:
         return _refused("checker source changed during verification", timing)
     result = report.as_dict()
     result["candidate"] = str(args.candidate)
     result["candidate_sha256"] = candidate_sha256
-    result["checker"] = "sqpack.rectangle_density:native-exact-v2"
+    result["checker"] = (
+        "sqpack.rectangle_density:rust-common-core-v1"
+        if args.backend == "rust"
+        else "sqpack.rectangle_density:native-exact-v2"
+    )
     result["checker_source_sha256"] = checker_sha256
+    if adapter_source is not None:
+        result["rust_adapter_source_sha256"] = hashlib.sha256(adapter_source).hexdigest()
     timing.attach(result)
     print(json.dumps(result, indent=2, sort_keys=True))
     if report.status == "VERIFIED":

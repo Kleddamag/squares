@@ -104,6 +104,7 @@ PROJECT_ROOT = configured_project_root()
 REPOSITORY_ROOT = PROJECT_ROOT.parent
 WORKBENCH_ROOT = REPOSITORY_ROOT / "packages/workbench"
 ENGINE = PROJECT_ROOT / "sqsearch/target/release/sqsearch"
+EXACT_GEOMETRY_CRATE = PROJECT_ROOT / "sqverify_exact"
 RESULTS = Path("campaign/series/series-000-smoke-and-calibration/results")
 ACTIVITY_MARKER = PROJECT_ROOT / ".gate-running"
 DEFAULT_CPU_COUNT = 4
@@ -2346,6 +2347,47 @@ def _rust_quality(context: Context) -> str:
     ).strip()
 
 
+def _rust_exact_geometry(context: Context) -> str:
+    """Check the diagnostic exact batch kernel against the Python area oracle."""
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("exact Rust geometry gate requires cargo")
+    environment = dict(context.environment)
+    environment["RUSTDOCFLAGS"] = f"{environment.get('RUSTDOCFLAGS', '')} -D warnings".strip()
+    child = replace(
+        context, environment=environment, timeout_seconds=min(context.timeout_seconds, 120)
+    )
+    output = _commands(
+        child,
+        (
+            (cargo, "fmt", "--all", "--check"),
+            (cargo, "clippy", "--locked", "--release", "--all-targets", "--", "-D", "warnings"),
+            (cargo, "test", "--locked", "--all-targets", "--quiet"),
+            (cargo, "doc", "--locked", "--no-deps", "--quiet"),
+            (cargo, "build", "--locked", "--release", "--quiet"),
+        ),
+        cwd=EXACT_GEOMETRY_CRATE,
+    )
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("exact Rust geometry gate ran no passing Rust tests")
+    target = Path(environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = EXACT_GEOMETRY_CRATE / target
+    binary = target / "release/sqverify-exact"
+    differential = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "devtools.check_exact_rust_kernel",
+            "--binary",
+            str(binary),
+        ),
+    )
+    _require_text(differential, "EXACT RUST GEOMETRY DIFFERENTIAL PASSED")
+    return f"{output}\n{differential}"
+
+
 def _trump_cones(context: Context) -> str:
     return _module(
         context,
@@ -3244,6 +3286,13 @@ _TOOLCHAIN = ("packing/pyproject.toml", "packing/uv.lock", "packing/.python-vers
 # per-file devtools pattern, so it belongs with the shared core rather than repeated.
 _CORE = ("packing/src/sqpack/*", "packing/devtools/__init__.py", *_TOOLCHAIN)
 _ENGINE_SRC = ("packing/sqsearch/*",)
+_EXACT_GEOMETRY_SRC = (
+    "packing/sqverify_exact/*",
+    "packing/devtools/check_exact_rust_kernel.py",
+    "packing/src/sqpack/rectangle_density.py",
+    "packing/resources/web/wand125-tools-2026-09-29/native-analytic-control.json",
+    "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
+)
 _ANY_PYTHON = ("*.py", "*.pyi", *_TOOLCHAIN)
 _CASES = ("packing/cases/*",)
 # The retained replay archives. Whole subtree, not the named files: several steps
@@ -3872,6 +3921,13 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_rust_floor.py",
             "packing/tests/test_rust_floor_contract.py",
         ),
+    ),
+    Step(
+        "exact rectangle Rust geometry",
+        _rust_exact_geometry,
+        fast=True,
+        broad=True,
+        touches=(*_EXACT_GEOMETRY_SRC, "packing/tests/test_validation_cli.py"),
     ),
     # 13.82s.
     Step(

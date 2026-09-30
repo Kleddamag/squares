@@ -7,11 +7,18 @@ import io
 import json
 import math
 import time
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
+from contextlib import ExitStack
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
+
+from sqpack.rust_rectangle_geometry import (
+    RustGeometryError,
+    RustGeometryTimeoutError,
+    RustRectangleGeometry,
+)
 
 type Point = tuple[Fraction, Fraction]
 type Polygon = tuple[Point, ...]
@@ -142,9 +149,13 @@ class VerificationReport:
     requested_angle_count: int
     bound_mode: str
     retain_pending_boxes: bool
+    backend: str = "python"
+    rust_binary_sha256: str | None = None
+    rust_table_sha256: str | None = None
+    backend_timeout: bool = False
 
     def as_dict(self) -> dict[str, object]:
-        return {
+        result: dict[str, object] = {
             "status": self.status,
             "n": self.candidate.n,
             "L": str(self.candidate.side),
@@ -167,6 +178,16 @@ class VerificationReport:
             "max_seconds": self.max_seconds,
             "angles": [angle.as_dict() for angle in self.angles],
         }
+        if self.backend == "rust":
+            result.update(
+                {
+                    "backend": self.backend,
+                    "rust_binary_sha256": self.rust_binary_sha256,
+                    "rust_table_sha256": self.rust_table_sha256,
+                    "backend_timeout": self.backend_timeout,
+                }
+            )
+        return result
 
 
 @dataclass(frozen=True, slots=True)
@@ -682,8 +703,9 @@ def _box_lower_bound(
     *,
     bound_mode: str,
     deadline: float,
+    coverage: Callable[[Polygon], Fraction],
 ) -> Fraction:
-    common = _coverage_polygon(candidate, _common_core(candidate, box, cosine, sine))
+    common = coverage(_common_core(candidate, box, cosine, sine))
     if bound_mode == "common-core" or common >= candidate.target:
         return common
     return max(common, _corner_minimum(candidate, box, cosine, sine, deadline))
@@ -732,7 +754,11 @@ def _expired(deadline: float) -> bool:
 
 
 def _verify_axis(
-    candidate: RectangleDensityCandidate, *, max_nodes: int, deadline: float
+    candidate: RectangleDensityCandidate,
+    *,
+    max_nodes: int,
+    deadline: float,
+    coverage: Callable[[Polygon], Fraction],
 ) -> AngleVerification:
     lower = candidate.side / 2
     upper = candidate.side - candidate.core_side / 2
@@ -753,7 +779,20 @@ def _verify_axis(
                     Fraction(),
                     stop_cause=cause,
                 )
-            value = coverage_at_point(candidate, x, y, Fraction(1), Fraction())
+            try:
+                value = coverage(
+                    square_polygon(x, y, Fraction(1), Fraction(), candidate.core_side)
+                )
+            except _BoundDeadlineError:
+                return AngleVerification(
+                    0,
+                    "INCONCLUSIVE",
+                    nodes,
+                    nodes,
+                    event_count - nodes,
+                    Fraction(),
+                    stop_cause="time_limit",
+                )
             nodes += 1
             minimum = value if minimum is None else min(minimum, value)
             if value < candidate.target:
@@ -797,6 +836,7 @@ def _verify_rotated(
     deadline: float,
     bound_mode: str,
     retain_pending_boxes: bool,
+    coverage: Callable[[Polygon], Fraction],
 ) -> AngleVerification:
     cosine, sine = _angle(index)
     extent = candidate.core_side * (cosine + sine) / 2
@@ -825,7 +865,13 @@ def _verify_rotated(
         nodes += 1
         try:
             lower_bound = _box_lower_bound(
-                candidate, box, cosine, sine, bound_mode=bound_mode, deadline=deadline
+                candidate,
+                box,
+                cosine,
+                sine,
+                bound_mode=bound_mode,
+                deadline=deadline,
+                coverage=coverage,
             )
         except _BoundDeadlineError:
             stop_cause = "time_limit"
@@ -847,7 +893,20 @@ def _verify_rotated(
             continue
         midpoint_x = (box.left + box.right) / 2
         midpoint_y = (box.bottom + box.top) / 2
-        point_value = coverage_at_point(candidate, midpoint_x, midpoint_y, cosine, sine)
+        try:
+            point_value = coverage(
+                square_polygon(midpoint_x, midpoint_y, cosine, sine, candidate.core_side)
+            )
+        except _BoundDeadlineError:
+            stop_cause = "time_limit"
+            unresolved += 1 + len(stack)
+            if pending is not None:
+                pending.append(PendingBox(index, *_box_coordinates(box), box.depth, stop_cause))
+                pending.extend(
+                    PendingBox(index, *_box_coordinates(queued), queued.depth, stop_cause)
+                    for queued in stack
+                )
+            break
         if point_value < candidate.target:
             if pending is not None:
                 pending.extend(
@@ -905,6 +964,8 @@ def verify_candidate(
     max_seconds: float = 300.0,
     bound_mode: str = "common-core",
     retain_pending_boxes: bool = False,
+    backend: str = "python",
+    rust_binary: Path | None = None,
 ) -> VerificationReport:
     """Verify selected net directions; only the complete 201-angle census can pass."""
 
@@ -937,33 +998,79 @@ def verify_candidate(
         raise CandidateError("max_seconds must be a nonnegative finite number")
     if bound_mode not in ("common-core", "corner-min"):
         raise CandidateError("bound mode must be common-core or corner-min")
+    if backend not in ("python", "rust"):
+        raise CandidateError("backend must be python or rust")
+    if backend == "rust" and bound_mode != "common-core":
+        raise CandidateError("Rust backend currently supports common-core only")
+    if backend == "rust" and not isinstance(rust_binary, Path):
+        raise CandidateError("Rust backend requires an explicit binary path")
+    if backend == "python" and rust_binary is not None:
+        raise CandidateError("Rust binary path requires the Rust backend")
     if type(retain_pending_boxes) is not bool:
         raise CandidateError("retain_pending_boxes must be Boolean")
     if retain_pending_boxes and max(1, max_nodes_per_angle) * len(indices) > 10_000:
         raise CandidateError("pending-box retention requires at most 10000 total nodes")
     deadline = time.monotonic() + max_seconds
     results: list[AngleVerification] = []
-    for index in indices:
-        result = (
-            _verify_axis(candidate, max_nodes=max_nodes_per_angle, deadline=deadline)
-            if index == 0
-            else _verify_rotated(
-                candidate,
-                index,
-                max_nodes=max_nodes_per_angle,
-                max_depth=max_depth,
-                deadline=deadline,
-                bound_mode=bound_mode,
-                retain_pending_boxes=retain_pending_boxes,
-            )
-        )
-        results.append(result)
-        if _expired(deadline):
-            break
+    rust_binary_sha256: str | None = None
+    rust_table_sha256: str | None = None
+    backend_timed_out = False
+    try:
+        with ExitStack() as resources:
+            if backend == "rust":
+                assert rust_binary is not None
+                engine = resources.enter_context(
+                    RustRectangleGeometry(candidate.rectangles, rust_binary, deadline=deadline)
+                )
+                rust_binary_sha256 = engine.binary_sha256
+                rust_table_sha256 = engine.table_sha256
+
+                def coverage(polygon: Polygon) -> Fraction:
+                    try:
+                        return engine.coverage(polygon)
+                    except RustGeometryTimeoutError as error:
+                        raise _BoundDeadlineError from error
+
+            else:
+
+                def coverage(polygon: Polygon) -> Fraction:
+                    return _coverage_polygon(candidate, polygon)
+
+            for index in indices:
+                result = (
+                    _verify_axis(
+                        candidate,
+                        max_nodes=max_nodes_per_angle,
+                        deadline=deadline,
+                        coverage=coverage,
+                    )
+                    if index == 0
+                    else _verify_rotated(
+                        candidate,
+                        index,
+                        max_nodes=max_nodes_per_angle,
+                        max_depth=max_depth,
+                        deadline=deadline,
+                        bound_mode=bound_mode,
+                        retain_pending_boxes=retain_pending_boxes,
+                        coverage=coverage,
+                    )
+                )
+                results.append(result)
+                if _expired(deadline):
+                    break
+    except RustGeometryTimeoutError:
+        backend_timed_out = True
+    except (RustGeometryError, OSError) as error:
+        raise CandidateError(f"Rust exact geometry refused: {error}") from error
     angles = tuple(results)
     if any(angle.status == "COUNTEREXAMPLE" for angle in angles):
         status = "COUNTEREXAMPLE"
-    elif len(angles) != len(indices) or any(angle.status == "INCONCLUSIVE" for angle in angles):
+    elif (
+        backend_timed_out
+        or len(angles) != len(indices)
+        or any(angle.status == "INCONCLUSIVE" for angle in angles)
+    ):
         status = "INCONCLUSIVE"
     elif indices == tuple(range(ANGLE_COUNT)):
         status = "VERIFIED"
@@ -979,4 +1086,8 @@ def verify_candidate(
         len(indices),
         bound_mode,
         retain_pending_boxes,
+        backend,
+        rust_binary_sha256,
+        rust_table_sha256,
+        backend_timed_out,
     )

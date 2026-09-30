@@ -39,7 +39,7 @@ Stdout begin:
   "candidate": "resources/web/wand125-tools-2026-09-29/native-analytic-control.json",
   "candidate_sha256": "bfd6e4dea67a048321836c69c9c9fe782687ffc512ccb1afc43249212ba5f01e",
   "checker": "sqpack.rectangle_density:native-exact-v2",
-  "checker_source_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
+  "checker_source_sha256": "1cc7ae158856a443fe9c51be2e9b9b04f4d7dc40fe663bfbd7337cb6fe7e1c7c",
   "declared_rhs": null,
   "mass": "1683003/625000",
   "mass_below_n": "191997/625000",

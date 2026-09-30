@@ -3,9 +3,9 @@ type: is
 id: is-01m3st0ft2fa2av6mts8sc0v24
 title: Measure coprime multiplication in the bounded full rectangle verifier
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 delegate: claude-code@spud10.local
 labels: []
@@ -14,8 +14,12 @@ parent_id: is-01m3sqcscz61hcv90x46w4ck31
 hold: null
 hold_until: null
 created_at: 2026-09-30T18:42:40.577Z
-updated_at: 2026-09-30T19:04:48.034Z
+updated_at: 2026-09-30T19:06:09.301Z
 started_at: 2026-09-30T18:51:25.186Z
+closed_at: 2026-09-30T19:06:09.297Z
+close_reason: "Preregistered bounded full-verifier comparison completed and independently audited by Astra: 12 exact matched reports; external child CPU median -14.4927%, invocation wall median -17.8519%, prereg criterion met. Receipt SHA8518e1a3; external angle1 remains INCONCLUSIVE, no production switch or proof credit. Adoption and remaining performance work stay with parent think-i5x7."
+resolution: null
+duplicate_of: null
 ---
 Follow the completed 12.912% fixed-primitive ablation in PR251 with a source-bound production-default versus experimental-coprime comparison on the retained external angle1/1000-node workload. Use the complete201-angle analytic fixture and malformed/source/deadline controls for correctness. Freeze sources, build flags, effective cutoff, traversal, node counts, timing metrics and accept rule before three alternating pairs. Require identical normalized reports; capped external runs remain INCONCLUSIVE and earn no certificate credit. Report coordinator CPU, child CPU and wall separately. Adopt only if the measured benefit justifies the small canonical helper; do not conflate this with a GMP/library comparison. Keep GCD/operand-size/allocation profiling and one alternative engine as separately measured hypotheses under parent think-3cwg.
 

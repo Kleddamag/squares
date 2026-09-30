@@ -1194,11 +1194,19 @@ def open_math_spans(text: str) -> list[CodeSpan]:
     skip the block parse on a migrated file whose only math-like spans sit where `$` cannot.
     """
     prose, _generated = mask(text)
+    lines = prose.split("\n")
     return [
         span
         for span in code_spans(prose)
-        if _reads_as_math(" ".join(span.content.split())) and _adjacent(text, span) is None
+        if _reads_as_math(" ".join(span.content.split()))
+        and _adjacent(text, span) is None
+        and not _ATX_HEADING.match(lines[span.line - 1])
     ]
+
+
+#: An ATX heading line, whose spans `plan` always keeps as code (`HEADING`): a cheap test
+#: that spares the ratchet the block parse on a file whose only math-like spans are there.
+_ATX_HEADING = re.compile(r" {0,3}#{1,6}(?:[ \t]|$)")
 
 
 def has_math_spans(text: str) -> bool:

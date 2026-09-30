@@ -2775,10 +2775,11 @@ def _readme(context: Context) -> str:
 
 def _math_markup(context: Context) -> str:
     """A file the math migration has done keeps its mathematics out of code spans."""
-    # Sub-second over the whole repository (0.34 s measured with nothing migrated, about
-    # 2.3 s estimated with every file migrated). The ratchet of Phase 3's math migration:
-    # a file listed as migrated in `devtools/math-markup.yaml` may not gain a math-like
-    # code span, and the backlog of unmigrated files is reported, never touched.
+    # The ratchet of Phase 3's math migration: a file listed as migrated in
+    # `devtools/math-markup.yaml` may not gain a math-like code span, nor a formula GitHub
+    # would show as dollars; the backlog of unmigrated files is reported, never touched.
+    # 3.6 s measured on 30 September 2026 over all 1,453 migrated files, across the cores
+    # (7.3 s serial, with another agent's load); 0.34 s with nothing migrated.
     return _module(context, "devtools.check_math_markup")
 
 

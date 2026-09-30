@@ -3193,6 +3193,11 @@ _WORKBENCH_INPUTS = (
     # The stage prints the shared version, pinned in `release.py`, so a re-pin changes the page.
     "packing/src/sqpack/release.py",
     "packing/devtools/render_explainer.py",
+    # The site's navigation bar the published page carries, from the shared partial.
+    "packing/devtools/render_overview.py",
+    "packing/devtools/templates/site-nav.html",
+    "packing/devtools/templates/site-nav.css",
+    "packing/devtools/overview/theme.js",
     "packing/witnesses/known-best/*",
     "packing/atlas/known-best/*",
     "package.json",

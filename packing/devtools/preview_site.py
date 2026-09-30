@@ -94,9 +94,7 @@ def missing_links(output: Path) -> list[str]:
             continue
         nav = HREF.search(path.read_text(encoding="utf-8"))
         if nav is None:
-            # The workbench is its own application; it links back in a note, not the nav.
-            if not name.startswith("workbench/"):
-                missing.append(f"{name}: no site nav")
+            missing.append(f"{name}: no site nav")
             continue
         base = path.parent
         for href in re.findall(r'href="([^"#?]+)', nav.group(0)):

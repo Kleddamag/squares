@@ -14,6 +14,14 @@
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   --site-wash: color-mix(in oklch, var(--kpress-doc-text) 9%, transparent);
 }
+/* The site's accent in dark mode, here rather than in site.css because every page carries
+   this file, the Visualizer included, and the bar's current item is drawn in it. kpress
+   declares the light value. */
+:root:where([data-kpress-resolved-theme="dark"]),
+:where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
+  --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
+}
 /* ---------- Navigation bar ----------
    Carried in kpress's own site-header slot, which spans the window, with its links in
    one fixed-width track so the bar sits in the same place on every page: the pages set
@@ -183,6 +191,34 @@
 /* On the explainer the bar is the first thing in the page, not in kpress's header slot. */
 .kpress-page-main > .site-nav {
   border-block-end: 1px solid var(--kpress-doc-border);
+}
+
+/* ---------- On an application page ----------
+   The Visualizer is an application rather than a kpress page, so nothing around the bar
+   gives it the margins kpress's standalone page gives every other page, nor the rule under
+   its header slot. Its shell (`render_overview.nav_shell`) takes both itself, from the same
+   tokens, so the bar has the same box on every page at every width. The shell is the
+   page's width and paints the page's background, so the application below starts at its
+   lower edge. */
+.site-app-shell {
+  background: var(--kpress-doc-bg);
+  box-sizing: border-box;
+  color: var(--kpress-doc-text);
+  flex: none;
+  padding: var(--kpress-page-margin-block-start) var(--kpress-page-margin-inline) 0;
+  width: 100%;
+}
+.site-app-shell .kpress-site-header {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+}
+/* kpress narrows its page margin on a phone; so does the shell. */
+@media (max-width: 767px) {
+  .site-app-shell {
+    --kpress-page-margin-inline: 0.5rem;
+  }
 }
 
 /* A page framed in a card's popover (`?view=embed`, set by overview/embed.js) shows the

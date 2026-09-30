@@ -265,6 +265,38 @@ def test_every_site_page_carries_the_theme_control(name: str) -> None:
     assert 'storageKey = "kpress.theme"' in script
 
 
+SITE_NAV_BLOCK = re.compile(r'<nav class="site-nav" aria-label="Site">.*?</nav>', re.DOTALL)
+
+
+def _the_bar(page: str, *, root: str) -> str:
+    """The page's one navigation bar with its current mark and its root prefix taken out."""
+    bars = SITE_NAV_BLOCK.findall(page)
+    assert len(bars) == 1, "a page carries exactly one navigation bar"
+    assert bars[0].count(' aria-current="page"') == 1, "the bar marks one page current"
+    return bars[0].replace(' aria-current="page"', "").replace(f'href="{root}', 'href="')
+
+
+def _visualizer_page() -> str:
+    """The Visualizer's page as `build_site` gives it the bar, on its own template."""
+    from workbench_tools import build_site  # noqa: PLC0415
+
+    template = build_site.WORKBENCH_PACKAGE / "assets" / "template.html"
+    return build_site.with_nav(template.read_text(encoding="utf-8"))
+
+
+@pytest.mark.parametrize("name", [*sorted(render_overview.PAGES), "workbench/index.html"])
+def test_every_site_page_carries_the_same_bar(name: str) -> None:
+    """Every page the Python build renders carries the bar byte for byte as the partial
+    writes it, but for which item is current and the prefix that reaches the site's root."""
+    assert name in render_overview.SITE_PAGES
+    if name == "workbench/index.html":
+        page, root = _visualizer_page(), "../"
+    else:
+        page, root = render_overview.PAGES[name]().html, ""
+    partial = render_overview.SITE_NAV.read_text(encoding="utf-8").replace("{{ROOT}}", "")
+    assert _the_bar(page, root=root) == SITE_NAV_BLOCK.findall(partial)[0]
+
+
 def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:
     """An explicit Light or Dark choice must win over the system theme, so the site's
     styles key on kpress's resolved theme, never on `prefers-color-scheme`."""

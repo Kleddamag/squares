@@ -11,7 +11,7 @@ Three layers carry it, from the bottom up:
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
 | Paper | [explainer-shell.html](explainer-shell.html) | The explainer’s type proportions, reading measure and figures |
-| Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer included |
+| Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the Visualizer included |
 
 The paper and site layers use the same values under their own prefixes, `--paper-` and
 `--site-`, so a site page and the explainer set a role at the same size and weight.
@@ -103,11 +103,20 @@ Each component is defined once in [site.css](site.css) and used on every page th
 it.
 
 - **Navigation bar.** One fixed-width row of sans links in the page’s header slot, the
-  same on every page, led by the site name, “Square Packing”, set in capitals by CSS
-  (`text-transform`, lightly tracked) so its text is unchanged, and a step heavier.
+  same on every page, the explainer and the Visualizer included, led by the site name,
+  “Square Packing”, set in capitals by CSS (`text-transform`, lightly tracked) so its
+  text is unchanged, and a step heavier.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
   current page alone is underlined in the accent.
   The edition appears only in the closing line.
+  Every page renders it from the one partial, `site-nav.html`, and it has the same box
+  on every page at every width.
+  The Visualizer is an application rather than a KPress page, so its build
+  (`workbench_tools.build_site`) takes the bar, its stylesheet, the theme bootstrap and
+  the gear’s script from `render_overview.nav_shell`, in a shell that gives it the page
+  margins and header rule KPress gives the others; the application fills the window
+  below it. Only the bar follows the theme there: the Visualizer itself has no dark mode
+  yet.
 
 - **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every
   page, the explainer included.

@@ -216,6 +216,62 @@ def nav_html(current: str, *, root: str = "") -> str:
     return nav.replace(marker, f'{marker} aria-current="page"')
 
 
+class NavShell(NamedTuple):
+    """The navigation bar for a page kpress does not render, in the three places it goes.
+
+    `head` opens the page's `<head>`: kpress's pre-paint theme bootstrap, kpress's design
+    tokens with the one face the bar is set in, and `site-nav.css`. `header` is the bar
+    in the shell `site-nav.css` gives an application page, for the start of `<body>`.
+    `script` is the gear's program, `overview/theme.js`, for the end of `<body>`.
+    """
+
+    head: str
+    header: str
+    script: str
+
+
+#: The face the bar is set in, the one `@font-face` of kpress's tokens an application page
+#: needs: `--kpress-font-sans` leads with it.
+_NAV_FACE = re.compile(r'font-family:\s*"Source Sans 3 Variable";\s*font-style:\s*normal;')
+
+
+def nav_shell(current: str, *, root: str) -> NavShell:
+    """The site's navigation bar, gear included, for an application page: the Visualizer.
+
+    The same partial, stylesheet and theme program every kpress page carries, with the
+    theme bootstrap kpress's standalone page runs before first paint, so the bar sits
+    where it does on every page and one stored choice, `kpress.theme`, drives the theme
+    on all of them. kpress's tokens come whole but for their faces, of which only the
+    bar's own is kept and inlined; the page's own stylesheet, placed after them, keeps
+    any of its own custom properties the tokens also name.
+    """
+    from devtools.render_explainer import (  # noqa: PLC0415
+        FONT_FACE_BLOCK,
+        inline_font_urls,
+        kpress_static,
+        theme_bootstrap,
+    )
+
+    static = kpress_static()
+    tokens = (static / "css" / "style-tokens.css").read_text(encoding="utf-8")
+    tokens = FONT_FACE_BLOCK.sub(
+        lambda match: match.group(0) if _NAV_FACE.search(match.group(0)) else "", tokens
+    )
+    if not _NAV_FACE.search(tokens):
+        raise SystemExit("kpress's style-tokens.css no longer declares the bar's face")
+    tokens = inline_font_urls(tokens, static / "css")
+    head = (
+        f"<script>{theme_bootstrap(static)}</script>\n"
+        f"<style>{tokens}</style>\n"
+        f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>"
+    )
+    header = (
+        '<div class="site-app-shell">\n<header class="kpress-site-header">\n'
+        f"{nav_html(current, root=root)}</header>\n</div>"
+    )
+    return NavShell(head, header, f"<script>{_script_text(THEME_SCRIPT)}</script>")
+
+
 @cache
 def favicon_html() -> str:
     """The site's icon: case 11, the project's central open case, drawn small as a data

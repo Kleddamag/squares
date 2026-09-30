@@ -34,8 +34,8 @@ body {
 :root:where([data-kpress-resolved-theme="dark"]),
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
-  --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
-  /* Chips turn over with the page: light fills that lighten with the level. */
+  /* The accent's dark value is in site-nav.css, which every page carries, the Visualizer
+     included. Chips turn over with the page: light fills that lighten with the level. */
   --site-rung-base: 75%;
   --site-rung-step: 4%;
 }

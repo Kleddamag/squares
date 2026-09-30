@@ -50,6 +50,7 @@ from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from devtools.render_overview import nav_shell
 from workbench_tools.self_contained import assert_self_contained_html
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
@@ -76,6 +77,12 @@ RENDER_INPUTS = (
     ROOT / "atlas/known-best/bound-citations.json",
     # The stage prints the shared version, which is pinned here, so a re-pin redraws the page.
     ROOT / "src/sqpack/release.py",
+    # The site's navigation bar, gear and theme, from the partial, stylesheet and program
+    # every page of the site carries (`render_overview.nav_shell`).
+    ROOT / "devtools/render_overview.py",
+    ROOT / "devtools/templates/site-nav.html",
+    ROOT / "devtools/templates/site-nav.css",
+    ROOT / "devtools/overview/theme.js",
     REPO / "vendor/kpress",
     REPO / "package.json",
     REPO / "package-lock.json",
@@ -119,6 +126,36 @@ page's design tokens like everything else, and the controls end `--site-note-cle
 the window's floor so their last row is never under it.
 """
 
+#: The page's entry in the site's navigation bar, which marks it as the current page.
+NAV_PAGE = "workbench"
+#: Where the site's root is from the page: it is served at `workbench/index.html`.
+NAV_ROOT = "../"
+
+
+def with_nav(page: str) -> str:
+    """Give the page the site's navigation bar, as every page of the site has it.
+
+    The bar is the site's own, rendered from its one partial by `render_overview.nav_shell`
+    rather than written again here, with this page marked current and its links reaching
+    the site's root. Its stylesheet and kpress's theme bootstrap open the head, so the
+    reader's stored theme is on the root before anything is drawn; the page's own
+    stylesheet follows them. The bar opens the body, above `#viewport`, which
+    `assets/workbench.css` then lays out below it, and the gear's program closes the body.
+    Like the note, it is a property of the published page: `body.capture` hides it.
+    """
+    shell = nav_shell(NAV_PAGE, root=NAV_ROOT)
+    head = HEAD.search(page)
+    body = BODY.search(page)
+    if head is None or body is None or "</body>" not in page:
+        msg = "could not place the site's navigation bar; the page has no head or body"
+        raise ValueError(msg)
+    page = (
+        f"{page[: head.end()]}\n{shell.head}{page[head.end() : body.end()]}\n"
+        f"{shell.header}{page[body.end() :]}"
+    )
+    return page.replace("</body>", f"{shell.script}\n</body>", 1)
+
+
 #: What the published page may load, which is nothing from the network. Scripts and styles
 #: are inline, fonts and images are `data:` URIs, and exports are `blob:` downloads, so the
 #: page needs no source beyond those. `default-src 'none'` covers every fetch the
@@ -136,6 +173,7 @@ CONTENT_SECURITY_POLICY = (
 )
 POLICY_META = f'<meta http-equiv="Content-Security-Policy" content="{CONTENT_SECURITY_POLICY}">'
 HEAD = re.compile(r"<head(?:\s[^>]*)?>", re.IGNORECASE)
+BODY = re.compile(r"<body(?:\s[^>]*)?>", re.IGNORECASE)
 
 REVISION = re.compile(r"[0-9a-f]{40}")
 
@@ -261,7 +299,7 @@ def build(
             dirty_metadata(dirty=source_dirty() if dirty is None else dirty),
         )
     )
-    marked = with_policy(page).replace("</head>", f"{identity}\n</head>", 1)
+    marked = with_policy(with_nav(page)).replace("</head>", f"{identity}\n</head>", 1)
     if identity not in marked:
         raise ValueError("could not stamp the page; it has no </head> to close")
 

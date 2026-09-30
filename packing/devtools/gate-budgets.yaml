@@ -321,14 +321,10 @@ tiers:
   # rule 2 allows 2.0x, so the declaration check refuses it: a tightened ceiling is not
   # optional here, it is what the register's own static rule demands.
   #
-  # 140 s is 1.85x of the record, and the two edges it sits between are the usual ones.
-  # It is above the drift rule's 1.5x (113.5 s), so the record-relative rule -- which
-  # names the step that grew -- still speaks before the ceiling does, and the ceiling is
-  # not what a regression trips first. It is below the step time this tier costs if its
-  # pool stops parallelising: the eight steps the faster run's log names already sum to
-  # 148.23 s over 42 more it does not name, so serial degeneration fails here rather
-  # than passing quietly. Both properties are what the 189 s and the 195 s before it
-  # were argued from, so the argument is unchanged and only the numbers moved.
+  # 2026-09-30: the tier now selects 54 of 85 steps, rather than the 50 of 80 that
+  # produced the 2026-09-17 record. The newly measured 114.34 s makes 140 s 1.22x
+  # the record, while preserving the absolute cap. The cap now speaks before the
+  # record-relative 1.5x rule; neither limit was raised to accommodate these runs.
   #
   # It remains outside the 180 s required-workflow wall, which includes checkout, setup,
   # queueing and the aggregator as well as this tier.
@@ -343,23 +339,45 @@ tiers:
   # would arm the stale rule against every honest run of the new one. The gate prints the
   # line to paste the first time a run at the reference shape measures the new tier.
   #
-  # 2026-09-17: the field has not been cleared again. What follows is a fall, not a
-  # re-scoping -- the tier selects the same 50 steps and the work inside it is the same
-  # work, run concurrently -- so the 94.65 s it supersedes moves into `history:`
-  # unchanged, and a fall owes the ratchet rule no attribution.
-  measured_seconds: 75.67
-  measured_on: '2026-09-17'
+  # 2026-09-30: both complete hosted checks attempts on PR #250 passed every
+  # mathematical and contract step but failed only the old record-relative cost band.
+  # Their same-source, same-shape walls support a new record; the rise is attributed
+  # below rather than relaxed by changing either enforcement limit.
+  measured_seconds: 114.34
+  measured_on: '2026-09-30'
   measured_where: >-
-    The geometric mean of two readings at the reference shape -- 90.19 s in run
-    35210073404 at head e8c79fe4 and 63.48 s in run 35213759889 at head 80a5976f, job
-    validate on PR 185, each selecting 50 of 80 steps, each green. Observed spread
-    1.42x. The fall is PR #185's concurrent `exact verification` (`think-5hfr`, merged
-    as d7f9d94d): that step read 67.51 s and 46.01 s in those two runs against 82.90 s
-    in run 35127260063 and 96.29 s in run 35182460400 on the serial code this tier ran
-    before, and nothing else in the selection changed. 90.19 s is 1.19x of this record
-    and 63.48 s is 0.84x, so both readings sit inside the drift and the stale rules the
-    record arms. Two readings is the minimum this convention accepts; the first hosted
-    run at the reference shape after this lands gives a third and can refine it.
+    The geometric mean of two complete readings at the reference shape -- 113.94 s in
+    run 36758687712 attempt 1, validate job 110035367595, and 114.74 s in attempt 2,
+    validate job 110037623536 -- on PR #250 at head
+    150f8b0dd35473f7aa9f713a63848b5bd6250b9d. Each selected 54 of 85 steps
+    with --jobs 3 and --inner-jobs 1; every step passed, and only the inherited
+    75.67 s record-relative band failed. Observed spread 1.01x. The unchanged
+    140 s absolute ceiling held both readings.
+  attribution:
+    cause: >-
+      Since the PR #185 record, four fast checks were added to this tier: exact
+      rectangle Rust geometry, class-record bound claims, archive annotation census,
+      and README recent-results agreement. The Rust check alone costs about 8 s in
+      each new run. Existing corpus-wide checks also have more work: tracked Python
+      files grew from 924 at d7f9d94d to 1,399 at 150f8b0dd, and the browser-code
+      scan and bead-tree steps nearly doubled. The unchanged exact-verification and
+      soundness-perimeter step definitions also read longer in both current hosted
+      attempts; the old two-run wall itself ranged from 63.48 to 90.19 s. These are
+      measured step costs and a changed 50-to-54-step selection, not a new ceiling.
+    unit: step-seconds
+    source: >-
+      PR #185 runs 35210073404 job 105165227319 and 35213759889 job 105177226821
+      compared with PR #250 run 36758687712 attempt 1 job 110035367595 and
+      attempt 2 job 110037623536; each job's retained == where the time went ==
+      summary. The PR #185 and PR #250 source trees enumerate exactly 50 and 54
+      checks steps, respectively.
+    grew:
+    - {name: soundness perimeter, before: 61.15, after: 77.06}
+    - {name: exact verification, before: 55.73, after: 72.46}
+    - {name: browser code lives in files (embedded JavaScript, probes), before: 18.73, after: 34.58}
+    - {name: bead tree, before: 12.21, after: 23.15}
+    - {name: exact rectangle Rust geometry, before: 0.0, after: 8.21}
+    - {name: soft-schema validation, before: 13.98, after: 16.21}
   history:
   - measured_seconds: 99.39
     measured_on: '2026-09-06'
@@ -411,6 +429,19 @@ tiers:
       failed only because this reading was below the stale-record boundary.
       Superseded on 2026-09-17: it is a reading of the same 50 steps with `exact
       verification` still serial, and PR #185 made that step concurrent.
+  - measured_seconds: 75.67
+    measured_on: '2026-09-17'
+    measured_where: >-
+      The geometric mean of two readings at the reference shape -- 90.19 s in run
+      35210073404 at head e8c79fe4 and 63.48 s in run 35213759889 at head 80a5976f, job
+      validate on PR 185, each selecting 50 of 80 steps, each green. Observed spread
+      1.42x. The fall is PR #185's concurrent `exact verification` (`think-5hfr`, merged
+      as d7f9d94d): that step read 67.51 s and 46.01 s in those two runs against 82.90 s
+      in run 35127260063 and 96.29 s in run 35182460400 on the serial code this tier ran
+      before, and nothing else in the selection changed. 90.19 s is 1.19x of this record
+      and 63.48 s is 0.84x, so both readings sit inside the drift and the stale rules the
+      record arms. Two readings is the minimum this convention accepts; the first hosted
+      run at the reference shape after this lands gives a third and can refine it.
   reference: {jobs: 3, inner_jobs: 1, cpus: 4}
   argument: >-
     The part of the pull-request surface that is none of the other seven: every floor,
@@ -418,7 +449,7 @@ tiers:
     rule rather than an accident -- `_build_engine` puts a serial `cargo build --release`
     in front of every step of any job that selects an engine step, so keeping all three
     engine steps and the Rust lint floor here stops every other job paying for a toolchain
-    it never uses. It is 50 steps of pure outer-parallel work at `--jobs 3`,
+    it never uses. It is 54 steps of pure outer-parallel work at `--jobs 3`,
     which is three units on four cpus and one cpu of headroom, and its wall is step time
     divided rather than any one step's own cost. `checks`, `frontend`, `typecheck`,
     `geometry`, `suite_a`, `suite_b`, `suite_c`, and `sweeps` are a partition of `--fast` by construction in

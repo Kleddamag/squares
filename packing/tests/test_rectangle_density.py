@@ -482,6 +482,7 @@ def test_comparison_cli_is_diagnostic_and_uses_one_exact_frontier(
     )
     assert receipt_status == 2
     receipt_path.write_text(capsys.readouterr().out)
+    original_receipt = receipt_path.read_bytes()
 
     status = comparison_cli.main(
         [
@@ -516,7 +517,28 @@ def test_comparison_cli_is_diagnostic_and_uses_one_exact_frontier(
     assert refused == 1
     assert refused_output["status"] == "REFUSED"
 
-    tampered = json.loads(receipt_path.read_text())
+    for field, value in (("max_nodes_per_angle", False), ("angle_index", True)):
+        tampered = json.loads(original_receipt)
+        if field == "angle_index":
+            tampered["angles"][0]["index"] = value
+        else:
+            tampered[field] = value
+        receipt_path.write_text(json.dumps(tampered))
+        refused = comparison_cli.main(
+            [
+                str(path),
+                "--frontier-receipt",
+                str(receipt_path),
+                "--n",
+                "3",
+                "--max-nodes-per-angle",
+                "0",
+            ]
+        )
+        assert refused == 1
+        assert json.loads(capsys.readouterr().out)["status"] == "REFUSED"
+
+    tampered = json.loads(original_receipt)
     tampered["mass"] = "0"
     receipt_path.write_text(json.dumps(tampered))
     refused = comparison_cli.main(

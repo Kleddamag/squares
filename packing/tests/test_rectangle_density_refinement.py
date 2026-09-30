@@ -168,6 +168,23 @@ def test_stale_source_and_malformed_census_refuse(
     assert json.loads(capsys.readouterr().out)["status"] == "REFUSED"
 
 
+@pytest.mark.parametrize(
+    ("field", "value"), [("max_nodes_per_angle", True), ("retain_pending_boxes", 1)]
+)
+def test_boolean_alias_in_retained_header_refuses(
+    synthetic_frontier: tuple[Path, Path],
+    capsys: pytest.CaptureFixture[str],
+    field: str,
+    value: object,
+) -> None:
+    candidate_path, receipt_path = synthetic_frontier
+    receipt: dict[str, Any] = json.loads(receipt_path.read_text())
+    receipt[field] = value
+    receipt_path.write_text(json.dumps(receipt))
+    assert refinement.main(_argv(candidate_path, receipt_path)) == 1
+    assert json.loads(capsys.readouterr().out)["status"] == "REFUSED"
+
+
 def test_timeout_keeps_current_parent_incomplete(
     synthetic_frontier: tuple[Path, Path],
     capsys: pytest.CaptureFixture[str],

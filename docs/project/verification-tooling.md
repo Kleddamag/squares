@@ -50,7 +50,7 @@ See [the classification definitions](../../epistemics.md).
 | --- | --- | --- |
 | Global n = 11 optimality, T-060 | All required mathematical obligations executed and reviewed; final composition has no pending obligations | Simplify the argument before writing the dedicated explainer; add convenient fresh chained replay automation |
 | Rectangle-density certificates, wand125/tokoharu tools | Optional independent Rust exact area backend and differential controls pass | Complete an external certificate replay and meet the C++ effectiveness and speed target; current bounded runs remain inconclusive and Rust is slower |
-| Wang–Li intake, PR #249 | Separate historical improvement to the previous n = 11 lower bound, with its own verification record | Reconcile claim IDs and shared generated records when the two open PRs are merged |
+| Wang–Li intake, PR #249 | Separate historical improvement to the previous n = 11 lower bound, with its own verification record | Integrate the still-draft PR #249 onto main after PR #246; reconcile claim IDs and shared generated records while preserving historical source credit |
 
 These pipelines do not substitute for one another.
 The rectangle-density checker is not the checker for the global optimality argument.
@@ -60,7 +60,7 @@ The completed rectangle experiment tested a stronger, independently reviewed der
 bound before committing to a native port.
 Its [preregistered diagnostic](reviews/review-2026-09-30-rectangle-derivative-bound.md)
 evaluated all 13 frozen pending boxes in 1.163 seconds including setup, improved no
-bound and closed no box.
+bound and closed no new box.
 That negative result rules out adoption on this evidence; it grants no proof credit or
 speed claim.
 
@@ -70,17 +70,24 @@ execution-specific bytes.
 A fresh chain needs reviewed state-equivalence joins.
 The publisher’s stale audit bindings (`think-gzju`) are another reproducibility defect;
 neither is an unexecuted mathematical premise in the accepted composition.
-Native performance (`think-3cwg` / `think-r97y`), proof simplification (`think-uz2x`),
-the later explainer (`think-08pw`), and cross-PR reconciliation (`think-d15x`) stay
-separately tracked.
+Native performance (`think-3cwg`), proof simplification (`think-uz2x`), the later
+explainer (`think-08pw`), and cross-PR reconciliation (`think-d15x`) stay separately
+tracked.
 
-The reusable pieces already have distinct homes: exact rectangle geometry in
-`sqpack.rectangle_density` and `sqverify_exact`, and reviewed n11 union and collision
-kernels in `n11_fast_exact_cover` and `n11_integer_collision`. Source-specific D4,
-field, capture and endpoint implications remain separate checkers.
-The next packaging steps are a thin fresh-replay entry point over those checkers
-(`think-e2ot`) and shared strict admission for the rectangle diagnostics (`think-nxd8`).
-Neither requires a new general workflow framework or rewriting accepted receipts.
+The reusable exact kernels have distinct homes: rectangle geometry in
+[`sqpack.rectangle_density`](../../packing/src/sqpack/rectangle_density.py) and
+[`sqverify_exact`](../../packing/sqverify_exact/), and reviewed n11 union and collision
+kernels in [`n11_fast_exact_cover`](../../packing/devtools/n11_fast_exact_cover.py) and
+[`n11_integer_collision`](../../packing/devtools/n11_integer_collision.py).
+The [pending-inventory helper](../../packing/devtools/rectangle_pending_inventory.py)
+validates canonical rational coordinates, permitted domains and the complete declared
+pending-box inventory for rectangle diagnostics.
+Each caller still binds its candidate, checker, threshold, search settings and any
+replay receipt; the helper grants no coverage or proof credit.
+D4, field, capture and endpoint implications remain in source-specific checkers.
+A thin fresh-replay entry point (`think-e2ot`) still needs reviewed state-equivalence
+joins between their newly executed receipts.
+It need not change the accepted historical evidence.
 
 ## Completed Global Proof Evidence
 

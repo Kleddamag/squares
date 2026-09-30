@@ -1454,6 +1454,19 @@ reviewed executions; the maintained union must deduplicate them against earlier
 evidence. Earlier aborted batches receive no credit.
 Neither this receipt audit nor a cached success marker repeats the geometry.
 
+The
+[second A2 batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-2/summary.json),
+SHA-256 `1a0cd58a21cf572a9428541623be42a93d21b8169a0145bec09569070f68aed1`, completes
+all 26 selected cases under the same frozen worktree checker, with 369 updates and
+23,616 rows. The
+[A1 integer batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-integer/summary.json),
+SHA-256 `860a8fddce125063eb769a7c0b77a2038151b65c267bc53288a423f1365d785e`, completes
+1652, 1658, 1776, 1816, 1841, and 1876 under reviewed checker `79473807`. Its 76 updates
+contain 2,432 rows and 23,730,928 collision inequalities.
+Both batches pass the same source, helper, decoded-receipt, and complete-inventory
+checks; all 32 IDs were new to the maintained union at admission.
+Their main-checkout copies retain the audited bytes.
+
 ## Baseline D4 Cut Implementation Checkpoint
 
 The new [finite-cut consumer](../../../packing/devtools/check_n11_baseline_d4_cuts.py),
@@ -1492,6 +1505,201 @@ The output lists the precise manifest-bound constraints and their proposed sourc
 identities. A later geometric consumer must compare its actual source constraints with
 that list before using any admitted cut.
 Neither large source node was downloaded or replayed for this finite diagnostic.
+
+## Linked Exclusion and Complete Capture Root State
+
+Shared checker `51c5fcfa802fe9e0ad644efd4bbaa14f132cb4f519e3b3c76ea4ba378686c814` uses
+[ancestry helper](../../../packing/devtools/n11_nonfield_ancestry.py)
+`f1d113d9d5c382933f3939d7481ecec6e486cc04890f417f7025af8e54264264` to pass the actual
+accepted groups and full pose rows between source nodes.
+Each child binds its immediate parent hash, seed, owner inventory, group hulls, and
+ordered pose references.
+Each node’s final state must match its completed updates.
+Open checkpoints grant no exclusion; only the last node’s independently checked
+contradiction can close the case.
+Twenty focused controls pass independently in 0.68 seconds.
+
+The
+[1723 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case1723-chain/pilot-fast-integer.json),
+SHA-256 `14b8676358dd4f9c4b71c6b0c329392ce3ee91895d092027f869d739c63b9eda`, binds those
+revisions and both exact source nodes.
+It accepts 75 strict seed points, 352 seed rows, 32 parent updates and two child
+updates, totaling 1,088 rows and 17,848 collision inequalities in 124.721 seconds.
+Its complete node/step/row inventory has no pending work, and its only exclusion is
+1723\. The maintained inventory now contains every exact ID in the pinned 1,931-case
+baseline; this is a union of reviewed observed executions, not an inference from the
+total accepted count.
+
+The
+[continuous capture root execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-full-integer/result.json),
+SHA-256 `0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4`, binds
+reviewed checker `2804989a` and the accepted first-step premise.
+Complete updates 1--12 accept 2,185 rows, 28,396,560 collision inequalities, 7,784
+ownership planes, and 92 compressed additions.
+Partial update 13 checks another 103 rows and 621,568 collision inequalities without
+promoting any row or point.
+The 891.927-second run reaches exact final-state equality and final source, dependency,
+and deadline checks.
+It therefore accepts the root node state for subsequent branch induction, resolving the
+selected-step receipt’s final-binding limitation.
+Capture-tree, candidate-capture, and global flags remain false.
+
+## Refined Partitions and Acquired Special Sources
+
+Shared checker `33e9dad1cc590f97b49a13daa73813f65a80587070f993451a8b235bc21d4014` with
+[refinement helper](../../../packing/devtools/n11_nonfield_refinement.py)
+`937d36d64bf385d94d8dad9e6de5c1f8c487f07955cdbc826987dd63dea3464c` removes the fixed
+seed-bin restriction from later updates.
+Each new closed interval lies in its uniquely referenced accepted predecessor interval;
+the new intervals form a gap-free full $[0,1]$ cover.
+Workers receive those exact predecessors, and final row counts match the accepted rows
+of each owner.
+A trailing incomplete step in an open ancestor is explicitly skipped, with
+no geometric or ownership promotion, and the source final state must still equal the
+state from completed updates.
+This implementation review grants no further case exclusion.
+The acquired 2053 and six-node 1393 sources fit this interval rule; 1393 also needs two
+unpromoted partial tails and steps containing up to 512 rows.
+
+The acquired 2175 and 2176 sources exactly match the manifest’s 72 and 73 proposed
+planes. Both use ordinary 64-bin wall seeds and one unguarded node, with 13 and 17
+complete updates, no collision regions, and terminal empty-owner contradictions.
+The [D4 admission helper](../../../packing/devtools/n11_nonfield_d4_admission.py),
+SHA-256 `621106a4855da5ca4bbc75985890561e80656cc7fb85dbcea95cf792b965ce28`, is approved
+as a source join: it refuses diagnostic or incomplete baseline reports and requires
+every actual rational owner/plane triple to match the pinned recipe and newly checked
+cut report. Its caller must freshly execute the frozen finite-cut consumer with the
+explicitly bound baseline inventory and recheck all dependencies and inputs before case
+acceptance. Admitted owner planes restrict query pre-wall and legal domains, and partner
+domains when used. Seed ownership, residual coverage, support, compression, and terminal
+checks remain required.
+
+The
+[acquired 1383 sources](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-sources/batch-partition-special.json)
+confirm five common ancestors followed by a two-node lower branch and a one-node upper
+branch. Both children start from the accepted state of source `b72e9019`, using separate
+copies. Their exact closed conditions are $y_{13}\le H$ and $-y_{13}\le-H$, where
+$H=B(U/2+4/3)=374956889708307252359863/116312507700684425319300$. These conditions cover
+every center, including equality, and must restrict both query and partner domains for
+owner 13. The lower branch closes through owner 6’s empty pose cover; the upper branch
+closes through owner 11’s. Both branches must accept before excluding 1383; this case
+has no baseline-exclusion premise.
+
+All eight actual parent links, initial group hulls and pose references, query and
+partner interval ancestry, and complete-only final pose states match the proposed 1383
+tree. Its 36,600 source query rows include 120 rows in three incomplete tails; there are
+260 complete updates and 132,288 partner rows.
+All 12,191 collision regions use the reviewed universal-collision rule, with no empty
+partner family. Variable partitions, necessary partner self-cuts, inherited center
+planes, and the two-child state join suffice for the observed grammar.
+This source audit proves no 1383 transition or exclusion.
+
+## Refined Replay and Special-Adapter Checkpoint
+
+The
+[second reviewed A3 batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-reviewed-2/summary.json),
+SHA-256 `675808fdc64b7e9a581b82331db959c2fdafacda6411996822d6a651dcac73b4`, completes
+all 32 selected cases under frozen checker `79473807`, with 405 updates, 23,584 rows,
+and 21,472 seed rows.
+Every compressed and decoded receipt identity, source and assignment binding, helper
+pin, ordered row inventory, singleton exclusion, and false global flag passes the
+receipt audit. The main-checkout copies retain the worktree bytes.
+All 32 IDs were new to the maintained 2,018-case union, taking it to 2,050, conditional
+on the observed reviewed executions.
+No earlier aborted batch is admitted.
+
+Shared checker `f430580c526c679d0b6a2551799bcec61a3973374fa7d6469064f11c459352cc` and
+partner helper `39f58aa5e83438009ca3a01c950f7d2668e37bedfda4cb8e55bd309c79bad850` extend
+the reviewed refined-interval rule with independently necessary partner self-cuts.
+For every refined closed interval, the frozen quadratic checker bounds all four corners
+of the complete physical square against the current accepted owned hull.
+The proposed partner domain must equal the accepted predecessor domain intersected with
+these proved cuts, including empty, point, and segment results.
+Strict partner core containment and same-prior collision checks remain required.
+The helper and its dependency closure are bound whenever partner covers are used.
+Thirty-two focused controls pass; this implementation review grants no exclusion by
+itself.
+
+The
+[2053 replay](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2053-refined/pilot-fast-integer.json),
+SHA-256 `5296d5061231abc7dd6e13892990575b71e45e74ce35d529779dea1de59461f1`, binds those
+revisions and refinement helper `937d36d6`. It accepts 69 strict seed points and 88 seed
+rows, followed by 11 eight-row parent updates and three sixteen-row child updates.
+Its 136 completed rows include 144 partner-cover rows and 54,736 collision inequalities.
+Source and assignment identities, both node inventories, every ordered step and row, and
+all helper pins match.
+The 27.400-second observed execution has no pending or skipped work and excludes exactly
+2053, with a false global flag.
+This admits that singleton under the observed-execution premise.
+
+The
+[full-baseline finite-cut execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/baseline-d4-cuts/complete-baseline-cuts.json),
+SHA-256 `b71f4c20b3ffef84e21953bad3c4ad77759647eecef8433b62c62f7a122499e7`, binds the
+frozen finite-cut checker and the
+[immutable baseline inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/baseline-d4-cuts/baseline-execution-inventory.json),
+SHA-256 `e581a614d4d3210375059e4fd98bfdae0ebb1ca8ba3078050454b0da208f3c6f`. That
+inventory contains every exact baseline ID; its 14 execution-record bindings match the
+retained bytes. The fresh 1.416-second calculation exhausts all 74 offending region
+assignments in 246 search nodes over all 506 raw survivors.
+It therefore admits the 72 and 73 necessary planes conditional on the reviewed baseline
+executions. The actual pinned 2175 and 2176 sources also pass the reviewed `621106a4`
+source join against this report.
+No geometric replay or singleton exclusion follows from the finite-cut calculation
+alone; its exclusion list is empty and its global flag false.
+
+The
+[special-assignment helper](../../../packing/devtools/n11_nonfield_special_assignment.py),
+SHA-256 `a01986779d54a80804b4ed9572c5448aa90e287c1dadae9b6b3f5377233aa4f7`, binds case
+and frame metadata, the D4 source and baseline identities, or the 1383 tree, seed,
+cover, and every ordered source node.
+It deliberately supplies no geometric meaning to publisher success flags.
+All three actual audits pass this helper and the unchanged A2 assignment checker.
+Seven focused controls pass.
+
+The
+[center-partition helper](../../../packing/devtools/n11_nonfield_center_partition.py),
+SHA-256 `43d2b8ec9c18911bbc26858f31db8429b2453b21a3a5a07c81daf7c5aa489e9b`, constructs
+an immutable plan after checking every actual parent chain, all source IDs, the
+unconstrained common prefix, two separate leaf tails, and the exact complementary closed
+center planes. The actual eight pinned headers produce the five-node common prefix and
+the two-node lower and one-node upper tails described above.
+Five focused controls pass.
+This helper grants no exclusion: its consumer must independently replay the common
+state, copy it for each branch, preserve every inherited condition, and close both
+leaves.
+
+## Conditional Capture Branch Review
+
+The [first-row r1 adapter](../../../packing/devtools/check_n11_capture_branch_r1.py),
+SHA-256 `f75b7ef718cc301833770128dd2f9b2bab3473b5dd01f59583e70fc2bb84abf9`, binds the
+exact reviewed root receipt `0d55007a` before and after its work.
+The earlier draft accepted a supplied root receipt without this identity check and was
+not admitted. The corrected adapter checks the root-to-child source link, every initial
+group and pose reference, and the exact closed condition $-y_{15}\le-B(U/2+5/4)$. It
+checks the original current-row identity before adapting only that label for the frozen
+root row checker; predecessor references, intervals, and geometry remain intact.
+
+The observed
+[r1 first-row execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-branch-r1-row0/result.json),
+SHA-256 `5d6061c4647d28778380328f784981d6bcfd608662fe3b8c6411019f1aed79ac`, binds the
+corrected adapter, root premise, and child source.
+It checks nine coverage events, 17 probes, and eight common-core planes in 2.706
+seconds. Its complete-step, branch, candidate, and global flags remain false; only this
+selected row is admitted.
+
+The [full-r1 adapter](../../../packing/devtools/check_n11_capture_branch_r1_node.py),
+SHA-256 `3e1bfc6471acc48ccbbce00a5c546f4f7e1e4e0cdd1bb3ce51247bfc94b10ce1`, is approved
+for a bounded replay.
+It reapplies the inherited owner-15 center condition to every query and used-partner
+view of accepted rows, including rows whose later outer support proposals extend beyond
+that condition. Each original current-row identity is checked before the same narrow
+label adaptation. All workers use the same accepted prior; every complete closed angular
+cover joins before kernel, compression, or state promotion.
+The final partial update cannot promote rows or additions.
+Exact child constraints are checked before adapting that field for the frozen
+final-state checker, and all source, premise, dependency, and deadline checks precede
+node acceptance. This source review grants no child-node, tree, candidate, or global
+proof credit.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

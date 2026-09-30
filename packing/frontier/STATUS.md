@@ -18,7 +18,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`8`](n-008.md) | `3` | `3` | `3.0` | `3` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`9`](n-009.md) | `3` | `3` | `3.0` | `3` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`10`](n-010.md) | `3 + (1/2)√2` | `3 + (1/2)√2` | `3.707106781187` | `3 + (1/2)√2` | proved | replayed here, external proof | — | 2026-09-07 |
-| [`11`](n-011.md) | `3.87708359002281` | `root(P_trump11, 3.87708359002281417730789706010096)` | `T=(6u+4)/(1+2u-u^2), u the unique root in (9/25,37/100) of 5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1` | `31/8` | open | replayed here, audited here | formal lower differs from report; proof audit pending | 2026-09-29 |
+| [`11`](n-011.md) | `3.87708359002281` | `root(P_trump11, 3.87708359002281417730789706010096)` | `3.87708359002281` | `31/8` | open | replayed here, audited here | formal lower differs from report; proof audit pending | 2026-09-29 |
 | [`12`](n-012.md) | `4` | `4` | `15680/3951` | `15680/3951` | open | replayed here, audited here | — | 2026-09-27 |
 | [`13`](n-013.md) | `4` | `4` | `4.0` | `4` | proved | replayed here, external proof | — | 2026-08-25 |
 | [`14`](n-014.md) | `4` | `4` | `4.0` | `4` | proved | replayed here, external proof | — | 2026-09-07 |

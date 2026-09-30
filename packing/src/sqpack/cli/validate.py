@@ -70,7 +70,8 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # left the open cases; n = 45 was Nagamochi-bounded, n = 21 carried a certificate.
     "n=1..100": (62, 62, 38),
     "n=1..200": (150, 150, 126),
-    "n=1..324": (262, 262, 238),
+    # T-060 is a reported n=11 proof claim; the verified/formal lane remains open.
+    "n=1..324": (262, 261, 238),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

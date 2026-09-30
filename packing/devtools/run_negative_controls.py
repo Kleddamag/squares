@@ -221,6 +221,15 @@ PRUNE = frozenset(
         ROOT
         / "campaign/agent-sessions/session-152-validation"
         / "validation-timings-validate-1.zip",
+        # Two earlier validation byproducts are retained in Git but are not inputs to
+        # any mutation control. The Session 106 fast archive is named as a plain output
+        # path; Session 152's initial diagnostic log has no reader. Neither is inline
+        # linked or registered as a result dependency, and both remain recoverable.
+        # Their 338,778 bytes restore headroom after the n=11 source intake crossed the
+        # unchanged 160 MiB private-worker cap. Dependency copy-back still takes
+        # precedence if a checked document later links either file.
+        ROOT / "campaign/agent-sessions/session-106-validation" / "fast-3deb90fc.tar.gz",
+        ROOT / "campaign/agent-sessions/session-152-validation" / "full-initial-diagnostic.log",
         # Agenda 024's commissioning outputs and its two manager roots are retained
         # research evidence, not mutation-control inputs. Long numerical logs and warm
         # states can grow while the gate is running; copying them into every private

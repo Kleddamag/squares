@@ -523,6 +523,34 @@ def test_session_152_timing_archive_is_not_a_mutation_worker_input(
     assert (tree / session.relative_to(controls.REPO)).read_bytes() == session.read_bytes()
 
 
+def test_historical_validation_byproducts_are_kept_in_git_but_not_workers(
+    control_snapshot: tuple[Path, set[Path]],
+) -> None:
+    tree, copied_targets = control_snapshot
+    byproducts = (
+        ROOT / "campaign/agent-sessions/session-106-validation/fast-3deb90fc.tar.gz",
+        ROOT / "campaign/agent-sessions/session-152-validation/full-initial-diagnostic.log",
+    )
+    specification = safe_load((ROOT / "devtools/controls.yaml").read_text())
+    for source in byproducts:
+        relative = source.relative_to(controls.REPO)
+        packing_relative = source.relative_to(ROOT).as_posix()
+        assert source.is_file()
+        assert source in PRUNE
+        assert all(
+            (ROOT / control["file"]).resolve() != source
+            and packing_relative not in control["run"]
+            for control in specification["controls"]
+        )
+        assert relative not in copied_targets
+        assert not (tree / relative).exists()
+    for session in (
+        ROOT / "campaign/agent-sessions/session-106-n26-source-consistency.md",
+        ROOT / "campaign/agent-sessions/session-152-external-density-and-n11-review.md",
+    ):
+        assert (tree / session.relative_to(controls.REPO)).read_bytes() == session.read_bytes()
+
+
 def test_old_validation_archive_is_pruned_while_current_records_survive(
     control_snapshot: tuple[Path, set[Path]],
 ) -> None:

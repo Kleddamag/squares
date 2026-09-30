@@ -1034,8 +1034,8 @@ TABLE_BLEED = (
 
 
 def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
-    """A data table's wide track is one rule on shared tokens. It shares the atlas grid's
-    maximum, and its growth term is zero at or below `--site-table-bleed-from` (80rem),
+    """A data table's wide track is one rule on shared tokens. It stops at its own maximum,
+    short of the atlas grid's, and its growth term is zero at or below `--site-table-bleed-from` (80rem),
     so a table at 1280 pixels or narrower keeps the plain wide track."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert "--site-bleed-max: 140rem;" in css
@@ -1044,7 +1044,8 @@ def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
     assert "--site-wide: var(--site-bleed-max);" in grid[: grid.index("}")]
     rule = css[css.index(TABLE_BLEED) :]
     rule = rule[: rule.index("\n}")]
-    assert "var(--site-bleed-max)," in rule
+    assert "--site-table-max: 100rem;" in css
+    assert "var(--site-table-max)," in rule
     assert "--site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));" in rule
     assert "calc(var(--site-wide) + var(--site-table-grow))" in rule
     assert "max-width: var(--site-table-wide);" in rule

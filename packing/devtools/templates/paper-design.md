@@ -435,17 +435,17 @@ it.
   400 units across, fine enough to show large.
 
 - **Wide bleed.** A wide block (`.site-wide`) takes the wide track, `--site-wide`, less
-  the page gutters. Two kinds bleed past it, both capped at one maximum,
-  `--site-bleed-max` (140rem). The atlas grid bleeds at every width.
-  A data table bleeds only above `--site-table-bleed-from` (80rem, 1280 pixels): from
-  there it grows one pixel for each pixel of window, `--site-table-wide`, until it
-  reaches the page gutters or the maximum.
+  the page gutters. Two kinds bleed past it.
+  The atlas grid bleeds at every width, up to `--site-bleed-max` (140rem). A data table
+  bleeds only above `--site-table-bleed-from` (80rem, 1280 pixels): from there it grows
+  one pixel for each pixel of window, `--site-table-wide`, until it reaches the page
+  gutters or `--site-table-max` (100rem, 1600 pixels), past which its columns would only
+  spread apart and a row would be harder to follow.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
   columns wrap less. The Every Result table is 1104 pixels wide up to 1280, 1424 at 1600
-  and 2024 at 2200; the frontier table, whose own track is 86rem, goes from 1376 to the
-  window less the gutters.
-  The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
-  bleeds with no rule of its own.
+  and 1600 from about 1780 up; the frontier table, whose own track is 86rem, goes from
+  1376 to 1600. The rule takes any `.site-wide` that is or holds a `.site-table-wrap`,
+  so a new table bleeds with no rule of its own.
   The replay table is the exception because it keeps to its content.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a

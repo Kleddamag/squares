@@ -65,6 +65,9 @@ body {
      above `--site-table-bleed-from`): paper-design.md, Wide bleed. */
   --site-bleed-max: 140rem;
   --site-table-bleed-from: 80rem;
+  /* A table stops at 100rem, short of the atlas's cap: past it, its columns only spread
+     apart and a row gets harder to follow. */
+  --site-table-max: 100rem;
   --site-subtitle-space: 1.25rem;
   --site-subtitle-scale: 1.1;
 }
@@ -100,13 +103,13 @@ body {
 }
 /* A data table's wide track bleeds as the atlas grid does, but only above
    `--site-table-bleed-from`: there it is exactly the wide track above, and past it the
-   table grows a pixel for each pixel of window, to the gutters or `--site-bleed-max`.
+   table grows a pixel for each pixel of window, to the gutters or `--site-table-max`.
    Any `.site-wide` that is or holds a table wrap takes it, so a new table needs no rule;
    the replay table keeps to its content and does not. */
 .site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)):not(.site-replay) {
   --site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));
   --site-table-wide: min(
-    var(--site-bleed-max),
+    var(--site-table-max),
     calc(100vw - 2rem),
     calc(var(--site-wide) + var(--site-table-grow))
   );
@@ -751,12 +754,12 @@ body {
   min-width: 18rem;
 }
 /* On a wide table the result takes the spare width: past KPress's 40rem cell cap, and
-   ahead of a long credit, which wraps at 14rem. */
+   ahead of a long credit, which wraps at 20rem. */
 .kpress .site-table td.site-col-result {
   max-width: none;
 }
 .site-table .site-col-credit {
-  max-width: 14rem;
+  max-width: 20rem;
 }
 .site-table .site-records {
   min-width: 10rem;

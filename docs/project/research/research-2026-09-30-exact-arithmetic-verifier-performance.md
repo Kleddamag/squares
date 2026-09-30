@@ -5,11 +5,12 @@
 **Author:** Codex (Astra mathematical and source review; Sol profiling), for the squares
 project
 
-**Status:** Complete: source survey, mathematical review, and one measured reduction
-ablation.
-Alternative libraries and full-verifier performance adoption remain unmeasured.
+**Status:** Complete: source survey, mathematical review, reduction ablation, and
+bounded verifier comparison.
+Alternative libraries and a full external certificate replay remain unmeasured;
+production defaults are unchanged.
 
-**Tracking:** `think-i5x7`, under `think-3cwg`.
+**Tracking:** `think-i5x7` and `think-ss4a`, under `think-3cwg`.
 
 ## Overview
 
@@ -35,10 +36,13 @@ The controlled multiplication ablation now supplies that measurement.
 On the fixed 128-polygon workload, omitting the final reduction lowered median Rust
 child CPU from 0.555 to 0.483 seconds, **12.9%**, with exact agreement in every pair.
 Python’s production coverage path still used less CPU on that workload.
-The result isolates one avoidable cost, leaves the production default unchanged, and
-earns a paired verifier experiment.
-GMP-backed Rust and Python arithmetic, pure-Rust alternatives, and homogeneous integer
-geometry remain unmeasured options for this kernel.
+The result isolates one avoidable cost.
+A subsequent paired verifier experiment found 14.5% lower Rust child CPU and 17.9% lower
+median invocation wall time on the retained external 1,000-node workload, with identical
+exact reports. That capped workload remains inconclusive; production defaults are
+unchanged.
+GMP-backed Rust and Python arithmetic, pure-Rust alternatives, and homogeneous
+integer geometry remain unmeasured options for this kernel.
 
 This work concerns the separate rectangle-density verifier.
 The independently confirmed `n = 11` optimality result, T-060, is already complete; its
@@ -318,6 +322,53 @@ The receipt binds `lib.rs` beginning `87e7c231`, benchmark `bff40e28`, normalize
 are retained. The two builds took 16.96 and 14.69 seconds separately.
 Build time is reported setup cost, not part of the subsecond query measurements or an
 estimate of agent labor.
+
+### The Bounded Verifier Comparison Also Improves
+
+The [follow-up receipt][verifier-ab] compares a freshly built default Rust binary with
+the reviewed coprime binary through the existing Python verifier.
+The [maintained benchmark][verifier-benchmark] runs three alternating pairs on each of
+two fixtures: all 201 analytic angles, and external angle 1 capped at 1,000 nodes.
+Every run must match the retained normalized report digest, including pending geometry.
+This fixes the mathematical work rather than comparing elapsed time alone.
+
+All twelve runs matched: the analytic fixture verified with 1,781 nodes, while the
+external fixture remained inconclusive after 1,000 nodes.
+No external certificate was accepted by this experiment.
+
+| Fixture and metric | Default median | Coprime median | Reduction |
+| --- | ---: | ---: | ---: |
+| External Rust child CPU | 9.924059 s | 8.485798 s | 14.49% |
+| External invocation wall | 11.742820 s | 9.646504 s | 17.85% |
+| Analytic Rust child CPU | 0.876950 s | 0.669636 s | 23.64% |
+| Analytic invocation wall | 1.572126 s | 1.359246 s | 13.54% |
+
+The predeclared rule required at least 10% lower median external child CPU, separated
+CPU ranges, and no more than 5% median wall regression on either fixture.
+It passed. External CPU ranges were 9.909474–9.992796 seconds for default and
+8.389309–8.632168 seconds for coprime.
+Wall measurements were noisier: paired external wall ratios were 0.837, 0.802, and
+0.971, and their ranges overlapped.
+The 17.85% figure is a median observation, not a guaranteed wall-time improvement.
+
+This comparison measures the whole default-versus-specialized implementation change;
+unlike the preceding normalized-helper ablation, it does not isolate only the final
+constructor. It supports a reviewed production-adoption decision for this kernel, not a
+prediction about other certificates, a Python speed comparison, or complete external
+verification. The default remains unchanged in this report’s accompanying code.
+
+The twelve invocation walls sum to 75.04 seconds, separate from the 6.43-second default
+release build. The receipt records coordinator CPU, child CPU, verification wall, and
+invocation wall for every run.
+Two earlier setup attempts produced no timed verifier trials: one used an incorrect
+Python module entrypoint, and one refused a different build-feature artifact identity.
+The corrected build and source identities were recorded before timing; the failed setup
+attempts are retained in `think-ss4a` rather than counted as trials.
+Preparation and review consumed additional agent time that was not separately metered.
+
+The benchmark source begins `ef07125f`, the receipt `8518e1a3`, the fresh default binary
+`0a8714df`, and the coprime binary `d25afa57`. Both builds are joined to the same Rust
+sources, compiler, and flags; only the intended feature selection differs.
 
 ### Equal Results Do Not Mean Equal Primitive Work
 
@@ -606,12 +657,13 @@ source/binary identities for each measured arm.
 
 ## Recommendations
 
-First, carry the successful canonical-multiplication experiment into a paired fixed-node
-verifier performance control.
-Keep the production default, geometry, subdivision, protocol, and input admission
-unchanged until that control passes.
-The 12.9% diagnostic gain is enough to justify this next experiment, not to mark the
-external certificate or native speed target complete.
+First, use the successful fixed-node verifier comparison to review adoption of the
+canonical multiplication helper.
+The measured benefit passes the predeclared continuation rule, while production
+geometry, subdivision, protocol, and input admission remain unchanged.
+Retain the exact differential and refusal controls when changing the default.
+Neither experiment completes the external certificate or establishes native speed parity
+with the upstream verifier.
 
 Second, collect representative operand sizes and operation counts in a separate
 diagnostic build.
@@ -630,22 +682,18 @@ the upstream interval verifier is not a drop-in exact arithmetic replacement.
 
 ## Next Steps: Separate Adoption From Further Diagnosis
 
-The reduction question now has a bounded positive result.
-The smallest next adoption control is a timed fixed-node verifier traversal with
-production and experimental arithmetic, preserving every mathematical input and
-requiring identical normalized reports.
-The 100-node correctness comparison already passed; use the retained 1,000-node workload
-for the next performance comparison and keep the analytic complete fixture as a
-correctness control.
+The reduction question and the bounded verifier comparison now have positive results.
+The 100-node correctness comparison and the timed 1,000-node comparison both preserve
+the exact reports; the complete analytic fixture also passes.
 A capped external run still earns no complete-certificate credit, regardless of its
 elapsed time.
 
-Before running it, freeze the binary/source identities, node and angle limits, exact
-cutoff, subdivision order, bound choice, and performance criterion.
-Use alternating pairs and record wall plus coordinator and child CPU; do not infer
-process CPU from wall.
-Keep source/protocol refusals, deadline behavior, tangency and degenerate-area controls,
-and canonical numerator/denominator assertions.
+For adoption and subsequent comparisons, preserve the frozen binary/source identities,
+node and angle limits, exact cutoff, subdivision order, bound choice, and performance
+criterion.
+Keep alternating pairs and separate wall, coordinator CPU, and child CPU. Keep
+source/protocol refusals, deadline behavior, tangency and degenerate-area controls, and
+canonical numerator/denominator assertions.
 A timeout remains incomplete.
 
 To diagnose the residual cost, collect representative operand sizes and operation counts
@@ -673,8 +721,8 @@ The matched and transport receipts pin the baseline `lib.rs` digest beginning
 `07fc7c68`, release binary `407021f0`, and candidate `8e3339ee`; the receipts contain
 the full identities.
 The OS sample uses that same binary.
-The later A/B has its own build and source bindings and passed only the diagnostic
-continuation criterion described above.
+The later kernel and bounded-verifier comparisons have their own build and source
+bindings and passed their respective diagnostic continuation criteria.
 Source changes or new library versions need new measurements rather than relabeling the
 historical receipts.
 
@@ -697,6 +745,10 @@ any one of them.
   exact comparisons, CPU ranges, and the passed diagnostic criterion.
 - [Coprime-kernel differential controls][coprime-controls]: 210 polygons, 10 refusals,
   complete analytic verification, and the capped external verifier comparison.
+- [Bounded verifier A/B][verifier-ab]: twelve exact report matches, paired CPU and wall
+  measurements, and the passed bounded performance criterion.
+- [Reusable bounded verifier benchmark][verifier-benchmark]: fixed workloads, source
+  admission, and supervised paired execution.
 - [Sampled transport run](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/rust-exact-os-sample-transport-2026-09-30.json):
   retained for provenance, not the unsampled timing baseline.
 - [Derivative frontier diagnostic][derivative]: all 13 declared pending boxes, no new
@@ -709,6 +761,8 @@ any one of them.
   benchmarks, with a different performance scope.
 
 [matched]: ../../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-rust-backend-matched-2026-09-30.json
+[verifier-ab]: ../../../packing/resources/web/wand125-tools-2026-09-29/receipts/rust-exact-bounded-verifier-ab-2026-09-30.json
+[verifier-benchmark]: ../../../packing/benchmarks/bench_rectangle_rust_verifier_ab.py
 [transport]: ../../../packing/resources/web/wand125-tools-2026-09-29/receipts/rust-transport-fixed-2026-09-30.json
 [sample]: ../../../packing/resources/web/wand125-tools-2026-09-29/receipts/rust-exact-os-sample-2026-09-30.json
 [arithmetic-ab]: ../../../packing/resources/web/wand125-tools-2026-09-29/receipts/rust-exact-arithmetic-ab-2026-09-30.json

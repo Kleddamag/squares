@@ -30,9 +30,9 @@ from sqpack.yamlio import safe_load
 
 #: (proved, open) at each corpus the frontier-corpus step has summarized.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (38, 62),
-    "n=1..200": (50, 150),
-    "n=1..324": (62, 262),
+    "n=1..100": (39, 61),
+    "n=1..200": (51, 149),
+    "n=1..324": (63, 261),
 }
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"
@@ -2084,7 +2084,7 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    # T-060 changes the reported n=11 lane while formal verification remains open.
+    # T-060's exact audit closes n=11 in both formal and reported lanes.
     reported_open = validate.FRONTIER_COUNTS[corpus.label][1]
     assert (
         f"reported lane: {corpus.count - reported_open} proved, {reported_open} open" in stdout

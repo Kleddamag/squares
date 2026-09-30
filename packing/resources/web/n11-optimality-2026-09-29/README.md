@@ -4,9 +4,13 @@
 publishes a proposed computer-assisted proof that the known eleven-square packing is
 globally optimal under independent rotations and boundary contact.
 Its claimed minimum side is the algebraic Trump construction side, about 3.8770835900.
-The frontier intake is T-060 at S5/V0/C1: a significant reported claim with a scoped
-source review, not complete mathematical or computational confirmation.
-Its initial receipt classification was C0; the recorded scoped review raised it to C1.
+**T-060 is now confirmed at S5/V4/C5.** The complete independent geometric
+execution ensemble covers all 2,180 exclusions and ten capture nodes. Astra at max
+reasoning reviewed their mathematical composition; the
+[final receipt](receipts/final-composition.json) has no pending obligations.
+The initial intake was V0/C0, followed by a scoped C1 review; the checkpoints below
+retain that history without substituting metadata checks for geometry.
+Shared arithmetic dependencies and reproduction limits are stated below.
 
 This packet pins source commit `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c` and tree
 `3fed944c5a0c1dda5e61cb9f45f0dd3d4dc6360c`. The selected files in [`source/`](source/)
@@ -45,7 +49,7 @@ mismatch between the actual near-state digest and its published audit; it blocks
 proof-packet binding, without refuting global optimality.
 The independent [capture receipts](receipts/capture-child-near/) instead check the
 source-state chain. The [completion inventory](receipts/completion-inventory.json) and
-separate final composition determine which reviewed obligations have joined; an
+[final composition](receipts/final-composition.json) bind the completed proof; an
 inventory does not rerun geometry.
 The symmetry check passed conditionally; it does not establish global optimality.
 The source’s publication note says the privacy-normalized public derivative has not had

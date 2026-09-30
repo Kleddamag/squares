@@ -909,7 +909,7 @@ session:
     bead: think-3i74
     objective: Complete the final near and center replays alongside the ordinary exclusion
       batch, reconcile their accepted executions, and close the exact proof composition.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Nine capture nodes and the accelerated final verifiers are independently reviewed.
     budget_minutes: 30
@@ -922,11 +922,34 @@ session:
     kill_condition: Missing execution, source mismatch, partial state or unreviewed rule
       prevents theorem promotion.
     fallback: Retain the exact incomplete obligation and target its measured bottleneck.
+    outcome: All 2180 exclusions and all ten capture nodes accepted. Astra-max approved
+      exact endpoint composition eaad8f14 with no pending obligations; T-060 earns V4/C5.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    stop_reason: Mathematical completion checkpoint at 2026-09-30T13:18:56Z.
+    next_action: Integrate the confirmed theorem into the registry, reader summaries and generated artifacts.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Integrate the confirmed n11 theorem, exact Rust tooling evidence and reader summaries;
+      run focused registry checks, regenerate data artifacts and resolve hosted CI.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: All mathematical components and the final composition are accepted.
+    budget_minutes: 45
+    started_at: '2026-09-30T13:18:56Z'
+    deadline_at: '2026-09-30T14:03:56Z'
+    expected_output: Committed and published V4/C5 evidence with consistent generated views and reviewed CI disposition.
+    validation_command: Focused composition controls, record tier, data artifact regeneration and hosted CI.
+    kill_condition: Unsupported promotion, stale generated views or failing correctness checks prevent completion.
+    fallback: Preserve the mathematical verdict and fix the specific integration defect without rerunning expensive geometry.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol runs near capture and measured optional Rust transport work; Astra
-      prioritizes final geometric and inventory audits; root integrates reviewed evidence.
+    next_action: Sol finishes reader docs and controls, Astra reviews registry scope, root integrates and publishes.
   budget:
     wall_minutes: 1135
     max_cycles: 40
@@ -1183,9 +1206,9 @@ session:
   resource_rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
   stop_reason: null
-  next_action: Under think-3i74, prioritize T-060 independent mathematical audit and validation;
-    think-pqg7 owns efficient verification tools, think-z3ko owns upstream integration, and other
-    tooling is deferred unless it discharges a named T-060 obligation. Certification debt remains explicit.
+  next_action: Mathematical confirmation is complete at V4/C5. Finish registry, generated artifacts
+    and hosted CI under think-3i74 and think-niqx; keep fresh-ensemble orchestration think-e2ot
+    and optional Rust performance think-3cwg separate from the accepted proof.
 ---
 # Upstream Merge and PR 246 Certification
 
@@ -1193,6 +1216,15 @@ The session began with integration of the s(32) point-cover qualification and
 gate-budget controls alongside PR 246’s independent rectangle verification and T-059
 census tools, provisionally labeled T-057 before upstream claim IDs were reconciled.
 Final merged-head certification remains integration debt under think-niqx.
+
+## Current Checkpoint
+
+The independent geometric executions and final Astra-max review confirm T-060:
+$s(11)=T$, at S5/V4/C5. All 2,180 exclusions and ten capture nodes are accepted;
+`final-composition.json` has no pending obligations.
+Registry and reader integration, data artifact regeneration and hosted CI are the active
+final slice. The plan below records the original dependency order; it does not describe
+unexecuted mathematics.
 
 ## Priority and Goal Hierarchy
 

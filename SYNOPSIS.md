@@ -1,16 +1,14 @@
 # Synopsis: The `s(n)` Program
 
-**Date:** 2026-09-15
+**Date:** 2026-09-30
 
 **Status:** Living document, revised whenever a result lands.
 
 **Owns:** The single technical account of what this project knows, how it knows it, and
 what it is doing next.
 
-**Evidence cutoff:** Last scientific target and result evidence through
-`80bcdbb0819504354e1278c37f211dd8cc2158fb`; later changes in this roll-up reconcile
-record lifecycle and reader state but add no scientific evidence.
-The record-state and validation revisions are retained in
+**Evidence cutoff:** Includes the independently audited T-060 global proof replay of
+2026-09-30. Earlier record-state and validation revisions are retained in
 [Session 128](packing/campaign/agent-sessions/session-128-research-state-rollup.md).
 
 > Every number here also appears in a schema-validated artifact in this repository, or
@@ -22,7 +20,7 @@ The record-state and validation revisions are retained in
 
 `s(n)` is the side of the smallest square that contains `n` non-overlapping unit
 squares, which may be rotated freely.
-The motivating case is `n = 11`, the smallest instance nobody has solved.
+The motivating case is `n = 11`, now solved at Walter Trump’s exact algebraic side.
 
 This project works under four independent principles, defined at the top level in
 [`README.md`](README.md#operating-principles): **Correctness** (Soundness) owns
@@ -72,7 +70,9 @@ T-026 established the earlier first-party bound
 `s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.8264474...` at `V4/C5`.
 T-033 tightens the same retained family to
 `s(11) >= 955000*sqrt(2073600042893309449)/359341754646249 = 3.8269975...` at `V4/C3`.
-The current verified lower bound is the stronger external result `s(11) > 31/8 = 3.875`.
+The exact value is now `s(11) = T = 3.877083590022814…`: T-060’s independently replayed
+global lower bound matches T-011’s exact Trump witness.
+Kleddamag’s `s(11) > 31/8 = 3.875` remains the earlier verified T-037 bound.
 Future research follows the
 [payoff policy](docs/project/handoff-2026-09-06-post-381-t2-t10-continuation.md#research-payoff-and-exposition):
 prioritize substantial bound improvements and methods or theorems that make them
@@ -156,9 +156,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-022](packing/frontier/RESULTS.md) | 11 | `V4` | `C5` | `S5` | `apparently-novel` | s(11) >= 38100*sqrt(8100042893309449)/899996306539 = 3.810025723614703, proved by an exact dilation-limit corollary of T-018’s retained certificate. |
 | [T-025](packing/frontier/RESULTS.md) | 11 | `V4` | `C5` | `S5` | `apparently-novel` | s(11) >= 191/50 = 3.82, by a threshold certificate: 584 point atoms of mass 271052551/31250000 and 320 threshold atoms, every one 2-of-3, of budget 143352577/62500000, on the D4-symmetric site set at shrunken side 9977/10000 and the 181-direction net. |
 | [T-026](packing/frontier/RESULTS.md) | 11 | `V4` | `C5` | `S5` | `apparently-novel` | s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.826447410572939, proved by an exact dilation-limit corollary of T-025’s threshold certificate re-certified on a finer direction net. |
+| [T-060](packing/frontier/RESULTS.md) | 11 | `V4` | `C5` | `S5` | `previously-published` | s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601 …, where u is the unique root in (9/25,37/100) of 5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0. |
 | [T-037](packing/frontier/RESULTS.md) | 11 | `V4` | `C4` | `S5` | `previously-published` | s(11) > 31/8 = 3.875, by Kleddamag’s 11-squares-certified-bound v1.0.2 release of 22 September 2026. |
 | [T-024](packing/frontier/RESULTS.md) | 11 | `V4` | `C3` | `S5` | `apparently-novel` | s(11) >= 3175000*sqrt(518400042893309449)/598960960743657 = 3.816609502788862, proved by an exact dilation-limit corollary of T-018’s retained atoms re-certified on a finer direction net. |
-| [T-060](packing/frontier/RESULTS.md) | 11 | `V0` | `C1` | `S5` | `previously-published` | Queuingtheorydotcom/11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c claims s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601 …, where u is the unique root in (9/25,37/100) of 5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0. |
 | [T-017](packing/frontier/RESULTS.md) | 12 | `V4` | `C4` | `S4` | `apparently-novel` | s(12) >= 99/25, by a first-party weighted fractional unavoidable-set certificate at container side 99/25 = 3.96. |
 | [T-019](packing/frontier/RESULTS.md) | 17, 18, 19 | `V4` | `C4` | `S4` | `apparently-novel` | s(17) >= 459/100, and s(18) >= 459/100 and s(19) >= 459/100, from a first-party weighted fractional unavoidable-set certificate at container side 459/100 = 4.59. |
 | [T-020](packing/frontier/RESULTS.md) | 19, 20, 21 | `V4` | `C4` | `S4` | `apparently-novel` | s(19) >= 24/5, s(20) >= 24/5 and s(21) >= 24/5, from a first-party weighted fractional unavoidable-set certificate at container side 24/5 = 4.80. |
@@ -309,11 +309,11 @@ ranked relational-certificate slate.
 A draft or proposed direction is not a registered hypothesis, and a registered
 hypothesis is not a frontier result.
 
-The current verified bracket is `3.875 < s(11) <= 3.877083590022814…`. Session 152 fully
-replayed and mathematically reviewed Kleddamag’s external certificate.
-It closes 95.89% of the gap from T-026 to the retained upper bound; the exact optimum
-remains open. Session 153 independently certifies every one of the 12,028 parent-angle
-intervals by directed-rounding box coverage, with no stalled or exhausted boxes.
+The exact value is now `s(11) = T = 3.877083590022814…` by T-060 and T-011. Session 152
+fully replayed and mathematically reviewed Kleddamag’s earlier external certificate,
+which closed 95.89% of the gap from T-026 to the Trump upper bound.
+Session 153 independently certifies every one of the 12,028 parent-angle intervals by
+directed-rounding box coverage, with no stalled or exhausted boxes.
 The event-sweep replay remains C3 by itself; the complete native decision and reviewed
 transfer theorem provide method-distinct C4 confirmation of the strict bound.
 Research below 3.875 must now justify its value as a simpler certificate or method
@@ -1274,20 +1274,23 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
-**Top priority: independently validate or refute T-060**, the proposed global optimality
-proof in
-[Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal).
-The [intake packet](packing/resources/web/n11-optimality-2026-09-29/README.md) pins its
-source; **think-3i74** owns the mathematical audit and independent validation plan.
-This is a new global claim, separate from T-037’s verified `s(11) > 31/8` and T-059’s
-row-minimum cross-check.
-Source publication explicitly leaves a fresh full replay of the sanitized public
-derivative outstanding.
-No global optimum is adopted at intake.
-The current W7 work builds the capabilities required for that audit.
-Tooling and efficiency tasks are subordinate; unrelated CI is outside its critical path.
-After validation, **think-uz2x** owns simplification, followed by the separate n11
-explainer under **think-08pw**. The
+**T-060 is independently verified at `V4/C5/S5`.** The
+[Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal)
+proof gives `s(11) = T`, Trump’s exact side.
+The [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) pins
+the source and independent exact replays; the
+[review](docs/project/reviews/review-2026-09-29-n11-optimality.md) audits the full
+mathematical composition, including all 2,180 exclusions, ten capture nodes, local
+isolation, and the exact witness.
+The publisher’s four cached final-state digests are stale; our acceptance rests on fresh
+source-bound geometry, not those cached results.
+T-037’s verified `s(11) > 31/8` and T-059’s reported row-minimum equality retain their
+separate scopes. The next handoff is to publish and maintain the verified result.
+
+The following paragraphs retain the previous intake handoff as an execution record.
+It placed tooling and efficiency off the proof’s critical path, then assigned
+**think-uz2x** to simplification and **think-08pw** to the separate n11 explainer.
+The
 [Session 164 plan](packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md)
 records parallel lanes, bounded checks and integration debt.
 
@@ -3881,21 +3884,20 @@ For most `n` the answer is uninteresting: `s(m²) = m` by the grid.
 It becomes interesting just above a perfect square, where the leftovers must be tilted
 in.
 
-At `n = 11` the upper end has not moved since 1979. On 2026-09-04 the lower end improved
-on Stromquist’s bound, stated in 1984 and published in 2003; the recorded search found
-no intervening improvement:
+At `n = 11` Walter Trump’s 1979 construction still supplies the exact upper bound.
+T-060’s independently audited global proof supplies the matching lower bound.
+The earlier lower-bound program passed Stromquist’s bound on 2026-09-04:
 
 |  | value | source |
 | --- | --- | --- |
-| Best known packing (upper bound) | `3.8770835…` | Walter Trump, 1979 |
-| Best certified lower bound | `31/8 = 3.875` (strict) | [Native n11 review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md), complete exact and interval coverage with the reviewed transfer theorem; C4 |
-| Bound gap | `0.0020836` | difference between the two bounds; the exact optimum remains open |
+| Best known packing (upper bound) | `3.877083590022814…` (exactly `T`) | Walter Trump, 1979; exact witness [T-011](packing/frontier/RESULTS.md) |
+| Best certified lower bound | `root(P_trump11, 3.87708359002281417730789706010096) = 3.877083590022814…` (exactly `T`) | Queuingtheorydotcom’s proof, independently replayed and audited here as [T-060](packing/frontier/RESULTS.md), `V4/C5` |
+| Bound gap | `0` | Matching exact lower and upper bounds |
 
 ![Walter Trump’s exact eleven-square packing.](packing/atlas/rendering/trump11-overview.svg)
 
-*The upper-bound endpoint of the interval: a certified degree-8 construction, still
-separated from the independently certified lower bound.
-The segment and dot contact marks are exact, not tolerance-based visual guesses.*
+*The exact optimum: a certified degree-8 construction with a matching global lower
+bound. The segment and dot contact marks are exact, not tolerance-based visual guesses.*
 
 The value `T-018` displaces is Stromquist’s `2 + 4/√5 = 3.788854382…`, stated in
 [Memo III, p. 10](packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf)
@@ -3999,15 +4001,16 @@ oblique records as a class
 
 ## `n = 11`, End to End
 
-The smallest open case, told once from what a proof has to do to what is left.
-This section restates the record through
+This section preserves the former open-case account as of
 [Session 156](packing/campaign/agent-sessions/session-156-w3-overnight-n11-settlement.md)
-on 2026-09-23, and the linked artifacts are authoritative where the two differ.
-Claims keep the distinctions [`epistemics.md`](epistemics.md) draws: proved,
+on 2026-09-23. For the settled result, see [T-060](packing/frontier/RESULTS.md) and the
+[proof review](docs/project/reviews/review-2026-09-29-n11-optimality.md).
+The linked artifacts are authoritative where the historical text and current case record
+differ. Claims keep the distinctions [`epistemics.md`](epistemics.md) draws: proved,
 machine-verified at a stated `V`/`C` rung, numerically observed, or conjectured.
 
-**The verified bracket is `3.875 < s(11) ≤ 3.87708359002281417…`**, a gap of
-`0.002083590022814177…` ([`n-011`](packing/frontier/n-011.md)). The lower end is
+**As of 2026-09-23, the verified bracket was `3.875 < s(11) ≤ 3.87708359002281417…`**, a
+gap of `0.002083590022814177…` ([`n-011`](packing/frontier/n-011.md)). The lower end is
 Kleddamag’s external certificate, replayed here by two complete methods; the upper end
 is Trump’s 1979 packing, verified exactly.
 Every first-party counting family is capped below `3.875`, no counting certificate can
@@ -4377,64 +4380,36 @@ family near `3.876`, to bound how far counting can reach; and the pruning tests 
 verified-global-optimization literature, from Markót and Csendes’s circle packings to
 Montanher and coauthors’ unit squares in a circle.
 
-### The road to settling `n = 11`
+### The exact `n = 11` result
 
-**What is established.** `s(11) > 31/8`, machine-verified by two complete methods, at
-`V4/C4` as the case record states it.
-`s(11) ≤ U`, machine-verified as `T-011`. Trump’s pose is strictly locally side-optimal
-(machine-verified, `exp-013`), with a quantified radius of about `0.004`, verified and
-exact since the BC-241 closure.
-With six squares axis-aligned and five at a common tilt within `10^-6` of Trump’s in the
-half-tangent, no packing beats `U` and only Trump’s pose attains it: `T-036`, composed
-from the machine-verified reduction `T-035` and BC-240’s first clause.
-Packings oriented only at `0°` and `45°` need side at least `3.885618` (Stromquist’s
-Theorem 3, from the literature).
-X-045 proves that at most three squares touch any wall in the bracket and that there are
-finitely many local-minimum side values; the PR 230 review found no fatal error in it,
-and neither statement is registered as a result.
+**Established.** `s(11) = T = 3.877083590022814…`, the exact side of Walter Trump’s
+packing. [T-011](packing/frontier/RESULTS.md) verifies the algebraic witness and
+[T-060](packing/frontier/RESULTS.md) supplies the matching global lower bound for
+arbitrarily rotated unit squares with disjoint interiors and boundary contact allowed.
+The latter is Queuingtheorydotcom’s Astra-assisted proof, building on this project and
+Kleddamag, independently replayed and mathematically audited here at `V4/C5/S5`.
 
-**What is observed, not proved.** No descent-stable minimum with three or more
-orientation classes below Stromquist’s value among 1,000 jolted starts (`exp-228`); no
-side below `3.897` among 200 refined uniform starts (`exp-204`, as X-046 reads it).
+The [proof review](docs/project/reviews/review-2026-09-29-n11-optimality.md) maps the
+2,184 canonical patterns, 2,180 exclusions, four symmetric survivors, exact D4 bridge,
+complete capture tree and fixed-side local isolation.
+The replay uses pinned source inputs and shares the mathematical geometry primitives
+disclosed in the review; it is an exact computational proof audit, not a proof-assistant
+formalization or a second independent method.
+Four final-state digests in the publisher’s cached audits are stale, so those cached
+PASS records do not establish the claim; the fresh source-bound replay and final
+composition do.
 
-**What is conjectured.** `s(11) = U`: Trump’s packing has stood since 1979.
-
-The road has three segments, and only the first is priced in the record.
-
-1. **Rung 0 is done; re-price the ladder.** Exp-232 closed the tree, so `H-236` is
-   confirmed at “verified, exact”, now that BC-241 is closed: the first optimality
-   statement with an equality case for a family containing Trump’s packing, about
-   Trump’s own angle only; Stromquist’s `0°`/`45°` bound is an earlier
-   restricted-orientation statement.
-   After the Fable max review it is registered as `T-035` and `T-036`. The consequential
-   work is the stronger per-node bound exp-231 calls for.
-   Tools the record names that bear on it are second-order convergent bounds from a
-   fixed dual at the box centre (X-046), descent leaves (idea 227), and symmetry
-   canonicalization (the PR 230 review); idea 246’s larger ball would save about three
-   refinement levels on each side of Trump’s box.
-   `H-239`’s measurement of `c` is estimated at an hour once the driver is admitted.
-2. **Rungs 1 to 3.** Each is a restricted-family theorem that strengthens Stromquist’s
-   Theorem 3, and every box closed with a positive margin yields a tube of positive
-   angular width around its exact angle pattern.
-   The two new minima from exp-228, at `3.8867` with two orientation classes and at
-   `3.8943` with three, set the sharpness any such theorem must resolve.
-   **This segment is unpriced:** X-046’s box counts predate exp-231’s measurement, and
-   the record holds no revised figure.
-3. **The far region.** Closing the eleven-dimensional angle space away from the
-   few-angle families is what settles the case.
-   **This segment is also unpriced:** X-046 ties it to `c` and `V(ε)`, both unmeasured
-   (`H-239`), and finds that the far region can be closed only by counting-type profile
-   theorems (idea 239) or by a search whose relaxation is coarse enough, neither of them
-   priced. A profile theorem shows that no packing at side at most `U` uses an
-   orientation in a given angle set; X-046 counts Stromquist’s Theorem 3, for the
-   profile `{0°, 45°}`, as the only known success.
-
-**The record offers no route to a first-party lower-bound gain with the instruments it
-holds.** The frozen families are exhausted below `3.875`, the point language is capped
-at `3.8288`, Kleddamag’s own certificate has a collar of `3.26e-9`, and the PR 230
-review makes a producer the record does not have the prerequisite for any gain.
-Even a move to `3.876` would remove only about 48% of the remaining gap (X-044) and
-prove nothing about `U`.
+Kleddamag’s `s(11) > 31/8` ([T-037](packing/frontier/RESULTS.md)) remains an earlier,
+independently verified lower bound.
+The restricted six-plus-five theorem and local Trump theorem
+([T-035](packing/frontier/RESULTS.md) and [T-036](packing/frontier/RESULTS.md)) retain
+their own scopes. The separate wand125 ceiling and row-minimum reports
+([T-058](packing/frontier/RESULTS.md) and [T-059](packing/frontier/RESULTS.md)) have not
+been promoted by T-060’s verification.
+Global optimality of the side does not assert uniqueness of the optimal arrangement.
+The earlier research program and its unpriced routes are retained in
+[X-046](packing/campaign/explorations/X-046-n11-settlement-program.md) as the history of
+how the gap was approached before this proof.
 
 ## Theoretical Results
 

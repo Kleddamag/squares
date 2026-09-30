@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-09-29'
+last_reviewed: '2026-09-30'
 evidence:
   - id: E-n011-global-optimality-report
     claim: lower-bound
@@ -29,17 +29,75 @@ evidence:
         This is a public proof-packet defect, not a geometric refutation. See
         docs/project/reviews/review-2026-09-29-n11-optimality.md and its retained receipts.
     limitations: >-
-      The source claims the exact Trump optimum through a 2184-pattern cover,
-      2180 exclusions, symmetry reduction of four survivors and a complete capture
-      proof for case 438. Its publication notes explicitly exclude a fresh full
-      geometric replay of the sanitized public derivative. Local intake has source
-      files and LFS pointers, not all certificate payloads; no independent acceptance
-      or refutation is established by this registration. Distinct from the T-037
-      lower bound and T-059 row-minimum equality.
+      This entry preserves the publisher's claim and the initial source-review
+      defect, not a successful execution of the publisher's driver. Four stale
+      B4-B7 final-state digests prevent that advertised binding. All required
+      payloads were subsequently acquired and independently checked; the completed
+      exact execution ensemble is E-n011-global-optimality-independent below.
+      These reproducibility defects do not refute the geometric theorem.
     blocker:
-      kind: mathematics
-      detail: Audit the global cover, every exclusion rule, symmetry reduction and complete endpoint capture; obtain required payloads and independently check the decisive obligations before any promotion.
-    source_reviewed: '2026-09-29'
+      kind: checker
+      detail: The publisher's B4-B7 audit bindings need correction before its advertised fresh replay can pass unchanged.
+    source_reviewed: '2026-09-30'
+  - id: E-n011-global-optimality-independent
+    claim: exact-value
+    scope: {n_values: [11]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[Queuingtheorydotcom n11 optimality 2026]'
+    certificate: packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
+    replay: >-
+      Replay the geometric components with the frozen commands in
+      packing/resources/web/n11-optimality-2026-09-29/README.md and the linked
+      per-component provenance records; these completed executions are the
+      evidence. Then, from packing, run .venv/bin/python3 -m
+      devtools.check_n11_final_composition --out /tmp/n11-final-composition.json
+      to reconcile their reviewed bindings. The composition command alone does
+      not rerun geometry.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md
+      theorem: Global optimality of Trump's eleven-square packing
+      scope: s(11)=T for eleven congruent unit squares with independent rotations and boundary contact.
+      pinpoints: >-
+        Final composition eaad8f14cf3404e8abe1bfee18cbd7f12a2fed2094f46f021d4e3bfb3088b141
+        binds 2180 exact exclusions, the complete 10-node capture graph, the
+        14-round root induction, all three far contradictions, 136-row near-pose
+        inclusion, 128 local branches with 66 strict margins each, the D4 bridge,
+        and the exact matching witness. The observed geometric executions and
+        mapped mathematical review establish these premises; receipt consistency
+        alone would not establish them.
+      assumptions:
+        - All 2184 canonical patterns cover packings in the cap U, including every smaller-container packing by embedding; four survivors reduce to case 438 by exact symmetry.
+        - Exact closed branch covers, complete owner updates and strict seed ownership support the complete capture induction.
+        - The accepted near state lies in the reviewed local neighborhood in the correct frame.
+        - Any smaller container embeds concentrically in the cap and recenters into the fixed-T local problem, where local isolation forces the exact witness span T, a contradiction.
+      audit_record: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: GPT-6 Astra at max reasoning, with Sol implementation and coordinator integration
+      note: >-
+        Reviewed every component family, actual complete execution bindings,
+        adverse controls and the full endpoint argument. Independently reproduced
+        the final composition with no pending obligations. V4/C5 records exact
+        computation with mapped mathematical review, not a distinct-method C4
+        proof or proof-assistant V5 certification.
+    limitations: >-
+      Independent source ingestion and geometric replay share disclosed local
+      arithmetic and construction primitives with the source; this is not fully
+      disjoint implementation or a second mathematical method. The publisher's
+      four stale final-state digests remain defects in its advertised replay.
+      Fresh whole-ensemble orchestration needs state-equivalence rebinding because
+      child checkers pin historical parent receipts including timings (think-e2ot).
+      Completed observed runs with those reviewed premises establish this result;
+      the fast final composer is only an evidence reconciler. Neither uniqueness
+      nor a broader rigidity classification is claimed.
+    source_reviewed: '2026-09-30'
   - id: E-wand125-tools-ceiling-report
     claim: derived-structure
     scope: {n_min: 1, n_max: 100}

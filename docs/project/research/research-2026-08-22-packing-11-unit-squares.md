@@ -11,6 +11,13 @@ same day’s [MacIver review](../reviews/review-2026-09-07-maciver-square-packin
 his missing computational artifacts to the source-availability table; his three
 manuscripts are now archived, and no operative bound changes from that addition.
 
+**Current status, 2026-09-30:** `s(11)` is now verified exactly at Walter Trump’s
+algebraic side by [T-060](../../../packing/frontier/RESULTS.md) and the exact witness
+[T-011](../../../packing/frontier/RESULTS.md).
+The [case record](../../../packing/frontier/n-011.md) and
+[proof review](../reviews/review-2026-09-29-n11-optimality.md) supersede the dated bound
+status below; the literature analysis remains preserved.
+
 ## How to read the citations
 
 Claims in this document carry an inline key in bold brackets, e.g.
@@ -34,9 +41,9 @@ the weakest in this document and are flagged again in [Open Questions](#open-que
 
 ## Current Summary Through 2026-09-06
 
-**Since then.** T-033 carried this project’s bound to `3.8269975…` on 22 September, and
-Kleddamag’s `s(11) > 31/8 = 3.875`, developed from T-026’s certificate, is the verified
-lower bound, about `0.0021` below Trump’s packing; see
+**By 2026-09-22.** T-033 carried this project’s bound to `3.8269975…`, and Kleddamag’s
+`s(11) > 31/8 = 3.875`, developed from T-026’s certificate, was then the verified lower
+bound, about `0.0021` below Trump’s packing; see
 [`n-011`](../../../packing/frontier/n-011.md).
 The summary below is kept as of its date.
 
@@ -1163,7 +1170,7 @@ Use the structured form to query or plot; use these tables to read.
 | 8 | `3` | counting | Said El Moumni (1999) | proved |
 | 9 | `3` | perfect square | classical | proved |
 | 10 | `3 + (1/2)√2` | unavoidable points | Walter Stromquist (2003) | proved |
-| 11 | `3.87708359` | counting | Queuingtheorydotcom (2026) | proof audit pending |
+| 11 | `3.87708359` | counting | Queuingtheorydotcom (2026) | proved |
 | 13 | `4` | unavoidable points | Wolfram Bentz (2010) | proved |
 | 14 | `4` | unavoidable points | Erich Friedman (2009) | proved |
 | 15 | `4` | counting | Said El Moumni (1999) | proved |

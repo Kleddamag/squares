@@ -1067,6 +1067,24 @@ The crate forbids unsafe code.
 These checks cover `sqsearch`; archived third-party verifier sources require their own
 source-bound builds and replay checks.
 
+The separate `sqverify_exact` crate implements optional exact rational rectangle
+geometry. From `packing/`, after setting the task scratch environment required by
+`AGENTS.md`, run its complete focused gate:
+
+```bash
+uv run --frozen --all-extras --group dev packing-validate --only "exact rectangle Rust geometry"
+```
+
+That gate uses the crate’s pinned toolchain, runs rustfmt, Clippy, tests, rustdoc and a
+locked release build, then compares exact results with the Python reference.
+It leaves the binary at `$CARGO_TARGET_DIR/release/sqverify-exact` when the target
+directory is absolute.
+Pass that path to `devtools.verify_rectangle_density` with
+`--backend rust --rust-binary PATH`; Python remains the default.
+The [tooling overview](docs/project/verification-tooling.md) records the supported
+inputs, refusal behavior, golden controls and measured performance limits.
+This crate verifies rectangle geometry, a separate contract from the global n11 proof.
+
 The native rectangle CLI has
 [five golden scenarios](packing/tests/golden/rectangle-density-cli/) covering complete,
 partial, capped, counterexample and admission-refusal results.

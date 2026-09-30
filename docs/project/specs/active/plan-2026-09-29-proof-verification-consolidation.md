@@ -24,6 +24,23 @@ The schedule is a target, not evidence that the remaining proof will pass or fit
 A failed certificate binding, an incomplete computation, and a mathematical refutation
 must remain distinct outcomes.
 
+## Completion Checkpoint — September 30
+
+All 2,180 exclusions and ten capture nodes have complete independent geometric
+executions and Astra-max review.
+The final composition accepts the exact equality $s(11)=T$ with no pending obligations;
+T-060 is recorded at **S5/V4/C5**. The
+[current review](../../reviews/review-2026-09-29-n11-optimality.md) links the final
+evidence, shared-kernel disclosures and the publisher’s four stale receipt digests.
+Counts in the baseline below describe the earlier planning checkpoint.
+
+The remaining integration work is registry/render consistency, release data stamps and
+hosted CI. Fresh whole-ensemble orchestration is tracked by `think-e2ot`; optional Rust
+rectangle performance by `think-3cwg`. Neither substitutes for or leaves a gap in the
+completed T-060 geometric ensemble.
+The separate simplification and explainer beads remain ordered: streamline the accepted
+proof before starting the new paper.
+
 ## Goals
 
 1. Independently accept every required global proof obligation, or isolate a precise
@@ -404,17 +421,36 @@ improve the complete verification task.
 Then compare complete runs under the matched contracts above; no incomplete run
 establishes speed parity.
 
+## Final Integration Efficiency Check
+
+Hosted run `36717374480` passed every functional test, but shard A took 165.10 seconds
+against a 109.92-second reference and failed the 1.5-times regression threshold.
+Two preceding cohorts took 163.13 and 164.37 seconds, so this was not a new isolated
+proof change. The recorded shard partition covered 325 files; the current successful
+pytest reports covered 433. Their summed test costs were 553.09 seconds on A and 381.58
+on B.
+
+The maintained `devtools.suite_files record` tool rebuilt the partition from both
+complete reports from that same run and source.
+It predicts 467.33 seconds of summed test cost in each shard.
+Those sums are not shard wall times.
+All 25 partition controls pass; the selected tests and timing thresholds are unchanged.
+A fresh hosted run must measure whether the balanced partition meets the existing wall
+budgets (`think-fjdd`).
+
 ## Rollout and Completion
 
 Coordinate the parallel Wang–Li intake in
 [issue #247](https://github.com/jlevy/squares/issues/247) through **think-d15x**. This
-branch retains T-058–T-060; the intake reserves T-061 for its separately reviewed lower
-bound. Its generalized parent-core verifier is outside the rectangle-kernel work here.
+branch retains T-058–T-060. The intake is now PR #249 and carries a provisional T-058;
+whichever branch merges second must assign an unused ID and preserve the source history.
+Its generalized parent-core verifier is outside the rectangle-kernel work here.
 T-059’s complete row-minimum equality remains a source claim with only the retained
 sample replayed by that wrapper; T-037’s complete native coverage is a separate result.
 The second branch to merge must merge current main, preserve both claim histories and
 regenerate the release revision.
-No unconfirmed T-060 equality supersedes an accepted lower bound.
+The now-confirmed T-060 equality supersedes the lower frontier without erasing the
+earlier bounds or the separately attributed Wang–Li result.
 The coordination review is recorded on
 [PR #246](https://github.com/jlevy/squares/pull/246#issuecomment-5904905961).
 

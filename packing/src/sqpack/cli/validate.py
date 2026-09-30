@@ -68,10 +68,12 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # proved s(32) = 6, so n = 32 left the open cases in both lanes. 38 since
     # 2026-09-29: replayed external mixed covers proved s(21) = 5 and s(45) = 7, so both
     # left the open cases; n = 45 was Nagamochi-bounded, n = 21 carried a certificate.
-    "n=1..100": (62, 62, 38),
-    "n=1..200": (150, 150, 126),
-    # T-060 is a reported n=11 proof claim; the verified/formal lane remains open.
-    "n=1..324": (262, 261, 238),
+    # T-060's independent exact audit proves n=11, reducing both open lanes by one
+    # in every corpus. Its previous reported-only status had already removed n=11
+    # from the n=1..324 reported-open count.
+    "n=1..100": (61, 61, 38),
+    "n=1..200": (149, 149, 126),
+    "n=1..324": (261, 261, 238),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

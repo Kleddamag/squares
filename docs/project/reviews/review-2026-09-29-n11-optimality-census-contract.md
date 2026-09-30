@@ -1,11 +1,15 @@
 # Eleven-Square Optimality: Census and Capture Ancestry Contract
 
-The next bounded checks for **T-060** establish whether the published case lists and
-capture dependencies cover the claimed domain.
-They support the independent proof review under `think-3i74`; they do not change the
-reported theorem’s S5/V0/C1 classification or the verified lower bound.
-The [source review](review-2026-09-29-n11-optimality.md) records the theorem, completed
-symmetry check, and remaining geometric obligations.
+**Final disposition, September 30:** the complete independent execution ensemble and
+mathematical review confirm **T-060 at S5/V4/C5**. All 2,180 exclusions and ten capture
+nodes are accepted, and the [whole-proof acceptance](#whole-proof-acceptance) records
+the exact endpoint argument and final composition with no pending obligations.
+
+This document retains the chronological audit trail.
+Earlier statements about open obligations or S5/V0/C1 describe the checkpoint at which
+they were written; the final disposition above supersedes those status statements.
+The [source review](review-2026-09-29-n11-optimality.md) gives the current synopsis and
+reproduction boundaries.
 
 This contract uses `Queuingtheorydotcom/11SquaresOptimal` at commit
 `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c`. The relevant published consumers are

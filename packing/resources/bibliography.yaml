@@ -34,8 +34,10 @@ sources:
     authors: [Queuingtheorydotcom]
     year: 2026
     venue: GitHub
+    short_venue: Web
     dated: '2026-09-29'
     credit: Queuingtheorydotcom after Levy, Kleddamag
+    short_credit: Queuingtheorydotcom after Levy et al.
     lineage: builds-on-project
     note: >-
       11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, announced by

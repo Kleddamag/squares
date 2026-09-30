@@ -1199,6 +1199,17 @@ body {
   cursor: default;
   opacity: 0.35;
 }
+/* The stepper's arrow (`overview_sections.step_arrow`): one drawing, the back arrow its
+   mirror, in the button's text colour, so the pair match in every theme and browser. */
+.site-arrow {
+  block-size: 1.1em;
+  display: block;
+  inline-size: 1.1em;
+  margin: auto;
+}
+.site-arrow-back {
+  transform: scaleX(-1);
+}
 
 /* The gap bar, as the film draws it: a number line from one below the grid bound to two
    above it, the integers and the values of the two formulas marked in the quiet gray,

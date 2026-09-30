@@ -958,11 +958,26 @@ def atlas_popover() -> str:
         '<a class="site-popover-action" data-go="page" data-atlas-expand href="cases.html">'
         "See All Cases</a>"
         '<span class="site-atlas-pop-step">'
-        '<button type="button" data-atlas-step="-1" aria-label="Previous case">\u2190</button>'
-        '<button type="button" data-atlas-step="1" aria-label="Next case">\u2192</button>'
+        '<button type="button" data-atlas-step="-1" aria-label="Previous case">'
+        f"{step_arrow(back=True)}</button>"
+        '<button type="button" data-atlas-step="1" aria-label="Next case">'
+        f"{step_arrow()}</button>"
         "</span></p>"
         f"<template data-atlas-math>{math_html('n')}</template>"
         "</div>"
+    )
+
+
+def step_arrow(*, back: bool = False) -> str:
+    """The stepper's arrow, one drawing for both directions, the back one mirrored, so
+    the pair always match: the site's text face has no arrow glyphs, and each browser
+    fell back to a different font for `←` and `→`."""
+    flip = " site-arrow-back" if back else ""
+    return (
+        f'<svg class="site-arrow{flip}" viewBox="0 0 16 16" aria-hidden="true" '
+        'focusable="false"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" '
+        'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+        'stroke-linejoin="round"/></svg>'
     )
 
 

@@ -439,6 +439,9 @@ it.
   math nodes, never HTML strings.
   It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,
   and the arrow keys, step to the neighbouring case.
+  The two arrows are one drawn SVG arrow (`step_arrow`), the back one mirrored, never
+  the `←` and `→` characters: the site’s text face has no arrow glyphs, so browsers drew
+  the two from different fallback fonts.
   Opening moves focus to the close cross; closing returns it to the case’s cell.
   On a phone the panel takes the width less half a rem each side, scrolls inside, keeps
   its button in a sticky foot, and has a 2.75rem close target.

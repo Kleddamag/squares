@@ -892,3 +892,15 @@ def test_wrapped_chips_never_touch() -> None:
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     rule = css[css.index(".site-chip {") :]
     assert "margin-block: 0.15rem;" in rule[: rule.index("}")]
+
+
+def test_the_atlas_stepper_draws_one_arrow_mirrored() -> None:
+    """Both stepper arrows are the same drawing, the back one mirrored, never the arrow
+    characters, which the site's face lacks and browsers draw from mismatched fallbacks."""
+    popover = overview_sections.atlas_popover()
+    step = popover[popover.index('<span class="site-atlas-pop-step">') :]
+    step = step[: step.index("</span>")]
+    assert "←" not in step
+    assert "→" not in step
+    assert step.count(overview_sections.step_arrow()) == 1
+    assert step.count(overview_sections.step_arrow(back=True)) == 1

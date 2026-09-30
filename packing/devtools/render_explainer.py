@@ -148,6 +148,9 @@ MAX_EXACT_PLACES = 8
 # keeps the two irrational bounds one digit past the six-place forms the
 # literature quotes, so a reader can see which way the sixth place rounds.
 APPROX_PLACES = 7
+#: Places the verified lower bound keeps when it does not terminate: nine is the fewest
+#: that show Wang and Li's 3.875000003… differs from 31/8 at all.
+VERIFIED_LOWER_PLACES = 9
 
 #: A covered mass this close to 1 is drawn as tight in Figure 5: the legend's percentage
 #: and the heat map's threshold are both this one number.
@@ -1822,6 +1825,8 @@ class VerifiedLowerBound:
 
     value: Fraction
     decimal: str
+    #: The same number for TeX: `\\ldots` where `decimal` has `…`.
+    tex: str
     #: The reference without its venue, `Kleddamag after Levy et al. 2026`: who and when, which
     #: is what the figure's other sources print (`Stromquist 1984/2003`).
     credit: str
@@ -1859,7 +1864,18 @@ def verified_lower_bound(n: int) -> VerifiedLowerBound:
             "`authors year, venue`"
         )
     value = Fraction(lower["value"])
-    return VerifiedLowerBound(value=value, decimal=decimal(value), credit=reference[1])
+    exact = exact_decimal(value)
+    # A bound that terminates is printed whole, as an equality. One that does not, such
+    # as Wang and Li's 3875000000/999999999, is cut off after enough places to show how it
+    # differs from 31/8 and marked as cut off; every digit shown is one of the bound's.
+    if exact is not None:
+        return VerifiedLowerBound(value=value, decimal=exact, tex=exact, credit=reference[1])
+    return VerifiedLowerBound(
+        value=value,
+        decimal=truncated(value, places=VERIFIED_LOWER_PLACES),
+        tex=truncated(value, places=VERIFIED_LOWER_PLACES, tex=True),
+        credit=reference[1],
+    )
 
 
 def line_x(value: float) -> float:
@@ -2313,6 +2329,7 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T026_RECORD_URL": repo_file(CURRENT_BOUND_RECORD),
         "NUMBER_LINE_MARKS": number_line_marks(facts, headline, current),
         "VERIFIED_LOWER_DEC": verified.decimal,
+        "VERIFIED_LOWER_TEX": verified.tex,
         "VERIFIED_SOURCE": verified.credit,
         "VERIFIED_GAP": truncated(BEST_PACKING - verified.value, tex=True),
         "PRIOR_X": f"{line_x(float(PRIOR_LOWER)):.0f}",

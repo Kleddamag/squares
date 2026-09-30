@@ -468,6 +468,11 @@ Its Frontier keys are **[Tokoharu density 2026]**, **[Kleddamag n11 2026]** and
 [integration review](../../docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
 distinguishes literal reported bounds, verified replays and proposed native extensions.
 
+The [Wang–Li packet](web/wang-li-n11-2026-09-29/README.md) retains Ke Wang and Can Li’s
+Zenodo record 23038546: Kleddamag’s `s(11)` certificate reweighted and scaled to
+`s(11) > 3875000000/999999999`, its two verifiers, the preprint, and this repository’s
+full replays, native coverage and controls, under **[Wang Li n11 2026]**.
+
 The
 [September 27 wand125 rectangle packet](web/wand125-rectangle-certificates-2026-09-27/README.md)
 pins wand125’s later rectangle-density certificates for 44 counts from `n = 18` to

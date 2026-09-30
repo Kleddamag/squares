@@ -2514,7 +2514,8 @@ results:
       case record took the bound without a C5 claim, so whether a same-project review of
       another author's certificate qualifies is the owner's decision rather than missing
       work. V5 by a proof-assistant port of the transfer theorem and the counting argument.
-      The exact value remains open; a certificate above 31/8 has 0.0020836 of runway.
+      Superseded on 2026-09-29 by Wang and Li's s(11) > 3875000000/999999999 (T-058), which
+      is this certificate reweighted and scaled, 3.9e-9 higher; stays true as stated.
 
   - id: T-038
     headline: "`s(17) > 461300/99853 = 4.6197910929…`"
@@ -3766,3 +3767,77 @@ results:
       beside the same-project reviews of each route (2026-09-29 and 2026-09-30). The
       source's own 80-digit interval run stays unreplayed until it publishes its boxes or
       checker; this record no longer depends on it.
+
+  - id: T-058
+    headline: "`s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8`"
+    claim: >-
+      s(11) > 3875000000/999999999 = 3.875000003875000003875..., by Ke Wang and Can Li's
+      Zenodo record 23038546 of 29 September 2026, reported on jlevy/squares#247. Wang and
+      Li, building on Kleddamag and this project: the certificate is Kleddamag's v1.0.2
+      global-certificate.json (T-037) with thirteen threshold-charge orbits raised, which
+      puts the minimum core charge at 1000047559 on every one of the 12,028 parent-angle
+      intervals, and with the parent and every core side scaled by 999999999/1000000000,
+      so that the container over the parent is (31/8) times 1000000000/999999999; eleven
+      disjoint cores exceed the budget 11000095024 by 428125 integer units. The step over
+      31/8 is exactly 31/7999999992, about 3.9e-9. One more step of the scale factor,
+      1 - 2*10^-9, already fails at row 615, so these data admit at most about twice the
+      step. It was replayed here in full by the authors' two verifiers and by Kleddamag's
+      own Python and JavaScript event-cell sweeps, and decided a second time by this
+      repository's native parent-core interval branch and bound, which accepted all
+      12,028 rows with no stalled box. The record makes no statement about AI assistance.
+      An externally produced, previously published result, not peer reviewed; no new
+      first-party mathematics is claimed.
+    scope: {n_values: [11]}
+    verification: V4
+    confirmation: C4
+    significance:
+      score: 2
+      rationale: >-
+        It strictly raises the verified lower bound at the central case, which the S5
+        anchor names, but by 31/7999999992, about 3.9e-9, spending the slack of T-037's
+        certificate after a reweighting; the release itself calls it a proof-of-slack
+        result, and these data admit at most about twice the step. The case's gap to
+        Trump's packing, 0.0020836, does not change at any printed digit, so it is scored
+        as a citable detail rather than movement; T-042 is the precedent for scoring a
+        true, fully replayed step by what it changes.
+      scored: '2026-09-30'
+      by: issue #247 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Wang Li n11 2026]']
+      published: '2026-09-29'
+    composition: >-
+      Primary at n = 11: one certificate and the bound L/A', with no monotonicity step. C4
+      is earned by two evidence entries whose methods differ and that both passed on the
+      pinned bytes: the event-cell sweeps (exact-algebraic: the authors' primary,
+      Kleddamag's Python and JavaScript, and the authors' re-implementation are one
+      method) and this repository's directed-rounding interval coverage of every row
+      (interval-certified). Both rest on the certificate and on T-037's counting and
+      transfer theorem, whose hypotheses were re-checked at the scaled sides.
+    produced_by:
+      session: session-161
+    evidence:
+      - E-n011-wang-li-report
+      - E-n011-wang-li-source-replay
+      - E-n011-wang-li-native-parent-core
+    artifacts:
+      - packing/resources/web/wang-li-n11-2026-09-29/README.md
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/certificate/diff.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/authors/fresh-full-replay/RESULT.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/kleddamag/full-replay/RESULT.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/native/native-all.json
+      - packing/devtools/audit_wang_li_n11.py
+      - packing/devtools/verify_n11_parent_core_native.py
+      - docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    controls:
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/source-checkers.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/native.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/cliff.json
+      - packing/tests/test_wang_li_n11.py
+    next_rung: >-
+      C5 would need a mapped, non-superseded review of the complete claim cited as
+      review_artifact; the 2026-09-30 review is a same-project read. V5 by a
+      proof-assistant port of the transfer theorem and the counting argument. Whether the
+      reweighting is needed at all, or Kleddamag's own weights already pass at the scaled
+      sides, is being measured (the packet's scale-only sweep); the answer bears on how
+      the method is described, not on the bound.

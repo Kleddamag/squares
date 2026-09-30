@@ -72,7 +72,9 @@ T-026 established the earlier first-party bound
 `s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.8264474...` at `V4/C5`.
 T-033 tightens the same retained family to
 `s(11) >= 955000*sqrt(2073600042893309449)/359341754646249 = 3.8269975...` at `V4/C3`.
-The current verified lower bound is the stronger external result `s(11) > 31/8 = 3.875`.
+The current verified lower bound is the external result
+`s(11) > 3875000000/999999999 = 3.875000003875…` (T-058, Wang and Li), Kleddamag’s
+`31/8` certificate reweighted and scaled, `3.9e-9` above it.
 Future research follows the
 [payoff policy](docs/project/handoff-2026-09-06-post-381-t2-t10-continuation.md#research-payoff-and-exposition):
 prioritize substantial bound improvements and methods or theorems that make them
@@ -202,6 +204,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V3` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, at revisions ad43d29 (added 26 and 27 September 2026) and 39d8ecc (raised or added 27 and 28 September), built with Tokoharu’s solver, weights scaled by one exact rational factor to mass n - 1/100 (n - 1/1000 at n = 27) before the recorded run, and each accepted there at every net direction by Tokoharu’s unchanged interval checker (verify.cpp, SHA-256 a75140df …). |
 | [T-048](packing/frontier/RESULTS.md) | 50 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds (introduced at commit 75dd0952, 28 September 2026; pinned at 39d8ecc) reports s(50) >= 37/5 = 7.4 from a D4-expanded rectangle density of 553 orbit representatives, total mass 4999999/100000 < 50, core side 9977/10000 and 201 net half-angles of step 83/40000, accepted at every oblique net angle by code/mixed_rotated_verify.cpp, a research copy of Tokoharu’s verify.cpp that accepts coverage at least 1 instead of 10001/10000 and checks each net node’s unit-square centre domain, and at angle zero by exact integer tables. |
+| [T-058](packing/frontier/RESULTS.md) | 11 | `V4` | `C4` | `S2` | `previously-published` | s(11) > 3875000000/999999999 = 3.875000003875000003875 …, by Ke Wang and Can Li’s Zenodo record 23038546 of 29 September 2026, reported on jlevy/squares#247. |
 | [T-003](packing/frontier/RESULTS.md) | 17, 18 | `V4` | `C3` | `S2` | `apparently-novel` | The sixteen-point set’s unavoidability ceiling lies in [4426213/1000000, 4427/1000): certification at the left endpoint, an exact escaping pose at the right, with the top strips’ a + 2b <= 2*sqrt(2) hypothesis identifying the closing mechanism at 753/250 + sqrt(2), inside the bracket. |
 | [T-005](packing/frontier/RESULTS.md) | 13 | `V4` | `C3` | `S2` | `apparently-novel` | Bentz 2010, Lemma 10 is false as printed -- the middle replacement point (1, 1.74) is refuted by an exact escape certificate, and the published page image carries the same transposed text -- and true under the corrected reading (1.74, 1), with all three corrected replacement covers certified exactly. |
 | [T-011](packing/frontier/RESULTS.md) | 11 | `V4` | `C3` | `S2` | `previously-published` | Trump’s 1979 packing is exactly valid: 11 unit squares in a square of side the published degree-8 algebraic number 3.877083590022814 …, with 14 of 55 pairs in exact zero-separation contact and 20 corner coordinates exactly on the boundary, so s(11) <= that side. |
@@ -242,7 +245,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 57 | 57 registered, 29 by others |
+| Frontier results | 58 | 58 registered, 30 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -306,8 +309,8 @@ ranked relational-certificate slate.
 A draft or proposed direction is not a registered hypothesis, and a registered
 hypothesis is not a frontier result.
 
-The current verified bracket is `3.875 < s(11) <= 3.877083590022814…`. Session 152 fully
-replayed and mathematically reviewed Kleddamag’s external certificate.
+The current verified bracket is `3875000000/999999999 < s(11) <= 3.877083590022814…`.
+Session 152 fully replayed and mathematically reviewed Kleddamag’s external certificate.
 It closes 95.89% of the gap from T-026 to the retained upper bound; the exact optimum
 remains open. Session 153 independently certifies every one of the 12,028 parent-angle
 intervals by directed-rounding box coverage, with no stalled or exhausted boxes.
@@ -978,6 +981,7 @@ case or experiment separately.
 | [wand125 n = 50 Mixed Certificates: The Threshold-One Verifier and the Containment Argument](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) | dated review record | record | retained | — |
 | [Mathematics Review: Couzo’s 49 Packings and de Winter’s `s(211) < 15` (T-056, T-057)](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) | dated review record | record | retained | — |
 | [Review: The Interval Route for T-056 and T-057 (`devtools.upper_bound_intervals`)](docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md) | dated review record | record | retained | — |
+| [Mathematical Review: Wang–Li `s(11) > 3875000000/999999999` (issue #247)](docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md) | dated review record | record | retained | — |
 | [The Three-Lane Research Method](docs/project/three-lane-research-method.md) | component scope and use | record | retained | — |
 | [Handoff — 2026-09-04, close of the fractional-certificate block](docs/project/handoff-2026-09-04-block-close.md) | dated handoff record | record | retained | — |
 | [Handoff: Post-3.81 Portfolio at T+2](docs/project/handoff-2026-09-06-post-381-t2-commissioning.md) | dated handoff record | record | retained | — |
@@ -3746,7 +3750,7 @@ no intervening improvement:
 |  | value | source |
 | --- | --- | --- |
 | Best known packing (upper bound) | `3.8770835…` | Walter Trump, 1979 |
-| Best certified lower bound | `31/8 = 3.875` (strict) | [Native n11 review](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md), complete exact and interval coverage with the reviewed transfer theorem; C4 |
+| Best certified lower bound | `3875000000/999999999 = 3.875000003875…` (strict) | Wang and Li’s scaling of Kleddamag’s `31/8` certificate ([review](docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md)), complete exact and interval coverage with the reviewed transfer theorem; C4 |
 | Bound gap | `0.0020836` | difference between the two bounds; the exact optimum remains open |
 
 ![Walter Trump’s exact eleven-square packing.](packing/atlas/rendering/trump11-overview.svg)

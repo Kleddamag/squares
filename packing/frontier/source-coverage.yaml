@@ -242,6 +242,22 @@ sources:
       Source outputs and the repository's execution attestation retain their
       distinct provenance. Superseded on 2026-09-25 by Guzhou0806's R052
       (guzhou-n17-r052-2026) and kept as the previous verified bound.
+  - id: wang-li-n11-2026
+    title: An exact computer-assisted improvement of the lower bound for packing eleven unit squares
+    role: source-repository
+    url: https://doi.org/10.5281/zenodo.23038546
+    local: resources/web/wang-li-n11-2026-09-29/
+    source_key: '[Wang Li n11 2026]'
+    scope: {n_values: [11]}
+    reviewed: '2026-09-30'
+    source_date: '2026-09-29'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-011.md]
+    evidence: [E-n011-wang-li-report, E-n011-wang-li-source-replay, E-n011-wang-li-native-parent-core]
+    notes: >-
+      Zenodo record 23038546 v1.0.0, reported on jlevy/squares#247, retained with its
+      archive extracted, the preprint and the full replay, native and control receipts.
   - id: kleddamag-n11-2026
     title: Eleven unit squares — a certified lower bound
     role: source-repository
@@ -251,7 +267,7 @@ sources:
     scope: {n_values: [11]}
     reviewed: '2026-09-22'
     source_date: null
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-011.md]
     evidence: [E-n011-kleddamag-3875-report, E-n011-kleddamag-3875-source-replay]

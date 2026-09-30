@@ -595,14 +595,14 @@
         "lower": {
           "display": "s(11) ≥ 3.875000",
           "evidence": [
-            "E-n011-kleddamag-3875-native-parent-core",
-            "E-n011-kleddamag-3875-source-replay"
+            "E-n011-wang-li-native-parent-core",
+            "E-n011-wang-li-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "3.875"
+          "value": "3.875000003875000003"
         },
         "n": 11,
         "optimality": {

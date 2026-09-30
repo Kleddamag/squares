@@ -294,24 +294,33 @@ def test_figure_three_marks_the_verified_lower_bound_beside_the_packing(
     header = (REPO / "packing/frontier/n-011.md").read_text(encoding="utf-8").split("---", 2)
     recorded = safe_load(header[1])["packing"]["verified_lower_bound"]
     verified = render_explainer.verified_lower_bound(11)
-    assert verified.value == Fraction(recorded["value"]) == Fraction(recorded["exact_form"])
-    assert (verified.decimal, verified.credit) == ("3.875", "Kleddamag after Levy et al. 2026")
+    # Wang and Li's 3875000000/999999999 does not terminate, so the record stores it cut
+    # off below its exact form and the figure prints it cut off and marked as such.
+    assert verified.value == Fraction(recorded["value"]) <= Fraction(recorded["exact_form"])
+    assert Fraction(recorded["exact_form"]) - verified.value < Fraction(1, 10**18)
+    credit = "Wang, Li after Kleddamag, Levy 2026"
+    assert (verified.decimal, verified.tex, verified.credit) == (
+        "3.875000003\N{HORIZONTAL ELLIPSIS}",
+        "3.875000003\\ldots",
+        credit,
+    )
 
     x = round(render_explainer.line_x(float(verified.value)))
     best_x = round(render_explainer.line_x(float(render_explainer.BEST_PACKING)))
     assert 0 < best_x - x < 20, "the two ticks are the reason the labels are staggered"
     assert (
         f'<text x="{x}" y="52" dx="-6" text-anchor="end" fill="var(--kpress-doc-text)">'
-        f"3.875, Kleddamag after Levy et al. 2026</text>"
+        f"3.875000003\N{HORIZONTAL ELLIPSIS}, {credit}</text>"
     ) in page
     # Trump's value takes the row the verified label would otherwise collide with.
     assert f'<line x1="{best_x}" y1="24" x2="{best_x}" y2="76"' in page
-    assert "the current verified lower bound 3.875 (Kleddamag after Levy et al. 2026)" in page
+    label = f"3.875000003\N{HORIZONTAL ELLIPSIS} ({credit})"
+    assert f"the current verified lower bound {label}" in page
 
     caption = " ".join(document.split())
     assert (
-        "The current verified lower bound, $3.875$ (Kleddamag after Levy et al. 2026), "
-        "leaves a gap of $0.0020835\\ldots$ beside "
+        "The current verified lower bound, $3.875000003\\ldots$ (Wang, Li after Kleddamag, "
+        "Levy 2026), leaves a gap of $0.0020835\\ldots$ beside "
         "Trump\N{RIGHT SINGLE QUOTATION MARK}s packing." in caption
     )
 

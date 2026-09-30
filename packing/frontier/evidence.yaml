@@ -585,6 +585,146 @@ evidence:
       the local replay and mathematical review recorded separately.
     source_reviewed: '2026-09-22'
 
+  - id: E-n011-wang-li-report
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Wang Li n11 2026]'
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json
+    replay_status: not-attempted
+    limitations: >-
+      Zenodo record 23038546 (29 September 2026) claims the strict bound s(11) >
+      3875000000/999999999 = 3.875000003875..., with independent rotations and boundary
+      contact allowed, from Kleddamag's v1.0.2 certificate with thirteen threshold-charge
+      orbits reweighted and the parent and core sides scaled by 999999999/1000000000. Its
+      two verifiers are Kleddamag's event-cell sweep and the authors' re-implementation
+      of the same method, which rebuilds the certificate from the source file and the
+      stated deltas and passes on equality with a hard-coded minimum. This entry preserves
+      the source claim, apart from the local replay and review recorded separately.
+    source_reviewed: '2026-09-30'
+
+  - id: E-n011-wang-li-source-replay
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Wang Li n11 2026]'
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json
+    replay: >-
+      From a fresh extraction of the retained archive, with the authors' pinned upstream
+      interpreter (CPython 3.14.7, numpy 2.3.5, numba 0.65.1, llvmlite 0.47.0): python
+      verify.py --mode full --jobs 1, which must print
+      PASS_FRESH_TWO_IMPLEMENTATION_FULL_REPLAY; then, from a scratch copy of the retained
+      kleddamag-11 tree prepared with prepare_secondary.py --source on the retained R038
+      file, the improved certificate beside it and the packet's
+      replay/kleddamag-verify-wang-li.py as verify_wang_li.py: check_integrity.py,
+      verify_threshold_algebra.py and verify_wang_li.py --output-dir OUT, which must print
+      PASS_FRESH_PORTABLE_FULL_VERIFICATION. The packet README (Replays Here, Reproduce)
+      gives the commands and receipts.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/paper/n11_lower_bound_wang_li.tex
+      theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The preprint's certificate and scaling sections; Kleddamag's PROOF.md lines 7-85
+        for the counting and transfer theorem; exact_mixed.py and integer_sweep.py as
+        retained under verifier/primary_kleddamag/; the packet's certificate diff
+        (receipts/certificate/diff.json).
+      assumptions:
+        - Exact nonnegative point and threshold charges form the validated D4-invariant system; a k-of-m feature costs floor(m/k) times its weight; the thirteen reweighted orbits are increments only.
+        - The 12028 contiguous parent-angle intervals cover the folded angular range, and each core of side lambda times its source side lies strictly inside every parent of side A' = 190999999809/193750000000 in its interval; containment is homogeneous of degree one in the two sides, so every premise margin is lambda times the source's.
+        - Every legal parent centre lies in its row's verified centre envelope, and the exact sweeps cover every generic centre cell there; upper semicontinuity extends the bound to all boundary centres.
+        - Distinct closed cores lie in disjoint parent interiors, and 11 times 1000047559 exceeds the budget 11000095024 by 428125 integer weight units; compactness makes the minimum packing side attained, so the bound is strict.
+      audit_record: docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: An independent adversarial review lane in this repository, with the coordinator's integration review.
+      note: >-
+        No mathematical defect. Every hypothesis of the counting and transfer theorem was
+        re-derived for the scaled sides with exact arithmetic by code sharing nothing with
+        the release or with Kleddamag; 651 of the 12,028 rows, the shrink-sensitive and the
+        historically weakest first, were re-decided there and each returned exactly
+        1000047559; the budget, the surplus 428125 and the ratio were recomputed.
+    limitations: >-
+      Pinned Zenodo 23038546 v1.0.0; the retained archive matches Zenodo's MD5 and the
+      improved certificate matches the SHA-256 the authors published. The authors' full
+      mode passed (9,356 s wall on a shared host): its primary Python sweep gave histogram
+      {1000047559: 12028}, 86,299,918 slabs and 511,649,696,956 cells, every row equal to
+      the archive's receipt, and its independent sweep gave zero bad rows. Kleddamag's own
+      launcher, adapted in three lines to the new certificate's path and constants, passed
+      the Python and BigInt JavaScript sweeps over all 12,028 intervals (8,207 s wall) and
+      independent_controls.py over 48,112 containment quadratics. Every sweep here is the
+      event-cell method, so this entry supports V4/C3 by itself; the method-distinct
+      decision is E-n011-wang-li-native-parent-core. Mutated certificates (the minimum
+      raised one unit, the counting gap closed, orbit 130 reverted, lambda one step past
+      the authors', a side beyond Trump's packing) are refused by every checker
+      (receipts/controls/). The exact optimum remains open.
+    source_reviewed: '2026-09-30'
+
+  - id: E-n011-wang-li-native-parent-core
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Wang Li n11 2026]'
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.verify_n11_parent_core_native
+      --all --workers 2 --output OUT/all.json, from packing/, which must report
+      PASS_COMPLETE; about 3 hours on two workers of an idle host, 5.2 hours here.
+    replay_status: passed
+    proof:
+      source: packing/src/sqpack/fractional/parent_core.py
+      theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The frozen devtools.verify_kleddamag_n11_native run, called unchanged by the
+        wrapper devtools.verify_n11_parent_core_native with the release pin lifted for
+        this certificate; validate_parent_core and the parent-centre domain derivation;
+        the directed-rounding interval and threshold searches; the complete receipt and
+        row journal in the packet's receipts/native/.
+      assumptions:
+        - Exact nonnegative point and threshold charges are D4 invariant; each k-of-m charge contributes at most floor(m/k) times its weight to the packing budget.
+        - The contiguous 12028-row half-tangent partition covers all folded parent orientations; rational vertex-projection quadratics prove each closed core lies strictly inside every parent in its row, the least containment numerator being 999999999/10^21.
+        - Directed-rounding boxes cover each entire parent-centre domain and count only sites guaranteed inside the closed core; every row certifies at the exact threshold 1000047559 with no stalled or exhausted boxes.
+        - Disjoint parent interiors make their closed cores disjoint; 11 times 1000047559 exceeds the budget 11000095024; uniform scaling with L = 191/50 and A' gives L/A' = 3875000000/999999999, and compactness makes the bound strict.
+      audit_record: docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: The same independent review lane and the coordinator's integration review.
+      note: >-
+        The native method and its transfer argument were reviewed for T-037
+        (docs/project/reviews/review-2026-09-22-native-n11-parent-core.md); here its
+        hypotheses were re-checked at the scaled sides and the complete run's receipt read.
+    limitations: >-
+      The complete native run on 2026-09-30 accepted all 12,028 rows in 18,853 s of wall
+      on two workers of a shared host, with 136,388,356 boxes, zero stalls, no exhausted
+      budgets and no refutations, every row at the exact threshold 1000047559. The receipt
+      and journal are packing/resources/web/wang-li-n11-2026-09-29/receipts/native/
+      native-all.json and native-all.rows.jsonl; the pilot and the native controls are
+      beside them. The wrapper leaves the frozen tool's code and its 19 proof inputs
+      unchanged and decides a Kleddamag row as the frozen tool does
+      (tests/test_wang_li_n11.py). This directed-rounding coverage differs from the
+      event-cell sweeps of E-n011-wang-li-source-replay; the two methods share the
+      certificate and the counting and transfer theorem. The exact optimum remains open.
+    source_reviewed: '2026-09-30'
+
   - id: E-tokoharu-density-report
     claim: lower-bound
     scope: {n_values: [11, 26, 29]}

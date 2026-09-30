@@ -661,7 +661,6 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 @pytest.mark.parametrize(
     ("n", "author", "entry"),
     [
-        (11, "Kleddamag after Levy et al.", "T-037"),
         (17, "Guzhou0806 after Kleddamag et al.", "T-043"),
         (26, "Tokoharu after Levy, wand125 et al.", "T-047"),
         (29, "Tokoharu after Levy, wand125 et al.", "T-047"),
@@ -868,16 +867,19 @@ def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
 
 
 def test_the_star_marks_recent_results_whoever_proved_them() -> None:
-    """n = 11 is starred as Kleddamag's, and every project bound is starred too.
+    """n = 11 is starred as Wang and Li's, and every project bound is starred too.
 
     The star used to be `first_proved_here`, so it went out at n = 11 when Kleddamag's
-    3.875, developed from T-026, became the verified bound (the owner, 2026-09-27). Credit
-    is the line's business: joint work names this project after the author, other work
-    names only its own lineage, and this project's sole work names the project.
+    3.875, developed from T-026, became the verified bound (the owner, 2026-09-27); Wang
+    and Li's scaling of that certificate replaced it on 2026-09-30. Credit is the line's
+    business: joint work names this project after the author, other work names only its
+    own lineage, and this project's sole work names the project.
     """
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
     assert lines[11]["recent"]
-    assert lines[11]["text"] == "Kleddamag after Levy et al. 2026, GitHub"
+    assert lines[11]["text"] == "Wang, Li after Kleddamag, Levy 2026, Zenodo"
+    assert lines[11]["confirmed_by"] == ["T-058"]
+    assert lines[11]["result"] is None
     assert lines[12]["recent"]
     assert lines[12]["text"].startswith("Daniel after Burns")
     assert lines[18]["recent"]

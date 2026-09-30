@@ -53,10 +53,10 @@ problem.[^novelty] Stromquist published the previous bound of {{PRIOR_LOWER_DEC}
 in 1979 (Figure 1), shows
 <span class="math-reference">$s(11) \le {{BEST_PACKING_TEX}}$.[^trump]</span>
 
-**Frontier update, September 22, 2026:** We have verified Kleddamag’s stronger lower
-bound, developed from the T-026 certificate below, so the
-[current bracket]({{FRONTIER_N11_URL}}) is
-${{VERIFIED_LOWER_DEC}} < s(11) \le {{BEST_PACKING_TEX}}$. The
+**Frontier update, September 30, 2026:** We have verified Kleddamag’s stronger lower
+bound `31/8`, developed from the T-026 certificate below, and Wang and Li’s scaling of
+that certificate, `3.9e-9` higher, so the [current bracket]({{FRONTIER_N11_URL}}) is
+${{VERIFIED_LOWER_TEX}} < s(11) \le {{BEST_PACKING_TEX}}$. The
 [mathematical review]({{FRONTIER_N11_REVIEW_URL}}) records the replays and proof.
 This article retains the T-018, T-025, and T-026 proofs below.
 
@@ -253,7 +253,7 @@ The figures below illustrate this certificate.
   </div>
   <figcaption><strong>Figure 3.</strong> Bounds on <span class="tex">s(11)</span>. The shaded band is the gap left by the certificates explained here. At T-026’s bound the gap is
   <span class="tex">{{CURRENT_GAP}}</span> wide, down from <span class="tex">{{GAP_BEFORE}}</span> at Stromquist’s bound.
-  The current verified lower bound, <span class="tex">{{VERIFIED_LOWER_DEC}}</span>
+  The current verified lower bound, <span class="tex">{{VERIFIED_LOWER_TEX}}</span>
   ({{VERIFIED_SOURCE}}), leaves a gap of <span class="tex">{{VERIFIED_GAP}}</span> beside Trump’s packing.</figcaption>
 </figure>
 

@@ -96,6 +96,21 @@ WORKBENCH_REVISION = re.compile(
 WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the overview</a>')
 
 
+#: An overview card's "On GitHub" link, which names the default branch on purpose: it
+#: opens the document as it is now. It is the one repository link held to the branch
+#: rather than the build commit, and it is still asked of GitHub.
+ON_GITHUB_LINK = re.compile(
+    r'<a class="site-popover-also" href="'
+    + re.escape(f"{REPO_URL}/blob/{render_overview.DEFAULT_BRANCH}/")
+    + r'[^"]*"[^>]*>On GitHub</a>'
+)
+
+
+def branch_links(text: str) -> set[tuple[str, str, str]]:
+    """The text's "On GitHub" links, as `repository_links` spells them."""
+    return repository_links("".join(ON_GITHUB_LINK.findall(text)))
+
+
 def repository_links(text: str) -> set[tuple[str, str, str]]:
     """Every (kind, ref, path) the text links into the repository, scripts and styles aside."""
     markup = re.sub(r"<(script|style)\b.*?</\1>", "", text, flags=re.DOTALL | re.IGNORECASE)
@@ -252,7 +267,7 @@ def check(
         url = site if name == "index.html" else site + name
         _, text = served_page(name, url, render_overview.canonical_url(name))
         links = repository_links(text)
-        names_the_commit(name, links)
+        names_the_commit(name, links - branch_links(text))
         if name in LINK_CHECKED_PAGES:
             checked_links |= links
 

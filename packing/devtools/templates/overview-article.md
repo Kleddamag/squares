@@ -71,6 +71,14 @@ the retained source and the review.
 
 {{RESULTS_TABLE}}
 
+## Other Square Packing Projects
+
+Others are working on the problem in the open.
+These are the projects on GitHub whose releases this record has reviewed, each credited
+to its author.
+
+{{OTHER_PROJECTS}}
+
 ## On GitHub
 
 The code, the certificates, the literature archive and the documents that record all of

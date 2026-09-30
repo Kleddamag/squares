@@ -125,17 +125,49 @@ def test_every_record_link_is_a_permalink_or_a_site_page() -> None:
 
 
 def test_every_repository_link_on_the_page_names_the_build_commit(page: str) -> None:
-    """The deployed-site check requires one ref across the page: the commit it was built at.
+    """The deployed-site check requires one ref across the page, the commit it was built
+    at, besides the "On GitHub" links, which name the default branch.
 
     The template's prose linked `epistemics.md` at `blob/main/`, which that check would
     have failed on the first deploy; this asks the same question of the render here.
     """
-    from devtools.check_published_site import repository_links  # noqa: PLC0415
+    from devtools.check_published_site import branch_links, repository_links  # noqa: PLC0415
     from devtools.render_explainer import link_revision  # noqa: PLC0415
 
-    links = repository_links(page)
+    links = repository_links(page) - branch_links(page)
     assert links
     assert {ref for _, ref, _ in links} == {link_revision()}
+
+
+def test_on_github_links_open_the_latest_version() -> None:
+    """Each "On GitHub" link names the default branch, and only those do."""
+    page = render_overview.overview_page().html
+    branch = f"{render_overview.REPO_URL}/blob/{render_overview.DEFAULT_BRANCH}/"
+    also = re.findall(r'<a class="site-popover-also" href="([^"]+)"[^>]*>On GitHub</a>', page)
+    assert len(also) == len(overview_sections.DOCUMENTS) + len(overview_sections.DIMENSIONS)
+    assert all(url.startswith(branch) for url in also)
+    assert page.count(branch) == len(also)
+
+    from devtools.check_published_site import branch_links  # noqa: PLC0415
+
+    assert {ref for _, ref, _ in branch_links(page)} == {render_overview.DEFAULT_BRANCH}
+    assert len(branch_links(page)) == len(set(also))
+
+
+def test_other_projects_are_the_source_repositories_the_record_reviews() -> None:
+    coverage = safe_load(
+        (overview_data.REPO / "packing/frontier/source-coverage.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    reviewed = {
+        re.sub(r"/tree/.*", "", source["url"])
+        for source in coverage["sources"]
+        if source["role"] == "source-repository" and "github.com" in source["url"]
+    }
+    listed = [url for url, _, _ in overview_sections.OTHER_PROJECTS]
+    assert sorted(listed) == sorted(reviewed)
+    assert not any("jlevy/squares" in url for url in listed)
 
 
 def test_record_line_links_point_at_their_entry() -> None:
@@ -206,10 +238,10 @@ ACTION = re.compile(
 def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
     """Every card opens a popover that shows its target and ends in one button that goes
     there. Another page is rendered in a frame, in its embedded view, and the button
-    expands it; a place on this page is previewed, and the button scrolls there. The
-    card's icon and the button's agree, and every target exists."""
+    expands it; a place on this page, or another site, is previewed, and the button goes
+    there. The card's icon and the button's agree, and every target on the site exists."""
     cards = CARD.findall(page)
-    assert {kind for _, kind in cards} == {"scroll", "page"}
+    assert {kind for _, kind in cards} == {"scroll", "page", "external"}
     assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
     served = {*render_overview.SITE_PAGES, "workbench/"}
@@ -222,6 +254,8 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
         if kind == "scroll":
             assert 'class="site-popover-preview"' in panel, target
             assert href[1:] in ids, href
+        elif kind == "external":
+            assert 'class="site-popover-preview"' in panel, target
         else:
             assert re.split(r"[?#]", href, maxsplit=1)[0] in served, href
             found = re.search(r'<iframe [^>]*src="([^"]+)"', panel)

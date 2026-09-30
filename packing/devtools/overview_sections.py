@@ -20,7 +20,7 @@ from devtools.overview_data import (
     math_html,
     tex_bounds,
 )
-from devtools.render_overview import DOCUMENT_PAGES
+from devtools.render_overview import DOCUMENT_PAGES, branch_file
 
 #: Confirmation rungs from strongest to weakest.
 C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
@@ -295,7 +295,6 @@ def verification_block() -> str:
     """One card per dimension of the rubric: its question and every level, as the chip
     the tables use and the rubric's meaning. Each card's popover renders that section of
     `epistemics.md`."""
-    from devtools.render_explainer import repo_file  # noqa: PLC0415
 
     levels = rubric_levels()
     cards = []
@@ -314,7 +313,7 @@ def verification_block() -> str:
                 f'<span class="site-level-question">{_esc(question)}</span>{ladder}',
                 href=f"epistemics.html#{section}",
                 action=f"Expand {name} in epistemics.md",
-                also=(f"{repo_file(REPO / 'epistemics.md')}#{section}", "On GitHub"),
+                also=(f"{branch_file('epistemics.md')}#{section}", "On GitHub"),
             )
         )
     return f'<div class="site-cards site-cards-dimensions site-wide">{"".join(cards)}</div>'
@@ -352,9 +351,7 @@ DOCUMENTS: tuple[tuple[str, str, str], ...] = (
 
 def document_cards() -> str:
     """One card per reader document; its popover renders the document, served as a page
-    of the site, and expands to it, with the file on GitHub beside."""
-    from devtools.render_explainer import repo_file  # noqa: PLC0415
-
+    of the site, and expands to it, with its latest version on GitHub beside."""
     return _cards(
         [
             card(
@@ -364,7 +361,7 @@ def document_cards() -> str:
                 _esc(note),
                 href=page,
                 action=f"Expand {path.rsplit('/', 1)[-1]}",
-                also=(repo_file(REPO / path), "On GitHub"),
+                also=(branch_file(path), "On GitHub"),
             )
             for (path, label, note), page in zip(DOCUMENTS, DOCUMENT_PAGES, strict=True)
         ]
@@ -435,3 +432,70 @@ def hero() -> str:
         f"{packing_svg(n, units=1000)}</a>"
         f"<figcaption>The best packing known for {n} squares</figcaption></figure>"
     )
+
+
+#: The other public square-packing projects on GitHub whose releases this record has
+#: reviewed: each repository's home, its author as the record credits them, and what it
+#: holds. The source-coverage register names every one, and a test holds this list to
+#: the register's source repositories, so a new one cannot go missing here.
+OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
+    (
+        "https://github.com/evand/square-packing",
+        "Evan Daniel",
+        "Exact weighted certificates and zero-margin closed covers, closing n = 21, 32 and 45.",
+    ),
+    (
+        "https://github.com/wand125/square-packing-bounds",
+        "wand125",
+        "Weighted point and rectangle-density lower-bound certificates across many n.",
+    ),
+    (
+        "https://github.com/tokoharu/square-packing-density-bounds",
+        "Tokoharu",
+        "Rectangle-density lower-bound certificates.",
+    ),
+    (
+        "https://github.com/Kleddamag/11-squares-certified-bound",
+        "Kleddamag",
+        "A certified lower bound for eleven squares.",
+    ),
+    (
+        "https://github.com/Kleddamag/17-squares-certified-bound",
+        "Kleddamag",
+        "Certified lower bounds for seventeen squares.",
+    ),
+    (
+        "https://github.com/Guzhou0806/n17-square-packing",
+        "Guzhou0806",
+        "Strict lower bounds for seventeen squares.",
+    ),
+    (
+        "https://github.com/BalthasarStrauss/Squares-packing_S-29-_New-Record",
+        "Thomas Schadt",
+        "A record packing of 29 squares.",
+    ),
+)
+
+
+def other_project_cards() -> str:
+    """One card per other project: its repository's name and owner, its author, and what
+    it holds. Each leads off the site, so its popover previews it and its button opens
+    the repository's home page."""
+    cards = []
+    for url, author, note in OTHER_PROJECTS:
+        owner, name = url.removeprefix("https://github.com/").split("/")
+        slug = re.sub(r"[^a-z0-9]+", "-", f"{owner}-{name}".lower()).strip("-")
+        cards.append(
+            card(
+                f"pop-project-{slug}",
+                f"By {author}",
+                _esc(name),
+                _esc(note),
+                preview=_dl(
+                    [("Repository", _esc(f"{owner}/{name}")), ("Author", _esc(author))]
+                ),
+                href=url,
+                action=f"Open {owner}/{name} on GitHub",
+            )
+        )
+    return _cards(cards)

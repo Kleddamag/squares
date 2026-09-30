@@ -127,7 +127,11 @@ it.
     case such as `frontier.html#n-11` arrives as it will be seen.
     The embed view drops the navigation bar and sends every link out of the frame to the
     full window. The button is **Expand**, which opens the page at full size; a
-    repository document also offers its source “On GitHub”.
+    repository document also offers its source “On GitHub”, which opens the latest
+    version on the default branch, the one repository link that is not a permalink at
+    the build commit.
+  - When the card leads off the site, as an other project’s card does, the popover
+    previews the repository and its author, and the button opens it.
   - When the card leads to a row on this page, the popover previews the row, read from
     the same record: a result’s claim, why it matters, its rungs and records.
     The button shows the row in the table.

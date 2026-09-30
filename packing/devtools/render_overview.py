@@ -55,6 +55,16 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 REPO_URL = "https://github.com/jlevy/squares"
+#: The branch an "On GitHub" link names, so a reader opens the file as it is now rather
+#: than as it was at the build. Every other repository link is a permalink.
+DEFAULT_BRANCH = "main"
+
+
+def branch_file(relative: str) -> str:
+    """A repository file's URL on the default branch: the latest version of it."""
+    return f"{REPO_URL}/blob/{DEFAULT_BRANCH}/{relative}"
+
+
 SITE_NAME = "Square Packing"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
@@ -324,6 +334,7 @@ def overview_page() -> Page:
         "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
         "HERO": overview_sections.hero(),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
+        "OTHER_PROJECTS": overview_sections.other_project_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),

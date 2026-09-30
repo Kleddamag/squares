@@ -5,6 +5,11 @@
 //! a closed-domain coverage obligation in the n=11 capture proof.
 
 use num_bigint::BigInt;
+#[cfg(any(
+    feature = "experimental-normalized-mul",
+    feature = "experimental-coprime-mul"
+))]
+use num_integer::Integer;
 use num_rational::BigRational;
 use num_traits::{Signed, Zero};
 use serde::{Deserialize, Serialize};
@@ -153,8 +158,41 @@ fn parse_rectangle(raw: &RawRectangle) -> Result<Rectangle, String> {
     Ok(rectangle)
 }
 
+#[cfg(any(
+    feature = "experimental-normalized-mul",
+    feature = "experimental-coprime-mul"
+))]
+fn multiply(left: &Rational, right: &Rational) -> Rational {
+    // Both operands are canonical with positive denominators. Cross-cancellation
+    // leaves coprime numerator and denominator, including canonical zero/one.
+    let left_cancel = left.numer().gcd(right.denom());
+    let right_cancel = right.numer().gcd(left.denom());
+    let numerator = (left.numer() / &left_cancel) * (right.numer() / &right_cancel);
+    let denominator = (left.denom() / &right_cancel) * (right.denom() / &left_cancel);
+    #[cfg(feature = "experimental-coprime-mul")]
+    {
+        Rational::new_raw(numerator, denominator)
+    }
+    #[cfg(not(feature = "experimental-coprime-mul"))]
+    {
+        Rational::new(numerator, denominator)
+    }
+}
+
+#[cfg(not(any(
+    feature = "experimental-normalized-mul",
+    feature = "experimental-coprime-mul"
+)))]
 fn cross(a: &Point, b: &Point, c: &Point) -> Rational {
     (&b.x - &a.x) * (&c.y - &b.y) - (&b.y - &a.y) * (&c.x - &b.x)
+}
+
+#[cfg(any(
+    feature = "experimental-normalized-mul",
+    feature = "experimental-coprime-mul"
+))]
+fn cross(a: &Point, b: &Point, c: &Point) -> Rational {
+    multiply(&(&b.x - &a.x), &(&c.y - &b.y)) - multiply(&(&b.y - &a.y), &(&c.x - &b.x))
 }
 
 fn parse_polygon(raw: Vec<[String; 2]>) -> Result<Vec<Point>, String> {
@@ -233,9 +271,21 @@ fn clip_axis(polygon: &[Point], axis: usize, edge: &Rational, keep_ge: bool) -> 
         if current_inside != previous_inside {
             let factor = (coordinate(previous, axis) - edge)
                 / (coordinate(previous, axis) - coordinate(current, axis));
+            #[cfg(not(any(
+                feature = "experimental-normalized-mul",
+                feature = "experimental-coprime-mul"
+            )))]
             output.push(Point {
                 x: &previous.x + &factor * (&current.x - &previous.x),
                 y: &previous.y + &factor * (&current.y - &previous.y),
+            });
+            #[cfg(any(
+                feature = "experimental-normalized-mul",
+                feature = "experimental-coprime-mul"
+            ))]
+            output.push(Point {
+                x: &previous.x + multiply(&factor, &(&current.x - &previous.x)),
+                y: &previous.y + multiply(&factor, &(&current.y - &previous.y)),
             });
         }
         if current_inside {
@@ -265,7 +315,20 @@ fn intersection_area(rectangle: &Rectangle, polygon: &[Point]) -> Rational {
         .enumerate()
         .fold(Rational::zero(), |sum, (index, point)| {
             let next = &clipped[(index + 1) % clipped.len()];
-            sum + &point.x * &next.y - &point.y * &next.x
+            #[cfg(not(any(
+                feature = "experimental-normalized-mul",
+                feature = "experimental-coprime-mul"
+            )))]
+            {
+                sum + &point.x * &next.y - &point.y * &next.x
+            }
+            #[cfg(any(
+                feature = "experimental-normalized-mul",
+                feature = "experimental-coprime-mul"
+            ))]
+            {
+                sum + multiply(&point.x, &next.y) - multiply(&point.y, &next.x)
+            }
         });
     twice_area.abs() / Rational::from_integer(BigInt::from(2))
 }
@@ -292,7 +355,20 @@ fn coverage(rectangles: &[Rectangle], polygon: &[Point]) -> Rational {
         {
             return sum;
         }
-        sum + &rectangle.density * intersection_area(rectangle, polygon)
+        #[cfg(not(any(
+            feature = "experimental-normalized-mul",
+            feature = "experimental-coprime-mul"
+        )))]
+        {
+            sum + &rectangle.density * intersection_area(rectangle, polygon)
+        }
+        #[cfg(any(
+            feature = "experimental-normalized-mul",
+            feature = "experimental-coprime-mul"
+        ))]
+        {
+            sum + multiply(&rectangle.density, &intersection_area(rectangle, polygon))
+        }
     })
 }
 
@@ -442,6 +518,52 @@ pub fn evaluate(input: &str) -> Result<String, String> {
 #[cfg(test)]
 mod tests {
     use super::{evaluate, open_session, query_session};
+
+    #[cfg(any(
+        feature = "experimental-normalized-mul",
+        feature = "experimental-coprime-mul"
+    ))]
+    #[test]
+    fn experimental_multiply_matches_canonical_rationals() {
+        use super::{Rational, multiply};
+        use num_bigint::BigInt;
+        use num_integer::Integer;
+        use num_traits::One;
+
+        let huge = BigInt::from(10_u32).pow(160) + BigInt::one();
+        let cases = [
+            (
+                Rational::new(0.into(), 1.into()),
+                Rational::new(3.into(), 7.into()),
+            ),
+            (
+                Rational::new(3.into(), (-7).into()),
+                Rational::new(0.into(), 1.into()),
+            ),
+            (
+                Rational::new(0.into(), 1.into()),
+                Rational::new(0.into(), 1.into()),
+            ),
+            (
+                Rational::new((-2).into(), 3.into()),
+                Rational::new(9.into(), 4.into()),
+            ),
+            (
+                Rational::new(huge.clone(), 77.into()),
+                Rational::new(77.into(), huge.clone()),
+            ),
+            (
+                Rational::new(huge.clone(), &huge + 2),
+                Rational::new(&huge + 4, &huge + 6),
+            ),
+        ];
+        for (left, right) in cases {
+            let result = multiply(&left, &right);
+            assert_eq!(result, left * right);
+            assert!(result.denom() > &BigInt::from(0));
+            assert_eq!(result.numer().gcd(result.denom()), BigInt::one());
+        }
+    }
 
     #[test]
     fn exact_area_and_tangency() {

@@ -1101,7 +1101,13 @@ session:
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol lanes fix calibration and selector contracts; root updates documentation and final PR evidence.
+    next_action: >-
+      Published 40bebd18a removes the temporary calibration exception and fixes the
+      browser-floor selector. Run 36740609969 passes all functional lanes; shard A
+      repeats the same 2213 passing tests and seven skips in 110.09 seconds, below 131
+      but outside the first single-reading baseline. Record the observed 65.67–110.09
+      band and 85.03 geometric mean using the existing timing contract; keep the
+      partition and absolute ceiling fixed, then certify the final head.
   budget:
     wall_minutes: 1235
     max_cycles: 40

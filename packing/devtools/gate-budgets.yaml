@@ -546,13 +546,15 @@ tiers:
 - id: suite_a
   command: packing-validate --suite-a
   ceiling_seconds: 131.0
-  measured_seconds: 65.67
+  measured_seconds: 85.03
   measured_on: '2026-09-30'
   measured_where: >-
-    First hosted three-shard cohort, run 36739024277 job 109968163253 at the
-    declared four-CPU reference shape: 65.67s, 2,213 passed and 7 skipped.
-    This is one observed A-shard wall, not a distribution. The 131s ceiling
-    tightens the former 168s bound.
+    Geometric mean of two hosted three-shard A readings at the declared four-CPU
+    reference shape: 65.67s in run 36739024277 job 109968163253 and 110.09s in
+    run 36740609969 job 109973706002. Both selected 2,213 passing and 7 skipped
+    tests under the same whole-file partition. The 1.68x observed spread is recorded
+    explicitly; the 131s absolute ceiling is unchanged.
+  measured_band: {low: 65.67, high: 110.09}
   history:
   - measured_seconds: 150.54
     measured_on: '2026-09-15'
@@ -592,6 +594,23 @@ tiers:
         35176748398.
       grew:
       - {name: suite-a tier, before: 84.0, after: 109.92}
+  - measured_seconds: 65.67
+    measured_on: '2026-09-30'
+    measured_where: >-
+      First three-shard cohort, run 36739024277 job 109968163253: 2,213 passed and
+      7 skipped in 65.67s at the declared four-CPU reference shape. Superseded by
+      the two-reading geometric mean after run 36740609969 observed runner variance.
+  attribution:
+    cause: >-
+      The second hosted run of the unchanged A file selection took 110.09s versus
+      65.67s in the first. Both ran 2,213 passing and 7 skipped tests; the difference
+      is hosted-runner variability, not a new assignment or an omitted test.
+    unit: job-seconds
+    source: >-
+      Run 36739024277 job 109968163253 and run 36740609969 job 109973706002,
+      including the latter's retained calibrated-a.log showing 110.09s tier wall.
+    grew:
+    - {name: 'fast behavioral tests, shard A', before: 65.67, after: 85.03}
   reference: {jobs: 1, inner_jobs: 1, cpus: 4}
   argument: >-
     Pre-collection shard A of the quick behavioural lane. `devtools.suite_files` packs

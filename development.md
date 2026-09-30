@@ -173,7 +173,7 @@ alone is not full pre-merge evidence.
 | `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 85 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
 | `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 85 | 111 s | 76.50 s on CI, the geometric mean of eighteen hosted readings on 2026-09-29 |
 | `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 85 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 85 | 131 s | 65.67 s on the three-shard partition, run 36739024277, job 109968163253 |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 85 | 131 s | 85.03 s geometric mean of the three-shard observations 65.67/110.09 s in runs 36739024277 and 36740609969 |
 | `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 85 | 154 s | 104.65 s on the three-shard partition, run 36739024277, job 109968163416 |
 | `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 85 | 154 s | 88.59 s on the three-shard partition, run 36739024277, job 109968163208 |
 | `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 85 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
@@ -299,6 +299,10 @@ The first three-shard cohort,
 7,958 behavioral tests with seven skips at 65.67/104.65/88.59 seconds.
 These are hosted observations, not a controlled speedup estimate.
 Calibration tightens shard A while preserving the observed file assignment.
+The unchanged shard A then passed the same 2,213 tests with seven skips in 110.09
+seconds in [run 36740609969](https://github.com/jlevy/squares/actions/runs/36740609969).
+Its declared timing band retains both observations, 65.67–110.09 seconds, with a
+geometric mean of 85.03 seconds; its absolute limit remains 131 seconds.
 
 The merged [PR95](https://github.com/jlevy/squares/pull/95) implementation pools the
 known-best census and prospective-atlas rebuilds through the shared worker policy.

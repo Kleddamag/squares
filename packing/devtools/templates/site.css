@@ -97,13 +97,14 @@ body {
   padding-block-start: calc(var(--kpress-font-size-base) * 2);
   text-align: center;
 }
-/* The page title: the sans face in caps at 1.5 times the sans base, centred. A page's
-   `h1` in its hero takes it, and so does any heading given `site-title` (the homepage,
-   which has no `h1`, sets its first section this way). */
+/* The page title: the sans face in upright caps (never KPress's italic h2) at 1.5 times
+   the sans base, centred. A page's `h1` in its hero takes it, and so does any heading
+   given `site-title` (the homepage, which has no `h1`, sets its first section this way). */
 .site-hero h1,
 .kpress .site-title {
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * var(--paper-title-scale));
+  font-style: normal;
   font-weight: var(--site-font-weight-sans-medium);
   letter-spacing: var(--kpress-caps-spacing);
   text-align: center;

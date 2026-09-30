@@ -817,3 +817,11 @@ def test_each_row_detail_names_its_novelty_label(
             f"{result.novelty}</span> {html.escape(labels[result.novelty])}</dd>"
         )
         assert chip in _row(results, result.id), result.id
+
+
+def test_the_page_title_style_is_upright() -> None:
+    """KPress sets `h2` in italic; the title style, which the homepage's first `h2` takes
+    through `site-title`, overrides it, so it reads as the frontier atlas's `h1` does."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    rule = css[css.index(".site-hero h1,\n.kpress .site-title {") :]
+    assert "font-style: normal;" in rule[: rule.index("}")]

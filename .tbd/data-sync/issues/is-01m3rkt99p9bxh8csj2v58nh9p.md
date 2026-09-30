@@ -3,15 +3,15 @@ type: is
 id: is-01m3rkt99p9bxh8csj2v58nh9p
 title: Measure PR gate sensitivity to proof-corpus growth and hosted load
 kind: task
-status: closed
+status: in_progress
 priority: 2
-version: 10
+version: 13
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3ra1hjvn4bdh3h13aggqgvb
 created_at: 2026-09-30T07:35:11.413Z
-updated_at: 2026-09-30T12:07:44.057Z
+updated_at: 2026-09-30T13:14:54.675Z
 closed_at: 2026-09-30T12:07:44.056Z
 close_reason: Implemented, independently reviewed, pushed in01572bb8b, and all hosted PR checks pass. CIselector optimized with68focusedtests and measured cold-profile improvement; proofcostreporter covers17retained batches with fivecontrols and unknownmetric handling.
 resolution: null
@@ -21,4 +21,4 @@ Hosted run36684000513 at6c1c713af passed all logical checks but failed cost cont
 
 ## Notes
 
-Measured/fixed dependency-selector hotspot without changing CI thresholds: imports ast.walk visited2.66millionnodes,6.36s cumulative of13.933s profiled selection. Skipping expression subtrees (cannotcontain importstatements) retains exception/match suites; same profile selection7.259s.68focusedselector tests pass6.83s, Ruff/typesclean. Candidate awaiting independentreview and hostedcheckpoint; broadlocaltests notrun.
+Run36717374480 at0a474: all functional tests pass; suite-A165.1s exceeds1.5x109.92 baseline by0.22s. Other required shards pass. Prior a7a06 suite-B retry dropped159s to91s, but partial attempt aggregator intentionally unmeasurable. No budget relaxation or broad local suite; inspect timing artifacts and verify next substantive full run.

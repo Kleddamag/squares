@@ -3,15 +3,19 @@ type: is
 id: is-01m3rxqvcpd3evbj585ej0cxkh
 title: Independently close case1383 through its complete center partition
 kind: task
-status: in_progress
+status: closed
 priority: 0
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3rb05kzxrn6zcj60cs1c91f
 created_at: 2026-09-30T10:28:37.397Z
-updated_at: 2026-09-30T12:29:42.177Z
+updated_at: 2026-09-30T13:13:35.954Z
+closed_at: 2026-09-30T13:13:35.954Z
+close_reason: All required source inputs acquired; complete observed geometric executions accepted by Astra-max. Exclusion inventory 49880161 covers all 2180 required cases; all ten capture nodes and center1383 both branches accepted. Final composition eaad8f14 has no pending obligations. Registry/PR integration continues under think-3i74 and think-36tg.
+resolution: null
+duplicate_of: null
 ---
 Pinned source closure acquired: eight ancestry nodes,36600 reported rows, closed owner13 center split at4/3 with le two-node and ge one-node branches. Independently replay shared ancestry, exact child restrictions, both closed branches and terminal contradictions; cached source assertions receive no authority. Reuse reviewed generic geometry, variable partitions and accepted-state joins. Astra-max audits mathematical composition before full replay. Separate from global capture438.
 

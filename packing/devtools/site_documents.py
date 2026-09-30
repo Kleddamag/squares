@@ -304,7 +304,9 @@ def render_document(
         current=document.current,
         title=document.title,
         description=document.description,
-        toc=True,
+        # A long report gets the contents rail and a short one does not, by kpress's
+        # own length rule, so every report keeps one layout either way.
+        toc="auto",
         trust_mode="sanitized",
         strict_anchors=True,
         rewrite_body=lambda page: rewrite_article(page, context=context, report=report),

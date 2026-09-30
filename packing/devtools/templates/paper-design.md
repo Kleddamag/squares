@@ -111,6 +111,12 @@ it.
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
   sections are `h2`s.
 
+- **Report layout.** Every report page (the tutorial, the synopsis and the other
+  documents) has one layout.
+  A long report gets a contents rail and a short one does not, by kpress’s own rule
+  (seven headings and 800 words), so the choice is never made per page.
+  Either way the reading column is centred.
+
 - **Document pages with contents.** On a wide screen the contents rail stays at the left
   edge and the reading column is centred on the page, under the centred navigation.
   Where the pane is too narrow to centre, the column sits as near centre as the 15rem

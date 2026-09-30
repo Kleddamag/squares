@@ -171,3 +171,23 @@ def test_the_tutorial_math_is_kpress_math(pages: dict[str, render_overview.Page]
     body = pages["tutorial.html"].html
     assert len(re.findall(r'data-kpress-math="inline"', body)) >= 14
     assert 'data-kpress-math-error="true">' not in body
+
+
+def test_long_reports_get_a_contents_rail_and_short_ones_do_not() -> None:
+    """kpress's own length rule decides, so a short report keeps the one centred
+    column and a long one adds the rail beside it."""
+    short = "\n\n".join(f"## Part {i}\n\nA line of text." for i in range(3))
+
+    def rail(markdown: str) -> bool:
+        page = render_overview.kpress_page(
+            markdown,
+            name="short.html",
+            current="tutorial",
+            title="T",
+            description="D",
+            toc="auto",
+        )
+        return 'class="kpress-toc ' in page.html
+
+    assert not rail(short)
+    assert 'class="kpress-toc ' in render_overview.PAGES["tutorial.html"]().html

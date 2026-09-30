@@ -252,7 +252,7 @@ def kpress_page(
     current: str,
     title: str,
     description: str,
-    toc: bool,
+    toc: bool | Literal["auto"],
     rewrite_body: Callable[[str], str] | None = None,
     page_scripts: Sequence[Path] = (),
     trust_mode: Literal["trusted", "sanitized"] = "trusted",
@@ -283,7 +283,7 @@ def kpress_page(
         asset_policy="none",
         content_card=False,
         show_doc_header=False,
-        include_toc="on" if toc else "off",
+        include_toc="auto" if toc == "auto" else "on" if toc else "off",
         head_extra_html=(
             f"{favicon_html()}{head}<script>{_script_text(EMBED_SCRIPT)}</script>"
         ),

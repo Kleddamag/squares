@@ -53,7 +53,6 @@ FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
 MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
-FILM_SCRIPT = BROWSER / "film.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
@@ -423,7 +422,6 @@ def overview_page() -> Page:
             FORWARD_SCRIPT,
             TABLE_SCRIPT,
             POPOVER_SCRIPT,
-            FILM_SCRIPT,
             ATLAS_GRID_SCRIPT,
         ),
     )

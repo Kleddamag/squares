@@ -104,7 +104,7 @@ What the site publishes now (from `.github/workflows/pages.yml` and the builders
 | --- | --- | --- |
 | `/` | the n = 11 `t-018` explainer | `devtools.render_explainer` |
 | `/t-018-explainer.md`, `/t-018-explainer.pdf` | its Markdown and PDF editions | `render_explainer`, `render_explainer_pdf` |
-| `/known-best-1-100.*`, `/known-best-1-324.*`, `/ascent-n1-100-poster.png` | atlas composites and the film poster | copied beside the page (`COMPOSITE_ASSETS`) |
+| `/known-best-1-100.*`, `/known-best-1-324.*`, `/ascent-n1-100-poster.png`, `/ascent-n1-324-poster.png` | atlas composites and the two film posters | copied beside the page (`COMPOSITE_ASSETS`) |
 | `/workbench/` | the interactive workbench | `workbench_tools.build_site` |
 
 The films are GitHub release assets, and every other document is reached through

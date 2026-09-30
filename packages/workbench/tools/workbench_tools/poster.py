@@ -1,23 +1,28 @@
 #!/usr/bin/env python3
-"""Cut the explainer's film poster out of a captured video, by the step its receipt names.
+"""Cut a film's poster out of a captured video, by the step its receipt names.
 
-The explainer's `<video>` shows `assets/ascent-n1-100-poster.png` until a reader presses
-play: a frame of the film itself, at n = 88, scaled to 1280x720, the video's own 16:9, so the
-box the poster fills is the box the video fills. The frame carries the version stamp, so a
-re-cut from new data leaves the old poster naming the old data until it is cut again.
+Each published film shows a poster until a reader presses play: a frame of the film itself,
+scaled to 1280x720, the video's own 16:9, so the box the poster fills is the box the video
+fills. The explainer's n = 1..100 film shows `assets/ascent-n1-100-poster.png`, its n = 88;
+the overview's n = 1..324 film shows `assets/ascent-n1-324-poster.png`, its n = 290. The cut
+a receipt describes picks its poster, by the last n of its range, so neither re-cut can
+overwrite the other's. The frame carries the version stamp, so a re-cut from new data
+leaves the old poster naming the old data until it is cut again.
 
-**The receipt says where n = 88 is.** It lists every step the cut drew, in order, with the
-frames each owns, so a step's frames are a contiguous run and the last of them is the step's
-settled end (`capture_video.frame_schedule`). This takes that frame, or one `--before-end`
-frames earlier, and checks the video beside the receipt is the one the receipt describes
-before reading anything from it.
+**The receipt says where the poster's n is.** It lists every step the cut drew, in order,
+with the frames each owns, so a step's frames are a contiguous run and the last of them is
+the step's settled end (`capture_video.frame_schedule`). This takes that frame, or one
+`--before-end` frames earlier, and checks the video beside the receipt is the one the
+receipt describes before reading anything from it.
 
 The seek is to half a frame before the wanted frame's own instant, so the first frame at or
 after it is that frame whichever way ffmpeg rounds the time.
 
-Usage, from `packing/`:
+Usage, from `packing/`, once per cut:
     uv run --frozen --all-extras --group dev python -m workbench_tools.poster \
         site/workbench/ascent-n1-100-1080p60-citations.receipt.json
+    uv run --frozen --all-extras --group dev python -m workbench_tools.poster \
+        site/workbench/ascent-n1-324-1080p60-citations.receipt.json
 """
 
 from __future__ import annotations
@@ -40,6 +45,14 @@ POSTER = PACKAGE_ROOT / "assets/ascent-n1-100-poster.png"
 #: the facts column carrying its bound, its citation and the version stamp.
 POSTER_N = 88
 
+#: Each published cut's poster and the n it shows, by the last n of the cut's range. The
+#: n = 1..324 film's is n = 290 (2026-09-30): two tilted blocks in one grid, with both
+#: bounds and both citations in the facts column, where n = 324 itself is a full grid.
+POSTERS: dict[int, tuple[Path, int]] = {
+    100: (POSTER, POSTER_N),
+    324: (PACKAGE_ROOT / "assets/ascent-n1-324-poster.png", 290),
+}
+
 #: The poster's size since it was first published (2026-09-22): the stage's 16:9 at two
 #: thirds.
 POSTER_WIDTH = 1280
@@ -59,6 +72,14 @@ def poster_frame(receipt: Mapping[str, Any], n: int, *, before_end: int = 0) -> 
             return start + frames - 1 - before_end
         start += frames
     raise ValueError(f"n = {n} is not a step of this cut, which covers {receipt.get('range')}")
+
+
+def published_poster(receipt: Mapping[str, Any]) -> tuple[Path, int]:
+    """The poster this cut publishes and the n it shows, by the last n of its range."""
+    last = int(receipt["range"][1])
+    if last not in POSTERS:
+        raise ValueError(f"no published poster for a cut ending at n = {last}")
+    return POSTERS[last]
 
 
 def seek_seconds(index: int, fps: int) -> float:
@@ -102,7 +123,9 @@ def _digest(path: Path) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("receipt", type=Path, help="the cut's .receipt.json, beside its video")
-    ap.add_argument("--n", type=int, default=POSTER_N, help="the step to take the frame from")
+    ap.add_argument(
+        "--n", type=int, help="the step to take the frame from (default: the cut's poster n)"
+    )
     ap.add_argument(
         "--before-end",
         type=int,
@@ -111,10 +134,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--width", type=int, default=POSTER_WIDTH)
     ap.add_argument("--height", type=int, default=POSTER_HEIGHT)
-    ap.add_argument("--out", type=Path, default=POSTER)
+    ap.add_argument("--out", type=Path, help="the PNG to write (default: the cut's poster)")
     o = ap.parse_args(argv)
 
     receipt = json.loads(o.receipt.read_text(encoding="utf-8"))
+    if o.n is None or o.out is None:
+        try:
+            default_out, default_n = published_poster(receipt)
+        except ValueError as error:
+            raise SystemExit(f"{error}; pass --n and --out") from error
+        o.n = default_n if o.n is None else o.n
+        o.out = default_out if o.out is None else o.out
     video = o.receipt.parent / str(receipt["video"])
     if not video.exists():
         raise SystemExit(f"{video} is not beside its receipt")

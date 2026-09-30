@@ -268,9 +268,11 @@ it.
 - **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
   on a phone. Each image and its caption link to that poster’s PDF, marked
   `type="application/pdf"` and never `download`, so the browser opens it in place.
-  Under them, across both columns, the n = 1 to 324 film plays by itself: muted,
-  looping, inline and with its controls, held still on its first frame for a reader who
-  asks for reduced motion (`overview/film.js`).
+  Under them, across both columns, is the n = 1 to 324 film, embedded as the explainer
+  embeds its film: inline, with its controls, fetching nothing until a reader presses
+  play (`preload="none"`), and showing its poster until then, a frame of the film at n =
+  290 (`ascent-n1-324-poster.png`) at the video’s own 16:9, so starting playback moves
+  nothing. Nothing moves by itself, so reduced motion needs no script.
 
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.

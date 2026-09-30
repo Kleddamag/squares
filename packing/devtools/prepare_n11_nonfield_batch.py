@@ -95,13 +95,19 @@ def main() -> None:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--limit", type=int, choices=range(1, 277), default=4)
     parser.add_argument("--cases", type=int, nargs="+")
+    parser.add_argument(
+        "--adapter",
+        choices=("sequential_wall_seed", "closed_center_partition", "baseline_necessary_d4"),
+        default="sequential_wall_seed",
+        help="Source recipe to acquire; this never admits its mathematical premises.",
+    )
     parser.add_argument("--max-compressed-bytes", type=int, default=20_000_000)
     parser.add_argument("--max-decoded-bytes", type=int, default=150_000_000)
     parser.add_argument("--max-seconds", type=float, default=55)
     args = parser.parse_args()
     require(0 < args.max_seconds <= 120, "acquisition wall limit outside (0,120]")
     require(
-        0 < args.max_compressed_bytes <= 100_000_000
+        0 < args.max_compressed_bytes <= 150_000_000
         and 0 < args.max_decoded_bytes <= 600_000_000,
         "acquisition byte budget outside allowed range",
     )
@@ -127,7 +133,7 @@ def main() -> None:
     cases = [
         case
         for case in manifest["cases"]
-        if case["adapter"] == "sequential_wall_seed"
+        if case["adapter"] == args.adapter
         and (args.cases is None or case["mask_index"] in args.cases)
     ]
     cases.sort(key=lambda case: (case["reported_rows"], case["declared_decoded_bytes"]))
@@ -181,6 +187,7 @@ def main() -> None:
         "intake_tool_sha256": digest(before),
         "manifest_helper_sha256": digest(helper_before),
         "selected_case_ids": [case["mask_index"] for case in cases],
+        "selected_adapter": args.adapter,
         "objects_directory": args.objects.resolve().relative_to(REPO).as_posix(),
         "objects": results,
         "compressed_bytes": sum(pin["compressed_bytes"] for pin in pins),

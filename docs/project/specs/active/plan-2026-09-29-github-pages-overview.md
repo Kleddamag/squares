@@ -513,8 +513,10 @@ the site, and the pinned flowmark keeps math spans whole (`devtools.check_math_s
 measures that). This phase moves the prose to LaTeX math so it renders as mathematics
 everywhere it is read.
 
-Measured at the baseline: 86 math-like code spans in `README.md`, 145 in `SYNOPSIS.md`,
-28 in `TUTORIAL.md`, and about 1,500 tracked Markdown files outside the archive.
+Measured at the first baseline: 86 math-like code spans in `README.md`, 145 in
+`SYNOPSIS.md`, 28 in `TUTORIAL.md`, and about 1,500 tracked Markdown files outside the
+archive. README’s generated blocks are migrated at their renderer in group 2, not edited
+in group 1.
 
 **What converts and what does not.** A code span converts when its content is a
 mathematical expression: a bound or equation in `s(n)`, a number or fraction standing as
@@ -541,33 +543,49 @@ It never touches a file that is not yet migrated.
 
 **Generated documents.** Generated Markdown is migrated at its renderer, never by
 editing the output: `render_results` (`RESULTS.md`), `render_research_tables`
-(`STATUS.md`), `render_results_headline`, the claim-document renderers, and the overview
-and frontier pages. The data stays ASCII (`results.yaml` claims such as
-`s(11) >= 381/100` do not change), and the renderers format it as math, so no data file
-moves and `DATA_REVISION` is unaffected.
+(`STATUS.md`), `render_results_headline`, `render_recent_results` (README’s generated
+blocks), the claim-document renderers, and the overview and frontier pages.
+The register and the case frontmatter stay ASCII (`results.yaml` claims such as
+`s(11) >= 381/100` do not change), and the renderers format them as math.
+The regenerated `RESULTS.md` and `STATUS.md` are under `DATA_PATHS`, so group 2’s commit
+is a data commit with its re-pin and re-stamp.
 
 **Order.** One commit per group, each run through the tool and the gate:
 
 1. The site’s reader documents: `README.md`, `TUTORIAL.md`, `SYNOPSIS.md`,
    `conventions.md`, `epistemics.md`.
-2. The renderers of generated documents, and their regenerated outputs.
+2. The renderers of generated documents, and their regenerated outputs; a data commit.
 3. `docs/project/` (specs, research, reviews, handoffs), except quoted source text and
    the dated reviews `.flowmarkignore` protects.
 4. The Markdown under `packing/` outside `resources/`: case files’ bodies, case
-   directories, the atlas and frontier READMEs.
+   directories, the atlas and frontier READMEs; a data commit for the case files.
+
+**GitHub is measured, not assumed** (added 30 September, after group 1). Group 1’s first
+push showed 31 formulas GitHub left as dollars that kpress, KaTeX and flowmark had all
+accepted. `devtools.check_github_math` compares every math span of a pushed file with
+GitHub’s own rendering of it, and its `--probe` measures the cases recorded in
+[`cases.md`](../../../../packing/tests/fixtures/github-math/cases.md): GitHub opens
+inline math only after whitespace, the start of a line, `(` or bold’s stars, closes none
+before a letter or digit, and draws none inside a link’s text or italics.
+It also reads a backslash before punctuation inside math as a Markdown escape (`\{`,
+`\,`, `\\`), and pairs stars in two formulas of one paragraph as emphasis, so formulas
+use the letter-named forms it keeps (`\lbrace`, `\thinspace`, `\cr`, `\ast`).
+`migrate_math` follows those rules before converting, puts back to code a formula it
+wrote where GitHub draws none, and `check_math_markup` fails on one in a migrated file.
+A test holds `migrate_math` to every recorded placement.
 
 **Rendering everywhere.** The site pages render math through `kpress`, like the
 explainer; the renderers of the tutorial and synopsis pages get a test that no `$`
 reaches the page unrendered.
 The workbench and any other HTML that shows register text use the same KaTeX path.
 
-- [ ] `migrate_math.py` with classification report, `--apply`, and span-safety check,
+- [x] `migrate_math.py` with classification report, `--apply`, and span-safety check,
   and tests over a fixture of math and identifier spans
-- [ ] `check_math_markup` ratchet on the pull-request surface
+- [x] `check_math_markup` ratchet on the pull-request surface
 - [ ] Group 1: the reader documents
-- [ ] Group 2: renderers of generated documents, outputs regenerated
+- [ ] Group 2: renderers of generated documents, outputs regenerated, re-pin
 - [ ] Group 3: `docs/project/`
-- [ ] Group 4: Markdown under `packing/` outside the archive
+- [ ] Group 4: Markdown under `packing/` outside the archive, re-pin
 - [ ] Rendered-math tests on the site pages; preview screenshots of math-heavy sections
 
 ## Testing Strategy

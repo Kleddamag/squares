@@ -59,6 +59,7 @@ body {
   --site-font-size-note: calc(var(--site-font-size-sans-base) * 0.92);
   --site-support-color: var(--kpress-doc-muted);
   --site-wide: calc(var(--kpress-measure) + 24rem);
+  --site-subtitle-space: 1.25rem;
 }
 .site-page a,
 .kpress-tooltip a {
@@ -99,10 +100,21 @@ body {
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
 }
-.site-hero .subtitle {
-  color: var(--kpress-doc-muted);
+/* A page's subtitle, such as "Every tracked case, n = 1 to 324": the sans face a step
+   above the base, as the explainer's subtitle is, in the page's own text colour, with
+   the same space above it (from the title) as below it (to the first paragraph). */
+.kpress .site-hero .subtitle {
+  color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-sans-base);
+  font-size: calc(var(--site-font-size-sans-base) * 1.25);
+  line-height: 1.3;
+  margin-block: var(--site-subtitle-space);
+}
+.kpress .site-hero:has(.subtitle) h1 {
+  margin-block-end: 0;
+}
+.kpress .site-hero:has(.subtitle) + * {
+  margin-block-start: var(--site-subtitle-space);
 }
 .site-colophon {
   color: var(--site-support-color);

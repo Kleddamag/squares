@@ -146,7 +146,11 @@ it.
   icons.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
-  sections are `h2`s.
+  sections are `h2`s. A page that has a title (the frontier atlas, the case records)
+  sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
+  = 1 to 324”. The subtitle is the sans face at 1.25 times the sans base, as the
+  explainer’s is, in the page’s own text colour, never gray, with the same space above
+  it and below it (`--site-subtitle-space`, 1.25rem).
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.

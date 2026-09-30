@@ -84,6 +84,7 @@ ANCHORS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("[Guzhou0806 n17 R052]", re.compile(r"\bR0[56]\d\b")),
     ("[n17 weighted certificates 2026-09-20]", re.compile(r"\bR012\b")),
     ("[evand square-packing 2026]", re.compile(r"Evan Daniel")),
+    ("[griffcass square-packing 2026-09-23]", re.compile(r"Casson")),
 )
 
 

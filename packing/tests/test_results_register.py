@@ -561,3 +561,20 @@ def test_the_registration_backfill_matches_a_result_not_only_its_id() -> None:
     )
     other = {**current, "attribution": {"source_keys": ["[Other]"], "published": "2026-09-20"}}
     assert not backfill_registered.same_result(other, current)
+
+
+def test_the_overview_template_is_in_the_reader_tier(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A `T-NNN` the overview's prose names must be a registered result, as in README."""
+    template = next(
+        path for path in check_results.READER_TIER if path.name == "overview-article.md"
+    )
+    poisoned = tmp_path / template.name
+    poisoned.write_text(
+        template.read_text(encoding="utf-8") + "\nSee T-999.\n", encoding="utf-8"
+    )
+    tier = tuple(poisoned if path == template else path for path in check_results.READER_TIER)
+    monkeypatch.setattr(check_results, "READER_TIER", tier)
+    assert check_results.main() == 1
+    assert "overview-article.md: mentions unknown result T-999" in capsys.readouterr().out

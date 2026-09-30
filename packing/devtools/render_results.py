@@ -71,7 +71,7 @@ OURS_TITLE = f"This Project{APOSTROPHE}s Results"
 BEFORE_PROJECT = "before-project"
 
 
-class ResultGroup(NamedTuple):
+class Group(NamedTuple):
     """One heading of the view and its results, in the order the view lists them."""
 
     key: str
@@ -99,7 +99,7 @@ def order(record: Mapping[str, Any]) -> tuple[int, int, str]:
 
 def grouped_results(
     results: Sequence[Mapping[str, Any]], sources: Mapping[str, Mapping[str, Any]]
-) -> list[ResultGroup]:
+) -> list[Group]:
     """The register's results under the view's headings, each group in the view's order.
 
     This project's results come first, always, even when there are none. Results by others
@@ -108,7 +108,7 @@ def grouped_results(
     `C3`) come first, since they are the queue.
     """
     ordered = sorted(results, key=order)
-    groups = [ResultGroup(OURS, OURS_TITLE, [r for r in ordered if not r.get("attribution")])]
+    groups = [Group(OURS, OURS_TITLE, [r for r in ordered if not r.get("attribution")])]
     others = [record for record in ordered if record.get("attribution")]
     for lineage, title in OTHERS:
         group = sorted(
@@ -116,7 +116,7 @@ def grouped_results(
             key=lambda record: (int(record["confirmation"][1]) >= 3, *order(record)),
         )
         if group:
-            groups.append(ResultGroup(lineage or BEFORE_PROJECT, title, group))
+            groups.append(Group(lineage or BEFORE_PROJECT, title, group))
     return groups
 
 

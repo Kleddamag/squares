@@ -38,7 +38,14 @@ RESULTS = ROOT / "frontier" / "results.yaml"
 EVIDENCE = ROOT / "frontier" / "evidence.yaml"
 BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
 FRONTIER = ROOT / "frontier"
-READER_TIER = (REPO / "README.md", REPO / "SYNOPSIS.md")
+#: The reader documents whose `T-NNN` mentions must name registered results: README, the
+#: synopsis, and the overview's article template, whose facts are placeholders filled from
+#: the record but whose prose may still name a result.
+READER_TIER = (
+    REPO / "README.md",
+    REPO / "SYNOPSIS.md",
+    ROOT / "devtools" / "templates" / "overview-article.md",
+)
 DOCUMENT_MAP = REPO / "docs" / "project" / "document-map.yaml"
 CAMPAIGN = ROOT / "campaign"
 # What each `produced_by` key names, for the refusal message.

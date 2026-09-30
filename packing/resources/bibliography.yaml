@@ -478,6 +478,12 @@ sources:
       is 2026-09-24 in UTC, the date given here; CITATION.cff gives 2026-09-23. Every
       packing is superseded here by [franciscouzo square-packing 2026-09-27]; no field
       holds it (web/casson-square-packing-2026-09-23/README.md).
+    ai_assistance:
+      statement: >-
+        Its README says the work was done by Griffin Casson “with the help of Claude
+        (Anthropic)”.
+      quote: with the help of Claude (Anthropic)
+      where: packing/resources/web/casson-square-packing-2026-09-23/griffcass-square-packing/README.md
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being

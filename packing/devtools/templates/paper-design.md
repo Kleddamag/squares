@@ -178,7 +178,7 @@ it.
   Three or fewer centre as a group, each card as wide as it would be in a full row, so a
   short section lines up with a long one; below four columns the row holds them anyway.
   Every card works the same way: pressing it opens a popover that shows where it leads,
-  and the popover ends in one button that goes there.
+  and the popover ends in one button that goes there, centred at its foot.
   - When the card leads to another page of the site, the popover renders that page
     itself, narrow, in a frame: the page at the same address with `?view=embed` added
     before any fragment, so a filtered view such as `frontier.html?recent=true` or a

@@ -113,9 +113,6 @@ body {
 .kpress .site-hero:has(.subtitle) h1 {
   margin-block-end: 0;
 }
-.kpress .site-hero:has(.subtitle) + * {
-  margin-block-start: var(--site-subtitle-space);
-}
 .site-colophon {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
@@ -277,11 +274,13 @@ body {
   flex: 1 1 auto;
   min-block-size: 0;
 }
+/* Every popover ends in its one button, centred, with any "On GitHub" link beside it. */
 .site-popover .site-popover-actions {
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1rem;
+  justify-content: center;
   margin-block: 0.8rem 0;
 }
 .site-popover .site-popover-also {
@@ -1117,10 +1116,19 @@ body {
   color: var(--kpress-doc-muted);
   font-weight: var(--site-font-weight-sans-medium);
 }
+/* The record's button centred like every popover's, with the arrows to the neighbouring
+   cases at the right edge: three columns, the outer two equal. */
+.site-popover.site-atlas-pop .site-popover-actions {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+.site-atlas-pop .site-popover-actions .site-popover-action {
+  grid-column: 2;
+}
 .site-atlas-pop .site-atlas-pop-step {
   display: inline-flex;
   gap: 0.4rem;
-  margin-inline-start: auto;
+  justify-self: end;
 }
 .site-atlas-pop-step button {
   background: none;
@@ -1235,6 +1243,18 @@ body {
   .site-atlas-pop-figure {
     justify-self: center;
     inline-size: min(100%, 15rem);
+  }
+  /* Too narrow for the button to sit centred between equal columns: the arrows go under
+     it, centred too. */
+  .site-popover.site-atlas-pop .site-popover-actions {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+  .site-atlas-pop .site-popover-actions .site-popover-action {
+    grid-column: 1;
+  }
+  .site-atlas-pop .site-atlas-pop-step {
+    justify-self: center;
   }
   /* The record's button stays in reach at the foot of a panel taller than the phone. */
   .site-atlas-pop .site-popover-actions {

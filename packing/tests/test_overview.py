@@ -154,7 +154,7 @@ def test_on_github_links_open_the_latest_version() -> None:
     assert len(branch_links(page)) == len(set(also))
 
 
-def test_other_projects_are_the_source_repositories_the_record_reviews() -> None:
+def test_other_projects_include_every_source_repository_the_record_reviews() -> None:
     coverage = safe_load(
         (overview_data.REPO / "packing/frontier/source-coverage.yaml").read_text(
             encoding="utf-8"
@@ -166,7 +166,8 @@ def test_other_projects_are_the_source_repositories_the_record_reviews() -> None
         if source["role"] == "source-repository" and "github.com" in source["url"]
     }
     listed = [url for url, _, _ in overview_sections.OTHER_PROJECTS]
-    assert sorted(listed) == sorted(reviewed)
+    assert reviewed <= set(listed)
+    assert len(set(listed)) == len(listed)
     assert not any("jlevy/squares" in url for url in listed)
 
 

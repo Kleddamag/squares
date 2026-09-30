@@ -74,8 +74,8 @@ the retained source and the review.
 ## Other Square Packing Projects
 
 Others are working on the problem in the open.
-These are the projects on GitHub whose releases this record has reviewed, each credited
-to its author.
+These are the projects on GitHub that the research frontier cites, each credited to its
+author.
 
 {{OTHER_PROJECTS}}
 

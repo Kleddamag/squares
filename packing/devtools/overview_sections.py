@@ -434,10 +434,10 @@ def hero() -> str:
     )
 
 
-#: The other public square-packing projects on GitHub whose releases this record has
-#: reviewed: each repository's home, its author as the record credits them, and what it
-#: holds. The source-coverage register names every one, and a test holds this list to
-#: the register's source repositories, so a new one cannot go missing here.
+#: The other public square-packing projects on GitHub that the research frontier cites:
+#: each repository's home, its author as the record credits them (the GitHub handle
+#: where the record names no one), and what it holds. A test holds this list to cover
+#: every source repository in the source-coverage register.
 OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     (
         "https://github.com/evand/square-packing",
@@ -455,6 +455,21 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "Rectangle-density lower-bound certificates.",
     ),
     (
+        "https://github.com/franciscouzo/square-packing",
+        "Francisco Couzo",
+        "Improved packings for dozens of n between 68 and 300.",
+    ),
+    (
+        "https://github.com/griffcass/square-packing",
+        "Griffin Casson",
+        "Improved packings for n = 103, 105 and other cases.",
+    ),
+    (
+        "https://github.com/JoostdeWinter/square-packing-211",
+        "Joost de Winter",
+        "A packing of 211 squares in a square of side under 15.",
+    ),
+    (
         "https://github.com/Kleddamag/11-squares-certified-bound",
         "Kleddamag",
         "A certified lower bound for eleven squares.",
@@ -468,6 +483,21 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "https://github.com/Guzhou0806/n17-square-packing",
         "Guzhou0806",
         "Strict lower bounds for seventeen squares.",
+    ),
+    (
+        "https://github.com/DRMacIver/square-packing-research",
+        "David R. MacIver",
+        "A lower bound for seventeen squares, with its paper and a Lean check.",
+    ),
+    (
+        "https://github.com/ahyangyi/17squares",
+        "ahyangyi",
+        "A lower-bound proof for seventeen squares.",
+    ),
+    (
+        "https://github.com/anabologyco-maker/square17-lower-bound",
+        "anabologyco-maker",
+        "A weighted fractional lower bound for seventeen squares.",
     ),
     (
         "https://github.com/BalthasarStrauss/Squares-packing_S-29-_New-Record",

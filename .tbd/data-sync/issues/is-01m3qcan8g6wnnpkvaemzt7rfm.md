@@ -5,7 +5,7 @@ title: Integrate PR246 with updated main and certify final head
 kind: bug
 status: in_progress
 priority: 1
-version: 12
+version: 13
 labels: []
 dependencies: []
 parent_id: is-01m3nzy6gqfv60whzzvww0ffa0
@@ -13,8 +13,9 @@ child_order_hints:
   - is-01m3qps2vt230531cvdm1nvtf9
   - is-01m3qvn66t22qdk6fjsfbrns1r
   - is-01m3s98k585t7bxxh824cmmed4
+  - is-01m3scjh5v7hnchx940vhrj14z
 created_at: 2026-09-29T20:05:04.906Z
-updated_at: 2026-09-30T14:42:21.749Z
+updated_at: 2026-09-30T14:47:51.737Z
 ---
 Main advanced during validation, and132c209c0 cannot be merge-built. Merge current origin/main preserving both research records, regenerate derived views and atlas, repin data after the merge, run appropriate local validation and require final-head hosted packing/page/mergeability checks. Reconcile Session161 upstream closeout and preserve Session163 work; do not erase reviews or receipts. This bead owns any certification debt from the stopped integration slice.
 

@@ -16,16 +16,18 @@ evidence:
     source_key: '[Queuingtheorydotcom n11 optimality 2026]'
     replay_status: not-attempted
     external_review:
-      state: informally-verified
+      state: defect-found
       date: '2026-09-29'
       reviewed_by: GPT-6 Astra at max reasoning, with coordinator integration
       note: >-
-        Read pinned f9e0de7 PROOF sections 3-10 and the implemented focused-local
-        Taylor, feature and frame bridge, plus v9 strict-core, collision and
-        residual-cover rules. No critical defect found in these reviewed implications.
-        The 2180-case and candidate geometric instances and public full replay
-        remain unchecked locally. The source reports composition integrity after
-        sanitization, not fresh public end-to-end geometric verification.
+        Astra-max mathematical review and first-party checks accept conditional D4,
+        fixed-T local isolation, conditional near-pose inclusion and 459 exclusions
+        from one field certificate. The complete case census is checked as metadata.
+        Independent calculations find the actual near final-state digest differs
+        from its pinned B7 audit. The publisher's fresh replay and complete capture
+        consumer require equality and would reject that binding (think-gzju).
+        This is a public proof-packet defect, not a geometric refutation. See
+        docs/project/reviews/review-2026-09-29-n11-optimality.md and its retained receipts.
     limitations: >-
       The source claims the exact Trump optimum through a 2184-pattern cover,
       2180 exclusions, symmetry reduction of four survivors and a complete capture

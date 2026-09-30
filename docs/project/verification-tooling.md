@@ -45,7 +45,16 @@ conditional on their geometric ancestry (3.38 seconds including startup).
 The [case-census checker](../../packing/devtools/check_n11_optimality_case_census.py)
 also confirms the complete case lists (0.11 seconds including startup), explicitly
 without accepting any exclusion geometry.
-Full capture and exclusions remain open.
+The [mask-0 field checker](../../packing/devtools/check_n11_optimality_field_mask0.py)
+accepts all 55 ownership obligations, 136 closed angular rows and 459 canonical
+exclusions in 16.58 seconds including startup.
+The remaining 1,721 exclusions and full capture remain open.
+The
+[capture refusal](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-ancestry/refusal-result.json)
+records a confirmed stale final-state digest in the published near audit, blocking its
+advertised fresh replay and capture binding.
+This does not refute the packing theorem; the
+[proof review](reviews/review-2026-09-29-n11-optimality.md) gives the exact scope.
 
 The [epistemic scale](../../epistemics.md#confirmation) distinguishes a complete replay
 (`C3`) from confirmation by a distinct complete method (`C4`) and a mapped review

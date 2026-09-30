@@ -289,10 +289,18 @@ Path semantics.
 The equivalence control and original timing test pass; three further controls confirm
 linked evidence, registered dependencies and cache exclusion survive real snapshots.
 Ruff and BasedPyright pass.
-No ceiling, test selection or mathematical acceptance rule was relaxed.
-`think-9b01` tracks this fix; `think-n2kg` retains the broader dependency selection and
-snapshot-growth work.
+No ceiling, test selection or mathematical acceptance rule was relaxed by the ancestry
+optimization. `think-9b01` tracks that fix.
 Current-head hosted timing remains to be checked.
+
+The next reviewed proof receipts raised the required snapshot to 167,821,919 bytes,
+49,759 bytes above the 160 MiB storage guard, after four measured non-input prunes.
+The separate storage adjustment restores roughly 32 MiB of headroom with a 192 MiB
+ceiling, retaining all linked proof evidence.
+It changes neither copied bytes nor runtime limits; at three workers the ceiling is 576
+MiB. The oversized-input refusal still applies.
+The existing `think-t1lk` owns durable dependency-aware selection; `think-n2kg` was
+consolidated into it rather than maintaining a duplicate task.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -32,8 +32,14 @@ bind the inputs and implementation, including shared source primitives.
 The later [fixed-T local-isolation receipt](receipts/local-isolation/result.json)
 confirms all curvature, feature-margin and nonlinear-branch obligations using the same
 two objects. It isolates the labelled Trump pose inside the supplied rectangle;
-pose inclusion, capture and global optimality remain unproved here.
-The remaining payloads have not been acquired for this packet.
+the [pose inclusion receipt](receipts/pose-inclusion/result.json) checks the supplied
+near domains conditionally. The [case census](receipts/case-census/result.json) checks
+all case lists, and the [first field receipt](receipts/field-mask0/result.json)
+independently accepts 459 exclusions. Most exclusion geometry and full capture remain
+unverified. The [capture refusal](receipts/capture-ancestry/refusal-result.json) retains
+a confirmed mismatch between the actual near-state digest and its published audit;
+it blocks that proof-packet binding, without refuting global optimality.
+Only selected payloads have been acquired.
 The symmetry check passed conditionally; it does not establish global optimality.
 The source’s publication note says the privacy-normalized public derivative has not had
 a fresh full geometric replay.

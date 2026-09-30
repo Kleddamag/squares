@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T02:05:05Z'
+  deadline_at: '2026-09-30T02:40:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -369,7 +369,7 @@ session:
     bead: think-sw68
     objective: Independently check nonlinear local isolation while retaining explicit source-sharing
       limits, and map the complete exclusion census and candidate-capture ancestry.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: The first independent symmetry and complete residual controls are retained;
       curvature, feature margins and complete nonlinear branch coverage are the next proof obligations.
@@ -383,16 +383,45 @@ session:
       CI blocks the mathematical lane.
     fallback: Retain the failed or incomplete obligation, inputs and timings; select the next independent
       check without changing the verified bound.
-    outcome: null
+    outcome: Fixed-T local isolation accepted with shared geometry source disclosed (17.98 seconds
+      outer); all 136 near-state rows and 1542 vertices pass conditional inclusion (3.38 seconds);
+      complete case census passes metadata-only (0.11 seconds). Astra reviewed all three. No full
+      case geometry or global theorem accepted. Parallel CI profiling reduced the focused snapshot
+      test from 6.23 to 0.74 seconds. Integration wrap-up exceeded the slice by about two minutes.
     evidence:
     - docs/project/reviews/review-2026-09-29-n11-optimality.md
     - packing/resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/result.json
+    stop_reason: Local, inclusion and census components retained; move to substantive exclusions.
+    next_action: Independently check mask0 field geometry and candidate-capture ancestry in parallel.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-fi4w
+    objective: Build and run the first independent field-exclusion kernel, with complete ownership,
+      angle coverage and transfer arithmetic; check candidate-capture ancestry in parallel.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Local isolation and conditional near-state inclusion passed; actual exclusions
+      and the validity of the supplied capture domains remain the principal open obligations.
+    budget_minutes: 30
+    started_at: '2026-09-30T01:51:55Z'
+    deadline_at: '2026-09-30T02:21:55Z'
+    expected_output: A bounded mask0 geometry acceptance or precise refusal, independently reviewed
+      controls and timings, and an explicitly scoped candidate ancestry receipt.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_optimality_field_mask0.py
+    kill_condition: Reported transfers or receipt ancestry are treated as geometric acceptance, or
+      unrelated repository CI interrupts a proof lane.
+    fallback: Retain the unresolved rule, source identity and cost; continue disjoint proof obligations.
+    outcome: null
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
     stop_reason: null
-    next_action: Sol implements exact curvature and feature tests; Astra max audits the implications
-      and census contracts; integration proceeds independently.
+    next_action: Sol checks 55 ownership obligations and 136 proposed positive-cell rows; Astra audits
+      the geometric rules; the second Sol lane checks capture ancestry.
   budget:
-    wall_minutes: 360
-    max_cycles: 12
+    wall_minutes: 395
+    max_cycles: 14
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
@@ -687,8 +716,14 @@ Record actual start times for subsequent slices.
 The first selected check is complete: independent exact D4 reduction passed in 0.927
 seconds of checker wall time (1.00 seconds including startup), with seven focused
 controls and Astra-max review.
-The local-isolation lane now targets 8,448 dual inequalities and 88 negative-feature
-margins; exclusion census and case-438 capture remain open.
+Fixed-T local isolation now passes all 8,448 strict dual inequalities and 88 feature
+margins. Near-state pose inclusion and the complete metadata census also pass, each with
+its scope limits. The first field certificate independently accepts 459 exclusions in
+16.58 seconds including startup.
+A reproducible near-state digest mismatch blocks the published capture binding
+(think-gzju), without refuting the theorem.
+The active lanes target additional exclusions and actual capture ancestry; global
+optimality remains open.
 This is component progress, not confirmation of T-060.
 
 Optimization is a supporting dependency, not a competing deliverable.

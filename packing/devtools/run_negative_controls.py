@@ -593,7 +593,14 @@ ROOT_DOCUMENTS = (
 # the next breach does not spend its first hour taking it a third time. `think-t1lk`
 # survives this branch narrowed rather than discharged: its nominated starting point is
 # disproved, and what remains is a link scan that can tolerate a pruned target.
-SNAPSHOT_MAX_BYTES = 160 * 1024 * 1024
+# 2026-09-30, T-060's reviewed local/census/inclusion receipts: 167,821,919 bytes,
+# 49,759 beyond 160 MiB even after four measured historical non-input prunes.
+# The remaining linked proof receipts are required evidence, not cache drift. Stop
+# making each small receipt trigger another archive hunt: restore roughly 32 MiB
+# operating headroom at 192 MiB while think-t1lk owns dependency-aware selection.
+# This changes no copied bytes or time limit. At three portable workers the storage
+# ceiling is 576 MiB; the current measured payload remains about 160.05 MiB per tree.
+SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0
 # Directories that must be walked into rather than bulk-copied, because something

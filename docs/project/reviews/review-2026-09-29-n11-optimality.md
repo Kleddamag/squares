@@ -199,25 +199,73 @@ Astra-max source review passed.
 Runtime was 0.044 seconds wall / 0.043 seconds CPU, 0.11 seconds including startup.
 
 This is a complete metadata census, **not acceptance of the exclusions**. It explicitly
-records `geometry_verified: false`, and all 2,184 case geometries remain unchecked as
-complete case conclusions.
+records `geometry_verified: false`; the subsequent field check below separately
+establishes 459 exclusions.
 Global optimality remains open.
+
+## Accepted First Field Certificate
+
+The
+[mask-0 field checker](../../../packing/devtools/check_n11_optimality_field_mask0.py)
+and
+[receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask0/result.json)
+independently establish 55 ownership obligations (34 strict disk and 21 rational wall)
+and all 136 closed angular rows of the two positive-charge cells.
+Exact arrangement coverage includes endpoints; the complete charge argument and
+supported owners give 453 direct and **459 canonical exclusions** after half-turn
+transfer, matching the pinned proposal set.
+This accepts one of 59 field certificates, not the complete union.
+
+Seven focused controls pass.
+Astra-max mathematical review accepted the stated scope.
+The run took **16.515 seconds wall / 16.458 seconds CPU**, 16.58 seconds including
+startup, under a 30-second ceiling.
+Of the 2,180 claimed exclusions, **1,721 still need independent geometric acceptance**.
+This fraction is case coverage, not a percentage of the whole proof: capture and
+composition remain separate obligations.
+
+## Confirmed Public Replay Binding Defect
+
+The
+[retained refusal](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-ancestry/refusal-result.json)
+records a mismatch between the pinned near trace and its published B7 audit:
+
+| Quantity | SHA-256 |
+| --- | --- |
+| Actual near `final_state`, canonical JSON | `a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80` |
+| B7 recorded `final_state_sha256` | `810027063afb57bda360cc16eced4bf0e62c6cb29f112237f945cabab8613f9f` |
+
+Two independent calculations agree on the actual digest.
+This is a confirmed binding and reproducibility defect, tracked by **think-gzju**, not a
+geometric counterexample.
+The pinned publisher’s `audit_capture_portable.py` rereads the raw input at line 401 and
+hashes its final state at line 408. Its `replay_candidate.py` lines 272–282 compare the
+fresh result with historical B7, including this mandatory digest: that comparison would
+reject with `Portable geometry differs at final_state_sha256` if reached.
+`audit_complete_capture438.py` line 158 also requires the equality.
+The later sealing stage cannot repair an earlier failed comparison.
+We have demonstrated the incompatible inputs and comparison; we have not run the full
+23-stage publisher pipeline.
+
+A consistent repair requires a fresh accepted near replay and coherently regenerated
+dependent receipts and bindings.
+Changing the stored digest alone does not establish geometric ancestry.
+Our accepted local isolation and conditional pose inclusion remain valid: the latter
+binds the actual near source directly.
+Full capture and global optimality are unconfirmed.
+**T-060 remains S5/V0/C1.**
 
 ## Next Bounded Checks
 
 The [census and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
-maps the remaining case census (`think-ncw8`) and candidate ancestry (`think-pgie`),
-including exact source keys and refusal rules.
-Metadata agreement is not geometric acceptance.
-
-The next slice independently checks the first substantive field certificate, mask 0,
-under `think-fi4w`: 55 ownership obligations and every closed angular row of two
-positive-charge cells.
-The reported transfer scope is 459 canonical cases; none is accepted from that count
-alone. Candidate-capture ancestry runs alongside it under `think-pgie`, with metadata
-consistency kept separate from source geometry.
-Record refusals and counterexamples as carefully as passes, with wall and CPU time and
-complete-domain scope.
+maps the remaining exclusions (`think-ncw8`) and candidate ancestry (`think-pgie`). The
+implementation and mathematical-review lanes next inspect mask 202: its proposal set
+contains 653 cases outside the accepted mask-0 set.
+That is a selection metric, not acceptance.
+The capture lane retains the refusal and inspects actual source edges and geometric
+premises independently.
+The coordinator batches integration and concrete CI repairs alongside these lanes,
+without gating proof work on unrelated tests.
 
 A source-level reviewer found no critical flaw in the examined center-cover, strict-core
 inclusion, focused-local, frame-bridge and $U$-to-$T$ implications, conditional on their
@@ -227,15 +275,15 @@ instances; the baseline spans earlier v4/v5/v6 geometry, not only the inspected 
 checker. Its scope supports C1, not an optimality verdict.
 The source review also compared those earlier baseline versions with v9 and examined
 field-counting rules, without finding a critical mathematical defect.
-Exact instance and ancestry acceptance remains unchecked.
+Most exact instances and complete ancestry remain unchecked.
 For the 59 field certificates in particular, the conditional counting obligations
 include capacity one for strict-core points, capacity $\lfloor m/k\rfloor$ for a
 threshold or floor atom, and capacity one for the complete TRUE odd-majority
 median-strip region by convex separation.
 Each transferred mask must retain its supported owners, and total per-cell lower charge
 must exceed the global budget.
-These rules were read at source level; none of their certificate instances has been
-independently run in this intake.
+The mask-0 instance above independently checks its applicable rules; other field
+instances still require acceptance.
 
 Only after the selective checks and a data, space and runtime plan should the full
 public replay be considered.

@@ -20,7 +20,7 @@ results, it is a statement about what this repository has itself examined.
 
 | evidence | cases | claim | assurance | method decides | whose work | read here | novelty |
 | --- | ---: | --- | --- | --- | --- | --- | --- |
-| `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
 | `E-wand125-point-source-replay` | 10 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |

@@ -153,6 +153,117 @@ justified from that earlier set.
 The later four-candidate symmetry result cannot be used to prove those earlier
 exclusions. A dependency graph must expose any such cycle.
 
+### First Independent Field Exclusion: Mask 0
+
+`think-fi4w` takes the first substantive geometric slice after the case census.
+The selected packet is
+`evidence/research/phase3/work/phase2/mask0-minimized-packet.json`, decoded SHA-256
+`14164a3d91117055000ae78cd15a4e8ad5d6bb2c27ce24ff080605b873a93340`. It has 28,065
+decoded bytes and 3,749 compressed bytes; its compressed LFS SHA-256 is
+`0759a9f56e0035713996287fa2bd540c29ad60820da5da40250136375442f832`. The packet has five
+rational sites, zero point weights, and one majority-hull feature using all five sites
+with threshold three and weight one.
+Its total budget is one.
+Cells 1 and 2 have required charge one; the other cell thresholds are zero.
+The conditional owner set is $O=\{0,1,2,3,6\}$, whose five groups contain 55 owned-point
+proposals.
+
+The A1 audit `evidence/research/phase3-fresh-fields/04-mask0-minimized-packet.json`
+supplies proposed angle intervals.
+Its index key is `2b99103ea70889c86e094fa8cface28d3e48e9040de5cad34caa1c975422a85e`,
+decoded SHA-256 `1a56056ad4d19786e41e248f0ef60866ad2021370e9ef809faa471fb679f8a54`, and
+decoded size 201,961 bytes.
+The compressed object has 29,707 bytes and LFS SHA-256
+`156102cf720236023cf5ec86cc697a5d6d2615fcf0eaa82336574be49d8856a2`. Use its
+`independent_row_proofs` intervals as proposals; its coverage, ownership, and `PASS`
+fields are not mathematical premises.
+A new proof that reconstructs every domain and covers both complete angle charts needs
+no producer replay as a mathematical premise.
+
+**Owned points.** For each of the 55 used points, prove strict interior membership in
+every unit square with center in its owner’s cell and contained in $[0,U]^2$. The
+unit-coordinate cell is $C_i=\tfrac12(1,1)+(U-1)V_i$, where $V_i$ is the validated
+normalized cover polygon, and the point is $p=p_f/B$. The bound
+$\max_{v\in\operatorname{vertices}(C_i)}\lVert p-v\rVert^2<1/4$ is sufficient.
+Otherwise, cover $t\in[0,1]$ by closed rational intervals $[a,b]$ and use
+
+$$
+c(t)=\frac{1-t^2}{1+t^2},\quad s(t)=\frac{2t}{1+t^2},\quad
+h=\frac{\min(c(a)+s(a),c(b)+s(b))}{2}.
+$$
+
+Clip $C_i$ to $[h,U-h]^2$, which contains every legal center in the interval.
+At every resulting vertex $v$, bound the body projections $c(t)(p_x-v_x)+s(t)(p_y-v_y)$
+and $c(t)(p_y-v_y)-s(t)(p_x-v_x)$ using $c(t)\in[c(b),c(a)]$ and $s(t)\in[s(a),s(b)]$.
+Both absolute bounds must be strictly below $1/2$. Preserve singleton and segment
+domains; an empty domain is vacuous.
+Refine unresolved intervals within selected depth and wall ceilings.
+No point is accepted until its entire closed chart is covered.
+Unused owner groups need no ownership proof for this specialized certificate.
+
+**Angle rows and strict cores.** For each proposed row $[a,b]$ of cells 1 and 2,
+reconstruct $t=(a+b)/2$, $(c,s)=(c(t),s(t))$, and
+
+$$
+f=\max_{z\in\{a,b\}}\bigl(c\,c(z)+s\,s(z)+\lvert c\,s(z)-s\,c(z)\rvert\bigr),
+\quad q=\frac{B-10^{-12}}{f},
+\quad H=\frac L2-\frac B2\min_{z\in\{a,b\}}(c(z)+s(z)).
+$$
+
+Require $0<q<B$ and $qf<B$. Check the full-angle quadratic inequalities from the pinned
+`audit_wall_mask_chain_v3.py`: the two core-support inequalities on $[a,t]$ and $[t,b]$,
+and the legal-wall width inequality on $[a,b]$. Endpoint sampling is insufficient.
+The midpoint-oriented square of side $q$ must lie strictly inside every parent square
+represented by the row.
+Rebuild the field center domain from $(B/2,B/2)+(L-B)V_i$, intersect it with
+$[L/2-H,L/2+H]^2$, and rotate it by the negative midpoint angle about $(L/2,L/2)$.
+
+**Closed domain coverage.** Rotate the five feature sites and used owned points into the
+same axes. The majority feature’s region consists of centers $x$ satisfying
+
+$$
+\lvert n\cdot x-\operatorname{median}_{j=1}^{5}(n\cdot p_j)\rvert
+\le\frac q2(\lvert n_x\rvert+\lvert n_y\rvert).
+$$
+
+Check the coordinate-axis normals and every nonzero perpendicular to a site pair.
+Between consecutive such directions, the median site and signs in the square’s support
+function are fixed, so these inequalities are linear in the normal.
+The other allowed cover regions are closed axis boxes of radius $q/2$ around owned
+points of $O\setminus\{i\}$. Those boxes represent collisions with other occupied
+squares; they add nothing to the physical charge budget.
+
+Prove that the union contains the entire closed center domain for every row.
+A rational slab and endpoint-chain consumer can provide an implementation distinct from
+the publisher’s field polygon-subtraction checker.
+The existing first-party closed-polygon consumer accepts rectangles and capped polygon
+inventories; it cannot be applied unchanged to these arbitrary convex domains.
+The accepted symmetry checker’s rational hull and clipping primitives are reusable, with
+their source identity retained.
+Preserve points, segments, touching boundaries, and tiny positive gaps.
+An unsupported degenerate domain or exhausted event budget yields an incomplete result.
+
+**Counting conclusion.** The majority feature has capacity one across disjoint strict
+inner cores: two such cores have a strictly separating direction, whereas both being
+charged would place the same median projection inside disjoint projection intervals.
+An owned-point collision is impossible in a legal packing, so full row coverage forces
+each of cells 1 and 2 to receive the majority charge.
+Their combined charge two exceeds the budget one.
+Require a complete, gap-free closed angle cover of $[0,1]$ for each cell before claiming
+this contradiction.
+
+Apply the owner-support and strict-budget transfer rule to every canonical mask and its
+whole half-turn. The expected sets have 453 direct representatives and 459 after the
+half-turn; compare all IDs with A1. An ownership-only or partial-row result proves no
+mask exclusion. The full component may prove these 459 exclusions while retaining
+`global_optimality_proved: false`.
+
+Profile one owned-point proof and one complete positive row before selecting the full
+run. Record checked point and row identities, remaining angular coverage by cell, exact
+refusal reasons, polygon or slab counts, and wall and CPU costs.
+These measurements determine later batching and parallel execution; the input size does
+not establish a runtime bound.
+
 ## Candidate 438 Capture Contract
 
 The case mask is `(0,1,2,3,4,8,9,10,11,13,15)`. The claimed capture partitions its

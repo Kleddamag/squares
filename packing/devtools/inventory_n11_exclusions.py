@@ -34,6 +34,10 @@ REVIEWED_CHECKERS = {
     "f430580c526c679d0b6a2551799bcec61a3973374fa7d6469064f11c459352cc",
 }
 PILOTS = {
+    "center-partition-1383-indexed/result.json.gz": (
+        1383,
+        "3ce7d6fcf5edd4f471f2db221a570e9c4a8d148fa5c789f62b0454c16ab7ea1b",
+    ),
     "generic-mask2095-intake/full-result.json": (
         2095,
         "2aa9c3819e4f39d9f4f489a25d1885b2a1c5a6f6c21099f42821d1165d608f88",

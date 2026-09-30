@@ -27,7 +27,9 @@ from devtools.inventory_n11_completion import FIXED, RECEIPTS, bound, completion
 from devtools.inventory_n11_exclusions import PILOTS, read_bound, require
 
 # Fill only after all 2,180 executions and their exact union receive final review.
-REVIEWED_COMPLETE_EXCLUSION_INVENTORY: str | None = None
+REVIEWED_COMPLETE_EXCLUSION_INVENTORY: str | None = (
+    "498801611757f8ce4557dd105697c4e6c4ab8aa3d460e0306b90bda4657ffe48"
+)
 
 
 def source_closure() -> dict[str, str]:

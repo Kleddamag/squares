@@ -1,0 +1,97 @@
+{
+  "created_utc": "2026-09-30T12:50:23.873376+00:00",
+  "criterion": "batch query wall <= 0.75 * singleton query wall in all three pairs",
+  "criterion_met": false,
+  "observations": [
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "singleton",
+        "batch"
+      ],
+      "pair": 0,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.5461139999999998,
+          "coordinator_cpu_seconds": 0.005902999999999992,
+          "query_wall_seconds": 0.5433932919986546,
+          "session_wall_seconds": 0.7423533339970163
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.5461320000000001,
+          "coordinator_cpu_seconds": 0.009189000000000003,
+          "query_wall_seconds": 0.5456523340035346,
+          "session_wall_seconds": 1.0291189170020516
+        }
+      }
+    },
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "batch",
+        "singleton"
+      ],
+      "pair": 1,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.5429830000000001,
+          "coordinator_cpu_seconds": 0.005628000000000008,
+          "query_wall_seconds": 0.5399319579955772,
+          "session_wall_seconds": 0.7560626250051428
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.5484129999999998,
+          "coordinator_cpu_seconds": 0.008507,
+          "query_wall_seconds": 0.5479248749979888,
+          "session_wall_seconds": 0.7459145000029821
+        }
+      }
+    },
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "singleton",
+        "batch"
+      ],
+      "pair": 2,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.5448850000000001,
+          "coordinator_cpu_seconds": 0.005836000000000008,
+          "query_wall_seconds": 0.5418549160021939,
+          "session_wall_seconds": 0.7428747079975437
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.5465399999999996,
+          "coordinator_cpu_seconds": 0.008246000000000003,
+          "query_wall_seconds": 0.5459874590014806,
+          "session_wall_seconds": 0.7338570840001921
+        }
+      }
+    }
+  ],
+  "paired_batch_over_singleton_query_wall": [
+    0.9958599242336139,
+    0.9854123852244508,
+    0.9924310660782495
+  ],
+  "scope": "Exact area queries only. Session wall includes child startup/shutdown; query wall includes JSON encode/write/read/decode and Rust arithmetic. Child CPU excludes coordinator; no verifier proof or speed claim.",
+  "source_sha256": {
+    "/Users/levy/wrk/github/squares/packing/benchmarks/bench_rectangle_rust_transport.py": "85dad5a9c0422e21bc5a6a6ce2ca159b35874ee3989cc17ca2d074b533328bd2",
+    "/Users/levy/wrk/github/squares/packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/lib.rs": "07fc7c68c1a13a498f88a31f893b7703b51b2499cb9f8441982a8a2669e1a6d0",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/main.rs": "fd45fbf50871c9380dad4614354c40a868da258c2c70d54aa5c80662abd53243",
+    "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py": "1cc7ae158856a443fe9c51be2e9b9b04f4d7dc40fe663bfbd7337cb6fe7e1c7c",
+    "/Users/levy/wrk/github/squares/packing/src/sqpack/rust_rectangle_geometry.py": "b32ca2bdfd79f61986c787901e94bbba1bb725a40866f2642b051640e335a4c0",
+    "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/cargo-sqverify-exact/release/sqverify-exact": "407021f046a3a5f4758ba9c560252955a3802dacf0a147feb3b33e0c978afb1f"
+  },
+  "status": "FIXED_WORK_TRANSPORT_DIAGNOSTIC_ONLY",
+  "work": {
+    "angle_index": 1,
+    "pairs": 3,
+    "polygons": 128
+  }
+}

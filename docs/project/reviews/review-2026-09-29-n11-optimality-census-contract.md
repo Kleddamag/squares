@@ -2338,6 +2338,125 @@ Even complete component accounting retains `global_optimality_proved: false` and
 requires final composition review.
 These bookkeeping changes grant no additional geometric credit.
 
+## Complete Exclusion Execution Census
+
+The complete
+[case-1383 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/center-partition-1383-indexed/result.json.gz)
+is accepted under center checker `d888179c`, generic checker `280becc5`, and indexed
+cover helper `68580e32`. Its compressed SHA-256 is
+`3ce7d6fcf5edd4f471f2db221a570e9c4a8d148fa5c789f62b0454c16ab7ea1b`; lossless decoding
+reproduces the audited execution bytes with SHA-256
+`21470bc2b315b2da6adf25e4632a65506741530aafaa9dff64ff989b990460ec`. All source and
+dependency bindings, A2 assignment, partition metadata, and actual eight source-node
+headers and step inventories match.
+The 72 strict seed points and 704 seed rows precede 260 complete updates checking 36,480
+query rows, 131,328 used partner rows, 50,399,152 collision inequalities, 398,024 cover
+events, and 784,145 probes.
+The 120 trailing partial rows in the common ancestry are omitted without promotion.
+Both branches start from independent copies of the same accepted common state and cover
+the closed owner-13 split at centered height $4/3$. The LE branch excludes every pose of
+owner 6 at step 39; the GE branch excludes every pose of owner 11 at step 7. All pending
+fields are empty.
+Wall time was 886.961 seconds and summed coordinator/child CPU time was
+2,111.288 seconds. This grants exactly case 1383, with the global flag false.
+
+The
+[final sequential batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-final-sequential/summary.json),
+SHA-256 `946df80e15e750ed74e6f9767f4a24bfe1cdac8c733bc722f2199e0b321cb175`, is also
+accepted. It binds reviewed checker `9047dcbb`, runner `461b6e6a`, and 32 complete
+executions with exit code zero.
+Every compressed and decoded receipt identity matches its earlier audit and the copy
+retained in this checkout; no refused or aborted execution enters the union.
+The batch checks 89 linked nodes, 4,409 complete updates, 232,000 query rows, 708,064
+partner rows, 336,354,736 collision inequalities, 4,030,556 cover events, and 7,960,879
+probes. Its 774 partial source rows are omitted without state promotion.
+Elapsed batch time was 5,386.365 seconds with four single-worker cases in parallel;
+summed process CPU time was 20,359.523 seconds.
+All 32 cases are distinct from earlier accepted exclusions.
+
+Together these executions close the exact required exclusion set
+$\{0,\ldots,2183\}\setminus\{438,999,1462,1659\}$: 1,904 field cases and 276 nonfield
+cases, totaling 2,180. This is an execution-based mathematical acceptance conditional on
+the reviewed programs and their observed runs, not a geometric proof inferred from
+stored success strings.
+The
+[complete exclusion inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json),
+SHA-256 `498801611757f8ce4557dd105697c4e6c4ab8aa3d460e0306b90bda4657ffe48`, was
+independently recomputed from all eighteen reviewed batch summaries and ten pilot
+bindings. Its exact disjoint union, empty remainder, and empty family remainders match;
+this is the approved complete-exclusion identity for the final consumer.
+The near capture execution and final composition review remain outstanding at this
+exclusion checkpoint.
+
+## Accepted Near State and Complete Capture
+
+The
+[near execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-near/result.json),
+SHA-256 `e428a9ab1d2bfd4eda6222b2a26d75565ae17a359def6d68d1a093aa5865bf10`, is accepted
+under reviewed child checker `ab824a14`. It checks all 121 ordered complete updates:
+119,372 query rows, 225,881 partner rows, 7,568,064 collision inequalities, 38,229 cover
+events, and 74,044 probes, producing 15,904 common-core planes and 748 additions.
+The actual pinned source `491afdaa`, accepted r111 premise `5efd22cc`, dependency
+closure, source step inventory, stdout, and original final-state digest `a6d45c0c`
+match. The freshly built index and retained stream match the run’s recorded identities
+and 10.904-second build; total wall time was 302.528 seconds with three workers.
+The terminated one-worker attempt grants no credit.
+
+An additional direct projection of the actual accepted near final state reproduces the
+retained pose-inclusion inventory exactly, including every omitted-empty-row count and
+every live interval and residual polygon.
+All ten capture nodes and their nine parent edges now join, the three complementary
+closed splits are exhaustive, and all three far branches end in checked contradictions.
+The near branch instead supplies the accepted feasible-state enclosure used by the
+136-row, 1,542-vertex inclusion check.
+The exact role map, inverse frame, 33 radii, six local arithmetic sources, 128 local
+branches, and endpoint-witness premises also join.
+No geometric obligation remains open; the final consumer must retain the complete
+composition result before the global theorem is promoted.
+
+## Whole-Proof Acceptance
+
+The
+[final composition](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json),
+SHA-256 `eaad8f14cf3404e8abe1bfee18cbd7f12a2fed2094f46f021d4e3bfb3088b141`, is accepted.
+The observed CLI exited zero, and an independent recomputation reproduced its complete
+result: `PASS_REVIEWED_COMPONENT_COMPOSITION`, 2,180 of 2,180 exclusions, all ten
+capture nodes, no missing leaf, and no pending obligation.
+Composer `86a97e4b`, completion inventory `23455ec0`, exclusion inventory `70eb5347`,
+and the remaining three recorded source dependencies match the six-file closure.
+The accepted exclusion inventory is `49880161`; the canonical near receipt preserves the
+exact `e428a9ab` execution bytes.
+The composer checks these joins and records `geometry_rerun: false`. Its conclusion
+rests on the separately reviewed, observed geometric execution ensemble and retained
+replay commands.
+
+This closes the mathematical equality $s(11)=T=(6u+4)/(1+2u-u^2)$, where $u$ is the
+unique root in $(9/25,37/100)$ of $5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0$. If a
+packing existed in a square of side $S<T$, concentric embedding into the checked cap
+$U>T$ would place it in the exhaustive pattern cover.
+The 2,180 exclusions and independently checked symmetry reduction force case 438. Closed
+capture and pose inclusion then place the packing, after the fixed isometry and
+translation, in the verified local neighborhood inside a square of side $T$. Exact local
+isolation forces the retained witness, whose opposite-wall contacts give span $T$,
+contradicting $S<T$. The same exactly checked eleven-square witness supplies the upper
+bound at $T$. The argument allows independent square rotations and boundary contact.
+
+Under [the repository’s epistemic policy](../../../epistemics.md), this complete
+exact-algebraic execution and composition support V4/C3; the completed mathematical
+review, mapped as a retained non-superseded review, and retained adversarial controls
+support **V4/C5** for the whole equality.
+The controls include
+[row and state refusals](../../../packing/tests/test_n11_generic_sequential.py),
+[capture admission and boundary cases](../../../packing/tests/test_n11_capture_child_node.py),
+[fresh-index forgery refusal](../../../packing/tests/test_index_n11_capture_source.py),
+and [composition mutations](../../../packing/tests/test_n11_composition_joins.py).
+Shared local arithmetic and construction code remain explicit trust dependencies;
+same-method implementations do not establish C4, and no proof-assistant formalization
+establishes V5. Credit remains with the original result and its recorded lineage.
+The four published final-state digest discrepancies remain defects in the publisher’s
+reproducibility chain; this independent confirmation of the mathematical equality does
+not claim that the unchanged publisher pipeline replayed successfully.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

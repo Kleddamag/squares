@@ -1,5 +1,5 @@
 {
-  "accepted_exclusions": 2147,
+  "accepted_exclusions": 2180,
   "capture_nodes": [
     {
       "parent_source_sha256": null,
@@ -57,68 +57,26 @@
     },
     {
       "parent_source_sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
-      "reviewed_execution_bound": false,
+      "reviewed_execution_bound": true,
       "source_path": "research/candidate-capture/near-refined1024-240.json",
       "source_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc"
     }
   ],
-  "center_partition_execution_pending": true,
-  "checker_sha256": "860c6a1f22a94ac3292abdb99a31ec1e5084eafe05d2069f5cb4b4e78d440fc9",
+  "center_partition_execution_pending": false,
+  "checker_sha256": "23455ec01389b2fa258f35a6e4b1259f4b8c8d5699334ef77d5ba77d9cc1adeb",
   "closed_capture_split_algebra_checked": true,
   "conditional_d4_premises_bound": [
     2175,
     2176
   ],
-  "exclusion_inventory_sha256": "84da77d221aa5f426f7593ee1a5836836d488998e806b5316213c54f3256b9b5",
+  "exclusion_inventory_sha256": "498801611757f8ce4557dd105697c4e6c4ab8aa3d460e0306b90bda4657ffe48",
   "final_composition_review_required": true,
   "geometry_rerun": false,
   "global_optimality_proved": false,
-  "missing_capture_leaf_executions": [
-    "near-refined1024-240"
-  ],
-  "missing_capture_source_sha256s": [
-    "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc"
-  ],
-  "missing_exclusion_ids": [
-    455,
-    655,
-    761,
-    927,
-    998,
-    1311,
-    1372,
-    1373,
-    1383,
-    1393,
-    1449,
-    1463,
-    1464,
-    1465,
-    1476,
-    1478,
-    1499,
-    1646,
-    1731,
-    1775,
-    1823,
-    1839,
-    1840,
-    1848,
-    1849,
-    1887,
-    1891,
-    2047,
-    2048,
-    2051,
-    2068,
-    2070,
-    2122
-  ],
+  "missing_capture_leaf_executions": [],
+  "missing_capture_source_sha256s": [],
+  "missing_exclusion_ids": [],
   "pending_joins": [
-    "33 required exclusion executions remain",
-    "Both center-partition branches for case 1383",
-    "1 capture node executions remain",
-    "Capture leaf executions remain: near-refined1024-240",
     "Final consumer join to the reviewed endpoint/witness argument"
   ],
   "premise": "Listed reviewed component executions occurred; this inventory does not prove their occurrence.",
@@ -129,6 +87,7 @@
     "capture-child-far13": "1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb",
     "capture-child-far15": "cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e",
     "capture-child-far2": "e7deeb0249e0688bc371436f4e18513e7b397d5479164db6546e151311c18442",
+    "capture-child-near": "e428a9ab1d2bfd4eda6222b2a26d75565ae17a359def6d68d1a093aa5865bf10",
     "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
     "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",
     "capture-child-r11": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
@@ -144,5 +103,5 @@
     "source-graph": "cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248"
   },
   "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
-  "status": "INCOMPLETE_PROOF_OBLIGATION_INVENTORY"
+  "status": "COMPONENT_ACCOUNTING_COMPLETE_PENDING_FINAL_REVIEW"
 }

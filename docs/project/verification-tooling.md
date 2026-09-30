@@ -5,7 +5,7 @@ weighted point covers, threshold charges, rectangle densities, and finite geomet
 subproblems. A checker establishes only the theorem and input format it implements.
 The existence of a checker is separate from a completed run on a particular claim.
 
-**Current priority: T-060, the claimed global n = 11 optimum.**
+**T-060: global n = 11 optimality is confirmed at S5/V4/C5.**
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) claims the
 exact Trump endpoint through a global cell cover, 2,180 exclusions, a symmetry bridge
 and complete capture into a local isolation region.
@@ -13,13 +13,13 @@ Its 23-stage source driver is a new trust boundary.
 Neither the existing native T-037 lower-bound checker nor the rectangle-density checker
 validates this global argument.
 The [intake packet](../../packing/resources/web/n11-optimality-2026-09-29/README.md)
-records the source pin and publication limits; **think-3i74** owns independent
-mathematical audit and efficient reproduction.
+records the source pin, completed independent executions and publication limits;
+**think-3i74** owns their integration.
 Source replay, independent rule checks and complete global composition must be reported
 separately.
 General slow repository tests do not substitute for any of these obligations.
 The [proof review and stage map](reviews/review-2026-09-29-n11-optimality.md) records
-the reviewed implications, outstanding replay and next independent controls.
+the reviewed implications, completed replay and remaining engineering follow-ups.
 The
 [census and capture contract](reviews/review-2026-09-29-n11-optimality-census-contract.md)
 separates metadata completeness from geometric acceptance.
@@ -35,8 +35,9 @@ The subsequent
 also checks curvature, all 88 feature margins and the complete nonlinear branch bridge;
 it confirms fixed-T local isolation in 17.98 seconds including startup, with shared
 geometry source disclosed.
-Pose inclusion, the 2,180 exclusions and case-438 capture remain separate obligations.
-None of these component results promotes T-060 beyond S5/V0/C1.
+Pose inclusion, all 2,180 exclusions and case-438 capture were checked separately.
+Their completed executions and reviewed final composition now establish T-060 at
+S5/V4/C5; an isolated component receipt would not establish the global theorem.
 
 The
 [pose-inclusion checker](../../packing/devtools/check_n11_optimality_pose_inclusion.py)
@@ -53,10 +54,11 @@ adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
 Subsequent complete field batches establish the entire 1,904-case field union.
-The independent generic checkers accept 243 further cases, including nine reviewed
-singleton runs and 234 complete executions in parallel batches.
-The exact union contains 2,147 exclusions, leaving 33. All 14 capture-root rounds pass,
-including 154 owner updates, 16,551 closed rows and 1,060 owned additions.
+The independent generic checkers accept 276 further cases, including ten reviewed
+singleton runs and 266 complete executions in parallel batches.
+The exact union contains all 2,180 required exclusions.
+All 14 capture-root rounds pass, including 154 owner updates, 16,551 closed rows and
+1,060 owned additions.
 Actual geometric executions plus the Astra-reviewed source and receipt chain establish
 conditional root ownership.
 The first complete capture owner update also passes all 217 rows and 3,173,632 exact
@@ -64,15 +66,17 @@ collision inequalities, including the common kernel, compressed additions and ne
 join. The subsequent full root-state replay accepts twelve more updates and exact final
 state, with 2,185 complete rows and 92 additions in 891.93 seconds.
 Its trailing partial step promotes no state.
-Nine of the ten capture nodes are accepted, including all three far-leaf contradictions.
-The final near-state execution remains open; the near state must then discharge the
-conditional pose-inclusion premise.
+All ten capture nodes are accepted, including all three far-leaf contradictions.
+The near run completed all 121 updates and 119,372 query rows in 302.528 seconds with
+three workers. Its exact final state discharges the pose-inclusion premise; the complete
+endpoint composition passes with no pending obligations.
 The
 [exact exclusion inventory](../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
 and
 [dated mathematical reviews](reviews/review-2026-09-29-n11-optimality-census-contract.md)
-are the acceptance record; in-flight batch successes await completed executor records
-and review before joining that union.
+are the acceptance record.
+Only complete, observed and reviewed executions contribute to that union; earlier
+incomplete attempts receive no credit.
 
 The T-060 geometry path has three reviewed accelerators.
 The [exact union sweep](../../packing/devtools/n11_fast_exact_cover.py) measures 1.892
@@ -106,11 +110,21 @@ executor wall time. This measures compute utilization, not agent analysis time.
 The separate center-1383 diagnostic used 118.05 CPU seconds in 120.01 wall seconds,
 including 6.08 seconds of admission and 3.65 seconds of seed checking.
 That incomplete run accepts no exclusion.
-The reviewed indexed sweep is now running the complete center partition with three
-workers; current-step worker inputs reduce measured startup from 1.864 to 0.551 seconds.
+The reviewed indexed sweep completes the entire center partition with three workers in
+886.961 seconds: eight nodes, both branches, 260 complete updates and 36,480 rows.
+Current-step worker inputs reduce measured startup from 1.864 to 0.551 seconds.
 A separate fresh, source-bound capture reader extracts all 121 near-state updates in one
 parse (12.617 seconds), avoiding repeated parsing of the 186 MB source.
 Neither optimization changes the geometry required for acceptance.
+The final 32-case batch took 5,386.365 seconds wall and 20,359.523 seconds total CPU
+with four workers. These timings measure actual validation, not agent analysis.
+Fresh full-ensemble orchestration is tracked as `think-e2ot`: current child checkers pin
+retained parent receipt bytes, including timings.
+The
+[reproduction guide](../../packing/resources/web/n11-optimality-2026-09-29/README.md)
+explains how to replay individual components and distinguishes that work from the fast
+metadata composer. The completed ensemble proves the result with disclosed shared local
+kernels; it is not a disjoint-method C4 or formal V5 proof.
 The
 [current verification checkpoint](reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 separates these obligations and their evidence.
@@ -426,7 +440,18 @@ Exact rational geometry, rather than message transfer, dominated the measured Ru
 Python remains the default; this backend establishes a reviewed implementation and
 differential control, not a speed improvement or complete C++ equivalence.
 Further performance work belongs to `think-3cwg` and must not delay the separate T-060
-capture and exclusion checks.
+proof integration.
+
+A
+[three-pair transport diagnostic](../../packing/resources/web/wand125-tools-2026-09-29/receipts/rust-transport-fixed-2026-09-30.json)
+compares 128 identical polygon queries sent singly or in batches.
+Exact answers agree; the median batch/singleton wall ratio is 0.99243, failing the
+predeclared 0.75 target.
+Child computation consumed about 0.54 seconds versus 0.006–0.009 seconds in the
+coordinator. Batching is not the measured bottleneck.
+The Rust primitive already precomputes polygon bounds and skips disjoint rectangles, so
+adding that optimization again would not improve it.
+The retained benchmark makes both findings reproducible.
 
 ## T-059 Row Replay and Its Separate Global Argument
 

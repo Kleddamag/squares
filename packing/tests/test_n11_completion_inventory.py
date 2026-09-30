@@ -26,13 +26,11 @@ def test_missing_and_circular_premises_are_refused() -> None:
         acyclic({"child": "missing"})
 
 
-def test_current_inventory_preserves_open_mathematical_obligations() -> None:
+def test_component_accounting_never_claims_geometry_or_global_proof() -> None:
     result = completion()
     assert result["global_optimality_proved"] is False
     assert result["geometry_rerun"] is False
-    assert result["missing_capture_source_sha256s"]
     assert result["final_composition_review_required"] is True
-    assert "All three far-leaf contradictions" not in result["pending_joins"]
 
 
 def test_pending_join_text_follows_actual_missing_components() -> None:

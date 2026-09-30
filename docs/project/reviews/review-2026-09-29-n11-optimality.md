@@ -4,25 +4,28 @@ The external
 [11SquaresOptimal source](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c)
 claims that eleven congruent unit squares, with independent rotations and legal boundary
 contact, require a square container of side at least Trump’s algebraic construction side
-$T=3.8770835900228141773078970601\ldots$. This is **T-060, S5/V0/C1** in the
-[result register](../../../packing/frontier/results.yaml): potentially decisive for the
-smallest open case, but still a reported external theorem.
-C1 records a scoped source review, not independent acceptance of the finite certificates
-or the global conclusion.
-The proof-audit parent is `think-3i74`; `think-pqg7` owns the measured, independent
-verifier lane.
+$T=3.8770835900228141773078970601\ldots$. The complete argument is now **confirmed as
+T-060, S5/V4/C5** in the [result register](../../../packing/frontier/results.yaml).
+Repository executions cover every exclusion and capture node; Astra at max reasoning
+reviewed the component mathematics, execution bindings, adverse controls and final
+endpoint argument. The final composition has no pending obligations.
+This is exact computational verification with a mapped mathematical review, not a
+proof-assistant formalization or confirmation by a distinct mathematical method.
+Shared local arithmetic and construction code is disclosed in the evidence packet.
 
-The current verified lower bound is the distinct **T-037** result $s(11)>31/8=3.875$.
-The exact Trump construction is the established upper witness, **T-011**. **T-059**
-concerns wand125’s reported equality of 12,028 row minima for a separate certificate; it
-neither asserts nor establishes global optimality.
-No result that landed from the current upstream main branch closes this gap.
+The earlier **T-037** result $s(11)>31/8=3.875$ is superseded as the lower frontier; the
+exact Trump upper witness **T-011** attains the now-confirmed optimum.
+**T-059** concerns wand125’s reported equality of 12,028 row minima for a separate
+certificate; that independent claim is unchanged.
+The proof-audit parent is `think-3i74`; `think-e2ot` tracks fresh ensemble
+orchestration.
 
 ## Independent Verification Checkpoint
 
-Independent checks accept **2,147 of the 2,180 required exclusions**: all 1,904 cases in
-the source field-certificate union and 243 generic cases, leaving 33. This is a case
-count, not a percentage of the proof.
+Independent checks accept **all 2,180 required exclusions**: all 1,904 cases in the
+source field-certificate union and 276 other cases.
+This closes the exclusion census.
+All ten capture nodes and the final theorem composition are also accepted.
 The
 [field receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
 records each contributing receipt and hash.
@@ -37,15 +40,15 @@ accept no exclusions.
 The generalized checker handles exact odd-site majority charges with three, five or
 seven sites and independently recomputes each transfer case set.
 
-The remaining obligations have different acceptance rules:
+The completed obligations have different acceptance rules:
 
-| Obligation | Accepted scope | Remaining scope |
+| Obligation | Accepted scope | Disposition |
 | --- | --- | --- |
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
-| Other exclusions | 243 generic cases, including nine reviewed singleton runs and complete parallel executions; all remaining source dependencies pinned | The baseline is complete. 7 extension cases and 26 returned cases remain: 33 distinct cases requiring independent geometric checks. These need 32 sequential checks and the center-partition case. Both baseline-dependent D4 geometric cases are accepted. |
-| Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual accepted geometric executions and the reviewed chain establish conditional root ownership. Later capture transitions remain open. |
-| Capture branches | Structural graph, conditional pose inclusion, the complete root-self, r1, r10, near13, r11 and r111 states, and all three far-leaf contradictions (far15, far13 and far2) | The final near-state execution remains; then final capture-to-local composition. |
-| Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
+| Other exclusions | All 276 cases, including ten reviewed singleton runs and 266 complete parallel executions; both baseline-dependent D4 cases and the complete center partition are accepted | No exclusion cases remain. |
+| Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual geometric executions and the reviewed chain establish root ownership for the accepted capture transitions. |
+| Capture branches | Structural graph, conditional pose inclusion, the complete root-self, r1, r10, near13, r11 and r111 states, and all three far-leaf contradictions (far15, far13 and far2) | The near state also passes all 121 updates and its exact final-state check; its connection to local isolation is accepted. |
+| Local conclusion | Exact conditional local isolation and symmetry checks | Complete composition and the smaller-container contradiction are reviewed and accepted. |
 
 Astra-max has reviewed the exact field rules and strict-seed/owner-pilot argument.
 The
@@ -90,8 +93,8 @@ It also checks 103 rows from the trailing partial step, which promotes no state.
 The exact final-state and source-binding checks pass; Astra-max accepted this
 conditional root state.
 The run took 891.93 seconds with one worker.
-Child branches and global capture remain open.
-The
+All child branches and global capture subsequently passed; see the final composition
+below. The
 [generic receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json)
 accepts case 2095 after all 77 seed points, 352 seed rows and 160 sequential update rows
 pass, including exact final-state reconstruction and the terminal contradiction.
@@ -100,7 +103,7 @@ The final run took 23.75 seconds wall, 5.61 seconds coordinator CPU and 35.09 se
 child CPU with three workers; earlier incomplete attempts retain zero credit.
 The
 [exact-ID inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
-reconciles nine reviewed singleton runs and thirteen parallel batches: 197 further
+reconciles ten reviewed singleton runs and eighteen parallel batches: all 276 non-field
 exclusions completed under frozen, independently reviewed checker revisions.
 Unsupported source variants receive zero credit.
 This inventory does not rerun geometry or prove that an execution occurred.
@@ -115,13 +118,48 @@ binds the original 276 non-field case recipes to immutable source objects.
 Their 924 distinct required objects total 2.12 GB compressed; bounded acquisition places
 bulk reproducible inputs in `attic/n11-proof-inputs/`, retaining their pins and
 validation receipts here.
-All 924 required source objects are now present locally; acquisition is complete, while
-geometric replay remains in progress.
+All 924 required source objects are present locally; acquisition and the required
+geometric replays are complete.
 The [coverage and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
 records their mathematical premises.
-No global confirmation or counterexample has been established.
+The complete independent ensemble confirms the global equality; no critical mathematical
+flaw remains in the reviewed argument.
 Four published final-state digest discrepancies remain reproducibility defects; they do
 not by themselves refute optimality.
+
+## Final Composition and Reproduction
+
+The
+[final receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json)
+has status `PASS_REVIEWED_COMPONENT_COMPOSITION`, with no pending obligations.
+It binds all 2,180 exclusions, ten capture nodes, all three far contradictions,
+near-to-local inclusion, 128 local branches with 66 strict margins each, the D4 bridge
+and the exact matching witness.
+The [final Astra review](review-2026-09-29-n11-optimality-census-contract.md)
+independently reproduced this composition and accepted the endpoint argument.
+The exclusion inventory is `49880161…`; the final composition is `eaad8f14…`.
+
+The near run completed 121 updates and 119,372 query rows in 302.528 seconds with three
+workers.
+The center partition completed both branches and 36,480 rows in 886.961 seconds.
+The final 32-case exclusion batch took 5,386.365 seconds wall and 20,359.523 seconds
+total CPU with four workers.
+These are measured geometric runs; review and orchestration time is separate.
+Incomplete predecessors retain zero credit.
+
+The
+[reproduction guide](../../../packing/resources/web/n11-optimality-2026-09-29/README.md)
+separates fresh component geometry from fast reconciliation of retained evidence.
+The final composer does not rerun geometry.
+Fresh whole-ensemble automation needs reviewed state-equivalence rebinding of child
+inputs because historical parent receipt hashes include timing fields (`think-e2ot`).
+The complete observed ensemble uses the reviewed retained premises; that automation gap
+does not leave an unexecuted proof step.
+The publisher’s four stale audit digests remain disclosed reproducibility defects.
+
+**Historical audit trail below.** Statements about pending steps, V0/C1 status and
+incomplete acquisition record the earlier checkpoints, not the final disposition above.
+They are retained to show how the review progressed and where defects were found.
 
 ## Pinned Source and Acquisition Limit
 

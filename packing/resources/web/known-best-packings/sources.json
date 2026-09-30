@@ -339,18 +339,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-67.svg"
     },
     {
-      "bytes": 18770,
-      "kind": "unitsquare-rendering",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         68
       ],
       "n": 68,
-      "path": "resources/web/known-best-packings/unitsquare/n068.svg",
-      "raw_asset_retained": true,
-      "retrieved": "2026-08-26",
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-068.yaml",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-09-29",
       "source_n": 68,
-      "upstream_declared_sha256": "d7385d6ce1b5a959d06893c94f3c0355f17175bd68608db6f012ca309854ed66",
-      "url": "https://hmbelvedere.com/packings/n068.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n68.txt"
     },
     {
       "bytes": 19018,
@@ -521,32 +522,34 @@
       "url": "https://kingbird.myphotos.cc/packing/square-101.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         102
       ],
       "n": 102,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-102.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 102,
-      "url": "https://kingbird.myphotos.cc/packing/square-102.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n102.txt"
     },
     {
-      "bytes": 27445,
-      "kind": "unitsquare-rendering",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         103
       ],
       "n": 103,
-      "path": "resources/web/prospective-packings/unitsquare/n103.svg",
-      "raw_asset_retained": true,
-      "retrieved": "2026-08-26",
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-103.yaml",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-09-29",
       "source_n": 103,
-      "upstream_declared_sha256": "4bb43826fa9e9ef5f904b1a7a5b45fd622bf02d894699a9462d3f026c53e63b2",
-      "url": "https://hmbelvedere.com/packings/n103.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n103.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -563,32 +566,34 @@
       "url": "https://kingbird.myphotos.cc/packing/square-104.svg"
     },
     {
-      "bytes": 27946,
-      "kind": "unitsquare-rendering",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         105
       ],
       "n": 105,
-      "path": "resources/web/prospective-packings/unitsquare/n105.svg",
-      "raw_asset_retained": true,
-      "retrieved": "2026-08-26",
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-105.yaml",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-09-29",
       "source_n": 105,
-      "upstream_declared_sha256": "c42fcba9c73b7feaa3ea2f892b1293a14da6c7f7d7ddd8b03ae47877e5f4f9e0",
-      "url": "https://hmbelvedere.com/packings/n105.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n105.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         106
       ],
       "n": 106,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-106.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 106,
-      "url": "https://kingbird.myphotos.cc/packing/square-106.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n106.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -633,18 +638,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-109.svg"
     },
     {
-      "bytes": 29203,
-      "kind": "unitsquare-rendering",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         110
       ],
       "n": 110,
-      "path": "resources/web/prospective-packings/unitsquare/n110.svg",
-      "raw_asset_retained": true,
-      "retrieved": "2026-08-26",
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-110.yaml",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-09-29",
       "source_n": 110,
-      "upstream_declared_sha256": "d650681ea297cd5ff972aadfbd0a21908d40a4970181bc8af9e5dedcfdc12fc9",
-      "url": "https://hmbelvedere.com/packings/n110.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n110.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -661,18 +667,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-122.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         123
       ],
       "n": 123,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-123.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 123,
-      "url": "https://kingbird.myphotos.cc/packing/square-123.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n123.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -759,46 +766,49 @@
       "url": "https://kingbird.myphotos.cc/packing/square-129.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         130
       ],
       "n": 130,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-130.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 130,
-      "url": "https://kingbird.myphotos.cc/packing/square-130.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n130.txt"
     },
     {
-      "bytes": 34560,
-      "kind": "unitsquare-rendering",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         131
       ],
       "n": 131,
-      "path": "resources/web/prospective-packings/unitsquare/n131.svg",
-      "raw_asset_retained": true,
-      "retrieved": "2026-08-26",
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-131.yaml",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-09-29",
       "source_n": 131,
-      "upstream_declared_sha256": "a92619568eda15cad4d5bb07a7c1c38622609f080dab9d22b8ca4c677b31ae4a",
-      "url": "https://hmbelvedere.com/packings/n131.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n131.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         132
       ],
       "n": 132,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-132.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 132,
-      "url": "https://kingbird.myphotos.cc/packing/square-132.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n132.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -901,18 +911,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-151.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         152
       ],
       "n": 152,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-152.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 152,
-      "url": "https://kingbird.myphotos.cc/packing/square-152.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n152.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -929,46 +940,49 @@
       "url": "https://kingbird.myphotos.cc/packing/square-153.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         154
       ],
       "n": 154,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-154.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 154,
-      "url": "https://kingbird.myphotos.cc/packing/square-154.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n154.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         155
       ],
       "n": 155,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-155.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 155,
-      "url": "https://kingbird.myphotos.cc/packing/square-155.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n155.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         156
       ],
       "n": 156,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-156.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 156,
-      "url": "https://kingbird.myphotos.cc/packing/square-156.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n156.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -999,18 +1013,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-171.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         172
       ],
       "n": 172,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-172.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 172,
-      "url": "https://kingbird.myphotos.cc/packing/square-172.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n172.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1069,18 +1084,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-176.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         177
       ],
       "n": 177,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-177.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 177,
-      "url": "https://kingbird.myphotos.cc/packing/square-177.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n177.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1111,46 +1127,49 @@
       "url": "https://kingbird.myphotos.cc/packing/square-179.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         180
       ],
       "n": 180,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-180.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 180,
-      "url": "https://kingbird.myphotos.cc/packing/square-180.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n180.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         181
       ],
       "n": 181,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-181.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 181,
-      "url": "https://kingbird.myphotos.cc/packing/square-181.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n181.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         182
       ],
       "n": 182,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-182.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 182,
-      "url": "https://kingbird.myphotos.cc/packing/square-182.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n182.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1181,18 +1200,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-198.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         199
       ],
       "n": 199,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-199.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 199,
-      "url": "https://kingbird.myphotos.cc/packing/square-199.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n199.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1279,74 +1299,94 @@
       "url": "https://kingbird.myphotos.cc/packing/square-205.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         206
       ],
       "n": 206,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-206.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 206,
-      "url": "https://kingbird.myphotos.cc/packing/square-206.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n206.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         207
       ],
       "n": 207,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-207.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 207,
-      "url": "https://kingbird.myphotos.cc/packing/square-207.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n207.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         208
       ],
       "n": 208,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-208.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 208,
-      "url": "https://kingbird.myphotos.cc/packing/square-208.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n208.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         209
       ],
       "n": 209,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-209.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 209,
-      "url": "https://kingbird.myphotos.cc/packing/square-209.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n209.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         210
       ],
       "n": 210,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-210.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 210,
-      "url": "https://kingbird.myphotos.cc/packing/square-210.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n210.txt"
+    },
+    {
+      "attribution": "Joost de Winter, https://github.com/JoostdeWinter/square-packing-211 at 702df9bb3b1e7fe13279a61a1fa89722aa2d496a",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
+      "listed_n": [
+        211
+      ],
+      "n": 211,
+      "path": "resources/web/de-winter-square-packing-211-2026-09-16/facts/n-211.yaml",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-09-29",
+      "source_n": 211,
+      "url": "https://github.com/JoostdeWinter/square-packing-211/blob/702df9bb3b1e7fe13279a61a1fa89722aa2d496a/n211__record.json"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1377,18 +1417,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-227.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         228
       ],
       "n": 228,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-228.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 228,
-      "url": "https://kingbird.myphotos.cc/packing/square-228.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n228.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1491,88 +1532,94 @@
       "url": "https://kingbird.myphotos.cc/packing/square-235.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         236
       ],
       "n": 236,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-236.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 236,
-      "url": "https://kingbird.myphotos.cc/packing/square-236.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n236.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         237
       ],
       "n": 237,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-237.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 237,
-      "url": "https://kingbird.myphotos.cc/packing/square-237.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n237.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         238
       ],
       "n": 238,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-238.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 238,
-      "url": "https://kingbird.myphotos.cc/packing/square-238.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n238.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         239
       ],
       "n": 239,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-239.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 239,
-      "url": "https://kingbird.myphotos.cc/packing/square-239.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n239.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         240
       ],
       "n": 240,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-240.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 240,
-      "url": "https://kingbird.myphotos.cc/packing/square-240.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n240.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         241
       ],
       "n": 241,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-241.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 241,
-      "url": "https://kingbird.myphotos.cc/packing/square-241.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n241.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1603,18 +1650,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-258.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         259
       ],
       "n": 259,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-259.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 259,
-      "url": "https://kingbird.myphotos.cc/packing/square-259.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n259.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1659,18 +1707,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-262.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         263
       ],
       "n": 263,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-263.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 263,
-      "url": "https://kingbird.myphotos.cc/packing/square-263.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n263.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1731,88 +1780,94 @@
       "url": "https://kingbird.myphotos.cc/packing/square-267.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         268
       ],
       "n": 268,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-268.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 268,
-      "url": "https://kingbird.myphotos.cc/packing/square-268.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n268.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         269
       ],
       "n": 269,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-269.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 269,
-      "url": "https://kingbird.myphotos.cc/packing/square-269.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n269.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         270
       ],
       "n": 270,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-270.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 270,
-      "url": "https://kingbird.myphotos.cc/packing/square-270.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n270.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         271
       ],
       "n": 271,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-271.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 271,
-      "url": "https://kingbird.myphotos.cc/packing/square-271.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n271.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         272
       ],
       "n": 272,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-272.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 272,
-      "url": "https://kingbird.myphotos.cc/packing/square-272.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n272.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         273
       ],
       "n": 273,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-273.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 273,
-      "url": "https://kingbird.myphotos.cc/packing/square-273.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n273.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1845,18 +1900,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-291.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         292
       ],
       "n": 292,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-292.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 292,
-      "url": "https://kingbird.myphotos.cc/packing/square-292.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n292.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1917,18 +1973,19 @@
       "url": "https://kingbird.myphotos.cc/packing/square-296.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         297
       ],
       "n": 297,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-297.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 297,
-      "url": "https://kingbird.myphotos.cc/packing/square-297.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n297.txt"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -1973,102 +2030,109 @@
       "url": "https://kingbird.myphotos.cc/packing/square-300.svg"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         301
       ],
       "n": 301,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-301.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 301,
-      "url": "https://kingbird.myphotos.cc/packing/square-301.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n301.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         302
       ],
       "n": 302,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-302.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 302,
-      "url": "https://kingbird.myphotos.cc/packing/square-302.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n302.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         303
       ],
       "n": 303,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-303.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 303,
-      "url": "https://kingbird.myphotos.cc/packing/square-303.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n303.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         304
       ],
       "n": 304,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-304.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 304,
-      "url": "https://kingbird.myphotos.cc/packing/square-304.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n304.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         305
       ],
       "n": 305,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-305.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 305,
-      "url": "https://kingbird.myphotos.cc/packing/square-305.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n305.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         306
       ],
       "n": 306,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-306.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 306,
-      "url": "https://kingbird.myphotos.cc/packing/square-306.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n306.txt"
     },
     {
-      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
-      "kind": "kingbird-derived-facts",
-      "license_status": "no-express-reuse-terms-found",
+      "attribution": "Francisco Couzo, https://github.com/franciscouzo/square-packing at f3c5a529c255b546db18605702b8da298132309f",
+      "kind": "packet-derived-facts",
+      "license_status": "no-licence-published",
       "listed_n": [
         307
       ],
       "n": 307,
+      "path": "resources/web/franciscouzo-square-packing-2026-09-27/facts/n-307.yaml",
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-09-29",
       "source_n": 307,
-      "url": "https://kingbird.myphotos.cc/packing/square-307.svg"
+      "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n307.txt"
     }
   ]
 }

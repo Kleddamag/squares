@@ -277,21 +277,174 @@ def test_a_credit_whose_line_would_not_fit_fails_before_any_case_cites_it() -> N
         )
 
 
+def test_a_short_credit_is_the_authors_and_a_prefix_of_the_links() -> None:
+    """The stage may drop links from the end of a credit, and nothing else.
+
+    Longest first, at least one link kept, never all of them: `Tokoharu et al.` would read
+    as coauthors, and a shortening that kept every link would say `et al.` of nobody.
+    """
+    full = "Tokoharu after Levy, wand125, Stromquist"
+    assert citations.short_credits(full) == [
+        "Tokoharu after Levy, wand125 et al.",
+        "Tokoharu after Levy et al.",
+    ]
+    assert citations.short_credits("Guzhou0806, Mira after Levy, Burns") == [
+        "Guzhou0806, Mira after Levy et al."
+    ]
+    assert citations.short_credits("Kleddamag after Levy") == []
+    assert citations.short_credits("Daniel") == []
+
+
+@pytest.mark.parametrize(
+    ("credit", "short"),
+    [
+        ("Guzhou0806, Mira after Levy, Burns", "Guzhou0806 after Levy et al."),
+        ("Tokoharu after Levy, wand125, Burns", "Tokoharu after wand125, Levy et al."),
+        ("Tokoharu after Levy, wand125, Burns", "Tokoharu after Levy, Mira et al."),
+        ("Tokoharu after Levy, wand125, Burns", "Tokoharu after Levy, wand125"),
+        ("Tokoharu after Levy, wand125, Burns", "Tokoharu et al."),
+        ("Tokoharu after Levy, wand125", "Tokoharu after Levy, wand125 et al."),
+        ("Kleddamag after Levy", "Kleddamag after Levy et al."),
+    ],
+    ids=[
+        "drops-an-author",
+        "reorders-the-links",
+        "names-a-link-the-credit-does-not",
+        "shortens-without-saying-so",
+        "keeps-no-link-and-reads-as-coauthors",
+        "keeps-every-link-and-says-et-al-of-nobody",
+        "shortens-a-one-link-credit",
+    ],
+)
+def test_a_short_credit_that_misstates_the_credit_fails(credit: str, short: str) -> None:
+    source = citations.Source("[K]", ("K",), 2026, "GitHub", credit=credit, short_credit=short)
+    with pytest.raises(ValueError, match="is not the credit's authors"):
+        citations.check_short_credit(source)
+
+
+def test_a_short_credit_needs_a_credit_to_shorten() -> None:
+    source = citations.Source("[K]", ("K",), 2026, "GitHub", short_credit="K after A et al.")
+    with pytest.raises(ValueError, match="does not have"):
+        citations.check_credits([source])
+
+
+def test_a_credit_too_wide_for_the_stage_needs_a_short_credit_that_fits() -> None:
+    """The whole credit may run past the stage; the line the stage would print may not."""
+    links = ", ".join(f"Link{index:02d}" for index in range(10))
+    wide = f"Author after {links}"
+    assert len(citations.cite(wide, 2026, "GitHub")) > citations.TEXT_LIMIT
+    with pytest.raises(ValueError, match="gives no `short_credit`"):
+        citations.check_credits([citations.Source("[K]", ("K",), 2026, "GitHub", credit=wide)])
+    fits = "Author after Link00, Link01 et al."
+    citations.check_credits(
+        [citations.Source("[K]", ("K",), 2026, "GitHub", credit=wide, short_credit=fits)]
+    )
+    too_wide = citations.short_credits(wide)[0]
+    with pytest.raises(ValueError, match="short credit line"):
+        citations.check_credits(
+            [
+                citations.Source(
+                    "[K]", ("K",), 2026, "GitHub", credit=wide, short_credit=too_wide
+                )
+            ]
+        )
+
+
+def _with_source(source: citations.Source) -> citations.Register:
+    register = _synthetic_register()
+    return citations.Register(
+        evidence=register.evidence,
+        results=register.results,
+        sources={**register.sources, source.key: source},
+        names=register.names,
+    )
+
+
+def test_the_stage_shortens_a_credit_only_where_the_whole_line_does_not_fit() -> None:
+    """R068's shape: the whole credit fits alone, and the confirmation pushes it over.
+
+    The citation names every link where there is room, and `et al.` where there is not;
+    what every other renderer reads, `Source.credited`, stays whole either way.
+    """
+    credit = "Guzhou0806 after Kleddamag, Mira, Levy"
+    source = citations.Source(
+        "[Paper 2001]",
+        ("Guzhou0806",),
+        2001,
+        "GitHub",
+        credit=credit,
+        short_credit="Guzhou0806 after Kleddamag et al.",
+    )
+    register = _with_source(source)
+    plain = citations.lower_citation(7, _synthetic_case(["E-paper"]), register)
+    assert plain is not None
+    assert plain["text"] == f"{credit} 2001, GitHub"
+    confirmed = citations.lower_citation(7, _synthetic_case(["E-paper", "E-replay"]), register)
+    assert confirmed is not None
+    assert len(f"{credit} 2001, GitHub (confirmed T-901)") > citations.TEXT_LIMIT
+    assert (confirmed["text"], confirmed["note"]) == (
+        "Guzhou0806 after Kleddamag et al. 2001, GitHub",
+        "(confirmed T-901)",
+    )
+    assert source.credited == credit
+
+
+def test_a_venue_gives_way_before_a_credit_does() -> None:
+    """Who did the work outranks where it appeared: the short venue is tried first."""
+    source = citations.Source(
+        "[K]",
+        ("Author",),
+        2001,
+        "V" * 30,
+        short_venue="Short J.",
+        credit="Author after Alpha, Beta, Gamma",
+        short_credit="Author after Alpha et al.",
+    )
+    whole = "Author after Alpha, Beta, Gamma 2001, Short J."
+    assert citations.compose(source.credit, 2001, source, len(whole), source.short_credit) == (
+        whole
+    )
+    # One character less, and neither venue carries the whole credit: the short credit
+    # is tried with the full venue, which is too wide, and then with the short one.
+    assert citations.compose(
+        source.credit, 2001, source, len(whole) - 1, source.short_credit
+    ) == ("Author after Alpha et al. 2001, Short J.")
+
+
+def test_a_stale_record_names_the_lines_that_moved() -> None:
+    """The atlas is re-rendered once for many bibliography edits; the check says which."""
+    line = {"text": "Author 2001, J. Test 1", "note": "(confirmed T-901)", "value": "2.25"}
+
+    def record(lower: dict[str, str]) -> dict[str, Any]:
+        return {"entries": [{"n": 7, "upper": None, "lower": lower}]}
+
+    moved = {**line, "text": "Author after A et al. 2001, J. Test 1"}
+    was = "'Author 2001, J. Test 1 (confirmed T-901)'"
+    assert citations.stale_lines(record(line), record(line)) == []
+    assert citations.stale_lines(record(line), record(moved)) == [
+        f"n=7 lower: {was} -> 'Author after A et al. 2001, J. Test 1 (confirmed T-901)'"
+    ]
+    assert citations.stale_lines(record(line), record({**line, "value": "2.5"})) == [
+        f"n=7 lower: {was}, fields ['value'] changed"
+    ]
+
+
 #: Names an AI agent goes by. The owner's rule (2026-09-27): no agent is ever a credited
 #: author; a release's use of one belongs in its provenance note, not in `credit`.
 AGENT_NAMES = re.compile(r"codex|openai|claude|anthropic|gpt|gemini|copilot", re.IGNORECASE)
 
 
 def test_every_recorded_credit_fits_the_stage_in_latin_letters_and_names_no_agent() -> None:
-    """Every `credit` in the bibliography, cited on the stage today or not."""
+    """Every `credit` and `short_credit` in the bibliography, on the stage today or not."""
     joint = {
-        source.key: source.credit
+        (source.key, text)
         for source in _register().sources.values()
-        if source.credit is not None
+        for text in (source.credit, source.short_credit)
+        if text is not None
     }
     assert joint
     citations.check_credits(_register().sources.values())
-    for key, credit in joint.items():
+    for key, credit in joint:
         assert credit.isascii(), key
         assert credit.isprintable(), key
         assert not AGENT_NAMES.search(credit), key
@@ -469,18 +622,31 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
+    # A parallel packing certified here: the finder's line, confirmed by the register
+    # entry whose replay it is (T-056), where the UnitSquare release stood until then.
     68: (
-        ("UnitSquare Project 2026, Results Release 1 (reported)", "external", "reported"),
-        ("wand125 after Levy 2026, GitHub (confirmed T-044)", "external", "verified"),
+        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("wand125 after Levy et al. 2026, GitHub (confirmed T-044)", "external", "verified"),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
     101: (
         ("Friedman & Ellsworth, Squares in Squares (reported)", "external", "reported"),
         ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
     ),
-    # Three finders and two improvers: the first and et al., and no year.
+    # Three finders and two improvers gave "Arslanov et al." with no year here until
+    # Couzo's certified packing took the case; the synthetic test above keeps that shape.
     132: (
-        ("Arslanov et al., Squares in Squares (reported)", "external", "reported"),
+        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+    ),
+    # A certified ceiling that trails its report by two units of the printed place is
+    # still cited as reported, with the register entry that confirms the packing.
+    206: (
+        ("Couzo 2026, GitHub (reported; confirmed T-056)", "external", "reported"),
+        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+    ),
+    211: (
+        ("de Winter 2026, GitHub (confirmed T-057)", "external", "verified"),
         ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
     ),
 }
@@ -495,10 +661,10 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 @pytest.mark.parametrize(
     ("n", "author", "entry"),
     [
-        (11, "Kleddamag after Levy", "T-037"),
-        (17, "Guzhou0806 after Kleddamag, Levy", "T-043"),
-        (26, "Tokoharu after Levy, wand125", "T-047"),
-        (29, "Tokoharu after Levy, wand125", "T-047"),
+        (11, "Kleddamag after Levy et al.", "T-037"),
+        (17, "Guzhou0806 after Kleddamag et al.", "T-043"),
+        (26, "Tokoharu after Levy, wand125 et al.", "T-047"),
+        (29, "Tokoharu after Levy, wand125 et al.", "T-047"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
@@ -509,7 +675,9 @@ def test_promoted_external_bounds_keep_the_sources_credit(
     Since 2026-09-29 the register holds others' results (epistemics.md, Results by
     Others), so a promoted external bound has an entry of its own that carries the
     replay: the credit stays the source's, the result id stays empty because the bound
-    is not this project's, and the entry is named as what confirms it.
+    is not this project's, and the entry is named as what confirms it. Each of these
+    credits names more links than the line has room for beside its confirmation, so the
+    stage prints the source's `short_credit`, and every other renderer the whole credit.
     """
     lower = _entry(n)["lower"]
     assert _line(lower) == (
@@ -519,6 +687,9 @@ def test_promoted_external_bounds_keep_the_sources_credit(
     )
     assert lower["result"] is None
     assert lower["confirmed_by"] == [entry]
+    source = _register().sources[lower["source_key"]]
+    assert author == source.short_credit
+    assert author in citations.short_credits(source.credited)
 
 
 def test_n29_credits_finder_and_optimizer_and_takes_the_registers_verdict() -> None:
@@ -706,7 +877,7 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     """
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
     assert lines[11]["recent"]
-    assert lines[11]["text"] == "Kleddamag after Levy 2026, GitHub"
+    assert lines[11]["text"] == "Kleddamag after Levy et al. 2026, GitHub"
     assert lines[12]["recent"]
     assert lines[12]["text"].startswith("Daniel after Burns")
     assert lines[18]["recent"]

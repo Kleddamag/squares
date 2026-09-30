@@ -43,11 +43,18 @@ def record(n: int) -> tuple[Array, float]:
     `n = 17` and raises a `KeyError` on `n = 12`.
     """
     payload = safe_load((WITNESSES / f"n-{n:03d}.yaml").read_text(encoding="utf-8"))["witness"]
+    # The packet-derived frames of the #227 intake declare radians; the rest declare degrees.
+    in_degrees = payload["coordinates"]["angle_unit"] == "degrees"
     rows = []
     for s in payload["squares"]:
         if "center" in s:
+            angle = float(s["angle"])
             rows.append(
-                [float(s["center"][0]), float(s["center"][1]), math.radians(float(s["angle"]))]
+                [
+                    float(s["center"][0]),
+                    float(s["center"][1]),
+                    math.radians(angle) if in_degrees else angle,
+                ]
             )
             continue
         pts = np.array([[float(a), float(b)] for a, b in s["corners"]])

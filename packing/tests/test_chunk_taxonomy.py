@@ -55,20 +55,30 @@ def test_no_component_the_grammar_misses_is_tilted() -> None:
         for component in entry["components"]
         if component["shape"] == "other-polyomino"
     }
-    assert angles == {"0"}
+    # Axis-aligned to within 1e-9 degrees. The one residual is n = 68's corner block, in
+    # Francisco Couzo's numerically optimized pose since 2026-09-29, at 3.2e-10 degrees.
+    assert "0" in angles
+    assert all(abs(float(angle)) < 1e-9 for angle in angles), angles
 
 
 def test_the_residue_is_two_populations_and_nothing_between() -> None:
     """A grid record that is one polyomino, and a corner block inside a real packing.
 
-    The wall seating separates them completely: 4 for a subset of an integer grid, which
-    spans the container, and 2 for a block seated in a corner of a packing that is
-    otherwise tilted. No residue component touches one wall or three.
+    The wall seating separates them: 4 for a subset of an integer grid, which spans the
+    container, and 2 for a block seated in a corner of a packing that is otherwise
+    tilted. Among the catalogue's packings no residue component touches one wall or
+    three. The one exception is n = 68, whose record moved on 2026-09-29 from its
+    UnitSquare rendering, where every square is a singleton, to Francisco Couzo's packing:
+    its five-square block seats against one wall.
     """
     residue = _record()["residue"]
 
-    assert residue["walls_touched"] == {"2": 65, "4": 44}
-    assert residue["by_source"] == {"exact-grid": 44, "kingbird-derived-facts": 65}
+    assert residue["walls_touched"] == {"1": 1, "2": 65, "4": 44}
+    assert residue["by_source"] == {
+        "exact-grid": 44,
+        "kingbird-derived-facts": 65,
+        "packet-derived-facts": 1,
+    }
     assert residue["tilted"] == 0
     assert residue["whole_record"] == 44
 
@@ -76,6 +86,8 @@ def test_the_residue_is_two_populations_and_nothing_between() -> None:
         if item["source"] == "exact-grid":
             assert item["is_the_whole_record"], item
             assert item["walls_touched"] == 4, item
+        elif item["source"] == "packet-derived-facts":
+            assert (item["n"], item["size"], item["walls_touched"]) == (68, 5, 1), item
         else:
             assert item["walls_touched"] == 2, item
 
@@ -93,7 +105,9 @@ def test_the_strata_are_not_three_samples_of_one_population() -> None:
     assert strata["exact-grid"]["tilted_components"] == 0
     assert strata["exact-grid"]["components"] == 64  # one connected component per record
     assert strata["kingbird-derived-facts"]["tilted_components"] > 0
-    assert strata["unitsquare-rendering"]["shapes"] == {"singleton": 137}
+    assert strata["unitsquare-rendering"]["shapes"] == {"singleton": 69}
+    assert strata["packet-derived-facts"]["records"] == 1
+    assert strata["packet-derived-facts"]["tilted_components"] > 0
 
 
 def test_wall_seating_agrees_with_the_n5_geometry_we_know_exactly() -> None:

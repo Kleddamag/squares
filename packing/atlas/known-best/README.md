@@ -80,8 +80,8 @@ one bought.
 
 The pipeline has four separate layers:
 
-1. exact canonical grids, attributed Kingbird-derived numerical facts, or retained
-   UnitSquare SVG renderings;
+1. exact canonical grids, attributed Kingbird-derived numerical facts, source packets’
+   derived facts, or retained UnitSquare SVG renderings;
 2. normalized [`Witness/v2`](../../witnesses/witness.schema.yaml) geometry;
 3. numerical or exact feasibility receipts at the assurance the source supports; and
 4. deterministic SVGs under [`rendering/`](rendering/).
@@ -96,7 +96,7 @@ confirmation on the same corpus.
 
 [`chunk-components.json`](chunk-components.json) is the exploratory layer that tests the
 assembly intuition without crossing that boundary.
-At the registered `1e-6`-radian angle and `1e-3` contact tolerances, 1,780 of 1,860
+At the registered `1e-6`-radian angle and `1e-3` contact tolerances, 1,782 of 1,860
 squares in the 36 non-grid records belong to a multi-square same-angle contact
 component.
 Twenty-five of those 36 records use no more than six such components and three
@@ -180,7 +180,7 @@ It contains no centres, side, geometry, container-fit result, packing feasibilit
 or optimality claim.
 
 [`contact-overlays.json`](contact-overlays.json) indexes five deterministic visual
-strata from the registered descriptive census: `n = 11`, `28`, `40`, `68`, and `89`.
+strata from the registered descriptive census: `n = 11`, `28`, `40`, `69`, and `89`.
 Every SVG under [`contact-overlays/`](contact-overlays/) uses the same house renderer as
 the base atlas. Dashed orange lines join square centres or a centre to a seated wall;
 they show tolerance-qualified graph incidence, not exact physical contact loci or
@@ -194,10 +194,19 @@ Noninteger catalogue records use attributed Kingbird-derived numerical center an
 facts retained in Witness/v2; the upstream SVGs are not retained in this source
 inventory because the review located no express redistribution terms.
 This is a conservative retention policy, not a legal conclusion.
-The newer public UnitSquare renderings supersede the older Kingbird geometry at `n = 68`
-and `n = 69`; their six-decimal polygon coordinates are explicitly recorded as
-rendering-derived numerical evidence, not as the unavailable interval boxes named in
-their metadata.
+The newer public UnitSquare renderings superseded the older Kingbird geometry at
+`n = 68, 69, 103, 105, 110` and `131`; their six-decimal polygon coordinates are
+explicitly recorded as rendering-derived numerical evidence, not as the unavailable
+interval boxes named in their metadata.
+Only `n = 69` still draws one, since Couzo’s packings supersede the other five.
+
+At 50 counts the drawing is a parallel project’s packing, read from its source packet’s
+derived facts: Francisco Couzo’s at 49 counts from `n = 68` to `307` (T-056) and Joost
+de Winter’s at `n = 211` (T-057), the first drawing of 211 squares that is not the grid.
+Neither source publishes a licence, so the packets keep the centres and angles and the
+upstream digests, never the files, as for Kingbird.
+Each of these packings is also certified exactly here, which the case record carries in
+its verified lane; the atlas witness itself stays the numerical one.
 
 Every witness limits its claim to feasibility of the retained construction.
 The phrase “known best” comes from the frontier register and never turns a numerical

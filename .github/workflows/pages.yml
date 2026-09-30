@@ -73,6 +73,9 @@ name: Certificate page
       - packing/devtools/validate_schemas.py
       - packing/devtools/site_documents.py
       - packing/devtools/render_results.py
+      - packing/devtools/result_credit.py
+      - packing/devtools/render_recent_results.py
+      - packing/devtools/migrate_math.py
       - packing/devtools/render_research_tables.py
       - packing/devtools/significance.py
       - packing/devtools/check_results.py

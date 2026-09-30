@@ -31,6 +31,7 @@ sources:
     evidence:
       - E-n032-evand-closed-cover-report
       - E-n032-evand-closed-cover-source-run
+      - E-n032-evand-closed-cover-zmx2-replay
       - E-n012-evand-15680-3951-report
       - E-n012-evand-15680-3951-source-replay
       - E-n012-evand-15680-3951-native-parent-core
@@ -45,13 +46,16 @@ sources:
       passed here at N = 6000, so s(12) >= 15680/3951 and s(21) >= 5000/1001
       are registered at V4/C3; this repository's native parent-core interval
       route then decided all 2,486 rows of the s(12) certificate, a second
-      method, so s(12) is at V4/C4. s(32) = 6 is registered at V4/C3: the
+      method, so s(12) is at V4/C4. s(32) = 6 is registered at V4/C4: the
       complete zeromargin.py re-sweep here certified all 7,200 roots of the D4
       region (D4 RECHECK CLEAN), every per-root census identical to the
       source's shipped record, and the 2026-09-27 review found no mathematical
-      defect. Neither zmcheck sweep, the
-      Lean build, the exhaustive xcheck.py passes nor the case-free s(13) cover
-      was replayed. The source's s(11) >= 3040/797
+      defect; on 2026-09-29 a complete run here of the source's zmx2, from the
+      2026-09-28 release, on the same cover was recorded beside it as a second,
+      interval-certified method (E-n032-evand-closed-cover-zmx2-replay, which
+      states what the two checkers share). Neither zmcheck sweep, the Lean
+      build nor the exhaustive xcheck.py passes were replayed, and the
+      case-free s(13) cover only by zmx2. The source's s(11) >= 3040/797
       is below the verified 31/8 and is retained in the packet but not registered.
       On 2026-09-29 the same repository's s(21) = 5
       (evand-square-packing-2026-09-28) superseded its s(21) >= 5000/1001,
@@ -73,6 +77,7 @@ sources:
       - E-n021-evand-mixed-cover-zmx2-replay
       - E-n045-evand-mixed-cover-report
       - E-n045-evand-mixed-cover-zmx2-replay
+      - E-n032-evand-closed-cover-zmx2-replay
     notes: >-
       Evan Daniel's repository at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3,
       retained on 2026-09-28 as the 91 files that changed or were added since
@@ -90,7 +95,9 @@ sources:
       method and C4, run separately. The Lean build was not run (Mathlib's
       cache is unreachable from this session). The source's hypothesis-free
       Lean checks of s(13) = 4 and s(32) = 6 are reported, not built, and move
-      no bound.
+      no bound. Its zmx2, run here on the 2026-09-26 release's s(32) cover, is
+      the evidence E-n032-evand-closed-cover-zmx2-replay, which raised s(32) = 6
+      to V4/C4 on 2026-09-29.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -384,6 +391,73 @@ sources:
       matched the source's records). The source claims no priority for s(21)
       or s(45). The superseded n = 50 rungs 147/20 and 3659/500 are retained
       and not registered.
+  - id: franciscouzo-square-packing-2026
+    title: Square packings better than the published records
+    role: source-repository
+    url: https://github.com/franciscouzo/square-packing/tree/f3c5a529c255b546db18605702b8da298132309f
+    local: resources/web/franciscouzo-square-packing-2026-09-27/
+    claims_record: resources/web/franciscouzo-square-packing-2026-09-27/acquisition/sources.json
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    reviewed: '2026-09-29'
+    source_date: '2026-09-27'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-068.md through frontier/n-307.md, witnesses/franciscouzo-2026/]
+    evidence: [E-franciscouzo-2026-09-27-report, E-franciscouzo-2026-09-27-exact-replay]
+    notes: >-
+      Francisco Couzo's repository at f3c5a529c255b546db18605702b8da298132309f,
+      retained on 2026-09-29 as derived Witness/v2 facts, upstream digests and the
+      per-case commit history, because it carries no licence; issue #227 asked for
+      its registration. Every one of its 49 packings beats both the retained Kingbird
+      capture and the live catalogue of 2026-09-29, and every one certifies exactly
+      over Q here at centre dilation 1 (T-056). At n = 206, 259 and 305 the certified
+      ceiling sits 2 to 3 units of the fifteenth decimal above the printed side, kept
+      as conflicts. At n = 68, 103, 105, 110 and 131 it supersedes the UnitSquare
+      release, and at 39 counts it beats Griffin Casson's packings of 2026-09-23.
+  - id: de-winter-square-packing-211-2026
+    title: square-packing-211
+    role: source-repository
+    url: https://github.com/JoostdeWinter/square-packing-211/tree/702df9bb3b1e7fe13279a61a1fa89722aa2d496a
+    local: resources/web/de-winter-square-packing-211-2026-09-16/
+    claims_record: resources/web/de-winter-square-packing-211-2026-09-16/acquisition/sources.json
+    source_key: '[de Winter n211 2026-09-16]'
+    scope: {n_values: [211]}
+    reviewed: '2026-09-29'
+    source_date: '2026-09-16'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-211.md, witnesses/de-winter-2026/n-211-rational.yaml.gz]
+    evidence: [E-n211-de-winter-report, E-n211-de-winter-exact-replay]
+    notes: >-
+      Joost de Winter's repository at 702df9bb3b1e7fe13279a61a1fa89722aa2d496a,
+      retained on 2026-09-29 as derived facts and digests because it carries no
+      licence. Its packing of 211 squares at side 14.99796070496771500150 is the first
+      below the grid side 15 on record, and certifies exactly over Q here (T-057). The
+      source's author-reported interval check publishes no boxes or checker. It was
+      found on 2026-09-29 alongside issue #227 and is not in the live catalogue.
+  - id: casson-square-packing-2026
+    title: 'Squares in squares: 39 improved packings (n = 103-307)'
+    role: source-repository
+    url: https://github.com/griffcass/square-packing/tree/82661bc8777beeecf458312e8aca9179a969da4f
+    local: resources/web/casson-square-packing-2026-09-23/griffcass-square-packing/
+    claims_record: resources/web/casson-square-packing-2026-09-23/acquisition/sources.json
+    source_key: '[griffcass square-packing 2026-09-23]'
+    scope: {n_values: [103, 105, 106, 123, 131, 132, 152, 154, 155, 156, 180, 181, 182, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 268, 269, 270, 271, 272, 273, 292, 297, 301, 303, 304, 305, 306, 307]}
+    reviewed: '2026-09-29'
+    source_date: '2026-09-24'
+    disposition: superseded-covered
+    replay_disposition: case-specific
+    represented_by: [frontier/n-103.md through frontier/n-307.md]
+    evidence: [E-casson-2026-09-23-report]
+    notes: >-
+      Griffin Casson's repository at 82661bc8777beeecf458312e8aca9179a969da4f,
+      committed 2026-09-23 at 22:45 UTC-6, retained on 2026-09-29 with its 39 CC BY 4.0
+      packings byte for byte and every other file pinned by digest. Every packing is
+      larger than Francisco Couzo's at the same count, so none holds a field and none
+      was replayed. By the authors' clocks Casson published before Couzo's first packing
+      at 36 of the 39 counts and after it at 103, 152 and 180; each case record states
+      both sources' dates and values.
   - id: kingbird-current
     title: Squares in Squares
     role: current-catalogue
@@ -407,6 +481,7 @@ sources:
     role: first-party-release
     url: https://hmbelvedere.com/
     local: resources/web/unitsquare-release1-2026/results.json
+    claims_record: resources/web/unitsquare-release1-2026/results.json
     source_key: '[UnitSquare 2026]'
     scope: {n_values: [68, 69, 103, 105, 110, 131]}
     reviewed: '2026-08-25'
@@ -419,6 +494,9 @@ sources:
       The release reports interval validation but does not publish its interval boxes,
       governed receipts, or replayable checker. Its in-horizon values are reported, not
       verified; four further claims are retained below without creating empty case files.
+      On 2026-09-29 Francisco Couzo's certified packings (franciscouzo-square-packing-2026)
+      superseded its reports at n = 68, 103, 105, 110 and 131, which are listed under
+      superseded_reports; n = 69 remains its current report.
   - id: schadt-n29-2025
     title: Squares-packing S(29) — New Record
     role: source-repository
@@ -439,33 +517,523 @@ sources:
       implementations. Neither establishes optimality.
 selected_overrides:
   - n: 68
-    source_id: unitsquare-release1
-    value: '8.803383074716108386903836683375989697670063329'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026
+    value: '8.798795237222592'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
+      the Kingbird baseline.
   - n: 69
     source_id: unitsquare-release1
     value: '8.827205507815920656880680735618736931225314831'
     evidence: E-unitsquare-release1-report
     reason: Newer first-party reported upper bound than the Kingbird baseline.
+  - n: 102
+    source_id: franciscouzo-square-packing-2026
+    value: '10.607174680178947'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 103
+    source_id: franciscouzo-square-packing-2026
+    value: '10.703516755580015'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
+      the Kingbird baseline.
+  - n: 105
+    source_id: franciscouzo-square-packing-2026
+    value: '10.806077865540567'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
+      the Kingbird baseline.
+  - n: 106
+    source_id: franciscouzo-square-packing-2026
+    value: '10.822908044141968'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 110
+    source_id: franciscouzo-square-packing-2026
+    value: '10.996783396634358'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
+      the Kingbird baseline.
+  - n: 123
+    source_id: franciscouzo-square-packing-2026
+    value: '11.601384658385687'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 130
+    source_id: franciscouzo-square-packing-2026
+    value: '11.911187706548755'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 131
+    source_id: franciscouzo-square-packing-2026
+    value: '11.954916830219048'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
+      the Kingbird baseline.
+  - n: 132
+    source_id: franciscouzo-square-packing-2026
+    value: '11.991327887694469'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 152
+    source_id: franciscouzo-square-packing-2026
+    value: '12.830718800982252'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 154
+    source_id: franciscouzo-square-packing-2026
+    value: '12.931663721169976'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 155
+    source_id: franciscouzo-square-packing-2026
+    value: '12.955619592137850'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 156
+    source_id: franciscouzo-square-packing-2026
+    value: '12.982082698520427'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 172
+    source_id: franciscouzo-square-packing-2026
+    value: '13.618988956935731'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 177
+    source_id: franciscouzo-square-packing-2026
+    value: '13.822979734183507'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 180
+    source_id: franciscouzo-square-packing-2026
+    value: '13.927888140501693'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 181
+    source_id: franciscouzo-square-packing-2026
+    value: '13.953748821957927'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 182
+    source_id: franciscouzo-square-packing-2026
+    value: '13.974090713124822'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 199
+    source_id: franciscouzo-square-packing-2026
+    value: '14.618988956907218'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 206
+    source_id: franciscouzo-square-packing-2026
+    value: '14.860158663395859'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 207
+    source_id: franciscouzo-square-packing-2026
+    value: '14.893954634242480'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 208
+    source_id: franciscouzo-square-packing-2026
+    value: '14.937018796984567'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 209
+    source_id: franciscouzo-square-packing-2026
+    value: '14.955041639430016'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 210
+    source_id: franciscouzo-square-packing-2026
+    value: '14.973001116591412'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 211
+    source_id: de-winter-square-packing-211-2026
+    value: '14.99796070496771500150'
+    evidence: E-n211-de-winter-report
+    reason: Newer reported upper bound, certified here (T-057), below the Kingbird baseline.
+  - n: 228
+    source_id: franciscouzo-square-packing-2026
+    value: '15.604638007678682'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 236
+    source_id: franciscouzo-square-packing-2026
+    value: '15.872219025616040'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 237
+    source_id: franciscouzo-square-packing-2026
+    value: '15.911191683008479'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 238
+    source_id: franciscouzo-square-packing-2026
+    value: '15.931725503598480'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 239
+    source_id: franciscouzo-square-packing-2026
+    value: '15.953819333484685'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 240
+    source_id: franciscouzo-square-packing-2026
+    value: '15.969685337536875'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 241
+    source_id: franciscouzo-square-packing-2026
+    value: '15.988132439537539'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 259
+    source_id: franciscouzo-square-packing-2026
+    value: '16.602568490497649'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 263
+    source_id: franciscouzo-square-packing-2026
+    value: '16.742280159187313'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 268
+    source_id: franciscouzo-square-packing-2026
+    value: '16.878814821018413'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 269
+    source_id: franciscouzo-square-packing-2026
+    value: '16.905967058598858'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 270
+    source_id: franciscouzo-square-packing-2026
+    value: '16.937810329390629'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 271
+    source_id: franciscouzo-square-packing-2026
+    value: '16.950820792633813'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 272
+    source_id: franciscouzo-square-packing-2026
+    value: '16.968279785326896'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 273
+    source_id: franciscouzo-square-packing-2026
+    value: '16.983925962660670'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 292
+    source_id: franciscouzo-square-packing-2026
+    value: '17.597249391199519'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 297
+    source_id: franciscouzo-square-packing-2026
+    value: '17.740417287548325'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 301
+    source_id: franciscouzo-square-packing-2026
+    value: '17.846667192848074'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 302
+    source_id: franciscouzo-square-packing-2026
+    value: '17.885993892536710'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 303
+    source_id: franciscouzo-square-packing-2026
+    value: '17.924349265547932'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 304
+    source_id: franciscouzo-square-packing-2026
+    value: '17.934650018395903'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 305
+    source_id: franciscouzo-square-packing-2026
+    value: '17.952959459023539'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 306
+    source_id: franciscouzo-square-packing-2026
+    value: '17.963449907261179'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+  - n: 307
+    source_id: franciscouzo-square-packing-2026
+    value: '17.981030548643712'
+    evidence: E-franciscouzo-2026-09-27-report
+    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+superseded_reports:
+  - n: 68
+    source_id: unitsquare-release1
+    value: '8.803383074716108386903836683375989697670063329'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 103
+    source_id: casson-square-packing-2026
+    value: '10.70377984436967189'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
   - n: 103
     source_id: unitsquare-release1
     value: '10.703790283762427'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 105
+    source_id: casson-square-packing-2026
+    value: '10.80758853319602153'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
   - n: 105
     source_id: unitsquare-release1
     value: '10.807847913867976'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 106
+    source_id: casson-square-packing-2026
+    value: '10.82293693182615435'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
   - n: 110
     source_id: unitsquare-release1
     value: '10.996797773597706'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 123
+    source_id: casson-square-packing-2026
+    value: '11.60138465962087828'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 131
+    source_id: casson-square-packing-2026
+    value: '11.95652190193193043'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
   - n: 131
     source_id: unitsquare-release1
     value: '11.956543108124773261501115489978287643498579738'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 132
+    source_id: casson-square-packing-2026
+    value: '11.99134529315214159'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 152
+    source_id: casson-square-packing-2026
+    value: '12.83071880600230408'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 154
+    source_id: casson-square-packing-2026
+    value: '12.93166403111078111'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 155
+    source_id: casson-square-packing-2026
+    value: '12.95820609164224457'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 156
+    source_id: casson-square-packing-2026
+    value: '12.98208269973811824'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 180
+    source_id: casson-square-packing-2026
+    value: '13.93500418116475004'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 181
+    source_id: casson-square-packing-2026
+    value: '13.95679529257278872'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 182
+    source_id: casson-square-packing-2026
+    value: '13.97409071444282525'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 207
+    source_id: casson-square-packing-2026
+    value: '14.89395465342147418'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 208
+    source_id: casson-square-packing-2026
+    value: '14.93761283595916289'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 209
+    source_id: casson-square-packing-2026
+    value: '14.95856148981292932'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 210
+    source_id: casson-square-packing-2026
+    value: '14.97381035691250695'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 228
+    source_id: casson-square-packing-2026
+    value: '15.60895620815939289'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 236
+    source_id: casson-square-packing-2026
+    value: '15.87606262597991957'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 237
+    source_id: casson-square-packing-2026
+    value: '15.91292783720833270'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 238
+    source_id: casson-square-packing-2026
+    value: '15.93958571370620980'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 239
+    source_id: casson-square-packing-2026
+    value: '15.95623903092502971'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 240
+    source_id: casson-square-packing-2026
+    value: '15.97536577224557242'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 241
+    source_id: casson-square-packing-2026
+    value: '15.99043971050729418'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 259
+    source_id: casson-square-packing-2026
+    value: '16.60256850594295841'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 268
+    source_id: casson-square-packing-2026
+    value: '16.87895510935973675'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 269
+    source_id: casson-square-packing-2026
+    value: '16.90596713867399714'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 270
+    source_id: casson-square-packing-2026
+    value: '16.94057158197226087'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 271
+    source_id: casson-square-packing-2026
+    value: '16.95479445810086716'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 272
+    source_id: casson-square-packing-2026
+    value: '16.96944950195848989'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 273
+    source_id: casson-square-packing-2026
+    value: '16.98811467146214582'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 292
+    source_id: casson-square-packing-2026
+    value: '17.60256849240573729'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 297
+    source_id: casson-square-packing-2026
+    value: '17.74092885618564353'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 301
+    source_id: casson-square-packing-2026
+    value: '17.86867840793058804'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 303
+    source_id: casson-square-packing-2026
+    value: '17.93105636462953001'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 304
+    source_id: casson-square-packing-2026
+    value: '17.94880191214547338'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 305
+    source_id: casson-square-packing-2026
+    value: '17.96053668235995815'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 306
+    source_id: casson-square-packing-2026
+    value: '17.96846609160515484'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
+  - n: 307
+    source_id: casson-square-packing-2026
+    value: '17.98205200143469895'
+    superseded_by: franciscouzo-square-packing-2026
+    reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
+      dates and values.
 beyond_horizon_claims: []

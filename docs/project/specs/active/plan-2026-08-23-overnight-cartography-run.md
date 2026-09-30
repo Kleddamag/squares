@@ -451,11 +451,12 @@ H124 and restricted H036 remain unresolved, and that representation receives no 
 Do not repeat a completed experiment or create another candidate without a registered
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
-For the next supervised exact-research goal, take agenda-042’s BC-390 under
-`think-7c17`: run the widened n = 11 rung 0 box on eight workers overnight, the first
-lane of [the after-4.640020 plan](plan-2026-09-27-after-4640020-overnight.md), with the
-rectangle ladders and the queued wand125 and Daniel replays beside it.
-The native `C4` route for `s(17) > 232001/50000` follows its day build.
+For the next supervised exact-research goal, take `think-l6la`, the handoff Session 161
+stopped on: run the complete `zm_mixed.py --d4 --cert-mode` re-sweeps for `s(21)` and
+`s(45)`, record them, and raise T-052 and T-053 to `C4`. Agenda-042’s BC-390, the
+widened n = 11 rung 0 box that leads
+[the after-4.640020 plan](plan-2026-09-27-after-4640020-overnight.md), stays queued
+behind it with the rectangle ladders and the remaining wand125 replays.
 See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current evidence
 and allocation boundaries.
 

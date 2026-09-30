@@ -30,26 +30,30 @@ from sqpack.render.numbers import scalar_from_decimal
 from sqpack.render.style import SQUARE_FILL_PALETTE, SQUARE_HUE_PALETTE
 from sqpack.witness import load_witness
 
-#: SVG files carrying indexed square fills, and those fills, per corpus (think-93on).
+#: SVG files carrying indexed square fills, and those fills, per corpus (think-93on). One
+#: more fill since the #227 intake: `n = 68` became Couzo's packing, so the contact-overlay
+#: stratum "first retained UnitSquare rendering-derived geometry" moved to `n = 69`.
 GOLDEN_INDEXED: dict[str, tuple[int, int]] = {
     "n=1..100": (211, 32017),
     "n=1..200": (311, 47067),
-    "n=1..324": (334, 58001),
+    "n=1..324": (334, 58002),
 }
 #: The largest number of distinct angle classes any one frame carries, and the case that
 #: carries it, per corpus. Per frame rather than corpus-wide because the colorizer
 #: registers classes per frame: what a palette has to distinguish is what one drawing
 #: puts side by side. Measured from the retained renderings, which record a class per
-#: square; it is the number the poster's palette question was decided against.
+#: square; it is the number the poster's palette question was decided against, when it
+#: was 106 at `n = 273`. Since the #227 intake Couzo's packing is the frame at 273, with
+#: 30 classes, and the largest is his `n = 301`, with 52.
 GOLDEN_MAX_ANGLE_CLASSES: dict[str, tuple[int, int]] = {
     "n=1..100": (14, 69),
     "n=1..200": (67, 182),
-    "n=1..324": (106, 273),
+    "n=1..324": (52, 301),
 }
 #: How many frames carry more classes than there are unpinned hue slots, so that their
 #: registrations wrap and two classes in one drawing share a colour. None at all when
-#: the corpus stopped at 100.
-GOLDEN_WRAPPED_CASES: dict[str, int] = {"n=1..100": 0, "n=1..200": 12, "n=1..324": 32}
+#: the corpus stopped at 100; 37 of 324, not 32, since the #227 intake's 50 packings.
+GOLDEN_WRAPPED_CASES: dict[str, int] = {"n=1..100": 0, "n=1..200": 12, "n=1..324": 37}
 
 ROOT = Path(__file__).resolve().parents[1]
 ATLAS = ROOT / "atlas"
@@ -174,6 +178,13 @@ def test_partial_edge_overlap_does_not_count_as_a_flush_side() -> None:
 
 
 def test_n68_near_wall_rotations_are_not_full_side_contacts() -> None:
+    """Squares turned a thousandth of a radian at a wall are neither axis squares nor flush.
+
+    Since the #227 intake `n = 68` is Couzo's packing (T-056), and it still carries the
+    case: `square-011` sits 0.00057 from the right wall and `square-014` touches the
+    bottom wall at a corner, each turned about 0.00097 rad. The UnitSquare packing it
+    replaced carried the same case in `square-019`, `square-049` and `square-050`.
+    """
     witness = load_witness(
         ROOT / "witnesses/known-best/n-068.yaml",
         fallback_schema=ROOT / "witness.schema.yaml",
@@ -182,37 +193,65 @@ def test_n68_near_wall_rotations_are_not_full_side_contacts() -> None:
     colors = assign_square_colors(frame_from_witness(witness), spec)
 
     quarter_turn = Decimal("1.57079632679489661923132169163975144209858469968755291048747")
+    near_wall = ("square-011", "square-014")
     near_axis_offsets = tuple(
         min(
             colors[square_id].orientation_radians,
             quarter_turn - colors[square_id].orientation_radians,
         )
-        for square_id in ("square-019", "square-049", "square-050")
+        for square_id in near_wall
     )
     assert min(near_axis_offsets) > spec.angle_tolerance_radians * 100
     assert max(near_axis_offsets) < Decimal("0.002")
 
-    assert colors["square-019"].hue_index != colors["square-001"].hue_index
-    assert colors["square-049"].hue_index != colors["square-050"].hue_index
-    assert colors["square-019"].contact_sides == 0
-    assert colors["square-049"].contact_sides == 0
-    assert colors["square-050"].contact_sides == 0
-    assert colors["square-019"].full_side_contacts == ()
-    assert colors["square-049"].full_side_contacts == ()
-    assert colors["square-050"].full_side_contacts == ()
+    assert colors["square-001"].orientation_radians == 0
+    for square_id in near_wall:
+        assert colors[square_id].hue_index != colors["square-001"].hue_index
+        assert colors[square_id].contact_sides == 0
+        assert colors[square_id].full_side_contacts == ()
+    assert colors["square-011"].hue_index != colors["square-014"].hue_index
 
 
 def test_full_side_contacts_join_numerically_split_angle_classes() -> None:
-    witness = load_witness(
-        ROOT / "witnesses/known-best/n-105.yaml",
-        fallback_schema=ROOT / "witness.schema.yaml",
-    )
-    colors = assign_square_colors(frame_from_witness(witness), RenderSpec())
+    """Tolerance seeding can split two flush squares; their shared side joins them again.
 
-    assert "square-101" in colors["square-094"].full_side_contacts
-    assert "square-094" in colors["square-101"].full_side_contacts
-    assert colors["square-094"].angle_class == colors["square-101"].angle_class
-    assert colors["square-094"].hue_index == colors["square-101"].hue_index
+    Classes are seeded greedily against each class's first orientation, so two squares
+    within tolerance of each other can land in different classes when one is also within
+    tolerance of an earlier seed. Before the #227 intake the corpus carried the case at
+    `n = 105`, whose squares 094 and 101 were 8.5e-7 rad apart; Couzo's packing (T-056)
+    replaced that frame, and no stored frame now carries such a pair, so the case is
+    built here: `square-02` joins the seed at 0, `square-03` is 1.4e-6 from it and seeds
+    its own class, and the two are 8e-7 apart and share a full side. The control moves
+    `square-03` off that side and leaves every orientation as it was.
+    """
+
+    def frame(third_x: int) -> PackingFrame:
+        squares = tuple(
+            SquareGeometry(
+                square_id,
+                _axis_square(f"unused-{square_id}", x, 5).corners,
+                RigidPose(
+                    _point(Decimal(x) + Decimal("0.5"), "5.5"), scalar_from_decimal(angle)
+                ),
+            )
+            for square_id, x, angle in (
+                ("square-01", 2, "0"),
+                ("square-02", 5, "6e-7"),
+                ("square-03", third_x, "1.4e-6"),
+            )
+        )
+        return PackingFrame(scalar_from_decimal(20), squares)
+
+    colors = assign_square_colors(frame(6), RenderSpec())
+    apart = assign_square_colors(frame(8), RenderSpec())
+
+    assert "square-03" in colors["square-02"].full_side_contacts
+    assert "square-02" in colors["square-03"].full_side_contacts
+    assert colors["square-02"].angle_class == colors["square-03"].angle_class
+    assert colors["square-02"].hue_index == colors["square-03"].hue_index
+
+    assert apart["square-02"].full_side_contacts == ()
+    assert apart["square-02"].angle_class != apart["square-03"].angle_class
 
 
 def test_contact_shading_scales_to_a_custom_shade_count() -> None:
@@ -407,16 +446,17 @@ def _angle_classes_by_case() -> dict[int, dict[int, list[tuple[int, float]]]]:
 
 
 def test_the_palette_holds_at_the_largest_angle_class_count_the_corpus_carries() -> None:
-    """The corpus asks for 106 angle classes in one frame; the palette answers with 20.
+    """The corpus asks for 52 angle classes in one frame; the palette answers with 20.
 
     The playbook's extension step read "widen the palette", and the measurement says the
     opposite: widening it is what would break it. The renderer colors per frame, so the
     number that matters is the largest class count in any single frame, not the corpus's
-    distinct angles -- 106, in `n = 273`, against 14 when the corpus stopped at 100.
-    Feeding that count to `square_fill_palette` would space 106 bases around one wheel
-    and leave the closest pair 0.04 degrees apart in OkLCh, which is not a palette. The
+    distinct angles -- 52, in `n = 301`, against 14 when the corpus stopped at 100. It was
+    106, in the catalogue's `n = 273`, until the #227 intake replaced that frame.
+    Feeding that count to `square_fill_palette` would space 52 bases around one wheel
+    and leave the closest pair 0.43 degrees apart in OkLCh, which is not a palette. The
     colorizer instead keeps the 20 checked bases and wraps class registrations onto the
-    18 unpinned slots, so the separation the figures rely on is the same one at 106
+    18 unpinned slots, so the separation the figures rely on is the same one at 52
     classes as at 14, and repeated hues in a dense frame are an honest statement that a
     frame carries more angles than any palette can distinguish.
 

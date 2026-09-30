@@ -379,58 +379,122 @@ def test_a_sources_credit_and_lineage_agree() -> None:
         assert names_project == (lineage != "independent"), source["key"]
 
 
-def test_every_result_carries_a_registration_date(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-    capsys: pytest.CaptureFixture[str],
-) -> None:
+def _dropped_field(tmp_path: Path, result_id: str, field: str) -> Path:
     register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
-    record = next(result for result in register["results"] if result["id"] == "T-007")
-    del record["registered"]
+    record = next(result for result in register["results"] if result["id"] == result_id)
+    record.pop(field)
     target = tmp_path / "results.yaml"
     target.write_text(
         yaml.safe_dump(register, sort_keys=False, allow_unicode=True, width=96),
         encoding="utf-8",
     )
-    monkeypatch.setattr(check_results, "RESULTS", target)
+    return target
+
+
+def test_a_result_without_a_headline_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A table row reads the headline, so a result with none would be a blank cell."""
+    monkeypatch.setattr(check_results, "RESULTS", _dropped_field(tmp_path, "T-017", "headline"))
+    assert check_results.main() == 1
+    assert "T-017: states no headline" in capsys.readouterr().out
+
+
+def test_a_headline_longer_than_a_table_cell_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The failure a headline invites: the claim's first sentence pasted in whole."""
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    claim = next(result for result in register["results"] if result["id"] == "T-017")["claim"]
+    first_sentence = " ".join(str(claim).split()).split(". ")[0]
+    assert len(first_sentence) > check_results.HEADLINE_LIMIT, "premise: the sentence is long"
+    pasted = _changed_result(tmp_path, "T-017", headline=first_sentence)
+    monkeypatch.setattr(check_results, "RESULTS", pasted)
+    assert check_results.main() == 1
+    assert f"T-017: headline is {len(first_sentence)} characters, over the 100" in (
+        capsys.readouterr().out
+    )
+
+
+def test_a_headline_states_only_numbers_its_claim_does() -> None:
+    """A headline may cut the claim's decimal short, marked, but never round or add one.
+
+    Rounding `3.810025...` up to `3.810026` would overstate a lower bound in the one cell
+    a reader sees; a truncation marked with an ellipsis stays true.
+    """
+    record = {
+        "id": "T-999",
+        "claim": "s(11) >= 38100*sqrt(8100042893309449)/899996306539 = 3.810025723614703.",
+    }
+    assert check_results.headline_problems({**record, "headline": "`s(11) ≥ 3.8100257…`"}) == []
+    assert check_results.headline_problems({**record, "headline": "`s(11) ≥ 3.810026`"}) == [
+        "T-999: headline states 3.810026, which its claim does not"
+    ]
+    assert check_results.headline_problems({**record, "headline": "`s(11) ≥ 3.8100257`"}) == [
+        "T-999: headline states 3.8100257, which its claim does not"
+    ]
+    assert check_results.headline_problems({**record, "headline": "`s(12) ≥ 3.8100257…`"}) == [
+        "T-999: headline states 12, which its claim does not"
+    ]
+
+
+def test_a_result_by_others_carries_no_established_date(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Its date is its source's, in `attribution.published`; a second would disagree."""
+    dated_twice = _changed_result(tmp_path, "T-032", established="2026-09-20")
+    monkeypatch.setattr(check_results, "RESULTS", dated_twice)
+    assert check_results.main() == 1
+    assert "T-032: a result by others is dated by attribution.published" in (
+        capsys.readouterr().out
+    )
+
+
+def test_a_result_of_this_project_names_the_day_it_was_established(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    undated = _dropped_field(tmp_path, "T-017", "established")
+    monkeypatch.setattr(check_results, "RESULTS", undated)
+    assert check_results.main() == 1
+    assert "T-017: a result of this project names the day it was established" in (
+        capsys.readouterr().out
+    )
+
+
+def test_an_established_date_lies_within_the_projects_record() -> None:
+    """Not before the project began, not after the register was last reviewed, and real."""
+    record = {"id": "T-999", "established": "2026-08-22"}
+    assert check_results.established_problems(record, "2026-09-29") == []
+    assert check_results.established_problems(
+        {**record, "established": "2026-08-21"}, "2026-09-29"
+    ) == ["T-999: established 2026-08-21 is before 2026-08-22, when this project's work began"]
+    assert check_results.established_problems(
+        {**record, "established": "2026-09-30"}, "2026-09-29"
+    ) == ["T-999: established 2026-09-30 is after the register's last review, 2026-09-29"]
+    assert check_results.established_problems(
+        {**record, "established": "2026-09-31"}, "2026-09-29"
+    ) == ["T-999: established 2026-09-31 is not a date"]
+
+
+def test_every_result_carries_a_registration_date(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    undated = _dropped_field(tmp_path, "T-007", "registered")
+    monkeypatch.setattr(check_results, "RESULTS", undated)
     assert check_results.main() == 1
     assert "T-007: registered is required" in capsys.readouterr().out
 
 
 def test_a_registration_date_is_a_date_no_later_than_the_review() -> None:
     record = {"id": "T-009", "registered": "2026-09-01"}
-    assert check_results.entry_field_problems(record, "2026-09-29") == []
-    assert check_results.entry_field_problems(record, "2026-09-01") == []
-    assert check_results.entry_field_problems(
+    assert check_results.registered_problems(record, "2026-09-29") == []
+    assert check_results.registered_problems(record, "2026-09-01") == []
+    assert check_results.registered_problems(
         {**record, "registered": "2026-02-30"}, "2026-09-29"
     ) == ["T-009: registered is not a calendar date: 2026-02-30"]
-    assert check_results.entry_field_problems(
+    assert check_results.registered_problems(
         {**record, "registered": "2026-10-01"}, "2026-09-29"
     ) == ["T-009: registered 2026-10-01 is after the register's last_reviewed 2026-09-29"]
-
-
-def test_a_headline_fits_a_table_cell(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-    capsys: pytest.CaptureFixture[str],
-) -> None:
-    record = {"id": "T-009", "registered": "2026-09-01"}
-    at_limit = "s" * check_results.HEADLINE_MAX
-    fits = {**record, "headline": at_limit}
-    assert check_results.entry_field_problems(fits, "2026-09-29") == []
-    assert check_results.entry_field_problems(
-        {**record, "headline": "two\nlines"}, "2026-09-29"
-    ) == ["T-009: headline must be one non-empty line"]
-    long = _changed_result(tmp_path, "T-009", headline=at_limit + "s")
-    monkeypatch.setattr(check_results, "RESULTS", long)
-    assert check_results.main() == 1
-    assert "T-009: headline is 91 characters, above 90" in capsys.readouterr().out
-
-
-def test_every_live_result_has_a_headline_within_the_ceiling() -> None:
-    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
-    for record in register["results"]:
-        assert 0 < len(record["headline"]) <= check_results.HEADLINE_MAX, record["id"]
 
 
 def test_grouped_results_lists_every_result_once_in_the_rendered_order() -> None:

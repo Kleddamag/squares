@@ -41138,7 +41138,7 @@
             "adjacency_tolerance": "1e-09",
             "angle_fit_valid": true,
             "angle_tolerance_radians": "1e-06",
-            "candidate_count": 0,
+            "candidate_count": 43,
             "limitation": "Complete for bars, filled rectangles, and corner Ls within the reported maximal lattice components. Sliding contact assemblies and angle-class splits are outside this candidate universe; a non-establishment is not an H-044 refutation.",
             "n": 68,
             "options": [
@@ -41176,7 +41176,7 @@
             "selected_chunk_count": null,
             "selected_free_square_count": null,
             "selected_partition_minimality": "not-applicable",
-            "source_kind": "unitsquare-rendering",
+            "source_kind": "packet-derived-facts",
             "status": "not-established",
             "witness_id": "W-known-best-n068"
           },
@@ -80357,21 +80357,31 @@
                 "2": 4
               }
             },
+            "packet-derived-facts": {
+              "candidate_count": 43,
+              "established": 0,
+              "not_established": 1,
+              "outside_registered_budget": 0,
+              "records": 1,
+              "search_limit": 0,
+              "selected_chunk_counts": {},
+              "selected_free_square_counts": {}
+            },
             "unitsquare-rendering": {
               "candidate_count": 0,
               "established": 0,
-              "not_established": 2,
+              "not_established": 1,
               "outside_registered_budget": 0,
-              "records": 2,
+              "records": 1,
               "search_limit": 0,
               "selected_chunk_counts": {},
               "selected_free_square_counts": {}
             }
           },
-          "candidate_count": 252298,
+          "candidate_count": 252341,
           "established": 67,
           "non_grid": {
-            "candidate_count": 21727,
+            "candidate_count": 21770,
             "established": 3,
             "not_established": 23,
             "outside_registered_budget": 2,
@@ -121552,7 +121562,7 @@
             "adjacency_tolerance": "0.001",
             "angle_fit_valid": true,
             "angle_tolerance_radians": "1e-06",
-            "candidate_count": 103,
+            "candidate_count": 45,
             "limitation": "Complete for bars, filled rectangles, and corner Ls within the reported maximal lattice components. Sliding contact assemblies and angle-class splits are outside this candidate universe; a non-establishment is not an H-044 refutation.",
             "n": 68,
             "options": [
@@ -121590,7 +121600,7 @@
             "selected_chunk_count": null,
             "selected_free_square_count": null,
             "selected_partition_minimality": "not-applicable",
-            "source_kind": "unitsquare-rendering",
+            "source_kind": "packet-derived-facts",
             "status": "not-established",
             "witness_id": "W-known-best-n068"
           },
@@ -160771,21 +160781,31 @@
                 "2": 4
               }
             },
-            "unitsquare-rendering": {
-              "candidate_count": 748,
+            "packet-derived-facts": {
+              "candidate_count": 45,
               "established": 0,
-              "not_established": 2,
+              "not_established": 1,
               "outside_registered_budget": 0,
-              "records": 2,
+              "records": 1,
+              "search_limit": 0,
+              "selected_chunk_counts": {},
+              "selected_free_square_counts": {}
+            },
+            "unitsquare-rendering": {
+              "candidate_count": 645,
+              "established": 0,
+              "not_established": 1,
+              "outside_registered_budget": 0,
+              "records": 1,
               "search_limit": 0,
               "selected_chunk_counts": {},
               "selected_free_square_counts": {}
             }
           },
-          "candidate_count": 253048,
+          "candidate_count": 252990,
           "established": 67,
           "non_grid": {
-            "candidate_count": 22477,
+            "candidate_count": 22419,
             "established": 3,
             "not_established": 23,
             "outside_registered_budget": 2,

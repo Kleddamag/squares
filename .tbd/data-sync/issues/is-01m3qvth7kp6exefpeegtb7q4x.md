@@ -1,17 +1,17 @@
 ---
 type: is
 id: is-01m3qvth7kp6exefpeegtb7q4x
-title: Register lazy-zmx2 n32 and n45 census claims with V/C/S assignments
+title: Classify lazy-zmx2 n32/n45 reports as supporting evidence or distinct claims
 kind: task
 status: open
 priority: 1
-version: 1
+version: 2
 spec_path: packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
 labels:
   - W7
 dependencies: []
 parent_id: is-01m3qvn66t22qdk6fjsfbrns1r
 created_at: 2026-09-30T00:35:53.703Z
-updated_at: 2026-09-30T00:35:53.703Z
+updated_at: 2026-09-30T00:37:47.017Z
 ---
-Astra-max intake audit identified two additional finite upstream equality claims in the pinned wand125 tools packet: lazy-zmx2 n32 (3600 roots) and mixed n45 (39200 roots). These are queued for replay under think-lg4u and think-wk08 and therefore fall within the epistemics result-registration scope. Before replay, inspect exact source statements and retained evidence, reconcile latest upstream IDs, and create narrow T entries with explicit V/C/S, novelty, source attribution, dated significance rationale, missing obligations and next-rung beads. Do not combine speedup assertions with correctness equality or packing bounds. Existing source admission defects and absence of complete bound replay must remain visible. Registration deferred only until this source-and-ID reconciliation; no acceptance or speedup is claimed.
+Astra-max intake audit identified finite n32 (3600 roots) and mixed n45 (39200 roots) lazy-zmx2 reports in the pinned wand125 tools packet, queued under think-lg4u and think-wk08. Compare their exact statements to registered T-051/T-053 before assigning IDs. If they only recheck existing bounds, attach scoped alternative-replay evidence to those existing claims; do not create duplicate T entries. If a distinct equality/equivalence or deliberately adopted benchmark result is asserted, register that narrow claim with explicit V/C/S, novelty, attribution, dated significance rationale and next-rung obligations. Keep performance assertions separate from correctness and retain source admission defects and incomplete replay status. Acceptance: every report has an explicit evidence-versus-distinct-result disposition in the intake record, with no unclassified adopted claim and no duplicate registration.

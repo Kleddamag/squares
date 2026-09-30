@@ -110,7 +110,8 @@ it.
   text is unchanged, and a step heavier.
   Case 11, the site’s icon, sits before the name as its mark, at 1.15 times the bar’s
   text, inside the same link, so it takes the same hover.
-  On a phone the name gives way to the links and the mark alone leads home.
+  Narrower than 50rem, where the bar with the name would wrap, the name gives way and
+  the mark alone leads home, labelled “Square Packing home” for a screen reader.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
   current page alone is underlined in the accent.
   The edition appears only in the closing line.

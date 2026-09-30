@@ -207,15 +207,19 @@
     padding-block: 0.5rem;
     padding-inline: 0.5rem;
   }
-  /* On a phone the name gives way to the links and the mark alone leads home. */
+  .site-nav a {
+    padding-inline: 0.45rem;
+  }
+}
+/* Narrower than the whole bar fits in one row with the name (50rem), the name gives
+   way and the mark alone leads home, so the links keep one row down to a phone. The
+   link keeps its label, "Square Packing home", for a screen reader. */
+@media (width < 50rem) {
   .site-nav .site-name-text {
     display: none;
   }
   .site-nav .site-name {
     align-self: flex-start;
-  }
-  .site-nav a {
-    padding-inline: 0.45rem;
   }
 }
 /* On the explainer the bar is the first thing in the page, not in kpress's header slot. */

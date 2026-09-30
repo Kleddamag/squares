@@ -97,6 +97,7 @@ from strif import atomic_output_file
 from devtools.check_math_spans import (
     FileResult,
     format_copy,
+    located_math_spans,
     mask_fences,
     math_spans,
     pinned_formatter,
@@ -958,6 +959,7 @@ def plain(latex: str) -> str:
     `31/8 = 3.875` and `$3.8770835\\ldots$` reads `3.8770835…`. Spacing is the LaTeX's,
     so the space `to_latex` puts after a control word before a letter stays.
     """
+
     def root(match: re.Match[str]) -> str:
         return f"√{match[1]}" if match[1].isalnum() else f"√({match[1]})"
 
@@ -998,6 +1000,19 @@ class Plan:
         return [decision for decision in self.decisions if decision.converts]
 
 
+#: What GitHub opens inline math after: whitespace, the start of a line, an opening
+#: parenthesis, and bold's stars. It opens none after a quote, a dash, a slash, a square
+#: bracket, a comma or colon, a closing parenthesis or an operator. Measured, not read
+#: from any documentation: `devtools.check_github_math --probe` over
+#: `packing/tests/fixtures/github-math/cases.md`, whose record `tests/test_migrate_math.py`
+#: holds these rules to.
+GITHUB_OPENS_AFTER = frozenset({"", " ", "\t", "\n", "(", "*"})
+#: The inline markup GitHub draws no math inside, by the token that opens it, measured by
+#: the same probe: a link's text, and italics, bold italics included. Bold, strikethrough,
+#: table cells and quotations draw it.
+GITHUB_NO_MATH_INSIDE = {"link_open": "a link's text", "em_open": "italics"}
+
+
 def _adjacent(text: str, span: CodeSpan) -> str | None:
     """Why a `$` in place of this span's backticks would touch something it must not."""
     before = text[span.start - 1] if span.start > 0 else ""
@@ -1007,7 +1022,66 @@ def _adjacent(text: str, span: CodeSpan) -> str | None:
             return f"`{char}` {side} the span"
         if char.isalnum():
             return f"`{char}` directly {side} the span"
+    if before not in GITHUB_OPENS_AFTER:
+        return f"`{before}` before the span, after which GitHub opens no math"
     return None
+
+
+@cache
+def _inline_parser() -> MarkdownIt:
+    # The same preset as the block pass, with inline parsing left on.
+    return MarkdownIt("js-default", {"html": True})
+
+
+def _normal(content: str) -> str:
+    return " ".join(content.split())
+
+
+def inline_markup(text: str, spans: Sequence[CodeSpan]) -> dict[int, str]:
+    """The spans sitting inside markup GitHub draws no math in, by start, with where.
+
+    Inline tokens carry no offsets, only their block's lines, so each code span the parser
+    reports is matched, in order and by content, to the next unmatched span of `spans` on
+    those lines. A span the parser does not report -- one in a generated block, which the
+    parser reads and `spans` omits, or the reverse -- is simply not matched.
+    """
+    ordered = sorted(spans, key=lambda span: span.start)
+    lines = [span.line - 1 for span in ordered]
+    marks: dict[int, str] = {}
+    matched: set[int] = set()
+    for token in _inline_parser().parse(text):
+        if token.type != "inline" or token.map is None or not token.children:
+            continue
+        first, last = token.map
+        low, high = bisect.bisect_left(lines, first), bisect.bisect_left(lines, last)
+        candidates = [span for span in ordered[low:high] if span.start not in matched]
+        cursor = 0
+        opened: list[str] = []
+        for child in token.children:
+            if child.type.endswith("_open"):
+                opened.append(child.type)
+            elif child.type.endswith("_close") and opened:
+                opened.pop()
+            elif child.type == "code_inline":
+                index = _next_match(candidates, cursor, child.content)
+                if index is None:
+                    continue
+                span, cursor = candidates[index], index + 1
+                matched.add(span.start)
+                inside = [GITHUB_NO_MATH_INSIDE[kind] for kind in opened
+                          if kind in GITHUB_NO_MATH_INSIDE]  # fmt: skip
+                if inside:
+                    marks[span.start] = f"inside {inside[0]}, where GitHub draws no math"
+    return marks
+
+
+def _next_match(candidates: Sequence[CodeSpan], cursor: int, content: str) -> int | None:
+    """The first candidate from `cursor` on holding `content`, spacing aside."""
+    wanted = _normal(content)
+    return next(
+        (i for i in range(cursor, len(candidates)) if _normal(candidates[i].content) == wanted),
+        None,
+    )
 
 
 #: Why a heading's code spans are left alone, whatever they hold. kpress drops math from a
@@ -1036,11 +1110,25 @@ def _in_table(raw: str, cells: Sequence[str]) -> bool:
     return any(raw in cell for cell in cells)
 
 
-def _in_context(text: str, span: CodeSpan, verdict: Verdict, blocks: Blocks) -> Verdict:
+def _unsafe_here(
+    text: str, span: CodeSpan, runs: Sequence[str], marks: dict[int, str]
+) -> tuple[str, str] | None:
+    """The rule and reason `$…$` could not stand where this span sits, or `None`."""
+    if reason := _adjacent(text, span) or _run_quirk(text[span.start : span.end], runs):
+        return "delimiter adjacency", reason
+    if reason := marks.get(span.start):
+        return "inside a link or italics", reason
+    return None
+
+
+def _in_context(
+    text: str, span: CodeSpan, verdict: Verdict, blocks: Blocks, marks: dict[int, str]
+) -> Verdict:
     """A verdict adjusted for where its span sits.
 
     Every span in a heading is kept as code, as an `identifier`; elsewhere only a math
-    verdict can change, to `uncertain` when a `$` could not safely replace the backticks.
+    verdict can change, to `uncertain` when a `$` could not safely replace the backticks,
+    or when GitHub would not draw math where the span sits (`marks`).
     """
     where = blocks.lines[span.line - 1]
     if where == "heading":
@@ -1049,8 +1137,9 @@ def _in_context(text: str, span: CodeSpan, verdict: Verdict, blocks: Blocks) -> 
         return verdict
     raw = text[span.start : span.end]
     runs = blocks.runs.get(span.line - 1, [])
-    if reason := _adjacent(text, span) or _run_quirk(raw, runs):
-        return Verdict("uncertain", "delimiter adjacency", reason=reason)
+    if unsafe := _unsafe_here(text, span, runs, marks):
+        rule, reason = unsafe
+        return Verdict("uncertain", rule, reason=reason)
     if where == "table":
         if not _in_table(raw, runs):
             reason = "a `|` in the row splits this span across table cells"
@@ -1065,10 +1154,11 @@ def plan(text: str) -> Plan:
     """Classify every code span in `text` and decide, in context, which ones convert."""
     prose, generated = mask(text)
     blocks = block_context(text)
+    spans = [span for span in code_spans(prose) if blocks.lines[span.line - 1] != "raw"]
+    marks = inline_markup(text, spans)
     decisions = tuple(
-        Decision(span, _in_context(text, span, classify(span.content), blocks))
-        for span in code_spans(prose)
-        if blocks.lines[span.line - 1] != "raw"
+        Decision(span, _in_context(text, span, classify(span.content), blocks, marks))
+        for span in spans
     )
     return Plan(decisions, generated=len(code_spans(generated)))
 
@@ -1101,6 +1191,142 @@ def rewrite(text: str, decisions: Iterable[Decision]) -> str:
             position = decision.span.end
     pieces.append(text[position:])
     return "".join(pieces)
+
+
+# ---------------------------------------------------------------------------------------
+# Math GitHub would not draw
+# ---------------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class UnsafeMath:
+    """An inline formula GitHub leaves as dollars where it sits, and why."""
+
+    start: int
+    end: int
+    tex: str
+    line: int
+    reason: str
+
+    @property
+    def code(self) -> str | None:
+        """The code span this tool would have left in its place, or `None`.
+
+        `None` when the formula is not one `to_latex` writes -- hand-written TeX, which
+        only a person can move into a context GitHub draws, or rephrase.
+        """
+        source = plain(self.tex)
+        if "`" in source or "\n" in source:
+            return None
+        for frac in (False, True):
+            try:
+                if to_latex(source, frac=frac) == self.tex:
+                    return f"`{source}`"
+            except UnconvertibleError:
+                continue
+        return None
+
+
+#: A blank line: emphasis and links never cross one, so a paragraph is parsed alone.
+_PARAGRAPH_BREAK = re.compile(r"\n[ \t]*\n")
+#: What a paragraph needs to hold before its inline markup is worth parsing: a `[` with
+#: a dollar after it before any `]`, which could be a link's text around a formula, or a
+#: lone `*` or `_` that could open italics with a dollar after it before the next one.
+#: Bold's doubled stars do not count; bold draws math.
+_INLINE_MARKERS = re.compile(
+    r"\[[^\]]*\$|(?<![*\w])\*(?![*\s])[^*]*\$|(?<![_\w])_(?![_\s])[^_]*\$"
+)
+
+
+def _adjacency_reason(text: str, start: int, end: int) -> str | None:
+    before = text[start - 1] if start > 0 else ""
+    after = text[end] if end < len(text) else ""
+    if after.isalnum():
+        return f"`{after}` directly after the formula, where GitHub closes no math"
+    if before not in GITHUB_OPENS_AFTER:
+        return f"`{before}` before the formula, after which GitHub opens no math"
+    return None
+
+
+def _markup_reasons(text: str, located: Sequence[tuple[int, int, str]]) -> dict[int, str]:
+    """For the formulas in link text or italics, why, by start; one paragraph at a time.
+
+    Each paragraph holding a formula and a `[`, `*` or `_` is parsed on its own, its lines
+    unindented so a list item's continuation is not read as code, with every formula made
+    a code span (`inline_markup` reads code spans) of the same line count.
+    """
+    breaks = [0, *(match.end() for match in _PARAGRAPH_BREAK.finditer(text)), len(text)]
+    reasons: dict[int, str] = {}
+    by_paragraph: dict[int, list[tuple[int, int, str]]] = {}
+    for item in located:
+        by_paragraph.setdefault(bisect.bisect_right(breaks, item[0]) - 1, []).append(item)
+    for paragraph, items in by_paragraph.items():
+        low, high = breaks[paragraph], breaks[paragraph + 1]
+        if _INLINE_MARKERS.search(text, low, high) is None:
+            continue
+        pieces: list[str] = []
+        shadows: list[CodeSpan] = []
+        position = low
+        for index, (start, end, tex) in enumerate(items):
+            pieces.extend(
+                (text[position:start], f"`MATHSPAN{index}{chr(10) * tex.count(chr(10))}`")
+            )
+            line = text.count("\n", low, start) + 1
+            shadows.append(CodeSpan(start, end, 1, f"MATHSPAN{index}", line))
+            position = end
+        pieces.append(text[position:high])
+        shadow = "\n".join(line.lstrip() for line in "".join(pieces).split("\n"))
+        reasons.update(inline_markup(shadow, shadows))
+    return reasons
+
+
+def github_unsafe_math(text: str) -> list[UnsafeMath]:
+    """Every inline formula in `text`'s prose that GitHub would show as dollars.
+
+    The same rules `plan` applies before converting, read off a `$…$` instead of a code
+    span: the character before the opening dollar (`GITHUB_OPENS_AFTER`), a letter or
+    digit after the closing one, and a link's text or italics around it (`_markup_reasons`).
+    Formulas in raw HTML blocks are left out: GitHub does not read Markdown there at all.
+    It runs on every migrated file in the edit tier, so the block parse happens only when
+    something was found, and the inline parse only on paragraphs that could hold markup.
+    """
+    prose, _generated = mask(text)
+    located = [
+        (start, end, tex)
+        for start, end, tex in located_math_spans(prose)
+        if not prose.startswith("$$", start)
+    ]
+    reasons = _markup_reasons(prose, located)
+    found = [
+        (start, end, tex, reason)
+        for start, end, tex in located
+        if (reason := _adjacency_reason(text, start, end) or reasons.get(start)) is not None
+    ]
+    if not found:
+        return []
+    lines = block_context(text).lines
+    return [
+        UnsafeMath(start, end, tex.strip(), text.count("\n", 0, start) + 1, reason)
+        for start, end, tex, reason in found
+        if lines[text.count("\n", 0, start)] != "raw"
+    ]
+
+
+def demote_unsafe(text: str) -> tuple[str, list[UnsafeMath], list[UnsafeMath]]:
+    """`text` with every formula this tool wrote where GitHub draws none put back as code.
+
+    Returns the text, the formulas demoted, and the unsafe ones left as they are because
+    this tool did not write them.
+    """
+    unsafe = github_unsafe_math(text)
+    demoted = [item for item in unsafe if item.code is not None]
+    pieces: list[str] = []
+    position = 0
+    for item in demoted:
+        pieces.extend((text[position : item.start], item.code or ""))
+        position = item.end
+    pieces.append(text[position:])
+    return "".join(pieces), demoted, [item for item in unsafe if item.code is None]
 
 
 # ---------------------------------------------------------------------------------------
@@ -1492,10 +1718,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"no such file: {path.as_posix()}", file=sys.stderr)
             return 2
         text = path.read_text(encoding="utf-8")
+        demoted_text, demoted, unsafe = demote_unsafe(text)
         if arguments.apply:
-            migration = prove(path, text, safety=safety)
+            migration = prove(path, demoted_text, safety=safety)
         else:
             migration = Migration(path, plan(text), text, text)
+        migration.notes.extend(
+            f"L{item.line}: ${item.tex}$ back to code -- {item.reason}" for item in demoted
+        )
+        migration.notes.extend(
+            f"L{item.line}: ${item.tex}$ is not this tool's and GitHub will not draw it -- "
+            f"{item.reason}; move or rephrase it by hand"
+            for item in unsafe
+        )
         report = file_report(migration)
         reports.append(report)
         print_report(report, listing=arguments.list)
@@ -1504,7 +1739,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif arguments.apply and migration.converted != text:
             with atomic_output_file(path) as temporary:
                 Path(temporary).write_text(migration.converted, encoding="utf-8")
-            print(f"  wrote {len(migration.plan.converting())} math spans")
+            print(
+                f"  wrote {len(migration.plan.converting())} math spans"
+                + (f", {len(demoted)} back to code" if demoted else "")
+            )
     totals: Counter[str] = Counter()
     for report in reports:
         totals.update(report["counts"])

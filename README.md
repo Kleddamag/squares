@@ -83,8 +83,8 @@ from. Its figures are drawn from the point certificates they explain.
 
 [![One hundred known-best square packings arranged from n equals one through one hundred, each labeled with its best-known upper bound and, where the value is still open, the strongest verified lower bound.](packing/atlas/known-best/known-best-1-100.png)](https://jlevy.github.io/squares/known-best-1-100.pdf)
 
-*The retained $n = 1\ldots100$ atlas, with each packing normalized to its own container
-and labeled by its best-known side upper bound.
+*The retained `n = 1…100` atlas, with each packing normalized to its own container and
+labeled by its best-known side upper bound.
 For open cases, the strongest verified lower bound appears beneath it.
 A crimson star marks a recent result, a verified lower bound proved since 22 August
 2026; each bound’s source and credit are on the film’s citation line.
@@ -95,9 +95,9 @@ The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.sv
 **The atlas is also a film.** The same drawing is built one square at a time, at
 1080p60, each step naming the bound it reaches, where that bound comes from, and whether
 this repository has certified it:
-[**$n = 1\ldots100$**](https://jlevy.github.io/squares/films/ascent-n1-100-1080p60-citations.mp4)
+[**`n = 1…100`**](https://jlevy.github.io/squares/films/ascent-n1-100-1080p60-citations.mp4)
 (2m 20s, 38 MB) and the
-[**full $n = 1\ldots324$ ascent**](https://jlevy.github.io/squares/films/ascent-n1-324-1080p60-citations.mp4)
+[**full `n = 1…324` ascent**](https://jlevy.github.io/squares/films/ascent-n1-324-1080p60-citations.mp4)
 (8m 14s, 206 MB), served from the site so they play in the browser, and archived on the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2) with the
 receipt that records what each file is and the page it was drawn from.
@@ -300,7 +300,7 @@ recorded claim rests on, who performed the work, and how far it has been checked
 The survey audits rather than merely transcribes.
 For example, the earliest published proof of $s(7) = 3$ carries four recorded defects in
 its printed route, so the case’s proved status rests on independent later proofs.
-The [$n = 7$ case](packing/frontier/n-007.md) states that disposition and links the
+The [`n = 7` case](packing/frontier/n-007.md) states that disposition and links the
 relevant source audit.
 
 ### Recent Results, All Sources
@@ -609,8 +609,8 @@ The Schadt $n = 29$ decimal pose passes its declared 300-digit numerical check, 
 the separately promoted interval witness establishes a slightly weaker side rigorously.
 Trump’s $n = 11$ witness is verified exactly over a degree-eight number field, including
 fourteen zero-gap contacts.
-The per-case records ([$n = 29$](packing/frontier/n-029.md),
-[$n = 11$](packing/frontier/n-011.md)) state exactly which bound each artifact proves.
+The per-case records ([`n = 29`](packing/frontier/n-029.md),
+[`n = 11`](packing/frontier/n-011.md)) state exactly which bound each artifact proves.
 
 Verification answers whether a proposed packing is valid.
 Proving it optimal is a different problem and requires a matching lower bound.

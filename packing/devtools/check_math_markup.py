@@ -9,6 +9,11 @@ and a code span it would convert fails the gate, with the LaTeX to write instead
 that must stay code despite reading as math is recorded under `keep` with its reason, and
 a `keep` entry whose span has gone fails too, so the list only shrinks.
 
+The reverse fails as well: a formula written as `$…$` where GitHub shows the dollars
+instead -- after a hyphen or a slash, inside a link's text or italics -- with the code
+span to write back, since GitHub is where most of these files are read
+(`migrate_math.github_unsafe_math`, whose rules the GitHub probe measured).
+
 A file that is not listed is never read. The check counts them instead -- every tracked
 hand-written Markdown file not yet migrated -- so the backlog stays visible without
 being enforced, and `--backlog` lists it. Generated views are counted apart, since they
@@ -38,7 +43,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
-from devtools.migrate_math import has_math_spans, plan
+from devtools.migrate_math import github_unsafe_math, has_math_spans, plan
 from devtools.repo_scope import tracked_files, vendored_directories
 from sqpack.yamlio import load_yaml, safe_load
 
@@ -215,6 +220,16 @@ def _check_file(path: str, text: str, keeps: set[str], outcome: Outcome) -> None
         f"{path}: `keep` names `{span}`, which is no longer a math code span here; remove it"
         for span in sorted(keeps - found)
     )
+    if "$" in text:
+        outcome.problems.extend(
+            f"{path}:{item.line}: ${item.tex}$ is shown as dollars on GitHub -- {item.reason}; "
+            + (
+                f"write {item.code}, or run `python -m devtools.migrate_math --apply {path}`"
+                if item.code is not None
+                else "move it where GitHub draws math, or rephrase"
+            )
+            for item in github_unsafe_math(text)
+        )
 
 
 def check(register: Register, repo: Path = REPO, files: Scope | None = None) -> Outcome:

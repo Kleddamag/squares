@@ -43,6 +43,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from pathlib import Path
+from typing import Literal, cast
 
 from devtools.check_math_spans import located_math_spans
 
@@ -188,19 +189,25 @@ def check(path: str, ref: str) -> Comparison:
 #: formula `c_{N}`, and the outcome each case is recorded with, `[math]` or `[code]`.
 PROBE = "packing/tests/fixtures/github-math/cases.md"
 _CASE = re.compile(r"c_\{(\d+)\}")
-_RECORDED = re.compile(r"^- \[(?P<outcome>math|code)\] ")
+_RECORDED = re.compile(r"^(?:- |\| |> )?\[(?P<outcome>math|altered|code)\] ")
+
+
+#: What GitHub did with a case's formula: drew it as written, drew something else, or
+#: left the dollars as text.
+Outcome = Literal["math", "altered", "code"]
 
 
 @dataclass(frozen=True)
 class Case:
-    """One probe case: its number, the list item or line holding it, and its record."""
+    """One probe case: its number, its formula, the list item holding it, and its record."""
 
     number: int
+    tex: str
     text: str
-    recorded: bool | None
+    recorded: Outcome | None
 
-    def describe(self, *, rendered: bool) -> str:
-        return f"c_{self.number}: {'math' if rendered else 'code'}  {self.text}"
+    def describe(self, outcome: Outcome) -> str:
+        return f"c_{self.number}: {outcome:<7} {self.text}"
 
 
 def probe_cases(source: str) -> list[Case]:
@@ -211,19 +218,31 @@ def probe_cases(source: str) -> list[Case]:
             items[-1] += " / " + line.strip()
         else:
             items.append(line.strip())
+    formulas = {
+        int(number): tex.strip()
+        for _, _, tex in located_math_spans(source)
+        for number in _CASE.findall(tex)
+    }
     cases = []
     for item in items:
         recorded = _RECORDED.match(item)
-        for number in _CASE.findall(item):
-            outcome = recorded.group("outcome") == "math" if recorded else None
-            cases.append(Case(int(number), item, outcome))
+        outcome = cast("Outcome", recorded.group("outcome")) if recorded else None
+        cases.extend(
+            Case(int(number), formulas[int(number)], item, outcome)
+            for number in _CASE.findall(item)
+        )
     return cases
 
 
-def probe_outcomes(source: str, rich: str) -> list[tuple[Case, bool]]:
-    """Each case and whether GitHub rendered its formula."""
-    drawn = {int(number) for tex in rendered_math(rich) for number in _CASE.findall(tex)}
-    return [(case, case.number in drawn) for case in probe_cases(source)]
+def probe_outcomes(source: str, rich: str) -> list[tuple[Case, Outcome]]:
+    """Each case and what GitHub did with its formula."""
+    drawn = {int(number): tex for tex in rendered_math(rich) for number in _CASE.findall(tex)}
+    outcomes: list[tuple[Case, Outcome]] = []
+    for case in probe_cases(source):
+        tex = drawn.get(case.number)
+        outcome: Outcome = "code" if tex is None else "math" if tex == case.tex else "altered"
+        outcomes.append((case, outcome))
+    return outcomes
 
 
 def probe(ref: str) -> int:
@@ -231,10 +250,10 @@ def probe(ref: str) -> int:
     source = _git("show", f"{ref}:{PROBE}")
     rich = rendered_html(fetch(f"https://github.com/{GITHUB_REPOSITORY}/blob/{ref}/{PROBE}"))
     changed = 0
-    for case, rendered in probe_outcomes(source, rich):
-        moved = case.recorded is not None and case.recorded != rendered
+    for case, outcome in probe_outcomes(source, rich):
+        moved = case.recorded is not None and case.recorded != outcome
         changed += moved
-        print(("MOVED " if moved else "") + case.describe(rendered=rendered))
+        print(("MOVED " if moved else "") + case.describe(outcome))
     if changed:
         print(f"{changed} cases no longer render as recorded", file=sys.stderr)
     return 1 if changed else 0
@@ -248,7 +267,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--probe", action="store_true", help=f"measure where GitHub opens math ({PROBE})"
     )
     args = parser.parse_args(argv)
-    ref = args.ref or _git("rev-parse", "HEAD").strip()
+    # A commit, whatever names it: GitHub serves the page of the commit, and `HEAD` or a
+    # local branch name means nothing to it.
+    ref = _git("rev-parse", f"{args.ref or 'HEAD'}^{{commit}}").strip()
     if args.probe:
         return probe(ref)
     if not args.paths:

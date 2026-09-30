@@ -69,7 +69,7 @@ def test_a_rewritten_formula_is_missing_on_one_side_and_extra_on_the_other() -> 
     rich = f"<p>Here {formula(r'\max{0,a}')} is it.</p>"
     result = compare("x.md", source, rich)
     assert not result.ok
-    assert result.missing == (r"\max\{0,a\}",)
+    assert [(item.line, item.tex) for item in result.missing] == [(1, r"\max\{0,a\}")]
     assert result.extra == (r"\max{0,a}",)
 
 
@@ -77,5 +77,6 @@ def test_a_formula_left_as_dollars_is_missing() -> None:
     source = "The $B$ and the $Q$.\n"
     rich = f"<p>The $B$ and the {formula('Q')}.</p>"
     result = compare("x.md", source, rich)
-    assert result.missing == ("B",)
+    (missing,) = result.missing
+    assert (missing.tex, missing.before, missing.after) == ("B", "The ", " and the $Q$")
     assert result.extra == ()

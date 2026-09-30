@@ -1070,6 +1070,11 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         # or decide a small fixture and cost 2.7s between them -- so this pays only for
         # itself, and the two-route gate it is half of is a command in the proof packet
         # rather than a test at all.
+        # Full independent 2095 replay: 23.75s wall with three row workers in the
+        # retained 2026-09-30 receipt; fast geometry/state mutations stay in PR CI.
+        "test_n11_generic_fresh.py": {
+            "test_complete_2095_receipt_has_every_step_and_no_pending_row",
+        },
         "test_n11_threshold_certificate.py": {
             "test_the_case_package_replays_the_retained_bytes_by_the_interval_route",  # 46.7s
         },

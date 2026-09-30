@@ -82,6 +82,31 @@ def test_empty_partner_row_still_covers_its_full_angle() -> None:
     assert counts == {"rows": 1, "empty_rows": 1, "live_rows": 0}
 
 
+def test_partner_self_cut_is_necessary_and_retains_closed_degenerate_domains() -> None:
+    proposed, accepted = _fixture()
+    center = geometry.L / 2
+    outer = [(Q(point[0]), Q(point[1])) for point in accepted[1][0]["outer_domain"]]
+    for upper, expected_vertices in (
+        (center, 4),
+        (center - Q(1, 100), 2),
+        (center - Q(2, 100), 0),
+    ):
+        changed = copy.deepcopy(proposed)
+        changed["1"][0]["self_hull_cuts"] = [{"normal": ["1", "0"], "upper": str(upper)}]
+        required = geometry.intersect(outer, [(Q(1), Q(), upper)])
+        changed["1"][0]["domain"] = [[str(x), str(y)] for x, y in required]
+        if not required:
+            changed["1"][0]["core"] = []
+        live, counts = _check(changed, accepted)
+        assert len(required) == expected_vertices
+        assert [domain for domain, _core in live[1]] == ([required] if required else [])
+        assert counts["empty_rows"] == int(not required)
+    changed = copy.deepcopy(proposed)
+    changed["1"][0]["self_hull_cuts"] = [{"normal": ["1", "0"], "upper": "1"}]
+    with pytest.raises(ValueError, match="self-cut excludes a possible square center"):
+        _check(changed, accepted)
+
+
 def test_universal_collision_region_is_checked_against_every_partner_pose() -> None:
     proposed, accepted = _fixture()
     live, _ = _check(proposed, accepted)

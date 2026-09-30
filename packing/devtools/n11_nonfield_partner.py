@@ -80,8 +80,10 @@ def admitted_partner_covers(
             old_lo, old_hi = (Q(value) for value in old["interval"])
             require(old_lo <= lo < hi <= old_hi, "partner interval escaped predecessor")
             previous_outer = frozen.hull(frozen.points(old["outer_domain"]))
-            require(row.get("self_hull_cuts", []) == [], "unsupported partner self-hull cut")
-            required = previous_outer
+            cuts = collision.necessary_self_cuts(
+                row.get("self_hull_cuts", []), accepted_groups[owner], lo, hi
+            )
+            required = geometry.intersect(previous_outer, cuts)
             if not required:
                 require(row["domain"] == [] and row["core"] == [], "empty partner row")
                 empty += 1

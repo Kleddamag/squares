@@ -1057,6 +1057,8 @@ def test_reported_bounds_awaiting_replay_are_listed(
     assert "`" not in block
     assert "<code>" not in block
     assert {18, 19, 20} <= set(listed)
+    # n = 11 reports T-060 rounded, and T-060 is verified: nothing awaits (think-pd2g).
+    assert 11 not in listed
     eighteen = re.search(r'<tr id="replay-n-18".*?</tr>', block, re.DOTALL)
     assert eighteen
     assert "939/200" in eighteen.group(0)

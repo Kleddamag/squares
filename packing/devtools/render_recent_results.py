@@ -47,7 +47,7 @@ project's own bound the day the result was `established`.
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from fractions import Fraction
 from typing import Any, NamedTuple
 
@@ -67,6 +67,7 @@ from devtools.build_bound_citations import (
 )
 from devtools.check_results import recent_evidence, scope_values
 from devtools.result_credit import source_lineage
+from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 
 #: The cases the recent rows cover. The survey counts they back are about "the hundred
@@ -126,6 +127,18 @@ class Lane:
     ours: bool
     lineage: str | None
     published: str | None
+    bound: Mapping[str, Any] = field(default_factory=dict[str, Any], compare=False, repr=False)
+    """The case record's bound the lane was read from, its `value` and `exact_form` as
+    written, for the register's own test of whether two bounds are one value."""
+
+    def same_value(self, other: Lane) -> bool:
+        """Whether two lanes state one value: equal as numbers, or equal at the precision
+        their records print, by `bounds_agree_at_declared_precision`, the rule the case
+        pages and the stage's citations already apply to a reported and a verified bound.
+        """
+        return self.value == other.value or bounds_agree_at_declared_precision(
+            self.bound, other.bound
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -139,11 +152,20 @@ class Row:
 
     @property
     def shows_reported(self) -> bool:
-        """The reported lane is its own entry only where it says something else."""
-        return (self.reported.value, self.reported.holder) != (
-            self.verified.value,
-            self.verified.holder,
-        )
+        """The reported lane is its own entry only where it says something else.
+
+        It says nothing else where it carries the same register entries as the verified
+        lane, which is one result reported and then verified, or where the same holder
+        reports the verified value at the precision its record prints. A record may keep
+        a source's rounded display beside the exact verified value: n = 11 reports
+        `3.87708359002281` for T, which the verified lane carries to 32 places, and
+        comparing the two as numbers listed T-060 as awaiting its own replay, with a
+        reported value below the verified one (think-pd2g).
+        """
+        reported, verified = self.reported, self.verified
+        if reported.results and reported.results == verified.results:
+            return False
+        return reported.holder != verified.holder or not reported.same_value(verified)
 
     @property
     def described(self) -> list[Lane]:
@@ -284,7 +306,17 @@ def lane(
         if recent:
             raise ValueError(f"n={n} {label}: a recent bound whose evidence names no source")
         # A derived bound, or a historical report whose evidence names no one source.
-        return Lane(value, cell, "", "", recent=False, ours=False, lineage=None, published=None)
+        return Lane(
+            value,
+            cell,
+            "",
+            "",
+            recent=False,
+            ours=False,
+            lineage=None,
+            published=None,
+            bound=bound,
+        )
     register = records.register
     if origin.source is None:
         result = project_result(n, origin.novel, register.results)
@@ -297,6 +329,7 @@ def lane(
             ours=True,
             lineage=PROJECT_LINEAGE,
             published=str(result["established"]),
+            bound=bound,
         )
     source = origin.source
     carrying = [
@@ -319,6 +352,7 @@ def lane(
         ours=False,
         lineage=lineage,
         published=published(source, carrying),
+        bound=bound,
     )
 
 

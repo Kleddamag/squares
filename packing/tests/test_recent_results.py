@@ -138,3 +138,91 @@ def test_every_recent_result_by_others_has_a_relation(records: view.Records) -> 
     for record in records.register.results:
         if view.is_recent_by_others(record):
             assert view.relation(record, records) in view.LINEAGES.values(), record["id"]
+
+
+def test_a_rounded_report_of_the_verified_result_is_not_awaiting_replay(
+    rows: list[view.Row],
+) -> None:
+    """think-pd2g. n = 11's record reports T as the source's rounded display,
+    `3.87708359002281`, below the 32-place verified value; both lanes carry T-060.
+    Compared as numbers they differed, so T-060 was listed as awaiting its own replay,
+    with a reported value below the verified one. The source's value stays as reported."""
+    case = load_case(11)
+    assert case["reported_lower_bound"]["value"] == "3.87708359002281"
+    eleven = next(row for row in rows if row.n == 11)
+    assert eleven.reported.value < eleven.verified.value
+    assert eleven.reported.results == eleven.verified.results == "T-060 `V4/C5`"
+    assert not eleven.shows_reported
+    assert eleven.described == [eleven.verified]
+    # Each clause decides n = 11 by itself: the same entry, and the same value printed.
+    assert eleven.reported.same_value(eleven.verified)
+
+
+def _lane(value: str, exact_form: str | None, holder: str, results: str) -> view.Lane:
+    bound = {"value": value, "exact_form": exact_form}
+    return view.Lane(
+        view.magnitude(bound),
+        view.shown(bound),
+        holder,
+        results,
+        recent=True,
+        ours=False,
+        lineage="independent",
+        published="2026-09-01",
+        bound=bound,
+    )
+
+
+T = "3.87708359002281417730789706010096"
+
+
+@pytest.mark.parametrize(
+    ("reported", "verified", "shows"),
+    [
+        # One result carried by both lanes is one lane, whatever each prints.
+        (
+            _lane("3.8", None, "A", "T-900 `V4/C3`"),
+            _lane("3.9", "39/10", "A", "T-900 `V4/C3`"),
+            False,
+        ),
+        # The same holder's rounded display of the verified closed form.
+        (
+            _lane("3.87708359002281", None, "A", "T-901 `V0/C0`"),
+            _lane(T, f"root(P, {T})", "A", "T-900 `V4/C3`"),
+            False,
+        ),
+        # A display agrees within half a unit of the coarser printed place, and no further.
+        (
+            _lane("4.68", None, "A", "T-901 `V0/C0`"),
+            _lane("4.675", "187/40", "A", "T-900 `V4/C3`"),
+            False,
+        ),
+        (
+            _lane("4.68", None, "A", "T-901 `V0/C0`"),
+            _lane("4.6749", "46749/10000", "A", "T-900 `V4/C3`"),
+            True,
+        ),
+        # Two exact forms agree only where they are one number.
+        (
+            _lane("4.68", "117/25", "A", "T-901 `V0/C0`"),
+            _lane("4.6789", "46789/10000", "A", "T-900 `V4/C3`"),
+            True,
+        ),
+        (
+            _lane("4.68", "117/25", "A", "T-901 `V0/C0`"),
+            _lane("4.68", "468/100", "A", "T-900 `V4/C3`"),
+            False,
+        ),
+        # Another holder's report is its own entry however close the value.
+        (
+            _lane("4.68", None, "B", "T-901 `V0/C0`"),
+            _lane("4.68", "117/25", "A", "T-900 `V4/C3`"),
+            True,
+        ),
+    ],
+)
+def test_a_reported_lane_is_its_own_entry_only_where_it_says_something_else(
+    reported: view.Lane, verified: view.Lane, *, shows: bool
+) -> None:
+    row = view.Row(18, exact=False, verified=verified, reported=reported)
+    assert row.shows_reported is shows

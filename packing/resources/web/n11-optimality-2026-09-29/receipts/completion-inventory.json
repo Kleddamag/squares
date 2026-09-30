@@ -63,7 +63,7 @@
     }
   ],
   "checker_sha256": "77827d28357b7633af3500672247ebfb6d7f11214232cbc5c45da6e3e05eb304",
-  "exclusion_inventory_sha256": "b48166292577243690a4776232313882338810bd9c8be527d8d4ef77615993dc",
+  "exclusion_inventory_sha256": "65f03361df2468d170215d9f84ea512e5222e73eb090be895341c0297b6ad10e",
   "final_composition_review_required": true,
   "geometry_rerun": false,
   "global_optimality_proved": false,

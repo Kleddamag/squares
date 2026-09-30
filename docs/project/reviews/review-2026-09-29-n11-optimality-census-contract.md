@@ -1854,6 +1854,84 @@ $S<T$ and does not exclude the valid witness at $T$. At this checkpoint, the rem
 non-field exclusions and eight capture-node executions are still open, so this
 composition contract grants no global theorem acceptance.
 
+## Refined and Conditional Exclusion Execution Checkpoint
+
+The
+[first refined batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-refined-1/summary.json),
+SHA-256 `4cb4d19f42708ac81eb63d4d5b9b20f20ad9a3af367344d2c45a2ee81d371a40`, accepts
+1889, 1950, 1955, 2049, 2050, 2052, 2055, 2056, 2057, and 2174 under frozen checker
+`f430580c` and partner helper `39f58aa5`. Its 19 nodes contain 321 complete updates,
+4,080 rows, 10,056 partner-cover rows, and 18,728,392 collision inequalities, with no
+skipped or pending work.
+Every copied compressed and decoded receipt, helper pin, node/step/row inventory,
+assignment, and all 39 distinct source-object identities pass the audit.
+The ten IDs were new, taking the reviewed union from 2,097 to 2,107.
+
+Three further executions bind reviewed checker `d226cb8d`, frozen at `f00127429`:
+
+| Case | Retained execution | Decoded receipt SHA-256 | Complete updates / rows |
+| --- | --- | --- | ---: |
+| 2175 | [Replay](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2175-complete/replay.json.gz) | `1946b9a11d5a1906c0a25f73383f45ab4bb20689521c19f2ce8eeb89ea1618b5` | 13 / 832 |
+| 2176 | [Replay](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2176-complete/replay.json.gz) | `3f17e984518a9dc409154c8fd99a027110fa68b9f4045ab7e85119eb1fc77f2d` | 17 / 1,088 |
+| 1875 | [Replay](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case1875-complete/replay.json.gz) | `cf3f99b76601b722e1394db56a940547a350b23df29b10d6dc4f7ebcb59758ab` | 16 / 1,024 |
+
+Each accepts 704 seed rows and its exact singleton exclusion, with complete ordered
+inventories, matching source and helper bindings, and false global flags.
+The
+[2175 cut report](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2175-complete/replay-d4-cuts.json),
+SHA-256 `842602d8e8abf3712787a870a06f3363518a21658a4bd091534dad81cc53c8c6`, and
+[2176 cut report](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2176-complete/replay-d4-cuts.json),
+SHA-256 `c96c3d139aac3585d2a0e0291c50c2696b03d3ac55b2c177292de83e2175a627`, were freshly
+executed within those replays.
+They retain the reviewed immutable baseline `e581a614`, exact 1,931 IDs and 506 raw
+survivors, all input and dependency identities, and exactly the previously reviewed
+per-case constraints and exhausted region searches.
+These geometric executions discharge both conditional D4 cases under the accepted
+baseline-execution premise.
+The 1875 replay independently closes its full empty-owner cover despite the publisher’s
+false terminal marker.
+Their earlier no-work refusals remain unaccepted.
+The union reaches 2,110, leaving 70 non-field exclusions.
+
+## Child-Node and Empty-Row Admission Checkpoint
+
+The
+[parameterized child checker](../../../packing/devtools/check_n11_capture_child_node.py),
+SHA-256 `ebbc83b0a92913234cd701d53557bab52305d1755727976f283a22d1fc3dbf0f`, is approved
+for bounded far-15, r10, and near-13 executions.
+Its registry binds each accepted parent’s actual receipt, original checker, source, and
+final-state identities.
+Copied query and partner views reapply every exact center and angular condition.
+Discarding a zero-width row intersection is sound here because the retained
+positive-width closed rows still cover the complete allowed interval, including that
+endpoint with their own accepted domains.
+Singleton or empty angular branches outside this profile refuse.
+A terminal node requires an independently empty complete owner cover.
+
+Review found that the earlier draft would reject near-13’s last complete update after
+doing its geometry. The corrected path checks that update’s kernel and compression, then
+binds its promoted state through exact final-state equality; earlier updates still
+require the next prior hull.
+Four focused controls pass.
+Original row identities and final conditions are checked before the narrow adaptations
+for the frozen root primitives.
+Final source, parent-premise, dependency, and deadline checks precede node acceptance.
+This source review supplies no new capture execution credit.
+
+Shared checker `9047dcbb9957877fe9b44d1bee356349be77cce0727c1195260d5fbb1d3803cf` is
+also approved with unchanged partner helper `1722c6e3`. Once accepted predecessor,
+independently necessary self-cuts, inherited conditions, and physical walls give an
+exactly empty legal domain over the closed row interval, unused pre-wall hints and core
+proposals need not be empty.
+Every residual, collision, common-core, support, and outer-domain output must still be
+empty; the row promotes no ownership point.
+A focused control refuses a retained residual in this case.
+Selecting the integer backend for a source with no collision regions no longer refuses
+admission; the receipt explicitly records the absence of collision work and the row
+counts retain zero collision inequalities.
+This is no evidence of integer-kernel execution or speed.
+Fresh bounded runs are still required before these relaxed admissions add any case ID.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

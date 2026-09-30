@@ -261,6 +261,8 @@ def test_the_workflow_outputs_and_summary_are_written(
     assert lines == [
         "explainer=true",
         "explainer_reason=every page is built on a test",
+        "overview=true",
+        "overview_reason=every page is built on a test",
         "workbench=true",
         "workbench_reason=every page is built on a test",
     ]

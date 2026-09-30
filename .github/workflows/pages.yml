@@ -75,6 +75,28 @@ name: Certificate page
       - packing/devtools/explainer/**
       - packing/devtools/probes/**
       - packing/atlas/known-best/manifest.json
+      - packing/devtools/render_overview.py
+      - packing/devtools/site_kit.py
+      - packing/devtools/overview_page.py
+      - packing/devtools/overview_data.py
+      - packing/devtools/overview_media.py
+      - packing/devtools/site_pages.py
+      - packing/devtools/reader_documents.py
+      - packing/devtools/published_media.py
+      - packing/devtools/preview_site.py
+      - packing/devtools/overview/**
+      - packing/devtools/templates/site-shell.html
+      - packing/devtools/templates/site-nav.html
+      - packing/devtools/templates/site.css
+      - packing/devtools/templates/overview-article.md
+      - packing/devtools/templates/frontier-article.md
+      - packing/frontier/**
+      - packing/resources/bibliography.yaml
+      - packing/resources/notable-sources.yaml
+      - TUTORIAL.md
+      - epistemics.md
+      - docs/project/document-map.yaml
+      - tsconfig.overview.json
       - .github/workflows/pages.yml
   # A pull request builds and checks the pages without deploying them, so a change that
   # breaks a render fails review rather than the next deploy. It has no `paths:` filter:
@@ -95,7 +117,9 @@ concurrency:
 # The job graph, and why it has this shape.
 #
 #   scope ─┬─ explainer-unchanged                  (only when the explainer is skipped)
+#          ├─ overview-unchanged                   (only when the overview is skipped)
 #          ├─ workbench-unchanged                  (only when the workbench is skipped)
+#          ├─ overview ────────────────────────────────┤
 #          ├─ workbench ───────────────────────────────┐
 #          ├─ prepare ─┬─ pdf ─────────────────────────┼─ publish ─┐
 #          │           ├─ print-layout                 │           ├─ pages-required (gate + wall)
@@ -119,7 +143,7 @@ concurrency:
 # than serializing it. Every check that ran before still runs, on the same prepared
 # artifact; nothing moved off the pull request (`OR-13`).
 jobs:
-  # Which of the two pages this change can affect. A pull request that touches neither
+  # Which of the site's three parts this change can affect. A pull request that touches neither
   # page's inputs does no browser work at all, and a workbench-only change no longer
   # pays for the explainer's checks (#178 did: ten workbench probe files, about 330 s of
   # explainer Chromium). `devtools.pages_scope` derives each half's inputs from the
@@ -135,6 +159,8 @@ jobs:
     outputs:
       explainer: ${{ steps.scope.outputs.explainer }}
       explainer_reason: ${{ steps.scope.outputs.explainer_reason }}
+      overview: ${{ steps.scope.outputs.overview }}
+      overview_reason: ${{ steps.scope.outputs.overview_reason }}
       workbench: ${{ steps.scope.outputs.workbench }}
       workbench_reason: ${{ steps.scope.outputs.workbench_reason }}
     defaults:
@@ -191,6 +217,19 @@ jobs:
           test -n "$REASON"
           echo "The explainer is not built or checked on this run: $REASON."
           echo "The explainer is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+
+  overview-unchanged:
+    needs: scope
+    if: needs.scope.outputs.overview != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say why the overview is not built
+        env:
+          REASON: ${{ needs.scope.outputs.overview_reason }}
+        run: |
+          test -n "$REASON"
+          echo "The overview is not built or checked on this run: $REASON."
+          echo "The overview is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
 
   workbench-unchanged:
     needs: scope
@@ -295,6 +334,73 @@ jobs:
         with:
           name: prepared-page
           path: packing/site
+          if-no-files-found: error
+          retention-days: 7
+
+  # The overview and the site's own pages (the frontier atlas and the tutorial), rendered
+  # by `devtools.render_overview` into `site-overview/` beside the explainer's `site/`, so
+  # neither render can overwrite the other's `index.html`. It reads nothing the
+  # explainer's jobs produce, so it builds beside `prepare`, like the workbench. Its render
+  # is not checked in, so two concurrent renders have to agree byte for byte, as the
+  # explainer's do; then one browser pass opens every page at desktop and phone widths and
+  # fails on a console error, math that never finished, or a horizontal overflow.
+  overview:
+    needs: scope
+    if: needs.scope.outputs.overview == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/packing/resources/*/
+            !/packing/campaign/*/
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Cache the Playwright browser
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('packing/uv.lock') }}
+
+      - name: Install the pinned Chromium headless shell
+        run: uv run --frozen --group dev python -m playwright install --only-shell chromium
+
+      - name: Render the site's own pages twice and require the renders to agree
+        run: |
+          twin="$RUNNER_TEMP/overview-twin"
+          uv run --frozen --all-extras --group dev python -m devtools.render_overview --output "$twin" &
+          twin_pid=$!
+          uv run --frozen --all-extras --group dev python -m devtools.render_overview
+          wait "$twin_pid"
+          diff --recursive site-overview "$twin"
+          test -s site-overview/index.html
+          echo "two renders agree; $(find site-overview -type f | wc -l) files, $(du -sh site-overview | cut -f1)"
+
+      - name: Open every page at desktop and phone widths
+        run: uv run --frozen --all-extras --group dev python -m devtools.preview_site --smoke site-overview
+
+      - name: Share the overview with the publication
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: overview-pages
+          path: packing/site-overview
           if-no-files-found: error
           retention-days: 7
 
@@ -1311,7 +1417,7 @@ jobs:
   # `main` uploads it for Pages. It needs the producers and not the checks, so on a pull
   # request it finishes beside the checks rather than after them.
   publish:
-    needs: [prepare, pdf, workbench]
+    needs: [prepare, pdf, workbench, overview]
     runs-on: ubuntu-latest
     steps:
       # With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the
@@ -1342,6 +1448,74 @@ jobs:
           name: workbench-page
           path: packing/site/workbench
 
+      # The explainer renders `site/index.html`, which about forty steps above and its PDF
+      # build read by that name; it is renamed here, at publication, so the overview can
+      # take the site root. Old links into the explainer carry their state in the fragment,
+      # and the overview forwards any fragment it does not own to `explainer.html`.
+      - name: Move the explainer to explainer.html
+        working-directory: packing/site
+        run: |
+          test -s index.html
+          test ! -e explainer.html
+          mv index.html explainer.html
+
+      - name: Use the overview
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: overview-pages
+          path: packing/site
+
+      # The two ascent films are release assets, and a release download is served as an
+      # `application/octet-stream` attachment, so a link to one downloads it. On `main`
+      # they are copied into the site, where Pages serves them as `video/mp4`, after each is
+      # checked against the size and SHA-256 pinned in `sqpack.release.PUBLISHED_FILMS`:
+      # a binary from outside git entering the published site is a real trust boundary.
+      # A pull request never downloads them; the pin is cached by its hash.
+      - name: Check out the film pin
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: source
+          submodules: true
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/packing/resources/*/
+            !/packing/campaign/*/
+
+      - name: Install uv and Python 3.14
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: source/packing
+          enable-cache: true
+          cache-dependency-glob: source/packing/uv.lock
+
+      # Keyed by the pinned films alone, so a data re-pin in `release.py` keeps the cache.
+      - name: Name the film cache by the pin
+        id: film-key
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        working-directory: source/packing
+        run: echo "key=$(uv run --frozen --all-extras --group dev python -m devtools.published_media --cache-key)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the pinned films
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ${{ runner.temp }}/films
+          key: ${{ steps.film-key.outputs.key }}
+
+      - name: Fetch and verify the films
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        working-directory: source/packing
+        run: >-
+          uv run --frozen --all-extras --group dev python -m devtools.published_media
+          --fetch "$GITHUB_WORKSPACE/packing/site" --cache "$RUNNER_TEMP/films"
+
       - name: List what the publication holds
         working-directory: packing/site
         run: find . -type f -printf '%P\n' | sort | while read -r file; do printf '%10s  %s  %s\n' "$(stat -c %s "$file")" "$(sha256sum "$file" | cut -c1-16)" "$file"; done
@@ -1363,8 +1537,10 @@ jobs:
     needs:
       - scope
       - explainer-unchanged
+      - overview-unchanged
       - workbench-unchanged
       - prepare
+      - overview
       - workbench
       - pdf
       - print-layout
@@ -1387,7 +1563,7 @@ jobs:
           jq -r 'to_entries[] | "\(.value.result)\t\(.key)"' <<< "$NEEDS"
           jq -e '
             .scope.result == "success"
-            and ([.scope.outputs.explainer, .scope.outputs.workbench] | all(. == "true" or . == "false"))
+            and ([.scope.outputs.explainer, .scope.outputs.overview, .scope.outputs.workbench] | all(. == "true" or . == "false"))
             and ([.[].result] | all(. == "success" or . == "skipped"))
           ' <<< "$NEEDS" > /dev/null
 
@@ -1486,7 +1662,7 @@ jobs:
         working-directory: packing
         run: uv run --frozen --group dev python -m playwright install --with-deps --only-shell chromium
 
-      - name: Verify the deployed explainer and workbench
+      - name: Verify the deployed overview, explainer and workbench
         working-directory: packing
         run: >-
           uv run --frozen --group dev python -m devtools.check_published_site

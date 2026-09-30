@@ -16,8 +16,9 @@ from pathlib import Path
 import pytest
 
 from devtools import render_overview, site_kit
-from devtools.render_overview import OUTPUT, RENDER_INPUTS, check, render
+from devtools.render_overview import OUTPUT, RENDER_INPUTS, REPO, check, render
 from devtools.site_kit import Asset, Page, base_for, nav_html
+from tests.test_explainer import covered, pages_filters
 
 COMMIT = "0" * 40
 
@@ -85,3 +86,19 @@ def test_pages_and_assets_refuse_paths_outside_the_site() -> None:
         Asset("../escape.txt", b"")
     with pytest.raises(ValueError, match="exactly one of markdown and html"):
         Page(key="overview", path="index.html", title="t", description="d")
+
+
+def test_the_pages_filter_covers_every_render_input() -> None:
+    """A render input outside the deploy filter is a page that goes stale with the gate green.
+
+    The explainer's version of this test (`test_explainer.py`) explains why only the push
+    filter is a list; this holds the overview's declaration to it the same way, including
+    the inputs every part of the site adds through its module's `RENDER_INPUTS`.
+    """
+    filters = pages_filters()
+    missing = [
+        declared.relative_to(REPO).as_posix()
+        for declared in RENDER_INPUTS
+        if not covered(declared, filters["push"])
+    ]
+    assert not missing, f"push: overview RENDER_INPUTS not covered by paths: {missing}"

@@ -33,6 +33,10 @@ OVERLAPPED_PREPARED_PAGE_JOBS = {
     "browser-geometry",
 }
 
+#: Jobs that open only the pages they render themselves, not the explainer's prepared page:
+#: the overview renders the site's own pages and smoke-checks that render before sharing it.
+OWN_RENDER_JOBS = {"overview"}
+
 #: The step right before every download by artifact id, reading the same id expression.
 #: With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the run.
 ARTIFACT_ID_GUARD = "Require the prepared page's artifact id"
@@ -68,7 +72,7 @@ def browser_check_jobs(jobs: Mapping[str, Mapping[str, Any]]) -> list[str]:
     return [
         name
         for name, job in jobs.items()
-        if name not in {"prepare", *DEPLOY_PATH}
+        if name not in {"prepare", *OWN_RENDER_JOBS, *DEPLOY_PATH}
         and any("playwright install" in step.get("run", "") for step in job.get("steps", []))
     ]
 
@@ -144,7 +148,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     workflow = load()
     jobs = workflow["jobs"]
     scope = jobs["scope"]
-    halves = ("explainer", "workbench")
+    halves = ("explainer", "overview", "workbench")
     assert set(scope["outputs"]) == {
         name for half in halves for name in (half, f"{half}_reason")
     }
@@ -168,6 +172,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     }
     assert gated == {
         "explainer": {"prepare", *OVERLAPPED_PREPARED_PAGE_JOBS},
+        "overview": {"overview"},
         "workbench": {"workbench"},
     }
     for half, roots in gated.items():
@@ -189,16 +194,19 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     for name, job in jobs.items():
         commands = "\n".join(step.get("run", "") for step in job.get("steps", []))
         works = "playwright install" in commands or re.search(
-            r"python -m (devtools\.render_explainer|workbench_tools\.build_site)\b", commands
+            r"python -m (devtools\.render_explainer|devtools\.render_overview"
+            r"|workbench_tools\.build_site)\b",
+            commands,
         )
         if works and name not in DEPLOY_PATH:
             directly_scoped = job.get("if") in {
                 "needs.scope.outputs.explainer == 'true'",
+                "needs.scope.outputs.overview == 'true'",
                 "needs.scope.outputs.workbench == 'true'",
             }
-            assert upstream(jobs, name) & {"prepare", "workbench"} or directly_scoped, (
-                f"{name} does page work on a pull request without waiting for the scope"
-            )
+            assert (
+                upstream(jobs, name) & {"prepare", "overview", "workbench"} or directly_scoped
+            ), f"{name} does page work on a pull request without waiting for the scope"
 
 
 def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> None:
@@ -220,7 +228,7 @@ def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> No
     assert step["env"]["NEEDS"] == "${{ toJSON(needs) }}"
     program = step["run"]
     assert '.scope.result == "success"' in program
-    decisions = "[.scope.outputs.explainer, .scope.outputs.workbench]"
+    decisions = "[.scope.outputs.explainer, .scope.outputs.overview, .scope.outputs.workbench]"
     assert f'{decisions} | all(. == "true" or . == "false")' in program
     assert '[.[].result] | all(. == "success" or . == "skipped")' in program
     assert "jq -e" in program
@@ -616,15 +624,17 @@ def test_live_verification_waits_for_the_exact_deployed_revision() -> None:
     assert "--no-browser" not in commands
 
 
-def test_publication_assembles_the_three_checked_products_and_only_main_uploads_it() -> None:
-    """What `build` uploaded from one directory is now three artifacts put back together.
+def test_publication_assembles_the_four_checked_products_and_only_main_uploads_it() -> None:
+    """What `build` uploaded from one directory is now four artifacts put back together.
 
-    The prepared page at the root, the checked PDF beside it, the workbench under
-    `/workbench/`: the same tree, and the only upload to Pages is a push to `main`.
+    The prepared explainer, renamed to `explainer.html`, with the checked PDF beside it;
+    the workbench under `/workbench/`; and the overview's own pages at the root, merged in
+    after the rename so its `index.html` takes the root. The films are fetched and
+    verified only on `main`, and the only upload to Pages is a push to `main`.
     """
     jobs = load()["jobs"]
     publish = jobs["publish"]
-    assert set(needs_of(publish)) == {"prepare", "pdf", "workbench"}
+    assert set(needs_of(publish)) == {"prepare", "pdf", "workbench", "overview"}
     steps = publish["steps"]
     assert steps[0]["name"] == ARTIFACT_ID_GUARD
     assert steps[0]["env"] == {
@@ -643,7 +653,25 @@ def test_publication_assembles_the_three_checked_products_and_only_main_uploads_
         },
         {"name": "explainer-pdf", "path": "packing/site"},
         {"name": "workbench-page", "path": "packing/site/workbench"},
+        {"name": "overview-pages", "path": "packing/site"},
     ]
+    names = [step.get("name", "") for step in steps]
+    rename = names.index("Move the explainer to explainer.html")
+    assert "mv index.html explainer.html" in steps[rename]["run"]
+    assert rename < names.index("Use the overview")
+    main_only = "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'"
+    film_steps = [
+        step
+        for step in steps
+        if "published_media" in step.get("run", "")
+        or step.get("name") in {"Check out the film pin", "Cache the pinned films"}
+    ]
+    assert len(film_steps) >= 3
+    assert all(step.get("if") == main_only for step in film_steps), (
+        "films are fetched on main only"
+    )
+    fetch = next(step for step in film_steps if "--fetch" in step.get("run", ""))
+    assert "python -m devtools.published_media" in fetch["run"]
     prepare = jobs["prepare"]
     assert prepare["outputs"] == {
         "prepared_artifact_id": "${{ steps.prepared-page-upload.outputs.artifact-id }}"
@@ -661,6 +689,7 @@ def test_publication_assembles_the_three_checked_products_and_only_main_uploads_
     assert produced["prepared-page"] == ("prepare", "packing/site")
     assert produced["explainer-pdf"] == ("pdf", "packing/site/t-018-explainer.pdf")
     assert produced["workbench-page"] == ("workbench", "packing/site/workbench")
+    assert produced["overview-pages"] == ("overview", "packing/site-overview")
     (upload,) = [
         step
         for step in steps

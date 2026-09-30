@@ -70,10 +70,16 @@ This repository contains:
   process: hypotheses registered before measurement, every claim graded, every defect
   logged.
 
-The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/) starts with an
-interactive point-certificate proof, then shows how threshold atoms and a dilation limit
-reach T-026’s `s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was
-developed from. Its figures are drawn from the point certificates they explain.
+The [**Square Packing site**](https://jlevy.github.io/squares/) opens on an overview of
+the problem and every current result, by this project and by others, with how far each
+is verified, the atlas and its film, a frontier atlas of every case to `n = 324`, and
+the tutorial.
+
+The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/explainer.html), an
+earlier edition than the current bounds, starts with an interactive point-certificate
+proof, then shows how threshold atoms and a dilation limit reach T-026’s
+`s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was developed from.
+Its figures are drawn from the point certificates they explain.
 
 [![One hundred known-best square packings arranged from n equals one through one hundred, each labeled with its best-known upper bound and, where the value is still open, the strongest verified lower bound.](packing/atlas/known-best/known-best-1-100.png)](https://jlevy.github.io/squares/known-best-1-100.pdf)
 
@@ -89,21 +95,22 @@ The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.sv
 **The atlas is also a film.** The same drawing is built one square at a time, at
 1080p60, each step naming the bound it reaches, where that bound comes from, and whether
 this repository has certified it:
-[**`n = 1…100`**](https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4)
+[**`n = 1…100`**](https://jlevy.github.io/squares/films/ascent-n1-100-1080p60-citations.mp4)
 (2m 20s, 38 MB) and the
-[**full `n = 1…324` ascent**](https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4)
-(8m 14s, 206 MB), both on the
+[**full `n = 1…324` ascent**](https://jlevy.github.io/squares/films/ascent-n1-324-1080p60-citations.mp4)
+(8m 14s, 206 MB), served from the site so they play in the browser, and archived on the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2) with the
 receipt that records what each file is and the page it was drawn from.
 GitHub strips `<video>` from Markdown, so these are links rather than an inline player;
-the [explainer page](https://jlevy.github.io/squares/) plays them.
+the [overview](https://jlevy.github.io/squares/) plays the full ascent and the
+[explainer page](https://jlevy.github.io/squares/explainer.html) the first hundred.
 
 The register now runs to `n = 324`, the end of the catalogue’s audited range, and a
 second, poster-sized composite draws all of it:
 [**`known-best-1-324`**](packing/atlas/known-best/known-best-1-324.png), an 18-by-18
 grid with the same cards, badges and legend, available as
 [**SVG**](packing/atlas/known-best/known-best-1-324.svg) and
-[**PDF**](packing/atlas/known-best/known-best-1-324.pdf) (44 by 51 inches).
+[**PDF**](https://jlevy.github.io/squares/known-best-1-324.pdf) (44 by 51 inches).
 The first figure is unchanged; the [atlas README](packing/atlas/known-best/README.md)
 describes both.
 

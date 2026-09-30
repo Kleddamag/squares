@@ -292,8 +292,13 @@ body {
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
 }
+/* A long closed form, such as a nested radical, scrolls inside its card rather than
+   widening the page. */
 .kpress .site-card .site-card-value {
   font-size: 1.15em;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .kpress .site-card .site-card-note {
   color: var(--site-support-color);

@@ -53,9 +53,9 @@ adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
 Subsequent complete field batches establish the entire 1,904-case field union.
-The independent generic checkers accept twenty-three further cases, including reviewed
-pilots 2095, 2135 and 2129 and twenty complete executions in parallel batches.
-The exact union contains 1,927 exclusions, leaving 253. All 14 capture-root rounds pass,
+The independent generic checkers accept 81 further cases, including four reviewed pilots
+and 77 complete executions in parallel batches.
+The exact union contains 1,985 exclusions, leaving 195. All 14 capture-root rounds pass,
 including 154 owner updates, 16,551 closed rows and 1,060 owned additions.
 Actual geometric executions plus the Astra-reviewed source and receipt chain establish
 conditional root ownership.
@@ -78,8 +78,10 @@ and positive-denominator cross-multiplication.
 Three pinned capture rows run
 [4.607 to 4.920 times faster in kernel CPU](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/collision-integer-benchmark.json),
 with identical facet checks.
-Its mathematical review and rational boundary controls pass; source-bound consumer
-integration and complete-step parity remain pending.
+Its mathematical review, rational boundary controls and source-bound generic integration
+pass. Complete case 1687 reproduces all 192 rows and 3,055,752 collision facets exactly;
+measured process CPU falls from 235.45 to 134.63 seconds (1.75 times).
+The runs had different host load, so their wall-time difference is observational.
 These are kernel measurements, not whole-proof speedups.
 This path is separate from the optional Rust rectangle verifier described below.
 The

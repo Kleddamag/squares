@@ -735,7 +735,7 @@ session:
     bead: think-k6lh
     objective: Restore immutable parallel execution, validate remaining generic cases,
       and use the measured rational collision hotspot to accelerate capture continuation.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Shared-worktree serialization needs end-to-end confirmation;
       actual collision profiling identifies repeated rational GCD work as the next hotspot.
@@ -749,13 +749,38 @@ session:
       prevents credit; never infer a complete proof from a stored status alone.
     fallback: Preserve interrupted records without credit and rerun repaired frozen
       execution; keep independent adapter and mathematical review lanes productive.
-    outcome: null
+    outcome: Immutable A3 and first A2 batches completed; receipt review is in progress.
+      Accepted exclusions reached 1928. Integer collision preserved the complete 1687
+      case with identical row results; observed wall fell from 296 to 151 seconds,
+      with different host load. Full capture-root replay runs beside remaining cases.
     evidence:
     - packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/collision-profile.json
     - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
-    stop_reason: null
+    stop_reason: Checkpoint recorded at 2026-09-30T10:14:05Z, after the planned slice ceiling.
     next_action: Coordinator batches immutable executions and profiles exact arithmetic;
       Sol implements partner and capture ancestry, Astra reviews mathematical joins.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Admit completed case batches, finish the baseline exclusions and capture root,
+      and extend reviewed state ancestry to the remaining multi-node certificates.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Reviewed integer collision and immutable execution now support broader replay.
+    budget_minutes: 30
+    started_at: '2026-09-30T10:14:05Z'
+    deadline_at: '2026-09-30T10:44:05Z'
+    expected_output: Reviewed case-union growth, complete capture-root evidence and bounded
+      multi-node replay with exact parent-state checks.
+    validation_command: Focused checker controls and frozen selected source replays.
+    kill_condition: A missing premise, changed source or incomplete execution prevents credit.
+    fallback: Retain scoped refusals and implement the next independently reviewed obligation.
+    outcome: null
+    evidence: []
+    stop_reason: null
+    next_action: Run independent case and capture lanes while reviewing D4 cut admission.
   budget:
     wall_minutes: 1135
     max_cycles: 40

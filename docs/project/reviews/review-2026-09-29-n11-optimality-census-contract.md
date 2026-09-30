@@ -1383,6 +1383,116 @@ measurements give no additional proof credit or whole-replay speed guarantee.
 Consumers must still establish strict full-angle core ownership and complete accepted
 partner pose covers, and pin this helper and the frozen reference dependency closure.
 
+## Partner Exclusion and Integer Integration Checkpoint
+
+The observed
+[1687 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case1687-partner/pilot-fast.json),
+SHA-256 `8566a62979920c37778638a9abbd36b90a4eed503601462bb84d6766a928d8f5`, binds the
+reviewed shared checker `722e654f` and partner helper `2928f037`. It accepts 70 strict
+seed points, 352 seed rows, and six complete updates containing 192 rows, including
+3,055,752 universal collision inequalities.
+The terminal owner is 10, no work remains pending, and the only exclusion is 1687. The
+observed run takes 296.132 seconds and retains a false global-optimality flag.
+This accepts that singleton conditional on the observed source-bound execution.
+
+The optional integer dispatch is approved at shared checker
+`79473807be4564af6cb13f8c36ad6517b8f077383707513069bc8a5be933fb5c` with partner helper
+`0bfbac5f09e366622ac324a776daa9a51829d3c3fb2aa24ec1a6627f31ea72ae`. The selected integer
+helper is hashed, recorded, and checked before dispatch and after replay; serial and
+parallel rows retain the same fixed backend and accepted state.
+This source review grants no additional exclusion.
+
+The subsequent
+[full integer replay](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case1687-partner/pilot-integer.json),
+SHA-256 `f0505c72b7bbe15c50e92ba51f7064f4d50c05837752cd93d69b4600c653f7c1`, binds those
+reviewed revisions and the frozen integer helper.
+Its seed, six complete updates, 192 rows, and 3,055,752 collision inequalities match the
+accepted reference execution.
+Every row’s coverage event, probe, and collision count, and every partner-cover count,
+also match.
+Both executions check the same source final state and exclude only 1687, with
+no pending work and a false global flag.
+This accepts the integer execution under the same observed-execution premise and adds no
+new case ID. Its 151.322-second wall time was measured under different host load and is
+not a controlled whole-case speedup.
+
+Capture continuation revision
+`2804989aff9414e712855d099aab659bb645f05cd9b2f72259b97a1d22cefcb8` similarly pins the
+integer helper and forces every positive diagnostic row limit to stop before promotion.
+The observed
+[complete step-one calculation](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-step1-integer/result.json),
+SHA-256 `ba2b7a053c6626e3be3af87ca2bd2492b2c276e1df86705a3f3588f4377d03e8`, reaches all
+149 rows, 670 partner rows, 4,452,672 collision inequalities, 624 ownership planes,
+eight compressed additions, and the following prior-hull equality in 125.824 seconds.
+Its whole-node status remains incomplete.
+The selected-step stop precedes the checker’s final source recheck, so this result is
+observed calculation evidence and requires a separate final binding before reuse as an
+accepted step premise.
+Both ten-row prefix comparisons perform zero collision inequalities; they establish
+diagnostic refusal behavior, not backend timing or nontrivial geometric parity.
+
+## Completed Reviewed-Worktree Batches
+
+Two retained batches ran with shared checker `722e654f` in the frozen worktree at
+`33b97fcadfb92be997e655fb24b67e127eb3cb3d`. The
+[A3 summary](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-reviewed/summary.json),
+SHA-256 `25be910a1ae2174890bbb279e091cd66d32e52e14c55fa88e422d346f42cf1d7`, completes
+all 32 selected cases, with 489 updates and 15,336 rows.
+The
+[first A2 summary](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/summary.json),
+SHA-256 `b085f9f2dacd6043533d5f9c6babfa3b10b5750ecaeb833d0cc88151d4abfc78`, completes 25
+of 26 selected cases, with 268 accepted updates and 17,152 accepted rows.
+Case 2174 refuses unsupported partner self-hull cuts and receives no credit.
+
+The audit checked compressed and decoded receipt identities, exact source and assignment
+bindings, helper pins, complete ordered step and row inventories, singleton exclusions,
+and false global flags.
+Every accepted receipt has no pending obligations.
+The copied main-checkout summaries retain the audited bytes.
+This admits the 57 distinct IDs in these two accepted lists conditional on the observed
+reviewed executions; the maintained union must deduplicate them against earlier
+evidence. Earlier aborted batches receive no credit.
+Neither this receipt audit nor a cached success marker repeats the geometry.
+
+## Baseline D4 Cut Implementation Checkpoint
+
+The new [finite-cut consumer](../../../packing/devtools/check_n11_baseline_d4_cuts.py),
+SHA-256 `338fb431d381502fa1a9721647f231f1a3e9db73a3c6337c3561e69d16bf5d32`, implements
+the forced-owner-region lemma above using the frozen independent cover, overlay, and
+strict-distance primitives.
+It derives the exact 253-case complement of the pinned 1,931-case metadata and retains
+all 506 raw masks. Five focused controls pass in 0.11 seconds, including comparison with
+independent enumeration of small finite assignments, strict cut-boundary tests,
+interrupted-search refusal, and rejection of count-only baseline admission.
+Lint and type checks report no findings.
+Independent code review is complete: the affine normalization, strict offending-vertex
+test, exhaustive region search, all-view target-mask intersections, closed equality, and
+exact baseline-ID premise were checked without a blocking finding.
+
+The observed
+[diagnostic execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/baseline-d4-cuts/diagnostic.json),
+SHA-256 `e4e440c09b69463d42ee4421054dee6e6f5137f95f7a45f9223f8d737bc11d38`, reconstructs
+all 220 closed regions and 1,572 strict bans.
+For 2175, its 72 proposed planes require rejection of 38 regions, taking 131 search
+nodes. For 2176, 73 planes require rejection of 36 regions, taking 115 nodes.
+All 74 forced assignments exhaust without a witness in 1.152 seconds overall.
+Regions whose vertices already satisfy every requested plane need no feasibility
+witness; equality is retained.
+The
+[post-commit diagnostic](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/baseline-d4-cuts/frozen-diagnostic.json),
+SHA-256 `abc56c2b2eb2ee7710ef11bbe087dc7447e1deed584ba2b83147e133e5342e08`, binds the
+same frozen implementation committed at `891e4715b` and repeats all 74 obligations in
+246 search nodes and 1.066 seconds, with the same limited scope.
+
+No baseline execution inventory was supplied, so necessary-cut and proof-credit flags
+remain false and no case is excluded.
+The optional inventory admission requires every exact baseline ID and explicitly depends
+on reviewed observed executions; a stored inventory is not a geometric replay.
+The output lists the precise manifest-bound constraints and their proposed source-node
+identities. A later geometric consumer must compare its actual source constraints with
+that list before using any admitted cut.
+Neither large source node was downloaded or replayed for this finite diagnostic.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -28,12 +28,14 @@ from strif import atomic_write_text
 
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
+from devtools import n11_fast_exact_cover as fast_cover
 
 PACKET = geometry.PACKET
 MANIFEST = PACKET / "receipts/nonfield-manifest/manifest.json.gz"
 MANIFEST_GZIP_SHA = "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c0184520"
 MANIFEST_SHA = "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b"
 FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3"
+FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -212,14 +214,14 @@ def necessary_self_cuts(
 
 
 def covering_input_domain(required: Polygon, proposal: Any) -> Polygon:
-    """Admit a convex overapproximation of every still-possible square center."""
+    """Bind a pre-wall source hint, then return the proved legal-center domain."""
     require(geometry.area2(required) > 0, "degenerate generic domain needs separate proof")
     domain = frozen.convex(proposal)
     require(
         frozen.hull(required + domain) == domain,
         "row input domain excludes a required legal pose",
     )
-    return domain
+    return required
 
 
 def check_row(
@@ -232,6 +234,7 @@ def check_row(
     world: list[Polygon],
     bins: int,
     budget: geometry.Budget,
+    cover_backend: str = "reference",
 ) -> tuple[dict[str, int], Polygon, list[tuple[Q, Q, Q]], dict[str, Any]]:
     row = step["rows"][row_index]
     owner = step["owner"]
@@ -256,7 +259,10 @@ def check_row(
         if other != owner
     ]
     residual = [frozen.convex(poly) for poly in row["residual_polygons"]]
-    coverage = geometry.exact_union_cover(domain, forbidden + residual, budget=budget)
+    cover = (
+        fast_cover.exact_union_cover if cover_backend == "fast" else geometry.exact_union_cover
+    )
+    coverage = cover(domain, forbidden + residual, budget=budget)
     reference = {
         "kind": "phase3",
         "node": source["node_id"],
@@ -305,6 +311,7 @@ class _WorkerState:
     source: dict[str, Any] | None = None
     world: list[Polygon] | None = None
     bins: int | None = None
+    cover_backend: str = "reference"
 
 
 def capability_preflight(source: dict[str, Any], mask: tuple[int, ...], bins: int) -> None:
@@ -335,8 +342,11 @@ def capability_preflight(source: dict[str, Any], mask: tuple[int, ...], bins: in
         )
 
 
-def _worker_init(source: dict[str, Any], world: list[Polygon], bins: int) -> None:
+def _worker_init(
+    source: dict[str, Any], world: list[Polygon], bins: int, cover_backend: str
+) -> None:
     _WorkerState.source, _WorkerState.world, _WorkerState.bins = source, world, bins
+    _WorkerState.cover_backend = cover_backend
 
 
 def _worker_row(
@@ -359,6 +369,7 @@ def _worker_row(
         world=world,
         bins=bins,
         budget=budget,
+        cover_backend=_WorkerState.cover_backend,
     )
     return (
         row_index,
@@ -382,6 +393,7 @@ def replay_one_node(
     result: dict[str, Any],
     budget: geometry.Budget,
     workers: int,
+    cover_backend: str = "reference",
 ) -> None:
     require(source["schema"] == "exact_generic_owned_hull_v1", "source schema")
     require(
@@ -440,6 +452,7 @@ def replay_one_node(
                     world=world,
                     bins=bins,
                     budget=budget,
+                    cover_backend=cover_backend,
                 )
                 completed.append(
                     (
@@ -456,7 +469,7 @@ def replay_one_node(
                 max_workers=workers,
                 mp_context=multiprocessing.get_context("spawn"),
                 initializer=_worker_init,
-                initargs=(source, world, bins),
+                initargs=(source, world, bins, cover_backend),
             ) as pool:
                 futures = {
                     pool.submit(
@@ -595,6 +608,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     require(0 < args.max_seconds <= 3600, "case wall ceiling")
     require(type(args.workers) is int and 1 <= args.workers <= 3, "row workers 1..3")
     require(type(args.max_events) is int and args.max_events > 0, "event ceiling")
+    cover_backend = getattr(args, "cover_backend", "reference")
+    require(cover_backend in ("reference", "fast"), "unsupported cover backend")
     started, cpu_started = time.monotonic(), time.process_time()
     children_before = resource.getrusage(resource.RUSAGE_CHILDREN)
     budget = geometry.Budget(started + args.max_seconds, args.max_events)
@@ -604,6 +619,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "geometry": Path(geometry.__file__),
         "manifest": args.manifest,
     }
+    if cover_backend == "fast":
+        paths["fast_cover"] = Path(fast_cover.__file__)
     before: dict[str, str] = {}
     result: dict[str, Any] = {
         "status": "INCOMPLETE",
@@ -615,6 +632,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "max_seconds": args.max_seconds,
         "max_events": args.max_events,
         "workers": args.workers,
+        "cover_backend": cover_backend,
         "current_node": None,
         "current_step": None,
         "current_row": None,
@@ -626,6 +644,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         result["source_sha256"].update(before)
         require(before["geometry"] == frozen.GEOMETRY_SHA, "frozen geometry changed")
         require(before["frozen_generic"] == FROZEN_GENERIC_SHA, "frozen generic kernel changed")
+        if cover_backend == "fast":
+            require(before["fast_cover"] == FAST_COVER_SHA, "fast cover kernel changed")
         geometry.admit_d4_receipt()
         manifest = load_manifest(args.manifest)
         recipes = [case for case in manifest["cases"] if case["mask_index"] == args.case_id]
@@ -705,6 +725,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             result=result,
             budget=budget,
             workers=args.workers,
+            cover_backend=cover_backend,
         )
         remaining(budget)
         require(
@@ -742,6 +763,7 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--max-seconds", type=float, default=30)
     parser.add_argument("--max-events", type=int, default=50_000)
+    parser.add_argument("--cover-backend", choices=("reference", "fast"), default="reference")
     parser.add_argument("--out", type=Path, required=True)
     result = run(parser.parse_args())
     print(

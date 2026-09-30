@@ -32,6 +32,7 @@ def _args(
         workers=1,
         max_seconds=30,
         max_events=50_000,
+        cover_backend="reference",
         out=tmp_path / "result.json",
     )
 
@@ -118,7 +119,7 @@ def test_unjustified_2135_input_shrink_is_refused() -> None:
 def test_input_domain_may_conservatively_enlarge_but_never_shrink() -> None:
     required = generic.frozen.hull([(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(1)), (Q(0), Q(1))])
     larger = [["-1", "-1"], ["2", "-1"], ["2", "2"], ["-1", "2"]]
-    assert generic.covering_input_domain(required, larger) == generic.frozen.convex(larger)
+    assert generic.covering_input_domain(required, larger) == required
     smaller = [["0", "0"], ["1/2", "0"], ["1/2", "1/2"], ["0", "1/2"]]
     with pytest.raises(ValueError, match="row input domain"):
         generic.covering_input_domain(required, smaller)
@@ -131,6 +132,18 @@ def test_imported_frozen_helper_pin_mismatch_refuses(
     result = generic.run(_args(tmp_path, 2135))
     assert result["status"] == "REFUSED"
     assert "frozen generic" in result["error"]
+    assert result["excluded_case_ids"] == []
+
+
+def test_fast_cover_pin_mismatch_refuses(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(generic, "FAST_COVER_SHA", "0" * 64)
+    args = _args(tmp_path, 2135)
+    args.cover_backend = "fast"
+    result = generic.run(args)
+    assert result["status"] == "REFUSED"
+    assert "fast cover kernel" in result["error"]
     assert result["excluded_case_ids"] == []
 
 
@@ -208,3 +221,31 @@ def test_complete_2135_exclusion(tmp_path: Path) -> None:
     assert result["current_step"] is None
     assert result["current_row"] is None
     assert result["global_optimality_proved"] is False
+
+
+@pytest.mark.slow
+def test_reference_and_fast_complete_2135_results_match(tmp_path: Path) -> None:
+    results = []
+    for backend in ("reference", "fast"):
+        args = _args(tmp_path, 2135)
+        args.workers = 3
+        args.cover_backend = backend
+        args.out = tmp_path / f"{backend}.json"
+        results.append(generic.run(args))
+    for result, backend in zip(results, ("reference", "fast"), strict=True):
+        assert result["status"] == "PASS_ONE_GENERIC_EXCLUSION"
+        assert result["geometry_verified"] is True
+        assert result["excluded_case_ids"] == [2135]
+        assert result["cover_backend"] == backend
+        assert result["steps_completed"] == 6
+        assert result["rows_checked"] == 48
+    reference, fast = results
+    assert [
+        (row["events"], row["probes"])
+        for step in reference["step_timings"]
+        for row in step["row_timings"]
+    ] == [
+        (row["events"], row["probes"])
+        for step in fast["step_timings"]
+        for row in step["row_timings"]
+    ]

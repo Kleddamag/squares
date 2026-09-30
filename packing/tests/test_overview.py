@@ -301,3 +301,16 @@ def test_every_small_label_is_one_chip(name: str) -> None:
             assert f'data-rung="{label[0]}" data-level="{label[1:]}"' in attributes, label
     assert "site-rung " not in html
     assert "site-status-proved" not in html
+
+
+def test_the_prose_links_repository_files_at_the_build_commit(page: str) -> None:
+    """Every `repo:` link in the template becomes a permalink to a file that exists."""
+    from devtools.render_explainer import REPO, repo_file  # noqa: PLC0415
+
+    article = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    paths = re.findall(r'(?:\]\(|href=")repo:([^)"\s#]+)', article)
+    assert paths
+    assert 'href="repo:' not in page
+    for path in paths:
+        assert (REPO / path).exists(), path
+        assert f'href="{repo_file(REPO / path)}"' in page, path

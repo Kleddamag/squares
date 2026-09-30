@@ -347,6 +347,13 @@ def overview_page() -> Page:
     markdown = fill(
         OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name
     )
+    # The prose names a repository file as `repo:PATH`, which becomes its permalink at
+    # the build commit, the one form of repository link the deployed-site check accepts.
+    markdown = re.sub(
+        r'(\]\(|href=")repo:([^)"\s#]+)',
+        lambda match: match[1] + repo_file(REPO / match[2]),
+        markdown,
+    )
     return kpress_page(
         markdown,
         name="index.html",

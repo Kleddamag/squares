@@ -457,7 +457,7 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     (
         "https://github.com/franciscouzo/square-packing",
         "Francisco Couzo",
-        "Improved packings for dozens of n between 68 and 300.",
+        "Improved packings for 49 counts from n = 68 to 307.",
     ),
     (
         "https://github.com/griffcass/square-packing",

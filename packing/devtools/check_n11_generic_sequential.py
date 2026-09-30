@@ -35,6 +35,7 @@ from devtools import n11_integer_collision as integer_collision
 from devtools import n11_nonfield_ancestry as ancestry
 from devtools import n11_nonfield_assignment as a2_assignment
 from devtools import n11_nonfield_partner as partner
+from devtools import n11_nonfield_refinement as refinement
 
 PACKET = geometry.PACKET
 MANIFEST = PACKET / "receipts/nonfield-manifest/manifest.json.gz"
@@ -48,6 +49,7 @@ PARTNER_HELPER_SHA = "0bfbac5f09e366622ac324a776daa9a51829d3c3fb2aa24ec1a6627f31
 COLLISION_KERNEL_SHA = "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309"
 INTEGER_COLLISION_SHA = "4a1f71cdc96134af1083c84717912b73801b07933a8f7cd2eff8b998b31eab98"
 ANCESTRY_HELPER_SHA = "f1d113d9d5c382933f3939d7481ecec6e486cc04890f417f7025af8e54264264"
+REFINEMENT_HELPER_SHA = "937d36d64bf385d94d8dad9e6de5c1f8c487f07955cdbc826987dd63dea3464c"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -252,7 +254,6 @@ def check_row(
     prior: dict[int, Polygon],
     predecessor: dict[str, Any],
     world: list[Polygon],
-    bins: int,
     budget: geometry.Budget,
     cover_backend: str = "reference",
     collision_backend: str = "reference",
@@ -262,10 +263,8 @@ def check_row(
     owner = step["owner"]
     require(row["prior_reference"] == predecessor["reference"], "row predecessor reference")
     lo, hi = (Q(value) for value in row["interval"])
-    require((lo, hi) == (Q(row_index, bins), Q(row_index + 1, bins)), "row interval gap")
-    require(
-        [lo, hi] == [Q(value) for value in predecessor["interval"]], "row interval ancestry"
-    )
+    old_lo, old_hi = (Q(value) for value in predecessor["interval"])
+    require(old_lo <= lo < hi <= old_hi, "row interval escaped predecessor")
     cuts = necessary_self_cuts(row, prior[owner], lo, hi)
     required_domain = geometry.intersect(
         frozen.hull(frozen.points(predecessor["outer_domain"])),
@@ -375,14 +374,13 @@ def check_row(
 class _WorkerState:
     source: dict[str, Any] | None = None
     world: list[Polygon] | None = None
-    bins: int | None = None
     cover_backend: str = "reference"
     collision_backend: str = "reference"
     partner_live: dict[int, list[tuple[Polygon, Polygon]]] | None = None
 
 
 def capability_preflight(
-    source: dict[str, Any], mask: tuple[int, ...], bins: int, parent_sha: str | None = None
+    source: dict[str, Any], mask: tuple[int, ...], max_rows: int, parent_sha: str | None = None
 ) -> None:
     """Reject known unsupported source grammar before expensive seed ownership."""
     require(
@@ -397,7 +395,7 @@ def capability_preflight(
         and source["guard_source"] is None,
         "unsupported parent/guard grammar",
     )
-    require(type(bins) is int and 1 <= bins <= 128, "unsupported bin count")
+    require(type(max_rows) is int and max_rows > 0, "row ceiling")
     require(source["steps"], "empty source step inventory")
     for index, step in enumerate(source["steps"]):
         require(
@@ -406,7 +404,12 @@ def capability_preflight(
         )
         require(step["allowed_half_angle"] == ["0", "1"], "unsupported angle scope")
         require(isinstance(step["prior_partner_pose_covers"], dict), "partner cover map")
-        require(len(step["rows"]) == bins, "step angular inventory")
+        require(
+            isinstance(step["rows"], list)
+            and len(step["rows"]) <= max_rows
+            and (step["complete"] is False or bool(step["rows"])),
+            "step angular inventory",
+        )
         require(
             all(isinstance(row["collision_regions"], list) for row in step["rows"]),
             "collision-region inventory",
@@ -416,11 +419,10 @@ def capability_preflight(
 def _worker_init(
     source: dict[str, Any],
     world: list[Polygon],
-    bins: int,
     backends: tuple[str, str],
     partner_live: dict[int, list[tuple[Polygon, Polygon]]],
 ) -> None:
-    _WorkerState.source, _WorkerState.world, _WorkerState.bins = source, world, bins
+    _WorkerState.source, _WorkerState.world = source, world
     _WorkerState.cover_backend, _WorkerState.collision_backend = backends
     _WorkerState.partner_live = partner_live
 
@@ -432,8 +434,8 @@ def _worker_row(
     predecessor: dict[str, Any],
     budget: geometry.Budget,
 ) -> tuple[int, dict[str, int], Polygon, list[tuple[Q, Q, Q]], dict[str, Any], float, float]:
-    source, world, bins = _WorkerState.source, _WorkerState.world, _WorkerState.bins
-    if source is None or world is None or bins is None:
+    source, world = _WorkerState.source, _WorkerState.world
+    if source is None or world is None:
         raise ValueError("worker source unavailable")
     started, cpu_started = time.monotonic(), time.process_time()
     coverage, vertices, planes, accepted = check_row(
@@ -443,7 +445,6 @@ def _worker_row(
         prior=prior,
         predecessor=predecessor,
         world=world,
-        bins=bins,
         budget=budget,
         cover_backend=_WorkerState.cover_backend,
         collision_backend=_WorkerState.collision_backend,
@@ -466,7 +467,6 @@ def replay_one_node(
     rows: dict[int, list[dict[str, Any]]],
     *,
     world: list[Polygon],
-    bins: int,
     mask: tuple[int, ...],
     result: dict[str, Any],
     budget: geometry.Budget,
@@ -520,7 +520,20 @@ def replay_one_node(
             ),
             "step previous accepted state",
         )
-        require(len(step["rows"]) == bins, "step angular inventory")
+        require(type(step["complete"]) is bool, "step completeness flag")
+        if not step["complete"]:
+            require(
+                step_index == len(source["steps"]) - 1 and not final_node,
+                "incomplete step cannot promote or close a case",
+            )
+            result["skipped_incomplete_source_rows"] = result.get(
+                "skipped_incomplete_source_rows", 0
+            ) + len(step["rows"])
+            break
+        predecessors = refinement.complete_refinement(
+            step["rows"], state_rows[owner], max_rows=budget.max_nodes
+        )
+        row_count = len(predecessors)
         if step["prior_partner_pose_covers"]:
             partner_live, partner_counts = partner.admitted_partner_covers(
                 step["prior_partner_pose_covers"],
@@ -533,11 +546,11 @@ def replay_one_node(
         else:
             partner_live = {}
             partner_counts = {"rows": 0, "empty_rows": 0, "live_rows": 0}
-        result["pending_row_indices"] = list(range(bins))
+        result["pending_row_indices"] = list(range(row_count))
         result["checked_row_indices_current_step"] = []
         if workers == 1:
             completed = []
-            for row_index in range(bins):
+            for row_index in range(row_count):
                 remaining(budget)
                 result["current_row"] = row_index
                 started, cpu_started = time.monotonic(), time.process_time()
@@ -546,9 +559,8 @@ def replay_one_node(
                     step,
                     row_index,
                     prior=state_groups,
-                    predecessor=state_rows[owner][row_index],
+                    predecessor=predecessors[row_index],
                     world=world,
-                    bins=bins,
                     budget=budget,
                     cover_backend=cover_backend,
                     collision_backend=collision_backend,
@@ -572,7 +584,6 @@ def replay_one_node(
                 initargs=(
                     source,
                     world,
-                    bins,
                     (cover_backend, collision_backend),
                     partner_live,
                 ),
@@ -583,10 +594,10 @@ def replay_one_node(
                         step_index,
                         row_index,
                         state_groups,
-                        state_rows[owner][row_index],
+                        predecessors[row_index],
                         budget,
                     ): row_index
-                    for row_index in range(bins)
+                    for row_index in range(row_count)
                 }
                 completed = []
                 for future in concurrent.futures.as_completed(
@@ -597,7 +608,7 @@ def replay_one_node(
                     completed.append(checked)
                     result["checked_row_indices_current_step"].append(row_index)
                     result["pending_row_indices"].remove(row_index)
-        require(len(completed) == bins, "incomplete step join")
+        require(len(completed) == row_count, "incomplete step join")
         accepted_rows: list[dict[str, Any]] = []
         all_vertices: Polygon = []
         all_planes: list[tuple[Q, Q, Q]] = []
@@ -617,7 +628,6 @@ def replay_one_node(
                 }
             )
             result["rows_checked"] += 1
-        require(step["complete"] is True, "source step incomplete")
         kernel = frozen.points(step["common_owned_kernel"])
         for point in kernel:
             require(
@@ -636,7 +646,7 @@ def replay_one_node(
                 "step": step_index,
                 "node": result["current_node"],
                 "owner": owner,
-                "rows": bins,
+                "rows": row_count,
                 "row_timings": row_timings,
                 "wall_seconds": time.monotonic() - step_started,
                 "row_process_cpu_seconds": sum(
@@ -679,7 +689,7 @@ def replay_one_node(
             "final group differs from accepted state",
         )
         given_rows = final["cells"][str(owner)]
-        require(len(given_rows) == bins, "final angular inventory")
+        require(len(given_rows) == len(state_rows[owner]), "final angular inventory")
         for given, accepted in zip(given_rows, state_rows[owner], strict=True):
             require(
                 given["reference"] == accepted["reference"]
@@ -738,6 +748,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "checker": Path(__file__),
         "frozen_generic": Path(frozen.__file__),
         "degenerate_cover": Path(degenerate_cover.__file__),
+        "refinement_helper": Path(refinement.__file__),
         "geometry": Path(geometry.__file__),
         "manifest": args.manifest,
     }
@@ -770,6 +781,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         require(
             before["degenerate_cover"] == DEGENERATE_COVER_SHA,
             "closed degenerate cover kernel changed",
+        )
+        require(
+            before["refinement_helper"] == REFINEMENT_HELPER_SHA,
+            "refinement helper changed",
         )
         if cover_backend == "fast":
             require(before["fast_cover"] == FAST_COVER_SHA, "fast cover kernel changed")
@@ -890,7 +905,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             capability_preflight(
                 source,
                 mask,
-                seed["bins"],
+                budget.max_nodes,
                 nodes[index - 1]["source_sha256"] if index else None,
             )
         require(
@@ -926,7 +941,6 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 groups,
                 rows,
                 world=world,
-                bins=bins,
                 mask=mask,
                 result=result,
                 budget=budget,

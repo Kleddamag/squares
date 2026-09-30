@@ -68,10 +68,10 @@ def test_a2_assignment_is_bound_before_geometry(
     assert result["excluded_case_ids"] == []
 
 
-def test_unhandled_multinode_refinement_remains_unproved(tmp_path: Path) -> None:
-    result = generic.run(_args(tmp_path, 2053))
+def test_unhandled_center_partition_remains_unproved(tmp_path: Path) -> None:
+    result = generic.run(_args(tmp_path, 1383))
     assert result["status"] == "REFUSED"
-    assert "step angular inventory" in result["error"]
+    assert "unsupported adapter" in result["error"]
     assert result["geometry_verified"] is False
     assert result["excluded_case_ids"] == []
 
@@ -111,6 +111,84 @@ def test_integer_collision_source_is_bound_before_geometry(
     assert result["status"] == "REFUSED"
     assert result["error"] == "stopped after source admission"
     assert result["source_sha256"]["integer_collision"] == generic.INTEGER_COLLISION_SHA
+
+
+def test_incomplete_last_step_is_unpromoted_and_cannot_close_case() -> None:
+    group = [["0", "0"]]
+    reference = {"kind": "wall_seed", "owner": 0, "row": 0}
+    row = {
+        "interval": ["0", "1"],
+        "reference": reference,
+        "outer_domain": [],
+        "residual_polygons": [],
+    }
+    world: list[generic.Polygon] = [[] for _ in range(16)]
+    source = {
+        "schema": "exact_generic_owned_hull_v1",
+        "parent": None,
+        "constraints": [],
+        "guard_source": None,
+        "mask_index": 7,
+        "mask": [0],
+        "source": {"sha256": "seed"},
+        "initial": {"groups": {"0": group}, "cell_references": {"0": [reference]}},
+        "steps": [
+            {
+                "index": 0,
+                "owner": 0,
+                "allowed_half_angle": ["0", "1"],
+                "prior_owned_hulls": {"0": group},
+                "complete": False,
+                "rows": [{"interval": ["0", "1/2"]}],
+            }
+        ],
+        "final_state": {
+            "mask_index": 7,
+            "mask": [0],
+            "U": str(generic.geometry.U),
+            "B": str(generic.geometry.B),
+            "constraints": [],
+            "guard": {},
+            "guard_source": None,
+            "source": {"sha256": "seed"},
+            "world": [[] for _ in range(16)],
+            "groups": {"0": group},
+            "cells": {"0": [row]},
+        },
+        "terminal": True,
+        "closed": False,
+        "contradiction": None,
+        "global_optimality_proved": False,
+    }
+    groups = {0: [(Q(), Q())]}
+    rows = {0: [row]}
+    result: dict[str, Any] = {"current_node": 0}
+    accepted = generic.replay_one_node(
+        source,
+        groups,
+        rows,
+        world=world,
+        mask=(0,),
+        result=result,
+        budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
+        workers=1,
+        final_node=False,
+    )
+    assert accepted == (groups, rows)
+    assert result["steps_completed"] == 0
+    assert result["skipped_incomplete_source_rows"] == 1
+    with pytest.raises(ValueError, match="incomplete step cannot promote or close"):
+        generic.replay_one_node(
+            source,
+            groups,
+            rows,
+            world=world,
+            mask=(0,),
+            result={"current_node": 0},
+            budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
+            workers=1,
+            final_node=True,
+        )
 
 
 def test_expired_case_has_no_promoted_exclusion(tmp_path: Path) -> None:
@@ -165,7 +243,6 @@ def test_unjustified_2135_input_shrink_is_refused() -> None:
             prior=prior,
             predecessor=seed["cells"][str(step["owner"])][0],
             world=[],
-            bins=8,
             budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
         )
 
@@ -204,7 +281,6 @@ def test_empty_and_closed_segment_legal_rows_are_handled_exactly() -> None:
             prior={0: [(Q(), Q())], 1: [(center, center)]},
             predecessor=predecessor,
             world=[],
-            bins=1,
             budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
         )
 
@@ -264,21 +340,26 @@ def test_missing_angular_row_and_changed_source_state_refuse() -> None:
         int(owner): generic.frozen.hull(generic.frozen.points(points))
         for owner, points in source["initial"]["groups"].items()
     }
+    bins = len(source["steps"][0]["rows"])
     rows = {
-        int(owner): [{"reference": reference} for reference in references]
+        int(owner): [
+            {
+                "reference": reference,
+                "interval": [str(Q(index, bins)), str(Q(index + 1, bins))],
+            }
+            for index, reference in enumerate(references)
+        ]
         for owner, references in source["initial"]["cell_references"].items()
     }
     world: list[generic.Polygon] = []
-    bins = len(source["steps"][0]["rows"])
     changed = copy.deepcopy(source)
     changed["steps"][0]["rows"].pop()
-    with pytest.raises(ValueError, match="angular inventory"):
+    with pytest.raises(ValueError, match="refinement angular cover incomplete"):
         generic.replay_one_node(
             changed,
             groups,
             rows,
             world=world,
-            bins=bins,
             mask=tuple(recipe["mask"]),
             result={},
             budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
@@ -292,7 +373,6 @@ def test_missing_angular_row_and_changed_source_state_refuse() -> None:
             groups,
             rows,
             world=world,
-            bins=bins,
             mask=tuple(recipe["mask"]),
             result={},
             budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),

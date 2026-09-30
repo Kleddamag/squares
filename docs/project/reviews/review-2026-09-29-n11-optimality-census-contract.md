@@ -801,6 +801,95 @@ B6 6c3ba29494ae83a98531ad8dafc98dd919ba37f230e44ec68d593c5e573dcc81 cc9b3d39e30b
 B7 8f898b9c197d0ff7ae85266ce8ee2fdc225954d01657a413600ec4c6612ef8c5 4a93b7c841b4380fb0bd481b6d57e595d9f4ae84fe3ce86fc57bad7374c765a3
 ```
 
+## Fresh Generic Induction and Degenerate Domains
+
+Astra-max review on 2026-09-30 found no mathematical blocker in the supported fresh-wall
+induction of the
+[generic checker](../../../packing/devtools/check_n11_generic_fresh.py).
+For case 2095 it reconstructs all 352 seed rows from the accepted cover and legal-wall
+envelopes, proves the 77 seed points strictly owned, and checks five sequential updates
+with 32 closed angular rows each.
+Every proposed core vertex must satisfy the strict containment quadratics throughout the
+complete interval, including its endpoints and any interior minimum.
+Convexity then places the entire core strictly inside the physical square.
+
+For another occupied owner’s strictly owned hull $H$ and the query core $Q$, the
+reconstructed Minkowski difference $H-Q$ is forbidden: a center there places a point of
+$H$ inside both physical square interiors.
+The exact sweep must cover the complete legal center domain by these forbidden regions
+and the proposed residuals.
+If $n\cdot q\le b$ is a core facet, the common-ownership condition is
+$n\cdot p\le b+\min_{z\in R}n\cdot z$ over every live residual $R$ in every row.
+Its minimum occurs at a residual vertex, including a singleton or segment endpoint.
+Thus each promoted point belongs to every possible translate of the strict core.
+Exact nonnegative convex-combination witnesses preserve that ownership during
+compression.
+
+The row workers consume one frozen predecessor state; the next step receives their
+results only after all 32 rows finish.
+The checker normalizes accepted polygons before subsequent clipping, validates support
+bounds against every residual vertex, and binds the reconstructed final groups and rows
+to the source state.
+Case 2095 requires independently empty residuals in all 32 rows of terminal owner 11,
+then an exact match to its sole A1 generic assignment.
+The publisher’s terminal and audit status fields supply no geometric premise.
+The seed and one-row diagnostic scopes accept no exclusion.
+
+The accepted
+[full result](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json)
+binds checker `e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3` and has
+SHA-256 `2aa9c3819e4f39d9f4f489a25d1885b2a1c5a6f6c21099f42821d1165d608f88`. It completes
+those inventories with no pending row and accepts exactly case 2095 in 23.753 seconds
+wall, 5.611 seconds coordinator CPU, and 35.086 seconds child CPU. Eight focused generic
+tests pass, including the full replay and refusals for a strict core touching the
+physical boundary, a removed necessary residual, a changed predecessor, invalid
+compression, tampered source, and expiry.
+This adds one case to the accepted 1,904-case field union: 1,905 exclusions are accepted
+and 275 non-field exclusions remain open.
+The global optimality flag remains false.
+
+The
+[degenerate-domain helper](../../../packing/devtools/check_n11_closed_degenerate_cover.py)
+correctly extends closed coverage to a legal point or segment.
+Write the domain as $z(t)=a+t(b-a)$ for $0\le t\le1$. Pulling back each convex region’s
+halfplanes gives exact closed linear intervals in $t$; their intersection is that
+region’s intersection with the domain.
+Sorted interval union covers the domain exactly when it reaches from zero to one without
+a positive gap. Coincident endpoints are retained, and $a=b$ reduces to ordinary point
+membership. Point regions use coordinate equalities, segment regions use their line
+equality and coordinate bounds, and positive-area regions use their hull facets.
+The helper rejects a proposed polygon whose area differs from its hull; consistent local
+turns alone would not reject a star traversal.
+The continuation keeps the existing sweep for positive-area domains and verifies empty
+residuals and strips when the reconstructed legal domain is empty.
+
+The revised
+[root continuation](../../../packing/devtools/check_n11_capture_root_continue.py) admits
+the earlier rounds through the frozen checker at commit `0f6b1e2d1`, whose SHA-256 is
+`dbde306a481333b470f1e2613ff05fd2be65c9711dd135615d65548932cebdd3`. The round-one
+checker, pilot, geometry kernel, and fixed round-one result also match their recorded
+identities. This source bridge preserves the conditional induction rule.
+It does not establish historical execution from a claimed `PASS`: full root acceptance
+still requires the observed geometric runs and complete joins of all fourteen rounds,
+rooted at the fixed first result.
+Even a complete adaptive root leaves the later transition tree, branch capture, and
+global composition to be checked.
+
+The accepted
+[round-eight result](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round8-final/result.json)
+checks all eleven owners and 1,251 rows, with 91 compressed additions and an exact
+joined next state, in 76.119 seconds wall.
+It binds continuation checker
+`17fc81b2b08a80456325b347b3effa25050e4e233d9a984292e0d6339bb64e73` and the reviewed
+helper `858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385`. The first
+eight accepted rounds cover 88 owner updates and 6,690 rows; root, capture, and global
+verdicts remain false.
+Four helper controls exercise closed ties, a positive gap, point and segment regions,
+and rejection of area domains or malformed polygons, including a star traversal.
+Together with inherited-domain and generic refusal controls, the focused review run
+passed fourteen tests in 4.90 seconds; the separate complete generic replay is the
+eighth generic test above.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

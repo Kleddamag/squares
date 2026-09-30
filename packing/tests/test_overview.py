@@ -251,6 +251,19 @@ def test_other_projects_include_every_source_repository_the_record_reviews() -> 
     assert not any("jlevy/squares" in url for url in listed)
 
 
+def test_other_project_cards_are_links_showing_their_address(page: str) -> None:
+    """Each other project's card is the link itself, with no popover, and shows its
+    address beside GitHub's mark (or the host's saved favicon)."""
+    section = page.split('id="other-square-packing-projects"', 1)[1].split("<h2", 1)[0]
+    cards = re.findall(r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', section)
+    assert [url for url, _ in cards] == [url for url, _, _ in overview_sections.OTHER_PROJECTS]
+    for url, body in cards:
+        assert url.removeprefix("https://") in body.replace("<wbr>", ""), url
+        assert 'class="site-link-icon"' in body, url
+    assert "popovertarget" not in section
+    assert "pop-project-" not in page
+
+
 def test_record_line_links_point_at_their_entry() -> None:
     lines = overview_data.RESULTS.read_text(encoding="utf-8").splitlines()
     for result in overview_data.load().results:
@@ -394,9 +407,11 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
     """Every card opens a popover that shows its target and ends in one button that goes
     there. Another page is rendered in a frame, in its embedded view, and the button
     expands it; a place on this page, or another site, is previewed, and the button goes
-    there. The card's icon and the button's agree, and every target on the site exists."""
+    there. The card's icon and the button's agree, and every target on the site exists.
+    An other project's card is the exception, the link itself with no popover (its own
+    test above)."""
     cards = CARD.findall(page)
-    assert {kind for _, kind in cards} == {"scroll", "page", "external"}
+    assert {"scroll", "page"} <= {kind for _, kind in cards} <= {"scroll", "page", "external"}
     assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
     served = {*render_overview.SITE_PAGES, "workbench/"}

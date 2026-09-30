@@ -191,8 +191,12 @@ it.
     repository document also offers its source “On GitHub”, which opens it on `main`.
     Every repository link on the site names `main`, never a commit, and is made by
     `devtools/repo_links.py`.
-  - When the card leads off the site, as an other project’s card does, the popover
-    previews the repository and its author, and the button opens it.
+  - When the card leads to another project off the site, the card is the link itself and
+    has no popover: its address is the whole of what a preview would say.
+    It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
+    URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
+    and inlined, since the page fetches nothing), and opens it in a new tab.
+    This is the one exception to the popover rule.
   - When the card leads to a row on this page, the popover previews the row, read from
     the same record: a result’s claim, why it matters, its rungs and records.
     The button shows the row in the table.

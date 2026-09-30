@@ -347,6 +347,26 @@ body {
   line-height: 1.4;
 }
 
+/* A link card's address, under its note: the host's mark in the support gray, level with
+   the address's first line, then the address, which wraps after a slash (and only
+   inside a name too long for a line) rather than widen the card. */
+.kpress .site-card .site-card-url {
+  align-items: first baseline;
+  color: var(--site-support-color);
+  display: flex;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  gap: 0.4rem;
+  margin-block-start: 0.35rem;
+  overflow-wrap: break-word;
+}
+.kpress .site-card .site-link-icon {
+  block-size: 1em;
+  flex: none;
+  inline-size: 1em;
+  translate: 0 0.15em;
+}
+
 /* ---------- Tables: additions to .kpress-table ---------- */
 .site-table-tools {
   display: flex;

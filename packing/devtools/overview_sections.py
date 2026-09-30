@@ -9,8 +9,11 @@ works without scripts: rows are all present, details open with `<details>`, and
 
 from __future__ import annotations
 
+import base64
 import html
 import re
+from pathlib import Path
+from urllib.parse import urlsplit
 
 from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
@@ -662,27 +665,72 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
 )
 
 
+#: Favicons for other projects hosted off GitHub, saved here by host name
+#: (`example.org.png`, `.svg` or `.ico`) and inlined, so the page fetches nothing.
+PROJECT_FAVICONS = Path(__file__).resolve().parent / "overview" / "favicons"
+
+#: GitHub's mark (Octicons `mark-github`, 16 units), drawn in the text colour.
+GITHUB_MARK = (
+    '<svg class="site-link-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">'
+    '<path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08'
+    "-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 "
+    "0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27"
+    "-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28"
+    "-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15"
+    "-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67"
+    '.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>'
+)
+
+_FAVICON_TYPES = {".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon"}
+
+
+def link_icon(url: str) -> str:
+    """The mark beside a project's address: GitHub's for a GitHub URL, otherwise the
+    site's own favicon from `PROJECT_FAVICONS`, which a build without one refuses."""
+    host = (urlsplit(url).hostname or "").removeprefix("www.")
+    if host == "github.com":
+        return GITHUB_MARK
+    for suffix, mime in _FAVICON_TYPES.items():
+        path = PROJECT_FAVICONS / f"{host}{suffix}"
+        if path.is_file():
+            data = base64.b64encode(path.read_bytes()).decode("ascii")
+            return (
+                f'<img class="site-link-icon" src="data:{mime};base64,{data}" alt="" '
+                'width="16" height="16">'
+            )
+    raise SystemExit(
+        f"{url}: save {host}'s favicon as {PROJECT_FAVICONS.name}/{host}.png (or .svg, .ico)"
+    )
+
+
+def _breakable(address: str) -> str:
+    """An address that may wrap after each slash rather than inside a name."""
+    return "/<wbr>".join(_esc(part) for part in address.split("/"))
+
+
+def link_card(url: str, label: str, value: str, note: str) -> str:
+    """A card that is itself the link to a place off the site: no popover, since the
+    address it shows is the whole of what a preview would say. It carries the label,
+    the value and note, and the address under them beside the host's mark."""
+    shown = url.removeprefix("https://").removeprefix("http://").rstrip("/")
+    return (
+        f'<a class="site-card site-card-link" href="{_esc(url)}" data-go="external" '
+        'target="_blank" rel="noopener noreferrer">'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-note">{note}</span>'
+        f'<span class="site-card-url">{link_icon(url)}<span>{_breakable(shown)}</span></span>'
+        "</a>"
+    )
+
+
 def other_project_cards() -> str:
-    """One card per other project: its repository's name and owner, its author, and what
-    it holds. Each leads off the site, so its popover previews it and its button opens
-    the repository's home page."""
+    """One card per other project: its repository's name, its author, what it holds and
+    its address. Each card is the link itself, opening the project in a new tab."""
     cards = []
     for url, author, note in OTHER_PROJECTS:
-        owner, name = url.removeprefix("https://github.com/").split("/")
-        slug = re.sub(r"[^a-z0-9]+", "-", f"{owner}-{name}".lower()).strip("-")
-        cards.append(
-            card(
-                f"pop-project-{slug}",
-                f"By {author}",
-                _esc(name),
-                _esc(note),
-                preview=_dl(
-                    [("Repository", _esc(f"{owner}/{name}")), ("Author", _esc(author))]
-                ),
-                href=url,
-                action=f"Open {owner}/{name} on GitHub",
-            )
-        )
+        name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
+        cards.append(link_card(url, f"By {author}", _esc(name), _esc(note)))
     return _cards(cards)
 
 

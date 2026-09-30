@@ -14,16 +14,17 @@ counts and standings from the functions here, as `frontier/RESULTS.md`
   read from the bibliography's typed lineage.
 
 **Standing is derived from the case records, never stored** (epistemics.md, "Results by
-Others"). An entry *holds* where a case in its scope has a bound that rests on it, read
-the way the per-case rows credit a bound: the one first-party result behind a bound of
-this project's (`project_result`), else every entry carrying the bound's own evidence
-(`results_carrying` over `own_evidence`, which leaves the grid and area bounds out). So a
-shared checker, such as the interval decision several first-party certificates cite, does
-not make every rung it decided hold the bound. Where only a reported bound rests on an
-entry, it holds as reported. An entry that holds nothing is a *second certificate* where
-it proves the exact value of a proved case (it cites that case's verified upper bound
-beside a lower bound of its own), *superseded* where it is any other bound, and not a
-bound at all where its evidence claims none.
+Others"). An entry is the *current best* where a case in its scope has a bound that
+rests on it (the code calls this `HOLDS`), read the way the per-case rows credit a
+bound: the one first-party result behind a bound of this project's (`project_result`),
+else every entry carrying the bound's own evidence (`results_carrying` over
+`own_evidence`, which leaves the grid and area bounds out). So a shared checker, such as
+the interval decision several first-party certificates cite, does not make every rung it
+decided hold the bound. Where only a reported bound rests on an entry, it is the current
+best as reported. An entry that holds no bound is a *second certificate* where it proves
+the exact value of a proved case (it cites that case's verified upper bound beside a
+lower bound of its own), *superseded* where it is any other bound, and not a bound at
+all where its evidence claims none.
 
 **Recent is decided where the record already decides it; nothing here defines it.** A
 verified lower bound is recent where the stage and the atlas star it,
@@ -91,8 +92,8 @@ ELLIPSIS = "…"
 NOT_A_BOUND = "—"
 
 #: An entry's standing, derived from the case records (see the module docstring).
-HOLDS = "holds"
-HOLDS_REPORTED = "holds, reported"
+HOLDS = "current best"
+HOLDS_REPORTED = "current best, reported"
 SECOND_CERTIFICATE = "second certificate"
 #: A second route to a proved value that this repository has not replayed: the same word
 #: as a replayed one would say it had been checked here.

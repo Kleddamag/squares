@@ -733,7 +733,7 @@ def test_every_result_shows_the_standing_readme_derives(
     records: render_recent_results.Records,
 ) -> None:
     """Standing is `render_recent_results.standing`, never restated: every table row
-    carries it as an attribute and a chip, and only `holds` takes the accent."""
+    carries it as an attribute and a chip, and only `current best` takes the accent."""
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
@@ -741,7 +741,7 @@ def test_every_result_shows_the_standing_readme_derives(
         assert f'data-standing="{overview_sections.standing_key(expected)}"' in row, result.id
         assert overview_sections.standing_chip(expected) in row, result.id
     held = overview_sections.standing_chip(render_recent_results.HOLDS)
-    assert 'data-tone="accent">holds</span>' in held
+    assert 'data-tone="accent">current best</span>' in held
     for other in render_recent_results.STANDINGS[1:]:
         assert "data-tone" not in overview_sections.standing_chip(other), other
     recent = _recent_table(page)
@@ -873,8 +873,8 @@ def test_the_recent_table_splits_method_credit_and_standing() -> None:
         overview_sections.standing_chips(render_recent_results.NOT_A_BOUND).count("site-chip")
         == 1
     )
-    held = overview_sections.standing_chips("holds, reported")
-    assert 'data-tone="accent">holds</span>' in held
+    held = overview_sections.standing_chips("current best, reported")
+    assert 'data-tone="accent">current best</span>' in held
     assert 'data-standing="reported">reported</span>' in held
 
 

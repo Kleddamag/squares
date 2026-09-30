@@ -420,10 +420,10 @@ it.
   Chips sit inline and wrap like words, a space apart, with a small block margin
   (0.15rem) so a wrapped row never touches the row above, on any page or at any width.
   A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`. A standing chip
-  carries `data-standing` and adds no style of its own: `holds` takes the accent, as a
-  settled state, and every other standing (`holds, reported`, `second certificate`,
-  `superseded`, `not a bound`) the plain gray, so a reader sees which results still hold
-  without the others shouting.
+  carries `data-standing` and adds no style of its own: `current best` takes the accent,
+  as a settled state, and every other standing (`current best, reported`,
+  `second certificate`, `superseded`, `not a bound`) the plain gray, so a reader sees
+  which results still hold without the others shouting.
   A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the

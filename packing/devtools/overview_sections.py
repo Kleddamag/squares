@@ -60,8 +60,8 @@ def standing_label(standing: str) -> str:
 
 
 def standing_key(standing: str) -> str:
-    """A standing as a row attribute and a filter value: `holds, reported` is
-    `holds-reported`."""
+    """A standing as a row attribute and a filter value: `current best, reported`
+    is `current-best-reported`."""
     return re.sub(r"[^a-z]+", "-", standing_label(standing)).strip("-")
 
 

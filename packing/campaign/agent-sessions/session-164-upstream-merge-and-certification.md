@@ -766,7 +766,7 @@ session:
     bead: think-3i74
     objective: Admit completed case batches, finish the baseline exclusions and capture root,
       and extend reviewed state ancestry to the remaining multi-node certificates.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Reviewed integer collision and immutable execution now support broader replay.
     budget_minutes: 30
@@ -777,10 +777,70 @@ session:
     validation_command: Focused checker controls and frozen selected source replays.
     kill_condition: A missing premise, changed source or incomplete execution prevents credit.
     fallback: Retain scoped refusals and implement the next independently reviewed obligation.
+    outcome: Reviewed exclusions reached 2018 of 2180 and completed the exact1931-case
+      baseline. The baseline-dependent D4 finite cuts now pass with their execution
+      premise. Full capture root state passed891.93s replay and Astra review.
+      Fixed ancestry, variable closed partitions and partner self-cuts are reviewed;
+      child branches and special geometric replays continue.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-full-integer/result.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/baseline-d4-cuts/complete-baseline-cuts.json
+    stop_reason: Component checkpoint at 2026-09-30T10:44:16Z.
+    next_action: Run independent case and capture lanes while reviewing D4 cut admission.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Complete generic refinement replay and constrained special cases while
+      validating full capture branches from the accepted root state.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: The exact baseline and capture root are accepted; remaining branch
+      and constraint consumers now have independently established starting premises.
+    budget_minutes: 30
+    started_at: '2026-09-30T10:44:16Z'
+    deadline_at: '2026-09-30T11:14:16Z'
+    expected_output: Additional reviewed case batches, complete variable-partition
+      and special D4 runs, and accepted child capture state.
+    validation_command: Frozen selected proof replays with focused adapter controls.
+    kill_condition: Partial geometry, mismatched source or an unproved branch condition
+      prevents mathematical credit.
+    fallback: Retain the precise missing obligation; keep independent replay lanes active.
+    outcome: Reviewed exclusions reached 2110 of 2180, including both special D4 cases
+      and a fresh metadata-corrected 1875 replay. Full r1 capture accepted; all924
+      required nonfield source objects acquired. Shared child verifier and final
+      obligation inventory implemented and under review.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/capture-branch-r1-full/result.json
+    stop_reason: Component checkpoint at 2026-09-30T11:13:41Z.
+    next_action: Sol advances generic and capture consumers; Astra reviews new implications;
+      coordinator completes intake, closed-partition planning and evidence integration.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Finish remaining multi-node exclusions and special center partition while
+      replaying shared capture children and auditing final composition.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Both baseline-dependent D4 cases and r1 capture now have reviewed executions.
+    budget_minutes: 30
+    started_at: '2026-09-30T11:13:41Z'
+    deadline_at: '2026-09-30T11:43:41Z'
+    expected_output: Reviewed remaining-case coverage, accepted child states or contradictions,
+      and explicit final obligation map.
+    validation_command: Frozen selected proof replays and focused changed-tool controls.
+    kill_condition: Missing premises, incomplete rows or changed dependencies prevent credit.
+    fallback: Preserve precise refusals and advance independent cases beside implementation.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Run independent case and capture lanes while reviewing D4 cut admission.
+    next_action: Sol handles empty-domain grammar and center branches; Sol capture lane
+      replays reviewed children; Astra audits implications; coordinator integrates evidence.
   budget:
     wall_minutes: 1135
     max_cycles: 40

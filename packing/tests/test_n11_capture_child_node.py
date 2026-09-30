@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import copy
+import json
 import time
 from fractions import Fraction as Q
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -127,6 +129,49 @@ def test_r11_parent_requires_all_near13_updates_complete() -> None:
         )
     with pytest.raises(ValueError, match="accepted complete pinned child"):
         child.admit_parent({**accepted, "final_state_canonical_sha256": "wrong"}, pin)
+
+
+@pytest.mark.parametrize("node", ["far2", "r111"])
+def test_r11_descendants_require_exact_partial_parent_state(node: str) -> None:
+    pin = child.PINS[node]
+    accepted = {
+        "status": pin.parent_status,
+        "child_node_state_checked": True,
+        "terminal_empty_pose_checked": False,
+        "capture_tree_proved": False,
+        "candidate_capture_proved": False,
+        "global_optimality_proved": False,
+        "checker_sha256": pin.parent_checker_sha,
+        "child_source_sha256": pin.parent_source_sha,
+        "final_state_canonical_sha256": pin.parent_final_sha,
+        "node_id": "r11-portable-v1",
+        "steps_checked": 7,
+        "steps": [{"index": index, "complete": index < 6} for index in range(7)],
+    }
+    child.admit_parent(accepted, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent(
+            {**accepted, "steps": [*accepted["steps"][:-1], {"index": 6, "complete": True}]},
+            pin,
+        )
+
+
+def test_r11_descendant_pins_match_retained_source_headers() -> None:
+    source_graph = (
+        Path(__file__).resolve().parents[1]
+        / "resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json"
+    )
+    headers = json.loads(source_graph.read_text())["source_headers"]
+    for node, path in (
+        ("far2", "research/candidate-capture/tree438-facet/r110.json"),
+        ("r111", "research/candidate-capture/tree438-facet/r111.json"),
+    ):
+        pin = child.PINS[node]
+        header = headers[path]
+        assert pin.node_id == header["node_id"]
+        assert {"path": pin.parent_path, "sha256": pin.parent_source_sha} == header["parent"]
+        assert pin.constraints == header["constraints"]
+        assert pin.steps == header["steps"]
 
 
 def test_extra_outer_support_is_checked_before_standard_superset_adapter() -> None:

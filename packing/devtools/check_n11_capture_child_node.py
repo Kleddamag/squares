@@ -35,15 +35,19 @@ R1_NODE_CHECKER_SHA = "3e1bfc6471acc48ccbbce00a5c546f4f7e1e4e0cdd1bb3ce51247bfc9
 R1_RESULT_SHA = "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4"
 R10_RESULT_SHA = "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f"
 NEAR13_RESULT_SHA = "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2"
+R11_RESULT_SHA = "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f"
 R1_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r1.json"
 R10_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r10.json"
 NEAR13_PATH = "/workspace/eleven-square/research/candidate-capture/near13-self-180.json"
+R11_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-facet/r11.json"
 R10_SOURCE_SHA = "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48"
 NEAR13_SOURCE_SHA = "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09"
+R11_SOURCE_SHA = "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a"
 ROOT_FINAL_SHA = "46001c7f39fd2382696f82bd24e1049722ac27b8fc04f0626e124bc50a27e979"
 R1_FINAL_SHA = "fd24cc9ef4e3c6a0e61707516e608fe6b4dbb66e791ffd9cc8048b35f812330a"
 R10_FINAL_SHA = "356e63cb58e0a49e54066c1923388d57128d512a929acb823ff8280553b01926"
 NEAR13_FINAL_SHA = "b0404ffa1c808d1d03c8fb174c25584041b0d22f96f416149e14dcf965b36226"
+R11_FINAL_SHA = "ecdebb59ba52e558d66404ad6689653c05598cfe28da3518244314a149060e71"
 
 
 def center_constraint(keep: str) -> dict[str, Any]:
@@ -131,7 +135,7 @@ PINS = {
     ),
     "r11": Pin(
         "r11-portable-v1",
-        "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+        R11_SOURCE_SHA,
         NEAR13_PATH,
         NEAR13_SOURCE_SHA,
         NEAR13_RESULT_SHA,
@@ -140,6 +144,40 @@ PINS = {
         "PASS_CHILD_NODE_STATE",
         [center_constraint("ge"), angle_constraint(13, Q(147, 512), "ge")],
         7,
+        None,
+    ),
+    "far2": Pin(
+        "r110-portable-v1",
+        "79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576",
+        R11_PATH,
+        R11_SOURCE_SHA,
+        R11_RESULT_SHA,
+        "e7383c3fb940c123ff39fa162bd401e389299daca21a85ed167af4f99df42989",
+        R11_FINAL_SHA,
+        "PASS_CHILD_NODE_STATE",
+        [
+            center_constraint("ge"),
+            angle_constraint(13, Q(147, 512), "ge"),
+            angle_constraint(2, Q(183, 512), "le"),
+        ],
+        11,
+        (8, 10),
+    ),
+    "r111": Pin(
+        "r111-portable-v1",
+        "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+        R11_PATH,
+        R11_SOURCE_SHA,
+        R11_RESULT_SHA,
+        "e7383c3fb940c123ff39fa162bd401e389299daca21a85ed167af4f99df42989",
+        R11_FINAL_SHA,
+        "PASS_CHILD_NODE_STATE",
+        [
+            center_constraint("ge"),
+            angle_constraint(13, Q(147, 512), "ge"),
+            angle_constraint(2, Q(183, 512), "ge"),
+        ],
+        48,
         None,
     ),
 }
@@ -191,6 +229,7 @@ def admit_parent(record: dict[str, Any], pin: Pin) -> None:
         parent_shape = {
             R10_SOURCE_SHA: ("r10-portable-v1", 13, False),
             NEAR13_SOURCE_SHA: ("near13-self-180", 44, True),
+            R11_SOURCE_SHA: ("r11-portable-v1", 7, False),
         }.get(pin.parent_source_sha)
         if parent_shape is None:
             raise ValueError("unsupported accepted child parent")

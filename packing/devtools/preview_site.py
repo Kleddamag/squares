@@ -297,7 +297,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             for page_path in pages:
                 if page_path.startswith("workbench/"):
                     continue
-                result = check_math_faces.check(url + page_path)
+                # Site pages set their math lazily; `?typeset=all` asks site-math.js to set
+                # every formula first, so the check reads all of them. The explainer
+                # ignores the parameter.
+                result = check_math_faces.check(url + page_path + "?typeset=all")
                 findings.problems.extend(
                     f"{page_path}: {finding}" for finding in result["findings"]
                 )

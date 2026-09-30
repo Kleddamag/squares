@@ -21,6 +21,8 @@
   /* The site pages' wide track: the reading measure the explainer uses, plus the room
      its figures take, which cards, tables and media share. */
   --site-track: calc(var(--kpress-font-size-base) * 40 + 14rem);
+  /* The navigation bar (site-nav.css) aligns its content to the wide track. */
+  --site-nav-max-width: calc(var(--site-track) + 2rem);
   /* The chip fill: the text colour, a touch toward the muted one. Dark in light mode
      and light in dark mode, since the two tokens swap with the theme. */
   --site-chip-ink: color-mix(in oklab, var(--kpress-doc-text) 86%, var(--kpress-doc-muted));
@@ -108,75 +110,6 @@
 }
 
 /* ── Navigation bar and footer ────────────────────────────────────────────────────── */
-
-.site-nav {
-  background: var(--kpress-doc-bg);
-  border-block-end: 1px solid var(--kpress-doc-border);
-  color: var(--kpress-doc-text);
-  font-family: var(--kpress-font-sans);
-  font-feature-settings: var(--kpress-font-features-sans);
-  font-size: var(--kpress-font-size-small);
-  font-weight: var(--kpress-font-weight-sans-regular);
-  line-height: var(--kpress-line-height-tight);
-}
-
-.site-nav-inner {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  margin-inline: auto;
-  max-width: calc(var(--site-track) + 2rem);
-  padding: 0.5rem 1rem;
-}
-
-.site-nav a {
-  border-radius: var(--kpress-radius-none);
-  color: inherit;
-  display: block;
-  padding: 0.35rem 0.5rem;
-  text-decoration: none;
-  transition:
-    background-color var(--kpress-transition-fast),
-    color var(--kpress-transition-fast);
-}
-
-.site-nav a:hover,
-.site-nav a:focus-visible {
-  background: var(--kpress-doc-surface-hover);
-  color: var(--kpress-doc-text);
-  text-decoration: none;
-}
-
-.site-nav a:focus-visible {
-  outline: 2px solid var(--kpress-doc-link);
-  outline-offset: 1px;
-}
-
-.site-nav-logo {
-  font-size: var(--kpress-font-size-large);
-  font-weight: var(--kpress-font-weight-sans-bold);
-  margin-inline-start: -0.5rem;
-}
-
-.site-nav-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 0.15rem;
-  list-style: none;
-  margin: 0 0 0 auto;
-  padding: 0;
-}
-
-.site-nav-items a {
-  color: var(--kpress-doc-muted);
-}
-
-.site-nav-items a[aria-current="page"] {
-  background: var(--kpress-doc-surface-selected);
-  color: var(--kpress-doc-text);
-  font-weight: var(--kpress-font-weight-sans-medium);
-}
 
 .site-footer {
   background: var(--kpress-doc-bg);
@@ -1058,7 +991,6 @@
 /* ── Motion and print ─────────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .site-nav a,
   .site-card,
   .site-card-link::before {
     transition: none;
@@ -1066,7 +998,6 @@
 }
 
 @media print {
-  .site-nav,
   .site-footer,
   .site-popover,
   .site-table-filters {

@@ -111,6 +111,8 @@ T026_REVIEW = REPO / "docs/project/reviews/review-2026-09-10-t025-t026-verifiabl
 RESULT_ID = "t-018"
 TEMPLATES = Path(__file__).with_name("templates")
 TEMPLATE = TEMPLATES / "explainer-shell.html"
+#: The navigation bar's rules, shared with the site's own pages so the bar cannot differ.
+SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 MARKDOWN = TEMPLATES / "explainer-article.md"
 #: First-party classic scripts inlined by the shell. The HTML carries placeholders only;
 #: these files are the sources Biome, ESLint and tsc check.
@@ -2393,6 +2395,7 @@ def shell_substitutions(
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         **shared,
         "SITE_NAV": site_nav(),
+        "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "EDITION_NOTICE": notice,
         "BODY_HTML": body,
     }
@@ -2679,6 +2682,7 @@ RENDER_INPUTS = (
     PACKING / "atlas" / "known-best" / "rendering" / "n-011.svg",
     *COMPOSITE_ASSETS,
     TEMPLATE,
+    SITE_NAV_CSS,
     MARKDOWN,
     PACKING / "devtools" / "templates" / "fonts",
     REPO / "vendor" / "kpress",

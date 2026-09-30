@@ -290,70 +290,12 @@ body {
 
    This page does not inline the site's stylesheet (`site.css`, described in
    `site-design.md`): that sheet also styles the other pages' cards, chips and tables,
-   and none of it may meet the article's selectors. The bar's rules are restated here
-   from it instead, in the same kpress tokens, so the bar looks the same on every page;
-   a change to the bar in `site.css` is made here too. Every rule is scoped to
-   `.site-nav` or `.site-edition-notice`, neither of which the article's Markdown
-   produces.
+   and none of it may meet the article's selectors. The bar's rules come from the one
+   file every page inlines, `site-nav.css`, so the bar is the same on every page. Every
+   rule here is scoped to `.site-nav` or `.site-edition-notice`, neither of which the
+   article's Markdown produces.
    ============================================================ */
-.site-nav {
-  background: var(--kpress-doc-bg);
-  border-block-end: 1px solid var(--kpress-doc-border);
-  color: var(--kpress-doc-text);
-  font-family: var(--kpress-font-sans);
-  font-feature-settings: var(--kpress-font-features-sans);
-  font-size: var(--kpress-font-size-small);
-  font-weight: var(--kpress-font-weight-sans-regular);
-  line-height: var(--kpress-line-height-tight);
-}
-.site-nav-inner {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  margin-inline: auto;
-  max-width: calc(var(--kpress-font-size-base) * 40 + 16rem);
-  padding: 0.5rem 1rem;
-}
-.site-nav a {
-  border-radius: var(--kpress-radius-none);
-  color: inherit;
-  display: block;
-  padding: 0.35rem 0.5rem;
-  text-decoration: none;
-  transition:
-    background-color var(--kpress-transition-fast),
-    color var(--kpress-transition-fast);
-}
-.site-nav a:hover,
-.site-nav a:focus-visible {
-  background: var(--kpress-doc-surface-hover);
-  color: var(--kpress-doc-text);
-  text-decoration: none;
-}
-.site-nav a:focus-visible {
-  outline: 2px solid var(--kpress-doc-link);
-  outline-offset: 1px;
-}
-.site-nav-logo {
-  font-size: var(--kpress-font-size-large);
-  font-weight: var(--kpress-font-weight-sans-bold);
-  margin-inline-start: -0.5rem;
-}
-.site-nav-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 0.15rem;
-  list-style: none;
-  margin: 0 0 0 auto;
-  padding: 0;
-}
-.site-nav-items a { color: var(--kpress-doc-muted); }
-.site-nav-items a[aria-current="page"] {
-  background: var(--kpress-doc-surface-selected);
-  color: var(--kpress-doc-text);
-  font-weight: var(--kpress-font-weight-sans-medium);
-}
+{{SITE_NAV_CSS}}
 /* The notice takes the reading column as every block of the page does, and its type is
    the page's supporting text: the caption face, size and colour. */
 .site-edition-notice {
@@ -373,9 +315,6 @@ body {
 }
 .site-edition-notice a { color: var(--kpress-doc-accent); text-decoration: none; }
 .site-edition-notice a:hover { text-decoration: underline; }
-@media (prefers-reduced-motion: reduce) {
-  .site-nav a { transition: none; }
-}
 @media print {
   .site-nav, .site-edition-notice { display: none; }
 }

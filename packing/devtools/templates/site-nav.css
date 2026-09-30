@@ -1,0 +1,88 @@
+/* The site's navigation bar, on every page that carries one: the overview, the frontier
+   atlas and the tutorial inline it through `devtools.render_overview`, and the explainer
+   through `devtools.render_explainer`. One file, so the bar cannot differ between them.
+   Written only in kpress tokens, and every rule is scoped to `.site-nav`, so it never
+   meets the explainer's article or math selectors. A page sets `--site-nav-max-width` to
+   align the bar with its own track; the fallback is the explainer's column. Described in
+   site-design.md. */
+
+.site-nav {
+  background: var(--kpress-doc-bg);
+  border-block-end: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-small);
+  font-weight: var(--kpress-font-weight-sans-regular);
+  line-height: var(--kpress-line-height-tight);
+}
+
+.site-nav-inner {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-inline: auto;
+  max-width: var(--site-nav-max-width, calc(var(--kpress-font-size-base) * 40 + 16rem));
+  padding: 0.5rem 1rem;
+}
+
+.site-nav a {
+  border-radius: var(--kpress-radius-none);
+  color: inherit;
+  display: block;
+  padding: 0.35rem 0.5rem;
+  text-decoration: none;
+  transition:
+    background-color var(--kpress-transition-fast),
+    color var(--kpress-transition-fast);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  background: var(--kpress-doc-surface-hover);
+  color: var(--kpress-doc-text);
+  text-decoration: none;
+}
+
+.site-nav a:focus-visible {
+  outline: 2px solid var(--kpress-doc-link);
+  outline-offset: 1px;
+}
+
+.site-nav-logo {
+  font-size: var(--kpress-font-size-large);
+  font-weight: var(--kpress-font-weight-sans-bold);
+  margin-inline-start: -0.5rem;
+}
+
+.site-nav-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.15rem;
+  list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+}
+
+.site-nav-items a {
+  color: var(--kpress-doc-muted);
+}
+
+.site-nav-items a[aria-current="page"] {
+  background: var(--kpress-doc-surface-selected);
+  color: var(--kpress-doc-text);
+  font-weight: var(--kpress-font-weight-sans-medium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav a {
+    transition: none;
+  }
+}
+
+@media print {
+  .site-nav {
+    display: none;
+  }
+}

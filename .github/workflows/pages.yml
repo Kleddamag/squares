@@ -102,6 +102,7 @@ name: Certificate page
       - packing/devtools/templates/site-shell.html
       - packing/devtools/templates/site-nav.html
       - packing/devtools/templates/site.css
+      - packing/devtools/templates/site-nav.css
       - packing/devtools/templates/overview-article.md
       - packing/devtools/templates/frontier-article.md
       - packing/frontier/**

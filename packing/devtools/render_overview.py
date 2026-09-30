@@ -56,6 +56,7 @@ EXPLAINER_OUTPUT = render_explainer.OUTPUT.parent
 TEMPLATES = site_kit.TEMPLATES
 SHELL = TEMPLATES / "site-shell.html"
 SITE_CSS = TEMPLATES / "site.css"
+SITE_NAV_CSS = render_explainer.SITE_NAV_CSS
 REPO_URL = site_kit.REPO_URL
 
 #: The parts of the site, each a module with `RENDER_INPUTS` and `pages()` or `assets()`.
@@ -94,6 +95,7 @@ SKELETON_INPUTS: tuple[Path, ...] = (
     SHELL,
     site_kit.NAV_TEMPLATE,
     SITE_CSS,
+    SITE_NAV_CSS,
     *MATH_SCRIPTS.values(),
     KPRESS_CLIENT,
     SCRIPTS,
@@ -141,7 +143,9 @@ def shell_assets() -> ShellAssets:
     return ShellAssets(
         kpress_css=render_explainer.kpress_css(static) + render_explainer.katex_css(static),
         relation_css=render_explainer.relation_face_css(static),
-        site_css=SITE_CSS.read_text(encoding="utf-8"),
+        site_css=SITE_NAV_CSS.read_text(encoding="utf-8")
+        + "\n"
+        + SITE_CSS.read_text(encoding="utf-8"),
         theme_bootstrap=render_explainer.theme_bootstrap(static),
         katex_js=render_explainer.katex_js(static),
         kpress_client=render_explainer.kpress_client_js(static, KPRESS_MODULES),

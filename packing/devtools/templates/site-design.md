@@ -22,9 +22,10 @@ Each addition is written so it could move upstream into KPress unchanged.
 - **Scoped.** Every selector names a `site-` class or the `data-site-page` attribute the
   site shell stamps on `<html>`, so nothing in it can match the explainer’s article
   (`.cert-page`), its figures or its math.
-  The explainer does not inline this sheet: it carries the navigation bar with a copy of
-  the bar’s rules in [explainer-shell.html](explainer-shell.html), in the same tokens,
-  and a change to the bar here is made there too.
+  The explainer does not inline this sheet.
+  The navigation bar’s rules are in their own file, [site-nav.css](site-nav.css), which
+  every page with the bar inlines, the explainer included, so the bar cannot differ
+  between pages; a page aligns it with its own track through `--site-nav-max-width`.
 - **Square.** Cards, chips, controls and the popover have square corners
   (`--kpress-radius-none`), like the explainer’s figures.
 
@@ -241,8 +242,10 @@ Until then the reader has KPress’s MathML. A print sets every formula first, a
 pixels of the viewport when the page opens has been set: what the reader can see, and a
 screen or two beyond it, is typeset.
 It does not mean every formula on the page is set.
-A check that reads every formula’s face calls `siteMath.typeset(document)` first.
-The explainer keeps its own `page.js` and its own meaning of the class.
+A check that reads every formula’s face opens the page with `?typeset=all`, which sets
+every formula, closed rows included, before `math-ready`; `devtools.preview_site` does
+this for `devtools.check_math_faces`. The explainer keeps its own `page.js` and its own
+meaning of the class.
 
 ## Media
 

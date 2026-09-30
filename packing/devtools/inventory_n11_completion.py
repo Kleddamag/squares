@@ -24,6 +24,12 @@ from devtools.inventory_n11_exclusions import (
     read_bound,
     require,
 )
+from devtools.n11_composition_joins import (
+    local_joins,
+    reviewed_capture_states,
+    root_scope,
+    symmetry_join,
+)
 
 RECEIPTS = PACKET / "receipts"
 FIXED = {
@@ -44,11 +50,17 @@ FIXED = {
     "capture-child-far15": ("cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e"),
     "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",
     "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
+    "capture-child-far13": "1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb",
     "pose-inclusion": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
     "local-isolation": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
 }
 # Source identities come from the reviewed graph, not from a supplied PASS string.
 CAPTURE = {
+    "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5": (
+        "capture-child-far13",
+        "child_source_sha256",
+        "child_node_state_checked",
+    ),
     "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09": (
         "capture-child-near13",
         "child_source_sha256",
@@ -213,6 +225,10 @@ def completion() -> dict[str, Any]:
         require(target.is_relative_to(RECEIPTS.resolve()), "root-chain path escaped packet")
         bound(target, sha)
     missing_nodes = [node for node in nodes if not node["reviewed_execution_bound"]]
+    missing_leaves = reviewed_capture_states(graph, records, CAPTURE)
+    local_joins(records, RECEIPTS)
+    symmetry_join(records, RECEIPTS)
+    root_scope(records)
     return {
         "status": "INCOMPLETE_PROOF_OBLIGATION_INVENTORY",
         "source_revision": REVISION,
@@ -230,6 +246,9 @@ def completion() -> dict[str, Any]:
         "center_partition_execution_pending": 1383 not in accepted,
         "capture_nodes": nodes,
         "missing_capture_source_sha256s": [node["source_sha256"] for node in missing_nodes],
+        "missing_capture_leaf_executions": missing_leaves,
+        "closed_capture_split_algebra_checked": True,
+        "retained_pose_local_join_checked": True,
         "pending_joins": [
             "Both center-partition branches for case 1383",
             "All three far-leaf contradictions and closed branch coverage",

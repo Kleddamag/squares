@@ -27,7 +27,7 @@
     },
     {
       "parent_source_sha256": "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48",
-      "reviewed_execution_bound": false,
+      "reviewed_execution_bound": true,
       "source_path": "research/candidate-capture/far13-collision-180.json",
       "source_sha256": "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5"
     },
@@ -63,7 +63,8 @@
     }
   ],
   "center_partition_execution_pending": true,
-  "checker_sha256": "184ba7d4aed4cc48a19caaedfdabc1d54ed398e844f3982279bca0b1eec8b351",
+  "checker_sha256": "958eec10581f487ca2a5cd8adbc60cde57dd21a5fa1a8d2a32e8bb3a08c94334",
+  "closed_capture_split_algebra_checked": true,
   "conditional_d4_premises_bound": [
     2175,
     2176
@@ -72,8 +73,11 @@
   "final_composition_review_required": true,
   "geometry_rerun": false,
   "global_optimality_proved": false,
+  "missing_capture_leaf_executions": [
+    "r110",
+    "near-refined1024-240"
+  ],
   "missing_capture_source_sha256s": [
-    "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5",
     "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
     "79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576",
     "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
@@ -122,8 +126,10 @@
   ],
   "premise": "Listed reviewed component executions occurred; this inventory does not prove their occurrence.",
   "required_exclusions": 2180,
+  "retained_pose_local_join_checked": true,
   "reviewed_fixed_receipt_sha256s": {
     "capture-branch-r1-full": "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4",
+    "capture-child-far13": "1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb",
     "capture-child-far15": "cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e",
     "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
     "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",

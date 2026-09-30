@@ -44,7 +44,7 @@ The remaining obligations have different acceptance rules:
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
 | Other exclusions | 243 generic cases, including nine reviewed singleton runs and complete parallel executions; all remaining source dependencies pinned | The baseline is complete. 7 extension cases and 26 returned cases remain: 33 distinct cases requiring independent geometric checks. These need 32 sequential checks and the center-partition case. Both baseline-dependent D4 geometric cases are accepted. |
 | Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual accepted geometric executions and the reviewed chain establish conditional root ownership. Later capture transitions remain open. |
-| Capture branches | Structural graph, conditional pose inclusion, the complete root-self, r1, r10 and near13 states, and the far15 contradiction | Child geometric transitions, branch coverage, ancestry, and final-state binding. |
+| Capture branches | Structural graph, conditional pose inclusion, the complete root-self, r1, r10 and near13 states, and the far15 and far13 contradictions | Four node executions remain: r11, far2, r111 and near; then final capture-to-local composition. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
 
 Astra-max has reviewed the exact field rules and strict-seed/owner-pilot argument.

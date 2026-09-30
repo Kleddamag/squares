@@ -2078,6 +2078,114 @@ objects.
 All four IDs were new, bringing the union to 2,147 of 2,180 required exclusions,
 with 33 remaining. Earlier refused runs retain zero credit.
 
+## Exact Closed-Tree Composition Conditions
+
+The final consumer must check the capture split algebra as well as receipt ancestry.
+In field coordinates, set
+$H_{15}=B(U/2+5/4)=121802296569435750786621/38770835900228141773100$. The root’s empty
+condition list splits into far15’s $y_{15}\le H_{15}$ and r1’s $y_{15}\ge H_{15}$.
+Within r1, r10 adds $t_{13}\le147/512$ and near13 adds $t_{13}\ge147/512$. Within r11,
+far2 adds $t_2\le183/512$ and r111 adds $t_2\ge183/512$. Each pair covers its parent
+including equality. The continuation edges r10 to far13, near13 to r11, and r111 to near
+preserve exactly the same conditions.
+Exact parent-state joins plus the three complete far-leaf contradictions therefore route
+every surviving pose to near.
+Publisher tree labels or a count of ten accepted nodes do not establish this exhaustive
+split.
+
+The near source `491afdaa` has 121 complete updates, `closed: false`, `terminal: true`,
+and no contradiction.
+Its required conclusion is accepted final state `a6d45c0c`, whose checked residual
+polygons cover every remaining feasible pose.
+That exact source and state discharge the conditional source-domain premise of
+pose-inclusion receipt `c5b97045`; an empty-pose conclusion would be the wrong
+obligation. The retained extraction `d519f3a4`, its compressed identity `7fccb88e`, the
+eleven-owner role bijection, complete live-row inventory, closed angle endpoints, and
+fixed inverse frame connect it to local-isolation receipt `a98623f5`. The shared focused
+radii and root enclosure must match exactly.
+The reviewed witness, cap inequality, and opposite-wall contacts in that local execution
+then supply the previously proved $S<T$ contradiction and upper bound at $T$. No further
+analytic hypothesis is introduced by this final join.
+
+Child-checker revision
+`2a81de9bbd20602f81e03f351a08b1def4a831a0cfc2abd576491e8c1b1cfb6b` is approved for the
+next r11 execution. It binds accepted near13 receipt `c6e6f7bc`, source `a2f30c92`,
+checker `ebbc83b0`, and final state `b0404ffa`. Its fixed parent registry requires all
+44 near13 updates complete while preserving the distinct r10 profile with a partial
+tail. The r11 source `280b5152` inherits the exact conditions and has six complete
+updates followed by an unpromoted partial step.
+The revision changes no row geometry; no r11 execution credit is granted here.
+
+## Far-13 Contradiction and Composition Join Implementation
+
+The
+[far13 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-far13/result.json),
+SHA-256 `1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb`, is accepted
+under reviewed checker `da027220`, frozen in the isolated checkout at `2232a9e16`. It
+binds accepted r10 receipt `d75b95da`, parent source `58da537e`, child source
+`c86ed9d0`, inherited conditions, and actual final-state digest `87482985`. All 24
+updates complete: 4,034 query rows, 8,523 partner rows, 11,277,080 collision
+inequalities, 32,220 cover events, 63,045 probes, 7,376 common-core planes, and 146
+additions. The final owner-10 update checks all 149 rows empty, with no addition.
+The actual receipt, frozen checker and dependency closure, parent, ordered steps,
+stdout, and final-state bindings pass.
+Wall time was 493.879 seconds; process CPU was not measured.
+This discharges the far13 branch contradiction only.
+Six capture node executions are now accepted; r11, far2, r111, and near remain open.
+
+The [composition join helper](../../../packing/devtools/n11_composition_joins.py),
+SHA-256 `02f18e5da546deba1b9ebea896bafa5bbc6aaed459ab7e24d2fe5f593bff828a`, and
+[completion inventory](../../../packing/devtools/inventory_n11_completion.py), SHA-256
+`e4b18e031714ce453a1183cbf9ed89dd7f24727a5570004c8ac08b18e3a5b98a`, pass review for
+their explicitly incomplete scope.
+They check the exact closed capture conditions and frames, accepted child states, and
+far-leaf terminal summaries.
+The retained pose extraction, role guard, inverse frame, label bijection, all 33 radii,
+root enclosure, 128 local branches, and 8,448 coordinate checks are joined.
+All six shared local arithmetic source files, both local proposal objects, and all three
+independent D4 inputs are bound.
+Near admission additionally requires its state conclusion and exactly 121 complete steps
+in order. Focused mutations refuse changed split signs, lost inherited conditions,
+altered final states, missing contradictions, missing local branches, and a changed
+inverse frame.
+An independent read-only invocation retains 2,147 exclusions, missing far2
+and near leaf executions, and false geometry-rerun and global flags.
+These joins do not replace the missing executions, case-1383 closure, or final
+complete-mode review.
+
+## Final Consumer and Classification Boundary
+
+The [final consumer](../../../packing/devtools/check_n11_final_composition.py), SHA-256
+`791538af3e5bc6bc8c38dcacb90df5e6d130a400c96318328bbfab92a18bb434`, passes source review
+with join helper `368157a0` and completion inventory `958eec10`. It separately requires
+all 2,180 exclusions, all ten capture node executions, the three far contradictions, the
+complete near state, both case-1383 branches, and a fixed identity for the independently
+reviewed complete exclusion inventory.
+The adaptive-root join checks the exact fourteen-round chain, 168 retained file
+bindings, 154 owner updates, 16,551 rows, 1,060 additions, and 2,036-row bridge.
+The consumer records and rechecks all six local files that enforce its assertions.
+Changed source identities and an unreviewed final inventory refuse.
+The
+[retained open execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition-open-2147-bound.json),
+SHA-256 `af492b12d6ee59eee4ce77e5bc763e4af62b8a4482ea6e31c529f32e446b015d`, correctly
+reports `INCOMPLETE_COMPOSITION`, 2,147 accepted exclusions, 33 missing exclusions, four
+missing capture nodes, and false geometry-rerun and global flags.
+This approval does not fill the deliberately unset final inventory identity or grant
+credit to any pending execution.
+
+Under [the repository’s classification rules](../../../epistemics.md), complete observed
+exact-algebraic executions and the reviewed composition would support V4/C3. C5 would
+additionally require the complete audit to be mapped as a non-superseded review with
+retained controls. The evidence must cite the actual geometric executions and their
+replay commands; running this receipt consumer alone establishes no new geometry.
+Shared local arithmetic and construction code must remain disclosed, and multiple
+implementations of the same method do not establish C4; no proof-assistant claim
+supports V5. The publisher’s four final-state digest discrepancies remain
+reproducibility defects even if the independently checked mathematical composition
+eventually closes.
+T-060 remains V0/C1 while those execution and final-review obligations
+are open.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -102,6 +102,32 @@ def test_grandchild_requires_complete_reviewed_parent_shape() -> None:
         )
 
 
+def test_r11_parent_requires_all_near13_updates_complete() -> None:
+    pin = child.PINS["r11"]
+    accepted = {
+        "status": pin.parent_status,
+        "child_node_state_checked": True,
+        "terminal_empty_pose_checked": False,
+        "capture_tree_proved": False,
+        "candidate_capture_proved": False,
+        "global_optimality_proved": False,
+        "checker_sha256": pin.parent_checker_sha,
+        "child_source_sha256": pin.parent_source_sha,
+        "final_state_canonical_sha256": pin.parent_final_sha,
+        "node_id": "near13-self-180",
+        "steps_checked": 44,
+        "steps": [{"index": index, "complete": True} for index in range(44)],
+    }
+    child.admit_parent(accepted, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent(
+            {**accepted, "steps": [*accepted["steps"][:-1], {"index": 43, "complete": False}]},
+            pin,
+        )
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent({**accepted, "final_state_canonical_sha256": "wrong"}, pin)
+
+
 def test_last_complete_update_uses_final_state_instead_of_missing_successor() -> None:
     pin = child.PINS["near13"]
     groups = {owner: [(Q(owner), Q())] for owner in pilot.MASK}

@@ -34,11 +34,16 @@ from devtools import check_n11_optimality_field_mask0 as geometry
 R1_NODE_CHECKER_SHA = "3e1bfc6471acc48ccbbce00a5c546f4f7e1e4e0cdd1bb3ce51247bfc94b10ce1"
 R1_RESULT_SHA = "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4"
 R10_RESULT_SHA = "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f"
+NEAR13_RESULT_SHA = "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2"
 R1_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r1.json"
 R10_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r10.json"
+NEAR13_PATH = "/workspace/eleven-square/research/candidate-capture/near13-self-180.json"
+R10_SOURCE_SHA = "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48"
+NEAR13_SOURCE_SHA = "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09"
 ROOT_FINAL_SHA = "46001c7f39fd2382696f82bd24e1049722ac27b8fc04f0626e124bc50a27e979"
 R1_FINAL_SHA = "fd24cc9ef4e3c6a0e61707516e608fe6b4dbb66e791ffd9cc8048b35f812330a"
 R10_FINAL_SHA = "356e63cb58e0a49e54066c1923388d57128d512a929acb823ff8280553b01926"
+NEAR13_FINAL_SHA = "b0404ffa1c808d1d03c8fb174c25584041b0d22f96f416149e14dcf965b36226"
 
 
 def center_constraint(keep: str) -> dict[str, Any]:
@@ -87,7 +92,7 @@ PINS = {
     ),
     "r10": Pin(
         "r10-portable-v1",
-        "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48",
+        R10_SOURCE_SHA,
         R1_PATH,
         branch.R1_SOURCE_SHA,
         R1_RESULT_SHA,
@@ -100,7 +105,7 @@ PINS = {
     ),
     "near13": Pin(
         "near13-self-180",
-        "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+        NEAR13_SOURCE_SHA,
         R1_PATH,
         branch.R1_SOURCE_SHA,
         R1_RESULT_SHA,
@@ -115,7 +120,7 @@ PINS = {
         "far13-collision-180",
         "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5",
         R10_PATH,
-        "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48",
+        R10_SOURCE_SHA,
         R10_RESULT_SHA,
         "ebbc83b0a92913234cd701d53557bab52305d1755727976f283a22d1fc3dbf0f",
         R10_FINAL_SHA,
@@ -123,6 +128,19 @@ PINS = {
         [center_constraint("ge"), angle_constraint(13, Q(147, 512), "le")],
         24,
         (10, 23),
+    ),
+    "r11": Pin(
+        "r11-portable-v1",
+        "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+        NEAR13_PATH,
+        NEAR13_SOURCE_SHA,
+        NEAR13_RESULT_SHA,
+        "ebbc83b0a92913234cd701d53557bab52305d1755727976f283a22d1fc3dbf0f",
+        NEAR13_FINAL_SHA,
+        "PASS_CHILD_NODE_STATE",
+        [center_constraint("ge"), angle_constraint(13, Q(147, 512), "ge")],
+        7,
+        None,
     ),
 }
 
@@ -170,6 +188,13 @@ def admit_parent(record: dict[str, Any], pin: Pin) -> None:
             "accepted complete r1 parent receipt required",
         )
     else:
+        parent_shape = {
+            R10_SOURCE_SHA: ("r10-portable-v1", 13, False),
+            NEAR13_SOURCE_SHA: ("near13-self-180", 44, True),
+        }.get(pin.parent_source_sha)
+        if parent_shape is None:
+            raise ValueError("unsupported accepted child parent")
+        expected_node, expected_steps, last_complete = parent_shape
         require(
             record.get("status") == "PASS_CHILD_NODE_STATE"
             and record.get("child_node_state_checked") is True
@@ -179,12 +204,12 @@ def admit_parent(record: dict[str, Any], pin: Pin) -> None:
             and record.get("global_optimality_proved") is False
             and record.get("child_source_sha256") == pin.parent_source_sha
             and record.get("final_state_canonical_sha256") == pin.parent_final_sha
-            and record.get("node_id") == "r10-portable-v1"
-            and record.get("steps_checked") == 13
-            and len(record.get("steps", [])) == 13
-            and [step["index"] for step in record["steps"]] == list(range(13))
+            and record.get("node_id") == expected_node
+            and record.get("steps_checked") == expected_steps
+            and len(record.get("steps", [])) == expected_steps
+            and [step["index"] for step in record["steps"]] == list(range(expected_steps))
             and all(step["complete"] is True for step in record["steps"][:-1])
-            and record["steps"][-1]["complete"] is False,
+            and record["steps"][-1]["complete"] is last_complete,
             "accepted complete pinned child parent receipt required",
         )
 

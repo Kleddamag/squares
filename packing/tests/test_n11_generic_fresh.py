@@ -70,34 +70,34 @@ def test_strict_core_rejects_boundary_touch() -> None:
 
 
 @pytest.fixture(scope="module")
-def seeded() -> tuple[
+def proposed_state() -> tuple[
     dict[str, Any],
     dict[int, generic.Polygon],
     dict[int, list[dict[str, Any]]],
     list[generic.Polygon],
 ]:
     source = _source()
-    cover = generic._load_pin(
-        generic.COVER,
-        (generic.geometry.COVER_SHA, 773_471, generic.geometry.COVER_LFS_SHA, 25_016),
-    )
-    groups, rows, world = generic._seed(
-        generic._load_pin(generic.OBJECTS / f"{generic.SEED_PIN[0]}.gz", generic.SEED_PIN),
-        cover,
-        budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
-    )
+    seed = generic._load_pin(generic.OBJECTS / f"{generic.SEED_PIN[0]}.gz", generic.SEED_PIN)
+    # These are inputs to refusal predicates, not independently accepted state.
+    # The full golden replay below checks seed ownership and every transition.
+    groups = {
+        owner: generic.hull(generic.points(seed["groups"][str(owner)]))
+        for owner in generic.MASK
+    }
+    rows = {owner: seed["cells"][str(owner)] for owner in generic.MASK}
+    world = [generic.points(polygon) for polygon in seed["world"]]
     return source, groups, rows, world
 
 
 def test_removing_a_needed_residual_does_not_cover_domain(
-    seeded: tuple[
+    proposed_state: tuple[
         dict[str, Any],
         dict[int, generic.Polygon],
         dict[int, list[dict[str, Any]]],
         list[generic.Polygon],
     ],
 ) -> None:
-    source, groups, rows, world = seeded
+    source, groups, rows, world = proposed_state
     changed = copy.deepcopy(source)
     changed["steps"][0]["rows"][0]["residual_polygons"] = []
     with pytest.raises(ValueError, match=r"cover|uncovered"):
@@ -115,14 +115,14 @@ def test_removing_a_needed_residual_does_not_cover_domain(
 
 
 def test_sequential_step_rejects_changed_predecessor(
-    seeded: tuple[
+    proposed_state: tuple[
         dict[str, Any],
         dict[int, generic.Polygon],
         dict[int, list[dict[str, Any]]],
         list[generic.Polygon],
     ],
 ) -> None:
-    source, groups, rows, world = seeded
+    source, groups, rows, world = proposed_state
     changed = copy.deepcopy(source)
     changed["steps"][0]["prior_owned_hulls"]["1"] = [["0", "0"]]
     audit = generic._load_pin(generic.OBJECTS / f"{generic.AUDIT_PIN[0]}.gz", generic.AUDIT_PIN)

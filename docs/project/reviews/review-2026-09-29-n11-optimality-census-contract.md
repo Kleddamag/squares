@@ -1164,6 +1164,87 @@ Its helper and source identities are checked before and after execution.
 This accepts one row’s geometry; it promotes no owned-point compression, complete step,
 source node, candidate capture, or global conclusion.
 
+## Closed Lower-Dimensional Generic Domains
+
+The shared checker revision
+`19cf2e57a5647125f8760ad4bf69511beff14c049aee15b731ec0184f5f6245f` extends the reviewed
+induction to empty, point, and segment legal domains.
+It reconstructs the required domain before interpreting source output.
+An empty domain retains its exact row identity and angle interval and permits only empty
+geometric output. A nonempty point or segment uses the already reviewed closed-interval
+cover helper, pinned to
+`858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385` before and after
+execution. Strict physical core containment, necessary cuts, source-hint inclusion,
+residual support bounds, and same-prior joins retain their previous obligations.
+The positive-area sweeps receive only positive-area domains; no zero-area domain is
+discarded merely because its area vanishes.
+
+The
+[four-case batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-degenerate/summary.json),
+SHA-256 `427fe5214650689ed75c9f4aa78fb6a1950e0c70ab88c06318fb0705c8d484ed`, records
+complete executions of cases 1681, 1690, 1692, and 1727 under this exact revision.
+The first three each accept 23 sequential updates and 736 rows; the fourth accepts 16
+updates and 512 rows.
+All four retain exact singleton exclusions, empty pending work, and false
+global-optimality flags.
+Their compressed and decoded receipt hashes match the batch index.
+Together they accept 85 updates and 2,720 rows in a batch wall time of 98.696 seconds.
+This accepts those four exclusions conditional on the observed executions; receipt
+inspection alone does not replace their geometric replay.
+
+## Special-Adapter Implementation Lemmas
+
+The pinned
+[support replay](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/src/evidence/research/global-math/audit_all_overlay_support.py)
+and
+[direct vertex test](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/src/evidence/research/global-math/overlay_field_halfplanes_v2.py)
+confirm a smaller sufficient proof for the 2175/2176 constraints.
+Reuse the independently reconstructed 220 closed overlay regions and strict distance
+bans. For each source owner, collect the regions having a vertex that violates any
+requested plane after the exact map $v\mapsto B((1/2,1/2)+(U-1)v)$. Exhaustively reject
+those forced owner-region assignments using all 506 raw masks from the exact 253-case A1
+complement. Every other region may remain without a feasibility witness.
+Its vertices satisfy every relevant plane, so convexity proves the required center
+inequalities without trusting publisher support hulls.
+
+The finite search assigns one region to each of the eleven source owners.
+Compatibility requires distinct cell labels in all four views and excludes only
+independently strict distance bans.
+The cell-diameter lemma makes those distinctness conditions necessary, including at
+closed-cell ties.
+Each view’s target set consists of allowed masks containing every label
+chosen so far; after eleven distinct labels, containment in an eleven-cell target means
+equality. Thus this search overapproximates every feasible packing.
+It must retain the eight singleton overlay regions, both half-turn orientations of each
+canonical survivor, and equality in the proposed planes.
+The final bridge’s six-mask search cannot be reused unchanged.
+A surviving assignment or interrupted search leaves that region unexcluded.
+This lemma remains conditional on accepted executions covering the exact 1,931 A1 IDs,
+with no target-case or cyclic dependency.
+
+For 1383, the pinned
+[node replay](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/src/evidence/research/phase3/work/phase3/hull/audit_capture_v9.py)
+allows successive updates to refine the angular partition.
+Validate every row against its exact accepted predecessor reference and closed
+containing interval, then require a gap-free full partition before promotion; a fixed
+seed-bin count is insufficient.
+Apply each inherited center condition to both query and partner domains for its owner.
+A final incomplete source step may be ignored only when it promotes no state and the
+reported final state equals the state reconstructed from complete updates; skipped rows
+must remain explicitly unaccepted.
+Both split children consume separate copies of the same accepted parent state, with
+their respective closed halfplanes.
+
+A generic leaf may close through a complete empty pose cover or an independently checked
+intersection of two accepted strict owned hulls.
+A shared point, including a degenerate intersection, lies in both physical interiors and
+therefore forces positive-area overlap.
+Neither local-guard capture nor points learned on the sibling branch establish such a
+contradiction. The source audit supplies these implementation rules; actual large-node
+ancestry and branch geometry remain to be read and replayed.
+The A2 assignment helper separately checks source/census identity only; its six focused
+controls pass in 0.23 seconds and grant no exclusion or baseline geometry.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

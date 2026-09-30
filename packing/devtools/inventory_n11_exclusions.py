@@ -25,6 +25,7 @@ REVIEWED_CHECKERS = {
     "820f35f7dfeb5ec9dd0cd276305f3e86a230abfccb94ee2a70463682f69d6e15",
     "ac833d5d5e7aa24465697bec14095ac6e5245f35d8ba4993b6375f38370739ab",
     "6294b3eb43727c08635fde1407de6629946e2c2138f6c712150f0b9cf2a8114d",
+    "19cf2e57a5647125f8760ad4bf69511beff14c049aee15b731ec0184f5f6245f",
 }
 PILOTS = {
     "generic-mask2095-intake/full-result.json": (

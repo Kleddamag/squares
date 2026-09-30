@@ -1068,6 +1068,13 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_n17_weighted_certificate_successor.py": {
             "test_real_ancestry_verifies_without_evaluating_a_direction",  # 6.4s on CI
         },
+        # 52s of call time across 2, measured 2026-09-30 on a four-cpu box at load 11:
+        # each loads, validates and indexes a 12,028-row certificate, and the first also
+        # decides one row twice.
+        "test_wang_li_n11.py": {
+            "test_wrapper_decides_a_kleddamag_row_as_the_frozen_tool_does",  # 42.3s
+            "test_native_premises_hold_for_the_new_parameters",  # 9.7s
+        },
         # 101s of call time across 3.
         "test_minus_w_bridge.py": {
             "test_the_bridge_agrees",  # 80.4s

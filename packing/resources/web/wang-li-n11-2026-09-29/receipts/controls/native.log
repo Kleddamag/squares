@@ -1,0 +1,5 @@
+command: .venv/bin/python3 -m devtools.verify_n11_parent_core_native --controls --output /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/native.json
+started: 2026-09-30T06:05:36Z load: 10.89 11.48 10.46
+PASS_ALL_CONTROLS_REFUSED: /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/native.json
+wall 36.494 s, user 20.901 s, system 1.265 s
+exit: 0

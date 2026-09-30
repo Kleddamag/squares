@@ -603,6 +603,11 @@ body {
 .site-recent .site-chip[data-standing] {
   margin-inline-start: 0.2rem;
 }
+/* The pointer under the recent list to the full results table, in the sans face. */
+.site-more {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+}
 /* A date says what it dates, "published" or "established", in the support colour, on
    its own line above the date so the column stays narrow. */
 .site-table .site-date-kind {

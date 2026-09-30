@@ -87,8 +87,9 @@ SITE_PAGES = tuple(render_overview.PAGES)
 #: The pages whose repository links are each asked of GitHub as well. The rest are
 #: checked against the commit's tree alone, which is offline, as the reader documents'
 #: links already are when they are rendered; asking GitHub would cost a request per link
-#: on every deploy.
-LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html"})
+#: on every deploy. The results page is one, since its records are the register's links
+#: and were asked of GitHub when the table was on the overview.
+LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html", render_overview.RESULTS_PAGE})
 
 #: Every file the deploy serves beside the explainer, by name.
 SERVED = (

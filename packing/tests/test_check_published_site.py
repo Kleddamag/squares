@@ -170,7 +170,7 @@ def test_the_checked_pages_are_every_page_the_site_serves_but_the_workbench() ->
     assert PAGE_URL.endswith(f"/{EXPLAINER}")
     assert EXPLAINER.endswith(".html")
     assert {*SITE_PAGES, EXPLAINER, "workbench/index.html"} <= set(render_overview.SITE_PAGES)
-    assert {"index.html", "frontier.html"} == LINK_CHECKED_PAGES
+    assert {"index.html", "frontier.html", "all-results.html"} == LINK_CHECKED_PAGES
     assert render_overview.canonical_url("index.html") == check_published_site.SITE_URL
     assert render_overview.canonical_url("tutorial.html").endswith("/squares/tutorial.html")
 

@@ -110,7 +110,7 @@ it.
   text is unchanged, and a step heavier.
   Case 11, the site’s icon, sits before the name as its mark, at 1.15 times the bar’s
   text, inside the same link, so it takes the same hover.
-  Narrower than 50rem, where the bar with the name would wrap, the name gives way and
+  Narrower than 56rem, where the bar with the name would wrap, the name gives way and
   the mark alone leads home, labelled “Square Packing home” for a screen reader.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
   current page alone is underlined in the accent.
@@ -204,9 +204,12 @@ it.
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
     and inlined, since the page fetches nothing), and opens it in a new tab.
     This is the one exception to the popover rule.
-  - When the card leads to a row on this page, the popover previews the row, read from
-    the same record: a result’s claim, why it matters, its rungs and records.
-    The button shows the row in the table.
+  - When the card leads to a row, the popover previews the row, read from the same
+    record: a result’s claim, why it matters, its rungs and records.
+    A result’s row is on the results page, so its card is a page card, with `→` for its
+    icon, that previews rather than frames: the button, **Open T-NNN in the results
+    table**, goes to `all-results.html#t-nnn`. A row on the overview itself would
+    scroll, with `↓`.
 
   The frame loads only when its popover first opens, so the overview stays light.
   The popover is a native `popover` panel with square corners over a faint scrim, set in
@@ -294,6 +297,24 @@ it.
   In the results table a result’s standing chip sits under its rungs, and a Standing
   filter selects by it; a date cell says what it dates, `published` or `established`, in
   the support colour.
+
+- **Results page.** Every registered result is one row of the results table on its own
+  page, `all-results.html`, “Results” in the navigation bar after Frontier.
+  (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
+  takes the other name.)
+  The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
+  `every-result`, a subtitle with the count, the prose that defines the ratings and
+  standings, and the table with its filters.
+  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
+  cards, its recent list and replay table, and each case record’s results link.
+  The overview keeps the newest results and ends that list with a “See all results →”
+  line in the sans face at the note size.
+  The table used to be the overview’s Every Result section, and its old addresses still
+  arrive: the overview’s `overview/forward.js` sends `#every-result` and any `#t-nnn` to
+  the results page with the fragment kept, and every other fragment the overview lacks
+  to the explainer, as before.
+  `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
+  every row id to the form it recognises.
 
 - **Awaiting replay.** Under the recent list, a closed disclosure in the sans face at
   the note size: its summary names how many cases and the range, and it opens a compact

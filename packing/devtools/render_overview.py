@@ -5,8 +5,10 @@ The published site used to have one top-level page, the n = 11 explainer. This r
 adds the front door and the pages around it, as the plan in
 `docs/project/specs/active/plan-2026-09-29-github-pages-overview.md` lays out:
 
-- `index.html`, the overview: the problem, the headline results, the results table and
-  the verification statistics, generated from the register;
+- `index.html`, the overview: the problem, the headline and recent results and the
+  verification statistics, generated from the register;
+- `all-results.html`, every registered result in one table, which the overview's cards
+  and recent list point into by row (`#t-018`);
 - `frontier.html`, the frontier atlas: one row for every case, from its
   `SquarePackingCase/v2` record;
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
@@ -48,6 +50,7 @@ SITE_CSS = TEMPLATES / "site.css"
 SITE_NAV = TEMPLATES / "site-nav.html"
 SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
+RESULTS_ARTICLE = TEMPLATES / "all-results-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
@@ -73,10 +76,18 @@ OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
 )
+RESULTS_DESCRIPTION = (
+    "Every registered result on packing unit squares in the smallest square, this "
+    "project's and others', with its verification, confirmation, standing and records."
+)
 FRONTIER_DESCRIPTION = (
     "Every tracked case of packing n unit squares in the smallest square, n = 1 to 324: "
     "the best known packing, the reported and verified bounds, and the records behind them."
 )
+
+#: The results table's page. `results.html` is `RESULTS.md` rendered, a reader document,
+#: so the table's own page takes this name; its row ids are the results' (`#t-018`).
+RESULTS_PAGE = "all-results.html"
 
 #: The repository documents served as pages outside the navigation, reached from the
 #: overview's cards; `site_documents` renders them.
@@ -95,6 +106,7 @@ DOCUMENT_PAGES: tuple[str, ...] = (
 SITE_PAGES: tuple[str, ...] = (
     "index.html",
     "frontier.html",
+    RESULTS_PAGE,
     "cases.html",
     "explainer.html",
     "tutorial.html",
@@ -113,6 +125,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     SITE_NAV,
     SITE_NAV_CSS,
     OVERVIEW_ARTICLE,
+    RESULTS_ARTICLE,
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
@@ -446,7 +459,6 @@ def overview_page() -> Page:
 
     overview = overview_data.load()
     values = {
-        "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "HERO": overview_sections.hero(),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
@@ -454,7 +466,6 @@ def overview_page() -> Page:
         "PAGE_CARDS": overview_sections.page_cards(),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),
-        "RESULTS_TABLE": overview_sections.results_table(overview),
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_list(overview),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
@@ -483,6 +494,30 @@ def overview_page() -> Page:
             POPOVER_SCRIPT,
             ATLAS_GRID_SCRIPT,
         ),
+    )
+
+
+def results_page() -> Page:
+    """Every registered result, one row each at its own id, sortable and filterable."""
+    from devtools import overview_data, overview_sections  # noqa: PLC0415
+
+    overview = overview_data.load()
+    values = {
+        "COUNT": str(len(overview.results)),
+        "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
+        "RESULTS_TABLE": overview_sections.results_table(overview),
+    }
+    markdown = fill(
+        RESULTS_ARTICLE.read_text(encoding="utf-8"), values, where=RESULTS_ARTICLE.name
+    )
+    return kpress_page(
+        markdown,
+        name=RESULTS_PAGE,
+        current="results",
+        title=f"Every Result · {SITE_NAME}",
+        description=RESULTS_DESCRIPTION,
+        toc=False,
+        page_scripts=(TABLE_SCRIPT,),
     )
 
 
@@ -528,6 +563,7 @@ def _document_page(name: str) -> Callable[[], Page]:
 PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
     "frontier.html": frontier_page,
+    RESULTS_PAGE: results_page,
     "cases.html": cases_page,
     "tutorial.html": tutorial_page,
     **{name: _document_page(name) for name in DOCUMENT_PAGES},

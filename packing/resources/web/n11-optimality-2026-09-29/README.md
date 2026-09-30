@@ -23,7 +23,13 @@ The published data store uses Git LFS.
 pointer files representing 2,344,331,966 declared bytes at initial intake.
 The subsequent [independent symmetry receipt](receipts/d4-independent/result.json)
 retains three selected compressed objects totaling 102,046 bytes, with provenance and a
-replay script beside it. The remaining payloads have not been acquired for this packet.
+replay script beside it.
+The [local residual receipt](receipts/local-dual-residual/result.json) subsequently
+retains two further objects totaling 1,560,204 compressed bytes and checks all 8,448
+signed-coordinate residuals. Its status remains incomplete: curvature, feature margins
+and geometric capture are separate obligations. Adjacent provenance and replay files
+bind the inputs and implementation, including shared source primitives.
+The remaining payloads have not been acquired for this packet.
 The symmetry check passed conditionally; it does not establish global optimality.
 The source’s publication note says the privacy-normalized public derivative has not had
 a fresh full geometric replay.

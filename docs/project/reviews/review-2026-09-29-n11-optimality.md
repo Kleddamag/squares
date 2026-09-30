@@ -120,14 +120,38 @@ The retained execution took 0.927 seconds wall and 0.923 seconds CPU inside the 
 The selected ceiling was 45 seconds inside a 55-second process timeout.
 No native-code optimization is justified by this measurement.
 
+## Recomputed Local Dual Residuals
+
+The first-party
+[residual consumer](../../../packing/devtools/check_n11_optimality_local_dual.py)
+recomputed all 128 branches times 66 signed coordinates: **8,448 exact residual
+checks**. Its
+[receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/result.json)
+deliberately reports `INCOMPLETE_LOCAL_DUAL_PROFILE`. It checks root isolation,
+matrix-entry enclosures, nonnegative dual weights, complete signed-coordinate inventory
+and the residual error bound.
+Four focused tests exercise arithmetic and refusals; Astra-max source review found no
+mathematical blocker in these residual checks.
+
+The retained run took 14.713 seconds wall and 14.632 seconds CPU inside the checker,
+15.41 seconds including startup, under a 25-second internal and 30-second process
+ceiling. Two source-bound proposal objects total 1,560,204 compressed bytes.
+The consumer uses our exact construction and branch primitives, which are byte-identical
+to the publisher’s copies: this is fresh residual arithmetic with shared geometry
+source, not an independently derived geometric model.
+
+**No local-isolation theorem has been accepted.** Curvature inequalities, 88
+unavailable-feature margins and the nonlinear feature-to-branch bridge remain open.
+Even their acceptance would leave pose inclusion and complete geometric capture.
+
 ## Next Bounded Checks
 
 The next slice under `think-pqg7` should bind the exact source and selected input
 hashes, then check local isolation independently before acquiring the whole data store.
-The next two proposal payloads total 1,560,204 compressed bytes.
-Acceptance requires recomputing 8,448 dual inequalities and 88 negative-feature margins,
-including the complete contact-branch mapping; supplied success receipts are not
-acceptance evidence.
+The two proposal payloads above are now retained.
+Acceptance still requires the curvature part of 8,448 dual inequalities and 88
+negative-feature margins, including the complete contact-branch mapping; supplied
+success receipts are not acceptance evidence.
 Any reuse of our exact construction primitives must disclose that they are
 byte-identical to source components.
 Local isolation would still leave pose inclusion and complete geometric capture

@@ -9,7 +9,7 @@ author: Claude (agent), for the repository owner
 
 **Author:** Claude (agent), for the repository owner
 
-**Status:** Revised; the rebuild has not started
+**Status:** Revised and reviewed; the rebuild has not started
 
 **Tracking:** `think-xjq4` (epic) and its child beads
 
@@ -38,6 +38,8 @@ This revision:
   [served directly with the right media types](#published-media), the explainer
   [shown as an earlier edition](#the-explainer-as-an-earlier-edition), and a
   [synopsis of the research documents](#research-documents);
+- folds in an adversarial review of the revision against the code at the baseline (see
+  [Technical Review](#technical-review));
 - requires the implementation branch to be pushed at every slice boundary.
   A branch push runs no Pages deploy (see [Non-Goals](#non-goals)), so reviewing a
   preview before deploying never required keeping the work local.
@@ -52,8 +54,8 @@ of a certificate proof, with no page that says what the project is, what it and 
 have found, or where the other documents are.
 
 This plan adds an overview page at the site root, titled **Square Packing**: the
-problem, the recent results by this project and by others, how each is verified, the
-atlas and its films, and a card for every other page and document.
+problem, the recent results by this project and by others, the verification state of
+each, the atlas and its films, and a card for every other page and document.
 The GitHub project keeps its name, the Squares Project.
 A shared navigation bar joins the overview to the frontier atlas, the explainer, the
 tutorial and the Visualizer, which is the workbench’s name on the site.
@@ -65,12 +67,13 @@ page is the one in `packing/frontier/n-NNN.md`.
 ## Goals
 
 - A top-level overview page at the site root, simpler than `README.md` but covering the
-  same ground: the problem, recent results from every source, how they are verified, the
-  atlas and its films, the results register, the research documents, and the other
+  same ground: the problem, recent results from every source, their verification state,
+  the atlas and its films, the results register, the research documents, and the other
   public square-packing projects.
 - Every result the register holds, by this project and by others, current at the build
   commit, credited as the bibliography credits it under the policy in
-  [`epistemics.md`](../../../../epistemics.md), with its `V`, `C` and `S` rungs.
+  [`epistemics.md`](../../../../epistemics.md), with its `V`, `C` and `S` rungs, and
+  with reported results labeled as reported.
 - Preview PNGs of the `n = 1…100` and `n = 1…324` atlases side by side, each linking
   directly to its PDF on the site, served as `application/pdf`; poster PNGs of the two
   ascent films side by side, each linking directly to its MP4 on the site, served as
@@ -86,8 +89,8 @@ page is the one in `packing/frontier/n-NNN.md`.
   rungs, novelty, dates, and links to the case record, the register entry, the evidence,
   the retained source copy and the review, where each exists.
 - Verification at a glance: how many results stand at each `V`, `C` and `S` rung, split
-  between this project’s and others’, and how many of the hundred atlas cases are
-  proved, open with a verified bracket, or carry a recent verified lower bound.
+  between this project’s and others’, and how many of the hundred atlas cases are proved
+  and how many carry a recent verified lower bound.
 - A frontier atlas page, separate from the overview: one table with a row for every
   `n = 1…324`, each value rendered cleanly from the case’s `SquarePackingCase/v2`
   softschema record.
@@ -112,14 +115,16 @@ page is the one in `packing/frontier/n-NNN.md`.
 
 - Changing the explainer’s prose, its PDF, or the workbench beyond the shared navigation
   bar, the move described under [URL Layout](#url-layout), the screen-only edition
-  notice, and the film’s source URL.
+  notice, and the film’s source URL and download link.
 
 - Changing data under `DATA_PATHS` beyond the one register field the page needs
-  (`registered`, under [Data Changes](#data-changes)). Everything else is read as it
-  stands.
+  (`registered`, under [Data Changes](#data-changes)) and the math markup of Phase 3’s
+  groups 2 and 4, each a data commit with its re-pin.
+  Everything else is read as it stands.
 
 - Rewriting the prose of `README.md`, `TUTORIAL.md` or `SYNOPSIS.md`. They change only
-  in the math markup migration of Phase 3 and in README’s asset links.
+  in Phase 3’s math markup, in their links into the explainer, and, for README, in its
+  asset links and a link to the overview.
 
 - Re-encoding the films.
   The site serves the v0.4.2 files their receipts describe; a smaller web encode is an
@@ -152,27 +157,29 @@ baseline):
 
 - `packing/frontier/results.yaml` (`ResultsRegister/v1`), 57 entries `T-001` to `T-057`,
   each with `headline` (at most 100 characters), `claim`, `scope`, `verification`,
-  `confirmation`, `significance`, `novelty`, `evidence` and `artifacts`. The 29 entries
-  by others carry `attribution` in place of `established`, including two upper-bound
-  results, `T-056` and `T-057`. `devtools.check_results` derives the rungs;
-  `devtools.render_results` renders `frontier/RESULTS.md`; `devtools.significance` ranks
-  them.
+  `confirmation`, `significance`, `novelty`, `evidence` and `artifacts`. This project’s
+  results carry `established`; the 29 entries by others carry `attribution` instead,
+  including two upper-bound results, `T-056` and `T-057`. `devtools.check_results`
+  derives the rungs; `devtools.render_results` renders `frontier/RESULTS.md`;
+  `devtools.significance` ranks them.
 - `devtools.render_recent_results`, which since jlevy/squares#248 generates README’s New
   Results, Results by Others and recent-results table from the register and the case
   records. Its data layer is public: `load_records`, `recent_rows`, `recent_counts`,
-  `held`, `standing`, `ours` and `by_others`.
+  `verified_lane`, `reported_lane`, `standing`, `relation`, `ours` and `by_others`.
 - The credit policy in `epistemics.md` (Results by Others; Parallel Projects and Their
   Credit): a result by others is credited by its bibliography entry’s `credit`, printed
   whole; this project is named as “Squares Project (Levy)” where it holds a bound; a
-  source’s own statement of AI assistance is repeated in its terms
-  (`devtools.state_ai_assistance.STATEMENTS`); and this repository’s rungs never change
-  a credit.
+  source’s own statement of AI assistance is repeated in its terms; and this
+  repository’s rungs never change a credit.
 - `packing/resources/bibliography.yaml`, with `credit`, `short_credit` and `lineage`
   (`builds-on-project`, `credits-project` or `independent`) on each source, read by
-  `devtools.result_credit`.
+  `devtools.result_credit`. The sources’ statements of AI assistance are held as prose
+  in `devtools.state_ai_assistance.STATEMENTS`, a tool that writes them into case
+  records; no structured field records them.
 - `packing/frontier/n-001.md` … `n-324.md` (`SquarePackingCase/v2`), with reported and
   verified bounds, rendered to `frontier/STATUS.md` by
-  `devtools.render_research_tables`.
+  `devtools.render_research_tables`. A case bound records a value and its exact form,
+  not a relation: it reads “$s(n)$ is at least this”.
 - `packing/atlas/known-best/` (`manifest.json`, `bound-citations.json`,
   `composite-figure.json`), which already knows which bounds are recent and whom they
   credit.
@@ -180,8 +187,11 @@ baseline):
   draws on, among them ten GitHub projects.
 - `docs/project/document-map.yaml`, which records every durable document’s role,
   authority and lifecycle, and is enforced by `devtools.check_documentation`.
-- `packing/src/sqpack/release.py`: `PUBLICATION_EDITION`, `PUBLICATION_HISTORY` and
-  `DATA_REVISION`, which every published artifact stamps.
+- `packing/src/sqpack/release.py`: `PUBLICATION_EDITION`, `PUBLICATION_HISTORY`,
+  `DATA_PATHS`, `DATA_EXCLUDED` and `DATA_REVISION`. Every published artifact stamps the
+  edition, and any commit that changes a file under `DATA_PATHS` not in `DATA_EXCLUDED`
+  is a data commit, followed by the re-pin and atlas re-stamp `tests/test_release.py`
+  requires.
 
 The recent merges the page has to reflect:
 
@@ -204,11 +214,18 @@ The recent merges the page has to reflect:
 
 A new renderer, `packing/devtools/render_overview.py`, built on the same kpress calls as
 `render_explainer.py`: it reads declared inputs, fills Markdown article templates,
-renders them with kpress, writes self-contained pages into `packing/site/`, and declares
-its inputs as `RENDER_INPUTS`. It renders three pages: the overview, the frontier atlas,
-and an HTML edition of the tutorial.
+renders them with kpress, writes self-contained pages, and declares its inputs as
+`RENDER_INPUTS`. It renders three pages: the overview, the frontier atlas, and an HTML
+edition of the tutorial, with their generated images.
 The explainer and workbench builders gain only what [URL Layout](#url-layout) and
 [The Explainer as an Earlier Edition](#the-explainer-as-an-earlier-edition) describe.
+
+**Its own output directory.** The explainer writes `packing/site/index.html`
+(`render_explainer.OUTPUT`, and `render_explainer_pdf.PAGE` reads it), so the overview
+cannot write there without each render clobbering the other and both `--check`s failing.
+The overview writes into `packing/site-overview/` (gitignored, like `packing/site/`),
+and the site is assembled from the builders’ directories in one place: `publish` in CI,
+and `preview_site` locally.
 
 These pages render math with kpress’s `math="auto"` and KaTeX, and do **not** use the
 explainer’s `--prepare-math` geometry pass, which measures math in Chromium for the
@@ -216,29 +233,37 @@ explainer’s figures and PDF. The tutorial has no display math, so no new geome
 typography or PDF jobs are added to `pages.yml`.
 
 Each page is deterministic at a commit.
-`--check` compares a fresh render with the file on disk, as the explainer’s does, and
+`--check` compares a fresh render with the files on disk, as the explainer’s does, and
 the `overview` job renders twice and compares the bytes, as the explainer’s twin step
 does.
 
 The data layer reuses the register’s own code rather than re-deriving it:
 
 - recent results: `render_recent_results`’ `load_records`, `ours`, `by_others`,
-  `standing` and `held`, the functions README’s generated blocks already use, so the
-  overview and README cannot disagree about what is recent, who holds a bound, or which
-  results are superseded;
-- the full table’s grouping and order: `render_results`’ `_order`, `_scope` and
-  `_claim`, made public, so the table and `RESULTS.md` order entries identically;
-- credit: `result_credit.credit_line` and `source_lineage`, and
-  `state_ai_assistance.STATEMENTS` for a source’s own statement of AI assistance;
-- rung legends: `significance.anchors`, generalized to take the axis letter so the `V`
-  and `C` tables in `epistemics.md` supply the tooltips;
+  `relation` and `standing`, the functions README’s generated blocks already use, so the
+  overview and README cannot disagree about what is recent, how a result relates to this
+  project, or which results no longer hold a case bound;
+- a case’s current holder and value: `verified_lane(n, case, records)` and
+  `reported_lane`, whose `Lane` carries the value, holder, results and lineage (`held`
+  returns only sets of result ids, lower and upper merged);
+- the full table’s grouping and order: `RESULTS.md`’s lineage loop and its sort key for
+  others’ entries, now inline in `render_results.render()`, extracted as a public
+  `grouped_results()` that `RESULTS.md` and the overview both call;
+- credit: `result_credit.credit_line` and `source_lineage`, and the structured
+  AI-assistance field described under [Data Changes](#data-changes);
+- rung legends: `significance.anchors`, generalized to take the axis letter and to read
+  the three-column `V` and `C` tables in `epistemics.md`, which its row pattern does not
+  yet expect;
 - case values: `render_research_tables.load_cases`, `pretty`, `compact_bound` and
   `case_disposition`, and `render_recent_results.digits`, which cuts a non-terminating
   decimal rather than rounding it, since a lower bound shown rounded up would claim more
   than the record proves;
-- atlas totals: the `known-best-1-100` totals in `composite-figure.json`
-  (`proved_optimal`, `lower_bound_recent_result`, `lower_bound_first_proved_here`), read
-  rather than recounted.
+- atlas totals: `proved_optimal` and `lower_bound_recent_result` from the
+  `known-best-1-100` totals in `composite-figure.json`, read rather than recounted.
+
+The register is gated by `check_results` in `packing-validate`, which every pull request
+runs. The overview job reads the register as gated and does not re-run that check: it
+reads `packing/campaign/`, which the Pages jobs’ sparse checkout omits.
 
 ### URL Layout
 
@@ -250,11 +275,11 @@ The data layer reuses the register’s own code rather than re-deriving it:
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) |
 | `/workbench/` | the Visualizer (path unchanged) |
 | `/films/ascent-n1-100-1080p60-citations.mp4`, `/films/ascent-n1-324-1080p60-citations.mp4` | the two ascent films (new on the site) |
-| `/known-best-1-{100,324}-preview.png`, `/ascent-n1-324-poster.png` | the preview images and the second poster (new) |
+| `/known-best-1-{100,324}-preview.png`, `/ascent-n1-324-poster.png`, `/thumbs/n-NNN.svg` | the preview images, the second poster and the frontier thumbnails (new) |
 | `/t-018-explainer.{md,pdf}` and the composite assets | unchanged |
 
 The explainer moves to `/explainer.html` rather than `/explainer/` so it stays beside
-the composite assets and PDF it references with relative paths.
+the composite assets, the films and the PDF it references with relative paths.
 
 **The explainer is renamed at publish, not at render.** `pages.yml` names
 `site/index.html` about forty times across the twin render, the PDF, and the geometry,
@@ -264,9 +289,9 @@ Instead the explainer build keeps writing `site/index.html` inside its own artif
 `publish` renames it to `explainer.html` before the overview’s `index.html` is merged
 in. What does change, because a reader or a checker sees it:
 
-- `render_explainer.CANONICAL_URL` (and `og:url`) becomes `SITE_URL + "explainer.html"`;
-  `SITE_URL` itself stays the directory URL, since `site_file`, the PDF link base and
-  `absolute_links.js` resolve against it;
+- the canonical URL (and `og:url`) that `render_explainer` fills into the shell becomes
+  `SITE_URL + "explainer.html"`; `SITE_URL` itself stays the directory URL, since
+  `site_file`, the PDF link base and `absolute_links.js` resolve against it;
 - the Markdown edition’s links to “the page”;
 - `check_published_site`: the explainer is fetched as `explainer.html`, the overview as
   the root, and each is checked for its edition stamp and canonical URL;
@@ -280,8 +305,8 @@ fragment: section ids, footnotes (`#fn-3`) and the certificate picker (`#19-5`,
 So the overview’s forwarding script sends any non-empty fragment that is not an id on
 the overview to `explainer.html` with the same fragment and query string
 (`?review=fonts` must survive).
-A test asserts that the overview’s ids and the explainer’s are disjoint, so no old link
-is captured by the overview.
+A test asserts that the overview’s ids and the explainer’s rendered ids are disjoint, so
+no old link is captured by the overview.
 The script lives in a `.js` file under the browser floor and needs nothing from the
 explainer build, so the overview job does not depend on `prepare`.
 
@@ -293,31 +318,33 @@ Sections, top to bottom:
    background hover; then Overview, Frontier, Explainer, Tutorial, Visualizer and
    GitHub. The current page is marked, and nav items do not underline on hover.
    There is no tagline and no version in the bar; the version is in the footer.
-   The site favicon is a small drawing of the `n = 11` packing, from
-   `atlas/known-best/rendering/n-011.svg`.
-2. **Hero.** A larger, centered drawing of the `n = 53` packing, from
-   `atlas/known-best/rendering/n-053.svg`. The page has no visible `h1`; it opens with
-   `h2` sections, and the title lives in `<title>` and the navigation bar.
+   The site favicon is a small drawing of the `n = 11` packing.
+2. **Hero.** A larger, centered drawing of the `n = 53` packing.
+   The page has no visible `h1`; it opens with `h2` sections, and the title lives in
+   `<title>` and the navigation bar.
 3. **The Square Packing Problem.** A brief definition of $s(n)$, the side of the
    smallest square that holds $n$ non-overlapping unit squares, with rotation allowed.
    It states no bound and no claim about which cases are open; those belong to the
    results below, which are generated.
-4. **Recent Results.** The results proved since 22 August 2026 (`RECENT_SINCE`), by this
-   project and by others, in one section.
-   It is grouped as README’s generated blocks group them: this project’s results, then
-   results by others building on this project, crediting it, and independent of it.
-   Each result is a card with its bound set as mathematics, its credit, its `T-NNN`, its
-   `V`, `C` and `S` chips, and its standing (holds a case bound, or superseded and by
-   what). New exact values are marked as such, distinct from new bounds.
+4. **Recent Results.** The results dated on or after 22 August 2026 (`RECENT_SINCE`), by
+   this project and by others, in one section, selected and ordered as README’s
+   generated blocks select and order them: this project’s results first, then others’
+   newest first, each with its relation to this project (`relation`). Each result is a
+   card with its bound set as mathematics, its credit, its `T-NNN`, its `V`, `C` and `S`
+   chips, and its standing from `standing` (holds a case bound, holds a reported bound,
+   a second certificate, or superseded); a superseded card names the case’s current
+   holder from `verified_lane`. A reported result (`V0`) is labeled reported, never
+   verified, and new exact values are marked as such, distinct from new bounds.
 5. **Verification at a Glance.** Three cards, one for each of the `V`, `C` and `S`
    dimensions, each showing how many results stand at each rung, split between this
    project’s and others’, with the rung definitions from `epistemics.md`. Beside them,
-   the atlas totals: how many of the hundred cases are proved, how many are open with a
-   verified bracket, and how many carry a recent verified lower bound.
+   the atlas totals: how many of the hundred cases are proved, how many remain open, and
+   how many carry a recent verified lower bound.
 6. **The Atlas and Its Films.** Two preview images side by side, `n = 1…100` and
    `n = 1…324`, each linking to its PDF; below them, the two film posters side by side,
    each linking to its MP4. The captions give the page size or duration, the file size,
-   and the edition. [Published Media](#published-media) describes the files.
+   and the edition each file carries.
+   [Published Media](#published-media) describes the files.
 7. **Results.** The full table, described [below](#the-results-table).
 8. **Read Further.** Page cards for the explainer (with its
    [edition note](#the-explainer-as-an-earlier-edition)), the tutorial, the frontier
@@ -327,6 +354,16 @@ Sections, top to bottom:
    `source-coverage.yaml` records as a source, crediting its author as the bibliography
    does, and linking the repository and the case records that cite it.
 10. **Footer.** Edition, data revision, build commit, and the licence.
+
+**Drawings.** The hero, the favicon and the frontier thumbnails are generated at build
+time from the rendering SVGs under `atlas/known-best/rendering/`, keeping only the
+container and the squares: no ids, titles or descriptions, and coordinates rounded for
+drawing only. The rendering SVGs are never inlined: all 324 come to 52 MB (`n-324.svg`
+alone is 330 KB), and each carries ids such as `figure-title` and `panel-0` that the
+explainer’s inlined `n = 11` drawing also uses, so inlining one would break the
+disjoint-ids test. The hero is inlined after the stripping; the thumbnails are separate
+files loaded with `<img loading="lazy">`, so their contents never enter the page’s id
+space.
 
 **Cards and popovers.** Every highlighted box on the page is a link; a page never mixes
 plain boxes with clickable ones.
@@ -353,26 +390,28 @@ register does not hold fails the gate, as it does in README and the synopsis.
 
 ### The Results Table
 
-One row per register entry, grouped and ordered as `RESULTS.md` is.
+One row per register entry, grouped and ordered as `RESULTS.md` is, through the shared
+`grouped_results()`.
 
 | Column | Source |
 | --- | --- |
 | ID | `id` |
 | `n` | `scope.n_values`, compressed to ranges (`render_recent_results.cases_cell`) |
 | Result | `headline`; the full `claim` in an expandable row |
-| Credit | “Squares Project (Levy)” for this project’s results; for others’, the `credit` of each `attribution.source_keys` entry in `resources/bibliography.yaml`, printed whole, never `short_credit`, followed by the source’s own statement of AI assistance where `state_ai_assistance.STATEMENTS` records one |
+| Credit | “Squares Project (Levy)” for this project’s results; for others’, the `credit` of each `attribution.source_keys` entry in `resources/bibliography.yaml`, printed whole, never `short_credit`, followed by the source’s own statement of AI assistance where it makes one |
 | `V` / `C` / `S` | `verification`, `confirmation`, `significance.score`, with the rung definitions from `epistemics.md` as tooltips |
 | Novelty | `novelty` |
-| Dates | `registered`; for others’ results, `attribution.published` alongside |
+| Dates | `established` for this project’s results or `attribution.published` for others’, which the priority rule in `epistemics.md` needs side by side; and `registered` |
 | Records | the case file (or the frontier atlas filtered to the scope, for ranges such as `18–95`), each `evidence` entry at its line in `evidence.yaml`, the entry’s line in `results.yaml`, `review_artifact` where set, and the retained source copy through the evidence entry’s `certificate` or `proof.source` path |
 
 The expanded row adds `composition`, `next_rung`, `artifacts` and `controls`, each
 linked. Every record link is a permalink at the build commit, which
-`check_published_site` already requires.
+`check_published_site` already requires of repository links.
 
 Behaviour: the table works with JavaScript off (all rows present, `<details>` for
-expansion). A small script adds sorting by column and filters by source, `n` and `C`
-rung. It lives in `packing/devtools/overview/table.js` with JSDoc types, its own
+expansion). A small script adds sorting by column (the dates included) and filters by
+source, `n` and `C` rung.
+It lives in `packing/devtools/overview/table.js` with JSDoc types, its own
 `tsconfig.overview.json`, and Biome and `tsc` coverage, the same arrangement as the
 explainer’s scripts.
 
@@ -383,14 +422,14 @@ bounds rather than repeating them.
 
 A separate page, `/frontier.html`, with one row for every case `n = 1…324`. Each row is
 rendered from the case’s softschema record, the `packing:` envelope of
-`packing/frontier/n-NNN.md` under the enforced `packing.squares:SquarePackingCase/v2`
-contract, loaded and validated the way `validate.py` and
-`devtools.render_research_tables.load_cases` already load it.
+`packing/frontier/n-NNN.md`, loaded by `render_research_tables.load_cases` and validated
+against the enforced `packing.squares:SquarePackingCase/v2` contract through softschema,
+as `validate.py` does; `load_cases` alone does not validate.
 No value on the page is typed by hand or read from `STATUS.md`.
 
 | Column | Source in the case record |
 | --- | --- |
-| `n` and thumbnail | `packing.n`; the drawing `atlas/known-best/rendering/n-NNN.svg`, inlined |
+| `n` and thumbnail | `packing.n`; a thumbnail generated from `atlas/known-best/rendering/n-NNN.svg` (see [Drawings](#the-overview-page)) |
 | Status | `status` (and `reported_status` where they differ) |
 | Best known packing | `reported_upper_bound`: `value`, `exact_form`, `found_by`, `found_year`, `construction_method`, `catalogue_rigid` |
 | Verified upper | `verified_upper_bound`: `exact_form`, else `value` |
@@ -403,17 +442,20 @@ No value on the page is typed by hand or read from `STATUS.md`.
 **Rendering values cleanly.** Exact forms are shown as mathematics, not as ASCII: $31/8$
 as a fraction, $2 + \tfrac{1}{2}\sqrt{2}$ with a radical, a `root(P, x)` form as its
 decimal with the minimal polynomial (`minimal_polynomial`) in the expanded row.
-A strict bound keeps its $>$ and a non-strict one its $\ge$, exactly as the record
-states it. The formatting reuses `render_research_tables.pretty` and `compact_bound`
-where they already do this, and extends them in one place rather than forking them.
+A case record states a value, not a relation, so a lower bound is shown with $\ge$
+unless a register entry citing the bound’s evidence claims it strictly, as `T-037`
+claims $s(11) > 31/8$; the relation is then taken from that entry.
+The formatting reuses `render_research_tables.pretty` and `compact_bound` where they
+already do this, and extends them in one place rather than forking them.
 A reported value that agrees with the verified one at declared precision is shown once,
 using `sqpack.assurance.bounds_agree_at_declared_precision`, the same test `STATUS.md`
 applies.
 
 **Behaviour.** The full table is in the HTML, so it reads with JavaScript off.
 The same script as the results table adds sorting and filters (status, open only, recent
-only, a range of `n`). The thumbnails are small inline SVGs; the page is checked against
-a size ceiling so 324 drawings do not make it slow to load.
+only, a range of `n`). The thumbnails load lazily as separate files, and a test holds
+the page’s HTML and the thumbnails under byte ceilings set from the first measured
+render.
 
 **Tests.** Every case file is a row and every row is a case file; each rendered value
 equals the record’s value (parsed back from the cell’s `data-` attribute); an invalid
@@ -431,18 +473,34 @@ Links are rewritten in the rendered HTML (`href` and `src` after parsing), never
 regular expression over the Markdown, which would also match `](` inside code spans:
 
 - a link to the explainer, the overview or the tutorial itself becomes the site page;
-- a link to `README.md`, `SYNOPSIS.md` or another document becomes a link to it on
-  GitHub on the default branch, as the overview’s document cards do;
+- a link to `README.md`, `SYNOPSIS.md` or another reader document becomes a link to it
+  on GitHub on the default branch, as the overview’s document cards do;
 - a link to a record (a case file, a register or evidence entry, a certificate) becomes
   a permalink at the build commit, `blob/` or `tree/` according to whether the target is
   a file or a directory;
 - images under the repository become raw-file permalinks, or served assets when they
   already are.
 
-The links are checked offline, against the build commit’s git objects (`git ls-tree` and
-`git cat-file -e`), and kpress’s `broken_anchor` diagnostic is raised to a failure.
-`check_published_site`’s per-link HTTP check stays on the overview and frontier pages,
-so the deployed-site check does not send hundreds of requests to GitHub.
+### Link Checks
+
+Links are proved where it is cheap to prove them.
+
+- **At build time, offline**, for every site page: each repository path a link names
+  exists at the build commit, checked against one `git ls-tree -r <commit>` listing.
+  The Pages jobs clone with `filter: blob:none`, where `git cat-file -e` on a missing
+  blob would fetch it over the network, while `ls-tree` reads only trees.
+  kpress’s `broken_anchor` diagnostic is raised to a failure.
+- **After deploy, over HTTP**, on the overview only: `check_published_site` requests
+  each repository link.
+  The frontier page’s 324 case files and their evidence anchors, and the tutorial’s
+  links, would be more than a thousand serial requests to GitHub, so they are proved
+  offline and not requested.
+- **The ref rule.** `check_published_site` requires every repository link to name the
+  build commit. Document cards and the tutorial’s links to reader documents name the
+  default branch instead, so a reader lands on the current document.
+  The renderer emits the list of those default-branch links as a data island, and the
+  check accepts `main` for exactly those paths and the build commit for every other
+  link.
 
 ### Published Media
 
@@ -469,16 +527,16 @@ README’s `n = 1…324` PDF link, now a repository path that opens GitHub’s v
 to the site URL.
 
 **Preview images are rendered at build time.** The committed PNGs are too heavy to show
-as previews: `known-best-1-324.png` is 4,224 by 4,912 pixels and 2.5 MB.
-`render_overview` scales each composite PNG to twice its displayed width with Pillow
-(already locked, 12.3.0) and writes it into `site/` only, so no file under `DATA_PATHS`
-changes and `DATA_REVISION` does not move.
+as previews: `known-best-1-324.png` is 4,224 by 4,912 pixels and 2.5 MB. The overview
+build scales each composite PNG to twice its displayed width with Pillow (already
+locked, 12.3.0) and writes it into its own output directory only, so no file under
+`DATA_PATHS` changes and `DATA_REVISION` does not move.
 The twin render proves the output deterministic, and a test holds each preview under a
 byte ceiling.
 
-**The films move onto the site, fetched at publish.** The `publish` job downloads the
-two v0.4.2 assets into `site/films/` and checks each against a pin committed in the
-repository before the artifact is uploaded:
+**The films move onto the site, fetched at publish on `main`.** Two steps in `publish`
+download the v0.4.2 assets into `films/` and check each against a pin committed in the
+repository, before the artifact is uploaded:
 
 | Film | Profile | Bytes | SHA-256 (the receipt’s `video_sha256`) |
 | --- | --- | --- | --- |
@@ -490,10 +548,15 @@ release tag, asset name, byte count and hash of each film.
 A mismatch fails the deploy.
 This is a trust boundary in the sense of `OR-16`: a binary from outside git enters the
 published site, so a checksum is the right control here, where git cannot be.
-The download is cached with `actions/cache`, keyed by the pinned hash, so a deploy
-downloads the films again only when the pin changes.
-Pull requests never fetch them: `publish` runs only for a push to `main`, and a
-pull-request test checks the pin’s shape and the page’s links statically.
+
+`publish` itself runs for pull requests too; only its upload step is gated to a push to
+`main`. The fetch, verify and cache steps carry the same condition as the upload
+(`github.ref == 'refs/heads/main' && github.event_name != 'pull_request'`), so a pull
+request never downloads 256 MB onto a critical path whose wall was 176 s against a 180 s
+budget at the first baseline.
+On `main` the download is cached with `actions/cache`, keyed by the pinned hash, so a
+deploy downloads the films again only when the pin changes.
+A pull-request test checks the pin’s shape and the page’s links statically.
 
 The sizes fit the Pages limits.
 The published site may be up to 1 GB, and the current artifact is 7.7 MB compressed;
@@ -505,26 +568,32 @@ Pages’ soft bandwidth limit is 100 GB a month, about 480 complete viewings of 
 `n = 1…324` film; the posters link rather than autoplay, so nothing is downloaded until
 a reader asks for it.
 
-The explainer’s `<video>` source moves to the same-origin copy (`films/…`), which serves
-`video/mp4`. README’s film links move to the site URLs, and the release stays linked as
-the archive of record with its receipts.
+The explainer’s `<video>` source, its download link and the caption’s link to the
+`n = 1…324` film, all in `templates/explainer-article.md`, move to the same-origin
+copies (`films/…`), which serve `video/mp4`. README’s film links move to the site URLs,
+and the release stays linked as the archive of record with its receipts.
 
-**Posters.** The `n = 1…100` poster exists: a 1,280 by 720 frame at `n = 88`, cut from
-the film by `workbench_tools.poster` at the step its receipt names.
-The `n = 1…324` poster is cut by the same tool from that film’s receipt and committed as
-`packages/workbench/assets/ascent-n1-324-poster.png`; the default frame is the last
-step’s settled end, which shows the whole atlas.
+**Posters.** The `n = 1…100` poster exists: a 1,280 by 720 frame at `n = 88` (the tool’s
+default), cut from the film by `workbench_tools.poster` at the step its receipt names.
+The `n = 1…324` poster is cut by the same tool with `--n 324 --out`, from that film’s
+receipt, and committed as `packages/workbench/assets/ascent-n1-324-poster.png`; it shows
+the whole atlas at the last step’s settled end.
 The play icon over each poster is drawn in CSS, not baked into the PNG.
+
+**Editions on media.** The films and posters carry the stamp they were cut with
+(`v0.4.2-a48ad1`), which stays true of those files after later re-pins.
+Their captions take the edition from the receipt, not from `PUBLICATION_EDITION`, so a
+caption never claims a newer edition than the frames show.
 
 **Two checks hold all of this.**
 
 - A render test fails on any media `href` or `src` on the overview that is not
   site-relative: a release download, a `raw.githubusercontent.com` URL, or a `/blob/`
   URL to a PDF, MP4 or PNG.
-- `check_published_site` requests one byte of every media file the overview links and
-  requires status 200 or 206, the exact `Content-Type` (`application/pdf`, `video/mp4`
-  or `image/png`), no `attachment` disposition, `accept-ranges: bytes` for the films,
-  and a total length equal to the pinned byte count.
+- After deploy, a media check requests one byte of every media file the overview links
+  and requires status 200 or 206, the exact `Content-Type` (`application/pdf`,
+  `video/mp4` or `image/png`), no `attachment` disposition, `accept-ranges: bytes` for
+  the films, and a total length equal to the pinned byte count.
 
 ### The Explainer as an Earlier Edition
 
@@ -533,13 +602,14 @@ proof edition”, and carries a hand-written frontier update dated 22 September 
 $31/8$ bracket. Two results have moved past its lead since: this project’s own T-033 at
 $3.8269975\ldots$, and Kleddamag’s $s(11) > 31/8$ (T-037), which is the verified bound.
 
-**On the overview**, the explainer’s card names its edition (the v0.4 proof edition,
-first published 5 September 2026) and carries a generated line comparing its lead result
-with the case record: when they differ, the line names the lead bound, the current
-verified bound and its credit; when they agree, it says the explainer’s bound is
+**On the overview**, the explainer’s card names its edition and dates from
+`PUBLICATION_HISTORY` (the page was first published on 5 September 2026 as v0.3.0; the
+v0.4 proof edition on 13 September) and carries a generated line comparing its lead
+result with the case record: when they differ, the line names the lead bound, the
+current verified bound and its credit; when they agree, it says the explainer’s bound is
 current. The explainer’s lead result is declared once, as a constant in
 `render_explainer.py` beside the prose that already names it, and the comparison reads
-the case’s `verified_lower_bound` and its holder through `render_recent_results.held`.
+the case’s current value and holder from `verified_lane`.
 
 **On the explainer**, the same generated line appears once under the navigation bar as a
 screen-only notice linking to the overview’s Recent Results.
@@ -573,8 +643,8 @@ The cards come in three groups:
   the maintained ones before those whose lifecycle is `retained`; a retained report’s
   card is labeled a dated record, with its date.
 
-Document cards link to GitHub on the default branch, not the build commit, so a reader
-lands on the current document.
+Document cards link to GitHub on the default branch, under the ref rule in
+[Link Checks](#link-checks).
 Record links in the results and frontier tables stay permalinks at the build commit.
 
 ### Shared Navigation and Style
@@ -629,14 +699,22 @@ The Visualizer is a full-viewport app and gets no bar: its `#site-note` element 
 since the layout checks measure its clearance, and only its link changes from “the
 explainer” at `../` to the overview.
 `WORKBENCH_HOME` in `check_published_site`, the `check_published_site/startup.js` probe,
-and `test_explainer.py`’s pin on the link’s target and text change with it.
+`test_explainer.py`’s pin on the link’s target and text, and
+`test_check_published_site.py`’s pin on “the explainer” change with it.
 
 ### Components
 
-- `packing/devtools/render_overview.py`: the overview, frontier atlas and tutorial pages
-  and the preview images; `RENDER_INPUTS`; `--update`, `--check` and `--output` options.
-  Its data layer is a separate module, `packing/devtools/overview_data.py`, so the page
-  and the data can be built in parallel.
+- `packing/devtools/render_overview.py`: the command line (`--update`, `--check`,
+  `--output`), `RENDER_INPUTS`, the page registry and shell that the modules below plug
+  into, and the overview page itself.
+- `packing/devtools/overview_data.py`: the data layer, one typed model of the register,
+  case files, atlas citations, bibliography credit and release stamp.
+- `packing/devtools/overview_media.py`: the preview images, the stripped drawings, and
+  the same-origin rule.
+- `packing/devtools/site_pages.py`: the frontier atlas and tutorial pages and their link
+  rewriting.
+- `packing/devtools/published_media.py`: the post-deploy media check, which
+  `check_published_site` calls.
 - `packing/devtools/templates/overview-article.md`, `frontier-article.md`,
   `site-nav.html`, `site.css` and `site-design.md`.
 - `packing/devtools/overview/*.js`: table sorting and filtering, popovers, and the
@@ -644,17 +722,19 @@ and `test_explainer.py`’s pin on the link’s target and text change with it.
 - `tsconfig.overview.json` at the repository root, extending `tsconfig.base.json` with
   no relaxed flags, and `tsc -p tsconfig.overview.json` added to `package.json`’s
   `typecheck` script. Biome and ESLint discover the files already.
-- Data passed to a script (the explainer’s anchor list, table metadata) goes into the
+- Data passed to a script (table metadata, the default-branch link list) goes into the
   page as a JSON data island through a placeholder, which the `.js` file reads; no
   script text is written from Python.
   A test mirrors `test_the_explainer_shell_owns_no_inline_programs` for the new
   templates.
-- `render_results.py` and `significance.py`: the shared functions made public, as listed
-  under [Approach](#approach).
+- `render_results.py`: `grouped_results()`, extracted from `render()`, with `_order`,
+  `_scope` and `_claim` made public; `significance.py`: `anchors` generalized.
 - `render_explainer.py`: includes the nav partial and the edition notice (both hidden in
-  print, so the PDF’s 22 pages and the print-layout checks do not move), the new
-  canonical URL, the declared lead result, and the film’s same-origin source; see
-  [URL Layout](#url-layout) for why its output file does not change.
+  print, so the PDF’s 22 pages and the print-layout checks do not move), fills the new
+  canonical URL, and declares the lead result; see [URL Layout](#url-layout) for why its
+  output file does not change.
+- `templates/explainer-article.md` and `templates/explainer-shell.html`: the film’s
+  same-origin source, download link and caption link, and the notice and nav slots.
 - `packing/src/sqpack/release.py`: `PUBLISHED_FILMS`.
 - `packages/workbench/assets/ascent-n1-324-poster.png`, cut by `workbench_tools.poster`.
 - `packages/workbench/tools/workbench_tools/build_site.py`: the `#site-note` link target
@@ -662,39 +742,37 @@ and `test_explainer.py`’s pin on the link’s target and text change with it.
 - `docs/project/document-map.schema.yaml` and `document-map.yaml`: the `summary` field
   and a summary for every document the overview shows; `check_documentation` checks
   them.
+- `packing/resources/bibliography.yaml` and its schema: the `ai_assistance` field (see
+  [Data Changes](#data-changes)).
 - `packing/devtools/check_results.py`: `READER_TIER` gains the overview template.
+- `.gitignore`: `packing/site-overview/`.
 - `.github/workflows/pages.yml` and its tests, in one change:
-  - an `overview` job that runs beside `prepare` rather than after it (the pull-request
-    wall was 176 s against a 180 s budget at the first baseline), with an
+  - an `overview` job that runs beside `prepare` rather than after it, with an
     `overview-unchanged` job for when its inputs did not move;
   - `scope` outputs `overview` and `overview_reason`; `pages_scope.BUILDER_INPUTS` gains
-    the half, whose `_HALF_GATE` refuses unknown halves;
+    the half, and `half_jobs` accepts it (it refuses unknown halves);
   - `pages-required` needs both new jobs, and its jq decision array reads the new
     output;
-  - `publish` downloads the overview artifact, renames the explainer, and fetches,
-    verifies and caches the films;
+  - `publish` downloads the overview artifact, renames the explainer, and, on `main`
+    only, fetches, verifies and caches the films;
   - the `push.paths` deploy filter gains the overview’s `RENDER_INPUTS` (`TUTORIAL.md`,
-    `README.md`, `frontier/`, `epistemics.md`, the document map, the templates), or a
-    merge that changes them would not republish, with a filter-coverage test like
-    `test_the_pages_filter_covers_every_render_input`;
-  - the sparse checkout gains what the renderer reads (`frontier/`,
-    `resources/bibliography.yaml`, `atlas/known-best/*.json` and `*.png`,
-    `epistemics.md`, `TUTORIAL.md`, the document map); it still omits most of
-    `packing/resources/` and all history and tags, so the renderer tests a link target’s
-    existence with `git cat-file -e <commit>:<path>`, never the filesystem, and never
-    reads `git log` or `git tag`;
-  - `gate-budgets.yaml` gains a budget for each new job, which the budget test requires
-    to cite a measured run, so the first pull-request run of the job is the measurement
-    and the entry follows it;
+    `README.md`, `frontier/`, `epistemics.md`, the document map, the bibliography, the
+    templates), or a merge that changes them would not republish, with a filter-coverage
+    test like `test_the_pages_filter_covers_every_render_input`;
+  - the sparse checkout is an exclusion list, so the renderer’s inputs are present
+    unless excluded; a test asserts that no entry of the overview’s `RENDER_INPUTS` is
+    excluded;
+  - `gate-budgets.yaml` gains a budget for each new job in the same change, since the
+    budget test fails a pull-request job without one; each entry cites a measured run of
+    the job on the branch (a `workflow_dispatch` run, which deploys nothing off `main`);
   - `test_pages_workflow.py` pins that change the scope outputs, the `pages-required`
-    needs and decision array, and `publish`’s needs, downloads and film step.
+    needs and decision array, and `publish`’s needs, downloads and film steps.
 - `packing/devtools/check_published_site.py`: `SERVED` gains the new pages, each checked
-  for its stamp and canonical URL; the media checks under
-  [Published Media](#published-media); `WORKBENCH_HOME` follows the Visualizer’s new
-  link; its live per-link HTTP check covers the overview and frontier pages, while the
-  tutorial’s links are proved at build time.
-- `packing/devtools/preview_site.py`: builds every page into one directory, serves it,
-  and takes screenshots; its page probes live in
+  for its stamp and canonical URL; the ref rule and the per-link scope under
+  [Link Checks](#link-checks); the media check; and `WORKBENCH_HOME` following the
+  Visualizer’s new link.
+- `packing/devtools/preview_site.py`: assembles every builder’s output into one
+  directory, serves it, and takes screenshots; its page probes live in
   `packing/devtools/probes/preview_site/`, registered in `probe-typecheck.json`.
 - `README.md`: links to the overview, the explainer’s new path, and the site copies of
   the `n = 1…324` PDF and both films.
@@ -702,15 +780,14 @@ and `test_explainer.py`’s pin on the link’s target and text change with it.
 ### Data Changes
 
 One field is added to `results.schema.yaml`, in one data commit followed by the
-`DATA_REVISION` re-pin and atlas re-stamp that `tests/test_release.py` requires:
+`DATA_REVISION` re-pin and atlas re-stamp:
 
 - **`registered: YYYY-MM-DD`** (required).
   The record has no registration date: `significance.scored` is when a result was last
   assessed, and the Pages build cannot read git history.
   The backfill takes each entry’s date from the commit that added it, once, by a script
   whose output is reviewed.
-  The table shows it, and orders by it within a group where the register’s own order
-  ties.
+  The table shows it as a sortable column.
 
 `headline`, which the first version of this plan also added, is on `main` already.
 
@@ -718,11 +795,21 @@ One field is added to `results.schema.yaml`, in one data commit followed by the
 The verification statistics count the **declared** `verification` and `confirmation`
 rungs, split by whether an entry has `attribution`, never re-derived ones:
 `check_results` accepts a declared rung below the derived one when a `composition` note
-explains it, so a re-derivation would disagree with the record.
-The overview build runs after the `check_results` gate.
+explains it, and 37 entries carry one, so a re-derivation would disagree with the
+record.
 
-Outside `DATA_PATHS`, and so without a re-pin: the document map’s `summary` field,
-`PUBLISHED_FILMS`, and the second poster.
+Outside `DATA_PATHS`, and so without a re-pin:
+
+- **`ai_assistance`** on bibliography entries: the source’s own statement of AI
+  assistance, quoted, with where it says it.
+  It is backfilled from `state_ai_assistance.STATEMENTS`, which then reads it, so the
+  statement has one structured home that the page, the table and the case-record tool
+  all read.
+- the document map’s `summary` field, `PUBLISHED_FILMS`, and the second poster.
+
+Phase 3’s groups 2 and 4 change files under `packing/frontier/` (`RESULTS.md`,
+`STATUS.md`, case files’ bodies) that `DATA_EXCLUDED` does not exclude, so each is a
+data commit followed by its re-pin and re-stamp.
 
 ### API Changes
 
@@ -732,29 +819,34 @@ Outside `DATA_PATHS`, and so without a re-pin: the document map’s `summary` fi
 ## Implementation Plan
 
 The work runs as four lanes with disjoint files, after a short shared start, under one
-coordinator (`OR-6`). The coordinator owns `pages.yml`, `pages_scope`,
-`gate-budgets.yaml`, the workflow tests, README, integration, commits and the beads.
+coordinator (`OR-6`). Each lane owns its modules and their tests.
+The coordinator owns the shared start, `pages.yml`, `pages_scope`, `gate-budgets.yaml`,
+`check_published_site.py` and its test, `preview_site.py`, `.gitignore`, README,
+integration, commits and the beads.
 
 | Lane | Deliverable | Files it owns |
 | --- | --- | --- |
-| A. Data | `registered`, the public helpers, `overview_data.py`, the Recent Results, verification and table data | `results.schema.yaml`, `results.yaml`, `check_results.py`, `render_results.py`, `significance.py`, `overview_data.py` |
-| B. Page and design system | the overview page, cards, popovers, chips, nav, hero, favicon, `site-design.md` | `render_overview.py`, `overview-article.md`, `site-nav.html`, `site.css`, `site-design.md`, `overview/*.js`, `tsconfig.overview.json` |
-| C. Media | `PUBLISHED_FILMS`, the second poster, preview images, the media checks | `release.py`, the poster asset, the preview step in `render_overview`’s media module, the media half of `check_published_site` |
-| D. Other pages | the frontier atlas page, the tutorial page, the explainer’s move and edition notice, the document-map summaries | `frontier-article.md`, `render_explainer.py`, `build_site.py`, `document-map.*`, `check_documentation.py` |
+| A. Data | `registered`, `ai_assistance`, `grouped_results()`, `overview_data.py` | `results.schema.yaml`, `results.yaml`, `bibliography.yaml` and its schema, `state_ai_assistance.py`, `check_results.py`, `render_results.py`, `significance.py`, `overview_data.py`, `test_overview_data.py` |
+| B. Overview page and design system | the overview’s sections, cards, popovers, chips, nav, hero and favicon, `site-design.md` | the overview-page part of `render_overview.py`, `overview-article.md`, `site-nav.html`, `site.css`, `site-design.md`, `overview/*.js`, `tsconfig.overview.json`, `test_overview_page.py` |
+| C. Media | `PUBLISHED_FILMS`, the second poster, previews and drawings, the same-origin rule, the media check | `release.py`, the poster asset, `overview_media.py`, `published_media.py`, `test_overview_media.py` |
+| D. Other pages | the frontier atlas and tutorial pages, the explainer’s move, notice and film links, the document-map summaries | `site_pages.py`, `frontier-article.md`, `render_explainer.py`, `explainer-article.md`, `explainer-shell.html`, `build_site.py`, `document-map.*`, `check_documentation.py`, `test_site_pages.py` |
 
-The shared start is `render_overview.py`’s skeleton (inputs, `RENDER_INPUTS`, shell,
-deterministic `--check`), which lanes B, C and D build on.
+The shared start is `render_overview.py`’s skeleton: inputs, `RENDER_INPUTS`, the page
+registry, the shell and a deterministic `--check`. Lanes B, C and D build on it; lane
+D’s film links follow lane C’s pin.
 The branch is pushed at the end of every slice.
 
 ### Phase 1: The Pages and Their Data
 
-- [ ] `render_overview.py` skeleton: inputs, `RENDER_INPUTS`, shell, deterministic
-  `--check`
+- [ ] `render_overview.py` skeleton: inputs, `RENDER_INPUTS`, page registry, shell, its
+  own output directory, deterministic `--check`
 - [ ] Register field `registered`: schema, backfill script, `check_results` check,
   `DATA_REVISION` re-pin
-- [ ] Public helpers from `render_results` and `significance`
-- [ ] `overview_data.py`: the register, case files, atlas citations, bibliography credit
-  and release stamp in one typed model, with the statistics and Recent Results groups
+- [ ] Bibliography field `ai_assistance`, backfilled from `STATEMENTS`, which then reads
+  it
+- [ ] `grouped_results()` and the public helpers from `render_results` and
+  `significance`
+- [ ] `overview_data.py`: the typed model, with the statistics and Recent Results
   derived through `render_recent_results`
 - [ ] The overview template and its sections: problem, Recent Results, Verification at a
   Glance, the atlas and films, Read Further, Other Square Packing Projects, footer
@@ -762,28 +854,31 @@ The branch is pushed at the end of every slice.
   `site-design.md`
 - [ ] The results table (static HTML, expandable rows, permalinks) and its sorting and
   filtering script under the browser floor
-- [ ] The frontier atlas page from the `SquarePackingCase/v2` records, with clean value
-  rendering, thumbnails and its tests
-- [ ] The tutorial page with link rewriting, a table of contents and offline link checks
-- [ ] Media: `PUBLISHED_FILMS`, the `n = 1…324` poster, the preview images, and the
-  same-origin render test
+- [ ] The frontier atlas page from the validated `SquarePackingCase/v2` records, with
+  clean value rendering, lazy thumbnails and its tests
+- [ ] The tutorial page with link rewriting and a table of contents
+- [ ] Offline link checks against one `git ls-tree -r` listing, for every site page
+- [ ] Media: `PUBLISHED_FILMS`, the `n = 1…324` poster, the preview images and stripped
+  drawings, and the same-origin render test
 - [ ] The explainer’s declared lead result and the generated edition note, on its card
   and as its screen-only notice
-- [ ] The document map’s `summary` field, the summaries, and the research-report cards
-- [ ] Tests: every register entry is a row; every recent result is a card; every record
-  link resolves at the build commit; statistics equal the register’s own counts;
-  byte-identical double render
+- [ ] The document map’s `summary` field, the summaries, and the document and report
+  cards
+- [ ] Tests: every register entry is a row; every recent result is a card; statistics
+  equal the declared rungs in `results.yaml`; byte-identical double render
 
 ### Phase 2: Wiring and Preview
 
 - [ ] Shared nav partial included by the overview, frontier, tutorial and explainer
   pages; the Visualizer’s `#site-note` link
-- [ ] Explainer moved to `explainer.html`, anchor list emitted, fragment forwarder on
-  the overview
-- [ ] `pages.yml`, `pages_scope`, the filter-coverage test and `check_published_site`
-  updated, with the film fetch in `publish`
+- [ ] Explainer renamed at publish, and the fragment forwarder on the overview
+- [ ] The explainer’s film links moved to the site copies
+- [ ] `pages.yml`, `pages_scope`, the filter-coverage and sparse-checkout tests, the job
+  budgets, and the `main`-only film steps in `publish`
+- [ ] `check_published_site`: the new pages, the ref rule, the per-link scope and the
+  media check
 - [ ] `README.md` links updated
-- [ ] `preview_site.py`: build every page into one directory, serve it, and check it
+- [ ] `preview_site.py`: assemble every page into one directory, serve it, and check it
 - [ ] Local preview with desktop and phone screenshots of each page, for the owner’s
   review
 
@@ -798,8 +893,8 @@ everywhere it is read.
 
 Measured at the first baseline: 86 math-like code spans in `README.md`, 145 in
 `SYNOPSIS.md`, 28 in `TUTORIAL.md`, and about 1,500 tracked Markdown files outside the
-archive.
-README’s generated blocks are counted with the renderers of group 2, not edited.
+archive. README’s generated blocks are migrated at their renderer in group 2, not edited
+in group 1.
 
 **What converts and what does not.** A code span converts when its content is a
 mathematical expression: a bound or equation in `s(n)`, a number or fraction standing as
@@ -828,19 +923,20 @@ It never touches a file that is not yet migrated.
 editing the output: `render_results` (`RESULTS.md`), `render_research_tables`
 (`STATUS.md`), `render_results_headline`, `render_recent_results` (README’s generated
 blocks), the claim-document renderers, and the overview and frontier pages.
-The data stays ASCII (`results.yaml` claims such as `s(11) >= 381/100` do not change),
-and the renderers format it as math, so no data file moves and `DATA_REVISION` is
-unaffected.
+The register and the case frontmatter stay ASCII (`results.yaml` claims such as
+`s(11) >= 381/100` do not change), and the renderers format them as math.
+The regenerated `RESULTS.md` and `STATUS.md` are under `DATA_PATHS`, so group 2’s commit
+is a data commit with its re-pin and re-stamp.
 
 **Order.** One commit per group, each run through the tool and the gate:
 
 1. The site’s reader documents: `README.md`, `TUTORIAL.md`, `SYNOPSIS.md`,
    `conventions.md`, `epistemics.md`.
-2. The renderers of generated documents, and their regenerated outputs.
+2. The renderers of generated documents, and their regenerated outputs; a data commit.
 3. `docs/project/` (specs, research, reviews, handoffs), except quoted source text and
    the dated reviews `.flowmarkignore` protects.
 4. The Markdown under `packing/` outside `resources/`: case files’ bodies, case
-   directories, the atlas and frontier READMEs.
+   directories, the atlas and frontier READMEs; a data commit for the case files.
 
 **Rendering everywhere.** The site pages render math through `kpress`, like the
 explainer; the tutorial page’s renderer gets a test that no `$` reaches the page
@@ -852,25 +948,27 @@ path.
   and tests over a fixture of math and identifier spans
 - [ ] `check_math_markup` ratchet on the pull-request surface
 - [ ] Group 1: the reader documents
-- [ ] Group 2: renderers of generated documents, outputs regenerated
+- [ ] Group 2: renderers of generated documents, outputs regenerated, re-pin
 - [ ] Group 3: `docs/project/`
-- [ ] Group 4: Markdown under `packing/` outside the archive
+- [ ] Group 4: Markdown under `packing/` outside the archive, re-pin
 - [ ] Rendered-math tests on the site pages; preview screenshots of math-heavy sections
 
 ## Testing Strategy
 
-- **Unit and render tests** under `packing/tests/test_overview.py`: row-per-entry and
-  card-per-recent-result completeness, link resolution at the build commit, statistics
-  against `check_results`’ derivation, determinism, self-containment
-  (`assert_self_contained`), no unresolved relative links in the tutorial page, the
-  explainer edition note against the case record, and the preview byte ceilings.
+- **Render tests**, one file per lane (`test_overview_data.py`, `test_overview_page.py`,
+  `test_overview_media.py`, `test_site_pages.py`): row-per-entry and
+  card-per-recent-result completeness, statistics against the declared rungs,
+  determinism, self-containment (`assert_self_contained`), the offline link check, the
+  explainer edition note against the case record, the relation shown on each lower
+  bound, and the preview and thumbnail byte ceilings.
 - **Credit:** every credit on the page equals `result_credit.credit_line` for its
-  sources, and every source with a recorded AI-assistance statement shows it.
+  sources, and every source with an `ai_assistance` statement shows it.
 - **Media:** the same-origin render test; the `PUBLISHED_FILMS` pin’s shape; and, after
-  deploy, `check_published_site`’s media-type, disposition, range and length checks.
+  deploy, the media check’s type, disposition, range and length requirements.
 - **Document map:** `check_documentation` requires and checks the summaries.
-- **Filter coverage:** a test like `test_the_pages_filter_covers_every_render_input` for
-  the overview’s `RENDER_INPUTS`.
+- **Workflow:** the filter-coverage test for the overview’s `RENDER_INPUTS`, the
+  sparse-checkout test, and the `test_pages_workflow.py` pins, including the `main`-only
+  condition on the film steps.
 - **Browser floor:** Biome, `tsc` and `node:test` for the new scripts; no JavaScript in
   Python strings, with any page probe in a `probes/` file.
 - **Browser checks:** a Playwright pass (launched with `SQPACK_CHROMIUM`, since the
@@ -889,8 +987,7 @@ path.
    page with the owner.
    Nothing is deployed.
 3. With the owner’s approval, open a pull request.
-   The pull request runs every check without deploying, and its first run measures the
-   new job for its budget entry.
+   The pull request runs every check without deploying and without fetching the films.
 4. Merge only with the owner’s approval.
    Deployment happens on the merge to `main`: the first deploy fetches the films and
    measures the artifact, and `verify-deployment` checks the live site, media types
@@ -913,8 +1010,6 @@ path.
   at 30 frames a second and a higher CRF) would cut its 206 MB several times over.
   Recommended: serve the archive encode its receipt describes, and add the profile only
   if the first deploy or the bandwidth says so.
-- **The `n = 1…324` poster frame.** Recommended: the last step’s settled end, which
-  shows the whole atlas.
 - **Projects mentioned but not reviewed.** Other Square Packing Projects lists the
   projects `source-coverage.yaml` records as sources.
   Whether to add repositories that sources mention but this repository has not reviewed
@@ -928,7 +1023,7 @@ path.
 Three read-only reviews of the first draft, on 2026-09-29, each checked against the code
 at the first baseline: the Pages build and published-site checks, the data layer and
 results table, and rendering and the browser floor.
-Their findings are folded into the sections above; the ones that changed the design:
+Their findings changed the design in these ways:
 
 - the explainer is renamed at publish, not at render, because about forty workflow steps
   and several tests pin `site/index.html`;
@@ -939,14 +1034,29 @@ Their findings are folded into the sections above; the ones that changed the des
   no registration date and its first sentences are too long for a table;
 - statistics count declared rungs, and grouping, ordering and case formatting reuse the
   register’s and survey’s own functions;
-- the tutorial skips the explainer’s math-geometry pass, rewrites links in the parsed
-  HTML, and checks its link targets offline;
+- the tutorial skips the explainer’s math-geometry pass and rewrites links in the parsed
+  HTML;
 - the new Pages half is wired through scope, `pages-required`, `publish`, the deploy
   filter, the sparse checkout and the job budgets in one change.
 
-The revision of 2026-09-30 rests on four read-only surveys at `886b1783`: the explainer
+The revision of 2026-09-30 rests on four read-only surveys at `886b1783` (the explainer
 and kpress build, the results sources and credit policy, the published media and their
-live response headers, and the reader documents and the document map.
+live response headers, and the reader documents and the document map), and on one
+adversarial review of the revised text against the code, whose confirmed findings
+changed the design in these ways:
+
+- the overview writes its own output directory, because the explainer and its PDF build
+  own `packing/site/index.html`;
+- the film steps in `publish` are gated to `main`, because `publish` runs for pull
+  requests and only its upload was gated;
+- default-branch document links get an explicit exception in the published-site ref
+  rule, and the frontier and tutorial links are proved offline rather than requested;
+- Phase 3’s changes under `packing/frontier/` are data commits with re-pins;
+- drawings are stripped of ids and the thumbnails load as separate files, since the
+  rendering SVGs total 52 MB and share ids with the explainer’s inlined drawing;
+- a lower bound’s relation comes from the register, since case records carry none;
+- AI-assistance statements gain a structured bibliography field;
+- each lane owns its own modules and tests, and the explainer’s templates have an owner.
 
 ## References
 

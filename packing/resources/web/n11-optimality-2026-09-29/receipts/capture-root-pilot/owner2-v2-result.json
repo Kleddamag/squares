@@ -1,0 +1,23 @@
+{
+  "adaptive_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "candidate_capture_proved": false,
+  "checker_sha256": "0d086300f41fa9d15c35868f1be8a54952e89956850bff4a8be1c5b668c44edc",
+  "compressed_owned_points": 7,
+  "cover_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+  "global_optimality_proved": false,
+  "last_row_cover": {
+    "edge_segments": 115,
+    "events": 46,
+    "probes": 91
+  },
+  "max_nodes_per_geometry_call": 100000,
+  "root_induction_proved": false,
+  "rows_checked": 69,
+  "scope": "owner",
+  "seed_points_checked": 130,
+  "seed_sha256": "b93be3358f7dfbf063d4109c52fd3bbbbfff9b34cb468c3123598b54cea72a56",
+  "selected_sha256": "31a6f65cd6c162bf69e059a41467ef2b190351f592869c42ea9b88f37ab39f21",
+  "shared_geometry_sha256": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+  "status": "PASS_CONDITIONAL_OWNER_UPDATE",
+  "wall_seconds": 10.15358924999964
+}

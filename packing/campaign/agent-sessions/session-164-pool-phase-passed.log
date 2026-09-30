@@ -1,0 +1,44 @@
+Frozen source: a2b8e696cc2dce562abedcecb9456229d57a9168
+Command: packing-validate --push --since 9174140a8
+Exit status: 0
+Summary excerpt; full durations and JUnit retained in external task scratch.
+
+== reachable tests: exclusive pytest phase after edit checks; normal lane 10 pytest workers, PACK_JOBS=1; pool-heavy lane if selected: serial pytest, PACK_JOBS=10 ==
+All checks passed!
+prospective source map check passed: 224 cases, availability and SVG
+contact scaffold atlas check passed: 21 topologies, 11013 abstract orbits
+known-best n=11 rational control check passed
+Route S compression checkpoint check passed
+frontier rigidity check passed: every block matches the derivationassessed: 18 locally-rigid, 296 not-rigid, 7 undetermined, 3 left to a stronger argument
+gate budget declaration passed: 12 tiers, 7 with a recorded cost, all ceilings within 2x of it, every pull-request tier (checks, frontend, geometry, suite_a, suite_b, sweeps, typecheck) recorded from hosted runs, no unattributed rise, the pull-request walls inside OR-14 and wired with every advisory wall tracked by a live bead, all named in development.md
+0.76s call     tests/test_session_gate.py::test_pending_does_not_suppress_malformed_or_unknown_declarations[full gate: passed]
+0.34s call     tests/test_session_rollups.py::test_a_passed_gate_can_clear_certification_while_usage_stays_unmeasured
+0.00s setup    tests/test_session_gate.py::test_pending_does_not_suppress_malformed_or_unknown_declarations[full gate: passed]
+0.00s setup    tests/test_session_rollups.py::test_a_passed_gate_can_clear_certification_while_usage_stays_unmeasured
+0.00s setup    tests/test_rust_floor_contract.py::test_gate_refuses_empty_test_run[test result: ok. 0 passed; 0 failed]
+0.00s teardown tests/test_session_gate.py::test_pending_does_not_suppress_malformed_or_unknown_declarations[full gate: passed]
+0.00s call     tests/test_render_motion.py::test_muting_is_derived_from_locking_and_evidence_when_not_passed_in
+0.00s teardown tests/test_session_rollups.py::test_a_passed_gate_can_clear_certification_while_usage_stays_unmeasured
+0.00s call     tests/test_analyze_bc303_h162_receipt.py::test_ordered_conditional_branches[4524132-4524132-sufficient_filter_passed-proved_if_exp158_admitted]
+0.00s call     tests/test_rust_floor_contract.py::test_gate_refuses_empty_test_run[test result: ok. 0 passed; 0 failed]
+0.00s call     tests/test_no_embedded_js_contract.py::test_a_name_passed_to_the_loader_by_keyword_must_resolve
+0.00s setup    tests/test_analyze_bc303_h162_receipt.py::test_ordered_conditional_branches[4524132-4524132-sufficient_filter_passed-proved_if_exp158_admitted]
+0.00s teardown tests/test_rust_floor_contract.py::test_gate_refuses_empty_test_run[test result: ok. 0 passed; 0 failed]
+0.00s setup    tests/test_no_embedded_js_contract.py::test_a_javascript_string_passed_as_a_script_counts_once
+0.00s call     tests/test_no_embedded_js_contract.py::test_a_javascript_string_passed_as_a_script_counts_once
+0.00s setup    tests/test_render_motion.py::test_muting_is_derived_from_locking_and_evidence_when_not_passed_in
+0.00s setup    tests/test_no_embedded_js_contract.py::test_a_name_passed_to_the_loader_by_keyword_must_resolve
+0.00s teardown tests/test_render_motion.py::test_muting_is_derived_from_locking_and_evidence_when_not_passed_in
+0.00s teardown tests/test_analyze_bc303_h162_receipt.py::test_ordered_conditional_branches[4524132-4524132-sufficient_filter_passed-proved_if_exp158_admitted]
+0.00s teardown tests/test_no_embedded_js_contract.py::test_a_javascript_string_passed_as_a_script_counts_once
+0.00s teardown tests/test_no_embedded_js_contract.py::test_a_name_passed_to_the_loader_by_keyword_must_resolve
+7750 passed, 9 skipped, 6 warnings in 416.24s (0:06:56)
+1 passed, 7819 deselected in 140.99s (0:02:20)
+   623.04s  TOTAL (wall)
+51 of 82 STEPS PASSED (a named tier; this is not the full gate)
+
+Pool progress receipt:
+{"command_id": "command-3a04203222fa4ba5be62b6c7b41e63cb.pytest-pool", "event": "session_start", "monotonic_ns": 897232340552291, "nodeid": "", "pack_jobs": "10", "run_id": "6085bce8a0eb46a287d2cd1a1b52cccb", "schema": "reachable-progress-v1", "source_commit": "a2b8e696cc2dce562abedcecb9456229d57a9168", "timestamp_utc": "2026-09-29T22:38:07.149406+00:00", "worker_id": "main", "xdist_workers": 1}
+{"command_id": "command-3a04203222fa4ba5be62b6c7b41e63cb.pytest-pool", "event": "start", "monotonic_ns": 897240528487125, "nodeid": "tests/test_known_best_atlas.py::test_known_best_composite_contains_every_case_and_square", "pack_jobs": "10", "run_id": "6085bce8a0eb46a287d2cd1a1b52cccb", "schema": "reachable-progress-v1", "source_commit": "a2b8e696cc2dce562abedcecb9456229d57a9168", "timestamp_utc": "2026-09-29T22:38:15.337617+00:00", "worker_id": "main", "xdist_workers": 1}
+{"command_id": "command-3a04203222fa4ba5be62b6c7b41e63cb.pytest-pool", "event": "finish", "monotonic_ns": 897373359361583, "nodeid": "tests/test_known_best_atlas.py::test_known_best_composite_contains_every_case_and_square", "outcome": "passed", "pack_jobs": "10", "run_id": "6085bce8a0eb46a287d2cd1a1b52cccb", "schema": "reachable-progress-v1", "source_commit": "a2b8e696cc2dce562abedcecb9456229d57a9168", "timestamp_utc": "2026-09-29T22:40:28.169570+00:00", "worker_id": "main", "xdist_workers": 1}
+{"command_id": "command-3a04203222fa4ba5be62b6c7b41e63cb.pytest-pool", "event": "session_finish", "exit_status": 0, "monotonic_ns": 897373360106750, "nodeid": "", "pack_jobs": "10", "run_id": "6085bce8a0eb46a287d2cd1a1b52cccb", "schema": "reachable-progress-v1", "source_commit": "a2b8e696cc2dce562abedcecb9456229d57a9168", "timestamp_utc": "2026-09-29T22:40:28.170328+00:00", "worker_id": "main", "xdist_workers": 1}

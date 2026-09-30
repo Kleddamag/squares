@@ -1,0 +1,72 @@
+{
+  "fields": [
+    {
+      "canonical_cases_excluded": 249,
+      "invocation_wall_seconds": 22.328969791997224,
+      "mask_index": 1141,
+      "process_cpu_seconds": 20.311958999999998,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 22.195604459000606
+    },
+    {
+      "canonical_cases_excluded": 126,
+      "invocation_wall_seconds": 18.20024608300082,
+      "mask_index": 1798,
+      "process_cpu_seconds": 16.542092999999998,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 18.075196416000836
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.170773292000376,
+      "mask_index": 1809,
+      "process_cpu_seconds": 47.270348,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.0320718749972
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 45.24963966699943,
+      "mask_index": 1987,
+      "process_cpu_seconds": 36.371035,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 45.06725716700021
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 12.294150749999972,
+      "mask_index": 1541,
+      "process_cpu_seconds": 11.313926,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 12.17865166699994
+    },
+    {
+      "canonical_cases_excluded": 126,
+      "invocation_wall_seconds": 21.38234229200316,
+      "mask_index": 232,
+      "process_cpu_seconds": 15.923213,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 21.213701458000287
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 31.993933833000483,
+      "mask_index": 1017,
+      "process_cpu_seconds": 27.160711,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 31.857691459001217
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 25.747932584003138,
+      "mask_index": 1377,
+      "process_cpu_seconds": 21.637947999999998,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 25.564176625000982
+    }
+  ],
+  "global_optimality_proved": false,
+  "jobs": 3,
+  "status": "BATCH_RECEIPTS_RETAINED",
+  "wall_seconds": 87.16716979199919
+}

@@ -10,7 +10,11 @@ import pytest
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Refuse pytest's false-green fallback when a configured test root is missing."""
+    """Register the test-only pool lane and refuse missing configured test roots."""
+    config.addinivalue_line(
+        "markers",
+        "pool_heavy: test that uses the per-case process pool in an exclusive phase",
+    )
     root = Path(str(config.rootpath))
     missing = [
         path for value in config.getini("testpaths") if not (path := root / value).is_dir()

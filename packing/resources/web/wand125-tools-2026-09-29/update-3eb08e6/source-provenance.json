@@ -1,0 +1,47 @@
+{
+  "repository": "https://github.com/wand125/square-packing-tools",
+  "commit": "3eb08e6c675d8d5aa953cb93da049a3f3cdc6123",
+  "prior_review_commit": "0d33ab61726c2ab03e3eb8f457dabaf22db8571f",
+  "tree": "82e5517b3437f357b09e3b6bb0760a6d2f750c6f",
+  "archive": {
+    "path": "upstream.tar.gz",
+    "bytes": 101065,
+    "sha256": "b2fdce75e156942025070ac05af16b553a69007377aedf3c699da7cf253435d2",
+    "format": "git archive tar, gzip -n"
+  },
+  "reviewed_source_files": {
+    "README.md": {
+      "bytes": 7350,
+      "sha256": "3933befd97a965a6b6f707e9b85b12404f5b9a5cdc0508c169ff228bb53b7005"
+    },
+    "solver/verify.cpp": {
+      "bytes": 7255,
+      "sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602"
+    },
+    "solver/certify.py": {
+      "bytes": 4435,
+      "sha256": "f86cb9c1444f98ae0b13190d0ee9a343064e68e1fb2a2ecd6e203eca8e5b8cf3"
+    },
+    "solver/run_verify.py": {
+      "bytes": 2162,
+      "sha256": "7bce246763cac8a2bda9aa4cfd9944aa5e14cde9ac965e00686c25f21ae78261"
+    },
+    "transfer/scale_and_verify.py": {
+      "bytes": 4847,
+      "sha256": "06f532991ba4d34e4f5fcb4a9c847e6a9dedb0c7af6a2e9323d1761166e3d0ed"
+    },
+    "transfer/l_cap.py": {
+      "bytes": 2671,
+      "sha256": "a8e1a92231b491c0d1610a13a2c7dbc435d6fb9e41a4c392bcf0d9b5b6865688"
+    },
+    ".github/workflows/ci.yml": {
+      "bytes": 918,
+      "sha256": "5dd3bfc09334da9e1c6f09269d971a54f76a8343cf8ce0f45fde4d895e1c1961"
+    },
+    "tests/test_smoke.py": {
+      "bytes": 6587,
+      "sha256": "a133a15c52973a1e2db9908cf9fb6ba12ed0ea31764ed4366f868edc4fc0bb14"
+    }
+  },
+  "scope": "Source acquisition only; acceptance and performance require separately retained runs."
+}

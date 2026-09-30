@@ -1,0 +1,23 @@
+{
+  "scope": "Complete root-self capture step 0 owner-15 transition conditional on accepted phase-two root and bridge; no full node, capture tree, or global exclusion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "checker_path": "packing/devtools/check_n11_capture_step0.py",
+  "checker_sha256": "3e8180817ffedff6406c13e1e98ac5beacad54a2d8bd9695c8a238b4467f78af",
+  "focused_test_sha256": "0768d1e94371cdc2535548c52fcb9beb9dcd197ec8f1d528b2cd2cca1885fa01",
+  "focused_test_observed": "1 passed; Ruff and BasedPyright zero findings",
+  "row_checker_sha256": "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309",
+  "root_decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "bridge_result_sha256": "ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d",
+  "result_sha256": "8ca86cc3f119c1dc42e14b142d04cf6863934b799b8e8b6818e54830b1d22b78",
+  "source_object_cache": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects/f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4.gz",
+  "source_object_compressed_sha256": "7ad9ce56d377129d75a18b62a800898c0d123ffa3539a5b186b7f8c5f9df6809",
+  "supervisor_seconds": 240,
+  "internal_seconds": 220,
+  "workers": 3,
+  "max_events_per_cover": 20000,
+  "observed_checker_wall_seconds": 64.91834825000115,
+  "process_cpu_seconds": null,
+  "stdout_capture": "The checker wrote result.json directly; its single summary line was observed in the command tool output but was not redirected to a separate file.",
+  "replay": "From packing after decoding and verifying the pinned root and adaptive gzip inputs into external scratch: timeout 240s .venv/bin/python3 -m devtools.check_n11_capture_step0 --root-source <decoded-root> --adaptive <decoded-adaptive> --bridge-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-bridge-final2/result.json --row-limit 217 --workers 3 --max-seconds 220 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-step0/result.json"
+}

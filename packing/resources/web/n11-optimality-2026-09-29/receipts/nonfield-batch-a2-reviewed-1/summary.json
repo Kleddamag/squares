@@ -1,0 +1,671 @@
+{
+  "status": "INCOMPLETE_BATCH",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "runner_sha256": "2406c77af09d482d521cab392383cda3f8d70667bf95267ddab3f2ce2c6a4a39",
+  "checker_sha256": "722e654fbf426d9db3a799458c075378814da632b29a23c4b514e24a38a19a7c",
+  "requested_case_ids": [
+    221,
+    247,
+    248,
+    250,
+    251,
+    439,
+    647,
+    649,
+    650,
+    778,
+    817,
+    868,
+    929,
+    958,
+    991,
+    1013,
+    1026,
+    1049,
+    1076,
+    1107,
+    1108,
+    1115,
+    1125,
+    2174,
+    2178,
+    2182
+  ],
+  "excluded_case_ids": [
+    221,
+    247,
+    248,
+    250,
+    251,
+    439,
+    647,
+    649,
+    650,
+    778,
+    817,
+    868,
+    929,
+    958,
+    991,
+    1013,
+    1026,
+    1049,
+    1076,
+    1107,
+    1108,
+    1115,
+    1125,
+    2178,
+    2182
+  ],
+  "remaining_case_ids": [
+    2174
+  ],
+  "global_optimality_proved": false,
+  "wall_seconds": 1488.572737208,
+  "max_batch_seconds": 7200.0,
+  "jobs": 2,
+  "workers_per_case": 1,
+  "cpu_budget": 8,
+  "host_process_cpu_count": 10,
+  "results": [
+    {
+      "mask_index": 221,
+      "exit_code": 0,
+      "invocation_wall_seconds": 133.49992591699993,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        221
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "c566ea4882f84a3b27cca7b20aa906524c7d9cb374b4841f73e576c485a446a0",
+      "receipt_decoded_sha256": "ef01710925f9b814b8159c7112e9effec34c486a002e9377042dbe6c88364f15",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-221.json.gz"
+    },
+    {
+      "mask_index": 247,
+      "exit_code": 0,
+      "invocation_wall_seconds": 120.37177820899524,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        247
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "c45feb2be87de09a1aa5cff489aa9ee6de996a318c44cf8df26e755c30fc2760",
+      "receipt_decoded_sha256": "d3a23effcc468affb7bce5bc2ef684696f3afcec5e2a6bd1f9f8fa40af73225a",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-247.json.gz"
+    },
+    {
+      "mask_index": 248,
+      "exit_code": 0,
+      "invocation_wall_seconds": 128.1734264589977,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        248
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "e5e6cd2f9a23a216f7df7428bdd24344d3c383ee27fe0d714211649df82b80b7",
+      "receipt_decoded_sha256": "b4457d4e965b82973cb8d045cdc81bd21391a95aca49cdd2c5a104b203a9ddd5",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-248.json.gz"
+    },
+    {
+      "mask_index": 250,
+      "exit_code": 0,
+      "invocation_wall_seconds": 120.86316624999745,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        250
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "05af4a22cc66e1f3a1967107b49a19acf7017dafe2cf3770a80b05b26ae78411",
+      "receipt_decoded_sha256": "946cfc973d07c29c11ebf2c3956ab99d559222e224d86650c3cf8111cfb07c76",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-250.json.gz"
+    },
+    {
+      "mask_index": 251,
+      "exit_code": 0,
+      "invocation_wall_seconds": 117.59499820799829,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        251
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "8950773bf30edb6b080073bc112d0b3380fba41b68b3d99d124e7d87b7f76f1d",
+      "receipt_decoded_sha256": "ed213ff6c93817922abf49005cbe3c5b023789d574504e7b2c3c44c6cfe5fe21",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-251.json.gz"
+    },
+    {
+      "mask_index": 439,
+      "exit_code": 0,
+      "invocation_wall_seconds": 118.51172812499863,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        439
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "a1500d46584361d79299524801034ae80f1a27340deb0ee5301bf366e4b114b9",
+      "receipt_decoded_sha256": "5bb0fa9a2ea276ebd5dbdb2215cb7966c1dd7b0905e3bed7645afe9a469b69bd",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-439.json.gz"
+    },
+    {
+      "mask_index": 647,
+      "exit_code": 0,
+      "invocation_wall_seconds": 116.77895691699814,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        647
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "e49aaad63768dd065037665d110f2326f1fb5e707ddfff75249f145a3c855e57",
+      "receipt_decoded_sha256": "fe06038bf5e9cf81e5e751e32826f6c69899ecfea187489f7affca28b53c079a",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-647.json.gz"
+    },
+    {
+      "mask_index": 649,
+      "exit_code": 0,
+      "invocation_wall_seconds": 120.7645644170043,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        649
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "d8befad70e95abd60c566f7e198f3194eeb5a70b4d821915eea773d34c0078f3",
+      "receipt_decoded_sha256": "e0ed02e8e4820b2857afdb0bf3b556308115dab3797bbd7ea7f67c364f0faf95",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-649.json.gz"
+    },
+    {
+      "mask_index": 650,
+      "exit_code": 0,
+      "invocation_wall_seconds": 122.44717033300549,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        650
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "e165be35d7169bef20d322370d911eb1b342659062590011a8b7bcff9261da7d",
+      "receipt_decoded_sha256": "78ed1fc89c65d5b214c5df88cb209a0c1dc9d4b7b145628988511323cf7db2cb",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-650.json.gz"
+    },
+    {
+      "mask_index": 778,
+      "exit_code": 0,
+      "invocation_wall_seconds": 73.05023891699966,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        778
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "605487848b57f0679f05feb38b99e4a6e7106b54a9fd82854daf58d8d619e0ba",
+      "receipt_decoded_sha256": "a8511680dba0b1e1c5134ea429ee4049641b4b476839afa68e3129c6023f552a",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-778.json.gz"
+    },
+    {
+      "mask_index": 817,
+      "exit_code": 0,
+      "invocation_wall_seconds": 72.49185870800284,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        817
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "c8f2448214a165cfa072cc33273c87333392a5f441d572b078ab2ef99eb03dfd",
+      "receipt_decoded_sha256": "dd289935925930c14aaea9a6a24ab45a615ade4308591a20425985597ad5c6c8",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-817.json.gz"
+    },
+    {
+      "mask_index": 868,
+      "exit_code": 0,
+      "invocation_wall_seconds": 89.51104337500146,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        868
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "cd7beaca847c83fe49789c4c64d0a95bd4742a4326feb1543afb10e5fe5405e8",
+      "receipt_decoded_sha256": "b68fda0a2d66f00b931cebb208d7976fa3e5c0b665d90a5a6542007f6230dd4b",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-868.json.gz"
+    },
+    {
+      "mask_index": 929,
+      "exit_code": 0,
+      "invocation_wall_seconds": 106.29444216700358,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        929
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "e4bb247dda4311807a658551def92e6ef6b4fd249247db85c48ede7ca5470828",
+      "receipt_decoded_sha256": "6f0f67da14321328e657ef00b8aba1a1c300803846a5f047f3127fd40b511f5a",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-929.json.gz"
+    },
+    {
+      "mask_index": 958,
+      "exit_code": 0,
+      "invocation_wall_seconds": 123.97118595799839,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        958
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "21db968081f1e16ca36f8892bd482a30ad7a53bb8092f1bf45e7cf73fdd95300",
+      "receipt_decoded_sha256": "805c91587bee5d2c780aca967f504d278b14e55069850fdcacab7335d9510edb",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-958.json.gz"
+    },
+    {
+      "mask_index": 991,
+      "exit_code": 0,
+      "invocation_wall_seconds": 120.26705050000601,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        991
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "99bdeac13ddd1ad5fb63ecea9e1e348a88ee59b8ccb10d822df079b833386fbd",
+      "receipt_decoded_sha256": "a5970521ef5f3c9262a934b0d285442ec2ab0e61d9bdb3f6bc227664b825d1f9",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-991.json.gz"
+    },
+    {
+      "mask_index": 1013,
+      "exit_code": 0,
+      "invocation_wall_seconds": 122.81785049999598,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1013
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "a584ce2d1968d963484284106aeedf2bc70a1cffa86af9e6f1eaf52ee31e599b",
+      "receipt_decoded_sha256": "c06a96178deac43c7814cfb48599d1cb7e425a3df598ce04ecbe369f0e719649",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1013.json.gz"
+    },
+    {
+      "mask_index": 1026,
+      "exit_code": 0,
+      "invocation_wall_seconds": 123.45626624999568,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1026
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "8b0aa89f3d9cb5b13c4c0587fbcfb383a6526e46168303312a1e3319cded9bb6",
+      "receipt_decoded_sha256": "d8b4f0f67ceaf1850b1fed05bd7f7813f9779bb895492d795781716d4ec93b88",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1026.json.gz"
+    },
+    {
+      "mask_index": 1049,
+      "exit_code": 0,
+      "invocation_wall_seconds": 107.9222043339978,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1049
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "01968952b013c0ff23ccbb422d5eea143dffe25e6ddfb3e68a0b46eb6b426b12",
+      "receipt_decoded_sha256": "7edb288f06a359643763b65d6117680e80d93aee7efbdc4e4fcbe70ddf333791",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1049.json.gz"
+    },
+    {
+      "mask_index": 1076,
+      "exit_code": 0,
+      "invocation_wall_seconds": 96.26152004100004,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1076
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "9dd0515cba282f11fbaf895696c349d217949029fb2f960322f7b63919f08177",
+      "receipt_decoded_sha256": "f48b46b46a47f22a4cf614462186a802478de8d253fd5c51e5397a3031a93cbb",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1076.json.gz"
+    },
+    {
+      "mask_index": 1107,
+      "exit_code": 0,
+      "invocation_wall_seconds": 133.93078874999628,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1107
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "7551fc989d40ceba0ae55eff79aeaba5114e19415b0a52758d998453be411b3b",
+      "receipt_decoded_sha256": "83d28fa394a86a3c313edab38fbb985b0d9e6088b6acedbb069f1fec8efcf058",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1107.json.gz"
+    },
+    {
+      "mask_index": 1108,
+      "exit_code": 0,
+      "invocation_wall_seconds": 124.85855874999834,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1108
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "895bfeb4f39956e5adf8641fb8dca965390442d9114be62ec35d6901eaf282f3",
+      "receipt_decoded_sha256": "8de1879c7cb65a11083c371423e4a4fcbac49c062ba2760682e1cf8ca295d523",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1108.json.gz"
+    },
+    {
+      "mask_index": 1115,
+      "exit_code": 0,
+      "invocation_wall_seconds": 101.4529530830041,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1115
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "5cb2618db258e6071b8fcc43e12115bee21e72992c36c66294eb41192479be71",
+      "receipt_decoded_sha256": "a4a6748ac237771c871f37c484be62a65e46491af0090f1430a6637d16c3ddc0",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1115.json.gz"
+    },
+    {
+      "mask_index": 1125,
+      "exit_code": 0,
+      "invocation_wall_seconds": 125.84605104199727,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        1125
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "5bd161fb2603461c42c1150447b7beba2b29cf016dcc8e71c4bd393c5e09854f",
+      "receipt_decoded_sha256": "4a83618b0e2d29bf5919afc0428e70da926447289288e7b3446f931edfb36e6a",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-1125.json.gz"
+    },
+    {
+      "mask_index": 2174,
+      "exit_code": 2,
+      "invocation_wall_seconds": 5.345455832997686,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "cba3d007efd74dc5d66b054d8ced7708f6290209fc4ecd625dab53e44f886277",
+      "receipt_decoded_sha256": "cba3d007efd74dc5d66b054d8ced7708f6290209fc4ecd625dab53e44f886277",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-2174.json",
+      "checker_status": "REFUSED",
+      "reason": "unsupported partner self-hull cut"
+    },
+    {
+      "mask_index": 2178,
+      "exit_code": 0,
+      "invocation_wall_seconds": 147.27121566700225,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2178
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "bd73f2e4398da996e24e0808403c279fd2cdabd316c7275f7bd307b58d5a1f1a",
+      "receipt_decoded_sha256": "e5ef2867ab975958006f5667dad8b4a213ccbf3563d7f54784584ed5d1e0b159",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-2178.json.gz"
+    },
+    {
+      "mask_index": 2182,
+      "exit_code": 0,
+      "invocation_wall_seconds": 143.72758662499837,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2182
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "objects_checkout": "git_common_primary",
+        "workers": 1,
+        "cover_backend": "fast",
+        "max_seconds": 600.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "b0050a335bc675570781766094b9f8068e93a85910ede1ec62d204b660da1f89",
+      "receipt_decoded_sha256": "b4ece0ebcec6df5c6422f9add7b23cf20e7ce9b874f33ea41c88e302e2d2def9",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-1/case-2182.json.gz"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "indexer_commit": "cf4a45327",
+  "indexer_sha256": "94075042f8ca3d8882fa04e5a10e92df2d51374e09a9d2a4ce8dc5a27fbb6742",
+  "input_source_bytes": 185901535,
+  "input_source_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc",
+  "input_source_reacquisition": "packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json records the pinned publication object and decoded SHA; the indexed JSONL remains disposable external scratch",
+  "internal_seconds": 60,
+  "process_cpu_seconds": "unmeasured",
+  "replay": "From packing after reacquiring the pinned source: timeout 75s .venv/bin/python3 -m devtools.index_n11_capture_source --source <decoded-near> --directory <external-scratch>/n11-capture/near-index --expected-sha256 491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc --expected-steps 121 --max-seconds 60 > resources/web/n11-optimality-2026-09-29/receipts/capture-near-index/result.json",
+  "result_sha256": "7ce0a9e42c5a9bead0344497a3b2d1f791ce189415259b048b9628cb394bf1b2",
+  "scope": "Diagnostic source-index construction only; no cached proof premise or geometry acceptance",
+  "stream_sha256": "a2bae5602a784985d08b9796bbdfce8c677608325ed6b747925dd96252dd1f23",
+  "supervisor_seconds": 75
+}

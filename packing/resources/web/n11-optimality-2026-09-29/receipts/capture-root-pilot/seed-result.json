@@ -1,0 +1,13 @@
+{
+  "candidate_capture_proved": false,
+  "checker_sha256": "111ac81728b947710be2783c6557d35dd892c08a8bec7ebe098fa8e3e58604ab",
+  "cover_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+  "global_optimality_proved": false,
+  "root_induction_proved": false,
+  "scope": "seed",
+  "seed_points_checked": 130,
+  "seed_sha256": "b93be3358f7dfbf063d4109c52fd3bbbbfff9b34cb468c3123598b54cea72a56",
+  "shared_geometry_sha256": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+  "status": "PASS_STRICT_ROOT_SEED",
+  "wall_seconds": 8.101461874997767
+}

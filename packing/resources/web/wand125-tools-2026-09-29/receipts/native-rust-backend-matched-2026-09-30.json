@@ -1,0 +1,57 @@
+{
+  "binary_sha256": "407021f046a3a5f4758ba9c560252955a3802dacf0a147feb3b33e0c978afb1f",
+  "created_utc": "2026-09-30T07:10:22.280234+00:00",
+  "observations": [
+    {
+      "angles": 201,
+      "identical_exact_report": true,
+      "input_sha256": "bfd6e4dea67a048321836c69c9c9fe782687ffc512ccb1afc43249212ba5f01e",
+      "name": "analytic-n3-all201",
+      "nodes": 1781,
+      "normalized_report_sha256": "bd878de9d1f469c749015aea091e96eceb98d8820db3fdc47f3e6562948117c8",
+      "status": "VERIFIED",
+      "timing": {
+        "python": {
+          "child_cpu_seconds": 0.0,
+          "wall_seconds": 0.5035070000012638
+        },
+        "rust": {
+          "child_cpu_seconds": 1.04407,
+          "wall_seconds": 3.8002159589996154
+        }
+      }
+    },
+    {
+      "angles": 1,
+      "identical_exact_report": true,
+      "input_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+      "name": "tokoharu-n11-angle1-1000",
+      "nodes": 1000,
+      "normalized_report_sha256": "68123cb6992b9971c370c1fd677985a1c6c5f31c74390e53c47303d5a5d49105",
+      "status": "INCONCLUSIVE",
+      "timing": {
+        "python": {
+          "child_cpu_seconds": 0.0,
+          "wall_seconds": 13.251588416998857
+        },
+        "rust": {
+          "child_cpu_seconds": 10.889362000000002,
+          "wall_seconds": 24.08472249999977
+        }
+      }
+    }
+  ],
+  "replay": ".venv/bin/python3 -m devtools.check_exact_rust_kernel --binary <release-binary> --benchmark-output <receipt.json>",
+  "source_sha256": {
+    "devtools/check_exact_rust_kernel.py": "7922800121d3dc7f9f764fc4d1ff6471eeab05b13b8c151b93f1ac4621a29cf2",
+    "sqverify_exact/Cargo.lock": "c9e885949c1928af3aa97b49c0aa9e79bdcf6fbf57fdecbdcde7860f09c54909",
+    "sqverify_exact/Cargo.toml": "ea090cfca549ea7098d942c4f34f5cca5b82647f1793765366184f6feb748ee9",
+    "sqverify_exact/rust-toolchain.toml": "495c69d1db93f25f53e3d0d2d40d812313366cc368de317871c2ace6c6ffafa4",
+    "sqverify_exact/src/lib.rs": "07fc7c68c1a13a498f88a31f893b7703b51b2499cb9f8441982a8a2669e1a6d0",
+    "sqverify_exact/src/main.rs": "fd45fbf50871c9380dad4614354c40a868da258c2c70d54aa5c80662abd53243",
+    "src/sqpack/rectangle_density.py": "1cc7ae158856a443fe9c51be2e9b9b04f4d7dc40fe663bfbd7337cb6fe7e1c7c",
+    "src/sqpack/rust_rectangle_geometry.py": "b32ca2bdfd79f61986c787901e94bbba1bb725a40866f2642b051640e335a4c0"
+  },
+  "status": "MATCHED_EXACT_REPORTS_NO_SPEED_PROMOTION",
+  "timing_scope": "wall includes admission, resident-child startup, IPC, work, and shutdown; child CPU excludes coordinator CPU"
+}

@@ -16,6 +16,26 @@ case_corpus:
   n_max: 324
   reader_view: frontier/STATUS.md
 sources:
+  - id: queuingtheory-n11-optimality-2026
+    title: Proposed global optimality proof for eleven squares
+    role: source-repository
+    url: https://github.com/Queuingtheorydotcom/11SquaresOptimal
+    local: resources/web/n11-optimality-2026-09-29/
+    source_key: '[Queuingtheorydotcom n11 optimality 2026]'
+    scope: {n_values: [11]}
+    reviewed: '2026-09-29'
+    source_date: '2026-09-29'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-011.md]
+    evidence: [E-n011-global-optimality-report]
+    notes: >-
+      T-060, pinned f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, is the priority
+      global-optimality audit under think-3i74. Source and LFS pointer inventory
+      retained; large certificate payloads are not yet locally acquired. The source
+      explicitly says its sanitized public derivative has no fresh full geometric
+      replay. No verified frontier value changes on intake. This is distinct from
+      Kleddamag's T-037 lower bound and wand125's T-059 row-minimum equality.
   - id: evand-square-packing-2026
     title: square-packing, exact weighted certificates and zero-margin closed covers
     role: source-repository

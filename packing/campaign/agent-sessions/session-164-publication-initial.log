@@ -1,0 +1,105 @@
+Source: 0ce06bfd9
+Command: packing-validate --push --since a2b8e696c
+Exit status: 1
+Failure excerpt; full duration transcript retained in external task scratch.
+
+=================================== FAILURES ===================================
+_________ test_every_deep_gate_job_is_clocked_against_a_declared_wall __________
+[gw6] darwin -- Python 3.14.7 /Users/levy/wrk/github/squares/packing/.venv/bin/python3
+
+    def test_every_deep_gate_job_is_clocked_against_a_declared_wall() -> None:
+        """`OR-17`: a hosted job with no ceiling is a job that can double unremarked.
+    
+        Not hypothetical here, and the numbers are the ones this file already carries.
+        `deep-gate.yml` prices the exhaustive tier at 1943.05s of step time, and the job that
+        runs it cost 2674s on two complete runs on 2026-09-21 -- 1.38x, under the 1.5x that
+        fails a local tier, and read by no rule at all, because `gate-budgets.yaml` clocked
+        `packing-validate`'s own wall and nothing clocked a workflow job's.
+    
+        So the tiers' own rule, asked of every worker: every job the gate runs has an
+        entry and a concrete ceiling. Existing job shapes carry hosted measurements. New
+        worker shapes carry an explicit pending-measurement bead and predecessor-derived
+        ceiling until their first candidate run; they cannot be mistaken for observed
+        walls. The same shape `test_every_page_job_a_pull_request_runs_is_budgeted` holds
+        over `pages`.
+    
+        Enforcement against a live run belongs to `devtools.check_ci_gate_walls`; this is the
+        declaration check, and like `check_gate_budgets` it needs no clock.
+        """
+        register = load(BUDGETS)
+        gate = register.ci_gate("deep-gate")
+        assert gate is not None, "the deep gate has no entry in gate-budgets.yaml"
+        jobs = _workflow(DEEP_GATE)["jobs"]
+    
+        assert gate.file == str(DEEP_GATE.relative_to(REPOSITORY_ROOT))
+        assert gate.aggregate == AGGREGATE_JOB
+        # Driven from the workflow, so a fifth deep job fails here the day it arrives rather
+        # than running unclocked -- which is the property the 1943.05s figure never had.
+        assert set(gate.ids) == set(jobs) - {AGGREGATE_JOB}
+        assert ci_declaration_problems(register) == []
+    
+        headroom = register.policy.max_headroom
+        for budget in (*gate.jobs, gate.wall):
+            where = budget.id
+            assert budget.argument.strip(), where
+            if budget.measured_seconds is None:
+                assert budget.measured_seconds is None, where
+                assert budget.measured_on is None, where
+                assert budget.measured_where is None, where
+                assert budget.spread is None, where
+                assert re.fullmatch(r"think-[a-z0-9]{4}", budget.pending_measurement or ""), where
+            else:
+                assert budget.pending_measurement is None, where
+                assert budget.measured_seconds is not None, where
+                assert budget.measured_on, where
+                assert budget.measured_where is not None, where
+                assert re.search(r"run \d{8,}", budget.measured_where), where
+                assert budget.ceiling_seconds >= budget.measured_seconds, where
+                assert budget.ceiling_seconds <= headroom * budget.measured_seconds, where
+                # A hosted band has to be argued against the runner's own variance, so the
+                # spread the readings showed is recorded beside the mean of them.
+>               assert budget.spread is not None, where
+E               AssertionError: resolve-tree
+E               assert None is not None
+E                +  where None = CiJobBudget(id='resolve-tree', ceiling_seconds=30.0, argument='Resolves a moving dispatch merge ref once. The first ho...n 36636552951 at 9174140a; one complete reading.', spread=None, history=(), attribution=None, pending_measurement=None).spread
+
+tests/test_deep_gate_workflow.py:548: AssertionError
+___ test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots ____
+[gw6] darwin -- Python 3.14.7 /Users/levy/wrk/github/squares/packing/.venv/bin/python3
+
+    def test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots() -> None:
+        assert ROOT / "atlas/prospective/rendering" in PRUNE
+        assert ROOT / "witnesses/prospective" in PRUNE
+        assert ROOT / "atlas/known-best/rendering" in PRUNE
+        assert ROOT / "atlas/known-best/contact-overlays" in PRUNE
+        assert MOTION_LAB_GOLDEN in PRUNE
+        assert (
+            ROOT
+            / "campaign/series/series-000-smoke-and-calibration/results"
+            / "bc-200-state-191-50.json"
+            in PRUNE
+        )
+        assert ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-025" in PRUNE
+        output_roots = {
+            ROOT / "campaign/series/series-000-smoke-and-calibration/results" / name
+            for name in (
+                "agenda-031",
+                "agenda-033",
+                "agenda-034",
+                "agenda-035",
+                "agenda-041",
+                "exp-201-arm-calibration",
+                "exp-202-round-1",
+            )
+        }
+        assert output_roots <= PRUNE
+        assert CORNER_DUAL_SALVAGE_RECEIPT in PRUNE
+>       assert snapshot_source_bytes() < SNAPSHOT_MAX_BYTES
+E       assert 168549242 < 167772160
+E        +  where 168549242 = snapshot_source_bytes()
+
+tests/test_negative_controls.py:298: AssertionError
+FAILED tests/test_deep_gate_workflow.py::test_every_deep_gate_job_is_clocked_against_a_declared_wall
+FAILED tests/test_negative_controls.py::test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots
+2 failed, 1778 passed, 4 warnings in 180.64s (0:03:00)
+   263.93s  TOTAL (wall)

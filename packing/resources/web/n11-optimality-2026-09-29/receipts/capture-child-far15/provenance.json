@@ -1,0 +1,18 @@
+{
+  "checker_sha256": "ebbc83b0a92913234cd701d53557bab52305d1755727976f283a22d1fc3dbf0f",
+  "child_source_sha256": "e25a5de42cb45d9057660bb6d5942f980672e5d6e6b97e361c10931359c2f486",
+  "input_source_reacquisition": "packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json records pinned publication object and decoded SHA; local decoded cache is disposable",
+  "internal_seconds": 1800,
+  "original_final_state_canonical_sha256": "9e28b0927cfa568ead95beb35cc3173e3c0466d3175dc47bb6d325939e6f1451",
+  "parent_result_sha256": "0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4",
+  "parent_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "process_cpu_seconds": "unmeasured",
+  "replay": "From packing after acquiring and SHA-verifying pinned root/far15 sources: timeout 1830s .venv/bin/python3 -m devtools.check_n11_capture_child_node --node far15 --parent-source <decoded-root> --child-source <decoded-far15> --parent-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-full-integer/result.json --workers 1 --max-seconds 1800 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-child-far15/result.json",
+  "result_sha256": "cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e",
+  "scope": "Far15 closed child branch contradiction conditional on accepted root-self state; no entire tree/candidate/global conclusion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "3db335434bdc7b2d3ce5c4e7611dc2aeeb0e7728239e8e5cfc258fc7a3fd5ac0",
+  "supervisor_seconds": 1830,
+  "wall_seconds_reported_by_checker": 66.27791749999597,
+  "workers": 1
+}

@@ -71,6 +71,12 @@ allOf:
         status: {const: stopped}
         stop_reason: {type: string, pattern: "\\S"}
   - if:
+      required: [handoff_role]
+    then:
+      properties:
+        status: {const: stopped}
+        stop_reason: {type: string, pattern: "\\S"}
+  - if:
       required: [resource_usage_unmeasured]
     then:
       required: [resource_rollups]
@@ -232,6 +238,14 @@ properties:
       passed fast/full declaration conflicts with this field. Remove the field only
       after an actual qualifying pass covers the handed-over source. Completed
       sessions and final pre-merge coverage retain their existing requirements.
+  handoff_role:
+    const: administrative_closeout
+    description: >-
+      Marks a stopped session whose terminal update closes administration without
+      replacing the current work handoff. Absence means the ordinary work-handoff role.
+      This top-level marker covers sessions with retained resource measurements; the
+      nested resource_usage_unmeasured handoff_role remains the explicit exception for
+      sessions whose native usage cannot be measured.
   resource_usage_unmeasured:
     type: object
     additionalProperties: false

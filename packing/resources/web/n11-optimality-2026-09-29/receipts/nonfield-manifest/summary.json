@@ -1,0 +1,28 @@
+{
+  "actual_parent_edges_verified": false,
+  "adapter_counts": {
+    "baseline_necessary_d4": 2,
+    "closed_center_partition": 1,
+    "sequential_wall_seed": 273
+  },
+  "builder_sha256": "e85c3806ceef4fce64cccc359f964f0cade40924bba33d7ad5f9ba47a1efa815",
+  "cases": 276,
+  "declared_unique_compressed_bytes": 2121265805,
+  "declared_unique_decoded_bytes": 10063719433,
+  "family_counts": {
+    "A1": 27,
+    "A2": 76,
+    "A3": 173
+  },
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "manifest_gzip_sha256": "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c0184520",
+  "manifest_sha256": "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b",
+  "metadata_downloaded_bytes_this_run": 0,
+  "metadata_objects_read": 285,
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "COMPLETE_METADATA_RECIPES_ONLY",
+  "unique_required_objects": 924,
+  "wall_seconds": 12.130288208998536
+}

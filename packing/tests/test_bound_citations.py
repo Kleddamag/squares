@@ -610,6 +610,16 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
         ("Göbel 1979, Squares in Squares", "external", "verified"),
         ("Stromquist 2003, Electron. J. Combin. 10, #R8", "external", "verified"),
     ),
+    # T-060 confirms the exact Trump lower bound; the narrow stage shortens its
+    # lineage and venue, while the bibliography retains both in full.
+    11: (
+        ("Trump 1979, Squares in Squares (confirmed T-011)", "external", "verified"),
+        (
+            "Queuingtheorydotcom after Levy et al. 2026, Web (confirmed T-060)",
+            "external",
+            "verified",
+        ),
+    ),
     13: (None, ("Bentz 2010, Electron. J. Combin. 17, #R126", "external", "verified")),
     22: (None, ("Bentz 2016, arXiv:1606.03746", "external", "verified")),
     # A published proof and this project's audit of it are one source's bound, and the
@@ -659,16 +669,16 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
 
 
 @pytest.mark.parametrize(
-    ("n", "author", "entry"),
+    ("n", "author", "venue", "entry"),
     [
-        (11, "Kleddamag after Levy et al.", "T-037"),
-        (17, "Guzhou0806 after Kleddamag et al.", "T-043"),
-        (26, "Tokoharu after Levy, wand125 et al.", "T-047"),
-        (29, "Tokoharu after Levy, wand125 et al.", "T-047"),
+        (11, "Queuingtheorydotcom after Levy et al.", "Web", "T-060"),
+        (17, "Guzhou0806 after Kleddamag et al.", "GitHub", "T-043"),
+        (26, "Tokoharu after Levy, wand125 et al.", "GitHub", "T-047"),
+        (29, "Tokoharu after Levy, wand125 et al.", "GitHub", "T-047"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
-    n: int, author: str, entry: str
+    n: int, author: str, venue: str, entry: str
 ) -> None:
     """The line credits the source; the register entry that replays it says so once.
 
@@ -681,7 +691,7 @@ def test_promoted_external_bounds_keep_the_sources_credit(
     """
     lower = _entry(n)["lower"]
     assert _line(lower) == (
-        f"{author} 2026, GitHub (confirmed {entry})",
+        f"{author} 2026, {venue} (confirmed {entry})",
         "external",
         "verified",
     )
@@ -868,16 +878,15 @@ def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
 
 
 def test_the_star_marks_recent_results_whoever_proved_them() -> None:
-    """n = 11 is starred as Kleddamag's, and every project bound is starred too.
+    """n = 11 is starred as Queuingtheorydotcom's, and project bounds are too.
 
-    The star used to be `first_proved_here`, so it went out at n = 11 when Kleddamag's
-    3.875, developed from T-026, became the verified bound (the owner, 2026-09-27). Credit
+    Kleddamag's 3.875, developed from T-026, preceded the exact T-060 proof. Credit
     is the line's business: joint work names this project after the author, other work
     names only its own lineage, and this project's sole work names the project.
     """
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
     assert lines[11]["recent"]
-    assert lines[11]["text"] == "Kleddamag after Levy et al. 2026, GitHub"
+    assert lines[11]["text"] == "Queuingtheorydotcom after Levy et al. 2026, Web"
     assert lines[12]["recent"]
     assert lines[12]["text"].startswith("Daniel after Burns")
     assert lines[18]["recent"]

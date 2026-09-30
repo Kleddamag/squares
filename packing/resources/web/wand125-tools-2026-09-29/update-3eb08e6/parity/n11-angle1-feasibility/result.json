@@ -1,0 +1,182 @@
+{
+  "adapter_exact_binding": {
+    "axis_centers": 146,
+    "expanded_rectangles": 192
+  },
+  "adapter_source_sha256": "f86cb9c1444f98ae0b13190d0ee9a343064e68e1fb2a2ecd6e203eca8e5b8cf3",
+  "benchmark_process_cpu_seconds": 0.065616,
+  "benchmark_source_sha256": "a31a41c0d87126883bc28e6ad68e96b2571c8a944b5d012afa05200b2a11c2f6",
+  "candidate_bytes": 186243,
+  "candidate_git_blob": "07342b487967413e6e491970692d2c6b6d0b651c",
+  "candidate_repository_path": "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
+  "candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+  "compiler": "/usr/bin/g++",
+  "compiler_flags": [
+    "-O2",
+    "-std=c++17",
+    "-fno-fast-math",
+    "-ffp-contract=off"
+  ],
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+  "cpp_adapter_metadata": {
+    "B": "9977/10000",
+    "D": "83/40000",
+    "L": "381/100",
+    "angle_count": 201,
+    "density_sha256": "616333041a3b41f62e60ef66ba659a391985fce251492c317046b095ce2dbe41",
+    "epsilon": "1/20000",
+    "input_sha256": "d9e760dd4e5a68bb8a287e2dbe61999a213650451f82e6a7f097339f70e0ecef",
+    "mass_decimal": 10.928379479009985,
+    "mass_exact": "68302371743812406989/6250000000000000000",
+    "rescaled": false,
+    "safety_exact": "399968091/400000000",
+    "source_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4"
+  },
+  "cpp_angle_seconds_sum": 0.417071458,
+  "cpp_angles_completed": 1,
+  "cpp_expanded_rectangle_count": 192,
+  "cpp_internal_box_floor": "min halfwidth < 2^-45",
+  "cpp_internal_node_limit": "nodes > 10000000 after a failed box",
+  "cpp_interval_input_sha256": "d9e760dd4e5a68bb8a287e2dbe61999a213650451f82e6a7f097339f70e0ecef",
+  "cpp_journal_sha256": "c499e01e9995261b7f0f73b4d1f4b1f48835e009ab0c2e14eb7c5ba18a31bb72",
+  "cpp_nodes_completed": 22361,
+  "cpp_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+  "cpp_timeout_seconds": 15.0,
+  "effective_binary64_threshold": "2252024993666617/2251799813685248",
+  "first_angle": 1,
+  "last_angle": 1,
+  "logical_cpu_count": 10,
+  "machine": "arm64",
+  "mass_below_n": "447628256187593011/6250000000000000000",
+  "mass_exact": "68302371743812406989/6250000000000000000",
+  "matched_complete_scope": false,
+  "native_angles_completed": 1,
+  "native_bound_mode": "common-core",
+  "native_checker_source_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
+  "native_cli_source_sha256": "db18d19c434ad17370521c4a3d88ba74ebf4e61515ff3861ea636f0265e3a538",
+  "native_expanded_rectangle_count": 184,
+  "native_internal_max_seconds": 13.0,
+  "native_max_depth": 48,
+  "native_max_nodes_per_angle": 10000000,
+  "native_nodes_completed": 2357,
+  "native_status": "INCONCLUSIVE",
+  "native_stdout_decoded_sha256": "6a039ba79806736316ad38b539087a2e45c6ffe45ebf0204b52342775dfe29c0",
+  "native_stdout_gzip_sha256": "fbcd552fa22b8877dee9b4e16c4c8dbad7cb23440229e45581a33c9854a3d0f7",
+  "native_timeout_seconds": 15.0,
+  "native_timing_phases": {
+    "cpu_clock": "process_time",
+    "excluded": [
+      "module_startup_and_argument_parsing",
+      "receipt_build_serialization_and_output"
+    ],
+    "phases": {
+      "admission": {
+        "process_cpu_seconds": 0.012593999999999994,
+        "wall_seconds": 0.012986208002985222
+      },
+      "input_read_hash": {
+        "process_cpu_seconds": 0.00031799999999999884,
+        "wall_seconds": 0.0003174170014972333
+      },
+      "source_recheck": {
+        "process_cpu_seconds": 0.000140000000000029,
+        "wall_seconds": 0.00013979199866298586
+      },
+      "verification": {
+        "process_cpu_seconds": 12.453477,
+        "wall_seconds": 13.007155249997595
+      }
+    },
+    "wall_clock": "perf_counter"
+  },
+  "nominal_threshold": "10001/10000",
+  "peak_rss_bytes": "unmeasured",
+  "performance_comparable": false,
+  "phases": {
+    "adapter_exact_binding": {
+      "process_cpu_seconds": 0.011300999999999978,
+      "wall_seconds": 0.011430041002313374
+    },
+    "candidate_read": {
+      "process_cpu_seconds": 8.600000000000274e-05,
+      "wall_seconds": 8.683399937581271e-05
+    },
+    "compile": {
+      "command": [
+        "/usr/bin/g++",
+        "-O2",
+        "-std=c++17",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "/Users/levy/wrk/github/squares/attic/wand125-tools/solver/verify.cpp",
+        "-o",
+        "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmphrls3xvn/verify"
+      ],
+      "exit_code": 0,
+      "process_cpu_seconds": 0.983655,
+      "process_system_seconds": 0.118861,
+      "process_user_seconds": 0.864794,
+      "timed_out": false,
+      "wall_seconds": 1.0490566250009579
+    },
+    "cpp_adapter": {
+      "process_cpu_seconds": 0.018646999999999997,
+      "wall_seconds": 0.019789541998761706
+    },
+    "cpp_verification": {
+      "command": [
+        "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmphrls3xvn/verify",
+        "1",
+        "1"
+      ],
+      "exit_code": 0,
+      "process_cpu_seconds": 0.42004799999999987,
+      "process_system_seconds": 0.004831000000000002,
+      "process_user_seconds": 0.41521699999999995,
+      "timed_out": false,
+      "wall_seconds": 0.7403227499999048
+    },
+    "native_admission": {
+      "process_cpu_seconds": 0.00945299999999999,
+      "wall_seconds": 0.009452332997170743
+    },
+    "native_verification": {
+      "command": [
+        "/Users/levy/wrk/github/squares/packing/.venv/bin/python3",
+        "-m",
+        "devtools.verify_rectangle_density",
+        "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmphrls3xvn/candidate.json",
+        "--n",
+        "11",
+        "--side",
+        "381/100",
+        "--threshold",
+        "2252024993666617/2251799813685248",
+        "--angles",
+        "1-1",
+        "--max-nodes-per-angle",
+        "10000000",
+        "--max-depth",
+        "48",
+        "--max-seconds",
+        "13.0",
+        "--bound-mode",
+        "common-core",
+        "--timing"
+      ],
+      "exit_code": 2,
+      "process_cpu_seconds": 12.544102,
+      "process_system_seconds": 0.16912299999999997,
+      "process_user_seconds": 12.374979,
+      "timed_out": false,
+      "wall_seconds": 13.104126957998233
+    }
+  },
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "scope": "Both checkers must complete the same 201 angles before a proof-throughput comparison.",
+  "speed_parity_established": false,
+  "status": "INCOMPLETE_NO_PARITY_CLAIM",
+  "subprocess_cpu_seconds": 13.947805,
+  "total_wall_seconds": 15.026844791998883,
+  "upstream_commit": "3eb08e6c675d8d5aa953cb93da049a3f3cdc6123"
+}

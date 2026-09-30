@@ -123,10 +123,13 @@ fn main() {
     refuse_bad_arms(&p);
 
     if threads > 0 {
-        rayon::ThreadPoolBuilder::new()
+        if let Err(error) = rayon::ThreadPoolBuilder::new()
             .num_threads(threads)
             .build_global()
-            .unwrap();
+        {
+            eprintln!("cannot initialize sqsearch worker threads: {error}");
+            std::process::exit(2);
+        }
     }
 
     let started = std::time::Instant::now();

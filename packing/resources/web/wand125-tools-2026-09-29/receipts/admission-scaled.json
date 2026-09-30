@@ -1,0 +1,24 @@
+{
+  "n": 1,
+  "L": "1.5",
+  "B": "9977/10000",
+  "rectangles": [
+    [
+      "1/1000",
+      "1/1000",
+      "1499/1000",
+      "1499/1000"
+    ]
+  ],
+  "weights": [
+    "289/10"
+  ],
+  "mass": 28.9,
+  "scaling_experiment": {
+    "source": "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/admission-control-final/search/candidate.json",
+    "source_mass_exact": "1/2",
+    "factor_exact": "289/5",
+    "target_mass_exact": "289/10",
+    "scaled_at": "2026-09-29T00:21:48"
+  }
+}

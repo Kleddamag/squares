@@ -627,12 +627,14 @@ class CiJobBudget:
     measured_seconds: float | None = None
     measured_on: str | None = None
     measured_where: str | None = None
-    #: Observed max/min across the readings behind `measured_seconds`. Recorded because a
-    #: hosted band has to be argued against the runner's own spread, not against a local
-    #: tier's; `None` when one reading is all there is, which is itself worth seeing.
+    #: Sample max/min across the readings behind `measured_seconds`. The sampler emits
+    #: 1.0 for one reading; that arithmetic ratio does not estimate runner variance.
+    #: `None` means no sample spread is recorded, as for a pending measurement.
     spread: float | None = None
     history: tuple[Record, ...] = ()
     attribution: Attribution | None = None
+    pending_measurement: str | None = None
+    """Bead owning the first observation of a new job shape; forecasts are not data."""
 
     @property
     def records(self) -> tuple[Record, ...]:
@@ -690,6 +692,18 @@ def _ci_job_from(raw: object, where: str) -> CiJobBudget:
     at = f"{where}[{job_id!r}]"
     measured = _optional_positive(entry.get("measured_seconds"), f"{at}.measured_seconds")
     measured_on = _optional_text(entry.get("measured_on"), f"{at}.measured_on")
+    pending = _optional_text(entry.get("pending_measurement"), f"{at}.pending_measurement")
+    if pending is not None:
+        if re.fullmatch(CI_TRACKING_BEAD, pending) is None:
+            raise BudgetError(f"{at}.pending_measurement must name a `think-xxxx` bead")
+        if any(
+            entry.get(field) is not None
+            for field in ("measured_seconds", "measured_on", "measured_where", "spread")
+        ):
+            raise BudgetError(
+                f"{at} has both a pending measurement and current observation fields; "
+                "retain predecessor observations in history and estimates in argument"
+            )
     if (measured is None) != (measured_on is None):
         raise BudgetError(
             f"{at} records a wall without a date or a date without a wall; a measurement "
@@ -705,6 +719,7 @@ def _ci_job_from(raw: object, where: str) -> CiJobBudget:
         spread=_optional_positive(entry.get("spread"), f"{at}.spread"),
         history=_history_from(entry.get("history"), at),
         attribution=_attribution_from(entry.get("attribution"), f"{at}.attribution"),
+        pending_measurement=pending,
     )
 
 
@@ -784,10 +799,12 @@ def ci_declaration_problems(register: Register) -> list[str]:
             at = f"{label} job {job.id!r}"
             measured = job.measured_seconds
             if measured is None:
-                problems.append(
-                    f"{at}: no wall is recorded, so its drift, stale and headroom rules "
-                    "are all switched off. Run `devtools.check_ci_gate_walls --sample`."
-                )
+                if job.pending_measurement is None:
+                    problems.append(
+                        f"{at}: no wall is recorded, so its drift, stale and headroom rules "
+                        "are all switched off. Run `devtools.check_ci_gate_walls --sample`, "
+                        "or name pending_measurement for the first run of a new job shape."
+                    )
                 continue
             if job.ceiling_seconds < measured:
                 problems.append(

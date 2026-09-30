@@ -19,6 +19,7 @@ from collections.abc import Callable
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from textwrap import dedent
+from threading import Barrier, Lock
 
 import pytest
 
@@ -29,9 +30,9 @@ from sqpack.yamlio import safe_load
 
 #: (proved, open) at each corpus the frontier-corpus step has summarized.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (38, 62),
-    "n=1..200": (50, 150),
-    "n=1..324": (62, 262),
+    "n=1..100": (39, 61),
+    "n=1..200": (51, 149),
+    "n=1..324": (63, 261),
 }
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"
@@ -284,7 +285,7 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
                     tokens[tokens.index("packing-validate") + 1 :]
                 )
                 only = namespace.only or []
-                if only == ["slow behavioral tests"]:
+                if name.startswith("deferred-") or only == ["slow behavioral tests"]:
                     assert (namespace.jobs, namespace.inner_jobs) == ("1", "2")
                 elif len(only) == 1:
                     assert (namespace.jobs, namespace.inner_jobs) == ("1", "4")
@@ -294,12 +295,23 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
                     continue
                 checked.add((workflow.name, name))
     assert checked == {
-        ("packing-validation.yml", "exhaustive"),
+        ("packing-validation.yml", "exhaustive-1"),
+        ("packing-validation.yml", "exhaustive-2"),
+        ("packing-validation.yml", "exhaustive-3"),
         ("packing-validation.yml", "screen"),
         ("packing-validation.yml", "slow-lane"),
         ("packing-validation.yml", "validate"),
-        ("deep-gate.yml", "exhaustive-tier"),
-        ("deep-gate.yml", "deferred-steps"),
+        ("packing-validation.yml", "deferred-threshold-1440"),
+        ("packing-validation.yml", "deferred-atlas-grid"),
+        ("packing-validation.yml", "deferred-controls-finer"),
+        ("packing-validation.yml", "deferred-threshold-720-rigidity"),
+        ("deep-gate.yml", "exhaustive-1"),
+        ("deep-gate.yml", "exhaustive-2"),
+        ("deep-gate.yml", "exhaustive-3"),
+        ("deep-gate.yml", "deferred-threshold-1440"),
+        ("deep-gate.yml", "deferred-atlas-grid"),
+        ("deep-gate.yml", "deferred-controls-finer"),
+        ("deep-gate.yml", "deferred-threshold-720-rigidity"),
         ("deep-gate.yml", "screen"),
         ("deep-gate.yml", "deferred-slow-lane"),
     }
@@ -586,6 +598,7 @@ def test_list_is_read_only_and_exposes_fast_and_full_check_groups() -> None:
     assert stderr == ""
     assert "fast behavioral tests, shard A [fast, suite-a]" in stdout
     assert "fast behavioral tests, shard B [fast, suite-b]" in stdout
+    assert "fast behavioral tests, shard C [fast, suite-c]" in stdout
     assert "exhaustive exact behavioral tests [full]" in stdout
     assert "soundness perimeter [fast, checks, engine]" in stdout
 
@@ -597,6 +610,7 @@ def test_list_applies_the_same_fast_and_name_filters_as_execution() -> None:
     assert stderr == ""
     assert "fast behavioral tests, shard A [fast, suite-a]" in stdout
     assert "fast behavioral tests, shard B [fast, suite-b]" in stdout
+    assert "fast behavioral tests, shard C [fast, suite-c]" in stdout
     assert "exhaustive exact behavioral tests" not in stdout
     assert "negative controls" not in stdout
 
@@ -605,6 +619,49 @@ def test_list_applies_the_same_fast_and_name_filters_as_execution() -> None:
     assert status == 0
     assert stderr == ""
     assert stdout.splitlines() == ["negative controls [full]"]
+
+
+def test_exhaustive_shard_is_confined_to_the_exact_exhaustive_selection() -> None:
+    status, stdout, stderr = _invoke(
+        "--list",
+        "--only",
+        "exhaustive exact behavioral tests",
+        "--exhaustive-shard",
+        "2/3",
+    )
+    assert status == 0
+    assert stderr == ""
+    assert stdout.splitlines() == ["exhaustive exact behavioral tests [full]"]
+
+    invalid = (
+        ("--list", "--exhaustive-shard", "1/3"),
+        ("--list", "--fast", "--exhaustive-shard", "1/3"),
+        (
+            "--list",
+            "--only",
+            "exhaustive exact behavioral tests",
+            "--exhaustive-shard",
+            "1/2",
+        ),
+        (
+            "--list",
+            "--only",
+            "exhaustive exact behavioral tests",
+            "--exhaustive-shard",
+            "4/3",
+        ),
+        (
+            "--list",
+            "--only",
+            "exhaustive exact behavioral tests",
+            "--exhaustive-shard",
+            "one/3",
+        ),
+    )
+    for arguments in invalid:
+        status, _, stderr = _invoke(*arguments)
+        assert status == 2
+        assert "--exhaustive-shard" in stderr
 
 
 def test_skip_is_only_read_the_other_way_round() -> None:
@@ -623,6 +680,7 @@ def test_skip_is_only_read_the_other_way_round() -> None:
     assert not any("exhaustive exact" in line for line in listed)
     assert "fast behavioral tests, shard A [fast, suite-a]" in stdout
     assert "fast behavioral tests, shard B [fast, suite-b]" in stdout
+    assert "fast behavioral tests, shard C [fast, suite-c]" in stdout
 
 
 def test_a_skip_naming_no_step_is_refused_rather_than_ignored() -> None:
@@ -707,7 +765,7 @@ def test_fast_behavioral_step_excludes_exhaustive_exact_tests(
         "--dist=loadfile",
         "-p",
         "devtools.suite_files",
-        "--suite-shard=1/2",
+        "--suite-shard=1/3",
         # The plugin that prints the cpu section, loaded by name across the subprocess
         # boundary because `sqpack.cli` may not import `devtools`.
         "-p",
@@ -1232,6 +1290,46 @@ def test_full_exhaustive_behavioral_step_selects_only_exhaustive_exact_tests(
     )
 
 
+def test_exhaustive_shard_uses_the_recorded_whole_file_partition(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed: tuple[str, ...] | None = None
+
+    def capture(context: validate.Context, command: tuple[str, ...], **_kwargs: object) -> str:
+        del context
+        nonlocal observed
+        observed = command
+        return ""
+
+    monkeypatch.setattr(validate, "_run", capture)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=1,
+        inner_jobs=4,
+        environment=os.environ.copy(),
+        exhaustive_shard="2/3",
+    )
+
+    validate._exhaustive_exact_tests(context)
+
+    assert observed == (
+        sys.executable,
+        "-m",
+        "pytest",
+        "-q",
+        *validate.BEHAVIORAL_TEST_ROOTS,
+        "-m",
+        "exhaustive_exact",
+        "-p",
+        "devtools.suite_files",
+        "--suite-shard=2/3",
+        "--suite-file-costs=devtools/exhaustive-file-costs.json",
+        "--durations=0",
+        "--durations-min=0",
+    )
+
+
 @pytest.mark.parametrize((("inner_jobs", "expected_workers")), [(1, "1"), (4, "2")])
 def test_full_negative_controls_respect_the_cap_and_measured_worker_count(
     monkeypatch: pytest.MonkeyPatch,
@@ -1287,6 +1385,7 @@ def test_invalid_worker_count_and_unmatched_selection_are_actionable() -> None:
         ("--geometry",),
         ("--suite-a",),
         ("--suite-b",),
+        ("--suite-c",),
         ("--sweeps",),
         ("--since", "HEAD"),
     ],
@@ -1989,7 +2088,11 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    assert f"reported lane: {proved} proved, {open_cases} open" in stdout
+    # T-060's exact audit closes n=11 in both formal and reported lanes.
+    reported_open = validate.FRONTIER_COUNTS[corpus.label][1]
+    assert (
+        f"reported lane: {corpus.count - reported_open} proved, {reported_open} open" in stdout
+    )
 
 
 def _budget_context(*, timeout_seconds: float, explicit: bool) -> validate.Context:
@@ -2211,6 +2314,7 @@ def test_push_tests_take_the_whole_suite_budget_only_when_the_selector_expands(
     step = validate._push_test_step("origin/main")
 
     assert step.broad is (expected_scope == "whole")
+    assert step.reachable_test_files == (None if expected_scope == "whole" else 7)
     assert step.budget_seconds == expected_budget
     assert (
         validate.STEPS[
@@ -2218,6 +2322,23 @@ def test_push_tests_take_the_whole_suite_budget_only_when_the_selector_expands(
         ].budget_seconds
         == validate.FAST_SUITE_BUDGET_SECONDS
     )
+
+
+@pytest.mark.parametrize(
+    "summary", ["", "narrow", "narrow 0", "narrow nope", "other", "noise\nnarrow 7"]
+)
+def test_push_refuses_a_missing_or_malformed_selector_summary(
+    monkeypatch: pytest.MonkeyPatch, summary: str
+) -> None:
+    monkeypatch.setattr(
+        validate.subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=("reachable-tests",), returncode=0, stdout=f"{summary}\n", stderr=""
+        ),
+    )
+    with pytest.raises(validate.UsageError, match="no valid summary"):
+        validate._push_test_step("origin/main")
 
 
 @pytest.mark.parametrize("summary", ["everything", "narrow 7"])
@@ -2271,32 +2392,78 @@ def test_push_tests_forward_the_shared_worker_allocation(
     ]
 
 
+def test_exclusive_push_forwards_pytest_and_pool_worker_allocations(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 10)
+    monkeypatch.setattr(
+        validate.subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=("reachable-tests",), returncode=0, stdout="narrow 114\n", stderr=""
+        ),
+    )
+    commands: list[tuple[str, ...]] = []
+
+    def capture(_context: validate.Context, command: tuple[str, ...]) -> str:
+        commands.append(command)
+        return "selected tests passed"
+
+    monkeypatch.setattr(validate, "_run", capture)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=1,
+        inner_jobs=1,
+        environment=os.environ.copy(),
+        pool_workers=10,
+    )
+
+    assert validate._push_test_step("origin/main").action(context) == "selected tests passed"
+    assert commands[0][-4:] == ("-n", "10", "--pool-workers", "10")
+
+
 @pytest.mark.parametrize(
-    ("broad", "arguments", "environment_jobs", "expected_jobs", "expected_inner_jobs"),
+    (
+        "cpus",
+        "broad",
+        "selected_files",
+        "arguments",
+        "environment_jobs",
+        "expected_jobs",
+        "expected_inner_jobs",
+        "exclusive",
+    ),
     [
-        (True, (), None, 1, 1),
-        (False, (), None, 8, 2),
-        (True, ("--jobs", "3"), None, 3, 1),
-        (True, (), "3", 3, 1),
-        (True, ("--inner-jobs", "7"), None, 1, 7),
+        (8, True, None, (), None, 8, 2, True),
+        (8, False, 7, (), None, 8, 2, False),
+        (8, False, 8, (), None, 8, 2, True),
+        (8, False, 114, (), None, 8, 2, True),
+        (1, False, 114, (), None, 1, 1, False),
+        (8, True, None, ("--jobs", "3"), None, 3, 1, False),
+        (8, True, None, (), "3", 3, 1, False),
+        (8, True, None, ("--inner-jobs", "7"), None, 1, 7, False),
     ],
 )
-def test_only_an_implicit_broad_push_gives_the_test_step_the_machine(
+def test_implicit_large_push_reserves_an_exclusive_test_phase(
     monkeypatch: pytest.MonkeyPatch,
     *,
+    cpus: int,
     broad: bool,
+    selected_files: int | None,
     arguments: tuple[str, ...],
     environment_jobs: str | None,
     expected_jobs: int,
     expected_inner_jobs: int,
+    exclusive: bool,
 ) -> None:
-    """The expensive fallback gets every cpu without slowing ordinary narrow pushes."""
+    """Large implicit selections reserve pytest; explicit resource choices still win."""
     if environment_jobs is None:
         monkeypatch.delenv("PACKING_VALIDATE_JOBS", raising=False)
     else:
         monkeypatch.setenv("PACKING_VALIDATE_JOBS", environment_jobs)
     monkeypatch.delenv("PACKING_VALIDATE_INNER_JOBS", raising=False)
-    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 8)
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: cpus)
     monkeypatch.setattr(
         validate,
         "_push_test_step",
@@ -2305,6 +2472,7 @@ def test_only_an_implicit_broad_push_gives_the_test_step_the_machine(
             action=lambda _context: "",
             fast=True,
             broad=broad,
+            reachable_test_files=selected_files,
         ),
     )
     monkeypatch.setattr(validate, "_begin_artifacts", lambda _context, _selected: None)
@@ -2332,6 +2500,217 @@ def test_only_an_implicit_broad_push_gives_the_test_step_the_machine(
     assert len(observed) == 1
     assert observed[0].jobs == expected_jobs
     assert observed[0].inner_jobs == expected_inner_jobs
+    assert observed[0].exclusive_step_name == (
+        "reachable behavioral tests" if exclusive else ""
+    )
+
+
+def test_exclusive_push_phase_waits_for_parallel_edits_and_keeps_one_report_order(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The edit pool drains before pytest gets the host, with one final verdict."""
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: 10)
+    marker = tmp_path / ".gate-running"
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
+    rendezvous = Barrier(2, timeout=10)
+    lock = Lock()
+    active = 0
+    completed: set[str] = set()
+
+    def edit(name: str) -> validate.Step:
+        def action(_context: validate.Context) -> str:
+            nonlocal active
+            with lock:
+                active += 1
+            try:
+                rendezvous.wait()
+                with lock:
+                    completed.add(name)
+                return name
+            finally:
+                with lock:
+                    active -= 1
+
+        return validate.Step(name, action, fast=True)
+
+    def tests(context: validate.Context) -> str:
+        assert marker.is_dir()
+        with lock:
+            assert active == 0
+            assert completed == {"first edit", "second edit"}
+        assert (context.jobs, context.inner_jobs) == (1, 1)
+        assert context.environment["PACK_JOBS"] == "1"
+        assert validate._pytest_workers(context.jobs) == 10
+        assert context.pool_workers == 10
+        return "reachable tests ran"
+
+    steps = [
+        edit("first edit"),
+        validate.Step("reachable behavioral tests", tests, fast=True),
+        edit("second edit"),
+    ]
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=10,
+        inner_jobs=3,
+        environment={"PACK_JOBS": "3"},
+        exclusive_step_name="reachable behavioral tests",
+    )
+
+    summary = validate._run_selected(steps, context, [])
+
+    assert [result.name for result in summary.results] == [step.name for step in steps]
+    assert [result.status for result in summary.results] == ["passed"] * 3
+    assert context.environment["PACK_JOBS"] == "3"
+    assert not marker.exists()
+
+
+def test_exclusive_push_phase_keeps_edit_failures_and_runs_the_remaining_check(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", tmp_path / ".gate-running")
+
+    def failed(_context: validate.Context) -> str:
+        raise validate.StepFailureError("edit check refused")
+
+    def selected(_context: validate.Context) -> str:
+        return "selected tests passed"
+
+    steps = [
+        validate.Step("edit check", failed, fast=True),
+        validate.Step("reachable behavioral tests", selected, fast=True),
+    ]
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=2,
+        inner_jobs=1,
+        environment={"PACK_JOBS": "1"},
+        exclusive_step_name="reachable behavioral tests",
+    )
+
+    summary = validate._run_selected(steps, context, [])
+
+    assert [(result.name, result.status) for result in summary.results] == [
+        ("edit check", "failed"),
+        ("reachable behavioral tests", "passed"),
+    ]
+    assert "edit check refused" in summary.results[0].reason
+
+
+def test_large_narrow_push_keeps_its_floor_when_a_full_gate_holds_the_marker(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    marker = tmp_path / ".gate-running"
+    marker.mkdir()
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
+    observed: list[tuple[int, int, str, int | None]] = []
+
+    def selected(context: validate.Context) -> str:
+        observed.append(
+            (
+                context.jobs,
+                context.inner_jobs,
+                context.environment["PACK_JOBS"],
+                context.pool_workers,
+            )
+        )
+        return "selected tests passed"
+
+    step = validate.Step("reachable behavioral tests", selected, fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=10,
+        inner_jobs=3,
+        environment={"PACK_JOBS": "3"},
+        exclusive_step_name=step.name,
+    )
+
+    summary = validate._run_selected([step], context, [])
+
+    assert summary.results[0].status == "passed"
+    assert observed == [(10, 3, "3", None)]
+    assert marker.is_dir()
+
+
+def test_exclusive_push_command_receipt_records_its_effective_worker_allocation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", tmp_path / ".gate-running")
+    artifacts = tmp_path / "artifacts"
+
+    def selected(context: validate.Context) -> str:
+        return validate._run(context, (sys.executable, "-c", "print('selected')"))
+
+    step = validate.Step("reachable behavioral tests", selected, fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=10,
+        inner_jobs=3,
+        environment={
+            **os.environ,
+            "PACK_JOBS": "3",
+            "PACKING_VALIDATION_ARTIFACT_DIR": str(artifacts),
+        },
+        exclusive_step_name=step.name,
+    )
+
+    summary = validate._run_selected([step], context, [])
+
+    assert [(result.status, result.output) for result in summary.results] == [
+        ("passed", "selected")
+    ]
+    start = json.loads(next(artifacts.glob("command-*.start.json")).read_text())
+    assert (start["jobs"], start["inner_jobs"], start["step_name"]) == (
+        1,
+        1,
+        step.name,
+    )
+    assert start["run_id"] == context.artifact_run_id
+
+
+def test_exclusive_push_interrupt_stops_run_and_releases_marker(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    marker = tmp_path / ".gate-running"
+    monkeypatch.setattr(validate, "ACTIVITY_MARKER", marker)
+
+    def interrupt(_context: validate.Context) -> str:
+        raise KeyboardInterrupt
+
+    step = validate.Step("reachable behavioral tests", interrupt, fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=2,
+        inner_jobs=1,
+        environment={"PACK_JOBS": "1"},
+        exclusive_step_name=step.name,
+    )
+
+    with pytest.raises(KeyboardInterrupt):
+        validate._run_selected([step], context, [])
+    assert context.processes.stopping
+    assert not marker.exists()
+
+
+def test_exclusive_push_refuses_an_absent_selected_step() -> None:
+    step = validate.Step("edit check", lambda _context: "passed", fast=True)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=2,
+        inner_jobs=1,
+        environment={},
+        exclusive_step_name="reachable behavioral tests",
+    )
+
+    with pytest.raises(validate.StepFailureError, match="absent from the selection"):
+        validate._run_selected([step], context, [])
 
 
 def test_the_edit_tier_cannot_under_run() -> None:
@@ -2357,6 +2736,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
     sweeps = names(fast=False, sweeps=True)
     suite_a = names(fast=False, suite_a=True)
     suite_b = names(fast=False, suite_b=True)
+    suite_c = names(fast=False, suite_c=True)
     geometry = names(fast=False, geometry=True)
     typecheck = names(fast=False, typecheck=True)
 
@@ -2367,7 +2747,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
     # The pull request's jobs are a partition of `--fast` rather than independent filters,
     # which is what makes it safe to run them on separate runners: no step can be in two
     # and none in none.
-    parts = [checks, frontend, typecheck, geometry, suite_a, suite_b, sweeps]
+    parts = [checks, frontend, typecheck, geometry, suite_a, suite_b, suite_c, sweeps]
     assert set().union(*parts) == fast
     for index, part in enumerate(parts):
         for other in parts[index + 1 :]:
@@ -2662,8 +3042,8 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
       xdist workers, which was two beside 57 steps at `--jobs 3` and is four at
       `--jobs 1` on a runner of its own.
 
-    That measurement justified extracting the lane. The current lane has two step
-    instances, one for each measured file shard. The plugin filters before collection
+    That measurement justified extracting the lane. The current lane has three step
+    instances, one for each file shard. The plugin filters before collection
     and assigns every module to exactly one of them. Their separate jobs reduce the lane
     wall without dropping a test or importing the other shard.
 
@@ -2700,7 +3080,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
     That leaves 269.60s in `checks`, two halves within two per cent of each other. At the
     reference shape on the same box the two walls are 93.27s and 86.20s.
 
-    The current surface exposes seven tier readings instead of one queue, and no coverage
+    The current surface exposes eight tier readings instead of one queue, and no coverage
     change at all: every one of these steps runs on every pull request exactly as it did
     before, which is what
     `test_the_pull_request_surface_defers_only_what_was_measured` re-checks from the
@@ -2717,6 +3097,9 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
     }
     assert {step.name for step in validate.STEPS if step.suite_b} == {
         "fast behavioral tests, shard B",
+    }
+    assert {step.name for step in validate.STEPS if step.suite_c} == {
+        "fast behavioral tests, shard C",
     }
     assert {step.name for step in validate.STEPS if step.frontend} == {
         "browser floor (biome, eslint, tsc, node:test)",
@@ -2746,6 +3129,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
         {step.name for step in validate.STEPS if step.sweep},
         {step.name for step in validate.STEPS if step.suite_a},
         {step.name for step in validate.STEPS if step.suite_b},
+        {step.name for step in validate.STEPS if step.suite_c},
         {step.name for step in validate.STEPS if step.geometry},
         {step.name for step in validate.STEPS if step.typecheck},
     ]
@@ -2756,6 +3140,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
         or step.sweep
         or step.suite_a
         or step.suite_b
+        or step.suite_c
         or step.geometry
         or step.typecheck
     )
@@ -2813,6 +3198,7 @@ def _workflow_selections(*, pull_request: bool) -> dict[str, set[str]]:
                 sweeps=namespace.sweeps,
                 suite_a=namespace.suite_a,
                 suite_b=namespace.suite_b,
+                suite_c=namespace.suite_c,
                 geometry=namespace.geometry,
                 typecheck=namespace.typecheck,
             )
@@ -2839,9 +3225,9 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
     a step in no selection, run by nobody, reported by nothing -- so the seven commands are
     read from the workflow and checked to be a partition rather than trusted to be.
 
-    `--checks`, `--frontend`, `--geometry`, both suite shards and `--sweeps` partition
+    `--checks`, `--frontend`, `--geometry`, all three suite shards and `--sweeps` partition
     `_select_steps` by construction, so this is really a check on the YAML: that the
-    workflow invokes all seven, on a pull request, and narrows none of them with `--only`
+    workflow invokes all eight, on a pull request, and narrows none of them with `--only`
     or `--skip`.
 
     Pairwise disjointness is asserted rather than inferred from the union. Two jobs make
@@ -2857,6 +3243,7 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
         "geometry",
         "suite-a",
         "suite-b",
+        "suite-c",
         "sweeps",
         "typecheck",
     }
@@ -2870,6 +3257,7 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
     assert selections["sweeps"] == {step.name for step in validate.STEPS if step.sweep}
     assert selections["suite-a"] == {step.name for step in validate.STEPS if step.suite_a}
     assert selections["suite-b"] == {step.name for step in validate.STEPS if step.suite_b}
+    assert selections["suite-c"] == {step.name for step in validate.STEPS if step.suite_c}
     assert selections["geometry"] == {step.name for step in validate.STEPS if step.geometry}
     assert selections["frontend"] == {step.name for step in validate.STEPS if step.frontend}
     assert selections["typecheck"] == {step.name for step in validate.STEPS if step.typecheck}
@@ -2941,6 +3329,34 @@ def test_a_tree_proof_narrows_only_the_complete_post_merge_surface(
     assert {entry["name"] for entry in json.loads(captured.out)} == narrowed
     # The announcement goes to stderr under `--format json`, never into the document.
     assert "passed this exact tree" in captured.err
+
+
+def test_exact_verifier_cache_cannot_relabel_an_older_build() -> None:
+    """Partial failed builds may be reused only for identical sources and compiler."""
+    document = safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    steps = document["jobs"]["validate"]["steps"]
+    key = next(step for step in steps if step.get("id") == "exact-key")
+    assert key["working-directory"] == "packing/sqverify_exact"
+    assert "git rev-parse HEAD:packing/sqverify_exact" in key["run"]
+    assert "rustc -vV" in key["run"]
+    cache = next(step for step in steps if step.get("id") == "exact-cache")
+    assert "restore-keys" not in cache["with"]
+    assert cache["with"]["path"] == "packing/sqverify_exact/target"
+    assert "steps.exact-key.outputs.rustc" in cache["with"]["key"]
+    assert "steps.exact-key.outputs.tree" in cache["with"]["key"]
+    repair = next(step for step in steps if "identical cached build" in step.get("name", ""))
+    assert repair["if"] == "steps.exact-cache.outputs.cache-hit == 'true'"
+    assert "git ls-files -z -- sqverify_exact" in repair["run"]
+    save = next(step for step in steps if "Save the exact verifier" in step.get("name", ""))
+    assert "always()" in save["if"]
+    assert "steps.exact-cache.outcome == 'success'" in save["if"]
+    assert save["with"]["key"] == "${{ steps.exact-cache.outputs.cache-primary-key }}"
+    assert save["with"]["path"] == cache["with"]["path"]
+    gate = next(
+        step for step in steps if step.get("name") == "Run the required pull-request checks"
+    )
+    assert "exact-cache" not in gate.get("if", "")
+    assert steps.index(repair) < steps.index(gate) < steps.index(save)
 
 
 def test_the_engine_cache_backdates_and_saves_only_a_build_for_its_exact_key() -> None:
@@ -3022,7 +3438,7 @@ def test_browser_floor_liveness_runs_only_with_the_frontend_node_toolchain() -> 
         if "browser floor liveness tests" in selected
     ]
     assert owners == ["frontend"]
-    for job_name in ("suite-a", "suite-b"):
+    for job_name in ("suite-a", "suite-b", "suite-c"):
         steps = document["jobs"][job_name]["steps"]
         assert not any("setup-node" in str(step.get("uses", "")) for step in steps)
         assert not any("npm ci" in str(step.get("run", "")) for step in steps)
@@ -3079,39 +3495,106 @@ def test_every_tier_band_is_declared_for_the_shape_ci_runs() -> None:
         "geometry",
         "suite_a",
         "suite_b",
+        "suite_c",
         "sweeps",
         "typecheck",
     }
 
 
 def test_the_post_merge_jobs_partition_the_gate() -> None:
-    """The jobs a merge runs must together select every step, and none twice.
-
-    think-tr2z split the exhaustive tier onto its own runner so that it reports its own
-    verdict against its own budget; `--skip` on the other job is what stops it being paid
-    for twice. `D-484` split the translation escape screen off for a different reason --
-    not its verdict but its worker count, which beside the rest of the gate is two and
-    alone is four. Every part of both splits is a name typed into a YAML file, so this
-    reads the workflow, parses each command with the CLI's own parser, and resolves it
-    through the CLI's own selector: a step added to `STEPS` lands in exactly one job, and
-    a rename that breaks the split fails here rather than after a merge.
-
-    The slow lane also has its own runner. The complete integration surface excludes
-    all three isolated selections. The `frontend`, `geometry`, `suite-a`, `suite-b`, and
-    `sweeps` jobs are pull-request only, and the complete integration surface here
-    already contains every step they would have run.
-    """
+    """The complete checkpoint partitions whole Steps; exhaustive shards share one Step."""
     selections = _workflow_selections(pull_request=False)
-
-    assert set(selections) == {"validate", "exhaustive", "screen", "slow-lane"}
-    assert selections["exhaustive"] == {"exhaustive exact behavioral tests"}
-    assert selections["screen"] == {"single-square translation escape screen"}
+    deferred = {
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
+    }
+    shards = {f"exhaustive-{index}" for index in (1, 2, 3)}
+    assert set(selections) == {"validate", "slow-lane", "screen", *deferred, *shards}
     assert selections["slow-lane"] == {"slow behavioral tests"}
-    names = list(selections)
+    assert selections["screen"] == {"single-square translation escape screen"}
+    commands = _workflow_commands(pull_request=False)
+    for index in (1, 2, 3):
+        job = f"exhaustive-{index}"
+        assert selections[job] == {"exhaustive exact behavioral tests"}
+        assert commands[job].exhaustive_shard == f"{index}/3"
+        assert (commands[job].jobs, commands[job].inner_jobs) == ("1", "4")
+
+    # The three whole-file shards jointly own one Step. Every other Step has one owner.
+    logical = {name: selected for name, selected in selections.items() if name not in shards}
+    logical["exhaustive"] = selections["exhaustive-1"]
+    names = list(logical)
     for index, job in enumerate(names):
         for other in names[index + 1 :]:
-            assert not selections[job] & selections[other], f"{job} and {other} overlap"
-    assert set().union(*selections.values()) == {step.name for step in validate.STEPS}
+            assert not logical[job] & logical[other], f"{job} and {other} overlap"
+    assert set().union(*logical.values()) == {step.name for step in validate.STEPS}
+    assert sum(map(len, logical.values())) == len(validate.STEPS)
+
+
+def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> None:
+    document = safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    jobs = document["jobs"]
+    expected = {
+        "validate",
+        "deferred-threshold-1440",
+        "deferred-atlas-grid",
+        "deferred-controls-finer",
+        "deferred-threshold-720-rigidity",
+        "slow-lane",
+        "exhaustive-1",
+        "exhaustive-2",
+        "exhaustive-3",
+        "screen",
+    }
+    aggregate = jobs["post-merge-required"]
+    assert aggregate["if"] == "!cancelled() && github.event_name != 'pull_request'"
+    assert set(aggregate["needs"]) == expected
+    verdict = aggregate["steps"][0]
+    command = verdict["run"]
+    for job in expected:
+        expression = f"${{{{ needs.{job}.result }}}}"
+        matching = [key for key, value in verdict["env"].items() if value == expression]
+        assert len(matching) == 1, job
+        assert f'test "${matching[0]}" = "success"' in command
+
+    # No deferred job can enter the eight-prerequisite pull-request context.
+    assert set(jobs["packing-required"]["needs"]) == {
+        "validate",
+        "frontend",
+        "typecheck",
+        "geometry",
+        "suite-a",
+        "suite-b",
+        "suite-c",
+        "sweeps",
+    }
+    for name in expected - {"validate"}:
+        job = jobs[name]
+        assert job["if"] == "github.event_name != 'pull_request'"
+        steps = job["steps"]
+        checkouts = [step for step in steps if "actions/checkout@" in step.get("uses", "")]
+        assert checkouts
+        assert all(step["with"]["ref"] == "${{ github.sha }}" for step in checkouts)
+        validators = [
+            index
+            for index, step in enumerate(steps)
+            if "packing-validate" in step.get("run", "")
+        ]
+        receipts = [
+            index
+            for index, step in enumerate(steps)
+            if step.get("name") == "Bind the receipt to the immutable tree"
+        ]
+        assert len(validators) == len(receipts) == 1
+        assert receipts[0] < validators[0]
+        receipt = steps[receipts[0]]
+        assert receipt["env"]["VALIDATED_SHA"] == "${{ github.sha }}"
+        assert 'test "$(git rev-parse HEAD)" = "$VALIDATED_SHA"' in receipt["run"]
+        uploads = [step for step in steps if "actions/upload-artifact@" in step.get("uses", "")]
+        assert len(uploads) == 1
+        expected_artifact = "validation-timings-${{ github.job }}-${{ github.run_attempt }}"
+        assert uploads[0]["with"]["name"] == expected_artifact
 
 
 def test_the_longest_steps_are_submitted_first() -> None:
@@ -3249,6 +3732,7 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
     assert {step.name for step in validate.STEPS if step.broad} == {
         "fast behavioral tests, shard A",
         "fast behavioral tests, shard B",
+        "fast behavioral tests, shard C",
         "browser floor liveness tests",
         "workbench browser behavior in Chromium",
         # Measured 2026-08-30: 31.6s in CI against a 43s edit tier, so carrying it there
@@ -3267,6 +3751,7 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "search engine (sqsearch)",  # 2.19s, but needs that same build
         "differential: search energy vs validity oracle",  # 0.34s, likewise
         "lint floor (rust)",  # 14.94s of cargo clippy and rustfmt
+        "exact rectangle Rust geometry",  # exact crate lint/tests and Python oracle
         # The four record sweeps, split at their measured seams on 2026-09-06 so the pull
         # request's second runner can schedule them. The figures beside them are the
         # 148.50s and 102.56s above, divided by the same measurement that split them:
@@ -3286,6 +3771,61 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "basin atlas",  # 9.63s
         "basin event record and replay",  # 7.89s
     }
+
+
+def test_exact_rust_geometry_is_fast_and_runs_the_differential_oracle(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    step = next(step for step in validate.STEPS if step.name == "exact rectangle Rust geometry")
+    assert step.fast
+    assert step.broad
+    assert not step.needs_engine
+    assert "packing/sqverify_exact/*" in step.touches
+    calls: list[tuple[str, ...]] = []
+
+    def commands(
+        context: validate.Context,
+        commands: tuple[tuple[str, ...], ...],
+        *,
+        cwd: Path,
+    ) -> str:
+        assert cwd == validate.EXACT_GEOMETRY_CRATE
+        assert context.environment["RUSTDOCFLAGS"] == "old -D warnings"
+        calls.extend(commands)
+        return "test result: ok. 2 passed; 0 failed"
+
+    def run(context: validate.Context, command: tuple[str, ...], **_: object) -> str:
+        assert context.environment["RUSTDOCFLAGS"] == "old -D warnings"
+        calls.append(command)
+        return "EXACT RUST GEOMETRY DIFFERENTIAL PASSED"
+
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_commands", commands)
+    monkeypatch.setattr(validate, "_run", run)
+    environment = {"RUSTDOCFLAGS": "old", "CARGO_TARGET_DIR": "/scratch/exact-target"}
+    context = validate.Context(
+        deep=False, strict=True, jobs=1, inner_jobs=1, environment=environment
+    )
+    assert "DIFFERENTIAL PASSED" in step.action(context)
+    assert environment == {"RUSTDOCFLAGS": "old", "CARGO_TARGET_DIR": "/scratch/exact-target"}
+    assert any(command[:3] == ("cargo", "clippy", "--locked") for command in calls)
+    assert ("cargo", "test", "--locked", "--all-targets", "--quiet") in calls
+    assert ("cargo", "build", "--locked", "--release", "--quiet") in calls
+    assert calls[-1][-1] == "/scratch/exact-target/release/sqverify-exact"
+
+
+def test_exact_rust_geometry_refuses_missing_compiler_or_empty_tests(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    step = next(step for step in validate.STEPS if step.name == "exact rectangle Rust geometry")
+    context = validate.Context(deep=False, strict=False, jobs=1, inner_jobs=1, environment={})
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: None)
+    with pytest.raises(validate.StepFailureError, match="requires cargo"):
+        step.action(context)
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_commands", lambda *_, **__: "test result: ok. 0 passed")
+    with pytest.raises(validate.StepFailureError, match="no passing Rust tests"):
+        step.action(context)
 
 
 def test_edit_and_fast_are_not_silently_combinable() -> None:
@@ -3322,3 +3862,30 @@ def test_the_activity_marker_still_refuses_a_second_gate(tmp_path: Path) -> None
         validate._validation_activity(marker),
     ):
         pass  # pragma: no cover - the context manager refuses to enter
+
+
+@pytest.mark.parametrize(("cpus", "jobs", "workers"), [(4, 2, "2"), (2, 2, "1"), (4, 4, "1")])
+def test_frontend_browser_workers_fit_outer_topology(
+    monkeypatch: pytest.MonkeyPatch, cpus: int, jobs: int, workers: str
+) -> None:
+    monkeypatch.setattr(validate.os, "process_cpu_count", lambda: cpus)
+    captured: list[tuple[str, ...]] = []
+
+    def commands(_context, commands, **_kwargs):
+        captured.extend(commands)
+        return "passed"
+
+    monkeypatch.setattr(validate, "_commands", commands)
+    context = validate.Context(
+        deep=False, strict=False, jobs=jobs, inner_jobs=1, environment={}
+    )
+    validate._workbench_frontend(context)
+    assert (
+        sys.executable,
+        "-m",
+        "workbench_tools.check_frontend",
+        "--workers",
+        workers,
+    ) in captured
+    assert any("devtools.check_probes" in command for command in captured)
+    assert any("devtools.check_motion_lab_pages" in command for command in captured)

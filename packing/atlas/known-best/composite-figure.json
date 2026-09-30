@@ -20,7 +20,7 @@
           "lower_bound_first_proved_here": 3,
           "lower_bound_recent_result": 27,
           "only_known_numerically": 5,
-          "proved_optimal": 38,
+          "proved_optimal": 39,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 12
         }
@@ -44,7 +44,7 @@
           "lower_bound_first_proved_here": 3,
           "lower_bound_recent_result": 27,
           "only_known_numerically": 55,
-          "proved_optimal": 62,
+          "proved_optimal": 63,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 20
         }
@@ -574,6 +574,11 @@
       {
         "badges": [
           {
+            "glyph": "O",
+            "meaning": "proved optimal",
+            "style": "solid"
+          },
+          {
             "glyph": "=",
             "meaning": "exact value known",
             "style": "solid"
@@ -593,21 +598,20 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(11) ≥ 3.875000",
+          "display": "s(11) ≥ 3.877083",
           "evidence": [
-            "E-n011-kleddamag-3875-native-parent-core",
-            "E-n011-kleddamag-3875-source-replay"
+            "E-n011-global-optimality-independent"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
-          "shown": true,
-          "value": "3.875"
+          "shown": false,
+          "value": "3.87708359002281417730789706010096"
         },
         "n": 11,
         "optimality": {
           "provenance": "frontier",
-          "status": "open"
+          "status": "proved"
         },
         "rigidity": {
           "basis": "first-party-argument",
@@ -616,9 +620,9 @@
           "state": "established"
         },
         "side": {
-          "display": "s(11) ≤ 3.877084",
+          "display": "s(11) = 3.877084",
           "provenance": "frontier",
-          "relation": "upper-bound",
+          "relation": "equality",
           "value": "3.87708359002281"
         }
       },
@@ -15079,7 +15083,7 @@
       "lower_bound_first_proved_here": 3,
       "lower_bound_recent_result": 27,
       "only_known_numerically": 55,
-      "proved_optimal": 62,
+      "proved_optimal": 63,
       "rigidity_catalogue_annotated": 2,
       "rigidity_established": 20
     }

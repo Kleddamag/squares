@@ -1,0 +1,49 @@
+{
+  "a1_baseline_decoded_sha256": "04fa1ebb37f5dace29946224fe8c7c5d8a1bedb4fa860c65b359f4200415de57",
+  "checker_path": "packing/devtools/check_n11_optimality_field_mask0.py",
+  "checker_sha256": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+  "d4_checker_sha256": "19f4b0a47afd6acb327e85bd4a98ca2a43d2fdaa49aeb0edd30aa12d1b6aac1d",
+  "d4_cover_decoded_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+  "d4_receipt_sha256": "c4aa4df460593abcb51cd4ebaaf916c78a6a718659bb6b7bf4245e3e67e6c00e",
+  "method": "Original fresh audit contributes only pinned point coordinates and candidate angle intervals. Independent local checker recomputes strict ownership bounds, full-angle core and wall inequalities, all rational charge regions, and an exact vertical sweep at every polygon-edge intersection and between events. It binds the previously accepted local D4 cover result and compares recomputed whole-half-turn case transfers against the pinned A1 list. No fetched source checker is executed.",
+  "objects": {
+    "field_packet": {
+      "compressed_bytes": 3749,
+      "compressed_sha256": "0759a9f56e0035713996287fa2bd540c29ad60820da5da40250136375442f832",
+      "decoded_bytes": 28065,
+      "decoded_sha256": "14164a3d91117055000ae78cd15a4e8ad5d6bb2c27ce24ff080605b873a93340",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask0/objects/14164a3d91117055000ae78cd15a4e8ad5d6bb2c27ce24ff080605b873a93340.gz"
+    },
+    "upstream_interval_proposals": {
+      "compressed_bytes": 29707,
+      "compressed_sha256": "156102cf720236023cf5ec86cc697a5d6d2615fcf0eaa82336574be49d8856a2",
+      "decoded_bytes": 201961,
+      "decoded_sha256": "1a56056ad4d19786e41e248f0ef60866ad2021370e9ef809faa471fb679f8a54",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask0/objects/1a56056ad4d19786e41e248f0ef60866ad2021370e9ef809faa471fb679f8a54.gz"
+    }
+  },
+  "replay_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask0/replay.sh",
+  "result_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask0/result.json",
+  "result_sha256": "821274111e6eb50d47e20882da083e3e23d25ee37e6725a18b18d133ab798663",
+  "run_measurement": {
+    "arrangement_events": 8105,
+    "arrangement_probes": 16074,
+    "checker_process_cpu_seconds": 16.458322000000003,
+    "checker_wall_seconds": 16.51491070800057,
+    "outer_wall_seconds": 16.58,
+    "ownership_disk_points": 34,
+    "ownership_points": 55,
+    "ownership_wall_points": 21,
+    "pending_ownership_points": 0,
+    "pending_rows": 0,
+    "positive_cell_rows": 136,
+    "work_units": 27544
+  },
+  "scope": "One of 59 field certificates, mask 0. All 55 conditioned owner points and 136 positive-cell rows were checked; 459 transferred canonical cases follow. Other field/generic/returned certificates and global optimality remain unchecked.",
+  "shared_premises": "The accepted D4 cover geometry, the packet\u2019s fixed field sites/owner point proposals, U and L, and the elementary strict-core collision and odd-majority capacity-one arguments are explicit premises. This one-packet check does not validate the other 58 field certificates, 34 generic certificates, 76 prior extensions, 173 returned cases, or case 438 capture.",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PASS_ONE_FIELD_MASK0_GEOMETRY_AND_TRANSFER",
+  "wall_ceiling_seconds": 30,
+  "work_ceiling": 100000
+}

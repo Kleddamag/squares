@@ -1,0 +1,27 @@
+{
+  "excluded_case_ids": [],
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "mask_index": 2095,
+  "max_events": 50000,
+  "max_seconds": 30.0,
+  "owned_seed_points_checked": 77,
+  "row_cover": {
+    "edge_segments": 242,
+    "events": 87,
+    "probes": 173
+  },
+  "rows_checked": 1,
+  "scope": "row",
+  "seed_rows_checked": 352,
+  "source_sha256": {
+    "audit": "25da11f4e602598e4095d0810d1cc09e7dd3589cba9a9ff1db2b6c5db650c8a3",
+    "checker": "f73746763758e871b9b39f98963b3fab034a4bcb04c6a88805aec0273330afd5",
+    "cover": "7c6d14012f06eb892912a50c93cc7408ce1f90524d46693c6178a01ceae71a99",
+    "geometry": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+    "seed": "83aebf79b8751a753e07d2693afe377d831035e1b531ad337ad5c79521e823b7",
+    "source": "800d8684bb856727acedbf438a27f57918c8ecd679c3df979e30ad826c590594"
+  },
+  "status": "PASS_ONE_GENERIC_ROW_DIAGNOSTIC",
+  "wall_seconds": 4.173880333000852
+}

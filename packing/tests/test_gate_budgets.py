@@ -77,6 +77,82 @@ def fabricated(
     return spec
 
 
+def pending_ci_register(tmp_path: Path, job_fields: str) -> Path:
+    """A new hosted shape with a real ceiling and no fabricated measurement."""
+    spec = fabricated(tmp_path, ceiling=200.0, measured="100.0")
+    with spec.open("a", encoding="utf-8") as stream:
+        stream.write(
+            "ci_gates:\n"
+            "- id: new-gate\n"
+            "  file: .github/workflows/new.yml\n"
+            "  aggregate: required\n"
+            "  selected_by: dispatch\n"
+            "  reference: {runner: ubuntu-latest, cpus: 4}\n"
+            "  drift_ratio: 1.5\n"
+            "  enforcement: reporting\n"
+            "  tracking_bead: think-test\n"
+            "  reporting_reason: first hosted observation is pending\n"
+            "  argument: a new parallel partition\n"
+            "  wall:\n"
+            "    ceiling_seconds: 200\n"
+            "    argument: ceiling retained until the first observation\n"
+            "    pending_measurement: think-test\n"
+            "  jobs:\n"
+            "  - id: worker\n"
+            "    ceiling_seconds: 200\n"
+            "    argument: bounded bootstrap with explicitly unmeasured wall\n"
+            f"{job_fields}"
+        )
+    return spec
+
+
+def test_pending_ci_measurement_keeps_the_absolute_ceiling(tmp_path: Path) -> None:
+    register = gate_budgets.load(
+        pending_ci_register(tmp_path, "    pending_measurement: think-test\n")
+    )
+    assert gate_budgets.ci_declaration_problems(register) == []
+    verdict = gate_budgets.judge_ci_job(
+        register,
+        "new-gate",
+        "worker",
+        wall_seconds=201,
+        runner="ubuntu-latest",
+        enforce=True,
+    )
+    assert verdict.failed
+    assert verdict.measured_seconds is None
+
+
+def test_unmeasured_ci_job_without_an_owner_still_fails(tmp_path: Path) -> None:
+    register = gate_budgets.load(pending_ci_register(tmp_path, ""))
+    assert any(
+        "no wall is recorded" in problem
+        for problem in gate_budgets.ci_declaration_problems(register)
+    )
+
+
+@pytest.mark.parametrize(
+    "extra",
+    [
+        "    measured_seconds: 100\n    measured_on: '2026-09-29'\n",
+        "    measured_where: estimated from predecessor\n",
+        "    spread: 1.5\n",
+    ],
+)
+def test_pending_ci_measurement_cannot_masquerade_as_observed(
+    tmp_path: Path, extra: str
+) -> None:
+    path = pending_ci_register(tmp_path, "    pending_measurement: think-test\n" + extra)
+    with pytest.raises(BudgetError, match="both a pending measurement"):
+        gate_budgets.load(path)
+
+
+def test_pending_ci_measurement_requires_a_bead_alias(tmp_path: Path) -> None:
+    path = pending_ci_register(tmp_path, "    pending_measurement: later\n")
+    with pytest.raises(BudgetError, match="think-xxxx"):
+        gate_budgets.load(path)
+
+
 def recorded_tier(register: Register) -> TierBudget:
     """A tier with a cost on record, for the rules that need something to compare to.
 
@@ -348,6 +424,7 @@ def test_the_tier_of_an_invocation_is_always_one_the_register_declares() -> None
         ["--typecheck"],
         ["--suite-a"],
         ["--suite-b"],
+        ["--suite-c"],
     ):
         namespace = validate._parser().parse_args(flags)
         tier = validate._tier_id(namespace)

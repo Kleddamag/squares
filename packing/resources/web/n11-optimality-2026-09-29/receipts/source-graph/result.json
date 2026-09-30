@@ -1,0 +1,673 @@
+{
+  "status": "ACTUAL_SOURCE_PARENT_GRAPH_CHECKED_PUBLIC_AUDIT_BINDING_REFUSED",
+  "reported_metadata_consistent": true,
+  "actual_source_parent_graph_checked": true,
+  "root_induction_geometry_proved": false,
+  "geometric_capture_proved": false,
+  "candidate_mask_capture_proved": false,
+  "global_optimality_proved": false,
+  "scope": "All ten hash-verified source nodes form the claimed rooted branch-assumption graph. This structural check does not replay source geometry or the external mask438-adaptive root induction. Published leaf audit final-state digests are checked independently and may refuse.",
+  "checker_sha256": "c6c7574d8f9623b67202abdf9c31d56d88f6b9cadb94533569a4964e2b38688e",
+  "capture_checker_sha256": "0db9902b9686618bf58bebcaacffbba53e69443e2bf5cc823a7ae53e3b54ba9b",
+  "upstream_commit": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "reported_geometry_nodes": 10,
+  "reported_bound_premises": 24,
+  "reported_root_owner_rounds": 154,
+  "closed_leaves": [
+    "far15",
+    "far13",
+    "far2",
+    "near"
+  ],
+  "reported_cached_audit_chain": [
+    "c68188a3ecd68ae865c139347cf5d4234f3e99e69c16709c806f4d307e732689",
+    "6088857994ed2fae2e5de5f27c0fccbeb7aac668736506fa81b6afdfefeed7e3",
+    "cc9b3d39e30bcf76a27956a7c453476d9364f6c3d2cc9864d66506ec65306832",
+    "4a93b7c841b4380fb0bd481b6d57e595d9f4ae84fe3ce86fc57bad7374c765a3"
+  ],
+  "near_parent_sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+  "source_nodes_checked": 10,
+  "actual_parent_edges_checked": 9,
+  "root_key": "research/candidate-capture/root-self-240.json",
+  "source_parent_edges": {
+    "research/candidate-capture/far15y-self-300.json": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+    "research/candidate-capture/tree438-rebuilt/r1.json": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+    "research/candidate-capture/tree438-rebuilt/r10.json": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+    "research/candidate-capture/far13-collision-180.json": "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48",
+    "research/candidate-capture/near13-self-180.json": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+    "research/candidate-capture/tree438-facet/r11.json": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+    "research/candidate-capture/tree438-facet/r110.json": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+    "research/candidate-capture/tree438-facet/r111.json": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+    "research/candidate-capture/near-refined1024-240.json": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b"
+  },
+  "far_leaf_contradiction_markers": [
+    "far15",
+    "far13",
+    "far2"
+  ],
+  "source_provenance": {
+    "research/candidate-capture/root-self-240.json": {
+      "index_key": "2c51d351dc81ada3ff44552b7cb68d3fb62cc56bbb71fa999ed4e4320a299c16",
+      "compressed_object": "data/objects/f9/f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4.gz",
+      "compressed_sha256": "7ad9ce56d377129d75a18b62a800898c0d123ffa3539a5b186b7f8c5f9df6809",
+      "compressed_bytes": 18846869,
+      "decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+      "decoded_bytes": 81191153
+    },
+    "research/candidate-capture/far15y-self-300.json": {
+      "index_key": "3903f42192cfb17b18675d59378379ae9b83ca540d41cc14482565fe32c73abe",
+      "compressed_object": "data/objects/e2/e25a5de42cb45d9057660bb6d5942f980672e5d6e6b97e361c10931359c2f486.gz",
+      "compressed_sha256": "918522a0c4dfafd5df5a9f52d4ad5cfe69d12c69e5d33ca1017f58e05a7c2a90",
+      "compressed_bytes": 2836761,
+      "decoded_sha256": "e25a5de42cb45d9057660bb6d5942f980672e5d6e6b97e361c10931359c2f486",
+      "decoded_bytes": 14841506
+    },
+    "research/candidate-capture/tree438-rebuilt/r1.json": {
+      "index_key": "476eb1593ca4cc33b8160dd5e07ccb88945d2f83d3499f4fd22ce23620199cac",
+      "compressed_object": "data/objects/63/63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52.gz",
+      "compressed_sha256": "40455921766dcdae272fd5ae4bbea61fe50f8c45a436479d5db208a2777ebcdd",
+      "compressed_bytes": 5838863,
+      "decoded_sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+      "decoded_bytes": 27923791
+    },
+    "research/candidate-capture/tree438-rebuilt/r10.json": {
+      "index_key": "e00fd29fa067faf1e677b8b5ea1316d4ff2de9beca53f52b72191546221e9bfb",
+      "compressed_object": "data/objects/58/58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48.gz",
+      "compressed_sha256": "08594c245805a504aab9e8538102e31017b69ad136ac28d3964972083c095bf1",
+      "compressed_bytes": 5451411,
+      "decoded_sha256": "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48",
+      "decoded_bytes": 25644606
+    },
+    "research/candidate-capture/far13-collision-180.json": {
+      "index_key": "d301ba7eb947d317b674650f2c457cda16fd106cd57e06968beef5685d34ebe9",
+      "compressed_object": "data/objects/c8/c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5.gz",
+      "compressed_sha256": "efe02af029b449bba1db8702a8848d83bc03088bd887eb298e3aee4643066eb7",
+      "compressed_bytes": 10105656,
+      "decoded_sha256": "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5",
+      "decoded_bytes": 45867401
+    },
+    "research/candidate-capture/near13-self-180.json": {
+      "index_key": "6e9706f2f50aec53906b6d0848c4fbbdec5d586541b0fae3d21cf47e7d22c1ac",
+      "compressed_object": "data/objects/a2/a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09.gz",
+      "compressed_sha256": "5c2926fc147a654b9563163a5696ed315bfff6552e63afcd5397e8ae599dee2e",
+      "compressed_bytes": 13091378,
+      "decoded_sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+      "decoded_bytes": 59958233
+    },
+    "research/candidate-capture/tree438-facet/r11.json": {
+      "index_key": "e0805fe5d47a53ea78c1c45dacc96d3ac0985dee52f7d536c37d79b0bbb474d6",
+      "compressed_object": "data/objects/28/280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a.gz",
+      "compressed_sha256": "6669e76fc13479316218ec4a966f59c55568eeb0baba852ab95768e833692de5",
+      "compressed_bytes": 6263606,
+      "decoded_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+      "decoded_bytes": 27404912
+    },
+    "research/candidate-capture/tree438-facet/r110.json": {
+      "index_key": "915972d3f1de58d8b520430cda4550a9746b2c198ef9529f707b20ba1fcd4828",
+      "compressed_object": "data/objects/79/79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576.gz",
+      "compressed_sha256": "0a7cb6618a416876e9d0dd785fc000bdd84ef663461c856fd9d6328d17ad536d",
+      "compressed_bytes": 6051535,
+      "decoded_sha256": "79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576",
+      "decoded_bytes": 25816366
+    },
+    "research/candidate-capture/tree438-facet/r111.json": {
+      "index_key": "5a51f3da73857d4e8e5c591fd51bce84537a697c4dcdfc79b4337b58ccffe8dc",
+      "compressed_object": "data/objects/db/db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b.gz",
+      "compressed_sha256": "486bf7b96fd8e5ba34d90a346c09eadfb428576c730bd2a7384e7739983374c3",
+      "compressed_bytes": 16534676,
+      "decoded_sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+      "decoded_bytes": 70705486
+    },
+    "research/candidate-capture/near-refined1024-240.json": {
+      "index_key": "73ddd73ce616ecb4a74d08c18a17f7eaff044df2111b0e500636b073e43ee970",
+      "compressed_object": "data/objects/49/491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc.gz",
+      "compressed_sha256": "5d74352c6c05fd4e0ea4d4842915061603669a54205af2a59cf2303051a48949",
+      "compressed_bytes": 27653954,
+      "decoded_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc",
+      "decoded_bytes": 185901535
+    }
+  },
+  "source_headers": {
+    "research/candidate-capture/root-self-240.json": {
+      "node_id": "root-self-240",
+      "parent": null,
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 14,
+      "final_state_sha256": "46001c7f39fd2382696f82bd24e1049722ac27b8fc04f0626e124bc50a27e979",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/far15y-self-300.json": {
+      "node_id": "far15y-self-300",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/root-self-240.json",
+        "sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            1
+          ],
+          "upper_field": "121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "le"
+        }
+      ],
+      "closed": true,
+      "terminal": true,
+      "contradiction": {
+        "kind": "all_parent_poses_forbidden",
+        "owner": 8,
+        "step": 7
+      },
+      "steps": 8,
+      "final_state_sha256": "9e28b0927cfa568ead95beb35cc3173e3c0466d3175dc47bb6d325939e6f1451",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/tree438-rebuilt/r1.json": {
+      "node_id": "r1-portable-v1",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/root-self-240.json",
+        "sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        }
+      ],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 9,
+      "final_state_sha256": "fd24cc9ef4e3c6a0e61707516e608fe6b4dbb66e791ffd9cc8048b35f812330a",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/tree438-rebuilt/r10.json": {
+      "node_id": "r10-portable-v1",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r1.json",
+        "sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "le"
+        }
+      ],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 13,
+      "final_state_sha256": "356e63cb58e0a49e54066c1923388d57128d512a929acb823ff8280553b01926",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/far13-collision-180.json": {
+      "node_id": "far13-collision-180",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r10.json",
+        "sha256": "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "le"
+        }
+      ],
+      "closed": true,
+      "terminal": true,
+      "contradiction": {
+        "kind": "all_parent_poses_forbidden",
+        "owner": 10,
+        "step": 23
+      },
+      "steps": 24,
+      "final_state_sha256": "87482985d0271e404133f1255f1b49e0ba3cf434ce9ce09b6b187f417089948e",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/near13-self-180.json": {
+      "node_id": "near13-self-180",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r1.json",
+        "sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "ge"
+        }
+      ],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 44,
+      "final_state_sha256": "b0404ffa1c808d1d03c8fb174c25584041b0d22f96f416149e14dcf965b36226",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/tree438-facet/r11.json": {
+      "node_id": "r11-portable-v1",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/near13-self-180.json",
+        "sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "ge"
+        }
+      ],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 7,
+      "final_state_sha256": "ecdebb59ba52e558d66404ad6689653c05598cfe28da3518244314a149060e71",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/tree438-facet/r110.json": {
+      "node_id": "r110-portable-v1",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/tree438-facet/r11.json",
+        "sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 2,
+          "bound_half_angle": "183/512",
+          "keep": "le"
+        }
+      ],
+      "closed": true,
+      "terminal": true,
+      "contradiction": {
+        "kind": "all_parent_poses_forbidden",
+        "owner": 8,
+        "step": 10
+      },
+      "steps": 11,
+      "final_state_sha256": "11d4a28e176ed885dbd650854426704ec280b08b275e556765d68c49f4108e6c",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/tree438-facet/r111.json": {
+      "node_id": "r111-portable-v1",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/tree438-facet/r11.json",
+        "sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 2,
+          "bound_half_angle": "183/512",
+          "keep": "ge"
+        }
+      ],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 48,
+      "final_state_sha256": "da17e6f71c183f90ed60fd5e5e4771ea3a2aa59c7ee9566ef83c4fe3f42c7550",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    },
+    "research/candidate-capture/near-refined1024-240.json": {
+      "node_id": "near-refined1024-240",
+      "parent": {
+        "path": "/workspace/eleven-square/research/candidate-capture/tree438-facet/r111.json",
+        "sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b"
+      },
+      "source": {
+        "path": "/workspace/eleven-square/research/phase3/work/phase2/conditional/mask438-adaptive.json",
+        "sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a"
+      },
+      "mask_index": 438,
+      "mask": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15
+      ],
+      "U": "387708359002281417731/100000000000000000000",
+      "B": "382000000000000000000/387708359002281417731",
+      "constraints": [
+        {
+          "owner": 15,
+          "normal": [
+            0,
+            -1
+          ],
+          "upper_field": "-121802296569435750786621/38770835900228141773100",
+          "axis": 1,
+          "bound_centered_unit": "5/4",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 13,
+          "bound_half_angle": "147/512",
+          "keep": "ge"
+        },
+        {
+          "kind": "half_angle",
+          "owner": 2,
+          "bound_half_angle": "183/512",
+          "keep": "ge"
+        }
+      ],
+      "closed": false,
+      "terminal": true,
+      "contradiction": null,
+      "steps": 121,
+      "final_state_sha256": "a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80",
+      "source_guard_sha256": "0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0"
+    }
+  },
+  "leaf_final_state_digests": {
+    "far15": {
+      "claimed": "3b7f1ea07e466b3fe0509dfe72e94ff5d35413eb21f6f44de4736d3148549824",
+      "actual": "9e28b0927cfa568ead95beb35cc3173e3c0466d3175dc47bb6d325939e6f1451"
+    },
+    "far13": {
+      "claimed": "f83eb23cc5b1f76ec1141d1d5f6c61d8a9edcd9c9b71fe157b3cb344ce1c41d1",
+      "actual": "87482985d0271e404133f1255f1b49e0ba3cf434ce9ce09b6b187f417089948e"
+    },
+    "far2": {
+      "claimed": "7551646f88839c82771b14aab113618b5f08ecac68d57bb53f87cd72dd948769",
+      "actual": "11d4a28e176ed885dbd650854426704ec280b08b275e556765d68c49f4108e6c"
+    },
+    "near": {
+      "claimed": "810027063afb57bda360cc16eced4bf0e62c6cb29f112237f945cabab8613f9f",
+      "actual": "a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80"
+    }
+  },
+  "all_leaf_audit_digests_match": false,
+  "metadata_wall_seconds": 0.00297933300043951,
+  "metadata_process_cpu_seconds": 0.001925000000000003,
+  "wall_seconds": 4.882330999999795,
+  "process_cpu_seconds": 4.802079,
+  "max_seconds": 30.0
+}

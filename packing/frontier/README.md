@@ -426,25 +426,24 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 262 open cases, **238** have Nagamochi’s formula as their verified lower bound.
-Six others use certificates already integrated into the register: current external
-certificate bounds at `n = 11` (`31/8`), `n = 12` (`15680/3951`) and `n = 17`
-(`116511/25000`), plus the first-party bounds at `n = 18` (`4679/1000`), `n = 19`
-(`24/5`) and `n = 20` (`97/20`). Complete interval and exact replays add 18 more
-external-certificate cases: `n = 26` at `1377/250` and `n = 29,30` at `571/100`
-(Tokoharu); `n = 27,28` at `28/5` and `n = 31` at `148/25` (wand125’s rectangle
-certificates); `n = 39,40,41` at `13/2`; `n = 52,53` at `369/50`; `n = 55` at `377/50`;
-`n = 56` at `381/50`; `n = 68,69` at `841/100`; `n = 70,71` at `171/20`; and `n = 72` at
-`861/100`. `n = 32` left the open cases on 2026-09-27, when a replayed external closed
-cover proved `s(32) = 6`, and `n = 21` and `n = 45` on 2026-09-29, when replayed
-external mixed covers proved `s(21) = 5` and `s(45) = 7`. Within the original `n ≤ 100`
-corpus, the corresponding Nagamochi count is 38. The count is checked against the case
-records by `devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained
-counts outlived their case promotions.
+Of the 261 open cases, **238** have Nagamochi’s formula as their verified lower bound.
+Five others use certificates already integrated into the register: current external
+certificate bounds at `n = 12` (`15680/3951`) and `n = 17` (`116511/25000`), plus the
+first-party bounds at `n = 18` (`4679/1000`), `n = 19` (`24/5`) and `n = 20` (`97/20`).
+Complete interval and exact replays add 18 more external-certificate cases: `n = 26` at
+`1377/250` and `n = 29,30` at `571/100` (Tokoharu); `n = 27,28` at `28/5` and `n = 31`
+at `148/25` (wand125’s rectangle certificates); `n = 39,40,41` at `13/2`; `n = 52,53` at
+`369/50`; `n = 55` at `377/50`; `n = 56` at `381/50`; `n = 68,69` at `841/100`;
+`n = 70,71` at `171/20`; and `n = 72` at `861/100`. `n = 32` left the open cases on
+2026-09-27, when a replayed external closed cover proved `s(32) = 6`, and `n = 21` and
+`n = 45` on 2026-09-29, when replayed external mixed covers proved `s(21) = 5` and
+`s(45) = 7`. Within the original `n ≤ 100` corpus, the corresponding Nagamochi count is
+38\. The count is checked against the case records by `devtools.check_nagamochi_bounds`
+(`D-430`), because earlier hand-maintained counts outlived their case promotions.
 
-Of the 262 open cases, 117 are still held by the trivial grid.
-The other 145 carry non-grid constructions.
-Within `n ≤ 100`, the 34 non-grid open cases comprise 14 hand-built, 10 from simulated
+Of the 261 open cases, 117 are still held by the trivial grid.
+The other 144 carry non-grid constructions.
+Within `n ≤ 100`, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
 annealing (nine of the ten dated 2024–2026; `n = 53` is Cantrell’s from 2002), 5
 diagonal strips, 3 extensions of smaller records, and 2 whose method the source does not
 record (`n = 68, 69`).

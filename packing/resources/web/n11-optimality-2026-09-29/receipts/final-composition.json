@@ -1,0 +1,42 @@
+{
+  "accepted_exclusions": 2180,
+  "checker_sha256": "86a97e4bfc6352088d67f8f5a897f840cfbae35bd11216a32e74598db8599991",
+  "endpoint_argument": "Concentric embedding of any S<T into U, the complete exclusion/D4 reduction, closed capture and pose inclusion place it in the fixed-T local neighborhood. Local isolation forces the verified witness of span T, contradicting S<T. The same independently checked witness supplies the upper bound at T.",
+  "exclusion_inventory_sha256": "498801611757f8ce4557dd105697c4e6c4ab8aa3d460e0306b90bda4657ffe48",
+  "geometry_rerun": false,
+  "global_optimality_proved": true,
+  "missing_capture_source_sha256s": [],
+  "missing_exclusion_ids": [],
+  "observed_execution_premise": "Listed reviewed component executions occurred; this inventory does not prove their occurrence.",
+  "pending_obligations": [],
+  "required_exclusions": 2180,
+  "reviewed_receipt_sha256s": {
+    "capture-branch-r1-full": "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4",
+    "capture-child-far13": "1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb",
+    "capture-child-far15": "cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e",
+    "capture-child-far2": "e7deeb0249e0688bc371436f4e18513e7b397d5479164db6546e151311c18442",
+    "capture-child-near": "e428a9ab1d2bfd4eda6222b2a26d75565ae17a359def6d68d1a093aa5865bf10",
+    "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
+    "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",
+    "capture-child-r11": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
+    "capture-child-r111": "5efd22cc39ee0a6d2167ebf6a9ffe2d685e879218ea9dabb47affe3c62751e79",
+    "capture-root-bridge-final2": "ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d",
+    "capture-root-chain": "f10d50e6b34179a6b2fb066d6ade9553057c280f7538ae6e53fe06e639a56d11",
+    "capture-root-node-full-integer": "0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4",
+    "capture-step0": "8ca86cc3f119c1dc42e14b142d04cf6863934b799b8e8b6818e54830b1d22b78",
+    "case-census": "98dad8545582694ca6217fce113f49b33d29537ea128c3994c101e75f5b57efb",
+    "d4-independent": "c4aa4df460593abcb51cd4ebaaf916c78a6a718659bb6b7bf4245e3e67e6c00e",
+    "local-isolation": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
+    "pose-inclusion": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
+    "source-graph": "cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248"
+  },
+  "source_sha256": {
+    "check_n11_final_composition.py": "86a97e4bfc6352088d67f8f5a897f840cfbae35bd11216a32e74598db8599991",
+    "inventory_n11_completion.py": "23455ec01389b2fa258f35a6e4b1259f4b8c8d5699334ef77d5ba77d9cc1adeb",
+    "inventory_n11_exclusions.py": "70eb5347630fcca0ff252cf2eeee64c0164d97cedad3fb9ebec1ebf105027964",
+    "n11_composition_joins.py": "368157a03aac1508eff5a388165818b80574de77276b8d68825da29b87077695",
+    "prepare_n11_nonfield_manifest.py": "e85c3806ceef4fce64cccc359f964f0cade40924bba33d7ad5f9ba47a1efa815",
+    "run_n11_nonfield_batch.py": "461b6e6a5cb37dcd277e67e7f21134d86ff68eb36ead56ced1d0f08d9539e4dc"
+  },
+  "status": "PASS_REVIEWED_COMPONENT_COMPOSITION"
+}

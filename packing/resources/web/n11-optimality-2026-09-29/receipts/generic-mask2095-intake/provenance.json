@@ -1,0 +1,50 @@
+{
+  "acceptance_scope": "One independently checked fresh-wall generic exclusion: canonical case 2095 only.",
+  "checker": "devtools/check_n11_generic_fresh.py",
+  "checker_sha256": "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3",
+  "excluded_case_ids": [
+    2095
+  ],
+  "focused_test": "tests/test_n11_generic_fresh.py",
+  "focused_test_result": "8 passed; Ruff, format, and BasedPyright clean",
+  "focused_test_sha256": "4ee76d1434657929260ede7d22905acafdf064b32410eb313d960550984d39d4",
+  "geometry_verified": true,
+  "global_optimality_proved": false,
+  "method": "Exact strict seed ownership and 352 wall rows; five sequential owner updates, each joined from 32 independent exact closed-domain row checks using the frozen predecessor; exact convex-combination compression and final-state/terminal contradiction checks. Source PASS flags are ignored.",
+  "observed": {
+    "child_process_cpu_seconds": 35.085955,
+    "coordinator_process_cpu_seconds": 5.610571,
+    "seed_points": 77,
+    "seed_rows": 352,
+    "step_rows": 160,
+    "steps": 5,
+    "wall_seconds": 23.753472624997812
+  },
+  "prior_diagnostics": [
+    "seed-pilot.json",
+    "row0-pilot.json",
+    "full-attempt.json",
+    "full-parallel-attempt.json"
+  ],
+  "proof_dependencies": "The admitted D4 receipt supplies only unconditional center-cover, cell-capacity, and whole-half-turn facts. This replay does not consume its conditional four-survivor reduction.",
+  "resource_ceiling": {
+    "max_events_per_row": 50000,
+    "row_workers": 3,
+    "wall_seconds": 30
+  },
+  "result": "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json",
+  "result_sha256": "2aa9c3819e4f39d9f4f489a25d1885b2a1c5a6f6c21099f42821d1165d608f88",
+  "schema": "n11_generic_fresh_provenance_v1",
+  "source_code_reuse": "Imports first-party frozen mask0 exact rational geometry at its pinned SHA; independent of upstream certificate checker.",
+  "source_pin_sha256": {
+    "a1": "adbb5f181a18d157fe12a5a62055b01bf7eff7a91ce08b8aeca6f01408953d21",
+    "audit": "25da11f4e602598e4095d0810d1cc09e7dd3589cba9a9ff1db2b6c5db650c8a3",
+    "checker": "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3",
+    "cover": "7c6d14012f06eb892912a50c93cc7408ce1f90524d46693c6178a01ceae71a99",
+    "geometry": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+    "seed": "83aebf79b8751a753e07d2693afe377d831035e1b531ad337ad5c79521e823b7",
+    "source": "800d8684bb856727acedbf438a27f57918c8ecd679c3df979e30ad826c590594"
+  },
+  "upstream_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "upstream_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c"
+}

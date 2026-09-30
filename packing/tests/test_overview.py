@@ -1183,7 +1183,7 @@ def test_every_page_starts_one_shared_space_below_the_bar() -> None:
     """The space from the bar's rule to a page's first block is one token, declared in the
     stylesheet every page carries and read by the site's column and the explainer's hero."""
     nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
-    assert "--site-page-top: 2rem;" in nav
+    assert "--site-page-top: 3rem;" in nav
     assert "padding-block-start: var(--site-page-top);" in render_overview.SITE_CSS.read_text(
         encoding="utf-8"
     )

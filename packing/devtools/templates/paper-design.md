@@ -253,7 +253,7 @@ it.
   It sits 1rem below the top of the window on every page, the explainer and the
   workbench included: `site-nav.css` narrows KPress’s page top margin
   (`--kpress-page-margin-block-start`) from 2.5rem. Below the bar, every page’s first
-  block starts one shared space under its rule, `--site-page-top` (2rem, in
+  block starts one shared space under its rule, `--site-page-top` (3rem, in
   `site-nav.css`): KPress’s document padding above the column is dropped on screen, the
   column’s own top padding is the token, and the first block (a hero or a document’s
   title) adds no margin of its own.

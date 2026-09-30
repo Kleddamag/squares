@@ -700,7 +700,7 @@ def test_every_result_shows_the_standing_readme_derives(
     for other in render_recent_results.STANDINGS[1:]:
         assert "data-tone" not in overview_sections.standing_chip(other), other
     recent = _recent_table(page)
-    for result in overview_sections.newest_results(overview):
+    for result in overview_sections.recent_results(overview):
         row = _recent_row(recent, result.id)
         assert f'data-standing="{overview_sections.standing_key(result.standing)}"' in row
         assert overview_sections.standing_chips(result.standing) in row, result.id
@@ -727,7 +727,7 @@ def _recent_table(page: str) -> str:
 def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
-    """The section is one `.site-table` of the newest results, one row each, with the
+    """The section is one `.site-table` of the recent results, one row each, with the
     date, the result linking its row, the method, the credit and the status chips; no
     card, popover or list is left in it."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
@@ -742,8 +742,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert "data-site-table" not in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
     assert heads == ["Date", "Result", "Method", "Credit", "Status"]
-    newest = overview_sections.newest_results(overview)
-    assert len(newest) == overview_sections.RECENT_COUNT
+    newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
         row = _recent_row(recent, result.id)
@@ -768,6 +767,41 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
     shown = {r.first_n for r in newest}
     assert exact <= shown
+
+
+def test_the_recent_table_lists_every_result_since_august_filtered_to_s3(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """Every result dated on or after 1 August 2026 is a row, and none before it; the
+    Significance filter starts at S3 and up, with the rows below it hidden in the HTML
+    and the count already written, so the first paint is the filtered table."""
+    assert overview_sections.RECENT_FROM.isoformat() == "2026-08-01"
+    since = [r for r in overview.results if r.dated[1] >= "2026-08-01"]
+    before = [r for r in overview.results if r.dated[1] < "2026-08-01"]
+    assert before, "the floor should leave older results to the results page"
+    recent = _recent_table(page)
+    listed = re.findall(r'<tr data-result="(t-\d+)"', recent)
+    assert sorted(listed) == sorted(r.id.lower() for r in since)
+    assert not {r.id.lower() for r in before} & set(listed)
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    tools = re.search(r'<div class="site-table-tools site-recent-tools">.*?</div>', section)
+    assert tools
+    assert section.index(tools.group(0)) < section.index(recent)
+    assert '<label>Significance <select data-filter="s" data-bound="min">' in tools[0]
+    options = re.findall(r'<option value="(\d?)"( selected)?>([^<]+)</option>', tools[0])
+    assert options[0] == ("3", " selected", "S3 and up")
+    assert ("", "", "All") in options
+    shown = 0
+    for result in since:
+        row = _recent_row(recent, result.id)
+        score = result.record["significance"]["score"]
+        assert f'data-s="{score}"' in row, result.id
+        assert (" hidden>" in row.split(">", 1)[0] + ">") == (score < 3), result.id
+        shown += score >= 3
+    assert shown < len(since)
+    assert f"{shown} of {len(since)} results</span>" in tools[0]
+    text = re.sub(r"<[^>]+>", "", section)
+    assert "every result since 1 August 2026" in text
 
 
 def test_the_recent_table_splits_method_credit_and_standing() -> None:

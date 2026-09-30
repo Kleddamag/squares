@@ -57,6 +57,15 @@ void test("filters: equals, flag and an n range", () => {
   assert.ok(table.rowMatches(row, [{ key: "n", kind: "max", value: "" }]));
 });
 
+void test("a significance floor keeps S3 and up, and an empty floor keeps all", () => {
+  /** @param {string} value @returns {SiteTableFilter[]} */
+  const floor = (value) => [{ key: "s", kind: "min", value }];
+  assert.ok(table.rowMatches({ s: "3" }, floor("3")));
+  assert.ok(table.rowMatches({ s: "5" }, floor("3")));
+  assert.ok(!table.rowMatches({ s: "2" }, floor("3")));
+  assert.ok(table.rowMatches({ s: "2" }, floor("")));
+});
+
 void test("the count names the total, and the share when filtered", () => {
   assert.equal(table.countText(324, 324, "cases"), "324 cases");
   assert.equal(table.countText(12, 324, "cases"), "12 of 324 cases");

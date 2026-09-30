@@ -12,6 +12,7 @@ from __future__ import annotations
 import base64
 import html
 import re
+from datetime import date
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -364,9 +365,18 @@ def verification_block() -> str:
     )
 
 
-#: How many of the newest results the overview's table shows: enough to hold the
-#: latest days' results whole, the three exact values Evan Daniel closed among them.
-RECENT_COUNT = 12
+#: The first day the overview's Recent Results table lists: every result dated on or
+#: after it, by the date the table shows.
+RECENT_FROM = date(2026, 8, 1)
+
+#: The recent table's Significance filter, as (the lowest S rung shown, its label), the
+#: default first. The empty value shows every row.
+RECENT_SIGNIFICANCE: tuple[tuple[str, str], ...] = (
+    ("3", "S3 and up"),
+    ("4", "S4 and up"),
+    ("5", "S5"),
+    ("", "All"),
+)
 
 #: A summary that leads with its formula: the formula, then the method after "by", then
 #: a trailing ", reported" that the standing chips already say.
@@ -376,9 +386,16 @@ _LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:,
 CREDIT_AFTER_SHOWN = 3
 
 
-def newest_results(overview: Overview, count: int = RECENT_COUNT) -> list[Result]:
-    """The newest results, newest first: by date, then by id."""
-    return sorted(overview.results, key=lambda r: (r.dated[1], r.id), reverse=True)[:count]
+def recent_results(overview: Overview) -> list[Result]:
+    """Every result dated on or after `RECENT_FROM`, newest first: by date, then by id."""
+    since = RECENT_FROM.isoformat()
+    recent = [r for r in overview.results if r.dated[1] >= since]
+    return sorted(recent, key=lambda r: (r.dated[1], r.id), reverse=True)
+
+
+def significance(result: Result) -> int:
+    """A result's S rung, the level its S chip shows."""
+    return int(result.record["significance"]["score"])
 
 
 def split_summary(summary: str) -> tuple[str, str]:
@@ -414,19 +431,37 @@ def standing_chips(standing: str) -> str:
 def status_chips(result: Result) -> str:
     """A result's rung chips, V, C and S, then its standing chips, side by side."""
     record = result.record
-    rungs = (
-        record["verification"],
-        record["confirmation"],
-        "S" + str(record["significance"]["score"]),
-    )
+    rungs = (record["verification"], record["confirmation"], f"S{significance(result)}")
     return " ".join(_rung(rung) for rung in rungs) + " " + standing_chips(result.standing)
 
 
-def recent_table(overview: Overview, count: int = RECENT_COUNT) -> str:
-    """The newest results as one table, newest first: the date, the result linking to
-    its row on the results page with its id quiet beside it, the method, the credit and
-    the status chips. A result by others is dated by its publication, as `RESULTS.md`
-    dates it, and this project's by the day it was established; the cell says which."""
+def recent_filter(shown: int, total: int) -> str:
+    """The recent table's tools bar: one Significance select over the rows' `data-s`,
+    read as a lower bound and set to its default, and the count of the rows it leaves,
+    written as `table.js` writes it so the first paint already reads right."""
+    options = "".join(
+        f'<option value="{value}"{" selected" if index == 0 else ""}>{_esc(label)}</option>'
+        for index, (value, label) in enumerate(RECENT_SIGNIFICANCE)
+    )
+    count = f"{total} results" if shown == total else f"{shown} of {total} results"
+    return (
+        '<div class="site-table-tools site-recent-tools">'
+        '<label>Significance <select data-filter="s" data-bound="min">'
+        f"{options}</select></label>"
+        '<span class="site-count" data-count data-noun="results" aria-live="polite">'
+        f"{count}</span></div>"
+    )
+
+
+def recent_table(overview: Overview) -> str:
+    """Every result since `RECENT_FROM` as one table, newest first: the date, the result
+    linking to its row on the results page with its id quiet beside it, the method, the
+    credit and the status chips. A result by others is dated by its publication, as
+    `RESULTS.md` dates it, and this project's by the day it was established; the cell
+    says which. The Significance filter above it starts at its default, and a row below
+    that is `hidden` in the HTML, so the first paint is already filtered."""
+    floor = int(RECENT_SIGNIFICANCE[0][0])
+    results = recent_results(overview)
     head = (
         "<thead><tr>"
         '<th class="site-col-date">Date</th>'
@@ -438,14 +473,16 @@ def recent_table(overview: Overview, count: int = RECENT_COUNT) -> str:
         "</tr></thead>"
     )
     rows = []
-    for result in newest_results(overview, count):
-        kind, date = result.dated
+    for result in results:
+        kind, dated = result.dated
         formula, method = split_summary(result.summary)
+        score = significance(result)
         rows.append(
             f'<tr data-result="{_esc(result.id.lower())}" '
-            f'data-standing="{_esc(standing_key(result.standing))}">'
+            f'data-standing="{_esc(standing_key(result.standing))}" '
+            f'data-s="{score}"{" hidden" if score < floor else ""}>'
             f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
-            f"{_esc(date)}</td>"
+            f"{_esc(dated)}</td>"
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
             f"{tex_bounds(formula)}</a> "
             f'<span class="site-cell-quiet">{_esc(result.id)}</span></td>'
@@ -455,11 +492,18 @@ def recent_table(overview: Overview, count: int = RECENT_COUNT) -> str:
             f'<td class="site-col-status">{status_chips(result)}</td>'
             "</tr>"
         )
+    shown = sum(significance(r) >= floor for r in results)
     return (
-        '<div class="site-wide"><div class="site-table-wrap">'
+        f'<div class="site-wide">{recent_filter(shown, len(results))}'
+        '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results site-recent-table">'
         f"{head}<tbody>{''.join(rows)}</tbody></table></div></div>"
     )
+
+
+def recent_from() -> str:
+    """`RECENT_FROM` as prose: 1 August 2026."""
+    return f"{RECENT_FROM.day} {RECENT_FROM:%B %Y}"
 
 
 def _since() -> str:

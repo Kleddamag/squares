@@ -10,6 +10,8 @@
 //   <select data-filter="status">                 row's data-status equals the value
 //   <input type="checkbox" data-filter="open">     row's data-open is "true"
 //   <input type="number" data-filter="n" data-bound="min|max">  row's data-n in range
+//   <select data-filter="s" data-bound="min">     row's data-s at least the value
+//                                                 (an empty value passes every row)
 // The bar's `.site-count` shows how many rows remain. A link can open the table
 // filtered: each query parameter presets the control it names, `status=proved`,
 // `recent=true`, or `n-max=100` for a bound, so a card can point at a filtered view.
@@ -149,13 +151,13 @@
     const filters = [];
     for (const control of tools.querySelectorAll("[data-filter]")) {
       const key = control.getAttribute("data-filter") ?? "";
-      if (control instanceof HTMLSelectElement) {
+      const bound = control.getAttribute("data-bound");
+      if (control instanceof HTMLSelectElement && !bound) {
         filters.push({ key, kind: "equals", value: control.value });
       } else if (control instanceof HTMLInputElement && control.type === "checkbox") {
         filters.push({ key, kind: "flag", value: control.checked ? "true" : "false" });
-      } else if (control instanceof HTMLInputElement) {
-        const kind = control.getAttribute("data-bound") === "max" ? "max" : "min";
-        filters.push({ key, kind, value: control.value });
+      } else if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) {
+        filters.push({ key, kind: bound === "max" ? "max" : "min", value: control.value });
       }
     }
     return filters;

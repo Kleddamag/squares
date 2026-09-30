@@ -43,7 +43,12 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
-from devtools.migrate_math import github_unsafe_math, has_math_spans, plan
+from devtools.migrate_math import (
+    github_unsafe_math,
+    has_math_spans,
+    open_math_spans,
+    plan,
+)
 from devtools.repo_scope import tracked_files, vendored_directories
 from sqpack.yamlio import load_yaml, safe_load
 
@@ -202,7 +207,9 @@ def _normalized(content: str) -> str:
 def _check_file(path: str, text: str, keeps: set[str], outcome: Outcome) -> None:
     """Fail every math code span in one migrated file that `keep` does not name."""
     found: set[str] = set()
-    if has_math_spans(text):
+    # A `keep` needs the full plan to tell a live span from a stale one; otherwise a file
+    # with no span `$` could replace has nothing the plan would convert.
+    if has_math_spans(text) and (keeps or open_math_spans(text)):
         for decision in plan(text).decisions:
             if decision.verdict.kind != "math":
                 continue

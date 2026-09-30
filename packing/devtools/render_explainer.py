@@ -85,6 +85,10 @@ THRESHOLD_CERTIFICATE = THRESHOLD_CASE / "certificate.json"
 THRESHOLD_FINE_CERTIFICATE = THRESHOLD_CASE / "certificate-191-50-net1440.json"
 THRESHOLD_PROOF = THRESHOLD_CASE / "t-025-threshold-certificate-proof.md"
 CURRENT_BOUND_RECORD = THRESHOLD_CASE / "t-026-dilation-limit-corollary.json"
+#: The register entry the article leads with: T-026's dilation-limit bound, which
+#: `CURRENT_BOUND_RECORD` holds. The overview's card for the explainer and the explainer's
+#: screen-only edition notice compare it with the case record (`overview_data`).
+LEAD_RESULT = "T-026"
 T025_CLAIM = THRESHOLD_CASE / "t-025-verifiable-claim-191-50.md"
 T026_CLAIM = THRESHOLD_CASE / "t-026-verifiable-claim-dilation-limit.md"
 T026_REVIEW = REPO / "docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md"

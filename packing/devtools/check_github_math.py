@@ -10,10 +10,12 @@ GitHub itself.
 
 For each file it fetches the file's page on github.com at a pushed ref, takes the rendered
 Markdown GitHub embeds in it, and compares the TeX of every `<math-renderer>` element with
-the math spans `devtools.check_math_spans` reads from the file at that ref. Every span has
-to come back exactly once, with its TeX unchanged, and GitHub may render nothing the file
-does not hold. The file is read with `git show REF:PATH`, so the comparison is between
-the same bytes on both sides.
+the math spans `devtools.check_math_spans` reads from the file at that ref, both in the
+order they appear. Every span has to come back, with its TeX unchanged, and GitHub may
+render nothing the file does not hold. The file is read with `git show REF:PATH`, so the
+comparison is between the same bytes on both sides. A span that did not come back is
+named by its line and the characters touching its dollars, which is usually the reason:
+GitHub does not open math after a hyphen or a slash, nor inside a link's text.
 
 A file GitHub declines to render, as it does past a size, is reported and skipped: its
 readers there see the source, formulas and all, whatever the markup.
@@ -37,12 +39,12 @@ import json
 import re
 import subprocess
 import sys
-from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from pathlib import Path
 
-from devtools.check_math_spans import math_spans
+from devtools.check_math_spans import located_math_spans
 
 REPO = Path(__file__).resolve().parents[2]
 #: The repository on GitHub whose rendering is asked for.
@@ -62,13 +64,26 @@ TIMEOUT_SECONDS = 60
 
 
 @dataclass(frozen=True)
+class Unrendered:
+    """A span of the file GitHub did not draw as that formula, and where it sits."""
+
+    line: int
+    tex: str
+    before: str
+    after: str
+
+    def describe(self) -> str:
+        return f"L{self.line}: {self.before!r} ${self.tex}$ {self.after!r}"
+
+
+@dataclass(frozen=True)
 class Comparison:
     """One file's math spans against GitHub's rendering of them."""
 
     path: str
     expected: int
     rendered: int
-    missing: tuple[str, ...]
+    missing: tuple[Unrendered, ...]
     extra: tuple[str, ...]
 
     @property
@@ -113,16 +128,37 @@ def rendered_math(rich: str) -> list[str]:
     return out
 
 
+#: How many characters either side of a span `Unrendered` shows.
+CONTEXT = 12
+
+
 def compare(path: str, source: str, rich: str) -> Comparison:
-    """Every span of `source` against the formulas in `rich`, as multisets of TeX."""
-    expected = Counter(span.strip() for span in math_spans(source))
-    rendered = Counter(span.strip() for span in rendered_math(rich))
+    """The file's spans against GitHub's formulas, aligned in document order."""
+    located = located_math_spans(source)
+    expected = [tex.strip() for _, _, tex in located]
+    rendered = [tex.strip() for tex in rendered_math(rich)]
+    matcher = SequenceMatcher(a=expected, b=rendered, autojunk=False)
+    missing: list[Unrendered] = []
+    extra: list[str] = []
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        if tag == "equal":
+            continue
+        for start, end, tex in located[i1:i2]:
+            missing.append(
+                Unrendered(
+                    line=source.count("\n", 0, start) + 1,
+                    tex=tex.strip(),
+                    before=source[max(0, start - CONTEXT) : start],
+                    after=source[end : end + CONTEXT],
+                )
+            )
+        extra.extend(rendered[j1:j2])
     return Comparison(
         path=path,
-        expected=sum(expected.values()),
-        rendered=sum(rendered.values()),
-        missing=tuple(sorted((expected - rendered).elements())),
-        extra=tuple(sorted((rendered - expected).elements())),
+        expected=len(expected),
+        rendered=len(rendered),
+        missing=tuple(missing),
+        extra=tuple(extra),
     )
 
 
@@ -148,12 +184,75 @@ def check(path: str, ref: str) -> Comparison:
     return compare(path, source, rendered_html(page))
 
 
+#: Where GitHub opens inline math, measured: one case per list item, each holding one
+#: formula `c_{N}`, and the outcome each case is recorded with, `[math]` or `[code]`.
+PROBE = "packing/tests/fixtures/github-math/cases.md"
+_CASE = re.compile(r"c_\{(\d+)\}")
+_RECORDED = re.compile(r"^- \[(?P<outcome>math|code)\] ")
+
+
+@dataclass(frozen=True)
+class Case:
+    """One probe case: its number, the list item or line holding it, and its record."""
+
+    number: int
+    text: str
+    recorded: bool | None
+
+    def describe(self, *, rendered: bool) -> str:
+        return f"c_{self.number}: {'math' if rendered else 'code'}  {self.text}"
+
+
+def probe_cases(source: str) -> list[Case]:
+    """Every case in the probe, with the whole list item it sits in, continuation included."""
+    items: list[str] = []
+    for line in source.splitlines():
+        if line.startswith("  ") and items and items[-1].startswith("- "):
+            items[-1] += " / " + line.strip()
+        else:
+            items.append(line.strip())
+    cases = []
+    for item in items:
+        recorded = _RECORDED.match(item)
+        for number in _CASE.findall(item):
+            outcome = recorded.group("outcome") == "math" if recorded else None
+            cases.append(Case(int(number), item, outcome))
+    return cases
+
+
+def probe_outcomes(source: str, rich: str) -> list[tuple[Case, bool]]:
+    """Each case and whether GitHub rendered its formula."""
+    drawn = {int(number) for tex in rendered_math(rich) for number in _CASE.findall(tex)}
+    return [(case, case.number in drawn) for case in probe_cases(source)]
+
+
+def probe(ref: str) -> int:
+    """Measure the probe at `ref`: every case's outcome, and any that left its record."""
+    source = _git("show", f"{ref}:{PROBE}")
+    rich = rendered_html(fetch(f"https://github.com/{GITHUB_REPOSITORY}/blob/{ref}/{PROBE}"))
+    changed = 0
+    for case, rendered in probe_outcomes(source, rich):
+        moved = case.recorded is not None and case.recorded != rendered
+        changed += moved
+        print(("MOVED " if moved else "") + case.describe(rendered=rendered))
+    if changed:
+        print(f"{changed} cases no longer render as recorded", file=sys.stderr)
+    return 1 if changed else 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").split("\n\n", 1)[0])
-    parser.add_argument("paths", nargs="+", help="repository-relative Markdown files")
+    parser.add_argument("paths", nargs="*", help="repository-relative Markdown files")
     parser.add_argument("--ref", help="a pushed commit, branch or tag (default: HEAD's commit)")
+    parser.add_argument(
+        "--probe", action="store_true", help=f"measure where GitHub opens math ({PROBE})"
+    )
     args = parser.parse_args(argv)
     ref = args.ref or _git("rev-parse", "HEAD").strip()
+    if args.probe:
+        return probe(ref)
+    if not args.paths:
+        parser.error("name at least one file, or --probe")
 
     failed = 0
     for path in args.paths:
@@ -171,7 +270,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"{result.rendered} rendered"
         )
         for span in result.missing:
-            print(f"  not rendered as math: ${span}$", file=sys.stderr)
+            print(f"  not rendered as math: {span.describe()}", file=sys.stderr)
         for span in result.extra:
             print(f"  rendered, not in the file: ${span}$", file=sys.stderr)
         failed += not result.ok

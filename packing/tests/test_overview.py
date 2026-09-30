@@ -65,7 +65,7 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     page: str, results: str
 ) -> None:
     """The table is on `all-results.html`, marked current in the bar, with its sorting
-    and filters; the overview keeps no row of it, only a pointer beside the recent list."""
+    and filters; the overview keeps no row of it, only a pointer under the recent table."""
     assert render_overview.RESULTS_PAGE == "all-results.html"
     assert "all-results.html" in render_overview.SITE_PAGES
     assert "results.html" in render_overview.DOCUMENT_PAGES
@@ -80,7 +80,7 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
 
 
 def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
-    """The overview's cards, recent list and replay table, and the case records, link a
+    """The overview's recent table and replay table, and the case records, link a
     result at its row on the results page, never at a fragment of their own page."""
     rows = {row_id for row_id, _, _ in ROW.findall(results)}
     linked = re.findall(r'href="all-results\.html#([^"]+)"', page)
@@ -697,23 +697,108 @@ def test_every_result_shows_the_standing_readme_derives(
     assert 'data-tone="accent">holds</span>' in held
     for other in render_recent_results.STANDINGS[1:]:
         assert "data-tone" not in overview_sections.standing_chip(other), other
-    recent = overview_sections.recent_list(overview)
-    assert recent in page
-    assert recent.count('data-standing="') == recent.count("<li>")
+    recent = _recent_table(page)
+    for result in overview_sections.newest_results(overview):
+        row = _recent_row(recent, result.id)
+        assert f'data-standing="{overview_sections.standing_key(result.standing)}"' in row
+        assert overview_sections.standing_chips(result.standing) in row, result.id
 
 
-def test_the_s5_cards_say_which_still_hold(overview: overview_data.Overview) -> None:
-    headline = overview_sections.headline_cards(overview)
+def _recent_row(table: str, result_id: str) -> str:
+    match = re.search(rf'<tr data-result="{result_id.lower()}"[^>]*>.*?</tr>', table, re.DOTALL)
+    assert match, result_id
+    return match.group(0)
+
+
+def _recent_table(page: str) -> str:
+    """The recent table as the page carries it, after kpress has wrapped it and labelled
+    its cells, from its opening tag to its close."""
+    match = re.search(
+        r'<table class="kpress-table site-table site-results site-recent-table">.*?</table>',
+        page,
+        re.DOTALL,
+    )
+    assert match
+    return match.group(0)
+
+
+def test_recent_results_is_one_table_not_cards_or_a_list(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """The section is one `.site-table` of the newest results, one row each, with the
+    date, the result linking its row, the method, the credit and the status chips; no
+    card, popover or list is left in it."""
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    recent = _recent_table(page)
+    assert recent in section
+    before_replay = section.split("site-replay", 1)[0]
+    assert "site-card" not in before_replay
+    assert "popover" not in before_replay
+    assert "<li>" not in before_replay
+    assert section.count("<table") == 2  # the recent table, then the replay table
+    assert 'class="kpress-table site-table site-results site-recent-table"' in recent
+    assert "data-site-table" not in recent
+    heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
+    assert heads == ["Date", "Result", "Method", "Credit", "Status"]
+    newest = overview_sections.newest_results(overview)
+    assert len(newest) == overview_sections.RECENT_COUNT
+    assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
+    for result in newest:
+        row = _recent_row(recent, result.id)
+        cells = re.findall(r'<td class="(site-col-[a-z]+)"', row)
+        assert cells == [
+            f"site-col-{c}" for c in ("date", "result", "method", "credit", "status")
+        ]
+        assert f'<a href="all-results.html#{result.id.lower()}">' in row
+        assert f'<span class="site-cell-quiet">{result.id}</span>' in row
+        status = row.split('<td class="site-col-status"', 1)[1]
+        # Every chip in the one status cell, side by side: V, C and S, then the standing.
+        chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', status)
+        record = result.record
+        assert chips[:3] == [
+            record["verification"],
+            record["confirmation"],
+            f"S{record['significance']['score']}",
+        ]
+        assert "<br" not in status
+        assert "site-standing" not in status
+    # Evan Daniel's three exact values, the closures the exact-value cards used to show.
+    exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
+    shown = {r.first_n for r in newest}
+    assert exact <= shown
+
+
+def test_the_recent_table_splits_method_credit_and_standing() -> None:
+    split = overview_sections.split_summary
+    assert split("`s(21) = 5` by a point-only route, reported") == (
+        "`s(21) = 5`",
+        "point-only route",
+    )
+    assert split("`s(45) = 7`, by a mixed cover of points and grid-line segments") == (
+        "`s(45) = 7`",
+        "mixed cover of points and grid-line segments",
+    )
+    assert split("`s(50) ≥ 37/5 = 7.4`, reported") == ("`s(50) ≥ 37/5 = 7.4`", "")
+    batch = "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
+    assert split(batch) == (batch, "")
+    credit = overview_sections.credit_cell("wand125 after Daniel, Tokoharu, Levy, Stromquist")
+    assert (
+        credit == 'wand125 <span class="site-cell-quiet">after Daniel, Tokoharu, Levy, …</span>'
+    )
+    assert overview_sections.credit_cell("This project") == "This project"
+    chips = overview_sections.standing_chips("second certificate, reported")
+    assert chips.count('class="site-chip"') == 2
+    assert (
+        overview_sections.standing_chips(render_recent_results.NOT_A_BOUND).count("site-chip")
+        == 1
+    )
+    held = overview_sections.standing_chips("holds, reported")
+    assert 'data-tone="accent">holds</span>' in held
+    assert 'data-standing="reported">reported</span>' in held
+
+
+def test_only_t037_of_the_s5_results_still_holds(overview: overview_data.Overview) -> None:
     s5 = [r for r in overview.results if r.record["significance"]["score"] >= 5]
-    assert s5
-    for result in s5:
-        button = re.search(
-            rf'<button[^>]*popovertarget="pop-{result.id.lower()}"[^>]*>.*?</button>',
-            headline,
-            re.DOTALL,
-        )
-        assert button, result.id
-        assert overview_sections.standing_chip(result.standing) in button.group(0), result.id
     holding = {r.id for r in s5 if r.standing == render_recent_results.HOLDS}
     # The audit's reading of the record; update it when the record moves on.
     assert holding == {"T-037"}
@@ -778,8 +863,8 @@ def test_results_by_others_show_their_publication_date(
             assert f'<span class="site-date-kind">published</span> {published}' in row
         else:
             assert result.dated[0] == "established"
-    recent = overview_sections.recent_list(overview)
-    dates = re.findall(r'<span class="site-date">(\w+) ([\d-]+)</span>', recent)
+    recent = overview_sections.recent_table(overview)
+    dates = re.findall(r'<span class="site-date-kind">(\w+)</span> ([\d-]+)</td>', recent)
     assert dates
     assert [d for _, d in dates] == sorted((d for _, d in dates), reverse=True)
     assert max(r.dated[1] for r in overview.results) == dates[0][1]

@@ -494,7 +494,30 @@ it.
   On a phone, the results table becomes one card per row.
   In the results table a result’s standing chip sits under its rungs, and a Standing
   filter selects by it; a date cell says what it dates, `published` or `established`, in
-  the support colour.
+  the support colour. A superseded result’s row reads quieter, its text in the support
+  colour, in every site table, by one rule on `tr[data-standing="superseded"]`; its
+  chips keep their fills.
+  Quiet secondary text inside a cell, such as a result’s id beside its math or the
+  “after …” part of a credit, is `.site-cell-quiet`: the support colour at the note
+  size.
+
+- **Recent results.** The overview’s Recent Results section is one table, not cards or a
+  list: the newest results, newest first, one row each, the same `.site-table` in the
+  sans face as the results page, without sorting or filters (`recent_table`). Its five
+  columns are the date, which says what it dates (`published` or `established`); the
+  result, its math linking to its row on the results page, with the id beside it quiet;
+  the method, the phrase the summary gives after the formula (“by a point-only route”
+  reads “point-only route”), empty when there is none; the credit, the finder first and
+  “after …” quiet, the list cut after three names with the whole of it in the cell’s
+  `title`; and the status, every chip in one cell side by side.
+  The status cell holds the V, C and S rung chips and then one chip per part of the
+  standing (`second certificate, reported` is two chips), left to right a space apart,
+  wrapping only where the cell is too narrow, with the chips’ own block margin between
+  wrapped rows; it never stacks one chip per line.
+  On a phone it takes the results table’s card-per-row form: the result and the date on
+  the first line, then the method, the credit and the chips each across the card.
+  No card, popover or bulleted list remains in the section, and the “See all results →”
+  line follows the table.
 
 - **Results page.** Every registered result is one row of the results table on its own
   page, `all-results.html`, “Results” in the navigation bar after Frontier.
@@ -504,8 +527,8 @@ it.
   `every-result`, a subtitle with the count, the prose that defines the ratings and
   standings, and the table with its filters.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
-  cards, its recent list and replay table, and each case record’s results link.
-  The overview keeps the newest results and ends that list with a “See all results →”
+  recent table and replay table, and each case record’s results link.
+  The overview keeps the newest results and ends that table with a “See all results →”
   line in the sans face at the note size.
   The table used to be the overview’s Every Result section, and its old addresses still
   arrive: the overview’s `overview/forward.js` sends `#every-result` and any `#t-nnn` to
@@ -514,7 +537,7 @@ it.
   `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
   every row id to the form it recognises.
 
-- **Awaiting replay.** Under the recent list, a closed disclosure in the sans face at
+- **Awaiting replay.** Under the recent table, a closed disclosure in the sans face at
   the note size: its summary names how many cases and the range, and it opens a compact
   table grouped by holder and the entries carrying the claim, each case linking to its
   row in the frontier atlas.

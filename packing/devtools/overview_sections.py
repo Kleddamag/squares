@@ -181,88 +181,27 @@ def _dl(rows: list[tuple[str, str]]) -> str:
     return f'<dl class="site-detail">{body}</dl>'
 
 
-def headline_cards(overview: Overview) -> str:
-    """One card per `S5` result, this project's and others' alike, with its rungs and its
-    standing. Its popover previews the result, its claim, rationale, rungs, standing and
-    records, and goes to its row on the results page."""
-    cards = []
-    for result in overview.results:
-        if result.record["significance"]["score"] < 5:
-            continue
-        record = result.record
-        rungs = " ".join(
-            _rung(rung)
-            for rung in (
-                record["verification"],
-                record["confirmation"],
-                "S" + str(record["significance"]["score"]),
-            )
-        )
-        rungs += " " + standing_chip(result.standing)
-        preview = (
-            f"{_detail(result, full=False)}"
-            f'<p class="site-popover-links">{rungs}</p>'
-            f'<p class="site-popover-links">{_records(result)}</p>'
-        )
-        cards.append(
-            card(
-                f"pop-{result.id.lower()}",
-                f"{result.id} · {result.credit}",
-                tex_bounds(result.summary),
-                rungs,
-                preview=preview,
-                href=result_url(result.id),
-                action=f"Open {result.id} in the results table",
-            )
-        )
-    return _cards(cards)
-
-
-def exact_value_cards(overview: Overview) -> str:
-    """Cases now proved by a recent verified lower bound: the new exact values. Each
-    popover frames the case's row in the frontier atlas."""
-    cards = []
-    for n in sorted(overview.recent_lower):
-        case = overview.cases[n]
-        if case["status"] != "proved":
-            continue
-        lower = case["verified_lower_bound"]
-        value = lower.get("exact_form") or lower.get("value")
-        cards.append(
-            card(
-                f"pop-n-{n}",
-                f"n = {n} · exact value",
-                math_html(f"s({n}) = {value}"),
-                "Proved by a recent lower bound.",
-                href=f"frontier.html#n-{n}",
-                action=f"Expand n = {n} in the frontier atlas",
-            )
-        )
-    return _cards(cards)
-
-
-def _detail(result: Result, *, full: bool = True) -> str:
-    """A result's claim and why it matters; `full` adds its composition, next rung and
-    novelty label, which the table row carries and a card's popover leaves to the row."""
+def _detail(result: Result) -> str:
+    """A result's claim, composition, next rung, why it matters and novelty label: what
+    its row in the results table opens to."""
     record = result.record
     rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
-        if full and record.get(key):
+        if record.get(key):
             rows.append((label, tex_bounds(" ".join(str(record[key]).split()))))
     rows.append(
         ("Significance", tex_bounds(" ".join(str(record["significance"]["rationale"]).split())))
     )
-    if full:
-        meaning = novelty_labels().get(result.novelty, "")
-        rows.append(
+    meaning = novelty_labels().get(result.novelty, "")
+    rows.append(
+        (
+            "Novelty",
             (
-                "Novelty",
-                (
-                    f'<span class="site-chip" data-novelty="{_esc(result.novelty)}">'
-                    f"{_esc(result.novelty)}</span> {_esc(meaning)}"
-                ),
-            )
+                f'<span class="site-chip" data-novelty="{_esc(result.novelty)}">'
+                f"{_esc(result.novelty)}</span> {_esc(meaning)}"
+            ),
         )
+    )
     body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
     return f'<dl class="site-detail">{body}</dl>'
 
@@ -424,18 +363,102 @@ def verification_block() -> str:
     )
 
 
-def recent_list(overview: Overview, count: int = 8) -> str:
-    """The newest results, newest first, each with its standing. A result by others is
-    dated by its publication, as `RESULTS.md` dates it, and this project's
-    by the day it was established; the label says which."""
-    newest = sorted(overview.results, key=lambda r: (r.dated[1], r.id), reverse=True)[:count]
-    items = "".join(
-        f'<li><span class="site-date">{_esc(r.dated[0])} {_esc(r.dated[1])}</span> · '
-        f'<a href="{_esc(result_url(r.id))}">{_esc(r.id)}</a> · {tex_bounds(r.summary)} '
-        f'<span class="site-credit">({_esc(r.credit)})</span> {standing_chip(r.standing)}</li>'
-        for r in newest
+#: How many of the newest results the overview's table shows: enough to hold the
+#: latest days' results whole, the three exact values Evan Daniel closed among them.
+RECENT_COUNT = 12
+
+#: A summary that leads with its formula: the formula, then the method after "by", then
+#: a trailing ", reported" that the standing chips already say.
+_LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
+
+#: How many names of a credit's "after …" list show before the rest is cut to its title.
+CREDIT_AFTER_SHOWN = 3
+
+
+def newest_results(overview: Overview, count: int = RECENT_COUNT) -> list[Result]:
+    """The newest results, newest first: by date, then by id."""
+    return sorted(overview.results, key=lambda r: (r.dated[1], r.id), reverse=True)[:count]
+
+
+def split_summary(summary: str) -> tuple[str, str]:
+    """A summary as its result and its method: `` `s(21) = 5` by a point-only route ``
+    is the formula and "point-only route". A summary that does not lead with one
+    formula, such as a batch of counts, is all result and no method."""
+    match = _LEADING_FORMULA.fullmatch(summary)
+    if not match:
+        return summary, ""
+    return match.group(1), match.group("method") or ""
+
+
+def credit_cell(credit: str) -> str:
+    """A credit with its finder first and "after …" quiet, the list cut after
+    `CREDIT_AFTER_SHOWN` names; the cell's title keeps the whole credit."""
+    finder, _, after = credit.partition(" after ")
+    if not after:
+        return _esc(finder)
+    names = after.split(", ")
+    shown = ", ".join(names[:CREDIT_AFTER_SHOWN])
+    if len(names) > CREDIT_AFTER_SHOWN:
+        shown += ", …"
+    return f'{_esc(finder)} <span class="site-cell-quiet">after {_esc(shown)}</span>'
+
+
+def standing_chips(standing: str) -> str:
+    """A standing as one chip per part: `second certificate, reported` is two chips."""
+    if standing == NOT_A_BOUND:
+        return standing_chip(standing)
+    return " ".join(standing_chip(part) for part in standing.split(", "))
+
+
+def status_chips(result: Result) -> str:
+    """A result's rung chips, V, C and S, then its standing chips, side by side."""
+    record = result.record
+    rungs = (
+        record["verification"],
+        record["confirmation"],
+        "S" + str(record["significance"]["score"]),
     )
-    return f'<ul class="site-recent">{items}</ul>'
+    return " ".join(_rung(rung) for rung in rungs) + " " + standing_chips(result.standing)
+
+
+def recent_table(overview: Overview, count: int = RECENT_COUNT) -> str:
+    """The newest results as one table, newest first: the date, the result linking to
+    its row on the results page with its id quiet beside it, the method, the credit and
+    the status chips. A result by others is dated by its publication, as `RESULTS.md`
+    dates it, and this project's by the day it was established; the cell says which."""
+    head = (
+        "<thead><tr>"
+        '<th class="site-col-date">Date</th>'
+        '<th class="site-col-result">Result</th>'
+        '<th class="site-col-method">Method</th>'
+        '<th class="site-col-credit">Credit</th>'
+        '<th class="site-col-status" title="Verification, confirmation and significance, '
+        'then whether a case bound rests on the result now">Status</th>'
+        "</tr></thead>"
+    )
+    rows = []
+    for result in newest_results(overview, count):
+        kind, date = result.dated
+        formula, method = split_summary(result.summary)
+        rows.append(
+            f'<tr data-result="{_esc(result.id.lower())}" '
+            f'data-standing="{_esc(standing_key(result.standing))}">'
+            f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
+            f"{_esc(date)}</td>"
+            f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
+            f"{tex_bounds(formula)}</a> "
+            f'<span class="site-cell-quiet">{_esc(result.id)}</span></td>'
+            f'<td class="site-col-method">{tex_bounds(method)}</td>'
+            f'<td class="site-col-credit" title="{_esc(result.credit)}">'
+            f"{credit_cell(result.credit)}</td>"
+            f'<td class="site-col-status">{status_chips(result)}</td>'
+            "</tr>"
+        )
+    return (
+        '<div class="site-wide"><div class="site-table-wrap">'
+        '<table class="kpress-table site-table site-results site-recent-table">'
+        f"{head}<tbody>{''.join(rows)}</tbody></table></div></div>"
+    )
 
 
 def _since() -> str:

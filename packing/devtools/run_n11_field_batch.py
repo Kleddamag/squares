@@ -26,13 +26,17 @@ REPO = Path(__file__).resolve().parents[2]
 PACKING = REPO / "packing"
 
 
-def run_field(entry: dict[str, Any], seconds: float) -> dict[str, Any]:
+def run_field(
+    entry: dict[str, Any], seconds: float, workers: int, attempt: str | None
+) -> dict[str, Any]:
     descriptor = (REPO / entry["descriptor"]).resolve()
     runner.require(
         descriptor.is_relative_to(kernel.PACKET), "descriptor outside retained packet"
     )
     root = descriptor.parent
-    target = root / "result.json.gz"
+    output_root = root if attempt is None else root / attempt
+    output_root.mkdir(exist_ok=True)
+    target = output_root / "result.json.gz"
     runner.require(
         not target.exists(), "result exists; review it before selecting a new receipt directory"
     )
@@ -50,7 +54,7 @@ def run_field(entry: dict[str, Any], seconds: float) -> dict[str, Any]:
         str(kernel.PACKET / "receipts/d4-independent/objects" / f"{kernel.COVER_SHA}.gz"),
         "--all",
         "--workers",
-        "1",
+        str(workers),
         "--max-seconds",
         str(seconds),
         "--max-work",
@@ -115,7 +119,9 @@ def run_field(entry: dict[str, Any], seconds: float) -> dict[str, Any]:
         invocation_wall_seconds=time.monotonic() - started,
         command=command,
     )
-    (root / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+    (output_root / "summary.json").write_text(
+        json.dumps(summary, indent=2, sort_keys=True) + "\n"
+    )
     return summary
 
 
@@ -124,7 +130,25 @@ def main() -> None:
     parser.add_argument("selection", type=Path)
     parser.add_argument("--jobs", type=int, choices=range(1, 5), default=3)
     parser.add_argument("--seconds", type=float, default=55)
+    parser.add_argument("--field-workers", type=int, choices=range(1, 5), default=1)
+    parser.add_argument("--attempt-name")
+    parser.add_argument("--retry-incomplete-only", action="store_true")
     args = parser.parse_args()
+    runner.require(args.jobs * args.field_workers <= 4, "total worker ceiling is four")
+    runner.require(
+        args.attempt_name is None
+        or (
+            args.attempt_name not in {".", ".."}
+            and args.attempt_name.isascii()
+            and all(c.isalnum() or c in "-_" for c in args.attempt_name)
+            and bool(args.attempt_name)
+        ),
+        "attempt name must be a simple directory name",
+    )
+    runner.require(
+        not args.retry_incomplete_only or args.attempt_name is not None,
+        "retries must preserve prior receipts in a named attempt directory",
+    )
     runner.require(0 < args.seconds <= 55, "field ceiling must be positive and <=55 seconds")
     selection = kernel.strict_json(args.selection.read_bytes())
     runner.require(
@@ -135,17 +159,40 @@ def main() -> None:
         for entry in selection["fields"]
         if entry.get("status") == "SUPPORTED_PROPOSAL_ONLY"
     ]
+    if args.retry_incomplete_only:
+        entries = [
+            entry
+            for entry in entries
+            if kernel.strict_json(
+                gzip.decompress(
+                    (REPO / entry["descriptor"]).with_name("result.json.gz").read_bytes()
+                )
+            ).get("status")
+            == "INCOMPLETE"
+        ]
     runner.require(bool(entries), "selection has no admitted proposals")
     source = Path(runner.__file__).read_bytes()
     start = time.monotonic()
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        results = list(pool.map(lambda entry: run_field(entry, args.seconds), entries))
+        results = list(
+            pool.map(
+                lambda entry: run_field(
+                    entry, args.seconds, args.field_workers, args.attempt_name
+                ),
+                entries,
+            )
+        )
     runner.require(Path(runner.__file__).read_bytes() == source, "runner changed during batch")
+    complete = all(
+        value.get("status") == "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER" for value in results
+    )
     report = {
-        "status": "BATCH_RECEIPTS_RETAINED",
+        "status": "COMPLETE_SELECTED_FIELDS" if complete else "INCOMPLETE_SELECTED_FIELDS",
         "global_optimality_proved": False,
         "wall_seconds": time.monotonic() - start,
         "jobs": args.jobs,
+        "field_workers": args.field_workers,
+        "attempt_name": args.attempt_name,
         "fields": [
             {
                 key: value.get(key)
@@ -161,10 +208,12 @@ def main() -> None:
             for value in results
         ],
     }
-    args.selection.with_name(args.selection.stem + "-result.json").write_text(
+    suffix = "" if args.attempt_name is None else "-" + args.attempt_name
+    args.selection.with_name(args.selection.stem + suffix + "-result.json").write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n"
     )
     print(json.dumps(report, indent=2))
+    sys.exit(0 if complete else 2)
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ from fractions import Fraction as Q
 from functools import partial
 from itertools import combinations, pairwise
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from devtools import check_n11_optimality_field_mask0 as kernel
 
@@ -302,7 +302,7 @@ def admit(
         "positive cell charges changed",
     )
     require(
-        packet.get("conditional_owner_support") == list(spec.owners)
+        proposed_owners(packet, audit) == list(spec.owners)
         and packet.get("conditional_ownership") == "cell_owned_points",
         "conditional ownership changed",
     )
@@ -316,6 +316,26 @@ def admit(
         ),
         "scoped ownership point inventory changed",
     )
+
+
+def proposed_owners(packet: dict[str, Any], audit: dict[str, Any]) -> list[int]:
+    """Admit owner names as proposals, never as proof of their supplied points."""
+    require(packet.get("conditional_ownership") == "cell_owned_points", "ownership mode")
+    owners = packet.get("conditional_owner_support", audit.get("conditional_owner_support"))
+    require(
+        isinstance(owners, list)
+        and bool(owners)
+        and all(type(owner) is int and 0 <= owner < 16 for owner in owners)
+        and len(set(owners)) == len(owners)
+        and set(owners).issubset(packet["mask"]),
+        "invalid owner support",
+    )
+    require(
+        "conditional_owner_support" not in audit
+        or audit["conditional_owner_support"] == owners,
+        "conflicting owner support",
+    )
+    return cast(list[int], owners)
 
 
 def derive_spec(
@@ -369,15 +389,7 @@ def derive_spec(
     )
     positive = tuple(cell for cell, value in enumerate(thresholds) if value > 0)
     require(bool(positive), "no positive cell thresholds")
-    owners = packet["conditional_owner_support"]
-    require(
-        isinstance(owners, list)
-        and bool(owners)
-        and len(set(owners)) == len(owners)
-        and all(type(owner) is int and 0 <= owner < 16 for owner in owners)
-        and set(owners).issubset(packet["mask"]),
-        "invalid owner support",
-    )
+    owners = proposed_owners(packet, audit)
     groups = packet["ownership_points_field"]
     require(isinstance(groups, list) and len(groups) == 16, "ownership inventory changed")
     row_counts = tuple(

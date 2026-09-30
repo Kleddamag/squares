@@ -144,7 +144,9 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--selection-name", default="selection.json")
     parser.add_argument("--retry-incomplete", action="store_true")
-    parser.add_argument("--limit", type=int, default=6, choices=range(1, 61))
+    parser.add_argument(
+        "--limit", type=int, default=6, choices=range(61), help="zero records coverage only"
+    )
     args = parser.parse_args()
     output = args.output.resolve()
     runner.require(output.is_relative_to(REPO), "retain unique source evidence in repository")
@@ -193,6 +195,19 @@ def main() -> None:
         "status": "INTAKE_ONLY",
         "global_optimality_proved": False,
         "source_revision": kernel.SOURCE_REVISION,
+        "previously_accepted_field_case_count": len(covered),
+        "previously_accepted_field_case_ids": sorted(covered),
+        "source_field_case_ids": sorted(
+            {
+                case
+                for entry in baseline["certificates"]
+                if entry["family"] == "field"
+                for case in entry["cases"]
+            }
+        ),
+        "coverage_scope": (
+            "Inventory of complete independent field receipts; not a new geometry check"
+        ),
         "fields": results,
     }
     (output / args.selection_name).write_text(

@@ -357,6 +357,19 @@ def test_descriptor_derivation_refuses_a_missing_whole_cell_and_bad_charges() ->
         derive(bad, audit)
 
 
+def test_owner_support_fallback_never_overrides_conflicting_or_malformed_data() -> None:
+    packet = {"conditional_ownership": "cell_owned_points", "mask": [0, 1, 2]}
+    audit = {"conditional_owner_support": [0, 2]}
+    assert shared.proposed_owners(packet, audit) == [0, 2]
+    for bad in (None, [], [True], [0, 0], [0, 3]):
+        with pytest.raises(ValueError, match="invalid owner support"):
+            shared.proposed_owners({**packet, "conditional_owner_support": bad}, audit)
+    with pytest.raises(ValueError, match="conflicting owner support"):
+        shared.proposed_owners({**packet, "conditional_owner_support": [0, 1]}, audit)
+    with pytest.raises(ValueError, match="ownership mode"):
+        shared.proposed_owners({**packet, "conditional_ownership": "cached"}, audit)
+
+
 def test_seven_site_median_region_equals_all_four_subset_hulls() -> None:
     def cross(a: kernel.Point, b: kernel.Point, c: kernel.Point) -> Q:
         return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])

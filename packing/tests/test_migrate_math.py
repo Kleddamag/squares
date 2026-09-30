@@ -31,6 +31,7 @@ from devtools.migrate_math import (
     kpress_math,
     main,
     markdown_math,
+    plain,
     plan,
     prove,
     register_latex,
@@ -216,6 +217,26 @@ def test_every_relation_is_kept_exactly_as_written() -> None:
         others = {">", r"\ge", "<", r"\le", r"\ne", r"\approx"} - {relation}
         assert relation in latex, (source, latex)
         assert not any(other in latex for other in others if other != "="), (source, latex)
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "3.8770835…",
+        "31/8 = 3.875",
+        "3.875 < s(11) ≤ 3.8770835…",
+        "s(12) ≥ 99/25",
+        "2 + 4/√5",
+        "1 + 5√2/4",
+        "√(2 + √2)",
+        "α = 1/m",
+        "x ≠ y ± 0.5",
+    ],
+)
+def test_a_figure_reads_back_from_its_latex(source: str) -> None:
+    """A checker reading a migrated figure sees what was written, in either style."""
+    for frac in (False, True):
+        assert plain(to_latex(source, frac=frac)) == source, (source, frac)
 
 
 def test_no_conversion_holds_a_delimiter_or_a_markdown_escape() -> None:

@@ -57,10 +57,10 @@ result/stdout lines are duplicated; three JSON receipts contain 15,240 lines, an
 session logs contribute 7,212. These are storage/review targets, not reasons to discard
 evidence. Compression reduces review noise; it does not simplify mathematics.
 
-At the completed batch-C checkpoint, acceptance is **1,814 exact exclusions of the
-claimed 2,180**; 366 remain.
-These comprise 90 field cases and 276 cases requiring other certificate families.
-Full capture and composition remain separate obligations.
+Acceptance is **all 1,904 cases in the source field-certificate union**; 276 of the
+claimed 2,180 exclusions remain, all requiring other certificate families.
+The first complete capture-root round passes; 13 further rounds, the subsequent capture
+transitions and final composition remain separate obligations.
 The
 [current review](../../reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 records the acceptance boundaries.

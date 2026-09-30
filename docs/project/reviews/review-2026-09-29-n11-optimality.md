@@ -20,8 +20,16 @@ No result that landed from the current upstream main branch closes this gap.
 
 ## Independent Verification Checkpoint
 
-At the completed batch-C checkpoint, exact field checks accept **1,814 of the 2,180
-required case exclusions**. This is a case count, not a percentage of the proof.
+Exact field checks accept **all 1,904 cases in the source field-certificate union**,
+leaving 276 of the 2,180 required exclusions.
+This is a case count, not a percentage of the proof.
+The
+[receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
+records each contributing receipt and hash.
+Astra-max independently checked those bindings, empty pending inventories, each exact
+transfer set, and equality with the source field-case union: 46 distinct complete
+packets, 18,855 rows and 4,464 ownership checks.
+The 59 source fields contain redundant coverage.
 The retained
 [batch receipts](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/)
 separate complete certificates from bounded incomplete attempts; incomplete attempts
@@ -33,13 +41,17 @@ The remaining obligations have different acceptance rules:
 
 | Obligation | Accepted scope | Remaining scope |
 | --- | --- | --- |
-| Field exclusions | 1,814 distinct exact case IDs | The 59 source fields cover at most 1,904; 90 additional field cases remain at this checkpoint. |
+| Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
 | Other exclusions | Source census only | 27 baseline generic cases, 76 extension cases, and 173 returned cases: 276 distinct cases requiring independent geometric checks. |
-| Capture root | All 130 strict seed points and a complete first-owner pilot | All 14 rounds must join their 11 owner updates from accepted prior states. Round-one integration is in progress. |
+| Capture root | All 130 strict seed points and the first complete round: 11 owners, 777 closed rows, 100 new owned points | Thirteen further rounds must join their owner updates from accepted prior states. Even all 14 rounds establish conditional root ownership, not complete capture. |
 | Capture branches | Structural graph and conditional pose inclusion | Actual geometric transitions, branch coverage, ancestry, and final-state binding. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
 
 Astra-max has reviewed the exact field rules and strict-seed/owner-pilot argument.
+The
+[first-round receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round1-final/result.json)
+records exact agreement with the next round’s prior state in 35.98 seconds wall;
+Astra-max also reviewed the common-prior join and exact convex compression.
 The [coverage and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
 records their mathematical premises.
 No global confirmation or counterexample has been established.

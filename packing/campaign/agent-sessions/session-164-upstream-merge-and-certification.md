@@ -532,7 +532,7 @@ session:
     bead: think-3i74
     objective: Complete admitted field batches, extend capture induction across complete
       rounds, and integrate the reviewed opt-in Rust backend and its refusal controls.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Reviewed generic field rules permit batching; the successful owner
       pilot enables round induction, while Rust measurements keep Python as default.
@@ -546,13 +546,46 @@ session:
       unsupported geometry prevents acceptance of the affected component.
     fallback: Preserve exact pending inventories and Python default; continue other
       independent obligations without promoting incomplete runs.
+    outcome: All 1904 field-union cases accepted across 46 complete packets, 18855 rows
+      and 4464 ownership checks; Astra independently audited exact case and receipt
+      bindings. First 11-owner capture round accepted. Optional Rust backend integrated
+      and hosted CI36683159180 passed; Python remains faster and default.
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    stop_reason: Complete field-family union and green Rust integration checkpoint, recorded
+      at 2026-09-30T07:25:50Z before the slice deadline.
+    next_action: Sol finishes Rust controls and full-root induction; Astra audits both;
+      coordinator completes parallel field batches and final-head integration.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-35ui
+    objective: Independently accept the first complete fresh-wall generic exclusion and
+      advance root ownership through later rounds while mapping all 276 nonfield closures.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: All 1904 field cases are accepted; remaining exclusions share a v9
+      geometric grammar suitable for one reviewed checker and bounded parallel replay.
+    budget_minutes: 30
+    started_at: '2026-09-30T07:25:50Z'
+    deadline_at: '2026-09-30T07:55:50Z'
+    expected_output: Complete 2095 exclusion or exact obstruction, accepted later root
+      rounds, and pinned selective acquisition recipes for all 276 remaining cases.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_generic_fresh.py -q
+    kill_condition: Unproved ancestry, missing closed-domain coverage, invalid strict
+      ownership or exceeded work bounds prevents acceptance of that component.
+    fallback: Retain zero exclusions for partial work and an exact remaining-obligation
+      inventory; continue independent capture and intake work.
     outcome: null
     evidence:
     - docs/project/reviews/review-2026-09-29-n11-optimality.md
     - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
     stop_reason: null
-    next_action: Sol finishes Rust controls and full-root induction; Astra audits both;
-      coordinator completes parallel field batches and final-head integration.
+    next_action: Sol implements the shared generic kernel and capture continuation in
+      separate lanes; Astra reviews mathematics and 276-case recipes; coordinator
+      batches intake, integrates frozen evidence and runs hosted CI concurrently.
   budget:
     wall_minutes: 1135
     max_cycles: 40

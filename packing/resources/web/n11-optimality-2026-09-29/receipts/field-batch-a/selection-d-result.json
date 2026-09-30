@@ -1,0 +1,104 @@
+{
+  "fields": [
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 18.167444333001185,
+      "mask_index": 1144,
+      "process_cpu_seconds": 16.681826,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 18.02664333299981
+    },
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 18.276089082999533,
+      "mask_index": 1524,
+      "process_cpu_seconds": 16.804301,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 18.132809665999957
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 31.39968562500144,
+      "mask_index": 1421,
+      "process_cpu_seconds": 29.642419,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 31.22815937499763
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.17116016699947,
+      "mask_index": 1662,
+      "process_cpu_seconds": 51.109353,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.00172575000033
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 7.479417333997844,
+      "mask_index": 887,
+      "process_cpu_seconds": 7.227613,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 7.378491457999189
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 14.154329250002775,
+      "mask_index": 1653,
+      "process_cpu_seconds": 13.445432,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 14.032682291999663
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 11.453841292001016,
+      "mask_index": 1456,
+      "process_cpu_seconds": 10.794399,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 11.332326332998491
+    },
+    {
+      "canonical_cases_excluded": 21,
+      "invocation_wall_seconds": 21.728901541002415,
+      "mask_index": 1309,
+      "process_cpu_seconds": 19.338836,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 21.596190207998006
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.43391279199932,
+      "mask_index": 1802,
+      "process_cpu_seconds": 45.649078,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.11124574999849
+    },
+    {
+      "canonical_cases_excluded": 6,
+      "invocation_wall_seconds": 28.82514508299937,
+      "mask_index": 246,
+      "process_cpu_seconds": 25.454505,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 28.6555305840011
+    },
+    {
+      "canonical_cases_excluded": 126,
+      "invocation_wall_seconds": 26.50788683400242,
+      "mask_index": 1239,
+      "process_cpu_seconds": 18.353914999999997,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 26.2316852499971
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.3835361249985,
+      "mask_index": 1304,
+      "process_cpu_seconds": 22.868153,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.16412499999933
+    }
+  ],
+  "global_optimality_proved": false,
+  "jobs": 3,
+  "status": "BATCH_RECEIPTS_RETAINED",
+  "wall_seconds": 145.86719858300057
+}

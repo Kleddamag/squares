@@ -52,11 +52,11 @@ The [mask-202 checker](../../packing/devtools/check_n11_optimality_field_mask202
 adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
-Subsequent complete field batches raise the accepted union to 1,814 at the batch-C
-checkpoint.
-The remaining 366 exclusions include 90 field cases and 276 cases using other
-certificate families.
-Full capture remains open; the
+Subsequent complete field batches establish the entire 1,904-case field union.
+The remaining 276 exclusions use other certificate families.
+The first complete capture-root round also passes, including all 11 owners and 777
+closed rows, with 13 further rounds and full capture still open.
+The
 [current verification checkpoint](reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 separates these obligations and their evidence.
 The

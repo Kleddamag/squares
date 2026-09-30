@@ -160,14 +160,24 @@ def main() -> None:
     )
     covered: set[int] = set()
     imported: set[str] = set()
-    for path in RECEIPTS.glob("**/result.json.gz"):
-        value = kernel.strict_json(gzip.decompress(path.read_bytes()))
+    accepted_receipts = []
+    for path in sorted(RECEIPTS.glob("**/result.json.gz")):
+        raw = gzip.decompress(path.read_bytes())
+        value = kernel.strict_json(raw)
         if (
             value.get("status") == "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER"
             and value.get("geometry_verified") is True
         ):
             covered.update(value["transfer"]["transferred_case_ids"])
             imported.add(value["packet_sha256"])
+            accepted_receipts.append(
+                {
+                    "path": str(path.relative_to(REPO)),
+                    "decoded_sha256": kernel.sha(raw),
+                    "packet_sha256": value["packet_sha256"],
+                    "checker_sha256": value.get("checker_sha256"),
+                }
+            )
         elif value.get("packet_sha256") and not args.retry_incomplete:
             imported.add(value["packet_sha256"])
     candidates = [
@@ -191,20 +201,23 @@ def main() -> None:
         ]
         results = [future.result() for future in futures]
     output.mkdir(parents=True, exist_ok=True)
+    field_cases = {
+        case
+        for entry in baseline["certificates"]
+        if entry["family"] == "field"
+        for case in entry["cases"]
+    }
+    runner.require(covered <= field_cases, "retained receipt claims a non-field case")
     report = {
         "status": "INTAKE_ONLY",
         "global_optimality_proved": False,
         "source_revision": kernel.SOURCE_REVISION,
         "previously_accepted_field_case_count": len(covered),
         "previously_accepted_field_case_ids": sorted(covered),
-        "source_field_case_ids": sorted(
-            {
-                case
-                for entry in baseline["certificates"]
-                if entry["family"] == "field"
-                for case in entry["cases"]
-            }
-        ),
+        "source_field_case_ids": sorted(field_cases),
+        "remaining_field_case_ids": sorted(field_cases - covered),
+        "complete_source_field_case_union": covered == field_cases,
+        "accepted_receipts": accepted_receipts,
         "coverage_scope": (
             "Inventory of complete independent field receipts; not a new geometry check"
         ),

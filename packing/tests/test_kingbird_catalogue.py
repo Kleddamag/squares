@@ -34,6 +34,7 @@ from sqpack.kingbird_catalogue import (
     default_catalogue_path,
     evaluate_exact_form,
     exact_form_matches_decimal,
+    html_entry_labels,
     index_entries,
     normalized_polynomial,
     parse_catalogue,
@@ -156,6 +157,27 @@ def test_exact_grid_entry_yields_an_integer() -> None:
     assert entry.exact_form == "3"
     assert entry.side_decimal == "3"
     assert evaluate_exact_form(entry.exact_form) == Decimal(3)
+
+
+def test_a_bare_decimal_side_is_a_printed_decimal_and_not_a_closed_form() -> None:
+    """`n = 68` prints `$s = 8.7987961402601$` in the 2026-09-30 capture, without `\\Nn`.
+
+    The macro only adds the ellipsis; the digits are the same truncation every other
+    block prints. Read as a closed form, it would have the record claim that the side is
+    exactly a thirteen-place decimal.
+    """
+    (entry,) = parse_entries(
+        "68\n[](square-68.svg)\n\n$s = 8.7987961402601$  \n"
+        "Found by Sigvart Brendberg in June 2023.\n"
+    )
+    html = (
+        '<div class="box"><font size="+3">68<br></font>'
+        '<div align="center"><font size="+1">$s = 8.7987961402601$<br>'
+    )
+
+    assert entry.side_decimal == "8.7987961402601"
+    assert entry.exact_form is None
+    assert html_entry_labels(html) == (((68,), "8.7987961402601"),)
 
 
 def test_one_picture_serves_both_counts_it_lists() -> None:

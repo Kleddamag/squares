@@ -59,6 +59,7 @@ _RIGIDITY = re.compile(r"^\[(Rigid|Semi-rigid)\.?]\(squares_in_squares__rigid\.h
 _PRINTED_DECIMAL = re.compile(r"^\\Nn\{([0-9]+(?:\.[0-9]+)?)\}$")
 _DEGREE_LOCK = re.compile(rf"^\{{}}\^\{{(\d+)}}{LOCK_GLYPH}$")
 _PLAIN_NUMBER = re.compile(r"^[0-9]+(?:\.[0-9]+)?$")
+_BARE_DECIMAL = re.compile(r"^[0-9]+\.[0-9]+$")
 _MARKDOWN_LINK = re.compile(r"\[([^\]]*)]\([^)]*\)")
 #: The sentence openers the catalogue uses to name who found a packing, longest first so
 #: that "Found and improved by" is never read as "Found by". Six, not the three this
@@ -102,7 +103,8 @@ _MAX_CONVERSION_ROUNDS = 8
 _HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 _HTML_BOX = re.compile(r'<div class="box"><font size="\+3">\s*([0-9 ,]+)<br>')
 _HTML_DECIMAL = re.compile(r"\\Nn\{([0-9]+(?:\.[0-9]+)?)}")
-_HTML_INTEGER = re.compile(r"\$s\s*=\s*([0-9]+)\$")
+#: An integer side, or a truncated decimal printed without the `\Nn` macro (`n = 68`).
+_HTML_INTEGER = re.compile(r"\$s\s*=\s*([0-9]+(?:\.[0-9]+)?)\$")
 
 
 class CatalogueParseError(ValueError):
@@ -296,6 +298,13 @@ def _parse_side(side_math: str, line: int) -> tuple[str, str | None, int | None]
         printed = _PRINTED_DECIMAL.match(part)
         if printed is not None:
             decimal_text = printed.group(1)
+            continue
+        if _BARE_DECIMAL.match(part) and decimal_text is None:
+            # The page's truncated decimal without its `\Nn` ellipsis macro: `n = 68`
+            # prints `$s = 8.7987961402601$` in the capture of 2026-09-30. A fraction
+            # digit makes it a truncation, not a closed form -- the page prints every
+            # exact side either as an integer or as a radical.
+            decimal_text = part
             continue
         lock = _DEGREE_LOCK.match(part)
         if lock is not None:

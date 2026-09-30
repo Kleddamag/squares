@@ -53,9 +53,11 @@ _ENTRY_HEADING = re.compile(r"^(\d+(?:\s*,\s*\d+)*)\s*$")
 # block but is never used to name one.
 _ENTRY_PICTURE = re.compile(r"^\[]\(square-\d+[a-z]?\.svg\)\s*$")
 # The catalogue prints the side either as a high-precision decimal inside \Nn{...} or,
-# for the integer grid packings, as a bare integer.
+# for the integer grid packings, as a bare integer. One block (`n = 68`, captured
+# 2026-09-30) prints its truncated decimal bare, without the macro, so a bare side may
+# carry a fraction too.
 _PRINTED_DECIMAL = re.compile(r"\\Nn\{([0-9]+(?:\.[0-9]+)?)\}")
-_PRINTED_INTEGER = re.compile(r"^\$s\s*=\s*([0-9]+)\$\s*$")
+_PRINTED_INTEGER = re.compile(r"^\$s\s*=\s*([0-9]+(?:\.[0-9]+)?)\$\s*$")
 _RIGIDITY_ANNOTATION = re.compile(
     r"^\[(Rigid|Semi-rigid)\.?]\(squares_in_squares__rigid\.html\)"
 )

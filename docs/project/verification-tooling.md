@@ -50,7 +50,9 @@ accepts all 55 ownership obligations, 136 closed angular rows and 459 canonical
 exclusions in 16.58 seconds including startup.
 The [mask-202 checker](../../packing/devtools/check_n11_optimality_field_mask202.py)
 adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
-The remaining 1,068 exclusions and full capture remain open.
+The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
+checks and 522 rows pass in 29.44 seconds wall.
+The accepted union is 1,243; the remaining 937 exclusions and full capture remain open.
 The
 [capture refusal](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-ancestry/refusal-result.json)
 records a confirmed stale final-state digest in the published near audit, blocking its
@@ -325,6 +327,15 @@ These times overlap and must not be added.
 Fraction arithmetic and repeated GCD normalization dominate the inner work; the profiler
 itself adds overhead, so its node rate is not a speed comparison.
 It does identify a target for compiled exact arithmetic.
+
+The
+[fixed-work clipping comparison](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/native-angle1-fixed1000-frontier-clip/result.json)
+preserves the entire normalized result: 1,000 nodes, 494 accepted leaves and the same 13
+pending boxes. Avoiding unnecessary rational subtraction on wholly inside or outside
+polygons reduced verification CPU from 7.305245 to 5.506285 seconds (24.6%) in this
+observation. Both implementations also completed the same 201-angle analytic control.
+This supports the exact clipping optimization; it does not establish full external
+certificate acceptance or C++ speed parity.
 
 Here, **native means first-party independent implementation, not compiled machine
 code**. The current rectangle checker is Python.

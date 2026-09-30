@@ -235,8 +235,8 @@ that subset to cover the entire closed domain.
 A subset miss returns incomplete and accepts no exclusions.
 
 The full run accepted 764 canonical exclusions, 653 outside the accepted mask-0 set:
-**1,112 distinct exclusions are independently accepted; 1,068 remain unchecked.** This
-is two of 59 field certificates, not the whole proof.
+**1,243 distinct exclusions are independently accepted; 937 remain unchecked.** This is
+two of 59 field certificates, not the whole proof.
 Checker wall time was 17.532 seconds, CPU 17.235 seconds, and outer wall 17.61 seconds,
 under the selected 30-second ceiling.
 Five focused controls pass, and Astra-max review accepted the implementation and
@@ -306,8 +306,8 @@ replays preserve all ownership proofs, shared row-proof fields and exact transfe
 case IDs. They accept 459 and 764 IDs, respectively, whose union remains 1,112. Their
 outer times were 17.37 and 17.75 seconds, each below its 30-second ceiling.
 Fourteen focused controls and Astra-max review passed.
-These are consolidation controls, not additional exclusions; the other 1,068 cases
-remain open.
+These are consolidation controls, not additional exclusions; at that checkpoint 1,068
+cases remain open.
 
 The [census and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
 maps the remaining exclusions (`think-ncw8`) and candidate ancestry (`think-pgie`). The
@@ -342,6 +342,31 @@ Running the publisher’s checker unchanged would test reproducibility; an indep
 method or adversarial controls must also establish the mathematical steps it implements.
 Until then T-060 stays V0/C1 and the established interval between T-037 and T-011
 remains open in this record.
+
+## Weighted Field Extension
+
+The
+[mask1155 receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask1155/summary.json)
+independently checks all 71 required owner points and 522 closed angle rows.
+Its two point charges and three odd-site majority charges each have capacity one, giving
+budget 5. Occupied cells 8, 9 and 10 each force charge 2, contradicting that budget.
+Exact whole-packing half-turn transfer establishes 252 case exclusions, 131 beyond the
+two previous fields.
+The accepted union is 1,243; 937 exclusions remain unchecked.
+
+Astra-max review accepted the narrow weighted grammar and its closed-boundary sweep.
+The checker evaluates every edge-arrangement event and every intervening slab, then all
+vertical endpoints and open intervals.
+Collision alternatives contribute the local threshold only as impossible poses, never to
+the physical budget.
+Their redundant regions are removed only after exact containment; distinct physical
+atoms remain. Nineteen focused controls include sloped gaps, insufficient total charge,
+duplicate atoms, containment, equal regions, and work-limit refusal.
+
+The complete run took 29.44 seconds wall with three row workers, 2.88 seconds of
+coordinator CPU and 25.65 seconds of child CPU. Submission is bounded and all workers
+share the deadline. Earlier incomplete attempts accept zero exclusions.
+This result does not establish the remaining capture or composition obligations.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

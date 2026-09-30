@@ -469,7 +469,7 @@ session:
     bead: think-3cwg
     objective: Reduce the measured exact-geometry bottleneck and prototype the Rust
       kernel under think-rmj3 while preserving proof outcomes and import coordination.
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The user requires an extremely fast verifier and specifically asks
       for Rust exact arithmetic; the profile identifies rational clipping as the target.
@@ -483,13 +483,44 @@ session:
       acceptance, or different capped workloads are presented as full-verifier speed parity.
     fallback: Preserve the exact Python reference, retain failed controls and measured costs,
       and refine the kernel without weakening the proof obligations.
-    outcome: null
+    outcome: The exact clipping fast path retained all n11 fixed-work outcomes and pending boxes,
+      reducing verification CPU from 7.305245 to 5.506285 seconds. Both kernels completed
+      all 201 analytic-control angles. Rust batch geometry passes focused differential
+      controls and is awaiting independent review and live integration.
     evidence:
     - docs/project/verification-tooling.md
     - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
-    stop_reason: null
+    stop_reason: Initial measured kernel slice completed; closure recorded after its deadline
+      during the user coordination exchange. No timely closure is implied.
     next_action: Sol owns fixed-work comparison and Rust implementation in disjoint lanes;
       Astra reviews geometry and arithmetic, coordinator integrates and tracks think-d15x.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Integrate the reviewed Rust kernel and clipping controls while independently
+      extending field exclusions and checking the capture root induction pilot.
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The user authorizes autonomous end-to-end completion; arithmetic,
+      coverage and composition remain separate acceptance obligations.
+    budget_minutes: 30
+    started_at: '2026-09-30T06:23:17Z'
+    deadline_at: '2026-09-30T06:53:17Z'
+    expected_output: Reviewed Rust kernel, matched batch costs, one new field decision
+      and a source-bound root induction pilot or precise unsupported obligation.
+    validation_command: cd packing && packing-validate --only 'exact rectangle Rust geometry'
+    kill_condition: Any unsupported geometry, changed exact result or missing dependency
+      prevents acceptance of the affected component.
+    fallback: Retain the Python oracle and frozen receipts; record the exact unresolved
+      obligation and continue independent lanes.
+    outcome: null
+    evidence:
+    - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
+    stop_reason: null
+    next_action: Sol implements Rust integration and the root pilot in disjoint lanes;
+      Astra reviews exact mathematics, coordinator extends supported field coverage.
   budget:
     wall_minutes: 1135
     max_cycles: 40

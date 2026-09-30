@@ -192,3 +192,124 @@ def test_selected_subset_miss_is_incomplete_not_a_false_exclusion(
                 interval,
                 budget=kernel.Budget(time.monotonic() + 5, 10000),
             )
+
+
+def test_weighted_closed_sweep_matches_distinct_pair_union() -> None:
+    def box(left: Q, bottom: Q, right: Q, top: Q) -> kernel.Polygon:
+        return [(left, bottom), (right, bottom), (right, top), (left, top)]
+
+    domain = box(Q(0), Q(0), Q(2), Q(2))
+    whole = (1, "whole", domain)
+    left = (1, "left", box(Q(0), Q(0), Q(1), Q(2)))
+    right = (1, "right", box(Q(1), Q(0), Q(2), Q(2)))
+    # Closed seam x=1 is covered; either adjacent region plus whole has charge 2.
+    weighted = shared.weighted_union_cover(
+        domain, [whole, left, right], 2, budget=kernel.Budget(time.monotonic() + 2, 10000)
+    )
+    unweighted = kernel.exact_union_cover(
+        domain, [left[2], right[2]], budget=kernel.Budget(time.monotonic() + 2, 10000)
+    )
+    assert weighted["events"] == unweighted["events"] == 3
+    gap = (1, "right", box(Q(1001, 1000), Q(0), Q(2), Q(2)))
+    with pytest.raises(ValueError, match="weighted row uncovered"):
+        shared.weighted_union_cover(
+            domain, [whole, left, gap], 2, budget=kernel.Budget(time.monotonic() + 2, 10000)
+        )
+    # Reusing one physical atom twice must not manufacture an extra unit of charge.
+    with pytest.raises(ValueError, match="duplicate weighted atom"):
+        shared.weighted_union_cover(
+            domain, [whole, whole], 2, budget=kernel.Budget(time.monotonic() + 2, 10000)
+        )
+    with pytest.raises(kernel.IncompleteError):
+        shared.weighted_union_cover(
+            domain, [whole, left, right], 2, budget=kernel.Budget(time.monotonic() + 2, 1)
+        )
+
+
+def test_weighted_packet_budget_transfer_and_first_row() -> None:
+    spec = shared.SPECS[1155]
+    packet, audit, cover = shared.load_sources(spec, RECEIPTS / "field-mask1155/objects", COVER)
+    shared.admit(spec, packet, audit, cover)
+    assert spec.charge_budget == 5
+    assert sum(packet["threshold_units"]) == 6
+    assert len(shared.proposed_rows(spec, audit)) == 522
+    assert sum(count for _, count in spec.owner_lengths) == 71
+    transfer = shared.transfer_cases(spec, packet, cover, baseline())
+    assert len(transfer["direct_case_ids"]) == 85
+    assert len(transfer["transferred_case_ids"]) == 252
+    cell, _, interval = shared.proposed_rows(spec, audit)[0]
+    proof = shared.row_geometry(
+        spec, packet, cover, cell, interval, budget=kernel.Budget(time.monotonic() + 3, 100000)
+    )
+    assert proof["required_charge"] == 2
+    assert proof["events"] > 0
+    bad = copy.deepcopy(packet)
+    bad["certificate"]["budget_units"] = 4
+    with pytest.raises(ValueError, match="field budget changed"):
+        shared.admit(spec, bad, audit, cover)
+    bad = copy.deepcopy(packet)
+    bad["certificate"]["point_weights"][7] = -1
+    with pytest.raises(ValueError, match="point charges changed"):
+        shared.admit(spec, bad, audit, cover)
+
+
+def test_weighted_sloped_crossings_detect_a_gap_between_coarse_probes() -> None:
+    domain = [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(1)), (Q(0), Q(1))]
+    rising = [
+        (Q(0), Q(0)),
+        (Q(1), Q(0)),
+        (Q(1), Q(1)),
+        (Q(3, 4), Q(1)),
+        (Q(0), Q(1, 4)),
+    ]
+    falling = [(Q(0), Q(0)), (Q(3, 4), Q(0)), (Q(0), Q(3, 4))]
+
+    def atoms(top_start: Q) -> list[tuple[int, str, kernel.Polygon]]:
+        upper = [(Q(0), top_start), (Q(1), top_start), (Q(1), Q(1)), (Q(0), Q(1))]
+        return [
+            (1, "whole", domain),
+            (1, "rising", rising),
+            (1, "falling", falling),
+            (1, "upper", upper),
+        ]
+
+    # The lower edges meet at (1/4, 1/2); their closed union reaches the upper atom.
+    shared.weighted_union_cover(
+        domain, atoms(Q(1, 2)), 2, budget=kernel.Budget(time.monotonic() + 2, 10000)
+    )
+    # Moving the upper atom to 9/16 leaves a gap only for 3/16 < x < 5/16.
+    # Vertex abscissae {0, 3/4, 1} and their midpoints all miss that gap.
+    with pytest.raises(ValueError, match="weighted row uncovered"):
+        shared.weighted_union_cover(
+            domain, atoms(Q(9, 16)), 2, budget=kernel.Budget(time.monotonic() + 2, 10000)
+        )
+
+
+def test_weighted_coverage_refuses_a_full_domain_with_insufficient_charge() -> None:
+    domain = [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(1)), (Q(0), Q(1))]
+    with pytest.raises(ValueError, match="weighted row uncovered"):
+        shared.weighted_union_cover(
+            domain,
+            [(1, "one_unit", domain)],
+            2,
+            budget=kernel.Budget(time.monotonic() + 2, 10000),
+        )
+
+
+def test_collision_pruning_preserves_maximal_boxes_and_one_equal_copy() -> None:
+    domain = [(Q(0), Q(0)), (Q(3), Q(0)), (Q(0), Q(3))]
+    regions = []
+    for name, center, radius in (
+        ("large", (Q(1), Q(1)), Q(1)),
+        ("equal", (Q(1), Q(1)), Q(1)),
+        ("small", (Q(1), Q(1)), Q(1, 2)),
+        ("incomparable", (Q(2), Q(0)), Q(1)),
+    ):
+        poly = kernel.intersect(domain, kernel.box_halfplanes(center, radius))
+        regions.append((kernel.area2(poly), name, poly))
+    reduced = shared.maximal_collision_regions(regions)
+    assert [name for _, name, _ in reduced] == ["large", "incomparable"]
+    for x in (Q(0), Q(1, 2), Q(1), Q(2), Q(3)):
+        assert kernel.covers_vertical(
+            domain, [p for _, _, p in regions], x
+        ) == kernel.covers_vertical(domain, [p for _, _, p in reduced], x)

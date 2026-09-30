@@ -57,7 +57,9 @@ result/stdout lines are duplicated; three JSON receipts contain 15,240 lines, an
 session logs contribute 7,212. These are storage/review targets, not reasons to discard
 evidence. Compression reduces review noise; it does not simplify mathematics.
 
-Current acceptance is **1,112 exact exclusions of the claimed 2,180**; 1,068 remain.
+Current acceptance is **1,243 exact exclusions of the claimed 2,180**; 937 remain.
+The weighted mask1155 extension checks 71 owners and 522 rows and adds 131 IDs; its
+complete source-bound receipt is linked from the mathematical review.
 Fixed-T local isolation is accepted.
 D4 reduction and near-pose inclusion retain their stated premises.
 The ten-node capture parent graph is structurally checked, but root induction and

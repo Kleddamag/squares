@@ -11,10 +11,13 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import resource
 import sys
 import time
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from fractions import Fraction as Q
+from functools import partial
 from itertools import combinations, pairwise
 from pathlib import Path
 from typing import Any
@@ -47,6 +50,21 @@ class FieldSpec:
     expected_direct: int
     expected_transferred: int
     max_regions: int | None
+    weighted_features: tuple[tuple[tuple[int, ...], int, int], ...] = ()
+    point_charges: tuple[tuple[int, int], ...] = ()
+    cell_charge: int = 1
+
+    @property
+    def features(self) -> tuple[tuple[tuple[int, ...], int, int], ...]:
+        return self.weighted_features or (
+            (tuple(range(self.site_count)), 1, self.feature_source_id),
+        )
+
+    @property
+    def charge_budget(self) -> int:
+        return sum(weight for _, weight, _ in self.features) + sum(
+            weight for _, weight in self.point_charges
+        )
 
     @property
     def owners(self) -> tuple[int, ...]:
@@ -101,6 +119,31 @@ SPECS = {
         548,
         764,
         12,
+    ),
+    1155: FieldSpec(
+        1155,
+        ObjectPin(
+            "8ac3b7c4093a06354850e4d804f250196ff0505bfc411ac05f4f78cbacec5734",
+            46854,
+            "e35e0e04e66f66f9aca0b92abd1b35085c561ffbf2f8689b89e6a24fae299fc0",
+            5344,
+        ),
+        ObjectPin(
+            "ad6ce694aa0a9449a6aabad34589d8a61a3fb812b616be4d779932aadae2e656",
+            545641,
+            "3f7acfd9e4e89a0422b9a15b073c6321d6cff7b088abf9388bd2bcfde3d48418",
+            60617,
+        ),
+        13,
+        0,
+        ((8, 14), (9, 10), (10, 11), (11, 14), (12, 12), (14, 10)),
+        ((8, 362), (9, 89), (10, 71)),
+        85,
+        252,
+        None,
+        (((0, 2, 5), 1, 333), ((3, 6, 8, 9, 10), 1, 369), ((1, 4, 11), 1, 573)),
+        ((7, 1), (12, 1)),
+        2,
     ),
 }
 
@@ -157,9 +200,9 @@ def canonical_masks(cover: dict[str, Any]) -> list[tuple[int, ...]]:
 def admit(
     spec: FieldSpec, packet: dict[str, Any], audit: dict[str, Any], cover: dict[str, Any]
 ) -> None:
-    """Admit only the explicit one-feature, zero-point-charge field grammar."""
+    """Admit pinned nonnegative point and odd-site majority charges."""
     require(
-        spec.site_count in (3, 5) and spec.site_count % 2 == 1,
+        all(len(indices) in (3, 5) for indices, _, _ in spec.features),
         "unsupported majority-site arity",
     )
     require(
@@ -203,23 +246,29 @@ def admit(
         "field sites outside rational container",
     )
     require(len({tuple(site) for site in sites}) == spec.site_count, "duplicate field site")
-    require(cert.get("point_weights") == [0] * spec.site_count, "point charges changed")
+    require(
+        cert.get("point_weights")
+        == [dict(spec.point_charges).get(index, 0) for index in range(spec.site_count)],
+        "point charges changed",
+    )
     require(
         cert.get("features")
         == [
             {
                 "kind": "majority_hull",
-                "indices": list(range(spec.site_count)),
-                "threshold": spec.site_count // 2 + 1,
-                "weight": 1,
-                "source_physical_feature": spec.feature_source_id,
+                "indices": list(indices),
+                "threshold": len(indices) // 2 + 1,
+                "weight": weight,
+                "source_physical_feature": source_id,
             }
+            for indices, weight, source_id in spec.features
         ],
         "unsupported field feature",
     )
-    require(cert.get("budget_units") == 1, "field budget changed")
+    require(cert.get("budget_units") == spec.charge_budget, "field budget changed")
     require(
-        packet.get("threshold_units") == [int(i in spec.positive_cells) for i in range(16)],
+        packet.get("threshold_units")
+        == [spec.cell_charge * int(i in spec.positive_cells) for i in range(16)],
         "positive cell charges changed",
     )
     require(
@@ -293,6 +342,96 @@ def proposed_rows(spec: FieldSpec, audit: dict[str, Any]) -> list[tuple[int, int
     return ordered
 
 
+def weighted_union_cover(
+    domain: Polygon,
+    atoms: list[tuple[int, str, Polygon]],
+    threshold: int,
+    *,
+    budget: kernel.Budget,
+) -> dict[str, int]:
+    """Check closed vertical sections at every arrangement event and between them.
+
+    Every physical atom has one convex region and is counted once. Collision
+    regions carry the threshold as an infeasibility alternative, not global mass.
+    """
+    require(kernel.area2(domain) > 0, "degenerate row domain requires separate proof")
+    require(threshold > 0 and all(weight > 0 for weight, _, _ in atoms), "invalid weights")
+    require(len({name for _, name, _ in atoms}) == len(atoms), "duplicate weighted atom")
+    polygons = [domain, *(polygon for _, _, polygon in atoms)]
+    left, right = min(x for x, _ in domain), max(x for x, _ in domain)
+    events = {x for polygon in polygons for x, _ in polygon if left <= x <= right}
+    lines = kernel.edge_lines(polygons)
+    for number, (a0, a1, m, b) in enumerate(lines):
+        _budget(budget, len(events), "weighted arrangement edges")
+        for z0, z1, n, d in lines[number + 1 :]:
+            if m != n:
+                start, stop = max(a0, z0, left), min(a1, z1, right)
+                if start <= stop and start <= (crossing := (d - b) / (m - n)) <= stop:
+                    events.add(crossing)
+    positions = sorted(events)
+    require(positions[0] == left and positions[-1] == right, "domain endpoints missing")
+    probes = [positions[0]]
+    for low, high in pairwise(positions):
+        probes.extend(((low + high) / 2, high))
+    work = len(events)
+    for x in probes:
+        _budget(budget, work, "weighted arrangement section")
+        target = kernel.vertical_interval(domain, x)
+        require(target is not None, "section outside domain")
+        if target is None:
+            raise ValueError("section outside domain")
+        low, high = target
+        spans = [
+            (weight, span)
+            for weight, _, polygon in atoms
+            if (span := kernel.vertical_interval(polygon, x)) is not None
+        ]
+        ordinates = sorted(
+            {low, high, *(y for _, span in spans for y in span if low <= y <= high)}
+        )
+        ys = [*ordinates, *((a + b) / 2 for a, b in pairwise(ordinates))]
+        for y in ys:
+            require(
+                sum(weight for weight, (a, b) in spans if a <= y <= b) >= threshold,
+                f"weighted row uncovered at exact (x,y)=({x},{y})",
+            )
+        work += len(ys)
+    _budget(budget, work, "weighted coverage return")
+    return {"events": len(events), "probes": work - len(events), "edge_segments": len(lines)}
+
+
+def maximal_collision_regions(
+    candidates: list[tuple[Q, str, Polygon]],
+) -> list[tuple[Q, str, Polygon]]:
+    """Remove contained alternatives, each a common domain intersected with a box.
+
+    If A's bounding box lies in B's, A lies in B's capture box and the common
+    domain, hence in B. This rule does not apply to distinct physical charge atoms.
+    """
+    extents = [
+        (
+            min(x for x, _ in poly),
+            min(y for _, y in poly),
+            max(x for x, _ in poly),
+            max(y for _, y in poly),
+        )
+        for _, _, poly in candidates
+    ]
+    retained = []
+    for index, (left, bottom, right, top) in enumerate(extents):
+        if not any(
+            other != index
+            and a <= left
+            and b <= bottom
+            and c >= right
+            and d >= top
+            and (extents[other] != extents[index] or other < index)
+            for other, (a, b, c, d) in enumerate(extents)
+        ):
+            retained.append(candidates[index])
+    return retained
+
+
 def row_geometry(
     spec: FieldSpec,
     packet: dict[str, Any],
@@ -326,10 +465,22 @@ def row_geometry(
         for x, y in cert["sites"]
     ]
     radius = core / 2
-    true_region = kernel.intersect(domain, majority_halfplanes(sites, radius))
+    physical_atoms: list[tuple[int, str, Polygon]] = []
+    for indices, weight, source_id in spec.features:
+        region = kernel.intersect(
+            domain, majority_halfplanes([sites[index] for index in indices], radius)
+        )
+        if kernel.area2(region) > 0:
+            physical_atoms.append((weight, f"TRUE:{source_id}", region))
+    for index, weight in spec.point_charges:
+        region = kernel.intersect(domain, kernel.box_halfplanes(sites[index], radius))
+        if kernel.area2(region) > 0:
+            physical_atoms.append((weight, f"point:{index}", region))
     candidates: list[tuple[Q, str, Polygon]] = []
-    if kernel.area2(true_region) > 0:
-        candidates.append((kernel.area2(true_region), "TRUE", true_region))
+    if not spec.weighted_features:
+        candidates.extend(
+            (kernel.area2(region), "TRUE", region) for _, _, region in physical_atoms
+        )
     for owner in spec.owners:
         if owner == cell:
             continue
@@ -343,13 +494,25 @@ def row_geometry(
                     (kernel.area2(captured), f"owner:{owner}:point:{index}", captured)
                 )
     eligible = len(candidates)
+    if spec.weighted_features:
+        candidates = maximal_collision_regions(candidates)
     if spec.max_regions is not None:
         candidates.sort(key=lambda row: row[0], reverse=True)
         candidates = candidates[: spec.max_regions]
     try:
-        proof = kernel.exact_union_cover(domain, [row[2] for row in candidates], budget=budget)
+        if spec.weighted_features:
+            atoms = physical_atoms + [
+                (spec.cell_charge, name, region) for _, name, region in candidates
+            ]
+            proof = weighted_union_cover(domain, atoms, spec.cell_charge, budget=budget)
+        else:
+            proof = kernel.exact_union_cover(
+                domain, [row[2] for row in candidates], budget=budget
+            )
     except ValueError as error:
-        if spec.max_regions is not None and str(error).startswith("row uncovered at exact x="):
+        if spec.max_regions is not None and str(error).startswith(
+            ("row uncovered at exact x=", "weighted row uncovered")
+        ):
             reason = (
                 f"selected {spec.max_regions}-region subset did not cover "
                 f"cell {cell} interval {interval}"
@@ -365,6 +528,8 @@ def row_geometry(
         "eligible_regions": eligible,
         "selected_regions": len(candidates),
         "selected_region_ids": [row[1] for row in candidates],
+        "physical_atom_ids": [name for _, name, _ in physical_atoms],
+        "required_charge": spec.cell_charge,
         **proof,
     }
 
@@ -380,7 +545,10 @@ def transfer_cases(
     thresholds = packet["threshold_units"]
 
     def applicable(mask: tuple[int, ...]) -> bool:
-        return support.issubset(mask) and sum(thresholds[cell] for cell in mask) > 1
+        return (
+            support.issubset(mask)
+            and sum(thresholds[cell] for cell in mask) > spec.charge_budget
+        )
 
     direct = [index for index, mask in enumerate(canonical) if applicable(mask)]
     transferred = [
@@ -416,6 +584,22 @@ def _budget(budget: kernel.Budget, work: int, phase: str) -> None:
         raise kernel.IncompleteError(f"global ceiling before {phase}")
 
 
+def _check_row(
+    row: tuple[int, int, tuple[Q, Q]],
+    *,
+    spec: FieldSpec,
+    packet: dict[str, Any],
+    cover: dict[str, Any],
+    budget: kernel.Budget,
+) -> dict[str, Any]:
+    _budget(budget, 0, "start row")
+    cell, index, interval = row
+    return {
+        "row_index": index,
+        **row_geometry(spec, packet, cover, cell, interval, budget=budget),
+    }
+
+
 def all_geometry(
     spec: FieldSpec,
     packet: dict[str, Any],
@@ -424,7 +608,9 @@ def all_geometry(
     baseline: dict[str, Any],
     *,
     budget: kernel.Budget,
+    workers: int = 1,
 ) -> dict[str, Any]:
+    require(1 <= workers <= 4, "workers must be between 1 and 4")
     rows = proposed_rows(spec, audit)
     owner_keys = [
         (owner, index) for owner, count in spec.owner_lengths for index in range(count)
@@ -442,18 +628,21 @@ def all_geometry(
             )
             work += proof["nodes"]
             done_points.append({"owner": owner, "point_index": index, **proof})
-        for cell, index, interval in rows:
-            _budget(budget, work, "next row")
-            proof = row_geometry(
-                spec,
-                packet,
-                cover,
-                cell,
-                interval,
-                budget=kernel.Budget(budget.deadline, budget.max_nodes - work),
-            )
-            work += proof["events"] + proof["probes"]
-            done_rows.append({"row_index": index, **proof})
+        check = partial(_check_row, spec=spec, packet=packet, cover=cover, budget=budget)
+        if workers == 1:
+            for row in rows:
+                _budget(budget, work, "next row")
+                proof = check(row)
+                work += proof["events"] + proof["probes"]
+                done_rows.append(proof)
+        else:
+            # Ordered delivery preserves the exact obligation inventory. Each child
+            # shares the wall deadline; the parent enforces aggregate work before PASS.
+            with ProcessPoolExecutor(max_workers=workers) as pool:
+                for proof in pool.map(check, rows, chunksize=1, buffersize=workers):
+                    _budget(budget, work, "next parallel row")
+                    work += proof["events"] + proof["probes"]
+                    done_rows.append(proof)
         _budget(budget, work, "transfer")
         transfer = transfer_cases(spec, packet, cover, baseline)
         _budget(budget, work, "PASS return")
@@ -502,6 +691,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--objects", type=Path, required=True)
     parser.add_argument("--cover", type=Path, required=True)
     parser.add_argument("--all", action="store_true")
+    parser.add_argument("--workers", type=int, choices=range(1, 5), default=1)
     parser.add_argument("--owner", type=int)
     parser.add_argument("--point", type=int, default=0)
     parser.add_argument("--row-cell", type=int)
@@ -513,6 +703,8 @@ def main(argv: list[str] | None = None) -> int:
     if not math.isfinite(args.max_seconds) or args.max_seconds <= 0 or args.max_work <= 0:
         parser.error("ceilings must be positive and finite")
     spec = SPECS[args.mask_index]
+    checker_source = Path(__file__).read_bytes()
+    child_start = resource.getrusage(resource.RUSAGE_CHILDREN)
     start, cpu = time.monotonic(), time.process_time()
     result: dict[str, Any]
     try:
@@ -532,7 +724,9 @@ def main(argv: list[str] | None = None) -> int:
                 raw_bytes=122029,
                 raw_sha=kernel.A1_SHA,
             )
-            result = all_geometry(spec, packet, audit, cover, baseline, budget=budget)
+            result = all_geometry(
+                spec, packet, audit, cover, baseline, budget=budget, workers=args.workers
+            )
         elif args.row_cell is None:
             require(args.owner in spec.owners, "owner outside supported scope")
             points = packet["ownership_points_field"][args.owner]
@@ -566,6 +760,9 @@ def main(argv: list[str] | None = None) -> int:
         result = {"status": "INCOMPLETE", "reason": str(error)}
     except (ValueError, KeyError, IndexError, TypeError, OSError) as error:
         result = {"status": "REFUSED", "reason": str(error)}
+    if Path(__file__).read_bytes() != checker_source:
+        result = {"status": "REFUSED", "reason": "checker source changed during execution"}
+    child_end = resource.getrusage(resource.RUSAGE_CHILDREN)
     result.setdefault("geometry_verified", False)
     result.setdefault("canonical_cases_excluded", 0)
     result.update(
@@ -576,12 +773,20 @@ def main(argv: list[str] | None = None) -> int:
         cover_sha256=kernel.COVER_SHA,
         d4_receipt_sha256=kernel.D4_RESULT_SHA,
         frozen_geometry_kernel_sha256=KERNEL_SHA,
-        checker_sha256=kernel.sha(Path(__file__).read_bytes()),
+        checker_sha256=kernel.sha(checker_source),
         global_optimality_proved=False,
         wall_seconds=time.monotonic() - start,
         process_cpu_seconds=time.process_time() - cpu,
+        child_cpu_seconds=(
+            child_end.ru_utime
+            + child_end.ru_stime
+            - child_start.ru_utime
+            - child_start.ru_stime
+        ),
         wall_ceiling_seconds=args.max_seconds,
         work_ceiling=args.max_work,
+        workers=args.workers,
+        cpu_scope="coordinator_only" if args.workers > 1 else "whole_process",
     )
     encoded = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:

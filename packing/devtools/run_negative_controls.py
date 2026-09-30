@@ -407,6 +407,11 @@ PRUNE = frozenset(
         "/exp-137-corner-dual-salvage.json.gz",
         ROOT / "resources",
         ROOT / "sqsearch/target",
+        # The exact Rust geometry crate's cargo output, built in place by the `exact
+        # verification` step: 331 MB of build products on 2026-09-30, which put the
+        # measured snapshot at 557,741,978 bytes when that step ran before the suites.
+        # No control builds or reads it.
+        ROOT / "sqverify_exact/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -733,7 +738,13 @@ LINKED_PRUNE_ROOTS = (
     *(
         path
         for path in sorted(PRUNE)
-        if path not in {ROOT / ".gate-running", ROOT / ".venv", ROOT / "sqsearch/target"}
+        if path
+        not in {
+            ROOT / ".gate-running",
+            ROOT / ".venv",
+            ROOT / "sqsearch/target",
+            ROOT / "sqverify_exact/target",
+        }
     ),
     REPO / ".github/workflows",
 )

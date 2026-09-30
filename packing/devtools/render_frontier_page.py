@@ -343,7 +343,7 @@ def _cell(content: str, *, value: str | None = None, classes: str = "") -> str:
 def _bound_cell(bound: dict[str, Any], note: str = "", details: str = "") -> str:
     parts = [value_html(bound)]
     if note:
-        parts.append(f'<span class="site-frontier-note">{note}</span>')
+        parts.append(f'<span class="site-frontier-note site-cell-quiet">{note}</span>')
     if details:
         parts.append(
             f'<details><summary>more</summary><dl class="site-detail">{details}</dl></details>'
@@ -428,7 +428,7 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
                 label=f"n = {n}: open its case record",
             ),
             value=str(n),
-            classes="num",
+            classes="num site-col-n",
         ),
         _cell(shown_status, value=status),
         _bound_cell(

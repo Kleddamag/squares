@@ -61,6 +61,10 @@ body {
   --site-font-size-note: calc(var(--site-font-size-sans-base) * var(--paper-note-scale));
   --site-support-color: var(--kpress-doc-muted);
   --site-wide: calc(var(--kpress-measure) + 24rem);
+  /* How far a block may bleed past the wide track (the atlas grid, and a data table
+     above `--site-table-bleed-from`): paper-design.md, Wide bleed. */
+  --site-bleed-max: 140rem;
+  --site-table-bleed-from: 80rem;
   --site-subtitle-space: 1.25rem;
   --site-subtitle-scale: 1.1;
 }
@@ -93,6 +97,21 @@ body {
 .site-page .site-wide {
   margin-inline: calc((min(var(--site-wide), 100vw - 2rem) - 100%) / -2);
   max-width: min(var(--site-wide), 100vw - 2rem);
+}
+/* A data table's wide track bleeds as the atlas grid does, but only above
+   `--site-table-bleed-from`: there it is exactly the wide track above, and past it the
+   table grows a pixel for each pixel of window, to the gutters or `--site-bleed-max`.
+   Any `.site-wide` that is or holds a table wrap takes it, so a new table needs no rule;
+   the replay table keeps to its content and does not. */
+.site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)):not(.site-replay) {
+  --site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));
+  --site-table-wide: min(
+    var(--site-bleed-max),
+    calc(100vw - 2rem),
+    calc(var(--site-wide) + var(--site-table-grow))
+  );
+  margin-inline: calc((var(--site-table-wide) - 100%) / -2);
+  max-width: var(--site-table-wide);
 }
 .site-hero {
   text-align: center;
@@ -481,12 +500,36 @@ body {
   color: var(--kpress-doc-accent);
 }
 .site-table td {
+  line-height: 1.4;
   vertical-align: top;
 }
-.site-table td.num,
-.site-table th.num {
+/* A header sits at the foot of its cell and aligns as its column does: text to the
+   start, numbers to the end. */
+.kpress .site-table thead th {
+  text-align: start;
+  vertical-align: bottom;
+}
+.kpress .site-table td.num,
+.kpress .site-table th.num {
   text-align: end;
   font-variant-numeric: tabular-nums;
+}
+/* The short columns keep as narrow as their content, leaving the spare width to the long
+   text column. The id and the date stay on one line; an n can be a long list of counts,
+   so it wraps. A phone's card-per-row layout sizes its own cells. */
+@media (width >= 40rem) {
+  .site-table :is(.site-col-id, .site-col-n, .site-col-date) {
+    width: 0;
+  }
+  .site-table :is(.site-col-id, .site-col-date) {
+    white-space: nowrap;
+  }
+}
+/* Secondary content in a cell (a credit, a method, an "after ..." list): the support
+   colour in the sans face, at the table's own size. */
+.site-table .site-cell-quiet {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
 }
 .site-table tr[hidden] {
   display: none;
@@ -691,11 +734,19 @@ body {
   font-size: var(--site-font-size-note);
 }
 .kpress .site-table :is(th, td) {
-  padding: 0.45rem 0.5rem;
+  padding: 0.55rem 0.5rem;
 }
 /* The result column carries the reading; the rest stay as narrow as their content. */
 .site-table .site-col-result {
   min-width: 18rem;
+}
+/* On a wide table the result takes the spare width: past KPress's 40rem cell cap, and
+   ahead of a long credit, which wraps at 14rem. */
+.kpress .site-table td.site-col-result {
+  max-width: none;
+}
+.site-table .site-col-credit {
+  max-width: 14rem;
 }
 .site-table .site-records {
   min-width: 10rem;
@@ -792,6 +843,16 @@ body {
   }
 }
 
+/* Rows part on a light rule rather than KPress's zebra stripe, and wash on hover. After
+   the phone layout, which draws the same rule under each card. */
+.kpress .site-table tbody tr {
+  background: none;
+  border-block-end: 1px solid var(--kpress-doc-border);
+}
+.kpress .site-table tbody tr:not(.site-group-row):hover {
+  background: var(--site-wash);
+}
+
 /* kpress wraps a wide table in its own full-bleed wrap, sized from the viewport. The
    site's tables already sit in a wide track of their own, so that wrap only has to fill
    it; left to bleed, it runs 20px past a phone's edge. */
@@ -859,7 +920,7 @@ body {
   --site-wide: 86rem;
 }
 /* A case reached by its anchor (`frontier.html#n-11`) is marked with the card wash. */
-.site-frontier tr:target {
+.kpress .site-frontier tbody tr:target {
   background: var(--site-wash);
 }
 .site-frontier .site-frontier-n {
@@ -878,9 +939,7 @@ body {
   vector-effect: non-scaling-stroke;
 }
 .site-frontier .site-frontier-note {
-  color: var(--site-support-color);
   display: block;
-  font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   line-height: 1.3;
   margin-inline-start: auto;
@@ -981,7 +1040,7 @@ body {
    eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
    like a card and opens the atlas popover (below). */
 .site-page .site-atlas-grid {
-  --site-wide: 140rem;
+  --site-wide: var(--site-bleed-max);
   position: relative;
 }
 .site-atlas-cells {

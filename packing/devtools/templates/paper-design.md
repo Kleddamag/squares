@@ -1,7 +1,7 @@
 # Design System
 
 This is the one description of how every page of the site looks: the explainer, the
-overview, the frontier atlas and the tutorial.
+overview, the frontier atlas, the tutorial and the Visualize section.
 Each stylesheet implements what is written here and points back to it; when a page needs
 something new, it is added here first and then to the stylesheet that owns it.
 
@@ -11,7 +11,7 @@ Three layers carry it, from the bottom up:
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
 | Paper | [explainer-shell.html](explainer-shell.html) | The explainer’s type proportions, reading measure and figures |
-| Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the Visualizer included |
+| Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the workbench included |
 
 The paper and site layers use the same values under their own prefixes, `--paper-` and
 `--site-`, so a site page and the explainer set a role at the same size and weight.
@@ -105,7 +105,7 @@ Each component is defined once in [site.css](site.css) and used on every page th
 it.
 
 - **Navigation bar.** One fixed-width row of sans links in the page’s header slot, the
-  same on every page, the explainer and the Visualizer included, led by the site name,
+  same on every page, the explainer and the workbench included, led by the site name,
   “Square Packing”, set in capitals by CSS (`text-transform`, lightly tracked) so its
   text is unchanged, and a step heavier.
   Case 11, the site’s icon, sits before the name as its mark, at 1.15 times the bar’s
@@ -117,15 +117,33 @@ it.
   The edition appears only in the closing line.
   Every page renders it from the one partial, `site-nav.html`, and it has the same box
   on every page at every width.
-  The Visualizer is an application rather than a KPress page, so its build
+  Its entries are Overview, Frontier, Explainer, Tutorial, Visualize and GitHub.
+  Visualize leads to the film (`visualize.html`) and is current on both pages of the
+  Visualize section, the film and the workbench.
+  The workbench is an application rather than a KPress page, so its build
   (`workbench_tools.build_site`) takes the bar, its stylesheet, the theme bootstrap and
   the gear’s script from `render_overview.nav_shell`, in a shell that gives it the page
   margins and header rule KPress gives the others; the application fills the window
-  below it. Only the bar follows the theme there: the Visualizer itself has no dark mode
-  yet.
+  below it. Only the bar and the section tabs follow the theme there: the workbench
+  itself has no dark mode yet.
+
+- **Section tabs.** A section that spans pages carries one small tab bar under the
+  navigation bar; the Visualize section is the one that does, with two tabs, **Film**
+  (`visualize.html`, the section’s first page) and **Workbench** (`workbench/`). Each
+  tab is a real link to its own page, so the bar needs no script, and a tab can be
+  opened, bookmarked and shared; every existing `workbench/` address lands on the
+  Workbench tab. The bar is a centred strip with square corners and the cards’ thin
+  border, a hairline between tabs, in the bar’s sans at 0.9rem and medium weight: a tab
+  is gray, takes the nav items’ wash and accent on hover, and the current tab is filled
+  with a 16% accent tint over the page background in the page’s own text colour.
+  It is `.site-tabs`, rendered by `render_overview.visualize_tabs`, and defined in
+  `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
+  stylesheet. On the film’s page it opens the document; on the workbench it sits in the
+  application shell under the bar, above the application.
+  It is hidden in print and in the embed view.
 
 - **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every
-  page, the explainer and the Visualizer included.
+  page, the explainer and the workbench included.
   From 80rem wide it leaves the links’ centred track for the bar’s far right, its edge
   over the right end of the rule under the bar; narrower, it ends the row of links.
   It takes the nav items’ wash on hover and while its menu is open, and never
@@ -175,7 +193,7 @@ it.
 
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
   fill. The icon is case 11, the central open case, in the atlas ink on white, inlined as
-  a data URI on every page, the Visualizer included; the same drawing is the mark in the
+  a data URI on every page, the workbench included; the same drawing is the mark in the
   navigation bar, drawn there in the bar’s ink.
   The homepage’s hero is case 53, centered under the title in the page’s ink and linked
   to its row in the frontier atlas.
@@ -287,6 +305,18 @@ it.
   play (`preload="none"`), and showing its poster until then, a frame of the film at n =
   290 (`ascent-n1-324-poster.png`) at the video’s own 16:9, so starting playback moves
   nothing. Nothing moves by itself, so reduced motion needs no script.
+
+- **The film.** The Visualize section’s Film tab, `visualize.html`, is the n = 1 to 324
+  film at full size under the section tabs and a page title, “Visualize”, with the
+  subtitle “The ascent, n = 1 to 324”. It is as wide as the window allows less the page
+  gutters, up to 120rem, but never so tall that it will not fit the window whole
+  (`.site-film-frame`), and embedded as the explainer embeds its film: inline, with its
+  controls, fetching nothing until a reader presses play (`preload="none"`), and showing
+  its poster until then, `ascent-n1-324-poster.png`, published beside the explainer’s
+  assets, at the video’s own 16:9, so starting playback moves nothing.
+  A caption and a note in the support colour follow at the reading measure: what the
+  film shows, its length, the shorter 1 to 100 film, the release both are on, and the
+  Workbench.
 
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.

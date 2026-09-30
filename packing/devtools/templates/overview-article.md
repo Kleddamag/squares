@@ -83,8 +83,9 @@ squares.
 
 ## The Atlas
 
-The best packings known for every tracked case, n = 1 to 324. Point at one for its
-bounds and who found them, or open it in the frontier atlas.
+The best packings known for every tracked case, n = 1 to 324. Press one to see what the
+film below shows for it: its bounds, where each comes from, and what is still open,
+beside the packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 

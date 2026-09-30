@@ -682,63 +682,185 @@ def other_project_cards() -> str:
     return _cards(cards)
 
 
+#: The atlas grid's drawings, in units across the frame. One drawing serves the cell and
+#: the popover, which shows it about four hundred pixels across: at 100 units the
+#: rounding shows there as uneven gaps, and 400 costs about 26 kB more gzipped.
+ATLAS_UNITS = 400
+
+#: The film's panel labels, keyed by the composite record's badge (glyph, style): the
+#: words `packages/workbench/src/view/facts.ts` draws under each badge (`BADGE_LABELS`).
+FILM_BADGES: dict[tuple[str, str], str] = {
+    ("O", "solid"): "optimal",
+    ("=", "solid"): "exact",
+    ("\u2248", "muted"): "numerical",
+    ("R", "solid"): "rigid",
+    ("R", "muted"): "rigid (catalogue)",
+}
+
+#: `side.display` and `lower.display` as the composite record writes them.
+_FILM_DISPLAY = re.compile(r"^s\((\d+)\) ([=\u2264\u2265]) (.+)$")
+
+
+def _film_value(display: str, n: int, relations: str) -> tuple[str, str]:
+    match = _FILM_DISPLAY.match(display)
+    if match is None or int(match[1]) != n or match[2] not in relations:
+        raise SystemExit(f"n = {n}: the atlas figure's {display!r} is not s({n}) {relations}")
+    return match[2], match[3]
+
+
+def atlas_film_facts() -> list[dict[str, object]]:
+    """What the ascent film's panel says about each case, n = 1 to 324, read as the film
+    reads it (`packages/workbench/tools/workbench_tools/build_candidate.py`, `load_facts`
+    and `load_citations`).
+
+    From the atlas figure's record: the bound as one statement, its values as the record
+    displays them, the badges, a star where the lower bound is a recent result, and what
+    is open (rigidity never is, as in the film). From `bound-citations.json`: the frontier
+    record and each bound's source with this project's note.
+    """
+    import json  # noqa: PLC0415
+
+    from devtools.overview_data import CITATIONS, COMPOSITE  # noqa: PLC0415
+
+    figure = json.loads(COMPOSITE.read_text(encoding="utf-8"))["figure"]["entries"]
+    cited = {
+        entry["n"]: entry
+        for entry in json.loads(CITATIONS.read_text(encoding="utf-8"))["citations"]["entries"]
+    }
+    facts: list[dict[str, object]] = []
+    for entry in figure:
+        n = entry["n"]
+        relation, upper = _film_value(entry["side"]["display"], n, "=\u2264")
+        lower = (
+            _film_value(entry["lower"]["display"], n, "\u2265")[1]
+            if entry["lower"]["shown"]
+            else None
+        )
+        badges: list[list[str]] = []
+        for badge in entry["badges"]:
+            key = (badge["glyph"], badge["style"])
+            if key not in FILM_BADGES:
+                raise SystemExit(f"n = {n}: badge {key} is not one the film draws")
+            badges.append([badge["glyph"], badge["style"], FILM_BADGES[key]])
+        open_items: list[str] = []
+        if entry["optimality"]["status"] == "open":
+            open_items.append("optimality")
+        if entry["exactness"]["state"] not in ("closed-form", "minimal-polynomial"):
+            open_items.append("exact value")
+        record = cited[n]
+        citations = {
+            bound: None
+            if record.get(bound) is None
+            else {"text": record[bound]["text"], "note": record[bound]["note"]}
+            for bound in ("lower", "upper")
+        }
+        facts.append(
+            {
+                "n": n,
+                "exact": relation == "=",
+                "upper": upper,
+                "lower": lower,
+                "star": bool(entry["lower"]["recent_result"]),
+                "badges": badges,
+                "open": open_items,
+                "record": record["record"],
+                "cite": citations,
+            }
+        )
+    if [fact["n"] for fact in facts] != list(range(1, len(facts) + 1)):
+        raise SystemExit("the atlas figure's entries are not n = 1, 2, 3 and on, in order")
+    return facts
+
+
+def _atlas_formula(key: str, tex: str) -> str:
+    return (
+        f'<span class="site-atlas-gap-formula" data-atlas-formula="{key}">'
+        f"{math_html(tex)}</span>"
+    )
+
+
+def atlas_popover() -> str:
+    """The one popover every atlas cell opens, filled by `overview/atlas-grid.js` from
+    the page's film facts. Its slots are empty here but for what is the same at every n:
+    the gap bar's two formulas, and the template each value's math is typeset from."""
+    return (
+        '<div class="site-popover site-atlas-pop" id="pop-atlas" popover '
+        'data-kpress-prose-font="sans" data-go="atlas" data-atlas-popover '
+        'role="dialog" aria-labelledby="pop-atlas-title">'
+        '<button type="button" class="site-popover-close" popovertarget="pop-atlas" '
+        'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
+        '<span class="site-card-label">Best known packing</span>'
+        '<p class="site-popover-value site-atlas-pop-title" id="pop-atlas-title" '
+        "data-atlas-title></p>"
+        '<div class="site-atlas-pop-body">'
+        '<div class="site-atlas-pop-figure" data-atlas-figure></div>'
+        '<div class="site-atlas-pop-facts">'
+        '<div class="site-atlas-gap" data-atlas-gap>'
+        '<div class="site-atlas-gap-values" data-atlas-gap-values></div>'
+        '<div class="site-atlas-gap-rail" data-atlas-gap-rail></div>'
+        '<div class="site-atlas-gap-row" data-atlas-gap-integers></div>'
+        '<div class="site-atlas-gap-row" data-atlas-gap-roots></div>'
+        '<div class="site-atlas-gap-row site-atlas-gap-formulas">'
+        + _atlas_formula("area", r"\sqrt{n}")
+        + _atlas_formula("grid", r"\sqrt{n} + 1")
+        + "</div></div>"
+        '<p class="site-atlas-pop-head">Proven</p>'
+        '<p class="site-atlas-pop-bound" data-atlas-bound></p>'
+        '<ul class="site-atlas-pop-badges" data-atlas-badges></ul>'
+        "<div data-atlas-citation>"
+        '<p class="site-atlas-pop-head">Citation '
+        '<span class="site-atlas-pop-record">record <span data-atlas-record></span></span></p>'
+        '<p class="site-atlas-pop-cite" data-atlas-cite="lower"></p>'
+        '<p class="site-atlas-pop-cite" data-atlas-cite="upper"></p></div>'
+        '<div data-atlas-open><p class="site-atlas-pop-head">Open</p>'
+        '<ul class="site-atlas-pop-badges" data-atlas-open-items></ul></div>'
+        "</div></div>"
+        '<p class="site-popover-actions">'
+        '<a class="site-popover-action" data-go="page" data-atlas-expand href="cases.html">'
+        "Open the case record</a>"
+        '<span class="site-atlas-pop-step">'
+        '<button type="button" data-atlas-step="-1" aria-label="Previous case">\u2190</button>'
+        '<button type="button" data-atlas-step="1" aria-label="Next case">\u2192</button>'
+        "</span></p>"
+        f"<template data-atlas-math>{math_html('n')}</template>"
+        "</div>"
+    )
+
+
 def atlas_grid() -> str:
-    """Every tracked case's known-best packing, n = 1 to 324, as a grid of small
-    drawings, each linking to its case record, which `overview/case-popover.js` opens in
-    the case popover beside the grid, and carrying its details for the hover card
-    `overview/atlas-grid.js` shows.
+    """Every tracked case's known-best packing, n = 1 to 324, as a grid of drawings,
+    each a link to its case record. With scripts, `overview/atlas-grid.js` opens a cell
+    in the one atlas popover instead: what the ascent film's panel says about that n,
+    from `atlas_film_facts`, beside the drawing shown large, with a button to the record.
 
     The cells, about a megabyte of SVG, sit in a `<template>`, which the browser parses
     but does not render; the script places them when the grid nears the viewport, so
-    the page opens as fast as it did without them.
+    the page opens as fast as it did without them. The facts are one JSON element, a
+    tenth the size the same facts would take as markup in every cell.
     """
-    from devtools import render_frontier_page as frontier  # noqa: PLC0415
-    from devtools.render_case_pages import CASES_PAGE, case_popover, case_url  # noqa: PLC0415
-    from sqpack.assurance import bounds_agree_at_declared_precision  # noqa: PLC0415
+    import json  # noqa: PLC0415
 
-    recent = frontier.recent_lower_bounds()
+    from devtools import render_frontier_page as frontier  # noqa: PLC0415
+    from devtools.render_case_pages import CASES_PAGE, case_url  # noqa: PLC0415
+
     cells = []
     for case in frontier.frontier_cases():
         n = case["n"]
-        upper = case["reported_upper_bound"]
-        reported_lower, verified_lower = (
-            case["reported_lower_bound"],
-            case["verified_lower_bound"],
-        )
         status = case["status"]
-        tone = ' data-tone="accent"' if status == "proved" else ""
-        star = (
-            '<span class="site-star" title="Recent lower bound">\u2605</span>'
-            if recent.get(n)
-            else ""
-        )
-        lower_by = (
-            frontier.credit(reported_lower.get("proved_by"), reported_lower.get("proved_year"))
-            if bounds_agree_at_declared_precision(reported_lower, verified_lower)
-            else "verified here"
-        )
-        detail = (
-            f'<span class="site-atlas-head"><b>n = {n}</b> '
-            f'<span class="site-chip"{tone}>{_esc(status)}</span> {star}</span>'
-            f'<span class="site-atlas-row"><span>Best known</span> '
-            f"<b>{_esc(frontier.decimal_text(upper['value']))}</b> "
-            f"<i>{frontier.credit(upper.get('found_by'), upper.get('found_year'))}</i></span>"
-            f'<span class="site-atlas-row"><span>Lower bound</span> '
-            f"<b>{_esc(frontier.decimal_text(verified_lower['value']))}</b> "
-            f"<i>{lower_by}</i></span>"
-        )
         cells.append(
-            f'<a class="site-atlas-cell" href="{case_url(n)}" data-case="{n}" '
-            f'data-status="{_esc(status)}" '
-            f'aria-label="n = {n}, {_esc(status)}">{frontier.packing_svg(n)}'
-            f'<span class="site-atlas-n">{n}</span>'
-            f'<span class="site-atlas-detail" hidden>{detail}</span></a>'
+            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}" '
+            f'data-status="{_esc(status)}" aria-label="n = {n}, {_esc(status)}">'
+            f"{frontier.packing_svg(n, units=ATLAS_UNITS)}"
+            f'<span class="site-atlas-n">{n}</span></a>'
         )
+    facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
     return (
         '<div class="site-wide site-atlas-grid" data-atlas-grid>'
         f"<template>{''.join(cells)}</template>"
+        '<script type="application/json" data-atlas-facts>'
+        + facts.replace("</", "<\\/")
+        + "</script>"
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
         '<a href="frontier.html">frontier atlas</a>, and each has a '
-        f'<a href="{CASES_PAGE}">case record</a>.</p>'
-        f'<div class="site-atlas-tip" role="tooltip" hidden></div></div>{case_popover()}'
+        f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'
     )

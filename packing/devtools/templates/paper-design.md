@@ -196,20 +196,40 @@ it.
   every level as its chip and the rubric’s meaning, read from the tables in
   `epistemics.md`. Each opens that section of `epistemics.md`.
 
-- **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a small
-  square drawing in the page’s ink with its n beneath, in as many columns as fit.
-  A cell washes on hover and opens its case record.
-  Pointing at or focusing a cell shows one hover card below it, kept inside the window:
-  the status chip, the best-known side and the lower bound, each with its credit.
+- **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a square
+  drawing in the page’s ink with its n beneath.
+  The grid bleeds past the wide track as the window grows, to 140rem less the page
+  gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
+  wider screen shows more cases per row: 4 at 390 pixels, 11 at 1280, 17 at 1920 and 20
+  at 2560. A cell washes on hover and is a link to its case record.
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
-  (`overview/atlas-grid.js`), so they add nothing to the first paint.
+  (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
+  400 units across, fine enough to show large.
 
-- **Case records.** Every case has one record at one address, `cases.html#n-11`, and
-  every place that names a case by its n opens it the same way: a cell of the atlas grid
-  and the n of a frontier-atlas row.
-  A press opens the one case popover the page carries, a page-kind popover framing the
-  record in its embed view, with **Expand** to the full record
-  (`overview/case-popover.js`); without scripting the link goes to the record itself.
+- **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
+  card popover in every other way (square corners, the scrim, the caps label, the close
+  cross, Escape and a click outside).
+  It shows what the ascent film’s panel shows for the case, beside the drawing large:
+  the gap bar (a number line from one below $\lceil\sqrt{n}\,\rceil$ to two above it,
+  the integers and the values of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two bounds as
+  bold rules with their values above and the open span between them shaded); under
+  PROVEN the bound as one statement, the proved lower bound in scarlet and the best
+  known side in green, with the star for a recent lower bound; the badges; the citation,
+  one line per bound with this project’s note; and what is OPEN. The facts are the
+  film’s own, read from the atlas figure and `bound-citations.json` into one JSON
+  element (`atlas_film_facts`), and the script fills the popover from them with kpress’s
+  math nodes, never HTML strings.
+  It ends in **Open the case record**, which goes to `cases.html#n-N` at full size, and
+  arrows, and the arrow keys, step to the neighbouring case.
+  Opening moves focus to the close cross; closing returns it to the case’s cell.
+  On a phone the panel takes the width less half a rem each side, scrolls inside, keeps
+  its button in a sticky foot, and has a 2.75rem close target.
+
+- **Case records.** Every case has one record at one address, `cases.html#n-11`. The n
+  of a frontier-atlas row opens it in the one case popover that page carries, a
+  page-kind popover framing the record in its embed view, with **Expand** to the full
+  record (`overview/case-popover.js`); an atlas-grid cell reaches it through the atlas
+  popover’s button. Without scripting either link goes to the record itself.
   A record leads with a caps label, the n, its status chip and recent star, and the
   verified interval as display-size math; then the known-best packing drawn large beside
   a grid of bordered sans panels, one per bound (best known, verified upper, reported

@@ -369,7 +369,6 @@ def overview_page() -> Page:
             POPOVER_SCRIPT,
             FILM_SCRIPT,
             ATLAS_GRID_SCRIPT,
-            CASE_POPOVER_SCRIPT,
         ),
     )
 

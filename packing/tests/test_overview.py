@@ -85,15 +85,64 @@ def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
 
 
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
-    """One cell per tracked case, each linking to its case record and carrying its
-    details, all inside a template the script places when the grid comes near."""
+    """One cell per tracked case, each linking to its case record, all inside a
+    template the script places when the grid comes near."""
     grid = page.split("data-atlas-grid>", 1)[1]
     template = grid.split("<template>", 1)[1].split("</template>", maxsplit=1)[0]
-    cells = re.findall(r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)"', template)
-    assert [int(n) for n in cells] == list(range(1, 325))
-    assert template.count('class="site-atlas-detail" hidden') == 324
+    cells = re.findall(
+        r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', template
+    )
+    assert [int(n) for n, _ in cells] == list(range(1, 325))
+    assert all(n == cell for n, cell in cells)
     assert template.count("<svg ") == 324
+    assert re.findall(r'aria-label="n = 11, [a-z]+"', template)
     assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
+
+
+def _atlas_facts(page: str) -> dict[int, dict]:
+    import json  # noqa: PLC0415
+
+    body = page.split('<script type="application/json" data-atlas-facts>', 1)[1]
+    return {fact["n"]: fact for fact in json.loads(body.split("</script>", 1)[0])}
+
+
+def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) -> None:
+    """The one atlas popover is filled from the grid's facts: for n = 11, the film's
+    chained bound, its star and badges, both bounds' sources with this project's notes,
+    and what is open, read from the atlas figure and `bound-citations.json`."""
+    facts = _atlas_facts(page)
+    assert sorted(facts) == list(range(1, 325))
+    eleven = facts[11]
+    assert eleven["exact"] is False
+    assert (eleven["lower"], eleven["upper"]) == ("3.875000", "3.877084")
+    assert eleven["star"] is True
+    assert [label for _, _, label in eleven["badges"]] == ["exact", "rigid"]
+    assert eleven["open"] == ["optimality"]
+    assert eleven["record"] == "n-011"
+    assert eleven["cite"]["lower"] == {
+        "text": "Kleddamag after Levy et al. 2026, GitHub",
+        "note": "(confirmed T-037)",
+    }
+    assert eleven["cite"]["upper"]["text"] == "Trump 1979, Squares in Squares"
+    assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
+    assert page.count('id="pop-atlas" popover') == 1
+    assert page.count(" data-atlas-popover ") == 1
+
+
+def test_the_atlas_popover_sets_its_math_and_leads_to_the_record(page: str) -> None:
+    """Its math is kpress's own math node (the formulas under the gap bar, and the
+    template every value is typeset from), never raw TeX; its button is Expand to the
+    case record, which the script points at `cases.html#n-N` for the case shown."""
+    popover = page.split('id="pop-atlas" popover', 1)[1].split("</template></div>", 1)[0]
+    assert popover.count('class="kpress-math kpress-math-inline"') == 3
+    assert r"\sqrt{n} + 1" in popover
+    assert "$" not in popover
+    (action,) = re.findall(r'<a class="site-popover-action"[^>]*>([^<]*)</a>', popover)
+    assert action == "Open the case record"
+    assert "data-atlas-expand" in popover
+    script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    assert 'expand.setAttribute("href", cell.getAttribute("href")' in script
+    assert "site-atlas-tip" not in page
 
 
 def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:

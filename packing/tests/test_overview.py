@@ -904,3 +904,15 @@ def test_the_atlas_stepper_draws_one_arrow_mirrored() -> None:
     assert "→" not in step
     assert step.count(overview_sections.step_arrow()) == 1
     assert step.count(overview_sections.step_arrow(back=True)) == 1
+
+
+def test_every_popover_shares_one_margin_and_close_target() -> None:
+    """Popover margins are one token on all four sides, and the close cross is one square
+    tap target set in from the corner by another."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    popover = css[css.index(".site-popover {") :]
+    assert "padding: var(--site-popover-pad);" in popover[: popover.index("}")]
+    close = css[css.index(".site-popover .site-popover-close {") :]
+    close = close[: close.index("}")]
+    for token in ("--site-popover-close)", "--site-popover-close-inset)"):
+        assert f"var({token}" in close

@@ -383,8 +383,12 @@ it.
   The popover is a native `popover` panel with square corners over a faint scrim, set in
   sans, closed by its `×`, by Escape, or by a click outside, and it works without
   scripting. A card gains a gentle wash on hover.
-  Its gray corner icon and the popover’s button both show where the button goes: `↓` to
-  a row on this page, `↗` off the site, `→` to another page of the site.
+  Every popover has the same margin on all four sides, `--site-popover-pad` (1.75rem;
+  1.1rem on a phone). Its `×` is a 2.75rem square tap target (`--site-popover-close`) set
+  0.6rem in from the corner (0.25rem on a phone), washed on hover.
+  Only the first block after it keeps clear of it, so the margins stay even everywhere
+  else. Its gray corner icon and the popover’s button both show where the button goes:
+  `↓` to a row on this page, `↗` off the site, `→` to another page of the site.
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
@@ -426,15 +430,15 @@ it.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
   card popover in every other way (square corners, the scrim, the caps label, the close
-  cross, Escape and a click outside).
-  It shows what the ascent film’s panel shows for the case, beside the drawing large:
-  the gap bar (a number line from one below $\lceil\sqrt{n}\,\rceil$ to two above it,
-  the integers and the values of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two bounds as
-  bold rules with their values above and the open span between them shaded); under
-  PROVEN the bound as one statement, the proved lower bound in scarlet and the best
-  known side in green, with the star for a recent lower bound; the badges; the citation,
-  one line per bound with this project’s note; and what is OPEN. The facts are the
-  film’s own, read from the atlas figure and `bound-citations.json` into one JSON
+  cross, Escape and a click outside), and a little larger: up to 62rem wide and 58rem
+  tall. It shows what the ascent film’s panel shows for the case, beside the drawing
+  large: the gap bar (a number line from one below $\lceil\sqrt{n}\,\rceil$ to two above
+  it, the integers and the values of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two
+  bounds as bold rules with their values above and the open span between them shaded);
+  under PROVEN the bound as one statement, the proved lower bound in scarlet and the
+  best known side in green, with the star for a recent lower bound; the badges; the
+  citation, one line per bound with this project’s note; and what is OPEN. The facts are
+  the film’s own, read from the atlas figure and `bound-citations.json` into one JSON
   element (`atlas_film_facts`), and the script fills the popover from them with kpress’s
   math nodes, never HTML strings.
   It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,

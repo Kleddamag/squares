@@ -282,7 +282,28 @@ body {
   max-height: min(80vh, 40rem);
   max-width: min(36rem, 100vw - 2rem);
   overflow: auto;
-  padding: 1.2rem 2.6rem 1.2rem 1.4rem;
+  padding: var(--site-popover-pad);
+}
+/* Every popover's margins are one token, the same on all four sides, and its close
+   button one square tap target set in from the corner. Only the first block after the
+   button keeps clear of it, so the margins stay even everywhere else. */
+:root {
+  --site-popover-pad: 1.75rem;
+  --site-popover-close: 2.75rem;
+  --site-popover-close-inset: 0.6rem;
+}
+@media (max-width: 40rem) {
+  :root {
+    --site-popover-pad: 1.1rem;
+    --site-popover-close-inset: 0.25rem;
+  }
+}
+.site-popover > .site-popover-close + * {
+  padding-inline-end: calc(
+    var(--site-popover-close) +
+    var(--site-popover-close-inset) -
+    var(--site-popover-pad)
+  );
 }
 .site-popover::backdrop {
   background: oklch(0% 0 0 / 0.12);
@@ -292,12 +313,20 @@ body {
   border: 0;
   color: var(--kpress-doc-muted);
   cursor: pointer;
+  block-size: var(--site-popover-close);
+  display: grid;
   font-family: var(--kpress-font-sans);
-  font-size: 1.3rem;
-  inset-block-start: 0.5rem;
-  inset-inline-end: 0.7rem;
+  font-size: 1.75rem;
+  inline-size: var(--site-popover-close);
+  inset-block-start: var(--site-popover-close-inset);
+  inset-inline-end: var(--site-popover-close-inset);
   line-height: 1;
+  place-items: center;
   position: absolute;
+}
+.site-popover .site-popover-close:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-text);
 }
 .site-popover .site-popover-value {
   font-size: 1.15em;
@@ -1043,8 +1072,8 @@ body {
   --site-bound-upper: oklch(76% 0.13 155);
 }
 .site-popover.site-atlas-pop {
-  inline-size: min(56rem, 100vw - 2rem);
-  max-block-size: min(92dvh, 52rem);
+  inline-size: min(62rem, 100vw - 2rem);
+  max-block-size: min(92dvh, 58rem);
   max-height: none;
   max-inline-size: none;
 }
@@ -1291,14 +1320,6 @@ body {
   .site-popover.site-atlas-pop {
     inline-size: calc(100vw - 1rem);
     max-block-size: calc(100dvh - 1rem);
-    padding: 0.9rem 0.9rem 1rem;
-  }
-  .site-atlas-pop .site-popover-close {
-    block-size: 2.75rem;
-    font-size: 1.6rem;
-    inline-size: 2.75rem;
-    inset-block-start: 0.2rem;
-    inset-inline-end: 0.2rem;
   }
   .site-atlas-pop-body {
     grid-template-columns: minmax(0, 1fr);
@@ -1323,9 +1344,9 @@ body {
   .site-atlas-pop .site-popover-actions {
     background: var(--kpress-doc-bg);
     border-block-start: 1px solid var(--kpress-doc-border);
-    inset-block-end: -1rem;
-    margin-block-end: -1rem;
-    padding-block: 0.6rem 1rem;
+    inset-block-end: calc(-1 * var(--site-popover-pad));
+    margin-block-end: calc(-1 * var(--site-popover-pad));
+    padding-block: 0.6rem var(--site-popover-pad);
     position: sticky;
   }
 }

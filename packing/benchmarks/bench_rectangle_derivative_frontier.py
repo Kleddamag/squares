@@ -19,6 +19,7 @@ from strif import atomic_write_bytes, atomic_write_text
 
 from benchmarks import bench_rectangle_verifier_parity as supervisor
 from devtools import rectangle_derivative_bound as gradient
+from devtools import rectangle_pending_inventory as inventory
 from devtools import verify_rectangle_density as native_cli
 from sqpack import rectangle_density as density
 
@@ -38,15 +39,6 @@ def _require(condition: object, message: str) -> None:
 
 def _incomplete(message: str) -> NoReturn:
     raise gradient.DiagnosticDeadlineError(message)
-
-
-def _rational(value: object) -> Fraction:
-    if type(value) is not str:
-        raise ValueError("pending box coordinate must be a rational string")
-    try:
-        return Fraction(value)
-    except (ValueError, ZeroDivisionError) as error:
-        raise ValueError("pending box coordinate is not a rational") from error
 
 
 def _admit_frontier(
@@ -124,52 +116,13 @@ def _admit_frontier(
         and row["unresolved_leaves"] > 0,
         "frontier did not complete fixed work with pending boxes",
     )
-    raw_boxes = row.get("pending_boxes")
-    _require(
-        isinstance(raw_boxes, list) and len(raw_boxes) == row["unresolved_leaves"],
-        "frontier pending inventory is incomplete",
+    return inventory.admit_pending_boxes(
+        row.get("pending_boxes"),
+        unresolved_leaves=row["unresolved_leaves"],
+        candidate=candidate,
+        angle=1,
+        max_depth=48,
     )
-    assert isinstance(raw_boxes, list)
-    cosine, sine = density._angle(1)  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
-    extent = candidate.core_side * (cosine + sine) / 2
-    legal_low, legal_high = candidate.side / 2, candidate.side - extent
-    boxes: list[density.PendingBox] = []
-    seen: set[tuple[Fraction, Fraction, Fraction, Fraction]] = set()
-    for item in raw_boxes:
-        _require(isinstance(item, dict), "pending box is not an object")
-        assert isinstance(item, dict)
-        _require(
-            set(item) == {"angle", "left", "bottom", "right", "top", "depth", "stop_cause"},
-            "pending box fields differ",
-        )
-        _require(
-            type(item["angle"]) is int
-            and item["angle"] == 1
-            and type(item["depth"]) is int
-            and 0 <= item["depth"] <= 48
-            and item["stop_cause"] in {"node_limit", "depth_limit", "point_box"},
-            "pending box metadata differs",
-        )
-        box = density.PendingBox(
-            1,
-            _rational(item["left"]),
-            _rational(item["bottom"]),
-            _rational(item["right"]),
-            _rational(item["top"]),
-            item["depth"],
-            item["stop_cause"],
-        )
-        _require(
-            legal_low <= box.left <= box.right <= legal_high
-            and legal_low <= box.bottom <= box.top <= legal_high,
-            "pending box lies outside the exact reduced root",
-        )
-        identity = (box.left, box.bottom, box.right, box.top)
-        _require(identity not in seen, "duplicate pending box")
-        seen.add(identity)
-        _require(box.as_dict() == item, "pending box exact serialization differs")
-        boxes.append(box)
-    return tuple(boxes)
 
 
 def _parse() -> argparse.Namespace:
@@ -200,6 +153,7 @@ def main() -> int:
     cli_path = Path(native_cli.__file__)
     runner_path = Path(__file__)
     supervisor_path = Path(supervisor.__file__)
+    inventory_path = Path(inventory.__file__)
     try:
         preflight_started = time.monotonic()
         preflight_cpu_started = time.process_time()
@@ -221,6 +175,7 @@ def main() -> int:
             "cli": cli_path.read_bytes(),
             "runner": runner_path.read_bytes(),
             "supervisor": supervisor_path.read_bytes(),
+            "pending_inventory": inventory_path.read_bytes(),
         }
         git_head = subprocess.check_output(
             ["git", "-C", str(REPO), "rev-parse", "HEAD"], text=True
@@ -293,7 +248,7 @@ def main() -> int:
                     "box": box.as_dict(),
                     **result.as_dict(),
                     "closes_old_gap": result.common < candidate.target <= result.combined,
-                    "closed_by_new_bound": result.combined >= candidate.target,
+                    "closed_by_combined_bound": result.combined >= candidate.target,
                 }
             )
         _require(len(comparisons) == len(boxes), "diagnostic inventory is incomplete")
@@ -304,6 +259,7 @@ def main() -> int:
             and cli_path.read_bytes() == source_bytes["cli"]
             and runner_path.read_bytes() == source_bytes["runner"]
             and supervisor_path.read_bytes() == source_bytes["supervisor"]
+            and inventory_path.read_bytes() == source_bytes["pending_inventory"]
             and subprocess.check_output(
                 ["git", "-C", str(REPO), "rev-parse", "HEAD"], text=True
             ).strip()

@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T17:20:00Z'
+  deadline_at: '2026-09-30T17:50:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -1144,7 +1144,7 @@ session:
     clock_role: work
     bead: think-r97y
     objective: Measure the reviewed derivative diagnostic and publish its scoped outcome with the first-principles overview.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Mathematical core review is complete; source freeze and observed diagnostic are next.
     budget_minutes: 25
@@ -1158,10 +1158,32 @@ session:
     evidence:
     - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
     - docs/project/verification-tooling.md
+    stop_reason: Complete negative diagnostic and packaging delta published at 6a307f6a4; 52 affected checks and 2180 tests pass, as do all required hosted PR checks.
+    next_action: Finish the hosted merge checkpoint while consolidating diagnostic admission in an isolated follow-up branch.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-pd17
+    objective: Merge the frozen confirmed-proof package after its hosted checkpoint while isolated agents consolidate reusable diagnostic admission.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Mathematical validation and the negative performance experiment are complete; clean integration and small reusable-tool cleanup are next.
+    budget_minutes: 30
+    started_at: '2026-09-30T16:59:53Z'
+    deadline_at: '2026-09-30T17:29:53Z'
+    expected_output: Green full checkpoint and provenance-preserving PR246 merge; reviewed isolated think-nxd8 follow-up, with PR249 coordination explicit.
+    validation_command: Hosted deferred checkpoint 36746969192 plus focused diagnostic admission controls and static checks in the isolated worktree.
+    kill_condition: Any failed required checkpoint or changed proof semantics prevents merge or admission of the follow-up.
+    fallback: Repair only the named failure; preserve frozen accepted evidence and the still-draft PR249 work.
+    outcome: null
+    evidence:
+    - docs/project/verification-tooling.md
+    - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
     stop_reason: null
-    next_action: Run the frozen diagnostic after final runner review, then disposition and publish one integration batch.
+    next_action: Await the parallel hosted workers while Sol implements shared inventory admission and Astra reviews exact refusal semantics.
   budget:
-    wall_minutes: 1275
+    wall_minutes: 1305
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15

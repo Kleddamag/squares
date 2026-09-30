@@ -188,6 +188,12 @@ def test_cli_runs_fixed_frontier_and_binds_helper_source(
     assert result["proof_credit"] is False
     assert result["pending_boxes"] == result["evaluated_boxes"] == 1
     assert result["newly_closed_boxes"] == 1
+    assert result["comparisons"][0]["closed_by_combined_bound"] is True
+    assert "closed_by_new_bound" not in result["comparisons"][0]
+    assert (
+        result["sources_sha256"]["pending_inventory"]
+        == hashlib.sha256(Path(bench.inventory.__file__).read_bytes()).hexdigest()
+    )
     assert (
         result["sources_sha256"]["supervisor"]
         == hashlib.sha256(Path(bench.supervisor.__file__).read_bytes()).hexdigest()

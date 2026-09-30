@@ -74,13 +74,19 @@ Native performance (`think-3cwg` / `think-r97y`), proof simplification (`think-u
 the later explainer (`think-08pw`), and cross-PR reconciliation (`think-d15x`) stay
 separately tracked.
 
-The reusable pieces already have distinct homes: exact rectangle geometry in
-`sqpack.rectangle_density` and `sqverify_exact`, and reviewed n11 union and collision
-kernels in `n11_fast_exact_cover` and `n11_integer_collision`. Source-specific D4,
-field, capture and endpoint implications remain separate checkers.
-The next packaging steps are a thin fresh-replay entry point over those checkers
-(`think-e2ot`) and shared strict admission for the rectangle diagnostics (`think-nxd8`).
-Neither requires a new general workflow framework or rewriting accepted receipts.
+The reusable exact kernels have distinct homes: rectangle geometry in
+[`sqpack.rectangle_density`](../../packing/src/sqpack/rectangle_density.py) and
+[`sqverify_exact`](../../packing/sqverify_exact/), and reviewed n11 union and collision
+kernels in [`n11_fast_exact_cover`](../../packing/devtools/n11_fast_exact_cover.py) and
+[`n11_integer_collision`](../../packing/devtools/n11_integer_collision.py).
+The [pending-inventory helper](../../packing/devtools/rectangle_pending_inventory.py)
+checks complete, unique, exact box geometry for rectangle diagnostics.
+Each caller still binds its candidate, checker, threshold, search settings and any
+replay receipt; the helper grants no coverage or proof credit.
+D4, field, capture and endpoint implications remain in source-specific checkers.
+A thin fresh-replay entry point (`think-e2ot`) still needs reviewed state-equivalence
+joins between their newly executed receipts.
+It need not change the accepted historical evidence.
 
 ## Completed Global Proof Evidence
 

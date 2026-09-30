@@ -199,19 +199,18 @@ def test_fast_cover_pin_mismatch_refuses(
 def test_missing_angular_row_and_changed_source_state_refuse() -> None:
     manifest, recipe = _recipe(2135)
     source = generic.load_object(recipe["source_sha256"], manifest, generic.OBJECTS)
-    seed = generic.load_object(recipe["seed_sha256"], manifest, generic.OBJECTS)
-    cover = generic.load_object(
-        generic.geometry.COVER_SHA,
-        manifest,
-        generic.PACKET / "receipts/d4-independent/objects",
-    )
-    groups, rows, world, bins = generic.seed_state(
-        seed,
-        cover,
-        2135,
-        tuple(recipe["mask"]),
-        budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
-    )
+    # These are deliberately unverified inputs to two early structural guards.
+    # The complete replay control separately proves the actual seed geometry.
+    groups = {
+        int(owner): generic.frozen.hull(generic.frozen.points(points))
+        for owner, points in source["initial"]["groups"].items()
+    }
+    rows = {
+        int(owner): [{"reference": reference} for reference in references]
+        for owner, references in source["initial"]["cell_references"].items()
+    }
+    world: list[generic.Polygon] = []
+    bins = len(source["steps"][0]["rows"])
     changed = copy.deepcopy(source)
     changed["steps"][0]["rows"].pop()
     with pytest.raises(ValueError, match="angular inventory"):

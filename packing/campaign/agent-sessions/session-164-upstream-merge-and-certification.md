@@ -718,10 +718,12 @@ seconds of checker wall time (1.00 seconds including startup), with seven focuse
 controls and Astra-max review.
 Fixed-T local isolation now passes all 8,448 strict dual inequalities and 88 feature
 margins. Near-state pose inclusion and the complete metadata census also pass, each with
-its scope limits. The first field certificate independently accepts 459 exclusions in
-16.58 seconds including startup.
-A reproducible near-state digest mismatch blocks the published capture binding
+its scope limits. Two field certificates independently accept 1,112 distinct exclusions;
+1,068 remain. Their full checks took 16.58 and 17.61 seconds including startup.
+Reproducible final-state digest mismatches affect all four published capture leaf audits
 (think-gzju), without refuting the theorem.
+The actual ten-node parent graph is structurally checked; root induction and geometric
+ancestry remain unaccepted.
 The active lanes target additional exclusions and actual capture ancestry; global
 optimality remains open.
 This is component progress, not confirmation of T-060.

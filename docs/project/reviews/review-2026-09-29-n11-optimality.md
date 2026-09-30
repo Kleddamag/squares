@@ -220,9 +220,29 @@ Seven focused controls pass.
 Astra-max mathematical review accepted the stated scope.
 The run took **16.515 seconds wall / 16.458 seconds CPU**, 16.58 seconds including
 startup, under a 30-second ceiling.
-Of the 2,180 claimed exclusions, **1,721 still need independent geometric acceptance**.
-This fraction is case coverage, not a percentage of the whole proof: capture and
-composition remain separate obligations.
+The subsequent mask-202 check below expands this coverage.
+Case coverage is not a percentage of the whole proof: capture and composition remain
+separate obligations.
+
+## Accepted Second Field Certificate
+
+The [mask-202 checker](../../../packing/devtools/check_n11_optimality_field_mask202.py)
+checks all 50 ownership points (23 disk and 27 wall) and all 439 closed angular rows.
+It imports the hash-bound frozen rational primitives of the first checker, with the
+correct three-site median, and independently reconstructs the selected charge regions.
+Using a smaller subset of regions reduces arrangement work: acceptance still requires
+that subset to cover the entire closed domain.
+A subset miss returns incomplete and accepts no exclusions.
+
+The full run accepted 764 canonical exclusions, 653 outside the accepted mask-0 set:
+**1,112 distinct exclusions are independently accepted; 1,068 remain unchecked.** This
+is two of 59 field certificates, not the whole proof.
+Checker wall time was 17.532 seconds, CPU 17.235 seconds, and outer wall 17.61 seconds,
+under the selected 30-second ceiling.
+Five focused controls pass, and Astra-max review accepted the implementation and
+complete result. Its full result is retained compressed beside the compact summary,
+provenance and replay in
+[the receipt directory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-mask202/).
 
 ## Confirmed Public Replay Binding Defect
 
@@ -247,7 +267,23 @@ The later sealing stage cannot repair an earlier failed comparison.
 We have demonstrated the incompatible inputs and comparison; we have not run the full
 23-stage publisher pipeline.
 
-A consistent repair requires a fresh accepted near replay and coherently regenerated
+The
+[source-graph receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json)
+subsequently checks all ten hash-verified source nodes and nine actual parent edges,
+including ordered branch assumptions and contradiction markers.
+This establishes structural ancestry, not validity of the geometric reductions or the
+external root induction.
+It took 4.95 seconds including startup.
+
+The same digest mismatch occurs in **all four** published leaf audits, with an
+independent serializer cross-check for each.
+The far15 mandatory comparison would therefore fail before the near comparison, if
+preceding stages completed.
+Exact hashes for all leaves are retained in the source-graph receipt.
+A contradiction marker in a source trace is not independent acceptance of that
+contradiction.
+
+A consistent repair requires fresh accepted leaf replays and coherently regenerated
 dependent receipts and bindings.
 Changing the stored digest alone does not establish geometric ancestry.
 Our accepted local isolation and conditional pose inclusion remain valid: the latter
@@ -259,11 +295,10 @@ Full capture and global optimality are unconfirmed.
 
 The [census and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
 maps the remaining exclusions (`think-ncw8`) and candidate ancestry (`think-pgie`). The
-implementation and mathematical-review lanes next inspect mask 202: its proposal set
-contains 653 cases outside the accepted mask-0 set.
-That is a selection metric, not acceptance.
-The capture lane retains the refusal and inspects actual source edges and geometric
-premises independently.
+implementation and mathematical-review lanes select additional certificates by marginal
+coverage and measured kernel cost.
+The capture lane proceeds from structural ancestry to the root induction and actual
+geometric premises; the binding defect remains open.
 The coordinator batches integration and concrete CI repairs alongside these lanes,
 without gating proof work on unrelated tests.
 

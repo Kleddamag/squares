@@ -48,7 +48,9 @@ without accepting any exclusion geometry.
 The [mask-0 field checker](../../packing/devtools/check_n11_optimality_field_mask0.py)
 accepts all 55 ownership obligations, 136 closed angular rows and 459 canonical
 exclusions in 16.58 seconds including startup.
-The remaining 1,721 exclusions and full capture remain open.
+The [mask-202 checker](../../packing/devtools/check_n11_optimality_field_mask202.py)
+adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
+The remaining 1,068 exclusions and full capture remain open.
 The
 [capture refusal](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-ancestry/refusal-result.json)
 records a confirmed stale final-state digest in the published near audit, blocking its

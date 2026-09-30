@@ -293,6 +293,22 @@ Full capture and global optimality are unconfirmed.
 
 ## Next Bounded Checks
 
+The
+[shared field runner](../../../packing/devtools/check_n11_optimality_field_runner.py)
+now reproduces both frozen field controls through one explicit 3-site/5-site grammar.
+It reuses and hash-binds the reviewed first-party mask0 geometry kernel; it is
+independent of the upstream producer, not an additional independent implementation of
+that kernel. Complete
+[mask0](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/shared-field-mask0/summary.json)
+and
+[mask202](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/shared-field-mask202/summary.json)
+replays preserve all ownership proofs, shared row-proof fields and exact transferred
+case IDs. They accept 459 and 764 IDs, respectively, whose union remains 1,112. Their
+outer times were 17.37 and 17.75 seconds, each below its 30-second ceiling.
+Fourteen focused controls and Astra-max review passed.
+These are consolidation controls, not additional exclusions; the other 1,068 cases
+remain open.
+
 The [census and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
 maps the remaining exclusions (`think-ncw8`) and candidate ancestry (`think-pgie`). The
 implementation and mathematical-review lanes select additional certificates by marginal

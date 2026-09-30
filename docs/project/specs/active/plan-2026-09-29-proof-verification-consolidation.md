@@ -329,7 +329,83 @@ This certificate family is separate from T-060: performance here does not discha
 remaining field/capture obligations.
 Keep the morning proof lanes available and report any resource tradeoff explicitly.
 
+### Proposed Stronger Rectangle Bound
+
+Optimize the measured exact-clipping hotspot and implement the batched Rust rational
+kernel first, keeping Python as the reference.
+The derivative bound below is proposed and unimplemented.
+Its value on the actual n11 certificate needs measurement.
+
+The common-core bound discards coverage gained when a square moves.
+For uniform density $\rho$ throughout every translated side-$B$ square, true coverage is
+constant $\rho B^2$. For center-box half-widths $h_x,h_y$ and a net orientation
+$c,s\ge0$, $c^2+s^2=1$, the common-core bound is only
+
+$$
+\rho\,[B-2(ch_x+sh_y)]_+\,[B-2(sh_x+ch_y)]_+,
+\qquad [a]_+=\max(a,0).
+$$
+
+This demonstrates a first-order loss in box width even when the true derivative is zero.
+It does not establish how much of the current n11 runtime comes from that loss.
+Completed and interrupted node counts from different bounds and subdivision rules cannot
+settle that attribution.
+
+For fixed oriented square $Q$ and admitted density rectangles $R$, let
+$F(z)=\sum_R\rho_R\operatorname{area}((z+Q)\cap R)$. Integration by parts gives
+
+$$
+\partial_xF(z)=\sum_R\rho_R
+  \bigl(\ell_{R,\mathrm{left}}(z)-\ell_{R,\mathrm{right}}(z)\bigr),
+$$
+
+where each $\ell$ is the length of the translated square intersected with the named
+rectangle edge. The vertical derivative uses bottom minus top.
+For nonaxis orientations, chord endpoints are minima and maxima of rational affine
+functions of the center.
+Enclose them over the entire center box, then sum their signed weighted intervals before
+taking absolute values.
+Coincident edge segments may first be split and combined by their exact signed density
+jumps. If $G_x,G_y$ enclose the derivatives throughout the box and $m$ is its midpoint,
+integration along coordinate segments proves
+
+$$
+F(z)\ge F(m)-h_x\max_{g\in G_x}|g|-h_y\max_{g\in G_y}|g|.
+$$
+
+Take the maximum with the existing lower bounds.
+This would be an independently derived and implemented exact checker using a geometric
+identity also used upstream; it would not constitute a different mathematical method
+merely because it uses Rust.
+
+Before adopting it, require exact controls for constant coverage, cancellation at the
+shared edge of two adjacent equal-density rectangles, an unequal-density jump, tangency,
+and crossings of chord endpoint events.
+Axis orientations need their exact special case or an explicit refusal of the divided
+formulas. Check the bound against exact coverage at selected points as a regression
+control; those samples do not prove the whole-box bound.
+
+Freeze one fixed-work n11 run and evaluate every pending box.
+Retain old and proposed lower bounds, exact midpoint values, newly closed IDs,
+unresolved IDs, and phase CPU and wall costs.
+A tighter bound is useful only if its measured cost and reduction in remaining work
+improve the complete verification task.
+Then compare complete runs under the matched contracts above; no incomplete run
+establishes speed parity.
+
 ## Rollout and Completion
+
+Coordinate the parallel Wang–Li intake in
+[issue #247](https://github.com/jlevy/squares/issues/247) through **think-d15x**. This
+branch retains T-058–T-060; the intake reserves T-061 for its separately reviewed lower
+bound. Its generalized parent-core verifier is outside the rectangle-kernel work here.
+T-059’s complete row-minimum equality remains a source claim with only the retained
+sample replayed by that wrapper; T-037’s complete native coverage is a separate result.
+The second branch to merge must merge current main, preserve both claim histories and
+regenerate the release revision.
+No unconfirmed T-060 equality supersedes an accepted lower bound.
+The coordination review is recorded on
+[PR #246](https://github.com/jlevy/squares/pull/246#issuecomment-5904905961).
 
 New runner receipts coexist with frozen controls until exact equivalence and review
 pass. Migrations are reversible through Git and preserve recoverable source evidence.

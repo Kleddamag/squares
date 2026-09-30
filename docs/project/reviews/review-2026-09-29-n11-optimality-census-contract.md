@@ -404,6 +404,119 @@ An in-range singleton polygon and singleton angle row must remain admissible.
 Geometric ancestry is accepted separately under `think-pgie`; accepting inclusion does
 not accept the trace’s pruning history.
 
+## Root Induction and Geometric Transitions
+
+`think-mnd1` remains open for independent geometric acceptance.
+Source review of
+[`audit_residual_kernel_v2.py`](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/src/evidence/research/phase3/work/phase3/hull/audit_residual_kernel_v2.py)
+and
+[`audit_capture_portable.py`](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/src/evidence/research/candidate-capture/audit_capture_portable.py)
+found no geometric contradiction in the ownership, strict-core, and collision
+implications examined.
+The supplied instances still require independent replay.
+The four published final-state binding defects remain separate from this mathematical
+obligation; replacing their hashes does not establish the geometry.
+
+The two adaptive-root inputs have been acquired and checked against both the pinned LFS
+identities and decoded identities, totaling **21,258,733 compressed bytes and
+136,828,193 decoded bytes**:
+
+| Input | Decoded package path | Compressed bytes | Decoded bytes |
+| --- | --- | ---: | ---: |
+| Adaptive root | `evidence/research/phase3/work/phase2/conditional/mask438-adaptive.json` | 21,255,326 | 136,801,164 |
+| Ownership seed | `evidence/research/phase3/work/phase2/conditional/mask438-seed.json` | 3,407 | 27,029 |
+
+For these two objects the index keys equal their decoded SHA-256 values:
+
+```text
+adaptive decoded 5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a
+adaptive LFS     cf9e5e8d3722587f21ccd746ff4005662a5bf12c1e9e0b47fa32b86a402db9f1
+seed decoded     b93be3358f7dfbf063d4109c52fd3bbbbfff9b34cb468c3123598b54cea72a56
+seed LFS         ad9c0c9c00c54301dd49b1fcd771d7a9a3a14e894fe904b949fe415dceddf7f2
+```
+
+The adaptive payload contains all fourteen rounds, with eleven complete owner updates
+per round and 16,551 angular rows.
+Its first seven rounds each have 777 rows, the next four each have 1,251, and the last
+three each have 2,036. It declares no branch, contradiction, or local-guard capture.
+Its `resume` record names an earlier producer checkpoint, but replaying the included
+rounds from the seed requires no assumption from that checkpoint.
+These are observed source counts, not accepted geometric conclusions.
+
+The root acceptance kernel must establish the following induction:
+
+1. Reconstruct each field-coordinate center cell $W_i=B(1/2+(U-1)V_i)$ from the accepted
+   cover cell $V_i$. Check the exact case, cap, scale, and all 130 seed points belonging
+   to occupied owners. Every such point must lie strictly inside every legal side-$B$
+   square with center in its owner cell.
+   The existing exact disk test or closed-angle wall subdivision can establish this.
+2. Bind each round’s prior point groups to the preceding accepted state.
+   For every owner in that round, use the same prior snapshot for the other owners’
+   hulls. The eleven owner updates may run independently; their newly derived points
+   become available only after the round finishes.
+3. Require each owner’s closed angular rows to partition $[0,1]$. An inherited support
+   cut must contain every vertex of the referenced prior residual polygons, and the new
+   interval must lie inside that prior interval.
+   Reconstruct the legal-wall outer domain.
+   Empty inherited residuals may delete an angle only after accepting the referenced
+   row.
+4. Treat each proposed core $Q$ as geometric input: prove that it is strictly inside
+   every side-$B$ square orientation throughout the row.
+   For prior owned hulls $H_j$, reconstruct the forbidden center regions $H_j-Q$ for
+   occupied owners $j\ne i$. Prove that their union with the proposed residual polygons
+   covers the entire closed center domain.
+   An uncovered point invalidates this localization certificate; it does not by itself
+   exhibit a feasible eleven-square packing.
+5. After all angular rows accept, prove each proposed new owned point belongs to $z+Q$
+   for every center $z$ in every live residual polygon.
+   Linear inequalities need checking at all residual vertices.
+   Verify each compressed output point as an exact convex combination of prior owned
+   points and accepted new points, with nonnegative coefficients summing to one.
+   Bind the reconstructed output groups to the source state.
+   Partial angular coverage promotes no points.
+
+The first bounded pilot should check all 130 occupied seed points, profile one row of
+round 1 for owner 2, then check that owner’s full 69-row update.
+Those rows contain at most six residual polygons each; the update proposes 28 kernel
+vertices and seven compressed output points.
+Passing this pilot establishes one conditional ownership update.
+Acceptance of the full adaptive root requires all 154 owner updates and their state
+bindings. Measure exact arithmetic and arrangement work before scheduling the remaining
+rows; file size and the publisher’s slab counts do not predict replay time.
+
+The ten later source nodes are already acquired.
+Their first node, `root.json` in the local source-graph cache, records a later
+fourteen-step transition from the adaptive root.
+Its last step is incomplete and leaves the prior recorded state unchanged.
+A verifier must preserve that behavior rather than infer that every recorded step makes
+progress. For these later transitions, extend the root kernel with these obligations:
+
+- Check self-owned-hull center cuts using support bounds valid throughout each closed
+  angular interval. For a proposed core vertex $(x,y)$ and half-angle $t$, strict
+  containment follows by proving both quadratics
+  $B/2-\sigma x-2\sigma yt+(B/2+\sigma x)t^2>0$ and
+  $B/2-\sigma y+2\sigma xt+(B/2+\sigma y)t^2>0$ for each $\sigma\in\{-1,1\}$. Check
+  endpoints and every in-interval quadratic minimum exactly.
+- Bind every partner pose domain $D_j$ and core $Q_j$ to accepted parent geometry and a
+  complete permitted angular partition.
+  A proposed universal collision polygon $P$ for query core $Q_i$ must satisfy
+  $P\subseteq\bigcap_{y\in D_j}(y+Q_j-Q_i)$ for every partner row.
+  For each facet $n\cdot v\le h$ of $Q_j-Q_i$, this is the exact vertex inequality
+  $n\cdot p\le h+\min_{y\in D_j}n\cdot y$. Equality is safe because the two cores lie
+  strictly inside the physical squares.
+- Preserve inherited branch predicates and the closed row-domain cover.
+  Check point and segment domains explicitly or refuse them; deleting a zero-area domain
+  can lose a legal pose.
+  A complete empty pose cover proves a contradiction, while an incomplete step with no
+  point promotion leaves its prior state intact.
+- Accept a cached state only through an accepted geometric node receipt with identical
+  input and output states, assumptions, kernel identity, and acyclic accepted ancestry.
+  Published status fields, source hashes, and completed-node inventories establish
+  identity and structure; they do not discharge the geometric implication.
+
+The far-branch contradictions, near capture, and final composition remain open until
+these root and transition checks accept their complete dependency closure.
+
 ## Bounded Execution and Refusal Controls
 
 Implement the checks in retained tools and exercise only their affected contracts.

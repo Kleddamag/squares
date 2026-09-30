@@ -432,7 +432,7 @@ session:
     bead: think-om8z
     objective: Finish the pinned wand125 process-equivalence audit and bounded matched
       benchmark, preserving the independent global-optimality proof as the primary goal.
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The user requests an explicit map of upstream verification and an
       independently implemented equivalent with measured speed and effectiveness.
@@ -448,13 +448,48 @@ session:
       the named certificate obligation becomes a prerequisite for proof progress.
     fallback: Retain an incomplete receipt and identify the failed premise or cost;
       continue the independent field and capture lanes without a false promotion.
+    outcome: Updated upstream admission controls and full analytic production replay
+      pass. The reviewed paired benchmark accepts all 201 analytic angles in both
+      engines; the external n11 angle-1 probe completes in C++ but is inconclusive
+      after 13 seconds in Python. Profiling locates the cost in exact clipping and
+      Fraction arithmetic. Shared field controls also reproduce the exact prior
+      mask0 and mask202 exclusions in 17.37 and 17.75 seconds outer wall; no new case
+      is claimed. Published fbc1fb6a0 passes all selected hosted checks.
+    evidence:
+    - docs/project/verification-tooling.md
+    - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
+    stop_reason: Source audit, controlled comparison and hotspot profile are retained;
+      user explicitly prioritizes fixing the arithmetic bottleneck with native code.
+    next_action: Validate the exact clipping optimization and implement a batched Rust
+      rational geometry kernel against the Python reference, retaining T-060 scope.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3cwg
+    objective: Reduce the measured exact-geometry bottleneck and prototype the Rust
+      kernel under think-rmj3 while preserving proof outcomes and import coordination.
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The user requires an extremely fast verifier and specifically asks
+      for Rust exact arithmetic; the profile identifies rational clipping as the target.
+    budget_minutes: 30
+    started_at: '2026-09-30T05:48:49Z'
+    deadline_at: '2026-09-30T06:18:49Z'
+    expected_output: Exact differential controls, a measured fixed-work clipping comparison,
+      and a narrowly scoped Rust batch kernel or precise implementation blocker.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_rectangle_density.py
+    kill_condition: Arithmetic approximations, overflow or incomplete coverage can produce
+      acceptance, or different capped workloads are presented as full-verifier speed parity.
+    fallback: Preserve the exact Python reference, retain failed controls and measured costs,
+      and refine the kernel without weakening the proof obligations.
     outcome: null
     evidence:
     - docs/project/verification-tooling.md
     - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
     stop_reason: null
-    next_action: Sol finishes benchmark controls while Astra audits acceptance semantics;
-      retain complete analytic and bounded external results, then return lanes to T-060.
+    next_action: Sol owns fixed-work comparison and Rust implementation in disjoint lanes;
+      Astra reviews geometry and arithmetic, coordinator integrates and tracks think-d15x.
   budget:
     wall_minutes: 1135
     max_cycles: 40

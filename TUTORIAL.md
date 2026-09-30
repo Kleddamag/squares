@@ -54,9 +54,9 @@ the next grid side can require tilted structure.
 ![Walter Trump’s exact packing of eleven unit squares.](packing/atlas/rendering/trump11-overview.svg)
 
 *Walter Trump’s packing of eleven unit squares, optimal by T-060. Six squares are
-axis-aligned; five form an oblique block tilted by about $40.18^{\circ}$. Segments mark
-shared edge intervals and dots mark point contacts, all computed in the construction’s
-exact number field and clipped to their participating squares.
+axis-aligned; five form an oblique block tilted by about `40.18°`. Segments mark shared
+edge intervals and dots mark point contacts, all computed in the construction’s exact
+number field and clipped to their participating squares.
 The picture certifies the construction; T-060 supplies its global optimality.*
 
 Three features make this different from most optimisation problems.
@@ -78,12 +78,12 @@ So “searching for a better packing” is not one method among several for impr
 upper bound—it is the only one anybody has.
 
 **$n = 11$ is the first case where genuinely oblique tilt is proved to improve on the
-$0^{\circ}$/$45^{\circ}$ class.** Stromquist proved that packings restricted to those
-two orientation classes cannot beat $2 + (4/3)\sqrt{2} \approx 3.885618$, which is
-*worse* than the best-known packing at $\approx 3.877084$. Stromquist’s result gives a
-concrete reason that $n = 11$ differs from the proved tilted cases at $n = 5$ and
-$n = 10$. [Section 7](#7-how-the-search-is-approached-and-why) uses that distinction to
-motivate its search strategy.
+$0^{\circ}$/`45°` class.** Stromquist proved that packings restricted to those two
+orientation classes cannot beat $2 + (4/3)\sqrt{2} \approx 3.885618$, which is *worse*
+than the best-known packing at $\approx 3.877084$. Stromquist’s result gives a concrete
+reason that $n = 11$ differs from the proved tilted cases at $n = 5$ and $n = 10$.
+[Section 7](#7-how-the-search-is-approached-and-why) uses that distinction to motivate
+its search strategy.
 
 ### The state of `n = 11`, in one table
 
@@ -218,11 +218,11 @@ conditions.
 | **Condition 1** | The weighted atoms are invariant under the container’s $D_4$ symmetries (the four rotations and four reflections of a square) | Reflect an orientation onto the net’s arc without changing any covered mass |
 | **Condition 2** | `μ(K) = 434547/40000 = 10.863675`, which is below 11 | Supply less total mass than eleven packed squares would have to consume |
 | **Condition 3** | A net of 181 exact directions reaches $\pi/4$ | Put every reduced square orientation between two checked directions |
-| **Condition 4** | $B(1 + D) < 1$, for $B = 9977/10000$ and $D = 207107/90000000$ | Fit a closed side-$B$ square at a nearby net direction strictly inside any unit square |
-| **Condition 5** | Every admissible side-$B$ square, at every net direction, covers mass at least $4001/4000$ | Give each inner square strictly more than one unit of mass |
+| **Condition 4** | $B(1 + D) < 1$, for $B = 9977/10000$ and $D = 207107/90000000$ | Fit a closed side-`B` square at a nearby net direction strictly inside any unit square |
+| **Condition 5** | Every admissible side-`B` square, at every net direction, covers mass at least $4001/4000$ | Give each inner square strictly more than one unit of mass |
 
 **The counting contradiction.** Suppose eleven unit squares did fit in $K$ with disjoint
-interiors. Inside each one put the side-$B$ square that **Conditions 3 and 4** supply.
+interiors. Inside each one put the side-`B` square that **Conditions 3 and 4** supply.
 Those inner squares are closed but lie strictly inside their parents’ interiors, so they
 are pairwise disjoint and no atom is counted twice.
 **Condition 5** gives each of them mass at least $4001/4000$. Nonnegativity and
@@ -243,7 +243,7 @@ The net directions are $\theta_r = 2 \arctan(t_r)$, carried as rational half-ang
 tangents $t_r$ so that their sines and cosines stay rational.
 For an arbitrary reduced angle, take the nearer endpoint of the net interval containing
 it and call the angular error $d$; the net’s spacing bounds $\tan d \le D$ exactly.
-Measured along the unit square’s own axes, a side-$B$ square at that net direction
+Measured along the unit square’s own axes, a side-`B` square at that net direction
 reaches from the shared centre by at most
 
 ```text
@@ -258,7 +258,7 @@ one.
 **How event cells cover every centre.** Even at one fixed direction the inner square has
 continuously many admissible centres.
 Rotate the frame to align with that square.
-For a single atom, the centres whose closed side-$B$ square covers it form a closed
+For a single atom, the centres whose closed side-`B` square covers it form a closed
 axis-aligned rectangle.
 The edges of all 1,121 rectangles cut the region of admissible centres into finitely
 many open **event cells**, and inside one event cell exactly the same atoms are covered,
@@ -291,7 +291,7 @@ certificate’s frozen bytes, agreeing on $4001/4000$ to the digit.
 A **site** and a square **pose** play different roles.
 A site is a point where the search may put an atom.
 A pose is one square at one centre and angle.
-In the proof regime above, the admissible side-$B$ net squares form a family containing
+In the proof regime above, the admissible side-`B` net squares form a family containing
 all the strict inner cores used by the proof.
 Choose a finite site set $\mathcal{X}$ and a finite pose set $\mathcal{P}$. The covering
 linear program is
@@ -317,7 +317,7 @@ Adding a row can raise the covering objective.
 objective can fall or stay fixed.
 The finished certificate still needs the shrink, boundary, and all-angle arguments
 already given above.
-In particular, its closed side-$B$ cores lie strictly inside the physical unit squares;
+In particular, its closed side-`B` cores lie strictly inside the physical unit squares;
 otherwise two touching physical squares could share a boundary atom and invalidate the
 counting sum.
 
@@ -378,7 +378,7 @@ in the continuum. The dated
 [exp-134 protocol](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-134-paired-full-support-pricing.md)
 is published but unrun, so it carries no verdict.
 That experiment transports the retained state to unit-square poses for a pricing
-mechanism test; it is not the side-$B$ primal-cover theorem used by T-018.
+mechanism test; it is not the side-`B` primal-cover theorem used by T-018.
 
 The threshold explains what either side can eventually prove.
 An exact atomic cover of all admissible strict cores with total mass below 11, together
@@ -425,7 +425,7 @@ unknown.
 
 ![Diagram of four green guaranteed footprints and five red dots: eleven squares minus four owners leaves seven residual cores, but disjoint cores cannot share any of the five dots.](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/four-owner-five-dot.svg)
 
-*The proved five-dot exclusion for one selected four-owner branch at $L = 96/25$. The
+*The proved five-dot exclusion for one selected four-owner branch at `L = 96/25`. The
 corner shapes are the regions guaranteed to lie in the four owner cores; the five dots
 pierce every selected remaining net core.
 The drawing explains the logic; the linked records supply the exact check and the
@@ -619,9 +619,9 @@ compression must be checked on its own contact structure.
 
 ![The high-precision Kingbird packing of twenty-nine unit squares.](packing/atlas/rendering/kingbird29-overview.svg)
 
-*The reported $n = 29$ record is a useful larger-scale check: six orientation classes
+*The reported `n = 29` record is a useful larger-scale check: six orientation classes
 across 29 squares. The retained roughly 100-digit source is evaluated at 160 decimal
-digits of working precision and passes all 406 pair checks at tolerance $10^{-80}$; that
+digits of working precision and passes all 406 pair checks at tolerance `1e-80`; that
 numerically checks the construction without verifying it or turning it into an exact
 certificate or an optimality proof.*
 
@@ -794,8 +794,8 @@ $\varphi(a)$ is not smooth at its minimum.
 Refined finite differences give one-sided rise rates of about $0.1747$ to the left and
 $0.384$ to the right per radian, stable over five decades.
 In the conventional signed derivative, these are about $-0.1747$ and $+0.384$. Two
-independent LP formulations agree: $0.1747$/$0.3839$ at a ratio of $2.1973$, and
-$0.1747$/$0.3841$ at a ratio of $2.198$. **The derivative does not vanish at the
+independent LP formulations agree: $0.1747$/`0.3839` at a ratio of $2.1973$, and
+$0.1747$/`0.3841` at a ratio of $2.198$. **The derivative does not vanish at the
 optimum; it jumps.**
 
 **Why.** Where the LP’s optimal *basis* is locally constant, $\varphi$ is smooth and its
@@ -887,7 +887,7 @@ That is the standing reason it stays out of the search loop.
 The useful frame is three budgets rather than one.
 An *agent* tier at 1–10 s per operation, where a proof or a verification lives and
 nothing needs optimising; an *interactive* tier at 10 ms–1 s; and an *inner loop* at 10
-ns–1 µs executed $10^9$–$10^{12}$ times, which is `f64` and always will be.
+ns–1 µs executed $10^9$–`1e12` times, which is `f64` and always will be.
 Screen in floating point, refine in floating point, decide in the number field.
 
 ### The number field
@@ -1112,7 +1112,7 @@ algebra can solve and the complete packing can be independently rechecked.
 **The two guesses, and why they matter more than the algebra.**
 
 - *The contact structure.* Step 2 decided that a residual separation at the solver
-  floor—$10^{-11}$ and below—is exactly zero.
+  floor—`1e-11` and below—is exactly zero.
   It might not be. Nothing in steps 3–5 rechecks this, so the reconstruction must be
   re-verified independently—numerical proximity does not guarantee algebraic
   correctness.
@@ -1444,13 +1444,13 @@ appear inside $o_{ik}$.
 | $K$ | square | The candidate container $[0, L]^2$ a lower-bound certificate rules out |
 | $L$ | positive rational | A candidate container side; $381/100$ in T-018 and $96/25$ in the cited ownership work |
 | $z$, $w(z)$ | point, nonnegative rational | An atom’s location and its weight |
-| $Q$ | region | A region whose atomic mass is being measured, usually a closed side-$B$ square |
+| $Q$ | region | A region whose atomic mass is being measured, usually a closed side-`B` square |
 | $\mu$ | atomic measure | $\mu(Q)$ is the sum of $w(z)$ over the atoms $z$ in $Q$ |
 | $\mathcal{X}$, $\mathcal{P}$ | finite sets | The held atom sites and held square poses in a covering LP |
 | $y(Q)$ | nonnegative real | The dual weight assigned to held pose $Q$ |
 | `depth_y(x)` | nonnegative real | The sum of $y(Q)$ over held poses containing point $x$; pricing searches for an absent site where it exceeds one |
 | $B$ | positive rational | The shrunken square side in a certificate; $9977/10000$ in T-018 |
-| $P_j$ | square | The closed side-$B$ square placed strictly inside packed unit square $j$ |
+| $P_j$ | square | The closed side-`B` square placed strictly inside packed unit square $j$ |
 | $t_r$, $\theta_r$ | rational, angle | A net direction’s half-angle tangent and the direction itself: $\theta_r = 2 \arctan(t_r)$ |
 | $d$ | angle | The difference between a square’s reduced orientation and the nearest net direction |
 | $D$ | nonnegative rational | The largest tangent of a half-gap between adjacent net directions |
@@ -1556,7 +1556,7 @@ records, while the original 1979 communication is not, and Bidwell’s 1998 reco
 likewise has no retained first-party document:
 
 - Stromquist (2003), *Packing 10 or 11 unit squares in a square*—the $s(10)$ proof, the
-  $s(11)$ lower-bound value, and the $0^{\circ}$/$45^{\circ}$ class bound
+  $s(11)$ lower-bound value, and the $0^{\circ}$/`45°` class bound
 - Trump (1979), the $n = 11$ construction that is still the standing upper bound
 - Friedman, *Packing Unit Squares in Squares: A Survey and New Results* (DS7)—the survey
   the frontier corpus is checked against

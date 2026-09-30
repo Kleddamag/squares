@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# ruff: noqa: RUF001 -- the page sets curly apostrophes, and the math converter's subject is
+# the register's mathematical Unicode: minus and multiplication signs, a Greek rho.
 """The overview page, the site's front door, rendered into the shared site shell.
 
 Its prose lives in `templates/overview-article.md`, reviewed as prose and formatted by
@@ -58,10 +60,11 @@ from devtools.overview_data import (
     Result,
     ResultGroup,
     RungCount,
+    SourceRelease,
 )
 from devtools.overview_media import Film, Preview
 from devtools.reader_documents import ReaderDocument
-from devtools.site_kit import REPO_URL, SITE_NAME, TEMPLATES, Page
+from devtools.site_kit import SITE_NAME, TEMPLATES, Page
 
 TEMPLATE = TEMPLATES / "overview-article.md"
 REPO = Path(__file__).resolve().parents[2]
@@ -221,7 +224,14 @@ def media() -> Media:
     )
 
 
-def pages() -> Iterable[Page]:
+def pages(commit: str) -> Iterable[Page]:
+    """The overview, for `render_overview`, which names the build commit.
+
+    The page writes no repository link of its own: its record links are the permalinks
+    `overview_data` builds, and its document cards name the default branch, as the
+    published-site ref rule allows for exactly the links the data island lists.
+    """
+    del commit
     yield Page(
         key="overview",
         path="index.html",
@@ -279,8 +289,23 @@ _GREEK_WORDS = re.compile(r"(?<![A-Za-z\\])(rho|theta|phi|alpha|beta|delta)(?![A
 _SUBSCRIPT_WORD = re.compile(r"_([A-Za-z]{2,})")
 _ROOT_TOKEN = re.compile(r"√([0-9A-Za-z.]+)")
 #: A register code span that names something rather than states it: a result, evidence
-#: or session id, a rung. It stays code, as the math migration's rule has it.
-_IDENTIFIER = re.compile(r"^(?:[A-Z]{1,3}-[\w.-]+|[VCS]\d|[a-z_]+\.[a-z_.]+)$")
+#: or session id, a rung, a module or a file. It stays code, as the math migration's
+#: rule has it.
+_IDENTIFIER = re.compile(
+    r"^(?:[A-Z]{1,3}-[\w.-]+|[VCS]\d|[\w./-]+\.[a-z]{1,4}|[a-z_]\w*(?:\.\w+)+"
+    r"|[\w.-]*[A-Za-z]{2}[\w.-]*/[\w./-]*)$"
+)
+#: What makes a code span mathematics: a digit, a relation or an operator, or a lone
+#: variable (`n`, `k`, `rho`, `U_hi`).
+_MATH_SIGN = re.compile(r"[0-9=<>≤≥≠≈√…^+−×·⌈⌉⌊⌋ρ/()\[\]]")
+_VARIABLE = re.compile(r"^[A-Za-z]{1,3}(?:_[A-Za-z0-9]+)?$")
+
+
+def looks_like_math(code: str) -> bool:
+    """Whether a code span states mathematics rather than naming a record or a file."""
+    if _IDENTIFIER.match(code):
+        return False
+    return bool(_MATH_SIGN.search(code) or _VARIABLE.match(code))
 
 
 def _root_groups(text: str) -> str:
@@ -309,10 +334,12 @@ def _root_groups(text: str) -> str:
 def ascii_tex(text: str) -> str:
     """The register's plain mathematics (`s(11) ≥ 2 + 4/√5`) as TeX.
 
-    The register and its headlines write mathematics as Unicode text in code spans;
-    Phase 3 of the plan moves the prose to LaTeX, and until then the page converts the
-    few symbols the register uses rather than showing them as code.
+    The register and its headlines write mathematics as Unicode text in code spans, and
+    a case record's exact form as ASCII (`2 + 4/sqrt(5)`); Phase 3 of the plan moves the
+    prose to LaTeX, and until then the page converts the few symbols the record uses
+    rather than showing them as code.
     """
+    text = re.sub(r"\*?\s*sqrt\(", "√(", text).replace("*", r" \cdot ")
     tex = _root_groups(text)
     tex = _ROOT_TOKEN.sub(r"\\sqrt{\1}", tex)
     for symbol, replacement in _TEX_SYMBOLS:
@@ -337,7 +364,7 @@ def inline_html(text: str) -> str:
             out.append(math_html(match["tex"]))
             continue
         code = match["code"]
-        if _IDENTIFIER.match(code):
+        if not looks_like_math(code):
             out.append(f"<code>{escape(code)}</code>")
             continue
         try:
@@ -345,7 +372,28 @@ def inline_html(text: str) -> str:
         except Exception:  # noqa: BLE001 -- latex2mathml raises bare parse errors
             out.append(f"<code>{escape(code)}</code>")
     out.append(escape(text[cursor:]))
-    return "".join(out)
+    return keep_punctuation("".join(out))
+
+
+#: An inline formula as kpress writes it, and the punctuation straight after it.
+_FORMULA_THEN_MARK = re.compile(
+    r'(<span class="kpress-math kpress-math-inline"[^>]*>.*?</math></span></span>)'
+    r"(?=[.,;:!?)\]’”])",
+    re.DOTALL,
+)
+#: U+2060 WORD JOINER: no line break here, and nothing drawn.
+WORD_JOINER = "&#8288;"
+
+
+def keep_punctuation(html: str) -> str:
+    """Keep the punctuation after an inline formula on the formula's line.
+
+    A formula is an inline box, and a line may break between a box and the colon or
+    comma after it, which at phone width leaves the mark alone at the start of a line. A
+    word joiner between them forbids that break without stopping the formula itself from
+    breaking at its relations, as `white-space: nowrap` would.
+    """
+    return _FORMULA_THEN_MARK.sub(rf"\1{WORD_JOINER}", html)
 
 
 def plain_text(text: str) -> str:
@@ -357,14 +405,28 @@ def decimal_tex(decimal: str) -> str:
     return decimal.replace("…", r"\ldots")
 
 
+def long_exact(bound: Bound) -> bool:
+    """Whether a bound's exact form is too long to set whole in a card or a summary line."""
+    return (
+        len(bound.exact) > EXACT_ON_CARD
+        or re.fullmatch(r"\d+\.\d{6,}", bound.exact) is not None
+    )
+
+
 def bound_tex(bound: Bound) -> str:
-    """A bound as a card shows it: the exact form when it is short, and the decimal."""
+    """A bound as a card shows it: the exact form when it is short, and the decimal.
+
+    A card is running text, so its fraction keeps the record's inline slash
+    (`s(11) > 31/8 = 3.875`); the table's expanded row sets the exact form as
+    `Bound.tex` has it.
+    """
     relation = RELATION_TEX.get(bound.relation, bound.relation)
-    if len(bound.exact) > EXACT_ON_CARD:
-        return f"s({bound.n}) {relation} {decimal_tex(bound.decimal)}"
+    lead = f"s({bound.n}) {relation}"
+    if long_exact(bound):
+        return f"{lead} {decimal_tex(bound.decimal)}"
     if bound.decimal and bound.decimal != bound.exact:
-        return f"{bound.tex} = {decimal_tex(bound.decimal)}"
-    return bound.tex
+        return f"{lead} {ascii_tex(bound.exact)} = {decimal_tex(bound.decimal)}"
+    return f"{lead} {ascii_tex(bound.exact)}"
 
 
 # ── Small components ────────────────────────────────────────────────────────────────
@@ -379,11 +441,15 @@ def goes(href: str) -> str:
     return "page"
 
 
-def chip(label: str, *, title: str | None = None, tone: str | None = None) -> str:
+def chip(
+    label: str, *, title: str | None = None, tone: str | None = None, wrap: bool = False
+) -> str:
     """One badge in the site's one chip component."""
     attributes = ['class="site-chip"']
     if tone:
         attributes.append(f'data-tone="{escape(tone)}"')
+    if wrap:
+        attributes.append("data-wrap")
     if title:
         attributes.append(f'title="{escape(title)}"')
     return f"<span {' '.join(attributes)}>{escape(label)}</span>"
@@ -400,15 +466,58 @@ def rung_chip(axis: str, rung: int, *, title: str | None = None) -> str:
 
 
 def star_chip(title: str) -> str:
-    return f'<span class="site-chip site-chip-star" title="{escape(title)}">recent</span>'
+    """The recent star: a chip with a drawn star, its word kept for screen readers."""
+    return (
+        f'<span class="site-chip site-chip-star" title="{escape(title)}">'
+        '<span class="site-visually-hidden">recent</span></span>'
+    )
 
 
-def link(item: Link) -> str:
-    return f'<a href="{escape(item.url)}">{escape(item.label)}</a>'
+def link(item: Link, label: str | None = None) -> str:
+    title = f' title="{escape(item.label)}"' if label and label != item.label else ""
+    return f'<a href="{escape(item.url)}"{title}>{escape(label or item.label)}</a>'
 
 
 def links(items: Sequence[Link], *, separator: str = " · ") -> str:
     return separator.join(link(item) for item in items)
+
+
+#: The records column names the rest of an entry's records by their kind; each link's
+#: full name is its tooltip, and the expanded row lists every link by its full name.
+RECORD_NAMES = {
+    "register": "register",
+    "evidence": "evidence",
+    "review": "review",
+    "source": "source",
+    "artifact": "artifact",
+    "control": "control",
+}
+_CASE_FILE = re.compile(r"^n-0*(\d+)\.md$")
+
+
+def record_links(items: Sequence[Link]) -> str:
+    """The records column, one line per kind: the case files by `n`, the register entry,
+    then the evidence entries, reviews and source copies, numbered when there are several."""
+    kinds: dict[str, list[Link]] = {}
+    for item in items:
+        kinds.setdefault(item.kind if item.kind in RECORD_NAMES else "", []).append(item)
+    lines: list[str] = []
+    cases = [item for item in kinds.pop("", []) if _CASE_FILE.match(item.label)]
+    others = [item for item in items if item.kind not in RECORD_NAMES and item not in cases]
+    if cases:
+        numbers = ", ".join(
+            link(item, match[1]) for item in cases if (match := _CASE_FILE.match(item.label))
+        )
+        lines.append(f"{math_html('n')} = {numbers}")
+    lines.extend(link(item) for item in others)
+    for kind, name in RECORD_NAMES.items():
+        group = kinds.get(kind, [])
+        if len(group) == 1:
+            lines.append(link(group[0], name))
+        elif group:
+            numbered = " ".join(link(item, str(index)) for index, item in enumerate(group, 1))
+            lines.append(f"{name} {numbered}")
+    return "<br>".join(lines)
 
 
 def card_link(href: str, content: str, *, popover: str | None = None) -> str:
@@ -424,9 +533,13 @@ def card_link(href: str, content: str, *, popover: str | None = None) -> str:
 
 
 def display_date(iso: str | None) -> str:
+    """`2026-09-22` as `22 September 2026`; a year or a month alone is printed as given."""
     if not iso:
         return ""
-    day = date.fromisoformat(iso)
+    try:
+        day = date.fromisoformat(iso)
+    except ValueError:
+        return iso
     return f"{day.day} {day:%B %Y}"
 
 
@@ -480,6 +593,19 @@ def _headline_rest(result: Result) -> str:
     return result.headline[match.end() :]
 
 
+def short_headline(result: Result) -> str:
+    """The headline with a long exact form shown by its decimal, as a card shows it.
+
+    The table's summary line and a card both need to wrap in a narrow column, and a
+    radical of forty digits does not; the expanded row sets the exact form in full.
+    """
+    if result.bound is None or not long_exact(result.bound):
+        return inline_html(result.headline)
+    rest = _headline_rest(result)
+    lead = math_html(bound_tex(result.bound))
+    return f"{lead}, {inline_html(rest)}" if rest else lead
+
+
 def result_card(result: Result, titles: dict[str, str]) -> str:
     if result.bound is not None:
         title = math_html(bound_tex(result.bound))
@@ -492,14 +618,18 @@ def result_card(result: Result, titles: dict[str, str]) -> str:
     meta.append(f"{math_html('n')} = {escape(result.cases)}")
     if when:
         meta.append(escape(display_date(when)))
+    source = "ours" if result.ours else "others"
     parts = [
-        f'<article class="site-card site-card-result" data-source='
-        f'"{"ours" if result.ours else "others"}">',
-        '<div class="site-card-head">'
-        f'<p class="site-card-meta">{" · ".join(meta)}</p>'
-        f'<p class="site-chips">{result_rungs(result, titles)}</p></div>',
-        '<h3 class="site-card-title">'
-        f"{card_link('#' + result_anchor(result), title, popover='result')}</h3>",
+        f'<article class="site-card site-card-result" data-source="{source}">',
+        (
+            '<div class="site-card-head">'
+            f'<p class="site-card-meta">{" · ".join(meta)}</p>'
+            f'<p class="site-chips">{result_rungs(result, titles)}</p></div>'
+        ),
+        (
+            '<h3 class="site-card-title">'
+            f"{card_link('#' + result_anchor(result), title, popover='result')}</h3>"
+        ),
     ]
     if rest:
         parts.append(f'<p class="site-card-summary">{inline_html(rest)}</p>')
@@ -510,12 +640,11 @@ def result_card(result: Result, titles: dict[str, str]) -> str:
     if result.ai_assistance:
         parts.append(
             '<p class="site-card-note">AI assistance, in the source’s words: '
-            f"{escape(result.ai_assistance)}</p>"
+            f"{inline_html(result.ai_assistance)}</p>"
         )
     if result.superseded_by:
         parts.append(
-            f'<p class="site-card-note">Superseded; the case is now held by '
-            f"{inline_html(result.superseded_by)}.</p>"
+            f'<p class="site-card-note">Now held by {inline_html(result.superseded_by)}.</p>'
         )
     chips = standing_chips(result)
     if chips:
@@ -551,8 +680,11 @@ def row_flags(result: Result) -> str:
 def details_body(result: Result) -> str:
     """The expanded row: the full claim, how it composes, and what would raise it."""
     parts = [f"<p><strong>Claim.</strong> {inline_html(result.claim)}</p>"]
-    if result.bound is not None and len(result.bound.exact) > EXACT_ON_CARD:
-        parts.append(f"<p><strong>Exact form.</strong> {math_html(result.bound.tex)}</p>")
+    if result.bound is not None and long_exact(result.bound):
+        parts.append(
+            f'<p class="site-details-math"><strong>Exact form.</strong> '
+            f"{math_html(result.bound.tex)}</p>"
+        )
     standing = result.standing
     if standing and standing != render_recent_results.NOT_A_BOUND:
         text = escape(standing)
@@ -567,6 +699,8 @@ def details_body(result: Result) -> str:
         parts.append(f"<p><strong>Records.</strong> {links(result.records)}</p>")
     if result.artifacts:
         parts.append(f"<p><strong>Artifacts.</strong> {links(result.artifacts)}</p>")
+    if result.controls:
+        parts.append(f"<p><strong>Controls.</strong> {links(result.controls)}</p>")
     return f'<div class="site-details-body">{"".join(parts)}</div>'
 
 
@@ -580,32 +714,42 @@ def result_row(result: Result, titles: dict[str, str]) -> str:
     if result.ai_assistance:
         credit += (
             f'<span class="site-cell-note">AI assistance, in the source’s words: '
-            f"{escape(result.ai_assistance)}</span>"
+            f"{inline_html(result.ai_assistance)}</span>"
         )
-    recent = star_chip("Recent: dated on or after the recent-results cut") if result.recent else ""
+    recent = (
+        star_chip("Recent: dated on or after the recent-results cut") if result.recent else ""
+    )
     novelty = NOVELTY_LABELS.get(result.novelty, result.novelty)
+    rungs = "".join(
+        f'<td class="site-col-rung" data-value="{rung}">'
+        f"{rung_chip(axis, rung, title=titles.get(f'{axis}{rung}'))}</td>"
+        for axis, rung in (("V", verification), ("C", confirmation), ("S", result.significance))
+    )
+    anchor = result_anchor(result)
+    identifier = f'<a class="site-row-id" href="#{anchor}">{escape(result.id)}</a>{recent}'
+    headline = (
+        f"<details><summary>{short_headline(result)}</summary>{details_body(result)}</details>"
+    )
+    dated = f'{escape(when or "\u2014")}<span class="site-cell-note">{when_label}</span>'
     cells = [
-        f'<td data-value="{escape(result.id[2:])}"><a class="site-row-id" '
-        f'href="#{result_anchor(result)}">{escape(result.id)}</a>{recent}</td>',
-        f'<td data-value="{low}">{escape(result.cases)}</td>',
-        f'<td class="site-col-result" data-value="{escape(plain_text(result.headline))}">'
-        f"<details><summary>{inline_html(result.headline)}</summary>"
-        f"{details_body(result)}</details></td>",
-        f'<td data-value="{escape(result.credit)}">{credit}</td>',
-        f'<td class="site-col-rung" data-value="{verification}">'
-        f"{rung_chip('V', verification, title=titles.get(f'V{verification}'))}</td>",
-        f'<td class="site-col-rung" data-value="{confirmation}">'
-        f"{rung_chip('C', confirmation, title=titles.get(f'C{confirmation}'))}</td>",
-        f'<td class="site-col-rung" data-value="{result.significance}">'
-        f"{rung_chip('S', result.significance, title=titles.get(f'S{result.significance}'))}"
-        "</td>",
-        f'<td data-value="{escape(novelty)}">{chip(novelty, tone="muted")}</td>',
-        f'<td class="site-col-date" data-value="{escape(when or "")}">'
-        f"{escape(when or '—')}"
-        f'<span class="site-cell-note">{when_label}</span></td>',
-        f'<td class="site-col-date" data-value="{escape(result.registered)}">'
-        f"{escape(result.registered)}</td>",
-        f'<td class="site-col-records">{links(result.records, separator="<br>")}</td>',
+        f'<td class="site-col-id" data-value="{escape(result.id[2:])}">{identifier}</td>',
+        f'<td class="site-col-n" data-value="{low}">{escape(result.cases)}</td>',
+        (
+            f'<td class="site-col-result" data-value="{escape(plain_text(result.headline))}">'
+            f"{headline}</td>"
+        ),
+        f'<td class="site-col-credit" data-value="{escape(result.credit)}">{credit}</td>',
+        rungs,
+        (
+            f'<td class="site-col-novelty" data-value="{escape(novelty)}">'
+            f"{chip(novelty, tone='muted', wrap=True)}</td>"
+        ),
+        f'<td class="site-col-date" data-value="{escape(when or "")}">{dated}</td>',
+        (
+            f'<td class="site-col-date" data-value="{escape(result.registered)}">'
+            f"{escape(result.registered)}</td>"
+        ),
+        f'<td class="site-col-records">{record_links(result.records)}</td>',
     ]
     attributes = (
         f'id="{result_anchor(result)}" data-source="{"ours" if result.ours else "others"}" '
@@ -624,7 +768,7 @@ TABLE_HEADER = (
     ("number", "site-col-rung", "C"),
     ("number", "site-col-rung", "S"),
     ("text", "site-col-novelty", "Novelty"),
-    ("text", "site-col-date", "Established or published"),
+    ("text", "site-col-date", "Date"),
     ("text", "site-col-date", "Registered"),
     ("", "site-col-records", "Records"),
 )
@@ -635,7 +779,7 @@ def table_filters() -> str:
     c_options = "".join(f'<option value="{rung}">C{rung}</option>' for rung in range(6))
     return (
         f'<div class="site-table-filters site-wide" data-filters-for="{RESULTS_TABLE_ID}" '
-        'hidden>'
+        "hidden>"
         '<label>Source <select data-filter="source"><option value="">All</option>'
         '<option value="ours">This project</option><option value="others">Others</option>'
         "</select></label>"
@@ -669,9 +813,10 @@ def results_table(groups: Sequence[ResultGroup], titles: dict[str, str]) -> str:
         )
     return (
         f"{table_filters()}\n"
-        '<div class="kpress-table-wrap site-table-wrap site-wide" '
+        '<div class="kpress-table-wrap site-table-wrap" '
         'data-kpress-table-scale="wide">'
-        f'<table class="kpress-table site-table" data-site-table id="{RESULTS_TABLE_ID}">'
+        '<table class="kpress-table site-table site-table-fixed" data-site-table '
+        f'id="{RESULTS_TABLE_ID}">'
         f"<thead><tr>{header}</tr></thead>\n" + "\n".join(bodies) + "</table></div>"
     )
 
@@ -681,8 +826,9 @@ def results_table(groups: Sequence[ResultGroup], titles: dict[str, str]) -> str:
 
 def axis_card(axis: str, name: str, summary: str, counts: Sequence[RungCount]) -> str:
     rows = "".join(
-        f"<tr><th scope=\"row\">{rung_chip(axis, count.rung, title=count.definition)}"
-        f"<span>{escape(count.label)}</span></th>"
+        f'<tr><th scope="row"><span class="site-rung-cell">'
+        f"{rung_chip(axis, count.rung, title=count.definition)}"
+        f"<span>{escape(count.label)}</span></span></th>"
         f'<td data-count="{count.ours}">{count.ours}</td>'
         f'<td data-count="{count.others}">{count.others}</td></tr>'
         for count in sorted(counts, key=lambda count: count.rung, reverse=True)
@@ -743,7 +889,7 @@ def preview_card(preview: Preview) -> str:
         f'<img src="{escape(preview.image)}" width="{preview.width}" '
         f'height="{preview.height}" alt="{escape(preview.alt)}" loading="lazy" '
         'decoding="async">'
-        f'<figcaption>{card_link(preview.pdf, caption)}</figcaption></figure>'
+        f"<figcaption>{card_link(preview.pdf, caption)}</figcaption></figure>"
     )
 
 
@@ -753,10 +899,11 @@ def film_figure(film: Film) -> str:
         f'<video controls preload="none" playsinline poster="{escape(film.poster)}" '
         f'width="{film.width}" height="{film.height}">'
         f'<source src="{escape(film.src)}" type="{escape(film.type)}"></video>'
-        '<figcaption>The ascent from one square to 324, one case at a time: '
-        f"{escape(film.duration)}, {escape(film.size)}, edition {escape(film.edition)}, "
-        f"as released in {escape(film.release)}. "
-        f'<a href="{escape(film.src)}">Open the MP4</a>.</figcaption></figure>'
+        "<figcaption>The ascent through every case of the atlas, one at a time: "
+        f"{escape(film.duration)}, {escape(film.size)}, edition {escape(film.edition)}. "
+        f'<a href="{escape(film.src)}">Open the MP4</a>; the '
+        f'<a href="{escape(film.release)}">release</a> is the archive of record, with its '
+        "receipts.</figcaption></figure>"
     )
 
 
@@ -779,10 +926,10 @@ def atlas_media(previews: Sequence[Preview], film: Film) -> str:
 
 
 def page_card(card: PageCard, explainer: ExplainerEdition) -> str:
+    title = card_link(card.href, escape(card.title), popover="page")
     parts = [
         '<article class="site-card site-card-page">',
-        f'<h3 class="site-card-title">{card_link(card.href, escape(card.title), popover="page")}'
-        "</h3>",
+        f'<h3 class="site-card-title">{title}</h3>',
         f'<p class="site-card-summary">{escape(card.summary)}</p>',
     ]
     if card.href == "explainer.html":
@@ -859,12 +1006,14 @@ def opening_html(path: str) -> str:
 
 
 def document_card(document: ReaderDocument) -> str:
-    meta: list[str] = [f"<code>{escape(document.path)}</code>"]
+    meta: list[str] = ["On GitHub" if goes(document.url) == "out" else "On this site"]
     if document.date:
         meta.append(escape(display_date(document.date)))
-    chips = chip("dated record", tone="muted", title="Kept as a record of its date") if (
-        document.dated
-    ) else ""
+    chips = (
+        chip("dated record", tone="muted", title="Kept as a record of its date")
+        if (document.dated)
+        else ""
+    )
     external = goes(document.url) == "out"
     preview = (
         f'<template class="site-card-preview">{opening_html(document.path)}</template>'
@@ -876,8 +1025,8 @@ def document_card(document: ReaderDocument) -> str:
         f'<article class="site-card site-card-document" data-group="{document.group}">'
         f'<p class="site-card-meta">{" · ".join(meta)} {chips}</p>'
         '<h3 class="site-card-title">'
-        f"{card_link(document.url, escape(document.title), popover=popover)}</h3>"
-        f'<p class="site-card-summary">{escape(document.summary)}</p>'
+        f"{card_link(document.url, inline_html(document.title), popover=popover)}</h3>"
+        f'<p class="site-card-summary">{inline_html(document.summary)}</p>'
         f"{preview}</article>"
     )
 
@@ -906,26 +1055,30 @@ def read_further(explainer: ExplainerEdition, documents: Sequence[ReaderDocument
 # ── Other square packing projects ───────────────────────────────────────────────────
 
 
+def release_item(release: SourceRelease) -> str:
+    """One reviewed release: its link, its dates, its retained copy, and whether the
+    record treats it as superseded by a later one."""
+    text = f'<a href="{escape(release.url)}">{escape(release.title)}</a>'
+    if release.published:
+        text += f", published {escape(release.published)}"
+    text += f", reviewed {escape(release.reviewed)}"
+    if release.archive is not None:
+        text += f' (<a href="{escape(release.archive.url)}">retained copy</a>)'
+    if release.superseded:
+        text += " " + chip("superseded", tone="muted", title="Covered by a later release")
+    return f"<li>{text}</li>"
+
+
 def source_card(source: NotableSource) -> str:
     parts = [
         f'<article class="site-card site-card-source" data-kind="{source.kind}">',
         f'<p class="site-card-meta">{escape(KIND_LABELS.get(source.kind, source.kind))}</p>',
-        f'<h3 class="site-card-title">{card_link(source.url, escape(source.title))}</h3>',
+        f'<h3 class="site-card-title">{card_link(source.url, inline_html(source.title))}</h3>',
         f'<p class="site-card-credit">{escape(source.credit)}</p>',
-        f'<p class="site-card-summary">{escape(source.summary)}</p>',
+        f'<p class="site-card-summary">{inline_html(source.summary)}</p>',
     ]
     if source.releases:
-        items = "".join(
-            f'<li><a href="{escape(release.url)}">{escape(release.title)}</a>, reviewed '
-            f"{escape(release.reviewed)}"
-            + (
-                " " + chip("superseded", tone="muted", title="Covered by a later release")
-                if release.superseded
-                else ""
-            )
-            + "</li>"
-            for release in source.releases
-        )
+        items = "".join(release_item(release) for release in source.releases)
         parts.append(f'<ul class="site-card-list">{items}</ul>')
     extras: list[str] = []
     if source.archive is not None:
@@ -1047,7 +1200,9 @@ def with_section_ids(html: str) -> str:
     if found != expected:
         raise SystemExit(f"{TEMPLATE.name}: sections {found} are not the page's {expected}")
     for (slug, heading), (anchor, _) in zip(_sections(html), SECTIONS, strict=True):
-        html = html.replace(f'<h2 id="{slug}">{heading}</h2>', f'<h2 id="{anchor}">{heading}</h2>')
+        html = html.replace(
+            f'<h2 id="{slug}">{heading}</h2>', f'<h2 id="{anchor}">{heading}</h2>'
+        )
     return html
 
 
@@ -1077,6 +1232,7 @@ def render(
         if html.count(paragraph) != 1:
             raise SystemExit(f"{TEMPLATE.name}: {{{{{key}}}}} must stand alone in a paragraph")
         html = html.replace(paragraph, value)
+    html = keep_punctuation(html)
     left = _PLACEHOLDER.findall(html)
     if left:
         raise SystemExit(f"{TEMPLATE.name}: placeholders left in the page: {sorted(left)}")

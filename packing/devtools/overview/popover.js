@@ -28,7 +28,7 @@
   };
 
   const dialog = document.createElement("dialog");
-  dialog.className = "site-popover";
+  dialog.className = "kpress site-popover";
   const bar = document.createElement("div");
   bar.className = "site-popover-bar";
   const title = document.createElement("span");
@@ -36,7 +36,8 @@
   const expand = document.createElement("a");
   expand.className = "site-popover-button site-popover-expand";
   const expandLabel = document.createElement("span");
-  expand.append(icon("maximize"), expandLabel);
+  const expandIcon = icon("maximize");
+  expand.append(expandIcon, expandLabel);
   const close = document.createElement("button");
   close.type = "button";
   close.className = "site-popover-button site-popover-close";
@@ -84,7 +85,7 @@
    * What each kind of card shows, or null to let the link navigate.
    * @param {HTMLAnchorElement} link
    * @param {Element} card
-   * @returns {{ label: string, heading: string, nodes: Node[] } | null}
+   * @returns {{ label: string, icon: string, heading: string, nodes: Node[] } | null}
    */
   const content = (link, card) => {
     const kind = link.getAttribute("data-popover");
@@ -98,6 +99,7 @@
       const id = card.querySelector(".site-card-id")?.textContent ?? heading;
       return {
         label: "Show in the table",
+        icon: "list",
         heading: id,
         nodes: [cardCopy(card), record.cloneNode(true)],
       };
@@ -107,7 +109,7 @@
       frame.className = "site-popover-frame";
       frame.src = link.href;
       frame.title = heading;
-      return { label: "Open the page", heading, nodes: [frame] };
+      return { label: "Open the page", icon: "maximize", heading, nodes: [frame] };
     }
     if (kind === "document") {
       const preview = card.querySelector("template.site-card-preview");
@@ -117,7 +119,12 @@
       const prose = document.createElement("div");
       prose.className = "kpress kpress-prose site-popover-prose";
       prose.append(preview.content.cloneNode(true));
-      return { label: "Open on GitHub", heading, nodes: [cardCopy(card), prose] };
+      return {
+        label: "Open on GitHub",
+        icon: "external-link",
+        heading,
+        nodes: [cardCopy(card), prose],
+      };
     }
     return null;
   };
@@ -153,6 +160,7 @@
     title.textContent = shown.heading;
     expand.href = link.href;
     expandLabel.textContent = shown.label;
+    expandIcon.firstElementChild?.setAttribute("href", `#kpress-icon-${shown.icon}`);
     body.replaceChildren(...shown.nodes);
     body.scrollTop = 0;
     dialog.showModal();

@@ -9,8 +9,9 @@
      `--kpress-*` token or a `--site-*` token derived from them in this file, so the
      sheet follows the reader's theme and kpress's print reset without a rule of its own.
    - Scoped. Every selector names a `site-` class or the `data-site-page` attribute the
-     site shell stamps on <html>. The explainer carries the navigation bar and this
-     sheet, and nothing here can match its article, its figures or its math.
+     site shell stamps on <html>, so nothing here can match the explainer's article, its
+     figures or its math. The explainer carries the navigation bar with a copy of the
+     bar's rules in its own shell; a change to the bar here is made there too.
    - Square. Cards, chips, controls and the popover have square corners
      (`--kpress-radius-none`), like the explainer's figures. */
 
@@ -72,7 +73,7 @@
 }
 
 /* Prose keeps the measure; the blocks marked wide take the whole track. */
-.site-page > :not(.site-wide) {
+.site-page > :not(.site-wide, .site-hero, .kpress-table-wrap) {
   margin-inline: auto;
   max-width: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
 }
@@ -91,6 +92,10 @@
 .site-page > .site-group-title {
   margin-block: 1.8rem 0.6rem;
   text-align: center;
+}
+
+.site-page > .site-group-title {
+  color: var(--kpress-doc-muted);
 }
 
 .site-visually-hidden {
@@ -209,8 +214,8 @@
 
 .site-hero {
   color: var(--kpress-doc-text);
-  margin: 1.5rem auto 0;
-  max-width: min(100%, 20rem);
+  margin: 1.75rem auto 0;
+  max-width: min(100%, 21rem);
 }
 
 .site-hero svg {
@@ -282,7 +287,7 @@
   font-size: var(--kpress-font-size-normal);
   font-style: normal;
   font-variant-caps: normal;
-  font-weight: var(--kpress-font-weight-sans-medium);
+  font-weight: var(--kpress-font-weight-sans-regular);
   letter-spacing: normal;
   line-height: 1.3;
   margin: 0;
@@ -292,8 +297,8 @@
 
 /* The card's one link, stretched over the whole card: the card is the link, and its
    secondary links (records, releases, cases) sit above the stretch. */
-.site-card-link,
-.site-card-link:hover {
+.site-card .site-card-link,
+.site-card .site-card-link:hover {
   color: inherit;
   text-decoration: none;
 }
@@ -393,15 +398,13 @@
   margin-block: 0.1rem;
 }
 
-.site-group-title {
-  color: var(--kpress-doc-muted);
-}
-
-/* The verification cards' rung ladders. */
+/* The verification cards' rung ladders: the rung and its words take the width, the two
+   counts a fixed narrow column each. */
 .site-rung-table {
   border-collapse: collapse;
   font-variant-numeric: tabular-nums;
   margin-block-start: 0.2rem;
+  table-layout: fixed;
   width: 100%;
 }
 
@@ -418,13 +421,25 @@
   border-block-start: 0;
   color: var(--kpress-doc-muted);
   font-size: var(--kpress-font-size-tiny);
+  line-height: 1.2;
+  vertical-align: bottom;
+}
+
+.site-rung-table thead th:not(:first-child) {
+  inline-size: 4.2rem;
 }
 
 .site-rung-table th[scope="row"] {
-  align-items: baseline;
-  display: flex;
-  gap: 0.45rem;
+  font-size: var(--kpress-font-size-smaller);
   text-align: start;
+}
+
+/* The rung and its words, the words hanging beside the badge when they wrap. */
+.site-rung-cell {
+  align-items: baseline;
+  display: grid;
+  gap: 0.4em;
+  grid-template-columns: auto 1fr;
 }
 
 .site-rung-table td[data-count="0"] {
@@ -480,7 +495,7 @@
 }
 
 .site-film {
-  margin-block: 0.5rem 1.5rem;
+  margin: 0.5rem 0 1.5rem;
 }
 
 .site-film video {
@@ -526,8 +541,15 @@
   line-height: normal;
   padding: 0 0.4em;
   text-transform: none;
+  overflow-wrap: normal;
   vertical-align: baseline;
   white-space: nowrap;
+  word-break: normal;
+}
+
+/* A chip whose label is a phrase (a novelty) may wrap between its words. */
+.site-chip[data-wrap] {
+  white-space: normal;
 }
 
 .site-chip[data-tone="muted"] {
@@ -641,6 +663,31 @@
   margin-inline-start: auto;
 }
 
+/* The results table has more columns than the track holds, so on a wide screen it and
+   its filters take the pane, capped and centred on the page, as kpress centres its own
+   wide tables; narrower, the table scrolls inside its wrap. */
+.kpress-doc.site-page {
+  --site-table-width: min(calc(100cqw - 2rem), 76rem);
+}
+
+.site-page > .site-table-wrap,
+.site-page > .site-table-filters {
+  inline-size: var(--site-table-width);
+  left: auto;
+  margin-inline: calc((100% - var(--site-table-width)) / 2);
+  max-width: none;
+  transform: none;
+}
+
+/* The results table is laid out by its header: every column but the result has a set
+   width, and the result takes the rest, never less than its minimum, below which the
+   wrap scrolls. So a long formula wraps in its own column instead of widening the table. */
+.site-page .site-table.site-table-fixed {
+  min-width: 70rem;
+  table-layout: fixed;
+  width: 100%;
+}
+
 .site-table th[data-sort] {
   padding: 0;
 }
@@ -691,28 +738,67 @@
   opacity: 1;
 }
 
-.site-table :is(th, td).site-col-id,
-.site-table :is(th, td).site-col-n,
-.site-table :is(th, td).site-col-rung,
-.site-table :is(th, td).site-col-date {
+.site-table
+  :is(th, td):is(
+    .site-col-id,
+    .site-col-n,
+    .site-col-rung,
+    .site-col-date,
+    .site-col-novelty,
+    .site-col-credit,
+    .site-col-records
+  ) {
   min-width: 0;
+}
+
+.site-table th.site-col-id {
+  inline-size: 5.6rem;
+}
+
+.site-table th.site-col-n {
+  inline-size: 4.6rem;
+}
+
+.site-table th.site-col-credit {
+  inline-size: 9.5rem;
+}
+
+.site-table th.site-col-rung {
+  inline-size: 3.1rem;
+}
+
+.site-table th.site-col-novelty {
+  inline-size: 6.6rem;
+}
+
+.site-table th.site-col-date {
+  inline-size: 6.9rem;
+}
+
+.site-table th.site-col-records {
+  inline-size: 8.2rem;
+}
+
+.site-table th .katex {
+  text-transform: none;
 }
 
 .site-table td.site-col-rung {
   text-align: center;
 }
 
-.site-table td:first-child,
-.site-table td.site-col-date {
+.site-table td:is(.site-col-id, .site-col-date) {
   white-space: nowrap;
 }
 
-.site-table .site-col-result {
-  min-width: 17rem;
+.site-table :is(th, td).site-col-rung {
+  padding-inline: 0.25rem;
 }
 
-.site-table .site-col-records {
-  min-width: 7rem;
+/* A formula wider than its column scrolls inside the cell rather than running under the
+   next one. */
+.site-table-fixed td.site-col-result {
+  overflow-x: auto;
 }
 
 .site-row-id {
@@ -761,8 +847,16 @@
   text-transform: none;
 }
 
+/* kpress lays a summary out as a flex row, which would make every text run and formula
+   of a headline its own column; the headline is one line of text that wraps. */
+.site-table summary {
+  display: block;
+}
+
 .site-table summary::before {
-  flex: none;
+  display: inline-block;
+  margin-inline-end: 0.3em;
+  vertical-align: -0.05em;
 }
 
 .site-table summary:hover {
@@ -783,6 +877,32 @@
 
 .site-details-body a {
   overflow-wrap: anywhere;
+}
+
+/* An expanded row in a narrow column (the frontier atlas's records) keeps a readable
+   width and widens its column rather than setting one word a line. */
+.site-col-records details[open] > .site-details-body {
+  min-width: 16rem;
+}
+
+/* An identifier in a table (an evidence id, a file name) stays whole; its hyphens are
+   part of the name, not places to break it. */
+.site-table code {
+  white-space: nowrap;
+}
+
+/* A formula keeps the punctuation that follows it on its line. kpress sets a formula as
+   an inline box, so a colon or comma after it could wrap alone at phone width; the
+   renderers wrap the pair in this class where that matters. */
+.site-nowrap,
+.frontier-decimal {
+  white-space: nowrap;
+}
+
+/* A long exact form scrolls rather than widening its column. */
+.site-details-math {
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 /* An opt-in for a long table: the wrap scrolls in both directions under a height cap,

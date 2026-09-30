@@ -1,0 +1,30 @@
+# Markdown files whose mathematics is written as LaTeX, not as code spans.
+#
+# Read by `devtools.check_math_markup`, the ratchet that keeps a migrated file migrated:
+# in every file listed under `migrated`, a code span that `devtools.migrate_math` reads
+# as mathematics fails the gate, unless `keep` records why that one span stays code. A
+# file not listed is never read; the check reports how many such files remain, so the
+# backlog is visible without being enforced.
+#
+# A file joins `migrated` in the commit that runs `migrate_math --apply` over it. Its
+# uncertain spans -- ASCII register literals, measurements with units, a character
+# discussed rather than used -- stay code and never fail the check, and the renderers'
+# generated blocks inside a file (`<!-- BEGIN … -->` to `<!-- END … -->`) are skipped,
+# since they move at their renderer. Generated views, the literature archive, vendored
+# trees and tool-owned files cannot be listed at all.
+#
+# Run, from `packing/`:
+#   uv run --frozen --all-extras --group dev python -m devtools.check_math_markup
+#   uv run --frozen --all-extras --group dev python -m devtools.check_math_markup --backlog
+#   uv run --frozen --all-extras --group dev python -m devtools.migrate_math --apply FILE...
+#
+# Fields:
+#   migrated: repository-relative paths, sorted, each a tracked hand-written Markdown file.
+#   keep:     spans that read as math but stay code, each {path, span, reason}. `path` is
+#             listed under `migrated`; `span` is the code span's text exactly; `reason`
+#             says why. An entry whose span is no longer in its file fails the check, so
+#             the list only shrinks.
+
+migrated: []
+
+keep: []

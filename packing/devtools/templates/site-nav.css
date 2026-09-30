@@ -200,14 +200,19 @@
    three lines; the site name goes, since "Overview" is the same link. */
 /* On a phone every link stays in view: the row wraps, centred, rather than scrolling
    links out of sight, and the gear ends the last line. */
+/* On a phone the links wrap to two or three rows, so each row is set closer: a shorter
+   line and less padding above and below each link, with no gap between rows. A link
+   stays 26px tall, above the 24px a tap target needs. */
 @media (width < 40rem) {
   .site-nav-inner {
-    gap: 0.15rem 0.1rem;
+    gap: 0 0.1rem;
     justify-content: center;
-    padding-block: 0.5rem;
+    padding-block: 0.4rem;
     padding-inline: 0.5rem;
   }
   .site-nav a {
+    line-height: 1.3;
+    padding-block: 0.15rem;
     padding-inline: 0.45rem;
   }
 }

@@ -1167,7 +1167,6 @@ migrated:
 - packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
 - packing/cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md
 - packing/cases/n11_threshold_certificate/t-026-dilation-limit-proof.md
-- packing/cases/trump11/isolation-theorem.md
 - packing/cases/w3_lower_bound_directions/README.md
 - packing/frankensim-probe/README.md
 - packing/frontier/README.md
@@ -1837,9 +1836,6 @@ keep:
 - path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
   span: "2"
   reason: "a process exit status, literal text"
-- path: packing/cases/trump11/isolation-theorem.md
-  span: "(+-1/2,+-1/2)"
-  reason: "the chart's ASCII notation, like `R(theta_i)` beside it"
 
 exempt:
 - path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md
@@ -1878,5 +1874,7 @@ exempt:
   reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
 - path: packing/cases/n11_five_dot_cover/wall-containment-contract.md
   reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/cases/trump11/isolation-theorem.md
+  reason: "exact bytes pinned by devtools.review_trump_local_theorem, which binds the theorem document to its review revision f9ba790a and refuses any content drift"
 - path: packing/resources/README.md
   reason: "catalogues the archive transcriptions annotations: its code spans quote what the raw extraction and the PDFs print, character for character, and math would retype them"

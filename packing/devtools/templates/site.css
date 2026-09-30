@@ -35,15 +35,16 @@ body {
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   /* The accent's dark value is in site-nav.css, which every page carries, the Visualizer
-     included. Chips turn over with the page: light fills that lighten with the level. */
-  --site-rung-base: 75%;
+     included. Chips turn over with the page: dark fills that lighten with the level,
+     the lowest close to the page's own dark background. */
+  --site-rung-base: 25%;
   --site-rung-step: 4%;
 }
-/* Chips are dark fills carrying the page's own background as their text, darkening
-   with the level; dark mode turns the scale over (above). */
+/* Chips are light fills carrying the page's own text colour, darkening with the level
+   from close to the page background; dark mode turns the scale over (above). */
 :root {
-  --site-rung-base: 50%;
-  --site-rung-step: -4%;
+  --site-rung-base: 96%;
+  --site-rung-step: -3.5%;
 }
 
 /* The paper typography profile, as the explainer sets it: a 19/18 sans base against
@@ -405,14 +406,14 @@ body {
 }
 /* ---------- Chips ----------
    Every small label on the site is one chip: square corners, the sans face at the note
-   size, a solid fill and no border, lettered in the page's background colour. In light
-   mode every fill is dark enough for light text; in dark mode every fill is light and
-   the text dark. A plain chip is neutral; `data-tone="accent"` marks a settled state (a
-   proved case). A rung chip adds `site-rung-fill`. */
+   size, a solid fill and no border, lettered in the page's own text colour. In light
+   mode every fill is light enough for dark text; in dark mode every fill is dark and
+   the text light. A plain chip is a neutral tint; `data-tone="accent"` marks a settled
+   state (a proved case) in an accent tint. A rung chip adds `site-rung-fill`. */
 .site-chip {
-  background: var(--kpress-doc-muted);
+  background: color-mix(in oklch, var(--kpress-doc-muted) 16%, var(--kpress-doc-bg));
   border-radius: 0;
-  color: var(--kpress-doc-bg);
+  color: var(--kpress-doc-text);
   display: inline-block;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -422,22 +423,22 @@ body {
   white-space: nowrap;
 }
 .site-chip[data-tone="accent"] {
-  background: var(--kpress-doc-accent);
-  color: var(--kpress-doc-bg);
+  background: color-mix(in oklch, var(--kpress-doc-accent) 22%, var(--kpress-doc-bg));
+  color: var(--kpress-doc-text);
 }
 
 /* A rung's fill moves with its level on its own scale, darker in light mode and lighter
-   in dark: verification in blue and confirmation in green, each a desaturated shade of
+   in dark, always behind the page's text colour: verification in blue and confirmation in green, each a desaturated shade of
    the packing palette's blue and green squares, and significance in gray. */
 .site-rung-fill {
   --rung-hue: 250;
-  --rung-chroma: 0.08;
+  --rung-chroma: 0.06;
   --rung-level: 0;
   background: oklch(
     calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step)) var(--rung-chroma)
       var(--rung-hue)
   );
-  color: var(--kpress-doc-bg);
+  color: var(--kpress-doc-text);
 }
 .site-rung-fill[data-rung="C"] {
   --rung-hue: 158;

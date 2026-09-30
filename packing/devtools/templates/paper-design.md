@@ -67,17 +67,19 @@ Page colors that are not the accent are desaturated shades of it:
 
 | Use | Hue | Chroma | Source in the palette |
 | --- | --- | --- | --- |
-| Verification rung (`V`) | 250 | 0.08 | The blue square, `#166eac` |
-| Confirmation rung (`C`) | 158 | 0.08 | The green square, `#158655` |
+| Verification rung (`V`) | 250 | 0.06 | The blue square, `#166eac` |
+| Confirmation rung (`C`) | 158 | 0.06 | The green square, `#158655` |
 | Significance rung (`S`) | 250 | 0.008 | Gray |
 
-Every chip carries light text on a dark fill, and in dark mode dark text on a light
-fill: its text is the page’s background colour.
-A rung’s fill is `oklch(base + step × level, chroma, hue)` for levels 0 to 5, with base
-50% and step −4% in light mode, so it darkens from 50% to 30% as the rung rises, and
-base 75% and step +4% in dark mode, so it lightens from 75% to 95%. The two are
-`--site-rung-base` and `--site-rung-step`. The recent-bound star is the one warm mark,
-`oklch(52% 0.19 25)`.
+Every chip carries the page’s own text colour, black in light mode, on a light fill, and
+in dark mode light text on a dark fill.
+A rung’s fill is `oklch(base + step × level, 0.06, hue)` for levels 0 to 5, with base
+96% and step −3.5% in light mode, so level 0 sits close to the page background and it
+darkens to 78.5% as the rung rises, and base 25% and step +4% in dark mode, so it
+lightens from near the dark background at 25% to 45%. The two are `--site-rung-base` and
+`--site-rung-step`. A plain chip is a 16% tint of the muted gray over the page
+background, and an accent chip a 22% tint of the accent.
+The recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
 
 Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
 defined in `site-nav.css` because every page carries it: KPress’s hover surface in light
@@ -191,9 +193,9 @@ it.
   a row on this page, `↗` off the site, `→` to another page of the site.
 
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
-  note size, a solid fill and no border, lettered in the page’s background colour.
-  A plain chip is the muted gray; `data-tone="accent"` is the accent, for a settled
-  state such as a proved case.
+  note size, a solid light fill and no border, lettered in the page’s own text colour.
+  A plain chip is a light gray tint; `data-tone="accent"` is an accent tint, for a
+  settled state such as a proved case.
   A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`. A standing chip
   carries `data-standing` and adds no style of its own: `holds` takes the accent, as a
   settled state, and every other standing (`holds, reported`, `second certificate`,

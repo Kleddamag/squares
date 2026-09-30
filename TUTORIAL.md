@@ -1563,8 +1563,9 @@ likewise has no retained first-party document:
 - Erdős and Graham (1975), the asymptotic waste line of work
 - Nagamochi (2005), the general lower bound covering most open cases in the corpus
 - Bidwell (1998), the $n = 17$ record, the nearest genuinely oblique one
-- Montanher et al. (2018), the only rigorous computer-assisted optimality proof for
-  rotatable unit squares in any container—three squares in a circle
+- Montanher et al. (2018), a rigorous computer-assisted optimality proof for rotatable
+  unit squares in a container—three squares in a circle—and, until T-060 proved $s(11)$,
+  the only one this project knew of
 - Martin (2000), the compactness results behind “the infimum is attained”
 - Dewar (2024), direction-typed contact graphs for homothetic oriented squares—useful
   combinatorial method evidence, not a completeness theorem for the global $n = 11$

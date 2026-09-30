@@ -5,14 +5,14 @@ title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
 status: open
 priority: 1
-version: 1
+version: 2
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T05:42:45.356Z
+updated_at: 2026-09-30T05:47:21.587Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -41,3 +41,7 @@ Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 ## Done when
 
 Both PRs are merged with T-058 to T-061 intact, `n-011.md` states both lines consistently, and each line's reply (#247 on the issue, #246 in its PR) points at the other where it matters.
+
+## Notes
+
+PR246 coordinator read the coordination comment5904905961 and issue247 on2026-09-30. Agreed ownership: retain T058/T059/T060; reserve T061 for Wang-Li intake; do not modify their verify_n11_parent_core_native/verify_kleddamag_n11_native path during rectangle exact-kernel work. Our current code changes are rectangle_density.py, its tests, and independent T060 field tools. Important evidence boundary: T059 is the source-reported complete12028-row minima equality; our bound source-replay sample remains3rows, distinct from already complete T037 native parent-core coverage. T060 is unconfirmedS5/V0/C1 and does not supersede any accepted bound yet. Later merger fetches/merges main and regenerates DATA_REVISION/release artifacts with both claim histories intact. Parent coordination remainsopen until both integrations land.

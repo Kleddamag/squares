@@ -5,7 +5,8 @@ title: "W7: implement native exact rectangle-density coverage verifier"
 kind: feature
 status: in_progress
 priority: 1
-version: 15
+version: 16
+spec_path: docs/project/reviews/review-2026-09-29-n11-optimality.md
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -19,7 +20,7 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:12:51.117Z
-updated_at: 2026-09-30T00:46:37.763Z
+updated_at: 2026-09-30T01:10:22.812Z
 started_at: 2026-09-29T07:14:10.458Z
 ---
 W7 block in docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md. Exact rational common-core polygon subdivision and axis event sweep, source-distinct from verify.cpp; library, CLI, refusal controls, proof contract review. Analytic full-net control and bounded retained input probe required before first checkpoint. Full large-certificate independent confirmation remains separate.

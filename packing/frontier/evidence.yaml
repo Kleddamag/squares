@@ -3198,6 +3198,99 @@ evidence:
       processes. The theorem is Bentz's; the bound on this case is unchanged.
     source_reviewed: '2026-09-27'
 
+  - id: E-n013-evand-casefree-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [13]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/rung2/s13_closed_cover_4.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, with every .gz restored (the 2026-09-28
+      packet README, Replay From the Packets): verify2/target/release/zmx2 cert
+      certificates/rung2/s13_closed_cover_4.txt --d4 --threads 2 --log OUT, which must
+      print VERIFIED-D4 over all 1,600 roots with no uncertified box; then, from packing/,
+      .venv/bin/python3 -m devtools.audit_evand_mixed_covers check must exit 0.
+    replay_status: passed
+    limitations: >-
+      Replays the source's zmx2 on the retained case-free cover of [0,4]^2 on 2026-09-28:
+      VERIFIED-D4, 1,600 roots, 47,162 boxes, 22,136 certified and 2,245 empty leaves,
+      maximum depth 20, none uncertified, 11 s wall (receipts/s13_zmx2_d4.log and its
+      roots log), the totals the source reports. zmx2's acceptances are exact integer
+      tests on outward-rounded binary64 enclosures (its Lemma R), and the run uses the D4
+      fold. It certifies the cover hypothesis of the Lean route in
+      E-n013-evand-casefree-cover-lean-kernel by a separate program; the theorem is
+      Bentz's (T-006), proved again here by another route.
+    source_reviewed: '2026-09-30'
+
+  - id: E-n013-evand-casefree-cover-lean-kernel
+    claim: exact-value
+    scope: {n_values: [13]}
+    assurance: verified
+    method: proof-assistant-checked
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/rung2/s13_closed_cover_4.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, with every .gz restored and python3 the
+      project interpreter: python3 lean/scripts/gen_s32_data.py (S32Data.lean, which the
+      import closure needs and neither packet retains); python3 lean/scripts/gen_zmtree.py
+      certificates/rung2/s13_closed_cover_4.txt --n 13 --name S13 --outdir
+      lean/Sqpack/S13 --nproc 1 --save OUT/s13.pkl, which must report the census of
+      lean/LADDER.md (10,024 boxes, 209 chunks); then, from lean/, with elan and the
+      pinned leanprover/lean4:v4.33.1: lake exe cache get, lake build Sqpack.S13Lower,
+      and lake env lean on a file importing Sqpack.S13Lower with #print axioms
+      SquarePacking.s13_eq_4, which must print [propext, Classical.choice, Quot.sound].
+      About 1 h 45 min and up to 9.5 GB here with LEAN_NUM_THREADS=1.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/lean/LADDER.md
+      theorem: 'SquarePacking.s13_eq_4, minSide 13 = 4, where minSide n is the infimum of the sides s of the closed square [0,s]^2 holding n closed unit squares with arbitrary independent rotations and pairwise disjoint open interiors.'
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        Sqpack/Basic.lean (coord, sq, sqInt, box, Packs, minSide); Sqpack/ZMTree.lean
+        (ZMTree.sound); Sqpack/BoxTree.lean (le_minSide); Sqpack/S13Lower.lean
+        (s13_ge_4, s13_eq_4 via packs_grid 4 13 and le_csInf); the generated
+        Sqpack/S13/Pts, Part0..15 and Cov; the build and axiom receipts in the
+        2026-09-28 packet's receipts/lean/.
+      assumptions:
+        - The Lean kernel of leanprover/lean4 v4.33.1 (commit 819816b2e0a3) and Mathlib 0df444a3 from the official cache are sound; that is the whole trusted base, with the definitions in Sqpack/Basic.lean.
+        - The generated S13 data are untrusted input; every chunk fact is proved by decide +kernel and Cov glues the 209 chunk theorems by name, so a wrong datum fails the build rather than the theorem.
+      audit_record: docs/project/reviews/review-2026-09-30-lean-s13.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: An independent adversarial review lane in this repository.
+      note: >-
+        The definitions state s(13) in this record's convention exactly: closed unit
+        squares, independent real rotations, open interiors disjoint, containment in the
+        closed square, the infimum attained by the 4 x 4 grid. No sorry, axiom,
+        native_decide, ofReduceBool, extern or kernel-bypassing option in the project
+        sources; the axiom printout is genuine; all 209 chunks enter the proof through Cov.
+    limitations: >-
+      Built here on 2026-09-30 at the pinned 6aa82ba4 with Lean 4.33.1 and Mathlib's
+      official cache (8,690 files, no Mathlib compiled locally). The S13 data were
+      generated here by the source's gen_zmtree.py, with the census LADDER.md reports,
+      and emitted into 16 part files instead of the source's 4 to fit memory; the chunk
+      definitions and theorems are the same text. Pts, Part0..15, Cov and S13Lower built
+      with exit 0 (6,255 s wall, 3,978 CPU-s, single-threaded, peak 4.1 GB beyond the
+      mapped Mathlib), and s13_eq_4 and s13_ge_4 depend only on propext,
+      Classical.choice and Quot.sound (receipts/lean/axioms_s13.log). The first
+      hypothesis-free kernel-checked exact value of s(n) for a nontrivial n on this
+      record; it is not the first kernel-checked s(13) = 4 anywhere. The source's own
+      Axioms.lean over its default target also printed only the standard axioms
+      (receipts/lean/axioms_default.log). The theorem is Bentz's (T-006); this is Evan
+      Daniel's case-free proof of it, made with an AI agent under his direction as his
+      CREDITS.md says.
+    source_reviewed: '2026-09-30'
+
   - id: E-n021-evand-mixed-cover-report
     claim: lower-bound
     scope: {n_values: [21]}

@@ -175,10 +175,17 @@ results:
   - id: T-006
     headline: "`s(13) = 4`"
     claim: >-
-      s(13) = 4 (Bentz 2010, Theorem 9).
+      s(13) = 4 (Bentz 2010, Theorem 9). Proved again, without cases, by Evan Daniel's
+      weighted closed cover of [0,4]^2 in evand/square-packing, and kernel-checked in Lean
+      4 here: SquarePacking.s13_eq_4 : minSide 13 = 4, depending only on propext,
+      Classical.choice and Quot.sound, built on 2026-09-30 from the retained source at
+      6aa82ba4 with Mathlib's official cache. The cover's zero-margin property was also
+      certified here by the source's zmx2 over every root of its D4 region. Evan Daniel,
+      building on Burns's and Massaccesi's method, with an AI agent under human direction
+      as his CREDITS.md says.
     scope: {n_values: [13]}
-    verification: V3
-    confirmation: C1
+    verification: V5
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -188,24 +195,36 @@ results:
       by: session-061 review (repository)
     novelty: previously-published
     attribution:
-      source_keys: ['[Bentz 2010]']
+      source_keys: ['[Bentz 2010]', '[evand square-packing 2026-09-28]']
       published: '2010-09-13'
     composition: >-
-      Compound with the minimum set by the unaudited part: Figure 2's
-      unavoidability and the corrected Lemma 10 replacements are machine-
-      confirmed (C3 parts, V4 fragments), but the Sections 3.1-3.2 case
-      analysis that completes the theorem is read prose, so the whole claim
-      stays at the published proof's V3 and our read's C1.
+      Two independent proofs of one value. Bentz's is compound, with Sections 3.1-3.2's
+      case analysis read rather than machine-checked. Evan Daniel's case-free proof is
+      complete as it stands: the Lean kernel checked s13_eq_4 from the definitions,
+      including every one of the 209 cover chunks, so the claim is V5 on
+      E-n013-evand-casefree-cover-lean-kernel. The confirmation rung comes from the
+      machine-method replay E-n013-evand-casefree-cover-zmx2-replay (C3); whether a
+      kernel check itself counts toward C is the owner's open question.
     evidence:
       - E-bentz-2010-proof
       - E-bentz13-figure2-audit
+      - E-n013-evand-casefree-cover-zmx2-replay
+      - E-n013-evand-casefree-cover-lean-kernel
     artifacts:
       - packing/cases/bentz13/verify_cover.py
       - packing/resources/papers/bentz-2010-optimal-packings-13-and-46.md
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/lean/axioms_s13.log
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/lean/s13_table.txt
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/s13_zmx2_d4.log
+      - docs/project/reviews/review-2026-09-30-lean-s13.md
+    controls:
+      - packing/tests/test_evand_mixed_covers.py
     next_rung: >-
-      C3 by machine-checking Sections 3.1-3.2's staged sets (typed on
-      think-1o1f), which would also make this the second fully audited theorem
-      of the paper.
+      C4 by a second machine method on the same cover, for example a complete
+      zeromargin.py sweep (1 h 42 min on 8 processes at the source) beside the zmx2
+      replay. Bentz's own route reaches C3 by machine-checking Sections 3.1-3.2's staged
+      sets (typed on think-1o1f), which would also make it the second fully audited
+      theorem of the paper.
   - id: T-007
     headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100`"
     claim: >-
@@ -3384,9 +3403,11 @@ results:
       C5 would follow the owner's decision on citing a mapped review as review_artifact for
       others' results. V5 by building the source's hypothesis-free Lean theorem s32_eq_6
       (commit 92cc5bb5), which decides a generated box tree in the kernel with zeromargin.py
-      only as the tree generator's untrusted oracle; the cost is compute, 13.8 CPU-hours and
-      up to 15.2 GB per process at the source, and Mathlib's build cache is unreachable from
-      this session (think-angg).
+      only as the tree generator's untrusted oracle. Mathlib's build cache became reachable
+      on 2026-09-30, and the conditional s32_eq_six_of_checker and s13_eq_4 were built here
+      (the 2026-09-28 packet's receipts/lean/). The cost that remains is compute: a probe
+      puts s32_eq_6 at 14 to 28 CPU-hours emitted in about 320 parts of about 4 GB each,
+      with 8 to 10 GB for the generator (think-angg).
 
   - id: T-052
     headline: "`s(21) = 5`, by a mixed cover of points and grid-line segments"
@@ -3446,8 +3467,10 @@ results:
     next_rung: >-
       C4 by a complete zm_mixed.py re-sweep, about 12.9 CPU-hours at the source, recorded as
       a second, exact-algebraic entry; the shared pose-space architecture stays the residual
-      common-mode risk. V5 would need the checker programs formalised; the Lean build was not
-      run here.
+      common-mode risk. V5 would need the checker statement S21CheckerCover proved in Lean;
+      the reduction s21_eq_five_of_checker, from that statement to s(21) = 5, was
+      kernel-checked here on 2026-09-30 with the standard axioms only (the 2026-09-28
+      packet's receipts/lean/).
 
   - id: T-053
     headline: "`s(45) = 7`, by a mixed cover of points and grid-line segments"

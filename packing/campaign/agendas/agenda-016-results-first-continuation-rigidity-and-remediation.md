@@ -1280,14 +1280,14 @@ computes the remaining eleven rows.
 
 H-052 success is assurance evidence, not new mathematics.
 Its value is the route it can open: independent review and source adoption of the
-reported exact rational `4.5058 = 22529/5000`. Adoption would raise the repository’s
-verified lower bound from 4.426213 at `n = 17, 18` and from
-`1 + 2 sqrt(3) ≈ 4.464101615` at `n = 19` to 4.5058. It would remain an externally
-proposed, source-backed result and would not improve `n = 20`.
+reported exact rational $4.5058 = 22529/5000$. Adoption would raise the repository’s
+verified lower bound from 4.426213 at $n = 17, 18$ and from
+`1 + 2 sqrt(3) ≈ 4.464101615` at $n = 19$ to 4.5058. It would remain an externally
+proposed, source-backed result and would not improve $n = 20$.
 
 H-060 is the primary genuinely new theorem lane.
 T-012 already verifies the exact first-order cone and second-order self-stress at
-Goebel’s `n = 5` optimum, and X-007 writes the coefficient argument that would turn
+Goebel’s $n = 5$ optimum, and X-007 writes the coefficient argument that would turn
 those certificates into fixed-side local rigidity.
 The missing work is bounded: use an intrinsic half-angle chart to account for every
 active and inactive wall and pair constraint, certify the neighborhood in which the

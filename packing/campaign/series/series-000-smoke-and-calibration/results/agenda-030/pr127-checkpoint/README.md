@@ -17,7 +17,7 @@ the original failure remains in the record.
 | Negative controls | `cbe9fd76` | Passed | 329.13 | [Raw stdout](negative-cbe9fd76.txt), [run and step receipts](negative-cbe9fd76/) |
 
 The four reused steps are the known-best `n=1..324` atlas rebuild, single-square
-translation escape screen, exact rational grid replay, and `n=40` rigidity bracket
+translation escape screen, exact rational grid replay, and $n=40$ rigidity bracket
 replay. The repair changes only the handoff records and generated views, their
 selected-entry control, and the negative-control snapshot guard.
 It does not change those four geometry producers, readers, witnesses or dependencies.

@@ -67,7 +67,7 @@ The frozen `BC-152` proof packet, installed unchanged in substance.
 review returned PASS on 2026-09-03, and the frontier property and the `T-014` register
 entry that followed were made there, not by this report.
 
-**Owns:** The mathematics of `BC-152` phase 0–105 at `n = 5`. It owns no code: the `W7`
+**Owns:** The mathematics of `BC-152` phase 0–105 at $n = 5$. It owns no code: the `W7`
 executable instrument, its receipt and the eight rejecting controls of §6 belong to a
 separate lane. That lane built them after this packet was frozen, at `6580a9fd`, as the
 package `src/sqpack/local_rigidity/`; their readiness review returned BOUNDED-CAVEAT
@@ -89,7 +89,7 @@ This report is the frozen `BC-152` proof packet, whose own header block read:
 - **Write scope:** the packet lane wrote only to its own scratchpad directory.
   No repository file was modified by it.
 
-The packet is `925` lines with SHA-256
+The packet is $925$ lines with SHA-256
 `28343b743e689fc99968d589a542d9022d061de8ec3ae5100bf4ef4930e40b6b`, and that hash names
 the frozen source rather than this file: the body from the rule below reproduces the
 packet’s content, reformatted to house Markdown conventions.
@@ -120,7 +120,7 @@ above and in §8.4, which was false when written; the “equivalently Milnor 196
 3.1” clause in the closing obligation, which restores exactly the over-attribution §4.1
 withdraws a citation for; the survey clause “not covered by any stated rigidity theorem
 for polygon contacts”, which is demoted out of the novelty claim in §7.4 and §8.5; and
-§7.3’s list of thirteen rigid `n`, which is now recorded as in tension with the archived
+§7.3’s list of thirteen rigid $n$, which is now recorded as in tension with the archived
 page. No statement, number, count, margin, inequality or proof step changed, and every
 correction makes this record weaker.
 
@@ -162,11 +162,11 @@ and digests are in the results record named above.
 | File | What it replays |
 | --- | --- |
 | `verify_chart.py` | pose = `cases.gobel5` corner-for-corner; 80 wall and 320 pair elementary margins; the 20 chart polynomials and their 2-jets; `A_chart = A_geo J`, `H_chart = J^T H_geo J`, `q_chart = 4 q_geo`; the 28 Farkas certificates and the self-stress of T-012 replayed on the chart rows; the flex line restricted gap `= -t4^2` |
-| `print_polys.py` | prints the 20 cleared polynomials, gradient rows and `q` (table in §2.5) |
+| `print_polys.py` | prints the 20 cleared polynomials, gradient rows and $q$ (table in §2.5) |
 | `margins.py` | the multiset of the 64 inactive wall margins (table in §3.3) |
-| `midpoint_check.py` | each active pair corner has along-edge parameter exactly `1/2` (no D-390 endpoint incidence) |
+| `midpoint_check.py` | each active pair corner has along-edge parameter exactly $\frac{1}{2}$ (no D-390 endpoint incidence) |
 | `control_exp034.py` | pre-run of the exp-034 negative control through the T-012 machinery (§6) |
-| `c8_side_check.py` | exact proof that the exp-034 family is at side `1 + 5√2/4 ≠ 2 + √2/2`, infeasible at Goebel’s side, and at positive distance from `P^0` (§6, Control 8 note) |
+| `c8_side_check.py` | exact proof that the exp-034 family is at side $1 + 5\sqrt{2}/4 \ne 2 + \sqrt{2}/2$, infeasible at Goebel’s side, and at positive distance from $P^{0}$ (§6, Control 8 note) |
 | `sosc_check.py` | the numbers of §5.7: `w · q_geo = -√2/2`, `w · q_chart = -2√2`, the `mu = 1` signs in both normalizations, the threshold `mu > 2/(-w · q)` |
 
 The packet also drew on text extractions of `gobel-1979`, the Whiteley handbook chapter,
@@ -184,16 +184,17 @@ its output or from the repository’s own certificate record.
 ## 0. What this document claims, in one paragraph
 
 Let `s = 2 + sqrt(2)/2`. Section 2 gives an explicit half-angle chart `Phi : R^15 -> C`
-onto an open subset of the labeled configuration space `C = (R^2 x S^1)^5`, injective on
-all of `R^15`, whose cleared denominators are `1 + t_i^2 >= 1` everywhere.
-Section 3 accounts for all 400 elementary polynomial inequalities that define “valid
-packing at side `s`” (80 wall–corner, 320 pair) and proves, from exact base margins and
-continuity only, that on an explicitly defined open neighbourhood `N` of the pose the
-feasible set is exactly `{ g_1 >= 0, ..., g_20 >= 0 }` for the twenty active
+onto an open subset of the labeled configuration space $C = (R^{2} \times S^{1})^{5}$,
+injective on all of $R^{15}$, whose cleared denominators are `1 + t_i^2 >= 1`
+everywhere.
+Section 3 accounts for all 400 elementary polynomial inequalities that define
+“valid packing at side $s$” (80 wall–corner, 320 pair) and proves, from exact base
+margins and continuity only, that on an explicitly defined open neighbourhood `N` of the
+pose the feasible set is exactly `{ g_1 >= 0, ..., g_20 >= 0 }` for the twenty active
 contact-normal polynomials.
 Section 4 states the Nash curve selection lemma and verifies its hypotheses for
 `F \ {0}`. Section 5 proves, by an induction on the Taylor coefficients of a putative
-nonconstant analytic feasible arc through order `2m`, that no such arc exists, using
+nonconstant analytic feasible arc through order $2m$, that no such arc exists, using
 only T-012’s first-order cone and second-order self-stress transferred to the chart by
 the transform `J = diag(1,1,2)^{(+)5}` and the positive row scaling
 `S = diag(1 on wall rows, sqrt 2 on pair rows)`. Together: **the pose is an isolated
@@ -211,8 +212,8 @@ obligation is named there.
 
 ### 1.1 The pose, exactly
 
-Field `Q(sqrt 2)`, `r := sqrt 2`, side `s = 2 + r/2` (`2 s^2 - 8 s + 7 = 0`). Square `i`
-has centre `c_i`, angle `theta_i`, and corners `p_{i,k} = c_i + R(theta_i) rho_k`,
+Field `Q(sqrt 2)`, `r := sqrt 2`, side $s = 2 + r/2$ ($2 s^{2} - 8 s + 7 = 0$). Square
+$i$ has centre $c_i$, angle `theta_i`, and corners `p_{i,k} = c_i + R(theta_i) rho_k`,
 `k = 0..3`, with body offsets
 
 ```
@@ -220,45 +221,45 @@ rho_0 = (-1/2, -1/2)   rho_1 = (1/2, -1/2)   rho_2 = (1/2, 1/2)   rho_3 = (-1/2,
 ```
 
 (counter-clockwise; this is the corner order of `cases/gobel5/packing.py`, checked
-corner-for-corner by `verify_chart.py`). Edge `e` runs from corner `e` to corner `e+1`;
+corner-for-corner by `verify_chart.py`). Edge $e$ runs from corner $e$ to corner $e+1$;
 its outward unit normal is `n_{i,e} = R(theta_i) nu_e` with
 
 ```
 nu_0 = (0, -1)   nu_1 = (1, 0)   nu_2 = (0, 1)   nu_3 = (-1, 0).
 ```
 
-| square | centre `c_i^0` | `theta_i^0` |
+| square | centre $c_i^{0}$ | `theta_i^0` |
 | --- | --- | --- |
-| 0 | `(1/2, 1/2)` | 0 |
-| 1 | `(s - 1/2, 1/2)` | 0 |
-| 2 | `(1/2, s - 1/2)` | 0 |
-| 3 | `(s - 1/2, s - 1/2)` | 0 |
-| 4 | `(s/2, s/2) = (1 + r/4, 1 + r/4)` | `pi/4` |
+| 0 | $(\frac{1}{2}, \frac{1}{2})$ | 0 |
+| 1 | $(s - \frac{1}{2}, \frac{1}{2})$ | 0 |
+| 2 | $(\frac{1}{2}, s - \frac{1}{2})$ | 0 |
+| 3 | $(s - \frac{1}{2}, s - \frac{1}{2})$ | 0 |
+| 4 | $(s/2, s/2) = (1 + r/4, 1 + r/4)$ | `pi/4` |
 
-Square 4’s corners are `(s/2 +- r/2, s/2)` and `(s/2, s/2 +- r/2)`; its extreme
+Square 4’s corners are $(s/2 +- r/2, s/2)$ and $(s/2, s/2 +- r/2)$; its extreme
 coordinate `s/2 + r/2 = 1 + 3r/4 ~ 2.06 < s`, so it touches no wall (margin
 `1 - r/4 ~ 0.646`, §3.3).
 
 ### 1.2 Valid packing, feasible set
 
-A configuration `P = (c_i, theta_i)_{i<5}` is a **valid packing at side `s`** when every
+A configuration `P = (c_i, theta_i)_{i<5}` is a **valid packing at side $s$** when every
 closed square `Q_i(P) = c_i + R(theta_i)[-1/2, 1/2]^2` lies in the closed container
-`[0, s]^2` and the interiors of `Q_i, Q_j` are disjoint for `i != j`. This is the
+$[0, s]^{2}$ and the interiors of $Q_i, Q_j$ are disjoint for `i != j`. This is the
 definition in `sqpack/verify.py` ("every square lies inside the container and every pair
 of squares has disjoint interiors") and in Martin 2000 (archive), and it allows
 touching.
 
-`Feas(s) subset C = (R^2 x S^1)^5` is the set of valid packings at side `s`. The
+`Feas(s) subset C = (R^2 x S^1)^5` is the set of valid packings at side $s$. The
 configuration space is *labeled*: squares and their corners carry indices, and `theta_i`
 is an angle, not an angle mod `pi/2`.
 
 ### 1.3 Local rigidity at fixed side
 
-**Definition.** `P^0` is *locally rigid at fixed side `s`* when `P^0` is an isolated
+**Definition.** $P^{0}$ is *locally rigid at fixed side `s`* when $P^{0}$ is an isolated
 point of `Feas(s)`: there is an open `W ∋ P^0` in `C` with `Feas(s) ∩ W = {P^0}`.
 
 Equivalent formulations that the proof also delivers: (i) there is no nonconstant
-continuous path `[0,1] -> Feas(s)` starting at `P^0`; (ii) there is no sequence of
+continuous path `[0,1] -> Feas(s)` starting at $P^{0}$; (ii) there is no sequence of
 feasible configurations `P^(k) != P^0` with `P^(k) -> P^0`. (i) follows from isolation
 because a nonconstant continuous path leaves every neighbourhood’s singleton; (ii) is
 the definition restated.
@@ -270,12 +271,12 @@ exact sequence of distinct feasible poses converging to it") is exactly the nega
 when it cannot be continuously transformed into any other valid packing without changing
 the size of its enclosing square” (retrieved 2026-09-03, §7.3). That is a statement
 about squares as *sets*. The map `(c, theta) -> c + R(theta)[-1/2,1/2]^2` from
-`R^2 x S^1` to placed squares is a 4-fold covering (fibre `theta + k pi/2`), so a
-continuous path of placed squares lifts uniquely to a continuous path in `(c, theta)`
+$R^{2} \times S^{1}$ to placed squares is a 4-fold covering (fibre `theta + k pi/2`), so
+a continuous path of placed squares lifts uniquely to a continuous path in `(c, theta)`
 from any lift of its start.
 Hence isolation of the labeled pose implies Kingbird’s fixed-side rigidity of the
 unlabeled packing. Relabelings and container symmetries give *other* labeled poses at
-positive distance (e.g. `theta_4 + pi/2` is at chart distance `t_4 = 1`), which
+positive distance (e.g. `theta_4 + pi/2` is at chart distance $t_4 = 1$), which
 isolation does not see and does not need to.
 
 * * *
@@ -291,7 +292,8 @@ Chart coordinates `z = (dx_i, dy_i, t_i)_{i<5} in R^15`, ordered as T-012’s
 Phi(z) = ( c_i^0 + (dx_i, dy_i),  theta_i^0 + 2 arctan t_i )_{i<5}.
 ```
 
-Then `cos(2 arctan t) = (1 - t^2)/(1 + t^2)`, `sin(2 arctan t) = 2t/(1 + t^2)`, so
+Then $\cos(2 \arctan t) = (1 - t^{2})/(1 + t^{2})$,
+$\sin(2 \arctan t) = 2t/(1 + t^{2})$, so
 
 ```
 R(theta_i) = R(theta_i^0) M(t_i) / (1 + t_i^2),     M(t) = [[1 - t^2, -2t], [2t, 1 - t^2]],
@@ -299,42 +301,43 @@ p_{i,k}(z) = c_i^0 + (dx_i, dy_i) + R(theta_i^0) M(t_i) rho_k / (1 + t_i^2),
 n_{h,e}(z) = R(theta_h^0) M(t_h) nu_e / (1 + t_h^2).
 ```
 
-Every corner and normal is a rational function of `z` with denominator a product of
-factors `1 + t_i^2`, and numerator a polynomial with coefficients in `Q(sqrt 2)`.
+Every corner and normal is a rational function of $z$ with denominator a product of
+factors $1 + t_i^{2}$, and numerator a polynomial with coefficients in `Q(sqrt 2)`.
 
 ### 2.2 Lemma 1 (injectivity, on all of `R^15`)
 
-`Phi` is a homeomorphism of `R^15` onto the open set
+`Phi` is a homeomorphism of $R^{15}$ onto the open set
 `U = { P in C : theta_i in (theta_i^0 - pi, theta_i^0 + pi) for all i }`, and
 `Phi(0) = P^0`.
 
 *Proof.* The translation part is the identity.
 `t -> theta^0 + 2 arctan t` is a real-analytic bijection
-`R -> (theta^0 - pi, theta^0 + pi)` (derivative `2/(1+t^2) > 0`), with analytic inverse
-`theta -> tan((theta - theta^0)/2)`. Products of homeomorphisms are homeomorphisms.
-`U` is open in `C` because it is a product of open arcs of `S^1` and copies of `R^2`. □
+`R -> (theta^0 - pi, theta^0 + pi)` (derivative $2/(1+t^{2}) > 0$), with analytic
+inverse `theta -> tan((theta - theta^0)/2)`. Products of homeomorphisms are
+homeomorphisms. $U$ is open in `C` because it is a product of open arcs of $S^{1}$ and
+copies of $R^{2}$. □
 
-So the “neighbourhood on which the chart is injective” is the whole of `R^15`; nothing
-smaller is needed, and `U` is an open neighbourhood of `P^0` in `C`.
+So the “neighbourhood on which the chart is injective” is the whole of $R^{15}$; nothing
+smaller is needed, and $U$ is an open neighbourhood of $P^{0}$ in `C`.
 
 ### 2.3 Lemma 2 (denominators)
 
-For every `i`, `D_i(z) := 1 + t_i^2 >= 1 > 0` on all of `R^15`, and `D_i(0) = 1`,
-`grad D_i(0) = 0`. The same holds for every product of the `D_i`.
+For every $i$, `D_i(z) := 1 + t_i^2 >= 1 > 0` on all of $R^{15}$, and `D_i(0) = 1`,
+`grad D_i(0) = 0`. The same holds for every product of the $D_i$.
 
-*Proof.* `t_i^2 >= 0`; `d/dt (1 + t^2) = 2t` vanishes at `0`; a product of functions
+*Proof.* `t_i^2 >= 0`; `d/dt (1 + t^2) = 2t` vanishes at $0$; a product of functions
 with value 1 and zero gradient at 0 has value 1 and zero gradient at 0. □
 
-Consequently, for any geometric margin `G` that is a rational function with denominator
-`D`, the **cleared polynomial** `G~ := D · G` has the same sign as `G` at every point of
-`R^15`. All sign conditions below are therefore stated on cleared polynomials without
+Consequently, for any geometric margin $G$ that is a rational function with denominator
+$D$, the **cleared polynomial** `G~ := D · G` has the same sign as $G$ at every point of
+$R^{15}$. All sign conditions below are therefore stated on cleared polynomials without
 loss.
 
 ### 2.4 Lemma 3 (2-jet transfer to T-012’s coordinates)
 
-Let `G(c, theta)` be real-analytic near `P^0`, with `G(P^0) = 0`, and let `D` be a
-product of factors `1 + t_i^2`. Put `G~(z) := D(z) · G(Phi(z))` and
-`J := diag(1, 1, 2)^{(+)5}` (the 15 x 15 diagonal matrix with `2` in the `t_i` slots).
+Let `G(c, theta)` be real-analytic near $P^{0}$, with $G(P^{0}) = 0$, and let $D$ be a
+product of factors $1 + t_i^{2}$. Put `G~(z) := D(z) · G(Phi(z))` and
+`J := diag(1, 1, 2)^{(+)5}` (the 15 x 15 diagonal matrix with $2$ in the $t_i$ slots).
 Then
 
 ```
@@ -344,10 +347,10 @@ grad G~(0) = J^T grad G(P^0),        Hess G~(0) = J^T Hess G(P^0) J,
 where `grad G`, `Hess G` are taken in the coordinates `(c_i, theta_i)` that T-012’s
 `constraint_rows` and `second_order_terms` differentiate.
 
-*Proof.* `2 arctan t = 2t - (2/3) t^3 + O(t^5)`, so `Phi(z) = P^0 + J z + O(|z|^3)`: the
-second derivative of `Phi` at 0 vanishes.
+*Proof.* $2 \arctan t = 2t - (2/3) t^{3} + O(t^{5})$, so
+`Phi(z) = P^0 + J z + O(|z|^3)`: the second derivative of `Phi` at 0 vanishes.
 Hence `G ∘ Phi` has 2-jet `grad G(P^0)^T (J z) + (1/2) (J z)^T Hess G(P^0) (J z)` at 0.
-Multiplying by `D` with `D(0) = 1`, `grad D(0) = 0`, `G(Phi(0)) = 0`:
+Multiplying by $D$ with $D(0) = 1$, `grad D(0) = 0`, `G(Phi(0)) = 0`:
 `grad(D · G∘Phi)(0) = D(0) grad(G∘Phi)(0) + (G∘Phi)(0) grad D(0) = grad(G∘Phi)(0)`, and
 `Hess(D · G∘Phi)(0) = D(0) Hess(G∘Phi)(0) + grad D(0) grad(G∘Phi)(0)^T + grad(G∘Phi)(0) grad D(0)^T + (G∘Phi)(0) Hess D(0) = Hess(G∘Phi)(0)`.
 □
@@ -355,18 +358,18 @@ Multiplying by `D` with `D(0) = 1`, `grad D(0) = 0`, `G(Phi(0)) = 0`:
 **Consequences used later** (all replayed exactly in `verify_chart.py`):
 
 - `A_chart = A_geo J`, where `A_geo` is T-012’s 20 x 15 matrix `constraint_rows`. Since
-  `J` is diagonal positive, `{ x : A_chart x >= 0 } = J^{-1} { u : A_geo u >= 0 }`; the
+  $J$ is diagonal positive, `{ x : A_chart x >= 0 } = J^{-1} { u : A_geo u >= 0 }`; the
   cone is a line in one system iff in the other, and `A_geo e_{w4} = 0` iff
   `A_chart e_{t4} = 0`.
 - `q_chart_j := e_{t4}^T Hess g~_j(0) e_{t4} = 4 · (e_{w4}^T Hess G_j e_{w4}) = 4 q_geo_j`.
-  T-012 reports `q_geo = -1/2` on the four pair rows and `0` on the sixteen wall rows;
-  so `q_chart = -2` and `0`. (Directly: each pair polynomial restricted to the line
+  T-012 reports `q_geo = -1/2` on the four pair rows and $0$ on the sixteen wall rows;
+  so `q_chart = -2` and $0$. (Directly: each pair polynomial restricted to the line
   `z = t_4 e_{t4}` is exactly `-t_4^2`.)
 - Positive row scalings: T-012 verifies its certificates against `A~ = S A_geo` with
   `S = diag(1 on wall rows, sqrt 2 on pair rows)`. In the chart,
   `S A_chart = S A_geo J`. If `w >= 0` and `w^T S A_geo = 0` then `w^T (S A_chart) = 0`;
   if `w^T S A_geo = e_k^T` then `w^T (S A_chart) = J_kk e_k^T`, a positive multiple of
-  `e_k^T`. Sign information is preserved by every one of these positive diagonal
+  $e_k^T$. Sign information is preserved by every one of these positive diagonal
   factors.
 
 ### 2.5 The twenty cleared polynomials
@@ -380,19 +383,19 @@ Row order is that of the retained record (`contacts.detail`). Wall rows are
 | 0 | sq0 c0 left | `dx0 (1+t0^2) + t0^2 + t0` | `dx0: 1, t0: 1` | 0 |
 | 1 | sq0 c0 bottom | `dy0 (1+t0^2) + t0^2 - t0` | `dy0: 1, t0: -1` | 0 |
 | 2 | sq0 c1 bottom | `dy0 (1+t0^2) + t0^2 + t0` | `dy0: 1, t0: 1` | 0 |
-| 3 | sq0 c2 on sq4 e3 | (pair, see below) | `dx0: -r/2, dy0: -r/2, dx4: r/2, dy4: r/2` | `-2` |
+| 3 | sq0 c2 on sq4 e3 | (pair, see below) | `dx0: -r/2, dy0: -r/2, dx4: r/2, dy4: r/2` | $-2$ |
 | 4 | sq0 c3 left | `dx0 (1+t0^2) + t0^2 - t0` | `dx0: 1, t0: -1` | 0 |
 | 5 | sq1 c0 bottom | `dy1 (1+t1^2) + t1^2 - t1` | `dy1: 1, t1: -1` | 0 |
 | 6 | sq1 c1 bottom | `dy1 (1+t1^2) + t1^2 + t1` | `dy1: 1, t1: 1` | 0 |
 | 7 | sq1 c1 right | `-dx1 (1+t1^2) + t1^2 - t1` | `dx1: -1, t1: -1` | 0 |
 | 8 | sq1 c2 right | `-dx1 (1+t1^2) + t1^2 + t1` | `dx1: -1, t1: 1` | 0 |
-| 9 | sq1 c3 on sq4 e0 | (pair) | `dx1: r/2, dy1: -r/2, dx4: -r/2, dy4: r/2` | `-2` |
+| 9 | sq1 c3 on sq4 e0 | (pair) | `dx1: r/2, dy1: -r/2, dx4: -r/2, dy4: r/2` | $-2$ |
 | 10 | sq2 c0 left | `dx2 (1+t2^2) + t2^2 + t2` | `dx2: 1, t2: 1` | 0 |
-| 11 | sq2 c1 on sq4 e2 | (pair) | `dx2: -r/2, dy2: r/2, dx4: r/2, dy4: -r/2` | `-2` |
+| 11 | sq2 c1 on sq4 e2 | (pair) | `dx2: -r/2, dy2: r/2, dx4: r/2, dy4: -r/2` | $-2$ |
 | 12 | sq2 c2 top | `-dy2 (1+t2^2) + t2^2 - t2` | `dy2: -1, t2: -1` | 0 |
 | 13 | sq2 c3 left | `dx2 (1+t2^2) + t2^2 - t2` | `dx2: 1, t2: -1` | 0 |
 | 14 | sq2 c3 top | `-dy2 (1+t2^2) + t2^2 + t2` | `dy2: -1, t2: 1` | 0 |
-| 15 | sq3 c0 on sq4 e1 | (pair) | `dx3: r/2, dy3: r/2, dx4: -r/2, dy4: -r/2` | `-2` |
+| 15 | sq3 c0 on sq4 e1 | (pair) | `dx3: r/2, dy3: r/2, dx4: -r/2, dy4: -r/2` | $-2$ |
 | 16 | sq3 c1 right | `-dx3 (1+t3^2) + t3^2 - t3` | `dx3: -1, t3: -1` | 0 |
 | 17 | sq3 c2 right | `-dx3 (1+t3^2) + t3^2 + t3` | `dx3: -1, t3: 1` | 0 |
 | 18 | sq3 c2 top | `-dy3 (1+t3^2) + t3^2 - t3` | `dy3: -1, t3: -1` | 0 |
@@ -419,7 +422,7 @@ Hessian on multiples of `e_{t4}`.
 
 ### 3.1 Lemma 4 (separating axes for two closed squares)
 
-Let `Q_i, Q_j` be closed unit squares with centres `c_i, c_j` and outward edge normals
+Let $Q_i, Q_j$ be closed unit squares with centres $c_i, c_j$ and outward edge normals
 `n_{i,e}, n_{j,e}` (`e = 0..3`). Then `int Q_i ∩ int Q_j = ∅` if and only if
 
 ```
@@ -429,36 +432,36 @@ OR over (owner, e) in {i, j} x {0,1,2,3}:   AND over k in {0,1,2,3}:
 
 where `other` is the square that is not `owner`.
 
-*Proof.* Put `K = Q_i - Q_j` (Minkowski difference), a convex polygon.
+*Proof.* Put $K = Q_i - Q_j$ (Minkowski difference), a convex polygon.
 For convex sets with nonempty interior `int(A + B) = int A + int B` (`int A + int B` is
-open and lies in `A + B`; conversely `A ⊂ Cl(int A)` gives `A + B ⊂ Cl(int A + int B)`,
+open and lies in $A + B$; conversely `A ⊂ Cl(int A)` gives `A + B ⊂ Cl(int A + int B)`,
 and the interior of the closure of an open convex set is that set), so
-`int Q_i ∩ int Q_j != ∅` iff `0 in int K`. Thus interiors are disjoint iff `0` lies on
-the boundary of `K` or outside it, iff some edge of `K` has `0` on its closed outer
-side, i.e. `h_K(a) <= 0` for that edge’s outward normal `a`, where
-`h_K(a) = max_{Q_i} a·x + max_{Q_j} (-a)·x` is the support function of `K`. Edges of a
-Minkowski sum of polygons are translates of edges of the summands, so `a` is an outward
-normal of `Q_i` or of `-Q_j`; since a square’s outward normals form the set
-`{+-n, +-n^perp}`, `a` is an outward edge normal of `Q_i` or of `Q_j`. If `a = n_{i,e}`:
+`int Q_i ∩ int Q_j != ∅` iff `0 in int K`. Thus interiors are disjoint iff $0$ lies on
+the boundary of $K$ or outside it, iff some edge of $K$ has $0$ on its closed outer
+side, i.e. `h_K(a) <= 0` for that edge’s outward normal $a$, where
+`h_K(a) = max_{Q_i} a·x + max_{Q_j} (-a)·x` is the support function of $K$. Edges of a
+Minkowski sum of polygons are translates of edges of the summands, so $a$ is an outward
+normal of $Q_i$ or of `-Q_j`; since a square’s outward normals form the set
+`{+-n, +-n^perp}`, $a$ is an outward edge normal of $Q_i$ or of $Q_j$. If `a = n_{i,e}`:
 `max_{Q_i} a·x = c_i·a + 1/2` and `max_{Q_j} (-a)·x = -min_k p_{j,k}·a`, so the
 condition reads `min_k (p_{j,k} - c_i)·n_{i,e} >= 1/2`, the `(owner, e) = (i, e)`
 branch. If `a = n_{j,e}`: the condition reads `max_k p_{i,k}·a <= c_j·a - 1/2`, i.e.
-`min_k (p_{i,k} - c_j)·(-a) >= 1/2` with `-a = n_{j,e+2}`, the `(j, e+2)` branch.
+`min_k (p_{i,k} - c_j)·(-a) >= 1/2` with `-a = n_{j,e+2}`, the $(j, e+2)$ branch.
 Conversely each branch exhibits a separating line.
 □
 
 In agenda vocabulary: 4 **axes** per pair (`n_{i,0}`, `n_{i,1}`, `n_{j,0}`, `n_{j,1}` up
-to sign), 2 **orientations** per axis (edges `e` and `e+2` of the owner), giving the 8
+to sign), 2 **orientations** per axis (edges $e$ and $e+2$ of the owner), giving the 8
 `(owner, e)` branches, and 4 **support-feature branches** per `(owner, e)` (which corner
 of the other square is the support point), giving 32 elementary functions per pair.
 
 ### 3.2 The full system
 
 - **Wall–corner:** for each of the 20 corners and each of the 4 walls, one polynomial
-  (`p_x`, `p_y`, `s - p_x`, `s - p_y`, cleared by `D_i`): **80** functions, all required
-  `>= 0` (convexity of `[0, s]^2` makes corner containment equivalent to square
+  ($p_x$, $p_y$, $s - p_x$, $s - p_y$, cleared by $D_i$): **80** functions, all required
+  `>= 0` (convexity of $[0, s]^{2}$ makes corner containment equivalent to square
   containment).
-- **Pairs:** `C(5,2) = 10` pairs x 32 elementary polynomials (cleared by
+- **Pairs:** $C(5,2) = 10$ pairs x 32 elementary polynomials (cleared by
   `D_owner D_other`): **320** functions, combined per pair as `OR_8 AND_4`.
 
 `Feas(s) ∩ U` corresponds under `Phi` to
@@ -467,7 +470,7 @@ of the other square is the support point), giving 32 elementary functions per pa
 F := { z in R^15 : all 80 wall polynomials >= 0  and, for each pair, OR_8 AND_4 (...) >= 0 }.
 ```
 
-`F` is a Boolean combination of 400 polynomial inequalities, hence **semialgebraic** (no
+$F$ is a Boolean combination of 400 polynomial inequalities, hence **semialgebraic** (no
 Tarski–Seidenberg needed), and `0 in F`.
 
 ### 3.3 Exact values at the pose (base margins)
@@ -481,44 +484,44 @@ counts twice). The other 64 are strictly positive with multiset
 
 | margin | count | where |
 | --- | --- | --- |
-| `1` | 16 | corner squares: the corner at coordinate 1 against the wall at 0 (`1 - 0`) |
-| `1 + r/2` | 16 | corner squares: the corner at coordinate 1 against the wall at `s` (`s - 1`) |
-| `2 + r/2` | 16 | corner squares: the corner at coordinate 0 against the wall at `s` (`s - 0`) |
-| `1 + r/4` | 8 | square 4, its four axis-extreme corners against the two side walls each |
-| `1 - r/4` | 4 | square 4, each corner against its nearest wall |
-| `1 + 3r/4` | 4 | square 4, each corner against its farthest wall |
+| $1$ | 16 | corner squares: the corner at coordinate 1 against the wall at 0 ($1 - 0$) |
+| $1 + r/2$ | 16 | corner squares: the corner at coordinate 1 against the wall at $s$ ($s - 1$) |
+| $2 + r/2$ | 16 | corner squares: the corner at coordinate 0 against the wall at $s$ ($s - 0$) |
+| $1 + r/4$ | 8 | square 4, its four axis-extreme corners against the two side walls each |
+| $1 - r/4$ | 4 | square 4, each corner against its nearest wall |
+| $1 + 3r/4$ | 4 | square 4, each corner against its farthest wall |
 
 Minimum inactive wall margin: `1 - r/4 ~ 0.6464`. Counts: **16 active + 64 inactive =
 80**, agreeing with the agenda.
 
-**Touching pairs (4):** `(0,4)`, `(1,4)`, `(2,4)`, `(3,4)`. For each, exactly one of the
+**Touching pairs (4):** $(0,4)$, $(1,4)$, $(2,4)$, $(3,4)$. For each, exactly one of the
 8 branches is satisfied, it has exactly one zero corner, and each of the other 7
 branches has a corner with strictly negative margin:
 
 | pair | separating branch | active corner | other 3 corner margins | witnesses of the 7 violated branches: `(owner,e) -> most negative corner margin` |
 | --- | --- | --- | --- | --- |
-| (0,4) | owner 4, e3 | sq0 c2 | `r, r/2, r/2` | `(0,0): -1-3r/4; (0,1): -r/4; (0,2): -r/4; (0,3): -1-3r/4; (4,0): -1/2-r/2; (4,1): -1-r; (4,2): -1/2-r/2` |
-| (1,4) | owner 4, e0 | sq1 c3 | `r/2, r, r/2` | `(1,0): -1-3r/4; (1,1): -1-3r/4; (1,2): -r/4; (1,3): -r/4; (4,1): -1/2-r/2; (4,2): -1-r; (4,3): -1/2-r/2` |
-| (2,4) | owner 4, e2 | sq2 c1 | `r/2, r/2, r` | `(2,0): -r/4; (2,1): -r/4; (2,2): -1-3r/4; (2,3): -1-3r/4; (4,0): -1-r; (4,1): -1/2-r/2; (4,3): -1/2-r/2` |
-| (3,4) | owner 4, e1 | sq3 c0 | `r/2, r, r/2` | `(3,0): -r/4; (3,1): -1-3r/4; (3,2): -1-3r/4; (3,3): -r/4; (4,0): -1/2-r/2; (4,2): -1/2-r/2; (4,3): -1-r` |
+| (0,4) | owner 4, e3 | sq0 c2 | $r, r/2, r/2$ | `(0,0): -1-3r/4; (0,1): -r/4; (0,2): -r/4; (0,3): -1-3r/4; (4,0): -1/2-r/2; (4,1): -1-r; (4,2): -1/2-r/2` |
+| (1,4) | owner 4, e0 | sq1 c3 | $r/2, r, r/2$ | `(1,0): -1-3r/4; (1,1): -1-3r/4; (1,2): -r/4; (1,3): -r/4; (4,1): -1/2-r/2; (4,2): -1-r; (4,3): -1/2-r/2` |
+| (2,4) | owner 4, e2 | sq2 c1 | $r/2, r/2, r$ | `(2,0): -r/4; (2,1): -r/4; (2,2): -1-3r/4; (2,3): -1-3r/4; (4,0): -1-r; (4,1): -1/2-r/2; (4,3): -1/2-r/2` |
+| (3,4) | owner 4, e1 | sq3 c0 | $r/2, r, r/2$ | `(3,0): -r/4; (3,1): -1-3r/4; (3,2): -1-3r/4; (3,3): -r/4; (4,0): -1/2-r/2; (4,2): -1/2-r/2; (4,3): -1-r` |
 
 Least negative witness: `-r/4 ~ -0.3536`. Least positive non-active corner margin in a
 separating branch: `r/2 ~ 0.7071`. The active corner sits at the **midpoint** of the
-host edge: its along-edge parameter `((p - a) · (b - a)) / |b - a|^2` is exactly `1/2`
-for all four contacts (`midpoint_check.py`), so no D-390 endpoint incidence occurs; and
-since exactly one branch is satisfied per pair there is no D-391 disjunction.
-Both facts are now *computed*, not argued.
+host edge: its along-edge parameter $((p - a) \cdot (b - a)) / |b - a|^{2}$ is exactly
+$1/2$ for all four contacts (`midpoint_check.py`), so no D-390 endpoint incidence
+occurs; and since exactly one branch is satisfied per pair there is no D-391
+disjunction. Both facts are now *computed*, not argued.
 
 **Non-touching pairs (6):** each has a branch with all four corners strictly positive:
 
 | pair | witness branch | four corner margins |
 | --- | --- | --- |
-| (0,1) | owner 0, e1 | `r/2, 1+r/2, 1+r/2, r/2` |
-| (0,2) | owner 0, e2 | `r/2, r/2, 1+r/2, 1+r/2` |
-| (0,3) | owner 0, e1 | `r/2, 1+r/2, 1+r/2, r/2` |
-| (1,2) | owner 1, e2 | `r/2, r/2, 1+r/2, 1+r/2` |
-| (1,3) | owner 1, e2 | `r/2, r/2, 1+r/2, 1+r/2` |
-| (2,3) | owner 2, e1 | `r/2, 1+r/2, 1+r/2, r/2` |
+| (0,1) | owner 0, e1 | $r/2, 1+r/2, 1+r/2, r/2$ |
+| (0,2) | owner 0, e2 | $r/2, r/2, 1+r/2, 1+r/2$ |
+| (0,3) | owner 0, e1 | $r/2, 1+r/2, 1+r/2, r/2$ |
+| (1,2) | owner 1, e2 | $r/2, r/2, 1+r/2, 1+r/2$ |
+| (1,3) | owner 1, e2 | $r/2, r/2, 1+r/2, 1+r/2$ |
+| (2,3) | owner 2, e1 | $r/2, 1+r/2, 1+r/2, r/2$ |
 
 Counts: **4 touching + 6 non-touching = 10**, agreeing with the agenda.
 Every one of the 400 elementary functions has been evaluated; the agenda’s counts
@@ -543,17 +546,17 @@ Then `0 in N`, `N` is open, and
 ```
 
 *Proof.* `N` is a finite intersection of preimages of open half-lines under continuous
-(polynomial) functions, hence open; it contains `0` by §3.3 (every listed sign is strict
-at the pose). (i): let `z in F ∩ N` and take a touching pair `(c, 4)` with separating
-branch `b_c` and active corner `k_c`. Since `z in F`, some branch of `(c,4)` is
-satisfied at `z`; since `z in N`, each of the other 7 branches has a strictly negative
-corner at `z`, so the satisfied branch is `b_c`; in particular its corner `k_c`
-inequality — which is `g~_j >= 0` for the corresponding pair row `j` — holds.
+(polynomial) functions, hence open; it contains $0$ by §3.3 (every listed sign is strict
+at the pose). (i): let `z in F ∩ N` and take a touching pair $(c, 4)$ with separating
+branch $b_c$ and active corner $k_c$. Since `z in F`, some branch of $(c,4)$ is
+satisfied at $z$; since `z in N`, each of the other 7 branches has a strictly negative
+corner at $z$, so the satisfied branch is $b_c$; in particular its corner $k_c$
+inequality — which is `g~_j >= 0` for the corresponding pair row $j$ — holds.
 The 16 active wall rows are among the 80 wall inequalities that `z in F` satisfies.
 (ii): conversely let `z in N` satisfy the 20 inequalities.
 The 64 inactive wall inequalities hold strictly on `N`; for a non-touching pair the
 witness branch holds strictly on `N`; for a touching pair the three non-active corners
-of `b_c` hold strictly on `N` and the active one holds by hypothesis, so `b_c` is
+of $b_c$ hold strictly on `N` and the active one holds by hypothesis, so $b_c$ is
 satisfied and the pair’s `OR` is true.
 Hence `z in F`. □
 
@@ -583,7 +586,7 @@ semialgebraic and `x ∈ Cl(A)`. Then there is a Nash arc `gamma : (-1, 1) -> R^
 Provenance, stated honestly: the printed text of BCR was **not** available in this
 environment, and it was not reached by the verification lane that later worked this
 obligation either — Springer Link redirects to an identity provider, the De Gruyter
-digitisation answers `405`, this project’s Google Books quota is `0`, and neither BCR
+digitisation answers $405$, this project’s Google Books quota is $0$, and neither BCR
 nor Milnor is on archive.org or HathiTrust in readable form.
 Nothing below is the printed page of Proposition 8.1.13 and none of it is offered as a
 substitute for one. What it does establish is that the statement used here is attested
@@ -605,7 +608,7 @@ coauthors, which is one author group and not four independent ones.
   verbatim: “For A and x as in theorem 1.14, there exists a Nash curve γ : (−1, 1) → R^n
   such that γ(0) = x and γ((0, 1)) ⊂ A.” Coste is the “C” of Bochnak–Coste–Roy, so this
   is the cited statement in an author’s own words, and it is the statement used here;
-  his Theorem 1.14 is the continuous version, in the `x ∈ clos(S)`, `x ∉ S` form.
+  his Theorem 1.14 is the continuous version, in the `x ∈ clos(S)`, $x \notin S$ form.
   Two caveats, stated because they are why this is still not primary text: the notes are
   self-described as “still in a provisional form”, and Theorem 1.15 is introduced with
   “We explain the reason for this fact, without giving a complete proof”.
@@ -648,16 +651,16 @@ Keeping it would have made this document repeat an over-attribution, so it is wi
 the general statement is cited to BCR, and Milnor is cited only together with the
 reduction that puts the set into his class.
 
-**What the sources agree on, and what is not used.** Semialgebraic `A`, `x` in its
+**What the sources agree on, and what is not used.** Semialgebraic $A$, $x$ in its
 closure, a Nash — that is, real-analytic *and* semialgebraic — arc, one branch inside
-`A`. Nash is strictly stronger than anything consumed below: `sin` and `exp` are
+$A$. Nash is strictly stronger than anything consumed below: `sin` and `exp` are
 analytic and not Nash, and Corollary 4.3 and §5 use only real-analyticity.
 That much is load-bearing rather than decorative, because analyticity is what supplies a
-least `m` with `a_m != 0`: a merely `C^∞` arc could be flat at `0`, and a merely
+least $m$ with `a_m != 0`: a merely `C^∞` arc could be flat at $0$, and a merely
 continuous semialgebraic one would carry a Puiseux expansion in fractional powers and
-need a reparametrisation `s = u^N` before the induction of §5 could start.
-The domain (`(-1,1)`, `[-1,1]` or `[0, ε)`) is immaterial here: only a convergent power
-series at `0` and the inclusion of `(0, ε)` are used.
+need a reparametrisation $s = u^N$ before the induction of §5 could start.
+The domain ($(-1,1)$, $[-1,1]$ or $[0, \varepsilon)$) is immaterial here: only a
+convergent power series at $0$ and the inclusion of $(0, \varepsilon)$ are used.
 
 **Alternative route** (for a reviewer who prefers the older statement).
 Milnor, *Singular Points of Complex Hypersurfaces*, Ann.
@@ -676,16 +679,16 @@ a real-analytic curve `p : [0, ε) -> R^m` with `p(0) = 0` and `p(t) ∈ U ∩ V
 The narrowness of that class is confirmed rather than suspected, and it is why the
 reduction below is required rather than decorative.
 Derdzinski–Gal define, verbatim: “By a *semi-algebraic set* in `S` one means the
-intersection of an algebraic set with `⋂_{j=1}^{k} f_j^{−1}((0, ∞))`, where `k ≥ 1` and
-`f_1, ..., f_k` are polynomial functions `S → R`” — finitely many **strict**
+intersection of an algebraic set with `⋂_{j=1}^{k} f_j^{−1}((0, ∞))`, where $k \ge 1$
+and `f_1, ..., f_k` are polynomial functions $S \to R$” — finitely many **strict**
 inequalities. `F \ {0}` is outside that class on two counts before its per-pair
 disjunctions are even considered: its inequalities are non-strict, and it has a point
 removed.
 
 To apply it, write `F \ {0}` as a finite union of sets of the form
 `{ f = 0 for f in Z } ∩ { f > 0 for f in P } ∩ { |z|^2 > 0 }`, obtained by choosing one
-branch per pair (`8^10` choices) and, for each of the resulting closed basic sets,
-splitting each `f >= 0` into `f = 0` or `f > 0`; `0` is in the closure of a finite union
+branch per pair ($8^{10}$ choices) and, for each of the resulting closed basic sets,
+splitting each `f >= 0` into $f = 0$ or $f > 0$; $0$ is in the closure of a finite union
 iff it is in the closure of one member; apply the lemma to that member.
 The finiteness is all that matters.
 This route needs no Nash-function theory.
@@ -695,65 +698,66 @@ review. **Localisation must stay inside the class.** Corollary 4.3 applies the l
 `F \ {0}` and only then localises, by continuity, to `N`; a reviewer who prefers to
 localise first, applying the lemma to `(F ∩ N) \ {0}`, needs the restriction to `N` to
 be a strict polynomial inequality itself, and it is — `N` is defined in §3.4 by 128
-strict sign conditions, the 28 conditions `f < 0` being `-f > 0`, so intersecting with
+strict sign conditions, the 28 conditions $f < 0$ being `-f > 0`, so intersecting with
 `N` keeps every member of the union in Milnor’s class and keeps the set semialgebraic
 for the BCR route. Nothing is lost either way, because isolation is local.
 **The finite-union step is in print.** Derdzinski–Gal’s displayed remark (4.1) —
-“whenever `Z ⊂ S` and `L ⊂ S` are algebraic, one easily sees that `Z \ L` is a finite
-union of semi-algebraic sets in `S`” — is precisely this move, made in a peer-reviewed
-paper immediately before they invoke Milnor’s lemma.
+“whenever $Z \subset S$ and $L \subset S$ are algebraic, one easily sees that `Z \ L` is
+a finite union of semi-algebraic sets in `S`” — is precisely this move, made in a
+peer-reviewed paper immediately before they invoke Milnor’s lemma.
 
 ### 4.2 Hypotheses, verified for this chart
 
-- `A := F \ {0}` is semialgebraic: `F` is (§3.2), and `{0} = { |z|^2 = 0 }` is;
-  differences of semialgebraic sets are semialgebraic.
-- `0 ∈ Cl(A)` **if and only if** `P^0` is not isolated in `Feas(s)`: `Phi` is a
+- `A := F \ {0}` is semialgebraic: $F$ is (§3.2), and
+  $\lbrace0\rbrace = \lbrace |z|^{2} = 0 \rbrace$ is; differences of semialgebraic sets
+  are semialgebraic.
+- `0 ∈ Cl(A)` **if and only if** $P^{0}$ is not isolated in `Feas(s)`: `Phi` is a
   homeomorphism onto the open set `U ∋ P^0` (Lemma 1), so `Feas(s) ∩ U` corresponds to
-  `F`, and a point is nonisolated in a set iff it lies in the closure of the set minus
+  $F$, and a point is nonisolated in a set iff it lies in the closure of the set minus
   the point.
 
 Those two bullets are the whole hypothesis of Proposition 8.1.13.
 
-**Applying the lemma to `F \ {0}` rather than to `F` is load-bearing, not tidiness.**
-The theorem is stated with `x ∈ Cl(A)`, which permits `x ∈ A`; and when `x ∈ A` the
+**Applying the lemma to `F \ {0}` rather than to $F$ is load-bearing, not tidiness.**
+The theorem is stated with `x ∈ Cl(A)`, which permits $x \in A$; and when $x \in A$ the
 *constant* arc `gamma ≡ x` already satisfies `gamma(0) = x` and `gamma((0,1)) ⊂ A`, so a
 lemma entitled to return it says nothing about isolation and leaves the coefficient
 induction of §5 with no `a_m != 0` to run on.
-Removing the point is exactly what excludes that: with `0 ∉ A`, every arc satisfying
-`gamma((0,1)) ⊂ A` has `gamma(s) != 0` for `s ∈ (0,1)`, which is where Corollary 4.3
-gets its nonconstancy.
-Any rephrasing that applies the lemma to `F` itself breaks the argument silently.
+Removing the point is exactly what excludes that: with $0 \notin A$, every arc
+satisfying `gamma((0,1)) ⊂ A` has `gamma(s) != 0` for $s \in (0,1)$, which is where
+Corollary 4.3 gets its nonconstancy.
+Any rephrasing that applies the lemma to $F$ itself breaks the argument silently.
 A reviewer who prefers the guard inside the theorem can cite Coste’s Theorem 1.14/1.15,
-stated for `x ∈ clos(A)`, `x ∉ A`.
+stated for `x ∈ clos(A)`, $x \notin A$.
 
 **Every hypothesis a weaker version of the lemma could impose is also satisfied**, so
 the argument does not depend on which formulation a reviewer reaches for:
 
 - **Closed, and locally closed basic.** All 400 conditions of §3.2 are non-strict, and
-  finite unions and intersections of closed sets are closed, so `F` is closed; the
+  finite unions and intersections of closed sets are closed, so $F$ is closed; the
   twenty-row system `G := { g~_1 >= 0, ..., g~_20 >= 0 }` is a **closed basic**
   semialgebraic set (inequalities only, no equalities), and Proposition 5(ii) says
-  `F ∩ N = G ∩ N`. Hence `F \ {0} = F ∩ (R^15 \ {0})` is closed intersected with open:
-  **locally closed**.
-- **`0 ∉ A`, and `0 ∈ Cl(A)` is exactly “not isolated”.** The first holds by
+  $F \cap N = G \cap N$. Hence `F \ {0} = F ∩ (R^15 \ {0})` is closed intersected with
+  open: **locally closed**.
+- **$0 \notin A$, and `0 ∈ Cl(A)` is exactly “not isolated”.** The first holds by
   construction, the second is the second bullet above.
 - **Bounded, if a reviewer insists on it.** No cited statement asks for it: “Closed and
   Bounded Semi-algebraic Sets” is the *title* of BCR §2.5, not a hypothesis, and Coste’s
   proof of Theorem 1.14 opens by *reducing* to the bounded case (“Replacing `S` with its
-  intersection with a ball with center `x` and radius 1, we can assume `S` bounded”). It
-  is free here in any case: intersecting `A` with the open unit ball `{ 1 - |z|^2 > 0 }`
-  about the pose — Coste’s own reduction — is one more strict polynomial inequality,
-  which preserves semialgebraicity, local closedness and membership in Milnor’s class,
-  leaves `0 ∈ Cl(A)` undisturbed because closure membership is local, and costs nothing
-  because isolation is local.
+  intersection with a ball with center $x$ and radius 1, we can assume `S` bounded”). It
+  is free here in any case: intersecting $A$ with the open unit ball
+  $\lbrace 1 - |z|^{2} > 0 \rbrace$ about the pose — Coste’s own reduction — is one more
+  strict polynomial inequality, which preserves semialgebraicity, local closedness and
+  membership in Milnor’s class, leaves `0 ∈ Cl(A)` undisturbed because closure
+  membership is local, and costs nothing because isolation is local.
   It is not done above only because nothing above needs it.
 
-**Corollary 4.3.** If `P^0` is not isolated in `Feas(s)`, there is a real-analytic
+**Corollary 4.3.** If $P^{0}$ is not isolated in `Feas(s)`, there is a real-analytic
 `gamma : (-1,1) -> R^15` with `gamma(0) = 0`, `gamma((0,1)) ⊂ F \ {0}`; writing its
-convergent Taylor series at 0 as `gamma(s) = sum_{k>=1} a_k s^k` (`a_k ∈ R^15`, radius
-`rho > 0`), not all `a_k` vanish (else `gamma ≡ 0` near 0, contradicting `gamma(s) != 0`
-for `s ∈ (0,1)`). Let `m >= 1` be least with `a_m != 0`. By continuity there is
-`ε ∈ (0, min(rho, 1))` with `gamma((0, ε)) ⊂ N`, hence by Proposition 5(i)
+convergent Taylor series at 0 as `gamma(s) = sum_{k>=1} a_k s^k` ($a_k \in R^{15}$,
+radius `rho > 0`), not all $a_k$ vanish (else `gamma ≡ 0` near 0, contradicting
+`gamma(s) != 0` for $s \in (0,1)$). Let `m >= 1` be least with `a_m != 0`. By continuity
+there is `ε ∈ (0, min(rho, 1))` with `gamma((0, ε)) ⊂ N`, hence by Proposition 5(i)
 
 ```
 g~_j(gamma(s)) >= 0     for all j = 1..20 and all s ∈ (0, ε).                    (4.1)
@@ -766,39 +770,41 @@ g~_j(gamma(s)) >= 0     for all j = 1..20 and all s ∈ (0, ε).                
 ### 5.1 Proposition 6 (T-012, transferred to the chart)
 
 Let `A := A_chart` (20 x 15, the gradient rows of §2.5), `S` the positive diagonal
-scaling (`sqrt 2` on rows 3, 9, 11, 15; `1` elsewhere), `q := q_chart ∈ R^20` (`-2` on
-rows 3, 9, 11, 15; `0` elsewhere).
+scaling (`sqrt 2` on rows 3, 9, 11, 15; $1$ elsewhere), `q := q_chart ∈ R^20` ($-2$ on
+rows 3, 9, 11, 15; $0$ elsewhere).
 Then:
 
 1. **Cone.** `C := { x ∈ R^15 : A x >= 0 } = R e_{t4}`, and `A e_{t4} = 0`.
-2. **Self-stress.** There is `w ∈ R^20`, `w >= 0`, with `w^T A = 0` and `w · q < 0`.
+2. **Self-stress.** There is $w \in R^{20}$, `w >= 0`, with $w^T A = 0$ and
+   $w \cdot q < 0$.
 
 *Proof.* (1) `A e_{t4} = 0` because `t4` appears in no gradient row (§2.5). For each of
 the 14 coordinates `k != t4`, T-012’s record carries weights `w^{k,+}, w^{k,-} >= 0`
 with `(w^{k,+-})^T S A_geo = +- e_k^T`; by §2.4, `(w^{k,+-})^T (S A) = +- J_kk e_k^T`.
 If `A x >= 0` then `S A x >= 0`, so `+- J_kk x_k = (w^{k,+-})^T S A x >= 0`, i.e.
-`x_k = 0`. Hence `C ⊂ R e_{t4}`, and `R e_{t4} ⊂ C` by `A e_{t4} = 0`. (2) T-012’s
-self-stress `w~ = 1/2` on the six rows `{5, 8, 9, 10, 11, 12}` satisfies
+$x_k = 0$. Hence `C ⊂ R e_{t4}`, and `R e_{t4} ⊂ C` by `A e_{t4} = 0`. (2) T-012’s
+self-stress `w~ = 1/2` on the six rows $\lbrace5, 8, 9, 10, 11, 12\rbrace$ satisfies
 `w~^T S A_geo = 0`, hence `w~^T S A = 0`; put `w := S w~`, i.e. weights
-`1/2, 1/2, r/2, 1/2, r/2, 1/2` on those rows.
-Then `w >= 0`, `w^T A = w~^T S A = 0`, and `w · q = (r/2)(-2) + (r/2)(-2) = -2r < 0`.
-All of this was replayed exactly (`verify_chart.py`: the 28 certificates and the
-self-stress against `S A_chart`; `w · q~ = -2 sqrt 2`). By hand, for the reader:
+$1/2, 1/2, r/2, 1/2, r/2, 1/2$ on those rows.
+Then `w >= 0`, `w^T A = w~^T S A = 0`, and
+$w \cdot q = (r/2)(-2) + (r/2)(-2) = -2r < 0$. All of this was replayed exactly
+(`verify_chart.py`: the 28 certificates and the self-stress against `S A_chart`;
+`w · q~ = -2 sqrt 2`). By hand, for the reader:
 `(1/2)(dy1 - t1) + (1/2)(-dx1 + t1) + (1/2)(dx1 - dy1 - dx4 + dy4) + (1/2)(dx2 + t2) + (1/2)(-dx2 + dy2 + dx4 - dy4) + (1/2)(-dy2 - t2) = 0`.
 □
 
 ### 5.2 Lemma 7 (sign of the leading coefficient)
 
 Let `f(s) = sum_{k >= K} f_k s^k` converge on `(-rho, rho)` and satisfy `f(s) >= 0` for
-`s ∈ (0, ε)`. Then `f_K >= 0`.
+$s \in (0, \varepsilon)$. Then `f_K >= 0`.
 
-*Proof.* If `f_K < 0`, then `f(s) = s^K (f_K + O(s))` is negative for small `s > 0`. □
+*Proof.* If $f_K < 0$, then $f(s) = s^K (f_K + O(s))$ is negative for small $s > 0$. □
 
 ### 5.3 Lemma 8 (coefficient extraction)
 
-Let `g` be a polynomial on `R^15` with `g(0) = 0`, gradient `a` and Hessian `H` at 0,
+Let $g$ be a polynomial on $R^{15}$ with $g(0) = 0$, gradient $a$ and Hessian $H$ at 0,
 and let `gamma(s) = sum_{k >= m} a_k s^k` with `a_m != 0`. Then `g(gamma(s))` is a
-convergent power series whose coefficient of `s^k` is
+convergent power series whose coefficient of $s^k$ is
 
 ```
 [s^k] g(gamma(s)) = a · a_k                                  for m <= k < 2m,
@@ -806,44 +812,45 @@ convergent power series whose coefficient of `s^k` is
 ```
 
 *Proof.* Write `g(z) = a·z + (1/2) z^T H z + (terms of degree >= 3)`. A monomial of
-degree `d` in `z` contributes to orders `>= d·m` in `s`. The linear part contributes
-`a · a_k` at each order `k`. The quadratic part contributes
-`(1/2) sum_{k+l = order, k,l >= m} a_k^T H a_l`, which is empty below order `2m` and
-equals `(1/2) a_m^T H a_m` at order `2m` (the only solution of `k + l = 2m`, `k, l >= m`
-is `k = l = m`). Cubic and higher parts start at order `3m > 2m`. □
+degree $d$ in $z$ contributes to orders `>= d·m` in $s$. The linear part contributes
+$a \cdot a_k$ at each order $k$. The quadratic part contributes
+`(1/2) sum_{k+l = order, k,l >= m} a_k^T H a_l`, which is empty below order $2m$ and
+equals $(1/2) a_m^T H a_m$ at order $2m$ (the only solution of $k + l = 2m$, `k, l >= m`
+is $k = l = m$). Cubic and higher parts start at order $3m > 2m$. □
 
 ### 5.4 Theorem 9 (no nonconstant analytic feasible arc)
 
 There is no real-analytic `gamma : (-rho, rho) -> R^15`, `gamma(0) = 0`, `gamma` not
-identically zero near 0, satisfying (4.1) on some `(0, ε)`.
+identically zero near 0, satisfying (4.1) on some $(0, \varepsilon)$.
 
-*Proof.* Suppose there is one; let `m >= 1` be least with `a_m != 0`, and write `a_j`
-for row `j` of `A`. We prove by induction on `k`, `m <= k <= 2m - 1`:
+*Proof.* Suppose there is one; let `m >= 1` be least with `a_m != 0`, and write $a_j$
+for row $j$ of $A$. We prove by induction on $k$, `m <= k <= 2m - 1`:
 
-> **(I_k)** `a_k ∈ C`, hence (Proposition 6.1) `a_k = lambda_k e_{t4}` and `A a_k = 0`.
+> **(I_k)** $a_k \in C$, hence (Proposition 6.1) `a_k = lambda_k e_{t4}` and
+> $A a_k = 0$.
 
-*Base `k = m`.* By Lemma 8, for each `j`,
+*Base `k = m`.* By Lemma 8, for each $j$,
 `g~_j(gamma(s)) = (a_j · a_m) s^m + O(s^{m+1})` (all lower coefficients vanish because
-`g~_j(0) = 0` and `a_k = 0` for `k < m`). By (4.1) and Lemma 7, `a_j · a_m >= 0` for
-every `j`, i.e. `A a_m >= 0`, i.e. `a_m ∈ C`. So `a_m = lambda e_{t4}` with
-`lambda := lambda_m != 0`, and `A a_m = 0`.
+`g~_j(0) = 0` and $a_k = 0$ for $k < m$). By (4.1) and Lemma 7, `a_j · a_m >= 0` for
+every $j$, i.e. `A a_m >= 0`, i.e. $a_m \in C$. So `a_m = lambda e_{t4}` with
+`lambda := lambda_m != 0`, and $A a_m = 0$.
 
-*Step `m < k <= 2m - 1`.* Assume `(I_{k'})` for `m <= k' < k`. Then for each `j` the
+*Step `m < k <= 2m - 1`.* Assume `(I_{k'})` for `m <= k' < k`. Then for each $j$ the
 coefficients of `s^{k'}`, `k' < k`, in `g~_j(gamma(s))` are `a_j · a_{k'} = 0` (Lemma 8
 and `A a_{k'} = 0`), so `g~_j(gamma(s)) = (a_j · a_k) s^k + O(s^{k+1})`, and Lemma 7
-with (4.1) gives `A a_k >= 0`, i.e. `(I_k)`.
+with (4.1) gives `A a_k >= 0`, i.e. $(I_k)$.
 
 *Order `2m`.* By `(I_{k})` for all `m <= k < 2m`, every coefficient of `g~_j(gamma(s))`
-of order `< 2m` vanishes, and by Lemma 8 the order-`2m` coefficient is
+of order $< 2m$ vanishes, and by Lemma 8 the order-`2m` coefficient is
 `a_j · a_{2m} + (1/2) a_m^T H_j a_m = a_j · a_{2m} + (lambda^2 / 2) q_j`, since
 `a_m = lambda e_{t4}` and `e_{t4}^T H_j e_{t4} = q_j`. Lemma 7 with (4.1) gives, for
-every `j`,
+every $j$,
 
 ```
 a_j · a_{2m} + (lambda^2 / 2) q_j >= 0,      i.e.      A a_{2m} >= -(lambda^2 / 2) q .
 ```
 
-Apply the self-stress `w` of Proposition 6.2 (`w >= 0`, `w^T A = 0`, `w · q < 0`):
+Apply the self-stress $w$ of Proposition 6.2 (`w >= 0`, $w^T A = 0$, $w \cdot q < 0$):
 
 ```
 0 = w^T A a_{2m} >= -(lambda^2 / 2) (w · q) > 0 ,
@@ -854,34 +861,34 @@ Contradiction. □
 
 ### 5.5 Theorem 10 (fixed-side local rigidity of Goebel’s pose)
 
-`P^0` is an isolated point of `Feas(s)`, `s = 2 + sqrt(2)/2`. Consequently there is no
-nonconstant continuous path in `Feas(s)` starting at `P^0`, no sequence of distinct
-feasible configurations converging to `P^0`, and (by the lifting remark of §1.3) the
+$P^{0}$ is an isolated point of `Feas(s)`, `s = 2 + sqrt(2)/2`. Consequently there is no
+nonconstant continuous path in `Feas(s)` starting at $P^{0}$, no sequence of distinct
+feasible configurations converging to $P^{0}$, and (by the lifting remark of §1.3) the
 unlabeled packing is rigid in Kingbird’s sense at fixed side.
 
-*Proof.* If `P^0` were not isolated, Corollary 4.3 would supply an analytic `gamma` with
-`gamma(0) = 0`, nonconstant near 0, satisfying (4.1); Theorem 9 forbids it.
+*Proof.* If $P^{0}$ were not isolated, Corollary 4.3 would supply an analytic `gamma`
+with `gamma(0) = 0`, nonconstant near 0, satisfying (4.1); Theorem 9 forbids it.
 The consequences are §1.3. □
 
 ### 5.6 Remarks on the proof
 
-- **`m = 1` is T-012.** Then `2m = 2` and the induction has no intermediate steps; the
-  order-2 inequality is exactly X-007’s `A y >= -q` with `y = 2 a_2` (up to the chart’s
+- **$m = 1$ is T-012.** Then $2m = 2$ and the induction has no intermediate steps; the
+  order-2 inequality is exactly X-007’s `A y >= -q` with $y = 2 a_2$ (up to the chart’s
   factor, since `gamma''(0) = 2 a_2`).
 - **Why no reparametrization is needed, and why X-007’s “wrong version” fails.** The
   induction works on the arc’s own coefficients; substituting `sigma = s^m` would
   destroy analyticity at 0 for `m >= 2`. The argument never differentiates `gamma` more
   than the power series allows.
-- **Where the geometry enters.** Exactly twice: `C ⊂ ker A` (the flex line is in the
-  kernel, so lower-order coefficients vanish *exactly* rather than merely being
-  nonnegative — this is what lets the induction proceed to order `2m` with nothing
-  accumulating), and `q < 0` on rows that a nonnegative self-stress combines to zero.
-  The cross terms `t_i t_4` of the pair polynomials are invisible because the Hessian is
+- **Where the geometry enters.** Exactly twice: $C \subset \ker A$ (the flex line is in
+  the kernel, so lower-order coefficients vanish *exactly* rather than merely being
+  nonnegative — this is what lets the induction proceed to order $2m$ with nothing
+  accumulating), and $q < 0$ on rows that a nonnegative self-stress combines to zero.
+  The cross terms $t_i t_4$ of the pair polynomials are invisible because the Hessian is
   only ever evaluated on `e_{t4}`.
-- **Fixed side is load-bearing.** With `s` a 16th variable the cone opens and
+- **Fixed side is load-bearing.** With $s$ a 16th variable the cone opens and
   `A y >= -q` becomes feasible (X-007’s measurement); nothing here survives.
   This is Control 5.
-- **Nothing is claimed about a numerical isolation radius**, about other optimal `n = 5`
+- **Nothing is claimed about a numerical isolation radius**, about other optimal $n = 5$
   packings, about global uniqueness, or about the container growing.
 
 ### 5.7 Second, corroborating proof: classical second-order sufficiency (not the acceptance route)
@@ -894,35 +901,35 @@ acceptance runs through §§2–5.5 only.
 Nothing in this subsection discharges or softens any obligation of the primary route
 (§8).
 
-**Theorem 11.** Let `g_1, ..., g_20` be `C^2` on a neighbourhood of `0` in `R^15` with
-`g_j(0) = 0`, gradients `a_j` (the rows of `A`) and Hessians `H_j` at `0`. Assume
+**Theorem 11.** Let `g_1, ..., g_20` be $C^{2}$ on a neighbourhood of $0$ in $R^{15}$
+with `g_j(0) = 0`, gradients $a_j$ (the rows of $A$) and Hessians $H_j$ at $0$. Assume
 
-- (i) `{ d : A d >= 0 } = R e` for a unit vector `e` with `A e = 0`;
-- (ii) there is `w ∈ R^20`, `w >= 0`, with `w^T A = 0` and `w · q < 0`, where
+- (i) `{ d : A d >= 0 } = R e` for a unit vector $e$ with $A e = 0$;
+- (ii) there is $w \in R^{20}$, `w >= 0`, with $w^T A = 0$ and $w \cdot q < 0$, where
   `q_j := e^T H_j e`.
 
-Then `0` is an isolated point of `G := { z : g_j(z) >= 0, j = 1..20 }`.
+Then $0$ is an isolated point of `G := { z : g_j(z) >= 0, j = 1..20 }`.
 
 *Proof (normalized sequence).* Suppose `z_k ∈ G \ {0}` with `z_k -> 0`. Put
 `rho_k := |z_k| -> 0` and `d_k := z_k / rho_k`; pass to a subsequence with `d_k -> d`,
-`|d| = 1`. By Taylor’s theorem with Peano remainder (`C^2` suffices),
+$|d| = 1$. By Taylor’s theorem with Peano remainder ($C^{2}$ suffices),
 `g_j(z_k) = rho_k a_j · d_k + (1/2) rho_k^2 d_k^T H_j d_k + o(rho_k^2)`. *First order:*
-divide `g_j(z_k) >= 0` by `rho_k` and let `k -> ∞`: `a_j · d >= 0` for every `j`, so
-`d ∈ R e` by (i), i.e. `d = +-e`. *Second order:* since `w >= 0`,
-`sum_j w_j g_j(z_k) >= 0`; since `w^T A = 0` the first-order terms cancel exactly,
+divide `g_j(z_k) >= 0` by `rho_k` and let `k -> ∞`: `a_j · d >= 0` for every $j$, so
+$d \in R e$ by (i), i.e. $d = +-e$. *Second order:* since `w >= 0`,
+`sum_j w_j g_j(z_k) >= 0`; since $w^T A = 0$ the first-order terms cancel exactly,
 leaving `(1/2) rho_k^2 d_k^T H_w d_k + o(rho_k^2) >= 0` with `H_w := sum_j w_j H_j`.
 Divide by `rho_k^2` and let `k -> ∞`: `d^T H_w d >= 0`. But
 `d^T H_w d = e^T H_w e = sum_j w_j q_j = w · q < 0` by (ii).
 Contradiction. □
 
-**Hypotheses reduced to this system.** (a) The `g_j` are the twenty cleared polynomials
-of §2.5, hence `C^∞`. (b) Proposition 5(i) gives `F ∩ N ⊂ G`, so isolation of `0` in `G`
-implies isolation in `F`, and through Lemma 1 isolation of `P^0` in `Feas(s)`; this is
-the same local reduction (the 28 strictly negative witnesses of §3.3) that the primary
-route uses, and it is the only geometric input shared by the two routes.
-(c) Hypothesis (i) is Proposition 6.1 with `e = e_{t4}`. (d) Hypothesis (ii) is
+**Hypotheses reduced to this system.** (a) The $g_j$ are the twenty cleared polynomials
+of §2.5, hence `C^∞`. (b) Proposition 5(i) gives $F \cap N \subset G$, so isolation of
+$0$ in $G$ implies isolation in $F$, and through Lemma 1 isolation of $P^{0}$ in
+`Feas(s)`; this is the same local reduction (the 28 strictly negative witnesses of §3.3)
+that the primary route uses, and it is the only geometric input shared by the two
+routes. (c) Hypothesis (i) is Proposition 6.1 with `e = e_{t4}`. (d) Hypothesis (ii) is
 Proposition 6.2, with `w · q = -2 sqrt 2`. The route uses no semialgebraicity, no
-property of the chart beyond its being a `C^2` local coordinate system, no curve
+property of the chart beyond its being a $C^{2}$ local coordinate system, no curve
 selection and no Puiseux induction; it works verbatim in the raw `(c, theta)`
 coordinates with T-012’s `A_geo`, `q_geo` and the unscaled weights `S w~` (there
 `w · q_geo = -sqrt(2)/2`).
@@ -932,10 +939,10 @@ condition (McCormick 1967, *SIAM J. Appl.
 Math.* 15; Fiacco–McCormick 1968, *Nonlinear Programming*; Nocedal–Wright, *Numerical
 Optimization*, 2nd ed.
 2006, Theorem 12.6 — citations from memory, numbering to be checked) applied to
-`min f(z) = -|z|^2` subject to `g_j(z) >= 0` at `x* = 0`: a strict local minimizer of
-`-|z|^2` over `G` is exactly an isolated point of `G`. KKT holds at `0` with multiplier
-`lambda = mu w` for any `mu > 0` (`grad f(0) = 0` and `w^T A = 0`); the critical cone
-`C(x*, lambda)` is contained in `{ d : A d >= 0 } = R e`; and
+$\min f(z) = -|z|^{2}$ subject to `g_j(z) >= 0` at $x^{\ast} = 0$: a strict local
+minimizer of $-|z|^{2}$ over $G$ is exactly an isolated point of $G$. KKT holds at $0$
+with multiplier `lambda = mu w` for any `mu > 0` (`grad f(0) = 0` and $w^T A = 0$); the
+critical cone `C(x*, lambda)` is contained in `{ d : A d >= 0 } = R e`; and
 `d^T Hess_zz L(x*, lambda) d = -2|d|^2 - mu d^T H_w d = |d|^2 (-2 - mu w · q)`, which is
 positive for all `d ∈ C \ {0}` as soon as `mu > 2 / (-w · q)`. The multiplier scaling is
 not cosmetic: with `mu = 1` the inequality reads `-2 + 2 sqrt 2 > 0` in the chart
@@ -946,7 +953,7 @@ The normalized-sequence proof above is this theorem’s standard proof, speciali
 is included so that the packet does not depend on the numbering.
 
 **What this does and does not add.** It corroborates Theorem 10 from strictly weaker
-hypotheses (`C^2` rather than semialgebraic; no curve selection), so an error in §4
+hypotheses ($C^{2}$ rather than semialgebraic; no curve selection), so an error in §4
 would not by itself break isolation.
 It does not change the acceptance criterion, does not close or soften the primary
 route’s open obligation, and claims no novelty: the closing principle is classical (§8).
@@ -956,7 +963,7 @@ route’s open obligation, and claims no novelty: the closing principle is class
 ## 6. (e) Negative and positive controls (to be run in the instrument phase)
 
 The instrument (W7 extension of `devtools.assess_n5_rigidity`) will (1) declare the
-chart and check `J`, the denominators and their 1-jets; (2) recompute the 400 base
+chart and check $J$, the denominators and their 1-jets; (2) recompute the 400 base
 margins in `Q(sqrt 2)` and classify by exact sign, refusing on any unexpected sign; (3)
 compute gradient and Hessian rows of the cleared polynomials and bind them to `A_geo J`,
 `4 q_geo`; (4) replay T-012’s certificates on `S A_chart`; (5) emit a neighbourhood
@@ -965,34 +972,36 @@ receipt. A control “rejects” when the instrument refuses to emit a passing r
 | id | control | mutation | check that must refuse | expected refusal |
 | --- | --- | --- | --- | --- |
 | Control 1 | changed feature | replace “sq0 c2 on sq4 e3” by “sq0 c1 on sq4 e3” in the declared active list | step 2: declared active row must vanish; true zero must be declared | declared row has value `r/2 != 0`; the actual zero (c2) is undeclared |
-| Control 2 | zero margin | (a) receipt mutation: one strict margin overwritten by `0`; (b) declare row 3 inactive | step 2: strict-sign check | (a) sign 0 fails `> 0`; (b) an inactive-classified function vanishes |
+| Control 2 | zero margin | (a) receipt mutation: one strict margin overwritten by $0$; (b) declare row 3 inactive | step 2: strict-sign check | (a) sign 0 fails $> 0$; (b) an inactive-classified function vanishes |
 | Control 3 | omitted constraint | drop “sq1 c0 on the bottom wall” (row 5, carried by the self-stress) from the declared list; variant: drop it from the certificate step only | step 2 (undeclared zero) / step 4 (`w^T A != 0`) | refuse; and the self-stress no longer verifies |
-| Control 4 | invented contact | add “sq4 c1 on the right wall” (margin `1 - r/4 > 0`) as active; variant: a D-390-style endpoint incidence injected as a pair row | step 2 | declared row nonzero; the endpoint incidence fails the separating test |
-| Control 5 | side release | add `s` as a 16th coordinate (`ds`) to every wall row and the chart | steps 3–4: cone certificates | the 14 certificates no longer pin (X-007: the cone opens to 16 dimensions and `A y >= -q` becomes feasible); no receipt |
-| Control 6 | wrong chart | (a) declare `J = I` with the half-angle polynomials; (b) declare `theta = theta^0 + t` but keep the cleared polynomials; (c) declare a denominator `1 - t^2` | step 1/3: `A_chart = A_geo J` binding; denominator positivity | (a),(b) the `t_i` columns differ by the factor 2; (c) `1 - t^2` has a zero |
-| Control 7 | certificate drift | perturb one self-stress weight by `1/1000`; flip the sign of one Farkas weight; set `q_3 = +2` | step 4 | `w^T A != 0`; negative weight; `w · q >= 0` |
-| Control 8 | exp-034 family (true negative) | run the instrument on the exp-033/034 pose at side `1 + 5r/4`, square 0 at `u = delta/2 = 3r/4 - 1`, `t = 0` (and `t = 1/200`) | steps 3–4 | the cone is not a line; certificates for `vx0, vy0, w0` (at least) do not exist; no receipt. Exp-034’s exact two-parameter family is a **verified nonconstant feasible arc** through that pose, so a “locally rigid” receipt there would be a false positive |
+| Control 4 | invented contact | add “sq4 c1 on the right wall” (margin $1 - r/4 > 0$) as active; variant: a D-390-style endpoint incidence injected as a pair row | step 2 | declared row nonzero; the endpoint incidence fails the separating test |
+| Control 5 | side release | add $s$ as a 16th coordinate (`ds`) to every wall row and the chart | steps 3–4: cone certificates | the 14 certificates no longer pin (X-007: the cone opens to 16 dimensions and `A y >= -q` becomes feasible); no receipt |
+| Control 6 | wrong chart | (a) declare $J = I$ with the half-angle polynomials; (b) declare `theta = theta^0 + t` but keep the cleared polynomials; (c) declare a denominator $1 - t^{2}$ | step 1/3: `A_chart = A_geo J` binding; denominator positivity | (a),(b) the $t_i$ columns differ by the factor 2; (c) $1 - t^{2}$ has a zero |
+| Control 7 | certificate drift | perturb one self-stress weight by $\frac{1}{1000}$; flip the sign of one Farkas weight; set $q_3 = +2$ | step 4 | `w^T A != 0`; negative weight; `w · q >= 0` |
+| Control 8 | exp-034 family (true negative) | run the instrument on the exp-033/034 pose at side $1 + 5r/4$, square 0 at `u = delta/2 = 3r/4 - 1`, $t = 0$ (and $t = \frac{1}{200}$) | steps 3–4 | the cone is not a line; certificates for `vx0, vy0, w0` (at least) do not exist; no receipt. Exp-034’s exact two-parameter family is a **verified nonconstant feasible arc** through that pose, so a “locally rigid” receipt there would be a false positive |
 
 Pre-run evidence for Control 8 (`control_exp034.py`, read-only, T-012 machinery): at
 `(u, t) = (delta/2, 0)` the pose is valid with 15 active contacts and no disjunctive
 pair; the slide `+-(dx0, dy0) = +-(1,1)` and the rotation `+-w0` all lie in the
 first-order cone; `w0` appears in no row; only `vx2, vy2, w2, vx3, vy3` are pinned.
-At the endpoint `u = 0` the slide is one-sided and rotation is refused at first order
-(rate `-1/2`), which is consistent with exp-034’s boundary `u >= e(t)`. So Control 8’s
+At the endpoint $u = 0$ the slide is one-sided and rotation is refused at first order
+(rate $-1/2$), which is consistent with exp-034’s boundary `u >= e(t)`. So Control 8’s
 expected outcome is fixed: refusal by an open cone, never a receipt.
 
 **Control 8 does not touch H-060’s target, and is not a rejection witness.** The exp-034
-family lives at side `S = 1 + 5√2/4 ≈ 2.7678`, not at Goebel’s `s = 2 + √2/2 ≈ 2.7071`
-(`S − s = 3√2/4 − 1 ≈ 0.0607 > 0` exactly), with squares 3 and 4 diagonal rather than
-square 4 alone, and its square 1 centred at `(1/2 + 5√2/4, 1/2)` versus Goebel’s
-`(3/2 + √2/2, 1/2)`. `c8_side_check.py` (exact, `sqpack.verify`) shows every point of
-the family at `u ∈ {0, δ/2, δ}` is valid at side `S` and **invalid at side `s`**: square
-1’s right edge sits at `x = S`, overshooting Goebel’s wall by exactly `3√2/4 − 1`. So
-the family is a subset of `Feas(S)`, disjoint from `Feas(s)`, and at positive distance
-from `P^0`; it is consistent with Theorem 10 because the two statements concern
-different sets. Control 8 is a specificity control: a pose where a nonconstant feasible
-arc is known to exist (at its own fixed side) at which the instrument must refuse a
-local-rigidity receipt.
+family lives at side $S = 1 + 5\sqrt{2}/4 \approx 2.7678$, not at Goebel’s
+$s = 2 + \sqrt{2}/2 \approx 2.7071$ ($S - s = 3\sqrt{2}/4 - 1 \approx 0.0607 > 0$
+exactly), with squares 3 and 4 diagonal rather than square 4 alone, and its square 1
+centred at $(1/2 + 5\sqrt{2}/4, 1/2)$ versus Goebel’s $(3/2 + \sqrt{2}/2, 1/2)$.
+`c8_side_check.py` (exact, `sqpack.verify`) shows every point of the family at
+$u \in \lbrace0, \delta/2, \delta\rbrace$ is valid at side `S` and **invalid at side
+$s$**: square 1’s right edge sits at $x = S$, overshooting Goebel’s wall by exactly
+$3\sqrt{2}/4 - 1$. So the family is a subset of `Feas(S)`, disjoint from `Feas(s)`, and
+at positive distance from $P^{0}$; it is consistent with Theorem 10 because the two
+statements concern different sets.
+Control 8 is a specificity control: a pose where a nonconstant feasible arc is known to
+exist (at its own fixed side) at which the instrument must refuse a local-rigidity
+receipt.
 
 All controls are to be run under normal and optimized Python per the agenda; none was
 run here except the Control 8 pre-run above.
@@ -1009,16 +1018,16 @@ Retrieved here (text extracted, `whiteley-chapter.txt`): W. Whiteley, “Rigidit
 scene analysis”, *Handbook of Discrete and Computational Geometry*, 2nd ed., CRC 2004,
 Chapter 60 (pp. 1327–1354). Verbatim:
 
-- “Rigid tensegrity framework `G±(p)`: For every analytic path `p(t)` in `R^{vd}`,
-  `0 ≤ t < 1`, if `p(0) = p` and `G(p)` dominates `G(p(t))` for all `t`, then `p` is
-  congruent to `p(t)` for all `t`.” (p. 1342) — rigidity is *defined* through analytic
+- “Rigid tensegrity framework $G\pm(p)$: For every analytic path $p(t)$ in `R^{vd}`,
+  $0 \le t < 1$, if $p(0) = p$ and $G(p)$ dominates $G(p(t))$ for all $t$, then $p$ is
+  congruent to $p(t)$ for all $t$.” (p. 1342) — rigidity is *defined* through analytic
   paths, which is legitimate precisely because of curve selection.
 - “(If this first derivative is trivial, then the earliest nontrivial derivative is a
   first-order motion.)” (p. 1341, bar frameworks) — the base case of §5.4 in the
   equality setting.
 - “THEOREM 60.1.39 Rigidity Stress Test.
-  A tensegrity framework `G±(p)` is rigid if, for each nontrivial first-order motion
-  `p'` of `G±(p)`, there is a proper self-stress `ω_{p'}` making
+  A tensegrity framework $G\pm(p)$ is rigid if, for each nontrivial first-order motion
+  `p'` of $G\pm(p)$, there is a proper self-stress `ω_{p'}` making
   `∑ ω_{p'}_{ij} (p'_i − p'_j)·(p'_i − p'_j) > 0`”, drawn from [CW96] = R. Connelly, W.
   Whiteley, *Second-order rigidity and prestress stability for tensegrity frameworks*,
   SIAM J. Discrete Math.
@@ -1036,7 +1045,7 @@ Math. 37) was not retrieved.
 **Governing finding (coordinator’s independent prior-art survey; not verified by this
 lane against the primary texts):** the Puiseux/curve-selection proof shape of §5 matches
 [CW96] Theorem 4.3.1 and is **not new**; the closing inference itself (first-order cone
-plus a self-stress with `w · q < 0` implies isolation) is the classical second-order
+plus a self-stress with $w \cdot q < 0$ implies isolation) is the classical second-order
 sufficient optimality condition (§5.7) and is **not new**. No stated theorem in that
 literature applies to this system: [CW96]'s members are point-pair distance constraints;
 the disk-jamming second-order results require a non-negative quadratic term, which is
@@ -1049,12 +1058,13 @@ proved directly.
 
 `gobel-1979-geometrical-packing-and-covering-problems.pdf` (archive) has a text layer;
 extracted here (`gobel-1979.txt`, 21 pages).
-§1 “Packing a square with unit squares”: “The exact value of `z*(n)` is known only for
-`n = 2, 3, 5` and the squares of integers”; Proposition 1: `S(2 + ½√2 − ε)` cannot be
-packed with 5 unit squares, proved by four unavoidable points at distance `1 − ε/3` from
-the sides. The words “rigid” and “unique” do not occur anywhere in the paper (0 hits
-each). **Goebel proves the side and makes no rigidity or uniqueness claim**; H-060’s
-result does not contradict or duplicate anything in the source.
+§1 “Packing a square with unit squares”: “The exact value of $z^{\ast}(n)$ is known only
+for $n = 2, 3, 5$ and the squares of integers”; Proposition 1:
+$S(2 + \tfrac{1}{2}\sqrt{2} - \varepsilon)$ cannot be packed with 5 unit squares, proved
+by four unavoidable points at distance $1 - \varepsilon/3$ from the sides.
+The words “rigid” and “unique” do not occur anywhere in the paper (0 hits each).
+**Goebel proves the side and makes no rigidity or uniqueness claim**; H-060’s result
+does not contradict or duplicate anything in the source.
 
 ### 7.3 Kingbird — definition closed, methodology open
 
@@ -1062,24 +1072,24 @@ result does not contradict or duplicate anything in the source.
 2026-09-03 (not archived under `packing/resources/`; recommend archiving).
 Verbatim: “A packing is rigid when it cannot be continuously transformed into any other
 valid packing without changing the size of its enclosing square.”
-It lists as rigid `n = 5, 11, 18, 28, 40, 52, 149, 296, 493, 740, 1037, 1384, 1781`,
-defines “semi-rigid” by example (`n = 28`: a carousel-like sliding group), and **states
+It lists as rigid $n = 5, 11, 18, 28, 40, 52, 149, 296, 493, 740, 1037, 1384, 1781$,
+defines “semi-rigid” by example ($n = 28$: a carousel-like sliding group), and **states
 no method** of determination.
 **This list is uncorroborated and in tension with the archived page**, which is stated
 rather than resolved here: the rigid page is not under `packing/resources/`, and the
 archived main page
 ([`kingbird-squares-in-squares.md`](../../resources/web/kingbird-squares-in-squares.md))
 carries exactly four “Rigid.”
-annotations at `n <= 100` — `n = 5, 11, 28, 40`, lines 44, 80, 163, 224 — which is what
+annotations at `n <= 100` — $n = 5, 11, 28, 40$, lines 44, 80, 163, 224 — which is what
 the coordinator’s prior-art survey reports, and which agrees with that page’s schema
-comment “all but four packings at n <= 100”. The thirteen-entry list adds `n = 18` and
-`n = 52` below 100. The two are reconcilable if rigid-but-inoptimal entries are simply
+comment “all but four packings at n <= 100”. The thirteen-entry list adds $n = 18$ and
+$n = 52$ below 100. The two are reconcilable if rigid-but-inoptimal entries are simply
 not annotated on the main list, which the rigid page’s own preamble allows (“in cases
 where they are inoptimal, they are shown alongside the best known”), but no reader can
 check that from anything in this repository until the rigid page is archived.
-Only the `n = 5` entry is used below, and it is corroborated on the archived page.
+Only the $n = 5$ entry is used below, and it is corroborated on the archived page.
 So the catalogue’s “Rigid.”
-for `n = 5` is an assertion under a definition that coincides with H-060’s fixed-side
+for $n = 5$ is an assertion under a definition that coincides with H-060’s fixed-side
 notion (§1.3), without argument.
 H-060 supplies the proof; it does not supply a *new* claim.
 
@@ -1087,8 +1097,8 @@ H-060 supplies the proof; it does not supply a *new* claim.
 
 - **Goebel 1979:** proved only the bound; “rigid” and “unique” occur zero times.
   CLOSED-NOVEL with respect to the source.
-- **Friedman DS7:** does not annotate `n = 5` for rigidity (evidence.yaml).
-- **Kingbird:** asserts exactly this property for `n = 5` ("cannot be continuously
+- **Friedman DS7:** does not annotate $n = 5$ for rigidity (evidence.yaml).
+- **Kingbird:** asserts exactly this property for $n = 5$ ("cannot be continuously
   transformed into any other valid packing without changing the size of its enclosing
   square") with no method or argument anywhere on the site.
   The **statement** is not novel; a **proof** is.
@@ -1099,7 +1109,7 @@ H-060 supplies the proof; it does not supply a *new* claim.
   jamming literature covers polygon contact systems (§7.1); that is an unverified survey
   assertion, carried outside the claim below rather than inside it.
 
-**Admissible claim:** the first exact proof that Goebel’s `n = 5` optimum is locally
+**Admissible claim:** the first exact proof that Goebel’s $n = 5$ optimum is locally
 rigid at fixed side — a property asserted without proof by Kingbird and not stated by
 Goebel or Friedman. **Novelty score S3, not S4.** Carried *outside* the claim: the
 survey’s finding that no theorem stated in the structural-rigidity or jamming literature
@@ -1130,24 +1140,25 @@ obligation listed below.
 Paper proofs, with every exact quantity replayed by an independent sympy implementation
 (`verify_chart.py`, `midpoint_check.py`, `c8_side_check.py`):
 
-- Lemmas 1–3: the half-angle chart is a homeomorphism of `R^15` onto an open
-  neighbourhood of the pose; denominators `1 + t_i^2 >= 1` on all of `R^15`; the cleared
-  polynomials’ 2-jets are `J^T grad G`, `J^T Hess G J` with `J = diag(1,1,2)^{(+)5}`.
+- Lemmas 1–3: the half-angle chart is a homeomorphism of $R^{15}$ onto an open
+  neighbourhood of the pose; denominators `1 + t_i^2 >= 1` on all of $R^{15}$; the
+  cleared polynomials’ 2-jets are `J^T grad G`, `J^T Hess G J` with
+  `J = diag(1,1,2)^{(+)5}`.
 - Lemma 4: SAT characterization of disjoint interiors for two closed squares (8 branches
   x 4 corners).
 - §3.3: all 400 elementary margins at the pose, exact; counts 16/64 and 4/6 confirmed;
   no D-390 incidence, no D-391 disjunction, computed.
 - Proposition 5: the local feasible set is exactly the 20 active inequalities on the
   explicitly defined open set `N`; direction (i) uses only the 28 negative witnesses.
-- Proposition 6: T-012’s cone and self-stress transfer to the chart under `J` and `S`;
+- Proposition 6: T-012’s cone and self-stress transfer to the chart under $J$ and `S`;
   all 28 Farkas certificates and the self-stress replay exactly on `S A_chart`;
   `w · q_chart = -2 sqrt 2`.
 - Lemmas 7–8, Theorem 9: the order-`2m` coefficient induction, with every sign explicit.
 - Theorem 10: isolation, given Corollary 4.3 (primary route).
-- Theorem 11: isolation by the normalized-sequence (SOSC) argument from `C^2` gaps,
+- Theorem 11: isolation by the normalized-sequence (SOSC) argument from $C^{2}$ gaps,
   Proposition 5(i) and Proposition 6 alone (second, corroborating route).
 - exp-034’s family is at side `1 + 5 sqrt(2)/4`, infeasible at Goebel’s side, disjoint
-  from `Feas(s)`, and at positive distance from `P^0`; it is not a rejection witness.
+  from `Feas(s)`, and at positive distance from $P^{0}$; it is not a rejection witness.
 
 ### 8.3 Cited, not verified against a primary text
 
@@ -1189,7 +1200,7 @@ instrument, recorded in `exp-058`.
 
 ### 8.5 What is claimed as new, and what is not (governing novelty scoping)
 
-- **Claimed:** the first exact proof that Goebel’s `n = 5` optimum is locally rigid at
+- **Claimed:** the first exact proof that Goebel’s $n = 5$ optimum is locally rigid at
   fixed side — a property asserted without proof by Kingbird and not stated by Goebel or
   Friedman. Novelty score **S3, not S4**.
 - **Carried outside the claim, unverified:** the coordinator’s survey finding that no
@@ -1210,18 +1221,18 @@ instrument, recorded in `exp-058`.
 ### 8.6 Not established, and not claimed
 
 A numerical isolation radius; rigidity when the side is free (false, X-007); global
-uniqueness of the `n = 5` optimum; rigidity of any other `n = 5` optimal family
+uniqueness of the $n = 5$ optimum; rigidity of any other $n = 5$ optimal family
 (exp-034’s sheet at a larger side is a different object); applicability of the
 Connelly–Whiteley theorem as stated; any novelty beyond §8.5.
 
 ### 8.7 Rejection routes that remain open in principle
 
-Only a verified nonconstant feasible arc through `P^0` in `Feas(s)` or an exact sequence
-of distinct feasible poses in `Feas(s)` converging to `P^0`. A lone feasible point at
-positive distance would only refute a proposed neighbourhood, and `N` here is defined by
-sign persistence rather than by a radius, so no such point is even a candidate
-refutation of §3.4. Feasible families at other container sides (exp-034) are not
-candidates at all.
+Only a verified nonconstant feasible arc through $P^{0}$ in `Feas(s)` or an exact
+sequence of distinct feasible poses in `Feas(s)` converging to $P^{0}$. A lone feasible
+point at positive distance would only refute a proposed neighbourhood, and `N` here is
+defined by sign persistence rather than by a radius, so no such point is even a
+candidate refutation of §3.4. Feasible families at other container sides (exp-034) are
+not candidates at all.
 
 ### The single largest remaining proof obligation
 
@@ -1231,15 +1242,15 @@ The one step this lane could not check against a primary source is the statement
 Proposition 8.1.13 — or Milnor 1968 Lemma 3.1 *with the finite-union reduction of §4.1*,
 which is a different route and not an equivalent statement, since Milnor’s
 “semi-algebraic” means a real algebraic set intersected with finitely many **strict**
-polynomial inequalities: that for an arbitrary semialgebraic `A ⊂ R^n` (not assumed
-open, closed, or of any dimension) and `x ∈ Cl(A)`, there exists a *real-analytic* arc
-`gamma` with `gamma(0) = x` and `gamma((0, ε)) ⊂ A`. The BC-153 reviewer should confirm
-this against the printed text; the second proof of §5.7 does not remove this obligation,
-because acceptance is preregistered on the curve-selection route.
-If the primary statement is as quoted, the registered proof is complete and H-060’s
-mathematical criterion is met; what then stands between “unresolved” and “accepted” is
-engineering (the instrument, its receipt, and the eight rejecting controls), not
-mathematics.
+polynomial inequalities: that for an arbitrary semialgebraic $A \subset R^n$ (not
+assumed open, closed, or of any dimension) and `x ∈ Cl(A)`, there exists a
+*real-analytic* arc `gamma` with `gamma(0) = x` and `gamma((0, ε)) ⊂ A`. The BC-153
+reviewer should confirm this against the printed text; the second proof of §5.7 does not
+remove this obligation, because acceptance is preregistered on the curve-selection
+route. If the primary statement is as quoted, the registered proof is complete and
+H-060’s mathematical criterion is met; what then stands between “unresolved” and
+“accepted” is engineering (the instrument, its receipt, and the eight rejecting
+controls), not mathematics.
 
 **Where that obligation stands after the verification pass (2026-09-03).** A separate
 lane worked it and returned **YES**: the statement as used follows from the theorem
@@ -1255,7 +1266,7 @@ A reviewer who requires the printed page still has that to do.
 **PASS** and judged this obligation non-blocking without closing it: the printed page is
 still unread, and in its place the reviewer derived the same statement first-hand from
 primary-text Basu–Pollack–Roy Theorem 3.22 plus the one-variable Puiseux fact, through
-the `t = u^p` change of variable Coste states in his own notes, with the Milnor route
+the $t = u^p$ change of variable Coste states in his own notes, with the Milnor route
 and the finite-union reduction of §4.1 as a third derivation.
 The engineering half is closed as well: the instrument’s readiness review passed and the
 `BC-153` reviewer replayed the instrument itself from clean roots.

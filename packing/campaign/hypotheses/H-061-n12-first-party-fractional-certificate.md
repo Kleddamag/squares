@@ -136,19 +136,19 @@ hypothesis:
 ---
 # H-061 — A First-Party Fractional Certificate Proves `s(12) ≥ 19/5`
 
-Twelve squares are easier to pack than thirteen, so `s(12) = 4` is a strictly stronger
-statement than Bentz’s proved `s(13) = 4`, and nothing specific to `n = 12` has ever
-been proved: the standing lower bound is Stromquist’s `n = 11` bound inherited by
+Twelve squares are easier to pack than thirteen, so $s(12) = 4$ is a strictly stronger
+statement than Bentz’s proved $s(13) = 4$, and nothing specific to $n = 12$ has ever
+been proved: the standing lower bound is Stromquist’s $n = 11$ bound inherited by
 monotonicity. The fractional unavoidable-set architecture that Burns and Massaccesi
-published at `n = 17`, and that this repository replayed with five implementations and
-adopted as `T-015`, has never been aimed at `n = 12`. A measure of total mass below
+published at $n = 17$, and that this repository replayed with five implementations and
+adopted as `T-015`, has never been aimed at $n = 12$. A measure of total mass below
 twelve that every unit square captures at least one unit of is a certificate that no
 twelve disjoint unit squares fit, and the side at which such a measure exists is a lower
 bound.
 
-The claim fixes the side at `19/5` so that the round can be wrong.
-The uncertified pilot suggests the fractional window at `n = 12` closes somewhere near
-`3.85`; `19/5` sits inside it with margin, and the ladder above it is registered one
+The claim fixes the side at $19/5$ so that the round can be wrong.
+The uncertified pilot suggests the fractional window at $n = 12$ closes somewhere near
+$3.85$; $19/5$ sits inside it with margin, and the ladder above it is registered one
 rung at a time rather than by moving this threshold.
 
 <!-- This document follows common-doc-guidelines.md.

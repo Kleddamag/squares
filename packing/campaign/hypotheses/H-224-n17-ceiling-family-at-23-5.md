@@ -54,7 +54,7 @@ hypothesis:
 
 X-040’s lane 3 and review R3 agree that the fixed-shrink family cannot close n=17. This
 claim asks where the point route actually stops.
-The Session 140 run at `23/5` converged above 17 on one site set; a ceiling family of
+The Session 140 run at $23/5$ converged above 17 on one site set; a ceiling family of
 total 17 would make that a statement about every site set.
 
 <!-- This document follows common-doc-guidelines.md.

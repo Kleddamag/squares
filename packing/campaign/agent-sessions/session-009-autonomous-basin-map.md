@@ -785,10 +785,10 @@ embeds that face in a two-parameter angle-and-slide sheet of optima.
 Full nonsmooth stationary identity and unequal-side clearance remain open.
 The source-bound n=10 entry path now passes its four-perturbation BC-008 known-answer
 control in exp-031. The exact evidence boundary now also passes BC-009: exp-032
-classifies only the complete `n = 3` and `n = 4` quotient models and refuses to infer a
+classifies only the complete $n = 3$ and $n = 4$ quotient models and refuses to infer a
 component from any current floating-point event.
 The next research cell is therefore the complete nonsmooth cone and continuation test
-around this exact `n = 5` sheet, not a sample-count census.
+around this exact $n = 5$ sheet, not a sample-count census.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

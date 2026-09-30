@@ -161,15 +161,15 @@ The
 [penalty calibration](../../../../atlas/known-best/video/spikes/v2-transitions/NOTES.md)
 of the day before ended in a precondition failure.
 Zero of 48 runs finished feasible.
-The least overlap anywhere was `0.0042` of a unit side, and holding eleven squares from
-the grid for thirteen times as many steps moved the overlap from `0.004578` to
-`0.004570` and the container side not at all.
+The least overlap anywhere was $0.0042$ of a unit side, and holding eleven squares from
+the grid for thirteen times as many steps moved the overlap from $0.004578$ to
+$0.004570$ and the container side not at all.
 That is a floor, not a transient: a penalty force settles where the springs balance the
 walls, and the overlap left there is pressure divided by stiffness.
 
 The consequence is worse than a null result.
-The stiffest law in that sweep reported `3.88987` at `n = 11` against the standing
-record `3.87708`, which reads as a third of a per cent off a record.
+The stiffest law in that sweep reported $3.88987$ at $n = 11$ against the standing
+record $3.87708$, which reads as a third of a per cent off a record.
 It is nothing of the kind — those squares interpenetrate by five thousandths, and the
 number is small *because* they do.
 A calibration ranks settings by how near they come to a known answer, which presumes the
@@ -179,17 +179,17 @@ So this round asks the prior question.
 The
 [simulation survey](../../../../../docs/project/research/research-2026-09-09-simulation-mechanisms-for-packing.md)
 ranks divide and concur first, on the strength of the only cold whole-benchmark result
-in either survey: Gravel and Elser ran it on `n` equal disks in a unit square for every
-`n` from 2 to 200, reached the best known within `1e-9` on 143 of 197 and beat it on 38,
+in either survey: Gravel and Elser ran it on $n$ equal disks in a unit square for every
+$n$ from 2 to 200, reached the best known within `1e-9` on 143 of 197 and beat it on 38,
 using “No information about the known packings … apart from their densities”.
 Nobody has run it on squares in a bounded container.
 
 ## The result
 
-Sixteen runs, four values of `n`, two relaxations, every side reached from the trivial
+Sixteen runs, four values of $n$, two relaxations, every side reached from the trivial
 grid with no record consulted.
 
-| `n` | grid | best known | runs below the grid | best side | excess | median side |
+| $n$ | grid | best known | runs below the grid | best side | excess | median side |
 | ---: | ---: | ---: | :---: | ---: | ---: | ---: |
 | 5 | 3 | 2.707107 | 1 of 4 | 2.7082031 | +0.040 % | 3.0 |
 | 10 | 4 | 3.707107 | 4 of 4 | 3.7703125 | +1.705 % | 3.7718750 |
@@ -200,23 +200,23 @@ A second arm, twelve more runs, varies the start policy and is reported below; e
 number in this document comes from one of the two.
 
 **Every one of the sixteen is a packing.** The solver’s own separating-axis test reports
-a violation of exactly `0.0` — not a small number, the float `0.0` — and all sixteen
+a violation of exactly $0.0$ — not a small number, the float $0.0$ — and all sixteen
 pass `sqpack.verify` in a separate process against code the search does not share.
 That is the whole difference from the penalty run, and it is a difference in kind.
 
-**The `n = 5` result is the record to four decimals.** `2.7082031` against
+**The $n = 5$ result is the record to four decimals.** $2.7082031$ against
 `2 + 1/sqrt(2) = 2.7071068` is `+0.040 %`, and the gap is the container schedule’s own
 floor rather than the search’s error: the ratchet stops halving at `1e-3` because the
 survey’s instruction is not to ask a projection loop for the final digits.
 Handing that pose to the fixed-angle LP is the obvious next step and was not done here.
 
-**The `n = 17` result is the one that matters against this repository’s own engine.** At
-`n = 17` the annealing control in [exp-205](exp-205-round-1-schedule.md) sits at exactly
-`5.0`, the trivial grid, on every seed; it took the collective perturbation move of
+**The $n = 17$ result is the one that matters against this repository’s own engine.** At
+$n = 17$ the annealing control in [exp-205](exp-205-round-1-schedule.md) sits at exactly
+$5.0$, the trivial grid, on every seed; it took the collective perturbation move of
 [H-201](../../../hypotheses/H-201-simultaneous-perturbation-move.md) to move it at all.
-The projection search reaches `4.8047` with no move set, no schedule and no temperature,
+The projection search reaches $4.8047$ with no move set, no schedule and no temperature,
 because it never had a single-square move menu to be trapped by.
-It is still well short of `sqsearch`’s `4.7071` with the long schedule and the
+It is still well short of `sqsearch`’s $4.7071$ with the long schedule and the
 collective move, at a budget three orders of magnitude larger.
 
 ## The setting that decides whether a run finds anything
@@ -226,23 +226,23 @@ decision, and a second arm isolates it.
 `cold` is the fraction of each tightening’s six attempts spent on a fresh random
 configuration rather than on continuing the packing already in hand.
 Gravel and Elser’s published protocol is entirely cold -- up to 400 independent random
-starts per `n` -- and continuation is this implementation’s addition.
+starts per $n$ -- and continuation is this implementation’s addition.
 
-| start policy | `n = 5` escaped | `n = 5` best | `n = 11` escaped | `n = 11` best |
+| start policy | $n = 5$ escaped | $n = 5$ best | $n = 11$ escaped | $n = 11$ best |
 | --- | :---: | ---: | :---: | ---: |
 | continuation only | 1 of 4 | **2.7082031** | 2 of 4 | 3.9640625 |
 | half cold | 3 of 3 | 2.7691406 | 2 of 3 | **3.9234375** |
 | all cold | 3 of 3 | 2.7726563 | 2 of 3 | 3.9843750 |
 
 **The two things one wants trade against each other**, which is the round’s most useful
-finding. Cold starts buy escape: at `n = 5` every mixed or fully cold run got off the
+finding. Cold starts buy escape: at $n = 5$ every mixed or fully cold run got off the
 grid, against one run in four for pure continuation.
-Continuation buys refinement: the single continuation run that did escape at `n = 5`
-reached `2.7082`, six thousandths better than the best any cold-mixed run managed,
+Continuation buys refinement: the single continuation run that did escape at $n = 5$
+reached $2.7082$, six thousandths better than the best any cold-mixed run managed,
 because it spent all six of its attempts improving one arrangement instead of
 rediscovering the problem.
 
-Half cold is the better of the three at `n = 11`, and it is also the setting that
+Half cold is the better of the three at $n = 11$, and it is also the setting that
 produced the best side measured anywhere in this round for that cell.
 Three runs per condition is too few to call the ordering, and it is recorded as a
 direction to sweep rather than a result.
@@ -257,7 +257,7 @@ continue from, so each subsequent step re-attempted a smaller tightening of the 
 infeasible start until the step size hit its floor.
 
 The reason is specific to squares and is worth stating plainly.
-A grid of `k` squares in a row needs a container of side exactly `k`. So the instant the
+A grid of $k$ squares in a row needs a container of side exactly $k$. So the instant the
 schedule asks for `k - epsilon`, the grid topology is infeasible *in its entirety* — not
 slightly wrong somewhere, wrong everywhere at once, with no small repair available.
 Continuation has nothing to offer at the first step, and the run has to invent a new
@@ -270,36 +270,36 @@ entire row at once. Two mechanisms with nothing in common — a Metropolis searc
 single-square moves, and an alternating projection with no move set at all — fail at the
 same configuration for the same geometric reason.
 
-The escape rate tracks how full the starting grid is: `n = 10` fills ten of sixteen
-cells and escaped on all four runs; `n = 11` fills eleven of sixteen and escaped on two;
-`n = 17` fills seventeen of twenty-five and escaped on one; `n = 5` fills five of nine
+The escape rate tracks how full the starting grid is: $n = 10$ fills ten of sixteen
+cells and escaped on all four runs; $n = 11$ fills eleven of sixteen and escaped on two;
+$n = 17$ fills seventeen of twenty-five and escaped on one; $n = 5$ fills five of nine
 and escaped on one. That is four points and should be read as a direction, not a law.
 
 ## Settings, on the evidence here
 
-- **`beta = 0.5` over `beta = 0.3`.** Five of eight runs escaped the grid at `0.5`
-  against three of eight at `0.3`, and the only cell to reach a record did so at `0.5`.
+- **`beta = 0.5` over `beta = 0.3`.** Five of eight runs escaped the grid at $0.5$
+  against three of eight at $0.3$, and the only cell to reach a record did so at $0.5$.
   Small numbers, but they agree with Elser’s own choice and against the 2025 flow-limit
   paper’s preference for `beta <= 0.3`, which measures asymptotic scaling rather than
   escape from a bad start.
-- **The metric weighting does nothing at `n = 5`.** Elser’s update
+- **The metric weighting does nothing at $n = 5$.** Elser’s update
   `lambda -> 0.99 lambda + 0.01 exp(-alpha d)` at `alpha` of 10 and 30 gave one success
   in twenty against one in twenty unweighted, at five per cent above the record.
   That is the case where the dilution argument it answers is weakest — four pair
-  replicas, most of them active — so this is not evidence against it at `n = 26`, where
+  replicas, most of them active — so this is not evidence against it at $n = 26$, where
   a square carries twenty-five replicas and touches about four.
-- **Cold success probability collapses with the container.** At `n = 5` from random
+- **Cold success probability collapses with the container.** At $n = 5$ from random
   starts: thirteen per cent of forty runs succeeded five per cent above the record, and
   two and a half per cent succeeded two per cent above.
   Aiming a cold start at the target is hopeless, which is why the published protocol
   ratchets.
-- **`m`-monotonicity at `m = 700` is not the binding constraint.** Successful runs
+- **$m$-monotonicity at $m = 700$ is not the binding constraint.** Successful runs
   converge in a median of 500 to 640 iterations and reach a violation of exactly zero,
   so the stop rule is discarding failures rather than truncating successes.
 
 ## What this does not establish
 
-No record was found and none is claimed; `n = 5` reproduces a packing proved optimal in
+No record was found and none is claimed; $n = 5$ reproduces a packing proved optimal in
 1985, and the other three cells are between 1.7 and 2.8 per cent above bounds that
 already stand.
 The comparison against `sqsearch` is not budget-matched and is not offered

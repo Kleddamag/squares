@@ -33,7 +33,7 @@ Attentive-agent time is unavailable because attention telemetry was not recorded
 
 BC-230’s theorem contract and control matrix were complete author drafts.
 BC-233 was terminal: both matched arms exited zero, parsed strictly, completed eight
-converged rounds, and froze byte-identical candidates of exact mass `11142893/1000000`.
+converged rounds, and froze byte-identical candidates of exact mass $11142893/1000000$.
 H-070 and exp-071 are rejected under their strict-improvement rule; no lower-bound
 route, replacement, or successor opened.
 
@@ -42,7 +42,7 @@ and Python 3.14.7 PID 84154. The coordinator’s `04:33:48Z` process-table sampl
 1:00:33 elapsed and 57:40.38 CPU. Iterations 0 through 9 were complete and iteration 10
 was in flight. Iteration 0 remained the only row-converged computational upper endpoint,
 with `rows_objective = 11.055616942909783`. The best exact scaled lower endpoint was the
-iteration-8 value `44049209132/4277680141`. The mutable state and log hashes at the gate
+iteration-8 value $44049209132/4277680141$. The mutable state and log hashes at the gate
 were:
 
 ```text

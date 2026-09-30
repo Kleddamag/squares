@@ -129,7 +129,7 @@ session:
 ---
 # Session-046 — The Two Sizes the Family Already Answers
 
-Session-045 spent nine unplanned phases discovering that `n = 40`’s exact construction
+Session-045 spent nine unplanned phases discovering that $n = 40$’s exact construction
 had been published all along, and recorded that as [`D-389`](../../../defects.md).
 Its last twenty minutes asked the general question that correction implies, and found
 that the same family is exactly the best known at four sizes.

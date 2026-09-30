@@ -73,9 +73,9 @@ The instrument, seeds, per-seed budget, validity screen, typed blockers, and rep
 contract remain unchanged.
 
 All four events are independently valid and replay.
-Seed 1 converges at side `3.199999999999` and is admissible.
-Seeds 0, 2, and 3 hit the time budget at valid sides `3.209153843824`, `3.148250012242`,
-and `3.167825251585`; each remains non-admissible with `producer_not_converged`. Their
+Seed 1 converges at side $3.199999999999$ and is admissible.
+Seeds 0, 2, and 3 hit the time budget at valid sides $3.209153843824$, $3.148250012242$,
+and $3.167825251585$; each remains non-admissible with `producer_not_converged`. Their
 receipts account for 18,286 fixed-point evaluations, all settled and none unsettled, in
 38.63 seconds of quench wall time.
 

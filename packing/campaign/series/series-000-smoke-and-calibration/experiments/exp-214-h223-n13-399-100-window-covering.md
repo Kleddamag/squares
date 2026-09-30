@@ -90,7 +90,7 @@ experiment:
 
 The first round of [H-223](../../../hypotheses/H-223-n13-point-covering-at-399-100.md)
 under [agenda-040](../../../agendas/agenda-040-overnight-lower-bound-loop.md) BC-361.
-Calibration under a proved value: `s(13) = 4` does not move.
+Calibration under a proved value: $s(13) = 4$ does not move.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

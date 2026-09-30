@@ -5,13 +5,14 @@ distinguished-square centers move by less than $\varepsilon=1/500$ in each world
 coordinate throughout the full near45 band.
 The same bound holds on the larger closed tangent-half-angle interval used by the
 existing instruments.
-It gives the fixed center region $C^*$ below: a near-axis square centered there
+It gives the fixed center region $C^{\ast}$ below: a near-axis square centered there
 intersects every admissible distinguished square.
 
 This is a source-free analytical proof prepared under `think-8x6o` on September 7, 2026,
 for independent review.
-No scientific source, polygon vertices for $C^*$, cover packet, or target invocation was
-constructed. Whether adding $C^*$ completes the remaining near-axis cover is untested.
+No scientific source, polygon vertices for $C^{\ast}$, cover packet, or target
+invocation was constructed.
+Whether adding $C^{\ast}$ completes the remaining near-axis cover is untested.
 
 The premises are the
 [H124 center-triangle and whole-band kernel reductions](../../../../hypotheses/H-124-full-distinguished-square-compatibility.md#a-stronger-continuous-common-obstacle).
@@ -42,14 +43,14 @@ Denote the second square by $\mathcal S$ below.
 The accepted H124 reduction places every admissible distinguished-square center in
 
 $$
-K_\theta=\{(x,y):U\le u_*,\ V\le v_*,\ SU+CV\ge h\},
+K_\theta=\lbrace(x,y):U\le u_{\ast},\ V\le v_{\ast},\ SU+CV\ge h\rbrace,
 $$
 
 where
 
 $$
 U=Cx+Sy,\qquad V=-Sx+Cy,\qquad
-u_*=Cm+S-1/2,\qquad v_*=C-S-1/2.
+u_{\ast}=Cm+S-1/2,\qquad v_{\ast}=C-S-1/2.
 $$
 
 Avoidance of the two closed P10 marks $(1,1)$ and $(m,1)$ gives strict upper
@@ -58,13 +59,13 @@ Bottom-wall containment supplies $y=SU+CV\ge h$. The other P10 conditions are no
 asserted for every point of this enlarged triangle.
 
 For $C,S>0$, the largest possible value of $SU+CV$ under the two upper bounds is
-$Su_*+Cv_*=h+\Delta$. Thus $K_\theta$ is empty when $\Delta<0$, is a singleton when
-$\Delta=0$, and otherwise has frame-coordinate vertices
+$Su_{\ast}+Cv_{\ast}=h+\Delta$. Thus $K_\theta$ is empty when $\Delta<0$, is a singleton
+when $\Delta=0$, and otherwise has frame-coordinate vertices
 
 $$
-(u_*,v_*),\qquad
-(u_*-\Delta/S,v_*),\qquad
-(u_*,v_*-\Delta/C).
+(u_{\ast},v_{\ast}),\qquad
+(u_{\ast}-\Delta/S,v_{\ast}),\qquad
+(u_{\ast},v_{\ast}-\Delta/C).
 $$
 
 Applying $(U,V)\mapsto(CU-SV,SU+CV)$ gives the world-frame vertices
@@ -72,11 +73,11 @@ Applying $(U,V)\mapsto(CU-SV,SU+CV)$ gives the world-frame vertices
 $$
 \begin{aligned}
 v_E(\theta)
- &=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\\
+ &=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\cr
 v_L(\theta)
- &=\left(v_{Ex}(\theta)-\cot\theta\,\Delta,\ h\right),\\
+ &=\left(v_{Ex}(\theta)-\cot\theta\thinspace\Delta,\ h\right),\cr
 v_R(\theta)
- &=\left(v_{Ex}(\theta)+\tan\theta\,\Delta,\ h\right).
+ &=\left(v_{Ex}(\theta)+\tan\theta\thinspace\Delta,\ h\right).
 \end{aligned}
 $$
 
@@ -99,7 +100,7 @@ Use the already reviewed endpoint
 
 $$
 T=\frac{110880}{50803079},\qquad
-\Theta=\{\pi/4+2\arctan t:-T\le t\le T\}.
+\Theta=\lbrace\pi/4+2\arctan t:-T\le t\le T\rbrace.
 $$
 
 The [angle-instrument derivation](bc-255-angle-instrument-design.md) proves
@@ -128,10 +129,10 @@ $$
 \begin{aligned}
 C,S
  &>\frac{707}{1000}\left(1-\frac1{64800}-\frac1{180}\right)
- >\frac{703}{1000},\\
+ >\frac{703}{1000},\cr
 C,S
  &<\frac{708}{1000}\left(1+\frac1{180}\right)
- <\frac{89}{125},\\
+ <\frac{89}{125},\cr
 \frac{353}{500}
  &<\frac{707}{1000}\left(1-\frac1{64800}\right)
  <h\le r<\frac57.
@@ -176,11 +177,11 @@ Differentiating the exact expressions yields
 
 $$
 \begin{aligned}
-v_{Ex}'&=h-2WCS,\\
-v_{Ey}'&=(C-S)\left(W(C+S)-\frac12\right),\\
-\Delta'&=(C-S)\left(W(C+S)-1\right),\\
-v_{Lx}'&=v_{Ex}'+\csc^2\theta\,\Delta-\cot\theta\,\Delta',\\
-v_{Rx}'&=v_{Ex}'+\sec^2\theta\,\Delta+\tan\theta\,\Delta',\\
+v_{Ex}'&=h-2WCS,\cr
+v_{Ey}'&=(C-S)\left(W(C+S)-\frac12\right),\cr
+\Delta'&=(C-S)\left(W(C+S)-1\right),\cr
+v_{Lx}'&=v_{Ex}'+\csc^2\theta\thinspace\Delta-\cot\theta\thinspace\Delta',\cr
+v_{Rx}'&=v_{Ex}'+\sec^2\theta\thinspace\Delta+\tan\theta\thinspace\Delta',\cr
 v_{Ly}'&=v_{Ry}'=h'.
 \end{aligned}
 $$
@@ -212,7 +213,7 @@ $$
 |v_{Lx}'|,|v_{Rx}'|
 &<\frac{233}{1000}
   +\frac{81}{40}\frac{23}{400}
-  +\frac{41}{40}\frac7{2500}\\
+  +\frac{41}{40}\frac7{2500}\cr
 &=\frac{140923}{400000}<\frac9{25}.
 \end{aligned}
 $$
@@ -223,10 +224,10 @@ proves
 
 $$
 \boxed{\quad
-\|v_i(\theta)-v_i^0\|_\infty
+\Vert v_i(\theta)-v_i^0\Vert_\infty
 <\frac9{25}\frac1{180}
 =\frac1{500}=\varepsilon,
-\qquad i\in\{E,L,R\},\quad\theta\in\Theta.
+\qquad i\in\lbrace E,L,R\rbrace,\quad\theta\in\Theta.
 \quad}
 $$
 
@@ -237,7 +238,7 @@ The same fixed epsilon covers both signs; it was not selected by a radius sweep.
 
 Let $R_\eta$ denote rotation through $\eta$ and let $U_\eta=R_\eta[-1/2,1/2]^2$ be the
 centered closed unit-square kernel.
-For a near-axis orientation $\psi\in\{2\arctan t:-T\le t\le T\}$, a square
+For a near-axis orientation $\psi\in\lbrace2\arctan t:-T\le t\le T\rbrace$, a square
 $\mathcal S=z+U_\psi$ intersects the square $v+U_\theta$ exactly when
 
 $$
@@ -250,7 +251,7 @@ For nonempty $K_\theta$, convexity gives
 $$
 \mathcal C_{\theta,\psi}
 :=\bigcap_{v\in K_\theta}(v+U_\theta+U_\psi)
-=\bigcap_{i\in\{E,L,R\}}(v_i(\theta)+U_\theta+U_\psi).
+=\bigcap_{i\in\lbrace E,L,R\rbrace}(v_i(\theta)+U_\theta+U_\psi).
 $$
 
 Indeed, if $z-v_i$ lies in the convex set $U_\theta+U_\psi$ for each vertex, then
@@ -267,8 +268,8 @@ B_0=[-\alpha,\alpha]^2,\qquad
 B_{\pi/4}=R_{\pi/4}[-\alpha,\alpha]^2,
 $$
 
-and put $M^*=B_{\pi/4}+B_0$. Its definition has positive denominators: $0<T<1/3$ implies
-$1+2T-T^2>0$.
+and put $M^{\ast}=B_{\pi/4}+B_0$. Its definition has positive denominators: $0<T<1/3$
+implies $1+2T-T^2>0$.
 
 For an angular offset with $|t|\le T$, the required projection factor is
 
@@ -281,21 +282,21 @@ Hence $\alpha f(|t|)\le\alpha f(T)=1/2$. This proves $B_{\pi/4}\subseteq U_\thet
 $B_0\subseteq U_\psi$ for both enlarged closed angle bands, and consequently
 
 $$
-M^*\subseteq U_\theta+U_\psi.
+M^{\ast}\subseteq U_\theta+U_\psi.
 $$
 
 For $n=(n_x,n_y)$, write $h_A(n)=\sup_{a\in A}n\cdot a$ for a support function.
-The complete set of outward facet directions of $M^*$ is
+The complete set of outward facet directions of $M^{\ast}$ is
 
 $$
-\mathcal N=\{\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\}.
+\mathcal N=\lbrace\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\rbrace.
 $$
 
 These normals are not normalized.
 The support function is
 
 $$
-h_{M^*}(n)
+h_{M^{\ast}}(n)
 =\alpha(|n_x|+|n_y|)
 +\alpha r\bigl(|n_x+n_y|+|n_y-n_x|\bigr).
 $$
@@ -303,17 +304,18 @@ $$
 It equals $\alpha(1+\sqrt2)$ on the four axis normals and $\alpha(2+\sqrt2)$ on the four
 diagonal normals. A Minkowski sum of two convex polygons has only facet directions from
 the summands: between consecutive such directions, each summand’s maximizing vertex is
-constant. Thus these eight support inequalities describe all of $M^*$, including its
+constant.
+Thus these eight support inequalities describe all of $M^{\ast}$, including its
 boundary.
 
 Define the fixed closed set
 
 $$
 \boxed{\quad
-C^*=\bigcap_{n\in\mathcal N}
-\left\{z:n\cdot z\le
-h_{M^*}(n)+\min_{i\in\{E,L,R\}}n\cdot v_i^0
--\varepsilon\|n\|_1\right\}.
+C^{\ast}=\bigcap_{n\in\mathcal N}
+\left\lbrace z:n\cdot z\le
+h_{M^{\ast}}(n)+\min_{i\in\lbrace E,L,R\rbrace}n\cdot v_i^0
+-\varepsilon\Vert n\Vert_1\right\rbrace.
 \quad}
 $$
 
@@ -325,29 +327,29 @@ For every $i,n,\theta$, the displacement theorem gives
 
 $$
 n\cdot v_i(\theta)
-\ge n\cdot v_i^0-\varepsilon\|n\|_1
-\ge\min_j n\cdot v_j^0-\varepsilon\|n\|_1.
+\ge n\cdot v_i^0-\varepsilon\Vert n\Vert_1
+\ge\min_j n\cdot v_j^0-\varepsilon\Vert n\Vert_1.
 $$
 
-If $z\in C^*$, subtracting this inequality from the corresponding bound on $n\cdot z$
-proves $n\cdot(z-v_i(\theta))\le h_{M^*}(n)$. The complete support description implies
-$z-v_i(\theta)\in M^*$. Therefore
+If $z\in C^{\ast}$, subtracting this inequality from the corresponding bound on
+$n\cdot z$ proves $n\cdot(z-v_i(\theta))\le h_{M^{\ast}}(n)$. The complete support
+description implies $z-v_i(\theta)\in M^{\ast}$. Therefore
 
 $$
-C^*\subseteq
-\bigcap_i(v_i(\theta)+M^*)
+C^{\ast}\subseteq
+\bigcap_i(v_i(\theta)+M^{\ast})
 \subseteq\mathcal C_{\theta,\psi}
 $$
 
 for every pair of orientations in the enlarged bands.
-In particular, every contained near-axis square centered in $C^*$ intersects every
+In particular, every contained near-axis square centered in $C^{\ast}$ intersects every
 admissible H124 distinguished square.
 Tangency counts as intersection; this argument supplies no positive overlap or uniform
 clearance claim.
 
 ## The Remaining Cover Obligation
 
-$C^*$ is a region of second-square centers.
+$C^{\ast}$ is a region of second-square centers.
 It is not asserted to lie inside Q and must be appended directly to the center cover,
 without adding $B_0$ to it again.
 
@@ -358,22 +360,23 @@ With $Z_0=[1/2,q-1/2]^2$, the changed sufficient obligation is
 $$
 Z_0\subseteq
 (E+B_0)\ \cup\ \bigcup_{p\in P_9}(p+B_0)
-\ \cup R_B\cup R_D\cup R_F\ \cup C^*.
+\ \cup R_B\cup R_D\cup R_F\ \cup C^{\ast}.
 $$
 
 There is no unmarked bottom-left patch.
 The triangle forgets anchor information used to prove $D\subseteq Q$, so this argument
-does not assert that $C^*$ contains the original $E+B_0$ region.
+does not assert that $C^{\ast}$ contains the original $E+B_0$ region.
 Appending preserves both valid collision mechanisms.
 
 For any contained near-axis $\mathcal S$ avoiding all nine marks, the marked regions and
 corner patches are unavailable.
-A complete cover would therefore place its center either in $E+B_0$ or in $C^*$, each of
-which forces intersection with Q. Together with exp125’s accepted diagonal-band lemma,
-this would prove H124; H106, H123, and the reviewed closed-core counting reduction would
-then prove restricted H036. It would not improve the unrestricted packing bound.
+A complete cover would therefore place its center either in $E+B_0$ or in $C^{\ast}$,
+each of which forces intersection with Q. Together with exp125’s accepted diagonal-band
+lemma, this would prove H124; H106, H123, and the reviewed closed-core counting
+reduction would then prove restricted H036. It would not improve the unrestricted
+packing bound.
 
-No vertices or positive-area assertion for $C^*$ have been computed here.
+No vertices or positive-area assertion for $C^{\ast}$ have been computed here.
 Source construction must retain the full eight-direction intersection and exact field
 embedding, handle an empty or lower-dimensional result explicitly, and preserve all
 original regions. The existing generic positive-area polygon reader cannot silently

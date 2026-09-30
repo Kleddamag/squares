@@ -10,7 +10,7 @@ I₊ = [1997/6000, sqrt(2)-1],
 I₋ = [1-sqrt(2), -1997/6000].
 ```
 
-The proof gives a uniform contradiction margin of `501/1000000`. The equal-angle
+The proof gives a uniform contradiction margin of $501/1000000$. The equal-angle
 threshold and the smaller two-angle control cells below give further exact statements.
 These results concern angle families and do not give a global packing bound.
 The argument is analytic and covers real half-tangents, including irrational values.
@@ -30,25 +30,25 @@ prove that its relaxation rejects the stated angles.
 
 ## The Equal-Angle Family
 
-Suppose both owners have the same positive folded angle `θ∈(0,π/4]`. Write
+Suppose both owners have the same positive folded angle $\theta\in(0,\pi/4]$. Write
 
 ```text
 c = cos θ,   s = sin θ,   c≥s>0,
 u = (c,s),   v = (-s,c).
 ```
 
-Every ordered separating normal must satisfy `v_y>0` and `56v_y≥62|v_x|-1`. The other
-upward normal `u` fails the second condition, since
+Every ordered separating normal must satisfy $v_y>0$ and $56v_y\ge62|v_x|-1$. The other
+upward normal $u$ fails the second condition, since
 
 ```text
 56s-62c+1 ≤ 1-6c ≤ 1-3sqrt(2) < 0.
 ```
 
 The downward normals fail the positive-y condition.
-Thus only `v` can separate the lower-anchor owner from the upper-anchor owner.
+Thus only $v$ can separate the lower-anchor owner from the upper-anchor owner.
 
 Let `C` be the upper owner’s center.
-Its `u` tube slab and the shared separating support give
+Its $u$ tube slab and the shared separating support give
 
 ```text
 u·(C-m) ≤ 1/2+ℓc/2+δ,
@@ -61,13 +61,13 @@ Since `(1,0)=cu-sv`, these imply
 C_x ≤ m_x+(c-s)/2+ℓ/2+δ(c+s).
 ```
 
-Container containment requires `C_x≥(c+s)/2`; therefore
+Container containment requires $C_x\ge(c+s)/2$; therefore
 
 ```text
 s ≤ A+δ(c+s).                                        (1)
 ```
 
-For `t=tan(θ/2)`, the exact difference in (1) is
+For $t=\tan(\theta/2)$, the exact difference in (1) is
 
 ```text
 A+δ(c+s)-s
@@ -81,44 +81,45 @@ t₀ = (497-sqrt(159993))/292,
 ```
 
 every equal-angle pair with `t₀<t≤sqrt(2)-1` is impossible.
-The polynomial in (2) decreases strictly on this range: its derivative is `292t-497<0`,
-and its smaller root is `t₀`. It has positive value at zero and value `-4/9` at `t=1/3`,
-so `0<t₀<1/3<sqrt(2)-1`.
+The polynomial in (2) decreases strictly on this range: its derivative is $292t-497<0$,
+and its smaller root is $t_0$. It has positive value at zero and value $-4/9$ at
+$t=1/3$, so `0<t₀<1/3<sqrt(2)-1`.
 
-At `t=1/3`, dividing `-4/9` by `250(1+1/9)` gives the previous difference `-1/625`. At
-`t=t₀`, (1) is equality and this argument is unresolved; no feasibility assertion is
+At $t=1/3$, dividing $-4/9$ by $250(1+1/9)$ gives the previous difference $-1/625$. At
+$t=t_0$, (1) is equality and this argument is unresolved; no feasibility assertion is
 made at the threshold.
 
-Reflection in `y=q/2` preserves the left segment, swaps the anchors, and maps an ordered
-pair `(t₁,t₂)` to `(-t₂,-t₁)`. It therefore proves the equal negative-angle exclusion as
-well. Reflection in `x=q/2` transfers the results between the two outer segments.
-Equivalently, equal signed half-tangents with `|t|>t₀` are excluded on either segment.
+Reflection in $y=q/2$ preserves the left segment, swaps the anchors, and maps an ordered
+pair $(t_1,t_2)$ to $(-t_2,-t_1)$. It therefore proves the equal negative-angle
+exclusion as well. Reflection in $x=q/2$ transfers the results between the two outer
+segments. Equivalently, equal signed half-tangents with $|t|>t_0$ are excluded on either
+segment.
 
 ## A Necessary Inequality for Unequal Positive Angles
 
-Let the two positive folded angles be `θ₁,θ₂`, with
+Let the two positive folded angles be $\theta_1,\theta_2$, with
 
 ```text
 u_i = (c_i,s_i),   w_i = (-s_i,c_i).
 ```
 
-The same normal-cut argument leaves only `w₁` and `w₂` as possible ordered separators.
-For a candidate `w_j`, where `j∈{1,2}`, define
+The same normal-cut argument leaves only $w_1$ and $w_2$ as possible ordered separators.
+For a candidate $w_j$, where $j\in\lbrace1,2\rbrace$, define
 
 ```text
 K = c_j c₂+s_j s₂ = cos(θ₂-θ_j) > 0,
 J = c_j s₂-s_j c₂ = sin(θ₂-θ_j).
 ```
 
-The upper owner’s support in this direction is `H₂(w_j)=(K+|J|)/2`. For its center
-offset `X=C₂-m`, the tube slab and branch clip give
+The upper owner’s support in this direction is $H_2(w_j)=(K+|J|)/2$. For its center
+offset $X=C_2-m$, the tube slab and branch clip give
 
 ```text
 u₂·X ≤ 1/2+ℓc₂/2+δ,
 w_j·X ≥ (K+|J|)/2-ℓs_j/2-δ.
 ```
 
-Use `(1,0)=(c_j u₂-s₂ w_j)/K` and `c_j=c₂K+s₂J` to obtain
+Use $(1,0)=(c_j u_2-s_2 w_j)/K$ and $c_j=c_2K+s_2J$ to obtain
 
 ```text
 X_x ≤ (c₂-s₂)/2+ℓ/2+δ(c_j+s₂)/K+s₂(J-|J|)/(2K)
@@ -137,10 +138,10 @@ the condition. At equal angles, (3) becomes (1).
 
 ## Proof of the Broad Same-Sign Band
 
-Put `T=1997/6000=1/3-1/2000`, and suppose `t₁,t₂∈I₊`. The function `c(t)` decreases and
-`s(t)` increases on the positive folded range.
-Between `T` and `1/3`, their derivatives have absolute value at most two.
-Since `c(1/3)=4/5` and `s(1/3)=3/5`,
+Put $T=1997/6000=1/3-1/2000$, and suppose $t_1,t_2\in I_+$. The function $c(t)$
+decreases and $s(t)$ increases on the positive folded range.
+Between $T$ and $1/3$, their derivatives have absolute value at most two.
+Since $c(1/3)=4/5$ and $s(1/3)=3/5$,
 
 ```text
 c(T) > 4/5,
@@ -148,7 +149,7 @@ c_i ≤ c(T) ≤ 801/1000,
 s_i ≥ s(T) ≥ 599/1000.
 ```
 
-Let `θ_low=2 arctan T`. For either candidate `w_j`, the two angles lie in `[θ_low,π/4]`,
+Let `θ_low=2 arctan T`. For either candidate $w_j$, the two angles lie in `[θ_low,π/4]`,
 so
 
 ```text
@@ -159,16 +160,17 @@ K = cos(θ₂-θ_j)
   > 989/1000.
 ```
 
-The final comparison is exact: `1399²-2·989²=959>0`.
+The final comparison is exact: $1399^2-2\cdot989^2=959>0$.
 
-Rewrite condition (3) as `F≤0`, where
+Rewrite condition (3) as $F\le0$, where
 
 ```text
 F = (s₂-59/100)K-δ(s₂+c_j).
 ```
 
-On the stated bounds, `F` increases with `K` because `s₂-59/100≥9/1000>0`; it increases
-with `s₂` because `K≥989/1000>δ`; and it decreases with `c_j`. Consequently,
+On the stated bounds, $F$ increases with $K$ because $s_2-59/100\ge9/1000>0$; it
+increases with $s_2$ because $K\ge989/1000>\delta$; and it decreases with $c_j$.
+Consequently,
 
 ```text
 F ≥ (599/1000-59/100)(989/1000)
@@ -178,7 +180,7 @@ F ≥ (599/1000-59/100)(989/1000)
 
 This contradicts the necessary inequality for both remaining candidate normals.
 It proves the positive-band theorem, including its endpoints.
-Reflection in `y=q/2` and exchange of the anchor order give `I₋`; reflection in `x=q/2`
+Reflection in $y=q/2$ and exchange of the anchor order give $I_-$; reflection in $x=q/2$
 gives both bands on the right outer segment as well.
 In particular, the simpler bands `[1/3,sqrt(2)-1]` and `[1-sqrt(2),-1/3]` are excluded.
 
@@ -195,22 +197,22 @@ is impossible for two owners of the same outer segment.
 This cell lies inside the positive band and remains an exact control.
 The following local bounds give a separate exact contradiction margin for this control.
 
-Put `ε=1/2000`. On this interval, which is contained in `[0,1/2]`, the rational
-orientation functions obey
+Put $\varepsilon=1/2000$. On this interval, which is contained in $[0,1/2]$, the
+rational orientation functions obey
 
 ```text
 c'(t) = -4t/(1+t²)²,           |c'(t)|≤2,
 s'(t) = 2(1-t²)/(1+t²)²,       |s'(t)|≤2.
 ```
 
-Their values at `1/3` are `4/5` and `3/5`. Thus throughout the closed cell,
+Their values at $1/3$ are $4/5$ and $3/5$. Thus throughout the closed cell,
 
 ```text
 s₂ ≥ 3/5-2ε = 599/1000,
 c_j+s₂ ≤ 7/5+4ε = 701/500.
 ```
 
-The exact half-tangent identity gives, for either `j`,
+The exact half-tangent identity gives, for either $j$,
 
 ```text
 K = 1-2(t₂-t_j)²/((1+t₂²)(1+t_j²))
@@ -227,10 +229,10 @@ Therefore the right side of (3) is at most
  ≤ s₂.
 ```
 
-The strict comparison is rational: `4206000<4499991`. It contradicts (3) for both `j=1`
-and `j=2`. All other candidate normals have already been excluded, completing the proof.
-The difference between the lower bound for `s₂` and the upper bound in (3) is at least
-`293991/499999000>0`, including on the cell boundary.
+The strict comparison is rational: $4206000<4499991$. It contradicts (3) for both $j=1$
+and $j=2$. All other candidate normals have already been excluded, completing the proof.
+The difference between the lower bound for $s_2$ and the upper bound in (3) is at least
+$293991/499999000>0$, including on the cell boundary.
 
 Horizontal reflection and exchange of the anchor order also exclude the closed cell
 

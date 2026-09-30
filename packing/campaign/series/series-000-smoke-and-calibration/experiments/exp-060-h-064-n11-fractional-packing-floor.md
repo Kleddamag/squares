@@ -112,32 +112,32 @@ experiment:
 # exp-060 — H-064’s Exact-Depth Fractional Packing at 3.82 and 3.85
 
 The round is Lane B’s `BC-200` of Agenda 021, run inside its 110-minute budget on one
-core. It measured the `n = 11` covering value from below, as
+core. It measured the $n = 11$ covering value from below, as
 [H-064](../../../hypotheses/H-064-n11-fractional-packing-floor.md) registers it: a
-finite family of closed `B`-square placements at net directions whose depth is at most
+finite family of closed $B$-square placements at net directions whose depth is at most
 one at every vertex of the arrangement of their edges, so that its total weight is a
-lower bound on the fractional packing value `ν*(L)` and hence on the covering value
-`τ*(L)`.
+lower bound on the fractional packing value $\nu^{\ast}(L)$ and hence on the covering
+value $\tau^{\ast}(L)$.
 
-At `191/50 = 3.82`, nine iterations of the cutting-plane loop raised the exact
-depth-scaled total from the retained `1152/175 = 6.5829` to an exact retained rational
-approximately equal to `9.907905594982566`. Thus the safely displayed bracket is
-`9.907905 ≤ ν*(3.82) ≤ τ*(3.82) ≤ 11.055617`; the row loop converged at iteration 5 to a
-restricted optimum of `11.055617` on 12,761 sites.
-At `77/20 = 3.85`, three iterations warm-started from the `3.82` state reached the exact
-rational `45019185620/4974572153 ≈ 9.04986081925667`, hence `ν*(3.85) ≥ 9.049860`. The
-row loop never converged there, so no upper end is certified.
-Neither family reached eleven, so nothing was frozen under the case package and the
-claim stays unresolved in the hypothesis’s own words; the families, their
-`verify_ceiling` verdicts, the summaries, the logs and the resumable `3.82` state are
+At $191/50 = 3.82$, nine iterations of the cutting-plane loop raised the exact
+depth-scaled total from the retained $1152/175 = 6.5829$ to an exact retained rational
+approximately equal to $9.907905594982566$. Thus the safely displayed bracket is
+$9.907905 \le \nu^{\ast}(3.82) \le \tau^{\ast}(3.82) \le 11.055617$; the row loop
+converged at iteration 5 to a restricted optimum of $11.055617$ on 12,761 sites.
+At $77/20 = 3.85$, three iterations warm-started from the $3.82$ state reached the exact
+rational $45019185620/4974572153 \approx 9.04986081925667$, hence
+$\nu^{\ast}(3.85) \ge 9.049860$. The row loop never converged there, so no upper end is
+certified. Neither family reached eleven, so nothing was frozen under the case package
+and the claim stays unresolved in the hypothesis’s own words; the families, their
+`verify_ceiling` verdicts, the summaries, the logs and the resumable $3.82$ state are
 retained beside this record.
 
 ## Correction on 2026-09-05
 
-Earlier versions displayed the two exact lower bounds as `9.907906` and `9.049861` and
+Earlier versions displayed the two exact lower bounds as $9.907906$ and $9.049861$ and
 then used those upward-rounded decimals in inequalities.
 The exact rational results and the round’s scientific disposition are unchanged.
-The frontmatter and body now use the downward-safe endpoints `9.907905` and `9.049860`,
+The frontmatter and body now use the downward-safe endpoints $9.907905$ and $9.049860$,
 while the summary records retain the exact rationals.
 
 <!-- This document follows common-doc-guidelines.md.

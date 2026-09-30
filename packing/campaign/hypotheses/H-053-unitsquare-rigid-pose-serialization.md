@@ -79,7 +79,7 @@ unit-square poses whose wall and nonoverlap signs can all be decided.
 
 ## Scope
 
-The two values of `n` are a paired serialization control, not a surgery trial.
+The two values of $n$ are a paired serialization control, not a surgery trial.
 A compatible model may still be too imprecise for gain-scale comparison, and a refusal
 is a valid measurement outcome when the retained source cannot support a sound decision.
 

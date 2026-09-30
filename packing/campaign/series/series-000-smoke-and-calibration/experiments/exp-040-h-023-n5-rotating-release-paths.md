@@ -120,7 +120,7 @@ s = sigma 4u/(4+u^2)
 ```
 
 Thus its angle is represented algebraically without storing `atan`, while its angular
-derivative at zero is `sigma`. The checker must prove `c^2+s^2 = 1` identically and
+derivative at zero is `sigma`. The checker must prove $c^{2}+s^{2} = 1$ identically and
 prove the exact feature-sign guards needed to keep every absolute-value branch fixed on
 the full interval. Move the centers affinely by the shared positional part of R4 and R5:
 
@@ -144,12 +144,12 @@ For each of those six cases, the checker must:
 - prove the full interval feasible by exhausting every container wall and every square
   pair, using all relevant SAT owner axes and tied support features rather than sampled
   fixtures;
-- clear the positive denominator `4+u^2` and retain the finite numerator sign table;
+- clear the positive denominator $4+u^{2}$ and retain the finite numerator sign table;
 - prove independently checked exact packings at `u = delta/4` and `u = delta/2`;
 - prove that the full zero separating-axis inventory contains exactly `(0,4):owner4:a-`,
   `(2,4):owner4:a+`, `(3,4):owner3:a+`, and `(3,4):owner4:a+` throughout each path, with
   no missing or extra zero axis;
-- rebuild both active owner branches for contact `(3,4)`, retain both tied feature rows
+- rebuild both active owner branches for contact $(3,4)$, retain both tied feature rows
   in each branch, and cancel every exact coefficient of the resulting rational stress
   identity with strictly positive multipliers over the interval; and
 - regenerate and replay the retained record identically.
@@ -159,31 +159,31 @@ Square 1’s selected upper-x and lower-y features have slack
 
 `u^2(u+2)/(2(4+u^2)) >= 0`,
 
-and contact `(1,4)` has owner-4 `a-` slack
+and contact $(1,4)$ has owner-4 `a-` slack
 
 `r u^2/(4+u^2) >= 0`.
 
-Both are zero at `u = 0` and must be proved strictly positive for `0 < u <= delta/2`.
+Both are zero at $u = 0$ and must be proved strictly positive for `0 < u <= delta/2`.
 For R5, the small nonlinear wall slack belongs to the `x-upper:-` and `y-lower:-`
 features while the `+` features open at first order; for R4 those roles reverse.
 The checker must retain that exact sign-to-feature map, including the other feature’s
-additional slack `4u/(4+u^2)`.
+additional slack $4u/(4+u^{2})$.
 
 The stress support and weights are frozen before measurement.
-Square 2’s four lower-wall rows have weight `r/4`, square 3’s two upper-wall rows have
-weight `r/2`, and contact `(2,4)` has weight one.
-On the owner-3 branch for contact `(3,4)`, the tied-row weights are
+Square 2’s four lower-wall rows have weight $r/4$, square 3’s two upper-wall rows have
+weight $r/2$, and contact $(2,4)$ has weight one.
+On the owner-3 branch for contact $(3,4)$, the tied-row weights are
 
 ```text
 w+ = 5/4 - r(1+u)/2
 w- = -1/4 + r(1+u)/2.
 ```
 
-On the owner-4 branch both tied-row weights are `1/2`. The checker must prove each
-weight strictly positive, with owner-3 lower bound `r/2 - 1/4 > 0`; derive the rational
+On the owner-4 branch both tied-row weights are $1/2$. The checker must prove each
+weight strictly positive, with owner-3 lower bound $r/2 - 1/4 > 0$; derive the rational
 numerator degree bound from the source rows, affine centers, and these affine weights;
-and cancel every pose-column numerator coefficient while retaining side coefficient `r`.
-Fixtures at finitely many `u` values are not this identity proof.
+and cancel every pose-column numerator coefficient while retaining side coefficient $r$.
+Fixtures at finitely many $u$ values are not this identity proof.
 
 Exactly twenty controls must reject: a non-unit orientation formula; an R4/R5 sign-label
 swap; a missing A slide; an added B slide; a changed square-1 center displacement; a
@@ -222,7 +222,7 @@ That is implementation progress, not an accepted scientific result.
 Two independent reviews retained five finite blockers:
 
 1. Distinguish the four axes that are identically zero along each path from the five
-   axes active at `u = 0`; prove every other residual strictly positive on the
+   axes active at $u = 0$; prove every other residual strictly positive on the
    appropriate open or closed interval.
 2. Prove and retain every stress multiplier’s full-interval positivity, not just the
    exact coefficient cancellation.

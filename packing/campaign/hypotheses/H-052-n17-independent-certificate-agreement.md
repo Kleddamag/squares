@@ -92,7 +92,7 @@ difference-array sweep line by line.
 The result measures agreement between two implementations on one retained certificate.
 Any later lower-bound adoption requires separate source review and disposition.
 The experiment cannot establish a distinct proof method, certificate uniqueness, or
-transfer to another value of `n`.
+transfer to another value of $n$.
 
 ## Resolution — Confirmed at Implementation-Agreement Scope, 2026-09-03
 
@@ -103,12 +103,12 @@ is cleared on that review and nothing else moved with it.
 The criterion above is **frozen and byte-unchanged** — written before the target work,
 never amended for the round or the review, and met as registered.
 
-**What is established.** For the fixed retained Massaccesi `n = 17` certificate, two
+**What is established.** For the fixed retained Massaccesi $n = 17$ certificate, two
 separately authored exact accumulation paths agree on every one of the 181 rational
 direction cells. Both 181-row `CertificateManifest` summaries are byte-identical: atom
 count 168 and atom hash `37d35da0…`, direction count 181 and direction hash `cc789e1a…`,
-total weight `203/12`, every one of the 181 row minima exactly `1/1`, and the global
-minimum `1/1`, which is the frozen expectation `576/576`. The shrink-and-scaling
+total weight $203/12$, every one of the 181 row minima exactly $1/1$, and the global
+minimum $1/1$, which is the frozen expectation $576/576$. The shrink-and-scaling
 preconditions hold, all five frozen mutations are rejected, all twelve frozen
 certificate invariants are true, and every decision-bearing field is derived from the
 emitted bytes rather than asserted beside them.
@@ -118,10 +118,10 @@ than promoting it and appending eleven new rows to the 170 carried ones.
 **This is assurance evidence, and it is not mathematics.** The registered notes already
 fix the scope and the resolution does not widen it: acceptance establishes
 implementation agreement for one fixed certificate.
-It is **not** proof-method independence, **not** adoption of `4.5058` as a reviewed
+It is **not** proof-method independence, **not** adoption of $4.5058$ as a reviewed
 lower bound, **not** a certificate-uniqueness claim, and **not** any cross-`n` or
 LP-generalization claim; acceptance alone moves no bound.
-What did move the verified lower bound at `n = 17, 18, 19` is the separate
+What did move the verified lower bound at $n = 17, 18, 19$ is the separate
 source-adoption route, `BC-150` and `BC-151`, resting on the published argument and its
 own from-scratch replays rather than on this agreement.
 This round is retained beside that route as `E-n017-massaccesi-h052-agreement`, one of

@@ -108,9 +108,9 @@ annealer, and the ranges overlap.
 
 The tested local procedure does not take these starts to Trump’s construction.
 
-At `n = 5` and `n = 10` the annealer reaches the neighbourhood of the proved optimum and
+At $n = 5$ and $n = 10$ the annealer reaches the neighbourhood of the proved optimum and
 stops short; the quench then finishes the job exactly.
-At `n = 11` the annealer is `8.8e-02` away, and no amount of local refinement crosses
+At $n = 11$ the annealer is `8.8e-02` away, and no amount of local refinement crosses
 that: an LP-in-cell solve optimises the cell it is given, and cyclic bracketing moves
 angles within the structure it is given.
 Both are *local* operations by construction.
@@ -127,11 +127,11 @@ So the sweep separates the two failures that
 [exp-003](exp-003-baseline-n11-target.md) could not tell apart, and assigns each to a
 different cell:
 
-- `n = 10` was a **polish** failure — now fixed, to `1.3e-15`.
-- `n = 11` is an **exploration** failure — untouched by any of this, and unaffected by
+- $n = 10$ was a **polish** failure — now fixed, to `1.3e-15`.
+- $n = 11$ is an **exploration** failure — untouched by any of this, and unaffected by
   fixing polish.
 
-That is worth more than a better number at `n = 11` would have been.
+That is worth more than a better number at $n = 11$ would have been.
 It says the spine is done arguing with the wrong problem: the burden sits squarely on
 the proposer, and the register’s proposer entries — δ-continuation
 ([H-013](../../../ideas.md)), neighbour transfer, angle-class search
@@ -140,13 +140,13 @@ critical path rather than its speculative tail.
 
 Three of five seeds hit the 30-second wall budget here, against two at each of the
 smaller cells, and the class counts run 4 to 6 rather than 2 — both signs that the
-annealer’s `n = 11` output has no clean angle-class structure to merge, which is itself
+annealer’s $n = 11$ output has no clean angle-class structure to merge, which is itself
 consistent with it being in a grid-like rather than record-like basin.
 
 ## Limits
 
 - Assurance is `numerically-checked` under `numerical-f64` throughout.
-  The target at `n = 11` is Trump’s *reported* standing best, not a proved optimum, so
+  The target at $n = 11$ is Trump’s *reported* standing best, not a proved optimum, so
   “gap to analytic” here means “gap to the standing best”.
 - Five seeds, one host, one parameter set.
   `exploratory`.

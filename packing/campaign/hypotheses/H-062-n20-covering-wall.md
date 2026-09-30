@@ -114,14 +114,14 @@ Nobody has ever measured a covering wall.
 The record holds seven reported restricted optima at seven sides, and
 `CERTIFICATE-REACH.md` says of them that no covering-search run log or solver checkpoint
 was retained for any, that two of the seven are explicitly unconverged, and that seven
-heterogeneous reports across a side band `0.98` wide support no growth trend at all.
+heterogeneous reports across a side band $0.98$ wide support no growth trend at all.
 The closest thing to a wall in the register is two independent site sets stopping at
-exactly `11.000000` at side `3.82`, and `T-018` says plainly that reading that as `τ*`
-would be reading an artefact.
+exactly $11.000000$ at side $3.82$, and `T-018` says plainly that reading that as
+$\tau^{\ast}$ would be reading an artefact.
 
-This claim is the first attempt to measure one deliberately, and it is made at `m = 5`
+This claim is the first attempt to measure one deliberately, and it is made at $m = 5$
 because that is where the measurement is clean.
-At `n = 20` and `n = 21` the upper bound is the trivial grid, so the packing cap and the
+At $n = 20$ and $n = 21$ the upper bound is the trivial grid, so the packing cap and the
 ceiling are the same number and no packing record stands between the ladder and the
 method’s structural limit.
 A rung that fails there fails for one reason.
@@ -129,7 +129,7 @@ A rung that fails there fails for one reason.
 What the claim is not is a statement about the covering value of the container.
 The quantity measured is the restricted optimum on two declared site-construction rules,
 and adding sites can only lower it.
-That distinction is the whole of why `T-018`’s `3.82` result is recorded as a
+That distinction is the whole of why `T-018`’s $3.82$ result is recorded as a
 measurement rather than as a bound, and it is inherited here unchanged.
 
 <!-- This document follows common-doc-guidelines.md.

@@ -207,7 +207,7 @@ verification and atomic-write path before a new experiment is registered.
 
 ## Frozen claim and determination
 
-For each fixed UnitSquare Release 1 pair at `n = 68` and `n = 69`, at least one model
+For each fixed UnitSquare Release 1 pair at $n = 68$ and $n = 69$, at least one model
 from the inventory below must admit nonempty compatible rigid-unit-square pose
 enclosures for both the parent and its corresponding child.
 The source digest and transform guards must pass, and the independent verifier must
@@ -219,7 +219,7 @@ models for at least one pair and none qualifies.
 A provenance, transform, enclosure, verifier or exhaustiveness failure is a typed
 premeasurement or measurement refusal and leaves H-053 unresolved.
 
-The primary metric is the determination tuple, per `n` and model:
+The primary metric is the determination tuple, per $n$ and model:
 `(parent_compatible, child_compatible, parent_valid, child_valid)`. A pair qualifies
 only when all four values are proven true.
 Search failure is not proof of an empty pose set.
@@ -240,7 +240,7 @@ A validity predicate is decided only when its interval proves the required nonne
 sign. An interval that straddles zero is `possible-contact` and cannot qualify H-053; a
 label never substitutes for a sign proof.
 
-The separate, downstream `n = 68` surgery-grade screen does not decide H-053. Its frozen
+The separate, downstream $n = 68$ surgery-grade screen does not decide H-053. Its frozen
 width threshold is one quarter of `7.68618004216131e-5`, namely `1.9215450105403275e-5`
 in unit-square-length coordinates.
 Displacement, ambiguity, container-side width and every signed-predicate width must each
@@ -259,7 +259,7 @@ The retained release metadata anchor is
 | 69 | child | `packing/resources/web/known-best-packings/unitsquare/n069.svg` | `b32aa37d37b07248ac92e683bbfd9be7ca6eb6aafa35a35e46a2484467afee41` |
 | 69 | parent | `https://kingbird.myphotos.cc/packing/square-69.svg` | `0333814c7b43ddc7db549a54771de117f8a6b7b3db0f89c12fe035115546fd08` |
 
-The release records bind the `n = 68` and `n = 69` rows to record digests
+The release records bind the $n = 68$ and $n = 69$ rows to record digests
 `b44aac1accc9a4d5b92f96077aaaaecb88b99faaef24870b3dd7f4507070f9d8` and
 `04af1825f36d4ec70c0372b3dabf0bb5871025e2ee37563fc6242c4ac2af253d`, respectively.
 These source-supplied hashes are provenance fields, not mathematical verification.
@@ -278,15 +278,14 @@ and failure.
 The parser composes every SVG transform in document order into one global-SVG mapping
 before reading the container or square vertices.
 It must identify one container rectangle `(x0, y0, W, H)` in that same frame, with
-`W > 0` and `H > 0`. For candidate container side `L`, a global point `(X, Y)` maps to
+$W > 0$ and $H > 0$. For candidate container side $L$, a global point $(X, Y)$ maps to
 
 `(L*(X-x0)/W, L*(y0+H-Y)/H)`.
 
-The mathematical container is `[0,L] × [0,L]`; the second coordinate reverses the SVG
-y-axis.
-Every fitted object is a rigid square of side exactly `1`. Corner correspondences
-are cyclic orderings of the four transformed source vertices, with orientation reversal
-considered explicitly and a deterministic lexicographic tie break.
+The mathematical container is $[0,L] \times [0,L]$; the second coordinate reverses the
+SVG y-axis. Every fitted object is a rigid square of side exactly $1$. Corner
+correspondences are cyclic orderings of the four transformed source vertices, with
+orientation reversal considered explicitly and a deterministic lexicographic tie break.
 A model is compatible only when every matched rigid corner’s inverse image lies inside
 its closed source cell.
 Singular transforms, multiple plausible containers, unstable square IDs, fewer or more
@@ -296,9 +295,9 @@ The inventory and evaluation order are fixed:
 
 1. `declared:svg-literal` — each SVG numeric token denotes its exact parsed decimal
    value; side fields retain their source-declared point or directional-bound semantics.
-2. `nearest-6` — a published six-place coordinate `d` denotes the closed cell
+2. `nearest-6` — a published six-place coordinate $d$ denotes the closed cell
    `[d-0.5e-6,d+0.5e-6]` in global-SVG coordinates.
-3. `truncate-6` — for `d ≥ 0`, the cell is `[d,d+1e-6]`; for `d < 0`, it is
+3. `truncate-6` — for $d \ge 0$, the cell is `[d,d+1e-6]`; for $d < 0$, it is
    `[d-1e-6,d]`.
 
 The three models never share or merge cells or pose sets.
@@ -309,13 +308,13 @@ A byte-for-byte repeat on the same fixture is required before target measurement
 
 ## Parent-only selection and blindness
 
-H-053 evaluates all models, but the downstream H-051 arm is selected from the `n = 68`
+H-053 evaluates all models, but the downstream H-051 arm is selected from the $n = 68$
 parent alone.
 A selector with no access to either child SVG, offered child side, released
 reduction or child-derived summary evaluates parent models in the frozen order.
 It selects the first compatible, independently valid model, hashes its canonical parent
 receipt and seals the model ID before child evaluation.
-The hash input contains only the parent URL and digest, `n`, model ID, transform and
+The hash input contains only the parent URL and digest, $n$, model ID, transform and
 interval-policy versions, canonical parent enclosures and independent validity result.
 
 The corresponding child is then evaluated under that sealed model.

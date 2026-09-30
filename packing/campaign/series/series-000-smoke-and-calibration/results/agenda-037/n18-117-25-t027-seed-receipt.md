@@ -2,14 +2,14 @@
 
 Status: **site set refuted, unconverged**. Locked at 18. The side stays open.
 
-Session-139 probe: BC-191 auto `(32, 43, 54)` unioned with T-027’s 769 atom sites scaled
-from `467/100` to `117/25`, `(n, L, B, net) = (18, 117/25, 9977/10000, 181 directions)`.
-The T-019 seed at the same side converged with exact mass `18.000043`. T-027’s own
-atoms, which certified `467/100`, sat at `18.000000` from round 7 through the 60-round
+Session-139 probe: BC-191 auto $(32, 43, 54)$ unioned with T-027’s 769 atom sites scaled
+from $467/100$ to $117/25$, `(n, L, B, net) = (18, 117/25, 9977/10000, 181 directions)`.
+The T-019 seed at the same side converged with exact mass $18.000043$. T-027’s own
+atoms, which certified $467/100$, sat at $18.000000$ from round 7 through the 60-round
 limit (465 still violated) on 6549 sites / 868 orbits.
 Remaining rows can only raise this value.
-Adding sites can still lower it, so `117/25` is not barred.
-T-027 at `467/100` is unchanged.
+Adding sites can still lower it, so $117/25$ is not barred.
+T-027 at $467/100$ is unchanged.
 
 ## Command
 
@@ -34,11 +34,11 @@ Wall 819.5 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `18.000000` |
+| Restricted optimum | $18.000000$ |
 | Sites / orbits / rows | 6549 / 868 / 19241 |
 | Seed sites | 769 |
 | LP rounds | 60 |
-| Crossing | round 7 (`18.000000`) |
+| Crossing | round 7 ($18.000000$) |
 | Wall | 819.5 s |
 | `least_covered` | 0.970596 |
 | Converged | no (`violated == 465` at stop) |

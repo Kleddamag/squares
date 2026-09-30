@@ -90,9 +90,9 @@ experiment:
 The single declared process launched at **2026-09-09T03:17:16Z** from published commit
 `513d3831a6f8ed62f0d22d9a65c20390ad540946` and exited 2 after 2.54 seconds wall time
 (1.75 seconds user CPU, 0.16 system CPU). The unrestricted arm converged in 17 rounds to
-numerical mass `11.981481481481488`, with least surveyed mass `0.9999999999999788`. The
+numerical mass $11.981481481481488$, with least surveyed mass $0.9999999999999788$. The
 residual arm stopped during separation at direction 113:
-`reachable residual cell has no interior witness`. Its last objective `4.0` is an
+`reachable residual cell has no interior witness`. Its last objective $4.0$ is an
 incomplete LP point and must not be reported as a residual cover or a gain.
 
 The paired comparison is **unresolved**. Raw weights, stop reasons and timing survive in
@@ -105,14 +105,14 @@ control, not a retry of this round.
 
 ## Original prospective contract
 
-At `L = 96/25` and `B = 9977/10000`, fix four axis-aligned physical unit squares flush
+At $L = 96/25$ and $B = 9977/10000$, fix four axis-aligned physical unit squares flush
 in the four corners.
-The residual program covers all selected-direction `B`-squares inside the container
+The residual program covers all selected-direction $B$-squares inside the container
 whose interiors avoid those obstacles.
 This is a conservative family containing the seven strict inner cores of any completion
 of that fixed branch.
 
-Both arms use the same 19-by-19 grid with inset `1/2` and the same nine indices from the
+Both arms use the same 19-by-19 grid with inset $1/2$ and the same nine indices from the
 retained 181-direction net.
 Their score is `M_global − M_residual − 4`. Residual mass below seven is an additional
 numerical signal, not the accept rule and not a packing certificate.
@@ -120,22 +120,22 @@ The subset does not supply the all-angle transfer.
 
 ## Domain and evidence contract
 
-For direction `(c,s)`, let `h = B/2`, `e = h(c+s)`, `a = 1+e`, `b = L−1−e`, `u = cx+sy`
+For direction $(c,s)$, let $h = B/2$, $e = h(c+s)$, $a = 1+e$, $b = L-1-e$, `u = cx+sy`
 and `v = −sx+cy`. Intersect every piece below with container containment
-`e ≤ x,y ≤ L−e`:
+$e \le x,y \le L-e$:
 
 | Piece | Additional inequalities |
 | --- | --- |
-| Vertical strip | `a ≤ x ≤ b` |
-| Horizontal strip | `a ≤ y ≤ b` |
-| Bottom-left cap | `x ≤ a`, `y ≤ a`, `u ≥ c+s+h` |
-| Bottom-right cap | `x ≥ b`, `y ≤ a`, `v ≥ c−s(L−1)+h` |
-| Top-left cap | `x ≤ a`, `y ≥ b`, `v ≤ c(L−1)−s−h` |
-| Top-right cap | `x ≥ b`, `y ≥ b`, `u ≤ (c+s)(L−1)−h` |
+| Vertical strip | $a \le x \le b$ |
+| Horizontal strip | $a \le y \le b$ |
+| Bottom-left cap | $x \le a$, $y \le a$, $u \ge c+s+h$ |
+| Bottom-right cap | $x \ge b$, $y \le a$, $v \ge c-s(L-1)+h$ |
+| Top-left cap | $x \le a$, $y \ge b$, $v \le c(L-1)-s-h$ |
+| Top-right cap | $x \ge b$, $y \ge b$, $u \le (c+s)(L-1)-h$ |
 
 Two independent mathematical reviews derived this union by the separating-axis test.
-For the bottom-left obstacle the alternatives reduce to `x ≥ a`, `y ≥ a`, or
-`u ≥ c+s+h`; reflection gives the other corners.
+For the bottom-left obstacle the alternatives reduce to $x \ge a$, $y \ge a$, or
+$u \ge c+s+h$; reflection gives the other corners.
 The mixed-axis alternatives imply the horizontal or vertical alternatives using
 `h+e(s−c)=Bs²` and `h+e(c−s)=Bc²`. The formulas hold for the final retained direction
 slightly beyond 45 degrees as well as for the axis endpoint.

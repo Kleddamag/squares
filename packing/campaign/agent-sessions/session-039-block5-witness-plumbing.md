@@ -244,7 +244,7 @@ flattering direction, and it is [D-358](../../../defects.md).
 
 ## What the block was for
 
-The `n = 29` certificate existed as a script and a JSON file.
+The $n = 29$ certificate existed as a script and a JSON file.
 Nobody else could check it, because the witness contract had no way to say what it was:
 `scalar.kind` offered `decimal`, `rational` and `algebraic-number-field`, and an
 enclosure is none of those.

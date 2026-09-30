@@ -31,8 +31,8 @@ Their positive controls establish:
 
 - Four overlapping rational D4 placements have row coefficient four and exact ceiling
   one, with a checked positive neighborhood.
-- The declared two-variable rational LP has primal point `(1/3, 1/3)`, upper multipliers
-  `(4/3, 4/3)`, and exact objective `8/3`.
+- The declared two-variable rational LP has primal point $(1/3, 1/3)$, upper multipliers
+  $(4/3, 4/3)$, and exact objective $8/3$.
 - The non-target algebraic control in the retained degree-eight field has eight distinct
   orbit members and exact ceiling one.
   It imports the field declaration but does not call the Trump packing builder.

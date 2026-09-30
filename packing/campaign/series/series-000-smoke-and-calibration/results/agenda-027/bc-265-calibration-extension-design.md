@@ -56,9 +56,9 @@ For $S\in O_j$, each member of $O_j$ appears $8/d_j$ times among $g^{-1}S$. Ther
 $$
 \begin{aligned}
 \int_S\bar\rho
-&=\frac1{d_j}\sum_{T\in O_j}\int_T\rho_0\\
+&=\frac1{d_j}\sum_{T\in O_j}\int_T\rho_0\cr
 &=\frac1{d_j}\sum_r\frac{\lambda_r}{|B_r|}
-                 \sum_{T\in O_j}|T\cap B_r|\\
+                 \sum_{T\in O_j}|T\cap B_r|\cr
 &\ge\frac1{d_j}\sum_r\lambda_rR_{rj}=1.
 \end{aligned}
 $$
@@ -114,16 +114,17 @@ sufficient reason to commission a complete expanded-depth verifier.
 
 For a simple symbolic counterexample, let two unit squares $A,B$ have both $|A\cap B|>0$
 and $|A\setminus B|>0$. A mass-one density supported on $A\setminus B$ covers the old
-support $\{A\}$ and gives coverage zero on $B$. Nevertheless, any feasible weights on
-$\{A,B\}$ have sum at most one, by the necessary depth inequality on their positive-area
-intersection. The expanded optimum is still one.
+support $\lbrace A\rbrace$ and gives coverage zero on $B$. Nevertheless, any feasible
+weights on $\lbrace A,B\rbrace$ have sum at most one, by the necessary depth inequality
+on their positive-area intersection.
+The expanded optimum is still one.
 No particular source placement is evaluated in this example.
 
 Neither a deficient pose nor a subsequently verified $D>11$ at $U$ improves the global
 packing lower bound.
 The latter would rule out the endpoint mass-eleven density route by weak duality.
 It does not exclude a packing at a smaller side, and wall-touching placements have no
-automatic below-$U$ transport.
+automatic below-`U` transport.
 [H116](../../../../hypotheses/H-116-expanded-full-size-dual-support.md) owns expanded
 supports; H099 remains the old support only.
 H116 is an open question, not an executable substitute for a narrower frozen support
@@ -194,7 +195,7 @@ No cap change or adapter is commissioned by this note.
 | BC265 / H101 | An exact $\Omega$-avoiding pose, or an actual globally covering equality density | Accepted source packing, its symmetries, and the finite calibration | No avoiding pose, void cover or continuum density certificate; retain the stronger obstruction as a conditional fallback |
 | BC265 / H116 | A complete depth-one expanded weighting of mass above eleven, or a useful ceiling for one genuinely changed support | Old support, baseline and exact calibration | No added pose or complete expanded-depth certificate; do not promote a calibration violation into a dual result |
 | BC265 / H115 | A specified curved resource with useful capture and complete boundary-null coverage | The nondegenerate quadratic-arc boundary lemma | No candidate or uniform integral verifier; line-nullity alone is not headroom, so park |
-| BC257 / H100 | Mass below eleven covering every full-size pose at a declared below-$U$ side | Weak-duality semantics and exact field/geometry foundations | No density mechanism with demonstrated prospective headroom, fixed family or continuum reader; old-support closure supplies none of these |
+| BC257 / H100 | Mass below eleven covering every full-size pose at a declared below-`U` side | Weak-duality semantics and exact field/geometry foundations | No density mechanism with demonstrated prospective headroom, fixed family or continuum reader; old-support closure supplies none of these |
 | BC264 / H114 | A small feature-family obstruction, or a kernel candidate with a credible complete verification cost | The finite-feature kernel formulation and existing exact geometry | Kernel-specific review, fixed features, exact PSD evidence and full diagonal/pair verification remain missing; select a bounded feasibility gate, not a hierarchy build |
 
 The H114 mechanism can directly exclude eleven squares at its declared side $96/25$: it
@@ -232,7 +233,7 @@ A finite $b<11$ candidate does not prove the packing bound; it earns at most a
 separately priced continuum check.
 An unresolved finite problem earns neither conclusion.
 The required controls include exact PSD/refusal checks, legal touching pairs, joint
-symmetry, and the original Trump-side no-false-$b<11$ control.
+symmetry, and the original Trump-side no-false-`b<11` control.
 Their future scientific invocation needs its own authorization.
 
 This recommendation is a priority judgment, not an assertion that a low-degree kernel

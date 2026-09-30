@@ -75,10 +75,10 @@ Concentrate on two lanes, each a ladder whose bottom rungs are cheap and yield a
 on their own, and whose top rungs are named theorems.
 Lane A is the proof lane: turn the T-4 instrument into a general unavoidable-set
 certifier and falsifier, machine-check the published proofs nobody has ever
-machine-checked, then climb to bespoke lower bounds at `n = 12` and the `m = 8` case of
-Bentz’s conjecture at `n = 61`. Lane B is the structural lane: reprice the chunk-level
+machine-checked, then climb to bespoke lower bounds at $n = 12$ and the $m = 8$ case of
+Bentz’s conjecture at $n = 61$. Lane B is the structural lane: reprice the chunk-level
 enumeration the queue stopped on an untraceable figure, then climb X-003’s pipeline to a
-restricted-class optimality certificate at `n = 11` — the first theorem of Stromquist’s
+restricted-class optimality certificate at $n = 11$ — the first theorem of Stromquist’s
 Theorem 3 shape since 1984 if it lands, and the proposer corpus `BC-090`’s gated search
 needs either way.
 
@@ -90,16 +90,16 @@ First, the field’s division of labor: the twelve upper-bound movements examine
 followed by annealing, and UnitSquare results whose discovery method is undisclosed
 (Schadt, Ellsworth, Hajba, and the UnitSquare Project, at `28 <= n <= 88`). The newest
 peer-reviewed or preprint mathematics in the archive is asymptotic and disjoint from
-`n <= 100` (Bui’s `O(x^0.6)` waste bound, arXiv 2508.04603, and McClenagan’s independent
-proof, arXiv 2602.01484), and the external peer-reviewed exact-value lane has not moved
-since Bentz 2016. The repository has since produced verified Green17-derived lower
-bounds, and August 2026 brought two source-backed weighted-certificate proposals at
-`n = 17`; X-011 owns that later evidence and its assurance boundary.
-Of the 65 open cases in the register, most still carry Nagamochi’s 2005 closed form as
-their best verified lower bound, `n = 12` carries a bound proved about `n = 11` and
-inherited by monotonicity, and `n = 11` carries this repository’s own H-041 certificate.
-The upper-bound lane at small `n` is the one thing the field is currently good at; the
-proof lane has been unattended for a decade.
+`n <= 100` (Bui’s $O(x^{0.6})$ waste bound, arXiv 2508.04603, and McClenagan’s
+independent proof, arXiv 2602.01484), and the external peer-reviewed exact-value lane
+has not moved since Bentz 2016. The repository has since produced verified
+Green17-derived lower bounds, and August 2026 brought two source-backed
+weighted-certificate proposals at $n = 17$; X-011 owns that later evidence and its
+assurance boundary. Of the 65 open cases in the register, most still carry Nagamochi’s
+2005 closed form as their best verified lower bound, $n = 12$ carries a bound proved
+about $n = 11$ and inherited by monotonicity, and $n = 11$ carries this repository’s own
+H-041 certificate. The upper-bound lane at small $n$ is the one thing the field is
+currently good at; the proof lane has been unattended for a decade.
 Second, the machinery inventory: the two places this repository is ahead of everyone are
 exact certification (fields, intervals, the exact LP with its own phase 1, the T-4
 certifier-falsifier pair) and structural description (the chunk census, the scaffold
@@ -113,47 +113,47 @@ The lanes are where those assets point.
 Measured over all 65 open cases — `devtools/gap_ranking.py`, added with this document —
 the spread is a factor of ten and the ranking is structured:
 
-| `n` | best known | proved lower | gap | form |
+| $n$ | best known | proved lower | gap | form |
 | ---: | --- | ---: | ---: | --- |
-| 97 | `10` | 9.944272 | 0.0557 | `10² − 3` |
-| 78 | `9` | 8.937254 | 0.0627 | `9² − 3` |
-| 61 | `8` | 7.928203 | 0.0718 | `8² − 3` |
-| 11 | 3.877084 | 3.788854 | 0.0882 | `4² − 5` |
-| 96 | `10` | 9.888194 | 0.1118 | `10² − 4` |
-| 77 | `9` | 8.874008 | 0.1260 | `9² − 4` |
-| 60 | `8` | 7.855655 | 0.1443 | `8² − 4` |
-| 95 | `10` | 9.831761 | 0.1682 | `10² − 5` |
-| 45 | `7` | 6.830952 | 0.1690 | `7² − 4` |
-| 76 | `9` | 8.810250 | 0.1898 | `9² − 5` |
-| 32 | `6` | 5.795832 | 0.2042 | `6² − 4` |
-| 12 | `4` | 3.788854 | 0.2111 | `4² − 4` |
+| 97 | $10$ | 9.944272 | 0.0557 | $10^2 - 3$ |
+| 78 | $9$ | 8.937254 | 0.0627 | $9^2 - 3$ |
+| 61 | $8$ | 7.928203 | 0.0718 | $8^2 - 3$ |
+| 11 | 3.877084 | 3.788854 | 0.0882 | $4^2 - 5$ |
+| 96 | $10$ | 9.888194 | 0.1118 | $10^2 - 4$ |
+| 77 | $9$ | 8.874008 | 0.1260 | $9^2 - 4$ |
+| 60 | $8$ | 7.855655 | 0.1443 | $8^2 - 4$ |
+| 95 | $10$ | 9.831761 | 0.1682 | $10^2 - 5$ |
+| 45 | $7$ | 6.830952 | 0.1690 | $7^2 - 4$ |
+| 76 | $9$ | 8.810250 | 0.1898 | $9^2 - 5$ |
+| 32 | $6$ | 5.795832 | 0.2042 | $6^2 - 4$ |
+| 12 | $4$ | 3.788854 | 0.2111 | $4^2 - 4$ |
 | … |  |  |  |  |
 | 51 | 7.700799 | 7.164414 | 0.5364 | annealing record |
 
-The head of the table is exactly the `k = m² − n` staircase: the three open members of
-the `k = 3` line, then `n = 11`, then the `k = 4` line in descending `m`. The “about
+The head of the table is exactly the $k = m^2 - n$ staircase: the three open members of
+the $k = 3$ line, then $n = 11$, then the $k = 4$ line in descending $m$. The “about
 0.5” cases are the mid-range annealing and strip records — the subset `BC-088` was
 looking at. A narrow gap is not a difficulty estimate (Nagamochi’s bound is simply
-tighter relative to `m` at large `m`), but which stratum of this table a case sits on is
+tighter relative to $m$ at large $m$), but which stratum of this table a case sits on is
 precisely what a proof-lane sequencing decision needs, and the entry’s claim erased it.
 The impression was conservative — it understated available signal — and it cost
 direction, not soundness.
 Replay: `uv run --frozen python -m devtools.gap_ranking` from `packing/`.
 
 Adopting Friedman DS7 Table 2’s Trevor Green bounds (think-s1pc) would narrow ~20
-mid-table gaps — `n = 17` from 0.513 to 0.230 — and touches nothing at the head of the
-table; `n = 31` is the one size where the frontier’s stored bound is better than the
+mid-table gaps — $n = 17$ from 0.513 to 0.230 — and touches nothing at the head of the
+table; $n = 31$ is the one size where the frontier’s stored bound is better than the
 table’s.
 
 ## Correction Two: the Enumeration Price Misread Its Artifact (D-406)
 
-`BC-092` was stopped and folded into `BC-090` on “`9.3e9` raw orbit work at `n = 5`.”
+`BC-092` was stopped and folded into `BC-090` on “`9.3e9` raw orbit work at $n = 5$.”
 That figure appears in X-009, agenda-009, session-049, and the ledger, with no artifact
 path beside it — and the artifact says the opposite of what the stop decision took from
 it. Session-051 found it by finding its tool (`devtools/price_contact_enumeration.py`):
 `atlas/known-best/contact-enumeration-pricing.json` records
-`raw_orbit_image_upper_work = 9,296,855,040` at `n = 5` as the price of the *legacy
-labeled* route, and its own decision rule at `n = 5` is `enumerate-isomorph-free` —
+`raw_orbit_image_upper_work = 9,296,855,040` at $n = 5$ as the price of the *legacy
+labeled* route, and its own decision rule at $n = 5$ is `enumerate-isomorph-free` —
 which reaches the same 11,013 canonical orbits without that work.
 (This document’s first version said no artifact existed: a text grep for “9.3e9” cannot
 find a record storing the exact integer.
@@ -179,10 +179,10 @@ So the honest statement is narrower than either document’s: the fold of `BC-09
 
 ## Lane A — the Proof Lane
 
-**The ambition:** the first new proved value of `s(n)` since Bentz 2016 — `s(61) = 8` or
-`s(12) = 4` — and, on the way, results nobody has: the first machine-verified proofs in
+**The ambition:** the first new proved value of $s(n)$ since Bentz 2016 — $s(61) = 8$ or
+$s(12) = 4$ — and, on the way, results nobody has: the first machine-verified proofs in
 this subject, verified lower bounds past Nagamochi at sizes untouched since 2005, and
-the first theorem specific to `s(12)`.
+the first theorem specific to $s(12)$.
 
 **Why this lane fits this repository.** T-4 is already a proof-lane result produced by
 exactly this method: `printed_cover.py` exhibits a strict escaping pose against
@@ -192,7 +192,7 @@ figure of one paper.
 The published record is checkable and has never been checked: no unavoidable-set proof
 in this literature has ever been machine-verified, and this project’s audit hit rate on
 printed proofs is one exact gap in Stromquist and four recorded defects in El Moumni’s
-route to `s(7)`.
+route to $s(7)$.
 
 The ladder, each rung a result by itself:
 
@@ -203,50 +203,51 @@ The ladder, each rung a result by itself:
   Exit: the Stromquist pair replayed through the general instrument — printed refuses,
   repaired certifies, byte-stable.
   The falsifier search half is think-yrvm’s known-answer triple.
-- **A1 — audit Bentz `m = 4`.** Section 3 of Bentz 2010 (`s(13) = 4`) is ~126 transcript
-  lines, the smallest published proof on the `m² − 3` line.
+- **A1 — audit Bentz $m = 4$.** Section 3 of Bentz 2010 ($s(13) = 4$) is ~126 transcript
+  lines, the smallest published proof on the $m^2 - 3$ line.
   Encode and check it.
-  Either outcome is a result: the first machine-verified published proof of an `s(n)`
+  Either outcome is a result: the first machine-verified published proof of an $s(n)$
   value, or a printed gap found and repaired — T-4’s precedent, one level up.
 - **A2 — past Nagamochi at the Green sizes.** DS7 Table 2’s non-trivial lower bounds at
   ~23 open cases rest on “T. Green, 2000, private communication”: there is no primary to
   read, so certifying sets of our own is the only route by which the frontier can ever
-  adopt values there. First targets `n = 17, 18` (Green `≈ 4.4452` against Nagamochi
-  `≈ 4.1623`), where DS7’s Figure 34 sketches the shape.
+  adopt values there. First targets $n = 17, 18$ (Green $\approx 4.4452$ against
+  Nagamochi $\approx 4.1623$), where DS7’s Figure 34 sketches the shape.
   Every certified value above the closed form moves a verified lane untouched since
   2005\.
-- **A3 — the first theorem about `s(12)`.** The best known lower bound for `s(12)` is a
+- **A3 — the first theorem about $s(12)$.** The best known lower bound for $s(12)$ is a
   theorem about a different problem.
-  Any bespoke certified bound above `2 + 4/√5 ≈ 3.7889` is the first result specific to
-  `n = 12` — a continuum of publishable outcomes between nothing and the full
-  `s(12) = 4`, with the low end genuinely reachable.
-  The mathematical shape: eleven resources unavoidable at side `> 2 + 4/√5`, found by
-  counterexample-guided synthesis — A0’s certifier and think-yrvm’s falsifier as the
+  Any bespoke certified bound above $2 + 4/\sqrt{5} \approx 3.7889$ is the first result
+  specific to $n = 12$ — a continuum of publishable outcomes between nothing and the
+  full $s(12) = 4$, with the low end genuinely reachable.
+  The mathematical shape: eleven resources unavoidable at side $> 2 + 4/\sqrt{5}$, found
+  by counterexample-guided synthesis — A0’s certifier and think-yrvm’s falsifier as the
   loop, H-006’s LP duals as the candidate generator, H-039 as the registered target.
-  An H-034-style fractional-piercing diagnostic at `n = 12` (is `τ* > 11` at side
-  `4 − ε`?) tells us early whether pure points can suffice or thresholds and segments
-  are forced, and is itself a result about the method.
-- **A4 — the peaks.** `s(61) = 8` via H-033: `s(m² − 3) = m` is proved for
-  `m = 3, 4, 5, 6, 7` and conjectured for all `m ≥ 3` in Bentz 2016 — a stated
+  An H-034-style fractional-piercing diagnostic at $n = 12$ (is $\tau^{\ast} > 11$ at
+  side $4 - \varepsilon$?) tells us early whether pure points can suffice or thresholds
+  and segments are forced, and is itself a result about the method.
+- **A4 — the peaks.** $s(61) = 8$ via H-033: $s(m^2 - 3) = m$ is proved for
+  $m = 3, 4, 5, 6, 7$ and conjectured for all $m \ge 3$ in Bentz 2016 — a stated
   conjecture, five proved predecessors, the third-narrowest gap in the corpus, and a
-  route (encode `m = 7` machine-readably, substitute `m = 8`, falsify each failed
+  route (encode $m = 7$ machine-readably, substitute $m = 8$, falsify each failed
   forcing step before inventing a resource) that is H-033’s registered instrument.
-  And `s(12) = 4` — strictly stronger than the proved `s(13) = 4`, which is why it is
-  last and not first. Cautions that stand: `n = 12` opens the `k = 4` line, which has no
-  proved member and a falsified first index (`s(5) = 2 + √2/2 < 3`); and the `n = 11`
-  report’s calibration — do not point a rigorous solver at `s(11)` — is not disturbed by
-  anything here.
+  And $s(12) = 4$ — strictly stronger than the proved $s(13) = 4$, which is why it is
+  last and not first. Cautions that stand: $n = 12$ opens the $k = 4$ line, which has no
+  proved member and a falsified first index ($s(5) = 2 + \sqrt{2}/2 < 3$); and the
+  $n = 11$ report’s calibration — do not point a rigorous solver at $s(11)$ — is not
+  disturbed by anything here.
 
 ## Lane B — the Structural Lane
 
-**The ambition:** a restricted-class optimality theorem at `n = 11` — “no packing
-expressible as at most `K` chunks with at most two tilt classes beats Trump’s side,”
+**The ambition:** a restricted-class optimality theorem at $n = 11$ — “no packing
+expressible as at most $K$ chunks with at most two tilt classes beats Trump’s side,”
 certified per stratum by exact or interval LP with a coverage certificate over the
 symmetry quotient and an omission control on the label generator.
-Stromquist’s Theorem 3 (no `0°/45°` packing reaches Trump’s side) is the only theorem of
-that shape, from 1984. As a side product, the stratum atlas is the proposer information
-`BC-090`’s gated search instrument needs — which contact shapes and angle-class
-structures carry records — so the lane feeds the search block without betting on it.
+Stromquist’s Theorem 3 (no $0^\circ/45^\circ$ packing reaches Trump’s side) is the only
+theorem of that shape, from 1984. As a side product, the stratum atlas is the proposer
+information `BC-090`’s gated search instrument needs — which contact shapes and
+angle-class structures carry records — so the lane feeds the search block without
+betting on it.
 
 **Why the lane is alive despite BC-092’s stop.** The stop rests on D-406’s figure.
 The description side is strong: X-008 proved the corpus’s whole inexpressible residue is
@@ -265,36 +266,37 @@ The ladder:
   measured quotient and the prefilter applied and an omission-control design stated.
   Output: a go/no-go number for the enumerator, replacing the impression.
   If the number says no, the lane stops at B1 having cost one pricing exercise.
-- **B1 — the H-044 verdict.** Are the standing records chunk-expressible at `K ≤ 6` with
-  at most two free squares?
+- **B1 — the H-044 verdict.** Are the standing records chunk-expressible at $K \le 6$
+  with at most two free squares?
   Refutation-first and search-free: measurable from archived geometry.
   The instrument is `chunks.py`’s census upgraded from conservative component-finding to
   the registered exact-cover minimization with typed refusals.
   A refutation kills the ansatz before an enumerator exists — X-003 registered it first
   for exactly that reason.
 - **B2–B4 — the pipeline.** Stage-1 enumerator with omission control (think-sfzh), glued
-  equality rows validated on the `n = 5`/`n = 10` proved controls (think-vnm5), the
+  equality rows validated on the $n = 5$/`n = 10` proved controls (think-vnm5), the
   class-angle sweep driver under X-003’s ranking rule — no stratum triage on aligned
   side values, every survivor gets its sweep (think-dh4b).
 - **B5 — the certificate.** The restricted-class statement, gated on one measurement
-  this session could not take: exact-LP cost at the full `n = 11` cell scale (T-2’s
+  this session could not take: exact-LP cost at the full $n = 11$ cell scale (T-2’s
   float LP is 1.28 ms there; the exact pivot cost is unmeasured and decides exact versus
   interval certification per stratum).
 
 ## Parked, and Why
 
 - **The annealing race (`BC-090`).** Stays exactly as X-009 gated it: no target until an
-  instrument beats exp-011’s measured grid-return at `n = 17`. Beating Schadt at
+  instrument beats exp-011’s measured grid-return at $n = 17$. Beating Schadt at
   Schadt’s method with less tuned machinery is the lowest-yield use of this repository;
   Lane B is how a search attempt gets a differential if one is ever taken.
-- **`n = 90` / H-049.** A clean finite question (20 squares squeezable in `4 × 6`) and
-  it stays registered and queued — but it is an upper-bound construction in the crowded
-  lane, not a focus.
-- **`BC-089`’s remainder** (think-d0j1, think-3nc4, the `n = 53` refusal).
+- **$n = 90$ / H-049.** A clean finite question (20 squares squeezable in $4 \times 6$)
+  and it stays registered and queued — but it is an upper-bound construction in the
+  crowded lane, not a focus.
+- **`BC-089`’s remainder** (think-d0j1, think-3nc4, the $n = 53$ refusal).
   Recognition work that finishes on its own momentum; it is between-slices filler, not a
   lane.
-- **The asymptotic lane.** Two independent 2025–2026 proofs of `O(x^0.6)` show it active
-  and competitive, and nothing here contributes differentially; H-037 stays parked.
+- **The asymptotic lane.** Two independent 2025–2026 proofs of $O(x^{0.6})$ show it
+  active and competitive, and nothing here contributes differentially; H-037 stays
+  parked.
 - **Full-`n` generative enumeration.** Even after D-406’s correction, nothing suggests
   square-level enumeration at target sizes; B0 prices the chunk level only.
 
@@ -305,13 +307,13 @@ The ladder:
 2. **The escaping-pose falsifier** (think-yrvm).
    The inner loop of synthesis and the audit tool for every published set; its
    known-answer triple is already specified.
-3. **One measurement: exact-LP cost at the `n = 11` cell.** Gates B5’s route and costs
+3. **One measurement: exact-LP cost at the $n = 11$ cell.** Gates B5’s route and costs
    an afternoon.
 4. **The square-subsystem selector** (think-mvrq).
    Turns `--strategy interval-existence` from checker-not-built into a generic
    certifier; serves both lanes and the `BC-089`/`BC-090` boundary.
-5. **The field seam.** `cases/stromquist` carries a bespoke `Q(√5)` embedding beside
-   `sqpack.field`; A0 should consume the shared field layer or record why not — a
+5. **The field seam.** `cases/stromquist` carries a bespoke $Q(\sqrt{5})$ embedding
+   beside `sqpack.field`; A0 should consume the shared field layer or record why not — a
    duplicate-arithmetic seam is where a certifier defect would live.
 6. **Queue trust.** The gap ranking is now a tool rather than an impression (D-405); 25
    `in_progress` beads from long-closed sessions still distort the ready queue (hygiene
@@ -339,14 +341,14 @@ The numbered proposals below are retained as written.)*
 
 ## Corrections and Repairs Made With This Document
 
-- `frontier/n-012.md` and the `n = 11` report no longer date the `s(m² − m) = m`
-  counterexample boundary to Cleemann’s `m = 17`: the retained Kingbird archive records
-  Hajba 2015 (`m = 16`), Arslanov 2019 (`m = 12`), and Cantrell February 2025 (`m = 11`,
-  `n = 110`). The retained prospective witness screens clean numerically in this
+- `frontier/n-012.md` and the $n = 11$ report no longer date the $s(m^2 - m) = m$
+  counterexample boundary to Cleemann’s $m = 17$: the retained Kingbird archive records
+  Hajba 2015 ($m = 16$), Arslanov 2019 ($m = 12$), and Cantrell February 2025 ($m = 11$,
+  $n = 110$). The retained prospective witness screens clean numerically in this
   session: zero containment violation, worst pairwise separation `+7.3e-8`, side margin
   below 11 of `3.2e-3` — a screen, not a verification (think-7x19).
 - `frontier/README.md`’s open-case provenance counts now match the records: 14
-  hand-built, 10 annealing (nine of the ten dated 2024–2026; `n = 53` is Cantrell 2002),
+  hand-built, 10 annealing (nine of the ten dated 2024–2026; $n = 53$ is Cantrell 2002),
   5 diagonal strips, 3 extensions, 2 unrecorded.
 - X-009 carries a dated correction note for the two premises above; agenda-009’s
   `BC-088` and `BC-092` evidence fields point at D-405 and D-406.
@@ -362,15 +364,15 @@ Four measured facts replaced this document’s forward guesses:
   certifier core replays exp-016/exp-017 byte-stable, and the falsifier’s triple passes
   with the saturation caveat fixed in code.
 - The stage-1 price came back harder than the ladder hoped: exhaustive chunk-level
-  enumeration is out of reach above `K ≤ 3` (raw `4.357e20` at `K ≤ 6`; the `K ≤ 3`
-  slice under X-008’s measured seatings prices at a `2.250e6` orbit floor), and Trump’s
-  own ~five-chunk decomposition sits outside the exhaustive range.
-  Lane B’s peak is therefore a `K ≤ 3` restricted-class statement or a pruned-canonical
-  enumerator, not the class this document imagined.
+  enumeration is out of reach above $K \le 3$ (raw `4.357e20` at $K \le 6$; the
+  $K \le 3$ slice under X-008’s measured seatings prices at a `2.250e6` orbit floor),
+  and Trump’s own ~five-chunk decomposition sits outside the exhaustive range.
+  Lane B’s peak is therefore a $K \le 3$ restricted-class statement or a
+  pruned-canonical enumerator, not the class this document imagined.
 - The exact LP at full cell scale costs ~1.4 s per pivot (58.8 s phase 1, 22.1 s phase
   2, first-hand), which decides B5’s route: sweep in float, certify winners exactly.
 - D-406 gained a second layer: the 9.3e9 figure has an artifact, and the artifact’s own
-  decision at `n = 5` is the isomorph-free route — this document’s first version
+  decision at $n = 5$ is the isomorph-free route — this document’s first version
   repeated the no-artifact claim, and the amendment is recorded in the defect.
 
 Resequencing: BC-101 (Green sizes) promoted behind BC-099 into the recovered wall;

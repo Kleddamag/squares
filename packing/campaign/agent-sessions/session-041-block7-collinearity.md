@@ -209,15 +209,15 @@ There were none to derive at the sizes that matter, and finding that out is the 
 
 ## Walking the flex before writing anything down
 
-`close` reported the contact system four conditions short at `n = 11` and seven at
-`n = 29`, and the previous block had gone as far as concluding — correctly, from those
+`close` reported the contact system four conditions short at $n = 11$ and seven at
+$n = 29$, and the previous block had gone as far as concluding — correctly, from those
 numbers — that no *first-order* condition could close either, because the null space
 contained directions that change the side.
 
 Rather than write a determinant, this block stepped along the worst such direction and
 looked at the packing.
 
-| step `t` | side | worst pair separation |
+| step $t$ | side | worst pair separation |
 | ---: | ---: | ---: |
 | `+1e-3` | 3.877269600145 | `-1.364e-07` |
 | `+1e-4` | 3.877102191035 | `-1.364e-09` |
@@ -226,8 +226,8 @@ looked at the packing.
 | `-1e-4` | 3.877064989011 | `-5.123e-05` |
 | `-1e-5` | 3.877081729922 | `-5.123e-06` |
 
-Going one way the violation is `O(t²)` — a second-order obstruction, which is what one
-expects. Going the other, the direction that would *shrink the container*, it is `O(t)`.
+Going one way the violation is $O(t^2)$ — a second-order obstruction, which is what one
+expects. Going the other, the direction that would *shrink the container*, it is $O(t)$.
 
 A constraint violated at first order along a direction where its own equation has zero
 derivative is not being described by that equation.
@@ -245,10 +245,10 @@ that point, and the pivot is exactly the motion in the table.
 
 With both endpoints on the line:
 
-|  | rank before | rank after | ‖proj of `e_s` onto null(A)‖ |
+|  | rank before | rank after | ‖proj of $e_s$ onto null(A)‖ |
 | --- | ---: | ---: | ---: |
-| `n = 11` | 30 / 34 | **34 / 34** | `1.86e-1` → `0` |
-| `n = 29` | 81 / 88 | **88 / 88** | `1.14e-1` → `0` |
+| $n = 11$ | 30 / 34 | **34 / 34** | `1.86e-1` → $0$ |
+| $n = 29$ | 81 / 88 | **88 / 88** | `1.14e-1` → $0$ |
 
 The residuals do not move — `8.9e-16` and `1.3e-15` — so the added equations are true at
 the poses they were assembled from.
@@ -271,15 +271,15 @@ where the claim was made rather than only here.
 
 ## What this does not touch
 
-The `n = 29` interval certificate came from the *published* Kingbird system — six
-equations in `{s, a, b, c, d, i}`, transcribed from the source — not from the contact
-system assembled here.
+The $n = 29$ interval certificate came from the *published* Kingbird system — six
+equations in $\lbrace s, a, b, c, d, i\rbrace$, transcribed from the source — not from
+the contact system assembled here.
 `D-361` is a defect in assembly, and assembly has never been in that certificate’s path.
 The bound stands exactly as recorded, and so does the fact that nothing has promoted it.
 
 ## What is left
 
-Göbel’s `n = 5` has no `edge-edge` contact at all.
+Göbel’s $n = 5$ has no `edge-edge` contact at all.
 It is untouched by the repair, keeps a genuine shortfall of one, and is now both the
 only size where a stationarity condition still has to be derived and the cleanest case
 to derive it on.

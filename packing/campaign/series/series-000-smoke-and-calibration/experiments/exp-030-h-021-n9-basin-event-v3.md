@@ -72,7 +72,7 @@ experiment:
 BC-007 asks whether the complete event path remains cheap enough to inspect before any
 broader sampling at n=9. It changes only the size, the per-seed cap, and the number of
 starts from exp-029. The single event is retained and semantically replayed as a valid,
-non-admissible time-budget stop at side `3.151852534444`; all 5,845 fixed-point
+non-admissible time-budget stop at side $3.151852534444$; all 5,845 fixed-point
 evaluations settle.
 
 The quench retains 20.062 seconds of wall time, and the complete frozen command takes

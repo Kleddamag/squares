@@ -25,13 +25,13 @@ script retained), RECORD (read from a retained file), OPEN.
 
 | # | Finding | Status |
 | --- | --- | --- |
-| F1 | On the retained 760-placement support (`bc-200-family-191-50.json`, B = 9977/10000, N = 180) the fixed-support optimum satisfies `nu_S(191/50) >= 271428569/25000000 = 10.85714276`: the polished family `bc200-polished-191-50.json` has that total and `verify_ceiling` finds maximum depth `499999999/500000000` over 2,769,100 vertices (415,767 decided exactly). Net regime, D4-symmetric measures only. | EXACT |
-| F2 | `nu_S(191/50) <= 76/7 = 10.857142857...`: an exact dual bound on the working-set program (a relaxation of the full program), rational duals on 11 priced rows, bound `sum u + sum_P max(0, c_P - (A^T u)_P)` decided in rationals. So `76/7 - nu_S < 1e-7`; the float LP optimum is `76/7` to 16 digits. **`nu_S < 11`: this support cannot witness the plateau, and the retained 9.908 was 0.95 short of what its own placements can do.** | EXACT (bracket); CHECKED (76/7 attained) |
+| F1 | On the retained 760-placement support (`bc-200-family-191-50.json`, B = 9977/10000, N = 180) the fixed-support optimum satisfies `nu_S(191/50) >= 271428569/25000000 = 10.85714276`: the polished family `bc200-polished-191-50.json` has that total and `verify_ceiling` finds maximum depth $\frac{499999999}{500000000}$ over 2,769,100 vertices (415,767 decided exactly). Net regime, D4-symmetric measures only. | EXACT |
+| F2 | `nu_S(191/50) <= 76/7 = 10.857142857...`: an exact dual bound on the working-set program (a relaxation of the full program), rational duals on 11 priced rows, bound `sum u + sum_P max(0, c_P - (A^T u)_P)` decided in rationals. So `76/7 - nu_S < 1e-7`; the float LP optimum is $\frac{76}{7}$ to 16 digits. **`nu_S < 11`: this support cannot witness the plateau, and the retained 9.908 was 0.95 short of what its own placements can do.** | EXACT (bracket); CHECKED (76/7 attained) |
 | F3 | The float optimum is not a vertex of the program: on the closed working set (112,239 rows) the tight rows span rank 11 for its 17 free columns, and 52,692 working-set vertices (6,924 D4 orbits) are tight for it. An exact vertex could not be read from the floats; the verified family is the float weights rounded down to multiples of 1e-9. | EXACT (tightness), CHECKED (rank) |
-| F4 | Denominator structure: the 76/7 solution lives on 17 of the 95 orbits (136 placements) with per-image weights in `{41/112, 9/56, 15/112, 3/56, 1/28, 1/56}`, all multiples of 1/112 (orbit totals multiples of 1/14); its duals are in `{2/7, 4/7, 8/7, 12/7}`. **Not half-integral**: in Lemma 3’s language it is a 112-fold packing, so the `k = 2` odd-cycle argument does not apply to it. | CHECKED (nearest rationals of the float LP) |
-| F5 | Weight by folded angle band: `58/7 = 8.286` within 2.5 deg of the axes (76 per cent), `2/7` in [2.5, 7.5), `9/7` in [25, 27.5), `5/7` in [27.5, 30), `2/7` in [35, 38.2); nothing elsewhere. Each corner carries exactly 1 (`2 x 41/112` on the mirror pair of 0.26 deg squares plus `2 x 15/112` on the axis square). | EXACT (rounded family; sums within 1e-7 of the fractions quoted) |
-| F6 | **The polished optimum violates a clique cut.** A 26-member clique of the interior-overlap graph (all 325 pairs decided exactly) carries `705357133/500000000 = 1.4107 > 1` (`79/56` at the float optimum); it has no common point (forced: depth <= 1 everywhere is exact). Its fractional piercing number is `tau*(C) = 5/3 < 2` (a 4-point measure of mass 5/3, weights (2/3, 1/3, 1/3, 1/3), covers every member -- checked exactly), so by the theory report’s F5 the cut is a rank-1 threshold atom: `(S, 3)` with `S` those four points at weights (2, 1, 1, 1), budget `floor(5/3) = 1`. Odd holes are far from tight: only 6 chordless 5-cycles exist on the support, the heaviest at 0.848 against capacity 2; the heaviest non-Helly triangle is 0.75; the heaviest triangle 0.866 is Helly. | EXACT (overlaps, weight); CHECKED (tau*, with an exact feasible piercing of mass 5/3) |
-| F7 | **Spike B’s exact 11-ceiling is cut by the same language**: on `agenda-034/ceiling-family-191-50.json` (88 placements at 1/8) the interior-overlap graph (824 edges) has a maximum clique of 11 entries (10 distinct squares; the axis corner square appears as its t = 0 and t = 1 entries) of weight `11/8 = 1.375 > 1` at a corner, non-Helly, `tau* = 5/3`; 398 maximal cliques of sizes 9-11 exceed weight 1; its chordless 5-cycles carry `5/8 < 2`. | CHECKED (exact pairwise overlaps; tau* float with exact feasible piercing) |
+| F4 | Denominator structure: the 76/7 solution lives on 17 of the 95 orbits (136 placements) with per-image weights in $\lbrace\frac{41}{112}, \frac{9}{56}, \frac{15}{112}, \frac{3}{56}, \frac{1}{28}, \frac{1}{56}\rbrace$, all multiples of 1/112 (orbit totals multiples of 1/14); its duals are in $\lbrace\frac{2}{7}, \frac{4}{7}, \frac{8}{7}, \frac{12}{7}\rbrace$. **Not half-integral**: in Lemma 3’s language it is a 112-fold packing, so the $k = 2$ odd-cycle argument does not apply to it. | CHECKED (nearest rationals of the float LP) |
+| F5 | Weight by folded angle band: $\frac{58}{7} = 8.286$ within 2.5 deg of the axes (76 per cent), $\frac{2}{7}$ in [2.5, 7.5), $\frac{9}{7}$ in [25, 27.5), $\frac{5}{7}$ in [27.5, 30), $\frac{2}{7}$ in [35, 38.2); nothing elsewhere. Each corner carries exactly 1 ($2 \times \frac{41}{112}$ on the mirror pair of 0.26 deg squares plus $2 \times \frac{15}{112}$ on the axis square). | EXACT (rounded family; sums within 1e-7 of the fractions quoted) |
+| F6 | **The polished optimum violates a clique cut.** A 26-member clique of the interior-overlap graph (all 325 pairs decided exactly) carries $\frac{705357133}{500000000} = 1.4107 > 1$ ($\frac{79}{56}$ at the float optimum); it has no common point (forced: depth <= 1 everywhere is exact). Its fractional piercing number is `tau*(C) = 5/3 < 2` (a 4-point measure of mass 5/3, weights (2/3, 1/3, 1/3, 1/3), covers every member -- checked exactly), so by the theory report’s F5 the cut is a rank-1 threshold atom: $(S, 3)$ with `S` those four points at weights (2, 1, 1, 1), budget `floor(5/3) = 1`. Odd holes are far from tight: only 6 chordless 5-cycles exist on the support, the heaviest at 0.848 against capacity 2; the heaviest non-Helly triangle is 0.75; the heaviest triangle 0.866 is Helly. | EXACT (overlaps, weight); CHECKED (tau*, with an exact feasible piercing of mass 5/3) |
+| F7 | **Spike B’s exact 11-ceiling is cut by the same language**: on `agenda-034/ceiling-family-191-50.json` (88 placements at 1/8) the interior-overlap graph (824 edges) has a maximum clique of 11 entries (10 distinct squares; the axis corner square appears as its t = 0 and t = 1 entries) of weight $\frac{11}{8} = 1.375 > 1$ at a corner, non-Helly, `tau* = 5/3`; 398 maximal cliques of sizes 9-11 exceed weight 1; its chordless 5-cycles carry $\frac{5}{8} < 2$. | CHECKED (exact pairwise overlaps; tau* float with exact feasible piercing) |
 | F8 | The LP dual is sparse and degenerate (11 atoms, none symmetric): 9.14 of its 76/7 sits exactly one B-side inside a wall, 1.71 near the centre. Pricing candidate placements against it is uninformative (coverage 0 off its support). The tight-vertex census is the informative signal: 11,455 tight vertices one B-side inside a wall, 9,015 in the wall band (< 0.5), 11,409 within 0.6 of the centre, 20,773 elsewhere in the interior, 40 at the corners. | CHECKED |
 | F9 | The retained unit record `agenda-030/pr127-unit-control.json` declares `square_side` 1, so `verify_ceiling` reads it in the **net regime at B = 1**; declaring `square_side` 9977/10000 makes K0 say `unit` (B(1 + D) = 0.9999959 < 1), the stronger statement the transport was for. The polisher has `--square-side` for this. Its polish was not run. | CHECKED; OPEN (nu_S at the unit side) |
 | F10 | `packing/devtools/polish_ceiling_family.py`: working-set polish with exact rows, exact rebuild or the documented rounded fallback, exact dual bound, `verify_ceiling` decision, record with provenance. Ruff and basedpyright at zero findings; `packing-validate --edit` passes its lint and type floors, and its three failing steps (a resource-usage record citing the defect id after D-488 before `defects.yaml` has it, session-close/SYNOPSIS drift, an orphaned-commit annotation in exp-002) are the concurrent integration’s, not this file’s. | tool |
@@ -84,25 +84,25 @@ full one, so `nu_S <= 76/7`.
 
 ## 2. Exact numbers
 
-- Side `191/50`, `B = 9977/10000`, net `t_k = T k / 180`, `T = 207107/500000`, 181
+- Side $191/50$, $B = 9977/10000$, net $t_k = T k / 180$, $T = 207107/500000$, 181
   directions; regime `net`, `symmetric_only` (mirrored angles present).
-- Retained family (RECORD): total `9.907905594982566`, depth exactly 1 at 16 vertices of
+- Retained family (RECORD): total $9.907905594982566$, depth exactly 1 at 16 vertices of
   2,769,100 (replay reproduced, 429 s wall on this loaded host).
-- Polished family (EXACT): total `271428569/25000000 = 10.85714276`; maximum depth
-  `499999999/500000000` at 2,769,100 vertices, 415,767 decided exactly; weights on 136
-  placements, six distinct values: `91517857/250000000` (x8), `32142857/200000000`
-  (x16), `133928571/1000000000` (x24), `13392857/250000000` (x8), `7142857/200000000`
-  (x16), `8928571/500000000` (x64). `verify_ceiling`: proved = false, failure `K3` only.
-- Working-set optimum: float `10.857142857142858`; exact dual bound `76/7` (11 priced
-  rows, duals `8/7` x7, `12/7`, `4/7`, `2/7` x2, sum `76/7`). Bracket:
+- Polished family (EXACT): total $271428569/25000000 = 10.85714276$; maximum depth
+  $499999999/500000000$ at 2,769,100 vertices, 415,767 decided exactly; weights on 136
+  placements, six distinct values: $91517857/250000000$ (x8), $32142857/200000000$
+  (x16), $133928571/1000000000$ (x24), $13392857/250000000$ (x8), $7142857/200000000$
+  (x16), $8928571/500000000$ (x64). `verify_ceiling`: proved = false, failure `K3` only.
+- Working-set optimum: float $10.857142857142858$; exact dual bound $76/7$ (11 priced
+  rows, duals $8/7$ x7, $12/7$, $4/7$, $2/7$ x2, sum $76/7$). Bracket:
   `76/7 - 4/(7 x 25000000)
-  = 271428569/25000000 <= nu_S <= 76/7`, width `1/175000000`… precisely
+  = 271428569/25000000 <= nu_S <= 76/7`, width $1/175000000$… precisely
   `76/7 - 271428569/25000000 = 17/175000000 = 9.7e-8`.
 - Support orbits (angle folded to [0, 45], a representative centre, orbit total): 0.26
-  deg (0.5012, 0.5041) `41/14`; 25.67 deg (1.3438, 1.3901) `9/7`; 1.32 deg (0.5149,
-  1.5894) `9/7`; 0 deg (0.4989, 1.4966) `15/14`; 0 deg (0.4989, 0.4989) `15/14`; 1.58
-  deg (0.5155, 1.5101) `15/14`; 1.85 deg (1.5069, 1.5177) `3/7`; 4.74 deg (1.5283,
-  1.5376) `2/7`; 1.85 deg (0.5164, 1.6722) `2/7`; and eight orbits at `1/7`: 28.91 deg
+  deg (0.5012, 0.5041) $41/14$; 25.67 deg (1.3438, 1.3901) $9/7$; 1.32 deg (0.5149,
+  1.5894) $9/7$; 0 deg (0.4989, 1.4966) $15/14$; 0 deg (0.4989, 0.4989) $15/14$; 1.58
+  deg (0.5155, 1.5101) $15/14$; 1.85 deg (1.5069, 1.5177) $3/7$; 4.74 deg (1.5283,
+  1.5376) $2/7$; 1.85 deg (0.5164, 1.6722) $2/7$; and eight orbits at $1/7$: 28.91 deg
   (1.5617, 1.8140) and (1.5922, 1.8677), 29.15 deg (1.3248, 1.3869) and (1.3250,
   1.4353), 28.66 deg (1.3269, 1.4360), 35.95 deg (1.3015, 1.3938), 36.91 deg (0.6985,
   1.8717), 0.53 deg (0.5038, 1.6354). Read: corners 4 (one each), wall slots about 3.9,
@@ -116,13 +116,13 @@ The 26-clique (F6). Members: the two 1.32 deg wall slots at (3.305, 1.589) and (
 2.231) and the two 1.58 deg slots at (3.304, 1.510), (3.304, 2.310) on the right wall,
 the 25.67 deg squares at (2.476, 1.390) and (2.476, 2.430), the near-centre 1.85 and
 4.74 deg squares at (2.30, 1.51), (2.30, 2.31), (2.28, 1.53), (2.28, 2.29), the 1.85 deg
-slots at (3.304, 1.672), (3.304, 2.148), and twelve `1/7`-orbit tilted squares
+slots at (3.304, 1.672), (3.304, 2.148), and twelve $1/7$-orbit tilted squares
 (28.7-36.9 deg) between them.
 Its piercing measure of mass 5/3 sits at (2.5264, 1.91) with weight 2/3 and at (2.8135,
 1.91), (2.8154, 1.8278), (2.8154, 1.9922) with weight 1/3 each -- three points one
 B-side inside the right wall and one further in.
 The clique’s own point program allows `nu*(C) = 5/3`; the family uses 1.41 of it.
-A threshold atom `(S, 3)` on these four points (weights 2, 1, 1, 1) charges every member
+A threshold atom $(S, 3)$ on these four points (weights 2, 1, 1, 1) charges every member
 and has budget 1: adding it to the covering program cuts this family by at least 0.41 on
 this clique. Whether the re-optimised support then stays below 11 is OPEN; on this
 support the optimum is already below 11 without it.
@@ -148,7 +148,7 @@ Not present (F4); the float optimum is a 112-fold packing and its duals
 have denominator 7. The prediction of the theory report’s Lemma 3 reading -- “the
 denominator of the optimal dual at 3.82 is the single best predictor” -- resolves as: on
 this support the denominator is 7 (dual) and 112 (primal), and the cut that bites is a
-rank-1 clique atom with `tau* = 5/3`, not a `k = 2` odd-cycle atom.
+rank-1 clique atom with `tau* = 5/3`, not a $k = 2$ odd-cycle atom.
 
 Where the support is short (task 4’s second half).
 The dual is too degenerate to price against (F8). The tight census says the float
@@ -206,7 +206,7 @@ nothing.
 Add the clique atoms to the covering program and re-run the exact ceiling: separate
 maximal non-Helly cliques of weight > 1 on the support graph (the weighted branch and
 bound takes under a second on 136 nodes, 4 s on spike B’s 88), compute `tau*` per
-clique, keep those with `tau* < 2` as `(S, k)` atoms from their piercing measures, and
+clique, keep those with `tau* < 2` as $(S, k)$ atoms from their piercing measures, and
 re-solve the fixed-support program with the cuts.
 If spike B’s 11-ceiling drops below 11 under its own 398 corner-clique cuts, the plateau
 at 3.82 is a rank-1 clique phenomenon and the threshold-atom certificate route (M3) is

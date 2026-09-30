@@ -3,8 +3,8 @@
 Status: **unresolved**. The deadline stopped the row loop before it converged.
 
 Nothing was frozen, so nothing was decided.
-This run does not move Nagamochi’s verified floor `5.0` at n=26, and it is not evidence
-for or against Green’s unrecovered `5.51`.
+This run does not move Nagamochi’s verified floor $5.0$ at n=26, and it is not evidence
+for or against Green’s unrecovered $5.51$.
 
 [H-225](../../../../hypotheses/H-225-n26-seeded-certificate-at-53-10.md) asks whether a
 point-atom certificate exists at `(n, L, B, net) = (26, 53/10, 9977/10000, 181
@@ -35,8 +35,8 @@ No parameter was changed, and the command was not re-run.
 
 ## Site Set
 
-Auto grid counts `(38, 51, 62)` at inset `1/2` on container side `53/10` and square side
-`9977/10000`, plus the 5-per-window ceiling lattice, which contributed 625 seed sites.
+Auto grid counts $(38, 51, 62)$ at inset $1/2$ on container side $53/10$ and square side
+$9977/10000$, plus the 5-per-window ceiling lattice, which contributed 625 seed sites.
 No seed certificate.
 `--support-cap 32` kept the 32 heaviest dual rows while pricing.
 
@@ -47,13 +47,13 @@ No seed certificate.
 
 ## Covering
 
-One column round, 48 LP rounds, wall `3754.0` s, stopped `deadline reached after 48
+One column round, 48 LP rounds, wall $3754.0$ s, stopped `deadline reached after 48
 rounds`. The loop never converged: 546 of the separation oracle’s placements were still
-violated at the last round, and the least covered mass was `0.9530750900989208`.
+violated at the last round, and the least covered mass was $0.9530750900989208$.
 
 `--deadline-seconds 3600` is checked before a round starts, so round 47 — which took
-`250.81` s of separation and `65.54` s of LP — ran past the bound and the process ended
-at `3754.0` s.
+$250.81$ s of separation and $65.54$ s of LP — ran past the bound and the process ended
+at $3754.0$ s.
 
 | LP round | Rows | Added | Violated | Support | Objective |
 | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -70,7 +70,7 @@ at `3754.0` s.
 | 47 | 17162 | 284 | 546 | 2689 | 25.000000 |
 
 Rounds 6 to 46 are omitted from the table only because every one of them reads
-`25.000000` with 546 violated; the full 48 rows are in `exp-215-n26-53-10-rows.jsonl`
+$25.000000$ with 546 violated; the full 48 rows are in `exp-215-n26-53-10-rows.jsonl`
 and in the run JSON’s `lp_log`. The one exception is round 37, which briefly read 543
 violated before returning to 546.
 
@@ -84,11 +84,11 @@ violated before returning to 546.
 | Covering freeze written | no |
 | Family freeze written | no |
 
-Between round 4 and round 5 the objective reached `25.000000` and stayed there for
+Between round 4 and round 5 the objective reached $25.000000$ and stayed there for
 forty-three consecutive rounds while 12,000 further rows were added.
 This is the same exact-integer artefact Session 141’s unseeded exp-169 probe hit at
-`513/100`: the LP is pinned at `n - 1` on a row set that is not yet complete.
-`25.000000000040338` is a float objective on an incomplete row set, not a covering value
+$513/100$: the LP is pinned at $n - 1$ on a row set that is not yet complete.
+$25.000000000040338$ is a float objective on an incomplete row set, not a covering value
 and not a bound; the program still has 546 violated placements, so it does not describe
 a covering at all.
 
@@ -110,18 +110,18 @@ measured to convergence.
   exists, and the confirm criterion was never reachable within the declared 3600 s.
 - No refutation is claimed: an unfinished loop says nothing about the claim, and the
   record’s direction says so in as many words.
-- The `25.000000` plateau is a restricted-LP artefact under an incomplete row set.
+- The $25.000000$ plateau is a restricted-LP artefact under an incomplete row set.
   It is not below 26 in any sense that bears on the criterion, because it is not the
   mass of any covering.
   Reading it as `s(26) >= 53/10` would be exactly the error the freeze-then-decide
   boundary exists to prevent.
 - What the run did establish is a cost: 48 LP rounds and 17,162 rows in 3754 s got the
-  row loop no closer than `0.953075` least covered mass, with per-round separation cost
+  row loop no closer than $0.953075$ least covered mass, with per-round separation cost
   climbing from under a second to over four minutes.
   At this rate the row set is the binding constraint, not the site set.
 
-A successor round resumes from this site set — auto `(38, 51, 62)` plus the 5-per-window
-lattice at `53/10`, 1125 orbits over 8505 sites — with a larger deadline, or from a
+A successor round resumes from this site set — auto $(38, 51, 62)$ plus the 5-per-window
+lattice at $53/10$, 1125 orbits over 8505 sites — with a larger deadline, or from a
 seeded site set, which the H-225 instrument allows and this round did not use.
 
 ## Artifacts

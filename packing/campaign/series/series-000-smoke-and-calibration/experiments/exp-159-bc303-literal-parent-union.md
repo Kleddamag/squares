@@ -78,20 +78,20 @@ experiment:
 
 The accepted parent-union lemma gives `mu(Q_I)+sum(outside core masses)<=M` for
 hypothetical eleven-parent packings with disjoint interiors.
-The imported BC303 floor is `1+3/800000` for each outside strict core.
-At scale `W=4000000`, the source total is `WM=45048398` and one outside-core floor is
+The imported BC303 floor is $1+3/800000$ for each outside strict core.
+At scale $W=4000000$, the source total is `WM=45048398` and one outside-core floor is
 `4000015` units.
 
 The one-parent budget is `45048398-10*4000015=5048248`. The four-parent union budget is
-`45048398-7*4000015=17048293`. Weighted D4 symmetry and the positive gap `q-2=46/25`
-between corner copies give four-parent union mass `4N`. Thus the first rejecting
+`45048398-7*4000015=17048293`. Weighted D4 symmetry and the positive gap $q-2=46/25$
+between corner copies give four-parent union mass $4N$. Thus the first rejecting
 integers are `5048249` for one literal parent and `4262074` for the four-corner tuple.
 The primary H-161 decision uses the four-corner cutoff.
 
 The
 [source-bound receipt](../results/agenda-035/exp-159-bc303-literal-parent-union.json) at
 preregistered execution head `f27c8ec7c8ebeb8a9b369c1c6f7efef4b531c359` reports
-`N=4000015`, or `mu(Q0)=800003/800000`. It used the admitted reader file from commit
+$N=4000015$, or `mu(Q0)=800003/800000`. It used the admitted reader file from commit
 `641beab7020570e71680950a92535073c8f698bd`, unchanged at the execution head.
 The independent
 [377-row audit](../results/agenda-035/exp-159-bc303-literal-parent-union-audit.json) was
@@ -103,14 +103,14 @@ images. The
 [timing receipt](../results/agenda-035/exp-159-bc303-literal-parent-union.time.txt)
 records 0.16 seconds of external wall time for the one target invocation.
 
-The measured four-corner union has `4N=16000060` units against `17048293` allowed by the
+The measured four-corner union has $4N=16000060$ units against `17048293` allowed by the
 necessary inequality.
 The one-parent mass has `4000015` units against `5048248`. Each test has `1048233`
-units, or `1048233/4000000`, of slack.
+units, or $1048233/4000000$, of slack.
 H-161 is rejected: this resource test excludes neither the literal four-corner tuple nor
 one literal Q0 parent from an eleven-parent packing.
 It also supplies no extension, pose-neighborhood exclusion, continuous selection
-routing, or new lower bound on `s(11)`.
+routing, or new lower bound on $s(11)$.
 
 The executed Python 3.14 stdin program called the committed `literal_q0_mass` tool once
 and serialized the result.

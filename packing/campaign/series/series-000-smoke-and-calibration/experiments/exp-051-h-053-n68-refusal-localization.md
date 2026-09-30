@@ -106,7 +106,7 @@ The immutable numerical-prototype baseline is commit `d7c94590`:
 The only target source is the ephemeral parent at
 `https://kingbird.myphotos.cc/packing/square-68.svg`, expected SHA-256
 `558fbdddfeb0b2f8752b88e172d2776544beb4d2a7122189ef77c1e1c5ebdc6d`. The cited side token
-`8.80345993651653` carries no implicit exactness or one-sided-bound semantics.
+$8.80345993651653$ carries no implicit exactness or one-sided-bound semantics.
 After digest and structural checks, the runner selects the lexicographically smallest
 stable square id. Raw bytes, XML, source excerpts, palettes and temporary paths may not
 be retained.
@@ -123,7 +123,7 @@ Transform lists use homogeneous column vectors with
 Unsupported, singular, ambiguous or uncertified decimal-angle transforms refuse rather
 than receiving a binary64 pad.
 
-The proof uses `t = tan(theta/2)` on the frozen quotient interval `[-1/2,1/2]`. It must
+The proof uses `t = tan(theta/2)` on the frozen quotient interval $[-1/2,1/2]$. It must
 provide:
 
 1. one exact rational `(cx,cy,t)` witness whose four derived corners lie in their closed
@@ -163,7 +163,7 @@ Every terminal decision remains `needs_review: true` for BC-120 and BC-121.
 **Artifact:** `cases/unitsquare_precision/refusal/run.py` defines exact rational
 intervals, half-angle poses and witnesses, affine composition, locally gap-free binary
 cover nodes, canonical proof serialization and exact point-pose wall signs.
-Four `refusal` tests retain the rational `t = 1/2` rotated-square answers, noncommuting
+Four `refusal` tests retain the rational $t = 1/2$ rotated-square answers, noncommuting
 transform order, a complete split and gap mutation, and interior, tangent and crossing
 wall signs.
 
@@ -190,9 +190,9 @@ and replays it without importing producer corner, rejection or sign functions.
 **Result:** The receipt binds its source model, source and polygon digests,
 independently supplied source-cell digest, exact transform and container normalization.
 The verifier admits the eight dihedral correspondences, enforces `t in [-1/2,1/2]` and
-the exact root quotient, checks the source-derived center bound, recomputes `c^2+s^2=1`,
-outward corner intervals, retained and rejected leaves, retained-leaf wall signs,
-recursive partitions and the canonical proof digest.
+the exact root quotient, checks the source-derived center bound, recomputes
+$c^{2}+s^{2}=1$, outward corner intervals, retained and rejected leaves, retained-leaf
+wall signs, recursive partitions and the canonical proof digest.
 Both children include their split point; this shared zero-width boundary is required.
 A gap or positive-width overlap fails partition replay.
 

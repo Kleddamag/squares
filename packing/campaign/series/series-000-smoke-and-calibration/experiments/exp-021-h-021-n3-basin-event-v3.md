@@ -66,7 +66,7 @@ experiment:
 ---
 # exp-021 — the first admissible retained basin event
 
-The supervised `n = 3`, seed 1 run reached side `2.000000000000001` in 1.90 seconds.
+The supervised $n = 3$, seed 1 run reached side $2.000000000000001$ in 1.90 seconds.
 Its independent geometry screen checked all three pairs and accepted the pose; the
 reported side is within the declared `1e-10` screen of the independently recomputed
 required side.

@@ -34,7 +34,7 @@ exploration:
 ---
 # X-038: Which Lower Bounds the Stock Tools Can Still Move
 
-Session-140 asked one question: of the open `s(n)` floors at `n <= 100`, which ones can
+Session-140 asked one question: of the open $s(n)$ floors at `n <= 100`, which ones can
 the instruments already on the branch still raise?
 
 The instruments are `devtools.run_fractional_colgen` (auto grids, explicit four-grids,
@@ -54,39 +54,39 @@ First-party fractional certificates sit on seven of them:
 
 | n | Verified floor | Verified ceiling | Gap | Covering already tried above the floor |
 | --- | ---: | ---: | ---: | --- |
-| 11 | T-026 `3.826447…` | Trump `3.877083…` | 0.051 | Yes. Closest point-atom construction above T-026 is `11.14` at `383/100`. |
-| 12 | T-017 `99/25` | grid `4` | 0.040 | Yes. Certificate-seeded `397/100` stopped at `12.016263` unconverged. Session-140 four-grid plus windows 7 at `397/100` converged at `12.133391`. Leftover `3969/1000` four-grid plus windows 7 stopped at `12.091168` unconverged. |
-| 17 | T-019 `459/100` | grid `5` (reported packing `4.675…`) | 0.410 | Yes. T-019-seed plus windows 5 at `23/5` stopped at `17.042346`. Session-140 four-grid plus windows 8 stopped at `17.120106`. Leftover `461/100` stopped at `17.195968`. |
-| 18 | T-028 `187/40` | `(7/2)+(1/2)sqrt(7)` | 0.148 | Rank 5 retained as T-028. `117/25` still sits on the `18.000000` plateau. |
-| 19 | T-020 `24/5` | `4.885618…` | 0.086 | Three probes. T-020-seed windows 6 at `97/20` stopped at `19.808958`. Session-140 same construction at `481/100` stopped at `19.132115`. Leftover `241/50` stopped at `19.247109`. |
-| 20 | T-021 `97/20` | grid `5` | 0.150 | Yes. Old cert-seed crossed at `20.000223`. Session-140 four-grid plus windows 7 stopped at `19.939212` unconverged after 2400 s. Leftover `971/200` stopped at `19.910044` unconverged. |
-| 21 | T-021 `97/20` | grid `5` | 0.150 | Session-140 auto plus windows 6 stopped at `19.814820` unconverged. Same side as T-021; not a floor raise. |
+| 11 | T-026 $3.826447\ldots$ | Trump $3.877083\ldots$ | 0.051 | Yes. Closest point-atom construction above T-026 is $11.14$ at $\frac{383}{100}$. |
+| 12 | T-017 $\frac{99}{25}$ | grid $4$ | 0.040 | Yes. Certificate-seeded $\frac{397}{100}$ stopped at $12.016263$ unconverged. Session-140 four-grid plus windows 7 at $\frac{397}{100}$ converged at $12.133391$. Leftover $\frac{3969}{1000}$ four-grid plus windows 7 stopped at $12.091168$ unconverged. |
+| 17 | T-019 $\frac{459}{100}$ | grid $5$ (reported packing $4.675\ldots$) | 0.410 | Yes. T-019-seed plus windows 5 at $\frac{23}{5}$ stopped at $17.042346$. Session-140 four-grid plus windows 8 stopped at $17.120106$. Leftover $\frac{461}{100}$ stopped at $17.195968$. |
+| 18 | T-028 $\frac{187}{40}$ | `(7/2)+(1/2)sqrt(7)` | 0.148 | Rank 5 retained as T-028. $\frac{117}{25}$ still sits on the $18.000000$ plateau. |
+| 19 | T-020 $\frac{24}{5}$ | $4.885618\ldots$ | 0.086 | Three probes. T-020-seed windows 6 at $\frac{97}{20}$ stopped at $19.808958$. Session-140 same construction at $\frac{481}{100}$ stopped at $19.132115$. Leftover $\frac{241}{50}$ stopped at $19.247109$. |
+| 20 | T-021 $\frac{97}{20}$ | grid $5$ | 0.150 | Yes. Old cert-seed crossed at $20.000223$. Session-140 four-grid plus windows 7 stopped at $19.939212$ unconverged after 2400 s. Leftover $\frac{971}{200}$ stopped at $19.910044$ unconverged. |
+| 21 | T-021 $\frac{97}{20}$ | grid $5$ | 0.150 | Session-140 auto plus windows 6 stopped at $19.814820$ unconverged. Same side as T-021; not a floor raise. |
 
-A verified lower bound on a restricted optimum above `n` would rule out that site set
+A verified lower bound on a restricted optimum above $n$ would rule out that site set
 only.
 The recorded float objectives and feasible frozen masses are not such lower bounds.
 Remaining rows can raise a row-generation objective, and adding sites can lower it.
-Session-139’s `397/100`, `23/5`, and `97/20` rows are numerical evidence, not walls.
+Session-139’s $397/100$, $23/5$, and $97/20$ rows are numerical evidence, not walls.
 
-H-062 already accepted a wall at `n = 20`, side `973/200`, on the two site sets it named
+H-062 already accepted a wall at $n = 20$, side $973/200$, on the two site sets it named
 (auto grid and the 97/20 seed).
 That wall does not bind a windows lattice or a four-grid.
 Those are new named site sets of the same producer.
 
 ## Ranked Queue
 
-Priority is “how close is a stock construction to mass `< n` at a side strictly above
+Priority is “how close is a stock construction to mass $< n$ at a side strictly above
 the current floor”, then remaining gap, then whether a seed certificate exists.
 
 | Rank | Bead | n | Next side | Why this first | First named site set |
 | ---: | --- | ---: | --- | --- | --- |
-| 1 | think-d2ad | 20 | `973/200` | Surplus `0.000223` on the old seed. One extra construction class can finish the rung. | T-021 seed, grids `34,46,56,64`, windows 7 |
-| 2 | think-h02v | 12 | `397/100` | Surplus `0.016263` on the old seed. Remaining window to the grid is `0.04`. | T-017 seed, grids `28,38,46,54`, windows 7 |
-| 3 | think-5q81 | 17 | `23/5` | Surplus `0.042346` on windows 5. Reported packing sits at `4.675`, so `4.60` is still inside the interesting interval. | T-019 seed, grids `34,45,56,64`, windows 8 |
-| 4 | think-zoq4 | 19 | `481/100` then `97/20` | Only one probe, and it is `0.81` above 19. A side just above `24/5` is the cheap test. | T-020 `certificate-24-5.json`, auto plus windows 6 |
-| 5 | think-15qo | 18 | `187/40` | Retained as T-028. `4.68` still plateaus at 18. | T-027 seed, auto plus windows 5 |
-| 6 | think-b6n9 | 21 | `97/20` | Same certificates as n=20, almost no covering data. Run only if the n=20 lane is idle. | T-021 seed, auto plus windows 6 |
-| 7 | — | 11 | none this block | Point covering at sides above T-026 is already `11.14` and rising. Not this campaign’s win condition. | — |
+| 1 | think-d2ad | 20 | $\frac{973}{200}$ | Surplus $0.000223$ on the old seed. One extra construction class can finish the rung. | T-021 seed, grids $34,46,56,64$, windows 7 |
+| 2 | think-h02v | 12 | $\frac{397}{100}$ | Surplus $0.016263$ on the old seed. Remaining window to the grid is $0.04$. | T-017 seed, grids $28,38,46,54$, windows 7 |
+| 3 | think-5q81 | 17 | $\frac{23}{5}$ | Surplus $0.042346$ on windows 5. Reported packing sits at $4.675$, so $4.60$ is still inside the interesting interval. | T-019 seed, grids $34,45,56,64$, windows 8 |
+| 4 | think-zoq4 | 19 | $\frac{481}{100}$ then $\frac{97}{20}$ | Only one probe, and it is $0.81$ above 19. A side just above $\frac{24}{5}$ is the cheap test. | T-020 `certificate-24-5.json`, auto plus windows 6 |
+| 5 | think-15qo | 18 | $\frac{187}{40}$ | Retained as T-028. $4.68$ still plateaus at 18. | T-027 seed, auto plus windows 5 |
+| 6 | think-b6n9 | 21 | $\frac{97}{20}$ | Same certificates as n=20, almost no covering data. Run only if the n=20 lane is idle. | T-021 seed, auto plus windows 6 |
+| 7 | — | 11 | none this block | Point covering at sides above T-026 is already $11.14$ and rising. Not this campaign’s win condition. | — |
 
 `think-8ujs` is not a probe.
 It is the retain step, and it stays idle unless `decide_certificate` prints
@@ -106,10 +106,10 @@ ranks 1–5 have either frozen or exhausted their named site sets.
 
 ## What Would Count as Progress
 
-A covering row on a new `(n, side, site_set)` is progress even when it stays above `n`.
-A verified floor moves only after a freeze with mass `< n` that both routes of
+A covering row on a new `(n, side, site_set)` is progress even when it stays above $n$.
+A verified floor moves only after a freeze with mass $< n$ that both routes of
 `decide_certificate` accept.
-Session-140 landed T-028 at n=18 (`187/40`). That retain is off the H-218 sweep and does
+Session-140 landed T-028 at n=18 ($187/40$). That retain is off the H-218 sweep and does
 not confirm H-218. Session-139 left the landing recipe; this session copied it and did
 not invent a case class.
 
@@ -124,16 +124,16 @@ stacked PR. Each probe bead owns one `(n, side)` family and writes under
 walker is `python -m devtools.run_covering_queue` over `first-wave-queue.yaml`, then
 `leftover-queue.yaml`, then `second-wave-queue.yaml`. Ranking for the leftover list is
 `leftover-side-ranking.md`: untried sides or site sets only.
-Within this session budget, record a set whose float objective crossed `n` and spend the
+Within this session budget, record a set whose float objective crossed $n$ and spend the
 next allocation on another rank.
 That scheduling choice is not a lower bound on the restricted optimum and does not
 refute the site set.
 Kill a probe at its deadline.
-If the freeze mass is below `n`, stop new probes and run the retain recipe.
+If the freeze mass is below $n$, stop new probes and run the retain recipe.
 
 Session-141 re-ranks from these masses in
 [X-039](X-039-n100-re-rank-after-session-140.md).
-Leftover n=18 `1871/400` and the Nagamochi second wave did not start here.
+Leftover n=18 $1871/400$ and the Nagamochi second wave did not start here.
 
 Correctness review (2026-09-19): the original census omitted the proved `n = 98..100`
 cases, whose lower and upper bounds both equal 10. The corrected census is 35 proved and

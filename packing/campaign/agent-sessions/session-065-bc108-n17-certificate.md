@@ -297,12 +297,12 @@ session:
 
 The frozen claim is H-052 verbatim:
 
-> The fixed retained Massaccesi `n = 17`, `L = 4.5058` certificate agrees on every
+> The fixed retained Massaccesi $n = 17$, $L = 4.5058$ certificate agrees on every
 > preregistered exact invariant when evaluated by an independently written exact
 > accumulation implementation that does not copy the published two-dimensional
 > difference-array sweep.
 
-Treat `L = 4.5058` as the exact rational `22529/5000`. The retained fixture is the
+Treat $L = 4.5058$ as the exact rational $22529/5000$. The retained fixture is the
 Massaccesi source snapshot and normalized verifier under
 `packing/resources/web/n17-lower-bounds-2026/`. The verifier file was hashed as opaque
 input during this cell; it was not opened, imported, or executed.
@@ -316,7 +316,7 @@ input during this cell; it was not opened, imported, or executed.
 | Historical target-blind W3 snapshot of `H-052-n17-independent-certificate-agreement.md` | `e5f2a976821e416d877beac63cd67dd4a741bce354d7004aa04c92b02de620d6` |
 
 The retained metadata fixes 168 weighted atoms on a 29 by 29 grid, total mass
-`9744/576`, 181 rational direction cells, and global checked minimum `576/576`. The
+$9744/576$, 181 rational direction cells, and global checked minimum $576/576$. The
 unchanged-input binding applies to the four retained-source rows and these values.
 The H-052 row is only the historical W3 contract snapshot; W7 necessarily changes that
 record when it binds the instrument and readiness evidence, so its digest is exempt from
@@ -339,7 +339,7 @@ The aggregate manifest must also contain:
   shrunken-square-containment, and strict-scaling precondition.
 
 The acceptance threshold is exact equality on every manifest field, total mass
-`9744/576`, global minimum `576/576`, and rejection of every frozen mutation.
+$9744/576$, global minimum $576/576$, and rejection of every frozen mutation.
 A reproducible exact disagreement rejects H-052 only after both implementations pass
 their known-answer, provenance, independence, and mutation guards.
 Any failed guard is a typed premeasurement stop or invalid-instrument result, not a
@@ -397,14 +397,14 @@ Freeze these mutations by deterministic rule and record the first rejecting guar
 
 1. **Atom:** remove the lexicographically first positive-weight atom; the atom-data
    hash, atom count, or total must reject it.
-2. **Weight:** add `1/576` to that atom; the exact total and manifest must reject it.
+2. **Weight:** add $1/576$ to that atom; the exact total and manifest must reject it.
 3. **Direction cell:** remove the lexicographically last rational direction; the
    direction-net hash, count, or angle-cover precondition must reject it.
 4. **Event boundary:** change the inclusive upper event convention to an exclusive one
    on the synthetic boundary fixture; its exact minimum must disagree with the frozen
    known answer.
-5. **Scaling:** replace the retained exact internal side `2.9545` with the defective
-   prose value `3.9545`; an exact shrink or scaling precondition must reject it.
+5. **Scaling:** replace the retained exact internal side $2.9545$ with the defective
+   prose value $3.9545$; an exact shrink or scaling precondition must reject it.
 
 The later source-defect controls separately exercise 28-interval versus `/29` grid
 spacing and inclusive versus exclusive endpoint enumeration.
@@ -422,8 +422,8 @@ They may also share the canonical manifest schema and exact-rational type.
 Agreement therefore checks accumulation implementation, exact bookkeeping, and the
 declared precondition calculations for this fixed fixture.
 It does not independently prove the shared geometric reductions, authenticate the
-original author’s derivation, establish a second proof method, authorize `4.5058` for
-the frontier, transfer the value to `n = 18` or `n = 19`, or validate the LP generator.
+original author’s derivation, establish a second proof method, authorize $4.5058$ for
+the frontier, transfer the value to $n = 18$ or $n = 19$, or validate the LP generator.
 
 ## W7 Readiness
 
@@ -545,7 +545,7 @@ revision. Session-065 records the stopped W6 phase and this finalization handoff
 Result: H-052 is scientifically unresolved because no complete exact manifest comparison
 exists. The lane produced a ready instrument and priced its current direct Cartesian
 execution path, but it did not establish agreement, disagreement, certificate validity,
-lower-bound adoption or transfer to another `n`.
+lower-bound adoption or transfer to another $n$.
 
 Guard: Enforced softschema validation passes for both terminal records.
 The result path remains absent, H-052 readiness remains true, exp-049 remains

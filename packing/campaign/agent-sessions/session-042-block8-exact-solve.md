@@ -197,7 +197,7 @@ last of the missing middle layers.
 
 ## The rule, not the search
 
-An integer-relation algorithm given `d + 1` unknown coefficients and enough digits
+An integer-relation algorithm given $d + 1$ unknown coefficients and enough digits
 returns a relation whether or not one exists.
 Ask for degree eight from a hundred digits and you get a degree-eight answer; ask for
 twelve and you get one of those too.
@@ -208,7 +208,7 @@ With `C` the largest coefficient the relation *actually carries* and
 `B = (d+1) log10(C)`:
 
 1. the relative residual is below `10^-(B+M)`,
-2. re-evaluated at `2B + 2M`, the residual keeps **falling** rather than resting near
+2. re-evaluated at $2B + 2M$, the residual keeps **falling** rather than resting near
    `10^-B`,
 3. the value comes from a refinement whose *reported residual bound* is below
    `10^-(B+M)`.
@@ -217,7 +217,7 @@ Clause 2 is the cheap decisive one, and it is what the planning probe lacked.
 
 ## `n = 11`, against a published answer
 
-Trump published the minimal polynomial of `s(11)` in 1979. The rule recovers it from
+Trump published the minimal polynomial of $s(11)$ in 1979. The rule recovers it from
 digits alone:
 
 ```
@@ -233,7 +233,7 @@ relation is determined only up to a unit and a common factor, and an un-normalis
 answer reads as a mismatch against a published one.
 
 Fitting is also not minimality — any multiple of the minimal polynomial vanishes just as
-well — so `discharge` adds irreducibility over `Q` and an isolating interval.
+well — so `discharge` adds irreducibility over $Q$ and an isolating interval.
 The square of Trump’s polynomial is refused by name.
 What `discharge` does *not* do is rebuild the packing and re-verify it; that needs an
 exact solve of every pose unknown, not the side alone, and the docstring says so rather
@@ -256,9 +256,9 @@ The search found nothing to judge.
 relations at almost every degree from 8 to 21 — a search with more freedom than input.
 Fed a thousand genuine digits, the same search falls silent everywhere.
 A search that answers when under-fed and stops when fed properly is evidence about the
-number rather than about the search, and what it bounds is concrete: **if `s(29)` is
+number rather than about the search, and what it bounds is concrete: **if $s(29)$ is
 algebraic of degree twenty or less, some coefficient of its minimal polynomial is at
-least `10^22`.**
+least $10^{22}$.**
 
 The spec anticipated this and said what it would mean — “a refusal here is a result: it
 would say the minimal polynomial is large, which is itself worth knowing and is why the
@@ -273,19 +273,19 @@ both are now devtools:
 
 - **`devtools/probe_contact_system.py`** reports what each retained case’s assembled
   system determines, and `--walk` steps the side-changing null direction and reads the
-  violation’s *order* in `t`. `O(t²)` is an ordinary second-order obstruction; `O(t)`
+  violation’s *order* in $t$. $O(t^2)$ is an ordinary second-order obstruction; $O(t)$
   means an equation is wrong.
   That distinction is the whole of [D-361](../../../defects.md) and it is now one
   command.
 - **`devtools/probe_minimal_polynomial.py`** runs the search above and reports which
   clause decided each degree.
-  The `n = 29` sweep takes twelve minutes, which is why it is a tool with a recorded
+  The $n = 29$ sweep takes twelve minutes, which is why it is a tool with a recorded
   result rather than a test.
 
 Building the first surfaced [D-359](../../../defects.md)’s own bug inside it.
 A rank verdict is a judgement about a gap between singular values, and the gap the SVD
 can *see* is bounded by the precision it runs at: at mpmath’s ambient 15, Göbel’s
-discarded singular value read `2.3e-16` against a counted `0.511`, where pinned at 50
+discarded singular value read `2.3e-16` against a counted $0.511$, where pinned at 50
 digits it is `1.04e-51`. Same verdict, a gap thirty-five decades narrower than the
 truth, and nothing in the output to tell them apart.
 Precision is now pinned per case and printed next to the gap.

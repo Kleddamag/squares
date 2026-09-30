@@ -764,12 +764,12 @@ Record this as a packaging limitation, not as theorem failure.
 The theorem packet must reproduce these retained quantities exactly:
 
 - anchored fixed-side centre-angle chart, 33 pose variables, sup norm, declared box
-  `1/64`;
+  $1/64$;
 - 128 derivative-distinct branches and 42 active rows per branch;
-- uniform radius lower bound `288616983/125000000000`;
-- per-row weighted radius lower bound `808514697/200000000000`;
-- uniform quadratic constant upper bound `2808470331/125000000`;
-- per-row quadratic constant upper bound `2574612531/200000000`; and
+- uniform radius lower bound $288616983/125000000000$;
+- per-row weighted radius lower bound $808514697/200000000000$;
+- uniform quadratic constant upper bound $2808470331/125000000$;
+- per-row quadratic constant upper bound $2574612531/200000000$; and
 - only the local fixed-side isolation and side-stability conclusions in BC-199’s
   `claim_boundary` field.
 
@@ -790,7 +790,7 @@ These inputs describe existing machinery; none is a typed-stationarity theorem:
 | `packing/src/sqpack/contact_full_cell_execution.py` | Deterministic row identifiers and work counts | Geometric equations or execution of an LP or nonlinear system |
 | `packing/atlas/enumerated/contact-scaffolds-size5.json` | 11,013 canonical abstract size-five scaffold orbits | Realizable or stationary packings |
 | `packing/atlas/known-best/contact-enumeration-pricing.json` | A measured abstract funnel: 9,684,224 raw labelled size-five candidates, 1,533,696 topology colorings, 21 topologies, and 11,013 orbits | A completed size-five LP stage or an n=11 price |
-| `packing/atlas/known-best/contact-full-cell-control.json` | A source-free structural axis-aligned n=3 `L` control and its 48 symmetry images | A full-cell geometric or stationary solution |
+| `packing/atlas/known-best/contact-full-cell-control.json` | A source-free structural axis-aligned n=3 $L$ control and its 48 symmetry images | A full-cell geometric or stationary solution |
 | `packing/atlas/known-best/contact-structures.json` | Trump’s 14 touching square pairs, 20 wall-corner incidences, and two angle classes of sizes six and five | Multiplier support, FJ/KKT status, or global uniqueness |
 
 Treat these as negative and positive controls.
@@ -905,9 +905,9 @@ A new schema or a change outside these roots requires a gate request before writ
 
 ## Density Proof Contract
 
-Let `C_L = [0,L]^2`. Let `P_L` be the compact placement space of centres and angles
+Let $C_L = [0,L]^{2}$. Let $P_L$ be the compact placement space of centres and angles
 modulo each square’s quarter-turn symmetry for which the corresponding closed unit
-square `S_p` lies in `C_L`.
+square $S_p$ lies in $C_L$.
 
 The initial primal is restricted to absolutely continuous measures.
 For `rho in L1_+(C_L)`, define
@@ -919,11 +919,11 @@ and
 `tau_ac(L) = inf integral over C_L of rho(x) dx`, subject to `F_rho(p) >= 1` for every
 `p in P_L`.
 
-For a finite nonnegative Borel measure `w` on `P_L`, define its overlap depth
+For a finite nonnegative Borel measure $w$ on $P_L$, define its overlap depth
 
 `d_w(x) = integral over P_L of 1[x in S_p] dw(p)`.
 
-The weak dual requires `d_w(x) <= 1` for Lebesgue-almost-every `x`. Tonelli’s theorem
+The weak dual requires `d_w(x) <= 1` for Lebesgue-almost-every $x$. Tonelli’s theorem
 then gives
 
 `w(P_L) <= integral rho(x) d_w(x) dx <= integral rho(x) dx`.
@@ -947,8 +947,8 @@ The unit-weight Trump mutation perturbs one interior atom so that exact full-dim
 a.e. depth exceeds one and must be rejected.
 A weighted-overlap fixture whose overlapping placements carry positive rational weights
 must be accepted when its summed exact depth is at most one on every full-dimensional
-cell. Use two distinct, contained, positive-area-overlapping placements of weight `1/2`
-each and no other atoms: their depth is one on the overlap and `1/2` elsewhere.
+cell. Use two distinct, contained, positive-area-overlapping placements of weight $1/2$
+each and no other atoms: their depth is one on the overlap and $1/2$ elsewhere.
 This distinction tests weighted depth rather than geometric intersection.
 
 The following directions are mandatory:
@@ -958,7 +958,7 @@ The following directions are mandatory:
 - A density that covers only sampled placements is a proposer, not primal-feasible and
   not an upper bound.
 - A primal upper bound requires a global continuum proof that `F_rho(p) >= 1` on all of
-  `P_L`, including interior pose boxes and wall strata.
+  $P_L$, including interior pose boxes and wall strata.
 - A branch-and-bound cover must prove its interval or Lipschitz enclosure direction and
   refuse a result if any pose box or boundary stratum remains open.
 - If singular mass is admitted, prove `mu(boundary S_p) = 0` for every admissible
@@ -984,7 +984,7 @@ The n=11 Lean spike is user-requested assurance, not a Condition 5 validity
 prerequisite, and a proof-producing Condition 5 receipt remains optional hardening
 unless a later gate promotes it.
 
-For inverse design, a Trump placement on the boundary of `P_L` obeys constrained
+For inverse design, a Trump placement on the boundary of $P_L$ obeys constrained
 stationarity: the derivative of `F_rho` lies in the normal cone generated by active wall
 containment constraints with nonnegative multipliers.
 It need not have zero unconstrained gradient.
@@ -994,7 +994,7 @@ Clarke condition, with wall ties retained.
 ## Typed-Stationarity Proof Contract
 
 The global program begins with existence.
-Bound `L` by the exact candidate side, put angles on the compact quarter-turn quotient,
+Bound $L$ by the exact candidate side, put angles on the compact quarter-turn quotient,
 and use the closed containment and nonoverlap conditions to prove that a better packing,
 if one exists, has a minimum.
 
@@ -1007,7 +1007,7 @@ Corner-corner contact is a disjunction of support descriptions, not a graph edge
 one distance equation.
 
 Use variables `z = (L, c_1, theta_1, ..., c_n, theta_n)` and include derivatives with
-respect to `L` in right and top wall rows.
+respect to $L$ in right and top wall rows.
 With branch inequalities `g_j(z) >= 0`, a branch minimum must have nonnegative `alpha`
 and `lambda_j`, not all zero, satisfying
 

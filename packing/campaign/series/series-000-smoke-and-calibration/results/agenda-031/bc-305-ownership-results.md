@@ -3,7 +3,7 @@
 BC-305 retains and validates analytic ownership results developed and reviewed during
 the PR 127 handoff preparation.
 They are not prospective numerical discoveries on the continuation branch.
-At `q = 96/25` and ownership tolerance `delta = 3/500`, they establish the following
+At $q = 96/25$ and ownership tolerance `delta = 3/500`, they establish the following
 local facts.
 
 ## Retained results
@@ -26,10 +26,10 @@ local facts.
   See [the support proof](proofs/shared-segment-support-bounds.md) and the
   [outer-constraint review](proofs/new-outer-constraints-review.md).
 - The coarse orientation corollary excludes a pair when both owners have absolute folded
-  half-tangent at least `49/125`, including equality.
+  half-tangent at least $49/125$, including equality.
   The stronger signed result excludes any pair whose half-tangents both lie in
   `[1997/6000, sqrt(2)-1]`, or both lie in the reflected band `[1-sqrt(2), -1997/6000]`;
-  its exact contradiction margin is `501/1000000`. See
+  its exact contradiction margin is $501/1000000$. See
   [the broad-band proof](proofs/outer-pair-equal-angle-and-cell-exclusions.md).
 - The guarded fixed-angle reader enumerates every separating-axis branch of the declared
   necessary relaxation for one supplied rational angle pair.
@@ -44,7 +44,7 @@ Two exact four-square counterexamples keep the local counts from being overread.
 
 1. Two owners of the left outer segment coexist with distinct bottom-left and top-left
    corner owners, with the selected marks strictly inside their canonical nearest-net
-   `B = 9977/10000` cores.
+   $B = 9977/10000$ cores.
    See [the outer-pair counterexample](proofs/outer-pair-corner-counterexample.md).
 2. Two adjacent corner-pair mark sets can each have two distinct diamond-square owners,
    again with the selected marks strictly inside their canonical nearest-net cores.
@@ -54,7 +54,7 @@ Two exact four-square counterexamples keep the local counts from being overread.
 One fixed cross-container pattern is nevertheless impossible.
 Fix the lower left and lower right outer owners to the axis-aligned squares used in the
 capacity witness. Any two additional squares containing the forced bottom-left and
-bottom-right marks would both contain `(48/25,2336/3175)` in their interiors.
+bottom-right marks would both contain $(48/25,2336/3175)$ in their interiors.
 The alternate bottom marks already lie inside the fixed outer squares, including their
 selected cores, so the mark choice is forced for additional owners.
 This excludes the specified fixed pattern, with boundary touching allowed; it does not
@@ -85,8 +85,8 @@ The two exact CLI readers were then replayed from the continuation checkout:
 ## Perturbation Supplement
 
 The [robust extension](proofs/robust-outer-corner-incompatibility.md) covers outer
-squares containing the fixed owners’ `1/1000`-inset rectangles; Euclidean Hausdorff
-distance at most `1/1000` is sufficient.
+squares containing the fixed owners’ $1/1000$-inset rectangles; Euclidean Hausdorff
+distance at most $1/1000$ is sufficient.
 Every additional owner of a forced bottom mark then contains the closed radius-`1/100`
 disk about the common point in its interior.
 Two additional opposite-bottom owners therefore overlap.
@@ -101,11 +101,11 @@ The expanded instrument suite passed
 ## Scope
 
 These capacity, support, angle, counterexample, and fixed-pattern results do not compose
-into a global exclusion at `q = 96/25`. Capacity is a local ownership count, and a
+into a global exclusion at $q = 96/25$. Capacity is a local ownership count, and a
 surviving fixed-angle screen branch is an unresolved relaxation branch.
 The certified packing bracket remains unchanged; its canonical values and provenance
 remain in [SYNOPSIS](../../../../../../SYNOPSIS.md).
-As approximate orientation only, its endpoints are about `3.81003` and `3.87708`.
+As approximate orientation only, its endpoints are about $3.81003$ and $3.87708$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

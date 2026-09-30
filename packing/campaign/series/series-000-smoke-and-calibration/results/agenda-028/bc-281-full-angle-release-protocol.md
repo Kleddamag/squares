@@ -37,7 +37,7 @@ For every actual square retain all four coordinate-support containment rows, and
 each pair retain the complete disjunction
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \left[\sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n)\right],\qquad
 H_i(n)=\frac{|n\cdot e_i|+|n\cdot f_i|}{2}.
 $$

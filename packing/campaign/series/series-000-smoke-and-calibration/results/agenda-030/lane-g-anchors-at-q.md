@@ -12,13 +12,13 @@ other lanes; the load average is recorded beside every wall time.
 Two premises entered this lane proved by earlier lanes and are used here without
 re-proof: **Theorem E.4** of
 [lane E](lane-e-ownership-set-at-q.md#62-the-certified-sets-and-the-threshold-in-the-segment-length)
-(every contained closed unit square at `96/25` is within `√2 · 2121/500000 < 3/500` of
-one of the ten horizontal segments of length `1/10` centred on Stromquist’s Figure-13
-points) and the **four-corner pair theorem** of
+(every contained closed unit square at $96/25$ is within
+$\sqrt{2} \cdot 2121/500000 < 3/500$ of one of the ten horizontal segments of length
+$1/10$ centred on Stromquist’s Figure-13 points) and the **four-corner pair theorem** of
 [lane C, Session-101](lane-c-n10-transfer.md#a-four-corner-theorem-the-free-measure-does-prove)
-(every packing of eleven unit squares in `[0, 96/25]²` has four distinct squares, one
-per corner, whose cores contain one of the corner’s two marks `(3152/3175, 2336/3175)`,
-`(2336/3175, 3152/3175)` or their images).
+(every packing of eleven unit squares in $[0, 96/25]^2$ has four distinct squares, one
+per corner, whose cores contain one of the corner’s two marks $(3152/3175, 2336/3175)$,
+$(2336/3175, 3152/3175)$ or their images).
 The anchored certificate is
 [Lemma B of lane C](lane-c-n10-transfer.md#12-reconstruction-of-theorem-2-n--11-at-s--2--45-as-an-anchored-certificate).
 
@@ -26,61 +26,61 @@ The anchored certificate is
 
 - **What the two premises localise, exactly** (Section 2). Eleven cores and ten points
   leave a core that contains no Figure-13 point, and by Theorem E.4 that escaping core
-  grazes a segment: it lies within `1/100` of a segment centred on a point it does not
+  grazes a segment: it lies within $1/100$ of a segment centred on a point it does not
   contain (Theorem G.1). Since the ten segments fall into four orbits of the container’s
   midline reflections, the escape class is `K4 · (E0_C ∪ E0_W ∪ E0_O ∪ E0_I)` with four
   thin *grazing classes* as its fundamental piece.
   This is the segment analogue of Stromquist’s “every avoider is centred in a `K4`-image
-  of `R`”, it holds at every angle, and it is exactly the localisation Lemma B’s branch
-  2 needs; branch 1 is free at `96/25` because ten unit atoms have mass ten.
+  of $R$”, it holds at every angle, and it is exactly the localisation Lemma B’s branch
+  2 needs; branch 1 is free at $96/25$ because ten unit atoms have mass ten.
 - **What they do not localise.** The corner square is not pinned to the corner segment:
-  an exact `45°` square at centre `(38/25, 3/4)` contains the mark in its interior and
-  is `0.009 > 3/500` from the corner segment (Proposition G.2); a corner square can be
-  near any of four segments.
+  an exact $45^\circ$ square at centre $(38/25, 3/4)$ contains the mark in its interior
+  and is $0.009 > 3/500$ from the corner segment (Proposition G.2); a corner square can
+  be near any of four segments.
   Eleven squares and ten segments give a *shared* segment, a two-body event, and a
   segment can be met by four interior-disjoint unit squares, so nothing like
   Stromquist’s exactly-one ownership follows (Proposition G.3).
 - **The band question is answered by the escaping square** (Section 3). The closed unit
-  square with centre `(53/35, 1398/985)` and `tan(ψ/2) = 137/1198`, tilt `13.0477°`, is
-  contained, avoids all ten points strictly, and is centred outside both wall rectangles
-  (Theorem G.6, exact).
+  square with centre $(53/35, 1398/985)$ and $\tan(\psi/2) = 137/1198$, tilt
+  $13.0477^\circ$, is contained, avoids all ten points strictly, and is centred outside
+  both wall rectangles (Theorem G.6, exact).
   So Stromquist’s ten points localise avoiders to the wall rectangles for no band
-  reaching `13.05°`; the float search reads the first avoider anywhere at `11.65°` (an
-  exact one at `11.67°` in the bottom wall rectangle) and the first interior one at
-  `13.03°`, so the wall-localised band, if it exists, is about `1.4°` wide — below the
-  `2°` the cell asked for — and is not proved.
-- **Pricing an anchor is decided by one fractional packing** (Lemma G.4). If `x` is a
-  fractional packing on the site set with value `V ≥ 11` and `x(E0) ≥ 1` on an anchor
-  class `E0`, no measure on that site set with threshold `w` on `E0` has mass below
-  `10 + w`, for any `w`. The corner-pair class is such a class on the very site set that
+  reaching $13.05^\circ$; the float search reads the first avoider anywhere at
+  $11.65^\circ$ (an exact one at $11.67^\circ$ in the bottom wall rectangle) and the
+  first interior one at $13.03^\circ$, so the wall-localised band, if it exists, is
+  about $1.4^\circ$ wide — below the $2^\circ$ the cell asked for — and is not proved.
+- **Pricing an anchor is decided by one fractional packing** (Lemma G.4). If $x$ is a
+  fractional packing on the site set with value $V \ge 11$ and `x(E0) ≥ 1` on an anchor
+  class `E0`, no measure on that site set with threshold $w$ on `E0` has mass below
+  $10 + w$, for any $w$. The corner-pair class is such a class on the very site set that
   proves the corner-pair theorem, because the ownership lemma’s premise — a heavy atom —
   is the complementary-slackness condition that saturates it (Corollary G.4.2): *an
   anchor proved by the ownership lemma is unpriceable on its own site set.*
 - **The trade-off curve, read from the free dual** (Section 5). Run 1 solved the free
-  covering LP at `96/25` on session-101’s site set (`619` orbits, `4645` sites) in
+  covering LP at $96/25$ on session-101’s site set ($619$ orbits, $4645$ sites) in
   `65 s`; its dual, rationalised down and symmetrised, is an exactly verified fractional
-  packing of value `V = 45544013/4000000 = 11.386`. It charges the corner-pair class
-  `1.0024` (dead for every threshold), the P10-avoiders `3.61` of its `11.39`, and the
-  four grazing classes `0.841` (corner), `0.822` (wall-middle), `0.000` (row-outer) and
-  `0.142` (row-inner).
+  packing of value $V = 45544013/4000000 = 11.386$. It charges the corner-pair class
+  $1.0024$ (dead for every threshold), the P10-avoiders $3.61$ of its $11.39$, and the
+  four grazing classes $0.841$ (corner), $0.822$ (wall-middle), $0.000$ (row-outer) and
+  $0.142$ (row-inner).
   Symmetric per-type measures are therefore dead on this site set for the corner and
   wall-middle types and alive only for the row types; an asymmetric branch-2 measure
-  needs at least `w > 3.42`, `3.16`, `1.39`, `1.45` respectively (a `K4`-symmetric one
-  `1.51` for the row-inner type).
-  Lane C’s S4 rectangle carries `0.35` (necessary `w > 1.60`), independent of its
+  needs at least $w > 3.42$, $3.16$, $1.39$, $1.45$ respectively (a `K4`-symmetric one
+  $1.51$ for the row-inner type).
+  Lane C’s S4 rectangle carries $0.35$ (necessary $w > 1.60$), independent of its
   height.
 - **No certificate and no new bound.** No claim needs an experiment id from this lane:
   Theorem G.1 is a hand proof over E.4 (whose registered replay is lane E’s follow-up),
   Lemma G.4 is a hand proof, Theorem G.6 is an exact rational pose recorded here, and
   every charge is an exact reading on one site set.
   **Recommended statuses:** H-126 open with the corner-anchor route recorded as an
-  obstruction at `96/25`; H-111 open with its anchor domain now concrete (the grazing
+  obstruction at $96/25$; H-111 open with its anchor domain now concrete (the grazing
   classes of the row types) and its next measurement named (Section 7).
 
 ## 1. The question and the falsifiers
 
 **Question.** For which angle band do Stromquist’s ten points localise every avoiding
-square at `96/25`, and can an escape-tolerant two-branch certificate close the escapes?
+square at $96/25$, and can an escape-tolerant two-branch certificate close the escapes?
 Rewritten for the premises that now exist: what do Theorem E.4 and the corner-pair
 theorem localise, does that give Lemma B a concrete anchor, and what does the retained
 instrument say about the anchor’s price.
@@ -88,47 +88,47 @@ instrument say about the anchor’s price.
 **Falsifiers, stated before each run.**
 
 - *Run 1 (the free LP with its dual).* Non-convergence within `1500 s`; a rationalised
-  measure the exact sweep rejects; or a mass below `11`, which would make the free
+  measure the exact sweep rejects; or a mass below $11$, which would make the free
   measure a certificate and the anchor question moot.
 - *The post-processing.* A site at which the rationalised, symmetrised dual has depth
-  above `1` (then it is not a fractional packing and no bound follows); or a corner-pair
-  charge below `1` (then the complementary-slackness prediction of Corollary G.4.2 fails
+  above $1$ (then it is not a fractional packing and no bound follows); or a corner-pair
+  charge below $1$ (then the complementary-slackness prediction of Corollary G.4.2 fails
   on this site set).
 - *The band search.* A found pose is a theorem once its rational rounding is decided
   exactly (containment and strict avoidance of every closed-square point); a grid with
   no find is a reading at its resolution and nothing more.
 - *The hand theorems.* An interior-disjoint packing whose cores all contain a Figure-13
-  point (against G.1(i)); a core that avoids the points and is farther than `1/100` from
+  point (against G.1(i)); a core that avoids the points and is farther than $1/100$ from
   every segment (against G.1(ii), which would contradict E.4 or the Hausdorff bound); a
-  measure on the run-1 site set below `10 + w` with threshold `w` on a class of charge
+  measure on the run-1 site set below $10 + w$ with threshold $w$ on a class of charge
   at least one (against G.4).
 
 ## 2. What Theorem E.4 and the corner pair localise
 
-**Notation.** `q = 96/25`, `S = [0, q]²`, `B = 9977/10000`, the retained net of `181`
-directions with half-tangents `k · 207107/500000/180`; its largest half-gap tangent is
-`D = 207107/90000000`. `P10` is Stromquist’s ten points at `q`: the corners `(1, 1)`,
-`(q − 1, 1)`, `(1, q − 1)`, `(q − 1, q − 1)`; the wall-middles `(q/2, 1)`,
-`(q/2, q − 1)`; and the middle row `(27/50, q/2)`, `(73/50, q/2)`, `(q − 73/50, q/2)`,
-`(q − 27/50, q/2)`. `M10` is the set of ten closed horizontal segments
-`[x − 1/20, x + 1/20] × {y}` for `(x, y) ∈ P10`. `K4` is the group generated by the two
-midline reflections; `P10` and `M10` are `K4`-invariant and are *not* `D4`-invariant
-(the transpose of `(q/2, 1)` is not in `P10`). The four `K4`-orbits of `M10` have
-representatives `σ_C` at `(1, 1)`, `σ_W` at `(q/2, 1)`, `σ_O` at `(27/50, q/2)` and
-`σ_I` at `(73/50, q/2)`, of sizes `4, 2, 2, 2`. `δ₀ = √2 · 2121/500000` is E.4’s
-constant.
+**Notation.** $q = 96/25$, $S = [0, q]^2$, $B = 9977/10000$, the retained net of $181$
+directions with half-tangents $k \cdot 207107/500000/180$; its largest half-gap tangent
+is $D = 207107/90000000$. `P10` is Stromquist’s ten points at $q$: the corners $(1, 1)$,
+$(q - 1, 1)$, $(1, q - 1)$, $(q - 1, q - 1)$; the wall-middles $(q/2, 1)$,
+$(q/2, q - 1)$; and the middle row $(27/50, q/2)$, $(73/50, q/2)$, $(q - 73/50, q/2)$,
+$(q - 27/50, q/2)$. `M10` is the set of ten closed horizontal segments
+$[x - 1/20, x + 1/20] \times \lbrace y\rbrace$ for `(x, y) ∈ P10`. `K4` is the group
+generated by the two midline reflections; `P10` and `M10` are `K4`-invariant and are
+*not* `D4`-invariant (the transpose of $(q/2, 1)$ is not in `P10`). The four `K4`-orbits
+of `M10` have representatives $\sigma_C$ at $(1, 1)$, $\sigma_W$ at $(q/2, 1)$,
+$\sigma_O$ at $(27/50, q/2)$ and $\sigma_I$ at $(73/50, q/2)$, of sizes $4, 2, 2, 2$.
+$\delta_0 = \sqrt{2} \cdot 2121/500000$ is E.4’s constant.
 
 ### 2.1 The grazing localisation of the escape class
 
-**Theorem G.1.** Let `Q₁, …, Q₁₁` be a packing of closed unit squares in `S` and let
-`P_i ⊂ int Q_i` be the concentric closed `B`-square at the net direction nearest to
-`Q_i`’s angle (a core, by Condition 4). Then:
+**Theorem G.1.** Let $Q_1, \ldots, Q_{11}$ be a packing of closed unit squares in `S`
+and let `P_i ⊂ int Q_i` be the concentric closed $B$-square at the net direction nearest
+to $Q_i$’s angle (a core, by Condition 4). Then:
 
 1. some core contains no point of `P10`;
-2. every core `P` that contains no point of `P10` satisfies `dist(P, σ) < 1/100` for
+2. every core $P$ that contains no point of `P10` satisfies `dist(P, σ) < 1/100` for
    some `σ ∈ M10`;
-3. for every such core there are `g ∈ K4` and a type `T ∈ {C, W, O, I}` with
-   `gP ∩ P10 = ∅` and `dist(gP, σ_T) < 1/100`.
+3. for every such core there are `g ∈ K4` and a type $T \in \lbrace C, W, O, I\rbrace$
+   with `gP ∩ P10 = ∅` and `dist(gP, σ_T) < 1/100`.
 
 Write `E0_T = {admissible cores P : P ∩ P10 = ∅, dist(P, σ_T) < 1/100}` and
 `E0 = E0_C ∪ E0_W ∪ E0_O ∪ E0_I`. Then (3) says the escape class of the ten unit atoms
@@ -137,109 +137,113 @@ is contained in `K4 · E0`.
 *Proof.* (1) The cores lie in the interiors of squares with pairwise disjoint interiors,
 so they are pairwise disjoint and each point of `P10` lies in at most one; ten points
 cannot meet eleven cores.
-(2) By Theorem E.4 the unit square `Q ⊃ P` is within `δ₀` of some `σ ∈ M10`. `P` and `Q`
-are concentric squares of sides `B` and `1` whose angles differ by at most
-`arctan D ≤ D`, so every vertex of `Q` is within
-`ρ = (1 − B)/√2 + (B/√2)·D < 0.0016264 + 0.0016236 < 0.00325` of the corresponding
-vertex of `P`; since `P ⊂ Q` and both are convex, `d_H(P, Q) ≤ ρ`, hence
-`dist(P, σ) ≤ δ₀ + ρ < 0.006 + 0.00325 < 1/100`. (3) `K4` permutes `M10` with the four
-orbits named above and fixes `P10` as a set, so for `g` with `gσ = σ_T`, `gP` avoids
-`P10` and `dist(gP, σ_T) = dist(P, σ)`. ∎
+(2) By Theorem E.4 the unit square $Q \supset P$ is within $\delta_0$ of some `σ ∈ M10`.
+$P$ and $Q$ are concentric squares of sides $B$ and $1$ whose angles differ by at most
+$\arctan D \le D$, so every vertex of $Q$ is within
+$\rho = (1 - B)/\sqrt{2} + (B/\sqrt{2})\cdot D < 0.0016264 + 0.0016236 < 0.00325$ of the
+corresponding vertex of $P$; since $P \subset Q$ and both are convex, `d_H(P, Q) ≤ ρ`,
+hence `dist(P, σ) ≤ δ₀ + ρ < 0.006 + 0.00325 < 1/100`. (3) `K4` permutes `M10` with the
+four orbits named above and fixes `P10` as a set, so for $g$ with $g\sigma = \sigma_T$,
+`gP` avoids `P10` and `dist(gP, σ_T) = dist(P, σ)`. ∎
 
-**Corollary G.1.1 (Lemma B at `96/25`, typed).** Let `μ₀` be the unit atoms on `P10`
-(`K4`-invariant, mass `10 < 11`). Suppose that for each type `T` there is a measure
-`μ₁^T` on the quarter-turn net and a threshold `w_T ≥ 1` with `μ₁^T(P) ≥ 1` for every
-admissible core `P`, `μ₁^T(P) ≥ w_T` for every `P ∈ E0_T`, and mass `M_T < 10 + w_T`.
-Then no packing of eleven unit squares exists in `S`.
+**Corollary G.1.1 (Lemma B at $96/25$, typed).** Let $\mu_0$ be the unit atoms on `P10`
+(`K4`-invariant, mass $10 < 11$). Suppose that for each type $T$ there is a measure
+$\mu_1^T$ on the quarter-turn net and a threshold $w_T \ge 1$ with $\mu_1^{T(P)} \ge 1$
+for every admissible core $P$, $\mu_1^{T(P)} \ge w_T$ for every `P ∈ E0_T`, and mass
+$M_T < 10 + w_T$. Then no packing of eleven unit squares exists in `S`.
 
-*Proof.* By G.1 some core `P_k` avoids `P10`; by G.1(3) choose `g ∈ K4` and `T` with
+*Proof.* By G.1 some core $P_k$ avoids `P10`; by G.1(3) choose `g ∈ K4` and $T$ with
 `gP_k ∈ E0_T`. The images `gP_i` are pairwise disjoint admissible cores (a midline
-reflection sends a net direction `θ` to `π/2 − θ` modulo quarter turns, which the
-quarter-turn net contains), so
+reflection sends a net direction $\theta$ to $\pi/2 - \theta$ modulo quarter turns,
+which the quarter-turn net contains), so
 `Σ_i μ₁^T(gP_i) ≥ w_T + 10 > M_T ≥ μ₁^T(⋃ gP_i) = Σ_i μ₁^T(gP_i)`. ∎
 
-The content of G.1 relative to lane C’s Proposition D is this: at `96/25` the ten
-*points* no longer confine the avoider to a wall rectangle (the `27.5°` interior escape
-of lane C, and the `13.05°` one of Section 3), but the ten *segments* confine it to
-graze one of them, at every angle.
+The content of G.1 relative to lane C’s Proposition D is this: at $96/25$ the ten
+*points* no longer confine the avoider to a wall rectangle (the $27.5^\circ$ interior
+escape of lane C, and the $13.05^\circ$ one of Section 3), but the ten *segments*
+confine it to graze one of them, at every angle.
 The anchor is therefore not a box but a thin class near a known short segment, in one of
 four types, and Lemma B’s branch 1 costs nothing.
 Whether branch 2 can be paid is Section 5.
 
 ### 2.2 The corner square is not pinned
 
-**Proposition G.2.** Let `m₁ = (3152/3175, 2336/3175)` and let `Q*` be the closed unit
-square with centre `(38/25, 3/4)` at `45°`, that is
-`Q* = {(x, y) : |x − 38/25| + |y − 3/4| ≤ 1/√2}`. Then `Q* ⊂ S`, `m₁ ∈ int Q*`,
-`dist(Q*, σ_C) > 3/500`, and `Q*` meets `σ_W`.
+**Proposition G.2.** Let $m_1 = (3152/3175, 2336/3175)$ and let $Q^{\ast}$ be the closed
+unit square with centre $(38/25, 3/4)$ at $45^\circ$, that is
+$Q^{\ast} = \lbrace(x, y) : |x - 38/25| + |y - 3/4| \le 1/\sqrt{2}\rbrace$. Then
+$Q^{\ast} \subset S$, `m₁ ∈ int Q*`, `dist(Q*, σ_C) > 3/500`, and $Q^{\ast}$ meets
+$\sigma_W$.
 
-*Proof.* The vertices of `Q*` are `(38/25 ± 1/√2, 3/4)` and `(38/25, 3/4 ± 1/√2)`, all
-in `S`. The `L¹` distance from `m₁` to the centre is
-`(38/25 − 3152/3175) + (3/4 − 2336/3175) = 6877/12700`, whose square `0.2932` is below
-`1/2`, so `m₁` is interior.
-For a point `(x, 1)` of `σ_C = [19/20, 21/20] × {1}` the `L¹` distance to the centre is
-at least `(38/25 − 21/20) + 1/4 = 18/25`, whose square `0.5184` exceeds `1/2`; for a
-`45°` square the Euclidean distance of an outside point is the `L¹` excess over `1/√2`
-divided by `√2`, here `18/(25√2) − 1/2 = 0.00912 > 3/500`. The point `(187/100, 1)` of
-`σ_W` has `L¹` distance `7/20 + 1/4 = 3/5` to the centre, and `9/25 < 1/2`. ∎
+*Proof.* The vertices of $Q^{\ast}$ are $(38/25 \pm 1/\sqrt{2}, 3/4)$ and
+$(38/25, 3/4 \pm 1/\sqrt{2})$, all in `S`. The $L^1$ distance from $m_1$ to the centre
+is $(38/25 - 3152/3175) + (3/4 - 2336/3175) = 6877/12700$, whose square $0.2932$ is
+below $1/2$, so $m_1$ is interior.
+For a point $(x, 1)$ of $\sigma_C = [19/20, 21/20] \times \lbrace1\rbrace$ the $L^1$
+distance to the centre is at least $(38/25 - 21/20) + 1/4 = 18/25$, whose square
+$0.5184$ exceeds $1/2$; for a $45^\circ$ square the Euclidean distance of an outside
+point is the $L^1$ excess over $1/\sqrt{2}$ divided by $\sqrt{2}$, here
+$18/(25\sqrt{2}) - 1/2 = 0.00912 > 3/500$. The point $(187/100, 1)$ of $\sigma_W$ has
+$L^1$ distance $7/20 + 1/4 = 3/5$ to the centre, and $9/25 < 1/2$. ∎
 
-So the corner-pair theorem does not place the corner square within `3/500` of the corner
-segment; the axis-parallel case, where it does (an axis square containing `m₁` has its
-top edge at height in `[1, 1.736]` and `x`-range containing `3152/3175`, hence contains
-`(3152/3175, 1) ∈ σ_C`), is not the general case.
+So the corner-pair theorem does not place the corner square within $3/500$ of the corner
+segment; the axis-parallel case, where it does (an axis square containing $m_1$ has its
+top edge at height in $[1, 1.736]$ and $x$-range containing $3152/3175$, hence contains
+$(3152/3175, 1) \in \sigma_C$), is not the general case.
 What is true is the diameter bound: every point of a unit square containing a mark is
-within `√2` of it, and the only segments within `√2 + 3/500` of `m₁` or `m₂` are `σ_C`,
-`σ_W`, `σ_O`, `σ_I` (the nearest points of the others are at distance at least `1.786`),
-so *the corner square is within `3/500` of one of the four segments of its own
-quadrant*. That is the whole of what the corner pair adds to E.4’s localisation.
+within $\sqrt{2}$ of it, and the only segments within $\sqrt{2} + 3/500$ of $m_1$ or
+$m_2$ are $\sigma_C$, $\sigma_W$, $\sigma_O$, $\sigma_I$ (the nearest points of the
+others are at distance at least $1.786$), so *the corner square is within `3/500` of one
+of the four segments of its own quadrant*. That is the whole of what the corner pair
+adds to E.4’s localisation.
 
 ### 2.3 The shared segment, and where exactly-one ownership fails
 
 **Proposition G.3.** In every packing of eleven unit squares in `S` some segment of
-`M10` is within `3/500` of two distinct squares.
+`M10` is within $3/500$ of two distinct squares.
 With the corner-pair theorem, either some square other than the four corner squares is
-within `3/500` of a corner segment, or the seven other squares are each within `3/500`
+within $3/500$ of a corner segment, or the seven other squares are each within $3/500$
 of one of the six non-corner segments and two of them share one.
-*Proof.* Pigeonhole on `11 > 10` and on `7 > 6`. ∎
+*Proof.* Pigeonhole on $11 > 10$ and on $7 > 6$. ∎
 
-This is where the transfer from `s(10)` stops.
-Stromquist’s bijection needs `|P| = n` with points, which no square can share; here the
-count is `11 > 10`, the marks are segments, and a segment of length `1/10` can be met by
-four interior-disjoint unit squares (the four axis squares around `(1, 1)`), so the
+This is where the transfer from $s(10)$ stops.
+Stromquist’s bijection needs $|P| = n$ with points, which no square can share; here the
+count is $11 > 10$, the marks are segments, and a segment of length $1/10$ can be met by
+four interior-disjoint unit squares (the four axis squares around $(1, 1)$), so the
 shared segment is a two-body event with no forced position for either body, and the free
 eleventh mark of H-134 has not been placed.
-The set-ownership form of Lemma C′ (any atom set of weight above `ε` meets a core) gives
-occupancy statements of the kind lane A already has, not a pinned square.
+The set-ownership form of Lemma C′ (any atom set of weight above $\varepsilon$ meets a
+core) gives occupancy statements of the kind lane A already has, not a pinned square.
 
 ### 2.4 Pricing an anchor: weak duality on the site set
 
-**Lemma G.4.** Let `Σ` be a site set, `x = (x_r)` a fractional packing on `Σ`: a finite
-family of admissible cores `P_r` with weights `x_r ≥ 0` such that
-`Σ_{r : s ∈ P_r} x_r ≤ 1` for every `s ∈ Σ`, of value `V = Σ_r x_r`. Let `E0` be any
-class of admissible cores, `w ≥ 1`, and let `μ` be any measure supported on `Σ` — no
-symmetry required — with `μ(P) ≥ 1` for every admissible core and `μ(P) ≥ w` for every
-`P ∈ E0`. Then
+**Lemma G.4.** Let $\Sigma$ be a site set, $x = (x_r)$ a fractional packing on $\Sigma$:
+a finite family of admissible cores $P_r$ with weights $x_r \ge 0$ such that
+`Σ_{r : s ∈ P_r} x_r ≤ 1` for every $s \in \Sigma$, of value $V = \Sigma_r x_r$. Let
+`E0` be any class of admissible cores, $w \ge 1$, and let $\mu$ be any measure supported
+on $\Sigma$ — no symmetry required — with $\mu(P) \ge 1$ for every admissible core and
+$\mu(P) \ge w$ for every `P ∈ E0`. Then
 
 `μ(S) ≥ V + (w − 1) · x(E0)`, where `x(E0) = Σ_{r : P_r ∈ E0} x_r`.
 
 *Proof.* `μ(S) = Σ_s μ_s ≥ Σ_s μ_s Σ_{r : s ∈ P_r} x_r = Σ_r x_r μ(P_r) ≥ Σ_r x_r c_r`
-with `c_r = w` on `E0` and `1` elsewhere.
+with $c_r = w$ on `E0` and $1$ elsewhere.
 ∎
 
-**Corollary G.4.1.** If `V ≥ 11` and `x(E0) ≥ 1` then `μ(S) ≥ 10 + w` for every `w ≥ 1`:
-on `Σ` there is no branch-2 measure of Corollary G.1.1 (nor any conditional certificate
-of X-014 Lemma-2 type) with anchor `E0`, at any threshold.
+**Corollary G.4.1.** If $V \ge 11$ and `x(E0) ≥ 1` then $\mu(S) \ge 10 + w$ for every
+$w \ge 1$: on $\Sigma$ there is no branch-2 measure of Corollary G.1.1 (nor any
+conditional certificate of X-014 Lemma-2 type) with anchor `E0`, at any threshold.
 If `x(E0) < 1`, a branch-2 measure needs `w > 1 + (V − 11)/(1 − x(E0))`. For a `D4`- or
-`K4`-symmetric `μ` the same holds with `E0` replaced by its orbit union.
+`K4`-symmetric $\mu$ the same holds with `E0` replaced by its orbit union.
 
 **Corollary G.4.2 (anchors proved by ownership are unpriceable on their site set).** Let
-`μ*` be the optimum of the free covering LP on `Σ` with mass `11 + ε`, `ε ≥ 0`, and `x`
-its optimal dual, symmetrised.
-If an atom `a` has `μ*({a}) > 0` then `x` saturates `a` (complementary slackness: the
-orbit constraint `Σ_r x_r · #(O ∩ P_r) ≤ |O|` is tight when the orbit’s weight is
-positive, and symmetrising spreads that to depth `1` at every member), so every class
-`E0 ⊇ {P : a ∈ P}` has `x(E0) ≥ 1` and is dead by G.4.1. The ownership lemma’s premise
-for anchoring a core at `a` — weight above `ε` at `a` — is precisely this condition.
+$\mu^{\ast}$ be the optimum of the free covering LP on $\Sigma$ with mass
+$11 + \varepsilon$, $\varepsilon \ge 0$, and $x$ its optimal dual, symmetrised.
+If an atom $a$ has $\mu^{\ast}(\lbrace a\rbrace) > 0$ then $x$ saturates $a$
+(complementary slackness: the orbit constraint `Σ_r x_r · #(O ∩ P_r) ≤ |O|` is tight
+when the orbit’s weight is positive, and symmetrising spreads that to depth $1$ at every
+member), so every class `E0 ⊇ {P : a ∈ P}` has `x(E0) ≥ 1` and is dead by G.4.1. The
+ownership lemma’s premise for anchoring a core at $a$ — weight above $\varepsilon$ at
+$a$ — is precisely this condition.
 So the corner-pair anchor, proved on session-101’s site set from the free measure,
 cannot be priced on that site set at any threshold; Section 5 exhibits the number.
 
@@ -252,148 +256,151 @@ for.
 
 ## 3. The band question: the escaping square
 
-**Theorem G.6 (exact).** Let `t = 137/1198`, `ψ = 2 arctan t = 13.0477°`, and let `Q` be
-the closed unit square with centre `(53/35, 1398/985)` and tilt `ψ`. Then `Q ⊂ S`, the
-centre of `Q` lies outside both wall rectangles `[1, q − 1] × [0, 1]` and
-`[1, q − 1] × [q − 1, q]`, and `Q` contains none of the ten points: in `Q`’s frame,
-`max(|u| − 1/2, |v| − 1/2) ≥ 3930001/100251438350 > 0` for every point of `P10`.
-Likewise the closed unit square with centre `(115/77, 565/956)` and
-`tan(ψ/2) = 191/1869` (`ψ = 11.6700°`) is a contained avoider whose centre lies in the
-bottom wall rectangle.
+**Theorem G.6 (exact).** Let $t = 137/1198$, $\psi = 2 \arctan t = 13.0477^\circ$, and
+let $Q$ be the closed unit square with centre $(53/35, 1398/985)$ and tilt $\psi$. Then
+$Q \subset S$, the centre of $Q$ lies outside both wall rectangles
+$[1, q - 1] \times [0, 1]$ and $[1, q - 1] \times [q - 1, q]$, and $Q$ contains none of
+the ten points: in $Q$’s frame,
+$\max(|u| - 1/2, |v| - 1/2) \ge 3930001/100251438350 > 0$ for every point of `P10`.
+Likewise the closed unit square with centre $(115/77, 565/956)$ and
+$\tan(\psi/2) = 191/1869$ ($\psi = 11.6700^\circ$) is a contained avoider whose centre
+lies in the bottom wall rectangle.
 
-*Proof.* Exact rational evaluation of the half-extent `(cos ψ + sin ψ)/2` with
-`cos ψ = (1 − t²)/(1 + t²)`, `sin ψ = 2t/(1 + t²)`, of the containment inequalities, of
-the rectangle membership, and of the ten frame margins, all in `fractions.Fraction`
-(`band.py`, Appendix; the script refuses to print a witness that fails any of them).
-∎
+*Proof.* Exact rational evaluation of the half-extent $(\cos \psi + \sin \psi)/2$ with
+$\cos \psi = (1 - t^2)/(1 + t^2)$, $\sin \psi = 2t/(1 + t^2)$, of the containment
+inequalities, of the rectangle membership, and of the ten frame margins, all in
+`fractions.Fraction` (`band.py`, Appendix; the script refuses to print a witness that
+fails any of them). ∎
 
-*Readings, not theorems.* On the grid of step `0.01` in the centre and `0.25°`
-(interior) or `0.05°` (wall rectangles) in the tilt, refined by bisection with a centre
-step `0.0025`, the least tilt of any avoider is `11.65°` (in a wall rectangle, margin
-`0.0002`) and the least tilt of an avoider centred outside the wall rectangles is
-`13.03°` (margin at the grid `0.0003`). Below `11.65°` neither search found an avoider.
+*Readings, not theorems.* On the grid of step $0.01$ in the centre and $0.25^\circ$
+(interior) or $0.05^\circ$ (wall rectangles) in the tilt, refined by bisection with a
+centre step $0.0025$, the least tilt of any avoider is $11.65^\circ$ (in a wall
+rectangle, margin $0.0002$) and the least tilt of an avoider centred outside the wall
+rectangles is $13.03^\circ$ (margin at the grid $0.0003$). Below $11.65^\circ$ neither
+search found an avoider.
 
 *What this settles.* The cell asked for a localisation theorem “for a band of at least
-`2°`, or the escaping square”; the answer is the escaping square.
-Every band `[0, α]` with `α ≥ 13.05°` contains an interior avoider, so Stromquist’s
-wall-rectangle localisation holds at `96/25` for no such band; if it holds at all it
-holds on a band inside `[11.65°, 13.05°)`, about `1.4°` wide, and proving it would need
-an interval certificate over that band, which was not run.
-The mechanism is the row slack: the rows `y = 1` and `y = q/2` are `0.92` apart and the
-points in a row are `0.92` apart, so an axis square always contains a point, and the
-first avoider appears when the tilt lets the row `y = 1` cut the square’s top wedge in a
-chord shorter than `0.92` between two points — at `11.67°` the chord is `0.918`. H-106’s
-near-axis clause (no avoider at all) therefore extends at `96/25` to a band of about
-`11.6°` by this reading, far beyond the `±0.25°` it certified at `1939/500`; the band
-the anchor route needs is not this one but G.1’s, which holds at every angle.
+$2^\circ$, or the escaping square”; the answer is the escaping square.
+Every band $[0, \alpha]$ with $\alpha \ge 13.05^\circ$ contains an interior avoider, so
+Stromquist’s wall-rectangle localisation holds at $96/25$ for no such band; if it holds
+at all it holds on a band inside $[11.65^\circ, 13.05^\circ)$, about $1.4^\circ$ wide,
+and proving it would need an interval certificate over that band, which was not run.
+The mechanism is the row slack: the rows $y = 1$ and $y = q/2$ are $0.92$ apart and the
+points in a row are $0.92$ apart, so an axis square always contains a point, and the
+first avoider appears when the tilt lets the row $y = 1$ cut the square’s top wedge in a
+chord shorter than $0.92$ between two points — at $11.67^\circ$ the chord is $0.918$.
+H-106’s near-axis clause (no avoider at all) therefore extends at $96/25$ to a band of
+about $11.6^\circ$ by this reading, far beyond the $\pm0.25^\circ$ it certified at
+$1939/500$; the band the anchor route needs is not this one but G.1’s, which holds at
+every angle.
 
 ## 4. Runs, inputs and exact verdicts
 
-**Inputs common to every run.** Side `96/25`, shrink `9977/10000`, the retained
-`181`-direction net (`certificate.json`: half-tangent limit `207107/500000`, `180` equal
-steps), `D = 207107/90000000`; site set as in session-101’s start: T-018’s `1121` atoms
-scaled by `128/127` unioned with the library’s density grids
-`site_counts_for_side(96/25, 9977/10000) = (25, 34, 42)` at inset `1/2`, closed under
-`D4` — `619` orbits, `4645` sites; `solve_rows` with `rows_per_direction 3`, at most
-`100` rounds, deadline `1500 s`, no column rounds (the run wants the dual on the stated
-site set, not a lighter measure); `rationalise_sites` at scale `4 000 000` with the
-`1000001/1000000` bump for the measure; the dual rationalised *down* (scaled by
-`999999/1000000`, floored at `1/4000000`), placements with centres rationalised at
-denominator `10⁶` and clamped into the exact centre domain as `colgen.dual_squares`
-does, then spread over the eight `D4` images at weight `1/8`; interpreter the project’s
+**Inputs common to every run.** Side $96/25$, shrink $9977/10000$, the retained
+$181$-direction net (`certificate.json`: half-tangent limit $207107/500000$, $180$ equal
+steps), $D = 207107/90000000$; site set as in session-101’s start: T-018’s $1121$ atoms
+scaled by $128/127$ unioned with the library’s density grids
+`site_counts_for_side(96/25, 9977/10000) = (25, 34, 42)` at inset $1/2$, closed under
+`D4` — $619$ orbits, $4645$ sites; `solve_rows` with `rows_per_direction 3`, at most
+$100$ rounds, deadline `1500 s`, no column rounds (the run wants the dual on the stated
+site set, not a lighter measure); `rationalise_sites` at scale $4 000 000$ with the
+$1000001/1000000$ bump for the measure; the dual rationalised *down* (scaled by
+$999999/1000000$, floored at $1/4000000$), placements with centres rationalised at
+denominator $10^6$ and clamped into the exact centre domain as `colgen.dual_squares`
+does, then spread over the eight `D4` images at weight $1/8$; interpreter the project’s
 Python 3.14 from the frozen environment; `sqpack` unmodified.
 
 **Run 1 (the free LP with its dual).** Converged: “every placement covers mass 1” after
-`21` rounds, `4775` rows, objective `11.386020301400558`, least covered placement
-`0.99999999999996`; wall `65.2 s`, load `0.35` before and `1.53` after.
-Rationalised measure: mass `45544287/4000000 = 11.38607175` over `329` atoms; the exact
-sweep in one worker (`11.7 s`, load `1.45`): Conditions 1, 3, 4 and 5 hold, least cell
-`400001/400000` at direction `0`, Condition 2 fails as it must at that mass.
+$21$ rounds, $4775$ rows, objective $11.386020301400558$, least covered placement
+$0.99999999999996$; wall `65.2 s`, load $0.35$ before and $1.53$ after.
+Rationalised measure: mass $45544287/4000000 = 11.38607175$ over $329$ atoms; the exact
+sweep in one worker (`11.7 s`, load $1.45$): Conditions 1, 3, 4 and 5 hold, least cell
+$400001/400000$ at direction $0$, Condition 2 fails as it must at that mass.
 The falsifier is not met.
-The value sits above session-101’s phase-D `11.262` because that reading followed ten
-column rounds on `637` orbits; the site set here is the one the pair theorem’s measure
+The value sits above session-101’s phase-D $11.262$ because that reading followed ten
+column rounds on $637$ orbits; the site set here is the one the pair theorem’s measure
 started from, and the dual is what the lane needs.
 
-**Post-processing (`charges.py`, `14.8 s`, load `1.2` to `1.6`).** `45` rows carry a
-positive dual (their float total equals the objective to `10⁻¹²`, as strong duality
-requires); `360` symmetrised placements; value `V = 45544013/4000000 = 11.38600325`
+**Post-processing (`charges.py`, `14.8 s`, load $1.2$ to $1.6$).** $45$ rows carry a
+positive dual (their float total equals the objective to $10^{-12}$, as strong duality
+requires); $360$ symmetrised placements; value $V = 45544013/4000000 = 11.38600325$
 exactly.
-Depth at every one of the `4645` sites, decided as an exact sum over memberships
-flagged in floats with a conservative `10⁻⁹` band (so the flagged sum is an upper bound
-on the exact depth): at most `15999983/16000000 < 1`; `893` sites at depth `≥ 0.999`.
-The marks `(3152/3175, 2336/3175)` and `(2336/3175, 3152/3175)` are sites and carry
-depth `15999983/16000000` each — saturated, as Corollary G.4.2 predicts; the scaled
-T-018 corner atom `(29586032/29422725, ·)` carries `7124827/8000000 = 0.891` and, as in
-session-101, weight `0` in the measure.
+Depth at every one of the $4645$ sites, decided as an exact sum over memberships
+flagged in floats with a conservative $10^{-9}$ band (so the flagged sum is an upper
+bound on the exact depth): at most $15999983/16000000 < 1$; $893$ sites at depth
+$\ge 0.999$. The marks $(3152/3175, 2336/3175)$ and $(2336/3175, 3152/3175)$ are sites
+and carry depth $15999983/16000000$ each — saturated, as Corollary G.4.2 predicts; the
+scaled T-018 corner atom $(29586032/29422725, \cdot)$ carries $7124827/8000000 = 0.891$
+and, as in session-101, weight $0$ in the measure.
 Neither post-processing falsifier is met.
 
 **The band searches (`band.py`).** Interior: `11.6 s`; wall rectangles: `12.5 s`; load
-`1.2` to `1.7`; the exact witnesses of Theorem G.6.
+$1.2$ to $1.7$; the exact witnesses of Theorem G.6.
 
 ## 5. The trade-off curve
 
-Every number below is `x(E0)` for the exactly verified fractional packing `x` of run 1,
+Every number below is `x(E0)` for the exactly verified fractional packing $x$ of run 1,
 an exact rational printed to six places (lower and upper bounds coincide except where a
 segment-distance test is sampled, where they still agreed at this resolution), and the
-verdict is Corollary G.4.1 with `V = 11.386`. Classes are in the bottom-left frame; “any
+verdict is Corollary G.4.1 with $V = 11.386$. Classes are in the bottom-left frame; “any
 core” has no avoidance filter; “grazing” means the core contains no point of `P10`. The
-radius `h` is the Euclidean distance from the core to the segment.
+radius $h$ is the Euclidean distance from the core to the segment.
 
 | Anchor class `E0` | charge | verdict for a branch-2 measure on this site set |
 | --- | --- | --- |
-| core contains `m₁` or `m₂` (the corner pair) | `1.002367` | dead for every `w` |
-| core contains the scaled T-018 corner atom | `0.890603` | needs `w > 4.53` |
-| all `P10`-avoiding cores (Lemma B’s `E`) | `3.608129` | dead for every `w` |
-| within `1/100` of `σ_C`, any core / grazing | `2.335340` / `0.840596` | dead / needs `w > 3.42` |
-| within `1/5` of `σ_C`, any core / grazing | `2.542421` / `0.858685` | dead / needs `w > 3.73` |
-| within `1/100` of `σ_W`, any core / grazing | `1.844134` / `0.821522` | dead / needs `w > 3.16` |
-| within `1/5` of `σ_W`, any core / grazing | `2.134337` / `0.826258` | dead / needs `w > 3.22` |
-| within `1/100` to `1/5` of `σ_O`, any core / grazing | `0.999999` / `0` | needs `w > 2.9 · 10⁵` / needs `w > 1.386` |
-| within `1/100` of `σ_I`, any core / grazing | `1.483797` / `0.142054` | dead / needs `w > 1.45` |
-| within `1/20` of `σ_I`, any core / grazing | `1.815750` / `0.209566` | dead / needs `w > 1.49` |
-| `K4`-union, grazing: `σ_C` (4 images) / `σ_W` (2) / `σ_O` (2) / `σ_I` (2) | `3.362383` / `1.643044` / `0` / `0.245745` | dead / dead / needs `w > 1.39` / needs `w > 1.51` |
-| `D4`-union, grazing: `σ_C` (8) / `σ_W` (4) / `σ_O` (4) / `σ_I` (4) | `3.362383` / `1.643044` / `1.406770` / `0.245745` | dead / dead / dead / needs `w > 1.51` |
-| centre within `1/2` of `σ_C`’s centre, any / grazing | `1.435235` / `0.150851` | dead / needs `w > 1.45` |
-| centre within `1/2` of `σ_W`’s centre, any / grazing | `0.864217` / `0.330852` | needs `w > 3.84` / needs `w > 1.58` |
-| centre within `1/2` of `σ_I`’s centre, any / grazing | `0.870966` / `0.178123` | needs `w > 3.99` / needs `w > 1.47` |
-| centre within `3/10` or less of any segment centre, grazing | `0` | needs `w > 1.386` |
-| lane C’s S4: centre in `[1, q/2] × [0, h]`, `h ∈ {1, 11/10, 6/5}`, any / avoiding the three bottom-row points | `0.499999` / `0.351692` | needs `w > 1.77` / needs `w > 1.60` |
+| core contains $m_1$ or $m_2$ (the corner pair) | $1.002367$ | dead for every $w$ |
+| core contains the scaled T-018 corner atom | $0.890603$ | needs $w > 4.53$ |
+| all `P10`-avoiding cores (Lemma B’s $E$) | $3.608129$ | dead for every $w$ |
+| within $\frac{1}{100}$ of $\sigma_C$, any core / grazing | $2.335340$ / $0.840596$ | dead / needs $w > 3.42$ |
+| within $\frac{1}{5}$ of $\sigma_C$, any core / grazing | $2.542421$ / $0.858685$ | dead / needs $w > 3.73$ |
+| within $\frac{1}{100}$ of $\sigma_W$, any core / grazing | $1.844134$ / $0.821522$ | dead / needs $w > 3.16$ |
+| within $\frac{1}{5}$ of $\sigma_W$, any core / grazing | $2.134337$ / $0.826258$ | dead / needs $w > 3.22$ |
+| within $\frac{1}{100}$ to $\frac{1}{5}$ of $\sigma_O$, any core / grazing | $0.999999$ / $0$ | needs $w > 2.9 \cdot 10^5$ / needs $w > 1.386$ |
+| within $\frac{1}{100}$ of $\sigma_I$, any core / grazing | $1.483797$ / $0.142054$ | dead / needs $w > 1.45$ |
+| within $\frac{1}{20}$ of $\sigma_I$, any core / grazing | $1.815750$ / $0.209566$ | dead / needs $w > 1.49$ |
+| `K4`-union, grazing: $\sigma_C$ (4 images) / $\sigma_W$ (2) / $\sigma_O$ (2) / $\sigma_I$ (2) | $3.362383$ / $1.643044$ / $0$ / $0.245745$ | dead / dead / needs $w > 1.39$ / needs $w > 1.51$ |
+| `D4`-union, grazing: $\sigma_C$ (8) / $\sigma_W$ (4) / $\sigma_O$ (4) / $\sigma_I$ (4) | $3.362383$ / $1.643044$ / $1.406770$ / $0.245745$ | dead / dead / dead / needs $w > 1.51$ |
+| centre within $\frac{1}{2}$ of $\sigma_C$’s centre, any / grazing | $1.435235$ / $0.150851$ | dead / needs $w > 1.45$ |
+| centre within $\frac{1}{2}$ of $\sigma_W$’s centre, any / grazing | $0.864217$ / $0.330852$ | needs $w > 3.84$ / needs $w > 1.58$ |
+| centre within $\frac{1}{2}$ of $\sigma_I$’s centre, any / grazing | $0.870966$ / $0.178123$ | needs $w > 3.99$ / needs $w > 1.47$ |
+| centre within $\frac{3}{10}$ or less of any segment centre, grazing | $0$ | needs $w > 1.386$ |
+| lane C’s S4: centre in $[1, q/2] \times [0, h]$, $h \in \lbrace1, \frac{11}{10}, \frac{6}{5}\rbrace$, any / avoiding the three bottom-row points | $0.499999$ / $0.351692$ | needs $w > 1.77$ / needs $w > 1.60$ |
 
 Three checks are in the table.
-Every grazing core of the dual is within `1/100` of some segment (`0` exceptions), as
+Every grazing core of the dual is within $1/100$ of some segment ($0$ exceptions), as
 Theorem G.1(2) requires of cores arising from contained unit squares.
-For the dual’s admissible `B`-cores this is a separate check: the theorem’s proof needs
-a contained unit-square parent, which an arbitrary admissible `B`-core need not have.
+For the dual’s admissible $B$-cores this is a separate check: the theorem’s proof needs
+a contained unit-square parent, which an arbitrary admissible $B$-core need not have.
 The corner-pair class is dead with charge above one, Corollary G.4.2 realised.
-And the `σ_O` class with no avoidance filter carries `0.999999` on twenty squares: the
-free packing puts exactly a unit of weight on cores containing `(27/50, q/2)`, which is
-a Figure-13 point *and* a saturated site of this dual, yet not one of those cores avoids
-the point — the row-outer segment is where the fractional packing’s integral and
+And the $\sigma_O$ class with no avoidance filter carries $0.999999$ on twenty squares:
+the free packing puts exactly a unit of weight on cores containing $(27/50, q/2)$, which
+is a Figure-13 point *and* a saturated site of this dual, yet not one of those cores
+avoids the point — the row-outer segment is where the fractional packing’s integral and
 fractional obligations coincide, and the grazing class beside it is empty.
 
 **What the curve says.** Read as `h ↦ (M₀(E), w(E0))` in the cell’s terms: branch 1 is
-free (`M₀ = 10`) at every `h` because the localisation is G.1’s, not a box; the binding
+free ($M_0 = 10$) at every $h$ because the localisation is G.1’s, not a box; the binding
 question is the branch-2 threshold, and its floor is set by the charge.
-The corner and wall-middle grazing classes carry `0.82` to `0.86` at every radius from
-`1/100` to `1/5` — the fractional packing lives there — so a symmetric per-type measure
+The corner and wall-middle grazing classes carry $0.82$ to $0.86$ at every radius from
+$1/100$ to $1/5$ — the fractional packing lives there — so a symmetric per-type measure
 is dead for those types on this site set, and an asymmetric one would need to place more
-than `2.4` extra units of threshold on a class the free measure already covers at `1`.
+than $2.4$ extra units of threshold on a class the free measure already covers at $1$.
 The row types are different: the row-outer grazing class is empty of dual weight at
-every radius and the row-inner one carries `0.14` to `0.25`, so for those two types the
-necessary threshold is `1.39` to `1.51`, within the range Stromquist’s `w = 3` scheme
+every radius and the row-inner one carries $0.14$ to $0.25$, so for those two types the
+necessary threshold is $1.39$ to $1.51$, within the range Stromquist’s $w = 3$ scheme
 paid. No run of the threshold program itself was made; the reading is one fractional
 packing, and a threshold program’s own dual can only be heavier.
 
-**Which pose classes carry the binding rows.** The `45` binding placements sit at `37`
-net directions from `0°` to `45°`. Of their `360` symmetrised images, `48` are grazing
-cores; in the bottom-left frame `5` graze the corner segment (at `0°`, `0.53°` and
-`45°`), `18` the wall-middle segment (at `0°`, `0.53°` and six directions from `13.39°`
-to `22.9°`), none the row-outer segment, and `16` the row-inner segment (the same six
-tilted directions only).
-So the near-axis grazers are the cores that slide along the row `y = 1` past its points,
-and the tilted grazers at `13°` to `23°` are the interior-escape poses of Section 3 seen
-from the dual’s side: the fractional packing puts its weight exactly where the point set
-first admits avoiders.
+**Which pose classes carry the binding rows.** The $45$ binding placements sit at $37$
+net directions from $0^\circ$ to $45^\circ$. Of their $360$ symmetrised images, $48$ are
+grazing cores; in the bottom-left frame $5$ graze the corner segment (at $0^\circ$,
+$0.53^\circ$ and $45^\circ$), $18$ the wall-middle segment (at $0^\circ$, $0.53^\circ$
+and six directions from $13.39^\circ$ to $22.9^\circ$), none the row-outer segment, and
+$16$ the row-inner segment (the same six tilted directions only).
+So the near-axis grazers are the cores that slide along the row $y = 1$ past its points,
+and the tilted grazers at $13^\circ$ to $23^\circ$ are the interior-escape poses of
+Section 3 seen from the dual’s side: the fractional packing puts its weight exactly
+where the point set first admits avoiders.
 
 ## 6. Obstructions and status
 
@@ -406,12 +413,12 @@ first admits avoiders.
   set.
 - **Symmetric measures cannot anchor a `K4`-symmetric point set at the corners or the
   walls.** On the run-1 site set the `K4`-union charges of the corner and wall-middle
-  grazing classes are `3.36` and `1.64`; Corollary A.2 of lane C (the `K4`-average of
-  Stromquist’s data is not a certificate) is the same fact at `2 + 4/√5`.
+  grazing classes are $3.36$ and $1.64$; Corollary A.2 of lane C (the `K4`-average of
+  Stromquist’s data is not a certificate) is the same fact at $2 + 4/\sqrt{5}$.
 - **The band is narrower than the cell hoped.** The wall-rectangle localisation of point
-  avoiders fails from `13.05°` (exact) and avoiders exist from `11.65°` (reading); the
-  localisation that survives is the segment one, which is a thin class rather than a box
-  and needs a threshold measure shaped to it.
+  avoiders fails from $13.05^\circ$ (exact) and avoiders exist from $11.65^\circ$
+  (reading); the localisation that survives is the segment one, which is a thin class
+  rather than a box and needs a threshold measure shaped to it.
 - **The segment premise is a two-body premise for ownership.** Nothing in E.4 plus the
   corner pair pins a single square to a single segment; the shared-segment split of G.3
   needs pair rows, which the retained row generator does not have, and the atoms a pair
@@ -419,13 +426,13 @@ first admits avoiders.
   squares leave them uncounted.
 - **What was not run.** The threshold program for the row types (an instrument
   extension: a row generator with the grazing predicate on the `D4` images of a
-  placement); the interval certificate of the no-avoider band below `11.6°` (H-106’s
-  reader with `q` and the band as parameters, the cell’s own instrument); the event-cell
-  filter of lane C’s S4 and its mutation test.
+  placement); the interval certificate of the no-avoider band below $11.6^\circ$
+  (H-106’s reader with $q$ and the band as parameters, the cell’s own instrument); the
+  event-cell filter of lane C’s S4 and its mutation test.
 
 **Recommended status for H-126:** open, unchanged in kind; the corner-anchor route is
-recorded as an obstruction at `96/25` on the retained shrink, net and session-101’s site
-set (Corollary G.4.2 with the charge `1.002367`), and the corner square’s pose is
+recorded as an obstruction at $96/25$ on the retained shrink, net and session-101’s site
+set (Corollary G.4.2 with the charge $1.002367$), and the corner square’s pose is
 localised only to the four segments of its quadrant (Proposition G.2).
 
 **Recommended status for H-111:** open, with the anchor domain now concrete: Theorem G.1
@@ -437,54 +444,54 @@ No claim is frozen and no experiment id is needed.
 ## 7. What the next session does first
 
 1. Run the threshold program for the row-inner type on the run-1 site set: a
-   `D4`-symmetric measure with `μ ≥ 1` everywhere and `μ ≥ w` on every placement one of
-   whose `D4` images is a grazing core within `1/100` of `σ_I`, for `w ∈ {3/2, 2, 5/2}`,
-   decided by the exact sweep; certificate iff the mass is below `10 + w`. The row
-   generator needs the grazing predicate on the eight images of a placement;
-   `placement_cells` supplies the least-mass cells, so the class’s own least-mass cells
-   need a second pass restricted to the class.
+   `D4`-symmetric measure with $\mu \ge 1$ everywhere and $\mu \ge w$ on every placement
+   one of whose `D4` images is a grazing core within $1/100$ of $\sigma_I$, for
+   $w \in \lbrace3/2, 2, 5/2\rbrace$, decided by the exact sweep; certificate iff the
+   mass is below $10 + w$. The row generator needs the grazing predicate on the eight
+   images of a placement; `placement_cells` supplies the least-mass cells, so the
+   class’s own least-mass cells need a second pass restricted to the class.
    The row-outer type needs a `K4`-symmetric measure (its `D4`-union is dead, its
    `K4`-union is empty on this dual).
    It can use the same folded angle range once the row generator and exact symmetry
    check support `K4`.
 2. If the threshold program leaves a class alive, do the same on session-101’s
-   `637`-orbit site set with column rounds, where the free value is `11.262`.
+   $637$-orbit site set with column rounds, where the free value is $11.262$.
 3. Only if a band theorem is wanted: the interval certificate that no contained unit
-   square of folded tilt at most `11°` avoids `P10` at `96/25` (the H-106 reader with
-   `q` and the band as parameters).
+   square of folded tilt at most $11^\circ$ avoids `P10` at $96/25$ (the H-106 reader
+   with $q$ and the band as parameters).
 
 **Readiness correction, 2026-09-08.** The earlier claim that the row-outer `K4` program
 requires a quarter-turn sweep was too strong.
-A vertical reflection in `K4` sends a square’s angle `θ`, modulo `π/2`, to `π/2 − θ`.
-Both the measure and the `K4`-orbit union of the row-outer grazing class are invariant
-under that reflection, so checking `[0, π/4]` covers the remaining angles as well.
-The missing instrument is the region-class separator and a verifier that checks the
-declared `K4` symmetry; `classcert._symmetry_report` currently accepts only `D4`. A
-small-grid comparison against an expanded angular sweep and a broken-symmetry mutation
-should guard that extension.
+A vertical reflection in `K4` sends a square’s angle $\theta$, modulo $\pi/2$, to
+$\pi/2 - \theta$. Both the measure and the `K4`-orbit union of the row-outer grazing
+class are invariant under that reflection, so checking $[0, \pi/4]$ covers the remaining
+angles as well. The missing instrument is the region-class separator and a verifier that
+checks the declared `K4` symmetry; `classcert._symmetry_report` currently accepts only
+`D4`. A small-grid comparison against an expanded angular sweep and a broken-symmetry
+mutation should guard that extension.
 The threshold program was not run in session-108. A row-type exclusion would still leave
 the corner and wall-middle types of Corollary G.1.1 to discharge.
 
 ## 8. Inputs and resources
 
-- Side `96/25`, shrink `9977/10000`, net `k · 207107/500000/180`, `k = 0..180`; site set
-  `619` orbits, `4645` sites (T-018 scaled by `128/127` plus grids `25, 34, 42` at inset
-  `1/2`); rows `4775`; dual rows with positive weight `45`.
-- Rationalisation: measure up at scale `4 000 000` with bump `1000001/1000000`; dual
-  down by `999999/1000000` then floored at `1/4000000`; centres at denominator `10⁶`,
+- Side $96/25$, shrink $9977/10000$, net $k \cdot 207107/500000/180$, `k = 0..180`; site
+  set $619$ orbits, $4645$ sites (T-018 scaled by $128/127$ plus grids $25, 34, 42$ at
+  inset $1/2$); rows $4775$; dual rows with positive weight $45$.
+- Rationalisation: measure up at scale $4 000 000$ with bump $1000001/1000000$; dual
+  down by $999999/1000000$ then floored at $1/4000000$; centres at denominator $10^6$,
   clamped.
-- Marks: `m₁ = (3152/3175, 2336/3175)`, `m₂ = (2336/3175, 3152/3175)`; scaled corner
-  atom `(29586032/29422725, 29586032/29422725)`; `P10` and `M10` as in Section 2;
-  segment-distance tests sampled at `401` points per segment with the `1`-Lipschitz
-  sampling error added to the lower bound and a `10⁻⁹` float allowance.
-- Band search: centre step `0.01` on the fundamental domain `[w, q/2]²`, tilt steps
-  `0.25°` (interior) and `0.05°` (wall rectangles), forty bisection steps with centre
-  step `0.0025`, then the tilt slack menu `0.02°` to `0.5°` with centre step `0.002`,
-  rationalised at denominators `2000` (half-tangent) and `1000` (centre), decided
-  exactly.
-- Wall times with the load average: run 1 `65.2 s` at `0.35` to `1.53`; its exact sweep
-  `11.7 s` at `1.45`; `charges.py` `14.8 s` at `1.2` to `1.6`; the band searches
-  `11.6 s` and `12.5 s` at `1.2` to `1.7`. One worker throughout; four cores shared with
+- Marks: $m_1 = (3152/3175, 2336/3175)$, $m_2 = (2336/3175, 3152/3175)$; scaled corner
+  atom $(29586032/29422725, 29586032/29422725)$; `P10` and `M10` as in Section 2;
+  segment-distance tests sampled at $401$ points per segment with the $1$-Lipschitz
+  sampling error added to the lower bound and a $10^{-9}$ float allowance.
+- Band search: centre step $0.01$ on the fundamental domain $[w, q/2]^2$, tilt steps
+  $0.25^\circ$ (interior) and $0.05^\circ$ (wall rectangles), forty bisection steps with
+  centre step $0.0025$, then the tilt slack menu $0.02^\circ$ to $0.5^\circ$ with centre
+  step $0.002$, rationalised at denominators $2000$ (half-tangent) and $1000$ (centre),
+  decided exactly.
+- Wall times with the load average: run 1 `65.2 s` at $0.35$ to $1.53$; its exact sweep
+  `11.7 s` at $1.45$; `charges.py` `14.8 s` at $1.2$ to $1.6$; the band searches
+  `11.6 s` and `12.5 s` at $1.2$ to $1.7$. One worker throughout; four cores shared with
   two other lanes.
 - No repository code was modified; every script is lane-owned and reproduced below.
 

@@ -21,7 +21,7 @@ at `$S/venv314` and every repository computation below ran through it
 
 Conventions. Orientations are taken modulo π/2 and folded to φ ∈ [0°, 45°]. A packing is
 a set of closed unit squares in [0, L]² with pairwise disjoint interiors.
-`B = 9977/10000` is the retained shrink, the net is the retained 181-direction net
+$B = 9977/10000$ is the retained shrink, the net is the retained 181-direction net
 (`certificate.json`: half-tangent limit 207107/500000, 180 steps, cell width ≈ 0.264° at
 the axis end, index 159 ≈ 40.194°, index 180 = 45.000°). A *B-core* of a square is the
 concentric closed square of side B at a net direction whose half-gap cell contains the
@@ -30,8 +30,8 @@ a packing are pairwise disjoint.
 Class certificates are X-014 Lemma 3 as implemented in `sqpack.fractional.classcert`.
 Everything decided “exactly” below was decided by `decide_class_program` on rationalised
 atoms (fractions, no tolerance); everything else is a float search and is labelled as
-such. `q = 96/25 = 3.84`, `U = 3.877083590…` (rational cover `3877084/10⁶` used wherever
-a theorem “at side U” is stated).
+such. $q = 96/25 = 3.84$, $U = 3.877083590\ldots$ (rational cover $3877084/10^6$ used
+wherever a theorem “at side U” is stated).
 
 Status labels used throughout: **PROVED** (full proof here), **EXACT-VERIFIED**
 (computer decision in exact rational arithmetic with the repository’s own verifier; a
@@ -801,7 +801,7 @@ grid-79 product set through a small adapter or run the class rows through `colge
 loop). *Procedure.* (1) Re-run n₀ = 0..9 at grid 119 and on the dilated-T-018 set,
 `max_rounds ≥
 200`; exact-decide every negative float margin; (2) for each surviving composition,
-build the dual fractional packing from the final LP (the `y` of the rows) and run the
+build the dual fractional packing from the final LP (the $y$ of the rows) and run the
 depth check at all arrangement vertices; add violating vertices as sites and iterate
 (the cutting-plane loop X-014 measurement 1 describes); (3) report Π(q)'s boundary
 points found. *Exit.* Theorem: “no packing at side ≤ 96/25 has exactly n₀ squares with
@@ -1591,40 +1591,42 @@ session record
 The planning report above is left as delivered; this section is the registered replay of
 its Section 2.3 decisions and the widening of its Theorem 1.11. Everything called a
 verdict below is `decide_class_program` on rationalised atoms with exact thresholds
-`(1, 0)` for the composition `(11, 0)`; the float optimum of `solve_class_program` is
+$(1, 0)$ for the composition $(11, 0)$; the float optimum of `solve_class_program` is
 context only.
 Wall times were measured on one worker (`PACK_JOBS=1`, `OMP_NUM_THREADS=1`)
 of a four-core machine shared with five other agents, so they are not comparable with
 the planning lane’s.
 
-**Question.** How wide a band around `0°` and `45°` can be excluded at `96/25`, decided
-exactly; do the planning lane’s counts (H-131) replay under a registered round; and
-where does the fractional obstruction live in angle once the band toward `40.19°` stays
-at or above eleven.
+**Question.** How wide a band around $0^\circ$ and $45^\circ$ can be excluded at
+$96/25$, decided exactly; do the planning lane’s counts (H-131) replay under a
+registered round; and where does the fractional obstruction live in angle once the band
+toward $40.19^\circ$ stays at or above eleven.
 
-**Inputs, fixed for every run.** Side `q = 96/25` (and `3877084/10⁶ ≥ U` for the three
-`U` rows of H-131); shrink `B = 9977/10000`; the retained 181-direction net
+**Inputs, fixed for every run.** Side $q = 96/25$ (and $3877084/10^6 \ge U$ for the
+three $U$ rows of H-131); shrink $B = 9977/10000$; the retained 181-direction net
 (`cases/n11_fractional_certificate/certificate.json`: half-tangent limit
-`207107/500000`, 180 equal steps, cell width about `0.264°` at the axis end and `0.225°`
-at the diagonal end); site set `build_site_grid(side, 79, 1/10)` — the `79 × 79` product
-grid inset `1/10` from the walls, folded into `D4` orbits (`6241` sites, `820` orbits);
-composition `(11, 0)`; `rows_per_direction = 3`; the row loop capped at a hundred rounds
-and the point reached decided regardless of convergence (the exact sweep is complete;
-the loop’s rows are a subset of placements); rationalisation at scale `4096` with the
-standard bump `1 + 10⁻⁶`; exact thresholds `(1, 0)`. A class is a union of half-gap
-cells and its folded range is the closed union of the cells’ exact-tangent bounds
-(`DirectionClasses.cell_bounds`), so every band below is stated with closed ends.
-Legal touching is retained throughout: a square’s `B`-core lies in its open interior
-(Condition 4), so the cores of a packing are pairwise disjoint even where squares touch.
+$207107/500000$, 180 equal steps, cell width about $0.264^\circ$ at the axis end and
+$0.225^\circ$ at the diagonal end); site set `build_site_grid(side, 79, 1/10)` — the
+$79 \times 79$ product grid inset $1/10$ from the walls, folded into `D4` orbits ($6241$
+sites, $820$ orbits); composition $(11, 0)$; `rows_per_direction = 3`; the row loop
+capped at a hundred rounds and the point reached decided regardless of convergence (the
+exact sweep is complete; the loop’s rows are a subset of placements); rationalisation at
+scale $4096$ with the standard bump $1 + 10^{-6}$; exact thresholds $(1, 0)$. A class is
+a union of half-gap cells and its folded range is the closed union of the cells’
+exact-tangent bounds (`DirectionClasses.cell_bounds`), so every band below is stated
+with closed ends. Legal touching is retained throughout: a square’s $B$-core lies in its
+open interior (Condition 4), so the cores of a packing are pairwise disjoint even where
+squares touch.
 
-**Falsifiers, stated before the runs.** For a count class `Θ` with claimed bound “at
-most `N`”: the exact sweep reports a core of mass below one at some direction of `Θ`, or
-the exact mass reaches `N + 1`, or `N + 1` pairwise disjoint `B`-cores at directions in
-`Θ` fit in `[0, 96/25]²`. For the end band `[0°, α] ∪ [45° − β, 45°]`: a fractional
-packing on the end cells of value at least eleven at `96/25`, or eleven pairwise
-disjoint `B`-cores at end-cell directions in the container.
+**Falsifiers, stated before the runs.** For a count class $\Theta$ with claimed bound
+“at most `N`”: the exact sweep reports a core of mass below one at some direction of
+$\Theta$, or the exact mass reaches $N + 1$, or $N + 1$ pairwise disjoint $B$-cores at
+directions in $\Theta$ fit in $[0, 96/25]^2$. For the end band
+$[0^\circ, \alpha] \cup [45^\circ - \beta, 45^\circ]$: a fractional packing on the end
+cells of value at least eleven at $96/25$, or eleven pairwise disjoint $B$-cores at
+end-cell directions in the container.
 A non-refutation on grid 79 is neither; it is a site-set reading and is labelled as
-such. For the nine-point control: an admissible `B`-core at a direction of the leading
+such. For the nine-point control: an admissible $B$-core at a direction of the leading
 eighteen cells that misses all nine atoms.
 
 ### The registered replay (H-131 and the Section 2.3 end bands)
@@ -1632,36 +1634,39 @@ eighteen cells that misses all nine atoms.
 Every row is one `solve_class_program` search on the site set above followed by
 `decide_class_program` on the rationalised point reached; “least core” is the exact
 least covered mass over every direction of the class (Condition 5′), “conditions” lists
-the failures among Conditions 1, 3, 4 and 5′ (Condition 2′ is the `(11, 0)` refutation
+the failures among Conditions 1, 3, 4 and 5′ (Condition 2′ is the $(11, 0)$ refutation
 itself and is reported in the last column).
-The count bound is `⌊M⌋` whenever Condition 5′ holds, by Theorem 1.5’s counting step.
+The count bound is $\lfloor M\rfloor$ whenever Condition 5′ holds, by Theorem 1.5’s
+counting step.
 
-| class (cells) | folded range, closed | side | rounds | float `M` | exact `M` | least core | count | planning lane | wall |
+| class (cells) | folded range, closed | side | rounds | float $M$ | exact $M$ | least core | count | planning lane | wall |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0–24 | `[0°, 6.4537°]` | `96/25` | 9, converged | 9.0000 | `4611/512 = 9.00586` | `2049/2048` | **≤ 9** | `9.00586` | 3 s |
-| 0–39 | `[0°, 10.3875°]` | `96/25` | 14, converged | 10.5000 | `10765/1024 = 10.51270` | `1025/1024` | **≤ 10** | `10.51270` | 6 s |
-| 171–180 | `[42.8453°, 45°]` | `96/25` | 100, cap | 9.6938 | `9989/1024 = 9.75488` | `2053/2048` | **≤ 9** | `9.75488` | 67 s |
-| 149–169 | `[37.7333°, 42.6166°]` | `96/25` | 100, cap | 9.9457 | `41529/4096 = 10.13892` | `1037/1024` | **≤ 10** | `10.13892` | 596 s |
-| 117–180 | `[30.0149°, 45°]` | `96/25` | 60, converged | 10.2309 | `42589/4096 = 10.39771` | `4147/4096` | **≤ 10** | `10.39771` | 1149 s |
-| 0–5 | `[0°, 1.4503°]` | `96/25` | 12, converged | 9.0000 | `2305/256 = 9.00391` | `4097/4096` | **≤ 9** | `9.00391` | 1 s |
-| 175–180 | `[43.7565°, 45°]` | `96/25` | 100, cap | 9.6277 | `9925/1024 = 9.69238` | `1021/1024` at 175 | undecided (5′ fails) | float only | 24 s |
-| 0–5 ∪ 175–180 | `[0°, 1.4503°] ∪ [43.7565°, 45°]` | `96/25` | 29, converged | 10.6866 | `10959/1024 = 10.70215` | `1025/1024` | **refutes `(11, 0)`** | `10.70215` | 5 s |
-| 0–24 | `[0°, 6.4537°]` | `3877084/10⁶` | 17, converged | 9.8125 | `10065/1024 = 9.82910` | `4101/4096` | **≤ 9** | `9.82910` | 6 s |
-| 0–29 | `[0°, 7.7671°]` | `3877084/10⁶` | 7, converged | 10.0000 | `10243/1024 = 10.00293` | `4097/4096` | **≤ 10** | `10.00293` | 4 s |
-| 175–180 | `[43.7565°, 45°]` | `3877084/10⁶` | 63, converged | 10.1379 | `5201/512 = 10.15820` | `2051/2048` | **≤ 10** | `10.15820` | 9 s |
+| 0–24 | $[0^\circ, 6.4537^\circ]$ | $\frac{96}{25}$ | 9, converged | 9.0000 | $\frac{4611}{512} = 9.00586$ | $\frac{2049}{2048}$ | **≤ 9** | $9.00586$ | 3 s |
+| 0–39 | $[0^\circ, 10.3875^\circ]$ | $\frac{96}{25}$ | 14, converged | 10.5000 | $\frac{10765}{1024} = 10.51270$ | $\frac{1025}{1024}$ | **≤ 10** | $10.51270$ | 6 s |
+| 171–180 | $[42.8453^\circ, 45^\circ]$ | $\frac{96}{25}$ | 100, cap | 9.6938 | $\frac{9989}{1024} = 9.75488$ | $\frac{2053}{2048}$ | **≤ 9** | $9.75488$ | 67 s |
+| 149–169 | $[37.7333^\circ, 42.6166^\circ]$ | $\frac{96}{25}$ | 100, cap | 9.9457 | $\frac{41529}{4096} = 10.13892$ | $\frac{1037}{1024}$ | **≤ 10** | $10.13892$ | 596 s |
+| 117–180 | $[30.0149^\circ, 45^\circ]$ | $\frac{96}{25}$ | 60, converged | 10.2309 | $\frac{42589}{4096} = 10.39771$ | $\frac{4147}{4096}$ | **≤ 10** | $10.39771$ | 1149 s |
+| 0–5 | $[0^\circ, 1.4503^\circ]$ | $\frac{96}{25}$ | 12, converged | 9.0000 | $\frac{2305}{256} = 9.00391$ | $\frac{4097}{4096}$ | **≤ 9** | $9.00391$ | 1 s |
+| 175–180 | $[43.7565^\circ, 45^\circ]$ | $\frac{96}{25}$ | 100, cap | 9.6277 | $\frac{9925}{1024} = 9.69238$ | `1021/1024` at 175 | undecided (5′ fails) | float only | 24 s |
+| 0–5 ∪ 175–180 | $[0^\circ, 1.4503^\circ] \cup [43.7565^\circ, 45^\circ]$ | $\frac{96}{25}$ | 29, converged | 10.6866 | $\frac{10959}{1024} = 10.70215$ | $\frac{1025}{1024}$ | **refutes $(11, 0)$** | $10.70215$ | 5 s |
+| 0–24 | $[0^\circ, 6.4537^\circ]$ | $3877084/10^6$ | 17, converged | 9.8125 | $\frac{10065}{1024} = 9.82910$ | $\frac{4101}{4096}$ | **≤ 9** | $9.82910$ | 6 s |
+| 0–29 | $[0^\circ, 7.7671^\circ]$ | $3877084/10^6$ | 7, converged | 10.0000 | $\frac{10243}{1024} = 10.00293$ | $\frac{4097}{4096}$ | **≤ 10** | $10.00293$ | 4 s |
+| 175–180 | $[43.7565^\circ, 45^\circ]$ | $3877084/10^6$ | 63, converged | 10.1379 | $\frac{5201}{512} = 10.15820$ | $\frac{2051}{2048}$ | **≤ 10** | $10.15820$ | 9 s |
 
 Every exact mass reproduces the planning lane’s to the fraction, on the same inputs; no
 falsifier occurred. The one row that stays undecided, the six trailing cells alone at
-`96/25`, was float-only in the planning lane too, and the count it would give is implied
-by the trailing-ten row (`[43.7565°, 45°] ⊂ [42.8453°, 45°]`, so at most nine there as
-well). So H-131’s list is now decided under this record: at `96/25` at most nine squares
-within `6.4537°` of the axes, at most ten within `10.3875°`, at most nine within
-`2.1547°` of `45°`, at most ten within `±2.44°` of `40.194°` (the class
-`[37.7333°, 42.6166°]`), and at most ten with folded tilt in `[30.0149°, 45°]`; at `U`
-at most nine within `6.4537°`, ten within `7.7671°`, and ten within `1.2435°` of `45°`.
-The site set in every case is the `79 × 79` inset-`1/10` grid, and the rationalised
-atoms are reproducible from the scripts in the appendix (`replay.jsonl` in the session
-scratchpad holds each verdict with its conditions and minima).
+$96/25$, was float-only in the planning lane too, and the count it would give is implied
+by the trailing-ten row ($[43.7565^\circ, 45^\circ] \subset [42.8453^\circ, 45^\circ]$,
+so at most nine there as well).
+So H-131’s list is now decided under this record: at $96/25$ at most nine squares within
+$6.4537^\circ$ of the axes, at most ten within $10.3875^\circ$, at most nine within
+$2.1547^\circ$ of $45^\circ$, at most ten within $\pm2.44^\circ$ of $40.194^\circ$ (the
+class $[37.7333^\circ, 42.6166^\circ]$), and at most ten with folded tilt in
+$[30.0149^\circ, 45^\circ]$; at $U$ at most nine within $6.4537^\circ$, ten within
+$7.7671^\circ$, and ten within $1.2435^\circ$ of $45^\circ$. The site set in every case
+is the $79 \times 79$ inset-`1/10` grid, and the rationalised atoms are reproducible
+from the scripts in the appendix (`replay.jsonl` in the session scratchpad holds each
+verdict with its conditions and minima).
 
 ### The band theorems this decides
 
@@ -1670,148 +1675,155 @@ Both statements are theorems of the exact verifier on the stated site set
 the appendix and each verdict is in the scratchpad log with its conditions.
 Both are frozen claims that need an experiment id (none is allocated here).
 
-**Theorem A (the exit band; cells `0–6 ∪ 174–180`).** No packing of eleven unit squares
-in `[0, 96/25]²` has every folded angle in `[0°, 1.7139°] ∪ [43.5293°, 45°]` — exactly,
-the closed set of angles whose tangent lies in `[0, 40385865000000/1349699746833857] ∪
-[1077991935000000/1134804266494367, 1]`. Equivalently every packing of eleven at side at
-most `3.84` has a square whose folded angle lies in `(1.7139°, 43.5293°)`, farther than
-`1.7139°` from `0°` and than `1.4707°` from `45°`; `α + β = 3.1846° ≥ 3°`, which is
-H-130’s criterion.
+**Theorem A (the exit band; cells $0\text{–}6 \cup 174\text{–}180$).** No packing of
+eleven unit squares in $[0, 96/25]^2$ has every folded angle in
+$[0^\circ, 1.7139^\circ] \cup [43.5293^\circ, 45^\circ]$ — exactly, the closed set of
+angles whose tangent lies in
+$[0, 40385865000000/1349699746833857] \cup [1077991935000000/1134804266494367, 1]$.
+Equivalently every packing of eleven at side at most $3.84$ has a square whose folded
+angle lies in $(1.7139^\circ, 43.5293^\circ)$, farther than $1.7139^\circ$ from
+$0^\circ$ and than $1.4707^\circ$ from $45^\circ$;
+$\alpha + \beta = 3.1846^\circ \ge 3^\circ$, which is H-130’s criterion.
 
-*Proof.* The composition-`(11, 0)` class program on the `79 × 79` inset-`1/10` grid
+*Proof.* The composition-`(11, 0)` class program on the $79 \times 79$ inset-`1/10` grid
 converged in 49 rounds; its rationalised measure (152 atoms, `D4`-closed) has total mass
-`5529/512 = 10.798828125`, the exact event-cell sweep reports least covered mass
-`4099/4096 ≥ 1` on every one of the fourteen class directions, and Conditions 3 and 4
-hold for the net (`B(1 + D) = 899996306539/900000000000 < 1`). Each square of a packing
-contains its closed `B`-core at the net direction whose cell holds its angle; if all
+$5529/512 = 10.798828125$, the exact event-cell sweep reports least covered mass
+$4099/4096 \ge 1$ on every one of the fourteen class directions, and Conditions 3 and 4
+hold for the net ($B(1 + D) = 899996306539/900000000000 < 1$). Each square of a packing
+contains its closed $B$-core at the net direction whose cell holds its angle; if all
 eleven angles lay in the class, eleven pairwise disjoint cores would each carry mass at
-least one, total at least eleven, against `10.7988`. ∎
+least one, total at least eleven, against $10.7988$. ∎
 
-**Theorem B (the widest band decided here; cells `0–39 ∪ 174–180`).** No packing of
-eleven unit squares in `[0, 96/25]²` has every folded angle in
-`[0°, 10.3875°] ∪ [43.5293°, 45°]` — tangent in `[0, 12271089750000/66942386977163] ∪
-[1077991935000000/1134804266494367, 1]`. Equivalently every packing of eleven at side at
-most `3.84` has a square whose folded angle lies in `(10.3875°, 43.5293°)`, and so, with
-Theorem 1.12, a square with folded tilt in `(10.3875°, 43.5293°)` and a square with
-folded tilt below `30.0149°` (possibly the same square).
-Here `α + β = 11.8582°`.
+**Theorem B (the widest band decided here; cells $0\text{–}39 \cup 174\text{–}180$).**
+No packing of eleven unit squares in $[0, 96/25]^2$ has every folded angle in
+$[0^\circ, 10.3875^\circ] \cup [43.5293^\circ, 45^\circ]$ — tangent in
+$[0, 12271089750000/66942386977163] \cup [1077991935000000/1134804266494367, 1]$.
+Equivalently every packing of eleven at side at most $3.84$ has a square whose folded
+angle lies in $(10.3875^\circ, 43.5293^\circ)$, and so, with Theorem 1.12, a square with
+folded tilt in $(10.3875^\circ, 43.5293^\circ)$ and a square with folded tilt below
+$30.0149^\circ$ (possibly the same square).
+Here $\alpha + \beta = 11.8582^\circ$.
 
 *Proof.* The same program converged in 41 rounds; the rationalised measure (216 atoms)
-has mass `351/32 = 10.96875`, least covered core `4101/4096` over the forty-seven class
+has mass $351/32 = 10.96875$, least covered core $4101/4096$ over the forty-seven class
 directions, Conditions 1, 3, 4 hold; eleven disjoint cores in the class are impossible.
 ∎
 
-Theorem B contains Theorem A and every `(a, 7)` row of the table; Theorem A is kept as
+Theorem B contains Theorem A and every $(a, 7)$ row of the table; Theorem A is kept as
 the statement H-130 asked for, with its own smaller certificate.
 Neither theorem uses Stromquist’s Theorem 3 or its lemmas 7–8. Trump’s packing (six
-squares at `0°`, five at `40.18°`) satisfies both with room, as it must: its five tilted
-squares lie in `(10.39°, 43.53°)`.
+squares at $0^\circ$, five at $40.18^\circ$) satisfies both with room, as it must: its
+five tilted squares lie in $(10.39^\circ, 43.53^\circ)$.
 
-**Theorem C (the widest band decided here, grid 119; cells `0–39 ∪ 172–180`).** No
-packing of eleven unit squares in `[0, 96/25]²` has every folded angle in
-`[0°, 10.3875°] ∪ [43.0737°, 45°]` — tangent in `[0, 12271089750000/66942386977163] ∪
-[177594252500000/189956166180167, 1]`. Equivalently every packing of eleven at side at
-most `3.84` has a square whose folded angle lies in `(10.3875°, 43.0737°)`;
-`α + β = 12.3138°`.
+**Theorem C (the widest band decided here, grid 119; cells
+$0\text{–}39 \cup 172\text{–}180$).** No packing of eleven unit squares in
+$[0, 96/25]^2$ has every folded angle in
+$[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$ — tangent in
+$[0, 12271089750000/66942386977163] \cup [177594252500000/189956166180167, 1]$.
+Equivalently every packing of eleven at side at most $3.84$ has a square whose folded
+angle lies in $(10.3875^\circ, 43.0737^\circ)$; $\alpha + \beta = 12.3138^\circ$.
 
 *Proof.* The same program on `build_site_grid(96/25, 119, 1/10)` converged in 81 rounds;
-the rationalised measure (296 atoms) has mass `11083/1024 = 10.8232421875`, least
-covered core `4101/4096` over the forty-nine class directions, Conditions 1, 3, 4 hold
+the rationalised measure (296 atoms) has mass $11083/1024 = 10.8232421875$, least
+covered core $4101/4096$ over the forty-nine class directions, Conditions 1, 3, 4 hold
 (`widen_ext_g119.jsonl`); eleven disjoint cores in the class are impossible.
 ∎
 
 Theorem C contains Theorem B; the grid-119 table in the refinement section carries the
-symmetric companion `(12, 12)` and the intermediate `(40, 8)`.
+symmetric companion $(12, 12)$ and the intermediate $(40, 8)$.
 
-**Corollary (a two-sided count).** At `96/25` the near-axis count and the end band
-combine: in any packing of eleven at most ten squares are within `10.3875°` of the axes
-(replay row `0–39`), and the remaining square or squares cannot all be within `1.4707°`
-of `45°` either — the band `[0°, 10.3875°] ∪ [43.5293°, 45°]` holds at most ten squares,
-`⌊10.96875⌋`.
+**Corollary (a two-sided count).** At $96/25$ the near-axis count and the end band
+combine: in any packing of eleven at most ten squares are within $10.3875^\circ$ of the
+axes (replay row $0\text{–}39$), and the remaining square or squares cannot all be
+within $1.4707^\circ$ of $45^\circ$ either — the band
+$[0^\circ, 10.3875^\circ] \cup [43.5293^\circ, 45^\circ]$ holds at most ten squares,
+$\lfloor10.96875\rfloor$.
 
 ### Widening the robust end band at 96/25
 
-The class is `[0°, α(a)] ∪ [45° − β(b), 45°]` for `a` leading and `b` trailing cells,
-with `α(a)` the exact upper tangent of cell `a − 1` and `45° − β(b)` the exact lower
-tangent of cell `181 − b` (both closed).
-Symmetric widening first, `a = b`, from the planning lane’s `a = b = 6`; then, from the
+The class is $[0^\circ, \alpha(a)] \cup [45^\circ - \beta(b), 45^\circ]$ for $a$ leading
+and $b$ trailing cells, with $\alpha(a)$ the exact upper tangent of cell $a - 1$ and
+$45^\circ - \beta(b)$ the exact lower tangent of cell $181 - b$ (both closed).
+Symmetric widening first, $a = b$, from the planning lane’s $a = b = 6$; then, from the
 widest symmetric success, one end held and the other pushed.
 Every point is the same search and the same exact decision as the replay rows.
 
-| `(a, b)` | band, closed | `α + β` | rounds | float `M` | exact `M` | least core | verdict (grid 79) | wall |
+| $(a, b)$ | band, closed | $\alpha + \beta$ | rounds | float $M$ | exact $M$ | least core | verdict (grid 79) | wall |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `(6, 6)` | `[0°, 1.4503°] ∪ [43.7565°, 45°]` | `2.6937°` | 29 | 10.6866 | `10959/1024 = 10.70215` | `1025/1024` | **refuted** (Theorem 1.11, replayed) | 5 s |
-| `(7, 7)` | `[0°, 1.7139°] ∪ [43.5293°, 45°]` | `3.1846°` | 49 | 10.7761 | `5529/512 = 10.79883` | `4099/4096` | **refuted** | 18 s |
-| `(8, 8)` | `[0°, 1.9775°] ∪ [43.3017°, 45°]` | `3.6759°` | 37 | 11.0000 | `5637/512 = 11.00977` | `4099/4096` | not refuted: Condition 2′ fails | 13 s |
-| `(7, 8)` | `[0°, 1.7139°] ∪ [43.3017°, 45°]` | `3.4122°` | 24 | 11.0000 | `45109/4096 = 11.01294` | `2049/2048` | not refuted: Condition 2′ fails | 5 s |
-| `(8, 7)` | `[0°, 1.9775°] ∪ [43.5293°, 45°]` | `3.4482°` | 36 | 10.7761 | `5529/512 = 10.79883` | `4099/4096` | **refuted** | 10 s |
-| `(9, 7)` | `[0°, 2.2411°] ∪ [43.5293°, 45°]` | `3.7118°` | 50 | 10.7761 | `11061/1024 = 10.80176` | `4101/4096` | **refuted** | 21 s |
-| `(10, 7)` | `[0°, 2.5047°] ∪ [43.5293°, 45°]` | `3.9754°` | 44 | 10.7761 | `5533/512 = 10.80664` | `4099/4096` | **refuted** | 18 s |
-| `(11, 7)` | `[0°, 2.7683°] ∪ [43.5293°, 45°]` | `4.2390°` | 42 | 10.7761 | `5531/512 = 10.80273` | `4099/4096` | **refuted** | 13 s |
-| `(12, 7)` | `[0°, 3.0318°] ∪ [43.5293°, 45°]` | `4.5025°` | 37 | 10.7761 | `11059/1024 = 10.79980` | `4099/4096` | **refuted** | 12 s |
-| `(13, 7)` | `[0°, 3.2953°] ∪ [43.5293°, 45°]` | `4.7660°` | 38 | 10.7761 | `11059/1024 = 10.79980` | `4099/4096` | **refuted** | 15 s |
-| `(14, 7)` | `[0°, 3.5588°] ∪ [43.5293°, 45°]` | `5.0295°` | 37 | 10.7761 | `11059/1024 = 10.79980` | `4099/4096` | **refuted** | 19 s |
-| `(15, 7)` | `[0°, 3.8222°] ∪ [43.5293°, 45°]` | `5.2929°` | 44 | 10.7761 | `11061/1024 = 10.80176` | `4099/4096` | **refuted** | 24 s |
-| `(16, 7)` | `[0°, 4.0856°] ∪ [43.5293°, 45°]` | `5.5563°` | 38 | 10.7761 | `11059/1024 = 10.79980` | `4099/4096` | **refuted** | 18 s |
-| `(17, 7)` | `[0°, 4.3489°] ∪ [43.5293°, 45°]` | `5.8196°` | 43 | 10.7761 | `11067/1024 = 10.80762` | `4099/4096` | **refuted** | 18 s |
-| `(18, 7)` | `[0°, 4.6122°] ∪ [43.5293°, 45°]` | `6.0829°` | 43 | 10.7761 | `11059/1024 = 10.79980` | `4099/4096` | **refuted** | 19 s |
-| `(19, 7)` | `[0°, 4.8754°] ∪ [43.5293°, 45°]` | `6.3462°` | 46 | 10.7761 | `1383/128 = 10.80469` | `4101/4096` | **refuted** | 31 s |
-| `(22, 7)` | `[0°, 5.6649°] ∪ [43.5293°, 45°]` | `7.1356°` | 45 | 10.7761 | `11057/1024 = 10.79785` | `4099/4096` | **refuted** | 35 s |
-| `(25, 7)` | `[0°, 6.4537°] ∪ [43.5293°, 45°]` | `7.9244°` | 39 | 10.7761 | `691/64 = 10.79688` | `4099/4096` | **refuted** | 28 s |
-| `(30, 7)` | `[0°, 7.7671°] ∪ [43.5293°, 45°]` | `9.2378°` | 34 | 10.7761 | `11065/1024 = 10.80566` | `4101/4096` | **refuted** | 24 s |
-| `(35, 7)` | `[0°, 9.0785°] ∪ [43.5293°, 45°]` | `10.5492°` | 39 | 10.7761 | `11057/1024 = 10.79785` | `4099/4096` | **refuted** | 41 s |
-| `(40, 7)` | `[0°, 10.3875°] ∪ [43.5293°, 45°]` | `11.8582°` | 41 | 10.9311 | `351/32 = 10.96875` | `4101/4096` | **refuted** | 52 s |
-| `(6, 8)` | `[0°, 1.4503°] ∪ [43.3017°, 45°]` | `3.1486°` | 37 | 11.0000 | `11277/1024 = 11.01270` | `2049/2048` | not refuted: Condition 2′ fails | 8 s |
-| `(1, 8)` | `[0°, 0.1318°] ∪ [43.3017°, 45°]` | `1.8302°` | 22 | 11.0000 | `11277/1024 = 11.01270` | `4099/4096` | not refuted: Condition 2′ fails | 3 s |
-| `(1, 10)` | `[0°, 0.1318°] ∪ [42.8453°, 45°]` | `2.2865°` | 39 | 11.1394 | `11423/1024 = 11.15527` | `1025/1024` | not refuted: Condition 2′ fails | 6 s |
-| `(3, 8)` | `[0°, 0.6592°] ∪ [43.3017°, 45°]` | `2.3576°` | 24 | 11.0000 | `1411/128 = 11.02344` | `4101/4096` | not refuted: Condition 2′ fails | 3 s |
+| $(6, 6)$ | $[0^\circ, 1.4503^\circ] \cup [43.7565^\circ, 45^\circ]$ | $2.6937^\circ$ | 29 | 10.6866 | $\frac{10959}{1024} = 10.70215$ | $\frac{1025}{1024}$ | **refuted** (Theorem 1.11, replayed) | 5 s |
+| $(7, 7)$ | $[0^\circ, 1.7139^\circ] \cup [43.5293^\circ, 45^\circ]$ | $3.1846^\circ$ | 49 | 10.7761 | $\frac{5529}{512} = 10.79883$ | $\frac{4099}{4096}$ | **refuted** | 18 s |
+| $(8, 8)$ | $[0^\circ, 1.9775^\circ] \cup [43.3017^\circ, 45^\circ]$ | $3.6759^\circ$ | 37 | 11.0000 | $\frac{5637}{512} = 11.00977$ | $\frac{4099}{4096}$ | not refuted: Condition 2′ fails | 13 s |
+| $(7, 8)$ | $[0^\circ, 1.7139^\circ] \cup [43.3017^\circ, 45^\circ]$ | $3.4122^\circ$ | 24 | 11.0000 | $\frac{45109}{4096} = 11.01294$ | $\frac{2049}{2048}$ | not refuted: Condition 2′ fails | 5 s |
+| $(8, 7)$ | $[0^\circ, 1.9775^\circ] \cup [43.5293^\circ, 45^\circ]$ | $3.4482^\circ$ | 36 | 10.7761 | $\frac{5529}{512} = 10.79883$ | $\frac{4099}{4096}$ | **refuted** | 10 s |
+| $(9, 7)$ | $[0^\circ, 2.2411^\circ] \cup [43.5293^\circ, 45^\circ]$ | $3.7118^\circ$ | 50 | 10.7761 | $\frac{11061}{1024} = 10.80176$ | $\frac{4101}{4096}$ | **refuted** | 21 s |
+| $(10, 7)$ | $[0^\circ, 2.5047^\circ] \cup [43.5293^\circ, 45^\circ]$ | $3.9754^\circ$ | 44 | 10.7761 | $\frac{5533}{512} = 10.80664$ | $\frac{4099}{4096}$ | **refuted** | 18 s |
+| $(11, 7)$ | $[0^\circ, 2.7683^\circ] \cup [43.5293^\circ, 45^\circ]$ | $4.2390^\circ$ | 42 | 10.7761 | $\frac{5531}{512} = 10.80273$ | $\frac{4099}{4096}$ | **refuted** | 13 s |
+| $(12, 7)$ | $[0^\circ, 3.0318^\circ] \cup [43.5293^\circ, 45^\circ]$ | $4.5025^\circ$ | 37 | 10.7761 | $\frac{11059}{1024} = 10.79980$ | $\frac{4099}{4096}$ | **refuted** | 12 s |
+| $(13, 7)$ | $[0^\circ, 3.2953^\circ] \cup [43.5293^\circ, 45^\circ]$ | $4.7660^\circ$ | 38 | 10.7761 | $\frac{11059}{1024} = 10.79980$ | $\frac{4099}{4096}$ | **refuted** | 15 s |
+| $(14, 7)$ | $[0^\circ, 3.5588^\circ] \cup [43.5293^\circ, 45^\circ]$ | $5.0295^\circ$ | 37 | 10.7761 | $\frac{11059}{1024} = 10.79980$ | $\frac{4099}{4096}$ | **refuted** | 19 s |
+| $(15, 7)$ | $[0^\circ, 3.8222^\circ] \cup [43.5293^\circ, 45^\circ]$ | $5.2929^\circ$ | 44 | 10.7761 | $\frac{11061}{1024} = 10.80176$ | $\frac{4099}{4096}$ | **refuted** | 24 s |
+| $(16, 7)$ | $[0^\circ, 4.0856^\circ] \cup [43.5293^\circ, 45^\circ]$ | $5.5563^\circ$ | 38 | 10.7761 | $\frac{11059}{1024} = 10.79980$ | $\frac{4099}{4096}$ | **refuted** | 18 s |
+| $(17, 7)$ | $[0^\circ, 4.3489^\circ] \cup [43.5293^\circ, 45^\circ]$ | $5.8196^\circ$ | 43 | 10.7761 | $\frac{11067}{1024} = 10.80762$ | $\frac{4099}{4096}$ | **refuted** | 18 s |
+| $(18, 7)$ | $[0^\circ, 4.6122^\circ] \cup [43.5293^\circ, 45^\circ]$ | $6.0829^\circ$ | 43 | 10.7761 | $\frac{11059}{1024} = 10.79980$ | $\frac{4099}{4096}$ | **refuted** | 19 s |
+| $(19, 7)$ | $[0^\circ, 4.8754^\circ] \cup [43.5293^\circ, 45^\circ]$ | $6.3462^\circ$ | 46 | 10.7761 | $\frac{1383}{128} = 10.80469$ | $\frac{4101}{4096}$ | **refuted** | 31 s |
+| $(22, 7)$ | $[0^\circ, 5.6649^\circ] \cup [43.5293^\circ, 45^\circ]$ | $7.1356^\circ$ | 45 | 10.7761 | $\frac{11057}{1024} = 10.79785$ | $\frac{4099}{4096}$ | **refuted** | 35 s |
+| $(25, 7)$ | $[0^\circ, 6.4537^\circ] \cup [43.5293^\circ, 45^\circ]$ | $7.9244^\circ$ | 39 | 10.7761 | $\frac{691}{64} = 10.79688$ | $\frac{4099}{4096}$ | **refuted** | 28 s |
+| $(30, 7)$ | $[0^\circ, 7.7671^\circ] \cup [43.5293^\circ, 45^\circ]$ | $9.2378^\circ$ | 34 | 10.7761 | $\frac{11065}{1024} = 10.80566$ | $\frac{4101}{4096}$ | **refuted** | 24 s |
+| $(35, 7)$ | $[0^\circ, 9.0785^\circ] \cup [43.5293^\circ, 45^\circ]$ | $10.5492^\circ$ | 39 | 10.7761 | $\frac{11057}{1024} = 10.79785$ | $\frac{4099}{4096}$ | **refuted** | 41 s |
+| $(40, 7)$ | $[0^\circ, 10.3875^\circ] \cup [43.5293^\circ, 45^\circ]$ | $11.8582^\circ$ | 41 | 10.9311 | $\frac{351}{32} = 10.96875$ | $\frac{4101}{4096}$ | **refuted** | 52 s |
+| $(6, 8)$ | $[0^\circ, 1.4503^\circ] \cup [43.3017^\circ, 45^\circ]$ | $3.1486^\circ$ | 37 | 11.0000 | $\frac{11277}{1024} = 11.01270$ | $\frac{2049}{2048}$ | not refuted: Condition 2′ fails | 8 s |
+| $(1, 8)$ | $[0^\circ, 0.1318^\circ] \cup [43.3017^\circ, 45^\circ]$ | $1.8302^\circ$ | 22 | 11.0000 | $\frac{11277}{1024} = 11.01270$ | $\frac{4099}{4096}$ | not refuted: Condition 2′ fails | 3 s |
+| $(1, 10)$ | $[0^\circ, 0.1318^\circ] \cup [42.8453^\circ, 45^\circ]$ | $2.2865^\circ$ | 39 | 11.1394 | $\frac{11423}{1024} = 11.15527$ | $\frac{1025}{1024}$ | not refuted: Condition 2′ fails | 6 s |
+| $(3, 8)$ | $[0^\circ, 0.6592^\circ] \cup [43.3017^\circ, 45^\circ]$ | $2.3576^\circ$ | 24 | 11.0000 | $\frac{1411}{128} = 11.02344$ | $\frac{4101}{4096}$ | not refuted: Condition 2′ fails | 3 s |
 
 The rationalised atoms of every refuted row carry `D4` symmetry, Conditions 3 and 4 hold
-for the net (`B(1 + D) = 0.99770… < 1`), and the least core mass over every class
+for the net ($B(1 + D) = 0.99770\ldots < 1$), and the least core mass over every class
 direction is at least one; the verdicts are in `widen_g79.jsonl` and `widen_ext.jsonl`
 in the session scratchpad with the atom counts (93 to 216 atoms per point).
 
 ### Where the obstruction lives in angle: the dual’s support
 
 For a class whose grid-79 value stays at or above eleven, the LP dual on the rows the
-loop generated is a fractional packing on the site set: weights `y_r ≥ 0` on placements
-(`B`-cores at class directions) with `Σ_r y_r A[r, a] ≤ |a|` for every `D4` orbit `a` of
-sites, and `Σ_r y_r = M` at optimality.
-Equivalently the `D4`-symmetrised family (each row’s eight images at weight `y_r / 8`)
+loop generated is a fractional packing on the site set: weights $y_r \ge 0$ on
+placements ($B$-cores at class directions) with `Σ_r y_r A[r, a] ≤ |a|` for every `D4`
+orbit $a$ of sites, and $\Sigma_r y_r = M$ at optimality.
+Equivalently the `D4`-symmetrised family (each row’s eight images at weight $y_r / 8$)
 has depth at most one at every site.
 That is a site-set object: depth at most one *between* sites is not implied, and the
-honest continuum value is `M / d` for the exact maximum depth `d` that `ceiling.py`
+honest continuum value is $M / d$ for the exact maximum depth $d$ that `ceiling.py`
 decides. The angular support below is the dual read by the direction of its rows
 (`histogram.py`; `hist.json` in the scratchpad holds each family with its centres).
 
-| class | folded set | `M` (grid 79) | support rows | `[0°, 2.5°)` | `[38.2°, 40.77°)` | `[40.77°, 42.5°)` | `[42.5°, 45°]` |
+| class | folded set | $M$ (grid 79) | support rows | $[0^\circ, 2.5^\circ)$ | $[38.2^\circ, 40.77^\circ)$ | $[40.77^\circ, 42.5^\circ)$ | $[42.5^\circ, 45^\circ]$ |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `0–5 ∪ 151–180` | `[0°, 1.4503°] ∪ [38.2049°, 45°]` (contains `40.194°`) | 11.2535, converged in 25 rounds | 29 | 7.472 | 1.775 | 0.465 | 1.542 |
-| `0–7 ∪ 173–180` | `[0°, 1.9775°] ∪ [43.3017°, 45°]` (first symmetric failure) | 11.0000, converged in 33 rounds | 8 | 6.000 | — | — | 5.000 |
-| `0–6 ∪ 173–180` | `[0°, 1.7139°] ∪ [43.3017°, 45°]` | 11.0000, converged in 20 rounds | 5 | 8.000 | — | — | 3.000 |
-| `0–5 ∪ 149–180` | `[0°, 1.4503°] ∪ [37.7333°, 45°]` (Trump band `±2.44°` and the diagonal end) | 11.2535, converged in 30 rounds | 30 | 7.465 | 1.141 (and 0.535 in `[35°, 38.2°)`) | 0.451 | 1.662 |
+| $0\text{–}5 \cup 151\text{–}180$ | $[0^\circ, 1.4503^\circ] \cup [38.2049^\circ, 45^\circ]$ (contains $40.194^\circ$) | 11.2535, converged in 25 rounds | 29 | 7.472 | 1.775 | 0.465 | 1.542 |
+| $0\text{–}7 \cup 173\text{–}180$ | $[0^\circ, 1.9775^\circ] \cup [43.3017^\circ, 45^\circ]$ (first symmetric failure) | 11.0000, converged in 33 rounds | 8 | 6.000 | — | — | 5.000 |
+| $0\text{–}6 \cup 173\text{–}180$ | $[0^\circ, 1.7139^\circ] \cup [43.3017^\circ, 45^\circ]$ | 11.0000, converged in 20 rounds | 5 | 8.000 | — | — | 3.000 |
+| $0\text{–}5 \cup 149\text{–}180$ | $[0^\circ, 1.4503^\circ] \cup [37.7333^\circ, 45^\circ]$ (Trump band $\pm2.44^\circ$ and the diagonal end) | 11.2535, converged in 30 rounds | 30 | 7.465 | 1.141 (and 0.535 in $[35^\circ, 38.2^\circ)$) | 0.451 | 1.662 |
 
-By direction, the band toward `40.19°` carries `6.739` at direction `0` (exactly
-axis-parallel), `0.155` at `0.79°`, `0.578` at `1.32°`, then `0.761` at `38.32°`,
-`0.437` at `39.03°`, `0.338` at `40.19°` itself, `0.183` at `40.89°`, `0.211` at
-`41.35°`, `0.366` at `42.73°`, `0.296` at `43.19°`, `0.254` at `43.42°`, `0.549` at
-`44.32°`, and small remainders.
-Seven and a half units of the eleven-and-a-quarter sit within `1.32°` of the axis and
-the other three and three-quarters are spread over the whole of `[38.2°, 45°]` rather
-than concentrated at Trump’s angle: the mass at `40.19° ± 0.5°` is `0.45`.
+By direction, the band toward $40.19^\circ$ carries $6.739$ at direction $0$ (exactly
+axis-parallel), $0.155$ at $0.79^\circ$, $0.578$ at $1.32^\circ$, then $0.761$ at
+$38.32^\circ$, $0.437$ at $39.03^\circ$, $0.338$ at $40.19^\circ$ itself, $0.183$ at
+$40.89^\circ$, $0.211$ at $41.35^\circ$, $0.366$ at $42.73^\circ$, $0.296$ at
+$43.19^\circ$, $0.254$ at $43.42^\circ$, $0.549$ at $44.32^\circ$, and small remainders.
+Seven and a half units of the eleven-and-a-quarter sit within $1.32^\circ$ of the axis
+and the other three and three-quarters are spread over the whole of
+$[38.2^\circ, 45^\circ]$ rather than concentrated at Trump’s angle: the mass at
+$40.19^\circ \pm 0.5^\circ$ is $0.45$.
 
 The two end-band failures are sharper.
-At `(8, 8)` the dual is eight rows of integer weight summing to exactly eleven: five
-units at direction `0`, one at `0.26°`, two at `43.42°`, one each at `43.64°`, `43.87°`
-and `44.32°` — six near the axis and five near `45°`, Trump’s composition.
-At `(7, 8)` it is five rows, again integral, eight near the axis (six at `0°`, two at
-`0.79°`) and three near `45°`. Both are `D4`-symmetrised fractional families (a corner
-core of weight three, for instance, is three quarters of a core at each of the four
-corners), not packings of eleven squares; and since `96/25 ÷ (9977/10000) = 3.8489` is
-below every known side for eleven unit squares, no family of eleven disjoint `B`-cores
-exists in the container at all.
+At $(8, 8)$ the dual is eight rows of integer weight summing to exactly eleven: five
+units at direction $0$, one at $0.26^\circ$, two at $43.42^\circ$, one each at
+$43.64^\circ$, $43.87^\circ$ and $44.32^\circ$ — six near the axis and five near
+$45^\circ$, Trump’s composition.
+At $(7, 8)$ it is five rows, again integral, eight near the axis (six at $0^\circ$, two
+at $0.79^\circ$) and three near $45^\circ$. Both are `D4`-symmetrised fractional
+families (a corner core of weight three, for instance, is three quarters of a core at
+each of the four corners), not packings of eleven squares; and since
+`96/25 ÷ (9977/10000) = 3.8489` is below every known side for eleven unit squares, no
+family of eleven disjoint $B$-cores exists in the container at all.
 The site-set dual can still reach eleven because two cores may overlap by up to a site
-spacing (`(96/25 − 1/5)/78 = 0.0467`) without sharing a site.
+spacing ($(96/25 - 1/5)/78 = 0.0467$) without sharing a site.
 
 `ceiling.py` decides that reading exactly (`ceiling_check.py`: the symmetrised family as
 a `CeilingCertificate` in the `net` regime, `scaled_to_unit_depth`, then
@@ -1819,12 +1831,12 @@ a `CeilingCertificate` in the `net` regime, `scaled_to_unit_depth`, then
 
 | dual | rows, placements | raw total | exact maximum depth | scaled total | K2 depth ≤ 1 after scaling | K3 total ≥ 11 |
 | --- | --- | --- | --- | --- | --- | --- |
-| `0–7 ∪ 173–180`, `(8, 8)` | 8, 64 | 11 | `2` | `11/2` | holds (13 488 vertices, 327 decided exactly) | fails |
-| `0–6 ∪ 173–180`, `(7, 8)` | 5, 40 | 11 | `2` | `11/2` | holds (4 488 vertices) | fails |
-| `0–5 ∪ 151–180`, toward `40.19°` | 29, 232 | 11.2535 | `1291/568 = 2.2729` | `6392/1291 = 4.9512` | holds (220 532 vertices, 1 514 decided exactly) | fails |
+| $0\text{–}7 \cup 173\text{–}180$, $(8, 8)$ | 8, 64 | 11 | $2$ | $\frac{11}{2}$ | holds (13 488 vertices, 327 decided exactly) | fails |
+| $0\text{–}6 \cup 173\text{–}180$, $(7, 8)$ | 5, 40 | 11 | $2$ | $\frac{11}{2}$ | holds (4 488 vertices) | fails |
+| $0\text{–}5 \cup 151\text{–}180$, toward $40.19^\circ$ | 29, 232 | 11.2535 | $\frac{1291}{568} = 2.2729$ | $\frac{6392}{1291} = 4.9512$ | holds (220 532 vertices, 1 514 decided exactly) | fails |
 
 A depth of exactly two is two cores of the integral family overlapping in a region that
-contains no site; at grid 79 the site spacing is `0.0467` and a `B`-core is `0.9977`
+contains no site; at grid 79 the site spacing is $0.0467$ and a $B$-core is $0.9977$
 wide, so that is the expected failure mode.
 The reading for the cell’s question is therefore: on grid 79, every band whose value
 stays at or above eleven is stopped by a near-integral, Trump-composition family that is
@@ -1832,104 +1844,106 @@ stays at or above eleven is stopped by a near-integral, Trump-composition family
 artefact of the site set, not of the relaxation, and the true class covering values of
 these bands are open from below.
 The grid-119 refinement below confirms it for the two end bands.
-For the band toward `40.19°` the honest obstruction, if one exists, has to come from a
-continuum family (`BC-294`’s cutting-plane loop with the disjointness filter, or a
-hand-built family) and not from a site-set dual; nothing here shows that band to be
+For the band toward $40.19^\circ$ the honest obstruction, if one exists, has to come
+from a continuum family (`BC-294`’s cutting-plane loop with the disjointness filter, or
+a hand-built family) and not from a site-set dual; nothing here shows that band to be
 unclosable.
 
 ### One refinement: grid 119
 
 The site set, not the relaxation, stopped the diagonal end on grid 79, so the failing
-points were rerun on `build_site_grid(96/25, 119, 1/10)` (`14 161` sites), everything
+points were rerun on `build_site_grid(96/25, 119, 1/10)` ($14 161$ sites), everything
 else unchanged.
 
-| `(a, b)` | band, closed | `α + β` | grid | rounds | float `M` | exact `M` | least core | verdict | wall |
+| $(a, b)$ | band, closed | $\alpha + \beta$ | grid | rounds | float $M$ | exact $M$ | least core | verdict | wall |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `(8, 8)` | `[0°, 1.9775°] ∪ [43.3017°, 45°]` | `3.6759°` | 119 | 52 | 10.7012 | `43857/4096 = 10.70728` | `4097/4096` | **refuted** | 52 s |
-| `(7, 8)` | `[0°, 1.7139°] ∪ [43.3017°, 45°]` | `3.4122°` | 119 | 54 | 10.7012 | `43865/4096 = 10.70923` | `4097/4096` | **refuted** | 50 s |
-| `(7, 7)` | `[0°, 1.7139°] ∪ [43.5293°, 45°]` | `3.1846°` | 119 | 53 | 10.7012 | `43857/4096 = 10.70728` | `4097/4096` | **refuted** | 42 s |
-| `(9, 9)` | `[0°, 2.2411°] ∪ [43.0737°, 45°]` | `4.1675°` | 119 | 40 | 10.7017 | `43951/4096 = 10.73022` | `2051/2048` | **refuted** | 27 s |
-| `(10, 10)` | `[0°, 2.5047°] ∪ [42.8453°, 45°]` | `4.6594°` | 119 | 46 | 10.7017 | `43951/4096 = 10.73022` | `2051/2048` | **refuted** | 45 s |
-| `(40, 8)` | `[0°, 10.3875°] ∪ [43.3017°, 45°]` | `12.0858°` | 119 | 86 | 10.7981 | `11085/1024 = 10.82520` | `2051/2048` | **refuted** | 474 s |
-| `(11, 11)` | `[0°, 2.7683°] ∪ [42.6166°, 45°]` | `5.1516°` | 119 | 50 | 10.7017 | `43951/4096 = 10.73022` | `1025/1024` | **refuted** | 56 s |
-| `(40, 9)` | `[0°, 10.3875°] ∪ [43.0737°, 45°]` | `12.3138°` | 119 | 81 | 10.7981 | `11083/1024 = 10.82324` | `4101/4096` | **refuted** | 584 s |
-| `(12, 12)` | `[0°, 3.0318°] ∪ [42.3876°, 45°]` | `5.6442°` | 119 | 47 | 10.7351 | `11033/1024 = 10.77441` | `4101/4096` | **refuted** | 109 s |
+| $(8, 8)$ | $[0^\circ, 1.9775^\circ] \cup [43.3017^\circ, 45^\circ]$ | $3.6759^\circ$ | 119 | 52 | 10.7012 | $\frac{43857}{4096} = 10.70728$ | $\frac{4097}{4096}$ | **refuted** | 52 s |
+| $(7, 8)$ | $[0^\circ, 1.7139^\circ] \cup [43.3017^\circ, 45^\circ]$ | $3.4122^\circ$ | 119 | 54 | 10.7012 | $\frac{43865}{4096} = 10.70923$ | $\frac{4097}{4096}$ | **refuted** | 50 s |
+| $(7, 7)$ | $[0^\circ, 1.7139^\circ] \cup [43.5293^\circ, 45^\circ]$ | $3.1846^\circ$ | 119 | 53 | 10.7012 | $\frac{43857}{4096} = 10.70728$ | $\frac{4097}{4096}$ | **refuted** | 42 s |
+| $(9, 9)$ | $[0^\circ, 2.2411^\circ] \cup [43.0737^\circ, 45^\circ]$ | $4.1675^\circ$ | 119 | 40 | 10.7017 | $\frac{43951}{4096} = 10.73022$ | $\frac{2051}{2048}$ | **refuted** | 27 s |
+| $(10, 10)$ | $[0^\circ, 2.5047^\circ] \cup [42.8453^\circ, 45^\circ]$ | $4.6594^\circ$ | 119 | 46 | 10.7017 | $\frac{43951}{4096} = 10.73022$ | $\frac{2051}{2048}$ | **refuted** | 45 s |
+| $(40, 8)$ | $[0^\circ, 10.3875^\circ] \cup [43.3017^\circ, 45^\circ]$ | $12.0858^\circ$ | 119 | 86 | 10.7981 | $\frac{11085}{1024} = 10.82520$ | $\frac{2051}{2048}$ | **refuted** | 474 s |
+| $(11, 11)$ | $[0^\circ, 2.7683^\circ] \cup [42.6166^\circ, 45^\circ]$ | $5.1516^\circ$ | 119 | 50 | 10.7017 | $\frac{43951}{4096} = 10.73022$ | $\frac{1025}{1024}$ | **refuted** | 56 s |
+| $(40, 9)$ | $[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$ | $12.3138^\circ$ | 119 | 81 | 10.7981 | $\frac{11083}{1024} = 10.82324$ | $\frac{4101}{4096}$ | **refuted** | 584 s |
+| $(12, 12)$ | $[0^\circ, 3.0318^\circ] \cup [42.3876^\circ, 45^\circ]$ | $5.6442^\circ$ | 119 | 47 | 10.7351 | $\frac{11033}{1024} = 10.77441$ | $\frac{4101}{4096}$ | **refuted** | 109 s |
 
-Grid 119 refutes `(8, 8)`, which grid 79 could not, lowers the value of `(7, 7)` from
-`10.799` to `10.707`, and then keeps going: every symmetric point through `(12, 12)` —
-`[0°, 3.0318°] ∪ [42.3876°, 45°]`, `α + β = 5.6442°`, mass `11033/1024 = 10.7744` — is
-refuted, and so are `(40, 8)` and `(40, 9)`, the latter being Theorem C above with
-`α + β = 12.3138°`. The `(13, 13)` and `(40, 10)` points were cut off by the clock, not
-decided, so the grid-119 rung lies at or beyond `(12, 12)` and `(40, 9)`. The widest
-exact-decided band is therefore a property of the site set as much as of the side, every
-non-refutation in the grid-79 table is a grid-79 reading only, and the ladder’s true
-rung at `96/25` lies beyond every point either grid decided.
+Grid 119 refutes $(8, 8)$, which grid 79 could not, lowers the value of $(7, 7)$ from
+$10.799$ to $10.707$, and then keeps going: every symmetric point through $(12, 12)$ —
+$[0^\circ, 3.0318^\circ] \cup [42.3876^\circ, 45^\circ]$,
+$\alpha + \beta = 5.6442^\circ$, mass $11033/1024 = 10.7744$ — is refuted, and so are
+$(40, 8)$ and $(40, 9)$, the latter being Theorem C above with
+$\alpha + \beta = 12.3138^\circ$. The $(13, 13)$ and $(40, 10)$ points were cut off by
+the clock, not decided, so the grid-119 rung lies at or beyond $(12, 12)$ and $(40, 9)$.
+The widest exact-decided band is therefore a property of the site set as much as of the
+side, every non-refutation in the grid-79 table is a grid-79 reading only, and the
+ladder’s true rung at $96/25$ lies beyond every point either grid decided.
 A finer site set needs nothing new in code; its cost is the row loop, not the exact
 sweep — the symmetric points took 27 to 109 s at grid 119 on this loaded machine and the
-`(40, b)` points 474 and 584 s, with the exact decision under four seconds in every
-case. The axis end is different — its limit is the near-axis saturation (`[0°, 13°]`
-alone is already at eleven on grid 79, planning report §2.3) — and the last points
-decided at grid 79 are:
+$(40, b)$ points 474 and 584 s, with the exact decision under four seconds in every
+case. The axis end is different — its limit is the near-axis saturation
+($[0^\circ, 13^\circ]$ alone is already at eleven on grid 79, planning report §2.3) —
+and the last points decided at grid 79 are:
 
-| `(a, b)` | band, closed | `α + β` | rounds | float `M` | exact `M` | least core | verdict (grid 79) | wall |
+| $(a, b)$ | band, closed | $\alpha + \beta$ | rounds | float $M$ | exact $M$ | least core | verdict (grid 79) | wall |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `(43, 7)` | `[0°, 11.1716°] ∪ [43.5293°, 45°]` | `12.6423°` | 59 | 11.0000 | `11275/1024 = 11.01074` | `1025/1024` | not refuted: Condition 2′ fails | 72 s |
-| `(45, 7)` | `[0°, 11.6937°] ∪ [43.5293°, 45°]` | `13.1644°` | 28 | 11.0891 | `11371/1024 = 11.10449` | `4099/4096` | not refuted: Condition 2′ fails | 24 s |
-| `(47, 7)` | `[0°, 12.2154°] ∪ [43.5293°, 45°]` | `13.6861°` | 39 | 11.0898 | `22747/2048 = 11.10693` | `1025/1024` | not refuted: Condition 2′ fails | 34 s |
-| `(49, 7)` | `[0°, 12.7366°] ∪ [43.5293°, 45°]` | `14.2073°` | 36 | 11.0898 | `5689/512 = 11.11133` | `2051/2048` | not refuted: Condition 2′ fails | 28 s |
-| `(41, 7)` | `[0°, 10.6489°] ∪ [43.5293°, 45°]` | `12.1197°` | 82 | 11.0000 | `11293/1024 = 11.02832` | `4099/4096` | not refuted: Condition 2′ fails | 126 s |
-| `(42, 7)` | `[0°, 10.9103°] ∪ [43.5293°, 45°]` | `12.3810°` | 49 | 11.0000 | `11275/1024 = 11.01074` | `1025/1024` | not refuted: Condition 2′ fails | 49 s |
+| $(43, 7)$ | $[0^\circ, 11.1716^\circ] \cup [43.5293^\circ, 45^\circ]$ | $12.6423^\circ$ | 59 | 11.0000 | $\frac{11275}{1024} = 11.01074$ | $\frac{1025}{1024}$ | not refuted: Condition 2′ fails | 72 s |
+| $(45, 7)$ | $[0^\circ, 11.6937^\circ] \cup [43.5293^\circ, 45^\circ]$ | $13.1644^\circ$ | 28 | 11.0891 | $\frac{11371}{1024} = 11.10449$ | $\frac{4099}{4096}$ | not refuted: Condition 2′ fails | 24 s |
+| $(47, 7)$ | $[0^\circ, 12.2154^\circ] \cup [43.5293^\circ, 45^\circ]$ | $13.6861^\circ$ | 39 | 11.0898 | $\frac{22747}{2048} = 11.10693$ | $\frac{1025}{1024}$ | not refuted: Condition 2′ fails | 34 s |
+| $(49, 7)$ | $[0^\circ, 12.7366^\circ] \cup [43.5293^\circ, 45^\circ]$ | $14.2073^\circ$ | 36 | 11.0898 | $\frac{5689}{512} = 11.11133$ | $\frac{2051}{2048}$ | not refuted: Condition 2′ fails | 28 s |
+| $(41, 7)$ | $[0^\circ, 10.6489^\circ] \cup [43.5293^\circ, 45^\circ]$ | $12.1197^\circ$ | 82 | 11.0000 | $\frac{11293}{1024} = 11.02832$ | $\frac{4099}{4096}$ | not refuted: Condition 2′ fails | 126 s |
+| $(42, 7)$ | $[0^\circ, 10.9103^\circ] \cup [43.5293^\circ, 45^\circ]$ | $12.3810^\circ$ | 49 | 11.0000 | $\frac{11275}{1024} = 11.01074$ | $\frac{1025}{1024}$ | not refuted: Condition 2′ fails | 49 s |
 
 ### Obstructions
 
-- **The `45°` end is the binding end.** With seven trailing cells (`β = 1.4707°`) the
-  float value is pinned at `10.7761` for every axis width from `1.71°` to `9.08°`, and
-  the same measure works: the near-axis cores are pierced by the smeared nine-point
-  pattern at mass nine whatever the width, and the diagonal cores cost the rest.
-  The eighth trailing cell (`43.3017°`) tips grid 79 to eleven even with a single axis
-  cell; grid 119 takes it back.
-  A theorem with `β` beyond `1.47°` is a site-set question, not a relaxation question,
-  on the evidence here.
+- **The $45^\circ$ end is the binding end.** With seven trailing cells
+  ($\beta = 1.4707^\circ$) the float value is pinned at $10.7761$ for every axis width
+  from $1.71^\circ$ to $9.08^\circ$, and the same measure works: the near-axis cores are
+  pierced by the smeared nine-point pattern at mass nine whatever the width, and the
+  diagonal cores cost the rest.
+  The eighth trailing cell ($43.3017^\circ$) tips grid 79 to eleven even with a single
+  axis cell; grid 119 takes it back.
+  A theorem with $\beta$ beyond $1.47^\circ$ is a site-set question, not a relaxation
+  question, on the evidence here.
 - **The site-set dual is not an obstruction.** Every dual that reached eleven on grid 79
-  has continuum depth two or more; `ceiling.py` scales them to `5.5` and `4.95`. A
+  has continuum depth two or more; `ceiling.py` scales them to $5.5$ and $4.95$. A
   non-refutation on a grid remains what the planning report’s §3.2 said it is.
 - **Cost.** Wall times here ran at load average eight on four cores with one worker; the
-  `[30°, 45°]` replay took 1 149 s against 700 s in the planning lane.
-  The band toward `40.19°` converged in 25 rounds and 16 s on grid 79 (the planning
+  $[30^\circ, 45^\circ]$ replay took 1 149 s against 700 s in the planning lane.
+  The band toward $40.19^\circ$ converged in 25 rounds and 16 s on grid 79 (the planning
   lane’s 80-round cap on the trailing-30 class alone was the slow case, not this union),
   so a grid-119 run of it is affordable next.
-- **Not done.** `(13, 13)` and `(40, 10)` at grid 119 were cut off by the clock, so
-  neither end is known to be exhausted there; the single trailing-six class at `96/25`
+- **Not done.** $(13, 13)$ and $(40, 10)$ at grid 119 were cut off by the clock, so
+  neither end is known to be exhausted there; the single trailing-six class at $96/25$
   stays undecided on its own (implied by the trailing-ten count); no continuum family
   was built for any band.
   A note on method: the queue that ran grid 119 piped its output through `grep`, whose
   block-buffered file output hid the finished rows until the end, so the session
-  believed for half an hour that `(9, 9)` had stalled; the `jsonl` logs, written per
+  believed for half an hour that $(9, 9)$ had stalled; the `jsonl` logs, written per
   point, are the record.
 
 ### Status recommended for H-130 and H-131
 
-- **H-130**: confirmed as stated, exact-decided — Theorem A gives `α + β = 3.1846°` on
-  grid 79, Theorem B `11.8582°` on grid 79, and Theorem C `12.3138°` on grid 119 (with
-  the symmetric `5.6442°` of `(12, 12)` there).
-  Frozen claims, need exp ids.
+- **H-130**: confirmed as stated, exact-decided — Theorem A gives
+  $\alpha + \beta = 3.1846^\circ$ on grid 79, Theorem B $11.8582^\circ$ on grid 79, and
+  Theorem C $12.3138^\circ$ on grid 119 (with the symmetric $5.6442^\circ$ of $(12, 12)$
+  there). Frozen claims, need exp ids.
   The hypothesis text should be read with its domain: closed folded ranges, the tangent
-  bounds above, `B = 9977/10000`, the retained net.
+  bounds above, $B = 9977/10000$, the retained net.
 - **H-131**: the registered replay is complete and every count reproduces to the
   fraction on the stated site set; the counts can now be cited as results of this
-  record. Frozen claim, needs exp id (one record for the five `96/25` counts and the
-  three `U` counts, or the replay table here cited directly).
+  record. Frozen claim, needs exp id (one record for the five $96/25$ counts and the
+  three $U$ counts, or the replay table here cited directly).
 
 ### What the next session should do first
 
-1. Continue the end band at grid 119 (and 159) from `(13, 13)` and `(40, 10)` until
+1. Continue the end band at grid 119 (and 159) from $(13, 13)$ and $(40, 10)$ until
    Condition 2′ fails; symmetric points are one to two minutes at grid 119, the
-   `(40, b)` points about ten.
+   $(40, b)$ points about ten.
    Freeze the widest success with its atoms.
-2. Run the band toward `40.19°` (`0–5 ∪ 151–180`, and `0–39 ∪ 151–180`) at grid 119; if
-   it stays above eleven, build the family in the continuum (`BC-294`’s loop with the
-   disjointness filter) and verify it with `ceiling.py` before calling it an
-   obstruction.
+2. Run the band toward $40.19^\circ$ ($0\text{–}5 \cup 151\text{–}180$, and
+   $0\text{–}39 \cup 151\text{–}180$) at grid 119; if it stays above eleven, build the
+   family in the continuum (`BC-294`’s loop with the disjointness filter) and verify it
+   with `ceiling.py` before calling it an obstruction.
 3. Allocate the experiment ids for Theorems A and B and the replay, and move H-130 and
    H-131 to the status the registry uses for exact-decided claims.
 

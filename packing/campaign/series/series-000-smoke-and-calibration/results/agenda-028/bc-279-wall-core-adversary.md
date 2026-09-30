@@ -173,7 +173,7 @@ The old BC278 valley disk center $P_6=(58/25,39/20)$ cannot be appended to the s
 cores. Its displacement from $R_5$ has absolute coordinates $19/50$ and $31/100$, hence
 
 $$
-\|P_6-R_5\|^2=\frac{38^2+31^2}{10000}=\frac{481}{2000}<1.
+\Vert P_6-R_5\Vert^2=\frac{38^2+31^2}{10000}=\frac{481}{2000}<1.
 $$
 
 The incircles alone overlap.

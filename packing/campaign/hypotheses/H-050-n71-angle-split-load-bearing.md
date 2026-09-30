@@ -47,8 +47,8 @@ hypothesis:
 ---
 # H-050 — Is the n = 71 Two-Class Angle Split Load-Bearing?
 
-The incumbent spends two angle classes `0.0358°` apart on one sixteen-square block that
-the atlas’s regularized sweep already merges at `1e-3` radians.
+The incumbent spends two angle classes $0.0358^\circ$ apart on one sixteen-square block
+that the atlas’s regularized sweep already merges at `1e-3` radians.
 Either the split buys the last `2.7e-5` of side, or a cleaner nearby structure exists
 and cold search never found it.
 A bracketed fixed-angle LP sweep decides which, for the price of counted LP solves.

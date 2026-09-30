@@ -97,16 +97,16 @@ Every claim that design can make about coverage, saturation, or restricted-class
 optimality rests on records actually having that shape.
 
 Two records are known instances.
-Trump’s `n = 11` packing is one corner square, one mirrored against the opposite side,
+Trump’s $n = 11$ packing is one corner square, one mirrored against the opposite side,
 one offset along the top, an L-shaped block of three, and one five-square group tilted
-as a rigid unit. Bidwell’s `n = 17` record is an aligned frame plus two tilted groups.
+as a rigid unit. Bidwell’s $n = 17$ record is an aligned frame plus two tilted groups.
 
 One record is a known stress.
 [Exp-037](../series/series-000-smoke-and-calibration/experiments/exp-037-h-042-n29-numerical-angle-classes.md)
-measures six numerical angle classes in the retained `n = 29` serialization, with a
-minimum class gap of `0.296067` degrees.
-That measurement constrains angle-class count `A`, not chunk count `K`. It makes
-`n = 29` a necessary stress case but does not justify the six-chunk threshold.
+measures six numerical angle classes in the retained $n = 29$ serialization, with a
+minimum class gap of $0.296067$ degrees.
+That measurement constrains angle-class count $A$, not chunk count $K$. It makes
+$n = 29$ a necessary stress case but does not justify the six-chunk threshold.
 
 ## Exact Chunks, Near Chunks, and Free Squares
 
@@ -127,7 +127,7 @@ requires counting them rather than hiding them in trivial one-square chunks.
 
 A refutation is not a dead end, because the failing records name the missing grammar
 move. Records that fail only on the skeleton test but pass the angle-class test call for
-richer intra-chunk shapes; records that fail on class count call for a larger `K` and
+richer intra-chunk shapes; records that fail on class count call for a larger $K$ and
 price the outer search dimension directly.
 Either outcome is a quantitative input to the enumerator’s design, which is why this
 round is registered ahead of the instrument it will judge.

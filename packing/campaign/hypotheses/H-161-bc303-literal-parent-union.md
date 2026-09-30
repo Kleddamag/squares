@@ -44,14 +44,14 @@ hypothesis:
 ---
 # H-161: Literal BC303 Parent Union
 
-The reviewed parent-union inequality is `mu(Q_I)-k+(11-k)g<=epsilon`, where `g=3/800000`
-and `epsilon=524199/2000000`. The source scale is `W=4000000`, with `WM=45048398` and
-`W(1+g)=4000015`. For one exact `Q0`, the necessary integer condition is `N<=5048248`.
+The reviewed parent-union inequality is `mu(Q_I)-k+(11-k)g<=epsilon`, where $g=3/800000$
+and `epsilon=524199/2000000`. The source scale is $W=4000000$, with `WM=45048398` and
+$W(1+g)=4000015$. For one exact `Q0`, the necessary integer condition is `N<=5048248`.
 For the four separated D4 corner copies, it is `4N<=17048293`, equivalently
 `N<=4262073`. These are fixed before the
 [exp-159 target read](../series/series-000-smoke-and-calibration/experiments/exp-159-bc303-literal-parent-union.md).
 
-Exp-159 measured `N=4000015`, below both first-rejecting integers.
+Exp-159 measured $N=4000015$, below both first-rejecting integers.
 It rejects H-161’s predicted four-corner nonextension.
 The four-corner claim concerns that specified tuple only, and this necessary test
 surviving does not prove the tuple extends to eleven parents.

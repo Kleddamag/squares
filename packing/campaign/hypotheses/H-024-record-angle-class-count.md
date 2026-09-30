@@ -53,12 +53,13 @@ interval evidence resolves them.
 
 **Unresolved, 2026-08-25.**
 [Exp-012](../series/series-000-smoke-and-calibration/experiments/exp-012-h-024-n29-angle-classes.md)
-reconstructs the primary Kingbird `n = 29` SVG and numerically checks all 29 squares and
+reconstructs the primary Kingbird $n = 29$ SVG and numerically checks all 29 squares and
 406 pairs at 160 decimal digits and tolerance `1e-80`. Its orientations are aligned,
-`a = 25.258655°`, `b = 20.800127°`, `−c = −17.506268°`, `d = 24.962588°`, and
-`i = 24.308358°`. The six intervals are disjoint by a minimum of `0.296067°`, so the
-serialized numerical geometry misses the upper bound of three without a clustering
-ambiguity. But this is not a formal feasibility certificate for the source geometry.
+$a = 25.258655^\circ$, $b = 20.800127^\circ$, $-c = -17.506268^\circ$,
+$d = 24.962588^\circ$, and $i = 24.308358^\circ$. The six intervals are disjoint by a
+minimum of $0.296067^\circ$, so the serialized numerical geometry misses the upper bound
+of three without a clustering ambiguity.
+But this is not a formal feasibility certificate for the source geometry.
 It therefore does not satisfy this hypothesis’s prerequisite.
 
 [H-042](H-042-n29-numerical-angle-classes.md) preserves the useful numerical claim

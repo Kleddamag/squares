@@ -58,9 +58,9 @@ hypothesis:
 # H-141 — Matched Four-Owner Footprint Gain
 
 [H-111](H-111-resource-anchor-case-exclusion.md) asks whether complete owner domains and
-resource accounting can exclude Realm 4 at `n = 11`. This hypothesis tests one narrower
+resource accounting can exclude Realm 4 at $n = 11$. This hypothesis tests one narrower
 mechanism: whether replacing four bare corner marks with the union of their complete
-endpoint footprints lowers a matched finite covering objective by more than `0.001`.
+endpoint footprints lowers a matched finite covering objective by more than $0.001$.
 
 The four owners are the reflected `m1`, sector-0 classes at the container corners.
 Their axis-aligned unit parents form an exact compatible configuration, so the

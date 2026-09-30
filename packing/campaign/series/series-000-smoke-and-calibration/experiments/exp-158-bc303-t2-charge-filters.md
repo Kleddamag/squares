@@ -73,7 +73,7 @@ experiment:
 This record contains no target atom charge.
 The source is the literal BC293 measure at reviewed revision
 `39714308ce2081abbd76624387d134fee4be6deb`; its 377 rows, nonnegative integer weights at
-scale `W=4000000`, 182 eligible source charts, and both axis aliases must be checked
+scale $W=4000000$, 182 eligible source charts, and both axis aliases must be checked
 before the target invocation.
 The reader must identify its own checkout and full committed implementation revision.
 
@@ -98,7 +98,7 @@ Both positive determinations prove the combined local T2 surplus helper under th
 accepted reduction. A C refuter rejects its opposite branch.
 Neither result proves local availability in an eleven-parent packing, owner selection
 into the admitted tuple family, adjacent-only T2 after an opposite rejection, or a
-stronger global `s(11)` bound.
+stronger global $s(11)$ bound.
 The disclosed C and S geometry fixtures are control poses, not target-blind discoveries.
 
 <!-- This document follows common-doc-guidelines.md.

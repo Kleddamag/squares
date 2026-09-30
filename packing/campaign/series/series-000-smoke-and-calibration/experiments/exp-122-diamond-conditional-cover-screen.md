@@ -78,7 +78,7 @@ The independent reader launched once at 07:04:40 UTC and completed with actual e
 in 0.07 seconds wall, 0.06 CPU. Its complete `verified_counterexample` receipt has
 passed guards, nine strict point avoidances, thirty-six edge determinants, sixteen
 closed wall slacks and strict separation.
-The supplied axis has exact positive gap `49667/20833333333`; the reader independently
+The supplied axis has exact positive gap $49667/20833333333$; the reader independently
 supplies its own separating axis too.
 There are no unresolved entries.
 Total scientific process cost is 0.20 seconds wall and 0.17 CPU, separate from

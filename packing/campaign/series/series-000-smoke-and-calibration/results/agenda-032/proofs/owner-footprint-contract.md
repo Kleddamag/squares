@@ -52,8 +52,8 @@ and collinear vertices, and retaining counterclockwise ordering.
 This is generally a quadrilateral, and contains T_j(m).
 
 An equivalent explicit counterclockwise vertex list is
-`(m, m+h*b, m+h*((c/(1+s))*a+J(a)), m+h*J(a))`, where `c=a·b` and `s=det(a,b)`. The
-denominator is positive.
+`(m, m+h*b, m+h*((c/(1+s))*a+J(a)), m+h*J(a))`, where $c=a\cdot b$ and $s=\det(a,b)$.
+The denominator is positive.
 This avoids clipping in production and gives an independent exact control against the
 two-square intersection.
 

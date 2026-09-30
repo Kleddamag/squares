@@ -45,20 +45,20 @@ hypothesis:
 
 ## Why this cell and not another
 
-The campaign’s ladder is `n = 5` and `n = 10`, and both are **45° mechanisms**:
+The campaign’s ladder is $n = 5$ and $n = 10$, and both are **45° mechanisms**:
 symmetric arrangements that blind search reaches without help.
-`n = 12` is the trivial grid.
+$n = 12$ is the trivial grid.
 So every control the campaign runs validates *machinery* — that the engine can descend,
 that the refiner converges, that the verifier decides — and **none of them exercises the
-thing `n = 11` actually demands**, which is an oblique core whose trigonometric
+thing $n = 11$ actually demands**, which is an oblique core whose trigonometric
 coordinates are algebraic but whose nonzero radian angle is transcendental, and which no
 proved case uses.
 
-`n = 17` is the nearest case whose record does.
-Bidwell’s 1998 packing uses tilts of `0°`, `+39.8049589798°`, and `−36.6237863834°`: two
-unequal non-trivial orientations against a grid frame, structurally the same *kind* of
-object as Trump’s, at a case that is cheap to run.
-The former `±40°` shorthand was not an accurate transcription of the primary SVG.
+$n = 17$ is the nearest case whose record does.
+Bidwell’s 1998 packing uses tilts of $0^\circ$, $+39.8049589798^\circ$, and
+$-36.6237863834^\circ$: two unequal non-trivial orientations against a grid frame,
+structurally the same *kind* of object as Trump’s, at a case that is cheap to run.
+The former $\pm40^\circ$ shorthand was not an accurate transcription of the primary SVG.
 
 The [synopsis](../../../SYNOPSIS.md#the-lay-of-the-land-by-n) calls it the largest
 unforced gap in the campaign’s coverage, and the
@@ -71,21 +71,21 @@ It has never been run.
 This is registered because **both branches are informative**, which is rare enough to be
 worth saying explicitly.
 
-- **If the annealer reaches the published `n=17` standing best** — the engine can find
+- **If the annealer reaches the published $n=17$ standing best** — the engine can find
   this oblique record under the registered regime.
-  Then the `n = 11` failure is more plausibly instance-specific: its basin may be rarer,
+  Then the $n = 11$ failure is more plausibly instance-specific: its basin may be rarer,
   narrower, or less forgiving.
   That localises the problem and makes [H-012](H-012-record-basins-are-rare.md)’s rarity
   measurement the right next question.
 - **If it does not** — this version of the engine did not reach this oblique standing
   best in five seeds at the registered budget.
   That supports testing changed move sets, schedules, and structured proposers; it does
-  not establish blindness at other `n`, larger budgets, or even along trajectories whose
+  not establish blindness at other $n$, larger budgets, or even along trajectories whose
   final retained best is the grid.
 
 Failure under this registered regime is the prediction.
-A single seed at 40% of the round’s budget already returned **exactly `5.000000000`** —
-the trivial `5×5` grid, `+0.324` from Bidwell.
+A single seed at 40% of the round’s budget already returned **exactly $5.000000000$** —
+the trivial $5\times5$ grid, $+0.324$ from Bidwell.
 Because only the retained best is stored, that result does not say whether the
 trajectory left the grid neighbourhood.
 Recorded here, before the round, so the scoped outcome is evidence rather than
@@ -93,13 +93,13 @@ hindsight.
 
 ## What this does not claim
 
-Not that `s(17) = 4.67553…`. That case is **open**, and the standing best is an upper
-bound like any other.
+Not that $s(17) = 4.67553\ldots$. That case is **open**, and the standing best is an
+upper bound like any other.
 The criterion is reaching the standing best, not proving it optimal.
 
 Nor does a failure here identify *which* part of the proposer underperformed — the move
 set, cooling schedule, absent angle-class structure, budget, or retention rule.
-It says only that the registered composite did not meet the declared `n=17` criterion.
+It says only that the registered composite did not meet the declared $n=17$ criterion.
 Separating those is [H-001](H-001-angle-class-reduction.md)’s job and needs an
 instrument that does not exist.
 

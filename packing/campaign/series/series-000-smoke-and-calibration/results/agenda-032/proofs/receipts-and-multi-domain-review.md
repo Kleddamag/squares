@@ -14,15 +14,15 @@ and its Exp136 source.
 The receipt is complete, covers direction indices0 through180, and reports the unchanged
 source mass
 
-`M=7804903/1000000`, with `m=760979/800000`.
+$M=7804903/1000000$, with $m=760979/800000$.
 
 The minimum occurs at directions27 through32. It is below one, so the raw rounded
 proposal is not a unit-demand cover on the full net.
 The exact quotient is
 
-`M/m = 31219612/3804895 ≈ 8.205117881045338`.
+$M/m = 31219612/3804895 \approx 8.205117881045338$.
 
-Its excess over the seven-core threshold is exactly `4585347/3804895`. It therefore
+Its excess over the seven-core threshold is exactly $4585347/3804895$. It therefore
 supplies no n=11 exclusion for the literal four-flush-unit branch.
 
 I checked the source residual atoms directly: there are88 coalesced atoms, all weights
@@ -34,11 +34,11 @@ deleting obstacle atoms does not improve the normalized effective mass.
 The transfer interpretation is sound, subject to the exact sweep’s recorded domain
 result. D4 symmetry of the weighted measure and the four obstacles makes the181 folded
 directions sufficient.
-The retained net reaches45 degrees and has `D=207107/90000000`;
-`B(1+D)=899996306539/900000000000<1` places each selected closed B-core strictly inside
+The retained net reaches45 degrees and has $D=207107/90000000$;
+$B(1+D)=899996306539/900000000000<1$ places each selected closed B-core strictly inside
 its physical unit parent.
 Actual remaining cores are strictly separated from the closed fixed unit obstacles.
-Thus scaling by `1/m` gives an all-angle conditional cover for those remaining cores.
+Thus scaling by $1/m$ gives an all-angle conditional cover for those remaining cores.
 The receipt’s finite-net wording is cautious; the additional analytic symmetry/shrink
 argument is what supplies this interpretation.
 

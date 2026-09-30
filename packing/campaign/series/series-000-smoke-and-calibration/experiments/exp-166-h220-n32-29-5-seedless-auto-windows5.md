@@ -94,10 +94,10 @@ This is the first scientific round of
 [X-039](../../../explorations/X-039-n100-re-rank-after-session-140.md) ranks the side.
 [Session 141](../../../agent-sessions/session-141-n100-research.md) owns the clock.
 
-Auto resolved to `(42, 56, 70)`. The 1200 s run stopped at `29.803318` unconverged below
+Auto resolved to $(42, 56, 70)$. The 1200 s run stopped at $29.803318$ unconverged below
 32 after 35 LP rounds.
 No freeze. T-030 was not offered.
-The follow-up is exp-167 at n=31 `57/10`.
+The follow-up is exp-167 at n=31 $57/10$.
 
 Confirm only on `RETAINABLE`. There is no n=32 case package.
 

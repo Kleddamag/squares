@@ -46,16 +46,16 @@ hypothesis:
 walked the shared tilt of Trump’s five tilted squares off its optimal value and solved
 the cell at each step:
 
-| `δ` from the optimal tilt | `s(θ* + δ) − s*` |
+| $\delta$ from the optimal tilt | $s(\theta^{\ast} + \delta) - s^{\ast}$ |
 | ---: | ---: |
 | `−1e-3` | `1.748e-04` |
 | `−1e-5` | `1.747e-06` |
-| `0` | `1.742e-10` |
+| $0$ | `1.742e-10` |
 | `+1e-5` | `3.840e-06` |
 | `+1e-3` | `3.846e-04` |
 
-Both sides are linear in `δ` and their slopes differ — about `0.175` on the left and
-`0.384` on the right.
+Both sides are linear in $\delta$ and their slopes differ — about $0.175$ on the left
+and $0.384$ on the right.
 The minimum is a **corner**, not a smooth basin floor.
 
 That establishes a kink along this angle slice, not rigidity of the full packing.
@@ -75,7 +75,7 @@ on a smooth local model at this point.
 Bracketing, subgradient or bundle methods, and active-contact algebra are candidates;
 the experiment does not prove that one family is necessary or sufficient.
 
-If this generalises across `n`, it is also an argument for
+If this generalises across $n$, it is also an argument for
 [H-001](H-001-angle-class-reduction.md) that H-001 does not itself make: reducing the
 angles to classes shrinks the non-smooth search to one or two dimensions, where the
 tested bracketing implementation reached the solver floor on the proved controls.

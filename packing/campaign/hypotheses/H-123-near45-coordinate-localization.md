@@ -50,7 +50,7 @@ They proved all four continuous guards and checked sixteen exact Bernstein coeff
 in 0.21 seconds of combined process wall time.
 Neither process was retried.
 
-The claim concerns closed unit squares contained in `[0,q]^2` that avoid the ten
+The claim concerns closed unit squares contained in $[0,q]^{2}$ that avoid the ten
 original Stromquist P10 marks, meaning that they contain none of those points.
 Here the near45 band is `abs(theta-pi/4)<=pi/720`.
 
@@ -62,10 +62,10 @@ target sign computation occurred in that assessment.
 
 ## Domain and Symmetries
 
-Write `q=1939/500`, `W=q/2-1`, `m=q/2=1+W`, `a=1-W/2` and `h0=2/3`. For a near45 angle,
-let `C=cos(theta)`, `S=sin(theta)` and `h=(C+S)/2`. Containment requires the center to
-lie in `[h,q-h]^2`. The near45 ratio bound in the conditional reduction,
-`49/50<tan(theta),cot(theta)`, gives `C,S>2/3`, since `2401/4901>4/9`; hence `h>h0`.
+Write $q=1939/500$, $W=q/2-1$, $m=q/2=1+W$, $a=1-W/2$ and `h0=2/3`. For a near45 angle,
+let `C=cos(theta)`, `S=sin(theta)` and $h=(C+S)/2$. Containment requires the center to
+lie in $[h,q-h]^{2}$. The near45 ratio bound in the conditional reduction,
+`49/50<tan(theta),cot(theta)`, gives $C,S>2/3$, since $2401/4901>4/9$; hence `h>h0`.
 Also `2/3<=W<1` implies `a<=h0`.
 
 It is sufficient to cover the larger closed center sets
@@ -76,7 +76,7 @@ $$
 
 and the coordinate-reflected right strip by the original P10 marks.
 Any P10-avoiding center then lies in the stated union of top and bottom strips;
-reflections `x -> q-x` and `y -> q-y` then put it in `[1,q/2] x [0,1]`. These are
+reflections `x -> q-x` and `y -> q-y` then put it in $[1,q/2] \times [0,1]$. These are
 reflections of the whole configuration.
 They preserve P10 and exchange the two near45 angle signs.
 A local anchor reflection or a quarter turn is not substituted.
@@ -91,7 +91,7 @@ G=(C+S)/2-WS(C+S/2)\ge0.
 $$
 
 The opposite angle sign supplies the C/S-swapped inequalities.
-For the P10 pair `L=(1,1)` and `N=(a,m)`, use square-frame coordinates `U=Cx+Sy`,
+For the P10 pair $L=(1,1)$ and $N=(a,m)$, use square-frame coordinates `U=Cx+Sy`,
 `V=-Sx+Cy`. Their differences are `delta U=W(S-C/2)` and `delta V=W(C+S/2)`. The near45
 ratio bounds make both positive and `delta U<=delta V`. Centers whose squares contain
 both marks form the closed frame rectangle
@@ -101,7 +101,7 @@ $$
 $$
 
 F ensures this rectangle is nonempty, including zero-width cases.
-Its horizontal projection is exactly `[a-G,1+G]`. Thus G ensures that, at every x
+Its horizontal projection is exactly $[a-G,1+G]$. Thus G ensures that, at every x
 between a and 1, some center has a square containing both marks.
 G alone does not establish that the frame rectangle is nonempty.
 
@@ -110,11 +110,11 @@ closed interval. The intervals for L and N overlap.
 They cover the lower and upper edges of `[h0,1] x [h0,m]`: squares centered on its lower
 edge contain L because both coordinate offsets are at most 1/3 and `sqrt(2)/3<1/2`;
 squares centered on its upper edge contain N because the horizontal offset is at most
-`W/2<1/2`. Their connected union covers the whole vertical segment.
+$W/2<1/2$. Their connected union covers the whole vertical segment.
 The overlap need not itself lie inside that segment.
 
-For the central quarter `[1,m]^2`, use the additional P10 marks `M=(m,1)` and
-`P=(1+W/2,m)`, splitting at `x=1+W/2`. The right half uses M and P, a horizontal
+For the central quarter $[1,m]^{2}$, use the additional P10 marks $M=(m,1)$ and
+$P=(1+W/2,m)$, splitting at $x=1+W/2$. The right half uses M and P, a horizontal
 translate of the previous pair.
 The left half uses L and P. Its common-hit rectangle has horizontal projection
 `[1-Gswap,1+W/2+Gswap]`, where `Gswap=h-WC(S+C/2)`; `Fswap=1-W(S+C/2)` ensures its
@@ -124,21 +124,21 @@ All boundary edges and splitting seams are closed.
 
 ## Four Continuous Polynomial Obligations
 
-Put `r=sqrt(2)/2`, `t=tan((theta-pi/4)/2)`, `D=1+t^2`, `c=r(1-2t-t^2)`, `s=r(1+2t-t^2)`.
-Then `C=c/D` and `S=s/D`, with `D>0`. The positive-denominator polynomials `D F` and
-`D^2 G` have ascending coefficients
+Put `r=sqrt(2)/2`, `t=tan((theta-pi/4)/2)`, $D=1+t^{2}$, $c=r(1-2t-t^{2})$,
+$s=r(1+2t-t^{2})$. Then $C=c/D$ and $S=s/D$, with $D>0$. The positive-denominator
+polynomials $D F$ and $D^{2} G$ have ascending coefficients
 
 $$
-DF:\quad (1-3Wr/2,\;Wr,\;1+3Wr/2),
+DF:\quad (1-3Wr/2,\thickspace Wr,\thickspace1+3Wr/2),
 $$
 
 $$
-D^2G:\quad (r-3W/4,\;-W,\;5W/2,\;W,\;-r-3W/4).
+D^2G:\quad (r-3W/4,\thickspace-W,\thickspace5W/2,\thickspace W,\thickspace-r-3W/4).
 $$
 
 The
 [exact outer half-angle enclosure](../series/series-000-smoke-and-calibration/results/agenda-026/bc-255-angle-instrument-design.md#one-parameter-and-two-center-coordinates)
-gives closed slabs `[-T,0]` and `[0,T]`, where `T=110880/50803079`. Checking each
+gives closed slabs $[-T,0]$ and $[0,T]$, where $T=110880/50803079$. Checking each
 polynomial on each slab gives four obligations, with no adaptive subdivision.
 A nonnegative Bernstein coefficient certificate suffices.
 Swapping C and S is `t -> -t`, already covered by the two slabs.

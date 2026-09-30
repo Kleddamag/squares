@@ -112,9 +112,9 @@ experiment:
 ---
 # exp-043 — exact pure -W second-order test
 
-Exp-038 proves that `W` is lineality in every branchwise linearization cone and records
+Exp-038 proves that $W$ is lineality in every branchwise linearization cone and records
 its exact normalized coordinates.
-Exp-036 excludes the `+W` orientation from the true Bouligand tangent cone at A, the
+Exp-036 excludes the $+W$ orientation from the true Bouligand tangent cone at A, the
 registered midpoint, and B. Neither result classifies the opposite orientation.
 This round tests only the canonical `-W` vector obtained by negating the retained
 exp-038 coordinates.
@@ -122,7 +122,7 @@ exp-038 coordinates.
 Throughout this round, “midpoint” means the source stratum labelled `interior` in
 exp-035 and exp-038. Retained records and code must use `interior`.
 
-Write `r = sqrt(2)`, `S = 1 + 5r/4`, and `w_i = cos(theta_i) + sin(theta_i)`. For
+Write `r = sqrt(2)`, $S = 1 + 5r/4$, and `w_i = cos(theta_i) + sin(theta_i)`. For
 `t -> 0+`, a sequence normalized to `-W` has
 
 ```text
@@ -135,7 +135,7 @@ delta = theta_3 - theta_4 = o(t).
 The checker must negate the complete stored W vector, including its center and angle
 coordinates, rather than reconstructing an angle-only surrogate.
 It must regenerate the exp-035 and exp-038 source poses, active rows, zero-axis
-inventories, and both pair `(3,4)` owner branches at A, the midpoint, and B. Both tied
+inventories, and both pair $(3,4)$ owner branches at A, the midpoint, and B. Both tied
 support rows remain a conjunction.
 It must prove the exact `-W` vector is first-order tight in every regenerated branch
 before using any second-order statement.
@@ -145,14 +145,14 @@ before using any second-order statement.
 For each of the six `(A, midpoint, B) x (owner3, owner4)` cases, derive the complete
 second-order necessary inequality from the sign-reversed center and angle expansion.
 Each branch proof must quantify over and eliminate arbitrary second-order center
-corrections, arbitrary `o(t)` angle corrections, and feasible subsequences.
+corrections, arbitrary $o(t)$ angle corrections, and feasible subsequences.
 It must retain an acceleration-independent necessary inequality or equivalent exact
 Farkas certificate; expanding one chosen center path is insufficient to exclude a
 Bouligand tangent. No coefficient may be copied from exp-036 as an expected constant.
 The separate sign-symmetry mechanism predicts:
 
 - owner 4 has exact positive excess coefficient `sqrt(2)/8`;
-- owner 3 has exact obstruction coefficient `1/4`; and
+- owner 3 has exact obstruction coefficient $1/4$; and
 - the relative-angle cusp has exact positive margin `sqrt(2)/2 - 1/4`.
 
 The obstruction outcome is `criterion_met` when every case has any strict exact
@@ -177,14 +177,14 @@ controls; the independent sign-symmetry mechanism may be met, missed, or unresol
 Retain exactly eight semantic mutations, each through the same source builder and
 validator and each with a stable expected failure identifier:
 
-1. negate only `dtheta3` and `dtheta4` while retaining the `+W` center entries and fail
+1. negate only `dtheta3` and `dtheta4` while retaining the $+W$ center entries and fail
    `source.minus_w`;
 2. remove one owner branch and fail `source.owner_exhaustion`;
 3. remove one actual tied support row and fail `source.tied_rows`;
 4. replace the production width second-order term `-sqrt(2)/2` by `+sqrt(2)/2` before
    owner-4 elimination, destroy its strict contradiction, and fail
    `certificate.owner4_sign`;
-5. add `1/2` to the production owner-3 upper-bound second-order wall term before
+5. add $1/2$ to the production owner-3 upper-bound second-order wall term before
    elimination, destroy its strict contradiction, and fail `certificate.owner3_sign`;
 6. omit the midpoint and fail `source.strata`;
 7. claim the known exp-034 sheet-angle curve is obstructed and fail
@@ -197,7 +197,7 @@ angle expansions through the same generic necessary-inequality evaluator and ret
 compatible, no-contradiction certificate before a mutation tries to relabel it.
 Checking only exp-034’s accepted flag, rejecting it because it is not `-W`, or branching
 to a sentinel is insufficient.
-Exp-036’s accepted `+W` record is a positive obstruction control, not a substitute for
+Exp-036’s accepted $+W$ record is a positive obstruction control, not a substitute for
 deriving `-W`. Coefficient mutations alter production inputs before derivation; changing
 a derived coefficient or expected constant afterward fails the control criterion.
 Catching an undifferentiated exception likewise fails it.
@@ -229,7 +229,7 @@ Two independent reviews found five finite defects:
 
 - the evaluator has no production rowwise second-order wall or SAT jets;
 - center velocities enter only first-order checks, while hand-written angle-squared
-  formulas make `+W` and `-W` certificates identical by construction;
+  formulas make $+W$ and `-W` certificates identical by construction;
 - the positive Farkas weights cancel linear correction columns but are never applied to
   derived rowwise nonlinear constants;
 - the exp-034 control does not feed a full exact center, angle, and acceleration witness

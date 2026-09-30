@@ -2,15 +2,15 @@
 
 Status: **site set refuted, unconverged**. The side stays open.
 
-Session-139 probe: BC-197 auto `(34, 45, 56)` unioned with T-020’s 2260 atom sites
-scaled from `24/5` to `97/20`, plus `--seed-windows 6`,
+Session-139 probe: BC-197 auto $(34, 45, 56)$ unioned with T-020’s 2260 atom sites
+scaled from $24/5$ to $97/20$, plus `--seed-windows 6`,
 `(n, L, B, net) = (19, 97/20, 9977/10000, 181 directions)`. Seed from the immutable
 `certificate-24-5.json`, not T-021’s moving `certificate.json`. Seed sites 2836 = 2260
 T-020 plus 576 ceiling-window lattice sites.
-The 900 s deadline stopped the row loop after 34 LP rounds at `19.808958` (321 still
-violated). Crossed nineteen at round 5 (`19.114379`) and climbed.
+The 900 s deadline stopped the row loop after 34 LP rounds at $19.808958$ (321 still
+violated). Crossed nineteen at round 5 ($19.114379$) and climbed.
 Remaining rows can only raise this value.
-Adding sites can still lower it, so `97/20` is not barred for n=19. T-020 at `24/5` is
+Adding sites can still lower it, so $97/20$ is not barred for n=19. T-020 at $24/5$ is
 unchanged. T-021’s n=20 certificate is untouched.
 
 ## Command
@@ -38,11 +38,11 @@ Wall 953.1 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `19.808958` |
+| Restricted optimum | $19.808958$ |
 | Sites / orbits / rows | 8865 / 1172 / 11546 |
 | Seed sites | 2836 |
 | LP rounds | 34 |
-| Crossing | round 5 (`19.114379`) |
+| Crossing | round 5 ($19.114379$) |
 | Wall | 953.1 s |
 | `least_covered` | 0.974389 |
 | Converged | no (`violated == 321` at stop) |

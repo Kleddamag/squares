@@ -162,8 +162,8 @@ Use frame coordinates $U=Cx+Sy$ and $V=-Sx+Cy$ for the center.
 The preceding inequalities and bottom containment place it inside the closed triangle
 
 $$
-K_\theta=\{U\le u_*,\ V\le v_*,\ SU+CV\ge h\},\qquad
-u_*=Cm+S-1/2,\quad v_*=C-S-1/2.
+K_\theta=\lbrace U\le u_{\ast},\ V\le v_{\ast},\ SU+CV\ge h\rbrace,\qquad
+u_{\ast}=Cm+S-1/2,\quad v_{\ast}=C-S-1/2.
 $$
 
 This is an outer approximation to the possible centers; enlarging the center set is safe
@@ -192,12 +192,12 @@ $$
 Since $CS\le1/2$, we have $\Delta\le23/400$. Each rectangle half-side is at least
 $1291/2812>459/1000$. Also $|C-S|<1/125$, $(2h-1)^2<9/49$ and $4CS>49/25$ bound the
 horizontal displacement of $p_\theta$ from $(k,r)$ by $1/1000$. The vertical
-displacement is less than $1/90000$, so $\|p_\theta-(k,r)\|_1<1/800$.
+displacement is less than $1/90000$, so $\Vert p_\theta-(k,r)\Vert_1<1/800$.
 
 It follows that the fixed diamond
 
 $$
-K_1=\{(X,Y):|X-k|+|Y-r|\le16/25\}
+K_1=\lbrace(X,Y):|X-k|+|Y-r|\le16/25\rbrace
 $$
 
 lies in the interior of every admissible Q: either frame projection relative to
@@ -221,7 +221,7 @@ Let T be the accepted outer tangent-half-angle endpoint $110880/50803079$ and se
 
 $$
 \alpha=\frac{1+T^2}{2(1+2T-T^2)},\qquad
-B_\phi=R_\phi[-\alpha,\alpha]^2,\quad\phi\in\{0,\pi/4\}.
+B_\phi=R_\phi[-\alpha,\alpha]^2,\quad\phi\in\lbrace0,\pi/4\rbrace.
 $$
 
 Here $R_\phi$ rotates a point by $\phi$. For S’s orientation $\psi$, put
@@ -232,7 +232,7 @@ The largest required projection is therefore bounded by
 $\alpha(\cos\delta+\sin\delta)\le1/2$. A complete cover of all possible S centers by
 
 $$
-(E+B_\phi)\ \cup\ \bigcup_{p\in\{B,\ldots,J\}}(p+B_\phi)
+(E+B_\phi)\ \cup\ \bigcup_{p\in\lbrace B,\ldots,J\rbrace}(p+B_\phi)
 $$
 
 would prove H124 for that whole band.
@@ -330,7 +330,7 @@ gap in this sufficient cover would not refute H124.
 ### A Fixed Collision-region Strengthening
 
 The next selected instrument keeps those thirteen regions and appends one fixed S-center
-region, $C^*$, directly.
+region, $C^{\ast}$, directly.
 It is not another obstacle to dilate by $B_0$. The
 [author proof](../series/series-000-smoke-and-calibration/results/agenda-026/bc-255-center-correlated-collision.md)
 and
@@ -339,8 +339,8 @@ prove the uniform displacement guard $\varepsilon=1/500$ and the collision impli
 throughout both actual closed angle bands.
 They define every constant and distinguish world coordinates from the rotated Q-frame.
 
-The producer constructs $C^*$ by closed half-plane clipping; the independently authored
-reader reconstructs it by enumerating supporting-line intersections.
+The producer constructs $C^{\ast}$ by closed half-plane clipping; the independently
+authored reader reconstructs it by enumerating supporting-line intersections.
 Both source-free reviews passed in Session094, with the fixed eight unnormalized normals
 and the required $2\varepsilon$ penalty on diagonal normals.
 The reviewed source retains the old thirteen regions unchanged and has at most fourteen

@@ -428,6 +428,90 @@ def test_the_live_reader_waits_for_the_aggregator_it_is_running_in(
     assert any(job["name"] == "packing-required" for job in settled)
 
 
+def test_the_live_reader_waits_longer_only_for_an_active_step_missing_from_the_api(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    entry = load_walls(register(tmp_path)).workflow("packing-validation")
+    _, active = recorded(IN_BAND)
+    aggregate = next(job for job in active if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    visible = deepcopy(active)
+    next(job for job in visible if job["name"] == "packing-required")["steps"].append(
+        {"name": check_pr_wall.WALL_STEP, "started_at": aggregate["started_at"]}
+    )
+    client = _JobsClient([active, active, active, active, visible])
+    delays: list[float] = []
+    monkeypatch.setattr(check_pr_wall.time, "sleep", delays.append)
+    expected = check_pr_wall._reported_job_ids(active, entry)
+    assert check_pr_wall._settled_jobs(client, IN_BAND, entry, expected) == visible
+    assert client.calls == 5
+    assert delays == [
+        check_pr_wall.SETTLE_SECONDS,
+        check_pr_wall.SETTLE_SECONDS,
+        *check_pr_wall.LIVE_STEP_BACKOFF_SECONDS[:2],
+    ]
+
+
+def test_the_live_reader_refuses_an_active_step_still_missing_after_the_bounded_backoff(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    entry = load_walls(register(tmp_path)).workflow("packing-validation")
+    _, active = recorded(IN_BAND)
+    aggregate = next(job for job in active if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    client = _JobsClient([active])
+    delays: list[float] = []
+    monkeypatch.setattr(check_pr_wall.time, "sleep", delays.append)
+    expected = check_pr_wall._reported_job_ids(active, entry)
+    with pytest.raises(WallError, match=r"without a started .* step after 7 reads"):
+        check_pr_wall._settled_jobs(client, IN_BAND, entry, expected)
+    assert client.calls == check_pr_wall.SETTLE_ATTEMPTS + len(
+        check_pr_wall.LIVE_STEP_BACKOFF_SECONDS
+    )
+    assert delays[-4:] == list(check_pr_wall.LIVE_STEP_BACKOFF_SECONDS)
+
+
+def test_the_live_reader_does_not_extend_a_completed_aggregator_without_a_wall_step(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    entry = load_walls(register(tmp_path)).workflow("packing-validation")
+    _, completed = recorded(IN_BAND)
+    client = _JobsClient([completed])
+    monkeypatch.setattr(check_pr_wall.time, "sleep", lambda _seconds: None)
+    expected = check_pr_wall._reported_job_ids(completed, entry)
+    with pytest.raises(WallError, match=r"without a started .* step after 3 reads"):
+        check_pr_wall._settled_jobs(client, IN_BAND, entry, expected)
+    assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
+
+
+def test_a_live_missing_step_does_not_extend_an_inconsistent_prerequisite_cohort(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    entry = load_walls(register(tmp_path)).workflow("packing-validation")
+    _, jobs = recorded(IN_BAND)
+    expected = check_pr_wall._reported_job_ids(jobs, entry)
+    aggregate = next(job for job in jobs if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    jobs = [job for job in jobs if job["name"] != "suite"]
+    client = _JobsClient([jobs])
+    monkeypatch.setattr(check_pr_wall.time, "sleep", lambda _seconds: None)
+    with pytest.raises(WallError, match="without a started"):
+        check_pr_wall._settled_jobs(client, IN_BAND, entry, expected)
+    assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
+
+
 @pytest.mark.parametrize("failure", ["missing", "not-started"])
 def test_the_live_reader_refuses_a_stale_aggregator_view(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failure: str

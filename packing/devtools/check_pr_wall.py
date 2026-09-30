@@ -140,6 +140,9 @@ STEP_FIELDS = ("name", "conclusion", "started_at", "completed_at")
 #: told finished. The jobs endpoint can lag the `needs` graph by a moment.
 SETTLE_ATTEMPTS = 3
 SETTLE_SECONDS = 3.0
+# A running aggregator can precede the jobs API's view of its active wall step.
+# Spend this extra bounded window only on that specific coherent live view.
+LIVE_STEP_BACKOFF_SECONDS = (2.0, 4.0, 8.0, 12.0)
 WALL_STEP = "Hold the pull request's wall to its budget"
 #: What a wall's size verdict does to the run. Absent means `enforcing`.
 ENFORCEMENT = ("enforcing", "advisory")
@@ -905,6 +908,7 @@ def _settled_jobs(
     time means the jobs endpoint is stale, not that the workflow has an older topology.
     """
     jobs = client.jobs(run_id)
+    reads = 1
     for _ in range(SETTLE_ATTEMPTS - 1):
         aggregator = next((job for job in jobs if job.get("name") == workflow.aggregator), None)
         if (
@@ -925,16 +929,48 @@ def _settled_jobs(
             break
         time.sleep(SETTLE_SECONDS)
         jobs = client.jobs(run_id)
+        reads += 1
+    aggregator = next((job for job in jobs if job.get("name") == workflow.aggregator), None)
+    if (
+        aggregator is not None
+        and aggregator.get("status") == "in_progress"
+        and _instant(aggregator.get("started_at")) is not None
+        and not any(
+            step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
+            for step in aggregator.get("steps") or []
+        )
+        and expected <= _reported_job_ids(jobs, workflow)
+        and not _unexpected_non_skipped_job_ids(jobs, workflow, expected)
+        and all(
+            job.get("status") == "completed"
+            for job in jobs
+            if _gates(job, workflow, workflow.aggregator)
+        )
+    ):
+        for seconds in LIVE_STEP_BACKOFF_SECONDS:
+            time.sleep(seconds)
+            jobs = client.jobs(run_id)
+            reads += 1
+            aggregator = next(
+                (job for job in jobs if job.get("name") == workflow.aggregator), None
+            )
+            if aggregator is None or aggregator.get("status") != "in_progress":
+                break
+            if any(
+                step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
+                for step in aggregator.get("steps") or []
+            ):
+                break
     aggregator = next((job for job in jobs if job.get("name") == workflow.aggregator), None)
     if aggregator is None:
         raise WallError(
             f"the jobs API did not report live aggregator `{workflow.aggregator}` after "
-            f"{SETTLE_ATTEMPTS} reads; refusing the historical no-aggregator fallback"
+            f"{reads} reads; refusing the historical no-aggregator fallback"
         )
     if _instant(aggregator.get("started_at")) is None:
         raise WallError(
             f"the jobs API reported live aggregator `{workflow.aggregator}` without a "
-            f"start time after {SETTLE_ATTEMPTS} reads"
+            f"start time after {reads} reads"
         )
     if not any(
         step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
@@ -942,7 +978,7 @@ def _settled_jobs(
     ):
         raise WallError(
             f"the jobs API reported live aggregator `{workflow.aggregator}` without a "
-            f"started `{WALL_STEP}` step after {SETTLE_ATTEMPTS} reads"
+            f"started `{WALL_STEP}` step after {reads} reads"
         )
     reported = _reported_job_ids(jobs, workflow)
     missing = expected - reported
@@ -950,7 +986,7 @@ def _settled_jobs(
     if missing or unexpected:
         raise WallError(
             f"the jobs API did not report the aggregator's required prerequisite set after "
-            f"{SETTLE_ATTEMPTS} reads (missing: {', '.join(sorted(missing)) or 'none'}; "
+            f"{reads} reads (missing: {', '.join(sorted(missing)) or 'none'}; "
             f"unexpected non-skipped jobs: {', '.join(sorted(unexpected)) or 'none'})"
         )
     return jobs

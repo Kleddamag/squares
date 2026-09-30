@@ -155,8 +155,8 @@ which `think-gdkd` freezes or revises before the first measured round.
    base scheduler with its Node command (`think-gfqt`), checkable ledgers (`think-i5pg`)
    and the successor series (`think-i08r`). It has no kinetic guard: Pack keeps no
    trajectory that Animate could replay.
-2. **Add components.** Search’s `grid` start is unseeded and places square `i` in cell
-   `i`, so every structural arm at `grid` or `random` first relabels its target by a
+2. **Add components.** Search’s `grid` start is unseeded and places square $i$ in cell
+   $i$, so every structural arm at `grid` or `random` first relabels its target by a
    permutation drawn from the slot’s seed, shared by every arm on that seed.
    After that relabelling a partition carries only its component-size profile, so
    compare the true touching-component partition with the unguided arm and with a
@@ -164,7 +164,7 @@ which `think-gdkd` freezes or revises before the first measured round.
    within-component pairs.
    A size-preserving membership shuffle is a control only at a label-dependent start,
    which in Search is `record-append`. A record that is one touching component, as
-   `n = 11` and 29 both are, gives a partition that carries nothing beyond `n`, so its
+   $n = 11$ and 29 both are, gives a partition that carries nothing beyond $n$, so its
    cells are excluded.
 3. **Add graph edges.** Compare the true contact graph with the unguided arm and a
    rewired graph of the same edge count, and a thinned true graph with its rewired twin:
@@ -196,7 +196,7 @@ A headless partition freeze (`think-05o4`) fixes known-answer calibration cells 
 held-out cells in the campaign manifest before the first measured round.
 Search’s presets (`think-3yma`) can load that partition but neither define it nor wait
 for it. The freeze uses `think-rey9`’s per-tier coverage, which today is thin: typed
-features exist only for `n = 11` and 29, whose 66 pair contacts are 35 edge-edge, 25
+features exist only for $n = 11$ and 29, whose 66 pair contacts are 35 edge-edge, 25
 corner-edge and 6 corner-corner, and both records are single touching components.
 Parameter choices use only the calibration side, under a selection rule frozen with the
 contrasts; held-out confirmation is the only decision gate.

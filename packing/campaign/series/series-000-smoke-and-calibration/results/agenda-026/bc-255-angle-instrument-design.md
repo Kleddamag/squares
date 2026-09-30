@@ -472,8 +472,8 @@ The earlier 256-leaf binary attempt remains unresolved in its unchanged record; 
 does not rewrite that result.
 
 The next instrument slice keeps the complete six-by-three center grid and source label
-matrix, evaluates the unchanged point formulas at `q=1939/500`, and checks both closed
-half-angle slabs `[-T,0]` and `[0,T]`, with the outward endpoint defined above.
+matrix, evaluates the unchanged point formulas at $q=1939/500$, and checks both closed
+half-angle slabs $[-T,0]$ and $[0,T]$, with the outward endpoint defined above.
 It uses no point optimization, narrower angle range, or sign subdivision.
 This tests the near-axis ten-point clause only; near-45-degree localization, three
 forcing clauses, and both twelve-point clauses remain separate obligations.

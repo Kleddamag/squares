@@ -44,7 +44,7 @@ hypothesis:
 
 The atlas cannot count components until its classifier is shown to decide most of the
 support produced by a declared regime.
-The exact `n = 3` sliding family is the control that prevents coordinate hashes from
+The exact $n = 3$ sliding family is the control that prevents coordinate hashes from
 masquerading as component identities.
 
 Failure is a strategic result: the campaign should switch from a discrete census to an

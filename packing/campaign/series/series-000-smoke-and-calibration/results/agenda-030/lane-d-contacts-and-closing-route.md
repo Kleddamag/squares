@@ -21,11 +21,12 @@ all working files under `scratchpad/D-contacts/`. Scripts were run with the proj
 (`packing/.venv/bin/python3`, Python 3.14.7, numpy 2.5.2, scipy 1.17.1); the outputs
 quoted below are saved beside each script as `*.out`.
 
-Notation: `U = 3.877083590022814` (Trump), `L_low = 3.810025723614703` (T-022),
-`q = 96/25 = 3.84`, `B = 9977/10000` (the retained shrink), folded angle
-`θ ∈ [0°, 45°]`, projection width `w(θ) = cos θ + sin θ ∈ [1, √2]`. A *minimizer* is a
-packing at side exactly `s(11)`. Every claim is tagged PROVED, CHECKED (numerically,
-with script), CONJECTURED or OPEN.
+Notation: $U = 3.877083590022814$ (Trump), `L_low = 3.810025723614703` (T-022),
+$q = 96/25 = 3.84$, $B = 9977/10000$ (the retained shrink), folded angle
+$\theta \in [0^\circ, 45^\circ]$, projection width
+$w(\theta) = \cos \theta + \sin \theta \in [1, \sqrt{2}]$. A *minimizer* is a packing at
+side exactly $s(11)$. Every claim is tagged PROVED, CHECKED (numerically, with script),
+CONJECTURED or OPEN.
 
 ## 0. Feasibility map in one page
 
@@ -48,12 +49,12 @@ with script), CONJECTURED or OPEN.
 ### 1.1 Compactness and the three representative reductions
 
 **Lemma 0 (minimizers exist).** The set of packings of 11 closed unit squares in
-`[0, L]²` (interiors disjoint) is a closed subset of the compact set
-`([0, L]² × [0, π/2))^11` (closure: containment and separation are closed conditions;
-angles are taken mod π/2 on the compact circle).
+$[0, L]^2$ (interiors disjoint) is a closed subset of the compact set
+$([0, L]^2 \times [0, \pi/2))^{11}$ (closure: containment and separation are closed
+conditions; angles are taken mod π/2 on the compact circle).
 `s(11) = inf{L : a packing exists}` is attained: take packings at sides `L_k ↓ s(11)`,
-embed them in `[0, L_1]²`, and pass to a convergent subsequence; the limit is a packing
-at side `s(11)` (each square’s closed container condition passes to the limit after
+embed them in $[0, L_1]^2$, and pass to a convergent subsequence; the limit is a packing
+at side $s(11)$ (each square’s closed container condition passes to the limit after
 rescaling the anchor).
 
 Three reductions are used below, and they compose (each preserves “is a minimizer”):
@@ -61,94 +62,104 @@ Three reductions are used below, and they compose (each preserves “is a minimi
 - **(R1) quarter turn.** Rotating the whole configuration by 90° about the container’s
   centre is a symmetry of the problem, so a direction-specific statement may be stated
   “after a quarter turn”.
-- **(R2) translation.** A minimizer translated within `[0, L]²` until some square
+- **(R2) translation.** A minimizer translated within $[0, L]^2$ until some square
   touches a chosen wall is a minimizer.
 - **(R3) LP vertex.** Fix the angles and, for each pair, one separating axis that
   separates the pair at the given minimizer (a “SAT selection”). Containment and the
   selected separations are linear in the 22 centre coordinates; the feasible set at
-  fixed side `L = s(11)` is a nonempty bounded polytope (bounded because centres lie in
-  `[0, L]²`); it has a vertex, and every point of it is a minimizer with the same
+  fixed side $L = s(11)$ is a nonempty bounded polytope (bounded because centres lie in
+  $[0, L]^2$); it has a vertex, and every point of it is a minimizer with the same
   angles.
 
 ### 1.2 Lemma S (spanning) and what it does not give
 
-**Lemma S.** Let `P = {Q_1, …, Q_n}` be a minimizer at side `L = s(n)`, `n ≥ 1`. Let `G`
-be the contact graph (`i ~ j` iff `Q_i ∩ Q_j ≠ ∅`). Then some connected component of `G`
-contains a square meeting the wall `x = 0` and a square meeting `x = L`, or some
-component contains a square meeting `y = 0` and one meeting `y = L`.
+**Lemma S.** Let $P = \lbrace Q_1, \ldots, Q_n\rbrace$ be a minimizer at side
+$L = s(n)$, $n \ge 1$. Let $G$ be the contact graph (`i ~ j` iff
+$Q_i \cap Q_j \ne \emptyset$). Then some connected component of $G$ contains a square
+meeting the wall $x = 0$ and a square meeting $x = L$, or some component contains a
+square meeting $y = 0$ and one meeting $y = L$.
 
 *Proof.* Suppose neither.
-For each component `C` write `a_C = min x`, `b_C = max x`, `c_C = min y`, `d_C = max y`
-over `⋃ C`. By assumption `max(a_C, L − b_C) > 0` and `max(c_C, L − d_C) > 0` for every
-`C`. Put `ε_h = min_C max(a_C, L − b_C)`, `ε_v = min_C max(c_C, L − d_C)`, and
-`ε_d = min dist(⋃C, ⋃C')` over distinct components; `ε_d > 0` because distinct
-components are disjoint compact sets (two squares in different components do not
-intersect, by definition of `G`). Let `ε = min(ε_h, ε_v, ε_d/3) > 0`. Translate each
-component rigidly by `(h_C, v_C)` with `h_C = −ε` if `b_C > L − ε` and `0` otherwise,
-`v_C` likewise. If `b_C > L − ε` then `L − b_C < ε ≤ ε_h ≤ max(a_C, L − b_C)`, so
-`a_C ≥ ε_h ≥ ε` and the shifted component has `x ∈ [a_C − ε, b_C − ε] ⊂ [0, L − ε]`; if
-`b_C ≤ L − ε` it already has `x ∈ [0, L − ε]`. Same vertically.
-Each shift has length `≤ ε√2 < ε_d/2`, so distinct components stay disjoint; squares
-inside a component keep their relative positions, so interiors stay disjoint.
-The result is a packing in `[0, L − ε]²`, contradicting minimality.
+For each component `C` write $a_C = \min x$, $b_C = \max x$, $c_C = \min y$,
+$d_C = \max y$ over `⋃ C`. By assumption $\max(a_C, L - b_C) > 0$ and
+$\max(c_C, L - d_C) > 0$ for every `C`. Put `ε_h = min_C max(a_C, L − b_C)`,
+`ε_v = min_C max(c_C, L − d_C)`, and `ε_d = min dist(⋃C, ⋃C')` over distinct components;
+$\varepsilon_d > 0$ because distinct components are disjoint compact sets (two squares
+in different components do not intersect, by definition of $G$). Let
+$\varepsilon = \min(\varepsilon_h, \varepsilon_v, \varepsilon_d/3) > 0$. Translate each
+component rigidly by $(h_C, v_C)$ with $h_C = -\varepsilon$ if $b_C > L - \varepsilon$
+and $0$ otherwise, $v_C$ likewise.
+If $b_C > L - \varepsilon$ then
+$L - b_C < \varepsilon \le \varepsilon_h \le \max(a_C, L - b_C)$, so
+$a_C \ge \varepsilon_h \ge \varepsilon$ and the shifted component has
+$x \in [a_C - \varepsilon, b_C - \varepsilon] \subset [0, L - \varepsilon]$; if
+$b_C \le L - \varepsilon$ it already has $x \in [0, L - \varepsilon]$. Same vertically.
+Each shift has length $\le \varepsilon\sqrt{2} < \varepsilon_d/2$, so distinct
+components stay disjoint; squares inside a component keep their relative positions, so
+interiors stay disjoint.
+The result is a packing in $[0, L - \varepsilon]^2$, contradicting minimality.
 ∎
 
 **Remarks (all PROVED).**
 
-1. *“Or”, not “and”.* For `n = 2`, `s(2) = 2`, the minimizer `[0,1]²`, `[1,2]×[0,1]`
-   spans horizontally and no component spans vertically.
+1. *“Or”, not “and”.* For $n = 2$, $s(2) = 2$, the minimizer $[0,1]^2$,
+   $[1,2]\times[0,1]$ spans horizontally and no component spans vertically.
    So the shrinking argument cannot force both directions.
-   A different minimizer, `[0,1]²` and `[1,2]²` touching at `(1,1)`, spans both.
-   Whether **some** `n = 11` minimizer spans both directions is OPEN (a packing in an
-   `L × H` rectangle with `H < L` would be the obstruction; Session S1 bounds `H` from
-   below by rectangle certificates).
+   A different minimizer, $[0,1]^2$ and $[1,2]^2$ touching at $(1,1)$, spans both.
+   Whether **some** $n = 11$ minimizer spans both directions is OPEN (a packing in an
+   $L \times H$ rectangle with $H < L$ would be the obstruction; Session S1 bounds $H$
+   from below by rectangle certificates).
 2. *Representative.* By (R1) and (R2): some minimizer has a contact chain joining the
    left and right walls and a square touching the bottom wall.
    This is a strictly stronger symmetry-breaking premise than the single bottom anchor
    used in the hybrid review, at no cost.
-3. *Point contacts suffice.* Göbel’s `n = 5` optimum (four axis-aligned corner squares,
+3. *Point contacts suffice.* Göbel’s $n = 5$ optimum (four axis-aligned corner squares,
    one 45° square whose four edges pass through the inner corners of the corner squares)
    spans left–right through the middle square by two corner-on-edge point contacts; its
    only positive-length contacts are wall contacts.
    So Lemma S cannot be strengthened to positive-length chain contacts by any argument
-   that applies to all `n`.
+   that applies to all $n$.
 4. *Trump* (CHECKED, `trump_structure.py`): contact graph connected (one component);
-   shortest left–right chain `0–6–8–9–1` (contacts point, segment, segment, point; both
-   wall contacts flush), shortest bottom–top chain `0–6–8–2` (point, segment, point).
+   shortest left–right chain $0\text{–}6\text{–}8\text{–}9\text{–}1$ (contacts point,
+   segment, segment, point; both wall contacts flush), shortest bottom–top chain
+   $0\text{–}6\text{–}8\text{–}2$ (point, segment, point).
 
 ### 1.3 Corollary C (chain projections) — the quantitative consequence
 
-**Corollary C.** In the spanning direction (say `x`), let `Q_{i_1}, …, Q_{i_k}` be a
-path in `G` from a square meeting `x = 0` to one meeting `x = L`. Then
-`Σ_j w(θ_{i_j}) ≥ L`, where `w(θ) = cos θ + sin θ` is the width of the `x`-projection.
+**Corollary C.** In the spanning direction (say $x$), let `Q_{i_1}, …, Q_{i_k}` be a
+path in $G$ from a square meeting $x = 0$ to one meeting $x = L$. Then
+`Σ_j w(θ_{i_j}) ≥ L`, where $w(\theta) = \cos \theta + \sin \theta$ is the width of the
+$x$-projection.
 
-*Proof.* The projection of a closed unit square at folded angle `θ` onto the `x`-axis is
-a closed interval of length `w(θ)`. Consecutive squares share a point, so consecutive
-projections intersect; the union of the `k` projections is therefore a single interval,
-which contains `0` and `L`. Hence the lengths sum to at least `L`. ∎
+*Proof.* The projection of a closed unit square at folded angle $\theta$ onto the
+$x$-axis is a closed interval of length $w(\theta)$. Consecutive squares share a point,
+so consecutive projections intersect; the union of the $k$ projections is therefore a
+single interval, which contains $0$ and $L$. Hence the lengths sum to at least $L$. ∎
 
-**Numbers** (CHECKED, `chain_arithmetic.py`): since `w ≤ √2`, `k ≥ ⌈L/√2⌉ = 3` for every
-`L ∈ [3.84, U]`. For `k = 3` at `L = 3.84`: each width `≥ L − 2√2 = 1.01157` (tilt
-`≥ 0.667°`), two widths `≥ (L − √2)/2 = 1.21289` (tilt `≥ 14.05°`), one width
-`≥ L/3 = 1.28` (tilt `≥ 19.84°`); a 3-chain containing an axis-aligned square needs the
-other two to sum to `2.84 > 2√2`, impossible.
-At `L = U` the same bounds read `2.86°`, `15.55°`, `21.04°`. For `k ≥ 4` nothing
-follows: three axis-aligned squares and one arbitrary square have total width `≥ 4 > U`.
+**Numbers** (CHECKED, `chain_arithmetic.py`): since $w \le \sqrt{2}$,
+$k \ge \lceil L/\sqrt{2}\rceil = 3$ for every $L \in [3.84, U]$. For $k = 3$ at
+$L = 3.84$: each width $\ge L - 2\sqrt{2} = 1.01157$ (tilt $\ge 0.667^\circ$), two
+widths $\ge (L - \sqrt{2})/2 = 1.21289$ (tilt $\ge 14.05^\circ$), one width
+$\ge L/3 = 1.28$ (tilt $\ge 19.84^\circ$); a 3-chain containing an axis-aligned square
+needs the other two to sum to $2.84 > 2\sqrt{2}$, impossible.
+At $L = U$ the same bounds read $2.86^\circ$, $15.55^\circ$, $21.04^\circ$. For
+$k \ge 4$ nothing follows: three axis-aligned squares and one arbitrary square have
+total width $\ge 4 > U$.
 
 **Verdict on non-triviality.** Corollary C is a genuine, free case split — “some
 spanning 3-chain of three strongly tilted mutually touching squares exists” versus
 “every spanning chain has ≥ 4 squares” — but it buys no headroom for the current
 instruments: the class program (exp-064) already cannot close compositions with two or
-more tilted squares at 3.84, and at Trump’s pose the inequality holds with slack `2.35`
-(`6.23` versus `3.88`) on the shortest chain.
+more tilted squares at 3.84, and at Trump’s pose the inequality holds with slack $2.35$
+($6.23$ versus $3.88$) on the shortest chain.
 It is recorded because it is the *only* consequence of spanning that is quantitative,
 and because a future ownership-type argument (Session S6) can use it to prune
 chain-adjacent cases.
 
 ### 1.4 Lemma V (the corrected LP-vertex statement) and the rank question
 
-**Lemma V.** Let `P` be a minimizer.
-Fix its angles and a SAT selection valid at `P`. Then there is a minimizer `P'` with the
+**Lemma V.** Let $P$ be a minimizer.
+Fix its angles and a SAT selection valid at $P$. Then there is a minimizer `P'` with the
 same angles such that (a) the active rows among the 44 wall rows and the 55 selected
 pair rows have rank 22, and (b) every square has at least two linearly independent
 active selected rows involving its centre coordinates.
@@ -179,7 +190,7 @@ breaks ties lexicographically in all centre coordinates.
 It next chooses a strictly slack separating row for every physically disjoint pair.
 The selected cell containing that minimizer lies inside the same component, and the
 minimizer is its vertex; consequently its 22-row basis cannot use a false contact from a
-disjoint pair. Translating any physical contact component left or down would lower `f`,
+disjoint pair. Translating any physical contact component left or down would lower $f$,
 so every component meets both walls.
 The full proof, exact counterexample and quantifier boundaries are in the
 [structural review](../../../../../../docs/project/reviews/review-2026-09-10-n11-structural-normal-forms.md#3-a-normal-form-at-the-trial-side).
@@ -191,47 +202,50 @@ set.
 A one-square contact component is allowed when that square touches both named walls;
 accordingly, “no isolated square” is not used for the square-only contact graph.
 
-**What is not forced (PROVED by examples).** The angular part of the rank: the `n = 6`
-optimal family (five axis squares at lower-left corners `(2,0),(2,1),(2,2),(0,2),(1,2)`,
-the sixth free to rotate about `(1,1)` inside the vacant `2 × 2`) has a square with a
-genuine one-parameter rotational freedom, so no lemma valid for every optimum can force
-the angular rank to exceed `n − 1`; and Göbel’s `n = 5` middle square has its angle
-fixed only at second order (X-007/X-012), so first-order arguments cannot force it
+**What is not forced (PROVED by examples).** The angular part of the rank: the $n = 6$
+optimal family (five axis squares at lower-left corners $(2,0),(2,1),(2,2),(0,2),(1,2)$,
+the sixth free to rotate about $(1,1)$ inside the vacant $2 \times 2$) has a square with
+a genuine one-parameter rotational freedom, so no lemma valid for every optimum can
+force the angular rank to exceed $n - 1$; and Göbel’s $n = 5$ middle square has its
+angle fixed only at second order (X-007/X-012), so first-order arguments cannot force it
 either. What *is* true at Trump’s pose (CHECKED): 11 wall incidences (9 flush, 2 corner
 points), 14 pair contacts (7 positive-length segments
-`(3,4),(3,5),(6,7),(6,8),(7,9),(8,9),(9,10)` of lengths
-`1, 1, 0.975, 0.881, 0.881, 0.975, 0.666`, and 7 point contacts
-`(0,6),(1,9),(2,8),(2,10),(4,5),(4,8),(5,6)`), segment-equality components
-`{0},{1},{2},{3,4,5},{6,…,10}` with wall-anchored squares `0–5`, one unanchored
-component, angular rank `10` — agreeing with the PR108 review and exp-013. The smallest
-strictly positive pair gap is `0.0249` (pairs `(6,9)` and `(8,10)`), which is the
-Euclidean counterpart of BC-199’s chart gap cap `0.0059`.
+$(3,4),(3,5),(6,7),(6,8),(7,9),(8,9),(9,10)$ of lengths
+$1, 1, 0.975, 0.881, 0.881, 0.975, 0.666$, and 7 point contacts
+$(0,6),(1,9),(2,8),(2,10),(4,5),(4,8),(5,6)$), segment-equality components
+$\lbrace0\rbrace,\lbrace1\rbrace,\lbrace2\rbrace,\lbrace3,4,5\rbrace,\lbrace6,\ldots,10\rbrace$
+with wall-anchored squares $0\text{–}5$, one unanchored component, angular rank $10$ —
+agreeing with the PR108 review and exp-013. The smallest strictly positive pair gap is
+$0.0249$ (pairs $(6,9)$ and $(8,10)$), which is the Euclidean counterpart of BC-199’s
+chart gap cap $0.0059$.
 
 **Flush counts (PROVED, trivial).** Two axis-aligned unit squares flush on the same wall
-have `x`-projections with disjoint interiors, so at most `⌊L⌋ = 3` squares are flush on
-any wall for `L < 4`. Trump attains 3 on the left and top walls.
+have $x$-projections with disjoint interiors, so at most $\lfloor L\rfloor = 3$ squares
+are flush on any wall for $L < 4$. Trump attains 3 on the left and top walls.
 
 ### 1.5 Lemma T (robust transfer to a fixed rational side)
 
 Structural facts proved for minimizers hold at the unknown side `s(11) ∈ [L_low, q]`,
-not at `q`. They transfer with a tolerance:
+not at $q$. They transfer with a tolerance:
 
-**Lemma T.** Let `P` be a packing at side `L ∈ [L_low, q]` and `λ = q/L ≤ q/L_low`.
-Scaling `P` by `λ` gives 11 disjoint closed squares of side `λ` in `[0, q]²`; the
-concentric unit squares `Q_i'` form a packing at side `q` such that (i) if
-`Q_i ∩ Q_j ≠ ∅` in `P` then `dist(Q_i', Q_j') ≤ (λ − 1)√2`; (ii) if `Q_i` touches a wall
-in `P` then `Q_i'` is within `(λ − 1)/√2` of that wall; (iii) angles are unchanged.
+**Lemma T.** Let $P$ be a packing at side `L ∈ [L_low, q]` and `λ = q/L ≤ q/L_low`.
+Scaling $P$ by $\lambda$ gives 11 disjoint closed squares of side $\lambda$ in
+$[0, q]^2$; the concentric unit squares `Q_i'` form a packing at side $q$ such that (i)
+if $Q_i \cap Q_j \ne \emptyset$ in $P$ then `dist(Q_i', Q_j') ≤ (λ − 1)√2`; (ii) if
+$Q_i$ touches a wall in $P$ then `Q_i'` is within $(\lambda - 1)/\sqrt{2}$ of that wall;
+(iii) angles are unchanged.
 
-*Proof.* A point of the side-`λ` square is at distance at most `(λ − 1)√2/2` from the
-concentric unit square (attained at a corner); apply it to the common point of two
-touching scaled squares, and to the wall-contact point.
+*Proof.* A point of the side-`λ` square is at distance at most $(\lambda - 1)\sqrt{2}/2$
+from the concentric unit square (attained at a corner); apply it to the common point of
+two touching scaled squares, and to the wall-contact point.
 ∎
 
-At `q = 3.84`: `λ ≤ 1.007867`, contact tolerance `0.01113`, wall tolerance `0.00556`
-(CHECKED). Consequence: any structural lemma to be *used* at 3.84 must be stated with
-these tolerances ("a δ-chain spans the container", “a square is within `0.0056` of the
-left wall”). T-017’s insertion saturation is already robust in this sense (it holds at
-every side `≤ 3.96`). The tolerance shrinks as the certified lower bound rises.
+At $q = 3.84$: $\lambda \le 1.007867$, contact tolerance $0.01113$, wall tolerance
+$0.00556$ (CHECKED). Consequence: any structural lemma to be *used* at 3.84 must be
+stated with these tolerances ("a δ-chain spans the container", “a square is within
+$0.0056$ of the left wall”). T-017’s insertion saturation is already robust in this
+sense (it holds at every side $\le 3.96$). The tolerance shrinks as the certified lower
+bound rises.
 
 ### 1.6 Lemma D (LP duality governs every conditional and capture certificate)
 
@@ -239,123 +253,128 @@ This is the result that quantifies Part II. It is elementary and, as far as I ca
 is not stated in the record (X-014 uses weak duality only for the unconditional
 ceiling).
 
-Setting (finite version, exact): sites `S`, admissible placements `Λ` (each a closed
-`B`-square at a net direction), a set `N ⊂ Λ` of “conditioned” placements, a threshold
-`t(P) ≥ 0` for each `P ∈ Λ`. The generalized covering program is `min Σ_s μ_s` subject
-to `Σ_{s ∈ P} μ_s ≥ t(P)` for all `P ∈ Λ`, `μ ≥ 0`. Its dual is the generalized
-fractional packing `max Σ_P t(P) y_P` subject to depth `Σ_{P ∋ s} y_P ≤ 1` at every site
-and `y ≥ 0`. Strong duality holds (both feasible).
+Setting (finite version, exact): sites `S`, admissible placements $\Lambda$ (each a
+closed $B$-square at a net direction), a set $N \subset \Lambda$ of “conditioned”
+placements, a threshold $t(P) \ge 0$ for each $P \in \Lambda$. The generalized covering
+program is $\min \Sigma_s \mu_s$ subject to `Σ_{s ∈ P} μ_s ≥ t(P)` for all
+$P \in \Lambda$, $\mu \ge 0$. Its dual is the generalized fractional packing
+$\max \Sigma_P t(P) y_P$ subject to depth `Σ_{P ∋ s} y_P ≤ 1` at every site and
+$y \ge 0$. Strong duality holds (both feasible).
 
 Three instances:
 
-- **Unconditional certificate**: `t ≡ 1`; exists iff `ν*_S(Λ) < 11` (the ceiling theorem
-  in X-014/`ceiling.py`).
-- **Conditional certificate (X-014 Lemma 2)** on a box `b`: `t = 1` on `Λ_b ∪ Π_b`
-  (cores disjoint from `I_b`, plus cores inside the box’s placements), `t = 0`
-  elsewhere. Exists iff the fractional packing value over `Λ_b ∪ Π_b` is `< 11`.
-- **Capture certificate** (thresholds `1` on a neighbourhood `N` of the record’s own
-  placements, `1 + δ` outside): exists for the pair `(N, δ)` iff for every
-  depth-feasible `y`, `Σ_{P∈N} y_P + (1 + δ) Σ_{P∉N} y_P < 11 + δ`. Then every packing
-  at that side has all eleven cores inside `N`: cores outside `N` contribute `≥ 1 + δ`
-  each and the total is `< 11 + δ`.
+- **Unconditional certificate**: $t \equiv 1$; exists iff `ν*_S(Λ) < 11` (the ceiling
+  theorem in X-014/`ceiling.py`).
+- **Conditional certificate (X-014 Lemma 2)** on a box $b$: $t = 1$ on
+  $\Lambda_b \cup \Pi_b$ (cores disjoint from $I_b$, plus cores inside the box’s
+  placements), $t = 0$ elsewhere.
+  Exists iff the fractional packing value over $\Lambda_b \cup \Pi_b$ is $< 11$.
+- **Capture certificate** (thresholds $1$ on a neighbourhood `N` of the record’s own
+  placements, $1 + \delta$ outside): exists for the pair $(N, \delta)$ iff for every
+  depth-feasible $y$, `Σ_{P∈N} y_P + (1 + δ) Σ_{P∉N} y_P < 11 + δ`. Then every packing
+  at that side has all eleven cores inside `N`: cores outside `N` contribute
+  $\ge 1 + \delta$ each and the total is $< 11 + \delta$.
 
-**Lemma D (kill criterion; continuum version by weak duality alone).** Let `μ` be any
-measure on `[0, L]²` with `μ(P) ≥ t(P)` for all placements `P` in a family, and let
-`y ≥ 0` be weights on finitely many such placements with pointwise depth `≤ 1`. Then
+**Lemma D (kill criterion; continuum version by weak duality alone).** Let $\mu$ be any
+measure on $[0, L]^2$ with $\mu(P) \ge t(P)$ for all placements $P$ in a family, and let
+$y \ge 0$ be weights on finitely many such placements with pointwise depth $\le 1$. Then
 `M = μ([0, L]²) ≥ ∫ depth dμ = Σ_P y_P μ(P) ≥ Σ_P t(P) y_P`. In particular:
 
-- (D1) a depth-1 family of value `≥ 11` supported on cores disjoint from `I_b` (plus
-  cores in the box) proves that no conditional certificate for box `b` exists on this
+- (D1) a depth-1 family of value $\ge 11$ supported on cores disjoint from $I_b$ (plus
+  cores in the box) proves that no conditional certificate for box $b$ exists on this
   `(L, B, net)`, at every larger side, for every site set and weights;
-- (D2) a depth-1 family with `Σ y ≥ 11` and `Σ_{P∉N} y_P ≥ 1` proves that no capture
-  certificate `(N, δ)` exists for any `δ ≥ 0`.
+- (D2) a depth-1 family with $\Sigma y \ge 11$ and `Σ_{P∉N} y_P ≥ 1` proves that no
+  capture certificate $(N, \delta)$ exists for any $\delta \ge 0$.
 
 *Proof.* The chain of inequalities is the one in the `ceiling.py` docstring with the
 thresholds inserted.
 For (D2): `Σ t y = Σ y + δ Σ_out y ≥ 11 + δ`. ∎
 
 **Corollary D3 (capture is capped by the shrink, PROVED from exp-064’s exact
-arithmetic).** With `B = 9977/10000`, at every side `L ≥ B(2 + (4/3)√2) = 3.876681` the
-eleven cores of the `{0°, 45°}` (Hämäläinen) packing scaled by `B` fit in `[0, L]²`
-(exp-064 records this as `L/B > 2 + (4/3)√2`, exact; at `L = U`,
-`U/B = 3.886021 > 3.885618`). Five of those cores are at `45°`, `4.82°` from Trump’s
-`40.18°` direction, hence outside any neighbourhood `N` of Trump’s placements of angular
-radius below `4.8°`; they carry weight `5 ≥ 1`. By (D2) no capture certificate exists at
-any `L ∈ [3.876681, U]` with this `B`. The gap `U − 3.876681 =
-0.000402` is the same `0.000403` exp-064 found for the class control, now read as a cap
-on *every* record-conditioned certificate, not only the two-end-cell class.
-Since `3.876681 < U`, the endpoint is unreachable with `B < 0.997804 = U/(2 + (4/3)√2)`;
-with `B = 1` the Hämäläinen packing needs side `3.885618 > U` and this particular kill
-disappears. The premise that the scaled 45° squares contain `B`-cores *at a net
-direction* was checked on the retained net (`net_end_check.py`): its last direction is
-`45.000043°`, offset `4.3 × 10⁻⁵` degrees from 45° against an allowance of `0.0059°`;
-the scale `λ = U/s_H = 0.997804` exceeds both `B` (axis squares) and
-`B(cos δ + sin δ) = 0.997699` (45° squares).
+arithmetic).** With $B = 9977/10000$, at every side
+$L \ge B(2 + (4/3)\sqrt{2}) = 3.876681$ the eleven cores of the
+$\lbrace0^\circ, 45^\circ\rbrace$ (Hämäläinen) packing scaled by $B$ fit in $[0, L]^2$
+(exp-064 records this as $L/B > 2 + (4/3)\sqrt{2}$, exact; at $L = U$,
+$U/B = 3.886021 > 3.885618$). Five of those cores are at $45^\circ$, $4.82^\circ$ from
+Trump’s $40.18^\circ$ direction, hence outside any neighbourhood `N` of Trump’s
+placements of angular radius below $4.8^\circ$; they carry weight $5 \ge 1$. By (D2) no
+capture certificate exists at any $L \in [3.876681, U]$ with this $B$. The gap
+$U - 3.876681 = 0.000402$ is the same $0.000403$ exp-064 found for the class control,
+now read as a cap on *every* record-conditioned certificate, not only the two-end-cell
+class. Since $3.876681 < U$, the endpoint is unreachable with
+$B < 0.997804 = U/(2 + (4/3)\sqrt{2})$; with $B = 1$ the Hämäläinen packing needs side
+$3.885618 > U$ and this particular kill disappears.
+The premise that the scaled 45° squares contain $B$-cores *at a net direction* was
+checked on the retained net (`net_end_check.py`): its last direction is
+$45.000043^\circ$, offset $4.3 \times 10^{-5}$ degrees from 45° against an allowance of
+$0.0059^\circ$; the scale $\lambda = U/s_H = 0.997804$ exceeds both $B$ (axis squares)
+and $B(\cos \delta + \sin \delta) = 0.997699$ (45° squares).
 
 **Corollary D4 (what conditioning can buy is measurable from below, CHECKED).** The
-retained BC-200 family (760 placements at `191/50`, exact depth `≤ 1`, total `9.907906`)
-is a valid depth-1 family in `[0, 3.84]²` when anchored at any corner (weak duality
-transfers upward in `L`). Its weight disjoint from a closed unit corner box is
-`≥ 8.8732`; from a half-unit corner box `≥ 9.0293`; from a central unit box `≥ 7.0992`;
-from the strip `x ≤ 1/10` `≥ 7.2788` (`family_restrict.py`). Reading: boxing one blocker
-into a unit corner box removes about one unit of *fractional* weight, exactly the
-integral count; the box does not by itself create headroom.
+retained BC-200 family (760 placements at $191/50$, exact depth $\le 1$, total
+$9.907906$) is a valid depth-1 family in $[0, 3.84]^2$ when anchored at any corner (weak
+duality transfers upward in $L$). Its weight disjoint from a closed unit corner box is
+$\ge 8.8732$; from a half-unit corner box $\ge 9.0293$; from a central unit box
+$\ge 7.0992$; from the strip $x \le 1/10$ $\ge 7.2788$ (`family_restrict.py`). Reading:
+boxing one blocker into a unit corner box removes about one unit of *fractional* weight,
+exactly the integral count; the box does not by itself create headroom.
 A conditional corner-box certificate at 3.84 is not killed by these numbers (they are
 lower bounds, and `8.87 + capacity(Π_b) < 11`), but it is alive only if the true
-restricted value stays below `≈ 10`; Session S2 decides that with the cutting-plane
-loop.
+restricted value stays below $\approx 10$; Session S2 decides that with the
+cutting-plane loop.
 
 ### 1.7 The equality run above U: the missing conditions (PROVED, short)
 
-X-014 proposes one run at rational `L1 > U` in which the certificate half refutes every
-box outside the `ρ0`-ball and the modulus lemma closes the ball.
+X-014 proposes one run at rational $L1 > U$ in which the certificate half refutes every
+box outside the $\rho0$-ball and the modulus lemma closes the ball.
 Two conditions are needed that the sketch does not state.
 
 (i) *Size of `L1 − U`.* The BC-240 chart is anchored at the container’s lower-left
-corner and does not quotient translations, so Trump’s packing translated by `(σ, 0)` is
-a packing at side `U + σ` at chart distance exactly `σ` from `z*`; packings at side
-`U + σ` therefore exist outside the `ρ0`-ball as soon as `σ > ρ0`. In the other
-direction, a feasible pose `z* + v` in a branch satisfies `a_j·v + σ e_j + R_j(v) ≥ 0`,
-and the modulus bound gives `κ‖v‖ ≤ σ + (K/2)‖v‖²`; on the half-ball `‖v‖ ≤ ρ0/2 = κ/K`
-(uniform pair, `ρ0 = 2κ/K`) the quadratic term is at most `(κ/2)‖v‖`, so `‖v‖ ≤ 2σ/κ`,
-and nearby packings can extend to distance up to `2σ/κ ≈ 174σ`. These are genuine
-packings the certificate half cannot refute.
-The run is sound only if `2σ/κ < ρ0/2`, i.e.
-`σ < κρ0/4 = 0.011480 × 0.0023089/4 ≈ 6.6 × 10⁻⁶` (the per-row pair gives the same
-order, `≈ 1.2 × 10⁻⁵`). A rational `L1` this close to `U` exists (e.g. `U` rounded up at
-the sixth decimal, `3.877084 − U = 4.1 × 10⁻⁷`), so this is a constraint, not a
-refutation.
+corner and does not quotient translations, so Trump’s packing translated by
+$(\sigma, 0)$ is a packing at side $U + \sigma$ at chart distance exactly $\sigma$ from
+$z^{\ast}$; packings at side $U + \sigma$ therefore exist outside the $\rho0$-ball as
+soon as $\sigma > \rho0$. In the other direction, a feasible pose $z^{\ast} + v$ in a
+branch satisfies `a_j·v + σ e_j + R_j(v) ≥ 0`, and the modulus bound gives
+`κ‖v‖ ≤ σ + (K/2)‖v‖²`; on the half-ball `‖v‖ ≤ ρ0/2 = κ/K` (uniform pair,
+$\rho0 = 2\kappa/K$) the quadratic term is at most `(κ/2)‖v‖`, so `‖v‖ ≤ 2σ/κ`, and
+nearby packings can extend to distance up to $2\sigma/\kappa \approx 174\sigma$. These
+are genuine packings the certificate half cannot refute.
+The run is sound only if $2\sigma/\kappa < \rho0/2$, i.e.
+$\sigma < \kappa\rho0/4 = 0.011480 \times 0.0023089/4 \approx 6.6 \times 10^{-6}$ (the
+per-row pair gives the same order, $\approx 1.2 \times 10^{-5}$). A rational `L1` this
+close to $U$ exists (e.g. $U$ rounded up at the sixth decimal,
+$3.877084 - U = 4.1 \times 10^{-7}$), so this is a constraint, not a refutation.
 
-(ii) *The shrink.* By Corollary D3 the certificate half at any `L1 ≥ 3.876681` cannot
-exist with `B = 9977/10000`; the equality run requires `B = 1` (open placements, the
-continuum of directions decided by interval arithmetic — X-014’s own `n = 12` design).
+(ii) *The shrink.* By Corollary D3 the certificate half at any $L1 \ge 3.876681$ cannot
+exist with $B = 9977/10000$; the equality run requires $B = 1$ (open placements, the
+continuum of directions decided by interval arithmetic — X-014’s own $n = 12$ design).
 
-So the only sound closing designs are: a **tree at side exactly `U` over `Q(u)`**, with
+So the only sound closing designs are: a **tree at side exactly $U$ over $Q(u)$**, with
 the exact field-valued LPs of `sqpack.exact_lp` deciding fixed-angle cells and the
-modulus lemma deciding the ball; or the **`B = 1` capture run at `U + σ`, `σ < 10⁻⁵`**,
-which additionally needs the `B = 1` relaxation to have no diffuse value-11 fractional
-packing at `U + σ` (Session S3 measures this).
+modulus lemma deciding the ball; or the **$B = 1$ capture run at $U + \sigma$,
+$\sigma < 10^{-5}$**, which additionally needs the $B = 1$ relaxation to have no diffuse
+value-11 fractional packing at $U + \sigma$ (Session S3 measures this).
 
 ## 2. Numerical checks (scripts in `scratchpad/D-contacts/`)
 
 | Script | What it computes | Key output |
 | --- | --- | --- |
-| `trump_structure.py` (run with `PYTHONPATH=packing`, project venv) | Exact pose from `cases.trump11.packing` → 40-digit enclosures → floats (tolerance 1e-12); wall incidences, pair contacts classified segment/point, components, shortest spanning chains, segment-equality rank | 11 wall incidences (9 flush + 2 points), 14 pair contacts (7 segments + 7 points), contact graph connected, chains `0–6–8–9–1` (widths sum 6.228) and `0–6–8–2` (4.818), angular rank 10; smallest strict gap 0.0249 |
+| `trump_structure.py` (run with `PYTHONPATH=packing`, project venv) | Exact pose from `cases.trump11.packing` → 40-digit enclosures → floats (tolerance 1e-12); wall incidences, pair contacts classified segment/point, components, shortest spanning chains, segment-equality rank | 11 wall incidences (9 flush + 2 points), 14 pair contacts (7 segments + 7 points), contact graph connected, chains $0\text{–}6\text{–}8\text{–}9\text{–}1$ (widths sum 6.228) and $0\text{–}6\text{–}8\text{–}2$ (4.818), angular rank 10; smallest strict gap 0.0249 |
 | `chain_arithmetic.py` (plain python3) | Chain bounds at 3.84/3.86/3.869/U; θ0(s); Lemma T tolerances; discard radii from BC-199 constants; linear allowance σ/κ; shrink caps | k ≥ 3; 3-chain tilts 0.667°/14.05°/19.84° at 3.84; θ0 = 2.44° (3.84), 1.97° (3.869), 1.85° (U); δ = 0.01113; radii 0.0537 (3.84), 0.0364 (3.86), 0.0251 (3.869), 0.0127 (3.875), floor 0.0040; capture cap 3.876681 |
-| `family_restrict.py` (project venv) | BC-200 depth-1 family placed in `[0, 3.84]²`; exact weight disjoint from corner boxes, strips, centre box (separating-axis test in `Fraction`) | 8.8732 (unit corner box), 9.0293 (half-unit corner box), 7.0992 (central unit box), 7.2788 (strip x ≤ 0.1) |
+| `family_restrict.py` (project venv) | BC-200 depth-1 family placed in $[0, 3.84]^2$; exact weight disjoint from corner boxes, strips, centre box (separating-axis test in `Fraction`) | 8.8732 (unit corner box), 9.0293 (half-unit corner box), 7.0992 (central unit box), 7.2788 (strip x ≤ 0.1) |
 | `net_end_check.py` (project venv) | Corollary D3’s premise on the retained net: last direction versus 45°, and the containment inequality for the scaled Hämäläinen squares | last direction 45.000043°, allowance 0.0059°; λ = 0.997804 ≥ 0.997699 |
 
 Cross-checks: the contact inventory agrees with exp-013 (14 zero-gap pairs, 20 wall
 corner coordinates = 9 flush × 2 + 2 points) and with the PR108 review’s seven segments;
-the modulus arithmetic reproduces `ρ_uniform = 2κ/K = 0.002309` from BC-199’s `κ` and
-`K`.
+the modulus arithmetic reproduces `ρ_uniform = 2κ/K = 0.002309` from BC-199’s $\kappa$
+and $K$.
 
 ## 3. Obstructions — what does not work, and why
 
 1. **Minimality lemmas are not automatically dilation-stable.** Lemma S, Corollary C and
-   the minimizer-specific use of Lemma V hold at the unknown side `s(11)`, while a
+   the minimizer-specific use of Lemma V hold at the unknown side $s(11)$, while a
    certificate is run at a fixed rational side.
-   Lemma T is their bridge, and it costs `0.011` of contact tolerance at 3.84.
+   Lemma T is their bridge, and it costs $0.011$ of contact tolerance at 3.84.
    Proposition V+ is different: it is proved directly at every feasible fixed side and
    needs no dilation transfer.
    Any other optimum-only structural lemma handed to a fixed-side certificate must state
@@ -363,34 +382,36 @@ the modulus arithmetic reproduces `ρ_uniform = 2κ/K = 0.002309` from BC-199’
 2. **The fractional plateau governs every dot route.** By Lemma D a conditional or
    capture certificate exists exactly when the *restricted* fractional packing value is
    below the threshold.
-   The record knows `9.908 ≤ ν*(3.82) ≤ 11.056` (BC-200) and nothing converged at
-   3.84–3.85. If `ν*(3.84) ≥ 11` with diffuse weight — which the round-11 restricted
-   optima at 3.82 suggest — then conditioning on one square’s box buys at most the ≈ 1
-   unit of weight the box removes (Corollary D4), and the whole of route (b) must come
-   from compatibility cuts (integer-hull inequalities), not from boxes.
-3. **Shrink caps.** Plain certificate: `3.868983`. Capture: `3.876681` (Corollary D3).
-   Both are below `U`; nothing with `B < 0.9978` reaches the endpoint.
-   `B = 1` removes these two caps and leaves the plateau.
+   The record knows $9.908 \le \nu^{\ast}(3.82) \le 11.056$ (BC-200) and nothing
+   converged at 3.84–3.85. If $\nu^{\ast}(3.84) \ge 11$ with diffuse weight — which the
+   round-11 restricted optima at 3.82 suggest — then conditioning on one square’s box
+   buys at most the ≈ 1 unit of weight the box removes (Corollary D4), and the whole of
+   route (b) must come from compatibility cuts (integer-hull inequalities), not from
+   boxes.
+3. **Shrink caps.** Plain certificate: $3.868983$. Capture: $3.876681$ (Corollary D3).
+   Both are below $U$; nothing with $B < 0.9978$ reaches the endpoint.
+   $B = 1$ removes these two caps and leaves the plateau.
 4. **No lemma forces positive-length contacts, axis alignment or angular rank.** Göbel’s
-   `n = 5` and the `n = 6` rattler are the counterexamples to any all-`n` statement; at
-   `n = 11` the corner-blocker geometry (X-019) shows a 45° square snug in a corner
+   $n = 5$ and the $n = 6$ rattler are the counterexamples to any all-`n` statement; at
+   $n = 11$ the corner-blocker geometry (X-019) shows a 45° square snug in a corner
    blocks the box while touching nothing flush.
-   H-121 (some minimizer has angles in `{0, θ}`) remains the key OPEN normal-form
-   statement and no motion argument for it is in sight.
+   H-121 (some minimizer has angles in $\lbrace0, \theta\rbrace$) remains the key OPEN
+   normal-form statement and no motion argument for it is in sight.
 5. **The intermediate tier has no instrument and no size estimate.** Between the modulus
-   ball (`ρ_row = 0.0040`, or `0.054` at target 3.84) and any conditioning radius the
-   tools could reach (`≥ 0.3` before a box removes a unit of fractional weight), uniform
-   boxes in the 33-chart number `(0.3/0.004)^33 ≈ 10^62`. Krawczyk-type contraction
-   needs radius `≈ κ/K ≈ 10⁻³ < ρ0`, so it does not extend the ball.
+   ball (`ρ_row = 0.0040`, or $0.054$ at target 3.84) and any conditioning radius the
+   tools could reach ($\ge 0.3$ before a box removes a unit of fractional weight),
+   uniform boxes in the 33-chart number $(0.3/0.004)^{33} \approx 10^{62}$.
+   Krawczyk-type contraction needs radius $\approx \kappa/K \approx 10^{-3} < \rho0$, so
+   it does not extend the ball.
    Only exact fixed-angle LPs over enumerated SAT branches could fill the tier, and
-   their raw count is `4^25 · 8^30 ≈ 10^42` even inside the axis-plus-one-angle family
-   (hybrid review).
-6. **“Narrow enough” is the wrong frame.** Narrowing the target band `[L1, U]` from 3.84
+   their raw count is $4^{25} \cdot 8^{30} \approx 10^{42}$ even inside the
+   axis-plus-one-angle family (hybrid review).
+6. **“Narrow enough” is the wrong frame.** Narrowing the target band $[L1, U]$ from 3.84
    to 3.869 shrinks the discard ball (0.054 → 0.025), weakens the composition forcing
    (θ0 2.44° → 1.97°), and does not touch the competitor question.
-   The width of the band enters a proof only through Lemma 1’s mass gap `ε(L)`, and
-   BC-201 showed the tight set at `ε = 0.01` is still `0.76%` of the cells with positive
-   area — a search, not a check.
+   The width of the band enters a proof only through Lemma 1’s mass gap
+   $\varepsilon(L)$, and BC-201 showed the tight set at $\varepsilon = 0.01$ is still
+   `0.76%` of the cells with positive area — a search, not a check.
 
 ## 4. Part II — architecture, status of the six measurements, and the three routes
 
@@ -398,9 +419,9 @@ the modulus arithmetic reproduces `ρ_uniform = 2κ/K = 0.002309` from BC-199’
 
 | Layer | Proved today | Measured | Missing | Decisive measurement |
 | --- | --- | --- | --- | --- |
-| Certificate ladder (T-018/T-022) | `s(11) ≥ 3.810026`; ceiling and cap theorems | restricted optima 11.000/11.056 at 3.82, 11.23 unconverged at 3.85; `ν*(3.82) ≥ 9.908` | the true `ν*(L)` for `L ∈ [3.82, 3.87]` | X-014 #1 (BC-200): run, inconclusive |
-| Lemma 1 tight cores / exact cover | Lemma 1, Corollaries 1a/1b | tight set 4.08% at `ε = 1/20`, positive area, 22,132 components (BC-201/exp-063) | an exact-cover engine (BC-207/BC-248 blocked on guards) | X-014 #3: run; reading “search” |
-| Class certificates (Lemma 3) | `classcert.py`; composition (11,0) closed at Trump’s side by 19 near-axis cells; nine-point closes `n1 ≤ 1` below U | two-end-cell class refuted by the shrink cap (exp-064); 12 compositions price 5.5 min at grid 39 | compositions with ≥ 2 tilted squares at 3.84 (BC-286 planned, unrun) | X-014 #4: partial |
+| Certificate ladder (T-018/T-022) | $s(11) \ge 3.810026$; ceiling and cap theorems | restricted optima 11.000/11.056 at 3.82, 11.23 unconverged at 3.85; $\nu^{\ast}(3.82) \ge 9.908$ | the true $\nu^{\ast}(L)$ for $L \in [3.82, 3.87]$ | X-014 #1 (BC-200): run, inconclusive |
+| Lemma 1 tight cores / exact cover | Lemma 1, Corollaries 1a/1b | tight set 4.08% at $\varepsilon = \frac{1}{20}$, positive area, 22,132 components (BC-201/exp-063) | an exact-cover engine (BC-207/BC-248 blocked on guards) | X-014 #3: run; reading “search” |
+| Class certificates (Lemma 3) | `classcert.py`; composition (11,0) closed at Trump’s side by 19 near-axis cells; nine-point closes $n1 \le 1$ below U | two-end-cell class refuted by the shrink cap (exp-064); 12 compositions price 5.5 min at grid 39 | compositions with ≥ 2 tilted squares at 3.84 (BC-286 planned, unrun) | X-014 #4: partial |
 | Conditional certificates (Lemma 2) | the lemma; Lemma D above bounds its reach | BC-200 family restricted: ≥ 8.87 outside a corner box (this report) | non-convex admissible domain in sweep/generate/interval/colgen (BC-204 blocked) | X-014 #5 handshake: never run; #6 n = 13 calibration: never run (BC-205 blocked; BC-211 unconverged) |
 | Local theorem at Trump (H-022) | exp-013 (128 zero cones), BC-199/BC-240 radius `ρ_row = 0.0040426`, `C_row = 12.873`, BC-241 review complete | — | independent replay of per-face witnesses (BC-240 refusal list); a radius in a chart with side free | X-014 #2: run; kill did not fire |
 | Near-axis / near-45 auxiliaries (H-036 programme) | H-106, H-108, H-109, H-123, H-124 accepted at 1939/500 under premises | P12 escape (exp-121) refutes the unconditional near-axis 12-point cover; diamond cover refuted (exp-122) | H-036 itself; axis compatibility `no_chain` | — |
@@ -408,34 +429,33 @@ the modulus arithmetic reproduces `ρ_uniform = 2κ/K = 0.002309` from BC-199’
 
 ### 4.2 Quantifying “narrow enough” (CHECKED arithmetic)
 
-| `L1` | band `U − L1` | discard radius `(η/C_row)^{1/2}` | θ0(L1) | Lemma T tolerance at `L1` | fraction of gap removed |
+| `L1` | band $U - L1$ | discard radius `(η/C_row)^{1/2}` | θ0(L1) | Lemma T tolerance at `L1` | fraction of gap removed |
 | --- | --- | --- | --- | --- | --- |
 | 3.84 | 0.0371 | 0.0537 | 2.44° | 0.0111 | 44.7% |
 | 3.86 | 0.0171 | 0.0364 | 2.12° | 0.0186 | 74.5% |
 | 3.869 | 0.0081 | 0.0251 | 1.97° | 0.0219 | 87.9% |
 | → U | 0 | floor 0.0040 | 1.85° | — | — |
 
-Every column that a case tree consumes gets *worse* as `L1 → U`. The set of packings
-with side in `[L1, U]` is, for all we know, empty except Trump’s orbit; a proof must
+Every column that a case tree consumes gets *worse* as $L1 \to U$. The set of packings
+with side in $[L1, U]$ is, for all we know, empty except Trump’s orbit; a proof must
 exhibit that, and its cost is set by how much of configuration space a general argument
-can discard *at side `U`*, not by `U − L1`.
+can discard *at side `U`*, not by $U - L1$.
 
 ### 4.3 The three closing routes, their case trees, and the lemma that would change each
 
 **(a) Trump’s combinatorial type, then exact algebra.** Closing step: given the 25
 incidences with a feature selection, the 42 rows have rank 33 (exp-013), so the pose is
 an isolated real solution; all real solutions of the contact system are finitely many
-and each is checked for feasibility over `Q(u)` (the Gensane–Ryckelynck/Ellsworth
+and each is checked for feasibility over $Q(u)$ (the Gensane–Ryckelynck/Ellsworth
 elimination; the degree-8 polynomial has finitely many real roots).
-This step is cheap.
-The premise — every packing at side `≤ U` has Trump’s type — *is* the
-theorem.
-Tree size without structure: choosing ~22 active rows among ≈ 44 wall rows and ≈
-440 typed pair features, `C(484, 22) ≈ 10^40` raw; with H-121 (angles in `{0, θ}`) the
-SAT product is `4^25 · 8^30 ≈ 10^42` raw (hybrid review), most infeasible but unproved
-so. **The single lemma that changes the estimate most is an ownership (localization)
+This step is cheap. The premise — every packing at side $\le U$ has Trump’s type — *is*
+the theorem. Tree size without structure: choosing ~22 active rows among ≈ 44 wall rows
+and ≈ 440 typed pair features, $C(484, 22) \approx 10^{40}$ raw; with H-121 (angles in
+$\lbrace0, \theta\rbrace$) the SAT product is $4^{25} \cdot 8^{30} \approx 10^{42}$ raw
+(hybrid review), most infeasible but unproved so.
+**The single lemma that changes the estimate most is an ownership (localization)
 lemma:** an unavoidable set of 11 marks (or 10 marks with a forced double owner, as in
-Stromquist’s Theorem 1 at `n = 10`) at side 3.84 (robustly, Lemma T). With every square
+Stromquist’s Theorem 1 at $n = 10$) at side 3.84 (robustly, Lemma T). With every square
 localized to within ≈ 1 of a known mark, each square has ≤ 4–6 possible neighbours and
 most separating axes are determined by geometry; the cell count drops to roughly
 `2^{20}` fixed-angle LPs — feasible.
@@ -445,7 +465,7 @@ total mass 10.86 where an integral ownership set would need ≤ 11 marks of mass
 
 **(b) Conditional certificates on a finite cover + the modulus ball.** Tree:
 compositions (12; ≈ 10³ with five angle bins) × position boxes; a box helps only when
-`I_b` removes ≈ 1 unit of fractional weight (radius ≲ 0.3), giving ≈ 160 boxes per
+$I_b$ removes ≈ 1 unit of fractional weight (radius ≲ 0.3), giving ≈ 160 boxes per
 square, `160^{11} ≈
 10^{24}` ordered (≈ 10^{17} unordered) before any pruning, `≈ 8^{11} ≈ 10^{10}` if only
 the 5% near-tight region of BC-201 need be boxed, at minutes per node.
@@ -455,48 +475,49 @@ boxes at once; nine-point and the X-018 strict-core lemmas fix the composition s
 Lemma S fixes an anchor chain.
 **The lemma that changes the estimate most is a valid integer-hull cut family** — subset
 capacities and clique cuts such as “at most one square meets the corner triangle
-`x + y ≤ ε`” (X-019, valid for packings, violable by fractional packings) — sufficient
-to push `ν*(3.84)` below 11. Lemma D says this is the *only* way conditioning can beat
-the plateau.
+$x + y \le \varepsilon$” (X-019, valid for packings, violable by fractional packings) —
+sufficient to push $\nu^{\ast}(3.84)$ below 11. Lemma D says this is the *only* way
+conditioning can beat the plateau.
 
 **(c) Shrink-free certificate (B = 1, open placements, interval-decided directions).**
-Removes both shrink caps and can approach `U` rung by rung, and `s(11) ≥ sup L = U`
-would follow from `τ*_1(L) < 11` for all `L < U` — but that requires infinitely many
-rungs or a parametric family, and the covering value of the `B = 1` relaxation may still
-cross 11 below `U` (its own plateau).
+Removes both shrink caps and can approach $U$ rung by rung, and $s(11) \ge \sup L = U$
+would follow from `τ*_1(L) < 11` for all $L < U$ — but that requires infinitely many
+rungs or a parametric family, and the covering value of the $B = 1$ relaxation may still
+cross 11 below $U$ (its own plateau).
 Tree size: none (it is a ladder), but each rung is a new soundness surface (open
 placements, event-grid semantics on lines, directions as intervals).
-**The decisive measurement is `ν*_1(L)` for `L ∈ {3.84, 3.86, 3.87}` with unit closed
-placements**, computable today with `ceiling.py`’s `unit` regime and the cutting-plane
-loop; a value `≥ 11` at any `L < U` kills (c) and, by Lemma D, every `B = 1` capture
-certificate at that side.
+**The decisive measurement is `ν*_1(L)` for $L \in \lbrace3.84, 3.86, 3.87\rbrace$ with
+unit closed placements**, computable today with `ceiling.py`’s `unit` regime and the
+cutting-plane loop; a value $\ge 11$ at any $L < U$ kills (c) and, by Lemma D, every
+$B = 1$ capture certificate at that side.
 
 ## 5. Proposed research sessions (2–4 h each, parallelizable), with dependency graph
 
 Common falsifier discipline: a lemma “for every packing at side ≤ L” is refuted only by
 an explicit packing at side ≤ L or by refuting the method; Trump and its D4 images are
-the only packings below `U`; loosened packings at 3.88–3.90 test lemmas whose proof
+the only packings below $U$; loosened packings at 3.88–3.90 test lemmas whose proof
 would also apply there.
 
 ### S1 — Rectangle no-fit certificates and the wall-proximity lemma
 
-*Question.* What is the largest `H0 < 3.84` such that eleven unit squares provably do
-not fit in `[0, 3.84] × [0, H0]`? Equivalently: in every packing at side ≤ 3.84, how
-close must some square come to each wall?
+*Question.* What is the largest $H0 < 3.84$ such that eleven unit squares provably do
+not fit in $[0, 3.84] \times [0, H0]$? Equivalently: in every packing at side ≤ 3.84,
+how close must some square come to each wall?
 *Entry.* `sqpack.fractional` at the retained net; the change is confined to
 `sweep.centre_domain` (rotated rectangle instead of rotated square), the float mirror
 `generate._CentreDomain` (separate x/y bounds in `_floor/_ceiling/u_chord`), the four
 half-planes of `interval.DirectionSearch`, and Condition 1’s symmetry group (rectangle:
 the two reflections only, so the net must span a quarter turn; the doubled net exists).
-*Instrument.* Column generation at `3.84 × H` for `H ∈ {3.80, 3.81, 3.815, 3.82}`; exact
-decision by the sweep and the interval route as for T-018. *Exit.* A frozen rectangle
-certificate at some `H0 ≥ 3.81` ("theorem: 11 unit squares do not fit in `3.84 × H0`"),
-or the converged restricted optimum ≥ 11 at `H = 3.81` (scoped obstruction: no rectangle
-gain at this net). *Falsifier.* A verified packing in `3.84 × H0` (none is known below
+*Instrument.* Column generation at $3.84 \times H$ for
+$H \in \lbrace3.80, 3.81, 3.815, 3.82\rbrace$; exact decision by the sweep and the
+interval route as for T-018. *Exit.* A frozen rectangle certificate at some
+$H0 \ge 3.81$ ("theorem: 11 unit squares do not fit in $3.84 \times H0$"), or the
+converged restricted optimum ≥ 11 at $H = 3.81$ (scoped obstruction: no rectangle gain
+at this net). *Falsifier.* A verified packing in $3.84 \times H0$ (none is known below
 the square side). *Buys for 3.84.* Robust structural facts: every wall is within
-`3.84 − H0` of a square, both directions have extent ≥ `H0`, hence (with Lemma S) the
+$3.84 - H0$ of a square, both directions have extent ≥ `H0`, hence (with Lemma S) the
 anchor chain plus near-contacts on the other two walls — the strongest symmetry-breaking
-premise available, and the first rectangle-container bound for `n = 11`. Also settles
+premise available, and the first rectangle-container bound for $n = 11$. Also settles
 whether a both-directions spanning representative can be *forced* at 3.84 (it can if
 `H0` can be pushed to 3.84 − δ). *Hours.* 3–4. *Depends on.* nothing.
 *Parallel with.* S2, S3, S4, S6.
@@ -504,8 +525,8 @@ whether a both-directions spanning representative can be *forced* at 3.84 (it ca
 ### S2 — Fractional-packing kill tests for conditional dots at 3.84 (Lemma D1)
 
 *Question.* Over placements disjoint from (i) a unit corner box, (ii) the corner
-triangle `x + y ≤ 1/2`, (iii) a unit box at the centre, and (iv) the union of the four
-corner boxes, what is the exact-depth fractional packing value at `96/25`? Does any
+triangle $x + y \le 1/2$, (iii) a unit box at the centre, and (iv) the union of the four
+corner boxes, what is the exact-depth fractional packing value at $96/25$? Does any
 reach 10 (kill) or stay below 9.5 (headroom)?
 *Entry.* `bc-200-family-191-50.json` (760 placements, depth ≤ 1) and
 `bc-200-state-191-50.json` as warm start; `sqpack.fractional.cutting.cutting_plane_loop`
@@ -514,7 +535,7 @@ dual side needs no domain generalization).
 *Instrument.* Cutting-plane loop ≤ 30 min per region on one core; `verify_ceiling` on
 the final family (exact depth at all arrangement vertices).
 *Exit.* Per region an exact depth-scaled total; classification: kill (≥ 10), alive (<
-9.5), undecided. Also the unrestricted `ν*(3.84)` lower bound as a by-product.
+9.5), undecided. Also the unrestricted $\nu^{\ast}(3.84)$ lower bound as a by-product.
 *Falsifier.* None needed: both outcomes are theorems about the relaxation.
 *Buys for 3.84.* Decides whether BC-204’s non-convex-domain instrument is worth building
 for corner-box conditioning at all; converts BC-285/BC-287 from speculation to a priced
@@ -525,35 +546,35 @@ plan; a kill redirects effort to integer-hull cuts (H-111, H-119). *Hours.* 2–
 ### S3 — The `B = 1` relaxation’s fractional value near `U`
 
 *Question.* With closed unit placements (`ceiling.py` `unit` regime) at
-`L ∈ {3.84, 3.86,
-3.87}`, is there a depth-1 family of value ≥ 11? If so, how much of its weight lies
-outside an angular/positional neighbourhood of Trump’s placements (radius 0.05 in
-centres, 1° in angle, D4 images included)?
+$L \in \lbrace3.84, 3.86, 3.87\rbrace$, is there a depth-1 family of value ≥ 11? If so,
+how much of its weight lies outside an angular/positional neighbourhood of Trump’s
+placements (radius 0.05 in centres, 1° in angle, D4 images included)?
 *Entry.* The cutting-plane loop with `square_side = 1`; a direction net dense near 0°
 and 40.18° so Trump’s own placements are representable; the BC-200 state as seed after
 rescaling placements’ *positions* only (sizes are fixed at 1, so the seed is a warm
 start, not a valid family, until re-verified).
-*Exit.* A verified family of value ≥ 11 at some `L < U` (kills route (c) and every
-`B = 1` capture certificate at that side, Lemma D2, if its outside-`N` weight is ≥ 1),
-or a converged covering LP below 11 at 3.87 with `B = 1` (opens route (c): the first
+*Exit.* A verified family of value ≥ 11 at some $L < U$ (kills route (c) and every
+$B = 1$ capture certificate at that side, Lemma D2, if its outside-`N` weight is ≥ 1),
+or a converged covering LP below 11 at 3.87 with $B = 1$ (opens route (c): the first
 rung above the shrink cap).
 *Falsifier.* An exact-depth verification failure on the produced family is the only
 refutation of a claimed kill.
 *Buys for 3.84.* Nothing directly at 3.84; it is the earliest possible hopelessness
 signal for the dot-based endgame (a diffuse value-11 family at 3.87 means no one-body
-relaxation can reach `U`, capture included).
+relaxation can reach $U$, capture included).
 *Hours.* 3–4. *Depends on.* nothing.
 *Gates.* S5.
 
 ### S4 — Corner blockers made quantitative (H-126 sharpened)
 
-*Question.* For the SW corner box `[0,1]²` and its unique-or-several blockers, classify
-the blocker poses that overlap every probe `[0,1] × [t, 1+t]`, `t ∈ [0, 0.5]`, and every
-probe `[t, 1+t] × [0,1]` (insertion saturation along both walls): is there a uniform
-inequality of the form “either a square meets the corner triangle `x + y ≤ ε0` with
-`ε0 ≥ 0.15`, or at least two distinct squares meet the corner box, one within angle `φ0`
-of an axis”? The falsifier is a local configuration (three or fewer squares) that blocks
-all probes while violating the inequality; the analytical tool is X-019’s identity
+*Question.* For the SW corner box $[0,1]^2$ and its unique-or-several blockers, classify
+the blocker poses that overlap every probe $[0,1] \times [t, 1+t]$, $t \in [0, 0.5]$,
+and every probe $[t, 1+t] \times [0,1]$ (insertion saturation along both walls): is
+there a uniform inequality of the form “either a square meets the corner triangle
+$x + y \le \varepsilon0$ with $\varepsilon0 \ge 0.15$, or at least two distinct squares
+meet the corner box, one within angle $\varphi0$ of an axis”?
+The falsifier is a local configuration (three or fewer squares) that blocks all probes
+while violating the inequality; the analytical tool is X-019’s identity
 `min_{p∈Q}(x + y) = g_x + g_y + sin φ`. *Entry.* X-019’s proved four-blocker fact;
 T-017; the probe family is finite-dimensional and the blocker’s pose has three
 parameters, so exhaustive interval enumeration of blocker poses is feasible with
@@ -573,28 +594,29 @@ This is the cheapest structural constraint with a real chance of headroom.
 
 ### S5 — The sound closing design and its price
 
-*Question.* Write the exact-side tree over `Q(u)` and the `B = 1` capture design at
-`U + σ` as one architecture: (i) prove the feasible-set stability `‖v‖ ≤ 2σ/κ` on the
-half-ball (the argument in §1.7, in the anchored chart with the retained `κ`, `K`); (ii)
-compute `σ_max = κρ0/4` and a rational `L1 ∈ (U, U + σ_max)`; (iii) enumerate the
-features whose gap at Trump’s pose is below the capture radius `r` (from the exact pose:
-the gaps `0.0249, 0.0249, 0.0326, 0.119, …`) to count the SAT branches active in the
-annulus `[ρ0/2, r]`; (iv) price the field-valued LP per branch with `sqpack.exact_lp`.
-*Exit.* A costed design (number of branches × exact LP cost) for `r ∈ {0.05, 0.1, 0.3}`,
-or the proof that the annulus needs angle subdivision below what the exact LP tolerates.
-*Falsifier.* A packing at side `U + σ` outside the predicted region (from the numerical
-quench, `sqpack.research.quench`) refutes the stability lemma as stated.
+*Question.* Write the exact-side tree over $Q(u)$ and the $B = 1$ capture design at
+$U + \sigma$ as one architecture: (i) prove the feasible-set stability `‖v‖ ≤ 2σ/κ` on
+the half-ball (the argument in §1.7, in the anchored chart with the retained $\kappa$,
+$K$); (ii) compute `σ_max = κρ0/4` and a rational `L1 ∈ (U, U + σ_max)`; (iii) enumerate
+the features whose gap at Trump’s pose is below the capture radius $r$ (from the exact
+pose: the gaps $0.0249, 0.0249, 0.0326, 0.119, \ldots$) to count the SAT branches active
+in the annulus $[\rho0/2, r]$; (iv) price the field-valued LP per branch with
+`sqpack.exact_lp`. *Exit.* A costed design (number of branches × exact LP cost) for
+$r \in \lbrace0.05, 0.1, 0.3\rbrace$, or the proof that the annulus needs angle
+subdivision below what the exact LP tolerates.
+*Falsifier.* A packing at side $U + \sigma$ outside the predicted region (from the
+numerical quench, `sqpack.research.quench`) refutes the stability lemma as stated.
 *Buys for 3.84.* Nothing; it is the only session that addresses the *endpoint* honestly.
-*Hours.* 2–3. *Depends on.* S3’s answer for whether capture at `U + σ` is even possible
-with `B = 1` (if S3 kills it, S5 reduces to the exact-side tree and needs an ownership
-lemma from S6 to be finite).
+*Hours.* 2–3. *Depends on.* S3’s answer for whether capture at $U + \sigma$ is even
+possible with $B = 1$ (if S3 kills it, S5 reduces to the exact-side tree and needs an
+ownership lemma from S6 to be finite).
 
 ### S6 — An ownership set at 3.84 (Stromquist’s method at the target side)
 
-*Question.* Is there a set of ≤ 11 marks (points or short segments) in `[0, 3.84]²` such
-that every contained unit square, at any angle, meets one of them, with the nonavoidance
-regions proved by Lemmas 1–4 of Stromquist 2003 (as repaired for Figure 14) and
-H-106-style interval readers, *robustly* (Lemma T: marks may be thickened by 0.006)?
+*Question.* Is there a set of ≤ 11 marks (points or short segments) in $[0, 3.84]^2$
+such that every contained unit square, at any angle, meets one of them, with the
+nonavoidance regions proved by Lemmas 1–4 of Stromquist 2003 (as repaired for Figure 14)
+and H-106-style interval readers, *robustly* (Lemma T: marks may be thickened by 0.006)?
 *Entry.* T-018’s 93 heaviest atoms (mass > 1/50, carrying 4.28 of 10.86) as candidate
 marks; the exp-121 escape instrument as the falsifier engine; `sqpack.cover` for the
 mesh checks. *Exit.* An 11-mark unavoidable set with a verified cover (theorem: every
@@ -638,35 +660,35 @@ a probe, not a proof plan), and the intermediate tier.
 **Realistic multi-session path to s(11) = U.**
 
 1. *Weeks 1–2:* S2, S3, S4 decide which relaxation survives.
-   If `ν*(3.84) ≥ 11` with diffuse weight, the covering LP must be strengthened by
-   integer-hull cuts (corner-triangle cliques, subset capacities, composition rows)
-   until it certifies 3.84; that is a publishable rung and the first evidence that
-   structure buys headroom.
-2. *Months:* push the strengthened `B = 1` ladder toward `U`, measuring `ν*_1(L)` at
+   If $\nu^{\ast}(3.84) \ge 11$ with diffuse weight, the covering LP must be
+   strengthened by integer-hull cuts (corner-triangle cliques, subset capacities,
+   composition rows) until it certifies 3.84; that is a publishable rung and the first
+   evidence that structure buys headroom.
+2. *Months:* push the strengthened $B = 1$ ladder toward $U$, measuring `ν*_1(L)` at
    each rung; in parallel attack ownership (S6) with the strengthened measure’s heavy
    atoms as marks.
-3. *Endpoint:* only two designs are sound (§1.7): the exact-side tree over `Q(u)`
+3. *Endpoint:* only two designs are sound (§1.7): the exact-side tree over $Q(u)$
    finished by the modulus lemma, which is finite only with an ownership or normal-form
-   theorem; or the `B = 1` capture run at `U + σ`, `σ < 10⁻⁵`, which needs the
-   strengthened relaxation to have no diffuse value-11 fractional packing at `U`.
+   theorem; or the $B = 1$ capture run at $U + \sigma$, $\sigma < 10^{-5}$, which needs
+   the strengthened relaxation to have no diffuse value-11 fractional packing at $U$.
 
 **Earliest point at which hopelessness could be known.** S3 within one session: a
-verified depth-1 family of value ≥ 11 at `L ≤ 3.87` with ≥ 1 unit of weight away from
+verified depth-1 family of value ≥ 11 at $L \le 3.87$ with ≥ 1 unit of weight away from
 Trump’s placements proves, by Lemma D2, that no one-body certificate — shrunk or not,
 unconditional or conditioned on Trump’s neighbourhood — can close the endpoint; every
 subsequent dot-based step then depends on cuts whose sufficiency is unproved.
 Route (a) has no comparable kill: a normal-form theorem could always exist, and the only
-practical refutation is a second local minimizer near `U` with a different contact type,
+practical refutation is a second local minimizer near $U$ with a different contact type,
 which 47 years of search have not produced.
 
 ## 7. Open questions ranked by expected value
 
 1. **Ownership at 3.84** (S6): is there an ≤ 11-mark robust unavoidable set?
    Highest value — collapses route (a) to ≈ 10⁶ exact LPs; prior ≈ 30%.
-2. **`ν*(3.84)` and `ν*_1(3.87)`** (S2, S3): the numbers that decide routes (b) and (c)
-   and the endgame’s capture premise; certain to be answered by measurement.
+2. **$\nu^{\ast}(3.84)$ and `ν*_1(3.87)`** (S2, S3): the numbers that decide routes (b)
+   and (c) and the endgame’s capture premise; certain to be answered by measurement.
 3. **Both-direction spanning representative / rectangle bound `H0`** (S1): a new theorem
-   type with structural corollaries; probability of `H0 ≥ 3.81` high, of `H0 ≥ 3.83`
+   type with structural corollaries; probability of $H0 \ge 3.81$ high, of $H0 \ge 3.83$
    unknown.
 4. **Corner dichotomy** (S4): the cheapest integer-hull cut with geometric content;
    prior 50%.
@@ -675,20 +697,20 @@ which 47 years of search have not produced.
    dimensions.
 6. **H-121 normal form**: decisive and out of reach; keep as the statement every partial
    result should be measured against.
-7. **Angular rattler exclusion at side ≤ 3.96** (conditional certificate with `I_b` a
+7. **Angular rattler exclusion at side ≤ 3.96** (conditional certificate with $I_b$ a
    disc of radius √2/2): provable by Lemma-D-style accounting if
-   `ν*(container ∖ disc) < 10`; low value, but it removes the `n = 6`-type degeneracy
+   `ν*(container ∖ disc) < 10`; low value, but it removes the $n = 6$-type degeneracy
    from Lemma V’s representative argument.
 
 ## Appendix — status of X-014’s six measurements
 
 | # | Measurement | Cell | Status | Outcome and kill |
 | --- | --- | --- | --- | --- |
-| 1 | `ν*(L)` at 3.82/3.85/3.87 | BC-200 (exp-060) | run, unconverged | `9.9079 ≤ ν*(3.82)`, restricted `τ* = 11.0556` on 12,761 sites; 3.85 at `9.0499` after three iterations; 3.87 never run. No kill defined; the ladder’s top is unlocated |
-| 2 | `κ_b`, `K`, `ρ0`, `C` | BC-199, packet BC-240, review BC-241 | complete | `ρ_uniform = 0.0023089`, `ρ_row = 0.0040426`, `C_uniform = 22.4678`, `C_row = 12.8731`; kill (`ρ0 < 10⁻⁶`) did not fire; per-face witnesses not independently replayed |
-| 3 | tight-cell census | BC-201 (exp-063) | complete | 4.0754% at `ε = 1/20`; positive area, bounding box = whole domain, 22,132 components; H-065 accepted; the reading is “search”; kill (most of the domain) did not fire |
-| 4 | twelve class certificates just above `U` | BC-198 (exp-064) | partial | (11,0) closed at Trump’s side (exact 39123/4096); two-end-cell class unreachable (cap 3.876681); the kill condition ("`n1 = 0` fails to certify above `U`") did not fire for the 19-cell class and fired by arithmetic for the two-end-cell class |
-| 5 | handshake at `U − 0.01`, all squares boxed at 0.05 | BC-204 | blocked, never run | needs the non-convex admissible domain in four places; Lemma D and S2 now give a cheaper necessary condition before building it |
+| 1 | `ν*(L)` at 3.82/3.85/3.87 | BC-200 (exp-060) | run, unconverged | $9.9079 \le \nu^{\ast}(3.82)$, restricted $\tau^{\ast} = 11.0556$ on 12,761 sites; 3.85 at $9.0499$ after three iterations; 3.87 never run. No kill defined; the ladder’s top is unlocated |
+| 2 | $\kappa_b$, $K$, $\rho0$, `C` | BC-199, packet BC-240, review BC-241 | complete | `ρ_uniform = 0.0023089`, `ρ_row = 0.0040426`, `C_uniform = 22.4678`, `C_row = 12.8731`; kill ($\rho0 < 10^{-6}$) did not fire; per-face witnesses not independently replayed |
+| 3 | tight-cell census | BC-201 (exp-063) | complete | 4.0754% at $\varepsilon = \frac{1}{20}$; positive area, bounding box = whole domain, 22,132 components; H-065 accepted; the reading is “search”; kill (most of the domain) did not fire |
+| 4 | twelve class certificates just above $U$ | BC-198 (exp-064) | partial | (11,0) closed at Trump’s side (exact 39123/4096); two-end-cell class unreachable (cap 3.876681); the kill condition ("`n1 = 0` fails to certify above $U$") did not fire for the 19-cell class and fired by arithmetic for the two-end-cell class |
+| 5 | handshake at $U - 0.01$, all squares boxed at 0.05 | BC-204 | blocked, never run | needs the non-convex admissible domain in four places; Lemma D and S2 now give a cheaper necessary condition before building it |
 | 6 | `n = 13` Bentz calibration at 399/100 | BC-205 (BC-211 precursor) | blocked / unconverged | BC-211’s grid rung at 399/100 never converged inside its wall; the conditional calibration never opened |
 
 ## Appendix: scripts and outputs as run
@@ -1345,33 +1367,33 @@ times below are therefore not comparable with the planning lane’s or with BC-2
 Nothing here allocates an identifier or edits a shared record; the frozen families and
 states are under the lane scratchpad (`scratchpad/lane-294/`) and their bytes are what
 the numbers below were verified from.
-Notation is Section 1.6’s: `q = 96/25`, `B = 9977/10000`, `U = 3.877083590`, a *family*
-is a finite set of weighted closed squares in `[0, q]²` with exact depth at most 1 at
+Notation is Section 1.6’s: $q = 96/25$, $B = 9977/10000$, $U = 3.877083590$, a *family*
+is a finite set of weighted closed squares in $[0, q]^2$ with exact depth at most 1 at
 every vertex of its own arrangement, and its *value* is its total weight.
 
 ### The question and the reading rule
 
 By Lemma D (Section 1.6) the covering mass of *every* measure a certificate could use is
 at least the value of any family the measure must cover, and the same inequality holds
-with the placements restricted to those disjoint from a region `R` (the conditional
+with the placements restricted to those disjoint from a region $R$ (the conditional
 program of X-014 Lemma 2) and with the thresholds of a capture certificate.
 Two instances are measured here.
 
-- **`B = 1` at `q`.** The placements are closed *unit* squares at the net directions.
-  A unit square at angle `θ ∈ [0, π/4]` contains a `B`-square at a net angle whenever
-  Condition 4 holds (`B(1 + D) < 1`), so a family of unit squares bounds from below the
-  covering mass of every `(B, net)` the method can use, and of the shrink-free `B = 1`
-  instrument with the continuum of directions in particular; `verify_ceiling` reports
-  this as the `unit` regime when the *declared* `(B, net)` satisfies Condition 4.
-  Declared with `square_side = 1` the same bytes are verified in the `net` regime with
-  `B = 1`, a weaker statement about the same family, so both declarations are reported.
-  A value `≥ 11` with at least one unit of weight outside Trump’s neighbourhood kills
-  every one-body certificate at `q` and above, capture included (D2); a value below 11
-  decides nothing by itself.
-- **Restricted values at `q` with the retained `(B, net)`.** The placements are the
-  retained `B`-squares at the retained 181-direction net, disjoint from `R`. The cell’s
-  thresholds: kill at `≥ 10` (one boxed blocker is worth about one unit of fractional
-  weight, Section 1.6 D4, so `10 + capacity(Π_b) ≥ 11`), alive below `9.5`, undecided
+- **$B = 1$ at $q$.** The placements are closed *unit* squares at the net directions.
+  A unit square at angle $\theta \in [0, \pi/4]$ contains a $B$-square at a net angle
+  whenever Condition 4 holds ($B(1 + D) < 1$), so a family of unit squares bounds from
+  below the covering mass of every `(B, net)` the method can use, and of the shrink-free
+  $B = 1$ instrument with the continuum of directions in particular; `verify_ceiling`
+  reports this as the `unit` regime when the *declared* `(B, net)` satisfies Condition
+  4\. Declared with `square_side = 1` the same bytes are verified in the `net` regime
+  with $B = 1$, a weaker statement about the same family, so both declarations are
+  reported. A value $\ge 11$ with at least one unit of weight outside Trump’s
+  neighbourhood kills every one-body certificate at $q$ and above, capture included
+  (D2); a value below 11 decides nothing by itself.
+- **Restricted values at $q$ with the retained `(B, net)`.** The placements are the
+  retained $B$-squares at the retained 181-direction net, disjoint from $R$. The cell’s
+  thresholds: kill at $\ge 10$ (one boxed blocker is worth about one unit of fractional
+  weight, Section 1.6 D4, so `10 + capacity(Π_b) ≥ 11`), alive below $9.5$, undecided
   between, or when only a lower bound exists.
 
 The reading rule for what each number *is*: a verified family gives an exact lower bound
@@ -1379,7 +1401,7 @@ on the fractional packing value and hence on every covering mass; a covering LP 
 finite site set whose row generation converged gives, by the same weak duality applied
 to the discrete site measure, an upper bound on the fractional packing value over the
 placements at the net directions — in floating point with the row oracle’s tolerance
-`10⁻⁹`, not exact — and a site LP whose rows did not converge is context only.
+$10^{-9}$, not exact — and a site LP whose rows did not converge is context only.
 
 ### Falsifiers, stated before the runs
 
@@ -1400,27 +1422,27 @@ it was driven by three scratch scripts (appendix), none of which touches an inst
 file:
 
 - `unit_loop.py` runs `cutting_plane_loop` with `square_side = 1` on a merged net (the
-  retained 180-step net plus seven steps of `h/8` above `0°` and Trump’s `u` with seven
-  steps of `h/8` on either side, 203 directions), warm from BC-200’s state at `191/50`
-  with the carried rows’ direction indices remapped onto the merged net and every row
-  clamped into the unit centre domain.
+  retained 180-step net plus seven steps of $h/8$ above $0^\circ$ and Trump’s $u$ with
+  seven steps of $h/8$ on either side, 203 directions), warm from BC-200’s state at
+  $191/50$ with the carried rows’ direction indices remapped onto the merged net and
+  every row clamped into the unit centre domain.
 - `polish_family.py` is new in kind: the loop restores feasibility by dividing every
-  weight by the exact maximum depth (BC-200: `11.06` at the sites became `9.91`), which
+  weight by the exact maximum depth (BC-200: $11.06$ at the sites became $9.91$), which
   discards everything the family had below depth 1 elsewhere.
   With the support fixed the arrangement and its vertex set do not move, so the polisher
-  solves `max Σ w_e` over one weight per D4 orbit subject to exact depth `≤ 1` at a
-  working set of vertices, rounds *down* to a common denominator, re-decides every
+  solves $\max \Sigma w_e$ over one weight per D4 orbit subject to exact depth $\le 1$
+  at a working set of vertices, rounds *down* to a common denominator, re-decides every
   vertex exactly with `depths_above`, adds the violated ones and repeats; the result is
   verified by `verify_ceiling` like any other family.
   It is the measurement instrument this lane would ask to have built (OR-1), and it is
   reported as scratch because the cell names no instrument file.
 - `restricted_loop.py` re-drives the loop with a disjointness filter on the dual side:
   the row oracle (`generate.placement_cells`) runs on the real sites plus phantom points
-  of weight 1000 filling `R` at spacing `1/16`, so placements deep in `R` are never the
+  of weight 1000 filling $R$ at spacing $1/16$, so placements deep in $R$ are never the
   least-covered cells it proposes; each surviving cell is tested for disjointness in
   floats with a margin, snapped, and re-tested exactly (separating-axis test in
-  `Fraction`) before it is held; the D4-symmetrised family is disjoint from `R` because
-  `R` is D4-symmetric, and the driver asserts that on every family it judges.
+  `Fraction`) before it is held; the D4-symmetrised family is disjoint from $R$ because
+  $R$ is D4-symmetric, and the driver asserts that on every family it judges.
   The instrument’s sites and duals are D4-symmetric, so it computes the restriction off
   a D4-symmetric region only: the four corner boxes together, or the central box.
   A single corner box or the corner triangle are not symmetric programs, and the
@@ -1428,25 +1450,26 @@ file:
   disjoint from four boxes is disjoint from one) and never an “alive”, and
   `subrestrict.py` reads their lower bounds off any verified family exactly.
 - `trump_split.py` scales Trump’s exact pose (`cases.trump11.packing`, 40-digit
-  enclosures) by `q/U`, closes it under D4, and splits a family’s weight by folded angle
-  (within `1°` of `0°` or of `40.181937°`) and by position (within `0.05` of a scaled
-  Trump centre of that class).
+  enclosures) by $q/U$, closes it under D4, and splits a family’s weight by folded angle
+  (within $1^\circ$ of $0^\circ$ or of $40.181937^\circ$) and by position (within $0.05$
+  of a scaled Trump centre of that class).
 
 ### Remarks proved without a run
 
-- **The `B = 1` value at `q` is at least 10** (proved).
-  `s(10) = 3 + √2/2 < 96/25` (`frontier/n-010.md`, proved), so ten closed unit squares
-  pack in `[0, q]²`; that packing is a family of value 10 with depth at most 1, whatever
-  its angles are. Hence every `B = 1` covering measure at `q` has mass at least 10, and a
-  `B = 1` certificate at `q`, if one exists, has mass in `[10, 11)`. The same holds at
-  every larger side. Nothing in this lane can lower the `B = 1` covering value below 10;
-  the question is only whether it reaches 11.
+- **The $B = 1$ value at $q$ is at least 10** (proved).
+  $s(10) = 3 + \sqrt{2}/2 < 96/25$ (`frontier/n-010.md`, proved), so ten closed unit
+  squares pack in $[0, q]^2$; that packing is a family of value 10 with depth at most 1,
+  whatever its angles are.
+  Hence every $B = 1$ covering measure at $q$ has mass at least 10, and a $B = 1$
+  certificate at $q$, if one exists, has mass in $[10, 11)$. The same holds at every
+  larger side. Nothing in this lane can lower the $B = 1$ covering value below 10; the
+  question is only whether it reaches 11.
 - **Monotonicity in the shrink** (proved, one line).
-  A family of unit squares at side `L` scaled by `B` is a family of `B`-squares at side
-  `BL`, and conversely, so `ν*₁(L) = ν*_B(BL)`. The `B = 1` value at `q` is the
-  retained-shrink value at `Bq = 3.831168`, inside the band `[3.810, 3.868983]` between
+  A family of unit squares at side $L$ scaled by $B$ is a family of $B$-squares at side
+  `BL`, and conversely, so `ν*₁(L) = ν*_B(BL)`. The $B = 1$ value at $q$ is the
+  retained-shrink value at `Bq = 3.831168`, inside the band $[3.810, 3.868983]$ between
   the retained certificate frontier (T-022) and the retained shrink’s plain cap; the
-  site LP at `191/50 = 3.82` with converged rows was `11.0556` (BC-200), which is an
+  site LP at $191/50 = 3.82$ with converged rows was $11.0556$ (BC-200), which is an
   upper bound on the finite-net value there and does not decide `Bq`.
 - **What the D4-symmetric instrument can and cannot compute** (proved).
   A D4-symmetric family disjoint from one corner box is disjoint from all four, so the
@@ -1454,7 +1477,7 @@ file:
   four boxes is disjoint from any one, so `ν*(off one box) ≥ ν*(off four boxes)`, and a
   kill of the four-box program is a kill of the single-box program while an “alive”
   four-box reading says nothing about one box.
-  The corner triangle `x + y ≤ 1/2` lies in the half-unit box, so
+  The corner triangle $x + y \le 1/2$ lies in the half-unit box, so
   `ν*(off the triangle) ≥ ν*(off the half box) ≥ ν*(off the unit
   box)`. The single-box and triangle programs have only the diagonal reflection as
   symmetry and need an instrument with sites that are not D4 orbits (BC-204’s domain
@@ -1462,29 +1485,29 @@ file:
 
 ### The `B = 1` value at `q = 96/25`
 
-**Inputs.** `n = 11`, `outer_side = 96/25`, placements of side exactly 1; net = the
+**Inputs.** $n = 11$, `outer_side = 96/25`, placements of side exactly 1; net = the
 retained `net_half_tangents(207107/500000, 180)` (half-tangent step
-`h = 207107/90000000`, last direction `45.000043°`) plus `h·k/8` for `k = 1..7`
-(`0.033°` steps above `0°`) and `u_T = 228871/625725` (Trump’s `tan(a/2)` to
-`limit_denominator(10⁶)`, `40.181937°`) with `u_T ± h·k/8` for `k = 1..7` (`0.029°`
-steps): 203 directions.
-Warm start: BC-200’s state at `191/50` (12761 sites, 9868 rows), sites and rows shifted
-by `(q − 191/50)/2 = 1/100`, the grid seed for `(96/25, 1)` added, rows remapped onto
+$h = 207107/90000000$, last direction $45.000043^\circ$) plus $h\cdot k/8$ for
+`k = 1..7` ($0.033^\circ$ steps above $0^\circ$) and $u_T = 228871/625725$ (Trump’s
+$\tan(a/2)$ to `limit_denominator(10⁶)`, $40.181937^\circ$) with $u_T \pm h\cdot k/8$
+for `k = 1..7` ($0.029^\circ$ steps): 203 directions.
+Warm start: BC-200’s state at $191/50$ (12761 sites, 9868 rows), sites and rows shifted
+by $(q - 191/50)/2 = 1/100$, the grid seed for $(96/25, 1)$ added, rows remapped onto
 the merged net and clamped into the unit centre domain: 16125 initial sites in 2113 D4
 orbits, 13305 rows after the first row generation.
 `support_cap = 96`, `cap = 150` orbits per iteration, `rows_rounds = 12`,
-`rows_per_direction = 3`, row denominator `10⁶`, weight denominator `10⁹`,
+`rows_per_direction = 3`, row denominator $10^6$, weight denominator $10^9$,
 `select_above = 1.000001`, budget 30 minutes, one worker, `PACK_JOBS = 1`, load average
 4 to 7 on four cores.
 
 **Iteration 0** (the only one that completed; the process was killed at about 05:01Z
 after saving its state, and the budget did not allow a restart): site LP objective
-`11.169805` with the row generation *not* converged (12-round cap, 1074 s), raw dual
-total `11.136308` at the sites, exact maximum depth `9989418081/8000000000 = 1.248677`
-at `(1.000547, 1.839449)` over 2877776 vertices (317548 above 1), depth-scaled value
-`8.918484`. The site LP is context: its rows did not converge, so it bounds nothing.
+$11.169805$ with the row generation *not* converged (12-round cap, 1074 s), raw dual
+total $11.136308$ at the sites, exact maximum depth $9989418081/8000000000 = 1.248677$
+at $(1.000547, 1.839449)$ over 2877776 vertices (317548 above 1), depth-scaled value
+$8.918484$. The site LP is context: its rows did not converge, so it bounds nothing.
 
-**Result (verified twice).** The value of the `B = 1` reading is the loop’s iteration-0
+**Result (verified twice).** The value of the $B = 1$ reading is the loop’s iteration-0
 depth-scaled family:
 
 ```
@@ -1492,174 +1515,178 @@ depth-scaled family:
 ```
 
 verified from the state bytes by `devtools.replay_ceiling_family --check`: 768
-placements, exact maximum depth exactly `1` over 2877776 vertices (3775 decided
-exactly), total `89090463224/9989418081`, `check: reproduced` (553 s), declared as
-`square_side = 1` on the 203-direction net (`net` regime, `B = 1`, K3 fails as it must
+placements, exact maximum depth exactly $1$ over 2877776 vertices (3775 decided
+exactly), total $89090463224/9989418081$, `check: reproduced` (553 s), declared as
+`square_side = 1` on the 203-direction net (`net` regime, $B = 1$, K3 fails as it must
 below 11). The polisher’s final pass verified the same bytes re-declared at
-`square_side = 9977/10000` (Condition 4: `B(1 + D) = 0.9999959 < 1`), which is the
+`square_side = 9977/10000` (Condition 4: $B(1 + D) = 0.9999959 < 1$), which is the
 every-`(B, net)` statement: `regime = unit`, `symmetric_only = True` (the 203-direction
-net’s last direction is `45.000043°`, so placements there are admissible through their
-mirror), exact maximum depth exactly `1` over 2877776 vertices (3775 decided exactly),
-total `89090463224/9989418081 = 8.918483790`, `statement: nothing: K3 total weight at
+net’s last direction is $45.000043^\circ$, so placements there are admissible through
+their mirror), exact maximum depth exactly $1$ over 2877776 vertices (3775 decided
+exactly), total $89090463224/9989418081 = 8.918483790$,
+`statement: nothing: K3 total weight at
 least n` (1839 s, the polisher’s whole run).
 
 The polisher did not improve it in the one round the block allowed: on the working set
-of 12028 vertices (the 3072 corners plus every vertex above depth `0.95`) the bounded LP
-reached exactly `11.000000`, and the exact re-check found depth `4/3` at 20256 vertices,
-so that round’s scaled contribution was `8.25`; the near-band of the candidate (`0.999`)
+of 12028 vertices (the 3072 corners plus every vertex above depth $0.95$) the bounded LP
+reached exactly $11.000000$, and the exact re-check found depth $4/3$ at 20256 vertices,
+so that round’s scaled contribution was $8.25$; the near-band of the candidate ($0.999$)
 was added and the deadline stopped the run.
 The number says what the cell needs to know about the loop: with a support of 96 orbits
-the site LP at `11.17`, the near-tight LP at `11.00` and the exactly feasible value at
-`8.92` are three different quantities, and only the last is a bound.
+the site LP at $11.17$, the near-tight LP at $11.00$ and the exactly feasible value at
+$8.92$ are three different quantities, and only the last is a bound.
 
-The value is a lower bound on the `B = 1` fractional packing value at `q` and on the
+The value is a lower bound on the $B = 1$ fractional packing value at $q$ and on the
 mass of every covering measure any `(B, net)` could use there and at every larger side.
-The proved floor is `10` (remark above), above it; so this family measures how far the
-loop is from the truth at `q` after one iteration, not the truth.
+The proved floor is $10$ (remark above), above it; so this family measures how far the
+loop is from the truth at $q$ after one iteration, not the truth.
 
 **Weight split against Trump’s placements** (`trump_split.py` on the same bytes; Trump’s
-pose scaled by `q/U = 0.990435`, D4-closed; angle band `1°`, centre radius `0.05`): of
-the total `8.918484`, `3.224868` lies within `1°` of the axis directions, `0.026704`
-within `1°` of `40.181937°`, and `5.666911` at other angles (the mass sits at `1°`,
-`13°`, `25°` to `36°` and `41°` to `44°`: the family is diffuse, not Trump-shaped);
-`2.991038` lies inside Trump’s neighbourhood (angle band and centre within `0.05` of a
-D4 image of a scaled Trump centre) and `5.927446` outside it.
-Lemma D2 would need `≥ 11` in total with `≥ 1` outside; the outside weight is there five
-times over, the total is not.
+pose scaled by $q/U = 0.990435$, D4-closed; angle band $1^\circ$, centre radius $0.05$):
+of the total $8.918484$, $3.224868$ lies within $1^\circ$ of the axis directions,
+$0.026704$ within $1^\circ$ of $40.181937^\circ$, and $5.666911$ at other angles (the
+mass sits at $1^\circ$, $13^\circ$, $25^\circ$ to $36^\circ$ and $41^\circ$ to
+$44^\circ$: the family is diffuse, not Trump-shaped); $2.991038$ lies inside Trump’s
+neighbourhood (angle band and centre within $0.05$ of a D4 image of a scaled Trump
+centre) and $5.927446$ outside it.
+Lemma D2 would need $\ge 11$ in total with $\ge 1$ outside; the outside weight is there
+five times over, the total is not.
 
 **Sub-restrictions of the same family** (`subrestrict.py`, exact): disjoint from one
-unit corner box `76291493608/9989418081 = 7.637231`; from the four corner boxes
-`37894584760/9989418081 = 3.793473`; from the half-unit corner box and from the corner
-triangle `x + y ≤ 1/2` (exact triangle test) `81373249834/9989418081 = 8.145945`; from
-the central unit box `20936487880/3329806027 = 6.287600`; from the strip `x ≤ 1/10`
-`6.614027`. Boxing one corner removes `1.28` of fractional weight from this family, the
-order of one square, as D4 read off BC-200 (`9.91 → 8.87`).
+unit corner box $76291493608/9989418081 = 7.637231$; from the four corner boxes
+$37894584760/9989418081 = 3.793473$; from the half-unit corner box and from the corner
+triangle $x + y \le 1/2$ (exact triangle test) $81373249834/9989418081 = 8.145945$; from
+the central unit box $20936487880/3329806027 = 6.287600$; from the strip $x \le 1/10$
+$6.614027$. Boxing one corner removes $1.28$ of fractional weight from this family, the
+order of one square, as D4 read off BC-200 ($9.91 \to 8.87$).
 
 ### Restricted values at `q` with the retained `(B, net)`
 
-**Inputs common to the restricted runs.** `n = 11`, `outer_side = 96/25`,
+**Inputs common to the restricted runs.** $n = 11$, `outer_side = 96/25`,
 `square_side = B = 9977/10000`, the retained 181-direction net
-(`net_half_tangents(207107/500000, 180)`); warm start BC-200’s state at `191/50` shifted
-by `1/100` with the grid seed for `(96/25, B)` added; carried rows meeting the region
+(`net_half_tangents(207107/500000, 180)`); warm start BC-200’s state at $191/50$ shifted
+by $1/100$ with the grid seed for $(96/25, B)$ added; carried rows meeting the region
 dropped exactly before the first solve; `support_cap = 96`, `cap = 150`,
 `rows_rounds = 6` (12 did not fit the budget under load), `rows_per_direction = 3` after
 the filter with `survey = 12` cells surveyed per direction, phantom points of weight
-1000 at spacing `1/16` filling the region, row denominator `10⁶`, weight denominator
-`10⁹`, `select_above = 1.000001`, one worker, `PACK_JOBS = 1`. The driver asserts exact
+1000 at spacing $1/16$ filling the region, row denominator $10^6$, weight denominator
+$10^9$, `select_above = 1.000001`, one worker, `PACK_JOBS = 1`. The driver asserts exact
 disjointness of every placement of every family it judges, so a family it reports is
 disjoint from the region by construction and by check.
 
-- **Four corner boxes** `[0,1]² ∪ [q−1,q]×[0,1] ∪ [0,1]×[q−1,q] ∪ [q−1,q]²`: 1156
-  phantom points; 5322 of the 9868 carried rows are disjoint from the union; 16285
-  initial sites in D4 orbits; 26-minute budget from 05:02Z.
+- **Four corner boxes**
+  $[0,1]^2 \cup [q-1,q]\times[0,1] \cup [0,1]\times[q-1,q] \cup [q-1,q]^2$: 1156 phantom
+  points; 5322 of the 9868 carried rows are disjoint from the union; 16285 initial sites
+  in D4 orbits; 26-minute budget from 05:02Z.
 
   The loop ran three iterations in 1735 s (iteration 2 cut by the deadline in its row
   generation): sites 16285 → 17485 → 18633, rows 7320 → 8076 → 8241 (no snapped row was
-  dropped by the exact re-test), site LP `7.324503`, `7.142857`, `7.142857`, none with
-  converged rows (6-round cap, then the deadline), raw duals `7.3245`, `7.1340`,
-  `7.1429`, exact maximum depths `1.429636`, `1.155661`, `1.162935`, scaled values
-  `5.123335`, `6.173135`, `6.142096`. The best in-loop floor is iteration 1’s
-  `28536196648/4622642825 = 6.173135` over 3135372 vertices; its polished value is
-  `57599999944/9199999991 = 6.260870`, verified below.
-  The site LP at `7.14` with unconverged rows is context only: the filtered oracle had
+  dropped by the exact re-test), site LP $7.324503$, $7.142857$, $7.142857$, none with
+  converged rows (6-round cap, then the deadline), raw duals $7.3245$, $7.1340$,
+  $7.1429$, exact maximum depths $1.429636$, $1.155661$, $1.162935$, scaled values
+  $5.123335$, $6.173135$, $6.142096$. The best in-loop floor is iteration 1’s
+  $28536196648/4622642825 = 6.173135$ over 3135372 vertices; its polished value is
+  $57599999944/9199999991 = 6.260870$, verified below.
+  The site LP at $7.14$ with unconverged rows is context only: the filtered oracle had
   not finished pricing the restricted placements, so nothing bounds the restricted value
   from above in this block.
   **Verified:** the loop’s own `verify_ceiling` on the iteration-1 family from its
-  bytes: exact maximum depth exactly `1` over 3135364 vertices, total
-  `28536196648/4622642825 = 6.173135`, `net` regime at `B = 9977/10000` on the retained
+  bytes: exact maximum depth exactly $1$ over 3135364 vertices, total
+  $28536196648/4622642825 = 6.173135$, `net` regime at $B = 9977/10000$ on the retained
   net (K3 fails, as it must below 11; the family is a floor, not a ceiling).
   `subrestrict.py` on the same bytes: the weight disjoint from any one corner box, from
-  the half box and from the corner triangle is the whole `6.173135` (it is disjoint from
-  all four boxes by construction), and `3.412321` of it is also disjoint from the
+  the half box and from the corner triangle is the whole $6.173135$ (it is disjoint from
+  all four boxes by construction), and $3.412321$ of it is also disjoint from the
   central box. **Polished (verified):** one polisher round on the same support (working
-  set 4052 vertices above `0.95` plus the corners; the LP reached `7.2` and the exact
-  re-check found depth `1.15`, so the round’s scaled candidate is kept) gives value
-  `57599999944/9199999991 = 6.260870`, verified by `verify_ceiling` from its bytes:
-  exact maximum depth exactly `1` over 3135364 vertices (26265 decided exactly), `net`
-  regime at `B = 9977/10000`, `symmetric_only`; the support is the loop’s, so every
+  set 4052 vertices above $0.95$ plus the corners; the LP reached $7.2$ and the exact
+  re-check found depth $1.15$, so the round’s scaled candidate is kept) gives value
+  $57599999944/9199999991 = 6.260870$, verified by `verify_ceiling` from its bytes:
+  exact maximum depth exactly $1$ over 3135364 vertices (26265 decided exactly), `net`
+  regime at $B = 9977/10000$, `symmetric_only`; the support is the loop’s, so every
   placement is exactly disjoint from the four boxes.
 
 ### Classification
 
-Thresholds are the cell’s: `B = 1` kills at `≥ 11` with a unit of weight outside Trump’s
-neighbourhood; a restricted region kills at `≥ 10`, is alive below `9.5`, and is
-undecided otherwise or when no converged covering LP bounds it from above.
+Thresholds are the cell’s: $B = 1$ kills at $\ge 11$ with a unit of weight outside
+Trump’s neighbourhood; a restricted region kills at $\ge 10$, is alive below $9.5$, and
+is undecided otherwise or when no converged covering LP bounds it from above.
 Every lower bound below is the value of a family verified from its bytes by
 `verify_ceiling`; every upper-bound column is empty because no row generation converged
 in the block.
 
-| Region at `q = 96/25` | Placements | Verified lower bound (family, regime) | Upper bound | Classification |
+| Region at $q = \frac{96}{25}$ | Placements | Verified lower bound (family, regime) | Upper bound | Classification |
 | --- | --- | --- | --- | --- |
-| whole container, `B = 1` | unit squares, 203-direction net | `8.918484` (polished iteration-0 support, `unit` regime re-declared at `9977/10000`; the loop’s own scaled family `8.918484` replayed) and the proved floor `10` | none (site LP `11.17`, rows unconverged) | **undecided**; not a kill (below 11), not alive (no converged LP) |
-| four corner boxes | retained `B`-squares, 181-direction net, disjoint | `6.173135` (loop iteration 1, `net` regime); polished `6.260870`; sub-restriction of the `B = 1` family `3.793473` | none (site LP `7.14`, rows unconverged) | **undecided**; far below 10, and “alive” needs a converged LP the block did not reach |
-| one corner box `[0,1]²` | not a D4-symmetric program | inherits every four-box lower bound; sub-restriction of the `B = 1` family `7.637231` | none (instrument cannot express the program) | **undecided** (a four-box kill would transfer; none exists) |
-| corner triangle `x + y ≤ 1/2` | not a D4-symmetric program | inherits the four-box bounds; sub-restriction of the `B = 1` family `8.145945` | none | **undecided**, same reason |
-| central unit box | D4-symmetric; loop cancelled under load | sub-restriction of the corners family `3.412321`; of the `B = 1` family `6.287600` | none | **undecided**; no loop was run on it |
-| `B = 1` at `3.86`, `3.87` | — | not started | — | **not started** (the `3.84` run did not converge) |
+| whole container, $B = 1$ | unit squares, 203-direction net | $8.918484$ (polished iteration-0 support, `unit` regime re-declared at $\frac{9977}{10000}$; the loop’s own scaled family $8.918484$ replayed) and the proved floor $10$ | none (site LP $11.17$, rows unconverged) | **undecided**; not a kill (below 11), not alive (no converged LP) |
+| four corner boxes | retained $B$-squares, 181-direction net, disjoint | $6.173135$ (loop iteration 1, `net` regime); polished $6.260870$; sub-restriction of the $B = 1$ family $3.793473$ | none (site LP $7.14$, rows unconverged) | **undecided**; far below 10, and “alive” needs a converged LP the block did not reach |
+| one corner box $[0,1]^2$ | not a D4-symmetric program | inherits every four-box lower bound; sub-restriction of the $B = 1$ family $7.637231$ | none (instrument cannot express the program) | **undecided** (a four-box kill would transfer; none exists) |
+| corner triangle $x + y \le \frac{1}{2}$ | not a D4-symmetric program | inherits the four-box bounds; sub-restriction of the $B = 1$ family $8.145945$ | none | **undecided**, same reason |
+| central unit box | D4-symmetric; loop cancelled under load | sub-restriction of the corners family $3.412321$; of the $B = 1$ family $6.287600$ | none | **undecided**; no loop was run on it |
+| $B = 1$ at $3.86$, $3.87$ | — | not started | — | **not started** (the $3.84$ run did not converge) |
 
-A `B = 1` family’s sub-restrictions transfer to the retained `(B, net)` program: under
-Condition 4 every unit placement contains a `B`-square at a net angle, and a sub-square
-of a placement disjoint from `R` is disjoint from `R`, so the contained `B`-squares form
+A $B = 1$ family’s sub-restrictions transfer to the retained `(B, net)` program: under
+Condition 4 every unit placement contains a $B$-square at a net angle, and a sub-square
+of a placement disjoint from $R$ is disjoint from $R$, so the contained $B$-squares form
 an admissible restricted family of the same weight and no greater depth.
 
 ### What the readings say about the routes, BC-204 and H-129
 
-- **No kill at `q` at this depth of search, on either side.** The best verified `B = 1`
-  family at `96/25` has value `8.918484`, against the kill threshold 11, and the best
-  verified family off the four corner boxes has value `6.260870`, against 10. Both are
+- **No kill at $q$ at this depth of search, on either side.** The best verified $B = 1$
+  family at $96/25$ has value $8.918484$, against the kill threshold 11, and the best
+  verified family off the four corner boxes has value $6.260870$, against 10. Both are
   lower bounds, both are far from their thresholds, and neither says the threshold is
-  unreachable: the site LPs above them (`11.17` unconverged at `B = 1`, `7.14`
+  unreachable: the site LPs above them ($11.17$ unconverged at $B = 1$, $7.14$
   unconverged off the corners) bound nothing, and the proved floor `ν*₁(q) ≥ 10` leaves
-  the `B = 1` question open in both directions.
+  the $B = 1$ question open in both directions.
 - **Routes (b) and (c) survive this block, untested rather than confirmed.** Lemma D2
-  would kill every capture design and route (c) with a `B = 1` family of value `≥ 11`
+  would kill every capture design and route (c) with a $B = 1$ family of value $\ge 11$
   carrying a unit of weight away from Trump’s placements; the family found carries
-  `5.927446` outside Trump’s neighbourhood and `2.991038` inside it (angle bands:
-  `3.224868` within `1°` of `0°`, `0.026704` within `1°` of `40.18°`), so the *shape* of
-  a would-be kill is diffuse and not Trump-like, but its value is not there.
+  $5.927446$ outside Trump’s neighbourhood and $2.991038$ inside it (angle bands:
+  $3.224868$ within $1^\circ$ of $0^\circ$, $0.026704$ within $1^\circ$ of
+  $40.18^\circ$), so the *shape* of a would-be kill is diffuse and not Trump-like, but
+  its value is not there.
   Route (b)’s premise — that integer-hull cuts must push the fractional value below 11 —
-  is neither confirmed nor refuted at `q`; boxing one corner removes `1.28` of
-  fractional weight from the best `B = 1` family and all four remove `5.13`
-  (sub-restriction), while the loop run *on* the four-box program keeps `6.17` (polished
-  `6.260870`); one box costs the order of one square, as Section 1.6 D4 read off BC-200,
+  is neither confirmed nor refuted at $q$; boxing one corner removes $1.28$ of
+  fractional weight from the best $B = 1$ family and all four remove $5.13$
+  (sub-restriction), while the loop run *on* the four-box program keeps $6.17$ (polished
+  $6.260870$); one box costs the order of one square, as Section 1.6 D4 read off BC-200,
   and four cost more than four because the family’s mass is in the corners.
 - **BC-204 is not yet worth building for corner conditioning.** The single-box and
   triangle programs would need it; the four-box program, which the symmetric loop
-  computes, sits at a floor of `6.260870` with an unconverged LP at `7.14`, and until a
-  converged restricted LP or a polished family above `9.5` exists the instrument has no
+  computes, sits at a floor of $6.260870$ with an unconverged LP at $7.14$, and until a
+  converged restricted LP or a polished family above $9.5$ exists the instrument has no
   threshold to aim at.
   What is worth building first is the polisher as an instrument step of the loop (the
   scaled-versus-polished gap below is the measurement), and an unloaded run of the
-  `B = 1` loop to convergence at `q`.
-- **H-129.** The claim (no `B = 1` family of value `≥ 11` up to `3.87`) is neither
-  refuted (no family reached 11 at `3.84`, the easiest of its three sides) nor supported
-  at the exit’s standard (no converged covering LP below 11 at `3.87`, nor at `3.84`
-  where the unconverged site LP was `11.17`). Recommended status: `open`, with this
-  block’s reading recorded as “`B = 1` at `3.84`: verified `≥ 8.918484`, proved `≥ 10`,
-  site LP `11.17` unconverged; `3.86` and `3.87` not started”.
+  $B = 1$ loop to convergence at $q$.
+- **H-129.** The claim (no $B = 1$ family of value $\ge 11$ up to $3.87$) is neither
+  refuted (no family reached 11 at $3.84$, the easiest of its three sides) nor supported
+  at the exit’s standard (no converged covering LP below 11 at $3.87$, nor at $3.84$
+  where the unconverged site LP was $11.17$). Recommended status: `open`, with this
+  block’s reading recorded as “`B = 1` at $3.84$: verified $\ge 8.918484$, proved
+  $\ge 10$, site LP $11.17$ unconverged; $3.86$ and $3.87$ not started”.
 
 ### Obstructions met in the block
 
 - **The loop’s scaling step is the bottleneck, not the LP.** At 16125 sites the site LP
-  was `11.17` and the raw dual `11.14`, but one vertex at depth `1.2487` cut the family
-  to `8.92`. Re-optimising the weights on the fixed support against exact vertices (the
+  was $11.17$ and the raw dual $11.14$, but one vertex at depth $1.2487$ cut the family
+  to $8.92$. Re-optimising the weights on the fixed support against exact vertices (the
   polisher) is the missing step between the loop’s two numbers; its first attempt found
   the LP unbounded because an orbit none of whose images passes through a near-tight
   vertex has no constraint at all, and the fix is structural: every placement’s corners
   are vertices of the arrangement, so seeding the working set with all of them gives
-  every orbit its own row `w_e/8 ≤ 1`.
+  every orbit its own row $w_e/8 \le 1$.
 - **One iteration is what thirty minutes buys on a shared core.** Iteration 0 of the
-  `B = 1` loop cost 23 minutes (18 of them row generation at 203 directions and 12
+  $B = 1$ loop cost 23 minutes (18 of them row generation at 203 directions and 12
   rounds); the process was then killed at about 05:01Z by something outside the driver
-  (exit 144, memory free), so the `B = 1` reading rests on one iteration’s support.
-  BC-200 needed nine iterations at `191/50` to reach `9.91`; a lane that wants the
+  (exit 144, memory free), so the $B = 1$ reading rests on one iteration’s support.
+  BC-200 needed nine iterations at $191/50$ to reach $9.91$; a lane that wants the
   loop’s own value to converge needs an unloaded core and hours, which is the planning
   lane’s estimate and not this block’s.
-- **The polisher’s working set must be near-tight, not wide.** A band of `0.5` on the
+- **The polisher’s working set must be near-tight, not wide.** A band of $0.5$ on the
   scaled family selected 2204492 of the 2877776 vertices; the exact screen alone took
   1731 s under load and the constraint build was killed by the memory cgroup at 10 GB
   (`dmesg`: `Memory cgroup out of memory: Killed process ... anon-rss:9998976kB`). A
-  band of `0.95` selects about nine thousand, which with the 3072 corners is the right
+  band of $0.95$ selects about nine thousand, which with the 3072 corners is the right
   first working set; the violated vertices of each round then add what the LP needs.
   Two of the block’s 2.5 hours went to learning this.
 
@@ -2517,24 +2544,26 @@ jointly depth-feasible anchored contribution or a dual on its full domain.
 
 For H-129, confirmation requires an exact measure of mass below eleven covering every
 contained unit placement at side 3.87 and every orientation.
-A finite-net covering upper bound has only finite-net scope; `B = 1` supplies no angular
+A finite-net covering upper bound has only finite-net scope; $B = 1$ supplies no angular
 shrink margin.
 Refutation requires a finite closed-unit family of weight at least eleven,
 exactly contained with pointwise depth at most one, at a side at most 3.87. Other
 results remain inconclusive, including every session-100 result.
 
-If such a family has total `T ≥ 11` and verified outside weight `O ≥ 1` for the stated
-neighbourhood `N`, then `T + δO ≥ 11 + δ` defeats the strict capture inequality
-`M < 11 + δ` for every `δ ≥ 0`. This conclusion concerns that capture shape and domain.
+If such a family has total $T \ge 11$ and verified outside weight $O \ge 1$ for the
+stated neighbourhood `N`, then $T + \delta O \ge 11 + \delta$ defeats the strict capture
+inequality $M < 11 + \delta$ for every $\delta \ge 0$. This conclusion concerns that
+capture shape and domain.
 It does not rule out geometric conditioning on a different domain, ownership at
 equality, capacity or compatibility cuts, or a finite case tree.
 References above to deciding the whole ambitious tier negatively, or to every
 record-conditioned certificate, exceed the lemma’s scope.
 
 **Finite-family stability lemma (proved).** A finite depth-one family of closed unit
-squares contained at side `L > √2` remains feasible at some side `L − ε`, with the same
-angles and weights. For each square let `w_i ≤ √2` be its projection width and map each
-centre coordinate continuously by
+squares contained at side $L > \sqrt{2}$ remains feasible at some side
+$L - \varepsilon$, with the same angles and weights.
+For each square let $w_i \le \sqrt{2}$ be its projection width and map each centre
+coordinate continuously by
 
 `c_i(ε) = w_i/2 + (c_i − w_i/2)(L − ε − w_i)/(L − w_i)`.
 
@@ -2551,46 +2580,47 @@ argument. Equality and ownership arguments remain separate.
 ### Correct retained-net capture cap
 
 The script `net_end_check.py` used `delta = 45 − last_deg < 0` and then
-`cos(delta) + sin(delta)`, incorrectly obtaining a required side below `B`. Containment
+`cos(delta) + sin(delta)`, incorrectly obtaining a required side below $B$. Containment
 requires the absolute angular difference.
-Let `t = 207107/500000`, `θ = 2 atan(t) > π/4`, `δ = θ − π/4`, `B = 9977/10000`, and
-`s_H = 2 + (4/3)√2`. A sufficient condition is the **strict** inequality
+Let $t = 207107/500000$, `θ = 2 atan(t) > π/4`, $\delta = \theta - \pi/4$,
+$B = 9977/10000$, and $s_H = 2 + (4/3)\sqrt{2}$. A sufficient condition is the
+**strict** inequality
 
 `L > C_B = B s_H (cos δ + sin δ) = B(2√2 + 8/3)·2t/(1 + t²)`.
 
-Scale the Hämäläinen packing by `L/s_H` and take the concentric B-cores at the net
+Scale the Hämäläinen packing by $L/s_H$ and take the concentric B-cores at the net
 directions.
 Strictness places each closed core inside its parent’s interior, so the cores
 are pairwise disjoint as closed sets, and their unit weights have depth one.
 At equality the original packing’s touching closed squares do not themselves have depth
-one. This is why `L ≥ B s_H`, as stated in Corollary D3, was not established.
+one. This is why $L \ge B s_H$, as stated in Corollary D3, was not established.
 
-The corrected cap is still below U. The rational upper bound `√2 < 665857/470832`
-follows from `665857² − 2·470832² = 1`, and substitution gives
+The corrected cap is still below U. The rational upper bound $\sqrt{2} < 665857/470832$
+follows from $665857^2 - 2\cdot470832^2 = 1$, and substitution gives
 
-`C_B < 22275352724718225/5745980944770482 < 38767/10000 < U`.
+$C_B < 22275352724718225/5745980944770482 < 38767/10000 < U$.
 
 For the middle comparison the cross-multiplied positive gap is
-`38767·5745980944770482 − 10000·22275352724718225 = 916038735025694`; the last
+$38767\cdot5745980944770482 - 10000\cdot22275352724718225 = 916038735025694$; the last
 comparison follows from the retained Trump root isolation.
-Thus at every `L ≥ 38767/10000` the five nearly diagonal cores defeat strict Trump
-capture for an angular neighbourhood of radius below `4.8°`. The symbolic corrected
-threshold, rather than the old rounded `3.876681`, governs the sharper statement.
+Thus at every $L \ge 38767/10000$ the five nearly diagonal cores defeat strict Trump
+capture for an angular neighbourhood of radius below $4.8^\circ$. The symbolic corrected
+threshold, rather than the old rounded $3.876681$, governs the sharper statement.
 
 The ten-square floor also needs closed-boundary care: start with the known packing at
-`s(10) < q`, dilate it to q, and take concentric closed unit squares strictly inside its
+$s(10) < q$, dilate it to q, and take concentric closed unit squares strictly inside its
 larger squares. This gives the stated depth-one family of weight ten.
 
 ### A stronger retained unit control and its replay
 
 [Exp-070](../../experiments/exp-070-h-064-n11-fractional-resume.md) retains a stronger
-family than BC-200’s original state: 768 placements at `L = 191/50`, side
-`B = 9977/10000`, exact depth one and weight `21342289572/2055263195`. Its file is
+family than BC-200’s original state: 768 placements at $L = 191/50$, side
+$B = 9977/10000$, exact depth one and weight $21342289572/2055263195$. Its file is
 [`agenda-025/bc-232-leg-01-family.json`](../agenda-025/bc-232-leg-01-family.json).
-Scale every centre and side by `10000/9977`, preserving weights and angles.
+Scale every centre and side by $10000/9977$, preserving weights and angles.
 The new closed unit family has the same pointwise depth and fits at
-`38200/9977 < 96/25`, since `38200·25 = 955000 < 957792 = 9977·96`. It follows exactly
-from the retained source verification that
+$38200/9977 < 96/25$, since $38200\cdot25 = 955000 < 957792 = 9977\cdot96$. It follows
+exactly from the retained source verification that
 
 `ν*_1(96/25) ≥ 21342289572/2055263195 ≈ 10.384212408`.
 
@@ -2616,8 +2646,8 @@ identity. The transport is an instrument control, not an experiment that improve
 packing bound.
 
 The W9 replay on 2026-09-08 independently checked the transported family at q:
-`max_depth = 1`, `2702488` arrangement vertices, `19335` exact tie decisions, and
-unchanged weight `21342289572/2055263195`. The only failed ceiling condition is
+`max_depth = 1`, `2702488` arrangement vertices, $19335$ exact tie decisions, and
+unchanged weight $21342289572/2055263195$. The only failed ceiling condition is
 `K3 total weight at least n`, as expected for a family below eleven; `proved = false`
 must not be read as a depth failure or promoted to an eleven-square obstruction.
 The input is Git-bound to `883d5ef8d4b971057977cd0c3c42f900f937f1de` at the retained

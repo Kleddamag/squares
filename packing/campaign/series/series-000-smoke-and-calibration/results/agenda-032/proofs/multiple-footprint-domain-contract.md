@@ -60,7 +60,7 @@ Membership in the returned closures alone is not a strict-disjointness claim.
    Subtract their union from the container interval.
    At most five positive-height free intervals remain.
 7. For each free gap with affine boundaries l(u)<r(u), emit the closure with vertices
-   `(u0,l(u0)), (u1,l(u1)), (u1,r(u1)), (u0,r(u0))`. Normalize and remove zero-area
+   $(u0,l(u0)), (u1,l(u1)), (u1,r(u1)), (u0,r(u0))$. Normalize and remove zero-area
    results. The result is a convex trapezoid, rectangle, or triangle.
    An endpoint height may vanish without invalidating a positive-area triangle.
 
@@ -161,7 +161,7 @@ small-support pilot.
 Take the existing bottom-left m1/j0 footprint A. Define the other three footprints by
 the same maps used in `screen_corner_dual_salvage.py`:
 
-`(x,y)`, `(q−x,y)`, `(x,q−y)`, `(q−x,q−y)`.
+$(x,y)$, $(q-x,y)$, $(x,q-y)$, $(q-x,q-y)$.
 
 Normalize vertex orientation after reflections.
 These are local corner classes; do not apply the same global sector angle to all four
@@ -175,7 +175,7 @@ For this particular branch, the four-owner part is analytically compatible: take
 axis-aligned UNIT parents centred at the reflected m1 marks.
 With a=3152/3175 and b=2336/3175, the nearest-wall distances exceed1/2, while
 
-`q−2a = 5888/3175 > 1`, `q−2b = 7520/3175 > 1`.
+$q-2a = 5888/3175 > 1$, $q-2b = 7520/3175 > 1$.
 
 The parents are contained and pairwise separated.
 Their selected B-cores are mark-centred; choosing the allowed positive signed axes at

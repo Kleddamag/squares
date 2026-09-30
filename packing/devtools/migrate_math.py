@@ -87,7 +87,7 @@ import unicodedata
 from collections import Counter
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass, field, replace
-from functools import cache
+from functools import cache, lru_cache
 from pathlib import Path
 from typing import Literal, TypedDict
 
@@ -95,6 +95,7 @@ from markdown_it import MarkdownIt
 from strif import atomic_output_file
 
 from devtools.check_math_spans import (
+    FRONTMATTER,
     FileResult,
     format_copy,
     located_math_spans,
@@ -114,8 +115,6 @@ KINDS: tuple[Kind, ...] = ("math", "identifier", "uncertain")
 # Finding the code spans
 # ---------------------------------------------------------------------------------------
 
-#: YAML frontmatter at the very top of a file: data, never prose.
-FRONTMATTER = re.compile(r"\A---[ \t]*\n.*?\n(?:---|\.\.\.)[ \t]*(?:\n|\Z)", re.DOTALL)
 #: A block a renderer owns, from `<!-- BEGIN GENERATED: … -->` to its `END GENERATED`. Other
 #: marked blocks, such as the synopsis's hand-written readiness dashboard, are prose.
 GENERATED = re.compile(
@@ -176,6 +175,7 @@ def _only(text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()) -
     return "".join(pieces)
 
 
+@lru_cache(maxsize=8)
 def mask(text: str) -> tuple[str, str]:
     """The prose of `text` with everything else blanked, and its generated blocks alone.
 
@@ -1155,12 +1155,37 @@ def plan(text: str) -> Plan:
     prose, generated = mask(text)
     blocks = block_context(text)
     spans = [span for span in code_spans(prose) if blocks.lines[span.line - 1] != "raw"]
-    marks = inline_markup(text, spans)
+    verdicts = [classify(span.content) for span in spans]
+    # Only a span that would otherwise convert needs its inline markup read.
+    candidates = [
+        (span.start, span.end, span.content)
+        for span, verdict in zip(spans, verdicts, strict=True)
+        if verdict.kind == "math"
+        and blocks.lines[span.line - 1] != "heading"
+        and _adjacent(text, span) is None
+    ]
+    marks = _markup_reasons(prose, candidates, delimiter="`")
     decisions = tuple(
-        Decision(span, _in_context(text, span, classify(span.content), blocks, marks))
-        for span in spans
+        Decision(span, _in_context(text, span, verdict, blocks, marks))
+        for span, verdict in zip(spans, verdicts, strict=True)
     )
     return Plan(decisions, generated=len(code_spans(generated)))
+
+
+def open_math_spans(text: str) -> list[CodeSpan]:
+    """The code spans that read as math by their text and whose backticks `$` could replace.
+
+    What `plan` could still convert, less the block parse: a span a heading, a raw block, a
+    table's `|` or a link or italics would keep as code is still listed. A file with none
+    has nothing `plan` would convert, whatever its context, which is what lets the ratchet
+    skip the block parse on a migrated file whose only math-like spans sit where `$` cannot.
+    """
+    prose, _generated = mask(text)
+    return [
+        span
+        for span in code_spans(prose)
+        if _reads_as_math(" ".join(span.content.split())) and _adjacent(text, span) is None
+    ]
 
 
 def has_math_spans(text: str) -> bool:
@@ -1229,13 +1254,20 @@ class UnsafeMath:
 
 #: A blank line: emphasis and links never cross one, so a paragraph is parsed alone.
 _PARAGRAPH_BREAK = re.compile(r"\n[ \t]*\n")
-#: What a paragraph needs to hold before its inline markup is worth parsing: a `[` with
-#: a dollar after it before any `]`, which could be a link's text around a formula, or a
-#: lone `*` or `_` that could open italics with a dollar after it before the next one.
-#: Bold's doubled stars do not count; bold draws math.
-_INLINE_MARKERS = re.compile(
-    r"\[[^\]]*\$|(?<![*\w])\*(?![*\s])[^*]*\$|(?<![_\w])_(?![_\s])[^_]*\$"
-)
+
+
+@cache
+def _inline_markers(delimiter: str) -> re.Pattern[str]:
+    """What a paragraph needs to hold before its inline markup is worth parsing.
+
+    A `[` with the span's delimiter after it before any `]`, which could be a link's text
+    around it, or a lone `*` or `_` that could open italics with the delimiter after it
+    before the next one. Bold's doubled stars do not count; bold draws math.
+    """
+    d = re.escape(delimiter)
+    return re.compile(
+        rf"\[[^\]]*{d}|(?<![*\w])\*(?![*\s])[^*]*{d}|(?<![_\w])_(?![_\s])[^_]*{d}"
+    )
 
 
 def _adjacency_reason(text: str, start: int, end: int) -> str | None:
@@ -1248,12 +1280,18 @@ def _adjacency_reason(text: str, start: int, end: int) -> str | None:
     return None
 
 
-def _markup_reasons(text: str, located: Sequence[tuple[int, int, str]]) -> dict[int, str]:
-    """For the formulas in link text or italics, why, by start; one paragraph at a time.
+def _markup_reasons(
+    text: str, located: Sequence[tuple[int, int, str]], *, delimiter: str
+) -> dict[int, str]:
+    """For the spans in link text or italics, why, by start; one paragraph at a time.
 
-    Each paragraph holding a formula and a `[`, `*` or `_` is parsed on its own, its lines
-    unindented so a list item's continuation is not read as code, with every formula made
-    a code span (`inline_markup` reads code spans) of the same line count.
+    `located` holds each span's start, end and content, and `delimiter` is what opens it:
+    `$` for a formula, a backtick for a code span `plan` might convert. Each paragraph
+    holding such a span after a `[`, `*` or `_` is parsed on its own, its lines unindented
+    so a list item's continuation is not read as code, with every span made a marker code
+    span (`inline_markup` reads code spans) of the same line count. A whole-file inline
+    parse cost the ratchet four seconds over the first 860 migrated files; this is the
+    paragraphs that can matter.
     """
     breaks = [0, *(match.end() for match in _PARAGRAPH_BREAK.finditer(text)), len(text)]
     reasons: dict[int, str] = {}
@@ -1262,7 +1300,7 @@ def _markup_reasons(text: str, located: Sequence[tuple[int, int, str]]) -> dict[
         by_paragraph.setdefault(bisect.bisect_right(breaks, item[0]) - 1, []).append(item)
     for paragraph, items in by_paragraph.items():
         low, high = breaks[paragraph], breaks[paragraph + 1]
-        if _INLINE_MARKERS.search(text, low, high) is None:
+        if _inline_markers(delimiter).search(text, low, high) is None:
             continue
         pieces: list[str] = []
         shadows: list[CodeSpan] = []
@@ -1296,7 +1334,7 @@ def github_unsafe_math(text: str) -> list[UnsafeMath]:
         for start, end, tex in located_math_spans(prose)
         if not prose.startswith("$$", start)
     ]
-    reasons = _markup_reasons(prose, located)
+    reasons = _markup_reasons(prose, located, delimiter="$")
     found = [
         (start, end, tex, reason)
         for start, end, tex in located

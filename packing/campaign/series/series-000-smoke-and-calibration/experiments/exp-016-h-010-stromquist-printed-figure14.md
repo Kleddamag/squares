@@ -66,28 +66,28 @@ experiment:
 H-010 is rejected on its original, source-faithful claim.
 The checker certifies an open square of side
 
-`L = 10001/10000`
+$L = 10001/10000$
 
 with `tan(theta) = 27/10` and centre `(37L/(2 sqrt(829)), 11/8)`. It lies inside
 Stromquist’s container of side `2 + 4/sqrt(5)` and strictly avoids every one of the
 twelve points printed in Figure 14. The smallest exact avoidance margin occurs at
-`G = (4/5, 37/20)` and is approximately `4.93957e-5`; the next is at `A1`.
+$G = (4/5, 37/20)$ and is approximately `4.93957e-5`; the next is at `A1`.
 
 The witness pinpoints the same outer quadrilateral that the source routes through Lemma
-4\. In its local coordinates, that cell has parameters `a = .95`, `b = .8`, while the
-true threshold is about `.7981534378`. The paper’s squared stationary cubic also
+4\. In its local coordinates, that cell has parameters $a = .95$, $b = .8$, while the
+true threshold is about $.7981534378$. The paper’s squared stationary cubic also
 contains an extraneous root in a different table row; the checker filters every
 candidate through the unsquared sign condition.
 
 The source boundary matters.
 The exact record binds the retained 2003 PDF and raw extraction, reconstructs the Figure
 13 point set under its actual Klein-four symmetry, and rejects a false `D4` expansion.
-It also checks the conditional `3 + 9` capacity argument and demonstrates why standalone
+It also checks the conditional $3 + 9$ capacity argument and demonstrates why standalone
 twelve-point unavoidability would not by itself exclude eleven boxes.
 The Figure 13 escape in the record is constructive evidence, not a universal
 localization certificate; node four already refutes the registered conjunction.
 
-Generation took `0.33` wall seconds and complete deterministic replay took `0.22`
+Generation took $0.33$ wall seconds and complete deterministic replay took $0.22$
 seconds. All ten mutations passed.
 The retained result is
 [`exp-016-h-010-stromquist-printed-figure14.json`](../results/exp-016-h-010-stromquist-printed-figure14.json).

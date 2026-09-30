@@ -393,10 +393,11 @@ neither extension has run a target.
 
 ## What is established
 
-The global bracket remains `3.810025723614703… ≤ s11 ≤ 3.877083590022814…`. We work at
-`L = 96/25` with strict inner squares of side `B = 9977/10000`. Existing ownership
-arguments force four distinct selected corner owners, each containing one of two
-specified marks. The reviewed
+The global bracket remains
+$3.810025723614703\ldots \le s11 \le 3.877083590022814\ldots$. We work at $L = 96/25$
+with strict inner squares of side $B = 9977/10000$. Existing ownership arguments force
+four distinct selected corner owners, each containing one of two specified marks.
+The reviewed
 [sector lemma](../series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md)
 splits each selected owner into sixteen classes, each with a guaranteed rational
 triangle inside its core.
@@ -410,14 +411,14 @@ later targets. It is not the current handoff.
 
 | Question | Evidence and accept rule | Next decision |
 | --- | --- | --- |
-| H-136: does fixing four flush owners improve the matched cover gap? | Fresh replay of the original fixed 19×19, nine-direction pilot; both arms converge and `M0 − M4 − 4 > 0.001`. Exp-135 remains unresolved after its separator failure. | Positive: exact/full-net verification if feasible. Non-positive: retain the scoped result and prioritize general owner information. |
+| H-136: does fixing four flush owners improve the matched cover gap? | Fresh replay of the original fixed 19×19, nine-direction pilot; both arms converge and $M0 - M4 - 4 > 0.001$. Exp-135 remains unresolved after its separator failure. | Positive: exact/full-net verification if feasible. Non-positive: retain the scoped result and prioritize general owner information. |
 | Can the retained fractional packing obstruct a conditional cover on every possible weight support? | [H137](../hypotheses/H-137-single-owner-dual-salvage.md) and [H138](../hypotheses/H-138-four-owner-dual-salvage.md), registered before target masks: strict separation from the footprint, full orientation membership, inherited depth at most one; compare survivor mass with ten or seven. | A qualifying branch needs stronger geometry, not more sites for this relaxation. A subthreshold mass is only inconclusive. |
 | Does area information add value beyond owning one point? | Register a matched point/triangle/enlarged-footprint comparison once the instrument is controlled. Geometry gains are `Mpoint − Mtriangle` and `Mtriangle − Menlarged`; the one-owner gap score is `M0 − MA − 1`. | Test branches left open by the exact obstruction screen. Numerical gains require independent exact verification before promotion. |
 | Can an endpoint intersection enlarge every sector footprint without more classes? | Analytic proof and exact independent geometry controls, separate from numerical experiments. | Admit the enlargement only after review; retain triangles as the proved baseline. |
 | Can a conditional gain become a global exclusion? | Full net, strict-core transfer, and exhaustive branch accounting. Eight reflected representatives cover sixteen one-corner classes only with explicit certificate transformations. | One successful branch remains conditional. Avoid a 65,536-case four-owner search until cheaper screens justify it. |
 
 No triangle automatically banks one unit of weight.
-With `k` distinct owners, the remaining count is `11 − k`; the actual weight in
+With $k$ distinct owners, the remaining count is $11 - k$; the actual weight in
 guaranteed occupied regions must still be measured.
 A depth-one fractional family supplies an all-site lower bound on cover mass, even
 though it need not be a physical packing.

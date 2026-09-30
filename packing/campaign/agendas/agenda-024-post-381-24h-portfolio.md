@@ -979,7 +979,7 @@ BC-245’s typed-backbone packet is
 claiming them proved, the finite-chart obligation; typed square and wall features; owner
 axes, signs, and orders; complete, active, and positive-multiplier row sets; normal/KKT
 and abnormal Fritz–John branches; ties, zero multipliers, and rattlers; the joint
-`D4 x S_n` action; and LP/Farkas, interval, and exact-algebra leaf obligations.
+$D4 \times S_n$ action; and LP/Farkas, interval, and exact-algebra leaf obligations.
 Its controls label n=3 and n=4 as complete, n=5 as representability-only, and Trump’s
 retained counts as a local endpoint.
 Missing proofs remain marked `open`; no producer, atlas, BC-246, or BC-247 run opens

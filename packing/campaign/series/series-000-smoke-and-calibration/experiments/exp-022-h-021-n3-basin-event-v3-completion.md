@@ -72,7 +72,7 @@ none unsettled. Together with seed 1 in exp-021, the fixed four-seed v3 block is
 scientifically admissible at the event level.
 
 Seeds 0, 1, and 3 reach side 2 within the declared floating-point screen.
-Seed 2 again reaches the valid nonoptimal side `2.3627357977946724` with a clean free
+Seed 2 again reaches the valid nonoptimal side $2.3627357977946724$ with a clean free
 pass. This is evidence that the producer has more than one terminal outcome under the
 declared regime; it does not establish whether the nonoptimal endpoint is isolated,
 identify its connected terminal component, or measure its basin mass.

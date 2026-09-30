@@ -13,8 +13,8 @@ instrument pointed at a second dual.
 
 > ## Read this warning before any number below
 
-> The object measured, the `1/25`-integral plateau dual after one round of site
-> separation, has exact maximum depth `28/25`, **above one**.
+> The object measured, the $1/25$-integral plateau dual after one round of site
+> separation, has exact maximum depth $28/25$, **above one**.
 > [`devtools/plateau_reader.py`](../../../../../devtools/plateau_reader.py) refuses such
 > a family at `K2` by design, because on a family that is not a fractional packing of
 > the plane a `K4`/`K5`/`K6` verdict is not a statement about the method.
@@ -26,7 +26,7 @@ instrument pointed at a second dual.
 >   adding it strictly cuts this dual.
 >   That is the whole purpose, and it survives the bypass intact.
 > - **a non-violation is not a cap.** Nothing here says the two-of-three method, the
->   budget-one class or the rank-one closure stops at `153/40`. A bypassed gate does not
+>   budget-one class or the rank-one closure stops at $153/40$. A bypassed gate does not
 >   become a claimed cap, and **no statement in this report may be quoted as one.**
 
 Retained beside this report: the small violated atoms, the before/after duals and the
@@ -45,9 +45,9 @@ Labels: **EXACT** (a rational decision by a repository primitive, script retaine
 
 |  |  |
 | --- | --- |
-| **LP at `L = 153/40` before** | `10.999999999999945` (11,881 simplex iterations, 310 s) |
-| **LP at `L = 153/40` after** | `11.000000000000167` (4,348 iterations, 168 s) — a move of `2.2e-13` |
-| **Atoms fed back** | 24 distinct D4 orbits, every one violated exactly: 18 two-of-three at `33/100`, one budget-one clique atom at `1/2`, five Chvátal–Gomory floor atoms at `5.545`, `7.105`, `7.255`, `8.27`, `8.18` |
+| **LP at $L = \frac{153}{40}$ before** | $10.999999999999945$ (11,881 simplex iterations, 310 s) |
+| **LP at $L = \frac{153}{40}$ after** | $11.000000000000167$ (4,348 iterations, 168 s) — a move of `2.2e-13` |
+| **Atoms fed back** | 24 distinct D4 orbits, every one violated exactly: 18 two-of-three at $\frac{33}{100}$, one budget-one clique atom at $\frac{1}{2}$, five Chvátal–Gomory floor atoms at $5.545$, $7.105$, $7.255$, $8.27$, $8.18$ |
 | **Weight the LP gave them** | exactly zero, all 24 |
 | **Outcome** | the second of lane X1’s three: **the LP stays at eleven and the dual relocates** |
 
@@ -55,16 +55,16 @@ Labels: **EXACT** (a rational decision by a repository primitive, script retaine
 
 | # | Finding | Status |
 | --- | --- | --- |
-| P1 | The gate is what stood between the reader and this family, and nothing else does. With the K2 refusal bypassed, K0, K1 and K3 hold (280 placements admissible, all inside, total exactly 11) and the arrangement reads in 48 s: 283,832 vertices, **22,201 distinct membership sets**, weight scale `1/200`, exact maximum depth `28/25`. Reducing to the sets **maximal under inclusion** — exact for every charge in the module, by monotonicity — leaves **965**, and every K4/K5/K6 search below runs on those. | EXACT |
-| P2 | **K4 two-of-three is violated, and by more than the depth.** Exact maximum charge **`133/100`** against budget 1 over all triples of distinct membership sets (complete by the reader’s own pair bound, 77,356 pairs expanded, 96 maximisers, 56 s): violation **`33/100`**. The maximum exceeds the family’s depth `28/25 = 1.12`, so this is not the point constraint restated — a two-of-three atom charges strictly more here than any single point can. The 64 witnesses kept collapse to **18 distinct D4 orbits**; the sparsest sits at `(1.9014, 1.0554)`, `(1.9940, 1.0032)`, `(1.8279, 1.0031)` and charges 40 of the 280 placements. | EXACT (separation-oracle) |
-| P3 | **K5 gives the hardest small cut: violation `1/2`.** The closed-intersection graph has 11,252 edges; enumeration of maximal cliques above weight one is **complete** at 1,080 cliques, 363 piercing programs decided exactly, 320 descended for `tau* >= 2` (29 s). The heaviest rank-one clique has **42 members, weight `3/2`, `tau* = 7/4`** (a float proposal certified by an exact primal-dual pair). Its piercing measure rationalises to the atom `a = (1, 2, 2, 1, 1)`, `t = 4`, `a(S) = 7`, budget `floor(7/4) = 1`, floor charge **`3/2`**: violation **`1/2`**, charging all 42 members. Again `3/2 > 28/25`. | EXACT (separation-oracle) |
-| P4 | **K6 returns a violated Chvátal–Gomory floor atom at every threshold tried, and they are the largest raw violations — but they are dense global cuts, not local ones.** Five thresholds, 90 s each, all five violated and verified exactly: `t=2` **`1109/200 = 5.545`** (279 points, all multiplicity 1, budget 139); `t=3` **`1421/200 = 7.105`** (304 points, budget 187); `t=4` **`1451/200 = 7.255`** (313, budget 216); `t=5` **`827/100 = 8.27`** (312, budget 231); `t=6` **`409/50 = 8.18`** (315, budget 243). Each uses multiplicity `t-1` on most of its points — the `(t-1)/t` rounding of nearly the whole point system — and each charges the same 264 of 280 placements. Every solver run hit its 90 s limit, so the reported violation is a feasible cut, not the optimum for its threshold (bounds `5.855`, `7.97`, `9.065`, `9.72`, `10.265`). **The threshold form of the same point sets is not violated at all** (threshold charge `201/25 = 8.04` against budgets 139 to 243): only the floor form cuts. | EXACT for each returned atom (separation-oracle); the per-threshold optimum OPEN |
-| P5 | The violated atoms live in the sliver lane A3’s S2 named, not somewhere new. The 36 distinct points of the 19 small atoms lie between **`3.7e-4` and `3.0e-2`** from the nearest of the 17,389 LP sites (median `8.7e-4`), and the closest of them is **`3.7e-6`** from a D4 image of the S2 depth witness `(0.99964, 1.82788)`. The three points of the sparsest K4 maximiser sit at `(1.8279, 1.0031)`, `(1.9940, 1.0032)` and `(1.9014, 1.0554)`, and the first of those is `3.7e-6` from the diagonal mirror `(1.82788, 0.99964)` of the S2 witness, so the tightest small atoms are reading exactly the interleaved wall-square edges S2 measured at `0.0006` wide, and the rest fan out to `0.03`. | EXACT points, CHECKED distances |
-| P6 | **The LP did not move: `11.000000000` before, `11.000000000` after.** Re-solving the `sites-1` LP (17,389 sites in 2,250 orbits, 2,566 threshold-atom orbits, 15,021 carried rows) cold gives **`10.999999999999945`** (HiGHS, 11,881 iterations, 310 s). Adding the **24 distinct D4 orbits** of violated atoms (18 two-of-three, 1 clique, 5 K6 floor atoms; 168 images; costs 4, 8 and 1,112 to 1,944) and re-solving gives **`11.000000000000167`** (4,348 iterations, 168 s) — a move of `2.2e-13`, five orders below the `7e-8` lane A3’s S1 itself called solver tolerance, and eleven below the `0.018` the `383/100` plateau would need. **Every one of the 24 new columns carries primal weight exactly `0.0`** in the saved `x.npy`, not merely below a threshold. Columns can only lower a covering LP’s value, so this is the value, not a tolerance artefact. | CHECKED (LP float); every atom’s admissibility EXACT |
-| P7 | **The dual relocated, and the atoms became tight.** Before: 64 dual rows, 512 placements after D4 symmetrisation. After: **42 rows, 336 placements**, total `1374999981/125000000`. Exactly **0 of the 24 seeded atoms** are violated by the new dual, and several are tight to the last digit — the clique atom at floor charge `999999981/1000000000` against budget 1, four two-of-three atoms at `499999989/500000000` and `49999999/50000000`, i.e. the `1e-9` family rounding below exactly 1. The cut was added, the dual walked onto the face where the cut is active, and the objective did not follow. | EXACT |
-| P8 | **The excess did not shrink; it moved inward, deepened, and got further from the sites.** Exact maximum depth of the LP’s own dual: `1.096307560` at `(1.300943, 1.847007)` before the atoms (71 placements, 1,089,288 vertices, nearest of the 17,389 sites **`0.004230`** away), and `557273381/500000000 = 1.114546762` at `(1.294501, 1.843441)` after (56 placements, 496,848 vertices, nearest site **`0.007740`** away). Both witnesses are led by the `29°`-class tilted pair squares near `(1.389, 1.328)` and their mirror images — lane A3’s interior meeting of the tilted pair, not S2’s mid-wall sliver. Adding the atom columns pushed the excess **0.0035 further from the sampled sites and 0.018 deeper**. | EXACT |
-| P9 | The dual at eleven is not a single object, and that matters for reading S2. The record’s `sites-1` dual — the `1/25`-integral, 35-row, 280-placement family this task was pointed at — came from a **warm** re-solve. The **cold** re-solve of the identical column set reaches a different vertex of the same optimal face (64 rows, 512 placements, no near-integral weight). Both have value eleven; the 19 small atoms separated from the `1/25` family are violated by the cold dual too (violations `0.044` to `0.184`), but all five K6 giants are satisfied by it, by `9.5` to `17.4`. The optimal face at `153/40` is wide, and a separation tuned to one of its vertices generalises only in part. | EXACT |
-| P10 | A gap worth recording independently: **what the reader can separate is wider than what the pipeline can freeze.** The freeze path writes `atoms` (point atoms) and `threshold_atoms` (`ThresholdAtom.to_record()`), and `devtools.decide_threshold_certificate` parses exactly those. The two-of-three atoms are `ThresholdAtom`s and would freeze as they stand; the K5 clique atom carries multiplicities `(1, 2, 2, 1, 1)` at `t = 4`, and every K6 atom charges `floor(a(P)/t) > 1` on some cores — neither is expressible as a `ThresholdAtom`, so neither could be frozen into a certificate today even if it had moved the LP. Had the value dropped on a K5 or K6 column, the freeze-and-gate step the brief specifies would have had nothing to write. | RECORD |
+| P1 | The gate is what stood between the reader and this family, and nothing else does. With the K2 refusal bypassed, K0, K1 and K3 hold (280 placements admissible, all inside, total exactly 11) and the arrangement reads in 48 s: 283,832 vertices, **22,201 distinct membership sets**, weight scale $\frac{1}{200}$, exact maximum depth $\frac{28}{25}$. Reducing to the sets **maximal under inclusion** — exact for every charge in the module, by monotonicity — leaves **965**, and every K4/K5/K6 search below runs on those. | EXACT |
+| P2 | **K4 two-of-three is violated, and by more than the depth.** Exact maximum charge **$\frac{133}{100}$** against budget 1 over all triples of distinct membership sets (complete by the reader’s own pair bound, 77,356 pairs expanded, 96 maximisers, 56 s): violation **$\frac{33}{100}$**. The maximum exceeds the family’s depth $\frac{28}{25} = 1.12$, so this is not the point constraint restated — a two-of-three atom charges strictly more here than any single point can. The 64 witnesses kept collapse to **18 distinct D4 orbits**; the sparsest sits at $(1.9014, 1.0554)$, $(1.9940, 1.0032)$, $(1.8279, 1.0031)$ and charges 40 of the 280 placements. | EXACT (separation-oracle) |
+| P3 | **K5 gives the hardest small cut: violation $\frac{1}{2}$.** The closed-intersection graph has 11,252 edges; enumeration of maximal cliques above weight one is **complete** at 1,080 cliques, 363 piercing programs decided exactly, 320 descended for `tau* >= 2` (29 s). The heaviest rank-one clique has **42 members, weight $\frac{3}{2}$, `tau* = 7/4`** (a float proposal certified by an exact primal-dual pair). Its piercing measure rationalises to the atom $a = (1, 2, 2, 1, 1)$, $t = 4$, $a(S) = 7$, budget `floor(7/4) = 1`, floor charge **$\frac{3}{2}$**: violation **$\frac{1}{2}$**, charging all 42 members. Again $\frac{3}{2} > \frac{28}{25}$. | EXACT (separation-oracle) |
+| P4 | **K6 returns a violated Chvátal–Gomory floor atom at every threshold tried, and they are the largest raw violations — but they are dense global cuts, not local ones.** Five thresholds, 90 s each, all five violated and verified exactly: $t=2$ **$\frac{1109}{200} = 5.545$** (279 points, all multiplicity 1, budget 139); $t=3$ **$\frac{1421}{200} = 7.105$** (304 points, budget 187); $t=4$ **$\frac{1451}{200} = 7.255$** (313, budget 216); $t=5$ **$\frac{827}{100} = 8.27$** (312, budget 231); $t=6$ **$\frac{409}{50} = 8.18$** (315, budget 243). Each uses multiplicity $t-1$ on most of its points — the $(t-1)/t$ rounding of nearly the whole point system — and each charges the same 264 of 280 placements. Every solver run hit its 90 s limit, so the reported violation is a feasible cut, not the optimum for its threshold (bounds $5.855$, $7.97$, $9.065$, $9.72$, $10.265$). **The threshold form of the same point sets is not violated at all** (threshold charge $\frac{201}{25} = 8.04$ against budgets 139 to 243): only the floor form cuts. | EXACT for each returned atom (separation-oracle); the per-threshold optimum OPEN |
+| P5 | The violated atoms live in the sliver lane A3’s S2 named, not somewhere new. The 36 distinct points of the 19 small atoms lie between **`3.7e-4` and `3.0e-2`** from the nearest of the 17,389 LP sites (median `8.7e-4`), and the closest of them is **`3.7e-6`** from a D4 image of the S2 depth witness $(0.99964, 1.82788)$. The three points of the sparsest K4 maximiser sit at $(1.8279, 1.0031)$, $(1.9940, 1.0032)$ and $(1.9014, 1.0554)$, and the first of those is `3.7e-6` from the diagonal mirror $(1.82788, 0.99964)$ of the S2 witness, so the tightest small atoms are reading exactly the interleaved wall-square edges S2 measured at $0.0006$ wide, and the rest fan out to $0.03$. | EXACT points, CHECKED distances |
+| P6 | **The LP did not move: $11.000000000$ before, $11.000000000$ after.** Re-solving the `sites-1` LP (17,389 sites in 2,250 orbits, 2,566 threshold-atom orbits, 15,021 carried rows) cold gives **$10.999999999999945$** (HiGHS, 11,881 iterations, 310 s). Adding the **24 distinct D4 orbits** of violated atoms (18 two-of-three, 1 clique, 5 K6 floor atoms; 168 images; costs 4, 8 and 1,112 to 1,944) and re-solving gives **$11.000000000000167$** (4,348 iterations, 168 s) — a move of `2.2e-13`, five orders below the `7e-8` lane A3’s S1 itself called solver tolerance, and eleven below the $0.018$ the $\frac{383}{100}$ plateau would need. **Every one of the 24 new columns carries primal weight exactly $0.0$** in the saved `x.npy`, not merely below a threshold. Columns can only lower a covering LP’s value, so this is the value, not a tolerance artefact. | CHECKED (LP float); every atom’s admissibility EXACT |
+| P7 | **The dual relocated, and the atoms became tight.** Before: 64 dual rows, 512 placements after D4 symmetrisation. After: **42 rows, 336 placements**, total $\frac{1374999981}{125000000}$. Exactly **0 of the 24 seeded atoms** are violated by the new dual, and several are tight to the last digit — the clique atom at floor charge $\frac{999999981}{1000000000}$ against budget 1, four two-of-three atoms at $\frac{499999989}{500000000}$ and $\frac{49999999}{50000000}$, i.e. the `1e-9` family rounding below exactly 1. The cut was added, the dual walked onto the face where the cut is active, and the objective did not follow. | EXACT |
+| P8 | **The excess did not shrink; it moved inward, deepened, and got further from the sites.** Exact maximum depth of the LP’s own dual: $1.096307560$ at $(1.300943, 1.847007)$ before the atoms (71 placements, 1,089,288 vertices, nearest of the 17,389 sites **$0.004230$** away), and $\frac{557273381}{500000000} = 1.114546762$ at $(1.294501, 1.843441)$ after (56 placements, 496,848 vertices, nearest site **$0.007740$** away). Both witnesses are led by the $29^\circ$-class tilted pair squares near $(1.389, 1.328)$ and their mirror images — lane A3’s interior meeting of the tilted pair, not S2’s mid-wall sliver. Adding the atom columns pushed the excess **0.0035 further from the sampled sites and 0.018 deeper**. | EXACT |
+| P9 | The dual at eleven is not a single object, and that matters for reading S2. The record’s `sites-1` dual — the $\frac{1}{25}$-integral, 35-row, 280-placement family this task was pointed at — came from a **warm** re-solve. The **cold** re-solve of the identical column set reaches a different vertex of the same optimal face (64 rows, 512 placements, no near-integral weight). Both have value eleven; the 19 small atoms separated from the $\frac{1}{25}$ family are violated by the cold dual too (violations $0.044$ to $0.184$), but all five K6 giants are satisfied by it, by $9.5$ to $17.4$. The optimal face at $\frac{153}{40}$ is wide, and a separation tuned to one of its vertices generalises only in part. | EXACT |
+| P10 | A gap worth recording independently: **what the reader can separate is wider than what the pipeline can freeze.** The freeze path writes `atoms` (point atoms) and `threshold_atoms` (`ThresholdAtom.to_record()`), and `devtools.decide_threshold_certificate` parses exactly those. The two-of-three atoms are `ThresholdAtom`s and would freeze as they stand; the K5 clique atom carries multiplicities $(1, 2, 2, 1, 1)$ at $t = 4$, and every K6 atom charges `floor(a(P)/t) > 1` on some cores — neither is expressible as a `ThresholdAtom`, so neither could be frozen into a certificate today even if it had moved the LP. Had the value dropped on a K5 or K6 column, the freeze-and-gate step the brief specifies would have had nothing to write. | RECORD |
 
 **P10 is the blocker on turning any of this separation work into a bound**, and it is
 carried as its own bead: the certificate format cannot express what the reader can
@@ -103,16 +103,16 @@ superadditive and disjoint cores have disjoint traces on `S`.
 
 **The driver was validated against the record before it was trusted.** The control run
 is the same driver with `--seed-atoms` absent, i.e. the unmodified site-loop code path
-with a zero-width floor block: it reports `10.999999999999945` where the record’s
-`sites-1` stage reports `11.000000071098183`. Both are eleven — the record’s is a warm
+with a zero-width floor block: it reports $10.999999999999945$ where the record’s
+`sites-1` stage reports $11.000000071098183$. Both are eleven — the record’s is a warm
 re-solve carrying its predecessor’s basis, this one a cold one — and the `7e-8` lane
 A3’s S1 called solver tolerance is 300,000 times the `2.2e-13` the atoms then moved it
 by.
 
-**Which LP.** The re-solve resumes the record’s own `153/40` site checkpoint, trimmed to
+**Which LP.** The re-solve resumes the record’s own $153/40$ site checkpoint, trimmed to
 its **`sites-1`** state (the first 2,250 site orbits = 17,389 sites, 2,566
 threshold-atom orbits, 15,021 rows), because that is the LP whose dual *is* the
-`1/25`-integral family.
+$1/25$-integral family.
 The later rounds’ 600 extra site orbits are dropped: they would only lower the value
 further, and they move the dual away from the object under study.
 
@@ -122,14 +122,14 @@ further, and they move the dual away from the object under study.
 was frozen, the two-route gate was not run, and no bound is claimed.
 Not outcome 3 either: the family is emphatically *not* rank-one feasible apart from its
 depth excess. Twenty-four distinct atom orbits cut it, and **every one of them by more
-than its whole depth excess** of `28/25 - 1 = 3/25`: `33/100` for each of the 18
-two-of-three orbits, `1/2` for the clique, and `5.545` to `8.27` for the five K6 giants.
+than its whole depth excess** of $28/25 - 1 = 3/25$: $33/100$ for each of the 18
+two-of-three orbits, $1/2$ for the clique, and $5.545$ to $8.27$ for the five K6 giants.
 
-So the reading, stated plainly: **the atom language is not what pins `3.825`.** Every
+So the reading, stated plainly: **the atom language is not what pins $3.825$.** Every
 atom class the reader knows separates this dual, the separations are exact, the columns
 are priced at their true budgets, and the restricted LP does not move by so much as a
 solver tolerance.
-The value at `153/40` on this column set is held at eleven by something
+The value at $153/40$ on this column set is held at eleven by something
 the rank-one point-atom language cannot express, and adding more of that language moves
 the dual rather than the objective.
 
@@ -140,8 +140,8 @@ What was wrong is the inference from them.
 D4-symmetric family of 64 admissible placements of total exactly 11, exact maximum depth
 exactly 1 everywhere, charging every one of the LP’s 2,566 atom orbits at ratio exactly
 1. A depth-one family is dual-feasible for **every** site set, so on this atom set no
-   site set can bring the rows-complete LP below eleven at `153/40`: **it is the atom
-   set, not the site set, that pins `3.825`.**
+   site set can bring the rows-complete LP below eleven at $153/40$: **it is the atom
+   set, not the site set, that pins $3.825$.**
 
 The reason the twenty-four columns here entered at primal weight exactly zero is now
 understood, and it is narrower than a statement about the language.
@@ -149,16 +149,16 @@ An atom separated from a **dual vertex** need not cut the optimal **primal** fam
 an atom that does not cut the primal optimum cannot move the objective.
 That is a fact about which object the separation targeted.
 Separated from the depth-one certificate instead, six atoms — two two-of-three and four
-three-of-five — take the blocking support from exactly 11 to `10.4210526`, bracketed
+three-of-five — take the blocking support from exactly 11 to $10.4210526$, bracketed
 exactly, where these twenty-four moved the LP by `2.2e-13`. The route is to iterate
 support and atoms together, separating from the certificate.
 
 The corollary for the site chase is sharper than lane A3’s S4. S4 read the excess
-retreating into a mid-wall sliver at `0.0006` per round and concluded that sites must be
+retreating into a mid-wall sliver at $0.0006$ per round and concluded that sites must be
 placed by the sliver’s structure.
 What P8 shows is that the excess is not pinned to that sliver at all: the LP has optimal
-duals whose excess sits in the **interior**, at the `29°` tilted pair near
-`(1.29, 1.85)`, `0.004` to `0.008` from any sampled site, and adding atoms moves it
+duals whose excess sits in the **interior**, at the $29^\circ$ tilted pair near
+$(1.29, 1.85)$, $0.004$ to $0.008$ from any sampled site, and adding atoms moves it
 there and deepens it.
 Chasing the mid-wall sliver would have chased one vertex of a wide optimal face.
 
@@ -175,19 +175,19 @@ can move it. The site side is closed on this atom set; see lane A6, G8.
 
 | stage | object | result | wall |
 | --- | --- | --- | ---: |
-| probe | arrangement of the `1/25` family | 283,832 vertices, 22,201 masks, 965 maximal | 48 s |
-| K0-K3 (bypassed at K2) | same | total 11, depth `28/25`, K0/K1/K3 hold | 36-45 s |
-| K4 two-of-three | 965 maximal masks | max `133/100`, complete, 96 maximisers | 56 s |
-| K5 budget-one atoms | 11,252-edge intersection graph | 1,080 maximal cliques above one, complete; heaviest rank-one `3/2`, `tau* = 7/4`; atom violation `1/2` | 29 s |
-| K6 `t = 2` | 965 candidate points | violation `1109/200`, solver time-limited (bound `5.855`) | 94 s |
-| K6 `t = 3` | " | violation `1421/200` (bound `7.97`) | 95 s |
-| K6 `t = 4` | " | violation `1451/200` (bound `9.065`) | 95 s |
-| K6 `t = 5` | " | violation `827/100` (bound `9.72`) | 96 s |
-| K6 `t = 6` | " | violation `409/50` (bound `10.265`) | 94 s |
-| LP control | `sites-1` resumed, no seeds | **`10.999999999999945`**, 64 dual rows, 11,881 it | 367 s total (matrices 54, model 14, LP 310) |
-| LP seeded | same + 24 floor-atom orbits | **`11.000000000000167`**, 42 dual rows, floor support 0, 4,348 it | 226 s total (matrices 55, model 11, LP 168) |
-| excess, control dual | 512 placements | depth `1.096307560`, nearest site `0.004230` | 200 s |
-| excess, seeded dual | 336 placements | depth `1.114546762`, nearest site `0.007740` | 68 s |
+| probe | arrangement of the $\frac{1}{25}$ family | 283,832 vertices, 22,201 masks, 965 maximal | 48 s |
+| K0-K3 (bypassed at K2) | same | total 11, depth $\frac{28}{25}$, K0/K1/K3 hold | 36-45 s |
+| K4 two-of-three | 965 maximal masks | max $\frac{133}{100}$, complete, 96 maximisers | 56 s |
+| K5 budget-one atoms | 11,252-edge intersection graph | 1,080 maximal cliques above one, complete; heaviest rank-one $\frac{3}{2}$, `tau* = 7/4`; atom violation $\frac{1}{2}$ | 29 s |
+| K6 $t = 2$ | 965 candidate points | violation $\frac{1109}{200}$, solver time-limited (bound $5.855$) | 94 s |
+| K6 $t = 3$ | " | violation $\frac{1421}{200}$ (bound $7.97$) | 95 s |
+| K6 $t = 4$ | " | violation $\frac{1451}{200}$ (bound $9.065$) | 95 s |
+| K6 $t = 5$ | " | violation $\frac{827}{100}$ (bound $9.72$) | 96 s |
+| K6 $t = 6$ | " | violation $\frac{409}{50}$ (bound $10.265$) | 94 s |
+| LP control | `sites-1` resumed, no seeds | **$10.999999999999945$**, 64 dual rows, 11,881 it | 367 s total (matrices 54, model 14, LP 310) |
+| LP seeded | same + 24 floor-atom orbits | **$11.000000000000167$**, 42 dual rows, floor support 0, 4,348 it | 226 s total (matrices 55, model 11, LP 168) |
+| excess, control dual | 512 placements | depth $1.096307560$, nearest site $0.004230$ | 200 s |
+| excess, seeded dual | 336 placements | depth $1.114546762$, nearest site $0.007740$ | 68 s |
 | round 2, K4 (abandoned) | relocated dual: 48,013 masks, 1,705 maximal | killed inside the pair expansion | 4 min |
 | round 2, K5 (abandoned) | same | killed inside the clique scan, no verdict | 14 min |
 
@@ -199,7 +199,7 @@ second round, and about 42 minutes of wall clock at two workers on 4 cores.
 Lane X1 priced the measurement at twenty minutes end to end.
 The measurement proper came in near that; what it did not budget for was the control
 solve, which turned out to matter (P9), or the cost of separating a *generic* dual
-rather than the `1/25`-integral one, which is what the abandoned second round measured
+rather than the $1/25$-integral one, which is what the abandoned second round measured
 the hard way.
 
 ## 5. What the bypass does and does not license
@@ -223,11 +223,11 @@ What survives the bypass:
 - **Soundness of a violation.** Two-of-three, budget-one clique and rank-one floor atoms
   are valid for every packing, whatever family is used to find them.
   `verify_atom` decides charge and budget in rationals against the family.
-  So “this dual violates this valid inequality by `v`” is exact, and the atom is a legal
+  So “this dual violates this valid inequality by $v$” is exact, and the atom is a legal
   LP column at cost equal to its budget.
 - **Completeness of the K4 and K5 searches** *as searches over this family*. The pair
-  bound `y(T_i ∩ T_j) + min(y(T_i Δ T_j), D)` uses the arrangement’s own `D`, so it
-  stays an upper bound at `D = 28/25`; the clique argument for K5 is about the
+  bound $y(T_i \cap T_j) + \min(y(T_i \Delta T_j), D)$ uses the arrangement’s own $D$,
+  so it stays an upper bound at $D = 28/25$; the clique argument for K5 is about the
   intersection graph and does not use the depth at all.
 
 What does not survive, and must never be quoted:
@@ -238,10 +238,10 @@ What does not survive, and must never be quoted:
   This report contains no such reading anyway — every class searched returned a
   violation — but the rule is the rule.
 - **The docstring’s dismissal of repeated membership sets.** It argues a triple with a
-  repeated set charges `y(T) <= D <= 1`. At `D = 28/25` that argument fails, and such a
+  repeated set charges `y(T) <= D <= 1`. At $D = 28/25$ that argument fails, and such a
   triple charges exactly the depth: a valid but uninteresting cut, because it *is* the
   point constraint at that vertex, which is what the site oracle already adds.
-  K4 here searches distinct sets only, and its maximum `133/100` exceeds `28/25`, so
+  K4 here searches distinct sets only, and its maximum $133/100$ exceeds $28/25$, so
   nothing it found is a disguised point constraint.
 
 ## 6. What failed, and what was not done
@@ -252,7 +252,7 @@ What does not survive, and must never be quoted:
   class.
 - Every K6 program hit its 90 s limit with an open gap, so the per-threshold optimum is
   unknown. Raising the limit was not worth it once the LP had not moved on cuts of
-  violation `5.5` to `8.3`.
+  violation $5.5$ to $8.3$.
 - The seeded LP was run once, on the union of all 24 orbits, rather than separately for
   the small atoms and the K6 giants.
   Attribution was recovered instead from the primal solution (all 24 at zero) and from
@@ -264,15 +264,15 @@ What does not survive, and must never be quoted:
 - **A second separation round on the relocated dual did not finish in the budget, and
   the reason is worth recording as an instrument reading.** That dual has 336
   placements, 496,848 vertices, **48,013 distinct membership sets and 1,705 maximal
-  ones** — nearly twice the `1/25` family’s 965 — and, because `family_from_dual` rounds
+  ones** — nearly twice the $1/25$ family’s 965 — and, because `family_from_dual` rounds
   weights at `1e-9`, its weights fall in hundreds of distinct classes rather than the
-  `1/25` family’s fifteen.
+  $1/25$ family’s fifteen.
   `MaskTable.weighted` costs one popcount pass per weight class, so both K4’s pair
   enumeration and K5’s piercing programs slow by more than an order of magnitude.
   K4 was killed after four minutes of pair expansion; K5 was relaunched alone and was
   killed after fourteen minutes of clique scan, without a verdict.
-  **The `1/25`-integral dual is cheap to separate precisely because it is
-  `1/25`-integral**; a generic vertex of the same optimal face is not.
+  **The $1/25$-integral dual is cheap to separate precisely because it is
+  $1/25$-integral**; a generic vertex of the same optimal face is not.
   Anyone planning a separation *loop* here should budget for the generic dual, not for
   this one.
 
@@ -280,33 +280,33 @@ What does not survive, and must never be quoted:
 
 - **Is the plateau at eleven a plateau of the method or of these columns?** Unchanged
   and OPEN. Everything here is a restricted LP on one column set.
-  The value bounds the true value from above at `153/40`, so eleven is not a lower bound
+  The value bounds the true value from above at $153/40$, so eleven is not a lower bound
   on anything.
 - **Does the atom language still separate the relocated dual?** OPEN, and it is the
   question a second round would answer: if it does, the loop is a treadmill (each round
   cuts a vertex and the dual walks to the next one at the same value); if it does not,
-  the relocated dual is rank-one feasible apart from its `0.1145` depth excess and the
+  the relocated dual is rank-one feasible apart from its $0.1145$ depth excess and the
   whole obstruction is the sliver, which is lane X1’s third outcome arriving one round
   late.
 - **Would the atoms bite with the sites?** Untested.
   The atoms were added to a fixed site set; a joint round — sites at the new interior
-  witness `(1.294501, 1.843441)` *and* the atoms — is one warm re-solve away and is the
+  witness $(1.294501, 1.843441)$ *and* the atoms — is one warm re-solve away and is the
   obvious next measurement.
-  P8 is the argument for it: the excess now sits `0.0077` from any site, which is more
+  P8 is the argument for it: the excess now sits $0.0077$ from any site, which is more
   than a site round has ever had to close here.
 - **Is the K6 optimum much larger than what was found?** OPEN. Every threshold was
-  time-limited with a gap of `0.3` to `2.1`. But the direction of the evidence is that
-  raw K6 violation is not the currency: the largest violation found, `8.27`, moved the
-  LP by nothing, while a violation of `1/2` on a budget-one clique atom did the same
+  time-limited with a gap of $0.3$ to $2.1$. But the direction of the evidence is that
+  raw K6 violation is not the currency: the largest violation found, $8.27$, moved the
+  LP by nothing, while a violation of $1/2$ on a budget-one clique atom did the same
   nothing.
 - **Do the K6 giants ever help?** They were satisfied by both cold duals by wide margins
   and carried zero weight.
   They are cuts tuned to one vertex of a wide face.
   A cut that only bites at one vertex of an optimal face cannot move the optimum, and
   this is a clean instance.
-- **Is `1080` maximal cliques above weight one a large number for a depth-one family?**
+- **Is $1080$ maximal cliques above weight one a large number for a depth-one family?**
   Not compared here. Lane X1’s survivor family reported 16 maximal cliques above one at
-  depth exactly 1; this family has 1,080 at depth `28/25`. How much of that is the depth
+  depth exactly 1; this family has 1,080 at depth $28/25$. How much of that is the depth
   excess and how much is real structure is one reader run on a repaired depth-one
   version of this family away — and that repaired family is the object lane X1’s third
   outcome named.
@@ -335,7 +335,7 @@ Retained beside this report:
   - [`lane-a4-summarise.py.txt`](lane-a4-summarise.py.txt) — the compact tables of what
     the oracle reader found, as Section 1’s numbers were read off them.
   - [`lane-a4-flooratoms.py.txt`](lane-a4-flooratoms.py.txt) — the Chvátal–Gomory floor
-    atom as an LP column: the `(S, a, t)` record, the superadditivity argument in its
+    atom as an LP column: the $(S, a, t)$ record, the superadditivity argument in its
     docstring, and a column builder using the same float geometry and `COVER_SLACK`
     loosening as `sepcore.atom_columns`.
   - [`lane-a4-split-seeds.py.txt`](lane-a4-split-seeds.py.txt) — splits the oracle

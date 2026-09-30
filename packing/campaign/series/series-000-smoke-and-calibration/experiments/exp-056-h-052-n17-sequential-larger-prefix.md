@@ -165,7 +165,7 @@ loading the retained fixture.
 
 This round can produce a larger contiguous agreeing prefix or all 181 pairs.
 Agreement alone moves no bound: it does not adopt the retained certificate as a frontier
-result, does not decide H-052 on a prefix, and does not open any `n = 17--19`
+result, does not decide H-052 on a prefix, and does not open any $n = 17--19$
 lower-bound transition, which needs the separate adoption gate.
 The first exact disagreement is a retained result, not a failure.
 

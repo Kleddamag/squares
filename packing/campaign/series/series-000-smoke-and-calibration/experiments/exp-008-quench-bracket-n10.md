@@ -92,8 +92,8 @@ experiment:
 ---
 # exp-008 — the bracketing quench at `n = 10`
 
-The sweep’s second proved cell: `s(10) = 3 + 1/√2`, and the campaign’s positive control
-since [exp-002](exp-002-baseline-n10-positive-control.md).
+The sweep’s second proved cell: $s(10) = 3 + 1/\sqrt{2}$, and the campaign’s positive
+control since [exp-002](exp-002-baseline-n10-positive-control.md).
 
 ## Result
 
@@ -112,8 +112,8 @@ respects the corner finishes it to machine precision.
 
 The two seeds that hit the wall budget are exactly the two that did not converge
 (`8.73e-03` and `2.2e-03`), so the failure mode is visible rather than averaged away.
-Class counts vary here (2, 3 and 4 across seeds) where `n = 5` always found 2 — the
-annealer’s output at `n = 10` is further from a clean class structure, and merging is
+Class counts vary here (2, 3 and 4 across seeds) where $n = 5$ always found 2 — the
+annealer’s output at $n = 10$ is further from a clean class structure, and merging is
 doing more work.
 
 <!-- This document follows common-doc-guidelines.md.

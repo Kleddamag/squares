@@ -89,7 +89,7 @@ The correction is accepted.
 The retained regression
 [`test_bland_choice_is_independent_of_starting_basis_order`](../../../../../tests/test_exact_lp_infeasibility.py)
 uses $x\ge0$, $y\ge0$, $x+y\le1$ and objective $-x-y$. With one pivot and initial bases
-`(0, 1)` and `(1, 0)`, both runs must reach $(1,0)$. The old position rule chose the
+$(0, 1)$ and $(1, 0)$, both runs must reach $(1,0)$. The old position rule chose the
 other optimal endpoint for the reversed basis.
 This distinguishes the defect from an arbitrary choice among valid optima.
 The updated regression passed in the independent 15-test replay.
@@ -172,7 +172,7 @@ translation variables are absolute centers.
 The corner order is $(-1,-1),(1,-1),(1,1),(-1,1)$ before the half-size rotation.
 `edge_axes` consequently returns $(f_i,-e_i,f_j,-e_j)$, where $e=(c,s)$ and $f=(-s,c)$.
 Positions 0 and 1 belong to square $i$; positions 2 and 3 belong to square $j$.
-Orientation `+1` places $i$ before $j$ along that chosen normal; `-1` reverses their
+Orientation $+1$ places $i$ before $j$ along that chosen normal; $-1$ reverses their
 order.
 The four positions and two signs cover the usual four SAT axes in both directions.
 
@@ -403,7 +403,7 @@ It consumes no asserted gap or solver status.
 The cover reader takes an authoritative `expected_root` separately from the packet.
 It revalidates both roots and requires equality.
 Each leaf must retain exactly that root’s center boxes, actual half-angle intervals and
-variable-side interval, and must choose pair `(0, 1)` with one of the four axis
+variable-side interval, and must choose pair $(0, 1)$ with one of the four axis
 positions and two signs.
 Requiring eight leaves and equality with the eight-element alternative set also rules
 out duplicates. Leaf order is immaterial.

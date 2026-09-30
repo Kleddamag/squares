@@ -25,7 +25,7 @@ uv run --frozen --all-extras --group dev python -m devtools.produce_threshold_ce
 | Quantity | Value |
 | --- | --- |
 | Status | unresolved |
-| Finished objective | `11.449456701` |
+| Finished objective | $11.449456701$ |
 | Atom orbits | 48 |
 | Rows | 459 |
 | Sites / site orbits | 612 / 86 |
@@ -33,9 +33,9 @@ uv run --frozen --all-extras --group dev python -m devtools.produce_threshold_ce
 | Covering below 11 | no |
 | Seed stopped | round limit 8 reached |
 
-On the 203 seed rows the atom loop dropped below 11 from `atoms-1` (`10.874023`) through
-`atoms-5` (`9.636364`). Eight row rounds then restored mass, crossing 11 at `rows-2`
-(`11.146979`) and finishing at `11.449457` on 459 rows.
+On the 203 seed rows the atom loop dropped below 11 from `atoms-1` ($10.874023$) through
+`atoms-5` ($9.636364$). Eight row rounds then restored mass, crossing 11 at `rows-2`
+($11.146979$) and finishing at $11.449457$ on 459 rows.
 Same shape as the 9-direction 456-site run: threshold atoms overfit the seed rows; added
 placement rows bring the covering back above 11.
 

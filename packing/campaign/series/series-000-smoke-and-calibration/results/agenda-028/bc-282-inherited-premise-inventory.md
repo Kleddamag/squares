@@ -3,7 +3,7 @@
 **The inherited lemmas leave a complete residual skeleton question open.** Both counts
 and the individual top-cap bound apply throughout that remainder.
 The stronger cap ordering and forced separating row apply only where $c,s\ge1/4$. The
-low-$s$ and low-$c$ portions remain mandatory.
+low-`s` and low-`c` portions remain mandatory.
 This inventory admits no new implication, scientific target, solver or case-elimination
 method.
 

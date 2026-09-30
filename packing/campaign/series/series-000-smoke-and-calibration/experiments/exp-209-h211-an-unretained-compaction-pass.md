@@ -79,9 +79,9 @@ by 0.15 of a side.
 
 ## What Was Seen
 
-On the repaired runs the pass did not change `closed` at `n = 5`, 10, 11 or 17, to four
+On the repaired runs the pass did not change `closed` at $n = 5$, 10, 11 or 17, to four
 decimal places. On the scattered control it shrank the container, for example from 3.279
-to 3.028 at `n = 5`.
+to 3.028 at $n = 5$.
 
 ## Why It Supports No Conclusion
 

@@ -156,65 +156,65 @@ algorithm 4 with the campaign’s LP-in-cell quench substituted for their greedy
 
 | cell | record | multistart median / best | basin-hop median / best | median improvement |
 | ---: | --- | --- | --- | ---: |
-| 5 | `2.707107` | `2.796224` / `2.742256` | `2.940518` / `2.768118` | `-0.144` |
-| 10 | `3.707107` | `3.873290` / `3.850686` | `3.767767` / `3.730820` | `+0.106` |
-| 11 | `3.877084` | `4.093023` / `3.976261` | `3.975619` / `3.897231` | `+0.117` |
-| 17 | `4.675530` | `5.056305` / `4.930212` | `4.923065` / `4.825373` | `+0.133` |
-| 19 | `4.885618` | `5.325335` / `5.314127` | `5.239540` / `5.159621` | `+0.086` |
+| 5 | $2.707107$ | $2.796224$ / $2.742256$ | $2.940518$ / $2.768118$ | $-0.144$ |
+| 10 | $3.707107$ | $3.873290$ / $3.850686$ | $3.767767$ / $3.730820$ | $+0.106$ |
+| 11 | $3.877084$ | $4.093023$ / $3.976261$ | $3.975619$ / $3.897231$ | $+0.117$ |
+| 17 | $4.675530$ | $5.056305$ / $4.930212$ | $4.923065$ / $4.825373$ | $+0.133$ |
+| 19 | $4.885618$ | $5.325335$ / $5.314127$ | $5.239540$ / $5.159621$ | $+0.086$ |
 
 Seed ranges, which the accept rule requires reported next to the medians:
 
 | cell | multistart range | basin-hop range |
 | ---: | --- | --- |
-| 5 | `[2.742256, 2.828427]` | `[2.768118, 2.942809]` |
-| 10 | `[3.850686, 3.915269]` | `[3.730820, 3.828427]` |
-| 11 | `[3.976261, 4.148809]` | `[3.897231, 3.985710]` |
-| 17 | `[4.930212, 5.058505]` | `[4.825373, 4.938534]` |
-| 19 | `[5.314127, 5.372526]` | `[5.159621, 5.306345]` |
+| 5 | $[2.742256, 2.828427]$ | $[2.768118, 2.942809]$ |
+| 10 | $[3.850686, 3.915269]$ | $[3.730820, 3.828427]$ |
+| 11 | $[3.976261, 4.148809]$ | $[3.897231, 3.985710]$ |
+| 17 | $[4.930212, 5.058505]$ | $[4.825373, 4.938534]$ |
+| 19 | $[5.314127, 5.372526]$ | $[5.159621, 5.306345]$ |
 
 ## Result
 
 **H-203 is confirmed on its own criterion and the confirmation is narrow.** The declared
-threshold was three of five cells improving by `0.01`; four improved, by `0.086` to
-`0.133`. Grosso and colleagues’ finding that multistart is the wrong shape for packing
+threshold was three of five cells improving by $0.01$; four improved, by $0.086$ to
+$0.133$. Grosso and colleagues’ finding that multistart is the wrong shape for packing
 transfers to squares under free rotation.
 
 Three qualifications belong next to that, and the second is the important one.
 
 **Only two of the five cells separate cleanly.** The campaign’s accept rule clause 1
-wants the seed ranges disjoint, and they are at `n = 10` (`3.828427` against `3.850686`)
-and at `n = 19` (`5.306345` against `5.314127`) — the candidate’s worst seed beats the
+wants the seed ranges disjoint, and they are at $n = 10$ ($3.828427$ against $3.850686$)
+and at $n = 19$ ($5.306345$ against $5.314127$) — the candidate’s worst seed beats the
 control’s best.
-At `n = 11` and `n = 17` the ranges overlap, and by that clause those two
+At $n = 11$ and $n = 17$ the ranges overlap, and by that clause those two
 cells show no detectable effect however large the median shift looks.
 So the verdict rests on two cells that separate, two more that move the median in the
 same direction without separating, and one that moves the other way.
 This is an exploratory round and is marked so.
 
-**`n = 5` regresses, and it regresses hard.** Basin hopping is `0.144` *worse* than
-multistart on the smallest cell, and its worst seed, `2.942809`, is the value five
-axis-aligned unit squares need in a `2.943` box — the arm found a structured local
+**$n = 5$ regresses, and it regresses hard.** Basin hopping is $0.144$ *worse* than
+multistart on the smallest cell, and its worst seed, $2.942809$, is the value five
+axis-aligned unit squares need in a $2.943$ box — the arm found a structured local
 optimum and never left it.
 That is exactly the failure Grosso and colleagues describe for too-small a perturbation:
 the new start lies in the basin of the current minimiser.
 With 20 refinements and a monotone accept rule, the arm has almost no way to escape,
-while multistart’s fresh scatters keep sampling until one lands in the `2.7071` funnel.
+while multistart’s fresh scatters keep sampling until one lands in the $2.7071$ funnel.
 So the operator that wins on four cells is the operator that loses on the fifth, and
 which it will be is not predictable in advance — which is Lai and colleagues’ result on
 circles and spheres reproduced here in miniature.
 
-**Nothing came close to a record.** The best result of the whole round is `3.897231` at
-`n = 11`, `+2.01e-02` from Trump.
+**Nothing came close to a record.** The best result of the whole round is $3.897231$ at
+$n = 11$, `+2.01e-02` from Trump.
 Not one of the 50 emitted packings is within `1e-2` of its record, let alone the `1e-4`
 basin proxy or the `1e-6` hit threshold.
-Both hit rates are `0/25`.
+Both hit rates are $0/25$.
 
-That `n = 11` number is still worth pausing on, because it is **better than the
+That $n = 11$ number is still worth pausing on, because it is **better than the
 annealer’s** at a budget four orders of magnitude smaller in raw operations: the arm-A
-control in [exp-202](exp-202-round-1-perturbation.md) reaches `3.922761` as its best of
+control in [exp-202](exp-202-round-1-perturbation.md) reaches $3.922761$ as its best of
 five seeds at `1e10` pair tests per seed, and 20 quench calls beat it.
 Refined local optima are worth far more per unit than annealing moves, exactly as the
-survey argues — and 20 of them is still three orders of magnitude short of the `10^3`
+survey argues — and 20 of them is still three orders of magnitude short of the $10^{3}$
 per record hit that Ellsworth’s statistics price a record at.
 
 ## What the prediction got wrong
@@ -223,7 +223,7 @@ The claim was right and the reason was partly wrong.
 H-203’s registered kill condition anticipated a refutation reading as “the quench is too
 weak a refiner for the proposal structure to matter”, echoing
 [exp-006](exp-006-lp-quench-n5-n10-n11.md)’s “the quench is a polisher, not a rescue”.
-The proposal structure mattered a great deal — 0.13 at `n = 17` is ten times the
+The proposal structure mattered a great deal — 0.13 at $n = 17$ is ten times the
 declared threshold — so the quench is strong enough for the proposer to be visible
 through it.
 
@@ -250,11 +250,12 @@ independent verification in a separate process.
 
 ## Limits
 
-- Five cells, all `n <= 19`, because one quench call at `n = 27` or above does not
+- Five cells, all `n <= 19`, because one quench call at $n = 27$ or above does not
   finish inside any budget this round could afford.
   Nothing here transfers to the larger half of the subset.
-- 20 refined optima per seed against the `10^3` per record hit that Ellsworth’s `n = 51`
-  statistics imply. This round cannot see a record-rate effect and does not claim to.
+- 20 refined optima per seed against the $10^{3}$ per record hit that Ellsworth’s
+  $n = 51$ statistics imply.
+  This round cannot see a record-rate effect and does not claim to.
 - One perturbation schedule (`eps0 = 0.1`, doubling and halving) and one accept rule
   (monotone). Grosso and colleagues’ sweep found a threefold difference in failure count
   across four magnitudes, so this is one point in a plane known to matter.

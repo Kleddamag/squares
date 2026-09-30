@@ -8,7 +8,7 @@ Removing the relaxation’s allowance for octagon boundary points does not repai
 proposed bound.
 
 This is a surrogate obstruction, **not an eleven-square packing**. One of the seven
-radius-$1/2$ disks strictly overlaps a selected actual square.
+radius-`1/2` disks strictly overlaps a selected actual square.
 The configuration therefore supplies neither a disk-model witness nor a full-square
 witness. The complete question $D_0=\varnothing$ remains unresolved by this adversary,
 subject to the fresh independent audit of both terminal arguments.
@@ -232,7 +232,7 @@ $\beta<39/40<1$.
 In the selected square’s orthonormal coordinates, the nearest point to $P_1$ is
 therefore on the face with $f$ coordinate $1/2$, at distance $\beta-1/2<1/2$. Moving
 that point a sufficiently small distance into the square keeps it inside the open
-radius-$1/2$ disk centered at $P_1$. The two interiors intersect.
+radius-`1/2` disk centered at $P_1$. The two interiors intersect.
 The declared disk model consequently rejects this configuration.
 
 Every full unit square centered at $P_1$, whatever its actual orientation, contains that

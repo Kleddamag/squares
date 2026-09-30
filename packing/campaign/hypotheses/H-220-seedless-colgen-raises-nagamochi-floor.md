@@ -77,13 +77,13 @@ hypothesis:
 [X-039](../explorations/X-039-n100-re-rank-after-session-140.md) keeps the eight
 Nagamochi sides Session-140 queued and did not start.
 
-The first probe is n=32 at `29/5`, auto plus windows 5, no certificate seed.
-Later probes are n=31 at `57/10`, n=30 at `559/100`, n=26 at `513/100`, n=27 at
-`525/100`, and n=29 at `548/100`. A float LP crossing or a feasible frozen mass above
-`n` does not rule out the site set.
+The first probe is n=32 at $29/5$, auto plus windows 5, no certificate seed.
+Later probes are n=31 at $57/10$, n=30 at $559/100$, n=26 at $513/100$, n=27 at
+$525/100$, and n=29 at $548/100$. A float LP crossing or a feasible frozen mass above
+$n$ does not rule out the site set.
 n=29 converged and froze below 29; the interval route stalled, so its decision remains
-unresolved. n=45 at `684/100` stopped at `42.137360` unconverged.
-n=44 at `675/100` stopped at `41.236782` unconverged.
+unresolved. n=45 at $684/100$ stopped at $42.137360$ unconverged.
+n=44 at $675/100$ stopped at $41.236782$ unconverged.
 The eight queued sides are measured and unresolved.
 None printed `RETAINABLE`.
 

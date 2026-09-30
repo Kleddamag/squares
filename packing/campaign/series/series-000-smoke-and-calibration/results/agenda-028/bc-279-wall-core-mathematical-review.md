@@ -33,7 +33,7 @@ The orientations compatible with one residual center are not identified with tho
 compatible with any other residual center.
 
 For $r\ge1/2$ the allowed set is nonempty, since an axis square is admissible.
-Put $t=\min(r,1/\sqrt2)$ and $a=1/(4t)$. The radius-$1/2$ disk lies in every unit
+Put $t=\min(r,1/\sqrt2)$ and $a=1/(4t)$. The radius-`1/2` disk lies in every unit
 square. For any admissible square normal $e=(\cos\theta,\sin\theta)$, the support of
 $[-a,a]^2$ is
 

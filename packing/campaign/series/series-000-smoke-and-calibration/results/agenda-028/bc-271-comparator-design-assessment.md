@@ -217,7 +217,7 @@ This is a strong per-pair disjunctive relaxation of the declared rows.
 It is not the joint convex hull of all 55 disjunctions.
 The distinction is a legitimate potential source of survival, provided it is prospective
 and identical in both arms.
-An arbitrary large big-$M$ would introduce an avoidable weakness.
+An arbitrary large big-`M` would introduce an avoidable weakness.
 
 Min/max arms, region choices and quadratic-envelope refinements need the same shared
 policy. Charging only SAT branches while giving the capacity arm free localization or

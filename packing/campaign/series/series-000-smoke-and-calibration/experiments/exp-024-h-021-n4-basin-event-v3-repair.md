@@ -78,7 +78,7 @@ Under engine `f15d036`, seeds 0 through 3 all converge to proved side 2, pass th
 independent geometry screen, and retain balanced receipts.
 The four events account for 14,301 fixed-point evaluations, all settled and none
 unsettled, in 16.97 seconds total.
-Seed 3 now reaches side `2.0` with 4,657 settled evaluations.
+Seed 3 now reaches side $2.0$ with 4,657 settled evaluations.
 
 This is a positive-control result for event admissibility, not a component census.
 All four endpoints share the same current geometric and contact descriptors, but those

@@ -209,7 +209,7 @@ b\ge1+\sum_{ij}\beta_{ij}+\langle M,R\rangle
 $$
 
 Thus $\sum\beta_{ij}\ge10$ proves $b\ge11$. Full-matrix PSD is a sufficient certificate
-format; a later implementation may equivalently verify the exact joint-$D_4$ projection
+format; a later implementation may equivalently verify the exact joint-`D_4` projection
 blockwise, but may not silently weaken the dual condition.
 The nine-clique control uses $\alpha_i=1/9$, $\beta_{ij}=2/9$ and yields $b\ge9$, with
 $M=(\sum_i\phi_i)(\sum_i\phi_i)^T/9$.

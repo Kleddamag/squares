@@ -44,12 +44,12 @@ Reader-facing writeup: [`agenda-032/sprint-report.md`](../agenda-032/sprint-repo
 
 `bc-303-first-wave-selection.md` §3, verdict:
 
-> **Verdict: agrees.** Every packing of eleven unit squares in `[0, 96/25]²` has four
+> **Verdict: agrees.** Every packing of eleven unit squares in $[0, 96/25]^2$ has four
 > distinct squares, one per corner, each containing in its interior at least one of its
-> corner’s two marks `(3152/3175, 2336/3175)` and `(2336/3175, 3152/3175)` (and their
+> corner’s two marks $(3152/3175, 2336/3175)$ and $(2336/3175, 3152/3175)$ (and their
 > images under the container’s symmetries).
-> Since `[0, s]² ⊂ [0, 96/25]²`, the same holds of every packing at side at most `96/25`
-> read in the `96/25` frame.
+> Since $[0, s]^2 \subset [0, 96/25]^2$, the same holds of every packing at side at most
+> $96/25$ read in the $96/25$ frame.
 
 `corner-owner-sector-footprints.md`, ownership premise (the version the footprint
 machinery uses; careful about closure):
@@ -74,11 +74,12 @@ The four owners are NOT produced jointly.
 The sentence that settles it is in `bc-303-first-wave-selection.md` §3, immediately
 before the verdict:
 
-> The argument needs exactly three facts and no more: a valid measure of mass `11 + ε`
-> (so the eleven pairwise disjoint cores of a packing, each of mass at least one by
-> Condition 5, leave at most `ε` outside them); a set of atoms of mass above `ε` **per
-> corner** (so one of its atoms is in some core); and a cross-corner distance above the
-> core’s diameter `B√2` (so no core holds atoms of two corners).
+> The argument needs exactly three facts and no more: a valid measure of mass
+> $11 + \varepsilon$ (so the eleven pairwise disjoint cores of a packing, each of mass
+> at least one by Condition 5, leave at most $\varepsilon$ outside them); a set of atoms
+> of mass above $\varepsilon$ **per corner** (so one of its atoms is in some core); and
+> a cross-corner distance above the core’s diameter $B\sqrt{2}$ (so no core holds atoms
+> of two corners).
 
 The second fact is per-corner and self-contained.
 The third is used only to make the four per-corner owners distinct from each other; it
@@ -99,11 +100,11 @@ section):
 > funding the four-corner branch family.
 
 `owner-footprint-contract.md` puts the four-corner family strictly after it: “Only then
-consider `16^4` four-corner branches; their required residual threshold is seven.”
+consider $16^{4}$ four-corner branches; their required residual threshold is seven.”
 
 Two consequences the documents also record:
 
-- **Eight solves, not sixteen.** The diagonal reflection sends `(m1, j)` to
+- **Eight solves, not sixteen.** The diagonal reflection sends $(m1, j)$ to
   `(m2, 7 - j mod 8)`; `owner-footprint-contract.md`: “with reflected full directions
   and a reflection-invariant support/grouping, eight representative solves can cover all
   sixteen by explicitly transforming certificates.”
@@ -111,7 +112,7 @@ Two consequences the documents also record:
   `m1:j1 <-> m2:j6`, …).
 - **No pruning is available at one corner.** `owner-footprint-contract.md`: “Cheap
   pose-emptiness pruning does not appear useful here: each mark can itself be the centre
-  of a contained `B`-core at every orientation… At centre equality, either signed ray
+  of a contained $B$-core at every orientation… At centre equality, either signed ray
   can be chosen, so all sectors are represented.”
   All sixteen must be run or excluded.
 
@@ -127,7 +128,7 @@ Everything below is a promoted `devtools` module with tests unless marked otherw
   - `full_owner_direction_manifest()` -> 181 folded / 361 canonical square orientations.
   - `owner_branch_manifest(...)` -> `OwnerBranchManifest` with 16 `OwnerClass` entries
     (`class_id` = `bottom-left:m{1,2}:j{0..7}`, `mark`, `sector`, `reflected_class_id`).
-  - `point_footprint(mark)`, `triangle_footprint(mark, sector)` (the `h²/4` sector
+  - `point_footprint(mark)`, `triangle_footprint(mark, sector)` (the $h^2/4$ sector
     triangle), `endpoint_footprint(...)` (enlarged anchored-square intersection),
     `owner_class_footprints(owner_class, directions)` -> all three as exact rational
     polygons.
@@ -161,7 +162,7 @@ Everything below is a promoted `devtools` module with tests unless marked otherw
   `packing/tests/test_run_owner_footprint_cover.py` (314 lines).
   - Flags: `--output`, `--class-id` (default `bottom-left:m1:j0`), `--owner-count {1,4}`
     (default 1), `--grid-count` (19), `--inset` (1/2), `--folded-indices` (default
-    `0,45,90,135,180`), `--rows-per-direction` (3), `--max-rounds` (60),
+    $0,45,90{,}135{,}180$), `--rows-per-direction` (3), `--max-rounds` (60),
     `--deadline-seconds-per-arm` (120), `--max-event-cells` (5e6), `--max-round-cells`
     (3e7), `--scale` (4e6), `--estimate-only`.
   - Four matched covering LPs on one support and one direction subset: `unrestricted`,
@@ -198,7 +199,7 @@ Everything below is a promoted `devtools` module with tests unless marked otherw
 
 - **`packing/devtools/pierce_pilot.py`** (163 lines).
   CLI `python -m devtools.pierce_pilot --side 3.83 | --ladder`. Fractional piercing
-  value `tau*` of the unrestricted unit-square pose family in `[0, t]²`. Float,
+  value `tau*` of the unrestricted unit-square pose family in $[0, t]^2$. Float,
   grid-restricted, “neither an upper nor a lower bound on `tau*` by itself”.
   Not residual-domain aware: it has no owner or footprint input.
   Not usable per class.
@@ -213,7 +214,7 @@ Everything below is a promoted `devtools` module with tests unless marked otherw
   `obstructs` flag. **Its source predicate is [`D-489`](../../../../../../defects.md)**:
   `_source_receipt` requires the source receipt’s `failures` to be exactly
   `["K3 total weight at least n"]`, so it accepts only a family that falls short of mass
-  `n` and can never accept a proved ceiling family.
+  $n$ and can never accept a proved ceiling family.
   That is what makes the exp-137 and exp-138 readings in §5 artifacts of their source.
 - **`packing/devtools/audit_corner_dual_salvage.py`**. CLI. Independent receipt audit.
   Tests `packing/tests/test_audit_corner_dual_salvage.py` (189 lines).
@@ -255,13 +256,13 @@ Everything below is a promoted `devtools` module with tests unless marked otherw
 
 | Parameter | Value | Where |
 | --- | --- | --- |
-| Container side `q` | `96/25 = 3.84` | `owner_footprints.OUTER_SIDE` |
-| Shrink `B` | `9977/10000` | `owner_footprints.CORE_SIDE`; `h = B/2` |
-| Angular slack `D` | `207107/90000000`; `B(1 + D) < 1` | `bc-303`, `gaps-to-global-bound.md` |
-| Full direction net | 181 folded half-tangents, step `D`, limit `207107/500000`; 361 canonical square orientations modulo quarter turns | `DIRECTION_STEPS = 180`, `ANGLE_LIMIT`; verified `folded 181 / full 361` |
+| Container side $q$ | $\frac{96}{25} = 3.84$ | `owner_footprints.OUTER_SIDE` |
+| Shrink $B$ | $\frac{9977}{10000}$ | `owner_footprints.CORE_SIDE`; $h = B/2$ |
+| Angular slack $D$ | $\frac{207107}{90000000}$; $B(1 + D) < 1$ | `bc-303`, `gaps-to-global-bound.md` |
+| Full direction net | 181 folded half-tangents, step $D$, limit $\frac{207107}{500000}$; 361 canonical square orientations modulo quarter turns | `DIRECTION_STEPS = 180`, `ANGLE_LIMIT`; verified `folded 181 / full 361` |
 | LP direction subset | `--folded-indices 0,45,90,135,180` -> 9 canonical orientations | exp-142/143 commands |
-| Support | 19x19 grid, inset `1/2`, plus the mark’s D4 orbit = 369 sites, independent singleton weights | `--grid-count 19 --inset 1/2` |
-| Bottom-left marks | `m1 = (3152/3175, 2336/3175)`, `m2 = (2336/3175, 3152/3175)` | `BOTTOM_LEFT_MARKS` |
+| Support | 19x19 grid, inset $\frac{1}{2}$, plus the mark’s D4 orbit = 369 sites, independent singleton weights | `--grid-count 19 --inset 1/2` |
+| Bottom-left marks | $m1 = (\frac{3152}{3175}, \frac{2336}{3175})$, $m2 = (\frac{2336}{3175}, \frac{3152}{3175})$ | `BOTTOM_LEFT_MARKS` |
 | Exact replay net | all 361 orientations, no symmetry fold | exp-144 `--scope full` |
 
 Footprints are always derived from the full 361-orientation manifest even when the LP
@@ -282,13 +283,13 @@ uses nine directions (`owner_footprints_derived_from_full_manifest: true`).
   `outer_side` or `square_side` differs from those constants.
 - `verify_residual_cover_pilot.py` re-declares its own `OUTER_SIDE = Fraction(96, 25)`.
 - `BOTTOM_LEFT_MARKS` is hardcoded and side-specific: the marks are T-018’s
-  `(197/200, 73/100)` orbit scaled by `128/127` into the `96/25` frame, and their
-  ownership property comes from the `96/25` measure
+  $(197/200, 73/100)$ orbit scaled by $128/127$ into the $96/25$ frame, and their
+  ownership property comes from the $96/25$ measure
   [`agenda-030/bc-293-measure-free-96-25.json`](../agenda-030/bc-293-measure-free-96-25.json)
-  of mass `22524199/2000000 = 11.2620995` with per-corner pair mass `106251/400000`
-  exceeding `eps = 524199/2000000` by `441/125000`.
+  of mass $22524199/2000000 = 11.2620995$ with per-corner pair mass $106251/400000$
+  exceeding `eps = 524199/2000000` by $441/125000$.
 
-**There is no owner or corner-pair theorem in the tree at any side other than `96/25`.**
+**There is no owner or corner-pair theorem in the tree at any side other than $96/25$.**
 The project statement on changing side is
 [`agenda-032/gaps-to-global-bound.md`](../agenda-032/gaps-to-global-bound.md):
 
@@ -299,12 +300,12 @@ The project statement on changing side is
 
 Two side-related facts bearing on “`191/50` and above”:
 
-- `191/50 = 3.82` is already unconditionally closed by `T-025`
+- $191/50 = 3.82$ is already unconditionally closed by `T-025`
   ([`t-025-threshold-certificate-proof.md`](../../../../../cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md)),
   so a conditional argument there proves nothing new; **the open window for the
-  conditional programme was `(3.82, 3.84]` before lane X1 closed it on other grounds.**
+  conditional programme was $(3.82, 3.84]$ before lane X1 closed it on other grounds.**
 - The only cross-side transport in this area runs the other way: the retained depth-one
-  family at `191/50` is transported by `+1/100` in each coordinate into the `96/25`
+  family at $191/50$ is transported by $+1/100$ in each coordinate into the $96/25$
   frame by `devtools/transport_ceiling_family.py` (exp-137’s receipt records
   `source_outer_side: 191/50`, `translation: [1/100, 1/100]`).
 
@@ -315,9 +316,9 @@ It is a four-corner class, not a single-corner one.
 | Item | Value |
 | --- | --- |
 | Class | the four reflected images of `bottom-left:m1:j0` — `compatible_m1_j0_footprints("endpoint")`, one endpoint footprint per corner |
-| Residual threshold | 7 (`11 - 4`) |
-| Residual cover value | 5 (normalised). Five atoms of common weight `beta = 1000001/1000000`, total `1000001/200000`; exact minimum over all 361 directions is exactly `beta`, so dividing by `beta` gives five unit dots |
-| Piercing points | 5: `(73/75, 187/90)`, `(793/450, 43/15)`, `(48/25, 48/25)`, `(187/90, 73/75)`, `(43/15, 793/450)` |
+| Residual threshold | 7 ($11 - 4$) |
+| Residual cover value | 5 (normalised). Five atoms of common weight `beta = 1000001/1000000`, total $\frac{1000001}{200000}$; exact minimum over all 361 directions is exactly `beta`, so dividing by `beta` gives five unit dots |
+| Piercing points | 5: $(\frac{73}{75}, \frac{187}{90})$, $(\frac{793}{450}, \frac{43}{15})$, $(\frac{48}{25}, \frac{48}{25})$, $(\frac{187}{90}, \frac{73}{75})$, $(\frac{43}{15}, \frac{793}{450})$ |
 | Wall time | LP search (exp-143) 9.12 s (arm seconds 4.62 / 1.83 / 0.83 / 0.77); exact 361-direction replay (exp-144) 28.95 s external, 12.76 s inside the exact loop, 589,549 dense event cells, max 2,457 per direction |
 | Registered as | `T-023`, V3/C3, significance S3, `packing/frontier/results.yaml` |
 
@@ -362,7 +363,7 @@ Other conditional cover values, none of them owner classes:
 | Run | Conditioning | Value | Scope |
 | --- | --- | --- | --- |
 | exp-136 | four literal flush corner unit squares | 7.804878 | numerical, 9 orientations, threshold 7 |
-| exp-139 | same | `31219612/3804895 ~= 8.205118` (weakest core `760979/800000`) | exact, full net, threshold 7 |
+| exp-139 | same | `31219612/3804895 ~= 8.205118` (weakest core $\frac{760979}{800000}$) | exact, full net, threshold 7 |
 | exp-143 | four `m1:j0` endpoint footprints | 5.0 | numerical, 9 orientations |
 | exp-144 | same | 5 (exact) | exact, 361 directions |
 
@@ -374,8 +375,8 @@ Other conditional cover values, none of them owner classes:
 
 Source: the retained depth-one family
 [`agenda-025/bc-232-leg-01-family.json`](../agenda-025/bc-232-leg-01-family.json), 768
-closed `B`-squares at `191/50`, total weight `21342289572/2055263195 ~= 10.384212`,
-transported `+1/100` into the `96/25` frame.
+closed $B$-squares at $191/50$, total weight `21342289572/2055263195 ~= 10.384212`,
+transported $+1/100$ into the $96/25$ frame.
 Deleting the members meeting a class’s footprint leaves a depth-one family of admissible
 residual cores, so the survivor weight is a weak-duality LOWER BOUND on that class’s
 residual cover value on any site set.
@@ -400,16 +401,16 @@ All sixteen bottom-left classes, threshold 10:
 | `m2:j6` | 9.417433 | 8.495207 | 8.482323 | 644 |
 | `m2:j7` | 9.417433 | 7.994638 | **7.987929** | 606 |
 
-Exact fractions are in the receipt: `m1:j0` endpoint is `65669186303/8221052780`;
-`m1:j3` endpoint is `77421212793/8221052780`. `obstructs` is false for all 48 rows —
+Exact fractions are in the receipt: `m1:j0` endpoint is $65669186303/8221052780$;
+`m1:j3` endpoint is $77421212793/8221052780$. `obstructs` is false for all 48 rows —
 none reaches 10.
 
 > **Correction, [`D-489`](../../../../../../defects.md).** Every absolute level in this
 > table is an artifact of its source.
-> The screen ran on a family of mass `10.384212`, `0.6158` short of eleven, because
+> The screen ran on a family of mass $10.384212$, $0.6158$ short of eleven, because
 > `screen_corner_dual_salvage._source_receipt` accepts only a receipt whose `failures`
 > are exactly `["K3 total weight at least n"]` — that is, only a family that fell short
-> of mass `n`. [Lane X1](lane-x1-corner-conditioning-is-mass-neutral.md) re-ran the same
+> of mass $n$. [Lane X1](lane-x1-corner-conditioning-is-mass-neutral.md) re-ran the same
 > `screen_footprint` on the mass-eleven ceiling family and read survivor weight
 > **exactly 10** at `m1:j3`, `m1:j4`, `m2:j3` and `m2:j4`. The *shape* of the table —
 > which classes gain from the footprint and which do not — survives; the conclusion “no
@@ -417,7 +418,7 @@ none reaches 10.
 
 The spread is NOT uniform:
 
-- The point footprint deletes the same `10.384212 - 9.417433 = 0.966779` from every
+- The point footprint deletes the same $10.384212 - 9.417433 = 0.966779$ from every
   class, consistent with the point-extension lemma’s cap of 1
   ([`agenda-032/proofs/point-extension-lemma.md`](../agenda-032/proofs/point-extension-lemma.md)).
 - The endpoint footprint’s extra deletion beyond the mark ranges from 0.000000 (`m1:j3`,
@@ -429,7 +430,7 @@ The spread is NOT uniform:
   from the footprint at all — which is exactly the zero-gain lane X1 then measured
   against the mass-eleven family.
 - Corresponding four-corner figures (same receipt, `four_corner` block, 65,536
-  combinations): point min = max = `13394344077/2055263195 = 6.517094`; triangle min
+  combinations): point min = max = $13394344077/2055263195 = 6.517094$; triangle min
   0.825915, max 6.517094; endpoint min 0.799079, max 6.517094; `obstructed_count: 0` in
   all three.
 
@@ -457,7 +458,7 @@ Full-net values can only be larger for the same support.
 ### Measurements taken on this container (one core, `packing/.venv/bin/python3`)
 
 Calibration: exp-144’s exact inner loop was re-run in process (same 5 atoms, same
-four-owner domain, all 361 directions), reproducing its exact minimum `1000001/1000000`
+four-owner domain, all 361 directions), reproducing its exact minimum $1000001/1000000$
 in 23.79 s against the receipt’s 12.76 s. **This container is about 1.9x slower per core
 than the recorded host.** Figures below are this container’s. — CHECKED
 
@@ -484,8 +485,9 @@ extrapolated across 361 directions:
 | 120 | 110.2 | 24,578 | 39.8 s |
 | 300 | 253.5 | 149,161 | 91.5 s |
 
-The reader builds a dense `(2A + p) x (2A + p)` event grid per direction, so cells grow
-quadratically in atom count while wall time grows closer to linearly over this range.
+The reader builds a dense $(2A + p) \times (2A + p)$ event grid per direction, so cells
+grow quadratically in atom count while wall time grows closer to linearly over this
+range.
 
 ### The estimate
 
@@ -546,11 +548,11 @@ Each item verified absent:
    `A subset A'` to reuse a certificate.
 5. **Side parameterisation.** `OUTER_SIDE` / `CORE_SIDE` are module constants; there is
    no `--side` flag; `replay_owner_footprint_cover.py` refuses any other side; the marks
-   are hardcoded to the `96/25` measure.
-   Running at any side in `(3.82, 3.84)` additionally needs a new ownership theorem at
+   are hardcoded to the $96/25$ measure.
+   Running at any side in $(3.82, 3.84)$ additionally needs a new ownership theorem at
    that side — a valid measure of mass `11 + eps` there with a corner atom orbit of mass
    above `eps` and cross-corner distance above `B sqrt 2`. None exists in the tree for
-   any side but `96/25`.
+   any side but $96/25$.
 6. **The threshold-atom join**, only if point covers stay above 10.
    `sqpack.fractional.threshold` / `threshold_interval` take no forbidden region;
    `owner_footprints` / `multi_owner_domains` produce one.
@@ -567,7 +569,7 @@ replay for `owner_count = 1`, and the reflection pairing.
 
 ## What this lane does not establish
 
-Nothing here is a statement about `s(11)`, and nothing here decides whether a
+Nothing here is a statement about $s(11)$, and nothing here decides whether a
 conditional certificate is worth building.
 That decision is [lane X1](lane-x1-corner-conditioning-is-mass-neutral.md)’s, and it is
 negative on grounds this survey cannot see: the tooling is present and adequate, and the

@@ -142,7 +142,7 @@ runs from the interrupted and unrun work; it adds no rerun or certification.
 The block began in the order the cell prescribes.
 The region-class row generator was written first (the marks’ coverage rectangles as
 event lines, so the corner class needs no clip), smoke-tested at grid 21, and run on
-grid 79 with inset `1/10` plus the eight marks; the flush-four program under D4, the
+grid 79 with inset $1/10$ plus the eight marks; the flush-four program under D4, the
 free control on the same sites, and then the two mark branches whose stabilisers contain
 a reflection — the opposite-both branch under `D2` and the U branch under one axis
 reflection. The U branch stopped during round 21 without an exact decision; the
@@ -157,7 +157,7 @@ work in progress on the lane branch.
 
 The lane found a ratio optimum of one for the opposite-both branch on site set A. The
 review corrected its extension to every site set: ratio and slice forms have the same
-exclusion power, while the slice `w_f = 1` exposes a positive residual that the ratio’s
+exclusion power, while the slice $w_f = 1$ exposes a positive residual that the ratio’s
 banking point can hide.
 The lane also reported that a folded site set must seed every mark whatever the group,
 or a branch’s LP acquires a free ray.

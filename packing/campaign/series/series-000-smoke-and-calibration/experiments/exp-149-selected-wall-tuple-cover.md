@@ -77,7 +77,7 @@ experiment:
 clean published revision `5600c0fb4eccf9e9dcdf82b02506d3d4340651cb` and exited zero
 after 11.41 seconds.
 Direction 0 (`owner-000`) has exact positive uncovered area
-`71717500601808574131146882402353369/1245285277939023012815400000000000000`. The receipt
+$71717500601808574131146882402353369/1245285277939023012815400000000000000$. The receipt
 retains a rational centre that independently replays strict container, five-dot and
 four-selected-patch avoidance.
 It checked one of 361 directions because the registered negative criterion stops at the

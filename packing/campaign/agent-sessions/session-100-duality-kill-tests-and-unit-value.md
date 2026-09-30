@@ -125,11 +125,11 @@ The mathematics and every input are in the Session-100 section of
 [lane D’s result document](../series/series-000-smoke-and-calibration/results/agenda-030/lane-d-contacts-and-closing-route.md);
 this record is the handoff.
 
-What the block established, all at `q = 96/25`: a verified `B = 1` family of value
-`89090463224/9989418081 = 8.918484` (the loop’s iteration-0 support; one polisher round
-did not improve it), of which `5.927446` lies outside Trump’s neighbourhood; a verified
-family off the four corner boxes of value `6.260870` at the retained `(B, net)`; the
-proved floor `ν*₁(q) ≥ 10` from `s(10)`; and the reading that no region is a kill and
+What the block established, all at $q = 96/25$: a verified $B = 1$ family of value
+$89090463224/9989418081 = 8.918484$ (the loop’s iteration-0 support; one polisher round
+did not improve it), of which $5.927446$ lies outside Trump’s neighbourhood; a verified
+family off the four corner boxes of value $6.260870$ at the retained `(B, net)`; the
+proved floor `ν*₁(q) ≥ 10` from $s(10)$; and the reading that no region is a kill and
 none is alive at the cell’s standard, so routes (b) and (c) and every capture design
 survive untested and BC-204 has no threshold to aim at yet.
 H-129 is recommended `open`. No claim is frozen and no experiment id is needed.
@@ -147,8 +147,8 @@ its own 203-direction state; using it to resume that state changes angles or rai
 index error.
 
 The operational control is exp-070’s retained `bc-232-leg-01-family.json`, whose exact
-weight is `21342289572/2055263195`. Scaling its complete geometry by `10000/9977` gives
-unit squares in side `38200/9977 < 96/25`, with the same depth and weight.
+weight is $21342289572/2055263195$. Scaling its complete geometry by $10000/9977$ gives
+unit squares in side $38200/9977 < 96/25$, with the same depth and weight.
 The
 [lane-D correction](../series/series-000-smoke-and-calibration/results/agenda-030/lane-d-contacts-and-closing-route.md#correction-of-2026-09-08-duality-scope-cap-and-retained-continuation)
 owns the proof, command and remaining dependencies.

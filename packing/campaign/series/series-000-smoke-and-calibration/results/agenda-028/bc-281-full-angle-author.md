@@ -512,7 +512,7 @@ $$
 s\xi_7+cY_7\ge sD+c(D-s+\beta c)=D+\beta c^2\ge D.
 $$
 
-The remaining negative-$e$ alternative gives
+The remaining negative-`e` alternative gives
 
 $$
 s\xi_7+cY_7\ge\frac{sD+Y_7}{c}

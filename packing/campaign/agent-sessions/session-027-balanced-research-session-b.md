@@ -855,7 +855,7 @@ produces its promised evidence.
 The `n = 1..100` atlas remains calibration-only.
 The 11,013 contact scaffolds remain abstract and geometry-free, local realization is not
 packing feasibility, BC-010 evidence remains pathwise, the unattended numerical runner
-remains **NO-GO**, and no `n = 11` target run is admitted before the grammar freeze.
+remains **NO-GO**, and no $n = 11$ target run is admitted before the grammar freeze.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

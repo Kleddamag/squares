@@ -222,7 +222,7 @@ Report that common value only as the exact finite-row optimum.
 A point with mass above eleven still needs BC-243’s complete almost-everywhere depth
 check before any dual lower-bound claim.
 Only a fully verified $D>11$ obstructs a mass-eleven area density at $U$; it neither
-closes the below-$U$ density question nor establishes global packing optimality.
+closes the below-`U` density question nor establishes global packing optimality.
 
 ## Control-Only Commission and Readiness
 

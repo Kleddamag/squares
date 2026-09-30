@@ -43,7 +43,7 @@ much support remains unseen.
 A curve that looks flat is not enough: the model and its evaluation split must be
 declared before the held-out observations are read.
 
-The estimand is conditional on `P/Q/E`. Changing any of those creates a new curve rather
+The estimand is conditional on $P/Q/E$. Changing any of those creates a new curve rather
 than improving the old one retroactively.
 
 <!-- This document follows common-doc-guidelines.md.

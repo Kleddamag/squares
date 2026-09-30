@@ -95,10 +95,10 @@ engine and archive: five deterministic seeds, eight chains each, 100M moves per 
 
 |  |  |
 | --- | --- |
-| best | `3.7075262001` |
-| median | `3.7076711818` |
-| range across seeds | `[3.7075262, 3.7091188]` |
-| standing best | `3.7071067812` |
+| best | $3.7075262001$ |
+| median | $3.7076711818$ |
+| range across seeds | $[3.7075262, 3.7091188]$ |
+| standing best | $3.7071067812$ |
 | gap | `+4.194e-04` |
 
 ## Why this round exists
@@ -129,7 +129,7 @@ and every stored configuration has recomputed overlap of exactly zero.
 ## Limits
 
 - `f64` screening. Nothing here is certified and none of it may claim a record.
-- One cell. This is the sweep’s `n = 10` point and says nothing about the others; the
+- One cell. This is the sweep’s $n = 10$ point and says nothing about the others; the
   companion rounds carry those.
 - Five seeds is enough to see the spread, not enough for a confirmatory interval.
 

@@ -565,7 +565,7 @@ strict common-surplus bound.
 A **contact graph** has one vertex for each physical unit square and an edge when two
 squares touch. A **contact component** is a maximal group connected by paths in this
 graph; it refers to parents, not their strict cores.
-A square’s **incircle** is the radius-$1/2$ circle centred at its centre and contained
+A square’s **incircle** is the radius-`1/2` circle centred at its centre and contained
 in the square.
 
 For two unit squares touching the left wall, their centre $x$ coordinates differ by at

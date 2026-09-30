@@ -120,17 +120,17 @@ exp-040. It must additionally:
 
 - prove `D = 4 + u^2 >= 4` on `0 <= u <= U`, retain that exact certificate, and use only
   sign-equivalent numerator clearing through this denominator;
-- retain two separate inventories: exactly five separating axes equal zero at `u = 0`,
+- retain two separate inventories: exactly five separating axes equal zero at $u = 0$,
   including contact `(1,4):owner4:a-`, and exactly four axes whose gap polynomial is
   identically zero throughout the path;
-- factor every nonidentically-zero gap by its maximal base factor `u^k` and prove the
+- factor every nonidentically-zero gap by its maximal base factor $u^k$ and prove the
   residual strictly positive on the declared closed interval, so for `0 < u <= U` the
   four pathwise axes are the complete zero inventory and `(1,4):owner4:a-` is strictly
   positive;
 - derive, rather than store as expected constants, both tied square-1 wall-feature
   numerators for each sign, verify the sign-to-label map, prove the selected numerator
-  has residual `u + 2` after the maximal `u^2` factor, and prove the other feature adds
-  the exact `4u/(4+u^2)` slack; and
+  has residual $u + 2$ after the maximal $u^{2}$ factor, and prove the other feature
+  adds the exact $4u/(4+u^{2})$ slack; and
 - retain the universal sign proof, strict-residual facts, feature derivations, exact
   endpoint fixtures, source map, and denominator certificate in a feasibility
   certificate independent of stress.
@@ -141,7 +141,7 @@ remains retained as `criterion_met`; the round verdict remains unresolved.
 
 ## Frozen stress criterion
 
-For both `(3,4)` owner branches in every case, the checker must regenerate the exact
+For both $(3,4)$ owner branches in every case, the checker must regenerate the exact
 support rows and weights frozen by exp-040. It must retain exact full-interval lower
 bounds for every multiplier, including `sqrt(2)/2 - 1/4 > 0` for the smaller owner-3
 tied-row weight. It must derive the cleared rational numerator degree bound from the
@@ -206,21 +206,21 @@ Candidate failure is not an R4/R5 obstruction.
 
 ## Checkpoint result
 
-The production-path generation stopped in `3.234` seconds before writing a result JSON.
-For `r = sqrt(2)` and `U = 3r/4 - 1`, the nonpersistent axis `0-3:owner3:a-` has cleared
+The production-path generation stopped in $3.234$ seconds before writing a result JSON.
+For `r = sqrt(2)` and $U = 3r/4 - 1$, the nonpersistent axis `0-3:owner3:a-` has cleared
 residual
 
 ```text
 (r/2)(u^2+4)^2(u-U).
 ```
 
-It is negative for `0 <= u < U` and zero at `U`. After sign normalization it is strictly
-positive only on `[0,U)`, not the frozen closed interval.
+It is negative for `0 <= u < U` and zero at $U$. After sign normalization it is strictly
+positive only on $[0,U)$, not the frozen closed interval.
 This axis is nonseparating before the endpoint, and another certified axis separates
-pair `(0,3)`, so the root does not refute path feasibility.
+pair $(0,3)$, so the root does not refute path feasibility.
 It refutes the frozen assertion that the four persistent axes are the complete pointwise
 zero inventory for every `0 < u <= U`. The exact pointwise inventories are five base
-zeros, four zeros on `0 < u < U`, and five zeros at `U`; the closed-path union has six
+zeros, four zeros on $0 < u < U$, and five zeros at $U$; the closed-path union has six
 labels because the base-only and endpoint-only axes differ.
 
 Independent control review found three remaining instrument issues after this exact

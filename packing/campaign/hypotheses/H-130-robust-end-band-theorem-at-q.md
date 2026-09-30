@@ -57,14 +57,15 @@ hypothesis:
 # H-130 — The First Rung of the Band Ladder
 
 A band-restricted theorem says that every packing all of whose folded angles lie in a
-set `S` has side above `L`. Stromquist’s Theorem 3 is `S = {0°, 45°}` at `3.8856`;
+set `S` has side above $L$. Stromquist’s Theorem 3 is
+$S = \lbrace0^\circ, 45^\circ\rbrace$ at $3.8856$;
 [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md) transports it
-to `0.6848°` bands at `96/25` and shows that the class program proves such theorems
+to $0.6848^\circ$ bands at $96/25$ and shows that the class program proves such theorems
 exactly whenever the restricted covering value is below eleven.
 
-This claim is the widest end band the instrument can decide at `96/25`. The planning
-lane already decided `1.45°` at the axis end and `1.24°` at the diagonal end on one site
-set; the claim asks for twice that.
+This claim is the widest end band the instrument can decide at $96/25$. The planning
+lane already decided $1.45^\circ$ at the axis end and $1.24^\circ$ at the diagonal end
+on one site set; the claim asks for twice that.
 The known construction does not provide an integral obstruction there.
 Exp-130’s Theorem C supplies the symmetric base case; Theorem A’s total width alone does
 not. [Agenda 030](../agendas/agenda-030-parallel-structural-lanes-at-n11.md) owns it in

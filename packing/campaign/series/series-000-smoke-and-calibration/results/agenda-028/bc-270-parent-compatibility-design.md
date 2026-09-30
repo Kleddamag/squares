@@ -13,7 +13,7 @@ identifies a redundant-remainder issue, corrected explicitly below on 2026-09-07
 The condition below is a list of inequalities in the actual four poses.
 It uses no preset center box, fitted orientation interval, assumed residual anchor or
 residual packing-number oracle.
-The other seven squares supply the contradiction through their radius-$1/2$ incircles
+The other seven squares supply the contradiction through their radius-`1/2` incircles
 and four explicitly constructed regions.
 The lower and upper band siblings remain open.
 No surviving coupled-LP witness is supplied, so
@@ -93,7 +93,7 @@ E=\{(x,y): |x|,|y|\le2/5,\quad |x|+|y|\le699/1000\}.
 $$
 
 Its eight vertices have coordinate magnitudes $2/5$ and $299/1000$. Their squared norm
-is $249401/1000000<1/4$. Thus the whole closed $E$ lies strictly inside the radius-$1/2$
+is $249401/1000000<1/4$. Thus the whole closed $E$ lies strictly inside the radius-`1/2`
 disk. Since every residual unit square contains that disk, a residual center in
 $C_i+\mathcal D(m_i)+E$ forces interior overlap with square $i$, whatever the residual
 orientation. This assertion includes the guard boundary: the guard lies inside the open
@@ -247,7 +247,7 @@ $$
 $$
 
 Every residual unit-square center belongs to this union, and two residual centers in one
-region would have distance at most $\beta<1$. Their radius-$1/2$ incircle interiors
+region would have distance at most $\beta<1$. Their radius-`1/2` incircle interiors
 would overlap, contradicting unit-square interior disjointness.
 Assign a center on a region seam to its lowest-index containing region.
 At most four residual squares fit.

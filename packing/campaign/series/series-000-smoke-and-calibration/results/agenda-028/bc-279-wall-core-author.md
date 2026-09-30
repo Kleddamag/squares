@@ -232,7 +232,7 @@ where $\mathcal O_i$ denotes the old selected guard octagons, distinguished from
 residual common cores.
 Even each closed $\mathcal O_i$ is strictly forbidden to the center of a disk avoiding
 the four actual selected squares.
-A further core contains its radius-$1/2$ disk, so its center must satisfy $Y>69/40$ and
+A further core contains its radius-`1/2` disk, so its center must satisfy $Y>69/40$ and
 lie in
 
 $$

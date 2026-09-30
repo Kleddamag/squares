@@ -38,7 +38,7 @@ hypothesis:
 ---
 # H-009 — quantify what the identity quotient removes
 
-The `n = 3` angle-wrap defect already proves that a naive key can split one geometric
+The $n = 3$ angle-wrap defect already proves that a naive key can split one geometric
 object. This experiment measures the effect on actual campaign output after the
 terminal-component relation is fixed.
 

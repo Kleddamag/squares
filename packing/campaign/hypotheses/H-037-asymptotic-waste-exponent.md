@@ -128,7 +128,7 @@ finite-transfer obligations.
 
 ## Exact count in Bui’s replacement grid
 
-Bui Section 3.1 starts with `m` columns of sloped squares and defines
+Bui Section 3.1 starts with $m$ columns of sloped squares and defines
 
 $$ i_j=\left\lceil (j-1)c\right\rceil+1, \qquad c=\frac{1-\Delta_1}{\Delta_2}>0. $$
 

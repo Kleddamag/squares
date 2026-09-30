@@ -83,7 +83,7 @@ measurement, and `OR-1` says which of them deserve a tool.
 | --- | --- | --- |
 | A, growth cone | One-sided rates $(f(\theta^*+hd)-U)/h$ per radian at $h=10^{-4}$; coordinate directions and the common tilt minimized over the 2,048 raw separating-axis cells containing Trump’s pose, the composite directions in the read cell only | Coordinate rates: sq0 0.139/0.164, sq1 0.458/0.542, sq2 0.411/0.194, sq3 0.458/0.458, sq4 0.458/0.542, sq5 0.230/0.273, sq6 0.238/0.299, sq7 0.312/0.301, sq8 0.674/0.210, sq9 0.402/0.301, sq10 0.134/**0.066**; common tilt 0.384/0.175 (H-019’s 0.3841/0.1747 reproduced); all six axis squares together 1.06/1.08 |
 | B, certificate at $U$ | Kleddamag’s rows, sites, weights and cores unchanged; container enlarged from $191/50$ to $(764/775)\cdot3877084/10^6$, ratio $3.877084>U$; per-row minimum charge on 18 rows by the retained box search in enclose mode | Drop from the $999{,}962{,}528$ threshold: 68.2% at $u=0$; 22–39% for $u\le0.023$ (tilt $\le2.6°$); 5–12% for $u\in[0.06,0.15]$; 0.8–2.5% for $u\ge0.19$; 1.69% on the row adjacent to Trump’s half-tangent $0.365769$ |
-| C, census | 59 `quench_bracket` runs from Trump: 15 single-square angle releases, 3 double releases, 40 random jolts of every centre and angle at scales 0.02–0.3 | 24 return to $U$ (13 of 16 jolts at scale $\le0.05$, then 2/8, 1/8, 1/8); Stromquist’s $3.885618083$ reached seven times; six endpoints at $U+0.0017$ to $U+0.0049$ with six axis squares, four at a common tilt $40.4°$–$40.9°$, and one square alone (square 10 five times, square 7 once) |
+| C, census | 59 `quench_bracket` runs from Trump: 15 single-square angle releases, 3 double releases, 40 random jolts of every centre and angle at scales 0.02–0.3 | 24 return to $U$ (13 of 16 jolts at scale $\le0.05$, then 2/8, 1/8, 1/8); Stromquist’s $3.885618083$ reached seven times; six endpoints at $U+0.0017$ to $U+0.0049$ with six axis squares, four at a common tilt $40.4°$ to $40.9°$, and one square alone (square 10 five times, square 7 once) |
 | D, descent check | From each of those six endpoints, walk the straight line in angle space to Trump’s angles in 24 steps, re-optimizing centres by the LP-in-cell fixed point | All six decrease monotonically to $U$ with zero rise; they are class-coordinate stalls of the quench, not local minima |
 
 Probe A’s rates are upper bounds on the growth of the all-cell optimum, since only
@@ -268,9 +268,9 @@ Either way the slice prices the tree, which is the only unknown in the milestone
 | Rung | Family | Angle parameters | What it proves | Cost order |
 | --- | --- | --- | --- | --- |
 | 0 | $\mathcal F_{6,5}$ on one box around $t^*$ | 0 | Trump is globally optimal at its own angle: the first optimality statement with an equality case for a family containing Trump’s packing | One cell tree |
-| 1 | $\mathcal F_{6,5}$, all $\theta$ (H-112) | 1 | Any improvement on Trump has a different multiplicity or more classes | $10^2$–$10^3$ boxes |
+| 1 | $\mathcal F_{6,5}$, all $\theta$ (H-112) | 1 | Any improvement on Trump has a different multiplicity or more classes | $10^2$ to $10^3$ boxes |
 | 2 | Axis plus one angle, $m=1..11$ tilted squares | 1 each | Any improvement uses two distinct non-axis orientations | 11 rungs like 1 |
-| 3 | Two arbitrary orientations (H-113) | 2 | Any improvement has at least three orientations: Stromquist’s Theorem 3 with $\{0°,45°\}$ replaced by every pair | $10^4$–$10^5$ boxes per multiplicity |
+| 3 | Two arbitrary orientations (H-113) | 2 | Any improvement has at least three orientations: Stromquist’s Theorem 3 with $\{0°,45°\}$ replaced by every pair | $10^4$ to $10^5$ boxes per multiplicity |
 | 4 | Three orientations | 3 | The first rung that meets the far region | Priced by $c$ and $V$ |
 
 Each rung also yields **tubes**: wherever a box is closed with margin $\mu>0$, transfer
@@ -293,7 +293,7 @@ family, with the ball covering the margin-zero end.
   consumer must filter.
 - **Stromquist’s class at $3.8856$.** It is a second local minimum of $\mathcal F_{6,5}$
   at $\theta=45°$, attained, with rotational rattlers (probe C reached the same side
-  with an axis square at $1.5°$–$3.5°$, thirteen contacts, not converged).
+  with an axis square at $1.5°$ to $3.5°$, thirteen contacts, not converged).
   For rung 1 it is harmless: the margin $0.0085$ prunes boxes of width about $0.0085/c$
   there, and the transfer strip covers the endpoint.
   For a profile theorem it fixes the required sharpness: any one-body statement about
@@ -375,8 +375,8 @@ Session 156 ran three of the lanes above the same night, and three estimates her
 wrong in ways that change the plan:
 
 - **The cell tree is about a thousand times larger than estimated.** Rung 0’s box needed
-  more than $7.8\times10^7$ nodes before its last 79 of 256 subtrees, against the
-  $10^3$–$10^5$ LPs per box estimated in “The H-112 Milestone”.
+  more than $7.8\times10^7$ nodes before its last 79 of 256 subtrees, against the $10^3$
+  to $10^5$ LPs per box estimated in “The H-112 Milestone”.
   Each added square multiplies the tree by roughly six or seven (the $n=5$ control
   closes in 229 nodes).
   Rung 1 is out of reach with this relaxation, and the lever is a stronger bound per

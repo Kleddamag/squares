@@ -43,12 +43,12 @@ hypothesis:
 ---
 # H-017 — the crude version of the premise test
 
-This probes one point on the budget-response curve for exp-001’s `n = 11` method.
+This probes one point on the budget-response curve for exp-001’s $n = 11$ method.
 Passing would show that this budget can reach the threshold on at least one declared
 seed; failing would rule out neither larger budgets nor other schedules.
 
 [H-012](H-012-record-basins-are-rare.md) asks a different question: the record-to-modal
-attraction-probability ratio under one named `P/Q/E`. It needs a new identified `n = 11`
+attraction-probability ratio under one named $P/Q/E$. It needs a new identified $n = 11$
 sample beyond H-011, so it is not a free or interchangeable substitute.
 H-017 remains a low-priority response-curve cell rather than the default eight-hour run.
 
@@ -59,7 +59,7 @@ measure preimage under a named quench, and the repository has not supplied its o
 rigidity certificate for Trump’s packing.
 H-012 is the direct proposer-conditioned measurement.
 Recorded before the run, so the failure is evidence rather than a shrug.
-A partial improvement — say `3.89` — resolves neither branch and should be recorded
+A partial improvement — say $3.89$ — resolves neither branch and should be recorded
 `unresolved`, not argued into whichever story is preferred.
 
 <!-- This document follows common-doc-guidelines.md.

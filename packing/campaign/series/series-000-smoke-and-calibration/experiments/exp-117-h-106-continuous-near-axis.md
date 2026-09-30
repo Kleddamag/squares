@@ -108,7 +108,7 @@ The
 accepts the separate rectangle calculation and states its arithmetic and process limits.
 The positive rational denominator, complete affine center map and closed grid prove
 coverage for each parameter.
-The bound `T=110880/50803079` is an outward enlargement of `tan(pi/1440)`, as proved in
+The bound $T=110880/50803079$ is an outward enlargement of `tan(pi/1440)`, as proved in
 the registered hypothesis’s design reference.
 
 The producer tests 864 signed triangle-vertex polynomials.

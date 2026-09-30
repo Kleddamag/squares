@@ -107,7 +107,7 @@ r(P)=\min(X,Y,q-X,q-Y),\quad
 t(P)=\min(r(P),1/\sqrt2),\quad a(P)=\frac1{4t(P)}.
 $$
 
-Let $B$ be the closed radius-$1/2$ disk centered at zero.
+Let $B$ be the closed radius-`1/2` disk centered at zero.
 Define
 
 $$

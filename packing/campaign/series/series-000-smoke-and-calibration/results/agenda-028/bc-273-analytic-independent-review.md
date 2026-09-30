@@ -262,7 +262,7 @@ The claimed consequences $z-2\ge182/725>1/4$ and, when $s\le13/20$, $z-2>331/100
 follow from the stated monotonicity and $\sqrt{231}/20>759/1000$.
 
 I also checked the author’s seven excluded core-versus-square-2 directions and the
-remaining negative-$f$ inequality.
+remaining negative-`f` inequality.
 Their right-compartment contradiction is valid.
 The below-coordinate expression decreases in angle as claimed and has endpoint value
 $1219/500<49/20$. The last two sine ranges give the positive rational differences

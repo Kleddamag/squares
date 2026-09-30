@@ -1,7 +1,7 @@
 # BC-278: Boundary-Band Author Result
 
 **Partial result; the full-square target remains unresolved.** The unchanged admitted
-four-pose domain contains an exact configuration admitting seven radius-$1/2$ disks with
+four-pose domain contains an exact configuration admitting seven radius-`1/2` disks with
 disjoint interiors. Consequently neither $\kappa_{\rm disk}\le6$ nor
 $\kappa_{\rm oct}\le6$ holds uniformly on that domain.
 These are negative controls for the two relaxations.
@@ -146,7 +146,7 @@ the as-yet unresolved eleven-square child $D_0$.
 
 ## Seven Exact Disk Centers
 
-Place closed radius-$1/2$ disks at the following centers:
+Place closed radius-`1/2` disks at the following centers:
 
 | Disk | $X$ | $Y$ |
 | --- | --- | --- |
@@ -200,7 +200,7 @@ $$
 (|a|-1/2)_+^2+(|c|-1/2)_+^2.
 $$
 
-Distance at least $1/2$ proves that a radius-$1/2$ disk avoids the square interior.
+Distance at least $1/2$ proves that a radius-`1/2` disk avoids the square interior.
 In particular, a positive normal coordinate at least one is a sufficient separating
 projection for this square and disk.
 It is not the corresponding support threshold for an arbitrary full residual square.
@@ -305,12 +305,12 @@ of this center-wise lifting attempt, not impossibility of other seven-square pos
 the same cavity or elsewhere in $\Gamma_0$.
 
 The disk counterexample also blocks a tempting repair of the weaker-model route.
-Replacing $E$ by a tighter polygon inside the radius-$1/2$ disk, adding more such
+Replacing $E$ by a tighter polygon inside the radius-`1/2` disk, adding more such
 orientation-independent forbidden-center resources, or using the exact selected
 square-plus-disk obstacle still cannot establish a uniform disk capacity of six: the
 seven disks pass the strongest of those individual-obstacle checks already.
 Indeed the intersection of all centered unit-square orientations is exactly the
-radius-$1/2$ disk. The disk is contained in every orientation; conversely, for any point
+radius-`1/2` disk. The disk is contained in every orientation; conversely, for any point
 of norm greater than $1/2$, choose a square edge normal parallel to that point, which
 excludes it. Thus a larger fixed inner core valid for every residual angle is
 unavailable. This argument concerns common-core center models; it does not rule out

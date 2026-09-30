@@ -68,7 +68,7 @@ B=9977/10000
 $$
 
 is small enough that every physical unit square, at any angle, strictly contains a
-same-centre side-$B$ core at a nearby net orientation.
+same-centre side-`B` core at a nearby net orientation.
 This strict containment also gives every residual core positive clearance from the
 closed owner patches.
 
@@ -241,7 +241,7 @@ documentation work; they add no experiment run and are not included in the froze
 session113 usage receipt.
 The separate native usage attempt for `05:16:31Z–05:55:48Z` failed validation:
 `devtools.codex_task_tree_delta` reported that cumulative agent-wait seconds decreased
-from `2208.02` to `1840.904`. No new delta receipt or cost total was accepted.
+from $2208.02$ to $1840.904$. No new delta receipt or cost total was accepted.
 `think-86ax` tracks the accounting repair and subsequent remeasurement; the frozen
 sprint receipt remains unchanged.
 The completed [Agenda032](../../../../agendas/agenda-032-conditional-owner-sprint.md)

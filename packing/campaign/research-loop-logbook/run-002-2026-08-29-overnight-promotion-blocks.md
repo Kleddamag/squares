@@ -224,13 +224,13 @@ logbook_entry:
 
 ## Context
 
-`s(n)` is the smallest square that holds `n` unit squares.
-For most `n` the best known packing is a *reported* number: someone found an
+$s(n)$ is the smallest square that holds $n$ unit squares.
+For most $n$ the best known packing is a *reported* number: someone found an
 arrangement, published its coordinates, and nobody has independently proved that the
 arrangement is even valid, let alone optimal.
 This repository separates those claims — `reported_upper_bound` is what a source says,
 `verified_upper_bound` is what has been checked here or replayed from a public
-certificate — and the gap between them at `n = 29` was the subject of this run.
+certificate — and the gap between them at $n = 29$ was the subject of this run.
 
 Verifying a packing exactly is harder than it sounds, and the reason is the whole
 argument for the machinery below.
@@ -242,11 +242,11 @@ So a real certificate needs either exact algebra or rigorous enclosures.
 
 Two routes lead there.
 The **exact route** recovers the packing’s minimal polynomial and discharges it by exact
-substitution; it is stronger, and at `n = 29` this run measured *why* it does not reach.
+substitution; it is stronger, and at $n = 29$ this run measured *why* it does not reach.
 A sweep under the promotion spec’s frozen margin rule, on a thousand manufactured
-digits, returns no relation at any degree through twenty below `10^22` — and the
-rationalised system bounds the solution variety at `1,039,500`, so degree twenty was a
-corner of the space rather than a survey of it.
+digits, returns no relation at any degree through twenty below $10^{22}$ — and the
+rationalised system bounds the solution variety at $1{,}039{,}500$, so degree twenty was
+a corner of the space rather than a survey of it.
 The **interval route** proves that a root exists and is unique inside a box and checks
 separation on enclosures; it never needs the polynomial.
 This run built both.
@@ -255,7 +255,7 @@ This run built both.
 
 Both routes moved, and one produced a result.
 
-At `n = 29` the interval route now certifies
+At $n = 29$ the interval route now certifies
 
 ```
 s(29) <= 5.93383346267692918974379895098      (eps = 1e-20, 406 pairs, none undecided)
@@ -271,8 +271,8 @@ sourcing, because no public certificate exists.
 Whether the ceiling moves is a reviewed human decision through the evidence contract.
 
 The claim is also narrower than it looks: an upper bound at a *declared relaxation*, not
-a statement about the optimum, and not an optimality result — the `n = 29` bound gap of
-about `0.46` is untouched.
+a statement about the optimum, and not an optimality result — the $n = 29$ bound gap of
+about $0.46$ is untouched.
 
 ## Run Rollup
 
@@ -282,9 +282,9 @@ Four blocks were planned; three ran.
 | Block | Commitment | State |
 | --- | --- | --- |
 | 1 | `BC-052` — interval arithmetic and the Krawczyk operator | complete |
-| 2 | `BC-053` — calibration, then `n = 29` | complete |
+| 2 | `BC-053` — calibration, then $n = 29$ | complete |
 | 3 | `BC-054` — contact features and system assembly | complete |
-| 4 | `BC-055` — reachability-scoped verification, `n = 5` rigidity | **not run** |
+| 4 | `BC-055` — reachability-scoped verification, $n = 5$ rigidity | **not run** |
 
 Blocks 2 and 3 each overran into the slack block 4 was placed last to absorb, which is
 what the slack was for.
@@ -308,14 +308,14 @@ No `exp-NNN` rounds were opened.
 This was `pipeline-improvement` work throughout: it built instruments and measured their
 behaviour, and the measurements below belong to the session records rather than to
 preregistered rounds.
-The `n = 29` certificate is a retained result awaiting review, not an accepted round.
+The $n = 29$ certificate is a retained result awaiting review, not an accepted round.
 
 ### Prior Retained Results Used or Rechecked
 
 None were replayed against their own criteria.
 Two prior *artifacts* were used as known answers and are worth naming even though
-neither is an experiment record: Trump’s exactly verified `n = 11` packing, and the
-`n = 29` contact structure BC-042 froze in session-035.
+neither is an experiment record: Trump’s exactly verified $n = 11$ packing, and the
+$n = 29$ contact structure BC-042 froze in session-035.
 
 ## What Worked
 
@@ -327,7 +327,7 @@ lifts both ends of `sqrt(2)`'s box above `sqrt(2)` — the operator proved somet
 and then wrote down something false.
 And the operator reported its last iteration rather than the verdict it had *proved*,
 discarding a uniqueness result obtained two iterations earlier once contraction drove
-the box tight enough that rounding widened `K(X)` past `X`.
+the box tight enough that rounding widened $K(X)$ past $X$.
 
 **Checking discrimination, not just agreement.** A checker that returned “valid”
 unconditionally would pass every agreement test in block 2. So the same packings were
@@ -335,7 +335,7 @@ pushed into infeasibility by amounts no float check can see: an overlap of `1e-3
 *proved* by the interval route and reported **valid** by `float_sign(1e-9)`.
 
 **Two routes meeting.** Verified unrelaxed, the interval chain cannot decide exactly 52
-pairs of the `n = 29` packing — and those are precisely the 52 pair contacts BC-042
+pairs of the $n = 29$ packing — and those are precisely the 52 pair contacts BC-042
 extracted by an entirely different method.
 Neither was built to agree with the other.
 
@@ -350,16 +350,16 @@ strictly. The fold is reimplemented; the geometry is still shared.
 
 **Counting rows.** The promotion spec’s phase-2 control asks for the unclosed contact
 system to be reported underdetermined.
-At `n = 11` it is overdetermined by the count — 35 equations against 34 unknowns — and
+At $n = 11$ it is overdetermined by the count — 35 equations against 34 unknowns — and
 four conditions short by the rank, at the same time.
 That control cannot fire as written, and closure is sized by the shortfall instead.
 
-**Angle identities.** Angle classes hold modulo ninety degrees, so `t_i = t_j` is false
+**Angle identities.** Angle classes hold modulo ninety degrees, so $t_i = t_j$ is false
 for a class member a quarter or half turn from another.
-Emitting them left `n = 11` at the noise floor — its classes happen to have equal angles
-— and drove `n = 29` to a residual of exactly `pi`.
+Emitting them left $n = 11$ at the noise floor — its classes happen to have equal angles
+— and drove $n = 29$ to a residual of exactly `pi`.
 
-**Assembling `n = 29`.** Seven of its twenty-nine squares are built inside `scale(-1 1)`
+**Assembling $n = 29$.** Seven of its twenty-nine squares are built inside `scale(-1 1)`
 mirror groups and have clockwise corner winding, which a centre-plus-rotation pose
 cannot produce.
 Assembly refuses them by name rather than describing their mirror images.
@@ -367,7 +367,7 @@ That is a limitation, not a result, and it is the block’s clearest open questi
 
 ## Pipeline Changes
 
-Four, all built: the interval-certification stack, the relaxation bound, the `n = 29`
+Four, all built: the interval-certification stack, the relaxation bound, the $n = 29$
 symbolic layout, and contact-system assembly.
 The frontmatter above lists their paths.
 
@@ -399,7 +399,7 @@ engine commit.
 
 ## Claim Boundary and Next Action
 
-The `n = 29` certificate proves an upper bound at a declared relaxation and nothing
+The $n = 29$ certificate proves an upper bound at a declared relaxation and nothing
 more. It is not the optimum, not an optimality result, and not promoted.
 `verified_upper_bound` is where it was.
 
@@ -416,23 +416,23 @@ finish.
 | Block | Commitment | Outcome |
 | ---: | --- | --- |
 | 11 | `BC-066` — eliminate the five-unknown system | A measured wall. OOM at degree 32, `13.8 GB`; swell is not the cause |
-| 12 | `BC-070` — bound the degree without a basis | `15,744` by mixed volume, sixty-six times tighter than Bézout |
-| 13 | `BC-067` — the `n = 11` round trip | Closed. Reconstructed side exactly the field generator |
+| 12 | `BC-070` — bound the degree without a basis | $15{,}744$ by mixed volume, sixty-six times tighter than Bézout |
+| 13 | `BC-067` — the $n = 11$ round trip | Closed. Reconstructed side exactly the field generator |
 | 14 | `BC-068` — pin the atlas emission (`D-359`) | Fixed; no stored artifact changed a byte |
-| 15 | `BC-069` — the one `n = 5` condition | Rank `16/16`; the promised form could not have closed it (`D-363`) |
+| 15 | `BC-069` — the one $n = 5$ condition | Rank `16/16`; the promised form could not have closed it (`D-363`) |
 | 16 | `BC-061` — exact LP over certified coefficients | Optimum exact; `ambiguous` empty |
 | 17 | `BC-071` — phase 1 of that LP | First vertex from the cell’s own coefficients, no float solver |
-| 18 | `BC-063` — first-party `n = 5` rigidity | Infinitesimally flexible, second-order rigid |
+| 18 | `BC-063` — first-party $n = 5$ rigidity | Infinitesimally flexible, second-order rigid |
 | 19 | `BC-072` — retrack at higher precision | Every path labelled; the count still refused, for a narrower reason |
 | 20 | `BC-073` — the sweep’s true reach | Refusal carries from degree 20 to 29; `D-364` found on the way |
 | 21 | `BC-064` — endpoint check | Two strict failures: `D-365` pre-existing, `D-366` this session’s |
 | — | `BC-062` — reachability-scoped verification | Stopped deliberately; a measurement block on a contended machine |
 
 **What the continuation was for, and what it settled.** The exact route’s every layer
-below the field is now built and exercised end to end at `n = 11`. At `n = 29` the
-degree bound falls from `1,039,500` to `15,744` and the relation refusal carries from
-degree 20 to 29. The field itself remains out of reach — but out of reach *measured*
-rather than assumed, which is the difference between a gap and a wall.
+below the field is now built and exercised end to end at $n = 11$. At $n = 29$ the
+degree bound falls from $1{,}039{,}500$ to $15{,}744$ and the relation refusal carries
+from degree 20 to 29. The field itself remains out of reach — but out of reach
+*measured* rather than assumed, which is the difference between a gap and a wall.
 
 **Five record defects a cold start inherits** were found by picking this branch up in a
 fresh container and following its own instructions: five bootstrap commands that do not
@@ -474,30 +474,29 @@ assembly, chirality in the pose model, the `edge-edge` collinearity repair, clos
 all three retained sizes, minimal-polynomial recovery under the frozen margin rule,
 irreducibility and root isolation, the round trip back to a verified packing, an exact
 LP over certified coefficients, and phase 1 of that LP so it needs no float starting
-vertex. At `n = 11`, where the field is published, the chain runs end to end and returns
+vertex. At $n = 11$, where the field is published, the chain runs end to end and returns
 the published side with a difference of exactly zero.
 
-**The one missing piece is the field itself at `n = 29`, and everything is blocked
-behind it.** The exact LP cannot be pointed at `n = 29` for the same reason the round
+**The one missing piece is the field itself at $n = 29$, and everything is blocked
+behind it.** The exact LP cannot be pointed at $n = 29$ for the same reason the round
 trip cannot: `fixed_cell_lp` needs exact coordinates, exact coordinates need an
-algebraic number field, and there is no minimal polynomial for `s(29)` to build one
+algebraic number field, and there is no minimal polynomial for $s(29)$ to build one
 from.
-Assembling the `n = 29` contact system as an LP is therefore not the next block; it
+Assembling the $n = 29$ contact system as an LP is therefore not the next block; it
 is the same block wearing different clothes.
 
 **And that missing piece has now been measured twice rather than assumed.** `BC-060`
-found no integer relation through degree twenty below `10^22` on a thousand digits.
+found no integer relation through degree twenty below $10^{22}$ on a thousand digits.
 `BC-066` found that Gröbner elimination does not reach an eliminant on this hardware,
-and — more usefully — that coefficient swell is *not* what stops it: over `F_p`, where a
+and — more usefully — that coefficient swell is *not* what stops it: over $F_p$, where a
 coefficient is one machine word, the matrices reach the same dimensions and the cheapest
 monomial order still does not terminate, so what is being measured is the size of the
-ideal.
-`BC-070` then bounded the degree of the Kingbird solution at **`15,744`** by mixed
-volume, down from Bézout’s `1,039,500`, which is a sixty-sixfold improvement and still
-far beyond what an integer-relation search reaches.
+ideal. `BC-070` then bounded the degree of the Kingbird solution at **$15{,}744$** by
+mixed volume, down from Bézout’s $1{,}039{,}500$, which is a sixty-sixfold improvement
+and still far beyond what an integer-relation search reaches.
 
 So the honest state is: the pipeline is finished and the number is not available.
-A route that produces the minimal polynomial of `s(29)` — or a proof that its degree is
+A route that produces the minimal polynomial of $s(29)$ — or a proof that its degree is
 large enough to close the question — is the whole of what remains, and the interval
 certificate carries the bound in the meantime for a reason that is now measured.
 
@@ -529,7 +528,7 @@ Writing the system down is **not** the hard part and is already done, twice: our
 assembly from the contact topology (122 equations in 88 unknowns, full rank, residual
 `1.3e-15`) and the source’s own six-equation system, which is itself the product of a
 large hand-elimination — Kingbird expressed all twenty-nine poses in six parameters.
-Rationalised, that is six polynomials over `Q`, and five after `s` is solved out.
+Rationalised, that is six polynomials over $Q$, and five after $s$ is solved out.
 The wall is the elimination, not the transcription.
 
 Elimination is also genuinely **less error-prone** than integer relation, and that is
@@ -539,10 +538,10 @@ them, so the rule carries all the epistemic weight.
 Elimination is a derivation — exact by construction, with no margin, no precision
 question, and nothing to be fooled by.
 
-But a complete success upgrades the `n = 29` **upper bound** from “certified at a
+But a complete success upgrades the $n = 29$ **upper bound** from “certified at a
 relaxation of `1e-20`” to “exactly this algebraic number”.
 It says nothing about optimality.
-The bound gap of about `0.46` at `n = 29` is untouched either way, and so is the
+The bound gap of about $0.46$ at $n = 29$ is untouched either way, and so is the
 question of whether Kingbird’s packing is the best one.
 Do the block for exactness and for making the pipeline general at sizes with no
 published system — not as a route to a larger theorem.

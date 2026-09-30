@@ -126,7 +126,7 @@ session:
 
 Contemporaneous record; the frontmatter is the session.
 Every comparison in the outcome is exact or cited: the pattern-ceiling inequality
-reduces to `18816 < 21025`, and the standing bound at `n = 61` is read from the
+reduces to $18816 < 21025$, and the standing bound at $n = 61$ is read from the
 gap-ranking tool the reassessment built under D-405.
 
 <!-- This document follows common-doc-guidelines.md.

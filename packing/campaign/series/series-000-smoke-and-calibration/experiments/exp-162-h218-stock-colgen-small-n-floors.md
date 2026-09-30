@@ -108,7 +108,7 @@ This is the first scientific round of
 [Session 140](../../../agent-sessions/session-140-lb-survey.md) owns the clock.
 
 The accept rule is the gate, not the float LP. A float objective or feasible frozen mass
-above `n` is not a verified lower bound on the restricted optimum and does not refute
+above $n$ is not a verified lower bound on the restricted optimum and does not refute
 the site set. T-028 is landed only on `RETAINABLE`.
 
 exp-161 is not this round.

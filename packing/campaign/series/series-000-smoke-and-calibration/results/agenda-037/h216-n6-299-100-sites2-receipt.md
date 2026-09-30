@@ -3,7 +3,7 @@
 Status: **open**. Neither confirmation nor refutation.
 
 This run is calibration of the helper-free point-atom language at n=6. It is not an n=11
-bound, and it does not move `s(6) = 3`.
+bound, and it does not move $s(6) = 3$.
 
 [H-216](../../../../hypotheses/H-216-point-certificate-at-n6-299-100.md) asks whether a
 helper-free point-atom certificate exists at `(n, L, B, net) = (6, 299/100, 9977/10000,
@@ -13,18 +13,18 @@ Confirm only with a frozen covering of mass strictly below 6 that both routes of
 Kill only with an exact depth-one family of total at least 6 that
 `devtools.independent_ceiling_reader` and `sqpack.fractional.ceiling.verify_ceiling`
 both accept. A float LP, an incomplete row set, a stalled interval route, or the attic
-scratch numbers `83/14` and `6.006571` decide neither direction.
+scratch numbers $83/14$ and $6.006571$ decide neither direction.
 
-The first freeze on auto grids `(18, 24, 29)` gave covering `76027/12500` = 6.08216 and
+The first freeze on auto grids $(18, 24, 29)$ gave covering $76027/12500$ = 6.08216 and
 does not confirm. This receipt is a second named site set on the same `(n, L, B, net)`.
 It does not re-run polish or either ceiling reader on that first family.
 
 ## Site Set
 
-BC-191 auto grids at densities `17/2`, `23/2`, `57/4` plus one extra density `67/4`,
-inset `1/2`, on container side `299/100` and square side `9977/10000`.
-`site_counts_for_side` writes those four densities as grid counts `(18, 24, 29, 34)`.
-The extra count `34` is also the count the same rule gives for density `413/25`, the
+BC-191 auto grids at densities $17/2$, $23/2$, $57/4$ plus one extra density $67/4$,
+inset $1/2$, on container side $299/100$ and square side $9977/10000$.
+`site_counts_for_side` writes those four densities as grid counts $(18, 24, 29, 34)$.
+The extra count $34$ is also the count the same rule gives for density $413/25$, the
 finest component of BC-191’s next measured three-grid rung.
 
 `devtools.run_fractional_colgen` has no extra-density flag.
@@ -72,40 +72,40 @@ deadline.
 | Float LP objective | 6.076773566569485 |
 | Atoms | 160 |
 | `least_cell_mass` | null (no cell sweep) |
-| Claimed mass `< 6` | no |
+| Claimed mass $< 6$ | no |
 
 `devtools.decide_certificate` was not run.
 The covering freeze exists, but its claimed mass is not strictly below 6, so it cannot
 confirm H-216. The float objective and the rationalised mass without a two-route
 decision are V0/C0 for the determination.
 
-Relative to the auto freeze `76027/12500` = 6.08216, this four-grid covering is lower by
-`123/25000` = 0.00492 and remains above 6.
+Relative to the auto freeze $76027/12500$ = 6.08216, this four-grid covering is lower by
+$123/25000$ = 0.00492 and remains above 6.
 
 ## Dual Family
 
-The freeze family carried 224 placements of total `6253/1029`. The in-run
-`verify_ceiling` screen on the unpolished family reported max depth `1.186710` and
-feasible total `5.120688` at 228440 vertices (35888 decided exactly).
+The freeze family carried 224 placements of total $6253/1029$. The in-run
+`verify_ceiling` screen on the unpolished family reported max depth $1.186710$ and
+feasible total $5.120688$ at 228440 vertices (35888 decided exactly).
 
 Polish and both ceiling readers were not run on this family.
 Covering mass is not below 6, so confirmation is already impossible.
 Kill would need an exact depth-one family of total at least 6; the in-run screen is not
 that object. `polish_ceiling_family` refuses a record that repeats a placement, and this
-freeze writes axis-parallel squares as both `t = 0` and `t = 1`. There is no in-tree
+freeze writes axis-parallel squares as both $t = 0$ and $t = 1$. There is no in-tree
 flag on `run_fractional_colgen` that merges those writings before polish.
 
 ## Determination
 
 H-216 remains **open**.
 
-- Confirmation failed: this covering freeze has mass `151931/25000`, which is not below
+- Confirmation failed: this covering freeze has mass $151931/25000$, which is not below
   6, and `decide_certificate` was not invoked.
 - Refutation was not attempted on this family.
-  The in-run screen’s feasible total `5.120688` is below 6 and is not an exact depth-one
+  The in-run screen’s feasible total $5.120688$ is below 6 and is not an exact depth-one
   verdict.
-- The attic bracket `[83/14, 6.006571]` is still V0/C0 scratch and is not used here.
-- The freeze family’s total `6253/1029` matches the site-set LP objective.
+- The attic bracket $[83/14, 6.006571]$ is still V0/C0 scratch and is not used here.
+- The freeze family’s total $6253/1029$ matches the site-set LP objective.
   It is not a language-wide lower bound: max depth on the unpolished family is above 1.
 
 ## Artifacts

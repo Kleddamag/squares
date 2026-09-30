@@ -142,7 +142,7 @@ The result document is
 this record carries the clocks, the stop conditions and what was checked.
 
 The block ran in the order the dispatch prescribed: the localisation theorems first, by
-hand, from the two proved premises; then one free covering LP at `96/25` on the site set
+hand, from the two proved premises; then one free covering LP at $96/25$ on the site set
 that proved the corner-pair theorem, its dual turned into an exactly verified fractional
 packing and its charge read on every anchor class the cell named; then the band question
 answered by an exact escaping square.

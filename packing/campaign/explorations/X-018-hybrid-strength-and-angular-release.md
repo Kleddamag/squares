@@ -321,7 +321,7 @@ cover. Retain the released-contact equality seam and the coincident/axis angle c
 The parent family contains Trump at $U$; that is a feasible control, not a witness
 inside the sublevel target.
 Keeping $L$ variable matters: enlarging a container can destroy the prescribed wall
-attachments, so a fixed-$q$ attachment test alone does not cover every smaller side.
+attachments, so a fixed-`q` attachment test alone does not cover every smaller side.
 
 For a closed pilot beyond existing local closure, use the complement of the local
 region’s interior, allowing boundary overlap, or impose a positive separation margin.

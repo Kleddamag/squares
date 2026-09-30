@@ -185,7 +185,7 @@ premises, and its own complete coverage receipt.
 Confirmation of the old n11 theorem supplies a strong control, not a new lower bound
 elsewhere.
 
-For the simpler fixed-$B$ square selector, changing only angular resolution has the
+For the simpler fixed-`B` square selector, changing only angular resolution has the
 ideal ceiling
 
 $$
@@ -204,7 +204,7 @@ The retained artifacts all use $B=9977/10000$:
 | n19 T-020 | $48000/9977=4.81106545054\ldots$ | Less than $0.011066$ |
 | n20/21 T-021 | $48500/9977=4.86118071565\ldots$ | Less than $0.011181$ |
 
-Thus unchanged-$B$ refinement could be a useful bridge or control, but cannot reach
+Thus unchanged-`B` refinement could be a useful bridge or control, but cannot reach
 $3.97$ at n12, $4.69$ at n18, $4.82$ at n19, or $4.87$ at n20/21 from these frozen
 working containers. Changed core size, support, weights, charges or conditional domains
 are different hypotheses.

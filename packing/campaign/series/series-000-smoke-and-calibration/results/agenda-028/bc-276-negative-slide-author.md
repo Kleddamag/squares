@@ -263,7 +263,7 @@ B\le K_5.
 \tag{14}
 $$
 
-The second is exactly negative-$f$ separation: $sX+cZ\ge D$ is equivalent to $B\le K_5$.
+The second is exactly negative-`f` separation: $sX+cZ\ge D$ is equivalent to $B\le K_5$.
 
 ### Pair 1–9: positive $f$ or upward separation
 
@@ -301,7 +301,7 @@ $$
 
 The last inequality uses $2s-1\ge1/5$ and $\beta c\le1/5$. It includes the exact
 equality at their shared extremal values.
-Thus horizontal-left separation also implies positive-$f$ separation.
+Thus horizontal-left separation also implies positive-`f` separation.
 Every legal alternative consequently gives
 
 $$
@@ -311,7 +311,7 @@ Y_9\ge D.
 \tag{17}
 $$
 
-The first is the exact positive-$f$ row for pair 1–9, since its block $f$ coordinate is
+The first is the exact positive-`f` row for pair 1–9, since its block $f$ coordinate is
 $B-1-\beta$.
 
 ### Pair 1–7 when square 9 separates upward
@@ -345,7 +345,7 @@ s\xi_7+cY_7
 \tag{19}
 $$
 
-If negative-$e$ separation holds, $c\xi_7-sY_7\ge D$, then
+If negative-`e` separation holds, $c\xi_7-sY_7\ge D$, then
 
 $$
 \begin{aligned}
@@ -358,7 +358,7 @@ s\xi_7+cY_7
 $$
 
 The identity in the last line is $D(1+s-c)-s=s^2$, using $c^2+s^2=1$. Thus both
-remaining alternatives imply the positive-$f$ alternative itself.
+remaining alternatives imply the positive-`f` alternative itself.
 Because square 7 has block $f$ coordinate $B-1$, every legal pair 1–7 gives
 
 $$
@@ -478,12 +478,12 @@ proposal’s remaining pair conditions.
 No square-10 pose or eleven-square witness was asserted.
 This failure directed attention to the full pair 5–6 disjunction.
 
-The positive pilot’s implication from upward pair 1–9 separation to its positive-$f$
+The positive pilot’s implication from upward pair 1–9 separation to its positive-`f`
 separation cannot be transferred directly.
 Combining that upward separation with horizontal-left pair 1–7 separation gives only
 $s\xi_9+cY_9\ge D-\beta s^2$. For negative slides this does not reach $D$. The argument
-here instead derives positive-$f$ separation for **pair 1–7**, giving $B\ge J$, and
-compares it with square 5’s negative-$f$ row.
+here instead derives positive-`f` separation for **pair 1–7**, giving $B\ge J$, and
+compares it with square 5’s negative-`f` row.
 This records the failed premise rather than treating the positive proof as a control
 inside $N$.
 

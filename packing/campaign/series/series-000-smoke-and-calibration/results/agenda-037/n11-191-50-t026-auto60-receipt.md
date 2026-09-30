@@ -2,11 +2,11 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: BC-191 auto `(25, 34, 41)` plus count 60, unioned with T-026’s 1121
-fractional-certificate atoms scaled from `381/100` to `191/50`,
+Session-139 probe: BC-191 auto $(25, 34, 41)$ plus count 60, unioned with T-026’s 1121
+fractional-certificate atoms scaled from $381/100$ to $191/50$,
 `(n, L, B, net) = (11, 191/50, 9977/10000, 181 directions)`. The T-025-seeded
-auto-plus-60 construction at this side converged at `11.020212`; windows dropped that to
-`11.018646`. Fractional seed converged at `11.033743` on 8081 sites.
+auto-plus-60 construction at this side converged at $11.020212$; windows dropped that to
+$11.018646$. Fractional seed converged at $11.033743$ on 8081 sites.
 Worse than the threshold seed.
 T-025 and T-026 are unchanged.
 
@@ -32,12 +32,12 @@ Column generation added one orbit after the row loop and stopped; wall 265.4 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.033743` |
-| Rationalised total | `5516909/500000` = `11.033818` |
+| Restricted optimum | $11.033743$ |
+| Rationalised total | $\frac{5516909}{500000}$ = $11.033818$ |
 | Sites / orbits / rows | 8081 / 1069 / 8324 |
 | Seed sites | 1121 |
 | LP rounds | 35 |
-| Crossing | round 14 (`11.002509`); rounds 5–13 sat at `11.000000` |
+| Crossing | round 14 ($11.002509$); rounds 5–13 sat at $11.000000$ |
 | Wall | 265.4 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

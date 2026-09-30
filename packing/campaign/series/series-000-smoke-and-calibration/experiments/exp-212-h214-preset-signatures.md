@@ -110,7 +110,7 @@ Each entry is median (minimum–maximum) over three seeds.
 | Physics | 90 | 0.45005 (0.43090–0.51833) | 0.52285 (0.51928–0.53185) | reverse order, separated |
 
 The order holds in two cells, overlaps and reverses in one, and reverses with separated
-ranges in Physics at `n = 90`.
+ranges in Physics at $n = 90$.
 
 ## Sticky Versus Balanced Contact Count
 
@@ -123,7 +123,7 @@ The prediction is a higher mean contact count for sticky.
 | Physics | 17 | 18.40 (18.27–18.57) | 19.75 (19.19–20.18) | predicted order, separated |
 | Physics | 90 | 140.06 (139.58–141.82) | 132.58 (131.02–132.85) | reverse order, separated |
 
-Sticky gathers more mean contacts at `n = 17` and fewer at `n = 90`, in both solvers.
+Sticky gathers more mean contacts at $n = 17$ and fewer at $n = 90$, in both solvers.
 Its mean nearest-neighbor gap is consistently less negative than balanced, which means
 less average penetration in this trace rather than a smaller positive separation.
 That metric does not rescue the claimed gathering order.
@@ -131,11 +131,11 @@ That metric does not rescue the claimed gathering order.
 ## Continuity Guards
 
 Soft and sticky do not stay inside the default continuity limits.
-For example, Physics soft at `n = 90` has maximum displacement
-`0.19503 (0.18717–0.21647)` and reversal ratio `0.03201 (0.03136–0.03450)` against
-limits `0.1` and `0.03`. Physics sticky at `n = 90` reaches maximum displacement
-`0.18638 (0.15280–0.22344)` and reversal ratio `0.05409 (0.05213–0.05605)`. H-213
-records the balanced and rigid guard failures.
+For example, Physics soft at $n = 90$ has maximum displacement
+$0.19503 (0.18717\text{–}0.21647)$ and reversal ratio $0.03201 (0.03136\text{–}0.03450)$
+against limits $0.1$ and $0.03$. Physics sticky at $n = 90$ reaches maximum displacement
+$0.18638 (0.15280\text{–}0.22344)$ and reversal ratio
+$0.05409 (0.05213\text{–}0.05605)$. H-213 records the balanced and rigid guard failures.
 
 ## What the Prediction Got Wrong
 

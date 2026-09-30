@@ -276,7 +276,7 @@ No contradiction with the accepted middle proofs follows, because neither contro
 is in their interval.
 
 The admitted opposite-sign diagonal controls remain valid in the full chart: the two
-displayed $7/8$-by-$7/8$ common-coordinate displacements give interior overlap, whereas
+displayed $7/8$-by-`7/8` common-coordinate displacements give interior overlap, whereas
 $a=b=0$ permits the component’s diagonal point touching.
 The exact Trump parent control remains outside the target by $U>387/100>96/25$; its
 retained replay was not rerun.

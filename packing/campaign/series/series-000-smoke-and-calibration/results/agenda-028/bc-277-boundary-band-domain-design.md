@@ -97,7 +97,7 @@ $$
 E=\{(X,Y):|X|,|Y|\le2/5,\quad |X|+|Y|\le699/1000\}
 $$
 
-lies strictly inside the radius-$1/2$ disk: its vertex squared norm is
+lies strictly inside the radius-`1/2` disk: its vertex squared norm is
 $249401/1000000<1/4$. Thus $C_i+\mathcal D(m_i)+E$ is a closed subset of the strict
 forbidden-center set supplied by the actual square $Q_i+C_i$ and a residual incircle.
 This uses full-square containment of the cores; it is not a replacement of the target
@@ -279,7 +279,7 @@ and all 21 complete mutual SAT disjunctions.
 Seven individually available cavities or seven individually legal centers do not
 establish coexistence.
 
-A weaker disk model keeps each center in $[b,d]^2$, requires its closed radius-$1/2$
+A weaker disk model keeps each center in $[b,d]^2$, requires its closed radius-`1/2`
 disk to avoid the four actual square interiors, and imposes pair distances at least one.
 Its center avoidance uses the interiors of $C_i+Q_i+B_{1/2}$, where $B_{1/2}$ is the
 closed disk. Every full-square extension yields such a disk configuration.

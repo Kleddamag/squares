@@ -16,75 +16,76 @@ session-104 on 2026-09-08, written by a research lane at maximum effort in one 2
 block on a four-core machine shared with seven other agents (load average 4 to 9 beside
 every wall time below; none is comparable with the planning lane’s). The report carries
 its own status labels (proved, certified, exact-verified, search reading, open); nothing
-here is a registered experiment or a new bound on `s(11)`.
+here is a registered experiment or a new bound on $s(11)$.
 
 ## E — Is there a robust unavoidable set of at most eleven marks at 96/25?
 
-Conventions.
-`q = 96/25`, container `S = [0, q]²`, `δ = 3/500` (the transfer tolerance of
-X-021’s Lemma T). A *mark* is a point or a closed segment; it is *thickened* by `δ`, so
-a closed unit square `Q ⊂ S` *meets* the mark `m` iff `dist(Q, m) ≤ δ`. A mark set `M`
-is *robustly unavoidable* iff every contained closed unit square, at every angle, meets
-some mark of `M`. An *escape* of `M` is a contained closed unit square with
-`dist(Q, m) > δ` for every `m ∈ M`. Poses are `(cx, cy, t)` with `t = tan(θ/2)`
-rational, `cos θ = (1 − t²)/(1 + t²)`, `sin θ = 2t/(1 + t²)` (exp-121’s frame), corners
+Conventions. $q = 96/25$, container $S = [0, q]^2$, $\delta = 3/500$ (the transfer
+tolerance of X-021’s Lemma T). A *mark* is a point or a closed segment; it is
+*thickened* by $\delta$, so a closed unit square $Q \subset S$ *meets* the mark $m$ iff
+`dist(Q, m) ≤ δ`. A mark set $M$ is *robustly unavoidable* iff every contained closed
+unit square, at every angle, meets some mark of $M$. An *escape* of $M$ is a contained
+closed unit square with `dist(Q, m) > δ` for every $m \in M$. Poses are `(cx, cy, t)`
+with $t = \tan(\theta/2)$ rational, $\cos \theta = (1 - t^2)/(1 + t^2)$,
+$\sin \theta = 2t/(1 + t^2)$ (exp-121’s frame), corners
 `(cx, cy) + ((a cos θ − b sin θ)/2, (a sin θ + b cos θ)/2)` for
-`(a, b) ∈ {(−1,−1), (1,−1), (1,1), (−1,1)}`. Stromquist’s Figure-13 points at `q` are
-`P10 = {(1, 1), (48/25, 1), (71/25, 1), (27/50, 48/25), (73/50, 48/25), (119/50, 48/25),
-(33/10, 48/25), (1, 71/25), (48/25, 71/25), (71/25, 71/25)}`.
+$(a, b) \in \lbrace(-1,-1), (1,-1), (1,1), (-1,1)\rbrace$. Stromquist’s Figure-13 points
+at $q$ are
+$P10 = \lbrace(1, 1), (48/25, 1), (71/25, 1), (27/50, 48/25), (73/50, 48/25), (119/50, 48/25), (33/10, 48/25), (1, 71/25), (48/25, 71/25), (71/25, 71/25)\rbrace$.
 
 Thickening is on the hypothesis’s side: it enlarges every mark, so it makes covering
-easier and escaping harder, and every escape below clears its marks by more than `δ`.
+easier and escaping harder, and every escape below clears its marks by more than
+$\delta$.
 
 ## 0. Findings in one page
 
 - **A robust unavoidable set of ten marks exists, and its cover is certified** (Section
-  6). Replace each point of `P10` by the horizontal segment of length `1/10` centred on
-  it. Every contained closed unit square at `q` is within `δ` of one of these ten
+  6). Replace each point of `P10` by the horizontal segment of length $1/10$ centred on
+  it. Every contained closed unit square at $q$ is within $\delta$ of one of these ten
   segments: an interval reader over the pose space `(t, cx, cy)` certifies the whole
-  domain with `404 613` boxes and `184 756` certified leaves, no failure, in `13.5 s`;
-  the same holds with the centre point added, and at segment length `9/100`. At length
-  `8/100` the reader leaves `3 626` boxes uncertified; at `7/100` the `45°` square on a
-  wall is a genuine escape again.
-  The falsifier’s reading is stronger than the certified statement: at resolution `0.01`
-  and `0.75°` and at `300` random poses every square actually meets a segment (distance
-  `0`), which is not proved.
-  The certification is floating point with an explicit `10⁻⁹` allowance against a
-  rounding error below `10⁻¹²`; the exact re-check in `fractions.Fraction` of every
-  certified leaf and every discarded box passed (`184 756` leaves, `17 551` discards, no
+  domain with $404 613$ boxes and $184 756$ certified leaves, no failure, in `13.5 s`;
+  the same holds with the centre point added, and at segment length $9/100$. At length
+  $8/100$ the reader leaves $3 626$ boxes uncertified; at $7/100$ the $45^\circ$ square
+  on a wall is a genuine escape again.
+  The falsifier’s reading is stronger than the certified statement: at resolution $0.01$
+  and $0.75^\circ$ and at $300$ random poses every square actually meets a segment
+  (distance $0$), which is not proved.
+  The certification is floating point with an explicit $10^{-9}$ allowance against a
+  rounding error below $10^{-12}$; the exact re-check in `fractions.Fraction` of every
+  certified leaf and every discarded box passed ($184 756$ leaves, $17 551$ discards, no
   failure, `79 s`), and 6 000 random poses inside 3 000 random certified leaves are
-  within `δ` of a mark by the falsifier’s exact distance.
+  within $\delta$ of a mark by the falsifier’s exact distance.
 - **Every point set tested has an exactly verified escape, and the best point set found
-  is `0.008` short of the tolerance** (Sections 4 and 5). The catalogue holds the
-  escapes of the four sets the cell named — T-018’s eleven heaviest atoms scaled to `q`,
+  is $0.008$ short of the tolerance** (Sections 4 and 5). The catalogue holds the
+  escapes of the four sets the cell named — T-018’s eleven heaviest atoms scaled to $q$,
   a greedy cover from its 93 heaviest atoms, `P10`, and `P10` plus one point — and of
-  the optimised sets: the best K4-symmetric eleven-point set leaves a `45°` square on
-  the middle of a side wall at exact distance `0.01401` from every mark, and the free
-  22-parameter search from it does no better (`0.01720`). Twenty-two catalogued escapes
+  the optimised sets: the best K4-symmetric eleven-point set leaves a $45^\circ$ square
+  on the middle of a side wall at exact distance $0.01401$ from every mark, and the free
+  22-parameter search from it does no better ($0.01720$). Twenty-two catalogued escapes
   were re-read by an independent standard-library reader with no disagreement.
 - **Why the atom skeleton fails.** T-018’s heavy atoms are the corners and the centre;
-  the eleven heaviest leave the wall strips bare (an axis square there is `0.41` from
-  every mark), and every set with rows `0.92` apart is escaped by a `45°` square resting
-  on a wall between two row marks: it cuts the row line in a chord of half-length
-  `√2 − 1 = 0.4142`, so point rows would need spacing at most
-  `2(√2 − 1) + 2√2·δ = 0.845`. A segment of half-length `1/20` reaches `0.0354` towards
-  that square and its clearance from the row points is `0.0319`; that `0.0035` is why
-  length `1/10` works and `7/100` does not.
+  the eleven heaviest leave the wall strips bare (an axis square there is $0.41$ from
+  every mark), and every set with rows $0.92$ apart is escaped by a $45^\circ$ square
+  resting on a wall between two row marks: it cuts the row line in a chord of
+  half-length $\sqrt{2} - 1 = 0.4142$, so point rows would need spacing at most
+  $2(\sqrt{2} - 1) + 2\sqrt{2}\cdot\delta = 0.845$. A segment of half-length $1/20$
+  reaches $0.0354$ towards that square and its clearance from the row points is
+  $0.0319$; that $0.0035$ is why length $1/10$ works and $7/100$ does not.
 - **Historical structural claims, corrected on 2026-09-08** (Section 3): no LP,
-  pigeonhole or counting argument can refute H-134, because T-018 scaled by `384/381` is
-  a fractional cover of mass `10.863675` for `δ`-rounded unit squares at `q`; ten marks
-  of any robust unavoidable set are localised to the `δ`-neighbourhoods of the ten
-  squares of the `n = 10` optimal packing scaled to `q`, and no eleven such squares
-  exist; no D4-symmetric eleven-set exists and every K4- or C2-symmetric one contains
-  the centre.
+  pigeonhole or counting argument can refute H-134, because T-018 scaled by $384/381$ is
+  a fractional cover of mass $10.863675$ for $\delta$-rounded unit squares at $q$; ten
+  marks of any robust unavoidable set are localised to the $\delta$-neighbourhoods of
+  the ten squares of the $n = 10$ optimal packing scaled to $q$, and no eleven such
+  squares exist; no D4-symmetric eleven-set exists and every K4- or C2-symmetric one
+  contains the centre.
 - **What it buys and what it does not.** H-134’s claim is met by ten short segments, so
-  every square of every packing of eleven unit squares in `S` lies within `δ` of a known
-  mark: the localisation that collapses route (a)'s tree.
+  every square of every packing of eleven unit squares in `S` lies within $\delta$ of a
+  known mark: the localisation that collapses route (a)'s tree.
   Exactly-one ownership does not follow: eleven squares and ten marks force one mark to
   serve two squares, and a segment can be shared by two squares touching along a line
-  through it, which is why this is not a proof that eleven squares do not fit at `q`. An
+  through it, which is why this is not a proof that eleven squares do not fit at $q$. An
   exact refutation engine for point sets was built and did not close (Section 5.2).
-- **Recommended status for H-134: accepted for the segment form at length `1/10`,
+- **Recommended status for H-134: accepted for the segment form at length $1/10$,
   pending the exact re-check below and an independent replay; the point form is open
   with every tested set refuted.** The claim to freeze, which needs an experiment id and
   an independent reader run, is Theorem E.4 of Section 6.
@@ -92,11 +93,11 @@ easier and escaping harder, and every escape below clears its marks by more than
 ## 1. Falsifiers, stated before the runs
 
 - **Falsifier of a candidate set** (every run in Sections 4 and 5). A contained closed
-  unit square at a rational pose with exact distance `> 3/500` to every mark, decided by
+  unit square at a rational pose with exact distance $> 3/500$ to every mark, decided by
   two independent exact formulas that must agree (Section 2). A “no escape found” is a
   search reading at the stated resolution, never a theorem.
 - **Falsifier of the hypothesis’s point form** (Section 5.2). A finite family of
-  contained unit squares such that no eleven points are within `δ` of all of them,
+  contained unit squares such that no eleven points are within $\delta$ of all of them,
   decided by an exact branch-and-bound whose relaxation is sound.
   A surviving branch is not evidence for the hypothesis; a dead tree is a theorem.
 - **Falsifier of a survivor’s proof** (Section 6). A box of pose space that the reader
@@ -107,34 +108,34 @@ easier and escaping harder, and every escape below clears its marks by more than
 
 `escape_engine.py` (Appendix) has three stages.
 
-1. **Grid.** Angles `0°, 1.5°, …, 88.5°`; for each, centres on a grid of step `0.02`
-   over the exact containment box `[w/2, q − w/2]²`, `w = |cos θ| + |sin θ|`; the margin
-   `g = min_m dist(Q, m) − δ` is evaluated in numpy for every pose (about 1.2 million
-   poses for eleven marks in under a second).
-   Segment marks are sampled at nine points for the float stage only.
+1. **Grid.** Angles $0^\circ, 1.5^\circ, \ldots, 88.5^\circ$; for each, centres on a
+   grid of step $0.02$ over the exact containment box $[w/2, q - w/2]^2$,
+   $w = |\cos \theta| + |\sin \theta|$; the margin `g = min_m dist(Q, m) − δ` is
+   evaluated in numpy for every pose (about 1.2 million poses for eleven marks in under
+   a second). Segment marks are sampled at nine points for the float stage only.
 2. **Refinement.** Nelder–Mead on `(cx, cy, θ)` from the best forty grid poses, with the
    centre projected onto the containment box at every evaluation; duplicates within
-   `0.02` are merged.
-3. **Exact decision.** The refined pose is snapped to rationals (`t` first, then the
-   centre clipped into the exact containment box for that `t`, denominators `10³` to
-   `10⁶` tried in turn) and verified: all four corners in the closed container, and for
+   $0.02$ are merged.
+3. **Exact decision.** The refined pose is snapped to rationals ($t$ first, then the
+   centre clipped into the exact containment box for that $t$, denominators $10^3$ to
+   $10^6$ tried in turn) and verified: all four corners in the closed container, and for
    every mark `dist(Q, m) > δ` by two methods that must agree or the run aborts — (A)
    the local-frame formula `dist² = (|u| − ½)₊² + (|v| − ½)₊²`; (B) the separating-axis
    theorem for two convex polygons, with the square’s two edge normals, the segment’s
-   normal, and every vertex-pair direction as candidates, the gap `> δ` decided as
-   `gap > 0` and `gap² > δ²|d|²` in unnormalised direction `d`. For a segment mark (B)
+   normal, and every vertex-pair direction as candidates, the gap $> \delta$ decided as
+   `gap > 0` and `gap² > δ²|d|²` in unnormalised direction $d$. For a segment mark (B)
    decides and (A) is checked at both endpoints.
 
 Self-tests (`selftest.py`, Appendix), all passed:
 
 | Test | Expected | Observed |
 | --- | --- | --- |
-| Lane C’s exact escape of P10 at `q`: centre `(73/50, 67/50)`, `t = 49/200` | escape, least margin `14979/1060025` | escape, `min dist 0.0141308` (equal to the retained value to 15 digits) |
-| exp-121’s frozen square at `1939/500`, `t = 1/1000`, twelve points, `δ = 0` | strict escape | strict escape, least distance `0.000199`; against `δ = 3/500` it is *not* an escape |
-| Search on P10 at `q` | finds an escape | finds four, the largest at the bottom wall (Section 4) |
-| Control: points on a `0.3` grid | no escape | best float margin `−0.006`, none verified |
-| Control: three full-width segments at `y = 1, q/2, q − 1` | no escape (every unit square has vertical extent `≥ 1 > 0.92`) | best float margin `−0.006`, none verified |
-| Axis square `0.01` above a segment / `0.005` above it | escape / not | escape / not |
+| Lane C’s exact escape of P10 at $q$: centre $(\frac{73}{50}, \frac{67}{50})$, $t = \frac{49}{200}$ | escape, least margin $\frac{14979}{1060025}$ | escape, `min dist 0.0141308` (equal to the retained value to 15 digits) |
+| exp-121’s frozen square at $\frac{1939}{500}$, $t = \frac{1}{1000}$, twelve points, $\delta = 0$ | strict escape | strict escape, least distance $0.000199$; against $\delta = \frac{3}{500}$ it is *not* an escape |
+| Search on P10 at $q$ | finds an escape | finds four, the largest at the bottom wall (Section 4) |
+| Control: points on a $0.3$ grid | no escape | best float margin $-0.006$, none verified |
+| Control: three full-width segments at $y = 1, q/2, q - 1$ | no escape (every unit square has vertical extent $\ge 1 > 0.92$) | best float margin $-0.006$, none verified |
+| Axis square $0.01$ above a segment / $0.005$ above it | escape / not | escape / not |
 
 A third, independent reader (`reader.py`, standard library only, no import of the
 engine: exp-121’s edge determinants for membership, point-to-edge distances otherwise,
@@ -151,43 +152,45 @@ of Section 6.
 ## 3. Structural facts proved in the block
 
 **Historical Lemma E.1 (no LP obstruction; retracted on 2026-09-08).** The fractional
-relaxation of H-134 has value at most `434547/40000 = 10.863675 < 11`. *Proof.* Scale
-T-018’s measure by `λ = 384/381` from side `381/100` to `q`. Every closed square of side
-`λ` at any angle inside `S` contains a `λB`-square at a net angle, hence carries mass
-`≥ 4001/4000`. The `δ`-neighbourhood of a unit square `Q` contains the concentric square
-of side `1 + √2·δ = 1.008485…` in `Q`’s frame (a point with `|u|, |v| ≤ ½ + δ/√2` is
-within `√(2·(δ/√2)²) = δ` of `Q`), and `1 + √2·δ > λ = 1.007874…`, so every `δ`-rounded
-unit square carries mass `≥ 4001/4000 ≥ 1`. ∎ Consequently no counting, pigeonhole or LP
+relaxation of H-134 has value at most $434547/40000 = 10.863675 < 11$. *Proof.* Scale
+T-018’s measure by $\lambda = 384/381$ from side $381/100$ to $q$. Every closed square
+of side $\lambda$ at any angle inside `S` contains a $\lambda B$-square at a net angle,
+hence carries mass $\ge 4001/4000$. The $\delta$-neighbourhood of a unit square $Q$
+contains the concentric square of side $1 + \sqrt{2}\cdot\delta = 1.008485\ldots$ in
+$Q$’s frame (a point with $|u|, |v| \le \tfrac{1}{2} + \delta/\sqrt{2}$ is within
+$\sqrt{2\cdot(\delta/\sqrt{2})^2} = \delta$ of $Q$), and
+$1 + \sqrt{2}\cdot\delta > \lambda = 1.007874\ldots$, so every $\delta$-rounded unit
+square carries mass $\ge 4001/4000 \ge 1$. ∎ Consequently no counting, pigeonhole or LP
 argument can refute H-134; only the integrality gap can, and that needs a case analysis
 over mark positions, which Section 5.2 mechanises.
 
-**Historical Lemma E.2 (ten forced marks; corrected on 2026-09-08).** Let `G₁, …, G₁₀`
-be the squares of the `n = 10` optimal packing (side `3 + 1/√2`) scaled to `q`, at the
-rational poses of `tests-gobel.json` (the two `45°` squares at `t = 41/99`). They are
-contained and pairwise at exact distance `> 2δ = 3/250` (`tests_gobel.py`,
-separating-axis decision).
-Hence any robustly unavoidable set has ten distinct marks `m_i` with
+**Historical Lemma E.2 (ten forced marks; corrected on 2026-09-08).** Let
+$G_1, \ldots, G_{10}$ be the squares of the $n = 10$ optimal packing (side
+$3 + 1/\sqrt{2}$) scaled to $q$, at the rational poses of `tests-gobel.json` (the two
+$45^\circ$ squares at $t = 41/99$). They are contained and pairwise at exact distance
+$> 2\delta = 3/250$ (`tests_gobel.py`, separating-axis decision).
+Hence any robustly unavoidable set has ten distinct marks $m_i$ with
 `dist(m_i, G_i) ≤ δ`. Eleven such squares cannot exist: they would be eleven squares of
-side `1 + 2δ` with disjoint interiors in a container of side `q + 2δ = 3.852`, that is
-eleven unit squares at side `3.852/1.012 = 3.806 < 3.81`, against T-018. So a set of
-eleven marks is *ten localised marks plus one free mark*, and a set of ten marks, such
-as Theorem E.4’s, is entirely localised: each of its marks is within `δ` of its own
-`G_i`.
+side $1 + 2\delta$ with disjoint interiors in a container of side $q + 2\delta = 3.852$,
+that is eleven unit squares at side $3.852/1.012 = 3.806 < 3.81$, against T-018. So a
+set of eleven marks is *ten localised marks plus one free mark*, and a set of ten marks,
+such as Theorem E.4’s, is entirely localised: each of its marks is within $\delta$ of
+its own $G_i$.
 
 **Lemma E.3 (symmetry of point sets; scope corrected on 2026-09-08).** No D4-symmetric
-eleven-set exists: D4 orbits in `S` have size 1 (the centre), 4 or 8, and `11 − 1 = 10`
+eleven-set exists: D4 orbits in `S` have size 1 (the centre), 4 or 8, and $11 - 1 = 10$
 is not a sum of 4s and 8s. Every K4-symmetric (two centreline reflections) or
 C2-symmetric (half-turn) eleven-set contains the centre, because all other orbits have
-even size. Stromquist’s ten-point scheme is K4-symmetric (`2 + 4 + 4`), so its only
+even size. Stromquist’s ten-point scheme is K4-symmetric ($2 + 4 + 4$), so its only
 symmetric eleven-point extension adds the centre.
 
 ### Correction of the structural claims, 2026-09-08
 
-**E.1 is refuted for the stated measure.** Scale T-018’s atoms by `128/127`, leave its
-weights unchanged, and take the contained unit square `Q = [0, 1]²`. Its closed
-Euclidean `3/500`-neighbourhood has mass `85353/100000 = 0.85353`, below one.
-The unscaled, unrounded control has mass `4001/4000`; the missing weight is `917/6250`
-at the scaled corner atom `(29586032/29422725, 29586032/29422725)`. The concentric
+**E.1 is refuted for the stated measure.** Scale T-018’s atoms by $128/127$, leave its
+weights unchanged, and take the contained unit square $Q = [0, 1]^2$. Its closed
+Euclidean $3/500$-neighbourhood has mass $85353/100000 = 0.85353$, below one.
+The unscaled, unrounded control has mass $4001/4000$; the missing weight is $917/6250$
+at the scaled corner atom $(29586032/29422725, 29586032/29422725)$. The concentric
 enlarged square used in the historical proof leaves the container at this corner, so the
 coverage premise does not apply.
 Whether another fractional point cover of mass below eleven exists is undecided by this
@@ -206,16 +209,18 @@ uv run --frozen --all-extras --group dev python -m devtools.rounded_measure_audi
   cases/n11_fractional_certificate/certificate.json --cx 1/2 --cy 1/2
 ```
 
-**E.2 does not exclude eleven separated squares.** Two unit squares at `45°`, centred at
-`(1, 1)` and `(243/100, 1)`, are contained in `[0, 96/25]²` and have distance
-`143/100 − √2 > 3/250`. Enlarging their sides to `1 + 2δ = 253/250` makes their
-interiors overlap. The safe enlargement inside a Euclidean `δ`-neighbourhood has side
-`1 + √2δ`; it yields normalized container side `1926/(500 + 3√2) > 381/100`, so T-018
-gives no contradiction.
+**E.2 does not exclude eleven separated squares.** Two unit squares at $45^\circ$,
+centred at $(1, 1)$ and $(243/100, 1)$, are contained in $[0, 96/25]^2$ and have
+distance $143/100 - \sqrt{2} > 3/250$. Enlarging their sides to $1 + 2\delta = 253/250$
+makes their interiors overlap.
+The safe enlargement inside a Euclidean $\delta$-neighbourhood has side
+$1 + \sqrt{2}\delta$; it yields normalized container side
+$1926/(500 + 3\sqrt{2}) > 381/100$, so T-018 gives no contradiction.
 The ten test squares still force ten distinct **point** marks because their rounded
 neighbourhoods are disjoint.
-A segment can meet two such neighbourhoods: the segment `[19/20, 21/20] × {71/25}` meets
-`G1` and is only `47/12460 < 3/500` from `G2` in the retained test list.
+A segment can meet two such neighbourhoods: the segment
+$[19/20, 21/20] \times \lbrace71/25\rbrace$ meets `G1` and is only $47/12460 < 3/500$
+from `G2` in the retained test list.
 The claimed extension to segment marks is withdrawn.
 
 **E.3 concerns point sets.** Centred horizontal and vertical segments can form a D4
@@ -223,10 +228,10 @@ orbit of size two, so the point-orbit counting proof cannot be applied to segmen
 
 **E.4 survives independently.** The promoted
 [BC-303 reader](../../../../../devtools/segment_cover_replay.py) replays the retained
-`q = 96/25`, segment length `1/10`, `δ = 3/500` claim.
+$q = 96/25$, segment length $1/10$, $\delta = 3/500$ claim.
 It reconstructs the marks and covers the same dyadic pose domain with 24,381 nodes,
 10,960 certified leaves and 1,231 discards; every leaf and discard passes its exact
-recheck, and the exact covered volume is `243/128`. This proof uses none of E.1–E.3. The
+recheck, and the exact covered volume is $243/128$. This proof uses none of E.1–E.3. The
 historical source is BC-303’s `e4_reader.py` appendix at Git commit `c89c7646`. The
 promoted tool preserves its geometry and bounds, adds a bounded portable CLI and
 Git/path provenance, and returns failure for unresolved or rejected boxes or a volume
@@ -244,35 +249,36 @@ certify the claim.
 ## 4. Candidate sets and the escape catalogue
 
 Coordinates are exact rationals in the `set-*.json` blocks of the Appendix, decimals
-here. Search resolution for every row: grid step `0.02`, angle step `1.5°`, forty grid
-poses refined, then exact decision; wall time per set `0.6` to `10 s` at load `4` to
-`8`. Every escape listed was verified exactly by both methods, and the point-set rows by
-the independent reader; the poses shown are the small-denominator forms of
+here. Search resolution for every row: grid step $0.02$, angle step $1.5^\circ$, forty
+grid poses refined, then exact decision; wall time per set $0.6$ to `10 s` at load $4$
+to $8$. Every escape listed was verified exactly by both methods, and the point-set rows
+by the independent reader; the poses shown are the small-denominator forms of
 `clean_pose.py`, each re-verified exactly.
 
-| Set | Marks | Best escape: centre, `t`, angle | Least exact distance | Marks it clears least |
+| Set | Marks | Best escape: centre, $t$, angle | Least exact distance | Marks it clears least |
 | --- | --- | --- | --- | --- |
-| W11: T-018’s eleven heaviest atoms scaled by `384/381` (four corners, the centre `(48/25, 48/25)`, six of the eight atoms of the `33/500` orbit) | 11 points | `(48/25, 1/2)`, `t = 0`, `0°` | `0.41449` | both bottom corner atoms at `0.41449` |
-| G11: greedy set cover of a pose sample (step `0.04`, `3°`) by the 93 heaviest atoms scaled to `q` | 11 points | `(3/2, 26473/8450)`, `t = 5/12`, `45.24°` | `0.06310` | `(1.0009, 2.8348)` at `0.0631`, `(2.0045, 2.8369)` at `0.0667` |
-| P10: Stromquist’s Figure-13 points at `q` | 10 points | `(73/50, 239/338)`, `t = 5/12`, `45.24°` (and three K4 images) | `0.03188` | `(48/25, 1)` at `0.03188`, `(1, 1)` at `0.03287` |
-| P10C: P10 plus the centre | 11 points | same as P10 | `0.03188` | same |
-| P10 + one point optimised by the min–max (Section 5.1) | 11 points | same as P10 | `0.03188` | same; the added point at `(2.31, 2.73)` kills one of four symmetric images |
-| K4 optimum, polished (Section 5.1) | 11 points | `(239/338, 48/25)`, `t = 5/12`, `45.24°` | `0.01634` (`0.01401` for the polished set) | `(1.0122, 1.4943)` at `0.0163`, `(1.0122, 2.3457)` at `0.0171` |
-| Free optimum from the K4 optimum | 11 points | `(3.133, 171/89)`, `t = 403/972`, `45.04°` | `0.01720` | the right column’s two middle marks |
-| K4S: the polished K4 optimum’s marks as segments of length `1/10`, `1/5`, `3/10` along their columns | 11 segments | `(1/2, 7/5)`, `t = 0`, `0°` | `0.01401` (all three lengths) | the left column’s marks, which sit at `x = 1.014 > 1 + δ` |
-| S10C at length `7/100` and `6/100`: P10 as horizontal segments plus the centre | 11 | `(119/50, 178056263/56834450)`, `t = 408/985`, `45.00°` | `0.00763`, `0.01116` | the two top-row segments |
-| S10 at length `1/10`, S10C at `1/10` and `9/100` | 10 or 11 segments | none found (best float margin `−0.006`: every refined pose meets a mark) | — | Section 6 |
-| S10C at length `8/100` | 11 segments | none found; best pose at exact distance `0.00409 < δ` | — | unresolved: within `δ` at the search resolution, not certified |
+| W11: T-018’s eleven heaviest atoms scaled by $\frac{384}{381}$ (four corners, the centre $(\frac{48}{25}, \frac{48}{25})$, six of the eight atoms of the $\frac{33}{500}$ orbit) | 11 points | $(\frac{48}{25}, \frac{1}{2})$, $t = 0$, $0^\circ$ | $0.41449$ | both bottom corner atoms at $0.41449$ |
+| G11: greedy set cover of a pose sample (step $0.04$, $3^\circ$) by the 93 heaviest atoms scaled to $q$ | 11 points | $(\frac{3}{2}, \frac{26473}{8450})$, $t = \frac{5}{12}$, $45.24^\circ$ | $0.06310$ | $(1.0009, 2.8348)$ at $0.0631$, $(2.0045, 2.8369)$ at $0.0667$ |
+| P10: Stromquist’s Figure-13 points at $q$ | 10 points | $(\frac{73}{50}, \frac{239}{338})$, $t = \frac{5}{12}$, $45.24^\circ$ (and three K4 images) | $0.03188$ | $(\frac{48}{25}, 1)$ at $0.03188$, $(1, 1)$ at $0.03287$ |
+| P10C: P10 plus the centre | 11 points | same as P10 | $0.03188$ | same |
+| P10 + one point optimised by the min–max (Section 5.1) | 11 points | same as P10 | $0.03188$ | same; the added point at $(2.31, 2.73)$ kills one of four symmetric images |
+| K4 optimum, polished (Section 5.1) | 11 points | $(\frac{239}{338}, \frac{48}{25})$, $t = \frac{5}{12}$, $45.24^\circ$ | $0.01634$ ($0.01401$ for the polished set) | $(1.0122, 1.4943)$ at $0.0163$, $(1.0122, 2.3457)$ at $0.0171$ |
+| Free optimum from the K4 optimum | 11 points | $(3.133, \frac{171}{89})$, $t = \frac{403}{972}$, $45.04^\circ$ | $0.01720$ | the right column’s two middle marks |
+| K4S: the polished K4 optimum’s marks as segments of length $\frac{1}{10}$, $\frac{1}{5}$, $\frac{3}{10}$ along their columns | 11 segments | $(\frac{1}{2}, \frac{7}{5})$, $t = 0$, $0^\circ$ | $0.01401$ (all three lengths) | the left column’s marks, which sit at $x = 1.014 > 1 + \delta$ |
+| S10C at length $\frac{7}{100}$ and $\frac{6}{100}$: P10 as horizontal segments plus the centre | 11 | $(\frac{119}{50}, \frac{178056263}{56834450})$, $t = \frac{408}{985}$, $45.00^\circ$ | $0.00763$, $0.01116$ | the two top-row segments |
+| S10 at length $\frac{1}{10}$, S10C at $\frac{1}{10}$ and $\frac{9}{100}$ | 10 or 11 segments | none found (best float margin $-0.006$: every refined pose meets a mark) | — | Section 6 |
+| S10C at length $\frac{8}{100}$ | 11 segments | none found; best pose at exact distance $0.00409 < \delta$ | — | unresolved: within $\delta$ at the search resolution, not certified |
 
 W11 fails for a structural reason: the heavy atoms of the certificate are corner and
 centre atoms, and the eleven heaviest leave the whole bottom and top wall strips
-`[1.42, 2.42] × [0, 1]` bare.
-G11’s greedy cover reproduces the three-row structure (rows at `y ≈ 1, 1.92, 2.84`) but
-runs out of marks before the `45°` squares at the top and bottom walls are served.
-P10’s four escapes are the K4 images of one `45°` square resting on a wall between two
-row points `0.92` apart.
+$[1.42, 2.42] \times [0, 1]$ bare.
+G11’s greedy cover reproduces the three-row structure (rows at
+$y \approx 1, 1.92, 2.84$) but runs out of marks before the $45^\circ$ squares at the
+top and bottom walls are served.
+P10’s four escapes are the K4 images of one $45^\circ$ square resting on a wall between
+two row points $0.92$ apart.
 One added point cannot kill four symmetric escapes.
-The K4 segment set fails because its outer columns sit `0.014` outside the wall’s unit
+The K4 segment set fails because its outer columns sit $0.014$ outside the wall’s unit
 strip, so the axis squares along the wall are missed whatever the segment length.
 
 ## 5. The adversarial min–max and the exact branch-and-bound
@@ -280,65 +286,66 @@ strip, so the axis squares along the wall are missed whatever the segment length
 ### 5.1 The adversarial min–max
 
 `minimax.py` minimises `φ(M) = max_pose (min_m dist(Q_pose, m) − δ)` over a fixed pose
-grid (step `0.06`, angle step `4°`, 53 000 poses) with Powell then Nelder–Mead;
+grid (step $0.06$, angle step $4^\circ$, 53 000 poses) with Powell then Nelder–Mead;
 `polish.py` then refines the best set at full resolution by a pool cutting-plane (the
 falsifier’s twenty best poses join a pool each round, the marks are moved to minimise
 the pool’s largest margin, and the pool only grows).
 Every number below is a search reading; the exact clearance is the falsifier’s verified
 least distance for the final set.
 
-| Family | Parameters | Starts | Coarse `φ` at the end | Exact least clearance of the best set’s escape | Wall, load |
+| Family | Parameters | Starts | Coarse $\varphi$ at the end | Exact least clearance of the best set’s escape | Wall, load |
 | --- | --- | --- | --- | --- | --- |
-| P10 plus one free point | 2 | 6 | `0.0234` | `0.03188` | `23 s`, `4.3` |
-| K4-symmetric: centre, one midline pair, two generic orbits | 5 | 10 | `0.0064` (nine of ten starts below `0.0105`) | `0.01401` after 25 polish rounds (`0.01634` before) | `9.6 min` + `3 min`, `5` to `8` |
-| K4-symmetric: centre, two vertical and one horizontal pair, one orbit | 5 | polish only, 20 rounds | — | `0.02376` | `3 min`, `7` |
-| K4-symmetric: centre, three vertical pairs, one orbit | 5 | polish only, 20 rounds | — | `0.21` | `3 min`, `7` |
-| Free, 22 coordinates, from the polished K4 optimum | 22 | 2 | `0.0059` | `0.01720` | `6 min`, `7` |
-| Free, 22 coordinates, pool polish from the K4 optimum | 22 | 25 rounds | — | unstable, `0.15` to `0.33`: Nelder–Mead overfits the pool and opens holes elsewhere | `3 min`, `7` |
+| P10 plus one free point | 2 | 6 | $0.0234$ | $0.03188$ | `23 s`, $4.3$ |
+| K4-symmetric: centre, one midline pair, two generic orbits | 5 | 10 | $0.0064$ (nine of ten starts below $0.0105$) | $0.01401$ after 25 polish rounds ($0.01634$ before) | `9.6 min` + `3 min`, $5$ to $8$ |
+| K4-symmetric: centre, two vertical and one horizontal pair, one orbit | 5 | polish only, 20 rounds | — | $0.02376$ | `3 min`, $7$ |
+| K4-symmetric: centre, three vertical pairs, one orbit | 5 | polish only, 20 rounds | — | $0.21$ | `3 min`, $7$ |
+| Free, 22 coordinates, from the polished K4 optimum | 22 | 2 | $0.0059$ | $0.01720$ | `6 min`, $7$ |
+| Free, 22 coordinates, pool polish from the K4 optimum | 22 | 25 rounds | — | unstable, $0.15$ to $0.33$: Nelder–Mead overfits the pool and opens holes elsewhere | `3 min`, $7$ |
 
 The polished K4 optimum (exact rationals in `set-POLISH-k4.json`, Appendix) is a
 three-column arrangement rather than Stromquist’s three rows: a middle column
-`x = 48/25` with three points (`y = 1.014, 1.92, 2.826`) and two outer columns with four
-points each (`x ≈ 1.014` at `y = 1.50, 2.34`, `x ≈ 0.988` at `y = 0.818, 3.022`, and
-their mirror images).
-The outer columns serve the side walls’ `45°` squares with offset `a ≈ 0.31` from the
-wall’s centre line `x = √2/2`, so each point serves a `cy`-interval of half-length
-`√2/2 + √2·δ − a ≈ 0.41`, and four points cover the wall’s `cy`-range of length `2.426`
-only if their gaps stay below `0.82`; the middle gap is `0.84`, which is the escape.
-Closing that gap moves the two middle points onto the interior `45°` squares’ holes.
-The trade-off is what the min–max measures, and the segment form of Section 6 is what
-resolves it: a horizontal segment on a row reaches the wall square along the diagonal
-direction that a point cannot.
+$x = 48/25$ with three points ($y = 1.014, 1.92, 2.826$) and two outer columns with four
+points each ($x \approx 1.014$ at $y = 1.50, 2.34$, $x \approx 0.988$ at
+$y = 0.818, 3.022$, and their mirror images).
+The outer columns serve the side walls’ $45^\circ$ squares with offset $a \approx 0.31$
+from the wall’s centre line $x = \sqrt{2}/2$, so each point serves a `cy`-interval of
+half-length $\sqrt{2}/2 + \sqrt{2}\cdot\delta - a \approx 0.41$, and four points cover
+the wall’s `cy`-range of length $2.426$ only if their gaps stay below $0.82$; the middle
+gap is $0.84$, which is the escape.
+Closing that gap moves the two middle points onto the interior $45^\circ$ squares’
+holes. The trade-off is what the min–max measures, and the segment form of Section 6 is
+what resolves it: a horizontal segment on a row reaches the wall square along the
+diagonal direction that a point cannot.
 
 ### 5.2 The exact branch-and-bound
 
-`branch.py` decides, for a finite family of contained unit squares `T_1, …, T_N`,
-whether eleven points can be within `δ` of all of them, by a sound relaxation:
+`branch.py` decides, for a finite family of contained unit squares $T_1, \ldots, T_N$,
+whether eleven points can be within $\delta$ of all of them, by a sound relaxation:
 
-- the `δ`-neighbourhood of `T` is replaced by the octagon
-  `O(T) = {|u| ≤ ½ + δ, |v| ≤ ½ + δ, |u| + |v| ≤ 1 + 17/2000}` in `T`’s frame, a
-  superset because the support of the rounded square in the diagonal direction is
-  `1 + √2·δ ≤ 1 + 17/2000`;
+- the $\delta$-neighbourhood of $T$ is replaced by the octagon
+  $O(T) = \lbrace|u| \le \tfrac{1}{2} + \delta, |v| \le \tfrac{1}{2} + \delta, |u| + |v| \le 1 + 17/2000\rbrace$
+  in $T$’s frame, a superset because the support of the rounded square in the diagonal
+  direction is $1 + \sqrt{2}\cdot\delta \le 1 + 17/2000$;
 - each mark carries a feasible region, a convex polygon with rational vertices,
-  initially the container; assigning `T` to a mark clips its region by `O(T)`
+  initially the container; assigning $T$ to a mark clips its region by $O(T)$
   (Sutherland–Hodgman, exact, closed half-planes, degenerate regions kept);
 - the search assigns the most constrained test square first, branching over the marks
-  whose regions meet its octagon (a float bounding-box prefilter with a `10⁻⁹` outward
-  margin skips certain misses; every other decision is exact), and over at most one
-  still-untouched mark, since marks are interchangeable;
+  whose regions meet its octagon (a float bounding-box prefilter with a $10^{-9}$
+  outward margin skips certain misses; every other decision is exact), and over at most
+  one still-untouched mark, since marks are interchangeable;
 - fewer than eleven marks is eleven marks with repeats, so eleven is without loss.
 
-A dead tree is a theorem: no eleven points are within `δ` of every `T_j`, hence no
+A dead tree is a theorem: no eleven points are within $\delta$ of every $T_j$, hence no
 robust unavoidable eleven-point set exists.
 A surviving branch is not evidence for H-134; it yields regions from which `loop.py`
 builds a candidate (the vertex average of each region), runs the falsifier, and adds the
 exact escapes as new test squares.
 
 Run A (seed: the ten Göbel squares of Lemma E.2 plus the 19 catalogued escapes of the
-named sets; up to six escapes added per round): 28 rounds in `4 min` at load `6`, 150
+named sets; up to six escapes added per round): 28 rounds in `4 min` at load $6$, 150
 test squares, every tree alive, node count equal to the number of tests plus one at
 every round (each test square had a unique possible server), the candidates’ escapes
-clearing by `0.05` to `0.20`. The loop was stopped: its candidate generator does not
+clearing by $0.05$ to $0.20$. The loop was stopped: its candidate generator does not
 optimise inside the regions, so the finite family never approached infeasibility.
 Its 155 test squares are retained (`tests-A.json`) for a session that wants the
 point-form negative; the tree’s shape says the cost is in choosing test squares that
@@ -346,93 +353,98 @@ empty regions, and the min–max escapes are the natural choice.
 
 ### 5.3 Segment marks reduce to point marks for refutation
 
-A segment of length at most `ℓ` thickened by `δ` lies in the disc of radius `δ + ℓ/2`
-about its midpoint, so a point-mark refutation at tolerance `δ + ℓ/2` covers every mark
-set with segments of length at most `ℓ`. Since segments of length `1/10` suffice
-(Section 6), no such refutation can exist at tolerance `δ + 1/20 = 0.056`: the
-branch-and-bound at that tolerance must stay alive, which is a consistency check the
-next session can run.
+A segment of length at most $\ell$ thickened by $\delta$ lies in the disc of radius
+$\delta + \ell/2$ about its midpoint, so a point-mark refutation at tolerance
+$\delta + \ell/2$ covers every mark set with segments of length at most $\ell$. Since
+segments of length $1/10$ suffice (Section 6), no such refutation can exist at tolerance
+$\delta + 1/20 = 0.056$: the branch-and-bound at that tolerance must stay alive, which
+is a consistency check the next session can run.
 
 ## 6. Proved nonavoidance: the ten-segment set
 
 ### 6.1 The interval reader
 
 `cover_reader.py` (Appendix) proves a statement of the form “every contained closed unit
-square is within `δ` of some mark of `M`” by an adaptive cover of the pose space
-`[0, 1] × [½, q − ½]²` in `(t, cx, cy)`; `t ∈ [0, 1]` is every orientation modulo a
-quarter turn and every contained square has its centre in `[½, q − ½]²`.
+square is within $\delta$ of some mark of $M$” by an adaptive cover of the pose space
+$[0, 1] \times [\tfrac{1}{2}, q - \tfrac{1}{2}]^2$ in `(t, cx, cy)`; $t \in [0, 1]$ is
+every orientation modulo a quarter turn and every contained square has its centre in
+$[\tfrac{1}{2}, q - \tfrac{1}{2}]^2$.
 
-For a point `p` with coordinates `(u, v)` in the square’s frame, let
-`f(P, p) = max(|u| − ½, |v| − ½)`. Then `dist(Q(P), p)² = (|u| − ½)₊² + (|v| − ½)₊²
+For a point $p$ with coordinates $(u, v)$ in the square’s frame, let
+$f(P, p) = \max(|u| - \tfrac{1}{2}, |v| - \tfrac{1}{2})$. Then
+`dist(Q(P), p)² = (|u| − ½)₊² + (|v| − ½)₊²
 ≤ 2·max(f, 0)²`, so `f ≤ τ := 2121/500000 < δ/√2` gives `dist ≤ √2·τ < δ`. For a segment
-mark, `f_seg(P) = min_p f(P, p)` over the segment; `f(P, ·)` is convex and piecewise
-linear along the segment, so the minimum is at an endpoint or at a breakpoint (`u = 0`,
-`v = 0`, `u = ±v`), each the root of an affine equation.
+mark, `f_seg(P) = min_p f(P, p)` over the segment; $f(P, \cdot)$ is convex and piecewise
+linear along the segment, so the minimum is at an endpoint or at a breakpoint ($u = 0$,
+$v = 0$, $u = \pm v$), each the root of an affine equation.
 
-*Lipschitz bound.* Over a box with half-widths `(ht, hx, hy)` about `P₀ = (t₀, x₀, y₀)`
-and any pose `P` in it: the centre moves by at most `hx + hy` in Euclidean norm, and the
-frame vectors `(cos θ, sin θ)`, `(−sin θ, cos θ)` move by at most
-`2 sin(|Δθ|/2) ≤ |Δθ| = 2|atan t − atan t₀| ≤ 2·ht`. With `u = ⟨(cos θ, sin θ), p − c⟩`,
+*Lipschitz bound.* Over a box with half-widths `(ht, hx, hy)` about
+$P_0 = (t_0, x_0, y_0)$ and any pose $P$ in it: the centre moves by at most `hx + hy` in
+Euclidean norm, and the frame vectors $(\cos \theta, \sin \theta)$,
+$(-\sin \theta, \cos \theta)$ move by at most
+`2 sin(|Δθ|/2) ≤ |Δθ| = 2|atan t − atan t₀| ≤ 2·ht`. With
+$u = \langle(\cos \theta, \sin \theta), p - c\rangle$,
 `|Δu| ≤ |Δc| + |Δ(cos θ, sin θ)|·|p − c| ≤ (hx + hy) + 2·ht·(R + hx + hy)`, where
-`R ≥ |p − (x₀, y₀)|` is taken as the L1 distance, and the same for `v`. Hence
+$R \ge |p - (x_0, y_0)|$ is taken as the L1 distance, and the same for $v$. Hence
 
-`f(P, p) ≤ f(P₀, p) + hx + hy + 2·ht·(R + hx + hy)` for every `P` in the box,
+`f(P, p) ≤ f(P₀, p) + hx + hy + 2·ht·(R + hx + hy)` for every $P$ in the box,
 
-and for a segment the bound holds with `R` the larger endpoint’s L1 distance, because
+and for a segment the bound holds with $R$ the larger endpoint’s L1 distance, because
 the minimum of functions with a common Lipschitz bound has that bound.
-A box is *certified* by a mark when the right-hand side is at most `τ`; then every pose
-in the box is within `δ` of that mark.
+A box is *certified* by a mark when the right-hand side is at most $\tau$; then every
+pose in the box is within $\delta$ of that mark.
 A box is *discarded* only when it contains no contained pose: `x₂ < w_min` or
-`x₁ > q − w_min` (or the same in `y`), where `w_min` is the least half-width
-`(cos θ + sin θ)/2` over the box’s `t`-range, attained at an endpoint since `w` is
-unimodal on `[0, 1]`. Otherwise the box is split along its widest scaled dimension
-(`3·ht`, `hx`, `hy`). A box below the floor `2·10⁻⁴` that is neither certified nor
-discarded is a failure, reported with its centre pose.
+`x₁ > q − w_min` (or the same in $y$), where `w_min` is the least half-width
+$(\cos \theta + \sin \theta)/2$ over the box’s $t$-range, attained at an endpoint since
+$w$ is unimodal on $[0, 1]$. Otherwise the box is split along its widest scaled
+dimension (`3·ht`, `hx`, `hy`). A box below the floor $2\cdot10^{-4}$ that is neither
+certified nor discarded is a failure, reported with its centre pose.
 
 *Arithmetic.* The certification runs in IEEE doubles with an explicit allowance: a box
-is certified only if the bound is at most `τ − 10⁻⁹`, and discarded only with the same
-allowance on the conservative side.
+is certified only if the bound is at most $\tau - 10^{-9}$, and discarded only with the
+same allowance on the conservative side.
 Every certification is fewer than two hundred additions, multiplications, absolute
-values and comparisons on quantities below ten, each with relative error at most `2⁻⁵³`,
-so the accumulated absolute error is below `10⁻¹²`, four orders of magnitude inside the
-allowance. Approximate breakpoints in `f_seg` can only raise the computed minimum, which
-is the conservative direction.
+values and comparisons on quantities below ten, each with relative error at most
+$2^{-53}$, so the accumulated absolute error is below $10^{-12}$, four orders of
+magnitude inside the allowance.
+Approximate breakpoints in `f_seg` can only raise the computed minimum, which is the
+conservative direction.
 The exact mode re-certifies every certified leaf in `fractions.Fraction` with the
-rational `τ` and no allowance.
+rational $\tau$ and no allowance.
 
 ### 6.2 The certified sets and the threshold in the segment length
 
-| Set | Marks | Falsifier (step `0.02`, `1.5°`) | Reader: boxes, certified leaves, discarded, failures, wall, load |
+| Set | Marks | Falsifier (step $0.02$, $1.5^\circ$) | Reader: boxes, certified leaves, discarded, failures, wall, load |
 | --- | --- | --- | --- |
-| S10 at length `1/10`: the ten horizontal segments `[x − 1/20, x + 1/20] × {y}`, `(x, y) ∈ P10` | 10 | no escape; every refined pose meets a mark | `404 613`, `184 756`, — , `0`, `13.5 s`, `7.7` |
-| S10C at `1/10`: S10 plus the centre point `(48/25, 48/25)` | 11 | as above; also at step `0.01`, `0.75°` (`48 s`) and at 300 random contained poses, all at distance `0` | `349 507`, `157 203`, `17 551`, `0`, `8.3 s`, `6.9` |
-| S10C at `9/100` | 11 | no escape; best pose at distance `0.00056` | `432 993`, `197 007`, — , `0`, `10.2 s`, `7.7` |
-| S10C at `8/100` | 11 | no escape; best pose at distance `0.00409 < δ` | `659 921`, `292 913`, — , `3 626` failures at the floor, `14.1 s` — not certified |
-| S10C at `7/100` | 11 | escape, clearance `0.00763` | — |
+| S10 at length $\frac{1}{10}$: the ten horizontal segments $[x - \frac{1}{20}, x + \frac{1}{20}] \times \lbrace y\rbrace$, $(x, y) \in P10$ | 10 | no escape; every refined pose meets a mark | $404 613$, $184 756$, — , $0$, `13.5 s`, $7.7$ |
+| S10C at $\frac{1}{10}$: S10 plus the centre point $(\frac{48}{25}, \frac{48}{25})$ | 11 | as above; also at step $0.01$, $0.75^\circ$ (`48 s`) and at 300 random contained poses, all at distance $0$ | $349 507$, $157 203$, $17 551$, $0$, `8.3 s`, $6.9$ |
+| S10C at $\frac{9}{100}$ | 11 | no escape; best pose at distance $0.00056$ | $432 993$, $197 007$, — , $0$, `10.2 s`, $7.7$ |
+| S10C at $\frac{8}{100}$ | 11 | no escape; best pose at distance $0.00409 < \delta$ | $659 921$, $292 913$, — , $3 626$ failures at the floor, `14.1 s` — not certified |
+| S10C at $\frac{7}{100}$ | 11 | escape, clearance $0.00763$ | — |
 
 **Theorem E.4 (certified; exact re-check passed: every certified leaf and every
-discarded box re-decided exactly).** Let `M₁₀` be the ten closed horizontal segments of
-length `1/10` centred at the points of `P10` in `S = [0, 96/25]²`. Every closed unit
+discarded box re-decided exactly).** Let $M_{10}$ be the ten closed horizontal segments
+of length $1/10$ centred at the points of `P10` in $S = [0, 96/25]^2$. Every closed unit
 square contained in `S`, at any angle, is at Euclidean distance at most
-`√2·2121/500000 < 3/500` from some segment of `M₁₀`. The same holds for `M₁₀` with the
-centre point added and for the segments of length `9/100`.
+$\sqrt{2}\cdot2121/500000 < 3/500$ from some segment of $M_{10}$. The same holds for
+$M_{10}$ with the centre point added and for the segments of length $9/100$.
 
 *What is and is not proved.* The theorem is the thickened statement H-134 asks for.
-The falsifier’s reading that every square actually meets a segment (distance `0`) is not
+The falsifier’s reading that every square actually meets a segment (distance $0$) is not
 proved and cannot be by this reader, whose slack at a tangency is zero.
 The certification is a floating-point computation with a documented error bound,
 replayable in `14 s`; the exact re-check of every leaf is the standard the record asks
 for, and an independent reader with its own bound is the standard the closing route
 should demand before the theorem is used.
-At length `8/100` the reader’s floor was too coarse for a slack of `0.002`; a finer
+At length $8/100$ the reader’s floor was too coarse for a slack of $0.002$; a finer
 floor would decide it and was not run.
 
 *A second reader, written and not completed.* `cover_reader2.py` (Appendix) certifies a
 box by a different bound, the Hausdorff one on the Euclidean distance itself:
 `dist(Q(P), m) ≤ dist(Q(P₀), m) + hx + hy + √2·ht`, decided exactly as
 `dist² ≤ (δ − hx − hy − 14143/10000·ht)²` with the vertex formulas of `reader.py` and no
-detour through `f` and `τ`. Its float cover did not finish within two bounded runs of
-`9` and `7` minutes at load `10` to `14`: the bound’s L1 centre term is looser than the
+detour through $f$ and $\tau$. Its float cover did not finish within two bounded runs of
+$9$ and $7$ minutes at load $10$ to $14$: the bound’s L1 centre term is looser than the
 frame bound’s, so it needs more boxes, and its per-box cost is about sixty
 point-to-segment distances against the first reader’s ten frame evaluations.
 The full exact pass it started at 05:30 was stopped after ten minutes.
@@ -442,16 +454,16 @@ level.
 ### 6.3 What Theorem E.4 buys
 
 - **Localisation for route (a).** In any packing of eleven unit squares in `S` each
-  square is within `δ` of one of ten known segments, all lying on the three rows
-  `y = 1, 48/25, 71/25`. Since a packing at any side `s ≤ q` dilates to a packing of
-  unit squares in `S`, the statement holds for every side up to `q` with no further
+  square is within $\delta$ of one of ten known segments, all lying on the three rows
+  $y = 1, 48/25, 71/25$. Since a packing at any side $s \le q$ dilates to a packing of
+  unit squares in `S`, the statement holds for every side up to $q$ with no further
   tolerance. This is the collapse X-021 priced: the branching over which mark each square
-  sits near is at most `10¹¹` labelled choices before symmetry and exclusion, and the
+  sits near is at most $10^{11}$ labelled choices before symmetry and exclusion, and the
   marks themselves were not taken from the certificate but from Stromquist’s rows with
   the one change that a chord argument demands.
 - **Not exactly-one ownership.** Eleven squares and ten marks force one mark to serve
   two squares, and a segment can be shared by two squares touching along a line that
-  crosses it; the pigeonhole that finishes Stromquist’s `n = 10` proof does not apply.
+  crosses it; the pigeonhole that finishes Stromquist’s $n = 10$ proof does not apply.
   The eleventh mark that H-134 allows is free; whether it can be placed so that some
   ownership argument survives is a question for the closing route, not for this lane.
 - **The certificate’s shape.** T-018’s heavy atoms could not do this; the marks that
@@ -462,24 +474,24 @@ level.
 ## 7. Obstructions, status of H-134, and what the next session does first
 
 - **The atom skeleton is the wrong shape for an integral set.** T-018’s mass sits on the
-  corners, the centre and near-wall orbits at row spacing `0.92`, which is the spacing
-  the wall `45°` squares defeat; no set of eleven points built from its 93 heaviest
+  corners, the centre and near-wall orbits at row spacing $0.92$, which is the spacing
+  the wall $45^\circ$ squares defeat; no set of eleven points built from its 93 heaviest
   atoms survives, and the greedy cover fails at the walls.
-- **Point marks are `0.008` short at the search resolution.** The best point set found
-  by the min–max (three columns, four marks in each outer column) still has a wall `45°`
-  escape of clearance `0.014`; the point form of H-134 is neither refuted nor
+- **Point marks are $0.008$ short at the search resolution.** The best point set found
+  by the min–max (three columns, four marks in each outer column) still has a wall
+  $45^\circ$ escape of clearance $0.014$; the point form of H-134 is neither refuted nor
   established, and the exact refutation engine did not close with its weak candidate
   generator.
-- **The segment form is settled by a chord.** A wall `45°` square cuts a row in a chord
-  of half-length `√2 − 1` and clears the row points by `0.0319`; a half-length of `1/20`
-  reaches `0.0354` along the diagonal and closes it.
-  The threshold lies in `(7/100, 9/100]`.
+- **The segment form is settled by a chord.** A wall $45^\circ$ square cuts a row in a
+  chord of half-length $\sqrt{2} - 1$ and clears the row points by $0.0319$; a
+  half-length of $1/20$ reaches $0.0354$ along the diagonal and closes it.
+  The threshold lies in $(7/100, 9/100]$.
 - **The proof is a computation.** Theorem E.4 rests on the Lipschitz bound of Section
   6.1 and a floating-point cover with an explicit allowance, re-checked exactly; it is
   not a hand proof by Stromquist’s Lemmas 1–4, which were not needed.
 
 **Recommended status for H-134:** accepted for the segment form (ten segments of length
-`1/10`, hence at most eleven marks), pending the exact re-check reported above and an
+$1/10$, hence at most eleven marks), pending the exact re-check reported above and an
 independent replay under a registered experiment; open for the point form, prior for
 that form lowered from about thirty per cent to about ten.
 A claim is frozen and needs an experiment id: Theorem E.4 with `set-S10-l0.1.json` as
@@ -498,26 +510,26 @@ escapes as test squares and a candidate generator that polishes inside the regio
 
 ## 8. Inputs and resources
 
-- Container side `q = 96/25`; tolerance `δ = 3/500`; every mark set as exact rationals
-  in the `set-*.json` blocks of the Appendix; atoms scaled from `381/100` to `q` by
-  `384/381`.
-- Search resolution for every catalogue row and every polish round: grid step `0.02`,
-  angle step `1.5°` (60 angles), the forty best grid poses refined by Nelder–Mead
-  (`xatol 10⁻⁹`), rationalised at denominators `10³` to `10⁶`; the min–max’s coarse grid
-  is step `0.06`, angle step `4°`. Greedy cover sample: step `0.04`, angle step `3°`.
-  Seeds: `numpy.random.default_rng(1)` for the random starts, `random.seed(3)` for the
-  300 spot-check poses; the named sets have none.
-- Reader: floor `2·10⁻⁴` on the scaled half-widths, node limit `4·10⁶`, `τ =
-  2121/500000`, allowance `10⁻⁹`.
+- Container side $q = 96/25$; tolerance $\delta = 3/500$; every mark set as exact
+  rationals in the `set-*.json` blocks of the Appendix; atoms scaled from $381/100$ to
+  $q$ by $384/381$.
+- Search resolution for every catalogue row and every polish round: grid step $0.02$,
+  angle step $1.5^\circ$ (60 angles), the forty best grid poses refined by Nelder–Mead
+  (`xatol 10⁻⁹`), rationalised at denominators $10^3$ to $10^6$; the min–max’s coarse
+  grid is step $0.06$, angle step $4^\circ$. Greedy cover sample: step $0.04$, angle
+  step $3^\circ$. Seeds: `numpy.random.default_rng(1)` for the random starts,
+  `random.seed(3)` for the 300 spot-check poses; the named sets have none.
+- Reader: floor $2\cdot10^{-4}$ on the scaled half-widths, node limit $4\cdot10^6$,
+  $\tau = 2121/500000$, allowance $10^{-9}$.
 - Exact decisions: `fractions.Fraction` throughout the falsifier’s final stage, the
   independent reader, the Göbel distances and the reader’s exact mode; two independent
   distance methods that must agree; corners in the closed container.
 - Wall times with the load average beside each (four cores shared with seven other
-  agents, one worker per job, `PACK_JOBS=1`): engine self-test `2 s` at `4.3`; each
-  named point set `0.6` to `1.0 s` at `4.3`; segment sets `6` to `10 s` at `7.7`;
-  min–max and polish as tabulated in Section 5.1; the exact loop `4 min` at `6`; the
-  reader `8` to `14 s` at `6.9` to `7.7`; the exact re-check `79` to `92 s` at `6` to
-  `9`, and the leaf sanity sample `29 s` at `9`.
+  agents, one worker per job, `PACK_JOBS=1`): engine self-test `2 s` at $4.3$; each
+  named point set $0.6$ to `1.0 s` at $4.3$; segment sets $6$ to `10 s` at $7.7$;
+  min–max and polish as tabulated in Section 5.1; the exact loop `4 min` at $6$; the
+  reader $8$ to `14 s` at $6.9$ to $7.7$; the exact re-check $79$ to `92 s` at $6$ to
+  $9$, and the leaf sanity sample `29 s` at $9$.
 - Interpreter: the project’s Python 3.14.7 with numpy 2.5.2 and scipy 1.17.1 from the
   frozen environment; no repository code was modified; `sqpack.cover` and the exp-121
   instruments were read, and exp-121’s frame and containment conventions reused.

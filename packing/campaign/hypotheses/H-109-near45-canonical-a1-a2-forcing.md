@@ -44,19 +44,19 @@ This strengthens the A1/A2 clauses needed under
 converse is not assumed.
 It reuses the generic triangle reduction from
 [H-108](H-108-near45-canonical-a3-forcing.md), not the truth of A3 forcing.
-At the fixed side `q=1939/500`, the points are `A1=(1,439/500)` and
-`A2=(1939/1000,439/500)`. Avoiding only L and M is the weaker antecedent; proving the
+At the fixed side $q=1939/500$, the points are $A1=(1{,}439/500)$ and
+$A2=(1939/1000,439/500)$. Avoiding only L and M is the weaker antecedent; proving the
 implication from that antecedent gives the stronger theorem.
 
 ## Why One A1 Proof Suffices
 
-Set `k=1+q/2` and reflect by `Phi(x,y)=(k-x,y)`. Use the same canonical region
+Set $k=1+q/2$ and reflect by `Phi(x,y)=(k-x,y)`. Use the same canonical region
 `R=[1,q/2]x[0,1]` and angle neighborhood `[pi/4-pi/720,pi/4+pi/720]` as H-108. Write
-`C=cos(theta)`, `S=sin(theta)`, `h=(C+S)/2` and `t=tan((theta-pi/4)/2)`. The reflected
+`C=cos(theta)`, `S=sin(theta)`, $h=(C+S)/2$ and `t=tan((theta-pi/4)/2)`. The reflected
 square can be represented with angle `theta'=pi/2-theta`. Thus `C'=S`, `S'=C`, `h'=h`
 and the half-angle offset satisfies `t'=-t`. This reflection preserves the canonical
 region and exchanges L with M and A1 with A2. It also preserves containment for
-canonical centers: `h<1` and `q>2` imply `[1,q/2]` is contained in `[h,q-h]`; vertical
+canonical centers: $h<1$ and $q>2$ imply $[1,q/2]$ is contained in $[h,q-h]$; vertical
 containment is unchanged.
 Closed membership and strict avoidance are preserved by reflection.
 

@@ -45,7 +45,7 @@ $$
 $$
 
 The norm on their convex hull is no greater than the maximum vertex norm.
-Thus the entire closed octagon lies strictly inside every residual square’s radius-$1/2$
+Thus the entire closed octagon lies strictly inside every residual square’s radius-`1/2`
 incircle. If a residual center is $C_i+d+e$ with $d\in\mathcal D(m_i)$ and $e\in E$, the
 point $C_i+d$ lies in $Q_i+C_i$ and in the residual square’s interior.
 Even if it is on the first square’s boundary, a sufficiently small move toward that
@@ -161,7 +161,7 @@ the triangle inequality to their difference.
 Thus (C) proves that every region has diameter at most $\beta=999/1000<1$.
 
 Two centers in one region would be less than one apart.
-Their open radius-$1/2$ incircles would overlap, and hence so would their unit-square
+Their open radius-`1/2` incircles would overlap, and hence so would their unit-square
 interiors, independently of orientation.
 Assigning each center to its lowest-index containing region handles region intersections
 without double counting.

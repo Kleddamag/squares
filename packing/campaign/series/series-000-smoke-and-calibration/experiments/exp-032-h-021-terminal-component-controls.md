@@ -74,8 +74,8 @@ compatibility may not.
 Without sufficient evidence, the only valid output is `unresolved`.
 
 The retained generation took 0.50 wall-seconds and the independent rebuild and replay
-took 0.42 seconds. Both report one `n = 3` quotient component across two contact
-signatures, one `n = 4` quotient component, 16 unresolved floating-point observations,
+took 0.42 seconds. Both report one $n = 3$ quotient component across two contact
+signatures, one $n = 4$ quotient component, 16 unresolved floating-point observations,
 and seven of seven rejected false-policy mutations.
 
 ## Preregistered acceptance rule
@@ -83,20 +83,20 @@ and seven of seven rejected false-policy mutations.
 The round passes only if one deterministic generation and one separate rebuild satisfy
 all of these conditions:
 
-- the four exact `n = 3` quotient samples lie in one connected component even though
+- the four exact $n = 3$ quotient samples lie in one connected component even though
   they have four geometric keys and cross two contact signatures and three strata;
-- all 24 exact labelled `n = 4` grid states map to one point after the declared
-  `D4 x S4` quotient;
+- all 24 exact labelled $n = 4$ grid states map to one point after the declared
+  $D4 \times S4$ quotient;
 - every retained floating-point observation remains unresolved because this checker has
   no exact membership witness for it;
-- the known nonoptimal `n = 3` observation and the out-of-domain `n = 5` observations
+- the known nonoptimal $n = 3$ observation and the out-of-domain $n = 5$ observations
   remain unresolved; and
 - mutations that equate a geometric key, contact signature, sample, labelled state, or
   floating-point match with a component are all rejected.
 
 Any exact-record drift, quotient-scope drift, forced numerical assignment, missing
 known-answer stratum, or mutation survivor rejects the instrument.
-This round admits the first bounded `n = 5` connectivity work; it does not validate a
+This round admits the first bounded $n = 5$ connectivity work; it does not validate a
 scalable classifier, estimate basin mass, or close the general identity bead.
 
 <!-- This document follows common-doc-guidelines.md.

@@ -186,7 +186,7 @@ Removing interiors preserves touching.
 Seven centers in their individual cavities still require all 21 mutual full-square SAT
 conditions.
 
-Each full unit square contains its radius-$1/2$ disk.
+Each full unit square contains its radius-`1/2` disk.
 Consequently every actual extension yields centers in $[b,d]^2$ whose disks avoid the
 selected actual square interiors and whose mutual distances are at least one.
 Those disk centers avoid the interiors of $C_i+Q_i+B_{1/2}$. Since the closed $K_i$ lies

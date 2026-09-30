@@ -181,7 +181,7 @@ certificates.
 | The transported 88-core family obstructs unconditional additive measures at n11 from $L_*=38200/9977\approx3.82881$. | A pure point, segment or density cover cannot cross that ceiling merely by a finer discretization or a different additive representation. | Nonadditive charges, restrictions proved for physical packings, and multi-parent compatibility. |
 | T-033 refines the same T-025 supports and weights. | Treating further refinement of that frozen family as the route past $3.875$. | Changed supports, features, parent domains or selection geometry. |
 | At n17, deleting triples at fixed point weights gives an exact point-only counterexample; dropping the parent-centre restriction gives another. | Claims that those ingredients are decorative for that certificate. | Reoptimized point-only families, better threshold families and different domains. |
-| Exp-222 gives an exact fixed-support, fixed-$(L,A)$ mass floor $33945829752/2000000005$. | More than $0.025163773\ldots$ of normalized mass improvement by changing only those weights at that same geometry. | New sites, new features, changed $A$, and joint geometry optimization. The quoted $+0.0034$ side estimate is a **heuristic**, not a theorem. |
+| Exp-222 gives an exact fixed-support, fixed-`(L,A)` mass floor $33945829752/2000000005$. | More than $0.025163773\ldots$ of normalized mass improvement by changing only those weights at that same geometry. | New sites, new features, changed $A$, and joint geometry optimization. The quoted $+0.0034$ side estimate is a **heuristic**, not a theorem. |
 | Corner-patch neutrality and the all-deep obstruction concern specified residual domains and point languages. | Closing those exact relaxations with more points alone. | Richer residual charges, actual parent footprints, different conditioning and valid selection rules. |
 | T-031 excludes the all-free corner class at $3.84$. Fourteen mixed bin vectors form four D4 classes; the all-deep branch has a separate obstruction. | Presenting one excluded class, or the unfinished tree, as an unconditional bound. | A newly justified complete cover of cases at a stronger target. |
 | Earlier global theta screens used finite families already cut by floor atoms; the global cell matrix was too large. | Repeating those screens as evidence for a useful new PSD method. | A localized continuum kernel, with a different comparison and a bounded certifier. |
@@ -390,7 +390,7 @@ Attempt a rational LP bound using only proved capacities and clique inequalities
 Large unresolved regions are a failed resolution attempt, not mathematical evidence
 against the target.
 
-A group of $r+1$ genuinely disjoint parents in a proposed bad-region capacity-$r$ class
+A group of $r+1$ genuinely disjoint parents in a proposed bad-region capacity-`r` class
 refutes that capacity.
 A feasible count vector surviving every admitted cut refutes the selected finite
 relaxation as an exclusion proof; it need not be a packing.

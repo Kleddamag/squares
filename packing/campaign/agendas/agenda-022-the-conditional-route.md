@@ -640,7 +640,7 @@ This agenda is paused, and every cell in it is `blocked` on one thing:
 is takeable until that closeout has run, evaluated its four doubling-down rules against
 block one’s measured numbers, and named which lanes below open — with two exceptions
 that depend on no rule and that a ten-hour pass enters as soon as `BC-203` is written:
-`BC-206`, the `n = 12` ladder, and `BC-208`, the class theorems, the latter only if
+`BC-206`, the $n = 12$ ladder, and `BC-208`, the class theorems, the latter only if
 `BC-198`’s controls passed.
 
 That is not caution for its own sake.
@@ -663,14 +663,14 @@ one either establishes or does not.
 
 | From | What this agenda consumes |
 | --- | --- |
-| `BC-197` | The `m = 5` wall, bracketed to at most `0.015`, and whether it is the covering value’s or the ceiling’s |
-| `BC-198` | A frozen class-certificate program with both controls passing — the near-axis class at or below `9`, the `{0°, 45°}` class at or above `3.877084` |
-| `BC-199` | `ρ₀` and `C` as exact rationals, and whether `ρ₀` cleared `10⁻⁶` |
-| `BC-200` | Whether the `n = 11` covering value reaches eleven at `3.82` or `3.85`, and where the ladder’s top now sits |
+| `BC-197` | The $m = 5$ wall, bracketed to at most $0.015$, and whether it is the covering value’s or the ceiling’s |
+| `BC-198` | A frozen class-certificate program with both controls passing — the near-axis class at or below $9$, the $\lbrace0^\circ, 45^\circ\rbrace$ class at or above $3.877084$ |
+| `BC-199` | $\rho_0$ and `C` as exact rationals, and whether $\rho_0$ cleared $10^{-6}$ |
+| `BC-200` | Whether the $n = 11$ covering value reaches eleven at $3.82$ or $3.85$, and where the ladder’s top now sits |
 | `BC-201` | The near-tight census, and whether Corollary 1a’s exact cover is a check or a search |
-| `BC-202` | A converged or time-limited covering-value point at `138/25`, and the cost per round there |
-| `BC-211` | Whether the `n = 13` covering value at `399/100` converges below thirteen, which reorders Lane A |
-| `BC-203` | Which two leads open, and whether Lane A builds the conditional route or the `B = 1` route |
+| `BC-202` | A converged or time-limited covering-value point at $\frac{138}{25}$, and the cost per round there |
+| `BC-211` | Whether the $n = 13$ covering value at $\frac{399}{100}$ converges below thirteen, which reorders Lane A |
+| `BC-203` | Which two leads open, and whether Lane A builds the conditional route or the $B = 1$ route |
 
 ## Why the conditional route goes second, and what it costs
 
@@ -699,14 +699,14 @@ thirteen means conditioning cannot close a case the classical method closes by h
 
 ## The wall accounting
 
-`360` elapsed minutes, three research lanes on three cores, the closeout at `300`. The
+$360$ elapsed minutes, three research lanes on three cores, the closeout at $300$. The
 lane that stays shut releases its core to the other two, and the closeout records that
 reallocation rather than leaving it implicit.
 
 | Clock | Lane A (core 1) | Lane B (core 2) | Lane C (core 3) | Coordinator |
 | --- | --- | --- | --- | --- |
 | `00:00–00:10` | — | — | — | wall start, continuity trigger armed, dispatch |
-| `00:10–02:40` | `BC-204` domain, or `BC-212` under rule four | `BC-208` class theorems | `BC-206` `n = 12` ladder | integration checkpoint at `03:00` |
+| `00:10–02:40` | `BC-204` domain, or `BC-212` under rule four | `BC-208` class theorems | `BC-206` $n = 12$ ladder | integration checkpoint at `03:00` |
 | `02:40–05:00` | `BC-204` or `BC-212` ends `03:10`; `BC-205` from `03:10` | `BC-207` exact cover from `02:40` | `BC-209` reach rungs from `02:10` | — |
 | `05:00–06:00` | freeze | freeze | freeze | `BC-210` closeout |
 
@@ -721,22 +721,22 @@ over unchanged.
 one opened so that the closeout reads them rather than argues them.
 Restated here as allocations:
 
-1. **The `m = 5` wall lands within `0.02` of five.** The covering value never binds
-   before the ceiling does at `m = 5`, so the ladder has nothing left there and the
+1. **The $m = 5$ wall lands within $0.02$ of five.** The covering value never binds
+   before the ceiling does at $m = 5$, so the ladder has nothing left there and the
    endgame is where the work is: `BC-204` and `BC-205` open, with `BC-206` carrying the
-   `n = 21` continuation as its second leg.
-2. **The `n = 11` covering value is below eleven at `3.85`.** The ladder is not blocked
+   $n = 21$ continuation as its second leg.
+2. **The $n = 11$ covering value is below eleven at $3.85$.** The ladder is not blocked
    where `X-014` assumed, so the cheapest remaining movement of the smallest open case
-   is more rungs: `BC-209` retargets at `n = 11` above `381/100`, `BC-206` takes the
+   is more rungs: `BC-209` retargets at $n = 11$ above $381/100$, `BC-206` takes the
    second rung lane, and `BC-207` defers because there is no wall for it to sit at.
-3. **`ρ₀` comes out below `10⁻⁶`.** The tree is dropped and the radius is kept as a
-   theorem: no conditional lead opens against Trump’s pose, `BC-204` and `BC-207` stay
+3. **$\rho_0$ comes out below $10^{-6}$.** The tree is dropped and the radius is kept as
+   a theorem: no conditional lead opens against Trump’s pose, `BC-204` and `BC-207` stay
    shut, the leads go to `BC-206`, `BC-208` and `BC-209`, and the radius goes to
    agenda-018’s `BC-176` and `BC-177` as the packet and its review.
-4. **The `n = 13` covering value at `399/100` converges below thirteen.** The `m = 4`
-   endgame is one certificate’s shrink tax away, so Lane A builds `BC-212`, the `B = 1`
+4. **The $n = 13$ covering value at $399/100$ converges below thirteen.** The $m = 4$
+   endgame is one certificate’s shrink tax away, so Lane A builds `BC-212`, the $B = 1$
    route over the direction continuum, in `BC-204`’s place, and `BC-205` calibrates on
-   it at side exactly `4`; the conditional route waits for block three.
+   it at side exactly $4$; the conditional route waits for block three.
 
 Rules one and two can both fire.
 Rule three overrides the endgame half of rule one, because a conditional certificate
@@ -748,20 +748,20 @@ Rule four reorders Lane A without closing any lead.
 **Retention.** Freeze, decide the frozen bytes through `devtools.decide_certificate`,
 retain only when both routes accept and agree on the value.
 Three cells here extend what the gate reads — `BC-204` adds the box and the doubled net,
-`BC-212` adds `B = 1` and the continuum decision, `BC-208` adds the two class thresholds
+`BC-212` adds $B = 1$ and the continuum decision, `BC-208` adds the two class thresholds
 — and all three extend it in the same direction: more of the object inside the frozen
 bytes, decided by both routes.
 Neither relaxes the rule, and a cell that cannot extend the gate inside its budget
 retains nothing.
 
 **A negative is a result.** `BC-205`’s kill, `BC-207`’s assignment-count cap and
-`BC-208`’s `n₁ = 0` failure are each written before the run with the number that would
+`BC-208`’s $n_1 = 0$ failure are each written before the run with the number that would
 fire them, and `BC-210` classifies whichever fires as a bounded negative with a
 disposition rather than as an unfinished lane.
 
 **A self-declared budget is not a stop condition.** `OR-8` applies to this block exactly
-as to the last: minute `360` is the end of an estimate, and the recurring continuity
-trigger armed at minute `10` is not deleted without the operator asking.
+as to the last: minute $360$ is the end of an estimate, and the recurring continuity
+trigger armed at minute $10$ is not deleted without the operator asking.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -123,7 +123,7 @@ Neither a deficient pose nor a subsequently verified $D>11$ at $U$ improves the 
 packing lower bound.
 The latter would rule out the endpoint mass-eleven density route by weak duality.
 It does not exclude a packing at a smaller side, and wall-touching placements have no
-automatic below-$U$ transport.
+automatic below-`U` transport.
 [H116](../../../../hypotheses/H-116-expanded-full-size-dual-support.md) owns expanded
 supports; H099 remains the old support only.
 H116 is an open question, not an executable substitute for a narrower frozen support
@@ -194,7 +194,7 @@ No cap change or adapter is commissioned by this note.
 | BC265 / H101 | An exact $\Omega$-avoiding pose, or an actual globally covering equality density | Accepted source packing, its symmetries, and the finite calibration | No avoiding pose, void cover or continuum density certificate; retain the stronger obstruction as a conditional fallback |
 | BC265 / H116 | A complete depth-one expanded weighting of mass above eleven, or a useful ceiling for one genuinely changed support | Old support, baseline and exact calibration | No added pose or complete expanded-depth certificate; do not promote a calibration violation into a dual result |
 | BC265 / H115 | A specified curved resource with useful capture and complete boundary-null coverage | The nondegenerate quadratic-arc boundary lemma | No candidate or uniform integral verifier; line-nullity alone is not headroom, so park |
-| BC257 / H100 | Mass below eleven covering every full-size pose at a declared below-$U$ side | Weak-duality semantics and exact field/geometry foundations | No density mechanism with demonstrated prospective headroom, fixed family or continuum reader; old-support closure supplies none of these |
+| BC257 / H100 | Mass below eleven covering every full-size pose at a declared below-`U` side | Weak-duality semantics and exact field/geometry foundations | No density mechanism with demonstrated prospective headroom, fixed family or continuum reader; old-support closure supplies none of these |
 | BC264 / H114 | A small feature-family obstruction, or a kernel candidate with a credible complete verification cost | The finite-feature kernel formulation and existing exact geometry | Kernel-specific review, fixed features, exact PSD evidence and full diagonal/pair verification remain missing; select a bounded feasibility gate, not a hierarchy build |
 
 The H114 mechanism can directly exclude eleven squares at its declared side $96/25$: it
@@ -232,7 +232,7 @@ A finite $b<11$ candidate does not prove the packing bound; it earns at most a
 separately priced continuum check.
 An unresolved finite problem earns neither conclusion.
 The required controls include exact PSD/refusal checks, legal touching pairs, joint
-symmetry, and the original Trump-side no-false-$b<11$ control.
+symmetry, and the original Trump-side no-false-`b<11` control.
 Their future scientific invocation needs its own authorization.
 
 This recommendation is a priority judgment, not an assertion that a low-degree kernel

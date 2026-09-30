@@ -13,16 +13,16 @@ Experiment: exp-071, H-070
 
 The strict-JSON deadline controls `test_deadline_before_first_round_writes_strict_json`
 and `test_summary_json_refuses_unexpected_non_finite_values` passed in 1.36 seconds.
-Massaccesi’s archived n=17 program reported 168 atoms, total `203/12`, least score `1`,
+Massaccesi’s archived n=17 program reported 168 atoms, total $203/12$, least score $1$,
 and `CERTIFICATE CONDITIONS VERIFIED`. The source-distinct third-party check rebuilt
 bytes identical to `control-n17-massaccesi.json` and accepted both its n=11 and n=17
 controls.
 
 The unpinned scalar verifier also accepted the retained n=11 certificate with SHA-256
 `b121edbd044b6f326022d8783551efd947c95eec2738269857d039358ac6ae6a`, exact total
-`434547/40000`, and least covered mass `4001/4000` over 567,131,843 reachable cells.
+$434547/40000$, and least covered mass $4001/4000$ over 567,131,843 reachable cells.
 The project decision gate independently returned `RETAINABLE` on the same bytes: its
-interval route enclosed exactly `4001/4000` after 1,570,831 boxes in 22 seconds, and its
+interval route enclosed exactly $4001/4000$ after 1,570,831 boxes in 22 seconds, and its
 exact sweep returned the same minimum in 8 seconds.
 
 No control changed a source file.
@@ -33,8 +33,8 @@ approved cache access; no scientific process was restarted.
 
 ## Screen Contract
 
-Each screen used side `191/50`, square side `9977/10000`, grid counts `25,34,41`, angle
-limit `207107/500000`, 180 direction steps, rationalization scale 4,000,000, one column
+Each screen used side $191/50$, square side $9977/10000$, grid counts $25,34,41$, angle
+limit $207107/500000$, 180 direction steps, rationalization scale 4,000,000, one column
 round, at most 60 row rounds, three rows per direction, and a 540-second deadline.
 All numerical-thread environment variables were pinned to one.
 
@@ -47,11 +47,11 @@ eligible screens.
 
 | Inset | Status | Exact candidate mass | Command wall | Candidate SHA-256 |
 | --- | --- | ---: | ---: | --- |
-| `1/2` | eligible; converged | `11142897/1000000` = 11.142897 | 85.175 s | `628d7e55d664c5256a9331b9a68166306a30c275432a997bfe9fab1a9ca0fc5a` |
-| `2962983/4505800` | eligible; converged | `9268609/800000` = 11.58576125 | 162.342 s | `2d2a955b0549d788fa822085e8ea217abaf78a006d846be01a350b4e9b7cedc9` |
-| `15513/20000` | eligible; converged | `44995603/4000000` = 11.24890075 | 69.604 s | `df5edeaf920951aa2c7d1284bd9f4e101e5f2e29caf39d5862c8dff4d8ba16a2` |
+| $\frac{1}{2}$ | eligible; converged | `11142897/1000000` = 11.142897 | 85.175 s | `628d7e55d664c5256a9331b9a68166306a30c275432a997bfe9fab1a9ca0fc5a` |
+| $\frac{2962983}{4505800}$ | eligible; converged | `9268609/800000` = 11.58576125 | 162.342 s | `2d2a955b0549d788fa822085e8ea217abaf78a006d846be01a350b4e9b7cedc9` |
+| $\frac{15513}{20000}$ | eligible; converged | `44995603/4000000` = 11.24890075 | 69.604 s | `df5edeaf920951aa2c7d1284bd9f4e101e5f2e29caf39d5862c8dff4d8ba16a2` |
 
-The `1/2` candidate is the unique exact minimum and is frozen as the selected seed.
+The $1/2$ candidate is the unique exact minimum and is frozen as the selected seed.
 Every candidate remains above eleven; none routes to exact lower-bound decision.
 The runner summaries record command wall time but not process CPU time.
 CPU was not captured before the first two short-lived screens exited and is recorded as
@@ -87,9 +87,9 @@ No arm ran during the hold.
 
 The active-minute-30 gate passed before launch.
 The coordinator’s explicit GO at `2026-09-06T04:03:58Z` opened the two fresh output
-stems. The selected `1/2` candidate seeded the released arm through `--seed-map centre`;
+stems. The selected $1/2$ candidate seeded the released arm through `--seed-map centre`;
 the control omitted only the seed certificate.
-Both used inset `1/2`, eight column rounds, 2,520-second deadlines, and the same
+Both used inset $1/2$, eight column rounds, 2,520-second deadlines, and the same
 remaining parameters as the screens.
 
 The released arm started at `2026-09-06T04:04:38Z` in execution session 87066 as uv PID
@@ -117,7 +117,7 @@ PIDs exited before the next process-table snapshot.
 The last live snapshot gives lower bounds of 141.47 CPU seconds for released and 140.27
 CPU seconds for control; those are not reported as final costs.
 
-Both arms improved the selected one-round screen mass by exactly `1/250000`, but they
+Both arms improved the selected one-round screen mass by exactly $1/250000$, but they
 did so equally. This is evidence for the common released-support search, not for an
 advantage from the seed.
 

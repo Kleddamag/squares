@@ -537,8 +537,8 @@ It does not measure H-052’s agreement criterion.
 H-052 remains `instrument_ready: true` and scientifically unresolved.
 Exp-049 remains `needs_review: true`. BC-112 is stopped for this wave because its
 positive entry gate did not pass, not because the certificate was refuted.
-Nothing in BC-116 adopts the proposed `4.5058` lower bound, transfers it to `n = 18` or
-`n = 19`, validates the LP generator, or changes the frontier.
+Nothing in BC-116 adopts the proposed $4.5058$ lower bound, transfers it to $n = 18$ or
+$n = 19$, validates the LP generator, or changes the frontier.
 
 ## Frozen Inputs
 
@@ -566,8 +566,8 @@ output for every Python file under `packing/cases/n17_weighted_certificate/`.
 | Terminal exp-049 record | `f8bbb64a561198c07cfc80548014d090f5b6a9baf27e619017544979854abb92` |
 
 The frozen fixture remains the retained Massaccesi certificate at exact side
-`22529/5000`: 168 weighted atoms on a 29 by 29 grid, total mass `9744/576`, 181 ordered
-rational directions, and claimed checked minimum `576/576`. These are retained fixture
+$22529/5000$: 168 weighted atoms on a 29 by 29 grid, total mass $9744/576$, 181 ordered
+rational directions, and claimed checked minimum $576/576$. These are retained fixture
 values, not results newly established by this W3 cell.
 
 ## External Driver Boundary
@@ -607,11 +607,11 @@ A non-scientific progress marker is atomically replaced before each source or
 independent stage. It may identify the active ordinal and stage, but it is not a
 canonical row and cannot support an H-052 verdict.
 
-For direction ordinal `k`, the driver may append a scientific checkpoint row only after
+For direction ordinal $k$, the driver may append a scientific checkpoint row only after
 both unchanged accumulation functions return.
 The row contains:
 
-- ordinal `k` and the exact ordered direction;
+- ordinal $k$ and the exact ordered direction;
 - the complete source-faithful and independent `DirectionManifest` values;
 - their exact equality decision;
 - the previous paired-row hash; and
@@ -629,7 +629,7 @@ hash, every row hash, the full previous-row chain, contiguous ordinals `0..k-1`,
 exact direction at each ordinal.
 It must reject a gap, duplicate, reordering, trailing partial row, malformed exact
 value, stale digest, mismatched path, or changed schema.
-It then starts at ordinal `k`; it may neither recompute and overwrite an accepted prefix
+It then starts at ordinal $k$; it may neither recompute and overwrite an accepted prefix
 nor skip the first incomplete direction.
 
 After 181 valid paired rows, the assembler reconstructs the two ordered

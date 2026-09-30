@@ -488,7 +488,7 @@ open-branch receipt.
 | Pair or wall infeasibility at fixed angles | Safe | Exact LP/Farkas certificate over the complete rows |
 | Interval objective bound worse than an exact incumbent | Safe | Outward enclosure covering the entire branch |
 | Exact algebraic infeasibility or objective exclusion | Safe | Complete real-root or component certificate |
-| Joint symmetry quotient | Safe | Full-field `D4 x S_n` transform and exact orbit witness replay |
+| Joint symmetry quotient | Safe | Full-field $D4 \times S_n$ transform and exact orbit witness replay |
 | Duplicate leaf removal | Conditional | Exact type-preserving bijection, including rows and multipliers |
 | Delete inactive inequalities or rattler variables | Refused | They remain part of feasibility even when absent from positive support |
 | Keep only positive-stress contacts or a connected graph | Refused | Neither is a necessary condition proved here |
@@ -503,7 +503,7 @@ These controls are obligations, not executions performed in this block.
 
 | Control | Frozen expected recovery | Permitted conclusion |
 | --- | --- | --- |
-| n=3 exact oracle | After axis-aligned orientation forcing, 64 four-way separation choices, 24 consistent one-cells, and a `D4 x S3` quotient that is a closed interval with three named strata | Completeness control for all n=3 optimum strata after an exact map from the general typed labels |
+| n=3 exact oracle | After axis-aligned orientation forcing, 64 four-way separation choices, 24 consistent one-cells, and a $D4 \times S3$ quotient that is a closed interval with three named strata | Completeness control for all n=3 optimum strata after an exact map from the general typed labels |
 | n=4 exact oracle | After axis-aligned orientation forcing, 4,096 four-way choices, 96 consistent zero-cells, 24 labelled grid states, and one quotient point | Completeness control for the n=4 optimum after an exact map from the general typed labels |
 | n=5 Göbel witness | Exact representability and the already proved local rigidity of the named witness | Positive representation and local control only; never full n=5 completeness |
 | n=11 Trump endpoint | 14 touching pairs, 20 wall-corner incidences, two angle classes of sizes six and five, 512 raw feature selections, 128 derivative-distinct matrices, 42 active rows per retained tangent branch, and the exact exp-013 verdict | Local endpoint compatibility only; invoke BC-240 only after its source-distinct review |

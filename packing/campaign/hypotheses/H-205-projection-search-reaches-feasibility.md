@@ -52,14 +52,14 @@ hypothesis:
 The
 [penalty calibration of 2026-09-08](../../atlas/known-best/video/spikes/v2-transitions/NOTES.md)
 ended in a precondition failure rather than a ranking.
-Zero of 48 runs finished feasible; the least overlap anywhere was `0.0042` of a unit
+Zero of 48 runs finished feasible; the least overlap anywhere was $0.0042$ of a unit
 side; and holding eleven squares still for thirteen times as many steps moved the
-overlap from `0.004578` to `0.004570` and the container side not at all.
+overlap from $0.004578$ to $0.004570$ and the container side not at all.
 The reason is structural rather than budgetary.
 A penalty force settles where the springs balance the walls, and the residual overlap
 there is pressure divided by stiffness, so only infinite stiffness removes it and the
 timestep forbids that.
-The stiffest law in that sweep reported `3.88987` against the standing record `3.87708`
+The stiffest law in that sweep reported $3.88987$ against the standing record $3.87708$
 — a third of a per cent off a record it had no packing for.
 
 A ranking presumes the thing being ranked can produce an answer.
@@ -72,7 +72,7 @@ answers it by name. Divide and concur has no potential, no derivative and no smo
 requirement: it alternates two projections, and its fixed points are packings by
 construction.
 It is also the only mechanism in either survey with a cold, whole-benchmark
-result on the sibling problem — 197 values of `n`, up to 400 random starts each, “No
+result on the sibling problem — 197 values of $n$, up to 400 random starts each, “No
 information about the known packings … apart from their densities”, best known reached
 within `1e-9` on 143 and beaten on 38.
 
@@ -85,10 +85,10 @@ different repairs.
   converges to points that are not packings, the mechanism is no better than the penalty
   and the survey’s rank ordering is wrong for this problem.
 - **It reaches feasibility but not below the grid.** The trivial grid is feasible for
-  every `n` and is where the container schedule starts, so a run that never improves on
+  every $n$ and is where the container schedule starts, so a run that never improves on
   it has found nothing.
-  This is the outcome to watch: a grid of `k` squares in a row needs a container of
-  exactly `k`, so every tightening makes the grid topology infeasible all at once and
+  This is the outcome to watch: a grid of $k$ squares in a row needs a container of
+  exactly $k$, so every tightening makes the grid topology infeasible all at once and
   there is no small repair to find.
   That is the same wall [H-201](H-201-simultaneous-perturbation-move.md) measured for
   the annealing engine, arriving by a different road.
@@ -99,8 +99,8 @@ different repairs.
 ## What this does not claim
 
 Nothing about optimality, and nothing about beating the existing engine.
-`sqsearch` with a long schedule and the collective move reaches `3.8958` at `n = 11` and
-`4.7071` at `n = 17`, at a budget three orders of magnitude larger than anything here.
+`sqsearch` with a long schedule and the collective move reaches $3.8958$ at $n = 11$ and
+$4.7071$ at $n = 17$, at a budget three orders of magnitude larger than anything here.
 This claim is about a property the existing engine’s physics arm does not have — that
 what comes out is a packing — and about how far a first, honest implementation gets.
 

@@ -16,16 +16,16 @@ clock.
 
 | Lane, claim | My replay | Verdict |
 | --- | --- | --- |
-| E (session-104), Theorem E.4: the ten horizontal segments of length `1/10` centred on Stromquist’s Figure-13 points at `96/25` are robustly unavoidable at tolerance `3/500`, and at the sharper `√2·2121/500000` | a new interval reader over a symmetry-reduced pose space with a rigid-motion Lipschitz bound on the *signed* Euclidean distance; every certified leaf and every discard re-decided in `Fraction`; the cover’s volume identity checked exactly | **agrees**, at both constants, with 24,381 boxes and 10,960 certified leaves (the lane needed 404,613 and 184,756); also decides the `9/100` set and the `8/100` set the lane left unresolved (the lane’s own reader then confirms `8/100` at a finer floor, so it is two-reader too), and finds exact escapes at `7/100` as the lane did |
-| C (session-101), the four-corner pair containment theorem at `96/25` | `sqpack.fractional.certificate.verify` on the exported free measure, then the ownership step re-derived from the mass gap and exact distances | **agrees**: mass `22524199/2000000`, valid, margin `441/125000` |
-| B (session-102, exp-130), Theorem C: `[0°, 10.3875°] ∪ [43.0737°, 45°]` excluded at `96/25` on grid 119 | the site set rebuilt, the class program proposed and decided by `decide_class_program` through my own driver | **agrees**, and reaches the lane’s rationalised point to the fraction: mass `11083/1024` over 296 atoms, least core `4101/4096`, all conditions holding |
+| E (session-104), Theorem E.4: the ten horizontal segments of length $\frac{1}{10}$ centred on Stromquist’s Figure-13 points at $\frac{96}{25}$ are robustly unavoidable at tolerance $\frac{3}{500}$, and at the sharper $\sqrt{2}\cdot\frac{2121}{500000}$ | a new interval reader over a symmetry-reduced pose space with a rigid-motion Lipschitz bound on the *signed* Euclidean distance; every certified leaf and every discard re-decided in `Fraction`; the cover’s volume identity checked exactly | **agrees**, at both constants, with 24,381 boxes and 10,960 certified leaves (the lane needed 404,613 and 184,756); also decides the $\frac{9}{100}$ set and the $\frac{8}{100}$ set the lane left unresolved (the lane’s own reader then confirms $\frac{8}{100}$ at a finer floor, so it is two-reader too), and finds exact escapes at $\frac{7}{100}$ as the lane did |
+| C (session-101), the four-corner pair containment theorem at $\frac{96}{25}$ | `sqpack.fractional.certificate.verify` on the exported free measure, then the ownership step re-derived from the mass gap and exact distances | **agrees**: mass $\frac{22524199}{2000000}$, valid, margin $\frac{441}{125000}$ |
+| B (session-102, exp-130), Theorem C: $[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$ excluded at $\frac{96}{25}$ on grid 119 | the site set rebuilt, the class program proposed and decided by `decide_class_program` through my own driver | **agrees**, and reaches the lane’s rationalised point to the fraction: mass $\frac{11083}{1024}$ over 296 atoms, least core $\frac{4101}{4096}$, all conditions holding |
 
 Two disagreements with the lanes’ own readings are recorded in Section 5: the segment
-length threshold is in `(7/100, 8/100]`, not `(7/100, 9/100]`, and lane E’s certified
+length threshold is in $(7/100, 8/100]$, not $(7/100, 9/100]$, and lane E’s certified
 domain misses a measure-zero sliver at the far walls that its stated constant does not
 strictly absorb (mine closes it).
 The selection (Section 6) funds the segment cover toward an ownership argument as the
-next sustained block and the `B = 1` depth polisher as the efficiency block, and
+next sustained block and the $B = 1$ depth polisher as the efficiency block, and
 recommends against funding the band ladder, the corner-pair anchored certificate and the
 plateau’s full-dual pricing as blocks of their own.
 The strongest claim to freeze is Theorem E.4 with its exact statement in Section 7.
@@ -34,97 +34,103 @@ The strongest claim to freeze is Theorem E.4 with its exact statement in Section
 
 Written in the lane checkpoint file before any run.
 
-1. **Theorem E.4.** A closed unit square contained in `[0, 96/25]²` whose exact
-   Euclidean distance to every one of the ten segments `[x − 1/20, x + 1/20] × {y}`,
-   `(x, y) ∈ P10`, exceeds `3/500`, decided in `Fraction` arithmetic by a convex-polygon
-   distance (an intersection test, then vertex-to-edge minima).
+1. **Theorem E.4.** A closed unit square contained in $[0, 96/25]^2$ whose exact
+   Euclidean distance to every one of the ten segments
+   $[x - 1/20, x + 1/20] \times \lbrace y\rbrace$, $(x, y) \in P10$, exceeds $3/500$,
+   decided in `Fraction` arithmetic by a convex-polygon distance (an intersection test,
+   then vertex-to-edge minima).
    A box my reader cannot certify is not a falsifier until its centre pose is decided
    exactly as an escape; an uncertified box with no exact escape is unresolved scope.
    Secondary falsifiers: a leaf my exact re-check rejects, or leaves and discards whose
    volumes do not sum to the domain’s.
-2. **Corner-pair theorem.** `verify` reports a mass other than `22524199/2000000` or any
+2. **Corner-pair theorem.** `verify` reports a mass other than $22524199/2000000$ or any
    of Conditions 1, 3, 4, 5 failing; the eight pair atoms absent or lighter than
-   `106251/800000`; a per-corner pair mass at most `ε = M − 11`; or a least squared
-   distance between marks of different corners at most `2B²`.
+   $106251/800000$; a per-corner pair mass at most $\varepsilon = M - 11$; or a least
+   squared distance between marks of different corners at most $2B^2$.
 3. **Theorem C.** `decide_class_program` on the rationalised point reached from grid
-   119, cells `0–39 ∪ 172–180`, composition `(11, 0)`, thresholds `(1, 0)`, reports
-   Condition 2′ or 5′ failing, or the folded range of the cells differs from
-   `[0°, 10.3875°] ∪ [43.0737°, 45°]`. Equality of the exact mass with `11083/1024` is
-   context: the LP path may reach a different rationalised point.
+   119, cells $0\text{–}39 \cup 172\text{–}180$, composition $(11, 0)$, thresholds
+   $(1, 0)$, reports Condition 2′ or 5′ failing, or the folded range of the cells
+   differs from $[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$. Equality of
+   the exact mass with $11083/1024$ is context: the LP path may reach a different
+   rationalised point.
 
 ## 2. Replay of Theorem E.4 (lane E)
 
 ### 2.1 The statement replayed
 
-`q = 96/25`, `S = [0, q]²`, `δ = 3/500`. `P10` is Stromquist’s Figure-13 set at `q`,
-which I recomputed from his formulas (`U = 3/2 − q/4 = 27/50`, `V = 1/2 + q/4 = 73/50`,
-`C = q/2 = 48/25`) rather than copying the lane’s list: `(1, 1)`, `(48/25, 1)`,
-`(71/25, 1)`, `(27/50, 48/25)`, `(73/50, 48/25)`, `(119/50, 48/25)`, `(33/10, 48/25)`,
-`(1, 71/25)`, `(48/25, 71/25)`, `(71/25, 71/25)`. `M₁₀` is the ten closed horizontal
-segments of length `1/10` centred on them.
-Claim: every closed unit square contained in `S`, at any angle, is within `δ` of some
-segment of `M₁₀`; the lane’s theorem states the sharper constant `√2·2121/500000`.
+$q = 96/25$, $S = [0, q]^2$, $\delta = 3/500$. `P10` is Stromquist’s Figure-13 set at
+$q$, which I recomputed from his formulas ($U = 3/2 - q/4 = 27/50$,
+$V = 1/2 + q/4 = 73/50$, $C = q/2 = 48/25$) rather than copying the lane’s list:
+$(1, 1)$, $(48/25, 1)$, $(71/25, 1)$, $(27/50, 48/25)$, $(73/50, 48/25)$,
+$(119/50, 48/25)$, $(33/10, 48/25)$, $(1, 71/25)$, $(48/25, 71/25)$, $(71/25, 71/25)$.
+$M_{10}$ is the ten closed horizontal segments of length $1/10$ centred on them.
+Claim: every closed unit square contained in `S`, at any angle, is within $\delta$ of
+some segment of $M_{10}$; the lane’s theorem states the sharper constant
+$\sqrt{2}\cdot2121/500000$.
 
 ### 2.2 The reader, written from the statement
 
 `e4_reader.py` (Appendix) is not a variant of the lane’s `cover_reader.py`, which I read
 only after this design was fixed and run (Section 2.5 compares them).
 
-- **Pose space and symmetry.** A pose is `(t, cx, cy)` with `t = tan(θ/2)`, the square’s
-  frame `(cos θ, sin θ) = ((1 − t²)/(1 + t²), 2t/(1 + t²))`. The segment set is
-  invariant under `x → q − x` and `y → q − y` (its rows are `y = 1, 48/25, 71/25` and
-  its columns are symmetric about `48/25`) but not under `x ↔ y`, so its symmetry group
-  is the rectangle’s. The half-turn keeps `θ` and maps `cy → q − cy`, so poses with
-  `cy ≤ q/2` suffice; then `x → q − x` keeps `cy` and maps a square at angle `θ` to one
-  at `π/2 − θ`, so `θ ∈ [0, π/4]` suffices.
-  The domain is `t ∈ [0, 27/64] ⊃ [0, √2 − 1]`, `cx ∈ [1/2, 7/2] ⊃ [1/2, q − 1/2]`,
-  `cy ∈ [1/2, 2] ⊃ [1/2, q/2]`, with dyadic bounds so that every box of the bisection
-  tree is an exact float and an exact `Fraction`, and the over-covered part is removed
-  by the discard rule.
-- **The bound.** Let `g(P, m)` be the signed Euclidean distance from the closed square
-  `Q(P)` to segment `m`: the distance when they are disjoint, minus the greatest
-  penetration depth of a point of `m` in `Q(P)` when they meet.
-  For the rigid motion `φ` carrying `Q(P₀)` to `Q(P)`, every point of `Q(P₀)` moves by
-  at most `h = |c − c₀| + (√2/2)|θ − θ₀|`, so a nearest point of `Q(P₀)` to `m` has an
-  image in `Q(P)` within `h` of it, and a ball of radius `d` inside `Q(P₀)` about
-  `p ∈ m` has as image a ball of radius `d` inside `Q(P)` about a point within `h` of
-  `p`; in both regimes `g(P, m) ≤ g(P₀, m) + h`. Over a box with half-widths
-  `(ht, hx, hy)` about its centre `P₀`, `|c − c₀| ≤ √(hx² + hy²)` and
+- **Pose space and symmetry.** A pose is `(t, cx, cy)` with $t = \tan(\theta/2)$, the
+  square’s frame $(\cos \theta, \sin \theta) = ((1 - t^2)/(1 + t^2), 2t/(1 + t^2))$. The
+  segment set is invariant under $x \to q - x$ and $y \to q - y$ (its rows are
+  $y = 1, 48/25, 71/25$ and its columns are symmetric about $48/25$) but not under
+  $x \leftrightarrow y$, so its symmetry group is the rectangle’s. The half-turn keeps
+  $\theta$ and maps `cy → q − cy`, so poses with `cy ≤ q/2` suffice; then $x \to q - x$
+  keeps `cy` and maps a square at angle $\theta$ to one at $\pi/2 - \theta$, so
+  $\theta \in [0, \pi/4]$ suffices.
+  The domain is $t \in [0, 27/64] \supset [0, \sqrt{2} - 1]$,
+  `cx ∈ [1/2, 7/2] ⊃ [1/2, q − 1/2]`, `cy ∈ [1/2, 2] ⊃ [1/2, q/2]`, with dyadic bounds
+  so that every box of the bisection tree is an exact float and an exact `Fraction`, and
+  the over-covered part is removed by the discard rule.
+- **The bound.** Let $g(P, m)$ be the signed Euclidean distance from the closed square
+  $Q(P)$ to segment $m$: the distance when they are disjoint, minus the greatest
+  penetration depth of a point of $m$ in $Q(P)$ when they meet.
+  For the rigid motion $\varphi$ carrying $Q(P_0)$ to $Q(P)$, every point of $Q(P_0)$
+  moves by at most $h = |c - c_0| + (\sqrt{2}/2)|\theta - \theta_0|$, so a nearest point
+  of $Q(P_0)$ to $m$ has an image in $Q(P)$ within $h$ of it, and a ball of radius $d$
+  inside $Q(P_0)$ about $p \in m$ has as image a ball of radius $d$ inside $Q(P)$ about
+  a point within $h$ of $p$; in both regimes $g(P, m) \le g(P_0, m) + h$. Over a box
+  with half-widths `(ht, hx, hy)` about its centre $P_0$, `|c − c₀| ≤ √(hx² + hy²)` and
   `|θ − θ₀| = 2|atan t − atan t₀| ≤
   2·ht/(1 + t₁t₀)` from `atan x ≤ x`. A box is **certified** when
-  `min_m g(P₀, m) + √(hx² + hy²) + √2·ht/(1 + t₁t₀) ≤ δ` (with `√2 ≤ 665857/470832` in
-  both stages and a `10⁻⁹` allowance in the float stage), **discarded** when it holds no
-  contained pose (`x₂ < w_min` or `x₁ > q − w_min`, likewise in `y`, `w_min =
-  min(w(t₁), w(t₂))` since `w = (cos θ + sin θ)/2` is unimodal), and otherwise split
-  along the largest of `hx`, `hy`, `√2·ht`. A box whose scaled half-widths are all below
-  the floor `2⁻¹⁴` and which is neither is a failure, and its centre pose is then
-  decided exactly by the falsifier’s polygon distance.
-- **The segment minimum.** `g(P₀, ·)` restricted to a segment is a convex function of
-  the segment parameter; the float stage evaluates it at the analytic candidates (the
-  endpoints, `u = 0`, `v = 0`, `|u| = |v|`, `|u| = 1/2`, `|v| = 1/2`, and the stationary
-  points of the four corner pieces) and records the minimiser `s*` and the segment.
-  Self-test 1 checks the candidate minimum against a 2001-point sampling of every
-  segment at 400 random poses (worst discrepancy `1.1·10⁻¹⁶`); self-test 2 checks the
-  float signed distance against the exact polygon distance at 60 random rational poses
-  (no mismatch).
-- **The exact stage.** Every certified leaf is re-decided in `Fraction`: `g` is
-  evaluated at the recorded rational `s*`, which bounds the true segment minimum from
-  above whatever the float search did, so soundness never rests on the float minimiser;
-  the irrational terms enter only through rational upper bounds (`√2` by the convergent,
-  `√(hx² + hy²)` by an integer square root plus one at `2⁻⁴⁰`); the inequality is
-  `val + h ≤ δ` when `s*` is inside the square and `val ≤ (δ − h)²` with `δ ≥ h` when
-  outside. Every discard is re-decided exactly, and the volumes of leaves, discards and
-  failures are summed exactly against the domain’s. The lane’s constant is handled as
+  `min_m g(P₀, m) + √(hx² + hy²) + √2·ht/(1 + t₁t₀) ≤ δ` (with
+  $\sqrt{2} \le 665857/470832$ in both stages and a $10^{-9}$ allowance in the float
+  stage), **discarded** when it holds no contained pose (`x₂ < w_min` or
+  `x₁ > q − w_min`, likewise in $y$, `w_min =
+  min(w(t₁), w(t₂))` since $w = (\cos \theta + \sin \theta)/2$ is unimodal), and
+  otherwise split along the largest of `hx`, `hy`, `√2·ht`. A box whose scaled
+  half-widths are all below the floor $2^{-14}$ and which is neither is a failure, and
+  its centre pose is then decided exactly by the falsifier’s polygon distance.
+- **The segment minimum.** $g(P_0, \cdot)$ restricted to a segment is a convex function
+  of the segment parameter; the float stage evaluates it at the analytic candidates (the
+  endpoints, $u = 0$, $v = 0$, $|u| = |v|$, $|u| = 1/2$, $|v| = 1/2$, and the stationary
+  points of the four corner pieces) and records the minimiser $s^{\ast}$ and the
+  segment. Self-test 1 checks the candidate minimum against a 2001-point sampling of
+  every segment at 400 random poses (worst discrepancy $1.1\cdot10^{-16}$); self-test 2
+  checks the float signed distance against the exact polygon distance at 60 random
+  rational poses (no mismatch).
+- **The exact stage.** Every certified leaf is re-decided in `Fraction`: $g$ is
+  evaluated at the recorded rational $s^{\ast}$, which bounds the true segment minimum
+  from above whatever the float search did, so soundness never rests on the float
+  minimiser; the irrational terms enter only through rational upper bounds ($\sqrt{2}$
+  by the convergent, `√(hx² + hy²)` by an integer square root plus one at $2^{-40}$);
+  the inequality is `val + h ≤ δ` when $s^{\ast}$ is inside the square and
+  `val ≤ (δ − h)²` with $\delta \ge h$ when outside.
+  Every discard is re-decided exactly, and the volumes of leaves, discards and failures
+  are summed exactly against the domain’s. The lane’s constant is handled as
   `dist² ≤ 2·(2121/500000)²`.
 
 ### 2.3 Inputs
 
 | Input | Value |
 | --- | --- |
-| Marks | `P10` as above; segments `[x − ℓ/2, x + ℓ/2] × {y}` with `ℓ ∈ {1/10, 9/100, 8/100, 7/100}` |
-| Tolerance | `3/500`; and, for `ℓ = 1/10`, `√2·2121/500000` |
-| Domain | `t ∈ [0, 27/64]`, `cx ∈ [1/2, 7/2]`, `cy ∈ [1/2, 2]`; volume `243/128` |
-| Floor, allowance, node budget | `2⁻¹⁴` on the scaled half-widths; `10⁻⁹`; `1.2·10⁷` nodes |
+| Marks | `P10` as above; segments $[x - \ell/2, x + \ell/2] \times \lbrace y\rbrace$ with $\ell \in \lbrace\frac{1}{10}, \frac{9}{100}, \frac{8}{100}, \frac{7}{100}\rbrace$ |
+| Tolerance | $\frac{3}{500}$; and, for $\ell = \frac{1}{10}$, $\sqrt{2}\cdot\frac{2121}{500000}$ |
+| Domain | $t \in [0, \frac{27}{64}]$, `cx ∈ [1/2, 7/2]`, `cy ∈ [1/2, 2]`; volume $\frac{243}{128}$ |
+| Floor, allowance, node budget | $2^{-14}$ on the scaled half-widths; $10^{-9}$; $1.2\cdot10^7$ nodes |
 | Split rule | the largest of `hx`, `hy`, `√2·ht`, bisected |
 | Arithmetic | IEEE doubles vectorised in numpy for the cover; `fractions.Fraction` for every leaf, discard, escape and the volume identity |
 | Seeds | `numpy.random.default_rng(303)` for the self-tests only; the cover is deterministic |
@@ -134,50 +140,52 @@ only after this design was fixed and run (Section 2.5 compares them).
 
 | Set | Nodes | Certified leaves | Discards | Floor boxes | Exact re-check | Volume | Wall (float, exact), load |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `ℓ = 1/10`, `δ = 3/500` | 24,381 | 10,960 | 1,231 | 0 | 0 leaves rejected, 0 discards rejected | `243/128` exact | 0.2 s, 0.5 s; 0.95 |
-| `ℓ = 1/10`, `√2·2121/500000` | 24,381 | 10,960 | 1,231 | 0 | 0, 0 | exact | 0.2 s, 0.5 s; 0.95 |
-| `ℓ = 9/100`, `3/500` | 29,939 | 13,556 | 1,414 | 0 | 0, 0 | exact | 0.4 s, 0.6 s; 0.95 |
-| `ℓ = 8/100`, `3/500` | 39,515 | 18,004 | 1,754 | 0 | 0, 0 | exact | 0.5 s, 0.8 s; 0.95 |
-| `ℓ = 7/100`, `3/500` | 3,291,749 | 187,496 | 53,159 | 1,405,220 | 0, 0 | exact | 39.6 s, 10.2 s; 1.5 |
+| $\ell = \frac{1}{10}$, $\delta = \frac{3}{500}$ | 24,381 | 10,960 | 1,231 | 0 | 0 leaves rejected, 0 discards rejected | $\frac{243}{128}$ exact | 0.2 s, 0.5 s; 0.95 |
+| $\ell = \frac{1}{10}$, $\sqrt{2}\cdot\frac{2121}{500000}$ | 24,381 | 10,960 | 1,231 | 0 | 0, 0 | exact | 0.2 s, 0.5 s; 0.95 |
+| $\ell = \frac{9}{100}$, $\frac{3}{500}$ | 29,939 | 13,556 | 1,414 | 0 | 0, 0 | exact | 0.4 s, 0.6 s; 0.95 |
+| $\ell = \frac{8}{100}$, $\frac{3}{500}$ | 39,515 | 18,004 | 1,754 | 0 | 0, 0 | exact | 0.5 s, 0.8 s; 0.95 |
+| $\ell = \frac{7}{100}$, $\frac{3}{500}$ | 3,291,749 | 187,496 | 53,159 | 1,405,220 | 0, 0 | exact | 39.6 s, 10.2 s; 1.5 |
 
-At `ℓ = 7/100` the reader does what a reader must when the claim is false: 162 of the
+At $\ell = 7/100$ the reader does what a reader must when the claim is false: 162 of the
 first 200 floor-box centres are exact escapes by the polygon distance, for instance
-`t = 384507/1048576`, `cx = 156707/65536`, `cy = 46211/65536` (a square at about `40.2°`
-resting near the bottom wall) at distance `0.006365 > 3/500`.
+$t = 384507/1048576$, `cx = 156707/65536`, `cy = 46211/65536` (a square at about
+$40.2^\circ$ resting near the bottom wall) at distance $0.006365 > 3/500$.
 
-**Verdict on E.4: agrees.** The ten segments of length `1/10` are robustly unavoidable
-at `3/500`, and at the lane’s sharper constant, on a domain that covers every contained
-pose with no failure; the same holds at `9/100`, as the lane found, and at `8/100`,
-which the lane’s reader left with 3,626 boxes at its floor `2·10⁻⁴`. Run again at floor
-`5·10⁻⁵` on the `8/100` set (`set-S10-l0.08.json`, Appendix), the lane’s reader
-certifies it as well: 809,879 nodes, 366,454 certified leaves, 38,486 discards, no
-failure, every leaf and discard re-decided exactly in its own exact mode, 13.7 s for the
-cover and 193.9 s for the exact pass at load 2.5. So the `8/100` companion has two
-independent readers, like the `1/10` and `9/100` sets.
+**Verdict on E.4: agrees.** The ten segments of length $1/10$ are robustly unavoidable
+at $3/500$, and at the lane’s sharper constant, on a domain that covers every contained
+pose with no failure; the same holds at $9/100$, as the lane found, and at $8/100$,
+which the lane’s reader left with 3,626 boxes at its floor $2\cdot10^{-4}$. Run again at
+floor $5\cdot10^{-5}$ on the $8/100$ set (`set-S10-l0.08.json`, Appendix), the lane’s
+reader certifies it as well: 809,879 nodes, 366,454 certified leaves, 38,486 discards,
+no failure, every leaf and discard re-decided exactly in its own exact mode, 13.7 s for
+the cover and 193.9 s for the exact pass at load 2.5. So the $8/100$ companion has two
+independent readers, like the $1/10$ and $9/100$ sets.
 The pose the lane’s reader certified that mine refutes: none.
 
-The first version of my exact stage used `√2 ≤ 14143/10000` and rejected one leaf at the
-lane’s constant (float margin `7·10⁻⁸` against the bound’s `2.7·10⁻⁷` of slack) and nine
-at `ℓ = 7/100`; that is a mismatch between two conservative stages, not an unsoundness
-(a rejected leaf is simply not certified), and disappears when both stages use one
-convergent. It is recorded because it is the kind of thing a second reader is for.
+The first version of my exact stage used $\sqrt{2} \le 14143/10000$ and rejected one
+leaf at the lane’s constant (float margin $7\cdot10^{-8}$ against the bound’s
+$2.7\cdot10^{-7}$ of slack) and nine at $\ell = 7/100$; that is a mismatch between two
+conservative stages, not an unsoundness (a rejected leaf is simply not certified), and
+disappears when both stages use one convergent.
+It is recorded because it is the kind of thing a second reader is for.
 
 ### 2.5 Comparison with the lane’s reader, after the fact
 
-The lane’s `cover_reader.py` certifies `f = max(|u| − 1/2, |v| − 1/2) ≤ τ = 2121/500000`
-in the square’s frame with the bound
-`f(P, p) ≤ f(P₀, p) + hx + hy + 2·ht·(R + hx + hy)`, `R` the larger endpoint’s `L¹`
-distance; I checked that bound line by line and it is sound, and its breakpoint set
-(`u = 0`, `v = 0`, `u = ±v`) is complete for the piecewise-linear `f`. The two readers
-differ in the domain (mine is `4.8×` smaller by the two symmetries), in the target (`δ`
-on the Euclidean distance against `δ/√2` on the frame distance) and in the constant,
-which together account for the `40×` difference in box count.
-One defect: the lane’s tree domain is `[0.5, Q − 0.5]` computed in floats, and
+The lane’s `cover_reader.py` certifies
+$f = \max(|u| - 1/2, |v| - 1/2) \le \tau = 2121/500000$ in the square’s frame with the
+bound `f(P, p) ≤ f(P₀, p) + hx + hy + 2·ht·(R + hx + hy)`, $R$ the larger endpoint’s
+$L^1$ distance; I checked that bound line by line and it is sound, and its breakpoint
+set ($u = 0$, $v = 0$, $u = \pm v$) is complete for the piecewise-linear $f$. The two
+readers differ in the domain (mine is `4.8×` smaller by the two symmetries), in the
+target ($\delta$ on the Euclidean distance against $\delta/\sqrt{2}$ on the frame
+distance) and in the constant, which together account for the `40×` difference in box
+count. One defect: the lane’s tree domain is $[0.5, Q - 0.5]$ computed in floats, and
 `float(3.84) − 0.5 = 3.33999…986 < 3.34`, so its cover misses the poses with `cx` or
-`cy` in `(3.34 − 1.4·10⁻¹⁶, 3.34]`, the axis square flush against a far wall among them.
-At `3/500` the gap is harmless (`f` is 1-Lipschitz in the centre, and the stated
-constant leaves `9·10⁻⁷` of room); for the constant `√2·2121/500000` as literally stated
-it is a measure-zero hole, which the dyadic domain here closes.
+`cy` in $(3.34 - 1.4\cdot10^{-16}, 3.34]$, the axis square flush against a far wall
+among them. At $3/500$ the gap is harmless ($f$ is 1-Lipschitz in the centre, and the
+stated constant leaves $9\cdot10^{-7}$ of room); for the constant
+$\sqrt{2}\cdot2121/500000$ as literally stated it is a measure-zero hole, which the
+dyadic domain here closes.
 
 ## 3. Replay of the corner-pair theorem (lane C)
 
@@ -188,29 +196,29 @@ then re-derives the ownership step.
 
 | Step | Exact reading |
 | --- | --- |
-| Inputs | `n = 11`, `L = 96/25`, `B = 9977/10000`, 377 atoms, the 181-direction net (`D = 207107/90000000`) |
-| Mass | `22524199/2000000 = 11.2620995`, equal to the claimed fraction |
-| Conditions | 1 (D4 closure of 377 atoms) holds; 3 holds (`t² + 2t − 1 = 309449/250000000000 ≥ 0`); 4 holds (`B(1 + D) = 899996306539/900000000000 < 1`); 5 holds, least cell `800003/800000` at direction 0; 2 fails at mass `11.262 > 11`, as expected of a non-certificate |
+| Inputs | $n = 11$, $L = \frac{96}{25}$, $B = \frac{9977}{10000}$, 377 atoms, the 181-direction net ($D = \frac{207107}{90000000}$) |
+| Mass | $\frac{22524199}{2000000} = 11.2620995$, equal to the claimed fraction |
+| Conditions | 1 (D4 closure of 377 atoms) holds; 3 holds ($t^2 + 2t - 1 = \frac{309449}{250000000000} \ge 0$); 4 holds ($B(1 + D) = \frac{899996306539}{900000000000} < 1$); 5 holds, least cell $\frac{800003}{800000}$ at direction 0; 2 fails at mass $11.262 > 11$, as expected of a non-certificate |
 | Sweep wall | 14.9 s at load 1.65 |
-| `ε = M − 11` | `524199/2000000 = 0.2620995` |
-| Pair orbit | eight atoms, the D4 orbit of `(3152/3175, 2336/3175)`, each of weight `106251/800000` |
-| Per-corner pair mass | `106251/400000 = 0.2656275`, exceeding `ε` by `441/125000 = 0.003528` at every corner |
-| Cross-corner distance | least squared distance between marks of different corners `34668544/10080625 ≈ 1.8545²`, against `2B² = 99540529/50000000 ≈ 1.4110²` |
-| Within a corner | the two marks are `√(1331712/10080625) ≈ 0.3635` apart, so one core can hold both, which is why the pair and not a mark is the anchor |
+| $\varepsilon = M - 11$ | $\frac{524199}{2000000} = 0.2620995$ |
+| Pair orbit | eight atoms, the D4 orbit of $(\frac{3152}{3175}, \frac{2336}{3175})$, each of weight $\frac{106251}{800000}$ |
+| Per-corner pair mass | $\frac{106251}{400000} = 0.2656275$, exceeding $\varepsilon$ by $\frac{441}{125000} = 0.003528$ at every corner |
+| Cross-corner distance | least squared distance between marks of different corners $\frac{34668544}{10080625} \approx 1.8545^2$, against $2B^2 = \frac{99540529}{50000000} \approx 1.4110^2$ |
+| Within a corner | the two marks are $\sqrt{\frac{1331712}{10080625}} \approx 0.3635$ apart, so one core can hold both, which is why the pair and not a mark is the anchor |
 
-The argument needs exactly three facts and no more: a valid measure of mass `11 + ε` (so
-the eleven pairwise disjoint cores of a packing, each of mass at least one by Condition
-5, leave at most `ε` outside them); a set of atoms of mass above `ε` per corner (so one
-of its atoms is in some core); and a cross-corner distance above the core’s diameter
-`B√2` (so no core holds atoms of two corners).
-Nothing about the bound, the column settlement or the floor enters.
+The argument needs exactly three facts and no more: a valid measure of mass
+$11 + \varepsilon$ (so the eleven pairwise disjoint cores of a packing, each of mass at
+least one by Condition 5, leave at most $\varepsilon$ outside them); a set of atoms of
+mass above $\varepsilon$ per corner (so one of its atoms is in some core); and a
+cross-corner distance above the core’s diameter $B\sqrt{2}$ (so no core holds atoms of
+two corners). Nothing about the bound, the column settlement or the floor enters.
 
-**Verdict: agrees.** Every packing of eleven unit squares in `[0, 96/25]²` has four
+**Verdict: agrees.** Every packing of eleven unit squares in $[0, 96/25]^2$ has four
 distinct squares, one per corner, each containing in its interior at least one of its
-corner’s two marks `(3152/3175, 2336/3175)` and `(2336/3175, 3152/3175)` (and their
+corner’s two marks $(3152/3175, 2336/3175)$ and $(2336/3175, 3152/3175)$ (and their
 images under the container’s symmetries).
-Since `[0, s]² ⊂ [0, 96/25]²`, the same holds of every packing at side at most `96/25`
-read in the `96/25` frame.
+Since $[0, s]^2 \subset [0, 96/25]^2$, the same holds of every packing at side at most
+$96/25$ read in the $96/25$ frame.
 
 ## 4. Replay of Theorem C (lane B, exp-130)
 
@@ -219,53 +227,53 @@ verifier; nothing of lane B’s `bandlib.py` is imported.
 
 | Input | Value |
 | --- | --- |
-| Side, shrink | `96/25`, `9977/10000` |
-| Net | the retained 181 directions from `cases/n11_fractional_certificate/certificate.json`, half-tangent limit `207107/500000`, 180 equal steps |
-| Class | cells `0–39 ∪ 172–180`; tangent bounds `[0, 12271089750000/66942386977163] ∪ [177594252500000/189956166180167, 1]`, read from `DirectionClasses.cell_bounds`, which are `[0°, 10.3875°] ∪ [43.0737°, 45°]` in folded degrees, closed ends |
+| Side, shrink | $\frac{96}{25}$, $\frac{9977}{10000}$ |
+| Net | the retained 181 directions from `cases/n11_fractional_certificate/certificate.json`, half-tangent limit $\frac{207107}{500000}$, 180 equal steps |
+| Class | cells $0\text{–}39 \cup 172\text{–}180$; tangent bounds $[0, \frac{12271089750000}{66942386977163}] \cup [\frac{177594252500000}{189956166180167}, 1]$, read from `DirectionClasses.cell_bounds`, which are $[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$ in folded degrees, closed ends |
 | Site set | `build_site_grid(96/25, 119, 1/10)`: 14,161 sites in 1,830 D4 orbits |
-| Composition, thresholds | `(11, 0)`; exact thresholds `(1, 0)` |
-| Proposer | `solve_class_program` with `max_rounds = 100`, `rows_per_direction = 3`, tolerance `10⁻⁹` |
-| Rationalisation | `rationalise` at scale `4096` (the library’s standard bump) on the weights divided by the float `w₀` |
+| Composition, thresholds | $(11, 0)$; exact thresholds $(1, 0)$ |
+| Proposer | `solve_class_program` with `max_rounds = 100`, `rows_per_direction = 3`, tolerance $10^{-9}$ |
+| Rationalisation | `rationalise` at scale $4096$ (the library’s standard bump) on the weights divided by the float $w_0$ |
 | Machine | one process, `PACK_JOBS=1`, one BLAS thread; load 1.24 at the start, 1.36 at the end of the row loop |
 
 | Reading | Value |
 | --- | --- |
 | Row loop | 81 rounds, 5,809 rows, stopped “converged: every placement carries its class threshold”, 332.9 s |
-| Float `M` at `w₀ = 1` | `10.798077` (context) |
-| Exact mass | `11083/1024 = 10.8232421875` over 296 rationalised atoms, equal to the lane’s fraction |
+| Float $M$ at $w_0 = 1$ | $10.798077$ (context) |
+| Exact mass | $\frac{11083}{1024} = 10.8232421875$ over 296 rationalised atoms, equal to the lane’s fraction |
 | Condition 1 | holds, 296 atoms closed under D4 |
-| Condition 2′ | holds, `11083/1024 < 11·1 + 0·0` |
-| Condition 3 | holds, `t² + 2t − 1 = 309449/250000000000 ≥ 0` |
-| Condition 4 | holds, `B(1 + D) = 899996306539/900000000000 < 1` |
-| Condition 5′, class 0 | holds, least covered core `4101/4096` at direction 0 over the 49 class directions |
+| Condition 2′ | holds, $\frac{11083}{1024} < 11\cdot1 + 0\cdot0$ |
+| Condition 3 | holds, $t^2 + 2t - 1 = \frac{309449}{250000000000} \ge 0$ |
+| Condition 4 | holds, $B(1 + D) = \frac{899996306539}{900000000000} < 1$ |
+| Condition 5′, class 0 | holds, least covered core $\frac{4101}{4096}$ at direction 0 over the 49 class directions |
 | Condition 5′, class 1 | holds vacuously (no square of the composition; 132 cells unswept) |
 | Exact decision wall | 2.6 s |
 
-**Verdict: agrees.** The composition `(11, 0)` on the band is refuted exactly, so no
-packing of eleven unit squares in `[0, 96/25]²` has every folded angle in
-`[0°, 10.3875°] ∪ [43.0737°, 45°]`; the replay reaches the lane’s rationalised point to
-the fraction, which is stronger than the verdict needed.
+**Verdict: agrees.** The composition $(11, 0)$ on the band is refuted exactly, so no
+packing of eleven unit squares in $[0, 96/25]^2$ has every folded angle in
+$[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$; the replay reaches the lane’s
+rationalised point to the fraction, which is stronger than the verdict needed.
 The row loop converged in 81 rounds here as in the lane, in 333 s at load 1.3 against
 the lane’s 584 s at load 8.
 
 ## 5. Disagreements with the lanes’ own readings
 
 - **Lane E, the threshold in the segment length.** The lane places it in
-  `(7/100, 9/100]` because its reader left `8/100` at the floor.
-  My reader decides `8/100` with no failure, and the lane’s reader confirms it at floor
-  `5·10⁻⁵`, so the threshold is in `(7/100, 8/100]`. The lane’s reading that a finer
-  floor would decide it was right; it was not run.
+  $(7/100, 9/100]$ because its reader left $8/100$ at the floor.
+  My reader decides $8/100$ with no failure, and the lane’s reader confirms it at floor
+  $5\cdot10^{-5}$, so the threshold is in $(7/100, 8/100]$. The lane’s reading that a
+  finer floor would decide it was right; it was not run.
 - **Lane E, the certified domain.** The far-wall sliver of Section 2.5. Harmless for the
-  H-134 statement at `3/500`, a literal gap for the theorem’s sharper constant, closed
+  H-134 statement at $3/500$, a literal gap for the theorem’s sharper constant, closed
   here.
 - **Lane C, what to run next.** Lane C asks for phase G (the pair orbit priced) to widen
-  the margin `441/125000`. The theorem does not change with the margin, and what is
+  the margin $441/125000$. The theorem does not change with the margin, and what is
   unmeasured is not the margin but the value of the anchor to a certificate, which by
   X-021’s duality lemma is bounded by the restricted fractional packing value that
   BC-294 left undecided.
   The measurement should come before the anchored certificate.
 - **Lane B, the ladder as a block.** Lane B’s first recommendation is to continue the
-  end band at grids 119 and 159 from `(13, 13)` and `(40, 10)`. The registered band
+  end band at grids 119 and 159 from $(13, 13)$ and $(40, 10)$. The registered band
   already clears H-130’s bar four times over, every further rung is a property of the
   site set as much as of the side, and a point costs ten minutes; this is queue filler
   under OR-3, not a sustained block.
@@ -277,7 +285,7 @@ the lane’s 584 s at load 8.
 ## 6. The selection
 
 The candidates the cell names, ranked by what a block would buy toward a global
-exclusion at `96/25` against what it costs, with the replays above as the evidence.
+exclusion at $96/25$ against what it costs, with the replays above as the evidence.
 
 1. **Fund: the segment-mark cover toward an ownership argument and route (a)** (BC-302’s
    follow-up, bead `think-qfog`), as the next sustained block.
@@ -287,7 +295,7 @@ exclusion at `96/25` against what it costs, with the replays above as the eviden
    where the lane ran five.
    It is also the ambitious tier’s only positive path in the agenda’s own words, and the
    replayed facts now give it a branch structure: every square of a packing is within
-   `3/500` of one of ten short segments on three rows, so by pigeonhole some segment
+   $3/500$ of one of ten short segments on three rows, so by pigeonhole some segment
    serves two squares; the corner-pair theorem names four of the eleven squares; Theorem
    C forces a square outside its exact union of end-band cells (the degree endpoints are
    only approximations).
@@ -295,17 +303,17 @@ exclusion at `96/25` against what it costs, with the replays above as the eviden
    of at most eleven marks with the shared configurations confined to a named
    compatibility pattern, or the exact threshold length, each certified by an interval
    reader with its exact re-check and a second reader; a float non-escape is never a
-   result. Sharing does not force contact: the disjoint squares `[0,1] × [1/2,3/2]` and
-   `[51/50,101/50] × [1/2,3/2]` both meet the central segment `[24/25,26/25] × {1}` and
-   have gap `1/50`. First tasks: register the second reader of this record beside the
-   lane’s; decide whether the free eleventh mark can be placed so that some sharing
-   pattern is impossible; cost the case split that E.4, the corner pair and Theorem C
-   define.
-2. **Fund as the efficiency block (OR-12): the `B = 1` depth polisher** (BC-294’s
+   result. Sharing does not force contact: the disjoint squares $[0,1] \times [1/2,3/2]$
+   and $[51/50{,}101/50] \times [1/2,3/2]$ both meet the central segment
+   $[24/25,26/25] \times \lbrace1\rbrace$ and have gap $1/50$. First tasks: register the
+   second reader of this record beside the lane’s; decide whether the free eleventh mark
+   can be placed so that some sharing pattern is impossible; cost the case split that
+   E.4, the corner pair and Theorem C define.
+2. **Fund as the efficiency block (OR-12): the $B = 1$ depth polisher** (BC-294’s
    follow-up, bead `think-7lp3`). `ν*₁(q)` is X-021’s decisive unmeasured number and the
    first wave located the loss in the instrument (depth scaling, not the LP); a polisher
    on the fixed support is a bounded instrument change with a kill test as its accept
-   rule: a finite family verified by `verify_ceiling` at `96/25` of value at least
+   rule: a finite family verified by `verify_ceiling` at $96/25$ of value at least
    eleven obstructs a strict one-body covering certificate there.
    A unit of weight outside an exactly specified Trump neighbourhood additionally
    obstructs that capture certificate.
@@ -314,9 +322,9 @@ exclusion at `96/25` against what it costs, with the replays above as the eviden
    declared directions, decides only that finite-net problem; a continuum conclusion
    additionally needs full angular coverage.
    A smaller feasible family or a converged site LP alone is inconclusive for H-129. The
-   continuation control is the retained exp-070 family transported by `10000/9977`: its
-   depth-one mass is `21342289572/2055263195`, approximately `10.3842`, in a unit-square
-   container of side `38200/9977 < 96/25`. The plateau’s full-dual pricing (lane F’s
+   continuation control is the retained exp-070 family transported by $10000/9977$: its
+   depth-one mass is $21342289572/2055263195$, approximately $10.3842$, in a unit-square
+   container of side $38200/9977 < 96/25$. The plateau’s full-dual pricing (lane F’s
    one-line `support_cap` diagnostic, about thirty minutes) rides inside this block as
    its first task, since it tells whether the instrument’s stops are the cap’s.
 3. **Retain, do not fund as a block: the band ladder at grids 119 and 159.** Run it as
@@ -342,21 +350,22 @@ H-131 confirmed (exp-131); H-129 open; H-133 refuted as stated; H-127 and H-132 
 Theorem E.4, in this exact form, with two independent readers agreeing (the lane’s
 `cover_reader.py` and `e4_reader.py` here):
 
-> **Theorem (segment localisation at `96/25`).** Let `q = 96/25` and let `M₁₀` be the
-> ten closed horizontal segments `[x − 1/20, x + 1/20] × {y}` for `(x, y)` in
-> `{(1, 1), (48/25, 1), (71/25, 1), (27/50, 48/25), (73/50, 48/25), (119/50, 48/25),
-> (33/10, 48/25), (1, 71/25), (48/25, 71/25), (71/25, 71/25)}`. Every closed unit square
-> contained in `[0, q]²`, at any angle, is at Euclidean distance at most
-> `√2·2121/500000 < 3/500` from some segment of `M₁₀`. Consequently every square of
-> every packing of eleven unit squares at side at most `96/25` is within `3/500` of one
-> of these ten segments, and some segment is within `3/500` of two of them.
+> **Theorem (segment localisation at $96/25$).** Let $q = 96/25$ and let $M_{10}$ be the
+> ten closed horizontal segments $[x - 1/20, x + 1/20] \times \lbrace y\rbrace$ for
+> $(x, y)$ in
+> $\lbrace(1, 1), (48/25, 1), (71/25, 1), (27/50, 48/25), (73/50, 48/25), (119/50, 48/25), > (33/10, 48/25), (1, 71/25), (48/25, 71/25), (71/25, 71/25)\rbrace$.
+> Every closed unit square contained in $[0, q]^2$, at any angle, is at Euclidean
+> distance at most $\sqrt{2}\cdot2121/500000 < 3/500$ from some segment of $M_{10}$.
+> Consequently every square of every packing of eleven unit squares at side at most
+> $96/25$ is within $3/500$ of one of these ten segments, and some segment is within
+> $3/500$ of two of them.
 
-The `3/500` tolerance statement holds with the segments shortened to `9/100` and to
-`8/100` (both readers; the lane’s at floor `5·10⁻⁵` for `8/100`); the smaller radical
-tolerance above has not been established for those lengths.
-The `3/500` statement fails at `7/100`, where both readers find exact escapes.
+The $3/500$ tolerance statement holds with the segments shortened to $9/100$ and to
+$8/100$ (both readers; the lane’s at floor $5\cdot10^{-5}$ for $8/100$); the smaller
+radical tolerance above has not been established for those lengths.
+The $3/500$ statement fails at $7/100$, where both readers find exact escapes.
 It needs an experiment id, the lane’s `set-S10-l0.1.json` and both readers as its
-record, and no registry entry beyond that: it changes no bound on `s(11)`.
+record, and no registry entry beyond that: it changes no bound on $s(11)$.
 
 **Handoff correction, 2026-09-08.** Exp-132 now records the segment result.
 The guarded, portable replay is `packing/devtools/segment_cover_replay.py`; its failure

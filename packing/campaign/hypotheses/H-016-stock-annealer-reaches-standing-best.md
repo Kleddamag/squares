@@ -42,12 +42,12 @@ budget, finds the best known packing.
 It was worth registering precisely because it was expected to be partly wrong, and the
 shape of the failure was the campaign’s starting information.
 [exp-001](../series/series-000-smoke-and-calibration/experiments/exp-001-baseline-sweep.md)
-refuted it — within `1e-4` only at `n = 12`, missing by `4.19e-04` at `n = 10` and
-`3.73e-02` at `n = 11` — and the two failures turned out to be different in kind, which
+refuted it — within `1e-4` only at $n = 12$, missing by `4.19e-04` at $n = 10$ and
+`3.73e-02` at $n = 11$ — and the two failures turned out to be different in kind, which
 one criterion could not distinguish.
 
 That distinction is the reason [H-002](H-002-lp-in-cell-polish.md) is now the registry’s
-top priority: `n = 10` was a polish failure inside the right basin.
+top priority: $n = 10$ was a polish failure inside the right basin.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

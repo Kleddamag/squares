@@ -39,13 +39,13 @@ the container side. The variable correspondence is:
 
 | Archived `geometry()` | Current `build_in()` | Common expression or role |
 | --- | --- | --- |
-| `c`, `s` | `cos_a`, `sin_a` | $(1-u^2)/(1+u^2)$, $2u/(1+u^2)$ |
-| `L` | `side` | $(6u+4)/(1+2u-u^2)$ |
-| `r` | `r1` | $1-(L-3)c$ |
-| `a` | `u1` | $((1+r)c-1)/s$ |
-| `v` | `v1` | $c-s$ |
-| `b` | `v2` | $(L-1)/s-r-(3+a)c/s$ |
-| `x` | `x0` | $1+2/c-(L-2)s/c$ |
+| $c$, $s$ | `cos_a`, `sin_a` | $(1-u^2)/(1+u^2)$, $2u/(1+u^2)$ |
+| $L$ | `side` | $(6u+4)/(1+2u-u^2)$ |
+| $r$ | `r1` | $1-(L-3)c$ |
+| $a$ | `u1` | $((1+r)c-1)/s$ |
+| $v$ | `v1` | $c-s$ |
+| $b$ | `v2` | $(L-1)/s-r-(3+a)c/s$ |
+| $x$ | `x0` | $1+2/c-(L-2)s/c$ |
 
 On the declared interval, $0<u<1$, so $1+u^2$, $1+2u-u^2$, $c$ and $s$ are positive.
 Thus every displayed denominator is nonzero.

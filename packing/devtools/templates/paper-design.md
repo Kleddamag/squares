@@ -39,6 +39,7 @@ physical sizes.
 | Subtitle | 23.75px | About 15.8333pt | Sans caps, 1.25 of the sans base |
 | Title credits and date | 19px | 12⅔pt | Sans base size |
 | Section headings | 21.6px | 14.4pt | Serif italic, 1.2 of the prose base |
+| Space above a section heading | 32.4px | 37.8pt | `--paper-section-space`: 1.8 of the prose base on screen, 2.8 in print |
 | Figure labels and controls | 18.05px | About 12.0333pt | Sans, 0.95 of the sans base |
 | Captions and end footnotes | 17.48px | About 11.6533pt | Shared sans size: 0.92 of the sans base; 1.4rem side inset |
 | Colophon | 16.15px | About 10.7667pt | Sans, 0.85 of the sans base |

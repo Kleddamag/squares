@@ -30,6 +30,17 @@
   --kpress-font-size-h2: calc(var(--kpress-font-size-base) * 1.2);
 }
 
+/* The space above a section heading (`h2`), on every page: 1.8 of the base on screen.
+   Print keeps the paper's 2.8, so the explainer's PDF paginates as before. */
+.kpress {
+  --paper-section-space: calc(var(--kpress-font-size-base) * 1.8);
+}
+@media print {
+  .kpress {
+    --paper-section-space: calc(var(--kpress-font-size-base) * 2.8);
+  }
+}
+
 /* The paper's roles: a 19/18 sans base against the prose, three sans weights, and the
    scales of the title, subtitle, supporting text and notes. The explainer reads them as
    `--cert-*` and `--paper-*`, the site pages as `--site-*`; both alias these. */

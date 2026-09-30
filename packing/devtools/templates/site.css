@@ -73,7 +73,7 @@ body {
 }
 .site-page h2 {
   text-align: center;
-  margin-block: calc(var(--kpress-font-size-base) * 2.8) 1.3rem;
+  margin-block: var(--paper-section-space) 1.3rem;
 }
 
 /* ---------- Page body ---------- */

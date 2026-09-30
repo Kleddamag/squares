@@ -844,3 +844,13 @@ def test_every_page_starts_one_shared_space_below_the_bar() -> None:
     )
     shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
     assert "padding-block-start: var(--site-page-top);" in shell
+
+
+def test_section_headings_share_one_space_above() -> None:
+    """The space above an `h2` is one token in the text layer both the site and the
+    explainer read, narrower on screen than in print."""
+    text = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    assert "--paper-section-space: calc(var(--kpress-font-size-base) * 1.8);" in text
+    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
+    for css in (render_overview.SITE_CSS.read_text(encoding="utf-8"), shell):
+        assert "margin-block: var(--paper-section-space) 1.3rem;" in css

@@ -5,7 +5,9 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import copy
+import multiprocessing
 import time
 from fractions import Fraction as Q
 from pathlib import Path
@@ -74,6 +76,70 @@ def test_unhandled_center_partition_remains_unproved(tmp_path: Path) -> None:
     assert "unsupported adapter" in result["error"]
     assert result["geometry_verified"] is False
     assert result["excluded_case_ids"] == []
+
+
+def test_indexed_cover_source_is_bound_before_geometry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    args = _args(tmp_path, 2135)
+    args.cover_backend = "indexed"
+    monkeypatch.setattr(generic, "INDEXED_COVER_SHA", "0" * 64)
+    result = generic.run(args)
+    assert result["status"] == "REFUSED"
+    assert result["error"] == "indexed cover kernel changed"
+    assert result["excluded_case_ids"] == []
+
+
+def test_current_step_spawn_worker_matches_serial_pinned_row() -> None:
+    manifest, recipe = _recipe(2135)
+    source = generic.load_object(recipe["source_sha256"], manifest, generic.OBJECTS)
+    seed = generic.load_object(recipe["seed_sha256"], manifest, generic.OBJECTS)
+    step_index = 1
+    step = source["steps"][step_index]
+    row_index = 0
+    owner = step["owner"]
+    assert step_index != 0
+    assert step["rows"][row_index]["prior_reference"] == {
+        "kind": "wall_seed",
+        "owner": owner,
+        "row": row_index,
+    }
+    prior = {
+        int(key): generic.frozen.hull(generic.frozen.points(points))
+        for key, points in step["prior_owned_hulls"].items()
+    }
+    predecessor = seed["cells"][str(owner)][row_index]
+    world = [generic.frozen.points(poly) for poly in seed["world"]]
+    budget = generic.geometry.Budget(time.monotonic() + 30, 50_000)
+    serial = generic.check_row(
+        source,
+        step,
+        row_index,
+        prior=prior,
+        predecessor=predecessor,
+        world=world,
+        budget=budget,
+        cover_backend="indexed",
+    )
+    payload = {"node_id": source["node_id"], "steps": {step_index: step}}
+    assert set(payload["steps"]) == {1}
+    with concurrent.futures.ProcessPoolExecutor(
+        max_workers=1,
+        mp_context=multiprocessing.get_context("spawn"),
+        initializer=generic._worker_init,  # noqa: SLF001
+        initargs=(payload, world, ("indexed", "reference"), {}, {}),
+    ) as pool:
+        worker = pool.submit(
+            generic._worker_row,  # noqa: SLF001
+            step_index,
+            row_index,
+            prior,
+            predecessor,
+            budget,
+        ).result(timeout=30)
+    assert worker[:5] == (row_index, *serial)
+    assert worker[5] >= 0
+    assert worker[6] >= 0
 
 
 def test_integer_collision_backend_admits_case_without_collision_work(

@@ -39,7 +39,7 @@
     },
     {
       "parent_source_sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
-      "reviewed_execution_bound": false,
+      "reviewed_execution_bound": true,
       "source_path": "research/candidate-capture/tree438-facet/r11.json",
       "source_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a"
     },
@@ -63,7 +63,7 @@
     }
   ],
   "center_partition_execution_pending": true,
-  "checker_sha256": "958eec10581f487ca2a5cd8adbc60cde57dd21a5fa1a8d2a32e8bb3a08c94334",
+  "checker_sha256": "baf17f94433fc08f86c0070d7ca4f56c814de804d23aee2c4857c1ebf686aae6",
   "closed_capture_split_algebra_checked": true,
   "conditional_d4_premises_bound": [
     2175,
@@ -78,7 +78,6 @@
     "near-refined1024-240"
   ],
   "missing_capture_source_sha256s": [
-    "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
     "79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576",
     "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
     "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc"
@@ -133,6 +132,7 @@
     "capture-child-far15": "cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e",
     "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
     "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",
+    "capture-child-r11": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
     "capture-root-bridge-final2": "ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d",
     "capture-root-chain": "f10d50e6b34179a6b2fb066d6ade9553057c280f7538ae6e53fe06e639a56d11",
     "capture-root-node-full-integer": "0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4",

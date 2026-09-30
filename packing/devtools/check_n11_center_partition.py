@@ -24,7 +24,7 @@ from devtools import check_n11_generic_sequential as generic
 from devtools import n11_nonfield_center_orchestrator as orchestrator
 from devtools import n11_nonfield_center_partition as partition
 
-GENERIC_SHA = "9047dcbb9957877fe9b44d1bee356349be77cce0727c1195260d5fbb1d3803cf"
+GENERIC_SHA = "280becc5393d9528ea36dca739fad1074e3c18e13e0722466e30c2fd16514ce1"
 PARTITION_SHA = "43d2b8ec9c18911bbc26858f31db8429b2453b21a3a5a07c81daf7c5aa489e9b"
 ORCHESTRATOR_SHA = "cfa62c5c4d3947bf6c9483b5cde9d194305d833d944e6ef467c52876d25fdf9a"
 CASE = 1383
@@ -43,6 +43,7 @@ def dependencies() -> dict[str, tuple[ModuleType, str]]:
         "geometry": (generic.geometry, generic.frozen.GEOMETRY_SHA),
         "frozen_generic": (generic.frozen, generic.FROZEN_GENERIC_SHA),
         "fast_cover": (generic.fast_cover, generic.FAST_COVER_SHA),
+        "indexed_cover": (generic.indexed_cover, generic.INDEXED_COVER_SHA),
         "degenerate_cover": (generic.degenerate_cover, generic.DEGENERATE_COVER_SHA),
         "a2_assignment": (generic.a2_assignment, generic.A2_HELPER_SHA),
         "partner": (generic.partner, generic.PARTNER_HELPER_SHA),
@@ -90,7 +91,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "max_seconds": args.max_seconds,
         "max_events": args.max_events,
         "workers": args.workers,
-        "cover_backend": "fast",
+        "cover_backend": "indexed",
         "collision_backend": "integer",
     }
     paths = {"checker": Path(__file__), "manifest": args.manifest}
@@ -186,7 +187,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             result=result,
             budget=budget,
             workers=args.workers,
-            cover_backend="fast",
+            cover_backend="indexed",
             collision_backend="integer",
         )
         admit_complete(result)

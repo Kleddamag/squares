@@ -51,11 +51,17 @@ FIXED = {
     "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",
     "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
     "capture-child-far13": "1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb",
+    "capture-child-r11": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
     "pose-inclusion": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
     "local-isolation": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
 }
 # Source identities come from the reviewed graph, not from a supplied PASS string.
 CAPTURE = {
+    "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a": (
+        "capture-child-r11",
+        "child_source_sha256",
+        "child_node_state_checked",
+    ),
     "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5": (
         "capture-child-far13",
         "child_source_sha256",

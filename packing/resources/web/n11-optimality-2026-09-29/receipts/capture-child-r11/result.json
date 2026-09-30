@@ -1,0 +1,138 @@
+{
+  "candidate_capture_proved": false,
+  "capture_tree_proved": false,
+  "checker_sha256": "e7383c3fb940c123ff39fa162bd401e389299daca21a85ed167af4f99df42989",
+  "child_node_state_checked": true,
+  "child_source_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+  "constraints": [
+    {
+      "axis": 1,
+      "bound_centered_unit": "5/4",
+      "keep": "ge",
+      "normal": [
+        0,
+        -1
+      ],
+      "owner": 15,
+      "upper_field": "-121802296569435750786621/38770835900228141773100"
+    },
+    {
+      "bound_half_angle": "147/512",
+      "keep": "ge",
+      "kind": "half_angle",
+      "owner": 13
+    }
+  ],
+  "current_step": 6,
+  "current_step_common_core_planes": 248,
+  "current_step_coverage_events": 687,
+  "current_step_coverage_probes": 1341,
+  "current_step_rows_checked": 56,
+  "current_step_universal_facet_vertex_checks": 526904,
+  "final_state_canonical_sha256": "ecdebb59ba52e558d66404ad6689653c05598cfe28da3518244314a149060e71",
+  "global_optimality_proved": false,
+  "max_events_per_cover": 20000,
+  "max_seconds": 1800.0,
+  "node": "r11",
+  "node_id": "r11-portable-v1",
+  "parent_result_sha256": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
+  "parent_source_sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+  "status": "PASS_CHILD_NODE_STATE",
+  "steps": [
+    {
+      "common_core_planes": 416,
+      "complete": true,
+      "compressed_additions": 8,
+      "coverage_events": 1190,
+      "coverage_probes": 2325,
+      "index": 0,
+      "owner": 13,
+      "partner_cover_rows": 587,
+      "rows_checked": 203,
+      "terminal": false,
+      "universal_facet_vertex_checks": 695376
+    },
+    {
+      "common_core_planes": 544,
+      "complete": true,
+      "compressed_additions": 9,
+      "coverage_events": 2992,
+      "coverage_probes": 5915,
+      "index": 1,
+      "owner": 9,
+      "partner_cover_rows": 534,
+      "rows_checked": 179,
+      "terminal": false,
+      "universal_facet_vertex_checks": 1257728
+    },
+    {
+      "common_core_planes": 504,
+      "complete": true,
+      "compressed_additions": 7,
+      "coverage_events": 2518,
+      "coverage_probes": 4958,
+      "index": 2,
+      "owner": 8,
+      "partner_cover_rows": 564,
+      "rows_checked": 259,
+      "terminal": false,
+      "universal_facet_vertex_checks": 1121248
+    },
+    {
+      "common_core_planes": 320,
+      "complete": true,
+      "compressed_additions": 8,
+      "coverage_events": 1719,
+      "coverage_probes": 3388,
+      "index": 3,
+      "owner": 10,
+      "partner_cover_rows": 611,
+      "rows_checked": 149,
+      "terminal": false,
+      "universal_facet_vertex_checks": 907064
+    },
+    {
+      "common_core_planes": 576,
+      "complete": true,
+      "compressed_additions": 7,
+      "coverage_events": 748,
+      "coverage_probes": 1406,
+      "index": 4,
+      "owner": 15,
+      "partner_cover_rows": 149,
+      "rows_checked": 217,
+      "terminal": false,
+      "universal_facet_vertex_checks": 330880
+    },
+    {
+      "common_core_planes": 528,
+      "complete": true,
+      "compressed_additions": 8,
+      "coverage_events": 4021,
+      "coverage_probes": 7938,
+      "index": 5,
+      "owner": 4,
+      "partner_cover_rows": 571,
+      "rows_checked": 182,
+      "terminal": false,
+      "universal_facet_vertex_checks": 1165552
+    },
+    {
+      "common_core_planes": 248,
+      "complete": false,
+      "compressed_additions": 0,
+      "coverage_events": 687,
+      "coverage_probes": 1341,
+      "index": 6,
+      "owner": 2,
+      "partner_cover_rows": 488,
+      "rows_checked": 56,
+      "terminal": false,
+      "universal_facet_vertex_checks": 526904
+    }
+  ],
+  "steps_checked": 7,
+  "terminal_empty_pose_checked": false,
+  "wall_seconds": 231.82800887499616,
+  "workers": 1
+}

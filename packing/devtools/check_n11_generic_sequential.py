@@ -32,6 +32,7 @@ from devtools import check_n11_closed_degenerate_cover as degenerate_cover
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
 from devtools import n11_fast_exact_cover as fast_cover
+from devtools import n11_indexed_exact_cover as indexed_cover
 from devtools import n11_integer_collision as integer_collision
 from devtools import n11_nonfield_ancestry as ancestry
 from devtools import n11_nonfield_assignment as a2_assignment
@@ -46,6 +47,7 @@ MANIFEST_GZIP_SHA = "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c01
 MANIFEST_SHA = "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b"
 FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3"
 FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
+INDEXED_COVER_SHA = "68580e324e56c555ea0587b6f396b208fb66563d1e10bd449b446c97b7667ccd"
 DEGENERATE_COVER_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 A2_HELPER_SHA = "f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac7265"
 PARTNER_HELPER_SHA = "1722c6e3e93b53885342516f42a2e094991c34fa938f1befef3b947ff8daa0fa"
@@ -330,9 +332,11 @@ def check_row(
         if other != owner
     ]
     residual = [frozen.convex(poly) for poly in row["residual_polygons"]]
-    cover = (
-        fast_cover.exact_union_cover if cover_backend == "fast" else geometry.exact_union_cover
-    )
+    cover = {
+        "reference": geometry.exact_union_cover,
+        "fast": fast_cover.exact_union_cover,
+        "indexed": indexed_cover.exact_union_cover,
+    }[cover_backend]
     coverage = (
         cover(domain, forbidden + residual + collision_regions, budget=budget)
         if geometry.area2(domain) > 0
@@ -620,7 +624,7 @@ def replay_one_node(
                 mp_context=multiprocessing.get_context("spawn"),
                 initializer=_worker_init,
                 initargs=(
-                    source,
+                    {"node_id": source["node_id"], "steps": {step_index: step}},
                     world,
                     (cover_backend, collision_backend),
                     partner_live,
@@ -768,7 +772,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     require(type(args.workers) is int and 1 <= args.workers <= 3, "row workers 1..3")
     require(type(args.max_events) is int and args.max_events > 0, "event ceiling")
     cover_backend = getattr(args, "cover_backend", "reference")
-    require(cover_backend in ("reference", "fast"), "unsupported cover backend")
+    require(cover_backend in ("reference", "fast", "indexed"), "unsupported cover backend")
     collision_backend = getattr(args, "collision_backend", "reference")
     require(collision_backend in ("reference", "integer"), "unsupported collision backend")
     started, cpu_started = time.monotonic(), time.process_time()
@@ -782,8 +786,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "geometry": Path(geometry.__file__),
         "manifest": args.manifest,
     }
-    if cover_backend == "fast":
+    if cover_backend in ("fast", "indexed"):
         paths["fast_cover"] = Path(fast_cover.__file__)
+    if cover_backend == "indexed":
+        paths["indexed_cover"] = Path(indexed_cover.__file__)
     before: dict[str, str] = {}
     result: dict[str, Any] = {
         "status": "INCOMPLETE",
@@ -816,8 +822,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             before["refinement_helper"] == REFINEMENT_HELPER_SHA,
             "refinement helper changed",
         )
-        if cover_backend == "fast":
+        if cover_backend in ("fast", "indexed"):
             require(before["fast_cover"] == FAST_COVER_SHA, "fast cover kernel changed")
+        if cover_backend == "indexed":
+            require(
+                before["indexed_cover"] == INDEXED_COVER_SHA, "indexed cover kernel changed"
+            )
+            require(indexed_cover.dependencies_unchanged(), "indexed cover dependency changed")
         geometry.admit_d4_receipt()
         manifest = load_manifest(args.manifest)
         recipes = [case for case in manifest["cases"] if case["mask_index"] == args.case_id]
@@ -1094,7 +1105,9 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--max-seconds", type=float, default=30)
     parser.add_argument("--max-events", type=int, default=50_000)
-    parser.add_argument("--cover-backend", choices=("reference", "fast"), default="reference")
+    parser.add_argument(
+        "--cover-backend", choices=("reference", "fast", "indexed"), default="reference"
+    )
     parser.add_argument(
         "--collision-backend", choices=("reference", "integer"), default="reference"
     )

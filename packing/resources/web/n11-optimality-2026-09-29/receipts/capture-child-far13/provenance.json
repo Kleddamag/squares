@@ -1,5 +1,6 @@
 {
   "checker_commit": "2232a9e163e635107cf88c93cea466fbeb749868",
+  "equivalent_main_commit": "f0380e8cb4458a39dca2729435d7416ba16d5699",
   "checker_sha256": "da027220b6eaea1962410fc786860e6c5c48d05cfe0860ac16ccdcec079c6921",
   "child_source_sha256": "c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5",
   "input_source_reacquisition": "packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json records pinned publication object and decoded SHA; local decoded cache is disposable",

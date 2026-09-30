@@ -851,7 +851,7 @@ session:
     bead: think-k6lh
     objective: Measure remaining proof execution costs and improve the dominant geometry
       work while independent capture and exclusion lanes continue.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Center diagnostic isolates actual geometry CPU as the dominant cost.
     budget_minutes: 30
@@ -862,11 +862,39 @@ session:
     validation_command: Frozen selected proof replays and focused changed-tool controls.
     kill_condition: Unmeasured speed claims or incomplete geometric work cannot receive credit.
     fallback: Retain exact incomplete obligations and continue independent proof lanes.
+    outcome: Indexed event construction used 4.81 times less CPU on the selected case 1383
+      proposal with identical 613 events; reviewed integration and 34 focused controls
+      pass. The CI selector hotspot improved from 13.93 to 7.26 profiled seconds,
+      68 tests pass, and all hosted checks are green at 01572bb8b. Seven capture nodes
+      are now accepted.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/indexed-cover-benchmark.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/reachable-selector-cost.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/completion-inventory.json
+    stop_reason: Component checkpoint at 2026-09-30T12:15:06Z.
+    next_action: Freeze measured parallel center replay and continue the final capture descendants.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Execute the accelerated center partition and remaining capture descendants,
+      audit the final 32-case batch, and compose only fully accepted proof components.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Indexed exact coverage and the extended capture-support adapter are reviewed.
+    budget_minutes: 30
+    started_at: '2026-09-30T12:15:06Z'
+    deadline_at: '2026-09-30T12:45:06Z'
+    expected_output: Reviewed remaining exclusions and capture states with exact final composition gaps.
+    validation_command: Frozen selected geometric replays and focused changed-tool controls.
+    kill_condition: Any missing source binding, incomplete branch or unreviewed execution prevents promotion.
+    fallback: Preserve the precise open obligation and improve its measured bottleneck in parallel.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol profiles geometry and summarizes costs; Sol advances capture children;
-      Astra audits execution and final joins; coordinator integrates accepted evidence.
+    next_action: Sol owns indexed profiling and capture descendants; Astra audits new executions;
+      coordinator freezes full center replay and integrates accepted records.
   budget:
     wall_minutes: 1135
     max_cycles: 40

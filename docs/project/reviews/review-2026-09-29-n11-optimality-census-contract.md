@@ -2186,6 +2186,76 @@ eventually closes.
 T-060 remains V0/C1 while those execution and final-review obligations
 are open.
 
+## Oblique Outer Supports and Accepted r11 State
+
+Child checker `e7383c3fb940c123ff39fa162bd401e389299daca21a85ed167af4f99df42989` is
+approved for additional outer-support directions.
+Every bound must have a nonzero rational normal, a unique positively normalized
+direction, and contain every vertex of every convex residual polygon.
+All eight standard directions remain present, and the original outer domain must equal
+the exact world intersection of all bounds.
+Full row coverage therefore places every feasible center inside this original domain.
+The wrapper passes the frozen output checker only a temporary enclosure formed by the
+eight standard supports; original rows remain the accepted state and later domains are
+hull-normalized. The empty-residual path is unchanged.
+Focused controls reject a cut residual vertex, changed outer domain, reversed direction,
+duplicate direction, missing standard direction, and zero normal.
+
+The
+[r11 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-r11/result.json),
+SHA-256 `407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f`, is accepted
+under that revision.
+Its exact source `280b5152`, accepted near13 receipt `c6e6f7bc`, dependency closure,
+inherited conditions, stdout, and original final-state digest `ecdebb59` match.
+Six complete updates check 1,189 query rows, 3,016 partner rows, 5,477,848 collision
+inequalities, 13,188 cover events, and 25,930 probes, producing 2,888 common-core planes
+and 47 additions. The final partial step checks 56 rows and 526,904 further collision
+inequalities with zero additions and no state promotion.
+Wall time was 231.828 seconds.
+This accepts the conditional r11 state and releases its two descendants; seven capture
+nodes are accepted, while far2, r111, and near remain open.
+The earlier eight-support refusal retains zero credit.
+
+## Indexed Crossing Events
+
+The [indexed cover helper](../../../packing/devtools/n11_indexed_exact_cover.py),
+SHA-256 `68580e324e56c555ea0587b6f396b208fb66563d1e10bd449b446c97b7667ccd`, preserves
+the reviewed closed-cover theorem for a convex positive-area domain and finitely many
+convex closed regions.
+For any pair of nonvertical edges whose closed x projections overlap inside the domain,
+neither edge is skipped and the earlier edge remains active when the later begins:
+expiration uses the strict comparison `end < start`. Every crossing considered by the
+previous all-pairs loop is therefore still tested with the same exact formula and closed
+inequalities. All vertex abscissae remain, including vertical-edge and point events.
+The resulting sorted event set drives the unchanged exact vertical sweep.
+Six focused controls compare event sets and cover outcomes, including shared endpoints,
+degenerate regions, random convex polygons, and three accepted case-2095 rows.
+
+The final integration revisions are generic checker
+`280becc5393d9528ea36dca739fad1074e3c18e13e0722466e30c2fd16514ce1` and center-partition
+consumer `d888179ca60fa03534dc24c6fd4e2e422c397a4d190714bbd93fe40acc8295a5`. They are
+approved: backend dispatch and worker propagation change, while convexity admission,
+lower-dimensional coverage, and all geometric obligations remain intact.
+The indexed helper, frozen fast helper, and geometry dependencies are bound before and
+after execution. Each worker receives only the node identity and current step, retaining
+the original step index.
+These are the only source fields its row computation reads; accepted predecessors,
+ownership groups, worlds, partner covers, constraints, and budgets remain separate
+unchanged inputs. The coordinator retains the complete source for ancestry and
+final-state checks. The
+[whole-node](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/spawn-cost-1383-whole3.json)
+and
+[one-step](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/spawn-cost-1383-step3.json)
+diagnostics measure a three-worker startup reduction from 1.864 to 0.551 seconds and a
+serialized payload reduction from 128,312,497 to 23,812,772 bytes.
+They check no row geometry.
+The
+[retained benchmark](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/indexed-cover-benchmark.json)
+matches all 613 crossing events from 1,738 edges in one case-1383 proposal row, with
+4.81-fold lower event-construction CPU time.
+That measurement uses proposed geometry and grants no row or case acceptance.
+Case 1383 still requires the complete common prefix and both closed branches.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

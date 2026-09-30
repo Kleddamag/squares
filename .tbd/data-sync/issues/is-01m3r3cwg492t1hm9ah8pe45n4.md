@@ -3,9 +3,9 @@ type: is
 id: is-01m3r3cwg492t1hm9ah8pe45n4
 title: "Films on the site: PUBLISHED_FILMS pin and a publish step that fetches, verifies and caches both v0.4.2 films under films/"
 kind: task
-status: closed
+status: open
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -17,9 +17,9 @@ dependencies:
     target: is-01m3qr6wqssd2sm32twemg0tpy
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-30T02:48:15.108Z
-updated_at: 2026-09-30T04:30:48.250Z
-closed_at: 2026-09-30T04:30:48.249Z
-close_reason: "Lane C, commit 764a5ac90: PUBLISHED_FILMS pin and published_media --fetch/--cache-key (workflow step main-only in f760444fe); n = 1..324 poster cut at n = 307; atlas previews rendered at build time under byte ceilings."
+updated_at: 2026-09-30T19:53:07.269Z
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
@@ -28,3 +28,5 @@ Spec: Published Media. Pin release tag, asset name, bytes and SHA-256 (the recei
 ## Notes
 
 Reviewed design: publish runs for pull requests (only its upload is gated), so the fetch, verify and cache steps carry the upload's main-only condition. Pull requests never download the films.
+
+Reopened: Done only on origin/claude/optimistic-gauss-uzmcl2 (764a5ac90, f760444fe), which is not in the claude/overview-page-impl PR; that branch has no PUBLISHED_FILMS or published_media and links the films at releases/download.

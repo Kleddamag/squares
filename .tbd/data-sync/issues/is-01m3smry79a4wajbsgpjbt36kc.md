@@ -3,17 +3,17 @@ type: is
 id: is-01m3smry79a4wajbsgpjbt36kc
 title: Make complete n11 case-2095 regression respect the bounded test worker budget
 kind: bug
-status: in_progress
+status: closed
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3sken298psm0jfn7tmbcqp9
 created_at: 2026-09-30T17:11:10.312Z
-updated_at: 2026-09-30T18:12:50.954Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T19:15:54.454Z
+closed_at: 2026-09-30T19:15:54.437Z
+close_reason: "Post-merge automatic main run 36761793749 at 3687d9cba3033d6fdd5942150566b5fca4846c5c completed slow-lane job 110045933894 successfully: all 158 tests passed, including test_complete_2095_receipt_has_every_step_and_no_pending_row (43.16 s call). This closes only the test-only case-2095 deadline repair; the run aggregate failed separately on deferred-controls-finer."
 resolution: null
 duplicate_of: null
 ---

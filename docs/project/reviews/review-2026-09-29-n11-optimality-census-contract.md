@@ -1135,6 +1135,35 @@ pending. The receipt accepts exactly case 2129 and retains false global optimali
 Its costs are 22.598 seconds wall, 4.269 seconds coordinator CPU, and 43.823 seconds
 child CPU. The two earlier refused attempts retain zero credit.
 
+## First Capture Transition Row
+
+The [transition pilot](../../../packing/devtools/check_n11_capture_transition_pilot.py),
+SHA-256 `22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309`, accepts only
+root-self step zero, row zero, for owner 15. It reconstructs the accepted phase-two
+support domains and checks all 149 partner-10 rows, including the complete closed angle
+partition and all 93 live domains.
+Self-hull cuts use full-square support bounds, and both query and partner cores lie
+strictly inside every physical square throughout their respective angle intervals.
+
+For every live partner domain $D$, the 23-vertex collision region is checked against
+every facet $n\cdot v\le h$ of $Q_{10}-Q_{15}$ using
+$n\cdot p\le h+\min_{y\in D}n\cdot y$. Thus every proposed query center forces a common
+core point for every remaining partner pose.
+Even equality gives a point in both physical interiors, so their intersection contains
+an open disk and has positive area.
+The row then checks its complete legal-domain cover, all common-ownership facets, and
+the eight outer support bounds and resulting domain.
+No point or segment domain is discarded by area alone.
+
+The
+[retained result](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-transition-row0/result.json),
+SHA-256 `7a46c8bf3ef348ddcf5061785728a5e507ae2bc3ed70fc991fd3f16e70efeb0d`, completes
+34,224 universal facet-vertex inequalities, 44 coverage events, 87 probes, and eight
+common-core planes in 5.170 seconds.
+Its helper and source identities are checked before and after execution.
+This accepts one row’s geometry; it promotes no owned-point compression, complete step,
+source node, candidate capture, or global conclusion.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

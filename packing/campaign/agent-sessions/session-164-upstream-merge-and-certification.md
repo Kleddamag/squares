@@ -667,7 +667,7 @@ session:
     bead: think-k6lh
     objective: Review and integrate exact cover reuse, discharge repeated-owner cases,
       and advance capture transitions while preparing partner-cover and ancestry adapters.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Profiling isolates repeated rational vertical intervals; source
       adapter refusals are now separated from geometric computation.
@@ -681,13 +681,48 @@ session:
       geometry prevents case credit or kernel admission.
     fallback: Preserve frozen accepted executions and exact refusals; use the reviewed
       baseline until optimized geometry and new adapters independently pass.
-    outcome: null
+    outcome: Reviewed exact sweep is integrated with matched full-case controls and
+      1.892 times median row CPU speedup. Generic 2129 and four further baseline
+      cases bring the exact union to 1923, leaving 257. Required-domain versus
+      pre-wall source-hint semantics independently checked. Capture first row
+      passes 34224 universal inequalities; complete step remains open. Lossless
+      batch ledger compression removes about 69000 review lines with identical
+      decoded bytes and accepted unions. Source freezes now precede further edits.
     evidence:
     - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
     - packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/fast-cover-benchmark.json
-    stop_reason: null
+    stop_reason: Component checkpoint closed at 2026-09-30T09:14:26Z; proceed to
+      lower-dimensional and partner-cover cases plus the full first capture step.
     next_action: Astra reviews repeated ownership and sweep equivalence; Sol implements
       capture and partner geometry; coordinator runs independent batches and integrates CI.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-35ui
+    objective: Complete remaining baseline case capabilities and the first capture
+      step using reviewed shared geometry, then expand independent case batches.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Exact sweep optimization and first transition row are accepted;
+      remaining baseline refusals are lower-dimensional, partner-cover or ancestry rules.
+    budget_minutes: 30
+    started_at: '2026-09-30T09:14:26Z'
+    deadline_at: '2026-09-30T09:44:26Z'
+    expected_output: Accepted lower-dimensional baseline cases, reviewed partner-cover
+      adapter and a complete capture step or exact unresolved obligations.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_generic_sequential.py tests/test_n11_capture_transition_pilot.py -q
+    kill_condition: Missing closed boundaries, unproved collision premises or incomplete
+      row joins prevent credit regardless of stored source status.
+    fallback: Retain exact incomplete states, run independent supported cases and
+      profile the smallest missing geometric component before increasing scope.
+    outcome: null
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
+    stop_reason: null
+    next_action: Sol extends baseline and capture consumers in disjoint files; Astra
+      reviews shared rules and complete receipts; coordinator batches execution and CI.
   budget:
     wall_minutes: 1135
     max_cycles: 40

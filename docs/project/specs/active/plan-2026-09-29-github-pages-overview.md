@@ -634,8 +634,12 @@ current. The explainer’s lead result is declared once, as a constant in
 `render_explainer.py` beside the prose that already names it, and the comparison reads
 the case’s current value and holder from `verified_lane`.
 
-**On the explainer**, the same generated line appears once under the navigation bar as a
-screen-only notice linking to the overview’s Recent Results.
+**On the explainer**, the same generated line appears once as a screen-only notice, the
+first child of the article column, linking to the overview’s Recent Results.
+It sits inside the column because three of the explainer’s checks (two print-layout ones
+and a math-font comparison) read the first `.kpress` element as the article, and a
+notice ahead of it made the print column measure zero, so the overflow check checked
+nothing; its math also needs a `.kpress` ancestor to take the right face.
 It is hidden in print, so the PDF and the print-layout checks do not move, and the
 hand-written frontier update stays as it is.
 

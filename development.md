@@ -835,9 +835,13 @@ For every newly retained result, first complete the
 update the frontier, README and survey, and regenerate affected survey SVG/PDF/PNG
 exports together. That sequence also applies when no explainer edition changes.
 
-The explainer at <https://jlevy.github.io/squares/> is not checked in.
-GitHub Pages builds it from `main` in `.github/workflows/pages.yml`, on every push that
-touches one of the renderer’s declared inputs (`RENDER_INPUTS` in
+The site opens on the overview at <https://jlevy.github.io/squares/>, rendered by
+`devtools.render_overview` into `site-overview/` with the frontier atlas and the
+tutorial; the explainer is at <https://jlevy.github.io/squares/explainer.html>, renamed
+there from its render’s `site/index.html` when `publish` assembles the site.
+Neither is checked in; `devtools.preview_site --build` assembles and checks them
+locally. GitHub Pages builds the explainer from `main` in `.github/workflows/pages.yml`,
+on every push that touches one of the renderer’s declared inputs (`RENDER_INPUTS` in
 `devtools/render_explainer.py`, which a test ensures the workflow’s path filter covers).
 The build writes the page (`site/index.html`), the Markdown edition
 (`site/t-018-explainer.md`), the PDF (`site/t-018-explainer.pdf`, drawn by Playwright’s
@@ -912,12 +916,12 @@ from the checkout:
 uv run --frozen --all-extras --group dev python -m devtools.check_published_site --commit <merge commit>
 ```
 
-It fetches the live page, Markdown edition, PDF, assets, and workbench.
-It checks the explainer edition, verifies that repository links name and resolve at the
-expected commit, and requires the PDF source receipt to match the exact served HTML
-bytes and its page count to match the publication.
+It fetches the overview, the explainer, the Markdown edition, the PDF, the assets, and
+the workbench. It checks the explainer edition, verifies that repository links name and
+resolve at the expected commit, and requires the PDF source receipt to match the exact
+served HTML bytes and its page count to match the publication.
 It also requires the workbench’s exact source revision, starts its public API in pinned
-Chromium, and follows its project-relative link to the explainer.
+Chromium, and follows its project-relative link to the overview.
 
 **One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
 credits, the atlas footer, the workbench stage and the videos all print

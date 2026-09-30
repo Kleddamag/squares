@@ -180,8 +180,11 @@ def test_pull_request_178_would_have_run_no_browser_work(
     assert in_scope([*changed, "packages/workbench/src/application.js"], declared) == {
         "workbench"
     }
+    # The explainer's math-face checker is also the local site preview's
+    # (`devtools.preview_site`, which the overview job runs), so it scopes both.
     assert in_scope([*changed, "packing/devtools/check_math_faces.py"], declared) == {
-        "explainer"
+        "explainer",
+        "overview",
     }
 
 
@@ -240,12 +243,14 @@ def test_a_gate_on_an_undeclared_page_is_refused() -> None:
 
 
 def test_every_page_says_why_it_was_skipped(declared: dict[str, tuple[Path, ...]]) -> None:
-    decisions = decide(["README.md", "packing/campaign/ledger.md"], declared)
+    # README is an overview input (its card reads the title), so the control is a root
+    # document no page reads.
+    decisions = decide(["development.md", "packing/campaign/ledger.md"], declared)
     assert [d.half for d in decisions] == list(pages_scope.BUILDER_INPUTS)
     for decision in decisions:
         assert not decision.in_scope
         assert decision.reason.startswith("none of the 2 changed files is among the ")
-    (single,) = decide(["README.md"], declared)[:1]
+    (single,) = decide(["development.md"], declared)[:1]
     assert single.reason.startswith("none of the 1 changed file is among the ")
 
 

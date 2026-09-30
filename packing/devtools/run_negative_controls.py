@@ -193,6 +193,12 @@ PRUNE = frozenset(
         # have hidden that rather than fixed it, which is what the note above this
         # constant says to check for before raising it a second time.
         ROOT / "site",
+        # The same for the overview's renderer, which writes the site's own pages and
+        # their assets beside the explainer's output, and for the local preview that
+        # assembles the two: gitignored render output, never repository content.
+        ROOT / "site-overview",
+        ROOT / "site-preview",
+        ROOT / "site-preview-screenshots",
         # Retained browser observations and the frozen HTML control add 2.5 MB,
         # pushing the 2026-09-08 snapshot beyond 96 MiB. The math-startup reporter
         # and Pages browser jobs consume them; no registered mutation control does.

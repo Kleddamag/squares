@@ -74,6 +74,19 @@ DECLARED_CONSUMER_TREES = {
 }
 
 DECLARED_CONSUMERS = {
+    "packing/devtools/site_pages.py": (
+        "prints each case's ceiling in the frontier atlas page's own Verified upper column, "
+        "and subtracts the verified lower bound from it only to print the bound gap; it "
+        "labels the value an upper bound and never presents it as s(n)"
+    ),
+    "packing/tests/test_site_pages.py": (
+        "checks that the frontier page's Verified upper and Verified lower cells equal the "
+        "records' values; it asserts nothing about s(n)"
+    ),
+    "docs/project/specs/active/plan-2026-09-29-github-pages-overview.md": (
+        "specifies the frontier atlas page's Verified upper column as the record's "
+        "ceiling and the bound gap as ceiling minus verified lower bound, never s(n)"
+    ),
     "packing/devtools/apply_upper_bound_packets.py": (
         "writes the ceiling a parallel packing's exact certificate proves, the printed side "
         "or the certified side rounded up at its precision, and the ceiling section, conflict "

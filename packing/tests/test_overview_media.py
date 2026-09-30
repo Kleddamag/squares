@@ -290,13 +290,46 @@ def test_the_overview_links_only_media_the_site_serves() -> None:
         | {path.name for path in render_explainer.COMPOSITE_ASSETS}
         | {published_media.site_path(film) for film in PUBLISHED_FILMS}
     )
-    pages = [page for page in render_overview.site_pages_of() if page.key == "overview"]
+    commit = "0" * 40
+    pages = [page for page in render_overview.site_pages_of(commit) if page.key == "overview"]
     assert pages, "the overview is one of the site's pages"
     for page in pages:
-        html = render_overview.page_html(page, commit="0" * 40)
-        assert published_media.foreign_media(html) == [], page.path
-        for url in published_media.media_references(html):
+        html = render_overview.page_html(page, commit=commit)
+        # The rule covers the site's own media, which the page marks `data-site-media`;
+        # record links elsewhere (retained source PDFs among them) are permalinks by design.
+        media = site_media(html)
+        assert media, "the overview marks its atlas and film section data-site-media"
+        assert published_media.foreign_media(media) == [], page.path
+        for url in published_media.media_references(media):
             if url.startswith("data:"):
                 continue
             resolved = posixpath.normpath(posixpath.join(posixpath.dirname(page.path), url))
             assert resolved in served, (page.path, url)
+
+
+def site_media(html: str) -> str:
+    """The HTML of every element the page marks `data-site-media`, concatenated."""
+    from html.parser import HTMLParser  # noqa: PLC0415
+
+    class Collector(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=False)
+            self.depth = 0
+            self.parts: list[str] = []
+
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            if self.depth or any(name == "data-site-media" for name, _ in attrs):
+                self.depth += tag not in VOID
+                self.parts.append(self.get_starttag_text() or "")
+
+        def handle_endtag(self, tag: str) -> None:
+            if self.depth:
+                self.parts.append(f"</{tag}>")
+                self.depth -= 1
+
+    collector = Collector()
+    collector.feed(html)
+    return "".join(collector.parts)
+
+
+VOID = frozenset({"img", "source", "br", "hr", "input", "meta", "link", "wbr", "track"})

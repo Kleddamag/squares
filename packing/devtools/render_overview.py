@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import json
 import re
 import sys
 from collections.abc import Iterable, Mapping, Sequence
@@ -156,7 +157,10 @@ def markdown_html(source: str, *, title: str, where: str) -> str:
     Trusted mode, because the templates are this repository's own and carry raw
     `<figure>`, `<div class>` and `<span class>` blocks; math is `auto`, so `$…$` and
     `$$…$$` are typeset by KaTeX with the explainer's math faces. A diagnostic of error
-    severity refuses the page rather than publishing a half-rendered one.
+    severity refuses the page rather than publishing a half-rendered one, and so do the
+    two kpress rates as warnings that would still publish a broken page: an in-page link
+    to an id the page lacks, and a formula KaTeX cannot typeset
+    (`site_pages.REFUSED_DIAGNOSTICS`).
     """
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
@@ -168,7 +172,10 @@ def markdown_html(source: str, *, title: str, where: str) -> str:
     )
     for diagnostic in document.diagnostics:
         print(f"{where}: {diagnostic.severity}: {diagnostic.message}", file=sys.stderr)
-    if any(d.severity == "error" for d in document.diagnostics):
+    if any(
+        d.severity == "error" or d.type in site_pages.REFUSED_DIAGNOSTICS
+        for d in document.diagnostics
+    ):
         raise SystemExit(f"{where} did not render cleanly; refusing to write the page")
     return document.html
 
@@ -233,6 +240,7 @@ def page_html(page: Page, *, commit: str) -> str:
         "PAGE_SCRIPTS": "\n".join(
             f"<script>{path.read_text(encoding='utf-8')}</script>" for path in page.scripts
         ),
+        "DEFAULT_BRANCH_LINKS": json_island(site_pages.default_branch_links(body)),
         # Last, so no later value is substituted inside the rendered body.
         "BODY_HTML": f"{shared.icon_sprite}\n{body}",
     }
@@ -245,8 +253,14 @@ def page_html(page: Page, *, commit: str) -> str:
     return html
 
 
-def site_pages_of(modules: Iterable[ModuleType] = PAGE_MODULES) -> list[Page]:
-    return [page for module in modules for page in module.pages()]
+def json_island(value: object) -> str:
+    """JSON to sit inside a `<script type="application/json">`, which `</` would end."""
+    return json.dumps(value, ensure_ascii=False, sort_keys=True).replace("</", "<\\/")
+
+
+def site_pages_of(commit: str, modules: Iterable[ModuleType] = PAGE_MODULES) -> list[Page]:
+    """Every part's pages, with their repository links at `commit`."""
+    return [page for module in modules for page in module.pages(commit)]
 
 
 def site_assets_of(modules: Iterable[ModuleType] = ASSET_MODULES) -> list[Asset]:
@@ -263,11 +277,28 @@ def render(commit: str | None = None) -> dict[str, bytes]:
             raise SystemExit(f"two parts of the site both write {path}")
         files[path] = content
 
-    for page in site_pages_of():
+    for page in site_pages_of(commit):
         add(page.path, page_html(page, commit=commit).encode("utf-8"))
     for asset in site_assets_of():
         add(asset.path, asset.content)
     return dict(sorted(files.items()))
+
+
+def link_report(files: Mapping[str, bytes], commit: str) -> list[str]:
+    """Every page's broken links, proved offline against the build commit.
+
+    Each repository path a page links must exist at `commit` (one `git ls-tree` listing,
+    which a blobless clone answers without fetching), and each in-page anchor must name an
+    id the page has. It runs from the command line, which renders at the checkout's own
+    commit; `render()` itself stays a pure function of its commit, so tests can render at
+    a placeholder.
+    """
+    return [
+        f"{path}: {problem}"
+        for path, content in files.items()
+        if path.endswith(".html")
+        for problem in site_pages.link_problems(content.decode("utf-8"), commit)
+    ]
 
 
 def _label(path: Path) -> str:
@@ -323,7 +354,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"{_label(output)} is the explainer's output; the overview would overwrite its "
             "index.html, so it renders to its own directory"
         )
-    files = render()
+    commit = render_explainer.link_revision()
+    files = render(commit)
+    broken = link_report(files, commit)
+    for problem in broken:
+        print(problem, file=sys.stderr)
+    if broken:
+        return 1
     if args.check:
         problems = check(output, files)
         for problem in problems:

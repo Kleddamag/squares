@@ -76,6 +76,20 @@ name: Certificate page
       - packing/devtools/probes/**
       - packing/atlas/known-best/manifest.json
       - packing/devtools/render_overview.py
+      - packing/devtools/render_research_tables.py
+      - packing/devtools/render_recent_results.py
+      - packing/devtools/render_results.py
+      - packing/devtools/result_credit.py
+      - packing/devtools/significance.py
+      - packing/devtools/check_results.py
+      - packing/devtools/state_ai_assistance.py
+      - README.md
+      - SYNOPSIS.md
+      - conventions.md
+      - docs/project/research/**
+      - packing/devtools/validate_schemas.py
+      - packing/devtools/check_basic_bounds.py
+      - packing/devtools/build_bound_citations.py
       - packing/devtools/site_kit.py
       - packing/devtools/overview_page.py
       - packing/devtools/overview_data.py

@@ -73,7 +73,7 @@ WORKBENCH_PATH = "workbench/"
 WORKBENCH_REVISION = re.compile(
     r'<meta\s+name="squares-workbench-revision"\s+content="([0-9a-f]{40})">'
 )
-WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the explainer</a>')
+WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">Square Packing</a>')
 
 
 def repository_links(text: str) -> set[tuple[str, str, str]]:

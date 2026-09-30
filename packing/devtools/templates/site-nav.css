@@ -164,24 +164,20 @@
 }
 /* On a phone the links keep to one row that scrolls sideways rather than wrapping to
    three lines; the site name goes, since "Overview" is the same link. */
+/* On a phone every link stays in view: the row wraps, centred, rather than scrolling
+   links out of sight, and the gear ends the last line. */
 @media (width < 40rem) {
   .site-nav-inner {
-    column-gap: 0.9rem;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-block: 0.6rem;
-    scrollbar-width: none;
-    white-space: nowrap;
+    gap: 0.15rem 0.1rem;
+    justify-content: center;
+    padding-block: 0.5rem;
+    padding-inline: 0.5rem;
   }
   .site-nav .site-name {
     display: none;
   }
-  /* The gear stays at the right edge while the links scroll under it. */
-  .site-theme {
-    background: var(--kpress-doc-bg);
-    inset-inline-end: 0;
-    margin-inline-start: auto;
-    position: sticky;
+  .site-nav a {
+    padding-inline: 0.45rem;
   }
 }
 /* On the explainer the bar is the first thing in the page, not in kpress's header slot. */

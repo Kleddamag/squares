@@ -112,6 +112,63 @@ PUBLICATION_HISTORY = (
     ),
 )
 
+
+class PublishedFilm(NamedTuple):
+    """One ascent film the site serves, pinned to the release asset it is copied from.
+
+    `byte_count` and `sha256` are the delivered file's, as its receipt records them
+    (`delivered.bytes` and `video_sha256`); `seconds`, `width` and `height` are the
+    receipt's `delivered` probe of the same file. `edition` is the stamp the frames carry,
+    the receipt's `version`, which stays true of these files after any later re-pin of
+    `DATA_REVISION`, so it is never `PUBLICATION_EDITION`.
+    """
+
+    tag: str
+    name: str
+    byte_count: int
+    sha256: str
+    profile: str
+    seconds: float
+    width: int
+    height: int
+    edition: str
+
+
+#: The films the published site serves under `films/`, copied from their release at
+#: publish and checked against this pin first (`devtools.published_media --fetch`). A
+#: release download is served as an `application/octet-stream` attachment, so the site
+#: serves its own copies, which Pages types `video/mp4`; a binary entering the site from
+#: outside git is a trust boundary, which is why these are pinned by hash (OR-16).
+#:
+#: Read on 2026-09-30 from the v0.4.2 receipts, `<name>.receipt.json` beside each film on
+#: the release. Both were cut from page `9e2a35cd` at `c19e6c0e2`, when the pinned data
+#: revision was `d48006`, so their frames are stamped `v0.4.2-d48006`. This file is not
+#: under `DATA_PATHS`, so a change here never moves the version.
+PUBLISHED_FILMS: tuple[PublishedFilm, ...] = (
+    PublishedFilm(
+        tag="v0.4.2",
+        name="ascent-n1-100-1080p60-citations.mp4",
+        byte_count=39_969_792,
+        sha256="6067ef13e9e9d9fa250f561ad71ecae21e9680e8c240f7e03e559d0050a854d7",
+        profile="social",
+        seconds=140.016667,
+        width=1920,
+        height=1080,
+        edition="v0.4.2-d48006",
+    ),
+    PublishedFilm(
+        tag="v0.4.2",
+        name="ascent-n1-324-1080p60-citations.mp4",
+        byte_count=216_275_792,
+        sha256="91d9c52fd8afb588e3dce268728fe483a4bc0e0aab0811c0504913f0924f3e6a",
+        profile="archive",
+        seconds=493.983333,
+        width=1920,
+        height=1080,
+        edition="v0.4.2-d48006",
+    ),
+)
+
 #: The edition the figures and the explainer state. Choose at most one version bump per
 #: merge, and keep it fixed while revising that pull request.
 PUBLICATION_VERSION = PUBLICATION_HISTORY[0].version

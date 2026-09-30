@@ -593,21 +593,25 @@ and the release stays linked as the archive of record with its receipts.
 
 **Posters.** The `n = 1…100` poster exists: a 1,280 by 720 frame at `n = 88` (the tool’s
 default), cut from the film by `workbench_tools.poster` at the step its receipt names.
-The `n = 1…324` poster is cut by the same tool with `--n 324 --out`, from that film’s
-receipt, and committed as `packages/workbench/assets/ascent-n1-324-poster.png`; it shows
-the whole atlas at the last step’s settled end, and is the overview player’s poster
-frame.
+The `n = 1…324` poster is cut by the same tool with `--n 307 --out`, from that film’s
+receipt, and committed as `packages/workbench/assets/ascent-n1-324-poster.png`: the
+settled end of the `n = 307` step, one of the recent improved packings, whose tilted
+bands show what the film is about.
+The last step is not used: `n = 324` is an 18-by-18 grid.
+It is the overview player’s poster frame.
 
 **Editions on media.** The films and posters carry the stamp they were cut with
-(`v0.4.2-a48ad1`), which stays true of those files after later re-pins.
+(`v0.4.2-d48006`, from their receipts), and the atlas composites theirs
+(`v0.4.2-a48ad1`); each stays true of its file after later re-pins.
 Their captions take the edition from the receipt, not from `PUBLICATION_EDITION`, so a
 caption never claims a newer edition than the frames show.
 
 **Two checks hold all of this.**
 
-- A render test fails on any media `href` or `src` on the overview that is not
-  site-relative: a release download, a `raw.githubusercontent.com` URL, or a `/blob/`
-  URL to a PDF, MP4 or PNG.
+- A render test fails on any media `href` or `src` in the overview’s atlas and film
+  section that is not site-relative: a release download, a `raw.githubusercontent.com`
+  URL, or a `/blob/` URL to a PDF, MP4 or PNG. Record links elsewhere on the page, to
+  retained source PDFs among them, are permalinks by design and outside the rule.
 - After deploy, a media check requests one byte of every media file the overview and the
   explainer link and requires status 200 or 206, the exact `Content-Type`
   (`application/pdf`, `video/mp4` or `image/png`), no `attachment` disposition,

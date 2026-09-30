@@ -12,8 +12,8 @@ something the repository already records and already gates:
   atlas star reads too;
 - evidence, retained source copies and reviews: `frontier/evidence.yaml`;
 - each result's standing, the survey's counts and the reported bounds awaiting a replay:
-  `devtools.render_recent_results`, the functions README's generated tables use, so the
-  page and README cannot disagree about any of them.
+  `devtools.render_recent_results`, the functions `RESULTS.md`'s standing column uses
+  too, so the page and the register view cannot disagree about any of them.
 
 Counts are of *declared* rungs. `check_results` accepts a declared rung below the one
 it derives when a `composition` note explains why, so re-deriving here would disagree
@@ -118,7 +118,7 @@ def math_html(tex: str, *, display: bool = False) -> str:
 
 
 #: One inline code span in register prose. Headlines write their mathematics this way
-#: (`s(11) ≥ 31/8`), as README and `RESULTS.md` print them.
+#: (`s(11) ≥ 31/8`), as `RESULTS.md` prints them.
 _CODE_SPAN = re.compile(r"`([^`\n]+)`")
 
 
@@ -190,7 +190,7 @@ class Result:
     records: list[Link] = field(default_factory=list)
     standing: str = ""
     """Whether a case bound rests on the result now, and if not, why not:
-    `render_recent_results.standing`, the word README's and `RESULTS.md`'s tables print."""
+    `render_recent_results.standing`, the word `RESULTS.md`'s tables print."""
 
     @property
     def id(self) -> str:
@@ -218,8 +218,8 @@ class Result:
     @property
     def dated(self) -> tuple[str, str]:
         """The date a reader is shown and what it is: publication for a result by
-        others, as README's Results by Others dates it; establishment for this
-        project's, as its New Results does."""
+        others, as the register's `attribution.published` dates it; establishment
+        for this project's, the register's `established`."""
         if self.published is not None:
             return "published", self.published
         return "established", str(self.record.get("established") or self.date)
@@ -263,12 +263,12 @@ class Overview:
     recent_lower: frozenset[int]
     groups: list[tuple[str, list[Result]]]
     recent: list[Row] = field(default_factory=list)
-    """Every case `n <= 100` with a recent lower bound in either lane, as README's survey
-    table lists them: `render_recent_results.recent_rows`."""
+    """Every case `n <= 100` with a recent lower bound in either lane, as the survey
+    section lists them: `render_recent_results.recent_rows`."""
 
     @property
     def counts(self) -> RecentCounts:
-        """The survey's four counts, as README's summary quotes them."""
+        """The survey's four counts, as the survey section quotes them."""
         return recent_counts(self.recent)
 
     @property

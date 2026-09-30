@@ -141,7 +141,8 @@ wand125’s point-only routes to $s(21) = 5$ and $s(45) = 7$, the latter verifie
 a second certificate, and its reported $s(50) \ge 37/5$ followed on 28 September.
 Guzhou0806’s continuation of R052, $s(17) > 4.62003$, superseded by `v1.1.0`, is
 retained as a publication record.
-[Results by Others](README.md#results-by-others) gives the credit for each.
+The [results register](packing/frontier/RESULTS.md) and the site’s
+[results table](https://jlevy.github.io/squares/#every-result) give the credit for each.
 
 Every result this project has registered, in the reading order its significance scores
 set. The full claims, the rationale behind each score, and the next evidence-improving

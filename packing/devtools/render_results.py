@@ -13,7 +13,7 @@ project, crediting it second-hand, independent of it, and published before it be
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
 rungs, with the result's standing, derived from the case records and never stored by
-`devtools.render_recent_results.standing`, the same function README's tables use:
+`devtools.render_recent_results.standing`, the same function the site's overview uses:
 whether a case bound rests on it now, and if not, whether it was superseded or is a
 second certificate for a value another result holds.
 

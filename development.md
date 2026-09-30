@@ -1229,13 +1229,11 @@ uv run --frozen python -m devtools.render_research_tables --check
 uv run --frozen python -m devtools.render_document_map
 uv run --frozen python -m devtools.render_results --update
 uv run --frozen python -m devtools.render_results_headline
-uv run --frozen python -m devtools.render_recent_results --update
 ```
 
-The last one writes README’s three results tables, New Results, Results by Others and
-the recent results by case, from the register, the case records and the bibliography.
-Edit the records and re-render; a hand edit inside a table’s markers fails its
-`--check`.
+README carries no results tables; the site’s overview renders the results from the
+register, the case records and the bibliography (`devtools.render_overview`). Edit the
+records and re-render; a hand edit to a generated view fails its `--check`.
 
 **Creating any durable Markdown file is a two-step change.** Register it in
 [`docs/project/document-map.yaml`](docs/project/document-map.yaml) with its `role`,

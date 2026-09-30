@@ -2946,16 +2946,6 @@ def _results_headline(context: Context) -> str:
     return _module(context, "devtools.render_results_headline", "--check")
 
 
-def _recent_results(context: Context) -> str:
-    # About a second: a hundred case records, the register and the bibliography. Records
-    # tier because it checks generated views of the record -- README's three results
-    # tables: New Results and Results by Others, which were a paragraph of prose per
-    # result, and the per-case recent-results table, whose hand-kept predecessor and its
-    # counts drifted three times (think-ti71). A hand edit inside any of the three fails
-    # here; the counts the survey summary quotes are held by `check_readme`.
-    return _module(context, "devtools.render_recent_results", "--check")
-
-
 def _certificate_citations(context: Context) -> str:
     # Sub-second: it ast-parses five modules and reads a hundred frontmatter blocks. Records
     # tier because it checks the record, not the mathematics -- that every exact certificate
@@ -4315,25 +4305,6 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
-        "README's recent results agree with the records",
-        _recent_results,
-        fast=True,
-        records=True,
-        touches=(
-            *_CORE,
-            "README.md",
-            "packing/frontier/n-*.md",
-            "packing/frontier/results.yaml",
-            "packing/frontier/evidence.yaml",
-            "packing/resources/bibliography.yaml",
-            "packing/devtools/render_recent_results.py",
-            "packing/devtools/build_bound_citations.py",
-            "packing/devtools/check_results.py",
-            "packing/devtools/render_research_tables.py",
-            "packing/devtools/render_results.py",
-        ),
-    ),
-    Step(
         "exact certificates are named by their records",
         _certificate_citations,
         fast=True,
@@ -4745,7 +4716,6 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",
-        "README's recent results agree with the records",
         "exact certificates are named by their records",
         "rung figures agree with their certificates",
         "case prose agrees with its own front matter",

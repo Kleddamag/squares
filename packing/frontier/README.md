@@ -380,19 +380,18 @@ certificate’s replay command.
    [New Result Publication](../campaign/documentation-pass.md#new-result-publication)
    gives: `validate_schemas` and `check_results` on the records, then
    `render_results --update`, `render_evidence_inventory --update`,
-   `render_research_tables`, `render_results_headline`, and
-   `render_recent_results --update`, which re-renders the root README’s New Results,
-   Results by Others and recent-results tables from the register; never edit inside
-   their markers. `packing-validate --records` runs those checks and the related record
-   checks; it does not replace certificate replay or the full checkpoint.
+   `render_research_tables` and `render_results_headline`; never edit inside a generated
+   view’s markers. The site’s overview renders the results table, the recent results and
+   the survey from the same records (`render_overview`). `packing-validate --records`
+   runs those checks and the related record checks; it does not replace certificate
+   replay or the full checkpoint.
    Complete the remaining publication steps too: regenerate affected atlas exports,
-   reconcile the synopsis and the README prose around its tables, and run the applicable
+   reconcile the synopsis, and run the applicable
    [validation tiers](../../development.md#validation-tiers), including the full
    checkpoint before final review.
    Retain the checked source/base and state which publication surfaces were updated or
    checked current. Each `apparently-novel` or `confirmed-novel` result gets its row in
-   the root README’s New Results table from the register, which both
-   `render_recent_results --check` and `check_readme` require.
+   `RESULTS.md` and the site’s results table from the register.
    A `T-id` may not appear in the README or the synopsis before its row exists, since
    the checker rejects unknown ids in that tier.
 

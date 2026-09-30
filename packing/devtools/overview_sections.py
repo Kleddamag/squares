@@ -43,8 +43,8 @@ def _rung(label: str) -> str:
     return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
-#: What the table and its filter call an entry that is no bound on `s(n)`: README's
-#: table leaves the cell as a dash, which a filter cannot name.
+#: What the table and its filter call an entry that is no bound on `s(n)`:
+#: `render_recent_results` spells that standing as a dash, which a filter cannot name.
 NOT_A_BOUND_LABEL = "not a bound"
 
 
@@ -250,7 +250,7 @@ def _records(result: Result) -> str:
 
 def results_table(overview: Overview) -> str:
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
-    relation README's Results by Others prints (`result_credit.source_lineage`), with its
+    relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
     standing and, for a result by others, the date it was published."""
     present = {result.standing for result in overview.results}
     head = (
@@ -395,7 +395,7 @@ def verification_block() -> str:
 
 def recent_list(overview: Overview, count: int = 8) -> str:
     """The newest results, newest first, each with its standing. A result by others is
-    dated by its publication, as README's Results by Others dates it, and this project's
+    dated by its publication, as `RESULTS.md` dates it, and this project's
     by the day it was established; the label says which."""
     newest = sorted(overview.results, key=lambda r: (r.dated[1], r.id), reverse=True)[:count]
     items = "".join(
@@ -414,7 +414,7 @@ def _since() -> str:
 
 def survey_counts(overview: Overview) -> str:
     """The survey's four counts as one Markdown sentence, from
-    `render_recent_results.recent_counts`, the numbers README's summary quotes."""
+    `render_recent_results.recent_counts`."""
     counts = overview.counts
     return (
         f"Of the hundred cases $n \\le 100$, {counts.cases} have a lower bound published or "

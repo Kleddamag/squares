@@ -15,10 +15,7 @@
 #   uv run --frozen --group dev python -m devtools.migrate_math FILE --report
 #   uv run --frozen --group dev python -m devtools.migrate_math FILE --apply
 files:
-  README.md:
-    keep:
-      - V # the verification ladder's name, not a variable
-      - C # the confirmation ladder's name
+  README.md: {}
   TUTORIAL.md: {}
   SYNOPSIS.md:
     keep:

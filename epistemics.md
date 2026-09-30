@@ -225,18 +225,17 @@ in the frontier README. Its three end points are fixed here.
 
 Each fact about the frontier has one home, and reader-facing lists of results are
 generated from these files (`OR-1`): `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, and the
-README’s three results tables, [New Results](README.md#new-results),
-[Results by Others](README.md#results-by-others) and the recent results by case.
-The README keeps a little prose around those tables, the $s(11)$ thread and the results
-outside the register, and that prose names the `T-NNN` it restates, so the register gate
-can find it.
+project site’s [overview](https://jlevy.github.io/squares/), whose recent results,
+results table and survey are rendered from them by `devtools.render_overview`. A `T-NNN`
+named in the README or the synopsis must be a registered result; the register gate
+checks it.
 
 | Record | Holds | Reader view |
 | --- | --- | --- |
-| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); README’s [recent results by case](README.md#recent-results-all-sources); the standing column of README’s register tables |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [survey](https://jlevy.github.io/squares/#the-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/#every-result) |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
-| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; README’s New Results and Results by Others tables |
-| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders in README’s recent results; the credit and relation in README’s Results by Others |
+| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/#every-result) |
+| [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders, credit and relation in `RESULTS.md` and on the site’s [overview](https://jlevy.github.io/squares/#recent-results) |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
 
 ## Enforcement and Register

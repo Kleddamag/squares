@@ -317,7 +317,7 @@ def test_the_prose_links_repository_files_at_the_build_commit(page: str) -> None
         assert f'href="{repo_file(REPO / path)}"' in page, path
 
 
-# ---------- What the page shares with README's generated tables (think-o0om) ----------
+# ---------- What the page shares with the register's views (think-o0om) ----------
 
 
 @pytest.fixture(scope="module")
@@ -442,8 +442,8 @@ def test_results_by_others_show_their_publication_date(
 def test_grouping_agrees_with_readmes_relation(
     overview: overview_data.Overview, records: render_recent_results.Records
 ) -> None:
-    """The table's groups are `source_lineage`'s, the lineage README's relation column
-    prints, so wand125's T-048, T-054 and T-055 read as crediting this project
+    """The table's groups are `source_lineage`'s, the lineage `render_recent_results.relation`
+    names, so wand125's T-048, T-054 and T-055 read as crediting this project
     second-hand in both."""
     titles = dict(OTHERS)
     for title, members in overview.groups[1:]:

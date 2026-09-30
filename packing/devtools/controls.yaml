@@ -94,42 +94,6 @@ controls:
   run: python3 -m devtools.check_readme
   expect: "contains retired workflow identifier"
 
-# The recent-results table and the counts quoted above it were kept by hand and drifted
-# three times (think-ti71). Both anchors are stable text rather than a value, so the
-# controls survive the counts and rows moving.
-- name: README - recent-results table edited by hand
-  file: ../README.md
-  replace: ["| `n` | Verified lower bound | Holder |", "| `n` | Verified lower bound | Holders |"]
-  run: python3 -m devtools.render_recent_results --check
-  expect: "README.md recent results are stale"
-
-- name: README - recent-result count sentence deleted rather than corrected
-  file: ../README.md
-  replace: ["are new exact values", "are new values"]
-  run: python3 -m devtools.check_readme
-  expect: "recent-result sentence to check"
-
-# New Results and Results by Others were a paragraph of prose per result until both became
-# tables generated from the register. The headers are stable text; the row anchor is an
-# id and its link, which move only if the register renumbers.
-- name: README - new-results table edited by hand
-  file: ../README.md
-  replace: ["| Result | `n` | Headline | V | C | S |", "| Result | `n` | Headlines | V | C | S |"]
-  run: python3 -m devtools.render_recent_results --check
-  expect: "README.md new results are stale"
-
-- name: README - results-by-others table edited by hand
-  file: ../README.md
-  replace: ["| Published | Result | `n` | Headline | Credit |", "| Published | Result | `n` | Headline | Credits |"]
-  run: python3 -m devtools.render_recent_results --check
-  expect: "README.md results by others are stale"
-
-- name: README - a novel result's row is lost from the New Results table
-  file: ../README.md
-  replace: ["| [T-014](packing/frontier/RESULTS.md) |", "| [T-0l4](packing/frontier/RESULTS.md) |"]
-  run: python3 -m devtools.check_readme
-  expect: "New Results does not name novel result T-014"
-
 - name: README - undeclared eleventh workflow is not ignored
   file: ../README.md
   replace:

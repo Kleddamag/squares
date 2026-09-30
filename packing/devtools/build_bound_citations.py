@@ -178,8 +178,8 @@ class Source:
     #: The source's own date for the version cited, where the bibliography gives one.
     dated: date | None = None
     #: How the source stands to this project, where the bibliography types it:
-    #: `builds-on-project`, `credits-project` or `independent`. Read by the README's
-    #: recent-results table (`devtools.render_recent_results`); no line here prints it.
+    #: `builds-on-project`, `credits-project` or `independent`. Read by the recent
+    #: rows (`devtools.render_recent_results`); no line here prints it.
     lineage: str | None = None
 
     @property
@@ -572,7 +572,7 @@ class LowerOrigin:
 
     Either this project's (`novel` names the first-party entries the register scores new,
     and `source` is None) or one external source's. The star's test lives here once, so
-    the stage's line and the README's recent-results table, which asks it of the reported
+    the stage's line and the site's recent rows, which ask it of the reported
     lane as well as the verified one, cannot disagree about which bounds are new.
     """
 

@@ -96,7 +96,7 @@ DECLARED_CONSUMERS = {
     ),
     "packing/devtools/render_recent_results.py": (
         "reads only the evidence ids a case's bound fields cite, to derive which register "
-        "entries hold a case bound for README's standing column; it takes no value from the "
+        "entries hold a case bound for the standing column; it takes no value from the "
         "field and never reads the ceiling as s(n)"
     ),
     "docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md": (

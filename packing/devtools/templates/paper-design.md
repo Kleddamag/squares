@@ -124,7 +124,9 @@ it.
   yet.
 
 - **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every
-  page, the explainer included.
+  page, the explainer and the Visualizer included.
+  From 80rem wide it leaves the links’ centred track for the bar’s far right, its edge
+  over the right end of the rule under the bar; narrower, it ends the row of links.
   It takes the nav items’ wash on hover and while its menu is open, and never
   underlines. Pressing it opens a compact menu, a native popover under the gear with
   square corners and the cards’ border and shadow, of three choices, each an icon and a

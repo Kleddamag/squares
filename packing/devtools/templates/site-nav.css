@@ -103,6 +103,20 @@
   display: flex;
   flex: 0 0 auto;
 }
+/* On a wide screen the links keep their centred track and the gear leaves it for the
+   bar's far right, its edge over the right end of the rule under the bar. From 80rem
+   the margin beside the 70rem track holds it clear of the last link; below that the
+   track spans the bar, and the gear ends the row. */
+@media (width >= 80rem) {
+  .site-nav {
+    position: relative;
+  }
+  .site-nav .site-theme {
+    inset-block: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+}
 .site-theme-button {
   align-items: center;
   background: none;

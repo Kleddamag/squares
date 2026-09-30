@@ -125,6 +125,55 @@ def test_input_domain_may_conservatively_enlarge_but_never_shrink() -> None:
         generic.covering_input_domain(required, smaller)
 
 
+def test_empty_and_closed_segment_legal_rows_are_handled_exactly() -> None:
+    center = generic.geometry.L / 2
+    base_row = {
+        "interval": ["0", "1"],
+        "prior_reference": {"kind": "seed"},
+        "reference": {"kind": "phase3", "node": "test", "step": 0, "row": 0},
+        "input_domain": [],
+        "core_vertices": [],
+        "residual_polygons": [],
+        "collision_regions": [],
+        "common_core_halfplanes": [],
+        "outer_bounds": [],
+        "outer_domain": [],
+    }
+    step = {"owner": 0, "index": 0, "rows": [base_row]}
+    predecessor = {"reference": {"kind": "seed"}, "interval": ["0", "1"], "outer_domain": []}
+
+    def check():
+        return generic.check_row(
+            {"node_id": "test"},
+            step,
+            0,
+            prior={0: [(Q(), Q())], 1: [(center, center)]},
+            predecessor=predecessor,
+            world=[],
+            bins=1,
+            budget=generic.geometry.Budget(time.monotonic() + 30, 50_000),
+        )
+
+    coverage, vertices, planes, accepted = check()
+    assert coverage == {"events": 0, "probes": 0, "edge_segments": 0}
+    assert vertices == planes == accepted["residual_polygons"] == []
+    base_row["core_vertices"] = [["0", "0"]]
+    with pytest.raises(ValueError, match="empty legal row"):
+        check()
+    radius = generic.geometry.B / 8
+    base_row["core_vertices"] = [
+        [str(x), str(y)]
+        for x, y in [(-radius, -radius), (radius, -radius), (radius, radius), (-radius, radius)]
+    ]
+    segment = [(center - Q(1, 100), center), (center + Q(1, 100), center)]
+    base_row["input_domain"] = [[str(x), str(y)] for x, y in segment]
+    predecessor["outer_domain"] = [[str(x), str(y)] for x, y in segment]
+    coverage, vertices, planes, accepted = check()
+    assert coverage["events"] > 0
+    assert coverage["probes"] > 0
+    assert vertices == planes == accepted["residual_polygons"] == []
+
+
 def test_imported_frozen_helper_pin_mismatch_refuses(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

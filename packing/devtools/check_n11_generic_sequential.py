@@ -26,6 +26,7 @@ from typing import Any
 
 from strif import atomic_write_text
 
+from devtools import check_n11_closed_degenerate_cover as degenerate_cover
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as geometry
 from devtools import n11_fast_exact_cover as fast_cover
@@ -36,6 +37,7 @@ MANIFEST_GZIP_SHA = "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c01
 MANIFEST_SHA = "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b"
 FROZEN_GENERIC_SHA = "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3"
 FAST_COVER_SHA = "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904"
+DEGENERATE_COVER_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 OBJECTS = PACKET / "receipts/nonfield-sources/objects"
 METADATA_OBJECTS = PACKET / "receipts/case-census/objects"
 Point = frozen.Point
@@ -215,7 +217,7 @@ def necessary_self_cuts(
 
 def covering_input_domain(required: Polygon, proposal: Any) -> Polygon:
     """Bind a pre-wall source hint, then return the proved legal-center domain."""
-    require(geometry.area2(required) > 0, "degenerate generic domain needs separate proof")
+    require(bool(required), "empty legal domain needs a separate row proof")
     domain = frozen.convex(proposal)
     require(
         frozen.hull(required + domain) == domain,
@@ -249,6 +251,36 @@ def check_row(
         frozen.hull(frozen.points(predecessor["outer_domain"])),
         frozen._wall_lines(lo, hi) + cuts,
     )
+    reference = {
+        "kind": "phase3",
+        "node": source["node_id"],
+        "step": step["index"],
+        "row": row_index,
+    }
+    require(row["reference"] == reference, "row reference")
+    if not required_domain:
+        require(
+            row["input_domain"] == []
+            and row["core_vertices"] == []
+            and row["residual_polygons"] == []
+            and row["collision_regions"] == []
+            and row["common_core_halfplanes"] == []
+            and row["outer_bounds"] == []
+            and row["outer_domain"] == [],
+            "empty legal row has an unsupported output",
+        )
+        remaining(budget)
+        return (
+            {"events": 0, "probes": 0, "edge_segments": 0},
+            [],
+            [],
+            {
+                "interval": [str(lo), str(hi)],
+                "reference": reference,
+                "outer_domain": [],
+                "residual_polygons": [],
+            },
+        )
     domain = covering_input_domain(required_domain, row["input_domain"])
     core = frozen.convex(row["core_vertices"])
     frozen._strict_core(core, lo, hi)
@@ -262,14 +294,13 @@ def check_row(
     cover = (
         fast_cover.exact_union_cover if cover_backend == "fast" else geometry.exact_union_cover
     )
-    coverage = cover(domain, forbidden + residual, budget=budget)
-    reference = {
-        "kind": "phase3",
-        "node": source["node_id"],
-        "step": step["index"],
-        "row": row_index,
-    }
-    require(row["reference"] == reference, "row reference")
+    coverage = (
+        cover(domain, forbidden + residual, budget=budget)
+        if geometry.area2(domain) > 0
+        else degenerate_cover.exact_cover_closed_degenerate(
+            domain, forbidden + residual, budget=budget
+        )
+    )
     vertices = [point for poly in residual for point in poly]
     expected: list[tuple[Q, Q, Q]] = []
     if vertices:
@@ -616,6 +647,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     paths = {
         "checker": Path(__file__),
         "frozen_generic": Path(frozen.__file__),
+        "degenerate_cover": Path(degenerate_cover.__file__),
         "geometry": Path(geometry.__file__),
         "manifest": args.manifest,
     }
@@ -644,6 +676,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         result["source_sha256"].update(before)
         require(before["geometry"] == frozen.GEOMETRY_SHA, "frozen geometry changed")
         require(before["frozen_generic"] == FROZEN_GENERIC_SHA, "frozen generic kernel changed")
+        require(
+            before["degenerate_cover"] == DEGENERATE_COVER_SHA,
+            "closed degenerate cover kernel changed",
+        )
         if cover_backend == "fast":
             require(before["fast_cover"] == FAST_COVER_SHA, "fast cover kernel changed")
         geometry.admit_d4_receipt()

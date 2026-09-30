@@ -501,7 +501,7 @@ session:
     bead: think-3i74
     objective: Integrate the reviewed Rust kernel and clipping controls while independently
       extending field exclusions and checking the capture root induction pilot.
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The user authorizes autonomous end-to-end completion; arithmetic,
       coverage and composition remain separate acceptance obligations.
@@ -515,12 +515,44 @@ session:
       prevents acceptance of the affected component.
     fallback: Retain the Python oracle and frozen receipts; record the exact unresolved
       obligation and continue independent lanes.
-    outcome: null
+    outcome: Seven complete field receipts now establish 1552 distinct exclusions. Generic
+      pinned intake and bounded parallel rows avoid hand-copying each certificate. The
+      capture seed and first owner update pass independently. Rust preserves exact
+      analytic and n11 fixed-work decisions but is slower, so remains opt-in.
     evidence:
     - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
-    stop_reason: null
+    stop_reason: Checkpoint recorded after the phase deadline while independent lanes
+      continued; no timely boundary closure is implied.
     next_action: Sol implements Rust integration and the root pilot in disjoint lanes;
       Astra reviews exact mathematics, coordinator extends supported field coverage.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Complete admitted field batches, extend capture induction across complete
+      rounds, and integrate the reviewed opt-in Rust backend and its refusal controls.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Reviewed generic field rules permit batching; the successful owner
+      pilot enables round induction, while Rust measurements keep Python as default.
+    budget_minutes: 30
+    started_at: '2026-09-30T06:56:40Z'
+    deadline_at: '2026-09-30T07:26:40Z'
+    expected_output: Additional complete exact field receipts, a complete root-round
+      join or explicit obstruction, and passing scoped Rust integration controls.
+    validation_command: cd packing && packing-validate --only 'exact rectangle Rust geometry'
+    kill_condition: Missing cases, unproved parent states, malformed transport or
+      unsupported geometry prevents acceptance of the affected component.
+    fallback: Preserve exact pending inventories and Python default; continue other
+      independent obligations without promoting incomplete runs.
+    outcome: null
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    stop_reason: null
+    next_action: Sol finishes Rust controls and full-root induction; Astra audits both;
+      coordinator completes parallel field batches and final-head integration.
   budget:
     wall_minutes: 1135
     max_cycles: 40

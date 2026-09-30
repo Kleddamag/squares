@@ -52,7 +52,13 @@ The [mask-202 checker](../../packing/devtools/check_n11_optimality_field_mask202
 adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
-The accepted union is 1,243; the remaining 937 exclusions and full capture remain open.
+Subsequent complete field batches raise the accepted union to 1,814 at the batch-C
+checkpoint.
+The remaining 366 exclusions include 90 field cases and 276 cases using other
+certificate families.
+Full capture remains open; the
+[current verification checkpoint](reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
+separates these obligations and their evidence.
 The
 [capture refusal](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-ancestry/refusal-result.json)
 records a confirmed stale final-state digest in the published near audit, blocking its
@@ -337,18 +343,35 @@ observation. Both implementations also completed the same 201-angle analytic con
 This supports the exact clipping optimization; it does not establish full external
 certificate acceptance or C++ speed parity.
 
-Here, **native means first-party independent implementation, not compiled machine
-code**. The current rectangle checker is Python.
-`sqsearch` is a Rust floating-point search engine, and the archived Rust integer
-verifiers accept other certificate families; neither supplies a Rust rational rectangle
-kernel. **think-rmj3** tracks a narrow Rust exact-geometry implementation, with the
-Python method retained as a differential oracle.
-It must use arbitrary-precision rationals or checked overflow with an exact fallback,
-batch work across any language boundary, preserve degeneracy and boundary behavior, and
-pass exact differential and golden controls before acceptance.
-Compiled arithmetic improves cost per node; stronger reviewed bounds may still be
-necessary to reduce the number of nodes.
-Neither improvement by itself demonstrates complete external-certificate parity.
+Here, **native means first-party independent implementation**. The rectangle verifier
+defaults to Python exact arithmetic.
+Its optional [Rust geometry kernel](../../packing/sqverify_exact/) uses
+arbitrary-precision rational clipping and area through a resident process.
+Select it with `verify_rectangle_density --backend rust --rust-binary PATH` and the
+common-core bound. Unsupported inputs or transport failures refuse acceptance.
+Finite input and integer-bit limits restrict the Rust admission domain; equivalence is
+claimed only on the admitted common-core inputs.
+`sqsearch` remains a separate floating-point search engine.
+
+The fast validation step `exact rectangle Rust geometry` checks 210 exact polygon
+comparisons, ten malformed-input refusals, and complete analytic and bounded external
+verifier comparisons.
+Rust formatting, lint, tests, documentation and locked build also pass.
+Astra-max reviewed the arithmetic and fail-closed integration, including timeout
+frontiers, binary/source binding and child cleanup.
+
+The
+[matched receipt](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-rust-backend-matched-2026-09-30.json)
+records identical exact reports: all 201 analytic angles took 0.504 seconds in Python
+and 3.800 seconds in Rust; the external n11 1,000-node control took 13.252 and 24.085
+seconds respectively, both inconclusive.
+These wall observations include concurrent host load; Rust child CPU was 10.889 seconds
+on the external control.
+Exact rational geometry, rather than message transfer, dominated the measured Rust run.
+Python remains the default; this backend establishes a reviewed implementation and
+differential control, not a speed improvement or complete C++ equivalence.
+Further performance work belongs to `think-3cwg` and must not delay the separate T-060
+capture and exclusion checks.
 
 ## T-059 Row Replay and Its Separate Global Argument
 

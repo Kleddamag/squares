@@ -57,7 +57,15 @@ result/stdout lines are duplicated; three JSON receipts contain 15,240 lines, an
 session logs contribute 7,212. These are storage/review targets, not reasons to discard
 evidence. Compression reduces review noise; it does not simplify mathematics.
 
-Current acceptance is **1,243 exact exclusions of the claimed 2,180**; 937 remain.
+At the completed batch-C checkpoint, acceptance is **1,814 exact exclusions of the
+claimed 2,180**; 366 remain.
+These comprise 90 field cases and 276 cases requiring other certificate families.
+Full capture and composition remain separate obligations.
+The
+[current review](../../reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
+records the acceptance boundaries.
+The reviewed Rust rectangle backend is optional: matched exact reports pass, but
+measured rational geometry is slower than Python.
 The weighted mask1155 extension checks 71 owners and 522 rows and adds 131 IDs; its
 complete source-bound receipt is linked from the mathematical review.
 Fixed-T local isolation is accepted.

@@ -18,6 +18,34 @@ concerns wand125’s reported equality of 12,028 row minima for a separate certi
 neither asserts nor establishes global optimality.
 No result that landed from the current upstream main branch closes this gap.
 
+## Independent Verification Checkpoint
+
+At the completed batch-C checkpoint, exact field checks accept **1,814 of the 2,180
+required case exclusions**. This is a case count, not a percentage of the proof.
+The retained
+[batch receipts](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/)
+separate complete certificates from bounded incomplete attempts; incomplete attempts
+accept no exclusions.
+The generalized checker handles exact odd-site majority charges with three, five or
+seven sites and independently recomputes each transfer case set.
+
+The remaining obligations have different acceptance rules:
+
+| Obligation | Accepted scope | Remaining scope |
+| --- | --- | --- |
+| Field exclusions | 1,814 distinct exact case IDs | The 59 source fields cover at most 1,904; 90 additional field cases remain at this checkpoint. |
+| Other exclusions | Source census only | 27 baseline generic cases, 76 extension cases, and 173 returned cases: 276 distinct cases requiring independent geometric checks. |
+| Capture root | All 130 strict seed points and a complete first-owner pilot | All 14 rounds must join their 11 owner updates from accepted prior states. Round-one integration is in progress. |
+| Capture branches | Structural graph and conditional pose inclusion | Actual geometric transitions, branch coverage, ancestry, and final-state binding. |
+| Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
+
+Astra-max has reviewed the exact field rules and strict-seed/owner-pilot argument.
+The [coverage and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
+records their mathematical premises.
+No global confirmation or counterexample has been established.
+Four published final-state digest discrepancies remain reproducibility defects; they do
+not by themselves refute optimality.
+
 ## Pinned Source and Acquisition Limit
 
 The captured Git commit is `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c`, tree
@@ -235,8 +263,8 @@ that subset to cover the entire closed domain.
 A subset miss returns incomplete and accepts no exclusions.
 
 The full run accepted 764 canonical exclusions, 653 outside the accepted mask-0 set:
-**1,243 distinct exclusions are independently accepted; 937 remain unchecked.** This is
-two of 59 field certificates, not the whole proof.
+**1,112 distinct exclusions were independently accepted; 1,068 remained at that
+checkpoint.** This is two of 59 field certificates, not the whole proof.
 Checker wall time was 17.532 seconds, CPU 17.235 seconds, and outer wall 17.61 seconds,
 under the selected 30-second ceiling.
 Five focused controls pass, and Astra-max review accepted the implementation and

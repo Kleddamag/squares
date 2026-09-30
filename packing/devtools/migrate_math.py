@@ -14,15 +14,18 @@ blocks, HTML comments, YAML frontmatter and the `<!-- BEGIN … -->`/`<!-- END �
 blocks a renderer owns (those move at their renderer, never here). A span is one of:
 
 - `identifier` -- literal text that stays code: result, evidence, hypothesis and agenda
-  ids (`T-018`, `E-n011-…`, `BC-241`, `R068`), rung labels (`V4`, `V4/C3`), paths and
-  globs, commands and flags, dotted and snake_case names, calls such as
-  `load_records()`, commit hashes, versions, dates, bare words, and anything carrying
-  code punctuation (quotes, backslashes, `==`, a YAML `key: value`).
+  ids (`T-018`, `E-n011-…`, `BC-241`, `R068`), rung labels (`V4`, `V4/C3`), lists of
+  one-letter labels (`P/Q/E`), paths and globs, commands and flags, dotted and
+  snake_case names, calls such as `load_records()`, commit hashes, versions, dates, bare
+  words, and anything carrying code punctuation (quotes, backslashes, `==`, a YAML
+  `key: value`).
 - `math` -- an expression whose every character has a LaTeX form: a bound or equation in
   `s(n)`, a number or fraction standing as a value, a formula, a variable.
 - `uncertain` -- everything else, left untouched and listed with its reason: ASCII
   register literals (`s(11) >= 381/100`, `sqrt`), float literals (`1e-11`), numbers
-  with units, words inside a formula, and math whose surroundings make `$…$` unsafe.
+  with units, words inside a formula, a label inside a formula (`f1 … f6`, `D4 x S3`),
+  slash-separated counts (`0/1/0`), a decimal quoted without its zero (`.8`), and math
+  whose surroundings make `$…$` unsafe.
 
 `classify` decides from the span's text alone; `plan` then applies its surroundings.
 Every span in a heading stays code, as an `identifier`: kpress drops math from a heading's
@@ -341,6 +344,11 @@ IDENTIFIER_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ),
     # The confirmation and verification axes, alone or as `V/C`.
     ("rung axis", re.compile(r"^[VC]$|^[VCSN](?:/[VCSN])+$")),
+    # Three or more one-letter labels between slashes, `P/Q/E`: named regimes or points,
+    # not a chain of quotients. Two stay math, since `L/B` and `B/A` are ratios. From the
+    # overview branch's classifier (3eebc2bdf), which took two as well, as are the three
+    # uncertain rules marked below and the padded label under `kebab-case name`.
+    ("label list", re.compile(r"^[A-Z](?:/[A-Z]){2,}$")),
     # A number printed by a program in exponent form: run output lifted verbatim, which
     # the conventions never retype. In an expression it is left `uncertain` below.
     ("float literal", re.compile(r"^[+\-−]?\d+(?:\.\d+)?[eE][+\-−]?\d+$")),
@@ -376,10 +384,11 @@ IDENTIFIER_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ),
     ("commit hash", re.compile(r"^(?=[0-9a-f]*[a-f])(?=[0-9a-f]*\d)[0-9a-f]{7,40}$")),
     # exp-001, think-qqzs, apparently-novel, known-best-1-324, and case ids such as n-011.
-    # `n-1` is arithmetic, so a kebab name needs a two-letter run or a padded case number.
+    # `n-1` and `y-x` are arithmetic, so a kebab name needs a two-letter run or one letter
+    # before a zero-padded number (`n-011`, the `x-010` beads).
     (
         "kebab-case name",
-        re.compile(r"^(?=.*[A-Za-z]{2})[A-Za-z][A-Za-z0-9]*(?:-[A-Za-z0-9.]+)+$|^n-\d{3}$"),
+        re.compile(r"^(?=.*[A-Za-z]{2})[A-Za-z][A-Za-z0-9]*(?:-[A-Za-z0-9.]+)+$|^[a-z]-\d{3}$"),
     ),
 )
 
@@ -403,6 +412,18 @@ UNCERTAIN_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ),
     # `S` names the significance axis, and `N` the novelty axis, as often as a variable.
     ("rung axis or variable", re.compile(r"^[SN]$")),
+    # From the overview branch's classifier. A letter run straight into a digit inside a
+    # formula -- `f1 … f6`, `Q0=[0,1]^2`, `D4 x S3` -- is a label, or a subscript written
+    # flat, which LaTeX would set as a product. A lone one (`f64`, `x1`) is a word already.
+    (
+        "label in an expression",
+        re.compile(r"^(?![A-Za-z][A-Za-z0-9]*$).*(?<![\w.])[A-Za-z]+\d"),
+    ),
+    # Three or more integers between slashes, `0/1/0` or `8/6/8`: counts in a row, which
+    # LaTeX would set as a chain of divisions.
+    ("slash sequence", re.compile(r"^\d+(?:/\d+){2,}$")),
+    # A decimal without its leading zero, `.8`: a figure quoted as its source prints it.
+    ("decimal without its zero", re.compile(r"^[+\-−]?\.\d+…?$")),
     # One character alone is as often the character discussed as the symbol used:
     # "maps `…` back to `...`".
     ("a lone character", re.compile(r"^[^\w\s]$")),

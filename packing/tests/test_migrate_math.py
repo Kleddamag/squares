@@ -87,6 +87,12 @@ MATH = (
         "formula",
         r"(x_i, y_i) + R_i\cdot(\pm\tfrac{1}{2}, \pm\tfrac{1}{2})",
     ),
+    # A difference of two letters stays arithmetic beside the padded-label rule, a ratio
+    # of two beside the label-list rule, and a decimal with its zero stays a number beside
+    # the zero-less one.
+    ("y-x", "formula", "y-x"),
+    ("L/B", "formula", "L/B"),
+    ("0.8", "number", "0.8"),
 )
 
 IDENTIFIERS = (
@@ -140,6 +146,11 @@ IDENTIFIERS = (
     ("[David Ellsworth]", "prose"),
     ("T+0", "time"),
     ("et al.", "prose"),
+    # The overview branch's protections (3eebc2bdf): a list of three one-letter labels, a
+    # padded one-letter label, and a lone label, which is a word.
+    ("P/Q/E", "label list"),
+    ("x-010", "kebab-case name"),
+    ("f64", "word"),
 )
 
 UNCERTAIN = (
@@ -156,6 +167,16 @@ UNCERTAIN = (
     ("≥", "a lone character"),
     ("sin", "bare function name"),
     ("contact + closure", "no LaTeX form"),
+    # The overview branch's protections (3eebc2bdf): a label or a flat subscript inside a
+    # formula, counts between slashes, and a decimal as its source prints it.
+    ("f1 … f6", "label in an expression"),
+    ("D4 x S3", "label in an expression"),
+    ("Q0=[0,1]^2", "label in an expression"),
+    ("x1 + x2", "label in an expression"),
+    ("0/1/0", "slash sequence"),
+    ("8/6/8", "slash sequence"),
+    (".8", "decimal without its zero"),
+    (".79", "decimal without its zero"),
     ("", "empty"),
 )
 
@@ -197,9 +218,10 @@ def test_uncertain_spans_are_left_with_a_reason(source: str, rule: str) -> None:
         ("2(1/2)", r"2(\frac{1}{2})"),
         # A case written with a slash names two cases, not a fraction.
         ("n = 68/69", "n = 68/69"),
-        # A decimal, a chain and an exponent are not integer fractions.
+        # A decimal and a chain are not integer fractions. (A chain of integers alone,
+        # `1/2/3`, is not math at all: it is a slash sequence, left as code.)
         ("3.5/2", "3.5/2"),
-        ("1/2/3", "1/2/3"),
+        ("x/2/3", "x/2/3"),
     ],
 )
 def test_table_and_display_form_uses_frac(source: str, latex: str) -> None:

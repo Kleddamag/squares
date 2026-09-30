@@ -153,6 +153,71 @@ justified from that earlier set.
 The later four-candidate symmetry result cannot be used to prove those earlier
 exclusions. A dependency graph must expose any such cycle.
 
+### Coverage Classes and the Non-Field Frontier
+
+Set arithmetic over the pinned A1–A3 inventories separates the remaining algorithms:
+
+| Class | Certificates or entries | Distinct cases contributed |
+| --- | ---: | ---: |
+| A1 fields | 59 | 1,904 |
+| A1 generic, outside the field union | 34 total, seven overlapping fields | 27 |
+| A2 extensions, outside A1 | 76 | 76 |
+| A3 returned jobs, outside A1 and A2 | 173 | 173 |
+| Complete reported exclusion union |  | 2,180 |
+
+Thus completing every field still leaves **276 non-field exclusions**, as well as the
+separate symmetry and candidate-capture obligations.
+These are case counts, not fractions of the mathematical proof or estimates of its
+remaining cost.
+Count completed field receipts by their exact case-ID union; a timeout or
+unsupported field contributes no IDs.
+
+The retained
+[field coverage inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
+now closes that entire 1,904-case field union using 46 complete distinct packets.
+An independent reread checked every listed receipt’s decoded identity, checker and
+packet bindings, successful geometry flag, empty pending lists, and exact per-packet A1
+transfer set, then recomputed the union.
+Those receipts contain 18,855 checked rows and 4,464 ownership checks.
+The inventory SHA-256 is
+`768b7110548ce9200d1a8887e417985d79109e5987ff8e0b2b7dd998976d260e`. This closes every
+field-covered case without claiming that all 59 overlapping source certificates were
+individually completed.
+The 276 non-field cases and the remaining candidate-capture implications are still open.
+
+The A2 inventory contains 72 `direct_v9` entries, two
+`necessary_D4_cuts_and_independent_geometry` entries, one `native_cached_v9`, and one
+`native_cached_v4_center_partition`. Each requires the geometric dependency closure
+appropriate to that method.
+A reported one-node audit may still depend on an unproved root or cached state.
+The two conditional symmetry cuts must retain the earlier-baseline dependency described
+above.
+
+Case 1723 is the smallest A1 generic-only terminal payload by decoded size.
+Its terminal and fresh audit total 293,355 compressed bytes and 1,736,892 decoded bytes:
+
+| Input | Pinned package path | Compressed bytes | Decoded bytes |
+| --- | --- | ---: | ---: |
+| Terminal source | `evidence/research/phase3/work/phase3/generic/mask1723-collision-followup-v5.json` | 287,501 | 1,707,879 |
+| Fresh audit | `evidence/research/phase3-fresh-generic/17-mask1723-collision-followup-v5.json` | 5,854 | 29,013 |
+
+The source index key and decoded SHA-256 are
+`4819cd7a7eb95a411288c42c108c33ae0bc83f36f445c97bcd53e9831cba3cf0`; its compressed
+SHA-256 is `8afe4fe10a03878a05bfe24fff4b6598e005124870a67ec59d15a3b5458a8f83`. The audit
+index key is `b960a0232ce72ccce555c073b5c92d9aa87cab7125682e64d16975cc3a4abe3e`, its
+decoded SHA-256 is `49de61eb2c2caae8558d634c8b93825304b64fb4256f8183fcba5bab285c92ae`,
+and its compressed SHA-256 is
+`53f8d7476c7cb1e2df2e6a1901512e68990aee60cfe43190d74242dd46d830df`. Inspect these two
+objects before selecting further inputs: their size does not include unresolved
+ancestors and does not establish the cheapest complete replay.
+The audit supplies references and proposed geometry, not accepted ownership or a
+contradiction. Completing this case would add one exclusion beyond the entire field
+union.
+
+Reusing a field through a larger container symmetry requires an independently checked
+permutation of the complete closed cover and transformed ownership and charge premises.
+Only the already checked whole-packing half-turn is presently part of field transfer.
+
 ### First Independent Field Exclusion: Mask 0
 
 `think-fi4w` takes the first substantive geometric slice after the case census.
@@ -484,6 +549,31 @@ Acceptance of the full adaptive root requires all 154 owner updates and their st
 bindings. Measure exact arithmetic and arrangement work before scheduling the remaining
 rows; file size and the publisher’s slab counts do not predict replay time.
 
+The retained
+[owner-2 receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-pilot/owner2-final-result.json)
+now accepts that bounded pilot: all 130 seed points, all 69 rows, and seven exact
+compressed ownership points, in 10.947 seconds of checker wall time.
+Source review confirms that the proposed core is admitted only after strict quadratic
+enclosure throughout each angle interval, the complete legal center domain is covered,
+and point or segment residuals remain in the coverage and support calculations.
+The shared rational geometry kernel is explicitly bound by SHA-256; this is an
+independent reconstruction of the geometric implication using previously reviewed local
+primitives.
+
+The first
+[round-one join receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round1-attempt1/result.json)
+records all eleven owners and 777 rows, producing 100 exact compressed additions and a
+reconstructed next prior equal to the source, in 32.518 seconds with three worker
+processes. Its source review approves the conditional induction step: every worker uses
+the same accepted seed snapshot, new points become available only at the complete join,
+and exact convex-combination witnesses justify compression.
+Worker receipts bind the same source, prior, checker, and shared kernel; the join
+requires every owner exactly once.
+Focused refusal controls for missing owners, changed worker bindings, and invalid convex
+weights accompany acceptance of this runner.
+Neither receipt accepts all fourteen rounds, the later transition tree, candidate
+capture, or global optimality; all those verdict flags remain false.
+
 The ten later source nodes are already acquired.
 Their first node, `root.json` in the local source-graph cache, records a later
 fourteen-step transition from the adaptive root.
@@ -526,8 +616,8 @@ Feature indices, ownership counts, and row subdivisions are proposal data; extra
 them supplies no geometric acceptance.
 
 Admit only exact rational sites at the declared scale, nonnegative integer point
-weights, and positive integer weighted `majority_hull` features with three or five
-distinct valid site indices.
+weights, and positive integer weighted `majority_hull` features with three, five, or
+seven distinct valid site indices.
 Reject booleans and floats where integers are required.
 Each feature must have threshold $(m+1)/2$ for its odd arity $m$ and a unique atom
 identifier.
@@ -550,7 +640,7 @@ A point resource also has capacity one.
 Different resources may share sites; summing their weighted capacities remains valid.
 
 Require exactly sixteen nonnegative integer cell thresholds.
-The first generic consumer may require one uniform positive threshold among them.
+Positive cells may have different thresholds; each row uses its own cell’s value.
 Derive the positive cells from all sixteen packet thresholds, never from the cells
 present in the audit proposal.
 Every positive cell requires a nonempty exact closed partition of $[0,1]$, with no

@@ -12,6 +12,7 @@
       "source_path": "evidence/research/phase3/work/phase2/conditional/mask438-adaptive.json",
       "decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
       "lfs_sha256": "cf9e5e8d3722587f21ccd746ff4005662a5bf12c1e9e0b47fa32b86a402db9f1",
+      "retained_compressed_source": "adaptive-source.json.gz",
       "selected_round1_owner2_decoded_sha256": "31a6f65cd6c162bf69e059a41467ef2b190351f592869c42ea9b88f37ab39f21",
       "retained_selected_compressed": "selected-round1-owner2.json.gz"
     },

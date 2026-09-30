@@ -875,3 +875,12 @@ def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
         assert 'shape-rendering="crispEdges"' in svg
     assert "block-size: 18px;" in render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
     assert render_overview.SITE_LOGO_PX == 18
+
+
+def test_page_subtitles_share_one_size() -> None:
+    """Every hero's subtitle ("The ascent, n = 1 to 324") is set from one scale of the sans
+    base, a small step above it."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert "--site-subtitle-scale: 1.1;" in css
+    rule = css[css.index(".kpress .site-hero .subtitle {") :]
+    assert "var(--site-subtitle-scale)" in rule[: rule.index("}")]

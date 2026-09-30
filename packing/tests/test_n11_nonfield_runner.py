@@ -14,6 +14,7 @@ from devtools.run_n11_nonfield_batch import (
     complete_case,
     retain_receipt,
     source_archive_allowed,
+    source_archive_reference,
 )
 
 
@@ -23,6 +24,14 @@ def test_worktree_reuses_only_same_repository_pinned_archive(tmp_path: Path) -> 
     common = primary / ".git"
     shared = primary / "attic/n11-proof-inputs" / REVISION / "objects"
     assert source_archive_allowed(shared, worktree, common)
+    assert source_archive_reference(shared, worktree, common) == {
+        "objects": f"attic/n11-proof-inputs/{REVISION}/objects",
+        "objects_checkout": "git_common_primary",
+    }
+    assert source_archive_reference(worktree / "local-inputs", worktree, common) == {
+        "objects": "local-inputs",
+        "objects_checkout": "execution",
+    }
     assert source_archive_allowed(worktree / "local-inputs", worktree, common)
     assert not source_archive_allowed(primary / "other-inputs", worktree, common)
     assert not source_archive_allowed(shared.parent.parent / "wrong-revision", worktree, common)

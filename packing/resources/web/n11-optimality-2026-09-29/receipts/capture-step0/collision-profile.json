@@ -1,0 +1,404 @@
+{
+  "schema": "n11_capture_collision_profile_v1",
+  "proof_credit": false,
+  "kernel_sha256": "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309",
+  "source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "input_loading_wall_seconds": 1.373379999997269,
+  "wall_seconds": 13.088135541998781,
+  "profile_caveat": "Instrumentation inflates runtime; compare unprofiled kernel CPU.",
+  "rows": [
+    {
+      "row": 0,
+      "partner": 10,
+      "facet_vertex_checks": 34224,
+      "live_partner_rows": 93,
+      "kernel_cpu_seconds": 0.959497,
+      "kernel_wall_seconds": 1.3709623749964521,
+      "profiled_cpu_seconds": 1.683818,
+      "hottest_self_cpu": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method math.gcd>",
+          "calls": 710726,
+          "self_cpu_seconds": 0.759068736,
+          "cumulative_cpu_seconds": 0.759068736
+        },
+        {
+          "file": "fractions.py",
+          "line": 810,
+          "function": "_sub",
+          "calls": 148548,
+          "self_cpu_seconds": 0.298475739,
+          "cumulative_cpu_seconds": 0.6869064840000001
+        },
+        {
+          "file": "fractions.py",
+          "line": 697,
+          "function": "forward",
+          "calls": 355510,
+          "self_cpu_seconds": 0.182873535,
+          "cumulative_cpu_seconds": 1.7447332050000002
+        },
+        {
+          "file": "fractions.py",
+          "line": 361,
+          "function": "_from_coprime_ints",
+          "calls": 355699,
+          "self_cpu_seconds": 0.16913185700000002,
+          "cumulative_cpu_seconds": 0.22268198800000003
+        },
+        {
+          "file": "fractions.py",
+          "line": 826,
+          "function": "_mul",
+          "calls": 154108,
+          "self_cpu_seconds": 0.162362894,
+          "cumulative_cpu_seconds": 0.572570691
+        },
+        {
+          "file": "fractions.py",
+          "line": 1021,
+          "function": "_richcmp",
+          "calls": 104790,
+          "self_cpu_seconds": 0.159735349,
+          "cumulative_cpu_seconds": 0.28614156700000004
+        },
+        {
+          "file": "fractions.py",
+          "line": 794,
+          "function": "_add",
+          "calls": 52854,
+          "self_cpu_seconds": 0.08754255300000001,
+          "cumulative_cpu_seconds": 0.270564638
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "calls": 493086,
+          "self_cpu_seconds": 0.08144973700000001,
+          "cumulative_cpu_seconds": 0.145557986
+        },
+        {
+          "file": "check_n11_capture_transition_pilot.py",
+          "line": 196,
+          "function": "universal_collision",
+          "calls": 1,
+          "self_cpu_seconds": 0.072799741,
+          "cumulative_cpu_seconds": 2.3326123340000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method __new__ of type object at 0x1016a4908>",
+          "calls": 355889,
+          "self_cpu_seconds": 0.053584195,
+          "cumulative_cpu_seconds": 0.053584195
+        },
+        {
+          "file": "check_n11_capture_root_pilot.py",
+          "line": 72,
+          "function": "turn",
+          "calls": 25668,
+          "self_cpu_seconds": 0.053236133000000005,
+          "cumulative_cpu_seconds": 1.001719725
+        },
+        {
+          "file": "<frozen abc>",
+          "line": 117,
+          "function": "__instancecheck__",
+          "calls": 137576,
+          "self_cpu_seconds": 0.034744219,
+          "cumulative_cpu_seconds": 0.064108249
+        },
+        {
+          "file": "check_n11_capture_root_pilot.py",
+          "line": 65,
+          "function": "hull",
+          "calls": 186,
+          "self_cpu_seconds": 0.033469461,
+          "cumulative_cpu_seconds": 1.281087676
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method _abc._abc_instancecheck>",
+          "calls": 137576,
+          "self_cpu_seconds": 0.029364030000000003,
+          "cumulative_cpu_seconds": 0.029364030000000003
+        },
+        {
+          "file": "fractions.py",
+          "line": 1051,
+          "function": "__le__",
+          "calls": 60038,
+          "self_cpu_seconds": 0.020429055,
+          "cumulative_cpu_seconds": 0.211654687
+        }
+      ]
+    },
+    {
+      "row": 100,
+      "partner": 10,
+      "facet_vertex_checks": 10360,
+      "live_partner_rows": 93,
+      "kernel_cpu_seconds": 0.7328580000000002,
+      "kernel_wall_seconds": 1.318325416999869,
+      "profiled_cpu_seconds": 1.277479,
+      "hottest_self_cpu": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method math.gcd>",
+          "calls": 563902,
+          "self_cpu_seconds": 0.548592645,
+          "cumulative_cpu_seconds": 0.548592645
+        },
+        {
+          "file": "fractions.py",
+          "line": 810,
+          "function": "_sub",
+          "calls": 147616,
+          "self_cpu_seconds": 0.238204513,
+          "cumulative_cpu_seconds": 0.628685979
+        },
+        {
+          "file": "fractions.py",
+          "line": 697,
+          "function": "forward",
+          "calls": 282067,
+          "self_cpu_seconds": 0.15307863000000002,
+          "cumulative_cpu_seconds": 1.3385325700000001
+        },
+        {
+          "file": "fractions.py",
+          "line": 361,
+          "function": "_from_coprime_ints",
+          "calls": 282256,
+          "self_cpu_seconds": 0.14191435300000002,
+          "cumulative_cpu_seconds": 0.19869402
+        },
+        {
+          "file": "fractions.py",
+          "line": 826,
+          "function": "_mul",
+          "calls": 105654,
+          "self_cpu_seconds": 0.11467977900000001,
+          "cumulative_cpu_seconds": 0.387737683
+        },
+        {
+          "file": "check_n11_capture_root_pilot.py",
+          "line": 72,
+          "function": "turn",
+          "calls": 25494,
+          "self_cpu_seconds": 0.088782093,
+          "cumulative_cpu_seconds": 0.9961591550000001
+        },
+        {
+          "file": "fractions.py",
+          "line": 1021,
+          "function": "_richcmp",
+          "calls": 80329,
+          "self_cpu_seconds": 0.082856685,
+          "cumulative_cpu_seconds": 0.17402366000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "calls": 394984,
+          "self_cpu_seconds": 0.07770819000000001,
+          "cumulative_cpu_seconds": 0.129467942
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method __new__ of type object at 0x1016a4908>",
+          "calls": 282446,
+          "self_cpu_seconds": 0.056814917000000006,
+          "cumulative_cpu_seconds": 0.056814917000000006
+        },
+        {
+          "file": "fractions.py",
+          "line": 794,
+          "function": "_add",
+          "calls": 28797,
+          "self_cpu_seconds": 0.053550805,
+          "cumulative_cpu_seconds": 0.137211
+        },
+        {
+          "file": "check_n11_capture_root_pilot.py",
+          "line": 65,
+          "function": "hull",
+          "calls": 186,
+          "self_cpu_seconds": 0.031271731000000004,
+          "cumulative_cpu_seconds": 1.228709207
+        },
+        {
+          "file": "check_n11_capture_transition_pilot.py",
+          "line": 196,
+          "function": "universal_collision",
+          "calls": 1,
+          "self_cpu_seconds": 0.029886492,
+          "cumulative_cpu_seconds": 1.798567333
+        },
+        {
+          "file": "<frozen abc>",
+          "line": 117,
+          "function": "__instancecheck__",
+          "calls": 112917,
+          "self_cpu_seconds": 0.028975765,
+          "cumulative_cpu_seconds": 0.051759752000000006
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method _abc._abc_instancecheck>",
+          "calls": 112917,
+          "self_cpu_seconds": 0.022783987000000002,
+          "cumulative_cpu_seconds": 0.022783987000000002
+        },
+        {
+          "file": "fractions.py",
+          "line": 1000,
+          "function": "__eq__",
+          "calls": 32588,
+          "self_cpu_seconds": 0.015057428000000001,
+          "cumulative_cpu_seconds": 0.044646678
+        }
+      ]
+    },
+    {
+      "row": 200,
+      "partner": 10,
+      "facet_vertex_checks": 31248,
+      "live_partner_rows": 93,
+      "kernel_cpu_seconds": 1.0662080000000005,
+      "kernel_wall_seconds": 1.8606984169964562,
+      "profiled_cpu_seconds": 1.749416,
+      "hottest_self_cpu": [
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method math.gcd>",
+          "calls": 680709,
+          "self_cpu_seconds": 1.029473966,
+          "cumulative_cpu_seconds": 1.029473966
+        },
+        {
+          "file": "fractions.py",
+          "line": 810,
+          "function": "_sub",
+          "calls": 144228,
+          "self_cpu_seconds": 0.28997558500000004,
+          "cumulative_cpu_seconds": 0.783335761
+        },
+        {
+          "file": "fractions.py",
+          "line": 697,
+          "function": "forward",
+          "calls": 340498,
+          "self_cpu_seconds": 0.27061603100000003,
+          "cumulative_cpu_seconds": 2.18778863
+        },
+        {
+          "file": "fractions.py",
+          "line": 826,
+          "function": "_mul",
+          "calls": 146404,
+          "self_cpu_seconds": 0.202674461,
+          "cumulative_cpu_seconds": 0.7215818430000001
+        },
+        {
+          "file": "fractions.py",
+          "line": 361,
+          "function": "_from_coprime_ints",
+          "calls": 340687,
+          "self_cpu_seconds": 0.174266834,
+          "cumulative_cpu_seconds": 0.245774554
+        },
+        {
+          "file": "fractions.py",
+          "line": 1021,
+          "function": "_richcmp",
+          "calls": 100968,
+          "self_cpu_seconds": 0.158437943,
+          "cumulative_cpu_seconds": 0.27737074500000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.isinstance>",
+          "calls": 474284,
+          "self_cpu_seconds": 0.10007354,
+          "cumulative_cpu_seconds": 0.156976643
+        },
+        {
+          "file": "fractions.py",
+          "line": 794,
+          "function": "_add",
+          "calls": 49866,
+          "self_cpu_seconds": 0.093340897,
+          "cumulative_cpu_seconds": 0.35623838500000005
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method __new__ of type object at 0x1016a4908>",
+          "calls": 340877,
+          "self_cpu_seconds": 0.071545511,
+          "cumulative_cpu_seconds": 0.071545511
+        },
+        {
+          "file": "check_n11_capture_root_pilot.py",
+          "line": 72,
+          "function": "turn",
+          "calls": 24802,
+          "self_cpu_seconds": 0.06865877000000001,
+          "cumulative_cpu_seconds": 1.171641053
+        },
+        {
+          "file": "check_n11_capture_transition_pilot.py",
+          "line": 196,
+          "function": "universal_collision",
+          "calls": 1,
+          "self_cpu_seconds": 0.053684033000000006,
+          "cumulative_cpu_seconds": 2.777923041
+        },
+        {
+          "file": "check_n11_capture_root_pilot.py",
+          "line": 65,
+          "function": "hull",
+          "calls": 186,
+          "self_cpu_seconds": 0.036379328,
+          "cumulative_cpu_seconds": 1.417840722
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method _abc._abc_instancecheck>",
+          "calls": 133786,
+          "self_cpu_seconds": 0.029340508,
+          "cumulative_cpu_seconds": 0.029340508
+        },
+        {
+          "file": "<frozen abc>",
+          "line": 117,
+          "function": "__instancecheck__",
+          "calls": 133786,
+          "self_cpu_seconds": 0.027562595000000002,
+          "cumulative_cpu_seconds": 0.056903103000000003
+        },
+        {
+          "file": "fractions.py",
+          "line": 1051,
+          "function": "__le__",
+          "calls": 56186,
+          "self_cpu_seconds": 0.021368285,
+          "cumulative_cpu_seconds": 0.17295159400000001
+        }
+      ]
+    }
+  ]
+}

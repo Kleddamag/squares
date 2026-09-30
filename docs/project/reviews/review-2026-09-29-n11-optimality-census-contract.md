@@ -1270,6 +1270,48 @@ Subsequent updates must still consume the accepted pose rows as well as the owne
 hulls.
 No complete source node, candidate capture, or global conclusion is accepted here.
 
+## A2 Admission and Remaining Capture Grammar
+
+Shared checker revision
+`da09d08d0e2d6c40755a15a9e9b4a47ae874513463acc9fb44e29f5a821afa2b` binds ordinary A2
+assignments through helper
+`f8135ba45073ad4bda7f66f543454b7484f46cc3fbcee63340afee1dbeac7265`. It pins and rechecks
+that helper and the baseline metadata object.
+The geometric checker remains restricted to one-node, assumption-free sequential
+wall-seed cases; partition and necessary-D4 recipes still refuse.
+This admission grants no exclusion until a complete geometric execution accepts the
+selected case, and supplies no A1 geometric premise.
+
+A further read-only inspection of all ten capture source objects, each checked against
+its
+[retained source identity](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json),
+found the existing transition grammar sufficient: exact predecessor rows, inherited
+center and angle conditions, necessary self-hull cuts, strict cores, universal partner
+collision regions, residual coverage, and exact ownership compression.
+Root-self, r1, r10, r11, and r111 each end with an incomplete step that must not promote
+state. Every complete query and partner cover must partition its owner’s entire allowed
+closed angle interval.
+At a branch threshold, a retained row must cover the endpoint with its own proved center
+domain; ignoring a zero-width intersection is justified only when the retained closed
+rows still cover that endpoint.
+The induction invariant is that each row contains every feasible center at every angle
+in its interval.
+
+The three far source leaves all propose `all_parent_poses_forbidden` contradictions.
+The final near source instead has `closed: false`, no contradiction, 121 complete
+updates, and 136 live final rows.
+Its older guard therefore cannot be a required acceptance gate.
+Those guard boxes classify producer progress and do not justify any geometric pruning in
+the reviewed node rules.
+After proving the actual near state, compose directly with the accepted pose-inclusion
+result for source `491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc` and
+the accepted local-isolation theorem.
+Bind the actual final-state digest
+`a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80`; the previously
+refused publisher leaf digests remain refused.
+This source inspection accepts no additional capture transition, but identifies no
+additional analytic premise for the remaining composition.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

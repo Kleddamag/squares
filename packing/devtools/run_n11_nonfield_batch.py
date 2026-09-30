@@ -35,6 +35,20 @@ def source_archive_allowed(path: Path, repo: Path, common_dir: Path) -> bool:
     )
 
 
+def source_archive_reference(path: Path, repo: Path, common_dir: Path) -> dict[str, str]:
+    """Describe local and shared inputs without assuming checkout-local paths."""
+    require(
+        source_archive_allowed(path, repo, common_dir), "objects outside repository archive"
+    )
+    resolved = path.resolve()
+    local = resolved.is_relative_to(repo.resolve())
+    root = repo.resolve() if local else common_dir.resolve().parent
+    return {
+        "objects": resolved.relative_to(root).as_posix(),
+        "objects_checkout": "execution" if local else "git_common_primary",
+    }
+
+
 def retain_receipt(path: Path, raw: bytes, *, remove_original: bool = True) -> tuple[Path, str]:
     """Losslessly compress large row ledgers while retaining their exact bytes."""
     if len(raw) < 16_384:
@@ -120,7 +134,7 @@ def run_case(
             "module": "devtools.check_n11_generic_sequential",
             "working_directory": "packing",
             "manifest": args.manifest.resolve().relative_to(REPO).as_posix(),
-            "objects": args.objects.resolve().relative_to(REPO).as_posix(),
+            **args.objects_reference,
             "workers": args.workers,
             "cover_backend": args.cover_backend,
             "max_seconds": available,
@@ -184,6 +198,9 @@ def main() -> int:
     require(
         source_archive_allowed(args.objects, REPO, Path(common.stdout.strip())),
         "objects outside repository archive",
+    )
+    args.objects_reference = source_archive_reference(
+        args.objects, REPO, Path(common.stdout.strip())
     )
     args.out_dir = args.out_dir.resolve()
     require(args.out_dir.is_relative_to(PACKET), "retain receipts in the source packet")

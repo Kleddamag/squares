@@ -702,7 +702,7 @@ session:
     bead: think-35ui
     objective: Complete remaining baseline case capabilities and the first capture
       step using reviewed shared geometry, then expand independent case batches.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Exact sweep optimization and first transition row are accepted;
       remaining baseline refusals are lower-dimensional, partner-cover or ancestry rules.
@@ -716,13 +716,46 @@ session:
       row joins prevent credit regardless of stored source status.
     fallback: Retain exact incomplete states, run independent supported cases and
       profile the smallest missing geometric component before increasing scope.
-    outcome: null
+    outcome: Four lower-dimensional A1 cases accepted, yielding1927 of2180 exclusions.
+      A2 assignment adapter reviewed and frozen. First capture owner update accepted;
+      217 rows,3173632 exact facets,64.918s. Source intake now52A2 and68A3 closures.
+      Shared-worktree batch executor exposed a post-execution path-recording defect;
+      16 emitted checker records retained without credit and interrupted runs stopped.
+      Focused path repair passes22 controls; repeat execution is required.
     evidence:
     - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
     - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
-    stop_reason: null
+    stop_reason: Component checkpoint closed at 2026-09-30T09:42:23Z; continue exact replay and cost repair.
     next_action: Sol extends baseline and capture consumers in disjoint files; Astra
       reviews shared rules and complete receipts; coordinator batches execution and CI.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-k6lh
+    objective: Restore immutable parallel execution, validate remaining generic cases,
+      and use the measured rational collision hotspot to accelerate capture continuation.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Shared-worktree serialization needs end-to-end confirmation;
+      actual collision profiling identifies repeated rational GCD work as the next hotspot.
+    budget_minutes: 30
+    started_at: '2026-09-30T09:42:23Z'
+    deadline_at: '2026-09-30T10:12:23Z'
+    expected_output: Source-bound A2/A3 batches with complete executor records,
+      reviewed partner and root-capture consumers, and a measured exact-kernel decision.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_nonfield_runner.py tests/test_n11_exclusion_inventory.py -q
+    kill_condition: Missing process evidence, unproved geometry or changed active source
+      prevents credit; never infer a complete proof from a stored status alone.
+    fallback: Preserve interrupted records without credit and rerun repaired frozen
+      execution; keep independent adapter and mathematical review lanes productive.
+    outcome: null
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/collision-profile.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
+    stop_reason: null
+    next_action: Coordinator batches immutable executions and profiles exact arithmetic;
+      Sol implements partner and capture ancestry, Astra reviews mathematical joins.
   budget:
     wall_minutes: 1135
     max_cycles: 40

@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T15:45:00Z'
+  deadline_at: '2026-09-30T16:10:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -1031,7 +1031,7 @@ session:
     clock_role: work
     bead: think-dh2d
     objective: Remove the live jobs-API timestamp dependency and certify the final published head.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Bounded retries did not resolve self-observation lag; all proof, Rust, behavioral and page checks passed.
     budget_minutes: 30
@@ -1041,12 +1041,40 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_pr_wall.py
     kill_condition: Understated wall time, mixed attempts or missing prerequisites prevent acceptance.
     fallback: Retain the mathematical result and explicit CI failure; repair the observation without weakening budgets.
+    outcome: >-
+      Published b6c97667b. The conservative invocation endpoint passed 80 focused tests
+      and worked in hosted run 36735084578; Pages passed and the bead-tree defect is
+      repaired. All 7955 behavioral tests passed, with seven skips, but shard B took
+      165.06 seconds against 154; A took 156.19 against 168. Their combined 321.25
+      seconds leaves less than one second against the two ceilings. The aggregate
+      correctly propagated the failed cost check. Mathematical and Rust checks remain accepted.
+    evidence:
+    - packing/devtools/check_pr_wall.py
+    - packing/tests/test_pr_wall.py
+    stop_reason: At 2026-09-30T15:21:12Z, measured capacity requires a third behavioral shard.
+    next_action: Add parallel capacity with complete coverage and required failure propagation; do not relax timing limits.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-o18s
+    objective: Add a third parallel behavioral shard so routine validation has measured headroom.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Two passing behavioral suites exceed their combined usable capacity; minor transfers cannot provide stable headroom.
+    budget_minutes: 30
+    started_at: '2026-09-30T15:21:12Z'
+    deadline_at: '2026-09-30T15:51:12Z'
+    expected_output: Deterministic three-way coverage, required suite-c, explicit budgets, focused contract tests and hosted confirmation.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_suite_files.py tests/test_pr_wall.py
+    kill_condition: Lost coverage, an optional shard, false timing provenance or weakened existing ceilings prevents acceptance.
+    fallback: Retain the confirmed proof and explicit integration cost debt while repairing only the failed contract.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol repairs live timing, Astra checks final mathematical wording, and the coordinator reconciles completed beads and publishes.
+    next_action: Sol lanes own partitioning and CI wiring concurrently; Astra reviews complete coverage and required failure propagation.
   budget:
-    wall_minutes: 1180
+    wall_minutes: 1205
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15

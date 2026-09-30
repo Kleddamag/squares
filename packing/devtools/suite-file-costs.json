@@ -1,6 +1,6 @@
 {
   "schema": "packing.squares:SuiteFileCosts/1",
-  "shards": 2,
+  "shards": 3,
   "recorded_from": [
     "shard 1/2: GITHUB_JOB=suite-a, GITHUB_RUN_ATTEMPT=1, GITHUB_RUN_ID=36728602528, GITHUB_SHA=d10eac3487ba3cecbd0212127eb7627bf454c069",
     "shard 2/2: GITHUB_JOB=suite-b, GITHUB_RUN_ATTEMPT=1, GITHUB_RUN_ID=36728602528, GITHUB_SHA=d10eac3487ba3cecbd0212127eb7627bf454c069"
@@ -442,6 +442,7 @@
   },
   "target_ceiling_seconds": [
     168.0,
+    154.0,
     154.0
   ]
 }

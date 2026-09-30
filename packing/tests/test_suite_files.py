@@ -35,7 +35,7 @@ def _test_files() -> set[str]:
 def test_the_suite_shards_partition_every_test_file() -> None:
     """Each test file on disk is in exactly one shard, and every shard has files.
 
-    This is the property that lets two runners divide the lane without a test running
+    This is the property that lets three runners divide the lane without a test running
     twice or not at all. It holds by construction -- a file's shard is a function of its
     path -- so what this checks is the construction against the real tree and the real
     record: that the recorded count is the one the CLI and the register use, and that
@@ -132,7 +132,7 @@ def test_capacity_weighted_packing_is_deterministic_and_matches_declared_budgets
     """The quick shards target equal ceiling utilization without losing a test file."""
     costs = suite_files.load_costs()
     register = gate_budgets.load()
-    declared = [register.tier(tier) for tier in ("suite_a", "suite_b")]
+    declared = [register.tier(tier) for tier in ("suite_a", "suite_b", "suite_c")]
     assert all(tier is not None for tier in declared)
     assert costs.target_ceiling_seconds == tuple(
         tier.ceiling_seconds for tier in declared if tier is not None
@@ -283,6 +283,15 @@ def test_record_requires_one_complete_coherent_shard_cohort() -> None:
         suite_files.record([complete[0], _shard_report(2, attempt="2")], shards=2)
     with pytest.raises(SuiteFilesError, match="each sharded cohort"):
         suite_files.record([complete[0], _shard_report(2, sha="def")], shards=2)
+
+
+def test_three_shard_record_requires_all_three_reports() -> None:
+    complete = [_shard_report(index, count=3) for index in (1, 2, 3)]
+    document = suite_files.record(complete, shards=3, target_ceiling_seconds=(168, 154, 154))
+    assert len(document["files"]) == 3
+    assert document["target_ceiling_seconds"] == [168, 154, 154]
+    with pytest.raises(SuiteFilesError, match="each shard exactly once"):
+        suite_files.record(complete[:2], shards=3)
 
 
 def test_record_refuses_reports_cut_for_another_shard_count() -> None:
@@ -520,8 +529,8 @@ def test_the_report_uses_the_actual_location_for_a_test_outside_rootdir(tmp_path
 @pytest.mark.parametrize(
     ("arguments", "message"),
     [
-        (["--suite-a", "--suite-b"], "seven parts"),
-        (["--checks", "--typecheck"], "seven parts"),
+        (["--suite-a", "--suite-b"], "eight parts"),
+        (["--checks", "--typecheck"], "eight parts"),
     ],
 )
 def test_the_cli_refuses_more_than_one_public_fast_part(

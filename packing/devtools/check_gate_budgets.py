@@ -62,6 +62,7 @@ import re
 import shlex
 import sys
 from collections.abc import Sequence
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -171,14 +172,37 @@ def pull_request_tiers(workflow: Path = PULL_REQUEST_WORKFLOW) -> dict[str, str]
     return found
 
 
-def unrecorded_problems(register: Register, tiers: dict[str, str]) -> list[str]:
+def unrecorded_problems(
+    register: Register, tiers: dict[str, str], *, today: date | None = None
+) -> list[str]:
     """Pull-request tiers whose record is empty, or cites no hosted run."""
     problems: list[str] = []
+    today = datetime.now(UTC).date() if today is None else today
     for tier_id, job in sorted(tiers.items()):
         tier = register.tier(tier_id)
         if tier is None:
             continue
         if tier.measured_seconds is None:
+            if (
+                tier_id == "suite_c"
+                and tier.pending_measurement is not None
+                and tier.pending_until is not None
+            ):
+                if today <= tier.pending_until:
+                    # The absolute ceiling still applies to this first cohort. A prior
+                    # measured shard supplies the maximum allowed provisional ceiling.
+                    prior = register.tier("suite_b")
+                    if (
+                        prior is not None
+                        and prior.measured_seconds is not None
+                        and tier.ceiling_seconds <= prior.ceiling_seconds
+                    ):
+                        continue
+                problems.append(
+                    f"tier {tier_id!r} pending calibration expired or exceeds the "
+                    "existing suite-b ceiling; record the hosted shard wall"
+                )
+                continue
             problems.append(
                 f"tier {tier_id!r} runs on every pull request, in the `{job}` job, and has "
                 "no recorded cost, so its drift, stale and headroom rules are all off. Record "

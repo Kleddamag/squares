@@ -176,10 +176,10 @@ tiers:
   reference: {jobs: 3, inner_jobs: 1, cpus: 4}
   argument: >-
     Since 2026-09-06 no CI job runs this tier whole: a pull request now runs `checks`,
-    `frontend`, `typecheck`, `geometry`, `suite_a`, `suite_b`, and `sweeps` concurrently,
-    and this is their union. The seven parts are where the live bands now are. It is
+    `frontend`, `typecheck`, `geometry`, `suite_a`, `suite_b`, `suite_c`, and `sweeps` concurrently,
+    and this is their union. The eight parts are where the live bands now are. It is
     still a real tier -- it is what a contributor runs before a block boundary, and it is
-    the thing the seven parts have to add up to -- which is why it keeps a ceiling rather
+    the thing the eight parts have to add up to -- which is why it keeps a ceiling rather
     than being retired.
     The edit tier plus the behavioural tests under the per-test ceiling: every floor,
     every record check, and the quick lane. What it excludes is a rule rather than a list
@@ -413,7 +413,7 @@ tiers:
       verification` still serial, and PR #185 made that step concurrent.
   reference: {jobs: 3, inner_jobs: 1, cpus: 4}
   argument: >-
-    The part of the pull-request surface that is none of the other six: every floor,
+    The part of the pull-request surface that is none of the other seven: every floor,
     every record check, and everything that needs the Rust engine. That last clause is a
     rule rather than an accident -- `_build_engine` puts a serial `cargo build --release`
     in front of every step of any job that selects an engine step, so keeping all three
@@ -421,9 +421,9 @@ tiers:
     it never uses. It is 50 steps of pure outer-parallel work at `--jobs 3`,
     which is three units on four cpus and one cpu of headroom, and its wall is step time
     divided rather than any one step's own cost. `checks`, `frontend`, `typecheck`,
-    `geometry`, `suite_a`, `suite_b`, and `sweeps` are a partition of `--fast` by construction in
+    `geometry`, `suite_a`, `suite_b`, `suite_c`, and `sweeps` are a partition of `--fast` by construction in
     `_select_steps`, and `test_the_pull_request_jobs_partition_the_surface` checks that
-    the workflow invokes all seven. What the geometry split bought is on its entry below.
+    the workflow invokes all eight. What the geometry split bought is on its entry below.
 
 - id: frontend
   command: packing-validate --frontend
@@ -592,7 +592,7 @@ tiers:
     CRC32 path fallback. Pytest therefore imports only this shard's files, and the job
     writes a fresh per-file cost report beside its timing artifact. It keeps full Git
     history for history-reading tests but installs no Node toolchain; browser liveness
-    belongs to `frontend`. `packing-required` preserves coverage by requiring both shard
+    belongs to `frontend`. `packing-required` preserves coverage by requiring all shard
     jobs, and the declared 168-second ceiling is the absolute bound.
 
 - id: suite_b
@@ -718,10 +718,26 @@ tiers:
     Pre-collection shard B under the same complete and disjoint assignment as shard A.
     The recorded-cost packing and stable fallback place every file in exactly one shard
     before import. This job also retains Git history, omits Node, and publishes its
-    per-file report. `packing-required` requires both shards so aggregation cannot hide
+    per-file report. `packing-required` requires all shards so aggregation cannot hide
     lost coverage. Its ceiling was OR-14's 180-second pull-request wall until 2026-09-21
     and is now its own: a shard job runs beside six others, so a ceiling equal to the
     whole surface's wall bounds the surface and not the tier.
+
+- id: suite_c
+  command: packing-validate --suite-c
+  ceiling_seconds: 154.0
+  measured_seconds: null
+  measured_on: null
+  measured_where: null
+  pending_measurement: think-o18s
+  pending_until: '2026-10-01'
+  reference: {jobs: 1, inner_jobs: 1, cpus: 4}
+  argument: >-
+    New third whole-file shard of the same quick behavioral lane. The 154-second
+    absolute ceiling matches shard B and applies from the first run. No hosted three-way
+    shard wall has been observed yet; the 2026-09-29 two-shard A/B readings are
+    predecessor evidence for repartitioning, not a measurement of C. The first complete
+    PR cohort must replace this pending entry with its observed wall by 2026-10-01.
 
 - id: typecheck
   command: packing-validate --typecheck
@@ -975,7 +991,7 @@ tiers:
       34926777301, 34929890466, 34930296150, 35012847055 and 35013703659, each selecting
       4 of the gate's 76 steps. Observed spread 1.43x. Refresh from the exact
       reconciliation topology; PR 180's 138.84-second predecessor reading is not the
-      current seven-part surface.
+      current eight-part surface.
   reference: {jobs: 4, inner_jobs: 2, cpus: 4}
   argument: >-
     The pull request's record sweeps, on their own runner: the known-best atlas's record
@@ -1239,7 +1255,7 @@ pull_request_walls:
       1.6-1.8x runner variance, so the wall is reported rather than enforced until
       think-g4n9 holds it at or under 180 s.
     argument: >-
-      The required Linux pull-request surface. The two suite shards use the recorded
+      The required Linux pull-request surface. The three suite shards use the recorded
       pre-collection partition, and the type floor has its own runner; packing-required
       waits for every lane and judges this wall.
     kinds:
@@ -1512,7 +1528,7 @@ ci_gates:
   aggregate: post-merge-required
   selected_by: >-
     A push to `main`, the daily schedule or a `workflow_dispatch`. Pull requests keep
-    their seven-job fast surface and leave this aggregate skipped.
+    their eight-job fast surface and leave this aggregate skipped.
   reference: {runner: ubuntu-latest, cpus: 4}
   drift_ratio: 1.25
   enforcement: reporting

@@ -22,8 +22,8 @@ file lands in exactly one shard by construction:
   and spreads new files as a uniform hash does rather than piling them on one side.
 
 The filter runs in `pytest_ignore_collect`, before a module is imported, so each shard
-pays for collecting its own half rather than all of it; the CI audit measured collection
-at 10-16 s per process, most of the lane's fixed cost.
+pays for collecting only its assigned files. The CI audit measured collection at 10-16 s
+per process, most of the lane's fixed cost.
 
 `--test-file-costs PATH` writes one JSON document per run: for every test file that
 reported, its repository-relative path, how many tests it ran, and the sum of their

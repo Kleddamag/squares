@@ -132,6 +132,7 @@ TIER_FLAGS = (
     "frontend",
     "suite_a",
     "suite_b",
+    "suite_c",
     "checks",
     "sweeps",
     "geometry",
@@ -139,9 +140,9 @@ TIER_FLAGS = (
     "fast",
 )
 TIER_IDS = (*TIER_FLAGS, "full")
-#: The measured quick-lane partition.  Keep the public tier names (`suite_a` and
-#: `suite_b`) stable; this count is the shared contract with `devtools.suite_files`.
-SUITE_SHARDS = 2
+#: The quick-lane partition. Keep the public tier names stable; this count is the
+#: shared contract with `devtools.suite_files`. The three-way wall is pending CI measurement.
+SUITE_SHARDS = 3
 #: Whole-file shards for the deferred exhaustive lane. The alternate cost record is
 #: derived from the retained 58-test hosted JUnit receipt on run 35579234418.
 EXHAUSTIVE_SHARDS = 3
@@ -517,10 +518,10 @@ class Step:
     enough that the pull request runs it on its own runner rather than beside the rest.
 
     `fast` says *whether* a pull request runs a step; this field, `frontend`,
-    `suite_a`, `suite_b`, `geometry`, and `typecheck` say *which pull-request job* runs
-    it. Every sweep is also `fast`, the seven selections are complements within `--fast`, and
+    `suite_a`, `suite_b`, `suite_c`, `geometry`, and `typecheck` say *which pull-request
+    job* runs it. Every sweep is also `fast`, the eight selections complement `--fast`, and
     `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks all
-    seven against what CI actually invokes -- so a step cannot land in no job, and no
+    eight against what CI actually invokes -- so a step cannot land in no job, and no
     step is paid for twice.
 
     The boundary is a measurement, not a topic. Four steps carry it, and on CI's
@@ -566,10 +567,10 @@ class Step:
     """Assigns this step to shard B of the pull request's behavioural lane.
 
     ``devtools.suite_files`` assigns each test file to one shard from recorded costs and
-    filters before collection. The two selections are complete and disjoint, and each
+    filters before collection. The three selections are complete and disjoint, and each
     runs alone so xdist can use every cpu while module-scoped fixtures remain reusable.
 
-    Two step instances carry these fields, one per measured file shard.
+    Three step instances carry these fields, one per file shard.
     Their separate runners follow from arithmetic rather than kind. `_pytest_workers`
     sizes the lane to `cpus - jobs + 1`, because a lane that asks for every cpu beside
     two other steps oversubscribes the runner and fails ordinary tests against the
@@ -586,9 +587,12 @@ class Step:
     does not buy is coverage -- the step runs on every pull request either way, which is
     the distinction `test_the_pull_request_surface_defers_only_what_was_measured` keeps.
 
-    Like `sweep` both fields default to False, so forgetting one makes the `checks` job
+    Like `sweep` all three fields default to False, so forgetting one makes the `checks` job
     slower rather than leaving a step unrun. Their membership is pinned by the workflow
     partition contracts."""
+
+    suite_c: bool = False
+    """Assigns this step to shard C of the pull request's behavioural lane."""
 
     typecheck: bool = False
     """Assigns the type floor to its own pull-request runner.
@@ -600,7 +604,7 @@ class Step:
     geometry: bool = False
     """This step runs in the pull request's second half of `checks`, on a fourth runner.
 
-    `sweep` and the two suite shards were split out on a kind and on a floor. This one is
+    `sweep` and the suite shards were split out on a kind and on a floor. This one is
     split out on a queue, and saying so plainly is the honest description: what was left
     in `checks` after the behavioural lane moved out was 57 steps of pure outer-parallel
     work with no single unit large enough to floor it, and a queue that size is shortened
@@ -637,7 +641,7 @@ class Step:
     there. `test_the_pull_request_runs_its_sweeps_and_its_suite_apart` is where a name
     added here has to be typed next to a number.
 
-    Like `sweep` and both suite-shard fields it defaults to False, so the failure mode of
+    Like `sweep` and the suite-shard fields it defaults to False, so the failure mode of
     forgetting it is a slower `checks` job rather than a step nobody runs."""
 
     touches: tuple[str, ...] = ()
@@ -674,7 +678,7 @@ class Step:
     Measured on 2026-08-30 over the 42 steps: an edit to the rigidity assessor selects 11,
     one root document 9, one agenda 10, the Rust engine 12, and one unrecognised file
     still selects all 42. That surface had six deliberately unattributed steps. The
-    current surface has seven because `fast behavioral tests` is now represented by two
+    current surface has eight because `fast behavioral tests` is now represented by three
     shard steps; both walk `REPO.rglob("*")`. The other five remain `negative controls`,
     which snapshots nearly everything, plus `synopsis`, `README`, `soft-schema
     validation`, and the exhaustive test step, each of which resolves or enumerates
@@ -731,6 +735,8 @@ class Step:
             tags.append("suite-a")
         elif self.suite_b:
             tags.append("suite-b")
+        elif self.suite_c:
+            tags.append("suite-c")
         elif self.typecheck:
             tags.append("typecheck")
         elif self.geometry:
@@ -1512,6 +1518,11 @@ def _fast_tests_a(context: Context) -> str:
 def _fast_tests_b(context: Context) -> str:
     """Run measured pre-collection shard B of the quick lane."""
     return _fast_tests(context, 2)
+
+
+def _fast_tests_c(context: Context) -> str:
+    """Run pre-collection shard C of the quick lane."""
+    return _fast_tests(context, 3)
 
 
 #: Under xdist, exit 5 can also mean every worker failed before collection. Only a
@@ -3329,8 +3340,9 @@ _WORKBENCH_INPUTS = (
 # What `fast` means since 2026-09-05: the tier a pull request runs, and therefore the
 # tier that has to hold everything a merge would otherwise be the first to check. Since
 # 2026-09-06 a pull request runs it as concurrent jobs rather than one. The current
-# partition is `--checks`, `--frontend`, `--geometry`, `--suite-a`, `--suite-b`, and
-# `--sweeps`, argued on the corresponding `Step` fields; the tier is unchanged and what
+# partition is `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
+# `--suite-b`, `--suite-c`, and `--sweeps`, argued on the corresponding `Step` fields;
+# the tier is unchanged and what
 # a pull request waits for is its longest part rather than their sum.
 #
 # The three-way split was the second cut and it was taken on the two-job surface's own
@@ -3819,6 +3831,13 @@ STEPS: tuple[Step, ...] = (
         fast=True,
         broad=True,
         suite_b=True,
+    ),
+    Step(
+        "fast behavioral tests, shard C",
+        _fast_tests_c,
+        fast=True,
+        broad=True,
+        suite_c=True,
     ),
     # The half of the behavioural suite that costs the wall. It is the same tests under
     # the same runner, selected by the `slow` marker instead of against it, and it runs
@@ -4820,6 +4839,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "fixed-angle cell is an LP, rebuilt independently",
         "fast behavioral tests, shard A",
         "fast behavioral tests, shard B",
+        "fast behavioral tests, shard C",
         "golden basin maps (proved cases, checked against mathematics)",
         "basin identity",
         "soft-schema validation",
@@ -4889,19 +4909,20 @@ def _select_steps(
     sweeps: bool = False,
     suite_a: bool = False,
     suite_b: bool = False,
+    suite_c: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
     skip: Sequence[str] = (),
 ) -> list[Step]:
     """The steps a tier and its name filters select.
 
-    `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--sweeps`, `--geometry`, and
-    `--typecheck` are the parts of `--fast`, and they exist because the pull request runs
-    them as concurrent GitHub jobs. They are a partition by construction here: six
+    `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--suite-c`, `--sweeps`,
+    `--geometry`, and `--typecheck` are the parts of `--fast`, and they exist because CI runs
+    them as concurrent GitHub jobs. They are a partition by construction here: seven
     select their placement field and `--checks` selects fast steps marked with none of
     them. No step can be in two parts or in none.
 
-    Seven jobs could have divided the tier with `--only` and `--skip` instead, and that
+    Eight jobs could have divided the tier with `--only` and `--skip` instead, and that
     was rejected on the register rather than on taste. A subset of a tier has no
     declared cost: `--only` reports no tier at all, and `--skip` reports the tier it
     narrowed, so a part-tier run would have been judged against the whole tier's
@@ -4936,6 +4957,8 @@ def _select_steps(
         selected = [step for step in STEPS if step.suite_a]
     elif suite_b:
         selected = [step for step in STEPS if step.suite_b]
+    elif suite_c:
+        selected = [step for step in STEPS if step.suite_c]
     elif geometry:
         selected = [step for step in STEPS if step.geometry]
     elif typecheck:
@@ -4950,6 +4973,7 @@ def _select_steps(
                 or step.sweep
                 or step.suite_a
                 or step.suite_b
+                or step.suite_c
                 or step.geometry
                 or step.typecheck
             )
@@ -5479,6 +5503,11 @@ def _parser() -> ArgumentParser:
         help=("run measured file shard B of the quick behavioral lane"),
     )
     parser.add_argument(
+        "--suite-c",
+        action="store_true",
+        help=("run file shard C of the quick behavioral lane"),
+    )
+    parser.add_argument(
         "--typecheck",
         action="store_true",
         help=(
@@ -5593,6 +5622,7 @@ def _validate_invocation(
     sweeps: bool = False,
     suite_a: bool = False,
     suite_b: bool = False,
+    suite_c: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
     since: str | None = None,
@@ -5600,29 +5630,29 @@ def _validate_invocation(
     skip: Sequence[str] = (),
     exhaustive_shard: str = "",
 ) -> None:
-    parts = checks or frontend or sweeps or suite_a or suite_b or geometry or typecheck
+    parts = any((checks, frontend, sweeps, suite_a, suite_b, suite_c, geometry, typecheck))
     narrowed = only or skip or fast or records or edit or parts or since or push
     if strict and narrowed:
         raise UsageError(
             "--strict cannot be combined with --only, --skip, --fast, --checks, "
-            "--frontend, --suite-a, --suite-b, --sweeps, --geometry, --typecheck, "
+            "--frontend, --suite-a, --suite-b, --suite-c, --sweeps, --geometry, --typecheck, "
             "--records, --edit, --push, or --since"
         )
     if edit and fast:
         raise UsageError(
             "--edit and --fast select different tiers; --fast is the wider of the two"
         )
-    if [checks, frontend, sweeps, suite_a, suite_b, geometry, typecheck].count(True) > 1:
+    if sum((checks, frontend, sweeps, suite_a, suite_b, suite_c, geometry, typecheck)) > 1:
         raise UsageError(
-            "--checks, --frontend, --geometry, --suite-a, --suite-b, --sweeps and "
-            "--typecheck are the seven parts of --fast; ask for --fast to run them all, "
+            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --sweeps and "
+            "--typecheck are the eight parts of --fast; ask for --fast to run them all, "
             "or for one of them to run that part"
         )
     if parts and (fast or records or edit or push):
         raise UsageError(
-            "--checks, --frontend, --geometry, --suite-a, --suite-b, --sweeps and "
+            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --sweeps and "
             "--typecheck are parts of --fast and are not combined with another tier; "
-            "--fast is all seven of them"
+            "--fast is all eight of them"
         )
     if push and (fast or records or edit):
         raise UsageError(
@@ -5688,6 +5718,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             sweeps=namespace.sweeps,
             suite_a=namespace.suite_a,
             suite_b=namespace.suite_b,
+            suite_c=namespace.suite_c,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
             since=namespace.since,
@@ -5731,6 +5762,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             sweeps=namespace.sweeps,
             suite_a=namespace.suite_a,
             suite_b=namespace.suite_b,
+            suite_c=namespace.suite_c,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
             skip=namespace.skip,

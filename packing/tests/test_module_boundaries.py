@@ -311,6 +311,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "validate",
         "suite-a",
         "suite-b",
+        "suite-c",
         "deferred-threshold-1440",
         "deferred-atlas-grid",
         "deferred-controls-finer",
@@ -373,9 +374,9 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     validate_steps = _mapping(jobs["validate"])["steps"]
     assert isinstance(validate_steps, list)
     # The pull-request surface is seven concurrent jobs after the workbench package took
-    # its frontend contracts out of the checks queue and the suite became two shards:
+    # its frontend contracts out of the checks queue and the suite became three shards:
     # `--checks` here, `--frontend` in the `frontend` job, `--geometry` in the `geometry`
-    # job, `--suite-a` and `--suite-b` in their shard jobs, and `--sweeps` in the
+    # job, `--suite-a`, `--suite-b`, and `--suite-c` in their shard jobs, and `--sweeps` in the
     # `sweeps` job, so a pull request waits for the longest of them rather than their sum.
     # That they partition
     # `--fast` is proved against the CLI's own selector by
@@ -470,7 +471,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         if str(_mapping(step).get("uses", "")).startswith("actions/checkout@")
     )
     assert "fetch-depth" not in _mapping(geometry_checkout["with"])
-    for suffix in ("a", "b"):
+    for suffix in ("a", "b", "c"):
         suite_job = _mapping(jobs[f"suite-{suffix}"])
         assert suite_job["if"] == "github.event_name == 'pull_request'"
         suite_steps = suite_job["steps"]
@@ -640,6 +641,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "geometry",
         "suite-a",
         "suite-b",
+        "suite-c",
         "sweeps",
     ]
     # `!cancelled()`, not `always()`, and the difference is D-380. With `always()` a run
@@ -653,7 +655,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     assert "continue-on-error" not in required_job
     required_job_steps = required_job["steps"]
     assert isinstance(required_job_steps, list)
-    # One `test` per prerequisite, and all seven of them, because `needs` alone does not
+    # One `test` per prerequisite, and all eight of them, because `needs` alone does not
     # make a job's failure fatal here: this job runs under `!cancelled()`, so it is reached
     # even when a prerequisite failed, and it is the shell that decides. A missing line
     # would leave that part of the surface green whatever it reported.
@@ -663,6 +665,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         'test "$TYPECHECK_RESULT" = "success" '
         'test "$GEOMETRY_RESULT" = "success" test "$SUITE_A_RESULT" = "success" '
         'test "$SUITE_B_RESULT" = "success" '
+        'test "$SUITE_C_RESULT" = "success" '
         'test "$SWEEPS_RESULT" = "success"'
     )
     required_env = _mapping(_mapping(required_job_steps[0])["env"])
@@ -673,6 +676,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "GEOMETRY_RESULT": "${{ needs.geometry.result }}",
         "SUITE_A_RESULT": "${{ needs.suite-a.result }}",
         "SUITE_B_RESULT": "${{ needs.suite-b.result }}",
+        "SUITE_C_RESULT": "${{ needs.suite-c.result }}",
         "SWEEPS_RESULT": "${{ needs.sweeps.result }}",
     }
     wall_step = next(

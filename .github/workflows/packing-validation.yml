@@ -246,8 +246,8 @@ jobs:
       # `prospective n=101..324 source map and safe seed` 213.19s. Reverting the promotion
       # was refused on coverage grounds, so the cost is bought with more runners instead:
       # `--checks` here, then `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
-      # `--suite-b`, and `--sweeps` below. The seven are a partition of `--fast`, they run
-      # concurrently, and a pull request waits for the longest rather than their sum. All seven
+      # `--suite-b`, `--suite-c`, and `--sweeps` below. The eight partition `--fast` and run
+      # concurrently, and a pull request waits for the longest rather than their sum. All eight
       # are required through `packing-required`.
       #
       # **Two runners were not enough, and the second cut is measured too.** Run
@@ -299,7 +299,7 @@ jobs:
       # measured, so a second core of headroom would cost this job more than the fourth
       # worker ever cost it.
       #
-      # Nothing left the surface to buy any of this. The seven jobs still select every
+      # Nothing left the surface to buy any of this. The eight jobs still select every
       # step `--fast` does, which is what
       # `test_the_pull_request_jobs_partition_the_surface` checks -- `OR-13`, and the
       # same refusal recorded two paragraphs up.
@@ -309,15 +309,15 @@ jobs:
       # been judged against `--fast`'s recorded 502.3s and failed for finishing early;
       # `--only` reports no tier at all and would have left every part of the
       # pull-request surface with no declared ceiling, which is `D-466` exactly.
-      # `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`, `--suite-b`,
+      # `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`, `--suite-b`, `--suite-c`,
       # and `--sweeps` each carry an entry in `devtools/gate-budgets.yaml`.
       #
       # `test_the_pull_request_jobs_partition_the_surface` reads this file, parses these
-      # seven commands with the CLI's own parser and resolves them through its own
-      # selector, and requires the seven selections to be pairwise disjoint and to cover
+      # eight commands with the CLI's own parser and resolves them through its own
+      # selector, and requires the eight selections to be pairwise disjoint and to cover
       # every step outside the four
       # `test_the_pull_request_surface_defers_only_what_was_measured` pins. A step added
-      # tomorrow lands in one of the seven jobs or fails that test.
+      # tomorrow lands in one of the eight jobs or fails that test.
       - name: Run the required pull-request checks
         if: "github.event_name == 'pull_request'"
         run: >-
@@ -667,7 +667,7 @@ jobs:
 
   suite-a:
     # The measured per-file partition filters before collection, so each runner imports
-    # only its own complete and disjoint half of the quick lane. Every run also emits the
+    # only its own complete and disjoint third of the quick lane. Every run also emits the
     # costs needed to refresh that partition.
     if: "github.event_name == 'pull_request'"
     runs-on: ubuntu-latest
@@ -746,6 +746,45 @@ jobs:
         run: >-
           uv run --frozen --all-extras --group dev
           packing-validate --suite-b --jobs 1 --inner-jobs 1
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  suite-c:
+    if: "github.event_name == 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Run required pull-request behavioral shard C
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --suite-c --jobs 1 --inner-jobs 1
 
       - name: Preserve validation timings and partial logs
         if: always()
@@ -1307,7 +1346,7 @@ jobs:
           retention-days: 30
 
   post-merge-required:
-    # Separate complete-checkpoint verdict. Pull requests retain exactly seven fast jobs.
+    # Separate complete-checkpoint verdict. Pull requests retain exactly eight fast jobs.
     if: "!cancelled() && github.event_name != 'pull_request'"
     needs:
       - validate
@@ -1400,14 +1439,14 @@ jobs:
     # single required context is the reason the split is allowed to exist: `BC-218` set
     # that as the condition for any fan-out, because `D-380` records what a fan-out of
     # separately required checks did to this repository once. A reviewer still watches one
-    # context; it just has seven prerequisites now.
+    # context; it has eight prerequisites now.
     #
     # `needs` alone is not enough, which is why every prerequisite also has a `test` line
     # below. This job runs under `!cancelled()`, so it is reached even when a prerequisite
     # failed, and it is the shell that decides -- a job named in `needs` and missing from
     # the script is an advisory check nothing blocks on.
     if: "!cancelled() && github.event_name == 'pull_request'"
-    needs: [validate, frontend, typecheck, geometry, suite-a, suite-b, sweeps]
+    needs: [validate, frontend, typecheck, geometry, suite-a, suite-b, suite-c, sweeps]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1421,6 +1460,7 @@ jobs:
           GEOMETRY_RESULT: ${{ needs.geometry.result }}
           SUITE_A_RESULT: ${{ needs.suite-a.result }}
           SUITE_B_RESULT: ${{ needs.suite-b.result }}
+          SUITE_C_RESULT: ${{ needs.suite-c.result }}
           SWEEPS_RESULT: ${{ needs.sweeps.result }}
         run: |
           test "$VALIDATE_RESULT" = "success"
@@ -1429,6 +1469,7 @@ jobs:
           test "$GEOMETRY_RESULT" = "success"
           test "$SUITE_A_RESULT" = "success"
           test "$SUITE_B_RESULT" = "success"
+          test "$SUITE_C_RESULT" = "success"
           test "$SWEEPS_RESULT" = "success"
 
       - name: Check out the wall budget and its register

@@ -168,13 +168,14 @@ alone is not full pre-merge evidence.
 | `--records` | contributor, before touching a registry; also every pull request | 36 of 83 | 300 s | 11.0 s |
 | `--edit` | contributor, in the edit loop | 51 of 83 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the seven tiers below | 72 of 83 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--fast` | contributor, at a block boundary; the union of the eight tiers below | 72 of 83 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
 | `--checks` | **CI, on every pull request**, in the `validate` job | 53 of 83 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
 | `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 83 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
 | `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 83 | 111 s | 55.67 s on CI, the mean of three readings |
 | `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 83 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
 | `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 83 | 168 s | 109.92 s on exact head `be28ad5a`, the geometric mean of attempts 1–3 of run 35182460400 |
 | `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 83 | 154 s | 102.91 s, the geometric mean of five readings spanning 73.90–133.81 s (1.81x) across runs 35182460400, 35634463193, 35637674151 and 35638434973 |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 | 154 s | New third shard; first hosted measurement pending under think-o18s |
 | `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 83 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
 | *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 83 of 83 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
@@ -276,13 +277,23 @@ After `main` merged into the stack, #160 read 200.68 s and 199.74 s at `72629c03
   representation.
 
 **The pull-request surface is `--checks`, `--frontend`, `--typecheck`, `--geometry`,
-`--suite-a`, `--suite-b`, and `--sweeps` together, run as seven concurrent CI jobs**, so
-a pull request waits for the longest part rather than for their sum.
-All seven feed the stable `packing-required` aggregate context.
+`--suite-a`, `--suite-b`, `--suite-c`, and `--sweeps` together, run as eight concurrent
+CI jobs**, so a pull request waits for the longest part rather than for their sum.
+All eight feed the stable `packing-required` aggregate context.
 Repository protection settings determine whether GitHub requires that context before a
 merge. `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks
 that they are pairwise disjoint and that they cover every step of `--fast` — so the
 split cannot lose a check the way a set of independent filters could.
+
+The three behavioral shards use a source-bound file-cost record and deterministic
+partitioning weighted by their 168/154/154-second ceilings.
+Each test file belongs to exactly one shard.
+The third shard supplies capacity after
+[run 36735084578](https://github.com/jlevy/squares/actions/runs/36735084578) measured
+156.19 and 165.06 seconds for the two-shard partition: their combined 321.25 seconds
+left less than one second against the combined ceilings.
+These are observed two-shard measurements, not a measurement or speedup claim for the
+new partition.
 
 The merged [PR95](https://github.com/jlevy/squares/pull/95) implementation pools the
 known-best census and prospective-atlas rebuilds through the shared worker policy.
@@ -314,6 +325,11 @@ start of the wall-check step inside its required aggregator, `packing-required` 
 `pages-required`. That includes prerequisite queues, checkout, setup, work, artifact
 transfer, and the aggregator’s queue, result assertion, blobless checkout, and pinned
 Python setup; it excludes the wall check itself and subsequent teardown.
+If GitHub withholds the running step’s timestamp, the live check can instead use its own
+process invocation time as a labeled conservative upper bound.
+This requires the matching run, attempt and aggregator, complete prerequisites, and
+ordered timestamps; it can charge extra wall time but cannot reduce the measured wait.
+Historical and sample measurements continue to use API timestamps.
 
 `packing/devtools/check_pr_wall.py` runs inside both aggregators and judges the wall
 against OR-14’s absolute 180-second budget.
@@ -321,8 +337,8 @@ Once a pull-request kind (`main` or `stacked`) has at least 15 recorded samples,
 judges the wall against 1.2 times that kind’s median.
 An unmeasurable current run fails closed.
 A missing or undersampled median produces an explicit warning while the absolute budget
-still applies. Partial reruns, missing jobs or timestamps, an incomplete jobs-API page,
-and non-finite register values cannot produce a passing measurement.
+still applies. Partial reruns, missing jobs or required timestamps, an incomplete
+jobs-API page, and non-finite register values cannot produce a passing measurement.
 
 **Both walls are currently advisory under `think-g4n9`.** Each workflow’s entry in
 `pull_request_walls` declares its `enforcement`. Absent means `enforcing`: a wall over
@@ -364,15 +380,16 @@ test satisfies exactly one, so no test can be in two lanes and none can be in ze
 
 | Lane | Marker | Tests at last count | Runs in | Bound |
 | --- | --- | ---: | --- | --- |
-| quick | neither | 6,345 selected (6,339 passed; 6 skipped) | PR fast surface: file shards in `suite-a` and `suite-b`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
+| quick | neither | 7,962 file-shard tests (7,955 passed; 7 skipped) | PR fast surface: file shards in `suite-a`, `suite-b` and `suite-c`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
 | slow | `slow` | 97 | full checkpoint, under xdist in CI | fails a test whose `call` phase is under 1 s |
 | exhaustive | `exhaustive_exact` | 55 | its own CI job | its own 3600 s budget |
 
-The quick count is from PR 188 run 35128357992 on 2026-09-16, after the first
-recorded-cost repartition.
-The slow and exhaustive counts are `--collect-only` readings from 2026-09-08 against the
-n = 1..324 corpus. These are measurements rather than fixed membership; marker
-expressions determine the three lanes, and counts move with the corpus.
+The quick file-shard count is from PR 246 run 36735084578 on 2026-09-30, before the
+third shard was added; the separate browser-floor controls are not included in that
+count. The slow and exhaustive counts are `--collect-only` readings from 2026-09-08
+against the n = 1..324 corpus.
+These are measurements rather than fixed membership; marker expressions determine the
+three lanes, and counts move with the corpus.
 A stale quick count in this table is how [D-488](defects.md)’s cause stayed invisible,
 since the tests grew and the budget bounding them did not.
 [Main run 34025346801](https://github.com/jlevy/squares/actions/runs/34025346801)
@@ -534,18 +551,19 @@ uv run --frozen --all-extras --group dev packing-validate --edit
 uv run --frozen --all-extras --group dev packing-validate --push
 
 # The pull-request surface: the edit tier plus every behavioral test under the
-# per-test ceiling. CI runs it as the seven parts below, one per runner; run it whole
+# per-test ceiling. CI runs it as the eight parts below, one per runner; run it whole
 # here, where there is only one machine and nothing to overlap with.
 uv run --frozen --all-extras --group dev packing-validate --fast
 
-# The seven parts CI runs concurrently on a pull request. They partition --fast, so
-# running all seven is running the surface and running one is running a part of it.
+# The eight parts CI runs concurrently on a pull request. They partition --fast, so
+# running all eight is running the surface and running one is running a part of it.
 uv run --frozen --all-extras --group dev packing-validate --checks
 uv run --frozen --all-extras --group dev packing-validate --frontend
 uv run --frozen --all-extras --group dev packing-validate --typecheck
 uv run --frozen --all-extras --group dev packing-validate --geometry
 uv run --frozen --all-extras --group dev packing-validate --suite-a
 uv run --frozen --all-extras --group dev packing-validate --suite-b
+uv run --frozen --all-extras --group dev packing-validate --suite-c
 uv run --frozen --all-extras --group dev packing-validate --sweeps
 
 # One named component. --only is repeatable and matches displayed step names.

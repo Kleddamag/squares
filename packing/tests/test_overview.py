@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 import re
 from collections import Counter
+from html.parser import HTMLParser
 
 import pytest
 
@@ -1025,3 +1026,89 @@ def test_popover_headlines_set_their_math_serif() -> None:
         / "host_math_init.js"
     ).read_text(encoding="utf-8")
     assert "closest('[data-math-face=\"serif\"]')" in shell
+
+
+TABLE_BLEED = (
+    ".site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)):not(.site-replay) {"
+)
+
+
+def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
+    """A data table's wide track is one rule on shared tokens. It shares the atlas grid's
+    maximum, and its growth term is zero at or below `--site-table-bleed-from` (80rem),
+    so a table at 1280 pixels or narrower keeps the plain wide track."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert "--site-bleed-max: 140rem;" in css
+    assert "--site-table-bleed-from: 80rem;" in css
+    grid = css[css.index(".site-page .site-atlas-grid {") :]
+    assert "--site-wide: var(--site-bleed-max);" in grid[: grid.index("}")]
+    rule = css[css.index(TABLE_BLEED) :]
+    rule = rule[: rule.index("\n}")]
+    assert "var(--site-bleed-max)," in rule
+    assert "--site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));" in rule
+    assert "calc(var(--site-wide) + var(--site-table-grow))" in rule
+    assert "max-width: var(--site-table-wide);" in rule
+
+
+class _TableAncestry(HTMLParser):
+    """Each `<table>`'s own classes and the classes of the elements around it."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.stack: list[tuple[str, str]] = []
+        self.tables: list[tuple[str, list[str]]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        classes = dict(attrs).get("class") or ""
+        if tag == "table":
+            # KPress's own table wrap, where it adds one, is not the site's.
+            around = [c for _, c in reversed(self.stack) if c != "kpress-table-wrap"]
+            self.tables.append((classes, around))
+        if tag in {"div", "details", "section", "table"}:
+            self.stack.append((tag, classes))
+
+    def handle_endtag(self, tag: str) -> None:
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                del self.stack[index:]
+                break
+
+
+def test_every_data_table_is_the_shared_component(page: str, results: str) -> None:
+    """Every `.site-table` on the overview, the results page and the frontier atlas is a
+    KPress table directly in a `.site-table-wrap`, and every one that fills its track is
+    in a `.site-wide` the bleed rule takes (the wrap itself, or its parent). Only the
+    compact replay table keeps to its content, and it is the rule's one exclusion."""
+    from devtools.render_frontier_page import frontier_cases, table_html  # noqa: PLC0415
+
+    seen = 0
+    for text in (page, results, table_html(frontier_cases())):
+        parser = _TableAncestry()
+        parser.feed(text)
+        for classes, around in parser.tables:
+            if "site-table" not in classes.split():
+                continue
+            seen += 1
+            assert "kpress-table" in classes.split()
+            wrap = around[0].split()
+            parent = around[1].split() if len(around) > 1 else []
+            assert "site-table-wrap" in wrap, classes
+            if "site-replay-table" in classes.split():
+                assert "site-replay" in parent
+            else:
+                assert "site-wide" in wrap or "site-wide" in parent, classes
+    assert seen >= 3
+
+
+def test_secondary_cell_content_is_quiet(results: str) -> None:
+    """A credit in the results table and a finder under a frontier bound take the one
+    quiet style: the support colour in the sans face."""
+    from devtools.render_frontier_page import frontier_cases, table_html  # noqa: PLC0415
+
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    rule = css[css.index("\n.site-cell-quiet {") :]
+    rule = rule[: rule.index("}")]
+    assert "color: var(--site-support-color);" in rule
+    assert "font-family: var(--kpress-font-sans);" in rule
+    assert 'class="site-col-credit site-cell-quiet"' in results
+    assert 'class="site-frontier-note site-cell-quiet"' in table_html(frontier_cases())

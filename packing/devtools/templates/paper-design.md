@@ -434,6 +434,20 @@ it.
   (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
   400 units across, fine enough to show large.
 
+- **Wide bleed.** A wide block (`.site-wide`) takes the wide track, `--site-wide`, less
+  the page gutters. Two kinds bleed past it, both capped at one maximum,
+  `--site-bleed-max` (140rem). The atlas grid bleeds at every width.
+  A data table bleeds only above `--site-table-bleed-from` (80rem, 1280 pixels): from
+  there it grows one pixel for each pixel of window, `--site-table-wide`, until it
+  reaches the page gutters or the maximum.
+  So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
+  columns wrap less. The Every Result table is 1104 pixels wide up to 1280, 1424 at 1600
+  and 2024 at 2200; the frontier table, whose own track is 86rem, goes from 1376 to the
+  window less the gutters.
+  The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
+  bleeds with no rule of its own.
+  The replay table is the exception because it keeps to its content.
+
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
   card popover in every other way (square corners, the scrim, the caps label, the close
   cross, Escape and a click outside), and a little larger: up to 62rem wide and 58rem
@@ -495,17 +509,27 @@ it.
   film shows, its length, the shorter 1 to 100 film, the release both are on, and the
   Workbench.
 
-- **Tables.** KPress tables in the sans face, with sortable headers, filters above,
+- **Tables.** Every data table is one component, `.site-table` on a KPress table, in a
+  `.site-table-wrap` that scrolls sideways if the table cannot fit.
+  It is set in the sans face at the note size, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.
+  Rows are separated by a light rule, not zebra stripes, and a row takes the wash on
+  hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit
+  at the bottom of their cell, aligned as their column is: text columns to the start,
+  number columns (`.num`, tabular figures) to the end.
+  The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
+  `.site-col-date`) stay on one line and as narrow as their content, which leaves the
+  spare width to the long text column.
+  Secondary content in a cell, such as a result’s id, a credit or an “after …” list,
+  takes `.site-cell-quiet`, which sets it in the support colour and the sans face.
+  It keeps the table’s size, so the quiet text does not become harder to read.
+  Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, the results table becomes one card per row.
   In the results table a result’s standing chip sits under its rungs, and a Standing
   filter selects by it; a date cell says what it dates, `published` or `established`, in
   the support colour. A superseded result’s row reads quieter, its text in the support
   colour, in every site table, by one rule on `tr[data-standing="superseded"]`; its
   chips keep their fills.
-  Quiet secondary text inside a cell, such as a result’s id beside its math or the
-  “after …” part of a credit, is `.site-cell-quiet`: the support colour at the note
-  size.
 
 - **Recent results.** The overview’s Recent Results section is one table, not cards or a
   list: the newest results, newest first, one row each, the same `.site-table` in the

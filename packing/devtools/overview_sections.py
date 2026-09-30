@@ -222,8 +222,8 @@ def results_table(overview: Overview) -> str:
     present = {result.standing for result in overview.results}
     head = (
         "<thead><tr>"
-        '<th data-sort="text">ID</th>'
-        '<th data-sort="num">n</th>'
+        '<th data-sort="text" class="site-col-id">ID</th>'
+        '<th data-sort="num" class="num site-col-n">n</th>'
         '<th class="site-col-result">Result</th>'
         '<th data-sort="text">Credit</th>'
         '<th data-sort="text" title="Verification, confirmation and significance, then '
@@ -253,7 +253,8 @@ def results_table(overview: Overview) -> str:
                 f'<td class="site-col-result"><details><summary>'
                 f"{tex_bounds(result.summary)}</summary>"
                 f"{_detail(result)}</details></td>"
-                f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
+                '<td class="site-col-credit site-cell-quiet" '
+                f'data-value="{_esc(result.credit)}">'
                 f"{_esc(result.credit)}</td>"
                 f'<td class="site-rungs" '
                 f'data-value="{_esc(record["confirmation"] + record["verification"])}">'

@@ -1,7 +1,7 @@
 # Archived: kingbird-squares-in-squares
 
 **Source:** https://kingbird.myphotos.cc/packing/squares_in_squares.html
-**Archived:** 2026-09-30, retrieved 05:33:57 UTC; the server reported `Last-Modified: Thu, 24 Sep 2026 15:18:52 GMT`. Replaces the capture of 2026-08-22 (HTML SHA-256 `d06590beefba61573f5ef2471d4e08afcfe4640bb8135824e0f715d0bb842ac8`), which Git keeps; `python -m devtools.diff_kingbird_catalogue --before REV` compares the two count by count.
+**Archived:** 2026-09-30, retrieved 05:33:57 UTC; the server reported `Last-Modified: Thu, 24 Sep 2026 15:18:52 GMT`. Replaces the capture of 2026-08-22, kept beside it as `kingbird-squares-in-squares-2026-08-22`; `python -m devtools.diff_kingbird_catalogue --before REV` compares two captures count by count.
 **Method:** `curl` plus `html2text==2025.4.15 --body-width=0`, which reproduces the 2026-08-22 transcription byte for byte from its own HTML; the original HTML is preserved alongside as `kingbird-squares-in-squares.html`, SHA-256 `b99c3265430838d1f4f117a81fb2a84b5faa2f4cb5d915a3794adc3bc26a4444`.
 
 ---

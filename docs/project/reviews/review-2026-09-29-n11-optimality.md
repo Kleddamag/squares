@@ -140,9 +140,34 @@ The consumer uses our exact construction and branch primitives, which are byte-i
 to the publisher’s copies: this is fresh residual arithmetic with shared geometry
 source, not an independently derived geometric model.
 
-**No local-isolation theorem has been accepted.** Curvature inequalities, 88
-unavailable-feature margins and the nonlinear feature-to-branch bridge remain open.
-Even their acceptance would leave pose inclusion and complete geometric capture.
+That residual checkpoint alone establishes no local-isolation theorem.
+The subsequent complete local check below discharges its curvature and feature
+obligations.
+
+## Accepted Fixed-T Local Isolation Component
+
+The [local checker](../../../packing/devtools/check_n11_optimality_local_isolation.py)
+returned `PASS_INDEPENDENT_FIXED_T_LOCAL_ISOLATION`. The
+[full receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json)
+and adjacent provenance bind the reviewed implementation, its frozen residual-checker
+dependency, and the two retained proposal objects.
+It checks all 112 features, 88 strict unavailable-feature margins, the 512-to-128
+nonlinear branch mapping, and all 8,448 strict weighted dual inequalities.
+For any proposed nonzero feasible displacement in the anisotropic rectangle, those
+inequalities force its normalized radius to exceed one, a contradiction.
+This isolates the labelled Trump pose at fixed container side T within that rectangle.
+
+The run took **17.298 seconds wall / 17.144 seconds CPU**, **17.98 seconds including
+startup**, under a 45-second internal and 55-second process ceiling.
+Four focused tests include strict-boundary refusal and a retained one-branch run that
+correctly stays incomplete.
+Astra-max review checked the mathematical implications, source identities, full receipt
+and partial control and found no blocker.
+The shared construction primitives remain an explicit trust dependency.
+
+**Pose inclusion, case-438 capture and all 2,180 exclusions remain unaccepted.** The
+receipt sets each corresponding conclusion, including global optimality, to false.
+T-060 remains S5/V0/C1; this component result does not promote the whole theorem.
 
 ## Next Bounded Checks
 
@@ -151,17 +176,14 @@ maps the remaining case census (`think-ncw8`) and candidate ancestry (`think-pgi
 including exact source keys and refusal rules.
 Metadata agreement is not geometric acceptance.
 
-The next slice under `think-pqg7` should bind the exact source and selected input
-hashes, then check local isolation independently before acquiring the whole data store.
-The two proposal payloads above are now retained.
-Acceptance still requires the curvature part of 8,448 dual inequalities and 88
-negative-feature margins, including the complete contact-branch mapping; supplied
-success receipts are not acceptance evidence.
-Any reuse of our exact construction primitives must disclose that they are
-byte-identical to source components.
-Local isolation would still leave pose inclusion and complete geometric capture
-unchecked. Record refusals and counterexamples as carefully as passes, with wall and CPU
-time and complete-domain scope.
+The next slice checks whether every live near-state pose lies in the accepted local
+rectangle. Select the one near-trace object (27,653,954 compressed bytes) and its role
+guard, then check all 136 closed angular rows and 1,542 vertices through the exact
+coordinate conversion.
+This remains conditional on the trace’s geometric ancestry.
+Run the small case census alongside it.
+Record refusals and counterexamples as carefully as passes, with wall and CPU time and
+complete-domain scope.
 
 A source-level reviewer found no critical flaw in the examined center-cover, strict-core
 inclusion, focused-local, frame-bridge and $U$-to-$T$ implications, conditional on their

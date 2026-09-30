@@ -1,0 +1,20 @@
+{
+  "schema": "sqpack.n11-fixed-T-local-isolation-receipt.v1",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "input_provenance": "../local-dual-residual/provenance.json",
+  "compressed_input_objects": [
+    "../local-dual-residual/objects/ffe9f89d40a9538ec9a10d8700999f05483d0ccfad17b84d430590da7dd65889.gz",
+    "../local-dual-residual/objects/9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3.gz"
+  ],
+  "checker_path": "packing/devtools/check_n11_optimality_local_isolation.py",
+  "checker_sha256": "4e64b3de55e1dafec6f8f976aaa6395218801d6c7111f8f5e22cdf2bb99b6ccc",
+  "residual_checker_path": "packing/devtools/check_n11_optimality_local_dual.py",
+  "residual_checker_sha256": "2078773593607d3da54f4d6fe7088c5fed224309837d712b030c75d9be04e1f1",
+  "result_sha256": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
+  "partial_result_sha256": "61d900c7a416c20ceef65ada68041f0d82a246e08dbf806dcceead0bb97ef45f",
+  "executed_from": "packing/",
+  "full_command": "source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh; /usr/bin/time -p /opt/homebrew/bin/timeout 55s .venv/bin/python3 -B -m devtools.check_n11_optimality_local_isolation --weighted /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/weighted.json --focused /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/focused.json --branch-limit 128 --max-seconds 45 --output /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/local-full-result.json",
+  "partial_command": "source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh; /usr/bin/time -p /opt/homebrew/bin/timeout 55s .venv/bin/python3 -B -m devtools.check_n11_optimality_local_isolation --weighted /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/weighted.json --focused /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/focused.json --branch-limit 1 --max-seconds 45 --output /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-local/local-partial-result.json",
+  "scope": "Exact fixed-T local isolation inside the supplied anisotropic rectangle with shared geometry source; pose-domain inclusion, case-438 capture, global exclusions, and global optimality are not checked."
+}

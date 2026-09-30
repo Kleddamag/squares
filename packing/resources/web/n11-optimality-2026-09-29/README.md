@@ -29,6 +29,10 @@ retains two further objects totaling 1,560,204 compressed bytes and checks all 8
 signed-coordinate residuals. Its status remains incomplete: curvature, feature margins
 and geometric capture are separate obligations. Adjacent provenance and replay files
 bind the inputs and implementation, including shared source primitives.
+The later [fixed-T local-isolation receipt](receipts/local-isolation/result.json)
+confirms all curvature, feature-margin and nonlinear-branch obligations using the same
+two objects. It isolates the labelled Trump pose inside the supplied rectangle;
+pose inclusion, capture and global optimality remain unproved here.
 The remaining payloads have not been acquired for this packet.
 The symmetry check passed conditionally; it does not establish global optimality.
 The source’s publication note says the privacy-normalized public derivative has not had

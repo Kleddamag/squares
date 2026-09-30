@@ -724,8 +724,14 @@ explainer” at `../` to the overview.
 ### Components
 
 - `packing/devtools/render_overview.py`: the command line (`--update`, `--check`,
-  `--output`), `RENDER_INPUTS`, the page registry and shell that the modules below plug
-  into, and the overview page itself.
+  `--output`), `RENDER_INPUTS` gathered from every part, the page registry, the shell
+  (`templates/site-shell.html`) and the footer.
+- `packing/devtools/site_kit.py`: what every renderer shares without importing another:
+  the site’s name, the navigation bar, and the `Page` and `Asset` types the parts
+  return.
+- `packing/devtools/overview/site-math.js`: typesets each page’s formulas through the
+  explainer’s math runtime and marks the page `math-ready`.
+- `packing/devtools/overview_page.py`: the overview page itself.
 - `packing/devtools/overview_data.py`: the data layer, one typed model of the register,
   case files, atlas citations, bibliography credit and release stamp.
 - `packing/devtools/overview_media.py`: the preview images, the stripped drawings, and
@@ -860,7 +866,7 @@ integration, commits and the beads.
 | Lane | Deliverable | Files it owns |
 | --- | --- | --- |
 | A. Data | `registered`, `ai_assistance`, the notable-sources registry, `grouped_results()`, `overview_data.py` | `results.schema.yaml`, `results.yaml`, `bibliography.yaml` and its schema, `notable-sources.yaml` and its schema, `check_notable_sources.py`, `state_ai_assistance.py`, `check_results.py`, `render_results.py`, `significance.py`, `overview_data.py`, `test_overview_data.py` |
-| B. Overview page and design system | the overview’s sections, cards, popovers, chips, nav, hero and favicon, `site-design.md` | the overview-page part of `render_overview.py`, `overview-article.md`, `site-nav.html`, `site.css`, `site-design.md`, `overview/*.js`, `tsconfig.overview.json`, `test_overview_page.py` |
+| B. Overview page and design system | the overview’s sections, cards, popovers, chips, nav, hero and favicon, `site-design.md` | `overview_page.py`, `overview-article.md`, `site-nav.html`, `site.css`, `site-design.md`, `overview/*.js`, `tsconfig.overview.json`, `test_overview_page.py` |
 | C. Media | `PUBLISHED_FILMS`, the second poster, previews and drawings, the same-origin rule, the media check | `release.py`, the poster asset, `overview_media.py`, `published_media.py`, `test_overview_media.py` |
 | D. Other pages | the frontier atlas and tutorial pages, the explainer’s move, notice and film links, the document-map summaries | `site_pages.py`, `frontier-article.md`, `render_explainer.py`, `explainer-article.md`, `explainer-shell.html`, `build_site.py`, `document-map.*`, `check_documentation.py`, `test_site_pages.py` |
 

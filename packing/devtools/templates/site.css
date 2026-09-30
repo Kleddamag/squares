@@ -1,0 +1,33 @@
+/* The site's additions to the kpress design system, written only in kpress tokens so they
+   follow the theme and the print rules. Each rule is described in site-design.md. */
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--kpress-font-sans);
+}
+
+.site-nav-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer {
+  padding: 1.5rem 1rem 2rem;
+  font-family: var(--kpress-font-sans);
+  font-size: 0.85em;
+  text-align: center;
+}
+
+@media print {
+  .site-nav {
+    display: none;
+  }
+}

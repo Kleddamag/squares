@@ -1,0 +1,11 @@
+{
+  // The published site's own pages: the overview, the frontier atlas and the tutorial.
+  // Classic scripts inlined by `devtools.render_overview`, under the shared floor with no
+  // relaxed flag.
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "packing/devtools/overview/**/*.js",
+    "packing/devtools/overview/**/*.d.ts",
+    "packing/devtools/probes/explainer.d.ts"
+  ]
+}

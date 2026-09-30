@@ -1312,6 +1312,77 @@ refused publisher leaf digests remain refused.
 This source inspection accepts no additional capture transition, but identifies no
 additional analytic premise for the remaining composition.
 
+## Generic Partner-Collision Admission
+
+Shared checker revision
+`722e654fbf426d9db3a799458c075378814da632b29a23c4b514e24a38a19a7c` admits partner
+collisions through the
+[partner helper](../../../packing/devtools/n11_nonfield_partner.py), SHA-256
+`2928f0371a6442ca405f0d13c01c52022da87a1ef0b8dfaf0ae77613b7987a0d`. Each used partner
+cover partitions the complete closed angle interval and resolves its references against
+the same accepted predecessor state used by the query rows.
+Every live partner domain equals the reconstructed predecessor hull, and its core lies
+strictly inside every square throughout that row’s interval.
+This profile refuses partner self-hull cuts and empty live families used for collision.
+
+The helper independently proves every proposed collision polygon using the reviewed
+universal Minkowski-facet inequalities; publisher status and row counts provide no
+geometric premise. Proving collision throughout the larger pre-wall query domain is
+conservative. The row cover still targets the independently required legal domain, and
+residual ownership and support calculations retain all proposed residual vertices.
+Parallel rows receive the same admitted partner covers and accepted prior state.
+The checker pins the helper, frozen collision checker, and its dependency closure before
+and after execution, then retains the existing complete-state and terminal-contradiction
+gates. Seventeen focused controls pass independently in 1.10 seconds, with two selected
+slow tests excluded.
+This approves the supported one-node implementation; it grants no case exclusion from
+the source-shaped 1658 row diagnostic.
+
+## Capture Root-Node Continuation Contract
+
+The [root-node continuation](../../../packing/devtools/check_n11_capture_root_node.py),
+reviewed at SHA-256 `7642b10e0ed2021dda95f0f9b5f73f6286f471877c46b3c807760db52f7c910b`,
+admits the fixed first-step execution as an explicit premise.
+It reconstructs the phase-two support rows once, replaces owner 15 with the accepted
+first-step state, and thereafter resolves query and used partner references against the
+immediately preceding accepted pose rows.
+Each complete update checks its full closed angular cover, common kernel, exact
+compression, and following prior hulls before promoting ownership or pose state.
+An independently checked complete empty partner cover already contradicts the existence
+of that partner, so the dedicated empty-partner rule is sound.
+
+The final partial step must be step 13, cover a proper initial angle interval, and have
+no kernel or compression to promote.
+The source’s final groups, intervals, references, residuals, and outer domains must
+match the state reconstructed from complete updates.
+Source, premise, and helper identities and the deadline are checked before final
+acceptance. This source review permits the bounded step-one pilot; neither the pilot nor
+this review accepts the complete root node, branch tree, or candidate capture.
+
+## Exact Integer Collision Predicates
+
+The [integer collision helper](../../../packing/devtools/n11_integer_collision.py),
+SHA-256 `4a1f71cdc96134af1083c84717912b73801b07933a8f7cd2eff8b998b31eab98`, represents
+each point as $(X/Z,Y/Z)$ with $Z>0$. Its determinant and lexicographic comparisons
+therefore have the exact affine orientation and ordering signs, including differently
+scaled representations of the same point.
+For successive counterclockwise hull vertices $a,b$, the computed facet coefficients are
+the rational facet multiplied by the positive factor $Z_aZ_b$. The minimum center
+projection and final region inequality likewise cross-multiply only positive
+denominators. Thus the helper proves the same universal Minkowski containment with exact
+closed boundary equality, without rational normalization in the inner loop.
+
+Six focused controls independently pass in 0.10 seconds.
+They cover random rational hulls with scaled duplicates, every-partner necessity, and
+rational oblique facets with signed translated centers and boundary perturbations of
+$10^{-60}$. The
+[three-row comparison](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/collision-integer-benchmark.json),
+SHA-256 `b5b9c1d9eafc11c8e0130ac02f07f63e54c30cdc4eecec830bca2ec36aa5ac37`, records the
+same facet-vertex counts and unprofiled kernel CPU speedups from 4.607 to 4.920. Those
+measurements give no additional proof credit or whole-replay speed guarantee.
+Consumers must still establish strict full-angle core ownership and complete accepted
+partner pose covers, and pin this helper and the frozen reference dependency closure.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

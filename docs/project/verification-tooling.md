@@ -53,12 +53,35 @@ adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
 Subsequent complete field batches establish the entire 1,904-case field union.
-The independent generic checkers accept nineteen further cases, including reviewed
-pilots 2095, 2135 and 2129 and sixteen complete executions in parallel batches.
-The exact union contains 1,923 exclusions, leaving 257. All 14 capture-root rounds pass,
+The independent generic checkers accept twenty-three further cases, including reviewed
+pilots 2095, 2135 and 2129 and twenty complete executions in parallel batches.
+The exact union contains 1,927 exclusions, leaving 253. All 14 capture-root rounds pass,
 including 154 owner updates, 16,551 closed rows and 1,060 owned additions.
 Actual geometric executions plus the Astra-reviewed source and receipt chain establish
-conditional root ownership; subsequent capture remains open.
+conditional root ownership.
+The first complete capture owner update also passes all 217 rows and 3,173,632 exact
+collision inequalities, including the common kernel, compressed additions and next-state
+join; subsequent capture remains open.
+The
+[exact exclusion inventory](../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
+and
+[dated mathematical reviews](reviews/review-2026-09-29-n11-optimality-census-contract.md)
+are the acceptance record; in-flight batch successes await completed executor records
+and review before joining that union.
+
+The T-060 geometry path has two reviewed accelerators: the
+[exact union sweep](../../packing/devtools/n11_fast_exact_cover.py), measured at 1.892
+times the reference row CPU speed with complete-case parity, and the optional
+[integer collision kernel](../../packing/devtools/n11_integer_collision.py).
+The latter removes repeated rational normalization using exact homogeneous coordinates
+and positive-denominator cross-multiplication.
+Three pinned capture rows run
+[4.607 to 4.920 times faster in kernel CPU](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/collision-integer-benchmark.json),
+with identical facet checks.
+Its mathematical review and rational boundary controls pass; source-bound consumer
+integration and complete-step parity remain pending.
+These are kernel measurements, not whole-proof speedups.
+This path is separate from the optional Rust rectangle verifier described below.
 The
 [current verification checkpoint](reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 separates these obligations and their evidence.

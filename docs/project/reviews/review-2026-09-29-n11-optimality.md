@@ -20,9 +20,9 @@ No result that landed from the current upstream main branch closes this gap.
 
 ## Independent Verification Checkpoint
 
-Independent checks accept **1,923 of the 2,180 required exclusions**: all 1,904 cases in
-the source field-certificate union and nineteen generic cases, leaving 257. This is a
-case count, not a percentage of the proof.
+Independent checks accept **1,927 of the 2,180 required exclusions**: all 1,904 cases in
+the source field-certificate union and twenty-three generic cases, leaving 253. This is
+a case count, not a percentage of the proof.
 The
 [field receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
 records each contributing receipt and hash.
@@ -42,9 +42,9 @@ The remaining obligations have different acceptance rules:
 | Obligation | Accepted scope | Remaining scope |
 | --- | --- | --- |
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
-| Other exclusions | Nineteen generic cases, including reviewed pilots 2095, 2135 and 2129; all remaining source dependencies pinned | 12 baseline generic cases, 76 extension cases, and 169 returned cases: 257 distinct cases requiring independent geometric checks. These need 254 sequential checks and three special adapters. |
+| Other exclusions | Twenty-three generic cases, including reviewed pilots 2095, 2135 and 2129; all remaining source dependencies pinned | 8 baseline generic cases, 76 extension cases, and 169 returned cases: 253 distinct cases requiring independent geometric checks. These need 250 sequential checks and three special adapters. |
 | Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual accepted geometric executions and the reviewed chain establish conditional root ownership. Later capture transitions remain open. |
-| Capture branches | Structural graph and conditional pose inclusion | Actual geometric transitions, branch coverage, ancestry, and final-state binding. |
+| Capture branches | Structural graph, conditional pose inclusion, and the first complete capture owner update | Remaining geometric transitions, branch coverage, ancestry, and final-state binding. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
 
 Astra-max has reviewed the exact field rules and strict-seed/owner-pilot argument.
@@ -77,8 +77,13 @@ The first
 [geometric transition row](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-transition-row0/result.json)
 now passes all 149 partner-cover rows, 34,224 exact universal collision inequalities,
 closed residual coverage, eight common-core planes and the outer supports.
-Astra-max reviewed this single-row argument; the remaining 216 rows of this step and
-subsequent capture steps remain open.
+The subsequent
+[complete first-step receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/result.json)
+accepts all 217 rows, 3,173,632 collision facet inequalities, the 60-point common
+kernel, ten exact additions and the complete next-prior hull join in 64.92 seconds.
+Astra-max reviewed its source and final receipt.
+Subsequent capture steps remain open; the step-one reference pilot reached its selected
+ceiling without promoting state.
 The
 [generic receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json)
 accepts case 2095 after all 77 seed points, 352 seed rows and 160 sequential update rows

@@ -405,7 +405,7 @@ def check_step(
     finally:
         if executor is not None:
             executor.shutdown(wait=True, cancel_futures=True)
-    if len(selected_rows) < len(rows):
+    if row_limit > 0:
         incomplete_at_row_limit(len(selected_rows), len(rows))
     additions: Polygon = []
     if step["complete"] is True:

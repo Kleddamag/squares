@@ -6,7 +6,7 @@
 
 <!-- The explainer has a section of this name, and an old explainer link to it must
      still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
-<h2 id="the-problem">The Square Packing Problem</h2>
+<h2 id="the-problem" class="site-title">The Square Packing Problem</h2>
 
 How small can a square be and still hold $n$ unit squares that do not overlap?
 Call the answer $s(n)$. The squares may be rotated, and they may touch.

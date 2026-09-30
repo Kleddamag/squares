@@ -93,11 +93,16 @@ body {
   padding-block-start: calc(var(--kpress-font-size-base) * 2);
   text-align: center;
 }
-.site-hero h1 {
+/* The page title: the sans face in caps at 1.5 times the sans base, centred. A page's
+   `h1` in its hero takes it, and so does any heading given `site-title` (the homepage,
+   which has no `h1`, sets its first section this way). */
+.site-hero h1,
+.kpress .site-title {
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * 1.5);
   font-weight: var(--site-font-weight-sans-medium);
   letter-spacing: var(--kpress-caps-spacing);
+  text-align: center;
   text-transform: var(--kpress-caps-transform);
 }
 /* A page's subtitle, such as "Every tracked case, n = 1 to 324": the sans face a step

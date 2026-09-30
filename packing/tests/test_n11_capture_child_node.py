@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import time
 from fractions import Fraction as Q
 from typing import Any
 
@@ -126,6 +127,78 @@ def test_r11_parent_requires_all_near13_updates_complete() -> None:
         )
     with pytest.raises(ValueError, match="accepted complete pinned child"):
         child.admit_parent({**accepted, "final_state_canonical_sha256": "wrong"}, pin)
+
+
+def test_extra_outer_support_is_checked_before_standard_superset_adapter() -> None:
+    world = [(Q(), Q()), (Q(4), Q()), (Q(4), Q(4)), (Q(), Q(4))]
+    residual = [["1", "1"], ["2", "1"], ["2", "2"], ["1", "2"]]
+    vertices = child.pilot.convex(residual)
+    bounds = [
+        {
+            "normal": [nx, ny],
+            "upper": str(max(nx * x + ny * y for x, y in vertices) + 1),
+        }
+        for nx, ny in child.primitive.SUPPORT_NORMALS
+    ]
+    bounds.append({"normal": [1, 2], "upper": "6"})
+
+    def outer(items: list[dict[str, Any]]) -> list[list[str]]:
+        lines = [
+            (Q(item["normal"][0]), Q(item["normal"][1]), Q(item["upper"])) for item in items
+        ]
+        return [[str(x), str(y)] for x, y in child.geometry.intersect(world, lines)]
+
+    row = {
+        "residual_polygons": [residual],
+        "outer_bounds": bounds,
+        "outer_domain": outer(bounds),
+    }
+    original = copy.deepcopy(row)
+    budget = child.geometry.Budget(time.monotonic() + 10, 10000)
+    adapted = child.adapt_outer_support(row, world, budget)
+    assert row == original
+    assert len(adapted["outer_bounds"]) == 8
+    assert child.primitive.same(
+        child.pilot.points(adapted["outer_domain"]),
+        child.geometry.intersect(
+            world,
+            [
+                (Q(item["normal"][0]), Q(item["normal"][1]), Q(item["upper"]))
+                for item in bounds[:-1]
+            ],
+        ),
+    )
+    assert not child.primitive.same(
+        child.pilot.points(row["outer_domain"]), child.pilot.points(adapted["outer_domain"])
+    )
+    with pytest.raises(ValueError, match="cuts residual"):
+        child.adapt_outer_support(
+            {**row, "outer_bounds": [*bounds[:-1], {"normal": [1, 2], "upper": "5"}]},
+            world,
+            budget,
+        )
+    with pytest.raises(ValueError, match="source outer domain differs"):
+        child.adapt_outer_support({**row, "outer_domain": []}, world, budget)
+    with pytest.raises(ValueError, match="source outer domain differs"):
+        child.adapt_outer_support(
+            {**row, "outer_bounds": [*bounds[:-1], {"normal": [-1, -2], "upper": "6"}]},
+            world,
+            budget,
+        )
+    with pytest.raises(ValueError, match="duplicate outer-support direction"):
+        child.adapt_outer_support(
+            {**row, "outer_bounds": [*bounds, {"normal": [2, 4], "upper": "12"}]},
+            world,
+            budget,
+        )
+    with pytest.raises(ValueError, match="missing standard outer-support direction"):
+        child.adapt_outer_support({**row, "outer_bounds": [*bounds[1:]]}, world, budget)
+    with pytest.raises(ValueError, match="zero common-core normal"):
+        child.adapt_outer_support(
+            {**row, "outer_bounds": [*bounds, {"normal": [0, 0], "upper": "0"}]},
+            world,
+            budget,
+        )
 
 
 def test_last_complete_update_uses_final_state_instead_of_missing_successor() -> None:

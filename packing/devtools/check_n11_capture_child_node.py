@@ -397,6 +397,51 @@ def _worker_init(
     _WorkerState.budget, _WorkerState.owner, _WorkerState.step_index = assignment
 
 
+def adapt_outer_support(
+    row: dict[str, Any], world: pilot.Polygon, budget: geometry.Budget
+) -> dict[str, Any]:
+    """Check every source support, then adapt its eight standard supports for root.check_row."""
+
+    vertices = [point for region in row["residual_polygons"] for point in pilot.convex(region)]
+    if not vertices:
+        return row
+    bounds = row["outer_bounds"]
+    require(isinstance(bounds, list), "outer-support inventory")
+    by_direction: dict[tuple[Q, Q], tuple[Q, Q, Q]] = {}
+    lines: list[tuple[Q, Q, Q]] = []
+    for item in bounds:
+        root.remaining(budget)
+        nx, ny = geometry.point(item["normal"])
+        upper = Q(item["upper"])
+        direction_x, direction_y, normalized_upper = primitive.normalized_line(nx, ny, upper)
+        direction = (direction_x, direction_y)
+        require(direction not in by_direction, "duplicate outer-support direction")
+        require(
+            all(nx * x + ny * y <= upper for x, y in vertices),
+            "outer support cuts residual",
+        )
+        by_direction[direction] = (direction_x, direction_y, normalized_upper)
+        lines.append((nx, ny, upper))
+    require(
+        all((Q(nx), Q(ny)) in by_direction for nx, ny in primitive.SUPPORT_NORMALS),
+        "missing standard outer-support direction",
+    )
+    require(
+        primitive.same(pilot.points(row["outer_domain"]), geometry.intersect(world, lines)),
+        "source outer domain differs from all supports",
+    )
+    standard = [by_direction[(Q(nx), Q(ny))] for nx, ny in primitive.SUPPORT_NORMALS]
+    standard_outer = geometry.intersect(world, standard)
+    root.remaining(budget)
+    return {
+        **row,
+        "outer_bounds": [
+            {"normal": [int(nx), int(ny)], "upper": str(upper)} for nx, ny, upper in standard
+        ],
+        "outer_domain": [[str(x), str(y)] for x, y in standard_outer],
+    }
+
+
 def _worker_row(task: tuple[int, dict[str, Any]]) -> tuple[int, int, int, list[tuple[Q, Q, Q]]]:
     prior_rows, groups, world = _WorkerState.prior_rows, _WorkerState.groups, _WorkerState.world
     covers, budget = _WorkerState.covers, _WorkerState.budget
@@ -412,8 +457,9 @@ def _worker_row(task: tuple[int, dict[str, Any]]) -> tuple[int, int, int, list[t
     ):
         raise ValueError("child row worker state missing")
     index, row = task
+    checked_output = adapt_outer_support(row, world, budget)
     return root.check_row(
-        row,
+        checked_output,
         index,
         step_index,
         owner,

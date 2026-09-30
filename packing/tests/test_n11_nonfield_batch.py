@@ -8,7 +8,20 @@ from typing import Any
 
 import pytest
 
-from devtools.prepare_n11_nonfield_batch import checked_bytes, digest
+from devtools.prepare_n11_nonfield_batch import (
+    INPUT_ARCHIVE,
+    PACKET,
+    checked_bytes,
+    digest,
+    object_directory_allowed,
+)
+
+
+def test_bulk_sources_are_confined_to_pinned_archive_or_packet(tmp_path: Path) -> None:
+    assert object_directory_allowed(PACKET / "receipts/nonfield-sources/objects")
+    assert object_directory_allowed(INPUT_ARCHIVE / "objects")
+    assert not object_directory_allowed(INPUT_ARCHIVE.parent / "other-revision")
+    assert not object_directory_allowed(tmp_path)
 
 
 def test_reused_object_requires_both_byte_identities(tmp_path: Path) -> None:

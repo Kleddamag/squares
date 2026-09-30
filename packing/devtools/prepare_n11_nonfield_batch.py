@@ -29,6 +29,14 @@ from devtools.prepare_n11_nonfield_manifest import (
     strict_json,
 )
 
+INPUT_ARCHIVE = REPO / "attic/n11-proof-inputs" / REVISION
+
+
+def object_directory_allowed(path: Path) -> bool:
+    """Keep bulk reproducible inputs in the ignored, durable source archive."""
+    resolved = path.resolve()
+    return resolved.is_relative_to(PACKET) or resolved.is_relative_to(INPUT_ARCHIVE)
+
 
 def checked_bytes(path: Path, pin: dict[str, Any]) -> bytes:
     """Bound both compressed and decoded input before checking its identity."""
@@ -98,7 +106,9 @@ def main() -> None:
         "acquisition byte budget outside allowed range",
     )
     require(not args.out.exists(), "use a new receipt path")
-    require(args.objects.resolve().is_relative_to(PACKET), "retain source objects in packet")
+    require(
+        object_directory_allowed(args.objects), "source objects require packet or pinned archive"
+    )
     require(args.out.resolve().is_relative_to(PACKET), "retain intake receipt in packet")
     started = time.monotonic()
     deadline = started + args.max_seconds
@@ -170,6 +180,7 @@ def main() -> None:
         "intake_tool_sha256": digest(before),
         "manifest_helper_sha256": digest(helper_before),
         "selected_case_ids": [case["mask_index"] for case in cases],
+        "objects_directory": args.objects.resolve().relative_to(REPO).as_posix(),
         "objects": results,
         "compressed_bytes": sum(pin["compressed_bytes"] for pin in pins),
         "decoded_bytes": sum(pin["decoded_bytes"] for pin in pins),

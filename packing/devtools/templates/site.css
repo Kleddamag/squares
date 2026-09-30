@@ -198,7 +198,7 @@ body {
   color: inherit;
   position: relative;
   text-decoration: none;
-  transition: background-color 120ms ease;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
 .kpress button.site-card {
   background: none;
@@ -211,30 +211,97 @@ body {
 .kpress :is(a, button).site-card:focus-visible {
   background: var(--site-wash);
 }
+/* ---------- Arrows ----------
+   Every arrow on the site is this one drawing, never a typed character: the text face
+   has no glyphs for most arrows, and each browser drew them from a different fallback
+   font (paper-design.md, Arrows). A shaft and an open head in a 16-unit box, stroke 1.6
+   with round caps and joins, painted as a mask over the text colour. Each direction is
+   the drawing turned: right as drawn, left mirrored, down and up a quarter turn,
+   external an eighth turn back. The sort pair is the one other shape. Inline markup is
+   `overview_sections.arrow_icon`; the rest are the pseudo-elements named here. */
+:root {
+  --site-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M9 3.5 13.5 8 9 12.5'/%3E%3C/svg%3E");
+  --site-arrow-sort: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13.5v-11M2 5.5l3-3 3 3M11 2.5v11M8 10.5l3 3 3-3'/%3E%3C/svg%3E");
+}
+/* Kept at low specificity, so each place an arrow sits can place and time it. */
+.site-icon-arrow,
+.kpress
+  :where(.site-card, .site-popover-action):where(
+    [data-go="scroll"],
+    [data-go="external"],
+    [data-go="page"]
+  )::after,
+:where(.site-table th[data-sort])::after {
+  --site-arrow-turn: 0deg;
+  --site-arrow-flip: 1;
+  --site-arrow-nudge: 2px 0;
+  background-color: currentColor;
+  block-size: 1em;
+  display: inline-block;
+  flex: none;
+  inline-size: 1em;
+  margin-inline-start: 0.3em;
+  mask: var(--site-arrow) center / contain no-repeat;
+  rotate: var(--site-arrow-turn);
+  scale: var(--site-arrow-flip) 1;
+  transition: translate var(--site-hover-duration) var(--site-hover-easing);
+  vertical-align: -0.125em;
+}
+.kpress
+  :where(.site-card, .site-popover-action):where(
+    [data-go="scroll"],
+    [data-go="external"],
+    [data-go="page"]
+  )::after,
+:where(.site-table th[data-sort])::after {
+  content: "";
+}
+.site-icon-arrow[data-arrow="left"] {
+  --site-arrow-flip: -1;
+  --site-arrow-nudge: -2px 0;
+  margin-inline: 0 0.3em;
+}
+.site-icon-arrow[data-arrow="down"],
+.kpress :is(.site-card, .site-popover-action)[data-go="scroll"]::after {
+  --site-arrow-turn: 90deg;
+  --site-arrow-nudge: 0 2px;
+}
+.site-icon-arrow[data-arrow="up"] {
+  --site-arrow-turn: -90deg;
+  --site-arrow-nudge: 0 -2px;
+}
+.site-icon-arrow[data-arrow="external"],
+.kpress :is(.site-card, .site-popover-action)[data-go="external"]::after {
+  --site-arrow-turn: -45deg;
+  --site-arrow-nudge: 1.5px -1.5px;
+}
+/* The one hover: an arrow in a link or button moves a little the way it points and keeps
+   the element's colour. A disabled button's arrow stays still; a card's corner icon fades
+   in with the card instead (below); reduced motion moves nothing. */
+:is(a, button):not(:disabled):is(:hover, :focus-visible) .site-icon-arrow,
+.kpress .site-popover-action:is(:hover, :focus-visible)::after {
+  translate: var(--site-arrow-nudge);
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(a, button):not(:disabled):is(:hover, :focus-visible) .site-icon-arrow,
+  .kpress .site-popover-action:is(:hover, :focus-visible)::after {
+    translate: none;
+  }
+}
+
+/* A card's corner icon: the site's arrow, gray, fading in with the card's wash. */
 .kpress :is(a, button).site-card::after {
   color: var(--kpress-doc-muted);
-  font-family: var(--kpress-font-sans);
-  inset-block-start: 0.7rem;
+  inset-block-start: 0.8rem;
   inset-inline-end: 0.8rem;
+  margin: 0;
   opacity: 0;
   position: absolute;
-  transition: opacity 120ms ease;
+  transition: opacity var(--site-hover-duration) var(--site-hover-easing);
 }
 .kpress :is(a, button).site-card:hover::after,
 .kpress :is(a, button).site-card:focus-visible::after {
   opacity: 1;
-}
-.kpress .site-card[data-go="scroll"]::after,
-.kpress .site-popover-action[data-go="scroll"]::after {
-  content: "\2193";
-}
-.kpress .site-card[data-go="external"]::after,
-.kpress .site-popover-action[data-go="external"]::after {
-  content: "\2197";
-}
-.kpress .site-card[data-go="page"]::after,
-.kpress .site-popover-action[data-go="page"]::after {
-  content: "\2192";
 }
 
 /* A card's optional hero: a small picture heading it, edge to edge above its label, in
@@ -261,12 +328,24 @@ body {
   object-fit: cover;
   object-position: top;
 }
+/* The chip under a hero card's icon is its own box, since the icon is a mask. */
 .kpress :is(a, button).site-card:has(.site-card-hero)::after {
+  inset-block-start: calc(0.5rem + 0.3em);
+  inset-inline-end: calc(0.5rem + 0.3em);
+}
+.kpress :is(a, button).site-card:has(.site-card-hero)::before {
   background: var(--kpress-doc-bg);
+  block-size: 1.6em;
+  content: "";
+  inline-size: 1.6em;
   inset-block-start: 0.5rem;
   inset-inline-end: 0.5rem;
-  line-height: 1;
-  padding: 0.2rem 0.35rem;
+  opacity: 0;
+  position: absolute;
+  transition: opacity var(--site-hover-duration) var(--site-hover-easing);
+}
+.kpress :is(a, button).site-card:is(:hover, :focus-visible)::before {
+  opacity: 1;
 }
 
 /* A card's popover shows where the card leads, another page framed in its embed
@@ -309,6 +388,9 @@ body {
   background: oklch(0% 0 0 / 0.12);
 }
 .site-popover .site-popover-close {
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
   background: none;
   border: 0;
   color: var(--kpress-doc-muted);
@@ -402,6 +484,11 @@ body {
   gap: 0.5rem;
   padding: 0.45rem 0.9rem;
   text-decoration: none;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+}
+.kpress .site-popover a.site-popover-action::after {
+  align-self: center;
+  margin: 0;
 }
 .kpress .site-popover a.site-popover-action:hover,
 .kpress .site-popover a.site-popover-action:focus-visible {
@@ -496,18 +583,22 @@ body {
   user-select: none;
   white-space: nowrap;
 }
+/* The sort indicator: the site's sort pair while unsorted, its arrow once sorted. */
 .site-table th[data-sort]::after {
-  content: " ↕";
   color: var(--kpress-doc-muted);
   font-size: 0.8em;
+  mask-image: var(--site-arrow-sort);
+  transition: none;
 }
 .site-table th[aria-sort="ascending"]::after {
-  content: " ↑";
+  --site-arrow-turn: -90deg;
   color: var(--kpress-doc-accent);
+  mask-image: var(--site-arrow);
 }
 .site-table th[aria-sort="descending"]::after {
-  content: " ↓";
+  --site-arrow-turn: 90deg;
   color: var(--kpress-doc-accent);
+  mask-image: var(--site-arrow);
 }
 .site-table td {
   vertical-align: top;
@@ -1061,6 +1152,7 @@ body {
   padding: 0.3rem;
   text-align: center;
   text-decoration: none;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
 .kpress .site-atlas-cell:is(:hover, :focus-visible) {
   background: var(--site-wash);
@@ -1251,6 +1343,7 @@ body {
   font-size: 1.1rem;
   inline-size: 2.75rem;
   block-size: 2.4rem;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
 .site-atlas-pop-step button:is(:hover, :focus-visible) {
   background: var(--site-wash);
@@ -1259,16 +1352,12 @@ body {
   cursor: default;
   opacity: 0.35;
 }
-/* The stepper's arrow (`overview_sections.step_arrow`): one drawing, the back arrow its
-   mirror, in the button's text colour, so the pair match in every theme and browser. */
-.site-arrow {
+/* The stepper's arrows are the site's arrow, left and right, centred in the button. */
+.site-atlas-pop-step .site-icon-arrow {
   block-size: 1.1em;
   display: block;
   inline-size: 1.1em;
   margin: auto;
-}
-.site-arrow-back {
-  transform: scaleX(-1);
 }
 
 /* The gap bar, as the film draws it: a number line from one below the grid bound to two
@@ -1587,6 +1676,7 @@ body {
   color: var(--kpress-doc-muted);
   padding-block: 0.2rem;
   text-align: center;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
 .kpress .site-case-index a[data-status="proved"] {
   color: var(--kpress-doc-accent);

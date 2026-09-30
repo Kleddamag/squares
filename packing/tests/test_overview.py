@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import html.parser
 import re
 from collections import Counter
 
@@ -980,15 +981,132 @@ def test_wrapped_chips_never_touch() -> None:
 
 
 def test_the_atlas_stepper_draws_one_arrow_mirrored() -> None:
-    """Both stepper arrows are the same drawing, the back one mirrored, never the arrow
+    """Both stepper arrows are the site's one arrow, left and right, never the arrow
     characters, which the site's face lacks and browsers draw from mismatched fallbacks."""
     popover = overview_sections.atlas_popover()
     step = popover[popover.index('<span class="site-atlas-pop-step">') :]
-    step = step[: step.index("</span>")]
-    assert "←" not in step
-    assert "→" not in step
-    assert step.count(overview_sections.step_arrow()) == 1
-    assert step.count(overview_sections.step_arrow(back=True)) == 1
+    step = step[: step.index("</span></p>")]
+    assert not ARROW_CHARACTERS.search(step)
+    assert step.count(overview_sections.arrow_icon("right")) == 1
+    assert step.count(overview_sections.arrow_icon("left")) == 1
+    assert overview_sections.step_arrow(back=True) == overview_sections.arrow_icon("left")
+
+
+#: Every arrow a typed character could draw, as characters and as CSS or HTML escapes.
+ARROW_CHARACTERS = re.compile(
+    r"[\u2190-\u21ff\u27f0-\u27ff\u2b00-\u2b0d\u2b60-\u2bff]"
+    r"|\\21[9a-f][0-9a-f]|\\u21[9a-f][0-9a-f]|&(?:[lrudh]arr|nearr|varr);|&#x?21[9a-f]",
+    re.IGNORECASE,
+)
+
+
+class _VisibleText(html.parser.HTMLParser):
+    """The text a reader sees: no styles, scripts, math, or code."""
+
+    SKIP = frozenset({"style", "script", "math", "code", "pre", "svg"})
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.depth = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:  # noqa: ARG002
+        if tag in self.SKIP:
+            self.depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in self.SKIP and self.depth:
+            self.depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self.depth:
+            self.parts.append(data)
+
+
+def _visible_text(page: str) -> str:
+    parser = _VisibleText()
+    parser.feed(page)
+    return "".join(parser.parts)
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_no_arrow_on_a_site_page_is_a_typed_character(name: str) -> None:
+    """Every arrow a site page shows is the one drawn icon set. The one exception is a
+    repository document's own prose, where its author writes an arrow as notation
+    (`experiment → series` in conventions.md): its article may show no more arrows than
+    its Markdown source has, and the page around the article none."""
+    from devtools.site_documents import DOCUMENTS  # noqa: PLC0415
+
+    page = render_overview.PAGES[name]().html
+    sources = {doc.name: doc.source for doc in DOCUMENTS}
+    if name in sources:
+        body = re.search(r"<article\b.*?</article>", page, re.DOTALL)
+        assert body is not None, name
+        written = len(ARROW_CHARACTERS.findall(sources[name].read_text(encoding="utf-8")))
+        assert len(ARROW_CHARACTERS.findall(_visible_text(body.group(0)))) <= written, name
+        page = page.replace(body.group(0), "")
+    assert not ARROW_CHARACTERS.findall(_visible_text(page)), name
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_every_arrow_icon_comes_from_the_one_set(name: str) -> None:
+    """Every inline arrow is `arrow_icon`'s markup, hidden from assistive technology, and
+    no page draws an arrow of its own."""
+    page = render_overview.PAGES[name]().html
+    icons = re.findall(r"<span class=\"site-icon-arrow\"[^>]*></span>", page)
+    allowed = {overview_sections.arrow_icon(d) for d in overview_sections.ARROW_DIRECTIONS}
+    assert set(icons) <= allowed, name
+    assert 'class="site-arrow' not in page
+
+
+def test_the_icon_set_is_one_drawing_in_the_stylesheet() -> None:
+    """The stylesheet draws every arrow from `--site-arrow` (and the sort pair), declared
+    once, and no generated content or site script is an arrow character."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert css.count("--site-arrow: url(") == 1
+    assert css.count("--site-arrow-sort: url(") == 1
+    assert "--site-arrow" not in nav
+    for content in re.findall(r"content:\s*([^;]+);", css):
+        assert not ARROW_CHARACTERS.search(content), content
+    for mask in re.findall(r"mask(?:-image)?:\s*([^;]+);", css):
+        assert re.match(r"var\(--site-arrow(?:-sort)?\)", mask), mask
+    scripts = (render_overview.PACKING / "devtools" / "overview").glob("*.js")
+    for script in scripts:
+        assert not ARROW_CHARACTERS.search(script.read_text(encoding="utf-8")), script.name
+    assert not ARROW_CHARACTERS.search(
+        render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    )
+    with pytest.raises(ValueError, match="unknown arrow direction"):
+        overview_sections.arrow_icon("sideways")
+
+
+#: The stylesheets that carry every hover on the site.
+_HOVER_SHEETS = (
+    render_overview.SITE_CSS,
+    render_overview.SITE_NAV_CSS,
+    EXPLAINER_SHELL,
+)
+
+
+def test_every_hover_runs_on_the_one_motion_token() -> None:
+    """One timing for every hover, declared once where every page reads it, 120 to 150ms
+    ease-out and instant under reduced motion; no transition names its own time or
+    transitions `all`."""
+    nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    duration = re.findall(r"--site-hover-duration:\s*(\d+)ms;", nav)
+    assert [int(d) for d in duration] == [140, 0]
+    assert "--site-hover-easing: ease-out;" in nav
+    timing = "var(--site-hover-duration) var(--site-hover-easing)"
+    assert f"--kpress-transition-fast: {timing};" in nav
+    for sheet in _HOVER_SHEETS:
+        text = sheet.read_text(encoding="utf-8")
+        assert "--site-hover-duration:" not in text or sheet == render_overview.SITE_NAV_CSS
+        for value in re.findall(r"transition:\s*([^;]+);", text):
+            assert not re.search(r"\d(?:m?s)\b", value), (sheet.name, value)
+            assert not re.search(r"\ball\b", value), (sheet.name, value)
+            if value.strip() != "none":
+                assert "var(--site-hover-duration) var(--site-hover-easing)" in value, value
 
 
 def test_every_popover_shares_one_margin_and_close_target() -> None:

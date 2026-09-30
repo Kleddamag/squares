@@ -34,7 +34,7 @@ a verified case bound rests on it now, and otherwise why not.
 
 {{RECENT}}
 
-<p class="site-more"><a href="all-results.html">See all results →</a></p>
+<p class="site-more"><a href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
 
 A reported bound counts here only once its certificate is replayed.
 These are the cases up to $n = 100$ where a source reports a recent lower bound above

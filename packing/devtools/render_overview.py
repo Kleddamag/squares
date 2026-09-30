@@ -528,6 +528,7 @@ def overview_page() -> Page:
         "RECENT": overview_sections.recent_table(overview),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
+        "ARROW_RIGHT": overview_sections.arrow_icon("right"),
     }
     markdown = fill(
         OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name

@@ -379,10 +379,10 @@ it.
     opens it in place.
   - When the card leads to a row, the popover previews the row, read from the same
     record: a result’s claim, why it matters, its rungs and records.
-    A result’s row is on the results page, so its card is a page card, with `→` for its
-    icon, that previews rather than frames: the button, **Open T-NNN in the results
-    table**, goes to `all-results.html#t-nnn`. A row on the overview itself would
-    scroll, with `↓`.
+    A result’s row is on the results page, so its card is a page card, with the right
+    arrow for its icon, that previews rather than frames: the button, **Open T-NNN in
+    the results table**, goes to `all-results.html#t-nnn`. A row on the overview itself
+    would scroll, with the down arrow.
 
   The frame loads only when its popover first opens, so the overview stays light.
   The popover is a native `popover` panel with square corners over a faint scrim, set in
@@ -393,7 +393,8 @@ it.
   0.6rem in from the corner (0.25rem on a phone), washed on hover.
   Only the first block after it keeps clear of it, so the margins stay even everywhere
   else. Its gray corner icon and the popover’s button both show where the button goes:
-  `↓` to a row on this page, `↗` off the site, `→` to another page of the site.
+  down to a row on this page, external off the site, right to another page of the site
+  (Arrows, below).
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
@@ -417,6 +418,46 @@ it.
   `superseded`, `not a bound`) the plain gray, so a reader sees which results still hold
   without the others shouting.
   A novelty chip (`data-novelty`) is always plain gray.
+
+- **Arrows.** Every arrow on the site is one drawing, never a typed character: the
+  site’s text face has glyphs for `↑` and `↓` only, so `←`, `→` and `↗` came from a
+  different fallback font in each browser and no two arrows matched.
+  The drawing is `--site-arrow` in [site.css](site.css), a shaft and an open head in a
+  16-unit box, stroke 1.6 with round caps and joins, held as an SVG data URI and painted
+  as a mask over `currentColor`, so it takes the colour of the text around it in both
+  themes. Each direction is that one drawing turned: **right** as drawn, **left** its
+  mirror, **down** a quarter turn clockwise, **up** a quarter turn back, and
+  **external** an eighth turn back, pointing up and to the right.
+  The one other shape is the sort pair, `--site-arrow-sort`, two small arrows up and
+  down in the same stroke.
+  - Inline markup carries `<span class="site-icon-arrow" data-arrow="right">`, written
+    only by `overview_sections.arrow_icon(direction)`: the atlas popover’s stepper (left
+    and right), a case record’s steps to its neighbours (left before the previous case,
+    right after the next) and the overview’s “See all results” line (right).
+  - The icons CSS draws are pseudo-elements painted from the same token: a card’s corner
+    icon and its popover’s button, chosen by `data-go` (down to a row on this page,
+    external off the site, right to another page of the site, such as **See All
+    Cases**), and a sortable header’s indicator (the sort pair while unsorted, in the
+    muted gray; up or down in the accent once sorted).
+  - The arrow is decorative, `aria-hidden` or generated content, so a link or button
+    keeps its own text or `aria-label` as its name.
+  - **Hover.** On hover or keyboard focus, the arrow in a link or button moves 2px the
+    way it points (external 1.5px up and 1.5px right) on the Motion timing and keeps the
+    element’s colour. A card’s corner icon does not move: it fades in with the card’s
+    wash. A disabled button’s arrow stays still, and under reduced motion no arrow moves.
+  - Sort indicators do not move: a header is a control whose arrow reports a state.
+
+- **Motion.** Every hover and focus change on the site runs on one timing, a fast,
+  smooth ease: `--site-hover-duration` (140ms) and `--site-hover-easing` (`ease-out`),
+  declared in [site-nav.css](site-nav.css) so every page carries them, the explainer and
+  the workbench included, and fed to KPress’s own `--kpress-transition-fast` so its
+  contents rail and footnote links match.
+  A rule transitions only the properties its hover changes (`background-color`, `color`,
+  `border-color`, `opacity`, `translate`), never `all`, and never with a literal
+  duration: `tests/test_overview.py` fails a `transition` in `site.css`, `site-nav.css`
+  or `explainer-shell.html` that names a time instead of the token.
+  Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
+  and no arrow moves.
 
 - **Dimension cards.** Verification at a Glance is one card per scored dimension of the
   rubric, Verification, Confirmation and Significance: the question it answers, then
@@ -448,9 +489,7 @@ it.
   math nodes, never HTML strings.
   It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,
   and the arrow keys, step to the neighbouring case.
-  The two arrows are one drawn SVG arrow (`step_arrow`), the back one mirrored, never
-  the `←` and `→` characters: the site’s text face has no arrow glyphs, so browsers drew
-  the two from different fallback fonts.
+  The two arrows are the site’s arrow, right and left (Arrows, above).
   Opening moves focus to the close cross; closing returns it to the case’s cell.
   On a phone the panel takes the width less half a rem each side, scrolls inside, keeps
   its button in a sticky foot, and has a 2.75rem close target.
@@ -521,8 +560,8 @@ it.
   wrapped rows; it never stacks one chip per line.
   On a phone it takes the results table’s card-per-row form: the result and the date on
   the first line, then the method, the credit and the chips each across the card.
-  No card, popover or bulleted list remains in the section, and the “See all results →”
-  line follows the table.
+  No card, popover or bulleted list remains in the section, and the “See all results”
+  line, with the right arrow, follows the table.
 
 - **Results page.** Every registered result is one row of the results table on its own
   page, `all-results.html`, “Results” in the navigation bar after Frontier.
@@ -533,8 +572,8 @@ it.
   standings, and the table with its filters.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
-  The overview keeps the newest results and ends that table with a “See all results →”
-  line in the sans face at the note size.
+  The overview keeps the newest results and ends that table with a “See all results”
+  line and the right arrow, in the sans face at the note size.
   The table used to be the overview’s Every Result section, and its old addresses still
   arrive: the overview’s `overview/forward.js` sends `#every-result` and any `#t-nnn` to
   the results page with the fragment kept, and every other fragment the overview lacks

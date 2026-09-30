@@ -9,6 +9,28 @@
 :root {
   --site-wash: var(--kpress-doc-surface-hover);
 }
+/* ---------- Motion ----------
+   Every hover and focus change on the site runs on one timing, fast and smooth, here
+   because every page carries this file (paper-design.md, Motion). A rule transitions
+   only the properties its hover changes, never `all`, and never with a literal time.
+   KPress's own hover timing takes the same value, so its contents rail and footnote
+   links match. Reduced motion makes every change instant. */
+:root {
+  --site-hover-duration: 140ms;
+  --site-hover-easing: ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --site-hover-duration: 0ms;
+  }
+}
+/* At every scope KPress declares its token, so this value is the one each finds. */
+:root,
+.kpress,
+.kpress-page-main,
+.kpress-tooltip {
+  --kpress-transition-fast: var(--site-hover-duration) var(--site-hover-easing);
+}
 /* The space above the bar, on every page and at every width: kpress's page top margin,
    narrowed from its 2.5rem so the bar sits close to the top of the window. It sets only
    the padding above the header (kpress's page main, and the application shell below). */
@@ -73,6 +95,9 @@
   font-weight: 550;
   padding: 0.25rem 0.55rem;
   text-decoration: none;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
 }
 .site-nav a:is(:hover, :focus-visible) {
   background: var(--site-wash);
@@ -147,6 +172,9 @@
   display: flex;
   font: inherit;
   padding: 0.3rem 0.45rem;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
 }
 .site-theme-button svg {
   block-size: 1.05rem;
@@ -189,6 +217,9 @@
   gap: 0.55rem;
   padding: 0.35rem 0.55rem;
   text-align: start;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
 }
 .site-theme-menu [role="menuitemradio"]:is(:hover, :focus-visible) {
   background: var(--site-wash);
@@ -304,6 +335,9 @@ nav.site-tabs a {
   font-weight: 550;
   padding: 0.3rem 1.1rem;
   text-decoration: none;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
 }
 nav.site-tabs a + a {
   border-inline-start: 1px solid var(--kpress-doc-border);

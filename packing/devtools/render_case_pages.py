@@ -681,6 +681,7 @@ def _sources(case: dict[str, Any]) -> str:
 
 def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
     """The record's head and its structured part, as one HTML block."""
+    from devtools.overview_sections import arrow_icon  # noqa: PLC0415
     from devtools.repo_links import branch_file  # noqa: PLC0415
 
     n = case["n"]
@@ -690,8 +691,16 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
     if case["reported_status"] != status:
         chip += f' <span class="site-credit">reported {_esc(case["reported_status"])}</span>'
     star = ' <span class="site-star" title="Recent lower bound">\u2605</span>' if recent else ""
-    previous = f'<a href="#n-{n - 1}" rel="prev">← n = {n - 1}</a>' if n > first else ""
-    following = f'<a href="#n-{n + 1}" rel="next">n = {n + 1} →</a>' if n < last else ""
+    previous = (
+        f'<a href="#n-{n - 1}" rel="prev">{arrow_icon("left")}n = {n - 1}</a>'
+        if n > first
+        else ""
+    )
+    following = (
+        f'<a href="#n-{n + 1}" rel="next">n = {n + 1}{arrow_icon("right")}</a>'
+        if n < last
+        else ""
+    )
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     evidence = list(dict.fromkeys(case["evidence"]))
     source = f"packing/frontier/n-{n:03d}.md"

@@ -253,12 +253,12 @@ body {
   font-weight: var(--kpress-font-weight-sans-medium);
 }
 
-/* One transition for every hover and every replaced readout: fast, and the
-   same everywhere. The scripts set `.swap` on a readout whose text they
+/* One transition for every hover and every replaced readout: the site's one hover
+   timing (site-nav.css, paper-design.md Motion), fast and the same everywhere. The scripts set `.swap` on a readout whose text they
    replace, so it fades in rather than flicking. */
 .cert-page a, .cert-page button, .cert-page .verdict, .cert-page .mass-dec,
 .cert-page .kpress-footnote-ref a, .cert-page a.kpress-footnote-backref {
-  transition: color 120ms ease-out, background-color 120ms ease-out, border-color 120ms ease-out;
+  transition: color var(--site-hover-duration) var(--site-hover-easing), background-color var(--site-hover-duration) var(--site-hover-easing), border-color var(--site-hover-duration) var(--site-hover-easing);
 }
 @keyframes cert-swap { from { opacity: 0; } to { opacity: 1; } }
 .cert-page .swap { animation: cert-swap 160ms ease-out; }
@@ -464,7 +464,7 @@ body {
   /* kpress underlines a link on hover, which is right for a link in a sentence and
      wrong for a bordered chip: the rule lands inside the box and reads as a defect.
      The chip already answers the hover with its border, its ground and its colour,
-     all three on the page's shared 120ms transition. */
+     all three on the site's one hover timing. */
   text-decoration: none;
 }
 .doc-links .chip svg { display: block; }

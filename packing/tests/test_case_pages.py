@@ -198,3 +198,19 @@ def test_the_prose_sets_formulas_and_keeps_names() -> None:
     assert "$$\ns (61) > 7 \\sqrt{3} / 2 + 2 \\sqrt{2} - 1\n$$" in shown
     assert "```bash\nuv run x\n```" in shown
     assert "footer" not in shown
+
+
+def test_each_record_steps_to_its_neighbours_with_the_sites_arrows(
+    page: str, numbers: list[int]
+) -> None:
+    """A record's steps are the site's drawn arrows, left before the previous case and
+    right after the next, never the arrow characters the site's face lacks."""
+    left, right = overview_sections.arrow_icon("left"), overview_sections.arrow_icon("right")
+    for n in (numbers[0], 11, numbers[-1]):
+        record = _record(page, n)
+        steps = record[record.index('<nav class="site-case-steps"') :]
+        steps = steps[: steps.index("</nav>")]
+        assert "←" not in steps
+        assert "→" not in steps
+        assert (f'rel="prev">{left}n = {n - 1}</a>' in steps) == (n != numbers[0])
+        assert (f"n = {n + 1}{right}</a>" in steps) == (n != numbers[-1])

@@ -257,7 +257,11 @@ sources:
       core sides by 999999999/1000000000. Its SOURCE_ATTRIBUTION.md describes the work as a
       derivative continuation of Kleddamag's release and keeps that release's attribution
       to this project's T-026 certificate. The record, the archive and the preprint make no
-      statement about AI assistance.
+      statement about AI assistance. On jlevy/squares#247 on 2026-09-30 the authors wrote
+      that "AI assistance was used for most of the computational exploration, code drafting
+      and checking, organization of verification outputs, and preparation of the written
+      materials", that the credit line above is fine with them, and that a revised Zenodo
+      release will state it (retained in web/wang-li-n11-2026-09-29/).
   - key: '[Tokoharu density 2026]'
     authors: [Tokoharu]
     year: 2026

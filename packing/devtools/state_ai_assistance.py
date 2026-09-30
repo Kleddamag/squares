@@ -154,6 +154,17 @@ STATEMENTS: tuple[Statement, ...] = (
         ),
         marker="Claude (Anthropic)",
     ),
+    Statement(
+        # The release is silent; the authors gave this wording on the issue that reported it.
+        keys=frozenset({"[Wang Li n11 2026]"}),
+        anchor=re.compile(r"Ke Wang and Can Li"),
+        sentence=(
+            "On jlevy/squares#247 the authors wrote that “AI assistance was used for most of "
+            "the computational exploration, code drafting and checking, organization of "
+            "verification outputs, and preparation of the written materials.”"
+        ),
+        marker="AI assistance was used for most of",
+    ),
 )
 
 

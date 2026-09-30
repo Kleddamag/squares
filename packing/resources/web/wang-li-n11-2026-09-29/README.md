@@ -40,6 +40,13 @@ threshold-counting method.
 `SOURCE_ATTRIBUTION.md` traces the certificate through Kleddamag to this repository’s
 T-026 at `7ccb679c`. Neither the record, the archive nor the preprint says whether AI
 tools were used in the work.
+On jlevy/squares#247, on 30 September, the authors wrote that “AI assistance was used for
+most of the computational exploration, code drafting and checking, organization of
+verification outputs, and preparation of the written materials.” They also accepted the
+credit line “Wang, Li after Kleddamag, Levy”. They said a revised Zenodo release will add
+that statement, read the published certificate in the second verifier, keep one canonical
+PDF and clarify the licence. The comment is retained verbatim as
+[`issue-247-authors-2026-09-30.json`](issue-247-authors-2026-09-30.json).
 
 ## Retained Files
 
@@ -48,6 +55,7 @@ tools were used in the work.
 | [`n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip`](n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip) | 2,495,053 | The release archive, 49 entries (42 files) |
 | [`n11_lower_bound_wang_li.pdf`](n11_lower_bound_wang_li.pdf) | 294,739 | The preprint, six pages, as a separate record file |
 | [`n11_wang_li_zenodo_release_2026-09-29/`](n11_wang_li_zenodo_release_2026-09-29/) | 9,899,885 in all | The archive extracted with `unzip`, every entry at its archive path |
+| [`issue-247-authors-2026-09-30.json`](issue-247-authors-2026-09-30.json) | 2,563 | The authors’ reply of 2026-09-30T12:34:33Z on jlevy/squares#247, from the GitHub API, body verbatim: the AI-assistance statement and their acceptance of the credit |
 
 **The one digest boundary.** Both downloads were compared with the MD5 checksums the
 Zenodo API publishes for them, `ae343d3220a5a11f7bd22e59f4382873` (PDF) and

@@ -23,12 +23,12 @@ reconstructed placement.
 For the three-of-five row, it reconstructs all eight D4 images, applies the exact
 membership threshold, and derives budget `8 floor(5/3) = 8`. It rejects any difference
 in the stored sparse row, multiplier, contribution, column, side, support count, budget,
-`A^T u`, slack, or bound.
+$A^T u$, slack, or bound.
 Float display fields do not enter a decision.
 
 The admitted multipliers satisfy `A^T u >= cost` in all 35 columns, with minimum slack
-`3/500000000`. Their budget-weighted dual objective `b^T u` is the upper bound
-`2605263163/250000000`. This proves the bound for nonnegative D4-tied weights on the
+$3/500000000$. Their budget-weighted dual objective $b^T u$ is the upper bound
+$2605263163/250000000$. This proves the bound for nonnegative D4-tied weights on the
 reconstructed fixed support under the seven admitted inequalities.
 It also bounds the stronger program that retains those inequalities and adds every exact
 point-depth row on the same support.
@@ -41,9 +41,9 @@ The claim must also state that the stronger program retains that threshold-orbit
 that its complete point-depth family is D4-invariant, and that averaging preserves
 feasibility and total placement mass.
 
-The declared lower value `325657893/31250000` is outside this admission.
+The declared lower value $325657893/31250000$ is outside this admission.
 It was only reported feasible on the selected finite rows, and the retained reader found
-maximum depth `105263157/100000000 > 1`. This reader does not replay the full set of
+maximum depth $105263157/100000000 > 1$. This reader does not replay the full set of
 139,521 depth rows, the 2,566 original atom rows, or K0–K3.
 
 <!-- This document follows common-doc-guidelines.md.

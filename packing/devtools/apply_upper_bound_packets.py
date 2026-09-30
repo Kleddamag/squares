@@ -56,6 +56,8 @@ from devtools.generate_frontier_case import (
     display_gap,
     load_unitsquare_release,
 )
+from devtools.migrate_math import markdown_math
+from devtools.state_ai_assistance import state
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 
@@ -400,12 +402,16 @@ def _section(body: str, heading: str) -> tuple[int, int] | None:
 
 
 def opener(body: str, plan: Plan, verified_lower: str) -> str:
-    """Point the case's opening sentence at the new side and its gap."""
+    """Point the case's opening sentence at the new side and its gap.
+
+    The sentence is read in either form the records hold it in, code or the math
+    `devtools.migrate_math` made of it, and written as code for `apply_case` to convert.
+    """
     who = f"{plan.registration.author}’s ({plan.registration.result})"
     shown = display_first_party_upper(plan.side)
     body, count = re.subn(
-        rf"The\s+best\s+known\s+(?:published\s+)?packing(?:,\s+[^`]*?,)?\s+gives\s+"
-        rf"`s\({plan.n}\)\s+≤\s+[^`]+`",
+        rf"The\s+best\s+known\s+(?:published\s+)?packing(?:,\s+[^`$]*?,)?\s+gives\s+"
+        rf"(?:`s\({plan.n}\)\s+≤\s+[^`]+`|\$s\({plan.n}\)\s+\\le\s+[^$]+\$)",
         f"The best known published packing, {who}, gives `s({plan.n}) ≤ {shown}`",
         body,
         count=1,
@@ -413,7 +419,7 @@ def opener(body: str, plan: Plan, verified_lower: str) -> str:
     if count != 1:
         raise ValueError(f"n={plan.n}: no opening sentence names the best known packing")
     return re.sub(
-        r"leaving\s+a\s+gap\s+of\s+`[0-9.]+`",
+        r"leaving\s+a\s+gap\s+of\s+(?:`[0-9.]+`|\$[0-9.]+\$)",
         f"leaving a gap of `{display_gap(plan.side, verified_lower)}`",
         body,
         count=1,
@@ -573,8 +579,13 @@ def _previous(plan: Plan, old: str, kingbird: str, unitsquare: str | None) -> st
         old,
     )
     old = re.sub(
-        r"The\s+formal\s+lane\s+retains\s+the\s+exact\s+`(\d+)\s+×\s+(\d+)`\s+grid\s+construction\.",
-        r"The formal lane held the exact `\1 × \2` grid construction until this intake.",
+        r"The\s+formal\s+lane\s+retains\s+the\s+exact\s+"
+        r"(?:`(?P<a>\d+)\s+×\s+(?P<b>\d+)`|\$(?P<c>\d+)\s+\\times\s+(?P<d>\d+)\$)"
+        r"\s+grid\s+construction\.",
+        lambda match: (
+            f"The formal lane held the exact `{match['a'] or match['c']} × "
+            f"{match['b'] or match['d']}` grid construction until this intake."
+        ),
         old,
     )
     lead = (
@@ -760,13 +771,23 @@ def apply_case(plan: Plan, text: str, earlier: Mapping[str, str]) -> str:
     """
     _, front, body = text.split("---\n", 2)
     payload = safe_load(front)["packing"]
-    written = body_text(plan, body, payload, earlier)
-    return f"---\n{front_matter(plan, front)}---\n{written}"
+    # What this writes is prose with code spans; its mathematics becomes math by the
+    # rules `devtools.migrate_math` applied to the rest of the body, which is left as is.
+    written = markdown_math(body_text(plan, body, payload, earlier))
+    # A rewritten paragraph describing a source keeps the AI-assistance statement
+    # `devtools.state_ai_assistance` owes it there, as Casson's does at his 39 counts.
+    return state(f"---\n{front_matter(plan, front)}---\n{written}")
+
+
+#: The backslash the formatter puts before a character that would open a list item, a
+#: heading or a quotation at the start of a wrapped line, as in `\+ 1).`: formatting,
+#: like the line break it follows.
+_WRAP_ESCAPE = re.compile(r"^([ \t]*)\\([-+*#>])", re.MULTILINE)
 
 
 def normalized(text: str) -> str:
     """The text with its whitespace collapsed: the formatter rewraps what this writes."""
-    return " ".join(text.split())
+    return " ".join(_WRAP_ESCAPE.sub(r"\1\2", text).split())
 
 
 def main(argv: Sequence[str] | None = None) -> int:

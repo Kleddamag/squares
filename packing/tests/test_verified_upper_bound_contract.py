@@ -31,6 +31,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from devtools.check_case_prose import Reading
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.known_best import KNOWN_BEST_CORPUS
 
@@ -406,7 +407,8 @@ def test_every_trailing_case_says_so_in_the_record_a_reader_opens() -> None:
         body = _body(n)
         assert CEILING_HEADING in body, f"n={n} certifies a weaker ceiling and does not say so"
         section = body.split(CEILING_HEADING, 1)[1].split("\n## ", 1)[0]
-        flat = " ".join(section.split())
+        # Its figures are math; read back, each is the code span it was written as.
+        flat = " ".join(Reading.of(section).text.split())
         assert str(verified) in flat, n
         assert str(reported) in flat, n
         # Pin the precision. The gap is rendered into the record at Python's

@@ -726,3 +726,59 @@ def test_fix_rewrites_nearest_decimals_without_strengthening_bounds(tmp_path: Pa
     assert len(check_case_file(stale)) == 1
     assert rewrite_directionally_safe_figures(stale) == 0
     assert len(check_case_file(stale)) == 1
+
+
+def test_a_body_written_as_math_is_read_as_its_code_spans_were(tmp_path: Path) -> None:
+    """`migrate_math` moved the figures to `$…$`; every shape still reads through them.
+
+    The stale n = 17 sentence, the wrapped named-field sentence and the fraction arithmetic
+    fail as math exactly as they failed as code, on the lines they sit on.
+    """
+    body = (
+        "# case\n\n"
+        "Intro.\n"
+        "The verified lower bound is $s(17) \\ge 22529/5000 = 4.5058$, adopted from a\n"
+        "prior certificate. The verified lower\n"
+        "bound is $\\frac{99}{25} = 3.96$. Also $189/50 = 3.79$ here.\n"
+    )
+    path = make_case(tmp_path, "n-017-math.md", 17, _N17_STYLE_BOUNDS, body)
+    first = split_front_matter(path.read_text(encoding="utf-8"))[2]
+    assert {(finding.check, finding.line - first) for finding in check_case_file(path)} == {
+        ("bound-figure", 3),
+        ("verified-bound-sentence", 5),
+        ("fraction-arithmetic", 5),
+    }
+    fixed = make_case(
+        tmp_path,
+        "n-017-math-fixed.md",
+        17,
+        _N17_STYLE_BOUNDS,
+        "# case\n\nThe verified lower bound is $s(17) \\ge \\frac{459}{100} = 4.59$.\n",
+    )
+    assert check_case_file(fixed) == []
+
+
+def test_fix_rewrites_a_figure_inside_math_where_the_latex_holds_it(tmp_path: Path) -> None:
+    """`--fix` finds the digits it re-renders in the LaTeX, and moves only those."""
+    bounds: _Bounds = {
+        "verified_lower_bound": ("4.605551775464", None),
+        "verified_upper_bound": ("4.88561808316412", None),
+        "reported_lower_bound": ("4.605551775464", None),
+        "reported_upper_bound": ("4.88561808316412", None),
+    }
+    path = make_case(
+        tmp_path,
+        "n-directional-math-fix.md",
+        20,
+        bounds,
+        (
+            "# case\n\nThe best known packing gives $s(20) \\le 4.88561808$, and the "
+            "best proved lower bound is $4.605552$.\n"
+        ),
+    )
+    assert len(check_case_file(path)) == 2
+    assert rewrite_directionally_safe_figures(path) == 2
+    assert check_case_file(path) == []
+    text = path.read_text(encoding="utf-8")
+    assert "$s(20) \\le 4.88561809$" in text
+    assert "best proved lower bound is $4.605551$." in text

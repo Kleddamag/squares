@@ -243,6 +243,45 @@ migrated:
 - packages/workbench/README.md
 - packages/workbench/probes/README.md
 - packages/workbench/tests/fixtures/benchmark-foundation/README.md
+- packing/atlas/README.md
+- packing/atlas/enumerated/README.md
+- packing/atlas/known-best/FIGURE-PLAYBOOK.md
+- packing/atlas/known-best/README.md
+- packing/atlas/known-best/video/spikes/README.md
+- packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+- packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+- packing/atlas/prospective/README.md
+- packing/atlas/rendering/README.md
+- packing/benchmarks/gate-cost-at-324/README.md
+- packing/benchmarks/math-startup/README.md
+- packing/benchmarks/math-startup/experiments/exp-001-control.md
+- packing/benchmarks/math-startup/experiments/exp-002-webkit-readiness.md
+- packing/benchmarks/math-startup/experiments/exp-003-prepared-geometry.md
+- packing/benchmarks/math-startup/experiments/exp-004-startup-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-005-hosted-parameter-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-006-hosted-font-geometry.md
+- packing/benchmarks/math-startup/experiments/exp-007-queued-hosted-parameter-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-008-queued-hosted-font-geometry.md
+- packing/benchmarks/math-startup/experiments/exp-009-protected-hosted-parameter-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-010-protected-hosted-font-geometry.md
+- packing/benchmarks/math-startup/explorations/X-001-startup.md
+- packing/benchmarks/math-startup/explorations/X-002-observer-overhead.md
+- packing/benchmarks/math-startup/explorations/X-003-saved-font-settings.md
+- packing/benchmarks/math-startup/explorations/X-004-hosted-rendering.md
+- packing/benchmarks/math-startup/hypotheses/H-001-layout.md
+- packing/benchmarks/math-startup/hypotheses/H-002-latency.md
+- packing/benchmarks/math-startup/hypotheses/H-003-parameter-only.md
+- packing/benchmarks/math-startup/hypotheses/H-004-saved-font-settings.md
+- packing/benchmarks/math-startup/hypotheses/H-005-corrected-hosted-startup.md
+- packing/benchmarks/math-startup/hypotheses/H-006-queued-recovery-startup.md
+- packing/benchmarks/math-startup/ideas.md
+- packing/benchmarks/validation-efficiency/README.md
+- packing/benchmarks/validation-efficiency/experiments/VE-001-float-oracle.md
+- packing/benchmarks/validation-efficiency/experiments/VE-002-bridge.md
+- packing/benchmarks/validation-efficiency/experiments/VE-003-checks-start-order.md
+- packing/benchmarks/validation-efficiency/experiments/VE-004-checks-start-order.md
+- packing/benchmarks/validation-efficiency/experiments/VE-005-rollup-corpus-snapshot.md
+- packing/benchmarks/validation-efficiency/ideas.md
 - packing/campaign/README.md
 - packing/campaign/agendas/agenda-001-basin-confidence-ladder.md
 - packing/campaign/agendas/agenda-002-constructive-enumeration-groundwork.md
@@ -1098,6 +1137,365 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/independent-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/target-output-independent-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-115-h-105-fixed-candidate-pair-obstruction/independent-review.md
+- packing/cases/n11_five_dot_cover/after-direct-family-decision.md
+- packing/cases/n11_five_dot_cover/after-exp148-strategy.md
+- packing/cases/n11_five_dot_cover/after-exp149-strategy.md
+- packing/cases/n11_five_dot_cover/after-exp150-decision-contract.md
+- packing/cases/n11_five_dot_cover/after-six-dot-refutation-strategy.md
+- packing/cases/n11_five_dot_cover/after-wall-gain-strategy.md
+- packing/cases/n11_five_dot_cover/direct-sixth-site-contract.md
+- packing/cases/n11_five_dot_cover/direct-sixth-site-source-admission.md
+- packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
+- packing/cases/n11_five_dot_cover/overnight-strategy-review.md
+- packing/cases/n11_five_dot_cover/owner-case-census-design.md
+- packing/cases/n11_five_dot_cover/owner-compatibility-contract.md
+- packing/cases/n11_five_dot_cover/owner-compatibility-source-admission.md
+- packing/cases/n11_five_dot_cover/selected-cover-source-admission.md
+- packing/cases/n11_five_dot_cover/six-dot-source-admission.md
+- packing/cases/n11_five_dot_cover/sixth-site-cutting-contract.md
+- packing/cases/n11_five_dot_cover/sixth-site-screen-source-admission.md
+- packing/cases/n11_five_dot_cover/two-attainer-source-admission.md
+- packing/cases/n11_five_dot_cover/union-contract.md
+- packing/cases/n11_five_dot_cover/wall-constructor-contract.md
+- packing/cases/n11_five_dot_cover/wall-containment-source-admission.md
+- packing/cases/n11_five_dot_cover/wall-source-admission.md
+- packing/cases/n11_fractional_certificate/a6_dual_upper/README.md
+- packing/cases/n11_fractional_certificate/lean-spike/README.md
+- packing/cases/n11_fractional_certificate/t-022-dilation-limit-proof.md
+- packing/cases/n11_fractional_certificate/t-024-dilation-limit-proof.md
+- packing/cases/n11_fractional_certificate/thirdparty/README.md
+- packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+- packing/cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md
+- packing/cases/n11_threshold_certificate/t-026-dilation-limit-proof.md
+- packing/cases/trump11/isolation-theorem.md
+- packing/cases/w3_lower_bound_directions/README.md
+- packing/frankensim-probe/README.md
+- packing/frontier/README.md
+- packing/frontier/n-001.md
+- packing/frontier/n-002.md
+- packing/frontier/n-003.md
+- packing/frontier/n-004.md
+- packing/frontier/n-005.md
+- packing/frontier/n-006.md
+- packing/frontier/n-007.md
+- packing/frontier/n-008.md
+- packing/frontier/n-009.md
+- packing/frontier/n-010.md
+- packing/frontier/n-011.md
+- packing/frontier/n-012.md
+- packing/frontier/n-013.md
+- packing/frontier/n-014.md
+- packing/frontier/n-015.md
+- packing/frontier/n-016.md
+- packing/frontier/n-017.md
+- packing/frontier/n-018.md
+- packing/frontier/n-019.md
+- packing/frontier/n-020.md
+- packing/frontier/n-021.md
+- packing/frontier/n-022.md
+- packing/frontier/n-023.md
+- packing/frontier/n-024.md
+- packing/frontier/n-025.md
+- packing/frontier/n-026.md
+- packing/frontier/n-027.md
+- packing/frontier/n-028.md
+- packing/frontier/n-029.md
+- packing/frontier/n-030.md
+- packing/frontier/n-031.md
+- packing/frontier/n-032.md
+- packing/frontier/n-033.md
+- packing/frontier/n-034.md
+- packing/frontier/n-035.md
+- packing/frontier/n-036.md
+- packing/frontier/n-037.md
+- packing/frontier/n-038.md
+- packing/frontier/n-039.md
+- packing/frontier/n-040.md
+- packing/frontier/n-041.md
+- packing/frontier/n-042.md
+- packing/frontier/n-043.md
+- packing/frontier/n-044.md
+- packing/frontier/n-045.md
+- packing/frontier/n-046.md
+- packing/frontier/n-047.md
+- packing/frontier/n-048.md
+- packing/frontier/n-049.md
+- packing/frontier/n-050.md
+- packing/frontier/n-051.md
+- packing/frontier/n-052.md
+- packing/frontier/n-053.md
+- packing/frontier/n-054.md
+- packing/frontier/n-055.md
+- packing/frontier/n-056.md
+- packing/frontier/n-057.md
+- packing/frontier/n-058.md
+- packing/frontier/n-059.md
+- packing/frontier/n-060.md
+- packing/frontier/n-061.md
+- packing/frontier/n-062.md
+- packing/frontier/n-063.md
+- packing/frontier/n-064.md
+- packing/frontier/n-065.md
+- packing/frontier/n-066.md
+- packing/frontier/n-067.md
+- packing/frontier/n-068.md
+- packing/frontier/n-069.md
+- packing/frontier/n-070.md
+- packing/frontier/n-071.md
+- packing/frontier/n-072.md
+- packing/frontier/n-073.md
+- packing/frontier/n-074.md
+- packing/frontier/n-075.md
+- packing/frontier/n-076.md
+- packing/frontier/n-077.md
+- packing/frontier/n-078.md
+- packing/frontier/n-079.md
+- packing/frontier/n-080.md
+- packing/frontier/n-081.md
+- packing/frontier/n-082.md
+- packing/frontier/n-083.md
+- packing/frontier/n-084.md
+- packing/frontier/n-085.md
+- packing/frontier/n-086.md
+- packing/frontier/n-087.md
+- packing/frontier/n-088.md
+- packing/frontier/n-089.md
+- packing/frontier/n-090.md
+- packing/frontier/n-091.md
+- packing/frontier/n-092.md
+- packing/frontier/n-093.md
+- packing/frontier/n-094.md
+- packing/frontier/n-095.md
+- packing/frontier/n-096.md
+- packing/frontier/n-097.md
+- packing/frontier/n-098.md
+- packing/frontier/n-099.md
+- packing/frontier/n-100.md
+- packing/frontier/n-101.md
+- packing/frontier/n-102.md
+- packing/frontier/n-103.md
+- packing/frontier/n-104.md
+- packing/frontier/n-105.md
+- packing/frontier/n-106.md
+- packing/frontier/n-107.md
+- packing/frontier/n-108.md
+- packing/frontier/n-109.md
+- packing/frontier/n-110.md
+- packing/frontier/n-111.md
+- packing/frontier/n-112.md
+- packing/frontier/n-113.md
+- packing/frontier/n-114.md
+- packing/frontier/n-115.md
+- packing/frontier/n-116.md
+- packing/frontier/n-117.md
+- packing/frontier/n-118.md
+- packing/frontier/n-119.md
+- packing/frontier/n-120.md
+- packing/frontier/n-121.md
+- packing/frontier/n-122.md
+- packing/frontier/n-123.md
+- packing/frontier/n-124.md
+- packing/frontier/n-125.md
+- packing/frontier/n-126.md
+- packing/frontier/n-127.md
+- packing/frontier/n-128.md
+- packing/frontier/n-129.md
+- packing/frontier/n-130.md
+- packing/frontier/n-131.md
+- packing/frontier/n-132.md
+- packing/frontier/n-133.md
+- packing/frontier/n-134.md
+- packing/frontier/n-135.md
+- packing/frontier/n-136.md
+- packing/frontier/n-137.md
+- packing/frontier/n-138.md
+- packing/frontier/n-139.md
+- packing/frontier/n-140.md
+- packing/frontier/n-141.md
+- packing/frontier/n-142.md
+- packing/frontier/n-143.md
+- packing/frontier/n-144.md
+- packing/frontier/n-145.md
+- packing/frontier/n-146.md
+- packing/frontier/n-147.md
+- packing/frontier/n-148.md
+- packing/frontier/n-149.md
+- packing/frontier/n-150.md
+- packing/frontier/n-151.md
+- packing/frontier/n-152.md
+- packing/frontier/n-153.md
+- packing/frontier/n-154.md
+- packing/frontier/n-155.md
+- packing/frontier/n-156.md
+- packing/frontier/n-157.md
+- packing/frontier/n-158.md
+- packing/frontier/n-159.md
+- packing/frontier/n-160.md
+- packing/frontier/n-161.md
+- packing/frontier/n-162.md
+- packing/frontier/n-163.md
+- packing/frontier/n-164.md
+- packing/frontier/n-165.md
+- packing/frontier/n-166.md
+- packing/frontier/n-167.md
+- packing/frontier/n-168.md
+- packing/frontier/n-169.md
+- packing/frontier/n-170.md
+- packing/frontier/n-171.md
+- packing/frontier/n-172.md
+- packing/frontier/n-173.md
+- packing/frontier/n-174.md
+- packing/frontier/n-175.md
+- packing/frontier/n-176.md
+- packing/frontier/n-177.md
+- packing/frontier/n-178.md
+- packing/frontier/n-179.md
+- packing/frontier/n-180.md
+- packing/frontier/n-181.md
+- packing/frontier/n-182.md
+- packing/frontier/n-183.md
+- packing/frontier/n-184.md
+- packing/frontier/n-185.md
+- packing/frontier/n-186.md
+- packing/frontier/n-187.md
+- packing/frontier/n-188.md
+- packing/frontier/n-189.md
+- packing/frontier/n-190.md
+- packing/frontier/n-191.md
+- packing/frontier/n-192.md
+- packing/frontier/n-193.md
+- packing/frontier/n-194.md
+- packing/frontier/n-195.md
+- packing/frontier/n-196.md
+- packing/frontier/n-197.md
+- packing/frontier/n-198.md
+- packing/frontier/n-199.md
+- packing/frontier/n-200.md
+- packing/frontier/n-201.md
+- packing/frontier/n-202.md
+- packing/frontier/n-203.md
+- packing/frontier/n-204.md
+- packing/frontier/n-205.md
+- packing/frontier/n-206.md
+- packing/frontier/n-207.md
+- packing/frontier/n-208.md
+- packing/frontier/n-209.md
+- packing/frontier/n-210.md
+- packing/frontier/n-211.md
+- packing/frontier/n-212.md
+- packing/frontier/n-213.md
+- packing/frontier/n-214.md
+- packing/frontier/n-215.md
+- packing/frontier/n-216.md
+- packing/frontier/n-217.md
+- packing/frontier/n-218.md
+- packing/frontier/n-219.md
+- packing/frontier/n-220.md
+- packing/frontier/n-221.md
+- packing/frontier/n-222.md
+- packing/frontier/n-223.md
+- packing/frontier/n-224.md
+- packing/frontier/n-225.md
+- packing/frontier/n-226.md
+- packing/frontier/n-227.md
+- packing/frontier/n-228.md
+- packing/frontier/n-229.md
+- packing/frontier/n-230.md
+- packing/frontier/n-231.md
+- packing/frontier/n-232.md
+- packing/frontier/n-233.md
+- packing/frontier/n-234.md
+- packing/frontier/n-235.md
+- packing/frontier/n-236.md
+- packing/frontier/n-237.md
+- packing/frontier/n-238.md
+- packing/frontier/n-239.md
+- packing/frontier/n-240.md
+- packing/frontier/n-241.md
+- packing/frontier/n-242.md
+- packing/frontier/n-243.md
+- packing/frontier/n-244.md
+- packing/frontier/n-245.md
+- packing/frontier/n-246.md
+- packing/frontier/n-247.md
+- packing/frontier/n-248.md
+- packing/frontier/n-249.md
+- packing/frontier/n-250.md
+- packing/frontier/n-251.md
+- packing/frontier/n-252.md
+- packing/frontier/n-253.md
+- packing/frontier/n-254.md
+- packing/frontier/n-255.md
+- packing/frontier/n-256.md
+- packing/frontier/n-257.md
+- packing/frontier/n-258.md
+- packing/frontier/n-259.md
+- packing/frontier/n-260.md
+- packing/frontier/n-261.md
+- packing/frontier/n-262.md
+- packing/frontier/n-263.md
+- packing/frontier/n-264.md
+- packing/frontier/n-265.md
+- packing/frontier/n-266.md
+- packing/frontier/n-267.md
+- packing/frontier/n-268.md
+- packing/frontier/n-269.md
+- packing/frontier/n-270.md
+- packing/frontier/n-271.md
+- packing/frontier/n-272.md
+- packing/frontier/n-273.md
+- packing/frontier/n-274.md
+- packing/frontier/n-275.md
+- packing/frontier/n-276.md
+- packing/frontier/n-277.md
+- packing/frontier/n-278.md
+- packing/frontier/n-279.md
+- packing/frontier/n-280.md
+- packing/frontier/n-281.md
+- packing/frontier/n-282.md
+- packing/frontier/n-283.md
+- packing/frontier/n-284.md
+- packing/frontier/n-285.md
+- packing/frontier/n-286.md
+- packing/frontier/n-287.md
+- packing/frontier/n-288.md
+- packing/frontier/n-289.md
+- packing/frontier/n-290.md
+- packing/frontier/n-291.md
+- packing/frontier/n-292.md
+- packing/frontier/n-293.md
+- packing/frontier/n-294.md
+- packing/frontier/n-295.md
+- packing/frontier/n-296.md
+- packing/frontier/n-297.md
+- packing/frontier/n-298.md
+- packing/frontier/n-299.md
+- packing/frontier/n-300.md
+- packing/frontier/n-301.md
+- packing/frontier/n-302.md
+- packing/frontier/n-303.md
+- packing/frontier/n-304.md
+- packing/frontier/n-305.md
+- packing/frontier/n-306.md
+- packing/frontier/n-307.md
+- packing/frontier/n-308.md
+- packing/frontier/n-309.md
+- packing/frontier/n-310.md
+- packing/frontier/n-311.md
+- packing/frontier/n-312.md
+- packing/frontier/n-313.md
+- packing/frontier/n-314.md
+- packing/frontier/n-315.md
+- packing/frontier/n-316.md
+- packing/frontier/n-317.md
+- packing/frontier/n-318.md
+- packing/frontier/n-319.md
+- packing/frontier/n-320.md
+- packing/frontier/n-321.md
+- packing/frontier/n-322.md
+- packing/frontier/n-323.md
+- packing/frontier/n-324.md
+- packing/strategies/preview/README.md
 
 keep:
 - path: SYNOPSIS.md
@@ -1328,6 +1726,120 @@ keep:
 - path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
   span: "k^2 - 4"
   reason: "the LaTeX source a writer types, listed with `\\sqrt{2}` and `\\ldots` as source"
+- path: packing/atlas/enumerated/README.md
+  span: "0"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/enumerated/README.md
+  span: "1"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/enumerated/README.md
+  span: "2"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/enumerated/README.md
+  span: "3"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/known-best/FIGURE-PLAYBOOK.md
+  span: "R"
+  reason: "the rigidity badge's glyph as the figure draws it"
+- path: packing/atlas/known-best/FIGURE-PLAYBOOK.md
+  span: "g"
+  reason: "the SVG `g` element"
+- path: packing/atlas/known-best/README.md
+  span: "F"
+  reason: "the label of free-count minimality, paired with the chunk label `C`, not a variable"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "(p/q)"
+  reason: "a token of the exact-form grammar, listed with `INT` and `sqrt(...)`"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "0,198 198,198 198,0 0,0"
+  reason: "an SVG polygon's points attribute, literal text"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "O"
+  reason: "a badge glyph as the page draws it"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "R"
+  reason: "a badge glyph as the page draws it"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B"
+  reason: "a CSS unicode-range value"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "028"
+  reason: "a pair's zero-padded file label"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "110 100 307"
+  reason: "a command's arguments"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "= R"
+  reason: "a badge-glyph combination as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "O"
+  reason: "a badge glyph as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "O ="
+  reason: "a badge-glyph combination as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "O = R"
+  reason: "a badge-glyph combination as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "R"
+  reason: "a badge glyph as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "a"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "b"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "c"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "d"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "k"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "l"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "m"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "p"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "s"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "t"
+  reason: "a keyboard key"
+- path: packing/atlas/rendering/README.md
+  span: "E"
+  reason: "a keyboard key"
+- path: packing/atlas/rendering/README.md
+  span: "Q"
+  reason: "a keyboard key"
+- path: packing/cases/n11_five_dot_cover/after-wall-gain-strategy.md
+  span: "(0,45,90,135,180)"
+  reason: "a literal index tuple; as math its tail reads as one grouped number"
+- path: packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
+  span: "[1,1,1,1]"
+  reason: "a mask array exactly as the coordinator reported it"
+- path: packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
+  span: "[32768,32768,32768,32768]"
+  reason: "a mask array exactly as the coordinator reported it"
+- path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+  span: "0"
+  reason: "a process exit status, literal text"
+- path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+  span: "1"
+  reason: "a process exit status, literal text"
+- path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+  span: "2"
+  reason: "a process exit status, literal text"
+- path: packing/cases/trump11/isolation-theorem.md
+  span: "(+-1/2,+-1/2)"
+  reason: "the chart's ASCII notation, like `R(theta_i)` beside it"
 
 exempt:
 - path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md
@@ -1362,3 +1874,9 @@ exempt:
   reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
   reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/cases/n11_five_dot_cover/unit-parent-centre-contract.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/cases/n11_five_dot_cover/wall-containment-contract.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/resources/README.md
+  reason: "catalogues the archive transcriptions annotations: its code spans quote what the raw extraction and the PDFs print, character for character, and math would retype them"

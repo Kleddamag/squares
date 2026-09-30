@@ -20,30 +20,30 @@ The theorem is local to the chart and active-feature packet defined below.
 
 ## Exact Witness and Chart
 
-Let `u` be the unique root in `(36/100, 37/100)` of
+Let $u$ be the unique root in $(36/100, 37/100)$ of
 
-`5u^8 - 10u^7 - 2u^6 + 14u^5 + 12u^4 - 6u^3 + 2u^2 + 2u - 1`.
+$5u^{8} - 10u^{7} - 2u^{6} + 14u^{5} + 12u^{4} - 6u^{3} + 2u^{2} + 2u - 1$.
 
 Put
 
-`U = (6u + 4)/(1 + 2u - u^2)`.
+$U = (6u + 4)/(1 + 2u - u^{2})$.
 
 The exact witness in [`packing.py`](packing.py) has
 
 `U = 3.87708359002281417730789706010096270637645566846...`,
 
-and `U` satisfies
+and $U$ satisfies
 
-`U^8 - 20U^7 + 178U^6 - 842U^5 + 1923U^4 - 496U^3 - 6754U^2 + 12420U - 6865 = 0`.
+$U^{8} - 20U^{7} + 178U^{6} - 842U^{5} + 1923U^{4} - 496U^{3} - 6754U^{2} + 12420U - 6865 = 0$.
 
-Anchor the container as `[0,U]^2`, with its lower-left corner fixed at the origin, and
+Anchor the container as $[0,U]^{2}$, with its lower-left corner fixed at the origin, and
 retain the square labels from `packing.py`. A chart point is
 
 `z = (x_0, y_0, theta_0, ..., x_10, y_10, theta_10) in R^33`.
 
-Square `i` has centre `c_i = (x_i,y_i)` and corners
+Square $i$ has centre $c_i = (x_i,y_i)$ and corners
 
-`c_i + R(theta_i) q_m`, where `q_m` runs through `(+-1/2,+-1/2)` in the retained corner
+`c_i + R(theta_i) q_m`, where $q_m$ runs through `(+-1/2,+-1/2)` in the retained corner
 order. Angles use the local representatives at the exact witness; this chart does not
 cross a quarter-turn identification.
 They are measured in radians.
@@ -54,7 +54,7 @@ The chart norm is
 Here a packing means that every closed unit square lies in the container and distinct
 squares have disjoint interiors; boundary touching is allowed.
 
-The side is fixed at `U` in the 33 chart variables.
+The side is fixed at $U$ in the 33 chart variables.
 A varying side is written `U + sigma` separately; it is not a thirty-fourth coordinate
 in the stated norm. The curvature calculation is valid on the declared box
 `||z-z_*||_infinity <= 1/64`.
@@ -62,10 +62,10 @@ in the stated norm. The curvature calculation is valid on the declared box
 The proof does not quotient the local coordinates by symmetry.
 The labels and angle representatives stay fixed.
 The retained exact matching guard places every distinct `D4` image and relabelling
-beyond a threshold of `1/8`; the theorem uses the exact half-distance cap `1/16`. For
+beyond a threshold of $1/8$; the theorem uses the exact half-distance cap $1/16$. For
 the cone and modulus arguments, a hypothetical nonzero displacement is normalized to sup
 norm one. Its unit sphere is the union of the 66 faces obtained by fixing one of 33
-coordinates to `+1` or `-1`. Stress scale is irrelevant: the proof uses positivity,
+coordinates to $+1$ or $-1$. Stress scale is irrelevant: the proof uses positivity,
 `A_b^T lambda_b = 0`, positive far-wall stress, and scale-invariant stress ratios.
 
 ## Theorem
@@ -83,14 +83,15 @@ Both pairs use the same labelled, anchored sup-norm chart.
 
 For either row of the table, write its constants as `(rho,C)`.
 
-1. **Fixed-side isolation.** If `z` is a labelled packing of the 11 closed unit squares
-   in `[0,U]^2` and `||z-z_*||_infinity < rho`, then `z = z_*`.
+1. **Fixed-side isolation.** If $z$ is a labelled packing of the 11 closed unit squares
+   in $[0,U]^{2}$ and `||z-z_*||_infinity < rho`, then `z = z_*`.
 
 2. **Side stability and equality.** Suppose the same labelled pose fits in `[0,s']^2`,
    anchored at the same origin, where `s' <= U` and `||z-z_*||_infinity < rho`.
-   Embedding `[0,s']^2` in `[0,U]^2` and applying the first conclusion gives `z = z_*`.
-   Because `z_*` touches all four walls of its exact container, `s' = U`. Thus equality
-   in this local side comparison occurs only at the retained labelled pose.
+   Embedding `[0,s']^2` in $[0,U]^{2}$ and applying the first conclusion gives
+   `z = z_*`. Because `z_*` touches all four walls of its exact container, `s' = U`.
+   Thus equality in this local side comparison occurs only at the retained labelled
+   pose.
 
 3. **Quadratic side bound.** Let `v = z-z_*`. A feasible pose at side `U + sigma` in the
    same ball satisfies
@@ -149,18 +150,18 @@ Across the 14 contacts, 24 raw feature options therefore collapse to 22
 derivative-distinct local options; the raw option product is 512, and exact derivative
 deduplication gives 128 branches.
 Independently, every selected branch has 22 pair tangent rows, so its 20 wall rows make
-a 42-row matrix. Pairs `(0,4)` and `(2,5)` each have an incidental zero projection but
+a 42-row matrix. Pairs $(0,4)$ and $(2,5)$ each have an incidental zero projection but
 also a strictly separating feature; they are locally interior and contribute no active
-row. Every `A_b` has 33 columns and exact rank 33. The exp-013 record retains the full
+row. Every $A_b$ has 33 columns and exact rank 33. The exp-013 record retains the full
 512-to-128 map.
-For every branch `b`, it also retains an exact positive stress `lambda_b`
+For every branch $b$, it also retains an exact positive stress `lambda_b`
 satisfying
 
 `A_b^T lambda_b = 0`,
 
 and an exact full-rank certificate.
 If `A_b v >= 0`, then the positive weighted sum `lambda_b^T A_b v` is zero.
-Every row product is therefore zero, and rank 33 forces `v = 0`. The exact replay
+Every row product is therefore zero, and rank 33 forces $v = 0$. The exact replay
 confirmed this conclusion for all 128 branches, with no unresolved cone.
 
 For a quantitative bound, BC-199 defines
@@ -175,18 +176,18 @@ the two passes. It found two exact modulus classes: the minimum lower value is
 `0.011480272061506444...`, while the other class has lower value
 `0.016423844897818726...`. All 128 branch moduli were completed.
 
-Let `g_j` be an active wall or pair-separation function.
+Let $g_j$ be an active wall or pair-separation function.
 On the declared box, the uniform calculation bounds its second-order remainder by
 
 `|R_j(v)| <= (K/2) ||v||_infinity^2`,
 
-with `K = 4972105219/500000000`. The per-row calculation retains the corresponding
+with $K = 4972105219/500000000$. The per-row calculation retains the corresponding
 row-specific bounds.
 For a feasible point at side `U + sigma` with `sigma <= 0`, an active branch row has
 
 `a_j v + sigma e_j + R_j(v) >= 0`,
 
-where `e_j` is one on the right and top wall rows and zero elsewhere.
+where $e_j$ is one on the right and top wall rows and zero elsewhere.
 Since `sigma e_j <= 0`, every row obeys
 
 `a_j v >= -(K/2)||v||_infinity^2`.
@@ -195,13 +196,13 @@ The modulus supplies a row with
 
 `a_j v <= -kappa_b ||v||_infinity`.
 
-For nonzero `v`, these inequalities force
+For nonzero $v$, these inequalities force
 
 `||v||_infinity >= 2 kappa_b/K`.
 
 Taking the minimum over the branches and then the declared-box, inactive-gap, and
 symmetry caps gives the uniform lower bound `rho_uniform`. For the per-row pass, let
-`K_j` bound the second-order remainder of row `j` and scale that row by `2/K_j`. The
+$K_j$ bound the second-order remainder of row $j$ and scale that row by $2/K_j$. The
 retained weighted modulus is
 
 `kappa_b^row = min_{||w||_infinity=1} max_j (-(2/K_j) a_j w)`.
@@ -209,13 +210,13 @@ retained weighted modulus is
 The same two inequalities force `||v||_infinity >= kappa_b^row`, which gives `rho_row`
 after the shared caps.
 The binding caps are the respective modulus bounds.
-The other uniform caps are `1/64` for the declared box, at least `0.005875508797...` for
-inactive-feature stability (with retained short lower bound `5875508797/1000000000000`),
-and `1/16` for symmetry.
+The other uniform caps are $1/64$ for the declared box, at least `0.005875508797...` for
+inactive-feature stability (with retained short lower bound $5875508797/1000000000000$),
+and $1/16$ for symmetry.
 They are all larger than `rho_uniform`; the retained per-row minimum likewise binds
 before the shared caps.
 
-At `v = 0`, a far-wall row requires `sigma >= 0`. This proves the fixed-side and
+At $v = 0$, a far-wall row requires `sigma >= 0`. This proves the fixed-side and
 side-stability conclusions.
 Multiplying the branch inequalities by `lambda_b` cancels the linear terms.
 If `Lambda_b > 0` is the stress on the right and top wall rows, then
@@ -259,7 +260,7 @@ version to a frozen input or replaying the generator.
 The following guards are premises of the packaged theorem and were true in the retained
 records or the author replay:
 
-- `u` is squarefree and irreducible over the rationals and has exactly one root in its
+- $u$ is squarefree and irreducible over the rationals and has exactly one root in its
   isolating interval
 - the exact witness is valid and its published side polynomial vanishes
 - the local active inventory contains all 512 raw selections and maps them to 128
@@ -361,7 +362,7 @@ The packet refuses each stronger statement:
 - no full radius-generator replay or recreation of the missing per-face witnesses
 - no theorem in an unanchored chart or a chart that includes side as a normed variable
 - no assertion about a different labeling or contact type outside the certified ball
-- no global optimality, global uniqueness, or global capture theorem for `s(11)`
+- no global optimality, global uniqueness, or global capture theorem for $s(11)$
 - no change to the frontier or the standing description of Trump’s construction as the
   verified known best
 
@@ -376,8 +377,8 @@ It should then run these falsifying controls:
 | Control | Mutation | Required refusal |
 | --- | --- | --- |
 | Active-row identity | Change one coefficient in a retained active row before matching it to the elementary functions | Exact row identification no longer matches the tied elementary gradient |
-| Branch sign | Multiply one selected separating-axis row by `-1` while retaining its recorded stress | The exact stress residual or retained branch signature no longer verifies |
-| Norm conversion | Replace one per-row factor `2/K_j` by `1/K_j` | The weighted modulus no longer reproduces the retained preferred radius; the norm-conversion comparison rejects it |
+| Branch sign | Multiply one selected separating-axis row by $-1$ while retaining its recorded stress | The exact stress residual or retained branch signature no longer verifies |
+| Norm conversion | Replace one per-row factor $2/K_j$ by $1/K_j$ | The weighted modulus no longer reproduces the retained preferred radius; the norm-conversion comparison rejects it |
 
 The BC-240 author is not eligible to certify those controls.
 

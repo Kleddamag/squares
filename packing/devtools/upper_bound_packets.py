@@ -1040,10 +1040,15 @@ def record_live(catalogue: Path) -> None:
 
 
 def _earlier_sides() -> dict[int, tuple[str, str]]:
-    """The side this project recorded before the intake, and whose it was."""
-    from devtools.check_source_coverage import parse_kingbird  # noqa: PLC0415
+    """The side this project recorded before the intake, and whose it was.
 
-    kingbird = parse_kingbird(WEB / "kingbird-squares-in-squares.html", 1, 324)
+    Read from the catalogue capture the intake read, never the current one: a later
+    capture prints later sides, and this column says what the records held on the day.
+    """
+    from devtools.check_source_coverage import parse_kingbird  # noqa: PLC0415
+    from sqpack.kingbird_catalogue import INTAKE_CATALOGUE_HTML  # noqa: PLC0415
+
+    kingbird = parse_kingbird(ROOT / INTAKE_CATALOGUE_HTML, 1, 324)
     release = json.loads((WEB / "unitsquare-release1-2026/results.json").read_text())
     unitsquare = {int(row["n"]): str(row["offered_side"]) for row in release["results"]}
     return {

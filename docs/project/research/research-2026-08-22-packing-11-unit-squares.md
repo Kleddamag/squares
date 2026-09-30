@@ -967,7 +967,7 @@ Use the structured form to query or plot; use these tables to read.
 | 123 | 11.60138466 | — | — | 11.229281 | monotone | 0.3721 |
 | 124 | `6 + 4 √2` = 11.65685425 | hand | — | 11.229281 | monotone | 0.4276 |
 | 125 | `11 + (1/2)√2` = 11.70710678 | strip | — | 11.229281 | monotone | 0.4778 |
-| 126 | 11.77617895 | annealing | 59 | 11.246951 | Nagamochi | 0.5292 |
+| 126 | 11.77473513 | annealing | — | 11.246951 | Nagamochi | 0.5278 |
 | 127 | `(21/2) + (1/2)√7` = 11.82287566 | extension | — | 11.29563 | Nagamochi | 0.5272 |
 | 128 | 11.82509197 | — | 40 | 11.34408 | Nagamochi | 0.481 |
 | 129 | 11.88130622 | annealing | 20 | 11.392305 | Nagamochi | 0.489 |
@@ -1014,7 +1014,7 @@ Use the structured form to query or plot; use these tables to read.
 | 176 | `(25/2) + (1/2)√7` = 13.82287566 | extension | — | 13.288206 | Nagamochi | 0.5347 |
 | 177 | 13.82297973 | — | — | 13.328828 | Nagamochi | 0.4942 |
 | 178 | `13 - (1/2)√2 + sqrt(1 + √2)` = 13.84666719 | extension | — | 13.369317 | Nagamochi | 0.4774 |
-| 179 | 13.89540982 | annealing | — | 13.409674 | Nagamochi | 0.4857 |
+| 179 | 13.89534107 | annealing | 158 | 13.409674 | Nagamochi | 0.4857 |
 | 180 | 13.92788814 | — | — | 13.4499 | Nagamochi | 0.478 |
 | 181 | 13.95374882 | — | — | 13.489996 | Nagamochi | 0.4638 |
 | 182 | 13.97409071 | — | — | 13.529964 | Nagamochi | 0.4441 |

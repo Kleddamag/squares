@@ -103,9 +103,10 @@ Each component is defined once in [site.css](site.css) and used on every page th
 it.
 
 - **Navigation bar.** One fixed-width row of sans links in the page’s header slot, the
-  same on every page, led by the site name, “Square Packing”, as written and a step
-  heavier. Every item takes the cards’ gentle wash on hover and nothing underlines on
-  hover; the current page alone is underlined in the accent.
+  same on every page, led by the site name, “Square Packing”, set in capitals by CSS
+  (`text-transform`, lightly tracked) so its text is unchanged, and a step heavier.
+  Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
+  current page alone is underlined in the accent.
   The edition appears only in the closing line.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its

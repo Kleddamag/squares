@@ -53,9 +53,12 @@
   text-decoration: none;
 }
 /* The name is set as written, in the bar's sans, a step heavier than the links. */
+/* The site name is set in capitals by style, so its text stays "Square Packing". */
 .site-nav .site-name {
   color: var(--kpress-doc-text);
   font-weight: 680;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   margin-inline: -0.55rem auto;
 }
 .site-nav .site-name:is(:hover, :focus-visible) {

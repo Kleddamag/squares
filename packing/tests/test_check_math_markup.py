@@ -16,6 +16,7 @@ import pytest
 
 from devtools.check_math_markup import (
     REGISTER,
+    Exempt,
     Keep,
     Register,
     RegisterError,
@@ -118,6 +119,29 @@ def test_keep_lets_one_span_stay_code_and_a_stale_keep_fails(repo: Path) -> None
     _write(repo, "guide.md", "Now $n = 11$ is math.\n")
     (problem,) = check(Register(("guide.md",), (kept,)), repo).problems
     assert "no longer a math code span" in problem
+
+
+def test_an_exempt_file_leaves_the_backlog_and_cannot_also_be_migrated(repo: Path) -> None:
+    pinned = Exempt("notes.md", "exact bytes pinned by a replay")
+    assert check(Register(("guide.md",), (), (pinned,)), repo).problems == []
+    both = check(Register(("notes.md",), (), (pinned,)), repo).problems
+    assert "math-markup.yaml: notes.md is both migrated and exempt" in both
+    outside = check(Register((), (), (Exempt("STATUS.md", "generated"),)), repo).problems
+    assert outside == [
+        "math-markup.yaml: `exempt` names STATUS.md, which is not a hand-written Markdown "
+        "file the ratchet could read"
+    ]
+
+
+def test_an_exempt_entry_is_path_and_reason(tmp_path: Path) -> None:
+    register = tmp_path / "math-markup.yaml"
+    register.write_text(
+        "migrated: []\nkeep: []\nexempt:\n- path: a.md\n  reason: pinned\n", encoding="utf-8"
+    )
+    assert load_register(register).exempt == (Exempt("a.md", "pinned"),)
+    register.write_text("migrated: []\nkeep: []\nexempt:\n- path: a.md\n", encoding="utf-8")
+    with pytest.raises(RegisterError, match="exempt"):
+        load_register(register)
 
 
 def test_an_unmigrated_file_is_never_read(repo: Path) -> None:

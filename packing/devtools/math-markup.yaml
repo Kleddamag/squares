@@ -24,7 +24,18 @@
 #             listed under `migrated`; `span` is the code span's text exactly; `reason`
 #             says why. An entry whose span is no longer in its file fails the check, so
 #             the list only shrinks.
+#   exempt:   files that never move, each {path, reason}, sorted by path: their exact bytes
+#             are pinned by a replay, or they quote an external source whose spans the
+#             tool would retype. They leave the backlog; listing one as migrated too fails.
 
 migrated: []
 
 keep: []
+
+exempt:
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"

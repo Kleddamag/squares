@@ -8,6 +8,9 @@ at a time. This is that check, for the pull-request surface: every file listed u
 and a code span it would convert fails the gate, with the LaTeX to write instead. A span
 that must stay code despite reading as math is recorded under `keep` with its reason, and
 a `keep` entry whose span has gone fails too, so the list only shrinks.
+A file that must never move -- its exact bytes are pinned by a replay, or it quotes an
+external source whose spans would be retyped -- is recorded under `exempt` with its
+reason, and leaves the backlog.
 
 The reverse fails as well: a formula written as `$…$` where GitHub shows the dollars
 instead -- after a hyphen or a slash, inside a link's text or italics -- with the code
@@ -75,18 +78,29 @@ class Keep:
 
 
 @dataclass(frozen=True)
+class Exempt:
+    """One file that stays as it is, and why: its bytes are pinned, or it quotes a source."""
+
+    path: str
+    reason: str
+
+
+@dataclass(frozen=True)
 class Register:
-    """The migrated files and the spans they keep as code."""
+    """The migrated files, the spans they keep as code, and the files that never move."""
 
     migrated: tuple[str, ...]
     keep: tuple[Keep, ...]
+    exempt: tuple[Exempt, ...] = ()
 
 
 def load_register(path: Path = REGISTER) -> Register:
     """Read and shape-check the register; a malformed one raises `RegisterError`."""
     data = load_yaml(path.read_text(encoding="utf-8"))
-    if not isinstance(data, dict) or set(data) != {"migrated", "keep"}:
-        raise RegisterError(f"{path.name}: expected exactly the keys `migrated` and `keep`")
+    if not isinstance(data, dict) or set(data) - {"exempt"} != {"migrated", "keep"}:
+        raise RegisterError(
+            f"{path.name}: expected the keys `migrated` and `keep`, and optionally `exempt`"
+        )
     migrated, keep = data["migrated"], data["keep"]
     if not isinstance(migrated, list) or not all(isinstance(item, str) for item in migrated):
         raise RegisterError(f"{path.name}: `migrated` must be a list of paths")
@@ -103,7 +117,18 @@ def load_register(path: Path = REGISTER) -> Register:
                 f"{path.name}: a `keep` entry is {{path, span, reason}}, none empty: {item!r}"
             )
         entries.append(Keep(item["path"], item["span"], item["reason"]))
-    return Register(tuple(migrated), tuple(entries))
+    exempt: list[Exempt] = []
+    for item in data.get("exempt") or []:
+        if (
+            not isinstance(item, dict)
+            or set(item) != {"path", "reason"}
+            or not all(isinstance(value, str) and value.strip() for value in item.values())
+        ):
+            raise RegisterError(
+                f"{path.name}: an `exempt` entry is {{path, reason}}, neither empty: {item!r}"
+            )
+        exempt.append(Exempt(item["path"], item["reason"]))
+    return Register(tuple(migrated), tuple(entries), tuple(exempt))
 
 
 @dataclass(frozen=True)
@@ -248,6 +273,17 @@ def check(register: Register, repo: Path = REPO, files: Scope | None = None) -> 
     for keep in register.keep:
         if keep.path not in register.migrated:
             outcome.problems.append(f"math-markup.yaml: `keep` names {keep.path}, not migrated")
+    exempt = [item.path for item in register.exempt]
+    if exempt != sorted(set(exempt)):
+        outcome.problems.append("math-markup.yaml: `exempt` must be sorted and unique")
+    for path in exempt:
+        if path in register.migrated:
+            outcome.problems.append(f"math-markup.yaml: {path} is both migrated and exempt")
+        elif path not in files.eligible:
+            outcome.problems.append(
+                f"math-markup.yaml: `exempt` names {path}, which is not a hand-written "
+                "Markdown file the ratchet could read"
+            )
     for path in register.migrated:
         if path not in files.eligible:
             why = (
@@ -283,7 +319,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 2
     files = scope(arguments.repo)
     outcome = check(register, arguments.repo, files)
-    backlog = sorted(files.eligible - set(register.migrated))
+    exempt = {item.path for item in register.exempt}
+    backlog = sorted(files.eligible - set(register.migrated) - exempt)
     for problem in outcome.problems:
         print(f"  {problem}", file=sys.stderr)
     excluded = Counter(files.excluded.values())
@@ -292,7 +329,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     reasons = ", ".join(f"{reason} {count}" for reason, count in sorted(excluded.items()))
     print(
         f"  backlog: {len(backlog)} of {len(files.eligible)} hand-written Markdown files "
-        f"not yet migrated; {len(files.generated)} generated views move at their renderers; "
+        f"not yet migrated, {len(exempt)} exempt; "
+        f"{len(files.generated)} generated views move at their renderers; "
         f"{excluded.total()} excluded" + (f" ({reasons})" if reasons else "")
     )
     if arguments.backlog:

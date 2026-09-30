@@ -3,9 +3,9 @@ type: is
 id: is-01m3p532d6ggqg2a2wg1hyze6t
 title: Frontier atlas page from SquarePackingCase/v2 records, n = 1..324, clean value rendering and thumbnails
 kind: task
-status: open
+status: closed
 priority: 2
-version: 5
+version: 6
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -13,9 +13,9 @@ dependencies:
     target: is-01m3p5343njrazhtrtw46yr27c
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T08:39:21.766Z
-updated_at: 2026-09-30T03:05:27.278Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T05:04:30.626Z
+closed_at: 2026-09-30T05:04:30.626Z
+close_reason: "Implemented by lanes A, D1 and D2 and integrated in 8c24872ae, 14cb1c051 and f268e9be0 (re-pin in cb738842d): register registered field, grouped_results and significance helpers, overview data layer, frontier atlas page, tutorial page, explainer nav/canonical/edition notice, Visualizer link, document-map summaries and reader-document cards, notable-sources registry, whole-credit and ai_assistance."
 resolution: null
 duplicate_of: null
 ---

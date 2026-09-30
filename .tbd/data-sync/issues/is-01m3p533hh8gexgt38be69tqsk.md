@@ -3,9 +3,9 @@ type: is
 id: is-01m3p533hh8gexgt38be69tqsk
 title: "Explainer and workbench: nav partial hidden in print, canonical URL, fragment forwarder, README/TUTORIAL links, #site-note"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 5
+version: 6
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -13,9 +13,9 @@ dependencies:
     target: is-01m3p5343njrazhtrtw46yr27c
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T08:39:22.929Z
-updated_at: 2026-09-30T02:47:51.430Z
-closed_at: null
-close_reason: null
+updated_at: 2026-09-30T05:04:30.633Z
+closed_at: 2026-09-30T05:04:30.632Z
+close_reason: "Implemented by lanes A, D1 and D2 and integrated in 8c24872ae, 14cb1c051 and f268e9be0 (re-pin in cb738842d): register registered field, grouped_results and significance helpers, overview data layer, frontier atlas page, tutorial page, explainer nav/canonical/edition notice, Visualizer link, document-map summaries and reader-document cards, notable-sources registry, whole-credit and ai_assistance."
 resolution: null
 duplicate_of: null
 ---

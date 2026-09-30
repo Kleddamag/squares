@@ -2929,6 +2929,14 @@ def _notable_sources(context: Context) -> str:
     return _module(context, "devtools.check_notable_sources")
 
 
+def _math_markup(context: Context) -> str:
+    # Sub-second over the whole repository (0.34 s measured with nothing migrated, about
+    # 2.3 s estimated with every file migrated). The ratchet of Phase 3's math migration:
+    # a file listed as migrated in `devtools/math-markup.yaml` may not gain a math-like
+    # code span, and the backlog of unmigrated files is reported, never touched.
+    return _module(context, "devtools.check_math_markup")
+
+
 def _results_headline(context: Context) -> str:
     # Sub-second: one register, one document, one rubric. Records tier because it checks
     # presentation of the record -- that every registered result reaches the section a
@@ -4291,6 +4299,22 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "migrated documents keep their math as math",
+        _math_markup,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "*.md",
+            "packing/devtools/math-markup.yaml",
+            "packing/devtools/check_math_markup.py",
+            "packing/devtools/migrate_math.py",
+            "packing/devtools/check_math_spans.py",
+            "docs/project/document-map.yaml",
+            ".flowmarkignore",
+        ),
+    ),
+    Step(
         "the synopsis headline carries every result",
         _results_headline,
         fast=True,
@@ -4735,6 +4759,8 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "results rungs are earned and the view agrees",
         # Reads the tracked registers, the archive index and the retained tree only.
         "notable sources cover the frontier's and resolve",
+        # Reads tracked Markdown and its own register only.
+        "migrated documents keep their math as math",
         "the synopsis headline carries every result",
         "README's recent results agree with the records",
         "exact certificates are named by their records",

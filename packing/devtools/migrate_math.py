@@ -64,6 +64,12 @@ Usage, from `packing/`:
 
 Without `--apply` the files are only read. With it, exit 1 if any file was refused.
 `devtools.check_math_markup` is the ratchet that keeps a migrated file migrated.
+
+**Generated Markdown is migrated at its renderer**, never by editing the output, and the
+renderers share this module's rules through two entry points: `markdown_math` for a
+Markdown fragment they did not write (a register `headline`, in running text or as a
+table cell), and `register_latex` for an ASCII register literal (`s(11) >= 381/100`,
+`2 + 4/sqrt(5) = 3.788854...`), which the register keeps ASCII.
 """
 
 from __future__ import annotations
@@ -109,8 +115,11 @@ KINDS: tuple[Kind, ...] = ("math", "identifier", "uncertain")
 
 #: YAML frontmatter at the very top of a file: data, never prose.
 FRONTMATTER = re.compile(r"\A---[ \t]*\n.*?\n(?:---|\.\.\.)[ \t]*(?:\n|\Z)", re.DOTALL)
-#: A block a renderer owns, from `<!-- BEGIN … -->` to the next `<!-- END … -->`.
-GENERATED = re.compile(r"<!--\s*BEGIN\b[^>]*?-->.*?<!--\s*END\b[^>]*?-->", re.DOTALL)
+#: A block a renderer owns, from `<!-- BEGIN GENERATED: … -->` to its `END GENERATED`. Other
+#: marked blocks, such as the synopsis's hand-written readiness dashboard, are prose.
+GENERATED = re.compile(
+    r"<!--\s*BEGIN GENERATED\b[^>]*?-->.*?<!--\s*END GENERATED\b[^>]*?-->", re.DOTALL
+)
 COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 TICKS = re.compile(r"`+")
 BLANK_LINE = re.compile(r"\n[ \t]*\n")
@@ -121,17 +130,45 @@ def _blank(text: str) -> str:
     return "\n".join(" " * len(line) for line in text.split("\n"))
 
 
-def _mask(text: str, pattern: re.Pattern[str]) -> str:
-    return pattern.sub(lambda match: _blank(match.group(0)), text)
+def _matches(
+    text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()
+) -> list[re.Match[str]]:
+    """Every match of `pattern` that does not open inside a code span, in order.
+
+    A marker quoted as code (`` `<!-- BEGIN GENERATED: … -->` ``) is text, not a comment,
+    since CommonMark reads whichever construct opens first. A match refused for opening
+    inside a span is searched again from its next character, so a real comment it
+    overlapped is still found.
+    """
+    starts = [span.start for span in spans]
+    found: list[re.Match[str]] = []
+    position = 0
+    while (match := pattern.search(text, position)) is not None:
+        index = bisect.bisect_right(starts, match.start()) - 1
+        if index >= 0 and spans[index].start < match.start() < spans[index].end:
+            position = match.start() + 1
+            continue
+        found.append(match)
+        position = max(match.end(), match.start() + 1)
+    return found
 
 
-def _only(text: str, pattern: re.Pattern[str]) -> str:
-    """`text` with everything outside the pattern's matches blanked."""
-    if pattern.search(text) is None:
-        return _blank(text)
+def _mask(text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()) -> str:
+    """`text` with every match of `pattern` outside a code span blanked."""
     pieces: list[str] = []
     position = 0
-    for match in pattern.finditer(text):
+    for match in _matches(text, pattern, spans):
+        pieces.extend((text[position : match.start()], _blank(match.group(0))))
+        position = match.end()
+    pieces.append(text[position:])
+    return "".join(pieces)
+
+
+def _only(text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()) -> str:
+    """`text` with everything but the pattern's matches outside code spans blanked."""
+    pieces: list[str] = []
+    position = 0
+    for match in _matches(text, pattern, spans):
         pieces.extend((_blank(text[position : match.start()]), match.group(0)))
         position = match.end()
     pieces.append(_blank(text[position:]))
@@ -146,8 +183,9 @@ def mask(text: str) -> tuple[str, str]:
     a generated block.
     """
     code_free = _mask(mask_fences(text), FRONTMATTER)
-    prose = _mask(_mask(code_free, GENERATED), COMMENT)
-    generated = _mask(_only(code_free, GENERATED), COMMENT)
+    quoted = code_spans(code_free) if "<!--" in code_free else []
+    prose = _mask(_mask(code_free, GENERATED, quoted), COMMENT, quoted)
+    generated = _mask(_only(code_free, GENERATED, quoted), COMMENT, quoted)
     return prose, generated
 
 
@@ -1029,6 +1067,73 @@ def rewrite(text: str, decisions: Iterable[Decision]) -> str:
             position = decision.span.end
     pieces.append(text[position:])
     return "".join(pieces)
+
+
+# ---------------------------------------------------------------------------------------
+# For renderers: generated Markdown is migrated where it is written, never after
+# ---------------------------------------------------------------------------------------
+
+_CELL_PREFIX = "| x |\n| --- |\n| "
+_CELL_SUFFIX = " |\n"
+
+
+def markdown_math(fragment: str, *, table: bool = False) -> str:
+    """A Markdown fragment with its math code spans as `$…$`, planned as a file would be.
+
+    For a renderer that writes prose it does not own, such as a register's `headline`.
+    `table` plans the fragment as one table cell, so it takes the cell's `\\frac` style
+    and the cell's refusals: a `|` in the math, and math opening a cell that ends in a
+    digit, which kpress's dollarmath would print as dollars.
+    """
+    if not table:
+        return rewrite(fragment, plan(fragment).decisions)
+    source = f"{_CELL_PREFIX}{fragment}{_CELL_SUFFIX}"
+    converted = rewrite(source, plan(source).decisions)
+    return converted[len(_CELL_PREFIX) : len(converted) - len(_CELL_SUFFIX)]
+
+
+#: The register's ASCII operators and their Unicode forms, which `to_latex` then reads.
+_REGISTER_ASCII = (
+    (re.compile(r">="), "≥"),
+    (re.compile(r"<="), "≤"),
+    (re.compile(r"!="), "≠"),
+    (re.compile(r"\.\.\."), "…"),
+    (re.compile(r"\bsqrt\s*\("), "√("),
+    (re.compile(r"\*"), "·"),
+)
+
+
+def register_latex(literal: str, *, frac: bool = False) -> str:
+    """The LaTeX for one ASCII register literal: an exact form, a value or a bound.
+
+    The register stores `s(11) >= 955000*sqrt(518400042893309449)/179696714646249` and
+    keeps it ASCII; a renderer shows it as mathematics. Only the literal goes in, never
+    the prose around it: a word raises `UnconvertibleError`, as it does in `to_latex`.
+    """
+    text = literal
+    for pattern, replacement in _REGISTER_ASCII:
+        text = pattern.sub(replacement, text)
+    for name, (left, right) in _BRACKETS.items():
+        text = _bracketed(text, name, left, right)
+    return to_latex(text, frac=frac)
+
+
+#: The register's rounding functions and the brackets that write them.
+_BRACKETS = {"floor": ("⌊", "⌋"), "ceil": ("⌈", "⌉")}
+
+
+def _bracketed(text: str, name: str, left: str, right: str) -> str:
+    """`floor(x)` as `⌊x⌋`, innermost first, so the parentheses always balance."""
+    call = re.compile(rf"\b{name}\(")
+    while (match := call.search(text)) is not None:
+        depth, end = 1, match.end()
+        while end < len(text) and depth:
+            depth += {"(": 1, ")": -1}.get(text[end], 0)
+            end += 1
+        if depth:
+            raise UnconvertibleError(f"an unclosed `{name}(`")
+        text = f"{text[: match.start()]}{left}{text[match.end() : end - 1]}{right}{text[end:]}"
+    return text
 
 
 # ---------------------------------------------------------------------------------------

@@ -39,10 +39,12 @@ Exits 1 on a finding, and 2 if the register cannot be read.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import time
 from collections import Counter
 from collections.abc import Sequence
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
@@ -290,6 +292,7 @@ def check(register: Register, repo: Path = REPO, files: Scope | None = None) -> 
                 f"math-markup.yaml: `exempt` names {path}, which is not a hand-written "
                 "Markdown file the ratchet could read"
             )
+    jobs: list[tuple[str, str, frozenset[str]]] = []
     for path in register.migrated:
         if path not in files.eligible:
             why = (
@@ -299,9 +302,32 @@ def check(register: Register, repo: Path = REPO, files: Scope | None = None) -> 
             )
             outcome.problems.append(f"math-markup.yaml: {path} cannot be listed: {why}")
             continue
-        keeps = {keep.span for keep in register.keep if keep.path == path}
-        _check_file(path, (repo / path).read_text(encoding="utf-8"), keeps, outcome)
+        keeps = frozenset(keep.span for keep in register.keep if keep.path == path)
+        jobs.append((path, (repo / path).read_text(encoding="utf-8"), keeps))
+    if len(jobs) < PARALLEL_FROM:
+        results = [_checked(job) for job in jobs]
+    else:
+        # Each file is independent, and with every Markdown file migrated the serial walk
+        # was seven seconds of the edit tier; the cores take a share each.
+        with ProcessPoolExecutor(max_workers=os.cpu_count()) as pool:
+            results = list(pool.map(_checked, jobs, chunksize=32))
+    for problems, kept in results:
+        outcome.problems.extend(problems)
+        outcome.kept += kept
     return outcome
+
+
+#: The register size from which the files are checked in parallel; a handful is faster
+#: checked where it is than spread across fresh processes.
+PARALLEL_FROM = 64
+
+
+def _checked(job: tuple[str, str, frozenset[str]]) -> tuple[list[str], int]:
+    """One migrated file's problems and kept-span count, in a form a worker can return."""
+    path, text, keeps = job
+    outcome = Outcome()
+    _check_file(path, text, set(keeps), outcome)
+    return outcome.problems, outcome.kept
 
 
 def _parser() -> argparse.ArgumentParser:

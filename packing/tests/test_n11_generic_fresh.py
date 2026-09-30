@@ -183,7 +183,7 @@ def test_expired_full_run_cannot_exclude_a_case(tmp_path: Path) -> None:
 
 
 @pytest.mark.slow
-def test_complete_shared_2095_replay_has_every_step_and_no_pending_row(tmp_path: Path) -> None:
+def test_complete_2095_receipt_has_every_step_and_no_pending_row(tmp_path: Path) -> None:
     manifest = sequential.load_manifest(sequential.MANIFEST)
     recipe = next(row for row in manifest["cases"] if row["mask_index"] == 2095)
     assert recipe["source_sha256"] == generic.SOURCE_PIN[0]

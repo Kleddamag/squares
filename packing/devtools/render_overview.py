@@ -320,7 +320,6 @@ def overview_page() -> Page:
     from devtools.render_explainer import repo_file  # noqa: PLC0415
 
     overview = overview_data.load()
-    stats = overview_data.stats(overview)
     values = {
         "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
         "HERO": overview_sections.hero(),
@@ -329,7 +328,7 @@ def overview_page() -> Page:
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),
         "RESULTS_TABLE": overview_sections.results_table(overview),
-        "VERIFICATION": overview_sections.verification_block(overview, stats),
+        "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_list(overview),
     }
     markdown = fill(

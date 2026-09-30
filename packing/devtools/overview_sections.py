@@ -10,14 +10,13 @@ works without scripts: rows are all present, details open with `<details>`, and
 from __future__ import annotations
 
 import html
+import re
 
 from devtools.overview_data import (
-    APOSTROPHE,
     EN_DASH,
     REPO,
     Overview,
     Result,
-    Stats,
     math_html,
     tex_bounds,
 )
@@ -268,82 +267,57 @@ def results_table(overview: Overview) -> str:
     )
 
 
-def _bar(label: str, counts: dict[str, int]) -> str:
-    total = sum(counts.values()) or 1
-    segments = "".join(
-        f'<span class="site-bar-seg site-rung-fill" {_fill(c)} style="flex:{counts[c]}"'
-        f' title="{c}: {counts[c]}">{counts[c]}</span>'
-        for c in C_RUNGS
-        if counts.get(c)
-    )
-    return (
-        f'<div class="site-bar-row"><span>{_esc(label)} ({sum(counts.values())})</span>'
-        f'<span class="site-bar-track" aria-label="{_esc(label)}: '
-        + ", ".join(f"{c} {counts[c]}" for c in C_RUNGS if counts.get(c))
-        + f'" data-total="{total}">{segments}</span></div>'
-    )
+#: The rubric's three scored dimensions, in the homepage's order: the scale, its name,
+#: the `epistemics.md` section that defines it, and the question it answers.
+DIMENSIONS: tuple[tuple[str, str, str, str], ...] = (
+    ("V", "Verification", "verification", "How strongly is the claim checked, by anyone?"),
+    ("C", "Confirmation", "confirmation", "What has this repository checked itself?"),
+    ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
+)
+
+_LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)
 
 
-def verification_block(overview: Overview, stats: Stats) -> str:
-    """Counts of results and cases, and the confirmation bar by source. Each count's
-    popover shows what it counts: the result groups, above a button to the table here;
-    the frontier atlas filtered to the cases it names; or the definition of the rungs."""
+def rubric_levels() -> dict[str, list[tuple[int, str]]]:
+    """Each dimension's levels and their one-line meanings, read from the tables in
+    `epistemics.md`, so a card cannot drift from the rubric it summarizes."""
+    text = (REPO / "epistemics.md").read_text(encoding="utf-8")
+    levels: dict[str, list[tuple[int, str]]] = {}
+    for scale, level, meaning in _LEVEL_ROW.findall(text):
+        levels.setdefault(scale, []).append((int(level), meaning.strip()))
+    for scale, *_ in DIMENSIONS:
+        if not levels.get(scale):
+            raise SystemExit(f"epistemics.md defines no {scale} levels")
+    return levels
+
+
+def verification_block() -> str:
+    """One card per dimension of the rubric: its question and every level, as the chip
+    the tables use and the rubric's meaning. Each card's popover renders that section of
+    `epistemics.md`."""
     from devtools.render_explainer import repo_file  # noqa: PLC0415
 
-    groups = _dl(
-        [(_esc(name), _esc(f"{len(results)} results")) for name, results in overview.groups]
-    )
-    cards = [
-        card(
-            "pop-count-results",
-            "Registered results",
-            _esc(stats.total),
-            _esc(f"{stats.ours} this project{APOSTROPHE}s, {stats.others} by others"),
-            preview=groups,
-            href="#every-result",
-            action="Show every result",
-        ),
-        card(
-            "pop-count-cases",
-            f"Cases n = 1{EN_DASH}100",
-            _esc(f"{stats.cases_1_100_proved} proved"),
-            _esc(f"{stats.cases_1_100_open} still open"),
-            href="frontier.html?n-max=100",
-            action="Expand these cases in the frontier atlas",
-        ),
-        card(
-            "pop-count-recent",
-            "Recent lower bounds",
-            _esc(stats.recent_lower_total),
-            "verified lower bounds proved since 22 August 2026",
-            href="frontier.html?recent=true",
-            action="Expand these cases in the frontier atlas",
-        ),
-        card(
-            "pop-count-verification",
-            "Verification",
-            _esc(f"{stats.verification.get('V4', 0)} at V4"),
-            _esc(
-                ", ".join(
-                    f"{v} {k}" for k, v in sorted(stats.verification.items(), reverse=True)
-                )
-            ),
-            href="epistemics.html#verification",
-            action="Expand epistemics.md",
-            also=(repo_file(REPO / "epistemics.md"), "On GitHub"),
-        ),
-    ]
-    grid = "".join(cards)
-    legend = "".join(
-        f'<span><i class="site-rung-fill" {_fill(c)}></i>{c}</span>' for c in C_RUNGS
-    )
-    bars = _bar("This project", dict(stats.confirmation_ours)) + _bar(
-        "By others", dict(stats.confirmation_others)
-    )
-    return (
-        f'<div class="site-cards site-wide">{grid}</div>'
-        f'<div class="site-bar">{bars}</div><div class="site-legend">{legend}</div>'
-    )
+    levels = rubric_levels()
+    cards = []
+    for scale, name, section, question in DIMENSIONS:
+        ladder = "".join(
+            f'<span class="site-level"><span class="site-chip site-rung-fill" '
+            f'data-rung="{scale}" data-level="{level}">{scale}{level}</span> '
+            f"{_esc(meaning)}</span>"
+            for level, meaning in sorted(levels[scale], reverse=True)
+        )
+        cards.append(
+            card(
+                f"pop-dimension-{scale.lower()}",
+                f"{scale}{levels[scale][0][0]}{EN_DASH}{scale}{levels[scale][-1][0]}",
+                _esc(name),
+                f'<span class="site-level-question">{_esc(question)}</span>{ladder}',
+                href=f"epistemics.html#{section}",
+                action=f"Expand {name} in epistemics.md",
+                also=(f"{repo_file(REPO / 'epistemics.md')}#{section}", "On GitHub"),
+            )
+        )
+    return f'<div class="site-cards site-cards-dimensions site-wide">{"".join(cards)}</div>'
 
 
 def recent_list(overview: Overview, count: int = 8) -> str:

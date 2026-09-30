@@ -67,13 +67,22 @@ Page colors that are not the accent are desaturated shades of it:
 
 | Use | Hue | Chroma | Source in the palette |
 | --- | --- | --- | --- |
-| Verification rung (`V`) | 250 | 0.05 | The blue square, `#166eac` |
-| Confirmation rung (`C`) | 158 | 0.05 | The green square, `#158655` |
+| Verification rung (`V`) | 250 | 0.08 | The blue square, `#166eac` |
+| Confirmation rung (`C`) | 158 | 0.08 | The green square, `#158655` |
 | Significance rung (`S`) | 250 | 0.008 | Gray |
 
-A rung’s fill is `oklch(95% − 10% × level, chroma, hue)` for levels 0 to 5, so it
-darkens as the rung rises, with dark text through level 3 and white from level 4. The
-recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
+Every chip carries light text on a dark fill, and in dark mode dark text on a light
+fill: its text is the page’s background colour.
+A rung’s fill is `oklch(base + step × level, chroma, hue)` for levels 0 to 5, with base
+50% and step −4% in light mode, so it darkens from 50% to 30% as the rung rises, and
+base 75% and step +4% in dark mode, so it lightens from 75% to 95%. The two are
+`--site-rung-base` and `--site-rung-step`. The recent-bound star is the one warm mark,
+`oklch(52% 0.19 25)`.
+
+Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
+defined in `site-nav.css` because every page carries it: KPress’s hover surface in light
+mode, and a 9% tint of the text in dark mode, where KPress’s own is a light gray that
+light text cannot sit on.
 
 ## Math
 
@@ -120,8 +129,7 @@ it.
     full window. The button is **Expand**, which opens the page at full size; a
     repository document also offers its source “On GitHub”.
   - When the card leads to a row on this page, the popover previews the row, read from
-    the same record: a result’s claim, why it matters, its rungs and records, or the
-    result groups a count counts.
+    the same record: a result’s claim, why it matters, its rungs and records.
     The button shows the row in the table.
 
   The frame loads only when its popover first opens, so the overview stays light.
@@ -132,11 +140,15 @@ it.
   a row on this page, `↗` off the site, `→` to another page of the site.
 
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
-  note size, a fill and no border.
-  A plain chip is neutral gray; `data-tone="accent"` is an accent tint for a settled
-  state, such as a proved case.
-  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, which the
-  confirmation bar and its legend share.
+  note size, a solid fill and no border, lettered in the page’s background colour.
+  A plain chip is the muted gray; `data-tone="accent"` is the accent, for a settled
+  state such as a proved case.
+  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`.
+
+- **Dimension cards.** Verification at a Glance is one card per scored dimension of the
+  rubric, Verification, Confirmation and Significance: the question it answers, then
+  every level as its chip and the rubric’s meaning, read from the tables in
+  `epistemics.md`. Each opens that section of `epistemics.md`.
 
 - **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
   on a phone. Each image and its caption link to that poster’s PDF, marked
@@ -148,8 +160,6 @@ it.
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.
   On a phone, the results table becomes one card per row.
-
-- **Confirmation bar.** One stacked bar per source, in the confirmation rung fills.
 
 ## Token Ownership
 

@@ -35,6 +35,15 @@ body {
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
+  /* Chips turn over with the page: light fills that lighten with the level. */
+  --site-rung-base: 75%;
+  --site-rung-step: 4%;
+}
+/* Chips are dark fills carrying the page's own background as their text, darkening
+   with the level; dark mode turns the scale over (above). */
+:root {
+  --site-rung-base: 50%;
+  --site-rung-step: -4%;
 }
 
 /* The paper typography profile, as the explainer sets it: a 19/18 sans base against
@@ -139,7 +148,7 @@ body {
 }
 .kpress :is(a, button).site-card:hover,
 .kpress :is(a, button).site-card:focus-visible {
-  background: var(--kpress-doc-surface-hover);
+  background: var(--site-wash);
 }
 .kpress :is(a, button).site-card::after {
   color: var(--kpress-doc-muted);
@@ -391,13 +400,14 @@ body {
 }
 /* ---------- Chips ----------
    Every small label on the site is one chip: square corners, the sans face at the note
-   size, a fill and no border. A plain chip is neutral; `data-tone="accent"` marks a
-   settled state (a proved case). A rung chip adds `site-rung-fill`, which the
-   confirmation bar and its legend share. */
+   size, a solid fill and no border, lettered in the page's background colour. In light
+   mode every fill is dark enough for light text; in dark mode every fill is light and
+   the text dark. A plain chip is neutral; `data-tone="accent"` marks a settled state (a
+   proved case). A rung chip adds `site-rung-fill`. */
 .site-chip {
-  background: var(--kpress-doc-surface-hover);
+  background: var(--kpress-doc-muted);
   border-radius: 0;
-  color: var(--kpress-doc-text);
+  color: var(--kpress-doc-bg);
   display: inline-block;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -407,19 +417,22 @@ body {
   white-space: nowrap;
 }
 .site-chip[data-tone="accent"] {
-  background: color-mix(in oklch, var(--kpress-doc-accent) 16%, transparent);
-  color: var(--kpress-doc-accent);
+  background: var(--kpress-doc-accent);
+  color: var(--kpress-doc-bg);
 }
 
-/* A rung's fill darkens with its level, on its own scale: verification in blue and
-   confirmation in green, each a desaturated shade of the packing palette's blue and green
-   squares, and significance in gray. Text turns light where the fill is dark. */
+/* A rung's fill moves with its level on its own scale, darker in light mode and lighter
+   in dark: verification in blue and confirmation in green, each a desaturated shade of
+   the packing palette's blue and green squares, and significance in gray. */
 .site-rung-fill {
   --rung-hue: 250;
-  --rung-chroma: 0.05;
+  --rung-chroma: 0.08;
   --rung-level: 0;
-  background: oklch(calc(95% - var(--rung-level) * 10%) var(--rung-chroma) var(--rung-hue));
-  color: oklch(25% 0.02 var(--rung-hue));
+  background: oklch(
+    calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step)) var(--rung-chroma)
+      var(--rung-hue)
+  );
+  color: var(--kpress-doc-bg);
 }
 .site-rung-fill[data-rung="C"] {
   --rung-hue: 158;
@@ -438,11 +451,9 @@ body {
 }
 .site-rung-fill[data-level="4"] {
   --rung-level: 4;
-  color: white;
 }
 .site-rung-fill[data-level="5"] {
   --rung-level: 5;
-  color: white;
 }
 .site-star {
   color: oklch(52% 0.19 25);
@@ -457,52 +468,6 @@ body {
   height: 100%;
 }
 
-/* ---------- Verification bar ---------- */
-.site-bar {
-  display: grid;
-  gap: 0.45rem;
-  margin-block: 1rem;
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-}
-.site-bar-row {
-  display: grid;
-  grid-template-columns: 9rem 1fr;
-  gap: 0.6rem;
-  align-items: center;
-}
-.site-bar-track {
-  display: flex;
-  height: 1.1rem;
-  border-radius: 3px;
-  overflow: hidden;
-  border: 1px solid var(--kpress-doc-border);
-}
-.site-bar-seg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8em;
-  min-width: 1.4rem;
-}
-.site-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 1rem;
-  color: var(--site-support-color);
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-}
-.site-legend i {
-  box-shadow: inset 0 0 0 1px var(--kpress-doc-border);
-  display: inline-block;
-  width: 0.8rem;
-  height: 0.8rem;
-  border-radius: 2px;
-  margin-inline-end: 0.3rem;
-  vertical-align: -0.1rem;
-}
-
 @media print {
   .site-nav,
   .site-table-tools {
@@ -515,9 +480,6 @@ body {
 @media (width < 40rem) {
   .site-nav .site-edition {
     display: none;
-  }
-  .site-bar-row {
-    grid-template-columns: 1fr;
   }
 }
 /* The two posters side by side, each opening its PDF; stacked on a phone. */
@@ -620,7 +582,7 @@ body {
   min-width: 10rem;
 }
 .kpress .site-table .site-group-row th {
-  background: var(--kpress-doc-surface-hover, transparent);
+  background: var(--site-wash);
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
   padding-block: 0.6rem;
@@ -724,7 +686,7 @@ body {
 }
 /* A case reached by its anchor (`frontier.html#n-11`) is marked with the card wash. */
 .site-frontier tr:target {
-  background: var(--kpress-doc-surface-hover);
+  background: var(--site-wash);
 }
 .site-frontier .site-frontier-n {
   align-items: center;
@@ -817,4 +779,24 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * 0.85);
   margin-block-start: 0.5rem;
+}
+
+/* A dimension card lists its levels, highest first: the chip, then the rubric's
+   meaning, one level to a line under the question the dimension answers. */
+.kpress .site-cards-dimensions .site-card-note {
+  display: grid;
+  gap: 0.3rem;
+}
+.site-level-question {
+  color: var(--kpress-doc-text);
+  margin-block-end: 0.2rem;
+}
+.site-level {
+  align-items: baseline;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 2.2rem 1fr;
+}
+.site-level .site-chip {
+  text-align: center;
 }

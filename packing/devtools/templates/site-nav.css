@@ -3,6 +3,17 @@
    Part of the design system in paper-design.md. Written in kpress tokens only. Hidden in print, so the explainer's PDF and its
    print-layout checks do not move.
    ============================================================ */
+/* The gentle wash of a hovered card or nav item, a table's group row and a targeted row,
+   here because every page carries this file. KPress's own dark hover surface is a light
+   gray that light text cannot sit on, so dark mode washes with a tint of the text. */
+:root {
+  --site-wash: var(--kpress-doc-surface-hover);
+}
+:root:where([data-kpress-resolved-theme="dark"]),
+:where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
+  --site-wash: color-mix(in oklch, var(--kpress-doc-text) 9%, transparent);
+}
 /* ---------- Navigation bar ----------
    Carried in kpress's own site-header slot, which spans the window, with its links in
    one fixed-width track so the bar sits in the same place on every page: the pages set
@@ -37,7 +48,7 @@
   text-decoration: none;
 }
 .site-nav a:is(:hover, :focus-visible) {
-  background: var(--kpress-doc-surface-hover);
+  background: var(--site-wash);
   color: var(--kpress-doc-accent);
   text-decoration: none;
 }

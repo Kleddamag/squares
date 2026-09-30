@@ -95,6 +95,18 @@ def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:
     assert render_overview.FILM_SCRIPT.read_text(encoding="utf-8") in page
 
 
+def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:
+    levels = overview_sections.rubric_levels()
+    assert [len(levels[scale]) for scale in "VCS"] == [6, 6, 5]
+    for scale, _, section, _ in overview_sections.DIMENSIONS:
+        panel = page.split(f'popovertarget="pop-dimension-{scale.lower()}"', 1)[1]
+        panel = panel.split("</button>", 1)[0]
+        for level, meaning in levels[scale]:
+            assert f'data-rung="{scale}" data-level="{level}">{scale}{level}</span>' in panel
+            assert html.escape(meaning, quote=True) in panel
+        assert f'href="epistemics.html#{section}"' in page
+
+
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     article = re.sub(r"<script.*?</script>", "", page, flags=re.DOTALL).split("<article", 1)[1]
     assert not re.search(r"\{\{[A-Z0-9_]+\}\}", page)

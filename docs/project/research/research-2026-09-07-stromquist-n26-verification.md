@@ -1,8 +1,8 @@
 # Stromquist’s Twenty-Six-Square Packing
 
-Stromquist’s Memo III construction is valid, but its side `5.650629191439388…` is larger
-than the current best known `(7 + 3sqrt(2))/2 = 5.621320343559642…`, found by Friedman
-in 1997. The chart’s upper bound needs no correction.
+Stromquist’s Memo III construction is valid, but its side $5.650629191439388\ldots$ is
+larger than the current best known `(7 + 3sqrt(2))/2 = 5.621320343559642…`, found by
+Friedman in 1997. The chart’s upper bound needs no correction.
 The source audit did find a separate omission: Friedman’s survey reports a stronger
 lower bound from Green than the one independently verified here.
 Those two evidential statuses are now explicit in the
@@ -41,9 +41,9 @@ The independent replay checks both the construction and the comparison.
 
 The archived
 [Memo III](../../../packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf)
-is dated November 15, 1984. Table 1 on printed page 2 gives approximately `5.651`; page
-3 describes improvements over Göbel; Figure 4(b) on page 5 prints `5.650629` and an
-angle of approximately `27.583°`. Two reviewers inspected the scanned pages.
+is dated November 15, 1984. Table 1 on printed page 2 gives approximately $5.651$; page
+3 describes improvements over Göbel; Figure 4(b) on page 5 prints $5.650629$ and an
+angle of approximately $27.583^\circ$. Two reviewers inspected the scanned pages.
 The number is not an OCR ambiguity.
 
 [Ellsworth’s historical catalogue](https://kingbird.myphotos.cc/packing/squares_in_squares__compared.html)
@@ -52,16 +52,16 @@ later Friedman packing alongside it:
 
 | Construction | Side of the enclosing square | Relation to Stromquist’s side |
 | --- | --- | --- |
-| Göbel, 1979 | `5 + sqrt(2)/2 ≈ 5.707106781187` | Larger by approximately `0.056477590` |
-| Stenlund, 1980 | `5/2 + 9sqrt(2)/4 ≈ 5.681980515339` | Larger by approximately `0.031351324` |
-| Stromquist, 1984 | Unique real root of `p(s)=s³−14s²+67s−112`, approximately `5.650629191439` | Historical improvement |
-| Friedman, 1997 | `(7 + 3sqrt(2))/2 ≈ 5.621320343560` | Smaller by approximately `0.029308848` |
+| Göbel, 1979 | `5 + sqrt(2)/2 ≈ 5.707106781187` | Larger by approximately $0.056477590$ |
+| Stenlund, 1980 | `5/2 + 9sqrt(2)/4 ≈ 5.681980515339` | Larger by approximately $0.031351324$ |
+| Stromquist, 1984 | Unique real root of $p(s)=s^3-14s^2+67s-112$, approximately $5.650629191439$ | Historical improvement |
+| Friedman, 1997 | `(7 + 3sqrt(2))/2 ≈ 5.621320343560` | Smaller by approximately $0.029308848$ |
 
 The differences are display approximations of rigorous rational enclosures retained by
 the checker. Smaller side is better.
 The live [explainer](https://jlevy.github.io/squares/) retrieved on September 7 was
 `DRAFT v0.2.3-a5e9dbfd`; its chart metadata at that source commit displays
-`s(26) ≤ 5.62132`. The chart and current catalogue agree.
+$s(26) \le 5.62132$. The chart and current catalogue agree.
 Stromquist’s 1984 improvement was subsequently superseded; it is already acknowledged in
 the historical record.
 
@@ -75,8 +75,8 @@ numerical and geometric facts; it is not vendored.
 All reconstructed coordinates and comparison intervals are retained in
 [the exact record](../../../packing/cases/stromquist/memo3-n26.json).
 
-The field is `Q(s)` for `p(s)=0`, with initial isolating interval
-`5650/1000 < s < 5651/1000`. The field implementation certifies irreducibility and root
+The field is $Q(s)$ for $p(s)=0$, with initial isolating interval
+$5650/1000 < s < 5651/1000$. The field implementation certifies irreducibility and root
 isolation. Monotonicity is also immediate from
 
 $$
@@ -97,24 +97,24 @@ The small relative slides between dominoes matter: replacing them with a solid
 three-by-four rectangle does not reproduce the figure.
 
 The production verifier checks unit-square geometry, every wall inequality, and all
-`26·25/2 = 325` pairs using exact algebraic signs.
+$26\cdot25/2 = 325$ pairs using exact algebraic signs.
 It finds 41 touching pairs and 284 strictly separated pairs.
-A duplicate square and a container shrunk by `10⁻⁶` are rejected.
+A duplicate square and a container shrunk by $10^{-6}$ are rejected.
 The independent tests use rational polynomial arithmetic and oriented-edge half-plane
 separation to check the returned geometry without reusing the production sign or
 separating-axis routines.
 
-The comparison with Friedman’s side `U` does not depend on rounded decimals:
+The comparison with Friedman’s side $U$ does not depend on rounded decimals:
 
 $$
 p(U)=\frac{-175+123\sqrt2}{8}<0,
 $$
 
-because `2·123² < 175²`. Since `p` is strictly increasing and `p(s)=0`, `U<s`. The
-existing [Friedman verifier](../../../packing/cases/gobel_offcentre/verify_exact.py)
+because $2\cdot123^2 < 175^2$. Since $p$ is strictly increasing and $p(s)=0$, $U< s$.
+The existing [Friedman verifier](../../../packing/cases/gobel_offcentre/verify_exact.py)
 also passes all 325 pairs and the walls for its separate construction, and rejects
 duplicate and overfull-column controls.
-Neither construction proves that `s(26)` equals its enclosing side.
+Neither construction proves that $s(26)$ equals its enclosing side.
 
 Run from `packing/`:
 
@@ -160,9 +160,9 @@ s(k^2+1)\ge
 \frac{k(k-1)^2+(k-1)\sqrt{2k}}{k^2+1}.
 $$
 
-At `k=5`, this is `2sqrt(2)+(27+2sqrt(10))/13 ≈ 5.3918`. Table 2 explicitly lists the
-value for `n=26–27`. In the archived PDF, the theorem, table, and reference [8] are on
-pages 23, 26, and 27 respectively.
+At $k=5$, this is `2sqrt(2)+(27+2sqrt(10))/13 ≈ 5.3918`. Table 2 explicitly lists the
+value for $n=26\text{–}27$. In the archived PDF, the theorem, table, and reference [8]
+are on pages 23, 26, and 27 respectively.
 The reference is Trevor Green, private communication, 2000. No proof or n26 point
 coordinates accompany the claim; the illustrated smaller cases do not fill that gap.
 An independent source review checked the page images and searched the retained corpus
@@ -177,12 +177,12 @@ been removed. This source-record omission is [D-481](../../../defects.md).
 
 The
 [independent mathematical review](../reviews/review-2026-09-07-stromquist-n26-directions.md)
-proves a bounded negative result: a rigid `3 × 3` oblique block cannot beat Friedman’s
-side while two explicitly defined opposite corner-triplet separations remain imposed.
-Its center is free to translate and its angle to vary.
-An exact support inequality places the minimum at `45°`. This closes that restricted
-proposal without a numerical sweep; changing the separation assignments, splitting the
-block, or moving the frame remains outside the argument.
+proves a bounded negative result: a rigid $3 \times 3$ oblique block cannot beat
+Friedman’s side while two explicitly defined opposite corner-triplet separations remain
+imposed. Its center is free to translate and its angle to vary.
+An exact support inequality places the minimum at $45^\circ$. This closes that
+restricted proposal without a numerical sweep; changing the separation assignments,
+splitting the block, or moving the frame remains outside the argument.
 
 The next packing-search design must identify an actual release of those assumptions and
 replay both exact source constructions as controls before seeking an improvement.
@@ -191,7 +191,7 @@ replay both exact source constructions as controls before seeking an improvement
 For the lower bound, `think-0x08` tracks recovery of Green’s proof or a fully
 independent twenty-five-point cover with complete all-angle verification.
 `think-4g6w` tracks the remaining survey-table audit for similar omissions.
-These are distinct from the earlier BC-202 numerical fractional-cover attempt at `5.52`,
+These are distinct from the earlier BC-202 numerical fractional-cover attempt at $5.52$,
 which yielded no certificate and does not become a successful or failed upper-packing
 search through this review.
 

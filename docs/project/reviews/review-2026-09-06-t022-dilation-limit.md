@@ -81,7 +81,7 @@ $$
 1+D=\frac{90207107}{90000000}.
 $$
 
-The uniform fixed-$B$, single-core factor ceiling and side are
+The uniform fixed-`B`, single-core factor ceiling and side are
 
 $$
 c_*=
@@ -168,7 +168,7 @@ $$
 The inequality holds exactly when $0<q<c_*$. This proves strict interior containment
 without invoking the scaled coarse Condition 4.
 
-Writing $h=D$ for the net’s constant half-tangent increment, the $k$th gap has tangent
+Writing $h=D$ for the net’s constant half-tangent increment, the `k`th gap has tangent
 
 $$
 \frac{h}{1+k(k+1)h^2}.
@@ -349,7 +349,7 @@ lemma. The public limit derivation does not accept a supplied verdict.
 
 I attempted two concrete substitution attacks on the retained path.
 First, comparing only condition names, total mass, and a reported minimum lets a verdict
-from one certificate be attached to another; changing `n` is one simple negative control
+from one certificate be attached to another; changing $n$ is one simple negative control
 when the closed-form reports are not recomputed.
 Recomputing Conditions 1–4 narrows that attack but does not authenticate Condition 5 for
 changed atom geometry.
@@ -455,7 +455,7 @@ acceptance does not depend on that label.
 - An algebraic endpoint is easier to mistranscribe than a rational one.
   The reduced value of $S_*^2$, the squarefree radicand, and the primitive quadratic
   above provide independent exact cross-checks.
-- This result is the uniform fixed-$B$, single-core strict-containment supremum.
+- This result is the uniform fixed-`B`, single-core strict-containment supremum.
   It does not close direction-specific or multi-core improvements, including possible
   equality arguments outside the present theorem.
 - Fit at $S_*$, any strict improvement beyond it, and absolute literature priority

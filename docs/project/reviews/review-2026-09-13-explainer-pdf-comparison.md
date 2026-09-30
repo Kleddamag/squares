@@ -62,7 +62,7 @@ fresh:  1 0 0 -1 257.32813 12994 Tm
 ```
 
 The following glyph codes spell “tan”, with unchanged glyph advances.
-This is the operator in `tan d ≤ D` on page 15, **The Contradiction Argument**.
+This is the operator in $\tan d \le D$ on page 15, **The Contradiction Argument**.
 Poppler’s extracted top coordinate changes from 200.692300 to 200.528205 points: a shift
 of 0.164095 points.
 The word’s horizontal bounds remain 282.990842 and 300.630379 points.

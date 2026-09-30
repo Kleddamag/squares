@@ -180,12 +180,14 @@ def test_pull_request_178_would_have_run_no_browser_work(
     assert in_scope([*changed, "packages/workbench/src/application.js"], declared) == {
         "workbench"
     }
-    # The explainer's math-face checker is also the local site preview's
-    # (`devtools.preview_site`, which the overview job runs), so it scopes both.
+    # The explainer's math-face checker is the explainer's alone; the site preview
+    # (`devtools.preview_site`, which the overview job runs) walks the site pages' faces
+    # with its own probe, which scopes the overview.
     assert in_scope([*changed, "packing/devtools/check_math_faces.py"], declared) == {
-        "explainer",
-        "overview",
+        "explainer"
     }
+    face_probe = "packing/devtools/probes/preview_site/math_face.js"
+    assert "overview" in in_scope([*changed, face_probe], declared)
 
 
 def test_a_matching_input_is_a_path_not_a_string_prefix() -> None:

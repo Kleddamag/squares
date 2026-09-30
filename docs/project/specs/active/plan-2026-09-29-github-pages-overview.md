@@ -76,25 +76,25 @@ page is the one in `packing/frontier/n-NNN.md`.
   commit, credited as the bibliography credits it under the policy in
   [`epistemics.md`](../../../../epistemics.md), with its `V`, `C` and `S` rungs, and
   with reported results labeled as reported.
-- Preview PNGs of the `n = 1…100` and `n = 1…324` atlases side by side, each linking
-  directly to its PDF on the site, served as `application/pdf`; poster PNGs of the two
-  ascent films side by side, each linking directly to its MP4 on the site, served as
-  `video/mp4`. No media link passes through a GitHub page, `raw.githubusercontent.com`
-  or a release download, which serve these files as HTML or as
-  `application/octet-stream` attachments.
+- Preview PNGs of the $n = 1\ldots100$ and $n = 1\ldots324$ atlases side by side, each
+  linking directly to its PDF on the site, served as `application/pdf`; poster PNGs of
+  the two ascent films side by side, each linking directly to its MP4 on the site,
+  served as `video/mp4`. No media link passes through a GitHub page,
+  `raw.githubusercontent.com` or a release download, which serve these files as HTML or
+  as `application/octet-stream` attachments.
 - The explainer presented as the v0.4 proof edition, with a generated note naming the
   bound that has since superseded its lead result.
 - The tutorial as a site page, and the synopsis, the research reports and the other
   reader documents as cards linking to GitHub, each with a one-sentence summary kept in
   the document map.
-- A results table with full details: identifier, `n`, bound, credit, `V`, `C` and `S`
+- A results table with full details: identifier, $n$, bound, credit, `V`, `C` and `S`
   rungs, novelty, dates, and links to the case record, the register entry, the evidence,
   the retained source copy and the review, where each exists.
 - Verification at a glance: how many results stand at each `V`, `C` and `S` rung, split
   between this project’s and others’, and how many of the hundred atlas cases are proved
   and how many carry a recent verified lower bound.
 - A frontier atlas page, separate from the overview: one table with a row for every
-  `n = 1…324`, each value rendered cleanly from the case’s `SquarePackingCase/v2`
+  $n = 1\ldots324$, each value rendered cleanly from the case’s `SquarePackingCase/v2`
   softschema record.
 - One navigation bar, the same on every site page except the full-viewport Visualizer.
 - Every page follows the kpress design system the explainer already uses (its tokens,
@@ -181,7 +181,7 @@ baseline):
 - `packing/frontier/n-001.md` … `n-324.md` (`SquarePackingCase/v2`), with reported and
   verified bounds, rendered to `frontier/STATUS.md` by
   `devtools.render_research_tables`. A case bound records a value and its exact form,
-  not a relation: it reads “$s(n)$ is at least this”.
+  not a relation: it reads “`s(n)` is at least this”.
 - `packing/atlas/known-best/` (`manifest.json`, `bound-citations.json`,
   `composite-figure.json`), which already knows which bounds are recent and whom they
   credit.
@@ -200,13 +200,13 @@ The recent merges the page has to reflect:
 - jlevy/squares#248: a written credit policy for parallel projects’ results, the
   jlevy/squares#227 intake (`T-056`, `T-057`), and README’s results generated from the
   register.
-- jlevy/squares#245: `s(32) = 6` raised to `V4/C4` by a second method.
+- jlevy/squares#245: $s(32) = 6$ raised to `V4/C4` by a second method.
 - jlevy/squares#243: others’ results registered beside this project’s (`T-037`–`T-055`),
   with original credit and this repository’s verification tracked apart.
 - jlevy/squares#242: every results listing and the survey refreshed for all sources,
   grouped by lineage.
-- jlevy/squares#241: Evan Daniel’s `s(21) = 5` and `s(45) = 7`, Guzhou0806’s R068 at
-  `s(17) > 116511/25000`, and wand125’s rectangle bounds to `n = 95`.
+- jlevy/squares#241: Evan Daniel’s $s(21) = 5$ and $s(45) = 7$, Guzhou0806’s R068 at
+  $s(17) > 116511/25000$, and wand125’s rectangle bounds to $n = 95$.
 - jlevy/squares#239 and jlevy/squares#240: the v0.4.2 edition, the starred recent
   results on the atlas, and the ascent films.
 
@@ -272,7 +272,7 @@ reads `packing/campaign/`, which the Pages jobs’ sparse checkout omits.
 | Path | Page |
 | --- | --- |
 | `/` | the overview (new) |
-| `/frontier.html` | the frontier atlas, `n = 1…324` (new) |
+| `/frontier.html` | the frontier atlas, $n = 1\ldots324$ (new) |
 | `/explainer.html` | the n = 11 explainer (moved from `/`) |
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) |
 | `/workbench/` | the Visualizer (path unchanged) |
@@ -320,8 +320,8 @@ Sections, top to bottom:
    background hover; then Overview, Frontier, Explainer, Tutorial, Visualizer and
    GitHub. The current page is marked, and nav items do not underline on hover.
    There is no tagline and no version in the bar; the version is in the footer.
-   The site favicon is a small drawing of the `n = 11` packing.
-2. **Hero.** A larger, centered drawing of the `n = 53` packing.
+   The site favicon is a small drawing of the $n = 11$ packing.
+2. **Hero.** A larger, centered drawing of the $n = 53$ packing.
    The page has no visible `h1`; it opens with `h2` sections, and the title lives in
    `<title>` and the navigation bar.
 3. **The Square Packing Problem.** A brief definition of $s(n)$, the side of the
@@ -342,11 +342,11 @@ Sections, top to bottom:
    project’s and others’, with the rung definitions from `epistemics.md`. Beside them,
    the atlas totals: how many of the hundred cases are proved, how many remain open, and
    how many carry a recent verified lower bound.
-6. **The Atlas and Its Film.** Two preview images side by side, `n = 1…100` and
-   `n = 1…324`, each linking to its PDF; below them, one embedded player for the full
-   `n = 1…324` ascent film, with native controls, `preload="none"`, its poster frame,
-   and no autoplay, and a link that opens the MP4 itself.
-   The `n = 1…100` film stays in the explainer and is not repeated here.
+6. **The Atlas and Its Film.** Two preview images side by side, $n = 1\ldots100$ and
+   $n = 1\ldots324$, each linking to its PDF; below them, one embedded player for the
+   full $n = 1\ldots324$ ascent film, with native controls, `preload="none"`, its poster
+   frame, and no autoplay, and a link that opens the MP4 itself.
+   The $n = 1\ldots100$ film stays in the explainer and is not repeated here.
    The captions give the page size or duration, the file size, and the edition each file
    carries. [Published Media](#published-media) describes the files.
 7. **Results.** The full table, described [below](#the-results-table).
@@ -378,7 +378,7 @@ time from the rendering SVGs under `atlas/known-best/rendering/`, keeping only t
 container and the squares: no ids, titles or descriptions, and coordinates rounded for
 drawing only. The rendering SVGs are never inlined: all 324 come to 52 MB (`n-324.svg`
 alone is 330 KB), and each carries ids such as `figure-title` and `panel-0` that the
-explainer’s inlined `n = 11` drawing also uses, so inlining one would break the
+explainer’s inlined $n = 11$ drawing also uses, so inlining one would break the
 disjoint-ids test. The hero is inlined after the stripping; the thumbnails are separate
 files loaded with `<img loading="lazy">`, so their contents never enter the page’s id
 space.
@@ -414,13 +414,13 @@ One row per register entry, grouped and ordered as `RESULTS.md` is, through the 
 | Column | Source |
 | --- | --- |
 | ID | `id` |
-| `n` | `scope.n_values`, compressed to ranges (`render_recent_results.cases_cell`) |
+| $n$ | `scope.n_values`, compressed to ranges (`render_recent_results.cases_cell`) |
 | Result | `headline`; the full `claim` in an expandable row |
 | Credit | “Squares Project (Levy)” for this project’s results; for others’, the `credit` of each `attribution.source_keys` entry in `resources/bibliography.yaml`, printed whole, never `short_credit`, followed by the source’s own statement of AI assistance where it makes one |
 | `V` / `C` / `S` | `verification`, `confirmation`, `significance.score`, with the rung definitions from `epistemics.md` as tooltips |
 | Novelty | `novelty` |
 | Dates | `established` for this project’s results or `attribution.published` for others’, which the priority rule in `epistemics.md` needs side by side; and `registered` |
-| Records | the case file (or the frontier atlas filtered to the scope, for ranges such as `18–95`), each `evidence` entry at its line in `evidence.yaml`, the entry’s line in `results.yaml`, `review_artifact` where set, and the retained source copy through the evidence entry’s `certificate` or `proof.source` path |
+| Records | the case file (or the frontier atlas filtered to the scope, for ranges such as $18\text{–}95$), each `evidence` entry at its line in `evidence.yaml`, the entry’s line in `results.yaml`, `review_artifact` where set, and the retained source copy through the evidence entry’s `certificate` or `proof.source` path |
 
 The expanded row adds `composition`, `next_rung`, `artifacts` and `controls`, each
 linked. Every record link is a permalink at the build commit, which
@@ -428,7 +428,7 @@ linked. Every record link is a permalink at the build commit, which
 
 Behaviour: the table works with JavaScript off (all rows present, `<details>` for
 expansion). A small script adds sorting by column (the dates included) and filters by
-source, `n` and `C` rung.
+source, $n$ and `C` rung.
 It lives in `packing/devtools/overview/table.js` with JSDoc types, its own
 `tsconfig.overview.json`, and Biome and `tsc` coverage, the same arrangement as the
 explainer’s scripts.
@@ -438,8 +438,8 @@ bounds rather than repeating them.
 
 ### The Frontier Atlas Page
 
-A separate page, `/frontier.html`, with one row for every case `n = 1…324`. Each row is
-rendered from the case’s softschema record, the `packing:` envelope of
+A separate page, `/frontier.html`, with one row for every case $n = 1\ldots324$. Each
+row is rendered from the case’s softschema record, the `packing:` envelope of
 `packing/frontier/n-NNN.md`, loaded by `render_research_tables.load_cases` and validated
 against the enforced `packing.squares:SquarePackingCase/v2` contract through softschema,
 as `validate.py` does; `load_cases` alone does not validate.
@@ -447,7 +447,7 @@ No value on the page is typed by hand or read from `STATUS.md`.
 
 | Column | Source in the case record |
 | --- | --- |
-| `n` and thumbnail | `packing.n`; a thumbnail generated from `atlas/known-best/rendering/n-NNN.svg` (see [Drawings](#the-overview-page)) |
+| $n$ and thumbnail | `packing.n`; a thumbnail generated from `atlas/known-best/rendering/n-NNN.svg` (see [Drawings](#the-overview-page)) |
 | Status | `status` (and `reported_status` where they differ) |
 | Best known packing | `reported_upper_bound`: `value`, `exact_form`, `found_by`, `found_year`, `construction_method`, `catalogue_rigid` |
 | Verified upper | `verified_upper_bound`: `exact_form`, else `value` |
@@ -471,7 +471,7 @@ applies.
 
 **Behaviour.** The full table is in the HTML, so it reads with JavaScript off.
 The same script as the results table adds sorting and filters (status, open only, recent
-only, a range of `n`). The thumbnails load lazily as separate files, and a test holds
+only, a range of $n$). The thumbnails load lazily as separate files, and a test holds
 the page’s HTML and the thumbnails under byte ceilings set from the first measured
 render.
 
@@ -541,8 +541,8 @@ type for media elements; a plain link to it downloads the file.
 **The PDFs are already on the site.** `COMPOSITE_ASSETS` copies both composites beside
 the page, and both are live as `application/pdf` with range support.
 The overview links them site-relative.
-README’s `n = 1…324` PDF link, now a repository path that opens GitHub’s viewer, moves
-to the site URL.
+README’s $n = 1\ldots324$ PDF link, now a repository path that opens GitHub’s viewer,
+moves to the site URL.
 
 **Preview images are rendered at build time.** The committed PNGs are too heavy to show
 as previews: `known-best-1-324.png` is 4,224 by 4,912 pixels and 2.5 MB. The overview
@@ -583,21 +583,21 @@ No per-file limit is documented for artifact deploys, so the first deploy is the
 measurement, and an oversize failure is answered by the web encode in the
 [open questions](#open-questions).
 Pages’ soft bandwidth limit is 100 GB a month, about 480 complete viewings of the
-`n = 1…324` film; its player has `preload="none"` and never autoplays, so nothing is
-downloaded until a reader presses play.
+$n = 1\ldots324$ film; its player has `preload="none"` and never autoplays, so nothing
+is downloaded until a reader presses play.
 
 The explainer’s `<video>` source, its download link and the caption’s link to the
-`n = 1…324` film, all in `templates/explainer-article.md`, move to the same-origin
+$n = 1\ldots324$ film, all in `templates/explainer-article.md`, move to the same-origin
 copies (`films/…`), which serve `video/mp4`. README’s film links move to the site URLs,
 and the release stays linked as the archive of record with its receipts.
 
-**Posters.** The `n = 1…100` poster exists: a 1,280 by 720 frame at `n = 88` (the tool’s
-default), cut from the film by `workbench_tools.poster` at the step its receipt names.
-The `n = 1…324` poster is cut by the same tool with `--n 307 --out`, from that film’s
-receipt, and committed as `packages/workbench/assets/ascent-n1-324-poster.png`: the
-settled end of the `n = 307` step, one of the recent improved packings, whose tilted
-bands show what the film is about.
-The last step is not used: `n = 324` is an 18-by-18 grid.
+**Posters.** The $n = 1\ldots100$ poster exists: a 1,280 by 720 frame at $n = 88$ (the
+tool’s default), cut from the film by `workbench_tools.poster` at the step its receipt
+names. The $n = 1\ldots324$ poster is cut by the same tool with `--n 307 --out`, from
+that film’s receipt, and committed as
+`packages/workbench/assets/ascent-n1-324-poster.png`: the settled end of the $n = 307$
+step, one of the recent improved packings, whose tilted bands show what the film is
+about. The last step is not used: $n = 324$ is an 18-by-18 grid.
 It is the overview player’s poster frame.
 
 **Editions on media.** The films and posters carry the stamp they were cut with
@@ -810,7 +810,7 @@ explainer” at `../` to the overview.
   directory, serves it, and takes screenshots; its page probes live in
   `packing/devtools/probes/preview_site/`, registered in `probe-typecheck.json`.
 - `README.md`: links to the overview, the explainer’s new path, and the site copies of
-  the `n = 1…324` PDF and both films.
+  the $n = 1\ldots324$ PDF and both films.
 
 ### Data Changes
 
@@ -885,49 +885,49 @@ The branch is pushed at the end of every slice.
 
 ### Phase 1: The Pages and Their Data
 
-- [ ] `render_overview.py` skeleton: inputs, `RENDER_INPUTS`, page registry, shell, its
+- [x] `render_overview.py` skeleton: inputs, `RENDER_INPUTS`, page registry, shell, its
   own output directory, deterministic `--check`
-- [ ] Register field `registered`: schema, backfill script, `check_results` check,
+- [x] Register field `registered`: schema, backfill script, `check_results` check,
   `DATA_REVISION` re-pin
-- [ ] Bibliography field `ai_assistance`, backfilled from `STATEMENTS`, which then reads
+- [x] Bibliography field `ai_assistance`, backfilled from `STATEMENTS`, which then reads
   it
-- [ ] The notable-sources registry, its schema and `check_notable_sources`, populated
+- [x] The notable-sources registry, its schema and `check_notable_sources`, populated
   from `source-coverage.yaml` and the archive’s Web Sources table
-- [ ] `grouped_results()` and the public helpers from `render_results` and
+- [x] `grouped_results()` and the public helpers from `render_results` and
   `significance`
-- [ ] `overview_data.py`: the typed model, with the statistics and Recent Results
+- [x] `overview_data.py`: the typed model, with the statistics and Recent Results
   derived through `render_recent_results`
-- [ ] The overview template and its sections: problem, Recent Results, Verification at a
+- [x] The overview template and its sections: problem, Recent Results, Verification at a
   Glance, the atlas and films, Read Further, Other Square Packing Projects, footer
-- [ ] Cards, popovers, chips and rung badges, the navigation bar, hero and favicon, and
+- [x] Cards, popovers, chips and rung badges, the navigation bar, hero and favicon, and
   `site-design.md`
-- [ ] The results table (static HTML, expandable rows, permalinks) and its sorting and
+- [x] The results table (static HTML, expandable rows, permalinks) and its sorting and
   filtering script under the browser floor
-- [ ] The frontier atlas page from the validated `SquarePackingCase/v2` records, with
+- [x] The frontier atlas page from the validated `SquarePackingCase/v2` records, with
   clean value rendering, lazy thumbnails and its tests
-- [ ] The tutorial page with link rewriting and a table of contents
-- [ ] Offline link checks against one `git ls-tree -r` listing, for every site page
-- [ ] Media: `PUBLISHED_FILMS`, the `n = 1…324` poster, the preview images and stripped
-  drawings, and the same-origin render test
-- [ ] The explainer’s declared lead result and the generated edition note, on its card
+- [x] The tutorial page with link rewriting and a table of contents
+- [x] Offline link checks against one `git ls-tree -r` listing, for every site page
+- [x] Media: `PUBLISHED_FILMS`, the $n = 1\ldots324$ poster, the preview images and
+  stripped drawings, and the same-origin render test
+- [x] The explainer’s declared lead result and the generated edition note, on its card
   and as its screen-only notice
-- [ ] The document map’s `summary` field, the summaries, and the document and report
+- [x] The document map’s `summary` field, the summaries, and the document and report
   cards
-- [ ] Tests: every register entry is a row; every recent result is a card; statistics
+- [x] Tests: every register entry is a row; every recent result is a card; statistics
   equal the declared rungs in `results.yaml`; byte-identical double render
 
 ### Phase 2: Wiring and Preview
 
-- [ ] Shared nav partial included by the overview, frontier, tutorial and explainer
+- [x] Shared nav partial included by the overview, frontier, tutorial and explainer
   pages; the Visualizer’s `#site-note` link
-- [ ] Explainer renamed at publish, and the fragment forwarder on the overview
-- [ ] The explainer’s film links moved to the site copies
-- [ ] `pages.yml`, `pages_scope`, the filter-coverage and sparse-checkout tests, the job
+- [x] Explainer renamed at publish, and the fragment forwarder on the overview
+- [x] The explainer’s film links moved to the site copies
+- [x] `pages.yml`, `pages_scope`, the filter-coverage and sparse-checkout tests, the job
   budgets, and the `main`-only film steps in `publish`
-- [ ] `check_published_site`: the new pages, the ref rule, the per-link scope and the
+- [x] `check_published_site`: the new pages, the ref rule, the per-link scope and the
   media check
-- [ ] `README.md` links updated
-- [ ] `preview_site.py`: assemble every page into one directory, serve it, and check it
+- [x] `README.md` links updated
+- [x] `preview_site.py`: assemble every page into one directory, serve it, and check it
 - [ ] Local preview with desktop and phone screenshots of each page, for the owner’s
   review
 
@@ -946,11 +946,11 @@ archive. README’s generated blocks are migrated at their renderer in group 2, 
 in group 1.
 
 **What converts and what does not.** A code span converts when its content is a
-mathematical expression: a bound or equation in `s(n)`, a number or fraction standing as
-a value, a formula (`2 + 4/√5`, `k² − 4`), or a variable (`n`, `k`). It stays code when
-it is an identifier or literal text: result and evidence ids (`T-018`, `E-…`), rung
-labels (`V4`, `C3`, `S5`), file paths, commands, field names, commit hashes, version
-tags, and anything inside a fenced block.
+mathematical expression: a bound or equation in $s(n)$, a number or fraction standing as
+a value, a formula ($2 + 4/\sqrt{5}$, $k^2 - 4$), or a variable ($n$, $k$). It stays
+code when it is an identifier or literal text: result and evidence ids (`T-018`, `E-…`),
+rung labels (`V4`, `C3`, `S5`), file paths, commands, field names, commit hashes,
+version tags, and anything inside a fenced block.
 Conversion is to idiomatic LaTeX: `s(11) \ge \frac{31}{8}` or `31/8` as the context
 reads best, `\sqrt{2}`, `k^2 - 4`, `\ldots` for elided digits.
 
@@ -987,16 +987,27 @@ is a data commit with its re-pin and re-stamp.
 4. The Markdown under `packing/` outside `resources/`: case files’ bodies, case
    directories, the atlas and frontier READMEs; a data commit for the case files.
 
+**GitHub is measured, not assumed** (added 30 September, after group 1). Group 1’s push
+showed 31 formulas GitHub left as dollars that kpress, KaTeX and flowmark had all
+accepted. `devtools.check_github_math` compares every math span of a pushed file with
+GitHub’s own rendering of it, and its `--probe` measures fifty placements in
+[`cases.md`](../../../../packing/tests/fixtures/github-math/cases.md): GitHub opens
+inline math only after whitespace, the start of a line, `(` or bold’s stars, closes none
+before a letter or digit, and draws none inside a link’s text or italics.
+`migrate_math` follows those rules before converting, puts back to code a formula it
+wrote where GitHub draws none, and `check_math_markup` fails on one in a migrated file.
+A test holds `migrate_math` to every recorded placement.
+
 **Rendering everywhere.** The site pages render math through `kpress`, like the
 explainer; the tutorial page’s renderer gets a test that no `$` reaches the page
 unrendered.
 The Visualizer and any other HTML that shows register text use the same KaTeX
 path.
 
-- [ ] `migrate_math.py` with classification report, `--apply`, and span-safety check,
+- [x] `migrate_math.py` with classification report, `--apply`, and span-safety check,
   and tests over a fixture of math and identifier spans
-- [ ] `check_math_markup` ratchet on the pull-request surface
-- [ ] Group 1: the reader documents
+- [x] `check_math_markup` ratchet on the pull-request surface
+- [x] Group 1: the reader documents
 - [ ] Group 2: renderers of generated documents, outputs regenerated, re-pin
 - [ ] Group 3: `docs/project/`
 - [ ] Group 4: Markdown under `packing/` outside the archive, re-pin
@@ -1048,15 +1059,15 @@ path.
   `/explainer.html` with fragment forwarding.
 - **The film on the overview:** no autoplay.
   The overview shows the two atlas PDF previews and one embedded player for the full
-  `n = 1…324` film.
+  $n = 1\ldots324$ film.
 - **Other projects:** every reviewed source the research frontier uses, as
   `source-coverage.yaml` records them, and the major websites and other notable
   repositories among the archive’s retained web sources.
 
 ## Open Questions
 
-- **A web encode of the `n = 1…324` film.** A third delivery profile (for example 1080p
-  at 30 frames a second and a higher CRF) would cut its 206 MB several times over.
+- **A web encode of the $n = 1\ldots324$ film.** A third delivery profile (for example
+  1080p at 30 frames a second and a higher CRF) would cut its 206 MB several times over.
   Recommended: serve the archive encode its receipt describes, and add the profile only
   if the first deploy or the bandwidth says so.
 - **Math style for fractions.** Inline `31/8` can become `\frac{31}{8}` or stay `31/8`

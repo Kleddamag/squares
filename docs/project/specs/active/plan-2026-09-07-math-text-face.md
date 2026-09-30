@@ -99,7 +99,7 @@ What is specific to this page, found while prototyping the feature on it:
   (`tex()` in the shell and the walkthrough script), so the metrics table has to be
   inlined and applied before those calls, not only inside kpress’s `katex-init.js`.
 - The `\mkern1mu` kern the renderer adds between a function name and its parenthesis
-  (`s(n)`) is what keeps the PT Serif italic, which has no italic correction of its own,
+  ($s(n)$) is what keeps the PT Serif italic, which has no italic correction of its own,
   from setting the parenthesis against the letter.
   It stays.
 - The display blocks carry `padding-block: 0.45rem`, which is what hid the one-pixel
@@ -803,7 +803,7 @@ on macOS the PDF wrote them as outline paths.
 The earlier treatment named the weight in a `.rel` class and left the family to the
 host, which fixed a weight bug and left the provenance one.
 
-Of the routes a shipped face allows, setting the title as mathematics would put `s(11)`
+Of the routes a shipped face allows, setting the title as mathematics would put $s(11)$
 and its digits in Computer Modern and break the line’s agreement with the subtitle and
 credits under it. So the glyphs come from KaTeX_Main, subset to those three code points
 and declared as a `unicode-range` face on `Source Sans 3 Variable` itself, which reaches

@@ -30,9 +30,9 @@ to work on.
 
 The experiment loop has run **eleven rounds** and produced a real result: the LP-in-cell
 quench refines annealer output to the analytic optimum **to machine precision** at
-`n = 5` and `n = 10`, and does essentially nothing at `n = 11`. That separates two
-failures the campaign could not previously tell apart — `n = 10` was a *polish* failure,
-now fixed; `n = 11` is an *exploration* failure, untouched by fixing polish.
+$n = 5$ and $n = 10$, and does essentially nothing at $n = 11$. That separates two
+failures the campaign could not previously tell apart — $n = 10$ was a *polish* failure,
+now fixed; $n = 11$ is an *exploration* failure, untouched by fixing polish.
 **The bottleneck has moved from the refiner to the proposer.** Three registered
 hypotheses are `blocked`, all on the same two missing tools, and building them is the
 critical path.
@@ -41,9 +41,9 @@ critical path.
 
 | Piece | State |
 | --- | --- |
-| `sqpack` exact verifier over `ℚ(α)` | works; reproduces all 33 published digits of `s(11)` |
+| `sqpack` exact verifier over $\mathbb{Q}(\alpha)$ | works; reproduces all 33 published digits of $s(11)$ |
 | `sqsearch` f64 annealer (Rust) | works; selftest of 13 checks gates every run |
-| `sqpack.quench` — LP-in-cell + cell fixed point + class bracketing | **built this session**; reaches the analytic optimum to `1e-15` at `n = 5, 10` |
+| `sqpack.quench` — LP-in-cell + cell fixed point + class bracketing | **built this session**; reaches the analytic optimum to `1e-15` at $n = 5, 10$ |
 | Soundness perimeter | every component that emits a packing is checked by `sqpack` through code it does not share |
 | Campaign record | 11 rounds, 9 hypotheses, generated ledger, negative controls, effort tracking |
 | Lint floor | ruff + basedpyright clean; clippy pedantic + rustfmt clean; enforced in `test.sh` |
@@ -119,9 +119,9 @@ whole cartography programme rests on, deliberately made cheap to kill.
 2. **A screen-tier run below the standing best is a promotion trigger, not a record.**
    Treat it as a defect candidate until an independent verifier agrees, but do not
    assume it must be a bug when the standing best is unproved.
-   D-042 records why `n=12` cannot serve as a known-answer negative control.
+   D-042 records why $n=12$ cannot serve as a known-answer negative control.
 3. **The tested class-angle slice has a corner at the optimum**, not a smooth minimum —
-   one-sided slopes `0.175` and `0.384`. That invalidates smooth derivative models on
+   one-sided slopes $0.175$ and $0.384$. That invalidates smooth derivative models on
    the slice. Bracketing worked here; tested Powell and Nelder–Mead runs did worse, which
    is empirical evidence rather than a general impossibility theorem.
    ([`exp-010`](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md).)
@@ -141,7 +141,7 @@ whole cartography programme rests on, deliberately made cheap to kill.
 
 - **Is the atlas worth building before a better proposer?** The premise (`H-012`) says
   record basins are rare, which is the argument for cartography — but it is *untested*,
-  and `exp-009` already showed the proposer is the bottleneck at `n = 11`. The register
+  and `exp-009` already showed the proposer is the bottleneck at $n = 11$. The register
   orders premise-first deliberately, and it is cheap; but a reasonable person could
   argue for going straight at δ-continuation (`think-v2m1`) instead.
 - **`class_tol` still shapes the search path**, even though a free-angle pass now

@@ -33,7 +33,205 @@ migrated:
 - SYNOPSIS.md
 - TUTORIAL.md
 - conventions.md
+- development.md
+- docs/project/handoff-2026-08-23-basin-identity-and-two-reviews.md
+- docs/project/handoff-2026-08-23-quench-spine.md
+- docs/project/handoff-2026-09-04-block-close.md
+- docs/project/handoff-2026-09-06-post-381-t2-commissioning.md
+- docs/project/handoff-2026-09-06-post-381-t2-t10-continuation.md
+- docs/project/handoff-2026-09-21-n17-external-intake.md
+- docs/project/handoff-2026-09-22-low-n-review-and-the-2880-rung.md
+- docs/project/postmortems/postmortem-2026-08-23-soundness-class.md
+- docs/project/research/research-2026-08-22-frankensim-rust-toolkit-for-square-packing.md
+- docs/project/research/research-2026-08-22-infrastructure-for-packing-exploration.md
+- docs/project/research/research-2026-08-22-lean-for-packing-proofs-and-validation.md
+- docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md
+- docs/project/research/research-2026-09-07-n26-best-known-audit.md
+- docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md
+- docs/project/research/research-2026-09-07-stromquist-memos-and-helper-arguments.md
+- docs/project/research/research-2026-09-07-stromquist-n26-verification.md
+- docs/project/research/research-2026-09-08-annealing-for-square-packing.md
+- docs/project/research/research-2026-09-09-n11-evidence-and-inference.md
+- docs/project/research/research-2026-09-09-n11-inference-audit.md
+- docs/project/research/research-2026-09-10-x027-certificate-mechanisms.md
+- docs/project/research/research-2026-09-10-x027-fractional-duality.md
+- docs/project/research/research-2026-09-13-bc303-literal-parent-union-result.md
+- docs/project/research/research-2026-09-13-bc303-t2-charge-bridge.md
+- docs/project/reviews/review-2026-08-23-engineering-loops-and-efficiency.md
+- docs/project/reviews/review-2026-08-23-experiment-loop-and-campaign.md
+- docs/project/reviews/review-2026-08-23-mathematical-frontier-strategy.md
+- docs/project/reviews/review-2026-08-23-response-to-pr15-review.md
+- docs/project/reviews/review-2026-08-23-square-packing-program-and-pr14.md
+- docs/project/reviews/review-2026-08-23-tooling-layout.md
+- docs/project/reviews/review-2026-08-25-pr34-soundness-review.md
+- docs/project/reviews/review-2026-08-25-research-loop-efficiency.md
+- docs/project/reviews/review-2026-08-25-tutorial-pedagogy-and-accuracy.md
+- docs/project/reviews/review-2026-08-25-tutorial-soundness-iteration-2.md
+- docs/project/reviews/review-2026-08-26-pr44-constructive-enumeration-and-known-best-atlas.md
+- docs/project/reviews/review-2026-08-31-overnight-run-verification-determinations.md
+- docs/project/reviews/review-2026-09-01-agenda013-first-wave-efficiency.md
+- docs/project/reviews/review-2026-09-01-agenda013-independent-lane-review.md
+- docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+- docs/project/reviews/review-2026-09-01-agenda013-second-wave-efficiency.md
+- docs/project/reviews/review-2026-09-01-agenda013-second-wave-packets.md
+- docs/project/reviews/review-2026-09-02-agenda014-first-wave-efficiency.md
+- docs/project/reviews/review-2026-09-02-agenda014-first-wave-independent-review.md
+- docs/project/reviews/review-2026-09-02-agenda014-first-wave-packets.md
+- docs/project/reviews/review-2026-09-02-agenda015-first-wave-efficiency.md
+- docs/project/reviews/review-2026-09-02-agenda015-second-wave-efficiency.md
+- docs/project/reviews/review-2026-09-02-agenda015-second-wave-independent-review.md
+- docs/project/reviews/review-2026-09-02-agenda015-second-wave-packets.md
+- docs/project/reviews/review-2026-09-02-agenda015-ten-hour-synthesis.md
+- docs/project/reviews/review-2026-09-02-n50-manifest-and-sentinel-design.md
+- docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
+- docs/project/reviews/review-2026-09-03-bc150-4-5058-adoption-packet.md
+- docs/project/reviews/review-2026-09-03-bc151-4-5058-adoption-independent-review.md
+- docs/project/reviews/review-2026-09-03-bc152-n5-rigidity-instrument-readiness.md
+- docs/project/reviews/review-2026-09-03-bc153-t014-registration-audit.md
+- docs/project/reviews/review-2026-09-03-bc154-w9-disposition-d044-d046.md
+- docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+- docs/project/reviews/review-2026-09-04-pr80-stacked-hardening.md
+- docs/project/reviews/review-2026-09-04-t017-independent-verification.md
+- docs/project/reviews/review-2026-09-05-gpt6-pro-adversarial-review.md
+- docs/project/reviews/review-2026-09-06-agenda024-adversarial-senior-strategy.md
+- docs/project/reviews/review-2026-09-06-change-scoped-exhaustive-validation.md
+- docs/project/reviews/review-2026-09-06-claude-code-adversarial-review.md
+- docs/project/reviews/review-2026-09-06-core-shrink-obstruction.md
+- docs/project/reviews/review-2026-09-06-published-core-claims-adversarial.md
+- docs/project/reviews/review-2026-09-06-t022-dilation-limit.md
+- docs/project/reviews/review-2026-09-06-tbd-testing-and-ci-performance-proposal.md
+- docs/project/reviews/review-2026-09-06-validation-efficiency-implementation.md
+- docs/project/reviews/review-2026-09-06-validation-exhaustive-cost.md
+- docs/project/reviews/review-2026-09-06-validation-slow-and-controls-cost.md
+- docs/project/reviews/review-2026-09-07-atlas-101-324-credit-lines.md
+- docs/project/reviews/review-2026-09-07-maciver-square-packing.md
+- docs/project/reviews/review-2026-09-07-n11-hybrid-strategy.md
+- docs/project/reviews/review-2026-09-07-n17-comprehensive-review.md
+- docs/project/reviews/review-2026-09-07-n6-pure-dots-obstruction.md
+- docs/project/reviews/review-2026-09-07-n6-quantitative-piercing-bound.md
+- docs/project/reviews/review-2026-09-07-research-throughput-and-timeboxes.md
+- docs/project/reviews/review-2026-09-07-stromquist-incorporation.md
+- docs/project/reviews/review-2026-09-07-stromquist-n26-directions.md
+- docs/project/reviews/review-2026-09-07-stromquist-segment-helper.md
+- docs/project/reviews/review-2026-09-07-upstream-research-reconciliation.md
+- docs/project/reviews/review-2026-09-08-paper-font-merge.md
+- docs/project/reviews/review-2026-09-08-pr127-research-readiness.md
+- docs/project/reviews/review-2026-09-09-n11-evidence-interpretation.md
+- docs/project/reviews/review-2026-09-09-threshold-certificate-theorem.md
+- docs/project/reviews/review-2026-09-10-n11-a6-scope-and-plan.md
+- docs/project/reviews/review-2026-09-10-n11-bc329-packet-preflight.md
+- docs/project/reviews/review-2026-09-10-n11-parent-adapter-admission.md
+- docs/project/reviews/review-2026-09-10-n11-parent-centre-author-check.md
+- docs/project/reviews/review-2026-09-10-n11-parent-centre-independent-review.md
+- docs/project/reviews/review-2026-09-10-n11-parent-domain-translation.md
+- docs/project/reviews/review-2026-09-10-n11-parent-realizability-independent.md
+- docs/project/reviews/review-2026-09-10-n11-parent-runner-independent.md
+- docs/project/reviews/review-2026-09-10-n11-strategy-frontier.md
+- docs/project/reviews/review-2026-09-10-n11-structural-normal-forms-independent.md
+- docs/project/reviews/review-2026-09-10-n11-structural-normal-forms.md
+- docs/project/reviews/review-2026-09-10-n11-weighted-five-site-atoms.md
+- docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md
+- docs/project/reviews/review-2026-09-12-n11-bc329-calibration-design.md
+- docs/project/reviews/review-2026-09-12-n11-post-bc329-strategy-audit.md
+- docs/project/reviews/review-2026-09-12-workbench-stack-architecture.md
+- docs/project/reviews/review-2026-09-13-bc303-floor-normalized-t2-independent.md
+- docs/project/reviews/review-2026-09-13-bc303-h162-preregistration-math.md
+- docs/project/reviews/review-2026-09-13-bc303-literal-parent-union-result.md
+- docs/project/reviews/review-2026-09-13-bc303-parent-union-math.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-charge-bridge.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-charge-reader-readmission.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-charge-reader-refusal.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-geometry.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-global-bridge.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-integrated-head-admission.md
+- docs/project/reviews/review-2026-09-13-explainer-pdf-comparison.md
+- docs/project/reviews/review-2026-09-13-n11-bc303-t1-reader-final-math.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-coordinator-arithmetic-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-coordinator-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-coordinator-rereview.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-integrated-run-sheet.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-reader-f6f7-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-reader-f6f7-overflow.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-flowmark-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-identity-refusal.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-parent-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-runset-verifier-r3-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-runset-verifier-rereview.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-runset-verifier.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-three-profile-run-sheet.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-topology-coordinator-initial.md
+- docs/project/reviews/review-2026-09-13-pr156-usage-delta.md
+- docs/project/reviews/review-2026-09-13-workbench-consumer-inventory.md
+- docs/project/reviews/review-2026-09-13-x030-publication.md
+- docs/project/reviews/review-2026-09-14-n11-post-w5-route-selection.md
+- docs/project/reviews/review-2026-09-14-n11-w10-route-selection.md
+- docs/project/reviews/review-2026-09-14-small-n-significant-progress-mathematical-audit.md
+- docs/project/reviews/review-2026-09-19-pr199-201-correctness.md
+- docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md
+- docs/project/reviews/review-2026-09-21-derived-artifact-currency.md
+- docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md
+- docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md
+- docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+- docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+- docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md
+- docs/project/reviews/review-2026-09-23-pr230-w3-directions.md
+- docs/project/reviews/review-2026-09-23-rung0-certificate-contract.md
+- docs/project/reviews/review-2026-09-24-bc241-closure.md
+- docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+- docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md
+- docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md
+- docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md
+- docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md
+- docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
+- docs/project/reviews/review-2026-09-28-density-solver-comparison.md
+- docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+- docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md
+- docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+- docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+- docs/project/specs/active/plan-2026-08-22-minimal-packing-toolkit.md
+- docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md
+- docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
+- docs/project/specs/active/plan-2026-08-24-frontier-assurance-and-verification.md
+- docs/project/specs/active/plan-2026-08-24-packing-engineering-maturity.md
+- docs/project/specs/active/plan-2026-08-25-generalized-motion-lab.md
+- docs/project/specs/active/plan-2026-08-25-research-loop-efficiency-infrastructure.md
+- docs/project/specs/active/plan-2026-08-26-overnight-constructive-enumeration.md
+- docs/project/specs/active/plan-2026-08-28-interval-certification.md
+- docs/project/specs/active/plan-2026-08-28-numeric-symbolic-round-trip.md
+- docs/project/specs/active/plan-2026-08-28-promotion-pipeline-implementation.md
+- docs/project/specs/active/plan-2026-08-28-symbolic-promotion-and-the-atlas.md
+- docs/project/specs/active/plan-2026-08-29-gate-validation-speed.md
+- docs/project/specs/active/plan-2026-09-06-post-381-research-sequence.md
+- docs/project/specs/active/plan-2026-09-06-validation-efficiency-and-checkpoints.md
+- docs/project/specs/active/plan-2026-09-07-atlas-expansion-to-324.md
+- docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+- docs/project/specs/active/plan-2026-09-07-math-text-face.md
+- docs/project/specs/active/plan-2026-09-09-packing-strategies-as-a-shared-language.md
+- docs/project/specs/active/plan-2026-09-10-n11-daytime-strategy-and-explainer.md
+- docs/project/specs/active/plan-2026-09-10-n11-overnight-three-blocks.md
+- docs/project/specs/active/plan-2026-09-11-annealing-as-a-search.md
+- docs/project/specs/active/plan-2026-09-11-workbench-from-spike-to-product.md
+- docs/project/specs/active/plan-2026-09-13-n11-bc329-runset-verifier.md
+- docs/project/specs/active/plan-2026-09-13-n11-bc329-three-profile-run-sheet.md
+- docs/project/specs/active/plan-2026-09-13-pr157-integrated-calibration-launch-supplement.md
+- docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+- docs/project/specs/active/plan-2026-09-22-upper-bound-certification-blocks.md
+- docs/project/specs/active/plan-2026-09-25-after-r052-planning.md
+- docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+- docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+- docs/project/specs/active/plan-2026-09-29-third-party-results-register.md
+- docs/project/specs/active/spike-2026-08-25-n5-motion-lab.md
+- docs/project/stromquist-helper-arguments-math-review.md
+- docs/project/three-lane-research-method.md
+- docs/tbd/shortcuts/create-or-update-pr-simple.md
+- docs/tbd/shortcuts/create-or-update-pr-with-validation-plan.md
 - epistemics.md
+- operating-rules.md
+- packages/workbench/README.md
+- packages/workbench/probes/README.md
+- packages/workbench/tests/fixtures/benchmark-foundation/README.md
 - packing/campaign/README.md
 - packing/campaign/agendas/agenda-001-basin-confidence-ladder.md
 - packing/campaign/agendas/agenda-002-constructive-enumeration-groundwork.md
@@ -888,6 +1086,150 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-115-h-105-fixed-candidate-pair-obstruction/independent-review.md
 
 keep:
+- path: development.md
+  span: "3.14"
+  reason: "the Python version this project runs, not a number"
+- path: docs/project/handoff-2026-09-04-block-close.md
+  span: "C4 → C5"
+  reason: "a move between two rung labels, which stay code"
+- path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+  span: "17--19"
+  reason: "a range written with a TeX-style double hyphen; as math it reads as two minus signs"
+- path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+  span: "17--19, 37, 39, 41, 50, 51, 53--55, 68, 69"
+  reason: "a list of cases with TeX-style double-hyphen ranges; as math they read as minus signs"
+- path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+  span: "3-4-5"
+  reason: "the name of the 3-4-5 right triangle, not a subtraction"
+- path: docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
+  span: "[:170]"
+  reason: "a Python slice"
+- path: docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
+  span: "[:33]"
+  reason: "a Python slice"
+- path: docs/project/reviews/review-2026-09-03-bc150-4-5058-adoption-packet.md
+  span: "0x5058"
+  reason: "a hexadecimal seed literal"
+- path: docs/project/reviews/review-2026-09-03-bc154-w9-disposition-d044-d046.md
+  span: "30m"
+  reason: "a timebox of thirty minutes, not 30 times m"
+- path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+  span: "13,000/167 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+  span: "4,866/110 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+  span: "b121…e6a"
+  reason: "an abbreviated file digest"
+- path: docs/project/reviews/review-2026-09-07-n17-comprehensive-review.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-12-workbench-stack-architecture.md
+  span: "n: 5"
+  reason: "a YAML key and value from a recipe"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-integrated-run-sheet.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-identity-refusal.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-parent-final.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-three-profile-run-sheet.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+  span: "9c92406…"
+  reason: "an abbreviated blob digest"
+- path: docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
+  span: "0x1p-45"
+  reason: "a hexadecimal floating-point literal from the verifier's source"
+- path: docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+  span: "0x1p+0 0x1p+0"
+  reason: "hexadecimal floating-point literals from the verifier's input"
+- path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+  span: "c++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
+  span: "--"
+  reason: "the literal character pair XML comments forbid"
+- path: docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
+  span: "D4 x S3"
+  reason: "the name of a test glyph, written with a letter x"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "158 × 3.3 + 165 × 0.9 + 1.2 = 671 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "323 × 0.5 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "324 × 1.5 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "324 × 2.6 s = 842.4 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "O"
+  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `≈`"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "R"
+  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `≈`"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B"
+  reason: "Unicode code points in a CSS unicode-range"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "n7.0.1"
+  reason: "an ffmpeg version tag"
+- path: docs/project/specs/active/plan-2026-09-07-math-text-face.md
+  span: "100 900"
+  reason: "a CSS font-weight range"
+- path: docs/project/specs/active/plan-2026-09-07-math-text-face.md
+  span: "200 900"
+  reason: "a CSS font-weight range"
+- path: docs/project/specs/active/plan-2026-09-13-n11-bc329-three-profile-run-sheet.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+  span: "00"
+  reason: "a hexadecimal byte of the avc1 codec string (the constraint flags), not a number"
+- path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+  span: "28"
+  reason: "a hexadecimal byte of the avc1 codec string (the level), not a number"
+- path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+  span: "64"
+  reason: "a hexadecimal byte of the avc1 codec string (the profile), not a number"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "31/8"
+  reason: "the LaTeX source a writer types, set beside `\\frac{31}{8}` as source"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "E-…"
+  reason: "an evidence-id prefix, given as an example of what stays code"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "]("
+  reason: "the characters of a Markdown link, which the sentence names as text"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "k^2 - 4"
+  reason: "the LaTeX source a writer types, listed with `\\sqrt{2}` and `\\ldots` as source"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "t-018"
+  reason: "the explainer's result slug, an identifier"
+- path: packages/workbench/README.md
+  span: "2m 20s"
+  reason: "a duration of two minutes twenty seconds"
 - path: packing/campaign/agendas/agenda-010-two-lane-overnight-run.md
   span: "x-010"
   reason: "a bead label, not a subtraction"
@@ -995,6 +1337,32 @@ keep:
   reason: "pytest parameter ids"
 
 exempt:
+- path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/research/research-2026-09-09-simulation-mechanisms-for-packing.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/research/research-2026-09-10-x027-structural-helpers.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: docs/project/research/research-2026-09-12-n11-selection-routing-first-principles.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: docs/project/reviews/review-2026-08-23-toolkit-docs-and-first-experiments.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-03-bc152-curve-selection-source-verification.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-03-bc153-h060-proof-independent-review.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-04-t018-thirdparty-package.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-12-n11-selection-routing-first-principles.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: docs/project/reviews/review-2026-09-21-n17-kleddamag-461300-99853.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-27-evand-s32-s12.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md
   reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md

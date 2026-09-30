@@ -94,7 +94,7 @@ The campaign ledger owns cumulative round and effort totals.
 | Estimated H-017 runtime | 2.80h at 39.7M moves/s locally; 7.46h at the recorded 14.9M moves/s cloud rate | Target-host calibration is mandatory |
 | Fast checks | status 0.22–0.24s; preflight 0.12s; ledger 0.23s; schemas 1.60s; engine selftest 1.43s | Orientation and focused feedback are already cheap |
 | Normal gate | 31 steps in 103.91s at the W7 and frozen-queue checkpoint, including 51 pytest contracts and 62 mutation controls | Green checkpoint evidence; not permission to run the red deep producer unattended |
-| Canonicalizer | 0.098s at `n=7`, 7.91s at `n=9` in one audit | Likely census bottleneck; confirm under `think-xzew` before redesign |
+| Canonicalizer | 0.098s at $n=7$, 7.91s at $n=9$ in one audit | Likely census bottleneck; confirm under `think-xzew` before redesign |
 
 The existing preflight is useful but not a launch decision.
 It proves that its current guards fire and that at least one recipe is visible.
@@ -188,9 +188,9 @@ and shared-record writes may not.
 | Order | Workflow and focus | Bead | Maximum | Durable exit | Kill line and frozen fallback |
 | ---: | --- | --- | ---: | --- | --- |
 | 1 | W4 `process-review` / Process | `think-k68v`, then `think-3cbq` | 1 slice | Reconciled landed-versus-branch-ahead claims, one active `session-010`, and a clean base receipt from `packing-ledger check` plus `packing-validate --fast` | If ownership is still ambiguous at thirty minutes, freeze writes and allow only the source-bound W1 fallback |
-| 2 | W6 `research-loop` / Insight | `think-nm35` | 1 slice | Exact branchwise ray or face inventory for the remaining `n=5` cones modulo exp-034, or a finite unresolved list; validate through `small-n exact models and local geometry` | Stop at thirty minutes without a component, census, or unequal-side claim; fall back to order 8 |
+| 2 | W6 `research-loop` / Insight | `think-nm35` | 1 slice | Exact branchwise ray or face inventory for the remaining $n=5$ cones modulo exp-034, or a finite unresolved list; validate through `small-n exact models and local geometry` | Stop at thirty minutes without a component, census, or unequal-side claim; fall back to order 8 |
 | 3 | W2 `factual-review` / Correctness | `think-nm35` | 1 slice, only after order 2 yields a candidate result | Independent branch-coverage and claim-scope disposition, with mutations or a defect where the checker can flatter | Any omitted branch or non-independent replay keeps BC-010 ready; do not repair inside W2 and continue at order 4 |
-| 4 | W7 `pipeline-improvement` / Correctness | `think-nr5w` | 1 slice | Millisecond `n=4`, seed-0 fixture retaining theta, cell, solver inputs, status, and replay—or the exact input still missing | No fixture by twenty minutes means retain the smallest input and stop; never launch a full-golden retry, change tolerance, or update the golden |
+| 4 | W7 `pipeline-improvement` / Correctness | `think-nr5w` | 1 slice | Millisecond $n=4$, seed-0 fixture retaining theta, cell, solver inputs, status, and replay—or the exact input still missing | No fixture by twenty minutes means retain the smallest input and stop; never launch a full-golden retry, change tolerance, or update the golden |
 | 5 | W2 `factual-review` / Correctness | `think-nr5w` | 1 slice, only after order 4 yields a fixture or repair | Independent diagnosis and a decision whether one more W7 repair is earned; no solver-health claim from one passing retry | A non-replayable or load-dependent diagnosis remains open and routes to order 12 |
 | 6 | W7 `pipeline-improvement` / Efficiency | `think-b4jc`, reconciled with `think-krqi` | 1 slice | One exact pair-test counting contract and the smallest counter-to-JSONL vertical slice, or the first unmetered move path | If equal work cannot be defined identically across current paths, retain the interface decision and use order 13; do not substitute moves or wall time |
 | 7 | W5 `efficiency-loop` / Efficiency | `think-b4jc` | 1 slice, only if order 6 lands a counter | Seeded-output equivalence, counter equality against independent totals, and measured overhead under an unloaded host | Any seeded drift, unexplained count, or competing load rejects the change; preserve the baseline and continue at order 8 |
@@ -199,7 +199,7 @@ and shared-record writes may not.
 | 10 | W2 `factual-review` / Correctness | `think-kfb4` | 1 slice, only after order 9 yields a result | Independent minimality and branch-scope disposition; an `exp-NNN` only if the frozen criterion is actually resolved | One unsupported branch or nonminimal certificate keeps the question unresolved and routes to order 11 |
 | 11 | W7 `pipeline-improvement` / Efficiency | `think-tx0b` | 1 slice | One timeout/process-group primitive and focused failure test in `tests/test_validation_cli.py`, or a minimized incompatibility | Do not retrofit every deep step in one slice; stop with the first coherent primitive or blocker |
 | 12 | W4 `process-review` / Process | `think-b3bm` | 1 slice | One short parent-owned rehearsal preserving argv, start/end, exit or signal, output paths, timeout, cleanup, and the portable runbook rule | If any receipt field disappears, retain that failure and leave the bead open; no long or deep command |
-| 13 | W1 `research-survey` / Insight | `think-ykt7` | 1 slice | Source-bound reproduction of one `O(x^(3/5))` primitive or error balance, with the exact boundary where finite transfer fails | If the local primary source is insufficient, record the gap and stop; no unsupported asymptotic or finite-instance claim |
+| 13 | W1 `research-survey` / Insight | `think-ykt7` | 1 slice | Source-bound reproduction of one $O(x^{\frac{3}{5}})$ primitive or error balance, with the exact boundary where finite transfer fails | If the local primary source is insufficient, record the gap and stop; no unsupported asymptotic or finite-instance claim |
 | 14 | Evidence-earned continuation / owning workflow and focus | One of orders 2, 4, 6, 8–9, 11, or 13 | 1 slice | One bounded successor justified by the predecessor’s retained evidence | No new evidence, no continuation; never become a third consecutive slice |
 | 15 | W4 `process-review` / Process | `think-3cbq` | 45 minutes | All writers stopped; artifacts, ledger, defects, beads, commits, push, normal-gate receipt, terminal session report, and exact next action reconciled | The first gate failure gets one focused diagnosis only; otherwise preserve the last green checkpoint and stop at the eight-hour deadline |
 
@@ -230,11 +230,11 @@ fast-first promotion rules.
 
 | Order | Artifact | Question | Why now | Runnable? |
 | ---: | --- | --- | --- | --- |
-| 1 | [H-023](../../../../packing/campaign/hypotheses/H-023-n5-terminal-connectivity.md) | Are the equal-side `n=5` candidates in one terminal family, and what valid-path bounds connect unequal levels? | Focused ambiguity at the first nontrivial census cell | No; full poses and local geometry study absent |
-| 2 | [H-021](../../../../packing/campaign/hypotheses/H-021-endpoint-identifiability.md) | Can the classifier resolve at least 95% of endpoint support through `n=8`? | Measurement-system gate; failure redirects the program | No; classifier and controls absent |
-| 3 | [H-011](../../../../packing/campaign/hypotheses/H-011-small-n-census.md) | Does unseen terminal-component mass fall below 0.05 by `n=8`? | Builds the atlas and tests whether census is viable | No; waits on identity, events and estimator |
+| 1 | [H-023](../../../../packing/campaign/hypotheses/H-023-n5-terminal-connectivity.md) | Are the equal-side $n=5$ candidates in one terminal family, and what valid-path bounds connect unequal levels? | Focused ambiguity at the first nontrivial census cell | No; full poses and local geometry study absent |
+| 2 | [H-021](../../../../packing/campaign/hypotheses/H-021-endpoint-identifiability.md) | Can the classifier resolve at least 95% of endpoint support through $n=8$? | Measurement-system gate; failure redirects the program | No; classifier and controls absent |
+| 3 | [H-011](../../../../packing/campaign/hypotheses/H-011-small-n-census.md) | Does unseen terminal-component mass fall below 0.05 by $n=8$? | Builds the atlas and tests whether census is viable | No; waits on identity, events and estimator |
 | 4 | [H-007](../../../../packing/campaign/hypotheses/H-007-saturation-curves.md) | Do preregistered coverage estimates predict held-out discovery? | Makes negative search results quantitative | No; waits on H-011 data |
-| 5 | [H-012](../../../../packing/campaign/hypotheses/H-012-record-basins-are-rare.md) | Is the record-to-modal attraction ratio below 0.1 under named `P/Q/E`? | Kills or supports the cartography premise directly | No; waits on H-011 plus `n=11` sampling |
+| 5 | [H-012](../../../../packing/campaign/hypotheses/H-012-record-basins-are-rare.md) | Is the record-to-modal attraction ratio below 0.1 under named $P/Q/E$? | Kills or supports the cartography premise directly | No; waits on H-011 plus $n=11$ sampling |
 
 H-009’s raw-to-canonical ratio and H-008’s stronger-verifier rejection rate are
 mandatory companion measurements.
@@ -245,20 +245,20 @@ not component identity or a rigidity certificate.
 
 | Priority | Artifact | Registered comparison | Gate or kill line |
 | ---: | --- | --- | --- |
-| 1 | [H-004](../../../../packing/campaign/hypotheses/H-004-neighbor-transfer-seeding.md) | neighbor transfer versus cold starts at `n=11` | median best-side improvement at least 0.01; the old `n=12` side-4 target was vacuous |
-| 1 | [H-013](../../../../packing/campaign/hypotheses/H-013-delta-continuation.md) | continuation versus direct starts, `n=10` before `n=11` | retire as a discovery method if it cannot win on the proved gate |
-| 1 | [H-001](../../../../packing/campaign/hypotheses/H-001-angle-class-reduction.md) | angle-class proposer versus free-coordinate annealing | pass proved and oblique calibration before interpreting `n=11` |
+| 1 | [H-004](../../../../packing/campaign/hypotheses/H-004-neighbor-transfer-seeding.md) | neighbor transfer versus cold starts at $n=11$ | median best-side improvement at least 0.01; the old $n=12$ side-4 target was vacuous |
+| 1 | [H-013](../../../../packing/campaign/hypotheses/H-013-delta-continuation.md) | continuation versus direct starts, $n=10$ before $n=11$ | retire as a discovery method if it cannot win on the proved gate |
+| 1 | [H-001](../../../../packing/campaign/hypotheses/H-001-angle-class-reduction.md) | angle-class proposer versus free-coordinate annealing | pass proved and oblique calibration before interpreting $n=11$ |
 | 2 | [H-015](../../../../packing/campaign/hypotheses/H-015-map-elites-illumination.md) | quality diversity versus matched restarts | at least 1.5× certified components per pair-test |
-| 2 | [H-005](../../../../packing/campaign/hypotheses/H-005-m2-minus-3-construction.md) | analytic 3-4-5-tilt construction at `n=97` | analytic geometry first; no numerical rescue of a failed family |
+| 2 | [H-005](../../../../packing/campaign/hypotheses/H-005-m2-minus-3-construction.md) | analytic 3-4-5-tilt construction at $n=97$ | analytic geometry first; no numerical rescue of a failed family |
 | 3 | [H-014](../../../../packing/campaign/hypotheses/H-014-superdisk-continuation.md) | circle-to-square continuation versus direct square starts | last because it alone needs a new geometry model |
 | 1 | [H-030](../../../../packing/campaign/hypotheses/H-030-public-parent-surgery.md) | held-out UnitSquare parent-to-child construction surgery | recover a hidden known child before any unseen-record budget |
 | 2 | [H-031](../../../../packing/campaign/hypotheses/H-031-load-guided-block-moves.md) | LP-load-guided block moves versus coordinate-only moves | at least 2× valid target events per pair-test on paired controls |
-| 2 | [H-029](../../../../packing/campaign/hypotheses/H-029-adaptive-splitting.md) | rare-event splitting versus independent restarts | pass exact synthetic coverage and an independent `n=10` reference before a new `n=11` cell |
+| 2 | [H-029](../../../../packing/campaign/hypotheses/H-029-adaptive-splitting.md) | rare-event splitting versus independent restarts | pass exact synthetic coverage and an independent $n=10$ reference before a new $n=11$ cell |
 | 2 | [H-040](../../../../packing/campaign/hypotheses/H-040-active-cell-neighbor-walk.md) | adjacent-cell pivots versus random-coordinate multistart | at least 2× new verified cells per LP solve; cells are not components |
 
 H-024 separately tests the descriptive claim that verified record packings through
-`n=30` use at most three orientation classes.
-Exp-012 reconstructed and independently screened the primary `n=29` SVG and found six
+$n=30$ use at most three orientation classes.
+Exp-012 reconstructed and independently screened the primary $n=29$ SVG and found six
 unambiguous classes, refuting H-024 at its first stop cell.
 That neither proves nor is proved by H-001’s algorithmic performance; H-025 now owns the
 successor question about effective angular rank or compressibility.
@@ -274,28 +274,28 @@ be silently rerun as fresh hypotheses.
 | 1 | [H-010](../../../../packing/campaign/hypotheses/H-010-stromquist-triple.md) / [H-041](../../../../packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md) | **exp-016/017 complete:** exact rejection of the printed cover plus exact certification of a source-distinct one-coordinate repair | the published proof remains false as printed; only the repaired set proves the numerical inequality here |
 | 1 | [H-026](../../../../packing/campaign/hypotheses/H-026-trump-first-order-rigidity.md) / [H-022](../../../../packing/campaign/hypotheses/H-022-trump-local-geometry.md) | **exp-013 complete:** 128/128 exact zero-cone certificates and finite-branch local isolation; next quantify a radius | feature counts and a smooth Jacobian decided neither rigidity nor isolation |
 | 2 | [H-006](../../../../packing/campaign/hypotheses/H-006-lp-dual-unavoidable-sets.md) | quantitative, refinement-stable dual support for candidate loci | discretized LP generates proof objects; it proves no bound |
-| 1 | [H-039](../../../../packing/campaign/hypotheses/H-039-s12-proof-frontier.md) | checked improvement to the `s(12)` lower bound | exp-016/017 are the calibrated failure and success gates for the forcing architecture |
-| 1 | [H-033](../../../../packing/campaign/hypotheses/H-033-m2-minus-3-at-n61.md) | extend Bentz’s `m²−3` method to `m=8` or retain its first blocking pose | the direct 2018 piercing bound is weaker than Nagamochi and does not settle `s(61)` |
-| 2 | [H-034](../../../../packing/campaign/hypotheses/H-034-fractional-piercing-ceiling.md) | certified decision whether `τ*(U_s)>10` at Trump’s side | `>10` rules out ten points; `≤10` does not construct an integral set |
-| 2 | [H-036](../../../../packing/campaign/hypotheses/H-036-robust-restricted-orientation.md) | extend Stromquist’s exact `0°/45°` exclusion to a fixed neighborhood | reproduce the exact theorem before interval enlargement |
-| 2 | [H-032](../../../../packing/campaign/hypotheses/H-032-small-n-optimal-moduli.md) / [H-038](../../../../packing/campaign/hypotheses/H-038-record-number-fields.md) | exp-014/015 solve the exact `n=3,4` quotient cells; next classify `n=5`, alongside exact-field taxonomy | keep the sub-second controls permanent; sampling cannot decide the `n=5` component relation |
-| 3 | [H-037](../../../../packing/campaign/hypotheses/H-037-asymptotic-waste-exponent.md) | narrow the `1/2` versus `3/5` exponent gap | separate paper-mathematics lane; finite diagnostics do not decide it |
+| 1 | [H-039](../../../../packing/campaign/hypotheses/H-039-s12-proof-frontier.md) | checked improvement to the $s(12)$ lower bound | exp-016/017 are the calibrated failure and success gates for the forcing architecture |
+| 1 | [H-033](../../../../packing/campaign/hypotheses/H-033-m2-minus-3-at-n61.md) | extend Bentz’s $m^2-3$ method to $m=8$ or retain its first blocking pose | the direct 2018 piercing bound is weaker than Nagamochi and does not settle $s(61)$ |
+| 2 | [H-034](../../../../packing/campaign/hypotheses/H-034-fractional-piercing-ceiling.md) | certified decision whether $\tau^{\ast}(U_s)>10$ at Trump’s side | $>10$ rules out ten points; $\le10$ does not construct an integral set |
+| 2 | [H-036](../../../../packing/campaign/hypotheses/H-036-robust-restricted-orientation.md) | extend Stromquist’s exact $0^\circ/45^\circ$ exclusion to a fixed neighborhood | reproduce the exact theorem before interval enlargement |
+| 2 | [H-032](../../../../packing/campaign/hypotheses/H-032-small-n-optimal-moduli.md) / [H-038](../../../../packing/campaign/hypotheses/H-038-record-number-fields.md) | exp-014/015 solve the exact $n=3,4$ quotient cells; next classify $n=5$, alongside exact-field taxonomy | keep the sub-second controls permanent; sampling cannot decide the $n=5$ component relation |
+| 3 | [H-037](../../../../packing/campaign/hypotheses/H-037-asymptotic-waste-exponent.md) | narrow the $\frac{1}{2}$ versus $\frac{3}{5}$ exponent gap | separate paper-mathematics lane; finite diagnostics do not decide it |
 
-H-026 completed in exp-013, exp-014/015 completed H-032’s `n=3,4` controls, and
+H-026 completed in exp-013, exp-014/015 completed H-032’s $n=3,4$ controls, and
 exp-016/017 completed the printed-failure/repaired-success Stromquist calibration.
-The next proof rotation is H-039’s first fixed-threshold `n=12` candidate alongside the
-first complete `n=5` component analysis.
-The slower `s(12)`, `s(61)`, fractional-piercing, restricted-orientation, exact-field
+The next proof rotation is H-039’s first fixed-threshold $n=12$ candidate alongside the
+first complete $n=5$ component analysis.
+The slower $s(12)$, $s(61)$, fractional-piercing, restricted-orientation, exact-field
 and asymptotic programs remain visible with explicit intermediate artifacts rather than
 being forced into the stochastic census queue.
 
 ### Basin maps, in order of mathematical honesty
 
-The first view has landed: exp-014’s generated packing glyphs and exact `n=3` quotient
-family. Next come fixed-cell angle sheets with active-basis overlays, an `n=5` ambiguity
+The first view has landed: exp-014’s generated packing glyphs and exact $n=3$ quotient
+family. Next come fixed-cell angle sheets with active-basis overlays, an $n=5$ ambiguity
 graph with tangent evidence, and valid-path clearance profiles.
 Kernel-conditioned transition networks and discovery curves wait for full event
-retention and `P/Q/E`; a global merge tree waits for certified components of a
+retention and $P/Q/E$; a global merge tree waits for certified components of a
 fixed-side filtration.
 Endpoint hashes or continuation-branch dendrograms are never labelled feasible topology.
 
@@ -333,9 +333,9 @@ Send promoted, novel, disputed, or otherwise high-risk claims through W2 before 
 move forward. A routine W6 result whose preregistered guards and independent replay
 already decide its stated criterion need not open a ceremonial review phase.
 
-The research cell at `n = 28` and `n = 40` stays open, and know what it costs before
+The research cell at $n = 28$ and $n = 40$ stays open, and know what it costs before
 taking it: that slice is not an assessment but an **exact construction**. `X-007`
-settled `n = 5` because Göbel’s construction is exact; the other two retain decimal
+settled $n = 5$ because Göbel’s construction is exact; the other two retain decimal
 witnesses of the kind measured `2.4e-30` off the diagonal, which no certificate can rest
 on.
 It is not the next thing, because a reassessment of what to search is queued in front
@@ -433,7 +433,7 @@ Its re-entry conditions remain in
 Agenda030’s first wave ran as sessions100 to104 and its second as sessions107
 through109. BC303 replayed the strongest claims independently and funded the
 segment-mark cover toward an ownership argument as the next sustained block, with the
-`B = 1` depth polisher as the efficiency block.
+$B = 1$ depth polisher as the efficiency block.
 BC-304 has dispositioned every cell and carried the unfinished complements of BC-292 and
 BC-299 forward. The pairwise compatibility argument continues from the independently
 replayed ten-segment theorem; the rounded-cover helper is retracted.
@@ -452,8 +452,8 @@ Do not repeat a completed experiment or create another candidate without a regis
 result; a float optimum is never a result.
 The former standalone publication handoff `think-d010` is fulfilled by PR 223’s merge.
 For the next supervised exact-research goal, take `think-l6la`, the handoff Session 161
-stopped on: run the complete `zm_mixed.py --d4 --cert-mode` re-sweeps for `s(21)` and
-`s(45)`, record them, and raise T-052 and T-053 to `C4`. Agenda-042’s BC-390, the
+stopped on: run the complete `zm_mixed.py --d4 --cert-mode` re-sweeps for $s(21)$ and
+$s(45)$, record them, and raise T-052 and T-053 to `C4`. Agenda-042’s BC-390, the
 widened n = 11 rung 0 box that leads
 [the after-4.640020 plan](plan-2026-09-27-after-4640020-overnight.md), stays queued
 behind it with the rectangle ladders and the remaining wand125 replays.
@@ -558,8 +558,8 @@ The optimization order follows measured leverage:
    infinite effective overhead.
 2. **Profile the complete agent and numeric loops** under `think-xzew`, including time
    in build, execute, analysis, record, recovery, and gates.
-3. **Measure canonicalization scaling.** The observed `n=7` to `n=9` jump may dominate
-   `n=10`; optimize only after representative profiles.
+3. **Measure canonicalization scaling.** The observed $n=7$ to $n=9$ jump may dominate
+   $n=10$; optimize only after representative profiles.
 4. **Bind pair-test accounting** (`think-krqi`/`think-b4jc`) so proposer comparisons use
    the declared machine-independent currency.
 5. **Reduce agent time per recorded round** toward ten minutes through recipes,
@@ -581,7 +581,7 @@ The canonical readiness epic is `think-ydus`.
 | Portfolio and agenda | `think-1sxv`, `think-isa3` | registry, idea board, exploration source and this spec reconcile |
 | Mathematical frontier | `think-7gu0` with `think-jbcm`, `think-1xex`, `think-vvd5`, `think-xbab`, `think-z4m0`; execution continues on `think-chbu`, `think-ykt7` and the existing Insight beads | ranked review, 40-artifact registry, basin ontology, priced rotation and source-correct proof/search lanes |
 | Counted object | `think-1s0h` → `think-0yo9`; `think-3szr`, `think-aans` | H-023/H-021 classification evidence and ambiguity bounds |
-| Events and evaluator | `think-31k1`, `think-rrht`, `think-apwt`, `think-jxx8` | full observations, named `P/Q/E`, held-out coverage evaluator |
+| Events and evaluator | `think-31k1`, `think-rrht`, `think-apwt`, `think-jxx8` | full observations, named $P/Q/E$, held-out coverage evaluator |
 | Validity and lifecycle | `think-ldq2`, `think-cns0`, `think-5zwm`, `think-ouf0`, `think-osyp` | independent pose checks, real selftest, transitions, interruption and control rehearsals |
 | Budget and reporting | `think-krqi`, `think-b4jc`, `think-kmn2`, `think-y37w`, `think-xzew` | pair-test budget, priced queue, durable report, measured loop |
 | First supervised cell | `think-l4z5` | H-011 instrument and recipe become true together; one complete cell retained |
@@ -603,7 +603,7 @@ The new H-024 corpus reconstruction is `think-w5rb` under the Insight focus.
   explicit scientific, lifecycle, capacity, and morning-artifact gate above.
 - **2026-08-24:** deep creativity review expanded the registry from 24 to 40 artifacts,
   corrected the rigidity, LP-dual, topology, tail-model and fractional-piercing claims,
-  added the exact-small-`n`, public-parent, `s(12)`, `s(61)`, algebraic-field and
+  added the exact-small-`n`, public-parent, $s(12)$, $s(61)$, algebraic-field and
   asymptotic lanes, and adopted the fast-first visualization and successive-halving
   agenda.
 - **2026-08-24:** added the soft-schema basin confidence ladder as the mutable

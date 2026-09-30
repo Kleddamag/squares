@@ -26,7 +26,7 @@ The current bracket is
     = 3.826447410572939744... <= s(11) <= 3.877083590022814...
 ```
 
-T-025 excludes the rational side `191/50 = 3.82` with a mixed certificate made from
+T-025 excludes the rational side $191/50 = 3.82$ with a mixed certificate made from
 ordinary point charges and two-of-three threshold charges.
 T-026 proves the ordinary exact lower bound displayed above at V4/C5 using a finer
 direction net, a larger strict core, weight normalization, rational dilation and order
@@ -38,7 +38,7 @@ This is a separate question and does not qualify the proved lower bound.
 The inherited A6 result is an exact obstruction for one fixed support, core domain, and
 atom family.
 H157 leaves six refined owner subclasses at survivor weight ten and improves
-two to `19/2`; it rejects its registered all-subclasses claim without deciding other
+two to $19/2$; it rejects its registered all-subclasses claim without deciding other
 domains, charges, or the existential owner-selection problem.
 These scopes remain in force throughout this plan.
 
@@ -85,8 +85,8 @@ below record the September 10–13 controller and evidence.
 
 An **atom** is a nonnegative resource rule used by a covering certificate.
 A point atom charges a core when it contains one site.
-A `k`-of-`m` threshold atom charges weight `w` when the core contains at least `k` sites
-from a declared set of `m`; disjoint cores can consume its resource only a bounded
+A $k$-of-`m` threshold atom charges weight $w$ when the core contains at least $k$ sites
+from a declared set of $m$; disjoint cores can consume its resource only a bounded
 number of times. A floor atom generalizes this counting rule using integer site
 multiplicities. A finite LP result applies only to its declared placements, rows, and
 atom family until continuum coverage and physical transfer have been checked.
@@ -100,7 +100,7 @@ Counting overlapping labels is not such a theorem.
 ## September 14 Strategy Reset
 
 The owner has paused heavy computer-assisted proof work aimed at very small lower-bound
-increments. The current objective is either a material improvement to the `n = 11` bound
+increments. The current objective is either a material improvement to the $n = 11$ bound
 or a substantially simpler proof of `s(11) >= 3.82`.
 [Agenda 036](../../../../packing/campaign/agendas/agenda-036-n11-strategy-reset-roadmap.md)
 is the live controller, and the synopsis’s
@@ -147,14 +147,14 @@ The planning candidates are:
 | Route | First discriminator | Intended payoff |
 | --- | --- | --- |
 | W5 efficiency checkpoint | Determine whether the four-to-eight-block cadence makes it due; if so, measure at most one demonstrated bottleneck | Protect the speed and equivalence of the next research loop |
-| A — systematic case split | At side `3.84`, freeze one complete difficult root family and report the fixed denominator and exact worst survivor; use `3.85` only after rebuilding its premises | A material lower-bound route beyond the point-certificate ceiling |
+| A — systematic case split | At side $3.84$, freeze one complete difficult root family and report the fixed denominator and exact worst survivor; use $3.85$ only after rebuilding its premises | A material lower-bound route beyond the point-certificate ceiling |
 | S — certificate compression | Start with T-025 and seek a fivefold reduction in orbit representatives or comparable independent geometry, with unchanged exact replay | Replace the current large certificate with a human-statable proof |
 | E — global angular resources | Test H-131’s proved angle-count caps against the whole retained fractional optimal face, with coherent selection explicit | Add a global physical resource without assuming two orientations or owner selection |
-| B — pairwise SDP | Audit a sound pose cover and compare with the strongest matched threshold baseline after the `n = 6` controls | Attack the fractional-versus-integer gap through pairwise compatibility |
+| B — pairwise SDP | Audit a sound pose cover and compare with the strongest matched threshold baseline after the $n = 6$ controls | Attack the fractional-versus-integer gap through pairwise compatibility |
 | F1 — stronger charge algebra | Test one exact realizable trace language against matched ordinary-threshold atoms | Change the relaxation by coupling individually admissible placements |
 | F2 — geometry-dependent budgets | Prove one joint-parent physical-capacity bound for an atom with ordinary budget at least two | Replace a fixed combinatorial budget with a geometry-dependent theorem |
-| N — `n = 12` exact value | Seek a uniform boundary-capacity or deformation lemma for `L = 4 - epsilon`, with solved controls and flexible boundary families | Attempt the larger theorem `s(12) = 4` without a decimal ladder |
-| C — orientation structure | Reproduce the 6+5 Trump-angle control, then close one complete positive-width interval near `3.87` | Prove a restricted-family theorem and test a possible bridge to optimality |
+| N — $n = 12$ exact value | Seek a uniform boundary-capacity or deformation lemma for `L = 4 - epsilon`, with solved controls and flexible boundary families | Attempt the larger theorem $s(12) = 4$ without a decimal ladder |
+| C — orientation structure | Reproduce the 6+5 Trump-angle control, then close one complete positive-width interval near $3.87$ | Prove a restricted-family theorem and test a possible bridge to optimality |
 | D — upper-bound search | Make one changed proposer recover an oblique control at matched work before allocating a larger search | Improve the upper bound or retain verified competing configurations |
 | G — geometric waste | Prove one orientation-sensitive local gap and a non-double-counting global accounting rule | Explore a speculative geometric mechanism beyond one-body density |
 
@@ -201,7 +201,7 @@ theorem.
 | 1 | Necessary parent geometry on the saved owner escape — complete | 60–90 min | Admitted the parent-domain adapter and ran the fixed exp151 target once. The residual survived its parent box; TR was already B-only incompatible, making its parent-domain arm redundant; BL, BR and TL were not run. H158 remains unresolved. |
 | 2 | One direct core and direction-net packet | 90–120 min after a fixed-core runner is admitted | Freeze the 2880-step net, one larger core, the original relative-weight scale and one deterministic normalization rule. Accept only when the raw minimum exceeds the exact budget threshold, both coverage routes agree, and dilation replay gives a limit strictly above T-026. A verified charge at or below that threshold rejects only the fixed relative-weight packet; timeout leaves it unresolved. |
 | 2T | BC303 C/S charge target, in parallel | Integrated-head admission, then one 30-minute scientific allowance | Authenticate the 377 source atoms, 182 eligible charts, both axis aliases, the repaired reader, and the executing revision; pass its synthetic all-strata controls. Run H-160/exp-158 once. C passes at $\ge4524200$; a lower C cell needs exact physical-parent replay to reject its opposite/combined helper. S first-owner passes at $\ge4524185$; a lower strip cell rejects only the sufficient filter. Even a positive T2 result leaves local availability and global selection open. |
-| 2P | Exact TR-incompatibility centre obstacle, in parallel | 45 min admission, then one 240 s scientific allowance inside a 300 s process | Keep exp151 direction 6, tuple `(0,0,0,7)`, open residual domain `C°`, and the same nine other closed centre-space obstacles. The control adds `P_TR + (-R)`; the candidate adds `K_TR` directly, with no second Minkowski expansion. Run once only after source-bound construction, clipping, a bounded runner and an independent reader are admitted. |
+| 2P | Exact TR-incompatibility centre obstacle, in parallel | 45 min admission, then one 240 s scientific allowance inside a 300 s process | Keep exp151 direction 6, tuple $(0,0,0,7)$, open residual domain $C^\circ$, and the same nine other closed centre-space obstacles. The control adds $P_{TR} + (-R)$; the candidate adds $K_{TR}$ directly, with no second Minkowski expansion. Run once only after source-bound construction, clipping, a bounded runner and an independent reader are admitted. |
 | 3 | Weighted-atom admission, then a matched support comparison | 60–90 min for admission; a separate 90–120 minute target block | Version multiplicity semantics and make every producer, loader and coverage route agree before freezing one common-row control/candidate comparison. Accept finite improvement only when an exact candidate primal upper bound is below the control dual lower bound. |
 | 4 | Genuine-contact or snug-parent residual pilot | 60–90 min | Use the proved fixed-angle contact alternative to define one exact conditional domain. Admit physical contacts and all complementary branches before measuring; a result on one branch remains conditional. |
 | 5 | Mixed charges on one angle profile | 60–90 min after a common finite discriminator is admitted | Test a profile with changed charges or sites. Earlier neutral point-only profiles are controls for that finite language, not a general negative about angle conditioning. |
@@ -216,7 +216,7 @@ scientific block only when a frozen candidate needs that language.
 
 ### The individual-parent result that changes the queue
 
-For a core direction `r`, write
+For a core direction $r$, write
 
 ```text
 S = |r_x| + |r_y|,  T = ||r_x| - |r_y||,
@@ -224,10 +224,10 @@ e(r,D) = max(B*S/2, 1/2, (S-T*D)/(2+D^2)).
 ```
 
 Every nearest-selected core from a physical unit square has its centre in
-`[e(r,D), q-e(r,D)]^2`. This is an unconditional necessary domain; it does not require
+$[e(r,D), q-e(r,D)]^{2}$. This is an unconditional necessary domain; it does not require
 choosing owners.
 
-The independently admitted 88-core point family at `q0 = 191/50` uses `B = 9977/10000`,
+The independently admitted 88-core point family at $q0 = 191/50$ uses $B = 9977/10000$,
 total weight eleven, and depth at most one.
 Translate every core by half of a container increase `Delta`. Its new wall margin is at
 least `B*S/2 + Delta/2`. Since `e(r,D) <= S/2`, `S <= sqrt(2) < 3/2`, and
@@ -244,17 +244,16 @@ q >= 191/50 + 69/20000 = 76469/20000 = 3.82345.
 
 Give each translated core a concentric unit parent with the same physical orientation.
 Its coordinate wall margin is at least `(Delta-(1-B)*S)/2 > 0`, and the core is strictly
-inside it.
-The family uses retained folded indices `0,1,3,5,99,113` and their mirrors, so
-each parent has zero angular mismatch and nearest selection returns the same geometric
-core. Translation preserves point depth and the required reflections.
-Consequently, a point-only optimization at `3.827` cannot beat T-026 merely by replacing
+inside it. The family uses retained folded indices $0,1,3,5,99{,}113$ and their mirrors,
+so each parent has zero angular mismatch and nearest selection returns the same
+geometric core. Translation preserves point depth and the required reflections.
+Consequently, a point-only optimization at $3.827$ cannot beat T-026 merely by replacing
 the old domain with either the conservative parent box or exact individual-parent
 realizability on this fixed B and retained net.
 This is an analytic consequence of admitted objects, not a new packing or a numerical
 target result. The family violates a two-of-three capacity row, so the argument does not
 obstruct a changed threshold family.
-A6 supplies a corresponding exact-parent obstruction at `76569/20000 = 3.82845` when its
+A6 supplies a corresponding exact-parent obstruction at $76569/20000 = 3.82845$ when its
 admitted atom sites translate with the placements.
 Changed charges, larger cores, angle cells that exclude the used nodes, contact or owner
 conditions, joint compatibility, and conditional routing remain separate possibilities.
@@ -266,7 +265,7 @@ and
 ## Block 1: Necessary Parent Geometry
 
 This completed protocol is retained for audit.
-Its saved object was exp151’s strict escape at tuple `(0,0,0,7)`.
+Its saved object was exp151’s strict escape at tuple $(0,0,0,7)$.
 
 The adapter, source binder, closed result schema and production runner have now passed a
 target-free independent admission with 56 focused tests.
@@ -300,18 +299,18 @@ authorizing no rerun.
 ### Parallel Secondary: The TR-Incompatibility Polygon
 
 BC337 asks a different fixed-domain question suggested by the exp156 result.
-Freeze exp151 direction 6, tuple `(0,0,0,7)`, the original B-only domains and sites, and
+Freeze exp151 direction 6, tuple $(0,0,0,7)$, the original B-only domains and sites, and
 the three `BL`, `BR` and `TL` patches.
-Let `C°` be the open residual-centre domain, and let `O` be the union of the same nine
-closed centre-space obstacles supplied by those sites and three patches.
+Let $C^\circ$ be the open residual-centre domain, and let $O$ be the union of the same
+nine closed centre-space obstacles supplied by those sites and three patches.
 
-The control uses the existing TR centre-space collision obstacle `P_TR + (-R)`, where
-`R` is the fixed residual core.
-The candidate uses `K_TR` directly as a centre-space obstacle.
-It does not apply another Minkowski expansion to `K_TR`. For each of the 181 owner
-frames `f`, let `Z_f` be its admitted owner-centre polygon, and take the eight signed
-separating-axis directions `n` for that frame.
-With `rho_f(n)` and `rho_r(n)` the owner and residual support radii in direction `n`,
+The control uses the existing TR centre-space collision obstacle $P_{TR} + (-R)$, where
+$R$ is the fixed residual core.
+The candidate uses $K_{TR}$ directly as a centre-space obstacle.
+It does not apply another Minkowski expansion to $K_{TR}$. For each of the 181 owner
+frames $f$, let $Z_f$ be its admitted owner-centre polygon, and take the eight signed
+separating-axis directions $n$ for that frame.
+With `rho_f(n)` and `rho_r(n)` the owner and residual support radii in direction $n$,
 freeze
 
 ```text
@@ -324,17 +323,17 @@ U1 = C° \ (O ∪ K_TR).
 
 The primary accepting result is exact area of `U1` equal to zero, confirmed by an
 independent polygon-union calculation.
-`C°` remains open and every obstacle remains closed, so a nonempty `U1` would be open
-and have positive area; exact zero area therefore implies `U1` is empty.
+$C^\circ$ remains open and every obstacle remains closed, so a nonempty `U1` would be
+open and have positive area; exact zero area therefore implies `U1` is empty.
 Reject the fixed candidate only when a positive exact uncovered area is accompanied by
 both a rational strict escape in `U1` and a compatible TR witness.
 Any other completed result remains unresolved.
 No outcome applies to another direction, tuple, residual domain or owner-selection
 problem.
 
-The target is blocked until a source-bound constructor derives `K_TR` from every frame
+The target is blocked until a source-bound constructor derives $K_{TR}$ from every frame
 and signed axis, and an exact clipping pipeline, bounded runner and independent reader
-compare `U0` and `U1` without closing `C°` or expanding `K_TR` a second time.
+compare `U0` and `U1` without closing $C^\circ$ or expanding $K_{TR}$ a second time.
 Admission stops after 45 minutes.
 Only then may one prospectively registered run receive a 240-second scientific allowance
 inside a 300-second external process with two-second termination grace.
@@ -362,12 +361,12 @@ verified the exact net error and the packet’s theoretical ceiling
 S_c = (191/50)*sqrt(1+D_c^2)/(B_c*(1+D_c))
 ```
 
-is strictly above T-026. Its value is about `3.826721480476156`, exceeding T-026 by
-about `0.000274070`. This is geometric headroom conditional on coverage, not a new lower
+is strictly above T-026. Its value is about $3.826721480476156$, exceeding T-026 by
+about $0.000274070$. This is geometric headroom conditional on coverage, not a new lower
 bound.
 
 “Retain the relative weights” needs one common scale rule.
-Let `M` be the original T-025 budget and let `m_c` be the least raw charge of an
+Let $M$ be the original T-025 budget and let $m_c$ be the least raw charge of an
 admissible core in this packet:
 
 ```text
@@ -376,10 +375,10 @@ M/11 = 685457679/687500000.
 ```
 
 A common multiplier can make the least charge at least one while keeping total budget
-below eleven exactly when `m_c > M/11`. Freeze the deterministic multiplier
-`alpha = 1/m_c`; then the derived least charge is one and its budget is `M/m_c < 11`. A
+below eleven exactly when $m_c > M/11$. Freeze the deterministic multiplier
+`alpha = 1/m_c`; then the derived least charge is one and its budget is $M/m_c < 11$. A
 raw charge below one therefore does not by itself reject the packet.
-A verified admissible core with charge at most `M/11` does reject this fixed collection
+A verified admissible core with charge at most $M/11$ does reject this fixed collection
 of sites, thresholds, relative weights, core side, and net under every common rescaling.
 
 The existing refinement CLI runs adaptive core sweeps and bisection and does not execute
@@ -489,12 +488,12 @@ remain open. None of those profiles has run.
 The implemented runner and calibration repairs do not admit BC329 execution.
 
 Then register one hypothesis and one experiment, freeze the packet and normalization
-rule, measure `m_c`, and run the normalized object through the complete exact route, the
+rule, measure $m_c$, and run the normalized object through the complete exact route, the
 reflected interval route, and the dilation reader’s source replay.
 A timeout, incomplete direction set, or nonzero-width enclosure leaves coverage
 incomplete.
 Without an independently verified admissible core whose raw charge is at most
-`M/11`, it also leaves the packet scientifically unresolved; such a core instead rejects
+$M/11$, it also leaves the packet scientifically unresolved; such a core instead rejects
 the fixed relative-weight packet even when the remaining directions are incomplete.
 A source mismatch, malformed geometry, method disagreement, or invalid witness makes the
 invocation or instrument invalid; it supplies no scientific verdict.
@@ -516,7 +515,7 @@ the same rows repeats a completed obstruction.
 The strongest concrete changed rule found in the intake is a seven-token, threshold-four
 K5 motif with five sites and integer multiplicities.
 Its budget is one because two disjoint cores cannot each consume four of seven labeled
-tokens. The retained reader reports charge `3/2` against A6’s family, but the production
+tokens. The retained reader reports charge $3/2$ against A6’s family, but the production
 format and both coverage routes do not yet admit multiplicities.
 First admit exact traces for this one motif on a frozen core domain and compare them
 with all 80 ordinary threshold types on the same sites.
@@ -556,7 +555,7 @@ freely rotated squares.
 The fixed-angle normal-form portion of Block 4 is complete and independently reviewed.
 At every feasible fixed side, for each labelled fixed-angle connected component, there
 is a representative whose physical contact components all touch the left and bottom
-walls and whose active translation constraints contain a `2n`-row basis of genuine
+walls and whose active translation constraints contain a $2n$-row basis of genuine
 contacts.
 For eleven squares this yields a finite alternative between one square touching
 both walls and a contact path of two through eleven squares joining them.
@@ -574,8 +573,8 @@ The accepted
 [selection-routing analysis](../../research/research-2026-09-12-n11-selection-routing-first-principles.md)
 and its
 [source-distinct review](../../reviews/review-2026-09-12-n11-selection-routing-first-principles.md)
-state the missing transfer exactly: for every physical packing `P`, its valid selection
-set must satisfy `Gamma(P) intersect G != empty`, where `G` contains only completely
+state the missing transfer exactly: for every physical packing $P$, its valid selection
+set must satisfy `Gamma(P) intersect G != empty`, where $G$ contains only completely
 excluded conditional selections.
 For T-023’s two certified uniform tuples, the complement has sixteen maximal
 availability products.
@@ -606,10 +605,10 @@ fixed-side normal form with the seven-of-eight mark-ownership alternative and on
 resource account. It may not promote an arbitrary active LP row to a contact edge or
 assume a literal corner, finite angle set, short prescribed path, or complete quench.
 
-For the angle-profile lane, H131 supplies upper counts, not an exact `(9,2)`
-decomposition. A certificate normalized to `9d_0+2d_1` therefore applies only to that
+For the angle-profile lane, H131 supplies upper counts, not an exact $(9,2)$
+decomposition. A certificate normalized to $9d_0+2d_1$ therefore applies only to that
 conditional exact-count branch unless the demand is minimized over every allowed count
-vector. In the simpler `n_0 <= 9` case, `d_0 <= d_1` makes `9d_0+2d_1` the worst allowed
+vector. In the simpler `n_0 <= 9` case, `d_0 <= d_1` makes $9d_0+2d_1$ the worst allowed
 demand; without that order, the single normalization does not cover the count theorem.
 
 ## Parallel Documentation Blocks
@@ -657,10 +656,10 @@ The explainer update uses an **incremental architecture**.
    Keep the separate strictness question apart from the V4/C5 assurance statement.
 2. Keep T-018 and its point-only certificate as the complete worked example, with its
    seven interactive figures and standalone standard-library checker.
-   State explicitly that the numerical `3.81` result is a teaching example rather than a
+   State explicitly that the numerical $3.81$ result is a teaching example rather than a
    premise of T-026.
 3. Add a final proof section defining a two-of-three threshold charge, proving the
-   general packing budget, and applying it to T-025’s direct certificate at `3.82`.
+   general packing budget, and applying it to T-025’s direct certificate at $3.82$.
 4. Complete the headline proof with T-026’s finer net, normalization, common dilation,
    and limiting step. Dilation-limit describes this proof method; the conclusion is an
    ordinary lower bound.

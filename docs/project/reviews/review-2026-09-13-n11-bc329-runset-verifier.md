@@ -51,7 +51,7 @@ not validate the other identity fields’ required types
 which establishes equality and identical types between two records, not that either
 value has the correct type.
 In an isolated synthetic root, I changed the first summary identity’s
-`requested_workers` from integer `4` to boolean `true`, resnapshotted, and generated a
+`requested_workers` from integer $4$ to boolean `true`, resnapshotted, and generated a
 zero-status proof carrying the same identity.
 `join_reader_proofs` returned `status: accepted`. The reader itself owns scientific
 checks, but R2’s explicit typed invocation identity must reject this pair.

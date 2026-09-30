@@ -21,18 +21,18 @@ It is a matter of formulation and move set.
 Every engine that has actually set a record on this problem does something the
 repository’s annealer does not do, and the missing pieces are nameable.
 The people who hold the records say so themselves.
-The provenance comment on the `n = 55` record, read first-hand for this document, states
+The provenance comment on the $n = 55$ record, read first-hand for this document, states
 that without special modifications the annealer “almost always gets stuck just above the
-trivial size”, which is precisely what this repository measured at `n = 17` in exp-011.
+trivial size”, which is precisely what this repository measured at $n = 17$ in exp-011.
 
-The half that is wrong: “solve to `n = 100`” is not one task.
+The half that is wrong: “solve to $n = 100$” is not one task.
 Of the 100 cases at `n <= 100`, 64 have a best-known packing equal to the trivial
 `ceil(sqrt(n))` grid, which the repository’s annealer already returns by construction.
 The real target is the other 36, and 21 of those 36 were found by hand rather than by
 any search program. The best public annealer, run by the person who runs it best, needed
-roughly a thousand classified local optima per record hit at `n` near 50, and a 2026
+roughly a thousand classified local optima per record hit at $n$ near 50, and a 2026
 machine-learning system with a well-built pipeline spent a nine-hour production search
-at `n = 17` without beating a packing found by an undergraduate in 1998. “The right
+at $n = 17$ without beating a packing found by an undergraduate in 1998. “The right
 annealer solves everything to 100” is not supported by any evidence found here.
 
 On the question as literally asked, there is a good answer and it is not a cooling
@@ -51,12 +51,12 @@ Proving optimality is a different problem that annealing does not address at all
 
 ## Questions to Answer
 
-1. What does “solve square packing to `n = 100`” actually require, case by case?
+1. What does “solve square packing to $n = 100$” actually require, case by case?
 2. What algorithms produced the published records, in enough detail to reimplement?
 3. What has the wider continuous-packing literature established about annealing against
    its competitors?
 4. Does the move set matter more than the cooling schedule, and what is the evidence?
-5. Given this repository’s own refutations at `n = 11` and `n = 17`, is the owner’s
+5. Given this repository’s own refutations at $n = 11$ and $n = 17$, is the owner’s
    expectation plausible?
 6. What engine would give the best shot at recovering known-best packings cold, and what
    is the cheapest first change to `sqsearch` that would move the number?
@@ -90,7 +90,7 @@ through `n-100.md`:
 | … of those, proved optimal | 33 |
 | … of those, open | 31 |
 | Best known beats the grid | 36 |
-| … of those, proved optimal | 2 (`n = 5`, `n = 10`) |
+| … of those, proved optimal | 2 ($n = 5$, $n = 10$) |
 | … of those, open | 34 |
 
 The 64 grid cases are not a search problem.
@@ -99,18 +99,18 @@ it (`packing/sqsearch/src/search.rs`, `run_chain`), so it “matches the known b
 all 64 without doing anything.
 For 31 of them nobody has ever found anything better, and
 [X-009](../../../packing/campaign/explorations/X-009-where-a-new-packing-is-reachable.md)
-records the relevant regularity: across the whole retained catalogue to `n = 324`,
-re-indexed by `k = m^2 - n` with `m = ceil(sqrt(n))`, **nobody has ever beaten a grid at
-`k <= m - 2`**. Re-deriving that index over the 31 open grid cases here gives `k` from 3
-to 10, of which 18 sit in the never-beaten band, 6 at `k = m - 1`, and 7 at `k = m`
-(`n = 12, 20, 30, 42, 56, 72, 90`).
+records the relevant regularity: across the whole retained catalogue to $n = 324$,
+re-indexed by $k = m^{2} - n$ with `m = ceil(sqrt(n))`, **nobody has ever beaten a grid
+at `k <= m - 2`**. Re-deriving that index over the 31 open grid cases here gives $k$
+from 3 to 10, of which 18 sit in the never-beaten band, 6 at $k = m - 1$, and 7 at
+$k = m$ ($n = 12, 20, 30, 42, 56, 72, 90$).
 
 **Inference.** For the 18 the honest task is a proof, not a search, and an annealer that
 fails to beat the grid there is probably failing to beat an optimum.
-The 13 at `k = m - 1` and `k = m` are the ones where a better-than-grid packing
-plausibly exists, because the `s(m^2 - m) = m` conjecture has been falsified at
-successively smaller `m`, most recently by Cantrell in February 2025 at `m = 11`, which
-makes `n = 90` the one grid case at `n <= 100` that X-009 treats as a defensible search
+The 13 at $k = m - 1$ and $k = m$ are the ones where a better-than-grid packing
+plausibly exists, because the $s(m^{2} - m) = m$ conjecture has been falsified at
+successively smaller $m$, most recently by Cantrell in February 2025 at $m = 11$, which
+makes $n = 90$ the one grid case at `n <= 100` that X-009 treats as a defensible search
 target.
 
 The 36 non-grid cases are the whole of the search problem, and their provenance is the
@@ -126,15 +126,15 @@ most informative number in this section.
 | Unknown | 2 |
 
 Twenty-one of the thirty-six are human geometry.
-Ten are annealing, all between `n = 28` and `n = 87`, and all but one dated 2024 or
-later. Over the full register to `n = 324` the annealing count is 40 cases, spanning
-`n = 28` to `n = 307`; the
+Ten are annealing, all between $n = 28$ and $n = 87$, and all but one dated 2024 or
+later. Over the full register to $n = 324$ the annealing count is 40 cases, spanning
+$n = 28$ to $n = 307$; the
 [2026-08-22 report](research-2026-08-22-square-packing-algorithms-and-tooling.md) gives
 the compatible figure of 47 of 184 catalogue *pictures* crediting annealing, counted
 against a different denominator.
 
 The margin a search has to find also varies by an order of magnitude.
-`n = 65` beats the grid by `0.4645`; `n = 89` beats it by `0.0503`. **Inference:** a hit
+$n = 65$ beats the grid by $0.4645$; $n = 89$ beats it by $0.0503$. **Inference:** a hit
 rate quoted without naming the case is close to meaningless, and any experiment on this
 should stratify by margin.
 
@@ -158,7 +158,7 @@ The formulation is the first thing to take from it.
 Instead of minimising the enclosing side, they fix the container and maximise the
 **inflation** `omega(C)`: how far the squares can be grown from a given configuration
 before an overlap appears.
-`s(n)` is then tied to the supremum of `omega` over admissible configurations.
+$s(n)$ is then tied to the supremum of `omega` over admissible configurations.
 The abstract states the link directly and the paper builds a billiard-style algorithm on
 it.
 
@@ -195,7 +195,7 @@ There is no temperature, no Metropolis exponential, and no uphill acceptance.
 The escape mechanism is layer 3’s simultaneous perturbation with a restore-on-failure
 outer loop, not a hot phase.
 The first algorithm that worked on squares in a square was an adaptive-step greedy
-billiard, and it stood as the `n = 29` record from 2004 until December 2025.
+billiard, and it stood as the $n = 29$ record from 2004 until December 2025.
 
 **Layer 3 is the load-bearing one and the paper says why.** Layer 2 converges to
 configurations that are *solid*, meaning no single object can be moved to improve the
@@ -205,18 +205,18 @@ configurations to a genuine local optimum.
 Gensane found this necessary in three dimensions and expected it to matter generally.
 
 The sphere paper also publishes per-`n` hit frequencies on an 800 MHz CPU, which are the
-direct ancestor of Ellsworth’s 2026 basin statistics: at `n = 11` the best packing was
-found about once in 140 runs, at `n = 24` about once in 50. Pairing a small sample of
-billiard runs with one perturbation run found the best `n = 24` packing at roughly a
+direct ancestor of Ellsworth’s 2026 basin statistics: at $n = 11$ the best packing was
+found about once in 140 runs, at $n = 24$ about once in 50. Pairing a small sample of
+billiard runs with one perturbation run found the best $n = 24$ packing at roughly a
 tenth of the cost of billiard alone.
 
-Results for squares: improved `n = 11, 29, 37`, and an alternative optimum at `n = 18`;
-`s(11) <= 3.8772`, `s(29) < 5.9648`, `s(37) <= 6.603236`. It *recovered* Trump’s 1979
-`n = 11` packing rather than beating it, which made it the first computer packing
-plausibly optimal, and its `n = 11` closed form is still the record.
-DS7 also records that the `n = 29` packing it found carries squares at “no less than 6
+Results for squares: improved $n = 11, 29, 37$, and an alternative optimum at $n = 18$;
+`s(11) <= 3.8772`, $s(29) < 5.9648$, `s(37) <= 6.603236`. It *recovered* Trump’s 1979
+$n = 11$ packing rather than beating it, which made it the first computer packing
+plausibly optimal, and its $n = 11$ closed form is still the record.
+DS7 also records that the $n = 29$ packing it found carries squares at “no less than 6
 different angles”, which this repository independently reproduced: exp-012 measured six
-numerical angle classes in the current `n = 29` record at tolerance `1e-80`.
+numerical angle classes in the current $n = 29$ record at tolerance `1e-80`.
 
 ### 2.2 Schadt’s annealer and Ellsworth’s modification, 2024 to 2026
 
@@ -230,7 +230,7 @@ Two artifacts do exist and are worth more than the absence.
 **Schadt’s own methodology note.** His single public repository,
 [BalthasarStrauss/Squares-packing_S-29-_New-Record](https://github.com/BalthasarStrauss/Squares-packing_S-29-_New-Record)
 (MIT, created 2025-12-08; the account’s `name` field is “Thomas Schadt”), publishes the
-`n = 29` record he set in December 2025 along with a verifier, and states the method in
+$n = 29$ record he set in December 2025 along with a verifier, and states the method in
 four sentences. The relevant one: the solution was found using C++ with data type
 `float`, then relaxed to at least `1e-100` in C++ with Boost, then checked in Python at
 the same precision. He also says the packing is “most certainly not fully optimized”.
@@ -239,20 +239,20 @@ The repository already retains this at `packing/resources/web/schadt-s29-2025/`.
 **The single most useful sentence anyone has written about this problem.** The
 provenance comment in
 [`square-55.svg`](https://kingbird.myphotos.cc/packing/square-55.svg), fetched and read
-first-hand on 2026-09-08, records that Schadt found the `n = 55` record on 3 January
+first-hand on 2026-09-08, records that Schadt found the $n = 55$ record on 3 January
 2026 with a GPU annealer **started from a cherry-picked state produced by an earlier
 program of his that reimplements the Gensane and Ryckelynck algorithm**. The comment
 then says why the cherry-picking was necessary: without special modifications the
 annealer “almost always gets stuck just above the trivial size”, which it attributes to
 stacked rows and columns.
 The same comment adds that the Gensane reimplementation, left to keep optimising that
-state on its own, went a different way and stuck at `7.9577055242`, and that Ellsworth
+state on its own, went a different way and stuck at $7.9577055242$, and that Ellsworth
 *refound* the same record from randomness a month later with modified version 3 of
 Schadt’s program.
 
 **Inference, and it is the direct answer to the owner’s question.** That sentence is the
 record-holders' own diagnosis of exactly the failure this repository measured in
-exp-011, where `sqsearch` returned the trivial `5.0` at `n = 17` on five seeds of five.
+exp-011, where `sqsearch` returned the trivial $5.0$ at $n = 17$ on five seeds of five.
 Getting stuck just above the trivial size is not a bug in this repository’s
 implementation, and it is not fixed by budget.
 It is the default behaviour of a plain annealer on this problem, stated by the person
@@ -278,7 +278,7 @@ their kind for this problem, and the repository retains them at
 [square-55.stats.txt](https://kingbird.myphotos.cc/packing/square-55.stats.txt)). Both
 runs used an NVIDIA RTX 3080 Ti with the annealer set to 65,536 threads.
 
-At `n = 51`, over nine sessions on 31 January and 1 February 2026, the classified basins
+At $n = 51$, over nine sessions on 31 January and 1 February 2026, the classified basins
 fell out as:
 
 | refines to | instances |
@@ -287,17 +287,17 @@ fell out as:
 | `s <= 7.70374810693708...` | 184 |
 | `s = 7.70079923541701...` (the record) | 4 |
 
-The record basin’s share is `4 / 3004`, about `1.3e-3`, roughly 700 times less likely
+The record basin’s share is $4 / 3004$, about `1.3e-3`, roughly 700 times less likely
 than the modal basin.
 Ellsworth’s own phrase for it is “an exceedingly rare find”.
 At 23.571 seconds per classified basin he computes 4.917 hours of GPU time to hit the
-record basin once. At `n = 55`, five sessions produced 1,893 instances below `s = 8.0`,
+record basin once. At $n = 55$, five sessions produced 1,893 instances below $s = 8.0$,
 of which five sit in the record family, at 2.614 seconds per instance and a computed
 40.604 minutes per qualifying hit.
 
 Three workflow facts in those files matter as much as the rates.
 
-- The schedule is **tuned from the statistics of past successes**: the `n = 51` file
+- The schedule is **tuned from the statistics of past successes**: the $n = 51$ file
   says the last three sessions were the most optimised, “with the median average
   temperature and cooldown period taken from the previous sessions’ finds”.
   The annealer’s parameters are fitted to the empirical distribution of hits, not chosen
@@ -305,20 +305,20 @@ Three workflow facts in those files matter as much as the rates.
 - The annealer’s output is a **basin**, not a packing.
   A separate refinement drives it to the local optimum, and a further analytic step
   produces the exact value.
-  The `n = 55` file distinguishes basins that “directly”, “readily” and “with more
+  The $n = 55$ file distinguishes basins that “directly”, “readily” and “with more
   delicate refinement” reach a target.
 - Seeding is usually not cold, and is often not even automatic.
   The catalogue’s provenance comments record runs started from randomness, from a
   neighbouring record with squares removed and some straightened, from a larger packing
   with dozens of squares deleted, from redistributing squares along a diagonal, from an
-  analytically constructed state, and, at `n = 103`, from manually moving squares in one
+  analytically constructed state, and, at $n = 103$, from manually moving squares in one
   corner of the picture and feeding the result back in to coax out a particular
-  improvement. Large cases run for weeks of wall clock: `n = 303` ran from 23 February to
-  13 March 2026, and `n = 304` from 30 April to 16 May 2026.
+  improvement. Large cases run for weeks of wall clock: $n = 303$ ran from 23 February to
+  13 March 2026, and $n = 304$ from 30 April to 16 May 2026.
 
 **Inference.** The unit of work in a serious record search is one *refined local
 optimum*, and the currency is basins per record, not moves per second.
-At `n` near 50 that currency reads roughly `10^3` classified basins per record hit.
+At $n$ near 50 that currency reads roughly $10^{3}$ classified basins per record hit.
 Any budget this repository quotes for a search experiment should be denominated the same
 way.
 
@@ -332,14 +332,14 @@ write-up at
 `packing/resources/web/burns-n17-series-addendum-2026-09-07/`, and the repository’s own
 documentation retained at `packing/resources/web/squarl-n17-2026/`, pinned at commit
 `016dff98`, from which every figure in this section is read).
-It targets `n = 17` only.
+It targets $n = 17$ only.
 It did not beat the record.
 It is nonetheless the most useful single source found for this question, because every
 component the closed engines hide is written down.
 
 Its formulation is the inflation formulation: a unit container, seventeen squares of
-side `s`, initial states built without overlap at `s = 1/7`, and the reported container
-width is `1/s`.
+side $s$, initial states built without overlap at $s = 1/7$, and the reported container
+width is $1/s$.
 
 Its move set, in the README’s own terms, is “CUDA-native individual and contact-group
 actions”, and **“every action contracts, acts, and re-expands to a legal measured
@@ -363,8 +363,8 @@ copying:
 - **For fixed angles, a float64 simplex LP solves all 34 centre coordinates and the
   container width together**, under 68 wall constraints and 136 directed pair
   constraints. A verified feasible basis is reused between nearby angle proposals.
-- **Angles are tied into classes and then released.** Angles within `0.002` radians of
-  an axis are snapped to an exact multiple of `pi/2`; other angles within `0.01` radians
+- **Angles are tied into classes and then released.** Angles within $0.002$ radians of
+  an axis are snapped to an exact multiple of `pi/2`; other angles within $0.01$ radians
   of each other are tied, optimised by a bounded Nelder-Mead search over the tied
   parameters, then released as independent variables.
   The default budget is 96 clustered and 32 released evaluations.
@@ -378,11 +378,11 @@ non-learning production search ran 32,390 seconds, completed 36 blocks of 40 pro
 (576 archive mutations, 720 separator-boundary mutations, 144 parent-conditioned
 topology kicks, and explicitly “no frozen-source or ML proposals”), evaluated 1,162
 centre-LP candidates and made 143 deep attempts.
-Its best strict float64 width was `4.675530095599908`, which is `1.995e-9` **above**
-Bidwell’s `4.67553009360455`. The conclusion in the repository’s own words is that the
+Its best strict float64 width was $4.675530095599908$, which is `1.995e-9` **above**
+Bidwell’s $4.67553009360455$. The conclusion in the repository’s own words is that the
 published reference was not beaten under the strict validation rule.
 
-**Inference, with a caveat.** Reaching `4.6755300956` means the search was inside
+**Inference, with a caveat.** Reaching $4.6755300956$ means the search was inside
 Bidwell’s arrangement, not merely near its value; the remaining `2e-9` is a numerical
 resolution question, not a topology question.
 The caveat is that the proposals came from an archive built by the project’s own earlier
@@ -393,7 +393,7 @@ material basin”. So this is a warm search over a self-built archive, not a col
 discovery, and the sources do not settle which run first entered that basin.
 
 Separately, the blog series reports that four independent searches converged on a
-*different* topology at width `4.677648294965133`, eleven axis-aligned squares and six
+*different* topology at width $4.677648294965133$, eleven axis-aligned squares and six
 at one common tilt, and the author’s summary of the whole effort is that the world
 record was not broken.
 
@@ -408,26 +408,26 @@ ran FICO Xpress 9.8 and SCIP 10.0 on packing benchmarks with a 10,000 second lim
 preceded by a 5,000 second multistart, on a 48-core Xeon Gold.
 Restricted to squares in a square, the
 [2026-08-22 report](research-2026-08-22-square-packing-algorithms-and-tooling.md#general-purpose-global-optimization)
-tabulates the outcome: they match the record at `n = 5, 10, 11`, miss the *trivial* grid
-at `n = 16` by returning `4.00001`, and fall behind from `n = 17` onward, returning
-`6.00000` at `n = 29` where the record is `5.9338`.
+tabulates the outcome: they match the record at $n = 5, 10, 11$, miss the *trivial* grid
+at $n = 16$ by returning $4.00001$, and fall behind from $n = 17$ onward, returning
+$6.00000$ at $n = 29$ where the record is $5.9338$.
 
 Their May 2026 follow-up, *Out-of-the-Box Global Optimization for Packing Problems*
 ([arXiv:2605.04850](https://arxiv.org/abs/2605.04850), retained at
 `packing/resources/papers/berthold-kamp-mexi-pokutta-polik-2026-out-of-the-box-packing-problems.pdf`),
-packs `n` regular `m`-gons into a regular `l`-gon under free rotation with a
-Farkas-lemma non-overlap formulation, and does set new incumbents at several `(l, m)`
+packs $n$ regular $m$-gons into a regular $l$-gon under free rotation with a
+Farkas-lemma non-overlap formulation, and does set new incumbents at several $(l, m)$
 pairs, beating records held by Cantrell, Friedman and Morandi.
-**Squares in a square, the case `(4, 4)`, is not among them**, and their median
+**Squares in a square, the case $(4, 4)$, is not among them**, and their median
 optimality gaps run from `9.9%` to `15.2%`, so the dual bounds are far from closing
 anything.
 
 **Inference.** This is the calibration point for the whole question.
 State-of-the-art general-purpose global optimisation, given hours per instance on 48
-cores, reproduces the records to about `n = 16` and then degrades, and when the same
+cores, reproduces the records to about $n = 16$ and then degrades, and when the same
 team went looking for new incumbents under free rotation a year later, this particular
 family was one they did not move.
-Any claim that a general method “should” reach `n = 100` has to explain why it beats
+Any claim that a general method “should” reach $n = 100$ has to explain why it beats
 this result by a factor it has never been shown to beat.
 
 ## 3. The Wider Family, and a Correction
@@ -451,7 +451,7 @@ Circle* ([arXiv:1306.0694](https://arxiv.org/abs/1306.0694), 2013), Table 3, rea
 the PDF for this document and retained at
 `packing/resources/papers/ye-huang-lu-2013-iterated-tabu-search-unequal-circles.pdf`,
 compares their method against several references on the 30 circle-packing-contest
-instances at `n = 21` to `50`:
+instances at $n = 21$ to $50$:
 
 | their method against | better | equal | worse |
 | --- | ---: | ---: | ---: |
@@ -490,18 +490,18 @@ container*, Journal of Global Optimization 47:63-81, 2010
 retained at
 `packing/resources/papers/grosso-jamali-locatelli-schoen-2010-packing-equal-unequal-circles.pdf`),
 ran 50,000 local searches from random starts and found roughly **16,000 distinct local
-minimisers by `n = 40`**, with the count rising rapidly and irregularly in `n`. Their
+minimisers by $n = 40$**, with the count rising rapidly and irregularly in $n$. Their
 conclusion is that multistart is most likely not an appropriate method for this problem.
 Against monotonic basin hopping, plain multistart with twice the local searches reached
 the best known solution in only a few cases and in a single case cleanly.
 
 **The perturbation magnitude has a sharp optimum, and it is the parameter that
-matters.** The same paper swept the displacement magnitude over `{0.6, 0.8, 1.0, 1.2}`
-on `n` from 60 to 80 and counted failures: 14 at `1.2`, 8 at `1.0`, 8 at `0.6`, and **3
-at `0.8`**. Their explanation is the cleanest statement of the tradeoff anywhere: too
-small and the new start lies in the basin of the current minimiser; too large and the
-method degenerates to multistart, which disrupts the structure.
-A good perturbation preserves structure.
+matters.** The same paper swept the displacement magnitude over
+$\lbrace0.6, 0.8, 1.0, 1.2\rbrace$ on $n$ from 60 to 80 and counted failures: 14 at
+$1.2$, 8 at $1.0$, 8 at $0.6$, and **3 at $0.8$**. Their explanation is the cleanest
+statement of the tradeoff anywhere: too small and the new start lies in the basin of the
+current minimiser; too large and the method degenerates to multistart, which disrupts
+the structure. A good perturbation preserves structure.
 
 **The landscape is mostly single-funnel, with a minority that is not.** Addis, Locatelli
 and Schoen, *Disk Packing in a Square: A New Global Optimization Approach*, INFORMS
@@ -510,13 +510,13 @@ Journal on Computing 20(4):516-524, 2008
 `packing/resources/papers/addis-locatelli-schoen-2008-disk-packing-square.pdf`),
 conjecture that the problem has a **funnelling landscape**, the feature familiar from
 molecular conformation, and build basin hopping on that conjecture: 32 improved
-instances for `n <= 130`, the smallest at `n = 53`, plus one sphere improvement at
-`n = 28`. Grosso et al.
+instances for `n <= 130`, the smallest at $n = 53$, plus one sphere improvement at
+$n = 28$. Grosso et al.
 then measure where the conjecture fails: population basin hopping is usually not worth
-its cost, because single-path search is already efficient, **but at `n = 31` monotonic
+its cost, because single-path search is already efficient, **but at $n = 31$ monotonic
 basin hopping found the best known solution in 1 run of 50 while population basin
 hopping with 10 members found it in 9 of 10**. That is the signature of a multi-funnel
-instance inside an otherwise funnel-like family, and which `n` behave that way cannot be
+instance inside an otherwise funnel-like family, and which $n$ behave that way cannot be
 predicted in advance.
 
 **The single most decisive move-versus-schedule measurement on a packing problem.** Lai,
@@ -527,7 +527,7 @@ retained at
 `packing/resources/papers/lai-hao-xiao-glover-2023-perturbation-thresholding-search.pdf`).
 The framework is thresholding search, so there is **no cooling schedule at all**. They
 compare two perturbation operators: a one-shot uniformly random perturbation at strength
-`0.8` (Grosso’s value), and a *sequential* random perturbation, a series of small
+$0.8$ (Grosso’s value), and a *sequential* random perturbation, a series of small
 perturbations each followed by a very short local optimisation with the strength
 decayed, which they explain as smoothing the landscape by eliminating small barriers
 without moving the global optimum.
@@ -543,7 +543,7 @@ Threshold accepting also has a direct track record on the sibling problem: the
 TAMSASS-PECS algorithm (*Packing Equal Circles in a Square II: New Results for up to 100
 Circles Using the TAMSASS-PECS Algorithm*,
 [doi:10.1007/978-1-4613-0295-7_15](https://doi.org/10.1007/978-1-4613-0295-7_15))
-reported better solutions than the then-published literature at `n = 32, 37, 47, 62, 72`
+reported better solutions than the then-published literature at $n = 32, 37, 47, 62, 72$
 and forty new results, using a worsening threshold in place of the Metropolis rule.
 That chapter is closed access and is not retained; the check is recorded in
 `packing/resources/web/annealing-methods-audit-2026-09-08/`.
@@ -567,9 +567,9 @@ audit packet). The line built on it:
 - Basurto, Gurin, Specht and Odriozola, *Searching for the maximal packing fraction of
   hard disks confined by a circular cavity through replica exchange / event-chain Monte
   Carlo*, Journal of Chemical Physics 161(4):044110, 28 July 2024
-  ([doi:10.1063/5.0219006](https://doi.org/10.1063/5.0219006)), ran `N = 300` to `720`
+  ([doi:10.1063/5.0219006](https://doi.org/10.1063/5.0219006)), ran $N = 300$ to $720$
   and **identified 108 novel maximal packings, some beating the existing configuration
-  by more than `0.001` in packing fraction**. Eckard Specht, who maintains the
+  by more than $0.001$ in packing fraction**. Eckard Specht, who maintains the
   Packomania record tables, is a coauthor, so the beaten configurations are the
   recognised records. Both the article and its 2026 successor were attempted on
   2026-09-08 and neither could be retrieved; the attempts, HTTP results and open-access
@@ -684,8 +684,8 @@ section 2:
 | Contract, act, re-expand | Squarl | makes room before moving, then rescores by how much room the move created |
 | Wall pressure | Squarl fast polish | pushes every square inward from the container, so the objective is felt everywhere |
 | Fixed-angle LP over all centres and the side | Squarl deep polish; this repository’s H-002 | solves the entire translation subproblem exactly |
-| Angle tying and release | Squarl deep polish; this repository’s exp-006 | collapses `n` angles to a handful of classes, then frees them |
-| Remove-and-straighten from a neighbouring record | Ellsworth’s seeding | transfers structure across `n` |
+| Angle tying and release | Squarl deep polish; this repository’s exp-006 | collapses $n$ angles to a handful of classes, then frees them |
+| Remove-and-straighten from a neighbouring record | Ellsworth’s seeding | transfers structure across $n$ |
 | Separator-boundary mutation | Squarl | changes which separating axis a pair uses, i.e. changes the combinatorial cell |
 | Rotational compaction and separation | Milenkovic 1998; Gomes and Oliveira 2006 | translates *and rotates* every piece at once to a local overlap minimum, by LP |
 | Swap two objects | Grosso et al.; Imamichi et al. ILSQN | attacks combinatorial difficulty that continuous moves cannot reach |
@@ -714,14 +714,14 @@ the simulation cell itself.
 Santangelo and Machta, *Packing Squares in a Torus*,
 [arXiv:1110.5348](https://arxiv.org/abs/1110.5348), 2012, retained at
 `packing/resources/papers/blair-santangelo-machta-2012-packing-squares-in-a-torus.pdf`.
-The container is a torus rather than a square, so it sets no record for `s(n)`, but its
+The container is a torus rather than a square, so it sets no record for $s(n)$, but its
 design is instructive because every choice is stated: translation, rotation and
-system-volume moves at probabilities `0.495`, `0.495` and `0.01`; a move producing any
+system-volume moves at probabilities $0.495$, $0.495$ and $0.01$; a move producing any
 overlap is rejected outright, and translations and rotations are otherwise accepted
 unconditionally; the box is held fixed and the *squares are rescaled* to change density,
 so the annealed parameter is **pressure, not temperature**, run from `beta P = 0.01` to
-`3000` in constant steps of inverse pressure; step sizes auto-tuned to a `0.4`
-acceptance ratio. It reached `n <= 27` with 1,000 repeats per `n`. Note what it shares
+$3000$ in constant steps of inverse pressure; step sizes auto-tuned to a $0.4$
+acceptance ratio. It reached `n <= 27` with 1,000 repeats per $n$. Note what it shares
 with Gensane and with Squarl and not with `sqsearch`: hard rejection instead of a
 penalty, and an inflation-style density parameter instead of an enclosing side.
 
@@ -733,18 +733,18 @@ squares, four when both spans are tight, which is the situation at any good pack
 Every other single-square translation leaves the side term **exactly** unchanged, so its
 energy change comes only from the overlap term, and once `lambda` has ramped, any move
 that creates overlap is rejected outright.
-So at `n = 17` roughly four proposals in seventeen can improve the objective at all; at
-`n = 51` roughly four in fifty-one; at `n = 100` roughly four in a hundred.
+So at $n = 17$ roughly four proposals in seventeen can improve the objective at all; at
+$n = 51$ roughly four in fifty-one; at $n = 100$ roughly four in a hundred.
 The remainder are a random walk on a plateau, bounded by rejection.
 
 That is a precise account of the failure recorded in exp-011, where the annealer
-returned exactly `5.0` at `n = 17` on five seeds of five.
+returned exactly $5.0$ at $n = 17$ on five seeds of five.
 The grid is jammed, only the corner squares carry any side gradient, and moving one
 outward raises the objective while moving one inward is refused.
 
 Both of the formulations that work fix this in the same way.
 Inflation replaces a max over two to four extremes with a min over the *active contact
-set*, which at a jammed configuration has size on the order of `2n`, so every square
+set*, which at a jammed configuration has size on the order of $2n$, so every square
 participates in the objective.
 Wall pressure adds the same information as a force term.
 Contract-act-re-expand makes the reward of a move equal to the space it opened anywhere
@@ -752,16 +752,16 @@ in the packing.
 
 **Symmetry and angle classes.** Several independent lines of evidence say the angle
 vector is low-dimensional at a record.
-DS7 describes `n = 17` as the smallest case whose best packing uses three different
-angles, and the `n = 29` packing as using at least six; exp-012 measured exactly six
-numerical classes at `n = 29` at tolerance `1e-80`, with the closest pair separated by
-`0.296` degrees, insensitive to the clustering radius by about 89 orders of magnitude.
-The `n = 55` record’s own SVG, read for this document, closes its exact system with a
+DS7 describes $n = 17$ as the smallest case whose best packing uses three different
+angles, and the $n = 29$ packing as using at least six; exp-012 measured exactly six
+numerical classes at $n = 29$ at tolerance `1e-80`, with the closest pair separated by
+$0.296$ degrees, insensitive to the clustering radius by about 89 orders of magnitude.
+The $n = 55$ record’s own SVG, read for this document, closes its exact system with a
 Mathematica `FindRoot` in **seven unknowns for 55 squares**: the side, plus six free
-angles named `a` through `f` alongside an axis-aligned class.
-Squarl ties angles within `0.01` radians and optimises the tied parameters before
+angles named $a$ through $f$ alongside an axis-aligned class.
+Squarl ties angles within $0.01$ radians and optimises the tied parameters before
 releasing them. The repository’s exp-006 found the same thing from the other direction:
-constraining the eleven `n = 11` angles to two classes and golden-sectioning the shared
+constraining the eleven $n = 11$ angles to two classes and golden-sectioning the shared
 tilt reached the analytic optimum in **70 LP solves**, against 1,024 for free descent
 over all eleven angles.
 **Inference:** angle-class structure is the strongest available prior for this problem
@@ -780,8 +780,8 @@ Mexi, Pokutta and Pólik’s May 2026 follow-up
 ([arXiv:2605.04850](https://arxiv.org/abs/2605.04850)) measured elementary
 symmetry-breaking constraints on polygon and solid packing and found them **the worst
 variant overall**, a median `2.178%` worse, strictly worse on 539 instances against
-better on 2. And this problem supplies its own counterexamples: `n = 17` needs three
-distinct angles and `n = 29` at least six.
+better on 2. And this problem supplies its own counterexamples: $n = 17$ needs three
+distinct angles and $n = 29$ at least six.
 
 The same paper supplies the verification protocol, and it is the right one to adopt:
 they cleaned circle instances by enforcing the *conjectured* structure, symmetry,
@@ -794,12 +794,12 @@ That converts a possibly lossy restriction into a seeding heuristic with a check
 **Step size should be adapted to an acceptance target, not left to the schedule.** Every
 implementation that reports it does the same thing: the torus annealer tunes
 translation, rotation and volume step sizes independently to an acceptance ratio of
-`0.4`; the adaptive shrinking cell reduces the trial-move magnitude when acceptance
+$0.4$; the adaptive shrinking cell reduces the trial-move magnitude when acceptance
 falls significantly below `50%`; Xu, Xiao and Amos’s annealer for weighted polygon
 packing ([arXiv:0809.5005](https://arxiv.org/abs/0809.5005), retained at
 `packing/resources/papers/xu-xiao-amos-2008-simulated-annealing-weighted-polygon-packing.pdf`)
-shrinks the neighbourhood from `±0.55 R0` in position and `±0.55 pi` in orientation to
-`0.05` of that range over the run.
+shrinks the neighbourhood from $\pm0.55 R0$ in position and `±0.55 pi` in orientation to
+$0.05$ of that range over the run.
 **Inference:** in `sqsearch` the move scale and the Metropolis temperature are the same
 variable, so the acceptance ratio cannot be targeted independently of the schedule.
 Separating them is a small change with a well-attested payoff.
@@ -833,16 +833,16 @@ These are the constraints any answer has to respect.
 All are recorded in `packing/campaign/`.
 
 - **exp-001** (2026-08-22, `sqsearch` defaults, 12 billion moves in 302 seconds on an M1
-  Pro): at `n = 10` the best of five seeds was `3.7075262001`, a gap of `4.19e-04`; at
-  `n = 11`, `3.9144165418`, a gap of `3.73e-02`; at `n = 12`, exactly `4.0`. The five
-  `n = 11` seeds spanned `[3.9144, 3.9361]`, a band five times narrower than the
+  Pro): at $n = 10$ the best of five seeds was $3.7075262001$, a gap of `4.19e-04`; at
+  $n = 11$, $3.9144165418$, a gap of `3.73e-02`; at $n = 12$, exactly $4.0$. The five
+  $n = 11$ seeds spanned $[3.9144, 3.9361]$, a band five times narrower than the
   remaining distance to Trump.
-  H-016 refuted. The report’s own reading is that `n = 10` is a polish failure and
-  `n = 11` an exploration failure, and that one criterion could not tell them apart.
-- **exp-011** (2026-08-23, `n = 17`, five seeds, `1e8` moves per chain, eight chains):
-  best `5.000000000000`, gap `+3.2447e-01`. The annealer returned the trivial grid on
+  H-016 refuted. The report’s own reading is that $n = 10$ is a polish failure and
+  $n = 11$ an exploration failure, and that one criterion could not tell them apart.
+- **exp-011** (2026-08-23, $n = 17$, five seeds, `1e8` moves per chain, eight chains):
+  best $5.000000000000$, gap `+3.2447e-01`. The annealer returned the trivial grid on
   every seed. H-020 refuted.
-- **exp-005 / H-018** (basin entry at `n = 11`): started from Trump’s exact
+- **exp-005 / H-018** (basin entry at $n = 11$): started from Trump’s exact
   configuration perturbed by uniform noise, zero of forty trials at `eps = 1e-3`
   returned within `1e-6`. The residual scaled approximately linearly with the
   perturbation and shrank with effort, which the artifact reads as incomplete
@@ -850,15 +850,15 @@ All are recorded in `packing/campaign/`.
 - **exp-006 / H-002** (LP-in-cell quench): the fixed-cell LP is exact, reproducing
   Trump’s side to `4.4e-16` when solved at his angles.
   As a quench on annealer output it gave 1.1x, 1.2x and 1.3x improvements at
-  `n = 5, 10, 11` with overlapping control and candidate ranges, so no detectable
+  $n = 5, 10, 11$ with overlapping control and candidate ranges, so no detectable
   effect. Its verdict: “the quench is a polisher, not a rescue.”
-- **exp-006 / H-019** (the kink): walking the shared `n = 11` tilt off its optimum gives
-  a response that is *linear on both sides*, with slopes `0.175` and `0.384`. The
+- **exp-006 / H-019** (the kink): walking the shared $n = 11$ tilt off its optimum gives
+  a response that is *linear on both sides*, with slopes $0.175$ and $0.384$. The
   objective has a corner at the optimum where the active contact set changes.
   Finite-difference descent stalls five orders short, and Powell and Nelder-Mead both
   did worse than plain descent.
 - **H-012** (record basins are rare) is registered, load-bearing for the whole
-  cartography programme, and **not yet measured**. Ellsworth’s `4 / 3004` is the nearest
+  cartography programme, and **not yet measured**. Ellsworth’s $4 / 3004$ is the nearest
   external analogue, under a different proposer, quench and equivalence relation.
 - **Parked in `ideas.md`:** the fixed-side shrink-and-re-anneal outer loop was built
   twice and abandoned, because the grid is exactly jammed and no local move escapes it;
@@ -867,8 +867,8 @@ All are recorded in `packing/campaign/`.
 
 **Inference.** The two refutations are not the same failure and should never be quoted
 together as “annealing does not work”.
-`n = 10` says the refiner is weak.
-`n = 17` says the proposer never leaves the starting basin.
+$n = 10$ says the refiner is weak.
+$n = 17$ says the proposer never leaves the starting basin.
 Sections 7 and 8 address them separately.
 
 ## 6. The Owner’s Question, Split Four Ways
@@ -879,13 +879,13 @@ Squarl’s deep polish reproduces Bidwell’s to `2e-9` from an archive state.
 Given the arrangement, recovering the number is an LP plus an angle search over a
 handful of classes. Nothing here is hard.
 
-**Finding it cold at `n < 20`.** Partly reachable, and the honest boundary is around
-`n = 16`. General-purpose global solvers match the record to `n = 16` and fail from
-`n = 17` (Berthold et al.). A purpose-built 2026 system with contact-group moves, an
+**Finding it cold at $n < 20$.** Partly reachable, and the honest boundary is around
+$n = 16$. General-purpose global solvers match the record to $n = 16$ and fail from
+$n = 17$ (Berthold et al.). A purpose-built 2026 system with contact-group moves, an
 inflation formulation, an LP polish and a learned proposer spent a nine-hour production
-search at `n = 17` and landed `2e-9` above the record.
-Gensane and Ryckelynck recovered `n = 11` in 2005. **Inference:** `n = 11` and `n = 18`
-and `n = 19` should be reachable cold by a good engine; `n = 17` is reachable but at the
+search at $n = 17$ and landed `2e-9` above the record.
+Gensane and Ryckelynck recovered $n = 11$ in 2005. **Inference:** $n = 11$ and $n = 18$
+and $n = 19$ should be reachable cold by a good engine; $n = 17$ is reachable but at the
 edge of what anyone has demonstrated.
 
 **Finding it cold at `20 <= n <= 100`.** This is where the owner’s expectation breaks,
@@ -893,15 +893,15 @@ and three independent lines of evidence break it.
 
 The first is the record-holders' own statement that a plain annealer gets stuck just
 above the trivial size, and that their working pipeline routes around it with a
-different upstream algorithm, hand-picked states, and manual intervention at `n = 103`.
+different upstream algorithm, hand-picked states, and manual intervention at $n = 103$.
 
-The second is Ellsworth’s basin statistics: `4 / 3004` at `n = 51` and roughly
-`5 / 1893` at `n = 55`, on a tuned closed-source GPU annealer with 65,536 threads.
+The second is Ellsworth’s basin statistics: $4 / 3004$ at $n = 51$ and roughly
+$5 / 1893$ at $n = 55$, on a tuned closed-source GPU annealer with 65,536 threads.
 Those are record *rediscovery* rates for cases whose records that same engine set, so
 they are an optimistic bound on rediscovering a record the engine has never seen.
 
 The third is the clock.
-Gensane and Ryckelynck’s `n = 29` packing stood as the record from 2004 to December
+Gensane and Ryckelynck’s $n = 29$ packing stood as the record from 2004 to December
 2025, through 21 years in which anyone could have pointed an annealer at it.
 The 21 non-grid cases at `n <= 100` credited to hand construction have, so far as any
 public source shows, never been rediscovered cold by any search program.
@@ -926,7 +926,7 @@ A specification concrete enough to build.
 Every choice names its evidence, and the guesses are marked.
 
 **Formulation: inflation, not enclosing side.** Fix the container to the unit square,
-carry a common square side `s`, and maximise `s`. Report `1/s` as the packing side.
+carry a common square side $s$, and maximise $s$. Report $1/s$ as the packing side.
 *Evidence:* Gensane and Ryckelynck’s paper is built on this and it is what made squares
 tractable; Squarl uses it; the structural argument in section 4 says why the enclosing-
 side objective is sparse under single-square moves and the inflation objective is not.
@@ -944,7 +944,7 @@ literature all converge on; the acceptance rule is the part every source treats 
 incidental.
 
 **Start the perturbation magnitude near Grosso’s value and expect a sharp optimum.**
-Their sweep on circles put the best value at `0.8` in units of the object’s own scale,
+Their sweep on circles put the best value at $0.8$ in units of the object’s own scale,
 with roughly a threefold difference in failure count between that and the neighbouring
 values they tried. *Evidence:* published, on circles.
 *Guess:* that the optimum for squares is near the same relative magnitude, since the
@@ -961,14 +961,14 @@ problem-agnostic.
 
 **Keep a population in reserve, not as the default.** Single-path basin hopping is
 usually enough and a population usually costs more than it returns, but a minority of
-instances invert that completely: Grosso et al.'s `n = 31` went from 1 success in 50 to
+instances invert that completely: Grosso et al.'s $n = 31$ went from 1 success in 50 to
 9 in 10 when a population of 10 replaced a single path.
-*Guess:* which `n` behave that way is not predictable in advance here either, so the
+*Guess:* which $n$ behave that way is not predictable in advance here either, so the
 practical rule is to escalate to a population on any case the single path fails
 repeatedly, rather than to run populations everywhere.
 
 **Adapt every step size to an acceptance target rather than to the clock**, at roughly
-`0.4` to `0.5`, and shrink the neighbourhood over the run.
+$0.4$ to $0.5$, and shrink the neighbourhood over the run.
 *Evidence:* the torus annealer, the adaptive shrinking cell and the weighted-polygon
 annealer all do this and all report the target.
 This requires decoupling the move scale from the Metropolis temperature, which in
@@ -981,9 +981,9 @@ re-solve unrestricted from that candidate and confirm it is not improved.
 (Oakley et al.), hard symmetry-breaking measurably degrades packing solutions on 539
 instances against 2 (Berthold et al.
 2026), the seed-then-verify protocol is theirs, and this problem’s own records at
-`n = 17` and `n = 29` are not symmetric enough to survive a hard restriction.
+$n = 17$ and $n = 29$ are not symmetric enough to survive a hard restriction.
 
-**A second stage is not optional, and the order matters.** Schadt’s `n = 55` record came
+**A second stage is not optional, and the order matters.** Schadt’s $n = 55$ record came
 from a GPU annealer started on a cherry-picked state produced by his Gensane
 reimplementation, because the annealer alone sticks just above the trivial size.
 If this repository keeps an annealer at all, it belongs *after* a greedy inflation
@@ -1007,28 +1007,28 @@ the grid.
    here.
 6. Remove-and-reinsert: drop the square with the largest local slack and reinsert it in
    the largest hole.
-7. Neighbour transfer: seed from `n-1` or `n+1` records with a square added or removed
+7. Neighbour transfer: seed from $n-1$ or $n+1$ records with a square added or removed
    and some straightened.
    *Evidence:* this is exactly the catalogue’s recorded seeding practice, and it is
    already registered here as H-004, unbuilt.
 
 **Local solver: fixed-angle LP with a bounded cell beam, plus an angle-class search.**
-At fixed angles and a fixed directed separating axis per pair, the problem in the `2n`
-centres and `s` is a linear program.
+At fixed angles and a fixed directed separating axis per pair, the problem in the $2n$
+centres and $s$ is a linear program.
 Choose each pair’s branch by largest current margin; call a pair ambiguous when its two
 best margins are within a declared tolerance and beam over a bounded number of ambiguous
 pairs. Above that, tie angles into classes by a declared radius, snap near-axis angles
 exactly, optimise the class parameters, then release.
 *Evidence:* Squarl’s `deep-polishing.md`
 (`packing/resources/web/squarl-n17-2026/squarl-docs-deep-polishing.md`) specifies
-precisely this and gives working tolerances (`5e-5` ambiguity, `0.002` snap, `0.01` tie,
+precisely this and gives working tolerances (`5e-5` ambiguity, $0.002$ snap, $0.01$ tie,
 96 clustered and 32 released evaluations); this repository’s exp-006 independently
 validated the LP half to `4.4e-16` and measured the class-constrained angle search at 70
 LP solves against 1,024. Two independent implementations arriving at the same
 architecture is the strongest single piece of evidence in this document.
 
-**Angle search must be kink-aware.** exp-006 measured a corner at the `n = 11` optimum
-with slopes `0.175` and `0.384`, and found Powell and Nelder-Mead both worse than plain
+**Angle search must be kink-aware.** exp-006 measured a corner at the $n = 11$ optimum
+with slopes $0.175$ and $0.384$, and found Powell and Nelder-Mead both worse than plain
 descent there. Use golden section or a bracketing method on the class parameters, or a
 subgradient method, and do not use a smooth local model.
 *Evidence:* measured here, exp-006 and H-019.
@@ -1041,7 +1041,7 @@ reason for linear over squared is already recorded here and stands.
 “re-expands to a legal measured packing”.
 
 **Precision.** Search in `float32`, refine in `float64`, promote in exact arithmetic.
-*Evidence:* Schadt’s own note says the `n = 29` record was found in C++ `float` and
+*Evidence:* Schadt’s own note says the $n = 29$ record was found in C++ `float` and
 relaxed afterward with Boost; Squarl keeps a float32 rollout path and a float64 deep
 polish, and requires two agreeing replays before accepting an improvement.
 
@@ -1049,7 +1049,7 @@ polish, and requires two agreeing replays before accepting an improvement.
 parameter is pressure.** Run many independent chains, each cheap, and exchange
 configurations between neighbouring levels of an inflation-pressure ladder.
 *Evidence:* this is the only parallel scheme found that is *currently producing* packing
-records, at 108 new maximal disk packings for `N = 300` to `720`, with the Packomania
+records, at 108 new maximal disk packings for $N = 300$ to $720$, with the Packomania
 maintainer as a coauthor; and hard particles are athermal, so pressure rather than
 temperature is the parameter with anything to exchange.
 It is also a small step from what Ellsworth already runs, since his 65,536 GPU threads
@@ -1062,7 +1062,7 @@ is the obvious library to borrow from, and its polygon overlap kernels and rotat
 moves are worth borrowing, but its parallelism is domain decomposition and its own
 socket-to-socket figures are modest, around `1.8x` to `3.1x` on polygons and polyhedra,
 with a stated minimum practical system size in the tens of thousands of particles.
-At `n = 20` to `500` squares there is nothing to decompose.
+At $n = 20$ to $500$ squares there is nothing to decompose.
 *Inference:* this reframes the repository’s own parked GPU result.
 `ideas.md` measured 2.5M evaluations per second on MPS against 18 to 20M on CPU cores
 and concluded the kernel was launch-bound and bandwidth-bound.
@@ -1076,13 +1076,13 @@ Ellsworth’s statistics files are an archive report, and Squarl’s production 
 most of their proposals from an archive of its own previous optima.
 *Evidence:* published in both cases.
 
-**Budget, denominated correctly.** Per case, expect to need on the order of `10^3`
-refined and classified local optima before a record-quality one appears at `n` near 50,
-by direct analogy with `4 / 3004` and `5 / 1893`. Budget in refined optima, not in
+**Budget, denominated correctly.** Per case, expect to need on the order of $10^{3}$
+refined and classified local optima before a record-quality one appears at $n$ near 50,
+by direct analogy with $4 / 3004$ and $5 / 1893$. Budget in refined optima, not in
 moves. A budget in moves is uninformative because the move cost changes by orders of
 magnitude between the raw proposer and the LP polish.
 
-**What this specification does not claim.** It does not claim to reach `n = 100`. It
+**What this specification does not claim.** It does not claim to reach $n = 100$. It
 claims to close the distance between `sqsearch` and the engines that have actually set
 records, and the honest prediction is that it recovers many of the 36 non-grid cases and
 not all of them.
@@ -1103,10 +1103,10 @@ It is strictly the cheapest structural change available.
 
 **The published payoff for exactly this move is large.** Gensane measured it on spheres
 in a cube, where a particle has three degrees of freedom, as a freely rotating square in
-the plane does. At `n = 12`, ten thousand plain billiard runs gave six digits; adding
+the plane does. At $n = 12$, ten thousand plain billiard runs gave six digits; adding
 perturbation gave six *more* digits at a small fraction of the effort.
-At `n = 21`, plain runs gave two digits and perturbation gave twelve.
-At `n = 24` the best packing arrived at roughly a tenth of the cost.
+At $n = 21$, plain runs gave two digits and perturbation gave twelve.
+At $n = 24$ the best packing arrived at roughly a tenth of the cost.
 His stated conclusion is that plain billiards suffices for disks in a square but
 perturbation is indispensable in three dimensions.
 No comparable measurement exists for squares, which is why this is a hypothesis and not
@@ -1119,26 +1119,26 @@ Stated as a hypothesis in this campaign’s form:
 > 
 > *Claim.* With a simultaneous perturbation proposal added at probability
 > `p_perturb = 0.05`, and every other parameter at its `sqsearch` default, the median
-> best side over five seeds is at least `0.01` lower than the paired single-square-only
+> best side over five seeds is at least $0.01$ lower than the paired single-square-only
 > control at equal move budget, on at least three of the five cells
 > `n in {11, 17, 19, 26, 27}`.
 > 
 > *Regime.* `sqsearch` at the commit under test, `f64` screening, eight chains, `1e8`
 > moves per chain, seeds 1 to 5, the same host, control and candidate interleaved.
 > 
-> *Criterion.* Paired, metric = paired difference in median best side, threshold `0.01`,
+> *Criterion.* Paired, metric = paired difference in median best side, threshold $0.01$,
 > direction = candidate lower.
 > 
-> *Kill.* Fewer than three of five cells improve by `0.01`. That result would say the
+> *Kill.* Fewer than three of five cells improve by $0.01$. That result would say the
 > plateau diagnosis is wrong or that the perturbation is not the binding constraint, and
 > it would move the next attempt to the inflation rewrite rather than to more moves.
 
 The cell set is chosen for stratification rather than for difficulty.
-`n = 11` and `n = 17` are the two cells this repository has already refuted, so they are
+$n = 11$ and $n = 17$ are the two cells this repository has already refuted, so they are
 the calibration points.
-`n = 26` and `n = 27` beat the grid by `0.379` and `0.293`, the large-margin end where a
+$n = 26$ and $n = 27$ beat the grid by $0.379$ and $0.293$, the large-margin end where a
 search has the most room to show an effect.
-`n = 19` beats it by `0.114`, the small-margin end.
+$n = 19$ beats it by $0.114$, the small-margin end.
 All five are non-grid, so none of them can be passed by returning the incumbent.
 
 **One change at a time, which is this campaign’s own discipline.** H-031 already states
@@ -1152,7 +1152,7 @@ paired round rather than being folded in.
   in length units and the denominator of the Metropolis exponential, so acceptance
   cannot be targeted independently of the schedule.
   Every implementation surveyed that reports a step-size rule tunes it to an acceptance
-  ratio near `0.4` to `0.5`. This is a few lines and its own experiment.
+  ratio near $0.4$ to $0.5$. This is a few lines and its own experiment.
 - **A wall-pressure term**: a small penalty proportional to each square’s distance from
   the container boundary, which gives every square a nonzero derivative of the objective
   without requiring the inflation rewrite.
@@ -1168,10 +1168,10 @@ repository’s parked GPU measurement was of the wrong axis of parallelism.
 
 ## Key Insights
 
-- **“Solve to `n = 100`” is 36 cases, not 100.** Sixty-four have the grid as their best
+- **“Solve to $n = 100$” is 36 cases, not 100.** Sixty-four have the grid as their best
   known packing and `sqsearch` returns it by construction.
   Thirty-one of those 64 are open, and 18 of the 31 sit in a band where no grid has ever
-  been beaten at any `n` to 324, so failing to beat them is probably correct behaviour.
+  been beaten at any $n$ to 324, so failing to beat them is probably correct behaviour.
 - **Twenty-one of the 36 were found by hand.** Annealing is credited with 10. The claim
   that a search program “should” find all of them is not supported by the record of
   which program found which.
@@ -1181,7 +1181,7 @@ repository’s parked GPU measurement was of the wrong axis of parallelism.
   than a better schedule.
 - **The first algorithm that worked here was not an annealer.** Gensane and Ryckelynck’s
   method accepts strictly greedily, has no temperature, and escapes by perturbing every
-  square at once. Its `n = 29` record stood for 21 years.
+  square at once. Its $n = 29$ record stood for 21 years.
 - **The formulation is the bug, not the schedule.** `required_side` is a max over two to
   four extreme squares, so a single-square move is a no-op on the objective for most
   squares. Inflation, wall pressure and contract-act-re-expand all fix the same defect,
@@ -1198,7 +1198,7 @@ repository’s parked GPU measurement was of the wrong axis of parallelism.
   rule is not what separates these methods.
 - **The annealing-family method currently setting packing records is replica exchange
   over a pressure ladder**, not a cooling schedule: 108 new maximal disk packings at
-  `N = 300` to `720` in 2024, with Packomania’s maintainer as a coauthor.
+  $N = 300$ to $720$ in 2024, with Packomania’s maintainer as a coauthor.
   Hard particles are athermal, so pressure is the parameter worth exchanging, and
   Ellsworth’s 65,536 GPU threads are already replicas without the exchange.
 - **The perturbation operator is what swings the result, and it is measurable.** On
@@ -1210,9 +1210,9 @@ repository’s parked GPU measurement was of the wrong axis of parallelism.
   worth having.
 - **Multistart is the wrong shape and the count says why.** Fifty thousand random-start
   local searches on circles produced about sixteen thousand *distinct* local minima by
-  `n = 40`. Restarting harder is not a plan.
+  $n = 40$. Restarting harder is not a plan.
 - **The right unit of work is a refined local optimum, and the right rate is basins per
-  record.** Ellsworth’s `4 / 3004` at `n = 51` is the only published measurement of this
+  record.** Ellsworth’s $4 / 3004$ at $n = 51$ is the only published measurement of this
   quantity for this problem, and it is the number any budget argument has to survive.
 - **Search precision and certification precision are different questions.** The record
   engine searches in `float32` and relaxes afterwards, by its author’s own statement, so
@@ -1249,20 +1249,20 @@ repository’s parked GPU measurement was of the wrong axis of parallelism.
   computation is not in hand.
 - The Squarl figures are read from that project’s own documentation, now retained at
   `packing/resources/web/squarl-n17-2026/` at a pinned commit.
-  Nothing in them has been replayed here, and the question of whether its `n = 17`
+  Nothing in them has been replayed here, and the question of whether its $n = 17$
   archive reached Bidwell’s arrangement cold is not settled by its documents.
 - Ellsworth’s basin statistics are two cases on one GPU with one tuned engine.
   They are the best data of their kind and they are not a portable prediction.
 - The census in section 1 reads the repository’s own frontier register, which is derived
   from the catalogue. Its `construction_method` field carries `unknown` for 2 of the 36
-  non-grid cases at `n <= 100` and for 37 cases overall to `n = 324`, so the method
+  non-grid cases at `n <= 100` and for 37 cases overall to $n = 324$, so the method
   counts are lower bounds.
 - The structural argument about `required_side` in section 4 is an analytic property of
   the objective, not a measurement.
   It predicts a specific plateau statistic that no experiment here has yet measured, and
   section 8’s hypothesis is the cheapest way to test the prediction rather than the
   argument.
-- Joost de Winter’s August 2026 report claiming improvements at `n = 68, 126, 206` could
+- Joost de Winter’s August 2026 report claiming improvements at $n = 68, 126, 206$ could
   not be retrieved (see `packing/resources/web/de-winter-improved-packings-2026/`), so
   its method is unknown and it is not counted anywhere above.
 

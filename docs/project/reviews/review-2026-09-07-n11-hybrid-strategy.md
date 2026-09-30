@@ -226,7 +226,7 @@ $$
 $$
 
 Every atom is at vertical distance at most $1/20<b/2$ from any allowed center.
-Adjacent horizontal atoms are $24/25<b$ apart; their open radius-$b/2$ intervals overlap
+Adjacent horizontal atoms are $24/25<b$ apart; their open radius-`b/2` intervals overlap
 and cover the full center interval $[1/2,17/5]$. At least one atom is therefore strictly
 inside every selected core.
 Disjoint unit-square interiors cannot share such an atom, giving capacity three for the
@@ -420,7 +420,7 @@ subproblems can prove others.
 An infeasible combination becomes a reusable exclusion only with its full geometric
 domain attached. Reuse on a narrower node is justified by domain inclusion; reuse after
 widening requires a new proof.
-Incircle distances, interval SAT, and existing small-$n$ theorems are cheap inputs when
+Incircle distances, interval SAT, and existing small-`n` theorems are cheap inputs when
 their containing region and shape assumptions match.
 A disk relaxation’s feasible placement proves nothing about the original squares.
 
@@ -767,7 +767,7 @@ do not reserve another BC range.
 | BC-TBD-CAPACITY | BC-262 / H-111 | A matched comparison of interval screens, coupled outer LPs, and the same geometry with local resources or subset capacities |
 | BC-TBD-ANCHOR | BC-262 / H-111 | A joint-anchor certificate on one unsplit domain if loss of anchor correlation explains the current residual |
 | BC-TBD-RELEASE | BC-267 / H-117 | An independently scoped release-family exclusion or precise angle-elimination obligation, retaining feature boundaries |
-| BC-TBD-FAMILY | BC-263/266 / H-112/113 | A complete common-angle interval pilot with all contact alternatives, plus an independent attempt to find a sub-$U$ witness |
+| BC-TBD-FAMILY | BC-263/266 / H-112/113 | A complete common-angle interval pilot with all contact alternatives, plus an independent attempt to find a sub-`U` witness |
 | BC-TBD-INTEGRATE | BC-268 | Compare closed domains, residual structure and proof cost; select the next representation from evidence |
 
 BC-259’s support review remains independently useful.
@@ -855,7 +855,7 @@ contracts rather than becoming speculative scientific hypotheses.
 | Curved resources and expanded support, H-115/116 | They are distinct from the unchanged support and present atomic cores | A concrete candidate or obstruction that identifies the next verifier |
 | Several rotator frames, few-large-tilt cases, and dispersed angle classes | Unrestricted competitors may have more than two orientations | Complete domains whose capacities or LP structure are simpler than the original root |
 | Contact and stationary algebra | Exact residual leaves may be easier than broad pose subdivision | A reviewed physical formulation and a measured finite family of remaining cases |
-| Numerical adversarial search | A different sub-$U$ witness would immediately redirect the program | Exact verification of an improvement; repeated failures alone do not restrict the feasible set |
+| Numerical adversarial search | A different sub-`U` witness would immediately redirect the program | Exact verification of an improvement; repeated failures alone do not restrict the feasible set |
 
 The strategic preference is to combine a direct proof method with a structural
 investigation whose conclusion would reduce its cost.

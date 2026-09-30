@@ -85,7 +85,7 @@ A **packing** permits boundary contact but forbids overlap of the interiors of a
 unit squares. A **pose** specifies one square’s centre and orientation; a
 **configuration** specifies the poses of all the squares.
 
-Write `s(11)` for the infimum of container sides that permit eleven such squares.
+Write $s(11)$ for the infimum of container sides that permit eleven such squares.
 An **upper bound** comes from a valid construction.
 A **lower bound** proves that containers below a specified side cannot contain eleven
 squares. These are different proof tasks.
@@ -99,7 +99,7 @@ $$
 
 The lower endpoint is T-026; the upper endpoint is the exactly verified Trump
 construction, T-011. At this account’s original PR145 cutoff the lower endpoint was
-T-022’s `3.810025723614703...`. The simpler introductory lower bound is T-018’s `3.81`.
+T-022’s `3.810025723614703...`. The simpler introductory lower bound is T-018’s $3.81$.
 These are the project’s retained verified claims, not a claim that this report has
 performed a fresh exhaustive literature search.
 See the [claim register](../../../packing/frontier/RESULTS.md) and
@@ -144,7 +144,7 @@ checking a few sampled centres would be a different, weaker test.
 
 A **site** or **dot** is a point.
 An **atom** is a site carrying a specified nonnegative weight.
-For sites `p_j` and weights `w_j`, the atomic measure
+For sites $p_j$ and weights $w_j$, the atomic measure
 
 $$\mu=\sum_j w_j\delta_{p_j}$$
 
@@ -152,16 +152,16 @@ assigns a region the sum of the weights of all sites it contains.
 Its **total mass** is `W = sum_j w_j`. A square **covers mass** when it contains those
 sites, with the stated boundary convention.
 A **weighted cover** requires every square in a declared family to cover at least some
-positive mass `m`.
+positive mass $m$.
 
 For pairwise disjoint cores `P_1,...,P_k`, nonnegativity gives
 
 $$k m\leq \sum_i\mu(P_i)\leq W.$$
 
-Thus a cover with `W/m < k` rules out `k` such disjoint cores.
-Unit-weight dots are the special case `w_j=1`. Five unavoidable dots allow at most five
+Thus a cover with $W/m < k$ rules out $k$ such disjoint cores.
+Unit-weight dots are the special case $w_j=1$. Five unavoidable dots allow at most five
 disjoint cores; six unavoidable dots allow at most six.
-Equality `W/m = k` gives no contradiction.
+Equality $W/m = k$ gives no contradiction.
 
 The measure is defined on the whole container, but its mass may sit at finitely many
 sites. There is no requirement to spread weight across every location.
@@ -192,14 +192,14 @@ A parent containing a nearby mark is not automatically an owner in this precise 
 the retained argument concerns mark containment in the selected core.
 
 There is a general ownership premise in the retained work.
-At `q=3.84`, an auxiliary weighted measure has total mass `11.2620995` and verified mass
+At $q=3.84$, an auxiliary weighted measure has total mass $11.2620995$ and verified mass
 at least one in every required core.
-In a hypothetical eleven-square packing, at most `0.2620995` mass can remain outside the
+In a hypothetical eleven-square packing, at most $0.2620995$ mass can remain outside the
 eleven selected cores.
-Each corner pair has mass `0.2656275`, larger than that allowance.
+Each corner pair has mass $0.2656275$, larger than that allowance.
 At least one mark from each pair must therefore lie in a selected core.
 Cross-corner mark distances exceed a core’s diameter, so these four owners are distinct.
-The source gives exact fractions and the positive margin `0.003528`:
+The source gives exact fractions and the positive margin $0.003528$:
 [corner-pair replay](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md#3-replay-of-the-corner-pair-theorem-lane-c)
 and
 [sector derivation](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md).
@@ -218,7 +218,7 @@ two owners.
 
 An **owner tuple** selects one class at each corner, in the declared order bottom-left,
 bottom-right, top-left, top-right.
-There are `16^4 = 65,536` raw labels.
+There are $16^{4} = 65{,}536$ raw labels.
 This is neither a count of feasible packings nor a probability distribution.
 The labels cover possible choices under the ownership premise, but some labels may be
 impossible and some physical configurations may receive more than one label.
@@ -260,7 +260,7 @@ packing admits **at least one** valid owner selection whose tuple has been exclu
 Proving every raw tuple excluded would suffice, but is stronger than necessary because
 mark and sector choices can overlap.
 The four-owner existence premise is already available; this sufficient routing result is
-not. T-023 proves a specified conditional branch exclusion at `q=3.84`; it is not a
+not. T-023 proves a specified conditional branch exclusion at $q=3.84$; it is not a
 global lower bound at that side.
 
 **Banking occupied mass** is a further conditional counting option.
@@ -274,8 +274,8 @@ guaranteed patches do not automatically bank four units of mass.
 ## 6. The Exact Geometry Used in the Recent Tests
 
 A **collision region** is a set of possible centres, not an occupied square.
-For fixed core shape `S` and obstacle `A`, it consists of centres `c` for which `c+S`
-meets `A`. A dot also gives such a collision region: all centres whose core contains
+For fixed core shape `S` and obstacle $A$, it consists of centres $c$ for which $c+S$
+meets $A$. A dot also gives such a collision region: all centres whose core contains
 that dot. The implementation constructs these regions exactly as polygons.
 
 The five original unit-weight sites are denoted **D**. With four selected footprints,
@@ -297,9 +297,9 @@ Within this model, a nonempty missed domain therefore has positive area.
 This topological premise matters when exact zero area is used to establish that no
 strict missed centre remains.
 
-For a unit axis u, the **projection** of a centre c is the scalar `u·c`. A **geometric
-support value** is an extremal projection, such as `sup_{c in U} u·c`. It describes how
-far a set extends in a direction.
+For a unit axis u, the **projection** of a centre c is the scalar $u\cdot c$. A
+**geometric support value** is an extremal projection, such as `sup_{c in U} u·c`. It
+describes how far a set extends in a direction.
 This is the meaning of “support” in exp153; §9 distinguishes it from a measure’s
 positive-weight sites and an LP dual’s positive-weight square rows.
 
@@ -345,12 +345,12 @@ impossible. The mask counts and their exact scope remain in the
 
 ## 8. Why Exp153 Decides More Than a Few Candidate Dots
 
-Let `I*` be the set of sites belonging to every core in the fixed-D missed family.
+Let $I^{\ast}$ be the set of sites belonging to every core in the fixed-D missed family.
 A single new dot completes D exactly when it belongs to I*. Exp152 intersected only two
 necessary witness cores; exp153 addressed the entire continuous-centre family at the
 retained directions.
 
-For a direction with orthonormal axes u and v and `h=B/2`, a site p belongs to the core
+For a direction with orthonormal axes u and v and $h=B/2$, a site p belongs to the core
 centred at c exactly when
 
 $$|u\cdot(p-c)|\leq h,\qquad |v\cdot(p-c)|\leq h.$$
@@ -480,7 +480,7 @@ intersection. This does not cover the rest of the family, but it demonstrates wh
 three-core obstruction alone cannot establish the disjoint-pair mass conclusion.
 
 The proposed **unit-parent centre restriction** is different.
-Every contained unit square has its centre in `[1/2,q-1/2]^2`. The centre-preserving
+Every contained unit square has its centre in $[1/2,q-1/2]^{2}$. The centre-preserving
 snapping construction allows this necessary condition to be intersected with existing
 owner-centre domains.
 An additional rational frame-aware bound is derived in the
@@ -575,10 +575,10 @@ contains total weight at least one.
 Eleven disjoint cores would then need total mass at least eleven.
 A globally valid point cover of mass below eleven excludes them.
 
-A **threshold atom** `(S,k,w)`, with finite `S`, integer `1 <= k <= |S|` and `w >= 0`,
-charges `w` when a core contains at least `k` distinct sites from `S`. Disjoint cores
+A **threshold atom** $(S,k,w)$, with finite `S`, integer `1 <= k <= |S|` and `w >= 0`,
+charges $w$ when a core contains at least $k$ distinct sites from `S`. Disjoint cores
 consume disjoint sites, so the atom charges at most `floor(|S|/k)` cores and contributes
-`w*floor(|S|/k)` to the **charge budget**. For a two-of-three atom this budget is `w`:
+`w*floor(|S|/k)` to the **charge budget**. For a two-of-three atom this budget is $w$:
 two disjoint cores cannot each contain two of the same three sites.
 The points of different atoms may overlap; the counting bound applies to each atom and
 then sums. The complete certificate must charge every admissible core at least one while
@@ -587,11 +587,11 @@ keeping its total charge budget below eleven.
 | Result | What was established | What it does not establish |
 | --- | --- | --- |
 | T-024: finer-net point certificate | Re-certifying the earlier point atoms and applying dilation gives global lower bound `3.816609502788862235...` | A fit decision at its irrational limiting side |
-| T-025: threshold certificate | 584 point atoms and 320 two-of-three atoms have budget `685457679/62500000 = 10.967322864 < 11`; covering decisions exclude side `191/50 = 3.82` | A result above this side without another certificate or transfer argument |
+| T-025: threshold certificate | 584 point atoms and 320 two-of-three atoms have budget $\frac{685457679}{62500000} = 10.967322864 < 11$; covering decisions exclude side $\frac{191}{50} = 3.82$ | A result above this side without another certificate or transfer argument |
 | T-026: finer-net threshold certificate | Re-certification on the 1440-step net and rational dilation prove the stronger global lower bound below | The separate strict inequality beyond the stated lower bound |
-| T-023: conditional five-dot certificate | A specified four-owner patch case at `96/25 = 3.84` leaves at most five further parents, contradicting the seven required | A global exclusion of every packing at `3.84` |
+| T-023: conditional five-dot certificate | A specified four-owner patch case at $\frac{96}{25} = 3.84$ leaves at most five further parents, contradicting the seven required | A global exclusion of every packing at $3.84$ |
 | Exp145–147: independent and wall-aware audits | Exp145 confirms the 361-direction cover; exp146 enlarges 12 of 16 common footprints; exp147 tests all 128 proposed containment transfers and finds no new certified selection | A physical case census or a bound from footprint growth alone |
-| Exp148–153: limits on the fixed five-dot extension | Partial masks, individual owner witnesses and escape geometry culminate in exp153’s exact exclusion of every freely placed sixth site added to fixed `D` for one selected wall-patch relaxation | Failure of moved or reweighted dots, arbitrary weighted covers, threshold charges, or stronger parent restrictions |
+| Exp148–153: limits on the fixed five-dot extension | Partial masks, individual owner witnesses and escape geometry culminate in exp153’s exact exclusion of every freely placed sixth site added to fixed $D$ for one selected wall-patch relaxation | Failure of moved or reweighted dots, arbitrary weighted covers, threshold charges, or stronger parent restrictions |
 | PR147 preparation | A fixed two-attainer instrument with synthetic controls and an analytic unit-parent centre proposal | A measured target result from either proposal |
 
 The new global result is
@@ -603,13 +603,13 @@ s(11) \geq C :=
 $$
 
 The upper construction remains `3.877083590022814...`. The lower endpoint moved by about
-`0.016421687`, closing about **24.49% of the previous gap** and leaving about
-`0.050636179`. This is progress on a rigorous lower bound, not a new packing or a proof
+$0.016421687$, closing about **24.49% of the previous gap** and leaving about
+$0.050636179$. This is progress on a rigorous lower bound, not a new packing or a proof
 of optimality. The dilation argument proves exclusions for rational factors strictly
 below the limiting factor; taking their limit proves `s(11) >= C`. Here
 **dilation-limit** names the method of proof.
 
-**Separate strictness question.** T-026 does not establish `s(11) > C`. This does not
+**Separate strictness question.** T-026 does not establish $s(11) > C$. This does not
 qualify the proved lower bound `s(11) >= C`.
 
 Primary proof packets are
@@ -643,11 +643,11 @@ specified admissible domain.
 It need not be an integral packing of eleven cores, and it is not a physical unit-square
 packing.
 
-The retained family at side `3.82` has 88 cores, each of weight `1/8`. Its independent
+The retained family at side $3.82$ has 88 cores, each of weight $1/8$. Its independent
 reader checks all 20,376 arrangement vertices and finds maximum depth one.
 With the declared symmetry, shrink and net, it rules out a D4-symmetric point measure
 below eleven on that domain.
-It violates a two-of-three inequality by charging `5/4` against budget one.
+It violates a two-of-three inequality by charging $5/4$ against budget one.
 Thus it explains why the ordinary point language is obstructed there while failing to
 obstruct the richer threshold certificate that T-025 actually supplies.
 It does not establish a symmetry-free result for a different pose domain.
@@ -660,12 +660,12 @@ resources down to obtain a valid capacity.
 A **closure** imposes the whole specified cut family, not just the cuts returned by one
 search.
 
-On the retained 88-placement supports at `3.825` and `3.83`, exact primal and dual
-certificates give optimum `32/3` under depth and the complete budget-one class.
+On the retained 88-placement supports at $3.825$ and $3.83$, exact primal and dual
+certificates give optimum $32/3$ under depth and the complete budget-one class.
 The reported valid floor rows give exact optimum ten for the final finite row set, hence
 an upper bound of ten for the full rank-one closure on those supports.
 Equality for the full closure is not proved.
-The separately enlarged 344-placement support has reported upper bound `21749/1980 < 11`
+The separately enlarged 344-placement support has reported upper bound $21749/1980 < 11$
 under its imposed cuts.
 These supports therefore do not witness a mass-eleven obstruction for those cuts.
 Another support could; these results alone neither rule that out nor construct a global
@@ -698,18 +698,18 @@ An **owner’s selected core** contains a designated mark near a corner; the own
 not occupy the literal corner or touch a wall.
 A proved owner class supplies a **guaranteed patch** contained in every owner core in
 that class. Other selected cores must avoid that patch.
-This defines a **residual domain** for the remaining `11-m` cores after `m` distinct
+This defines a **residual domain** for the remaining $11-m$ cores after $m$ distinct
 owners are selected.
 A certificate charging every core in that domain at least one, with valid total charge
-budget below `11-m`, excludes a packing with that owner selection.
+budget below $11-m$, excludes a packing with that owner selection.
 It does not say that the single-core residual domain is empty.
 
-The X1 retained fractional family leaves weight `11-m` on the named neutral
+The X1 retained fractional family leaves weight $11-m$ on the named neutral
 endpoint-patch combinations.
 This obstructs a point cover below the residual requirement on those relaxations.
 It does not settle the later wall-aware domains.
 Nor does matching two cut maxima prove that conditional optimization is the
-unconditional optimization shifted by `m`, or that it costs sixteen times as much.
+unconditional optimization shifted by $m$, or that it costs sixteen times as much.
 
 The correct global requirement preserves the selection quantifier: **every hypothetical
 physical packing must admit at least one valid owner selection whose residual family has
@@ -718,11 +718,11 @@ excluded selection of the same packing.
 A fractional survivor establishes neither a physical packing nor an unavoidable owner
 choice.
 
-Similarly, an artificial integral packing of B-cores near `3.868983` supplies an
+Similarly, an artificial integral packing of B-cores near $3.868983$ supplies an
 unconditional obstruction on its declared core domain.
 Conditional transfer needs verified distinct owners, marks, classes, occupied patches
 and all additional domain conditions at that same side.
-The unit-parent ownership theorem at `96/25` does not automatically provide them.
+The unit-parent ownership theorem at $96/25$ does not automatically provide them.
 The corrected
 [X-026 ladder](../../../packing/campaign/explorations/X-026-what-conditioning-does-and-does-not-buy.md)
 states the deductions and missing premises explicitly.
@@ -742,7 +742,7 @@ negative outcome before a target run.
 | Joint compatibility and owner routing | T-023, individual witnesses and necessary escape screens | A proof relating physical packings to excluded valid selections, or a precisely scoped additional case exclusion |
 | Conditional threshold charges | The point survivor violates threshold inequalities | Implement and validate the restricted-domain gate, then test a declared class; H155 is live and unrun |
 | Unit-parent centre restrictions | An analytic contract and author check | Independent review, implementation admission and a measured effect on the residual domain |
-| Small weighted extensions of fixed `D` | Exp153 excludes one added site; two-attainer preparation exists | A separately admitted target for a declared richer family; exp153 does not decide it |
+| Small weighted extensions of fixed $D$ | Exp153 excludes one added site; two-attainer preparation exists | A separately admitted target for a declared richer family; exp153 does not decide it |
 
 The mathematical review found no error in the T-024–T-026 proof arguments or exact
 constants. It did find the unsupported interpretations corrected above.
@@ -787,7 +787,7 @@ The conclusion concerns the program with every admissible core constraint.
 A finite-row relaxation can still report a lower objective and fail when its missing
 core constraints are tested.
 
-The retained A6 family has 64 placements at side `153/40`, core side `9977/10000` and
+The retained A6 family has 64 placements at side $153/40$, core side $9977/10000$ and
 the declared 181-direction net with its symmetry convention.
 A separate integer and rational reader, which does not import the producer’s ceiling
 geometry, confirmed containment, allowed directions, D4 symmetry, total weight exactly
@@ -813,7 +813,7 @@ its feasibility conclusion holds.
 
 Together with the separate point-family check, this establishes the obstruction for
 arbitrary point sites combined with these fixed threshold atoms, on the declared core
-domain at `153/40`. It does not close the entire threshold language: an additional atom
+domain at $153/40$. It does not close the entire threshold language: an additional atom
 can violate this family.
 The
 [A6 report](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-structural-sites-and-the-depth-one-certificate.md)
@@ -828,9 +828,9 @@ weight. A6 separated six ordinary threshold-atom orbits from successive families
 such support: two two-of-three orbits and four three-of-five orbits.
 Each image has budget one; all six orbits fit the existing threshold format.
 A floor-atom extension is not required to represent them.
-The exact reader reproduced charges `11/8`, `11/8` and `33/32` against the
+The exact reader reproduced charges $11/8$, $11/8$ and $33/32$ against the
 [first source family](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-independent-cut-family-1.json),
-and `5/4` for each of the three cuts against the
+and $5/4$ for each of the three cuts against the
 [second source family](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-independent-cut-family-2.json).
 Each exceeds its per-image budget one.
 These matched charge checks do not prove that either source family satisfies every other
@@ -839,12 +839,12 @@ capacity inequality.
 The report gives two outcomes that must stay together:
 
 - On the fixed-support program, the reported value fell from eleven to approximately
-  `10.4210526`. An independent reader now verifies the exact upper bound
-  `2605263163/250000000`: six point-depth inequalities and one complete three-of-five
+  $10.4210526$. An independent reader now verifies the exact upper bound
+  $2605263163/250000000$: six point-depth inequalities and one complete three-of-five
   atom orbit suffice. It reconstructs all 280 placements as 35 D4 orbits and every priced
   coefficient with rational membership tests.
   The weighted inequalities cover each objective coefficient, with minimum slack
-  `3/500000000`. The
+  $3/500000000$. The
   [maintained reader and receipt](../../../packing/cases/n11_fractional_certificate/a6_dual_upper/README.md)
   retain this check and twelve focused controls; no LP rerun is needed for this upper
   certificate.
@@ -852,9 +852,9 @@ The report gives two outcomes that must stay together:
   stayed at eleven and all six received zero covering weight.
   No improved global certificate resulted.
 
-The returned family of weight `325657893/31250000` satisfies the selected finite
+The returned family of weight $325657893/31250000$ satisfies the selected finite
 constraints in the reported calculation but has actual maximum depth
-`105263157/100000000 > 1`. It is therefore not a feasible lower certificate for the
+$105263157/100000000 > 1$. It is therefore not a feasible lower certificate for the
 problem imposing depth at most one everywhere.
 The admitted upper certificate also bounds the more constrained problem with tied
 weights on that same support.
@@ -899,7 +899,7 @@ physical unit squares.
 H157 tested whether refining the four neutral eight-sector classes into eight
 sixteen-sector subclasses would make every subclass’s survivor weight less than ten.
 The aggregate is the **maximum** survivor weight over those subclasses.
-Six remain at ten, and two fall to `19/2`; the maximum over all 32 sixteen-sector
+Six remain at ten, and two fall to $19/2$; the maximum over all 32 sixteen-sector
 classes is also ten.
 An independent review reproduced the saved table, the eight-sector equivalence control,
 and the relevant survivor sets with exact clipping as well as separating-axis checks.
@@ -969,7 +969,7 @@ The active allocation is
 
 ### A Necessary Domain and Exact Individual Parents
 
-Suppose a strict B-core with unit direction `r=(r_x,r_y)` was selected as the nearest
+Suppose a strict B-core with unit direction $r=(r_x,r_y)$ was selected as the nearest
 core to the concentric unit square that contains it.
 Write
 
@@ -978,15 +978,15 @@ S = |r_x| + |r_y|,  T = ||r_x| - |r_y||,
 e(r,D) = max(B*S/2, 1/2, (S-T*D)/(2+D^2)),
 ```
 
-where `D` is the admitted bound on the tangent of the angular mismatch.
+where $D$ is the admitted bound on the tangent of the angular mismatch.
 The parent square’s centre, and hence the concentric core’s centre, must lie in the
-closed box `[e(r,D),q-e(r,D)]^2`. This is a necessary condition for every selected
+closed box $[e(r,D),q-e(r,D)]^{2}$. This is a necessary condition for every selected
 nearest core. In general it is not a sufficient construction of a parent or a
 simultaneous packing.
 
-The retained 88-core point family at `q0=191/50`, total weight eleven and depth one, can
+The retained 88-core point family at $q0=191/50$, total weight eleven and depth one, can
 be translated by half the container increase.
-Because `e(r,D) <= S/2`, `S<3/2`, and `B=9977/10000`, the translated family lies in the
+Because `e(r,D) <= S/2`, $S<3/2$, and $B=9977/10000$, the translated family lies in the
 necessary parent box whenever
 
 ```text
@@ -1002,13 +1002,13 @@ orientation. Its coordinate wall margin is at least
 ```
 
 including at the stated rational threshold, and the core has parent-axis margin
-`(1-B)/2 > 0`. The used folded indices are `0,1,3,5,99,113` and their mirrors, so each
+$(1-B)/2 > 0$. The used folded indices are $0,1,3,5,99{,}113$ and their mirrors, so each
 parent lies exactly at its retained net node.
 Nearest-angle selection returns the same geometric orientation, including the equivalent
-`t=0` and `t=1` endpoint representations.
+$t=0$ and $t=1$ endpoint representations.
 
 Its point depths, total weight and D4 relations are unchanged.
-Thus a point-only LP at `3.827` with the same B, retained directions and point language
+Thus a point-only LP at $3.827$ with the same B, retained directions and point language
 cannot improve merely by replacing the conservative parent box with exact
 individual-parent realizability.
 The argument does not cover T-025’s threshold rows, a larger core, removal of the used
@@ -1055,7 +1055,7 @@ one.
 On the abstract universe of all Boolean containment traces of the five sites, one
 weighted threshold atom has budget one, while any nonnegative combination of ordinary
 distinct-site threshold atoms that charges every weighted-positive trace by at least one
-has budget at least `4/3`. The
+has budget at least $4/3$. The
 [weighted-atom review](../reviews/review-2026-09-10-n11-weighted-five-site-atoms.md)
 gives matching exact primal and dual arguments.
 This proves an expressiveness separation in the abstract trace model.
@@ -1071,7 +1071,7 @@ event and interval coverage routes agree on a common-row comparison.
 ### A Fixed-Side Contact Normal Form and a Source Correction
 
 The earlier Lane D argument correctly showed that a preselected fixed-angle SAT cell has
-a vertex with `2n` independent active selected rows.
+a vertex with $2n$ independent active selected rows.
 It incorrectly treated every tight selected pair row as a physical contact.
 Two squares can have projection intervals that share an endpoint along the chosen axis
 while remaining positively separated along another axis.
@@ -1089,7 +1089,7 @@ active basis uses genuine wall or pair contacts.
 Translating a physical contact component left or down would lower the first objective;
 therefore every such component touches both the left and bottom walls.
 
-For `n=11`, the representative has 22 independent genuine-contact rows.
+For $n=11$, the representative has 22 independent genuine-contact rows.
 It yields a finite alternative between one square touching both adjacent walls and a
 path of two through eleven physically contacting squares joining those walls.
 It does not force axis alignment, a literal corner occupant, a finite angle set, or a
@@ -1101,11 +1101,11 @@ per-cell contact inference.
 
 ### What These Facts Permit Next
 
-| Fact now in hand | A valid next use | Missing bridge to a stronger `n=11` result |
+| Fact now in hand | A valid next use | Missing bridge to a stronger $n=11$ result |
 | --- | --- | --- |
-| Point obstruction has explicit individual parents from `3.82345` | Avoid repeating fixed-B point-only solves that merely tighten isolated-parent containment or refine a net while retaining the used nodes; test changed geometry, charges, or conditional owner/contact restrictions | Production admission, then a complete conditional class result; joint feasibility and global routing remain separate |
-| The 2880-step fixed-core packet has exact geometric headroom to `3.826721480476156460...` | Complete calibration and source-distinct admission of the built fixed-core runner; only then freeze the raw criterion `m>M/11`, normalization `alpha=1/m`, and one prospectively registered packet | Coverage is unmeasured; no BC329 target has run; exact and interval agreement plus dilation replay remain required |
-| Weighted five-site traces have an exact `4/3` abstract separation | Build and compare the multiplicity-aware certificate language on one fresh common row set | Geometric realization, exact covering on both routes, and continuum transfer |
+| Point obstruction has explicit individual parents from $3.82345$ | Avoid repeating fixed-B point-only solves that merely tighten isolated-parent containment or refine a net while retaining the used nodes; test changed geometry, charges, or conditional owner/contact restrictions | Production admission, then a complete conditional class result; joint feasibility and global routing remain separate |
+| The 2880-step fixed-core packet has exact geometric headroom to `3.826721480476156460...` | Complete calibration and source-distinct admission of the built fixed-core runner; only then freeze the raw criterion $m>M/11$, normalization `alpha=1/m`, and one prospectively registered packet | Coverage is unmeasured; no BC329 target has run; exact and interval agreement plus dilation replay remain required |
+| Weighted five-site traces have an exact $\frac{4}{3}$ abstract separation | Build and compare the multiplicity-aware certificate language on one fresh common row set | Geometric realization, exact covering on both routes, and continuum transfer |
 | Every fixed-angle feasible component has an adjacent-wall contact representative | Condition pilots on a snug parent or a genuine contact path without assuming literal corners | Certificates for every branch and a valid map from every hypothetical packing to an excluded label |
 | A preselected SAT equality need not be contact | Require strict alternatives for disjoint pairs and actual-contact controls | Correction alone produces no exclusion or bound |
 

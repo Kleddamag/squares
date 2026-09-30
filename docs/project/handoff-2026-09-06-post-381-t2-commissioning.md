@@ -1,6 +1,6 @@
 # Handoff: Post-3.81 Portfolio at T+2
 
-Continue the 24-active-hour attempt to raise the eleven-square lower bound above `3.81`
+Continue the 24-active-hour attempt to raise the eleven-square lower bound above $3.81$
 from this handoff. The first 120 active portfolio minutes produced the scientific
 checkpoint below. Resume at T+2. Do not restart the commissioning block, reclaim any
 spent or unused cell budget, or recreate its experiment identities.
@@ -46,9 +46,9 @@ Process wall and CPU time remain separate measurements.
 | Cell | State at handoff | Result and boundary |
 | --- | --- | --- |
 | BC-230 / `think-c678` | Theorem and remediated control contract complete after post-freeze review | Direction-dependent witness cores have a proof-ready containment and mass theorem. The scalar specialization is preserved. This is a language and verifier contract, not an implemented adaptive certificate. |
-| BC-232 / `think-gmdy` | Open, resumable | Exact lower endpoint `21342289572/2055263195 ≈ 10.384212408377215`; sole row-converged computational upper endpoint `11.055616942909783`; provisional width approximately `0.671404534532568`, 41.5006 percent narrower. No bound or route verdict yet. |
-| BC-233 / `think-jbat` | Complete, rejected | Released inset seed and unseeded control produced byte-identical eight-round candidates of exact mass `11142893/1000000`. Retire this seed rule unless a new mechanism is preregistered. |
-| BC-240 / `think-4ln1` | Complete at local-theorem scope | Retained-record-dependent, labelled, anchored, fixed-side local isolation and side stability only. Preferred radius `808514697/200000000000`; quadratic constant `2574612531/200000000`. BC-241 must still review it. |
+| BC-232 / `think-gmdy` | Open, resumable | Exact lower endpoint $\frac{21342289572}{2055263195} \approx 10.384212408377215$; sole row-converged computational upper endpoint $11.055616942909783$; provisional width approximately $0.671404534532568$, 41.5006 percent narrower. No bound or route verdict yet. |
+| BC-233 / `think-jbat` | Complete, rejected | Released inset seed and unseeded control produced byte-identical eight-round candidates of exact mass $\frac{11142893}{1000000}$. Retire this seed rule unless a new mechanism is preregistered. |
+| BC-240 / `think-4ln1` | Complete at local-theorem scope | Retained-record-dependent, labelled, anchored, fixed-side local isolation and side stability only. Preferred radius $\frac{808514697}{200000000000}$; quadratic constant $\frac{2574612531}{200000000}$. BC-241 must still review it. |
 | BC-242 / `think-9xxh` | Complete at theorem-contract scope | Absolutely continuous primal, Lebesgue-a.e. dual and Tonelli weak duality passed the source-distinct max review. Strong duality, attainment, singular mass, every numerical value and a continuum primal certificate remain open. |
 | BC-245 / `think-do04` | Complete at language-theorem scope | Finite typed stationary language includes normal and abnormal Fritz–John branches, ties, zero multipliers and rattlers. It proves no tractable or global n=11 atlas. |
 
@@ -76,10 +76,10 @@ required these control-plane changes:
    BC-231 remains behind BC-220 and still has to implement the reviewed contract.
 3. Role assignment is no longer reported as attentive labor when telemetry is absent.
 4. BC-243 is now the cheap dual-only exact a.e.-depth test.
-   A sound result with `D > 11` ends the equality-density route without a primal
+   A sound result with $D > 11$ ends the equality-density route without a primal
    instrument. The continuum primal guard is a later BC-244 expense only if the dual does
    not kill the route.
-5. The direct scalar `61/16 = 3.8125` probe moves to the T+4 launch frontier.
+5. The direct scalar $61/16 = 3.8125$ probe moves to the T+4 launch frontier.
    It runs in parallel with BC-232’s last 30 process minutes and outranks an unpriced
    adaptive or atlas expansion if it yields a row-converged value below eleven.
 6. A global typed n=11 atlas is rejected for this portfolio until lazy n=3/n=4 and Trump
@@ -105,7 +105,7 @@ floating worker. A background scientific process does not consume another agent 
 
 The BC-232 command and all frozen hashes are printed in the linked disposition, so a
 replacement needs no network lookup or reconstructed command.
-Do not launch its final 30 minutes before BC-220. At T+4, preregister the scalar `61/16`
+Do not launch its final 30 minutes before BC-220. At T+4, preregister the scalar $61/16$
 direct probe and run it beside those final 30 minutes; the exact command and bridge
 obligations are already in Agenda 025’s `Direct scalar 61/16 probe` section.
 

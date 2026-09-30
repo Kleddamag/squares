@@ -3,9 +3,9 @@
 Date: 2026-09-13. Reviewed result head: `73f5f6939fef92eb3a6bbf594343e33b25249bff`.
 
 **Verdict: accept the recorded rejection of H-161 for its two named necessary tests.**
-The frozen parent `Q0=[0,1]^2` has `4,000,015` integer mass units.
-Its four separated corner images have `16,000,060` units in their union.
-Both values are `1,048,233` units below their respective maximums for a hypothetical
+The frozen parent $Q0=[0,1]^{2}$ has $4{,}000{,}015$ integer mass units.
+Its four separated corner images have $16{,}000{,}060$ units in their union.
+Both values are $1{,}048{,}233$ units below their respective maximums for a hypothetical
 eleven-parent extension.
 The tests therefore do not exclude either literal configuration.
 They also do not exhibit an extension.
@@ -41,7 +41,7 @@ It checks all eight weighted D4 transforms, distinct sites, total measure, close
 membership, the four disjoint corner groups, their union, both budgets, and source and
 executing-reader Git identities.
 All 19 atoms in `Q0` also lie in the disclosed strict T1 core; none is on the parent
-boundary. A receipt with the integer mass changed to `4,000,016` was refused with
+boundary. A receipt with the integer mass changed to $4{,}000{,}016$ was refused with
 `AuditError: literal parent mass`.
 
 The preregistered arithmetic is:
@@ -54,7 +54,7 @@ N = 4,000,015;  four-corner union = 4N = 16,000,060
 slack in each comparison = 1,048,233
 ```
 
-The four unit parents are separated by `q-2=46/25`, so the audit’s disjoint source
+The four unit parents are separated by $q-2=46/25$, so the audit’s disjoint source
 groups agree with the geometric union premise.
 The result report and generated registers use the same numbers and describe H-161 as
 rejected. The result branch passed its records and edit tiers; the scientific target was

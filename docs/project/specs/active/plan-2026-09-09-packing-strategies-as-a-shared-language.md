@@ -101,9 +101,9 @@ SVG and browser imports must refuse false evidence consistently.
 
 - Reject `source: given` and `source: random` until implemented, or implement them with
   explicit inputs. Record the source actually used.
-- Enforce exactly `n` active poses at solver boundaries.
+- Enforce exactly $n$ active poses at solver boundaries.
   A grid request whose side is too small must fail or return an explicitly infeasible
-  arrangement of all `n` squares; it must not drop squares to fit.
+  arrangement of all $n$ squares; it must not drop squares to fit.
 - Audit admitted phase fields against their consumers, including stop conditions,
   targets, structural hints, and trace options.
   Unsupported choices fail before a run.
@@ -174,7 +174,7 @@ Acceptance:
   description.
 - Record, per ascent step, how close the unguided phase came before a guide took over
   (`think-e74w`).
-- Represent changes in `n`, container side, and orientation explicitly.
+- Represent changes in $n$, container side, and orientation explicitly.
 
 ## Phase 4: Optional Backends and New Mechanisms
 

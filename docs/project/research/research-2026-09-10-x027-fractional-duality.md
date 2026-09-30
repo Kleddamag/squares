@@ -73,7 +73,7 @@ This report supplies their definitions, derivations, examples, and limitations.
 | [Retained 88-core family](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/ceiling-family-191-50.json) and [independent exact receipt](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/ceiling-family-191-50-independent-reader.json) | Geometric premises for §1: contained cores, their weights, and depth at most one at every point |
 | [BC-242 density contract](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-242-full-size-density-proof-contract.md) | Baseline continuous problem for §§2–3, including continuity of coverage for integrable densities; this report supplies the value-equality argument |
 | [T-025 proof packet](../../../packing/cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md) | Premise for the matched core-model gap in §5: the specified core family has a threshold cover of budget below eleven |
-| [A6 scope and exact evidence](research-2026-09-09-n11-evidence-and-inference.md#13-the-later-a6-and-h157-results-what-has-been-checked), [current physical bracket](../../../SYNOPSIS.md#current-handoff), and [the $n=6$ case](../../../packing/frontier/n-006.md) | Retained results used to distinguish conclusions about fixed families from physical packing claims in §§5–7 |
+| [A6 scope and exact evidence](research-2026-09-09-n11-evidence-and-inference.md#13-the-later-a6-and-h157-results-what-has-been-checked), [current physical bracket](../../../SYNOPSIS.md#current-handoff), and [the `n=6` case](../../../packing/frontier/n-006.md) | Retained results used to distinguish conclusions about fixed families from physical packing claims in §§5–7 |
 | [Stromquist correspondence](../../../packing/resources/private-correspondence/email-stromquist-2026-09-07.md), [X-023](../../../packing/campaign/explorations/X-023-three-losses-and-a-new-atom.md), and [X-026](../../../packing/campaign/explorations/X-026-what-conditioning-does-and-does-not-buy.md) | Motivation and research context; the letter and strategic summaries are not proofs of the new derivations |
 
 An exact **receipt** is a retained record of a verifier’s checks.
@@ -792,7 +792,7 @@ These two outcomes are retained together in
 
 ## 6. N6 Is a Cleaner Physical-Gap Control
 
-The retained [$n=6$ case](../../../packing/frontier/n-006.md) has $s(6)=3$, with a
+The retained [`n=6` case](../../../packing/frontier/n-006.md) has $s(6)=3$, with a
 published proof and archived earlier work.
 Any exact full-unit fractional family of mass six at a side below three would therefore
 prove a physical integrality gap immediately.

@@ -33,8 +33,8 @@ Phase 1, section C feeds Phases 2/3, section D feeds Phase 5, and section E feed
 5A. It does not independently release Search or authorize an experiment.
 
 The workbench’s blind physics is an incremental, record-conditioned search.
-It starts from the retained packing for `n`, withholds the destination poses for
-`n + 1`, places the added square with a coarse-grid proposal, and runs the contact
+It starts from the retained packing for $n$, withholds the destination poses for
+$n + 1$, places the added square with a coarse-grid proposal, and runs the contact
 dynamics while contracting toward the atlas reference side.
 The reference side is available to the run.
 
@@ -67,7 +67,7 @@ The review found these distinct cases:
 
 | observation | status | disposition |
 | --- | --- | --- |
-| The retained summaries include `n = 17` cells at anneal level 8, all scored before the validity check. Repaired `n = 17` runs exist at level 6 only, and the retained deep level-8 artifact contains `n = 11` only. | `exp-208`’s deep level-8 table for `n = 17`, 26 and 29 had no retained source. | Removed from `exp-208` and `X-034` (`think-jdgu`, `think-84m3`); the record now cites only `resolved: true` cells. |
+| The retained summaries include $n = 17$ cells at anneal level 8, all scored before the validity check. Repaired $n = 17$ runs exist at level 6 only, and the retained deep level-8 artifact contains $n = 11$ only. | `exp-208`’s deep level-8 table for $n = 17$, 26 and 29 had no retained source. | Removed from `exp-208` and `X-034` (`think-jdgu`, `think-84m3`); the record now cites only `resolved: true` cells. |
 | The report validator admits non-finite metrics, and the sweep path ranks results without applying that validator. | Demonstrated implementation defect. It can turn an invalid or non-finite outcome into a reported best. The retained aggregates do not show whether it changed a published result. | Fixed on #160, not here: `think-1fpa` closed at `f9099096`, where the package benchmark replaces the harness; its review round refused below-record and non-converged successes and counted every attempt (`fbc74c0e`, `acae83c6`). `think-nals`’s one fail-closed validity contract (`ec0a0604`) is now read at the benchmark, Search and page boundaries (`c0d9db2b`). |
 | Large accepted seed values can alias in the generated JavaScript because the seed mix loses integer precision before the 32-bit operation. | Demonstrated public reproducibility defect. The small seed ranges in the recorded campaign are not known to be affected. | Fixed on #160, not here: `think-dq1l` (`f9099096`) fixed the mixer and supported seed domain, and `think-karf` (`15d97a59`) enforces seed receipt and replay semantics at the strategy boundary. |
 | Raw annealing JSONL files are ignored and absent; retained summaries cannot reconstruct per-seed trials or disjoint blocks. | Deliberate storage choice with a material audit limitation. | `think-3eha` repaired the record contract (`91722c3a`). `packages/workbench/tools/workbench_tools/summarize_annealing.py` rebuilds the summaries from regenerated rows. `think-4z7d` closed on #160 (`15d97a59`) with a disjoint-block reporter. Findings cite only retained cells and state what cannot be re-checked. |
@@ -100,7 +100,7 @@ Every trial block records:
   version;
 - the engine commit, browser and browser build, runtime, operating system, and relevant
   package or lockfile identity;
-- `n`, the source packing identity, the reference side, every physics and repair
+- $n$, the source packing identity, the reference side, every physics and repair
   parameter, and the proposal and scheduler versions; and
 - the requested trial count, completed trial count, interruption state and artifact
   path.
@@ -114,7 +114,7 @@ The raw physics state and the repaired state are separate records.
 Repair never overwrites the state that the physics produced.
 Both states carry a validation result against one definition:
 
-- exactly `n` uniquely identified poses;
+- exactly $n$ uniquely identified poses;
 - finite coordinates and angles;
 - containment by all four walls at the stated side; and
 - every pairwise overlap within the declared tolerance.
@@ -136,7 +136,7 @@ They do not establish a best-of-`k` distribution.
 The measurement tool partitions a declared seed range into disjoint blocks, computes one
 best per block, and reports the block count and distribution.
 Comparisons use the same blocks and work budget.
-When a result guides parameter choice, an optional held-out seed block or held-out `n`
+When a result guides parameter choice, an optional held-out seed block or held-out $n$
 checks whether the conclusion survives outside the tuning set.
 
 Raw trial records remain available long enough to reproduce the aggregate, or the
@@ -175,7 +175,7 @@ touching components, its contact graph, its flush contacts, and simplified graph
 touching groups start parallel and pull apart as the container closes.
 Each way of stitching that information into an optimisation should be a strategy,
 written in the repository’s strategy format, and code should run strategies in a loop
-and compare them for one `n` and across `n`.
+and compare them for one $n$ and across $n$.
 
 So the benchmark’s question becomes: **for each record, which strategies find it, and
 how much of the record does each have to be given?** Tracking: `think-c0rm`.
@@ -301,14 +301,14 @@ a strategy anyone can re-run by name.
 
 ### What is already known
 
-- **Blind is a middle rung.** It starts from the record for `n - 1`, closes its walls
-  onto the record side for `n`, and in the `bodies` style the benchmark used it welds
+- **Blind is a middle rung.** It starts from the record for $n - 1$, closes its walls
+  onto the record side for $n$, and in the `bodies` style the benchmark used it welds
   squares into rigid blocks chosen by matching the two records.
 - **A first structure ladder already ran, on the projection solver** (2026-09-09,
   [X-025](../../../../packing/campaign/explorations/X-025-hunting-by-hand-and-the-move-set-threads.md),
   `packing/devtools/sweep_structure_hints.py`). Declared as constraints, structure did
-  not help. At `n = 11` success fell as more contacts were declared and the reachable
-  side got worse; at `n = 5` and 10, declaring faces left the basin as wide as the bare
+  not help. At $n = 11$ success fell as more contacts were declared and the reachable
+  side got worse; at $n = 5$ and 10, declaring faces left the basin as wide as the bare
   projection; exact equalities pushed the search away from the record.
   Used to build the start, structure helped: laying out face groups first lifted a cold
   solve from 1 run in 8 to 5 in 8 at a loose side (commit `2d2a7790`). The samples were
@@ -320,10 +320,10 @@ a strategy anyone can re-run by name.
   `phased` mode holds face-contact groups tight and then releases them
   (`run_projection_ratchet.py`). No engine merges near-flush groups at a declared
   tolerance, releases them on a schedule, or has an aligning torque.
-- **Near-flush groups are uncommon below `n = 30`.** In the records for `n = 5`, 10, 11,
+- **Near-flush groups are uncommon below $n = 30$.** In the records for $n = 5$, 10, 11,
   17 and 26, every corner contact joins squares 36–45° apart.
-  Near-flush corner contacts appear at `n = 29`, seven of them within 0.3–4.5° of
-  alignment, and at `n = 37`, two at 2.9° (`run_projection_ratchet.py`, the `phased`
+  Near-flush corner contacts appear at $n = 29$, seven of them within 0.3–4.5° of
+  alignment, and at $n = 37$, two at 2.9° (`run_projection_ratchet.py`, the `phased`
   docstring).
 
 So structure should **construct and stage** a run, not be held as a constraint.
@@ -363,20 +363,20 @@ Four additions make every approach a document (`think-8ocb`):
 
 | rung | the run is given | exists today |
 | --- | --- | --- |
-| `none` | nothing but `n` | the Rust search; the page optimiser’s random and grid starts |
+| `none` | nothing but $n$ | the Rust search; the page optimiser’s random and grid starts |
 | `previous` | the previous record and the reference side | blind in `physics` style |
 | `blocks` | which squares move together | blind in `bodies` style |
 | `touching-partition` | which squares touch, as clusters | not computed anywhere |
 | `contact-graph` | square–square contacts | Python at 1e-9; the page sees only aligned full sides |
-| `contact-graph-with-types` | contacts typed flush or corner | only `n = 11` (exact) and 29 (multiprecision) |
+| `contact-graph-with-types` | contacts typed flush or corner | only $n = 11$ (exact) and 29 (multiprecision) |
 | `with-wall-contacts` | the above, plus wall contacts | Python |
-| `oriented-face-pairs` | typed square–square contacts with their features, and face alignment for edge-edge contacts | features recorded only for `n = 11` and 29 |
+| `oriented-face-pairs` | typed square–square contacts with their features, and face alignment for edge-edge contacts | features recorded only for $n = 11$ and 29 |
 | `merged-near-flush` | near-flush groups merged at a declared tolerance | not built |
 | `partial-poses` | exact layouts of some rigid clusters | not built |
 | full poses | every destination pose, through target springs | Animate `free` and `snap`; Pack `springs` |
 
 The existing `partition` rung means angle classes and keeps that name.
-The order is by intent; what compares rungs across `n` is the number of degrees of
+The order is by intent; what compares rungs across $n$ is the number of degrees of
 freedom a hint leaves, from the rank of its constraints at the record, which is how the
 chunk census counts slide freedoms.
 
@@ -385,21 +385,21 @@ chunk census counts slide freedoms.
 The loop is the benchmark generalised from one method’s parameters to strategies
 (`think-qx88`):
 
-- **Input:** a set of strategy documents, a set of `n`, and a plan of paired,
+- **Input:** a set of strategy documents, a set of $n$, and a plan of paired,
   interleaved, disjoint seed blocks at equal work in the currency registered below.
 - **Run:** each document on an implementation that supports every phase.
 - **Score:** only after the shared validity contract passes, with repair recorded as its
   own step.
 - **Record:** each trial carries the document’s content hash, its guidance summary, its
   catalogue entry, the effective seed and configuration, and provenance.
-- **Report:** per `n`, the valid success rate at tolerance, best-of-k over disjoint
-  blocks, and cost in steps; across `n`, which strategy at which guidance succeeds
+- **Report:** per $n$, the valid success rate at tolerance, best-of-k over disjoint
+  blocks, and cost in steps; across $n$, which strategy at which guidance succeeds
   where.
 - **Controls:** every structural strategy runs beside the information-changing controls
   registered for its tier below, each a document in its own right, so a gain is
   attributable to the true structure rather than to added forces.
-- **Test set:** `n = 29` and 37, where merge-then-release should matter; `n = 11` and
-  17, tilted classes without near-flush contacts; `n = 5`, 10 and 26, the 45° families;
+- **Test set:** $n = 29$ and 37, where merge-then-release should matter; $n = 11$ and
+  17, tilted classes without near-flush contacts; $n = 5$, 10 and 26, the 45° families;
   and one partial grid as a control.
 - **Held out:** settings are selected on calibration cells by the frozen rule below, and
   only held-out cells decide.
@@ -424,7 +424,7 @@ Every rejected, invalid and no-effect round remains in the experiment record.
 
 A result names its strategy and guidance.
 A sentence of the form “given `merged-near-flush` as a start, with a release phase, the
-physics reached `s(29)` in k of m blocks” is a statement about guided search, never a
+physics reached $s(29)$ in k of m blocks” is a statement about guided search, never a
 discovery.
 
 The same nonvisual TypeScript kernel, target, application configuration, seed and
@@ -450,11 +450,11 @@ currency.
 
 **Label-agnostic starts.** Search’s proposals are `grid`, `random` and `record-append`.
 Only seeded `random` has interchangeable labels on its own.
-`grid` is unseeded and places square `i` in cell `i` (`createGridPackStart` in
+`grid` is unseeded and places square $i$ in cell $i$ (`createGridPackStart` in
 `packages/workbench/src/simulation/pack.ts`), so square numbering fixes the starting
 adjacency identically in every block.
 Record IDs are not in random order either: in `contact-structures.json` the two angle
-classes at `n = 11` are squares 0–5 and 6–10. A true partition or true graph at `grid`
+classes at $n = 11$ are squares 0–5 and 6–10. A true partition or true graph at `grid`
 could inherit that order as a head start.
 Every structural arm at `grid` or `random` therefore relabels its target by a
 permutation derived from the slot’s seed, the same permutation for every arm on that
@@ -469,14 +469,14 @@ its component-size profile.
 Membership carries information only at a label-dependent start, so a `shuffled`
 membership control is run only there.
 At every start the information-changing control is a split-merge partition: split one
-true component in two, then merge one piece with another component, keeping `n` and
+true component in two, then merge one piece with another component, keeping $n$ and
 choosing sizes so the number of within-component pairs stays as close to the truth’s as
-they allow. A record that is one touching component gives the partition `{n}`, which
-carries nothing beyond `n`; an `attract` use over it is the same all-pairs attraction as
-ordinary stickiness.
+they allow. A record that is one touching component gives the partition
+$\lbrace n\rbrace$, which carries nothing beyond $n$; an `attract` use over it is the
+same all-pairs attraction as ordinary stickiness.
 Such cells are excluded from the partition contrast.
 Both records with typed contact features are single components: 14 pair contacts join
-all 11 squares at `n = 11`, and 52 join all 29 at `n = 29`
+all 11 squares at $n = 11$, and 52 join all 29 at $n = 29$
 (`packing/atlas/known-best/contact-structures.json`). `think-rey9` reports every
 record’s component count and sizes before cells are frozen.
 If no test-set cell has two or more components, `think-gdkd` drops the partition
@@ -487,8 +487,8 @@ contrast or replaces it with `merged-near-flush` before the first round.
 `rewired` keeps the edge count and moves `keep` edges to pairs that do not touch at the
 record, so it is the contact graph’s information control; the planned default moves
 every edge. `thinned` changes the edge count, so it never stands alone as an information
-control. Its twin is defined explicitly: take the thinned true graph with its `k` kept
-edges, then move the same fraction of those `k` edges that the full `rewired` control
+control. Its twin is defined explicitly: take the thinned true graph with its $k$ kept
+edges, then move the same fraction of those $k$ edges that the full `rewired` control
 moves, which by default is all of them.
 
 **Oriented face pairs.** Face alignment is defined only for edge-edge contacts.
@@ -509,11 +509,11 @@ Both are deciding comparators.
 | --- | --- |
 | `none` | every retained record |
 | `touching-component-partition` | none among the two feature-typed records, which are single components; other records are unknown until `think-rey9` reports component counts |
-| `contact-graph` | `n = 11` under exact arithmetic and `n = 29` at multiprecision; other records only at float tolerance, from `contact_edges` in `packing/devtools/known_structure.py` at 1e-9 |
-| `oriented-face-pairs` | `n = 11` and 29 only: 66 pair contacts, of which 35 are edge-edge, 25 corner-edge and 6 corner-corner |
+| `contact-graph` | `n = 11` under exact arithmetic and $n = 29$ at multiprecision; other records only at float tolerance, from `contact_edges` in `packing/devtools/known_structure.py` at 1e-9 |
+| `oriented-face-pairs` | $n = 11$ and 29 only: 66 pair contacts, of which 35 are edge-edge, 25 corner-edge and 6 corner-corner |
 
-With two cells, the oriented tier can put at most one `n` on each side of the split, so
-its held-out result is a single `n` unless `think-rey9` extends feature extraction
+With two cells, the oriented tier can put at most one $n$ on each side of the split, so
+its held-out result is a single $n$ unless `think-rey9` extends feature extraction
 first.
 
 **Contrasts.** A candidate is accepted only if it beats every deciding comparator in its
@@ -584,7 +584,7 @@ replace them. Clause 3 becomes: every ranked state passes the shared validity co
 (`workbench_tools.packing_contracts`), and the package’s validity fixtures pass at the
 same engine commit. Clause 4 becomes: a declared positive control, such as a full-poses
 run, reaches a valid state within `1e-2` of a known record side; no valid state at
-`n = 16` reports a side below 4; and deliberately invalid fixtures are rejected by the
+$n = 16$ reports a side below 4; and deliberately invalid fixtures are rejected by the
 same build.
 
 The runner is Search’s Pack runner (`packages/workbench/src/search/pack-runner.ts` over
@@ -694,7 +694,7 @@ It distinguishes prefix summaries from independent block estimates and can optio
 reserve held-out blocks.
 
 `think-jdgu` closed on #160 (`f9099096`) with an audit of every retained cell.
-`exp-208` and X-034 here state what the retained cells support at `n = 17`: repaired
+`exp-208` and X-034 here state what the retained cells support at $n = 17$: repaired
 runs at level 6 only, and no retained deep run at level 8. Numerical claims are restated
 only after the repaired tool derives them from durable inputs.
 
@@ -769,7 +769,7 @@ headless loop.
 | phase | gate |
 | --- | --- |
 | A | Each active claim resolves to retained evidence and a complete manifest, or is explicitly annotated as unsupported or historical. New incomplete records fail validation. |
-| B | A committed tool reproduces acceptance, work and disjoint-block distributions from durable inputs. The `n = 17` narrative matches the retained cells and their resolved status. |
+| B | A committed tool reproduces acceptance, work and disjoint-block distributions from durable inputs. The $n = 17$ narrative matches the retained cells and their resolved status. |
 | C | Benchmark and browser adapters agree on raw and repaired states and on every validity fixture, including non-finite values, pose counts, walls and pairs. Seed and trace replay tests pass. The standalone package is the shared source. |
 | D | Search displays only valid ranked outcomes, accounts for every attempted trial, reproduces an exact seed and configuration, and reports independent blocks rather than a correlated prefix as a distribution. |
 | E | Every approach compared is a validated strategy document with a derived guidance summary; a zero-strength canonical receipt is byte-for-byte the unguided receipt, and the un-normalized and small-strength kernel controls pass; each structural strategy runs beside the information-changing controls registered for its tier; Node and pinned-Chromium replay agree; every reported success names its strategy, ordinary stickiness and guidance, and is decided on held-out cells. |
@@ -780,7 +780,7 @@ headless loop.
   the disjoint-block distribution at equal total CPU work?
 - Does a repair that can rotate squares change the result after translation-only repair
   reaches a local jam?
-- Which conclusions survive a held-out seed block or held-out `n` after parameters are
+- Which conclusions survive a held-out seed block or held-out $n$ after parameters are
   selected?
 - Which metrics help tune search while keeping animation quality a separate product
   decision?

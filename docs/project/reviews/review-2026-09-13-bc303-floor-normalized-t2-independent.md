@@ -60,10 +60,10 @@ W=4000000,\qquad M=\frac{22524199}{2000000},\qquad
 g=\frac3{800000},\qquad w=\frac{106251}{800000}.
 $$
 
-Thus `WM=45048398`, `Wε=1048398`, `Wg=15`, and `Ww=531255`. Here **g is the surplus
-above one**, so the mass floor is `1+g`, or `4000015` units.
+Thus `WM=45048398`, $W\varepsilon=1048398$, `Wg=15`, and `Ww=531255`. Here **g is the
+surplus above one**, so the mass floor is $1+g$, or `4000015` units.
 The BC303 replay’s `corner-pair.out`, lines 1116–1125, reports the complete
-181-direction coverage minimum `800003/800000`, with symmetry, arc coverage, and strict
+181-direction coverage minimum $800003/800000$, with symmetry, arc coverage, and strict
 containment admitted.
 The JSON declaration alone would not prove this floor.
 
@@ -82,10 +82,10 @@ quantifier.
 
 ## The Eleven-Core Account
 
-Fix a hypothetical eleven-parent packing and one coherent admitted selected core `C_i`
+Fix a hypothetical eleven-parent packing and one coherent admitted selected core $C_i$
 strictly inside each parent.
 Disjoint parent interiors make those closed cores disjoint.
-With `U` the measure outside their union,
+With $U$ the measure outside their union,
 
 $$
 U+\sum_{i=1}^{11}(\mu(C_i)-1)=\varepsilon,
@@ -105,7 +105,7 @@ $$
 \boxed{U+\sum_{i=1}^{11}s_g(C_i)=E.}
 $$
 
-For a displayed pair of corners with `k` distinct actual owners and `u` globally unowned
+For a displayed pair of corners with $k$ distinct actual owners and $u$ globally unowned
 marks, the necessary inequality is
 
 $$
@@ -119,39 +119,39 @@ $$
 $$
 
 excludes that forced-type conflict from any such packing.
-In the original surplus notation `S=Σ(μ(C_i)−1)`, (N) is exactly
+In the original surplus notation $S=\Sigma(\mu(C_i)-1)$, (N) is exactly
 
 $$
 S>\varepsilon-uw-(11-k)g.
 $$
 
 This charges each of the eleven floors exactly once.
-Subtracting `11g` from the right-hand side while leaving `S` unchanged would be unsound.
+Subtracting $11g$ from the right-hand side while leaving `S` unchanged would be unsound.
 Nor may one replace the disjoint-core sum by a sum of closed-parent masses: touching
 parents can share positive atomic mass.
 
 The permitted roles and owner counts remain X-029’s. Full/full combinations are C,C
-(`k=2`), C,S or S,C (`k=3`), and S,S (`k=4`). One-missing combinations are O1,C or C,O2
-(`k=2`) and O1,S or S,O2 (`k=3`). The O1,O2 pair is absent under seven-of-eight
+($k=2$), C,S or S,C ($k=3$), and S,S ($k=4$). One-missing combinations are O1,C or C,O2
+($k=2$) and O1,S or S,O2 ($k=3$). The O1,O2 pair is absent under seven-of-eight
 ownership. The meaning of an O role in the global contradiction must come from the
 packing’s actual incidence: a mark missing from the displayed owners need not be
 globally unowned after arbitrary other parents are added.
 
 ## Complete Reduction to C and Actual S
 
-Let `D` be the union of the exact forced-0 BL C and S domains in X-029. Every local
+Let $D$ be the union of the exact forced-0 BL C and S domains in X-029. Every local
 configuration includes its actual contained physical parent or simultaneous physical
-parents. Let `k(X)=1` for C and `k(X)=2` for S, and define
+parents. Let $k(X)=1$ for C and $k(X)=2$ for S, and define
 
 $$
 A_g=\min_{X\in D}\left(\sum_{C_i\in X}\mu(C_i)-k(X)(1+g)\right).
 $$
 
-The minimum is attained: `D` is nonempty, and a finite point measure gives only finitely
+The minimum is attained: $D$ is nonempty, and a finite point measure gives only finitely
 many charge values even when the geometric domain is not closed.
 
-If `A_g>E/2`, every full/full corner pair has normalized surplus at least `2A_g>E`. For
-a one-missing pair, the full corner contributes at least `A_g` and the O owner
+If $A_g>E/2$, every full/full corner pair has normalized surplus at least $2A_g>E$. For
+a one-missing pair, the full corner contributes at least $A_g$ and the O owner
 contributes at least zero.
 Also
 
@@ -164,20 +164,20 @@ Thus every one-missing pair also satisfies (N). The proof covers every adjacent
 realization, because it only uses its actual local components and nonnegative surpluses;
 it does not assert that arbitrary adjacent local configurations coexist.
 
-Conversely, suppose `A_g≤E/2`. X-029’s whole-configuration diagonal reflection exchanges
-forced 0 and forced 15, preserves charge and the number of owners, and transports
-complete signed-frame labels.
+Conversely, suppose $A_g\le E/2$. X-029’s whole-configuration diagonal reflection
+exchanges forced 0 and forced 15, preserves charge and the number of owners, and
+transports complete signed-frame labels.
 Transport the reflected minimizer to the opposite corner.
-Every BL-mark parent is separated from every TR-mark parent by the uniform `x+y` gap
+Every BL-mark parent is separated from every TR-mark parent by the uniform $x+y$ gap
 
 $$
 2q-2(a+b)-4=\frac{708}{3175}>0.
 $$
 
-This follows because every physical unit square has `x+y` width at most two, and the two
-BL marks have the same `x+y` value.
+This follows because every physical unit square has $x+y$ width at most two, and the two
+BL marks have the same $x+y$ value.
 Each local S pair must already coexist before transport.
-The two corner configurations then coexist and have normalized surplus `2A_g≤E`,
+The two corner configurations then coexist and have normalized surplus $2A_g\le E$,
 violating the opposite full/full inequality.
 Therefore
 
@@ -195,12 +195,12 @@ configurations.
 ## Exact Integer Thresholds
 
 `WE/2=1048233/2=524116.5`. Hence a normalized local surplus passes precisely when it is
-at least `524117` integer units.
+at least $524117$ integer units.
 
 | Complete local test | Strict inequality before rounding | First passing integer | Last failing integer | Original T2 first passing integer |
 | --- | --- | ---: | ---: | ---: |
-| C mass `N` | `N−4000015>524116.5` | 4,524,132 | 4,524,131 | 4,524,200 |
-| Actual S-pair mass `N1+N2` | `N1+N2−8000030>524116.5` | 8,524,147 | 8,524,146 | 8,524,200 |
+| C mass `N` | $N-4000015>524116.5$ | 4,524,132 | 4,524,131 | 4,524,200 |
+| Actual S-pair mass $N1+N2$ | $N1+N2-8000030>524116.5$ | 8,524,147 | 8,524,146 | 8,524,200 |
 
 The source-bound complete C sweep has exactly the same geometric domain and open-cell
 completeness proof at the lower cutoff.
@@ -220,8 +220,8 @@ $$
 N_1+N_2\ge4524132+4000015=8524147.
 $$
 
-Equivalently, every violating actual S pair has both `N1,N2≤4524131`. A strip cell at or
-below `4524131` only defeats this sufficient filter.
+Equivalently, every violating actual S pair has both $N1,N2\le4524131$. A strip cell at
+or below `4524131` only defeats this sufficient filter.
 It is not an S refuter without a qualifying second owner and simultaneous-parent replay.
 The complete half-budget equivalence uses actual S, not the relaxed first-owner strip
 minimum.
@@ -241,7 +241,7 @@ $$
 \sum_{i=1}^{k}N_i\ge k(4000015)+1048234-u(531255).
 $$
 
-| Pair roles | `k` | `u` | First passing total mass |
+| Pair roles | $k$ | $u$ | First passing total mass |
 | --- | ---: | ---: | ---: |
 | C,C | 2 | 0 | 9,048,264 |
 | C,S or S,C | 3 | 0 | 13,048,279 |
@@ -250,8 +250,8 @@ $$
 | O1,S or S,O2 | 3 | 1 | 12,517,024 |
 
 The first three cuts equal the sums of the appropriate one-corner minima above.
-Compared with the original raw two-corner cuts, they save `(11−k)15` units: 135, 120,
-and 105 for `k=2,3,4`. This checks the owner-count dependence and strictness.
+Compared with the original raw two-corner cuts, they save $(11-k)15$ units: 135, 120,
+and 105 for $k=2,3,4$. This checks the owner-count dependence and strictness.
 
 H-160 and exp-158 retain their frozen criteria and current unrun status.
 The normalized criterion is a separate analytic implication; accepting it does not prove
@@ -271,36 +271,39 @@ boundary member. The empty list therefore establishes `supp(μ)∩∂Q0=∅`, in
 potential entrants as well as captured atoms.
 
 There is an exact local constancy theorem.
-For a parent with centre `z` and physical rotation `θ`, define for each source atom `p`
+For a parent with centre $z$ and physical rotation $\theta$, define for each source atom
+$p$
 
 $$
 F_p(z,\theta)=\left\|R_{-\theta}(p-z)\right\|_\infty-\frac12.
 $$
 
-Closed parent membership is `F_p≤0`. At the literal pose `z0=(1/2,1/2), θ=0`, every
-`F_p` is nonzero. Finitely many atoms give a positive number
+Closed parent membership is $F_p\le0$. At the literal pose $z0=(1/2,1/2), \theta=0$,
+every $F_p$ is nonzero.
+Finitely many atoms give a positive number
 
 $$
 \rho=\min_{p\in\operatorname{supp}\mu}|F_p(z_0,0)|>0.
 $$
 
-Continuity and finiteness supply one neighborhood in which every `F_p` keeps its sign.
+Continuity and finiteness supply one neighborhood in which every $F_p$ keeps its sign.
 Every rigid-motion parent in that neighborhood has the same 19 member atoms and mass
-`4000015/W`. Intersecting the neighborhood with the contained, admissible physical poses
+$4000015/W$. Intersecting the neighborhood with the contained, admissible physical poses
 preserves this statement.
-No numerical value for `ρ` or a finite claimed pose cell has been measured or certified
-here.
+No numerical value for $\rho$ or a finite claimed pose cell has been measured or
+certified here.
 
 Q0 touches the two container walls, so a full ambient neighborhood also contains
 infeasible poses. For example, rotating around its fixed centre pushes it beyond a near
 wall. Feasible nearby poses nevertheless exist: sufficiently small inward translations
-do, and a small angle `θ` can be accompanied by centre
-`((cos θ+|sin θ|)/2,(cos θ+|sin θ|)/2)` to keep the two near-wall contacts.
-These geometric facts must be checked separately from membership constancy.
+do, and a small angle $\theta$ can be accompanied by centre
+$((\cos \theta+|\sin \theta|)/2,(\cos \theta+|\sin \theta|)/2)$ to keep the two
+near-wall contacts. These geometric facts must be checked separately from membership
+constancy.
 
-The four D4 corner copies have strict inter-parent gap `q−2=46/25`, so that gap also
+The four D4 corner copies have strict inter-parent gap $q-2=46/25$, so that gap also
 persists under sufficiently small independent perturbations.
-Their masses then remain `4000015/W` each, even without requiring the perturbed tuple
+Their masses then remain $4000015/W$ each, even without requiring the perturbed tuple
 itself to be exactly D4-symmetric.
 Both H-161 tests consequently retain their `1048233` units of unused budget throughout a
 sufficiently small admissible neighborhood.
@@ -321,10 +324,10 @@ $$
 C_0=[23/20000,19977/20000]^2,
 $$
 
-and its complete labels are `{3,4,11,12}`. Both marks are strictly inside, and their
-centre-coordinate differences are the two orderings of `(−3129/6350,−1497/6350)`. In the
-fixed axis selected-core chart, these strict signs and strict mark containment persist
-for sufficiently small centre perturbations.
+and its complete labels are $\lbrace3,4,11,12\rbrace$. Both marks are strictly inside,
+and their centre-coordinate differences are the two orderings of
+$(-3129/6350,-1497/6350)$. In the fixed axis selected-core chart, these strict signs and
+strict mark containment persist for sufficiently small centre perturbations.
 The least mark-to-core coordinate slack is
 
 $$
@@ -342,7 +345,7 @@ Replacing the frame representation of the same core, while retaining every admis
 signed frame in the complete label calculation, does not change its complete label set.
 
 In particular, this literal local configuration offers neither 0 nor 15. It is not in
-the forced-0 C/S domain defining `A_g`, and sufficiently small perturbations preserving
+the forced-0 C/S domain defining $A_g$, and sufficiently small perturbations preserving
 its stated axis chart keep it outside that domain.
 The H-161 equality with the floor therefore supplies no normalized-T2 refuter.
 Nor does its local physical feasibility construct seven more parents, preserve a global

@@ -331,7 +331,7 @@ The target check can return before any new certificate is built.
 Using the genuine n29 certificate with `--n 1 --target 5.71` produces `TARGET_REACHED`,
 reports `n=1, best_L=5.71`, and exits zero.
 One unit square fits in side 1. In a second control, changing only the copied metadata’s
-`L` to `100` makes the driver report `n=29, best_L=100` and exit zero; 29 unit squares
+$L$ to $100$ makes the driver report `n=29, best_L=100` and exit zero; 29 unit squares
 fit in a $6\times6$ grid.
 The
 [control receipt and logs](../../../packing/resources/web/external-square-certificates-2026-09-22/receipts/density-adversarial-final/driver-controls/driver-controls.json)

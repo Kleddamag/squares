@@ -34,7 +34,7 @@ $$
 T-026 proves the ordinary exact lower bound
 `s(11) >= 955000*sqrt(518400042893309449)/179696714646249` at V4/C5 by dilation and
 rational density. T-025 proves `s(11) >= 191/50 = 3.82` at V4/C5. T-023 excludes one
-four-owner branch at `96/25`; it does not supply a global lower bound there.
+four-owner branch at $96/25$; it does not supply a global lower bound there.
 Their registry levels are respectively V4/C5/S5, V4/C5/S5 and V3/C3/S3. The later
 [claim review](review-2026-09-10-t025-t026-verifiable-claims.md) supplies T-026’s C5
 artifact; this strategy review does not raise any assurance level itself.
@@ -50,8 +50,8 @@ This does not qualify T-026’s proved lower bound.
 | The 88-core family has total weight eleven and point depth at most one | It obstructs point covers on a domain containing those placements | Feasibility of that family for a changed charge language or a smaller domain |
 | A6 satisfies every point inequality and its 2,566 retained ordinary threshold orbits | Arbitrary new point sites cannot defeat this fixed atom family on its declared domain | Nothing here settles additional threshold atoms, multiplicities, or changed core geometry |
 | Six new ordinary atoms cut selected A6 families and bound its 280-placement support below eleven | Those placements cannot carry a mass-eleven obstruction against the admitted rows | A different placement support can; finite support bounds do not construct continuum covers |
-| The seven-token threshold-four motif has budget one and abstract advantage `4/3` over ordinary atoms on the same five sites | Multiplicity has a proved expressiveness advantage in the Boolean trace model | Exact geometric incidence, a finite program gain, and all-pose coverage are separate |
-| H157 leaves six refined subclasses at ten and improves two to `19/2` | Its registered all-subclasses claim fails on the declared patch/survivor family | Neutral selections need not be physically unavoidable; thresholds and joint restrictions were not tested |
+| The seven-token threshold-four motif has budget one and abstract advantage $\frac{4}{3}$ over ordinary atoms on the same five sites | Multiplicity has a proved expressiveness advantage in the Boolean trace model | Exact geometric incidence, a finite program gain, and all-pose coverage are separate |
+| H157 leaves six refined subclasses at ten and improves two to $\frac{19}{2}$ | Its registered all-subclasses claim fails on the declared patch/survivor family | Neutral selections need not be physically unavoidable; thresholds and joint restrictions were not tested |
 | S1 supplies genuine contact representatives at every feasible fixed side | A snug-parent/contact-path case decomposition is available | All branches, all continuous parameters, and owner routing still require coverage |
 | Old angle-profile point programs found no useful effect on grid 79 | Those finite point programs did not exclude the tested profiles | Mixed charges, changed sites, or additional geometry can define different programs |
 
@@ -64,10 +64,10 @@ It is not a measured comparison of research productivity.
 
 ## A Stronger Consequence of the Parent Translation
 
-Let the retained 88-core family at `q0=191/50` have centres `c_i`, unit directions
-`r_i`, common side `B=9977/10000`, and weights `y_i=1/8`. Write `S_i=|r_ix|+|r_iy|`.
-Closed containment of its cores implies that every coordinate of `c_i` is between
-`B S_i/2` and `q0-B S_i/2`.
+Let the retained 88-core family at $q0=191/50$ have centres $c_i$, unit directions
+$r_i$, common side $B=9977/10000$, and weights $y_i=1/8$. Write $S_i=|r_{ix}|+|r_{iy}|$.
+Closed containment of its cores implies that every coordinate of $c_i$ is between
+$B S_i/2$ and $q0-B S_i/2$.
 
 For **every** real `Delta >= 69/20000`, put `q=q0+Delta` and
 
@@ -76,26 +76,26 @@ c_i'=c_i+(\Delta/2,\Delta/2),\qquad
 U_i=c_i'+[-1/2,1/2]r_i+[-1/2,1/2]Jr_i.
 $$
 
-Each coordinate margin of `U_i` in the new container is at least
+Each coordinate margin of $U_i$ in the new container is at least
 
 $$
 \frac{B S_i+\Delta-S_i}{2}
 =\frac{\Delta-(1-B)S_i}{2}>0,
 $$
 
-because `S_i <= sqrt(2) < 3/2` and `69/20000=(3/2)(1-B)`. Therefore each `U_i` is a unit
-square **strictly inside** `[0,q]^2`. Its concentric side-`B` square is exactly the
-translated retained core and lies strictly inside `U_i`, since `B<1` and their
+because `S_i <= sqrt(2) < 3/2` and $69/20000=(3/2)(1-B)$. Therefore each $U_i$ is a unit
+square **strictly inside** $[0,q]^{2}$. Its concentric side-`B` square is exactly the
+translated retained core and lies strictly inside $U_i$, since $B<1$ and their
 orientations agree.
 
 The nearest-angle assertion also holds for this particular family, rather than being
 inferred from closeness.
-The independent ceiling reader records only folded net indices `0,1,3,5,99,113`, and
+The independent ceiling reader records only folded net indices $0,1,3,5,99{,}113$, and
 their reflections. Every nonzero folded angle is strictly below `pi/4`; the family does
 not use the rational terminal net direction just beyond `pi/4`. After the prescribed
 fold, the constructed unit parent has exactly its retained net orientation.
 Its distance from that node is zero, so a different geometric orientation cannot tie for
-nearest. The `t=0` and `t=1` representations both describe the same square modulo a
+nearest. The $t=0$ and $t=1$ representations both describe the same square modulo a
 quarter turn. Reflection and quarter-turn choices therefore return the same geometric
 core even if equivalent representations tie.
 An arbitrary new net with overshooting terminal nodes would need its own
@@ -139,9 +139,9 @@ packing. The parents can overlap; the original cores already form a fractional o
 
 | Proposed restriction | Does this corollary already preserve the point obstruction? |
 | --- | --- |
-| Replace the conservative necessary box by exact isolated unit-parent containment | Yes, for the fixed family, core side, net and stated range of `q` |
+| Replace the conservative necessary box by exact isolated unit-parent containment | Yes, for the fixed family, core side, net and stated range of $q$ |
 | Retain every genuine nearest-angle source cell, or shrink its mismatch bound while keeping its node | Yes, for these retained orientations |
-| Require the same concentric snapping construction with strict core containment | Yes; the constructed mismatch is zero and `B<1` |
+| Require the same concentric snapping construction with strict core containment | Yes; the constructed mismatch is zero and $B<1$ |
 | Require parents to be strictly inside the container rather than only closed-contained | Yes; the displayed wall margin is positive |
 | Restrict a parent to a physical angle subinterval excluding its net node | Not established; this is an additional pose condition needing its own complete routing |
 | Impose actual wall contact, a snug parent, prescribed ownership, or contact with another parent | Not established; the constructed parents generally satisfy none of those conditions |
@@ -183,8 +183,8 @@ remain separate.
 or at least one selected class admits strict core coexistence in the B-only control but
 admits none after the necessary parent restriction.
 
-**Frozen comparison.** Preserve tuple `(0,0,0,7)`, the exact residual, original marks,
-all residual and owner source frames, physical corner maps, B, D and `q=96/25`. Use the
+**Frozen comparison.** Preserve tuple $(0,0,0,7)$, the exact residual, original marks,
+all residual and owner source frames, physical corner maps, B, D and $q=96/25$. Use the
 existing 90-second scientific clock, 120-second external bound and termination grace.
 The [adapter admission](review-2026-09-10-n11-parent-adapter-admission.md) still
 required the production command, complete result schema, frozen revision and independent
@@ -230,9 +230,9 @@ Its small budget margin is not a proof that a new net must lose too much charge.
 Minima change at geometric events, not by a presumed smooth cost per doubling.
 
 **Hypothesis.** The frozen T-025 sites and relative weights, on the 2880-step net with
-one predeclared larger side such as `B_c=9981/10000`, have least charge `m_c>M/11` and a
-verified dilation limit above T-026 after normalization by `1/m_c`. Here `M` is the
-unnormalized T-025 budget and `D_c=207107/1440000000`. This is a new packet, not a reuse
+one predeclared larger side such as $B_c=9981/10000$, have least charge $m_c>M/11$ and a
+verified dilation limit above T-026 after normalization by $1/m_c$. Here $M$ is the
+unnormalized T-025 budget and $D_c=207107/1440000000$. This is a new packet, not a reuse
 of H156’s already confirmed disjunction.
 
 **Control and guard.** The retained 1440-step certificate is the scientific control.
@@ -244,7 +244,7 @@ $$
 
 and check its strict comparison with T-026 before launching a target.
 Use the maintained dilation reader, not a decimal estimate.
-The suggested `B_c` deliberately trades some of the angular gain for easier coverage.
+The suggested $B_c$ deliberately trades some of the angular gain for easier coverage.
 Freeze that choice; do not turn its failure into an unregistered search over shrinks.
 All old net nodes survive and provide monotonicity controls when B grows.
 
@@ -265,7 +265,7 @@ or reoptimized weights.
 one reported host; earlier shared-host runs took longer.
 A 2880 estimate needs the current gate’s resource estimate before allocation.
 With the old crossing shrink held fixed, even a hypothetical vanishing mismatch cannot
-exceed `955000/249507`; this is an analytic ceiling for that fixed shrink, not an
+exceed $955000/249507$; this is an analytic ceiling for that fixed shrink, not an
 achieved value or a ceiling for reoptimization.
 One bounded attempt is justified; an automatic doubling campaign is not.
 
@@ -273,34 +273,34 @@ One bounded attempt is justified; an automatic doubling campaign is not.
 [BC329 preflight](review-2026-09-10-n11-bc329-packet-preflight.md) verifies the exact
 half-gap, the strict-containment guard and `S_c = 3.826721480476156460... > T-026`. It
 also makes the normalization contract explicit: use the T-025 scale, require
-`m_c > M/11 = 685457679/687500000`, and then set `alpha=1/m_c`. A raw minimum below one
-is not a rejection if it remains above `M/11`. The existing refinement command runs an
+$m_c > M/11 = 685457679/687500000$, and then set `alpha=1/m_c`. A raw minimum below one
+is not a rejection if it remains above $M/11$. The existing refinement command runs an
 adaptive sweep rather than this fixed-core packet and has no process deadline.
 BC329 therefore remains blocked on a bounded fixed-core runner and independent
 admission. No coverage direction has been measured for this candidate.
 
 **Separate mathematical follow-up.** A uniform B and global D combine their worst
 directions even when those directions differ.
-Direction-specific sides `B_i` and angular source cells could use the condition
+Direction-specific sides $B_i$ and angular source cells could use the condition
 `lambda B_i (cos d_i+sin d_i)<1` on each cell.
 A sufficient physical proof is coverage of the whole angle circle by those strict
 containment intervals, plus the common certificate’s coverage at every corresponding
-`(r_i,B_i)`. This is a distinct admission problem; merely inserting local mismatch
+$(r_i,B_i)$. This is a distinct admission problem; merely inserting local mismatch
 bounds in the uniform certificate is insufficient.
 A failed uniform packet leaves it open.
 
 ### 3. Weighted atoms on a common finite program
 
-**Hypothesis.** The retained weighted `(2,2,1,1,1)`, threshold-four motifs provide a
+**Hypothesis.** The retained weighted $(2,2,1,1,1)$, threshold-four motifs provide a
 strict budget advantage over a matched ordinary-atom program on one newly retained
-finite geometry. The seven-token proof gives budget one; the abstract `4/3` result
+finite geometry. The seven-token proof gives budget one; the abstract $4/3$ result
 motivates the target but does not predict its numerical size in square geometry.
 
 **First block.** Complete the narrow weighted binary representation and independent
 source replay described in the
 [weighted-atom review](review-2026-09-10-n11-weighted-five-site-atoms.md).
 Do not build a general floor language.
-Require exact reproduction of the two reported `3/2` charges, weighted D4 keys, strict
+Require exact reproduction of the two reported $3/2$ charges, weighted D4 keys, strict
 decoding and closed-boundary token membership.
 All-one multiplicities must reproduce legacy behavior; the 32 Boolean masks provide a
 small representation control.
@@ -322,13 +322,13 @@ policy.
 **Reject or remain partial.** Exact common optimum/tie rejects this frozen improvement
 claim. Overlapping primal/dual brackets or an unfinished solve is unresolved.
 A motif can cut the displayed mass-eleven family while leaving another optimal family,
-so its charge `3/2` does not guarantee objective movement.
+so its charge $3/2$ does not guarantee objective movement.
 Treatment columns of zero weight in one returned optimum do not alone prove a tie.
 
 **Transfer gap.** A finite cover omits continuum rows.
 A later all-pose gate must include new boundary placements, every direction, the
 packing-budget proof and the physical transfer.
-Translating rows and atoms from `3.825` to `3.83` preserves the matrix exactly; it
+Translating rows and atoms from $3.825$ to $3.83$ preserves the matrix exactly; it
 measures the atom change cleanly but says nothing about the newly available boundary
 geometry. New support remains important after new atoms cut an old obstruction, despite
 A6’s obstruction to point additions with its old atoms held fixed.
@@ -354,7 +354,7 @@ Alternatively freeze one two-parent path cell if the parent adapter already admi
 geometry. Its control drops only the genuine pair contact while retaining the same
 angles, walls and parent containment.
 
-**Controls and acceptance.** The tilted pair at `74/35` is a true-contact positive
+**Controls and acceptance.** The tilted pair at $74/35$ is a true-contact positive
 control; the disjoint squares with equal projection endpoints are a negative control.
 Acceptance requires either a complete conditional cover below ten for the one-parent
 branch (below nine for two distinct parents), or an exact residual witness admitted by
@@ -381,12 +381,12 @@ transfer argument.
 ### 5. Mixed charges for a partial angle profile
 
 **Hypothesis.** One composition already permitted by the proved angle counts, initially
-the `(9,2)` leading-25-cell/complement profile at `q=96/25`, has a mixed certificate
+the $(9,2)$ leading-25-cell/complement profile at $q=96/25$, has a mixed certificate
 that a matched point-only program does not provide.
 This changes the charge language and permits unequal required charge in the two classes;
 it does not assume that every square has one of two exact orientations.
 
-The predecessor point program returned the count-only solution on `(9,2)` and near-equal
+The predecessor point program returned the count-only solution on $(9,2)$ and near-equal
 class prices for several other compositions on grid 79. Its interpretation was numerical
 and site dependent. The existing exact band facts are stronger than a new elementary
 near-axis count and should be used as controls.
@@ -399,13 +399,13 @@ angle labels. The historical comparison is in
 every row. The point-only control and ordinary-threshold treatment share point sites,
 rows and class definitions; the treatment can use the existing admitted two-of-three
 language without waiting for multiplicities.
-Optimize nonnegative required charges `d0,d1` with normalization `9 d0+2 d1=1`. Require
-every row of class `j` to receive at least `dj`; minimize the resource budget M. Freeze
+Optimize nonnegative required charges $d0,d1$ with normalization $9 d0+2 d1=1$. Require
+every row of class $j$ to receive at least `dj`; minimize the resource budget M. Freeze
 the treatment atom-generation rule and sites before solving.
 
 **Accept.** Exact rational witnesses prove `U_treatment<L_control`; a conditional
-certificate additionally needs `M<1` and complete independent coverage of both class
-domains. For an actual `(9,2)` composition, total charge is then at least one while the
+certificate additionally needs $M<1$ and complete independent coverage of both class
+domains. For an actual $(9,2)$ composition, total charge is then at least one while the
 resource budget is below one, giving a contradiction.
 
 **Reject or remain partial.** An exact finite tie rejects this packet, not all partial

@@ -91,7 +91,7 @@ The geometric-waste route is speculative.
 
 | Order | Route | Information From the First Proper Discriminator | Potential Payoff | Main Missing Prerequisite |
 | --- | --- | --- | --- | --- |
-| 1 | A: occupancy/contact decomposition | High if a complete difficult family closes or a precise surviving relaxation is exposed | A global $3.84$–$3.85$ bound and reusable subconfiguration exclusions | A complete partition, physical transfer, and a checker for the chosen conditional language |
+| 1 | A: occupancy/contact decomposition | High if a complete difficult family closes or a precise surviving relaxation is exposed | A global $3.84$–`3.85` bound and reusable subconfiguration exclusions | A complete partition, physical transfer, and a checker for the chosen conditional language |
 | 2 | S: proof compression | High relative to the amount of new machinery | A substantially shorter exact $3.82$ proof and reusable certificate templates | A mathematical complexity target beyond smaller serialization |
 | 3 | B: pairwise SDP | High for choosing a proof mechanism | A global bound beyond the point relaxation and a transferable solver architecture | A sound complete pose cover and independently checkable SDP certificate |
 | 4 | C: orientation structure | Moderate initially; high if a complete continuous interval closes | A contact-independent restricted-family theorem or a bridge to optimality | Complete separation branching over continuous angles |
@@ -256,7 +256,7 @@ A sound finite conflict graph requires:
 
 There is a simple capacity-one construction.
 A spatial center tile of diameter strictly below one cannot contain two centers of unit
-squares: their inscribed radius-$1/2$ disks would overlap.
+squares: their inscribed radius-`1/2` disks would overlap.
 All angle cells over that tile share one occupancy budget.
 This is a sound starting point, not a guarantee of useful conflict density.
 The
@@ -483,7 +483,7 @@ Weighted motifs, genuinely multilevel floor atoms, and higher-rank floor composi
 form the stronger-charge candidate; a physical joint-parent budget theorem forms the
 geometry-dependent candidate.
 The seven-token threshold-four motif has no multilevel floor behavior.
-X-027’s five-site factor-$5/4$ separation concerns domination of a demand profile, not
+X-027’s five-site factor-`5/4` separation concerns domination of a demand profile, not
 an improved unit-demand square-cover budget.
 [Charge mechanisms](../../../packing/campaign/explorations/X-027-stromquist-fractional-and-structural-strategy.md#weighted-binary-atoms-and-floor-atoms-ask-different-questions)
 
@@ -522,7 +522,7 @@ optimal set. [n12 record](../../../packing/frontier/n-012.md)
 A fixed-shrink point certificate cannot reach four.
 A parameterized family approaching four remains logically possible, but its existence is
 unproved.
-The reports at $3.97$–$3.99$ do not establish a universal n12 ceiling: some are
+The reports at $3.97$–`3.99` do not establish a universal n12 ceiling: some are
 finite-site failures, and the historical cutting floor lacks its replayable generating
 family. They cannot justify a limiting-value extrapolation.
 [Covering-value evidence](../../../packing/frontier/CERTIFICATE-REACH.md)

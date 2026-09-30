@@ -93,7 +93,7 @@ Coverage gives total core charge at least $n$, while the atom budgets give a tot
 strictly below $n$, a contradiction.
 
 This excludes a packing at side $L$. A packing at any smaller side would embed in the
-side-$L$ container, so the infimum definition yields $s(n)\geq L$. No compactness claim
+side-`L` container, so the infimum definition yields $s(n)\geq L$. No compactness claim
 is needed.
 
 ## Exact Sweep and Its Boundary Conventions
@@ -131,7 +131,7 @@ nonnegative, monotone threshold charge.
 
 The sweep applies a rectangle’s start addition and end subtraction before querying the
 next open $u$ slab. Its active horizontal indices are consequently `start <= i < end`. A
-vertical range update covers leaves `j0` through `j1 - 1`, which represent open cells
+vertical range update covers leaves `j0` through $j1 - 1$, which represent open cells
 between consecutive event coordinates.
 Events outside the admissible domain are still processed, preserving the active sum on
 entry.

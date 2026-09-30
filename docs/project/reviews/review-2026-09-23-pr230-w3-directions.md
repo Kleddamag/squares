@@ -28,7 +28,7 @@ arithmetic rather than runs.
 2. **Settling n11 is verified global optimization.** The task is a complete cover of
    $\{S\le U\}$ modulo the symmetry group, with every leaf closed by infeasibility, a
    side inequality, descent, or Trump’s quantified chart ball.
-   Markót and Csendes proved circle packings $n=28$–$30$ this way by interval
+   Markót and Csendes proved circle packings $n=28$–`30` this way by interval
    branch-and-bound; Montanher and coauthors did rigorous unit squares in a circle.
    At fixed angles the centre problem is an exact disjunctive LP, so **the bottleneck is
    the eleven angles**. The X-045 reviewer proposes a rigorous form of H-112 as the

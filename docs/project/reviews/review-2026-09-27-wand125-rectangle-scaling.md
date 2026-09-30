@@ -47,7 +47,7 @@ Linux with `g++` 13.3.0:
 - a field-by-field comparison of the retained n27, n31 and n32 replay rows against the
   upstream rows;
 - statistics over the 44 certificates (table below), exact-rational checks of the two
-  monotone transfers, an exact check of every candidate’s own `n`, `L`, `B` and `rhs`
+  monotone transfers, an exact check of every candidate’s own $n$, $L$, $B$ and `rhs`
   against the intake’s pinned table, and `apply_wand125_rectangles --check`, which
   reports no drift between the receipts and the register;
 - a measurement of the double rounding error of the checker’s hull cross product at
@@ -70,7 +70,7 @@ Linux with `g++` 13.3.0:
 | Weight scaling factor | none | $1.00052$ to $1.02659$ |
 
 Every candidate declares $B = 9977/10000$, `rhs` $= 1001/1000$ and the same net
-$D = 83/40000$ with 201 directions; every candidate’s own `n` and `L` equal the pinned
+$D = 83/40000$ with 201 directions; every candidate’s own $n$ and $L$ equal the pinned
 table in `audit_wand125_rectangles.CASES`. The per-angle rows account for the summary
 totals in all 44 cases, all 201 directions report `verified`, and the smallest printed
 leaf bound is $1.0001000003$ (n68). The last figure is a branch-and-bound artefact, not
@@ -80,7 +80,7 @@ least accepted leaf always sits just above the threshold.
 ## Fixed-Width Types and Overflow
 
 `verify.cpp` has no fixed-size arrays and no compile-time capacity.
-The rectangle count `n` and the axis-event count `nc` are `int`, read from the input and
+The rectangle count $n$ and the axis-event count `nc` are `int`, read from the input and
 used to size `std::vector`s; their largest values here are 6,496 and 2,325. Node and
 leaf counters are `long long`. The axis case counts $nc^2 \le 5{,}405{,}625$ vertices,
 and the largest single branch-and-bound direction is 237,591 nodes.
@@ -220,7 +220,7 @@ pinned $n$, requires the candidate’s $L$ to equal the pinned side, regenerates
 checker input from the candidate so the replayed $L$ is the candidate’s, and binds that
 input to the digest the accepting run recorded.
 A wrong count or stale side would surface as `mass >= n` or a side mismatch.
-All 44 candidates also carry their own `n` and `L` in agreement with the pins (checked
+All 44 candidates also carry their own $n$ and $L$ in agreement with the pins (checked
 here; see WSC-1).
 
 DENS-2 — the runner is a coverage checker, not a bound verifier — is exactly why the
@@ -263,7 +263,7 @@ $s(26)$. The packet README and the audit tool’s docstring state it in this dir
 ### WSC-1 — Low: the preflight does not compare the candidate’s own `n` to the pin
 
 `audit_tokoharu_density.preflight` checks the pinned side and `mass < n` for the pinned
-$n$, and the metadata’s `L`, `B` and `mass_exact`, but never reads the candidate’s `n`
+$n$, and the metadata’s $L$, $B$ and `mass_exact`, but never reads the candidate’s $n$
 field. The bound is sound without it — the mass inequality is the operative condition —
 and all 44 candidates agree with the pins.
 It is the one descriptive field a DENS-1-style mislabel would leave inconsistent, so
@@ -282,7 +282,7 @@ would be a new checker revision to review.
 
 - **Proved here in exact arithmetic**: the net and smoothing margins; the rotation
   coefficients’ exactness; the two monotone transfers; the agreement of every
-  candidate’s `n`, `L`, `B`, `rhs` with the pins; every mass below its count (the
+  candidate’s $n$, $L$, $B$, `rhs` with the pins; every mass below its count (the
   preflight receipt, re-run here for n76 and n78).
 - **Computationally verified**: complete 201-direction coverage for n27, n31 and n32,
   bit-identical to upstream; n78 at $r = 1, 100, 200$, bit-identical to upstream.

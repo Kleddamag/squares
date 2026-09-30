@@ -145,7 +145,7 @@ geometry.
 
 **Next.** BC-121 may clear only exp-048’s `needs_review` flag.
 Exp-050 must remain under review with its frozen unresolved decision.
-H-054 remains unresolved and the instrument remains unready, with no pose, `53/7`
+H-054 remains unresolved and the instrument remains unready, with no pose, $53/7$
 validation or frontier transition.
 A future preregistered round must bind the producer-runner hash and inject a
 pre-evaluation stage sentinel.

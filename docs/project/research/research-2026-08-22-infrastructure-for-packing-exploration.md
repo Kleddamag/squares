@@ -44,7 +44,7 @@ Three findings frame the rest.
 1. **Latency has three tiers here, not one, and the tiers want different languages.**
    Most of this project’s computation is attached to an LLM call and is therefore free —
    a 350 ms verification is invisible next to a 3-second model turn.
-   A small, identifiable part runs `10⁹`–`10¹²` times inside a search loop and is
+   A small, identifiable part runs $10^9$–`10¹²` times inside a search loop and is
    nothing of the kind.
    The boundary between those two is where the API belongs.
 2. **The measured gaps are large enough to decide the architecture, and they are not
@@ -54,7 +54,7 @@ Three findings frame the rest.
    **578×** at degree 62 — the advantage *grows* exactly where the record table gets
    hard.
 3. **Determinism is a correctness requirement, not an optimization.** The most valuable
-   artifact this field has produced is Ellsworth’s basin statistics for `s(51)` — 3,004
+   artifact this field has produced is Ellsworth’s basin statistics for $s(51)$ — 3,004
    basins, 4 of them the record.
    A search that cannot reproduce its own runs cannot publish that kind of number, and
    that is the main thing an open engine could contribute that the closed one has not.
@@ -75,7 +75,7 @@ Three findings frame the rest.
 about unit-square packings; the language and library choices behind it; the performance
 budget of each part; and the discipline needed for results to be citable.
 
-**Excluded:** the mathematics of `s(n)` (see
+**Excluded:** the mathematics of $s(n)$ (see
 [the `n = 11` report](research-2026-08-22-packing-11-unit-squares.md)); the record
 history; and any judgement about whether a given search strategy will succeed.
 This is about the substrate, not the program that runs on it.
@@ -92,12 +92,12 @@ It is three, and they have budgets that differ by nine orders of magnitude.
 | --- | --- | --- | --- |
 | **Agent** | 1–10 s | Deriving a number field from a published polynomial; parsing the record corpus; verifying one packing; recovering a minimal polynomial; rendering a table; anything an agent calls between model turns | Python, SymPy, whatever is clearest |
 | **Interactive** | 10 ms – 1 s | Verifying a packing in a notebook; querying the frontier corpus; a bulk re-verification of all 184 pictured records | Python over a native core |
-| **Inner loop** | 10 ns – 1 µs, executed `10⁹`–`10¹²` times | The separating-axis predicate inside an annealing sweep; the three-parameter decision inside an unavoidable-set search | Native, monomorphized, no allocation |
+| **Inner loop** | 10 ns – 1 µs, executed $10^9$–`10¹²` times | The separating-axis predicate inside an annealing sweep; the three-parameter decision inside an unavoidable-set search | Native, monomorphized, no allocation |
 
 **The agent tier is genuinely free, and it is most of the work.** A model turn costs
 seconds. The complete exact verification of Trump’s packing — 55 pairs, exact arithmetic
-in `ℚ(u)`, no floating point in the decision path — costs **0.35 s of unoptimised pure
-Python**. Optimising that is optimising noise.
+in $\mathbb{Q}(u)$, no floating point in the decision path — costs **0.35 s of
+unoptimised pure Python**. Optimising that is optimising noise.
 This is the tier where “simple should be simple” is the only requirement that matters,
 and where a dependency on SymPy costs nothing.
 
@@ -121,19 +121,19 @@ angles, evaluated over a fixed mix of separated and overlapping placements:
 A **48× gap** on the operation a search executes most.
 Expressed as budget rather than ratio: one CPU-hour buys 1.3 G pair-tests in Python,
 63.6 G in single-core Rust, and about 2,000 G on 32 cores.
-The published `s(51)` campaign — 3,004 basins at ~23.6 s each on a GPU — is the scale
+The published $s(51)$ campaign — 3,004 basins at ~23.6 s each on a GPU — is the scale
 this has to reach to be interesting, and that is the difference between a plausible CPU
 campaign and an impossible one.
 
-**Exact field arithmetic.** One multiplication in `ℚ(α)` with dense random elements, at
-the algebraic degrees that actually occur in the record table:
+**Exact field arithmetic.** One multiplication in $\mathbb{Q}(\alpha)$ with dense random
+elements, at the algebraic degrees that actually occur in the record table:
 
 | Degree | Occurs at | Pure Python (`fractions.Fraction`) | python-flint (`fmpq_poly mod m`) | Speedup |
 | --- | --- | --- | --- | --- |
-| 8 | `s(11)` | 215.5 µs | 1.2 µs | **177×** |
-| 18 | `s(17)` | 1,071.7 µs | 3.0 µs | **363×** |
-| 40 | `s(300)` | 5,978.7 µs | 13.1 µs | **457×** |
-| 62 | `s(1453)` | 13,490.5 µs | 23.3 µs | **578×** |
+| 8 | $s(11)$ | 215.5 µs | 1.2 µs | **177×** |
+| 18 | $s(17)$ | 1,071.7 µs | 3.0 µs | **363×** |
+| 40 | $s(300)$ | 5,978.7 µs | 13.1 µs | **457×** |
+| 62 | $s(1453)$ | 13,490.5 µs | 23.3 µs | **578×** |
 
 Two things to read from this.
 The speedup **grows with degree**, so pure Python is worst exactly where the problem is
@@ -151,24 +151,24 @@ dot products per axis, no divisions and no square roots.
 That means the identical algorithm is correct over `f64`, over intervals, and over an
 exact algebraic field — only the scalar type changes.
 
-So the predicate is written **once**, generic over a `Scalar` trait supplying `+ − ×`
-and a sign decision, and instantiated at:
+So the predicate is written **once**, generic over a `Scalar` trait supplying
+$+ - \times$ and a sign decision, and instantiated at:
 
 | Scalar | Decides | Cost | Used for |
 | --- | --- | --- | --- |
 | `f64` with a tolerance | approximately | 57 ns | search inner loop |
 | `f64` plus an error bound, escalating | strictly, when the margin is wide | ~60 ns typical | filtered kernel’s first stage |
 | Interval (outward-rounded) | strict separation only; *never* equality | ~µs | second stage |
-| `ℚ(α)` exact | everything, including exact zero | ~µs–ms by degree | contacts, and only contacts |
+| $\mathbb{Q}(\alpha)$ exact | everything, including exact zero | ~µs–ms by degree | contacts, and only contacts |
 
 This repo’s Python verifier already has the shape right —
 `verify_packing(..., sign=exact_sign)` versus `sign=float_sign(1e-9)` is exactly this
 generic, and the two backends share one implementation of the test.
 Rust monomorphizes it at zero cost instead of paying dynamic dispatch per call.
 
-**Why the staging matters more than any single stage.** In a record packing only `O(n)`
+**Why the staging matters more than any single stage.** In a record packing only $O(n)$
 pairs actually touch; the rest are separated by a wide margin.
-For `n = 11`, 14 pairs of 55 have exactly zero gap and 41 are strictly separated.
+For $n = 11$, 14 pairs of 55 have exactly zero gap and 41 are strictly separated.
 A filtered kernel settles those 41 in floating point and pays the exact price only on
 the 14. That is CGAL’s `Exact_predicates_*` design, and it is why “exact verification”
 is cheap in practice rather than catastrophic.
@@ -191,16 +191,17 @@ it still permits?
 
 **L0 · `sqpack-core` (Rust).** Geometry and predicates.
 Corner generation, the separating-axis test, container containment, and uniform-grid
-bucketing so pair enumeration is `Θ(n)` rather than `Θ(n²)`. Generic over `Scalar`; no
-allocation on the hot path; no I/O. *Simple:* `separated(&a, &b)`. *Possible:*
-instantiate it over an exact field and get a certificate instead of a guess.
+bucketing so pair enumeration is $\Theta(n)$ rather than $\Theta(n^2)$. Generic over
+`Scalar`; no allocation on the hot path; no I/O. *Simple:* `separated(&a, &b)`.
+*Possible:* instantiate it over an exact field and get a certificate instead of a guess.
 This is the layer both the search and the verifier depend on, and the reason they cannot
 drift apart.
 
 **L1 · `sqpack-exact` (Rust).** The `Scalar` implementations and the filtered ladder.
-`f64`, an outward-rounded interval type, and an algebraic type over `ℚ(α)`: elements as
-polynomials of degree `< deg m` reduced modulo the minimal polynomial, exact zero by
-representative test, exact sign by rational interval evaluation with bisection.
+`f64`, an outward-rounded interval type, and an algebraic type over
+$\mathbb{Q}(\alpha)$: elements as polynomials of degree $< \deg m$ reduced modulo the
+minimal polynomial, exact zero by representative test, exact sign by rational interval
+evaluation with bisection.
 Back it with FLINT rather than reimplementing — the measurements above are the argument,
 and the degree-62 cases are where a hand-rolled implementation would fail quietly.
 *Simple:* `verify(packing)` returns a decision, not a tolerance.
@@ -212,7 +213,7 @@ Perturbed billiard/inflation and simulated annealing over L0, with three propert
 copied deliberately from FrankenSim:
 
 - **Counter-based RNG keyed by logical work identity** — `(seed, kernel, tile, index)`
-  with `O(1)` random access, so a restart is reproducible and a basin is addressable.
+  with $O(1)$ random access, so a restart is reproducible and a basin is addressable.
 - **Fixed-slot reductions folded in tile order**, so worker count never changes the
   answer.
 - **Speculative races with loser cancellation**, which is precisely the shape of “run
@@ -228,8 +229,8 @@ not a framework. Every function here is allowed to be “slow” — the tier bu
 seconds.
 
 **L4 · Corpus tooling (Python).** The SVG record parser that turns the catalogue’s
-33-digit decimal entities and Mathematica `Root[…]` comments into `(x, y, θ)` triples
-with their algebraic definitions — the missing geometry noted in the
+33-digit decimal entities and Mathematica `Root[…]` comments into $(x, y, \theta)$
+triples with their algebraic definitions — the missing geometry noted in the
 [frontier corpus](../../../packing/frontier/README.md) and tracked as its own work item.
 Agent tier, run once per record, performance irrelevant.
 
@@ -301,7 +302,7 @@ the code. Sharpened into a list, with the reason each item is on it:
    For a project whose output is records other people will cite, this is worth more than
    it costs.
 5. **The two determinism lints**, which are about a hundred lines of `xtask`: ban
-   `.powi(n)` for `|n| > 3`, and ban platform `libm` in any component claiming cross-ISA
+   `.powi(n)` for $|n| > 3$, and ban platform `libm` in any component claiming cross-ISA
    reproducibility. Both are documented there with the incident that motivated them; the
    `powi` story — a golden hash re-pinned with a plausible but wrong justification, when
    the real mover was optimization-level-dependent `powi` — is the better cautionary
@@ -336,8 +337,8 @@ The reason to build an open search engine at all is not that it would find bette
 packings than the closed one — that is unlikely and unnecessary.
 It is that a search whose randomness is a pure function of `(seed, kernel, tile, index)`
 can answer questions the current tooling cannot: how many basins are there, how rare is
-the record basin, how does that rarity scale with `n`, does a given move set change the
-basin distribution. Ellsworth published that for two values of `n` and it immediately
+the record basin, how does that rarity scale with $n$, does a given move set change the
+basin distribution. Ellsworth published that for two values of $n$ and it immediately
 became the most quantitative thing known about the problem’s landscape.
 
 A tolerance-based verifier undermines this in a specific way.
@@ -351,7 +352,7 @@ output a measurement.
 
 1. **Three latency tiers, not one, and most of the work is in the free tier.** Anything
    attached to an LLM call has a budget of seconds, and the full exact verification of
-   `s(11)` costs 0.35 s in unoptimised Python.
+   $s(11)$ costs 0.35 s in unoptimised Python.
    Optimizing the agent tier is optimizing noise; the discipline is knowing which code
    is not in it.
 2. **The predicate is a polynomial, so one implementation serves every precision.** Four
@@ -363,7 +364,7 @@ output a measurement.
    algebraic degree*. The second is the more consequential, because it grows precisely
    toward the record table’s hard cases.
 4. **Filtering, not raw exact speed, is what makes exactness affordable.** Only the
-   `O(n)` touching pairs need the exact path — 14 of 55 at `n = 11`. A staged kernel
+   $O(n)$ touching pairs need the exact path — 14 of 55 at $n = 11$. A staged kernel
    spends floating-point time on the 41 and exact time on the 14.
 5. **Exact-for-`f64` is the wrong exactness.** Shewchuk predicates answer exactly the
    question “do these rounded coordinates overlap”, and the published 16-digit decimals
@@ -405,13 +406,14 @@ Items 1–3 are cheap and unlock everything else; 4–5 are the actual research 
    target, a fingerprint, and an acceptance band.
 4. **L2 search, CPU-first, determinism from day one.** Counter-based RNG and fixed-slot
    reductions are cheap at the start and near-impossible to retrofit.
-   Aim first at reproducing known records for small `n`, which is a test with a known
+   Aim first at reproducing known records for small $n$, which is a test with a known
    answer, before aiming at anything unknown.
    *Acceptance:* the same seed reproduces the same basin on 1 core and on 32.
 5. **The proof lane reuses all of it.** Verifying that a candidate point set is
-   unavoidable — “does every unit square in `[0,k]²` contain a point of `P`?” — is a
-   decision over three parameters `(x, y, θ)`, which is L0’s geometry with a different
-   quantifier. Searching for such sets is L2 with a different objective.
+   unavoidable — “does every unit square in $[0,k]^2$ contain a point of $P$?” — is a
+   decision over three parameters $(x, y, \theta)$, which is L0’s geometry with a
+   different quantifier.
+   Searching for such sets is L2 with a different objective.
    Nothing automated has ever run in this lane, and it is the one where a new result
    would be a theorem rather than a record.
 
@@ -422,7 +424,7 @@ implementation of the separating-axis test for any reason whatsoever.
 ## Open Questions
 
 - [ ] What is the real filter rate on the record corpus — what fraction of pairs
-  actually need the exact path at each `n`? The `n = 11` figure is 14 of 55, but that is
+  actually need the exact path at each $n$? The $n = 11$ figure is 14 of 55, but that is
   one case and it is the smallest.
 - [ ] Does the CPU budget actually reach the published GPU campaign?
   32 cores gives roughly 2,000 G pair-tests per hour by extrapolation from a single-core
@@ -454,9 +456,9 @@ measurement; the prior studies’ own methodology sections cover their sources.
 - **The same predicate, Python.** Same algorithm, same case-generation logic and seed,
   200,000 tests. Reported: 366,797 tests/s, 2,726 ns/test.
   The comparison holds the algorithm fixed and varies only the language.
-- **Field multiplication.** One multiplication in `ℚ(α)` at degrees 8, 18, 40 and 62,
-  comparing this repo’s `sqpack.field.NumberField` (`fractions.Fraction`) against
-  `python-flint`’s `fmpq_poly` reduced modulo the minimal polynomial.
+- **Field multiplication.** One multiplication in $\mathbb{Q}(\alpha)$ at degrees 8, 18,
+  40 and 62, comparing this repo’s `sqpack.field.NumberField` (`fractions.Fraction`)
+  against `python-flint`’s `fmpq_poly` reduced modulo the minimal polynomial.
   Operands are **dense** random elements with rational coefficients, which is the honest
   case; an earlier sparse trial understated the pure-Python cost by an order of
   magnitude and is not reported.

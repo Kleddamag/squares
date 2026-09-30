@@ -5,7 +5,7 @@
 PRs 111, 114, 116, 117, 118, 120, 121, 127, 128, 129, 130, 131, 132, 134, 136, and 138
 have since landed on `main`. PR110’s Agenda 028 results remain valid at their declared
 restricted scope and complement Agenda 030’s later segment, corner, angle, and ownership
-results. They do not improve the global `n = 11` bracket.
+results. They do not improve the global $n = 11$ bracket.
 
 The current research handoff is Agenda 030’s `think-qfog` pairwise-compatibility
 continuation. Agenda 028 remains paused, with H118 and H120 re-entry conditioned on the

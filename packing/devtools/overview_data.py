@@ -10,7 +10,10 @@ something the repository already records and already gates:
   loaded by `devtools.render_research_tables.load_cases`;
 - which lower bounds are recent: `atlas/known-best/bound-citations.json`, which the
   atlas star reads too;
-- evidence, retained source copies and reviews: `frontier/evidence.yaml`.
+- evidence, retained source copies and reviews: `frontier/evidence.yaml`;
+- each result's standing, the survey's counts and the reported bounds awaiting a replay:
+  `devtools.render_recent_results`, the functions README's generated tables use, so the
+  page and README cannot disagree about any of them.
 
 Counts are of *declared* rungs. `check_results` accepts a declared rung below the one
 it derives when a `composition` note explains why, so re-deriving here would disagree
@@ -29,6 +32,14 @@ from pathlib import Path
 from devtools import render_results
 from devtools.migrate_math import classify
 from devtools.render_explainer import repo_file
+from devtools.render_recent_results import (
+    RecentCounts,
+    Row,
+    load_records,
+    recent_counts,
+    recent_rows,
+    standing,
+)
 from devtools.render_research_tables import load_cases
 from devtools.result_credit import credit_line
 from devtools.significance import headline as first_sentence
@@ -177,6 +188,9 @@ class Result:
     credit: str
     ours: bool
     records: list[Link] = field(default_factory=list)
+    standing: str = ""
+    """Whether a case bound rests on the result now, and if not, why not:
+    `render_recent_results.standing`, the word README's and `RESULTS.md`'s tables print."""
 
     @property
     def id(self) -> str:
@@ -194,6 +208,25 @@ class Result:
             or record.get("attribution", {}).get("published")
             or record["significance"]["scored"]
         )
+
+    @property
+    def published(self) -> str | None:
+        """When a result by others was published, as its attribution records it."""
+        attribution = self.record.get("attribution")
+        return str(attribution["published"]) if attribution else None
+
+    @property
+    def dated(self) -> tuple[str, str]:
+        """The date a reader is shown and what it is: publication for a result by
+        others, as README's Results by Others dates it; establishment for this
+        project's, as its New Results does."""
+        if self.published is not None:
+            return "published", self.published
+        return "established", str(self.record.get("established") or self.date)
+
+    @property
+    def novelty(self) -> str:
+        return str(self.record["novelty"])
 
     @property
     def scope(self) -> str:
@@ -229,6 +262,20 @@ class Overview:
     cases: dict[int, dict]
     recent_lower: frozenset[int]
     groups: list[tuple[str, list[Result]]]
+    recent: list[Row] = field(default_factory=list)
+    """Every case `n <= 100` with a recent lower bound in either lane, as README's survey
+    table lists them: `render_recent_results.recent_rows`."""
+
+    @property
+    def counts(self) -> RecentCounts:
+        """The survey's four counts, as README's summary quotes them."""
+        return recent_counts(self.recent)
+
+    @property
+    def awaiting_replay(self) -> list[Row]:
+        """The recent cases whose reported lower bound says something the verified one
+        does not: a source's claim still waiting on a replay here."""
+        return [row for row in self.recent if row.shows_reported]
 
 
 def _evidence() -> dict[str, dict]:
@@ -295,6 +342,7 @@ def load() -> Overview:
     register = safe_load(RESULTS.read_text(encoding="utf-8"))
     sources = render_results.load_sources()
     evidence = _evidence()
+    records = load_records()
     results: list[Result] = []
     groups: list[tuple[str, list[Result]]] = []
     for title, members in render_results.grouped_results(register, sources):
@@ -309,6 +357,7 @@ def load() -> Overview:
                 ),
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
+                standing=standing(r, records),
             )
             for r in members
         ]
@@ -320,7 +369,13 @@ def load() -> Overview:
     recent = frozenset(
         entry["n"] for entry in citations if entry["lower"] and entry["lower"]["recent"]
     )
-    return Overview(results=results, cases=cases, recent_lower=recent, groups=groups)
+    return Overview(
+        results=results,
+        cases=cases,
+        recent_lower=recent,
+        groups=groups,
+        recent=recent_rows(records),
+    )
 
 
 @dataclass(frozen=True)

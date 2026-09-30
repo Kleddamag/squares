@@ -147,7 +147,12 @@ it.
   note size, a solid fill and no border, lettered in the page’s background colour.
   A plain chip is the muted gray; `data-tone="accent"` is the accent, for a settled
   state such as a proved case.
-  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`.
+  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`. A standing chip
+  carries `data-standing` and adds no style of its own: `holds` takes the accent, as a
+  settled state, and every other standing (`holds, reported`, `second certificate`,
+  `superseded`, `not a bound`) the plain gray, so a reader sees which results still hold
+  without the others shouting.
+  A novelty chip (`data-novelty`) is always plain gray.
 
 - **Dimension cards.** Verification at a Glance is one card per scored dimension of the
   rubric, Verification, Confirmation and Significance: the question it answers, then
@@ -192,6 +197,14 @@ it.
 - **Tables.** KPress tables in the sans face, with sortable headers, filters above,
   group rows, and an expandable row whose summary stays sans so its math does.
   On a phone, the results table becomes one card per row.
+  In the results table a result’s standing chip sits under its rungs, and a Standing
+  filter selects by it; a date cell says what it dates, `published` or `established`, in
+  the support colour.
+
+- **Awaiting replay.** Under the recent list, a closed disclosure in the sans face at
+  the note size: its summary names how many cases and the range, and it opens a compact
+  table grouped by holder and the entries carrying the claim, each case linking to its
+  row in the frontier atlas.
 
 ## Token Ownership
 

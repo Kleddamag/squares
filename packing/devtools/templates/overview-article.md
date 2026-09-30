@@ -45,9 +45,17 @@ A result by others is registered as *reported* when its source is taken in, and 
 *verified* only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;
 [`epistemics.md`](epistemics.html#results-by-others) states the policy.
-Every result registered recently, newest first:
+The newest results, each dated by its publication if it is by others and by the day it
+was established if it is this project’s, with its standing: *holds* where a verified
+case bound rests on it now, and otherwise why not.
 
 {{RECENT}}
+
+A reported bound counts here only once its certificate is replayed.
+These are the cases up to $n = 100$ where a source reports a recent lower bound above
+the one verified so far, each linked to its case in the frontier atlas:
+
+{{AWAITING_REPLAY}}
 
 ## Verification at a Glance
 
@@ -106,8 +114,11 @@ Each result has an identifier, a claim, and two ratings defined in
 supports, and **C**, what this repository has checked itself.
 A result by others is credited to its authors as their source states it; its `V` and `C`
 are this repository’s own verification of it.
-Open a row for the full claim, and follow the records to the case file, the evidence,
-the retained source and the review.
+Its standing says whether a case bound rests on it now: it *holds* a verified bound, or
+only a reported one; it is a *second certificate* for an exact value another result
+holds; it is *superseded*; or it is not a bound at all, such as a rigidity or an
+erratum. Open a row for the full claim and its novelty label, and follow the records to
+the case file, the evidence, the retained source and the review.
 
 {{RESULTS_TABLE}}
 
@@ -120,6 +131,7 @@ An external certificate counts once it is replayed in full and its mathematical
 assumptions are discharged, and each record says who ran the checks and how independent
 they were. The [frontier atlas](frontier.html) shows every case, and the
 [status table](status.html) is the generated summary.
+{{SURVEY_COUNTS}}
 The [literature archive](repo:packing/resources/README.md) keeps each primary source, a
 cleaned transcription and the unedited extraction it was checked against, and the
 [evidence inventory](repo:packing/frontier/INVENTORY.md) shows what each claim rests on

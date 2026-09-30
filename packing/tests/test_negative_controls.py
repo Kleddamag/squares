@@ -268,6 +268,21 @@ CACHE_PROBE_DIRECTORIES = (
 )
 
 
+def test_pruned_ancestry_matches_path_semantics(tmp_path: Path) -> None:
+    roots = frozenset((tmp_path / "archive", tmp_path / "receipt.json"))
+    for path in (
+        tmp_path,
+        tmp_path / "archive",
+        tmp_path / "archive" / "nested" / "input.json",
+        tmp_path / "archive-backup" / "input.json",
+        tmp_path / "receipt.json",
+        tmp_path / "receipt.json.backup",
+    ):
+        expected = any(path.is_relative_to(root) for root in roots)
+        assert controls.in_pruned_roots(path, roots) == expected
+        assert not controls.in_pruned_roots(path, frozenset())
+
+
 def test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots() -> None:
     assert ROOT / "atlas/prospective/rendering" in PRUNE
     assert ROOT / "witnesses/prospective" in PRUNE

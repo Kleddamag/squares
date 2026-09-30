@@ -732,6 +732,11 @@ LINKED_PRUNE_ROOTS = (
 )
 
 
+def in_pruned_roots(path: Path, roots: frozenset[Path]) -> bool:
+    """Test resolved ancestry once, rather than rebuilding it for every prune root."""
+    return path in roots or any(parent in roots for parent in path.parents)
+
+
 def linked_pruned_targets() -> list[Path]:
     """Omitted files the checked documents link to inline, resolved and existing.
 
@@ -759,12 +764,11 @@ def linked_pruned_targets() -> list[Path]:
         elif document.is_file() and document.suffix == ".md":
             documents.append(document)
     targets: set[Path] = set()
+    roots = frozenset(LINKED_PRUNE_ROOTS)
     for document in documents:
         for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
             resolved = (document.parent / raw).resolve()
-            if resolved.is_file() and any(
-                resolved.is_relative_to(root) for root in LINKED_PRUNE_ROOTS
-            ):
+            if resolved.is_file() and in_pruned_roots(resolved, roots):
                 targets.add(resolved)
     return sorted(targets)
 
@@ -773,15 +777,14 @@ def result_pruned_targets() -> list[Path]:
     """Pruned files named structurally by the results register."""
     register = safe_load((ROOT / "frontier/results.yaml").read_text(encoding="utf-8"))
     targets: set[Path] = set()
+    roots = frozenset(LINKED_PRUNE_ROOTS)
     for record in register["results"]:
         raw_paths = [*(record.get("artifacts") or []), *(record.get("controls") or [])]
         if review := record.get("review_artifact"):
             raw_paths.append(review)
         for raw in raw_paths:
             resolved = (REPO / raw).resolve()
-            if resolved.is_file() and any(
-                resolved.is_relative_to(root) for root in LINKED_PRUNE_ROOTS
-            ):
+            if resolved.is_file() and in_pruned_roots(resolved, roots):
                 targets.add(resolved)
     return sorted(targets)
 

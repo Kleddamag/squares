@@ -1,0 +1,4 @@
+.                                                                        [100%]
+============================= slowest 1 durations ==============================
+6.23s call     tests/test_negative_controls.py::test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots
+1 passed in 6.75s

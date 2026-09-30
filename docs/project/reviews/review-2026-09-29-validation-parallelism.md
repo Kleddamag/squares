@@ -264,6 +264,36 @@ For a manual pull-request dispatch, GitHub’s event SHA names the dispatch ref 
 workers validate the resolved merge SHA. The tree receipt and custom validated-SHA field
 in exhaustive per-file reports name the latter.
 
+## W5 Follow-up: Snapshot Ancestry Accounting
+
+CI run 36655332600 spent 13.45 seconds in the snapshot-accounting control, beyond its
+12-second call limit.
+This integration issue was handled alongside the T-060 proof lanes, without a broad
+local suite. The focused local test took
+[6.23 seconds before](../../../packing/campaign/agent-sessions/session-164-validation/snapshot-ancestry-before.txt)
+and
+[0.74 seconds after](../../../packing/campaign/agent-sessions/session-164-validation/snapshot-ancestry-after.txt)
+the accepted change.
+These are individual observations during ongoing source intake, not a frozen-tree
+benchmark or a claim about hosted runtime.
+
+The first hypothesis, pruning cache directories before traversing them, measured 6.30
+seconds and was discarded.
+Profiling instead attributed 21.8 of 22.9 instrumented test seconds to 323,185 repeated
+path-ancestry comparisons.
+The fix constructs the candidate path’s ancestor chain once and looks up each ancestor
+in a set of prune roots, rather than reconstructing it for every root.
+File-root equality, directory containment and prefix collisions retain their previous
+Path semantics.
+
+The equivalence control and original timing test pass; three further controls confirm
+linked evidence, registered dependencies and cache exclusion survive real snapshots.
+Ruff and BasedPyright pass.
+No ceiling, test selection or mathematical acceptance rule was relaxed.
+`think-9b01` tracks this fix; `think-n2kg` retains the broader dependency selection and
+snapshot-growth work.
+Current-head hosted timing remains to be checked.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

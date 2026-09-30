@@ -5,7 +5,7 @@ title: Consolidate proof verification and decouple the validation pipeline
 kind: epic
 status: in_progress
 priority: 1
-version: 16
+version: 18
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
@@ -22,10 +22,11 @@ child_order_hints:
   - is-01m3sk1aq5e7wm2hzghg3wf499
   - is-01m3sken298psm0jfn7tmbcqp9
   - is-01m3snf059ca48fjmqh0vrb7e8
+  - is-01m3sp12jsvbfsveyd1cqq2msj
 created_at: 2026-09-30T04:44:23.504Z
-updated_at: 2026-09-30T17:23:13.186Z
+updated_at: 2026-09-30T17:33:05.495Z
 ---
-User requested audit of ~60000-line PR. At0dda2856e diff vs886b1783a:59419 additions483 deletions240 files,32 binary. Added lines: retained source/receipts30071; sessions/logs/accounting9710 (7212 log lines); implementation/config8153; CI/config1130; tests4804; goldens/fixtures1844; docs/registers3705; atlas text2. Actual n11 checkers4395 and tests991. At least3338 lines duplicate result.json exactly in stdout.json. Three large JSON receipts total15240 lines. Review code duplication and separate mathematical proof audit from earlier rectangle-tools and CI scope; compress bulky raw results/logs deterministically with concise summaries and preserved decoded identities/replay bindings. Do not discard unique evidence, blindly change frozen checker hashes, or weaken independent acceptance. Read-only size audit complete; reduction not yet implemented.
+Consolidate the independently confirmed n11 proof and its reusable verification tools, with separate contracts for proof geometry, source/receipt admission, evidence composition, and repository CI. Initial size audit at0dda2856e found 59,419 added lines across240 files; that is a planning baseline, not current scope. Completed work includes lossless evidence compression (93,389 plaintext ledger lines removed), shared field and exact geometry kernels, all T060 mathematical executions/review atS5/V4/C5, a first-principles tooling overview, and measured CI/diagnostic improvements. Final integration/merge is think-pd17; shared diagnostic admission think-nxd8 is implemented/reviewed in an isolated follow-up; fresh chained replay think-e2ot, rectangle native performance think-3cwg, and cross-provider PR249 reconciliation think-d15x remain separately tracked. Preserve accepted source and evidence identities; no blanket verifier rewrite, unique evidence deletion, or new framework is required.
 
 ## Notes
 

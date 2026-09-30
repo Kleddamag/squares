@@ -5,14 +5,14 @@ title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
 status: open
 priority: 1
-version: 5
+version: 6
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T16:45:00.995Z
+updated_at: 2026-09-30T17:44:28.920Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -44,8 +44,4 @@ Both PRs are merged with distinct contiguous IDs and complete source credit, `n-
 
 ## Notes
 
-2026-09-30 correction: check_results requires contiguous register IDs, so T-061 could not be reserved. The Wang–Li result is T-058 on claude/determined-goldberg-ura2ed (jlevy/squares#249, commit 827e70b68). #246 also uses T-058 to T-060. Whichever PR merges second renumbers its new entries to follow the other's; if #249 is second, Wang–Li becomes T-061. The comment on #246 was edited to say so.
-
-2026-09-30 PR246 completion update: T-060 now independently confirms global equality at Trump's exact endpoint, S5/V4/C5, after all2180 exclusions and ten capture nodes plus final Astra-max composition review. Final receipt eaad8f14; PR review https://github.com/jlevy/squares/pull/246#issuecomment-5912106554. The verified lower frontier is being promoted on that evidence. Wang–Li remains a separately credited historical improvement; preserve its intake and generalized native parent-core tool. Current origin/main was fetched and is included; PR249 was still open at the prior check. The later-merging PR must reconcile IDs as above and repin generated artifacts.
-
-2026-09-30 packaging review: independently compared both branches. 36 shared changed paths include claim/evidence/source records, n-011, root reader docs, release pin, explainer renderer/tests, budgets/validate and generated atlas assets. Read-only merge analysis reports 39 text conflict hunks and six binary atlas conflicts. Merge completed PR246 first after its final packaging checks. PR249 remains draft; its own re-sweeps and full dispatch are still declared pending, so do not race or merge its ongoing work. Once its owner is ready, merge updated main into PR249, renumber Wang–Li to the next contiguous ID, preserve exact n11 equality and historical source credit, preserve T006/T056/T057 promotions, compose tooling semantics and the three-shard topology, regenerate artifacts, then repin DATA_REVISION to the merged data commit. Run affected records, release, explainer and atlas checks plus the hosted full checkpoint before its merge. Prior green checks against old main do not certify that combination.
+PR246 merged first at d44ec04086cffd5498fd69e54ee58415365910c7 on2026-09-30T17:41:19Z after all required424b6be3a checks passed. PR249 owner advanced to c6f51ce6b with passing pre-integration checks and still-draft pending s21/s45 re-sweeps. Next integrate newmain whenownerready; Wang-Li T058 becomesT061, preserve T060 equality and all providercredits/V-C classifications, nativeparent-corechecker and three-shardCI; resolve sharedrecords, rebuildatlas/readers, repinDATA_REVISION, run affectedpluscheckpoint validation. Prior36sharedpaths/39texthunks/6binaryconflicts is a planning baseline; reassess currenthead. PR249 body and comment now record the actualmerge and why oldgreenchecks do not certify combinedsource.

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Check the explainer as GitHub Pages serves it, against the commit it should be built from.
+"""Check the site as GitHub Pages serves it, against the commit it should be built from.
 
-`pages.yml` renders the page, its Markdown edition and its PDF from `main` and deploys
-them. Nothing is checked in, so nothing in the repository says whether a deploy landed
-or what the page it served links to; this asks the live site. From `packing/`:
+`pages.yml` renders the overview and the site's own pages, the explainer with its
+Markdown edition and PDF, and the workbench from `main`, and deploys them. Nothing is
+checked in, so nothing in the repository says whether a deploy landed or what the pages
+it served link to; this asks the live site. From `packing/`:
 
     uv run --frozen --group dev python -m devtools.check_published_site --commit <sha>
 
@@ -11,9 +12,17 @@ With no `--commit` the checkout's `origin/main` is the expectation, which is the
 the last deploy built from once `git fetch` has run. One line per check, `ok` or
 `FAIL`, and the exit status is 0 only when every check passes:
 
-- the page is served and carries the edition stamp `sqpack.release` names;
-- every repository link in the page and in the Markdown edition names the expected
+- the overview, the frontier atlas and the tutorial are served, carry the edition stamp
+  and their own canonical URLs, and name the expected commit in every repository link
+  but the default-branch links each page declares in its `site-default-branch-links`
+  data island; the overview's links are also requested (the frontier and tutorial links
+  are proved offline when the pages are rendered, being more than a thousand);
+- the explainer is served at `explainer.html` with its edition stamp and canonical URL;
+- every repository link in the explainer and in the Markdown edition names the expected
   commit, and each resolves on GitHub;
+- every media file the overview and the explainer link is served with its exact media
+  type, no attachment disposition, and, for the films, range support and the pinned
+  length (`devtools.published_media`);
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
@@ -28,6 +37,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import re
 import subprocess
 import sys
@@ -41,10 +51,10 @@ from urllib.parse import urljoin
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
+from devtools import published_media
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
-    OUTPUT,
     REPO,
     REPO_URL,
     SITE_URL,
@@ -68,6 +78,20 @@ SERVED = (
     *(asset.name for asset in COMPOSITE_ASSETS),
 )
 
+#: The explainer's address on the site: rendered as `index.html`, renamed at publication so
+#: the overview can take the root.
+EXPLAINER_PAGE = "explainer.html"
+#: The site's own pages, rendered by `devtools.render_overview`; the overview is the root.
+SITE_PAGES = ("index.html", "frontier.html", "tutorial.html")
+#: The pages whose repository links are requested one by one. The frontier atlas and the
+#: tutorial link more than a thousand records, which their render proves offline.
+REQUESTED_LINKS = ("index.html",)
+CANONICAL = re.compile(r'<link rel="canonical" href="([^"]+)">')
+DEFAULT_BRANCH_LINKS = re.compile(
+    r'<script type="application/json" id="site-default-branch-links">(.*?)</script>',
+    re.DOTALL,
+)
+
 USER_AGENT = "squares-check-published-site (+https://github.com/jlevy/squares)"
 WORKBENCH_PATH = "workbench/"
 WORKBENCH_REVISION = re.compile(
@@ -82,6 +106,27 @@ def repository_links(text: str) -> set[tuple[str, str, str]]:
     return {
         (kind, ref, path.rstrip("/")) for kind, ref, path in REPOSITORY_LINK.findall(markup)
     }
+
+
+def canonical_url(name: str) -> str:
+    """The canonical URL a page at `name` declares: the site root for the overview."""
+    return SITE_URL if name == "index.html" else SITE_URL + name
+
+
+def default_branch_links(text: str) -> set[str]:
+    """The repository URLs a page declares it names on the default branch, by design."""
+    found = DEFAULT_BRANCH_LINKS.search(text)
+    return set(json.loads(found.group(1))) if found else set()
+
+
+def ref_problems(text: str, commit: str) -> list[str]:
+    """Repository links that name neither the build commit nor a declared default-branch URL."""
+    allowed = default_branch_links(text)
+    return sorted(
+        f"{REPO_URL}/{kind}/{ref}/{path}"
+        for kind, ref, path in repository_links(text)
+        if ref != commit and f"{REPO_URL}/{kind}/{ref}/{path}" not in allowed
+    )
 
 
 def pdf_pages(data: bytes) -> int:
@@ -190,15 +235,30 @@ def check(
     *,
     timeout: float,
     browser: bool = True,
+    media: bool = True,
 ) -> list[tuple[bool, str]]:
     """Every check as (passed, line), in the order they are printed."""
     results: list[tuple[bool, str]] = []
     site = site.rstrip("/") + "/"
 
-    status, page = fetch(site + OUTPUT.name, timeout=timeout)
+    for name in SITE_PAGES:
+        results.extend(site_page(site, name, commit, timeout=timeout))
+
+    status, page = fetch(site + EXPLAINER_PAGE, timeout=timeout)
     text = page.decode("utf-8", errors="replace")
     results.append(
-        (status == 200, f"page {site}{OUTPUT.name}: HTTP {status}, {len(page)} bytes")
+        (status == 200, f"page {site}{EXPLAINER_PAGE}: HTTP {status}, {len(page)} bytes")
+    )
+    declared = CANONICAL.search(text)
+    expected = canonical_url(EXPLAINER_PAGE)
+    results.append(
+        (
+            declared is not None and declared.group(1) == expected,
+            (
+                f"explainer canonical URL {declared.group(1) if declared else None!r} "
+                f"against {expected!r}"
+            ),
+        )
     )
     # The shared version (think-qsuu), pinned in release.py: the page names the data it was
     # drawn from, as the atlas and the videos do, whatever commit built it. The commit is
@@ -284,6 +344,59 @@ def check(
     )
     if browser:
         results.append(workbench_startup(workbench_url, site, timeout=timeout))
+    if media:
+        status, overview = fetch(site, timeout=timeout)
+        paths = [
+            reference
+            for html in (overview.decode("utf-8", errors="replace"), text)
+            for reference in published_media.media_references(html)
+            if not reference.startswith(("data:", "http:", "https:", "//"))
+        ]
+        problems = published_media.check_media(site, paths)
+        results.append(
+            (
+                not problems,
+                f"{len(dict.fromkeys(paths))} media files served as their types"
+                if not problems
+                else "media: " + "; ".join(problems),
+            )
+        )
+    return results
+
+
+def site_page(site: str, name: str, commit: str, *, timeout: float) -> list[tuple[bool, str]]:
+    """One of the site's own pages: served, stamped, canonical, and linking the right refs."""
+    url = site + ("" if name == "index.html" else name)
+    status, page = fetch(url, timeout=timeout)
+    text = page.decode("utf-8", errors="replace")
+    results = [(status == 200, f"page {url}: HTTP {status}, {len(page)} bytes")]
+    stamped = PUBLICATION_EDITION in text
+    results.append((stamped, f"{name} carries the edition stamp {PUBLICATION_EDITION!r}"))
+    declared = CANONICAL.search(text)
+    expected = canonical_url(name)
+    results.append(
+        (
+            declared is not None and declared.group(1) == expected,
+            (
+                f"{name} canonical URL {declared.group(1) if declared else None!r} "
+                f"against {expected!r}"
+            ),
+        )
+    )
+    wrong = ref_problems(text, commit)
+    results.append(
+        (
+            not wrong,
+            f"{name} repository links name {commit} or a declared default-branch URL"
+            if not wrong
+            else f"{name} repository links on another ref: {wrong[:5]}",
+        )
+    )
+    if name in REQUESTED_LINKS:
+        for kind, ref, path in sorted(repository_links(text)):
+            link = f"{REPO_URL}/{kind}/{ref}/{path}"
+            status, _ = fetch(link, head=True, timeout=timeout)
+            results.append((status == 200, f"link HTTP {status}: {link}"))
     return results
 
 

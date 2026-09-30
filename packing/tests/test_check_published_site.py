@@ -43,6 +43,30 @@ def source_receipt(page: bytes) -> bytes:
     return f"\n%sqpack-source-html-sha256: {hashlib.sha256(page).hexdigest()}\n".encode()
 
 
+EXPLAINER = check_published_site.EXPLAINER_PAGE
+
+
+def as_served(page: bytes, url: str) -> bytes:
+    """The fixture page as the site serves it at `url`, declaring its own canonical URL."""
+    name = url.rstrip("/").rsplit("/", 1)[-1]
+    name = name if name.endswith(".html") else "index.html"
+    canonical = check_published_site.canonical_url(name)
+    return f'<link rel="canonical" href="{canonical}">'.encode() + page
+
+
+@pytest.fixture(autouse=True)
+def served_media(monkeypatch: pytest.MonkeyPatch) -> list[list[str]]:
+    """The media check asks the network, so each test sees the paths it would ask for."""
+    asked: list[list[str]] = []
+
+    def check_media(_site: str, paths: object) -> list[str]:
+        asked.append(list(paths))  # pyright: ignore[reportArgumentType]
+        return []
+
+    monkeypatch.setattr(check_published_site.published_media, "check_media", check_media)
+    return asked
+
+
 def test_repository_links_are_read_from_markup_and_markdown_but_not_from_scripts() -> None:
     sha = "0123456789abcdef0123456789abcdef01234567"
     text = (
@@ -97,8 +121,10 @@ def test_check_accepts_the_requested_build_and_rejects_a_stale_stamp(
             return 200, workbench_page(commit)
         if url.endswith(".pdf"):
             pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
-            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(page)
-        return 200, b"" if head else page
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(page, EXPLAINER)
+            )
+        return 200, b"" if head else as_served(page, url)
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
     results = check_published_site.check(
@@ -114,8 +140,9 @@ def test_check_accepts_the_requested_build_and_rejects_a_stale_stamp(
         )
         if not passed
     ]
-    assert len(failures) == 1
-    assert "edition stamp" in failures[0]
+    # The overview, the frontier atlas, the tutorial and the explainer each carry the stamp.
+    assert len(failures) == 4
+    assert all("edition stamp" in line for line in failures)
 
 
 def test_check_rejects_a_deployed_pdf_that_crossed_a_page_boundary(
@@ -133,8 +160,10 @@ def test_check_rejects_a_deployed_pdf_that_crossed_a_page_boundary(
             return 200, workbench_page(commit)
         if url.endswith(".pdf"):
             pages = b"1 0 obj << /Type /Page >> endobj\n" * (EXPECTED_PAGE_COUNT + 1)
-            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(page)
-        return 200, b"" if head else page
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(page, EXPLAINER)
+            )
+        return 200, b"" if head else as_served(page, url)
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
     failures = [
@@ -174,8 +203,10 @@ def test_check_rejects_a_stale_workbench_or_account_root_navigation(
             return 200, workbench_page("f" * 40, home="/")
         if url.endswith(".pdf"):
             pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
-            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(page)
-        return 200, b"" if head else page
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(page, EXPLAINER)
+            )
+        return 200, b"" if head else as_served(page, url)
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
     failures = [
@@ -205,8 +236,10 @@ def test_check_requires_the_workbench_browser_api_to_start(
             return 200, workbench_page(commit)
         if url.endswith(".pdf"):
             pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
-            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(page)
-        return 200, b"" if head else page
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(page, EXPLAINER)
+            )
+        return 200, b"" if head else as_served(page, url)
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
     monkeypatch.setattr(
@@ -234,11 +267,11 @@ def test_check_rejects_a_pdf_without_the_deployed_html_source_receipt(
     page = (
         f'<p>({stamp})</p><a href="{REPO_URL}/blob/{commit}/README.md">Repository</a>'
     ).encode()
-    valid = source_receipt(page)
+    valid = source_receipt(as_served(page, EXPLAINER))
     receipt = {
         "missing": b"",
         "malformed": b"\n%sqpack-source-html-sha256: not-a-digest\n",
-        "wrong-source": source_receipt(page + b"<!-- old source -->"),
+        "wrong-source": source_receipt(as_served(page, EXPLAINER) + b"<!-- old source -->"),
         "duplicate": valid + valid,
         "uppercase": valid[: valid.index(b":") + 1] + valid[valid.index(b":") + 1 :].upper(),
         "trailing-data": valid + b"unbound suffix",
@@ -251,7 +284,7 @@ def test_check_rejects_a_pdf_without_the_deployed_html_source_receipt(
         if url.endswith(".pdf"):
             pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
             return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + receipt
-        return 200, b"" if head else page
+        return 200, b"" if head else as_served(page, url)
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
     failures = [
@@ -280,8 +313,10 @@ def test_check_compares_the_exact_fetched_html_bytes(
             return 200, workbench_page(commit)
         if url.endswith(".pdf"):
             pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
-            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(page)
-        return 200, b"" if head else page
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(page, EXPLAINER)
+            )
+        return 200, b"" if head else as_served(page, url)
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
     results = check_published_site.check(
@@ -321,3 +356,90 @@ def test_fetch_retries_a_transient_answer_before_reporting_it(
     )
     assert status == (403, b"")
     assert pauses == [], "a refusal is an answer, not a deploy still settling"
+
+
+def test_site_pages_accept_main_only_for_the_links_they_declare(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A document card on the default branch passes; an undeclared `main` link fails."""
+    commit = "0123456789abcdef0123456789abcdef01234567"
+    card = f"{REPO_URL}/blob/main/SYNOPSIS.md"
+    island = (
+        f'<script type="application/json" id="site-default-branch-links">["{card}"]</script>'
+    )
+    page = (
+        f"<p>({PUBLICATION_EDITION})</p>"
+        f'<a href="{REPO_URL}/blob/{commit}/README.md">record</a>'
+        f'<a href="{card}">card</a>{island}'
+    ).encode()
+    explainer = (
+        f'<p>({PUBLICATION_EDITION})</p><a href="{REPO_URL}/blob/{commit}/README.md">record</a>'
+    ).encode()
+
+    def fetch(url: str, *, head: bool = False, timeout: float = 30.0) -> tuple[int, bytes]:
+        del timeout
+        if url.endswith("/workbench/"):
+            return 200, workbench_page(commit)
+        if url.endswith(".pdf"):
+            pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(explainer, EXPLAINER)
+            )
+        if url.endswith((EXPLAINER, ".md")):
+            return 200, b"" if head else as_served(explainer, url)
+        return 200, b"" if head else as_served(page, url)
+
+    monkeypatch.setattr(check_published_site, "fetch", fetch)
+    results = check_published_site.check(
+        "https://example.org", commit, timeout=1, browser=False
+    )
+    assert all(passed for passed, _ in results), [line for ok, line in results if not ok]
+
+    undeclared = page.replace(island.encode(), b"")
+    assert check_published_site.ref_problems(undeclared.decode(), commit) == [card]
+
+
+def test_the_media_check_reports_what_published_media_finds(
+    monkeypatch: pytest.MonkeyPatch, served_media: list[list[str]]
+) -> None:
+    commit = "0123456789abcdef0123456789abcdef01234567"
+    page = (
+        f"<p>({PUBLICATION_EDITION})</p>"
+        f'<a href="{REPO_URL}/blob/{commit}/README.md">record</a>'
+        '<a href="known-best-1-100.pdf"><img src="known-best-1-100-preview.png"></a>'
+        '<video><source src="films/ascent-n1-324-1080p60-citations.mp4"></video>'
+    ).encode()
+
+    def fetch(url: str, *, head: bool = False, timeout: float = 30.0) -> tuple[int, bytes]:
+        del timeout
+        if url.endswith("/workbench/"):
+            return 200, workbench_page(commit)
+        if url.endswith(".pdf"):
+            pages = b"1 0 obj << /Type /Page >> endobj\n" * EXPECTED_PAGE_COUNT
+            return 200, b"%PDF-1.7\n" + pages + b"%%EOF" + source_receipt(
+                as_served(page, EXPLAINER)
+            )
+        return 200, b"" if head else as_served(page, url)
+
+    monkeypatch.setattr(check_published_site, "fetch", fetch)
+    results = check_published_site.check(
+        "https://example.org", commit, timeout=1, browser=False
+    )
+    assert all(passed for passed, _ in results), [line for ok, line in results if not ok]
+    (asked,) = served_media
+    assert "films/ascent-n1-324-1080p60-citations.mp4" in asked
+    assert "known-best-1-100.pdf" in asked
+
+    monkeypatch.setattr(
+        check_published_site.published_media,
+        "check_media",
+        lambda _site, _paths: ["films/x.mp4: application/octet-stream, not video/mp4"],
+    )
+    failures = [
+        line
+        for passed, line in check_published_site.check(
+            "https://example.org", commit, timeout=1, browser=False
+        )
+        if not passed
+    ]
+    assert failures == ["media: films/x.mp4: application/octet-stream, not video/mp4"]

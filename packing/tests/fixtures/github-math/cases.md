@@ -76,3 +76,42 @@ to leaving a span as code in every context recorded `[code]` or `[altered]`.
 - [math] a less-than before a letter: x $c_{48} < b$ y
 - [math] a less-than touching a letter: x $c_{49}<b$ y
 - [altered] an ampersand: x $c_{50} \& b$ y
+- a thin space: x $c_{51}\,b$ y
+- a thick space: x $c_{52}\;b$ y
+- a medium space: x $c_{53}\:b$ y
+- a negative thin space: x $c_{54}\!b$ y
+- a double bar: x $\|c_{55}\|$ y
+- an escaped underscore: x $c_{56}\_b$ y
+- a subscript star: x $c_{57}L_*$ y
+- a closing brace escape alone: x $c_{58}\}$ y
+- the brace commands: x $\lbrace c_{59} \rbrace$ y
+- the space commands: x $c_{60}\thinspace b\medspace c\thickspace d$ y
+- the double bar command: x $\Vert c_{61} \Vert$ y
+
+## Display Math
+
+- a display block on its own lines:
+
+$$
+c_{62} + \frac{1}{2}
+$$
+
+- a display block with a line break:
+
+$$
+\begin{aligned} c_{63} &= 1 \\ d &= 2 \end{aligned}
+$$
+
+- a display block with an escaped brace:
+
+$$
+\{c_{64}\}
+$$
+
+- a display block with a thin space:
+
+$$
+c_{65}\,b
+$$
+
+- a display block inside one line: $$c_{66} + 1$$

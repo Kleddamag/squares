@@ -3850,7 +3850,6 @@ results:
       - packing/resources/web/wang-li-n11-2026-09-29/receipts/certificate/diff.json
       - packing/resources/web/wang-li-n11-2026-09-29/receipts/authors/fresh-full-replay/RESULT.json
       - packing/resources/web/wang-li-n11-2026-09-29/receipts/kleddamag/full-replay/RESULT.json
-      - packing/resources/web/wang-li-n11-2026-09-29/receipts/native/native-all.json
       - packing/devtools/audit_wang_li_n11.py
       - packing/devtools/verify_n11_parent_core_native.py
       - docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md

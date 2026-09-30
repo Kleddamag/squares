@@ -150,7 +150,10 @@ it.
   sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
   = 1 to 324”. The subtitle is the sans face at 1.25 times the sans base, as the
   explainer’s is, in the page’s own text colour, never gray, with the same space above
-  it and below it (`--site-subtitle-space`, 1.25rem).
+  it and below it (`--site-subtitle-space`, 1.25rem). The page title style (every hero
+  `h1`, and `.site-title`) is the sans face in caps at 1.5 times the sans base, centred.
+  The homepage’s first section, The Square Packing Problem, takes it through
+  `.site-title`, so it reads as the frontier atlas’s title does.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.

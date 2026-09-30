@@ -159,12 +159,12 @@ def card(
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value">{value}</span>'
         f'<span class="site-card-note">{note}</span></button>'
-        f'<div class="site-popover" id="{_esc(target)}" popover data-kpress-prose-font="sans" '
+        f'<div class="site-popover" id="{_esc(target)}" popover '
         f'data-go="{kind}">'
         f'<button type="button" class="site-popover-close" popovertarget="{_esc(target)}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<p class="site-popover-value">{value}</p>{body}'
+        f'<p class="site-popover-value" data-math-face="serif">{value}</p>{body}'
         f'<p class="site-popover-actions"><a class="site-popover-action" href="{_esc(href)}" '
         f'data-go="{kind}">{_esc(action)}</a>{second}</p>'
         "</div>"
@@ -947,13 +947,13 @@ def atlas_popover() -> str:
     the gap bar's two formulas, and the template each value's math is typeset from."""
     return (
         '<div class="site-popover site-atlas-pop" id="pop-atlas" popover '
-        'data-kpress-prose-font="sans" data-go="atlas" data-atlas-popover '
+        'data-go="atlas" data-atlas-popover '
         'role="dialog" aria-labelledby="pop-atlas-title">'
         '<button type="button" class="site-popover-close" popovertarget="pop-atlas" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         '<span class="site-card-label">Best known packing</span>'
-        '<p class="site-popover-value site-atlas-pop-title" id="pop-atlas-title" '
-        "data-atlas-title></p>"
+        '<p class="site-popover-value site-atlas-pop-title" data-math-face="serif" '
+        'id="pop-atlas-title" data-atlas-title></p>'
         '<div class="site-atlas-pop-body">'
         '<div class="site-atlas-pop-figure" data-atlas-figure></div>'
         '<div class="site-atlas-pop-facts">'

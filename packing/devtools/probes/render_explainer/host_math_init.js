@@ -18,6 +18,11 @@
       if (el?.nodeType !== 1) {
         return false;
       }
+      // A block marked for serif mathematics (a popover's headline) keeps the serif face
+      // whatever the words around it are set in.
+      if (/** @type {Element} */ (el).closest('[data-math-face="serif"]')) {
+        return false;
+      }
       const style = getComputedStyle(/** @type {Element} */ (el));
       const sans = firstFamily(style.getPropertyValue("--kpress-font-sans"));
       return !!sans && firstFamily(style.fontFamily) === sans;

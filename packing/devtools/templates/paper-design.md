@@ -151,7 +151,12 @@ a caption, a footnote), so a site style must not set text inside one of those co
 in the serif face, or the other way round; set the text in the face KPress will pick for
 its math. The outer math em follows the surrounding text in inline and display formulas;
 KaTeX still controls the internal sizes of scripts and nested expressions.
-Documents write math as LaTeX (`$…$`) rather than in code spans;
+One exception: a popover’s headline (`.site-popover-value`, such as $n = 11$ or a card’s
+title) sets its math in the serif face, though the headline itself is sans.
+It is marked `data-math-face="serif"`, which the host adapter’s sans test
+(`host_math_init.js`) honours before it reads the surrounding face.
+Popovers carry no `data-kpress-prose-font` mark, so every other formula in them follows
+its own text. Documents write math as LaTeX (`$…$`) rather than in code spans;
 `devtools.check_math_markup` holds the documents already migrated to it.
 Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
 

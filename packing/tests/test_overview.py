@@ -1001,3 +1001,19 @@ def test_every_popover_shares_one_margin_and_close_target() -> None:
     close = close[: close.index("}")]
     for token in ("--site-popover-close)", "--site-popover-close-inset)"):
         assert f"var({token}" in close
+
+
+def test_popover_headlines_set_their_math_serif() -> None:
+    """Every popover's headline is marked for serif mathematics, and no popover forces sans
+    mathematics on everything inside it."""
+    card = overview_sections.atlas_popover()
+    assert 'data-math-face="serif" id="pop-atlas-title"' in card
+    assert "data-kpress-prose-font" not in card.split(">", 1)[0]
+    shell = (
+        render_overview.PACKING
+        / "devtools"
+        / "probes"
+        / "render_explainer"
+        / "host_math_init.js"
+    ).read_text(encoding="utf-8")
+    assert "closest('[data-math-face=\"serif\"]')" in shell

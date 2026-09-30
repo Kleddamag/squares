@@ -84,11 +84,11 @@ def case_popover() -> str:
     moves its fragment."""
     return (
         f'<div class="site-popover" id="{CASE_POPOVER_ID}" popover '
-        'data-kpress-prose-font="sans" data-go="page" data-case-popover>'
+        'data-go="page" data-case-popover>'
         f'<button type="button" class="site-popover-close" popovertarget="{CASE_POPOVER_ID}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         '<span class="site-card-label">Case record</span>'
-        '<p class="site-popover-value" data-case-title>Case record</p>'
+        '<p class="site-popover-value" data-math-face="serif" data-case-title>Case record</p>'
         '<iframe class="site-popover-frame" title="Case record" data-case-frame></iframe>'
         '<p class="site-popover-actions"><a class="site-popover-action" data-go="page" '
         f'data-case-expand href="{CASES_PAGE}">See All Cases</a></p>'

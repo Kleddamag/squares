@@ -5,7 +5,7 @@ title: "W7: implement native exact rectangle-density coverage verifier"
 kind: feature
 status: in_progress
 priority: 1
-version: 12
+version: 14
 delegate: claude-code@spud10.local
 labels: []
 dependencies: []
@@ -15,10 +15,11 @@ child_order_hints:
   - is-01m3q333efvqtrjzbncve0efps
   - is-01m3q3yck931awc12wrdfjtc8b
   - is-01m3q9nxx8t416wr59nsvcve5z
+  - is-01m3qtxksrtmt2kc5qqnxf6t97
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:12:51.117Z
-updated_at: 2026-09-29T19:43:23.889Z
+updated_at: 2026-09-30T00:20:06.071Z
 started_at: 2026-09-29T07:14:10.458Z
 ---
 W7 block in docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md. Exact rational common-core polygon subdivision and axis event sweep, source-distinct from verify.cpp; library, CLI, refusal controls, proof contract review. Analytic full-net control and bounded retained input probe required before first checkpoint. Full large-certificate independent confirmation remains separate.
@@ -42,3 +43,5 @@ Full independent acceptance still requires one bound input to pass exact mass/ad
 Final Astra-max next-step review selected think-gfpf: exactly two refinement levels on each of the 67 retained depth-capped boxes, unchanged common-core bound, 268 child evaluations and 30-second cooperative cap. Exact analytic control has parent 9/25 and each child 169/100. This experiment is predeclared but unexecuted. The queued depth-1 box prevents inferring full-angle cost from the 1000-node prefix.
 
 The two-level diagnostic think-gfpf met its predeclared local criterion: 15 of 67 depth-capped parents close after all 268 children are evaluated. This is diagnostic evidence only; complete native external coverage remains think-aqne. Next: design and cost a whole-angle traversal without treating the 1000-node prefix as a full-angle cost estimate.
+
+2026-09-29 upstream integration: wand125 provisional T-056/T-057 map to canonical T-058/T-059. Published Couzo/de Winter retain T-056/T-057. Historical notes and archived receipts retain their original labels; no evidence bytes or acceptance level changed.

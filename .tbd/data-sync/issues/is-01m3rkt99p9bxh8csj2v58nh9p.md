@@ -3,9 +3,9 @@ type: is
 id: is-01m3rkt99p9bxh8csj2v58nh9p
 title: Measure PR gate sensitivity to proof-corpus growth and hosted load
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 21
+version: 22
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
@@ -14,9 +14,9 @@ child_order_hints:
   - is-01m3s98kgj0s9pg4ybk685nc7t
   - is-01m3sefkn12n7fzy6gx1ss13nh
 created_at: 2026-09-30T07:35:11.413Z
-updated_at: 2026-09-30T15:21:13.110Z
-closed_at: 2026-09-30T12:07:44.056Z
-close_reason: Implemented, independently reviewed, pushed in01572bb8b, and all hosted PR checks pass. CIselector optimized with68focusedtests and measured cold-profile improvement; proofcostreporter covers17retained batches with fivecontrols and unknownmetric handling.
+updated_at: 2026-09-30T16:08:32.038Z
+closed_at: 2026-09-30T16:08:32.035Z
+close_reason: Measured shard capacity and hosted runner variability are addressed without weakening coverage or raising limits. Three-way assignment and explicit observed timing bands pass all required checks at 180326e81. Remaining historical cost-accounting work is separately owned by think-wvwx.
 resolution: null
 duplicate_of: null
 ---

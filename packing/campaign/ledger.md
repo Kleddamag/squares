@@ -176,6 +176,9 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-159](agent-sessions/session-159-n17-guzhou-r052-intake.md) | completed | contemporaneous | `factual-review` (correctness) | `review-planning-oversight` (insight) | 2 | think-ju2h | BC-386 (think-amx8): lift the native coverage ceilings and decide R052 natively, the first lane of the after-R052 order, with the n11 tilt-profile census and the ceiling search beside it. |
 | [session-160](agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | completed | contemporaneous | `factual-review` (correctness) | `factual-review` (correctness) | 3 | think-il68 | BC-390 (think-7c17): run the widened n = 11 rung 0 box on eight workers overnight, with the rectangle ladders and the queued wand125 and Daniel replays on the remaining workers, per the 2026-09-27 plan. |
 | [session-161](agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | stopped | contemporaneous | `research-survey` (correctness) | `factual-review` (correctness) | 2 | think-1an7 | Under think-l6la: run the complete zm_mixed.py --d4 --cert-mode re-sweeps for s(21) and s(45), record them, and raise T-052 and T-053 to C4. |
+| [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
+| [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
+| [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 
 ### Workflow summary
 
@@ -184,13 +187,13 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | workflow | declared entries | retrospective entries | declared phases | retrospective phases |
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
-| `factual-review` | 11 | 0 | 63 | 2 |
+| `factual-review` | 11 | 1 | 63 | 3 |
 | `insight-iteration` | 27 | 1 | 84 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 37 | 1 |
 | `research-loop` | 31 | 4 | 108 | 8 |
-| `pipeline-improvement` | 36 | 2 | 154 | 5 |
-| `documentation-pass` | 1 | 0 | 25 | 1 |
+| `pipeline-improvement` | 38 | 2 | 198 | 6 |
+| `documentation-pass` | 1 | 0 | 25 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 35 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |

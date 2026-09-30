@@ -1,0 +1,3 @@
+== pre-push floor against 4296edced381e46f1dc982ebbeadceaf1b4c7de8: tests select a reachable subset ==
+
+== no gate marker: every selected step is read-only and edit-tier ==

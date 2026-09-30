@@ -1,0 +1,26 @@
+{
+  "scope": "conditional round-one root induction only: 130 seed points, all 11 independent owner updates, 777 closed rows, 100 new points, exact round-two prior state",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "input_bindings": {
+    "seed_decoded_sha256": "b93be3358f7dfbf063d4109c52fd3bbbbfff9b34cb468c3123598b54cea72a56",
+    "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+    "cover_decoded_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+    "selected_round_sha256": "2ccafa3cb7f185bc78998ac12ded9da31d10831d7182eab69797ff10a028ce6f",
+    "accepted_prior_sha256": "a92612a33621450dfbfb68111900621b61cf7e20181acbc34710d31a651e2561",
+    "source_object_locations": "See ../capture-root-pilot/provenance.json: seed-source.json.gz, adaptive-source.json.gz, and ../d4-independent/objects/df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e.gz."
+  },
+  "checker_sha256": "50eef26bff3aee127e9ad508b1587014514c8e5f1cf9a3214e8ace7a92d88afd",
+  "pilot_sha256": "1abfc9244d19fcb38a131c3bee676c8973de991998c1e7ab224fae8196259737",
+  "shared_geometry_sha256": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+  "result_sha256": "488f26c0effe528f29d2cc06f60766e2c1f845f2aac93f65b18c0c4d3b5e76a4",
+  "replay": {
+    "cwd": "packing",
+    "environment": "source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh",
+    "command": "gtimeout 180 .venv/bin/python3 -m devtools.check_n11_capture_root_round1 --seed /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-capture/root-induction/seed.json --adaptive /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-capture/root-induction/adaptive.json --out resources/web/n11-optimality-2026-09-29/receipts/capture-root-round1-final --scratch-root /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-capture --workers 3 --max-owner-seconds 30 --max-events 100000"
+  },
+  "superseded_diagnostic": "../capture-root-round1-attempt1",
+  "supersession_reason": "Attempt 1 used pre-final resource-stop classification. Its mathematical output matched, but only the final receipt binds the checked source and refusal controls.",
+  "root_induction_proved": false,
+  "candidate_capture_proved": false,
+  "global_optimality_proved": false
+}

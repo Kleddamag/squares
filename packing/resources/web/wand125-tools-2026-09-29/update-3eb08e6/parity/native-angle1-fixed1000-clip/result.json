@@ -1,0 +1,114 @@
+{
+  "angles": "1",
+  "baseline": {
+    "accepted_leaves": 494,
+    "angle_count": 1,
+    "nodes": 1000,
+    "process": {
+      "command": [
+        "env",
+        "PYTHONPATH=/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmp/tmpf2vbl_o7/baseline:/Users/levy/wrk/github/squares/packing",
+        "/Users/levy/wrk/github/squares/packing/.venv/bin/python3",
+        "-m",
+        "devtools.verify_rectangle_density",
+        "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmp/tmpf2vbl_o7/candidate.json",
+        "--n",
+        "11",
+        "--side",
+        "381/100",
+        "--threshold",
+        "2252024993666617/2251799813685248",
+        "--angles",
+        "1",
+        "--max-nodes-per-angle",
+        "1000",
+        "--max-depth",
+        "48",
+        "--max-seconds",
+        "12.0",
+        "--timing"
+      ],
+      "exit_code": 2,
+      "process_cpu_seconds": 7.290783,
+      "process_system_seconds": 0.041724,
+      "process_user_seconds": 7.249059,
+      "timed_out": false,
+      "wall_seconds": 7.347239791000902
+    },
+    "status": "INCONCLUSIVE",
+    "stdout_decoded_sha256": "13c0c13e643305e49dbc91d133434a0127d2dd05f63561aaa850d52f2304c334",
+    "stop_causes": [
+      "node_limit"
+    ],
+    "unresolved_leaves": 13,
+    "verification_phase": {
+      "process_cpu_seconds": 7.202836,
+      "wall_seconds": 7.254792083000211
+    }
+  },
+  "baseline_kernel_sha256": "1d41fa6aaa9cd9d5dfb95b54fe0cc3598af52c3d3c3f400fd78d83ccf98ca7aa",
+  "baseline_ref": "2757efcf2e78bae9a7904513b6d62563c825d02a",
+  "candidate_git_blob": "07342b487967413e6e491970692d2c6b6d0b651c",
+  "candidate_path": "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json",
+  "candidate_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+  "cli_sha256": "db18d19c434ad17370521c4a3d88ba74ebf4e61515ff3861ea636f0265e3a538",
+  "current": {
+    "accepted_leaves": 494,
+    "angle_count": 1,
+    "nodes": 1000,
+    "process": {
+      "command": [
+        "env",
+        "PYTHONPATH=/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmp/tmpf2vbl_o7/current:/Users/levy/wrk/github/squares/packing",
+        "/Users/levy/wrk/github/squares/packing/.venv/bin/python3",
+        "-m",
+        "devtools.verify_rectangle_density",
+        "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/tmp/tmpf2vbl_o7/candidate.json",
+        "--n",
+        "11",
+        "--side",
+        "381/100",
+        "--threshold",
+        "2252024993666617/2251799813685248",
+        "--angles",
+        "1",
+        "--max-nodes-per-angle",
+        "1000",
+        "--max-depth",
+        "48",
+        "--max-seconds",
+        "12.0",
+        "--timing"
+      ],
+      "exit_code": 2,
+      "process_cpu_seconds": 5.390992000000001,
+      "process_system_seconds": 0.030695999999999994,
+      "process_user_seconds": 5.360296000000001,
+      "timed_out": false,
+      "wall_seconds": 5.421301665999636
+    },
+    "status": "INCONCLUSIVE",
+    "stdout_decoded_sha256": "430baaadc83c3533267020f4c135c3e0d0180484b3790ba063e501eba09f5a47",
+    "stop_causes": [
+      "node_limit"
+    ],
+    "unresolved_leaves": 13,
+    "verification_phase": {
+      "process_cpu_seconds": 5.3022279999999995,
+      "wall_seconds": 5.328376249999565
+    }
+  },
+  "current_kernel_sha256": "1e9ca048fd09557b8e7e435c3d5a1a3c5dac31ed4488fc192a17d9832d63dc5b",
+  "internal_seconds": 12.0,
+  "max_depth": 48,
+  "max_nodes_per_angle": 1000,
+  "n": 11,
+  "normalized_outcomes_equal": true,
+  "outer_seconds": 15.0,
+  "runner_sha256": "9f298e4afd7d6960eb2cd23ac73ada3df6b0b02f56686914b2ff604171af514a",
+  "scope": "same_fixed_work_native_cli_not_full_cpp_parity",
+  "side": "381/100",
+  "speed_parity_established": false,
+  "status": "MATCHED_FIXED_WORK",
+  "threshold": "2252024993666617/2251799813685248"
+}

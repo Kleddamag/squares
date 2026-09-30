@@ -106,16 +106,16 @@ def test_the_gap_is_exact_where_both_bounds_are(rows, cases) -> None:
 
 
 def test_an_invalid_record_fails_the_render(tmp_path: Path, monkeypatch) -> None:
-    source = tables.FRONTIER / "n-011.md"
+    source = tables.FRONTIER / "n-012.md"
     shutil.copy(tables.FRONTIER / "square-packing-case.schema.yaml", tmp_path)
     text = source.read_text(encoding="utf-8")
     front = safe_load(text.split("---\n")[1])
     assert front["packing"]["status"] == "open"
     broken = text.replace("\n  status: open\n", "\n  status: unknown\n", 1)
     assert broken != text
-    (tmp_path / "n-011.md").write_text(broken, encoding="utf-8")
+    (tmp_path / "n-012.md").write_text(broken, encoding="utf-8")
     monkeypatch.setattr(tables, "FRONTIER", tmp_path)
-    with pytest.raises(SystemExit, match=r"n-011\.md is not a valid case record"):
+    with pytest.raises(SystemExit, match=r"n-012\.md is not a valid case record"):
         frontier.frontier_cases()
 
 
@@ -135,7 +135,7 @@ def test_no_math_is_left_as_source_text_in_the_table(page: str) -> None:
     table = page[page.index("<tbody>") : page.index("</tbody>")]
     assert "$" not in table
     assert "sqrt(" not in table
-    assert r"\(\dfrac{31}{8}\)" in table
+    assert r"\(\dfrac{15680}{3951}\)" in table
 
 
 def test_the_frontier_inputs_are_render_inputs() -> None:

@@ -74,6 +74,19 @@ DECLARED_CONSUMER_TREES = {
 }
 
 DECLARED_CONSUMERS = {
+    "packing/devtools/render_explainer.py": (
+        "admits the solved n11 caption only when the case is proved, its exact lower "
+        "identity matches the ceiling and T-060 confirmation is present; the ceiling "
+        "alone and matching decimal displays do not establish s(11)"
+    ),
+    "packing/tests/test_explainer.py": (
+        "tests the proved-case exact lower/ceiling identity and refuses missing T-060 "
+        "confirmation or a changed root; rounded equality alone is not optimality"
+    ),
+    "packing/tests/test_certificate_reach.py": (
+        "checks the solved n11 record has proved status and matching exact lower/ceiling "
+        "identities; the diagnostic float cap is not used to prove optimality"
+    ),
     "packing/devtools/apply_upper_bound_packets.py": (
         "writes the ceiling a parallel packing's exact certificate proves, the printed side "
         "or the certified side rounded up at its precision, and the ceiling section, conflict "

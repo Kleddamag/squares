@@ -1,0 +1,30 @@
+{
+  "status": "INCOMPLETE_LOCAL_GEOMETRY_PROFILE",
+  "scope": "Exact shared witness/branch and elementary-feature generation only; no proposal, dual, negative margin, rectangle inclusion, capture, or global proof checked.",
+  "source_shared_with_published_checker": true,
+  "source_hashes": {
+    "cases/trump11/packing.py": "3b4eae938c37c13af6252ac5d83fa99aa95f6b1627b99920c5df8be94c56bea9",
+    "cases/trump11/tangent_cones.py": "17302de574d9f7bc377cbc1dc4c537dc60976d6a1e4e63432adb5fa184058765",
+    "cases/trump11/isolation_radius.py": "3b4f754b8a77c0a6edb12a8f669e705594817992f9983956d308aa7b343031b4",
+    "src/sqpack/field.py": "734a645d9b95bf43018b1d9662cf255fbf3b834b74ae5e1f10dcf2455a0e3de6",
+    "src/sqpack/verify.py": "56bc5b9f690b054ba30e82547dea4aa9d0ccea0a2b1827fab28fcc4e98677337",
+    "src/sqpack/exact_lp.py": "c7e2b92116ae41a7e5e081736be14731553d31bdc85f3ef78c107151aac108ba"
+  },
+  "checker_sha256": "dd6b1794354c694cf91dbdf10b1ff4c5363a8f29bc2ccccc4a49d5cf080c3b15",
+  "contacts": 14,
+  "branches": 128,
+  "elementary_functions": 1936,
+  "contact_features": 112,
+  "phases": {
+    "exact_witness_and_branches": {
+      "wall_seconds": 1.0143742909999673,
+      "process_cpu_seconds": 1.0123950000000002
+    },
+    "elementary_value_gradient_generation": {
+      "wall_seconds": 1.0304767920001723,
+      "process_cpu_seconds": 1.0290110000000001
+    }
+  },
+  "wall_seconds": 2.0469828750001398,
+  "max_seconds": 25.0
+}

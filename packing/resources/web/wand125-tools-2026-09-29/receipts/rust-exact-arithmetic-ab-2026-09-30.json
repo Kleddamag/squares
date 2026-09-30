@@ -1,0 +1,252 @@
+{
+  "arithmetic_ab": {
+    "baseline_binary_sha256": "e0a006b5d7c04aa53016f5f46b4e40a3bf4447080e0625c2e8b3f6318b75d697",
+    "baseline_child_cpu_median_seconds": 0.5548840000000004,
+    "baseline_child_cpu_range_seconds": [
+      0.5530310000000016,
+      0.5560149999999995
+    ],
+    "build": {
+      "build_ceiling_seconds": 180,
+      "builds": [
+        {
+          "binary_sha256": "e0a006b5d7c04aa53016f5f46b4e40a3bf4447080e0625c2e8b3f6318b75d697",
+          "command": [
+            "cargo",
+            "build",
+            "--offline",
+            "--locked",
+            "--release",
+            "--features",
+            "experimental-normalized-mul"
+          ],
+          "feature": "experimental-normalized-mul",
+          "label": "baseline",
+          "target_dir": "/Volumes/spud-ext1/agent-scratch/rust-exact-profile-think-i5x7/variants/baseline",
+          "wall_seconds": 16.955526082994766
+        },
+        {
+          "binary_sha256": "d25afa57a162cb821c5cae752209c77df7ff51715430b0d6ffd2f542f09e983b",
+          "command": [
+            "cargo",
+            "build",
+            "--offline",
+            "--locked",
+            "--release",
+            "--features",
+            "experimental-coprime-mul"
+          ],
+          "feature": "experimental-coprime-mul",
+          "label": "candidate",
+          "target_dir": "/Volumes/spud-ext1/agent-scratch/rust-exact-profile-think-i5x7/variants/candidate",
+          "wall_seconds": 14.688756000003195
+        }
+      ],
+      "cargo_encoded_rustflags": "",
+      "cargo_version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "rustc_version": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: aarch64-apple-darwin\nrelease: 1.98.0\nLLVM version: 22.1.8",
+      "rustflags": "",
+      "source_sha256": {
+        "/Users/levy/wrk/github/squares/packing/sqverify_exact/Cargo.lock": "162843d820f1919f80b37f565a4871a163fa6932a44123543bb47d2fe95aa3b9",
+        "/Users/levy/wrk/github/squares/packing/sqverify_exact/Cargo.toml": "ce81c640916d82c6b14737eb1484bf83fa4d7c99445208a6a05c520b962ec26f",
+        "/Users/levy/wrk/github/squares/packing/sqverify_exact/rust-toolchain.toml": "495c69d1db93f25f53e3d0d2d40d812313366cc368de317871c2ace6c6ffafa4",
+        "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/lib.rs": "87e7c231234803ab7b28176cf373b0720e29edc9a78464ca4714adb3621e41ee",
+        "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/main.rs": "fd45fbf50871c9380dad4614354c40a868da258c2c70d54aa5c80662abd53243"
+      }
+    },
+    "candidate_binary_sha256": "d25afa57a162cb821c5cae752209c77df7ff51715430b0d6ffd2f542f09e983b",
+    "candidate_child_cpu_median_seconds": 0.48323600000000777,
+    "candidate_child_cpu_range_seconds": [
+      0.4807920000000028,
+      0.48580000000000023
+    ],
+    "criterion": "candidate child CPU median <= 0.90 * baseline median, and the candidate and baseline child CPU ranges do not overlap",
+    "criterion_met": true,
+    "observations": [
+      {
+        "exact_values_equal": true,
+        "order": [
+          "baseline",
+          "candidate"
+        ],
+        "pair": 0,
+        "python": {
+          "process_cpu_seconds": 0.319834,
+          "wall_seconds": 0.3507630420062924
+        },
+        "rust": {
+          "baseline": {
+            "child_cpu_seconds": 0.5530310000000016,
+            "coordinator_cpu_seconds": 0.007534999999999958,
+            "query_wall_seconds": 0.5801325419888599,
+            "session_wall_seconds": 0.9648750419873977
+          },
+          "candidate": {
+            "child_cpu_seconds": 0.4807920000000028,
+            "coordinator_cpu_seconds": 0.006931999999999938,
+            "query_wall_seconds": 0.5299430000013672,
+            "session_wall_seconds": 0.8324219999922207
+          }
+        }
+      },
+      {
+        "exact_values_equal": true,
+        "order": [
+          "candidate",
+          "baseline"
+        ],
+        "pair": 1,
+        "python": {
+          "process_cpu_seconds": 0.31847500000000006,
+          "wall_seconds": 0.34172104101162404
+        },
+        "rust": {
+          "baseline": {
+            "child_cpu_seconds": 0.5548840000000004,
+            "coordinator_cpu_seconds": 0.007599000000000022,
+            "query_wall_seconds": 0.581952624997939,
+            "session_wall_seconds": 0.9589172080013668
+          },
+          "candidate": {
+            "child_cpu_seconds": 0.48580000000000023,
+            "coordinator_cpu_seconds": 0.007842999999999933,
+            "query_wall_seconds": 0.5609232090064324,
+            "session_wall_seconds": 0.7932927079964429
+          }
+        }
+      },
+      {
+        "exact_values_equal": true,
+        "order": [
+          "baseline",
+          "candidate"
+        ],
+        "pair": 2,
+        "python": {
+          "process_cpu_seconds": 0.3164999999999999,
+          "wall_seconds": 0.33598987499135546
+        },
+        "rust": {
+          "baseline": {
+            "child_cpu_seconds": 0.5560149999999995,
+            "coordinator_cpu_seconds": 0.007068999999999992,
+            "query_wall_seconds": 0.5938354579993756,
+            "session_wall_seconds": 0.8482432089949725
+          },
+          "candidate": {
+            "child_cpu_seconds": 0.48323600000000777,
+            "coordinator_cpu_seconds": 0.0072149999999999714,
+            "query_wall_seconds": 0.5337551250122488,
+            "session_wall_seconds": 0.7715922499919543
+          }
+        }
+      }
+    ],
+    "paired_candidate_over_baseline_child_cpu": [
+      0.869376219416274,
+      0.875498302347878,
+      0.869106049297246
+    ],
+    "scope": "Exactly the same 128 generated polygons and fixed rectangle table. The Rust child CPU includes parsing, convexity checks, clipping, arithmetic, and output encoding; Python CPU covers its internal coverage path. No verifier branching or certificate decision is timed.",
+    "status": "FIXED_WORK_ARITHMETIC_AB_DIAGNOSTIC_ONLY"
+  },
+  "created_utc": "2026-09-30T18:29:13.527830+00:00",
+  "criterion": "batch query wall <= 0.75 * singleton query wall in all three pairs",
+  "criterion_met": false,
+  "observations": [
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "singleton",
+        "batch"
+      ],
+      "pair": 0,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.4770179999999966,
+          "coordinator_cpu_seconds": 0.007321000000000022,
+          "query_wall_seconds": 0.531004499993287,
+          "session_wall_seconds": 0.7952339579933323
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.4801340000000067,
+          "coordinator_cpu_seconds": 0.024716000000000016,
+          "query_wall_seconds": 0.5346789579925826,
+          "session_wall_seconds": 0.9058099579997361
+        }
+      }
+    },
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "batch",
+        "singleton"
+      ],
+      "pair": 1,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.4747669999999973,
+          "coordinator_cpu_seconds": 0.00747299999999998,
+          "query_wall_seconds": 0.5046472499961965,
+          "session_wall_seconds": 0.7505080410046503
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.48030000000000594,
+          "coordinator_cpu_seconds": 0.02201499999999998,
+          "query_wall_seconds": 0.5361239159974502,
+          "session_wall_seconds": 0.8204203750065062
+        }
+      }
+    },
+    {
+      "exact_values_equal": true,
+      "exact_values_sha256": "4302505d30d5479502d1bb9350b3912863bf7fe3d7c5f18b0d419a867328b05b",
+      "order": [
+        "singleton",
+        "batch"
+      ],
+      "pair": 2,
+      "timing": {
+        "batch": {
+          "child_cpu_seconds": 0.47710199999999414,
+          "coordinator_cpu_seconds": 0.007300000000000001,
+          "query_wall_seconds": 0.5100758749904344,
+          "session_wall_seconds": 0.7306772500014631
+        },
+        "singleton": {
+          "child_cpu_seconds": 0.48279499999999764,
+          "coordinator_cpu_seconds": 0.02130500000000002,
+          "query_wall_seconds": 0.5246592499897815,
+          "session_wall_seconds": 0.8167907910101349
+        }
+      }
+    }
+  ],
+  "paired_batch_over_singleton_query_wall": [
+    0.9931277303055069,
+    0.941288450184708,
+    0.9722041019964268
+  ],
+  "scope": "Exact area queries only. Session wall includes child startup/shutdown; query wall includes JSON encode/write/read/decode and Rust arithmetic. Child CPU excludes coordinator; no verifier proof or speed claim.",
+  "source_sha256": {
+    "/Users/levy/wrk/github/squares/packing/benchmarks/bench_rectangle_rust_transport.py": "bff40e28131995a932eb87ba9c9d5b825242d517d42e27ef77f9eb1ab02b1a09",
+    "/Users/levy/wrk/github/squares/packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n11_L381/certified_candidate.json": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/Cargo.lock": "162843d820f1919f80b37f565a4871a163fa6932a44123543bb47d2fe95aa3b9",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/Cargo.toml": "ce81c640916d82c6b14737eb1484bf83fa4d7c99445208a6a05c520b962ec26f",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/rust-toolchain.toml": "495c69d1db93f25f53e3d0d2d40d812313366cc368de317871c2ace6c6ffafa4",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/lib.rs": "87e7c231234803ab7b28176cf373b0720e29edc9a78464ca4714adb3621e41ee",
+    "/Users/levy/wrk/github/squares/packing/sqverify_exact/src/main.rs": "fd45fbf50871c9380dad4614354c40a868da258c2c70d54aa5c80662abd53243",
+    "/Users/levy/wrk/github/squares/packing/src/sqpack/rectangle_density.py": "1cc7ae158856a443fe9c51be2e9b9b04f4d7dc40fe663bfbd7337cb6fe7e1c7c",
+    "/Users/levy/wrk/github/squares/packing/src/sqpack/rust_rectangle_geometry.py": "b32ca2bdfd79f61986c787901e94bbba1bb725a40866f2642b051640e335a4c0",
+    "/Volumes/spud-ext1/agent-scratch/rust-exact-profile-think-i5x7/variants/sqverify-exact-baseline": "e0a006b5d7c04aa53016f5f46b4e40a3bf4447080e0625c2e8b3f6318b75d697",
+    "/Volumes/spud-ext1/agent-scratch/rust-exact-profile-think-i5x7/variants/sqverify-exact-candidate": "d25afa57a162cb821c5cae752209c77df7ff51715430b0d6ffd2f542f09e983b"
+  },
+  "status": "FIXED_WORK_TRANSPORT_DIAGNOSTIC_ONLY",
+  "work": {
+    "angle_index": 1,
+    "pairs": 3,
+    "polygons": 128
+  }
+}

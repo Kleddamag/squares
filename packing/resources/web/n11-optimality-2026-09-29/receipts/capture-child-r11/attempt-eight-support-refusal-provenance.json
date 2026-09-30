@@ -1,0 +1,15 @@
+{
+  "checker_commit": "00e1ba224",
+  "checker_sha256": "2a81de9bbd20602f81e03f351a08b1def4a831a0cfc2abd576491e8c1b1cfb6b",
+  "child_source_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+  "finding": "The frozen eight-support output validator refused the first live r11 row because its source proposes ten supports, including two oblique directions; this is a validator scope refusal, not a geometric counterexample.",
+  "internal_seconds": 1800,
+  "parent_result_sha256": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
+  "parent_source_sha256": "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09",
+  "result_sha256": "c1ba3cefa55c5be73af760db9249eb93ac6c8fc76952599e51d8fcb79481817c",
+  "status": "REFUSED",
+  "stdout_sha256": "c07f7b3b9620bcd7ecb2da625cd2cc7327e197cfafcd4f61fe5c3fdb84ae52cb",
+  "supervisor_seconds": 1830,
+  "wall_seconds_reported_by_checker": 2.8166143340058625,
+  "workers": 1
+}

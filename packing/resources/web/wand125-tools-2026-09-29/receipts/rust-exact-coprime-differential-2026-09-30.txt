@@ -1,0 +1,1 @@
+EXACT RUST GEOMETRY DIFFERENTIAL PASSED {"analytic_sha256": "bfd6e4dea67a048321836c69c9c9fe782687ffc512ccb1afc43249212ba5f01e", "polygons_checked": 210, "refusals_checked": 10, "tokoharu_sha256": "8e3339eefb2fad81868f51e3f72cbc8487b40b66f9d8fbc711c1dbd5e5edeff4", "whole_verifier_controls": 2}

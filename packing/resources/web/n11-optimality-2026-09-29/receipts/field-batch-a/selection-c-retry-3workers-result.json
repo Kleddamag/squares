@@ -1,0 +1,26 @@
+{
+  "attempt_name": "retry-3workers",
+  "field_workers": 3,
+  "fields": [
+    {
+      "canonical_cases_excluded": 56,
+      "invocation_wall_seconds": 49.412724667003204,
+      "mask_index": 1139,
+      "process_cpu_seconds": 4.462357,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 49.217916792000324
+    },
+    {
+      "canonical_cases_excluded": 18,
+      "invocation_wall_seconds": 27.427222207999876,
+      "mask_index": 246,
+      "process_cpu_seconds": 4.825717,
+      "status": "PASS_ONE_FIELD_GEOMETRY_AND_TRANSFER",
+      "wall_seconds": 27.277475582999614
+    }
+  ],
+  "global_optimality_proved": false,
+  "jobs": 1,
+  "status": "COMPLETE_SELECTED_FIELDS",
+  "wall_seconds": 76.84244729200145
+}

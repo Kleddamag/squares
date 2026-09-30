@@ -1,0 +1,19 @@
+{
+  "checker_commit": "29fbcd25d",
+  "checker_sha256": "69a38da43ce599be5222b321de0a2c820d6e35180fa8032890bd368a1e984c2f",
+  "child_source_sha256": "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+  "input_source_reacquisition": "packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json records pinned publication object and decoded SHA; local decoded cache is disposable",
+  "internal_seconds": 3600,
+  "original_final_state_canonical_sha256": "da17e6f71c183f90ed60fd5e5e4771ea3a2aa59c7ee9566ef83c4fe3f42c7550",
+  "parent_result_sha256": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
+  "parent_source_sha256": "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a",
+  "process_cpu_seconds": "unmeasured",
+  "replay": "From packing after SHA-verifying pinned r11/r111 sources: timeout 3630s .venv/bin/python3 -m devtools.check_n11_capture_child_node --node r111 --parent-source <decoded-r11> --child-source <decoded-r111> --parent-result resources/web/n11-optimality-2026-09-29/receipts/capture-child-r11/result.json --workers 1 --max-seconds 3600 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-child-r111/result.json",
+  "result_sha256": "5efd22cc39ee0a6d2167ebf6a9ffe2d685e879218ea9dabb47affe3c62751e79",
+  "scope": "R111 child node state conditional on accepted r11 state; no entire tree/candidate/global conclusion",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "f1591f055cc503185843a49ea12705cd09937e0f8ee6f2b59e55adaec81d7fe9",
+  "supervisor_seconds": 3630,
+  "wall_seconds_reported_by_checker": 726.9879632919983,
+  "workers": 1
+}

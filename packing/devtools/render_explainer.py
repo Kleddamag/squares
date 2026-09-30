@@ -322,6 +322,9 @@ BEST_RENDERING = ATLAS / "rendering" / "n-011.svg"
 #: the frontier record's `verified_lower_bound`, and `build_bound_citations --check` holds
 #: the two together, so the figure moves when the register does.
 BOUND_CITATIONS = ATLAS / "bound-citations.json"
+FRONTIER_N11 = PACKING / "frontier" / "n-011.md"
+OPTIMALITY_REVIEW = REPO / "docs/project/reviews/review-2026-09-29-n11-optimality.md"
+KLEDDAMAG_REVIEW = REPO / "docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md"
 # The atlas composite of every known-best packing, shown as Figure 2 and served
 # beside the page rather than inlined: the PNG is the image, the PDF the link.
 #: The composite travels with the page: the SVG the figure shows, the PDF it links for
@@ -1799,13 +1802,14 @@ LINE_HEIGHT = 260.0
 
 @dataclass(frozen=True, slots=True)
 class VerifiedLowerBound:
-    """The case's current verified lower bound, as the citation record states it."""
+    """The citation's decimal value, which may only be a display of an algebraic root."""
 
     value: Fraction
-    decimal: str
+    display: str
     #: The reference without its venue, `Kleddamag after Levy et al. 2026`: who and when, which
     #: is what the figure's other sources print (`Stromquist 1984/2003`).
     credit: str
+    confirmed_by: tuple[str, ...]
 
 
 @cache
@@ -1840,7 +1844,41 @@ def verified_lower_bound(n: int) -> VerifiedLowerBound:
             "`authors year, venue`"
         )
     value = Fraction(lower["value"])
-    return VerifiedLowerBound(value=value, decimal=decimal(value), credit=reference[1])
+    display = exact_decimal(value)
+    return VerifiedLowerBound(
+        value=value,
+        display=display if display is not None else truncated(value),
+        credit=reference[1],
+        confirmed_by=tuple(lower["confirmed_by"]),
+    )
+
+
+def n11_solved(verified: VerifiedLowerBound) -> bool:
+    """Admit an equality caption only from the case's matching exact root claims.
+
+    The citation and packing constants carry rounded display digits. Their numeric
+    equality alone cannot establish equality of the underlying algebraic bounds.
+    """
+    parts = FRONTIER_N11.read_text(encoding="utf-8").split("---", 2)
+    if len(parts) != 3 or parts[0].strip():
+        raise SystemExit(f"{FRONTIER_N11.name}: missing case frontmatter")
+    case = safe_load(parts[1])["packing"]
+    if case["status"] != "proved":
+        if verified.value >= BEST_PACKING:
+            raise SystemExit("the displayed n=11 lower endpoint reached Trump without a proof")
+        return False
+    lower = case["verified_lower_bound"]
+    upper = case["verified_upper_bound"]
+    root = f"root(P_trump11, {digits(BEST_PACKING, CARRIED_PLACES)})"
+    if not (
+        case["n"] == 11
+        and lower["exact_form"] == upper["exact_form"] == root
+        and Fraction(lower["value"]) == Fraction(upper["value"]) == verified.value
+        and verified.value == BEST_PACKING
+        and "T-060" in verified.confirmed_by
+    ):
+        raise SystemExit("n=11 solved display lacks matching exact T-060 endpoint claims")
+    return True
 
 
 def line_x(value: float) -> float:
@@ -2184,12 +2222,71 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
     headline_frac = f"{headline.outer_side.numerator}/{headline.outer_side.denominator}"
     current = current_bound_facts()
     verified = verified_lower_bound(headline.n)
-    # Figure 3 hangs this mark's label to the left of its tick, over the band and clear
-    # of the certificate rows, which holds only while it lies between the two.
-    if not current.bounded_side < verified.value < BEST_PACKING:
+    solved = headline.n == 11 and n11_solved(verified)
+    # The old separate lower-bound tick needs a positive gap from Trump's packing.
+    # At the exact T-060 endpoint there is one tick, not two rounded-equal marks.
+    if verified.value <= current.bounded_side:
+        raise SystemExit("the verified lower bound is outside Figure 3's certificate band")
+    if solved and verified.value != BEST_PACKING:
+        raise SystemExit("the exact optimum does not match Figure 3's packing endpoint")
+    if not solved and verified.value >= BEST_PACKING:
         raise SystemExit(
-            f"the verified lower bound {verified.decimal} is not between T-026's bound and "
+            f"the verified lower bound {verified.display} is not between T-026's bound and "
             "the best packing; Figure 3's marks would stack wrong"
+        )
+    verified_x = f"{line_x(float(verified.value)):.0f}"
+    if solved:
+        verified_tex = truncated(verified.value, tex=True)
+        frontier_update = (
+            "**Frontier update, September 30, 2026:** The independently checked T-060 "
+            f"proof by {verified.credit} establishes $s(11)=T$, where $T$ is Trump's "
+            "exact degree-eight packing "
+            f"side specified in the [case record]({repo_url(FRONTIER_N11)}). The decimal "
+            f"${verified_tex}$ is a truncated display, not the definition of $T$. "
+            f"The [mathematical review]({repo_url(OPTIMALITY_REVIEW)}) "
+            "records the independent checks. This article retains the earlier T-018, "
+            "T-025, and T-026 lower-bound proofs below."
+        )
+        figure_aria = (
+            "Number line from 3.75 to 3.90 showing the earlier point and threshold "
+            "lower bounds, and one exact optimum endpoint shared by the T-060 lower "
+            f"proof and Trump's packing, displayed approximately as {verified.display}"
+        )
+        # Keep the raw SVG block contiguous for Markdown's HTML-block parser.
+        verified_mark = "<!-- T-060 shares the packing endpoint tick. -->"
+        figure_end = (
+            f"T-060, by {verified.credit}, closes the remaining gap: its independently "
+            "checked lower bound "
+            "equals Trump's upper bound at the exact algebraic side $T$. "
+            f"${verified_tex}$ is a truncated decimal display of $T$."
+        )
+    else:
+        frontier_update = (
+            "**Frontier update, September 22, 2026:** We have verified Kleddamag's "
+            "stronger lower bound, developed from the T-026 certificate below, so the "
+            f"[current bracket]({repo_url(FRONTIER_N11)}) is "
+            f"${verified.display} < s(11) \\le {truncated(BEST_PACKING, tex=True)}$. "
+            f"The [mathematical review]({repo_url(KLEDDAMAG_REVIEW)}) "
+            "records the replays and proof. This article retains the T-018, T-025, "
+            "and T-026 proofs below."
+        )
+        figure_aria = (
+            "Number line from 3.75 to 3.90 showing the previous lower bound, the point "
+            f"and threshold bounds, the current verified lower bound {verified.display} "
+            f"({verified.credit}), and the best known packing at {truncated(BEST_PACKING)}"
+        )
+        verified_mark = (
+            f'<line x1="{verified_x}" y1="56" x2="{verified_x}" y2="76" '
+            'stroke="var(--kpress-doc-muted)" stroke-width="1.25"/>\n'
+            f'<circle cx="{verified_x}" cy="76" r="3.2" fill="var(--kpress-doc-muted)"/>\n'
+            f'<text x="{verified_x}" y="52" dx="-6" text-anchor="end" '
+            f'fill="var(--kpress-doc-text)">{verified.display}, {verified.credit}</text>'
+        )
+        figure_end = (
+            f'The current verified lower bound, <span class="tex">{verified.display}</span> '
+            f"({verified.credit}), leaves a gap of "
+            f'<span class="tex">{truncated(BEST_PACKING - verified.value, tex=True)}</span> '
+            "beside Trump's packing."
         )
     package_side = Fraction(
         json.loads(THIRDPARTY_CERTIFICATE.read_text(encoding="utf-8"))["outer_side"]
@@ -2296,11 +2393,14 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T026_REVIEW_URL": repo_url(T026_REVIEW),
         "T026_RECORD_URL": repo_url(CURRENT_BOUND_RECORD),
         "NUMBER_LINE_MARKS": number_line_marks(facts, headline, current),
-        "VERIFIED_LOWER_DEC": verified.decimal,
+        "VERIFIED_LOWER_DEC": verified.display,
         "VERIFIED_SOURCE": verified.credit,
-        "VERIFIED_GAP": truncated(BEST_PACKING - verified.value, tex=True),
+        "FRONTIER_UPDATE": frontier_update,
+        "FIGURE3_ARIA": figure_aria,
+        "VERIFIED_MARK": verified_mark,
+        "FIGURE3_END": figure_end,
         "PRIOR_X": f"{line_x(float(PRIOR_LOWER)):.0f}",
-        "VERIFIED_X": f"{line_x(float(verified.value)):.0f}",
+        "VERIFIED_X": verified_x,
         "BEST_X": f"{line_x(float(BEST_PACKING)):.0f}",
         "BAND_X": f"{line_x(float(current.bounded_side)):.0f}",
         "BAND_W": f"{line_x(float(BEST_PACKING)) - line_x(float(current.bounded_side)):.0f}",
@@ -2591,6 +2691,7 @@ RENDER_INPUTS = (
     PACKING / "devtools" / "probes",
     PACKING / "src" / "sqpack",
     PACKING / "frontier" / "results.yaml",
+    FRONTIER_N11,
     PACKING / "atlas" / "known-best" / "composite-figure.json",
     BOUND_CITATIONS,
     PACKING / "atlas" / "known-best" / "rendering" / "n-011.svg",

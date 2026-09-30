@@ -1,0 +1,141 @@
+{
+  "compressed_bytes": 110747459,
+  "decoded_bytes": 506484849,
+  "excluded_case_ids": [],
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "intake_tool_sha256": "eeac4cef93fd1044aa3ec0a84351c111616b5c7b187aba8f12ed780296414daf",
+  "manifest_helper_sha256": "e85c3806ceef4fce64cccc359f964f0cade40924bba33d7ad5f9ba47a1efa815",
+  "manifest_sha256": "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b",
+  "objects": [
+    {
+      "downloaded_bytes": 5979,
+      "sha256": "024713c82d68f593d805f52ea6fc85932b4f2098663b2f8daf32827c5b39baf1"
+    },
+    {
+      "downloaded_bytes": 13137092,
+      "sha256": "113b0bfdb4caa19ce910b76c6dc172a6336423bf73a6585546621c3c45d1bf90"
+    },
+    {
+      "downloaded_bytes": 7098087,
+      "sha256": "131e6c2735048ee3dbf88ba622b26f166200c81e71792db893b0a37bbd72b501"
+    },
+    {
+      "downloaded_bytes": 12147,
+      "sha256": "14d5ece16e0b5ddc0754109054c8970e0c387e9fac192586faeb06692a456bf8"
+    },
+    {
+      "downloaded_bytes": 5939,
+      "sha256": "15884deac0006270175c4bc8a377579bd029624dcde10c0fa8aa95a931bd5f8b"
+    },
+    {
+      "downloaded_bytes": 870754,
+      "sha256": "262eafd2a813e4276a644bb2b327063935df1c31069c3b1a24c3c9fa199a9a03"
+    },
+    {
+      "downloaded_bytes": 6004,
+      "sha256": "3056ffe70cf29642bbd04dc5ce161463172bc2ced8ca69ed5af9b95f0898d944"
+    },
+    {
+      "downloaded_bytes": 8051473,
+      "sha256": "33328284e90fb7a6c0db4424420cc21fc5cfc715e1ab6fc1a07b043be92ccaf8"
+    },
+    {
+      "downloaded_bytes": 9554146,
+      "sha256": "3c0e2954ced726180e9432ba358ac4d8e6f9786a07d418cbe964bcd287ec9ef0"
+    },
+    {
+      "downloaded_bytes": 92430,
+      "sha256": "4876a2ae7c8476cfd4b1b57ce1a26707199f4883725ebd892d69544880154cda"
+    },
+    {
+      "downloaded_bytes": 47913,
+      "sha256": "521899b4386dfc1772390984da66c3cd1be25eb2cf07fe4eec2eac3ba90b67b3"
+    },
+    {
+      "downloaded_bytes": 6042,
+      "sha256": "60117672eca97b76492fe6607af1c768f8e69279c33f1e8b01458dff31a973b5"
+    },
+    {
+      "downloaded_bytes": 10522124,
+      "sha256": "65914dd64af96c0609d7c82ad4e325dab2eeb07e77ff07a20e3a2d8977c77c29"
+    },
+    {
+      "downloaded_bytes": 100176,
+      "sha256": "68b857e66acf1bafd4c0407fec919666ae243cff139d5e6b4f62ba8a5d204d62"
+    },
+    {
+      "downloaded_bytes": 529725,
+      "sha256": "6dc8feaec2f377d02cdd931495c2e3ac5c26a1be255cba25041bdf34aee2dda5"
+    },
+    {
+      "downloaded_bytes": 164683,
+      "sha256": "72535ea8ab3f711dfe614016a8ecdc76688caaef0ca7727a3ad8385dce6b3a41"
+    },
+    {
+      "downloaded_bytes": 1311070,
+      "sha256": "767de07c9b98016b5c92a0d532d6366ee3e866e4dbcc133e25372d4ab278111b"
+    },
+    {
+      "downloaded_bytes": 5268372,
+      "sha256": "7f3804f281f8764280c34703d41c9ff6dcfa85adf654130b39f25cce10e56693"
+    },
+    {
+      "downloaded_bytes": 100381,
+      "sha256": "7fe61b23a1bea8a5f2f1802ac2b98ddaf19a7ae60de6390a31e385a6c970aa16"
+    },
+    {
+      "downloaded_bytes": 1695170,
+      "sha256": "8dc3d2e795cbf5482287205451667d0a0ad4811fe5a7c3104c015934d8100585"
+    },
+    {
+      "downloaded_bytes": 15698636,
+      "sha256": "9793febc44f06b407171233c4c1d326e07cb4cd328a27b7645f3f559fa152ca6"
+    },
+    {
+      "downloaded_bytes": 50546,
+      "sha256": "ac82f761fff00eb74e542475246bfcd0d29f0e8626e057e56d18284f9c589e49"
+    },
+    {
+      "downloaded_bytes": 5946,
+      "sha256": "bf636cb3cdefa5280a53004549db70333b61db49b33c1989932c11bb1e54297c"
+    },
+    {
+      "downloaded_bytes": 7420757,
+      "sha256": "c72916aeeb9a104356ed4643b5f03ff1cf1c47fa74a3b231bbfca7c099645856"
+    },
+    {
+      "downloaded_bytes": 2509742,
+      "sha256": "c85e6fec9d73038e8b83427c4624a8c55400a249efc12e63b9654f05d4dd1912"
+    },
+    {
+      "downloaded_bytes": 20383496,
+      "sha256": "d2811412c44a726c11a59bb6f8c49c788c866f678ccd9383753daa085a04c380"
+    },
+    {
+      "downloaded_bytes": 5812,
+      "sha256": "de40d3a39fdd998a75bb142908dca0ea978357f574e4036aabe88c4876300ee8"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e"
+    },
+    {
+      "downloaded_bytes": 6067801,
+      "sha256": "f324d363dca62085f87251235524ee3b81fa06c8b235ed1026914f1890027097"
+    }
+  ],
+  "objects_directory": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+  "selected_adapter": "sequential_wall_seed",
+  "selected_case_ids": [
+    1849,
+    2047,
+    1848,
+    1840,
+    1823,
+    1775
+  ],
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PINNED_PROPOSALS_ACQUIRED",
+  "wall_seconds": 14.795099250004569
+}

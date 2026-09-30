@@ -579,7 +579,7 @@ controls:
   # Mutate a digit the table actually SHOWS. The rendered cell carries 8 significant
   # digits, so a change at the 14th is invisible to it and the check is right not to
   # fire -- which this control asserted the wrong way round on its first attempt.
-  replace: ["    value: '3.87708359002281'", "    value: '3.88708359002281'"]
+  replace: ["  reported_upper_bound:\n    value: '3.87708359002281'", "  reported_upper_bound:\n    value: '3.88708359002281'"]
   run: python3 -m devtools.render_research_tables --check
   expect: "STALE (re-run `python -m devtools.render_research_tables`)"
 
@@ -1293,9 +1293,9 @@ controls:
 
 - name: synopsis handoff - selected entry is replaced by another bead
   file: ../SYNOPSIS.md
-  replace: ["**Selected next entry:** `think-l6la`", "**Selected next entry:** `think-cyko`"]
+  replace: ["**Selected next entry:** `think-e2ot`", "**Selected next entry:** `think-cyko`"]
   run: python3 -m devtools.check_synopsis
-  expect: "exactly one canonical Selected next entry marker for think-l6la"
+  expect: "exactly one canonical Selected next entry marker for think-e2ot"
 
 - name: session handoff - observed end precedes its start
   file: campaign/agent-sessions/session-128-research-state-rollup.md

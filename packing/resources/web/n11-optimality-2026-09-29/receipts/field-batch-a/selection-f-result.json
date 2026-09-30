@@ -1,0 +1,26 @@
+{
+  "attempt_name": null,
+  "field_workers": 1,
+  "fields": [
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.30789454200203,
+      "mask_index": 1294,
+      "process_cpu_seconds": 14.908852,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.00193774999934
+    },
+    {
+      "canonical_cases_excluded": 0,
+      "invocation_wall_seconds": 55.20439350000015,
+      "mask_index": 1596,
+      "process_cpu_seconds": 14.903034,
+      "status": "INCOMPLETE",
+      "wall_seconds": 55.00113079199946
+    }
+  ],
+  "global_optimality_proved": false,
+  "jobs": 2,
+  "status": "INCOMPLETE_SELECTED_FIELDS",
+  "wall_seconds": 55.31020829100089
+}

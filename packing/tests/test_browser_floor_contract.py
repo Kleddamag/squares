@@ -767,6 +767,7 @@ def _jobs_without_node(document: Mapping[str, Any], step_name: str) -> list[str]
                 sweeps=namespace.sweeps,
                 suite_a=namespace.suite_a,
                 suite_b=namespace.suite_b,
+                suite_c=namespace.suite_c,
                 geometry=namespace.geometry,
                 typecheck=namespace.typecheck,
             )
@@ -1232,6 +1233,11 @@ def test_a_frontend_job_without_node_is_detected() -> None:
         and "npm ci" not in str(step.get("run"))
     ]
     assert _jobs_without_node(document, "browser floor liveness tests") == ["frontend"]
+
+
+def test_suite_c_does_not_claim_browser_liveness_without_node() -> None:
+    document = safe_load(WORKFLOWS[0].read_text(encoding="utf-8"))
+    assert "suite-c" not in _jobs_without_node(document, "browser floor liveness tests")
 
 
 def test_a_missing_tool_fails_under_ci_and_skips_locally(

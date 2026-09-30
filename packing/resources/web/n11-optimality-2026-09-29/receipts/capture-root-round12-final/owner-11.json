@@ -1,0 +1,60 @@
+{
+  "candidate_capture_proved": false,
+  "checker_sha256": "3eca359a215cde005b79fbd9f7866000f75b48bb3f50ce0b3a3d9b2d9db83b34",
+  "degenerate_sha256": "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385",
+  "events": 988,
+  "geometry_sha256": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+  "global_optimality_proved": false,
+  "new_points": [
+    [
+      "35451619/12500000",
+      "13165779/6250000"
+    ],
+    [
+      "283792617/100000000",
+      "82329193/50000000"
+    ],
+    [
+      "61552407/20000000",
+      "148599677/100000000"
+    ],
+    [
+      "165635737/50000000",
+      "148691511/100000000"
+    ],
+    [
+      "334526789/100000000",
+      "151799047/100000000"
+    ],
+    [
+      "36566073/10000000",
+      "192654101/100000000"
+    ],
+    [
+      "334846319/100000000",
+      "59142843/25000000"
+    ],
+    [
+      "38447049/12500000",
+      "14779053/6250000"
+    ],
+    [
+      "141816701/50000000",
+      "221112757/100000000"
+    ]
+  ],
+  "owner": 11,
+  "pilot_sha256": "1abfc9244d19fcb38a131c3bee676c8973de991998c1e7ab224fae8196259737",
+  "previous_result_sha256": "60269d2082768e2b102a1fa899bdaec73bde54bedb4d686a01dcdbcb7fe94a03",
+  "previous_sha256": "abb5e6de8f2fddc5ba67a61acc7d21489ae2ccb2254dcae056e9e915798033ae",
+  "prior_sha256": "5af9fec3d7b4b255e2211274c88fb57df6bcd29db33e4c53d18e1f514e9441c1",
+  "probes": 1824,
+  "process_cpu_seconds": 12.292575,
+  "retained_rows": 144,
+  "root_induction_proved": false,
+  "round": 12,
+  "round_sha256": "ece8dc180ae016a6bf8b625952af4ff4ac9d853df8d1dfae0281fb3630db3d7f",
+  "rows_checked": 215,
+  "status": "PASS_CONDITIONAL_OWNER_UPDATE",
+  "wall_seconds": 12.366036499999609
+}

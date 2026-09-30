@@ -2,9 +2,21 @@
 
 The Squares Project studies $s(n)$, the side of the smallest square that holds $n$
 non-overlapping unit squares.
-The problem is elementary to state and remains open even at small $n$. Its central case
-is eleven squares, where the verified bracket is $3.875 < s(11) \le 3.8770835\ldots$, a
-gap of about $0.0021$.
+The problem is elementary to state and remains open even at small $n$. Its central case,
+eleven squares, is now settled: $s(11) = T = 3.877083590022814\ldots$, the exact side of
+Walter Trump’s 1979 packing.
+
+[T-060](packing/frontier/RESULTS.md) records the global lower bound from the
+Astra-assisted
+[11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
+Queuingtheorydotcom, building on this project and Kleddamag.
+This repository independently replayed the pinned exact proof inputs and audited their
+mathematical composition (`V4/C5/S5`); [T-011](packing/frontier/RESULTS.md) verifies
+Trump’s matching witness.
+The [case record](packing/frontier/n-011.md),
+[review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
+[retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
+method’s shared dependencies and the publisher’s four stale cached-audit digests.
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the
@@ -42,9 +54,9 @@ defect logged. The rest of this README is about that work.
 | [**Results register**](packing/frontier/RESULTS.md) | Whole-result bounds, audits, structural theorems, and errata graded under [`epistemics.md`](epistemics.md) |
 | [**Frontier**](packing/frontier/STATUS.md) | One record per case for $n = 1\ldots324$, with reported and verified bounds kept separate |
 | [**Atlas**](packing/atlas/README.md) | Known-best and prospective packings, contact-scaffold enumeration, and deterministic renderings |
-| [**Literature**](packing/resources/README.md) | Retained primary sources, cleaned transcriptions, and raw extractions |
+| [**Literature**](packing/resources/README.md) | Retained primary sources, cleaned transcriptions, raw extractions, and the [maintained index of upstream repositories](packing/resources/README.md#recent-external-github-repositories) we integrate from |
 | [**Reports**](#reports) | Research reports on the mathematics, algorithms, infrastructure, formal proof, and search strategy |
-| [**Code and development guide**](development.md) | Exact verification, search, promotion, and the [validation tiers and behavioral lanes](development.md#validation-tiers) that gate every change |
+| [**Code and development guide**](development.md) | Exact verification, search, promotion, the [verification tooling overview](docs/project/verification-tooling.md) of what the checkers cover, and the [validation tiers and behavioral lanes](development.md#validation-tiers) that gate every change |
 | [**Campaign record**](packing/campaign/README.md) | Hypotheses, preregistered experiments, session records, agendas, and generated ledger |
 | [**Defect log**](defects.md) | Generated record of defects, detection methods, fixes, and regressions |
 
@@ -199,10 +211,11 @@ The Motion Lab is an exploratory instrument, not a citable research result.
 
 ## Reports
 
-These 20 research reports are the durable topical syntheses:
+These 21 research reports are the durable topical syntheses:
 
 | Report | Scope |
 | --- | --- |
+| [Exact Arithmetic for Independent Verifiers](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | Source-level comparison of Python and Rust rational arithmetic, native-library options, sampled profiles, and a controlled experiment measuring redundant normalization |
 | [Fractional Packing, Duality, and the Next N11 Discriminators](docs/project/research/research-2026-09-10-x027-fractional-duality.md) | Exact full-unit transport, interior duality and density equivalence, finite witnesses, and the limits of fractional obstructions |
 | [Seven Corner Marks, Contact Components, and Relational Helpers](docs/project/research/research-2026-09-10-x027-structural-helpers.md) | New ownership and contact-component deductions, shared-owner consistency, and bounded segment-helper comparisons |
 | [Certificate Mechanisms After the N11 Fractional Ceilings](docs/project/research/research-2026-09-10-x027-certificate-mechanisms.md) | Recent bound gains, weighted and floor charges, geometric expressiveness tests, and the finite optimal-dual-face criterion |
@@ -211,7 +224,7 @@ These 20 research reports are the durable topical syntheses:
 | [BC303 T2: From the Accepted Pose Domains to Exact Charge Tests](docs/project/research/research-2026-09-13-bc303-t2-charge-bridge.md) | Accepted C open-cell reduction and S first-owner sufficient test, with exact sweep and witness conditions; no charge or T2 verdict |
 | [N11 Definitions, Findings, and the Inference Chain](docs/project/research/research-2026-09-09-n11-evidence-and-inference.md) | First-principles interpretation through exp153, exact scope of results, remaining proof obligations, and unranked alternatives |
 | [N11 Inference Audit](docs/project/research/research-2026-09-09-n11-inference-audit.md) | Corrections to overbroad summaries, physical-versus-relaxed quantifiers, and missing evidence |
-| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | What is proved for $s(11)$, what remains conjectural, and why the available proof techniques do not close the gap |
+| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | Dated account of the former $s(11)$ gap and earlier proof techniques; T-060 and the current case record supersede its status summary |
 | [Algorithms and Tooling for Square Packing](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) | Search, numerical-to-exact promotion, verification, and the record landscape |
 | [FrankenSim as a Rust Toolkit for Square Packing](docs/project/research/research-2026-08-22-frankensim-rust-toolkit-for-square-packing.md) | Assessment of certified-arithmetic and determinism components in a larger Rust framework |
 | [Infrastructure for Square-Packing Exploration](docs/project/research/research-2026-08-22-infrastructure-for-packing-exploration.md) | Build order, latency tiers, language boundaries, and symbolic tooling |
@@ -344,11 +357,11 @@ transition contracts.
 
 | ID | Workflow | Enter when | Durable result | Usual handoff |
 | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | The sourced state of knowledge is incomplete | A sourced survey, source notes, conflicts, and explicit gaps | W2 |
-| W2 | `factual-review` | Existing claims need a correctness-only audit | Findings, authorized bounded corrections, or defects; no new theory smuggled into the review | W3 or W4 |
+| W1 | `research-survey` | The sourced state of knowledge is incomplete | A pinned source packet, claim IDs, proof obligations, source notes, conflicts, and explicit gaps | W2 |
+| W2 | `factual-review` | Existing claims need efficient confirmation and a correctness audit | Focused proof receipts, explicit unresolved obligations, measured cost, and findings; no new theory smuggled into the review | W5 for bottlenecks; W3 or W4 otherwise |
 | W3 | `insight-iteration` | Current evidence needs new explanations or hypotheses | Candidate `X-NNN`/`H-NNN` items with mechanisms, falsifiers, and information value | W6 |
 | W4 | `process-review` | Work is hard to reconstruct or the discipline itself needs review | Process findings, beads, and narrowly scoped contract or check changes | W5 or the next owning workflow |
-| W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | W6 |
+| W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | Return to the originating workflow (W2, W6 or W7) |
 | W6 | `research-loop` | A registered hypothesis has a fixed criterion, regime, budget, and instrument contract | A frozen instrument and one or more `exp-NNN` records, raw evidence, verdicts, and a current ledger | W2 for promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | A named packing-pipeline surface or research consumer needs a new, stronger, simpler, or repaired capability | A bounded implementation or refactor, executable controls, explicit evidence limits, cost receipt, and readiness decision; no scientific verdict | W2 before a materially changed trust boundary reaches W6; otherwise W5 or W6 |
 | W8 | `documentation-pass` | A period of research has left the reader-facing documents behind what the record now says | Reconciled root documents—README, tutorial, synopsis—checked against the artifacts and against each other, with every drift either fixed or logged as a defect; no new claim introduced | W2 for any claim the pass could not verify; otherwise the next owning workflow |

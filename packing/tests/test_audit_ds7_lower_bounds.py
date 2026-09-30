@@ -128,6 +128,67 @@ def test_a_stronger_non_ds7_report_at_n18_is_left_in_place() -> None:
     assert ds7.select_update(case) is None
 
 
+def test_n11_reported_algebraic_identity_is_not_misparsed_or_ranked() -> None:
+    case = ds7.read_case(REPO, None, 11)
+    reported = case["reported_lower_bound"]
+    assert reported["exact_form"] is None
+    assert "T=(6u+4)/(1+2u-u^2)" in reported["note"]
+    assert ds7.n11_report_without_parser_identity(case, "reported_lower_bound")
+    assert ds7.select_update(case) is None
+    comparison = next(row for row in ds7.audit(REPO, None, None, 11)["rows"] if row["n"] == 11)
+    assert comparison["reported_lower_bound"]["comparison"]["sign"] is None
+    assert comparison["reported_lower_bound"]["current_exact"] is None
+    assert (
+        comparison["verified_lower_bound"]["current_exact"]
+        == case["verified_lower_bound"]["exact_form"]
+    )
+    assert comparison["verified_lower_bound"]["comparison"]["sign"] == -1
+    assert "unique root" in comparison["verified_lower_bound"]["exact_identity_basis"]
+    assert not ds7.n11_report_without_parser_identity(case, "verified_lower_bound")
+    for key, value in (
+        ("value", "3.8"),
+        ("source_key", "[another source]"),
+        ("evidence", []),
+    ):
+        near_miss = deepcopy(case)
+        near_miss["reported_lower_bound"][key] = value
+        assert not ds7.n11_report_without_parser_identity(near_miss, "reported_lower_bound")
+        with pytest.raises(ValueError, match="lacks a usable exact identity"):
+            ds7.field_expression(near_miss, "reported_lower_bound")
+    unproved = deepcopy(case)
+    unproved["reported_status"] = "open"
+    assert not ds7.n11_report_without_parser_identity(unproved, "reported_lower_bound")
+    without_verified_identity = deepcopy(case)
+    without_verified_identity["verified_lower_bound"]["exact_form"] = None
+    with pytest.raises(ValueError, match="lacks a usable exact identity"):
+        ds7.field_expression(without_verified_identity, "verified_lower_bound")
+    malformed = deepcopy(case)
+    malformed["reported_lower_bound"]["exact_form"] = "unknown"
+    assert not ds7.n11_report_without_parser_identity(malformed, "reported_lower_bound")
+    with pytest.raises(ValueError, match="expression"):
+        ds7.field_expression(malformed, "reported_lower_bound")
+
+
+def test_verified_n11_root_comparison_uses_the_polynomial_not_display_digits() -> None:
+    case = ds7.read_case(REPO, None, 11)
+    with pytest.raises(ValueError, match="unsupported exact expression"):
+        ds7.exact_parse(case["verified_lower_bound"]["exact_form"])
+    # These rational endpoints straddle T; changing the display must not move it.
+    case["verified_lower_bound"]["value"] = "0"
+    for expression, sign in (("3.87708359", -1), ("3.87708360", 1)):
+        comparison = ds7.n11_verified_root_comparison(case, ds7.exact_parse(expression))
+        assert comparison is not None
+        assert comparison["sign"] == sign
+    for key, value in (("exact_form", "root(P_unknown, 3.877)"), ("evidence", [])):
+        near_miss = deepcopy(case)
+        near_miss["verified_lower_bound"][key] = value
+        assert ds7.n11_verified_root_comparison(near_miss, sp.Integer(3)) is None
+        with pytest.raises(ValueError, match="unsupported exact expression"):
+            ds7.field_expression(near_miss, "verified_lower_bound")
+    case["status"] = "open"
+    assert ds7.n11_verified_root_comparison(case, sp.Integer(3)) is None
+
+
 def test_opaque21_stays_nonexact_and_cannot_replace_a_stronger_exact_identity() -> None:
     case = ds7.read_case(REPO, None, 21)
     # Evan Daniel's s(21) = 5 in both lanes since 2026-09-29, and his 5000/1001 from

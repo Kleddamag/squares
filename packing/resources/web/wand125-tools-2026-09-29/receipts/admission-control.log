@@ -1,0 +1,8 @@
+L = 1.5  mass 0.500000000 -> 28.9  factor 57.800000000000
+  exact check OK: scaled mass = 289/10 = 28.9
+  scaled candidate: /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/admission-control-final/proof.candidate.json
+  running certify.py (workers=2) ...
+
+  status = VERIFIED  angles 201  nodes 209  3s
+  minimum leaf lower bound: 11.247558274423946
+  => certificate for s(1) >= 1.5: /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/admission-control-final/proof

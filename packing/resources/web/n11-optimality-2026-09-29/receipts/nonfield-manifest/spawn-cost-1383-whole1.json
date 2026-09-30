@@ -1,0 +1,22 @@
+{
+  "max_seconds": 20.0,
+  "payload_kind": "whole_node",
+  "payload_pickle_bytes": 128312497,
+  "schema": "n11_spawn_cost_diagnostic_v1",
+  "scope": "Node-object spawn/transfer only; no row geometry or proof credit.",
+  "source_sha256": {
+    "benchmark": "8e338e79ab7f86444339a0fc4a8359df01df1f83be898951b5a4c56ecf1894a4",
+    "manifest": "a730804aef482e9f32d4b579608a52727b55fa2df8fa4327dfbeae82c0184520",
+    "source_node": "34eca8dda7d8a97602b7eb0ee795b3674c52d10b9330fbd76d6f469be8f5cff1"
+  },
+  "spawn_wall_seconds": 0.8921663340006489,
+  "status": "COMPLETE_DIAGNOSTIC",
+  "worker_measurements": [
+    {
+      "maxrss_platform_units": 253444096,
+      "ready_after_seconds": 0.44909404200006975,
+      "steps": 5
+    }
+  ],
+  "workers": 1
+}

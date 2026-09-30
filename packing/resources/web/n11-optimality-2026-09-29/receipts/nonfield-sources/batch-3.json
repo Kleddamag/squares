@@ -1,0 +1,194 @@
+{
+  "compressed_bytes": 16411592,
+  "decoded_bytes": 87749452,
+  "excluded_case_ids": [],
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "intake_tool_sha256": "5372ef692cd1b6737052acbf5bdc5994fb049bb6016b14c16b6c1747c087ad33",
+  "manifest_helper_sha256": "e85c3806ceef4fce64cccc359f964f0cade40924bba33d7ad5f9ba47a1efa815",
+  "manifest_sha256": "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b",
+  "objects": [
+    {
+      "downloaded_bytes": 0,
+      "sha256": "055452dd4b4694aaf15331ffa6747879515d0e51b9daf682328f82a823114655"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "071071aac97bb9ba7a9e851ad8108f82b204eacb31cd25790f4ddc22f06dc3ef"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "080187eab2d1fc1006ca9745992fad1b61eb06c17885bcb07361aff9be92eb5c"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "1cbd82d9022a4fb704f59dcfe5359dccb114e0a11a3722acdab86c5d79b12869"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "1e981ae2e9a8c65a1c5d50c7f01c5274a2982d8b78baf0690e9f325f49f3932b"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "210f9beaf4e49881128a54b3fb575317e0f96ba124b485881b720d7a2161d9a7"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "29324656bd95ca23720142c9dafae04c1d9d7edb48a35a314aec2f6411f79275"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "2d9d924e5875cd6883216fa0ebf03cd5dd6dd6d67cd066c6b18c21198b30fa97"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "340cd84699db10b288c5db4ceb35f717a94d0c3b71da0b2b2f1b29d8503b39fd"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "42595b1c7d49adadd0e2a2844cece2f6bb9139f3e769da0d593daa52fbe10d02"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "458a031a057d12f785570e1e670806de301a293c1c933d034330837b531f2ddc"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "508de4370507976396128ddbf0ecdb06fbcaf0a62a0553d6618a7884f8336bad"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "50a177f06526d00525f7c1870753b7c7a1b459eef19139418093c71f28218242"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "528820fa694b45824583969c8ff9c2d02b097ee83cfb936deb8611cdd9b09d16"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "63d64d3f94fb939ddf84505fa6e7d2bbeaa800d14db68754370df6230c24634a"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "680ef3e9e58cb643b729befe45d0dcb7a383292519a0ea92febd0a3a06722216"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "68adba943c66ee60c65caf8094dfc18f68a622379acf506ed40558f87602f8aa"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "6a529f6d1a66300db617877c3635eee0fd023aec6fe57b466071fee6c5a7915e"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "7428ebe8f695a91bb258aaa880a2ac389bf5cbade5ac2d5b868b1196851dd2d6"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "7b6d67e08e29b7ee6401d440d2c128cbf3f5145be5d5f36a29d7edaab4853251"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "7c58cccaa9c2c71afdefe6a5b8ee18491ea91262165af1326d7e42d1d37400b6"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "8375fc49e6cbec2770c24a57ce3c5aca06b5359b040fec265b50277374882b81"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "8554254cc48dda71394fec04450bd5244b4b26f4216be9e3f1dbf7f72dcfc9de"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "90a5ab06da7f37919cf532f643c84d388fe371700488941106d706b6b192bcc2"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "91cd773b3593e84311dc342b453714bf6c50755d60029997b489d04418cd35fe"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "9222b6b60a47b2e5f2c5b294c6fa247535d28fbbdfb9307e4b536accc22563e6"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "96540116fe5fa64ad132e0cf33a80ce7ce1ef437958638d5af7f12e1a08bddff"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "99bc576cd6e9269e7d6abbf4370e725bdf9b0cc08a90c531bc0b032757135fb1"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "acdcf06ab6ccdfee28ab99caa0572626f81f9c62b7e759cb0ae51c1c3332fe2c"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "b91823a320f99ccbd721c890372bdf9d84652f6f1ffa749a5cb887170ebf280d"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "bd116d90693c5e719530b2c012e5bd63cccb230efc9e5df15268164584a3661b"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "c1bcd52c722f55397245f60a8f454e09da11a238d9aa297d7cbb5b61a42a35fd"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "c3228937af8b8bec56a30668e3145c7f262e59dad57f993d376568e51a834c65"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "c3271e2213303b2f25d7b30e19b706069b8ce74a43f6f85069077c6c37d31e1b"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "ca54b8702b7ef6776220a11fed7beb4b377a1b5041c5e1e70f62121f83ea96f7"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "cda68273db5c412feca321897bc62cc32e42ff6295e86ec92fcd29e38dbe2b29"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "d420b94e9fe60b9a2711eee5dd4e955ffdfdd4cb6169d1518dab96ffef8da14d"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "e5dc3531f30cd1ccaa6cc6fdfd3d8e56c0b1882dc6f21953f0375e4929d676ad"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "fbcbb481bb7a572ad9e7a6e1f5ab61666a0fe4b5da91fde7241fc09cce79a249"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "ff5bf38e9e4c1bdb1375e924f78b9b49d4ddebdfe5b9712cc693d5a243fa566c"
+    }
+  ],
+  "objects_directory": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+  "selected_case_ids": [
+    2135,
+    2132,
+    2053,
+    2056,
+    2055,
+    2129,
+    2095,
+    2100,
+    2086,
+    2052,
+    1539,
+    2143
+  ],
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PINNED_PROPOSALS_ACQUIRED",
+  "wall_seconds": 0.7198208340014389
+}

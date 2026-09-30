@@ -1,0 +1,21 @@
+{
+  "adaptive_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "candidate_capture_proved": false,
+  "capture_tree_proved": false,
+  "checker_sha256": "7642b10e0ed2021dda95f0f9b5f73f6286f471877c46b3c807760db52f7c910b",
+  "current_step": 1,
+  "current_step_rows_checked": 77,
+  "error": "capture row wall ceiling",
+  "global_optimality_proved": false,
+  "max_events_per_cover": 20000,
+  "max_seconds": 300.0,
+  "root_node_state_checked": false,
+  "root_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "status": "INCOMPLETE",
+  "step0_checker_sha256": "3e8180817ffedff6406c13e1e98ac5beacad54a2d8bd9695c8a238b4467f78af",
+  "step0_result_sha256": "8ca86cc3f119c1dc42e14b142d04cf6863934b799b8e8b6818e54830b1d22b78",
+  "steps": [],
+  "stop_step": 1,
+  "wall_seconds": 300.0094513330041,
+  "workers": 1
+}

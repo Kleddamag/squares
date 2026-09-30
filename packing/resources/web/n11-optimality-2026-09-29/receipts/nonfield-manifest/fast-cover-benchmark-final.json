@@ -1,0 +1,79 @@
+{
+  "median_of_row_speedups": 1.8919580823847286,
+  "rounds_per_row": 3,
+  "rows": [
+    {
+      "coverage": {
+        "edge_segments": 242,
+        "events": 87,
+        "probes": 173
+      },
+      "fast_cpu_seconds": [
+        0.12393700000000002,
+        0.12232900000000002,
+        0.12275799999999992
+      ],
+      "fast_median_cpu_seconds": 0.12275799999999992,
+      "frozen_cpu_seconds": [
+        0.22641,
+        0.22718900000000009,
+        0.22865199999999997
+      ],
+      "frozen_median_cpu_seconds": 0.22718900000000009,
+      "median_speedup": 1.8507062676159618,
+      "row": 0
+    },
+    {
+      "coverage": {
+        "edge_segments": 295,
+        "events": 120,
+        "probes": 239
+      },
+      "fast_cpu_seconds": [
+        0.20961600000000002,
+        0.21042899999999998,
+        0.21179299999999968
+      ],
+      "fast_median_cpu_seconds": 0.21042899999999998,
+      "frozen_cpu_seconds": [
+        0.40144899999999994,
+        0.407883,
+        0.41137900000000016
+      ],
+      "frozen_median_cpu_seconds": 0.407883,
+      "median_speedup": 1.9383402477795362,
+      "row": 22
+    },
+    {
+      "coverage": {
+        "edge_segments": 206,
+        "events": 77,
+        "probes": 153
+      },
+      "fast_cpu_seconds": [
+        0.09506400000000026,
+        0.09513899999999964,
+        0.09544399999999964
+      ],
+      "fast_median_cpu_seconds": 0.09513899999999964,
+      "frozen_cpu_seconds": [
+        0.17876400000000015,
+        0.1814659999999999,
+        0.17999900000000002
+      ],
+      "frozen_median_cpu_seconds": 0.17999900000000002,
+      "median_speedup": 1.8919580823847286,
+      "row": 31
+    }
+  ],
+  "schema": "n11_fast_exact_cover_benchmark_v1",
+  "scope": "Three first-step rows of one accepted case; no corpus forecast.",
+  "source_sha256": {
+    "fast": "eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904",
+    "frozen": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+    "generic": "e8fcfd02560d09e7a2a5b2622976ab021ef15a4456a2824b37abae926f6ab7d3",
+    "pilot_receipt": "2aa9c3819e4f39d9f4f489a25d1885b2a1c5a6f6c21099f42821d1165d608f88",
+    "pilot_source": "68adba943c66ee60c65caf8094dfc18f68a622379acf506ed40558f87602f8aa"
+  },
+  "status": "DIAGNOSTIC_MATCHED_EXACT_RESULTS"
+}

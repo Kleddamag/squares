@@ -1,0 +1,62 @@
+{
+  "upstream_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "upstream_commit": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "packet_ids": ["B1", "B2", "B3", "B4", "B5", "B6", "B7"],
+  "packet_index_keys": {
+    "B1": "4b940a7b89b4fbb51e4231e7595d48adc83e2dfa0ff0f789eafbe03923c46a8d",
+    "B2": "bcd0048d125f5582653de5f2180723fd4962fb2658c8f5034ba1c8f9979881e9",
+    "B3": "a3e3ebb9bb89be3e430ef7b813efe075f27d069e688228fa54299370cac9d104",
+    "B4": "6d654d2518955a5f9ab6c45100904168f37c262e410575a5e1472e8e4716b87d",
+    "B5": "0053aa7ea7354d2bc9ba2a23d9f53fc50ccb70865f01668a342d40dc5f9d2294",
+    "B6": "6c3ba29494ae83a98531ad8dafc98dd919ba37f230e44ec68d593c5e573dcc81",
+    "B7": "8f898b9c197d0ff7ae85266ce8ee2fdc225954d01657a413600ec4c6612ef8c5"
+  },
+  "packet_decoded_sha256": {
+    "B1": "f5c66ab125f7a4695039197ae52b5ce5ee2dd2365142e4cf8488a220f250f5d5",
+    "B2": "dd192f1a95fe23d0ae63112ef8f6f78ee31ba2f81241c47abf2b48299e430f45",
+    "B3": "8e369168774ba97721ba49efcff2d35cbe5f0d86f3e01a37b419a800e047d7e4",
+    "B4": "c68188a3ecd68ae865c139347cf5d4234f3e99e69c16709c806f4d307e732689",
+    "B5": "6088857994ed2fae2e5de5f27c0fccbeb7aac668736506fa81b6afdfefeed7e3",
+    "B6": "cc9b3d39e30bcf76a27956a7c453476d9364f6c3d2cc9864d66506ec65306832",
+    "B7": "4a93b7c841b4380fb0bd481b6d57e595d9f4ae84fe3ce86fc57bad7374c765a3"
+  },
+  "retained_packet_objects": "objects/B1.gz through objects/B7.gz",
+  "retained_packet_compressed_total_bytes": 19590,
+  "retained_packet_decoded_total_bytes": 91760,
+  "near_source": {
+    "indexed_path": "evidence/research/candidate-capture/near-refined1024-240.json",
+    "index_key": "73ddd73ce616ecb4a74d08c18a17f7eaff044df2111b0e500636b073e43ee970",
+    "decoded_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc",
+    "decoded_bytes": 185901535,
+    "compressed_object": "data/objects/49/491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc.gz",
+    "compressed_sha256_lfs_oid": "5d74352c6c05fd4e0ea4d4842915061603669a54205af2a59cf2303051a48949",
+    "compressed_bytes": 27653954,
+    "external_cache": "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-pose/near.json"
+  },
+  "accepted_pose_result_sha256": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
+  "checker_sha256": "0db9902b9686618bf58bebcaacffbba53e69443e2bf5cc823a7ae53e3b54ba9b",
+  "refusal_result_sha256": "53929a2507c58b1235923239cae6648aa9de71e60f131b39fa15f84c48de2ffe",
+  "canonical_final_state_rule": "sha256(json.dumps(final_state, default=str, sort_keys=True, separators=(',', ':')).encode())",
+  "canonical_final_state_actual_sha256": "a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80",
+  "canonical_final_state_reported_sha256": "810027063afb57bda360cc16eced4bf0e62c6cb29f112237f945cabab8613f9f",
+  "independent_crosscheck": "jq -acSj '.final_state' on the same decoded near source yields a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80",
+  "published_consumer_references": [
+    "src/evidence/research/candidate-capture/audit_capture_portable.py:29,408",
+    "src/evidence/research/candidate-capture/audit_complete_capture438.py:158",
+    "src/evidence/code/replay_candidate.py:199-200,272-281"
+  ],
+  "bounded_run": {
+    "checker_max_seconds": 15,
+    "supervisor_max_seconds": 30,
+    "exit_code": 2,
+    "outer_real_seconds": 1.65,
+    "outer_user_seconds": 1.46,
+    "outer_system_seconds": 0.18,
+    "checker_wall_seconds": 1.5905029579998882,
+    "checker_process_cpu_seconds": 1.588378,
+    "stdout": "stdout.json",
+    "outer_time": "outer-time.txt"
+  },
+  "scope": "The reported graph metadata and exact closed cut list are internally consistent. The published B7 audit's final-state digest does not bind to its own hash-verified near source, so this public capture certificate and fixed fresh-replay comparison refuse. This does not refute the geometric theorem. Actual source-parent ancestry and geometric replay remain separate."
+}

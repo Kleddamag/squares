@@ -1,0 +1,17 @@
+{
+  "accepted_step0_result_sha256": "8ca86cc3f119c1dc42e14b142d04cf6863934b799b8e8b6818e54830b1d22b78",
+  "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "checker_sha256": "7642b10e0ed2021dda95f0f9b5f73f6286f471877c46b3c807760db52f7c910b",
+  "internal_seconds": 300,
+  "observed_rows_checked": 77,
+  "replay": "From packing after decoding and verifying the pinned root and adaptive inputs: timeout 330s .venv/bin/python3 -m devtools.check_n11_capture_root_node --root-source <decoded-root> --adaptive <decoded-adaptive> --step0-result resources/web/n11-optimality-2026-09-29/receipts/capture-step0/result.json --stop-step 1 --workers 1 --max-seconds 300 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-step1-reference-incomplete/result.json",
+  "replayability_note": "The then-uncommitted checker source with SHA 7642b10e was not preserved; this incomplete result is a non-replayable cost observation, not proof evidence.",
+  "required_step1_rows": 149,
+  "result_sha256": "f66238ec63f422c9e5b7713278138ae16c85803ed86f3bdc672ba62d768c4cc9",
+  "root_decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "scope": "Source-bound reference-rational step1 cost diagnostic only; incomplete at the declared wall ceiling, with no step or node promotion",
+  "source_bytes_retained": false,
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "supervisor_seconds": 330,
+  "workers": 1
+}

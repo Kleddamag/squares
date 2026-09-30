@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 161
+count: 164
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 107
+  sessions_measured: 110
   sessions_unmeasured: 54
   attributed:
     rollups: 254
@@ -35,9 +35,9 @@ totals:
     one_off_code: 6272
     wall_hours: 624.21
 codex_receipts:
-  attributed: 64
+  attributed: 67
   unattributed: 2
-  measured: 66
+  measured: 69
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -2777,3 +2777,63 @@ sessions:
   one_off_code: 224
   wall_hours: 11.09
   codex_receipts: []
+- id: session-162
+  title: "wand125 Tools Review and Native Rectangle Verification"
+  status: stopped
+  primary_bead: think-8cps
+  phases: 4
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/session-162-codex-task-tree.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/session-162-codex-task-tree.yaml
+    model_responses: 434
+    agent_hours: 1.57
+    active_union_hours: 0.64
+    wall_hours: 0.64
+    snapshot_incomplete: true
+- id: session-163
+  title: "Native Rectangle Bounds and T-057 Census Admission"
+  status: stopped
+  primary_bead: think-8cps
+  phases: 5
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/session-163-codex-task-tree.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/session-163-codex-task-tree.yaml
+    model_responses: 763
+    agent_hours: 4.27
+    active_union_hours: 2.53
+    wall_hours: 2.63
+    snapshot_incomplete: true
+- id: session-164
+  title: "Upstream Merge and PR 246 Certification"
+  status: completed
+  primary_bead: think-3i74
+  phases: 39
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/session-164-codex-task-tree.yaml
+    model_responses: 2423
+    agent_hours: 7.51
+    active_union_hours: 2.73
+    wall_hours: 2.74
+    snapshot_incomplete: true

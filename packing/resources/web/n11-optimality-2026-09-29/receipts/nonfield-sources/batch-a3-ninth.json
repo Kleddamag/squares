@@ -1,0 +1,196 @@
+{
+  "compressed_bytes": 120403558,
+  "decoded_bytes": 534410526,
+  "excluded_case_ids": [],
+  "geometry_verified": false,
+  "global_optimality_proved": false,
+  "intake_tool_sha256": "eeac4cef93fd1044aa3ec0a84351c111616b5c7b187aba8f12ed780296414daf",
+  "manifest_helper_sha256": "e85c3806ceef4fce64cccc359f964f0cade40924bba33d7ad5f9ba47a1efa815",
+  "manifest_sha256": "b2b80cb792e12a41860b4f82b51f93ca08e2e89b3c3718b632e982a2a8fb588b",
+  "objects": [
+    {
+      "downloaded_bytes": 355749,
+      "sha256": "00291abb793a2df62b6efe9988357e9ca14e71451fba142c011a2a25d6c10c29"
+    },
+    {
+      "downloaded_bytes": 5977,
+      "sha256": "0b84c291dda8404a0ef3a37038b54952f5e1b9b7e1580119eb4d8e8bc1bf592c"
+    },
+    {
+      "downloaded_bytes": 1085521,
+      "sha256": "0d396f9961edbef20b97079676e71b60877c01c152671c17401301f1230f9a06"
+    },
+    {
+      "downloaded_bytes": 13687276,
+      "sha256": "100da04239e7368197ce7a9c8b2bfa8eb7d010d52264e707acbae298bb807e0c"
+    },
+    {
+      "downloaded_bytes": 5680,
+      "sha256": "10eb8d43df98c6a6dde21fe786c19b5830415ab630f1586b2f458e173bfe8693"
+    },
+    {
+      "downloaded_bytes": 84812,
+      "sha256": "1db4c405723bf4afe07cef9ceceabd7d708b6fdf357ea1b7fc2be8724790e5e9"
+    },
+    {
+      "downloaded_bytes": 7701203,
+      "sha256": "298ce2ad14eb3e61f5537c96ec823d594a4e7ba710afa1c4f76460a67a8224ca"
+    },
+    {
+      "downloaded_bytes": 12897,
+      "sha256": "3599b279ac0f07ba7ab3396645eaae68dab4a859c60c73f193fb76d62a9220e6"
+    },
+    {
+      "downloaded_bytes": 5859547,
+      "sha256": "378f62521969aeb5f912f0a46f639da7c45e14ec6e482bb714d9fa3ba14200c1"
+    },
+    {
+      "downloaded_bytes": 12120,
+      "sha256": "38d487177748a2f3bf4b35565f9384f7804e6c14d9b282c872bed1468a2a8c12"
+    },
+    {
+      "downloaded_bytes": 5501,
+      "sha256": "41ebcb8eb88676bfda74ec538f19d07f3f91298a52f0d40955b56ad2db388d3b"
+    },
+    {
+      "downloaded_bytes": 5414,
+      "sha256": "505731a2634f2932876a42de7cb0655bd864795ec4e2ca0c8a8263681da9b978"
+    },
+    {
+      "downloaded_bytes": 3569331,
+      "sha256": "5d46e329e2635e15763e218671bc9b3ca9dd2c3dec8689c030a61b478acd923b"
+    },
+    {
+      "downloaded_bytes": 5827,
+      "sha256": "5dfc566b1fce1b119e383f17a5a96abf1457b2ca422e4d10ea083e3522ff6f0c"
+    },
+    {
+      "downloaded_bytes": 5854,
+      "sha256": "64d3e51f98d2dd08435e9dad81ed2bda686104470f96754b7ee4c6284bc68dd4"
+    },
+    {
+      "downloaded_bytes": 47097,
+      "sha256": "6e2b806ee7cfe0c4499bd33474c89f2b40902fcd96ba0276679092d66571f8e8"
+    },
+    {
+      "downloaded_bytes": 3288880,
+      "sha256": "7679154d61727e163deb979bb9205f8ebd889a306af05aa7ec4e10a594fa6fd2"
+    },
+    {
+      "downloaded_bytes": 750464,
+      "sha256": "78d71c4e0f65597278156a4bb28c48b642f369b7a0f3ca992c00ceeab8a57bd8"
+    },
+    {
+      "downloaded_bytes": 128435,
+      "sha256": "86332809ca5ef1c43120b6c43cdc967b68c251e1d478a9f3e653402838b61420"
+    },
+    {
+      "downloaded_bytes": 8597901,
+      "sha256": "8b36951d21aa272715e8e4f858c8f082a5628a90e2edf333f16418a65f23088a"
+    },
+    {
+      "downloaded_bytes": 6002,
+      "sha256": "8bb4b79fab32024f4dec725f7615e10fc01cbabd9b5f23286994f84761e1e39e"
+    },
+    {
+      "downloaded_bytes": 10266928,
+      "sha256": "8c45956c834f557f8cb162da626d90335d6838571f0690d839d4105be68dab43"
+    },
+    {
+      "downloaded_bytes": 12182,
+      "sha256": "908dbd162655a77415bbbf13d5c8134d61dae266c2cca5a95bbe9538c72bccb6"
+    },
+    {
+      "downloaded_bytes": 5907,
+      "sha256": "9588e14451556de372c92e2ae28ffdf6e6410e6cce31362285e27451e559e403"
+    },
+    {
+      "downloaded_bytes": 11707,
+      "sha256": "9e254110d170821bf7f55d9cfd292f758b0c9271a48e6c586064c67521884938"
+    },
+    {
+      "downloaded_bytes": 7583862,
+      "sha256": "a5121d2097baeb0e77cea7feb17478b9560d3b35184831fa425146a336b32743"
+    },
+    {
+      "downloaded_bytes": 5892,
+      "sha256": "b4be355c883e370034eda41bb820db9a874ca906d0750547ea21fbb14810747f"
+    },
+    {
+      "downloaded_bytes": 15926732,
+      "sha256": "b6e37805cdeb4f28299c8673c17dba6a01b89e11b8613e4f4991f584036daf7d"
+    },
+    {
+      "downloaded_bytes": 6721292,
+      "sha256": "b921c2456df32ab8cbeacb955fd96a6539687d56d48ed053527de6328bf9a4c1"
+    },
+    {
+      "downloaded_bytes": 91813,
+      "sha256": "b957ba426c371ba5cce08acf74b2a11c7dab38b5ac30e199388ed960dcafd0ac"
+    },
+    {
+      "downloaded_bytes": 3199463,
+      "sha256": "c21efdf5a197255732ddd3d0a64939fcce4ae04c6397d25da3199421eadefb98"
+    },
+    {
+      "downloaded_bytes": 714550,
+      "sha256": "c28e61c3d8ecf50f61f580a71939e3cd0b2b06624712b54f4aa30556207c03dd"
+    },
+    {
+      "downloaded_bytes": 92363,
+      "sha256": "c9d5c01f5a7e56c45e3ae01b152f747de99f7f159f88daea96a77722cf9c3806"
+    },
+    {
+      "downloaded_bytes": 10503114,
+      "sha256": "d21d295655ad37487a0053916e07f10e0c6e13edf00efb56c67a6aef50d11070"
+    },
+    {
+      "downloaded_bytes": 4347044,
+      "sha256": "d6affd228d2b2355d183d4fab05bb9664142361fc4c57f3ee7fd5f4bcd284d06"
+    },
+    {
+      "downloaded_bytes": 1750701,
+      "sha256": "de4fe23802287d6ca0b93d3385116ba5c249328689ecf9860cdfd5ea4ffdb536"
+    },
+    {
+      "downloaded_bytes": 0,
+      "sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e"
+    },
+    {
+      "downloaded_bytes": 4859948,
+      "sha256": "e4929d3afaf1fa1d124bc57cef53807d0a0cdb51d15a1e1267c5d669f533e7e3"
+    },
+    {
+      "downloaded_bytes": 776499,
+      "sha256": "eb9a6c1f18666571b2f8b9d64706f5ac5b6f3d56e542b0921726de4b39558f7c"
+    },
+    {
+      "downloaded_bytes": 7075345,
+      "sha256": "ee74beb0965921df1e85953312a2193cc00f710b023c68aae1b113c8e8cf3d11"
+    },
+    {
+      "downloaded_bytes": 12030,
+      "sha256": "ef41dda31c755117348c7183d201b69014b824e0dfe355d277bd05bd1873a45e"
+    },
+    {
+      "downloaded_bytes": 1199682,
+      "sha256": "f6d92e80da0080bc0b7fb4b5d7a829a415090afb2275071f462c43110bb06cf7"
+    }
+  ],
+  "objects_directory": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+  "selected_adapter": "sequential_wall_seed",
+  "selected_case_ids": [
+    1810,
+    2069,
+    1887,
+    1693,
+    1449,
+    2048,
+    1311,
+    1891,
+    2051
+  ],
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PINNED_PROPOSALS_ACQUIRED",
+  "wall_seconds": 15.419620542001212
+}

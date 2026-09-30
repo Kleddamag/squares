@@ -1,0 +1,38 @@
+{
+  "schema": "sqpack.n11-conditional-d4-independent-receipt.v1",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "source_index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "objects": {
+    "cover": {
+      "indexed_path": "evidence/research/phase3/current/research/optimality/global_capture/center-cover-symmetric-exact.json",
+      "indexed_decoded_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+      "decoded_bytes": 773471,
+      "stored_path": "objects/df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e.gz",
+      "lfs_oid_sha256": "7c6d14012f06eb892912a50c93cc7408ce1f90524d46693c6178a01ceae71a99",
+      "stored_bytes": 25016
+    },
+    "overlay": {
+      "indexed_path": "evidence/research/phase3/work/phase2/geometry/cover_overlay_exact.json",
+      "indexed_decoded_sha256": "845b5f748843dd60fa7e290a5ea1a304da4e439ae229bd73a841aec816f4e700",
+      "decoded_bytes": 132395,
+      "stored_path": "objects/845b5f748843dd60fa7e290a5ea1a304da4e439ae229bd73a841aec816f4e700.gz",
+      "lfs_oid_sha256": "4b36026f5f16998929032abf5e730b56a2166a0880d5b6464b3abf9d9ed62bda",
+      "stored_bytes": 8850
+    },
+    "distance": {
+      "indexed_path": "evidence/research/phase3/work/phase2/geometry/overlay_distance_pairs.json",
+      "indexed_decoded_sha256": "4f960f4001faa6c9c1e7521f3a2344f71e10b41cd38a6425f6821cc1fd2ccd47",
+      "decoded_bytes": 442772,
+      "stored_path": "objects/4f960f4001faa6c9c1e7521f3a2344f71e10b41cd38a6425f6821cc1fd2ccd47.gz",
+      "lfs_oid_sha256": "64bcfe233d888ef1a435589ec68ad9d04c4fe33cd20f9864d719281af663e2f9",
+      "stored_bytes": 68180
+    }
+  },
+  "checker_path": "packing/devtools/check_n11_optimality_d4.py",
+  "checker_sha256": "19f4b0a47afd6acb327e85bd4a98ca2a43d2fdaa49aeb0edd30aa12d1b6aac1d",
+  "result_sha256": "c4aa4df460593abcb51cd4ebaaf916c78a6a718659bb6b7bf4245e3e67e6c00e",
+  "executed_command": "source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh; /usr/bin/time -p /opt/homebrew/bin/timeout 55s packing/.venv/bin/python3 -B packing/devtools/check_n11_optimality_d4.py --cover /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-d4/cover.json --overlay /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-d4/overlay.json --distance /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-d4/distance.json --max-seconds 45 --output packing/resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
+  "replay_script": "replay.sh",
+  "scope": "Independent conditional D4 lemma only; the 2180 exclusions and case-438 capture were not replayed."
+}

@@ -1,0 +1,45 @@
+{
+  "upstream_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "upstream_commit": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "source_manifest": "result.json:source_provenance",
+  "ten_source_objects_total_compressed_bytes": 112674709,
+  "ten_source_objects_total_decoded_bytes": 565254989,
+  "source_objects_location": "/Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-capture/source plus /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/n11-pose/near.json and near.gz",
+  "large_source_objects_retained_in_repository": false,
+  "input_capture_metadata_checker_sha256": "0db9902b9686618bf58bebcaacffbba53e69443e2bf5cc823a7ae53e3b54ba9b",
+  "checker_sha256": "c6c7574d8f9623b67202abdf9c31d56d88f6b9cadb94533569a4964e2b38688e",
+  "result_sha256": "cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248",
+  "reported_versus_actual_leaf_digests": {
+    "far15": {
+      "reported": "3b7f1ea07e466b3fe0509dfe72e94ff5d35413eb21f6f44de4736d3148549824",
+      "actual": "9e28b0927cfa568ead95beb35cc3173e3c0466d3175dc47bb6d325939e6f1451"
+    },
+    "far13": {
+      "reported": "f83eb23cc5b1f76ec1141d1d5f6c61d8a9edcd9c9b71fe157b3cb344ce1c41d1",
+      "actual": "87482985d0271e404133f1255f1b49e0ba3cf434ce9ce09b6b187f417089948e"
+    },
+    "far2": {
+      "reported": "7551646f88839c82771b14aab113618b5f08ecac68d57bb53f87cd72dd948769",
+      "actual": "11d4a28e176ed885dbd650854426704ec280b08b275e556765d68c49f4108e6c"
+    },
+    "near": {
+      "reported": "810027063afb57bda360cc16eced4bf0e62c6cb29f112237f945cabab8613f9f",
+      "actual": "a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80"
+    }
+  },
+  "independent_crosscheck": "Separate jq -acSj '.final_state' hashes match the Python canonical digests on all four leaves (Astra review).",
+  "bounded_run": {
+    "checker_max_seconds": 30,
+    "supervisor_max_seconds": 45,
+    "exit_code": 2,
+    "outer_real_seconds": 4.95,
+    "outer_user_seconds": 4.37,
+    "outer_system_seconds": 0.49,
+    "checker_wall_seconds": 4.882330999999795,
+    "checker_process_cpu_seconds": 4.802079,
+    "stdout": "stdout.json",
+    "outer_time": "outer-time.txt"
+  },
+  "scope": "The ten actual source objects form a hash-verified rooted parent graph with nine edges and ordered inherited branch assumptions. The three far source leaves carry reported whole-branch contradiction markers; their geometry and the external mask438-adaptive root induction have not been independently replayed. All four published audit final-state digests mismatch their corresponding exact source objects, so the public audit binding refuses. This is a certificate defect, not a packing counterexample."
+}

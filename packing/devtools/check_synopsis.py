@@ -621,6 +621,19 @@ def is_administrative_unmeasured_closeout(session: dict) -> bool:
     return not unmeasured_resource_problems(identifier, session)
 
 
+def is_administrative_closeout(session: dict) -> bool:
+    """Recognize a valid measured or legacy-unmeasured administrative closeout."""
+    if "handoff_role" not in session:
+        return is_administrative_unmeasured_closeout(session)
+    reason = session.get("stop_reason")
+    return (
+        session.get("handoff_role") == "administrative_closeout"
+        and session.get("status") == "stopped"
+        and isinstance(reason, str)
+        and bool(reason.strip())
+    )
+
+
 def select_latest_terminal_session(
     records: Iterable[tuple[Path, dict]],
 ) -> tuple[Path, dict] | None:
@@ -629,7 +642,7 @@ def select_latest_terminal_session(
         (path, session)
         for path, session in records
         if session.get("status") in {"completed", "stopped"}
-        and not is_administrative_unmeasured_closeout(session)
+        and not is_administrative_closeout(session)
     ]
     if not terminal:
         return None

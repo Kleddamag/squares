@@ -39,7 +39,7 @@ $$
 Swap the rays if necessary so that $e_2$ is the counterclockwise quarter-turn of $e_1$.
 Let $\phi$ be the first ray’s angle modulo $2\pi$. For each closed bin
 $\phi\in[j\pi/4,(j+1)\pi/4]$, $j=0,\ldots,7$, every such anchored square contains the
-radius-`h` wedge with directions $[(j+1)\pi/4,(j+2)\pi/4]$. Define the rational vectors
+radius-$h$ wedge with directions $[(j+1)\pi/4,(j+2)\pi/4]$. Define the rational vectors
 
 $$
 \begin{aligned}

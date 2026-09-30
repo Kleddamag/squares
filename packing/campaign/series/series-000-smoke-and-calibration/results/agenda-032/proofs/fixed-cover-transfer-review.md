@@ -57,8 +57,8 @@ After folding a physical square’s angle by a container D4 symmetry, choose the
 retained direction.
 If the angular discrepancy is δ, then tan|δ|≤D. A concentric B-square
 at that direction has extent, in either parent-axis direction, at most
-`(B/2)*(cosδ+|sinδ|) < 1/2`, because $\cos\delta+|\sin\delta| \le 1+D$. Thus its closed
-core lies strictly inside the physical unit parent.
+`(B/2)*(cosδ+|sinδ|) < 1/2`, because `cosδ+|sinδ| ≤ 1+D`. Thus its closed core lies
+strictly inside the physical unit parent.
 Undo the fold to obtain the actual selected core.
 
 The weighted measure and O are invariant under the same container symmetry, so folding
@@ -86,7 +86,7 @@ weak-contact placement, but actual strict cores do not depend on those component
 
 Let M=μ(K). The conservative feasible cover receipt is
 
-$U = M/m$.
+`U = M/m`.
 
 If U<7, seven disjoint remaining cores would carry total ν-mass at least seven inside K,
 a contradiction. If U≥7, this receipt does not exclude the eleven-square branch.
@@ -111,7 +111,7 @@ corresponding corner of K. Its intersection with the old container is a subset o
 old corner square, so this relocation creates no new overlap.
 
 The reported rationalized residual total is 7.804903. With that total, the conservative
-threshold would require $m > 7.804903/7$; a positive m by itself is far from enough.
+threshold would require `m > 7.804903/7`; a positive m by itself is far from enough.
 No value of the full-net m has been assumed or evaluated in this review.
 For any verified U_eff, the counting argument more generally excludes a branch with r
 remaining squares whenever the integer r is strictly greater than U_eff.
@@ -129,7 +129,7 @@ Even if U0−Ures−4 is positive, subtracting two feasible upper bounds does no
 gap between the true covering optima τ0 and τres.
 To prove an improvement beyond the four-owner accounting, obtain
 
-$L0 \le \tau0$, `τres ≤ Ures`, and `L0−Ures−4 > 0`.
+`L0 ≤ τ0`, `τres ≤ Ures`, and `L0−Ures−4 > 0`.
 
 L0 needs an exact feasible global covering dual with the same support and variable
 grouping as the claimed comparison.
@@ -157,8 +157,8 @@ This remains a comparison of feasible measures, not a theorem about optimal valu
 
 The sprint coordinator reports that Exp137 completed its exact fixed-weight deletion
 filters with no obstruction in any one-owner or four-owner class.
-The point-only survivor masses are $77421212793/8221052780 < 10$ for the one-owner cases
-and $13394344077/2055263195 < 7$ for the four-owner cases.
+The point-only survivor masses are `77421212793/8221052780 < 10` for the one-owner cases
+and `13394344077/2055263195 < 7` for the four-owner cases.
 These receipts were not independently re-run in this review.
 
 This closes the proposed additional deletion filters on that same weighted family.

@@ -24,7 +24,9 @@
 #             listed under `migrated`; `span` is the code span's text exactly; `reason`
 #             says why. An entry whose span is no longer in its file fails the check, so
 #             the list only shrinks.
-
+#   exempt:   files that never move, each {path, reason}, sorted by path: their exact bytes
+#             are pinned by a replay, or they quote an external source whose spans the
+#             tool would retype. They leave the backlog; listing one as migrated too fails.
 
 migrated:
 - README.md
@@ -737,7 +739,6 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-282-residual-skeleton-design.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/midpoint-allocation.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/README.md
-- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-a-corner-structure.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-b-angle-classes.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-c-n10-transfer.md
@@ -748,7 +749,6 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/adjacent-corner-two-owner-counterexample.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/bc-305-ownership-results.md
-- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/fixed-outer-pairs-bottom-corner-incompatibility.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/new-outer-constraints-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/outer-middle-capacity-two-proof.md
@@ -762,7 +762,6 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/dual-salvage-contract.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/endpoint-footprint-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/five-dot-transfer-review.md
-- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/multiple-footprint-domain-contract.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/owner-footprint-contract.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/owner-pose-refinement-contract.md
@@ -988,12 +987,17 @@ keep:
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-c-n10-transfer.md
   span: "A_ub"
   reason: "SciPy linprog's parameter name"
-- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
-  span: "B*(1+D) = 899996306539/900000000000 < 1"
-  reason: "`*` is multiplication, the shrink condition `B(1 + D) < 1`; the tool reads it as a star, `B^{\\ast}`"
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/deep-gate-wall-clock-receipt.md
   span: "[t025]"
   reason: "pytest parameter ids"
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/deep-gate-wall-clock-receipt.md
   span: "[t026]"
   reason: "pytest parameter ids"
+
+exempt:
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"

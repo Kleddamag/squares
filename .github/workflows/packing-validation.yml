@@ -181,6 +181,31 @@ jobs:
         if: "steps.engine-cache.outputs.cache-hit == 'true'"
         run: git ls-files -z -- sqsearch | xargs -0 touch -t 200001010000
 
+      # The exact verifier is a separate crate. Its cold compilation was included in
+      # the 39.3s gate on run 36686375268. Cache only an identical source/compiler pair;
+      # no prefix restore can associate an older binary with this exact key.
+      # All fmt/clippy/test/doc/build and differential checks still run on every gate.
+      - name: Key the exact verifier cache on its sources and compiler
+        id: exact-key
+        working-directory: packing/sqverify_exact
+        run: |
+          rustc_vv="$(rustc -vV)"
+          echo "tree=$(git rev-parse HEAD:packing/sqverify_exact)" >> "$GITHUB_OUTPUT"
+          echo "rustc=$(printf '%s' "$rustc_vv" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the exact verifier build
+        id: exact-cache
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_exact/target
+          key: >-
+            ${{ runner.os }}-sqverify-exact-${{ steps.exact-key.outputs.rustc }}-${{
+            steps.exact-key.outputs.tree }}
+
+      - name: Date exact verifier sources before their identical cached build
+        if: "steps.exact-cache.outputs.cache-hit == 'true'"
+        run: git ls-files -z -- sqverify_exact | xargs -0 touch -t 200001010000
+
       # `--fast` is the pull-request surface, and two separate pieces of work in one day
       # made it what it is. They pull in opposite directions on purpose.
       #
@@ -355,6 +380,18 @@ jobs:
             packing/sqsearch/target
           key: >-
             ${{ steps.engine-cache.outputs.cache-primary-key }}
+
+      # Keep same-source build intermediates even when another check or the tier wall
+      # fails. This cache has no prefix restore, so it can never re-label an older
+      # source's binary. Cargo and the complete exact verifier gate still validate it.
+      - name: Save the exact verifier build intermediates
+        if: >-
+          always() && steps.exact-cache.outcome == 'success' &&
+          steps.exact-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_exact/target
+          key: ${{ steps.exact-cache.outputs.cache-primary-key }}
 
       - name: Preserve validation timings and partial logs
         if: always()

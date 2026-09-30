@@ -3318,6 +3318,34 @@ def test_a_tree_proof_narrows_only_the_complete_post_merge_surface(
     assert "passed this exact tree" in captured.err
 
 
+def test_exact_verifier_cache_cannot_relabel_an_older_build() -> None:
+    """Partial failed builds may be reused only for identical sources and compiler."""
+    document = safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    steps = document["jobs"]["validate"]["steps"]
+    key = next(step for step in steps if step.get("id") == "exact-key")
+    assert key["working-directory"] == "packing/sqverify_exact"
+    assert "git rev-parse HEAD:packing/sqverify_exact" in key["run"]
+    assert "rustc -vV" in key["run"]
+    cache = next(step for step in steps if step.get("id") == "exact-cache")
+    assert "restore-keys" not in cache["with"]
+    assert cache["with"]["path"] == "packing/sqverify_exact/target"
+    assert "steps.exact-key.outputs.rustc" in cache["with"]["key"]
+    assert "steps.exact-key.outputs.tree" in cache["with"]["key"]
+    repair = next(step for step in steps if "identical cached build" in step.get("name", ""))
+    assert repair["if"] == "steps.exact-cache.outputs.cache-hit == 'true'"
+    assert "git ls-files -z -- sqverify_exact" in repair["run"]
+    save = next(step for step in steps if "Save the exact verifier" in step.get("name", ""))
+    assert "always()" in save["if"]
+    assert "steps.exact-cache.outcome == 'success'" in save["if"]
+    assert save["with"]["key"] == "${{ steps.exact-cache.outputs.cache-primary-key }}"
+    assert save["with"]["path"] == cache["with"]["path"]
+    gate = next(
+        step for step in steps if step.get("name") == "Run the required pull-request checks"
+    )
+    assert "exact-cache" not in gate.get("if", "")
+    assert steps.index(repair) < steps.index(gate) < steps.index(save)
+
+
 def test_the_engine_cache_backdates_and_saves_only_a_build_for_its_exact_key() -> None:
     """A partial restore or verified-main skip must not bless an old target as current."""
     document = safe_load(WORKFLOW.read_text(encoding="utf-8"))

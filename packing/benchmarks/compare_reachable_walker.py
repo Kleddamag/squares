@@ -1,3 +1,4 @@
+# pyright: reportPrivateUsage=false
 """Compare the preserved walker rule with its conditional-transform optimization.
 
 This measures selection only; it never runs the selected tests. Both modes use
@@ -11,6 +12,7 @@ import argparse
 import ast
 import hashlib
 import json
+import signal
 import time
 from dataclasses import asdict
 from functools import cache
@@ -34,11 +36,19 @@ def control(path: Path) -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--max-seconds", type=int, choices=range(1, 121), default=120)
     args = parser.parse_args()
     if args.out.exists():
         parser.error("retain prior evidence: choose a new output path")
     candidate = selector._walker_evidence  # noqa: SLF001
     source_before = Path(selector.__file__).read_bytes()
+    benchmark_before = Path(__file__).read_bytes()
+
+    def expired(_signum: int, _frame: object) -> None:
+        raise TimeoutError("selector comparison exceeded its declared wall ceiling")
+
+    previous_handler = signal.signal(signal.SIGALRM, expired)
+    signal.alarm(args.max_seconds)
     records = []
     try:
         for changed in (
@@ -70,11 +80,16 @@ def main() -> None:
             )
     finally:
         selector._walker_evidence = candidate  # noqa: SLF001
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, previous_handler)
     if Path(selector.__file__).read_bytes() != source_before:
         raise RuntimeError("selector changed during comparison")
+    if Path(__file__).read_bytes() != benchmark_before:
+        raise RuntimeError("benchmark changed during comparison")
     report = {
         "selector_sha256": hashlib.sha256(source_before).hexdigest(),
-        "benchmark_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "benchmark_sha256": hashlib.sha256(benchmark_before).hexdigest(),
+        "max_seconds": args.max_seconds,
         "all_selections_equal": all(record["equivalent"] for record in records),
         "records": records,
         "scope": "Three cold selector calls per mode on one checkout; no test execution.",

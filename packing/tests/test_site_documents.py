@@ -189,3 +189,13 @@ def test_long_reports_get_a_contents_rail_and_short_ones_do_not() -> None:
 
     assert not rail(short)
     assert 'class="kpress-toc ' in render_overview.PAGES["tutorial.html"]().html
+
+
+def test_a_hand_written_contents_list_is_dropped_from_the_page() -> None:
+    """The tutorial's own Contents list, written for GitHub, is not on its page, where
+    the contents rail lists the headings; the text around it stays."""
+    markdown = "Intro.\n\n## Contents\n\n1. [One](#one)\n2. [Two](#two)\n\n## One\n\nBody.\n"
+    assert site_documents.without_manual_contents(markdown) == "Intro.\n\n## One\n\nBody.\n"
+    page = site_documents.tutorial_page().html
+    assert 'id="contents"' not in page
+    assert 'href="#contents"' not in page

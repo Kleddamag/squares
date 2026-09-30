@@ -330,6 +330,8 @@ it.
   A long report gets a contents rail and a short one does not, by kpress’s own rule
   (seven headings and 800 words), so the choice is never made per page.
   Either way the reading column is centred.
+  A document’s own hand-written contents list, which GitHub needs and the site does not,
+  is dropped from its page, so the rail never repeats it as an entry.
 
 - **Document pages with contents.** On a wide screen the contents rail stays at the left
   edge and the reading column is centred on the page, under the centred navigation.

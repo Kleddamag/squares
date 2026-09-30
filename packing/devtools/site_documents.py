@@ -122,6 +122,18 @@ _TAG = re.compile(r"<(?!/)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>")
 _LINK_ATTR = re.compile(r'\s(href|src)="([^"]*)"')
 _ID_ATTR = re.compile(r'\s(?:id|name)="([^"]*)"')
 _EXTERNAL = re.compile(r"^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//)")
+# A document's own contents list, written for GitHub, which draws no contents rail: a
+# `## Contents` heading over nothing but a list of links to the document's headings.
+_MANUAL_CONTENTS = re.compile(
+    r"^## Contents\n\n(?:[ \t]*(?:\d+\.|[-*])[ \t]+\[[^\]]+\]\(#[^)]+\)[ \t]*\n)+\n?",
+    re.MULTILINE,
+)
+
+
+def without_manual_contents(markdown: str) -> str:
+    """The document without its hand-written contents list. On the site the contents
+    rail lists the headings, and the list would repeat as the rail's first entry."""
+    return _MANUAL_CONTENTS.sub("", markdown, count=1)
 
 
 @dataclass
@@ -242,7 +254,7 @@ def render_document(
     base = posixpath.dirname(document.source.relative_to(REPO).as_posix())
     context = LinkContext(document.name, tree, base)
     return render_overview.kpress_page(
-        document.source.read_text(encoding="utf-8"),
+        without_manual_contents(document.source.read_text(encoding="utf-8")),
         name=document.name,
         current=document.current,
         title=document.title,

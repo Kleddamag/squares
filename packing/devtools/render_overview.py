@@ -56,6 +56,7 @@ ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
 CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
+THEME_SCRIPT = BROWSER / "theme.js"
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -261,7 +262,8 @@ def kpress_page(
     """One standalone kpress page with the site's layer, nav and colophon.
 
     `page_scripts` are page programs in checked `.js` files, each placed in its own
-    script element after the math scripts; no script text is written here.
+    script element after the math scripts and the navigation bar's theme control
+    (`overview/theme.js`); no script text is written here.
     `strict_anchors` raises kpress's `broken_anchor` warning, an in-page `#…` link
     with no target, to a failure; the reader documents are rendered that way.
     """
@@ -304,7 +306,7 @@ def kpress_page(
         page = rewrite_body(page)
     programs = "".join(
         f"\n<script>{_script_text(path)}</script>"
-        for path in (MATH_RETRY_SCRIPT, *page_scripts)
+        for path in (THEME_SCRIPT, MATH_RETRY_SCRIPT, *page_scripts)
     )
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)

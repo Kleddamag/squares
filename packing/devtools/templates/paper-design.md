@@ -109,6 +109,30 @@ it.
   current page alone is underlined in the accent.
   The edition appears only in the closing line.
 
+- **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every
+  page, the explainer included.
+  It takes the nav items’ wash on hover and while its menu is open, and never
+  underlines. Pressing it opens a compact menu, a native popover under the gear with
+  square corners and the cards’ border and shadow, of three choices, each an icon and a
+  word: System, Light and Dark.
+  The current choice is in the accent with a check at its end.
+  Choosing applies at once, closes the menu and keeps the choice across pages and
+  visits; the menu also closes on Escape, an outside click or tabbing away.
+  The gear is a button named “Color theme” with `aria-haspopup="menu"` and
+  `aria-expanded`; the menu is a `role="menu"` of `menuitemradio` items carrying
+  `aria-checked`, and the arrow keys, Home and End move between them.
+  On a phone the gear stays at the right edge while the links scroll beneath it.
+  The choice is KPress’s own reader preference, the `kpress.theme` key its head
+  bootstrap applies before first paint, so no page flashes the wrong theme and every
+  stylesheet keys only on `data-kpress-resolved-theme`, never on `prefers-color-scheme`.
+  System follows the operating system as it changes.
+  The embed view has no navigation bar and so no gear, and a framed page follows the
+  choice its parent makes, live.
+  `overview/theme.js` is the script, and it announces a change as `squares:themechange`
+  for anything drawn on a canvas.
+  Adapted from metabrowser’s settings gear, reduced to one chooser with words beside its
+  icons.
+
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
   sections are `h2`s.
 

@@ -152,6 +152,15 @@ def test_certificate_comparisons_match_the_rendered_certificates(
     assert f"weighted points reach ${render_explainer.decimal(facts.outer_side)}$" in document
 
 
+def test_the_explainer_carries_the_site_theme_control(page: str) -> None:
+    """The explainer's nav ends in the same gear as every other page, and its script
+    runs after the nav is drawn."""
+    script = render_explainer.INLINE_SCRIPT_ASSETS["SITE_THEME"].read_text(encoding="utf-8")
+    assert page.count('class="site-theme-button"') == 1
+    assert page.index('class="site-theme-button"') < page.index(script)
+    assert 'stored("kpress.theme")' in page
+
+
 def test_the_page_is_self_contained(page: str) -> None:
     """The renderer's own check passes on its own output; the workflow relies on this.
 

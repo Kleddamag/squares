@@ -5,7 +5,7 @@ title: Independently replay capture branch geometry with complete closed boundar
 kind: task
 status: in_progress
 priority: 0
-version: 6
+version: 9
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies:
@@ -13,10 +13,10 @@ dependencies:
     target: is-01m3rb06s1vsjfwqa238mqh84a
 parent_id: is-01m3qyb542qv2xz4y2n7633g66
 created_at: 2026-09-30T05:01:07.864Z
-updated_at: 2026-09-30T11:02:21.797Z
+updated_at: 2026-09-30T12:16:16.255Z
 ---
 Build shared independent step semantics; verify source transitions and far15/far13/far2 contradiction geometry plus near-domain ancestry in separable source-node jobs. Each job declares inherited assumptions/root premises explicitly. Branch jobs can run conditionally alongside root induction but global composition requires root acceptance. Preserve boundary ownership and no silent use of stored contradiction flags.
 
 ## Notes
 
-Full root-state replay accepted0d55007a; fullr1 branch replay accepted677719a0 under frozen3e1b checker:8complete updates1585rows63additions,partial154rows zero promotion,117.128s2workers. Sol implementing shared parameterized remaining-child consumer; capture tree/global composition stillopen.
+Seven capture nodes accepted after r11receipt407aa7b5: sixcompleteupdates1189rows/3016partnerrows/5,477,848facets plus unpromotedpartial56rows.231.828s; exactfinalecdebb59. Remainingfar2,r111,near; siblingPINSandparallelruns next. Nearone-pass sourceindex addressesmeasured121repeated2.6sJSONparses but cachetrust reviewedbeforeuse.

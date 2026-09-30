@@ -3,15 +3,19 @@ type: is
 id: is-01m3rxqw1zt462wxchtztea5by
 title: Admit baseline-dependent D4 cuts and replay cases2175 and2176
 kind: task
-status: in_progress
+status: closed
 priority: 0
-version: 2
+version: 3
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3rb05kzxrn6zcj60cs1c91f
 created_at: 2026-09-30T10:28:38.077Z
-updated_at: 2026-09-30T10:36:38.576Z
+updated_at: 2026-09-30T11:30:32.070Z
+closed_at: 2026-09-30T11:30:32.069Z
+close_reason: Fresh necessary D4 cuts bound to the independently accepted1931-case baseline, exact source-plane joins and full2175/2176geometry replay all passed Astra-max review. Source-bound singleton receipts retained; no global theorem promotion.
+resolution: null
+duplicate_of: null
 ---
 Require exact1931 baseline execution IDs, then admit reviewed338f finite-cut obligations and compare actual source constraints byte-semantically to manifest cuts. Source closures acquired. Independent consumer must geometrically replay both constrained certificates before singleton exclusion credit. Diagnostic finite obligations already pass74 regions246 search nodes; currently no baseline or exclusion credit. Keep baseline and source-cut premises explicit.
 

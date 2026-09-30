@@ -5,15 +5,15 @@ title: Measure PR gate sensitivity to proof-corpus growth and hosted load
 kind: task
 status: closed
 priority: 2
-version: 7
+version: 10
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3ra1hjvn4bdh3h13aggqgvb
 created_at: 2026-09-30T07:35:11.413Z
-updated_at: 2026-09-30T10:16:37.981Z
-closed_at: 2026-09-30T10:16:37.979Z
-close_reason: Hosted Packing36700059142 at eeafe6a206c7f11c110ccff574ee3425d8781f31 passes all required jobs including behavioral shards, typecheck, macOS, geometry and frontend; pages-required also passes. Focused fixture cost repairs preserved logical checks and no timing thresholds were weakened. Later heads retain normal hosted certification.
+updated_at: 2026-09-30T12:07:44.057Z
+closed_at: 2026-09-30T12:07:44.056Z
+close_reason: Implemented, independently reviewed, pushed in01572bb8b, and all hosted PR checks pass. CIselector optimized with68focusedtests and measured cold-profile improvement; proofcostreporter covers17retained batches with fivecontrols and unknownmetric handling.
 resolution: null
 duplicate_of: null
 ---
@@ -21,4 +21,4 @@ Hosted run36684000513 at6c1c713af passed all logical checks but failed cost cont
 
 ## Notes
 
-Hosted shardA all4100 tests pass but172.23s exceeded168s. Two focused setup fixes retain rejection predicates while removing redundant seed geometry: generic_fresh7controls0.40s, sequential structurecontrol0.14s; full golden replays unchanged. Separate frozen-worktree executor defect was found during actual batches: shared-input path passed admission but invocation serialization used checkout-relative path.16 checker records retained without credit; supervisors stopped. Source_archive_reference now handles both repository roots;22 runner/inventory controls pass. Fresh actual replay required, no budget or proof acceptance relaxed.
+Measured/fixed dependency-selector hotspot without changing CI thresholds: imports ast.walk visited2.66millionnodes,6.36s cumulative of13.933s profiled selection. Skipping expression subtrees (cannotcontain importstatements) retains exception/match suites; same profile selection7.259s.68focusedselector tests pass6.83s, Ruff/typesclean. Candidate awaiting independentreview and hostedcheckpoint; broadlocaltests notrun.

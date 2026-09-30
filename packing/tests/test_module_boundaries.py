@@ -1075,6 +1075,9 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_n11_generic_fresh.py": {
             "test_complete_2095_receipt_has_every_step_and_no_pending_row",
         },
+        # Full 2135 replay: 8.71s in the retained source-bound receipt. Its eight
+        # fast admission and geometry controls remain in the required PR suite.
+        "test_n11_generic_sequential.py": {"test_complete_2135_exclusion"},
         "test_n11_threshold_certificate.py": {
             "test_the_case_package_replays_the_retained_bytes_by_the_interval_route",  # 46.7s
         },

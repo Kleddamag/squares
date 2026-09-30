@@ -1,0 +1,505 @@
+{
+  "status": "INCOMPLETE_BATCH",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "runner_sha256": "131b3f9463883068d800117d7e7518ac17ba3257231ea5f54a2d82dba1f84b26",
+  "checker_sha256": "820f35f7dfeb5ec9dd0cd276305f3e86a230abfccb94ee2a70463682f69d6e15",
+  "requested_case_ids": [
+    220,
+    1652,
+    1658,
+    1681,
+    1687,
+    1690,
+    1692,
+    1709,
+    1727,
+    1776,
+    1800,
+    1816,
+    1841,
+    1876,
+    2054,
+    2099,
+    2104,
+    2108,
+    2117,
+    2123,
+    2127,
+    2173
+  ],
+  "excluded_case_ids": [
+    2054,
+    2099,
+    2104,
+    2108,
+    2117,
+    2123,
+    2127
+  ],
+  "remaining_case_ids": [
+    220,
+    1652,
+    1658,
+    1681,
+    1687,
+    1690,
+    1692,
+    1709,
+    1727,
+    1776,
+    1800,
+    1816,
+    1841,
+    1876,
+    2173
+  ],
+  "global_optimality_proved": false,
+  "wall_seconds": 242.36003195900048,
+  "max_batch_seconds": 1800.0,
+  "jobs": 6,
+  "workers_per_case": 1,
+  "cpu_budget": 6,
+  "host_process_cpu_count": 10,
+  "results": [
+    {
+      "mask_index": 220,
+      "exit_code": 2,
+      "invocation_wall_seconds": 79.68132179100212,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "c9694fe9852ec512233e329120b279a7097c4fcefcccb59535d12da8f81d6cd0",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-220.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1652,
+      "exit_code": 2,
+      "invocation_wall_seconds": 4.420274999996764,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "cc73da1dad07669d580c7c3e943e7833fa0cd11ee13e31f0a65361c7e71d9452",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1652.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1658,
+      "exit_code": 2,
+      "invocation_wall_seconds": 4.127439542000502,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "c20c01fe74938810a184ad0a8c2aa1f632f362eae3a340fd2e61296d17d8ed3b",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1658.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1681,
+      "exit_code": 2,
+      "invocation_wall_seconds": 81.28609987500022,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "ac8644753eed244c14ca172b47c5bde56dcda4fcc5bf0a003c63d06350037865",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1681.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1687,
+      "exit_code": 2,
+      "invocation_wall_seconds": 3.53320037499725,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "593e3e43420cdd52b3e245127653215f4b88708f6bf5b2a66fb864595f71f940",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1687.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1690,
+      "exit_code": 2,
+      "invocation_wall_seconds": 89.90101795900046,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "9534d6939b8592fa86416533eb712157a2e2f73c119f2d30829b9bedca74a2ac",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1690.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1692,
+      "exit_code": 2,
+      "invocation_wall_seconds": 82.97161062500163,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "798b82c101c3e644f4a4a1c7229f8b281a2d56675f4ab64a87b1cbe6c47407a0",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1692.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1709,
+      "exit_code": 2,
+      "invocation_wall_seconds": 87.96068133299923,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "bf15bbf17843ed9ac17d42703d89f91dddc3680e4c5de92a3d7a1d56ae95bb07",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1709.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1727,
+      "exit_code": 2,
+      "invocation_wall_seconds": 87.84304466699905,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "7117ca18bd05fd132c4c59e417e03c522079ea92e0f3781e711de2d0f26398db",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1727.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1776,
+      "exit_code": 2,
+      "invocation_wall_seconds": 4.4790028749994235,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "5de9c213ee61b3faafd830992de3facace6ddc9aeee68a88a39ab77024e5a20d",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1776.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1800,
+      "exit_code": 2,
+      "invocation_wall_seconds": 87.12700512499941,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "e79b777e92b01cfd34d1c2931d3f329f503c2aa228dc1fa580796f47f1d2c361",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1800.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1816,
+      "exit_code": 2,
+      "invocation_wall_seconds": 4.60317854099776,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "5a73a191e26b8bc9a3dfa490c83aeaec657fad1251b7640add09f02b10a32bce",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1816.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1841,
+      "exit_code": 2,
+      "invocation_wall_seconds": 3.6387602080030774,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "28203a9c5f78118a29eb6a678cc792da031f518f2447ce2551033825ec6c953f",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1841.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 1876,
+      "exit_code": 2,
+      "invocation_wall_seconds": 4.771970499998133,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "bc0ae43b5e339a6e1dff7b17478cfe55b6cf2b195ed512072bdac6735284f943",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-1876.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    },
+    {
+      "mask_index": 2054,
+      "exit_code": 0,
+      "invocation_wall_seconds": 73.49392012500175,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2054
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "ec3cd817aaacb501cfd81a94f56de6207577a7030cf3768c69b9f6aae7b590aa",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2054.json"
+    },
+    {
+      "mask_index": 2099,
+      "exit_code": 0,
+      "invocation_wall_seconds": 69.37872529200104,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2099
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "0396fa1dec490fba16b5bc862fe1ec801529cb5ec6a31729bcb719574df29ac9",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2099.json"
+    },
+    {
+      "mask_index": 2104,
+      "exit_code": 0,
+      "invocation_wall_seconds": 86.14486504100205,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2104
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "ad4cb0f7a7cd4428f8a4978778c9a4ca1715a196ba96c1fc887ea5f8152da493",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2104.json"
+    },
+    {
+      "mask_index": 2108,
+      "exit_code": 0,
+      "invocation_wall_seconds": 80.30931316699935,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2108
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "76bc6d2699a39c7de20d48a463f54f0c2683e2db822e0e2de40c2ae93e884d38",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2108.json"
+    },
+    {
+      "mask_index": 2117,
+      "exit_code": 0,
+      "invocation_wall_seconds": 98.01255412499813,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2117
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "f2dcd19965c8c539ccdcc43d42ff4bdbafddca25ed2052d5051d177ad7f392e0",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2117.json"
+    },
+    {
+      "mask_index": 2123,
+      "exit_code": 0,
+      "invocation_wall_seconds": 73.81421404200228,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2123
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "3c914325f9705982662c89278ca30cccaeaaa2d923077ff14ae6cef15eb83f70",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2123.json"
+    },
+    {
+      "mask_index": 2127,
+      "exit_code": 0,
+      "invocation_wall_seconds": 78.95606020900232,
+      "status": "COMPLETE_CASE",
+      "excluded_case_ids": [
+        2127
+      ],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "d71dc2e3aa8d33c3ccc05ecf4a4a914ff47453a86e5b0ee1cc5ff4583176d07a",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2127.json"
+    },
+    {
+      "mask_index": 2173,
+      "exit_code": 2,
+      "invocation_wall_seconds": 72.06141366700103,
+      "status": "PROCESS_REFUSED",
+      "excluded_case_ids": [],
+      "invocation": {
+        "module": "devtools.check_n11_generic_sequential",
+        "working_directory": "packing",
+        "manifest": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz",
+        "objects": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects",
+        "workers": 1,
+        "max_seconds": 900.0,
+        "max_events": 50000
+      },
+      "receipt_sha256": "efb58186e6c7e391e253042b96f770584caba9fcd4319f9bdf07afe3ded99380",
+      "receipt": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a1-direct/case-2173.json",
+      "checker_status": "REFUSED",
+      "reason": null
+    }
+  ]
+}

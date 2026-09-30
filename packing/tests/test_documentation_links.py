@@ -10,14 +10,15 @@ from devtools import check_documentation
 from devtools.check_documentation import _link_problems
 
 
-def test_only_sqsearch_cargo_output_is_outside_document_map(
+def test_only_declared_cargo_outputs_are_outside_document_map(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Rustdoc licenses are generated; ordinary target-named paths stay checked."""
     generated = tmp_path / "packing/sqsearch/target/doc/static.files/SourceSerif4-LICENSE.md"
+    exact_generated = tmp_path / "packing/sqverify_exact/target/doc/static.files/LICENSE.md"
     authored = tmp_path / "docs/target/README.md"
     similar = tmp_path / "packing/sqsearch/target-not-generated/README.md"
-    for path in (generated, authored, similar):
+    for path in (generated, exact_generated, authored, similar):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("# Document\n")
     synopsis = tmp_path / "SYNOPSIS.md"

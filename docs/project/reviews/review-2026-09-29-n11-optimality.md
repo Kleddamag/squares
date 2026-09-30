@@ -20,11 +20,11 @@ No result that landed from the current upstream main branch closes this gap.
 
 ## Independent Verification Checkpoint
 
-Independent checks accept **1,906 of the 2,180 required exclusions**: all 1,904 cases in
-the source field-certificate union and generic cases 2095 and 2135, leaving 274. This is
-a case count, not a percentage of the proof.
+Independent checks accept **1,918 of the 2,180 required exclusions**: all 1,904 cases in
+the source field-certificate union and fourteen generic cases, leaving 262. This is a
+case count, not a percentage of the proof.
 The
-[receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
+[field receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
 records each contributing receipt and hash.
 Astra-max independently checked those bindings, empty pending inventories, each exact
 transfer set, and equality with the source field-case union: 46 distinct complete
@@ -42,7 +42,7 @@ The remaining obligations have different acceptance rules:
 | Obligation | Accepted scope | Remaining scope |
 | --- | --- | --- |
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
-| Other exclusions | Generic cases 2095 and 2135; all remaining source dependencies pinned | 26 baseline generic cases, 76 extension cases, and 172 returned cases: 274 distinct cases requiring independent geometric checks. These need 271 sequential checks and three special adapters. |
+| Other exclusions | Fourteen generic cases, including reviewed pilots 2095 and 2135; all remaining source dependencies pinned | 16 baseline generic cases, 76 extension cases, and 170 returned cases: 262 distinct cases requiring independent geometric checks. These need 259 sequential checks and three special adapters. |
 | Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual accepted geometric executions and the reviewed chain establish conditional root ownership. Later capture transitions remain open. |
 | Capture branches | Structural graph and conditional pose inclusion | Actual geometric transitions, branch coverage, ancestry, and final-state binding. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
@@ -76,6 +76,12 @@ pass, including exact final-state reconstruction and the terminal contradiction.
 Astra-max reviewed this argument and its geometry/state mutation controls.
 The final run took 23.75 seconds wall, 5.61 seconds coordinator CPU and 35.09 seconds
 child CPU with three workers; earlier incomplete attempts retain zero credit.
+The
+[exact-ID inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
+reconciles these reviewed executions and two parallel batches: twelve further exclusions
+completed under the same frozen checker.
+Unsupported source variants receive zero credit.
+This inventory does not rerun geometry or prove that an execution occurred.
 The parameterized checker also accepts
 [case 2135](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2135-pilot/final-result.json):
 75 seed points, 88 seed rows and all 48 sequential rows, including its terminal

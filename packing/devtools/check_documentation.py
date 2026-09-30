@@ -160,7 +160,11 @@ def check() -> list[str]:
         # cargo doc emits third-party font licenses beneath this crate's default
         # build directory (think-k8hl). Exclude that generated tree, not authored
         # documents in unrelated directories that happen to be named `target`.
-        and path.relative_to(REPO).parts[:3] != ("packing", "sqsearch", "target")
+        and path.relative_to(REPO).parts[:3]
+        not in {
+            ("packing", "sqsearch", "target"),
+            ("packing", "sqverify_exact", "target"),
+        }
         and not any(
             part in IGNORED_PARTS or part.startswith(".")
             for part in path.relative_to(REPO).parts

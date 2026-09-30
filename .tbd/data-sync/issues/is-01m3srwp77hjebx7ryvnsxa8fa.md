@@ -5,13 +5,13 @@ title: Keep terminal synopsis handoff and mutation anchor aligned after formatti
 kind: bug
 status: in_progress
 priority: 2
-version: 5
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3sk1aq5e7wm2hzghg3wf499
 created_at: 2026-09-30T18:23:07.481Z
-updated_at: 2026-09-30T19:16:28.668Z
+updated_at: 2026-09-30T19:27:16.436Z
 closed_at: null
 close_reason: null
 resolution: null
@@ -21,4 +21,4 @@ PR250 run36757489226 at7c8ed1116 failed synopsis and negative-control checks: Fl
 
 ## Notes
 
-Post-merge source-bound failure: run 36761793749, head 3687d9cba3033d6fdd5942150566b5fca4846c5c, deferred-controls-finer job 110045933934. In packing/devtools/controls.yaml:1330-1334, replacement target is think-e2ot→think-cyko but expect still says think-niqx. Actual check_synopsis refusal says Current Handoff must contain exactly one canonical Selected next entry marker for think-e2ot. Negative controls 171/172 fired; the 1440-step finer-net limit record agreed with its source certificate. No mathematical certificate failure is implied.
+Focused fix in PR253, head 52f62f5ab on main48d30ff33: only packing/devtools/controls.yaml expected text niqx→e2ot changed. Actual isolated selected negative control fired 1/1 (3.222 s control wall; 164.2 MiB snapshot), unmutated check_synopsis and diff-check passed, normal hook ran. PR evidence comment https://github.com/jlevy/squares/pull/253#issuecomment-5918098013. Root accepted cancellation requests for superseded main runs36762224141 and36764534873; neither is a pass/failure of this fix. Completed main failure36761793749 remains retained. PR253 all applicable hosted checks passed and merged 2026-09-30T19:26:21Z as 5ddb1cdaebfe9580570f949075a62f55973625f8. Deferred control was skipped on PR; fresh automatic main verdict remains pending, so no deferred PASS or full checkpoint credit yet.

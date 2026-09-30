@@ -168,14 +168,26 @@ def _require_receipt_header(
         "mass": str(candidate.mass),
         "status": "INCONCLUSIVE",
     }
-    if any(receipt.get(key) != value for key, value in expected.items()):
+    if any(
+        receipt.get(key) != value
+        or (
+            type(receipt.get(key)) not in (int, float)
+            if key == "max_seconds"
+            else type(receipt.get(key)) is not type(value)
+        )
+        for key, value in expected.items()
+    ):
         raise density.CandidateError("frontier receipt input, source, or settings differ")
 
 
 def _selected_leaves(
-    angle: density.AngleVerification, args: argparse.Namespace
+    angle: density.AngleVerification,
+    args: argparse.Namespace,
+    candidate: density.RectangleDensityCandidate,
 ) -> tuple[density.PendingBox, ...]:
-    boxes = comparison._require_complete_frontier(angle)  # pyright: ignore[reportPrivateUsage]
+    boxes = comparison._require_complete_frontier(  # pyright: ignore[reportPrivateUsage]
+        angle, candidate, max_depth=args.max_depth
+    )
     if angle.index != args.angle or angle.nodes != args.max_nodes_per_angle:
         raise density.CandidateError("frontier angle or node census differs")
     if len(boxes) != args.expected_pending_boxes:
@@ -187,9 +199,6 @@ def _selected_leaves(
         raise density.CandidateError("depth-capped leaf census differs")
     if any(box.stop_cause != "node_limit" for box in boxes if box not in selected):
         raise density.CandidateError("unexpected pending-box stop cause")
-    unique = {(box.left, box.bottom, box.right, box.top, box.depth) for box in boxes}
-    if len(unique) != len(boxes):
-        raise density.CandidateError("duplicate pending box")
     return selected
 
 
@@ -223,12 +232,14 @@ def main(argv: list[str] | None = None) -> int:
     source_path = Path(density.__file__)
     tool_path = Path(__file__)
     comparison_path = Path(comparison.__file__)
+    inventory_path = Path(comparison.inventory.__file__)
     started = time.monotonic()
     deadline = started + args.max_seconds
     try:
         source_bytes = source_path.read_bytes()
         tool_bytes = tool_path.read_bytes()
         comparison_bytes = comparison_path.read_bytes()
+        inventory_bytes = inventory_path.read_bytes()
         candidate_bytes = args.candidate.read_bytes()
         receipt_bytes = _bounded_receipt_read(args.frontier_receipt)
         receipt = json.loads(receipt_bytes)
@@ -271,7 +282,7 @@ def main(argv: list[str] | None = None) -> int:
                 angle=angle,
                 args=args,
             )
-            selected = _selected_leaves(angle, args)
+            selected = _selected_leaves(angle, args, candidate)
             for parent in selected:
                 try:
                     rows.append(_refine_parent(candidate, parent, deadline=deadline))
@@ -281,6 +292,7 @@ def main(argv: list[str] | None = None) -> int:
         _unchanged(source_path, source_bytes, label="checker source")
         _unchanged(tool_path, tool_bytes, label="refinement tool")
         _unchanged(comparison_path, comparison_bytes, label="comparison tool")
+        _unchanged(inventory_path, inventory_bytes, label="pending inventory helper")
         _unchanged(args.candidate, candidate_bytes, label="candidate")
         _unchanged(args.frontier_receipt, receipt_bytes, label="frontier receipt")
     except (
@@ -307,6 +319,7 @@ def main(argv: list[str] | None = None) -> int:
         "checker_source_sha256": checker_sha256,
         "refinement_tool_sha256": hashlib.sha256(tool_bytes).hexdigest(),
         "comparison_tool_sha256": hashlib.sha256(comparison_bytes).hexdigest(),
+        "pending_inventory_source_sha256": hashlib.sha256(inventory_bytes).hexdigest(),
         "angle": args.angle,
         "threshold": "1",
         "max_nodes_per_angle": args.max_nodes_per_angle,

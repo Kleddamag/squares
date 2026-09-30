@@ -11,6 +11,7 @@ import time
 from fractions import Fraction
 from pathlib import Path
 
+from devtools import rectangle_pending_inventory as inventory
 from sqpack import rectangle_density as density
 
 
@@ -29,13 +30,17 @@ def _parser() -> argparse.ArgumentParser:
 
 def _require_complete_frontier(
     frontier: density.AngleVerification,
+    candidate: density.RectangleDensityCandidate,
+    *,
+    max_depth: int,
 ) -> tuple[density.PendingBox, ...]:
-    if (
-        frontier.pending_boxes is None
-        or len(frontier.pending_boxes) != frontier.unresolved_leaves
-    ):
-        raise density.CandidateError("frontier diagnostics are incomplete")
-    return frontier.pending_boxes
+    return inventory.admit_pending_boxes(
+        frontier.pending_boxes,
+        unresolved_leaves=frontier.unresolved_leaves,
+        candidate=candidate,
+        angle=frontier.index,
+        max_depth=max_depth,
+    )
 
 
 def _require_unchanged(path: Path, original: bytes, *, label: str) -> None:
@@ -84,9 +89,19 @@ def _require_matching_frontier(
         "mass": str(candidate.mass),
         "status": report.status,
     }
-    if any(receipt.get(key) != value for key, value in expected.items()):
+    if any(
+        receipt.get(key) != value
+        or (
+            type(receipt.get(key)) not in (int, float)
+            if key == "max_seconds"
+            else type(receipt.get(key)) is not type(value)
+        )
+        for key, value in expected.items()
+    ):
         raise density.CandidateError("frontier receipt input, source, or settings differ")
-    if receipt.get("angles") != [angle.as_dict()]:
+    if json.dumps(receipt.get("angles"), sort_keys=True) != json.dumps(
+        [angle.as_dict()], sort_keys=True
+    ):
         raise density.CandidateError("frontier receipt boxes differ from this exact replay")
     if angle.status != "INCONCLUSIVE" or angle.unresolved_leaves == 0:
         raise density.CandidateError("frontier receipt has no inconclusive boxes to compare")
@@ -106,11 +121,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     source_path = Path(density.__file__)
     tool_path = Path(__file__)
+    inventory_path = Path(inventory.__file__)
     started = time.monotonic()
     deadline = started + args.max_seconds
     try:
         source_bytes = source_path.read_bytes()
         tool_bytes = tool_path.read_bytes()
+        inventory_bytes = inventory_path.read_bytes()
         candidate_bytes = args.candidate.read_bytes()
         receipt_bytes = args.frontier_receipt.read_bytes()
         receipt = json.loads(receipt_bytes)
@@ -141,7 +158,9 @@ def main(argv: list[str] | None = None) -> int:
             angle=frontier,
             args=args,
         )
-        pending_boxes = _require_complete_frontier(frontier)
+        pending_boxes = _require_complete_frontier(
+            frontier, candidate, max_depth=args.max_depth
+        )
         frontier_elapsed = time.monotonic() - started
         comparisons: list[dict[str, object]] = []
         timed_out = False
@@ -174,6 +193,7 @@ def main(argv: list[str] | None = None) -> int:
             )
         _require_unchanged(source_path, source_bytes, label="checker source")
         _require_unchanged(tool_path, tool_bytes, label="comparison tool")
+        _require_unchanged(inventory_path, inventory_bytes, label="pending inventory helper")
         _require_unchanged(args.candidate, candidate_bytes, label="candidate")
         _require_unchanged(args.frontier_receipt, receipt_bytes, label="frontier receipt")
     except (density.CandidateError, OSError, OverflowError, ValueError) as error:
@@ -188,6 +208,7 @@ def main(argv: list[str] | None = None) -> int:
         "checker": "sqpack.rectangle_density:native-exact-v2",
         "checker_source_sha256": checker_sha256,
         "comparison_tool_sha256": hashlib.sha256(tool_bytes).hexdigest(),
+        "pending_inventory_source_sha256": hashlib.sha256(inventory_bytes).hexdigest(),
         "n": candidate.n,
         "L": str(candidate.side),
         "B": str(candidate.core_side),

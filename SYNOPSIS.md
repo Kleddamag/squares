@@ -241,7 +241,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 164 | 101 completed; 62 stopped; 1 nonterminal |
+| Sessions | 164 | 102 completed; 62 stopped; all terminal |
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1287,7 +1287,8 @@ isolation, and the exact witness.
 The publisher’s four cached final-state digests are stale; our acceptance rests on fresh
 source-bound geometry, not those cached results.
 T-037’s verified `s(11) > 31/8` and T-059’s reported row-minimum equality retain their
-separate scopes. The next handoff is to publish and maintain the verified result.
+separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
+fresh-ensemble replay entry point.
 
 The following paragraphs retain the previous intake handoff as an execution record.
 It placed tooling and efficiency off the proof’s critical path, then assigned
@@ -1298,8 +1299,8 @@ records parallel lanes, bounded checks and integration debt.
 
 [Session 163](packing/campaign/agent-sessions/session-163-native-bounds-and-census.md)
 completed the reviewed rectangle-bound, refinement, and T-059 receipt-admission slices
-on PR 246. The merge with `main` and final certification are the current operational
-handoff under `think-niqx`. The
+on PR 246. The merge with `main` and hosted fast-tier certification are complete.
+The
 [dependency map](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md#continuing-work-and-bead-dependencies)
 separates these engineering slices from complete certificate replay, global counting,
 ceiling repair and accelerated-verifier validation.
@@ -1315,8 +1316,8 @@ certificate-page workflow passed at `c621b845f` and the documentation follow-up
 `c621b845f`. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-niqx`, merge the reviewed PR 246 work with `main` and
-certify the combined tree before resuming exact research.
+**Selected next entry:** `think-e2ot`, build the bounded fresh-ensemble replay entry
+point while preserving the accepted historical evidence.
 The later mathematical entry is `think-bmf3`, W7: design and cost a whole-angle
 traversal using the measured refinement result, before a complete external rectangle
 replay. The

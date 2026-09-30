@@ -190,13 +190,16 @@ def test_complete_2095_receipt_has_every_step_and_no_pending_row(tmp_path: Path)
     assert recipe["seed_sha256"] == generic.SEED_PIN[0]
     assert recipe["audit_sha256"] == generic.AUDIT_PIN[0]
     # One reviewed exact-cover worker avoids a nested pool inside the slow lane.
-    # The finite clock remains live, and every row must finish before acceptance.
+    # This is a complete-replay golden, not a 60-second performance contract: the
+    # slow lane runs four xdist workers, and the former 60-second limit expired there
+    # while a full atlas replay shared the runner. Keep a finite operational ceiling;
+    # every row and the final source recheck must still finish before acceptance.
     result = sequential.run(
         argparse.Namespace(
             case_id=2095,
             manifest=sequential.MANIFEST,
             objects=generic.OBJECTS,
-            max_seconds=60,
+            max_seconds=300,
             max_events=50_000,
             workers=1,
             cover_backend="fast",

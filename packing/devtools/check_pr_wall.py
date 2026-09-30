@@ -15,8 +15,10 @@ This reads one workflow run's jobs from the GitHub API and computes:
   own queue, blobless checkout and pinned Python setup, which the required context makes
   a contributor wait through. A completed legacy run without that step ends at the
   aggregator's start; a still older run with no aggregator ends at its last gating job's
-  completion. Both fallbacks say which endpoint they used and are unavailable to a live
-  check;
+  completion. Both historical fallbacks say which endpoint they used. A live aggregator
+  whose jobs API withholds its own active step may instead use this checker's invocation
+  time as an explicitly labeled upper bound, after binding the run attempt and complete
+  prerequisite cohort. It cannot understate the wall;
 * **each job's wall**, with its queue, and its step time split into setup and work.
   A step is setup when its name matches `setup_steps` in the register: provisioning,
   caches, artifact transfer and the post-job teardown. Everything else is work.
@@ -72,7 +74,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal, Protocol, override
 
@@ -140,9 +142,6 @@ STEP_FIELDS = ("name", "conclusion", "started_at", "completed_at")
 #: told finished. The jobs endpoint can lag the `needs` graph by a moment.
 SETTLE_ATTEMPTS = 3
 SETTLE_SECONDS = 3.0
-# A running aggregator can precede the jobs API's view of its active wall step.
-# Spend this extra bounded window only on that specific coherent live view.
-LIVE_STEP_BACKOFF_SECONDS = (2.0, 4.0, 8.0, 12.0)
 WALL_STEP = "Hold the pull request's wall to its budget"
 #: What a wall's size verdict does to the run. Absent means `enforcing`.
 ENFORCEMENT = ("enforcing", "advisory")
@@ -476,8 +475,14 @@ def measure(
     policy: WallPolicy,
     *,
     kind: str | None,
+    live_step_upper_bound: datetime | None = None,
 ) -> Measurement:
-    """The run's wall to its wall-check step, and every gating job's split."""
+    """The run's wall to its wall-check step, and every gating job's split.
+
+    Only the checked live aggregator may supply an invocation-time upper bound when
+    GitHub's jobs list withholds the active step until the job completes. An upper
+    bound can make a wall larger, never make an over-budget wall pass.
+    """
     reasons: list[str] = []
     start = _instant(run.get("run_started_at") or run.get("created_at"))
     if run.get("conclusion") == "cancelled":
@@ -546,6 +551,15 @@ def measure(
         )
     if wall_step_start is not None:
         end, ends_at = wall_step_start, f"the start of `{WALL_STEP}`"
+    elif live_step_upper_bound is not None and aggregator is not None:
+        end = live_step_upper_bound
+        ends_at = f"this live check's invocation (upper bound on `{WALL_STEP}` start)"
+        if aggregator.get("status") != "in_progress":
+            reasons.append("the live aggregator was not in progress at the fallback endpoint")
+        if aggregator_start is None or end < aggregator_start:
+            reasons.append("the live fallback endpoint predates the aggregator start")
+        if any(finished_at > end for finished_at, _ in finished):
+            reasons.append("the live fallback endpoint predates a prerequisite completion")
     elif (
         aggregator is not None
         and aggregator_start is not None
@@ -895,11 +909,65 @@ def _unexpected_non_skipped_job_ids(
     }
 
 
+def _admit_live_step_upper_bound(
+    run: dict[str, Any],
+    jobs: Sequence[dict[str, Any]],
+    workflow: WorkflowWall,
+    run_id: int,
+    bound: datetime,
+) -> None:
+    """Bind a conservative local endpoint to this live PR attempt and complete cohort."""
+    attempt = os.environ.get("GITHUB_RUN_ATTEMPT", "")
+    if (
+        os.environ.get("GITHUB_JOB") != workflow.aggregator
+        or os.environ.get("GITHUB_RUN_ID") != str(run_id)
+        or not re.fullmatch(r"[1-9][0-9]*", attempt)
+        or run.get("id") != run_id
+        or run.get("run_attempt") != int(attempt or "0")
+        or run.get("event") != "pull_request"
+        or run.get("path") != workflow.file
+        or run.get("status") != "in_progress"
+    ):
+        raise WallError("the live invocation does not match this PR aggregator and run attempt")
+    start = _instant(run.get("run_started_at"))
+    aggregators = [job for job in jobs if job.get("name") == workflow.aggregator]
+    if len(aggregators) != 1:
+        raise WallError("the live aggregator job identity is missing or duplicated")
+    aggregator = aggregators[0]
+    aggregator_start = _instant(aggregator.get("started_at"))
+    if (
+        start is None
+        or aggregator.get("status") != "in_progress"
+        or aggregator_start is None
+        or not start <= aggregator_start <= bound
+    ):
+        raise WallError("the live aggregator timestamps do not fit this run attempt")
+    gating = [
+        job
+        for job in jobs
+        if _gates(job, workflow, workflow.aggregator) and job.get("conclusion") != "skipped"
+    ]
+    # Matrix jobs share a prerequisite key but have distinct full display names.
+    names = [str(job["name"]) for job in gating]
+    if len(names) != len(set(names)) or not all(
+        job.get("status") == "completed"
+        and (finished := _instant(job.get("completed_at"))) is not None
+        and start <= finished <= bound
+        for job in gating
+    ):
+        raise WallError(
+            "the live prerequisite cohort is duplicated, unfinished or outside this attempt"
+        )
+
+
 def _settled_jobs(
     client: JobsClient,
     run_id: int,
     workflow: WorkflowWall,
     expected: set[str],
+    *,
+    live_run: dict[str, Any] | None = None,
+    live_step_upper_bound: datetime | None = None,
 ) -> list[dict[str, Any]]:
     """The jobs once the live aggregator is visible and every listed gate has settled.
 
@@ -931,37 +999,6 @@ def _settled_jobs(
         jobs = client.jobs(run_id)
         reads += 1
     aggregator = next((job for job in jobs if job.get("name") == workflow.aggregator), None)
-    if (
-        aggregator is not None
-        and aggregator.get("status") == "in_progress"
-        and _instant(aggregator.get("started_at")) is not None
-        and not any(
-            step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
-            for step in aggregator.get("steps") or []
-        )
-        and expected <= _reported_job_ids(jobs, workflow)
-        and not _unexpected_non_skipped_job_ids(jobs, workflow, expected)
-        and all(
-            job.get("status") == "completed"
-            for job in jobs
-            if _gates(job, workflow, workflow.aggregator)
-        )
-    ):
-        for seconds in LIVE_STEP_BACKOFF_SECONDS:
-            time.sleep(seconds)
-            jobs = client.jobs(run_id)
-            reads += 1
-            aggregator = next(
-                (job for job in jobs if job.get("name") == workflow.aggregator), None
-            )
-            if aggregator is None or aggregator.get("status") != "in_progress":
-                break
-            if any(
-                step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
-                for step in aggregator.get("steps") or []
-            ):
-                break
-    aggregator = next((job for job in jobs if job.get("name") == workflow.aggregator), None)
     if aggregator is None:
         raise WallError(
             f"the jobs API did not report live aggregator `{workflow.aggregator}` after "
@@ -972,14 +1009,6 @@ def _settled_jobs(
             f"the jobs API reported live aggregator `{workflow.aggregator}` without a "
             f"start time after {reads} reads"
         )
-    if not any(
-        step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
-        for step in aggregator.get("steps") or []
-    ):
-        raise WallError(
-            f"the jobs API reported live aggregator `{workflow.aggregator}` without a "
-            f"started `{WALL_STEP}` step after {reads} reads"
-        )
     reported = _reported_job_ids(jobs, workflow)
     missing = expected - reported
     unexpected = _unexpected_non_skipped_job_ids(jobs, workflow, expected)
@@ -989,6 +1018,16 @@ def _settled_jobs(
             f"{reads} reads (missing: {', '.join(sorted(missing)) or 'none'}; "
             f"unexpected non-skipped jobs: {', '.join(sorted(unexpected)) or 'none'})"
         )
+    if not any(
+        step.get("name") == WALL_STEP and _instant(step.get("started_at")) is not None
+        for step in aggregator.get("steps") or []
+    ):
+        if live_run is None or live_step_upper_bound is None:
+            raise WallError(
+                f"the jobs API reported live aggregator `{workflow.aggregator}` without a "
+                f"started `{WALL_STEP}` step after {reads} reads"
+            )
+        _admit_live_step_upper_bound(live_run, jobs, workflow, run_id, live_step_upper_bound)
     return jobs
 
 
@@ -1077,6 +1116,9 @@ def _running_run(workflow: WorkflowWall) -> int:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    # This process starts inside the wall-check step. Its own start is later than the
+    # step start, so it is a conservative endpoint if the live jobs API hides the step.
+    invocation_started = datetime.now(UTC)
     arguments = _parser().parse_args(argv)
     try:
         register = load_walls(arguments.register)
@@ -1093,7 +1135,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         for run_id in arguments.run_id:
             run = client.run(run_id)
             jobs = (
-                _settled_jobs(client, run_id, workflow, expected)
+                _settled_jobs(
+                    client,
+                    run_id,
+                    workflow,
+                    expected,
+                    live_run=run,
+                    live_step_upper_bound=invocation_started,
+                )
                 if in_run
                 else client.jobs(run_id)
             )
@@ -1104,7 +1153,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 arguments.base_ref or os.environ.get("GITHUB_BASE_REF") or client.base_ref(run)
             )
             kind = kind_of(base, register.policy.main_branch)
-            measurement = measure(run, jobs, workflow, register.policy, kind=kind)
+            measurement = measure(
+                run,
+                jobs,
+                workflow,
+                register.policy,
+                kind=kind,
+                live_step_upper_bound=invocation_started if in_run else None,
+            )
             verdict = judge(measurement, workflow, register.policy)
             print("\n".join(render(measurement, verdict)))
             _annotate(measurement, verdict)

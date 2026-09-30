@@ -61,6 +61,15 @@ Transfers and rescaling must produce a fresh certificate with exact mass below t
 target count and complete coverage; search success and a coverage-only acceptance
 message are insufficient.
 
+The pinned source's
+[lazy-zmx2 reports](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/performance/point_verifier_lazy/README.md)
+compare implementations for the already registered $s(32)=6$ (**T-051**) and $s(45)=7$
+(**T-053**) certificates. They report complete census comparisons and private timings,
+not distinct packing claims requiring new T identifiers. These lazy-verifier runs have
+not been replayed or admitted here; the existing evidence and V/C ratings for T-051 and
+T-053 remain unchanged. Separate replay and performance work remains under `think-lg4u`
+and `think-wk08`; `think-lest` tracks this classification.
+
 The [verification tooling overview](../../../../docs/project/verification-tooling.md)
 records which checks are independent, which replay upstream code, and what remains to be
 implemented or replayed.

@@ -28,6 +28,7 @@ from __future__ import annotations
 import json
 import re
 from copy import deepcopy
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -428,55 +429,101 @@ def test_the_live_reader_waits_for_the_aggregator_it_is_running_in(
     assert any(job["name"] == "packing-required" for job in settled)
 
 
-def test_the_live_reader_waits_longer_only_for_an_active_step_missing_from_the_api(
+def test_the_live_reader_uses_only_a_bound_live_invocation_when_the_api_hides_its_step(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     entry = load_walls(register(tmp_path)).workflow("packing-validation")
-    _, active = recorded(IN_BAND)
+    run, active = recorded(IN_BAND)
+    run["status"], run["conclusion"] = "in_progress", None
     aggregate = next(job for job in active if job["name"] == "packing-required")
     aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
         "in_progress",
         None,
         None,
     )
-    visible = deepcopy(active)
-    next(job for job in visible if job["name"] == "packing-required")["steps"].append(
-        {"name": check_pr_wall.WALL_STEP, "started_at": aggregate["started_at"]}
-    )
-    client = _JobsClient([active, active, active, active, visible])
-    delays: list[float] = []
-    monkeypatch.setattr(check_pr_wall.time, "sleep", delays.append)
-    expected = check_pr_wall._reported_job_ids(active, entry)
-    assert check_pr_wall._settled_jobs(client, IN_BAND, entry, expected) == visible
-    assert client.calls == 5
-    assert delays == [
-        check_pr_wall.SETTLE_SECONDS,
-        check_pr_wall.SETTLE_SECONDS,
-        *check_pr_wall.LIVE_STEP_BACKOFF_SECONDS[:2],
-    ]
-
-
-def test_the_live_reader_refuses_an_active_step_still_missing_after_the_bounded_backoff(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    entry = load_walls(register(tmp_path)).workflow("packing-validation")
-    _, active = recorded(IN_BAND)
-    aggregate = next(job for job in active if job["name"] == "packing-required")
-    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
-        "in_progress",
-        None,
-        None,
-    )
+    bound = check_pr_wall._instant(aggregate["started_at"])
+    assert bound is not None
+    bound += timedelta(seconds=10)
+    monkeypatch.setenv("GITHUB_JOB", "packing-required")
+    monkeypatch.setenv("GITHUB_RUN_ID", str(IN_BAND))
+    monkeypatch.setenv("GITHUB_RUN_ATTEMPT", "1")
     client = _JobsClient([active])
     delays: list[float] = []
     monkeypatch.setattr(check_pr_wall.time, "sleep", delays.append)
     expected = check_pr_wall._reported_job_ids(active, entry)
-    with pytest.raises(WallError, match=r"without a started .* step after 7 reads"):
-        check_pr_wall._settled_jobs(client, IN_BAND, entry, expected)
-    assert client.calls == check_pr_wall.SETTLE_ATTEMPTS + len(
-        check_pr_wall.LIVE_STEP_BACKOFF_SECONDS
+    settled = check_pr_wall._settled_jobs(
+        client, IN_BAND, entry, expected, live_run=run, live_step_upper_bound=bound
     )
-    assert delays[-4:] == list(check_pr_wall.LIVE_STEP_BACKOFF_SECONDS)
+    policy = load_walls(register(tmp_path)).policy
+    measured = check_pr_wall.measure(
+        run, settled, entry, policy, kind="main", live_step_upper_bound=bound
+    )
+    assert settled == active
+    started = check_pr_wall._instant(run["run_started_at"])
+    assert started is not None
+    assert measured.wall_seconds is not None
+    assert measured.wall_seconds == (bound - started).total_seconds()
+    assert "upper bound" in measured.ends_at
+    assert not measured.unmeasurable
+    exact = deepcopy(active)
+    next(job for job in exact if job["name"] == "packing-required")["steps"].append(
+        {"name": check_pr_wall.WALL_STEP, "started_at": aggregate["started_at"]}
+    )
+    exact_wall = check_pr_wall.measure(run, exact, entry, policy, kind="main")
+    assert exact_wall.wall_seconds is not None
+    assert measured.wall_seconds > exact_wall.wall_seconds
+    tight = load_walls(register(tmp_path, budget=1.0))
+    verdict = check_pr_wall.judge(measured, tight.workflow("packing-validation"), tight.policy)
+    assert verdict.status == "failed"
+    assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
+    assert delays == [check_pr_wall.SETTLE_SECONDS] * 2
+
+    matrix = deepcopy(active)
+    sibling = next(job for job in matrix if job["name"] == "geometry")
+    sibling["name"] = "geometry (linux)"
+    second = deepcopy(sibling)
+    second["name"] = "geometry (macos)"
+    matrix.append(second)
+    check_pr_wall._admit_live_step_upper_bound(run, matrix, entry, IN_BAND, bound)
+    with pytest.raises(WallError, match="identity is missing or duplicated"):
+        check_pr_wall._admit_live_step_upper_bound(
+            run, [*active, deepcopy(aggregate)], entry, IN_BAND, bound
+        )
+
+
+@pytest.mark.parametrize("fault", ["wrong-job", "wrong-attempt", "completed-run"])
+def test_the_live_endpoint_refuses_a_mismatched_invocation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, fault: str
+) -> None:
+    entry = load_walls(register(tmp_path)).workflow("packing-validation")
+    run, active = recorded(IN_BAND)
+    run["status"], run["conclusion"] = "in_progress", None
+    aggregate = next(job for job in active if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    bound = check_pr_wall._instant(aggregate["started_at"])
+    assert bound is not None
+    bound += timedelta(seconds=10)
+    monkeypatch.setenv("GITHUB_JOB", "packing-required")
+    monkeypatch.setenv("GITHUB_RUN_ID", str(IN_BAND))
+    monkeypatch.setenv("GITHUB_RUN_ATTEMPT", "1")
+    if fault == "wrong-job":
+        monkeypatch.setenv("GITHUB_JOB", "suite")
+    elif fault == "wrong-attempt":
+        monkeypatch.setenv("GITHUB_RUN_ATTEMPT", "2")
+    else:
+        run["status"] = "completed"
+    client = _JobsClient([active])
+    monkeypatch.setattr(check_pr_wall.time, "sleep", lambda _seconds: None)
+    expected = check_pr_wall._reported_job_ids(active, entry)
+    with pytest.raises(WallError, match="does not match this PR aggregator and run attempt"):
+        check_pr_wall._settled_jobs(
+            client, IN_BAND, entry, expected, live_run=run, live_step_upper_bound=bound
+        )
+    assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
 
 
 def test_the_live_reader_does_not_extend_a_completed_aggregator_without_a_wall_step(
@@ -507,7 +554,7 @@ def test_a_live_missing_step_does_not_extend_an_inconsistent_prerequisite_cohort
     jobs = [job for job in jobs if job["name"] != "suite"]
     client = _JobsClient([jobs])
     monkeypatch.setattr(check_pr_wall.time, "sleep", lambda _seconds: None)
-    with pytest.raises(WallError, match="without a started"):
+    with pytest.raises(WallError, match="required prerequisite set"):
         check_pr_wall._settled_jobs(client, IN_BAND, entry, expected)
     assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
 
@@ -824,6 +871,47 @@ def run_main(
 def historical(path: Path, run_id: int) -> list[str]:
     """The arguments that judge one recorded run afterwards, against `path`."""
     return ["--register", str(path), "--run-id", str(run_id), "--base-ref", "main"]
+
+
+def test_main_uses_the_bound_live_endpoint_without_an_api_step(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    run, jobs = recorded(IN_BAND)
+    run["status"], run["conclusion"] = "in_progress", None
+    aggregate = next(job for job in jobs if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    begun = check_pr_wall._instant(aggregate["started_at"])
+    assert begun is not None
+    bound = begun + timedelta(seconds=10)
+
+    class Clock:
+        @staticmethod
+        def now(_zone: object) -> datetime:
+            return bound
+
+        @staticmethod
+        def fromisoformat(value: str) -> datetime:
+            return datetime.fromisoformat(value)
+
+    monkeypatch.setattr(check_pr_wall, "datetime", Clock)
+    monkeypatch.setenv("GITHUB_RUN_ID", str(IN_BAND))
+    monkeypatch.setenv("GITHUB_RUN_ATTEMPT", "1")
+    monkeypatch.setenv("GITHUB_JOB", "packing-required")
+    monkeypatch.setenv("GITHUB_BASE_REF", "main")
+    expected = check_pr_wall._reported_job_ids(
+        jobs, load_walls(register(tmp_path)).workflow("packing-validation")
+    )
+    monkeypatch.setenv("EXPECTED_PREREQUISITES", json.dumps({name: {} for name in expected}))
+    status, summary = run_main(
+        tmp_path, monkeypatch, ["--register", str(register(tmp_path, budget=1.0))], run, jobs
+    )
+    assert status == 1
+    assert "upper bound" in summary
+    assert "upper bound" in capsys.readouterr().out
 
 
 def test_an_advisory_wall_over_its_budget_warns_names_its_bead_and_exits_zero(

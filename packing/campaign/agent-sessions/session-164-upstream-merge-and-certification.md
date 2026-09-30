@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T15:30:00Z'
+  deadline_at: '2026-09-30T15:45:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -1002,7 +1002,7 @@ session:
     clock_role: work
     bead: think-fjdd
     objective: Fix the measured hosted shard imbalance and solved-state SVG rendering, then certify the published head.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Complete geometric verification is unchanged; actual hosted timings and print diagnostics identify the remaining integration work. Extend the session prospectively to retain its finalization reserve while repairing these failures.
     budget_minutes: 30
@@ -1012,12 +1012,41 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_suite_files.py tests/test_explainer.py
     kill_condition: Missing test coverage, weakened timing or layout guards, or changed proof premises prevent acceptance.
     fallback: Preserve the completed mathematical result and repair the measured integration defect under think-hvrd and think-fjdd.
+    outcome: >-
+      The SVG repair and capacity-weighted partition passed hosted checks. At fa94d63b9,
+      suite A passed 3544 tests with seven skips in 148.11 seconds against 168; suite B
+      passed 4408 in 152.40 seconds against 154. Pages passed. Final certification failed
+      on an open automation bead under the closed proof-composition bead and the live
+      jobs API omitting the running wall step even after seven reads. The bead was moved
+      to the open tooling epic and its exact check now passes. No mathematical checks failed.
+    evidence:
+    - packing/tests/test_suite_files.py
+    - packing/tests/test_explainer.py
+    - packing/tests/test_pr_wall.py
+    stop_reason: At 2026-09-30T14:59:15Z, the remaining CI defect requires a reliable live timing observation contract.
+    next_action: Repair the timing observation while preserving budgets and cohort checks; publish the reviewed delta.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-dh2d
+    objective: Remove the live jobs-API timestamp dependency and certify the final published head.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Bounded retries did not resolve self-observation lag; all proof, Rust, behavioral and page checks passed.
+    budget_minutes: 30
+    started_at: '2026-09-30T14:59:15Z'
+    deadline_at: '2026-09-30T15:29:15Z'
+    expected_output: Reviewed fail-closed timing contract, focused controls, corrected bead hierarchy and passing required CI.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_pr_wall.py
+    kill_condition: Understated wall time, mixed attempts or missing prerequisites prevent acceptance.
+    fallback: Retain the mathematical result and explicit CI failure; repair the observation without weakening budgets.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Run Sol lanes for shard measurements and rendered print/PDF checks in parallel; publish the reviewed fixes and inspect the complete hosted run.
+    next_action: Sol repairs live timing, Astra checks final mathematical wording, and the coordinator reconciles completed beads and publishes.
   budget:
-    wall_minutes: 1165
+    wall_minutes: 1180
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15

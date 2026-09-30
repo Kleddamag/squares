@@ -187,6 +187,19 @@ frozen inputs still equal their blobs at `c183cc9a`. On a Kleddamag row it decid
 exactly as the frozen tool does (`tests/test_wang_li_n11.py`). The native premise check
 gives the minimum containment numerator `999999999/10²¹`, `λ` times the source’s.
 
+## Is the Reweighting Needed?
+
+No. `devtools.audit_wang_li_n11 scale-only` writes Kleddamag’s certificate with only the parent side and every core side scaled by `999999999/1000000000`. The weights, budget and minimum are left as Kleddamag has them. Kleddamag’s own `replay_parallel.py` then swept that certificate over all 12,028 intervals: `PASS_FULL_EXACT_PYTHON_REPLAY`, in 3,065 s wall and 2,482 s CPU ([`python.json`](receipts/scale-only/python.json), [log](receipts/scale-only/run.log)).
+
+The results match Kleddamag’s unscaled certificate:
+- the least row minimum is 999,962,528;
+- the counting surplus is 107,864;
+- the slab and cell counts, 86,299,918 and 511,649,696,956, equal the unscaled sweep’s.
+
+So at this scale the shrink moves no event cell, and scaling alone proves `s(11) > 3875000000/999999999`. Wang and Li’s thirteen raised orbits lift every row to 1,000,047,559 and the surplus to 428,125, but the bound does not need them.
+
+This is one event-cell sweep of a derived certificate, recorded as an observation about the method. The registered bound rests on the authors’ certificate and its full replays above.
+
 ## Controls
 
 Every mutation must be refused, and was, by each checker that reads what it changes.

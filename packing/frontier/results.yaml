@@ -3804,7 +3804,9 @@ results:
       disjoint cores exceed the budget 11000095024 by 428125 integer units. The step over
       31/8 is exactly 31/7999999992, about 3.9e-9. One more step of the scale factor,
       1 - 2*10^-9, already fails at row 615, so these data admit at most about twice the
-      step. It was replayed here in full by the authors' two verifiers and by Kleddamag's
+      step, and scaling Kleddamag's certificate alone already passes a full sweep, so the
+      reweighting enlarges the surplus but is not needed for the bound. It was replayed
+      here in full by the authors' two verifiers and by Kleddamag's
       own Python and JavaScript event-cell sweeps, and decided a second time by this
       repository's native parent-core interval branch and bound, which accepted all
       12,028 rows with no stalled box. The record makes no statement about AI assistance.
@@ -3860,7 +3862,8 @@ results:
     next_rung: >-
       C5 would need a mapped, non-superseded review of the complete claim cited as
       review_artifact; the 2026-09-30 review is a same-project read. V5 by a
-      proof-assistant port of the transfer theorem and the counting argument. Whether the
-      reweighting is needed at all, or Kleddamag's own weights already pass at the scaled
-      sides, is being measured (the packet's scale-only sweep); the answer bears on how
-      the method is described, not on the bound.
+      proof-assistant port of the transfer theorem and the counting argument. The
+      reweighting is not needed for the bound: Kleddamag's own weights at the scaled sides
+      pass Kleddamag's full event-cell sweep with the same minimum 999962528 and surplus
+      107864 (the packet's scale-only receipt), so the scaling alone carries the step and
+      the thirteen raised orbits only enlarge the surplus to 428125.

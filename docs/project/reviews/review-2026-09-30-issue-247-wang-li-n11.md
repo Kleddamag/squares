@@ -518,6 +518,12 @@ None.
   factors lie in `(1 − 2·10⁻⁹, 1]`, and these data give at most about twice the present
   step.
 
+- **Scaling alone suffices.** A full event-cell sweep of Kleddamag’s unreweighted
+  certificate, scaled by `λ = 999999999/1000000000` (the packet’s
+  `receipts/scale-only/`), passes with the same minimum 999,962,528 and surplus 107,864,
+  so the bound does not need the reweighting.
+  This review’s sampled rows could not show it.
+
 - **The should-fix items addressed to the authors** (binding the independent replay to
   the frozen file, the licence field, the standalone PDF, an AI-assistance statement)
   are put to them on jlevy/squares#247.

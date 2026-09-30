@@ -20,9 +20,9 @@ No result that landed from the current upstream main branch closes this gap.
 
 ## Independent Verification Checkpoint
 
-Exact field checks accept **all 1,904 cases in the source field-certificate union**,
-leaving 276 of the 2,180 required exclusions.
-This is a case count, not a percentage of the proof.
+Independent checks accept **1,906 of the 2,180 required exclusions**: all 1,904 cases in
+the source field-certificate union and generic cases 2095 and 2135, leaving 274. This is
+a case count, not a percentage of the proof.
 The
 [receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
 records each contributing receipt and hash.
@@ -42,8 +42,8 @@ The remaining obligations have different acceptance rules:
 | Obligation | Accepted scope | Remaining scope |
 | --- | --- | --- |
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
-| Other exclusions | Source census and pinned dependency manifest | 27 baseline generic cases, 76 extension cases, and 173 returned cases: 276 distinct cases requiring independent geometric checks. The manifest assigns 273 sequential checks and three special adapters. |
-| Capture root | All 130 strict seed points and seven complete rounds: 77 owner updates, 5,439 closed rows | Seven further rounds must join their owner updates from accepted prior states. Round eight requires exact point/segment domain coverage. Even all 14 rounds establish conditional root ownership, not complete capture. |
+| Other exclusions | Generic cases 2095 and 2135; all remaining source dependencies pinned | 26 baseline generic cases, 76 extension cases, and 172 returned cases: 274 distinct cases requiring independent geometric checks. These need 271 sequential checks and three special adapters. |
+| Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual accepted geometric executions and the reviewed chain establish conditional root ownership. Later capture transitions remain open. |
 | Capture branches | Structural graph and conditional pose inclusion | Actual geometric transitions, branch coverage, ancestry, and final-state binding. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
 
@@ -55,11 +55,35 @@ Astra-max also reviewed the common-prior join and exact convex compression.
 The
 [seventh-round receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round7-final/result.json)
 continues this conditional induction using the frozen checker at `0f6b1e2d1`. Round
-eight refused an unsupported lower-dimensional legal domain; that refusal accepts no
-additional round and does not refute the source proof.
+eight initially refused an unsupported lower-dimensional legal domain.
+The reviewed exact point/segment adapter closes that gap; the
+[complete eighth-round receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-round8-final/result.json)
+accepts all 1,251 rows in 76.12 seconds.
+Rounds nine through eleven pass with the same frozen checker.
+Round twelve reached its 30-second per-owner limit; a deliberately selected 60-second
+retry completed, preserving the incomplete attempt and the mathematical checks.
+Rounds twelve through fourteen pass, each checking 2,036 rows.
+The
+[root-chain audit](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-chain/result.json)
+binds all 14 actual executions to exact successive source states and 168 retained files.
+Astra-max reviewed the chain and the limited ceiling change.
+Together with those geometric executions, this establishes the conditional adaptive-root
+induction; receipt consistency alone would not establish it.
+The
+[generic receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json)
+accepts case 2095 after all 77 seed points, 352 seed rows and 160 sequential update rows
+pass, including exact final-state reconstruction and the terminal contradiction.
+Astra-max reviewed this argument and its geometry/state mutation controls.
+The final run took 23.75 seconds wall, 5.61 seconds coordinator CPU and 35.09 seconds
+child CPU with three workers; earlier incomplete attempts retain zero credit.
+The parameterized checker also accepts
+[case 2135](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2135-pilot/final-result.json):
+75 seed points, 88 seed rows and all 48 sequential rows, including its terminal
+contradiction, in 8.71 seconds wall.
+Astra-max reviewed the source and final receipt.
 The
 [non-field manifest](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/summary.json)
-binds all 276 remaining case recipes to immutable source objects.
+binds the original 276 non-field case recipes to immutable source objects.
 Their 924 distinct required objects total 2.12 GB compressed; bounded acquisition places
 bulk reproducible inputs in `attic/n11-proof-inputs/`, retaining their pins and
 validation receipts here.

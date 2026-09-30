@@ -57,10 +57,11 @@ result/stdout lines are duplicated; three JSON receipts contain 15,240 lines, an
 session logs contribute 7,212. These are storage/review targets, not reasons to discard
 evidence. Compression reduces review noise; it does not simplify mathematics.
 
-Acceptance is **all 1,904 cases in the source field-certificate union**; 276 of the
-claimed 2,180 exclusions remain, all requiring other certificate families.
-The first complete capture-root round passes; 13 further rounds, the subsequent capture
-transitions and final composition remain separate obligations.
+Acceptance is **1,906 cases**, comprising all 1,904 cases in the source
+field-certificate union and generic cases 2095 and 2135; 274 of the claimed 2,180
+exclusions remain. All 14 capture-root rounds pass, with a reviewed chain joining their
+actual geometric executions.
+Subsequent capture transitions and final composition remain open.
 The
 [current review](../../reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 records the acceptance boundaries.
@@ -70,9 +71,9 @@ The weighted mask1155 extension checks 71 owners and 522 rows and adds 131 IDs; 
 complete source-bound receipt is linked from the mathematical review.
 Fixed-T local isolation is accepted.
 D4 reduction and near-pose inclusion retain their stated premises.
-The ten-node capture parent graph is structurally checked, but root induction and
-transition geometry remain unaccepted.
-All four published leaf audits have stale final-state bindings.
+The ten-node capture parent graph is structurally checked.
+Conditional adaptive-root induction is accepted; subsequent transition geometry remains
+unaccepted. All four published leaf audits have stale final-state bindings.
 T-060 remains **S5/V0/C1**, with no optimum promotion.
 The [proof review](../../reviews/review-2026-09-29-n11-optimality.md) owns current
 mathematical status; this spec owns the implementation decomposition.

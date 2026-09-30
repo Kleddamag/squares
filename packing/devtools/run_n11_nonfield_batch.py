@@ -136,7 +136,7 @@ def main() -> int:
         1 <= args.cpu_budget <= available_cpus and args.jobs * args.workers <= args.cpu_budget,
         "case and row pools exceed the selected host CPU budget",
     )
-    require(0 < args.seconds <= 120 and 0 < args.batch_seconds <= 300, "wall ceiling")
+    require(0 < args.seconds <= 3600 and 0 < args.batch_seconds <= 14400, "wall ceiling")
     require(1 <= len(args.cases) <= 32 and len(set(args.cases)) == len(args.cases), "case list")
     require(all(0 <= case < 2184 for case in args.cases), "case index outside census")
     require(args.manifest.resolve().is_relative_to(PACKET), "manifest outside pinned packet")

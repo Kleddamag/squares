@@ -281,6 +281,53 @@ support is at most $E$, making the center cut necessary.
 This uses an upper bound on the full square; the smaller strict collision core cannot
 supply that bound.
 
+### The Three Special Adapters
+
+Case 1383 reuses the generic transition kernel under two explicit center assumptions.
+Its pinned tree proposes five unguarded ancestors followed by an owner-13 split at
+centered unit height $4/3$, with two further nodes on the lower branch and one on the
+upper branch. From the same accepted parent state, fork the closed conditions
+$y_{13,f}\le B(U/2+4/3)$ and $-y_{13,f}\le-B(U/2+4/3)$. Their union is exhaustive and
+includes equality on both sides.
+Verify actual parent edges, exact inherited assumptions, seed, case, scale, and child
+state bindings before replaying each branch.
+Both leaves must independently reach contradiction; do not merge ownership points
+derived under different branch assumptions.
+The eight-node inventory and its 36,600 reported rows remain proposals until those
+source objects are read and replayed.
+This case has no declared dependency on the baseline exclusion set.
+
+Cases 2175 and 2176 add 72 and 73 necessary center halfplanes, respectively.
+Their published support premise is the exact 1,931-case A1 baseline, identified by
+snapshot `bc3563a0c9955a561f99cbefe7278e027feff085ff6d97bc338e347f97514545`, with 253
+canonical survivors.
+Using only the accepted field union and case 2095 leaves 26 A1 exclusions unaccepted.
+Matching a count of 1,931, accepting unrelated extensions, or using the later four-case
+symmetry conclusion cannot supply those missing premises.
+
+A separate independent support check may instead use any explicitly admitted exclusion
+set $E$, with canonical survivor set $S=\mathcal C\setminus E$ and both raw half-turn
+orientations of each survivor.
+For the field union and case 2095, this means 279 canonical and 558 raw masks.
+Reuse the reviewed cover, complete 220-region overlay, and 1,572 strict distance bans
+from the [D4 checker](../../../packing/devtools/check_n11_optimality_d4.py), while
+parameterizing its finite search by $S$ and a forced owner-region assignment.
+For each proposed plane, exhaustively exclude every owner region having an offending
+vertex; other regions may remain conservatively retained without a feasibility claim.
+Every retained normalized vertex $v$, including singleton regions, must satisfy
+$n\cdot B(\tfrac12(1,1)+(U-1)v)\le h$. A timeout leaves a region unexcluded.
+The publisher’s planes may fail under the larger survivor set, in which case their
+necessity remains unproved.
+
+Bind the retained overlay and distance objects explicitly: the special recipes list
+publisher support receipts but do not include those receipts’ full geometry input
+closure.
+Recomputing support avoids treating the publisher’s supported hulls as premises.
+Only after all source constraints are proved necessary may a complete conditional
+generic contradiction exclude its case.
+Record the exact exclusion dependencies and reject cycles or reliance on the target’s
+own conclusion.
+
 ### First Independent Field Exclusion: Mask 0
 
 `think-fi4w` takes the first substantive geometric slice after the case census.
@@ -889,6 +936,73 @@ and rejection of area domains or malformed polygons, including a star traversal.
 Together with inherited-domain and generic refusal controls, the focused review run
 passed fourteen tests in 4.90 seconds; the separate complete generic replay is the
 eighth generic test above.
+
+## Complete Adaptive Root Receipt Chain
+
+The fourteen retained, accepted geometric executions now cover 154 owner updates and
+16,551 rows, adding 1,060 owned points to the fixed seed state.
+The [chain audit](../../../packing/devtools/check_n11_capture_root_chain.py), reviewed
+at SHA-256 `fdc46b2178bcfc91b97dfbd1fa45c7ec193cd5778800b31a98461ecc30f66a75`, checks
+all 168 aggregate and worker receipt files against the pinned adaptive source.
+It starts from the fixed round-one result, reconstructs every common prior and joined
+next state, and requires each owner’s complete row count and exact compressed output.
+No owner consumes additions from another owner in the same round.
+Every joined state equals the next source prior, including the final adaptive output.
+
+The checker revisions are explicit: the fixed first-round checker; `dbde306a…` for
+rounds two through seven; `17fc81b2…` for rounds eight through eleven; and
+`3eca359a215cde005b79fbd9f7866000f75b48bb3f50ce0b3a3d9b2d9db83b34` for rounds twelve
+through fourteen.
+The last revision changes only the selected owner ceiling from 30 to 60
+seconds and admits the pinned preceding checker revision.
+Its geometric operations and the `858c61c3…` degenerate-domain helper are unchanged.
+The complete prior checker is retained at commit `cb8e8b8c4` and matches its declared
+`17fc81b2…` digest.
+
+The
+[chain result](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-chain/result.json),
+SHA-256 `f10d50e6b34179a6b2fb066d6ade9553057c280f7538ae6e53fe06e639a56d11`, passes in
+28.385 seconds and binds final state
+`914d6337ee4231fb4980693f8ece49b2d16d0a35b31b6b1f402b627a2dda9d3f`. This is an accepted
+receipt-and-state audit conditional on the reported actual geometric executions; a
+cached status or hash cannot establish that those executions occurred.
+The observed executions and their complete joins support the adaptive root induction.
+The audit itself retains false conditional-root, candidate-capture, and global flags.
+Transition-tree coverage, branch capture, and final composition remain open.
+Focused review controls for revision boundaries, incomplete worker rows, stale prior
+bindings, and altered output pass together with the shared generic controls: six tests
+in 0.17 seconds, with the full generic replay deselected.
+
+## Shared Single-Node Generic Replay
+
+The [shared checker](../../../packing/devtools/check_n11_generic_sequential.py)
+preserves the reviewed fresh-wall induction while admitting the pinned recipe’s bin
+count, mask, seed, and A1 or A3 assignment.
+The exact full-square support quadratics above justify every added self-hull cut before
+it restricts a legal center domain.
+Each row starts from its accepted predecessor hull, and parallel rows use the same prior
+ownership state until their complete join.
+Strict cores, residual coverage, common ownership, compression, and the reconstructed
+final state retain the earlier mathematical checks.
+The sole terminal exclusion must have empty residuals in every angular row.
+The imported generic and geometry kernels are explicitly pinned, and all consumed file
+identities must remain unchanged during replay.
+A2 assignment, multiple source nodes, partner covers, guarded branches, and degenerate
+generic domains remain refused by this adapter.
+
+The accepted
+[case-2135 result](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2135-pilot/final-result.json)
+binds shared checker `820f35f7dfeb5ec9dd0cd276305f3e86a230abfccb94ee2a70463682f69d6e15`
+and has SHA-256 `ecd3b2cd820ae92c0770641031a789b25ee9739cdba5f2064232f7b7ace234be`. It
+checks 75 owned seed points and 88 seed rows, then all 48 rows in six sequential
+updates, finishing with empty residuals in all eight rows of owner 10. No node, step, or
+row remains pending.
+The receipt accepts exactly case 2135 and keeps global optimality false; its costs are
+8.706 seconds wall, 3.779 seconds coordinator CPU, and 11.440 seconds child CPU. An
+independent focused run passes eight refusal controls in 3.48 seconds, including a
+missing angular row, changed initial state, unjustified domain shrink, invalid
+full-square cut, helper-pin mismatch, altered assignment, unsupported ancestry, and
+expiry.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

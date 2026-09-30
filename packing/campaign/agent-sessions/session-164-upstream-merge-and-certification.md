@@ -564,7 +564,7 @@ session:
     bead: think-35ui
     objective: Independently accept the first complete fresh-wall generic exclusion and
       advance root ownership through later rounds while mapping all 276 nonfield closures.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: All 1904 field cases are accepted; remaining exclusions share a v9
       geometric grammar suitable for one reviewed checker and bounded parallel replay.
@@ -578,14 +578,81 @@ session:
       ownership or exceeded work bounds prevents acceptance of that component.
     fallback: Retain zero exclusions for partial work and an exact remaining-obligation
       inventory; continue independent capture and intake work.
+    outcome: Generic case 2095 completed all 160 rows in 17.714s with three workers, pending
+      mutation controls and Astra-max review before credit. Capture rounds 1–7 accepted
+      all 77 owner updates and 5439 rows; round 8 refused an unsupported point/segment domain.
+      All 276 nonfield source closures are pinned; twelve small cases acquired in bounded batches.
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    stop_reason: Component checkpoint closed at 2026-09-30T07:57:18Z, 88 seconds after the
+      slice deadline during integration. Global confirmation remains open.
+    next_action: Sol implements the shared generic kernel and capture continuation in
+      separate lanes; Astra reviews mathematics and 276-case recipes; coordinator
+      batches intake, integrates frozen evidence and runs hosted CI concurrently.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-fjdd
+    objective: Verify bounded generic row parallelism and repair the measured CI selector
+      bottleneck while capture and independent mathematical review continue concurrently.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: The serial generic replay hit 30 seconds and the hosted selector exceeded
+      its 12-second test ceiling; both now have narrow candidates requiring matched evidence.
+    budget_minutes: 30
+    started_at: '2026-09-30T07:57:18Z'
+    deadline_at: '2026-09-30T08:27:18Z'
+    expected_output: Accepted or rejected matched timing comparisons, reviewed generic
+      and degenerate-domain adapters, and the next bounded proof batch.
+    validation_command: cd packing && .venv/bin/python3 -m benchmarks.compare_reachable_walker --out RECEIPT
+    kill_condition: Changed selections, lost closed endpoints, a changed prior state or
+      relaxed time limits presented as a speedup prevents acceptance.
+    fallback: Keep the faster exact reference and incomplete receipts; retain explicit
+      unsupported proof obligations and continue independent components.
+    outcome: Case 2095 independently accepted after five steps and 160 rows; all fourteen
+      root rounds geometrically accepted, with the separate chain audit under review.
+      Three cold selector comparisons preserve exact test sets and reduce CPU time.
+      Warm exact Rust cache reduces its hosted step from 37.52s to 7.19s; checks tier
+      now passes its timing budget at 106.19s. Remaining hosted failures are record checks.
+      Inventory and profile locate 435523 sequential rows and the vertical-cover hotspot.
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    stop_reason: Component checkpoint closed at 2026-09-30T08:27:34Z, 16 seconds after
+      the slice deadline. The previous phase closure still needed publication, causing
+      hosted record-check failures despite the repaired timing budget.
+    next_action: Sol generalizes the sequential checker and advances capture; Astra-max
+      reviews both; coordinator measures the selector, acquires bounded sources and integrates.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-35ui
+    objective: Accept the shared sequential adapter and run bounded baseline batches while
+      connecting the completed root induction to actual capture transitions.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Root geometry is complete and the first generic proof is accepted;
+      the next reusable interfaces are variable-bin/self-cut exclusions and capture ancestry.
+    budget_minutes: 30
+    started_at: '2026-09-30T08:27:34Z'
+    deadline_at: '2026-09-30T08:57:34Z'
+    expected_output: Reviewed shared-adapter executions with exact new IDs, a reviewed
+      root receipt chain, and a measured first capture transition or precise missing premise.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_generic_sequential.py -q
+    kill_condition: A source-state mismatch, unproved cut, lost closed endpoint or pending
+      geometric work prevents case or capture credit.
+    fallback: Retain exact refused obligations, use complete earlier components, and
+      improve the measured vertical-interval hotspot independently of source admission.
     outcome: null
     evidence:
     - docs/project/reviews/review-2026-09-29-n11-optimality.md
     - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
     stop_reason: null
-    next_action: Sol implements the shared generic kernel and capture continuation in
-      separate lanes; Astra reviews mathematics and 276-case recipes; coordinator
-      batches intake, integrates frozen evidence and runs hosted CI concurrently.
+    next_action: Native Sol extends and batches exclusions; capture Sol owns variable
+      partitions and branch ancestry; Astra-max audits both; coordinator integrates receipts.
   budget:
     wall_minutes: 1135
     max_cycles: 40

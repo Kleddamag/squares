@@ -60,7 +60,7 @@ The completed rectangle experiment tested a stronger, independently reviewed der
 bound before committing to a native port.
 Its [preregistered diagnostic](reviews/review-2026-09-30-rectangle-derivative-bound.md)
 evaluated all 13 frozen pending boxes in 1.163 seconds including setup, improved no
-bound and closed no box.
+bound and closed no new box.
 That negative result rules out adoption on this evidence; it grants no proof credit or
 speed claim.
 

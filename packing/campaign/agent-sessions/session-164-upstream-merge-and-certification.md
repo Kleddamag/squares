@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T17:50:00Z'
+  deadline_at: '2026-09-30T18:25:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -1166,24 +1166,63 @@ session:
     clock_role: work
     bead: think-pd17
     objective: Merge the frozen confirmed-proof package after its hosted checkpoint while isolated agents consolidate reusable diagnostic admission.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Mathematical validation and the negative performance experiment are complete; clean integration and small reusable-tool cleanup are next.
     budget_minutes: 30
     started_at: '2026-09-30T16:59:53Z'
     deadline_at: '2026-09-30T17:29:53Z'
-    expected_output: Green full checkpoint and provenance-preserving PR246 merge; reviewed isolated think-nxd8 follow-up, with PR249 coordination explicit.
+    expected_output: Retained deferred executions, scoped repairs and a reviewed plan for the required combined checkpoint before PR 246 merges.
     validation_command: Hosted deferred checkpoint 36746969192 plus focused diagnostic admission controls and static checks in the isolated worktree.
     kill_condition: Any failed required checkpoint or changed proof semantics prevents merge or admission of the follow-up.
-    fallback: Repair only the named failure; preserve frozen accepted evidence and the still-draft PR249 work.
-    outcome: null
+    fallback: Repair only the named failure; preserve frozen accepted evidence and the still-draft PR 249 work.
+    outcome: >-
+      Deferred run 36746969192 had eight passing worker jobs; its ninth slow-lane job
+      passed 156 tests and failed the generic 2095 receipt control and stale
+      38-equality atlas assertion. The aggregate failed, while the passing worker
+      executions and 156 slow passes remain scoped evidence. Repair ebbfec10e passes
+      three focused controls in 34.48 seconds; four quick retained-atlas controls pass
+      in 0.98 seconds. Astra reviewed both repairs. A broader push selector was
+      interrupted after choosing redundant slow work; think-ufhu tracks this gap and
+      the interrupted run grants no pass credit.
     evidence:
     - docs/project/verification-tooling.md
     - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
+    - packing/tests/test_n11_generic_fresh.py
+    - packing/tests/test_known_best_atlas.py
+    stop_reason: Named deferred failures require scoped repair and final-head checks.
+    next_action: Combine the retained passing executions with reviewed targeted repairs
+      under the documented checkpoint contract; keep required final-head CI green.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-pd17
+    objective: Finish scoped checkpoint repairs and required final-head CI before merging PR 246.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: The prior packaging slice ended with named deferred failures; a scoped repair slice now tracks their checkpoint and final-head CI.
+    budget_minutes: 40
+    started_at: '2026-09-30T17:29:01Z'
+    deadline_at: '2026-09-30T18:09:01Z'
+    expected_output: Reviewed scoped repairs plus retained passing deferred executions satisfy the combined checkpoint contract; required final-head CI passes before merge.
+    validation_command: Focused generic-receipt and retained-atlas controls, followed by required hosted PR 246 checks.
+    kill_condition: Changed proof semantics or failed required final-head CI prevents merge.
+    fallback: Repair only named regressions; retain passing checkpoint evidence without promoting failed or interrupted runs.
+    outcome: >-
+      Required CI on ebbfec10e failed only the expired Session 164 clock and changed
+      generic node-inventory expectation. The node-inventory repair passes its focused
+      contract and review; this session-clock repair is in progress. Final-head CI and
+      the combined checkpoint verdict remain pending.
+    evidence:
+    - packing/tests/test_n11_generic_fresh.py
+    - packing/tests/test_known_best_atlas.py
+    - packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
     stop_reason: null
-    next_action: Await the parallel hosted workers while Sol implements shared inventory admission and Astra reviews exact refusal semantics.
+    next_action: Publish the scoped fixes, await required final-head checks and merge
+      only after the combined checkpoint is reviewed as sufficient.
   budget:
-    wall_minutes: 1305
+    wall_minutes: 1340
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15
@@ -1435,14 +1474,32 @@ session:
     Complete hosted workflow 36642969918 runs on that source. Fresh Astra-max static scope audit found
     no unsupported mathematical promotion and all 19 T-037 inputs unchanged; the later merge requires
     its own checks.'
+  - 'Deferred run 36746969192: eight worker jobs passed; the ninth slow-lane job had 156 passes and two
+    failures. The aggregate failed, but passing executions remain scoped checkpoint evidence. At ebbfec10e,
+    three scoped controls passed in 34.48 seconds and four quick atlas controls in 0.98 seconds, with Astra
+    review. Required CI on ebbfec10e then found only an expired session clock and a node-inventory test;
+    both have scoped repairs, and final-head CI remains pending.'
+  - 'An attempted broad push selection was interrupted before a verdict because it repeated slow work;
+    think-ufhu tracks selection visibility and unaffected-checkpoint reuse. It grants no pass credit.'
   resource_rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
   stop_reason: null
-  next_action: Mathematical confirmation is complete at V4/C5. Finish registry, generated artifacts
-    and hosted CI under think-3i74 and think-niqx; keep fresh-ensemble orchestration think-e2ot
-    and optional Rust performance think-3cwg separate from the accepted proof.
+  next_action: Mathematical confirmation is complete at V4/C5. Await the combined retained-and-targeted
+    checkpoint review and green required CI before merging PR 246; keep PR 249 cross-branch reconciliation
+    separate. Fresh-ensemble orchestration think-e2ot and optional Rust performance think-3cwg remain
+    outside the accepted proof.
 ---
 # Upstream Merge and PR 246 Certification
+
+## Current Status — 2026-09-30 17:31 UTC
+
+T-060’s mathematical obligations are complete at S5/V4/C5; PR 246 has not merged.
+Deferred run 36746969192 had eight passing workers and 156 passing slow tests, while two
+slow tests failed. Reviewed scoped repairs pass, and the next CI run found only a
+session-clock expiry and node-inventory expectation; their focused repairs are in
+progress. Required final-head CI and the combined checkpoint verdict remain pending.
+The chronology below retains earlier statements that global proof components were open;
+those are dated checkpoints, not current proof status.
 
 The session began with integration of the s(32) point-cover qualification and
 gate-budget controls alongside PR 246’s independent rectangle verification and T-059

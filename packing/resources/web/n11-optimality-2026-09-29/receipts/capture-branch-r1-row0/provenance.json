@@ -1,0 +1,15 @@
+{
+  "checker_sha256": "f75b7ef718cc301833770128dd2f9b2bab3473b5dd01f59583e70fc2bb84abf9",
+  "internal_seconds": 30,
+  "process_cpu_seconds": "unmeasured",
+  "r1_source_sha256": "63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52",
+  "replay": "From packing after decoding and SHA-verifying pinned root and r1 sources: timeout 45s .venv/bin/python3 -m devtools.check_n11_capture_branch_r1 --root-source <decoded-root> --r1-source <decoded-r1> --root-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-node-full-integer/result.json --row-index 0 --max-seconds 30 --max-events 20000 --out resources/web/n11-optimality-2026-09-29/receipts/capture-branch-r1-row0/result.json",
+  "result_sha256": "5d6061c4647d28778380328f784981d6bcfd608662fe3b8c6411019f1aed79ac",
+  "root_checker_sha256": "2804989aff9414e712855d099aab659bb645f05cd9b2f72259b97a1d22cefcb8",
+  "root_result_sha256": "0d55007a6c5092c0e276ec4e6a2f8524a32ddc4d527ffa3a930f088ff11bccc4",
+  "root_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "scope": "Exact first r1 branch row after closed center-ge cut, conditional on accepted root-node state; no complete step, branch tree, capture, or global claim",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "stdout_sha256": "54878a942a30bcb48df3ad622ae4b2a4919fda27b781e6226802e652d13f48b2",
+  "supervisor_seconds": 45
+}

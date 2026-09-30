@@ -30,6 +30,7 @@ REVIEWED_CHECKERS = {
     "722e654fbf426d9db3a799458c075378814da632b29a23c4b514e24a38a19a7c",
     "79473807be4564af6cb13f8c36ad6517b8f077383707513069bc8a5be933fb5c",
     "51c5fcfa802fe9e0ad644efd4bbaa14f132cb4f519e3b3c76ea4ba378686c814",
+    "f430580c526c679d0b6a2551799bcec61a3973374fa7d6469064f11c459352cc",
 }
 PILOTS = {
     "generic-mask2095-intake/full-result.json": (
@@ -51,6 +52,10 @@ PILOTS = {
     "generic-case1723-chain/pilot-fast-integer.json": (
         1723,
         "14b8676358dd4f9c4b71c6b0c329392ce3ee91895d092027f869d739c63b9eda",
+    ),
+    "generic-case2053-refined/pilot-fast-integer.json": (
+        2053,
+        "5296d5061231abc7dd6e13892990575b71e45e74ce35d529779dea1de59461f1",
     ),
 }
 

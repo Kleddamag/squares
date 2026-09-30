@@ -53,15 +53,18 @@ adds 653 distinct cases in 17.61 seconds, for 1,112 accepted exclusions.
 The weighted mask1155 extension adds 131 distinct exclusions after all 71 ownership
 checks and 522 rows pass in 29.44 seconds wall.
 Subsequent complete field batches establish the entire 1,904-case field union.
-The independent generic checkers accept 81 further cases, including four reviewed pilots
-and 77 complete executions in parallel batches.
-The exact union contains 1,985 exclusions, leaving 195. All 14 capture-root rounds pass,
+The independent generic checkers accept 114 further cases, including five reviewed
+pilots and 187 complete executions in parallel batches.
+The exact union contains 2,097 exclusions, leaving 83. All 14 capture-root rounds pass,
 including 154 owner updates, 16,551 closed rows and 1,060 owned additions.
 Actual geometric executions plus the Astra-reviewed source and receipt chain establish
 conditional root ownership.
 The first complete capture owner update also passes all 217 rows and 3,173,632 exact
 collision inequalities, including the common kernel, compressed additions and next-state
-join; subsequent capture remains open.
+join. The subsequent full root-state replay accepts twelve more updates and exact final
+state, with 2,185 complete rows and 92 additions in 891.93 seconds.
+Its trailing partial step promotes no state.
+Child branches remain open.
 The
 [exact exclusion inventory](../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
 and

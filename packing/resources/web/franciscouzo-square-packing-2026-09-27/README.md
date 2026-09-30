@@ -190,10 +190,12 @@ derives from the other.
 - The interval route above is the method-distinct replay T-056’s `next_rung` named. It takes the result to `C4` once its review is recorded and the register cites it.
 - The three trailing counts need a pose refined beyond the source’s binary64 digits, or
   higher-precision coordinates from the source, before the printed sides certify.
-- The retained Kingbird catalogue dates from 2026-08-25. The live page of 29 September
-  prints a different side at 41 counts, 36 of them among these 49 and five others
-  (`n = 69, 83, 87, 126, 179`); refreshing the retained capture is a separate, dated
-  survey.
+- The retained Kingbird catalogue was captured again on 2026-09-30. The page is the same
+  one read on 29 September. It prints a different side at 41 counts in range, 36 of
+  them among these 49, where every Couzo side stays below it, and five others. n = 126
+  and 179 moved to their new sides. n = 69, 83 and 87 wait on intake. The earlier
+  sides this packet compares with are read from the 2026-08-22 capture, which is kept
+  beside the new one.
 
 ## Compressed Files
 

@@ -1836,6 +1836,9 @@ keep:
 - path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
   span: "2"
   reason: "a process exit status, literal text"
+- path: packing/frontier/README.md
+  span: "s(6), s(13), s(22), s(33), s(46)"
+  reason: "GitHub leaves this formula as dollars where it sits, at the start of a line inside a parenthesis opened on the line before (check_github_math at 6908c432c); a placement the GitHub probe has not measured, so it stays code until it is"
 
 exempt:
 - path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md

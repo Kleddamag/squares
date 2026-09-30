@@ -478,7 +478,7 @@ $n = 11$, which headed it at $0.0021$ once Kleddamag carried it to $31/8$, left 
 
 $n = 97$, $n = 78$ and $n = 61$ are three consecutive unproved members of the family
 $s(m^2 - 3) = m$, which is **proved exactly for $m = 3, 4, 5, 6, 7$** (that is
-$s(6), s(13), s(22), s(33), s(46)$) and conjectured beyond.
+`s(6), s(13), s(22), s(33), s(46)`) and conjectured beyond.
 Their gaps are small because Nagamochi’s bound is nearly tight there, and their
 conjectured optima are **integers**—the case the existing proof technique is built for.
 

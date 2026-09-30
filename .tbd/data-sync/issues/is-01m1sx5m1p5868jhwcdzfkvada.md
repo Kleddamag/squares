@@ -5,11 +5,15 @@ title: The mutation-snapshot cap has 0.9% headroom and the record keeps growing
 kind: task
 status: open
 priority: 1
-version: 9
+version: 12
+spec_path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
 labels: []
 dependencies: []
+parent_id: is-01m3p5wj25knm7rbx0g4a4tpvg
+child_order_hints:
+  - is-01m3qzn1k3708fhtrsw1mqdgvk
 created_at: 2026-09-05T23:06:30.837Z
-updated_at: 2026-09-29T20:27:09.000Z
+updated_at: 2026-09-30T01:51:55.283Z
 ---
 Measured 2026-09-05 after pruning packing/site/ and the link-preview card: the snapshot is 66,490,716 bytes against a 67,108,864 cap, 99.1% of it, 618,148 bytes of headroom. SNAPSHOT_MAX_BYTES' own comment says a guard with 2% headroom fires for the wrong reason; 0.9% is worse than the case it warns about, and the next committed artifact of any size trips it.
 
@@ -101,3 +105,5 @@ half is not.
 2026-09-29 PR246 main merge: snapshot rose above the unchanged 160 MiB cap after new records. A proposed integrated-fast.log prune was rejected because Session088 links it inline and the dependency copier correctly restores it. Reviewed replacement omits only session-152-validation/validation-timings-validate-1.zip (499,501 bytes) from temporary workers; its sole prior reference is a plain session output path. Archive and source session stay in Git; dependency copyback remains active. Three focused tests, Ruff and BasedPyright pass; snapshot 167,292,104 bytes, 480,056 bytes headroom. This narrow repair does not close the broader structural headroom issue.
 
 Read-only Sol design audit (Session164): separate existence-only links from content inputs. A frozen worker manifest may record existing tracked regular non-Markdown files deliberately omitted under PRUNE; link checks may consult it only for those missing targets in a negative-control worker. Preserve full bytes for Markdown fragment checks, registered evidence and traced content readers. Two composite SVGs plus four linked exports could save about13MB, subject to measurement. Do not use placeholders or allow arbitrary missing paths. Required tests: real and mutated dead links still fail; pruned binary links pass; Markdown anchors read real content; registered evidence stays byte-identical; baseline README/SYNOPSIS/documentation checks pass in workers. Broader generated-output pruning needs per-command input closure/read traces, not controls.yaml mutation targets or validation touches (neither is a read set). chunk-partitions.json and translation-escape-screen.json are direct schema-check inputs; exp-042 is a replay input. Fixed cap cannot absorb unbounded genuinely required evidence forever; separately measure that growth and revise the storage budget deliberately. Design only, not implemented or benchmarked.
+
+2026-09-30: T-060 intake reached 167,821,919 required snapshot bytes after four measured non-input prunes, exceeding 160 MiB by 49,759 bytes. Restore the established roughly 32 MiB operating headroom at 192 MiB without deleting linked proof evidence or changing copied bytes, runtime ceilings or oversized refusal. Durable dependency-aware selection remains open. Consolidated duplicate think-n2kg here; child think-9b01 fixes a separate profiled ancestry-comparison cost (focused local call 6.23s to 0.74s). Proof geometry lanes continue independently.

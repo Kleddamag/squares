@@ -445,11 +445,16 @@ suites that neither packet retains.
 
 ## Full `zm_mixed` Re-sweeps
 
-**Placeholder, to be filled by the coordinator.** The two complete
-`zm_mixed.py --d4 --cert-mode` re-sweeps, 12.9 and 16.5 CPU-hours at the source, are
-running in separate sessions.
+**In progress (`think-l6la`).** The two complete `zm_mixed.py --d4 --cert-mode`
+re-sweeps, 12.9 and 16.5 CPU-hours at the source, were first assigned to two separate
+cloud sessions on 29 September. Neither landed anything. Both were restarted on 30
+September at 05:24 UTC from an overlay of the two packets. Each runs on two workers with
+the command in [Not Replayed Here](#not-replayed-here-and-what-each-would-take) and the
+shipped settings. At about 1.3 times the source's CPU per root, they are expected to
+finish in 9 to 10 hours. Until they finish, the shipped records remain the only complete
+`zm_mixed.py` certification.
 Their receipts will be retained under `receipts/zm-mixed-full-s21/` and
-`receipts/zm-mixed-full-s45/`, which this intake leaves unwritten.
+`receipts/zm-mixed-full-s45/`.
 From `packing/`, with `N` 21 or 45 and `B` the bundle directory
 `resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/sN`, the
 comparison with the shipped records and the completeness audit are:

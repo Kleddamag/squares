@@ -87,8 +87,8 @@ the opposite slides, giving exactly $a,b$. This fixes the source contact-side pa
 other assignments of contact sides are sibling feature domains, not silently covered by
 these equations. No equality is imposed on pair 9–10.
 
-The retained angular equality graph has wall component $\lbrace0,\ldots,5,*\rbrace$ and
-free components $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$. Its rank is nine.
+The retained angular equality graph has wall component $\lbrace0,\ldots,5,\ast\rbrace$
+and free components $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$. Its rank is nine.
 Two angular parameters remain before other geometric restrictions; rank alone gives no
 feasible motion.
 
@@ -169,7 +169,7 @@ For every $L\le96/25$, the retained center $C_{3,y}=L-1/2$ differs from its sour
 by
 
 $$
-|C_{3,y}-C^*_{3,y}|=U-L>\frac3{100}>
+|C_{3,y}-C^{\ast}_{3,y}|=U-L>\frac3{100}>
 \rho_{\rm row}=\frac{808514697}{200000000000}.
 $$
 

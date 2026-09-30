@@ -89,7 +89,7 @@ Their centers are
 | $2$ | $399/170$ | $7/10$ |
 | $3$ | $157/50$ | $1113/850$ |
 
-Call this four-pose configuration $G_*$. Equal choices at this one point are legal
+Call this four-pose configuration $G_{\ast}$. Equal choices at this one point are legal
 values of four independent angle variables.
 This is a new exact member of the unchanged domain, not a replacement for the original
 four-diamond membership fixture.
@@ -122,7 +122,7 @@ For example, the first numerator is $4(337)+3(259)=2125$, and the middle adjacen
 numerator is $3(363)+4(259)=2125$, both over denominator $2125$. The three adjacent
 touches must not be discarded by replacing weak SAT with strict separation.
 
-At $G_*$ the guard quantities are
+At $G_{\ast}$ the guard quantities are
 
 $$
 m=5/8,\quad \varepsilon=0,\quad \ell=7/10,\quad
@@ -140,9 +140,9 @@ $$
 $$
 
 Every value is strictly positive.
-Thus $G_*\in\Gamma_0$. Its bottom barrier is $\ell+A=69/40$ and its high-row octagon top
-is $u+A=7937/3400$. Membership in $\Gamma_0$ asserts four guarded poses, not a point of
-the as-yet unresolved eleven-square child $D_0$.
+Thus $G_{\ast}\in\Gamma_0$. Its bottom barrier is $\ell+A=69/40$ and its high-row
+octagon top is $u+A=7937/3400$. Membership in $\Gamma_0$ asserts four guarded poses, not
+a point of the as-yet unresolved eleven-square child $D_0$.
 
 ## Seven Exact Disk Centers
 
@@ -237,9 +237,9 @@ This completes all 28 cross checks.
 Together with disk containment and the 21 mutual checks, it proves
 
 $$
-\kappa_{\rm disk}(G_*)\ge7,
+\kappa_{\rm disk}(G_{\ast})\ge7,
 \qquad
-\kappa_{\rm oct}(G_*)\ge7.
+\kappa_{\rm oct}(G_{\ast})\ge7.
 $$
 
 The second statement follows from the accepted relaxation inclusion; the first is
@@ -350,8 +350,8 @@ No full-square success child is pruned by this partial result.
 
 The original four-diamond lower fixture and its upper reflection remain membership
 controls only. Their capacities were not determined here.
-The new $G_*$ checks the same eight-guard domain at a different legal actual angle, and
-the seven-center construction falsifies only the disk and octagon bounds of six.
+The new $G_{\ast}$ checks the same eight-guard domain at a different legal actual angle,
+and the seven-center construction falsifies only the disk and octagon bounds of six.
 The exact wall-forced overlap is a negative control against relabeling that construction
 as an eleven-square witness.
 The preserved selected-square touches, disk touch and wall contacts also check the

@@ -93,7 +93,7 @@ The four one-leaf subtrees are frontier cells the top tree already made infeasib
 $0$ and five sharing one orientation modulo $\pi/2$ whose half-tangent lies in the
 declared box, every packing has side at least $U$, and equality holds only on the
 $\mathbb Z/4\times S_6\times S_5$ orbit of Trump’s pose.
-Reflections are not in the family: they send the tilt to $\pi/2-\theta^*$, whose
+Reflections are not in the family: they send the tilt to $\pi/2-\theta^{\ast}$, whose
 half-tangent $0.464$ is outside the box, so the orbit is the whole equality set.
 
 **Where BC-240 enters.** Only at the three $t$ leaves.
@@ -139,14 +139,15 @@ control not to close; both are met as written.
 **Exact claim, the reduction (registrable now).** Every packing of eleven unit squares
 in a square container, six at orientation $0$ and five sharing one orientation modulo
 $\pi/2$ with half-tangent in $[91442076901/250000000000,\ 73154061521/200000000000]$ (an
-interval containing $[t^*-10^{-6},\ t^*+10^{-6}]$ for Trump’s exact half-tangent
-$t^*=0.365769307604677\ldots$), whose side is at most the rational $U_{hi}$ of the
-certificate header ($U_{hi}-U=2.03\times10^{-45}$), lies, after the quarter turn that
-puts its tilted centroid in the closed upper-right quadrant and the relabelling that
-orders each class by $x+y/4$, strictly within $\rho=808514697/200000000000$ of Trump’s
-labelled image (rotation 1, labels $[3,4,2,5,0,1,8,10,6,9,7]$) in every centre
-coordinate, with every tilted orientation within $2.0\times10^{-6}$ radians of Trump’s;
-every other packing in the family has side greater than $U_{hi}$.
+interval containing $[t^{\ast}-10^{-6},\ t^{\ast}+10^{-6}]$ for Trump’s exact
+half-tangent $t^{\ast}=0.365769307604677\ldots$), whose side is at most the rational
+$U_{hi}$ of the certificate header ($U_{hi}-U=2.03\times10^{-45}$), lies, after the
+quarter turn that puts its tilted centroid in the closed upper-right quadrant and the
+relabelling that orders each class by $x+y/4$, strictly within
+$\rho=808514697/200000000000$ of Trump’s labelled image (rotation 1, labels
+$[3,4,2,5,0,1,8,10,6,9,7]$) in every centre coordinate, with every tilted orientation
+within $2.0\times10^{-6}$ radians of Trump’s; every other packing in the family has side
+greater than $U_{hi}$.
 
 **Exact claim, H-236 (the reduction composed with BC-240).** Every packing in that
 family has container side at least $U=3.877083590022814\ldots$, the exact side of

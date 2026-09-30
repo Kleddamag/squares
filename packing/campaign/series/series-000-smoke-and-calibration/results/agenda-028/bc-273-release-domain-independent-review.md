@@ -278,7 +278,7 @@ $$
 Thus every target point obeys
 
 $$
-\Vert q-q_*\Vert_\infty\ge|C_{3,y}-C^*_{3,y}|=U-L
+\Vert q-q_{\ast}\Vert_\infty\ge|C_{3,y}-C^{\ast}_{3,y}|=U-L
 >\frac{1925}{497}-\frac{96}{25}
 =\frac{413}{12425}>\frac3{100}
 >\frac{808514697}{200000000000}.

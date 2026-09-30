@@ -224,8 +224,8 @@ assistant. It is not a hardened parser for arbitrary hostile interval files.
 
 ### Optional smoothing
 
-The source also constructs a continuous function $f=g*k_\varepsilon$, with a normalized
-uniform kernel on $[-\varepsilon,\varepsilon]^2$ and $\varepsilon=1/20000$.
+The source also constructs a continuous function $f=g\ast k_\varepsilon$, with a
+normalized uniform kernel on $[-\varepsilon,\varepsilon]^2$ and $\varepsilon=1/20000$.
 Positive-weight rectangles stay strictly more than $\varepsilon$ inside the container,
 so smoothing preserves the total mass inside $K$. The kernel’s projection width is at
 most $2\sqrt2\varepsilon<3\varepsilon$. The checked margin

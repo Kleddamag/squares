@@ -162,8 +162,8 @@ Use frame coordinates $U=Cx+Sy$ and $V=-Sx+Cy$ for the center.
 The preceding inequalities and bottom containment place it inside the closed triangle
 
 $$
-K_\theta=\lbrace U\le u_*,\ V\le v_*,\ SU+CV\ge h\rbrace,\qquad
-u_*=Cm+S-1/2,\quad v_*=C-S-1/2.
+K_\theta=\lbrace U\le u_{\ast},\ V\le v_{\ast},\ SU+CV\ge h\rbrace,\qquad
+u_{\ast}=Cm+S-1/2,\quad v_{\ast}=C-S-1/2.
 $$
 
 This is an outer approximation to the possible centers; enlarging the center set is safe
@@ -330,7 +330,7 @@ gap in this sufficient cover would not refute H124.
 ### A Fixed Collision-region Strengthening
 
 The next selected instrument keeps those thirteen regions and appends one fixed S-center
-region, $C^*$, directly.
+region, $C^{\ast}$, directly.
 It is not another obstacle to dilate by $B_0$. The
 [author proof](../series/series-000-smoke-and-calibration/results/agenda-026/bc-255-center-correlated-collision.md)
 and
@@ -339,8 +339,8 @@ prove the uniform displacement guard $\varepsilon=1/500$ and the collision impli
 throughout both actual closed angle bands.
 They define every constant and distinguish world coordinates from the rotated Q-frame.
 
-The producer constructs $C^*$ by closed half-plane clipping; the independently authored
-reader reconstructs it by enumerating supporting-line intersections.
+The producer constructs $C^{\ast}$ by closed half-plane clipping; the independently
+authored reader reconstructs it by enumerating supporting-line intersections.
 Both source-free reviews passed in Session094, with the fixed eight unnormalized normals
 and the required $2\varepsilon$ penalty on diagonal normals.
 The reviewed source retains the old thirteen regions unchanged and has at most fourteen

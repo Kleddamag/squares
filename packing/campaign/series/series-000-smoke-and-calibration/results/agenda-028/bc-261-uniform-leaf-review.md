@@ -111,7 +111,7 @@ feasible. The first blocking nonbasis row, or the floor at height zero, adds an
 independent row because its value changes along that edge.
 This supplies the auxiliary starting vertex without a feasible source pose.
 
-At an exact positive optimum $t_*$, the floor is inactive.
+At an exact positive optimum $t_{\ast}$, the floor is inactive.
 The nonnegative active dual multipliers satisfy
 
 $$
@@ -121,7 +121,7 @@ $$
 Multiplying the active equalities gives
 
 $$
-\lambda^Tb=\lambda^T(Az_*-wt_*)=-t_*<0.
+\lambda^Tb=\lambda^T(Az_{\ast}-wt_{\ast})=-t_{\ast}<0.
 $$
 
 `prove_infeasible` places those multipliers at their original row indices and fills

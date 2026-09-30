@@ -178,7 +178,7 @@ certificates.
 
 | Retained fact | What it excludes | What remains open |
 | --- | --- | --- |
-| The transported 88-core family obstructs unconditional additive measures at n11 from $L_*=38200/9977\approx3.82881$. | A pure point, segment or density cover cannot cross that ceiling merely by a finer discretization or a different additive representation. | Nonadditive charges, restrictions proved for physical packings, and multi-parent compatibility. |
+| The transported 88-core family obstructs unconditional additive measures at n11 from $L_{\ast}=38200/9977\approx3.82881$. | A pure point, segment or density cover cannot cross that ceiling merely by a finer discretization or a different additive representation. | Nonadditive charges, restrictions proved for physical packings, and multi-parent compatibility. |
 | T-033 refines the same T-025 supports and weights. | Treating further refinement of that frozen family as the route past $3.875$. | Changed supports, features, parent domains or selection geometry. |
 | At n17, deleting triples at fixed point weights gives an exact point-only counterexample; dropping the parent-centre restriction gives another. | Claims that those ingredients are decorative for that certificate. | Reoptimized point-only families, better threshold families and different domains. |
 | Exp-222 gives an exact fixed-support, fixed-`(L,A)` mass floor $33945829752/2000000005$. | More than $0.025163773\ldots$ of normalized mass improvement by changing only those weights at that same geometry. | New sites, new features, changed $A$, and joint geometry optimization. The quoted $+0.0034$ side estimate is a **heuristic**, not a theorem. |

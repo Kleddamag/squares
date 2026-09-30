@@ -315,7 +315,7 @@ The generator explicitly takes both.
 A more accurate notation would be
 
 $$
-\tau^*(A,\Theta;L,B),
+\tau^{\ast}(A,\Theta;L,B),
 $$
 
 where \(A\) is the site set and \(\Theta\) the net.

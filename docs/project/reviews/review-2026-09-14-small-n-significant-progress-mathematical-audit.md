@@ -52,7 +52,7 @@ The following facts constrain the choice of route.
 | Registered, V4/C5 | T-025 proves $s(11)\ge3.82$; T-026 proves $s(11)\ge3.826447410572939\ldots$ | The next bound should justify its cost relative to this frontier |
 | Registered upper bound | Trump’s exact construction gives $s(11)\le3.877083590022814\ldots$ | A verified smaller construction would immediately change the upper bound |
 | Registered conditional result, V3/C3 | T-023 excludes one specified four-owner branch at $3.84$, with admitted symmetry transports | Conditional coverage is productive, but global selection remains missing |
-| Independently reviewed analytical deduction | The retained 88-core family transports to full unit squares with fractional mass eleven at $L_*=38200/9977\approx3.82880625$ | Unconditional point measures and the specified density formulation cannot prove a bound above $L_*$ |
+| Independently reviewed analytical deduction | The retained 88-core family transports to full unit squares with fractional mass eleven at $L_{\ast}=38200/9977\approx3.82880625$ | Unconditional point measures and the specified density formulation cannot prove a bound above $L_{\ast}$ |
 | Exact local negative evidence | T1 has a local low-surplus counterexample; H-161’s literal parent union adds no mass there | The existing local resource cannot supply the missing availability theorem |
 | Reviewed analytical deduction | X-031 extends that literal failure to a sufficiently small admissible neighborhood | Subdividing the same local domain does not remove its obstruction |
 | Registered but unmeasured | H-160/H-162 have no scientific target receipt | Their pause carries no scientific verdict; even success would leave local availability open |
@@ -71,9 +71,8 @@ The point/density ceiling is stronger than a limitation of the current sites, sy
 convention, or core shape.
 Selecting a core inside each member of the full-unit fractional family cannot increase
 its point depth. Thus changing an unconditional point-core selection rule cannot evade
-the obstruction.
-A physical integrality gap at $L_*$ remains unproved because the current
-physical lower bound lies below it.
+the obstruction. A physical integrality gap at $L_{\ast}$ remains unproved because the
+current physical lower bound lies below it.
 
 A6 has a narrower scope: it obstructs its specified threshold catalog and core domain.
 It does not obstruct every threshold, floor, compatibility, or conditional certificate.
@@ -545,8 +544,8 @@ This is a speculative independent line.
 Assign uncovered area or boundary loss to local arrangements of two or three parents,
 retaining their relative orientations.
 Seek a lower bound on unavoidable empty area that contradicts $L^2-11$. An unconditional
-one-body density reformulation cannot work above $L_*$; a useful version must preserve
-shared geometric information.
+one-body density reformulation cannot work above $L_{\ast}$; a useful version must
+preserve shared geometric information.
 
 **First discriminator:** Derive one exact local gap lemma, calibrate it against Trump
 and the n6 angular-rattler family, then give an accounting rule that sums it over a

@@ -152,7 +152,7 @@ A theorem relating objective slack to pose distance is missing.
 
 Even the packet’s inequality
 
-$$S-U\ge -C\Vert z-z_*\Vert_\infty^2$$
+$$S-U\ge -C\Vert z-z_{\ast}\Vert_\infty^2$$
 
 is a local inequality with an already-assumed chart domain.
 For $S<U$ it gives a lower bound on a possible displacement, not an upper bound forcing

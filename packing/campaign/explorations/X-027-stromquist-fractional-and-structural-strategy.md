@@ -170,8 +170,8 @@ under discussion, not one constant shared by every example.
 
 ## Outcome and Evidence Status
 
-A covering proof past $L_* = 38200/9977$ needs a counting rule or a geometric relation
-that ordinary point depth forgets.
+A covering proof past $L_{\ast} = 38200/9977$ needs a counting rule or a geometric
+relation that ordinary point depth forgets.
 Recent work has made both kinds of progress: threshold charges produced T-025, and owner
 restrictions produced T-023’s conditional exclusion.
 Finer angular containment then carried the threshold certificate to T-026. The threshold
@@ -195,7 +195,7 @@ $$
 The most consequential deductions are:
 
 - The retained 88-core obstruction scales exactly to **full unit squares** of fractional
-  mass $11$ at $L_* = 38200/9977$, approximately $3.8288$. It obstructs arbitrary
+  mass $11$ at $L_{\ast} = 38200/9977$, approximately $3.8288$. It obstructs arbitrary
   unconditional point measures at that side and above, without a symmetry assumption.
   A new search for such a witness at $3.83\leq L\leq3.85$ is unnecessary.
 - An open-interior formulation gives a self-contained strong-duality argument, including
@@ -277,7 +277,7 @@ $191/50$, each of weight $1/8$, with closed depth at most one everywhere.
 Scaling all positions and sides by $1/B$ gives unit squares in
 
 $$
-L_* = \frac{191/50}{9977/10000} = \frac{38200}{9977}
+L_{\ast} = \frac{191/50}{9977/10000} = \frac{38200}{9977}
 < \frac{383}{100}.
 $$
 
@@ -296,10 +296,10 @@ A directly consumable full-unit export would be useful engineering; another exis
 search at $3.83\leq L\leq3.85$ would not.
 
 **A strict physical integrality gap remains unproved.** The current physical lower bound
-lies below $L_*$. To prove that the fractional relaxation actually permits more squares
-than physical packing at $L_*$, we still need a physical exclusion there.
-A global lower bound strictly above $L_*$, for example $3.83$, would establish both a
-stronger bound and this gap.
+lies below $L_{\ast}$. To prove that the fractional relaxation actually permits more
+squares than physical packing at $L_{\ast}$, we still need a physical exclusion there.
+A global lower bound strictly above $L_{\ast}$, for example $3.83$, would establish both
+a stronger bound and this gap.
 T-025 already demonstrates a matched gap in its declared closed-core model; the
 unit-square statement is separate.
 
@@ -375,7 +375,7 @@ fractional packing. Rational description uses rational centre coordinates and ra
 rotation matrices. The proof shrinks a finite partition of pose space to strictly
 interior representative cores, rationalizes with margin, and dilates.
 Exact-side finite attainment is not proved.
-The retained family already supplies a concrete $k=8$ witness at $L_*$.
+The retained family already supplies a concrete $k=8$ witness at $L_{\ast}$.
 
 ## 3. Stronger Charges: Test Expressiveness Before a Large Covering Run
 
@@ -724,7 +724,7 @@ known; X-027 is not an instruction to run every row at once.
 - **Find fractional mass eleven at $3.83\leq L\leq3.85$.** Already answered by exact
   transport. Reopen for a smaller frozen side or a new capacity family, not existence in
   that range.
-- **Replace point sites by unrestricted continuous density to cross $L_*$.** The
+- **Replace point sites by unrestricted continuous density to cross $L_{\ast}$.** The
   retained family and the duality argument block this unconditional method.
   Reopen with a richer charge or conditional domain whose witness membership is checked.
 - **Split the same neutral endpoint patches again.** These guaranteed occupied regions
@@ -764,7 +764,7 @@ known; X-027 is not an instruction to run every row at once.
 
 The coordinator checked the source scopes and consequential deductions, and assembled
 the comparison. A separate integrated review found no mathematical blocker and prompted
-four scope corrections: limit the introductory cap claim to sides past $L_*$,
+four scope corrections: limit the introductory cap claim to sides past $L_{\ast}$,
 distinguish timeouts from exact packet rejection, preserve the possible usefulness of
 ordinary replacement columns, and separate the angle-demand and charge-language
 controls. Its broken structural-section link was also corrected.

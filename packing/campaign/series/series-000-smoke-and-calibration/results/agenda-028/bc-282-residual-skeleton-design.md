@@ -27,7 +27,7 @@ angular exclusion.
 
 ## Complete Indexed Domain
 
-Let $\mathcal K^*$ be the seven-parameter necessary skeleton with
+Let $\mathcal K^{\ast}$ be the seven-parameter necessary skeleton with
 
 $$
 (L,z,p_x,p_y,a,b,t),\qquad p=(p_x,p_y),
@@ -118,7 +118,7 @@ enters this domain.
 Deleting square 10 gives the necessary implication
 
 $$
-\pi(\mathcal R_{11})\subseteq\mathcal K^*,
+\pi(\mathcal R_{11})\subseteq\mathcal K^{\ast},
 $$
 
 where $\mathcal R_{11}$ is the accepted closed eleven-square remainder and $\pi$ drops
@@ -296,8 +296,8 @@ $$
 
 If (F) is proved uniformly, its open intervals cover the entire closed fiber.
 Every permissible $p$ then overlaps at least one axis square, so
-$\mathcal K^*=\varnothing$. This would complete the original source-family exclusion
-together with the inherited complementary intervals.
+$\mathcal K^{\ast}=\varnothing$. This would complete the original source-family
+exclusion together with the inherited complementary intervals.
 
 The distinct-source, six-link requirement is a **specific sufficient strengthening**,
 not an equivalent rewriting of skeleton emptiness.
@@ -373,7 +373,7 @@ No implementation or replay is proposed by this design.
   be excluded.
 
 **Complete exclusion:** an independent audit verifies a contradiction for all
-$\mathcal K^*$, through (F) or another separately admitted complete argument.
+$\mathcal K^{\ast}$, through (F) or another separately admitted complete argument.
 The inherited complementary exclusions then finish this restricted source family, for
 every original square-10 pose.
 This is not a global representative, finite-motion theorem, unrestricted bound, or H120
@@ -382,7 +382,7 @@ adapter result.
 **Exact ten-square witness:** give exact $(L,z,p_x,p_y,a,b,t)$ with unambiguous
 algebraic roots where needed; reconstruct and check all 40 containment rows, 45 actual
 SAT clauses, contact identities and parameter bounds.
-This proves $\mathcal K^*\ne\varnothing$ and shows that these ten-square conditions
+This proves $\mathcal K^{\ast}\ne\varnothing$ and shows that these ten-square conditions
 alone cannot exclude the eleven-square remainder.
 It gives no eleven-square upper bound and does not assert an extension.
 

@@ -26,16 +26,16 @@ $L_0=191/50$. Rescaling both their positions and their sides by $1/B$ gives unit
 of total mass eleven in a container of side
 
 $$
-L_*=\frac{L_0}{B}
+L_{\ast}=\frac{L_0}{B}
 =\frac{191/50}{9977/10000}
 =\frac{38200}{9977}
 \approx3.8288.
 $$
 
-Here $L_*$ names the side supplied by this particular witness; it is not a claimed
-optimum. Ordinary point covers of budget below eleven are therefore impossible at $L_*$
-and every larger side, including the interval $[3.83,3.85]$. Section 1 proves the
-rescaling and its scope.
+Here $L_{\ast}$ names the side supplied by this particular witness; it is not a claimed
+optimum. Ordinary point covers of budget below eleven are therefore impossible at
+$L_{\ast}$ and every larger side, including the interval $[3.83,3.85]$. Section 1 proves
+the rescaling and its scope.
 A search for that existence result would duplicate retained evidence.
 
 Two further results explain what to do with that obstruction.
@@ -57,8 +57,8 @@ $$
 3.877083590022814\ldots.
 $$
 
-The lower endpoint is below $L_*$. Thus the retained fractional witness does not yet
-prove that eleven physical unit squares need a strictly larger container than eleven
+The lower endpoint is below $L_{\ast}$. Thus the retained fractional witness does not
+yet prove that eleven physical unit squares need a strictly larger container than eleven
 units of fractional mass.
 
 ## Inputs, Outputs, and Reading Order
@@ -125,7 +125,7 @@ $$
 $$
 
 **Analytic derivation.** Define the unit squares $U_i=B^{-1}C_i$, meaning that every
-coordinate is multiplied by $1/B$. They lie in $K_{L_*}$ and satisfy
+coordinate is multiplied by $1/B$. They lie in $K_{L_{\ast}}$ and satisfy
 
 $$
 \sum_{i=1}^{88}a_i\mathbf 1_{U_i}(x)
@@ -139,7 +139,7 @@ membership. The same squares can be placed unchanged in a larger container.
 Also
 
 $$
-\frac{383}{100}-L_*=\frac{1191}{997700}>0,
+\frac{383}{100}-L_{\ast}=\frac{1191}{997700}>0,
 $$
 
 so this witness exists below $3.83$.
@@ -165,8 +165,8 @@ If $\mu(U_i)\geq1$ for every $i$, finite summation gives
 $$
 11
 \leq\sum_{i=1}^{88}a_i\mu(U_i)
-=\int_{K_{L_*}}\sum_{i=1}^{88}a_i\mathbf 1_{U_i}(x)\thinspace d\mu(x)
-\leq\mu(K_{L_*}).
+=\int_{K_{L_{\ast}}}\sum_{i=1}^{88}a_i\mathbf 1_{U_i}(x)\thinspace d\mu(x)
+\leq\mu(K_{L_{\ast}}).
 $$
 
 The integral means mass-weighted addition over points.
@@ -653,8 +653,8 @@ A bounded search restricted to $k=2$ or $k=4$ is therefore not a complete decisi
 At the exact side, the following equivalence remains unproved: $\nu_\circ(L)\geq n$ if
 and only if some positive integer $k$ admits a finite $k$-fold family of $nk$ unit
 squares in $K_L$. Finite attainment there needs another argument.
-The retained family already supplies the particular case $k=8$, $n=11$ at $L_*$, without
-relying on general exact-side attainment.
+The retained family already supplies the particular case $k=8$, $n=11$ at $L_{\ast}$,
+without relying on general exact-side attainment.
 
 ## 5. Integrality Gaps and Threshold Capacities
 
@@ -669,8 +669,8 @@ $$
 
 A fractional mass-eleven family proves such a physical gap at a side only after a
 separate theorem gives $m(L)\leq10$. The current lower bound does not supply that
-theorem at $L_*$. A physical exclusion at $L_*$ or a larger side would establish a gap
-there when combined with the retained fractional family.
+theorem at $L_{\ast}$. A physical exclusion at $L_{\ast}$ or a larger side would
+establish a gap there when combined with the retained fractional family.
 
 ### The matched core-model gap
 
@@ -686,7 +686,7 @@ The
 is the premise for that core exclusion.
 Its physical theorem uses strict core containment.
 A gap between closed-core packing and closed-core fractional packing does not itself
-give the unresolved full-unit gap at $L_*$, where physical boundaries may touch.
+give the unresolved full-unit gap at $L_{\ast}$, where physical boundaries may touch.
 
 ### How a threshold adds a capacity
 
@@ -798,7 +798,7 @@ The retained [`n=6` case](../../../packing/frontier/n-006.md) has $s(6)=3$, with
 published proof and archived earlier work.
 Any exact full-unit fractional family of mass six at a side below three would therefore
 prove a physical integrality gap immediately.
-For eleven squares, the corresponding physical exclusion at $L_*$ is still missing.
+For eleven squares, the corresponding physical exclusion at $L_{\ast}$ is still missing.
 
 The correspondence’s five-dot failure concerns five unweighted sites: each chosen site
 has weight one. It does not concern arbitrary positive weights on arbitrary numbers of
@@ -847,13 +847,13 @@ requirement fails.
 | Question or mechanism | First useful decision | Prerequisite and scope of a negative result |
 | --- | --- | --- |
 | Does fractional mass eleven exist for full units in $[3.83,3.85]$? | The rescaling in §1 already proves existence at $38200/9977$ | Export the unit family and replay it independently if a program needs to consume it; no search is required |
-| Does the ordinary point obstruction begin below $L_*$? | Freeze a smaller target and obtain an exact finite witness or a globally certified cover below eleven | An interior/a.e. arrangement reader must accept touching controls and reject excess depth on positive area; a fixed-support value below eleven does not refute existence |
+| Does the ordinary point obstruction begin below $L_{\ast}$? | Freeze a smaller target and obtain an exact finite witness or a globally certified cover below eleven | An interior/a.e. arrangement reader must accept touching controls and reject excess depth on positive area; a fixed-support value below eleven does not refute existence |
 | Do additional atoms improve the covering problem at a fixed side? | Add an exactly violated atom, then require globally verified better coverage or a valid obstruction for the enlarged catalog | Alternate support and atom changes with full point-depth checks; a candidate with depth above one can suggest cuts but is not an obstruction |
 | Does a retained obstruction satisfy conditional ownership? | Check the witness’s membership in the actual residual domain and the proposed ownership inequalities | Parent, mark, patch, joint-compatibility, and selection requirements must all be stated and checked |
 | Is there a physical fractional gap for six squares below side three? | Exact fractional mass six proves a gap; a cover below six excludes such mass at the chosen side | Use integral controls at $L=3$ and a frozen target below three; bounded failure to find a family is inconclusive |
 | Can the duality theorem become an admitted premise for later tools? | Retain the independent checks of the finite hitting set, weak closedness, mask LP, and smearing margin | This supplies value equality, not a numerical optimum, equality classification, or automatically complete separation algorithm |
 
-Past $L_*$, the direct eleven-square problem needs counting capacities or geometric
+Past $L_{\ast}$, the direct eleven-square problem needs counting capacities or geometric
 relations beyond ordinary point depth.
 Threshold charges already demonstrate that mechanism on the matched core model.
 The next comparison must measure their effect on a globally covered pose domain or an

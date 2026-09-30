@@ -259,7 +259,7 @@ The retained six segments are $(3,4),(3,5),(6,7),(6,8),(7,9),(8,9)$. The nine fl
 incidences are square 0 at left/bottom; 1 at bottom/right; 2 at top; 3 at left/top; 4 at
 top; and 5 at left. Positive-length segments force equal actual orientations modulo
 quarter turns, and flush edges force the axis orientation.
-The retained graph has wall component $\lbrace0,\ldots,5,*\rbrace$ and unanchored
+The retained graph has wall component $\lbrace0,\ldots,5,\ast\rbrace$ and unanchored
 components $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$, hence rank nine by a spanning
 forest. This is the retained equality graph’s rank.
 Recontacts or new contacts can raise the full contact graph’s rank, and distinct
@@ -296,7 +296,7 @@ $$
 Consequently
 
 $$
-\Vert z-z_*\Vert_\infty\ge U-L
+\Vert z-z_{\ast}\Vert_\infty\ge U-L
 \ge\frac{1925}{497}-\frac{96}{25}
 =\frac{413}{12425}>\frac3{100}
 >\frac{808514697}{200000000000}=\rho_{\rm row}.

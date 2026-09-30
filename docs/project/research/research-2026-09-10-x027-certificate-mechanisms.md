@@ -155,7 +155,7 @@ finite LP arguments below do not rely on X-027’s conclusions.
 | --- | --- | --- |
 | Retained T-022, T-024, T-025, and T-026 certificate packets, including the frozen T-018 premise | Which geometry, sites, coefficients, and counting rules changed; the current lower bound | [Retained gains](#what-produced-the-retained-gains) and the primary packets linked there |
 | A5’s corrected finite-support calculation and A6’s admitted upper certificate and family checks | Obstructions and upper bounds at their stated atom, domain, and support scopes | [Ceiling families](#what-the-ceiling-families-require-us-to-change) |
-| The fractional sibling’s rescaling of the retained 88-core family | A point-only obstruction for full unit squares at $L_*=38200/9977$ | [Fractional report, exact rescaling](research-2026-09-10-x027-fractional-duality.md#1-exact-rescaling-already-answers-the-mass-eleven-question); this is the only mathematical result imported from a sibling report |
+| The fractional sibling’s rescaling of the retained 88-core family | A point-only obstruction for full unit squares at $L_{\ast}=38200/9977$ | [Fractional report, exact rescaling](research-2026-09-10-x027-fractional-duality.md#1-exact-rescaling-already-answers-the-mass-eleven-question); this is the only mathematical result imported from a sibling report |
 | Distinct sites and disjoint closed cores; nonnegative integer site counts | Globally valid weighted and floor resource budgets; exact finite profile comparisons | [Integer multiplicities](#integer-site-multiplicities-and-genuine-floor-charges), proved locally; the retained weighted comparison is separately attributed to its review |
 | A feasible finite covering LP with finite optimum and the same placement rows in both comparisons | The whole-optimal-face discriminator for new atoms | [Joint generation](#why-support-and-atom-generation-must-interact), proved locally using finite LP duality |
 | A specified angle classification and an exact count premise for physical squares | A conditional certificate with different class demands | [Angle profiles](#angle-profiles-change-the-required-charge), using the cited strategy and H-131 premises |
@@ -239,7 +239,7 @@ three sites. The retained 88-core family violates a two-of-three inequality at c
 $5/4$. The accepted threshold certificate closes its declared core problem at $3.82$,
 where that family obstructs point covers.
 It does not exceed the separately transported full-unit point cap
-$L_*=38200/9977\approx3.8288$ imported from the fractional sibling.
+$L_{\ast}=38200/9977\approx3.8288$ imported from the fractional sibling.
 The original
 [X-023 derivation](../../../packing/campaign/explorations/X-023-three-losses-and-a-new-atom.md#threshold-atoms)
 and corrected X-024 distinguish these comparisons.

@@ -76,10 +76,10 @@ For the bottom-left owner, the selected core contains $m_1=(3152/3175,2336/3175)
 Choose its two perpendicular signed axes so that the displacement from this mark to the
 core centre has nonnegative projections on both axes.
 Order them so that the second is a counterclockwise quarter-turn of the first.
-The first axis has direction $0\leq\theta\leq\theta_*$, where $\theta_*$ is the retained
-rational endpoint just below $45^\circ$. Neither axis needs to point directly at the
-core centre. Horizontal and vertical reflections give the other three owner classes and
-patches.
+The first axis has direction $0\leq\theta\leq\theta_{\ast}$, where $\theta_{\ast}$ is
+the retained rational endpoint just below $45^\circ$. Neither axis needs to point
+directly at the core centre.
+Horizontal and vertical reflections give the other three owner classes and patches.
 
 For a fixed orientation, an **event cell** is a region of possible core centres in which
 the set of contained dots does not change.

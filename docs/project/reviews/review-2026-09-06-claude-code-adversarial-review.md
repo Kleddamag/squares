@@ -332,25 +332,26 @@ leaving the container, at every net direction, carries mass at least 1.”
 
 ### A6. The covering linear program is not pinned down, and two sentences about it are each true only under a different reading (Medium)
 
-**Where.** Generator and Verifier: the display $\tau^*(L,B) = \min_{w \ge 0} \sum_a w_a$
-subject to $\sum_{a \in Q} w_a \ge 1$ “for every placement $Q$”, followed by “A
-certificate exists exactly when $\tau^* \lt n$. Since $\tau^*$ depends on $L$ and $B$
-alone, an optimum that lands on a round number is a sign of a bug, not a result: the
-target never enters the program.”
+**Where.** Generator and Verifier: the display
+$\tau^{\ast}(L,B) = \min_{w \ge 0} \sum_a w_a$ subject to $\sum_{a \in Q} w_a \ge 1$
+“for every placement $Q$”, followed by “A certificate exists exactly when
+$\tau^{\ast} \lt n$. Since $\tau^{\ast}$ depends on $L$ and $B$ alone, an optimum that
+lands on a round number is a sign of a bug, not a result: the target never enters the
+program.”
 
 **Problem.** The display does not say which placements $Q$ range over (unit squares or
 $B$-squares; all angles or the net’s) or what the index $a$ ranges over (a fixed finite
 site set, as the generator uses, or all points).
 
 - If the program is the one the generator solves, over $B$-squares at the net’s
-  directions on a fixed site set, then “exists exactly when $\tau^* < n$” is right up to
-  rationalisation, but $\tau^*$ depends on the site set and the net as well as on $L$
-  and $B$. The register entry for this result records two site sets at side 3.82 whose
-  optima differ, which is the dependence the sentence denies.
-- If the program is the idealised one over all sites and all angles, then $\tau^*$ does
-  depend on `L` and `B` alone, but “exactly when” fails in one direction: a certificate
-  needs mass at least 1 only for `B`-squares at net angles, so a certificate can exist
-  while the all-angle `B`-square program has $\tau^* \ge n$.
+  directions on a fixed site set, then “exists exactly when $\tau^{\ast} < n$” is right
+  up to rationalisation, but $\tau^{\ast}$ depends on the site set and the net as well
+  as on $L$ and $B$. The register entry for this result records two site sets at side
+  3.82 whose optima differ, which is the dependence the sentence denies.
+- If the program is the idealised one over all sites and all angles, then $\tau^{\ast}$
+  does depend on `L` and `B` alone, but “exactly when” fails in one direction: a
+  certificate needs mass at least 1 only for `B`-squares at net angles, so a certificate
+  can exist while the all-angle `B`-square program has $\tau^{\ast} \ge n$.
 
 The sentence’s point, that $n$ never enters the program, is right under either reading.
 Also, “exactly when” glosses the rationalisation step: the search runs in floating
@@ -360,12 +361,12 @@ in exact arithmetic.
 
 **Fix.** State the program the generator solves and say what depends on what:
 
-> $\tau^*$ is the least total weight on a candidate set of sites such that every
+> $\tau^{\ast}$ is the least total weight on a candidate set of sites such that every
 > $B$-square at a net direction inside the container carries weight at least 1. It
 > depends on the container, the shrink, the net and the candidate sites, and not on $n$:
 > an optimum that lands exactly on an integer is a sign of a bug, not a result.
-> If $\tau^* < n$, scaling a solution up slightly and rounding it to rationals gives a
-> certificate; if $\tau^* \ge n$, none exists on those sites.
+> If $\tau^{\ast} < n$, scaling a solution up slightly and rounding it to rationals
+> gives a certificate; if $\tau^{\ast} \ge n$, none exists on those sites.
 
 ### A7. “A wrong linear program will be rejected by the verifier” (Nit)
 

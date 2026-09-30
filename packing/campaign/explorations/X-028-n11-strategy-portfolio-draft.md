@@ -106,7 +106,7 @@ exact value; exhaustive search is unnecessary for that direction.
 | X-026 and H-157 | Neutrality obstructs point covers on named endpoint-patch residual domains; six of eight refined subclasses remain neutral and two improve | Stronger domains, conditional thresholds, compatible owner selections, and routing |
 | H-158 / exp-156 | The saved residual survives its necessary parent box; all 181 B-only frames already exclude its selected TR owner | Parent-domain gain at BL, BR, or TL; the frozen protocol stopped before those owners, leaving H-158 unresolved |
 | Parent-domain translation review | The translated 88-core family has individually contained exact unit parents from $3.82345$ with the retained core side and nodes | Simultaneous parents, owner conditions, changed charges, larger cores, and changed selection domains |
-| X-027’s reviewed deductions | Full-unit fractional mass eleven at $L_*=38200/9977$; seven owned corner marks and at most three contact components after the stated normalization at $96/25$ | A physical integrality gap at $L_*$, useful complete geometric cells, and a new global packing bound |
+| X-027’s reviewed deductions | Full-unit fractional mass eleven at $L_{\ast}=38200/9977$; seven owned corner marks and at most three contact components after the stated normalization at $96/25$ | A physical integrality gap at $L_{\ast}$, useful complete geometric cells, and a new global packing bound |
 
 The sources for the finite-family statements and their independent replay are the
 [A6 evidence section](../../../docs/project/research/research-2026-09-09-n11-evidence-and-inference.md#13-the-later-a6-and-h157-results-what-has-been-checked).
@@ -210,7 +210,7 @@ The
 removes a redundant global test: tightening isolated-parent containment with the
 retained $B=9977/10000$ and nodes cannot defeat its translated point obstruction at
 $3.827$. Each core has a possible parent; the parents are not proved mutually
-compatible. X-027 additionally transports the family to full unit squares at $L_*$,
+compatible. X-027 additionally transports the family to full unit squares at $L_{\ast}$,
 obstructing unconditional point measures there and above.
 Continuous density does not bypass that point-capacity obstruction under the report’s
 stated formulation.
@@ -359,7 +359,7 @@ allowance. Replay the exact membership and orbit absence.
 A hit identifies information lost by truncation and proposes a column.
 At H-135’s frozen $q=96/25$, X-027’s transported mass-eleven family rules out an
 unconditional point certificate below eleven.
-Turning a pricing hit into a stronger bound therefore requires a side below $L_*$,
+Turning a pricing hit into a stronger bound therefore requires a side below $L_{\ast}$,
 richer charges, or a justified restricted domain, followed by the corresponding
 re-optimization, complete coverage, and physical transfer.
 

@@ -145,7 +145,7 @@ Equivalently its ordinary owner surplus is at most \(\varepsilon-uw-(11-k)g\). X
 already states this necessary extension inequality; the new deduction is its complete
 C/S reduction and integer decision thresholds.
 
-Let $B_*$ be the minimum of \(\sum_{i\in X}\beta_i\) over every full forced-0 local
+Let $B_{\ast}$ be the minimum of \(\sum_{i\in X}\beta_i\) over every full forced-0 local
 configuration $X$, including both actual C and actual S domains from X-029. S requires
 joint physical parents.
 The minimum exists: the domains are nonempty, only finitely many atomic membership sets
@@ -163,19 +163,19 @@ Then
 \]
 
 **Proof.** Diagonal reflection exchanges forced types and preserves measure, equipment,
-and owner count. Every full/full pair therefore has excess at least $2B_*$. A
-one-missing/full pair has excess at least $B_*$, because the O owner’s excess is
+and owner count. Every full/full pair therefore has excess at least $2B_{\ast}$. A
+one-missing/full pair has excess at least $B_{\ast}$, because the O owner’s excess is
 nonnegative. Here
 
 \[
 2Ww=1062510>1048233=W\Delta,
 \]
 
-so $B_*>\Delta/2>\Delta-w$. The two-missing role is absent.
+so $B_{\ast}>\Delta/2>\Delta-w$. The two-missing role is absent.
 These inequalities prove the forward sufficiency for all adjacent and opposite
-realizations. Conversely, an attaining full corner with $B_*\le\Delta/2$ and its
-diagonally reflected opposite copy have excess $2B_*\le\Delta$. X-029’s proved parent
-separation
+realizations. Conversely, an attaining full corner with $B_{\ast}\le\Delta/2$ and its
+diagonally reflected opposite copy have excess $2B_{\ast}\le\Delta$. X-029’s proved
+parent separation
 
 \[
 2q-2(a+b)-4=708/3175>0

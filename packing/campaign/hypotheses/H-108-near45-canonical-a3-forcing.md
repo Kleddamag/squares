@@ -76,17 +76,17 @@ Thus, in square-frame coordinates `U=Cx+Sy`, `V=-Sx+Cy`, every square avoiding L
 under these hypotheses has its center in the closed enlargement
 
 $$
-K_\theta=\lbrace U\le u_*,\ V\le v_*,\ SU+CV\ge h\rbrace,\qquad
-u_*=Cq/2+S-1/2,\quad v_*=C-S-1/2.
+K_\theta=\lbrace U\le u_{\ast},\ V\le v_{\ast},\ SU+CV\ge h\rbrace,\qquad
+u_{\ast}=Cq/2+S-1/2,\quad v_{\ast}=C-S-1/2.
 $$
 
 For positive C and S this set is empty, a singleton, or the triangle with formal
 vertices
 
 $$
-E=(u_*,v_*),\qquad
-F=((h-Cv_*)/S,v_*),\qquad
-G=(u_*,(h-Su_*)/C).
+E=(u_{\ast},v_{\ast}),\qquad
+F=((h-Cv_{\ast})/S,v_{\ast}),\qquad
+G=(u_{\ast},(h-Su_{\ast})/C).
 $$
 
 Indeed, let `Delta=Su*+Cv*-h`. For positive Delta the barycentric coefficients at F, G

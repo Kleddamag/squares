@@ -109,8 +109,9 @@ $e,f$ are linearly independent.
 The forced 4–5 point contact at $(1,L-1)$ also remains.
 Pair 9–10 has no prescribed contact or positive separation margin.
 
-The retained angular-equality graph has the wall component $\lbrace0,\ldots,5,*\rbrace$
-and components $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$, hence retained rank nine.
+The retained angular-equality graph has the wall component
+$\lbrace0,\ldots,5,\ast\rbrace$ and components $\lbrace6,7,8,9\rbrace$ and
+$\lbrace10\rbrace$, hence retained rank nine.
 Coincident orientations do not themselves add graph edges; new segment contacts may add
 edges.
 Neither this graph rank nor the ten-parameter description proves a feasible motion

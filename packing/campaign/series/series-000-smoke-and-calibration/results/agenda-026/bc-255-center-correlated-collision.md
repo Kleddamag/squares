@@ -5,13 +5,14 @@ distinguished-square centers move by less than $\varepsilon=1/500$ in each world
 coordinate throughout the full near45 band.
 The same bound holds on the larger closed tangent-half-angle interval used by the
 existing instruments.
-It gives the fixed center region $C^*$ below: a near-axis square centered there
+It gives the fixed center region $C^{\ast}$ below: a near-axis square centered there
 intersects every admissible distinguished square.
 
 This is a source-free analytical proof prepared under `think-8x6o` on September 7, 2026,
 for independent review.
-No scientific source, polygon vertices for $C^*$, cover packet, or target invocation was
-constructed. Whether adding $C^*$ completes the remaining near-axis cover is untested.
+No scientific source, polygon vertices for $C^{\ast}$, cover packet, or target
+invocation was constructed.
+Whether adding $C^{\ast}$ completes the remaining near-axis cover is untested.
 
 The premises are the
 [H124 center-triangle and whole-band kernel reductions](../../../../hypotheses/H-124-full-distinguished-square-compatibility.md#a-stronger-continuous-common-obstacle).
@@ -42,14 +43,14 @@ Denote the second square by $\mathcal S$ below.
 The accepted H124 reduction places every admissible distinguished-square center in
 
 $$
-K_\theta=\lbrace(x,y):U\le u_*,\ V\le v_*,\ SU+CV\ge h\rbrace,
+K_\theta=\lbrace(x,y):U\le u_{\ast},\ V\le v_{\ast},\ SU+CV\ge h\rbrace,
 $$
 
 where
 
 $$
 U=Cx+Sy,\qquad V=-Sx+Cy,\qquad
-u_*=Cm+S-1/2,\qquad v_*=C-S-1/2.
+u_{\ast}=Cm+S-1/2,\qquad v_{\ast}=C-S-1/2.
 $$
 
 Avoidance of the two closed P10 marks $(1,1)$ and $(m,1)$ gives strict upper
@@ -58,13 +59,13 @@ Bottom-wall containment supplies $y=SU+CV\ge h$. The other P10 conditions are no
 asserted for every point of this enlarged triangle.
 
 For $C,S>0$, the largest possible value of $SU+CV$ under the two upper bounds is
-$Su_*+Cv_*=h+\Delta$. Thus $K_\theta$ is empty when $\Delta<0$, is a singleton when
-$\Delta=0$, and otherwise has frame-coordinate vertices
+$Su_{\ast}+Cv_{\ast}=h+\Delta$. Thus $K_\theta$ is empty when $\Delta<0$, is a singleton
+when $\Delta=0$, and otherwise has frame-coordinate vertices
 
 $$
-(u_*,v_*),\qquad
-(u_*-\Delta/S,v_*),\qquad
-(u_*,v_*-\Delta/C).
+(u_{\ast},v_{\ast}),\qquad
+(u_{\ast}-\Delta/S,v_{\ast}),\qquad
+(u_{\ast},v_{\ast}-\Delta/C).
 $$
 
 Applying $(U,V)\mapsto(CU-SV,SU+CV)$ gives the world-frame vertices
@@ -267,8 +268,8 @@ B_0=[-\alpha,\alpha]^2,\qquad
 B_{\pi/4}=R_{\pi/4}[-\alpha,\alpha]^2,
 $$
 
-and put $M^*=B_{\pi/4}+B_0$. Its definition has positive denominators: $0<T<1/3$ implies
-$1+2T-T^2>0$.
+and put $M^{\ast}=B_{\pi/4}+B_0$. Its definition has positive denominators: $0<T<1/3$
+implies $1+2T-T^2>0$.
 
 For an angular offset with $|t|\le T$, the required projection factor is
 
@@ -281,11 +282,11 @@ Hence $\alpha f(|t|)\le\alpha f(T)=1/2$. This proves $B_{\pi/4}\subseteq U_\thet
 $B_0\subseteq U_\psi$ for both enlarged closed angle bands, and consequently
 
 $$
-M^*\subseteq U_\theta+U_\psi.
+M^{\ast}\subseteq U_\theta+U_\psi.
 $$
 
 For $n=(n_x,n_y)$, write $h_A(n)=\sup_{a\in A}n\cdot a$ for a support function.
-The complete set of outward facet directions of $M^*$ is
+The complete set of outward facet directions of $M^{\ast}$ is
 
 $$
 \mathcal N=\lbrace\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\rbrace.
@@ -295,7 +296,7 @@ These normals are not normalized.
 The support function is
 
 $$
-h_{M^*}(n)
+h_{M^{\ast}}(n)
 =\alpha(|n_x|+|n_y|)
 +\alpha r\bigl(|n_x+n_y|+|n_y-n_x|\bigr).
 $$
@@ -303,16 +304,17 @@ $$
 It equals $\alpha(1+\sqrt2)$ on the four axis normals and $\alpha(2+\sqrt2)$ on the four
 diagonal normals. A Minkowski sum of two convex polygons has only facet directions from
 the summands: between consecutive such directions, each summand’s maximizing vertex is
-constant. Thus these eight support inequalities describe all of $M^*$, including its
+constant.
+Thus these eight support inequalities describe all of $M^{\ast}$, including its
 boundary.
 
 Define the fixed closed set
 
 $$
 \boxed{\quad
-C^*=\bigcap_{n\in\mathcal N}
+C^{\ast}=\bigcap_{n\in\mathcal N}
 \left\lbrace z:n\cdot z\le
-h_{M^*}(n)+\min_{i\in\lbrace E,L,R\rbrace}n\cdot v_i^0
+h_{M^{\ast}}(n)+\min_{i\in\lbrace E,L,R\rbrace}n\cdot v_i^0
 -\varepsilon\Vert n\Vert_1\right\rbrace.
 \quad}
 $$
@@ -329,25 +331,25 @@ n\cdot v_i(\theta)
 \ge\min_j n\cdot v_j^0-\varepsilon\Vert n\Vert_1.
 $$
 
-If $z\in C^*$, subtracting this inequality from the corresponding bound on $n\cdot z$
-proves $n\cdot(z-v_i(\theta))\le h_{M^*}(n)$. The complete support description implies
-$z-v_i(\theta)\in M^*$. Therefore
+If $z\in C^{\ast}$, subtracting this inequality from the corresponding bound on
+$n\cdot z$ proves $n\cdot(z-v_i(\theta))\le h_{M^{\ast}}(n)$. The complete support
+description implies $z-v_i(\theta)\in M^{\ast}$. Therefore
 
 $$
-C^*\subseteq
-\bigcap_i(v_i(\theta)+M^*)
+C^{\ast}\subseteq
+\bigcap_i(v_i(\theta)+M^{\ast})
 \subseteq\mathcal C_{\theta,\psi}
 $$
 
 for every pair of orientations in the enlarged bands.
-In particular, every contained near-axis square centered in $C^*$ intersects every
+In particular, every contained near-axis square centered in $C^{\ast}$ intersects every
 admissible H124 distinguished square.
 Tangency counts as intersection; this argument supplies no positive overlap or uniform
 clearance claim.
 
 ## The Remaining Cover Obligation
 
-$C^*$ is a region of second-square centers.
+$C^{\ast}$ is a region of second-square centers.
 It is not asserted to lie inside Q and must be appended directly to the center cover,
 without adding $B_0$ to it again.
 
@@ -358,22 +360,23 @@ With $Z_0=[1/2,q-1/2]^2$, the changed sufficient obligation is
 $$
 Z_0\subseteq
 (E+B_0)\ \cup\ \bigcup_{p\in P_9}(p+B_0)
-\ \cup R_B\cup R_D\cup R_F\ \cup C^*.
+\ \cup R_B\cup R_D\cup R_F\ \cup C^{\ast}.
 $$
 
 There is no unmarked bottom-left patch.
 The triangle forgets anchor information used to prove $D\subseteq Q$, so this argument
-does not assert that $C^*$ contains the original $E+B_0$ region.
+does not assert that $C^{\ast}$ contains the original $E+B_0$ region.
 Appending preserves both valid collision mechanisms.
 
 For any contained near-axis $\mathcal S$ avoiding all nine marks, the marked regions and
 corner patches are unavailable.
-A complete cover would therefore place its center either in $E+B_0$ or in $C^*$, each of
-which forces intersection with Q. Together with exp125’s accepted diagonal-band lemma,
-this would prove H124; H106, H123, and the reviewed closed-core counting reduction would
-then prove restricted H036. It would not improve the unrestricted packing bound.
+A complete cover would therefore place its center either in $E+B_0$ or in $C^{\ast}$,
+each of which forces intersection with Q. Together with exp125’s accepted diagonal-band
+lemma, this would prove H124; H106, H123, and the reviewed closed-core counting
+reduction would then prove restricted H036. It would not improve the unrestricted
+packing bound.
 
-No vertices or positive-area assertion for $C^*$ have been computed here.
+No vertices or positive-area assertion for $C^{\ast}$ have been computed here.
 Source construction must retain the full eight-direction intersection and exact field
 embedding, handle an empty or lower-dimensional result explicitly, and preserve all
 original regions. The existing generic positive-area polygon reader cannot silently

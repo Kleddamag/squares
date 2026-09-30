@@ -560,7 +560,7 @@ proving uniqueness of a high-angle global minimizer.
 Release the segment identity $(9,10)$ from Trump’s graph, keeping the other six
 specified pair segments, all nine specified flush wall incidences, and all 55 pair
 nonoverlap and wall conditions.
-The retained equality graph has wall component $\lbrace0,\ldots,5,*\rbrace$ and two
+The retained equality graph has wall component $\lbrace0,\ldots,5,\ast\rbrace$ and two
 unanchored components, $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$. Its rank is nine,
 allowing an axis class and two oblique parameters.
 

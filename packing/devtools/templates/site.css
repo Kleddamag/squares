@@ -889,21 +889,30 @@ body {
   text-align: center;
 }
 
-/* The atlas grid: every case's known-best packing in a small square cell, numbered
-   beneath, filling the width in as many columns as fit. A cell washes on hover like a
-   card; its details show in one hover card below it, kept inside the window. */
-.site-atlas-grid {
+/* The atlas grid: every case's known-best packing in a square cell, numbered beneath.
+   It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
+   size that reads, so the row holds more cases the wider the screen: four on a phone,
+   eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
+   like a card and opens the atlas popover (below). */
+.site-page .site-atlas-grid {
+  --site-wide: 140rem;
   position: relative;
 }
 .site-atlas-cells {
   display: grid;
-  gap: 0.4rem;
-  grid-template-columns: repeat(auto-fill, minmax(3.4rem, 1fr));
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(6.4rem, 1fr));
+}
+@media (max-width: 40rem) {
+  .site-atlas-cells {
+    gap: 0.35rem;
+    grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
+  }
 }
 .kpress .site-atlas-cell {
   color: var(--kpress-doc-text);
   display: block;
-  padding: 0.25rem;
+  padding: 0.3rem;
   text-align: center;
   text-decoration: none;
 }
@@ -921,8 +930,9 @@ body {
   color: var(--kpress-doc-muted);
   display: block;
   font-family: var(--kpress-font-sans);
-  font-size: 0.7rem;
-  margin-block-start: 0.15rem;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  margin-block-start: 0.2rem;
 }
 .site-atlas-grid .site-atlas-note {
   color: var(--site-support-color);
@@ -931,36 +941,275 @@ body {
   margin-block: 0.8rem 0;
   text-align: center;
 }
-.site-atlas-tip {
-  background: var(--kpress-doc-bg);
-  border: 1px solid var(--kpress-doc-border);
-  box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
-  color: var(--kpress-doc-text);
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-  max-inline-size: 17rem;
-  inline-size: max-content;
-  padding: 0.6rem 0.8rem;
-  pointer-events: none;
-  position: absolute;
-  z-index: 5;
+
+/* The atlas popover: one panel every cell opens, what the ascent film's panel says about
+   the case beside its drawing shown large. It is a card popover in every other way:
+   square corners over the scrim, the caps label, the close cross, and the action
+   button at its foot, here to the case record, with arrows to the neighbouring cases.
+   The two bounds keep the film's colours, scarlet for the proved lower bound and green
+   for the best known side, turned lighter in dark mode. */
+:root {
+  --site-bound-lower: #a3123f;
+  --site-bound-upper: #17794a;
 }
-.site-atlas-tip[hidden] {
-  display: none;
+:root:where([data-kpress-resolved-theme="dark"]) {
+  --site-bound-lower: oklch(72% 0.15 12);
+  --site-bound-upper: oklch(76% 0.13 155);
 }
-.site-atlas-tip :is(.site-atlas-head, .site-atlas-row) {
+.site-popover.site-atlas-pop {
+  inline-size: min(56rem, 100vw - 2rem);
+  max-block-size: min(92dvh, 52rem);
+  max-height: none;
+  max-inline-size: none;
+}
+.site-atlas-pop .site-atlas-pop-title {
+  font-size: 1.5em;
+  margin-block: 0.1rem 0.9rem;
+}
+.site-atlas-pop-body {
+  align-items: start;
+  display: grid;
+  gap: 1.2rem 1.8rem;
+  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+}
+.site-atlas-pop-figure svg {
+  aspect-ratio: 1;
   display: block;
+  height: auto;
+  width: 100%;
 }
-.site-atlas-tip .site-atlas-head {
-  margin-block-end: 0.3rem;
+.site-atlas-pop-facts {
+  font-size: var(--site-font-size-note);
+  min-inline-size: 0;
 }
-.site-atlas-tip .site-atlas-row > span {
+.kpress .site-atlas-pop .site-atlas-pop-head {
+  color: var(--kpress-doc-muted);
+  font-size: var(--kpress-caps-label-size, 0.8rem);
+  font-weight: var(--site-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  margin-block: 1rem 0.35rem;
+  text-transform: var(--kpress-caps-transform);
+}
+.site-atlas-pop .site-atlas-pop-record {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--kpress-font-weight-sans-regular);
+  letter-spacing: normal;
+  margin-inline-start: 0.4rem;
+  text-transform: none;
+}
+.site-atlas-pop .site-atlas-pop-bound {
+  font-size: 1.35em;
+  margin-block: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.site-atlas-pop-star {
+  color: var(--site-bound-lower);
+  display: inline-block;
+  font-size: 0.8em;
+  inline-size: 1.1em;
+}
+.site-atlas-pop :is(.is-lower, .is-lower .katex) {
+  color: var(--site-bound-lower);
+}
+.site-atlas-pop :is(.is-upper, .is-upper .katex) {
+  color: var(--site-bound-upper);
+}
+.site-atlas-pop .site-atlas-pop-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+.kpress-prose .site-atlas-pop-item {
+  align-items: center;
+  display: inline-flex;
+  font-weight: var(--site-font-weight-sans-medium);
+  gap: 0.4rem;
+  margin: 0;
+  padding-inline-start: 0;
+}
+.kpress-prose .site-atlas-pop-item::before {
+  content: none;
+}
+.site-atlas-pop-item.is-new-result {
+  color: var(--site-bound-lower);
+}
+.site-atlas-badge {
+  align-items: center;
+  border: 1.5px solid var(--kpress-doc-muted);
+  block-size: 1.25rem;
+  color: var(--kpress-doc-muted);
+  display: inline-flex;
+  font-size: 0.85rem;
+  font-weight: var(--site-font-weight-sans-bold);
+  inline-size: 1.25rem;
+  justify-content: center;
+  line-height: 1;
+}
+.site-atlas-badge[data-style="solid"] {
+  background: var(--kpress-doc-muted);
+  color: var(--kpress-doc-bg);
+}
+.site-atlas-badge[data-style="star"] {
+  border-color: transparent;
+  color: var(--site-bound-lower);
+  font-size: 1.05rem;
+}
+.site-atlas-badge[data-style="query"] {
+  border-color: var(--kpress-doc-border);
+}
+.site-atlas-pop [data-atlas-open] .site-atlas-pop-item {
+  color: var(--kpress-doc-muted);
+  font-weight: var(--kpress-font-weight-sans-regular);
+}
+.site-atlas-pop .site-atlas-pop-cite {
+  color: var(--site-support-color);
+  line-height: 1.4;
+  margin-block: 0.15rem 0;
+  padding-inline-start: 3.4rem;
+  text-indent: -3.4rem;
+}
+.site-atlas-pop-which {
+  display: inline-block;
+  font-weight: var(--site-font-weight-sans-medium);
+  inline-size: 3.4rem;
+  text-indent: 0;
+}
+.site-atlas-pop-note {
+  color: var(--kpress-doc-muted);
+  font-weight: var(--site-font-weight-sans-medium);
+}
+.site-atlas-pop .site-atlas-pop-step {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-inline-start: auto;
+}
+.site-atlas-pop-step button {
+  background: none;
+  border: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-text);
+  cursor: pointer;
+  font-family: var(--kpress-font-sans);
+  font-size: 1.1rem;
+  inline-size: 2.75rem;
+  block-size: 2.4rem;
+}
+.site-atlas-pop-step button:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+}
+.site-atlas-pop-step button:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+/* The gap bar, as the film draws it: a number line from one below the grid bound to two
+   above it, the integers and the values of the two formulas marked in the quiet gray,
+   the two bounds as bold rules with their values above in their colours, and the span
+   between them shaded. Its labels are placed by `overview/atlas-grid.js`, which keeps
+   each inside the bar and the two values off each other. */
+.site-atlas-gap {
+  font-variant-numeric: tabular-nums;
+  margin-block: 0 0.4rem;
+}
+.site-atlas-gap-values,
+.site-atlas-gap-row {
+  block-size: 1.45em;
+  position: relative;
+}
+.site-atlas-gap-values span,
+.site-atlas-gap-row > span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.site-atlas-gap-values span[style*="px"],
+.site-atlas-gap-row > span[style*="px"] {
+  transform: none;
+}
+.site-atlas-gap-values span {
+  font-weight: var(--site-font-weight-sans-bold);
+}
+.site-atlas-gap-values .is-lower {
+  color: var(--site-bound-lower);
+}
+.site-atlas-gap-values .is-upper {
+  color: var(--site-bound-upper);
+}
+.site-atlas-gap-row {
   color: var(--kpress-doc-muted);
 }
-.site-atlas-tip i {
-  color: var(--site-support-color);
-  display: block;
-  font-style: normal;
+.site-atlas-gap-formulas {
+  block-size: 1.8em;
+}
+.site-atlas-gap-rail {
+  block-size: 0.85rem;
+  margin-block: 0.3rem;
+  position: relative;
+}
+.site-atlas-gap-rail > span {
+  position: absolute;
+}
+.site-atlas-gap-track {
+  background: var(--kpress-doc-border);
+  inset: 0;
+}
+.site-atlas-gap-open {
+  background: var(--kpress-doc-muted);
+  inset-block: 0;
+  opacity: 0.6;
+}
+.site-atlas-gap-tick,
+.site-atlas-gap-rule {
+  transform: translateX(-50%);
+}
+.site-atlas-gap-tick {
+  background: var(--kpress-doc-muted);
+  block-size: calc(100% + 0.6rem);
+  inline-size: 1.5px;
+  inset-block-start: -0.3rem;
+  opacity: 0.7;
+}
+.site-atlas-gap-tick.is-root {
+  block-size: calc(100% + 0.3rem + 1.45em + 0.3rem);
+}
+.site-atlas-gap-rule {
+  background: var(--kpress-doc-text);
+  block-size: calc(100% + 0.8rem);
+  inline-size: 3px;
+  inset-block-start: -0.4rem;
+}
+@media (max-width: 40rem) {
+  .site-popover.site-atlas-pop {
+    inline-size: calc(100vw - 1rem);
+    max-block-size: calc(100dvh - 1rem);
+    padding: 0.9rem 0.9rem 1rem;
+  }
+  .site-atlas-pop .site-popover-close {
+    block-size: 2.75rem;
+    font-size: 1.6rem;
+    inline-size: 2.75rem;
+    inset-block-start: 0.2rem;
+    inset-inline-end: 0.2rem;
+  }
+  .site-atlas-pop-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .site-atlas-pop-figure {
+    justify-self: center;
+    inline-size: min(100%, 15rem);
+  }
+  /* The record's button stays in reach at the foot of a panel taller than the phone. */
+  .site-atlas-pop .site-popover-actions {
+    background: var(--kpress-doc-bg);
+    border-block-start: 1px solid var(--kpress-doc-border);
+    inset-block-end: -1rem;
+    margin-block-end: -1rem;
+    padding-block: 0.6rem 1rem;
+    position: sticky;
+  }
 }
 
 /* ---------- Case records ----------

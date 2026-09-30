@@ -45,27 +45,33 @@ def test_every_case_has_one_record_at_its_own_address(page: str, numbers: list[i
     assert render_case_pages.case_url(11) == "cases.html#n-11"
 
 
-def test_the_atlas_grid_and_the_frontier_atlas_open_the_same_record(
+def test_the_atlas_grid_and_the_frontier_atlas_link_the_same_record(
     numbers: list[int],
 ) -> None:
-    """Both entry points link each case to `cases.html#n-N` with `data-case`, which the
-    shared popover script opens, and carry the one popover it opens in."""
+    """Both entry points link each case to `cases.html#n-N`. The frontier atlas marks
+    its links with `data-case`, which the shared case popover opens; the atlas grid's
+    cells open the atlas popover instead, whose button leads to the same record."""
     grid = overview_sections.atlas_grid()
     frontier = PAGES["frontier.html"]().html
-    for source in (grid, frontier):
-        links = re.findall(r'href="cases\.html#n-(\d+)" data-case="(\d+)"', source)
-        assert [int(n) for n, _ in links] == numbers
-        assert all(n == case for n, case in links)
-        assert source.count(render_case_pages.case_popover()) == 1
+    links = re.findall(r'href="cases\.html#n-(\d+)" data-case="(\d+)"', frontier)
+    assert [int(n) for n, _ in links] == numbers
+    assert all(n == case for n, case in links)
+    assert frontier.count(render_case_pages.case_popover()) == 1
+    cells = re.findall(r'href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', grid)
+    assert [int(n) for n, _ in cells] == numbers
+    assert all(n == cell for n, cell in cells)
+    assert "data-case=" not in grid
 
 
-def test_both_entry_pages_carry_the_popover_scripts() -> None:
+def test_both_entry_pages_carry_their_popover_scripts() -> None:
     popover = render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8")
     case_popover = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
-    for name in ("index.html", "frontier.html"):
-        html = PAGES[name]().html
-        assert popover in html, name
-        assert case_popover in html, name
+    atlas_grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    overview, frontier = PAGES["index.html"]().html, PAGES["frontier.html"]().html
+    assert popover in overview
+    assert atlas_grid in overview
+    assert popover in frontier
+    assert case_popover in frontier
 
 
 def test_the_popover_frames_the_record_and_expands_to_it() -> None:

@@ -51,6 +51,8 @@ RESULTS = PACKING / "frontier" / "results.yaml"
 EVIDENCE = PACKING / "frontier" / "evidence.yaml"
 BIBLIOGRAPHY = PACKING / "resources" / "bibliography.yaml"
 CITATIONS = PACKING / "atlas" / "known-best" / "bound-citations.json"
+#: The atlas figure's per-case facts, which the ascent film's panel is drawn from.
+COMPOSITE = PACKING / "atlas" / "known-best" / "composite-figure.json"
 FRONTIER = PACKING / "frontier"
 
 #: Typography the page prints, written as escapes for the reason `render_results` gives:
@@ -65,6 +67,7 @@ INPUTS: tuple[Path, ...] = (
     EVIDENCE,
     BIBLIOGRAPHY,
     CITATIONS,
+    COMPOSITE,
     FRONTIER,
     PACKING / "devtools" / "render_results.py",
     PACKING / "devtools" / "result_credit.py",

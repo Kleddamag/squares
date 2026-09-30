@@ -490,7 +490,9 @@ def decide_at(pose: Pose, digits: int, claimed: Fraction | None = None) -> Decis
             gap = _pair(first, second, scale)
             if gap.lo >= 0:
                 separated += 1
-                if gap.lo == 0:
+                # Exactly touching only when the gap is the point zero; a lower end of
+                # zero alone would also count a true gap below the working precision.
+                if gap.lo == 0 == gap.hi:
                     touching += 1
             elif gap.hi < 0:
                 overlapping.append((i + 1, j + 1))
@@ -618,9 +620,6 @@ def row(source: packets.Source, n: int) -> dict[str, Any]:
     decision = decide(pose)
     scale = decision.scale
     printed = Fraction(pose.side)
-    exact = packets.certification(source)[n]
-    exact_side = Fraction(exact["certified_side"])
-    verdict = decision.verdict if matches else REFUSED
     return {
         "n": n,
         "printed_side": pose.side,
@@ -642,14 +641,7 @@ def row(source: packets.Source, n: int) -> dict[str, Any]:
         "units_above_printed": int(
             (Fraction(decision.bound) - printed) * 10 ** places(pose.side)
         ),
-        "exact_route": {
-            "verified_value": exact["verified_value"],
-            "agrees": exact["verified_value"] == decision.bound,
-            "certified_side_minus_enclosure": [
-                _scientific(exact_side - Fraction(decision.side.hi, scale), ROUND_FLOOR),
-                _scientific(exact_side - Fraction(decision.side.lo, scale), ROUND_CEILING),
-            ],
-        },
+        "exact_route": _exact_route(source, n, decision),
         "frame": {
             "fits_printed_side_as_placed": _frame_verdict(decision.frame),
             "least_wall_clearance": outward(decision.frame.least, scale),
@@ -671,8 +663,29 @@ def row(source: packets.Source, n: int) -> dict[str, Any]:
             "certified": decision.walls.certified,
             "against_side": decision.bound,
         },
-        "verdict": verdict,
+        "verdict": decision.verdict,
         "wall_seconds": round(time.monotonic() - started, 2),
+    }
+
+
+def _exact_route(source: packets.Source, n: int, decision: Decision) -> dict[str, Any] | None:
+    """The exact route's result beside this one, for comparison only; ``None`` when the
+    exact route has not certified the case, since nothing here depends on it."""
+    try:
+        exact = packets.certification(source).get(n)
+    except FileNotFoundError:
+        return None
+    if exact is None:
+        return None
+    scale = decision.scale
+    exact_side = Fraction(exact["certified_side"])
+    return {
+        "verified_value": exact["verified_value"],
+        "agrees": exact["verified_value"] == decision.bound,
+        "certified_side_minus_enclosure": [
+            _scientific(exact_side - Fraction(decision.side.hi, scale), ROUND_FLOOR),
+            _scientific(exact_side - Fraction(decision.side.lo, scale), ROUND_CEILING),
+        ],
     }
 
 
@@ -877,8 +890,13 @@ def check(
             n = entry["n"]
             if n not in recorded or _comparable(recorded[n]) != _comparable(entry):
                 problems.append(f"{source.id} n={n}: decided differently from its receipt")
-            if entry["verdict"] != VERIFIED or not entry["exact_route"]["agrees"]:
+            if entry["verdict"] != VERIFIED:
                 problems.append(f"{source.id} n={n}: {entry['verdict']}")
+            if not entry["input"]["upstream_bytes_rebuilt"]:
+                problems.append(f"{source.id} n={n}: the facts do not rebuild the pinned file")
+            exact_route = entry["exact_route"]
+            if exact_route is not None and not exact_route["agrees"]:
+                problems.append(f"{source.id} n={n}: the exact route's value differs")
             print(f"  {source.id} n={n}: {entry['verdict']} ({entry['wall_seconds']} s)")
         if numbers is None or CONTROL_CASES[source.id][0] in numbers:
             stored = json.loads(control_receipt(source).read_text("utf-8"))

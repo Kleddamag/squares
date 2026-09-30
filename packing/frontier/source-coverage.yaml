@@ -404,7 +404,7 @@ sources:
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-068.md through frontier/n-307.md, witnesses/franciscouzo-2026/]
-    evidence: [E-franciscouzo-2026-09-27-report, E-franciscouzo-2026-09-27-exact-replay]
+    evidence: [E-franciscouzo-2026-09-27-report, E-franciscouzo-2026-09-27-exact-replay, E-franciscouzo-2026-09-27-interval-replay]
     notes: >-
       Francisco Couzo's repository at f3c5a529c255b546db18605702b8da298132309f,
       retained on 2026-09-29 as derived Witness/v2 facts, upstream digests and the
@@ -428,7 +428,7 @@ sources:
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-211.md, witnesses/de-winter-2026/n-211-rational.yaml.gz]
-    evidence: [E-n211-de-winter-report, E-n211-de-winter-exact-replay]
+    evidence: [E-n211-de-winter-report, E-n211-de-winter-exact-replay, E-n211-de-winter-interval-replay]
     notes: >-
       Joost de Winter's repository at 702df9bb3b1e7fe13279a61a1fa89722aa2d496a,
       retained on 2026-09-29 as derived facts and digests because it carries no

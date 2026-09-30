@@ -6316,9 +6316,65 @@ evidence:
       At n = 206, 259 and 305 it lies 2, 3 and 2 units above, which the case records keep
       as conflicts; the reported sides there are not certified. Two negative controls on the
       n = 68 certificate, its side cut by 1e-15 and one square moved by 1e-6, are refused
-      by both checkers (receipts/negative-controls.json). One exact method, so no C4; no
-      optimality at any count.
+      by both checkers (receipts/negative-controls.json). The method-distinct second
+      entry is E-franciscouzo-2026-09-27-interval-replay; no optimality at any count.
     source_reviewed: '2026-09-29'
+
+  - id: E-franciscouzo-2026-09-27-interval-replay
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    certificate: resources/web/franciscouzo-square-packing-2026-09-27/facts/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_intervals
+      check --source franciscouzo-square-packing, which rebuilds each upstream file from
+      the packet's retained facts and requires the size and SHA-256 the acquisition took
+      from the pinned clone, decides each printed pose again by outward-rounded decimal
+      interval arithmetic, and requires every row of receipts/interval-certification.json
+      and receipts/interval-negative-controls.json to be what it records; it must print
+      "every case and control decided as its receipt records". About six seconds on one
+      worker.
+    replay_status: passed
+    limitations: >-
+      Proves, for each listed count, s(n) at most the same verified value that
+      E-franciscouzo-2026-09-27-exact-replay gives, from the source's own pose as printed
+      rather than a rational rounding of it: the printed centres, each angle in the
+      radians the source declares, and its true cosine and sine, enclosed by Taylor
+      polynomials with the Lagrange remainder. On decimal fixed-point intervals of 40
+      digits rounded outward, 24,014 of the 1,229,925 pairs are proved disjoint by the
+      separating-axis test over the four edge normals and the rest by bounding circles
+      decided exactly on the printed centres; nothing needed more than 40 digits, no pair
+      touches, and the least gap at any count is 1.98e-13 (n = 106). The pose, translated
+      so that its least x and y are zero, lies inside a square of the larger of the printed
+      side and its own extent's upper end rounded up at 15 decimals. That is the printed
+      side at 20 counts; at the other 29 the printed pose's extent exceeds its printed side
+      by 7.8e-17 to 2.13e-15, one unit of the fifteenth decimal at 26 and 2, 3 and 2 units
+      at n = 206, 259 and 305, so the printed sides there are not those of the printed
+      poses in any arithmetic. As placed, 47 of the 49 poses cross a wall of the source's
+      frame by up to 1.87e-15; the bound is the translated pose's, as the exact entry's is.
+      At every count the verified value equals the exact entry's, and the exact
+      certificate's side lies within 3.2e-37 of the enclosure of the pose's extent. Three
+      controls on n = 68 are refused (receipts/interval-negative-controls.json). Method-
+      distinct from the exact entry in its arithmetic (enclosures of transcendental values
+      against exact rationals), in the object decided (the printed pose against one whose
+      angles moved by up to 1e-36) and in code: it takes nothing from sqpack's geometry,
+      from mpmath or from either exact checker, which tests/test_upper_bound_intervals.py
+      enforces. The common mode is the same retained facts, which this entry rebuilds into
+      the upstream files and matches to the acquisition's pins (so a transcription error is
+      caught and a wrong pin is not); the separating-axis criterion, the side as the pose's
+      extent and the verified-value ceiling rule; upper_bound_packets' source records and
+      acquisition readers; the YAML loader; and authorship by agents in this repository.
+      Soundness rests on the directed rounding of integer floor division and on the Taylor
+      remainder bound, reviewed in docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md,
+      which re-decided all 50 cases a third way; the program is not formally verified. No
+      optimality at any count.
+    source_reviewed: '2026-09-30'
 
   - id: E-n211-de-winter-report
     claim: upper-bound
@@ -6367,8 +6423,46 @@ evidence:
       centre dilation 1. Every pair and wall is decided over Q twice, by the promotion's
       exact test and by an independent Fraction checker. The first packing of 211 squares
       below the grid side 15; nothing about optimality, and the lower bound is untouched.
-      One exact method, so no C4.
+      The method-distinct second entry is E-n211-de-winter-interval-replay.
     source_reviewed: '2026-09-29'
+
+  - id: E-n211-de-winter-interval-replay
+    claim: upper-bound
+    scope: {n_values: [211]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[de Winter n211 2026-09-16]'
+    certificate: resources/web/de-winter-square-packing-211-2026-09-16/facts/n-211.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_intervals
+      check --source de-winter-square-packing-211, which rebuilds the upstream JSON record
+      from the packet's retained facts and requires its pinned size and SHA-256, decides the
+      printed pose again by outward-rounded decimal interval arithmetic, and requires
+      receipts/interval-certification.json and receipts/interval-negative-controls.json to
+      be what they record; it must print "every case and control decided as its receipt
+      records".
+    replay_status: passed
+    limitations: >-
+      Proves s(211) <= 14.99796070496771500150, the printed side, from the source's own
+      21-digit pose as printed, with each angle's true cosine and sine enclosed, by
+      outward-rounded decimal interval arithmetic at 40 digits. The pose as placed lies in
+      [0, 14.99796070496771500150]^2 with least wall clearance exactly 1.000005e-14, at
+      square 66 counting from one; its 469 near pairs are proved disjoint by the
+      separating-axis test and the other 21,686 of 22,155 by bounding circles on the exact
+      centres, with least gap exactly 2.10001e-14, between squares 80 and 82. Those are the
+      values and squares (65, and 79 and 81, counting from zero) that the source's own
+      interval summary reports, now replayed; the source's 80-digit run itself, whose boxes
+      and checker are not published, is not. The pose's extent is exactly
+      14.9979607049676940014, the exact certificate's side. Three controls are refused
+      (receipts/interval-negative-controls.json). Method-distinct from
+      E-n211-de-winter-exact-replay, with the common mode that
+      E-franciscouzo-2026-09-27-interval-replay states and the same review. Nothing about
+      optimality.
+    source_reviewed: '2026-09-30'
 
   - id: E-casson-2026-09-23-report
     claim: upper-bound

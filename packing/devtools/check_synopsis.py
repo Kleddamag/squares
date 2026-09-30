@@ -46,8 +46,8 @@ from decimal import ROUND_HALF_UP, Decimal, InvalidOperation, localcontext
 from pathlib import Path
 
 from devtools.check_rung_figures import round_to
-from devtools.migrate_math import plain
 from devtools.check_session_rollups import unmeasured_resource_problems
+from devtools.migrate_math import plain
 from devtools.render_certificate_reach import reported_covering_values
 from sqpack.yamlio import safe_load
 

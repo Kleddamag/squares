@@ -83,6 +83,23 @@ def test_a_new_math_code_span_in_a_migrated_file_fails(repo: Path) -> None:
     assert "write $n = 11$" in problem
 
 
+def test_math_github_shows_as_dollars_fails_with_the_code_to_write(repo: Path) -> None:
+    _write(
+        repo,
+        "guide.md",
+        "# Guide\n\nA side-$B$ square, the [case $n = 7$](n.md) and *the $n = 11$ one*.\n",
+    )
+    problems = check(Register(("guide.md",), ()), repo).problems
+    assert [problem.split(" -- ")[0] for problem in problems] == [
+        "guide.md:3: $B$ is shown as dollars on GitHub",
+        "guide.md:3: $n = 7$ is shown as dollars on GitHub",
+        "guide.md:3: $n = 11$ is shown as dollars on GitHub",
+    ]
+    assert "write `B`" in problems[0]
+    assert "a link's text" in problems[1]
+    assert "italics" in problems[2]
+
+
 def test_identifier_uncertain_and_heading_spans_never_fail(repo: Path) -> None:
     _write(
         repo,

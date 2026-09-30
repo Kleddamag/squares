@@ -22,12 +22,15 @@ from pathlib import Path
 import pytest
 
 from devtools import migrate_math
+from devtools.check_github_math import PROBE, probe_cases
 from devtools.check_math_spans import FileResult
 from devtools.migrate_math import (
     HEADING,
     SpanSafety,
     classify,
+    demote_unsafe,
     flowmark_safety,
+    github_unsafe_math,
     kpress_math,
     main,
     markdown_math,
@@ -237,6 +240,74 @@ def test_a_figure_reads_back_from_its_latex(source: str) -> None:
     """A checker reading a migrated figure sees what was written, in either style."""
     for frac in (False, True):
         assert plain(to_latex(source, frac=frac)) == source, (source, frac)
+
+
+#: The GitHub probe, and the sections of it that are about where a formula sits rather than
+#: what it holds.
+GITHUB_PROBE = migrate_math.REPO / PROBE
+PLACEMENT_SECTIONS = ("## Before the Opening Dollar", "## After the Closing Dollar",
+                      "## Inside Inline Markup")  # fmt: skip
+
+
+def _placement_cases() -> list[tuple[int, str]]:
+    """Each placement case's number and recorded outcome."""
+    text = GITHUB_PROBE.read_text(encoding="utf-8")
+    placement = text[text.index(PLACEMENT_SECTIONS[0]) : text.index("## Inside the Formula")]
+    numbers = {int(n) for n in re.findall(r"c_\{(\d+)\}", placement)}
+    return [
+        (case.number, case.recorded or "")
+        for case in probe_cases(text)
+        if case.number in numbers
+    ]
+
+
+def test_every_placement_github_leaves_as_dollars_stays_code() -> None:
+    """The probe's record, against the plan: a span in each context GitHub was measured
+    to leave as dollars is kept as code, and one in each context it draws is converted.
+
+    Every case's formula becomes the code span `` `k` `` in place, so the characters
+    around it and the markup it sits in are the probe's own.
+    """
+    text = GITHUB_PROBE.read_text(encoding="utf-8")
+    numbers = re.findall(r"\$c_\{(\d+)\}\$", text)
+    as_code = re.sub(r"\$c_\{(\d+)\}\$", "`k`", text)
+    decisions = [d for d in plan(as_code).decisions if d.span.content == "k"]
+    assert len(decisions) == len(numbers)
+    converts = dict(
+        zip((int(n) for n in numbers), (d.converts for d in decisions), strict=True)
+    )
+    wrong = {
+        number: recorded
+        for number, recorded in _placement_cases()
+        if converts[number] != (recorded == "math")
+    }
+    assert wrong == {}
+
+
+def test_every_formula_github_alters_holds_what_to_latex_never_writes() -> None:
+    """`[altered]` cases are TeX GitHub rewrites: each holds a backslash before ASCII
+    punctuation, which `to_latex` refuses to write."""
+    altered = [
+        c for c in probe_cases(GITHUB_PROBE.read_text("utf-8")) if c.recorded == "altered"
+    ]
+    assert altered
+    for case in altered:
+        assert re.search(r"\\[^A-Za-z]", case.tex), case
+
+
+def test_math_github_would_not_draw_goes_back_to_code_when_this_tool_wrote_it() -> None:
+    text = (
+        "A closed side-$B$ square, the [$n = 7$ case](n.md), *the $n = 11$ one*, "
+        "$0.1747$/$0.3839$, and $s(11) \\ge 3.82$ (fine) beside $10^2$–$10^3$ boxes.\n"
+    )
+    demoted, back, left = demote_unsafe(text)
+    assert [item.tex for item in back] == ["B", "n = 7", "n = 11", "0.3839"]
+    assert [item.tex for item in left] == ["10^3"]
+    assert demoted == (
+        "A closed side-`B` square, the [`n = 7` case](n.md), *the `n = 11` one*, "
+        "$0.1747$/`0.3839`, and $s(11) \\ge 3.82$ (fine) beside $10^2$–$10^3$ boxes.\n"
+    )
+    assert [item.tex for item in github_unsafe_math(demoted)] == ["10^3"]
 
 
 def test_no_conversion_holds_a_delimiter_or_a_markdown_escape() -> None:

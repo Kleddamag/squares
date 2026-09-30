@@ -533,14 +533,16 @@ def other_project_cards() -> str:
 
 def atlas_grid() -> str:
     """Every tracked case's known-best packing, n = 1 to 324, as a grid of small
-    drawings, each linking to its row in the frontier atlas and carrying its details for
-    the hover card `overview/atlas-grid.js` shows.
+    drawings, each linking to its case record, which `overview/case-popover.js` opens in
+    the case popover beside the grid, and carrying its details for the hover card
+    `overview/atlas-grid.js` shows.
 
     The cells, about a megabyte of SVG, sit in a `<template>`, which the browser parses
     but does not render; the script places them when the grid nears the viewport, so
     the page opens as fast as it did without them.
     """
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
+    from devtools.render_case_pages import CASES_PAGE, case_popover, case_url  # noqa: PLC0415
     from sqpack.assurance import bounds_agree_at_declared_precision  # noqa: PLC0415
 
     recent = frontier.recent_lower_bounds()
@@ -575,7 +577,7 @@ def atlas_grid() -> str:
             f"<i>{lower_by}</i></span>"
         )
         cells.append(
-            f'<a class="site-atlas-cell" href="frontier.html#n-{n}" '
+            f'<a class="site-atlas-cell" href="{case_url(n)}" data-case="{n}" '
             f'data-status="{_esc(status)}" '
             f'aria-label="n = {n}, {_esc(status)}">{frontier.packing_svg(n)}'
             f'<span class="site-atlas-n">{n}</span>'
@@ -585,6 +587,7 @@ def atlas_grid() -> str:
         '<div class="site-wide site-atlas-grid" data-atlas-grid>'
         f"<template>{''.join(cells)}</template>"
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
-        '<a href="frontier.html">frontier atlas</a>.</p>'
-        '<div class="site-atlas-tip" role="tooltip" hidden></div></div>'
+        '<a href="frontier.html">frontier atlas</a>, and each has a '
+        f'<a href="{CASES_PAGE}">case record</a>.</p>'
+        f'<div class="site-atlas-tip" role="tooltip" hidden></div></div>{case_popover()}'
     )

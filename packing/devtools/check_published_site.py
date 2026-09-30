@@ -96,11 +96,11 @@ WORKBENCH_REVISION = re.compile(
 WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the overview</a>')
 
 
-#: An overview card's "On GitHub" link, which names the default branch on purpose: it
-#: opens the document as it is now. It is the one repository link held to the branch
-#: rather than the build commit, and it is still asked of GitHub.
+#: An "On GitHub" link, an overview card's or a case record's, which names the default
+#: branch on purpose: it opens the file as it is now. It is the one repository link held
+#: to the branch rather than the build commit, and it is still asked of GitHub.
 ON_GITHUB_LINK = re.compile(
-    r'<a class="site-popover-also" href="'
+    r'<a class="(?:site-popover-also|site-case-github)" href="'
     + re.escape(f"{REPO_URL}/blob/{render_overview.DEFAULT_BRANCH}/")
     + r'[^"]*"[^>]*>On GitHub</a>'
 )

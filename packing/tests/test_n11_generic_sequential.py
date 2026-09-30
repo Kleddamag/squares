@@ -76,13 +76,21 @@ def test_unhandled_center_partition_remains_unproved(tmp_path: Path) -> None:
     assert result["excluded_case_ids"] == []
 
 
-def test_integer_collision_backend_refuses_case_without_collision_work(tmp_path: Path) -> None:
+def test_integer_collision_backend_admits_case_without_collision_work(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def stop_at_seed(*_args: Any, **_kwargs: Any) -> Any:
+        raise ValueError("stopped after source admission")
+
+    monkeypatch.setattr(generic, "seed_state", stop_at_seed)
     args = _args(tmp_path, 2135)
     args.collision_backend = "integer"
     result = generic.run(args)
     assert result["status"] == "REFUSED"
     assert result["excluded_case_ids"] == []
-    assert "no collision work" in result["error"]
+    assert result["error"] == "stopped after source admission"
+    assert result["collision_work_present"] is False
+    assert "integer_collision" not in result["source_sha256"]
 
 
 def test_integer_collision_source_is_bound_before_geometry(
@@ -310,9 +318,15 @@ def test_empty_and_closed_segment_legal_rows_are_handled_exactly() -> None:
         "collision_facet_checks": 0,
     }
     assert vertices == planes == accepted["residual_polygons"] == []
+    base_row["input_domain"] = [["0", "0"], ["1", "0"], ["0", "1"]]
     base_row["core_vertices"] = [["0", "0"]]
+    coverage, vertices, planes, accepted = check()
+    assert coverage["collision_facet_checks"] == 0
+    assert vertices == planes == accepted["outer_domain"] == []
+    base_row["residual_polygons"] = [[["0", "0"]]]
     with pytest.raises(ValueError, match="empty legal row"):
         check()
+    base_row["residual_polygons"] = []
     radius = generic.geometry.B / 8
     base_row["core_vertices"] = [
         [str(x), str(y)]

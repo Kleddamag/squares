@@ -57,6 +57,18 @@ PILOTS = {
         2053,
         "5296d5061231abc7dd6e13892990575b71e45e74ce35d529779dea1de59461f1",
     ),
+    "generic-case2175-complete/replay.json": (
+        2175,
+        "1946b9a11d5a1906c0a25f73383f45ab4bb20689521c19f2ce8eeb89ea1618b5",
+    ),
+    "generic-case2176-complete/replay.json": (
+        2176,
+        "3f17e984518a9dc409154c8fd99a027110fa68b9f4045ab7e85119eb1fc77f2d",
+    ),
+    "generic-case1875-complete/replay.json": (
+        1875,
+        "cf3f99b76601b722e1394db56a940547a350b23df29b10d6dc4f7ebcb59758ab",
+    ),
 }
 
 

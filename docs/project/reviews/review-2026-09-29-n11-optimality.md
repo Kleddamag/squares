@@ -20,8 +20,8 @@ No result that landed from the current upstream main branch closes this gap.
 
 ## Independent Verification Checkpoint
 
-Independent checks accept **2,097 of the 2,180 required exclusions**: all 1,904 cases in
-the source field-certificate union and 193 generic cases, leaving 83. This is a case
+Independent checks accept **2,110 of the 2,180 required exclusions**: all 1,904 cases in
+the source field-certificate union and 206 generic cases, leaving 70. This is a case
 count, not a percentage of the proof.
 The
 [field receipt inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/field-batch-a/field-coverage-inventory.json)
@@ -42,7 +42,7 @@ The remaining obligations have different acceptance rules:
 | Obligation | Accepted scope | Remaining scope |
 | --- | --- | --- |
 | Field exclusions | All 1,904 distinct exact case IDs from the source field union | No field cases remain. Redundant partial attempts retain zero credit. |
-| Other exclusions | 193 generic cases, including six reviewed pilots and complete parallel executions; all remaining source dependencies pinned | The baseline is complete. 10 extension cases and 73 returned cases remain: 83 distinct cases requiring independent geometric checks. These need 80 sequential checks and three special adapters. |
+| Other exclusions | 206 generic cases, including nine reviewed singleton runs and complete parallel executions; all remaining source dependencies pinned | The baseline is complete. 7 extension cases and 63 returned cases remain: 70 distinct cases requiring independent geometric checks. These need 69 sequential checks and the center-partition case. Both baseline-dependent D4 geometric cases are accepted. |
 | Capture root | All 130 strict seed points and all 14 complete rounds: 154 owner updates, 16,551 closed rows, 1,060 owned additions | Actual accepted geometric executions and the reviewed chain establish conditional root ownership. Later capture transitions remain open. |
 | Capture branches | Structural graph, conditional pose inclusion, the complete root-self state and the complete r1 branch state | Child geometric transitions, branch coverage, ancestry, and final-state binding. |
 | Local conclusion | Exact conditional local isolation and symmetry checks | Compose these with all exclusions and accepted capture. |
@@ -100,8 +100,8 @@ The final run took 23.75 seconds wall, 5.61 seconds coordinator CPU and 35.09 se
 child CPU with three workers; earlier incomplete attempts retain zero credit.
 The
 [exact-ID inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
-reconciles six reviewed pilots and twelve parallel batches: 187 further exclusions
-completed under frozen, independently reviewed checker revisions.
+reconciles nine reviewed singleton runs and thirteen parallel batches: 197 further
+exclusions completed under frozen, independently reviewed checker revisions.
 Unsupported source variants receive zero credit.
 This inventory does not rerun geometry or prove that an execution occurred.
 The parameterized checker also accepts

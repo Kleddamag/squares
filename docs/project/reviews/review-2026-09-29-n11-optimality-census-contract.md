@@ -1701,6 +1701,159 @@ final-state checker, and all source, premise, dependency, and deadline checks pr
 node acceptance. This source review grants no child-node, tree, candidate, or global
 proof credit.
 
+The subsequent
+[full r1 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-branch-r1-full/result.json),
+SHA-256 `677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4`, binds that
+reviewed implementation and the accepted root premise.
+Its eight complete updates check 1,585 rows, 4,600 common-core planes, and 63 additions.
+Partial update 8 checks 154 further rows and 616 planes without promotion.
+The retained result, provenance, stdout, source pins, dependency closure, and ordered
+step inventory agree.
+Exact final state and final binding checks precede acceptance in 117.128 seconds.
+This admits the conditional r1 node state; tree, candidate-capture, and global flags
+remain false.
+
+## Further Exclusions and D4 Integration
+
+The
+[third reviewed A2 batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a2-reviewed-3/summary.json),
+SHA-256 `b67859511a7a6d257491bb487f435f14cdf8349fdc25d169bd791fbd3729c8bd`, completes
+all 15 selected cases, with 291 updates and 18,624 rows.
+The
+[third reviewed A3 batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-reviewed-3/summary.json),
+SHA-256 `3be940ab5d88828c595d5cc7dbefd01ac80e7af2d79837b17125e756fc89fd0b`, completes 31
+cases, with 501 updates and 32,064 rows.
+Both use frozen checker `79473807` and runner `461b6e6a`. Every copied compressed and
+decoded receipt, ordered step and row inventory, source and assignment binding, helper
+pin, and pending-work flag passes the audit.
+The 141 distinct referenced source, seed, and audit objects also match their pinned
+compressed identities.
+All 46 accepted IDs were new to the 2,051-case union, taking it to 2,097 under the
+observed-execution premise.
+Case 1875 remains refused and receives no credit from this batch.
+
+Shared checker `d226cb8d2ca971a98eb453971b820bf159bbf59308cf9b0b5908047c1206c1bc` with
+partner helper `1722c6e3e93b53885342516f42a2e094991c34fa938f1befef3b947ff8daa0fa` is
+approved for bounded D4, complete-ancestry `native_cached_v9`, and producer-flag
+replays.
+Its D4 path freshly executes frozen checker `338fb431`, admits the actual source
+through `621106a4`, and reapplies those exact field-coordinate planes in every query and
+partner domain.
+Use the reviewed immutable baseline inventory `e581a614`; the cut premise
+remains conditional on its observed baseline executions.
+The report, inventory, source objects, dependencies, and final constraints are bound
+through case acceptance.
+Cached labels supply no geometric premise.
+
+The publisher’s `terminal` boolean is unnecessary after independently proving an empty
+accepted pose cover over the entire closed angular domain.
+The revised final-node check accepts either boolean value while retaining
+`closed: true`, the exact last owner and step, complete row coverage, the empty-residual
+contradiction, and exact final-state equality.
+Open-ancestor admission is unchanged.
+A focused control accepts `terminal: false` only with the checked empty cover and
+refuses a retained residual.
+The old 1875 refusal remains unaccepted until a new frozen execution completes.
+
+## Final Composition Interface
+
+A final obligation consumer must distinguish the mathematical implication from the
+premise that the reviewed component executions actually occurred.
+Bind full receipt, checker, input, and output-state identities from an explicit accepted
+registry; a matching success string or an arbitrary self-supplied receipt is
+insufficient. Record `geometry_rerun: false` and the observed-execution premise.
+Until every required obligation below is bound, report the exact missing or refused
+obligations and grant no global conclusion.
+A complete evidence inventory still does not itself replay the geometry; final theorem
+acceptance uses the reviewed executions and the composition argument together.
+
+1. **Cap and census.** Require the shared exact $U$, $B$, $L$, cover, and pinned source
+   revision. Reconstruct the ordered 2,184 canonical masks and require the exclusion
+   union to equal exactly $\{0,\ldots,2183\}\setminus\{438,999,1462,1659\}$. The
+   accepted census receipt `98dad854` binds the A1--A5 assignments but contributes no
+   geometry. The accepted 1,904-case field union plus all 276 non-field IDs suffice;
+   completing redundant overlapping field certificates is unnecessary.
+   Each admitted singleton must retain its reviewed execution and complete dependency
+   closure.
+2. **Conditional exclusions.** The 2175 and 2176 executions must bind freshly checked
+   necessary cuts and the independently accepted exact 1,931-case baseline.
+   Their later exclusions cannot justify that earlier premise.
+   The 1383 execution must close both complementary center branches after the common
+   accepted ancestry. Check this dependency graph for cycles; neither metadata-only
+   admission nor a partial branch closes a case.
+3. **Symmetry.** Bind the independent D4 receipt
+   `c4aa4df460593abcb51cd4ebaaf916c78a6a718659bb6b7bf4245e3e67e6c00e`, its exact cover,
+   overlay, strict-distance inputs, and three exhausted finite searches.
+   Its premise is the complete 2,180-case exclusion union.
+   Its conclusion supplies a case-438 image of any remaining packing, including the
+   closed cover boundaries.
+4. **Root induction.** Bind all 14 observed root rounds, rooted in the fixed first
+   result `488f26c0`, through chain audit `f10d50e6`, bridge `ba65b741`, first capture
+   step `8ca86cc3`, and complete root-state execution `0d55007a`. Preserve all eleven
+   owners, the 154 owner updates, every source-state succession, and the 2,036-row
+   initial bridge. The chain audit alone proves no execution occurred.
+5. **Capture graph.** Require accepted geometry for every node in the table below, with
+   exact parent initial-state equality, retained assumptions, complete closed query and
+   partner angular coverage, and no promotion from partial tails.
+   Split predicates are the complementary closed conditions at $y_{15}=5/4$,
+   $t_{13}=147/512$, and $t_2=183/512$. A singleton threshold remains covered by a
+   retained closed row with its own proved domain.
+   Each of the three far leaves must independently contradict every pose in its branch.
+   The near leaf instead supplies its accepted final state; its `closed: false` marker
+   is consistent with that role.
+
+| Node | Exact source SHA-256 | Accepted parent or required conclusion |
+| --- | --- | --- |
+| Root | `f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4` | Fourteen-round adaptive state; receipt `0d55007a` accepted |
+| Far 15 | `e25a5de42cb45d9057660bb6d5942f980672e5d6e6b97e361c10931359c2f486` | Root; contradiction under the lower center branch |
+| r1 | `63c6e29d75491d51aa9abc404e35eb99bc862456f07bf7aa3c20f7b1c9ea5e52` | Root; receipt `677719a0` accepted under the upper center branch |
+| r10 | `58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48` | r1; lower owner-13 angular branch |
+| Far 13 | `c86ed9d005dc5b2c347aa89964d7a9305bfe67f3ab3451a6e663a2185dac5fd5` | r10; contradiction |
+| Near 13 | `a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09` | r1; upper owner-13 angular branch |
+| r11 | `280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a` | Near 13; continuation |
+| Far 2 / r110 | `79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576` | r11; contradiction under the lower owner-2 angular branch |
+| r111 | `db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b` | r11; upper owner-2 angular branch |
+| Near | `491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc` | r111; accepted final state for pose inclusion |
+
+The
+[actual source graph](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json),
+SHA-256 `cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248`, binds these
+identities and edges but grants no transition geometry.
+Its publisher-audit digest refusal remains valid.
+Use the actual final-state digests below, not the inconsistent claimed leaf digests:
+
+| Leaf | Actual canonical final-state SHA-256 |
+| --- | --- |
+| Far 15 | `9e28b0927cfa568ead95beb35cc3173e3c0466d3175dc47bb6d325939e6f1451` |
+| Far 13 | `87482985d0271e404133f1255f1b49e0ba3cf434ce9ce09b6b187f417089948e` |
+| Far 2 | `11d4a28e176ed885dbd650854426704ec280b08b275e556765d68c49f4108e6c` |
+| Near | `a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80` |
+
+6. **Inclusion and local isolation.** Bind pose-inclusion receipt
+   `c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c` to that exact near
+   source and final state, its 136 live rows and 1,542 vertices, the retained extraction
+   `d519f3a4`, guard-role input `0bc2edf5`, and exact frame and role bijection.
+   Its local-result reference must equal
+   `a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d`, with the same 33
+   focused radii from `9a9cf4e0`. The local execution covers all 128 branches and 8,448
+   strict signed-coordinate inequalities.
+   Retain its construction and exact arithmetic source bindings.
+   The earlier residual-only profile is not a substitute.
+7. **Endpoint and witness.** Use the already reviewed exact construction,
+   $T=(6u+4)/(1+2u-u^2)$ for the specified root $u\in(9/25,37/100)$, its verified
+   packing, $T<U$, and opposite-wall contacts.
+   A putative side $S<T$ embeds concentrically in the cap; the D4 map and the accepted
+   inverse frame place the resulting unit squares in a concentric side-$S$ subcontainer
+   of the fixed side-$T$ container.
+   Capture, inclusion, and local isolation force the construction, whose span $T$ is
+   impossible there. The verified packing at $T$ supplies the upper bound.
+
+These obligations suffice for $s(11)=T$ when every required execution and join is
+accepted. Exclusions apply at the rational cap $U$; the candidate argument rules out
+$S<T$ and does not exclude the valid witness at $T$. At this checkpoint, the remaining
+non-field exclusions and eight capture-node executions are still open, so this
+composition contract grants no global theorem acceptance.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

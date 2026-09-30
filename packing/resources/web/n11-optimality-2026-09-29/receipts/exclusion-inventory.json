@@ -1,5 +1,5 @@
 {
-  "accepted_case_count": 2097,
+  "accepted_case_count": 2110,
   "accepted_case_ids": [
     0,
     1,
@@ -1819,6 +1819,7 @@
     1872,
     1873,
     1874,
+    1875,
     1876,
     1877,
     1878,
@@ -1830,6 +1831,7 @@
     1884,
     1886,
     1888,
+    1889,
     1890,
     1892,
     1893,
@@ -1889,10 +1891,12 @@
     1947,
     1948,
     1949,
+    1950,
     1951,
     1952,
     1953,
     1954,
+    1955,
     1956,
     1957,
     1958,
@@ -1984,8 +1988,14 @@
     2044,
     2045,
     2046,
+    2049,
+    2050,
+    2052,
     2053,
     2054,
+    2055,
+    2056,
+    2057,
     2058,
     2059,
     2060,
@@ -2091,6 +2101,9 @@
     2171,
     2172,
     2173,
+    2174,
+    2175,
+    2176,
     2177,
     2178,
     2179,
@@ -2123,6 +2136,18 @@
     {
       "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2053-refined/pilot-fast-integer.json",
       "sha256": "5296d5061231abc7dd6e13892990575b71e45e74ce35d529779dea1de59461f1"
+    },
+    {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2175-complete/replay.json",
+      "sha256": "1946b9a11d5a1906c0a25f73383f45ab4bb20689521c19f2ce8eeb89ea1618b5"
+    },
+    {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case2176-complete/replay.json",
+      "sha256": "3f17e984518a9dc409154c8fd99a027110fa68b9f4045ab7e85119eb1fc77f2d"
+    },
+    {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/generic-case1875-complete/replay.json",
+      "sha256": "cf3f99b76601b722e1394db56a940547a350b23df29b10d6dc4f7ebcb59758ab"
     },
     {
       "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-1/summary.json",
@@ -2171,6 +2196,10 @@
     {
       "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-reviewed-3/summary.json",
       "sha256": "3be940ab5d88828c595d5cc7dbefd01ac80e7af2d79837b17125e756fc89fd0b"
+    },
+    {
+      "path": "packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-refined-1/summary.json",
+      "sha256": "4cb4d19f42708ac81eb63d4d5b9b20f20ad9a3af367344d2c45a2ee81d371a40"
     }
   ],
   "field_inventory_sha256": "768b7110548ce9200d1a8887e417985d79109e5987ff8e0b2b7dd998976d260e",
@@ -2186,10 +2215,7 @@
       927,
       998,
       1383,
-      1839,
-      2174,
-      2175,
-      2176
+      1839
     ],
     "A3": [
       1145,
@@ -2238,22 +2264,12 @@
       1848,
       1849,
       1850,
-      1875,
       1885,
       1887,
-      1889,
       1891,
-      1950,
-      1955,
       2047,
       2048,
-      2049,
-      2050,
       2051,
-      2052,
-      2055,
-      2056,
-      2057,
       2068,
       2069,
       2070,
@@ -2267,7 +2283,7 @@
       2125
     ]
   },
-  "remaining_case_count": 83,
+  "remaining_case_count": 70,
   "remaining_case_ids": [
     455,
     655,
@@ -2322,22 +2338,12 @@
     1848,
     1849,
     1850,
-    1875,
     1885,
     1887,
-    1889,
     1891,
-    1950,
-    1955,
     2047,
     2048,
-    2049,
-    2050,
     2051,
-    2052,
-    2055,
-    2056,
-    2057,
     2068,
     2069,
     2070,
@@ -2348,10 +2354,7 @@
     2098,
     2116,
     2122,
-    2125,
-    2174,
-    2175,
-    2176
+    2125
   ],
   "required_case_count": 2180,
   "scope": "Exact union conditional on reviewed actual executions; no geometry rerun",

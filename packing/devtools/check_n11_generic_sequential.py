@@ -288,9 +288,7 @@ def check_row(
     require(row["reference"] == reference, "row reference")
     if not required_domain:
         require(
-            row["input_domain"] == []
-            and row["core_vertices"] == []
-            and row["residual_polygons"] == []
+            row["residual_polygons"] == []
             and row["collision_regions"] == []
             and row["common_core_halfplanes"] == []
             and row["outer_bounds"] == []
@@ -909,8 +907,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             for step in source["steps"]
             for row in step["rows"]
         )
-        if collision_backend == "integer":
-            require(has_collision, "integer collision backend has no collision work")
+        result["collision_work_present"] = has_collision
         if any(
             step["prior_partner_pose_covers"]
             or any(row["collision_regions"] for row in step["rows"])

@@ -9,6 +9,14 @@
 :root {
   --site-wash: var(--kpress-doc-surface-hover);
 }
+/* The space above the bar, on every page and at every width: kpress's page top margin,
+   narrowed from its 2.5rem so the bar sits close to the top of the window. It sets only
+   the padding above the header (kpress's page main, and the application shell below). */
+:root,
+.kpress,
+.kpress-page-main {
+  --kpress-page-margin-block-start: 1rem;
+}
 :root:where([data-kpress-resolved-theme="dark"]),
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {

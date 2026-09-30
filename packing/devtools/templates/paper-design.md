@@ -244,7 +244,10 @@ it.
   The edition appears only in the closing line.
   Every page renders it from the one partial, `site-nav.html`, and it has the same box
   on every page at every width.
-  Its entries are Overview, Frontier, Explainer, Tutorial, Visualize and GitHub.
+  It sits 1rem below the top of the window on every page, the explainer and the
+  workbench included: `site-nav.css` narrows KPress’s page top margin
+  (`--kpress-page-margin-block-start`) from 2.5rem. Its entries are Overview, Frontier,
+  Results, Explainer, Tutorial, Visualize and GitHub.
   Visualize leads to the film (`visualize.html`) and is current on both pages of the
   Visualize section, the film and the workbench.
   The workbench is an application rather than a KPress page, so its build

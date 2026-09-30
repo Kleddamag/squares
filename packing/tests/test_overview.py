@@ -825,3 +825,10 @@ def test_the_page_title_style_is_upright() -> None:
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     rule = css[css.index(".site-hero h1,\n.kpress .site-title {") :]
     assert "font-style: normal;" in rule[: rule.index("}")]
+
+
+def test_the_bar_sits_close_to_the_top_of_every_page() -> None:
+    """The space above the bar is kpress's page top margin, narrowed once in the stylesheet
+    every page carries, so the explainer, the KPress pages and the workbench all agree."""
+    css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert "--kpress-page-margin-block-start: 1rem;" in css

@@ -85,6 +85,34 @@ def test_integer_collision_backend_refuses_case_without_collision_work(tmp_path:
     assert "no collision work" in result["error"]
 
 
+def test_integer_collision_source_is_bound_before_geometry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _, recipe = _recipe(2135)
+    original_load = generic.load_object
+
+    def load_with_synthetic_collision(
+        sha: str, manifest: dict[str, Any], directory: Path
+    ) -> dict[str, Any]:
+        value = original_load(sha, manifest, directory)
+        if sha == recipe["source_sha256"]:
+            value = copy.deepcopy(value)
+            value["steps"][0]["rows"][0]["collision_regions"] = [{"synthetic": True}]
+        return value
+
+    def stop_at_seed(*_args: Any, **_kwargs: Any) -> Any:
+        raise ValueError("stopped after source admission")
+
+    monkeypatch.setattr(generic, "load_object", load_with_synthetic_collision)
+    monkeypatch.setattr(generic, "seed_state", stop_at_seed)
+    args = _args(tmp_path, 2135)
+    args.collision_backend = "integer"
+    result = generic.run(args)
+    assert result["status"] == "REFUSED"
+    assert result["error"] == "stopped after source admission"
+    assert result["source_sha256"]["integer_collision"] == generic.INTEGER_COLLISION_SHA
+
+
 def test_expired_case_has_no_promoted_exclusion(tmp_path: Path) -> None:
     args = _args(tmp_path, 2135)
     args.max_seconds = 0.001

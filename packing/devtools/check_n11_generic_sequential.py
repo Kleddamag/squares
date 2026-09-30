@@ -806,7 +806,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             paths["collision_kernel"] = Path(collision_kernel.__file__)
             if collision_backend == "integer":
                 paths["integer_collision"] = Path(integer_collision.__file__)
-            for name in ("partner_helper", "collision_kernel"):
+            bound_collision_sources = ["partner_helper", "collision_kernel"]
+            if collision_backend == "integer":
+                bound_collision_sources.append("integer_collision")
+            for name in bound_collision_sources:
                 before[name] = digest(paths[name])
                 result["source_sha256"][name] = before[name]
             require(before["partner_helper"] == PARTNER_HELPER_SHA, "partner helper changed")

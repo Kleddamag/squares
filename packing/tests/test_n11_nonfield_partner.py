@@ -95,22 +95,30 @@ def test_universal_collision_region_is_checked_against_every_partner_pose() -> N
         "live_rows": 1,
         "vertices": [[str(x), str(y)] for x, y in query],
     }
-    regions, checks = partner.admitted_collision_regions(
-        [region],
-        query_core=core,
-        query_pre_wall_domain=query,
-        partners=live,
-        budget=geometry.Budget(time.monotonic() + 30, 50_000),
-    )
-    assert regions == [query]
-    assert checks > 0
-    wrong = copy.deepcopy(region)
-    wrong["vertices"] = [[str(center + 1), str(center + 1)]]
-    with pytest.raises(ValueError, match="query domain"):
+    results = [
         partner.admitted_collision_regions(
-            [wrong],
+            [region],
             query_core=core,
             query_pre_wall_domain=query,
             partners=live,
             budget=geometry.Budget(time.monotonic() + 30, 50_000),
+            backend=backend,
         )
+        for backend in ("reference", "integer")
+    ]
+    assert results[0] == results[1]
+    regions, checks = results[0]
+    assert regions == [query]
+    assert checks > 0
+    wrong = copy.deepcopy(region)
+    wrong["vertices"] = [[str(center + 1), str(center + 1)]]
+    for backend in ("reference", "integer"):
+        with pytest.raises(ValueError, match="query domain"):
+            partner.admitted_collision_regions(
+                [wrong],
+                query_core=core,
+                query_pre_wall_domain=query,
+                partners=live,
+                budget=geometry.Budget(time.monotonic() + 30, 50_000),
+                backend=backend,
+            )

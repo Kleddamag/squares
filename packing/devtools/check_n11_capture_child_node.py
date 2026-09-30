@@ -17,6 +17,7 @@ import math
 import multiprocessing
 import subprocess
 import time
+from collections.abc import Iterator
 from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any, NamedTuple
@@ -30,24 +31,31 @@ from devtools import check_n11_capture_root_node as root
 from devtools import check_n11_capture_root_pilot as pilot
 from devtools import check_n11_capture_transition_pilot as primitive
 from devtools import check_n11_optimality_field_mask0 as geometry
+from devtools import index_n11_capture_source as source_index
 
+SOURCE_INDEX_SHA = "94075042f8ca3d8882fa04e5a10e92df2d51374e09a9d2a4ce8dc5a27fbb6742"
 R1_NODE_CHECKER_SHA = "3e1bfc6471acc48ccbbce00a5c546f4f7e1e4e0cdd1bb3ce51247bfc94b10ce1"
 R1_RESULT_SHA = "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4"
 R10_RESULT_SHA = "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f"
 NEAR13_RESULT_SHA = "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2"
 R11_RESULT_SHA = "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f"
+R111_RESULT_SHA = "5efd22cc39ee0a6d2167ebf6a9ffe2d685e879218ea9dabb47affe3c62751e79"
 R1_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r1.json"
 R10_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-rebuilt/r10.json"
 NEAR13_PATH = "/workspace/eleven-square/research/candidate-capture/near13-self-180.json"
 R11_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-facet/r11.json"
+R111_PATH = "/workspace/eleven-square/research/candidate-capture/tree438-facet/r111.json"
 R10_SOURCE_SHA = "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48"
 NEAR13_SOURCE_SHA = "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09"
 R11_SOURCE_SHA = "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a"
+R111_SOURCE_SHA = "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b"
+NEAR_SOURCE_SHA = "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc"
 ROOT_FINAL_SHA = "46001c7f39fd2382696f82bd24e1049722ac27b8fc04f0626e124bc50a27e979"
 R1_FINAL_SHA = "fd24cc9ef4e3c6a0e61707516e608fe6b4dbb66e791ffd9cc8048b35f812330a"
 R10_FINAL_SHA = "356e63cb58e0a49e54066c1923388d57128d512a929acb823ff8280553b01926"
 NEAR13_FINAL_SHA = "b0404ffa1c808d1d03c8fb174c25584041b0d22f96f416149e14dcf965b36226"
 R11_FINAL_SHA = "ecdebb59ba52e558d66404ad6689653c05598cfe28da3518244314a149060e71"
+R111_FINAL_SHA = "da17e6f71c183f90ed60fd5e5e4771ea3a2aa59c7ee9566ef83c4fe3f42c7550"
 
 
 def center_constraint(keep: str) -> dict[str, Any]:
@@ -165,7 +173,7 @@ PINS = {
     ),
     "r111": Pin(
         "r111-portable-v1",
-        "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b",
+        R111_SOURCE_SHA,
         R11_PATH,
         R11_SOURCE_SHA,
         R11_RESULT_SHA,
@@ -178,6 +186,23 @@ PINS = {
             angle_constraint(2, Q(183, 512), "ge"),
         ],
         48,
+        None,
+    ),
+    "near": Pin(
+        "near-refined1024-240",
+        NEAR_SOURCE_SHA,
+        R111_PATH,
+        R111_SOURCE_SHA,
+        R111_RESULT_SHA,
+        "69a38da43ce599be5222b321de0a2c820d6e35180fa8032890bd368a1e984c2f",
+        R111_FINAL_SHA,
+        "PASS_CHILD_NODE_STATE",
+        [
+            center_constraint("ge"),
+            angle_constraint(13, Q(147, 512), "ge"),
+            angle_constraint(2, Q(183, 512), "ge"),
+        ],
+        121,
         None,
     ),
 }
@@ -193,6 +218,8 @@ def dependencies_unchanged() -> bool:
         r1node.__file__ is not None
         and branch.__file__ is not None
         and root.__file__ is not None
+        and source_index.__file__ is not None
+        and pilot.digest(Path(source_index.__file__)) == SOURCE_INDEX_SHA
         and pilot.digest(Path(r1node.__file__)) == R1_NODE_CHECKER_SHA
         and pilot.digest(Path(branch.__file__)) == r1node.BRANCH_PILOT_SHA
         and pilot.digest(Path(root.__file__)) == branch.ROOT_CHECKER_SHA
@@ -230,6 +257,7 @@ def admit_parent(record: dict[str, Any], pin: Pin) -> None:
             R10_SOURCE_SHA: ("r10-portable-v1", 13, False),
             NEAR13_SOURCE_SHA: ("near13-self-180", 44, True),
             R11_SOURCE_SHA: ("r11-portable-v1", 7, False),
+            R111_SOURCE_SHA: ("r111-portable-v1", 48, False),
         }.get(pin.parent_source_sha)
         if parent_shape is None:
             raise ValueError("unsupported accepted child parent")
@@ -352,6 +380,22 @@ def check_header(source: dict[str, Any], parent: dict[str, Any], pin: Pin) -> No
 def canonical_sha(value: Any) -> str:
     raw = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(raw).hexdigest()
+
+
+def indexed_step_sources(
+    reader: source_index.IndexedSource, steps: int
+) -> Iterator[dict[str, Any]]:
+    """Stream each exact step with only its immediate successor's proposed prior."""
+
+    current = reader.step(0)
+    for index in range(steps):
+        successor = reader.step(index + 1) if index + 1 < steps else None
+        yield {
+            "step": current,
+            "next_prior": successor["prior_owned_hulls"] if successor is not None else None,
+        }
+        if successor is not None:
+            current = successor
 
 
 def terminal_rows_empty(rows: list[dict[str, Any]]) -> bool:
@@ -696,6 +740,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "positive bounded pinned child replay parameters",
         )
         pin = PINS[args.node]
+        if args.node == "near":
+            require(args.index_directory is not None, "near replay requires fresh source index")
         result.update(
             child_source_sha256=pin.source_sha,
             parent_source_sha256=pin.parent_source_sha,
@@ -718,22 +764,48 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         require(
             canonical_sha(parent) == pin.parent_final_sha, "accepted parent final state differs"
         )
-        header = root.extract(
-            args.child_source,
-            "{schema,node_id,mask_index,mask,U,B,parent,constraints,initial,source,guard_source}",
-        )
+        reader: source_index.IndexedSource | None = None
+        if args.index_directory is not None:
+            require(
+                math.isfinite(args.index_max_seconds) and args.index_max_seconds > 0,
+                "positive bounded source index deadline",
+            )
+            reader = source_index.build_and_open(
+                args.child_source,
+                args.index_directory,
+                expected_sha256=pin.source_sha,
+                expected_steps=pin.steps,
+                max_seconds=args.index_max_seconds,
+            )
+            result["fresh_index_stream_sha256"] = reader.trusted_index["stream_sha256"]
+            result["fresh_index_build_wall_seconds"] = reader.trusted_index["timing"][
+                "total_wall_seconds"
+            ]
+            root.remaining(budget)
+            header = reader.header()
+            indexed_sources = indexed_step_sources(reader, pin.steps)
+        else:
+            header = root.extract(
+                args.child_source,
+                "{schema,node_id,mask_index,mask,U,B,parent,constraints,initial,source,guard_source}",
+            )
+            indexed_sources = None
         check_header(header, parent, pin)
         groups, cells = initial_state(parent, header["initial"])
         worlds = {owner: pilot.points(parent["world"][owner]) for owner in range(16)}
         for index in range(pin.steps):
             root.remaining(budget)
-            source = root.extract(
-                args.child_source,
-                "{step:.steps["
-                + str(index)
-                + "],next_prior:.steps["
-                + str(index + 1)
-                + "].prior_owned_hulls}",
+            source = (
+                next(indexed_sources)
+                if indexed_sources is not None
+                else root.extract(
+                    args.child_source,
+                    "{step:.steps["
+                    + str(index)
+                    + "],next_prior:.steps["
+                    + str(index + 1)
+                    + "].prior_owned_hulls}",
+                )
             )
             check_step(
                 source,
@@ -746,7 +818,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 progress=result,
             )
             result["steps_checked"] = index + 1
-        final = root.extract(args.child_source, "{final_state,closed,terminal,contradiction}")
+        final = (
+            {
+                "final_state": reader.final_state(),
+                "closed": header["closed"],
+                "terminal": header["terminal"],
+                "contradiction": header["contradiction"],
+            }
+            if reader is not None
+            else root.extract(args.child_source, "{final_state,closed,terminal,contradiction}")
+        )
         if pin.terminal is None:
             require(
                 final["closed"] is False
@@ -775,6 +856,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         normalized_final = {**final["final_state"], "constraints": []}
         root.final_state(normalized_final, header, groups, cells, worlds)
         result["final_state_canonical_sha256"] = canonical_sha(final["final_state"])
+        if reader is not None:
+            reader.verify_binding()
         require(
             pilot.digest(args.parent_result) == pin.parent_result_sha
             and pilot.digest(args.parent_source) == pin.parent_source_sha
@@ -816,6 +899,8 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--max-seconds", type=float, default=1800)
     parser.add_argument("--max-events", type=int, default=20000)
+    parser.add_argument("--index-directory", type=Path)
+    parser.add_argument("--index-max-seconds", type=float, default=60)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     result = run(args)

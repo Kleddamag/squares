@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import time
 from fractions import Fraction as Q
@@ -165,6 +166,7 @@ def test_r11_descendant_pins_match_retained_source_headers() -> None:
     for node, path in (
         ("far2", "research/candidate-capture/tree438-facet/r110.json"),
         ("r111", "research/candidate-capture/tree438-facet/r111.json"),
+        ("near", "research/candidate-capture/near-refined1024-240.json"),
     ):
         pin = child.PINS[node]
         header = headers[path]
@@ -172,6 +174,57 @@ def test_r11_descendant_pins_match_retained_source_headers() -> None:
         assert {"path": pin.parent_path, "sha256": pin.parent_source_sha} == header["parent"]
         assert pin.constraints == header["constraints"]
         assert pin.steps == header["steps"]
+
+
+def test_near_parent_requires_complete_r111_prefix_and_partial_tail() -> None:
+    pin = child.PINS["near"]
+    accepted = {
+        "status": pin.parent_status,
+        "child_node_state_checked": True,
+        "terminal_empty_pose_checked": False,
+        "capture_tree_proved": False,
+        "candidate_capture_proved": False,
+        "global_optimality_proved": False,
+        "checker_sha256": pin.parent_checker_sha,
+        "child_source_sha256": pin.parent_source_sha,
+        "final_state_canonical_sha256": pin.parent_final_sha,
+        "node_id": "r111-portable-v1",
+        "steps_checked": 48,
+        "steps": [{"index": index, "complete": index < 47} for index in range(48)],
+    }
+    child.admit_parent(accepted, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent({**accepted, "steps_checked": 47}, pin)
+    with pytest.raises(ValueError, match="accepted complete pinned child"):
+        child.admit_parent({**accepted, "node_id": "near-refined1024-240"}, pin)
+
+
+def test_fresh_index_streams_exact_step_and_immediate_successor(tmp_path: Path) -> None:
+    source = tmp_path / "source.json"
+    payload = {
+        "schema": "tiny",
+        "steps": [
+            {"index": 0, "prior_owned_hulls": {"0": [0]}},
+            {"index": 1, "prior_owned_hulls": {"0": [1]}},
+            {"index": 2, "prior_owned_hulls": {"0": [2]}},
+        ],
+        "final_state": {"accepted": False},
+    }
+    source.write_text(json.dumps(payload))
+    sha = hashlib.sha256(source.read_bytes()).hexdigest()
+    reader = child.source_index.build_and_open(
+        source, tmp_path / "index", expected_sha256=sha, expected_steps=3
+    )
+    selected = list(child.indexed_step_sources(reader, 3))
+    assert [item["step"] for item in selected] == payload["steps"]
+    assert [item["next_prior"] for item in selected] == [
+        payload["steps"][1]["prior_owned_hulls"],
+        payload["steps"][2]["prior_owned_hulls"],
+        None,
+    ]
+    assert reader.header() == {"schema": "tiny"}
+    assert reader.final_state() == payload["final_state"]
+    reader.verify_binding()
 
 
 def test_extra_outer_support_is_checked_before_standard_superset_adapter() -> None:

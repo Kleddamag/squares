@@ -2921,6 +2921,14 @@ def _results_register(context: Context) -> str:
     return f"{first}\n{second}"
 
 
+def _notable_sources(context: Context) -> str:
+    # Sub-second: two registers, the bibliography and the archive index. Records tier
+    # because the overview's Other Square Packing Projects section is drawn from this
+    # registry, and a frontier source reviewed after it was written would otherwise drop
+    # off the page without anything noticing.
+    return _module(context, "devtools.check_notable_sources")
+
+
 def _results_headline(context: Context) -> str:
     # Sub-second: one register, one document, one rubric. Records tier because it checks
     # presentation of the record -- that every registered result reaches the section a
@@ -4266,6 +4274,23 @@ STEPS: tuple[Step, ...] = (
         touches=(),
     ),
     Step(
+        "notable sources cover the frontier's and resolve",
+        _notable_sources,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/resources/notable-sources.yaml",
+            "packing/resources/notable-sources.schema.yaml",
+            "packing/resources/bibliography.yaml",
+            "packing/resources/README.md",
+            "packing/resources/web/*",
+            "packing/frontier/source-coverage.yaml",
+            "packing/devtools/check_notable_sources.py",
+            "packing/devtools/validate_schemas.py",
+        ),
+    ),
+    Step(
         "the synopsis headline carries every result",
         _results_headline,
         fast=True,
@@ -4708,6 +4733,8 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the borrowed lower bounds re-derive",
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
+        # Reads the tracked registers, the archive index and the retained tree only.
+        "notable sources cover the frontier's and resolve",
         "the synopsis headline carries every result",
         "README's recent results agree with the records",
         "exact certificates are named by their records",

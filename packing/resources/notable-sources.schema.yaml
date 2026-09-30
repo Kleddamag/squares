@@ -1,0 +1,88 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: packing.squares:NotableSources/v1
+title: NotableSources
+description: >-
+  The notable websites, catalogues, releases and repositories on square packing, one entry
+  per project or site, in the order the overview's Other Square Packing Projects section
+  shows them. It holds every source the research frontier reviews
+  (`frontier/source-coverage.yaml`), grouped by the project or site that published it, and
+  the major websites and notable repositories among the archive's retained Web Sources
+  (`resources/README.md`). devtools/check_notable_sources.py holds it to both: every
+  coverage source belongs to exactly one entry, every credit key resolves, every retained
+  copy exists, and every summary is one sentence that states no bound.
+type: object
+additionalProperties: false
+required: [last_reviewed, sources]
+properties:
+  last_reviewed: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
+  sources:
+    type: array
+    minItems: 1
+    items: {$ref: '#/$defs/source'}
+$defs:
+  source:
+    type: object
+    additionalProperties: false
+    required: [id, title, kind, url, keys, retained, summary]
+    properties:
+      id: {type: string, pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'}
+      title:
+        type: string
+        minLength: 1
+        description: The name the source gives itself, as its page or repository shows it.
+      kind:
+        enum: [website, catalogue, release, repository]
+        description: >-
+          A `website` is a page or a series of posts; a `catalogue` a maintained table of
+          records; a `release` a published archive with its own identifier, such as a
+          Zenodo record or a numbered results release; a `repository` a public source
+          repository, whatever releases it has cut.
+      url:
+        type: string
+        pattern: '^https://'
+        description: The project or site itself; a reviewed release's own address is in source-coverage.yaml.
+      keys:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items: {type: string, pattern: '^\[.+\]$'}
+        description: >-
+          The citation keys that credit the source, spelled as the archive index defines
+          them, brackets included. Each resolves in `resources/bibliography.yaml` or, for a
+          source the bibliography does not carry, among the keys the archive index
+          (`resources/README.md`) defines in bold. Every `source_key` of the coverage
+          sources an entry holds is among its keys.
+      credit:
+        type: string
+        minLength: 1
+        pattern: '^[ -~]+$'
+        description: >-
+          Who the card credits, where no key is in the bibliography: surnames, or the
+          handles people publish under, never an AI agent, read from the retained copy.
+          Refused where a key is in the bibliography, whose `credit` (or joined authors)
+          is then printed whole instead, so a credit is never written twice.
+      retained:
+        type: string
+        pattern: '^packing/resources/web/[^ ]+$'
+        description: >-
+          The retained copy, repository-relative: a file, or a directory written with a
+          trailing slash.
+      coverage:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items: {type: string, pattern: '^[a-z0-9-]+$'}
+        description: >-
+          The `frontier/source-coverage.yaml` ids this entry holds: the releases of this
+          project or site the frontier reviewed.
+      summary:
+        type: string
+        minLength: 1
+        maxLength: 200
+        description: >-
+          One sentence on what the source is, never what it found: no bound, relation or
+          fractional value, so the numbers on the page stay generated from the record.
+      note:
+        type: string
+        minLength: 1
+        description: Where the credit or the address was read, where the entry cannot say it itself.

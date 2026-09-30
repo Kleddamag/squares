@@ -1,33 +1,967 @@
-/* The site's additions to the kpress design system, written only in kpress tokens so they
-   follow the theme and the print rules. Each rule is described in site-design.md. */
+/* The site's additions to the kpress design system: the navigation bar and footer, the
+   site pages' frame, cards and their hover icons, the square popover, chips and rung
+   badges, and the sortable, filterable table. site-design.md names every token,
+   component and rule here and says why; read it before changing this file.
+
+   Three rules hold the whole sheet:
+
+   - Only kpress tokens. Every colour, face, size, radius and transition is a
+     `--kpress-*` token or a `--site-*` token derived from them in this file, so the
+     sheet follows the reader's theme and kpress's print reset without a rule of its own.
+   - Scoped. Every selector names a `site-` class or the `data-site-page` attribute the
+     site shell stamps on <html>. The explainer carries the navigation bar and this
+     sheet, and nothing here can match its article, its figures or its math.
+   - Square. Cards, chips, controls and the popover have square corners
+     (`--kpress-radius-none`), like the explainer's figures. */
+
+/* ── Site tokens ──────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* The site pages' wide track: the reading measure the explainer uses, plus the room
+     its figures take, which cards, tables and media share. */
+  --site-track: calc(var(--kpress-font-size-base) * 40 + 14rem);
+  /* The chip fill: the text colour, a touch toward the muted one. Dark in light mode
+     and light in dark mode, since the two tokens swap with the theme. */
+  --site-chip-ink: color-mix(in oklab, var(--kpress-doc-text) 86%, var(--kpress-doc-muted));
+  /* Rung hues: kpress's link blue and success green pulled toward its muted grey, which
+     brings them to the chroma of the packing palette's blue and green
+     (sqpack.render.style.SQUARE_HUE_PALETTE); `S` is the muted grey itself. */
+  --site-rung-v: color-mix(in oklab, var(--kpress-doc-link) 80%, var(--kpress-doc-muted));
+  --site-rung-c: color-mix(in oklab, var(--kpress-doc-success) 78%, var(--kpress-doc-muted));
+  --site-rung-s: var(--kpress-doc-muted);
+  /* The hover icons, drawn as masks so they take the muted colour of the theme. Lucide
+     glyphs: arrow-down (down the page), arrow-right (another page of the site),
+     arrow-up-right (out to GitHub or another site), and a star for recent results. */
+  --site-icon-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E");
+  --site-icon-page: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+  --site-icon-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
+  --site-icon-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.94 6.26 6.86.8-5.08 4.7 1.36 6.78L12 17.6l-6.08 3.44 1.36-6.78-5.08-4.7 6.86-.8z'/%3E%3C/svg%3E");
+}
+
+/* ── The site pages' frame ────────────────────────────────────────────────────────── */
+
+/* The explainer's type scale: kpress derives every size from this one token. */
+:root[data-site-page] {
+  --kpress-host-font-size-base: 18px;
+}
+
+/* The document scrolls, not kpress's viewport pane, so the footer follows the page and
+   the browser keeps the reading position, as the explainer does. */
+:root[data-site-page],
+:root[data-site-page] body {
+  block-size: auto;
+  overflow: visible;
+}
+
+:root[data-site-page] body {
+  background: var(--kpress-doc-bg);
+  color: var(--kpress-doc-text);
+  margin: 0;
+}
+
+:root[data-site-page] .kpress-page-main.kpress-viewport {
+  block-size: auto;
+  overflow: visible;
+  padding-block-start: 0;
+}
+
+.kpress-doc.site-page {
+  --kpress-measure: calc(var(--kpress-font-size-base) * 40);
+  --kpress-font-size-h2: calc(var(--kpress-font-size-base) * 1.2);
+  max-width: min(100%, calc(var(--site-track) + 2 * var(--kpress-doc-gutter)));
+}
+
+/* Prose keeps the measure; the blocks marked wide take the whole track. */
+.site-page > :not(.site-wide) {
+  margin-inline: auto;
+  max-width: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
+}
+
+.site-page > .site-wide {
+  margin-inline: auto;
+  max-width: var(--site-track);
+}
+
+.site-page > h2 {
+  margin-block: calc(var(--kpress-font-size-base) * 2.8) 1.3rem;
+  text-align: center;
+}
+
+.site-page > h3,
+.site-page > .site-group-title {
+  margin-block: 1.8rem 0.6rem;
+  text-align: center;
+}
+
+.site-visually-hidden {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* ── Navigation bar and footer ────────────────────────────────────────────────────── */
 
 .site-nav {
+  background: var(--kpress-doc-bg);
+  border-block-end: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-small);
+  font-weight: var(--kpress-font-weight-sans-regular);
+  line-height: var(--kpress-line-height-tight);
+}
+
+.site-nav-inner {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.5rem 1.25rem;
-  padding: 0.75rem 1rem;
-  font-family: var(--kpress-font-sans);
+  gap: 0.25rem 1rem;
+  margin-inline: auto;
+  max-width: calc(var(--site-track) + 2rem);
+  padding: 0.5rem 1rem;
+}
+
+.site-nav a {
+  border-radius: var(--kpress-radius-none);
+  color: inherit;
+  display: block;
+  padding: 0.35rem 0.5rem;
+  text-decoration: none;
+  transition:
+    background-color var(--kpress-transition-fast),
+    color var(--kpress-transition-fast);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  background: var(--kpress-doc-surface-hover);
+  color: var(--kpress-doc-text);
+  text-decoration: none;
+}
+
+.site-nav a:focus-visible {
+  outline: 2px solid var(--kpress-doc-link);
+  outline-offset: 1px;
+}
+
+.site-nav-logo {
+  font-size: var(--kpress-font-size-large);
+  font-weight: var(--kpress-font-weight-sans-bold);
+  margin-inline-start: -0.5rem;
 }
 
 .site-nav-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  margin: 0;
-  padding: 0;
+  gap: 0 0.15rem;
   list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+}
+
+.site-nav-items a {
+  color: var(--kpress-doc-muted);
+}
+
+.site-nav-items a[aria-current="page"] {
+  background: var(--kpress-doc-surface-selected);
+  color: var(--kpress-doc-text);
+  font-weight: var(--kpress-font-weight-sans-medium);
 }
 
 .site-footer {
-  padding: 1.5rem 1rem 2rem;
+  background: var(--kpress-doc-bg);
+  border-block-start: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
-  font-size: 0.85em;
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-tiny);
+  font-weight: var(--kpress-font-weight-sans-regular);
+  line-height: 1.5;
+  padding: 1.5rem 1rem 2rem;
   text-align: center;
 }
 
+.site-footer p {
+  margin: 0.2rem auto;
+  max-width: var(--site-track);
+}
+
+.site-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--kpress-doc-link);
+}
+
+.site-footer code {
+  font-family: var(--kpress-font-mono);
+  font-size: var(--kpress-font-size-mono-tiny);
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────────────── */
+
+.site-hero {
+  color: var(--kpress-doc-text);
+  margin: 1.5rem auto 0;
+  max-width: min(100%, 20rem);
+}
+
+.site-hero svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────────────────── */
+
+.site-cards {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  margin-block: 1rem 1.5rem;
+}
+
+.site-cards-axes {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.site-cards-media {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+.site-cards-single {
+  grid-template-columns: 1fr;
+}
+
+.site-card {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-none);
+  color: var(--kpress-doc-text);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-small);
+  font-weight: var(--kpress-font-weight-sans-regular);
+  gap: 0.35rem;
+  line-height: 1.4;
+  margin: 0;
+  min-width: 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  position: relative;
+  transition:
+    background-color var(--kpress-transition-fast),
+    border-color var(--kpress-transition-fast);
+}
+
+.site-card:hover {
+  background: var(--kpress-doc-code-bg);
+  border-color: var(--kpress-doc-muted);
+}
+
+.site-card:has(.site-card-link:focus-visible) {
+  outline: 2px solid var(--kpress-doc-link);
+  outline-offset: 2px;
+}
+
+.site-card p {
+  margin: 0;
+}
+
+.site-card .site-card-title {
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-normal);
+  font-style: normal;
+  font-variant-caps: normal;
+  font-weight: var(--kpress-font-weight-sans-medium);
+  letter-spacing: normal;
+  line-height: 1.3;
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+
+/* The card's one link, stretched over the whole card: the card is the link, and its
+   secondary links (records, releases, cases) sit above the stretch. */
+.site-card-link,
+.site-card-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-card-link:focus-visible {
+  outline: none;
+}
+
+.site-card-link::after {
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.site-card a:not(.site-card-link) {
+  position: relative;
+  z-index: 2;
+}
+
+/* The hover icon: where the card goes, in the muted grey, shown on hover and focus. */
+.site-card-link::before {
+  background-color: var(--kpress-doc-muted);
+  block-size: 0.85rem;
+  content: "";
+  inline-size: 0.85rem;
+  inset-block-end: 0.55rem;
+  inset-inline-end: 0.55rem;
+  mask: var(--site-icon-page) center / contain no-repeat;
+  opacity: 0;
+  position: absolute;
+  transition: opacity var(--kpress-transition-fast);
+}
+
+.site-card-link[data-goes="down"]::before {
+  mask-image: var(--site-icon-down);
+}
+
+.site-card-link[data-goes="out"]::before {
+  mask-image: var(--site-icon-out);
+}
+
+.site-card:hover .site-card-link::before,
+.site-card-link:focus-visible::before {
+  opacity: 1;
+}
+
+.site-card-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  justify-content: space-between;
+}
+
+.site-card-meta,
+.site-card-note,
+.site-cell-note {
+  color: var(--kpress-doc-muted);
+  font-size: var(--kpress-font-size-tiny);
+}
+
+.site-card-meta code {
+  font-size: var(--kpress-font-size-mono-tiny);
+}
+
+.site-card-id {
+  color: var(--kpress-doc-text);
+  font-weight: var(--kpress-font-weight-sans-medium);
+}
+
+.site-card-summary {
+  color: var(--kpress-doc-text);
+}
+
+.site-card-credit {
+  color: var(--kpress-doc-text);
+  font-size: var(--kpress-font-size-smaller);
+}
+
+.site-card-relation {
+  color: var(--kpress-doc-muted);
+}
+
+.site-card-foot {
+  margin-block-start: auto;
+  padding-block-start: 0.2rem;
+  padding-inline-end: 1.2rem;
+}
+
+.site-card-list {
+  font-size: var(--kpress-font-size-smaller);
+  margin: 0;
+}
+
+.site-card .site-card-list > li {
+  margin-block: 0.1rem;
+}
+
+.site-group-title {
+  color: var(--kpress-doc-muted);
+}
+
+/* The verification cards' rung ladders. */
+.site-rung-table {
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  margin-block-start: 0.2rem;
+  width: 100%;
+}
+
+.site-rung-table th,
+.site-rung-table td {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  font-weight: var(--kpress-font-weight-sans-regular);
+  padding: 0.25rem 0.3rem;
+  text-align: end;
+  vertical-align: baseline;
+}
+
+.site-rung-table thead th {
+  border-block-start: 0;
+  color: var(--kpress-doc-muted);
+  font-size: var(--kpress-font-size-tiny);
+}
+
+.site-rung-table th[scope="row"] {
+  align-items: baseline;
+  display: flex;
+  gap: 0.45rem;
+  text-align: start;
+}
+
+.site-rung-table td[data-count="0"] {
+  color: var(--kpress-doc-muted);
+}
+
+/* The atlas card's three figures. */
+.site-card .site-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 2rem;
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+}
+
+.site-card .site-figures > li {
+  margin: 0;
+  padding: 0;
+}
+
+.site-card .site-figures > li::before {
+  content: none;
+}
+
+.site-figure {
+  font-size: var(--kpress-font-size-large);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--kpress-font-weight-sans-bold);
+}
+
+/* An atlas preview: the image fills the card, the caption is the link. */
+.site-card-preview {
+  padding: 0;
+}
+
+.site-card-preview img {
+  background: var(--kpress-doc-bg);
+  border-block-end: 1px solid var(--kpress-doc-border);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.site-card-preview figcaption {
+  padding: 0.6rem 0.9rem 0.8rem;
+  padding-inline-end: 1.8rem;
+}
+
+.site-card-preview .site-card-note {
+  display: block;
+  margin-block-start: 0.2rem;
+}
+
+.site-film {
+  margin-block: 0.5rem 1.5rem;
+}
+
+.site-film video {
+  aspect-ratio: 16 / 9;
+  background: var(--kpress-doc-code-bg);
+  border: 1px solid var(--kpress-doc-border);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.site-film figcaption {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-smaller);
+  line-height: 1.4;
+  margin-block-start: 0.5rem;
+  text-align: center;
+}
+
+/* ── Chips and rung badges ────────────────────────────────────────────────────────── */
+
+.site-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.site-chip {
+  --site-chip-fill: var(--site-chip-ink);
+  align-items: center;
+  background: var(--site-chip-fill);
+  border-radius: var(--kpress-radius-none);
+  color: var(--kpress-doc-bg);
+  display: inline-flex;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-tiny);
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--kpress-font-weight-sans-medium);
+  gap: 0.2em;
+  letter-spacing: 0.02em;
+  line-height: normal;
+  padding: 0 0.4em;
+  text-transform: none;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.site-chip[data-tone="muted"] {
+  --site-chip-fill: var(--kpress-doc-muted);
+}
+
+/* A rung badge: the axis hue, mixed toward the text colour as the rung rises, so the
+   fill darkens with the rung in light mode (and, with the tokens swapped, lightens in
+   dark mode, away from the page either way). */
+.site-rung {
+  --site-rung-depth: 0%;
+  --site-chip-fill: color-mix(
+    in oklab,
+    var(--site-rung-hue, var(--site-rung-s)),
+    var(--kpress-doc-text) var(--site-rung-depth)
+  );
+  justify-content: center;
+  min-inline-size: 2.2em;
+}
+
+.site-rung[data-axis="v"] {
+  --site-rung-hue: var(--site-rung-v);
+}
+
+.site-rung[data-axis="c"] {
+  --site-rung-hue: var(--site-rung-c);
+}
+
+.site-rung[data-axis="s"] {
+  --site-rung-hue: var(--site-rung-s);
+}
+
+.site-rung[data-rung="1"] {
+  --site-rung-depth: 8%;
+}
+
+.site-rung[data-rung="2"] {
+  --site-rung-depth: 16%;
+}
+
+.site-rung[data-rung="3"] {
+  --site-rung-depth: 24%;
+}
+
+.site-rung[data-rung="4"] {
+  --site-rung-depth: 32%;
+}
+
+.site-rung[data-rung="5"] {
+  --site-rung-depth: 40%;
+}
+
+/* The recent star: a chip with a drawn star; its word is for screen readers. */
+.site-chip-star::before {
+  background-color: currentColor;
+  block-size: 0.8em;
+  content: "";
+  inline-size: 0.8em;
+  mask: var(--site-icon-star) center / contain no-repeat;
+}
+
+.site-chip-star {
+  padding: 0.15em 0.25em;
+  vertical-align: 0.05em;
+}
+
+/* ── Tables ───────────────────────────────────────────────────────────────────────── */
+
+.site-table-filters {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-small);
+  gap: 0.5rem 1.1rem;
+  margin-block: 1rem -1.25rem;
+}
+
+.site-table-filters[hidden] {
+  display: none;
+}
+
+.site-table-filters label {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.site-table-filters :is(select, input[type="number"]) {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-none);
+  color: var(--kpress-doc-text);
+  font: inherit;
+  padding: 0.15rem 0.35rem;
+}
+
+.site-table-filters input[type="number"] {
+  inline-size: 4.5em;
+}
+
+.site-table-filters input[type="checkbox"] {
+  accent-color: var(--kpress-doc-link);
+  margin: 0;
+}
+
+.site-table-count {
+  color: var(--kpress-doc-muted);
+  font-variant-numeric: tabular-nums;
+  margin-inline-start: auto;
+}
+
+.site-table th[data-sort] {
+  padding: 0;
+}
+
+/* `table.js` puts a button in each sortable header; without it the header is text. */
+.site-table th[data-sort] > .site-sort {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 0.25em;
+  justify-content: center;
+  letter-spacing: inherit;
+  padding: 0.3rem 0.6rem;
+  text-transform: inherit;
+  width: 100%;
+}
+
+.site-table th[data-sort]:not(:has(> .site-sort)) {
+  padding: 0.3rem 0.6rem;
+}
+
+.site-table th[data-sort] > .site-sort:hover {
+  background: var(--kpress-doc-surface-hover);
+}
+
+.site-table th[data-sort] > .site-sort:focus-visible {
+  outline: 2px solid var(--kpress-doc-link);
+  outline-offset: -2px;
+}
+
+.site-table th[data-sort] > .site-sort::after {
+  color: var(--kpress-doc-muted);
+  content: "↕";
+  opacity: 0.45;
+}
+
+.site-table th[aria-sort="ascending"] > .site-sort::after {
+  content: "↑";
+  opacity: 1;
+}
+
+.site-table th[aria-sort="descending"] > .site-sort::after {
+  content: "↓";
+  opacity: 1;
+}
+
+.site-table :is(th, td).site-col-id,
+.site-table :is(th, td).site-col-n,
+.site-table :is(th, td).site-col-rung,
+.site-table :is(th, td).site-col-date {
+  min-width: 0;
+}
+
+.site-table td.site-col-rung {
+  text-align: center;
+}
+
+.site-table td:first-child,
+.site-table td.site-col-date {
+  white-space: nowrap;
+}
+
+.site-table .site-col-result {
+  min-width: 17rem;
+}
+
+.site-table .site-col-records {
+  min-width: 7rem;
+}
+
+.site-row-id {
+  color: inherit;
+  font-weight: var(--kpress-font-weight-sans-medium);
+  margin-inline-end: 0.3rem;
+  text-decoration: none;
+}
+
+.site-table tr:target > td {
+  background: var(--kpress-doc-surface-selected);
+}
+
+.site-table .site-table-group > th {
+  background: var(--kpress-doc-bg);
+  border-block: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-muted);
+  padding: 0.9rem 0.6rem 0.35rem;
+  text-align: start;
+}
+
+.site-table .site-table-group[hidden] {
+  display: none;
+}
+
+.site-cell-note {
+  display: block;
+}
+
+/* Expandable rows: the summary is the headline in the table's own sans, never the
+   caps label kpress gives a disclosure, and the body is the full record. */
+.site-table details {
+  border: 0;
+  margin: 0;
+}
+
+.site-table summary {
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-table);
+  font-size: inherit;
+  font-variant-caps: normal;
+  font-weight: var(--kpress-font-weight-sans-regular);
+  letter-spacing: normal;
+  line-height: inherit;
+  padding: 0;
+  text-transform: none;
+}
+
+.site-table summary::before {
+  flex: none;
+}
+
+.site-table summary:hover {
+  color: var(--kpress-doc-link);
+}
+
+.site-table details[open] summary {
+  border-block-end: 0;
+}
+
+.site-table details > .site-details-body {
+  padding: 0.35rem 0 0.2rem 1.25em;
+}
+
+.site-details-body p {
+  margin: 0 0 0.45rem;
+}
+
+.site-details-body a {
+  overflow-wrap: anywhere;
+}
+
+/* An opt-in for a long table: the wrap scrolls in both directions under a height cap,
+   and the header row stays in view. */
+.site-table-scroll {
+  max-block-size: 85vh;
+  overflow: auto;
+}
+
+.site-table-scroll .site-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* A thumbnail, for the frontier atlas: a drawing loaded as an `<img>`, whose outlines
+   switch to the light ink only when the image's own colour scheme is dark. An image
+   does not inherit the page's theme, so the dark theme hands it the scheme. */
+.site-thumb {
+  display: block;
+}
+
+:root[data-kpress-resolved-theme="dark"] .site-thumb {
+  color-scheme: dark;
+}
+
+/* ── The square popover ───────────────────────────────────────────────────────────── */
+
+.site-popover {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border-hairline);
+  border-radius: var(--kpress-radius-none);
+  box-shadow: var(--kpress-card-shadow);
+  color: var(--kpress-doc-text);
+  flex-direction: column;
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-small);
+  inline-size: min(40rem, calc(100vw - 1.5rem));
+  line-height: 1.45;
+  max-block-size: min(88vh, 60rem);
+  padding: 0;
+}
+
+.site-popover[open] {
+  display: flex;
+}
+
+.site-popover[data-kind="page"] {
+  block-size: min(88vh, 60rem);
+}
+
+.site-popover::backdrop {
+  background: color-mix(in srgb, var(--kpress-doc-text) 30%, transparent);
+}
+
+.site-popover-bar {
+  align-items: center;
+  border-block-end: 1px solid var(--kpress-doc-border);
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem 0.45rem 0.9rem;
+}
+
+.site-popover-title {
+  flex: 1;
+  font-weight: var(--kpress-font-weight-sans-medium);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-popover-button {
+  align-items: center;
+  background: none;
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-none);
+  color: var(--kpress-doc-text);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--kpress-font-size-tiny);
+  gap: 0.3rem;
+  padding: 0.25rem 0.55rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-popover-button:hover {
+  background: var(--kpress-doc-surface-hover);
+  text-decoration: none;
+}
+
+.site-popover-button:focus-visible {
+  outline: 2px solid var(--kpress-doc-link);
+  outline-offset: 1px;
+}
+
+.site-popover-button svg {
+  block-size: 0.9rem;
+  inline-size: 0.9rem;
+}
+
+.site-popover-body {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  padding: 0.9rem 1rem 1rem;
+}
+
+.site-popover[data-kind="page"] .site-popover-body {
+  overflow: hidden;
+  padding: 0;
+}
+
+.site-popover-frame {
+  background: var(--kpress-doc-bg);
+  block-size: 100%;
+  border: 0;
+  display: block;
+  inline-size: 100%;
+}
+
+.site-popover .site-card {
+  background: none;
+  border: 0;
+  padding: 0 0 0.6rem;
+}
+
+.site-popover .site-card-link::before,
+.site-popover .site-card-link::after {
+  content: none;
+}
+
+.site-popover-prose {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  margin-block-start: 0.75rem;
+  padding-block-start: 0.5rem;
+}
+
+.site-popover-prose.kpress {
+  background: none;
+  font-size: var(--kpress-font-size-small);
+}
+
+/* ── Motion and print ─────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav a,
+  .site-card,
+  .site-card-link::before {
+    transition: none;
+  }
+}
+
 @media print {
-  .site-nav {
+  .site-nav,
+  .site-footer,
+  .site-popover,
+  .site-table-filters {
+    display: none;
+  }
+
+  .site-card {
+    break-inside: avoid;
+  }
+
+  .site-card-link::before {
+    content: none;
+  }
+
+  .site-chip {
+    background: none;
+    border: 1px solid currentColor;
+    color: inherit;
+  }
+
+  .site-film video {
     display: none;
   }
 }

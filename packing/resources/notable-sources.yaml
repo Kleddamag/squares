@@ -1,0 +1,292 @@
+softschema:
+  contract: packing.squares:NotableSources/v1
+  schema: notable-sources.schema.yaml
+  status: enforced
+last_reviewed: '2026-09-30'
+# The notable websites and repositories on square packing, one entry per project or site,
+# behind the overview's Other Square Packing Projects section and in the order it shows
+# them: websites and catalogues, then releases, then repositories.
+#
+# Two lists meet here. Every source the research frontier reviews is in
+# `frontier/source-coverage.yaml`, release by release; each belongs to exactly one entry
+# below, under `coverage`, so a reviewed source can never drop off the page. The other
+# entries are the major websites and notable repositories among the archive's retained
+# Web Sources (`resources/README.md`), which is the reviewed list of retained sites.
+#
+# Credit is read, never restated: where a key is in `bibliography.yaml`, the card prints
+# that key's `credit` (or its joined authors) whole, and `credit` here is refused. Only a
+# source the bibliography does not carry states its credit here, read from the retained
+# copy, with a `note` saying where. `devtools.check_notable_sources` holds all of it.
+sources:
+  - id: friedman-packing-center
+    title: Packing Unit Squares in Squares
+    kind: catalogue
+    url: https://erich-friedman.github.io/papers/squares/squares.html
+    keys: ['[Friedman Center]']
+    credit: Friedman
+    retained: packing/resources/web/friedman-packing-center-squares.md
+    summary: >-
+      Erich Friedman's page on packing unit squares in squares, on his Packing Center
+      site, with record tables and diagrams of the best known packings.
+    note: The retained capture's byline names Erich Friedman.
+  - id: kingbird-squares-in-squares
+    title: Squares in Squares
+    kind: catalogue
+    url: https://kingbird.myphotos.cc/packing/squares_in_squares.html
+    keys: ['[Kingbird]']
+    retained: packing/resources/web/kingbird-squares-in-squares.md
+    coverage: [kingbird-current]
+    summary: >-
+      The maintained catalogue of the best known packings of unit squares in a square,
+      with exact minimal polynomials and rigidity flags, continued by David Ellsworth from
+      Friedman's original.
+  - id: friedman-ds7-survey
+    title: 'Packing Unit Squares in Squares: A Survey and New Results'
+    kind: website
+    url: https://www.combinatorics.org/files/Surveys/ds7/ds7v5-2009/ds7-2009.html
+    keys: ['[Friedman DS7 html]']
+    credit: Friedman
+    retained: packing/resources/web/friedman-ds7-survey-2009-html.md
+    summary: >-
+      The 2009 HTML edition of Friedman's dynamic survey in the Electronic Journal of
+      Combinatorics, with the history of the problem and proofs of its small cases.
+    note: The retained capture's byline names Erich Friedman.
+  - id: wikipedia-square-packing
+    title: Square packing
+    kind: website
+    url: https://en.wikipedia.org/wiki/Square_packing
+    keys: ['[Wikipedia]']
+    credit: Wikipedia contributors
+    retained: packing/resources/web/wikipedia-square-packing.md
+    summary: >-
+      Wikipedia's overview of square packing problems, among them packing unit squares in
+      a square.
+    note: A collectively written encyclopedia article, credited as Wikipedia credits one.
+  - id: burns-n17-posts
+    title: Sam Burns's seventeen-square series
+    kind: website
+    url: https://sam-burns.com/posts/n17-square-packing-problem-intro/
+    keys: ['[Burns n17 addendum 2026-09-07]']
+    credit: Burns
+    retained: packing/resources/web/n17-lower-bounds-2026/
+    summary: >-
+      Sam Burns's blog series on packing seventeen unit squares: a weighted lower-bound
+      certificate with its verifier, and a near-record arrangement of distinct topology.
+    note: >-
+      The posts are Burns's own, as the two packets retaining them say
+      (web/n17-lower-bounds-2026/README.md and
+      web/burns-n17-series-addendum-2026-09-07/README.md). The bibliography's
+      [Burns–Massaccesi n17] credits Massaccesi's result on Burns's architecture, so it is
+      the key of Massaccesi's card, not this one.
+  - id: massaccesi-n17-posts
+    title: Gustavo Massaccesi's seventeen-square posts
+    kind: website
+    url: https://gus-massa.blogspot.com/2026/08/another-better-lower-bound-for-n17.html
+    keys: ['[Burns–Massaccesi n17]']
+    retained: packing/resources/web/n17-lower-bounds-2026/
+    summary: >-
+      Gustavo Massaccesi's posts applying linear programming to Burns's certificate
+      architecture for seventeen squares, with the verifier in the post.
+  - id: unitsquare-results
+    title: UnitSquare Results Release 1
+    kind: release
+    url: https://hmbelvedere.com/
+    keys: ['[UnitSquare 2026]']
+    retained: packing/resources/web/unitsquare-release1-2026/
+    coverage: [unitsquare-release1]
+    summary: >-
+      The UnitSquare Project's first results release: construction-only packings for six
+      counts, with a public structured record and no optimality claim.
+  - id: brandwijk-n17-capsule
+    title: Kim Brandwijk's seventeen-square capsule
+    kind: release
+    url: https://doi.org/10.5281/zenodo.21422426
+    keys: ['[Brandwijk n17 capsule]']
+    credit: Brandwijk
+    retained: packing/resources/web/literature-refresh-2026-09-05/
+    summary: >-
+      Kim Brandwijk's Zenodo capsule for seventeen squares: an exact sixteen-point
+      certificate with an offline checker and its metadata.
+    note: >-
+      Zenodo names Kim Brandwijk as the record's creator
+      (web/literature-refresh-2026-09-05/zenodo-21422426.json).
+  - id: kleddamag-11-squares
+    title: 11-squares-certified-bound
+    kind: repository
+    url: https://github.com/Kleddamag/11-squares-certified-bound
+    keys: ['[Kleddamag n11 2026]']
+    retained: packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/
+    coverage: [kleddamag-n11-2026]
+    summary: >-
+      Kleddamag's certified lower bound for eleven squares: an exact weighted-covering
+      certificate over parent-angle intervals, with its proof and checkers.
+  - id: kleddamag-17-squares
+    title: 17-squares-certified-bound
+    kind: repository
+    url: https://github.com/Kleddamag/17-squares-certified-bound
+    keys:
+      - '[Kleddamag n17 4.66001]'
+      - '[Kleddamag n17 4.640020]'
+      - '[Kleddamag n17 certified bound]'
+    retained: packing/resources/web/n17-kleddamag-466001-2026-09-27/
+    coverage: [kleddamag-n17-466001-2026, kleddamag-n17-4640020-2026, kleddamag-n17-2026]
+    summary: >-
+      Kleddamag's successive certified lower bounds for seventeen squares, each an exact
+      weighted-covering certificate over orientation intervals with two checkers.
+  - id: guzhou0806-n17-square-packing
+    title: n17-square-packing
+    kind: repository
+    url: https://github.com/Guzhou0806/n17-square-packing
+    keys:
+      - '[Guzhou0806 n17 R068]'
+      - '[Guzhou0806 n17 R067]'
+      - '[Guzhou0806 n17 R052 continuation]'
+      - '[Guzhou0806 n17 R052]'
+    retained: packing/resources/web/n17-guzhou-r068-2026-09-28/
+    coverage:
+      - guzhou-n17-r068-2026
+      - guzhou-n17-r067-2026
+      - guzhou-n17-r052-continuation-2026
+      - guzhou-n17-r052-2026
+    summary: >-
+      Guzhou0806 / N17 project's releases of certified lower bounds for seventeen squares,
+      continuing Kleddamag's mixed point and threshold charge architecture.
+  - id: tokoharu-density-bounds
+    title: square-packing-density-bounds
+    kind: repository
+    url: https://github.com/tokoharu/square-packing-density-bounds
+    keys: ['[Tokoharu density 2026]']
+    retained: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/
+    coverage: [tokoharu-density-2026]
+    summary: >-
+      Tokoharu's rectangle-density lower-bound certificates and the interval verifier that
+      decides them.
+  - id: wand125-square-packing-bounds
+    title: square-packing-bounds
+    kind: repository
+    url: https://github.com/wand125/square-packing-bounds
+    keys:
+      - '[wand125 point and mixed bounds 2026-09-28]'
+      - '[wand125 rectangle bounds 2026-09-28]'
+      - '[wand125 rectangle bounds 2026]'
+      - '[wand125 point bounds 2026]'
+    retained: packing/resources/web/wand125-rectangle-certificates-2026-09-28/
+    coverage: [wand125-point-and-mixed-2026-09-28, wand125-rectangles-2026, wand125-points-2026]
+    summary: >-
+      wand125's weighted point, rectangle-density and mixed lower-bound certificates across
+      many square counts, several decided by Tokoharu's verifier.
+  - id: evand-square-packing
+    title: square-packing
+    kind: repository
+    url: https://github.com/evand/square-packing
+    keys: ['[evand square-packing 2026-09-28]', '[evand square-packing 2026]']
+    retained: packing/resources/web/evand-square-packing-2026-09-28/
+    coverage: [evand-square-packing-2026-09-28, evand-square-packing-2026]
+    summary: >-
+      Evan Daniel's exact weighted certificates and zero-margin closed and mixed covers,
+      with exact and interval checkers and Lean top theorems.
+  - id: franciscouzo-square-packing
+    title: square-packing
+    kind: repository
+    url: https://github.com/franciscouzo/square-packing
+    keys: ['[franciscouzo square-packing 2026-09-27]']
+    retained: packing/resources/web/franciscouzo-square-packing-2026-09-27/
+    coverage: [franciscouzo-square-packing-2026]
+    summary: >-
+      Francisco Couzo's packings for counts from 68 to 307, found by search and published
+      with their coordinates.
+  - id: de-winter-square-packing-211
+    title: square-packing-211
+    kind: repository
+    url: https://github.com/JoostdeWinter/square-packing-211
+    keys: ['[de Winter n211 2026-09-16]']
+    retained: packing/resources/web/de-winter-square-packing-211-2026-09-16/
+    coverage: [de-winter-square-packing-211-2026]
+    summary: >-
+      Joost de Winter's packing of 211 unit squares, with the author's summary of its
+      interval verification.
+  - id: griffcass-square-packing
+    title: square-packing
+    kind: repository
+    url: https://github.com/griffcass/square-packing
+    keys: ['[griffcass square-packing 2026-09-23]']
+    retained: packing/resources/web/casson-square-packing-2026-09-23/
+    coverage: [casson-square-packing-2026]
+    summary: >-
+      Griffin Casson's polished and annealed packings for counts from 103 to 307, seeded
+      from the catalogue's records and checked by the author.
+  - id: schadt-n29
+    title: Squares-packing S(29) - New Record
+    kind: repository
+    url: https://github.com/BalthasarStrauss/Squares-packing_S-29-_New-Record
+    keys: ['[Schadt n=29 repository]']
+    credit: Schadt
+    retained: packing/resources/web/schadt-s29-2025/
+    coverage: [schadt-n29-2025]
+    summary: >-
+      Thomas Schadt's packing of 29 unit squares, with its Python verifier, its rendering
+      and a note on his method.
+    note: >-
+      The archive index names the repository as Thomas Schadt's (resources/README.md, Web
+      Sources), and the bibliography's credited names cite him as Schadt.
+  - id: mira-17squares
+    title: 17squares
+    kind: repository
+    url: https://github.com/Mira-acc/17squares
+    keys: ['[GitHub n17 certificates 2026]']
+    credit: Mira
+    retained: packing/resources/web/n17-github-certificates-2026/mira-17squares/
+    summary: >-
+      Mira's exact certificates for seventeen squares: sixteen-point pose-space
+      certificates, then a weighted measure in this project's certificate schema.
+    note: >-
+      The packet names the repository as Mira's (web/n17-github-certificates-2026/README.md).
+      Its later weighted measure is retained beside Guzhou0806's R012 under
+      [n17 weighted certificates 2026-09-20], whose credit is joint, so that key is not this
+      card's.
+  - id: stanislavfort-17squares
+    title: 17squares
+    kind: repository
+    url: https://github.com/stanislavfort/17squares
+    keys: ['[GitHub n17 certificates 2026]']
+    credit: Fort
+    retained: packing/resources/web/n17-github-certificates-2026/stanislavfort-17squares/
+    summary: >-
+      Stanislav Fort's exact sixteen-point pose-space certificate for seventeen squares, on
+      the architecture of Mira's.
+    note: The packet's chronology names Stanislav Fort (web/n17-github-certificates-2026/README.md).
+  - id: anabologyco-square17-lower-bound
+    title: square17-lower-bound
+    kind: repository
+    url: https://github.com/anabologyco-maker/square17-lower-bound
+    keys: ['[GitHub n17 certificates 2026]']
+    credit: anabologyco-maker
+    retained: packing/resources/web/n17-github-certificates-2026/anabologyco-square17-lower-bound/
+    summary: >-
+      anabologyco-maker's weighted-measure certificate for seventeen squares, with an exact
+      orientation partition and a Lean layer.
+    note: The packet names the author by that handle (web/n17-github-certificates-2026/README.md).
+  - id: squarl
+    title: squarl
+    kind: repository
+    url: https://github.com/sam-bee/squarl
+    keys: ['[Squarl n17 2026]']
+    credit: Burns
+    retained: packing/resources/web/squarl-n17-2026/
+    summary: >-
+      Sam Burns's open search pipeline for seventeen squares: its formulation, move set and
+      deep-polish architecture, and the accounting of its final production search.
+    note: The packet names the repository as Sam Burns's (web/squarl-n17-2026/README.md).
+  - id: maciver-square-packing-research
+    title: square-packing-research
+    kind: repository
+    url: https://github.com/DRMacIver/square-packing-research
+    keys: ['[MacIver 2026 papers]']
+    credit: MacIver
+    retained: packing/resources/web/maciver-square-packing-2026-09-07/
+    summary: >-
+      David MacIver's research repository of three manuscripts on packing unit squares,
+      with their Lean source.
+    note: >-
+      The manuscripts are David MacIver's, as the packet's reading aid says
+      (web/maciver-square-packing-2026-09-07/README.md).

@@ -276,6 +276,92 @@ body {
   }
 }
 
+/* ============================================================
+   The site around the article: the navigation bar every site page carries, and the
+   line under it saying how this edition's lead result compares with the record now.
+   Both are screen-only, so nothing in the article, its PDF or its print layout moves
+   for them.
+
+   The bar is outside `<main>`. The notice opens the page's `.kpress` block, ahead of
+   the article's first line, because its formulas are set by the same runtime as the
+   article's and kpress scopes its math faces to a `.kpress` ancestor; a second
+   `.kpress` block ahead of this one would become the column the print-layout and
+   math-font checks measure, since they take the first one.
+
+   This page does not inline the site's stylesheet (`site.css`, described in
+   `site-design.md`): that sheet also styles the other pages' cards, chips and tables,
+   and none of it may meet the article's selectors. What the bar needs is restated here
+   instead, in kpress tokens and this page's own weight scale, and every rule is scoped
+   to `.site-nav` or `.site-edition-notice`, neither of which the article's Markdown
+   produces.
+   ============================================================ */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1.25rem;
+  row-gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: var(--kpress-doc-bg);
+  border-block-end: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--paper-font-size-support);
+  font-weight: var(--cert-font-weight-sans-light);
+  line-height: var(--paper-support-leading);
+}
+.site-nav a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 120ms ease-out, background-color 120ms ease-out;
+}
+.site-nav a:hover { color: var(--kpress-doc-text); text-decoration: none; }
+.site-nav a[aria-current="page"] { color: var(--kpress-doc-text); }
+.site-nav-logo {
+  margin-inline-start: -0.35rem;
+  padding: 0.1rem 0.35rem;
+  color: var(--kpress-doc-text);
+  font-weight: var(--cert-font-weight-sans-bold);
+}
+.site-nav .site-nav-logo:hover { background: var(--kpress-doc-surface-hover); }
+.site-nav-items {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav-item { margin: 0; padding: 0; }
+.site-nav-item a[aria-current="page"] { font-weight: var(--cert-font-weight-sans-medium); }
+/* The notice takes the reading column as every block of the page does, and its type is
+   the page's supporting text: the caption face, size and colour. */
+.site-edition-notice {
+  margin-block-end: 1.5rem;
+  color: var(--paper-support-color);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--paper-font-size-support);
+  font-weight: var(--cert-font-weight-sans-light);
+  line-height: var(--paper-support-leading);
+}
+.site-edition-notice .sans-text {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+.site-edition-notice a { color: var(--kpress-doc-accent); text-decoration: none; }
+.site-edition-notice a:hover { text-decoration: underline; }
+@media (prefers-reduced-motion: reduce) {
+  .site-nav a { transition: none; }
+}
+@media print {
+  .site-nav, .site-edition-notice { display: none; }
+}
+
 /* Prose keeps the kpress measure; figures are allowed a wider track. The
    Markdown body has no column wrappers, so every direct child of the page and
    of an article takes the measure unless it is a figure. kpress indents a list
@@ -1146,8 +1232,10 @@ html[data-kpress-math-pending]
 </style>
 </head>
 <body>
+{{SITE_NAV}}
 <main class="kpress-page-main kpress-viewport">
 <div class="kpress kpress-doc kpress-prose cert-page">
+{{EDITION_NOTICE}}
 {{BODY_HTML}}
 <p class="col colophon centred">Formatted and typeset with <a href="https://github.com/jlevy/flowmark"><strong>Flowmark</strong></a> and <a href="https://github.com/jlevy/kpress"><strong>KPress</strong></a></p>
 </div>

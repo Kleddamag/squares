@@ -10,8 +10,11 @@ above, restricts C5 to mapped review artifacts, and rejects unknown result ids
 in the reader tier. It holds every `headline` to one table cell that states no
 number its claim does not, and dates every result of this project by
 `established` and every result by others by `attribution.published`, never
-both. Human review owns evidence relevance, claim coverage, composition,
-significance, novelty, and whether a headline says what its claim says.
+both. Every entry also carries `registered`, the day it entered the register,
+which can follow neither the register's last review nor precede the day the
+result was established or published. Human review owns evidence relevance,
+claim coverage, composition, significance, novelty, and whether a headline
+says what its claim says.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.check_results
@@ -301,6 +304,43 @@ def _established_date_problem(established: str, last_reviewed: str) -> str | Non
     return None
 
 
+def registered_problems(record: dict, last_reviewed: str) -> list[str]:
+    """What is wrong with the day a result entered the register.
+
+    Every entry carries it, this project's and others'. The register began after this
+    project's work did, so no entry was registered before `RECENT_SINCE`; none after the
+    register's last review; and none before the day its result was established here or
+    published by its source, since an entry records a result that already exists.
+    """
+    registered = record.get("registered")
+    if registered is None:
+        return [f"{record['id']}: states no registered date"]
+    problem = _registered_date_problem(str(registered), str(last_reviewed))
+    if problem is None:
+        established = record.get("established")
+        published = (record.get("attribution") or {}).get("published")
+        if established is not None and str(registered) < str(established):
+            problem = f"registered {registered} is before it was established, {established}"
+        elif published is not None and str(registered) < str(published):
+            problem = f"registered {registered} is before it was published, {published}"
+    return [f"{record['id']}: {problem}"] if problem else []
+
+
+def _registered_date_problem(registered: str, last_reviewed: str) -> str | None:
+    try:
+        day = date.fromisoformat(registered)
+    except ValueError:
+        return f"registered {registered} is not a date"
+    if day < RECENT_SINCE:
+        return (
+            f"registered {registered} is before {RECENT_SINCE.isoformat()}, "
+            "when this project's work began"
+        )
+    if day > date.fromisoformat(last_reviewed):
+        return f"registered {registered} is after the register's last review, {last_reviewed}"
+    return None
+
+
 def coverage_problems(
     results: list[dict],
     evidence_index: dict[str, dict],
@@ -401,6 +441,7 @@ def main() -> int:
         problems.extend(attribution_problems(record, sources))
         problems.extend(headline_problems(record))
         problems.extend(established_problems(record, register["last_reviewed"]))
+        problems.extend(registered_problems(record, register["last_reviewed"]))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):
@@ -481,8 +522,8 @@ def main() -> int:
     print(
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
-        "headline and date holds, every recent case lower bound is covered, every "
-        "reader-tier mention exists"
+        "headline, date and registration day holds, every recent case lower bound is "
+        "covered, every reader-tier mention exists"
     )
     return 0
 

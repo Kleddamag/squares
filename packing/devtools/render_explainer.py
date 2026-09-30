@@ -21,6 +21,13 @@ the client behaviors, all inlined. Nothing is fetched at view time, which
 is what lets the same artifact serve from GitHub Pages, from a file:// URL, and
 from an artifact host with a strict content-security policy.
 
+The page is one page of a site. Since 2026-09-30 the site opens on an overview, and
+this page is published at `explainer.html`, beside it: the render still writes
+`site/index.html`, which the Pages workflow renames when it assembles the site, so the
+PDF build and every check that reads the page keep their path. Above the article it
+carries the site's navigation bar and a line saying how its lead result compares with
+the case record now; both are screen-only, so the PDF and its print layout do not move.
+
 Usage, from `packing/`:
 
     uv run --frozen --all-extras --group dev python -m devtools.render_explainer --prepare-math
@@ -51,10 +58,11 @@ from fractions import Fraction
 from functools import cache
 from math import isqrt
 from pathlib import Path
-from typing import Any, Final, NamedTuple, TypedDict
+from typing import TYPE_CHECKING, Any, Final, NamedTuple, TypedDict
 
 from strif import atomic_output_file
 
+from devtools import site_kit
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
@@ -76,6 +84,9 @@ from sqpack.release import (
 )
 from sqpack.render.style import SQUARE_HUE_PALETTE
 from sqpack.yamlio import safe_load
+
+if TYPE_CHECKING:
+    from devtools.overview_data import ExplainerEdition
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -296,15 +307,24 @@ PRIOR_URL = "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v10i1
 PRIOR_MEMO_URL = "https://walterstromquist.com/papers/squares3.pdf"
 PRIOR_SIX_MEMO_URL = "https://walterstromquist.com/papers/squares1.pdf"
 PRIOR_TEN_MEMO_URL = "https://walterstromquist.com/papers/squares2.pdf"
-REPO_URL = "https://github.com/jlevy/squares"
-# Where the deploy serves this page: the GitHub Pages site for the repository, at
+REPO_URL = site_kit.REPO_URL
+# Where the deploy serves the site: the GitHub Pages site for the repository, at
 # the project subpath, with the trailing slash the directory URL actually resolves
 # to. A link preview is the one part of the page that cannot be relative -- a
 # crawler resolves `og:image` and `og:url` on its own machine, not against the
-# document -- so the deployment's own address has to be stated somewhere, and this
-# is that one place.
-SITE_URL = "https://jlevy.github.io/squares/"
-SITE_NAME = "Squares"
+# document -- so the deployment's own address has to be stated somewhere, and
+# `site_kit` is that one place. Assets beside the page resolve against it
+# (`site_file`), since they sit in the site's root directory with the page.
+SITE_URL = site_kit.SITE_URL
+SITE_NAME = site_kit.SITE_NAME
+#: The name this page is published under, and so its canonical address. The render
+#: writes `OUTPUT`, `site/index.html`, which the PDF build and the checks read; the Pages
+#: workflow renames it to this when it assembles the site, whose root is the overview.
+PAGE_NAME = "explainer.html"
+PAGE_URL = SITE_URL + PAGE_NAME
+#: Where the edition notice sends a reader: the overview's Recent Results, at the site
+#: root beside this page.
+RECENT_RESULTS_HREF = "./#recent-results"
 #: The atlas the Figure 2 caption sends a reader to browse, linked as a directory.
 ATLAS = PACKING / "atlas" / "known-best"
 BEST_RENDERING = ATLAS / "rendering" / "n-011.svg"
@@ -330,6 +350,15 @@ POSTER_STEM = PACKING / "atlas" / "known-best" / "known-best-1-324"
 #: with the workbench, whose stage drew it, rather than in the atlas: the atlas directory
 #: is a data path, and a file added there would move the version every artifact prints.
 FILM_POSTER = REPO / "packages" / "workbench" / "assets" / "ascent-n1-100-poster.png"
+#: The ascent films, as the site serves them: same-origin copies in `films/` beside the
+#: page, fetched from the v0.4.2 release and checked against their pins when the Pages
+#: workflow publishes the site on `main`. The release's own download URL serves a film as
+#: an `application/octet-stream` attachment, so a link to it downloads rather than plays;
+#: the site serves `video/mp4` with range support. Figure 2's player and its download
+#: link name the first; its caption links the second.
+FILMS = "films"
+FILM = f"{FILMS}/ascent-n1-100-1080p60-citations.mp4"
+FULL_FILM = f"{FILMS}/ascent-n1-324-1080p60-citations.mp4"
 COMPOSITE_ASSETS = (
     *(COMPOSITE_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     COMPOSITE_STEM.with_name(f"{COMPOSITE_STEM.name}-card.png"),
@@ -2184,7 +2213,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     return {
         "PAGE_TITLE": title,
         "PAGE_DESCRIPTION": description,
-        "CANONICAL_URL": SITE_URL,
+        "CANONICAL_URL": PAGE_URL,
         "SITE_NAME": SITE_NAME,
         "CARD_IMAGE_URL": site_file(COMPOSITE_CARD),
         "CARD_IMAGE_WIDTH": str(width),
@@ -2270,6 +2299,8 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "BEST_SOURCE": BEST_SOURCE,
         "BEST_RENDER_URL": repo_file(BEST_RENDERING),
         "ATLAS_URL": repo_file(ATLAS),
+        "FILM_URL": FILM,
+        "FULL_FILM_URL": FULL_FILM,
         "ARCHIVE_URL": repo_file(REPO / "packing/resources"),
         "NAGAMOCHI_URL": repo_file(
             REPO
@@ -2327,11 +2358,14 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
     }
 
 
-def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict[str, str]:
-    """Values for the page shell: the inlined assets and the rendered body.
+def shell_substitutions(
+    static: Path, shared: dict[str, str], body: str, *, notice: str
+) -> dict[str, str]:
+    """Values for the page shell: the inlined assets, the site's chrome and the body.
 
     `BODY_HTML` goes in last, after every other value: it is already substituted
-    through, and a later key must not reach inside it.
+    through, and a later key must not reach inside it. The navigation bar and the
+    edition notice go in just before it, for the same reason: they are finished HTML.
 
     `MONO_FONT` is stamped from the constant rather than written into the shell, so the
     attribute and the stylesheets cannot disagree: `data-kpress-mono-font` is kpress's
@@ -2354,6 +2388,8 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         },
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         **shared,
+        "SITE_NAV": site_nav(),
+        "EDITION_NOTICE": notice,
         "BODY_HTML": body,
     }
 
@@ -2594,10 +2630,23 @@ MARKDOWN_OUTPUT = PACKING / "site" / f"{RESULT_ID}-explainer.md"
 #: (think-bl0n) -- the composite SVG the figure shows, the frontier register the opening
 #: counts, and the figure record with the module it is read through -- and a change to
 #: any of them would have left the deployed page stale with every gate green.
+#: What the edition notice reads, through `overview_data.explainer_edition`: the lead
+#: result's register entry (`frontier/results.yaml`, below), the case record it is
+#: compared with, and the credit of whoever holds the case's bound now.
+EDITION_INPUTS = (
+    PACKING / "devtools" / "overview_data.py",
+    PACKING / "devtools" / "render_recent_results.py",
+    PACKING / "devtools" / "result_credit.py",
+    PACKING / "frontier" / "n-011.md",
+    PACKING / "resources" / "bibliography.yaml",
+)
 RENDER_INPUTS = (
     CASE,
     THRESHOLD_CASE,
     Path(__file__),
+    Path(site_kit.__file__),
+    site_kit.NAV_TEMPLATE,
+    *EDITION_INPUTS,
     EXPLAINER_SCRIPTS,
     PACKING / "devtools" / "prepare_explainer_math.py",
     PACKING / "devtools" / "measure_net_coarsening.py",
@@ -2697,7 +2746,7 @@ _EDITION_NOTE = f"""
 > This is the Markdown edition, written by the same render that writes the page. The
 > argument is complete here, and every figure's caption states what its figure shows.
 > Only Figure 2 carries its image; the rest are drawn by [the page
-> itself]({SITE_URL})."""
+> itself]({PAGE_URL})."""
 
 
 def _with_edition_note(document: str) -> str:
@@ -2785,7 +2834,7 @@ def published_markdown(source: str, *, default_slug: str) -> str:
                 number = re.match(r"\*\*Figure (\d+)", text)
                 which = f"Figure {number.group(1)}" if number else "This figure"
                 parts.append(
-                    f"*{which} is drawn by [the page]({SITE_URL}); its caption follows.*"
+                    f"*{which} is drawn by [the page]({PAGE_URL}); its caption follows.*"
                 )
             parts.append(text)
         out.append("\n\n".join(part for part in parts if part))
@@ -2928,6 +2977,69 @@ def markdown_body(source: str, *, title: str) -> str:
     return document.html
 
 
+def site_nav() -> str:
+    """The site's navigation bar, the one every site page carries, with this page current.
+
+    The page sits at the site's root, so the bar's hrefs are the root-relative ones. Its
+    look is the shell's own, in rules scoped to `.site-nav`: this page does not inline
+    the site's stylesheet, whose cards, chips and tables must never meet the article's
+    selectors, and the bar is `display: none` in print.
+    """
+    return site_kit.nav_html("explainer")
+
+
+def edition_notice(edition: ExplainerEdition | None = None) -> str:
+    """The screen-only line under the navigation bar: this edition's lead against the record.
+
+    The article leads with `LEAD_RESULT`, in the proof edition it was written for, and
+    the record can move past it. What the line says is generated by
+    `overview_data.explainer_edition` from the register and the case record, and the
+    overview's card for this page carries the same line; here it sends the reader on to
+    the overview's Recent Results. It opens the page's `.kpress` block, ahead of the
+    article's first line and screen-only like the chip row beside it, so the article,
+    its PDF and the print layout do not move, and the hand-written frontier update
+    inside the article stays as it is. It is inside that block rather than before it
+    because kpress sets math faces under a `.kpress` ancestor, and a `.kpress` of its
+    own ahead of the article would become the column the print-layout and math-font
+    checks measure, which take the first one.
+
+    Its mathematics is set by the page's runtime like the article's, so it is rendered by
+    kpress in the same way and held to the same inline rule: a stacked fraction would
+    push the line open, so the note writes a fraction with a slash. `edition` stands in
+    for the record's, for a test.
+    """
+    if edition is None:
+        # `overview_data` reads `LEAD_RESULT` from this module, so it is imported when the
+        # line is rendered rather than when this module loads.
+        from devtools.overview_data import explainer_edition  # noqa: PLC0415
+
+        edition = explainer_edition()
+    note = " ".join(edition.note.split())
+    if not note:
+        raise SystemExit("the explainer's edition note is empty")
+    source = kerned_math_spans(
+        f"{note} See the [recent results]({RECENT_RESULTS_HREF}) on the overview."
+    )
+    _refuse_stacked_inline_math(source, where="the edition notice")
+
+    from kpress.format.markdown import parse_markdown  # noqa: PLC0415
+
+    document = parse_markdown(source, title="Edition", trust_mode="trusted", math="auto")
+    for diagnostic in document.diagnostics:
+        print(f"edition notice: {diagnostic.severity}: {diagnostic.message}", file=sys.stderr)
+    if any(d.severity == "error" for d in document.diagnostics):
+        raise SystemExit("the edition notice did not render cleanly; refusing to write the page")
+    paragraph = document.html.strip()
+    if not (paragraph.startswith("<p>") and paragraph.count("<p>") == 1):
+        raise SystemExit(f"the edition notice is not one paragraph: {paragraph[:80]!r}")
+    # `sans-text` is kpress's sans region: the math runtime reads it to set the formulas
+    # from the sans composite at the sans size, as a caption's are.
+    return (
+        '<div class="site-edition-notice screen-only" role="note">\n'
+        f'<p class="sans-text">{paragraph.removeprefix("<p>")}\n</div>'
+    )
+
+
 class Render(NamedTuple):
     """What one render produces: the page, and the document it is made of."""
 
@@ -2945,7 +3057,7 @@ _INLINE_MATH = re.compile(
 )
 
 
-def _refuse_stacked_inline_math(source: str) -> None:
+def _refuse_stacked_inline_math(source: str, *, where: str = MARKDOWN.name) -> None:
     """Refuse a two-storey fraction set in a line of prose.
 
     A stacked fraction is taller than the line box it sits in. Inline, it pushes the
@@ -2966,13 +3078,21 @@ def _refuse_stacked_inline_math(source: str) -> None:
     if stacked:
         joined = "\n  ".join(stacked[:5])
         raise SystemExit(
-            f"{MARKDOWN.name}: stacked math in a line of prose; use `frac_inline_tex`:\n"
-            f"  {joined}"
+            f"{where}: stacked math in a line of prose; use `frac_inline_tex`:\n  {joined}"
         )
 
 
-def render(certificate_paths: tuple[Path, ...], *, full_sweep: bool = False) -> Render:
-    """One page for every certificate given, the first shown by default."""
+def render(
+    certificate_paths: tuple[Path, ...],
+    *,
+    full_sweep: bool = False,
+    edition: ExplainerEdition | None = None,
+) -> Render:
+    """One page for every certificate given, the first shown by default.
+
+    `edition` stands in for the record's comparison of the lead result, for a test; the
+    page states whatever `overview_data.explainer_edition` reads from the record.
+    """
     if not certificate_paths:
         raise SystemExit("no certificate to render")
     facts = [derive(path, full_sweep=full_sweep) for path in certificate_paths]
@@ -3008,7 +3128,8 @@ def render(certificate_paths: tuple[Path, ...], *, full_sweep: bool = False) -> 
     shell = expand(
         TEMPLATE.read_text(encoding="utf-8"), "SCRIPT", per_certificate, article=False
     )
-    page = fill(shell, shell_substitutions(static, shared, body), where=TEMPLATE.name)
+    substitutions = shell_substitutions(static, shared, body, notice=edition_notice(edition))
+    page = fill(shell, substitutions, where=TEMPLATE.name)
     assert_self_contained(page)
     return Render(page=page, markdown=published_markdown(source, default_slug=slug(facts[0])))
 

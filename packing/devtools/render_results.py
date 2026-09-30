@@ -17,6 +17,9 @@ rungs, with the result's standing, derived from the case records and never store
 whether a case bound rests on it now, and if not, whether it was superseded or is a
 second certificate for a value another result holds.
 
+The grouping and its order are `grouped_results`, which the site's overview calls too, so
+its results table and this view cannot sort or group a result differently.
+
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
     uv run --frozen --all-extras --group dev python -m devtools.render_results --check
@@ -25,7 +28,9 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import argparse
+from collections.abc import Mapping, Sequence
 from pathlib import Path
+from typing import Any, NamedTuple
 
 from strif import atomic_output_file
 
@@ -58,19 +63,61 @@ explanations for every declared `V` and `C`.
 """
 
 
-def _scope(record: dict) -> str:
-    scope = record["scope"]
-    if "n_values" in scope:
-        return ", ".join(str(n) for n in scope["n_values"])
-    return f"{scope['n_min']}-{scope['n_max']}"
+#: The group this project's own results read under, and its heading.
+OURS = "this-project"
+OURS_TITLE = f"This Project{APOSTROPHE}s Results"
+#: The key of the group `result_credit.OTHERS` titles with no lineage: results by others
+#: published before this project began.
+BEFORE_PROJECT = "before-project"
 
 
-def _claim(record: dict) -> str:
+class ResultGroup(NamedTuple):
+    """One heading of the view and its results, in the order the view lists them."""
+
+    key: str
+    title: str
+    records: list[Mapping[str, Any]]
+
+
+def scope(record: Mapping[str, Any]) -> str:
+    """The `n` a result speaks about, as the view's `n` column prints it."""
+    values = record["scope"]
+    if "n_values" in values:
+        return ", ".join(str(n) for n in values["n_values"])
+    return f"{values['n_min']}-{values['n_max']}"
+
+
+def claim(record: Mapping[str, Any]) -> str:
+    """The claim on one line, with a pipe escaped for a table cell."""
     return " ".join(str(record["claim"]).split()).replace("|", r"\|")
 
 
-def _order(record: dict) -> tuple[int, int, str]:
+def order(record: Mapping[str, Any]) -> tuple[int, int, str]:
+    """Significance descending, then confirmation descending, then id."""
     return (-record["significance"]["score"], -int(record["confirmation"][1]), record["id"])
+
+
+def grouped_results(
+    results: Sequence[Mapping[str, Any]], sources: Mapping[str, Mapping[str, Any]]
+) -> list[ResultGroup]:
+    """The register's results under the view's headings, each group in the view's order.
+
+    This project's results come first, always, even when there are none. Results by others
+    follow in the lineage their sources state, `result_credit.OTHERS`, and only the groups
+    that hold a result; within each, the entries still waiting on a replay here (`C` below
+    `C3`) come first, since they are the queue.
+    """
+    ordered = sorted(results, key=order)
+    groups = [ResultGroup(OURS, OURS_TITLE, [r for r in ordered if not r.get("attribution")])]
+    others = [record for record in ordered if record.get("attribution")]
+    for lineage, title in OTHERS:
+        group = sorted(
+            (record for record in others if source_lineage(record, sources) == lineage),
+            key=lambda record: (int(record["confirmation"][1]) >= 3, *order(record)),
+        )
+        if group:
+            groups.append(ResultGroup(lineage or BEFORE_PROJECT, title, group))
+    return groups
 
 
 def render() -> str:
@@ -79,19 +126,18 @@ def render() -> str:
         source["key"]: source
         for source in safe_load(BIBLIOGRAPHY.read_text(encoding="utf-8"))["sources"]
     }
-    results = sorted(register["results"], key=_order)
-    ours = [record for record in results if not record.get("attribution")]
-    others = [record for record in results if record.get("attribution")]
+    results = sorted(register["results"], key=order)
+    ours, *others = grouped_results(results, sources)
     lines = [HEADER]
-    lines.append(f"## This Project{APOSTROPHE}s Results")
+    lines.append(f"## {ours.title}")
     lines.append("")
     lines.append("| id | n | V | C | S | novelty | claim |")
     lines.append("| --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
-        f"| {record['id']} | {_scope(record)} | {record['verification']} "
+        f"| {record['id']} | {scope(record)} | {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
-        f"| {record['novelty']} | {_claim(record)} |"
-        for record in ours
+        f"| {record['novelty']} | {claim(record)} |"
+        for record in ours.records
     )
     lines.append("")
     if others:
@@ -104,23 +150,17 @@ def render() -> str:
             "complete replay here."
         )
         lines.append("")
-        for lineage, title in OTHERS:
-            group = sorted(
-                (record for record in others if source_lineage(record, sources) == lineage),
-                key=lambda record: (int(record["confirmation"][1]) >= 3, *_order(record)),
-            )
-            if not group:
-                continue
-            lines.append(f"### {title}")
+        for group in others:
+            lines.append(f"### {group.title}")
             lines.append("")
             lines.append("| id | n | credit | published | V | C | S | standing | claim |")
             lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
-                f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
+                f"| {record['id']} | {scope(record)} | {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records)} | {_claim(record)} |"
-                for record in group
+                f"| {standing(record, records)} | {claim(record)} |"
+                for record in group.records
             )
             lines.append("")
     lines.append("## Next actions")

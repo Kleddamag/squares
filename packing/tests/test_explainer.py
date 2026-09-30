@@ -11,15 +11,18 @@ from __future__ import annotations
 
 import re
 import subprocess
+from dataclasses import dataclass
 from fnmatch import fnmatchcase
 from fractions import Fraction
 from pathlib import Path
+from typing import override
 from urllib.parse import urljoin
 
 import pytest
 import tinycss2
 
-from devtools import render_explainer
+from devtools import render_explainer, render_explainer_pdf, site_kit
+from devtools.overview_data import Bound, ExplainerEdition, explainer_edition
 from devtools.render_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -29,9 +32,16 @@ from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     COMPOSITE_CARD,
     COMPOSITE_PNG,
+    EDITION_INPUTS,
+    FILM,
+    FULL_FILM,
     GENERATOR,
+    LEAD_RESULT,
     MARKDOWN_OUTPUT,
     OUTPUT,
+    PAGE_NAME,
+    PAGE_URL,
+    RECENT_RESULTS_HREF,
     RENDER_INPUTS,
     REPO,
     REPO_URL,
@@ -42,9 +52,11 @@ from devtools.render_explainer import (
     WALKTHROUGH,
     assert_self_contained,
     current_bound_facts,
+    edition_notice,
     link_revision,
     png_size,
     render,
+    verified_lower_bound,
 )
 from devtools.render_explainer import load_certificate as load
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
@@ -54,6 +66,7 @@ from sqpack.release import (
     PUBLICATION_EDITION,
     PUBLICATION_HISTORY,
     PUBLICATION_VERSION,
+    PUBLISHED_FILMS,
 )
 from sqpack.yamlio import safe_load
 from workbench_tools.build_site import NOTE as WORKBENCH_NOTE
@@ -161,7 +174,7 @@ def test_the_page_is_self_contained(page: str) -> None:
     """
 
     assert_self_contained(page)
-    assert re.findall(r"<link[^>]*>", page) == [f'<link rel="canonical" href="{SITE_URL}">']
+    assert re.findall(r"<link[^>]*>", page) == [f'<link rel="canonical" href="{PAGE_URL}">']
     assert re.search(r"<script[^>]*\ssrc=", page) is None
 
 
@@ -376,8 +389,8 @@ def test_the_link_preview_is_complete_and_its_urls_are_absolute(page: str) -> No
     assert tags.keys() >= REQUIRED_CARD_TAGS, sorted(REQUIRED_CARD_TAGS - tags.keys())
     for key in ("og:url", "og:image", "twitter:image"):
         assert tags[key].startswith("https://"), (key, tags[key])
-    assert f'<link rel="canonical" href="{SITE_URL}">' in page
-    assert tags["og:url"] == SITE_URL
+    assert f'<link rel="canonical" href="{PAGE_URL}">' in page
+    assert tags["og:url"] == PAGE_URL
 
 
 def test_the_card_image_is_one_the_render_serves_beside_the_page(page: str) -> None:
@@ -558,11 +571,17 @@ def test_pages_installs_the_locked_package_before_building_the_workbench() -> No
 
 
 def test_workbench_navigation_resolves_to_the_pages_project_root() -> None:
-    href = re.search(r'<a href="([^"]+)">the explainer</a>', WORKBENCH_NOTE)
+    """The Visualizer's one link goes home, to the overview at the site root.
+
+    It named the explainer while the explainer was the root page; the overview took the
+    root and the explainer moved to `explainer.html`, so the link now names the site.
+    """
+    href = re.search(r'<a href="([^"]+)">Square Packing</a> overview', WORKBENCH_NOTE)
     assert href is not None
     workbench = "https://jlevy.github.io/squares/workbench/"
-    assert urljoin(workbench, href.group(1)) == "https://jlevy.github.io/squares/"
+    assert urljoin(workbench, href.group(1)) == SITE_URL
     assert href.group(1) == "../"
+    assert "the explainer" not in WORKBENCH_NOTE
 
 
 def test_workbench_build_identity_requires_an_exact_commit() -> None:
@@ -711,7 +730,8 @@ def test_the_published_document_says_what_it_is_and_where_the_figures_are(
     edition drops.
     """
     assert "Markdown edition" in document
-    assert SITE_URL in document
+    assert f"]({PAGE_URL})" in document
+    assert f"]({SITE_URL})" not in document, "the site's root is the overview, not this page"
 
 
 def _style_blocks(page: str) -> list[str]:
@@ -854,12 +874,19 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
 
     Two links already shipped as `file:///home/.../known-best-1-100.pdf`, absolute paths
     to the machine that built them, and the atlas figure was one of them.
+
+    The page is one of the site's pages since 2026-09-30, published as `explainer.html`
+    beside the overview, so what it may name is its own files, the films the site copies
+    from their release when it publishes, and the site's other pages, which the
+    navigation bar and the edition notice link.
     """
     served = {
-        OUTPUT.name,
+        PAGE_NAME,
         MARKDOWN_OUTPUT.name,
         PDF_OUTPUT.name,
         *(asset.name for asset in COMPOSITE_ASSETS),
+        *(f"films/{film.name}" for film in PUBLISHED_FILMS),
+        *(item.href for item in site_kit.NAV_ITEMS if not item.external),
     }
     # Markup only. The page inlines KaTeX and kpress's client, and a minified
     # `'+a(this.src)+'` in one of them reads as an attribute to a regex that does not
@@ -1010,3 +1037,223 @@ def test_reader_facing_version_references_follow_release_metadata() -> None:
     for path in (REPO / "README.md", REPO / "TUTORIAL.md"):
         assert PUBLICATION_VERSION in path.read_text()
     assert "PUBLICATION_HISTORY" in (REPO / "development.md").read_text()
+
+
+# ---------------------------------------------------------------------------
+# The page as one page of the site: its address, the navigation bar and the edition
+# notice above the article, and the films it plays from the site's own copies.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class _Edition(ExplainerEdition):
+    """An edition whose note is given, for the notice's tests; the record's is generated."""
+
+    given: str = ""
+
+    @property
+    @override
+    def note(self) -> str:
+        return self.given
+
+
+def _bound(n: int, relation: str, tex: str, value: Fraction | None) -> Bound:
+    return Bound(n=n, relation=relation, exact=tex, decimal=tex, tex=tex, value=value)
+
+
+def _edition(note: str, *, current: bool = False) -> _Edition:
+    lead = _bound(11, "≥", r"3.8264474\ldots", None)
+    now = lead if current else _bound(11, ">", "31/8", Fraction(31, 8))
+    return _Edition(
+        lead_result=LEAD_RESULT,
+        lead_bound=lead,
+        current_bound=now,
+        current_credit="Kleddamag",
+        current_results=(LEAD_RESULT,) if current else ("T-037",),
+        is_current=current,
+        first_published="September 5, 2026",
+        edition="v0.4",
+        edition_first_published="September 13, 2026",
+        given=note,
+    )
+
+
+_COLUMN = '<div class="kpress kpress-doc kpress-prose cert-page">'
+
+
+def _article(page: str) -> str:
+    """The page's `.kpress` block: the notice, the rendered Markdown and the colophon."""
+    start = page.index(_COLUMN)
+    return page[start : page.index("</main>", start)]
+
+
+def _page_stylesheet(page: str) -> str:
+    """The shell's own stylesheet: the one that styles the certificate page."""
+    return next(css for css in _style_blocks(page) if ".cert-page {" in css)
+
+
+def _selectors(css: str) -> list[tuple[str, str]]:
+    """Every style rule's selectors, each with the at-rule prelude it sits in, if any."""
+    found: list[tuple[str, str]] = []
+
+    def walk(rules: list[tinycss2.ast.Node], context: str) -> None:
+        for rule in rules:
+            if isinstance(rule, tinycss2.ast.QualifiedRule):
+                prelude = tinycss2.serialize(rule.prelude)
+                found.extend((context, selector) for selector in _selector_list(prelude))
+            elif isinstance(rule, tinycss2.ast.AtRule) and rule.content is not None:
+                inner = tinycss2.parse_rule_list(
+                    rule.content, skip_comments=True, skip_whitespace=True
+                )
+                walk(inner, f"@{rule.lower_at_keyword} {tinycss2.serialize(rule.prelude).strip()}")
+
+    walk(tinycss2.parse_stylesheet(css, skip_comments=True, skip_whitespace=True), "")
+    return found
+
+
+def test_the_page_is_published_as_explainer_html_beside_the_site_root() -> None:
+    """The overview took the site's root, and this page moved beside it.
+
+    The render still writes `site/index.html`, which the PDF build and every browser
+    check read; the Pages workflow renames it when it assembles the site. What moves is
+    what a reader or a crawler sees: the canonical address. The page's assets stay
+    beside it, so `site_file` and the PDF's absolute links keep resolving against the
+    site's directory, and the exporter's copy of that address has to be the same one.
+    """
+    assert PAGE_NAME == "explainer.html"
+    assert PAGE_URL == SITE_URL + PAGE_NAME
+    assert OUTPUT.name == "index.html"
+    assert urljoin(PAGE_URL, COMPOSITE_CARD.name) == render_explainer.site_file(COMPOSITE_CARD)
+    assert render_explainer_pdf.SITE_URL == SITE_URL
+    assert SITE_URL == site_kit.SITE_URL
+    assert render_explainer.SITE_NAME == site_kit.SITE_NAME
+
+
+def test_the_page_carries_the_site_navigation_bar_above_the_article(page: str) -> None:
+    """The bar every site page carries, marked for this page, outside the article column."""
+    bar = site_kit.nav_html("explainer")
+    assert page.count(bar) == 1
+    assert page.index(bar) < page.index('<main class="kpress-page-main')
+    assert '<a href="explainer.html" aria-current="page">Explainer</a>' in bar
+    markup = re.sub(r"<(script|style)\b.*?</\1>", "", page, flags=re.DOTALL | re.IGNORECASE)
+    assert markup.count('aria-current="page"') == 1
+    assert "site-nav" not in _article(page)
+
+
+def test_the_bar_and_the_notice_are_screen_only(page: str) -> None:
+    """Hidden in print, so the PDF and the print layout do not move for them.
+
+    `check_print_layout` and the PDF's page count are what show the printed page did not
+    move; this holds the rule that makes it so, which is a declaration rather than an
+    accident of where the elements sit.
+    """
+    hidden = {
+        selector
+        for context, selector in _selectors(_page_stylesheet(page))
+        if context == "@media print"
+    }
+    assert {".site-nav", ".site-edition-notice"} <= hidden
+    css = _page_stylesheet(page)
+    assert re.search(
+        r"@media print \{\s*\.site-nav, \.site-edition-notice \{ display: none; \}\s*\}", css
+    )
+    assert '<div class="site-edition-notice screen-only" role="note">' in page
+
+
+def test_the_site_chrome_rules_never_match_the_article(page: str) -> None:
+    """Every rule for the bar or the notice is scoped to it, and the article carries neither.
+
+    The page does not inline the site's stylesheet, so the bar's rules are restated in the
+    shell; a restated rule that reached `.cert-page` would move the article and its PDF.
+    Each selector that names the bar or the notice has to name it first, as the element
+    the rest of the selector descends from.
+
+    The notice opens the page's `.kpress` block, where kpress sets its formulas' faces,
+    and the page has no other `.kpress` block ahead of that one: the print-layout and
+    math-font checks measure the first `.kpress` on the page as the article's column.
+    """
+    chrome = ("site-nav", "site-edition-notice")
+    ruled = [
+        selector
+        for _, selector in _selectors(_page_stylesheet(page))
+        if any(name in selector for name in chrome)
+    ]
+    assert ruled
+    for selector in ruled:
+        assert selector.startswith((".site-nav", ".site-edition-notice")), selector
+        assert ".cert-page" not in selector, selector
+    article = _article(page)
+    notice = '<div class="site-edition-notice screen-only" role="note">'
+    assert article.startswith(f"{_COLUMN}\n{notice}")
+    body = article[article.index("</div>", len(_COLUMN) + len(notice)) :]
+    for name in chrome:
+        assert name not in body, name
+    markup = re.sub(r"<(script|style)\b.*?</\1>", "", page, flags=re.DOTALL | re.IGNORECASE)
+    first = next(
+        match.start()
+        for match in re.finditer(r'class="([^"]*)"', markup)
+        if "kpress" in match.group(1).split()
+    )
+    assert first == markup.index(_COLUMN) + len("<div ")
+
+
+def test_the_edition_notice_sets_the_note_and_sends_the_reader_to_recent_results() -> None:
+    """The note is the record's; the notice renders it with the page's math and links on."""
+    note = (
+        r"This v0.4 proof edition leads with T-026’s $s(11) \ge 3.8264474\ldots$; the "
+        r"verified lower bound is now $s(11) > 31/8$, by Kleddamag (T-037)."
+    )
+    notice = edition_notice(_edition(note))
+    assert notice.startswith('<div class="site-edition-notice screen-only" role="note">')
+    assert '<p class="sans-text">This v0.4 proof edition leads with T-026’s' in notice
+    assert notice.count('class="kpress-math kpress-math-inline"') == 2
+    assert r"s\mkern1mu(11) \ge 3.8264474\ldots" in notice
+    assert f'<a href="{RECENT_RESULTS_HREF}">recent results</a>' in notice
+    assert RECENT_RESULTS_HREF == "./#recent-results"
+    assert "$" not in notice
+
+    current = edition_notice(_edition("The explainer’s bound is current.", current=True))
+    assert "The explainer’s bound is current." in current
+
+
+@pytest.mark.parametrize("note", ["", "   ", r"The bound is $s(11) > \frac{31}{8}$ now."])
+def test_the_edition_notice_refuses_an_empty_note_or_a_stacked_fraction(note: str) -> None:
+    """A stacked fraction pushes a line of text open; the note writes one with a slash."""
+    with pytest.raises(SystemExit, match="empty|stacked math"):
+        edition_notice(_edition(note))
+
+
+def test_the_page_states_the_records_edition_note(page: str) -> None:
+    """The notice on the page is the one the record gives, about the lead the page declares.
+
+    The bound it compares with is the case's verified lower bound, the one Figure 3 marks,
+    so the notice and the figure beside the article cannot name different bounds.
+    """
+    edition = explainer_edition()
+    assert edition.lead_result == LEAD_RESULT
+    assert edition.current_bound.n == 11
+    assert edition.current_bound.value == verified_lower_bound(11).value
+    assert page.count(edition_notice(edition)) == 1
+    for path in EDITION_INPUTS:
+        assert path in RENDER_INPUTS
+
+
+def test_the_films_play_from_the_sites_copies_of_the_pinned_release_files(
+    page: str, document: str
+) -> None:
+    """Same-origin copies, which the site serves as `video/mp4`, not the release download.
+
+    A release download is an `application/octet-stream` attachment: the player sniffed
+    past it, but a link to it downloaded the file. The site fetches the pinned files into
+    `films/` when it publishes, so the player, its download link and the caption's link
+    to the full ascent all name those.
+    """
+    pinned = {f"films/{film.name}" for film in PUBLISHED_FILMS}
+    assert {FILM, FULL_FILM} == pinned
+    assert FILM.endswith("ascent-n1-100-1080p60-citations.mp4")
+    assert f'<source src="{FILM}" type="video/mp4; codecs=&quot;avc1.640028&quot;">' in page
+    assert f'<a href="{FILM}">Download' in page
+    assert f'<a href="{FULL_FILM}">full' in page
+    assert f"]({FULL_FILM})" in document
+    for text in (page, document):
+        assert "releases/download" not in text

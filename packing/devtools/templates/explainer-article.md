@@ -187,9 +187,8 @@ The proof presented here is of this kind.
 <video class="film" controls preload="none" playsinline width="1920" height="1080"
     poster="ascent-n1-100-poster.png"
     aria-label="The atlas built one unit square at a time, from n = 1 to n = 100, at 1080p60.">
-<source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
-<a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">Download
-the film</a>. </video>
+<source src="{{FILM_URL}}" type="video/mp4; codecs=&quot;avc1.640028&quot;">
+<a href="{{FILM_URL}}">Download the film</a>. </video>
 
   </div>
 
@@ -199,7 +198,7 @@ the film</a>. </video>
   provenance. PDFs are available for <a href="known-best-1-100.pdf">this figure</a> and the
   <a href="known-best-1-324.pdf">full 324-case poster</a>. The film below the atlas draws the same hundred
   packings one square at a time, each step naming the bound it reaches and where that bound comes from; the
-  <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">full
+  <a href="{{FULL_FILM_URL}}">full
   <span class="tex">n = 1 \ldots 324</span> ascent</a> runs 8m 14s.</figcaption>
 </figure>
 

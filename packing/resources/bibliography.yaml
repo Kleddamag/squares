@@ -26,7 +26,11 @@ last_reviewed: '2026-09-29'
 # width and that shape. `lineage`, required on the source of a result
 # by others published on or after 22 August 2026, is `builds-on-project`,
 # `credits-project` or `independent`, as the source's own attribution files say; the
-# policy is epistemics.md, Results by Others. A web source's authors are
+# policy is epistemics.md, Results by Others. `ai_assistance`, where a source states
+# that AI assisted its work, is that statement's one home: the sentence a case record, a
+# register row or the overview repeats, the source's own words it quotes, and the
+# retained file that says so; `devtools.state_ai_assistance` reads it from here. A web
+# source's authors are
 # not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:
@@ -99,6 +103,12 @@ sources:
     dated: '2026-09-20'
     credit: Guzhou0806, Mira after Levy, Burns, Massaccesi
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        R012’s `ATTRIBUTION.md` names it as research by “Guzhou0806 / N17 project, with
+        AI assistance”.
+      quote: AI assistance
+      where: packing/resources/web/n17-weighted-certificates-2026-09-20/guzhou0806-n17-square-packing/certificates/R012/ATTRIBUTION.md
     note: >-
       The two repositories the packet retains, by their authors' GitHub names
       (web/n17-weighted-certificates-2026-09-20/README.md): Guzhou0806's R012
@@ -116,6 +126,12 @@ sources:
     dated: '2026-09-21'
     credit: Kleddamag after Levy, Mira, Guzhou0806
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The source’s `AUTHORS.md` says Kleddamag directed the research and OpenAI Codex
+        carried it out.
+      quote: OpenAI Codex
+      where: packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/AUTHORS.md
     note: >-
       The retained v1.0.0 release; its AUTHORS.md names Kleddamag as the project's
       director and says the work was produced with AI agents (OpenAI Codex) under that
@@ -127,6 +143,12 @@ sources:
     dated: '2026-09-27'
     credit: Kleddamag after Levy, Mira, Guzhou0806
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The source’s `AUTHORS.md` says Kleddamag directed the research and OpenAI Codex
+        carried it out.
+      quote: OpenAI Codex
+      where: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/AUTHORS.md
     note: >-
       Commit 57519bb7 of Kleddamag/17-squares-certified-bound, 2026-09-27, untagged,
       whose bounds/4.66001/ package proves s(17) > 466001/100000. Kleddamag, building
@@ -143,6 +165,12 @@ sources:
     dated: '2026-09-26'
     credit: Kleddamag after Levy, Mira, Guzhou0806
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The source’s `AUTHORS.md` says Kleddamag directed the research and OpenAI Codex
+        carried it out.
+      quote: OpenAI Codex
+      where: packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/AUTHORS.md
     note: >-
       The v1.1.0 release of Kleddamag/17-squares-certified-bound at 13821ddf,
       2026-09-26, whose bounds/4.640020/ package proves s(17) > 232001/50000.
@@ -157,6 +185,11 @@ sources:
     dated: '2026-09-25'
     credit: Guzhou0806 after Kleddamag, Mira, Levy
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The release names itself as made by Guzhou0806 / N17 project with AI assistance.
+      quote: AI assistance
+      where: packing/resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/README.md
     note: >-
       The R052 release of Guzhou0806/n17-square-packing at 3bf1095c, 2026-09-25,
       which names itself as produced by "Guzhou0806 / N17 project with AI
@@ -170,6 +203,11 @@ sources:
     credit: Guzhou0806 after Kleddamag, Mira, Levy
     short_credit: Guzhou0806 after Kleddamag et al.
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The release names itself as made by Guzhou0806 / N17 project with AI assistance.
+      quote: AI assistance
+      where: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/README.md
     note: >-
       The R068 release of Guzhou0806/n17-square-packing at 815b1626, 2026-09-28, whose
       certificates/R068-C010/accepted/4.66044/ proves s(17) > 116511/25000. Guzhou0806 /
@@ -188,6 +226,11 @@ sources:
     dated: '2026-09-28'
     credit: Guzhou0806 after Kleddamag, Mira, Levy
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The release names itself as made by Guzhou0806 / N17 project with AI assistance.
+      quote: AI assistance
+      where: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/README.md
     note: >-
       The R067 release of Guzhou0806/n17-square-packing at d4e2c287, 2026-09-28, whose
       certificates/R067-4.66018/ proves s(17) > 233009/50000 on Kleddamag's 4.66001
@@ -203,6 +246,12 @@ sources:
     dated: '2026-09-27'
     credit: Daniel after Burns, Massaccesi
     lineage: independent
+    ai_assistance:
+      statement: >-
+        The source’s `CREDITS.md` says the work was produced by Claude (Anthropic) in a
+        single session under human direction.
+      quote: Claude (Anthropic)
+      where: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/CREDITS.md
     note: >-
       evand/square-packing (formerly evand/square-packing-12) at 167d842c,
       2026-09-26. Its LICENSE names Evan Daniel. Its CREDITS.md credits the
@@ -216,6 +265,12 @@ sources:
     dated: '2026-09-28'
     credit: Daniel after Burns, Massaccesi
     lineage: independent
+    ai_assistance:
+      statement: >-
+        The source’s `CREDITS.md` says the work was produced by Claude (Anthropic) in a
+        single session under human direction.
+      quote: Claude (Anthropic)
+      where: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/CREDITS.md
     note: >-
       evand/square-packing at 6aa82ba4, 2026-09-28, whose s12/certificates/s21/ and
       s12/certificates/s45/ bundles prove s(21) = 5 and s(45) = 7 by mixed covers. Its
@@ -230,6 +285,12 @@ sources:
     credit: Kleddamag after Levy, Guzhou0806, Mira
     short_credit: Kleddamag after Levy et al.
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        The source’s `AUTHORS.md` says Kleddamag directed the research and OpenAI Codex
+        carried it out.
+      quote: OpenAI Codex
+      where: packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/AUTHORS.md
     note: >-
       The v1.0.2 release of Kleddamag/11-squares-certified-bound, pinned in
       web/external-square-certificates-2026-09-22/acquisition/sources.json,
@@ -249,6 +310,12 @@ sources:
     credit: Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi
     short_credit: Tokoharu after Levy, wand125 et al.
     lineage: credits-project
+    ai_assistance:
+      statement: >-
+        Tokoharu’s README says parts of the work were produced with AI assistance under
+        human direction.
+      quote: AI assistance under human direction
+      where: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/README.md
     note: >-
       The tokoharu/square-packing-density-bounds repository, pinned in
       web/external-square-certificates-2026-09-22/acquisition/sources.json,
@@ -269,6 +336,12 @@ sources:
     credit: wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi
     short_credit: wand125 after Levy et al.
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        wand125’s README says parts of the work were produced with AI assistance under
+        human direction.
+      quote: AI assistance under human direction
+      where: packing/resources/web/external-square-certificates-2026-09-22/wand125-points/README.md
     note: >-
       The wand125/square-packing-bounds repository and its 2026 certificate claims,
       retained under web/external-square-certificates-2026-09-22/wand125-points/;
@@ -287,6 +360,12 @@ sources:
     credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
     short_credit: wand125 after Tokoharu, Levy et al.
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        wand125’s README says parts of the work were produced with AI assistance under
+        human direction.
+      quote: AI assistance under human direction
+      where: packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/README.md
     note: >-
       The rectangle-density certificates wand125/square-packing-bounds added on
       2026-09-26 and 2026-09-27, built with and checked by Tokoharu's solver and
@@ -306,6 +385,12 @@ sources:
     credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
     short_credit: wand125 after Tokoharu, Levy et al.
     lineage: builds-on-project
+    ai_assistance:
+      statement: >-
+        wand125’s README says parts of the work were produced with AI assistance under
+        human direction.
+      quote: AI assistance under human direction
+      where: packing/resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles/README.md
     note: >-
       The rectangle-density certificates wand125/square-packing-bounds added or raised
       between 2026-09-27 and 2026-09-28, built with and checked by Tokoharu's solver and
@@ -321,6 +406,12 @@ sources:
     credit: wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
     short_credit: wand125 after Daniel, Tokoharu, Levy et al.
     lineage: credits-project
+    ai_assistance:
+      statement: >-
+        wand125’s README says parts of the work were produced with AI assistance under
+        human direction.
+      quote: AI assistance under human direction
+      where: packing/resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles/README.md
     note: >-
       The point-only s(21) = 5 and s(45) = 7 certificates and the mixed-rectangle
       s(50) >= 37/5 certificate (with the superseded 147/20 and 3659/500 rungs) that

@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Check durable-document coverage, lifecycle, footers, links, and generated map."""
+"""Check durable-document coverage, lifecycle, footers, links, summaries, and generated map.
+
+A document the published overview lists as a card (`devtools.reader_documents`) needs a
+one-sentence `summary` in the document map, and no summary may state a bound: the
+overview's numbers are generated from the record, and a summary that carried one would
+go stale the day the record moved past it. `states_a_bound` says precisely what counts.
+"""
 
 from __future__ import annotations
 
@@ -9,6 +15,7 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import unquote
 
+from devtools.reader_documents import shown_paths
 from devtools.render_document_map import MAP, REPO, SYNOPSIS, expected_synopsis, load_map
 from devtools.repo_scope import is_vendored
 from sqpack.yamlio import safe_load
@@ -41,6 +48,90 @@ RETIRED_PHRASES = (
     "numerically verified",
     "verified-construction",
 )
+
+#: The longest summary a card sets; the schema's `maxLength` is the same number.
+SUMMARY_LIMIT = 160
+
+# What stating a bound looks like. A summary says what a document covers, and names cases
+# by integers (`n = 11`, `n = 1…324`, "twenty-six squares"); a bound is a value of `s`, or
+# a side length, and it shows up in one of the shapes below. Each is named for the
+# refusal, and `states_a_bound` returns the first that matches.
+#
+# Spacing inside TeX (`\;`, `\,`, `~`) and a `$` around the math count as space, and
+# `\frac{` may open the number, so `$s(11) \;\ge\; \frac{31}{8}$` is the same statement
+# as `s(11) >= 31/8`.
+_SPACE = r"(?:\s|\\[,;:!]|~)*"
+_INEQUALITY = r"(?:<=|>=|[<>≤≥≈]|\\(?:le|ge|leq|geq|lt|gt|approx)(?![A-Za-z]))"
+_RELATION = rf"(?:{_INEQUALITY}|=|\b(?:is|at least|at most|equals?|exceeds?|below|above|to)\b)"
+_NUMBER = rf"\$?{_SPACE}(?:\\[dt]?frac{_SPACE}\{{{_SPACE})?\d"
+_S_OF = r"(?<![A-Za-z\\])s\s*\([^()]*\)"
+BOUND_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    # `s(11) >= 3.8`, `s(32) = 6`, `$s(n) \ge 5$`, `s(11) is at least 3.8`.
+    (
+        "a relation of s(…) to a number",
+        re.compile(rf"{_S_OF}{_SPACE}\$?{_SPACE}(?:{_RELATION}{_SPACE})+{_NUMBER}"),
+    ),
+    # `3.8 < s(11)`, `5 = s(21)`.
+    (
+        "a number in relation to s(…)",
+        re.compile(rf"\d[\d.,/…]*{_SPACE}\$?{_SPACE}{_RELATION}{_SPACE}\$?{_SPACE}{_S_OF}"),
+    ),
+    # `side ≥ 4`, `n = 11 > 3`: an inequality or approximation beside a number, whatever
+    # it compares. A range of cases is written with `=` and an ellipsis, or in words.
+    (
+        "an inequality with a number",
+        re.compile(rf"{_INEQUALITY}{_SPACE}{_NUMBER}|\d{_SPACE}\$?{_SPACE}{_INEQUALITY}"),
+    ),
+    # The forms a side length takes and a count never does. A version (`v0.4`) and an
+    # identifier (`T-026`, `BC303`, `H-161`) are not numbers here.
+    ("a decimal", re.compile(r"(?<![\w.])\d+\.\d+")),
+    ("a fraction", re.compile(r"(?<![\w/])\d+\s*/\s*\d+(?![\w/])|\\[dt]?frac\b")),
+    ("a radical", re.compile(r"√|\\sqrt\b|\bsqrt\s*\(")),
+)
+
+
+def states_a_bound(text: str) -> tuple[str, str] | None:
+    """The first bound-stating shape `text` contains, named, with what matched; else None."""
+    for name, pattern in BOUND_PATTERNS:
+        match = pattern.search(text)
+        if match:
+            return name, match.group(0)
+    return None
+
+
+def summary_faults(summary: str) -> list[str]:
+    """What is wrong with one summary: its length, its shape, or a bound in it."""
+    faults: list[str] = []
+    if len(summary) > SUMMARY_LIMIT:
+        faults.append(f"is {len(summary)} characters, over {SUMMARY_LIMIT}")
+    if "\n" in summary or not summary.endswith(".") or re.search(r"[.!?]\s+\S", summary):
+        faults.append("is not one sentence ending in a full stop")
+    bound = states_a_bound(summary)
+    if bound is not None:
+        faults.append(
+            f"states a bound ({bound[0]}: {bound[1]!r}); a summary says what the document "
+            "covers, and the page's numbers come from the record"
+        )
+    return faults
+
+
+def summary_problems(document_map: dict) -> list[str]:
+    """Every card the overview shows has a summary, and every summary is well formed."""
+    problems: list[str] = []
+    entries = {document["path"]: document for document in document_map["documents"]}
+    for path in shown_paths(document_map):
+        entry = entries.get(path)
+        if entry is None:
+            problems.append(f"{path}: the overview lists it, but the document map does not")
+        elif not str(entry.get("summary") or "").strip():
+            problems.append(f"{path}: the overview lists it, so its map entry needs a summary")
+    for document in document_map["documents"]:
+        summary = document.get("summary")
+        if summary is not None:
+            problems.extend(
+                f"{document['path']}: summary {fault}" for fault in summary_faults(str(summary))
+            )
+    return problems
 
 
 def _matches(pattern: str) -> set[str]:
@@ -121,6 +212,7 @@ def check() -> list[str]:
             problems.append(f"{document['path']}: superseded without superseded_by")
         if replacement and not (REPO / replacement).is_file():
             problems.append(f"{document['path']}: replacement does not exist: {replacement}")
+    problems.extend(summary_problems(document_map))
 
     for collection in document_map["collections"]:
         matched = _matches(collection["pattern"])

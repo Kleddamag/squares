@@ -16,6 +16,11 @@ The anchors are parsed from `epistemics.md` rather than copied, because a rubric
 restated in code is a rubric that drifts from the policy it claims to quote --
 the same shape as `D-010`, `D-017` and `D-022`, three hand-maintained views that
 drifted from their sources in one week.
+
+The same holds for the verification and confirmation ladders, which the overview's
+counts label: `rungs` reads any of the three tables, the two-column `S` rubric and the
+three-column `V` and `C` ladders, whose third column is the structural support the
+checker derives the rung from.
 """
 
 from __future__ import annotations
@@ -23,6 +28,7 @@ from __future__ import annotations
 import re
 from datetime import date
 from pathlib import Path
+from typing import NamedTuple
 
 from sqpack.yamlio import safe_load
 
@@ -32,24 +38,53 @@ REPO = ROOT.parent
 RESULTS = ROOT / "frontier" / "results.yaml"
 EPISTEMICS = REPO / "epistemics.md"
 
-#: `| `S3` | A substantive case result or machine audit |`, the rubric's own row shape.
-_ANCHOR_ROW = re.compile(r"^\|\s*`S(\d)`\s*\|\s*(.+?)\s*\|\s*$", re.MULTILINE)
+#: The three axes `epistemics.md` tabulates rung by rung, and what each is called.
+AXES = {"V": "verification", "C": "confirmation", "S": "significance"}
+
+#: The head of one rung's row, `| `S3` |` or `| `V4` |`, in any of the three tables. The
+#: cells after it are split on the pipe: `| `S3` | anchor |` for the significance rubric,
+#: `| `V4` | meaning | structural support |` for the two ladders.
+_RUNG_ROW = re.compile(r"^\|\s*`([VCS])(\d)`\s*\|")
 
 
-def anchors() -> dict[int, str]:
-    """The significance rubric, read from `epistemics.md` at the moment of use."""
-    text = EPISTEMICS.read_text(encoding="utf-8")
-    found = {int(score): anchor for score, anchor in _ANCHOR_ROW.findall(text)}
+class Rung(NamedTuple):
+    """One rung as `epistemics.md` defines it."""
+
+    meaning: str
+    """The rung's own words: `Machine-verified`, or the rubric anchor for a score."""
+    support: str | None
+    """What the checker derives the rung from, for `V` and `C`; None for `S`."""
+
+
+def rungs(axis: str) -> dict[int, Rung]:
+    """One axis's rungs, read from `epistemics.md` at the moment of use."""
+    if axis not in AXES:
+        raise ValueError(f"no rung table for axis {axis!r}; expected one of {sorted(AXES)}")
+    found: dict[int, Rung] = {}
+    for line in EPISTEMICS.read_text(encoding="utf-8").splitlines():
+        match = _RUNG_ROW.match(line)
+        if match is None or match.group(1) != axis:
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")][1:]
+        rung = int(match.group(2))
+        if rung in found or not 1 <= len(cells) <= 2 or not cells[0]:
+            raise SystemExit(f"{EPISTEMICS}: the {AXES[axis]} row {axis}{rung} is malformed")
+        found[rung] = Rung(cells[0], cells[1] if len(cells) == 2 else None)
     if not found:
-        raise SystemExit(f"{EPISTEMICS}: no significance anchors found; the rubric moved")
+        raise SystemExit(f"{EPISTEMICS}: no {AXES[axis]} anchors found; the table moved")
     return found
 
 
-def anchor_for(score: int) -> str:
-    """The rubric's own words for one score, or a refusal naming the gap."""
-    found = anchors()
+def anchors(axis: str = "S") -> dict[int, str]:
+    """One axis's rungs in their own words; the significance rubric by default."""
+    return {rung: row.meaning for rung, row in rungs(axis).items()}
+
+
+def anchor_for(score: int, axis: str = "S") -> str:
+    """The rubric's own words for one rung, or a refusal naming the gap."""
+    found = anchors(axis)
     if score not in found:
-        raise SystemExit(f"epistemics.md defines no anchor for S{score}")
+        raise SystemExit(f"epistemics.md defines no anchor for {axis}{score}")
     return found[score]
 
 

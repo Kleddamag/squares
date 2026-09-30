@@ -50,6 +50,7 @@ $defs:
     required:
       - id
       - headline
+      - registered
       - claim
       - scope
       - verification
@@ -87,6 +88,18 @@ $defs:
           Required on every result without `attribution` and refused on one with it,
           whose date is `attribution.published`. Never before 22 August 2026, the day
           this project's square-packing work began.
+      registered:
+        type: string
+        pattern: '^\d{4}-\d{2}-\d{2}$'
+        description: >-
+          The day this entry entered the register: the committing day, in UTC, of the
+          commit that added it, on every result, this project's and others'. Distinct from
+          `established`, the day a result of this project first passed here,
+          `attribution.published`, the day a result by others entered its source, and
+          `significance.scored`, the day of the current assessment. Never before either of
+          the first two, nor after the register's last review. The entries that predate
+          the field took it from git once (`devtools.backfill_registered`); a new entry
+          states it when it is written.
       claim:
         type: string
         minLength: 1

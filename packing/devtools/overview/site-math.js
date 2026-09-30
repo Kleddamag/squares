@@ -3,7 +3,11 @@
    set exactly as it is in the explainer. The page is then marked `math-ready`, which the
    preview and layout checks wait for, and kpress's footnote previews are booted, so their
    clones carry rendered formulas. The explainer's `page.js` does the same for its article,
-   with its certificate figures besides. */
+   with its certificate figures besides.
+
+   `siteMath.typeset(root)` sets the formulas under one element later on: the popover
+   calls it for the opening section of a document, which the page carries in a
+   `<template>` and so is not in the document when the page first typesets. */
 (() => {
   const math = squaresMath;
   const runtime = kpressMathText;
@@ -32,12 +36,17 @@
       }
     };
   };
-  const typeset = async () => {
-    const nodes = [...document.querySelectorAll(".kpress-math")].map(
+  /** @param {ParentNode} root */
+  const typesetIn = async (root) => {
+    const nodes = [...root.querySelectorAll(".kpress-math")].map(
       (node) => /** @type {HTMLElement} */ (node),
     );
     await math.batch(nodes.map(job));
     await math.settled();
+  };
+  window.siteMath = { typeset: typesetIn };
+  const typeset = async () => {
+    await typesetIn(document);
     runtime.complete();
     document.documentElement.classList.add("math-ready");
     window.kpressInitTooltips?.(document, { only: "footnote" });

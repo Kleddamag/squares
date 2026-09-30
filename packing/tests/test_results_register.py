@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from devtools import check_results, render_results
+from devtools import backfill_registered, check_results, render_results
 from devtools.check_results import (
     derive_confirmation,
     derive_verification,
@@ -474,3 +474,90 @@ def test_an_established_date_lies_within_the_projects_record() -> None:
     assert check_results.established_problems(
         {**record, "established": "2026-09-31"}, "2026-09-29"
     ) == ["T-999: established 2026-09-31 is not a date"]
+
+
+def test_every_result_names_the_day_it_was_registered(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """This project's and others' alike: the overview's table sorts by it."""
+    for result_id in ("T-017", "T-032"):
+        unregistered = _dropped_field(tmp_path, result_id, "registered")
+        monkeypatch.setattr(check_results, "RESULTS", unregistered)
+        assert check_results.main() == 1
+        assert f"{result_id}: states no registered date" in capsys.readouterr().out
+
+
+def test_a_registration_day_follows_the_result_and_precedes_the_review() -> None:
+    """Not before the project, the result's own date or after the last review, and real."""
+    ours = {"id": "T-999", "established": "2026-09-01", "registered": "2026-09-02"}
+    assert check_results.registered_problems(ours, "2026-09-29") == []
+    assert check_results.registered_problems(
+        {**ours, "registered": "2026-08-31"}, "2026-09-29"
+    ) == ["T-999: registered 2026-08-31 is before it was established, 2026-09-01"]
+    assert check_results.registered_problems(
+        {**ours, "registered": "2026-09-30"}, "2026-09-29"
+    ) == ["T-999: registered 2026-09-30 is after the register's last review, 2026-09-29"]
+    assert check_results.registered_problems(
+        {**ours, "registered": "2026-02-30"}, "2026-09-29"
+    ) == ["T-999: registered 2026-02-30 is not a date"]
+    theirs = {
+        "id": "T-998",
+        "attribution": {"source_keys": ["[X]"], "published": "2026-09-20"},
+        "registered": "2026-09-19",
+    }
+    assert check_results.registered_problems(theirs, "2026-09-29") == [
+        "T-998: registered 2026-09-19 is before it was published, 2026-09-20"
+    ]
+    old = {**theirs, "attribution": {"source_keys": ["[X]"], "published": "1979"}}
+    assert (
+        check_results.registered_problems({**old, "registered": "2026-08-31"}, "2026-09-29")
+        == []
+    )
+    assert check_results.registered_problems(
+        {**old, "registered": "2026-08-21"}, "2026-09-29"
+    ) == ["T-998: registered 2026-08-21 is before 2026-08-22, when this project's work began"]
+
+
+def test_the_registration_backfill_adds_one_line_and_nothing_else() -> None:
+    """After `established` on this project's results, after `headline` on others'."""
+    text = (
+        "results:\n"
+        "  - id: T-001\n"
+        '    headline: "`s(17) ≥ 4`"\n'
+        "    established: '2026-08-31'\n"
+        "    claim: >-\n"
+        "      s(17) >= 4.\n"
+        "  - id: T-002\n"
+        '    headline: "`s(46) ≥ 7`"\n'
+        "    claim: s(46) >= 7.\n"
+        "  - id: T-003\n"
+        '    headline: "`s(5) ≥ 2`"\n'
+        "    registered: '2026-09-01'\n"
+        "    claim: s(5) >= 2.\n"
+    )
+    days = {"T-001": "2026-08-31", "T-002": "2026-09-02", "T-003": "2026-09-03"}
+    written = backfill_registered.with_registered(text, days)
+    assert written.splitlines() == [
+        *text.splitlines()[:4],
+        "    registered: '2026-08-31'",
+        *text.splitlines()[4:8],
+        "    registered: '2026-09-02'",
+        *text.splitlines()[8:],
+    ]
+    assert backfill_registered.with_registered(written, days) == written
+
+
+def test_the_registration_backfill_matches_a_result_not_only_its_id() -> None:
+    """On 2026-09-21 a merge renumbered one of two `T-031`s; an id alone would misdate it."""
+    current = {
+        "id": "T-032",
+        "scope": {"n_values": [17]},
+        "attribution": {"source_keys": ["[R012]"], "published": "2026-09-20"},
+    }
+    assert backfill_registered.same_result({**current, "attribution": None}, current)
+    assert not backfill_registered.same_result({**current, "id": "T-031"}, current)
+    assert not backfill_registered.same_result(
+        {**current, "scope": {"n_values": [11]}}, current
+    )
+    other = {**current, "attribution": {"source_keys": ["[Other]"], "published": "2026-09-20"}}
+    assert not backfill_registered.same_result(other, current)

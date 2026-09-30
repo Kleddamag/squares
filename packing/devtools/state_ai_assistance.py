@@ -11,13 +11,22 @@ matter without saying so in their bodies. Writing one sentence into each by hand
 one-off edit `OR-1` asks to be a tool, and checking that none is missing afterwards is
 the measurement that should outlive it.
 
-Each `Statement` names the bibliography keys whose citation calls for it, the paragraph
-that describes that source's result (`anchor`), the sentence to write there in the
-source's own words, and the words that show the paragraph already says so (`marker`).
-A record owes the statement when its front matter cites one of the keys and a body
-paragraph matches the anchor; it has it when such a paragraph contains the marker.
-`--apply` appends the sentence to the first anchored paragraph of every record that
-owes one; the Markdown formatter then reflows it.
+**The statements live in the bibliography.** Each source's `ai_assistance` in
+`resources/bibliography.yaml` holds the sentence in the source's own terms (`statement`),
+the source's own words that sentence quotes (`quote`), and the retained file that says so
+(`where`); the overview reads the same field, so the page, the register and the case
+records cannot word a source's statement differently. This tool adds only what is about
+case records: where in one the sentence belongs.
+
+Each `Statement` names the bibliography keys whose citation calls for it (every key that
+carries the same statement), the paragraph that describes that source's result
+(`anchor`, from `ANCHORS`), the sentence to write there, and the words that show the
+paragraph already says so (`marker`, the statement's quote). A record owes the statement
+when its front matter cites one of the keys and a body paragraph matches the anchor; it
+has it when such a paragraph contains the marker. `--apply` appends the sentence to the
+first anchored paragraph of every record that owes one; the Markdown formatter then
+reflows it. A statement in the bibliography with no anchor here fails on import rather
+than going unsaid.
 
 Records whose body never describes the source owe nothing and are listed by `--check`
 as such, since where the sentence belongs is then a question for the record rather than
@@ -36,18 +45,19 @@ from __future__ import annotations
 import argparse
 import re
 import sys
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 from strif import atomic_output_file
 
+from sqpack.yamlio import safe_load
+
 ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
+BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
 RECORD = re.compile(r"^n-(\d{3})\.md$")
-
-#: What wand125's and Tokoharu's repository READMEs say, word for word.
-UNDER_HUMAN_DIRECTION = "AI assistance under human direction"
 
 
 @dataclass(frozen=True, slots=True)
@@ -60,84 +70,64 @@ class Statement:
     marker: str
 
 
-#: wand125's statement, which `devtools.apply_wand125_rectangles` also writes into the
-#: intake paragraph it owns, so that regenerating a record keeps the sentence this tool added.
-WAND125 = Statement(
-    keys=frozenset(
-        {
-            "[wand125 point bounds 2026]",
-            "[wand125 rectangle bounds 2026]",
-            "[wand125 rectangle bounds 2026-09-28]",
-            "[wand125 point and mixed bounds 2026-09-28]",
-        }
+#: Where a case record describes each source's result: the paragraph its statement joins.
+#: Keyed by one bibliography key of each statement; every key whose `ai_assistance`
+#: carries the same statement shares the anchor. In this order, which `STATEMENTS` keeps.
+ANCHORS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("[wand125 point bounds 2026]", re.compile(r"wand125")),
+    (
+        "[Tokoharu density 2026]",
+        # Tokoharu's own result, not Tokoharu's checker running someone else's certificate.
+        re.compile(r"\[Tokoharu density source\]|Tokoharu’s (?:retained|separately|n\d)"),
     ),
-    anchor=re.compile(r"wand125"),
-    sentence=(
-        "wand125’s README says parts of the work were produced with AI assistance under "
-        "human direction."
-    ),
-    marker=UNDER_HUMAN_DIRECTION,
+    ("[Kleddamag n11 2026]", re.compile(r"Kleddamag")),
+    ("[Guzhou0806 n17 R052]", re.compile(r"\bR0[56]\d\b")),
+    ("[n17 weighted certificates 2026-09-20]", re.compile(r"\bR012\b")),
+    ("[evand square-packing 2026]", re.compile(r"Evan Daniel")),
 )
 
-STATEMENTS: tuple[Statement, ...] = (
-    WAND125,
-    Statement(
-        keys=frozenset({"[Tokoharu density 2026]"}),
-        # Tokoharu's own result, not Tokoharu's checker running someone else's certificate.
-        anchor=re.compile(
-            r"\[Tokoharu density source\]|Tokoharu’s (?:retained|separately|n\d)"
-        ),
-        sentence=(
-            "Tokoharu’s README says parts of the work were produced with AI assistance under "
-            "human direction."
-        ),
-        marker=UNDER_HUMAN_DIRECTION,
-    ),
-    Statement(
-        keys=frozenset(
-            {
-                "[Kleddamag n11 2026]",
-                "[Kleddamag n17 certified bound]",
-                "[Kleddamag n17 4.640020]",
-                "[Kleddamag n17 4.66001]",
-            }
-        ),
-        anchor=re.compile(r"Kleddamag"),
-        sentence=(
-            "The source’s `AUTHORS.md` says Kleddamag directed the research and OpenAI Codex "
-            "carried it out."
-        ),
-        marker="OpenAI Codex",
-    ),
-    Statement(
-        keys=frozenset(
-            {"[Guzhou0806 n17 R052]", "[Guzhou0806 n17 R067]", "[Guzhou0806 n17 R068]"}
-        ),
-        anchor=re.compile(r"\bR0[56]\d\b"),
-        sentence=(
-            "The release names itself as made by Guzhou0806 / N17 project with AI assistance."
-        ),
-        marker="AI assistance",
-    ),
-    Statement(
-        keys=frozenset({"[n17 weighted certificates 2026-09-20]"}),
-        anchor=re.compile(r"\bR012\b"),
-        sentence=(
-            "R012’s `ATTRIBUTION.md` names it as research by “Guzhou0806 / N17 project, with "
-            "AI assistance”."
-        ),
-        marker="AI assistance",
-    ),
-    Statement(
-        keys=frozenset({"[evand square-packing 2026]", "[evand square-packing 2026-09-28]"}),
-        anchor=re.compile(r"Evan Daniel"),
-        sentence=(
-            "The source’s `CREDITS.md` says the work was produced by Claude (Anthropic) in a "
-            "single session under human direction."
-        ),
-        marker="Claude (Anthropic)",
-    ),
+
+def said(source: Mapping[str, Any]) -> tuple[str, str] | None:
+    """A bibliography entry's statement of AI assistance and its quote, on one line each."""
+    statement = source.get("ai_assistance")
+    if not statement:
+        return None
+    sentence = " ".join(str(statement["statement"]).split())
+    return sentence, " ".join(str(statement["quote"]).split())
+
+
+def load_statements(sources: Iterable[Mapping[str, Any]]) -> tuple[Statement, ...]:
+    """The bibliography's statements, one per distinct sentence, each with its anchor."""
+    carried: dict[tuple[str, str], set[str]] = {}
+    for source in sources:
+        if (statement := said(source)) is not None:
+            carried.setdefault(statement, set()).add(str(source["key"]))
+    statements: list[Statement] = []
+    for key, anchor in ANCHORS:
+        found = [(statement, keys) for statement, keys in carried.items() if key in keys]
+        if not found:
+            raise ValueError(f"{BIBLIOGRAPHY.name}: {key} states no AI assistance")
+        (sentence, marker), keys = found[0]
+        if marker not in sentence:
+            raise ValueError(f"{key}: its statement does not contain its quote {marker!r}")
+        statements.append(Statement(frozenset(keys), anchor, sentence, marker))
+    placed = {key for statement in statements for key in statement.keys}
+    unplaced = sorted(key for keys in carried.values() for key in keys if key not in placed)
+    if unplaced:
+        raise ValueError(
+            f"{', '.join(unplaced)}: AI assistance stated in {BIBLIOGRAPHY.name} with no "
+            "anchor in devtools.state_ai_assistance.ANCHORS"
+        )
+    return tuple(statements)
+
+
+STATEMENTS: tuple[Statement, ...] = load_statements(
+    safe_load(BIBLIOGRAPHY.read_text(encoding="utf-8"))["sources"]
 )
+
+#: wand125's statement, which `devtools.apply_wand125_rectangles` also writes into the
+#: intake paragraph it owns, so that regenerating a record keeps the sentence this tool added.
+WAND125 = STATEMENTS[0]
 
 
 @dataclass(frozen=True, slots=True)

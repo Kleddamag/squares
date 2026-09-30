@@ -9,7 +9,14 @@ named list that only shrinks.
 
 from __future__ import annotations
 
+from pathlib import Path
+
+import pytest
+
 from devtools import state_ai_assistance as assistance
+from sqpack.yamlio import safe_load
+
+REPO = Path(__file__).resolve().parents[2]
 
 WAND125 = assistance.STATEMENTS[0]
 TOKOHARU = assistance.STATEMENTS[1]
@@ -90,3 +97,41 @@ def test_a_marker_already_in_the_paragraph_is_the_statement_made() -> None:
 def test_every_committed_record_makes_the_statements_it_owes() -> None:
     missing, _ = assistance.report(assistance.records(None))
     assert {label.split(":", 1)[0] for label in missing} <= PENDING
+
+
+def _bibliography() -> list[dict]:
+    return safe_load(assistance.BIBLIOGRAPHY.read_text(encoding="utf-8"))["sources"]
+
+
+def test_every_statement_quotes_its_source_where_the_source_says_it() -> None:
+    """The quote is the source's own words, in the retained file the entry names."""
+    stated = [source for source in _bibliography() if source.get("ai_assistance")]
+    assert stated, "premise: the bibliography records statements"
+    for source in stated:
+        said = source["ai_assistance"]
+        quote = " ".join(said["quote"].split())
+        assert quote in " ".join(said["statement"].split()), source["key"]
+        where = REPO / said["where"]
+        assert where.is_file(), f"{source['key']}: {said['where']} is not retained"
+        text = " ".join(where.read_text(encoding="utf-8").split())
+        assert quote in text, f"{source['key']}: {said['where']} does not say {quote!r}"
+
+
+def test_the_statements_are_read_from_the_bibliography() -> None:
+    """One home: every key a statement names carries it there, word for word."""
+    by_key = {source["key"]: source for source in _bibliography()}
+    for statement in assistance.STATEMENTS:
+        for key in statement.keys:
+            assert assistance.said(by_key[key]) == (statement.sentence, statement.marker)
+
+
+def test_a_statement_with_no_anchor_is_refused_rather_than_left_unsaid() -> None:
+    sources = [
+        *_bibliography(),
+        {
+            "key": "[Somebody 2026]",
+            "ai_assistance": {"statement": "It says AI helped.", "quote": "AI helped"},
+        },
+    ]
+    with pytest.raises(ValueError, match=r"\[Somebody 2026\]: AI assistance stated"):
+        assistance.load_statements(sources)

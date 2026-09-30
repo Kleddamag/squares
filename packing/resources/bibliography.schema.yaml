@@ -63,6 +63,26 @@ properties:
             `devtools.check_results` for every source a register result by others
             published since the project began cites, and held to `credit` by
             tests/test_results_register.py.
+        ai_assistance:
+          type: object
+          additionalProperties: false
+          required: [statement, quote, where]
+          description: >-
+            The source's own statement that AI assisted its work, where it makes one;
+            absent where it makes none, whatever else is said about it elsewhere. An AI
+            agent is never a credited author (epistemics.md, Parallel Projects and Their
+            Credit), so this is the one place the record says it. `statement` is the
+            sentence a case record, a register row or the overview repeats, in the source's
+            own terms; `quote` is the source's own words, verbatim, which the statement
+            contains and which a case record that has made the statement contains too;
+            `where` is the retained file, repository-relative, in which the source says it.
+            Keys that carry the same statement share it: devtools.state_ai_assistance
+            reads its statements from here and writes them into the case records that cite
+            the source.
+          properties:
+            statement: {type: string, minLength: 1}
+            quote: {type: string, minLength: 1}
+            where: {type: string, pattern: '^packing/resources/web/[^ ]+[^/ ]$'}
         # Where a web source's authors or year were read, since the README's Web Sources
         # table carries neither.
         note: {type: string, minLength: 1}

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Build the package workbench as a standalone page under `site/workbench/`.
 
-GitHub Pages serves `packing/site` whole, so a subdirectory is a URL: this puts the
-workbench at `/workbench/` beside the explainer at `/`, without touching the explainer.
-That separation is the point -- the explainer is already published and may be linked from
-elsewhere, so nothing here moves `site/index.html`.
+GitHub Pages serves the assembled site whole, so a subdirectory is a URL: this puts the
+workbench, which the site calls the Visualizer, at `/workbench/`, beside the overview at `/`
+and the explainer at `/explainer.html`, without touching either. That separation is the
+point -- the explainer is already published and may be linked from elsewhere, so nothing
+here moves `site/index.html`, which the Pages workflow renames to `explainer.html` when it
+assembles the site.
 
 The page is already self-contained, which is what makes it deployable at all: one file,
 no external script, stylesheet or font, so it works from any static host. This tool exists
@@ -97,13 +99,17 @@ to cover it."""
 
 NOTE = """<div id="site-note">
 The animation model is still moving, so a number here is not evidence
-&mdash; <a href="../">the explainer</a> is the published work.
+&mdash; the <a href="../">Square Packing</a> overview has the published results.
 </div>"""
 """The one thing a reader of the published page has to know, said once and quietly.
 
 It is **injected here rather than written into the template** because it is a property of
-the published page and not of the page. The relative link reaches the project root from
-`/squares/workbench/`, from a local static server, and from any other deployment subpath.
+the published page and not of the page. The relative link reaches the site root, where the
+Square Packing overview is, from `/squares/workbench/`, from a local static server, and
+from any other deployment subpath. It named the explainer while the explainer was the
+site's root page; the overview took the root on 2026-09-30, and the explainer moved to
+`explainer.html`, one link away in the overview's navigation bar. The Visualizer is a
+full-viewport app, so it carries this note rather than that bar.
 
 Where it sits and how it looks are both deliberate, and both are corrections. It was a
 full-width strip in warning yellow at the top of `<body>` -- which put it outside

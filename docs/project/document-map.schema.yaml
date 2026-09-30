@@ -77,6 +77,16 @@ $defs:
       authority: {$ref: '#/$defs/authority'}
       lifecycle: {$ref: '#/$defs/lifecycle'}
       superseded_by: {type: string, pattern: '^[^*]+\.md$'}
+      summary:
+        type: string
+        minLength: 20
+        maxLength: 160
+        pattern: '^[^\n]*[^\s.]\.$'
+        description: >-
+          One sentence saying what the document covers, never what it found, shown on
+          the published overview's card for it. Required on every document the overview
+          lists, and refused when it states a bound, since the page's numbers are
+          generated from the record (devtools.check_documentation).
   collection:
     type: object
     additionalProperties: false

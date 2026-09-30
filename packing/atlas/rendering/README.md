@@ -27,7 +27,7 @@ Reduced-motion and non-CSS viewers show endpoint B directly.
 ### General Motion Lab: setup and free quench
 
 > **Maturity: rough draft, first landed 2026-08-28.** This is a days-old Phase 1 tool
-> that grew out of a single `n = 5` spike, and it should be read as an instrument under
+> that grew out of a single $n = 5$ spike, and it should be read as an instrument under
 > construction rather than a settled part of the toolchain.
 > It has never been used to produce a research result.
 > Its interfaces are expected to change: the scenario, frame, request, event, and trace
@@ -57,7 +57,7 @@ loopback, makes no remote request, and answers only requests whose `Host` header
 a page whose own hostname re-resolves to loopback reaches the service as a same-origin
 caller, and the `Host` header is the only part of such a request that still names it.
 Reach the lab by one of those two names, not through a hostname that points at loopback.
-The exact `n = 5` scenario is also available from the Scenario control and at
+The exact $n = 5$ scenario is also available from the Scenario control and at
 `http://127.0.0.1:8765/exact-n5`.
 
 #### Setup and run workflow
@@ -173,13 +173,13 @@ Expect more.
 [Open the self-contained motion lab](n5-motion-lab.html).
 
 The self-contained HTML+SVG artifact exposes the six certified
-`(R4, R5) × (A, interior, B)` paths from experiment 042 and the displayed `+W` direction
+`(R4, R5) × (A, interior, B)` paths from experiment 042 and the displayed $+W$ direction
 obstructed by experiment 036. It has a parameter scrubber, one-pass playback for
 certified paths, source-declared contact-graph states, center trails, first-order
 predictors, and owner-branch obstruction readouts.
 
 This file is an interactive research artifact, not a safe publication SVG. Dashed
-geometry is a tangent predictor; in the `+W` view it is explicitly not a feasible path.
+geometry is a tangent predictor; in the $+W$ view it is explicitly not a feasible path.
 The document SVG renderer and its script-free safety profile remain unchanged.
 See the
 [motion-lab spike record](../../../docs/project/specs/active/spike-2026-08-25-n5-motion-lab.md)
@@ -204,9 +204,9 @@ The source event is candidate evidence, not an optimality certificate.
 ![Walter Trump’s exact packing of eleven unit squares.](trump11-overview.svg)
 
 Six axis-aligned squares surround a five-square block tilted at an algebraic angle near
-`40.18°`. Segments show positive-length edge contacts, and dots show point contacts.
-The figure carries certified-upper-bound evidence and does not call the open case
-solved.
+$40.18^\circ$. Segments show positive-length edge contacts, and dots show point
+contacts. The figure carries certified-upper-bound evidence and does not call the open
+case solved.
 
 ### `n = 29`: numerically checked high-precision construction
 
@@ -239,14 +239,14 @@ a quarter turn share a hue, while the number of full-side contacts selects one o
 shades. Four flush sides use the darkest shade and no flush sides use the lightest.
 Angle classes use the full retained numeric precision with a `1e-6`-radian seed
 tolerance; strict full-side contacts merge seeds that represent the same physical
-orientation. The defaults use 20 hue families, five shades, and a `0.2` total lightness
+orientation. The defaults use 20 hue families, five shades, and a $0.2$ total lightness
 span. `--hues`, `--shades-per-hue`, and `--shade-span` customize those values;
 `--shade contrast` and the legacy `--hue index --shade sequence` remain explicit
 alternatives.
 
-The near-wall outliers in retained `n = 68` are a useful precision check.
-Their orientations are about `0.009°` to `0.080°` off axis, more than 100 times the
-angle tolerance—and their endpoints do not form full-side contacts.
+The near-wall outliers in retained $n = 68$ are a useful precision check.
+Their orientations are about $0.009^\circ$ to $0.080^\circ$ off axis, more than 100
+times the angle tolerance—and their endpoints do not form full-side contacts.
 Their different hues therefore expose real offsets in that numerical witness rather than
 rounding noise.
 
@@ -366,23 +366,23 @@ Size and conversion measurements were refreshed for the five-figure gallery on
 
 | Figure | SVG bytes | Quick Look PNG bytes |
 | --- | ---: | ---: |
-| Exact `n = 3` moduli | 14,186 | 85,886 |
-| Trump `n = 11` overview | 30,728 | 81,615 |
-| Göbel `n = 10` comparison | 18,069 | 38,131 |
-| Exact `n = 5` trajectory | 15,648 | 36,774 |
-| Kingbird `n = 29` overview | 22,680 | 168,176 |
+| Exact $n = 3$ moduli | 14,186 | 85,886 |
+| Trump $n = 11$ overview | 30,728 | 81,615 |
+| Göbel $n = 10$ comparison | 18,069 | 38,131 |
+| Exact $n = 5$ trajectory | 15,648 | 36,774 |
+| Kingbird $n = 29$ overview | 22,680 | 168,176 |
 
 Quick Look produced all five thumbnails, including the final-state rendering of the
 animated figure. Its square-thumbnail mode scales wide SVGs to fill and therefore crops
 the sides of the comparison and moduli figures; those thumbnails are conversion smoke
 tests, not layout evidence.
 A fit-preserving `sips` document conversion rendered the complete declared viewports at
-`1200×900`, `960×680`, `1280×680`, and `960×680`. The complete gallery was inspected at
-document and screen scale; the pure-black boundaries, square fills, translucent clipped
-contact marks, labels, and final-state attributes survive a renderer that ignores CSS
-animation.
-The focused checker also proves that both comparison containers lie inside the
-declared viewport.
+$1200\times900$, $960\times680$, $1280\times680$, and $960\times680$. The complete
+gallery was inspected at document and screen scale; the pure-black boundaries, square
+fills, translucent clipped contact marks, labels, and final-state attributes survive a
+renderer that ignores CSS animation.
+The focused checker also proves that both comparison containers lie inside the declared
+viewport.
 
 Raster screenshots remain a manual QA aid, not a golden gate.
 No pinned `resvg` binary or pinned font bundle is present.

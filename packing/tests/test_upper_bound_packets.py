@@ -9,6 +9,7 @@ import pytest
 
 from devtools import apply_upper_bound_packets as apply
 from devtools import upper_bound_packets as packets
+from devtools.check_case_prose import Reading
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.witness import witness_document
 from sqpack.yamlio import safe_load
@@ -132,7 +133,8 @@ def test_shared_counts_state_both_sources_dates_and_values() -> None:
         if plan.casson is None:
             continue
         body = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
-        flat = " ".join(body.split())
+        # The sides are math; read back, each is the code span it was written as.
+        flat = " ".join(Reading.of(body).text.split())
         assert f"`{plan.casson['side']}`" in flat, plan.n
         assert f"`{plan.case['history'][0]['side']}`" in flat, plan.n
         assert "22:45 UTC\u22126" in flat, plan.n

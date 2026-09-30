@@ -23,7 +23,7 @@ selected for execution.
 
 Freeze tuple (0,0,0,7), the existing four exp146 wall patches, and
 
-$$D_6=D\cup\{x_{149}\},\qquad
+$$D_6=D\cup\lbrace x_{149}\rbrace,\qquad
 x_{149}=\left(\frac{7641479337977841787}{2367233010000000000},
 \frac{11240556076810055587}{4734458945995860000}\right).$$
 

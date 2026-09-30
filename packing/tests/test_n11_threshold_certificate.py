@@ -36,6 +36,7 @@ from cases.n11_threshold_certificate.replay import (
     declared,
     digest,
 )
+from devtools.check_case_prose import Reading
 from devtools.check_rung_figures import load_certificate
 from devtools.decide_threshold_certificate import decide, load
 from sqpack.fractional.threshold import (
@@ -107,7 +108,8 @@ def test_the_frozen_premises_are_recomputed_from_the_bytes() -> None:
     assert budget() == Fraction(685457679, 62500000) < 11
     assert {(len(a.points), a.threshold) for a in retained.threshold_atoms} == {(3, 2)}
 
-    text = PROOF.read_text(encoding="utf-8")
+    # The proof writes these as math; read back, each is the code span it was written as.
+    text = Reading.of(PROOF.read_text(encoding="utf-8")).text
     for figure in (
         FROZEN_SHA256,
         "`L = 191/50`, `B = 9977/10000`",

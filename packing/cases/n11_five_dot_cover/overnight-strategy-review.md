@@ -90,8 +90,8 @@ tuple giving the same union, provided the class-to-polygon transport is exact.
 It does not identify overlapping class labels with distinct physical owners.
 
 The recorded stabilizers also give the stated counts.
-The patch union has stabilizer $\{1,H,V,R\}$, while the dots have stabilizer
-$\{1,D,D',R\}$. Their intersection has two elements.
+The patch union has stabilizer $\lbrace1,H,V,R\rbrace$, while the dots have stabilizer
+$\lbrace1,D,D',R\rbrace$. Their intersection has two elements.
 Consequently D4 gives two patch unions and four patch-and-dot pairs.
 Symmetry plus coarse occupied-union containment reaches exactly those two geometric
 tuples. This is not a measured fraction of physically feasible packings.

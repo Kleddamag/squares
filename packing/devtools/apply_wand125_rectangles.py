@@ -67,6 +67,7 @@ from devtools.audit_wand125_rectangles import (
     monotone_bounds,
 )
 from devtools.generate_frontier_case import display_gap
+from devtools.migrate_math import markdown_math
 from devtools.retained_data import read_retained_text, retained_exists
 from devtools.state_ai_assistance import WAND125
 from sqpack.yamlio import safe_load
@@ -260,14 +261,25 @@ def _loose(phrase: str) -> str:
     return r"\s+".join(re.escape(word).replace(r"\)", r"\\?\)") for word in phrase.split())
 
 
+#: A figure as the bodies quote it: a code span, or the math `devtools.migrate_math` made
+#: of one. The two delimiters are not paired; no body writes a span that mixes them.
+_QUOTED = r"[`$]{figure}[`$]"
+
 #: The two sentences the Nagamochi-form bodies use to name their verified lower bound.
 #: Once this source holds that field, both describe history, so they are rewritten.
 _NAGAMOCHI_SUMMARY = re.compile(
-    r"Open\. The best known packing gives `s\(\d+\) ≤ (?P<upper>[0-9.]+)`,\s+"
+    _loose("Open. The best known packing gives")
+    + r"\s+"
+    + _QUOTED.format(figure=r"s\(\d+\)\s+(?:≤|\\le)\s+(?P<upper>[0-9.]+)")
+    + r",\s+"
     + _loose("and the strongest lower bound independently verified here is")
-    + r"\s+`[0-9.]+`\s+"
+    + r"\s+"
+    + _QUOTED.format(figure="[0-9.]+")
+    + r"\s+"
     + _loose("from Nagamochi’s general theorem, leaving a gap of")
-    + r"\s+`[0-9.]+`\.\s+"
+    + r"\s+"
+    + _QUOTED.format(figure="[0-9.]+")
+    + r"\.\s+"
     + _loose(
         "General closed form: s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1)."
     )
@@ -275,8 +287,9 @@ _NAGAMOCHI_SUMMARY = re.compile(
 _NAGAMOCHI_SECTION = re.compile(
     _loose(
         "The strongest lower bound independently verified in this record is Nagamochi’s "
-        "general closed form, which applies to every `N ≥ 4`:"
+        "general closed form, which applies to every"
     )
+    + r"\s+(?:`N ≥ 4`|\$N \\ge 4\$):"
 )
 
 
@@ -537,7 +550,7 @@ _REPORTED_ONLY = re.compile(
         "This changes the reported source field only; the independently verified lower "
         "bound remains"
     )
-    + r"\s+`(?P<verified>[^`]+)`\."
+    + r"\s+(?P<verified>`[^`]+`|\$[^$]+\$)\."
 )
 
 
@@ -554,7 +567,7 @@ def _retire_selected_report(rest: str, plan: Plan) -> str:
         return (
             "wand125’s rectangle-density certificate above has since replaced it in the "
             "reported field; the independently verified lower bound remains "
-            f"`{match['verified']}`."
+            f"{match['verified']}."
         )
 
     return _REPORTED_ONLY.sub(reported_only, rest, count=1)
@@ -611,12 +624,12 @@ def _retire_earlier_intake(paragraph: str, plan: Plan, registration: Registratio
             count=1,
         )
         paragraph = re.sub(
-            r"Its\s+n(?P<source>\d+)\s+certificate,\s+of\s+mass\s+`(?P<mass>[^`]+)`,\s+"
+            r"Its\s+n(?P<source>\d+)\s+certificate,\s+of\s+mass\s+(?P<mass>`[^`]+`|\$[^$]+\$),\s+"
             r"gives\s+(?:the\s+stronger\s+)?"
             + figure
             + r"\s+by\s+monotonicity,\s+the\s+reported\s+lower\s+bound\.",
             lambda match: (
-                f"Its n{match['source']} certificate, of mass `{match['mass']}`, gave "
+                f"Its n{match['source']} certificate, of mass {match['mass']}, gave "
                 f"`{match['exact']} = {match['decimal']}` by monotonicity, the reported "
                 f"lower bound until {later}."
             ),
@@ -716,7 +729,9 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
         front = _prepend_list(
             front, "resources", ["".join("  " + line + "\n" for line in dumped.splitlines())]
         )
-    paragraph = intake(plan, registration)
+    # The intake is written with code spans, and its mathematics made math by the rules
+    # `devtools.migrate_math` applied to the rest of the body.
+    paragraph = markdown_math(intake(plan, registration))
     title, _, rest = body.partition("\n\n")
     if rest.startswith(registration.intake):
         existing_paragraph, _, rest = rest.partition("\n\n")
@@ -734,7 +749,8 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
         rest = _retire_nagamochi_prose(
             rest, plan, str(payload["reported_upper_bound"]["value"])
         )
-    body = f"{title}\n\n{paragraph}\n\n{rest}"
+    # Only what a retirement wrote is still code: the rest is migrated already.
+    body = f"{title}\n\n{paragraph}\n\n{markdown_math(rest)}"
     return f"---\n{front}---\n{body}"
 
 

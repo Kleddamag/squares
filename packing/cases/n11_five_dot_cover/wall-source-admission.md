@@ -48,9 +48,9 @@ driver.
 1. **Exercise degenerate K-intersections through the public wrapper.** The current
    dimension test calls `convex_polygon_intersection()` directly, while the wrapper test
    has a positive-area answer.
-   Add `closed_centre_set()` fixtures with q=4, h=1, and ray `(1,0)`: mark `(0,0)` must
-   return the point `((1,1),)`; mark `(0,1)` must return the segment with endpoints
-   `(1,1)` and `(1,2)`. These catch a replacement with area-only clipping at the actual
+   Add `closed_centre_set()` fixtures with q=4, h=1, and ray $(1,0)$: mark $(0,0)$ must
+   return the point $((1,1),)$; mark $(0,1)$ must return the segment with endpoints
+   $(1,1)$ and $(1,2)$. These catch a replacement with area-only clipping at the actual
    constructor boundary.
    They are the wrapper controls already required in the admission addendum.
 2. **Make every tested allowed-frame intersection matter.** In
@@ -59,8 +59,8 @@ driver.
    Skipping any of them passes that test.
    Use two distinct rectangles whose intersection is the old footprint, with either
    omission giving a strict enlargement.
-   For example, with old `[0,1]^2`, intersect `[-1,1]^2` and `[0,2]x[0,1]`. The result
-   must be `[0,1]^2`, with `proper_inclusion=false`. Retain the empty and
+   For example, with old $[0,1]^{2}$, intersect $[-1,1]^{2}$ and `[0,2]x[0,1]`. The
+   result must be $[0,1]^{2}$, with `proper_inclusion=false`. Retain the empty and
    degenerate-frame disposition checks.
    This directly tests the consequential universal quantifier over feasible frames.
 

@@ -469,6 +469,37 @@ def _committed_composite_svg() -> str:
     return (ATLAS / "known-best-1-100.svg").read_text(encoding="utf-8")
 
 
+def _assert_current_composite_equalities(bounds: list[str]) -> None:
+    assert len(bounds) == 100
+    assert all(re.fullmatch(r"s\(\d+\) [=≤] .+", bound) for bound in bounds)
+    assert all(bound.startswith(f"s({n}) ") for n, bound in enumerate(bounds, 1))
+    equalities = {n for n, bound in enumerate(bounds, 1) if " = " in bound}
+    assert equalities == {
+        *range(1, 12),
+        *range(13, 17),
+        *range(21, 26),
+        *range(32, 37),
+        *range(45, 50),
+        *range(62, 65),
+        *range(79, 82),
+        *range(98, 101),
+    }
+    assert bounds[10] == "s(11) = 3.877084"
+    figure = json.loads((ATLAS / "composite-figure.json").read_text(encoding="utf-8"))["figure"]
+    n11 = next(entry for entry in figure["entries"] if entry["n"] == 11)
+    assert n11["optimality"]["status"] == "proved"
+    assert n11["lower"]["evidence"] == ["E-n011-global-optimality-independent"]
+
+
+def test_retained_composite_equalities_match_classified_cases() -> None:
+    root = ET.fromstring(_committed_composite_svg())
+    bounds = [
+        "".join(node.itertext())
+        for node in root.findall(".//svg:text[@data-feature='side-bound']", SVG)
+    ]
+    _assert_current_composite_equalities(bounds)
+
+
 def test_a_pool_worker_builds_the_same_bytes_as_this_process() -> None:
     """The corpus is built across processes, and every derived byte must be unmoved.
 
@@ -553,10 +584,8 @@ def test_known_best_composite_contains_every_case_and_square() -> None:
         for node in root.findall(".//svg:text[@data-feature='side-bound']", SVG)
     ]
     assert labels == [str(n) for n in range(1, 101)]
-    assert len(bounds) == 100
-    # A proved optimum is stated as an equality, a best-known bound as <=.
-    assert all(re.fullmatch(r"s\(\d+\) [=≤] .+", bound) for bound in bounds)
-    assert sum(" = " in bound for bound in bounds) == 38
+    # The slow rebuild and the quick retained-vector control share the same contract.
+    _assert_current_composite_equalities(bounds)
 
 
 def test_known_best_composite_png_is_derived_from_current_svg() -> None:

@@ -17,6 +17,7 @@ from typing import Any
 import pytest
 
 from devtools import check_n11_generic_fresh as generic
+from devtools import check_n11_generic_sequential as sequential
 
 
 def _source() -> dict[str, Any]:
@@ -182,23 +183,36 @@ def test_expired_full_run_cannot_exclude_a_case(tmp_path: Path) -> None:
 
 
 @pytest.mark.slow
-def test_complete_2095_receipt_has_every_step_and_no_pending_row(tmp_path: Path) -> None:
-    result = generic.run(
+def test_complete_shared_2095_replay_has_every_step_and_no_pending_row(tmp_path: Path) -> None:
+    manifest = sequential.load_manifest(sequential.MANIFEST)
+    recipe = next(row for row in manifest["cases"] if row["mask_index"] == 2095)
+    assert recipe["source_sha256"] == generic.SOURCE_PIN[0]
+    assert recipe["seed_sha256"] == generic.SEED_PIN[0]
+    assert recipe["audit_sha256"] == generic.AUDIT_PIN[0]
+    # One reviewed exact-cover worker avoids a nested pool inside the slow lane.
+    # The finite clock remains live, and every row must finish before acceptance.
+    result = sequential.run(
         argparse.Namespace(
+            case_id=2095,
+            manifest=sequential.MANIFEST,
             objects=generic.OBJECTS,
-            scope="full",
-            max_seconds=30,
+            max_seconds=60,
             max_events=50_000,
-            workers=3,
+            workers=1,
+            cover_backend="fast",
+            collision_backend="reference",
             out=tmp_path / "complete.json",
         )
     )
     assert result["status"] == "PASS_ONE_GENERIC_EXCLUSION"
     assert result["geometry_verified"] is True
     assert result["excluded_case_ids"] == [2095]
+    assert result["source_sha256"]["source_node_0"] == generic.SOURCE_PIN[2]
     assert result["steps_completed"] == 5
     assert result["rows_checked"] == 160
     assert [item["rows"] for item in result["step_timings"]] == [32] * 5
     assert result["current_step"] is None
     assert result["current_row"] is None
+    assert result["pending_row_indices"] == []
     assert result["global_optimality_proved"] is False
+    assert json.loads((tmp_path / "complete.json").read_text()) == result

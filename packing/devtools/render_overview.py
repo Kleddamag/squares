@@ -215,7 +215,7 @@ def assert_self_contained(name: str, page: str) -> None:
 def nav_html(current: str, *, root: str = "") -> str:
     """The navigation bar, with the current page marked."""
     nav = SITE_NAV.read_text(encoding="utf-8")
-    nav = nav.replace("{{ROOT}}", root)
+    nav = nav.replace("{{ROOT}}", root).replace("{{LOGO}}", site_logo())
     marker = f'data-page="{current}"'
     if marker not in nav:
         raise SystemExit(f"site-nav.html has no entry for {current!r}")
@@ -267,6 +267,7 @@ def nav_shell(current: str, *, root: str) -> NavShell:
         raise SystemExit("kpress's style-tokens.css no longer declares the bar's face")
     tokens = inline_font_urls(tokens, static / "css")
     head = (
+        f"{favicon_html()}\n"
         f"<script>{theme_bootstrap(static)}</script>\n"
         f"<style>{tokens}</style>\n"
         f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>"
@@ -276,6 +277,18 @@ def nav_shell(current: str, *, root: str) -> NavShell:
         f"{nav_html(current, root=root)}</header>\n</div>"
     )
     return NavShell(head, header, f"<script>{_script_text(THEME_SCRIPT)}</script>")
+
+
+@cache
+def site_logo() -> str:
+    """The site's mark beside its name in the bar: case 11, the drawing the tab's icon
+    is, in the bar's own ink so it turns over with the theme."""
+    from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
+
+    svg = packing_svg(11, units=200)
+    return svg.replace(
+        "<svg ", '<svg class="site-logo" aria-hidden="true" focusable="false" ', 1
+    )
 
 
 @cache

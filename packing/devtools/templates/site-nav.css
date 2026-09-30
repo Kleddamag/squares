@@ -69,6 +69,18 @@
   text-transform: uppercase;
   margin-inline: -0.55rem auto;
 }
+/* The mark, case 11 as the tab's icon draws it, sits before the name at the name's
+   cap height, in the bar's ink, and takes the name's hover with it. */
+.site-nav .site-name {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.45rem;
+}
+.site-nav .site-logo {
+  block-size: 1.15em;
+  flex: none;
+  inline-size: 1.15em;
+}
 .site-nav .site-name:is(:hover, :focus-visible) {
   color: var(--kpress-doc-text);
 }
@@ -181,8 +193,12 @@
     padding-block: 0.5rem;
     padding-inline: 0.5rem;
   }
-  .site-nav .site-name {
+  /* On a phone the name gives way to the links and the mark alone leads home. */
+  .site-nav .site-name-text {
     display: none;
+  }
+  .site-nav .site-name {
+    align-self: flex-start;
   }
   .site-nav a {
     padding-inline: 0.45rem;

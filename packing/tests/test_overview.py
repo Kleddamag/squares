@@ -59,6 +59,14 @@ def test_the_page_fetches_nothing(page: str) -> None:
     render_overview.assert_self_contained("index.html", page)
 
 
+def test_the_bar_leads_with_case_11_beside_the_name(page: str) -> None:
+    """The bar's home link carries case 11, the tab's icon, in the bar's own ink."""
+    link = page.split('<a class="site-name"', 1)[1].split("</a>", 1)[0]
+    assert '<svg class="site-logo" aria-hidden="true"' in link
+    assert '<span class="site-name-text">Square Packing</span>' in link
+    assert render_overview.site_logo() in link
+
+
 def test_the_site_icon_is_case_11_and_fetches_nothing(page: str) -> None:
     icon = render_overview.favicon_html()
     assert page.count(icon) == 1
@@ -383,7 +391,11 @@ def test_every_site_page_carries_the_same_bar(name: str) -> None:
         page, root = _visualizer_page(), "../"
     else:
         page, root = render_overview.PAGES[name]().html, ""
-    partial = render_overview.SITE_NAV.read_text(encoding="utf-8").replace("{{ROOT}}", "")
+    partial = (
+        render_overview.SITE_NAV.read_text(encoding="utf-8")
+        .replace("{{ROOT}}", "")
+        .replace("{{LOGO}}", render_overview.site_logo())
+    )
     assert _the_bar(page, root=root) == SITE_NAV_BLOCK.findall(partial)[0]
 
 

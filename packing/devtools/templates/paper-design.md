@@ -108,6 +108,9 @@ it.
   same on every page, the explainer and the Visualizer included, led by the site name,
   “Square Packing”, set in capitals by CSS (`text-transform`, lightly tracked) so its
   text is unchanged, and a step heavier.
+  Case 11, the site’s icon, sits before the name as its mark, at 1.15 times the bar’s
+  text, inside the same link, so it takes the same hover.
+  On a phone the name gives way to the links and the mark alone leads home.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
   current page alone is underlined in the accent.
   The edition appears only in the closing line.
@@ -169,7 +172,8 @@ it.
 
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
   fill. The icon is case 11, the central open case, in the atlas ink on white, inlined as
-  a data URI on every page.
+  a data URI on every page, the Visualizer included; the same drawing is the mark in the
+  navigation bar, drawn there in the bar’s ink.
   The homepage’s hero is case 53, centered under the title in the page’s ink and linked
   to its row in the frontier atlas.
 

@@ -201,18 +201,63 @@ def test_a_card_hero_is_served_beside_the_page_never_fetched() -> None:
 
 
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
-    """One cell per tracked case, each linking to its case record, all inside a
-    template the script places when the grid comes near."""
-    grid = page.split("data-atlas-grid>", 1)[1]
-    template = grid.split("<template>", 1)[1].split("</template>", maxsplit=1)[0]
-    cells = re.findall(
-        r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', template
-    )
-    assert [int(n) for n, _ in cells] == list(range(1, 325))
-    assert all(n == cell for n, cell in cells)
-    assert template.count("<svg ") == 324
-    assert re.findall(r'aria-label="n = 11, [a-z]+"', template)
+    """One cell per tracked case, each linking to its case record, in two templates the
+    script places: the first hundred when the grid comes near, the rest on expanding."""
+    grid = page.split("data-atlas-grid>", 1)[1].split("data-atlas-facts>", 1)[0]
+
+    def cells(which: str) -> list[int]:
+        template = grid.split(f"<template data-atlas-{which}>", 1)[1]
+        template = template.split("</template>", maxsplit=1)[0]
+        found = re.findall(
+            r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"',
+            template,
+        )
+        assert all(n == cell for n, cell in found)
+        assert template.count("<svg ") == len(found)
+        return [int(n) for n, _ in found]
+
+    assert cells("first") == list(range(1, 101))
+    assert cells("rest") == list(range(101, 325))
+    assert grid.count("<template") == 2
+    assert re.findall(r'aria-label="n = 11, [a-z]+"', grid)
     assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
+
+
+def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
+    """Under the grid one centred button, the site's action button, reads "Show all 324"
+    and says it is collapsed; its row ships hidden, since only the script makes it act.
+    The script places the rest on the first expand, flips the label and `aria-expanded`,
+    and expands the grid when the popover steps past the last case shown."""
+    grid = overview_sections.atlas_grid()
+    (row,) = re.findall(r'<p class="site-atlas-toggle-row" hidden>(.*?)</p>', grid)
+    assert row == (
+        '<button type="button" class="site-popover-action site-atlas-toggle" '
+        'data-atlas-toggle aria-expanded="false" data-label-more="Show all 324" '
+        'data-label-less="Show 1 to 100">Show all 324</button>'
+    )
+    assert grid.index("data-atlas-toggle") < grid.index('class="site-atlas-note"')
+    script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    assert 'toggle.setAttribute("aria-expanded", String(open))' in script
+    assert "rest.append(restTemplate.content.cloneNode(true))" in script
+    step = script[script.index("A case the grid does not show yet") :]
+    assert "expandGrid(true)" in step[: step.index("show(next)")]
+
+
+def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
+    """The expander takes the popover action button's own rule, widened to a <button>,
+    not a style of its own; its spacing is a token, and the placed rest is one box the
+    grid lays out as its cells, hidden when collapsed."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert ".kpress :is(.site-popover a, button).site-popover-action {" in css
+    assert ".site-atlas-toggle {" not in css
+    row = css[css.index(".site-atlas-grid .site-atlas-toggle-row {") :]
+    row = row[: row.index("}")]
+    assert "margin-block: var(--site-atlas-toggle-space) 0;" in row
+    grid = css[css.index(".site-page .site-atlas-grid {") :]
+    assert "--site-atlas-toggle-space:" in grid[: grid.index("}")]
+    rest = css[css.index(".site-atlas-rest {") :]
+    assert "display: contents;" in rest[: rest.index("}")]
+    assert ".site-atlas-rest[hidden] {\n  display: none;" in css
 
 
 def _atlas_facts(page: str) -> dict[int, dict]:
@@ -1042,8 +1087,9 @@ TABLE_BLEED = (
 
 def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
     """A data table's wide track is one rule on shared tokens. It stops at its own maximum,
-    short of the atlas grid's, and its growth term is zero at or below `--site-table-bleed-from` (80rem),
-    so a table at 1280 pixels or narrower keeps the plain wide track."""
+    short of the atlas grid's, and its growth term is zero at or below
+    `--site-table-bleed-from` (80rem), so a table at 1280 pixels or narrower keeps the
+    plain wide track."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert "--site-bleed-max: 140rem;" in css
     assert "--site-table-bleed-from: 80rem;" in css

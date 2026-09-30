@@ -7,19 +7,57 @@
 // citation and what is open), read from the grid's JSON facts, beside the drawing shown
 // large, ending in the button to the case record. The arrows, and the arrow keys, step
 // to the next or previous case. Without this script a cell is a link to the record.
+//
+// The grid shows the first hundred cases. The button under it places the rest, from a
+// second template, the first time it is pressed, and after that shows or hides them;
+// stepping the popover past the hundredth case expands the grid the same way.
 (() => {
   const grid = document.querySelector("[data-atlas-grid]");
-  const template = grid?.querySelector("template");
-  if (!(grid instanceof HTMLElement) || !(template instanceof HTMLTemplateElement)) {
+  const template = grid?.querySelector("template[data-atlas-first]");
+  const restTemplate = grid?.querySelector("template[data-atlas-rest]");
+  const toggle = grid?.querySelector("[data-atlas-toggle]");
+  if (
+    !(grid instanceof HTMLElement) ||
+    !(template instanceof HTMLTemplateElement) ||
+    !(restTemplate instanceof HTMLTemplateElement) ||
+    !(toggle instanceof HTMLButtonElement)
+  ) {
     return;
   }
   const cells = document.createElement("div");
   cells.className = "site-atlas-cells";
+  // The rest of the cases, in a box of their own that the grid lays out as if its
+  // cells were the grid's own (`display: contents`), so hiding them is one attribute.
+  const rest = document.createElement("div");
+  rest.className = "site-atlas-rest";
+  rest.hidden = true;
 
   const place = () => {
-    cells.append(template.content.cloneNode(true));
+    cells.append(template.content.cloneNode(true), rest);
     grid.prepend(cells);
+    if (toggle.parentElement) {
+      toggle.parentElement.hidden = false;
+    }
   };
+
+  /** @param {boolean} open */
+  const expandGrid = (open) => {
+    if (open && rest.childElementCount === 0) {
+      rest.append(restTemplate.content.cloneNode(true));
+    }
+    rest.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.textContent = (open ? toggle.dataset.labelLess : toggle.dataset.labelMore) ?? "";
+  };
+  toggle.addEventListener("click", () => {
+    const open = rest.hidden !== false;
+    expandGrid(open);
+    // Collapsing takes away everything above the button but the first hundred, so the
+    // page would land far below it: bring the button back to where the reader is.
+    if (!open) {
+      toggle.scrollIntoView({ block: "nearest" });
+    }
+  });
   if ("IntersectionObserver" in window) {
     const watch = new IntersectionObserver(
       (entries) => {
@@ -346,7 +384,14 @@
     if (current === null) {
       return;
     }
-    const next = cells.querySelector(`[data-atlas-n="${Number(current.dataset.atlasN) + offset}"]`);
+    const selector = `[data-atlas-n="${Number(current.dataset.atlasN) + offset}"]`;
+    let next = cells.querySelector(selector);
+    // A case the grid does not show yet: expand it, so the cell the popover now stands
+    // for is there when it closes and focus returns to it.
+    if (!(next instanceof HTMLAnchorElement) || next.closest("[hidden]")) {
+      expandGrid(true);
+      next = cells.querySelector(selector);
+    }
     if (next instanceof HTMLAnchorElement) {
       show(next);
     }
@@ -378,8 +423,15 @@
     if (!(event instanceof ToggleEvent) || event.newState !== "closed" || current === null) {
       return;
     }
+    // The browser has already put focus back on the cell that opened the popover, which
+    // is not the case shown once the arrows have moved.
     const focus = document.activeElement;
-    if (focus === null || focus === document.body || popover.contains(focus)) {
+    if (
+      focus === null ||
+      focus === document.body ||
+      popover.contains(focus) ||
+      (cells.contains(focus) && focus !== current)
+    ) {
       current.focus();
     }
   });

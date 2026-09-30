@@ -426,7 +426,7 @@ it.
   every level as its chip and the rubric’s meaning, read from the tables in
   `epistemics.md`. Each opens that section of `epistemics.md`.
 
-- **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a square
+- **Atlas grid.** The atlas grid holds every tracked case, n = 1 to 324, as a square
   drawing in the page’s ink with its n beneath.
   The grid bleeds past the wide track as the window grows, to 140rem less the page
   gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
@@ -435,6 +435,18 @@ it.
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
   (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
   400 units across, fine enough to show large.
+
+- **Atlas expander.** The grid shows n = 1 to 100 at first (`ATLAS_FIRST`). One button,
+  centred under it, reads **Show all 324** and expands the grid in place; it then reads
+  **Show 1 to 100** and collapses it, and carries `aria-expanded`. It is the site’s
+  action button, `.site-popover-action`, the same accent fill a popover’s button has,
+  set `--site-atlas-toggle-space` below the grid.
+  Cases 101 to 324 ship in a second `<template>` and are placed only the first time the
+  grid expands, into one box the grid lays out as its own cells (`display: contents`),
+  so collapsing is that box’s `hidden`. Collapsing keeps the button in view.
+  The atlas popover’s arrows still step through all 324 cases: stepping past the last
+  case shown expands the grid first, so the cell focus returns to is there.
+  Without scripting the button’s row stays `hidden`, since it would do nothing.
 
 - **Wide bleed.** A wide block (`.site-wide`) takes the wide track, `--site-wide`, less
   the page gutters. Two kinds bleed past it.

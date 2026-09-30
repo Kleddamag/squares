@@ -850,6 +850,10 @@ def atlas_cards() -> str:
 #: rounding shows there as uneven gaps, and 400 costs about 26 kB more gzipped.
 ATLAS_UNITS = 400
 
+#: How many cases the atlas grid shows until the reader asks for the rest: the first
+#: hundred, the cases of the smaller poster.
+ATLAS_FIRST = 100
+
 #: The film's panel labels, keyed by the composite record's badge (glyph, style): the
 #: words `packages/workbench/src/view/facts.ts` draws under each badge (`BADGE_LABELS`).
 FILM_BADGES: dict[tuple[str, str], str] = {
@@ -1011,18 +1015,23 @@ def atlas_grid() -> str:
     in the one atlas popover instead: what the ascent film's panel says about that n,
     from `atlas_film_facts`, beside the drawing shown large, with a button to the record.
 
-    The cells, about a megabyte of SVG, sit in a `<template>`, which the browser parses
-    but does not render; the script places them when the grid nears the viewport, so
-    the page opens as fast as it did without them. The facts are one JSON element, a
-    tenth the size the same facts would take as markup in every cell.
+    The cells, about a megabyte of SVG, sit in two `<template>`s, which the browser
+    parses but does not render. The script places the first `ATLAS_FIRST` when the grid
+    nears the viewport, so the page opens as fast as it did without them, and the rest
+    only when the reader presses the button under the grid, "Show all 324", or steps the
+    popover past the last case shown. The button then reads "Show 1 to 100" and collapses
+    the grid again. Its row ships `hidden`, since without the script it would do
+    nothing. The facts are one JSON element, a tenth the size the same facts would take
+    as markup in every cell.
     """
     import json  # noqa: PLC0415
 
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
     from devtools.render_case_pages import CASES_PAGE, case_url  # noqa: PLC0415
 
+    cases = frontier.frontier_cases()
     cells = []
-    for case in frontier.frontier_cases():
+    for case in cases:
         n = case["n"]
         status = case["status"]
         cells.append(
@@ -1032,12 +1041,18 @@ def atlas_grid() -> str:
             f'<span class="site-atlas-n">{n}</span></a>'
         )
     facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
+    more, less = f"Show all {len(cases)}", f"Show 1 to {ATLAS_FIRST}"
     return (
         '<div class="site-wide site-atlas-grid" data-atlas-grid>'
-        f"<template>{''.join(cells)}</template>"
+        f"<template data-atlas-first>{''.join(cells[:ATLAS_FIRST])}</template>"
+        f"<template data-atlas-rest>{''.join(cells[ATLAS_FIRST:])}</template>"
         '<script type="application/json" data-atlas-facts>'
         + facts.replace("</", "<\\/")
         + "</script>"
+        '<p class="site-atlas-toggle-row" hidden>'
+        '<button type="button" class="site-popover-action site-atlas-toggle" '
+        'data-atlas-toggle aria-expanded="false" '
+        f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
         '<a href="frontier.html">frontier atlas</a>, and each has a '
         f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'

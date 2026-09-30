@@ -13,6 +13,12 @@ Call the answer $s(n)$. The squares may be rotated, and they may touch.
 The question is easy to state and hard to settle: for most $n$ the answer is known only
 to lie between the best packing found and a proved lower bound.
 
+Eleven squares, until now the smallest case still open, is settled: Walter Trump’s 1979
+packing is optimal, and $s(11) = 3.8770835\ldots$. The proof is Queuingtheorydotcom’s,
+Astra-assisted and building on this project and Kleddamag; it is machine-verified here
+and its mathematics reviewed ([T-060](all-results.html#t-060),
+[case 11](cases.html#n-11)).
+
 This site collects what the project has proved, what others have proved alongside it,
 and how each claim was checked.
 
@@ -33,6 +39,8 @@ publication if it is by others and by the day it was established if it is this
 project’s, with its rungs and its standing: *current best* where a verified case bound
 rests on it now, and otherwise why not.
 It starts filtered to significance S3 and up; choose All to see every row.
+
+{{RECENT_LEAD}}
 
 {{RECENT}}
 

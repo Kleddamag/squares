@@ -165,6 +165,17 @@ def test_the_atlas_film_waits_for_the_reader_behind_its_poster(page: str) -> Non
     )
 
 
+def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str) -> None:
+    """A site page scrolls the document, so the document is the element kpress watches:
+    with `<main>` marked instead, the contents rail's scroll-spy observed a pane that
+    never scrolls. kpress's contents-rail and history modules ride on every page, since
+    without them nothing marks the section in view."""
+    assert page.count("<html data-kpress-viewport ") == 1
+    assert '<main class="kpress-page-main kpress-viewport">' in page
+    for module in render_overview.KPRESS_CLIENT_MODULES:
+        assert f"/* kpress: js/{module} */" in page, module
+
+
 def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     """A section of three cards or fewer centres them only when its grid can ask how many
     columns its frame fits, so every grid is the only child of a `.site-cards-frame`."""

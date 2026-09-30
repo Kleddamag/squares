@@ -58,6 +58,13 @@ EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
 CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
 THEME_SCRIPT = BROWSER / "theme.js"
+#: The frame the site's flattened kpress client modules are placed in.
+KPRESS_CLIENT_FRAME = BROWSER / "kpress-client.js"
+#: kpress's client modules a site page carries, in dependency order: the contents rail's
+#: scroll-spy and drawer (`toc.js`) and hash-navigation history (`history.js`), with
+#: the helpers they import.
+KPRESS_CLIENT_MODULES = ("viewport.js", "overlay.js", "runtime.js", "toc.js", "history.js")
+KPRESS_CLIENT_API = {"runtime.js": "behaviors", "toc.js": "initKpressToc"}
 OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
@@ -349,15 +356,54 @@ def kpress_page(
         raise SystemExit(f"{name}: kpress reported errors: {errors[:3]}")
     prose = 'class="kpress-prose kpress-long-text'
     page = rendered.html.replace(prose + '"', prose + ' site-page"', 1)
+    page = _document_scrolls(name, page)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    programs = "".join(
+    programs = f"\n{kpress_client_script()}" + "".join(
         f"\n<script>{_script_text(path)}</script>"
         for path in (THEME_SCRIPT, MATH_RETRY_SCRIPT, *page_scripts)
     )
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
+
+
+#: kpress's standalone shell marks `<main>` as the pane the document scrolls in.
+_MAIN_VIEWPORT = '<main class="kpress-page-main kpress-viewport" data-kpress-viewport>'
+
+
+def _document_scrolls(name: str, page: str) -> str:
+    """Name the document as kpress's viewport, as the explainer's shell does.
+
+    `site.css` lets a site page scroll the document rather than `<main>`, so the
+    navigation bar can stick, and kpress has to be told: its scroll-spy observes and
+    listens on the element marked `data-kpress-viewport`, and with `<main>` still marked
+    it watched a pane that never scrolls and the contents rail never followed the
+    reader. Its popovers place themselves against the same element.
+    """
+    if page.count(_MAIN_VIEWPORT) != 1 or page.count("<html ") != 1:
+        raise SystemExit(f"{name}: kpress's shell no longer marks <main> as its viewport")
+    page = page.replace(
+        _MAIN_VIEWPORT, _MAIN_VIEWPORT.removesuffix(" data-kpress-viewport>") + ">"
+    )
+    return page.replace("<html ", "<html data-kpress-viewport ", 1)
+
+
+def kpress_client_script() -> str:
+    """kpress's contents-rail and history modules as one classic script element.
+
+    Flattened by the explainer's checked flattener, since an inline module would fetch
+    its siblings at view time; see `render_explainer.kpress_client_js`.
+    """
+    from devtools.render_explainer import kpress_client_js, kpress_static  # noqa: PLC0415
+
+    script = kpress_client_js(
+        kpress_static(),
+        modules=KPRESS_CLIENT_MODULES,
+        api=KPRESS_CLIENT_API,
+        frame=KPRESS_CLIENT_FRAME,
+    )
+    return f"<script>{script}</script>"
 
 
 def _script_text(path: Path) -> str:

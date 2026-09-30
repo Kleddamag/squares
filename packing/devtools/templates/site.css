@@ -997,6 +997,22 @@
   }
 }
 
+/* kpress's reduced-motion block gives every classed element, every summary and their
+   pseudo-elements `transition-duration: 0.01ms` and leaves `transition-property` at its
+   initial `all`, so any change to their style starts a transition. In a table that is
+   thousands of elements: Chromium restarts a `scrollbar-color` transition, inherited
+   from the wrap, on each of them at every style recalculation, and a resize across a
+   kpress breakpoint transitions every font size, so a resize of the frontier atlas took
+   ten seconds of layout. Under reduced motion nothing in a table transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .site-page .site-table-wrap,
+  .site-page .site-table-wrap :is([class], summary),
+  .site-page .site-table-wrap :is([class], summary)::before,
+  .site-page .site-table-wrap :is([class], summary)::after {
+    transition-property: none;
+  }
+}
+
 @media print {
   .site-footer,
   .site-popover,

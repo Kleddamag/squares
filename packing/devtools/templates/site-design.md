@@ -209,6 +209,11 @@ The rest is presentation:
   the dark theme it is given `color-scheme: dark`, which is what switches its outlines
   to the light ink, since an image does not inherit the page’s theme.
 - The row a fragment targets is marked with the selected surface.
+- Under reduced motion nothing in a table wrap transitions.
+  KPress’s reduced-motion block gives every classed element a 0.01 ms transition and
+  leaves `transition-property` at `all`, so in a table of thousands of elements every
+  style change became thousands of transitions, and a resize of the frontier atlas took
+  ten seconds of layout.
 
 ## Mathematics
 

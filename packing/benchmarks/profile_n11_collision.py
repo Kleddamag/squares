@@ -19,12 +19,15 @@ from strif import atomic_write_text
 
 from devtools import check_n11_capture_transition_pilot as collision
 from devtools import check_n11_optimality_field_mask0 as geometry
+from devtools import n11_integer_collision as integer
 
 
 def run(source: Path, indices: list[int]) -> dict[str, Any]:
     started = time.monotonic()
     kernel = Path(collision.__file__)
     before = hashlib.sha256(kernel.read_bytes()).hexdigest()
+    integer_path = Path(integer.__file__)
+    integer_before = hashlib.sha256(integer_path.read_bytes()).hexdigest()
     collision.require(
         before == "22c5b4d1f23d48bcc4333bd279df41ba022c337109d063073771349b2854b309"
         and collision.dependencies_unchanged(),
@@ -70,6 +73,16 @@ def run(source: Path, indices: list[int]) -> dict[str, Any]:
             count = execute(query, domain, partner, region)
             kernel_cpu = time.process_time() - cpu
             kernel_wall = time.monotonic() - wall
+            cpu = time.process_time()
+            exact_count = integer.universal_collision(
+                query,
+                domain,
+                partner,
+                region,
+                budget=geometry.Budget(time.monotonic() + 60, 20_000),
+            )
+            integer_cpu = time.process_time() - cpu
+            collision.require(exact_count == count, "integer collision operation count differs")
             profile = cProfile.Profile()
             cpu = time.process_time()
             profile.enable()
@@ -87,6 +100,8 @@ def run(source: Path, indices: list[int]) -> dict[str, Any]:
                     "live_partner_rows": len(partner),
                     "kernel_cpu_seconds": kernel_cpu,
                     "kernel_wall_seconds": kernel_wall,
+                    "integer_cpu_seconds": integer_cpu,
+                    "integer_cpu_speedup": kernel_cpu / integer_cpu,
                     "profiled_cpu_seconds": profiled_cpu,
                     "hottest_self_cpu": [
                         {
@@ -107,10 +122,15 @@ def run(source: Path, indices: list[int]) -> dict[str, Any]:
         "kernel changed during profile",
     )
     collision.require(collision.dependencies_unchanged(), "dependencies changed during profile")
+    collision.require(
+        hashlib.sha256(integer_path.read_bytes()).hexdigest() == integer_before,
+        "integer kernel changed during profile",
+    )
     return {
         "schema": "n11_capture_collision_profile_v1",
         "proof_credit": False,
         "kernel_sha256": before,
+        "integer_kernel_sha256": integer_before,
         "source_sha256": collision.bridge.ROOT_SOURCE_SHA,
         "input_loading_wall_seconds": loading,
         "wall_seconds": time.monotonic() - started,

@@ -5,14 +5,14 @@ title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
 status: open
 priority: 1
-version: 1
+version: 2
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T05:42:45.356Z
+updated_at: 2026-09-30T11:28:02.642Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -41,3 +41,7 @@ Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 ## Done when
 
 Both PRs are merged with T-058 to T-061 intact, `n-011.md` states both lines consistently, and each line's reply (#247 on the issue, #246 in its PR) points at the other where it matters.
+
+## Notes
+
+2026-09-30 correction: check_results requires contiguous register IDs, so T-061 could not be reserved. The Wang–Li result is T-058 on claude/determined-goldberg-ura2ed (jlevy/squares#249, commit 827e70b68). #246 also uses T-058 to T-060. Whichever PR merges second renumbers its new entries to follow the other's; if #249 is second, Wang–Li becomes T-061. The comment on #246 was edited to say so.

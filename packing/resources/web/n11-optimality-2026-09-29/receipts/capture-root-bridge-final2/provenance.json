@@ -1,0 +1,21 @@
+{
+  "scope": "Capture root initial hulls and phase-two references only; no capture transition geometry",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "supersedes": "receipts/capture-root-bridge-final/result.json",
+  "checker_sha256": "2bbddc8f27575eb6a61e0a4f97e0cb71194357fbd6a341ec1d710a6a2c1ae9a5",
+  "test_sha256": "b85fd4aba3cf2a28980f573e0cbb26b15f3da440ca9b5025d4fc0189cd2b6fb5",
+  "test_observed": "1 passed; Ruff and BasedPyright zero findings",
+  "result_sha256": "ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d",
+  "stdout_sha256": "dee6c58c517d8c6d8a0c4f7b65c2053cbfe8701d17742d14009f6f137e45c8e5",
+  "supervisor_seconds": 30,
+  "source_inputs": {
+    "root_decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+    "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+    "chain_result_sha256": "f10d50e6b34179a6b2fb066d6ade9553057c280f7538ae6e53fe06e639a56d11",
+    "source_graph_result_sha256": "cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248"
+  },
+  "root_compressed_sha256": "7ad9ce56d377129d75a18b62a800898c0d123ffa3539a5b186b7f8c5f9df6809",
+  "root_compressed_bytes": 18846869,
+  "root_cache": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects/f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4.gz",
+  "replay": "Decode the pinned root cache and receipts/capture-root-pilot/adaptive-source.json.gz into verified external scratch; from packing run timeout 30s .venv/bin/python3 -m devtools.check_n11_capture_root_bridge --root-source <decoded-root> --adaptive <decoded-adaptive> --chain-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-chain/result.json --graph-result resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json --out resources/web/n11-optimality-2026-09-29/receipts/capture-root-bridge-final2/result.json"
+}

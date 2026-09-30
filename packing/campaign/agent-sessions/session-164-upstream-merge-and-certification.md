@@ -632,7 +632,7 @@ session:
     bead: think-35ui
     objective: Accept the shared sequential adapter and run bounded baseline batches while
       connecting the completed root induction to actual capture transitions.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Root geometry is complete and the first generic proof is accepted;
       the next reusable interfaces are variable-bin/self-cut exclusions and capture ancestry.
@@ -646,13 +646,48 @@ session:
       geometric work prevents case or capture credit.
     fallback: Retain exact refused obligations, use complete earlier components, and
       improve the measured vertical-interval hotspot independently of source admission.
-    outcome: null
+    outcome: Shared sequential checker reviewed; fourteen generic executions now join
+      1,904 field cases for 1,918 exact exclusions, 262 remaining. All 14 adaptive-root
+      rounds accepted with reviewed chain. Two parallel batches completed; repeated-owner
+      and partner-cover restrictions identified precisely. Capture initial bridge passes
+      but awaits final independent review. Measured fast exact-cover candidate gives
+      1.86 to 1.93 times row CPU speedup; independent review is active. Hosted integration
+      repairs are published in 48c403add.
     evidence:
     - docs/project/reviews/review-2026-09-29-n11-optimality.md
     - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
-    stop_reason: null
+    stop_reason: Component checkpoint closed at 2026-09-30T08:48:43Z; continue exact
+      adapter and optimization review without waiting for hosted CI.
     next_action: Native Sol extends and batches exclusions; capture Sol owns variable
       partitions and branch ancestry; Astra-max audits both; coordinator integrates receipts.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-k6lh
+    objective: Review and integrate exact cover reuse, discharge repeated-owner cases,
+      and advance capture transitions while preparing partner-cover and ancestry adapters.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Profiling isolates repeated rational vertical intervals; source
+      adapter refusals are now separated from geometric computation.
+    budget_minutes: 30
+    started_at: '2026-09-30T08:48:43Z'
+    deadline_at: '2026-09-30T09:18:43Z'
+    expected_output: Reviewed faster exact kernel, matched differential evidence,
+      completed repeated-owner exclusions and a first capture transition or precise refusal.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_fast_exact_cover.py tests/test_n11_generic_sequential.py -q
+    kill_condition: Lost closed endpoint, unsupported premise, source drift or partial
+      geometry prevents case credit or kernel admission.
+    fallback: Preserve frozen accepted executions and exact refusals; use the reviewed
+      baseline until optimized geometry and new adapters independently pass.
+    outcome: null
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/fast-cover-benchmark.json
+    stop_reason: null
+    next_action: Astra reviews repeated ownership and sweep equivalence; Sol implements
+      capture and partner geometry; coordinator runs independent batches and integrates CI.
   budget:
     wall_minutes: 1135
     max_cycles: 40

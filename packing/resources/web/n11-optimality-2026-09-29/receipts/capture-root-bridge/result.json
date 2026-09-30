@@ -1,0 +1,85 @@
+{
+  "adaptive_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "candidate_capture_proved": false,
+  "capture_root_initial_bridge_checked": true,
+  "capture_transition_geometry_proved": false,
+  "chain_result_sha256": "f10d50e6b34179a6b2fb066d6ade9553057c280f7538ae6e53fe06e639a56d11",
+  "checker_sha256": "a385cb7b5ee7d8b770c19f8b8257a905a0dc30e0a3e1fce66bf3808b95a14cad",
+  "first_step_owner": 15,
+  "first_step_rows": 217,
+  "global_optimality_proved": false,
+  "owner_census": [
+    {
+      "accepted_points": 85,
+      "hull_vertices": 10,
+      "owner": 0,
+      "rows": 133
+    },
+    {
+      "accepted_points": 105,
+      "hull_vertices": 11,
+      "owner": 1,
+      "rows": 136
+    },
+    {
+      "accepted_points": 97,
+      "hull_vertices": 12,
+      "owner": 2,
+      "rows": 153
+    },
+    {
+      "accepted_points": 119,
+      "hull_vertices": 10,
+      "owner": 3,
+      "rows": 137
+    },
+    {
+      "accepted_points": 108,
+      "hull_vertices": 15,
+      "owner": 4,
+      "rows": 182
+    },
+    {
+      "accepted_points": 113,
+      "hull_vertices": 18,
+      "owner": 8,
+      "rows": 259
+    },
+    {
+      "accepted_points": 91,
+      "hull_vertices": 13,
+      "owner": 9,
+      "rows": 179
+    },
+    {
+      "accepted_points": 119,
+      "hull_vertices": 10,
+      "owner": 10,
+      "rows": 149
+    },
+    {
+      "accepted_points": 108,
+      "hull_vertices": 10,
+      "owner": 11,
+      "rows": 215
+    },
+    {
+      "accepted_points": 129,
+      "hull_vertices": 14,
+      "owner": 13,
+      "rows": 276
+    },
+    {
+      "accepted_points": 116,
+      "hull_vertices": 13,
+      "owner": 15,
+      "rows": 217
+    }
+  ],
+  "owner_count": 11,
+  "phase_two_rows": 2036,
+  "root_source_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+  "source_graph_result_sha256": "cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248",
+  "status": "PASS_CAPTURE_ROOT_INITIAL_BRIDGE",
+  "wall_seconds": 3.388315917
+}

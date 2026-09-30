@@ -69,6 +69,10 @@ binds all 14 actual executions to exact successive source states and 168 retaine
 Astra-max reviewed the chain and the limited ceiling change.
 Together with those geometric executions, this establishes the conditional adaptive-root
 induction; receipt consistency alone would not establish it.
+The reviewed
+[capture-root bridge](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-bridge-final2/result.json)
+also matches all 11 owner hulls and all 2,036 predecessor-row references to the next
+source state. That identity check does not establish transition geometry.
 The
 [generic receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json)
 accepts case 2095 after all 77 seed points, 352 seed rows and 160 sequential update rows

@@ -1004,6 +1004,58 @@ missing angular row, changed initial state, unjustified domain shrink, invalid
 full-square cut, helper-pin mismatch, altered assignment, unsupported ancestry, and
 expiry.
 
+## Compiled Exact Coverage
+
+The [compiled sweep](../../../packing/devtools/n11_fast_exact_cover.py), reviewed at
+SHA-256 `eb21b1acda671b9f858039d077b0c8a30d035ee5920e083887952bf44b156904`, is sound for
+a positive-area convex domain and finitely many closed convex covering regions; covering
+regions may also be points or segments.
+Callers retain responsibility for that convexity contract.
+Its increasing probes activate edges at their left endpoint and remove them strictly
+after their right endpoint, preserving closed intersections exactly.
+Polygon vertices and overlapping-edge crossings partition the sweep into slabs with
+fixed affine endpoint order, so the existing event and midpoint probes remain complete.
+
+The new vertical predicate skips intervals ending below the current cursor before
+testing coverage.
+This fixes an inherited predicate weakness for a singleton target slice
+without changing the frozen historical kernel.
+The weakness cannot produce a false full-cover acceptance under the reviewed historical
+contract: every slice strictly inside a positive-area convex domain’s horizontal
+projection has positive height, so the sweep correctly covers all those slices.
+Their closure is the whole domain, and a finite union of closed covering regions
+contains their limits.
+This argument grants no extension to degenerate domains or nonconvex inputs.
+Direct controls now distinguish intervals below or above a singleton from intervals
+touching it, preserving equality.
+
+The
+[matched benchmark](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/fast-cover-benchmark-final.json)
+binds this helper and the unchanged historical sources.
+On three rows of case 2095, three repetitions per row preserve the exact event, probe,
+and edge counts and measure median CPU speedups of 1.85–1.94, with median 1.89. Those
+measurements describe these rows only.
+
+## Adaptive-Root to Capture Input Bridge
+
+The [bridge checker](../../../packing/devtools/check_n11_capture_root_bridge.py),
+SHA-256 `2bbddc8f27575eb6a61e0a4f97e0cb71194357fbd6a341ec1d710a6a2c1ae9a5`, verifies
+that all eleven initial capture hulls equal the accepted adaptive-root hulls.
+Taking those convex hulls preserves strict ownership.
+It matches all 2,036 ordered phase-two row references and the first capture step’s 217
+references for owner 15, with exact cap, scale, mask, source, and final adaptive-state
+bindings. The pilot, round-one, and geometry dependencies are pinned and checked before
+and after; canonical-state hashing uses the standard library directly.
+
+The
+[final bridge result](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-root-bridge-final2/result.json),
+SHA-256 `ba65b7416678f701feee8c027e2b4f9359e9d3324ceee0958fbc8ca30afe309d`, passes in
+2.876 seconds. This accepts the input bridge conditional on the accepted root execution
+chain. It proves no capture transition and keeps capture and global flags false.
+Transition consumers must still resolve every referenced domain from its accepted source
+and prove the complete geometric update.
+Focused bridge and singleton-slice controls pass in 0.07 seconds.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

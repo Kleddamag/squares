@@ -1,0 +1,33 @@
+{
+  "scope": "Exact accepted root hulls and 2036 phase-two row references bound to capture root-self; no capture transition geometry",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "supersedes": "receipts/capture-root-bridge/result.json",
+  "checker_path": "packing/devtools/check_n11_capture_root_bridge.py",
+  "checker_sha256": "fc317ebfbd3471a4dfddb152517dc5ca8012f3323852bb5f5cab526b87ef7713",
+  "dependency_sha256s": {
+    "pilot": "1abfc9244d19fcb38a131c3bee676c8973de991998c1e7ab224fae8196259737",
+    "round1": "50eef26bff3aee127e9ad508b1587014514c8e5f1cf9a3214e8ace7a92d88afd",
+    "geometry": "75fc0238f2ac91af9dc9cf57bd00792343dcf3321c395adddebf0f3465113ce5",
+    "chain": "fdc46b2178bcfc91b97dfbd1fa45c7ec193cd5778800b31a98461ecc30f66a75"
+  },
+  "root_source": {
+    "index_path": "evidence/research/candidate-capture/root-self-240.json",
+    "index_key": "2c51d351dc81ada3ff44552b7cb68d3fb62cc56bbb71fa999ed4e4320a299c16",
+    "compressed_object": "data/objects/f9/f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4.gz",
+    "compressed_bytes": 18846869,
+    "compressed_sha256": "7ad9ce56d377129d75a18b62a800898c0d123ffa3539a5b186b7f8c5f9df6809",
+    "decoded_bytes": 81191153,
+    "decoded_sha256": "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4",
+    "ignored_durable_cache": "attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects/f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4.gz"
+  },
+  "adaptive_decoded_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
+  "chain_result_sha256": "f10d50e6b34179a6b2fb066d6ade9553057c280f7538ae6e53fe06e639a56d11",
+  "source_graph_result_sha256": "cb7ffccf1e3841d44a2dff88549fdee1911805e516f175ef484c5b6e9004b248",
+  "focused_test_path": "packing/tests/test_n11_capture_root_bridge.py",
+  "focused_test_sha256": "b85fd4aba3cf2a28980f573e0cbb26b15f3da440ca9b5025d4fc0189cd2b6fb5",
+  "focused_test_observed": "1 passed; Ruff and BasedPyright zero findings",
+  "result_sha256": "649bd1269462b6f6cf6677381f5854dff340212f02724b70da50feaabb8093e3",
+  "stdout_sha256": "e7181173be6b56d17f2804e5e2bf27d0178c6b5b23586e5a51d8d7ddec340422",
+  "supervisor_seconds": 30,
+  "replay": "Decode and verify the pinned root source gzip and receipts/capture-root-pilot/adaptive-source.json.gz into external scratch; from packing run timeout 30s .venv/bin/python3 -m devtools.check_n11_capture_root_bridge --root-source <decoded-root> --adaptive <decoded-adaptive> --chain-result resources/web/n11-optimality-2026-09-29/receipts/capture-root-chain/result.json --graph-result resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json --out resources/web/n11-optimality-2026-09-29/receipts/capture-root-bridge-final/result.json"
+}

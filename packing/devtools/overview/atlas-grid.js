@@ -326,7 +326,7 @@
     drawBound(fact);
     drawFacts(fact);
     expand.setAttribute("href", cell.getAttribute("href") ?? "cases.html");
-    expand.setAttribute("aria-label", `Open the case record for n = ${n}`);
+    expand.setAttribute("aria-label", `See all cases, opened at n = ${n}`);
     for (const step of popover.querySelectorAll("[data-atlas-step]")) {
       if (step instanceof HTMLButtonElement) {
         step.disabled = !factsFor().has(n + Number(step.dataset.atlasStep));

@@ -139,7 +139,7 @@ def test_the_atlas_popover_sets_its_math_and_leads_to_the_record(page: str) -> N
     assert r"\sqrt{n} + 1" in popover
     assert "$" not in popover
     (action,) = re.findall(r'<a class="site-popover-action"[^>]*>([^<]*)</a>', popover)
-    assert action == "Open the case record"
+    assert action == "See All Cases"
     assert "data-atlas-expand" in popover
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
     assert 'expand.setAttribute("href", cell.getAttribute("href")' in script

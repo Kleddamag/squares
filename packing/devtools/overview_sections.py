@@ -821,7 +821,7 @@ def atlas_popover() -> str:
         "</div></div>"
         '<p class="site-popover-actions">'
         '<a class="site-popover-action" data-go="page" data-atlas-expand href="cases.html">'
-        "Open the case record</a>"
+        "See All Cases</a>"
         '<span class="site-atlas-pop-step">'
         '<button type="button" data-atlas-step="-1" aria-label="Previous case">\u2190</button>'
         '<button type="button" data-atlas-step="1" aria-label="Next case">\u2192</button>'

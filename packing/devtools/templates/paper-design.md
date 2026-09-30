@@ -240,8 +240,8 @@ it.
   film’s own, read from the atlas figure and `bound-citations.json` into one JSON
   element (`atlas_film_facts`), and the script fills the popover from them with kpress’s
   math nodes, never HTML strings.
-  It ends in **Open the case record**, which goes to `cases.html#n-N` at full size, and
-  arrows, and the arrow keys, step to the neighbouring case.
+  It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,
+  and the arrow keys, step to the neighbouring case.
   Opening moves focus to the close cross; closing returns it to the case’s cell.
   On a phone the panel takes the width less half a rem each side, scrolls inside, keeps
   its button in a sticky foot, and has a 2.75rem close target.

@@ -91,7 +91,7 @@ def case_popover() -> str:
         '<p class="site-popover-value" data-case-title>Case record</p>'
         '<iframe class="site-popover-frame" title="Case record" data-case-frame></iframe>'
         '<p class="site-popover-actions"><a class="site-popover-action" data-go="page" '
-        f'data-case-expand href="{CASES_PAGE}">Expand the case record</a></p>'
+        f'data-case-expand href="{CASES_PAGE}">See All Cases</a></p>'
         "</div>"
     )
 

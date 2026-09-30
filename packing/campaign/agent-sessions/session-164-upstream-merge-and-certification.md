@@ -1154,7 +1154,7 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_rectangle_derivative_bound.py tests/test_rectangle_derivative_frontier_cli.py
     kill_condition: Any mathematical review blocker, incomplete inventory, source mutation or diagnostic ceiling violation prevents acceptance.
     fallback: Retain negative or incomplete results and the Python default; make no native speed claim.
-    outcome: null
+    outcome: All 22 focused controls passed; frozen source 66c37b255 produced a complete 13-box diagnostic with zero improved bounds and zero closures. Preflight plus diagnostic took 1.163 seconds, frontier generation 5.977 seconds and whole invocation 7.160 seconds. Adoption is rejected; exact Rust area backend and Python default remain unchanged. First-principles overview and both PR descriptions/comments are current.
     evidence:
     - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
     - docs/project/verification-tooling.md

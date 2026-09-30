@@ -2,7 +2,7 @@
 title: Exact Rectangle Derivative Bound — Preregistered Diagnostic
 date: '2026-09-30'
 bead: think-r97y
-status: in-progress
+status: completed
 ---
 # Exact Rectangle Derivative Bound
 
@@ -98,9 +98,51 @@ comes from the reviewed interval derivation.
 
 ## Outcome
 
-Implementation and mathematical review are in progress.
-No diagnostic measurements, threshold improvements, performance gains or new
-verification credit are claimed.
+**Reject this bound for production adoption on the measured frontier.** The complete
+diagnostic evaluated all 13 pending boxes, improved none of their common-core bounds and
+closed no new box at the fixed exact cutoff.
+It therefore fails the predeclared usefulness criterion despite meeting the time limit.
+No Rust port, production integration, speedup or new verification credit follows.
+This result concerns this bound and frozen frontier; it does not establish that every
+derivative-based method would fail.
+
+The instrument was frozen at `66c37b255d9be019912fca31c2c85a360c91b6e7`, with a clean
+working tree at run start.
+Astra max reviewed both the mathematical implementation and the complete runner; 22
+focused controls passed in 0.63 seconds, and Ruff and BasedPyright were clean.
+The retained
+[result](../../../packing/resources/web/wand125-tools-2026-09-29/receipts/derivative-frontier-2026-09-30/result.json)
+binds the candidate, checker, core, runner, subprocess supervisor and decoded frontier.
+The source was checked again before acceptance of the complete diagnostic.
+
+| Measured phase | Wall seconds | Process CPU seconds |
+| --- | --- | --- |
+| Candidate/source preflight | 0.135 | 0.017 |
+| Fresh 1,000-node frontier subprocess | 5.977 | 5.600 |
+| Complete admission, edge coalescing, evaluation and final source checks | 1.028 | 0.843 |
+| Whole invocation | 7.160 | 0.870 in the coordinator, plus the subprocess CPU above |
+
+Preflight plus diagnostic took 1.163 seconds against the 120-second criterion.
+The 13 boxes came from an inconclusive angle-1 run, not a completed certificate.
+The diagnostic evaluated 372 coalesced vertical and 372 horizontal signed edge segments.
+This single observation is not a throughput benchmark.
+In the frozen receipt, `closed_by_new_bound` tests the combined maximum, not an
+improvement attributable to the derivative term: its seven true entries already meet the
+cutoff under common-core.
+`closes_old_gap` is false for every box, and `newly_closed_boxes` is zero.
+Astra’s independent receipt audit confirmed these exact comparisons and every
+source/input binding.
+The Python backend remains the default; native full-certificate acceptance and C++
+performance parity remain open under `think-3cwg`. Shared diagnostic admission cleanup
+is tracked separately as `think-nxd8`.
+
+From `packing/`, the reusable instrument is
+`python -m benchmarks.bench_rectangle_derivative_frontier CANDIDATE --candidate-sha256 SHA --out NEW_DIRECTORY`
+under the project interpreter.
+The retained result supplies the exact candidate path, SHA and frozen source revision;
+the output directory must not already exist.
+Reproducing the historical measurement requires that source revision.
+A run against newer source is a new experiment and records its own source identities.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

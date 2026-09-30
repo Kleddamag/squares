@@ -5,7 +5,7 @@ title: Complete independent exclusion coverage using measured certificate batche
 kind: task
 status: in_progress
 priority: 0
-version: 23
+version: 25
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies:
@@ -19,10 +19,10 @@ child_order_hints:
   - is-01m3rxqvcpd3evbj585ej0cxkh
   - is-01m3rxqw1zt462wxchtztea5by
 created_at: 2026-09-30T05:01:07.070Z
-updated_at: 2026-09-30T11:20:25.062Z
+updated_at: 2026-09-30T11:43:52.871Z
 ---
 Inventory remaining required mask IDs and certificate capability families. Choose a sufficient exact union, avoiding redundant full corpus replay. Verify unsupported generic, extension and returned families with independently reviewed adapters; shard by packet without trusting stored PASS or counts. Aggregate exact IDs only from complete accepted receipts; missing or partial packets cannot promote. Finish all2180 exclusions or retain exact unresolved obligations.
 
 ## Notes
 
-Reviewed execution union2110/2180; remaining70(A1=0,A2=7,A3=63). Full1931baseline and both conditional D4 geometric cases2175/2176 accepted after fresh finite-cut execution/source-plane joining.1875 freshclosure replay accepted;three source-bound singleton ledgers losslessly compressed. A3-reviewed4 complete24awaitreview; refined2 and three corrected retries active. Main immutable generic9047 fixes empty-domain grammar/no-work backend admission.
+Astra-reviewed execution union2147/2180;33 remain (A1=0,A2=7,A3=26). All32 ordinary remaining cases run on frozen9047 worktree with4workers;455 and761 have completed pending batch audit. Special center1383 remains separate. All924 required inputs present. No geometric counterexample found.

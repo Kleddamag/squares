@@ -5,13 +5,15 @@ title: Profile exact sequential geometry cost for T060 nonfield exclusions
 kind: task
 status: in_progress
 priority: 0
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3rb05kzxrn6zcj60cs1c91f
+child_order_hints:
+  - is-01m3s1n0yn7v1x1rqvn3raqhem
 created_at: 2026-09-30T08:14:19.735Z
-updated_at: 2026-09-30T10:36:39.675Z
+updated_at: 2026-09-30T11:36:59.092Z
 ---
 Build reusable row-cost inventory and bounded profile from pinned nonfield manifest and accepted generic mask 2095 receipt. Identify exact union cover hotspot and assess safe optimization without changing frozen verifier; report calibrated scenarios and differential acceptance conditions.
 

@@ -441,23 +441,29 @@ def square_polygon(
 def _clip_axis(polygon: Polygon, *, axis: int, edge: Fraction, sign: int) -> Polygon:
     if not polygon:
         return ()
+    inside = tuple(
+        point[axis] >= edge if sign == 1 else point[axis] <= edge for point in polygon
+    )
+    if all(inside):
+        return polygon
+    if not any(inside):
+        return ()
     output: list[Point] = []
     previous = polygon[-1]
-    previous_depth = sign * (previous[axis] - edge)
-    for current in polygon:
-        depth = sign * (current[axis] - edge)
-        if (depth >= 0) != (previous_depth >= 0):
-            factor = previous_depth / (previous_depth - depth)
+    previous_inside = inside[-1]
+    for current, current_inside in zip(polygon, inside, strict=True):
+        if current_inside != previous_inside:
+            factor = (previous[axis] - edge) / (previous[axis] - current[axis])
             output.append(
                 (
                     previous[0] + factor * (current[0] - previous[0]),
                     previous[1] + factor * (current[1] - previous[1]),
                 )
             )
-        if depth >= 0:
+        if current_inside:
             output.append(current)
         previous = current
-        previous_depth = depth
+        previous_inside = current_inside
     return tuple(output)
 
 

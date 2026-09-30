@@ -1,0 +1,20 @@
+{
+  "status": "SUPERSEDED_DIAGNOSTICS",
+  "reason": "The first A/B runner lacked strict fixed-work admission and its uncommitted source bytes were not retained. Its reported measurements are preserved but are not the authoritative comparison.",
+  "superseded_runner_sha256": "9f298e4afd7d6960eb2cd23ac73ada3df6b0b02f56686914b2ff604171af514a",
+  "superseded_receipts": [
+    "native-angle1-fixed1000-clip/result.json",
+    "native-analytic-clip/result.json"
+  ],
+  "authoritative_runner_sha256": "a364dbb265a79021d71b1d3a79ca5277e6fd0e958293f68622e1d7fe35dc17fb",
+  "authoritative_receipts": [
+    {
+      "path": "native-angle1-fixed1000-frontier-clip/result.json",
+      "sha256": "82d51365ddc12a03321fb2c5cc336b357d5938fb0469a77a1aca6fafa31bc94b"
+    },
+    {
+      "path": "native-analytic-final-clip/result.json",
+      "sha256": "cfcb32e2d874be81ed79d6a50c43c7e2591e1264226555bfa8a0c01a5ee4a648"
+    }
+  ]
+}

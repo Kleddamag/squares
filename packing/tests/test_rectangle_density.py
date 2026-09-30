@@ -18,6 +18,7 @@ from sqpack.rectangle_density import (
     RectangleDensityCandidate,
     _BoundDeadlineError,  # pyright: ignore[reportPrivateUsage]
     _CentreBox,  # pyright: ignore[reportPrivateUsage]
+    _clip_axis,  # pyright: ignore[reportPrivateUsage]
     _common_core,  # pyright: ignore[reportPrivateUsage]
     _corner_minimum,  # pyright: ignore[reportPrivateUsage]
     coverage_at_point,
@@ -47,6 +48,80 @@ def test_exact_clipping_handles_containment_halving_and_tangency() -> None:
     assert exact_intersection_area((-1, -1, 1, 1), polygon) == 1
     assert exact_intersection_area((0, -1, 1, 1), polygon) == Fraction(1, 2)
     assert exact_intersection_area((Fraction(7, 10), -1, 1, 1), polygon) == 0
+
+
+def _reference_clip_axis(
+    polygon: tuple[tuple[Fraction, Fraction], ...], *, axis: int, edge: Fraction, sign: int
+) -> tuple[tuple[Fraction, Fraction], ...]:
+    """The original depth-based exact clipper, retained as a differential oracle."""
+
+    if not polygon:
+        return ()
+    output: list[tuple[Fraction, Fraction]] = []
+    previous = polygon[-1]
+    previous_depth = sign * (previous[axis] - edge)
+    for current in polygon:
+        depth = sign * (current[axis] - edge)
+        if (depth >= 0) != (previous_depth >= 0):
+            factor = previous_depth / (previous_depth - depth)
+            output.append(
+                (
+                    previous[0] + factor * (current[0] - previous[0]),
+                    previous[1] + factor * (current[1] - previous[1]),
+                )
+            )
+        if depth >= 0:
+            output.append(current)
+        previous = current
+        previous_depth = depth
+    return tuple(output)
+
+
+def test_clip_fast_paths_match_original_exact_vertices_and_area() -> None:
+    f = Fraction
+    huge = f(10**25 + 1, 10**17 + 3)
+    polygons = (
+        ((f(0), f(0)),),
+        ((f(0), f(0)), (f(1), f(0)), (f(2), f(0))),
+        ((f(0), f(0)), (f(2), f(0)), (f(2), f(2)), (f(0), f(2))),
+        ((f(0), f(0)), (f(0), f(2)), (f(2), f(2)), (f(2), f(0))),
+        ((f(0), f(0)), (f(2), f(0)), (f(0), f(2))),
+        ((huge, huge), (huge + f(1, 10**20), huge), (huge, huge + f(1, 10**20))),
+        square_polygon(f(0), f(0), f(3, 5), f(4, 5), f(1)),
+    )
+    rectangles = (
+        (f(-3), f(-3), f(3), f(3)),
+        (f(0), f(0), f(1), f(1)),
+        (f(2), f(0), f(3), f(1)),
+        (f(2), f(2), f(3), f(3)),
+        (f(3), f(3), f(4), f(4)),
+        (f(-1, 3), f(-2, 3), f(1, 3), f(2, 3)),
+        (huge, huge, huge + f(1, 10**20), huge + f(1, 10**20)),
+    )
+    for polygon in polygons:
+        for rectangle in rectangles:
+            left, bottom, right, top = rectangle
+            reference = polygon
+            for axis, edge, sign in (
+                (0, left, 1),
+                (0, right, -1),
+                (1, bottom, 1),
+                (1, top, -1),
+            ):
+                clipped = _clip_axis(reference, axis=axis, edge=edge, sign=sign)
+                reference = _reference_clip_axis(reference, axis=axis, edge=edge, sign=sign)
+                assert clipped == reference
+                if len(reference) < 3:
+                    break
+            twice_area = sum(
+                (
+                    point[0] * reference[(index + 1) % len(reference)][1]
+                    - point[1] * reference[(index + 1) % len(reference)][0]
+                    for index, point in enumerate(reference)
+                ),
+                f(),
+            )
+            assert exact_intersection_area(rectangle, polygon) == abs(twice_area) / 2
 
 
 def test_small_analytic_density_proves_every_net_angle() -> None:

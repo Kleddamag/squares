@@ -333,11 +333,16 @@ POSTER_STEM = PACKING / "atlas" / "known-best" / "known-best-1-324"
 #: with the workbench, whose stage drew it, rather than in the atlas: the atlas directory
 #: is a data path, and a file added there would move the version every artifact prints.
 FILM_POSTER = REPO / "packages" / "workbench" / "assets" / "ascent-n1-100-poster.png"
+#: The overview's film poster, the n = 1..324 film's n = 290 at the same 1280x720, since
+#: 2026-09-30. The overview links the assets served beside the explainer by name rather
+#: than publishing its own, so its poster travels here with the rest.
+OVERVIEW_FILM_POSTER = FILM_POSTER.with_name("ascent-n1-324-poster.png")
 COMPOSITE_ASSETS = (
     *(COMPOSITE_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     COMPOSITE_STEM.with_name(f"{COMPOSITE_STEM.name}-card.png"),
     *(POSTER_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     FILM_POSTER,
+    OVERVIEW_FILM_POSTER,
 )
 #: The full-canvas raster, which the published Markdown shows to a reader whose context
 #: cannot render the vector. The 1x rather than the committed `@2x`: every consumer

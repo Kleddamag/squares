@@ -98,7 +98,7 @@ bounds and who found them, or open it in the frontier atlas.
 <figcaption>n = 1 to 324 · <a href="known-best-1-324.pdf" type="application/pdf">PDF</a></figcaption>
 </figure>
 <figure class="site-atlas-film">
-<video class="site-film" autoplay muted loop playsinline controls width="1920" height="1080" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">
+<video class="site-film" controls preload="none" playsinline width="1920" height="1080" poster="ascent-n1-324-poster.png" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">
 <source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
 <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">The film of the ascent from 1 to 324</a>.
 </video>

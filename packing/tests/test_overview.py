@@ -9,6 +9,7 @@ from collections import Counter
 import pytest
 
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
+from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
@@ -96,17 +97,23 @@ def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None
     assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
 
 
-def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:
-    """Muted, looping and inline, which is what lets a browser autoplay it; the script
-    that holds it still for reduced motion is on the page."""
+def test_the_atlas_film_waits_for_the_reader_behind_its_poster(page: str) -> None:
+    """Embedded as the explainer embeds its film: controls, inline, nothing fetched and
+    nothing moving until a reader presses play, and a poster that is a frame of the film
+    served beside the page."""
     (video,) = re.findall(r"<video\b[^>]*>", page)
-    for attribute in ("autoplay", "muted", "loop", "playsinline", "controls"):
+    for attribute in ("controls", "playsinline"):
         assert re.search(rf"\s{attribute}\b", video), attribute
+    for attribute in ("autoplay", "loop", "muted"):
+        assert not re.search(rf"\s{attribute}\b", video), attribute
+    assert 'preload="none"' in video
+    assert f'poster="{OVERVIEW_FILM_POSTER.name}"' in video
+    assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
+    assert OVERVIEW_FILM_POSTER.is_file()
     assert (
         "ascent-n1-324-1080p60-citations.mp4"
         in page.split(video, 1)[1].split("</video>", maxsplit=1)[0]
     )
-    assert render_overview.FILM_SCRIPT.read_text(encoding="utf-8") in page
 
 
 def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:

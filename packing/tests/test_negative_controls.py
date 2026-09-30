@@ -523,13 +523,17 @@ def test_session_152_timing_archive_is_not_a_mutation_worker_input(
     assert (tree / session.relative_to(controls.REPO)).read_bytes() == session.read_bytes()
 
 
-def test_historical_validation_byproducts_are_kept_in_git_but_not_workers(
+def test_historical_byproducts_are_kept_in_git_but_not_workers(
     control_snapshot: tuple[Path, set[Path]],
 ) -> None:
     tree, copied_targets = control_snapshot
     byproducts = (
         ROOT / "campaign/agent-sessions/session-106-validation/fast-3deb90fc.tar.gz",
         ROOT / "campaign/agent-sessions/session-152-validation/full-initial-diagnostic.log",
+        ROOT
+        / "campaign/series/series-000-smoke-and-calibration/results/agenda-040"
+        / "one-spare-inventory-n21-orbits.json.gz",
+        ROOT / "campaign/agent-sessions/session-105-validation/full-48a4544f.json",
     )
     specification = safe_load((ROOT / "devtools/controls.yaml").read_text())
     for source in byproducts:
@@ -547,6 +551,10 @@ def test_historical_validation_byproducts_are_kept_in_git_but_not_workers(
     for session in (
         ROOT / "campaign/agent-sessions/session-106-n26-source-consistency.md",
         ROOT / "campaign/agent-sessions/session-152-external-density-and-n11-review.md",
+        ROOT / "campaign/agent-sessions/session-105-stromquist-n26-verification.md",
+        ROOT
+        / "campaign/series/series-000-smoke-and-calibration/results/agenda-040"
+        / "bentz2016-one-spare-receipt.md",
     ):
         assert (tree / session.relative_to(controls.REPO)).read_bytes() == session.read_bytes()
 

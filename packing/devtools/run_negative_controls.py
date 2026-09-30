@@ -230,6 +230,16 @@ PRUNE = frozenset(
         # precedence if a checked document later links either file.
         ROOT / "campaign/agent-sessions/session-106-validation" / "fast-3deb90fc.tar.gz",
         ROOT / "campaign/agent-sessions/session-152-validation" / "full-initial-diagnostic.log",
+        # The n=21 orbit inventory and Session 105 full-gate JSON are older generated
+        # byproducts, named only in historical prose/output fields. Neither is a
+        # registered result dependency, inline link, control target, or control input.
+        # Keep both in Git while the private mutation workers omit their 458,698
+        # bytes. This absorbs the source-bound atlas export and subsequent reviewed
+        # proof-receipt links without widening the portable snapshot ceiling.
+        ROOT
+        / "campaign/series/series-000-smoke-and-calibration/results/agenda-040"
+        / "one-spare-inventory-n21-orbits.json.gz",
+        ROOT / "campaign/agent-sessions/session-105-validation/full-48a4544f.json",
         # Agenda 024's commissioning outputs and its two manager roots are retained
         # research evidence, not mutation-control inputs. Long numerical logs and warm
         # states can grow while the gate is running; copying them into every private

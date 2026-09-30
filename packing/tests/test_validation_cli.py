@@ -2084,7 +2084,11 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    assert f"reported lane: {proved} proved, {open_cases} open" in stdout
+    # T-060 changes the reported n=11 lane while formal verification remains open.
+    reported_open = validate.FRONTIER_COUNTS[corpus.label][1]
+    assert (
+        f"reported lane: {corpus.count - reported_open} proved, {reported_open} open" in stdout
+    )
 
 
 def _budget_context(*, timeout_seconds: float, explicit: bool) -> validate.Context:

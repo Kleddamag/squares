@@ -1932,6 +1932,152 @@ counts retain zero collision inequalities.
 This is no evidence of integer-kernel execution or speed.
 Fresh bounded runs are still required before these relaxed admissions add any case ID.
 
+## First Far-Leaf Contradiction and r10 State
+
+The
+[far-15 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-far15/result.json),
+SHA-256 `cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e`, is accepted
+under reviewed child checker `ebbc83b0`. Its exact parent is root receipt `0d55007a`,
+its source is `e25a5de4`, and its retained condition is the closed owner-15 lower center
+branch.
+All eight steps complete, checking 1,585 rows, 6,891 cover events, 13,183 probes,
+880 common-core planes, and 31 additions.
+The final owner-8 update checks all 259 rows and finds every residual and outer domain
+empty, with no addition.
+The original final-state digest equals the actual graph digest `9e28b092`. Source,
+dependency, parent, ordered execution, final-state, and stdout bindings pass.
+This discharges the far-15 branch contradiction only; it neither excludes case 438 nor
+completes the capture tree.
+
+The
+[r10 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-r10/result.json),
+SHA-256 `d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f`, is accepted
+under the same checker.
+It binds accepted r1 receipt `677719a0`, source `58da537e`, the inherited closed
+conditions, and original final-state digest `356e63cb`. Steps 0–11 check 1,908 rows,
+13,945 cover events, 27,112 probes, 6,136 common-core planes, and 95 additions.
+Step 12 checks 88 rows but adds no point and does not promote its partial state.
+The observed 164.074-second execution reaches final-state and dependency checks.
+Its conclusion is the conditional r10 state; terminal, capture-tree, candidate, and
+global flags remain false.
+Neither execution uses partner collision regions.
+
+## Exclusion Execution Checkpoint at 2,143 Cases
+
+The
+[fourth reviewed A3 batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-a3-reviewed-4/summary.json),
+SHA-256 `47126cf6c12903b8283b40b1f7647898e2d8195d194633efecc2ec51d77c2500`, accepts
+1145, 1259, 1265, 1268, 1270, 1310, 1342, 1416, 1422, 1429, 1439, 1686, 1688, 1693,
+1696, 1729, 1783, 1850, 2071, 2072, 2073, 2078, 2098, and 2116. Frozen checker
+`79473807` checks 574 complete updates and 35,488 rows after 16,544 seed rows and 1,751
+strict seed points. It records 1,708,092 cover events and 3,382,028 probes, with no
+partner collision work.
+All compressed and decoded receipts, assignments, ordered inventories, helper
+identities, and 72 distinct archived input objects pass the audit.
+Historical source bytes at `891e4715b` establish the frozen checker and runner
+identities after the worktree was reused.
+These 24 IDs were new, taking the union from 2,110 to 2,134.
+
+The
+[second refined batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-refined-2/summary.json),
+SHA-256 `6009b91fda5095df0b1fb281f94781ce44432e8552c91907dfed4db9f4f9ec4d`, accepts
+1335, 1411, 1430, 1484, 1695, 1728, 1810, 1885, and 2069 under frozen checker
+`f430580c`, partner helper `39f58aa5`, and refinement helper `937d36d6`. Its 19 accepted
+nodes contain 489 complete updates, 13,640 rows, 15,568 partner rows, and 24,518,448
+collision inequalities.
+The 116 skipped source rows occur only in unpromoted ancestor tails; every accepted
+terminal node has its complete required owner cover.
+The audit checks the copied receipts byte for byte, both compression identities, exact
+source and dependency bindings at `cbc57135`, all 49 distinct input objects, and
+complete node/step/row inventories.
+The batch’s refusals for 1343, 1716, and 2125 add no ID; later retries require their own
+accepted executions.
+The nine accepted IDs are new and disjoint from the A3 batch, bringing the reviewed
+union to 2,143 of 2,180 required exclusions, with 37 remaining.
+These are retained, source-bound execution results under the reviewed geometric
+checkers; the receipt audit itself does not rerun their geometry.
+
+## Closed Center-Partition Consumer Review
+
+The
+[center orchestrator](../../../packing/devtools/n11_nonfield_center_orchestrator.py),
+SHA-256 `cfa62c5c4d3947bf6c9483b5cde9d194305d833d944e6ef467c52876d25fdf9a`, correctly
+joins the reviewed case-1383 branch plan.
+It checks the five common nodes once, then gives each branch a separate deep copy of the
+same accepted groups and pose rows.
+Every child must match its exact parent, seed, frame, owner inventory, hulls, and
+ordered references. The exact closed center condition is reapplied to every query and
+partner domain through shared checker `9047dcbb`. Both terminal leaves must return from
+complete independently empty owner covers before the join succeeds.
+The helper alone supplies neither source admission nor case credit.
+
+The [standalone consumer](../../../packing/devtools/check_n11_center_partition.py),
+SHA-256 `da3c38b75bdf823dbe3ccf3f07d1905b931290d4ca1f9cde0ca5203356f7a5b6`, binds that
+orchestrator, plan helper `43d2b8ec`, shared checker `9047dcbb`, and their fourteen
+direct dependency identities plus the collision dependency closure.
+It admits the exact metadata, cover, tree, seed, audit, and eight source nodes, checks
+the strict seed geometry once, and requires both closed terminal branches, all eight
+completed nodes, and an empty pending frontier before singleton acceptance.
+Input, source, dependency, and deadline checks precede the final status.
+Existing output paths and overlaps with inputs refuse.
+The actual tree `7a9bf9e6` matches the pinned manifest proposal and retains false
+publisher proof flags.
+This approves a bounded execution; case 1383 remains unaccepted until its complete
+observed replay passes.
+
+The scoped [completion inventory](../../../packing/devtools/inventory_n11_completion.py)
+revision `c1cea231` also passes review as incomplete evidence bookkeeping.
+Its conditional-D4 join binds immutable baseline `e581a614`, the exact 1,931-case
+census, every earlier execution file, and each fresh cut report through its already
+reviewed singleton execution.
+Cases 1383, 2175, and 2176 cannot enter that premise.
+The far-15 parent, actual final-state, and terminal joins are explicit.
+Its read-only execution retains false geometry-rerun and global flags; matching records
+does not establish that their geometric executions occurred.
+
+## Near-13 State and Four Further Exclusions
+
+The
+[near-13 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-near13/result.json),
+SHA-256 `c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2`, is accepted
+under child checker `ebbc83b0`. It binds r1 receipt `677719a0`, source `a2f30c92`, the
+inherited upper center and owner-13 angular conditions, and actual original final-state
+digest `b0404ffa`. All 44 updates complete: 7,852 rows, 52,383 cover events, 101,811
+probes, 23,592 common-core planes, and 344 additions, with no partner collision work.
+The last complete update is bound through the exact final state, as required by the
+reviewed source correction.
+The 623.328-second execution and its stdout, parent receipt, source, dependency, and
+ordered step bindings pass.
+This supplies the conditional near-13 state for r11; it proves no terminal
+contradiction, completed capture tree, or global theorem.
+
+The isolated child-checker revision
+`da027220b6eaea1962410fc786860e6c5c48d05cfe0860ac16ccdcec079c6921` is approved for
+far13. It adds exact accepted r10 receipt `d75b95da`, source `58da537e`, final state
+`356e63cb`, and the pinned far13 source `c86ed9d0` with 24 steps and terminal owner 10
+at step 23. Its parent admission requires the exact
+twelve-complete-steps-plus-partial-tail shape.
+The geometry, closed-condition inheritance, complete terminal cover, and final
+dependency checks are unchanged; this source approval grants no far13 execution credit.
+
+The
+[fresh retry batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-refined-retry/summary.json),
+SHA-256 `b16a8c549a6784e4a5fc69a6dd98d808b8d76f8beb1488d43e22575e436d4204`, accepts
+1343, 1716, and 2125 under reviewed checker `9047dcbb`. Its six nodes contain 160
+complete updates and 3,776 rows.
+The 81 skipped rows belong only to unpromoted ancestor tails.
+Case 2125 checks 1,176 partner rows and 87,688 collision inequalities; 1343 and 1716
+correctly record no collision work.
+The
+[final single-node batch](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/nonfield-batch-final-single/summary.json),
+SHA-256 `7bdcde5281868fb58fadccb40c8b418bc1e22314136b8690cf9f94a1b9e762a1`, accepts 1694
+after 37 complete updates and 2,368 rows, with no collision work.
+Both audits check every compressed and decoded receipt, exact ordered inventory,
+assignment, frozen checker/helper/runner identity, and all 15 distinct archived input
+objects.
+All four IDs were new, bringing the union to 2,147 of 2,180 required exclusions,
+with 33 remaining. Earlier refused runs retain zero credit.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

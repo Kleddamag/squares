@@ -825,7 +825,7 @@ session:
     bead: think-3i74
     objective: Finish remaining multi-node exclusions and special center partition while
       replaying shared capture children and auditing final composition.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Both baseline-dependent D4 cases and r1 capture now have reviewed executions.
     budget_minutes: 30
@@ -836,11 +836,37 @@ session:
     validation_command: Frozen selected proof replays and focused changed-tool controls.
     kill_condition: Missing premises, incomplete rows or changed dependencies prevent credit.
     fallback: Preserve precise refusals and advance independent cases beside implementation.
+    outcome: Reviewed exclusions reached 2147 of 2180. Root, r1, r10, near13 and
+      far15 capture nodes accepted. Remaining32 ordinary cases running; center1383
+      diagnostic measured118CPU seconds in120wall seconds and remains incomplete.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/completion-inventory.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/center-partition-1383-profile/result.json
+    stop_reason: Component checkpoint at 2026-09-30T11:43:48Z.
+    next_action: Continue remaining proof runs while profiling the center geometry bottleneck.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-k6lh
+    objective: Measure remaining proof execution costs and improve the dominant geometry
+      work while independent capture and exclusion lanes continue.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Center diagnostic isolates actual geometry CPU as the dominant cost.
+    budget_minutes: 30
+    started_at: '2026-09-30T11:43:48Z'
+    deadline_at: '2026-09-30T12:13:48Z'
+    expected_output: Reusable cost summary, bounded center replay decision, and reviewed
+      additional exclusions and capture states.
+    validation_command: Frozen selected proof replays and focused changed-tool controls.
+    kill_condition: Unmeasured speed claims or incomplete geometric work cannot receive credit.
+    fallback: Retain exact incomplete obligations and continue independent proof lanes.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol handles empty-domain grammar and center branches; Sol capture lane
-      replays reviewed children; Astra audits implications; coordinator integrates evidence.
+    next_action: Sol profiles geometry and summarizes costs; Sol advances capture children;
+      Astra audits execution and final joins; coordinator integrates accepted evidence.
   budget:
     wall_minutes: 1135
     max_cycles: 40

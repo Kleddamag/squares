@@ -15,7 +15,15 @@ from typing import Any
 
 from strif import atomic_write_text
 
-from devtools.inventory_n11_exclusions import PACKET, REPO, REVISION, inventory, require
+from devtools.inventory_n11_exclusions import (
+    PACKET,
+    PILOTS,
+    REPO,
+    REVISION,
+    inventory,
+    read_bound,
+    require,
+)
 
 RECEIPTS = PACKET / "receipts"
 FIXED = {
@@ -33,11 +41,19 @@ FIXED = {
     "capture-branch-r1-full": (
         "677719a04426aa53a9ebe3bf8d597e78079313eec2e387bc6f4e4655fd5610f4"
     ),
+    "capture-child-far15": ("cda898189d5026234bb6dfd1239dec356a1ea7c1e22504034b02d0c6b692641e"),
+    "capture-child-r10": "d75b95da3f286f794aa091a4abbddfea22eb264c29530200d19fa6bb8aab517f",
+    "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
     "pose-inclusion": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
     "local-isolation": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
 }
 # Source identities come from the reviewed graph, not from a supplied PASS string.
 CAPTURE = {
+    "a2f30c9246b770a2da91e45489f7b9343c345c105e00333f7ca67ab66b53db09": (
+        "capture-child-near13",
+        "child_source_sha256",
+        "child_node_state_checked",
+    ),
     "f9e67f28ea951fb5255c89e33b3ff0e1ee663c7011751761c9200441047b66d4": (
         "capture-root-node-full-integer",
         "root_source_sha256",
@@ -47,6 +63,16 @@ CAPTURE = {
         "capture-branch-r1-full",
         "r1_source_sha256",
         "r1_node_state_checked",
+    ),
+    "e25a5de42cb45d9057660bb6d5942f980672e5d6e6b97e361c10931359c2f486": (
+        "capture-child-far15",
+        "child_source_sha256",
+        "child_node_state_checked",
+    ),
+    "58da537ee50dee6f21848f166a4d685961ebae6de4077835e40eef1fc1f89f48": (
+        "capture-child-r10",
+        "child_source_sha256",
+        "child_node_state_checked",
     ),
 }
 
@@ -68,6 +94,45 @@ def acyclic(parents: dict[str, str | None]) -> None:
             cursor = parents[cursor]
 
 
+def conditional_d4(census: dict[str, Any]) -> list[int]:
+    """Bind the earlier baseline without deriving it from later conditional cases."""
+    baseline_sha = "e581a614d4d3210375059e4fd98bfdae0ebb1ca8ba3078050454b0da208f3c6f"
+    baseline = bound(
+        RECEIPTS / "baseline-d4-cuts/baseline-execution-inventory.json", baseline_sha
+    )
+    required = set(census["baseline"]["case_ids"])
+    accepted = set(baseline["accepted_case_ids"])
+    require(len(required) == 1931 and required <= accepted, "baseline exclusions missing")
+    require(not {1383, 2175, 2176} & accepted, "conditional exclusion in its own premise")
+    for binding in baseline["execution_record_bindings"]:
+        path = (REPO / binding["path"]).resolve()
+        require(path.is_relative_to(RECEIPTS.resolve()), "baseline execution outside packet")
+        read_bound(path, binding["sha256"])
+    for case in (2175, 2176):
+        relative = f"generic-case{case}-complete/replay.json.gz"
+        require(PILOTS[relative][0] == case, "special case registry identity")
+        execution = read_bound(RECEIPTS / relative, PILOTS[relative][1])
+        require(execution["excluded_case_ids"] == [case], "conditional exclusion identity")
+        require(
+            execution["source_sha256"]["baseline_execution_inventory"] == baseline_sha,
+            "conditional exclusion baseline differs",
+        )
+        report = bound(
+            RECEIPTS / f"generic-case{case}-complete/replay-d4-cuts.json",
+            execution["source_sha256"]["d4_report"],
+        )
+        require(
+            report["baseline_execution_premise_admitted"] is True
+            and report["finite_obligations_complete"] is True
+            and report["necessary_cuts_verified"] is True
+            and set(report["baseline_case_ids"]) == required
+            and report["baseline_pending_case_ids"] == []
+            and [row["mask_index"] for row in report["cases"]] == [case],
+            "conditional cut scope differs",
+        )
+    return [2175, 2176]
+
+
 def completion() -> dict[str, Any]:
     records = {name: bound(RECEIPTS / name / "result.json", sha) for name, sha in FIXED.items()}
     path = RECEIPTS / "exclusion-inventory.json"
@@ -85,6 +150,7 @@ def completion() -> dict[str, Any]:
     accepted = set(exclusions["accepted_case_ids"])
     require(accepted <= required, "excluded survivor or foreign case")
     require(set(exclusions["remaining_case_ids"]) == required - accepted, "wrong remainder")
+    d4_cases = conditional_d4(records["case-census"])
 
     graph = records["source-graph"]
     require(graph["upstream_commit"] == REVISION, "capture revision differs")
@@ -109,6 +175,13 @@ def completion() -> dict[str, Any]:
             require(record["global_optimality_proved"] is False, "unexpected global promotion")
             if parents[source] is not None:
                 require(parents[source] in CAPTURE, "accepted child without accepted parent")
+            if source_key == "child_source_sha256":
+                parent_receipt = CAPTURE[parents[source]][0]
+                require(
+                    record["parent_source_sha256"] == parents[source]
+                    and record["parent_result_sha256"] == FIXED[parent_receipt],
+                    "child execution premise differs",
+                )
         nodes.append(
             {
                 "source_path": name,
@@ -128,6 +201,13 @@ def completion() -> dict[str, Any]:
     )
     for child, field, parent in joins:
         require(records[child][field] == FIXED[parent], f"receipt join differs: {child}")
+    far15 = records["capture-child-far15"]
+    require(
+        far15["terminal_empty_pose_checked"] is True
+        and far15["final_state_canonical_sha256"]
+        == graph["leaf_final_state_digests"]["far15"]["actual"],
+        "far15 contradiction or actual leaf state differs",
+    )
     for relative, sha in records["capture-root-chain"]["receipt_file_sha256"].items():
         target = (RECEIPTS / relative).resolve()
         require(target.is_relative_to(RECEIPTS.resolve()), "root-chain path escaped packet")
@@ -146,10 +226,12 @@ def completion() -> dict[str, Any]:
         "accepted_exclusions": len(accepted),
         "required_exclusions": len(required),
         "missing_exclusion_ids": sorted(required - accepted),
+        "conditional_d4_premises_bound": d4_cases,
+        "center_partition_execution_pending": 1383 not in accepted,
         "capture_nodes": nodes,
         "missing_capture_source_sha256s": [node["source_sha256"] for node in missing_nodes],
         "pending_joins": [
-            "All conditional exclusion premises and center branches",
+            "Both center-partition branches for case 1383",
             "All three far-leaf contradictions and closed branch coverage",
             "Accepted near final state to pose inclusion and local isolation",
             "Final consumer join to the reviewed endpoint/witness argument",

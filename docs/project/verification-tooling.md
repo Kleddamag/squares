@@ -5,6 +5,74 @@ weighted point covers, threshold charges, rectangle densities, and finite geomet
 subproblems. A checker establishes only the theorem and input format it implements.
 The existence of a checker is separate from a completed run on a particular claim.
 
+## The n = 11 Argument from First Principles
+
+To prove the optimal side length, two inequalities must meet at the same exact value.
+A feasible packing of eleven unit squares in a square of side `T` establishes
+`s(11) ≤ T`. Global optimality additionally requires excluding every packing with side
+less than `T`, including independently rotated squares and boundary contact.
+Here `T = 3.8770835900228141773078970601…` denotes the exact algebraic endpoint, not the
+printed decimal used as a tolerance.
+
+The lower-bound proof turns that continuous question into a finite, exhaustive cover.
+The 2,184 canonical patterns cover all configurations under the reviewed reduction.
+Exact geometric checks exclude 2,180 patterns; symmetry relates the four survivors.
+The capture argument confines the remaining configurations to a local region, and the
+local endpoint argument rules out every smaller container.
+The exact feasible witness supplies the matching upper bound.
+Every required exclusion and capture component has a completed execution, and the review
+checks that their hypotheses and conclusions join without a missing case.
+
+There are three different forms of checking in this process:
+
+- **Geometric execution** computes the exact inequalities that eliminate cases or
+  constrain configurations.
+  This is where most proof runtime is spent.
+- **Composition and mathematical review** establish exhaustiveness, symmetry, boundary
+  handling, state joins and the final implication.
+  The fast final composer reconciles retained evidence; it does not repeat the geometric
+  calculations.
+- **Software validation** checks implementation contracts, malformed inputs, regression
+  controls and repository integration.
+  Passing general CI does not prove the theorem.
+
+The accepted result is T-060 at **S5/V4/C5**: significance on a central open case, exact
+machine verification, and a mapped review-ready confirmation record.
+`C5` does not imply a distinct mathematical method, and `V4` does not mean a
+proof-assistant kernel checked the argument.
+Our checkers share disclosed exact arithmetic and construction primitives with the
+source. There is no claimed uniqueness theorem or formal V5 certification.
+See [the classification definitions](../../epistemics.md).
+
+## Separate Pipelines and Remaining Work
+
+| Pipeline | Current result | Remaining work |
+| --- | --- | --- |
+| Global n = 11 optimality, T-060 | All required mathematical obligations executed and reviewed; final composition has no pending obligations | Simplify the argument before writing the dedicated explainer; add convenient fresh chained replay automation |
+| Rectangle-density certificates, wand125/tokoharu tools | Optional independent Rust exact area backend and differential controls pass | Complete an external certificate replay and meet the C++ effectiveness and speed target; current bounded runs remain inconclusive and Rust is slower |
+| Wang–Li intake, PR #249 | Separate historical improvement to the previous n = 11 lower bound, with its own verification record | Reconcile claim IDs and shared generated records when the two open PRs are merged |
+
+These pipelines do not substitute for one another.
+The rectangle-density checker is not the checker for the global optimality argument.
+Porting an exact polygon-area operation to Rust does not strengthen the geometric bound
+or reduce its required search boxes by itself.
+The next rectangle experiment therefore tests a stronger, independently reviewed
+derivative bound before committing to a native port; its
+[preregistered diagnostic](reviews/review-2026-09-30-rectangle-derivative-bound.md)
+requires a complete frozen frontier and reports runtime separately from proof credit.
+
+Fresh whole-proof automation (`think-e2ot`) is an engineering gap: all constituent
+geometric runs already completed, but their existing receipt chains include
+execution-specific bytes.
+A fresh chain needs reviewed state-equivalence joins.
+The publisher’s stale audit bindings (`think-gzju`) are another reproducibility defect;
+neither is an unexecuted mathematical premise in the accepted composition.
+Native performance (`think-3cwg` / `think-r97y`), proof simplification (`think-uz2x`),
+the later explainer (`think-08pw`), and cross-PR reconciliation (`think-d15x`) stay
+separately tracked.
+
+## Completed Global Proof Evidence
+
 **T-060: global n = 11 optimality is confirmed at S5/V4/C5.**
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) claims the
 exact Trump endpoint through a global cell cover, 2,180 exclusions, a symmetry bridge

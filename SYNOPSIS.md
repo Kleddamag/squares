@@ -979,6 +979,7 @@ case or experiment separately.
 | [wand125 Tools: Mathematical and Admission Review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) | dated review record | record | retained | — |
 | [Native Rectangle-Density Verification Contract](docs/project/reviews/review-2026-09-29-native-rectangle-contract.md) | dated review record | record | retained | — |
 | [Rectangle Corner Bound and Pending-Box Review](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) | dated review record | record | retained | — |
+| [Exact Rectangle Derivative Bound](docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md) | dated review record | record | retained | — |
 | [Validation Parallelism Efficiency Block](docs/project/reviews/review-2026-09-29-validation-parallelism.md) | dated review record | record | retained | — |
 | [Verification Tooling and Its Boundaries](docs/project/verification-tooling.md) | component scope and use | record | retained | — |
 | [Native Rectangle Verification and wand125 Tools Intake](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md) | implementation plan | record | maintained | — |

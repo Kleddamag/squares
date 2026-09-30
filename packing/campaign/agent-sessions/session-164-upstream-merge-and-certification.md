@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T16:40:00Z'
+  deadline_at: '2026-09-30T17:20:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -1088,7 +1088,7 @@ session:
     clock_role: work
     bead: think-o18s
     objective: Calibrate the observed three-shard partition and complete final PR integration.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: The new partition passed every behavioral test; only a stale baseline and selector contract remain.
     budget_minutes: 30
@@ -1098,9 +1098,18 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_gate_budgets.py tests/test_suite_files.py
     kill_condition: Changed test coverage, invented timings or weakened enforcement prevent acceptance.
     fallback: Keep the confirmed theorem and explicit integration status while repairing the failing contract.
-    outcome: null
-    evidence: []
-    stop_reason: null
+    outcome: >-
+      Published 180326e81 with source-bound two-reading A calibration, unchanged
+      131/154/154 absolute ceilings and complete three-shard coverage. All functional
+      checks on predecessor 40bebd18a passed; its A timing-only failure is now explained
+      by the observed 65.67–110.09 band. The published head subsequently passed all
+      required checks: Packing validation 36741427338, Pages 36741427124 and
+      mergeability 36741420037. Integration beads think-niqx, think-z3ko, think-o18s
+      and think-fjdd are closed; native-verifier work continues separately.
+    evidence:
+    - packing/devtools/gate-budgets.yaml
+    - packing/tests/test_browser_floor_contract.py
+    stop_reason: At 2026-09-30T16:06:00Z, published calibration is awaiting asynchronous hosted confirmation.
     next_action: >-
       Published 40bebd18a removes the temporary calibration exception and fixes the
       browser-floor selector. Run 36740609969 passes all functional lanes; shard A
@@ -1108,8 +1117,51 @@ session:
       but outside the first single-reading baseline. Record the observed 65.67–110.09
       band and 85.03 geometric mean using the existing timing contract; keep the
       partition and absolute ceiling fixed, then certify the final head.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-r97y
+    objective: Test a stronger independently implemented exact rectangle bound while final CI runs.
+    status: stopped
+    entered_by: evidence_checkpoint
+    switch_reason: The Rust area kernel is complete but slower; a reviewed derivative bound may remove unnecessary geometric work.
+    budget_minutes: 30
+    started_at: '2026-09-30T16:06:00Z'
+    deadline_at: '2026-09-30T16:36:00Z'
+    expected_output: Reviewed exact diagnostic, complete frozen-frontier result and explicit decision before any production adoption.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_rectangle_derivative_bound.py
+    kill_condition: Unsound interval enclosure, incomplete box coverage or a resource limit prevents diagnostic acceptance.
+    fallback: Retain the complete Rust kernel and Python default; report a negative or incomplete diagnostic without a speed claim.
+    outcome: Exact core and eight analytic controls are reviewed and frozen; runner admission controls pass while final static review finishes. Both PR descriptions and coordination bead now distinguish completed T-060, separate native tooling and pending cross-PR merge.
+    evidence:
+    - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
+    stop_reason: Source review reached its checkpoint; measurement awaits the frozen runner and local commit.
+    next_action: Freeze the reviewed runner, commit the preregistered instrument, then execute the bounded complete-frontier diagnostic.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-r97y
+    objective: Measure the reviewed derivative diagnostic and publish its scoped outcome with the first-principles overview.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Mathematical core review is complete; source freeze and observed diagnostic are next.
+    budget_minutes: 25
+    started_at: '2026-09-30T16:35:27Z'
+    deadline_at: '2026-09-30T17:00:27Z'
+    expected_output: Committed reviewed source, complete or explicitly incomplete measurement, and current PR evidence without new unsupported proof credit.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev pytest -q tests/test_rectangle_derivative_bound.py tests/test_rectangle_derivative_frontier_cli.py
+    kill_condition: Any mathematical review blocker, incomplete inventory, source mutation or diagnostic ceiling violation prevents acceptance.
+    fallback: Retain negative or incomplete results and the Python default; make no native speed claim.
+    outcome: null
+    evidence:
+    - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
+    - docs/project/verification-tooling.md
+    stop_reason: null
+    next_action: Run the frozen diagnostic after final runner review, then disposition and publish one integration batch.
   budget:
-    wall_minutes: 1235
+    wall_minutes: 1275
     max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15

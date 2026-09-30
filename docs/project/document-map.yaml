@@ -709,6 +709,10 @@ documents:
     role: review
     authority: record
     lifecycle: retained
+  - path: docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
+    role: review
+    authority: record
+    lifecycle: retained
   - path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
     role: review
     authority: record

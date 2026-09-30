@@ -1089,6 +1089,9 @@ exclusions:
       GitHub math probe `devtools.check_github_math --probe` fetches: not documents.
   - pattern: packing/devtools/templates/*.md
     reason: >-
-      Templates for devtools.render_explainer and devtools.render_verifiable_claim:
-      Markdown with placeholders and stamping markers, not documents. The rendered page
-      and the generated claim documents are the documents.
+      The renderers' templates -- the explainer's, the site pages' (devtools.render_overview),
+      the proof card's and the claim documents' -- are Markdown with placeholders and
+      stamping markers, not documents; the rendered pages and generated claims are. The two
+      design notes beside them, paper-design.md and site-design.md, are the contracts for
+      the stylesheets in the same directory and are read beside them; the glob covers them
+      too, so they carry no role here.

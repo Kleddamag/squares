@@ -1233,7 +1233,7 @@ solutions along the parameter instead of searching for them cold.
 | Ladder | Parameter | Easy end | What to watch |
 | --- | --- | --- | --- |
 | container inflation | slack $\delta$ in side $s^{\ast} + \delta$ | large $\delta$: hypothesized broader accessibility | basin splits and merges; the first observed or certified $\delta$ at which a named target is reachable |
-| superdisk | exponent $p$ in `|x|^(2p) + |y|^(2p) <= 1` | `p = 1`: circles, orientation-free; `p -> infinity`: the square limit | where orientation symmetry breaks |
+| superdisk | exponent $p$ in $\lvert x\rvert^{2p} + \lvert y\rvert^{2p} \le 1$ | $p = 1$: circles, orientation-free; $p \to \infty$: the square limit | where orientation symmetry breaks |
 | boundary layer | frozen grid bulk | the pure grid | whether a sheared band re-synchronizes |
 
 Container inflation is the primary one, and it can pay three ways from one computation:
@@ -1471,7 +1471,7 @@ appear inside $o_{ik}$.
 | $\eta$ | nonnegative real | The objective multiplier in the tutorial’s Fritz–John equation |
 | $\kappa_j$ | nonnegative real | The multiplier on branch constraint $g_j$ in that equation |
 | $\delta$ | real | Slack in a container-inflation ladder |
-| $p$ | real | The exponent in the superdisk family `|x|^(2p) + |y|^(2p) <= 1`; `p = 1` is a circle and `p -> infinity` approaches a square |
+| $p$ | real | The exponent in the superdisk family $\lvert x\rvert^{2p} + \lvert y\rvert^{2p} \le 1$; $p = 1$ is a circle and $p \to \infty$ approaches a square |
 
 Two collisions are worth naming because they come from outside this document.
 Smale’s **α-theory**, in [§5](#5-algebra-versus-numerics), has nothing to do with the

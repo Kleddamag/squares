@@ -37,6 +37,7 @@ import html
 import re
 import sys
 from collections.abc import Callable, Sequence
+from datetime import datetime
 from functools import cache
 from pathlib import Path
 from typing import Literal, NamedTuple
@@ -44,7 +45,7 @@ from urllib.parse import quote
 
 from devtools import repo_links
 from devtools.repo_links import repo_url
-from sqpack.release import PUBLICATION_EDITION
+from sqpack.release import PUBLICATION_EDITION, PUBLICATION_HISTORY
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -99,6 +100,16 @@ FILM_URL = (
     "ascent-n1-324-1080p60-citations.mp4"
 )
 SHORT_FILM_URL = FILM_URL.replace("n1-324", "n1-100")
+
+
+def film_release_date() -> str:
+    """The day `FILM_RELEASE` was first published, as the site writes a date without
+    its year: 28 September. The films show the record as it stood that day."""
+    entry = next(entry for entry in PUBLICATION_HISTORY if entry.version == FILM_RELEASE)
+    day = datetime.strptime(entry.first_published, "%B %d, %Y").date()  # noqa: DTZ007
+    return f"{day.day} {day:%B}"
+
+
 #: The Visualize section's tabs, each its own page: its key, where it is served from the
 #: site's root, and its label. The film is the section's first tab and the bar's target.
 VISUALIZE_TABS: tuple[tuple[str, str, str], ...] = (
@@ -360,9 +371,9 @@ def site_logo() -> str:
 
 @cache
 def favicon_html() -> str:
-    """The site's icon: case 11, the project's central open case, drawn small as a data
-    URI, so it costs no fetch. It names its ink and paper, since a tab has no page
-    colour to inherit."""
+    """The site's icon: case 11, the project's central case, settled by T-060, drawn
+    small as a data URI, so it costs no fetch. It names its ink and paper, since a tab
+    has no page colour to inherit."""
     from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
 
     svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff", frame_px=FAVICON_PX)
@@ -525,6 +536,7 @@ def overview_page() -> Page:
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "VERIFICATION": overview_sections.verification_block(),
+        "RECENT_LEAD": overview_sections.recent_lead(overview),
         "RECENT": overview_sections.recent_table(overview),
         "RECENT_FROM": overview_sections.recent_from(),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
@@ -617,6 +629,7 @@ def visualize_page() -> Page:
         "SHORT_FILM_URL": SHORT_FILM_URL,
         "RELEASE_URL": FILM_RELEASE_URL,
         "RELEASE": FILM_RELEASE,
+        "RELEASE_DATE": film_release_date(),
     }
     markdown = fill(
         VISUALIZE_ARTICLE.read_text(encoding="utf-8"), values, where=VISUALIZE_ARTICLE.name

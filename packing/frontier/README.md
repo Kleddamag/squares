@@ -58,7 +58,7 @@ uv run --frozen python -m devtools.render_research_tables --check
 ```
 
 Five reader views are generated this way: [`STATUS.md`](STATUS.md), the open frontier
-(265 rows), the solved cases (59), and the search and proof strategy catalogues (28 and
+(261 rows), the solved cases (63), and the search and proof strategy catalogues (28 and
 30). Editing a fact means editing the data here and re-rendering; editing a generated
 table by hand will be caught.
 
@@ -135,7 +135,7 @@ The ones that carry the most weight:
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
-  There are currently 62 proved and 262 open formal cases.
+  There are currently 63 proved and 261 open formal cases.
 - `reported_upper_bound.catalogue_rigid` transcribes what the catalogue says about
   rigidity, in the catalogue’s own three-valued vocabulary: `rigid`, `semi-rigid`, or
   `not-stated`. `not-stated` is source silence and never a claim that a packing can
@@ -448,7 +448,8 @@ diagonal strips, 3 extensions of smaller records, and 2 whose method the source 
 record (`n = 68, 69`).
 
 Recorded catalogue degrees for `n ≤ 100` rise through 4, 5, 6, 8, 12, 18, 20, 24, 42,
-and 44, while every proved case has degree at most 2.
+and 44, while every proved case but `n = 11`, whose side has degree 8, has degree at
+most 2.
 
 ### Smallest Open Gaps
 
@@ -457,36 +458,38 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 
 | `n` | gap | record | note |
 | --- | --- | --- | --- |
-| 11 | 0.0021 | Trump 1979 | the famous case, carried to `31/8` by Kleddamag |
 | 17 | 0.0151 | Bidwell | carried to `116511/25000` by Guzhou0806 after Kleddamag |
 | 12 | 0.0314 | grid | `4² − 4`, carried to `15680/3951` by Daniel after Burns, Massaccesi |
 | 97 | 0.0557 | grid | `10² − 3` |
 | 78 | 0.0627 | grid | `9² − 3` |
+| 61 | 0.0718 | grid | `8² − 3` |
 
 The `n = 17` bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
 weighted-certificate proof over 4,991 orientation intervals.
-The first three moved in September 2026 on third-party weighted certificates, and the
+The first two moved in September 2026 on third-party weighted certificates, and the
 `k² − 4` family now has three solved members above `k = 3`: `s(21) = 5`, `s(32) = 6` and
 `s(45) = 7`, proved by Evan Daniel on the same method’s zero-margin form, the first and
 third with mass on the grid lines as well as on points.
-`n = 21`, which led this table at `0.0050` from 2026-09-27, left it with that proof.
+`n = 21`, in this table at `0.0050` from 2026-09-27, left it with that proof.
+`n = 11`, which headed it at `0.0021` once Kleddamag carried it to `31/8`, left it on
+2026-09-30, when T-060 proved `s(11)` equal to Trump’s side.
 
-Next comes `n = 61` at `0.0718`; with `n = 97` and `n = 78` it is one of three
-consecutive unproved members of the family `s(m² − 3) = m`, which is **proved exactly
-for `m = 3, 4, 5, 6, 7`** (that is `s(6), s(13), s(22), s(33), s(46)`) and conjectured
-beyond. Their gaps are small because Nagamochi’s bound is nearly tight there, and their
+`n = 97`, `n = 78` and `n = 61` are three consecutive unproved members of the family
+`s(m² − 3) = m`, which is **proved exactly for `m = 3, 4, 5, 6, 7`** (that is
+`s(6), s(13), s(22), s(33), s(46)`) and conjectured beyond.
+Their gaps are small because Nagamochi’s bound is nearly tight there, and their
 conjectured optima are **integers**—the case the existing proof technique is built for.
 
 Their small gaps and integer conjectured optima make them candidates for the existing
 technique; the retained source audit found little case-specific treatment.
 
-Among the cases with a *non-trivial* record, `n = 19` follows `n = 11` and `n = 17` at
-`0.0856`, then `n = 27` at `0.1071`, `n = 26` at `0.1133` and `n = 18` at `0.1439`.
-First-party certificates moved `n = 11`, `17`, `18` and `19` beginning on 2026-09-04;
-the retained `n = 18` ladder reached `4.679` on 2026-09-19. External certificates now
-carry `n = 11`, `17`, `26` and `27`, and wand125’s reported rectangle bounds stand above
-the verified values at `18` and `19` until their replays run.
+Among the cases with a *non-trivial* record, `n = 19` follows `n = 17` at `0.0856`, then
+`n = 27` at `0.1071`, `n = 26` at `0.1133` and `n = 18` at `0.1439`. First-party
+certificates moved `n = 11`, `17`, `18` and `19` beginning on 2026-09-04; the retained
+`n = 18` ladder reached `4.679` on 2026-09-19. External certificates now carry `n = 11`,
+`17`, `26` and `27`, and wand125’s reported rectangle bounds stand above the verified
+values at `18` and `19` until their replays run.
 
 ## Cross-References
 

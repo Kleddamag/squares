@@ -9,9 +9,11 @@ author: Claude (agent), for the repository owner
 
 **Author:** Claude (agent), for the repository owner
 
-**Status:** Reviewed; in implementation
+**Status:** Phases 1 and 2 built on `claude/overview-page-impl` (jlevy/squares#255) and
+in owner review; Phase 3 carried by jlevy/squares#254, stacked on that branch
 
-**Tracking:** `think-xjq4` (epic) and its sixteen child beads
+**Tracking:** `think-xjq4` (epic); its first sixteen child beads grew to 71 during
+review, of which 56 are closed, 3 in progress and 12 open (2026-09-30)
 
 **Workflow:** W7 pipeline improvement
 
@@ -70,6 +72,10 @@ the one in `packing/frontier/n-NNN.md`.
 - A local preview of the whole site (overview, frontier atlas, explainer, tutorial,
   synopsis, workbench) with desktop and phone screenshots, reviewed by the owner before
   anything deploys.
+
+Amended 2026-09-30: the owner’s preview review replaced some of these pages; the site as
+built is under [URL Layout](#url-layout) and the decisions under
+[Owner Decisions During Review](#owner-decisions-during-review).
 
 ## Non-Goals
 
@@ -178,15 +184,25 @@ The data layer reuses the register’s own code rather than re-deriving it:
 
 ### URL Layout
 
-| Path | Page |
-| --- | --- |
-| `/` | the overview (new) |
-| `/frontier.html` | the frontier atlas, `n = 1…324` (new) |
-| `/explainer.html` | the n = 11 explainer (moved from `/`) |
-| `/tutorial.html` | `TUTORIAL.md`, rendered (new) |
-| `/synopsis.html` | `SYNOPSIS.md`, rendered (new) |
-| `/workbench/` | the workbench (unchanged) |
-| `/t-018-explainer.{md,pdf}` and the composite assets | unchanged |
+As built (amended 2026-09-30):
+
+| Path | Page | Nav tab |
+| --- | --- | --- |
+| `/` | the overview (new) | Overview |
+| `/frontier.html` | the frontier atlas, `n = 1…324` (new) | Frontier |
+| `/all-results.html` | every register entry, the results table (new) | Results |
+| `/cases.html#n-N` | one case record per tracked `n` (new) | none; opened from the atlas grid and the frontier atlas |
+| `/explainer.html` | the n = 11 explainer (moved from `/`) | Explainer |
+| `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Tutorial |
+| `/visualize.html` | the `n = 1…324` film at full width, with Film and Workbench tabs (new) | Visualize |
+| `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
+| `/readme.html`, `/synopsis.html`, `/results.html`, `/status.html`, `/epistemics.html`, `/conventions.html`, `/development.html`, `/defects.html` | the repository documents, rendered for the documentation cards’ popovers | none |
+| `/t-018-explainer.{md,pdf}` and the composite assets | unchanged | none |
+
+The nav also links the repository on GitHub.
+The planned `/synopsis.html` nav page was dropped for a card (see
+[Owner Decisions During Review](#owner-decisions-during-review)); the synopsis is served
+only as one of the rendered documents behind the cards, beside its GitHub copy.
 
 The explainer moves to `/explainer.html` rather than `/explainer/` so it stays beside
 the composite assets and PDF it references with relative paths.
@@ -245,6 +261,33 @@ Sections, top to bottom:
    (`frontier/RESULTS.md`), `epistemics.md`, and the research process.
 9. **Footer.** Edition, data revision, build commit, and the licence.
 
+As built (amended 2026-09-30), after the owner’s preview review, the page runs:
+
+1. **Nav bar and hero.** The case-11 drawing is the site’s mark beside “Square Packing”,
+   and alone below 50rem; a theme gear (System, Light, Dark) ends the bar.
+   The edition appears only in the footer.
+   There is no `h1` and no tagline; an n = 53 hero graphic opens the page.
+2. **The Square Packing Problem.** Brief, and carrying no bound or open-case claim,
+   followed by cards for the explainer, the tutorial, the workbench and the frontier
+   atlas.
+3. **Recent Results.** One table (date, result, method, credit, status) of every result
+   since 1 August 2026, newest first, filtered by default to significance S3 and up,
+   with a link to the full table on `all-results.html`. It replaces the headline cards,
+   the exact-value cards and the recent-changes list, and is followed by the cases
+   awaiting a replay.
+4. **Verification at a Glance.** One card per rung dimension (Verification,
+   Confirmation, Significance) in place of the counts and stacked bar.
+5. **The Atlas.** A grid of every known-best packing, `n = 1…100` expanding to 324, each
+   opening a popover with the film’s panel for that `n` and a link to its case record;
+   then three cards: the two posters, each opening its PDF, and Visualize.
+6. **The Survey**, **Other Square Packing Projects** and **Squares Project
+   Documentation**, the last a card per repository document whose popover renders it and
+   links its copy on GitHub.
+7. **Footer.**
+
+A card opens a popover that previews where it leads, with a button to go there; a direct
+card, such as an atlas poster, opens its target in a new tab.
+
 The prose around generated blocks (the problem statement, section introductions) lives
 in a template, `packing/devtools/templates/overview-article.md`, so it is reviewed as
 prose and formatted by flowmark.
@@ -254,7 +297,9 @@ the template as a literal.
 ### The Results Table
 
 One row per register entry, grouped and ordered exactly as `RESULTS.md` is, through the
-shared `grouped_results()`.
+shared `grouped_results()`. Amended 2026-09-30: the table is its own page,
+`all-results.html`, with a Results nav tab; the overview keeps Recent Results, and
+`forward.js` sends old `index.html#every-result` and `#t-nnn` links there.
 
 | Column | Source |
 | --- | --- |
@@ -327,6 +372,11 @@ record fails the render rather than rendering a blank cell.
 with kpress `render_page` in `trust_mode="sanitized"`, with its TOC rail from the
 headings. Heading ids come from kpress’s GitHub-compatible slugger, so existing
 `SYNOPSIS.md#…` anchors carry over.
+Amended 2026-09-30: only the tutorial is a nav page.
+The synopsis became a card among the repository documents, rendered by
+`devtools.site_documents` for its popover and linked on GitHub, and the site pages share
+the explainer’s text layout and math pipeline with a contents rail beside a centred
+reading column.
 
 Links are rewritten in the rendered HTML (`href` and `src` after parsing), never by a
 regular expression over the Markdown, which would also match `](` inside code spans:
@@ -366,6 +416,12 @@ follows the theme and the print rules:
 - a thumbnail cell for the frontier atlas;
 - the stacked verification bar.
 
+Amended 2026-09-30: the stacked bar became rung cards, and the additions grew into a
+design system documented in one place, `packing/devtools/templates/paper-design.md`: one
+chip for every small label, cards and popovers, one shared table component (every
+`.site-table` on the same rules, bleeding wide above 1280px up to 100rem), and the nav
+in its own `site-nav.css`.
+
 Each addition is written so it could move upstream into kpress unchanged; moving it is a
 follow-up in the kpress repository, not part of this plan.
 
@@ -382,6 +438,8 @@ since the layout checks measure its clearance, and only its link changes from �
 explainer” at `../` to the overview.
 `WORKBENCH_HOME` in `check_published_site`, the `check_published_site/startup.js` probe,
 and `test_explainer.py`’s pin on the link’s target and text change with it.
+Amended 2026-09-30: the workbench now carries the shared nav, the theme gear and the
+Film and Workbench tabs too (`render_overview.nav_shell`); `#site-note` stays.
 
 ### Components
 
@@ -474,37 +532,87 @@ and `python -m devtools.preview_site`.
 
 ### Phase 1: The Overview and Its Data
 
-- [ ] `render_overview.py` skeleton: inputs, `RENDER_INPUTS`, shell, deterministic
-  `--check`
-- [ ] Register fields `registered` and `headline`: schema, backfill script,
-  `check_results` checks, `DATA_REVISION` re-pin
-- [ ] Shared `grouped_results()` and the public `significance` helpers
-- [ ] Data layer: read the register, case files, atlas citations and release stamp into
-  one typed model; derive the statistics and the recent-changes list
-- [ ] Overview article template and the problem, headline, atlas and read-further
-  sections
-- [ ] The results table (static HTML, expandable rows, permalinks)
-- [ ] The frontier atlas page from the `SquarePackingCase/v2` records, with clean value
-  rendering, thumbnails and its tests
-- [ ] Verification-at-a-glance counts and the inline SVG bar
-- [ ] Table sorting and filtering script under the browser floor
-- [ ] Tests: every register entry is a row; every record link resolves at the build
-  commit; statistics equal the register’s own counts; byte-identical double render
+- [x] `render_overview.py` skeleton: inputs, `RENDER_INPUTS`, shell, deterministic
+  `--check` (`think-26f0`)
+- [x] Register fields `registered` and `headline`: schema, backfill script,
+  `check_results` checks, `DATA_REVISION` re-pin (`think-amvh`; `headline` arrived from
+  `main`)
+- [x] Shared `grouped_results()` and the public `significance` helpers (`think-jmsi`)
+- [x] Data layer: read the register, case files, atlas citations and release stamp into
+  one typed model; derive the statistics and the recent-changes list (`think-3bul`)
+- [x] Overview article template and the problem, headline, atlas and read-further
+  sections (`think-3bul`), since reshaped in review as listed under
+  [The Overview Page](#the-overview-page)
+- [x] The results table (static HTML, expandable rows, links on `main`), on its own
+  page, `all-results.html` (`think-sk27`, `think-x8ev`)
+- [x] The frontier atlas page from the `SquarePackingCase/v2` records, with clean value
+  rendering, thumbnails and its tests (`think-404b`)
+- [x] Verification at a Glance, built as one card per rung dimension in place of the
+  counts and inline SVG bar (`think-6hre`)
+- [x] Table sorting and filtering script under the browser floor (`think-sk27`)
+- [x] Tests: every register entry is a row; every record link resolves on `main`;
+  statistics equal the register’s own counts; byte-identical double render
 
 ### Phase 2: Navigation, Pages and Preview
 
-- [ ] Shared nav partial and stylesheet, included by the overview, explainer and
-  workbench
-- [ ] Explainer moved to `explainer.html`, anchor list emitted, fragment forwarder on
-  the overview
-- [ ] Tutorial and synopsis pages with link rewriting and a table of contents
-- [ ] `preview_site.py`: build every page into one directory and serve it
-- [ ] `pages.yml`, `pages_scope`, the filter-coverage test and `check_published_site`
-  updated; `README.md` links updated
-- [ ] Local preview with desktop and phone screenshots of each page, for the owner’s
-  review
+- [x] Shared nav partial and stylesheet, included by the overview, explainer and
+  workbench (`think-26f0`, `think-ooyr`, `think-38h1`)
+- [x] Explainer moved to `explainer.html`, anchor list emitted, fragment forwarder on
+  the overview (`think-ooyr`)
+- [x] Tutorial page with link rewriting and a table of contents; the synopsis is a
+  document card rather than a nav page (`think-fhik`, `think-6b3r`)
+- [x] `preview_site.py`: build every page into one directory and serve it (`think-f07f`)
+- [x] `pages.yml`, `pages_scope`, the filter-coverage test and `check_published_site`
+  updated (`think-rnqc`); `README.md` trimmed to point at the site (`think-grqy`)
+- [x] Local preview with desktop and phone screenshots of each page, for the owner’s
+  review (`think-h2un`)
+
+Added during the owner’s review, all built on the branch:
+
+- [x] Results page `all-results.html` with a Results nav tab (`think-x8ev`)
+- [x] Case records at `cases.html#n-N`, opened from the atlas grid and the frontier
+  atlas (`think-7vjh`)
+- [x] `visualize.html`: the `n = 1…324` film at full width, with Film and Workbench tabs
+  (`think-88zu`)
+- [x] Recent Results: every result since 1 August 2026 in one table, filtered by default
+  to S3 and up (`think-kjd1`, `think-5oih`)
+- [x] Homepage atlas grid of every known-best packing, with the atlas popover
+  (`think-p16v`)
+- [x] Card popovers that render the page or document they lead to, with an Expand button
+  (`think-x5z0`, `think-1wa2`)
+- [x] Theme gear (System, Light, Dark) at the end of every page’s nav (`think-4085`)
+- [x] The case-11 drawing as the nav mark and the favicon on every page (`think-38h1`)
+- [x] One shared table component and one chip design, documented in `paper-design.md`
+  (`think-5oih`, `think-w7ef`, `think-25tz`)
+- [x] Every repository link on `main`, never at a commit hash, with a published-site
+  check (`think-xv28`)
+- [x] Site pages share the explainer’s text layout and math pipeline, with a contents
+  rail (`think-iamc`)
+- [x] “Holds” renamed to “current best” on the site and in `RESULTS.md` (`think-krfg`)
+- [x] Smaller owner-review polish to nav, spacing, icons, popovers and headline math
+  (`think-e2dp`)
+- [x] Current `main` merged into the branch: `origin/main` at `5ddb1cdae` is an ancestor
+  of `cdb38d729` (`think-v4vq`, whose bead is still open)
+
+Still open under the epic at `cdb38d729`:
+
+- [ ] Present the n = 11 optimality result T-060 on the site and the reader pages
+  (`think-4ccp`, in progress; `cdb38d729` carries T-060’s exact n = 11 through the
+  frontier page), with its display bug `think-pd2g`
+- [ ] Films and atlas previews served from the site, with media checks (`think-9xvt`,
+  `think-g7lu`, `think-vvml`); README and explainer links to the site copies
+  (`think-p2gn`)
+- [ ] The explainer as an earlier edition (`think-500c`), research-document cards
+  (`think-nr5e`), credit per `epistemics.md` (`think-x1vl`), and a card per notable
+  project (`think-lt7k`)
 
 ### Phase 3: Math Everywhere
+
+Amended 2026-09-30: this phase is carried by jlevy/squares#254, stacked on this branch,
+which holds its amendments and its progress.
+This branch has `migrate_math` and the `check_math_markup` ratchet (`3eebc2bdf`,
+`think-himi`) and a first pass over group 1 (`5bff221b2`), without the GitHub placement
+rules; `think-4apa` tracks that gap.
 
 The repository’s Markdown writes most mathematics as code spans:
 `` `s(11) ≥ 3.8269975…` ``, `` `31/8` ``, `` `2 + (1/2)√2` ``. The toolchain already
@@ -631,9 +739,13 @@ The workbench and any other HTML that shows register text use the same KaTeX pat
 - **Synopsis weight.** `SYNOPSIS.md` renders to a long page.
   Keep it as one page with a table of contents, or split it at its top-level headings?
   Recommended: one page.
+  Resolved in review: there is no synopsis nav page; it renders as one page behind its
+  documentation card.
 - **Recent changes.** The plan generates the list from registration dates and release
   tags. If the owner wants pull requests named explicitly, the list needs a small
   hand-kept `site/news.yaml`, since the page cannot fetch from GitHub at render time.
+  Resolved in review: Recent Results is generated from the register’s dates, with no
+  hand-kept list.
 
 ## Technical Review
 
@@ -655,6 +767,35 @@ Their findings are folded into the sections above; the ones that changed the des
   the parsed HTML, and check their 1,100-odd link targets offline;
 - the new Pages half is wired through scope, `pages-required`, `publish`, the deploy
   filter, the sparse checkout and the job budgets in one change.
+
+## Owner Decisions During Review
+
+The owner reviewed the site in private previews on 2026-09-29 and 2026-09-30. The
+decisions that changed the plan above:
+
+- **No synopsis page.** The synopsis and the other repository documents are cards in a
+  Squares Project Documentation section, each opening the document in a popover with a
+  link to it on GitHub (`think-6b3r`, `think-1wa2`).
+- **The site is “Square Packing”**; the GitHub project stays the Squares Project
+  (`think-7oho`). The homepage has no `h1` or tagline, the version is in the footer
+  only, and the problem section makes no bound or open-case claim (`think-sz43`,
+  `think-r07m`, `think-7stg`).
+- **More pages.** Every result moves to `all-results.html`, each case gets a record at
+  `cases.html#n-N`, and Visualize (`visualize.html`) shows the film with the workbench
+  under a second tab (`think-x8ev`, `think-7vjh`, `think-88zu`).
+- **Recent Results replaces the headline cards and the recent-changes list**: one table
+  of everything since 1 August 2026, filtered by default to S3 and up (`think-vvns`,
+  `think-kjd1`, `think-5oih`).
+- **Rung cards replace the stacked verification bar**, and Verification at a Glance
+  moves near the top (`think-6hre`, `think-1f2m`).
+- **One look on every page**: a theme gear, the n = 11 packing as logo and favicon, one
+  chip design, one shared table component, and math set in the face of its text, with a
+  popover’s headline math in serif (`think-4085`, `think-38h1`, `think-w7ef`,
+  `think-5oih`, `think-g63b`, `think-e2dp`).
+- **Repository links name `main`**, never a commit: permalinks at the build commit 404ed
+  once a squash merge left that commit on no branch (`think-eefp`, `think-xv28`).
+- **The site lands with current `main` and presents T-060**, the n = 11 optimality
+  result, on the site and the reader pages (`think-v4vq`, `think-4ccp`).
 
 ## References
 

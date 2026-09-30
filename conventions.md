@@ -339,7 +339,7 @@ Verbatim source archives and literal third-party machine identifiers may reprodu
 external letter-C notation; they are preserved evidence or syntax, not repository
 terminology.
 
-**Budgets are in pair-tests**, tiers S/M/L = $10^9$/$10^{11}$/$10^{13}$. [convention]
+**Budgets are in pair-tests**, tiers S/M/L = $10^9$/`1e11`/`1e13`. [convention]
 Machine-independent, and comparable across proposers whose move semantics differ.
 Wall clock is reported alongside as a courtesy, never as the budget.
 

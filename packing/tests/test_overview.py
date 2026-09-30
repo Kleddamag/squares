@@ -895,6 +895,128 @@ def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overvie
     assert holding == {"T-060"}
 
 
+def _lead_candidate(
+    result_id: str, score: int, published: str, standing: str
+) -> overview_data.Result:
+    record = {
+        "id": result_id,
+        "headline": f"Result {result_id}",
+        "verification": "V4",
+        "confirmation": "C3",
+        "significance": {"score": score},
+        "attribution": {"published": published},
+    }
+    return overview_data.Result(
+        record, group="", credit="A. Source", ours=False, standing=standing
+    )
+
+
+def test_the_recent_lead_is_chosen_by_the_register_not_typed() -> None:
+    """The lead is the highest significance among recent results that are the current
+    best, the newest of equals: a newer superseded S5 result, a newer S4 one that holds,
+    and an S5 one from before the recent window all lose to the newest S5 that holds."""
+    holds, superseded = render_recent_results.HOLDS, render_recent_results.SUPERSEDED
+    candidates = [
+        _lead_candidate("T-901", 5, "2026-09-01", holds),
+        _lead_candidate("T-902", 5, "2026-09-10", holds),
+        _lead_candidate("T-903", 5, "2026-09-20", superseded),
+        _lead_candidate("T-904", 4, "2026-09-25", holds),
+        _lead_candidate("T-905", 5, "2026-07-01", holds),
+    ]
+    overview = overview_data.Overview(
+        results=candidates, cases={}, recent_lower=frozenset(), groups=[]
+    )
+    lead = overview_sections.lead_result(overview)
+    assert lead is not None
+    assert lead.id == "T-902"
+    line = overview_sections.recent_lead(overview)
+    assert '<a href="all-results.html#t-902">Result T-902</a>' in line
+    nobody = overview_data.Overview(
+        results=candidates[2:3], cases={}, recent_lower=frozenset(), groups=[]
+    )
+    assert overview_sections.lead_result(nobody) is None
+    assert overview_sections.recent_lead(nobody) == ""
+
+
+def test_the_recent_lead_names_t060_above_the_table(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """On today's register the lead is T-060, with its headline linking its row, its id,
+    its credit and its chips, set between the section's prose and the recent table."""
+    holding = [
+        r
+        for r in overview_sections.recent_results(overview)
+        if r.standing == render_recent_results.HOLDS
+    ]
+    expected = max(holding, key=lambda r: (overview_sections.significance(r), r.dated[1], r.id))
+    lead = overview_sections.lead_result(overview)
+    assert lead is not None
+    assert lead is expected
+    # The audit's reading of the record; update it when the record moves on.
+    assert lead.id == "T-060"
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    match = re.search(r'<p class="site-recent-lead">.*?</p>', section, re.DOTALL)
+    assert match
+    line = match.group(0)
+    assert section.index(line) < section.index(_recent_table(page))
+    assert '<a href="all-results.html#t-060">' in line
+    assert '<span class="site-cell-quiet">T-060</span>' in line
+    assert "Queuingtheorydotcom" in line
+    chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', line)
+    assert chips == ["V4", "C5", "S5", render_recent_results.HOLDS]
+
+
+def test_the_problem_section_says_eleven_squares_is_settled(page: str) -> None:
+    """The problem section names T-060 and case 11, and the template is in the reader
+    tier, so the gate refuses a result it names that the register does not hold."""
+    from devtools import check_results  # noqa: PLC0415
+
+    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
+    text = re.sub(r"<[^>]+>", "", problem)
+    assert "Trump\u2019s 1979" in text
+    assert "packing is optimal" in text
+    assert '<a href="all-results.html#t-060">T-060</a>' in problem
+    assert '<a href="cases.html#n-11">case 11</a>' in problem
+    assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
+
+
+def test_the_explainer_card_names_the_earlier_bound_it_proves(page: str) -> None:
+    """The explainer proves T-026's historical bound, so its card says so, with the bound
+    the explainer itself states cut to the card's four places and set as math."""
+    from devtools.render_explainer import current_bound_facts  # noqa: PLC0415
+
+    card = page.split('popovertarget="pop-page-explainer"', 1)[1].split("</button>", 1)[0]
+    assert "Earlier " in card
+    assert "lower bounds" in card
+    assert "before T-060 settled the case" in card
+    assert current_bound_facts().bounded_side_decimal.startswith("3.8264")
+    note = card.split('class="site-card-note">', 1)[1]
+    assert "kpress-math" in note
+    assert "3.8264" in note
+    assert "&gt;=" not in note
+
+
+def test_the_film_note_says_the_films_predate_t060(register: list[dict]) -> None:
+    """The films were cut before T-060, so the film page says what they show at n = 11,
+    dated from the release; a film cut after T-060 fails here until the note goes."""
+    from datetime import datetime  # noqa: PLC0415
+
+    from sqpack.release import PUBLICATION_HISTORY  # noqa: PLC0415
+
+    page = render_overview.PAGES["visualize.html"]().html
+    assert render_overview.film_release_date() == "28 September"
+    text = re.sub(r"<[^>]+>", "", page)
+    assert (
+        "Both predate T-060, so at n = 11 they show the lower bound of 28 September, "
+        "not the proved value." in text
+    )
+    assert '<a href="all-results.html#t-060">T-060</a>' in page
+    release = next(e for e in PUBLICATION_HISTORY if e.version == render_overview.FILM_RELEASE)
+    released = datetime.strptime(release.first_published, "%B %d, %Y").date()  # noqa: DTZ007
+    t060 = next(r for r in register if r["id"] == "T-060")
+    assert released.isoformat() < str(t060["registered"])
+
+
 def test_the_standing_filter_offers_each_standing_on_the_page(
     results: str, overview: overview_data.Overview
 ) -> None:
@@ -935,6 +1057,8 @@ def test_reported_bounds_awaiting_replay_are_listed(
     assert "`" not in block
     assert "<code>" not in block
     assert {18, 19, 20} <= set(listed)
+    # n = 11 reports T-060 rounded, and T-060 is verified: nothing awaits (think-pd2g).
+    assert 11 not in listed
     eighteen = re.search(r'<tr id="replay-n-18".*?</tr>', block, re.DOTALL)
     assert eighteen
     assert "939/200" in eighteen.group(0)

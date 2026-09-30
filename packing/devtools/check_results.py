@@ -36,7 +36,13 @@ RESULTS = ROOT / "frontier" / "results.yaml"
 EVIDENCE = ROOT / "frontier" / "evidence.yaml"
 BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
 FRONTIER = ROOT / "frontier"
-READER_TIER = (REPO / "README.md", REPO / "SYNOPSIS.md")
+#: The reader documents whose result mentions must name registered results: README, the
+#: synopsis, and the site's overview prose, which names T-060 in its problem section.
+READER_TIER = (
+    REPO / "README.md",
+    REPO / "SYNOPSIS.md",
+    ROOT / "devtools" / "templates" / "overview-article.md",
+)
 DOCUMENT_MAP = REPO / "docs" / "project" / "document-map.yaml"
 CAMPAIGN = ROOT / "campaign"
 # What each `produced_by` key names, for the refusal message.

@@ -802,7 +802,10 @@ def test_a_worker_snapshot_can_be_asked_what_this_repository_tracks(
     # The linked-back environment and cargo target are the real checkout's, not this
     # snapshot's content, which is why the index is built before they are symlinked in.
     assert not any(
-        name.startswith(("packing/.venv", "packing/sqsearch/target")) for name in tracked
+        name.startswith(
+            ("packing/.venv", "packing/sqsearch/target", "packing/sqverify_exact/target")
+        )
+        for name in tracked
     )
 
 

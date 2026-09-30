@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-09-29'
+last_reviewed: '2026-09-30'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -465,17 +465,22 @@ sources:
     local: resources/web/kingbird-squares-in-squares.html
     source_key: '[Kingbird]'
     scope: {n_min: 1, n_max: 324}
-    reviewed: '2026-08-25'
-    source_date: null
+    reviewed: '2026-09-30'
+    source_date: '2026-09-24'
     disposition: baseline-current
     replay_disposition: case-specific
     represented_by: [frontier/n-001.md through frontier/n-324.md]
     evidence: [E-kingbird-upper-register]
     notes: >
-      The retained page was freshly retrieved and reparsed on the review date. It is
-      byte-identical to the prior retained capture. Its values supply the baseline
-      report; newer first-party releases can override individual cases. SVG geometry
-      has case-specific replay status and is not made formal by appearing here.
+      Captured again on 2026-09-30; the server dates the page 2026-09-24. The capture of
+      2026-08-22, which the 2026-08-25 review found byte-identical to a fresh retrieval, is
+      kept beside it as kingbird-squares-in-squares-2026-08-22, because the UnitSquare and
+      certified-packet intakes read it. devtools.diff_kingbird_catalogue compares the two:
+      41 counts at n <= 324 print a new side, all of them lower. At 36 a certified packet
+      already reports a smaller side; n = 126 and 179 now take the catalogue's new side;
+      n = 69, 83 and 87 are pending intake below. Its values supply the baseline report;
+      newer first-party releases can override individual cases. SVG geometry has
+      case-specific replay status and is not made formal by appearing here.
   - id: unitsquare-release1
     title: UnitSquare Results Release 1
     role: first-party-release
@@ -1037,3 +1042,36 @@ superseded_reports:
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
 beyond_horizon_claims: []
+pending_catalogue_intake:
+  - n: 69
+    record_value: '8.827205507815920656880680735618736931225314831'
+    catalogue_value: '8.82719465572973'
+    capture: '2026-08-22'
+    reason: >-
+      The capture of 2026-09-30 prints David Ellsworth's September 2026 packing, which in the
+      catalogue's words refound the UnitSquare Project's July 2026 improvement starting from
+      Morandi's s(69) and optimized it to a degree-38 root below the release's side. A result
+      by others after 2026-08-22 that would become this count's reported upper bound, so the
+      register holds it before the record takes it (epistemics.md, Results by Others); the
+      record also moves from the release to the catalogue, which the UnitSquare prose does not
+      yet say.
+  - n: 83
+    record_value: '9.63482562092335'
+    catalogue_value: '9.63475764863108'
+    capture: '2026-08-22'
+    reason: >-
+      The capture of 2026-09-30 prints Allen Chang's September 2026 improvement of the Hajba and
+      Cantrell packing, optimized by David Ellsworth in September 2026, with a degree-672 root
+      whose polynomial the catalogue leaves to the SVG source. A result by others after
+      2026-08-22 that would become this count's reported upper bound, so the register holds it
+      before the record takes it (epistemics.md, Results by Others).
+  - n: 87
+    record_value: '9.83881743996618'
+    catalogue_value: '9.83881526994826'
+    capture: '2026-08-22'
+    reason: >-
+      The capture of 2026-09-30 prints Allen Chang's September 2026 improvement and
+      optimization of the Ellsworth and Cantrell packing, a degree-41 root, with help the
+      catalogue credits to "TheMagicAnimals". A result by others after 2026-08-22 that would
+      become this count's reported upper bound, so the register holds it before the record
+      takes it (epistemics.md, Results by Others).

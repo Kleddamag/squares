@@ -63,6 +63,7 @@ from devtools import validate_schemas
 from devtools.apply_upper_bound_packets import PREVIOUS_HEADING, earlier_reports
 from devtools.check_basic_bounds import check_case_basic_bounds
 from devtools.check_case_prose import check_case_file
+from devtools.check_source_coverage import COVERAGE, record_catalogue
 from devtools.generate_frontier_case import (
     CATALOGUE_CLASSIFICATION,
     GRID_CLASSIFICATION,
@@ -82,18 +83,24 @@ from devtools.generate_frontier_case import (
     check_records,
     construction_method_from_credit,
     credited_surnames,
+    drafting_capture,
     facts_from_catalogue_entry,
     generate_record,
     grid_ceiling,
     load_availability,
+    load_catalogue,
+    load_drafting_catalogue,
     load_unitsquare_release,
     lower_bound_promotion_from_records,
     main,
     method_summary,
     packet_adopted_counts,
     record_path,
+    redraft,
+    refresh_records,
     refuse_reason,
     render_record,
+    with_rigidity_of,
     without_rigidity,
     write_record,
 )
@@ -182,9 +189,13 @@ def _availability(n: int, kind: str) -> SourceAvailability:
 
 
 def _parsed_facts(n: int) -> CatalogueFacts:
-    """The catalogue entry for `n` as the real parser reads it."""
+    """The catalogue entry for `n` as the parser reads it, from the capture `n` drafts from."""
     catalogue = pytest.importorskip("sqpack.kingbird_catalogue")
-    return facts_from_catalogue_entry(catalogue.parse_catalogue()[n], n=n)
+    kind = _source_kind(_committed(n)[0]["packing"])
+    source = _availability(n, kind)
+    return facts_from_catalogue_entry(
+        catalogue.parse_catalogue(drafting_capture(n, source))[n], n=n
+    )
 
 
 def _committed(n: int) -> tuple[dict[str, Any], str]:
@@ -530,6 +541,16 @@ def _catalogue_facts() -> dict[int, CatalogueFacts]:
     }
 
 
+def _record_facts() -> dict[int, CatalogueFacts]:
+    """What each record transcribes: the current capture, or at a count pending intake the
+    capture of 2026-08-22, exactly as `check_source_coverage` reconciles them."""
+    catalogue_module = pytest.importorskip("sqpack.kingbird_catalogue")
+    coverage = safe_load(COVERAGE.read_text(encoding="utf-8"))
+    pending = coverage.get("pending_catalogue_intake", [])
+    entries = record_catalogue(catalogue_module.parse_catalogue(), pending)
+    return {n: facts_from_catalogue_entry(entry, n=n) for n, entry in entries.items()}
+
+
 def _regenerate_in_range(n: int) -> str:
     """Draft a case past the hand-authored range, on the register's own review date."""
     return generate_record(
@@ -779,7 +800,7 @@ def test_the_improvement_rule_reproduces_the_hand_transcription() -> None:
     hand pass read an "Optimized by" sentence as an improvement and five sibling records
     read the same sentence as nothing.
     """
-    catalogue = _catalogue_facts()
+    catalogue = _record_facts()
     disagreed: dict[int, tuple[list[str], list[str]]] = {}
     compared = 0
     for n in range(1, 101):
@@ -823,7 +844,9 @@ def test_a_pending_improvement_leaves_analytic_optimization_unstated() -> None:
     unstated = sorted(
         n for n, facts in catalogue.items() if facts.analytically_optimized is None
     )
-    assert unstated == [102, 130, 172, 199, 228, 259, 269, 292, 302]
+    # `n = 102` left the list on 2026-09-30: the page now prints Cantrell's January 2025
+    # improvement that its "Further improvement pending" was waiting on.
+    assert unstated == [130, 172, 199, 228, 259, 269, 292, 302]
     # `n = 88`'s "Improvement by Thomas Schadt pending" is a different sentence.
     assert catalogue[88].analytically_optimized is True
 
@@ -950,20 +973,24 @@ def test_analytically_optimized_is_the_catalogues_own_disclaimer() -> None:
         n for n, facts in catalogue.items() if facts.analytically_optimized is False
     )
     print(f"catalogue entries carrying the disclaimer: {len(stated)}")
-    assert 179 in stated
-    assert all(n > 100 for n in stated)
+    # n = 179 dropped it when it was optimized in June 2026, and n = 126 took it with its
+    # August 2026 packing; below the register only n = 68's latest improvement carries it.
+    assert 126 in stated
+    assert 179 not in stated
+    assert [n for n in stated if n <= 100] == [68]
 
 
 def test_a_stale_printed_form_is_dropped_and_typed_as_a_conflict() -> None:
     """`n = 179`: the page prints a form its own decimal contradicts, and says so by date.
 
-    The catalogue's entry pairs a January-2025 closed form with a January-2026 decimal it
-    does not equal. Recording the form would put a number in `exact_form` that no source
-    currently claims, so the three algebraic fields go null and the disagreement is
-    carried as a `stale-source` conflict quoting both printed values.
+    The capture of 2026-08-22 pairs a January-2025 closed form with a January-2026 decimal
+    it does not equal. Recording the form would put a number in `exact_form` that no
+    source currently claims, so the three algebraic fields go null and the disagreement is
+    carried as a `stale-source` conflict quoting both printed values. The capture of
+    2026-09-30 prints a consistent root there, so the rule is exercised on the earlier one.
     """
     catalogue_module = pytest.importorskip("sqpack.kingbird_catalogue")
-    entry = catalogue_module.parse_catalogue()[179]
+    entry = catalogue_module.parse_catalogue(catalogue_module.intake_catalogue_path())[179]
     assert entry.exact_form == "(25/2) + sqrt(2)"
     assert not catalogue_module.exact_form_matches_decimal(entry)
 
@@ -990,10 +1017,86 @@ def test_a_stale_printed_form_is_dropped_and_typed_as_a_conflict() -> None:
     assert f"`{entry.side_decimal}`" in conflicts[0]["detail"]
     assert conflicts[0]["evidence"] == [KINGBIRD_EVIDENCE]
 
-    # Every other entry in range agrees with its own decimal, so 179 is the only conflict.
-    catalogue = _catalogue_facts()
-    stale = sorted(n for n, facts in catalogue.items() if facts.stale_exact_form is not None)
+    # Every other entry agreed with its own decimal, so 179 was the only conflict; in the
+    # current capture there is none.
+    earlier = load_catalogue(catalogue_module.intake_catalogue_path())
+    stale = sorted(n for n, facts in earlier.items() if facts.stale_exact_form is not None)
     assert stale == [179]
+    catalogue = _catalogue_facts()
+    assert [n for n, facts in catalogue.items() if facts.stale_exact_form is not None] == []
+
+
+def test_a_count_an_intake_replaced_drafts_from_the_capture_the_intake_read() -> None:
+    """What a record says the replaced packing was does not move with a new capture.
+
+    `n = 155` is Couzo's (T-056) and keeps the 2026-08-22 catalogue entry as its previous
+    best known packing; `n = 69` is the release's and names the parent the release
+    improved on; `n = 126` is the catalogue's own and follows the current capture.
+    """
+    availability = load_availability()
+    release = _availability(69, UNITSQUARE)
+    assert drafting_capture(155, availability[155]) is not None
+    assert drafting_capture(69, release) is not None
+    assert drafting_capture(126, availability[126]) is None
+
+    facts = load_drafting_catalogue([126, 155], availability)
+    assert facts[155].side_decimal == "12.95851388606690"
+    assert facts[126].side_decimal == "11.77473513240654"
+
+
+def test_the_register_agrees_with_its_drafts_where_the_capture_moved() -> None:
+    """The refreshed records, and a packet count whose catalogue entry moved, draft as held."""
+    cases = [126, 155, 179]
+    availability = load_availability()
+    args = argparse.Namespace(out=FRONTIER, review_date="2026-09-30", retrieved_date=None)
+    catalogue = load_drafting_catalogue(cases, availability)
+
+    assert check_records(cases, args, availability, catalogue) == 0
+
+
+def test_a_refresh_keeps_the_assessment_and_rewrites_only_what_moved(tmp_path: Path) -> None:
+    """The draft's `rigidity: null` would drop an assessed record out of the assessed set."""
+    availability = load_availability()
+    catalogue = load_drafting_catalogue([179], availability)
+    committed = (FRONTIER / "n-179.md").read_text(encoding="utf-8")
+    stale = committed.replace("value: '13.89534106997649'", "value: '13.89540982243640'", 1)
+    record_path(tmp_path, 179).write_text(stale, encoding="utf-8")
+    args = argparse.Namespace(
+        out=tmp_path, review_date="2026-09-30", retrieved_date="2026-09-30", force=False
+    )
+
+    assert refresh_records([179], args, availability, catalogue) == 0
+
+    refreshed = record_path(tmp_path, 179).read_text(encoding="utf-8")
+    assert refreshed == committed
+    assert "  rigidity:\n    property: " in refreshed
+    drafted = redraft(
+        179,
+        committed,
+        availability=availability,
+        catalogue=catalogue,
+        review_date="2026-09-30",
+        retrieved_date="2026-09-30",
+    )
+    assert "  rigidity: null\n" in drafted
+    assert with_rigidity_of(committed, drafted) == committed
+
+
+def test_a_refresh_refuses_the_hand_authored_range_and_a_missing_record(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    availability = load_availability()
+    into_register = argparse.Namespace(
+        out=FRONTIER, review_date="2026-09-30", retrieved_date=None, force=False
+    )
+    assert refresh_records([83], into_register, availability, None) == 1
+    assert "hand-authored" in capsys.readouterr().out
+
+    elsewhere = argparse.Namespace(
+        out=tmp_path, review_date="2026-09-30", retrieved_date=None, force=False
+    )
+    assert refresh_records([126], elsewhere, availability, None) == 1
+    assert "does not exist" in capsys.readouterr().out
 
 
 def test_the_summary_counts_the_methods_and_names_what_is_left_unknown() -> None:

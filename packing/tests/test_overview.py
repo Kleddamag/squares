@@ -82,6 +82,18 @@ def test_the_atlas_shows_both_posters_each_opening_its_pdf(page: str) -> None:
     assert re.search(r"<a\b[^>]*\sdownload\b", page) is None
 
 
+def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
+    """One cell per tracked case, each linking to its frontier row and carrying its
+    details, all inside a template the script places when the grid comes near."""
+    grid = page.split("data-atlas-grid>", 1)[1]
+    template = grid.split("<template>", 1)[1].split("</template>", maxsplit=1)[0]
+    cells = re.findall(r'<a class="site-atlas-cell" href="frontier\.html#n-(\d+)"', template)
+    assert [int(n) for n in cells] == list(range(1, 325))
+    assert template.count('class="site-atlas-detail" hidden') == 324
+    assert template.count("<svg ") == 324
+    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
+
+
 def test_the_atlas_film_plays_quietly_by_itself(page: str) -> None:
     """Muted, looping and inline, which is what lets a browser autoplay it; the script
     that holds it still for reduced motion is on the page."""

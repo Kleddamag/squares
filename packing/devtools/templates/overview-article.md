@@ -40,6 +40,11 @@ Every result registered recently, newest first:
 
 ## The Atlas
 
+The best packings known for every tracked case, n = 1 to 324. Point at one for its
+bounds and who found them, or open it in the frontier atlas.
+
+{{ATLAS_GRID}}
+
 <div class="site-wide site-atlas">
 <figure>
 <a href="known-best-1-100.pdf" type="application/pdf"><img src="known-best-1-100.png" alt="One hundred known-best square packings, n = 1 to 100, each labelled with its best-known side and, where the case is open, its strongest verified lower bound." loading="lazy"></a>

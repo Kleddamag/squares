@@ -50,6 +50,7 @@ TABLE_SCRIPT = BROWSER / "table.js"
 MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
 FILM_SCRIPT = BROWSER / "film.js"
+ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 OUTPUT = PACKING / "site"
 
@@ -335,6 +336,7 @@ def overview_page() -> Page:
         "HERO": overview_sections.hero(),
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
+        "ATLAS_GRID": overview_sections.atlas_grid(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "HEADLINE_CARDS": overview_sections.headline_cards(overview),
         "EXACT_CARDS": overview_sections.exact_value_cards(overview),
@@ -352,7 +354,13 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        page_scripts=(FORWARD_SCRIPT, TABLE_SCRIPT, POPOVER_SCRIPT, FILM_SCRIPT),
+        page_scripts=(
+            FORWARD_SCRIPT,
+            TABLE_SCRIPT,
+            POPOVER_SCRIPT,
+            FILM_SCRIPT,
+            ATLAS_GRID_SCRIPT,
+        ),
     )
 
 

@@ -529,3 +529,62 @@ def other_project_cards() -> str:
             )
         )
     return _cards(cards)
+
+
+def atlas_grid() -> str:
+    """Every tracked case's known-best packing, n = 1 to 324, as a grid of small
+    drawings, each linking to its row in the frontier atlas and carrying its details for
+    the hover card `overview/atlas-grid.js` shows.
+
+    The cells, about a megabyte of SVG, sit in a `<template>`, which the browser parses
+    but does not render; the script places them when the grid nears the viewport, so
+    the page opens as fast as it did without them.
+    """
+    from devtools import render_frontier_page as frontier  # noqa: PLC0415
+    from sqpack.assurance import bounds_agree_at_declared_precision  # noqa: PLC0415
+
+    recent = frontier.recent_lower_bounds()
+    cells = []
+    for case in frontier.frontier_cases():
+        n = case["n"]
+        upper = case["reported_upper_bound"]
+        reported_lower, verified_lower = (
+            case["reported_lower_bound"],
+            case["verified_lower_bound"],
+        )
+        status = case["status"]
+        tone = ' data-tone="accent"' if status == "proved" else ""
+        star = (
+            '<span class="site-star" title="Recent lower bound">\u2605</span>'
+            if recent.get(n)
+            else ""
+        )
+        lower_by = (
+            frontier.credit(reported_lower.get("proved_by"), reported_lower.get("proved_year"))
+            if bounds_agree_at_declared_precision(reported_lower, verified_lower)
+            else "verified here"
+        )
+        detail = (
+            f'<span class="site-atlas-head"><b>n = {n}</b> '
+            f'<span class="site-chip"{tone}>{_esc(status)}</span> {star}</span>'
+            f'<span class="site-atlas-row"><span>Best known</span> '
+            f"<b>{_esc(frontier.decimal_text(upper['value']))}</b> "
+            f"<i>{frontier.credit(upper.get('found_by'), upper.get('found_year'))}</i></span>"
+            f'<span class="site-atlas-row"><span>Lower bound</span> '
+            f"<b>{_esc(frontier.decimal_text(verified_lower['value']))}</b> "
+            f"<i>{lower_by}</i></span>"
+        )
+        cells.append(
+            f'<a class="site-atlas-cell" href="frontier.html#n-{n}" '
+            f'data-status="{_esc(status)}" '
+            f'aria-label="n = {n}, {_esc(status)}">{frontier.packing_svg(n)}'
+            f'<span class="site-atlas-n">{n}</span>'
+            f'<span class="site-atlas-detail" hidden>{detail}</span></a>'
+        )
+    return (
+        '<div class="site-wide site-atlas-grid" data-atlas-grid>'
+        f"<template>{''.join(cells)}</template>"
+        '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
+        '<a href="frontier.html">frontier atlas</a>.</p>'
+        '<div class="site-atlas-tip" role="tooltip" hidden></div></div>'
+    )

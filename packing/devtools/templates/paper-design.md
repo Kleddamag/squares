@@ -154,6 +154,14 @@ it.
   every level as its chip and the rubric’s meaning, read from the tables in
   `epistemics.md`. Each opens that section of `epistemics.md`.
 
+- **Atlas grid.** The atlas opens with every tracked case, n = 1 to 324, as a small
+  square drawing in the page’s ink with its n beneath, in as many columns as fit.
+  A cell washes on hover and links to its row in the frontier atlas.
+  Pointing at or focusing a cell shows one hover card below it, kept inside the window:
+  the status chip, the best-known side and the lower bound, each with its credit.
+  The cells ship in a `<template>` and are placed only as the grid nears the viewport
+  (`overview/atlas-grid.js`), so they add nothing to the first paint.
+
 - **Atlas posters.** The n = 1 to 100 and n = 1 to 324 posters sit side by side, stacked
   on a phone. Each image and its caption link to that poster’s PDF, marked
   `type="application/pdf"` and never `download`, so the browser opens it in place.

@@ -800,3 +800,77 @@ body {
 .site-level .site-chip {
   text-align: center;
 }
+
+/* The atlas grid: every case's known-best packing in a small square cell, numbered
+   beneath, filling the width in as many columns as fit. A cell washes on hover like a
+   card; its details show in one hover card below it, kept inside the window. */
+.site-atlas-grid {
+  position: relative;
+}
+.site-atlas-cells {
+  display: grid;
+  gap: 0.4rem;
+  grid-template-columns: repeat(auto-fill, minmax(3.4rem, 1fr));
+}
+.kpress .site-atlas-cell {
+  color: var(--kpress-doc-text);
+  display: block;
+  padding: 0.25rem;
+  text-align: center;
+  text-decoration: none;
+}
+.kpress .site-atlas-cell:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  text-decoration: none;
+}
+.site-atlas-cell svg {
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.site-atlas-n {
+  color: var(--kpress-doc-muted);
+  display: block;
+  font-family: var(--kpress-font-sans);
+  font-size: 0.7rem;
+  margin-block-start: 0.15rem;
+}
+.site-atlas-grid .site-atlas-note {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  margin-block: 0.8rem 0;
+  text-align: center;
+}
+.site-atlas-tip {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border);
+  box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  max-inline-size: 17rem;
+  inline-size: max-content;
+  padding: 0.6rem 0.8rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: 5;
+}
+.site-atlas-tip[hidden] {
+  display: none;
+}
+.site-atlas-tip :is(.site-atlas-head, .site-atlas-row) {
+  display: block;
+}
+.site-atlas-tip .site-atlas-head {
+  margin-block-end: 0.3rem;
+}
+.site-atlas-tip .site-atlas-row > span {
+  color: var(--kpress-doc-muted);
+}
+.site-atlas-tip i {
+  color: var(--site-support-color);
+  display: block;
+  font-style: normal;
+}

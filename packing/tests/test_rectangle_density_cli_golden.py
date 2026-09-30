@@ -5,6 +5,7 @@ from __future__ import annotations
 import difflib
 import hashlib
 import json
+import math
 import os
 import shlex
 import subprocess
@@ -271,6 +272,37 @@ def test_rectangle_density_cli_golden(sessions: tuple[Session, ...]) -> None:
 
 def test_rectangle_density_cli_semantics(sessions: tuple[Session, ...]) -> None:
     _assert_semantics(sessions)
+
+
+def test_timing_is_opt_in_and_preserves_cli_decisions(sessions: tuple[Session, ...]) -> None:
+    for original in (sessions[1], sessions[2], sessions[4]):
+        scenario = original.scenario
+        timed = _run(
+            Scenario(
+                scenario.key,
+                scenario.name,
+                (*scenario.arguments, "--timing"),
+                scenario.exit_code,
+                scenario.status,
+            )
+        )
+        timing = timed.payload.pop("timing")
+        assert timed.payload == original.payload
+        assert "timing" not in original.payload
+        assert timing["wall_clock"] == "perf_counter"
+        assert timing["cpu_clock"] == "process_time"
+        assert timing["excluded"] == [
+            "module_startup_and_argument_parsing",
+            "receipt_build_serialization_and_output",
+        ]
+        phases = timing["phases"]
+        expected = {"input_read_hash", "admission"}
+        if scenario.status != "REFUSED":
+            expected |= {"verification", "source_recheck"}
+        assert set(phases) == expected
+        for phase in phases.values():
+            assert set(phase) == {"wall_seconds", "process_cpu_seconds"}
+            assert all(math.isfinite(value) and value >= 0 for value in phase.values())
 
 
 def test_golden_updates_only_when_explicitly_requested(tmp_path: Path) -> None:

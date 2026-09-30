@@ -38,6 +38,15 @@ geometry source disclosed.
 Pose inclusion, the 2,180 exclusions and case-438 capture remain separate obligations.
 None of these component results promotes T-060 beyond S5/V0/C1.
 
+The
+[pose-inclusion checker](../../packing/devtools/check_n11_optimality_pose_inclusion.py)
+now confirms all 136 live rows and 1,542 vertices lie in the accepted rectangle,
+conditional on their geometric ancestry (3.38 seconds including startup).
+The [case-census checker](../../packing/devtools/check_n11_optimality_case_census.py)
+also confirms the complete case lists (0.11 seconds including startup), explicitly
+without accepting any exclusion geometry.
+Full capture and exclusions remain open.
+
 The [epistemic scale](../../epistemics.md#confirmation) distinguishes a complete replay
 (`C3`) from confirmation by a distinct complete method (`C4`) and a mapped review
 (`C5`). A source checker run here is a replay.

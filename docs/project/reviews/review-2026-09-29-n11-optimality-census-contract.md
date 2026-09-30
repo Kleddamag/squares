@@ -215,6 +215,84 @@ remains feasible after the rigid map into the fixed container of side $T$; the
 construction’s opposite-wall contacts exclude $S<T$. The census or ancestry checks alone
 do not establish this conclusion.
 
+## Independent Near-State Pose Inclusion
+
+`think-hjne` checks inclusion after the fixed-$T$ local-isolation component under
+`think-sw68`. The accepted
+[local receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json)
+binds the 33 radii through focused input SHA-256
+`9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3`. Use those exact
+radii and retain the local receipt’s identity in the inclusion output.
+The rectangle has center displacements in unit-square coordinates and angle
+displacements in radians; each radius lies in $(0,1/64]$.
+
+The two new objects total **27,656,848 compressed bytes and 185,939,439 decoded bytes**:
+
+| Input | Decoded path | Compressed bytes | Decoded bytes |
+| --- | --- | ---: | ---: |
+| Near trace | `evidence/research/candidate-capture/near-refined1024-240.json` | 27,653,954 | 185,901,535 |
+| Role guards | `evidence/research/phase3/current/research/optimality/global_capture/local-capture-guards.json` | 2,894 | 37,904 |
+
+The near trace has index key
+`73ddd73ce616ecb4a74d08c18a17f7eaff044df2111b0e500636b073e43ee970`, decoded SHA-256
+`491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc`, and compressed LFS
+SHA-256 `5d74352c6c05fd4e0ea4d4842915061603669a54205af2a59cf2303051a48949`. The guard’s
+index key and decoded SHA-256 are both
+`0bc2edf59cbf620258719db7ba50cdf77af749d38dfbef76a131d32353443fb0`; its compressed LFS
+SHA-256 is `13b0aa2153484dc689f0c7b48295e91c5ba91b45c0e9c5921c6e7ba1b23866e3`.
+
+Bind the full trace before extracting `final_state`. Check its mask, cap, scale, and
+constraints against the corresponding top-level fields.
+Require exactly one matching guard for mask 438, symmetry
+`{swap: true, reflect_x: true, reflect_y: false}`, a role bijection between labels 0–10
+and all eleven owners, and a `label_to_cell` array consistent with those roles.
+State cell keys must be exactly the eleven owners.
+Each owner must have at least one live row; check every nonempty residual component of
+every live row, preserving singleton points, segments, and singleton angle intervals.
+
+For each encoded vertex $(x_f,y_f)$, compute
+
+$$
+c=(y_f/B-U/2,\ U/2-x_f/B).
+$$
+
+Independently enclose the exact construction center $c_i^*-(T/2,T/2)$ in rational
+intervals. For each coordinate, the maximum distance from $c$ to **both** enclosure
+endpoints must be at most its accepted radius.
+The affine map and convex coordinate bounds extend the vertex check to the whole encoded
+polygon. Record all per-owner row and vertex counts; the total must be 136 live rows and
+1,542 vertices, with angular endpoints 0 and 1 both present.
+
+For the angular checks, let $[a,b]\subseteq[0,1]$ be a full closed half-angle row and
+$[u_-,u_+]$ the independently isolated algebraic root interval.
+Verify the exact witness axes: labels 0–5 have axis $(1,0)$, and labels 6–10 have axis
+$((1-u^2)/(1+u^2),2u/(1+u^2))$. The inverse quarter-turn preserves square orientations
+modulo $\pi/2$. Check these rational upper bounds on the absolute angular displacement:
+
+| Witness orientation | Row condition | Sufficient bound on $\lvert\Delta\theta\rvert$ |
+| --- | --- | --- |
+| Axis aligned | $b\le1/2$ | $2b$ |
+| Axis aligned | $a\ge1/2$ | $2(1-a)/(1+a)$ |
+| Slanted | $b<2/3$ | $2\max(\lvert a-u_+\rvert,\lvert b-u_-\rvert)/(1+\min(a,u_-)^2)$ |
+
+Each bound must be at most the corresponding accepted angular radius.
+An axis row straddling $1/2$ fails this chart check.
+The first bound uses $\arctan t\le t$; the second uses the axis chart
+$\tan((\theta-\pi/2)/2)=(t-1)/(t+1)$; the slanted bound follows from the derivative of
+$\arctan$ over the interval between $t$ and $u$. These checks include equality endpoints
+and apply to the whole angle interval.
+A midpoint calculation is insufficient.
+
+The resulting component may report `PASS_POSE_INCLUSION` with
+`conditional_on_source_pose_domains: true`. It must retain false capture and global
+optimality flags.
+Refusal controls should cover a wrong cap or scale, wrong inverse chart
+sign, a vertex or angular bound just outside its radius, a missing owner or component,
+and a nonbijective role map.
+An in-range singleton polygon and singleton angle row must remain admissible.
+Geometric ancestry is accepted separately under `think-pgie`; accepting inclusion does
+not accept the trace’s pruning history.
+
 ## Bounded Execution and Refusal Controls
 
 Implement the checks in retained tools and exercise only their affected contracts.
@@ -233,11 +311,8 @@ A reusable extractor may retain compact parent, constraint, and final-state proj
 bound to the full source digest and extractor identity.
 Those projections accelerate repeat checks without supplying omitted geometry.
 
-The near-state source alone is 27,653,954 compressed bytes and 185,901,535 decoded
-bytes. Its index key is
-`73ddd73ce616ecb4a74d08c18a17f7eaff044df2111b0e500636b073e43ee970`; its decoded SHA-256
-is `491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc`. Select the
-remaining source ancestry from B1–B7 before estimating or scheduling that replay.
+Select the remaining source ancestry from B1–B7 before estimating or scheduling its
+replay.
 
 Each run records the source revision, checker and input identities, exact checked and
 unresolved IDs, wall time, process CPU time, and the chosen wall ceiling.

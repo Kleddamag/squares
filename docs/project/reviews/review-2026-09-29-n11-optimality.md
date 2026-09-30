@@ -165,9 +165,43 @@ Astra-max review checked the mathematical implications, source identities, full 
 and partial control and found no blocker.
 The shared construction primitives remain an explicit trust dependency.
 
-**Pose inclusion, case-438 capture and all 2,180 exclusions remain unaccepted.** The
-receipt sets each corresponding conclusion, including global optimality, to false.
-T-060 remains S5/V0/C1; this component result does not promote the whole theorem.
+The local receipt does not claim pose inclusion or capture.
+The subsequent inclusion check below closes only the first of those obligations.
+T-060 remains S5/V0/C1; these component results do not promote the whole theorem.
+
+## Checked Near-State Pose Inclusion
+
+The [pose checker](../../../packing/devtools/check_n11_optimality_pose_inclusion.py) and
+[retained receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json)
+check all **136 live closed angular rows and 1,542 vertices across eleven owners**
+against the accepted local rectangle, including both angle-chart endpoints.
+The inverse quarter-turn, exact coordinate conversion and whole-interval angle bounds
+are checked; the narrowest certified coordinate slack is positive, about
+$2.28\times10^{-12}$. The receipt binds the original near trace and guard, the retained
+compact extraction, the extractor, and the accepted local-isolation result.
+
+The bounded run took **3.300 seconds wall**, **3.38 seconds including startup**.
+Python’s own process CPU was 0.418 seconds; the outer measurement includes the jq child
+and records 2.73 seconds user plus 0.54 seconds system CPU. Six focused tests pass;
+Astra-max review approved the exact inclusion argument and inspected its receipt.
+This proves inclusion **conditional on the supplied domains being valid**. Their
+geometric ancestry and complete case-438 capture remain unaccepted.
+
+## Checked Case Census
+
+The [census checker](../../../packing/devtools/check_n11_optimality_case_census.py)
+returned `PASS_CASE_CENSUS_ONLY`; its
+[receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/result.json)
+reconstructs all 2,184 canonical IDs and verifies the exact 1,931 baseline, 76 extension
+and 173 returned-case lists across twelve jobs.
+Their complement is exactly 438, 999, 1462 and 1659. Eleven focused controls and
+Astra-max source review passed.
+Runtime was 0.044 seconds wall / 0.043 seconds CPU, 0.11 seconds including startup.
+
+This is a complete metadata census, **not acceptance of the exclusions**. It explicitly
+records `geometry_verified: false`, and all 2,184 case geometries remain unchecked as
+complete case conclusions.
+Global optimality remains open.
 
 ## Next Bounded Checks
 
@@ -176,12 +210,12 @@ maps the remaining case census (`think-ncw8`) and candidate ancestry (`think-pgi
 including exact source keys and refusal rules.
 Metadata agreement is not geometric acceptance.
 
-The next slice checks whether every live near-state pose lies in the accepted local
-rectangle. Select the one near-trace object (27,653,954 compressed bytes) and its role
-guard, then check all 136 closed angular rows and 1,542 vertices through the exact
-coordinate conversion.
-This remains conditional on the trace’s geometric ancestry.
-Run the small case census alongside it.
+The next slice independently checks the first substantive field certificate, mask 0,
+under `think-fi4w`: 55 ownership obligations and every closed angular row of two
+positive-charge cells.
+The reported transfer scope is 459 canonical cases; none is accepted from that count
+alone. Candidate-capture ancestry runs alongside it under `think-pgie`, with metadata
+consistency kept separate from source geometry.
 Record refusals and counterexamples as carefully as passes, with wall and CPU time and
 complete-domain scope.
 

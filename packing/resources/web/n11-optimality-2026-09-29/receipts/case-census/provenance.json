@@ -1,0 +1,68 @@
+{
+  "checker_path": "packing/devtools/check_n11_optimality_case_census.py",
+  "checker_sha256": "b7b9fd05ff6cd9894bc272243a032039ebc2ddd79da2c754dd5c2c5b31300cdc",
+  "checkout_head_when_provenance_written": "9fa395f0a18fa54c6c4ff60d7faadaeedf52573d",
+  "cover_compressed_sha256": "7c6d14012f06eb892912a50c93cc7408ce1f90524d46693c6178a01ceae71a99",
+  "cover_decoded_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+  "interpretation": "Exact published case census only; certificate geometry, returned audits, and global optimality are unverified.",
+  "objects": {
+    "A1": {
+      "compressed_bytes": 26100,
+      "compressed_sha256": "adbb5f181a18d157fe12a5a62055b01bf7eff7a91ce08b8aeca6f01408953d21",
+      "decoded_bytes": 122029,
+      "decoded_sha256": "04fa1ebb37f5dace29946224fe8c7c5d8a1bedb4fa860c65b359f4200415de57",
+      "index_key": "60add61f5efc56652a350944ad34cafd19d9c590f058ebaad2d98d8854be9538",
+      "object_path": "data/objects/04/04fa1ebb37f5dace29946224fe8c7c5d8a1bedb4fa860c65b359f4200415de57.gz",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/objects/04fa1ebb37f5dace29946224fe8c7c5d8a1bedb4fa860c65b359f4200415de57.gz",
+      "source_path": "evidence/research/PHASE3_FRESH_REPLAY_RESULT.json"
+    },
+    "A2": {
+      "compressed_bytes": 25401,
+      "compressed_sha256": "e42dc34909640e073110f2a9cf1526a3258c371f8dc5ab3776162e0ad3d16740",
+      "decoded_bytes": 270956,
+      "decoded_sha256": "719efa40df07d5cb29874a44483737a4903c82498f18b348fc05b5ad08daa8e6",
+      "index_key": "d3c8a8f207c986462c6c85d399b739fce7841e0adaff6b75801ac171bc319db4",
+      "object_path": "data/objects/71/719efa40df07d5cb29874a44483737a4903c82498f18b348fc05b5ad08daa8e6.gz",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/objects/719efa40df07d5cb29874a44483737a4903c82498f18b348fc05b5ad08daa8e6.gz",
+      "source_path": "evidence/results/prior-union/PRIOR_UNION_RESULT.json"
+    },
+    "A3": {
+      "compressed_bytes": 45515,
+      "compressed_sha256": "965718825788759fa51c033382fa569fae7e055b991316a1646f18532c36976e",
+      "decoded_bytes": 401045,
+      "decoded_sha256": "ba2ba3eae20ffa7b88bbc8e97928a073d7c084d1976211fa16e5e6338860fcc1",
+      "index_key": "ba2ba3eae20ffa7b88bbc8e97928a073d7c084d1976211fa16e5e6338860fcc1",
+      "object_path": "data/objects/ba/ba2ba3eae20ffa7b88bbc8e97928a073d7c084d1976211fa16e5e6338860fcc1.gz",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/objects/ba2ba3eae20ffa7b88bbc8e97928a073d7c084d1976211fa16e5e6338860fcc1.gz",
+      "source_path": "evidence/inputs/returned-replay-plan.json"
+    },
+    "A4": {
+      "compressed_bytes": 2762,
+      "compressed_sha256": "dba5a74b7652c38e990163e857013b457ccc6cee0b71d3930a228c4cb2029159",
+      "decoded_bytes": 37021,
+      "decoded_sha256": "03d6e82a9bde1bad6cf6683081cff2b583d7f60fddb2c810c91e071cb4575864",
+      "index_key": "3f5ce8ccd45268a34f567f87897640255ea946dec3e43f1bca161a951806f0d1",
+      "object_path": "data/objects/03/03d6e82a9bde1bad6cf6683081cff2b583d7f60fddb2c810c91e071cb4575864.gz",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/objects/03d6e82a9bde1bad6cf6683081cff2b583d7f60fddb2c810c91e071cb4575864.gz",
+      "source_path": "evidence/inputs/CASE_ASSIGNMENTS.json"
+    },
+    "A5": {
+      "compressed_bytes": 763,
+      "compressed_sha256": "405c171283f9b68afc43e2c2a7b029d7dcb7acafe05552c8cb81def04921506f",
+      "decoded_bytes": 2257,
+      "decoded_sha256": "7920ae9fede574c58ea36893724a55911a02f2875dd808f799a99fd3ea0ee18e",
+      "index_key": "8147c29389e597227ddee71ebacafe7358b0fd6b8e07885fb0e0ff0ab860a3cb",
+      "object_path": "data/objects/79/7920ae9fede574c58ea36893724a55911a02f2875dd808f799a99fd3ea0ee18e.gz",
+      "retained_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/objects/7920ae9fede574c58ea36893724a55911a02f2875dd808f799a99fd3ea0ee18e.gz",
+      "source_path": "evidence/results/returned/SUMMARY.json"
+    }
+  },
+  "replay_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/replay.sh",
+  "result_path": "packing/resources/web/n11-optimality-2026-09-29/receipts/case-census/result.json",
+  "result_sha256": "98dad8545582694ca6217fce113f49b33d29537ea128c3994c101e75f5b57efb",
+  "source_index_decoded_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "status": "PASS_CASE_CENSUS_ONLY",
+  "wall_ceiling_seconds": 30
+}

@@ -400,6 +400,8 @@ it.
   note size, a solid light fill and no border, lettered in the page’s own text colour.
   A plain chip is a light gray tint; `data-tone="accent"` is an accent tint, for a
   settled state such as a proved case.
+  Chips sit inline and wrap like words, a space apart, with a small block margin
+  (0.15rem) so a wrapped row never touches the row above, on any page or at any width.
   A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`. A standing chip
   carries `data-standing` and adds no style of its own: `holds` takes the accent, as a
   settled state, and every other standing (`holds, reported`, `second certificate`,

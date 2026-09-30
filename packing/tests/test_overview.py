@@ -884,3 +884,11 @@ def test_page_subtitles_share_one_size() -> None:
     assert "--site-subtitle-scale: 1.1;" in css
     rule = css[css.index(".kpress .site-hero .subtitle {") :]
     assert "var(--site-subtitle-scale)" in rule[: rule.index("}")]
+
+
+def test_wrapped_chips_never_touch() -> None:
+    """Chips wrap like words; every chip carries a block margin, so a wrapped row keeps a
+    gap from the row above wherever chips sit."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    rule = css[css.index(".site-chip {") :]
+    assert "margin-block: 0.15rem;" in rule[: rule.index("}")]

@@ -13,7 +13,8 @@ Git revision in the receipt's provenance. The receipt adds ``certificate``, that
 ``proof_inputs``, which records whether every frozen input still equals its
 ``PROOF_COMMIT`` blob.
 
-A certificate retained as ``X.gz`` is read through `devtools.retained_data` and handed
+A certificate retained as ``X.gz`` is read through `devtools.retained_data`, and one inside
+the Wang and Li archive through `devtools.audit_wang_li_n11.read_bytes`; either is handed
 to the loader as a temporary plain file with the same bytes.
 
 Usage, from ``packing/``::
@@ -49,11 +50,8 @@ from sqpack.fractional.parent_core import (
 from sqpack.fractional.parent_core_interval import verify_parent_core_rows
 
 REPO = frozen.REPO
-WANG_LI = (
-    REPO
-    / "packing/resources/web/wang-li-n11-2026-09-29"
-    / "n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json"
-)
+#: A path inside the retained archive, read from the zip (`audit.read_bytes`).
+WANG_LI = audit.IMPROVED
 #: The first, the source's weakest, and the last row, as in the frozen pilot.
 PILOT_ROWS = (0, 11962, 12027)
 
@@ -89,7 +87,11 @@ def run_certificate(
         proof_inputs = {"proof_commit": PROOF_COMMIT, "unchanged": False, "error": str(error)}
     with tempfile.TemporaryDirectory(prefix="n11-native-") as scratch:
         plain = Path(scratch) / "certificate.json"
-        plain.write_bytes(read_retained_bytes(path))
+        plain.write_bytes(
+            audit.read_bytes(path)
+            if path.is_relative_to(audit.RELEASE)
+            else read_retained_bytes(path)
+        )
         with (
             mock.patch.object(frozen, "REVIEWED_SHA256", None),
             journal_path.open("x", encoding="utf-8") as journal,

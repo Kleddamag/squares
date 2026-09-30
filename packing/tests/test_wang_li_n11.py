@@ -85,8 +85,10 @@ def test_every_mutation_changes_what_it_says(
 
 
 @pytest.mark.slow
-def test_native_premises_hold_for_the_new_parameters() -> None:
-    certificate = load_kleddamag_parent_core(audit.IMPROVED)
+def test_native_premises_hold_for_the_new_parameters(tmp_path: Path) -> None:
+    plain = tmp_path / "improved-global-certificate.json"
+    plain.write_bytes(audit.read_bytes(audit.IMPROVED))
+    certificate = load_kleddamag_parent_core(plain)
     premises = validate_parent_core(certificate)
     assert certificate.parent_side == Fraction(190999999809, 193750000000)
     assert certificate.outer_side / certificate.parent_side == Fraction(3875000000, 999999999)

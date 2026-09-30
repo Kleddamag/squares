@@ -10,9 +10,8 @@ threshold-charge orbit weights raised and the parent side `A` and every row’s 
 [jlevy/squares#247](https://github.com/jlevy/squares/issues/247), opened by GitHub user
 XiaoLiaoShe on 2026-09-29 at 13:38 UTC.
 
-This packet holds the Zenodo record’s two files byte-identical, the archive extracted
-beside them, the replay receipts made here, and one minimally adapted copy of
-Kleddamag’s launcher.
+This packet holds the Zenodo record’s two files byte-identical, the replay receipts made
+here, and one minimally adapted copy of Kleddamag’s launcher.
 Retention registers the claim for review; it does not move a Frontier bound.
 
 ## Provenance
@@ -52,15 +51,14 @@ PDF and clarify the licence. The comment is retained verbatim as
 
 | File | Bytes | What it is |
 | --- | ---: | --- |
-| [`n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip`](n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip) | 2,495,053 | The release archive, 49 entries (42 files) |
+| [`n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip`](n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip) | 2,495,053 | The release archive: 49 entries, 40 files in 9 directories. The packet keeps it zipped only, and the tools read the certificate from inside it; a replay unzips it into scratch |
 | [`n11_lower_bound_wang_li.pdf`](n11_lower_bound_wang_li.pdf) | 294,739 | The preprint, six pages, as a separate record file |
-| [`n11_wang_li_zenodo_release_2026-09-29/`](n11_wang_li_zenodo_release_2026-09-29/) | 9,899,885 in all | The archive extracted with `unzip`, every entry at its archive path |
 | [`issue-247-authors-2026-09-30.json`](issue-247-authors-2026-09-30.json) | 2,563 | The authors’ reply of 2026-09-30T12:34:33Z on jlevy/squares#247, from the GitHub API, body verbatim: the AI-assistance statement and their acceptance of the credit |
 
 **The one digest boundary.** Both downloads were compared with the MD5 checksums the
 Zenodo API publishes for them, `ae343d3220a5a11f7bd22e59f4382873` (PDF) and
 `52c82aee798ab94d3733c749eecd70de` (archive), and both match.
-The extracted `certificate/improved-global-certificate.json` has SHA-256
+The archive’s `certificate/improved-global-certificate.json` has SHA-256
 `31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34`, the value the
 authors published in the issue and the preprint.
 These comparisons detect a transfer or storage fault between Zenodo and this checkout
@@ -78,12 +76,10 @@ from the record’s separate PDF; `AUDIT_LOG.md` says the PDF was regenerated fr
 LaTeX source during packaging.
 The record’s PDF was read in full and agrees with `paper/n11_lower_bound_wang_li.tex`.
 
-Seven extracted data files exceed 1,000 lines: the two certificates, the merged fresh
-replay receipt and its four quarter receipts.
-They are kept plain rather than as the deterministic gzip that
-[`packing/resources/README.md`](../../README.md) describes: the source certificate is
-then the same Git blob as Kleddamag’s retained copy, and the retained archive already
-carries every file compressed.
+The archive is kept zipped only, not extracted beside itself.
+A path under `n11_wang_li_zenodo_release_2026-09-29/`, in the receipts and the tools,
+names the archive member at that path, and `devtools.audit_wang_li_n11.read_bytes` reads
+it from the zip; the replays below unzip the archive into scratch.
 The source trees are not passed through this repository’s Markdown formatter.
 
 ## The Change, Derived From the Two Files
@@ -154,12 +150,12 @@ CPU.
 | --- | --- | ---: | ---: | --- |
 | Authors, integrity | `python verify.py --mode integrity` in a fresh extraction of the retained archive | 0.3 s | 0.2 s | `PASS_STATIC_INTEGRITY` ([log](receipts/authors/integrity.log)) |
 | Authors, smoke | `python verify.py --mode quick` | 9.0 s | 8.1 s | `PASS_QUICK_SMOKE`: row 0 is `1000047559` in both verifiers ([log](receipts/authors/quick.log)) |
-| Authors, primary full replay | first half of `python verify.py --mode full --jobs 1` (the README says `--jobs 5`) | 4,206 s | in the total below | `PASS_FULL_EXACT_PYTHON_REPLAY`: histogram `{1000047559: 12028}`, 86,299,918 slabs, 511,649,696,956 cells; every row’s minimum, cells and slabs equal the archive’s fresh receipt ([`primary.json`](receipts/authors/fresh-full-replay/primary.json)) |
+| Authors, primary full replay | first half of `python verify.py --mode full --jobs 1` (the README says `--jobs 5`) | 4,206 s | in the total below | `PASS_FULL_EXACT_PYTHON_REPLAY`: histogram `{1000047559: 12028}`, 86,299,918 slabs, 511,649,696,956 cells; every row’s minimum, cells and slabs equal the archive’s fresh receipt ([`primary.json.gz`](receipts/authors/fresh-full-replay/primary.json.gz)) |
 | Authors, independent full replay | second half of the same command | 5,146 s | in the total below | `PASS_INDEPENDENT_FULL_REPLAY`: histogram `{1000047559: 12028}`, zero bad rows ([`independent.json`](receipts/authors/fresh-full-replay/independent.json)) |
 | Authors, full mode in total | `python verify.py --mode full --jobs 1` | 9,356 s | 5,299 s | `PASS_FRESH_TWO_IMPLEMENTATION_FULL_REPLAY` ([`RESULT.json`](receipts/authors/fresh-full-replay/RESULT.json), [log](receipts/authors/full.log)) |
 | Kleddamag’s checkers | `check_integrity.py`, `verify_threshold_algebra.py`, then `verify_wang_li.py --output-dir OUT`, the adapted launcher below, from 2026-09-30T08:14:51Z | 8,207 s | 5,564 s | `PASS_FRESH_PORTABLE_FULL_VERIFICATION`: all 12,028 intervals by the Python and the BigInt JavaScript sweeps, minimum `1000047559`, budget `11000095024`, surplus `428125`; `independent_controls.py` gives `PASS_INDEPENDENT_EXACT_CONTROLS` over 48,112 containment quadratics ([`RESULT.json`](receipts/kleddamag/full-replay/RESULT.json), [log](receipts/kleddamag/run.log)) |
 | Native interval, pilot | `.venv/bin/python3 -m devtools.verify_n11_parent_core_native --pilot --workers 1 --output …` | 45.8 s | 19.6 s | rows 0, 11962 and 12027 certified at `1000047559` with zero stalls ([receipt](receipts/native/native-pilot.json)) |
-| Native interval, all rows | the same with `--all --workers 2 --batch-size 2048`, 05:48 to 11:02 UTC | 18,854 s | 11,957 s | `PASS_COMPLETE`: all 12,028 rows certified at the threshold `1000047559`, 136,388,356 boxes, zero stalls, no exhausted budget, no refutation ([`native-all.json`](receipts/native/native-all.json), [log](receipts/native/native-all.log), row journal `native-all.rows.jsonl`) |
+| Native interval, all rows | the same with `--all --workers 2 --batch-size 2048`, 05:48 to 11:02 UTC | 18,854 s | 11,957 s | `PASS_COMPLETE`: all 12,028 rows certified at the threshold `1000047559`, 136,388,356 boxes, zero stalls, no exhausted budget, no refutation ([`native-all.json.gz`](receipts/native/native-all.json.gz), [log](receipts/native/native-all.log.gz); the run’s row journal repeated the receipt’s rows exactly and is not kept) |
 
 **The authors’ two verifiers.** The primary is Kleddamag’s event-cell sweep, copied
 (above). The second, `verifier/independent/`, is the authors’ own block range-minimum
@@ -197,7 +193,7 @@ gives the minimum containment numerator `999999999/10²¹`, `λ` times the sourc
 
 ## Is the Reweighting Needed?
 
-No. `devtools.audit_wang_li_n11 scale-only` writes Kleddamag’s certificate with only the parent side and every core side scaled by `999999999/1000000000`. The weights, budget and minimum are left as Kleddamag has them. Kleddamag’s own `replay_parallel.py` then swept that certificate over all 12,028 intervals: `PASS_FULL_EXACT_PYTHON_REPLAY`, in 3,065 s wall and 2,482 s CPU ([`python.json`](receipts/scale-only/python.json), [log](receipts/scale-only/run.log)).
+No. `devtools.audit_wang_li_n11 scale-only` writes Kleddamag’s certificate with only the parent side and every core side scaled by `999999999/1000000000`. The weights, budget and minimum are left as Kleddamag has them. Kleddamag’s own `replay_parallel.py` then swept that certificate over all 12,028 intervals: `PASS_FULL_EXACT_PYTHON_REPLAY`, in 3,065 s wall and 2,482 s CPU ([`python.json.gz`](receipts/scale-only/python.json.gz), [log](receipts/scale-only/run.log)).
 
 The results match Kleddamag’s unscaled certificate:
 - the least row minimum is 999,962,528;
@@ -247,8 +243,7 @@ From `packing/`:
 ```
 
 The source-checker controls and the source replays need a separate interpreter with
-NumPy and Numba, and writable scratch copies of `kleddamag-11/` and of the extracted
-release:
+NumPy and Numba, and writable scratch copies of `kleddamag-11/` and of the release, unzipped:
 
 ```bash
 uv venv --python 3.14.7 UPSTREAM
@@ -261,6 +256,18 @@ unzip -d RELEASE resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release
   --kleddamag-tree KLEDDAMAG --release-tree RELEASE/n11_wang_li_zenodo_release_2026-09-29 \
   --output OUT/source-controls.json
 ```
+
+## Compressed Files
+
+Five receipts of more than 1,000 lines are stored as deterministic gzip made by `gzip -9n`, with no file name or timestamp in the header, following the [R068 packet](../n17-guzhou-r068-2026-09-28/README.md): the complete native run and its log, and the per-row output of the authors’ full replay, Kleddamag’s full replay and the scale-only sweep. The table gives the Git blob and SHA-256 of the decompressed bytes, the bytes each replay wrote. Readers take the plain path and decompress through `devtools.retained_data.read_retained_bytes`, and `devtools.retained_data check` re-derives every row.
+
+| Stored file | Origin | Git blob | SHA-256 |
+| --- | --- | --- | --- |
+| `receipts/native/native-all.json.gz` | receipt | `ee77691a617f8ec84d0d5a3f19f67b694d8e2bed` | `5f1e246eb9d90bd44c7e418fb0cbabffc44851c6cd696bd3e9089650629b4722` |
+| `receipts/native/native-all.log.gz` | receipt | `ee5e490a843c2a1f45ff4cbce167dd4ee72ea2a7` | `689931ed073670f4d7e9b84b7141e183fe0bfe0468156e00c4ef3bb0648e4b34` |
+| `receipts/authors/fresh-full-replay/primary.json.gz` | receipt | `00efeeee455b08c5a52f87b71940fea1b3d2a0e7` | `9f5e17afe0afe2f6a214111c4d0b4ac0e819740bc8b978cd0607d17ca7c5c256` |
+| `receipts/kleddamag/full-replay/python.json.gz` | receipt | `da29a794af4fe59ffd242d738fe1e2840af287fc` | `a0724666a21f651ac215a61db3dcb7c3b57edab9503a27f913f4eb9f4d7b88b3` |
+| `receipts/scale-only/python.json.gz` | receipt | `94e10c0d5caf200ce352b38159bd69c89a291061` | `3804affcf5306d648c02238d6ff132f7590eadf14de664c39edff8e73903472b` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

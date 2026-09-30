@@ -27,7 +27,9 @@ Usage, from ``packing/``::
         --kleddamag-tree COPY --release-tree COPY --output OUT.json
 
 The two trees are writable scratch copies: the source checkers write caches beside
-themselves.
+themselves. The packet keeps the Zenodo archive zipped only, so the release tree is the
+archive unzipped into scratch, and a path under `RELEASE` names the archive member at
+that path.
 """
 
 from __future__ import annotations
@@ -43,6 +45,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import zipfile
 from collections.abc import Callable
 from fractions import Fraction
 from pathlib import Path
@@ -51,7 +54,11 @@ from typing import Any
 REPO = Path(__file__).resolve().parents[2]
 WEB = REPO / "packing/resources/web"
 SOURCE = WEB / "external-square-certificates-2026-09-22/kleddamag-11/global-certificate.json"
-RELEASE = WEB / "wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29"
+PACKET = WEB / "wang-li-n11-2026-09-29"
+#: Zenodo's archive, the bytes its published MD5 covers, kept in place of an extraction.
+ARCHIVE = PACKET / "n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip"
+#: The archive's top directory: a path under it names the member at that path.
+RELEASE = PACKET / "n11_wang_li_zenodo_release_2026-09-29"
 IMPROVED = RELEASE / "certificate/improved-global-certificate.json"
 #: The bound, scaling factor and orbit changes the authors state, compared, not assumed.
 STATED_BOUND = Fraction(3875000000, 999999999)
@@ -79,10 +86,17 @@ def _unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def read_bytes(path: Path) -> bytes:
+    """A file's bytes, or for a path under `RELEASE` the archive member it names."""
+    if path.is_relative_to(RELEASE):
+        with zipfile.ZipFile(ARCHIVE) as archive:
+            return archive.read(path.relative_to(PACKET).as_posix())
+    return path.read_bytes()
+
+
 def load(path: Path) -> Certificate:
     """One certificate, refusing duplicate keys."""
-    with path.open("rb") as stream:
-        return json.loads(stream.read(), object_pairs_hook=_unique)
+    return json.loads(read_bytes(path), object_pairs_hook=_unique)
 
 
 def text(value: Fraction) -> str:

@@ -595,7 +595,7 @@ evidence:
     origin: external
     novelty: previously-published
     source_key: '[Wang Li n11 2026]'
-    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
     replay_status: not-attempted
     limitations: >-
       Zenodo record 23038546 (29 September 2026) claims the strict bound s(11) >
@@ -618,7 +618,7 @@ evidence:
     origin: replayed-here
     novelty: previously-published
     source_key: '[Wang Li n11 2026]'
-    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
     replay: >-
       From a fresh extraction of the retained archive, with the authors' pinned upstream
       interpreter (CPython 3.14.7, numpy 2.3.5, numba 0.65.1, llvmlite 0.47.0): python
@@ -632,7 +632,7 @@ evidence:
       gives the commands and receipts.
     replay_status: passed
     proof:
-      source: packing/resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/paper/n11_lower_bound_wang_li.tex
+      source: packing/resources/web/wang-li-n11-2026-09-29/n11_lower_bound_wang_li.pdf
       theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
       scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
       pinpoints: >-
@@ -682,11 +682,12 @@ evidence:
     origin: replayed-here
     novelty: previously-published
     source_key: '[Wang Li n11 2026]'
-    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
     replay: >-
       uv run --frozen --all-extras --group dev python -m devtools.verify_n11_parent_core_native
-      --all --workers 2 --output OUT/all.json, from packing/, which must report
-      PASS_COMPLETE; about 3 hours on two workers of an idle host, 5.2 hours here.
+      --all --workers 2 --output OUT/all.json, from packing/, which reads
+      certificate/improved-global-certificate.json from inside the retained archive and must
+      report PASS_COMPLETE; about 3 hours on two workers of an idle host, 5.2 hours here.
     replay_status: passed
     proof:
       source: packing/src/sqpack/fractional/parent_core.py
@@ -715,10 +716,10 @@ evidence:
     limitations: >-
       The complete native run on 2026-09-30 accepted all 12,028 rows in 18,853 s of wall
       on two workers of a shared host, with 136,388,356 boxes, zero stalls, no exhausted
-      budgets and no refutations, every row at the exact threshold 1000047559. The receipt
-      and journal are packing/resources/web/wang-li-n11-2026-09-29/receipts/native/
-      native-all.json and native-all.rows.jsonl; the pilot and the native controls are
-      beside them. The wrapper leaves the frozen tool's code and its 19 proof inputs
+      budgets and no refutations, every row at the exact threshold 1000047559. The receipt,
+      every row included, and the run's log are packing/resources/web/wang-li-n11-2026-09-29/
+      receipts/native/native-all.json.gz and native-all.log.gz; the pilot and the native
+      controls are beside them. The wrapper leaves the frozen tool's code and its 19 proof inputs
       unchanged and decides a Kleddamag row as the frozen tool does
       (tests/test_wang_li_n11.py). This directed-rounding coverage differs from the
       event-cell sweeps of E-n011-wang-li-source-replay; the two methods share the

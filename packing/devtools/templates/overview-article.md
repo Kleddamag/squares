@@ -159,7 +159,7 @@ author.
 
 {{OTHER_PROJECTS}}
 
-## On GitHub
+## Squares Project Documentation
 
 The code, the certificates, the literature archive and the documents that record all of
 this live in the Squares Project’s [repository](https://github.com/jlevy/squares).

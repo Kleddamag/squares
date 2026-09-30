@@ -3,17 +3,17 @@ type: is
 id: is-01m3rkt99p9bxh8csj2v58nh9p
 title: Measure PR gate sensitivity to proof-corpus growth and hosted load
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
 parent_id: is-01m3ra1hjvn4bdh3h13aggqgvb
 created_at: 2026-09-30T07:35:11.413Z
-updated_at: 2026-09-30T09:44:07.710Z
-closed_at: 2026-09-30T08:52:47.572Z
-close_reason: Hosted Packing validation36691851635 at48c403add passes every required job including macOS, behavioral A/B, types, geometry, frontend and aggregate. Exact-source Rust cache fixes runtime; generated Rustdoc exclusion and measured2135 replay registration fixes pass focused controls. No timing thresholds relaxed. Future heads require their own hosted certification.
+updated_at: 2026-09-30T10:16:37.981Z
+closed_at: 2026-09-30T10:16:37.979Z
+close_reason: Hosted Packing36700059142 at eeafe6a206c7f11c110ccff574ee3425d8781f31 passes all required jobs including behavioral shards, typecheck, macOS, geometry and frontend; pages-required also passes. Focused fixture cost repairs preserved logical checks and no timing thresholds were weakened. Later heads retain normal hosted certification.
 resolution: null
 duplicate_of: null
 ---

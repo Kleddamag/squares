@@ -63,9 +63,10 @@ _REPORT_DATE = re.compile(r"research-(\d{4}-\d{2}-\d{2})-[^/]+\.md")
 _HEADING = re.compile(r"#[ \t]+(\S.*?)[ \t]*#*[ \t]*")
 _FENCE = re.compile(r"(`{3,}|~{3,})")
 
-#: The map, the module, and every document whose first heading a card reads.
+#: The map, the modules, and every document whose first heading a card reads.
 RENDER_INPUTS: tuple[Path, ...] = (
     Path(__file__),
+    Path(site_kit.__file__),
     DOCUMENT_MAP,
     *(REPO / path for path in (*START, *RESULTS)),
     REPO / REPORTS,

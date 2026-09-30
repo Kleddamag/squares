@@ -290,52 +290,70 @@ body {
 
    This page does not inline the site's stylesheet (`site.css`, described in
    `site-design.md`): that sheet also styles the other pages' cards, chips and tables,
-   and none of it may meet the article's selectors. What the bar needs is restated here
-   instead, in kpress tokens and this page's own weight scale, and every rule is scoped
-   to `.site-nav` or `.site-edition-notice`, neither of which the article's Markdown
+   and none of it may meet the article's selectors. The bar's rules are restated here
+   from it instead, in the same kpress tokens, so the bar looks the same on every page;
+   a change to the bar in `site.css` is made here too. Every rule is scoped to
+   `.site-nav` or `.site-edition-notice`, neither of which the article's Markdown
    produces.
    ============================================================ */
 .site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 1.25rem;
-  row-gap: 0.25rem;
-  padding: 0.75rem 1rem;
   background: var(--kpress-doc-bg);
   border-block-end: 1px solid var(--kpress-doc-border);
-  color: var(--kpress-doc-muted);
+  color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
-  font-size: var(--paper-font-size-support);
-  font-weight: var(--cert-font-weight-sans-light);
-  line-height: var(--paper-support-leading);
+  font-size: var(--kpress-font-size-small);
+  font-weight: var(--kpress-font-weight-sans-regular);
+  line-height: var(--kpress-line-height-tight);
+}
+.site-nav-inner {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-inline: auto;
+  max-width: calc(var(--kpress-font-size-base) * 40 + 16rem);
+  padding: 0.5rem 1rem;
 }
 .site-nav a {
+  border-radius: var(--kpress-radius-none);
   color: inherit;
+  display: block;
+  padding: 0.35rem 0.5rem;
   text-decoration: none;
-  transition: color 120ms ease-out, background-color 120ms ease-out;
+  transition:
+    background-color var(--kpress-transition-fast),
+    color var(--kpress-transition-fast);
 }
-.site-nav a:hover { color: var(--kpress-doc-text); text-decoration: none; }
-.site-nav a[aria-current="page"] { color: var(--kpress-doc-text); }
-.site-nav-logo {
-  margin-inline-start: -0.35rem;
-  padding: 0.1rem 0.35rem;
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  background: var(--kpress-doc-surface-hover);
   color: var(--kpress-doc-text);
-  font-weight: var(--cert-font-weight-sans-bold);
+  text-decoration: none;
 }
-.site-nav .site-nav-logo:hover { background: var(--kpress-doc-surface-hover); }
+.site-nav a:focus-visible {
+  outline: 2px solid var(--kpress-doc-link);
+  outline-offset: 1px;
+}
+.site-nav-logo {
+  font-size: var(--kpress-font-size-large);
+  font-weight: var(--kpress-font-weight-sans-bold);
+  margin-inline-start: -0.5rem;
+}
 .site-nav-items {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 1rem;
-  row-gap: 0.25rem;
-  margin: 0;
-  padding: 0;
+  gap: 0 0.15rem;
   list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
 }
-.site-nav-item { margin: 0; padding: 0; }
-.site-nav-item a[aria-current="page"] { font-weight: var(--cert-font-weight-sans-medium); }
+.site-nav-items a { color: var(--kpress-doc-muted); }
+.site-nav-items a[aria-current="page"] {
+  background: var(--kpress-doc-surface-selected);
+  color: var(--kpress-doc-text);
+  font-weight: var(--kpress-font-weight-sans-medium);
+}
 /* The notice takes the reading column as every block of the page does, and its type is
    the page's supporting text: the caption face, size and colour. */
 .site-edition-notice {

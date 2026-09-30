@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+from collections.abc import Sequence
 from dataclasses import dataclass
 from fnmatch import fnmatchcase
 from fractions import Fraction
@@ -20,8 +21,9 @@ from urllib.parse import urljoin
 
 import pytest
 import tinycss2
+from tinycss2.ast import AtRule, Node, QualifiedRule
 
-from devtools import render_explainer, render_explainer_pdf, site_kit
+from devtools import overview_data, render_explainer, render_explainer_pdf, site_kit
 from devtools.overview_data import Bound, ExplainerEdition, explainer_edition
 from devtools.render_explainer import (
     ATLAS,
@@ -1096,16 +1098,19 @@ def _selectors(css: str) -> list[tuple[str, str]]:
     """Every style rule's selectors, each with the at-rule prelude it sits in, if any."""
     found: list[tuple[str, str]] = []
 
-    def walk(rules: list[tinycss2.ast.Node], context: str) -> None:
+    def walk(rules: Sequence[Node], context: str) -> None:
         for rule in rules:
-            if isinstance(rule, tinycss2.ast.QualifiedRule):
+            if isinstance(rule, QualifiedRule):
                 prelude = tinycss2.serialize(rule.prelude)
                 found.extend((context, selector) for selector in _selector_list(prelude))
-            elif isinstance(rule, tinycss2.ast.AtRule) and rule.content is not None:
+            elif isinstance(rule, AtRule) and rule.content is not None:
                 inner = tinycss2.parse_rule_list(
                     rule.content, skip_comments=True, skip_whitespace=True
                 )
-                walk(inner, f"@{rule.lower_at_keyword} {tinycss2.serialize(rule.prelude).strip()}")
+                walk(
+                    inner,
+                    f"@{rule.lower_at_keyword} {tinycss2.serialize(rule.prelude).strip()}",
+                )
 
     walk(tinycss2.parse_stylesheet(css, skip_comments=True, skip_whitespace=True), "")
     return found
@@ -1200,26 +1205,26 @@ def test_the_site_chrome_rules_never_match_the_article(page: str) -> None:
 def test_the_edition_notice_sets_the_note_and_sends_the_reader_to_recent_results() -> None:
     """The note is the record's; the notice renders it with the page's math and links on."""
     note = (
-        r"This v0.4 proof edition leads with T-026’s $s(11) \ge 3.8264474\ldots$; the "
+        r"This v0.4 proof edition leads with T-026's $s(11) \ge 3.8264474\ldots$; the "
         r"verified lower bound is now $s(11) > 31/8$, by Kleddamag (T-037)."
     )
     notice = edition_notice(_edition(note))
     assert notice.startswith('<div class="site-edition-notice screen-only" role="note">')
-    assert '<p class="sans-text">This v0.4 proof edition leads with T-026’s' in notice
+    assert '<p class="sans-text">This v0.4 proof edition leads with T-026' in notice
     assert notice.count('class="kpress-math kpress-math-inline"') == 2
     assert r"s\mkern1mu(11) \ge 3.8264474\ldots" in notice
     assert f'<a href="{RECENT_RESULTS_HREF}">recent results</a>' in notice
     assert RECENT_RESULTS_HREF == "./#recent-results"
     assert "$" not in notice
 
-    current = edition_notice(_edition("The explainer’s bound is current.", current=True))
-    assert "The explainer’s bound is current." in current
+    current = edition_notice(_edition("The explainer's bound is current.", current=True))
+    assert "The explainer's bound is current." in current
 
 
 @pytest.mark.parametrize("note", ["", "   ", r"The bound is $s(11) > \frac{31}{8}$ now."])
 def test_the_edition_notice_refuses_an_empty_note_or_a_stacked_fraction(note: str) -> None:
     """A stacked fraction pushes a line of text open; the note writes one with a slash."""
-    with pytest.raises(SystemExit, match="empty|stacked math"):
+    with pytest.raises(SystemExit, match=r"empty|stacked math"):
         edition_notice(_edition(note))
 
 
@@ -1234,8 +1239,28 @@ def test_the_page_states_the_records_edition_note(page: str) -> None:
     assert edition.current_bound.n == 11
     assert edition.current_bound.value == verified_lower_bound(11).value
     assert page.count(edition_notice(edition)) == 1
+
+
+def test_the_explainer_rebuilds_when_its_edition_note_can_change() -> None:
+    """The notice reads the record through `overview_data`, so its inputs are the page's.
+
+    The overview's own inputs are the list to compare with, less the two that feed only
+    its other sections -- the notable sources and the rung legends in `epistemics.md` --
+    which `explainer_edition` never reads. An input `overview_data` gains is an input of
+    this page until it is shown to be one of those.
+    """
+    only_the_overview = {overview_data.NOTABLE_SOURCES, overview_data.EPISTEMICS}
     for path in EDITION_INPUTS:
         assert path in RENDER_INPUTS
+    missing = [
+        path.relative_to(REPO).as_posix()
+        for path in overview_data.RENDER_INPUTS
+        if path not in only_the_overview
+        and not any(
+            path == declared or path.is_relative_to(declared) for declared in RENDER_INPUTS
+        )
+    ]
+    assert not missing, f"the edition note reads inputs the page does not declare: {missing}"
 
 
 def test_the_films_play_from_the_sites_copies_of_the_pinned_release_files(

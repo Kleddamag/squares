@@ -2630,15 +2630,28 @@ MARKDOWN_OUTPUT = PACKING / "site" / f"{RESULT_ID}-explainer.md"
 #: (think-bl0n) -- the composite SVG the figure shows, the frontier register the opening
 #: counts, and the figure record with the module it is read through -- and a change to
 #: any of them would have left the deployed page stale with every gate green.
-#: What the edition notice reads, through `overview_data.explainer_edition`: the lead
-#: result's register entry (`frontier/results.yaml`, below), the case record it is
-#: compared with, and the credit of whoever holds the case's bound now.
+#: What the edition notice reads, through `overview_data.explainer_edition`: the register
+#: and every case record (the lead result's bound, the case's verified lane), the
+#: bibliography that credits the lane's holder, and the modules `overview_data` imports
+#: to read them. `test_the_explainer_rebuilds_when_its_edition_note_can_change` holds this
+#: to `overview_data.RENDER_INPUTS`, less what only the overview's other sections read.
 EDITION_INPUTS = (
     PACKING / "devtools" / "overview_data.py",
-    PACKING / "devtools" / "render_recent_results.py",
-    PACKING / "devtools" / "result_credit.py",
-    PACKING / "frontier" / "n-011.md",
+    PACKING / "frontier",
     PACKING / "resources" / "bibliography.yaml",
+    *(
+        PACKING / "devtools" / f"{module}.py"
+        for module in (
+            "render_recent_results",
+            "render_results",
+            "result_credit",
+            "significance",
+            "build_bound_citations",
+            "check_results",
+            "render_research_tables",
+            "state_ai_assistance",
+        )
+    ),
 )
 RENDER_INPUTS = (
     CASE,
@@ -3028,7 +3041,9 @@ def edition_notice(edition: ExplainerEdition | None = None) -> str:
     for diagnostic in document.diagnostics:
         print(f"edition notice: {diagnostic.severity}: {diagnostic.message}", file=sys.stderr)
     if any(d.severity == "error" for d in document.diagnostics):
-        raise SystemExit("the edition notice did not render cleanly; refusing to write the page")
+        raise SystemExit(
+            "the edition notice did not render cleanly; refusing to write the page"
+        )
     paragraph = document.html.strip()
     if not (paragraph.startswith("<p>") and paragraph.count("<p>") == 1):
         raise SystemExit(f"the edition notice is not one paragraph: {paragraph[:80]!r}")

@@ -64,14 +64,13 @@ if TYPE_CHECKING:
     from kpress.format.model import DocumentTree, TocEntry
 
 REPO = render_explainer.REPO
-PACKING = render_explainer.PACKING
 FRONTIER = render_research_tables.FRONTIER
 EVIDENCE = FRONTIER / "evidence.yaml"
 RESULTS = FRONTIER / "results.yaml"
 BOUND_CITATIONS = validate_schemas.BOUND_CITATIONS
 TUTORIAL = REPO / "TUTORIAL.md"
 FRONTIER_TEMPLATE = TEMPLATES / "frontier-article.md"
-#: lane B's table script: sorting and the filters above a `data-site-table`.
+#: The site's table script: sorting, and the filters above a `data-site-table`.
 TABLE_SCRIPT = Path(__file__).with_name("overview") / "table.js"
 
 #: Every repository path these pages read. The case records, the evidence and results
@@ -108,9 +107,9 @@ ELLIPSIS = "…"
 THUMBNAIL_SIZE = 48
 
 FRONTIER_DESCRIPTION = (
-    "Every case of the square packing problem from the first to the last the record "
-    "tracks: the best known packing and the reported and verified bounds on s(n), read "
-    "from the case records."
+    "One row for every case of the square packing problem the record tracks: the best "
+    "known packing, and the reported and verified bounds on s(n), each read from the "
+    "case's record."
 )
 TUTORIAL_DESCRIPTION = (
     "A conceptual on-ramp to square packing: what the objects are, why the approach is "
@@ -441,30 +440,6 @@ def surd_decimal(value: Surd) -> Decimal:
     return total
 
 
-def surd_tex(value: Surd) -> str:
-    """An exact gap as LaTeX: its radical terms by radicand, then its rational part."""
-    terms: list[str] = []
-    for radicand in sorted(value, key=lambda k: (k == 1, k)):
-        coefficient = value[radicand]
-        magnitude = abs(coefficient)
-        if radicand == 1:
-            body = (
-                str(magnitude.numerator)
-                if magnitude.denominator == 1
-                else rf"\frac{{{magnitude.numerator}}}{{{magnitude.denominator}}}"
-            )
-        else:
-            factor = ""
-            if magnitude.denominator != 1:
-                factor = rf"\tfrac{{{magnitude.numerator}}}{{{magnitude.denominator}}}"
-            elif magnitude != 1:
-                factor = str(magnitude.numerator)
-            body = rf"{factor}\sqrt{{{radicand}}}"
-        sign = "-" if coefficient < 0 else "+"
-        terms.append(f"{'-' if sign == '-' else ''}{body}" if not terms else f"{sign} {body}")
-    return " ".join(terms) or "0"
-
-
 def cut(value: Fraction, *, places: int = PLACES, exact: bool = True) -> str:
     """A non-negative value in decimals: whole where it terminates within `places`, else
     cut there, never rounded, and marked with an ellipsis. An inexact value (a radical's
@@ -548,11 +523,13 @@ def shown(bound: Mapping[str, Any]) -> Shown:
 
 @dataclass(frozen=True)
 class Gap:
-    """Verified upper minus verified lower: exact where both bounds are in the field."""
+    """Verified upper minus verified lower: exact where both bounds are in the field.
+
+    `decimal` is the gap cut for the cell, and `sort` the same cut further, for `table.js`.
+    """
 
     decimal: str
     sort: str
-    tex: str | None
     exact: bool
 
 
@@ -565,8 +542,7 @@ def gap(upper: Shown, lower: Shown) -> Gap:
         if rational is not None:
             if rational < 0:
                 raise SystemExit(f"a verified upper bound {upper.exact} is below {lower.exact}")
-            form = None if rational.denominator == 1 else surd_tex(difference)
-            return Gap(cut(rational), cut(rational, places=SORT_PLACES), form, exact=True)
+            return Gap(cut(rational), cut(rational, places=SORT_PLACES), exact=True)
         with localcontext() as context:
             context.prec = PRECISION
             approximation = Fraction(surd_decimal(difference))
@@ -577,7 +553,6 @@ def gap(upper: Shown, lower: Shown) -> Gap:
     return Gap(
         cut(approximation, exact=False),
         cut(approximation, places=SORT_PLACES, exact=False).removesuffix(ELLIPSIS),
-        None if difference is None else surd_tex(difference),
         exact=difference is not None,
     )
 
@@ -699,13 +674,19 @@ def recent_lower_bounds() -> frozenset[int]:
 # ---------------------------------------------------------------------------------------
 
 
+#: kpress diagnostics that are warnings to kpress and failures here: an in-page link with
+#: no target, and a formula kpress could not read, which would reach the page as source.
+REFUSED_DIAGNOSTICS = frozenset({"broken_anchor", "math_render_error"})
+
+
 def parse_markdown_html(
     source: str, *, title: str, trust_mode: Literal["trusted", "sanitized"], where: str
 ) -> DocumentTree:
     """Render Markdown with kpress as the site's pages are, refusing on any error.
 
-    A broken in-page anchor is a warning to kpress and a failure here. `math="auto"`, and
-    the explainer's kerning inside each `$…$` span, so formulas set as the explainer's do.
+    `REFUSED_DIAGNOSTICS` are failures here, though kpress only warns of them. Math is
+    `auto`, with the explainer's kerning inside each `$…$` span, so formulas set as the
+    explainer's do.
     """
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
@@ -718,7 +699,7 @@ def parse_markdown_html(
     failures = [
         diagnostic
         for diagnostic in document.diagnostics
-        if diagnostic.severity == "error" or diagnostic.type == "broken_anchor"
+        if diagnostic.severity == "error" or diagnostic.type in REFUSED_DIAGNOSTICS
     ]
     for diagnostic in document.diagnostics:
         print(f"{where}: {diagnostic.severity}: {diagnostic.message}", file=sys.stderr)
@@ -803,16 +784,21 @@ def value_html(bound: Shown, formulas: Formulas, *, relation_mark: str | None = 
 
 
 def _cell(
-    content: str, *, value: str | None = None, exact: str | None = None, **data: str
+    content: str,
+    column: str,
+    *,
+    value: str | None = None,
+    exact: str | None = None,
+    **data: str,
 ) -> str:
-    attributes = []
+    """One cell: its column's class, its sort value, and its record's exact form."""
+    attributes = [f'class="site-col-{column}"']
     if value is not None:
         attributes.append(f'data-value="{escape(value)}"')
     if exact is not None:
         attributes.append(f'data-exact="{escape(exact)}"')
     attributes.extend(f'data-{key.replace("_", "-")}="{escape(v)}"' for key, v in data.items())
-    joined = " ".join(attributes)
-    return f"<td {joined}>{content}</td>" if joined else f"<td>{content}</td>"
+    return f"<td {' '.join(attributes)}>{content}</td>"
 
 
 def _names(people: Iterable[str], year: object) -> str:
@@ -855,15 +841,18 @@ def frontier_row(
     case: Mapping[str, Any], *, claims: Sequence[Claim], recent: frozenset[int]
 ) -> Row:
     n = int(case["n"])
-    bounds = {
-        key: shown(case[key])
-        for key in (
-            "reported_upper_bound",
-            "verified_upper_bound",
-            "reported_lower_bound",
-            "verified_lower_bound",
-        )
-    }
+    try:
+        bounds = {
+            key: shown(case[key])
+            for key in (
+                "reported_upper_bound",
+                "verified_upper_bound",
+                "reported_lower_bound",
+                "verified_lower_bound",
+            )
+        }
+    except ExactFormError as error:
+        raise SystemExit(f"n = {n}: {error}") from error
     verified_lower = bounds["verified_lower_bound"]
     reported_lower = bounds["reported_lower_bound"]
     mark, strict_by = relation(
@@ -913,7 +902,7 @@ def _best_known_html(case: Mapping[str, Any], row: Row, formulas: Formulas) -> s
     if row.upper_agrees:
         line += f" {_verified_mark()}"
     if line.strip():
-        parts.append(f'<span class="frontier-credit">{line.strip()}</span>')
+        parts.append(f'<span class="site-cell-note frontier-credit">{line.strip()}</span>')
     return " ".join(parts)
 
 
@@ -929,7 +918,7 @@ def _reported_lower_html(case: Mapping[str, Any], row: Row, formulas: Formulas) 
     line = " · ".join(escape(part) for part in (credit, kind) if part)
     if row.lower_agrees:
         line += f" {_verified_mark()}"
-    parts.append(f'<span class="frontier-credit">{line.strip()}</span>')
+    parts.append(f'<span class="site-cell-note frontier-credit">{line.strip()}</span>')
     return " ".join(parts)
 
 
@@ -959,8 +948,6 @@ def _details_html(case: Mapping[str, Any], row: Row, links: Links, formulas: For
         items.append(
             f'<li>{lead}{of_degree}: <span class="frontier-polynomial">{formula}</span></li>'
         )
-    if row.gap.tex is not None:
-        items.append(f"<li>Bound gap, exactly: {formulas.slot(row.gap.tex)}</li>")
     for strict_by, which in (
         (row.strict_by, "verified"),
         (row.reported_strict_by, "reported"),
@@ -970,18 +957,19 @@ def _details_html(case: Mapping[str, Any], row: Row, links: Links, formulas: For
             items.append(f"<li>The {which} lower bound is strict, as {named} claims.</li>")
     return (
         '<details class="frontier-details"><summary>Details</summary>'
-        f'<ul class="frontier-records">{"".join(items)}</ul></details>'
+        '<div class="site-details-body">'
+        f'<ul class="frontier-records">{"".join(items)}</ul></div></details>'
     )
 
 
 def _status_html(row: Row) -> str:
     status = (
-        f'<span class="site-chip site-chip-status site-chip-{escape(row.status)}">'
+        f'<span class="site-chip site-chip-status" data-status="{escape(row.status)}">'
         f"{escape(row.status)}</span>"
     )
     if row.reported_status != row.status:
         status += (
-            f' <span class="frontier-reported-status">reported '
+            f' <span class="site-cell-note frontier-reported-status">reported '
             f"{escape(row.reported_status)}</span>"
         )
     return status
@@ -999,79 +987,94 @@ def row_html(
     )
     case_file = f"packing/frontier/n-{n:03d}.md"
     recent = (
-        '<span class="site-chip site-chip-recent" title="a recent lower bound, starred as '
-        'on the atlas figure">★<span class="site-visually-hidden"> recent</span></span>'
+        '<span class="site-chip site-chip-star" title="A recent lower bound, starred as on '
+        'the atlas figure."><span class="site-visually-hidden">recent</span></span>'
         if row.recent
         else ""
     )
     cells = [
-        _cell(f'<span class="frontier-n">{n}</span> {thumbnail}', value=str(n)),
-        _cell(_status_html(row)),
+        _cell(f'<span class="frontier-n">{n}</span> {thumbnail}', "n", value=str(n)),
+        _cell(_status_html(row), "status"),
         _cell(
             _best_known_html(case, row, formulas),
+            "best-known",
             value=row.reported_upper.value,
             exact=row.reported_upper.exact,
         ),
         _cell(
             value_html(row.verified_upper, formulas),
+            "verified-upper",
             value=row.verified_upper.value,
             exact=row.verified_upper.exact,
         ),
         _cell(
             _reported_lower_html(case, row, formulas),
+            "reported-lower",
             value=row.reported_lower.value,
             exact=row.reported_lower.exact,
             relation=row.reported_relation,
         ),
         _cell(
             value_html(row.verified_lower, formulas, relation_mark=row.relation),
+            "verified-lower",
             value=row.verified_lower.value,
             exact=row.verified_lower.exact,
             relation=row.relation,
         ),
         _cell(
             f'<span class="frontier-decimal">{escape(row.gap.decimal)}</span>',
+            "gap",
             value=row.gap.sort,
             gap_exact="true" if row.gap.exact else "false",
         ),
-        _cell(recent, value="1" if row.recent else "0"),
+        _cell(recent, "recent", value="1" if row.recent else "0"),
         _cell(
             f'<a href="{escape(links.blob(case_file))}">n-{n:03d}.md</a> '
-            + _details_html(case, row, links, formulas)
+            + _details_html(case, row, links, formulas),
+            "records",
         ),
     ]
     return (
-        f'<tr data-n="{n}" data-status="{escape(row.status)}" '
+        f'<tr id="n-{n:03d}" data-n="{n}" data-status="{escape(row.status)}" '
         f'data-flags="{escape(" ".join(row.flags))}">' + "".join(cells) + "</tr>"
     )
 
 
-HEADERS = (
-    ("<var>n</var>", "number"),
-    ("Status", "text"),
-    ("Best known packing", "number"),
-    ("Verified upper", "number"),
-    ("Reported lower", "number"),
-    ("Verified lower", "number"),
-    ("Bound gap", "number"),
-    ("Recent", "number"),
-    ("Records", None),
+#: The columns: a class suffix, a header, and how `table.js` sorts it (None: it does not).
+#: The `n` header is a formula, as the page's prose sets `n`.
+HEADERS: tuple[tuple[str, str, str | None], ...] = (
+    ("n", "$n$", "number"),
+    ("status", "Status", "text"),
+    ("best-known", "Best known packing", "number"),
+    ("verified-upper", "Verified upper", "number"),
+    ("reported-lower", "Reported lower", "number"),
+    ("verified-lower", "Verified lower", "number"),
+    ("gap", "Bound gap", "number"),
+    ("recent", "Recent", "number"),
+    ("records", "Records", None),
 )
 
 
-def filters_html(first: int, last: int) -> str:
-    """The filters lane B's table script reads: status, open only, recent only, and `n`."""
+def _label(text: str, formulas: Formulas) -> str:
+    return formulas.slot(text[1:-1]) if text.startswith("$") else escape(text)
+
+
+def filters_html(first: int, last: int, formulas: Formulas) -> str:
+    """The filter panel `table.js` shows and reads: status, open only, recent only, and a
+    range of `n`. It is hidden until the script runs, since without it nothing filters."""
+    n = formulas.slot("n")
     return (
-        '<div class="site-table-filters" data-filters-for="frontier-table">'
+        '<div class="site-table-filters" data-filters-for="frontier-table" hidden>'
         '<label>Status <select data-filter="status">'
         '<option value="">All</option><option value="open">Open</option>'
         '<option value="proved">Proved</option></select></label>'
         '<label><input type="checkbox" data-filter-flag="open"> Open only</label>'
         '<label><input type="checkbox" data-filter-flag="recent"> Recent only</label>'
-        f'<label><var>n</var> from <input type="number" data-filter-min="n" min="{first}" '
+        f'<label>{n} from <input type="number" data-filter-min="n" min="{first}" '
         f'max="{last}" step="1" inputmode="numeric" placeholder="{first}"></label>'
         f'<label>to <input type="number" data-filter-max="n" min="{first}" max="{last}" '
         f'step="1" inputmode="numeric" placeholder="{last}"></label>'
+        '<output class="site-table-count" data-filter-count></output>'
         "</div>"
     )
 
@@ -1079,20 +1082,22 @@ def filters_html(first: int, last: int) -> str:
 def table_html(
     cases: Sequence[Mapping[str, Any]], rows: Sequence[Row], links: Links, *, base: str
 ) -> str:
-    head = "".join(
-        f'<th scope="col" data-sort="{sort}">{label}</th>'
-        if sort
-        else f'<th scope="col">{label}</th>'
-        for label, sort in HEADERS
-    )
+    """The filters and the table, which scrolls in its own wrap under a sticky header."""
     formulas = Formulas()
+    head = "".join(
+        f'<th scope="col" class="site-col-{column}"'
+        + (f' data-sort="{sort}">' if sort else ">")
+        + f"{_label(label, formulas)}</th>"
+        for column, label, sort in HEADERS
+    )
     body = "\n".join(
         row_html(case, row, links, formulas, base=base)
         for case, row in zip(cases, rows, strict=True)
     )
     table = (
-        f"{filters_html(rows[0].n, rows[-1].n)}\n"
-        '<div class="kpress-table-wrap site-table-wrap" data-kpress-table-scale="wide">'
+        f"{filters_html(rows[0].n, rows[-1].n, formulas)}\n"
+        '<div class="kpress-table-wrap site-table-wrap site-table-scroll" '
+        'data-kpress-table-scale="wide">'
         '<table class="kpress-table site-table frontier-table" data-site-table '
         'id="frontier-table" aria-label="The frontier atlas, one row per case">'
         f"<thead><tr>{head}</tr></thead>\n<tbody>\n{body}\n</tbody></table></div>"
@@ -1156,7 +1161,7 @@ def frontier_page(commit: str) -> Page:
         title=title,
         description=FRONTIER_DESCRIPTION,
         html=html,
-        scripts=(TABLE_SCRIPT,) if TABLE_SCRIPT.is_file() else (),
+        scripts=(TABLE_SCRIPT,),
     )
 
 
@@ -1284,15 +1289,24 @@ def repository_link(
 def path_link(path: str, fragment: str, *, commit: str, page: str, image: bool) -> str:
     """A repository path as a page links it: the site's own copy where it serves one, a
     raw permalink for an image, a reader document on `main`, else a permalink at `commit`,
-    `tree/` for a directory in the checkout and `blob/` for a file."""
+    `tree/` for a directory and `blob/` for a file."""
     if path in served_assets():
         return base_for(page) + served_assets()[path] + fragment
     if image:
         return f"{RAW_URL}/{commit}/{quote(path)}"
     if is_reader_document(path):
         return f"{REPO_URL}/blob/{DEFAULT_BRANCH}/{quote(path)}{fragment}"
-    kind = "tree" if (REPO / path).is_dir() else "blob"
-    return f"{REPO_URL}/{kind}/{commit}/{quote(path)}{fragment}"
+    return f"{REPO_URL}/{_kind(path, commit)}/{commit}/{quote(path)}{fragment}"
+
+
+def _kind(path: str, commit: str) -> str:
+    """`tree` for a directory at the commit, else `blob`. The commit's own listing decides,
+    not the checkout, which in the Pages jobs is sparse; only a commit git cannot list, such
+    as a test's placeholder, falls back to the checkout."""
+    paths = _listing(commit)
+    if paths is None:
+        return "tree" if (REPO / path).is_dir() else "blob"
+    return "tree" if path in paths.directories else "blob"
 
 
 def toc_html(entries: Sequence[TocEntry]) -> str:
@@ -1447,9 +1461,7 @@ class Listing:
 
 
 @cache
-def listing(commit: str) -> Listing:
-    """One `git ls-tree -r` of the commit. It reads trees only, never a blob, so it costs
-    nothing in a partial clone."""
+def _listing(commit: str) -> Listing | None:
     found = subprocess.run(
         ("git", "ls-tree", "-r", "-z", commit),
         cwd=REPO,
@@ -1457,9 +1469,7 @@ def listing(commit: str) -> Listing:
         check=False,
     )
     if found.returncode != 0:
-        raise SystemExit(
-            f"cannot list commit {commit}: {found.stderr.decode(errors='replace').strip()}"
-        )
+        return None
     files: set[str] = set()
     directories: set[str] = {""}
     for record in found.stdout.decode("utf-8").split("\0"):
@@ -1475,6 +1485,15 @@ def listing(commit: str) -> Listing:
             directories.add(parent)
             parent = posixpath.dirname(parent)
     return Listing(frozenset(files), frozenset(directories))
+
+
+def listing(commit: str) -> Listing:
+    """The paths at `commit`, from one `git ls-tree -r`, which reads trees and never a blob,
+    so it costs nothing in the Pages jobs' partial clone."""
+    paths = _listing(commit)
+    if paths is None:
+        raise SystemExit(f"git cannot list commit {commit}; the links cannot be checked")
+    return paths
 
 
 def repository_link_problems(html: str, commit: str) -> list[str]:

@@ -612,20 +612,7 @@ body {
   font-size: var(--site-font-size-note);
   text-align: center;
 }
-.site-recent {
-  font-size: 0.95em;
-}
-.site-recent .site-date,
-.site-recent .site-credit {
-  color: var(--site-support-color);
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-}
-/* A standing chip trails its line quietly: the recent list and a card's rung line. */
-.site-recent .site-chip[data-standing] {
-  margin-inline-start: 0.2rem;
-}
-/* The pointer under the recent list to the full results table, in the sans face. */
+/* The pointer under the recent table to the full results table, in the sans face. */
 .site-more {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -789,6 +776,50 @@ body {
   }
   .site-results .site-col-result {
     min-width: 0;
+  }
+}
+
+/* ---------- Quiet cell text and quiet rows ----------
+   Secondary text inside a cell, a result's id beside its math or a credit's "after …",
+   in the support colour a step smaller. A superseded result's row reads quieter in every
+   site table; its chips keep their fills. */
+.site-cell-quiet {
+  color: var(--site-support-color);
+  font-size: 0.9em;
+}
+.kpress .site-table tr[data-standing="superseded"] :is(td, summary) {
+  color: var(--site-support-color);
+}
+
+/* ---------- The recent results table ----------
+   The overview's newest results: date, result, method, credit, status. The status cell
+   holds every chip side by side, wrapping only when the cell is too narrow. On a phone
+   it keeps the results table's card per row: the result and the date on the first
+   line, then the method, the credit and the chips each across the card. */
+.site-recent-table .site-col-result {
+  min-width: 12rem;
+}
+/* Wide enough for three rungs and two standing chips on one line. */
+.site-recent-table .site-col-status {
+  min-width: 22rem;
+}
+/* A result's id never breaks at its hyphen. */
+.site-recent-table .site-col-result .site-cell-quiet {
+  white-space: nowrap;
+}
+@media (width < 40rem) {
+  .site-recent-table .site-col-result {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+  .site-recent-table .site-col-date {
+    grid-area: 1 / 3;
+  }
+  .site-recent-table :is(.site-col-method, .site-col-credit, .site-col-status) {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .site-recent-table .site-col-method:empty {
+    display: none;
   }
 }
 

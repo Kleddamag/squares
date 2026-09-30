@@ -524,10 +524,8 @@ def overview_page() -> Page:
         "ATLAS_GRID": overview_sections.atlas_grid(),
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
-        "HEADLINE_CARDS": overview_sections.headline_cards(overview),
-        "EXACT_CARDS": overview_sections.exact_value_cards(overview),
         "VERIFICATION": overview_sections.verification_block(),
-        "RECENT": overview_sections.recent_list(overview),
+        "RECENT": overview_sections.recent_table(overview),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
     }

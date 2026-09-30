@@ -20,34 +20,17 @@ and how each claim was checked.
 
 ## Recent Results
 
-The central thread is eleven squares.
-T-010 repaired the printed argument behind Stromquist’s
-$2 + 4/\sqrt{5} = 3.7888543\ldots$, stated in 1984 and published in 2003; T-018 passed
-it with a weighted fractional certificate at $381/100$, whose
-[proof card](repo:packing/cases/n11_fractional_certificate/t-018-proof-card.md) states
-the whole proof and the one command that checks it; threshold atoms and exact dilation
-limits then carried this project’s bound to T-033’s $3.8269975\ldots$. Kleddamag’s
-$31/8$, developed from T-026’s certificate, now holds the case.
-
-The results scored
-<span class="site-chip site-rung-fill" data-rung="S" data-level="5">S5</span>, the
-highest significance:
-
-{{HEADLINE_CARDS}}
-
-The cases a recent lower bound has closed, where the exact value is now known.
-Evan Daniel’s are the exact values of $s(k^2 - 4)$ for $k = 5, 6, 7$, the first for any
-$k \ge 4$:
-
-{{EXACT_CARDS}}
+These are the recent results this project tracks: new bounds for particular numbers of
+squares, found here or by others, each with who found it and how far it has been
+checked.
 
 A result by others is registered as *reported* when its source is taken in, and as
 *verified* only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;
 [`epistemics.md`](epistemics.html#results-by-others) states the policy.
 The newest results, each dated by its publication if it is by others and by the day it
-was established if it is this project’s, with its standing: *holds* where a verified
-case bound rests on it now, and otherwise why not.
+was established if it is this project’s, with its rungs and its standing: *holds* where
+a verified case bound rests on it now, and otherwise why not.
 
 {{RECENT}}
 

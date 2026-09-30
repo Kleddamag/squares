@@ -286,6 +286,49 @@ measured receipts.
 Batch repository CI alongside research; no general slow local suite is
 a prerequisite for this plan.
 
+## Upstream Validation and Performance Equivalence
+
+The user additionally requires reproduction and audit of wand125’s verification process,
+then independent verification at least as fast and effective.
+**think-om8z** owns this work; **think-0jps** owns the reusable comparison tool.
+The
+[process map](../../verification-tooling.md#wand125-verification-process-and-independent-equivalence)
+separates source acquisition, proposals, exact admission, continuous coverage, complete
+angle census, packing deduction and receipt publication.
+
+Pin the new upstream `3eb08e6c` separately from `0d33ab6`; reproduce the corrected
+mass-budget controls and review the revised ceiling guidance.
+Preserve historical findings rather than relabeling them as current defects.
+Existing `verify.cpp` is unchanged; its reuse is upstream reproduction, not an
+independent implementation.
+
+Acceptance has two independent requirements: equivalent mathematical scope and adequate
+measured performance.
+First-party default threshold 1 is not equivalent to the source’s 10001/10000 coverage
+target.
+Record nominal and effective C++ thresholds explicitly, using the exact effective
+binary64 cutoff for strict timing comparisons.
+Require full 201-direction and center-domain decisions, exact candidate/parameter
+binding and all packing-budget premises.
+Incomplete runs cannot establish timing parity.
+
+Start with one complete analytic control and a bounded representative feasibility probe.
+Then freeze a representative certificate corpus before optimizing, run alternating
+matched pairs on the same host/worker allocation, and compare complete-result wall and
+aggregate CPU, separating compile/setup and kernel costs.
+The parity target is no slower complete verification at the matched resource budget,
+with no reduction in accepted coverage or refusal checks; noisy measurements remain
+unresolved. Analytic-control parity alone does not establish parity on external proof
+certificates.
+
+Measure before choosing native code or a stronger geometric bound.
+A source-distinct interval implementation may be more economical than optimizing
+rational clipping, but requires its own rounding, boundary and full-domain proof review.
+Avoid a literal C++ translation presented as independent mathematics.
+This certificate family is separate from T-060: performance here does not discharge
+remaining field/capture obligations.
+Keep the morning proof lanes available and report any resource tradeoff explicitly.
+
 ## Rollout and Completion
 
 New runner receipts coexist with frozen controls until exact equivalence and review

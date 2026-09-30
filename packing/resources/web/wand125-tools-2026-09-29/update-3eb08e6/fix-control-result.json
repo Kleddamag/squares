@@ -1,0 +1,19 @@
+{
+  "canonical_cpp_executed": false,
+  "control_runner_sha256": "53481807fe2106b3563a460b770f5e3eea0151754127e795a6948ac1d9968447",
+  "current_commit": "3eb08e6c675d8d5aa953cb93da049a3f3cdc6123",
+  "current_l_cap_sha256": "a8e1a92231b491c0d1610a13a2c7dbc435d6fb9e41a4c392bcf0d9b5b6865688",
+  "current_wrapper_sha256": "06f532991ba4d34e4f5fcb4a9c847e6a9dedb0c7af6a2e9323d1761166e3d0ed",
+  "fake_certifier_only": true,
+  "fixed_default_budget_and_n_mismatch_refused": true,
+  "fixed_invalid_n1_target_28_9_refused_before_fake_certifier": true,
+  "fixed_nonverified_summary_refused": true,
+  "geometry_verified": false,
+  "l_cap_general_and_on_net_factors_checked": true,
+  "old_commit": "0d33ab61726c2ab03e3eb8f457dabaf22db8571f",
+  "old_invalid_n1_target_28_9_reached_fake_claim_path": true,
+  "old_wrapper_sha256": "b59714a2780e66c099f3cd752a9b44b339a526ea0a5c681e6d96ed400cb865f0",
+  "replay_command_from_repository_root": "source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh && packing/.venv/bin/python3 packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/replay-fix-controls.py",
+  "speed_parity_measured": false,
+  "status": "PASS_WRAPPER_ADMISSION_CONTROLS_ONLY"
+}

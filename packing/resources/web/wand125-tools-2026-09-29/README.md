@@ -27,6 +27,21 @@ Extract the archive into task scratch on the external volume to inspect or run i
 source bytes unchanged.
 The archive includes the upstream tests and notices.
 
+## Separately Pinned Update
+
+The [updated source archive](update-3eb08e6/upstream.tar.gz) and
+[provenance](update-3eb08e6/source-provenance.json) retain
+`3eb08e6c675d8d5aa953cb93da049a3f3cdc6123`, four commits after the original pin.
+The update addresses our mass-budget and ceiling-guidance findings and adds upstream CI;
+Tokoharu's canonical C++ coverage checker remains unchanged. The
+[current process map](../../../../docs/project/verification-tooling.md#wand125-verification-process-and-independent-equivalence)
+separates wrapper admission, complete coverage, independent acceptance and matched
+performance. Updated controls and benchmarks remain separate from historical receipts.
+
+The provisional T-056/T-057 identifiers in the historical intake below now correspond to
+**T-058/T-059**; the result register is authoritative. None of these tools establishes
+T-060's claimed exact global optimum.
+
 ## Claims and Review
 
 The announcement supplies tools rather than a new numerical lower bound.

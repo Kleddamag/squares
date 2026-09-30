@@ -340,6 +340,66 @@ the atlas regeneration.
 The provisional wand125 labels T-056/T-057 in archived receipts map to T-058/T-059 after
 that merge; published Couzo/de Winter claims retain T-056/T-057.
 
+## Updated Source and Equivalence Audit
+
+The separately retained
+[source update](../../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/source-provenance.json)
+pins `3eb08e6c675d8d5aa953cb93da049a3f3cdc6123`. Its unchanged `verify.cpp` remains the
+coverage authority; the new wrapper refuses target mass outside `(0,n)` and defaults
+below n. The revised ceiling calculation uses `B(1+D)` generally and `B` only for
+matching integer-grid upper-bound records.
+All 64 current matching records satisfy the required `n <= k^2`; the selection function
+should enforce that condition before accepting future records.
+Rounded upper-bound inputs still make the displayed ceiling guidance heuristic.
+
+Four focused upstream controls passed.
+The retained
+[wrapper control](../../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/fix-control-result.json)
+reproduces the old admission path and the corrected refusal with a synthetic certifier.
+It checks wrapper behavior only, not C++ geometry or performance.
+This update does not alter the original counterexample receipt or erase its historical
+finding.
+
+An Astra review at max thinking found no new flaw in the reviewed continuum-coverage
+argument at this pin.
+The
+[process map](../verification-tooling.md#wand125-verification-process-and-independent-equivalence)
+separates exact admission, interval geometry, translation-domain subdivision, the
+201-direction net, strict packing budget and artifact publication.
+Its arithmetic dependencies include binary64 interval operations, the rounding mode, and
+compiler flags excluding unsafe floating-point transformations.
+The generic certifier checks coverage without supplying the separate `mass < n` packing
+premise. It also rereads the source candidate at publication, so a first-party replay
+must bind an immutable candidate and verify the final artifact against the input that
+was checked.
+
+Our exact rational verifier implements different geometric bounds.
+C++ combines center-area enclosures with signed derivative bounds; common-core and
+per-rectangle corner minima do not exploit the same derivative cancellation.
+Equivalent complete coverage and comparable speed therefore remain separate obligations.
+The matched benchmark uses the exact rational value of the C++ effective binary64
+cutoff, records the nominal `10001/10000` target, and distinguishes complete, partial
+and unresolved outcomes.
+Neither an incomplete probe nor a complete analytic control establishes performance
+parity on external certificates.
+This audit concerns rectangle-density certificates; it does not confirm the T-060
+global-optimality capture proof.
+
+The paired benchmark at source SHA
+`a31a41c0d87126883bc28e6ad68e96b2571c8a944b5d012afa05200b2a11c2f6` passed a separate
+Astra-max review of exact threshold conversion, D4/input/domain binding, complete unique
+angle census, unresolved-work refusal, source rechecks and timeout handling.
+Three portable benchmark tests and two production-path refusal tests pass.
+The retained
+[analytic comparison](../../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/analytic-control/result.json)
+accepts all 201 directions in both engines.
+The
+[external angle-1 probe](../../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/n11-angle1-feasibility/result.json)
+finishes in C++ but is inconclusive in native after its 13-second internal budget.
+These establish a working comparison and a specific performance gap; they do not
+establish independent full external coverage or speed parity.
+The process map retains the measured costs and the open effectiveness obligations.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

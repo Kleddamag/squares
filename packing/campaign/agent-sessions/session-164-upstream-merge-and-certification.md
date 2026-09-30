@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T02:40:05Z'
+  deadline_at: '2026-09-30T15:00:00Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -400,7 +400,7 @@ session:
     bead: think-fi4w
     objective: Build and run the first independent field-exclusion kernel, with complete ownership,
       angle coverage and transfer arithmetic; check candidate-capture ancestry in parallel.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Local isolation and conditional near-state inclusion passed; actual exclusions
       and the validity of the supplied capture domains remain the principal open obligations.
@@ -413,15 +413,51 @@ session:
     kill_condition: Reported transfers or receipt ancestry are treated as geometric acceptance, or
       unrelated repository CI interrupts a proof lane.
     fallback: Retain the unresolved rule, source identity and cost; continue disjoint proof obligations.
-    outcome: null
+    outcome: Mask0 accepted 459 canonical exclusions in 16.58 seconds; mask202 later
+      added 653, giving 1112 distinct exclusions with 1068 remaining. Capture ancestry
+      was checked structurally, not geometrically; all four published leaf digests
+      mismatch their source states. These results were retained in the proof review,
+      but this phase status was not reconciled at its deadline. That recordkeeping
+      lapse caused the da50993c8 hosted ledger failure; no timely closure is claimed.
     evidence:
     - docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    stop_reason: Both field controls and the structural ancestry audit are retained; remaining
+      proof work is separated in the consolidation plan. Phase closure recorded late.
+    next_action: Implement the shared field runner and remaining capture obligations from the
+      consolidation plan; do not infer global confirmation from these partial results.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-om8z
+    objective: Finish the pinned wand125 process-equivalence audit and bounded matched
+      benchmark, preserving the independent global-optimality proof as the primary goal.
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The user requests an explicit map of upstream verification and an
+      independently implemented equivalent with measured speed and effectiveness.
+      Resume prospective clocking now; the earlier unrecorded transition is acknowledged
+      above. The session window follows the user's morning target in the plan.
+    budget_minutes: 30
+    started_at: '2026-09-30T05:25:42Z'
+    deadline_at: '2026-09-30T05:55:42Z'
+    expected_output: Source-bound production control, reviewed matched benchmark and
+      focused refusal tests, actual phase costs and explicit remaining parity gaps.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_rectangle_verifier_parity.py
+    kill_condition: Partial results are described as parity, or testing unrelated to
+      the named certificate obligation becomes a prerequisite for proof progress.
+    fallback: Retain an incomplete receipt and identify the failed premise or cost;
+      continue the independent field and capture lanes without a false promotion.
+    outcome: null
+    evidence:
+    - docs/project/verification-tooling.md
+    - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
     stop_reason: null
-    next_action: Sol checks 55 ownership obligations and 136 proposed positive-cell rows; Astra audits
-      the geometric rules; the second Sol lane checks capture ancestry.
+    next_action: Sol finishes benchmark controls while Astra audits acceptance semantics;
+      retain complete analytic and bounded external results, then return lanes to T-060.
   budget:
-    wall_minutes: 395
-    max_cycles: 14
+    wall_minutes: 1135
+    max_cycles: 40
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:

@@ -197,6 +197,126 @@ Coverage succeeded, but the required `mass < n` check was absent.
 The native checker rejects that retained scaled input at admission, before attempting
 coverage.
 
+## wand125 Verification Process and Independent Equivalence
+
+The updated
+[source](https://github.com/wand125/square-packing-tools/tree/3eb08e6c675d8d5aa953cb93da049a3f3cdc6123)
+is pinned separately from the original intake.
+Its
+[source archive and identities](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/source-provenance.json)
+preserve that version.
+Four subsequent commits change wrapper admission, ceiling guidance and tests/CI; the
+canonical C++ coverage checker is unchanged.
+Historical findings continue to describe their original source pin.
+
+| Stage | Upstream responsibility | First-party equivalent obligation |
+| --- | --- | --- |
+| Candidate generation | LP, transfer, budget recovery and screening propose rectangles/weights; cached-axis and batched/parallel screens accelerate search | Keep outside acceptance; candidate quality may change verification cost but supplies no proof |
+| Exact admission | `certify.prepare` parses exact fractions, checks nonnegative mass, support and shrink/smoothing/net safety, expands eight symmetry images and emits enclosing binary64 intervals | Independently recompute the exact source measure, all premises and interval-input identity; additionally require strict mass below target n for a packing claim |
+| Axis case | `verify.cpp` evaluates the complete event grid | Independently enumerate all exact event endpoints and prove complete axis coverage |
+| Oblique coverage | Certified inner polygon areas give center values; outward-rounded derivative bounds extend them over center boxes; subdivision covers all boxes | Independently prove a lower bound over every center box, using exact clipping/common-core or another reviewed bound; no point sampling substitution |
+| Direction completeness | `run_verify.py` compiles with safe floating-point flags and runs all 201 unique directions | Bind the same complete direction set and threshold; reject missing/duplicate/partial output and exhausted budgets |
+| Packing implication | Net containment covers arbitrary rotations; nonnegative total mass below n contradicts n disjoint unit squares each capturing at least one | Check the counting and containment premises explicitly; a coverage-only VERIFIED result is insufficient |
+| Receipt publication | Source/input hashes and complete coverage summary | Retain complete outcome, scope, independent code identity, exact inputs, work and timings; no acceptance from a producer flag alone |
+
+The source compilation is `g++ -O2 -std=c++17 -fno-fast-math -ffp-contract=off`. Record
+the actual compiler and host; a command named g++ can select different toolchains.
+The C++ checker uses binary64 outward intervals, not exact rational arithmetic.
+Approximate polygon construction is accepted only after interval checks prove its
+convexity/containment and area bound.
+Search speedups do not change this final checker.
+A C++ axis failure means its lower bound did not meet the threshold, and resource
+exhaustion means unresolved; neither alone is an exact counterexample.
+The raw certifier rereads the candidate when publishing its result, so independent
+admission uses an immutable snapshot and verifies that final geometry/weights agree with
+the proved input. This is a required binding contract, not a report of corruption in a
+published certificate.
+
+There are three distinct thresholds.
+Native default `1` suffices for its reviewed packing obstruction but is weaker than the
+canonical coverage target `10001/10000`. Nominal compatibility requires that exact
+target. For a strict performance comparison, use the exact rational value of C++'s
+upward-rounded binary64 cutoff and record both values.
+This matches the leaf cutoff, not the subdivision strategy or interval costs.
+A rational checker can validly prove exact equality where interval rounding remains
+inconclusive; that is not a disagreement about the theorem.
+
+Effectiveness includes correct refusal, as well as successful positive runs.
+The [native tests](../../packing/tests/test_rectangle_density.py) cover exact clipping,
+asymmetric symmetry orbits, negative weights and malformed data, direct-construction
+admission bypasses, strict mass budgets, exact violating placements, incomplete angle
+selection and exhausted subdivision budgets.
+Analytic oracles test both bounds; retained external probes test that incomplete work
+cannot be promoted. The
+[benchmark controls](../../packing/tests/test_rectangle_verifier_parity.py) additionally
+check complete angle inventories and exact interval-input binding.
+Remaining acceptance work is a complete representative external replay at the matched
+threshold, adversarial threshold-boundary and stale-artifact controls across the full
+publication path, and measured performance on that corpus.
+Passing the analytic control does not close these items.
+**think-bcle** tracks these adversarial acceptance and publication controls.
+
+**Performance parity is not yet established.** The comparison must use identical
+candidate bytes, n/L/B, complete center/direction domain, threshold and worker
+allocation. Measure source preparation, compilation, kernel execution, total wall,
+aggregate child CPU and memory separately.
+Record algorithmic limits, which are not identical across engines.
+Only complete results that hit no cap are eligible for timing comparisons; a timeout or
+one-angle success is not a speed win.
+Use an analytic complete control, then representative retained external certificates.
+Predeclare the corpus and alternate paired runs before reporting aggregate performance;
+report uncertainty and worst cases, not just the fastest sample.
+
+The independent implementation imports no upstream coverage code.
+Replay of unchanged `verify.cpp` tests reproducibility, while the independent procedure
+checks the same mathematical obligations through different code.
+The point/threshold row checker below is another family.
+Neither rectangle coverage nor its speed comparison verifies the separate T-060
+global-optimality capture proof.
+**think-om8z** tracks this process audit and **think-0jps** its reusable benchmark.
+
+The
+[unchanged upstream production-path control](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/full-pipeline-control.json)
+runs `certify.py`, its real compilation/runner and all 201 angles on the retained n=3
+analytic candidate with one worker and a 60-second outer ceiling.
+Its receipt records the observed wall time, exact mass, complete angle census and
+source/input/final-artifact identities.
+This is a reproduction of the full upstream acceptance path on that control; the paired
+benchmark measures kernel cost separately.
+LP search and ladder generation are outside this control because they propose candidates
+rather than accept proofs.
+
+The
+[first matched analytic run](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/analytic-control/result.json)
+completed all 201 angles in both engines at the same effective threshold.
+This one control exposes a cost gap rather than establishing performance parity:
+
+| Measurement | Upstream C++ | Independent rational checker |
+| --- | --- | --- |
+| Subdivision/event nodes | 209 | 1,781 |
+| Verification subprocess wall | 0.381 s | 0.432 s |
+| Verification subprocess CPU | 0.00916 s | 0.426 s |
+
+Compilation took 1.017 seconds; preparation and exact adapter binding together took
+0.00152 seconds. These are single-run observations on the recorded host, not a stable
+speed ratio. The C++ journal’s internal kernel sum is only 0.00352 seconds; startup
+therefore matters greatly for this small control.
+Different representations also matter: native coalesces eight coincident symmetry images
+into one rectangle while preserving the exact measure.
+**think-3cwg** tracks stronger bounds and arithmetic profiling before larger replay.
+More workers alone would not eliminate either the extra subdivision work or the
+arithmetic cost.
+
+The
+[bounded external n11 probe](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/n11-angle1-feasibility/result.json)
+uses the retained `L=381/100` certificate and only angle 1 at the same threshold.
+C++ completes that angle in 0.740 seconds of subprocess wall; native reaches its
+13-second internal budget and returns `INCONCLUSIVE` in 13.104 seconds.
+This is a concrete performance gap on a real certificate, not a measured full-proof
+speed ratio. Neither this subset nor the analytic control confirms the external
+certificate with our independent engine.
+Full 201-direction acceptance remains open.
+
 ## T-059 Row Replay and Its Separate Global Argument
 
 The wand125 entries are T-058 (ceiling) and T-059 (row replay).

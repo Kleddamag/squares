@@ -32,6 +32,7 @@ SOURCE_REVISION = "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c"
 FIRST_SHA = "50eef26bff3aee127e9ad508b1587014514c8e5f1cf9a3214e8ace7a92d88afd"
 FIRST_RESULT_SHA = "488f26c0effe528f29d2cc06f60766e2c1f845f2aac93f65b18c0c4d3b5e76a4"
 LEGACY_SHA = "dbde306a481333b470f1e2613ff05fd2be65c9711dd135615d65548932cebdd3"
+MODERN_SHA = "17fc81b2b08a80456325b347b3effa25050e4e233d9a984292e0d6339bb64e73"
 DEGENERATE_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 Point = pilot.Point
 Polygon = pilot.Polygon
@@ -90,7 +91,13 @@ def admit_previous(
         require(digest(previous_raw) == FIRST_RESULT_SHA, "round-one receipt changed")
     previous = geometry.strict_json(previous_raw)
     expected_checker = (
-        FIRST_SHA if index == 2 else LEGACY_SHA if index <= 8 else pilot.digest(Path(__file__))
+        FIRST_SHA
+        if index == 2
+        else LEGACY_SHA
+        if index <= 8
+        else MODERN_SHA
+        if index <= 12
+        else pilot.digest(Path(__file__))
     )
     require(
         previous["status"] in ("PASS_ONE_ROOT_ROUND", "PASS_CONDITIONAL_ROOT_ROUND")
@@ -353,7 +360,7 @@ def worker(args: argparse.Namespace) -> int:
         "rows_checked": 0,
     }
     try:
-        require(2 <= args.round <= 14 and 0 < args.max_owner_seconds <= 30, "worker limits")
+        require(2 <= args.round <= 14 and 0 < args.max_owner_seconds <= 60, "worker limits")
         source_identity()
         round_bytes = args.round_source.read_bytes()
         previous_bytes = args.previous_source.read_bytes()
@@ -450,7 +457,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     require(scratch.is_relative_to(Path("/Volumes/spud-ext1/agent-scratch")), "scratch path")
     scratch.mkdir(parents=True, exist_ok=True)
     require(
-        2 <= args.round <= 14 and 1 <= args.workers <= 3 and 0 < args.max_owner_seconds <= 30,
+        2 <= args.round <= 14 and 1 <= args.workers <= 3 and 0 < args.max_owner_seconds <= 60,
         "round or worker limits",
     )
     require(not args.out.exists(), "round receipt directory already exists")

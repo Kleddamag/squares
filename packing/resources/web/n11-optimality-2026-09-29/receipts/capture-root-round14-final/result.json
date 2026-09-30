@@ -1,5 +1,5 @@
 {
-  "accepted_prior_sha256": "5af9fec3d7b4b255e2211274c88fb57df6bcd29db33e4c53d18e1f514e9441c1",
+  "accepted_prior_sha256": "1a05134d0504ee0776925dfae4c8d22797de8ebd5cb8606c1ce155287c96354a",
   "adaptive_sha256": "5452ed7fe20266ec81749b79c1e00f4e9a2ba75242b25d90b7fb696ca317d40a",
   "candidate_capture_proved": false,
   "checker_sha256": "3eca359a215cde005b79fbd9f7866000f75b48bb3f50ce0b3a3d9b2d9db83b34",
@@ -9,8 +9,8 @@
   "global_optimality_proved": false,
   "max_events_per_geometry_call": 100000,
   "max_owner_seconds": 60.0,
-  "new_owned_points": 96,
-  "next_state_sha256": "09c55eaf7d9e3cc7037c4e0df950a74de39bb68d0a31a36951f003ae9cf9090d",
+  "new_owned_points": 90,
+  "next_state_sha256": "914d6337ee4231fb4980693f8ece49b2d16d0a35b31b6b1f402b627a2dda9d3f",
   "owners_completed": [
     0,
     1,
@@ -38,15 +38,15 @@
     15
   ],
   "pilot_sha256": "1abfc9244d19fcb38a131c3bee676c8973de991998c1e7ab224fae8196259737",
-  "previous_result_sha256": "60269d2082768e2b102a1fa899bdaec73bde54bedb4d686a01dcdbcb7fe94a03",
-  "previous_selected_sha256": "abb5e6de8f2fddc5ba67a61acc7d21489ae2ccb2254dcae056e9e915798033ae",
+  "previous_result_sha256": "a99af032e75278ef92b548c07385dc8b924e12cf0f43329cfc717b00cb7ce86a",
+  "previous_selected_sha256": "570b61392868329e940a8eac82b8a1d5446b529c4ff91047443aa4bf686bc5a0",
   "root_induction_proved": false,
-  "round": 12,
+  "round": 14,
   "rows_checked": 2036,
   "seed_sha256": "b93be3358f7dfbf063d4109c52fd3bbbbfff9b34cb468c3123598b54cea72a56",
-  "selected_round_sha256": "ece8dc180ae016a6bf8b625952af4ff4ac9d853df8d1dfae0281fb3630db3d7f",
+  "selected_round_sha256": "f02d323ac9c26c6a5a923353511c546edfc848159872041d9e3fe299be9344b1",
   "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
   "status": "PASS_CONDITIONAL_ROOT_ROUND",
-  "wall_seconds": 108.0065288750011,
+  "wall_seconds": 69.2662045420002,
   "workers": 3
 }

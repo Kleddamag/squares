@@ -501,7 +501,10 @@ body {
 .site-popover .site-popover-more {
   list-style: none;
 }
-.kpress .site-popover a.site-popover-action {
+/* The site's one action button: a popover's link to where it leads, and the few page
+   buttons that act in place, such as the atlas grid's "Show all 324". A <button> takes
+   it too, with the browser's own border, face and size put back to the link's. */
+.kpress :is(.site-popover a, button).site-popover-action {
   background: var(--kpress-doc-accent);
   color: var(--kpress-doc-bg);
   display: inline-flex;
@@ -515,8 +518,16 @@ body {
   align-self: center;
   margin: 0;
 }
-.kpress .site-popover a.site-popover-action:hover,
-.kpress .site-popover a.site-popover-action:focus-visible {
+.kpress button.site-popover-action {
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--kpress-font-sans);
+  font-size: inherit;
+  line-height: inherit;
+}
+.kpress :is(.site-popover a, button).site-popover-action:hover,
+.kpress :is(.site-popover a, button).site-popover-action:focus-visible {
   background: color-mix(in oklch, var(--kpress-doc-accent) 85%, var(--kpress-doc-text));
 }
 
@@ -1198,6 +1209,7 @@ body {
    like a card and opens the atlas popover (below). */
 .site-page .site-atlas-grid {
   --site-wide: var(--site-bleed-max);
+  --site-atlas-toggle-space: 1.2rem;
   position: relative;
 }
 .site-atlas-cells {
@@ -1236,6 +1248,22 @@ body {
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   margin-block-start: 0.2rem;
+}
+/* The grid shows n = 1 to 100 until its button, centred under it, places the rest. The
+   rest sit in one box the grid lays out as its own cells, so hiding them again is the
+   box's `hidden`. */
+.site-atlas-rest {
+  display: contents;
+}
+.site-atlas-rest[hidden] {
+  display: none;
+}
+.site-atlas-grid .site-atlas-toggle-row {
+  margin-block: var(--site-atlas-toggle-space) 0;
+  text-align: center;
+}
+.site-atlas-grid .site-atlas-toggle-row[hidden] {
+  display: none;
 }
 .site-atlas-grid .site-atlas-note {
   color: var(--site-support-color);

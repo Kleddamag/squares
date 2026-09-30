@@ -267,12 +267,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     excluded = Counter(files.excluded.values())
     kept = f", {outcome.kept} spans kept as code" if outcome.kept else ""
     print(f"  math markup: {len(register.migrated)} migrated files checked{kept}")
+    reasons = ", ".join(f"{reason} {count}" for reason, count in sorted(excluded.items()))
     print(
         f"  backlog: {len(backlog)} of {len(files.eligible)} hand-written Markdown files "
         f"not yet migrated; {len(files.generated)} generated views move at their renderers; "
-        f"{sum(excluded.values())} excluded ("
-        + ", ".join(f"{reason} {count}" for reason, count in sorted(excluded.items()))
-        + ")"
+        f"{excluded.total()} excluded" + (f" ({reasons})" if reasons else "")
     )
     if arguments.backlog:
         for path in backlog:

@@ -30,8 +30,10 @@ from devtools.migrate_math import (
     flowmark_safety,
     kpress_math,
     main,
+    markdown_math,
     plan,
     prove,
+    register_latex,
     rewrite,
     to_latex,
 )
@@ -460,3 +462,53 @@ def test_without_apply_the_file_is_only_read(tmp_path: Path) -> None:
     source.write_text("A `31/8` and `sqrt 2`.\n", encoding="utf-8")
     assert main([str(source)]) == 0
     assert source.read_text(encoding="utf-8") == "A `31/8` and `sqrt 2`.\n"
+
+
+def test_a_renderer_converts_a_markdown_fragment_in_its_cell_style() -> None:
+    headline = "`s(17) ≥ 4426213/1000000 = 4.426213`, from a sixteen-point unavoidable set"
+    assert markdown_math(headline) == (
+        r"$s(17) \ge 4426213/1000000 = 4.426213$, from a sixteen-point unavoidable set"
+    )
+    assert markdown_math(headline, table=True) == (
+        r"$s(17) \ge \frac{4426213}{1000000} = 4.426213$, from a sixteen-point unavoidable set"
+    )
+    # A cell that opens with math and ends in a digit is one kpress would print as dollars.
+    quirk = "`s(18) ≥ 4426213/1000000`, by monotonicity from T-001"
+    assert markdown_math(quirk, table=True) == quirk
+
+
+def test_a_register_literal_renders_as_latex() -> None:
+    assert register_latex("s(11) >= 381/100") == r"s(11) \ge 381/100"
+    assert register_latex("s(11) >= 381/100", frac=True) == r"s(11) \ge \frac{381}{100}"
+    assert register_latex("2 + 4/sqrt(5) = 3.788854...") == r"2 + 4/\sqrt{5} = 3.788854\ldots"
+    assert register_latex("955000*sqrt(518400042893309449)/179696714646249") == (
+        r"955000\cdot\sqrt{518400042893309449}/179696714646249"
+    )
+    assert register_latex("sqrt(17 - 2*floor(sqrt(17)) + 1) + 1") == (
+        r"\sqrt{17 - 2\cdot\lfloor\sqrt{17}\rfloor + 1} + 1"
+    )
+    assert register_latex("ceil(sqrt(n))^2") == r"\lceil\sqrt{n}\rceil^{2}"
+    with pytest.raises(migrate_math.UnconvertibleError, match="the word"):
+        register_latex("s(11) >= 381/100, by a certificate")
+
+
+def test_only_a_renderer_owned_block_is_skipped_and_a_quoted_marker_is_text() -> None:
+    text = textwrap.dedent(
+        """\
+        Blocks sit between `<!-- BEGIN GENERATED: … -->` markers, and `n = 3` is prose.
+
+        <!-- BEGIN CURRENT-RESEARCH-READINESS -->
+        A hand-written dashboard at `n = 5`.
+        <!-- END CURRENT-RESEARCH-READINESS -->
+
+        <!-- BEGIN GENERATED: table (devtools.render_research_tables) -->
+        A rendered `n = 7`.
+        <!-- END GENERATED: table -->
+        """
+    )
+    migration_plan = plan(text)
+    converted = rewrite(text, migration_plan.decisions)
+    assert "`<!-- BEGIN GENERATED: … -->` markers, and $n = 3$ is prose." in converted
+    assert "A hand-written dashboard at $n = 5$." in converted
+    assert "A rendered `n = 7`." in converted
+    assert migration_plan.generated == 1

@@ -267,6 +267,23 @@ RECOMMENDED_INFO_RULES = {
 #: changes the census and fails.
 DECLARED_SUPPRESSIONS = Counter(
     {
+        # The site pins its own faces against a font hook an embedding viewer injects;
+        # the injected rule may come later at the same specificity, so only !important
+        # keeps the pin (`paper-design.md`, Text).
+        (
+            "packing/devtools/templates/paper-type.css",
+            (
+                "/* biome-ignore-start lint/complexity/noImportantStyles: the pin must "
+                "outrank an injected hook */"
+            ),
+        ): 1,
+        (
+            "packing/devtools/templates/paper-type.css",
+            (
+                "/* biome-ignore-end lint/complexity/noImportantStyles: the pin must "
+                "outrank an injected hook */"
+            ),
+        ): 1,
         (
             "packing/src/sqpack/motion_lab/assets/motion-lab.css",
             (

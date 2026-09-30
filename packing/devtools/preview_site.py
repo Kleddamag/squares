@@ -49,8 +49,10 @@ PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
 _MATH_PENDING = probe(PROBES, "preview_site/math_pending")
 _MATH_FACE = probe(PROBES, "preview_site/math_face")
-#: How long a page may take to typeset all its math before it is shot as it stands.
-MATH_WAIT_MS = 20_000
+#: How long a page may take to typeset all its math before it is shot as it stands. The
+#: site typesets the formulas near the viewport first and the rest in idle time
+#: (`overview/math.js`); the synopsis's 1,357 took 40 to 50 seconds of scrolling in all.
+MATH_WAIT_MS = 60_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
 
 
@@ -131,11 +133,11 @@ def serve(output: Path, port: int) -> ThreadingHTTPServer:
 
 
 def _settle_math(page: Page) -> int:
-    """Scroll the page through once so kpress typesets every formula, then return to the
-    top; returns how many were still untypeset when the wait ran out."""
+    """Scroll the page through once, a screen at a time, so every formula is typeset, then
+    return to the top; returns how many were still untypeset when the wait ran out."""
     waited = 0
     while (pending := page.evaluate(_MATH_PENDING)) and waited < MATH_WAIT_MS:
-        page.mouse.wheel(0, 2000)
+        page.mouse.wheel(0, 800)
         page.wait_for_timeout(100)
         waited += 100
     page.mouse.wheel(0, -10_000_000)

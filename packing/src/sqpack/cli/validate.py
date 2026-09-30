@@ -3197,6 +3197,7 @@ _WORKBENCH_INPUTS = (
     "packing/devtools/render_overview.py",
     "packing/devtools/templates/site-nav.html",
     "packing/devtools/templates/site-nav.css",
+    "packing/devtools/templates/paper-type.css",
     "packing/devtools/overview/theme.js",
     "packing/witnesses/known-best/*",
     "packing/atlas/known-best/*",

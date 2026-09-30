@@ -900,6 +900,9 @@ parameter startup and neighboring text movement are measured by
 `devtools.check_math_startup`; its controlled fixtures run in CI, while timing
 comparisons are retained in the
 [math startup campaign](packing/benchmarks/math-startup/README.md).
+The site’s other pages load math through the same pipeline, typeset in the client;
+[paper-design.md → Math Loading](packing/devtools/templates/paper-design.md#math-loading)
+describes it and records its load timings, which `devtools.measure_site_pages` measures.
 
 **Merging is the whole publish.** Every repository link on the site names `main`, the
 branch the site deploys from, through one helper

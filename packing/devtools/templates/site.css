@@ -46,16 +46,17 @@ body {
   --site-rung-step: -4%;
 }
 
-/* The paper typography profile, as the explainer sets it: a 19/18 sans base against
-   the prose, and three sans weights. */
+/* The paper typography profile, read from paper-type.css, which the explainer carries
+   too: the type base and measure, a 19/18 sans base against the prose, and three sans
+   weights. */
 :root {
-  --site-font-scale-sans: calc(19 / 18);
+  --site-font-scale-sans: var(--paper-font-scale-sans);
   --site-font-weight-sans-light: var(--kpress-font-weight-sans-regular);
-  --site-font-weight-sans-medium: 550;
-  --site-font-weight-sans-bold: 680;
+  --site-font-weight-sans-medium: var(--paper-font-weight-sans-medium);
+  --site-font-weight-sans-bold: var(--paper-font-weight-sans-bold);
   --site-font-size-sans-base: calc(var(--kpress-font-size-base) * var(--site-font-scale-sans));
-  --site-font-size-support: calc(var(--site-font-size-sans-base) * 0.95);
-  --site-font-size-note: calc(var(--site-font-size-sans-base) * 0.92);
+  --site-font-size-support: calc(var(--site-font-size-sans-base) * var(--paper-support-scale));
+  --site-font-size-note: calc(var(--site-font-size-sans-base) * var(--paper-note-scale));
   --site-support-color: var(--kpress-doc-muted);
   --site-wide: calc(var(--kpress-measure) + 24rem);
 }
@@ -75,12 +76,14 @@ body {
 /* ---------- Page body ---------- */
 /* Capped at 100% as kpress caps its column: beside a TOC the column is a grid item with
    auto margins, sized to its min-content, so a wide code block or table would otherwise
-   push it past a phone's viewport instead of scrolling inside it. */
+   push it past a phone's viewport instead of scrolling inside it. The text fills the
+   column, as the explainer's does: its lines run the measure plus both insets, 800px at
+   a desktop, and on a phone the page margin alone keeps them off the screen's edge. */
 .site-page {
   margin-inline: auto;
   max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));
   padding-block-end: calc(var(--kpress-font-size-base) * 5);
-  padding-inline: 1rem;
+  padding-inline: 0;
 }
 /* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose. */
 .site-page .site-wide {
@@ -93,7 +96,7 @@ body {
 }
 .site-hero h1 {
   font-family: var(--kpress-font-sans);
-  font-size: calc(var(--site-font-size-sans-base) * 1.5);
+  font-size: calc(var(--site-font-size-sans-base) * var(--paper-title-scale));
   font-weight: var(--site-font-weight-sans-medium);
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
@@ -106,7 +109,7 @@ body {
 .site-colophon {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
-  font-size: calc(var(--site-font-size-sans-base) * 0.85);
+  font-size: calc(var(--site-font-size-sans-base) * var(--paper-colophon-scale));
   margin-block-start: 3rem;
   text-align: center;
 }

@@ -47,11 +47,14 @@ TEMPLATES = PACKING / "devtools" / "templates"
 SITE_CSS = TEMPLATES / "site.css"
 SITE_NAV = TEMPLATES / "site-nav.html"
 SITE_NAV_CSS = TEMPLATES / "site-nav.css"
+#: The text tokens every page shares with the explainer: its type base, reading measure,
+#: heading scale and pinned faces. The explainer's shell inlines the same file.
+PAPER_TYPE_CSS = TEMPLATES / "paper-type.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
-MATH_RETRY_SCRIPT = BROWSER / "math-retry.js"
+MATH_SCRIPT = BROWSER / "math.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
 FILM_SCRIPT = BROWSER / "film.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
@@ -106,6 +109,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     SITE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
+    PAPER_TYPE_CSS,
     OVERVIEW_ARTICLE,
     BROWSER,
     PACKING / "src" / "sqpack",
@@ -167,18 +171,21 @@ class Page(NamedTuple):
 
 
 def page_assets() -> tuple[str, str]:
-    """The explainer's own inlined assets: head styles and the math scripts.
+    """The explainer's own inlined assets: head styles and the math pipeline.
 
     The stylesheets are the explainer's (`kpress_css`, `katex_css`, `relation_face_css`),
     faces already inlined as data URIs, so a reader moving between the explainer and
-    these pages sees one design system. The scripts are kpress's KaTeX assets as classic
-    scripts, which render `$…$` once the page loads; kpress's module scripts are left
-    out, because an inline module still fetches its siblings.
+    these pages sees one design system; `paper-type.css`, the text tokens the explainer
+    also carries, follows them. The script is the explainer's math pipeline,
+    `render_explainer.katex_js`: KaTeX, kpress's metric tables and shared runtime, and
+    the explainer's host adapter (`squaresMath`), without kpress's auto-render entry
+    point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
+    places after it, drives the adapter over kpress's own math markup. The pipeline is
+    described in `templates/paper-design.md`, under Math Loading.
     """
-    from kpress.format.assets import KATEX_JS_ASSETS  # noqa: PLC0415
-
     from devtools.render_explainer import (  # noqa: PLC0415
         katex_css,
+        katex_js,
         kpress_css,
         kpress_static,
         relation_face_css,
@@ -188,14 +195,11 @@ def page_assets() -> tuple[str, str]:
     head = (
         f"<style>{kpress_css(static)}{katex_css(static)}</style>\n"
         f"<style>{relation_face_css(static)}</style>\n"
+        f"<style>{PAPER_TYPE_CSS.read_text(encoding='utf-8')}</style>\n"
         f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>\n"
         f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>"
     )
-    scripts = "\n".join(
-        f"<script>{(static / name).read_text(encoding='utf-8')}</script>"
-        for name in KATEX_JS_ASSETS
-    )
-    return head, scripts
+    return head, f"<script>{katex_js(static)}</script>"
 
 
 def assert_self_contained(name: str, page: str) -> None:
@@ -220,7 +224,8 @@ class NavShell(NamedTuple):
     """The navigation bar for a page kpress does not render, in the three places it goes.
 
     `head` opens the page's `<head>`: kpress's pre-paint theme bootstrap, kpress's design
-    tokens with the one face the bar is set in, and `site-nav.css`. `header` is the bar
+    tokens with the one face the bar is set in, the text tokens every page shares
+    (`paper-type.css`), and `site-nav.css`. `header` is the bar
     in the shell `site-nav.css` gives an application page, for the start of `<body>`.
     `script` is the gear's program, `overview/theme.js`, for the end of `<body>`.
     """
@@ -263,6 +268,7 @@ def nav_shell(current: str, *, root: str) -> NavShell:
     head = (
         f"<script>{theme_bootstrap(static)}</script>\n"
         f"<style>{tokens}</style>\n"
+        f"<style>{PAPER_TYPE_CSS.read_text(encoding='utf-8')}</style>\n"
         f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>"
     )
     header = (
@@ -354,7 +360,7 @@ def kpress_page(
         page = rewrite_body(page)
     programs = "".join(
         f"\n<script>{_script_text(path)}</script>"
-        for path in (THEME_SCRIPT, MATH_RETRY_SCRIPT, *page_scripts)
+        for path in (THEME_SCRIPT, MATH_SCRIPT, *page_scripts)
     )
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)

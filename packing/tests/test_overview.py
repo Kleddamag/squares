@@ -225,9 +225,47 @@ def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str])
 
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
-def test_every_site_page_retries_untypeset_math(name: str) -> None:
+def test_every_site_page_loads_math_through_the_explainers_pipeline(name: str) -> None:
+    """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
+    site's queue, and neither of kpress's whole-page entry points (auto-render and its
+    native initializer), which typeset every formula in one task at DOMContentLoaded."""
+    from devtools.render_explainer import katex_js, kpress_static  # noqa: PLC0415
+
     page = render_overview.PAGES[name]().html
-    assert render_overview.MATH_RETRY_SCRIPT.read_text(encoding="utf-8") in page
+    static = kpress_static()
+    assert katex_js(static) in page
+    assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in page
+    for entry in ("katex/auto-render.min.js", "katex/katex-init.js"):
+        assert (static / entry).read_text(encoding="utf-8") not in page, entry
+
+
+@pytest.mark.parametrize("name", ["index.html", "tutorial.html"])
+def test_every_site_page_carries_the_explainers_text_tokens(name: str) -> None:
+    """The type base, measure and heading scale come from the one file the explainer
+    inlines too, after kpress's stylesheets so they win at kpress's own scopes."""
+    page = render_overview.PAGES[name]().html
+    tokens = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    assert tokens in page
+    assert page.index(tokens) > page.index("/* kpress: css/style-tokens.css */")
+    assert page.index(tokens) < page.index(render_overview.SITE_CSS.read_text(encoding="utf-8"))
+
+
+def test_the_text_tokens_are_declared_in_one_place() -> None:
+    """No page layer re-declares what `paper-type.css` owns, so no page can drift."""
+    owned = (
+        "--kpress-host-font-size-base:",
+        "--kpress-measure:",
+        "--kpress-font-size-h2:",
+        "--kpress-host-font-sans:",
+    )
+    tokens = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    for name in owned:
+        assert name in tokens, name
+    for layer in (EXPLAINER_SHELL, render_overview.SITE_CSS, render_overview.SITE_NAV_CSS):
+        text = layer.read_text(encoding="utf-8")
+        for name in owned:
+            assert name not in text, f"{layer.name} re-declares {name}"
+    assert "{{PAPER_TYPE_CSS}}" in EXPLAINER_SHELL.read_text(encoding="utf-8")
 
 
 def test_the_nav_ends_in_an_accessible_theme_control() -> None:

@@ -2,10 +2,10 @@
 // (`cases.html#n-11`), or, with no fragment, the index of every case. Without this
 // script every record is listed and the fragment scrolls to the one asked for.
 //
-// A record's formulas are typeset only when it is shown. kpress typesets every formula
-// on the page once the document is parsed, and there are thousands here; this script
-// runs first, marks the formulas of every record not shown as done, and hands them back
-// to kpress when their record is shown.
+// A record's formulas are typeset only when it is shown. The site's math driver
+// (`math.js`) typesets every formula on the page once the document is parsed, and there
+// are thousands here; this script runs first, marks the formulas of every record not
+// shown as done, and hands them back to the driver when their record is shown.
 (() => {
   const root = document.querySelector("[data-case-records]");
   if (!(root instanceof HTMLElement)) {
@@ -42,10 +42,7 @@
         delete host.dataset.siteMathDeferred;
       }
     }
-    const enhance = globalThis.enhanceMath;
-    if (typeof enhance === "function") {
-      void enhance();
-    }
+    void globalThis.siteMath?.typeset(record);
   };
 
   // A record opens at the top of the page with the navigation in view. KPress scrolls

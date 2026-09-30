@@ -82,6 +82,7 @@ RENDER_INPUTS = (
     ROOT / "devtools/render_overview.py",
     ROOT / "devtools/templates/site-nav.html",
     ROOT / "devtools/templates/site-nav.css",
+    ROOT / "devtools/templates/paper-type.css",
     ROOT / "devtools/overview/theme.js",
     REPO / "vendor/kpress",
     REPO / "package.json",

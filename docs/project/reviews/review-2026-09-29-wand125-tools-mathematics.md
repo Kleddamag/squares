@@ -10,6 +10,29 @@ bound without checking the target count’s mass budget.
 The disputed ceiling is tracked as **T-058**. The separately reported equality of the
 n11 row scans is **T-059**.
 
+## Assigned Result Classifications
+
+The [result register](../../../packing/frontier/results.yaml) assigns each imported
+claim the same
+[verification, confirmation and significance scales](../../../epistemics.md) used for
+this project’s results.
+Verification describes the evidence supporting the whole claim; confirmation describes
+this repository’s recorded work.
+Significance is a separate judgment and does not raise either evidence level.
+
+| Claim | Significance | Verification | Confirmation | What remains |
+| --- | --- | --- | --- | --- |
+| T-058: unrestricted $B\,UB(n)$ ceiling | S2: a tooling limit whose premises affect safe search, with no new packing bound | V0: the unrestricted claim is unestablished | C1: source-level review found a missing premise | Discharge angular alignment and exact upper-witness assumptions, or use the reviewed sufficient correction; think-xgjo. |
+| T-059: equality of all 12,028 n11 row minima | S2: a citable row-checking result that changes no existing theorem | V0: no retained complete replay supports the equality claim | C1: source-level review found journal-admission defects | Replay all unique rows with exact witness comparisons and retain the full journal; think-11z6 under think-190a. |
+
+Both are attributed to the published wand125 source and classified
+`previously-published`. The register retains each significance rationale, assessment
+date and scorer. The three sampled row replays do not confirm the full equality, and the
+existing complete native proof of the n11 bound is a different claim.
+Search speedups and alternative verifier implementations remain implementation
+obligations in the component table below; no measured speedup or independent full-domain
+acceptance is inferred from these two ratings.
+
 This is a W2 factual review of
 [wand125/square-packing-tools at `0d33ab61726c2ab03e3eb8f457dabaf22db8571f`](https://github.com/wand125/square-packing-tools/tree/0d33ab61726c2ab03e3eb8f457dabaf22db8571f),
 retrieved on 2026-09-29. The admission defect was reproduced with the unchanged upstream
@@ -306,6 +329,13 @@ The analytic 201-angle result, inconclusive external probe, 15/67 diagnostic ref
 and 3/12,028 partial minimum replay agree with their stated scopes.
 All 19 existing T-037 proof-input paths match `c183cc9`. This audit did not rerun
 coverage or premise checks and does not certify the subsequent upstream merge.
+
+A follow-up Astra-max preservation review at `cb7bc3998` confirmed the canonical claim
+mapping, unchanged wand125 acceptance logic and archived evidence, and all 19 T-037
+proof-input paths still matching `c183cc9`. It found no collision, lost premise, or
+mathematical promotion.
+This narrow merge check did not re-assess the imported Couzo/de Winter proofs or certify
+the atlas regeneration.
 
 The provisional wand125 labels T-056/T-057 in archived receipts map to T-058/T-059 after
 that merge; published Couzo/de Winter claims retain T-056/T-057.

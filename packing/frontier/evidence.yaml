@@ -4,6 +4,40 @@ softschema:
   status: enforced
 last_reviewed: '2026-09-29'
 evidence:
+  - id: E-n011-global-optimality-report
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: not-applicable
+    origin: external
+    novelty: previously-published
+    source_key: '[Queuingtheorydotcom n11 optimality 2026]'
+    replay_status: not-attempted
+    external_review:
+      state: informally-verified
+      date: '2026-09-29'
+      reviewed_by: GPT-6 Astra at max reasoning, with coordinator integration
+      note: >-
+        Read pinned f9e0de7 PROOF sections 3-10 and the implemented focused-local
+        Taylor, feature and frame bridge, plus v9 strict-core, collision and
+        residual-cover rules. No critical defect found in these reviewed implications.
+        The 2180-case and candidate geometric instances and public full replay
+        remain unchecked locally. The source reports composition integrity after
+        sanitization, not fresh public end-to-end geometric verification.
+    limitations: >-
+      The source claims the exact Trump optimum through a 2184-pattern cover,
+      2180 exclusions, symmetry reduction of four survivors and a complete capture
+      proof for case 438. Its publication notes explicitly exclude a fresh full
+      geometric replay of the sanitized public derivative. Local intake has source
+      files and LFS pointers, not all certificate payloads; no independent acceptance
+      or refutation is established by this registration. Distinct from the T-037
+      lower bound and T-059 row-minimum equality.
+    blocker:
+      kind: mathematics
+      detail: Audit the global cover, every exclusion rule, symmetry reduction and complete endpoint capture; obtain required payloads and independently check the decisive obligations before any promotion.
+    source_reviewed: '2026-09-29'
   - id: E-wand125-tools-ceiling-report
     claim: derived-structure
     scope: {n_min: 1, n_max: 100}
@@ -44,6 +78,18 @@ evidence:
     novelty: previously-published
     source_key: '[wand125 tools 2026]'
     replay_status: not-attempted
+    external_review:
+      state: defect-found
+      date: '2026-09-29'
+      reviewed_by: GPT-6 Astra mathematical review with coordinator integration
+      note: >-
+        Read the pinned general_pose_tree row claim and source replay harness.
+        run_n11.py skips existing output by row number without binding it to the
+        certificate or checker; summarize_n11.py counts repeated records and does
+        not enforce the exact unique 0..12027 census. These source admission defects
+        do not refute the reported minimum equalities. The first-party bound journal
+        covers only rows 0, 6014 and 12027; a complete source-bound minimum replay
+        remains outstanding. See review-2026-09-29-wand125-tools-mathematics.md.
     limitations: >-
       general_pose_tree/README.md reports all 12028 exact per-row minima agreeing with
       Kleddamag's pinned n11 certificate, including witness replay. This intake has not

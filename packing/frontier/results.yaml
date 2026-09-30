@@ -3785,7 +3785,7 @@ results:
       counting theorem or independent rectangle-density coverage.
     scope: {n_values: [11]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 2
       rationale: A reusable independent row-checking implementation worth replaying; the existing n11 bound does not change.
@@ -3807,10 +3807,50 @@ results:
       wrapper. Retain the complete unique census and exact witness comparisons; three
       freshly bound sample rows do not promote this claim.
     notes: >-
-      V0/C0 because the full claimed row-minimum equality has no retained local complete
-      replay. The identical certificate already has complete native threshold coverage
+      V0 because the full claimed row-minimum equality has no retained complete replay;
+      C1 records the scoped source review and its journal-admission defects, not confirmation
+      of all row minima. The identical certificate already has complete native threshold coverage
       and reviewed global counting premises supporting the existing V4/C4 n11 bound;
       that proof need not reproduce every exact row minimum and does not settle T-059.
       This claim was drafted as T-057 before the merge; T-059 is canonical because
       the merged upstream had already allocated T-057. Archived intake evidence
       retains its original provisional label.
+
+  - id: T-060
+    headline: "Claimed global optimality of Trump's eleven-square packing"
+    claim: >-
+      Queuingtheorydotcom/11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c
+      claims s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601...,
+      where u is the unique root in (9/25,37/100) of
+      5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0.
+      The claimed proof allows independent rotations and boundary contact, using
+      2184 canonical patterns, 2180 exclusions, four symmetric survivors and
+      a complete branch cover forcing the last case into a local isolation region.
+      Announced as Astra-assisted work building on Squares Project and Kleddamag;
+      registered as an external claim, not an established optimum here.
+    scope: {n_values: [11]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 5
+      rationale: Resolving global optimality for the central open n=11 case would close the remaining gap to Trump's construction; significance is separate from whether this proposed proof is correct.
+      scored: '2026-09-29'
+      by: User priority and coordinator intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Queuingtheorydotcom n11 optimality 2026]']
+      published: '2026-09-29'
+    evidence: [E-n011-global-optimality-report]
+    artifacts:
+      - packing/resources/web/n11-optimality-2026-09-29/source/README.md
+      - packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md
+      - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    next_rung: >-
+      think-3i74: Astra-max mathematical audit and independent checks of the complete
+      proof obligations, with measured selective replay before expensive full execution.
+      Record a critical flaw precisely if found; incomplete confirmation is not refutation.
+    notes: >-
+      V0/C1 records a scoped Astra-max source review, not complete proof confirmation.
+      Source publication says the sanitized public derivative has no fresh complete
+      geometric replay. T-037 remains the verified lower bound; T-059 is a separate
+      row-minimum claim. Neither implies this claimed equality.

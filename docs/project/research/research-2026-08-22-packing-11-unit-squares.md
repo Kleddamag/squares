@@ -883,7 +883,6 @@ Use the structured form to query or plot; use these tables to read.
 
 | `n` | best reported `s(n)` | how | deg | reported lower bound | from | gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| 11 | 3.87708359 | hand | 8 | 3.875 | counting | 0.0021 |
 | 12 | 4 | grid | — | 3.968615 | counting | 0.0314 |
 | 17 | 4.67553009 | hand | 18 | 4.66044 | counting | 0.0151 |
 | 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | counting | 0.1279 |
@@ -1164,6 +1163,7 @@ Use the structured form to query or plot; use these tables to read.
 | 8 | `3` | counting | Said El Moumni (1999) | proved |
 | 9 | `3` | perfect square | classical | proved |
 | 10 | `3 + (1/2)√2` | unavoidable points | Walter Stromquist (2003) | proved |
+| 11 | `3.87708359` | counting | Queuingtheorydotcom (2026) | proof audit pending |
 | 13 | `4` | unavoidable points | Wolfram Bentz (2010) | proved |
 | 14 | `4` | unavoidable points | Erich Friedman (2009) | proved |
 | 15 | `4` | counting | Said El Moumni (1999) | proved |

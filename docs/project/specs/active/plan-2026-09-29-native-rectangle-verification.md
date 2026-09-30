@@ -292,6 +292,28 @@ Full external coverage remains **think-aqne** under **think-bmf3**; the next sli
 design and cost a whole-angle traversal rather than aggregate this diagnostic into a
 proof.
 
+### W7 Timing Instrumentation
+
+The current W7 cost instrument adds opt-in `--timing` to the rectangle CLI without
+changing the exact checker.
+It reports monotonic wall time and process CPU separately for input reading/hashing,
+admission, verification and source recheck.
+Verification includes the engine’s admission recheck; it is not a pure geometry-kernel
+measurement. Startup, argument parsing, receipt construction, serialization and output
+are excluded. Focused differential controls cover partial, inconclusive and mass-refused
+outcomes; the existing untimed goldens remain unchanged.
+Astra-max review found no acceptance regression in this instrumentation.
+
+A single development smoke observation returned the existing 1,000-node, 428-accepted,
+78-pending census, with about 6.585 seconds verification wall and 6.532 seconds process
+CPU. Only summarized tool output was retained: the full receipt and execution-time CLI
+identity were not captured.
+This is a development observation, not a durable proof receipt, paired benchmark,
+whole-angle estimate or speedup claim.
+Outer process costs remain unknown.
+The next retained measurement must capture full output and actual source/input
+identities before launch; no larger replay follows automatically.
+
 ### Full T-059 Replay Readiness
 
 The reviewed census wrapper can run rows `0-12027` without changing the source search.
@@ -317,6 +339,43 @@ serial execution itself needs no new verifier mathematics.
 The broader distinction between link-existence checks and content inputs is tracked
 under **think-t1lk**. Neither a compressed format nor parallel or resumable admission is
 implemented by the current census wrapper.
+
+## Focused Proof-Review Cost Baseline
+
+**think-af9n** measures the time needed to obtain and review a proof-specific result.
+General slow repository checks are batched at integration checkpoints, outside this
+loop. Local checks cover the changed verifier, the selected proof obligation, and
+affected integration contracts; a full repository gate is not a prerequisite for the
+next mathematical diagnostic.
+
+The baseline separates three surfaces:
+
+| Surface | Measurements | Interpretation |
+| --- | --- | --- |
+| Analysis and coordination | Observed model-stream and first-token intervals, tool and agent waits, handoffs, repeated work, and overlap-safe elapsed time | These are observable execution intervals, not a direct measurement of useful reasoning; overlapping intervals cannot be added to explain wall time |
+| Validation execution | Monotonic wall time, process CPU time, setup and input parsing, frontier replay, exact bound evaluation, and result serialization | Separate profiling runs from ordinary timing runs; record instrumentation overhead and do not treat parent CPU as total worker CPU |
+| Proof progress | Visited and certified boxes, unresolved boxes by reason and depth, exact bound deficits, and the declared domain covered | Faster partial work does not establish complete coverage; selected difficult leaves cannot stand in for the whole remaining domain |
+
+Reuse existing task-tree rollups and verifier receipts before adding instrumentation.
+The next bounded diagnostic must bind its source, input, parameters and outcome, report
+its timing boundary, and account for the queued boxes as well as depth-capped leaves.
+Missing measurements remain explicitly unavailable.
+No full-replay estimate follows from the three sampled minimum rows or the selected
+refinement parents alone.
+
+Choose an optimization only after identifying the dominant cost: reduce repeated
+orchestration and unnecessary checks, improve mathematical bounds to reduce work,
+compile measured exact-arithmetic kernels, or distribute independent work with bounded
+worker counts. Preserve the simple exact reference and compare verdicts, exact values,
+refusals and unresolved coverage before accepting an accelerated implementation.
+
+Each comparison fixes source, inputs, workload and worker allocation; records host load
+and cache state; and declares its wall ceiling and acceptance criterion before running.
+Use repeated comparable samples with their spread for performance claims.
+Retain negative results and timeout receipts, and stop a bounded diagnostic at its
+declared limit rather than silently extending it.
+The report states both elapsed time and total compute cost so reduced waiting is not
+mistaken for reduced computation.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

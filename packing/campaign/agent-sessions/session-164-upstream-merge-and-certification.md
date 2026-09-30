@@ -10,12 +10,13 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T00:15:05Z'
+  deadline_at: '2026-09-30T01:35:05Z'
   branch: codex/wand125-tools-review
-  primary_bead: think-niqx
+  primary_bead: think-3i74
   status: in_progress
-  goal: Integrate PR 246 with current main without losing either branch's source records, regenerate derived
-    research and release artifacts, and certify the final PR head.
+  goal: Independently validate or refute T-060, the proposed global n11 optimum, by building and
+    applying the necessary W7 audit machinery efficiently; integrate its source, classifications and
+    evidence while keeping unrelated CI off the proof-review critical path.
   workflow_phases:
   - workflow: pipeline-improvement
     focus: correctness
@@ -276,7 +277,7 @@ session:
     bead: think-niqx
     objective: Integrate upstream PR 248 without losing evidence, resolve provisional claim ID collisions,
       regenerate release-bound atlas outputs, and obtain merged-head validation.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Upstream data and published claim IDs changed during hosted validation.
     budget_minutes: 30
@@ -289,24 +290,88 @@ session:
       or a receipt bound to the wrong source prevents publication.
     fallback: Retain the last passing published checkpoint and repair the named failing contract without
       deleting mathematical checks.
-    outcome: null
+    outcome: Merge cb7bc3998 preserves both branches and registers wand125 as T-058/T-059.
+      Focused registry checks and independent Astra-max and Sol preservation reviews passed.
+      External scratch disappeared during atlas regeneration, leaving release and atlas integration
+      uncertified. The user redirected work to focused pipeline improvements, with general slow
+      repository validation batched separately. No mathematical claim was promoted.
     evidence:
     - packing/frontier/results.yaml
     - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+    stop_reason: Interrupted artifact regeneration and explicit user reprioritization; integration debt retained.
+    next_action: Retain atlas, release and final-head certification debt under think-niqx while improving
+      the focused proof-review pipeline.
+  - workflow: pipeline-improvement
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-af9n
+    objective: Map the current W7 session, refine W1/W2 contracts, and specify attributable verifier
+      diagnostics with independent review and explicit integration debt.
+    status: completed
+    entered_by: user_request
+    switch_reason: The user classifies all current work as W7 pipeline improvement and requests focused,
+      parallel proof-tool iteration rather than repeated general repository gates.
+    budget_minutes: 30
+    started_at: '2026-09-30T00:26:03Z'
+    deadline_at: '2026-09-30T00:56:03Z'
+    expected_output: Reviewed W7 session map, W1/W2 workflow contracts, and a bounded diagnostic
+      implementation handoff with beads and proof-status boundaries.
+    validation_command: cd packing && .venv/bin/python3 -m devtools.check_session_clocks
+    kill_condition: A partial diagnostic is described as a complete proof, or broad testing becomes
+      a prerequisite for this focused planning and tooling slice.
+    fallback: Retain the last valid evidence and name the missing diagnostic or integration obligation.
+    outcome: W1/W2 intake contracts, W7 hierarchy and explicit evidence boundaries reviewed by Astra
+      max. All 59 then-registered results passed structural classification checks. Optional rectangle
+      CLI timing passed four focused tests and independent review. A larger frontier diagnostic is
+      unfinished and deferred. User supplied the separate global-optimality source, now the priority.
+    evidence:
+    - SYNOPSIS.md
+    - docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md
+    stop_reason: Reviewed contract and minimal timing slice complete; priority source identified.
+    next_action: Pin and register the actual optimality proof, audit its critical implications and map
+      efficient independent validation under think-3i74.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Integrate the actual T-060 optimality source and establish the smallest decisive
+      independent checks, with parallel mathematical audit, source intake and runtime planning.
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The user supplied Queuingtheorydotcom/11SquaresOptimal and explicitly made its
+      independent validation or refutation the primary goal; tooling is supporting work.
+    budget_minutes: 30
+    started_at: '2026-09-30T00:49:43Z'
+    deadline_at: '2026-09-30T01:19:43Z'
+    expected_output: Pinned attic source and retained intake, T-060 registration and current survey
+      links, mathematical obligation map, and a measured or bounded independent verification plan.
+    validation_command: cd packing && .venv/bin/python3 -m devtools.check_results
+    kill_condition: Source PASS strings, composition-only checks or existing lower-bound evidence
+      are treated as independent global-optimality confirmation.
+    fallback: Retain the precise missing implication, source defect or replay blocker and continue
+      independent obligations without a false promotion.
+    outcome: null
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/README.md
+    - packing/frontier/results.yaml
+    - docs/project/verification-tooling.md
     stop_reason: null
-    next_action: Commit the resolved merged data, repin its publication revision, regenerate artifacts
-      and run the affected gate before publishing.
+    next_action: Use Astra-max findings to select cheap decisive controls before fetching the exact
+      payload subsets needed for the first replay; retain all timings and limits.
   budget:
-    wall_minutes: 250
-    max_cycles: 9
+    wall_minutes: 330
+    max_cycles: 12
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
   - A self-declared session budget is not a stop condition; continue in a new clocked slice if needed.
   - No source or register entry may be lost or promoted beyond its retained evidence.
-  - Final certification requires a passing qualifying gate on the merged PR head.
+  - W7 readiness requires focused controls, cost evidence and independent review; merged-head certification
+    remains a separate required integration checkpoint under think-niqx.
   progress:
-    metric: Merged branch and certified final PR head.
+    metric: Reviewed workflow contracts and attributable proof diagnostics, with explicit readiness and integration debt.
     before: Commit 132c209c0 passed the local push tier and was published, but current main made PR 246
       unmergeable and withheld its normal hosted checks.
     after: null
@@ -551,16 +616,109 @@ session:
   resource_rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml
   stop_reason: null
-  next_action: Under think-niqx, finish the merged data and record review, pass required local and hosted
-    checks on the final PR head, then clear Session 163's certification debt.
+  next_action: Under think-3i74, prioritize T-060 independent mathematical audit and validation;
+    think-pqg7 owns efficient verification tools, think-z3ko owns upstream integration, and other
+    tooling is deferred unless it discharges a named T-060 obligation. Certification debt remains explicit.
 ---
 # Upstream Merge and PR 246 Certification
 
-Current main added the s(32) point-cover qualification and gate-budget controls while PR
-246 developed independent rectangle verification and the T-057 census tools.
-The merge must retain both sets of source records.
-The final check must run after the last data revision, atlas and handoff edits are
-committed.
+The session began with integration of the s(32) point-cover qualification and
+gate-budget controls alongside PR 246’s independent rectangle verification and T-059
+census tools, provisionally labeled T-057 before upstream claim IDs were reconciled.
+Final merged-head certification remains integration debt under think-niqx.
+
+## Priority and Goal Hierarchy
+
+**The primary goal is to validate or refute T-060 independently.** The claim is global
+optimality at Trump’s algebraic endpoint in `Queuingtheorydotcom/11SquaresOptimal`,
+pinned at `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c`. It is not T-037’s lower bound or
+T-059’s row-minimum equality.
+The earlier tooling intake did not validate this proof.
+
+| Priority | Owner and bead | Result required |
+| --- | --- | --- |
+| Primary mathematical question | Astra max, coordinator; think-3i74 | Complete independent confirmation, a precise critical flaw, or an explicit unresolved obligation. No forced binary verdict when evidence is incomplete. |
+| Source and record integration | Sol intake, coordinator; think-3i74 and think-z3ko | Pinned attic checkout, retained source and payload inventory, S5 with supported V/C, bibliography and survey links, all upstream imports preserved. |
+| Independent validation machinery | Sol implementation with Astra review; think-pqg7 | A 23-stage dependency map, independently implemented decisive checks, adversarial controls, and source-bound replay receipts. |
+| Efficiency support | Same verification lane; W5 method inside W7 | Measure setup, kernel, CPU, wall and orchestration costs. Optimize only bottlenecks blocking a named proof obligation. |
+| Integration certification | Coordinator; think-niqx | Publish coherent changes and obtain affected final-head checks; batch unrelated slow checks outside the mathematical critical path. |
+| Later exposition | think-uz2x, then think-08pw | Finish validation, try to simplify the proof, then create the separate n11 paper. No drafting yet. |
+
+During the current 30-minute slice, run source intake, mathematical implication review
+and verification-cost planning concurrently.
+At its checkpoint, choose the smallest decisive independent control from the audit, not
+a generic repository test.
+The next slice implements and runs those controls while reviewing the remaining proof
+rules. Only then select certificate payloads and a bounded replay from the measured
+dependency map. Schedule complete replay when the premises and runtime/storage plan
+support it; the source warns it can take hours.
+Record actual start times for subsequent slices.
+
+The attic checkout initially contains 2,638 Git LFS pointers: roughly 2.34 GB compressed
+and 11.3 GB decoded, before replay output.
+Do not mistake checkout success or package integrity for proof verification.
+Use external scratch for all materialization and test environments; source and unique
+evidence remain retained.
+Fetch only the payloads a selected check needs until full replay is justified.
+A selective run remains selective.
+
+The unvalidated rectangle-frontier diagnostic under think-af9n is deferred.
+Existing rectangle and row-minimum reviews remain useful independent work, but they are
+not prerequisites for this global proof unless its dependency audit establishes that
+link.
+Fresh fetch and `git merge origin/main` reported already up to date at `886b1783a`,
+which local merge `cb7bc3998` includes.
+That ancestry fact is not final-head certification.
+
+## Earlier W7 Tooling Slice
+
+**Entry point: W7 pipeline improvement.** W1 intake and W2 confirmation are the
+workflows being refined.
+W5 supplies the efficiency investigation method within this pipeline work.
+This classification covers the current documentation, instrumentation, tool review and
+validation-scheduling work.
+
+The next slices have parallel deliverables with separate ownership:
+
+| Lane | Owner | Beads | Deliverable and acceptance |
+| --- | --- | --- | --- |
+| Intake and confirmation contracts | Coordinator; independent Astra review | think-v17c | README and SYNOPSIS define pinned intake, claim obligations, focused confirmation, cost accounting and W5 handoffs. |
+| Proof-cost instrumentation | Sol implementation; Astra max reviews mathematical semantics | think-af9n | Reusable opt-in wall/CPU phase timing and bounded diagnostics distinguish admission, replay, bound evaluation and reporting. Focused controls preserve exact outcomes and refusal behavior. |
+| Ingestion and evidence audit | Independent review; coordinator integrates | think-bvsg, think-bmf3 | T-058/T-059 mapping, maintained-source references and proof-status overview retain source provenance and unresolved obligations. Existing source-preservation reviews are reused only within their scope. |
+| Integration checkpoint | Coordinator, separately batched | think-z3ko under think-niqx | Refresh upstream, reconcile every provider result with explicit V/C/S assignments, finish release/atlas consistency and final-head hosted checks after the focused work is ready. This remains certification debt and does not gate proof-tool iteration. |
+| Scheduling follow-up | Sol implementation when measurement warrants | think-xcij, think-ii0r | Preserve coverage and failure propagation. Normal-worker balancing remains a measured hypothesis; no broad benchmark is started for this planning slice. |
+
+First finish the contracts and diagnostic design in the current 30-minute slice.
+Then start a separately clocked implementation slice, with Sol coding while Astra max
+reviews the exact diagnostic interpretation.
+Integrate focused tests and one bounded external diagnostic in the following slice.
+These are planning estimates; record actual starts and outcomes rather than inventing
+future execution timestamps.
+
+The diagnostic freezes n11 angle 1, threshold 1, common-core, 1,000 nodes and depth 20.
+It retains the existing cooperative time ceiling and adds an explicit supervisor
+ceiling, with no automatic larger retry.
+A completed configured run must reproduce 428 accepted leaves and 78 pending boxes,
+including 67 depth-capped and 11 queued.
+An interrupted run remains partial.
+Survey all pending boxes, including the queued half-domain; midpoint coverage bounds the
+minimum from above and cannot certify a box.
+Neither pending counts nor unresolved area represent a proof-completion percentage.
+
+Separate invocation wall time, process CPU and phase costs from observed agent and
+orchestration intervals.
+Overlapping agent intervals cannot be added to elapsed wall.
+Choose stronger bounds, caching, a compiled kernel or more parallelism from these
+measurements; a Rust implementation requires exact differential controls and explicit
+overflow handling before it can replace any acceptance computation.
+
+The W7 finish line is reviewed workflow contracts, attributable diagnostics, focused
+correctness evidence, and a current bead/PR handoff.
+Mathematical closure remains separate: external rectangle acceptance needs every
+required angle with no unresolved work; T-059 equality needs all 12,028 rows; T-058
+retains its premise and admission gaps.
+General slow repository gates are batched at the integration checkpoint.
+No new bound is promoted by completing this pipeline work.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

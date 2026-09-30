@@ -5,6 +5,22 @@ weighted point covers, threshold charges, rectangle densities, and finite geomet
 subproblems. A checker establishes only the theorem and input format it implements.
 The existence of a checker is separate from a completed run on a particular claim.
 
+**Current priority: T-060, the claimed global n = 11 optimum.**
+[11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) claims the
+exact Trump endpoint through a global cell cover, 2,180 exclusions, a symmetry bridge
+and complete capture into a local isolation region.
+Its 23-stage source driver is a new trust boundary.
+Neither the existing native T-037 lower-bound checker nor the rectangle-density checker
+validates this global argument.
+The [intake packet](../../packing/resources/web/n11-optimality-2026-09-29/README.md)
+records the source pin and publication limits; **think-3i74** owns independent
+mathematical audit and efficient reproduction.
+Source replay, independent rule checks and complete global composition must be reported
+separately.
+General slow repository tests do not substitute for any of these obligations.
+The [proof review and stage map](reviews/review-2026-09-29-n11-optimality.md) records
+the reviewed implications, outstanding replay and next independent controls.
+
 The [epistemic scale](../../epistemics.md#confirmation) distinguishes a complete replay
 (`C3`) from confirmation by a distinct complete method (`C4`) and a mapped review
 (`C5`). A source checker run here is a replay.

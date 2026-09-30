@@ -178,7 +178,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-161](agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | stopped | contemporaneous | `research-survey` (correctness) | `factual-review` (correctness) | 2 | think-1an7 | Under think-l6la: run the complete zm_mixed.py --d4 --cert-mode re-sweeps for s(21) and s(45), record them, and raise T-052 and T-053 to C4. |
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
-| [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | in_progress | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 9 | think-niqx | Under think-niqx, finish the merged data and record review, pass required local and hosted checks on the final PR head, then clear Session 163's certification debt. |
+| [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | in_progress | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 11 | think-3i74 | Under think-3i74, prioritize T-060 independent mathematical audit and validation; think-pqg7 owns efficient verification tools, think-z3ko owns upstream integration, and other tooling is deferred unless it discharges a named T-060 obligation. Certification debt remains explicit. |
 
 ### Workflow summary
 
@@ -192,7 +192,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 37 | 1 |
 | `research-loop` | 31 | 4 | 108 | 8 |
-| `pipeline-improvement` | 38 | 2 | 168 | 6 |
+| `pipeline-improvement` | 38 | 2 | 170 | 6 |
 | `documentation-pass` | 1 | 0 | 25 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 35 | 2 |

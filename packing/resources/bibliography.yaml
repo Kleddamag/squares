@@ -30,6 +30,21 @@ last_reviewed: '2026-09-29'
 # not in the README's Web Sources table, so its `note` says which retained bytes they
 # were read from.
 sources:
+  - key: '[Queuingtheorydotcom n11 optimality 2026]'
+    authors: [Queuingtheorydotcom]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-29'
+    credit: Queuingtheorydotcom after Levy, Kleddamag
+    lineage: builds-on-project
+    note: >-
+      11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, announced by
+      Square Packing Fan (@MathCompSciFTW) as an Astra-assisted global optimality proof.
+      README and THIRD_PARTY_NOTICES credit jlevy/squares at c55726e1e885227f63110131c0a914665175ff89,
+      Walter Trump's construction and David Ellsworth's reconstruction diagram; the
+      announcement credits Kleddamag. No blanket license covers the collection.
+      The public derivative has not had a fresh full geometric replay according to
+      docs/PUBLICATION.md. Retained intake: web/n11-optimality-2026-09-29/.
   - key: '[wand125 tools 2026]'
     authors: [wand125]
     year: 2026

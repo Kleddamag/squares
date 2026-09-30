@@ -2820,8 +2820,8 @@ sessions:
 - id: session-164
   title: "Upstream Merge and PR 246 Certification"
   status: in_progress
-  primary_bead: think-niqx
-  phases: 9
+  primary_bead: think-3i74
+  phases: 11
   measured: true
   rollups:
   - packing/campaign/resource-usage/session-164-codex-task-tree.yaml

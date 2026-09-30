@@ -6,6 +6,15 @@ The problem is elementary to state and remains open even at small `n`. Its centr
 is eleven squares, where the verified bracket is `3.875 < s(11) ≤ 3.8770835…`, a gap of
 about `0.0021`.
 
+**Priority review:** [T-060](packing/frontier/RESULTS.md), the Astra-assisted
+[11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) claim,
+asserts that Trump’s eleven-square packing is globally optimal.
+It is registered at **S5/V0/C1**: highest significance, with scoped source review but no
+complete independent confirmation.
+The [retained intake](packing/resources/web/n11-optimality-2026-09-29/README.md) and
+[validation plan](packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md#priority-and-goal-hierarchy)
+separate this claim from the established lower bound above.
+
 This repository contains:
 
 - **[New results from this project](#new-results):** Lower bounds on `s(11)` that
@@ -239,7 +248,8 @@ column the retained source packet and this repository’s reviews.
 
 | Published | Result | `n` | Headline | Credit | Relation | V/C | Standing | Records |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-09-29 | [T-059](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Reported equality of 12028 n11 row minima awaits a complete bound replay | wand125 after Tokoharu, Daniel | independent | V0/C0 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) · [review 3](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
+| 2026-09-29 | [T-060](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Claimed global optimality of Trump’s eleven-square packing | Queuingtheorydotcom after Levy, Kleddamag | builds on | V0/C1 | holds, reported | [review](docs/project/reviews/review-2026-09-29-n11-optimality.md) |
+| 2026-09-29 | [T-059](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Reported equality of 12028 n11 row minima awaits a complete bound replay | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) · [review 3](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
 | 2026-09-29 | [T-058](packing/frontier/RESULTS.md) | 1–100 | Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) |
 | 2026-09-28 | [T-055](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5` by a point-only route, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | second certificate, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
 | 2026-09-28 | [T-054](packing/frontier/RESULTS.md) | [45](packing/frontier/n-045.md) | `s(45) = 7` by a second, point-only route | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V4/C3 | second certificate | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
@@ -321,7 +331,7 @@ Where both bounds are recent, the lineage and date columns read verified first.
 
 | `n` | Verified lower bound | Holder | Result | Reported, where different | Holder | Result | Lineage | Published |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [11](packing/frontier/n-011.md) | `31/8` = 3.875 | Kleddamag after Levy, Guzhou0806, Mira | T-037 `V4/C4` |  |  |  | builds on | 2026-09-22 |
+| [11](packing/frontier/n-011.md) | `31/8` = 3.875 | Kleddamag after Levy, Guzhou0806, Mira | T-037 `V4/C4` | 3.8770… | Queuingtheorydotcom after Levy, Kleddamag | T-060 `V0/C1` | builds on | 2026-09-22; 2026-09-29 |
 | [12](packing/frontier/n-012.md) | `15680/3951` = 3.9686… | Daniel after Burns, Massaccesi | T-049 `V4/C4` |  |  |  | independent | 2026-08-25 |
 | [17](packing/frontier/n-017.md) | `116511/25000` = 4.66044 | Guzhou0806 after Kleddamag, Mira, Levy | T-043 `V4/C3` |  |  |  | builds on | 2026-09-28 |
 | [18](packing/frontier/n-018.md) | `4679/1000` = 4.679 | Squares Project (Levy) | T-030 `V4/C4` | `939/200` = 4.695 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | this project; builds on | 2026-09-19; 2026-09-27 |
@@ -690,11 +700,11 @@ transition contracts.
 
 | ID | Workflow | Enter when | Durable result | Usual handoff |
 | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | The sourced state of knowledge is incomplete | A sourced survey, source notes, conflicts, and explicit gaps | W2 |
-| W2 | `factual-review` | Existing claims need a correctness-only audit | Findings, authorized bounded corrections, or defects; no new theory smuggled into the review | W3 or W4 |
+| W1 | `research-survey` | The sourced state of knowledge is incomplete | A pinned source packet, claim IDs, proof obligations, source notes, conflicts, and explicit gaps | W2 |
+| W2 | `factual-review` | Existing claims need efficient confirmation and a correctness audit | Focused proof receipts, explicit unresolved obligations, measured cost, and findings; no new theory smuggled into the review | W5 for bottlenecks; W3 or W4 otherwise |
 | W3 | `insight-iteration` | Current evidence needs new explanations or hypotheses | Candidate `X-NNN`/`H-NNN` items with mechanisms, falsifiers, and information value | W6 |
 | W4 | `process-review` | Work is hard to reconstruct or the discipline itself needs review | Process findings, beads, and narrowly scoped contract or check changes | W5 or the next owning workflow |
-| W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | W6 |
+| W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | Return to the originating workflow (W2, W6 or W7) |
 | W6 | `research-loop` | A registered hypothesis has a fixed criterion, regime, budget, and instrument contract | A frozen instrument and one or more `exp-NNN` records, raw evidence, verdicts, and a current ledger | W2 for promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | A named packing-pipeline surface or research consumer needs a new, stronger, simpler, or repaired capability | A bounded implementation or refactor, executable controls, explicit evidence limits, cost receipt, and readiness decision; no scientific verdict | W2 before a materially changed trust boundary reaches W6; otherwise W5 or W6 |
 | W8 | `documentation-pass` | A period of research has left the reader-facing documents behind what the record now says | Reconciled root documents—README, tutorial, synopsis—checked against the artifacts and against each other, with every drift either fixed or logged as a defect; no new claim introduced | W2 for any claim the pass could not verify; otherwise the next owning workflow |

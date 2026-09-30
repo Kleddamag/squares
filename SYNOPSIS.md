@@ -158,6 +158,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-026](packing/frontier/RESULTS.md) | 11 | `V4` | `C5` | `S5` | `apparently-novel` | s(11) >= 955000*sqrt(518400042893309449)/179696714646249 = 3.826447410572939, proved by an exact dilation-limit corollary of T-025’s threshold certificate re-certified on a finer direction net. |
 | [T-037](packing/frontier/RESULTS.md) | 11 | `V4` | `C4` | `S5` | `previously-published` | s(11) > 31/8 = 3.875, by Kleddamag’s 11-squares-certified-bound v1.0.2 release of 22 September 2026. |
 | [T-024](packing/frontier/RESULTS.md) | 11 | `V4` | `C3` | `S5` | `apparently-novel` | s(11) >= 3175000*sqrt(518400042893309449)/598960960743657 = 3.816609502788862, proved by an exact dilation-limit corollary of T-018’s retained atoms re-certified on a finer direction net. |
+| [T-060](packing/frontier/RESULTS.md) | 11 | `V0` | `C1` | `S5` | `previously-published` | Queuingtheorydotcom/11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c claims s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601 …, where u is the unique root in (9/25,37/100) of 5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0. |
 | [T-017](packing/frontier/RESULTS.md) | 12 | `V4` | `C4` | `S4` | `apparently-novel` | s(12) >= 99/25, by a first-party weighted fractional unavoidable-set certificate at container side 99/25 = 3.96. |
 | [T-019](packing/frontier/RESULTS.md) | 17, 18, 19 | `V4` | `C4` | `S4` | `apparently-novel` | s(17) >= 459/100, and s(18) >= 459/100 and s(19) >= 459/100, from a first-party weighted fractional unavoidable-set certificate at container side 459/100 = 4.59. |
 | [T-020](packing/frontier/RESULTS.md) | 19, 20, 21 | `V4` | `C4` | `S4` | `apparently-novel` | s(19) >= 24/5, s(20) >= 24/5 and s(21) >= 24/5, from a first-party weighted fractional unavoidable-set certificate at container side 24/5 = 4.80. |
@@ -209,8 +210,8 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-042](packing/frontier/RESULTS.md) | 17 | `V4` | `C3` | `S2` | `previously-published` | s(17) > 233009/50000 = 4.66018, by Guzhou0806 / N17 project’s R067 release (commit d4e2c287, 28 September 2026, named as made “with AI assistance”): Kleddamag’s 4.66001 charge (T-041) unchanged, budget 17000402008 units of 10^-9, at the larger parent side 32950/33287, with strict cores rebuilt over 2,808 parent-angle intervals whose endpoints contain every 4.66001 endpoint; seventeen cores at the minimum core charge 1000026844 exceed the budget by 54340. |
 | [T-054](packing/frontier/RESULTS.md) | 45 | `V4` | `C3` | `S2` | `previously-published` | s(45) = 7 by a second, point-only route. |
 | [T-058](packing/frontier/RESULTS.md) | 1-100 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools claims that rectangle-density certificates using core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100 witness table. |
+| [T-059](packing/frontier/RESULTS.md) | 11 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate at commit 6a733f3, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-055](packing/frontier/RESULTS.md) | 21 | `V0` | `C0` | `S2` | `previously-published` | wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed at commit d38917c6 on 28 September 2026 with a Lean 4 reduction at b64f96e6: Evan Daniel’s s21_lower_4.9950.txt support (T-050) scaled by 1001/1000 and re-weighted, 4,604 D4-invariant entries of total 2624862500021/125000000000, with capture threshold q = 249987/250000 over every closed unit square in [0,5]^2, so that 21q exceeds the total by 999979/125000000000. |
-| [T-059](packing/frontier/RESULTS.md) | 11 | `V0` | `C0` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate at commit 6a733f3, with global row minimum 999962528 units and all witnesses replayed. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
 | --- | --- |
@@ -1107,16 +1108,82 @@ routine task.
 
 | ID | Workflow | Enter with | Work boundary | Durable exit | Default handoff |
 | --- | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | A bounded question, source corpus, and identified coverage gap | Survey and source the state of knowledge; do not run a new experiment or turn untested connections into campaign verdicts | A sourced survey, source notes, explicit conflicts, and unresolved gaps | W2 audits the claims; W3 may mine supported gaps |
-| W2 | `factual-review` | A fixed artifact set, its sources, and the claims to audit | Correctness only; read-only by default, but an authorized review may apply an obvious bounded correction whose evidence and scope are unchanged; do not invent successor theory or redesign the process inside the review | Claim-by-claim dispositions, authorized corrections, or defects with exact evidence | Required before promoted, novel, disputed, or high-risk claims; otherwise W3 for new hypotheses or W4 for a process failure |
+| W1 | `research-survey` | A bounded question, source corpus, and identified coverage gap | Survey and source the state of knowledge; do not run a new experiment or turn untested connections into campaign verdicts | A pinned source packet, stable claim IDs, proof obligations, source notes, explicit conflicts, and unresolved gaps | W2 audits the claims; W3 may mine supported gaps |
+| W2 | `factual-review` | A fixed artifact set, its sources, and the claims to audit | Correctness only; read-only by default, but an authorized review may apply an obvious bounded correction whose evidence and scope are unchanged; do not invent successor theory or redesign the process inside the review | Claim-by-claim dispositions, focused confirmation receipts, unresolved coverage, measured cost, authorized corrections, or defects with exact evidence | W5 for measured confirmation bottlenecks; required before promoted, novel, disputed, or high-risk claims; otherwise W3 for new hypotheses or W4 for a process failure |
 | W3 | `insight-iteration` | Current synopsis, idea board, ledger, negative results, and a sharp frontier | Generate explanations and hypotheses freely; do not certify them or spend an undeclared experiment budget | `X-NNN` reports and candidate `H-NNN` items with mechanism, falsifier, expected information, and limits | Codification, then W6 |
 | W4 | `process-review` | Artifacts, beads, logs, checks, and a reconstructability or discipline question | Inspect ownership, handoffs, refusals, and controls; do not substitute process polish for a scientific result | Review findings, beads, and narrowly scoped contract or checker changes | W5 for a measured bottleneck or the next workflow that owns the result |
-| W5 | `efficiency-loop` | A measured baseline, profile, target metric, and equivalence or validity guard | Improve time, cost, or throughput under the same regime; never relax correctness or provenance to win | Benchmark record, change or rejection, measured delta, and preserved guards | W6 when the research bottleneck moves; W4 if the process contract is wrong |
+| W5 | `efficiency-loop` | A measured baseline, profile, target metric, and equivalence or validity guard | Improve time, cost, or throughput under the same regime; never relax correctness or provenance to win | Benchmark record, change or rejection, measured delta, and preserved guards | Return to the originating workflow (W2, W6 or W7) with the measured improvement or rejection; W4 if the process contract is wrong |
 | W6 | `research-loop` | A registered hypothesis, fixed criterion, regime, budget, stop rule, and instrument contract | Build or repair the bounded instrument, freeze it before measurement, then use creative effort inside the registered scope to execute the smallest fair test; never change the criterion, suppress a failure, or improvise a replacement hypothesis mid-round | Frozen instrument, `exp-NNN`, raw data or proof record, verdict, regenerated views, and the next bounded question | W2 before promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | Named packing-research consumers, the smallest reusable capability or cleanup they need, controls or an independent oracle, a budget, and expected comparability impact | Add, strengthen, simplify, or repair only the bounded packing pipeline surface; do not collect a target verdict while it is mutable, optimize an unchanged implementation without a W5 baseline, or generalize beyond named consumers | Code, entry point or refactor; replayable positive and negative controls; exact validation command; cost and complexity receipt; evidence limits; and a readiness or retained-blocker decision | W2 before a new or materially changed trust boundary reaches W6; W5 if measured throughput remains the blocker; otherwise W6 |
 | W8 | `documentation-pass` | A period of research that closed several commitments, the artifacts it left, and the reader-facing documents that have not caught up | Reconcile the root tier — README, tutorial, synopsis, and the conventions they cite — against the artifacts and against each other; correct, cut, reorder and clarify, but never introduce a claim the record does not already carry, and never soften a claim boundary to make a document read better | A checklist run over each root document, every drift either fixed or filed as a defect, generated views regenerated, and an explicit statement of what was checked and what was left | W2 for any claim the pass could not verify against an artifact; otherwise the next owning workflow |
 | W9 | `remediation` | A confirmed defect or issue inventory, risk ordering, owning beads, and a bounded repair wave | Triage and repair defects systematically without changing scientific criteria or hiding unresolved evidence; group only compatible work and preserve each item’s independent disposition | Fixed items with regressions, contained items with evidence, rerouted evidence work, explicit blockers, regenerated defect views, and validation receipts | W10 reviews the wave and selects what follows |
 | W10 | `review-planning-oversight` | A launch or checkpoint scope, source ideas and H-items, stable evidence, agenda and beads; all writers terminal for full closeout | Assess mathematical directions, codify questions, and select bounded parallel work; at terminal closeout also reconcile every outcome and document impact. Do not execute the selected successors here. | H-linked agenda commitments, priorities, prerequisites, owners and one coordinating next entry; a linked tbd plan may retain rationale. Terminal work additionally records outcomes, dispositions and documentation decisions. | The selected coordinating entry dispatches the owning workflows, including independent BCs in parallel |
+
+### W1/W2 Intake and Efficient Confirmation
+
+W1 turns an incoming result into a reviewable source packet: maintained repository and
+license, immutable source identity, precise claim and assumptions, certificate format,
+and any supplied verifier.
+Check the current register before assigning claim IDs; record explicit mappings when
+provisional IDs collide.
+Separate source assertions from results already independently confirmed.
+Every imported result within the register’s scope receives a claim ID, explicit
+verification (`V`), confirmation (`C`), significance (`S`) and novelty assignments under
+[Epistemics](epistemics.md).
+Record the significance rationale, assessment date and scorer, and explain the evidence
+and limitations supporting the verification and confirmation levels.
+These assignments are required at intake, including when the result remains `V0/C0`;
+useful tooling or a promising claim does not earn a higher verification level.
+Keep each assignment attached to its precise claim, not to an entire repository or
+provider. Its W2 handoff names the proof obligations, existing evidence, missing checks,
+and the smallest useful next confirmation.
+
+W2 owns correctness and efficient confirmation.
+For each obligation, declare the exact acceptance condition and domain, then use the
+smallest relevant check: premise audit, exact control, bounded diagnostic, or complete
+replay. Keep independent mathematical review and disjoint tool work in parallel.
+Reuse evidence only when its input, source, assumptions and checked scope still apply.
+Report what passed, what failed or remains unresolved, which implementation was
+independent, and the precise conclusion supported.
+A sampled replay, diagnostic frontier, or green software test is not complete coverage.
+
+General slow repository testing is batched at integration or release checkpoints; it is
+not part of every W2 iteration.
+During confirmation, run checks for the proof, changed verifier, and affected contracts.
+Record broader integration debt separately without relabeling a proof-specific result as
+repository certification.
+Required hosted checks remain in force, but unrelated checks do not block the next
+independent review.
+
+At each W2 checkpoint, inspect the cost of obtaining the next useful result.
+Separate observed analysis and coordination intervals from validation setup, exact
+computation, serialization and worker idle time.
+Record elapsed time and CPU or runner cost with source, workload and timing boundaries;
+overlapping agent intervals cannot be added to explain wall time.
+Missing timings remain unknown.
+Retained receipts come before new benchmarks, and profiling overhead is distinguished
+from ordinary execution cost.
+
+Delegate a bounded W5 efficiency slice when a declared wall ceiling is missed, repeated
+setup or reruns dominate, workers sit idle with queued work, or the cost of a complete
+check is unknown and prevents choosing the next slice.
+Keep the regular W5 cadence in
+[OR-12](operating-rules.md#or-12-one-block-in-four-to-eight-is-an-efficiency-block-and-the-record-says-which);
+these triggers need not wait for that cadence.
+W2 retains ownership of the claim and can continue independent obligations while W5
+measures the bottleneck.
+The handoff names a bead, frozen workload, baseline or missing measurement, cost target,
+exact correctness guards, wall ceiling, and the owning consumer to return to.
+W7 can delegate this measurement while retaining ownership of pipeline readiness.
+
+W5 chooses among less orchestration, stronger bounds, compiled exact kernels, caching,
+and bounded parallelism from measurements.
+Preserve the exact reference, refusals, provenance and complete-domain acceptance.
+Benchmark comparable workloads with repeat samples and spread before claiming a speedup;
+report negative results too.
+Return a reviewed change or rejection and a reproducible measurement to the owning
+workflow. Tool improvements and mathematical confirmation have separate dispositions;
+neither silently closes the other’s bead.
 
 The current W5
 [validation efficiency and checkpoints plan](docs/project/specs/active/plan-2026-09-06-validation-efficiency-and-checkpoints.md)
@@ -1203,6 +1270,23 @@ stop. Long autonomous sessions use the same rule; autonomy changes the duration 
 controller, not permission to blur contracts.
 
 ### Current Handoff
+
+**Top priority: independently validate or refute T-060**, the proposed global optimality
+proof in
+[Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal).
+The [intake packet](packing/resources/web/n11-optimality-2026-09-29/README.md) pins its
+source; **think-3i74** owns the mathematical audit and independent validation plan.
+This is a new global claim, separate from T-037’s verified `s(11) > 31/8` and T-059’s
+row-minimum cross-check.
+Source publication explicitly leaves a fresh full replay of the sanitized public
+derivative outstanding.
+No global optimum is adopted at intake.
+The current W7 work builds the capabilities required for that audit.
+Tooling and efficiency tasks are subordinate; unrelated CI is outside its critical path.
+After validation, **think-uz2x** owns simplification, followed by the separate n11
+explainer under **think-08pw**. The
+[Session 164 plan](packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md)
+records parallel lanes, bounded checks and integration debt.
 
 [Session 163](packing/campaign/agent-sessions/session-163-native-bounds-and-census.md)
 completed the reviewed rectangle-bound, refinement, and T-059 receipt-admission slices

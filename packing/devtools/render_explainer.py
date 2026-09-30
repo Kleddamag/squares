@@ -833,9 +833,9 @@ KPRESS_API = {
 CLIENT_PLACEHOLDER = "__SQUARES_KPRESS_CLIENT_JS__();"
 
 
-def kpress_client_modules() -> str:
+def kpress_client_modules(modules: tuple[str, ...] = KPRESS_MODULES) -> str:
     """The modules the shell's comment names as the client script's sources, in order."""
-    return ", ".join(f"js/{name}" for name in KPRESS_MODULES)
+    return ", ".join(f"js/{name}" for name in modules)
 
 
 def client_script_frame() -> tuple[str, str]:
@@ -855,11 +855,13 @@ def client_script_frame() -> tuple[str, str]:
     return source[:at], source[after:]
 
 
-def kpress_client_js(static: Path) -> str:
+def kpress_client_js(static: Path, modules: tuple[str, ...] = KPRESS_MODULES) -> str:
     """kpress's client modules inside the checked classic-script frame.
 
-    Concatenates `KPRESS_MODULES` in order, dropping the imports (every name they
-    bind is already in scope by the time it is used) and the `export` keyword. The
+    Concatenates `modules` (the explainer's `KPRESS_MODULES` unless a page asks for more,
+    as the site's pages add the contents rail's `toc.js`) in order, dropping the imports
+    (every name they bind is already in scope by the time it is used) and the `export`
+    keyword. The
     checked asset writes the rest of the script around one sentinel: the IIFE the modules
     share and the epilogue that exposes the two boots. Refuses to produce a
     bundle it cannot vouch for: an import or export form it does not rewrite, an
@@ -872,7 +874,7 @@ def kpress_client_js(static: Path) -> str:
     declared: dict[str, str] = {}
     parts: list[str] = []
 
-    for name in KPRESS_MODULES:
+    for name in modules:
         path = static / "js" / name
         if not path.is_file():
             raise SystemExit(f"kpress has no js/{name}; the client modules have moved")
@@ -940,7 +942,9 @@ def kpress_client_js(static: Path) -> str:
     bundle = "\n".join(parts)
     before, after = client_script_frame()
     element = (
-        before.replace("{{KPRESS_CLIENT_MODULES}}", kpress_client_modules()) + bundle + after
+        before.replace("{{KPRESS_CLIENT_MODULES}}", kpress_client_modules(modules))
+        + bundle
+        + after
     )
     if re.search(r"</script", element, re.IGNORECASE):
         raise SystemExit(

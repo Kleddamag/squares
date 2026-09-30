@@ -70,6 +70,10 @@ MATH_SCRIPTS = {
     for key in ("NATIVE_MATH_METRICS", "RESERVE_MATH", "FINISH_MATH")
 }
 KPRESS_CLIENT = render_explainer.INLINE_SCRIPT_ASSETS["KPRESS_CLIENT_SCRIPT"]
+#: The explainer's kpress client modules plus the contents rail's, which the tutorial's
+#: long page needs below kpress's wide breakpoint, where the rail becomes a toggled panel.
+#: It follows the modules it imports from (overlay, runtime, viewport).
+KPRESS_MODULES = (*render_explainer.KPRESS_MODULES, "toc.js")
 #: The site pages' own classic scripts, checked by the browser floor under
 #: `tsconfig.overview.json`. `site-math.js` typesets every formula through the runtime above.
 SCRIPTS = Path(__file__).with_name("overview")
@@ -140,7 +144,7 @@ def shell_assets() -> ShellAssets:
         site_css=SITE_CSS.read_text(encoding="utf-8"),
         theme_bootstrap=render_explainer.theme_bootstrap(static),
         katex_js=render_explainer.katex_js(static),
-        kpress_client=render_explainer.kpress_client_js(static),
+        kpress_client=render_explainer.kpress_client_js(static, KPRESS_MODULES),
         math_scripts={
             key: path.read_text(encoding="utf-8") for key, path in MATH_SCRIPTS.items()
         },

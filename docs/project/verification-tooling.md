@@ -20,6 +20,20 @@ separately.
 General slow repository tests do not substitute for any of these obligations.
 The [proof review and stage map](reviews/review-2026-09-29-n11-optimality.md) records
 the reviewed implications, outstanding replay and next independent controls.
+The
+[census and capture contract](reviews/review-2026-09-29-n11-optimality-census-contract.md)
+separates metadata completeness from geometric acceptance.
+
+Two focused first-party checks have now run:
+[`check_n11_optimality_d4`](../../packing/devtools/check_n11_optimality_d4.py) confirms
+the conditional symmetry bridge in 1.00 seconds including startup;
+[`check_n11_optimality_local_dual`](../../packing/devtools/check_n11_optimality_local_dual.py)
+recomputes all 8,448 local residuals in 15.41 seconds, using shared exact geometry
+primitives.
+The latter remains explicitly incomplete until curvature, feature margins and
+the nonlinear branch bridge are checked.
+Neither result establishes the 2,180 exclusions or case-438 capture, and neither
+promotes T-060 beyond S5/V0/C1.
 
 The [epistemic scale](../../epistemics.md#confirmation) distinguishes a complete replay
 (`C3`) from confirmation by a distinct complete method (`C4`) and a mapped review

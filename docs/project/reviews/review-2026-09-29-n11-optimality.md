@@ -146,6 +146,11 @@ Even their acceptance would leave pose inclusion and complete geometric capture.
 
 ## Next Bounded Checks
 
+The [census and capture contract](review-2026-09-29-n11-optimality-census-contract.md)
+maps the remaining case census (`think-ncw8`) and candidate ancestry (`think-pgie`),
+including exact source keys and refusal rules.
+Metadata agreement is not geometric acceptance.
+
 The next slice under `think-pqg7` should bind the exact source and selected input
 hashes, then check local isolation independently before acquiring the whole data store.
 The two proposal payloads above are now retained.

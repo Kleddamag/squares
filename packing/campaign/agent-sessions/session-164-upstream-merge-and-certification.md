@@ -10,7 +10,7 @@ session:
   title: Upstream Merge and PR 246 Certification
   date: '2026-09-29'
   started_at: '2026-09-29T20:05:05Z'
-  deadline_at: '2026-09-30T01:35:05Z'
+  deadline_at: '2026-09-30T02:05:05Z'
   branch: codex/wand125-tools-review
   primary_bead: think-3i74
   status: in_progress
@@ -338,7 +338,7 @@ session:
     bead: think-3i74
     objective: Integrate the actual T-060 optimality source and establish the smallest decisive
       independent checks, with parallel mathematical audit, source intake and runtime planning.
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The user supplied Queuingtheorydotcom/11SquaresOptimal and explicitly made its
       independent validation or refutation the primary goal; tooling is supporting work.
@@ -352,16 +352,46 @@ session:
       are treated as independent global-optimality confirmation.
     fallback: Retain the precise missing implication, source defect or replay blocker and continue
       independent obligations without a false promotion.
-    outcome: null
+    outcome: Pinned and registered T-060 at S5/V0/C1. Independent conditional D4 reduction passed
+      in 1.00 seconds including startup; all 8448 local dual residuals recomputed in 15.41 seconds.
+      Astra-max review found no blocker in these component checks. Global exclusions, nonlinear
+      local isolation and case-438 capture remain open. Scoped CI repairs passed affected checks.
     evidence:
     - packing/resources/web/n11-optimality-2026-09-29/README.md
     - packing/frontier/results.yaml
     - docs/project/verification-tooling.md
+    stop_reason: Intake and first measured independent controls complete; continue local acceptance.
+    next_action: Finish nonlinear local isolation and map complete case-census and ancestry checks.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-sw68
+    objective: Independently check nonlinear local isolation while retaining explicit source-sharing
+      limits, and map the complete exclusion census and candidate-capture ancestry.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: The first independent symmetry and complete residual controls are retained;
+      curvature, feature margins and complete nonlinear branch coverage are the next proof obligations.
+    budget_minutes: 30
+    started_at: '2026-09-30T01:19:40Z'
+    deadline_at: '2026-09-30T01:49:40Z'
+    expected_output: A reviewed local-isolation acceptance or precise unresolved condition, measured
+      execution receipts, and tracked census and ancestry contracts; one batched integration update.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n11_optimality_local_dual.py
+    kill_condition: Partial residual arithmetic is promoted to local or global acceptance, or unrelated
+      CI blocks the mathematical lane.
+    fallback: Retain the failed or incomplete obligation, inputs and timings; select the next independent
+      check without changing the verified bound.
+    outcome: null
+    evidence:
+    - docs/project/reviews/review-2026-09-29-n11-optimality.md
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/result.json
     stop_reason: null
-    next_action: Use Astra-max findings to select cheap decisive controls before fetching the exact
-      payload subsets needed for the first replay; retain all timings and limits.
+    next_action: Sol implements exact curvature and feature tests; Astra max audits the implications
+      and census contracts; integration proceeds independently.
   budget:
-    wall_minutes: 330
+    wall_minutes: 360
     max_cycles: 12
     slice_minutes: 30
     finalization_minutes: 15

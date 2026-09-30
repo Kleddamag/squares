@@ -24,12 +24,15 @@ from strif import atomic_write_text
 
 from devtools import check_n11_capture_root_pilot as pilot
 from devtools import check_n11_capture_root_round1 as first
+from devtools import check_n11_closed_degenerate_cover as degenerate
 from devtools import check_n11_optimality_field_mask0 as geometry
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE_REVISION = "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c"
 FIRST_SHA = "50eef26bff3aee127e9ad508b1587014514c8e5f1cf9a3214e8ace7a92d88afd"
 FIRST_RESULT_SHA = "488f26c0effe528f29d2cc06f60766e2c1f845f2aac93f65b18c0c4d3b5e76a4"
+LEGACY_SHA = "dbde306a481333b470f1e2613ff05fd2be65c9711dd135615d65548932cebdd3"
+DEGENERATE_SHA = "858c61c3ffa464a12be0fda9a14f802d7d9ea22f9b6aaa2b06c6974f0caa5385"
 Point = pilot.Point
 Polygon = pilot.Polygon
 
@@ -52,6 +55,7 @@ def source_identity() -> None:
     require(pilot.digest(Path(pilot.__file__)) == first.PILOT_SHA, "pilot source changed")
     require(pilot.digest(Path(first.__file__)) == FIRST_SHA, "round-one source changed")
     require(pilot.digest(Path(geometry.__file__)) == pilot.GEOMETRY_SHA, "geometry changed")
+    require(pilot.digest(Path(degenerate.__file__)) == DEGENERATE_SHA, "cover helper changed")
 
 
 def selected_query(index: int) -> str:
@@ -85,6 +89,9 @@ def admit_previous(
     if index == 2:
         require(digest(previous_raw) == FIRST_RESULT_SHA, "round-one receipt changed")
     previous = geometry.strict_json(previous_raw)
+    expected_checker = (
+        FIRST_SHA if index == 2 else LEGACY_SHA if index <= 8 else pilot.digest(Path(__file__))
+    )
     require(
         previous["status"] in ("PASS_ONE_ROOT_ROUND", "PASS_CONDITIONAL_ROOT_ROUND")
         and previous["round"] == index - 1
@@ -94,8 +101,8 @@ def admit_previous(
         and previous["cover_sha256"] == geometry.COVER_SHA
         and previous["pilot_sha256"] == first.PILOT_SHA
         and previous["geometry_sha256"] == pilot.GEOMETRY_SHA
-        and previous["checker_sha256"]
-        == (FIRST_SHA if index == 2 else pilot.digest(Path(__file__))),
+        and previous["checker_sha256"] == expected_checker
+        and (index <= 8 or previous["degenerate_sha256"] == DEGENERATE_SHA),
         "previous independent receipt is not admitted",
     )
     require(
@@ -123,7 +130,8 @@ def admit_previous(
             and worker["round_sha256"] == digest(previous_bytes)
             and worker["pilot_sha256"] == first.PILOT_SHA
             and worker["geometry_sha256"] == pilot.GEOMETRY_SHA
-            and worker["checker_sha256"] == previous["checker_sha256"],
+            and worker["checker_sha256"] == previous["checker_sha256"]
+            and (index <= 8 or worker["degenerate_sha256"] == DEGENERATE_SHA),
             f"previous owner {owner} receipt differs",
         )
     return previous
@@ -216,7 +224,12 @@ def checked_row(
             (Q(), Q(-1), -geometry.L / 2 + halfwidth),
         ],
     )
-    require(bool(legal) and geometry.area2(legal) > 0, "degenerate legal domain unsupported")
+    if not legal:
+        require(
+            row["residual_polygons"] == [] and row["common_core_strips"] == [],
+            "empty legal domain retains geometry",
+        )
+        return {"events": 0, "probes": 0}, [], []
     corners = [
         (core * (a * cosine - b * sine) / 2, core * (a * sine + b * cosine) / 2)
         for a, b in ((-1, -1), (1, -1), (1, 1), (-1, 1))
@@ -226,7 +239,12 @@ def checked_row(
         for group in other_hulls.values()
     ]
     residual = [pilot.convex(polygon) for polygon in row["residual_polygons"]]
-    coverage = geometry.exact_union_cover(legal, forbidden + residual, budget=budget)
+    regions = forbidden + residual
+    coverage = (
+        geometry.exact_union_cover(legal, regions, budget=budget)
+        if geometry.area2(legal) > 0
+        else degenerate.exact_cover_closed_degenerate(legal, regions, budget=budget)
+    )
     vertices = [point for polygon in residual for point in polygon]
     strips: list[tuple[Point, Q, Q]] = []
     if vertices:
@@ -404,17 +422,22 @@ def worker(args: argparse.Namespace) -> int:
         checker_sha256=pilot.digest(Path(__file__)),
         pilot_sha256=first.PILOT_SHA,
         geometry_sha256=pilot.GEOMETRY_SHA,
+        degenerate_sha256=DEGENERATE_SHA,
     )
     atomic_write_text(args.worker_output, json.dumps(result, indent=2, sort_keys=True) + "\n")
     return 0 if result["status"] == "PASS_CONDITIONAL_OWNER_UPDATE" else 2
 
 
 def require_complete_owners(owner_results: dict[int, dict[str, Any]]) -> None:
+    statuses = [item["status"] for item in owner_results.values()]
+    require(
+        all(status != "REFUSED" for status in statuses),
+        "one or more owner updates refused",
+    )
     if set(owner_results) != set(pilot.MASK) or any(
-        item["status"] == "INCOMPLETE" for item in owner_results.values()
+        status == "INCOMPLETE" for status in statuses
     ):
         raise geometry.IncompleteError("one or more owner updates incomplete")
-    statuses = [item["status"] for item in owner_results.values()]
     require(
         all(status == "PASS_CONDITIONAL_OWNER_UPDATE" for status in statuses),
         "one or more owner updates refused",
@@ -443,6 +466,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "checker_sha256": pilot.digest(Path(__file__)),
         "pilot_sha256": first.PILOT_SHA,
         "geometry_sha256": pilot.GEOMETRY_SHA,
+        "degenerate_sha256": DEGENERATE_SHA,
         "source_revision": SOURCE_REVISION,
         "adaptive_sha256": pilot.ADAPTIVE_SHA,
         "seed_sha256": pilot.SEED_SHA,
@@ -574,7 +598,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         == result["previous_result_sha256"]
                         and owner_result.get("checker_sha256") == result["checker_sha256"]
                         and owner_result.get("pilot_sha256") == first.PILOT_SHA
-                        and owner_result.get("geometry_sha256") == pilot.GEOMETRY_SHA,
+                        and owner_result.get("geometry_sha256") == pilot.GEOMETRY_SHA
+                        and owner_result.get("degenerate_sha256") == DEGENERATE_SHA,
                         f"owner {owner} worker binding differs",
                     )
                     owner_results[owner] = owner_result

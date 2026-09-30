@@ -317,6 +317,28 @@ speed ratio. Neither this subset nor the analytic control confirms the external
 certificate with our independent engine.
 Full 201-direction acceptance remains open.
 
+The
+[bounded profile](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/native-angle1-cprofile/result.json)
+locates the cost in exact polygon geometry: 9.95 seconds cumulative in coverage, 9.26 in
+intersection areas, and 8.06 in axis clipping during the 10-second instrumented run.
+These times overlap and must not be added.
+Fraction arithmetic and repeated GCD normalization dominate the inner work; the profiler
+itself adds overhead, so its node rate is not a speed comparison.
+It does identify a target for compiled exact arithmetic.
+
+Here, **native means first-party independent implementation, not compiled machine
+code**. The current rectangle checker is Python.
+`sqsearch` is a Rust floating-point search engine, and the archived Rust integer
+verifiers accept other certificate families; neither supplies a Rust rational rectangle
+kernel. **think-rmj3** tracks a narrow Rust exact-geometry implementation, with the
+Python method retained as a differential oracle.
+It must use arbitrary-precision rationals or checked overflow with an exact fallback,
+batch work across any language boundary, preserve degeneracy and boundary behavior, and
+pass exact differential and golden controls before acceptance.
+Compiled arithmetic improves cost per node; stronger reviewed bounds may still be
+necessary to reduce the number of nodes.
+Neither improvement by itself demonstrates complete external-certificate parity.
+
 ## T-059 Row Replay and Its Separate Global Argument
 
 The wand125 entries are T-058 (ceiling) and T-059 (row replay).

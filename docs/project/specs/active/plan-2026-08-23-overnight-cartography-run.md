@@ -468,11 +468,12 @@ checks, and Session 162’s certification debt is discharged.
 Session 163 adds separately reviewed changes; PR 246 has since merged with hosted
 fast-tier certification.
 The prototype and controls do not establish complete coverage of an external rectangle
-certificate. For the next supervised exact-research goal, the current handoff is
-`think-e2ot`: build a bounded fresh-ensemble replay entry point while preserving the
-accepted historical evidence.
-See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current evidence
-and allocation boundaries.
+certificate.
+
+For the next supervised exact-research goal, the current handoff is `think-e2ot`: build
+a bounded fresh-ensemble replay entry point while preserving the accepted historical
+evidence. See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current
+evidence and allocation boundaries.
 
 ## The numeric runner launch gate
 

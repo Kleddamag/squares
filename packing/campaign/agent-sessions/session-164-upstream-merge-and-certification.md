@@ -880,7 +880,7 @@ session:
     bead: think-3i74
     objective: Execute the accelerated center partition and remaining capture descendants,
       audit the final 32-case batch, and compose only fully accepted proof components.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Indexed exact coverage and the extended capture-support adapter are reviewed.
     budget_minutes: 30
@@ -890,11 +890,43 @@ session:
     validation_command: Frozen selected geometric replays and focused changed-tool controls.
     kill_condition: Any missing source binding, incomplete branch or unreviewed execution prevents promotion.
     fallback: Preserve the precise open obligation and improve its measured bottleneck in parallel.
+    outcome: The reviewed full center replay is running with three workers from a7a06b05f.
+      All three far leaves and nine capture nodes are accepted; r111 contributes 47 complete
+      updates, with its partial last update unpromoted. The final near checker is reviewed.
+      Twenty-six ordinary exclusion cases have completed and are being audited before
+      their final batch join. New-head functional CI passes; timing aggregation remains
+      open after a partial hosted retry. Final composition still refuses incomplete evidence.
+    evidence:
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-far2/result.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-r111/result.json
+    - packing/resources/web/n11-optimality-2026-09-29/receipts/center-partition-1383-indexed/provenance.json
+    stop_reason: Component checkpoint at 2026-09-30T12:45:48Z.
+    next_action: Run the final near capture, finish remaining exclusions, and audit exact composition.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-3i74
+    objective: Complete the final near and center replays alongside the ordinary exclusion
+      batch, reconcile their accepted executions, and close the exact proof composition.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Nine capture nodes and the accelerated final verifiers are independently reviewed.
+    budget_minutes: 30
+    started_at: '2026-09-30T12:45:48Z'
+    deadline_at: '2026-09-30T13:15:48Z'
+    expected_output: Reviewed remaining component receipts or precise executable gaps,
+      with an updated global composition verdict.
+    validation_command: Frozen targeted proof executions, focused acceptance controls,
+      and the final composition consumer once all prerequisites close.
+    kill_condition: Missing execution, source mismatch, partial state or unreviewed rule
+      prevents theorem promotion.
+    fallback: Retain the exact incomplete obligation and target its measured bottleneck.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Sol owns indexed profiling and capture descendants; Astra audits new executions;
-      coordinator freezes full center replay and integrates accepted records.
+    next_action: Sol runs near capture and measured optional Rust transport work; Astra
+      prioritizes final geometric and inventory audits; root integrates reviewed evidence.
   budget:
     wall_minutes: 1135
     max_cycles: 40

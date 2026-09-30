@@ -1,0 +1,15 @@
+{
+  "checker_commit": "a7a06b05f330ed5ce69435800fc3a5d31a75aa41",
+  "checker_sha256": "d888179ca60fa03534dc24c6fd4e2e422c397a4d190714bbd93fe40acc8295a5",
+  "generic_checker_sha256": "280becc5393d9528ea36dca739fad1074e3c18e13e0722466e30c2fd16514ce1",
+  "indexed_cover_sha256": "68580e324e56c555ea0587b6f396b208fb66563d1e10bd449b446c97b7667ccd",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "scope": "Case 1383 only: five common ancestry nodes followed by both closed center branches; no global proof credit until complete execution and review",
+  "internal_seconds": 7200,
+  "supervisor_seconds": 7250,
+  "workers": 3,
+  "max_events": 50000,
+  "cover_backend": "indexed",
+  "collision_backend": "integer",
+  "replay": "From packing: timeout --signal=TERM --kill-after=10s 7250s .venv/bin/python3 -m devtools.check_n11_center_partition --objects ../attic/n11-proof-inputs/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/objects --workers 3 --max-seconds 7200 --max-events 50000 --out resources/web/n11-optimality-2026-09-29/receipts/center-partition-1383-indexed/result.json"
+}

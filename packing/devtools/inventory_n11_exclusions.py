@@ -151,14 +151,29 @@ def inventory(batches: list[Path]) -> dict[str, Any]:
     bindings = []
     for relative, (case, sha) in PILOTS.items():
         record = read_bound(receipts / relative, sha)
-        require(record["excluded_case_ids"] == [case], "pilot identity")
+        expected_status = (
+            "PASS_CENTER_PARTITION_EXCLUSION" if case == 1383 else "PASS_ONE_GENERIC_EXCLUSION"
+        )
+        require(
+            record["status"] == expected_status
+            and record["geometry_verified"] is True
+            and record["global_optimality_proved"] is False
+            and record["excluded_case_ids"] == [case],
+            "pilot execution scope or identity",
+        )
+        require(case not in accepted, f"duplicate accepted case across records: {case}")
         accepted.add(case)
         bindings.append(
             {"path": (receipts / relative).relative_to(REPO).as_posix(), "sha256": sha}
         )
     for path in batches:
         raw = path.read_bytes()
-        accepted |= admitted_batch(json.loads(raw))
+        batch_accepted = admitted_batch(json.loads(raw))
+        require(
+            not accepted & batch_accepted,
+            f"duplicate accepted cases across records: {sorted(accepted & batch_accepted)}",
+        )
+        accepted |= batch_accepted
         bindings.append(
             {
                 "path": path.resolve().relative_to(REPO).as_posix(),

@@ -12,10 +12,14 @@ from typing import Any
 import pytest
 
 from devtools.inventory_n11_exclusions import (
+    PACKET,
+    PILOTS,
+    REPO,
     REVIEWED_CHECKERS,
     REVISION,
     admitted_batch,
     compact_batch,
+    inventory,
 )
 
 
@@ -101,3 +105,27 @@ def test_inconsistent_execution_inventory_refuses(tmp_path: Path, mutation: str)
         batch["remaining_case_ids"] = [2132]
     with pytest.raises(ValueError, match=r"checker|execution|receipt|credit|union|remainder"):
         admitted_batch(batch, tmp_path)
+
+
+def test_repeated_batch_credit_refuses_across_records() -> None:
+    retained = json.loads((PACKET / "receipts/exclusion-inventory.json").read_text())
+    relative = next(
+        row["path"]
+        for row in retained["execution_record_bindings"]
+        if row["path"].endswith("/summary.json")
+    )
+    with pytest.raises(ValueError, match="duplicate accepted cases across records"):
+        inventory([REPO / relative, REPO / relative])
+
+
+def test_pilot_credit_cannot_reappear_in_a_batch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    pilot = next(iter(PILOTS.values()))[0]
+    summary = tmp_path / "summary.json"
+    summary.write_text("{}")
+    monkeypatch.setattr(
+        "devtools.inventory_n11_exclusions.admitted_batch", lambda _row: {pilot}
+    )
+    with pytest.raises(ValueError, match="duplicate accepted cases across records"):
+        inventory([summary])

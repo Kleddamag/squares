@@ -64,7 +64,9 @@ collision inequalities, including the common kernel, compressed additions and ne
 join. The subsequent full root-state replay accepts twelve more updates and exact final
 state, with 2,185 complete rows and 92 additions in 891.93 seconds.
 Its trailing partial step promotes no state.
-Child branches remain open.
+Nine of the ten capture nodes are accepted, including all three far-leaf contradictions.
+The final near-state execution remains open; the near state must then discharge the
+conditional pose-inclusion premise.
 The
 [exact exclusion inventory](../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json)
 and
@@ -72,12 +74,12 @@ and
 are the acceptance record; in-flight batch successes await completed executor records
 and review before joining that union.
 
-The T-060 geometry path has two reviewed accelerators: the
-[exact union sweep](../../packing/devtools/n11_fast_exact_cover.py), measured at 1.892
-times the reference row CPU speed with complete-case parity, and the optional
-[integer collision kernel](../../packing/devtools/n11_integer_collision.py).
-The latter removes repeated rational normalization using exact homogeneous coordinates
-and positive-denominator cross-multiplication.
+The T-060 geometry path has three reviewed accelerators.
+The [exact union sweep](../../packing/devtools/n11_fast_exact_cover.py) measures 1.892
+times the reference row CPU speed with complete-case parity.
+The optional [integer collision kernel](../../packing/devtools/n11_integer_collision.py)
+removes repeated rational normalization using exact homogeneous coordinates and
+positive-denominator cross-multiplication.
 Three pinned capture rows run
 [4.607 to 4.920 times faster in kernel CPU](../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-step0/collision-integer-benchmark.json),
 with identical facet checks.
@@ -85,6 +87,12 @@ Its mathematical review, rational boundary controls and source-bound generic int
 pass. Complete case 1687 reproduces all 192 rows and 3,055,752 collision facets exactly;
 measured process CPU falls from 235.45 to 134.63 seconds (1.75 times).
 The runs had different host load, so their wall-time difference is observational.
+The [indexed event sweep](../../packing/devtools/n11_indexed_exact_cover.py) rejects
+edge pairs only when their closed horizontal projections are disjoint.
+On a difficult case-1383 source-proposal row, it returns the identical 613 events in
+1.682 versus 8.085 CPU seconds (4.81 times faster).
+That diagnostic grants no geometric credit; differential controls on accepted rows,
+boundary cases and actual spawned-worker execution also pass.
 These are kernel measurements, not whole-proof speedups.
 This path is separate from the optional Rust rectangle verifier described below.
 The [batch cost reporter](../../packing/devtools/summarize_n11_nonfield_costs.py)
@@ -97,8 +105,12 @@ For example, the latest 24-case batch used 4,453.66 CPU seconds over 1,771.40 se
 executor wall time. This measures compute utilization, not agent analysis time.
 The separate center-1383 diagnostic used 118.05 CPU seconds in 120.01 wall seconds,
 including 6.08 seconds of admission and 3.65 seconds of seed checking.
-Exact segment event construction is the next measured optimization target; this
-incomplete run accepts no exclusion.
+That incomplete run accepts no exclusion.
+The reviewed indexed sweep is now running the complete center partition with three
+workers; current-step worker inputs reduce measured startup from 1.864 to 0.551 seconds.
+A separate fresh, source-bound capture reader extracts all 121 near-state updates in one
+parse (12.617 seconds), avoiding repeated parsing of the 186 MB source.
+Neither optimization changes the geometry required for acceptance.
 The
 [current verification checkpoint](reviews/review-2026-09-29-n11-optimality.md#independent-verification-checkpoint)
 separates these obligations and their evidence.

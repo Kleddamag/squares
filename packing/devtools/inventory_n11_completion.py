@@ -52,11 +52,23 @@ FIXED = {
     "capture-child-near13": "c6e6f7bca7d19f759445fada136ee9632eb7ed69fa792ee486514bdcd781c1d2",
     "capture-child-far13": "1204bb9ca399d96b2b47e2980defa1e4194f1ea089e9bc8ff72568fe90c90feb",
     "capture-child-r11": "407aa7b53fd6ab1cb4d748563fe7f564baf57a7bbe079348547bddf058f5717f",
+    "capture-child-far2": "e7deeb0249e0688bc371436f4e18513e7b397d5479164db6546e151311c18442",
+    "capture-child-r111": "5efd22cc39ee0a6d2167ebf6a9ffe2d685e879218ea9dabb47affe3c62751e79",
     "pose-inclusion": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
     "local-isolation": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
 }
 # Source identities come from the reviewed graph, not from a supplied PASS string.
 CAPTURE = {
+    "db4c60f07a0143ac2edf976f595178903113102de902ac72ddcf863de04d0f7b": (
+        "capture-child-r111",
+        "child_source_sha256",
+        "child_node_state_checked",
+    ),
+    "79e7f3141c9d726b3c1ba9fe6dfdd2fe82692aab1b6cacf51b6860610baa1576": (
+        "capture-child-far2",
+        "child_source_sha256",
+        "child_node_state_checked",
+    ),
     "280b5152e02e0dffd23bafb4dda2fd464ad847ec969c42b903ea266d2f7f974a": (
         "capture-child-r11",
         "child_source_sha256",
@@ -151,6 +163,25 @@ def conditional_d4(census: dict[str, Any]) -> list[int]:
     return [2175, 2176]
 
 
+def pending_joins(
+    missing_exclusions: list[int],
+    missing_nodes: list[dict[str, Any]],
+    missing_leaves: list[str],
+) -> list[str]:
+    """Describe unfinished components without treating the inventory as a proof."""
+    pending = []
+    if missing_exclusions:
+        pending.append(f"{len(missing_exclusions)} required exclusion executions remain")
+    if 1383 in missing_exclusions:
+        pending.append("Both center-partition branches for case 1383")
+    if missing_nodes:
+        pending.append(f"{len(missing_nodes)} capture node executions remain")
+    if missing_leaves:
+        pending.append(f"Capture leaf executions remain: {', '.join(sorted(missing_leaves))}")
+    pending.append("Final consumer join to the reviewed endpoint/witness argument")
+    return pending
+
+
 def completion() -> dict[str, Any]:
     records = {name: bound(RECEIPTS / name / "result.json", sha) for name, sha in FIXED.items()}
     path = RECEIPTS / "exclusion-inventory.json"
@@ -235,8 +266,14 @@ def completion() -> dict[str, Any]:
     local_joins(records, RECEIPTS)
     symmetry_join(records, RECEIPTS)
     root_scope(records)
+    missing_exclusions = sorted(required - accepted)
+    component_accounting_complete = not (missing_exclusions or missing_nodes or missing_leaves)
     return {
-        "status": "INCOMPLETE_PROOF_OBLIGATION_INVENTORY",
+        "status": (
+            "COMPONENT_ACCOUNTING_COMPLETE_PENDING_FINAL_REVIEW"
+            if component_accounting_complete
+            else "INCOMPLETE_PROOF_OBLIGATION_INVENTORY"
+        ),
         "source_revision": REVISION,
         "geometry_rerun": False,
         "global_optimality_proved": False,
@@ -247,20 +284,15 @@ def completion() -> dict[str, Any]:
         "final_composition_review_required": True,
         "accepted_exclusions": len(accepted),
         "required_exclusions": len(required),
-        "missing_exclusion_ids": sorted(required - accepted),
+        "missing_exclusion_ids": missing_exclusions,
         "conditional_d4_premises_bound": d4_cases,
-        "center_partition_execution_pending": 1383 not in accepted,
+        "center_partition_execution_pending": 1383 in missing_exclusions,
         "capture_nodes": nodes,
         "missing_capture_source_sha256s": [node["source_sha256"] for node in missing_nodes],
         "missing_capture_leaf_executions": missing_leaves,
         "closed_capture_split_algebra_checked": True,
         "retained_pose_local_join_checked": True,
-        "pending_joins": [
-            "Both center-partition branches for case 1383",
-            "All three far-leaf contradictions and closed branch coverage",
-            "Accepted near final state to pose inclusion and local isolation",
-            "Final consumer join to the reviewed endpoint/witness argument",
-        ],
+        "pending_joins": pending_joins(missing_exclusions, missing_nodes, missing_leaves),
         "reviewed_fixed_receipt_sha256s": FIXED,
         "exclusion_inventory_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         "checker_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

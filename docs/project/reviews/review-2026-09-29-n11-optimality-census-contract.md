@@ -2256,6 +2256,88 @@ matches all 613 crossing events from 1,738 edges in one case-1383 proposal row, 
 That measurement uses proposed geometry and grants no row or case acceptance.
 Case 1383 still requires the complete common prefix and both closed branches.
 
+## Third Far Contradiction and Capture Source Index
+
+The
+[far2 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-far2/result.json),
+SHA-256 `e7deeb0249e0688bc371436f4e18513e7b397d5479164db6546e151311c18442`, is accepted
+under child checker `69a38da4`. That registry revision binds accepted r11 receipt
+`407aa7b5`, source `280b5152`, and final state `ecdebb59`, with the
+six-complete-updates-plus-partial-tail profile.
+The actual far2 and r111 node identities, parent paths, source digests, inherited closed
+conditions, and step counts match the independently checked source graph.
+Their complementary owner-2 cuts meet at $183/512$.
+
+Far2 completes all eleven updates: 1,855 query rows, 4,319 partner rows, 4,702,168
+collision inequalities, 13,750 cover events, 26,889 probes, 3,280 common-core planes,
+and 76 additions. Terminal owner 8 at step 10 has all 259 residual and outer domains
+empty, with no addition.
+The actual raw child and parent sources, accepted parent receipt, checker dependencies,
+stdout, ordered steps, and original final-state digest `11d4a28e` pass review.
+Wall time was 225.852 seconds.
+All three far-branch contradictions are now accepted; eight capture nodes are complete,
+with r111 and near still required.
+Tree, candidate-capture, and global flags remain false.
+
+The [capture source indexer](../../../packing/devtools/index_n11_capture_source.py),
+SHA-256 `94075042f8ca3d8882fa04e5a10e92df2d51374e09a9d2a4ce8dc5a27fbb6742`, is approved
+only with fresh `build_and_open` inside the geometric verifier.
+One parse preserves every top-level field in the header, each ordered complete step
+object, or the final-state record.
+The builder hashes the original source before and after extraction, checks the exact
+record count and contiguous offsets, and returns the stream and per-record identities
+directly to its caller.
+The reader compares disk metadata with a private copy of that fresh identity and checks
+each record; the caller must recheck the source, stream, metadata, and indexer before
+final acceptance. An existing index’s claimed source digest alone does not establish
+derivation from that source.
+A focused control rewrites both a stream record and its self-described index and now
+refuses; omitted records, changed offsets, changed sources, unbounded timing, and output
+paths that overwrite the source also refuse.
+This approves an input-access optimization, with no geometric or ancestry credit.
+
+## R111 State and Final Indexed Continuation
+
+The
+[r111 execution](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/capture-child-r111/result.json),
+SHA-256 `5efd22cc39ee0a6d2167ebf6a9ffe2d685e879218ea9dabb47affe3c62751e79`, is accepted
+under checker `69a38da4` and the accepted r11 premise `407aa7b5`. The actual raw
+sources, parent receipt, dependency closure, all 48 ordered source and receipt steps,
+stdout, and provenance match.
+Steps 0–46 complete 8,137 query rows, 16,358 partner rows, 13,626,320 collision
+inequalities, 37,750 cover events, and 73,530 probes, producing 13,640 common-core
+planes and 296 additions.
+Partial step 47 checks 121 further rows and 223,680 collision inequalities, with no
+addition or state promotion.
+The original final-state digest is `da17e6f7`, matching the independently checked graph.
+Wall time was 726.988 seconds.
+This accepts the ninth conditional capture state; the final near node remains required.
+
+Child checker `ab824a14d50b32b16bcd0be36d8b77f1ceea23f8cdb1f496a6c9c1b39d3cb930` is
+approved for the near continuation.
+It binds this exact r111 execution, its 47 complete updates and partial tail, and source
+`db4c60f0` to near source `491afdaa` with its inherited closed conditions.
+The fresh indexer `94075042` runs inside the verifier.
+Each iteration reads the complete indexed step and its immediate successor’s proposed
+prior; header and final state come from the same freshly derived stream.
+The verifier rechecks the original source, stream, metadata, imported code, and deadline
+before accepting the state.
+The focused stream control checks every step and successor, including the absent final
+successor. This changes input access, preserving the reviewed row and ownership
+induction. Final composition still requires all 121 near updates to be complete and the
+original final state to equal `a6d45c0c`; no near execution is credited here.
+
+Exclusion inventory revision `cadf7a75` now rejects duplicate accepted IDs across
+retained executions and requires each pilot’s exact scoped status, geometry flag,
+singleton ID, and false global flag.
+Completion revision `860c6a1f` includes the accepted far2 and r111 identities and
+derives pending components from the actual missing IDs, nodes, and leaves.
+Its recomputation preserves 2,147 accepted exclusions and reports only near as the
+remaining capture node and leaf.
+Even complete component accounting retains `global_optimality_proved: false` and
+requires final composition review.
+These bookkeeping changes grant no additional geometric credit.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

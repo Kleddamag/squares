@@ -554,6 +554,14 @@ workload. The default implementation is unchanged; this is neither a whole-verif
 speedup nor native/C++ parity, and the remaining library and allocation costs are not
 yet isolated. `think-i5x7` tracks this investigation under the native-performance work.
 
+The subsequent bounded verifier comparison (`think-ss4a`) matched all twelve exact
+reports across three pairs on the complete analytic fixture and external angle 1 at
+1,000 nodes. The coprime helper used 14.49% less median Rust child CPU and 17.85% less
+median invocation wall time on the external workload; wall ranges overlapped.
+That external result remains inconclusive, and production defaults remain unchanged.
+`think-1ozu` tracks the narrowly reviewed adoption decision; the report retains the
+paired measurements and source identities.
+
 ## T-059 Row Replay and Its Separate Global Argument
 
 The wand125 entries are T-058 (ceiling) and T-059 (row replay).

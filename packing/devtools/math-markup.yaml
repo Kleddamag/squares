@@ -197,6 +197,11 @@ migrated:
 - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
 - docs/project/reviews/review-2026-09-29-validation-parallelism.md
 - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+- docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
+- docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+- docs/project/reviews/review-2026-09-30-lean-s13.md
+- docs/project/reviews/review-2026-09-30-n11-expository-simplification.md
+- docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md
 - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
 - docs/project/specs/active/plan-2026-08-22-minimal-packing-toolkit.md
 - docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md
@@ -1839,6 +1844,9 @@ keep:
 - path: packing/frontier/README.md
   span: "s(6), s(13), s(22), s(33), s(46)"
   reason: "GitHub leaves this formula as dollars where it sits, at the start of a line inside a parenthesis opened on the line before (check_github_math at 6908c432c); a placement the GitHub probe has not measured, so it stays code until it is"
+- path: docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
+  span: "+-6.5"
+  reason: "a test input, written with an ASCII plus-minus; as math it reads as a plus and a minus"
 
 exempt:
 - path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md

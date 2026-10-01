@@ -42,7 +42,7 @@ method’s shared dependencies and the publisher’s four stale cached-audit dig
 [Square Packing](https://jlevy.github.io/squares/).** It carries the
 [recent results](https://jlevy.github.io/squares/#recent-results) by this project and by
 others with their credit, the
-[verification ratings](https://jlevy.github.io/squares/#verification-at-a-glance),
+[verification ratings](https://jlevy.github.io/squares/#verification-ladders),
 [the atlas](https://jlevy.github.io/squares/#the-atlas) of known-best packings and its
 films, the table of [every result](https://jlevy.github.io/squares/all-results.html),
 and [the survey](https://jlevy.github.io/squares/#the-survey) of every case

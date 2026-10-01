@@ -1360,11 +1360,12 @@ body {
 }
 
 /* ---------- The rating ladders ----------
-   Verification at a Glance is one diagram (paper-design.md, Rating ladders): a column
-   for each scored dimension, a row for each level, the highest at the top, so the rungs
-   of the three ladders line up. It is a grid with table roles, in the wide track, and
-   it stands the tables' own space clear of the text. Every rung is the same height: its
-   description is a box of exactly two lines, and its chip and count are a line each. */
+   Verification Ladders is one diagram (paper-design.md, Rating ladders): a column for
+   each scored dimension, a row for each level, the highest at the top, so the rungs of
+   the three ladders line up. It is a grid with table roles, in the wide track, and it
+   stands the tables' own space clear of the text. Every rung is the same height: its
+   chip is one line and its description a box of exactly two. One rule stands under the
+   column heads and none between the rows, which the space between them keeps apart. */
 .site-ladders-frame {
   container: site-ladders / inline-size;
 }
@@ -1376,15 +1377,17 @@ body {
 .site-ladders {
   --site-ladders-leading: 1.4;
   --site-ladders-line: calc(var(--site-font-size-note) * var(--site-ladders-leading));
-  /* The rail holds a chip over its count, "no result yet" at the widest. */
-  --site-ladders-rail: 6.5rem;
-  --site-ladders-gap: 0.5rem;
+  /* The rail holds a chip and nothing else, so it is the chip's own width. */
+  --site-ladders-rail: 2.25rem;
+  --site-ladders-gap: 0.75rem;
   /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
   --site-ladders-meaning-min: 13.5rem;
-  /* What a column keeps clear after its words, before the next column's chip: more than
-     the gap inside a rung, and no more than lets three columns stand in the wide track
-     of a 768-pixel window, 43rem (below). */
+  /* What a column keeps clear after its words, before the next column's chip, and no
+     more than lets three columns stand in the wide track of a 768-pixel window, 43rem
+     (below). */
   --site-ladders-inset: 0.75rem;
+  /* Half the space between two rows, which no rule divides. */
+  --site-ladders-row-space: 0.75rem;
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -1424,45 +1427,36 @@ body {
   display: block;
 }
 .site-ladders-cell {
-  border-block-end: 1px solid var(--kpress-doc-border);
   container-type: inline-size;
-  padding: 0.6rem var(--site-ladders-inset) 0.6rem 0;
+  padding-block: var(--site-ladders-row-space);
+  padding-inline-end: var(--site-ladders-inset);
 }
-/* A rung in a narrow cell: its chip, then its count, on one line, and the description
-   under them across the whole cell. */
+/* A rung in a narrow cell: its chip, and the description under it across the whole
+   cell. */
 .site-ladders-rung {
-  align-items: center;
   column-gap: var(--site-ladders-gap);
   display: grid;
   grid-template:
-    "chip count" auto
-    "meaning meaning" auto / auto minmax(0, 1fr);
+    "chip" auto
+    "meaning" auto / minmax(0, 1fr);
 }
 .site-ladders-rung .site-chip {
   grid-area: chip;
   justify-self: start;
-  min-inline-size: 2.2rem;
+  min-inline-size: var(--site-ladders-rail);
   text-align: center;
-}
-.site-ladders-count {
-  color: var(--site-support-color);
-  font-variant-numeric: tabular-nums;
-  grid-area: count;
-  white-space: nowrap;
 }
 .site-ladders-meaning {
   block-size: calc(2 * var(--site-ladders-line));
   grid-area: meaning;
 }
-/* A rung with room, 20.5rem (the rail, the gap and the least description): the chip over
-   its count in a rail and the description beside them, its first line level with the
-   chip's letters, which the chip's own margin sets down. */
-@container (inline-size >= 20.5rem) {
+/* A rung with room, 16.5rem (the rail, the gap and the least description): the chip in
+   its rail and the description beside it, its first line level with the chip's letters,
+   which the chip's own margin sets down. */
+@container (inline-size >= 16.5rem) {
   .site-ladders-rung {
     align-items: start;
-    grid-template:
-      "chip meaning" auto
-      "count meaning" minmax(0, 1fr) / var(--site-ladders-rail) minmax(0, 1fr);
+    grid-template: "chip meaning" auto / var(--site-ladders-rail) minmax(0, 1fr);
   }
   .site-ladders-meaning {
     margin-block-start: 0.15rem;
@@ -1491,7 +1485,6 @@ body {
   }
   .site-ladders-empty {
     block-size: 1px;
-    border: 0;
     clip-path: inset(50%);
     inline-size: 1px;
     overflow: hidden;

@@ -14,7 +14,6 @@ import base64
 import html
 import re
 import textwrap
-from collections import Counter
 from collections.abc import Iterable, Sequence
 from datetime import date, timedelta
 from functools import cache
@@ -25,7 +24,6 @@ from urllib.parse import urlsplit
 
 from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
-from devtools.check_results import RESULTS as REGISTER
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
@@ -39,7 +37,6 @@ from devtools.overview_data import (
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
-from sqpack.yamlio import safe_load
 
 
 def _esc(text: object) -> str:
@@ -931,28 +928,9 @@ def rung_short_meanings() -> dict[str, str]:
     return short
 
 
-def rung_counts() -> dict[str, Counter[int]]:
-    """How many registered results stand at each level of each dimension, read from the
-    register, so the diagram shows an empty rung as empty rather than omitting it."""
-    results = safe_load(REGISTER.read_text(encoding="utf-8"))["results"]
-    counts: dict[str, Counter[int]] = {scale: Counter() for scale, *_ in DIMENSIONS}
-    for record in results:
-        counts["V"][int(record["verification"][1])] += 1
-        counts["C"][int(record["confirmation"][1])] += 1
-        counts["S"][int(record["significance"]["score"])] += 1
-    return counts
-
-
-def count_label(count: int) -> str:
-    """How the diagram says how many results stand at a level; an empty rung says so."""
-    if count == 0:
-        return "no result yet"
-    return f"{count} result" + ("" if count == 1 else "s")
-
-
-def _ladder_cell(scale: str, level: int, count: int) -> str:
+def _ladder_cell(scale: str, level: int) -> str:
     """One rung of the ladder diagram: the chip the tables use, titled with the rubric's
-    full meaning, the two-line description, and how many results stand there."""
+    full meaning, and the two-line description."""
     label = f"{scale}{level}"
     return (
         f'<div class="site-ladders-cell" role="cell" data-ladder="{scale}">'
@@ -960,7 +938,6 @@ def _ladder_cell(scale: str, level: int, count: int) -> str:
         f'<span class="site-chip site-rung-fill" title="{_esc(rung_meanings()[label])}" '
         f"{_fill(label)}>{label}</span>"
         f'<span class="site-ladders-meaning">{_esc(rung_short_meanings()[label])}</span>'
-        f'<span class="site-ladders-count">{_esc(count_label(count))}</span>'
         "</div></div>"
     )
 
@@ -969,16 +946,14 @@ def verification_block() -> str:
     """The rating ladders as one diagram: a column per dimension of the rubric,
     Significance, Verification, Confirmation, headed by its name and the question it
     answers, and a row per level, the highest at the top, so the rungs of the three
-    ladders line up. A cell is the rung's chip, its description on two lines and the
-    count of results at that level; a ladder with no rung at a level leaves its cell
-    empty, as Significance does at level 0.
+    ladders line up. A cell is the rung's chip and its description on two lines; a ladder
+    with no rung at a level leaves its cell empty, as Significance does at level 0.
 
     It is a grid marked with table roles, not a `<table>`: kpress wraps every table on a
     page in its own scroller and restyles it as `.kpress-table`, which this diagram is
     not. Each name links to that section of `epistemics.md`.
     """
     levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
-    counts = rung_counts()
     heads = "".join(
         f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
         f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
@@ -994,7 +969,7 @@ def verification_block() -> str:
     every = sorted({level for scale, *_ in DIMENSIONS for level in levels[scale]}, reverse=True)
     for level in every:
         cells = "".join(
-            _ladder_cell(scale, level, counts[scale][level])
+            _ladder_cell(scale, level)
             if level in levels[scale]
             else f'<div class="site-ladders-cell site-ladders-empty" role="cell" '
             f'data-ladder="{scale}"></div>'
@@ -1006,9 +981,10 @@ def verification_block() -> str:
             f"{cells}</div>"
         )
     names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    label = f"Verification ladders by level: {names}"
     return (
         '<div class="site-ladders-frame site-wide">'
-        f'<div class="site-ladders" role="table" aria-label="Rating ladders by level: {names}">'
+        f'<div class="site-ladders" role="table" aria-label="{label}">'
         f"{''.join(rows)}</div></div>"
     )
 

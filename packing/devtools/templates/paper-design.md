@@ -667,16 +667,20 @@ it.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
-- **Rating ladders.** Verification at a Glance is one diagram, `.site-ladders`, which is
+- **Rating ladders.** Verification Ladders is one diagram, `.site-ladders`, which is
   neither a set of cards nor the shared data table: a column for each scored dimension
   of the rubric, in the order Significance, Verification, Confirmation, and a row for
   each level, the highest at the top, so the rungs of the three ladders line up across a
   row. A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
-  A cell holds the rung’s chip, a description of exactly two lines, and the count of
-  register entries at that level, “7 results” or “no result yet” (`rung_counts`,
-  `count_label`). A ladder with no rung at a level leaves its cell empty, as
-  Significance does at level 0.
+  A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
+  the diagram says what each rung means, and carries no tally of the results at it.
+  A ladder with no rung at a level leaves its cell empty: Significance has no level 0.
+  The section was Verification at a Glance until 2026-10-01; an empty anchor in its
+  heading keeps the old fragment, `#verification-at-a-glance`, landing on it.
+  - **Rules.** One rule, in the text’s colour, stands under the column heads.
+    No rule stands between the rows: 1.5rem between one rung’s description and the next
+    rung (`--site-ladders-row-space`, 0.75rem, either side of a row) keeps them apart.
   - **Wording.** The chip’s `title` is the rubric’s full meaning, read from the tables
     in `epistemics.md` (`rung_meanings`). The description is that meaning, or a short
     form where the meaning does not fit two lines of the narrowest cell
@@ -685,14 +689,14 @@ it.
     A description is never clipped and never cut with an ellipsis: one that does not
     wrap to two lines of 25 characters (`SHORT_MEANING_LINE`) stops the build until it
     is given a shorter form.
-  - **Rows.** Every rung is the same height at any one width, since each is a chip, a
-    count and a two-line box.
-    A cell arranges the three by its own width.
-    With 20.5rem or more it sets the chip over its count in a 6.5rem rail and the
-    description beside them, 74.8px a row, at 1280 pixels and on a phone.
-    Narrower, it sets the chip and its count on one line and the description under them
-    across the cell, 99.3px a row, at 1024 and 768 pixels.
-    A description is never set narrower than 13.5rem (`--site-ladders-meaning-min`).
+  - **Rows.** Every rung is the same height at any one width, since each is a chip and a
+    two-line box. A cell arranges the two by its own width.
+    With 16.5rem or more it sets the chip in a 2.25rem rail, the chip’s own width, and
+    the description beside it, 0.75rem on, 75.3px a row: at 1280 and 1024 pixels, down
+    to a 908-pixel window, and on a phone down to 296 pixels.
+    Narrower, it sets the chip on a line of its own and the description under it across
+    the cell, 103.1px a row, from 907 pixels down to 716, so at 768. A description is
+    never set narrower than 13.5rem (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
     Three columns therefore need 42.75rem: three times the least description and its

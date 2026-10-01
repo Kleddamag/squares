@@ -23,7 +23,7 @@ We and several others have proved new results as part of this project for low va
 $n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
 As part of a collaborative open effort, several people have built on results from this
 project or developed other new proofs, and this site
-[independently checks and documents](#verification-at-a-glance) the proofs and
+[independently checks and documents](#verification-ladders) the proofs and
 certificates behind them.
 
 If you have new results or know of newer results, please
@@ -63,7 +63,11 @@ the one verified so far, each linked to its case in the frontier atlas:
 
 {{AWAITING_REPLAY}}
 
-## Verification at a Glance
+<!-- This section's fragment was #verification-at-a-glance until 2026-10-01. The empty
+     anchor in its heading keeps an old link landing here, with no script, and keeps
+     forward.js from sending that fragment on to the explainer as one the overview lacks. -->
+
+## Verification Ladders<a id="verification-at-a-glance"></a>
 
 {{VERIFICATION}}
 

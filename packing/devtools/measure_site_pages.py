@@ -24,11 +24,12 @@ Seven measurements, each over pages of a directory `preview_site` has built:
   and each card's headline face, weight and size. `--markdown` prints one line a row, and
   `--media print` lays the page out as it prints.
 - `ladders` reports the rating-ladder diagram (`.site-ladders`) as laid out: how many
-  columns its rungs stand in, every rung's height, and each description's box, the lines
-  its words take and how far they run past the box. `--markdown` prints one line a
-  width, with the distinct rung heights (one value when every row is the same height),
-  the narrowest description box and the most lines any description takes. `--shots DIR`
-  also shoots each diagram there at each width, light and dark, under its heading.
+  columns its rungs stand in, every rung's height, the rules under its heads and between
+  its rows, and each description's box, the lines its words take and how far they run
+  past the box. `--markdown` prints one line a width, with the distinct rung heights (one
+  value when every row is the same height), the narrowest description box and the most
+  lines any description takes. `--shots DIR` also shoots each diagram there at each
+  width, light and dark, under its heading.
 - `math` reports the face of every typeset formula beside the face of the text it sits
   in, counted by surface (a card's headline, a chip, a table, a popover, a caption, the
   prose), once the page has typeset all its math. `--press SELECTOR` presses an element

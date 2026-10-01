@@ -192,7 +192,7 @@ As built (amended 2026-09-30):
 | `/frontier.html` | the frontier atlas, `n = 1…324` (new) | Frontier |
 | `/all-results.html` | every register entry, the results table (new) | Results |
 | `/cases.html#n-N` | one case record per tracked `n` (new) | none; opened from the atlas grid and the frontier atlas |
-| `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial (new) | Papers |
+| `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial, each a link that goes to its paper in the same tab (new) | Papers |
 | `/n11-optimality/t-060-explainer.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it | Papers |
 | `/explainer.html` | the n = 11 explainer (moved from `/`) | Papers |
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
@@ -291,8 +291,10 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
 7. **Footer.**
 
 A card opens a popover that previews where it leads, with a button to go there; a direct
-card is the link itself: the four page cards go to their pages in the same tab, with no
-popover (`think-bc5d`), and an atlas poster opens its target in a new tab.
+card is the link itself: the four page cards, and the Papers page’s three paper cards,
+go to their pages in the same tab, with no popover (`think-bc5d`, `think-w82r`), and an
+atlas poster opens its target in a new tab.
+A card whose target is a full page of the site navigates; popovers are for records.
 
 The prose around generated blocks (the problem statement, section introductions) lives
 in a template, `packing/devtools/templates/overview-article.md`, so it is reviewed as
@@ -795,10 +797,10 @@ decisions that changed the plan above:
 - **Cards come in three sizes**, small, medium and large, chosen by a card’s text or
   declared by its section, and every line of cards is centred on its line.
 - **Papers is one tab.** The optimality paper, the explainer and the tutorial share the
-  bar’s Papers entry and a page of three large cards, the optimality paper first
-  (`think-afxf`, `think-ux5l`).
+  bar’s Papers entry and a page of three large cards, the optimality paper first, each
+  the link to its paper (`think-afxf`, `think-ux5l`, `think-w82r`).
 - **The homepage’s prose is README’s introduction**, read from two shared blocks: the
-  problem section opens with README’s first paragraph, followed by the site’s own
+  problem section opens with README’s two opening paragraphs, followed by the site’s own
   statement and where to report a result, and Recent Results opens with README’s next
   two, what the project covers and its newest major result (`think-u7pb`). Eleven
   squares is a central case, never the central one.

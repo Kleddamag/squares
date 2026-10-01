@@ -553,9 +553,10 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record.
 
-    Its first section opens with README's first paragraph and its Recent Results with
-    README's next two, read from README's `project-intro` and `recent-progress` blocks
-    and their links rewritten for the site (`site_documents`).
+    Its first section, The Square Packing Problem, opens with README's two opening
+    paragraphs and its Recent Results with README's next two, read from README's
+    `project-intro` and `recent-progress` blocks and their links rewritten for the site
+    (`site_documents`).
     """
     from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
@@ -632,7 +633,8 @@ def results_page() -> Page:
 
 def papers_page() -> Page:
     """The Papers section's page: a short introduction and one large card per paper,
-    each opening a popover that frames the paper and expands to it."""
+    each the link to its paper, which is a full page of the site. It has no popover,
+    so it carries no popover script."""
     from devtools import overview_sections  # noqa: PLC0415
 
     values = {"PAPER_CARDS": overview_sections.paper_cards()}
@@ -646,7 +648,6 @@ def papers_page() -> Page:
         title=f"Papers · {SITE_NAME}",
         description=PAPERS_DESCRIPTION,
         toc=False,
-        page_scripts=(POPOVER_SCRIPT,),
     )
 
 

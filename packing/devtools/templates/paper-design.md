@@ -449,14 +449,14 @@ it.
   in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
-  That section opens with README’s first paragraph: the block between README’s
+  That section opens with README’s two opening paragraphs: the block between README’s
   `project-intro` markers, read at render time and its links rewritten for the site
   (`site_documents.overview_intro`), so it is edited in `README.md` and nowhere else.
   The site’s own statement follows it and is the only prose the template holds there.
   README’s next two paragraphs, what the project covers and its newest major result, are
   a second shared block, `recent-progress`, which opens Recent Results
-  (`site_documents.overview_progress`); README keeps all three paragraphs together and
-  in order, parted only by the markers.
+  (`site_documents.overview_progress`); README keeps all four paragraphs together and in
+  order, parted only by the markers.
   `devtools.check_readme` holds both blocks: each marked once, the second directly after
   the first, prose alone with no heading or comment, and no case called the central one.
 
@@ -523,17 +523,20 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A page card navigates.** The overview’s four page cards, the explainer, the
-  tutorial, the workbench and the frontier atlas, lead to full pages the site serves, so
-  each is a direct card that goes to its page in the same tab (`new_tab=False`), with
-  the right arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`).
-  Popovers are for targets that are not site pages of their own: a result’s row, a
-  repository document rendered for its card’s popover, a case.
+  **A card whose target is a full page of the site navigates.** The overview’s four page
+  cards, the explainer, the tutorial, the workbench and the frontier atlas, and the
+  Papers page’s three paper cards lead to full pages the site serves, so each is a
+  direct card that goes to its page in the same tab (`new_tab=False`), with the right
+  arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`, `think-w82r`).
+  Popovers are for records, targets that are not site pages of their own: a result, a
+  case, a repository document rendered for its card’s popover.
+  A direct card is a link and holds no other link, so what its note names is linked from
+  the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
   `link_card` refuses `new_tab=False` for an address off the site.
-  - When a popover card leads to a document or paper the site renders, the popover
+  - When a popover card leads to a repository document the site renders, the popover
     renders that page itself, narrow, in a frame: the page at the same address with
     `?view=embed` added before any fragment, so a filtered view such as
     `frontier.html?recent=true` or a case such as `frontier.html#n-11` arrives as it
@@ -1051,16 +1054,16 @@ its defaults.
   and one large card for each paper (`data-card-size="large"`), saying what the paper
   is. The cards come from one ordered list, `overview_sections.PAPERS`, each entry a
   paper’s address, label, title, description and card size, so a new paper is one entry.
-  Each is a popover card: pressing it opens a popover that frames the paper and expands
-  to it. (The overview’s page cards are direct links instead; see Cards.)
-  A popover card is a button and holds no link of its own, so what its description names
-  is linked from its popover, beside the button.
-  The optimality paper is first: it explains the result that stands, T-060, where the
-  explainer proves the lower bounds T-060 superseded and the tutorial is the background
-  to both. The explainer’s card names the newer optimality proofs and links the
-  optimality paper and T-060 from its popover, from the one list that holds them
-  (`OPTIMALITY_LINKS`). Its card on the overview reads the same but is the link to the
-  explainer itself, so it carries no other link.
+  Each is a direct card: a paper is a full page the site serves, so its card is the link
+  itself and goes to the paper in the same tab, as the overview’s page cards do, with no
+  popover and no framed preview (`link_card`, `new_tab=False`; see Cards).
+  A link holds no other link, so what a description names is linked from the page’s
+  introduction (`templates/papers-article.md`), which links T-060’s row and the
+  optimality paper. The optimality paper is first: it explains the result that stands,
+  T-060, where the explainer proves the lower bounds T-060 superseded and the tutorial
+  is the background to both.
+  The explainer’s card names the newer optimality proofs, and reads the same on the
+  overview. The page has no popover, so it carries no popover script.
   The papers keep their addresses, `explainer.html`, `tutorial.html` and
   `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
   page and on each of them.

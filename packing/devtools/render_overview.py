@@ -572,6 +572,7 @@ def overview_page() -> Page:
         "PAGE_CARDS": overview_sections.page_cards(),
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
+        "STAR_LEGEND": overview_sections.star_legend(),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
@@ -613,6 +614,7 @@ def results_page() -> Page:
         "COUNT": str(len(overview.results)),
         "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "RESULTS_TABLE": overview_sections.results_table(overview),
+        "STAR_LEGEND": overview_sections.star_legend(),
     }
     markdown = fill(
         RESULTS_ARTICLE.read_text(encoding="utf-8"), values, where=RESULTS_ARTICLE.name

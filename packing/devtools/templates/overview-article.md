@@ -45,6 +45,7 @@ squares, found here or by others.
 Each is dated by its publication if it is by others and by the day it was established if
 it is this project’s, and carries its rungs and its standing: *current best* where a
 verified case bound rests on it now, and otherwise why not.
+{{STAR_LEGEND}}
 A result by others is registered as *reported* when its source is taken in, and as
 *verified* only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;

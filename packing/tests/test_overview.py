@@ -17,6 +17,7 @@ from typing import cast
 import pytest
 
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
+from devtools.check_results import scope_values
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
@@ -2166,6 +2167,79 @@ def test_results_by_others_show_their_publication_date(
     assert dates
     assert [d for _, d in dates] == sorted((d for _, d in dates), reverse=True)
     assert max(r.dated[1] for r in overview.results) == dates[0][1]
+
+
+#: A new result's star as a row carries it: joined to the result's text by a space that
+#: does not break, an image whose name and tooltip are one label.
+ROW_STAR = re.compile(
+    '\u00a0<span class="site-star" role="img" aria-label="([^"]+)" title="([^"]+)">'
+    "\u2605</span>"
+)
+
+
+def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """A row is starred where the atlas stars its case: the result holds a case's
+    verified lower bound now, and that bound is recent (`starred_results`). The starred
+    cases are the ones the atlas popover and the film call a new result, each starred
+    result is a current best in scope, and the star is read as well as seen: it has a
+    label, the row's name says so, and the prose above each table says what it marks."""
+    atlas = {n for n, fact in _atlas_facts(page).items() if fact["star"]}
+    assert atlas == set(overview.recent_lower)
+    starred = overview.starred
+    assert {n for cases in starred.values() for n in cases} == atlas
+    by_id = {result.id: result for result in overview.results}
+    for result_id, cases in starred.items():
+        result = by_id[result_id]
+        assert result.standing == render_recent_results.HOLDS, result_id
+        assert set(cases) <= set(scope_values(dict(result.record["scope"]))), result_id
+    # T-060 settles n = 11 and T-043 holds n = 17. T-037 is as new and is superseded,
+    # T-007 holds its cases and is from 2005, and T-057 is a new upper bound, which the
+    # atlas does not star.
+    assert starred["T-060"] == (11,)
+    assert starred["T-043"] == (17,)
+    assert not {"T-037", "T-007", "T-057"} & set(starred)
+
+    table = overview_sections.results_table(overview)
+    recent = overview_sections.recent_table(overview)
+    for result in overview.results:
+        formula = overview_sections.split_summary(result.summary)[0]
+        # Each row, and where its star stands: after the result's own text.
+        rows = (
+            (_row(table, result.id), overview_data.tex_bounds(result.summary) + "{star}</td>"),
+            (_recent_row(recent, result.id), overview_data.tex_bounds(formula) + "</a>{star} "),
+        )
+        for row, placed in rows:
+            name = re.search(r' aria-label="([^"]*)"', row)
+            assert name
+            if result.id not in starred:
+                assert "site-star" not in row, result.id
+                assert not name.group(1).endswith("new result"), result.id
+                continue
+            label = html.escape(overview_sections.new_result_label(result, overview))
+            assert label.startswith("New result: holds the verified lower bound for n = ")
+            star = ROW_STAR.search(row)
+            assert star, result.id
+            assert star.groups() == (label, label), result.id
+            assert row.count("site-star") == 1, result.id
+            assert placed.replace("{star}", star.group(0)) in row, result.id
+            assert name.group(1).endswith(", new result"), result.id
+    assert overview_sections.new_result_label(by_id["T-060"], overview).endswith("n = 11")
+
+    assert len(ROW_STAR.findall(recent)) == len(ROW_STAR.findall(table)) == len(starred)
+    # Each page carries every row's star, and says in its prose what the star marks.
+    legend = re.sub(r"<[^>]+>", "", overview_sections.star_legend())
+    assert legend == (
+        "A star (\u2605) marks a new result, as the atlas does: the verified lower bound of a "
+        "case rests on it now, and it was proved or published on or after 22 August 2026."
+    )
+    for served in (page, results):
+        assert legend in re.sub(r"<[^>]+>", "", served)
+        assert served.index("marks a new result") < served.index('<div class="site-table-tools')
+        assert len(ROW_STAR.findall(served)) == len(starred)
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert ".site-star {\n  color: oklch(52% 0.19 25);\n}" in css
 
 
 def test_grouping_agrees_with_readmes_relation(

@@ -15,6 +15,7 @@ Its standing says whether a case bound rests on it now: it is the *current best*
 verified bound, or the current best as reported; it is a *second certificate* for an
 exact value another result holds; it is *superseded*; or it is not a bound at all, such
 as a rigidity or an erratum.
+{{STAR_LEGEND}}
 Open a row for the full claim and its novelty label, and follow the records to the case
 file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).

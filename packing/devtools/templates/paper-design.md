@@ -836,8 +836,15 @@ it.
   On a phone, the results table becomes one card per row.
   In the results table a result’s standing chip sits under its rungs; a date cell says
   what it dates, `published` or `established`, in the support colour.
-  A superseded result’s row reads quieter, its text in the support colour, in every site
-  table, by one rule on `tr[data-standing="superseded"]`; its chips keep their fills.
+  In both tables of results the star follows the text of a new result, joined to it by a
+  no-break space (`new_result_star`). The rule is the atlas’s, asked of a result instead
+  of a case (`overview_data.starred_results`): the verified lower bound of a case rests
+  on the result now, and that bound is recent, so a superseded result and an upper bound
+  carry no star. The star is never the only signal: it is an image whose name and tooltip
+  say “New result” and the cases, the row’s own name ends “new result”, and the prose
+  above each table says what it marks (`star_legend`). A superseded result’s row reads
+  quieter, its text in the support colour, in every site table, by one rule on
+  `tr[data-standing="superseded"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
   the wash, in every site table.
 

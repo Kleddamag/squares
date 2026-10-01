@@ -32,6 +32,7 @@ from devtools.overview_data import (
     REPO,
     Overview,
     Result,
+    compress,
     math_html,
     tex_bounds,
 )
@@ -492,16 +493,67 @@ def result_fragment(result_id: str) -> str:
     return f"{RESULT_FRAGMENTS}/{result_id.lower()}.html"
 
 
-def result_row(result: Result, *, trigger: str, here: bool) -> RowDetail:
+#: The site's one star, the mark of a recent lower bound (paper-design.md), as an escape.
+STAR = "\u2605"
+
+#: What a starred result is called, as the film and the atlas popover call a starred case.
+NEW_RESULT = "new result"
+
+
+def new_result_label(result: Result, overview: Overview) -> str:
+    """What a result's star says, or nothing where the result has no star: that it is a
+    new result, and the cases whose verified lower bound it holds now.
+
+    The rule is the atlas's (`overview_data.starred_results`): the result is the one a
+    case's verified lower bound rests on, and that bound is recent, proved or published
+    since `RECENT_SINCE`. It is the star and the "new result" of the film and of the
+    atlas popover, asked of the result instead of the case.
+    """
+    cases = overview.starred.get(result.id)
+    if not cases:
+        return ""
+    return (
+        f"{NEW_RESULT.capitalize()}: holds the verified lower bound for n = "
+        f"{compress(list(cases))}"
+    )
+
+
+def new_result_star(result: Result, overview: Overview) -> str:
+    """The red star after a new result's text in a table of results, joined to it by a
+    space that does not break, or nothing (`new_result_label`). The glyph is an image
+    whose name and tooltip are the label, so it is read and not only seen, and the row's
+    own name says "new result" too (`result_row`)."""
+    label = new_result_label(result, overview)
+    if not label:
+        return ""
+    return (
+        f'\u00a0<span class="site-star" role="img" aria-label="{_esc(label)}" '
+        f'title="{_esc(label)}">{STAR}</span>'
+    )
+
+
+def star_legend() -> str:
+    """The sentence that says what the star in a table of results marks, with the star
+    itself, for the prose above each table (`{{STAR_LEGEND}}` in the two articles)."""
+    return (
+        f'A star (<span class="site-star" aria-hidden="true">{STAR}</span>) marks a '
+        f"{NEW_RESULT}, as the atlas does: the verified lower bound of a case rests on it "
+        f"now, and it was proved or published on or after {_since()}."
+    )
+
+
+def result_row(result: Result, *, trigger: str, here: bool, starred: bool = False) -> RowDetail:
     """A result's row popover, the same on every page: its id as the caps label, its
     summary as the headline, then the result's short detail (`_detail`), which the
     script replaces with the whole overview, fetched from `result_fragment` when the
     popover first opens. A row on the results page (`here`) is the result's own row, so
-    its popover has no button; anywhere else it ends in the button to that row."""
+    its popover has no button; anywhere else it ends in the button to that row. A
+    `starred` row's name ends ", new result", what its star says (`new_result_star`)."""
     action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
+    name = f"{result.id}: {plain_text(result.summary)}"
     return row_detail(
         f"pop-result-{result.id.lower()}",
-        name=f"{result.id}: {plain_text(result.summary)}",
+        name=f"{name}, {NEW_RESULT}" if starred else name,
         trigger=trigger,
         label=result.id,
         title=tex_bounds(result.summary),
@@ -711,7 +763,8 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
         for result in members:
             record = result.record
             kind, date = result.dated
-            detail = result_row(result, trigger=_esc(result.id), here=True)
+            star = new_result_star(result, overview)
+            detail = result_row(result, trigger=_esc(result.id), here=True, starred=bool(star))
             popovers.append(detail.popover)
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
@@ -719,7 +772,7 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
                 f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
-                f'<td class="site-col-result">{tex_bounds(result.summary)}</td>'
+                f'<td class="site-col-result">{tex_bounds(result.summary)}{star}</td>'
                 '<td class="site-col-credit site-cell-quiet" '
                 f'data-value="{_esc(result.credit)}">'
                 f"{_esc(result.credit)}</td>"
@@ -1006,7 +1059,8 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
     for result in results:
         kind, dated = result.dated
         formula, method = split_summary(result.summary)
-        detail = result_row(result, trigger=_esc(result.id), here=False)
+        star = new_result_star(result, overview)
+        detail = result_row(result, trigger=_esc(result.id), here=False, starred=bool(star))
         popovers.append(detail.popover)
         rows.append(
             f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
@@ -1015,7 +1069,7 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
             f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
             f"{_esc(dated)}</td>"
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
-            f"{tex_bounds(formula)}</a> "
+            f"{tex_bounds(formula)}</a>{star} "
             f'<span class="site-cell-quiet">{detail.trigger}</span></td>'
             f'<td class="site-col-method">{tex_bounds(method)}</td>'
             f'<td class="site-col-credit" title="{_esc(result.credit)}">'

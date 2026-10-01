@@ -3144,6 +3144,15 @@ def _rung_figures(context: Context) -> str:
     return _module(context, "devtools.check_rung_figures")
 
 
+def _standing(context: Context) -> str:
+    # About a second: the register, the bibliography and the case records its results
+    # name. Records tier because it checks the record against itself -- standing is
+    # derived from which evidence a case bound cites and never from a number, so an entry
+    # labelled superseded while the bound it states still stands, or standing while every
+    # bound it states is beaten, would pass every other step here (think-nr0y).
+    return _module(context, "devtools.check_standing")
+
+
 def _case_prose(context: Context) -> str:
     # Sub-second: it regex-scans a hundred case bodies against their own front matter and
     # reuses check_rung_figures's exact-arithmetic rule. Records tier because it checks the
@@ -4539,6 +4548,24 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "standings agree with the bounds their entries state",
+        _standing,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_standing.py",
+            "packing/devtools/render_recent_results.py",
+            "packing/devtools/build_bound_citations.py",
+            "packing/devtools/check_results.py",
+            "packing/devtools/result_credit.py",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
+            "packing/frontier/n-*.md",
+            "packing/resources/bibliography.yaml",
+        ),
+    ),
+    Step(
         "case prose agrees with its own front matter",
         _case_prose,
         fast=True,
@@ -4943,6 +4970,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the synopsis headline carries every result",
         "exact certificates are named by their records",
         "rung figures agree with their certificates",
+        # The register, the bibliography and the case records, read and compared: no
+        # clock, no network and no history.
+        "standings agree with the bounds their entries state",
         "case prose agrees with its own front matter",
         "terminal sessions name what they cost",
         "terminal sessions name the gate that certified them",

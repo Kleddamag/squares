@@ -14,20 +14,26 @@ as their source states it, and this project’s results to Joshua Levy, as *Levy
 after Y* means that X’s result rests directly on Y’s proof, method or tool, so the
 credit also says which results build on this project’s. The `V` and `C` of a result by
 others are this repository’s own verification of it.
+
 Under its rungs each result shows its kind, which says what it is: a *lower bound*, an
 *upper bound*, an *optimality* result, which settles an exact value, or one of the kinds
 that bound no case, such as a *rigidity*, a *case exclusion* or a *simplification*, a
 second and simpler proof of a value another result holds.
-A result that a verified case bound rests on now, the current best, shows no standing.
-Any other that claims a bound shows how it stands: it is the current best only as
-*reported*; it is a *second certificate* for an exact value another result holds; or it
-is *superseded*.
+Under its kind is its status, how far the work on it here has gone: *recorded*,
+registered from its source with nothing here yet read or replayed; *reviewed*, its
+argument read here; *confirmed*, a replay of its certificate passed; or *incomplete*, a
+defect found in it still open.
+The status follows the confirmation rung and is never set by hand;
+[`epistemics.md`]({{EPISTEMICS_URL}}#status) defines it.
+Beside it, *in analysis* marks a replay or review under way here and *waiting on* a
+request that is with the source or another party.
+A bound that no case bound rests on now is marked *superseded*.
 {{STAR_LEGEND}}
 Open a row for the full claim and its novelty label, and follow the records to the case
 file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).
 
 The table starts with every result showing, newest first.
-The filters narrow it by rating, kind, standing, source, case and age, and they combine.
+The filters narrow it by rating, kind, status, source, case and age, and they combine.
 
 {{RESULTS_TABLE}}

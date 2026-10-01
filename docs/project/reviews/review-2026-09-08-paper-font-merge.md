@@ -14,8 +14,8 @@ The mathematical results are unaffected.
 The merge updated kpress from `aee6df7c` to `7b20ae70`, incorporating upstream commit
 `feb089d6`, which changed bullets from a font glyph to a painted CSS square.
 The host rule in
-[`explainer-shell.html`](../../../packing/devtools/templates/explainer-shell.html) still
-gave each marker `height: 1lh` to center its glyph.
+[`explainer-shell.html`](../../../packing/devtools/templates/n11-lower-bounds-explainer-shell.html)
+still gave each marker `height: 1lh` to center its glyph.
 That stretched the new painted square to the height of an entire line.
 Every unordered list, including nested lists, was affected on screen and in print.
 
@@ -31,8 +31,8 @@ name that defect.
 **Medium; D-486; think-lghs.** Independent review found that the page honors the saved
 `kpress.proseFont=sans` preference, which switches prose mathematics to the sans
 composite. The merge introduced that composite and pruned its bold slots in
-[`render_explainer.py`](../../../packing/devtools/render_explainer.py), assuming that
-bold mathematics appeared only in serif prose.
+[`render_explainer.py`](../../../packing/devtools/render_n11_lower_bounds_explainer.py),
+assuming that bold mathematics appeared only in serif prose.
 The three bold $D$ symbols in the symmetry-group expressions then requested an absent
 650-weight sans face.
 Restoring that face changes the browser’s measured glyph width, confirming that the

@@ -14,14 +14,18 @@ from pathlib import Path
 import pytest
 import yaml
 
-from devtools import backfill_result_registration, check_results, render_results
+from devtools import (
+    backfill_result_registration,
+    check_results,
+    render_results,
+    result_status,
+)
 from devtools.check_results import (
     derive_confirmation,
     derive_verification,
     repository_file_problem,
     verification_relation,
 )
-from devtools.render_recent_results import STANDINGS
 from devtools.result_credit import credit_line
 from sqpack.yamlio import safe_load
 
@@ -249,8 +253,8 @@ def test_results_renderer_escapes_a_pipe_in_a_claim(
         line for line in render_results.render().splitlines() if line.startswith("| T-001 ")
     )
     assert r"Sixteen points \| make" in row
-    # Nine cells: id, n, kind, credit, V, C, S, novelty, claim.
-    assert len(re.findall(r"(?<!\\)\|", row)) == 10
+    # Ten cells: id, n, kind, credit, V, C, S, status, novelty, claim.
+    assert len(re.findall(r"(?<!\\)\|", row)) == 11
 
 
 def _poisoned_register(tmp_path: Path, old: str, new: str) -> Path:
@@ -949,12 +953,12 @@ def test_results_md_labels_every_result_by_its_kind() -> None:
         )
         cells = row.split(" | ")
         assert cells[2] == check_results.kind_label(record["kind"]), record["id"]
-        if record.get("attribution"):
-            # The standing column of a result by others: a derived word, or a dash for
-            # a result that claims no bound, which has no standing.
-            assert cells[8] in (*STANDINGS, render_results.NO_STANDING_CELL), record["id"]
-            if cells[8] == render_results.NO_STANDING_CELL:
-                assert record["kind"] not in check_results.BOUND_KINDS, record["id"]
+        # The status column, the cell after S in both tables: the derived status first,
+        # and `superseded` only on a result whose kind is a bound.
+        status = cells[8 if record.get("attribution") else 7]
+        assert status.split(", ")[0] in result_status.STATUSES, record["id"]
+        if "superseded" in status.split(", "):
+            assert record["kind"] in check_results.BOUND_KINDS, record["id"]
 
 
 def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:

@@ -10,17 +10,33 @@ figures and their exports included.
 
 ## Rebuild it
 
+Two commands, for two layers that change for different reasons:
+
 ```bash
 uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --update
+uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --update-composites
 ```
 
-That rebuilds 324 witnesses, 324 individual renderings, both composite SVGs, every PNG
-raster and both PDFs, the manifest, and the frontier back-links.
+The first rebuilds the data: 324 witnesses, 324 individual renderings, the manifest, and
+the frontier back-links.
+It takes about eleven minutes at 324 cases, nearly all of it in the witnesses’
+feasibility receipts.
+Run it when the data changes.
+
+The second redraws both composite SVGs, every PNG raster and both PDFs from the retained
+witnesses, in about a minute.
+Run it at a version bump, or when you want the figures to show the current data; a data
+change does not require it.
+Each composite records the data commit and date it was drawn from, prints them as its
+footer stamp and its dateline, and may trail the data until the next version:
+[Release assets](../../../development.md#release-assets-are-drawn-at-a-version-bump-or-on-demand)
+has the rule, and `--check-composites` lists the cards that trail.
+It refuses to draw while the pinned data revision is stale or the data has uncommitted
+changes.
+
 Each composite’s exports are one family: a single run draws all of them from the same
 SVG, and a single `--check` reports every one that has fallen behind.
-It is idempotent: a second run changes nothing.
-It also takes about eleven minutes at 324 cases, nearly all of it in the witnesses’
-feasibility receipts rather than in the drawing.
+Both commands are idempotent: a second run changes nothing.
 Then confirm nothing drifted:
 
 ```bash
@@ -215,6 +231,13 @@ uv run --frozen --all-extras --group dev python -m devtools.render_research_tabl
 uv run --frozen --all-extras --group dev packing-validate
 ```
 
+Commit, then re-pin the data revision, which is one line and rebuilds nothing:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.release_pin --update
+```
+
+The composites are not redrawn for a data change.
 The middle step refreshes generated tables that also quote frontier values.
 It rewrites only the rows whose content actually changed, so a run over an unchanged
 tree leaves an empty diff and the formatter’s typography survives in the rows it does
@@ -222,6 +245,7 @@ not touch.
 
 ## If you change the palette or the renderer
 
+Redraw the composites (`--update-composites`), since the change is to the drawing.
 Color and layout reach past this directory, so rebuild the rest too:
 
 ```bash
@@ -236,10 +260,11 @@ Changing the canvas size means four edits, not one: the card metrics in
 `devtools/build_known_best_atlas.py`, the pinned dimensions in
 [`known-best-atlas.schema.yaml`](known-best-atlas.schema.yaml), the expected dimensions
 in `tests/test_known_best_atlas.py`, and the `width` and `height` on the `img` tag in
-`devtools/templates/explainer-article.md`, which reserves the space the page scrolls
-past. The card metrics are shared, so an edit to them moves both composites; the schema
-pins each canvas under its own stem, so a silent resize of either fails the gate.
-The last three pin every raster each composite publishes — for the figure, the 1x
+`devtools/templates/n11-lower-bounds-explainer-article.md`, which reserves the space the
+page scrolls past.
+The card metrics are shared, so an edit to them moves both composites;
+the schema pins each canvas under its own stem, so a silent resize of either fails the
+gate. The last three pin every raster each composite publishes — for the figure, the 1x
 preview, the 2x export and the link-preview crop — so a canvas change that moves one and
 not the others is caught rather than shipped.
 Only the builder needs a single edit: each raster derives its size from the canvas

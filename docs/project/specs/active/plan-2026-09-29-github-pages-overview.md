@@ -193,15 +193,17 @@ As built (amended 2026-09-30 and 2026-10-01):
 | `/all-results.html` | every register entry, the results table (new) | Results |
 | `/cases.html#n-N` | one case record per tracked $n$ (new) | none; opened from the atlas grid and the frontier atlas |
 | `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial, each a link that goes to its paper in the same tab (new) | Papers |
-| `/n11-optimality/t-060-explainer.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it | Papers |
-| `/explainer.html` | the n = 11 explainer (moved from `/`) | Papers |
+| `/papers/n11-optimality-review.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it under the same slug | Papers |
+| `/papers/n11-lower-bounds-explainer.html` | the n = 11 explainer, with its Markdown and PDF beside it under the same slug (moved from `/explainer.html`, and before that from `/`) | Papers |
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
 | `/visualize.html` | the $n = 1\ldots324$ film at full width, with Film and Workbench tabs (new) | Visualize |
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
 | `/readme.html`, `/epistemics.html`, `/synopsis.html`, `/conventions.html`, `/development.html` | the repository documents, rendered for the documentation cards’ popovers, in the cards’ order | none |
 | `/results.html`, `/status.html`, `/defects.html` | forwarders since 2026-10-01 (`think-bk2e`): `RESULTS.md`, `STATUS.md` and `defects.md` are no longer pages, and their old addresses send a visit to `/all-results.html`, to `/frontier.html` and to `defects.md` on GitHub | none |
 | `/result/t-nnn.html` | one result’s overview, a fragment its row’s popover fetches; not a page | none |
-| `/t-018-explainer.{md,pdf}` and the composite assets | unchanged | none |
+| the composite assets | unchanged, at the root | none |
+| `/explainer.html`, `/n11-optimality/`, `/n11-optimality/t-060-explainer.html` | forwarders at the papers’ old addresses: each sends a reader on to the paper with the query string and fragment they came with | none |
+| `/t-018-explainer.{md,pdf}`, `/n11-optimality/t-060-explainer.{md,pdf}` | copies of the papers’ Markdown and PDF at their old addresses | none |
 
 The nav also links the repository on GitHub.
 The planned `/synopsis.html` nav page was dropped for a card (see
@@ -210,6 +212,20 @@ only as one of the rendered documents behind the cards, beside its GitHub copy.
 
 The explainer moves to `/explainer.html` rather than `/explainer/` so it stays beside
 the composite assets and PDF it references with relative paths.
+
+**Amended 2026-10-01: the papers are served under `/papers/` by their slugs**
+(`think-cmz6`, the owner: “papers should have those simple slug names internally and
+externally”). The explainer is `papers/n11-lower-bounds-explainer.html` and the
+optimality paper `papers/n11-optimality-review.html`, each with its Markdown and PDF
+beside it under the same slug, and each renderer, template, test and Pages job carries
+the slug in its name.
+A paper is now rendered where it is served, so the next two paragraphs describe what
+held until then: nothing is renamed at publish, the jobs read
+`site/papers/n11-lower-bounds-explainer.html`, and the composite assets stay at the
+root, which the page reaches a level up.
+Old links keep working by the same script: `render_overview.MOVED_PAGES` lists each page
+that moved and the overview’s build writes a forwarder at its old address, and
+`MOVED_FILES` lists the Markdown and PDF files, which the publish job copies to theirs.
 
 **The explainer is renamed at publish, not at render.** `pages.yml` names
 `site/index.html` about forty times across the twin render, the PDF, and the geometry,
@@ -276,11 +292,12 @@ runs:
    followed by five page cards: the optimality paper, the explainer, the tutorial, the
    workbench and the frontier atlas.
 3. **Recent Results.** One table of every result, newest first, in the results page’s
-   six columns (id, n, result, credit, rungs with the standing under them, date),
-   filtered by default to significance S4 and up, a maximum age of 180 days and
+   six columns (id, n, result, credit, rungs with the kind and the status under them,
+   date), filtered by default to significance S4 and up, a maximum age of 180 days and
    superseded results hidden, with a link to the full table on `all-results.html`. It
-   replaces the headline cards, the exact-value cards and the recent-changes list, and
-   is followed by the cases awaiting a replay.
+   replaces the headline cards, the exact-value cards and the recent-changes list.
+   Until 2026-10-01 a separate disclosure followed it, the cases awaiting a replay; a
+   reported result is now a row of the table with the status *recorded* (`think-d04u`).
 4. **Verification Ladders**, named Verification at a Glance until 2026-10-01. One ladder
    diagram in place of the three dimension cards, which had replaced the counts and
    stacked bar: a column per rung dimension (Significance, Verification, Confirmation),
@@ -794,8 +811,7 @@ decisions that changed the plan above:
   The two tables differ only in where the bar starts: Recent Results at “S4 and up” and
   180 days, the results page at All and no maximum age (`think-1vo2`).
 - **The row is the unit.** A table row with detail opens one popover for the whole row,
-  on the recent, awaiting-replay, results and frontier tables; no cell expands on its
-  own.
+  on the recent, results and frontier tables; no cell expands on its own.
 - **A result’s row opens its full overview**: the case drawn, the chain of results on
   it, and every link. No page carries the overviews, about 2.8 MB between them; each is
   written once beside the pages and fetched when its row is first opened, and the page
@@ -817,10 +833,23 @@ decisions that changed the plan above:
   statement and where to report a result, and Recent Results opens with README’s next
   two, what the project covers and its newest major result (`think-u7pb`). Eleven
   squares is a central case, never the central one.
+- **Papers are named by simple slugs, internally and externally** (2026-10-01,
+  `think-cmz6`): `papers/n11-lower-bounds-explainer.html` and
+  `papers/n11-optimality-review.html`, with the source renamed to match and every old
+  address still served.
 - **Repository links name `main`**, never a commit: permalinks at the build commit 404ed
   once a squash merge left that commit on no branch (`think-eefp`, `think-xv28`).
 - **The site lands with current `main` and presents T-060**, the n = 11 optimality
   result, on the site and the reader pages (`think-v4vq`, `think-4ccp`).
+- **No separate block for reported results, and a status in place of the standing**
+  (2026-10-01). The “Reported, awaiting replay” disclosure under the recent table is
+  gone: its 48 cases were two register entries, T-046 and T-048, which the results table
+  already listed. Each result now shows a workflow status under its rungs (recorded,
+  reviewed, confirmed or incomplete), the filter bar’s Standing select is a Status
+  select, and *superseded* stays as its own mark and its own checkbox.
+  The proposal, the status of every result and the choices left to the owner are in
+  [the result-status plan](plan-2026-10-01-result-status.md) (`think-d04u`,
+  `think-ai94`).
 
 ## References
 

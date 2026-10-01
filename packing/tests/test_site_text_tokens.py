@@ -21,7 +21,7 @@ from typing import Any
 import pytest
 
 from devtools.measure_site_pages import TYPOGRAPHY
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 #: The explainer's resolved values at a 1280px desktop, from `measure_site_pages type`.

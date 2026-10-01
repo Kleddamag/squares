@@ -20,7 +20,11 @@ keeps one record for each case $n = 1\ldots324$, with reported and verified boun
 separate, and its [results register](packing/frontier/RESULTS.md) grades each registered
 result, this project’s or another’s, by how far it has been checked.
 It goes into most depth where there is recent progress, which in September 2026 means
-$n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$.
+$n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$. At
+seventeen squares both ends of the bracket are now machine-checked: Guzhou0806’s lower
+bound $s(17) > 4.66044$ ([T-043](packing/frontier/RESULTS.md)), and the upper bound
+$s(17) \le 4.67553009\ldots$ of John Bidwell’s 1998 packing, certified exactly from
+Kleddamag’s rational witness ([T-065](packing/frontier/RESULTS.md)).
 
 A recent major result settles eleven squares, until then the smallest case still open:
 $s(11) = T = 3.877083590022814\ldots$, the exact side of Walter Trump’s 1979 packing.
@@ -55,14 +59,14 @@ films are on the
 
 The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.
 The
-[**eleven-square optimality paper**](https://jlevy.github.io/squares/n11-optimality/)
+[**eleven-square optimality paper**](https://jlevy.github.io/squares/papers/n11-optimality-review.html)
 explains T-060 from the exact construction through the exhaustive case exclusions,
 geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
-It has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
-[maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
-drawn from or checked against the retained proof data.
-The [explainer](https://jlevy.github.io/squares/explainer.html) proves the earlier,
-simpler lower bounds on $s(11)$.
+It has a [PDF](https://jlevy.github.io/squares/papers/n11-optimality-review.pdf) and
+[maintained source](packing/devtools/templates/n11-optimality-review-article.md), with
+figures drawn from or checked against the retained proof data.
+The [explainer](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html)
+proves the earlier, simpler lower bounds on $s(11)$.
 
 This repository also contains
 **[a set of tools and AI workflows for automated mathematical research](#autonomous-research-process)**:
@@ -523,7 +527,7 @@ for results by others: their scope, credit, intake and reply.
 ├── package-lock.json       Root and workbench workspace lockfile
 ├── tsconfig.base.json      The shared TypeScript type floor every program extends
 ├── tsconfig.devtools-node.json  The Node scripts the Python devtools and tests run
-├── tsconfig.explainer.json The checked classic scripts in the standalone explainer
+├── tsconfig.n11-lower-bounds-explainer.json The checked classic scripts in the standalone explainer
 ├── tsconfig.json           The bundled workbench application's entry module
 ├── tsconfig.motion-lab.json  The motion lab's assets and the slideshow harness
 ├── tsconfig.overview.json  The site pages' table and math scripts

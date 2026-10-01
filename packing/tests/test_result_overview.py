@@ -205,7 +205,7 @@ def test_a_result_about_a_few_cases_draws_each(bodies: dict[str, str]) -> None:
 def test_the_chain_is_every_result_on_the_case_oldest_first(
     result_id: str, overview: overview_data.Overview, bodies: dict[str, str]
 ) -> None:
-    """Each step names its result, links its row, and carries its kind and its standing;
+    """Each step names its result, links its row, and carries its kind and its status;
     the result the overview is about is marked; and each step links the register entry
     at its line."""
     result = _result(overview, result_id)
@@ -230,7 +230,7 @@ def test_the_chain_is_every_result_on_the_case_oldest_first(
         assert f'<p class="site-result-step-head">{dated} <a href=' in step
         assert not re.search(r'class="site-date-kind">\w+</span> [\d-]+', step)
         assert overview_data.tex_bounds(other.summary) in step
-        assert overview_sections.kind_and_standing(other) in step
+        assert overview_sections.kind_and_status(other) in step
         assert f"packing/frontier/results.yaml?plain=1#L{lines[other.id]}" in step
         assert html.escape(other.credit) in step
         for key in (other.record.get("attribution") or {}).get("source_keys") or []:
@@ -251,7 +251,7 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
     step = bodies[SETTLED].split('data-step="t-047"', 1)[1].split("</li>", 1)[0]
     # A result that still stands draws no chip, so the step has none for its standing
     # elsewhere and says in words how it stands on this case.
-    assert overview_sections.standing_chips(HOLDS) == ""
+    assert not overview_sections.is_superseded(wide)
     assert ">current best<" not in step
     assert "on this case, superseded" in step
     assert steps["t-047"] == overview_sections.standing_key(SUPERSEDED)
@@ -271,10 +271,12 @@ def test_the_links_reach_the_site_and_the_record(
     else:
         assert '<a href="cases.html#n-11">' in links
         assert '<a href="frontier.html#n-11">' in links
-        # Both papers on the case, the one on the result that stands first.
+        # Both papers on the case, the one on the result that stands first, each where
+        # it is served under `papers/`.
         paper = f'<a href="{overview_sections.OPTIMALITY_PAPER}">'
         assert paper in links
-        assert links.index(paper) < links.index('<a href="explainer.html">')
+        explainer = '<a href="papers/n11-lower-bounds-explainer.html">'
+        assert links.index(paper) < links.index(explainer)
         assert f'{REPO_URL}/blob/main/packing/frontier/n-011.md"' in links
     line = result_overview.result_lines()[result_id]
     assert f"packing/frontier/results.yaml?plain=1#L{line}" in links
@@ -355,7 +357,10 @@ def test_every_site_link_is_a_served_page_and_a_real_fragment(
             elif page in {"cases.html", "frontier.html"}:
                 assert not fragment or fragment in cases, href
             else:
-                assert page in {"explainer.html", overview_sections.OPTIMALITY_PAPER}, href
+                assert page in {
+                    overview_sections.LOWER_BOUNDS_PAPER,
+                    overview_sections.OPTIMALITY_PAPER,
+                }, href
                 assert not fragment
 
 

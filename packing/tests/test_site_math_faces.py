@@ -30,7 +30,7 @@ from devtools import render_case_pages, render_overview
 from devtools import render_frontier_page as frontier
 from devtools.measure_site_pages import MATH_FACES
 from devtools.preview_site import MATH_FACE, press, settle_math
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 SANS_TEXT = "Source Sans 3 Variable"

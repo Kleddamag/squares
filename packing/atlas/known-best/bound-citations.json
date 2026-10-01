@@ -321,10 +321,14 @@
         "upper": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
+          "confirmed_by": [
+            "T-065"
+          ],
+          "note": "(confirmed T-065)",
           "result": null,
-          "results": [],
+          "results": [
+            "T-065"
+          ],
           "source_key": "[Kingbird]",
           "text": "Bidwell 1998, Squares in Squares",
           "value": "4.67553009360455"

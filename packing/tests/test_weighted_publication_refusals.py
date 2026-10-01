@@ -9,7 +9,7 @@ from typing import Any
 
 import pytest
 
-from devtools import render_explainer, render_verifiable_claim
+from devtools import render_n11_lower_bounds_explainer, render_verifiable_claim
 from devtools.check_rung_figures import load_certificate
 from devtools.measure_threshold_net_refinement import rescaled_record
 
@@ -66,15 +66,15 @@ def test_public_record_consumers_refuse_weighted_input(
 def test_explainer_refuses_weighted_coarse_and_fine_sources(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, input_name: str, *, prototype: bool
 ) -> None:
-    original = getattr(render_explainer, input_name)
+    original = getattr(render_n11_lower_bounds_explainer, input_name)
     path = tmp_path / original.name
     path.write_text(
         json.dumps(_weighted_record(original, prototype=prototype)), encoding="utf-8"
     )
-    monkeypatch.setattr(render_explainer, input_name, path)
-    render_explainer.current_bound_facts.cache_clear()
+    monkeypatch.setattr(render_n11_lower_bounds_explainer, input_name, path)
+    render_n11_lower_bounds_explainer.current_bound_facts.cache_clear()
     try:
         with pytest.raises(SystemExit, match="weighted"):
-            render_explainer.current_bound_facts()
+            render_n11_lower_bounds_explainer.current_bound_facts()
     finally:
-        render_explainer.current_bound_facts.cache_clear()
+        render_n11_lower_bounds_explainer.current_bound_facts.cache_clear()

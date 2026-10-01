@@ -2,7 +2,7 @@
   "probeRoots": [
     {
       "path": "packing/devtools/probes",
-      "commonDeclarations": ["packing/devtools/probes/explainer.d.ts"],
+      "commonDeclarations": ["packing/devtools/probes/n11-lower-bounds-explainer.d.ts"],
       "dependencies": {
         "check_math_faces": [
           "packing/devtools/probes/math/types.d.ts",
@@ -12,13 +12,13 @@
         "check_math_startup": ["packing/devtools/probes/math/types.d.ts"],
         "check_print_layout": ["packing/devtools/probes/math/types.d.ts"],
         "check_published_site": ["packages/workbench/probes/atlas-transitions.d.ts"],
-        "prepare_explainer_math": ["packing/devtools/probes/math/types.d.ts"],
-        "render_explainer_pdf": ["packing/devtools/probes/math/types.d.ts"]
+        "prepare_n11_lower_bounds_explainer_math": ["packing/devtools/probes/math/types.d.ts"],
+        "render_n11_lower_bounds_explainer_pdf": ["packing/devtools/probes/math/types.d.ts"]
       }
     },
     {
       "path": "packing/tests/probes",
-      "commonDeclarations": ["packing/devtools/probes/explainer.d.ts"]
+      "commonDeclarations": ["packing/devtools/probes/n11-lower-bounds-explainer.d.ts"]
     },
     {
       "path": "packing/atlas/known-best/video/spikes/v1-slideshow/probes",

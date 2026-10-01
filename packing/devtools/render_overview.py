@@ -14,10 +14,13 @@ adds the front door and the pages around it, as the plan in
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
   the atlas grid and the frontier atlas both open (`render_case_pages`);
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
-  `overview_sections.PAPERS`. The optimality paper (`n11-optimality/`,
-  `render_n11_optimality_explainer`), the explainer (`explainer.html`,
-  `render_explainer`) and the tutorial are the section's papers, and the bar's Papers
-  entry is current on all four;
+  `overview_sections.PAPERS`. The optimality review (`papers/n11-optimality-review.html`,
+  `render_n11_optimality_review`), the lower-bounds explainer
+  (`papers/n11-lower-bounds-explainer.html`, `render_n11_lower_bounds_explainer`) and the
+  tutorial are the section's papers, and the bar's Papers entry is current on all four;
+- a forwarder at each address a page used to have (`MOVED_PAGES`), the papers' old
+  addresses among them, so an old link still arrives, query and fragment kept
+  (`forwarder_pages`);
 - `tutorial.html`, the tutorial rendered as a page;
 - a forwarder at each address a page used to have (`MOVED_PAGES`), so an old link still
   arrives, query and fragment kept (`forwarder_pages`);
@@ -94,7 +97,7 @@ OUTPUT = PACKING / "site"
 
 #: Where the deploy serves the site: the one statement of the published root. Every
 #: canonical URL and every address in a link preview is built from it (`canonical_url`,
-#: `head_tags`), and `render_explainer.SITE_URL` is this constant.
+#: `head_tags`), and `render_n11_lower_bounds_explainer.SITE_URL` is this constant.
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
 #: The project's formal name (the owner, 2026-10-01). The name in the bar stays the
@@ -184,6 +187,26 @@ DOCUMENT_PAGES: tuple[str, ...] = (
     "conventions.html",
     "development.html",
 )
+#: The directory the site's papers are served from, under its root.
+PAPERS_DIR = "papers"
+#: The papers' slugs, each naming its case, its subject and its kind of paper. A paper is
+#: `papers/<slug>.html`, with its Markdown and its PDF beside it under the same slug
+#: (`paper_path`), and its renderer, templates and tests carry the slug in their names:
+#: `render_n11_optimality_review`, `render_n11_lower_bounds_explainer`. Both renderers
+#: import this module, so the slugs are written once, here.
+N11_OPTIMALITY_REVIEW = "n11-optimality-review"
+N11_LOWER_BOUNDS_EXPLAINER = "n11-lower-bounds-explainer"
+#: From a paper's page back up to the site's root, which is where the bar's links, the
+#: other pages and the atlas's files are.
+PAPERS_ROOT = "../"
+
+
+def paper_path(slug: str, suffix: str = ".html") -> str:
+    """Where a paper is served, by path under the site's root: its page, or with
+    `suffix` its Markdown (`.md`) or its PDF (`.pdf`)."""
+    return f"{PAPERS_DIR}/{slug}{suffix}"
+
+
 #: Every page the published site serves, by path under the site root, whichever build
 #: writes it. The navigation bar links only to these, and tests hold it to that.
 SITE_PAGES: tuple[str, ...] = (
@@ -192,8 +215,8 @@ SITE_PAGES: tuple[str, ...] = (
     RESULTS_PAGE,
     "cases.html",
     "papers.html",
-    "n11-optimality/t-060-explainer.html",
-    "explainer.html",
+    paper_path(N11_OPTIMALITY_REVIEW),
+    paper_path(N11_LOWER_BOUNDS_EXPLAINER),
     "tutorial.html",
     "visualize.html",
     "workbench/index.html",
@@ -206,20 +229,39 @@ SITE_PAGES: tuple[str, ...] = (
 #: 2026-10-01 (think-bk2e). The results register's page gave way to the results table
 #: and the status table's to the frontier atlas, each built from the same record; the
 #: defect log is internal to the repository, so its old address opens the file on
-#: GitHub. Each old path is still served, as a forwarder (`forwarder_pages`), so a link
-#: written before the change arrives with its query and its fragment. Nothing on the
-#: site links an old path; a test holds every page to that.
+#: GitHub. The papers moved to `papers/<slug>.html` the same day (think-cmz6): the
+#: explainer from `explainer.html`, where it had been since the overview took the root,
+#: and the optimality paper from `n11-optimality/t-060-explainer.html`, with the landing
+#: address its directory had. Each old path is still served, as a forwarder
+#: (`forwarder_pages`), so a link written before the change arrives with its query and
+#: its fragment. Nothing on the site links an old path; a test holds every page to that.
 MOVED_PAGES: tuple[tuple[str, str], ...] = (
     ("results.html", RESULTS_PAGE),
     ("status.html", "frontier.html"),
     ("defects.html", repo_url(repo_links.DEFECTS, kind="blob")),
+    ("explainer.html", paper_path(N11_LOWER_BOUNDS_EXPLAINER)),
+    ("n11-optimality/t-060-explainer.html", paper_path(N11_OPTIMALITY_REVIEW)),
+    ("n11-optimality/index.html", paper_path(N11_OPTIMALITY_REVIEW)),
 )
-#: What a forwarder calls the place it sends a reader, by that place's address.
+#: What a forwarder calls the place it sends a reader, by that place's address. A paper
+#: is called by its title, which its card has (`overview_sections.PAPERS`).
 FORWARDER_TITLES: dict[str, str] = {
     RESULTS_PAGE: "Every Result",
     "frontier.html": "The Frontier Atlas",
     repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
 }
+#: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
+#: which a script cannot forward. Each old path is served as a copy of the new one, made
+#: when the site is assembled, since the files come from other builds than this one: by
+#: the Pages workflow's `publish` job, and by `preview_site.copy_moved_files` on one
+#: machine. The first paper's had been linked since September, a dated review among the
+#: links; the optimality paper's PDF was linked from the README.
+MOVED_FILES: tuple[tuple[str, str], ...] = (
+    ("t-018-explainer.md", paper_path(N11_LOWER_BOUNDS_EXPLAINER, ".md")),
+    ("t-018-explainer.pdf", paper_path(N11_LOWER_BOUNDS_EXPLAINER, ".pdf")),
+    ("n11-optimality/t-060-explainer.md", paper_path(N11_OPTIMALITY_REVIEW, ".md")),
+    ("n11-optimality/t-060-explainer.pdf", paper_path(N11_OPTIMALITY_REVIEW, ".pdf")),
+)
 FORWARDER = TEMPLATES / "site-forwarder.html"
 
 #: Every file a render reads beside the record `overview_data.INPUTS` names; `inputs()`
@@ -402,7 +444,7 @@ def inputs() -> tuple[Path, ...]:
     """Every file any page this module renders reads: its own inputs and the record's.
 
     The page modules are imported here rather than at the top because
-    `render_frontier_page` reads `render_explainer`, which imports this module.
+    `render_frontier_page` reads `render_n11_lower_bounds_explainer`, which imports this module.
     """
     from devtools import overview_data  # noqa: PLC0415
     from devtools.render_case_pages import CASES_INPUTS  # noqa: PLC0415
@@ -434,13 +476,13 @@ def page_assets() -> tuple[str, str]:
     faces already inlined as data URIs, so a reader moving between the explainer and
     these pages sees one design system; `paper-type.css`, the text tokens the explainer
     also carries, follows them. The script is the explainer's math pipeline,
-    `render_explainer.katex_js`: KaTeX, kpress's metric tables and shared runtime, and
-    the explainer's host adapter (`squaresMath`), without kpress's auto-render entry
-    point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
-    places after it, drives the adapter over kpress's own math markup. The pipeline is
-    described in `templates/paper-design.md`, under Math Loading.
+    `render_n11_lower_bounds_explainer.katex_js`: KaTeX, kpress's metric tables and shared
+    runtime, and the explainer's host adapter (`squaresMath`), without kpress's auto-render
+    entry point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
+    places after it, drives the adapter over kpress's own math markup. The pipeline is described
+    in `templates/paper-design.md`, under Math Loading.
     """
-    from devtools.render_explainer import (  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         katex_css,
         katex_js,
         kpress_css,
@@ -513,7 +555,7 @@ def nav_shell(current: str, *, root: str, tabs: str = "") -> NavShell:
     any of its own custom properties the tokens also name. `tabs`, a section's tab bar
     (`visualize_tabs`), follows the bar in the header, as on a kpress page.
     """
-    from devtools.render_explainer import (  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         FONT_FACE_BLOCK,
         inline_font_urls,
         kpress_static,
@@ -765,9 +807,12 @@ def kpress_client_script() -> str:
     """kpress's contents-rail and history modules as one classic script element.
 
     Flattened by the explainer's checked flattener, since an inline module would fetch
-    its siblings at view time; see `render_explainer.kpress_client_js`.
+    its siblings at view time; see `render_n11_lower_bounds_explainer.kpress_client_js`.
     """
-    from devtools.render_explainer import kpress_client_js, kpress_static  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
+        kpress_client_js,
+        kpress_static,
+    )
 
     script = kpress_client_js(
         kpress_static(),
@@ -823,7 +868,7 @@ def overview_page() -> Page:
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
-        "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
+        "STATUS_COUNTS": overview_sections.status_counts(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
     }
@@ -882,10 +927,14 @@ def results_page() -> Page:
 def papers_page() -> Page:
     """The Papers section's page: a short introduction and one large card per paper,
     each the link to its paper, which is a full page of the site. It has no popover,
-    so it carries no popover script."""
+    so it carries no popover script. The introduction's link to the optimality paper is
+    the card's own address, filled from the one constant."""
     from devtools import overview_sections  # noqa: PLC0415
 
-    values = {"PAPER_CARDS": overview_sections.paper_cards()}
+    values = {
+        "PAPER_CARDS": overview_sections.paper_cards(),
+        "OPTIMALITY_PAPER": overview_sections.OPTIMALITY_PAPER,
+    }
     markdown = fill(
         PAPERS_ARTICLE.read_text(encoding="utf-8"), values, where=PAPERS_ARTICLE.name
     )
@@ -1015,11 +1064,14 @@ def forwarder_pages() -> list[Page]:
     fragment they came with. For a reader without scripts it carries a refresh and a
     link, and for a crawler the canonical address of the place it stands for. It has no
     bar, no stamp and no styles, and is not among `PAGES`. A target is written as the
-    old path's reader must follow it: relative for a page of the site, whole for an
-    address off it.
+    old path's reader must follow it: relative for a page of the site, climbing out of
+    the old path's directory where it has one, and whole for an address off it.
     """
     import posixpath  # noqa: PLC0415
 
+    from devtools.overview_sections import PAPERS  # noqa: PLC0415
+
+    titles = FORWARDER_TITLES | {paper.href: paper.title for paper in PAPERS}
     template = FORWARDER.read_text(encoding="utf-8")
     pages = []
     for old, new in MOVED_PAGES:
@@ -1027,7 +1079,7 @@ def forwarder_pages() -> list[Page]:
         target = new if external else posixpath.relpath(new, posixpath.dirname(old))
         values = {
             "TARGET": html.escape(target, quote=True),
-            "TITLE": html.escape(FORWARDER_TITLES[new]),
+            "TITLE": html.escape(titles[new]),
             "CANONICAL_URL": html.escape(new if external else canonical_url(new), quote=True),
             "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
         }

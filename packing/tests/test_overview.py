@@ -22,13 +22,13 @@ from devtools import (
     overview_sections,
     render_overview,
     render_recent_results,
+    result_status,
 )
-from devtools.build_known_best_atlas import SUMMARY_RELEASE_STAMP
 from devtools.check_results import scope_values
-from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
-from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
-from devtools.render_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
-from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
+from devtools.render_n11_lower_bounds_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
+from devtools.render_n11_lower_bounds_explainer import MARKDOWN as EXPLAINER_ARTICLE
+from devtools.render_n11_lower_bounds_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
+from devtools.render_n11_lower_bounds_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
 from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
@@ -134,7 +134,11 @@ def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: 
     recognises, the section's lands on the page's title, and no id the overview keeps is."""
     forward = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
     assert 'id === "every-result" || /^t-\\d+$/.test(id)' in forward
-    assert "all-results.html" in forward
+    assert f'"{render_overview.RESULTS_PAGE}"' in forward
+    # Every other fragment goes to the explainer where it is served now, not through the
+    # forwarder at its old address.
+    assert f'"{overview_sections.LOWER_BOUNDS_PAPER}"' in forward
+    assert '"explainer.html"' not in forward
     moved = re.compile(r"every-result|t-\d+")
     assert all(moved.fullmatch(row_id) for row_id, _, _ in ROW.findall(results))
     assert 'id="every-result"' in results
@@ -282,8 +286,8 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
     assert [href for href, *_ in pages] == [
-        "n11-optimality/t-060-explainer.html",
-        "explainer.html",
+        "papers/n11-optimality-review.html",
+        "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
         "workbench/",
         "frontier.html",
@@ -339,10 +343,10 @@ def test_a_same_tab_link_card_leads_only_to_a_page_of_the_site() -> None:
 
 def test_a_site_page_is_a_page_the_site_serves() -> None:
     """`is_site_page` is the one rule for which cards navigate in the same tab: every
-    page the site serves (`render_overview.SITE_PAGES`), the optimality paper in its
-    own directory among them, and a directory served by its `index.html`, as
-    `workbench/` is, with or without a query or fragment. Every page card's address and
-    every paper's is one; nothing else is."""
+    page the site serves (`render_overview.SITE_PAGES`), the papers under `papers/`
+    among them, and a directory served by its `index.html`, as `workbench/` is, with or
+    without a query or fragment. Every page card's address and every paper's is one;
+    nothing else is, and not an address a paper used to have, which serves a forwarder."""
     is_site_page = overview_sections.is_site_page
     for name in render_overview.SITE_PAGES:
         assert is_site_page(name), name
@@ -363,8 +367,10 @@ def test_a_site_page_is_a_page_the_site_serves() -> None:
         "https://github.com/jlevy/squares",
         "known-best-1-100.pdf",
         "nowhere.html",
-        "n11-optimality/",
+        "papers/",
         "workbench",
+        *(old for old, _ in render_overview.MOVED_PAGES),
+        *(old.removesuffix("index.html") for old, _ in render_overview.MOVED_PAGES),
     ):
         assert not is_site_page(address), address
 
@@ -1136,7 +1142,8 @@ NAV_ENTRIES = [
     ("github", "https://github.com/jlevy/squares", "GitHub"),
 ]
 #: The pages the bar's Papers entry is current on, of those this renderer owns; the
-#: explainer, the third, is rendered by its own module and held there (`test_explainer`).
+#: explainer, the third, is rendered by its own module and held there
+#: (`test_n11_lower_bounds_explainer`).
 PAPERS_SECTION = {"papers.html", "tutorial.html"}
 
 
@@ -1193,7 +1200,10 @@ def test_every_site_page_loads_math_through_the_explainers_pipeline(
     """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
     site's queue, and neither of kpress's whole-page entry points (auto-render and its
     native initializer), which typeset every formula in one task at DOMContentLoaded."""
-    from devtools.render_explainer import katex_js, kpress_static  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
+        katex_js,
+        kpress_static,
+    )
 
     page = rendered(name)
     static = kpress_static()
@@ -1243,11 +1253,11 @@ def test_the_shared_stylesheet_states_the_provers_two_palette_colours() -> None:
     """The first paper's stylesheet was a block of its shell, where the renderer filled
     in the two colours the prover's canvases also draw with. As a file of its own it
     states them, so they are held to the renderer's here and cannot drift apart."""
-    from devtools import render_explainer  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer  # noqa: PLC0415
 
     css = EXPLAINER_STYLE.read_text(encoding="utf-8")
-    assert f"  --cert-below: {render_explainer.BELOW_ONE};\n" in css
-    assert f"  --cert-near: {render_explainer.NEAR_LIMIT};\n" in css
+    assert f"  --cert-below: {render_n11_lower_bounds_explainer.BELOW_ONE};\n" in css
+    assert f"  --cert-near: {render_n11_lower_bounds_explainer.NEAR_LIMIT};\n" in css
     assert "{{" not in css
 
 
@@ -1300,8 +1310,10 @@ def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
     name and its repository, linked, on the first line, and on the second the version
     every artifact prints and the credit to the two tools, each linked where README
     links it. The parts of a line stand either side of a middle dot with a space each
-    side. The version is the release's own edition stamp, the string the atlas footer
-    prints, so a re-pin or a new edition changes it here with no edit."""
+    side. The version is the release's own edition stamp at the pinned data revision, so
+    a re-pin or a new edition changes it here with no edit. An atlas poster's footer is
+    the same spelling at the data commit the poster was drawn from (`release.edition_at`),
+    which a re-pin does not move."""
     from sqpack import release  # noqa: PLC0415
 
     lines = COLOPHON_LINE.findall(render_overview.colophon_lines())
@@ -1325,7 +1337,7 @@ def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
     assert re.fullmatch(r"v\d+\.\d+\.\d+-[0-9a-f]{6}", release.PUBLICATION_STAMP)
     revision = release.DATA_REVISION[: release.DATA_REVISION_LENGTH]
     assert f"{release.PUBLICATION_VERSION}-{revision}" == release.PUBLICATION_STAMP
-    assert second[0] == SUMMARY_RELEASE_STAMP
+    assert second[0] == release.PUBLICATION_EDITION == release.edition_at(release.DATA_REVISION)
     # The tools' addresses are the repository's own: README links Flowmark there, and
     # KPress is the submodule this site is rendered with.
     readme = (render_overview.REPO / "README.md").read_text(encoding="utf-8")
@@ -1657,7 +1669,7 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str, results: str) 
 
 def test_an_embedded_page_keeps_its_query_and_fragment() -> None:
     embed = overview_sections.embed_url
-    assert embed("explainer.html") == "explainer.html?view=embed"
+    assert embed("papers.html") == "papers.html?view=embed"
     assert embed("frontier.html?recent=true") == "frontier.html?recent=true&view=embed"
     assert embed("frontier.html#n-21") == "frontier.html?view=embed#n-21"
     assert embed("workbench/") == "workbench/?view=embed"
@@ -1764,7 +1776,7 @@ def test_each_results_row_shows_its_rungs_significance_first(
 
 def test_the_prose_links_repository_files_on_main(page: str) -> None:
     """Every `repo:` link in the template becomes a link on `main` to a file that exists."""
-    from devtools.render_explainer import REPO  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import REPO  # noqa: PLC0415
 
     article = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     paths = re.findall(r'(?:\]\(|href=")repo:([^)"\s#]+)', article)
@@ -1817,34 +1829,105 @@ def _outside_row_popovers(page: str) -> str:
     return page
 
 
-def test_every_result_shows_the_standing_readme_derives(
+def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     page: str,
     results: str,
     overview: overview_data.Overview,
     records: render_recent_results.Records,
 ) -> None:
-    """Standing is `render_recent_results.standing`, never restated: every table row
-    carries it as an attribute, for the filters, and draws it as chips under its rungs,
-    one a part, after the result's kind chip. A result that still stands is the default
-    and draws no chip: the row of a current best has none, and one that is the current
-    best as reported has only `reported`. A result that claims no bound has no standing
-    and draws none. Every standing chip is the one plain chip."""
+    """A row's status line is derived, never restated. Its first chip is the status,
+    which every row draws (`result_status.status`) and carries as an attribute, for the
+    filter. After it comes `superseded`, on a bound that no case bound rests on now
+    (`render_recent_results.superseded`), and that is all a row shows of a standing.
+    That a bound is only reported is the status `recorded` and no chip of its own; a
+    second proof of a held value says so by its kind; and a result that is no bound is
+    never marked superseded, whatever its evidence makes its standing. Every chip is
+    the one plain chip (think-ai94)."""
     held = render_recent_results.HOLDS
     recent = _recent_table(page)
+    status = re.compile(r'<span class="site-chip" data-status="([^"]*)"[^>]*>([^<]+)</span>')
     standing = re.compile(r'<span class="site-chip" data-standing="[^"]*"[^>]*>([^<]+)</span>')
+    evidence = records.register.evidence
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
-        parts = [part for part in expected.split(", ") if part and part != held]
+        assert result.status == result_status.status(result.record, evidence), result.id
+        marks = render_recent_results.position_marks(result.record, expected)
+        assert overview_sections.is_superseded(result) is bool(marks), result.id
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
-            assert f'data-standing="{overview_sections.standing_key(expected)}"' in row
-            assert standing.findall(row) == parts, result.id
-            assert ('class="site-standing"' in row) is bool(parts), result.id
-            assert ">current best<" not in row, result.id
-    assert overview_sections.standing_chips(held) == ""
+            tag = row.split(">", 1)[0]
+            assert f'data-status="{result.status}"' in tag, result.id
+            assert "data-standing=" not in tag, result.id
+            assert status.findall(row) == [(result.status, result.status)], result.id
+            assert standing.findall(row) == marks, result.id
+            line = row.split('<span class="site-standing">', 1)[1]
+            assert line.startswith(overview_sections.status_chip(result.status)), result.id
+            for word in (">current best<", ">reported<", ">second certificate<"):
+                assert word not in row, (result.id, word)
+    assert {result.status for result in overview.results} <= set(result_status.STATUSES)
     assert any(result.standing == held for result in overview.results)
+    # A method's limit cites the bound it measures and derives `superseded`; it is no
+    # bound, so nothing supersedes it and its row is not marked.
+    by_id = {result.id: result for result in overview.results}
+    assert by_id["T-003"].standing == render_recent_results.SUPERSEDED
+    assert not overview_sections.is_superseded(by_id["T-003"])
+    assert overview_sections.is_superseded(by_id["T-037"])
+    for second in ("T-054", "T-055"):
+        assert by_id[second].record["kind"] == "simplification"
+        assert "second certificate" not in _row(results, second), second
     for other in render_recent_results.STANDINGS:
         assert "data-tone" not in overview_sections.standing_chip(other), other
+    for other in result_status.STATUSES:
+        assert "data-tone" not in overview_sections.status_chip(other), other
+
+
+def test_an_activity_is_a_chip_beside_the_status_and_only_where_recorded(
+    overview: overview_data.Overview,
+) -> None:
+    """Who has the next move is drawn where the register records an `activity`, straight
+    after the status: `in analysis` for work under way here, `waiting on source` for a
+    request with another party, its title what is in hand and since when. A result with
+    none recorded draws nothing for it."""
+    for result in overview.results:
+        chip = overview_sections.activity_chip(result)
+        activity = result.record.get("activity")
+        marks = overview_sections.status_marks(result)
+        if not activity:
+            assert chip == "", result.id
+            assert "data-activity=" not in marks, result.id
+            continue
+        assert result.activity == result_status.activity_label(activity), result.id
+        assert f'data-activity="{activity["state"]}"' in chip, result.id
+        assert f">{html.escape(result.activity)}</span>" in chip, result.id
+        assert f"Since {activity['since']}." in html.unescape(chip), result.id
+        status = overview_sections.status_chip(result.status)
+        assert marks.startswith(f"{status} {chip}"), result.id
+    doing = overview_data.Result(
+        {"activity": {"state": "in-analysis", "what": "a <b> replay", "since": "2026-09-29"}},
+        group="",
+        credit="",
+        ours=False,
+        status="recorded",
+    )
+    assert overview_sections.activity_chip(doing) == (
+        '<span class="site-chip" data-activity="in-analysis" '
+        'title="a &lt;b&gt; replay Since 2026-09-29.">in analysis</span>'
+    )
+    waiting = overview_data.Result(
+        {
+            "activity": {
+                "state": "waiting",
+                "party": "third-party",
+                "what": "the boxes",
+                "since": "2026-09-30",
+            }
+        },
+        group="",
+        credit="",
+        ours=False,
+        status="confirmed",
+    )
+    assert ">waiting on third party</span>" in overview_sections.activity_chip(waiting)
 
 
 def test_every_result_shows_its_kind(
@@ -1854,9 +1937,8 @@ def test_every_result_shows_its_kind(
 ) -> None:
     """A result's kind is the register's `kind`, never restated: every row of both
     tables carries it as `data-kind`, for the Kind filter, and draws it as one plain
-    chip in the rubric's words, on a line of its own under its rungs and above any
-    standing chip. A result with no standing shows its kind alone, and its kind is no
-    bound."""
+    chip in the rubric's words, on a line of its own under its rungs and above its
+    status line. A result with no standing is of a kind that is no bound."""
     recent = _recent_table(page)
     for result in overview.results:
         kind = result.record["kind"]
@@ -1864,23 +1946,31 @@ def test_every_result_shows_its_kind(
         label = check_results.kind_label(kind)
         assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
         assert "data-tone" not in chip
-        standing = overview_sections.standing_chips(result.standing)
-        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
-        if standing:
-            under += f'<span class="site-standing">{standing}</span>'
+        marks = overview_sections.status_marks(result)
+        under = (
+            f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
+            f'<span class="site-standing">{marks}</span>'
+        )
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
             assert f">{under}</td>" in row, result.id
             assert row.count(chip) == 1, result.id
         if result.standing == render_recent_results.NO_STANDING:
             assert kind not in check_results.BOUND_KINDS, result.id
-            assert standing == "", result.id
+        if kind not in check_results.BOUND_KINDS:
+            assert not overview_sections.is_superseded(result), result.id
+            assert ">superseded<" not in marks, result.id
     assert ">not a bound<" not in results + recent
     assert 'data-standing="not-a-bound"' not in results + recent
-    # The popover's head and a chain's step show the kind beside the rungs.
+    # The popover's head and a chain's step show the kind beside the rungs, then the
+    # status line.
     t036 = next(result for result in overview.results if result.id == "T-036")
     assert overview_sections.status_chips(t036) == (
-        f"{overview_sections.rung_chips(t036)} {overview_sections.kind_chip(t036)}"
+        f"{overview_sections.rung_chips(t036)} {overview_sections.kind_chip(t036)} "
+        f"{overview_sections.status_marks(t036)}"
+    )
+    assert overview_sections.kind_and_status(t036) == (
+        f"{overview_sections.kind_chip(t036)} {overview_sections.status_chip('confirmed')}"
     )
     from devtools import result_overview  # noqa: PLC0415
 
@@ -1918,16 +2008,16 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
     assert recent in section
-    before_replay = section.split("site-replay", 1)[0]
-    assert set(re.findall(r'<div class="(site-popover(?: [^"]*)?)"', before_replay)) == {
+    assert set(re.findall(r'<div class="(site-popover(?: [^"]*)?)"', section)) == {
         "site-popover site-row-pop"
     }
     section = _outside_row_popovers(section)
-    before_replay = section.split("site-replay", 1)[0]
-    assert "site-popover" not in before_replay
-    assert not re.search(r'class="site-card[ "]', before_replay)
-    assert "<li>" not in before_replay
-    assert section.count("<table") == 2  # the recent table, then the replay table
+    assert "site-popover" not in section
+    assert not re.search(r'class="site-card[ "]', section)
+    assert "<li>" not in section
+    # The recent table and no other: a reported bound is a row of it (think-d04u).
+    assert section.count("<table") == 1
+    assert "<details" not in section
     assert 'class="kpress-table site-table site-results"' in recent
     assert "site-recent-table" not in page
     # The script that sorts and filters the results page's table wires this one too.
@@ -1997,7 +2087,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
         dated = overview_sections.first_day(result.dated[1])
         assert f'data-s="{score}"' in row, result.id
         assert f'data-date="{dated}"' in row, result.id
-        current = result.standing != "superseded"
+        current = not overview_sections.is_superseded(result)
         assert f'data-current="{"true" if current else "false"}"' in row, result.id
         keeps = score >= 4 and dated >= cutoff and current
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
@@ -2039,9 +2129,12 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
     assert overview_sections.age_cutoff(date(2026, 10, 1), 0) == "2026-10-01"
     assert overview_sections.age_cutoff(date(2024, 3, 1), 1) == "2024-02-29"
 
-    def result(dated: str, score: int, standing: str = "current best") -> overview_data.Result:
+    def result(
+        dated: str, score: int, standing: str = "current best", kind: str = "lower-bound"
+    ) -> overview_data.Result:
         record = {
             "id": "T-900",
+            "kind": kind,
             "scope": {"n_values": [11]},
             "established": dated,
             "registered": "2026-09-30",
@@ -2066,14 +2159,21 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(result(dated, score), every, day), dated
     assert shows(result("1979", 4), overview_sections.FilterDefaults(significance=4), day)
     assert not shows(result("1979", 2), overview_sections.FilterDefaults(max_age=30), day)
-    # Hide superseded hides the one standing, and keeps every other.
+    # Hide superseded hides a bound of the one standing, and keeps every other.
     hiding = overview_sections.FilterDefaults(hide_superseded=True)
     for standing in render_recent_results.STANDINGS:
         current = standing != "superseded"
-        assert overview_sections.is_superseded(standing) == (not current), standing
-        assert shows(result("1979", 2, standing), hiding, day) == current, standing
+        bound = result("1979", 2, standing)
+        assert overview_sections.is_superseded(bound) == (not current), standing
+        assert shows(bound, hiding, day) == current, standing
         assert shows(result("2026-09-29", 5, standing), recent, day) == current, standing
-        assert shows(result("1979", 2, standing), every, day), standing
+        assert shows(bound, every, day), standing
+    # A result that is no bound is never superseded, whatever standing its evidence
+    # gives it: no later bound supersedes the limit of a method.
+    for kind in sorted(set(check_results.KINDS) - check_results.BOUND_KINDS):
+        other = result("1979", 2, "superseded", kind)
+        assert not overview_sections.is_superseded(other), kind
+        assert shows(other, hiding, day), kind
 
 
 def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() -> None:
@@ -2088,14 +2188,11 @@ def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() ->
         'Levy <span class="site-cell-quiet">after Burns, Massaccesi</span>'
     )
     assert overview_sections.credit_cell("A & B") == "A &amp; B"
-    chips = overview_sections.standing_chips("second certificate, reported")
-    assert chips.count('class="site-chip"') == 2
-    assert overview_sections.standing_chips("case exclusion").count("site-chip") == 1
-    # A result that still stands draws no chip; what else its standing says, it draws.
-    held = overview_sections.standing_chips("current best, reported")
-    assert held == '<span class="site-chip" data-standing="reported">reported</span>'
-    assert overview_sections.standing_chips("current best") == ""
-    assert "superseded</span>" in overview_sections.standing_chips("superseded")
+    # Of a standing a table draws one chip, `superseded`, the plain one.
+    assert overview_sections.standing_chip("superseded") == (
+        '<span class="site-chip" data-standing="superseded">superseded</span>'
+    )
+    assert not hasattr(overview_sections, "standing_chips")
 
 
 def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overview) -> None:
@@ -2471,7 +2568,7 @@ def test_the_explainer_card_says_what_the_explainer_now_is(
     Papers page the card is the link to the explainer, so it holds no other; T-060, the
     optimality proof since registered, is linked from the Papers page's introduction.
     The wording stays within T-060's rungs: proved, never formally."""
-    value, note = _page_card_parts(page, "explainer.html")
+    value, note = _page_card_parts(page, overview_sections.LOWER_BOUNDS_PAPER)
     article = papers_article(rendered("papers.html"))
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
@@ -2534,8 +2631,8 @@ def test_the_papers_page_holds_one_large_card_for_each_paper(
     page = rendered("papers.html")
     papers = overview_sections.PAPERS
     assert [paper.href for paper in papers] == [
-        "n11-optimality/t-060-explainer.html",
-        "explainer.html",
+        "papers/n11-optimality-review.html",
+        "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
     ]
     assert {paper.size for paper in papers} == {"large"}
@@ -2572,7 +2669,7 @@ def test_a_papers_card_holds_no_link_so_the_introduction_links_what_it_names(
     )
     explainer = overview_sections.EXPLAINER
     assert explainer is overview_sections.PAPERS[1]
-    assert explainer.href == "explainer.html"
+    assert explainer.href == overview_sections.LOWER_BOUNDS_PAPER
     article = papers_article(rendered("papers.html"))
     introduction, cards = article.split('<div class="site-cards-frame', 1)
     assert re.findall(r'<a href="([^"]+)">([^<]+)</a>', introduction) == [
@@ -2590,10 +2687,11 @@ def test_the_papers_page_says_what_each_paper_is(
     `TUTORIAL.md`'s own opening, whom it is for and what it covers. The overview keeps a
     card for the explainer and the tutorial."""
     papers = rendered("papers.html")
-    value, note = _page_card_parts(papers, "explainer.html")
+    explainer = overview_sections.LOWER_BOUNDS_PAPER
+    value, note = _page_card_parts(papers, explainer)
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
-    assert (value, note) == _page_card_parts(page, "explainer.html")
+    assert (value, note) == _page_card_parts(page, explainer)
 
     value, note = _page_card_parts(papers, "tutorial.html")
     assert card_text(value) == "Square packing from first principles"
@@ -2610,7 +2708,7 @@ def test_the_papers_page_says_what_each_paper_is(
     ):
         assert phrase in card_text(note), phrase
         assert phrase in opening, phrase
-    assert {"explainer.html", "tutorial.html"} <= {href for href, _, _ in _page_cards(page)}
+    assert {explainer, "tutorial.html"} <= {href for href, _, _ in _page_cards(page)}
 
 
 def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
@@ -2620,7 +2718,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     titled as its renderer titles it, in sentence case, and described as explaining the
     accepted proof, T-060, in the words T-060's rungs allow, V3 and C3: a proof, never a
     formal one. The card is the link to the paper, in the same tab."""
-    from devtools import render_n11_optimality_explainer as renderer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as renderer  # noqa: PLC0415
 
     paper = overview_sections.PAPERS[0]
     assert paper.href == overview_sections.OPTIMALITY_PAPER == renderer.SITE_PATH
@@ -2691,25 +2789,21 @@ def test_the_film_note_says_the_films_predate_t060(
     assert released.isoformat() < str(t060["registered"])
 
 
-def test_the_standing_filter_offers_each_standing_on_the_page(
+def test_the_status_filter_offers_each_status_a_result_has(
     results: str, overview: overview_data.Overview
 ) -> None:
-    tools = re.search(r'<select data-filter="standing">(.*?)</select>', results, re.DOTALL)
+    """Status offers All, then each status some result has, in the workflow's order,
+    each under its own word. Superseded is no status: the checkbox beside it asks that."""
+    tools = re.search(r'<select data-filter="status">(.*?)</select>', results, re.DOTALL)
     assert tools
-    offered = re.findall(r'<option value="([^"]*)"[^>]*>', tools.group(1))
-    present = {overview_sections.standing_key(r.standing) for r in overview.results}
-    assert offered[0] == ""
-    # A result that claims no bound has no standing, so its empty key is no choice.
-    assert set(offered[1:]) == present - {""}
-    assert "" in present
-    # The unmarked state keeps its name as a choice, first after All, whether or not a
-    # row draws a chip for it; `superseded` is the one choice Hide superseded leaves no
-    # row for (think-nr0y).
-    assert offered[1:3] == ["current-best", "current-best-reported"]
-    assert "superseded" in offered[3:]
-    words = dict(re.findall(r'<option value="([^"]+)"[^>]*>([^<]+)</option>', tools.group(1)))
-    assert words["current-best"] == "current best"
-    assert words["superseded"] == "superseded"
+    offered = re.findall(r'<option value="([^"]*)"[^>]*>([^<]+)</option>', tools.group(1))
+    present = {result.status for result in overview.results}
+    assert offered[0] == ("", "All")
+    assert offered[1:] == [
+        (status, status) for status in result_status.STATUSES if status in present
+    ]
+    assert "superseded" not in dict(offered)
+    assert '<select data-filter="standing">' not in results
 
 
 def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overview) -> None:
@@ -2722,32 +2816,48 @@ def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overvi
     assert f"{counts.cases} have a lower bound published or proved since 22 August 2026" in text
 
 
-def test_reported_bounds_awaiting_replay_are_listed(
-    page: str, overview: overview_data.Overview
+def test_a_reported_bound_is_a_row_of_the_results_table_and_no_block_of_its_own(
+    page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """Every recent case whose reported lane differs from the verified one has a row
-    linking its frontier record, with the reported value set as math, not code."""
-    waiting = [row.n for row in overview.recent if row.shows_reported]
+    """Every recent case whose reported lower bound says more than its verified one is
+    carried by register entries, and each of those is a row of both tables with its
+    status. The overview lists no case of them on its own: it says how many results are
+    not yet confirmed, each count the link to those rows (think-d04u)."""
+    waiting = [row for row in overview.recent if row.shows_reported]
     assert waiting
-    assert waiting == [row.n for row in overview.awaiting_replay]
-    block = overview_sections.awaiting_replay(overview)
-    assert '<details class="site-wide site-replay">' in page
-    for n in waiting:
-        assert f'<tr id="replay-n-{n}"' in page, n
-    listed = [int(n) for n in re.findall(r'<tr id="replay-n-(\d+)"', block)]
-    assert sorted(listed) == waiting
-    for n in waiting:
-        assert f'<a href="frontier.html#n-{n}">{n}</a>' in block, n
-    assert "`" not in block
-    assert "<code>" not in block
-    assert {18, 19, 20} <= set(listed)
+    carrying = {
+        entry for row in waiting for entry in re.findall(r"T-\d{3}", row.reported.results)
+    }
+    assert carrying
+    recent = _recent_table(page)
+    by_id = {result.id: result for result in overview.results}
+    for entry in sorted(carrying):
+        chip = overview_sections.status_chip(by_id[entry].status)
+        assert chip in _row(results, entry), entry
+        assert chip in _recent_row(recent, entry), entry
     # n = 11 reports T-060 rounded, and T-060 is verified: nothing awaits (think-pd2g).
-    assert 11 not in listed
-    eighteen = re.search(r'<tr id="replay-n-18".*?</tr>', block, re.DOTALL)
-    assert eighteen
-    assert "939/200" in eighteen.group(0)
-    assert "kpress-math" in eighteen.group(0)
-    assert "wand125" in block
+    assert 11 not in [row.n for row in waiting]
+    for gone in ("site-replay", "awaiting replay", 'id="replay-n-', "pop-replay-n-"):
+        assert gone not in page, gone
+    assert not hasattr(overview, "awaiting_replay")
+    assert not hasattr(overview_sections, "awaiting_replay")
+    sentence = overview_sections.status_counts(overview)
+    held = Counter(result.status for result in overview.results)
+    opening = f"Of the {len(overview.results)} results, {held['confirmed']} are confirmed"
+    assert opening in sentence
+    for status, count in held.items():
+        link = f"[{count} {status}](all-results.html?status={status})"
+        assert (link in sentence) is (status != "confirmed"), status
+        if status != "confirmed":
+            assert f'<a href="all-results.html?status={status}">{count} {status}</a>' in page
+    reference = overview_sections.reference_date(overview)
+    shown = sum(
+        overview_sections.shown_by_default(result, overview_sections.RECENT_DEFAULTS, reference)
+        for result in overview.results
+        if result.status != "confirmed"
+    )
+    words = {0: "none of them"}.get(shown, f"{shown} of them")
+    assert f"this table shows {words} until its filters are changed" in sentence
 
 
 def test_results_by_others_show_their_publication_date(
@@ -3211,25 +3321,24 @@ def test_a_page_title_stands_one_space_above_what_follows_it() -> None:
 
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     """The space above and below a table is one token: above the filter bar of a table
-    that has one, below every table's wrap, around the awaiting-replay disclosure, and
-    around a document's own table, which KPress wraps. The rules that read it are for
+    that has one, below every table's wrap, and around a document's own table, which
+    KPress wraps. The rules that read it are for
     the screen alone, so print keeps KPress's spacing; the bar is not printed at all."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert css.count("--site-table-space: 2rem;") == 1
     bar = css[css.index("\n.site-table-tools {") :]
     assert "margin-block: var(--site-table-space) 0.5rem;" in bar[: bar.index("}")]
-    start = css.index("@media screen {\n  .kpress details.site-replay,")
+    start = css.index("@media screen {\n  .kpress-table-wrap,")
     screen = css[start : css.index("\n}\n", start)]
     assert (
-        "  .kpress details.site-replay,\n  .kpress-table-wrap,\n  .site-table-wrap {\n"
+        "  .kpress-table-wrap,\n  .site-table-wrap {\n"
         "    margin-block: var(--site-table-space);\n  }"
     ) in screen
-    # The bar keeps its own gap to its table, and the disclosure's table sits flush.
+    # The bar keeps its own gap to its table.
     assert (
-        "  .site-table-tools + .site-table-wrap,\n  .site-replay .site-table-wrap {\n"
-        "    margin-block-start: 0;\n  }"
+        "  .site-table-tools + .site-table-wrap {\n    margin-block-start: 0;\n  }"
     ) in screen
-    assert "  .site-replay .site-table-wrap {\n    margin-block-end: 0;\n  }" in screen
+    assert "site-replay" not in css
     # The rating ladders, which are no table, stand the same space clear of the text.
     ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
     assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
@@ -3619,15 +3728,13 @@ def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
         render_overview.PACKING
         / "devtools"
         / "probes"
-        / "render_explainer"
+        / "render_n11_lower_bounds_explainer"
         / "host_math_init.js"
     ).read_text(encoding="utf-8")
     assert "closest('[data-math-face=\"serif\"]')" in shell
 
 
-TABLE_BLEED = (
-    ".site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)):not(.site-replay) {"
-)
+TABLE_BLEED = ".site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)) {"
 
 
 def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
@@ -3740,10 +3847,7 @@ def test_every_data_table_is_the_shared_component(page: str, results: str) -> No
             wrap = around[0].split()
             parent = around[1].split() if len(around) > 1 else []
             assert "site-table-wrap" in wrap, classes
-            if "site-replay-table" in classes.split():
-                assert "site-replay" in parent
-            else:
-                assert "site-wide" in wrap or "site-wide" in parent, classes
+            assert "site-wide" in wrap or "site-wide" in parent, classes
     assert seen >= 3
 
 
@@ -3786,7 +3890,7 @@ class _RowWiring(HTMLParser):
             self.cells += 1
         elif tag == "tr":
             self._row = None
-            if self._site_table and self._depth["tbody"] and "site-group-row" not in classes:
+            if self._site_table and self._depth["tbody"]:
                 self._row = []
                 self.rows.append((found, self._row))
         elif tag == "button" and "site-row-open" in classes and self._row is not None:
@@ -3860,15 +3964,13 @@ def test_every_row_with_detail_is_wired_to_one_popover(name: str) -> None:
 def test_the_tables_with_row_detail_are_the_ones_named(
     overview: overview_data.Overview,
 ) -> None:
-    """The recent table and the replay table on the overview, the results table on its
-    page and the frontier atlas: each row's popover is its own, by its key."""
+    """The recent table on the overview, the results table on its page and the frontier
+    atlas: each row's popover is its own, by its key."""
     from devtools.render_frontier_page import frontier_cases  # noqa: PLC0415
 
     recent = {f"pop-result-{r.id.lower()}" for r in overview_sections.recent_results(overview)}
-    replay = {f"pop-replay-n-{row.n}" for row in overview.awaiting_replay}
     assert recent
-    assert replay
-    assert set(_row_wiring("index.html").popovers) == recent | replay
+    assert set(_row_wiring("index.html").popovers) == recent
     assert set(_row_wiring("all-results.html").popovers) == {
         f"pop-result-{r.id.lower()}" for r in overview.results
     }
@@ -3982,13 +4084,15 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     ]
     (tmp_path / "result").mkdir()
     (tmp_path / "result" / "t-999.html").write_text("withdrawn", encoding="utf-8")
-    (tmp_path / "explainer.html").write_text("another build's", encoding="utf-8")
+    paper = tmp_path / overview_sections.LOWER_BOUNDS_PAPER
+    paper.parent.mkdir()
+    paper.write_text("another build's", encoding="utf-8")
     render_overview.write_site(tmp_path, files)
     assert sorted(
         path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*.html")
     ) == [
-        "explainer.html",
         "index.html",
+        "papers/n11-lower-bounds-explainer.html",
         "result/t-001.html",
     ]
     assert (tmp_path / "result" / "t-001.html").read_text(encoding="utf-8") == "<p>one</p>\n"
@@ -4029,40 +4133,6 @@ def test_a_result_row_popover_is_the_same_panel_in_both_tables(
     assert not ACTION.findall(here)
     assert "in the results table" not in away
     assert away == here
-
-
-def test_a_replay_rows_popover_body_comes_from_one_function(
-    overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """`replay_row_popover_body` is the one source of an awaiting-replay row's detail:
-    the reported and the verified bound, each with its holder and its entries. The
-    popovers follow the disclosure rather than sit in it, and each ends in the button
-    to its case in the frontier atlas."""
-    row = overview.awaiting_replay[0]
-    body = overview_sections.replay_row_popover_body(row)
-    assert "<dt>Reported</dt>" in body
-    assert "<dt>Verified here</dt>" in body
-    assert html.escape(row.reported.holder) in body
-    # Each lane's date is what the tables' Date column says it is: a bound by others was
-    # published then, and this project's own was established then.
-    ours = next(r for r in overview.awaiting_replay if r.verified.ours and r.reported.published)
-    detail = overview_sections.replay_row_popover_body(ours)
-    assert f", established {ours.verified.published}" in detail
-    assert f", published {ours.reported.published}" in detail
-    assert f", published {ours.verified.published}" not in detail.split("Verified here")[1]
-    block = overview_sections.awaiting_replay(overview)
-    assert body in _row_popover(block, f"pop-replay-n-{row.n}")
-    assert block.index("</details>") < block.index('<div class="site-popover site-row-pop"')
-    (action,) = ACTION.findall(_row_popover(block, f"pop-replay-n-{row.n}"))
-    assert action == (f"frontier.html#n-{row.n}", "page")
-
-    def marked(row: render_recent_results.Row) -> str:
-        return f"<p>BODY OF {row.n}</p>"
-
-    monkeypatch.setattr(overview_sections, "replay_row_popover_body", marked)
-    block = overview_sections.awaiting_replay(overview)
-    for waiting in overview.awaiting_replay:
-        assert block.count(f"<p>BODY OF {waiting.n}</p>") == 1, waiting.n
 
 
 def test_a_row_detail_escapes_its_words_and_keeps_its_html() -> None:
@@ -4169,7 +4239,7 @@ def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> No
     keyboard focus, with a ring, and while its popover is open, and shows the pointer
     once the script has made it the control. No rule styles a `<details>` in a table."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    hover = css[css.index(".kpress .site-table tbody tr:not(.site-group-row):hover {") :]
+    hover = css[css.index(".kpress .site-table tbody tr:hover {") :]
     assert "background: var(--site-wash);" in hover[: hover.index("}")]
     row = ".kpress .site-table tbody tr[data-row-popover]"
     held = css[css.index(f'{row}:is(:focus-visible, [aria-expanded="true"]) {{') :]
@@ -4192,7 +4262,7 @@ RESULT_FILTERS = [
     ("v", "min"),
     ("c", "min"),
     ("kind", ""),
-    ("standing", ""),
+    ("status", ""),
     ("current", ""),
     ("source", ""),
     ("n", "covers"),
@@ -4203,7 +4273,7 @@ RESULT_FILTERS = [
     ("s", ""),
 ]
 
-#: The bar's one checkbox, as `result_filters` writes it: its own label, after Standing.
+#: The bar's one checkbox, as `result_filters` writes it: its own label, after Status.
 HIDE_SUPERSEDED = (
     '<label><input type="checkbox" data-filter="current"{checked}> Hide superseded</label>'
 )
@@ -4254,7 +4324,7 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert _without_defaults(here) == _without_defaults(there)
     assert here != there
     assert _controls(here) == _controls(there) == RESULT_FILTERS
-    everything = {"s": "", "v": "", "c": "", "kind": "", "standing": "", "source": ""}
+    everything = {"s": "", "v": "", "c": "", "kind": "", "status": "", "source": ""}
     for bar in (here, there):
         # Six selects of the bar's own, each with its starting choice marked, and the two
         # preset-only selects (`tests/test_site_project_tallies.py`), which start at All.
@@ -4265,9 +4335,9 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
         assert bar.count('type="checkbox"') == 1
         assert "<label>Max age <input " in bar
         assert "> days</label>" in bar
-        # The checkbox is the control straight after Standing, in a label of its own.
+        # The checkbox is the control straight after Status, in a label of its own.
         assert re.search(
-            r'<select data-filter="standing">.*?</select></label>'
+            r'<select data-filter="status">.*?</select></label>'
             r'<label><input type="checkbox" data-filter="current"(?: checked)?> '
             r"Hide superseded</label><label>Source ",
             bar,
@@ -4327,11 +4397,11 @@ def test_the_filter_bar_is_one_helpers_and_reads_the_whole_register(
         assert choices[0] == ("", "All")
         assert choices[1] == ("1", f"{scale}1 and up")
         assert choices[-1] == ("5", f"{scale}5")
-    standings = re.search(r'<select data-filter="standing">(.*?)</select>', full)
-    assert standings
-    assert set(re.findall(r'<option value="([^"]+)"', standings[1])) == {
-        overview_sections.standing_key(result.standing) for result in overview.results
-    } - {""}
+    statuses = re.search(r'<select data-filter="status">(.*?)</select>', full)
+    assert statuses
+    assert set(re.findall(r'<option value="([^"]+)"', statuses[1])) == {
+        result.status for result in overview.results
+    }
     # Kind offers the kinds the register holds, in the rubric's order and words.
     kinds = re.search(r'<label>Kind <select data-filter="kind">(.*?)</select>', full)
     assert kinds
@@ -4362,8 +4432,8 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
 ) -> None:
     """A row of either table carries the same facets, each from the register: whose
     result it is, its V, C and S levels, its kind, the listed projects it is attributed
-    to, its standing, whether that is a current best, its cases and its date. The bar
-    has a control for each and no control without one."""
+    to, its status, whether it is current, which is to say not superseded, its cases and
+    its date. The bar has a control for each and no control without one."""
     filtered = {key for key, _ in RESULT_FILTERS}
     recent = _recent_table(page)
     listed = {r.id for r in overview_sections.recent_results(overview)}
@@ -4376,8 +4446,8 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "s": str(record["significance"]["score"]),
             "kind": record["kind"],
             "project": " ".join(overview_sections.result_projects(result)),
-            "standing": overview_sections.standing_key(result.standing),
-            "current": "false" if result.standing == "superseded" else "true",
+            "status": result.status,
+            "current": "false" if overview_sections.is_superseded(result) else "true",
             "n": overview_sections.result_cases(result),
             "date": overview_sections.first_day(result.dated[1]),
         }
@@ -4452,9 +4522,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
     without = 0
     kept = set()
     for result in overview.results:
-        superseded = overview_sections.is_superseded(result.standing)
-        assert superseded == (result.standing == render_recent_results.SUPERSEDED), result.id
-        assert superseded == (overview_sections.standing_key(result.standing) == "superseded")
+        superseded = overview_sections.is_superseded(result)
+        assert superseded == (
+            result.standing == render_recent_results.SUPERSEDED
+            and result.record["kind"] in check_results.BOUND_KINDS
+        ), result.id
         flag = f'data-current="{"false" if superseded else "true"}"'
         ours = _recent_row(recent, result.id).split(">", 1)[0] + ">"
         theirs = _row(results, result.id).split(">", 1)[0] + ">"
@@ -4469,13 +4541,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
         without += overview_sections.shown_by_default(result, unchecked, reference)
         if result.id in overview.starred:
             assert not superseded, result.id
-    # Every standing but the one stays, and so does a result with none: nothing but a
-    # superseded result is hidden for it.
-    assert kept == {
-        *render_recent_results.STANDINGS,
-        render_recent_results.NO_STANDING,
-    } - {render_recent_results.SUPERSEDED}
-    current = sum(not overview_sections.is_superseded(r.standing) for r in overview.results)
+    # Every standing stays, and so does a result with none: nothing but a superseded
+    # bound is hidden for it. The one result that derives `superseded` and stays is the
+    # limit of a method, which is no bound.
+    assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
+    current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)
     assert f">{shown} of {len(overview.results)} results</span>" in here
@@ -4560,3 +4630,167 @@ def test_secondary_cell_content_is_quiet(results: str) -> None:
     assert '<span class="site-cell-quiet">after ' in results
     assert "site-col-credit site-cell-quiet" not in results
     assert 'class="site-frontier-note site-cell-quiet"' in table_html(frontier_cases())
+
+
+def _old_addresses() -> set[str]:
+    """Every address a paper used to have, in every form a link may take: its path under
+    the site's root, its directory where it was a directory's index, and either as an
+    address on the deployed site."""
+    old = {
+        *(old for old, _ in render_overview.MOVED_PAGES),
+        *(old.removesuffix("index.html") for old, _ in render_overview.MOVED_PAGES),
+        *(old for old, _ in render_overview.MOVED_FILES),
+    }
+    return old | {render_overview.SITE_URL + address for address in old}
+
+
+def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
+    """`conventions.md`: a paper has one name, its slug, which says the case, the subject
+    and the kind of paper. The site serves it at `papers/<slug>.html`, and the renderer,
+    its templates, its test and its half of the Pages workflow carry the slug, so a
+    reader of the repository finds a paper by the name the site gives it."""
+    import importlib  # noqa: PLC0415
+
+    from devtools.pages_scope import BUILDER_INPUTS, load_workflow  # noqa: PLC0415
+
+    slugs = (render_overview.N11_OPTIMALITY_REVIEW, render_overview.N11_LOWER_BOUNDS_EXPLAINER)
+    assert slugs == ("n11-optimality-review", "n11-lower-bounds-explainer")
+    packing = overview_data.REPO / "packing"
+    jobs = load_workflow()["jobs"]
+    for slug in slugs:
+        name = slug.replace("-", "_")
+        renderer = importlib.import_module(f"devtools.render_{name}")
+        assert slug == renderer.SLUG
+        assert renderer.SITE_PATH == render_overview.paper_path(slug) == f"papers/{slug}.html"
+        assert renderer.SITE_PATH in render_overview.SITE_PAGES
+        assert renderer.SITE_ROOT == render_overview.PAPERS_ROOT == "../"
+        assert renderer.SITE_PATH in {paper.href for paper in overview_sections.PAPERS}
+        for template in (f"{slug}-article.md", f"{slug}-shell.html"):
+            assert (render_overview.TEMPLATES / template).is_file(), template
+        tests = packing / "tests"
+        assert (tests / f"test_render_{name}.py").is_file() or (
+            tests / f"test_{name}.py"
+        ).is_file(), slug
+        assert name in BUILDER_INPUTS, slug
+        assert f"{slug}-unchanged" in jobs, slug
+    assert render_overview.paper_path("a-b", ".pdf") == "papers/a-b.pdf"
+
+
+def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
+    """A page that moved leaves a forwarder at its old address (`MOVED_PAGES`), so no
+    link written before the move breaks. The forwarder names where the page is now four
+    times, and they agree: as its canonical URL, in full; to the forwarding script, on
+    the root element; in a refresh for a reader without scripts, inside `<noscript>` so
+    it cannot outrun the script and drop the fragment; and in a link. It carries the
+    overview's own forwarding script whole, and nothing of a site page: no bar, no
+    stamp, no stylesheet. `check_published_site` reads a deployed one the same way."""
+    from devtools import check_published_site  # noqa: PLC0415
+
+    forwarders = {
+        forwarder.name: forwarder.html for forwarder in render_overview.forwarder_pages()
+    }
+    assert list(forwarders) == [old for old, _ in render_overview.MOVED_PAGES]
+    papers = {
+        old: new
+        for old, new in render_overview.MOVED_PAGES
+        if new.startswith(f"{render_overview.PAPERS_DIR}/")
+    }
+    assert papers == {
+        "explainer.html": "papers/n11-lower-bounds-explainer.html",
+        "n11-optimality/t-060-explainer.html": "papers/n11-optimality-review.html",
+        "n11-optimality/index.html": "papers/n11-optimality-review.html",
+    }
+    script = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
+    titles = {paper.href: paper.title for paper in overview_sections.PAPERS}
+    for old, new in papers.items():
+        page = forwarders[old]
+        assert new in render_overview.SITE_PAGES, new
+        assert old not in render_overview.SITE_PAGES, old
+        assert old not in render_overview.PAGES, old
+        says = check_published_site.forwarder_says(page)
+        assert says == check_published_site.forwarder_expected(old, new), old
+        assert says["canonical"] == render_overview.SITE_URL + new
+        climbs = "../" * old.count("/")
+        assert says["script"] == f"{climbs}{new}"
+        assert page.count(f"<script>{script}</script>") == 1
+        assert page.count("<script") == 1
+        refresh = (
+            f'<noscript><meta http-equiv="refresh" content="0; url={climbs}{new}"></noscript>'
+        )
+        assert refresh in page
+        assert f"<title>{html.escape(titles[new])}</title>" in page
+        assert "site-nav" not in page
+        assert "<style" not in page
+        assert len(page) < 8_000, "a forwarder is a few lines, not a page"
+        render_overview.assert_self_contained(old, page)
+    # The script reads the root element's `data-moved-to`.
+    assert "movedTo" in script
+
+
+def test_each_file_that_moved_is_a_papers_markdown_or_pdf_under_its_slug() -> None:
+    """A file that moved and cannot forward is served at its old address as a copy
+    (`MOVED_FILES`): each paper's Markdown and PDF, which now sit beside the page under
+    its slug. The copies are made when the site is assembled, by the workflow's
+    `publish` job and by `preview_site.copy_moved_files`."""
+    assert dict(render_overview.MOVED_FILES) == {
+        "t-018-explainer.md": "papers/n11-lower-bounds-explainer.md",
+        "t-018-explainer.pdf": "papers/n11-lower-bounds-explainer.pdf",
+        "n11-optimality/t-060-explainer.md": "papers/n11-optimality-review.md",
+        "n11-optimality/t-060-explainer.pdf": "papers/n11-optimality-review.pdf",
+    }
+    pages = {new for _, new in render_overview.MOVED_PAGES}
+    for old, new in render_overview.MOVED_FILES:
+        assert Path(old).suffix == Path(new).suffix in {".md", ".pdf"}
+        assert str(Path(new).with_suffix(".html")) in pages, new
+
+
+def test_no_page_links_an_address_a_paper_used_to_have(
+    rendered: Callable[[str], str],
+) -> None:
+    """Every link on the site goes to a paper where it is served, never through a
+    forwarder: the bar, the cards, the Papers introduction, a result's overview, and
+    the reader documents, whose links to the site are written in full. A link to the
+    directory the optimality paper was in, to an old Markdown or PDF, and to the
+    deployed site's own old address are all found, which a pattern over the pages' paths
+    alone (`test_site_documents`) does not read."""
+    old = _old_addresses()
+    assert "explainer.html" in old
+    assert "n11-optimality/" in old
+    assert "https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf" in old
+    bodies = {name: rendered(name) for name in render_overview.PAGES}
+    bodies |= {
+        f"the overview of {result}": body
+        for result, body in site_renders.result_bodies().items()
+    }
+    for name, body in bodies.items():
+        links = {
+            html.unescape(link).partition("#")[0].partition("?")[0]
+            for link in re.findall(r'\b(?:href|src|data-pop-src|poster)="([^"]+)"', body)
+        }
+        assert not links & old, (name, sorted(links & old))
+    # The papers are linked, where they are served, from the pages that card them.
+    for name in ("index.html", "papers.html"):
+        for paper in (overview_sections.OPTIMALITY_PAPER, overview_sections.LOWER_BOUNDS_PAPER):
+            assert f'href="{paper}"' in bodies[name], (name, paper)
+
+
+def test_the_site_writes_its_forwarders_and_checks_them(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`render_overview` writes the forwarders with the pages, each in the directory its
+    old address was in, and `--check` holds them to a fresh render as it holds a page."""
+    page = render_overview.Page("index.html", "<p>page</p>")
+    monkeypatch.setattr(render_overview, "render_all", lambda: [page])
+    monkeypatch.setattr(render_overview, "result_fragments", list)
+    moved = [old for old, _ in render_overview.MOVED_PAGES]
+    assert [file.name for file in render_overview.render_site()] == ["index.html", *moved]
+    assert {"explainer.html", "n11-optimality/index.html"} < set(moved)
+    assert render_overview.main(["--output", str(tmp_path)]) == 0
+    assert sorted(
+        path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*") if path.is_file()
+    ) == sorted(["index.html", *moved])
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
+    (tmp_path / "explainer.html").write_text("an old page", encoding="utf-8")
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+    (tmp_path / "explainer.html").unlink()
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1

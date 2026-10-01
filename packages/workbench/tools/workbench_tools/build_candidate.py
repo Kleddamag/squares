@@ -1486,18 +1486,23 @@ KATEX_JS = KATEX_FONTS.parent / "katex.min.js"
 def katex_css() -> str:
     """KaTeX's stylesheets, through the explainer's own inliner.
 
-    **Reused rather than rewritten, and the reuse is the point.** `render_explainer.katex_css`
-    already does this for the paper: it takes kpress's two stylesheets in kpress's order,
-    inlines the faces the page can actually reach and drops the rest (every face is 30-40 kB),
-    and it includes `katex-text-face.css` -- the composite that draws the letters and digits of
-    mathematics from PT Serif and leaves the rest to the KaTeX faces. That composite is what
-    makes the paper's mathematics look like the paper rather than like generic KaTeX, and it is
-    exactly what the owner asked this panel to match. A second implementation here would have
-    been a second thing to keep in step with kpress, and would have got the visual match wrong
-    by leaving it out.
+    **Reused rather than rewritten, and the reuse is the point.**
+    `render_n11_lower_bounds_explainer.katex_css` already does this for the paper: it takes
+    kpress's two stylesheets in kpress's order, inlines the faces the page can actually reach
+    and drops the rest (every face is 30-40 kB), and it includes `katex-text-face.css` -- the
+    composite that draws the letters and digits of mathematics from PT Serif and leaves the rest
+    to the KaTeX faces. That composite is what makes the paper's mathematics look like the paper
+    rather than like generic KaTeX, and it is exactly what the owner asked this panel to match.
+    A second implementation here would have been a second thing to keep in step with kpress, and
+    would have got the visual match wrong by leaving it out.
     """
     rendered = subprocess.run(
-        (sys.executable, "-m", "devtools.render_explainer", "--emit-katex-css"),
+        (
+            sys.executable,
+            "-m",
+            "devtools.render_n11_lower_bounds_explainer",
+            "--emit-katex-css",
+        ),
         cwd=PACKING,
         check=False,
         capture_output=True,

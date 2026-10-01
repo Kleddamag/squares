@@ -53,7 +53,7 @@ from typing import Any
 import pytest
 from nodejs_wheel import node
 
-from devtools import bead_state, render_explainer
+from devtools import bead_state, render_n11_lower_bounds_explainer
 from sqpack.cli import validate
 from sqpack.yamlio import safe_load
 
@@ -286,35 +286,35 @@ DECLARED_SUPPRESSIONS = Counter(
             ),
         ): 1,
         (
-            "packing/devtools/templates/explainer-publication.css",
+            "packing/devtools/templates/paper-publication.css",
             (
                 "/* biome-ignore lint/style/noDescendingSpecificity: historical selector "
                 "order preserves the established KPress publication cascade. */"
             ),
         ): 29,
         (
-            "packing/devtools/templates/explainer-publication.css",
+            "packing/devtools/templates/paper-publication.css",
             (
                 "/* biome-ignore lint/complexity/noImportantStyles: this measured KPress "
                 "or print override needs to beat a vendor or inline declaration. */"
             ),
         ): 6,
         (
-            "packing/devtools/templates/explainer-publication.css",
+            "packing/devtools/templates/paper-publication.css",
             (
                 "/* biome-ignore lint/complexity/noImportantStyles: prepared math reserves "
                 "a measured inline box and KPress sets this dimension inline. */"
             ),
         ): 1,
         (
-            "packing/devtools/templates/explainer-publication.css",
+            "packing/devtools/templates/paper-publication.css",
             (
                 "/* biome-ignore lint/complexity/noImportantStyles: the paired baseline "
                 "correction must override the prepared inline value. */"
             ),
         ): 1,
         (
-            "packing/devtools/templates/explainer-publication.css",
+            "packing/devtools/templates/paper-publication.css",
             (
                 "/* biome-ignore lint/style/noDescendingSpecificity: credit emphasis "
                 "inherits the shared bold role after the broader support-text rules. */"
@@ -854,7 +854,7 @@ def test_the_node_toolchain_is_exactly_pinned_and_runtime_bounded() -> None:
 def test_the_root_typecheck_script_names_every_root_type_program() -> None:
     """The convenience command covers the same root programs as the official gate."""
     script = _jsonc(ROOT_PACKAGE)["scripts"]["typecheck"]
-    observed = set(re.findall(r"\btsc -p (tsconfig(?:\.[a-z-]+)?\.json)\b", script))
+    observed = set(re.findall(r"\btsc -p (tsconfig(?:\.[a-z0-9-]+)?\.json)\b", script))
     expected = {
         config.name
         for config in _tsconfigs()
@@ -1200,7 +1200,7 @@ def test_a_probe_cannot_see_a_foreign_groups_ambient_types(tmp_path: Path) -> No
 
 def test_the_explainer_shell_owns_no_inline_programs() -> None:
     """HTML is not a Biome/ESLint/tsc input, so every executable body comes from a file."""
-    source = render_explainer.TEMPLATE.read_text(encoding="utf-8")
+    source = render_n11_lower_bounds_explainer.TEMPLATE.read_text(encoding="utf-8")
     assert _literal_inline_scripts(source) == []
     placeholders = {
         match.group(1)
@@ -1210,13 +1210,13 @@ def test_the_explainer_shell_owns_no_inline_programs() -> None:
     assert placeholders == {
         "THEME_BOOTSTRAP",
         "KATEX_JS",
-        *render_explainer.INLINE_SCRIPT_ASSETS,
+        *render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS,
     }
 
 
 def test_a_literal_explainer_program_is_refused() -> None:
     """Negative control: a program written back into the HTML cannot escape the floor."""
-    source = render_explainer.TEMPLATE.read_text(encoding="utf-8")
+    source = render_n11_lower_bounds_explainer.TEMPLATE.read_text(encoding="utf-8")
     planted = source.replace("{{NATIVE_MATH_METRICS}}", "literal program", 1)
     assert _literal_inline_scripts(planted) == ["literal program"]
 

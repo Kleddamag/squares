@@ -2021,6 +2021,13 @@ def _known_best_atlas(context: Context) -> str:
     without changing the tier or moving a check. `known-best n=1..324 atlas rebuild` on
     the deferred surface is the rest, and `benchmarks/gate-cost-at-324/` retains the
     earlier readings.
+
+    The sample also holds the two composites to their own records, rebuilding neither
+    (`build_known_best_atlas.composite_findings`): each states the data commit it was
+    drawn from, so a re-pin leaves it right and no data commit redraws eight binaries,
+    while a composite drawn for an earlier version fails here until it is redrawn. A
+    composite that trails the pin has its trailing cards printed and passes
+    (`sqpack.release`, rule 5).
     """
     output = _command_groups(
         context,
@@ -2108,6 +2115,10 @@ def _known_best_atlas_rebuild(context: Context) -> str:
     instead is `known-best atlas records and sample`, which is the complement of this
     step and not a sample of it -- every record comparison, and a recorded slice of the
     per-case geometry this one re-derives whole.
+
+    Each composite is redrawn from the rebuilt corpus under its own record. While it
+    shows the pinned data the retained bytes must be that drawing; once the pin has
+    moved on, the parts that differ are printed and fail nothing until the next version.
     """
     output = _module(context, "devtools.build_known_best_atlas", "--check")
     _require_text(
@@ -3410,7 +3421,7 @@ _WORKBENCH_INPUTS = (
     "packing/src/sqpack/render/*",
     # The stage prints the shared version, pinned in `release.py`, so a re-pin changes the page.
     "packing/src/sqpack/release.py",
-    "packing/devtools/render_explainer.py",
+    "packing/devtools/render_n11_lower_bounds_explainer.py",
     # The site's navigation bar the published page carries, from the shared partial.
     "packing/devtools/render_overview.py",
     "packing/devtools/templates/site-nav.html",
@@ -4289,7 +4300,7 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_katex.py",
             "packing/devtools/node/check-katex.mjs",
             "packing/devtools/check_math_spans.py",
-            "packing/devtools/render_explainer.py",
+            "packing/devtools/render_n11_lower_bounds_explainer.py",
             "packing/pyproject.toml",
             "packing/uv.lock",
             "vendor/kpress",

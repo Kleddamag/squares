@@ -39,13 +39,14 @@ import pytest
 from PIL import Image
 
 from devtools import measure_site_pages as measure
-from devtools import render_explainer, render_overview
-from devtools import render_n11_optimality_explainer as paper
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools import render_n11_lower_bounds_explainer, render_overview
+from devtools import render_n11_optimality_review as paper
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
-TEMPLATES = Path(render_explainer.__file__).with_name("templates")
-EXPLAINER, PAPER = "explainer.html", "paper.html"
+TEMPLATES = Path(render_n11_lower_bounds_explainer.__file__).with_name("templates")
+#: The two papers as this module writes them into one directory, each under its slug.
+EXPLAINER, PAPER = "n11-lower-bounds-explainer.html", "n11-optimality-review.html"
 #: The site's own pages measured here: a long report, whose headings, tables and block
 #: quotes hold formulas, and the homepage, whose cards, chips and tables do.
 SITE_PAGES = ("tutorial.html", "index.html")
@@ -408,7 +409,7 @@ def test_the_summary_lists_each_roles_distinct_settings_with_their_pages() -> No
     rows = [row for row in measure.glyph_summary(pages) if row["role"] == "caption"]
     assert [(row["setting"], row["pages"]) for row in rows] == [
         (f"{sans} 410, 16.15/27", "index.html (1280)"),
-        (f"{sans} 410, 17.48/27", "explainer.html (1280), tutorial.html (1280)"),
+        (f"{sans} 410, 17.48/27", f"{EXPLAINER} (1280), tutorial.html (1280)"),
     ]
     math = [row for row in measure.glyph_summary(pages) if row["part"] == "math"]
     assert [(row["role"], row["setting"]) for row in math] == [
@@ -421,14 +422,20 @@ def test_every_shell_with_the_publication_stylesheet_carries_its_head_script() -
     stamps, so a shell that names one names the other, in its head, where it runs before
     the body paints; and both papers take the pair from one function."""
     shells = sorted(TEMPLATES.glob("*-shell.html"))
-    assert {shell.name for shell in shells} >= {"explainer-shell.html", paper.SHELL.name}
+    assert {shell.name for shell in shells} >= {
+        "n11-lower-bounds-explainer-shell.html",
+        paper.SHELL.name,
+    }
     carrying = [shell for shell in shells if "{{PUBLICATION_CSS}}" in shell.read_text("utf-8")]
-    assert {shell.name for shell in carrying} == {"explainer-shell.html", paper.SHELL.name}
+    assert {shell.name for shell in carrying} == {
+        "n11-lower-bounds-explainer-shell.html",
+        paper.SHELL.name,
+    }
     for shell in carrying:
         head = shell.read_text(encoding="utf-8").split("</head>", 1)[0]
         assert head.count("<style>{{PUBLICATION_CSS}}</style>") == 1, shell.name
         assert head.count("<script>{{NATIVE_MATH_METRICS}}</script>") == 1, shell.name
-    layer = render_explainer.publication_layer()
+    layer = render_n11_lower_bounds_explainer.publication_layer()
     assert set(layer) == {"PUBLICATION_CSS", "NATIVE_MATH_METRICS"}
     assert measure.NATIVE_METRICS in layer["PUBLICATION_CSS"]
     name = measure.NATIVE_METRICS.removeprefix("data-")
@@ -530,7 +537,9 @@ def site(chromium: None, tmp_path_factory: pytest.TempPathFactory) -> Path:  # n
     """The two papers and the site's own pages, rendered once, in one directory. The
     explainer is the unprepared page, which typesets in the client as the others do."""
     root = tmp_path_factory.mktemp("glyphs")
-    explainer = render_explainer.render(render_explainer.WALKTHROUGH).page
+    explainer = render_n11_lower_bounds_explainer.render(
+        render_n11_lower_bounds_explainer.WALKTHROUGH
+    ).page
     (root / EXPLAINER).write_text(explainer, encoding="utf-8")
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
@@ -539,7 +548,7 @@ def site(chromium: None, tmp_path_factory: pytest.TempPathFactory) -> Path:  # n
         revision="a" * 40,
     )
     (root / PAPER).write_text(html, encoding="utf-8")
-    script = render_explainer.publication_layer()["NATIVE_MATH_METRICS"]
+    script = render_n11_lower_bounds_explainer.publication_layer()["NATIVE_MATH_METRICS"]
     assert html.count(script) == 1
     (root / "unflagged.html").write_text(html.replace(script, ""), encoding="utf-8")
     for name in SITE_PAGES:

@@ -6,7 +6,7 @@ status: draft
 # N11 Optimality Explainer Citation and Documentation Review
 
 **Scope:** The complete T-060
-[article template](../../../packing/devtools/templates/n11-optimality-article.md).
+[article template](../../../packing/devtools/templates/n11-optimality-review-article.md).
 The opening and hero were edited separately under think-75cp; this pass changed
 citations only from “The Result” onward and reviewed the opening read-only.
 This is an editorial source audit, not another verification of the global proof.

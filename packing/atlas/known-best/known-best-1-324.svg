@@ -14,6 +14,8 @@
       <sqpack:value name="color-shade-scheme">contacts</sqpack:value>
       <sqpack:value name="color-shades-per-hue">5</sqpack:value>
       <sqpack:value name="columns">18</sqpack:value>
+      <sqpack:value name="data-date">2026-10-01</sqpack:value>
+      <sqpack:value name="data-revision">afd83121da989462650d9b39314e676c728fa7eb</sqpack:value>
       <sqpack:value name="first-n">1</sqpack:value>
       <sqpack:value name="generated-by">python -m devtools.build_known_best_atlas</sqpack:value>
       <sqpack:value name="last-n">324</sqpack:value>
@@ -26,8 +28,8 @@
   </metadata>
   <rect width="4224" height="4912" fill="#ffffff" />
   <text x="2112" y="76" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="48" font-weight="700" letter-spacing="1.5" fill="#17202a">324 BEST KNOWN SQUARE PACKINGS</text>
-  <polygon data-feature="release-star" points="1839.909,93.75714285714285714285714286 1842.529428571428571428571429,101.2934285714285714285714286 1850.505857142857142857142857,101.4568571428571428571428571 1844.148857142857142857142857,106.278 1846.459142857142857142857143,113.9145714285714285714285714 1839.909,109.3571428571428571428571429 1833.358857142857142857142857,113.9145714285714285714285714 1835.669142857142857142857143,106.278 1829.312142857142857142857143,101.4568571428571428571428571 1837.288571428571428571428571,101.2934285714285714285714286" fill="#a3123f" />
-  <text data-feature="release" x="1862.051857142857142857142857" y="114" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17202a">Including new results (September 28, 2026)</text>
+  <polygon data-feature="release-star" points="1864.479,93.75714285714285714285714286 1867.099428571428571428571429,101.2934285714285714285714286 1875.075857142857142857142857,101.4568571428571428571428571 1868.718857142857142857142857,106.278 1871.029142857142857142857143,113.9145714285714285714285714 1864.479,109.3571428571428571428571429 1857.928857142857142857142857,113.9145714285714285714285714 1860.239142857142857142857143,106.278 1853.882142857142857142857143,101.4568571428571428571428571 1861.858571428571428571428571,101.2934285714285714285714286" fill="#a3123f" />
+  <text data-feature="release" x="1886.621857142857142857142857" y="114" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17202a">Including new results (October 1, 2026)</text>
   <text data-feature="repository" x="2112" y="148" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17202a">github.com/jlevy/squares</text>
   <g data-feature="evidence-legend">
     <rect data-feature="evidence-badge" data-evidence="proved optimal" x="1186.836" y="4725" width="19" height="19" rx="4.5" fill="#5c6673" stroke="none" stroke-width="1.2" />

@@ -61,7 +61,7 @@ OUT = ROOT / "site/workbench"
 
 RENDER_INPUTS = (
     Path(__file__),
-    ROOT / "devtools/render_explainer.py",
+    ROOT / "devtools/render_n11_lower_bounds_explainer.py",
     ROOT / "src/sqpack/render",
     ROOT / "pyproject.toml",
     ROOT / "uv.lock",

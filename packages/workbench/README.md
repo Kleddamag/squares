@@ -206,7 +206,7 @@ of each `python -m` and `squares-workbench-*` command below.
    version is fixed before capture, never after.
    New data does not move it by itself: the stamp’s data revision names the data, and
    the version names an edition the owner cuts, at most one per merge, by
-   [Cutting an edition](../../development.md#publishing-the-explainer).
+   [Cutting an edition](../../development.md#cutting-an-edition).
    Ask the owner whether this re-cut goes out under the current version or a new one.
    A new one is cut and merged in its own pull request, and this procedure then starts
    from that merge.
@@ -308,11 +308,11 @@ of each `python -m` and `squares-workbench-*` command below.
    says why a player accepts it.
 
 9. **Open one pull request** with the poster from step 6 and these edits, then run
-   `python -m pytest tests/test_explainer.py`:
+   `python -m pytest tests/test_n11_lower_bounds_explainer.py`:
    - [`README.md`](../../README.md), the film paragraph under the atlas: each length
      (`2m 20s` from the receipt’s `seconds`) and size (`38 MB`, the file’s bytes over
      2²⁰), and the tag in its three links if it changed.
-   - [`explainer-article.md`](../../packing/devtools/templates/explainer-article.md),
+   - [`n11-lower-bounds-explainer-article.md`](../../packing/devtools/templates/n11-lower-bounds-explainer-article.md),
      Figure 2: the tag in its three release URLs and the full cut’s length (“runs 8m
      14s”).
    - The plan’s

@@ -76,12 +76,12 @@ DECLARED_CONSUMER_TREES = {
 }
 
 DECLARED_CONSUMERS = {
-    "packing/devtools/render_explainer.py": (
+    "packing/devtools/render_n11_lower_bounds_explainer.py": (
         "admits the solved n11 caption only when the case is proved, its exact lower "
         "identity matches the ceiling and T-060 confirmation is present; the ceiling "
         "alone and matching decimal displays do not establish s(11)"
     ),
-    "packing/tests/test_explainer.py": (
+    "packing/tests/test_n11_lower_bounds_explainer.py": (
         "tests the proved-case exact lower/ceiling identity and refuses missing T-060 "
         "confirmation or a changed root; rounded equality alone is not optimality"
     ),

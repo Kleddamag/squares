@@ -1067,7 +1067,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-253 | confirmed | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  | 8s wall |
 | H-254 | confirmed | proof | The proposed three-variable endpoint equality chart, including its exp |  | 1 |  | 1s wall |
 | H-255 | confirmed | proof | The two exact n17 chart polynomials have a unique real root in the fix |  | 1 |  | 1s wall |
-| H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 |  | 43s wall |
+| H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 | T-065 | 43s wall |
 | H-257 | confirmed | proof | At the accepted H255 root and H256 centroid packing, all owner-axis al |  | 1 |  | 42s wall |
 | H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |

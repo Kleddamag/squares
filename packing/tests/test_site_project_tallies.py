@@ -29,7 +29,7 @@ import pytest
 
 from devtools import overview_data, overview_sections, render_overview
 from devtools.overview_sections import Cited, ProjectTally, project_order, project_tallies
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 from sqpack.yamlio import safe_load
 from tests import site_renders
@@ -240,7 +240,7 @@ def test_a_tally_link_selects_exactly_its_projects_rows(
     assert '<label hidden>At significance <select data-filter="s" data-preset>' in bar
     # The bar's own controls keep their order, and the preset-only ones follow them.
     order = re.findall(r'data-filter="([a-z]+)"', bar)
-    own = ["s", "v", "c", "kind", "standing", "current", "source", "n", "date"]
+    own = ["s", "v", "c", "kind", "status", "current", "source", "n", "date"]
     assert order == [*own, "project", "s"]
 
 

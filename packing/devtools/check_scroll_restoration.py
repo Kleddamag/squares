@@ -19,7 +19,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Literal, TypedDict
 
-from devtools.render_explainer_pdf import PAGE
+from devtools.render_n11_lower_bounds_explainer_pdf import PAGE
 from sqpack.probes import applied, probe
 
 
@@ -66,15 +66,20 @@ class _QuietHandler(SimpleHTTPRequestHandler):
 
 @contextmanager
 def served_page(path: Path) -> Iterator[str]:
-    """Serve the original directory so relative publication assets still resolve."""
-    handler = partial(_QuietHandler, directory=str(path.resolve().parent))
+    """Serve the page from where it sits in the site, so its relative publication assets
+    still resolve: the page is a level below the site's root (`papers/`), and reaches the
+    atlas's files a level up. So the directory above the page's is what is served, and
+    the page is asked for under its own directory's name."""
+    page = path.resolve()
+    handler = partial(_QuietHandler, directory=str(page.parent.parent))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
         from urllib.parse import quote  # noqa: PLC0415
 
-        yield f"http://127.0.0.1:{server.server_port}/{quote(path.name)}"
+        address = f"{quote(page.parent.name)}/{quote(page.name)}"
+        yield f"http://127.0.0.1:{server.server_port}/{address}"
     finally:
         server.shutdown()
         server.server_close()

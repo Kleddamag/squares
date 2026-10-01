@@ -25,7 +25,7 @@ from typing import Any
 
 import pytest
 
-from devtools.render_explainer import derive
+from devtools.render_n11_lower_bounds_explainer import derive
 from devtools.render_verifiable_claim import main as render_claims
 from devtools.render_verifiable_claim import perturbations, render_claim
 

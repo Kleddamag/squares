@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-kpress-viewport data-kpress-theme="system" data-kpress-resolved-theme="light"
+      data-kpress-palette="neutral" data-kpress-prose-font="serif" data-kpress-math-text="prose"
+      data-kpress-mono-font="{{MONO_FONT}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="generator" content="kpress">
+<!-- The page's identity and what a shared link shows: the title, the description, the
+     canonical link and the Open Graph and Twitter sets, from the one definition every
+     page of the site writes its head from (`render_overview.head_tags`). Everything the
+     page itself loads is inlined or relative, because it has to open the same way from
+     a file, from Pages and from an artifact host; these are the exception, and they are
+     not loads. A crawler reads them off the markup with no base to resolve against, so
+     each URL is absolute, and no browser fetches any of them to display the page. The
+     image is the site's one card, the homepage's packing drawn at 1200 by 630
+     (`devtools.social_card`), served at the site's root. -->
+{{PAGE_HEAD}}
+{{SITE_FAVICON}}
+<style>{{KPRESS_CSS}}</style>
+<!-- The relation, the approximation sign and the arrow, subset out of KaTeX_Main and
+     declared on the sans families the page already ships. Source Sans 3 carries none of
+     the three, so without these the reader's own machine draws them: a different face
+     for every reader, and outline paths in the PDF. See `relation_face_css`. -->
+<style>{{RELATION_CSS}}</style>
+<!-- The text tokens every page of the site shares: type base, reading measure, heading
+     scale, the paper's roles, and the site's own faces. See templates/paper-type.css. -->
+<style>{{PAPER_TYPE_CSS}}</style>
+<!-- The site's navigation bar, shared with every other page of the site and hidden in
+     print. See templates/site-nav.css. -->
+<style>{{SITE_NAV_CSS}}</style>
+<script>{{THEME_BOOTSTRAP}}</script>
+<script>{{SITE_EMBED}}</script>
+<script>{{NATIVE_MATH_METRICS}}</script>
+<style>{{PUBLICATION_CSS}}</style>
+<style>
+/* Print shows one certificate, always the one the page opens on, so a printed copy
+   does not depend on what the reader last clicked. The rest of the page's styles
+   are templates/paper-publication.css, above; this rule stays here because it
+   names the page's default certificate. */
+@media print {
+  .cert-figure[data-cert="{{DEFAULT_SLUG}}"][hidden] { display: block !important; }
+  .cert-figure:not([data-cert="{{DEFAULT_SLUG}}"]) { display: none !important; }
+}
+</style>
+</head>
+<body>
+<main class="kpress-page-main kpress-viewport">
+{{SITE_NAV}}
+<div class="kpress kpress-doc kpress-prose cert-page">
+{{BODY_HTML}}
+<p class="col colophon centred">{{COLOPHON}}</p>
+</div>
+
+</main>
+<script>{{SITE_THEME}}</script>
+<script>{{KATEX_JS}}</script>
+<script>{{RESERVE_MATH}}</script>
+<script>{{KPRESS_CLIENT_SCRIPT}}</script>
+<script>{{DIAGRAM_LABEL_SCRIPT}}</script>
+<script>{{EXPLAINER_PAGE_SCRIPT}}</script>
+<!--BEGIN:SCRIPT-->
+<script>{{CERTIFICATE_SCRIPT}}</script>
+<!--END:SCRIPT-->
+<script>{{FINISH_MATH}}</script>
+</body>
+</html>

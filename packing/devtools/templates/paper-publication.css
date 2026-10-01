@@ -1,0 +1,1556 @@
+/* ============================================================
+   This page on top of the kpress design system.
+
+   Everything typographic -- the reading measure, the type ramp, headings,
+   lists, code, the color roles and both themes -- comes from the kpress
+   stylesheets above. What follows is only what kpress has no component for:
+   the certificate's figures and the two interactive panels. Every value here
+   is a kpress token, so the figures move with the system rather than beside
+   it.
+   ============================================================ */
+
+/* This standalone article scrolls the document, so the browser preserves its
+   reading position on reload and history traversal. KPress also supports host
+   panes, but its pane reset would leave the document at scroll position zero.
+   Keep main's width-query container without creating a second scroll context. */
+html,
+body {
+  height: auto;
+  overflow: visible;
+}
+.kpress-page-main.kpress-viewport {
+  block-size: auto;
+  overflow: visible;
+}
+
+/* One accent, everywhere. kpress ships a separate link blue and sets it on
+   `:root`, on `.kpress`, and again per theme and palette on attribute selectors,
+   all of which outrank `body`; the popovers it appends carry `.kpress-tooltip`
+   and their own resolved-theme attribute. Redeclare the token in the same
+   places kpress does, so links and controls inside those popovers resolve the
+   same accent as the surrounding page. */
+:root,
+.kpress,
+.kpress-page-main,
+.kpress-tooltip,
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme],
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-palette][data-kpress-resolved-theme],
+body {
+  --kpress-doc-link: var(--kpress-doc-accent);
+  --color-primary-light: var(--kpress-doc-accent);
+}
+/* kpress declares `--kpress-doc-accent` once, for both themes, and gives
+   `--kpress-doc-link` a value per theme. Aliasing the link to the accent above
+   therefore took the light teal into dark mode as well, where it measured 3.37:1 on
+   the page ground against the 4.5:1 AA needs -- every link on the page, plus the
+   footnote references and the pressed chooser label at 2.99:1 and 3.07:1 on their
+   tinted grounds. The accent is what carries the alias, so the accent is what gains a
+   dark value: the same hue and chroma lifted to the lightness kpress's own dark link
+   uses, which brings everything that reads the accent up together rather than fixing
+   links and leaving the borders and the range control behind. Scoped exactly as kpress
+   scopes its own dark tokens, on the resolver's output attribute, so an explicit
+   choice and the system default both land here. */
+:root:where([data-kpress-resolved-theme="dark"]),
+:where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
+  --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
+}
+/* The reading measure (forty of the base) and the h2 scale (1.2) are in paper-type.css,
+   shared with every page of the site. */
+.cert-page {
+  padding-block-end: calc(var(--kpress-font-size-base) * 6);
+}
+/* Paper typography profile; see paper-design.md beside this template.
+   Keep the values and their scope together for review upstream to KPress:
+   a 19px sans base against 18px prose, regular 410, medium 550, bold 680.
+   Captions and footnotes share a slightly smaller size than figure labels.
+   Print keeps the same size ratio.
+   Scope the bold token to sans components because KPress also uses it for serif
+   emphasis. Diagram labels with explicit SVG weights join the same scale.
+
+   Three weights and no others, which is the rule rather than the tally: one bold
+   everywhere in the sans, one medium everywhere, one light for supporting text.
+   `sans_instances --weights` lists what the page asks for in both media with the
+   declaration behind each request, and it is how a fourth weight is found. Two used
+   to be there: the caption label sat at the medium while the title credits were bold,
+   and the footnote controls at KPress's literal 600, which is neither token. */
+/* The values, and the `--paper-*` role scales, are in paper-type.css, shared with every
+   page of the site; this page reads them under its own names. */
+:root {
+  --cert-font-scale-sans: var(--paper-font-scale-sans);
+  --cert-font-weight-sans-light: var(--kpress-font-weight-sans-regular);
+  --cert-font-weight-sans-medium: var(--paper-font-weight-sans-medium);
+  --cert-font-weight-sans-bold: var(--paper-font-weight-sans-bold);
+}
+/* Resolve the sans base in the prose scope so nested sans components all use
+   the same size instead of multiplying the scale at each level. */
+:root,
+.cert-page {
+  --cert-font-size-sans-base: calc(var(--kpress-font-size-base) * var(--cert-font-scale-sans));
+  --paper-font-size-support: calc(var(--cert-font-size-sans-base) * var(--paper-support-scale));
+  --paper-font-size-note: calc(var(--cert-font-size-sans-base) * var(--paper-note-scale));
+  --paper-support-color: var(--kpress-doc-muted);
+}
+.cert-page
+  :is(
+    .credits,
+    .kpress-figcaption,
+    .kpress-footnotes,
+    .colophon,
+    .mass-line,
+    .panel,
+    .tip-panel,
+    .caps,
+    .tag,
+    button,
+    .doc-links .chip,
+    .hero h1,
+    .hero .subtitle
+  ),
+.kpress-tooltip {
+  --kpress-font-size-base: var(--cert-font-size-sans-base);
+  --kpress-font-size-normal: var(--kpress-font-size-base);
+  --kpress-font-size-large: calc(var(--kpress-font-size-base) * 1.2);
+  --kpress-font-size-small: calc(var(--kpress-font-size-base) * 0.95);
+  --kpress-font-size-smaller: calc(var(--kpress-font-size-base) * 0.9);
+  --kpress-font-size-tiny: calc(var(--kpress-font-size-base) * 0.85);
+  --kpress-caps-label-size: calc(
+    var(--kpress-font-size-smaller) *
+    var(--kpress-caps-heading-size-multiplier)
+  );
+}
+.cert-page .panel {
+  font-size: var(--kpress-font-size-normal);
+}
+.cert-page .hero h1 {
+  font-size: calc(var(--cert-font-size-sans-base) * var(--paper-title-scale));
+}
+.cert-page,
+.kpress-tooltip {
+  --kpress-font-weight-sans-light: var(--cert-font-weight-sans-light);
+  /* The medium is mapped at this scope rather than at the sans components' because it
+     is the same 550 KPress already uses, so nothing the page does not own can change
+     under it; naming it here is what lets every medium on the page read as a token. */
+  --kpress-font-weight-sans-medium: var(--cert-font-weight-sans-medium);
+}
+.cert-page
+  :is(
+    .credits,
+    .kpress-figcaption,
+    .kpress-footnotes,
+    .colophon,
+    .mass-line,
+    .panel,
+    .tip-panel,
+    .line-fig,
+    .chart,
+    button
+  ),
+.kpress-tooltip {
+  --kpress-font-weight-sans-bold: var(--cert-font-weight-sans-bold);
+  font-weight: var(--cert-font-weight-sans-light);
+}
+/* Diagram labels carry their weight as an SVG presentation attribute, because that is
+   what an `<svg>` written by `render_n11_lower_bounds_explainer` can say about one `<text>`. The two
+   numbers it emits are markers, not weights: they select the scale's medium and its
+   bold here, so a token moves them with everything else. */
+.cert-page :is(.line-fig, .chart) [font-weight="550"] {
+  font-weight: var(--kpress-font-weight-sans-medium);
+}
+.cert-page :is(.line-fig, .chart) [font-weight="650"] {
+  font-weight: var(--cert-font-weight-sans-bold);
+}
+.cert-page a,
+.cert-page .kpress-footnote-ref a,
+.cert-page a.kpress-footnote-backref,
+.cert-page a:hover,
+.kpress a.kpress-footnote-backref:hover,
+.kpress-tooltip a,
+.kpress-tooltip a:hover,
+.kpress-tooltip .kpress-footnote-nav-link {
+  color: var(--kpress-doc-accent);
+}
+.cert-page a,
+.kpress-tooltip a {
+  text-decoration: none;
+}
+
+/* Supporting text shares its family, weight and color in both media.
+   KPress's print text-role reset below turns the inherited gray into black. */
+.cert-page
+:is(.kpress-figcaption, .kpress-footnotes, .mass-line, .line-fig, .chart, .panel, .tip-panel),
+.cert-page
+  figure
+  :is(.caps, .hint, .legend, .kv, .val, .mass-val, .mass-dec, .verdict, .tag, button) {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--paper-font-size-support);
+  font-weight: var(--cert-font-weight-sans-light);
+  line-height: var(--paper-support-leading);
+  color: var(--paper-support-color);
+}
+.cert-page :is(.kpress-figcaption, .kpress-footnotes) {
+  font-size: var(--paper-font-size-note);
+  padding-inline: var(--paper-note-inset);
+}
+.cert-page :is(.kpress-figcaption, .kpress-footnotes) strong {
+  color: inherit;
+}
+/* Sources, not controls: the ↑ after each footnote is kpress's footnote control and
+   keeps the control styling (accent here, through the link alias above). */
+.cert-page :is(figure, .kpress-footnotes) a:not(.kpress-footnote-backref),
+.cert-page :is(figure, .kpress-footnotes) a:not(.kpress-footnote-backref):hover {
+  color: var(--paper-support-color);
+  text-decoration: none;
+}
+.cert-page :is(.kpress-figcaption, .kpress-footnotes, .mass-line, .panel) .katex {
+  color: inherit;
+}
+.cert-page .kpress-footnotes code {
+  color: inherit;
+}
+.cert-page :is(.line-fig, .chart) svg text {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--paper-diagram-font-size, var(--paper-font-size-support));
+  fill: var(--paper-support-color);
+}
+.cert-page figure .figure-note {
+  font: inherit;
+  color: inherit;
+  margin-block: 0.25rem 0;
+}
+.cert-page figure .verdict.ok {
+  color: var(--kpress-doc-accent);
+}
+.cert-page figure .verdict.no {
+  color: var(--cert-below);
+}
+/* Diagram geometry scales with its viewport; the shared script compensates
+   label sizes. Narrow screens scroll the diagram instead of shrinking its text. */
+.cert-page :is(.line-fig, .chart) {
+  overflow-x: auto;
+  margin-block-end: 0;
+}
+.cert-page :is(.line-fig, .chart) svg {
+  min-width: calc(var(--paper-font-size-support) * 34);
+}
+@media print {
+  .cert-page a,
+  .cert-page a:hover {
+    text-decoration: none;
+  }
+  .cert-page :is(.line-fig, .chart) {
+    overflow: visible;
+  }
+  /* Fix the drawing width before pagination so label compensation sees the
+     same viewport as the PDF: Letter text column minus figure side padding. */
+  .cert-page :is(.line-fig, .chart) svg {
+    min-width: 0;
+    width: calc(8.5in - 2 * var(--kpress-print-page-margin) - 2.2rem);
+  }
+}
+
+/* The footnote controls -- the reference in the body, the arrow back from each source,
+   the tooltip's next and previous -- at the scale's medium. KPress sets all three from
+   one literal 600, which is neither of this page's tokens and was the page's fourth sans
+   weight: two instanced faces in the PDF for thirty superscript figures. 550 is 50 units
+   below it and still reads as a mark rather than as body text at the 0.75em these run
+   at; if a control ever needs more presence than that, the answer is the bold token and
+   not a number between the two.
+
+   The tooltip's link is named at KPress's own specificity and comes later in the
+   cascade, which is how it wins; the two in the page win on `.cert-page`. */
+.cert-page .kpress-footnote-ref a,
+.cert-page a.kpress-footnote-backref,
+.kpress-tooltip .kpress-footnote-nav-link {
+  font-weight: var(--kpress-font-weight-sans-medium);
+}
+
+/* One transition for every hover and every replaced readout: the site's one hover
+   timing (site-nav.css, paper-design.md Motion), fast and the same everywhere. The
+   scripts set `.swap` on a readout whose text they replace, so it fades in rather than
+   flicking. */
+.cert-page a,
+.cert-page button,
+.cert-page .verdict,
+.cert-page .mass-dec,
+.cert-page .kpress-footnote-ref a,
+.cert-page a.kpress-footnote-backref {
+  transition:
+    color var(--site-hover-duration) var(--site-hover-easing),
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    border-color var(--site-hover-duration) var(--site-hover-easing);
+}
+@keyframes cert-swap {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.cert-page .swap {
+  animation: cert-swap 160ms ease-out;
+}
+/* The two footnote anchors are named again rather than left to `.cert-page a`: a
+   media query adds no specificity, so the transition above at (0,2,1) would outrank
+   this rule's (0,1,1) and keep running for a reader who asked for no motion. It is
+   also a render hazard -- a transition caught in flight is one of the three things
+   that make the PDF export draw the page differently twice (D-490). */
+@media (prefers-reduced-motion: reduce) {
+  .cert-page a,
+  .cert-page button,
+  .cert-page .verdict,
+  .cert-page .mass-dec,
+  .cert-page .swap,
+  .cert-page .kpress-footnote-ref a,
+  .cert-page a.kpress-footnote-backref {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Prose keeps the kpress measure; figures are allowed a wider track. The
+   Markdown body has no column wrappers, so every direct child of the page and
+   of an article takes the measure unless it is a figure. kpress indents a list
+   with a margin, which the measure resets; the indent comes back as padding
+   inside the measured box, so a list's text is narrower by the same amount. */
+.cert-page > :is(ul, ol) {
+  box-sizing: border-box;
+  padding-inline-start: 1.8rem;
+}
+.cert-page > :not(figure, .cert-figure, .kpress-figure),
+.col {
+  margin-inline: auto;
+  max-width: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
+}
+.cert-page figure {
+  margin-inline: auto;
+  margin-block: calc(var(--kpress-font-size-base) * 1.8) 0;
+  max-width: calc(var(--kpress-measure) + 14rem);
+  border: 1px solid var(--kpress-doc-border);
+}
+
+/* A section label, in the kpress caps idiom. */
+.caps {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-caps-label-size);
+  font-weight: var(--kpress-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  text-transform: var(--kpress-caps-transform);
+}
+/* A section starts with room above its heading, so it reads as a new step. */
+.section-head {
+  margin-block: calc(var(--kpress-font-size-base) * 2.6) 0.9rem;
+  text-align: center;
+}
+/* A section starts with room above its heading and a breath below it. */
+.cert-page h2 {
+  margin-block: var(--paper-section-space) var(--paper-section-space-below);
+  text-align: center;
+}
+/* A box holds discrete statements rather than continuous argument, so its
+   paragraphs stand a little further apart than running prose, which kpress sets at
+   0.75rem. One rule serves both boxes on the page, the five conditions and the
+   contradiction, so they cannot drift into two rhythms.
+
+   The conditions were a bulleted list and are now paragraphs. The bold lead already
+   numbers and names each one, so a marker beside it said the same thing twice, and
+   losing the list's hanging indent lets each condition start on the measure with
+   everything else. `.conditions ol` and `.conditions li` styled an ordered list this
+   page had stopped emitting; they are gone with it. */
+.cert-page .boxed-text {
+  margin-block: calc(1rem + 0.5lh);
+}
+.cert-page .boxed-text p {
+  margin-block: 0.95rem;
+}
+.intro .section-head {
+  margin-block-start: 0;
+}
+
+.hero {
+  padding-block-start: calc(var(--kpress-font-size-base) * 3);
+}
+/* The heading is set in caps by kpress; its math run, `n = 11`, is mathematics and keeps
+   both mathematical italic and lowercase rather than inheriting the heading transform.
+   It also stays on one line: KaTeX allows a break after a relation, and at phone width
+   the title ended one line on `n =` and began the next with `11`. */
+.hero h1 .tex {
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+/* Prepared math reserves its full measured ascent and descent. In the title, a math
+   run's 1.27-1.30em profile reservations (measured on `s(11)`, which the title once
+   carried; `n = 11` reserves 1.20-1.27em) are taller than the heading's 1.05
+   line-height and can push Figure 1 onto the next printed page. Both profiles keep a
+   0.9123em ascent, so this limits only the invisible inline box while leaving the 1em
+   glyphs in the same painted position: 1.05 - 0.9123 = 0.1377em below the baseline. */
+.hero h1 .squares-math-box {
+  /* biome-ignore lint/complexity/noImportantStyles: prepared math reserves a measured inline box and KPress sets this dimension inline. */
+  height: 1.05em !important;
+  /* biome-ignore lint/complexity/noImportantStyles: the paired baseline correction must override the prepared inline value. */
+  vertical-align: -0.138em !important;
+}
+/* Mathematical relations set in a sans line: `≥` in the title and the certificate
+   buttons, `≈` in two captions and in the chart labels, `→` in Figure 7's label.
+   Source Sans 3 carries none of the three, so the browser used to resolve them to
+   whatever family on the reader's machine had them.
+
+   That was drawn as a weight bug first. The hero is set at 550 and CSS weight matching
+   searches upward from anything above 500, so the fallback family, offering 400 and
+   700, answered with Bold: one bold character in a semibold line, 18% heavier in stroke
+   and up to twice the ink of the digits beside it, from DejaVu Sans Bold in the printed
+   file while every other glyph on the line came from Source Sans 3. A `.rel { 400 }`
+   class fixed the weight and left the family to the host, and the three treatments
+   compared then -- the host sans at 400, the page's own KaTeX_Main, and the whole line
+   set as mathematics -- picked the host sans, because it is drawn like the digits beside
+   it and a Computer Modern relation is a hairline against Source Sans.
+
+   The rule that the page resolves every run to a face it ships retires that choice: a
+   glyph from the reader's machine is a different glyph for every reader, and on macOS
+   the PDF writes it as outline paths. Setting the whole title as mathematics would
+   hand the relation and bound to formula-specific glyph selection, spacing, and weight
+   rather than the established title typography, so the relation comes from KaTeX_Main,
+   subset to those three code points and declared on the sans families themselves
+   (`relation_face_css`) rather than named by a class. The title's `s(11)` is separately
+   set as mathematics, where the italic `s` carries meaning, while the relation and
+   value remain part of the sans title line. The relation face also reaches the chart
+   labels and the caption prose, which no class did.
+
+   KaTeX_Main-Bold, not Regular, and the comparison is the reason. Measured with
+   `compare_math_fonts metrics`, in units of a thousandth of an em, the rule thickness of
+   the minus -- which is the bar every relation here is drawn on -- is 40 in
+   KaTeX_Main-Regular and 60 in its Bold, against Source Sans 3's own 62 at the 410 the
+   captions run at and 78 at the 550 of the title. Bold lands within 3% of the sans at
+   410 and at 77% of it at 550; Regular is at 65% and 51%, which is the hairline the
+   earlier comparison saw. One face for all of them, declared across the whole weight
+   range, so the relation cannot change weight between the title and a caption the way
+   the host's fallback did -- the same rule as one bold in the sans.
+
+   Scaled to 70% by `size-adjust`, because a mathematics face draws its relations for a
+   mathematics line and this one's `≈` is 1.7 times the size of the arithmetic beside it:
+   `RELATION_SIZE_ADJUST` carries the measurements and what the scale costs. Scaling takes
+   the stroke down with the width, so the sign is lighter than the sans's own `=` at every
+   size. That is the price of the rule, and it is stated rather than hidden: the route it
+   replaces gave a different relation to every reader.
+
+   `.rel` is gone with the class-based fix: it marked three of the sites and the face
+   reaches all of them. */
+/* Under the title: the description in sans caps, a step below the title's
+   size, then the deck in the prose face, italic. */
+.cert-page .hero .subtitle {
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: calc(var(--cert-font-size-sans-base) * var(--paper-subtitle-scale));
+  font-style: normal;
+  font-variant-caps: var(--kpress-caps-variant);
+  font-weight: var(--kpress-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  line-height: 1.2;
+  margin-block: 0.5rem 0;
+  text-transform: var(--kpress-caps-transform);
+}
+/* `.centred` is the page's one word for "this block is centred, in every medium".
+   It exists because the print block left-aligns prose wholesale, and the elements that
+   must escape that need to be nameable in one place: the rule there carves them out by
+   `:not(.centred)` and `check_print_layout` holds them to it. The hero's `h1` is named
+   separately because a Markdown heading carries no class of its own.
+   The hero is centred -- title and credits; the deck below reads as prose. */
+.centred,
+.cert-page .hero h1 {
+  text-align: center;
+}
+.credits {
+  display: grid;
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--kpress-font-size-normal);
+  gap: 0.2rem;
+  line-height: 1.45;
+  margin-block: 2rem 2.2rem;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: credit emphasis inherits the shared bold role after the broader support-text rules. */
+.credits strong {
+  font-weight: var(--kpress-font-weight-sans-bold);
+}
+.credits .publication-date {
+  margin-block-start: 1lh;
+}
+.cert-page .hero .deck {
+  font-family: var(--kpress-font-prose);
+  font-style: italic;
+  margin-block: 0;
+}
+/* Where this page came from and how to take it away, at the top corner and out of
+   the way. Chips rather than prose: they are tools, not part of the argument. */
+.doc-links {
+  display: flex;
+  float: inline-end;
+  gap: 0.4rem;
+  margin-block-start: 0.15rem;
+  margin-inline-start: 1rem;
+}
+.doc-links .chip {
+  align-items: center;
+  border: 1px solid var(--kpress-doc-border);
+  border-radius: var(--kpress-radius-sm);
+  color: var(--kpress-doc-muted);
+  display: inline-flex;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-tiny);
+  font-weight: var(--kpress-font-weight-sans-medium);
+  gap: 0.3rem;
+  letter-spacing: 0.02em;
+  /* `normal`, not `1`, and the padding is what it is because of that.
+
+     `line-height: 1` makes the line box 15.3px while the sans content area at that size
+     is 17.28px. The half-leading is then negative, and negative leading is not shared
+     evenly the way positive leading is -- ascent and descent are not symmetric about the
+     em box -- so the text sat 0.65px above the chip's centre: 2.11px of space over it and
+     3.41px under. Small, and a reader saw it.
+
+     A line box at least as tall as the content area centres exactly, so the height comes
+     back from the padding instead: `normal` gives a 23.98px content area, and 0.11rem
+     either side puts the chip at 27.50px against the 27.52px it had. Measured after:
+     2.75px above, 2.75px below, offset 0. `check_print_layout` holds it there. */
+  line-height: normal;
+  padding: 0.11rem 0.5rem;
+  text-decoration: none;
+}
+.doc-links .chip:hover {
+  background: var(--kpress-doc-surface-hover);
+  border-color: var(--kpress-doc-accent);
+  color: var(--kpress-doc-accent);
+  /* kpress underlines a link on hover, which is right for a link in a sentence and
+     wrong for a bordered chip: the rule lands inside the box and reads as a defect.
+     The chip already answers the hover with its border, its ground and its colour,
+     all three on the site's one hover timing. */
+  text-decoration: none;
+}
+.doc-links .chip svg {
+  display: block;
+}
+/* On screen the page's first block is the source chips' row, a little below the bar's
+   rule, and the hero starts the site's shared `--site-page-top` below that row
+   (site-nav.css), as every page's title does; print keeps the space above.
+   These follow the hero's, the credits' and the chips' own rules above, which they
+   adjust on screen. */
+@media screen {
+  .cert-page .doc-links {
+    margin-block-start: 0.5rem;
+  }
+  .hero {
+    clear: both;
+    padding-block-start: var(--site-page-top);
+  }
+  .cert-page .hero h1 {
+    margin-block-start: 0;
+  }
+  /* The credits start a little further under the title on screen than in print. */
+  .cert-page .hero .credits {
+    margin-block-start: 2.25rem;
+  }
+}
+
+/* The deck is a div so its footnote renders; the paragraph inside keeps its edges. */
+.cert-page .hero .deck > p {
+  margin-block: 0;
+}
+
+/* The certificate switch sits at the foot of every figure it changes; the articles
+   are whole documents, so they are hidden outright. */
+/* Wrapping, because the two buttons are 148px and 176px and the page's scroller
+   clips rather than scrolls: at 320px they spilled about five pixels off each edge and
+   the labels were cut. They fit on one line from 360px up, which is where wrapping
+   costs nothing. */
+.cert-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: center;
+}
+.cert-toggle button {
+  white-space: nowrap;
+}
+.intro {
+  margin-block-start: 1.6rem;
+}
+/* The atlas rendering is inlined: its ground and strokes take the page's
+   theme, and its own caption is replaced by the figure's. */
+.trump a {
+  display: block;
+  width: min(100%, 24rem);
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.trump svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.trump svg rect[fill="#ffffff"] {
+  fill: var(--kpress-doc-bg);
+}
+.trump svg [stroke="#000000"] {
+  stroke: var(--kpress-doc-text);
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.trump svg text {
+  display: none;
+}
+.cert-figure[hidden] {
+  display: none;
+}
+/* Separate the closing credit with whitespace. Qualify the selector so its
+   margins take precedence over kpress's paragraph rules in both media. */
+.cert-page .colophon {
+  border-block-start: 0;
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-tiny);
+  margin-block: 4rem 0;
+  padding-block-start: 0;
+}
+
+/* KPress paints a 0.226em square. Keep its actual height: the old glyph-era
+   height:1lh stretched that square into a full-line vertical bar.
+
+   The item's resolved line-height keeps the marker's lh tied to the first text
+   line. Centre the square there, then lower its optical centre by 0.04 of the
+   body base: 0.72px at the 18px screen size and 0.64px at the 16px print size.
+   In the shipped PT Serif outlines, the A and E crossbars are centred 0.262em
+   and 0.357em above the baseline. The adjusted prose marker sits between them,
+   about 0.32em above the baseline in both media. */
+.cert-page.kpress-prose ul > li {
+  line-height: 1lh;
+}
+.cert-page.kpress-prose ul > li::before {
+  height: 0.226em;
+  top: calc(0.5lh - 0.113em + var(--kpress-font-size-base) * 0.04);
+}
+
+.line-fig {
+  padding: 1.3rem 1.1rem 0.4rem;
+}
+/* `.kpress-diagram svg` sets display, height and centring; these figures also
+   need full width and labels allowed outside the viewBox. */
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.line-fig svg,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.chart svg {
+  overflow: visible;
+  width: 100%;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.line-fig svg text,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .chart
+  svg
+  text {
+  fill: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+}
+
+/* Figure chrome. The figure carries no title: the caption names it, and repeating
+   the number above the frame said the same thing twice. What the head did carry that
+   the caption cannot is the certificate chooser, which belongs with the diagram it
+   changes, so it sits at its foot. */
+.fig-choose {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  display: flex;
+  justify-content: center;
+  padding: 0.7rem 1.1rem;
+}
+.tag {
+  background: color-mix(in srgb, var(--kpress-doc-accent) 12%, transparent);
+  border-radius: var(--kpress-radius-sm);
+  color: var(--kpress-doc-accent);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-tiny);
+  font-weight: var(--kpress-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  padding: 0.05rem 0.4rem;
+}
+/* Pure charts and packing drawings need no outer box. Composite apparatus uses the
+   same hairline as its internal panel so its diagram, readout and controls read as one
+   figure.
+
+   Caption padding keeps borderless figures inset from the measure, so a reader can see
+   where the figure ends and the prose resumes. */
+.cert-page .kpress-figure {
+  border: 0;
+}
+.cert-page .kpress-figure.apparatus {
+  border: 1px solid var(--kpress-doc-border);
+}
+.cert-page .kpress-figcaption {
+  border-block-start: 0;
+  margin-block-start: 0;
+  padding-block: 0.85rem 1rem;
+}
+/* The "Figure N." prefix is the caption label. It uses the title-credit bold so a
+   reader scanning for Figure 7 can find it; the condition and caption text stay at the
+   caption's regular weight. */
+.cert-page .kpress-figcaption strong {
+  font-weight: var(--kpress-font-weight-sans-bold);
+}
+
+/* The mass budget. */
+.mass-line {
+  color: var(--kpress-doc-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-tiny);
+  gap: 1rem;
+  justify-content: space-between;
+  margin-block-start: 0.6rem;
+  padding: 0 1.1rem 0.9rem;
+}
+.mass-line .v {
+  display: block;
+  margin-block-start: 0.15rem;
+}
+
+/* The two interactive stages. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(14rem, 1fr);
+}
+/* Figures sit on the page's own ground, and the canvases take the room the
+   figure track gives them. */
+.stage {
+  align-items: center;
+  background: var(--kpress-doc-bg);
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem;
+  position: relative;
+}
+/* A canvas is 40% of a phone's viewport height and there are three of them, so what
+   it does with a touch decides whether the page can be read on a phone at all. The
+   blanket `touch-action: none` here took every gesture: a 250px upward swipe starting
+   on a canvas scrolled the page 0px, against 338px for the same swipe two centimetres
+   to the left, leaving 26px of gutter either side as the only way past three dead
+   zones. Keep vertical scrolling on the canvases; only the small native rotation
+   handles capture a two-axis touch gesture. The atom field, which only taps,
+   restricts nothing. */
+.stage canvas {
+  display: block;
+  height: auto;
+  max-width: 42rem;
+  width: 100%;
+}
+/* The film under the atlas. Sized like a canvas, and its box is settled before a byte of
+   video arrives: the `width`/`height` attributes give the intrinsic 16:9, the poster is a
+   frame of the film at that same ratio, and `aspect-ratio` holds it if either is missing.
+   Without them a `preload="none"` player is drawn at the 300x150 default and then jumps to
+   1920x1080 when someone presses play (the owner, 2026-09-22). */
+.stage video.film {
+  aspect-ratio: 16 / 9;
+  background: var(--kpress-doc-text);
+  display: block;
+  height: auto;
+  max-width: 42rem;
+  width: 100%;
+}
+.stage canvas.draggable {
+  cursor: grab;
+  touch-action: pan-y;
+}
+.stage canvas.draggable:active {
+  cursor: grabbing;
+}
+/* The atom readout: a fixed panel beside the canvas, in the sans face. */
+.tip-panel {
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-small);
+  line-height: 1.5;
+}
+.tip-panel .tip-w {
+  color: var(--kpress-doc-muted);
+  display: block;
+  margin-block-start: 0.1rem;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.panel {
+  border-inline-start: 1px solid var(--kpress-doc-border);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--kpress-font-sans);
+  gap: 1.1rem;
+  padding: 1.1rem;
+}
+@media (max-width: 52rem) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+  /* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .panel {
+    border-block-start: 1px solid var(--kpress-doc-border);
+    border-inline-start: 0;
+  }
+}
+
+.readout {
+  padding: 0.2rem 0 0.7rem;
+}
+.readout .caps {
+  display: block;
+  margin-block-end: 0.5rem;
+}
+.mass-val {
+  align-items: center;
+  display: flex;
+  font-size: calc(var(--kpress-font-size-base) * 1.9);
+  line-height: 1.1;
+  min-height: 2.4em;
+}
+.mass-row {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.7rem;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.mass-dec {
+  color: var(--kpress-doc-text);
+  font-size: var(--kpress-font-size-large);
+}
+/* Figure 5 needs room for a mass fraction and three separate direction values.
+   Keep its controls below the drawing even on a wide screen. */
+.prover .split {
+  display: block;
+}
+.prover .stage canvas {
+  max-width: 36rem;
+}
+.prover .panel {
+  border-inline-start: 0;
+  border-block-start: 1px solid var(--kpress-doc-border);
+  text-align: left;
+}
+.prover .readout,
+.prover .ctl {
+  text-align: center;
+}
+.prover .mass-row {
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+.cert-page .prover .mass-val {
+  font-size: var(--kpress-font-size-large);
+  min-height: 0;
+}
+.prover .mass-val .katex {
+  white-space: nowrap;
+}
+.prover .ctl {
+  align-items: center;
+  gap: 0.8rem;
+}
+.prover input[type="range"] {
+  max-width: 34rem;
+}
+.prover .direction-values {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem 1.6rem;
+}
+.prover :is(.math-item, .mass-dec) {
+  display: inline-block;
+  white-space: nowrap;
+}
+.prover .btns {
+  justify-content: center;
+}
+.prover .shading-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+.prover .shading-toggle input {
+  accent-color: var(--kpress-doc-accent);
+}
+.prover .legend {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+}
+.prover .control-status {
+  border-inline-start: 2px solid var(--kpress-doc-accent);
+  padding-inline-start: 0.8rem;
+}
+.prover .fig-choose {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.prover .fig-choose > .screen-only {
+  display: block;
+}
+.prover [hidden] {
+  display: none;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.verdict {
+  border-radius: var(--kpress-radius-sm);
+  display: inline-block;
+  font-size: var(--kpress-font-size-tiny);
+  font-weight: var(--kpress-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  margin-block-start: 0.6rem;
+  padding: 0.1rem 0.4rem;
+  text-transform: var(--kpress-caps-transform);
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.verdict.ok {
+  background: color-mix(in srgb, var(--kpress-doc-accent) 12%, transparent);
+  color: var(--kpress-doc-accent);
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.verdict.no {
+  background: color-mix(in srgb, var(--cert-below) 16%, transparent);
+  color: var(--cert-below);
+}
+.verdict.out {
+  background: var(--kpress-doc-code-bg);
+  color: var(--kpress-doc-muted);
+}
+
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.ctl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.ctl .val {
+  color: var(--kpress-doc-text);
+  font-size: var(--kpress-font-size-tiny);
+  line-height: 1.6;
+}
+.cert-page input[type="range"] {
+  accent-color: var(--kpress-doc-accent);
+  margin: 0;
+  width: 100%;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.cert-page button {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border-hairline);
+  border-radius: var(--kpress-radius-sm);
+  color: var(--kpress-doc-text);
+  cursor: pointer;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-tiny);
+  padding: 0.3rem 0.55rem;
+}
+/* The theme's dark surface-hover is mostly muted text, which washes out a
+   button's pale label. Tint the document ground instead. */
+.cert-page button:hover {
+  background: color-mix(in srgb, var(--kpress-doc-text) 10%, var(--kpress-doc-bg));
+}
+.cert-page button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--kpress-doc-accent) 12%, transparent);
+  border-color: var(--kpress-doc-accent);
+  color: var(--kpress-doc-accent);
+}
+/* A visible native target works before hover and keeps touch rotation local.
+   Its position follows the canvas, while its hit area stays finger-sized. */
+.cert-page figure .rotation-handle {
+  align-items: center;
+  background: var(--kpress-doc-bg);
+  border: 2px solid var(--cert-probe);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--kpress-doc-bg);
+  box-sizing: border-box;
+  color: var(--cert-probe);
+  cursor: grab;
+  display: flex;
+  font-size: 25px;
+  height: 44px;
+  justify-content: center;
+  line-height: 1;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+  position: absolute;
+  touch-action: none;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  width: 44px;
+}
+.cert-page .rotation-handle:hover {
+  background: color-mix(in srgb, var(--cert-probe) 12%, var(--kpress-doc-bg));
+}
+.cert-page .rotation-handle:focus-visible {
+  outline: 2px solid var(--kpress-doc-accent);
+  outline-offset: 3px;
+}
+.cert-page .rotation-handle[data-dragging] {
+  cursor: grabbing;
+}
+.cert-page .rotation-handle[hidden] {
+  display: none;
+}
+.hint {
+  color: var(--kpress-doc-muted);
+  font-size: var(--kpress-font-size-tiny);
+  line-height: 1.55;
+  margin: 0;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.legend {
+  color: var(--kpress-doc-muted);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--kpress-font-size-tiny);
+  gap: 0.3rem;
+}
+.legend > span {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+.legend i {
+  display: block;
+  flex: none;
+  height: 0.7rem;
+  width: 0.9rem;
+}
+
+.kv {
+  align-items: baseline;
+  display: grid;
+  font-size: var(--kpress-font-size-tiny);
+  gap: 0.3rem 0.9rem;
+  grid-template-columns: auto 1fr;
+}
+.kv dt {
+  color: var(--kpress-doc-muted);
+}
+.kv dd {
+  margin: 0;
+  text-align: end;
+}
+.kv dd.hi {
+  color: var(--cert-probe);
+}
+
+.chart {
+  padding: 0.5rem 1.1rem 0.4rem;
+}
+
+/* One role kpress has no token for: the square the reader drags, which must
+   read as a separate instrument from the mass it measures. */
+:root {
+  /* The type base, 18px, is paper-type.css's, shared with every page of the site. */
+  --cert-probe: oklch(55% 0.145 52);
+  --cert-below: #e26e82;
+  --cert-near: #c9a13a;
+  --cert-probe-wash: color-mix(in srgb, var(--cert-probe) 14%, transparent);
+  --cert-accent-wash: color-mix(in srgb, var(--kpress-doc-accent) 12%, transparent);
+}
+:root:where([data-kpress-resolved-theme="dark"]) {
+  --cert-probe: oklch(76% 0.13 60);
+}
+
+/* Keep an inline result, its punctuation and its source reference together. */
+.math-reference {
+  white-space: nowrap;
+}
+
+/* Every outer formula uses its surrounding text size, including displays and
+   saved system-font settings. KaTeX still controls scripts and large operators
+   inside that em. Override the stock face's legacy display-size compensation. */
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.cert-page .katex,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.kpress-tooltip .katex {
+  /* biome-ignore lint/complexity/noImportantStyles: this measured KPress or print override needs to beat a vendor or inline declaration. */
+  font-size: inherit !important;
+}
+
+/* Published math reserves widths in em. Linux Chromium's hinted advances can
+   round each glyph to a whole pixel, so a width measured there is wrong on
+   another platform or at another size. Override KaTeX's explicit `auto` for
+   both preparation and reading, including print. */
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.kpress .katex,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.kpress-tooltip .katex {
+  text-rendering: geometricPrecision;
+}
+/* On macOS, geometricPrecision also disables native hinting and visibly lightens
+   the unchanged PT Serif and Source Sans glyphs. CoreText already gives linear
+   advances under auto; the preparation guard verifies them at 16x as well. */
+@media screen {
+  html[data-squares-native-math-metrics] .kpress .katex,
+  html[data-squares-native-math-metrics] .kpress-tooltip .katex {
+    text-rendering: auto;
+  }
+}
+
+/* Measured bases reserve ascent and descent too. Empty inline carriers must not
+   add a font-dependent strut when a fallback face changes, especially in print's
+   tighter lines. Preparation copies each base's measured height and depth onto
+   its existing KaTeX strut, which also fixes the glyph baseline when print
+   changes the font size. */
+.kpress [data-kpress-math-prepared="true"] .katex,
+.kpress [data-kpress-math-prepared="true"] .katex-html {
+  /* biome-ignore lint/complexity/noImportantStyles: this measured KPress or print override needs to beat a vendor or inline declaration. */
+  line-height: 0 !important;
+}
+.kpress [data-kpress-math-prepared="true"] .base {
+  /* biome-ignore lint/complexity/noImportantStyles: this measured KPress or print override needs to beat a vendor or inline declaration. */
+  line-height: 0 !important;
+}
+
+/* Math is held until KaTeX has typeset it, so no raw TeX flashes. */
+/* Saved preferences are stamped in the head. Select their measured math before
+   first paint; inactive variants occupy no space and are never hydrated. */
+.squares-math-variant {
+  display: none;
+}
+html:not([data-kpress-font-set="system"]):not([data-kpress-prose-font="sans"])
+  .squares-math-variant[data-squares-math-contexts~="custom-serif"],
+html:not([data-kpress-font-set="system"])[data-kpress-prose-font="sans"]
+  .squares-math-variant[data-squares-math-contexts~="custom-sans"],
+html[data-kpress-font-set="system"]:not([data-kpress-prose-font="sans"])
+  .squares-math-variant[data-squares-math-contexts~="system-serif"],
+html[data-kpress-font-set="system"][data-kpress-prose-font="sans"]
+  .squares-math-variant[data-squares-math-contexts~="system-sans"] {
+  display: inline;
+}
+/* The head bootstrap marks pending enhancement and clears it on failure. Without
+   JavaScript, raw TeX remains legible alongside KPress's semantic MathML. */
+html[data-kpress-math-pending]
+:is(.tex, .tex-d, [data-kpress-math-prepared="true"]):not([data-squares-math-ready="true"]) {
+  visibility: hidden;
+}
+/* Once startup has queued a wrapper, the root watchdog cannot expose it before
+   its render runs. Include native MathML and descendants with explicit visibility. */
+.kpress [data-squares-math-queued],
+.kpress [data-squares-math-queued] * {
+  /* biome-ignore lint/complexity/noImportantStyles: this measured KPress or print override needs to beat a vendor or inline declaration. */
+  visibility: hidden !important;
+}
+/* Wide equations scroll sideways; the block keeps headroom for fractions, since
+   overflow-x: auto also clips vertically and the display margin is zeroed. */
+.tex-d {
+  margin-block: 1.1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.45rem;
+}
+.tex-d .katex-display {
+  margin: 0;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.caps .katex,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.fig-title .katex,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.legend .katex,
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.hint .katex {
+  text-transform: none;
+}
+/* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+.caps .katex {
+  letter-spacing: 0;
+}
+/* ============================================================
+   Print. kpress prints a document well: page margins, 11pt type,
+   forced-light tokens, break rules for headings, figures, boxes and
+   display math, hidden buttons and popovers. It cannot know this page
+   carries canvases, control panels and a figure chooser, so what
+   follows is only what kpress does not cover.
+   ============================================================ */
+@media print {
+  /* Nothing on paper can be dragged, hovered or chosen. The buttons kpress
+     already hides; these are the rest of the apparatus, including the empty
+     rule the chooser would otherwise leave under every figure. */
+  /* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .panel,
+  .fig-choose,
+  .cert-page input[type="range"],
+  /* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .screen-only,
+  .cert-page figure .rotation-handle {
+    display: none;
+  }
+
+  /* Paper keeps inline code's Planetaire metrics and text role without drawing the
+     screen chip behind it. Only decoration changes, so family, color, size, weight,
+     baseline and wrapping continue to come from kpress and the surrounding role. */
+  .cert-page code:not(pre code) {
+    background: transparent;
+    border: 0;
+  }
+
+  /* Stack the printable figure body and cap canvases so their captions fit. */
+  .split {
+    display: block;
+  }
+  .stage canvas {
+    max-height: 3.2in;
+    width: auto;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  .trump a {
+    width: min(100%, 3in);
+  }
+  .cert-page figure img {
+    max-height: 6.5in;
+    width: auto;
+    max-width: 100%;
+  }
+
+  /* The hundred-packing atlas gets a page of its own. With 0.75in vertical
+     margins, its full six-inch width leaves room for the caption. Remove the
+     stage's side padding and the old height cap that narrowed the graphic. */
+  .cert-page .stage:has(img[src$="known-best-1-100.svg"]) {
+    padding-inline: 0;
+  }
+  .cert-page .stage > a:has(img[src$="known-best-1-100.svg"]) {
+    width: 100%;
+  }
+  .cert-page figure img[src$="known-best-1-100.svg"] {
+    max-height: none;
+    width: 100%;
+  }
+
+  /* Link targets are deliberately not spelled out after each link: a URL set in
+     the middle of a sentence breaks the line badly and reads worse than the
+     sentence it interrupts. The footnotes carry the sources, and the colophon
+     carries the repository. */
+
+  /* kpress forces its light tokens on `:root` and `.kpress`, which leaves the
+     page's own main element and this page's one extra token on their dark
+     values. A dark-mode reader would otherwise print prose on a dark ground
+     and lose the Figure 7 threshold line entirely. */
+  .kpress-page-main {
+    --kpress-doc-bg: oklch(100% 0 0);
+    --kpress-doc-border: oklch(78.26% 0 0);
+    background: oklch(100% 0 0);
+    color-scheme: light;
+  }
+  /* Print prose, captions, labels and the colophon in solid black. Reset both
+     text roles at every KPress scope so screen theme tokens cannot shadow them. */
+  :root,
+  .kpress,
+  .kpress-page-main,
+  .kpress-tooltip,
+  :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme],
+  :is(
+    .kpress,
+    .kpress-page-main,
+    .kpress-tooltip
+  )[data-kpress-palette][data-kpress-resolved-theme] {
+    --kpress-doc-muted: #000;
+    --kpress-doc-text: #000;
+    color: var(--kpress-doc-text);
+  }
+  :root {
+    --cert-probe: oklch(55% 0.145 52);
+  }
+
+  /* The accent, which the block above forgot. The dark rule near the top of this sheet
+     lifts `--kpress-doc-accent` to L=76.68% so links clear 4.5:1 on a dark ground; the
+     print reset puts the ground back to white and left the accent where it was, so a
+     dark-mode reader printed #6ec5bc links on paper at 2.02:1 against the 5.47:1 the
+     light accent gives. Restored to kpress's own light value.
+
+     Declared on the same elements the dark rule names, including the attribute form at
+     (0,2,0). Putting it on `.kpress-page-main` alone would be shadowed by the dark
+     rule's own declaration on `.kpress` -- exactly how the print type size went missing
+     two rules down. */
+  :root,
+  .kpress,
+  .kpress-page-main,
+  .kpress-tooltip,
+  :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme] {
+    --kpress-doc-accent: oklch(51.09% 0.0861 186.4);
+  }
+
+  /* Legend chips carry their meaning in colour alone, so they keep it even
+     when the reader prints without background graphics. */
+  .legend i {
+    border: 1px solid currentColor;
+    print-color-adjust: exact;
+  }
+
+  /* The title block is a title page. */
+  .intro {
+    break-before: page;
+  }
+
+  /* Inline math is hidden until KaTeX finishes; on paper it should fall back
+     to its source rather than to nothing. */
+  /* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .tex,
+  .tex-d {
+    visibility: visible;
+  }
+
+  /* Unrounded advances. This is what made the serif text look loose and, worse,
+     uneven. Chromium's default `text-rendering: auto` rounds every glyph advance
+     to a whole CSS pixel at layout time and then writes that rounded position
+     into the PDF: measured here, 98.44% of the 11,177 glyph moves in the printed
+     file sat on integers. At the print size the rounding is not small. PT Serif
+     at 11pt is 14.6667px, where the word space gains 12.3% and `i` and `l` gain
+     13.3% while the comma and the full stop lose about 10% -- a spread of 1.395px,
+     or 9.5% of an em, between adjacent gaps. The true metrics are identical to the
+     screen's; a sweep across 9pt to 14pt puts 11pt at the worst of the range.
+     `geometricPrecision` is the only value that turns linear metrics on, it
+     inherits, so one declaration covers prose, captions, tables, code and KaTeX,
+     and being print-only it leaves the screen's hinted rendering alone. */
+  .kpress {
+    text-rendering: geometricPrecision;
+  }
+
+  /* Quotation marks used to be overridden here. kpress borrowed Georgia's into the PT
+     Serif stack through a `LocalPunct` @font-face whose `src` was `local("Georgia")`,
+     so on the Mac and Windows machines most readers print from, every apostrophe and
+     quotation mark came from a face the reader happened to own -- at its own metrics,
+     and impossible to embed in the PDF. This scope replaced the prose stack for print
+     to keep that out of the printed page.
+
+     kpress ships the marks now (`KPress Quotes`, six glyphs of Source Serif 4 at about
+     700 bytes, leading the prose stack through `--kpress-font-punctuation`), so the
+     override would do the opposite of what it was for: naming the stack again would
+     drop the shipped face and send print back to PT Serif's own marks. It is gone, and
+     `render_n11_lower_bounds_explainer_pdf --fonts` is what holds the result -- no Georgia in the
+     export, and `KPressQuotes` embedded. */
+
+  /* Ragged right. kpress justifies printed prose and asks for automatic
+     hyphenation to keep the lines even, but hyphenation needs dictionaries the
+     printing engine may not carry: headless Chromium has none, so `hyphens: auto`
+     is inert there and justification has nothing to stretch but the word spaces.
+     Even word spacing is worth more here than a straight right edge.
+
+     `!important` and the wider selector are deliberate. kpress's rule and this one
+     have the same specificity, so this one wins on nothing but the order the two
+     stylesheets are inlined in; a kpress release that adds `!important` or narrows
+     its selector to `.kpress-prose p` would silently restore justification. The
+     extra elements are not justified by kpress today and cost nothing to name.
+
+     What is centred by design carries `.centred` and is carved out of the selector
+     rather than restated after it. Restating it is what shipped the bug: the exemption
+     was `.colophon { text-align: center !important }` at (0,1,0) against this rule's
+     (0,2,0), both `!important` in one stylesheet, so the more specific one won and the
+     colophon printed flush left. An exemption that has to out-shout the rule it exempts
+     is a race the rule can win; an exemption the rule does not match is not a race at
+     all, which is why this one is written with `:not()`. `:is()` takes the specificity
+     of its most specific argument -- all type selectors here -- so the selector is
+     (0,2,1) and the `!important` still stands against a kpress bump.
+
+     `check_print_layout` holds `.centred` to its word in both media. */
+  .kpress :is(p, li, blockquote, dd, dt, figcaption, td, th, caption):not(.centred) {
+    /* biome-ignore lint/complexity/noImportantStyles: this measured KPress or print override needs to beat a vendor or inline declaration. */
+    text-align: left !important;
+  }
+
+  /* Carving `.centred` out of the rule above is only half of it: kpress justifies
+     printed prose itself, so a block this page excuses from the left-align rule lands
+     on the vendor's `justify` instead of on its own centring, which is (0,1,0) and
+     loses. This is the restatement the rule above refuses to be, and the difference is
+     that it is not exempting anything from a rule beside it -- the two selectors cannot
+     match the same element -- it is beating a stylesheet we do not control, which is
+     what the ragged-right rule above already uses `!important` for. */
+  .kpress .centred {
+    /* biome-ignore lint/complexity/noImportantStyles: this measured KPress or print override needs to beat a vendor or inline declaration. */
+    text-align: center !important;
+  }
+
+  /* kpress breaks words anywhere inside an ordered list so a long token cannot
+     overflow. With no hyphen to mark the break it reads as a typo. `overflow-wrap`
+     stays, so a URL too long for the measure still wraps -- at a boundary. */
+  /* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .kpress ol > li > * {
+    word-break: normal;
+  }
+
+  /* The measure, which is what "the margins look wrong" turned out to mean.
+
+     Measured across the document rather than estimated, median characters per full body
+     line, over the paragraphs that carry no inline math -- a KaTeX span sits at its own
+     top, so counting distinct line tops in a paragraph containing one counts more lines
+     than the paragraph has, and an earlier pass that did not exclude them read 45 where
+     the answer was 64:
+
+       0.70in / 11pt   6.94in column   102 chars   11 pages
+       1.00in / 11pt   6.30in column    94 chars   12 pages   <- was here
+       1.25in / 11pt   5.84in column    80 chars
+       1.25in / 12pt   5.84in column    64 chars   13 pages   <- is here
+
+     The margin alone cannot fix this. Going 0.7in to 1in bought eight characters and
+     cost a page, and 94 is still far outside the 45 to 75 that reads comfortably. It is
+     a type size decision wearing a margin's clothes, so both move.
+
+     The two rows that matter are the last two, and they are the same margin: the type
+     size is what carries the measure from 80 into the band. That is worth stating
+     plainly because the first version of this change did not deliver it. The margin
+     took effect and the type size did not (see the rule below), so the document shipped
+     at 1.25in and 11pt -- the 80-character row -- while the row underneath it, the one
+     this comment argued for, was labelled 12pt and had never been rendered. The 80
+     figure was real; only its label was wrong.
+
+     `size` is declared because the exporter passes `preferCSSPageSize`, which makes
+     this rule the one that decides the paper. Declaring `size` WITHOUT that flag is the
+     trap: Chromium then centres the CSS page box on the API's paper and leaves dead
+     bands around it. The two belong together and are commented at both ends. */
+  @page {
+    size: Letter;
+    margin-top: 0.75in;
+    margin-bottom: 0.75in;
+  }
+  .cert-page {
+    padding-block-end: 0;
+  }
+  .cert-page .hero {
+    padding-block-start: 0.25in;
+  }
+  .cert-page h2 {
+    margin-block: calc(var(--kpress-font-size-base) * 1.5) 0.75rem;
+  }
+  .cert-page .colophon {
+    margin-block-start: 1.5rem;
+  }
+  /* Keep reading-guide groups together and set their short entries compactly. */
+  #further-reading + ul {
+    font-size: var(--kpress-font-size-small);
+  }
+  #further-reading + ul > li {
+    break-inside: avoid;
+  }
+  #further-reading + ul ul {
+    margin-block-end: 0;
+  }
+  #further-reading + ul ul > li {
+    margin-block-start: 0.3rem;
+  }
+  /* Keep an equation with the prose introducing it, and short lists intact. */
+  /* biome-ignore lint/style/noDescendingSpecificity: historical selector order preserves the established KPress publication cascade. */
+  .cert-page p {
+    break-inside: avoid;
+  }
+  .cert-page p:has(+ .kpress-math-display, + ul) {
+    break-after: avoid;
+  }
+  .cert-page p + .kpress-math-display {
+    break-before: avoid;
+  }
+  .cert-page > ul:not(:has(ul)) {
+    break-inside: avoid;
+  }
+  /* On `.kpress` as well as `:root`, and that is the whole of why the type size moved.
+     kpress declares both tokens on `:root, .kpress, .kpress-page-main, .kpress-tooltip`
+     and then reads the size back on `.kpress` -- `font-size: var(--kpress-print-font-size)`
+     -- so a declaration only at the root is shadowed by kpress's own on the element that
+     consumes it, and inheritance never gets a turn. The margin escaped this because
+     `@page { margin: var(--kpress-print-page-margin) }` resolves at the root, where
+     nothing shadows it. So the first version of this rule shipped 1.25in margins around
+     11pt type, half of a change whose whole argument was that the two move together, and
+     set the folio -- also resolved at the root -- one step larger than the body it
+     numbers. Measured in the PDF before the fix: body 11.00pt, folio 12pt. */
+  :root,
+  .kpress {
+    --kpress-print-page-margin: 1.25in;
+    --kpress-print-font-size: 12pt;
+  }
+
+  /* The running foot carries the folio and nothing else.
+
+     kpress puts its own credit in `@bottom-left` on every page -- `--kpress-print-footer`
+     is the string "Formatted by KPress" -- and the page number in `@bottom-right`. The
+     credit is right for a page kpress publishes and wrong for a paper: it is the same
+     eighteen characters under all thirteen pages, saying at the foot of the argument what
+     the colophon already says once at the end of it. The folio stays, because a paper's
+     pages need numbering.
+
+     Chromium 141 supports margin boxes and `@page :first` -- verified, not assumed; the
+     advice that Blink ignores them is out of date. */
+  @page {
+    @bottom-left {
+      content: none;
+    }
+    @bottom-left {
+      color: #000;
+    }
+    @bottom-right {
+      color: #000;
+      vertical-align: top;
+      padding-top: 0.15in;
+    }
+  }
+
+  /* No folio on the title page either: it already carries the publication dates and the
+     repository, and a page number under a title block reads as a body page. */
+  @page :first {
+    @bottom-right {
+      content: none;
+    }
+  }
+
+  /* The footnotes are the paper's sources, not an aside, so they are set in the text
+     colour rather than the muted one kpress gives them. */
+  .cert-page .kpress-footnotes {
+    color: var(--kpress-doc-text);
+    margin-block-start: 1rem;
+    padding-block-start: 0.5rem;
+  }
+  /* Replace both print list margins so the source list leaves room for its colophon. */
+  .cert-page .kpress-footnotes > ol {
+    margin-block: 0.5rem 0;
+  }
+  .cert-page .kpress-footnotes ol > li {
+    margin-block: 0.25rem 0;
+  }
+
+  /* Their numbers in the sans the entries are set in. kpress replaces the list marker in
+     print with `content: counter(...)` on `li::before` and sets that in
+     `--kpress-font-prose`, which is right for a numbered list inside serif prose and
+     wrong here: the footnote block is sans throughout, so its own numbers were the one
+     serif thing in it. Scoped to the footnotes for that reason -- an ordered list in the
+     body keeps serif figures, because the text beside them is serif. */
+  .cert-page .kpress-footnotes ol > li::before {
+    font-family: var(--kpress-font-sans);
+    font-feature-settings: var(--kpress-font-features-sans);
+  }
+
+  /* The footnote references in the body, in the sans they wear on screen. kpress prints
+     them in the prose face as small-cap figures at 400 -- a quiet treatment for prose
+     that cites rarely. This paper cites in most paragraphs, and each reference is a
+     signpost to the sources block, which is sans throughout; the prose-face figure sat
+     a little too close to the digits of the text around it. The weight is the screen's,
+     and the screen's is now the scale's medium, set once for both media in the rule
+     above rather than repeated here as a number. No chip in print; kpress's print rule
+     already removes it.
+
+     kpress prints every superscript at 110% of the text, a compensation for the
+     small-cap figure it sets the reference in, which is short. A sans figure at that
+     size and weight stood taller than the capitals beside it; a superscript's own
+     size, 0.75em, puts it back where a reference mark belongs. */
+  .cert-page sup.kpress-footnote-ref {
+    font-size: 0.75em;
+  }
+  .cert-page .kpress-footnote-ref a {
+    font-family: var(--kpress-font-sans);
+    font-feature-settings: var(--kpress-font-features-sans);
+    font-variant-caps: normal;
+  }
+}

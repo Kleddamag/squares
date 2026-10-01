@@ -48,8 +48,8 @@ from pathlib import Path
 
 from devtools import rung_scale
 from devtools.overview_sections import HERO_CASE
-from devtools.render_explainer import kpress_static
 from devtools.render_frontier_page import packing_svg
+from devtools.render_n11_lower_bounds_explainer import kpress_static
 from devtools.render_overview import (
     OUTPUT,
     PROJECT_NAME,

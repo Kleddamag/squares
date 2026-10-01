@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
 """Decide which of the published site's builds a pull request has to run and check.
 
-The Pages workflow publishes one artifact assembled from four builds: the explainer at
-`/explainer.html`, the site's own pages (the overview at `/` and the pages
-`render_overview.PAGES` puts beside it), the workbench at `/workbench/`, and the T-060
-article at `/n11-optimality/`. Until 2026-09-15 every pull request that touched the
-explainer's or the workbench's paths paid for both. #178 changed ten workbench probe
-files and ran about 330 s of explainer Chromium checks on a page whose bytes it could
-not change; an explainer-only
+The Pages workflow publishes one artifact assembled from four builds: the two papers
+under `/papers/`, each by its slug (the lower-bounds explainer at
+`/papers/n11-lower-bounds-explainer.html` and the optimality review at
+`/papers/n11-optimality-review.html`), the site's own pages (the overview at `/` and the
+pages `render_overview.PAGES` puts beside it, with the forwarders at the papers' old
+addresses), and the workbench at `/workbench/`. A half that is a paper is named by the
+paper's slug, with underscores where a workflow output cannot carry a hyphen. Until
+2026-09-15 every pull request that touched the explainer's or the workbench's paths paid
+for both. #178 changed ten workbench probe files and ran about 330 s of explainer
+Chromium checks on a page whose bytes it could not change; an explainer-only
 change paid for the workbench build the same way.
 
 This tool is what lets each half run only on its own inputs. For each half it takes:
 
 * the builder's own declaration of what a render reads -- `RENDER_INPUTS` in
-  `devtools/render_explainer.py` for the explainer, in `workbench_tools/build_site.py`
-  for the workbench and in `devtools/render_n11_optimality_explainer.py` for the T-060
-  article, and `inputs()` in `devtools/render_overview.py` for the site's own pages (its
-  `RENDER_INPUTS` and the record `overview_data.INPUTS` names). Read live from those
-  modules rather than copied here, because a copy is a second list that drifts, and the
-  builders' lists already have tests that keep them honest
-  (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
+  `devtools/render_n11_lower_bounds_explainer.py` for the explainer, in
+  `workbench_tools/build_site.py` for the workbench and in
+  `devtools/render_n11_optimality_review.py` for the T-060 article, and `inputs()` in
+  `devtools/render_overview.py` for the site's own pages (its `RENDER_INPUTS` and the record
+  `overview_data.INPUTS` names). Read live from those modules rather than copied here, because a
+  copy is a second list that drifts, and the builders' lists already have tests that keep them
+  honest (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
 * every developer tool and test the workflow's jobs for that half run, read out of
   `pages.yml` itself, with the modules those tools import from this repository. A checker
   is an input of the verdict even though it is not an input of the page: editing
@@ -83,10 +86,10 @@ _NOT_ON_PULL_REQUESTS = re.compile(
 )
 
 
-def _explainer_inputs() -> tuple[Path, ...]:
-    from devtools import render_explainer  # noqa: PLC0415
+def _lower_bounds_explainer_inputs() -> tuple[Path, ...]:
+    from devtools import render_n11_lower_bounds_explainer  # noqa: PLC0415
 
-    return tuple(render_explainer.RENDER_INPUTS)
+    return tuple(render_n11_lower_bounds_explainer.RENDER_INPUTS)
 
 
 def _workbench_inputs() -> tuple[Path, ...]:
@@ -101,19 +104,19 @@ def _overview_inputs() -> tuple[Path, ...]:
     return render_overview.inputs()
 
 
-def _optimality_inputs() -> tuple[Path, ...]:
-    from devtools import render_n11_optimality_explainer  # noqa: PLC0415
+def _optimality_review_inputs() -> tuple[Path, ...]:
+    from devtools import render_n11_optimality_review  # noqa: PLC0415
 
-    return tuple(render_n11_optimality_explainer.RENDER_INPUTS)
+    return tuple(render_n11_optimality_review.RENDER_INPUTS)
 
 
 #: Each half, and the builder declaration it starts from, in the order the workflow's
 #: outputs and summary use.
 BUILDER_INPUTS: Mapping[str, Callable[[], tuple[Path, ...]]] = {
-    "explainer": _explainer_inputs,
+    "n11_lower_bounds_explainer": _lower_bounds_explainer_inputs,
     "workbench": _workbench_inputs,
     "overview": _overview_inputs,
-    "optimality": _optimality_inputs,
+    "n11_optimality_review": _optimality_review_inputs,
 }
 
 
@@ -241,7 +244,8 @@ def _imported_modules(path: Path) -> set[str]:
             names.update(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
             names.add(node.module)
-            # `from devtools import render_explainer_pdf as pdf` imports a module too.
+            # `from devtools import render_n11_lower_bounds_explainer_pdf as pdf` imports a
+            # module too.
             names.update(f"{node.module}.{alias.name}" for alias in node.names)
     return {name for name in names if name.split(".")[0] in LOCAL_PACKAGES}
 

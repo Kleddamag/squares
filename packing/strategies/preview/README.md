@@ -6,7 +6,7 @@ mirrors that shape:
 
 | path | what | built by |
 | --- | --- | --- |
-| `/` | the explainer | `devtools/render_explainer.py`, in CI |
+| `/` | the explainer | `devtools/render_n11_lower_bounds_explainer.py`, in CI |
 | `/workbench/` | the workbench, its own address | the v2 spike generator |
 | `/atlas/` | the slideshow | the v1 spike generator |
 | `/embed/*.svg` | one animation per case | `squares-workbench-export-svg` |
@@ -14,9 +14,9 @@ mirrors that shape:
 ## Why the explainer is a mockup here
 
 `packing/site/` is gitignored and rendered in CI, where
-`render_explainer.py --prepare-math` stamps font geometry into the page before it draws.
-A local copy of that build renders wrong, so serving one would be testing a stale
-artifact rather than the layout.
+`render_n11_lower_bounds_explainer.py --prepare-math` stamps font geometry into the page
+before it draws. A local copy of that build renders wrong, so serving one would be
+testing a stale artifact rather than the layout.
 [`explainer-mockup.html`](explainer-mockup.html) stands in for it, and tests the only
 thing this preview needs from that page: whether an embedded animation sits correctly in
 a column of prose.

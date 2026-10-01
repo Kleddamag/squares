@@ -41,7 +41,12 @@ from tempfile import TemporaryDirectory
 from typing import Any, Literal
 
 from devtools.check_math_loading import MATH_LIBRARY_INIT, page_url
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE, PAGE, READY, SETTLED_REFERENCE
+from devtools.render_n11_lower_bounds_explainer_pdf import (
+    BROWSER_OVERRIDE,
+    PAGE,
+    READY,
+    SETTLED_REFERENCE,
+)
 from sqpack.probes import applied, probe
 
 type BrowserName = Literal["chromium", "firefox", "webkit"]

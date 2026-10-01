@@ -8,7 +8,7 @@ the probe's output in Python, so the decisions are tested here without a browser
 from __future__ import annotations
 
 from devtools.measure_site_pages import card_rows
-from devtools.preview_site import off_centre
+from devtools.preview_site import off_centre, shot_stem
 
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
@@ -46,3 +46,9 @@ def test_the_card_table_has_one_line_a_row() -> None:
     assert rows[1]["widths"] == "264 264"
     assert rows[1]["sizes"] == "- -"
     assert (rows[1]["start"], rows[1]["end"]) == (280, 280)
+
+
+def test_a_shot_is_named_for_its_page_and_fragment() -> None:
+    assert shot_stem("index.html") == "index"
+    assert shot_stem("workbench/index.html") == "workbench"
+    assert shot_stem("cases.html#n-11") == "cases-n-11"

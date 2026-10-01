@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
-and the card sections' layout.
+the card sections' layout, and the face of every formula.
 
-Four measurements, each over pages of a directory `preview_site` has built:
+Five measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -22,6 +22,10 @@ Four measurements, each over pages of a directory `preview_site` has built:
   widths and sizes and the slack at its start and end (equal when the row is centred),
   and each card's headline face, weight and size. `--markdown` prints one line a row, and
   `--media print` lays the page out as it prints.
+- `math` reports the face of every typeset formula beside the face of the text it sits
+  in, counted by surface (a card's headline, a chip, a table, a popover, a caption, the
+  prose), once the page has typeset all its math. `--press SELECTOR` presses an element
+  first, a card or an atlas cell, so the math of what it opens is counted too.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -29,6 +33,8 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages faces SITE
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages cards SITE \
         --page index.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages math SITE \
+        --page index.html --press '[data-atlas-n="11"]' --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -47,7 +53,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.preview_site import serve
+from devtools.preview_site import press, serve, settle_math
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -57,6 +63,7 @@ _DONE = probe(PROBES, "measure_site_pages/done")
 _REPORT = probe(PROBES, "measure_site_pages/report")
 TYPOGRAPHY = probe(PROBES, "measure_site_pages/typography")
 CARDS = probe(PROBES, "measure_site_pages/cards")
+MATH_FACES = probe(PROBES, "measure_site_pages/math_faces")
 
 #: The pages compared by default: the explainer, the long reports, a short one, the
 #: homepage and one case record.
@@ -137,6 +144,37 @@ def measure_cards(
         )
         for section in found
     ]
+
+
+def measure_math(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], presses: Sequence[str] = ()
+) -> list[dict[str, Any]]:
+    """Every formula's face and its text's on each page at each width, one entry per
+    surface, text face and math face. Each page is scrolled through until all its math
+    is typeset, and each selector in `presses` that matches is pressed first, so what
+    it opens is typeset and counted."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for name in pages:
+                print(f"measuring {name} at {width}", file=sys.stderr, flush=True)
+                page = browser.new_page(viewport={"width": width, "height": 900})
+                page.goto(f"{base}/{name}", wait_until="load")
+                pending = settle_math(page)
+                for selector in presses:
+                    if page.locator(selector).count():
+                        press(page, selector)
+                        page.keyboard.press("Escape")
+                results.extend(
+                    {"page": name, "width": width, "untypeset": pending, **row}
+                    for row in page.evaluate(MATH_FACES)
+                )
+                page.close()
+        browser.close()
+    return results
 
 
 def _evaluate(
@@ -272,7 +310,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("mode", choices=("load", "type", "faces", "cards"))
+    parser.add_argument("mode", choices=("load", "type", "faces", "cards", "math"))
     parser.add_argument("site", type=Path)
     parser.add_argument(
         "--page", action="append", help="a page, with any #fragment; repeatable"
@@ -287,6 +325,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=("screen", "print"),
         default="screen",
         help="with `cards`: the CSS media to lay the page out in",
+    )
+    parser.add_argument(
+        "--press",
+        action="append",
+        default=[],
+        metavar="SELECTOR",
+        help="with `math`: press the first element this CSS selector matches, where a page "
+        "has one, before counting; repeatable",
     )
     parser.add_argument(
         "--tokens",
@@ -309,6 +355,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_type(base, pages, widths=widths)
             elif args.mode == "cards":
                 report = measure_cards(base, pages, widths=widths, media=args.media)
+            elif args.mode == "math":
+                report = measure_math(base, pages, widths=widths, presses=args.press)
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

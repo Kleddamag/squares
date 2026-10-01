@@ -473,6 +473,21 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     }
 
 
+def test_no_card_leaves_its_math_as_plain_text(page: str) -> None:
+    """A card's headline and note are prose whose mathematical runs are set as math
+    (`n = 21`, a bound on `s(11)`), so on a card, which is sans, they are sans math
+    rather than upright words: nothing `overview_data.MATH` would match is left outside
+    a formula on any card."""
+    cards = [text for section in _card_sections(page).values() for _, text in section]
+    assert len(cards) > len(overview_sections.OTHER_PROJECTS)
+    typeset = 0
+    for text in cards:
+        left = overview_data.MATH.findall(overview_sections.words(text))
+        assert not left, (left, overview_sections.reading_text(text))
+        typeset += overview_sections.formulas(text)
+    assert typeset >= 9
+
+
 def test_each_sections_size_is_what_its_typical_card_asks_for(page: str) -> None:
     """A section's declared size is the size its median card's text takes by default, so
     the sizes follow the text: a section whose cards grow or shrink past a threshold

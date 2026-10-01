@@ -161,7 +161,14 @@ sans test (`host_math_init.js`) honours before it reads the surrounding face.
 the value is all math, and the two headlines a script fills with $n = N$, the atlas
 popover’s and the case popover’s, carry the mark in their markup.
 Popovers carry no `data-kpress-prose-font` mark, so every other formula in them follows
-its own text. Documents write math as LaTeX (`$…$`) rather than in code spans;
+its own text. The rule holds on every surface, walked formula by formula on the built
+site: a card’s headline and note, a popover and the atlas popover, a table’s cells,
+heads, summaries and disclosures, a caption, a footnote, a case record’s head, panels
+and detail, and a sans heading are sans text with sans math; prose and its lists are
+serif with serif math.
+A card’s headline and note are prose whose mathematical runs are set as math, so a case
+a note names, such as $n = 21$, is sans math too, never upright words.
+Documents write math as LaTeX (`$…$`) rather than in code spans;
 `devtools.check_math_markup` holds the documents already migrated to it.
 Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
 
@@ -752,11 +759,21 @@ page at a desktop and a phone width:
 uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots /tmp/shots
 ```
 
-It fails on console errors, a page wider than its viewport, math left untypeset, any
-formula whose face disagrees with the text around it, and a row of cards off the centre
-of its line (more than a pixel between its two slacks).
-`devtools.measure_site_pages cards` reports the rows it reads: each card section’s
-lines, their cards’ widths and the slack at either end.
+It scrolls each page to its foot first, so what a page places or loads lazily is in the
+shot, and fails on console errors, a page wider than its viewport, math left untypeset,
+any formula set in the wrong face (the Math rule above, its headline exception
+included), and a row of cards off the centre of its line (more than a pixel between its
+two slacks). `--page cases.html#n-11` walks one page at a fragment, and
+`--press SELECTOR` presses a card or an atlas cell on each page that has one, then walks
+and shoots what it opened, since a popover a script fills has no math until it opens.
+`devtools.measure_site_pages cards` reports the rows the preview reads: each card
+section’s lines, their cards’ widths and the slack at either end.
+`devtools.measure_site_pages math` reports every formula’s face beside its text’s,
+counted by surface.
+`tests/test_site_math_faces.py` runs the same walk wherever a browser
+is installed, over the overview and its atlas popover, the results table, the frontier
+atlas and its case popover, and two case records, with a control that marks a worded
+headline for serif math and requires the walk to name it.
 `tests/test_overview.py` holds the cards and chips to the rules above.
 
 The linear-program display is reflowed within the print column.

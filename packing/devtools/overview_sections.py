@@ -196,12 +196,21 @@ def reading_text(fragment: str) -> str:
     return " ".join("".join(_read(fragment).parts).split())
 
 
+def formulas(fragment: str) -> int:
+    """How many formulas `fragment` holds."""
+    return _read(fragment).formulas
+
+
+def words(fragment: str) -> str:
+    """`fragment`'s text that is in no formula, with runs of white space as one space."""
+    return " ".join("".join(_read(fragment).outside).split())
+
+
 def is_all_math(fragment: str) -> bool:
     """Whether `fragment` is mathematics standing alone: at least one formula, and no
     word, digit or mark outside one. `$n = 11$` is; "Earlier $n = 11$ lower bounds" is
     not."""
-    reader = _read(fragment)
-    return reader.formulas > 0 and not "".join(reader.outside).strip()
+    return formulas(fragment) > 0 and not words(fragment)
 
 
 #: The mark that sets a block's mathematics in the serif face whatever the words around
@@ -1013,13 +1022,18 @@ def link_card(
 
 def other_project_cards() -> str:
     """One card per other project: its repository's name, its author, what it holds and
-    its address. Each card is the link itself, opening the project in a new tab."""
+    its address. Each card is the link itself, opening the project in a new tab. The note
+    is prose like a page card's, so a case it names (`n = 21`) is set as math."""
     cards = []
     for url, author, note in OTHER_PROJECTS:
         name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
         cards.append(
             link_card(
-                url, f"By {author}", _esc(name), _esc(note), size=SECTION_CARD_SIZES["projects"]
+                url,
+                f"By {author}",
+                _esc(name),
+                tex_bounds(note),
+                size=SECTION_CARD_SIZES["projects"],
             )
         )
     return _cards(cards)
@@ -1073,7 +1087,7 @@ def atlas_cards() -> str:
                 href,
                 label,
                 tex_bounds(value),
-                _esc(note),
+                tex_bounds(note),
                 hero=hero,
                 size=SECTION_CARD_SIZES["atlas"],
             )

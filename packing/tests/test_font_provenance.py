@@ -1,12 +1,12 @@
 """The rules the on-screen provenance guard decides a page by, without a browser.
 
-`inspect_explainer_typography --check-supporting` answers the whole question -- is every
-run of text on the page drawn from a face the page ships -- and it needs a rendered page,
-a browser and a CDP session to do it. Two rules underneath it decide every finding, and
-both fail quietly if they are wrong: one reads a platform-font answer and says whether it
-is acceptable, and one decides which elements are asked about at all. A coverage rule that
-skips too much reports a clean page it never looked at, which is the failure mode this
-project has a name for.
+`inspect_n11_lower_bounds_explainer_typography --check-supporting` answers the whole question --
+is every run of text on the page drawn from a face the page ships -- and it needs a rendered
+page, a browser and a CDP session to do it. Two rules underneath it decide every finding, and
+both fail quietly if they are wrong: one reads a platform-font answer and says whether it is
+acceptable, and one decides which elements are asked about at all. A coverage rule that skips
+too much reports a clean page it never looked at, which is the failure mode this project has a
+name for.
 
 So the two are exercised on fixtures in the shapes Chromium returns:
 
@@ -30,8 +30,8 @@ from __future__ import annotations
 
 import pytest
 
-from devtools import render_explainer_pdf
-from devtools.inspect_explainer_typography import (
+from devtools import render_n11_lower_bounds_explainer_pdf
+from devtools.inspect_n11_lower_bounds_explainer_typography import (
     MathContext,
     _text_bearing,
     _unshipped,
@@ -147,7 +147,10 @@ def test_a_host_face_a_bead_is_removing_is_not_a_finding(
     face is one the page never declared.
     """
     monkeypatch.setattr(
-        render_explainer_pdf, "EXPECTED_HOST_FONTS", {"Menlo": "kpr-v731"}, raising=True
+        render_n11_lower_bounds_explainer_pdf,
+        "EXPECTED_HOST_FONTS",
+        {"Menlo": "kpr-v731"},
+        raising=True,
     )
     assert _unshipped([_face("Menlo", custom=False)]) == []
     # The excuse is one family, not an amnesty: everything else still answers as itself.

@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import TypedDict, cast
 
 from devtools.check_math_spans import math_spans_with_mode
-from devtools.render_explainer import kpress_static
+from devtools.render_n11_lower_bounds_explainer import kpress_static
 
 
 class ParseError(TypedDict):

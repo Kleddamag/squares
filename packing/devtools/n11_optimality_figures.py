@@ -19,7 +19,7 @@ from xml.etree import ElementTree as ET
 
 from devtools.check_n11_optimality_d4 import EXPECTED_MASKS
 from devtools.packing_render_adapters import frame_from_trump11
-from devtools.render_explainer import crop_to_container
+from devtools.render_n11_lower_bounds_explainer import crop_to_container
 from sqpack.render import render_packing_svg
 
 PACKING = Path(__file__).resolve().parents[1]

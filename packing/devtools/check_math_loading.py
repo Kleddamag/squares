@@ -16,7 +16,12 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Literal, TypedDict
 
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE, PAGE, READY, SETTLED
+from devtools.render_n11_lower_bounds_explainer_pdf import (
+    BROWSER_OVERRIDE,
+    PAGE,
+    READY,
+    SETTLED,
+)
 from sqpack.probes import applied, probe
 
 #: The probes this module hands the page, one file each under `probes/`.

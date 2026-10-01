@@ -308,11 +308,11 @@ of each `python -m` and `squares-workbench-*` command below.
    says why a player accepts it.
 
 9. **Open one pull request** with the poster from step 6 and these edits, then run
-   `python -m pytest tests/test_explainer.py`:
+   `python -m pytest tests/test_n11_lower_bounds_explainer.py`:
    - [`README.md`](../../README.md), the film paragraph under the atlas: each length
      (`2m 20s` from the receipt’s `seconds`) and size (`38 MB`, the file’s bytes over
      2²⁰), and the tag in its three links if it changed.
-   - [`explainer-article.md`](../../packing/devtools/templates/explainer-article.md),
+   - [`n11-lower-bounds-explainer-article.md`](../../packing/devtools/templates/n11-lower-bounds-explainer-article.md),
      Figure 2: the tag in its three release URLs and the full cut’s length (“runs 8m
      14s”).
    - The plan’s

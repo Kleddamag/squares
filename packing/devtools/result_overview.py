@@ -794,7 +794,11 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
     A result on eleven squares links both papers on that case, the one on the result
     that stands first: the optimality paper, which explains T-060, then the explainer,
     which proves the lower bounds T-060 superseded."""
-    from devtools.overview_sections import OPTIMALITY_PAPER, result_url  # noqa: PLC0415
+    from devtools.overview_sections import (  # noqa: PLC0415
+        LOWER_BOUNDS_PAPER,
+        OPTIMALITY_PAPER,
+        result_url,
+    )
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     record = result.record
@@ -809,7 +813,7 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
     site.append(_link(result_url(result.id), f"{_esc(result.id)} in the results table"))
     if 11 in cases:
         site.append(_link(OPTIMALITY_PAPER, f"The {math_html('n = 11')} optimality paper"))
-        site.append(_link("explainer.html", f"The {math_html('n = 11')} explainer"))
+        site.append(_link(LOWER_BOUNDS_PAPER, f"The {math_html('n = 11')} explainer"))
 
     evidence_rows: list[str] = []
     files: list[str] = []

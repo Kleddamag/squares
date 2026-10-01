@@ -1,29 +1,37 @@
 #!/usr/bin/env python3
 """Check the site as GitHub Pages serves it, against the commit it should be built from.
 
-`pages.yml` renders the overview and the pages beside it, the explainer with its Markdown
-edition and PDF, and the workbench from `main`, and deploys them. Nothing is checked in,
-so nothing in the repository says whether a deploy landed or what the pages it served
-link to; this asks the live site. From `packing/`:
+`pages.yml` renders the overview and the pages beside it, the two papers under `papers/`
+with their Markdown and PDF, and the workbench from `main`, and deploys them. Nothing is
+checked in, so nothing in the repository says whether a deploy landed or what the pages
+it served link to; this asks the live site. From `packing/`:
 
     uv run --frozen --group dev python -m devtools.check_published_site --commit <sha>
 
 With no `--commit` the checkout's `origin/main` is the expectation, which is the commit
-the last deploy built from once `git fetch` has run. One line per check, `ok` or
-`FAIL`, and the exit status is 0 only when every check passes:
+the last deploy built from once `git fetch` has run. `--site` may also name a site served
+on this machine (`http://127.0.0.1:8765/`, as `devtools.preview_site --serve` serves
+one), which is how the same checks are run on a build before it is deployed; give
+`--commit` the commit that build was made from. One line per check, `ok` or `FAIL`, and
+the exit status is 0 only when every check passes:
 
 - every page `render_overview.PAGES` owns is served at its URL (the overview at the
-  root), and the explainer at `explainer.html`; each carries the edition stamp
-  `sqpack.release` names and the canonical URL its renderer wrote;
+  root), and the lower-bounds explainer at `papers/n11-lower-bounds-explainer.html`;
+  each carries the edition stamp `sqpack.release` names and the canonical URL its
+  renderer wrote;
 - no page and not the Markdown edition links a repository file at a commit hash: every
   repository link names `main` (`repo_links`), because a permalink to the commit a page
   was built from 404s once a squash merge leaves that commit on no branch. Every path a
   page links on `main` exists in the expected commit's tree, which is `main` when the
   deploy runs, and each link on the explainer, its Markdown edition, the overview and
   the frontier atlas is also asked of GitHub;
-- every address a page used to have (`render_overview.MOVED_PAGES`) is still served, as
-  a forwarder that names where a visit is sent now, so a link written before a page
-  moved or was withdrawn does not 404;
+- no link written before a page moved or was withdrawn breaks
+  (`render_overview.MOVED_PAGES`, `MOVED_FILES`): each address a page used to have, the
+  papers' among them, still serves a forwarder that names where a visit is sent now in
+  the four places it says it, and they agree: its canonical URL, the address its script
+  reads, the refresh for a reader without scripts, and its link. In the pinned browser
+  a visit to each with a query string and a fragment arrives there with both. Each
+  address a paper's Markdown or PDF used to have serves the same bytes as the new one;
 - every result overview the results table's rows name (`data-row-pop-src`) is served
   beside the pages and is that result's, and the overviews' repository links pass the
   same two checks against the tree;
@@ -35,12 +43,13 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   each result row of the overview's and the results page's tables carries every record
   link the renderer gives that result, and the overviews of `RECORD_LINK_SAMPLE` carry
   every repository link the renderer writes for them. It fetches nothing more;
-- the Markdown edition, the PDF and the composite assets are served beside the page,
-  and the PDF is a PDF with the expected page count and a source receipt matching
-  the exact HTML bytes the site serves;
+- the Markdown edition and the PDF are served beside the page under its slug and the
+  composite assets at the site's root, and the PDF is a PDF with the expected page count
+  and a source receipt matching the exact HTML bytes the site serves;
 - the optimality paper, which the Papers page's first card opens, is served where that
-  card points, with its landing address, Markdown and PDF, and its bar marks Papers as
-  the current section. Its own Pages job builds and checks its content. It is the one
+  card points, `papers/n11-optimality-review.html`, with its Markdown and PDF beside it,
+  and each paper's bar marks Papers as the current section, from a level below the
+  root. Its own Pages job builds and checks its content. It is the one
   page whose repository links are held to a commit and not to `main`: a paper cites the
   evidence as it stood when the paper was typeset, so each citation on the page and in
   its Markdown names the expected commit, the one the deploy built from, which `main`
@@ -68,6 +77,8 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
+import posixpath
 import re
 import subprocess
 import sys
@@ -80,20 +91,18 @@ from pathlib import Path
 from typing import NamedTuple
 from urllib.parse import urljoin
 
+from playwright.sync_api import Browser, BrowserContext, sync_playwright
 from playwright.sync_api import Error as PlaywrightError
-from playwright.sync_api import sync_playwright
 
 from devtools import overview_data, render_overview, result_overview, social_card
-from devtools.overview_sections import OPTIMALITY_PAPER, result_fragment
-from devtools.render_explainer import (
+from devtools.overview_sections import LOWER_BOUNDS_PAPER, OPTIMALITY_PAPER, result_fragment
+from devtools.render_n11_lower_bounds_explainer import (
     COMPOSITE_ASSETS,
-    MARKDOWN_OUTPUT,
     PAGE_URL,
     REPO,
     SITE_URL,
 )
-from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
-from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE, EXPECTED_PAGE_COUNT
 from devtools.repo_links import (
     REPO_URL,
     RepositoryTree,
@@ -115,12 +124,11 @@ CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
 #: result's overview opens: the one block it is, naming its result.
 ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
 RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
-#: Where a forwarder sends a visit, as its root element names it.
-MOVED_TO = re.compile(r'<html\b[^>]*\sdata-moved-to="([^"]*)"')
 
-#: Where the explainer is served. It is built as `index.html` and renamed when the site
-#: is assembled, because the root is the overview's.
-EXPLAINER = PAGE_URL.removeprefix(SITE_URL)
+#: The lower-bounds explainer's Markdown edition and its PDF, by path under the site's
+#: root: beside the page, under the paper's slug.
+LOWER_BOUNDS_MARKDOWN = f"{LOWER_BOUNDS_PAPER.removesuffix('.html')}.md"
+LOWER_BOUNDS_PDF = f"{LOWER_BOUNDS_PAPER.removesuffix('.html')}.pdf"
 
 #: The site's own pages, by served name, read from the renderer that owns them so a page
 #: added there is checked here without an edit. `index.html` is fetched as the root.
@@ -133,27 +141,33 @@ SITE_PAGES = tuple(render_overview.PAGES)
 #: and were asked of GitHub when the table was on the overview.
 LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html", render_overview.RESULTS_PAGE})
 
-#: The optimality paper's page, by path under the site's root, and what is served with
-#: it: its directory's landing address, its Markdown and its PDF. The path is the one the
-#: Papers card links (`overview_sections.OPTIMALITY_PAPER`).
+#: What is served with the optimality paper's page, by path under the site's root: its
+#: Markdown and its PDF, beside it under its slug. The page's path is the one the Papers
+#: card links (`overview_sections.OPTIMALITY_PAPER`).
+OPTIMALITY_PAPER_MARKDOWN = f"{OPTIMALITY_PAPER.removesuffix('.html')}.md"
 OPTIMALITY_PAPER_FILES = (
-    f"{OPTIMALITY_PAPER.rsplit('/', 1)[0]}/",
-    f"{OPTIMALITY_PAPER.removesuffix('.html')}.md",
+    OPTIMALITY_PAPER_MARKDOWN,
     f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
 )
-#: The paper's landing address as a file: the forwarder its directory serves.
-OPTIMALITY_PAPER_LANDING = f"{OPTIMALITY_PAPER_FILES[0]}index.html"
-#: The paper's Markdown, whose citations are held to the same commit as the page's.
-OPTIMALITY_PAPER_MARKDOWN = f"{OPTIMALITY_PAPER.removesuffix('.html')}.md"
-#: The bar's current entry on that page, a level below the root.
+#: The bar's current entry on a paper's page, a level below the root.
 PAPERS_CURRENT = '<a data-page="papers" aria-current="page" href="../papers.html">'
 
-#: Every file the deploy serves beside the explainer, by name.
+#: Every file the deploy serves with the lower-bounds explainer, by path under the site's
+#: root: its Markdown and PDF beside it, and the atlas's files at the root.
 SERVED = (
-    MARKDOWN_OUTPUT.name,
-    PDF_OUTPUT.name,
+    LOWER_BOUNDS_MARKDOWN,
+    LOWER_BOUNDS_PDF,
     *(asset.name for asset in COMPOSITE_ASSETS),
 )
+
+#: What a forwarder says about where its page is now: the address the script reads, the
+#: refresh a reader without scripts follows, and the link.
+MOVED_TO = re.compile(r'<html\b[^>]*\sdata-moved-to="([^"]*)"')
+REFRESH = re.compile(r'<meta\s+http-equiv="refresh"\s+content="0;\s*url=([^"]*)"')
+MOVED_LINK = re.compile(r'<p>[^<]*<a\s+href="([^"]*)"')
+#: The query string and fragment a forwarder is visited with in the browser: the review
+#: switch the explainer reads and a footnote, both of which a real old link carries.
+FORWARDED_SUFFIX = "?review=fonts#fn-1"
 
 USER_AGENT = "squares-check-published-site (+https://github.com/jlevy/squares)"
 WORKBENCH_PATH = "workbench/"
@@ -459,20 +473,20 @@ def head_checks(
 
 def forwarder_canonicals() -> dict[str, str]:
     """Each forwarder the site serves, by its path, and the canonical address it names:
-    the renderer's (`render_overview.forwarder_pages`), each naming where its page went,
-    and the optimality paper's landing address, naming the paper."""
+    the renderer's (`render_overview.forwarder_pages`), each naming where its page went.
+    The address the optimality paper's directory once had, `n11-optimality/`, is one of
+    them, naming the paper where it is served now."""
     named: dict[str, str] = {}
     for forwarder in render_overview.forwarder_pages():
         found = read_head(forwarder.html).link("canonical")
         named[forwarder.name] = found[0] if found else ""
-    named[OPTIMALITY_PAPER_LANDING] = render_overview.canonical_url(OPTIMALITY_PAPER)
     return named
 
 
 def shared_pages() -> tuple[str, ...]:
     """Every page of the site that can be shared, by the path it is served at: the
     renderer's own pages, the explainer, the optimality paper and the workbench."""
-    return (*SITE_PAGES, EXPLAINER, OPTIMALITY_PAPER, WORKBENCH_PAGE)
+    return (*SITE_PAGES, LOWER_BOUNDS_PAPER, OPTIMALITY_PAPER, WORKBENCH_PAGE)
 
 
 def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
@@ -677,7 +691,7 @@ def paper_citations(text: str, commit: str) -> tuple[set[tuple[str, str]], list[
     """The optimality paper's repository links: each (kind, path) it cites at `commit`,
     without any query or anchor, and every link that names another ref, `main` among
     them, as `kind/ref/path`. The paper pins its citations to the commit it was built
-    from (`render_n11_optimality_explainer.link_revision`), and the deploy builds it
+    from (`render_n11_optimality_review.link_revision`), and the deploy builds it
     from the commit it deploys."""
     cited: set[tuple[str, str]] = set()
     strays: list[str] = []
@@ -714,10 +728,16 @@ RETRY_DELAYS = (2.0, 4.0, 8.0, 16.0)
 TRANSIENT_STATUSES = frozenset({0, 404, 408, 429, 500, 502, 503, 504})
 
 
+#: A site this machine serves, as `devtools.preview_site --serve` does: the one kind of
+#: address that is not https and is still asked, so a build can be checked before it is
+#: deployed. GitHub is always asked over https.
+LOCAL_SITE = re.compile(r"http://(?:127\.0\.0\.1|localhost)(?::\d+)?/")
+
+
 def fetch_once(url: str, *, head: bool = False, timeout: float = 30.0) -> tuple[int, bytes]:
     """The status and body of a GET (or the status alone of a HEAD); 0 when unreachable."""
-    if not url.startswith("https://"):
-        raise ValueError(f"refusing to fetch a non-https URL: {url}")
+    if not (url.startswith("https://") or LOCAL_SITE.match(url)):
+        raise ValueError(f"refusing to fetch a URL that is neither https nor local: {url}")
     request = urllib.request.Request(
         url, method="HEAD" if head else "GET", headers={"User-Agent": USER_AGENT}
     )
@@ -787,6 +807,83 @@ def workbench_startup(url: str, project_root: str, *, timeout: float) -> tuple[b
     home = observed.get("home") if isinstance(observed, dict) else None
     passed = isinstance(pairs, int) and pairs > 0 and home == project_root
     return passed, f"workbench API started with {pairs!r} pairs; home resolved to {home!r}"
+
+
+def forwarder_says(text: str) -> dict[str, str | None]:
+    """Where a forwarder says its page is now, in each of the four places it says it:
+    its canonical URL, the address its script reads, its refresh, and its link."""
+    places = (
+        ("canonical", CANONICAL),
+        ("script", MOVED_TO),
+        ("refresh", REFRESH),
+        ("link", MOVED_LINK),
+    )
+    found = {name: pattern.search(text) for name, pattern in places}
+    return {
+        name: match.group(1) if match is not None else None for name, match in found.items()
+    }
+
+
+def forwarder_expected(old: str, new: str) -> dict[str, str | None]:
+    """What `forwarder_says` has to answer for the page that moved from `old` to `new`:
+    the new address in full as the canonical URL, and relative to the old one elsewhere.
+    An address off the site, as the defect log's on GitHub is, is whole in all four."""
+    external = new.startswith("https://")
+    target = new if external else posixpath.relpath(new, posixpath.dirname(old))
+    return {
+        "canonical": new if external else render_overview.canonical_url(new),
+        "script": target,
+        "refresh": target,
+        "link": target,
+    }
+
+
+def visited_address(old: str) -> str:
+    """The address a reader has for a page that moved: a directory's `index.html` is
+    linked as its directory."""
+    return old.removesuffix("index.html")
+
+
+def forwarder_arrivals(
+    browser: Browser | BrowserContext, site: str, *, timeout: float
+) -> list[tuple[bool, str]]:
+    """Visit each address a page used to have in `browser`, with a query string and a
+    fragment, and require it to arrive where the page is now with both: a page of the
+    site, or for a page that left it the address off the site it is sent to. The arrival
+    is the address the browser commits to, so a slow page at the far end is not waited
+    for."""
+    results: list[tuple[bool, str]] = []
+    for old, new in render_overview.MOVED_PAGES:
+        start = site + visited_address(old) + FORWARDED_SUFFIX
+        arrival = (new if new.startswith("https://") else site + new) + FORWARDED_SUFFIX
+        page = browser.new_page()
+        try:
+            page.goto(start, wait_until="load", timeout=timeout * 1000)
+            page.wait_for_url(arrival, wait_until="commit", timeout=timeout * 1000)
+        except PlaywrightError:
+            pass  # Where the visit is now says what went wrong.
+        landed = page.url
+        page.close()
+        results.append(
+            (landed == arrival, f"visiting {start} arrives at {landed!r}, expected {arrival!r}")
+        )
+    return results
+
+
+def forwarders_followed(site: str, *, timeout: float) -> list[tuple[bool, str]]:
+    """`forwarder_arrivals` in the pinned browser. `SQPACK_CHROMIUM` names a browser the
+    environment supplies, as the other browser tools read it."""
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(
+                executable_path=os.environ.get(BROWSER_OVERRIDE)
+            )
+            try:
+                return forwarder_arrivals(browser, site, timeout=timeout)
+            finally:
+                browser.close()
+    except PlaywrightError as error:
+        return [(False, f"the forwarders could not be visited: {error}")]
 
 
 def check(
@@ -870,24 +967,6 @@ def check(
         if name == render_overview.RESULTS_PAGE:
             overviews = sorted(set(ROW_SOURCE.findall(text)))
 
-    # A page that moved or was withdrawn is still served at its old address, as a
-    # forwarder: a deploy that dropped one would 404 every link written before the change.
-    for forwarder in render_overview.forwarder_pages():
-        status, body = fetch(site + forwarder.name, timeout=timeout)
-        expected = MOVED_TO.search(forwarder.html)
-        forwarded[forwarder.name] = (
-            body.decode("utf-8", errors="replace"),
-            canonicals[forwarder.name],
-        )
-        served = MOVED_TO.search(body.decode("utf-8", errors="replace"))
-        target = None if served is None else served.group(1)
-        results.append(
-            (
-                status == 200 and expected is not None and target == expected.group(1),
-                f"forwarder {forwarder.name}: HTTP {status}, sends a visit to {target!r}",
-            )
-        )
-
     # The result overviews are files beside the pages, fetched when a row is opened: a
     # deploy that lost one would show only as a popover that keeps its short detail.
     results.append(
@@ -937,20 +1016,23 @@ def check(
         )
 
     # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
-    page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)
-    heads[EXPLAINER] = text
+    page, text = served_page(LOWER_BOUNDS_PAPER, site + LOWER_BOUNDS_PAPER, PAGE_URL)
+    current = PAPERS_CURRENT in text
+    marked = f"Papers is {'' if current else 'not '}the bar's current entry"
+    results.append((current, f"{LOWER_BOUNDS_PAPER}: {marked}, linked from a level below"))
+    heads[LOWER_BOUNDS_PAPER] = text
 
-    status, markdown = fetch(site + MARKDOWN_OUTPUT.name, timeout=timeout)
+    status, markdown = fetch(site + LOWER_BOUNDS_MARKDOWN, timeout=timeout)
     results.append(
         (
             status == 200,
-            f"Markdown edition {MARKDOWN_OUTPUT.name}: HTTP {status}, {len(markdown)} bytes",
+            f"Markdown edition {LOWER_BOUNDS_MARKDOWN}: HTTP {status}, {len(markdown)} bytes",
         )
     )
 
     markdown_text = markdown.decode("utf-8", errors="replace")
-    links_main(EXPLAINER, text)
-    links_main(MARKDOWN_OUTPUT.name, markdown_text)
+    links_main(LOWER_BOUNDS_PAPER, text)
+    links_main(LOWER_BOUNDS_MARKDOWN, markdown_text)
     checked_links |= repository_links(text) | repository_links(markdown_text)
     # This loop is where the check's time goes: one request to github.com for each distinct
     # link, in turn. On 2026-10-01 it was 614 of 783 checks and nearly all of a 14 m 47 s
@@ -965,13 +1047,13 @@ def check(
         results.append((status == 200, f"link HTTP {status}: {url}"))
 
     for name in SERVED:
-        if name == MARKDOWN_OUTPUT.name:
+        if name == LOWER_BOUNDS_MARKDOWN:
             continue
-        head_only = name != PDF_OUTPUT.name
+        head_only = name != LOWER_BOUNDS_PDF
         status, body = fetch(site + name, head=head_only, timeout=timeout)
         line = f"served {name}: HTTP {status}"
         ok = status == 200
-        if name == PDF_OUTPUT.name:
+        if name == LOWER_BOUNDS_PDF:
             pages = pdf_pages(body)
             source_matches = pdf_source_matches(body, page)
             ok = ok and pages == EXPECTED_PAGE_COUNT and source_matches
@@ -1019,17 +1101,41 @@ def check(
     heads[OPTIMALITY_PAPER] = paper_text
     for name in OPTIMALITY_PAPER_FILES:
         cited_here = name == OPTIMALITY_PAPER_MARKDOWN
-        # The landing address is a forwarder, read for its canonical link.
-        landing = name == OPTIMALITY_PAPER_FILES[0]
-        status, body = fetch(site + name, head=not (cited_here or landing), timeout=timeout)
+        status, body = fetch(site + name, head=not cited_here, timeout=timeout)
         results.append((status == 200, f"served {name}: HTTP {status}"))
         if cited_here and status == 200:
             cites_commit(name, body.decode("utf-8", errors="replace"))
-        if landing:
-            forwarded[OPTIMALITY_PAPER_LANDING] = (
-                body.decode("utf-8", errors="replace"),
-                canonicals[OPTIMALITY_PAPER_LANDING],
+
+    # No link written before a page moved or was withdrawn breaks: a page's old address
+    # forwards, and a file's old address serves the same bytes. A deploy that dropped a
+    # forwarder would 404 every link written before the change.
+    for old, new in render_overview.MOVED_PAGES:
+        status, body = fetch(site + old, timeout=timeout)
+        moved_text = body.decode("utf-8", errors="replace")
+        # Its head is read with the other pages' below: a canonical link and no card.
+        forwarded[old] = (moved_text, canonicals[old])
+        says = forwarder_says(moved_text)
+        expected = forwarder_expected(old, new)
+        results.append(
+            (
+                status == 200 and says == expected,
+                f"forwarder {old}: HTTP {status}, leads to {new}"
+                if says == expected
+                else f"forwarder {old}: HTTP {status}, says {says} against expected {expected}",
             )
+        )
+    for old, new in render_overview.MOVED_FILES:
+        old_status, old_body = fetch(site + old, timeout=timeout)
+        new_status, new_body = fetch(site + new, timeout=timeout)
+        same = old_status == 200 and new_status == 200 and old_body == new_body
+        verdict = "the same bytes as" if same else "not the bytes of"
+        line = (
+            f"moved file {old}: HTTP {old_status}, {len(old_body)} bytes, {verdict} {new} "
+            f"(HTTP {new_status}, {len(new_body)} bytes)"
+        )
+        results.append((same, line))
+    if browser:
+        results.extend(forwarders_followed(site, timeout=timeout))
 
     workbench_url = site + WORKBENCH_PATH
     status, workbench = fetch(workbench_url, timeout=timeout)
@@ -1078,7 +1184,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--no-browser",
         action="store_true",
-        help="skip the browser API startup check (HTTP identity checks still run)",
+        help="skip the checks that open a browser, the workbench's API startup and the "
+        "forwarders' arrival (HTTP identity checks still run)",
     )
     parser.add_argument(
         "--local",

@@ -38,8 +38,14 @@ from typing import NotRequired, TypedDict
 from playwright.sync_api import CDPSession, Locator, Page, ViewportSize
 
 from devtools.check_math_loading import MATH_LIBRARY
-from devtools.render_explainer import WALKTHROUGH
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE, FONTS_READY, PAGE, READY, SETTLED
+from devtools.render_n11_lower_bounds_explainer import WALKTHROUGH
+from devtools.render_n11_lower_bounds_explainer_pdf import (
+    BROWSER_OVERRIDE,
+    FONTS_READY,
+    PAGE,
+    READY,
+    SETTLED,
+)
 from sqpack.probes import probe as load_probe
 
 #: The probes this module hands the page, one file each under `probes/`.
@@ -778,7 +784,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if not args.page.is_file():
-        raise SystemExit(f"{args.page}: no rendered page; run `render_explainer` first")
+        raise SystemExit(
+            f"{args.page}: no rendered page; run `render_n11_lower_bounds_explainer` first"
+        )
 
     if args.self_check:
         return self_check(args.page.resolve().as_uri())

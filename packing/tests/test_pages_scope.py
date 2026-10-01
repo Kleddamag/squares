@@ -19,8 +19,8 @@ import pytest
 from devtools import (
     overview_data,
     pages_scope,
-    render_explainer,
-    render_n11_optimality_explainer,
+    render_n11_lower_bounds_explainer,
+    render_n11_optimality_review,
     render_overview,
 )
 from devtools.pages_scope import (
@@ -54,11 +54,11 @@ def in_scope(changed: list[str], declared: dict[str, tuple[Path, ...]]) -> set[s
 @pytest.mark.parametrize(
     ("half", "builder_inputs"),
     [
-        ("explainer", lambda: render_explainer.RENDER_INPUTS),
+        ("n11_lower_bounds_explainer", lambda: render_n11_lower_bounds_explainer.RENDER_INPUTS),
         ("workbench", lambda: build_site.RENDER_INPUTS),
         ("overview", lambda: render_overview.RENDER_INPUTS),
         ("overview", lambda: overview_data.INPUTS),
-        ("optimality", lambda: render_n11_optimality_explainer.RENDER_INPUTS),
+        ("n11_optimality_review", lambda: render_n11_optimality_review.RENDER_INPUTS),
     ],
 )
 def test_every_builder_input_puts_its_page_in_scope(
@@ -81,16 +81,21 @@ def test_the_scope_reads_each_builder_declaration_live(monkeypatch: pytest.Monke
     """
     added = REPO / "packing" / "devtools" / "templates" / "a-new-render-input.css"
     before = declared_inputs()
-    assert "explainer" not in in_scope([probe(added)], before)
+    assert "n11_lower_bounds_explainer" not in in_scope([probe(added)], before)
     monkeypatch.setattr(
-        render_explainer, "RENDER_INPUTS", (*render_explainer.RENDER_INPUTS, added)
+        render_n11_lower_bounds_explainer,
+        "RENDER_INPUTS",
+        (*render_n11_lower_bounds_explainer.RENDER_INPUTS, added),
     )
-    assert "explainer" in in_scope([probe(added)], declared_inputs())
+    assert "n11_lower_bounds_explainer" in in_scope([probe(added)], declared_inputs())
     monkeypatch.setattr(build_site, "RENDER_INPUTS", (*build_site.RENDER_INPUTS, added))
-    assert in_scope([probe(added)], declared_inputs()) == {"explainer", "workbench"}
+    assert in_scope([probe(added)], declared_inputs()) == {
+        "n11_lower_bounds_explainer",
+        "workbench",
+    }
     monkeypatch.setattr(overview_data, "INPUTS", (*overview_data.INPUTS, added))
     assert in_scope([probe(added)], declared_inputs()) == {
-        "explainer",
+        "n11_lower_bounds_explainer",
         "workbench",
         "overview",
     }
@@ -145,14 +150,17 @@ def test_the_workflow_and_the_scope_itself_select_every_page(
 def test_a_helper_a_checker_imports_is_an_input(declared: dict[str, tuple[Path, ...]]) -> None:
     """A tool's first-party imports change its verdict as much as the tool does.
 
-    `check_scroll_restoration` reads the page path from `render_explainer_pdf`, so the
-    closure the scope computes over the files a job runs has to reach that module.
+    `check_scroll_restoration` reads the page path from `render_n11_lower_bounds_explainer_pdf`,
+    so the closure the scope computes over the files a job runs has to reach that module.
     """
     closure = pages_scope.import_closure(
         {REPO / "packing/devtools/check_scroll_restoration.py"}
     )
-    assert REPO / "packing/devtools/render_explainer_pdf.py" in closure
-    assert REPO / "packing/devtools/render_explainer_pdf.py" in declared["explainer"]
+    assert REPO / "packing/devtools/render_n11_lower_bounds_explainer_pdf.py" in closure
+    assert (
+        REPO / "packing/devtools/render_n11_lower_bounds_explainer_pdf.py"
+        in declared["n11_lower_bounds_explainer"]
+    )
 
 
 def test_every_pdf_browser_control_probe_selects_the_explainer(
@@ -162,9 +170,11 @@ def test_every_pdf_browser_control_probe_selects_the_explainer(
     controls = REPO / "packing/tests/probes/pdf_math_browser"
     probes = sorted(path for path in controls.rglob("*") if path.is_file())
     assert probes
-    assert controls in declared["explainer"]
+    assert controls in declared["n11_lower_bounds_explainer"]
     missed = [
-        probe(path) for path in probes if "explainer" not in in_scope([probe(path)], declared)
+        probe(path)
+        for path in probes
+        if "n11_lower_bounds_explainer" not in in_scope([probe(path)], declared)
     ]
     assert missed == []
 
@@ -196,7 +206,7 @@ def test_pull_request_178_would_have_run_no_browser_work(
         "workbench"
     }
     assert in_scope([*changed, "packing/devtools/check_math_faces.py"], declared) == {
-        "explainer"
+        "n11_lower_bounds_explainer"
     }
 
 
@@ -209,9 +219,9 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     tutorial are the overview's alone, so a pull request changing only those
     runs its job and no explainer Chromium. The register itself is read by the explainer
     too, and so is n = 11's case record, whose exact T-060 endpoint Figure 3 checks
-    (`render_explainer.n11_solved`); the renderer module by all three, since it also
-    writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by
-    all three.
+    (`render_n11_lower_bounds_explainer.n11_solved`); the renderer module by all three, since it
+    also writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by all
+    three.
     """
     for changed in (
         "TUTORIAL.md",
@@ -224,7 +234,9 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     ):
         assert in_scope([changed], declared) == {"overview"}, changed
     for shared in ("packing/frontier/results.yaml", "packing/frontier/n-011.md"):
-        assert in_scope([shared], declared) == {"explainer", "overview"}, shared
+        assert in_scope([shared], declared) == {"n11_lower_bounds_explainer", "overview"}, (
+            shared
+        )
     assert in_scope(["packing/devtools/render_overview.py"], declared) == set(
         pages_scope.BUILDER_INPUTS
     )
@@ -233,42 +245,43 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
 
 
 def test_t060_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]]) -> None:
-    assert in_scope(["packing/devtools/templates/n11-optimality-article.md"], declared) == {
-        "optimality"
-    }
+    assert in_scope(
+        ["packing/devtools/templates/n11-optimality-review-article.md"], declared
+    ) == {"n11_optimality_review"}
     assert in_scope(
         ["packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json"],
         declared,
-    ) == {"optimality"}
+    ) == {"n11_optimality_review"}
 
 
 def test_t060_page_has_an_independent_required_build() -> None:
     jobs = load_workflow()["jobs"]
-    assert "needs.scope.outputs.optimality == 'true'" in jobs["optimality"]["if"]
-    assert jobs["optimality"]["timeout-minutes"] == 10
+    job = jobs["n11-optimality-review"]
+    assert "needs.scope.outputs.n11_optimality_review == 'true'" in job["if"]
+    assert job["timeout-minutes"] == 10
     browser_control = next(
         step
-        for step in jobs["optimality"]["steps"]
-        if step.get("name") == "Check T-060 figures and article renderer"
+        for step in job["steps"]
+        if step.get("name") == "Check the paper's figures and renderer"
     )
-    assert browser_control["env"]["SQPACK_N11_PAPER_BROWSER"] == "1"
-    commands = "\n".join(str(step.get("run", "")) for step in jobs["optimality"]["steps"])
-    assert "render_n11_optimality_explainer --output-dir site/n11-optimality --pdf" in commands
-    assert (
-        "render_n11_optimality_explainer --output-dir site/n11-optimality --check" in commands
-    )
-    assert "test -s site/n11-optimality/t-060-explainer.pdf" in commands
-    assert "optimality" in jobs["publish"]["needs"]
-    assert "optimality" in jobs["pages-required"]["needs"]
-    assert "optimality-unchanged" in jobs["pages-required"]["needs"]
+    assert browser_control["env"]["SQPACK_N11_OPTIMALITY_REVIEW_BROWSER"] == "1"
+    commands = "\n".join(str(step.get("run", "")) for step in job["steps"])
+    # Rendered where it is served: under `papers/` in the site, by the paper's slug.
+    assert "render_n11_optimality_review --site site --pdf" in commands
+    assert "render_n11_optimality_review --site site --check" in commands
+    assert "test -s site/papers/n11-optimality-review.pdf" in commands
+    assert "n11-optimality-review" in jobs["publish"]["needs"]
+    assert "n11-optimality-review" in jobs["pages-required"]["needs"]
+    assert "n11-optimality-review-unchanged" in jobs["pages-required"]["needs"]
     required = next(
         step["run"]
         for step in jobs["pages-required"]["steps"]
         if step.get("name") == "Require every page this run builds to pass"
     )
     assert (
-        '(.scope.outputs.optimality != "true" or .optimality.result == "success")' in required
-    )
+        '(.scope.outputs.n11_optimality_review != "true" '
+        'or .["n11-optimality-review"].result == "success")'
+    ) in required
 
 
 def test_a_matching_input_is_a_path_not_a_string_prefix() -> None:
@@ -283,9 +296,15 @@ def test_membership_follows_needs_and_leaves_out_what_a_pull_request_never_runs(
     workflow = {
         "jobs": {
             "scope": {},
-            "prepare": {"needs": "scope", "if": "needs.scope.outputs.explainer == 'true'"},
+            "prepare": {
+                "needs": "scope",
+                "if": "needs.scope.outputs.n11_lower_bounds_explainer == 'true'",
+            },
             "check": {"needs": ["prepare"]},
-            "note": {"needs": "scope", "if": "needs.scope.outputs.explainer != 'true'"},
+            "note": {
+                "needs": "scope",
+                "if": "needs.scope.outputs.n11_lower_bounds_explainer != 'true'",
+            },
             "build": {"needs": "scope", "if": "needs.scope.outputs.workbench == 'true'"},
             "publish": {"needs": ["check", "build"]},
             "deploy": {
@@ -298,7 +317,7 @@ def test_membership_follows_needs_and_leaves_out_what_a_pull_request_never_runs(
         }
     }
     members = half_jobs(workflow)
-    assert members["explainer"] == {
+    assert members["n11_lower_bounds_explainer"] == {
         "prepare",
         "check",
         "publish",
@@ -345,18 +364,20 @@ def test_the_workflow_outputs_and_summary_are_written(
     assert pages_scope.main(["--all", "a test"]) == 0
     lines = outputs.read_text(encoding="utf-8").splitlines()
     assert lines == [
-        "explainer=true",
-        "explainer_reason=every page is built on a test",
+        "n11_lower_bounds_explainer=true",
+        "n11_lower_bounds_explainer_reason=every page is built on a test",
         "workbench=true",
         "workbench_reason=every page is built on a test",
         "overview=true",
         "overview_reason=every page is built on a test",
-        "optimality=true",
-        "optimality_reason=every page is built on a test",
+        "n11_optimality_review=true",
+        "n11_optimality_review_reason=every page is built on a test",
     ]
-    assert "| explainer | builds and checks |" in summary.read_text(encoding="utf-8")
+    assert "| n11_lower_bounds_explainer | builds and checks |" in summary.read_text(
+        encoding="utf-8"
+    )
     assert "| overview | builds and checks |" in summary.read_text(encoding="utf-8")
-    assert "explainer: in scope" in capsys.readouterr().out
+    assert "n11_lower_bounds_explainer: in scope" in capsys.readouterr().out
 
 
 def test_an_identical_pair_of_revisions_changes_nothing() -> None:

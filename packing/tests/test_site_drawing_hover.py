@@ -30,7 +30,7 @@ from typing import Any
 import pytest
 from PIL import Image
 
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 from tests import site_renders
 

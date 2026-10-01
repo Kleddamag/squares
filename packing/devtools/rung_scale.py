@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from devtools.overview_sections import rubric_levels
-from devtools.render_explainer import kpress_static
+from devtools.render_n11_lower_bounds_explainer import kpress_static
 from devtools.render_overview import SITE_CSS
 from sqpack.render.color import (
     _linear_to_srgb,  # pyright: ignore[reportPrivateUsage]

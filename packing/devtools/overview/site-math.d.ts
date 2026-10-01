@@ -3,7 +3,7 @@
 
 /**
  * The explainer's math host adapter, `squaresMath`, which every page inlines after KPress's
- * runtime (`render_explainer.katex_js`); the site's pages use the part `math.js` drives.
+ * runtime (`render_n11_lower_bounds_explainer.katex_js`); the site's pages use the part `math.js` drives.
  */
 interface SiteSquaresMath {
   render(el: Element, source: string, display?: boolean): Promise<boolean>;

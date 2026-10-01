@@ -1,4 +1,4 @@
-// `render_explainer_pdf/settled.js`: two animation frames cannot finish a readout still
+// `render_n11_lower_bounds_explainer_pdf/settled.js`: two animation frames cannot finish a readout still
 // waiting for its font, so settlement waits for the page's pending math as well.
 import assert from "node:assert/strict";
 import { probe } from "../probe.mjs";
@@ -17,7 +17,7 @@ Object.assign(globalThis, {
 let done = false;
 
 const settle = /** @type {() => () => Promise<void>} */ (
-  probe("devtools/probes/render_explainer_pdf/settled.js")
+  probe("devtools/probes/render_n11_lower_bounds_explainer_pdf/settled.js")
 )();
 const settled = settle().then(() => {
   done = true;

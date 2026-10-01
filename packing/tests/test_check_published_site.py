@@ -10,11 +10,11 @@ from pathlib import Path
 import pytest
 
 from devtools import check_published_site, render_overview
-from devtools import render_explainer_pdf as pdf
-from devtools import render_n11_optimality_explainer as optimality
+from devtools import render_n11_lower_bounds_explainer_pdf as pdf
 from devtools.check_published_site import (
-    EXPLAINER,
     LINK_CHECKED_PAGES,
+    LOWER_BOUNDS_MARKDOWN,
+    LOWER_BOUNDS_PDF,
     OMITTED_TREES,
     OPTIMALITY_PAPER,
     OPTIMALITY_PAPER_FILES,
@@ -35,10 +35,15 @@ from devtools.check_published_site import (
     repository_links,
     row_records,
 )
+from devtools.check_published_site import LOWER_BOUNDS_PAPER as EXPLAINER
 from devtools.overview_sections import result_fragment
-from devtools.render_explainer import COMPOSITE_ASSETS, MARKDOWN_OUTPUT, PAGE_URL
-from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
-from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.render_n11_lower_bounds_explainer import (
+    COMPOSITE_ASSETS,
+    MARKDOWN_OUTPUT,
+    PAGE_URL,
+)
+from devtools.render_n11_lower_bounds_explainer_pdf import EXPECTED_PAGE_COUNT
+from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, RepositoryTree, branch_paths
 from sqpack.release import PUBLICATION_EDITION
 from tests import site_renders
@@ -104,13 +109,22 @@ def page(
     ref: str = DEFAULT_BRANCH,
     stamp: str = PUBLICATION_EDITION,
     link: str = "README.md",
+    bar: str = "",
 ) -> bytes:
     """A served page as the check reads one: the head of the page served at `canonical`,
-    with its canonical link, then the stamp and a repository link."""
+    with its canonical link, then for a paper its bar's current entry (`bar`), the stamp
+    and a repository link."""
     path = canonical.removeprefix(render_overview.SITE_URL) or "index.html"
     return (
-        f'{head(path)}<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>'
+        f"{head(path)}{bar}"
+        f'<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>'
     ).encode()
+
+
+def explainer_page(canonical: str = PAGE_URL, **kwargs: str) -> bytes:
+    """The lower-bounds explainer as the check reads it: a page with Papers current in
+    its bar, linked from a level below the root."""
+    return page(canonical, bar=PAPERS_CURRENT + "Papers</a>", **kwargs)
 
 
 #: The result overviews the fixture's results table names, by address beside the pages.
@@ -164,11 +178,6 @@ def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
     ).encode()
 
 
-def optimality_landing() -> str:
-    """The paper's landing address as its renderer writes it: a forwarder to the paper."""
-    return optimality.output_files(Path("site"), "", "")[Path("site") / "index.html"]
-
-
 def optimality_markdown(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
     """The paper's Markdown, with the same citation as a Markdown link."""
     return f"[Receipt]({REPO_URL}/blob/{ref}/{link}#anchor)\n".encode()
@@ -187,17 +196,21 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
         name: page(render_overview.canonical_url(name), link=f"packing/{name}.md")
         for name in SITE_PAGES
     }
-    pages[EXPLAINER] = page(PAGE_URL)
+    pages[EXPLAINER] = explainer_page()
     for address in OVERVIEWS:
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
     pages[OPTIMALITY_PAPER] = optimality_paper()
     pages[OPTIMALITY_PAPER_MARKDOWN] = optimality_markdown()
-    # The paper's landing address, a forwarder as its renderer writes it, and the card.
-    pages[OPTIMALITY_PAPER_FILES[0]] = optimality_landing().encode()
+    pages[LOWER_BOUNDS_MARKDOWN] = b"the Markdown edition\n"
     pages[render_overview.SOCIAL_CARD] = card()
+    # What keeps the links written before the papers moved: the forwarders the
+    # overview's build writes, and each moved file again at its old address.
     for forwarder in render_overview.forwarder_pages():
         pages[forwarder.name] = forwarder.html.encode()
     pages.update(overrides)
+    for old, new in render_overview.MOVED_FILES:
+        if new in pages:
+            pages.setdefault(old, pages[new])
     pages[render_overview.RESULTS_PAGE] += "".join(
         f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
         for address in named
@@ -305,21 +318,25 @@ def test_pdf_pages_counts_page_objects_and_refuses_what_is_not_a_pdf() -> None:
 
 
 def test_the_served_files_are_the_markdown_edition_the_pdf_and_the_composite_assets() -> None:
-    assert SERVED[0] == MARKDOWN_OUTPUT.name
-    assert SERVED[1] == PDF_OUTPUT.name
+    """The Markdown and the PDF are beside the page under `papers/`, by the paper's slug
+    and as the renderer and the exporter name them; the atlas's files are at the root."""
+    assert SERVED[0] == LOWER_BOUNDS_MARKDOWN == "papers/n11-lower-bounds-explainer.md"
+    assert SERVED[1] == LOWER_BOUNDS_PDF == "papers/n11-lower-bounds-explainer.pdf"
+    assert LOWER_BOUNDS_MARKDOWN.endswith(f"/{MARKDOWN_OUTPUT.name}")
+    assert LOWER_BOUNDS_PDF.endswith(f"/{PDF_OUTPUT.name}")
     assert set(SERVED[2:]) == {asset.name for asset in COMPOSITE_ASSETS}
 
 
 def test_the_checked_pages_are_every_page_the_site_serves_but_the_workbench() -> None:
     """The overview's renderer is the list: a page added there is checked without an edit.
 
-    The explainer moved to `explainer.html` when the overview took the root, and the
-    checker names it from the explainer's own canonical URL, so the two cannot disagree.
+    The explainer is served under `papers/` by its slug, where the Papers card links it
+    and where its own canonical URL says it is, so the three cannot disagree.
     """
     assert tuple(render_overview.PAGES) == SITE_PAGES
     assert SITE_PAGES.index("index.html") == 0
-    assert PAGE_URL.endswith(f"/{EXPLAINER}")
-    assert EXPLAINER.endswith(".html")
+    assert PAGE_URL.endswith(f"/squares/{EXPLAINER}")
+    assert EXPLAINER == "papers/n11-lower-bounds-explainer.html"
     assert {*SITE_PAGES, EXPLAINER, "workbench/index.html"} <= set(render_overview.SITE_PAGES)
     assert {"index.html", "frontier.html", "all-results.html"} == LINK_CHECKED_PAGES
     assert render_overview.canonical_url("index.html") == check_published_site.SITE_URL
@@ -332,9 +349,9 @@ def test_the_checked_pages_are_every_page_the_site_serves_but_the_workbench() ->
 def test_live_source_check_accepts_the_receipt_written_by_the_pdf_exporter(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    page = tmp_path / "index.html"
+    page = tmp_path / "n11-lower-bounds-explainer.html"
     page.write_bytes(b"<html>the exact publication source</html>\n")
-    output = tmp_path / "explainer.pdf"
+    output = page.with_suffix(".pdf")
     monkeypatch.setattr(pdf, "PAGE", page)
     monkeypatch.setattr(pdf, "OUTPUT", output)
     monkeypatch.setattr(pdf, "render_pdf_bytes", lambda: b"%PDF-1.7\n%%EOF\n")
@@ -351,7 +368,7 @@ def test_check_accepts_the_requested_build_and_rejects_a_stale_stamp(
     assert f"https://example.org/{EXPLAINER}" in requested
     assert "https://example.org/index.html" not in requested, "the overview is the root"
 
-    stale = site_pages(**{EXPLAINER: page(PAGE_URL, stamp="v0.0.0-deadbe")})
+    stale = site_pages(**{EXPLAINER: explainer_page(stamp="v0.0.0-deadbe")})
     (failure,) = failures(monkeypatch, fake_site(stale))
     assert "edition stamp" in failure
     assert EXPLAINER in failure
@@ -370,7 +387,7 @@ def test_check_requires_each_page_to_name_its_own_canonical_url(
     The explainer's canonical URL is how a search engine and a share card find it; one
     left at `/` after the move would point both at the overview.
     """
-    swapped = site_pages(**{EXPLAINER: page(render_overview.SITE_URL)})
+    swapped = site_pages(**{EXPLAINER: explainer_page(render_overview.SITE_URL)})
     (failure,) = failures(monkeypatch, fake_site(swapped))
     assert f"{EXPLAINER} names canonical URL" in failure
 
@@ -461,35 +478,6 @@ def test_check_requires_every_result_overview_the_results_table_names(
     gone = site_pages(**{"result/t-002.html": result_overview("t-002", link="packing/gone.md")})
     missing = f"linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
     assert failures(monkeypatch, fake_site(gone)) == [f"the result overviews: {missing}"]
-
-
-def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """A page that moved or was withdrawn is still served at its old address, as a
-    forwarder naming where a visit goes now: a deploy without one 404s every link written
-    before the change, and one that names another place sends its readers there."""
-    moved = dict(render_overview.MOVED_PAGES)
-    assert {"results.html", "status.html", "defects.html"} <= set(moved)
-    assert not set(moved) & set(render_overview.SITE_PAGES)
-    requested: list[str] = []
-    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
-    for old in moved:
-        assert f"https://example.org/{old}" in requested, old
-
-    for old in moved:
-        # The slash keeps `results.html` from also losing `all-results.html`.
-        (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{old}",)))
-        assert failure == f"forwarder {old}: HTTP 404, sends a visit to None", old
-
-    elsewhere = b'<html lang="en" data-moved-to="index.html"><body></body></html>'
-    (failure,) = failures(monkeypatch, fake_site(site_pages(**{"results.html": elsewhere})))
-    assert failure == "forwarder results.html: HTTP 200, sends a visit to 'index.html'"
-
-    # The page that was there before, still served in place of its forwarder.
-    kept = page(render_overview.canonical_url("status.html"))
-    (failure,) = failures(monkeypatch, fake_site(site_pages(**{"status.html": kept})))
-    assert failure == "forwarder status.html: HTTP 200, sends a visit to None"
 
 
 def test_absent_links_names_what_a_deploy_dropped_and_rows_are_read_one_by_one() -> None:
@@ -622,15 +610,13 @@ def test_check_requires_the_optimality_paper_where_the_papers_card_points(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """The Papers page's first card opens the optimality paper, which another build
-    writes into a directory of its own: a deploy without it, or with a page there whose
-    bar does not mark Papers, fails, and so does one without its landing address, its
-    Markdown or its PDF."""
-    assert OPTIMALITY_PAPER == "n11-optimality/t-060-explainer.html"
+    writes under `papers/`: a deploy without it, or with a page there whose bar does not
+    mark Papers, fails, and so does one without its Markdown or its PDF."""
+    assert OPTIMALITY_PAPER == "papers/n11-optimality-review.html"
     assert OPTIMALITY_PAPER in render_overview.SITE_PAGES
     assert OPTIMALITY_PAPER_FILES == (
-        "n11-optimality/",
-        "n11-optimality/t-060-explainer.md",
-        "n11-optimality/t-060-explainer.pdf",
+        "papers/n11-optimality-review.md",
+        "papers/n11-optimality-review.pdf",
     )
     requested: list[str] = []
     assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
@@ -648,10 +634,11 @@ def test_check_requires_the_optimality_paper_where_the_papers_card_points(
     assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 200, ")
     assert failure.endswith("Papers is not the bar's current entry")
 
-    for name in OPTIMALITY_PAPER_FILES[1:]:
-        assert failures(monkeypatch, fake_site(site_pages(), lost=(name,))) == [
-            f"served {name}: HTTP 404"
-        ]
+    # A lost file is also what its old address was to be a copy of.
+    for name in OPTIMALITY_PAPER_FILES:
+        found = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{name}",)))
+        assert found[0] == f"served {name}: HTTP 404", name
+        assert all(line.startswith("moved file ") for line in found[1:]), found
 
 
 def test_the_optimality_papers_citations_name_the_deployed_commit(
@@ -663,7 +650,7 @@ def test_the_optimality_papers_citations_name_the_deployed_commit(
     in its Markdown, names the expected commit, and every cited path is in that commit's
     tree. A citation on `main` or at another commit fails, as does a page with none and
     a cited path the tree lacks."""
-    assert OPTIMALITY_PAPER_MARKDOWN == "n11-optimality/t-060-explainer.md"
+    assert OPTIMALITY_PAPER_MARKDOWN == "papers/n11-optimality-review.md"
     assert OPTIMALITY_PAPER_MARKDOWN in OPTIMALITY_PAPER_FILES
     other = "f" * 40
     text = (
@@ -766,6 +753,7 @@ def test_check_requires_the_workbench_browser_api_to_start(
         "workbench_startup",
         lambda _url, _root, *, timeout: (False, f"API missing after {timeout}s"),
     )
+    monkeypatch.setattr(check_published_site, "forwarders_followed", lambda _site, **_: [])
     assert failures(monkeypatch, fake_site(site_pages()), browser=True) == [
         "API missing after 1s"
     ]
@@ -797,7 +785,7 @@ def test_check_rejects_a_pdf_without_the_deployed_html_source_receipt(
 def test_check_compares_the_exact_fetched_html_bytes(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    pages = site_pages(**{EXPLAINER: page(PAGE_URL) + b"<!-- byte-exact source: \xff -->"})
+    pages = site_pages(**{EXPLAINER: explainer_page() + b"<!-- byte-exact source: \xff -->"})
     assert failures(monkeypatch, fake_site(pages)) == []
 
     overview_receipt = source_receipt(pages["index.html"])
@@ -838,6 +826,156 @@ def test_fetch_retries_a_transient_answer_before_reporting_it(
     assert pauses == [], "a refusal is an answer, not a deploy still settling"
 
 
+def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A page that moved or was withdrawn is still served at its old address, as a
+    forwarder naming where a visit goes now (`render_overview.MOVED_PAGES`): the three
+    repository documents that left the site, and the papers, which moved under
+    `papers/`. A deploy without one 404s every link written before the change. It fails
+    when an old address is gone, when the page there still is the old page, and when a
+    forwarder leads anywhere but where a visit should go, in any one of the four places
+    it says where that is."""
+    moved = dict(render_overview.MOVED_PAGES)
+    assert set(moved) == {
+        "results.html",
+        "status.html",
+        "defects.html",
+        "explainer.html",
+        "n11-optimality/t-060-explainer.html",
+        "n11-optimality/index.html",
+    }
+    assert not set(moved) & set(render_overview.SITE_PAGES)
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for old in moved:
+        assert f"https://example.org/{old}" in requested, old
+
+    for old, new in moved.items():
+        # The slash keeps `results.html` from also losing `all-results.html`.
+        (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{old}",)))
+        assert failure.startswith(f"forwarder {old}: HTTP 404, says "), failure
+
+        # The page that was there before, still served in place of its forwarder.
+        stale = site_pages(**{old: explainer_page()})
+        (failure,) = failures(monkeypatch, fake_site(stale))
+        assert failure.startswith(f"forwarder {old}: HTTP 200, says "), failure
+        assert "'script': None" in failure, "an old page is not a forwarder"
+
+        good = site_pages()[old]
+        expected = check_published_site.forwarder_expected(old, new)
+        target, canonical = expected["script"], expected["canonical"]
+        assert target is not None
+        assert canonical is not None
+        elsewhere = (target + "-elsewhere").encode()
+        wrong = {
+            "canonical": good.replace(
+                b'rel="canonical" href="' + canonical.encode(),
+                b'rel="canonical" href="https://example.org/',
+            ),
+            "script": good.replace(b'data-moved-to="' + target.encode(), b'data-moved="'),
+            "refresh": good.replace(b"0; url=" + target.encode(), b"0; url=" + elsewhere),
+            "link": good.replace(b'<a href="' + target.encode(), b'<a href="' + elsewhere),
+        }
+        for place, body in wrong.items():
+            assert body != good, place
+            (failure,) = failures(monkeypatch, fake_site(site_pages(**{old: body})))
+            assert failure.startswith(f"forwarder {old}: HTTP 200, says "), (place, failure)
+            says = check_published_site.forwarder_says(body.decode())
+            assert {name for name in says if says[name] != expected[name]} == {place}
+
+    # A page of the site is named relative to the old address, climbing out of its
+    # directory; a page that left the site is named whole.
+    says = check_published_site.forwarder_says(
+        site_pages()["n11-optimality/index.html"].decode()
+    )
+    assert says["script"] == "../papers/n11-optimality-review.html"
+    says = check_published_site.forwarder_says(site_pages()["defects.html"].decode())
+    assert says["script"] == says["canonical"] == f"{REPO_URL}/blob/{DEFAULT_BRANCH}/defects.md"
+
+
+def test_check_requires_each_moved_file_at_its_old_address_with_the_same_bytes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A paper's Markdown and PDF cannot forward, so each old address serves a copy of
+    the file (`render_overview.MOVED_FILES`): a deploy fails when the old address is
+    gone and when it serves anything but the bytes the new one serves."""
+    moved = dict(render_overview.MOVED_FILES)
+    assert set(moved) == {
+        "t-018-explainer.md",
+        "t-018-explainer.pdf",
+        "n11-optimality/t-060-explainer.md",
+        "n11-optimality/t-060-explainer.pdf",
+    }
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for old, new in moved.items():
+        assert f"https://example.org/{old}" in requested, old
+        assert f"https://example.org/{new}" in requested, new
+
+        (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{old}",)))
+        assert failure.startswith(f"moved file {old}: HTTP 404, "), failure
+        assert f"not the bytes of {new}" in failure
+
+    for old in ("t-018-explainer.md", "n11-optimality/t-060-explainer.md"):
+        stale = site_pages(**{old: b"the edition before the move\n"})
+        (failure,) = failures(monkeypatch, fake_site(stale))
+        assert failure.startswith(f"moved file {old}: HTTP 200, "), failure
+        assert f"not the bytes of {moved[old]}" in failure
+
+
+def test_check_visits_the_forwarders_only_with_a_browser(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Whether a forwarder forwards is the browser's to say, so with a browser the check
+    visits each old address and reports where it arrived; `tests/test_site_forwarders.py`
+    runs that visit for real."""
+    monkeypatch.setattr(
+        check_published_site, "workbench_startup", lambda _url, _root, **_: (True, "ok")
+    )
+    visited: list[str] = []
+
+    def followed(site: str, *, timeout: float) -> list[tuple[bool, str]]:
+        visited.append(site)
+        return [(False, f"visiting {site}explainer.html arrives nowhere in {timeout}s")]
+
+    monkeypatch.setattr(check_published_site, "forwarders_followed", followed)
+    assert failures(monkeypatch, fake_site(site_pages())) == []
+    assert visited == []
+    assert failures(monkeypatch, fake_site(site_pages()), browser=True) == [
+        "visiting https://example.org/explainer.html arrives nowhere in 1s"
+    ]
+    assert visited == ["https://example.org/"]
+    assert check_published_site.visited_address("n11-optimality/index.html") == (
+        "n11-optimality/"
+    )
+    assert check_published_site.visited_address("explainer.html") == "explainer.html"
+
+
+def test_a_site_served_on_this_machine_may_be_asked_and_no_other_plain_http_one() -> None:
+    """The check runs on a build before it is deployed, served locally as
+    `preview_site --serve` serves one; any other address has to be https."""
+    local = check_published_site.LOCAL_SITE
+    for url in (
+        "http://127.0.0.1:8765/",
+        "http://localhost:8765/papers.html",
+        "http://127.0.0.1/",
+    ):
+        assert local.match(url), url
+    for url in (
+        "http://example.org/",
+        "http://127.0.0.1.example.org/",
+        "http://localhost.example.org:8765/",
+        "ftp://127.0.0.1/",
+        "file:///tmp/site/index.html",
+    ):
+        assert not local.match(url), url
+        with pytest.raises(ValueError, match="neither https nor local"):
+            check_published_site.fetch_once(url)
+    # Nothing listens on port 9: a local address is asked, and answers unreachable.
+    assert check_published_site.fetch_once("http://127.0.0.1:9/", timeout=2) == (0, b"")
+
+
 def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -851,7 +989,8 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     fetch = fake_site(site_pages(), requested=requested)
     assert failures(monkeypatch, fetch, heads=True) == []
     assert requested.count(f"https://example.org/{render_overview.SOCIAL_CARD}") == 1
-    for name in (*SITE_PAGES[1:], EXPLAINER, OPTIMALITY_PAPER, OPTIMALITY_PAPER_FILES[0]):
+    landing = "n11-optimality/index.html"
+    for name in (*SITE_PAGES[1:], EXPLAINER, OPTIMALITY_PAPER, landing):
         assert requested.count(f"https://example.org/{name}") == 1, name
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
@@ -868,9 +1007,10 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     for name in shared:
         assert f"{name}: {clean}" in lines, name
     assert f"each of {len(shared)} pages has a description of its own" in lines
-    landing = check_published_site.OPTIMALITY_PAPER_LANDING
-    assert landing == "n11-optimality/index.html"
+    # The address the paper's directory had is one of the renderer's forwarders now.
+    assert dict(render_overview.MOVED_PAGES)[landing] == OPTIMALITY_PAPER
     paper_url = render_overview.canonical_url(OPTIMALITY_PAPER)
+    assert paper_url == f"{render_overview.SITE_URL}papers/n11-optimality-review.html"
     assert f"forwarder {landing}: names {paper_url} as canonical, and carries no card" in lines
     for forwarder in render_overview.forwarder_pages():
         assert any(line.startswith(f"forwarder {forwarder.name}: names ") for line in lines)
@@ -938,14 +1078,20 @@ def test_check_fails_a_card_that_is_missing_or_not_the_declared_size(
 def test_check_fails_a_forwarder_whose_canonical_link_is_not_its_targets_address(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """The paper's landing address named the paper by its file name alone, which a
-    crawler has no base to resolve; a forwarder names its target's address in full."""
-    landing = optimality_landing()
+    """The paper's landing address once named the paper by its file name alone, which a
+    crawler has no base to resolve; a forwarder names its target's address in full. A
+    relative one fails twice: it is not the address the forwarder should name, and it is
+    not an address in full."""
+    name = "n11-optimality/index.html"
+    landing = site_pages()[name].decode()
     target = render_overview.canonical_url(OPTIMALITY_PAPER)
     assert f'<link rel="canonical" href="{target}">' in landing
-    relative = landing.replace(target, OPTIMALITY_PAPER.rsplit("/", 1)[1]).encode()
-    (failure,) = failures(
-        monkeypatch, fake_site(site_pages(**{OPTIMALITY_PAPER_FILES[0]: relative})), heads=True
+    relative = landing.replace(
+        f'rel="canonical" href="{target}"',
+        'rel="canonical" href="../papers/n11-optimality-review.html"',
+    ).encode()
+    says, heads = failures(monkeypatch, fake_site(site_pages(**{name: relative})), heads=True)
+    assert says.startswith(f"forwarder {name}: HTTP 200, says ")
+    assert heads.startswith(
+        f"forwarder {name}: head: its canonical links are ['../papers/n11-optimality-review"
     )
-    name = check_published_site.OPTIMALITY_PAPER_LANDING
-    assert failure.startswith(f"forwarder {name}: head: its canonical links are ['t-060-")

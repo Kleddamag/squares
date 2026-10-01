@@ -252,9 +252,9 @@ def _render_input_probe(declared: Path) -> str:
 def test_every_workbench_render_input_selects_the_workbench_check() -> None:
     """`_WORKBENCH_INPUTS` is a hand list beside the builder's own declaration.
 
-    Compared here rather than trusted: it omitted `packing/devtools/render_explainer.py`,
-    which the builder runs for the KaTeX stylesheet, so a `--since` run over that file
-    skipped the page check (#160 R26).
+    Compared here rather than trusted: it omitted
+    `packing/devtools/render_n11_lower_bounds_explainer.py`, which the builder runs for the
+    KaTeX stylesheet, so a `--since` run over that file skipped the page check (#160 R26).
     """
     unselected = [
         _render_input_probe(declared)
@@ -278,8 +278,12 @@ def test_the_motion_lab_golden_selects_its_browser_replay() -> None:
 def test_an_omitted_workbench_input_is_detected() -> None:
     """The negative control: the step's patterns without the explainer renderer."""
     (step,) = [step for step in STEPS if step.name == WORKBENCH_STEP]
-    without = tuple(pattern for pattern in step.touches if "render_explainer" not in pattern)
-    explainer = REPO / "packing/devtools/render_explainer.py"
+    without = tuple(
+        pattern
+        for pattern in step.touches
+        if "render_n11_lower_bounds_explainer" not in pattern
+    )
+    explainer = REPO / "packing/devtools/render_n11_lower_bounds_explainer.py"
     assert explainer in RENDER_INPUTS
     assert not _selects(_render_input_probe(explainer), WORKBENCH_STEP, without)
 

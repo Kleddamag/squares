@@ -32,7 +32,7 @@ from typing import Any
 import pytest
 
 from devtools import overview_data, overview_sections, render_recent_results, result_status
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 from tests import site_renders
 

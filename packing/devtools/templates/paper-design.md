@@ -11,7 +11,7 @@ Three layers carry it, from the bottom up, with the paper’s text tokens shared
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
 | Text | [paper-type.css](paper-type.css) | The type base, reading measure, heading scale, role scales and pinned faces every page shares |
-| Paper | [explainer-publication.css](explainer-publication.css) | The publication layer both papers share: figures, panels, components and print rules |
+| Paper | [paper-publication.css](paper-publication.css) | The publication layer both papers share: figures, panels, components and print rules |
 | Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the workbench included |
 
 The paper and site layers read the same values from `paper-type.css`, under their own
@@ -25,15 +25,17 @@ captions, notes, and controls.
 The web page and PDF share this hierarchy, with sizes scaled for each medium.
 Keep these conventions reusable across papers.
 
-[explainer-publication.css](explainer-publication.css) contains the publication layer
-both papers share, above KPress and `paper-type.css`. Both
-[explainer-shell.html](explainer-shell.html) and
-[n11-optimality-shell.html](n11-optimality-shell.html) inline that stylesheet;
-[explainer-article.md](explainer-article.md) and
-[n11-optimality-article.md](n11-optimality-article.md) contain the separate articles.
-KPress supplies the fonts, Markdown typography, math, themes, and general print
-behavior. `paper-type.css` sets the type proportions and reading measure, and the
-publication layer sets the figure layout and the paper’s components.
+[paper-publication.css](paper-publication.css) contains the publication layer both
+papers share, above KPress and `paper-type.css`. Both
+[n11-lower-bounds-explainer-shell.html](n11-lower-bounds-explainer-shell.html) and
+[n11-optimality-review-shell.html](n11-optimality-review-shell.html) inline that
+stylesheet;
+[n11-lower-bounds-explainer-article.md](n11-lower-bounds-explainer-article.md) and
+[n11-optimality-review-article.md](n11-optimality-review-article.md) contain the
+separate articles. KPress supplies the fonts, Markdown typography, math, themes, and
+general print behavior.
+`paper-type.css` sets the type proportions and reading measure, and the publication
+layer sets the figure layout and the paper’s components.
 
 ## Typography Roles
 
@@ -243,7 +245,7 @@ with these exceptions:
 **Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
 punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
 composites), because every page takes them from the same functions,
-`render_explainer.kpress_css`, `katex_css` and `relation_face_css`;
+`render_n11_lower_bounds_explainer.kpress_css`, `katex_css` and `relation_face_css`;
 `devtools.measure_site_pages faces` compares them block by block.
 KPress leads each family token with an embedding host’s hook, `--kpress-host-font-sans`
 and its siblings, so an application embedding a KPress fragment can supply its own face.
@@ -305,9 +307,10 @@ The optimality paper once inlined the stylesheet without the script, so on macOS
 formulas stayed at `geometricPrecision`, and the same formula held 15 to 17% less ink
 than on the explainer in the light theme and 23 to 26% less in the dark one.
 No computed size, weight, face or colour differed between the two pages.
-Both renderers now take the pair from `render_explainer.publication_layer`, the paper’s
-renderer refuses a value its shell has no place for, and the same formula’s ink on the
-two pages agrees within 0.2%.
+Both renderers now take the pair from
+`render_n11_lower_bounds_explainer.publication_layer`, the paper’s renderer refuses a
+value its shell has no place for, and the same formula’s ink on the two pages agrees
+within 0.2%.
 
 `devtools.measure_site_pages glyphs` is the measurement.
 For every role of text and for the formulas of every surface it reports the face asked
@@ -333,11 +336,11 @@ pipeline, from the same code:
   URIs and switched from `font-display: swap` to `block`, so no formula is drawn in a
   host face and redrawn; KPress’s math composites; the three relation glyphs
   (`relation_face_css`).
-- **Scripts.** `render_explainer.katex_js`: KaTeX, KPress’s metric tables and shared
-  runtime, and the explainer’s host adapter, `squaresMath`
-  (`probes/render_explainer/host_math_init.js`). KPress’s own entry points,
-  `auto-render.min.js` and `katex-init.js`, are left out: `katex-init.js` typesets every
-  formula on the page in one task at DOMContentLoaded.
+- **Scripts.** `render_n11_lower_bounds_explainer.katex_js`: KaTeX, KPress’s metric
+  tables and shared runtime, and the explainer’s host adapter, `squaresMath`
+  (`probes/render_n11_lower_bounds_explainer/host_math_init.js`). KPress’s own entry
+  points, `auto-render.min.js` and `katex-init.js`, are left out: `katex-init.js`
+  typesets every formula on the page in one task at DOMContentLoaded.
 - **Per-formula readiness.** The runtime lays a formula out hidden, waits for the faces
   its glyphs need, and reveals that formula alone; a formula whose faces fail keeps its
   readable fallback.
@@ -345,17 +348,18 @@ pipeline, from the same code:
   is ready shows while later ones are still being submitted.
 
 The explainer adds what only a single published page can: its formulas are typeset,
-measured and written into the HTML at publication (`render_explainer --prepare-math`),
-so the client hydrates rather than lays out, and its queue puts the interactive panels
-first. The KPress pages are rendered without a browser, so they typeset in the client,
-driven by `overview/math.js`: the formulas within two screens of the viewport first, the
-rest as the reader scrolls toward them or opens what hides them, and, once the page has
+measured and written into the HTML at publication
+(`render_n11_lower_bounds_explainer --prepare-math`), so the client hydrates rather than
+lays out, and its queue puts the interactive panels first.
+The KPress pages are rendered without a browser, so they typeset in the client, driven
+by `overview/math.js`: the formulas within two screens of the viewport first, the rest
+as the reader scrolls toward them or opens what hides them, and, once the page has
 loaded, one at a time in the browser’s idle time.
 A formula whose faces missed the runtime’s wait is retried twice after the page and its
 fonts load, which a long page needed when every face decoded at once.
 Both mark the end of their load-time work with `math-ready`. The optimality paper is
 typeset as the KPress pages are, by the same two scripts
-(`render_n11_optimality_explainer.math_scripts`). It used to inline KPress’s own entry
+(`render_n11_optimality_review.math_scripts`). It used to inline KPress’s own entry
 points, which neither kern a function’s name ($s(11)$ was set without the one-mu space
 it has on every other page) nor wait for a formula’s faces, so a formula that asked for
 a face the page does not ship (`\mathsf`) was drawn from the reader’s machine.
@@ -377,14 +381,14 @@ pipeline:
 
 | Page | Width | DOMContentLoaded | Visible math | Load-time math done | Longest task | Blocking |
 | --- | --- | --- | --- | --- | --- | --- |
-| `explainer.html` | 1280 | 712 → 993 | 727 → 1,008 | 947 → 1,238 | 132 → 128 | 211 → 263 |
+| `papers/n11-lower-bounds-explainer.html` | 1280 | 712 → 993 | 727 → 1,008 | 947 → 1,238 | 132 → 128 | 211 → 263 |
 | `tutorial.html` | 1280 | 2,233 → 594 | 2,235 → 595 | 2,458 → 741 | 1,875 → 198 | 2,101 → 182 |
 | `synopsis.html` | 1280 | 14,040 → 1,089 | 14,704 → 1,668 | 14,704 → 1,758 | 13,002 → 847 | 16,123 → 1,179 |
 | `results.html` | 1280 | 568 → 236 | 600 → 387 | 600 → 387 | 82 → 75 | 32 → 25 |
 | `readme.html` | 1280 | 608 → 233 | 642 → 297 | 642 → 322 | 74 → 98 | 28 → 48 |
 | `index.html` | 1280 | 3,331 → 686 | 3,595 → 811 | 3,595 → 903 | 2,152 → 152 | 2,507 → 219 |
 | `cases.html#n-11` | 1280 | 7,958 → 5,362 | 8,106 → 5,386 | 8,106 → 5,509 | 3,773 → 2,399 | 7,247 → 4,130 |
-| `explainer.html` | 390 | 696 → 1,156 | 710 → 1,171 | 932 → 1,421 | 121 → 128 | 205 → 263 |
+| `papers/n11-lower-bounds-explainer.html` | 390 | 696 → 1,156 | 710 → 1,171 | 932 → 1,421 | 121 → 128 | 205 → 263 |
 | `tutorial.html` | 390 | 2,336 → 651 | 2,338 → 652 | 2,541 → 743 | 1,924 → 191 | 2,163 → 175 |
 | `synopsis.html` | 390 | 14,969 → 1,361 | 15,657 → 1,363 | 15,657 → 1,525 | 13,922 → 326 | 17,132 → 880 |
 | `results.html` | 390 | 166 → 190 | 214 → 240 | 214 → 240 | 79 → 87 | 29 → 37 |
@@ -960,7 +964,7 @@ it.
   A rule transitions only the properties its hover changes (`background-color`, `color`,
   `border-color`, `opacity`, `translate`), never `all`, and never with a literal
   duration: `tests/test_overview.py` fails a `transition` in `site.css`, `site-nav.css`
-  or `explainer-publication.css` that names a time instead of the token.
+  or `paper-publication.css` that names a time instead of the token.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
@@ -1663,16 +1667,23 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   is the background to both.
   The explainer’s card names the newer optimality proofs, and reads the same on the
   overview. The page has no popover, so it carries no popover script.
-  The papers keep their addresses, `explainer.html`, `tutorial.html` and
-  `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
-  page and on each of them.
+  The two papers are served under `papers/`, each by its slug, with its Markdown and its
+  PDF beside it under the same slug: `papers/n11-optimality-review.html` and
+  `papers/n11-lower-bounds-explainer.html`. The tutorial stays at `tutorial.html`.
+  Papers is the current entry on the papers page and on each of them.
+  The addresses the papers had before 2026-10-01, `explainer.html` and
+  `n11-optimality/t-060-explainer.html` with its directory, each serve a forwarder: a
+  page of a few lines that sends a reader on with the query string and the fragment they
+  came with (`overview/forward.js`, which reads the root element’s `data-moved-to`),
+  with a refresh and a link for a reader without scripts and the new address as its
+  canonical URL. Nothing on the site links an old address.
   The optimality paper has its own renderer, shell and Pages job
-  (`render_n11_optimality_explainer`), and takes the publication layer and the site’s
-  math pipeline from the shared functions (**Math**, above); it carries the bar as the
+  (`render_n11_optimality_review`), and takes the publication layer and the site’s math
+  pipeline from the shared functions (**Math**, above); it carries the bar as the
   explainer does, through `render_overview.nav_html`, with the links climbing one level
   to the site’s root. Its page shares the explainer’s publication layer and
   `paper-type.css`, and keeps only its diagrams’ rules in
-  [n11-optimality.css](n11-optimality.css).
+  [n11-optimality-review.css](n11-optimality-review.css).
   There a table keeps to the column and scrolls inside its own wrap, the credits are one
   column no wider than the page, and a diagram drawn in fixed ink keeps a light ground
   on the dark theme, as the construction in its first figure does.
@@ -1683,7 +1694,7 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   should land on the text the paper read.
   The hazard that links on `main` avoid, a commit that a squash merge leaves on no
   branch, does not reach the deployed paper: the deploy builds it from the commit it
-  deploys, which `main` keeps (`render_n11_optimality_explainer.link_revision`).
+  deploys, which `main` keeps (`render_n11_optimality_review.link_revision`).
   `check_published_site` holds each citation on the page and in its Markdown to that
   commit and to its tree, and fails one that names `main` or any other commit.
   A pull request’s build names a commit that may not outlive the merge; it is checked
@@ -1841,9 +1852,9 @@ axis value, a short formula beside what it measures.
 No title is lettered across the top of an SVG and no sentence under it.
 
 Both papers open on a packing, set one way: the atlas rendering cut to its container’s
-outline (`render_explainer.crop_to_container`), with the atlas’s own lettering gone, in
-a centred stage (`.stage.trump`) 24rem wide on screen and 3in in print, linked to the
-rendering in the repository.
+outline (`render_n11_lower_bounds_explainer.crop_to_container`), with the atlas’s own
+lettering gone, in a centred stage (`.stage.trump`) 24rem wide on screen and 3in in
+print, linked to the rendering in the repository.
 The optimality paper’s first figure used to be the atlas’s whole canvas, 960 units wide
 for a container of 536, with the atlas’s caption under the drawing: the packing stood
 18% of the figure’s width left of the column’s centre, over a line of its own text.
@@ -1854,8 +1865,8 @@ What a caption states that is data, a count of rows, of regions or of margins, i
 as a placeholder (`{{LOCAL_MARGINS}}`) and the figure module supplies from the receipt
 the figure is drawn from (`caption_facts`), so a caption cannot retype a number.
 A caption writes its mathematics as LaTeX, as the prose does: a figure is an HTML block,
-where KPress leaves `$…$` literal, so `render_n11_optimality_explainer.caption_math`
-puts KPress’s math markup in its place for the page, and the Markdown edition keeps the
+where KPress leaves `$…$` literal, so `render_n11_optimality_review.caption_math` puts
+KPress’s math markup in its place for the page, and the Markdown edition keeps the
 `$…$`. The formula is then set in the caption’s own sans, where it used to be Unicode
 text in characters the sans does not carry.
 
@@ -1884,12 +1895,12 @@ Preserve the hierarchy when adjusting page breaks or figure dimensions.
 From `packing/`, render and check the result:
 
 ```shell
-uv run --frozen --all-extras --group dev python -m devtools.render_explainer --prepare-math
-uv run --frozen --all-extras --group dev pytest tests/test_explainer.py -q
-uv run --frozen --all-extras --group dev python -m devtools.inspect_explainer_typography --check-supporting --check-math --theme light
-uv run --frozen --all-extras --group dev python -m devtools.inspect_explainer_typography --check-supporting --check-math --theme dark --width 390
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_lower_bounds_explainer --prepare-math
+uv run --frozen --all-extras --group dev pytest tests/test_n11_lower_bounds_explainer.py -q
+uv run --frozen --all-extras --group dev python -m devtools.inspect_n11_lower_bounds_explainer_typography --check-supporting --check-math --theme light
+uv run --frozen --all-extras --group dev python -m devtools.inspect_n11_lower_bounds_explainer_typography --check-supporting --check-math --theme dark --width 390
 uv run --frozen --all-extras --group dev python -m devtools.check_print_layout
-uv run --frozen --all-extras --group dev python -m devtools.render_explainer_pdf --update
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --update
 ```
 
 The typography check compares ordinary captions and endnotes with their shared role, and
@@ -1933,7 +1944,7 @@ and every formula is drawn, and `--view problems` fails on a page set off the ru
 **Text** and **Math**, above: on a built site,
 
 ```shell
-uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs SITE --page explainer.html --page n11-optimality/t-060-explainer.html --view differences --markdown
+uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs SITE --page papers/n11-lower-bounds-explainer.html --page papers/n11-optimality-review.html --view differences --markdown
 ```
 
 lists every property the optimality paper sets differently from the explainer, and names

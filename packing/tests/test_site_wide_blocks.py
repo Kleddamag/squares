@@ -52,7 +52,7 @@ from devtools.preview_site import (
     tabs_problems,
     type_problems,
 )
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 PAGES = ("index.html", "all-results.html", "frontier.html", "visualize.html", "tutorial.html")

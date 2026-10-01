@@ -1322,13 +1322,15 @@ pages:
       blobless sparse checkout omits 504 MB in `packing/resources/` and
       `packing/campaign/`; a contract test proves those omitted trees contain no declared
       workbench or explainer build input.
-  - id: optimality
+  # Named `optimality` until 2026-10-01, when the papers took their slugs (think-cmz6):
+  # the same job, steps and inputs under the paper's name, so its reading stands.
+  - id: n11-optimality-review
     measured_seconds: 49.0
     measured_on: 2026-10-01
     measured_where: >-
-      PR 259 exact-head run 36796189326, job 110160194859 at a3fd9510:
-      00:27:00Z to 00:27:49Z, including the new T-060 render, real Chromium
-      controls, PDF print, and artifact upload.
+      PR 259 exact-head run 36796189326, job 110160194859 at a3fd9510, where the job
+      was named `optimality`: 00:27:00Z to 00:27:49Z, including the new T-060 render,
+      real Chromium controls, PDF print, and artifact upload.
     ceiling_seconds: 80.0
     argument: >-
       The independent T-060 page reads only its own pinned proof packet, exact-backed
@@ -1405,10 +1407,14 @@ pages:
     argument: >-
       Assembles the site from the artifacts the jobs above produced. On a pull request it
       publishes nothing; it proves the assembly still works.
-  - id: explainer-unchanged
+  # Named `explainer-unchanged` until 2026-10-01 (think-cmz6): the same one-step notice
+  # under the paper's slug, so its reading stands.
+  - id: n11-lower-bounds-explainer-unchanged
     measured_seconds: 4.0
     measured_on: 2026-09-16
-    measured_where: run 35039355763, the scope demonstration
+    measured_where: >-
+      run 35039355763, the scope demonstration, where the job was named
+      `explainer-unchanged`
     ceiling_seconds: 8.0
     argument: >-
       The notice a pull request gets when no declared explainer input changed. It exists
@@ -1420,7 +1426,8 @@ pages:
     measured_where: run 35039355763, the scope demonstration
     ceiling_seconds: 8.0
     argument: The same notice for the workbench half.
-  - id: optimality-unchanged
+  # Named `optimality-unchanged` until 2026-10-01 (think-cmz6).
+  - id: n11-optimality-review-unchanged
     measured_seconds: 4.0
     measured_on: 2026-09-16
     measured_where: >-

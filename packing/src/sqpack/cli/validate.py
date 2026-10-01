@@ -3406,7 +3406,7 @@ _WORKBENCH_INPUTS = (
     "packing/src/sqpack/render/*",
     # The stage prints the shared version, pinned in `release.py`, so a re-pin changes the page.
     "packing/src/sqpack/release.py",
-    "packing/devtools/render_explainer.py",
+    "packing/devtools/render_n11_lower_bounds_explainer.py",
     # The site's navigation bar the published page carries, from the shared partial.
     "packing/devtools/render_overview.py",
     "packing/devtools/templates/site-nav.html",
@@ -4278,7 +4278,7 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_katex.py",
             "packing/devtools/node/check-katex.mjs",
             "packing/devtools/check_math_spans.py",
-            "packing/devtools/render_explainer.py",
+            "packing/devtools/render_n11_lower_bounds_explainer.py",
             "packing/pyproject.toml",
             "packing/uv.lock",
             "vendor/kpress",

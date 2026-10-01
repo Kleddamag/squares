@@ -11,8 +11,9 @@ So the three are exercised directly:
 - the coverage rule, over the set the page requests and the one substitution it relies
   on. 400 is the case: the `@page` footer inherits it, and CSS font matching sends a
   request in [400, 500] up before it goes down, so it lands on 410.
-- `print_face_css`, over stand-in files, for the shape `render_explainer_pdf` injects:
-  one `@media print` block, the family the print stack names, every face's bytes inline.
+- `print_face_css`, over stand-in files, for the shape `render_n11_lower_bounds_explainer_pdf`
+  injects: one `@media print` block, the family the print stack names, every face's bytes
+  inline.
 - the PDF font scan, over synthetic dictionaries in the shapes Chromium writes. Both
   failures are here -- an owned face drawn as outlines, and a file the scan can see no
   font in at all -- because the second is the one that would otherwise look like a pass.
@@ -41,8 +42,8 @@ from pathlib import Path
 import pytest
 from nodejs_wheel import node
 
-from devtools import render_explainer_pdf
-from devtools.render_explainer_pdf import (
+from devtools import render_n11_lower_bounds_explainer_pdf
+from devtools.render_n11_lower_bounds_explainer_pdf import (
     EXPECTED_HOST_FONTS,
     atlas_face_bead,
     embedded_fonts,
@@ -135,7 +136,8 @@ def instances(tmp_path: Path) -> Path:
 
 
 def test_the_injected_css_is_one_print_block_of_self_contained_faces(instances: Path) -> None:
-    """The shape `render_explainer_pdf` adds to the loaded page, and nothing else.
+    """The shape `render_n11_lower_bounds_explainer_pdf` adds to the loaded page, and nothing
+    else.
 
     Three properties, and each is load-bearing. `@media print` is what keeps the screen
     on the variable font when the same rules are added to a page that is not printing.
@@ -503,7 +505,10 @@ def test_a_pending_face_passes_and_is_reported_with_its_bead(
     file would be read as no face at all rather than as the host face it is.
     """
     monkeypatch.setattr(
-        render_explainer_pdf, "EXPECTED_HOST_FONTS", {"Menlo": "kpr-v731"}, raising=True
+        render_n11_lower_bounds_explainer_pdf,
+        "EXPECTED_HOST_FONTS",
+        {"Menlo": "kpr-v731"},
+        raising=True,
     )
     waiting = (
         _descriptor(7, "Menlo-Regular", program=True)

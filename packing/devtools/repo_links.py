@@ -17,13 +17,13 @@ in the tree `main` will hold fails the render (`site_documents`) or the render-t
 commit by its hash, the optimality paper aside.
 
 Two things name a commit on purpose. The committed claim documents name their edition's
-revision (`render_explainer.edition_file`); they are not site pages. The optimality
-paper is one, and pins each citation to the commit it was built from
-(`render_n11_optimality_explainer.link_revision`): a paper cites the evidence as it
-stood when it was typeset, with anchors into reviews and receipts that keep changing on
-`main`. The hazard above does not reach the deployed paper, since the deploy builds it
-from the commit it deploys, which `main` keeps; the deployed-site check holds each of
-its citations to that commit and to its tree (`check_published_site.paper_citations`).
+revision (`render_n11_lower_bounds_explainer.edition_file`); they are not site pages. The
+optimality paper is one, and pins each citation to the commit it was built from
+(`render_n11_optimality_review.link_revision`): a paper cites the evidence as it stood when it
+was typeset, with anchors into reviews and receipts that keep changing on `main`. The hazard
+above does not reach the deployed paper, since the deploy builds it from the commit it deploys,
+which `main` keeps; the deployed-site check holds each of its citations to that commit and to
+its tree (`check_published_site.paper_citations`).
 """
 
 from __future__ import annotations
@@ -120,7 +120,7 @@ def repo_url(
     `tree/` and a file under `blob/`, and redirects the other way round, so the
     canonical one is written and no link is a redirect. `fragment` is appended as given,
     `?plain=1#L12` or `#section`. `ref` exists for the committed claim documents alone,
-    which name their edition's revision (`render_explainer.edition_file`).
+    which name their edition's revision (`render_n11_lower_bounds_explainer.edition_file`).
     """
     rel = relative(path)
     if kind is None:

@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `review-planning-oversight` (correctness) | 9 | think-kaqh | Await fresh Astra max chart derivation under think-j516; then preregister a bounded test. PR265 CI runs asynchronously; no target replay needs repeating. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `review-planning-oversight` (correctness) | 14 | think-kaqh | Await fresh Astra max chart derivation under think-j516; then preregister a bounded test. PR265 CI runs asynchronously; no target replay needs repeating. |
 
 ### Workflow summary
 
@@ -191,12 +191,12 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `factual-review` | 11 | 1 | 64 | 3 |
 | `insight-iteration` | 28 | 1 | 86 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
-| `efficiency-loop` | 11 | 1 | 38 | 1 |
-| `research-loop` | 31 | 4 | 109 | 8 |
-| `pipeline-improvement` | 38 | 2 | 199 | 6 |
-| `documentation-pass` | 1 | 0 | 26 | 3 |
+| `efficiency-loop` | 11 | 1 | 39 | 1 |
+| `research-loop` | 31 | 4 | 110 | 8 |
+| `pipeline-improvement` | 38 | 2 | 200 | 6 |
+| `documentation-pass` | 1 | 0 | 27 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 37 | 2 |
+| `review-planning-oversight` | 6 | 0 | 38 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -859,13 +859,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-395 | research | 12 | ready | 2 | think-ujwy | The ladder log and the highest certificate directory. |
 | BC-396 | research | 45 | blocked | 1 | think-0g4t | The k = 7 cover, both censuses and the review. |
 | BC-397 | measurement_validation | 17 | complete | 0 | think-08sm | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md |
-| BC-398 | research | 17 | blocked | 0 | think-j516 | Reviewed complete contact table and controlled devtools.check_n17_contact_chart instrument. |
+| BC-398 | research | 17 | complete | 0 | think-j516 | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 164 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 165 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1059,7 +1059,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-251 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-252 | blocked | proof | A D4-invariant weighted point set in [0,7]^2 with rational weights and |  | 0 |  |  |
 | H-253 | confirmed | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  | 8s wall |
-| H-254 | blocked | proof | The proposed three-variable endpoint equality chart, including its exp |  | 0 |  |  |
+| H-254 | confirmed | proof | The proposed three-variable endpoint equality chart, including its exp |  | 1 |  | 1s wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1199,7 +1199,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (47)
+### accepted (48)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1250,6 +1250,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-229 | series-000 | 21 | Claude Session 156, Opus high lane | H-240 | Both routes accept set C's certificate at least cell mass 250001/250000 with total mass 20.145724 < 21, so the gate certifies the covering at side 122/25. The Fable max W2 review H-240 requires accepted it on three routes, and it is registered as T-034. |
 | exp-232 | series-000 | 11 | Claude Session 157 coordinator | H-236 | The independent reader closes all 256 subtrees with no unresolved leaf and three Trump-degenerate leaves, so every packing of six axis-aligned squares and five at a common tilt within 10^-6 of Trump's half-tangent has side at least U, with equality only on Trump's orbit; the local theorem it relies on is BC-240, accepted at retained-record-dependent scope pending BC-241, and the certificate tree itself (5.5 GB) is retained outside the record. The Fable max W2 review of 2026-09-24 accepted it, and it is registered as T-035 (the reduction) and T-036 (the composed theorem). |
 | exp-235 | series-000 | 17 | Codex Session165 coordinator | H-253 | The frozen exact source, two local geometry implementations, independent mapping audit and all positive/negative controls agree. Acceptance is only of the rational upper witness. |
+| exp-236 | series-000 | 17 | Codex Session165 coordinator | H-254 | All458 frozen comparisons pass with complete independently audited coverage and controlled instrument. Acceptance establishes fidelity at the relaxed rational source only. |
 
 ### baseline (12)
 
@@ -1314,7 +1315,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-164 rounds, 2512.1 agent-minutes, 4019.3 wall-minutes.
+165 rounds, 2512.1 agent-minutes, 4019.3 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

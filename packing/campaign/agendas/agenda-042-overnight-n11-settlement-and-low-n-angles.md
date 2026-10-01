@@ -942,7 +942,7 @@ agenda:
     purpose: research
     owner_focus: insight
     instances: [17]
-    state: in_progress
+    state: complete
     priority: 0
     question: Does the proposed n17 endpoint contact chart match the retained rational witness within its frozen exact residual and feature thresholds?
     hypotheses: [H-254]

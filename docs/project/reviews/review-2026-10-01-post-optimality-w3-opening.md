@@ -289,27 +289,27 @@ along $u$ and use $y_{15}\le S-1/2$ to obtain $x_{15}\ge X_0$. Sum $2\to13\to14\
 along $u$ and use $x_{17}\le S-1/2$ to obtain $y_{17}\ge Y_0$. The chain $3\to11\to12$
 similarly gives $U_{12}:=u\cdot r_{12}\ge c+2s+3/2$.
 
-Write the actual projections of square 16 as $A_*=p\cdot r_{16}$ and
-$B_*=q\cdot r_{16}$. The last bridge branches and containment give
+Write the actual projections of square 16 as $A_{\ast}=p\cdot r_{16}$ and
+$B_{\ast}=q\cdot r_{16}$. The last bridge branches and containment give
 
 $$
-A_*\ge A_0=d(X_0+1/2)-e(S-1)+1/2,
+A_{\ast}\ge A_0=d(X_0+1/2)-e(S-1)+1/2,
 $$
 
 $$
-A_*\le A_{\max}=d(S-1)-e(Y_0+1/2)-1/2,
-\qquad B_*\le B_0=(d+e)(S-1)-1/2.
+A_{\ast}\le A_{\max}=d(S-1)-e(Y_0+1/2)-1/2,
+\qquad B_{\ast}\le B_0=(d+e)(S-1)-1/2.
 $$
 
 Consequently $A_{\max}-A_0=F_2\ge0$. The remaining branch $12\to16$ gives
 
 $$
-\alpha(A_*-1/2)+\gamma(B_*-1/2)
+\alpha(A_{\ast}-1/2)+\gamma(B_{\ast}-1/2)
 \ge U_{12}+1/2\ge c+2s+2.
 $$
 
-Because $\alpha,\gamma>0$, replacing $A_*,B_*$ by their upper bounds preserves this
-necessary inequality.
+Because $\alpha,\gamma>0$, replacing $A_{\ast},B_{\ast}$ by their upper bounds preserves
+this necessary inequality.
 Its residual is exactly
 
 $$
@@ -324,6 +324,146 @@ An exclusion below the candidate side would establish a lower bound only for the
 common orientations and directed branches.
 Split orientations and branch changes remain the capture problem.
 No numerical exclusion or target evaluation was used in this symbolic derivation.
+
+## Conditional Minimum in the Frozen Parameter Box
+
+The two Astra max reviewers also independently derived and checked a monotonicity
+argument on the whole H-254 box.
+It gives a conditional minimum and at most one equality root, without assuming saturated
+contacts. Root existence remains unproved.
+
+Put
+
+$$
+P=S-X_0-3/2=S-2-s+\frac{s(S-3)-2}{c},\qquad
+Q=S-Y_0-3/2=S-3+\frac{c(S-3)-2}{s},
+$$
+
+$$
+R=(c+s)S-(2c+3s+2).
+$$
+
+Then $F_2=dP+eQ-1$ and $G_3=R+e\alpha Q-\alpha-\gamma$. Let $J=F_2+G_3$. With angular
+derivatives taken in radians,
+
+$$
+P_\theta=\frac{S-3-2s}{c^2}-c,\qquad
+Q_\theta=\frac{2c-S+3}{s^2},
+$$
+
+$$
+(F_2)_\theta=dP_\theta+eQ_\theta,\qquad
+(F_2)_\beta=-eP+dQ,
+$$
+
+$$
+(G_3)_\theta=c(S-3)-s(S-2)+e\alpha Q_\theta-e\gamma Q+\gamma-\alpha,
+\qquad (G_3)_\beta=\gamma-\alpha+Q\cos(\theta+2\beta).
+$$
+
+The side derivatives are strictly positive:
+
+$$
+(F_2)_S=(c+s)(d/c+e/s)>0,\qquad
+(G_3)_S=(c+s)(1+e\alpha/s)>0.
+$$
+
+Rational outward bounds on the entire box, using the monotone half-angle formulas and
+the displayed derivatives, are as follows.
+Every terminating decimal in this table is an exact rational bound, not a sampled value.
+
+| Quantity | Lower | Upper |
+| --- | --- | --- |
+| $c$ | $0.7591$ | $0.7706$ |
+| $s$ | $0.6373$ | $0.651$ |
+| $d$ | $0.792$ | $0.804$ |
+| $e$ | $0.595$ | $0.610$ |
+| $P$ | $0.795$ | $0.860$ |
+| $Q$ | $0.531$ | $0.588$ |
+| $\alpha$ | $0.204$ | $0.241$ |
+| $\gamma$ | $0.956$ | $0.994$ |
+| $P_\theta$ | $-0.143$ | $-0.062$ |
+| $Q_\theta$ | $-0.389$ | $-0.315$ |
+
+For example, $(F_2)_\beta\le-0.595\cdot0.795+0.804\cdot0.588=-0.000273$; its lower bound
+is greater than $-0.105$. Also $(F_2)_\theta\le-0.792\cdot0.062-0.595\cdot0.315<-0.236$.
+The four terms in $(G_3)_\theta$ have respective upper bounds $-0.413$, $-0.0382347$,
+$-0.30204342$, and $0.790$, whose sum is $0.03672188<0.037$. Using
+$\cos(\theta+2\beta)\ge-1$ gives $(G_3)_\beta\ge0.956-0.241-0.588=0.127$. Thus
+
+$$
+(F_2)_S>0,\quad(F_2)_\theta<0,\quad(F_2)_\beta<0,
+\qquad J_S>0,\quad J_\theta<-0.199,\quad J_\beta>0.022.
+$$
+
+Suppose an exact equality root $(S_{\ast},\theta_{\ast},\beta_{\ast})$ exists in this
+box. Since $F_1\ge0$ implies $S\ge g(\theta)=2+(c+3)/(c+s)$ and $g$ strictly decreases,
+any necessary-system point with $S<S_{\ast}$ must have $\theta>\theta_{\ast}$. The
+monotonicities of $F_2$ then force $\beta<\beta_{\ast}$; otherwise $F_2<0$. But all
+three changes make $J$ smaller than its value zero at the root, contradicting
+$F_2,G_3\ge0$. Therefore the root’s side is the minimum within this necessary system and
+box. Two roots with different sides contradict this result; equal sides force equal
+$\theta$ by $g$ and then equal $\beta$ by strict monotonicity of $F_2$.
+
+This is a conditional analytic result reviewed by two mathematical agents.
+It has no machine-checked derivative certificate yet, and proves neither root existence
+nor a packing at that root.
+Applying it to all nearby or all global packings additionally requires coverage of
+orientations, directed branches and parameters outside the box.
+The next useful slice is rigorous root isolation and endpoint/slider feasibility, with
+these capture obligations kept separate.
+
+## Smaller Root-Isolation Problem
+
+On $F_1=0$, the endpoint lane’s algebraic reduction gives
+
+$$
+S(t)=\frac{6+4t}{1+2t-t^2},\quad
+P(t)=\frac{2(1-t)}{(1+t)(1+t^2)},\quad
+Q(t)=\frac{(1-t)^2}{2t},\quad
+R(t)=\frac{2(1-t)}{1+t^2}.
+$$
+
+The equation $F_2=0$ becomes
+
+$$
+(P+1)b^2-2Qb+1-P=0.
+$$
+
+Using $eQ=1-dP$, $G_3=0$ reduces to
+
+$$
+R-\gamma-Pd\alpha=0.
+$$
+
+All denominators are positive on the frozen half-angle box.
+This reduces root isolation to two rational equations in $t,b$; the 34 centre
+coordinates and two slider parameters do not belong in the root solver.
+For an explicit polynomial form, write $D=1+t^2$, $E=1+b^2$, $L=(1+t)D$, $K=1+2t-t^2$,
+and $N_\alpha=(1-t^2)(1-b^2)-4tb$. The independently checked pair is
+
+$$
+\Pi_2=2t(1-t)(1-b^2)+(1-t)^2Lb-tLE,
+$$
+
+$$
+\Pi_3=(1-t^2)DE^2
+-(1+t)DE\bigl[b(1-t^2)+t(1-b^2)\bigr]
+-(1-t)(1-b^2)N_\alpha.
+$$
+
+After substituting $S(t)$, their exact normalizations are $\Pi_2=tLE F_2$ and
+$\Pi_3=(1+t)D^2E^2 F_3/2$. Both multipliers are strictly positive, so the signs as well
+as zero sets are preserved.
+The side interval must also be retained; the bare angle rectangle does not imply it.
+Since $K>0$, its exact polynomial guards are
+
+$$
+187t^2-214t+53\ge0,\qquad 1169t^2-1338t+331\le0.
+$$
+
+`think-bj81` owns the next preregistered root-isolation and endpoint-feasibility slice.
+No root calculation has run at this checkpoint.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

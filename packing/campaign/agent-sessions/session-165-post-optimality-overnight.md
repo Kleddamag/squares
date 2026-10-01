@@ -272,7 +272,7 @@ session:
     bead: think-j516
     objective: Execute exp236 once after committing the controlled H254 instrument; preserve exact residuals
       and independent output review.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: H254 instrument and synthetic controls independently approved.
     budget_minutes: 12
@@ -284,10 +284,90 @@ session:
       -m devtools.check_n17_contact_chart
     kill_condition: Source/controls mismatch, timeout, unsupported mandatory guard or repeated crash.
     fallback: Retain unresolved result with exact cause; never change frozen thresholds.
+    outcome: exp236 passed all458exact clauses in1.13s wall at74480b0a0. Independent Astra audit reconstructed
+      the complete unique check roster and all frozen rational comparisons; H254 accepted. The separate
+      symbolic slack-contact conditional minimum passed two Astra max reviews.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md
+    - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    stop_reason: One bounded run and independent output review complete; no target retry.
+    next_action: Publish evidence and fix stale CI control anchor; next math is think-bj81 root isolation
+      and joint endpoint feasibility.
+  - workflow: documentation-pass
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: Retain exp236 exact evidence, conditional minimum proof and next root-isolation work; publish
+      a recoverable checkpoint.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: Second bounded experiment and independent mathematical/output reviews are complete.
+    budget_minutes: 15
+    started_at: '2026-10-01T11:29:00Z'
+    deadline_at: '2026-10-01T11:44:00Z'
+    expected_output: Updated ledger/synopsis/agenda, fixed control anchor, pushed evidence and PR review
+      comment.
+    validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
+    kill_condition: Focused record consistency or independent proof transcription check fails.
+    fallback: Repair the named issue without rerunning accepted target evidence.
+    outcome: exp236 receipt and independent output review retained; two Astra reviews checked the conditional
+      box-minimum proof and exact two-polynomial reduction. Ledger, synopsis, agenda, session costs, documentation
+      and math markup pass focused checks; stale165-round negative-control anchor repaired and mutation
+      verified.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md
+    - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    stop_reason: Focused evidence checks complete; publish recoverable checkpoint and let hostedCIrun
+      asynchronously.
+    next_action: Next mathematical obligation is think-bj81 root existence and joint endpoint-slider feasibility.
+  - workflow: efficiency-loop
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    objective: Use the second bounded run to distinguish proof work and checkpoint overhead from arithmetic
+      cost.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: Second W3/W10/W7/W6 cycle completed with exact timing and two avoidable CI metadata
+      failures.
+    budget_minutes: 5
+    started_at: '2026-10-01T11:35:00Z'
+    deadline_at: '2026-10-01T11:40:00Z'
+    expected_output: Retained cost judgment and a supporting checkpoint-efficiency bead.
+    validation_command: Read exp236 timing against session phases and failedCI causes.
+    kill_condition: Optimization target is not supported by observed costs.
+    fallback: Continue direct root-existence mathematics rather than adding arithmetic infrastructure.
+    outcome: Target1.13s and independent synthetic controls0.70s do not justify Rust optimization. Proof
+      derivation/review is productive elapsed work; stale view/control anchors caused avoidable integration
+      overhead. think-je3v tracks a bounded checkpoint refresh improvement without displacing root work.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/run-001/timing.log
+    stop_reason: Measured bottleneck disposition recorded; no extra benchmark selected.
+    next_action: Proceed to think-bj81 with exact-polynomial root certificate readiness review.
+  - workflow: review-planning-oversight
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-bj81
+    objective: Specify the smallest independently checkable root-existence certificate before registering
+      the next experiment.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 13
+    started_at: '2026-10-01T11:36:34Z'
+    deadline_at: '2026-10-01T11:49:34Z'
+    expected_output: Reviewed exact-polynomial certificate acceptance rule, domain and synthetic controls,
+      with no target evaluation.
+    validation_command: Review sqpack.promote.krawczyk and retained polynomial identities against the
+      proposed certificate contract.
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Commit then run once; independent output check before deciding verdict.
+    next_action: Collect Astra readiness review; freeze next hypothesis before any root computation.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -305,7 +385,9 @@ session:
     metric: Independently checked useful discriminators and resolved proof obligations.
     before: X-048 and evand intake reviewed; no W3 target execution; n17 candidate has only a numerical
       receipt.
-    after: null
+    after: H253 rational feasibility and H254 chart fidelity independently confirmed; a conditional slack-contact
+      box minimum derived and independently reviewed. Root existence/endpoint feasibility/capture remain
+      open.
   delegations:
   - task: think-s6ty endpoint and flexible-family mathematical review
     operator: gpt-6-astra max
@@ -417,6 +499,10 @@ session:
     and a prohibited shell entrypoint. Corrections are isolated from accepted run-001 evidence.
   - '11:17:54UTC capacity check: load66.14 on10cores, CPUidle0percent; one local bounded worker remains
     the cap. External scratch mounted and writable. Unrelated processes were observed and left untouched.'
+  - exp236target1.13s; all458 rational clauses passed, independently audited with completeunique expectedroster.
+    No rootexistence or globaloptimality claim.
+  - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
+    anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
   next_action: Await fresh Astra max chart derivation under think-j516; then preregister a bounded test.
     PR265 CI runs asynchronously; no target replay needs repeating.
@@ -459,6 +545,24 @@ the expected count17 and rational side, conversion, both local checkers and sour
 replay. Use a fresh output directory for any rerun; the original run-001 is immutable.
 Its outputs retain command lines, exits, wall/CPU/memory receipts and source/Git
 identity. The launcher unsets `PYTHONOPTIMIZE` and confirms assertions are active.
+
+## Next Mathematical Slice
+
+The next bead is `think-bj81`: rigorous existence of the root of the two polynomial
+equations in the W3 report, then endpoint containment, all pairs and joint slider
+domains. The reviewed conditional minimum is already available; root existence and
+capture are separate obligations.
+A readiness review is comparing the existing Krawczyk primitives with a small
+exact-rational polynomial certificate checker before H-255 is registered.
+No new root target is admitted or executed yet.
+
+Resume with `sed -n '1,260p' packing/src/sqpack/promote/krawczyk.py` and the
+[polynomial reduction](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md#smaller-root-isolation-problem),
+then freeze the next criterion and controls.
+Do not repeat H253/H254 or source intake.
+`think-vdmf` retains rational frontier admission; `think-je3v` retains the observed
+checkpoint-efficiency issue.
+The overnight deadline and finalization start are unchanged.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

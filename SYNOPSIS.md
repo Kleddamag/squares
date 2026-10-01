@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 387 | 195 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
+| Commitments | 387 | 196 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
 | Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 189 | 33 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 164 | 47 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 189 | 34 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 165 | 48 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -510,6 +510,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [Independent Review of exp-236](packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md) | dated review record | record | retained | — |
 | [Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md) | dated review record | record | retained | — |
 | [Plan: Transfer Recent Optimality Methods to n = 17 and Other Low Cases](docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md) | implementation plan | current | transient | — |
 | [N11 Optimality Review — Intuition and Visual Structure](docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md) | dated review record | record | retained | — |
@@ -5232,7 +5233,7 @@ round that names the hypothesis, control roles included.
 | [H-251](packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md) | open | A rectangle-density certificate with mass below 82 at 93/10, covering n = 82..85 by mass against Nagamochi’s 1 + √(n − 17) (BC-394) | 0 | — |
 | [H-252](packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md) | blocked | Evan Daniel’s zero-margin closed cover carried to k = 7: a cover of [0,7]² with mass below 45, so s(45) = 7; blocked on the intake lane’s review of the s(32) certificate (BC-396) | 0 | — |
 | [H-253](packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md) | confirmed | The retained Kleddamag rational reconstruction contains seventeen unit squares at exact side 4675530093604551/1000000000000000 | 1 | 8s wall |
-| [H-254](packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md) | blocked | The proposed three-variable endpoint contact chart reproduces the fixed rational n17 witness within exact residual and contact-feature thresholds; blocked until its instrument and full reconstruction table are built and reviewed | 0 | — |
+| [H-254](packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md) | confirmed | The proposed three-variable endpoint contact chart reproduces the fixed rational n17 witness within exact residual and contact-feature thresholds; the conclusion is fidelity at this relaxed witness only | 1 | 1s wall |
 
 ### Confirmed
 
@@ -5554,7 +5555,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 164 rounds registered in `series-000`.
+There are 165 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4019.3 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -5762,6 +5763,7 @@ archive beside it.
 | [exp-233](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md) | 12 | target | H-241 | Warm-started cutting loop at side 39609/10000 with six row rounds and support 192 | Row loop converged at covering value 11.980175 < 12; no family reaches 12 | rejected |
 | [exp-234](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-234-h242-rung1-pilot.md) | 11 | target | H-242 | Rung-0 cell tree on eighteen boxes away from Trump’s tilt, 150,000 nodes per subtree | No box closed; about two-thirds closed at about four million nodes each, flat in width and tilt | unresolved |
 | [exp-235](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md) | 17 | target | H-253 | Exact replay of the fixed Kleddamag rational source through two local geometry implementations, with source and control agreement | Seventeen unit squares and all 136 pair separations verified at exact side 4675530093604551/1000000000000000; rational upper witness accepted | accepted |
+| [exp-236](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md) | 17 | target | H-254 | Exact rational fidelity screen of the frozen three-variable contact chart, including all contacts, reconstructed centres, alternative axes and source feasibility | All 458 frozen comparisons passed with independent receipt review; fidelity at the relaxed rational witness only | accepted |
 
 ### Cost and provenance
 
@@ -5931,10 +5933,11 @@ archive beside it.
 | exp-233 | 345 minutes on one process | 7941 s | — | criterion | `7b4847aa` |
 | exp-234 | 150,000 nodes per subtree, eighteen boxes | 11264 s | — | criterion | `42d52c38` |
 | exp-235 | 90 seconds per command; 600 seconds total | 7.91 s | — | criterion | `bacacdd15` |
+| exp-236 | 90 seconds; one worker | 1.13 s | — | criterion | `74480b0a` |
 
-### What the 164 rounds jointly establish
+### What the 165 rounds jointly establish
 
-The 164 rounds use 2512.1 agent-minutes and 4019.3 wall-minutes under the campaign’s
+The 165 rounds use 2512.1 agent-minutes and 4019.3 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

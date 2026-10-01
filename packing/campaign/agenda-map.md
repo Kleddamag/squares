@@ -10,9 +10,9 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **13** in_progress, **24** ready, **21** tentative, **71** blocked, **63** stopped, **195** complete.
+- **13** in_progress, **24** ready, **21** tentative, **70** blocked, **63** stopped, **196** complete.
 
-- **28 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`, `BC-398`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
+- **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
 ## Live queue
 
@@ -153,7 +153,6 @@ A commitment blocked by other commitments names them; one blocked by something e
 | agenda-037 | `BC-358` | 1 | — | no | think-g3j7 must land a new reader for weighted-majority and floor atoms without mutating T-025/T-026 verify_claim.py.… |
 | agenda-040 | `BC-364` | 2 | `BC-363` | yes | The non-convex box-avoidance domain predicate (BC-204) and a conflict-edge atom class in the relational reader. |
 | agenda-040 | `BC-365` | 3 | — | no | An unshrunk exact-orientation verifier generalised from cases/green17/interval_audit.py and an unshrunk column… |
-| agenda-042 | `BC-398` | 0 | `BC-397` | yes | Complete frozen contact table and independently reviewed exact residual instrument with synthetic controls. |
 | agenda-042 | `BC-384` | 1 | `BC-388`, `BC-389` | no | — |
 | agenda-042 | `BC-396` | 1 | — | no | The intake lane's accepting review of evand/square-packing's s(32) certificate at 167d842, which is also the reading of… |
 
@@ -217,7 +216,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active |  | 8 |  | 3 | 2 | 12 | 25 |
+| agenda-042 | active |  | 8 |  | 2 | 2 | 13 | 25 |
 
 ## By program
 
@@ -509,9 +508,9 @@ Open frontier: `BC-306`.
 | agenda | id | state | question |
 | --- | --- | --- | --- |
 | agenda-042 | `BC-397` | complete | Does the retained rational n17 upper certificate pass two local exact geometry implementations at… |
-| agenda-042 | `BC-398` | blocked | Does the proposed n17 endpoint contact chart match the retained rational witness within its frozen… |
+| agenda-042 | `BC-398` | complete | Does the proposed n17 endpoint contact chart match the retained rational witness within its frozen… |
 
-Open frontier: `BC-398`.
+Open frontier: none; every cell is terminal.
 
 ### `reach-table-ladder`
 

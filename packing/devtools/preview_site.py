@@ -12,6 +12,10 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --serve
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR
 
+`--result-preview` adds one page the site never publishes, the sample result overviews
+(`devtools.result_overview`), and with `--shots` shoots it whole and with each of its
+popovers open.
+
 `--skip explainer` or `--skip workbench` leaves a slow build out; its nav link then
 points at a missing page, which the link check reports rather than fails on. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the explainer's own
@@ -29,6 +33,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+from collections.abc import Sequence
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -75,8 +80,14 @@ def build_workbench(output: Path) -> None:
     _run("workbench_tools.build_site", "--out", str(output / "workbench"))
 
 
-def build(output: Path, skip: set[str]) -> None:
+def build(output: Path, skip: set[str], *, result_preview: bool = False) -> None:
     output.mkdir(parents=True, exist_ok=True)
+    if result_preview:
+        from devtools.result_overview import preview_page  # noqa: PLC0415
+
+        preview = preview_page()
+        (output / preview.name).write_text(preview.html, encoding="utf-8")
+        print(f"wrote {output / preview.name}")
     if "explainer" not in skip:
         build_explainer(output)
     if "pages" not in skip:
@@ -145,10 +156,27 @@ def _settle_math(page: Page) -> int:
     return pending
 
 
-def screenshots(output: Path, shots: Path, port: int) -> list[str]:
+def _popover_shots(page: Page, shots: Path, stem: str) -> None:
+    """Each popover a preview page's buttons open, shot as the window shows it."""
+    openers = page.locator("[data-preview] button[popovertarget]:not(.site-popover-close)")
+    for index in range(openers.count()):
+        opener = openers.nth(index)
+        target = opener.get_attribute("popovertarget")
+        opener.scroll_into_view_if_needed()
+        opener.click()
+        page.wait_for_timeout(600)
+        path = shots / f"{stem}-{target}.png"
+        page.screenshot(path=str(path))
+        print(f"shot {path}")
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(100)
+
+
+def screenshots(output: Path, shots: Path, port: int, extra: Sequence[str] = ()) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, math left untypeset or set in the other face from its text, and any
-    page wider than its viewport."""
+    page wider than its viewport. `extra` names preview pages built beside the site's
+    own, which are shot the same way and then with each of their popovers open."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -157,7 +185,7 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
     try:
         with sync_playwright() as driver:
             browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
-            for name in render_overview.SITE_PAGES:
+            for name in (*render_overview.SITE_PAGES, *extra):
                 if not (output / name).is_file():
                     continue
                 for width in WIDTHS:
@@ -184,6 +212,8 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
                     target = shots / f"{stem}-{width}.png"
                     page.screenshot(path=str(target), full_page=True)
                     print(f"shot {target}")
+                    if name in extra:
+                        _popover_shots(page, shots, f"{stem}-{width}")
                     page.close()
             browser.close()
     finally:
@@ -197,18 +227,28 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--skip", action="append", choices=BUILDS, default=[])
     parser.add_argument("--shots", type=Path, help="write screenshots of every page here")
     parser.add_argument("--serve", action="store_true", help="serve the site until stopped")
+    parser.add_argument(
+        "--result-preview",
+        action="store_true",
+        help="also build the sample result overviews, a page the site never publishes",
+    )
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args(argv)
     output = args.output.resolve()
     if output == (PACKING / "site").resolve():
         parser.error("the preview never writes into packing/site/")
 
-    build(output, set(args.skip))
+    extra: tuple[str, ...] = ()
+    if args.result_preview:
+        from devtools.result_overview import PREVIEW_PAGE  # noqa: PLC0415
+
+        extra = (PREVIEW_PAGE,)
+    build(output, set(args.skip), result_preview=args.result_preview)
     status = 0
     for problem in missing_links(output):
         print(f"missing: {problem}", file=sys.stderr)
     if args.shots:
-        for error in screenshots(output, args.shots.resolve(), args.port):
+        for error in screenshots(output, args.shots.resolve(), args.port, extra):
             print(f"problem: {error}", file=sys.stderr)
             status = 1
     if args.serve:

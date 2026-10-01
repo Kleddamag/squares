@@ -86,11 +86,11 @@ def is_current_best(standing: str) -> bool:
 
 
 def standing_chip(standing: str) -> str:
-    """A result's standing as a chip: the accent where a case bound rests on it now,
-    the plain gray otherwise, so a reader sees at a glance which results still hold."""
-    tone = ' data-tone="accent"' if standing == HOLDS else ""
+    """One part of a result's standing as a chip, the plain gray one: every standing chip
+    is the one component, so `superseded`, `reported` and `second certificate` are one
+    size and differ only in their words (`standing_chips` chooses which are drawn)."""
     return (
-        f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}"{tone}>'
+        f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}">'
         f"{_esc(standing_label(standing))}</span>"
     )
 
@@ -774,9 +774,9 @@ def result_filters(
 
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
-    in one order. The id, which is the row's trigger; the cases; the result; the credit;
-    the rungs, with the standing under them; the date; and the records. A column sorts
-    where an order means something, on either page."""
+    in one order. The id, which is the row's trigger; the cases; the result, with its
+    records under it; the credit; the rungs, with the standing under them; and the
+    date. A column sorts where an order means something, on either page."""
     return (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
@@ -787,7 +787,6 @@ def result_head() -> str:
         'whether a case bound rests on the result now">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
-        "<th>Records</th>"
         "</tr></thead>"
     )
 
@@ -837,23 +836,29 @@ def date_cell(result: Result) -> str:
 def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
     its id (`id_cell`), its cases, its summary with the star a new result earns
-    (`result_text`, `new_result_star`), its credit (`credit_cell`), its rung chips with
-    its standing chip under them, its date (`date_cell`) and its records."""
+    (`result_text`, `new_result_star`) and its records on a quiet line under it, its
+    credit (`credit_cell`), its rung chips with its standing under them where it has
+    one to show (`standing_chips`), and its date (`date_cell`). The records are no
+    column of their own: a column narrow enough to fit set them a link to a line, and
+    under the summary they take a line or two. The overview's table carries them and
+    does not show them (`site.css`, `.site-recent-table`)."""
     record = result.record
+    standing = standing_chips(result.standing)
+    if standing:
+        standing = f'<span class="site-standing">{standing}</span>'
     return (
         f"{id_cell(result, detail)}"
         f'<td class="num site-col-n" data-value="{result.first_n}">{_esc(result.scope)}</td>'
         f'<td class="site-col-result">{result_text(result, here=here)}'
-        f"{new_result_star(result, overview)}</td>"
+        f"{new_result_star(result, overview)}"
+        f'<div class="site-records">{_records(result)}</div></td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-        f"{rung_chips(result)}"
-        f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
+        f"{rung_chips(result)}{standing}</td>"
         f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
         f"{date_cell(result)}</td>"
-        f'<td class="site-records">{_records(result)}</td>'
     )
 
 
@@ -1135,15 +1140,20 @@ def split_summary(summary: str) -> tuple[str, str]:
 
 
 def standing_chips(standing: str) -> str:
-    """A standing as one chip per part: `second certificate, reported` is two chips."""
+    """A standing as its chips, one per part: `second certificate, reported` is two
+    chips. A result that still stands, `current best`, is the default and takes none:
+    what a reader is told is that a result no longer holds (`superseded`), or how it
+    holds otherwise. So `current best` draws nothing and `current best, reported` draws
+    `reported`. The standing itself stays on the row, as `data-standing`, for the
+    filters."""
     if standing == NOT_A_BOUND:
         return standing_chip(standing)
-    return " ".join(standing_chip(part) for part in standing.split(", "))
+    return " ".join(standing_chip(part) for part in standing.split(", ") if part != HOLDS)
 
 
 def status_chips(result: Result) -> str:
     """A result's rung chips, S, V and C, then its standing chips, side by side."""
-    return rung_chips(result) + " " + standing_chips(result.standing)
+    return " ".join(filter(None, (rung_chips(result), standing_chips(result.standing))))
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:

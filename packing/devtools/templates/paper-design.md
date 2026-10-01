@@ -715,19 +715,26 @@ it.
   note size, a solid light fill and no border, lettered in the page’s own text colour.
   A plain chip is a light gray tint; `data-tone="accent"` is an accent tint, for a
   settled state such as a proved case.
-  Chips sit inline and wrap like words, a space apart, with a small block margin
-  (0.15rem) so a wrapped row never touches the row above, on any page or at any width.
-  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its fill
-  strengthens and saturates with the level (Color, The Rung Scale).
+  No chip wraps: one rule on the component, `white-space: nowrap`, keeps a chip’s words
+  on one line wherever it sits, and no other rule lets one break.
+  What holds a chip is made wide enough for it.
+  A row of chips wraps like words, between chips, a space apart, with a small block
+  margin (0.15rem) so a wrapped row never touches the row above, on any page or at any
+  width. A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its
+  fill strengthens and saturates with the level (Color, The Rung Scale).
   Significance is listed first: wherever a result’s rungs are shown together, in a table
   row, a popover, a result’s overview or a case record, they run S, V, C, from the one
   function that sets the order, `overview_sections.rung_chips`. The generated register
   documents keep their own order, verification first.
-  A standing chip carries `data-standing` and adds no style of its own: `current best`
-  takes the accent, as a settled state, and every other standing
-  (`current best, reported`, `second certificate`, `superseded`, `not a bound`) the
-  plain gray, so a reader sees which results still hold without the others shouting.
-  A novelty chip (`data-novelty`) is always plain gray.
+  A standing is drawn as one chip a part (`standing_chips`): `second certificate,
+  reported` is two. A standing chip carries `data-standing` and adds no style of its
+  own, so every one is the same plain gray chip, one font size, line height and height,
+  and they differ only in their words.
+  A result that still stands draws no chip: `current best` is the default, so it is left
+  unsaid, and `current best, reported` draws only `reported`. What a reader is told is
+  that a result no longer holds, `superseded`, or how else it stands.
+  The row, or the step of a chain, keeps the whole standing as `data-standing` for the
+  filters. A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the
   site’s text face has glyphs for `↑` and `↓` only, so `←`, `→` and `↗` came from a
@@ -969,19 +976,35 @@ it.
   `.site-col-date`) stay on one line and as narrow as their content, which leaves the
   spare width to the long text column.
   The two tables of results, the overview’s recent table and the results page’s, are one
-  table: one header (`result_head`) and one row (`result_table_row`), so the same seven
+  table: one header (`result_head`) and one row (`result_table_row`), so the same six
   columns in the same order.
   They are the id, the first column and the row’s trigger, as narrow as an id, under the
   6rem KPress keeps a cell to; the cases, n; the result, its summary whole, method and
-  all; the credit, the finder first and “after …”, what the result builds on, quiet
-  after it, in full; the rungs, with the standing chip under them; the date; and the
-  records. A separate standing column does not fit at a 1280-pixel window, where the
-  track is 1104 pixels and four results’ formulas keep the result column to 411 of them,
-  so the standing stays under the rungs.
+  all, with its records on a quiet line under it; the credit, the finder first and
+  “after …”, what the result builds on, quiet after it, in full; the rungs, with the
+  standing under them where there is one to draw (**Chips**, above); and the date.
   The tables differ in three things only: where the filter bar starts, the order of the
   rows, and that a row on the results page is the result’s own address, where a row on
   the overview links there from its summary’s leading formula (`result_text`). Both sort
   on any column whose header carries the sort pair.
+  The widths follow from what cannot give.
+  Four results’ formulas do not break and hold the result column to 411 pixels.
+  The credit column is at least 11.5rem wide, which holds the longest name on one line
+  (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
+  never inside one; KPress’s own floor, 6rem, set it a word to a line.
+  The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
+  at 114 pixels, and “second certificate” at 159 where a row with one shows.
+  Those, the id, n and the date come to 1006 of the 1104 pixels a table has at a
+  1280-pixel window, so the result and the credit share 98 to spare, and below that
+  width the table scrolls sideways in its wrap, as it did.
+  The records are therefore no column of their own, which would be left 98 pixels and
+  set a link to a line: they sit under the summary, a line or two of links.
+  The overview’s table carries them and does not show them, at any width, by one rule on
+  `.site-recent-table`: each row’s popover holds every link.
+  `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
+  each column’s width, the most lines a cell takes, the words a line break splits and
+  the tallest row a column sets; and every chip’s font size, box and lines.
+  `tests/test_site_result_columns.py` holds both tables to it in a browser.
   Secondary content in a cell, such as a credit or an “after …” list, takes
   `.site-cell-quiet`, which sets it in the support colour and the sans face.
   It keeps the table’s size, so the quiet text does not become harder to read.
@@ -989,7 +1012,6 @@ it.
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, a table of results becomes one card per row.
-  A result’s standing chip sits under its rungs.
   A date cell leads with the date and then says what it dates, `published` or
   `established`, in the support colour (`date_cell`): under the date on a wide table,
   which keeps the column narrow, and beside it on a phone.

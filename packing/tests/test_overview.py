@@ -1504,7 +1504,7 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
         )
         chips = overview_sections.rung_chips(result)
         assert [label for _, _, label in RUNG_CHIP.findall(chips)] == list(rungs)
-        assert overview_sections.status_chips(result).startswith(chips + " ")
+        assert overview_sections.status_chips(result).startswith(chips)
 
 
 @pytest.mark.parametrize(
@@ -1612,22 +1612,29 @@ def test_every_result_shows_the_standing_readme_derives(
     records: render_recent_results.Records,
 ) -> None:
     """Standing is `render_recent_results.standing`, never restated: every table row
-    carries it as an attribute and a chip, and only `current best` takes the accent."""
+    carries it as an attribute, for the filters, and draws it as chips under its rungs,
+    one a part. A result that still stands is the default and draws no chip: the row of
+    a current best has none, and one that is the current best as reported has only
+    `reported`. Every standing chip is the one plain chip."""
+    held = render_recent_results.HOLDS
+    recent = _recent_table(page)
+    standing = re.compile(r'<span class="site-chip" data-standing="[^"]*"[^>]*>([^<]+)</span>')
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
-        row = _row(results, result.id)
-        assert f'data-standing="{overview_sections.standing_key(expected)}"' in row, result.id
-        assert overview_sections.standing_chip(expected) in row, result.id
-    held = overview_sections.standing_chip(render_recent_results.HOLDS)
-    assert 'data-tone="accent">current best</span>' in held
-    for other in render_recent_results.STANDINGS[1:]:
+        if expected == render_recent_results.NOT_A_BOUND:
+            parts = [overview_sections.standing_label(expected)]
+        else:
+            parts = [part for part in expected.split(", ") if part != held]
+        for row in (_row(results, result.id), _recent_row(recent, result.id)):
+            assert f'data-standing="{overview_sections.standing_key(expected)}"' in row
+            assert standing.findall(row) == parts, result.id
+            assert ('class="site-standing"' in row) is bool(parts), result.id
+            assert ">current best<" not in row, result.id
+    assert overview_sections.standing_chips(held) == ""
+    assert any(result.standing == held for result in overview.results)
+    for other in render_recent_results.STANDINGS:
         assert "data-tone" not in overview_sections.standing_chip(other), other
-    recent = _recent_table(page)
-    for result in overview_sections.recent_results(overview):
-        row = _recent_row(recent, result.id)
-        assert f'data-standing="{overview_sections.standing_key(result.standing)}"' in row
-        assert overview_sections.standing_chip(result.standing) in row, result.id
 
 
 def _recent_row(table: str, result_id: str) -> str:
@@ -1673,7 +1680,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["ID", "n", "Result", "Credit", "Rungs", "Date", "Records"]
+    assert heads == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -1843,9 +1850,11 @@ def test_a_summary_splits_at_its_formula_and_a_credit_at_what_it_builds_on() -> 
         overview_sections.standing_chips(render_recent_results.NOT_A_BOUND).count("site-chip")
         == 1
     )
+    # A result that still stands draws no chip; what else its standing says, it draws.
     held = overview_sections.standing_chips("current best, reported")
-    assert 'data-tone="accent">current best</span>' in held
-    assert 'data-standing="reported">reported</span>' in held
+    assert held == '<span class="site-chip" data-standing="reported">reported</span>'
+    assert overview_sections.standing_chips("current best") == ""
+    assert "superseded</span>" in overview_sections.standing_chips("superseded")
 
 
 def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overview) -> None:
@@ -2459,32 +2468,19 @@ def test_both_tables_of_results_have_the_same_columns(
     """Recent Results and the results page's table are one table: the same header cells
     in the same order, from one definition (`result_head`), and for each result the same
     cells from one function (`result_cells`), which differ only in that the overview's
-    summary links the result's row on the results page. Both sort and both filter."""
+    summary links the result's row on the results page. Both sort and both filter. A
+    result's records are a line under its summary, no column, which the overview carries
+    and does not show."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
     assert table.count(head) == recent.count(head) == 1
     assert table.count("<thead>") == recent.count("<thead>") == 1
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
-    assert [words for _, words in heads] == [
-        "ID",
-        "n",
-        "Result",
-        "Credit",
-        "Rungs",
-        "Date",
-        "Records",
-    ]
+    assert [words for _, words in heads] == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
     assert len(heads) == overview_sections.RESULT_COLUMNS
-    assert ["data-sort=" in attributes for attributes, _ in heads] == [
-        True,
-        True,
-        False,
-        True,
-        True,
-        True,
-        False,
-    ]
+    sorts = ["data-sort=" in attributes for attributes, _ in heads]
+    assert sorts == [True, True, False, True, True, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -2503,8 +2499,12 @@ def test_both_tables_of_results_have_the_same_columns(
             "site-col-credit",
             "site-rungs",
             "site-col-date",
-            "site-records",
         ]
+        # The records close the result's own cell, after its summary and its star.
+        assert here.count('<div class="site-records">') == 1, result.id
+        assert re.search(
+            r'<div class="site-records">.*?</div></td><td class="site-col-credit"', here
+        )
         # The cells are the same but for the link on the overview's summary.
         cells = here.split(">", 1)[1]
         assert unlinked.sub(r"\1", there.split(">", 1)[1], count=1) == cells, result.id
@@ -2513,9 +2513,11 @@ def test_both_tables_of_results_have_the_same_columns(
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    # One table, so one set of rules: the recent table has none of its own, on a wide
-    # window or as a phone's cards.
-    assert ".site-recent-table" not in css
+    # One table, so one set of rules. The recent table has one of its own: it carries a
+    # result's records and does not show them, at any width.
+    assert css.count(".site-recent-table") == 1
+    assert "\n.kpress .site-recent-table .site-records {\n  display: none;\n}" in css
+    assert "Records" not in head
     for gone in ("site-col-method", "site-col-status"):
         assert gone not in css + table + recent, gone
 
@@ -2611,15 +2613,17 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     for result in overview.results:
-        # Each row, and where its star stands: after the result's own text.
+        # Each row, and where its star stands: after the result's own text, before the
+        # line of its records.
+        records = '<div class="site-records">'
         rows = (
             (
                 _row(table, result.id),
-                overview_sections.result_text(result, here=True) + "{star}</td>",
+                overview_sections.result_text(result, here=True) + "{star}" + records,
             ),
             (
                 _recent_row(recent, result.id),
-                overview_sections.result_text(result, here=False) + "{star}</td>",
+                overview_sections.result_text(result, here=False) + "{star}" + records,
             ),
         )
         for row, placed in rows:

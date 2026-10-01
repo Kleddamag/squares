@@ -85,6 +85,9 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
+#: Where a reader reports a result the site does not have yet: a new issue on the
+#: repository, which the overview's own statement links.
+NEW_ISSUE_URL = f"{repo_links.REPO_URL}/issues/new"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
@@ -382,9 +385,9 @@ def site_logo() -> str:
 
 @cache
 def favicon_html() -> str:
-    """The site's icon: case 11, the project's central case, settled by T-060, drawn
-    small as a data URI, so it costs no fetch. It names its ink and paper, since a tab
-    has no page colour to inherit."""
+    """The site's icon: case 11, Trump's packing of eleven squares, drawn small as a
+    data URI, so it costs no fetch. It names its ink and paper, since a tab has no page
+    colour to inherit."""
     from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
 
     svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff", frame_px=FAVICON_PX)
@@ -535,12 +538,18 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 
 
 def overview_page() -> Page:
-    """The front door: prose from its template, every fact from the record."""
-    from devtools import overview_data, overview_sections  # noqa: PLC0415
+    """The front door: prose from its template, every fact from the record.
+
+    Its first section's prose is README's introduction, read from README's
+    `project-intro` block and its links rewritten for the site (`site_documents`).
+    """
+    from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
     overview = overview_data.load()
     values = {
         "HERO": overview_sections.hero(),
+        "README_INTRO": site_documents.overview_intro(),
+        "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
         "ATLAS_GRID": overview_sections.atlas_grid(),
@@ -571,6 +580,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
+        rewrite_body=site_documents.rewrite_overview_intro,
         page_scripts=(
             FORWARD_SCRIPT,
             TABLE_SCRIPT,

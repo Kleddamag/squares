@@ -20,7 +20,8 @@ what it is doing next.
 
 $s(n)$ is the side of the smallest square that contains $n$ non-overlapping unit
 squares, which may be rotated freely.
-The motivating case is $n = 11$, now solved at Walter Trump’s exact algebraic side.
+The program covers every $n$ and goes into most depth where there is recent progress;
+$n = 11$, a central case, is now solved at Walter Trump’s exact algebraic side.
 
 This project works under four independent principles, defined at the top level in
 [`README.md`](README.md#operating-principles): **Correctness** (Soundness) owns

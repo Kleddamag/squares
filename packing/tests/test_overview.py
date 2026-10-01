@@ -9,6 +9,7 @@ import re
 from collections import Counter
 from collections.abc import Callable
 from html.parser import HTMLParser
+from pathlib import Path
 from typing import cast
 
 import pytest
@@ -1226,18 +1227,152 @@ def test_the_recent_lead_names_t060_above_the_table(
     assert chips == ["V4", "C5", "S5", render_recent_results.HOLDS]
 
 
-def test_the_problem_section_says_eleven_squares_is_settled(page: str) -> None:
-    """The problem section names T-060 and case 11, and the template is in the reader
-    tier, so the gate refuses a result it names that the register does not hold."""
-    from devtools import check_results  # noqa: PLC0415
+def _intro(page: str) -> str:
+    """README's introduction as the overview renders it: the run between its markers."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    opened, closed = site_documents.OVERVIEW_INTRO_OPEN, site_documents.OVERVIEW_INTRO_CLOSE
+    assert page.count(opened) == page.count(closed) == 1
+    return page.split(opened, 1)[1].split(closed, 1)[0]
+
+
+#: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
+_KPRESS_MATH = re.compile(
+    r'<span class="kpress-math [^>]*><span class="kpress-math-render"[^>]*>'
+    r"\\\((.*?)\\\)</span>.*?</math></span></span>",
+    re.DOTALL,
+)
+
+
+def _rendered_text(markup: str) -> str:
+    """Rendered prose as its words, each formula written back as `$tex$`."""
+    text = _KPRESS_MATH.sub(lambda match: f"${html.unescape(match.group(1))}$", markup)
+    return " ".join(html.unescape(re.sub(r"<[^>]+>", "", text)).split())
+
+
+def _markdown_text(markdown: str) -> str:
+    """Markdown prose as its words: each link reduced to its text, code spans unmarked."""
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", markdown)
+    return " ".join(text.replace("`", "").split())
+
+
+def test_the_overviews_introduction_is_readmes(page: str) -> None:
+    """The overview's first section says what README's introduction says, word for word
+    and formula for formula, because it is that block: the template holds a placeholder
+    where the prose would be, and nothing about eleven squares of its own."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
+    assert _rendered_text(_intro(page)) == _markdown_text(block)
+
+    template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    section = template.split('id="the-problem"', 1)[1].split("{{PAGE_CARDS}}", 1)[0]
+    prose = re.sub(r"<!--.*?-->", "", section.split("</h2>", 1)[1], flags=re.DOTALL)
+    paragraphs = [" ".join(part.split()) for part in prose.split("\n\n") if part.strip()]
+    assert paragraphs[0] == "{{README_INTRO}}"
+    own = " ".join(paragraphs[1:])
+    assert not re.search(r"\bT-\d{3}\b", own)
+    assert "eleven" not in own.lower()
+
+
+def test_the_problem_section_says_eleven_squares_is_settled(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
+    """The problem section names T-060 and case 11 through README's introduction, each
+    link at the site's own page for it, and README is in the reader tier, so the gate
+    refuses a result the section names that the register does not hold."""
+    from devtools import check_results, site_documents  # noqa: PLC0415
 
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
-    text = re.sub(r"<[^>]+>", "", problem)
-    assert "Trump\u2019s 1979" in text
-    assert "packing is optimal" in text
-    assert '<a href="all-results.html#t-060">T-060</a>' in problem
-    assert '<a href="cases.html#n-11">case 11</a>' in problem
+    intro = _intro(page)
+    assert intro in problem
+    text = _rendered_text(intro)
+    assert "settles eleven squares" in text
+    assert "Trump\u2019s 1979 packing" in text
+    assert "$n = 1\\ldots324$" in text
+    assert '<a href="all-results.html#t-060">T-060</a>' in intro
+    assert '<a href="all-results.html#t-011">T-011</a>' in intro
+    assert '<a href="cases.html#n-11">case record</a>' in intro
+    assert '<a href="frontier.html">frontier</a>' in intro
+    assert '<a href="all-results.html">results register</a>' in intro
+    assert 'id="t-060"' in results
+    assert 'id="t-011"' in results
+    assert 'id="n-11"' in rendered("cases.html")
+    hrefs = re.findall(r'href="([^"]+)"', intro)
+    review = "docs/project/reviews/review-2026-09-29-n11-optimality.md"
+    assert f"{REPO_URL}/blob/{DEFAULT_BRANCH}/{review}" in hrefs
+    for href in hrefs:
+        assert (
+            href.startswith("https://") or href.partition("#")[0] in render_overview.SITE_PAGES
+        ), href
+    assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
+
+
+#: The site's own statement, the owner's words of 2026-09-30 with only hyphenation and
+#: punctuation edited, and one sentence on what the project checks.
+SITE_STATEMENT = (
+    (
+        "The Square Packing Project site collects all known historic research and "
+        "current new results on the square packing problem. Work on this problem has "
+        "exploded in the summer of 2026 thanks to AI-powered research efforts. This "
+        "project tracks all results here and by all others known. The project also "
+        "independently checks the proofs and certificates behind them, replaying each "
+        "where it can, and records how far every result has been verified and confirmed."
+    ),
+    (
+        "If you have new results or know of newer results, please file an issue to "
+        "report them, and we will gladly incorporate them and cite your work."
+    ),
+)
+
+
+def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
+    """After README's introduction the section has two paragraphs of its own: what the
+    site collects and checks, and where to report a result it lacks. The first links the
+    rungs it names to their section; the second opens a new issue on the repository."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
+    own = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1].split("<div", 1)[0]
+    paragraphs = re.findall(r"<p>(.*?)</p>", own, re.DOTALL)
+    assert [_rendered_text(paragraph) for paragraph in paragraphs] == list(SITE_STATEMENT)
+    assert '<a href="#verification-at-a-glance">verified and confirmed</a>' in paragraphs[0]
+    assert 'id="verification-at-a-glance"' in page
+    assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
+    assert re.search(
+        rf'<a href="{re.escape(render_overview.NEW_ISSUE_URL)}"[^>]*>file an issue</a>',
+        paragraphs[1],
+    )
+    assert "formal" not in " ".join(SITE_STATEMENT).lower()
+
+
+#: The framing the owner refused on 2026-09-30: eleven squares is a central case of the
+#: problem, and never the one the project is about.
+_THE_CENTRAL_CASE = re.compile(
+    "\\b(?:the|its|project[\u2019']s)\\s+central\\s+(?:open\\s+)?case\\b", re.IGNORECASE
+)
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        render_overview.REPO / "README.md",
+        render_overview.OVERVIEW_ARTICLE,
+        render_overview.TEMPLATES / "paper-design.md",
+        render_overview.PACKING / "devtools" / "render_overview.py",
+    ],
+    ids=lambda path: path.name,
+)
+def test_no_case_is_called_the_central_one(path: Path) -> None:
+    """The project covers square packing at every n. "A central case" may be said of
+    eleven squares; "the central case", "its central case" and "the central open case"
+    may not, in README, the overview's template, the design notes or this renderer."""
+    found = _THE_CENTRAL_CASE.findall(path.read_text(encoding="utf-8"))
+    assert not found, f"{path.name}: {found}"
+    assert not _THE_CENTRAL_CASE.search("a central case, and a central open case")
+    for phrase in ("the central case", "Its central\ncase", "the central open case"):
+        assert _THE_CENTRAL_CASE.search(phrase), phrase
 
 
 def card_text(fragment: str) -> str:

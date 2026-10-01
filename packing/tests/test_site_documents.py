@@ -9,10 +9,16 @@ import pytest
 from devtools import render_overview, site_documents
 from devtools.repo_links import RAW_URL, REPO_URL, RepositoryTree
 from devtools.site_documents import (
+    INTRO_BEGIN,
+    INTRO_END,
+    OVERVIEW_INTRO_CLOSE,
+    OVERVIEW_INTRO_OPEN,
     LinkContext,
     LinkReport,
+    intro_block,
     rewrite_article,
     rewrite_link,
+    rewrite_overview_intro,
     unresolved,
 )
 
@@ -199,3 +205,91 @@ def test_a_hand_written_contents_list_is_dropped_from_the_page() -> None:
     page = site_documents.tutorial_page().html
     assert 'id="contents"' not in page
     assert 'href="#contents"' not in page
+
+
+def _readme(body: str) -> str:
+    return f"# Title\n\n{INTRO_BEGIN}\n\n{body}\n\n{INTRO_END}\n\nThe rest.\n"
+
+
+def test_the_introduction_is_the_block_between_readmes_markers() -> None:
+    body = "One paragraph about $s(n)$.\n\nA second, with [a link](packing/atlas/)."
+    assert intro_block(_readme(body)) == body
+
+
+@pytest.mark.parametrize(
+    ("readme", "refusal"),
+    [
+        ("# Title\n\nNo markers.\n", "exactly once"),
+        (_readme("Prose.") + _readme("Prose again."), "exactly once"),
+        (f"{INTRO_END}\n\nProse.\n\n{INTRO_BEGIN}\n", "ends before it begins"),
+        (_readme(""), "is empty"),
+        (_readme("Prose.\n\n## A Heading\n\nMore."), "a heading or a comment"),
+        (_readme("Prose.\n\n<!-- a note -->"), "a heading or a comment"),
+        (_readme(f"See [the site]({render_overview.SITE_URL})."), "links the site"),
+    ],
+)
+def test_a_malformed_introduction_block_is_refused(readme: str, refusal: str) -> None:
+    with pytest.raises(ValueError, match=refusal):
+        intro_block(readme)
+
+
+#: A tree with what README's introduction links: the registers, a case file, a document
+#: served as a page, and a review that is only in the repository.
+INTRO_TREE = RepositoryTree(
+    files=frozenset(
+        {
+            "packing/frontier/RESULTS.md",
+            "packing/frontier/STATUS.md",
+            "packing/frontier/n-011.md",
+            "docs/review.md",
+            "epistemics.md",
+        }
+    ),
+    directories=frozenset({"", "docs", "packing", "packing/frontier"}),
+)
+
+
+def _overview(intro: str) -> str:
+    outside = '<p><a href="packing/frontier/RESULTS.md">outside the block</a></p>'
+    return f"{outside}{OVERVIEW_INTRO_OPEN}{intro}{OVERVIEW_INTRO_CLOSE}{outside}"
+
+
+def test_the_introductions_links_reach_the_sites_own_pages(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A result's id goes to its row, the registers to the results table and the
+    frontier atlas, a case file to its record, a served document to its page, and any
+    other path to `main`; nothing outside the block is touched."""
+    monkeypatch.setattr(site_documents, "repository_tree", lambda: INTRO_TREE)
+    out = rewrite_overview_intro(
+        _overview(
+            '<p><a href="packing/frontier/RESULTS.md">T-060</a> '
+            '<a href="packing/frontier/RESULTS.md">results register</a> '
+            '<a href="packing/frontier/STATUS.md">frontier</a> '
+            '<a href="packing/frontier/n-011.md">case record</a> '
+            '<a href="epistemics.md">the rungs</a> '
+            '<a href="docs/review.md">review</a> '
+            '<a href="https://example.org/proof">the proof</a></p>'
+        )
+    )
+    intro = out.split(OVERVIEW_INTRO_OPEN, 1)[1].split(OVERVIEW_INTRO_CLOSE, 1)[0]
+    assert re.findall(r'<a href="([^"]+)">([^<]+)</a>', intro) == [
+        ("all-results.html#t-060", "T-060"),
+        ("all-results.html", "results register"),
+        ("frontier.html", "frontier"),
+        ("cases.html#n-11", "case record"),
+        ("epistemics.html", "the rungs"),
+        (f"{REPO_URL}/blob/{BRANCH}/docs/review.md", "review"),
+        ("https://example.org/proof", "the proof"),
+    ]
+    assert out.count('<a href="packing/frontier/RESULTS.md">outside the block</a>') == 2
+
+
+def test_the_overview_fails_on_an_unresolved_introduction_link(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(site_documents, "repository_tree", lambda: INTRO_TREE)
+    with pytest.raises(SystemExit, match="1 unresolved links in README's introduction"):
+        rewrite_overview_intro(_overview('<p><a href="docs/gone.md">gone</a></p>'))
+    with pytest.raises(SystemExit, match="is not marked in the page"):
+        rewrite_overview_intro('<p><a href="docs/review.md">no markers</a></p>')

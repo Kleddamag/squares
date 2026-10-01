@@ -419,6 +419,17 @@ able to see where a number came from and go check it.
 Attribution is an evidence rule here, and it survives the licence question being
 answered either way.
 
+**Prose credits a source and links it; the revision is recorded where the source is
+taken in.** [checked: `check_prose_ceremony`; owner decision 2026-10-01] A sentence a
+reader meets says who established a result and on which date, and links the source.
+Commit ids, digests, clock and timezone qualifiers and packet sizes are recorded once,
+at ingestion, in the evidence entry and the source packet.
+They stay out of the register’s prose, the case records and the reader documents, and so
+does a disclaimer the credit line already makes.
+A register claim that runs past a few sentences is written in paragraphs: the statement,
+the certificate, how its source checked it, what was replayed here, and the credit with
+its link.
+
 **Numbers are lifted from run data, never retyped.**
 [convention, spot-checked by review] The tables in a round’s body are derived from its
 archive.
@@ -595,10 +606,11 @@ coverage, and soft-schema validation; generated status and research tables in sy
 the frontier data; both strategy catalogues; the document map and local links; the
 defect log (schema, contiguous ids, open defects carrying beads, links resolving, the
 generated view in sync); `SYNOPSIS.md` and `README.md` reconciled against the artifacts
-and the directory; the campaign record (schema validation, id uniqueness, dangling
-references, verdict rules, idea-board reconciliation, ledger freshness); provenance
-(every round’s recorded engine commit reachable, or annotated); the bead tree; and the
-skills mirrored between `.agents` and `.claude`.
+and the directory; reader-facing prose free of commit ids, digests and clocks, with the
+register’s long fields in paragraphs; the campaign record (schema validation, id
+uniqueness, dangling references, verdict rules, idea-board reconciliation, ledger
+freshness); provenance (every round’s recorded engine commit reachable, or annotated);
+the bead tree; and the skills mirrored between `.agents` and `.claude`.
 
 **Hygiene.** The lint floor (ruff, ruff-format and basedpyright on the Python; clippy
 pedantic and rustfmt on the Rust); the soundness perimeter (every component that emits a

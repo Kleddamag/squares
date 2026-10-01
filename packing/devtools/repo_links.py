@@ -60,14 +60,49 @@ STATUS = "packing/frontier/STATUS.md"
 Kind = Literal["blob", "tree", "raw"]
 
 
-def relative(path: Path | str) -> str:
-    """The repository-relative POSIX path of `path`, absolute or already relative."""
+def _inside(path: Path | str) -> str | None:
+    """`path` as a repository-relative POSIX path, or `None` where it lies outside."""
     if isinstance(path, str):
         return path.strip("/")
     try:
         return path.resolve().relative_to(REPO).as_posix()
     except ValueError:
-        raise SystemExit(f"{path} is outside the repository and cannot be linked") from None
+        return None
+
+
+def relative(path: Path | str) -> str:
+    """The repository-relative POSIX path of `path`, absolute or already relative."""
+    inside = _inside(path)
+    if inside is None:
+        raise SystemExit(f"{path} is outside the repository and cannot be linked")
+    return inside
+
+
+def path_kind(path: Path | str) -> Literal["blob", "tree"] | None:
+    """What `path` is in the repository: a file (`blob`), a directory (`tree`), or
+    neither (`None`), as GitHub will serve it.
+
+    The working tree answers where it has the path, and the commit being rendered
+    (`repository_tree`) where it does not. The second half is what a partial checkout
+    needs: the Pages jobs check the repository out without the directories under
+    `packing/resources` and `packing/campaign`, 504 MB the render never opens, and a
+    renderer that asked the disk alone whether a record's source, packet or certificate
+    exists dropped every link into them from the deployed site while a full checkout
+    kept them (found 2026-10-01 by comparing the two). A path on disk that no commit
+    holds yet is still found, as it was.
+    """
+    inside = _inside(path)
+    if inside is None:
+        return None
+    on_disk = REPO / inside
+    if on_disk.is_dir():
+        return "tree"
+    if on_disk.is_file():
+        return "blob"
+    tree = repository_tree()
+    if inside in tree.files:
+        return "blob"
+    return "tree" if inside in tree.directories else None
 
 
 def repo_url(
@@ -75,15 +110,16 @@ def repo_url(
 ) -> str:
     """The GitHub URL of a repository file or directory on `main`.
 
-    `kind` is read from the checkout when it is not given: GitHub serves a directory
-    under `tree/` and a file under `blob/`, and redirects the other way round, so the
+    `kind` is read from the checkout when it is not given (`path_kind`, which asks the
+    commit where a partial checkout lacks the path): GitHub serves a directory under
+    `tree/` and a file under `blob/`, and redirects the other way round, so the
     canonical one is written and no link is a redirect. `fragment` is appended as given,
     `?plain=1#L12` or `#section`. `ref` exists for the committed claim documents alone,
     which name their edition's revision (`render_n11_lower_bounds_explainer.edition_file`).
     """
     rel = relative(path)
     if kind is None:
-        kind = "tree" if (REPO / rel).is_dir() else "blob"
+        kind = path_kind(rel) or "blob"
     quoted = quote(rel, safe="/")
     if kind == "raw":
         return f"{RAW_URL}/{ref}/{quoted}{fragment}"

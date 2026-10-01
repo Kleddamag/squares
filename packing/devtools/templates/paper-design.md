@@ -748,7 +748,12 @@ it.
   unsaid, and `current best, reported` draws only `reported`. What a reader is told is
   that a result no longer holds, `superseded`, or how else it stands.
   The row, or the step of a chain, keeps the whole standing as `data-standing` for the
-  filters. A novelty chip (`data-novelty`) is always plain gray.
+  filters. A kind chip (`kind_chip`) says what a result is, in the rubric’s words,
+  `lower bound` or `case exclusion`, and carries `data-kind`. It is the same plain gray
+  chip, and every result draws one: on a line of its own under its rungs in a table,
+  above any standing chip, and after the rungs in a popover’s head and a chain’s step.
+  A result that claims no bound has no standing, so it draws its kind and nothing after
+  it. A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the
   site’s text face has glyphs for `↑` and `↓` only, so `←`, `→` and `↗` came from a
@@ -997,7 +1002,8 @@ it.
   6rem KPress keeps a cell to; the cases, n; the result, its summary whole, method and
   all, with its records on a quiet line under it; the credit, the finder first and
   “after …”, what the result builds on, quiet after it, in full; the rungs, with the
-  standing under them where there is one to draw (**Chips**, above); and the date.
+  kind on a line under them and the standing on a line under that where there is one to
+  draw (**Chips**, above); and the date.
   The tables differ in three things only: where the filter bar starts, the order of the
   rows, and that a row on the results page is the result’s own address, where a row on
   the overview links there from its summary’s leading formula (`result_text`). Both sort
@@ -1008,11 +1014,13 @@ it.
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
-  at 114 pixels, and “second certificate” at 159 where a row with one shows.
-  Those, the id, n and the date come to 1006 of the 1104 pixels a table has at a
-  1280-pixel window, so the result and the credit share 98 to spare, and below that
+  at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
+  one shows. The kind and the standing each take a line under the rungs, so a superseded
+  bound has three lines of chips, 114 pixels of row.
+  Those, the id, n and the date come to 1027 of the 1104 pixels a table has at a
+  1280-pixel window, so the result and the credit share 77 to spare, and below that
   width the table scrolls sideways in its wrap, as it did.
-  The records are therefore no column of their own, which would be left 98 pixels and
+  The records are therefore no column of their own, which would be left 77 pixels and
   set a link to a line: they sit under the summary, a line or two of links.
   The overview’s table carries them and does not show them, at any width, by one rule on
   `.site-recent-table`: each row’s popover holds every link.
@@ -1057,6 +1065,7 @@ it.
 | Significance | `data-s`, the S level | a floor: S4 and up |
 | Verification | `data-v`, the V level | a floor: V4 and up |
 | Confirmation | `data-c`, the C level | a floor: C3 and up |
+| Kind | `data-kind`, the register’s `kind` | equal to the kind chosen |
 | Standing | `data-standing` | equal to the standing chosen |
 | Hide superseded | `data-current`, `true` or `false` | checked: the result is not superseded |
 | Source | `data-source`, `ours` or `others` | this project’s, or others’ |
@@ -1065,7 +1074,8 @@ it.
 
 ```
 A rung select offers All, then each level of the rubric above its lowest as a floor,
-the top level bare (S5). Standing offers the standings the register holds.
+the top level bare (S5). Kind offers the kinds the register holds, in the rubric's
+order and words. Standing offers the standings the register holds.
 A date the register gives only to the year is the first day of it (`1979-01-01`).
 Max age is a number of days, and empty is no limit. There is no date range.
 ```
@@ -1078,13 +1088,16 @@ Max age is a number of days, and empty is no limit. There is no date range.
   `current best` is the name of the state a result is in while a case bound rests on it.
   A row need not mark that state, since it is the one a reader assumes, and the filter
   still names it, so a reader can ask for it.
+  A result that claims no bound, such as a rigidity or a case exclusion, has no
+  standing: its row’s `data-standing` is empty, and a standing chosen leaves it out.
+  Kind is the control that finds it.
 
 - **Hide superseded.** One checkbox, straight after Standing, hides exactly the
   superseded results: those that claim a bound no case bound rests on now, because a
   later or a stronger result holds the case (`overview_sections.is_superseded`). Every
   other result stays: one that still holds a bound, verified or reported, a second
-  certificate of a proved value, and a result that is not a bound, such as a rigidity or
-  an erratum, which no better bound supersedes.
+  certificate of a proved value, and a result that claims no bound, such as a rigidity
+  or a case exclusion, which has no standing and which no better bound supersedes.
   A result that holds one case of several is not superseded.
   The word is the register’s own derived standing (`render_recent_results.standing`), so
   the checkbox and the standing chips cannot disagree, and `devtools.check_standing`
@@ -1252,11 +1265,12 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle, the prose that defines the ratings and standings, and the
-  table under its filters (**Result filters**, above), which start with significance at
-  All, no maximum age and Hide superseded clear, so every result shows, newest first, in
-  one flat list. Each row keeps its id, the result’s own (`#t-018`), which is where the
-  overview’s recent table and replay table, and each case record’s results link.
+  `every-result`, a subtitle, the prose that defines the ratings, kinds and standings,
+  and the table under its filters (**Result filters**, above), which start with
+  significance at All, no maximum age and Hide superseded clear, so every result shows,
+  newest first, in one flat list.
+  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
+  recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”
@@ -1350,10 +1364,10 @@ names.
 
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
-  the overview lands. The body opens with the S, V and C rung chips and the standing
-  chips, as the tables show them; then the date with what it dates, the credit and the
-  cases, in the support colour; the claim at the note size; and a closed disclosure with
-  the significance, composition, next rung and novelty.
+  the overview lands. The body opens with the S, V and C rung chips, the kind chip and
+  the standing chips, as the tables show them; then the date with what it dates, the
+  credit and the cases, in the support colour; the claim at the note size; and a closed
+  disclosure with the significance, composition, next rung and novelty.
 - **The case.** A result about one case, or up to four, shows the atlas popover’s panel
   for each: the gap bar, the bound as one statement with the lower bound in scarlet and
   the best known side in green, the badges, the citation and what is open, beside the

@@ -10,9 +10,9 @@ its wrap; and at 390, where each row is a card.
 
 What it holds: the table fits its track at 1280; the id column is as narrow as an id; the
 credit column keeps room for its longest name, so no credit breaks inside a word; the
-rungs column holds its widest chip; the overview carries each result's records without
-showing them; and every chip on either page is one line high, every standing chip one
-size.
+rungs column holds its widest chip, a kind's or a standing's; the overview carries each
+result's records without showing them; and every chip on either page is one line high,
+every kind and standing chip one size.
 
 Each page is rendered and loaded once, in a module fixture, its math typeset, and then
 resized for each width. Skipped where no Chromium can be launched; `SQPACK_CHROMIUM`
@@ -121,13 +121,17 @@ def test_both_tables_lay_out_the_same_columns(
 ) -> None:
     """Both tables are laid out with the six columns in one order. The id's is as narrow
     as an id, and the rungs' holds its widest chip with the cell's padding, so its three
-    rung chips share a line and no standing chip is cut or wrapped."""
+    rung chips share a line and no kind or standing chip is cut or wrapped."""
     table, chips, _ = laid[name, width]
     assert [column["column"] for column in table["columns"]] == COLUMNS_SHOWN
     assert 0 < _column(table, "ID")["width"] <= ID_MAX
     in_table = [chip for chip in chips if chip["surface"] == "table"]
-    widest = max(chip["inline_size"] for chip in in_table if chip["chip"] == "standing")
+    under = [chip for chip in in_table if chip["chip"] in {"kind", "standing"}]
+    widest = max(chip["inline_size"] for chip in under)
     assert _column(table, "Rungs")["width"] >= widest + PADDING - 0.5
+    # Every row shows its kind: one kind chip to a row showing.
+    kinds = [chip for chip in in_table if chip["chip"] == "kind"]
+    assert len(kinds) == table["shown_rows"]
 
 
 @pytest.mark.parametrize("width", WIDTHS)
@@ -177,7 +181,7 @@ def test_no_chip_wraps(laid: dict[tuple[str, int], Laid], name: str, width: int)
     chip is wide enough for it."""
     chips = laid[name, width].chips
     assert chips
-    assert {chip["chip"] for chip in chips} >= {"rung", "standing"}
+    assert {chip["chip"] for chip in chips} >= {"rung", "kind", "standing"}
     wrapped = [(chip["surface"], chip["text"]) for chip in chips if chip["lines"] != 1]
     assert wrapped == []
     assert {chip["white_space"] for chip in chips} == {"nowrap"}
@@ -185,18 +189,21 @@ def test_no_chip_wraps(laid: dict[tuple[str, int], Laid], name: str, width: int)
 
 @pytest.mark.parametrize("width", WIDTHS)
 @pytest.mark.parametrize("name", PAGES)
-def test_every_standing_chip_is_one_size(
+def test_every_kind_and_standing_chip_is_one_size(
     laid: dict[tuple[str, int], Laid], name: str, width: int
 ) -> None:
-    """`superseded`, `reported`, `second certificate` and the rest are the one chip: one
-    font size, one line height and one block size, the rung chips' own, and they differ
-    only in their words. A result that still stands draws no chip at all."""
+    """`lower bound`, `case exclusion`, `superseded`, `reported` and the rest are the one
+    chip: one font size, one line height and one block size, the rung chips' own, and
+    they differ only in their words. A result that still stands draws no standing chip
+    at all."""
     chips = laid[name, width].chips
     standing = [chip for chip in chips if chip["chip"] == "standing"]
+    kinds = [chip for chip in chips if chip["chip"] == "kind"]
     rungs = [chip for chip in chips if chip["chip"] == "rung"]
     assert {chip["text"] for chip in standing} >= {"superseded"}
     assert "current best" not in {chip["text"] for chip in standing}
+    assert {chip["text"] for chip in kinds} >= {"lower bound", "optimality"}
     for measure in ("font_size", "line_height", "block_size"):
-        sizes = {chip[measure] for chip in standing}
+        sizes = {chip[measure] for chip in (*standing, *kinds)}
         assert len(sizes) == 1, (measure, sizes)
         assert sizes == {chip[measure] for chip in rungs}, measure

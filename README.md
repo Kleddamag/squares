@@ -28,13 +28,13 @@ $s(11) = T = 3.877083590022814\ldots$, the exact side of Walter Trump’s 1979 p
 Astra-assisted
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
 Queuingtheorydotcom, building on this project and Kleddamag.
-This repository independently replayed the pinned exact proof inputs and audited their
+This repository independently replayed the proof’s exact inputs and audited their
 mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
 [T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
-[retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
-method’s shared dependencies and the publisher’s four stale cached-audit digests.
+[retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what
+the confirmation depends on and the reproducibility defects found in the source.
 
 <!-- END SHARED: recent-progress -->
 
@@ -60,7 +60,7 @@ explains T-060 from the exact construction through the exhaustive case exclusion
 geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
 It has a [PDF](https://jlevy.github.io/squares/papers/n11-optimality-review.pdf) and
 [maintained source](packing/devtools/templates/n11-optimality-review-article.md), with
-figures drawn from the retained proof data.
+figures drawn from or checked against the retained proof data.
 The [explainer](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html)
 proves the earlier, simpler lower bounds on $s(11)$.
 

@@ -14,19 +14,28 @@ from devtools.check_published_site import (
     LINK_CHECKED_PAGES,
     LOWER_BOUNDS_MARKDOWN,
     LOWER_BOUNDS_PDF,
+    OMITTED_TREES,
     OPTIMALITY_PAPER,
     OPTIMALITY_PAPER_FILES,
     OPTIMALITY_PAPER_MARKDOWN,
     PAPERS_CURRENT,
+    RECORD_LINK_PAGES,
+    RECORD_LINK_SAMPLE,
     SERVED,
     SITE_PAGES,
     WORKBENCH_HOME,
     WORKBENCH_REVISION,
+    RecordLinks,
+    absent_links,
     paper_citations,
     pdf_pages,
+    record_link_checks,
+    rendered_record_links,
     repository_links,
+    row_records,
 )
 from devtools.check_published_site import LOWER_BOUNDS_PAPER as EXPLAINER
+from devtools.overview_sections import result_fragment
 from devtools.render_n11_lower_bounds_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
@@ -34,8 +43,9 @@ from devtools.render_n11_lower_bounds_explainer import (
 )
 from devtools.render_n11_lower_bounds_explainer_pdf import EXPECTED_PAGE_COUNT
 from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
-from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, RepositoryTree
+from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, RepositoryTree, branch_paths
 from sqpack.release import PUBLICATION_EDITION
+from tests import site_renders
 
 #: A page's text linking into the repository four ways: from markup, from Markdown, from plain
 #: text, and from inside a script, which the check must not read. `{{REPO_URL}}` and `{{SHA}}`
@@ -56,6 +66,9 @@ TREE = RepositoryTree(
 )
 
 Fetch = Callable[..., tuple[int, bytes]]
+
+#: The check's own reading of the checkout's commit, to tell it from a test's stand-in.
+CHECKOUT_COMMIT = check_published_site.checkout_commit
 
 
 def workbench_page(commit: str, *, home: str = "../") -> bytes:
@@ -105,6 +118,33 @@ def result_overview(
     ).encode()
 
 
+#: The record link the fixture's renderer writes for every result: the one file `TREE`
+#: holds at the root.
+RECORD = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/README.md"
+#: What the renderer is taken to write for the fixture site: one record link in each of
+#: two result rows, and the first overview, sampled, with the link `result_overview` gives.
+EXPECTED_RECORDS = RecordLinks(
+    rows={"t-001": RECORD, "t-002": RECORD},
+    overviews={OVERVIEWS[0]: result_overview("t-001").decode()},
+)
+
+
+def result_row(row: str, *, here: bool, records: bool = True) -> str:
+    """A result's row as a table of results writes it: named by `id` on the results page
+    (`here`) and by `data-result` anywhere else, with its line of record links."""
+    link = f'<a href="{RECORD}">register</a>' if records else ""
+    return (
+        f'<tr {"id" if here else "data-result"}="{row}" data-s="3"><td>{row}</td>'
+        f'<td class="site-col-result">A result<div class="site-records">{link}</div></td></tr>'
+    )
+
+
+def results_table(*, here: bool) -> bytes:
+    """The table of results on a page, every row with its record link."""
+    rows = "".join(result_row(row, here=here) for row in EXPECTED_RECORDS.rows)
+    return f"<table><tbody>{rows}</tbody></table>".encode()
+
+
 def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
     """The optimality paper's page as the check reads one: the bar with Papers current,
     and one citation, which the paper pins to the commit it was built from."""
@@ -149,6 +189,8 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
         f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
         for address in named
     ).encode()
+    for name in RECORD_LINK_PAGES:
+        pages[name] += results_table(here=name == render_overview.RESULTS_PAGE)
     return pages
 
 
@@ -188,6 +230,18 @@ def fake_site(
     return fetch
 
 
+def fixture_records(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Hold the fixture site to the fixture's record links, as rendered at its commit.
+    A test that asks about the renderer itself, or about another checkout, sets its own
+    first, and that is kept."""
+    if check_published_site.rendered_record_links is rendered_record_links:
+        monkeypatch.setattr(
+            check_published_site, "rendered_record_links", lambda: EXPECTED_RECORDS
+        )
+    if check_published_site.checkout_commit is CHECKOUT_COMMIT:
+        monkeypatch.setattr(check_published_site, "checkout_commit", lambda: COMMIT)
+
+
 def failures(
     monkeypatch: pytest.MonkeyPatch,
     fetch: Fetch,
@@ -201,6 +255,7 @@ def failures(
         "repository_tree",
         lambda commit: TREE if commit == COMMIT else None,
     )
+    fixture_records(monkeypatch)
     return [
         line
         for passed, line in check_published_site.check(site, COMMIT, timeout=1, browser=browser)
@@ -375,18 +430,147 @@ def test_check_requires_every_result_overview_the_results_table_names(
     assert failure.endswith("but it is 'result/t-001.html'")
 
     assert failures(monkeypatch, fake_site(site_naming(()))) == [
-        "all-results.html names 0 result overviews"
+        "all-results.html names 0 result overviews",
+        f"result overview {OVERVIEWS[0]}: sampled for its record links and not served",
     ]
 
-    pinned = site_pages(**{"result/t-001.html": result_overview("t-001", ref=COMMIT[:8])})
+    # The second overview is not one the fixture samples for its record links, so each
+    # of these is the one failure.
+    pinned = site_pages(**{"result/t-002.html": result_overview("t-002", ref=COMMIT[:8])})
     url = f"{REPO_URL}/blob/{COMMIT[:8]}/README.md"
     assert failures(monkeypatch, fake_site(pinned)) == [
         f"the result overviews: 1 repository links pinned to a commit: [{url!r}]"
     ]
 
-    gone = site_pages(**{"result/t-001.html": result_overview("t-001", link="packing/gone.md")})
+    gone = site_pages(**{"result/t-002.html": result_overview("t-002", link="packing/gone.md")})
     missing = f"linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
     assert failures(monkeypatch, fake_site(gone)) == [f"the result overviews: {missing}"]
+
+
+def test_absent_links_names_what_a_deploy_dropped_and_rows_are_read_one_by_one() -> None:
+    packet = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/packing/resources/web/a-packet/README.md"
+    line = f"{RECORD}?plain=1#L12"
+    rendered = f'<a href="{line}">register</a> <a href="{packet}">packet</a>'
+    assert absent_links(rendered, rendered) == []
+    assert absent_links(rendered, f'<a href="{RECORD}">register</a>') == [
+        "blob/packing/resources/web/a-packet/README.md"
+    ]
+    # The path is what is asked for, not the anchor into it or the link's words.
+    assert (
+        absent_links(f"{line}\n{packet}", f'<a href="{RECORD}">r</a><a href="{packet}">p</a>')
+        == []
+    )
+    # A commit-pinned link to the same file is not the link on `main`.
+    pinned = packet.replace(f"/{DEFAULT_BRANCH}/", f"/{COMMIT}/")
+    assert absent_links(packet, f'<a href="{pinned}">packet</a>') == [
+        "blob/packing/resources/web/a-packet/README.md"
+    ]
+
+    table = (
+        "<table><thead><tr><th>ID</th></tr></thead><tbody>"
+        + result_row("t-001", here=True, records=False).replace(
+            '<div class="site-records"></div>', ""
+        )
+        + result_row("t-002", here=True)
+        + '<tr id="replay-n-18"><td><div class="site-records">not a result</div></td></tr>'
+        + "</tbody></table>"
+    )
+    # A row without its line is not given the next row's, and only result rows are read.
+    assert row_records(table) == {"t-002": f'<a href="{RECORD}">register</a>'}
+    assert row_records(result_row("t-007", here=False)) == {
+        "t-007": f'<a href="{RECORD}">register</a>'
+    }
+
+
+def test_check_requires_every_record_link_the_renderer_writes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Every other check asks whether a link that was written resolves, so a deploy that
+    wrote fewer links passed all of them (D-512): the Pages jobs' partial checkout dropped
+    each link into the literature archive and the campaign. The renderer says what the
+    rows and the sampled overviews link, and a page that lacks one link fails."""
+    assert failures(monkeypatch, fake_site(site_pages())) == []
+
+    for name in RECORD_LINK_PAGES:
+        here = name == render_overview.RESULTS_PAGE
+        pages = site_pages()
+        full, bare = (result_row("t-002", here=here, records=keep) for keep in (True, False))
+        assert pages[name].count(full.encode()) == 1
+        pages[name] = pages[name].replace(full.encode(), bare.encode())
+        lacks = (
+            f"{name}: 1 of 2 result rows lack record links the renderer writes: "
+            "t-002 lacks ['blob/README.md']"
+        )
+        assert failures(monkeypatch, fake_site(pages)) == [lacks], name
+        # A row that is gone lacks its links as one that lost them does.
+        pages[name] = pages[name].replace(bare.encode(), b"")
+        (failure,) = failures(monkeypatch, fake_site(pages))
+        assert failure.startswith(f"{name}: 1 of 2 result rows lack record links"), name
+
+    # The sampled overview with its record link dropped: it links another file `main`
+    # holds, so every link that was written resolves and only this check fails.
+    address = OVERVIEWS[0]
+    dropped = site_pages(**{address: result_overview("t-001", link="packing/index.html.md")})
+    lacks = (
+        f"result overview {address}: lacks 1 of the 1 repository links the renderer "
+        "writes for it: ['blob/README.md']"
+    )
+    assert failures(monkeypatch, fake_site(dropped)) == [lacks]
+
+    # The expectation rendered in a checkout that is not at the deployed commit says so,
+    # since the failure may then be the checkout's.
+    monkeypatch.setattr(check_published_site, "checkout_commit", lambda: "f" * 40)
+    (failure,) = failures(monkeypatch, fake_site(dropped))
+    assert failure.endswith(f" (expected as rendered at {'f' * 12}, not {COMMIT[:12]})")
+    assert failures(monkeypatch, fake_site(site_pages())) == []
+
+
+def test_check_fails_when_the_record_links_cannot_be_rendered(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def refuses() -> RecordLinks:
+        raise SystemExit("the register has no T-060 to sample")
+
+    monkeypatch.setattr(check_published_site, "rendered_record_links", refuses)
+    refused = (
+        "the record links cannot be rendered in this checkout: "
+        "the register has no T-060 to sample"
+    )
+    assert failures(monkeypatch, fake_site(site_pages())) == [refused]
+
+
+def test_the_sample_cites_the_archive_and_the_campaign_whatever_the_checkout(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """What the deploy is held to is what the renderer writes from the register: every
+    result's row, and the overviews of `RECORD_LINK_SAMPLE`, which between them cite
+    files under directories of both trees a partial checkout omits. The answer is the
+    same in such a checkout, which is where the deployed pages are rendered."""
+    expected = rendered_record_links()
+    assert set(expected.overviews) == {result_fragment(result) for result in RECORD_LINK_SAMPLE}
+    assert len(expected.rows) >= 61
+    assert set(expected.rows) >= {result.lower() for result in RECORD_LINK_SAMPLE}
+    cited = {path for body in expected.overviews.values() for _, path in branch_paths(body)}
+    for tree in OMITTED_TREES:
+        assert any(path.startswith(tree) and "/" in path.removeprefix(tree) for path in cited)
+    packet = "packing/resources/web/n11-optimality-2026-09-29"
+    settled = {path for _, path in branch_paths(expected.overviews[result_fragment("T-060")])}
+    assert {f"{packet}/receipts/final-composition.json", f"{packet}/source/PROOF.md"} <= settled
+    assert f"{packet}/source/PROOF.md" in expected.rows["t-060"]
+    # Held to itself the expectation passes; T-060's overview without its packet's links
+    # does not, and the line names what is gone.
+    held = record_link_checks(expected, {}, expected.overviews)
+    assert [passed for passed, _ in held] == [True] * len(RECORD_LINK_SAMPLE)
+    address = result_fragment("T-060")
+    served = {address: expected.overviews[address].replace(f"/{packet}/", "/packing/frontier/")}
+    ((passed, line),) = record_link_checks(
+        RecordLinks({}, {address: expected.overviews[address]}), {}, served
+    )
+    assert not passed
+    assert f"blob/{packet}/receipts/final-composition.json" in line
+
+    site_renders.leave_out_the_archive_and_the_campaign(monkeypatch)
+    assert rendered_record_links() == expected
 
 
 def test_check_requires_the_optimality_paper_where_the_papers_card_points(
@@ -483,6 +667,7 @@ def test_check_fails_when_the_commit_tree_cannot_be_read(
 
     monkeypatch.setattr(check_published_site, "fetch", fake_site(site_pages()))
     monkeypatch.setattr(check_published_site, "repository_tree", unreadable)
+    fixture_records(monkeypatch)
     found = [
         line
         for passed, line in check_published_site.check(

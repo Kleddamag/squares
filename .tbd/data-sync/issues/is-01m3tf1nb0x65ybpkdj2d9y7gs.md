@@ -5,7 +5,7 @@ title: Revise n11 explainer opening and apply line-by-line publication feedback
 kind: task
 status: in_progress
 priority: 1
-version: 21
+version: 22
 labels: []
 dependencies: []
 child_order_hints:
@@ -26,10 +26,10 @@ child_order_hints:
   - is-01m3v1fawj8t12bh308abgc7qx
   - is-01m3v2zncnfvtd2p0h1gqcsbm2
 created_at: 2026-10-01T00:50:19.096Z
-updated_at: 2026-10-01T06:38:45.139Z
+updated_at: 2026-10-01T06:58:17.392Z
 ---
 Continue published T-060 paper on codex/n11-explainer-doc-review from origin/main. User asks first opening prose to explicitly identify this as an explanation of the original proof and directly cite original proof, repository and each antecedent/provenance contribution. Retain mathematical meaning and source scope. Delegate rigorous common-doc-guidelines review read-only while user provides line corrections; apply requested corrections on branch and keep publication separate.
 
 ## Notes
 
-Draft PR https://github.com/jlevy/squares/pull/261 at 9e97024f5e8bd45768be3eebb4feadfd9df6b4c8. Review summary https://github.com/jlevy/squares/pull/261#issuecomment-5922986171; hosted integration follow-up https://github.com/jlevy/squares/pull/261#issuecomment-5923124362. Completed and closed all seven child review/publication/CI beads. Original provenance and component citations, Astra-max reconciliation (no blocker/high/medium; two low qualifications resolved; 11 simplification candidates), Sol common-doc review, exact shared publication CSS/SVG typography, and four-slice illustration plan retained. 231 focused tests plus 46 integration tests, isolated probe typing and affected browser rerun passed; PDF visually inspected and glyph sizes measured. Final hosted CI at 9e97024f5: 26 passed, 27 intentional skips, both required gates green, clean merge compatibility; draft remains unmerged and deployment skipped. Keep parent open for line-by-line feedback. Future visuals think-y0um/think-cpv2/think-jjq5/think-0k78; optional editorial suggestions retained in citation review. No fresh full geometric proof replay in this publication audit.
+Latest e37362ff9 completes requested intuitive restructuring: twelve SVGs in eleven numbered figures, preserved provenance/shared typography, all nine review findings mapped to closed child beads. Article and source diagrams reviewed by Astra max and Sol; final publication checks running. PR261 remains draft for user feedback; do not merge/deploy. Preview at http://127.0.0.1:8768/t-060-explainer.html; standalone replay package remains separate work.

@@ -80,67 +80,67 @@ section.
 
 | id | n | claim | kind | why | confidence |
 | --- | --- | --- | --- | --- | --- |
-| T-001 | 17 | `s(17) ≥ 4426213/1000000 = 4.426213`, from a sixteen-point unavoidable set | lower bound | the claim concludes `s(17) ≥` | high |
+| T-001 | 17 | $s(17) \ge \frac{4426213}{1000000} = 4.426213$, from a sixteen-point unavoidable set | lower bound | the claim concludes $s(17) \ge$ | high |
 | T-002 | 18 | `s(18) ≥ 4426213/1000000`, by monotonicity from T-001 | lower bound | T-001 carried to 18 by monotonicity | high |
-| T-003 | 17, 18 | The sixteen-point set’s unavoidability ceiling lies in `[4426213/1000000, 4427/1000)` | method limit | brackets what one point set can certify; its lower end is T-001 | medium |
-| T-004 | 46 | Bentz 2010, Theorem 8 (`s(46) ≥ 7`) is correct as printed, machine-audited in full | audit | the claim is that a printed proof is correct; T-008 carries the value | medium |
-| T-005 | 13 | Bentz 2010, Lemma 10 is false as printed and true as corrected to `(1.74, 1)` | correction | a printed lemma is false, and the corrected one is certified | high |
-| T-006 | 13 | `s(13) = 4` | optimality | an exact value; the case-free second proof is in the same entry | high |
-| T-007 | 4–100 | `s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100` | lower bound | Nagamochi’s closed-form family | high |
-| T-008 | 46 | `s(46) = 7` | optimality | the audited lower half meets the grid | high |
-| T-009 | 29 | `s(29) ≤ 5.933833…`, by a Krawczyk interval certificate | upper bound | a packing, interval-certified | high |
-| T-010 | 11 | `s(11) ≥ 2 + 4/√5`, by a repair of Stromquist 2003’s Figure 14 point set | lower bound | the claim concludes the bound; the repair is how it is proved | medium |
-| T-011 | 11 | Trump’s 1979 packing is exactly valid, so `s(11) ≤ 3.877083590022814…` | upper bound | the claim concludes `s(11) ≤`; the exact check is how | medium |
-| T-012 | 5 | Goebel’s `n = 5` packing is second-order rigid at fixed side | rigidity | second-order rigidity of one packing | high |
-| T-013 | 40 | Goebel’s `n = 40` packing: seven verified first-order flexes, each refused at second order | rigidity | first-order flexes, each refused at second order | high |
-| T-014 | 5 | Goebel’s `n = 5` optimum is rigid at fixed side: its pose is an isolated feasible point | rigidity | the pose is an isolated feasible point | high |
-| T-015 | 17 | `s(17) ≥ 22529/5000 = 4.5058` | lower bound | a published certificate, replayed | high |
-| T-016 | 18, 19 | `s(n) ≥ 22529/5000` for `n = 18, 19`, by monotonicity from T-015 | lower bound | T-015 carried to 18 and 19 by monotonicity | high |
-| T-017 | 12 | `s(12) ≥ 99/25 = 3.96` | lower bound | a fractional certificate | high |
-| T-018 | 11 | `s(11) ≥ 381/100 = 3.81` | lower bound | a fractional certificate | high |
-| T-019 | 17, 18, 19 | `s(n) ≥ 459/100 = 4.59` for `n = 17, 18, 19` | lower bound | one certificate, three counts | high |
-| T-020 | 19, 20, 21 | `s(n) ≥ 24/5 = 4.80` for `n = 19, 20, 21` | lower bound | one certificate, three counts | high |
-| T-021 | 20, 21 | `s(n) ≥ 97/20 = 4.85` for `n = 20, 21` | lower bound | one certificate, two counts | high |
-| T-022 | 11 | `s(11) ≥ 38100√(8100042893309449)/899996306539 = 3.8100257…` | lower bound | a dilation-limit corollary of T-018 | high |
-| T-023 | 11 | Conditional exclusion: no eleven-square packing in the four-owner branch at `q = 96/25` | case exclusion | one four-owner branch holds no packing; no bound moves | high |
-| T-024 | 11 | `s(11) ≥ 3175000√(518400042893309449)/598960960743657 = 3.8166095…` | lower bound | a dilation-limit corollary on a finer net | high |
-| T-025 | 11 | `s(11) ≥ 191/50 = 3.82`, by a threshold certificate | lower bound | a threshold certificate | high |
-| T-026 | 11 | `s(11) ≥ 955000√(518400042893309449)/179696714646249 = 3.8264474…` | lower bound | a dilation-limit corollary of T-025 | high |
-| T-027 | 18 | `s(18) ≥ 467/100 = 4.67` | lower bound | a fractional certificate | high |
-| T-028 | 18 | `s(18) ≥ 187/40 = 4.675` | lower bound | a fractional certificate | high |
-| T-029 | 18 | `s(18) ≥ 1871/400 = 4.6775` | lower bound | a fractional certificate | high |
-| T-030 | 18 | `s(18) ≥ 4679/1000 = 4.679` | lower bound | a fractional certificate | high |
-| T-031 | 11 | The octagon corner class (threshold `1/2`) holds no eleven-square packing at side `96/25` | case exclusion | one corner class holds no packing at `96/25`; no bound moves | high |
-| T-032 | 17 | `s(17) ≥ 461300/99999 = 4.61304613…`, and beneath it Mira’s `s(17) ≥ 4613/1000` | lower bound | two published certificates, replayed | high |
-| T-033 | 11 | `s(11) ≥ 955000√(2073600042893309449)/359341754646249 = 3.8269975…` | lower bound | a dilation-limit corollary on the 2880-step net | high |
-| T-034 | 21 | `s(21) ≥ 122/25 = 4.88` | lower bound | a fractional certificate | high |
-| T-035 | 11 | Six-plus-five packings near Trump’s tilt with side `≤ U_hi` lie within `rho` of his pose | case exclusion | excludes the family’s small packings away from Trump’s pose | medium |
-| T-036 | 11 | Trump’s pose is optimal among six-plus-five packings near its tilt, unique up to symmetry | restricted optimality | best within one orientation family; says nothing about `s(11)` | medium |
-| T-037 | 11 | `s(11) > 31/8 = 3.875` | lower bound | a published certificate, replayed | high |
-| T-038 | 17 | `s(17) > 461300/99853 = 4.6197910929…` | lower bound | a published certificate, replayed | high |
-| T-039 | 17 | `s(17) > 231001/50000 = 4.62002` | lower bound | a published certificate, replayed | high |
-| T-040 | 17 | `s(17) > 232001/50000 = 4.64002` | lower bound | a published certificate, replayed | high |
-| T-041 | 17 | `s(17) > 466001/100000 = 4.66001` | lower bound | a published certificate, replayed | high |
-| T-042 | 17 | `s(17) > 233009/50000 = 4.66018` | lower bound | a published certificate, replayed; never held the case | high |
-| T-043 | 17 | `s(17) > 116511/25000 = 4.66044` | lower bound | a published certificate, replayed | high |
-| T-044 | 26–72 (14 counts) | Weighted point lower bounds for ten counts in `n = 26…72`, plus four from the same files | lower bound | fourteen bounds from ten published certificates | high |
-| T-045 | 27, 28, 31, 32 | `s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20` | lower bound | three published certificates, replayed | high |
-| T-046 | 18–95 (48 counts) | Rectangle-density lower bounds reported for 48 counts in `n = 18…95` | lower bound | 48 reported bounds, not yet replayed | high |
-| T-047 | 11, 26, 27, 28, 29, 30, 31 | `s(11) ≥ 381/100`; `s(n) ≥ 1377/250` for `n = 26…28`; `s(n) ≥ 571/100` for `n = 29…31` | lower bound | three published certificates, replayed | high |
-| T-048 | 50 | `s(50) ≥ 37/5 = 7.4`, reported | lower bound | a reported bound, not yet replayed | high |
-| T-049 | 12 | `s(12) ≥ 15680/3951 = 3.9686155…` | lower bound | a published certificate, replayed | high |
-| T-050 | 21 | `s(21) ≥ 5000/1001 = 4.995004995…` | lower bound | a published certificate, replayed | high |
-| T-051 | 32 | `s(32) = 6` | optimality | a closed cover at the grid side meets the grid | high |
-| T-052 | 21 | `s(21) = 5`, by a mixed cover of points and grid-line segments | optimality | a mixed cover at the grid side meets the grid | high |
-| T-053 | 45 | `s(45) = 7`, by a mixed cover of points and grid-line segments | optimality | a mixed cover at the grid side meets the grid | high |
-| T-054 | 45 | `s(45) = 7` by a second, point-only route | simplification | re-proves T-053’s value with points alone | medium |
-| T-055 | 21 | `s(21) = 5` by a point-only route, reported | simplification | re-proves T-052’s value with points alone, at a positive margin | medium |
-| T-056 | 68–307 (49 counts) | Smaller packings for 49 counts from `n = 68` to `307`, each certified two independent ways | upper bound | 49 packings, each certified | high |
-| T-057 | 211 | `s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record | upper bound | a packing below the grid | high |
+| T-003 | 17, 18 | The sixteen-point set’s unavoidability ceiling lies in $[\frac{4426213}{1000000}, \frac{4427}{1000})$ | method limit | brackets what one point set can certify; its lower end is T-001 | medium |
+| T-004 | 46 | Bentz 2010, Theorem 8 ($s(46) \ge 7$) is correct as printed, machine-audited in full | audit | the claim is that a printed proof is correct; T-008 carries the value | medium |
+| T-005 | 13 | Bentz 2010, Lemma 10 is false as printed and true as corrected to $(1.74, 1)$ | correction | a printed lemma is false, and the corrected one is certified | high |
+| T-006 | 13 | $s(13) = 4$ | optimality | an exact value; the case-free second proof is in the same entry | high |
+| T-007 | 4–100 | $s(n) \ge \min(\lceil\sqrt{n}\rceil, \sqrt{n - 2\lfloor\sqrt{n}\rfloor + 1} + 1)$ for $4 \le n \le 100$ | lower bound | Nagamochi’s closed-form family | high |
+| T-008 | 46 | $s(46) = 7$ | optimality | the audited lower half meets the grid | high |
+| T-009 | 29 | $s(29) \le 5.933833\ldots$, by a Krawczyk interval certificate | upper bound | a packing, interval-certified | high |
+| T-010 | 11 | $s(11) \ge 2 + 4/\sqrt{5}$, by a repair of Stromquist 2003’s Figure 14 point set | lower bound | the claim concludes the bound; the repair is how it is proved | medium |
+| T-011 | 11 | Trump’s 1979 packing is exactly valid, so $s(11) \le 3.877083590022814\ldots$ | upper bound | the claim concludes $s(11) \le$; the exact check is how | medium |
+| T-012 | 5 | Goebel’s $n = 5$ packing is second-order rigid at fixed side | rigidity | second-order rigidity of one packing | high |
+| T-013 | 40 | Goebel’s $n = 40$ packing: seven verified first-order flexes, each refused at second order | rigidity | first-order flexes, each refused at second order | high |
+| T-014 | 5 | Goebel’s $n = 5$ optimum is rigid at fixed side: its pose is an isolated feasible point | rigidity | the pose is an isolated feasible point | high |
+| T-015 | 17 | $s(17) \ge \frac{22529}{5000} = 4.5058$ | lower bound | a published certificate, replayed | high |
+| T-016 | 18, 19 | `s(n) ≥ 22529/5000` for $n = 18, 19$, by monotonicity from T-015 | lower bound | T-015 carried to 18 and 19 by monotonicity | high |
+| T-017 | 12 | $s(12) \ge \frac{99}{25} = 3.96$ | lower bound | a fractional certificate | high |
+| T-018 | 11 | $s(11) \ge \frac{381}{100} = 3.81$ | lower bound | a fractional certificate | high |
+| T-019 | 17, 18, 19 | $s(n) \ge \frac{459}{100} = 4.59$ for $n = 17, 18, 19$ | lower bound | one certificate, three counts | high |
+| T-020 | 19, 20, 21 | $s(n) \ge \frac{24}{5} = 4.80$ for $n = 19, 20, 21$ | lower bound | one certificate, three counts | high |
+| T-021 | 20, 21 | $s(n) \ge \frac{97}{20} = 4.85$ for $n = 20, 21$ | lower bound | one certificate, two counts | high |
+| T-022 | 11 | $s(11) \ge 38100\sqrt{8100042893309449}/899996306539 = 3.8100257\ldots$ | lower bound | a dilation-limit corollary of T-018 | high |
+| T-023 | 11 | Conditional exclusion: no eleven-square packing in the four-owner branch at $q = \frac{96}{25}$ | case exclusion | one four-owner branch holds no packing; no bound moves | high |
+| T-024 | 11 | $s(11) \ge 3175000\sqrt{518400042893309449}/598960960743657 = 3.8166095\ldots$ | lower bound | a dilation-limit corollary on a finer net | high |
+| T-025 | 11 | $s(11) \ge \frac{191}{50} = 3.82$, by a threshold certificate | lower bound | a threshold certificate | high |
+| T-026 | 11 | $s(11) \ge 955000\sqrt{518400042893309449}/179696714646249 = 3.8264474\ldots$ | lower bound | a dilation-limit corollary of T-025 | high |
+| T-027 | 18 | $s(18) \ge \frac{467}{100} = 4.67$ | lower bound | a fractional certificate | high |
+| T-028 | 18 | $s(18) \ge \frac{187}{40} = 4.675$ | lower bound | a fractional certificate | high |
+| T-029 | 18 | $s(18) \ge \frac{1871}{400} = 4.6775$ | lower bound | a fractional certificate | high |
+| T-030 | 18 | $s(18) \ge \frac{4679}{1000} = 4.679$ | lower bound | a fractional certificate | high |
+| T-031 | 11 | The octagon corner class (threshold $\frac{1}{2}$) holds no eleven-square packing at side $\frac{96}{25}$ | case exclusion | one corner class holds no packing at $\frac{96}{25}$; no bound moves | high |
+| T-032 | 17 | $s(17) \ge \frac{461300}{99999} = 4.61304613\ldots$, and beneath it Mira’s $s(17) \ge \frac{4613}{1000}$ | lower bound | two published certificates, replayed | high |
+| T-033 | 11 | $s(11) \ge 955000\sqrt{2073600042893309449}/359341754646249 = 3.8269975\ldots$ | lower bound | a dilation-limit corollary on the 2880-step net | high |
+| T-034 | 21 | $s(21) \ge \frac{122}{25} = 4.88$ | lower bound | a fractional certificate | high |
+| T-035 | 11 | Six-plus-five packings near Trump’s tilt with side $\le U_{hi}$ lie within `rho` of his pose | case exclusion | excludes the family’s small packings away from Trump’s pose | medium |
+| T-036 | 11 | Trump’s pose is optimal among six-plus-five packings near its tilt, unique up to symmetry | restricted optimality | best within one orientation family; says nothing about $s(11)$ | medium |
+| T-037 | 11 | $s(11) > \frac{31}{8} = 3.875$ | lower bound | a published certificate, replayed | high |
+| T-038 | 17 | $s(17) > \frac{461300}{99853} = 4.6197910929\ldots$ | lower bound | a published certificate, replayed | high |
+| T-039 | 17 | $s(17) > \frac{231001}{50000} = 4.62002$ | lower bound | a published certificate, replayed | high |
+| T-040 | 17 | $s(17) > \frac{232001}{50000} = 4.64002$ | lower bound | a published certificate, replayed | high |
+| T-041 | 17 | $s(17) > \frac{466001}{100000} = 4.66001$ | lower bound | a published certificate, replayed | high |
+| T-042 | 17 | $s(17) > \frac{233009}{50000} = 4.66018$ | lower bound | a published certificate, replayed; never held the case | high |
+| T-043 | 17 | $s(17) > \frac{116511}{25000} = 4.66044$ | lower bound | a published certificate, replayed | high |
+| T-044 | 26–72 (14 counts) | Weighted point lower bounds for ten counts in $n = 26\ldots72$, plus four from the same files | lower bound | fourteen bounds from ten published certificates | high |
+| T-045 | 27, 28, 31, 32 | $s(27), s(28) \ge \frac{28}{5}$, $s(31) \ge \frac{148}{25}$ and $s(32) \ge \frac{119}{20}$ | lower bound | three published certificates, replayed | high |
+| T-046 | 18–95 (48 counts) | Rectangle-density lower bounds reported for 48 counts in $n = 18\ldots95$ | lower bound | 48 reported bounds, not yet replayed | high |
+| T-047 | 11, 26, 27, 28, 29, 30, 31 | $s(11) \ge \frac{381}{100}$; $s(n) \ge \frac{1377}{250}$ for $n = 26\ldots28$; $s(n) \ge \frac{571}{100}$ for $n = 29\ldots31$ | lower bound | three published certificates, replayed | high |
+| T-048 | 50 | $s(50) \ge \frac{37}{5} = 7.4$, reported | lower bound | a reported bound, not yet replayed | high |
+| T-049 | 12 | $s(12) \ge \frac{15680}{3951} = 3.9686155\ldots$ | lower bound | a published certificate, replayed | high |
+| T-050 | 21 | $s(21) \ge \frac{5000}{1001} = 4.995004995\ldots$ | lower bound | a published certificate, replayed | high |
+| T-051 | 32 | $s(32) = 6$ | optimality | a closed cover at the grid side meets the grid | high |
+| T-052 | 21 | $s(21) = 5$, by a mixed cover of points and grid-line segments | optimality | a mixed cover at the grid side meets the grid | high |
+| T-053 | 45 | $s(45) = 7$, by a mixed cover of points and grid-line segments | optimality | a mixed cover at the grid side meets the grid | high |
+| T-054 | 45 | $s(45) = 7$ by a second, point-only route | simplification | re-proves T-053’s value with points alone | medium |
+| T-055 | 21 | $s(21) = 5$ by a point-only route, reported | simplification | re-proves T-052’s value with points alone, at a positive margin | medium |
+| T-056 | 68–307 (49 counts) | Smaller packings for 49 counts from $n = 68$ to $307$, each certified two independent ways | upper bound | 49 packings, each certified | high |
+| T-057 | 211 | $s(211) \le 14.99796070496771500150 < 15$, the first packing of 211 squares below the grid on record | upper bound | a packing below the grid | high |
 | T-058 | 1–100 | Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises | method limit | a claimed ceiling on one certificate format; premises disputed | medium |
 | T-059 | 11 | Reported equality of 12028 n11 row minima awaits a complete bound replay | audit | a second checker reproduces T-037’s row minima; no new bound | medium |
-| T-060 | 11 | Trump’s eleven-square packing is globally optimal | optimality | the exact value of `s(11)` | high |
-| T-061 | 11 | `s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8` | lower bound | a published certificate, replayed | high |
+| T-060 | 11 | Trump’s eleven-square packing is globally optimal | optimality | the exact value of $s(11)$ | high |
+| T-061 | 11 | $s(11) > \frac{3875000000}{999999999} = 3.875000003875\ldots$, 3.9e-9 above $\frac{31}{8}$ | lower bound | a published certificate, replayed | high |
 
 Counts: 37 lower bounds, 6 optimality results, 4 upper bounds, 3 rigidity results, 3
 case exclusions, 2 simplifications, 2 method limits, 2 audits, 1 correction and 1
@@ -203,8 +203,8 @@ cross-checks the declared kind against three things the record already holds.
 
 | Source | What it settles |
 | --- | --- |
-| The headline’s opening relation | A headline that opens with `s(n) ≥` or `>` is a lower bound, with `≤` or `<` an upper bound, and with `=` optimality; only a simplification may open with one under another kind. 44 of the 61 headlines open this way |
-| The relations written elsewhere | A bound’s headline writes no relation of the other direction, and its claim writes one of its own if it writes any. An optimality result writes `s(n) = v`. A rigidity, a case exclusion and a restricted optimality write no relation on `s(n)` in their headline |
+| The headline’s opening relation | A headline that opens with a relation on $s(n)$ states its kind: `≥` or `>` is a lower bound, `≤` or `<` an upper bound and `=` optimality; only a simplification may open with one under another kind. 44 of the 61 headlines open this way |
+| The relations written elsewhere | A bound’s headline writes no relation of the other direction, and its claim writes one of its own if it writes any. An optimality result writes $s(n) = v$. A rigidity, a case exclusion and a restricted optimality write no relation on $s(n)$ in their headline |
 | The cited evidence’s `claim` | A lower bound cites lower-bound evidence, an upper bound upper-bound evidence, and optimality an exact value or both halves. A rigidity, a case exclusion and a restricted optimality cite `derived-structure` evidence |
 | The results the claim names | A simplification’s claim names a registered result that shares one of its cases |
 

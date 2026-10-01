@@ -340,12 +340,12 @@ certificate’s replay command.
    plus `controls` at `C3` or above.
    `kind` is the line after `id`, then `headline` and `established`. `kind` says what
    the result is, one of the [result kinds](../../epistemics.md#result-kinds): the
-   checker reads a headline that opens with `s(n) ≥`, `≤` or `=` as a lower bound, an
-   upper bound or optimality, and holds the cited evidence to the same kind.
-   `headline` is the claim shortened for a table cell, at most 100 characters of inline
-   Markdown with the mathematics in backticks: the claim’s relation exactly (`≥` is not
-   `>`), its exact form with its decimal or a truncation of it marked `…`, and its $n$
-   values. The checker refuses a number the claim does not state.
+   checker reads a headline that opens with a relation on $s(n)$ as a lower bound (`≥`),
+   an upper bound (`≤`) or optimality (`=`), and holds the cited evidence to the same
+   kind. `headline` is the claim shortened for a table cell, at most 100 characters of
+   inline Markdown with the mathematics in backticks: the claim’s relation exactly (`≥`
+   is not `>`), its exact form with its decimal or a truncation of it marked `…`, and
+   its $n$ values. The checker refuses a number the claim does not state.
    `established` is the day the certificate or proof first passed here, read from the
    commit that landed it, not from the day of registration.
    `claim` is the one statement the rungs attach to, in full and with exact values where

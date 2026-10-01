@@ -77,8 +77,8 @@ from sqpack.fractional.model import Atom
 from sqpack.fractional.sweep import minimum_covered_mass, weight_scale
 from sqpack.probes import applied, probe
 from sqpack.release import (
+    EXPLAINER_REVISED,
     FIRST_PUBLISHED,
-    PUBLICATION_DATE,
     PUBLICATION_EDITION,
     PUBLICATION_HISTORY,
     PUBLICATION_REVISION,
@@ -2346,7 +2346,9 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         # revised, and which edition is being read; the full list of editions is linked
         # rather than repeated there (the owner, 2026-09-22).
         "FIRST_PUBLISHED": FIRST_PUBLISHED,
-        "LAST_REVISED": PUBLICATION_DATE,
+        # When the article's own text last changed, not when the edition was first
+        # published: the page changes between editions, and this date goes with it.
+        "LAST_REVISED": EXPLAINER_REVISED,
         # The shared version, taken whole: the atlas footer and the videos print the same
         # string, so the credits name the data rather than the commit that built the page.
         "EDITION": PUBLICATION_EDITION,

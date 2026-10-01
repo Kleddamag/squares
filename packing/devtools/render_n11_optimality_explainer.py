@@ -24,7 +24,8 @@ from kpress.format.pdf import _await_print_fonts  # pyright: ignore[reportPrivat
 from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
-from devtools import render_explainer
+from devtools import artifact_dates, render_explainer
+from devtools.render_explainer_pdf import dated
 from devtools.render_overview import (
     EMBED_SCRIPT,
     PAPER_TYPE_CSS,
@@ -297,7 +298,12 @@ def output_files(output_dir: Path, html: str, markdown: str) -> dict[Path, str]:
 
 
 def _print_pdf(html_path: Path, pdf_path: Path) -> None:
-    """Print only after KPress math and its print fonts have settled."""
+    """Print only after KPress math and its print fonts have settled.
+
+    The document's two date fields are set to the day the article says the review was
+    last revised, not left at the second Chromium printed it
+    (`render_explainer_pdf.dated`, `devtools.artifact_dates`).
+    """
     from playwright.sync_api import expect, sync_playwright  # noqa: PLC0415
 
     with sync_playwright() as playwright:
@@ -319,10 +325,8 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
             if page.locator(".katex-error, math merror").count():
                 raise ValueError("the paper contains a math rendering error")
             _await_print_fonts(page)  # pyright: ignore[reportArgumentType]
-            write_bytes_atomic(
-                pdf_path,
-                page.pdf(format="Letter", prefer_css_page_size=True, print_background=True),
-            )
+            drawn = page.pdf(format="Letter", prefer_css_page_size=True, print_background=True)
+            write_bytes_atomic(pdf_path, dated(drawn, artifact_dates.optimality_revised()))
         finally:
             if page is not None:
                 page.close()

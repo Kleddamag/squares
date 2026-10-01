@@ -19,7 +19,7 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import render_explainer, render_overview
+from devtools import render_composite_pdf, render_explainer, render_overview
 from devtools.render_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -50,11 +50,12 @@ from devtools.render_explainer import load_certificate as load
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
 from devtools.render_overview import SITE_PAGES
 from sqpack.release import (
+    EXPLAINER_REVISED,
     FIRST_PUBLISHED,
-    PUBLICATION_DATE,
     PUBLICATION_EDITION,
     PUBLICATION_HISTORY,
     PUBLICATION_VERSION,
+    edition_at,
 )
 from sqpack.yamlio import safe_load
 from workbench_tools.build_site import NOTE as WORKBENCH_NOTE
@@ -1062,25 +1063,29 @@ def test_every_repository_link_names_main_and_exists_there(page: str, document: 
 
 
 def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, document: str) -> None:
-    """The credits print the version the atlas footer prints, not the build commit.
+    """The credits print the one version, as the atlas footer does, not the build commit.
 
-    One version names the data both are drawn from, so a reader holding the page and
-    the atlas sees one string on each.
+    The page names the data it is drawn from now, the pin. A poster names the data it
+    was drawn from, in the same spelling at its own data commit, and is not re-stamped
+    when the pin moves (`sqpack.release`, rule 4): the two agree in the version and may
+    differ in the six characters after it.
     """
     for composite in (path for path in COMPOSITE_ASSETS if path.suffix == ".svg"):
-        footer = re.search(
-            r'<text data-feature="release-stamp"[^>]*>([^<]*)</text>', composite.read_text()
-        )
+        text = composite.read_text()
+        footer = re.search(r'<text data-feature="release-stamp"[^>]*>([^<]*)</text>', text)
         assert footer is not None, composite.name
-        assert footer.group(1) == PUBLICATION_EDITION, composite.name
+        drawn_from = render_composite_pdf.svg_metadata(text)["data-revision"]
+        assert footer.group(1) == edition_at(drawn_from), composite.name
+        assert footer.group(1).rsplit("-", 1)[0] == PUBLICATION_EDITION.rsplit("-", 1)[0]
     # The top names when the result was first published and when it was last revised,
     # then which edition is being read, linking the full list rather than repeating it
-    # (the owner, 2026-09-22). Two lines, and the dates are two different editions'.
-    dates = f"First published {FIRST_PUBLISHED} · Last revised {PUBLICATION_DATE}"
+    # (the owner, 2026-09-22). The first date is the oldest edition's; the second is the
+    # day the article last changed, which `test_artifact_dates` holds to git.
+    dates = f"First published {FIRST_PUBLISHED} · Last revised {EXPLAINER_REVISED}"
     edition = f'{PUBLICATION_EDITION} (<a href="#version-history">version history</a>)'
     assert f'<span class="publication-date">{dates}</span>' in page
     assert f'<span class="edition">{edition}</span>' in page
-    assert FIRST_PUBLISHED != PUBLICATION_DATE
+    assert FIRST_PUBLISHED != EXPLAINER_REVISED
     compact = " ".join(document.split())
     assert dates in compact
     assert f"{PUBLICATION_EDITION} ([version history](#version-history))" in compact

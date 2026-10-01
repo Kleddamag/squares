@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-01
 
-**Status:** Planned; execution has not started
+**Status:** Planning and source review in progress; overnight continuation scheduled
 
 **Workflow:** W3 insight iteration → W10 selection and codification → bounded W6
 execution, with W7 only for a missing instrument and W2 for high-risk or promoted
@@ -47,9 +47,10 @@ Three facts determine the opening work:
 - An elementary n17 centre grid already yields over eight billion raw occupancy masks.
   Price geometric pruning before building a complete enumeration.
 
-The n12 additive obstruction reported by evand needs source recovery and an independent
-check; its missing auxiliary files are recorded in X-048. Do not substitute an
-unverified obstruction for a proved impossibility theorem.
+The n12 additive obstruction reported by evand needs an independent check.
+The October audit recovered side-4 and side-5 support files; side-3.99 support remains
+missing. X-048 records the distinction.
+Do not substitute an unverified obstruction for a proved impossibility theorem.
 
 ## Goal Hierarchy
 
@@ -202,6 +203,106 @@ that its diff contains only this research planning work.
 Run focused checks again after conflict resolution and keep the PR’s evidence and
 disposition tables current.
 Do not merge this child ahead of the required parent integration.
+
+## Overnight Execution: October 1
+
+The owner has authorized autonomous execution after the planning blocks, including
+bounded research-loop experiments.
+Thread heartbeat **Post-optimality overnight research**
+(`post-optimality-overnight-research`) resumes this task every 30 minutes.
+The fixed stop is **2026-10-01 08:00 America/Los_Angeles**, or 15:00 UTC; **07:30
+Pacific** starts the protected finalization interval.
+These are one night’s absolute limits, not a fresh budget on each wake.
+The schedule permits a final wake after the deadline only to close existing work and
+pause itself.
+
+**Execution bead:** `think-kaqh`. The active run remains recoverable from the repository
+if the heartbeat is delayed.
+At actual launch, create the next valid session record with the real start, the fixed
+stop above and phase-level guards.
+If a matching active session already exists, resume it; never create a duplicate.
+The next agent reads the current clock before starting any command.
+
+### Incorporate the Evand Review Before Selecting Experiments
+
+The owner also requested a current W1 source survey and independent W2 correctness
+review of evand’s [proof index](https://evand.github.io/square-packing/proofs.html),
+[source index](https://evand.github.io/square-packing/sources.html), and relevant linked
+GitHub proof artifacts.
+`think-a0fj` owns source/citation coverage; `think-yew8` owns mathematical review.
+These run in parallel with the n17 planning lanes.
+Read the [source audit](../../reviews/review-2026-10-01-evand-source-coverage.md) and
+[mathematical review](../../reviews/review-2026-10-01-evand-mathematical-transfer.md)
+before W10 selection; independently useful n17 work may proceed while a particular
+external obligation remains blocked.
+New external claims enter the plan as source assertions until their acceptance
+requirements are met.
+Missing claims receive result and evidence records, with significance and assurance
+assessed separately; an infinite family’s finite projection onto the case corpus must
+not obscure its full claimed scope.
+Follow-up acceptance work is tracked by `think-4k80` (finite family premise and Lean
+reduction), `think-e7xa` (s60 mixed cover), and `think-q5tt` (fractional dual guards and
+replays).
+The large family and width-three runs are selected explicitly, not started as a
+side effect of source intake.
+
+The source intake uses a separate current-main branch, `codex/evand-october-survey`,
+tracked by `think-l1zd`, so its result IDs and assurance fields use the current rubric.
+Its checkout is the attached `validation-parity` worktree; it is separate from this
+research branch. Resume each branch in its own checkout.
+Remaining source gaps have named owners in the queue: `think-hxrz` acquires the
+independent wand125 s61 primary source; `think-e8qx` reconciles newer formalization and
+checker evidence for older evand results; `think-kqi1` addresses universal-family schema
+support. `think-2z60` independently reviews the auxiliary clique-threshold repair before
+a proof uses it.
+
+### Execution Limits and Recovery
+
+- At most three delegates and two compute-heavy subprocesses run concurrently.
+  Sol handles implementations and intake; Astra max handles hard mathematics and
+  adversarial review. Keep all shared-record writes with the coordinator.
+- Use slices of at most 30 minutes, with useful evidence retained by minute 20. A
+  command’s supervised timeout cannot outlast its slice or finalization start.
+  Record process identities and stop children at timeout; do not leave orphaned work.
+- Before each target run, freeze its hypothesis, domain, criterion, input revision,
+  node/output/memory caps and positive/negative controls.
+  New observations can justify a new preregistered experiment, never a changed criterion
+  on an existing one.
+- Run at most three target rounds per hypothesis before review and explicit
+  reprioritization. Three consecutive guard failures or crashes stop that instrument.
+  Retain invalid and inconclusive outputs and their causes.
+- Do not run the generic `packing-campaign run` queue.
+  At planning time its only ready hypothesis was the unrelated H-017 n11 search; H-248
+  was not instrument-ready.
+  Inspect readiness afresh, then execute only the explicitly selected experiment.
+- A missing instrument can receive a bounded W7 slice with controls.
+  If no candidate can be admitted, preserve a blocker and continue an independent
+  mathematical or source obligation; do not manufacture a research verdict.
+- Use the existing external scratch policy.
+  Do not install new dependencies or alter version pins unattended.
+  Keep raw evidence and finished reports under version control.
+- Regular commits, pushes to this research branch, bead sync and evidence comments on PR
+  #265 are authorized.
+  Force-pushes, PR merges, deployments and edits to another agent’s mutable branch are
+  outside this overnight run.
+
+At each wake, verify the branch and active processes before writing.
+If the checkout has moved or contains another agent’s changes, preserve them and
+re-establish a safe research checkout before continuing.
+The parent/main publication conflict tracked by `think-y7za` does not block read-only
+math or isolated proof experiments; it still blocks claiming the stack merge-ready.
+
+### Morning Handoff
+
+From 07:30, stop opening experiments and assemble existing evidence.
+The report leads with what changed scientifically: accepted checks, refuted candidates,
+unresolved domains and missing sources, each with scope and replay commands.
+Include elapsed command, orchestration and review costs; distinguish numerical screens,
+exact checks, source replays and independent confirmation.
+List the next selected mathematical question and the blockers that would change it.
+Update the session, ledger, beads and PR, commit and push the recoverable checkpoint,
+then pause the heartbeat.
+At or after 08:00, perform only this closeout, never additional target work.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

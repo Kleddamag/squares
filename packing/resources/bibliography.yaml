@@ -255,6 +255,21 @@ sources:
       LICENSE names Evan Daniel. Its CREDITS.md credits the weighted exact-rational
       covering method to Sam Burns and Gustavo Massaccesi, and says the work was produced
       with an AI agent under human direction (web/evand-square-packing-2026-09-28/README.md).
+  - key: '[evand square-packing 2026-10-01]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-01'
+    credit: Daniel after Burns, Massaccesi
+    lineage: independent
+    note: >-
+      evand/square-packing at 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5:
+      reported mixed-cover s(60) = 8 and periodic segment-and-area covers for
+      s(k^2 - 3) = k for every k >= 6, with a Lean reduction conditional on
+      the finite covering premise. A selective source packet retains proof notes,
+      checker sources and research obstructions; it is not a complete replay bundle.
+      No fresh certificate replay is implied by the source audit
+      (web/evand-square-packing-2026-10-01/README.md).
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026

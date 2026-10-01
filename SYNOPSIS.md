@@ -992,6 +992,8 @@ case or experiment separately.
 | [Verification Tooling and Its Boundaries](docs/project/verification-tooling.md) | component scope and use | record | retained | — |
 | [Native Rectangle Verification and wand125 Tools Intake](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md) | implementation plan | record | maintained | — |
 | [Proof Review: Evan Daniel’s `s(21) = 5` and `s(45) = 7` by Mixed Covers](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) | dated review record | record | retained | — |
+| [Evan Daniel’s October Proof Pages: Source Coverage and Intake](docs/project/reviews/review-2026-10-01-evand-source-coverage.md) | dated review record | record | retained | — |
+| [Evand: Mathematical Review and Transfer to Low-n Research](docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |

@@ -70,6 +70,10 @@ be reconciled before selecting its unfinished tasks.
 | [X-048 R8: richer resources](explorations/X-048-n17-optimality-after-n11.md#r8-change-the-certificate-features-then-measure-their-value) | shaped | Test new features against a frozen finite primal/dual control |
 | [X-048 R9: subconfiguration cuts](explorations/X-048-n17-optimality-after-n11.md#r9-use-settled-small-cases-as-subconfiguration-cuts) | shaped | Transfer settled cases through proved whole-square containment |
 | [X-048 low-n alternatives](explorations/X-048-n17-optimality-after-n11.md#other-low-cases) | shaped | n12 conditional occupancy first; audit reported additive obstructions before transferring n21’s method |
+| [X-048 exact limiting configurations](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | shaped | Derive exact contact-family constraints before sampling endpoint covers |
+| [X-048 continuum clique resources](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | shaped | Test uniform charge across grazing contacts, using the existing evand construction |
+| [X-048 higher-order obstructions](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | raw | Resolve zero-margin local plateaus beyond first-order constraints |
+| [X-048 periodic deficit-four family](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | parked | Require exact deficit D > 1 before selecting the costly width-three coverage campaign |
 
 The historical starting bracket for the program below was
 `3.875 < s(11) <= 3.877083590022814177...`. The strict lower end is Kleddamag’s verified

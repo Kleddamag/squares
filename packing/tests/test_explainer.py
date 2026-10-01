@@ -118,7 +118,10 @@ def test_title_block_names_the_result_without_a_subtitle(page: str, document: st
     assert heading is not None
     assert re.sub(r"<[^>]+>", "", heading.group(0)) == render_explainer.TITLE
     assert '<span class="tex">n = 11</span></h1>' in heading.group(0)
-    rule = ".hero h1 .tex { letter-spacing: 0; text-transform: none; white-space: nowrap; }"
+    rule = (
+        ".hero h1 .tex {\n  letter-spacing: 0;\n  text-transform: none;\n"
+        "  white-space: nowrap;\n}"
+    )
     assert rule in page
     assert '<p class="subtitle centred">' not in page
     assert "Weighted Certificates for Square Packing" not in page

@@ -242,8 +242,9 @@ def test_the_atlas_film_is_a_hero_card_opening_the_visualize_page(page: str) -> 
     # Under a heading that says PDFs and Videos, each label says which its card is.
     assert '<span class="site-card-label">Film \u00b7 Video</span>' in body
     assert [
-        re.search(r'<span class="site-card-label">([^<]*)</span>', body)[1] for _, body in cards
-    ] == ["Poster \u00b7 PDF", "Poster \u00b7 PDF", "Film \u00b7 Video"]
+        re.findall(r'<span class="site-card-label">([^<]*)</span>', body)[:1]
+        for _, body in cards
+    ] == [["Poster \u00b7 PDF"], ["Poster \u00b7 PDF"], ["Film \u00b7 Video"]]
     assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
     assert OVERVIEW_FILM_POSTER.is_file()
     assert "<video" not in page

@@ -288,15 +288,30 @@ MOVED_LINK = re.compile(
 )
 
 
-def test_no_page_of_the_site_links_a_page_that_moved() -> None:
+@pytest.fixture(scope="module")
+def every_page() -> dict[str, str]:
+    """Every page of the site, rendered once for the process (`site_renders`): the
+    render is this fixture's setup, not a test's call time."""
+    return site_renders.pages()
+
+
+@pytest.fixture(scope="module")
+def every_result_body() -> dict[str, str]:
+    """Every result's overview, rendered once for the process."""
+    return site_renders.result_bodies()
+
+
+def test_no_page_of_the_site_links_a_page_that_moved(
+    every_page: dict[str, str], every_result_body: dict[str, str]
+) -> None:
     """A forwarder is for links written before the change. The site's own pages, the
     reader documents and every result's overview name the page a reader is going to."""
     assert MOVED_LINK.search(' href="results.html#next-actions"')
     assert MOVED_LINK.search(' src="../defects.html?view=embed"')
     assert not MOVED_LINK.search(' href="all-results.html#t-060"')
-    for name, text in site_renders.pages().items():
+    for name, text in every_page.items():
         assert not MOVED_LINK.findall(text), name
-    for result, body in site_renders.result_bodies().items():
+    for result, body in every_result_body.items():
         assert not MOVED_LINK.findall(body), result
 
 

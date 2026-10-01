@@ -10,6 +10,8 @@ This is a dated record.
 Line numbers in `SYNOPSIS.md` are those at `fe6399451`, before this branch’s edits.
 “The site” is the build of `devtools.preview_site` at that commit, without the two
 papers and the workbench.
+`main` moved to `766e5f573` while the review ran, and the branch merged it before its
+gates. Where that changes a finding, the text says so.
 
 ## Answers
 
@@ -18,20 +20,22 @@ Both are generated, both matched their sources at `fe6399451` (`render_results -
 `render_research_tables --check`), and the gate fails when either drifts.
 Neither is edited by hand: the gate refuses a file that differs from a fresh render.
 The site’s results table and frontier atlas are built from the same records by the same
-functions, and show everything the two files show except three things listed below.
+functions, and show everything the two files show except the four things listed below.
 Their cards and pages are removed from the site.
 The files stay in the repository, where they are the plain-text views a person working
 in a checkout reads, and where the gate, the synopsis and the campaign’s records depend
 on them.
 
 **`SYNOPSIS.md` is maintained where a check holds it, and has drifted where none does.**
-Of 31 factual statements checked across its sections, 13 are current, 16 are stale and 2
-are wrong today. Every current one is in a generated block, is held by one of
+Of 31 factual statements checked across its sections at `fe6399451`, 12 were current, 17
+stale and 2 wrong. Every current one is in a generated block, is held by one of
 `check_synopsis`’s fifteen checks, or is prose from the last week that nothing has yet
 overtaken. Every stale or wrong one is free prose.
-Seven of the sixteen stale ones name rungs from the ladder in force before 2026-09-30,
+Eight of the seventeen stale ones name rungs from the ladder in force before 2026-09-30,
 which [`epistemics.md`](../../../epistemics.md#what-changed-on-2026-09-30) says to read
 as dated; the rest are counts and narrative that later work passed.
+The same day `main` fixed eight of the nineteen (pull request 274) and this branch fixes
+four more. Seven remain, all narrative, and are listed for the owner.
 
 **`defects.md` is off the site**, and the cards now lead with `README.md` and
 `epistemics.md`.
@@ -50,9 +54,9 @@ Two documents a reader might expect are not on the site and are included for com
 | `conventions.md` | Hand-written | 2026-09-14: the correction rule in §7. Since then only the math migration | `check_documentation` (map, footer, links); `check_session_gate` and `check_synopsis` read parts | Nothing | **Card, fourth** |
 | `development.md` | Hand-written | 2026-09-30: the tier drift rules, the optimality paper’s build | `check_gate_budgets` (every tier is named); `check_documentation` | Nothing | **Card, fifth** |
 | `TUTORIAL.md` | Hand-written | 2026-09-30: brought up to T-060 | `check_documentation`; the render fails on a dead link | A paper on the Papers page | **Page, as now**; not a documentation card |
-| `packing/frontier/RESULTS.md` | Generated whole by `render_results` from `results.yaml` and the bibliography | 2026-09-30: every rung re-derived; ten commits that day, each a regeneration after a register edit | `render_results --check`, in the step “results rungs are earned and the view agrees”, on every change | The results table, each result’s overview, the case records | **Repository only**; forward `results.html` |
+| `packing/frontier/RESULTS.md` | Generated whole by `render_results` from `results.yaml` and the bibliography | 2026-09-30: every rung re-derived; ten commits that day, each a regeneration after a register edit. On `main` since: a kind and a credit column, and next actions in paragraphs (2026-10-01) | `render_results --check`, in the step “results rungs are earned and the view agrees”, on every change | The results table, each result’s overview, the case records | **Repository only**; forward `results.html` |
 | `packing/frontier/STATUS.md` | Generated whole by `render_research_tables` from the 324 case files and `evidence.yaml` | 2026-10-01: the $n = 17$ row, twice; each of the last ten commits regenerates one to three rows | `render_research_tables --check`, in “generated tables in sync with frontier/” | The frontier atlas and the case records | **Repository only**; forward `status.html` |
-| `defects.md` | Generated whole by `render_defects` from `defects.yaml`, 511 defects | 2026-10-01: two commits, each a regeneration after a defect was logged | `render_defects --check`, in “defect log” | Nothing | **Repository only**, by the owner’s decision; forward `defects.html` to the file |
+| `defects.md` | Generated whole by `render_defects` from `defects.yaml`, 511 defects (512 after the merge) | 2026-10-01: two commits, each a regeneration after a defect was logged | `render_defects --check`, in “defect log” | Nothing | **Repository only**, by the owner’s decision; forward `defects.html` to the file |
 | `operating-rules.md` | Hand-written; `AGENTS.md` mirrors its summary | 2026-09-30 | `render_operating_rules --check` | Not on the site | Leave off the site: it is for agents working in the repository |
 | `packing/frontier/README.md` | Hand-written | 2026-10-01 | `check_nagamochi_bounds` and two contract tests read parts | Not on the site | Leave off the site; the frontier atlas’s own prose covers what a reader needs |
 
@@ -69,9 +73,10 @@ outside the cards; the overview’s survey linked `status.html` once.
 | The opening paragraph on the axes | The results page’s own prose, the overview’s Verification Ladders, and `epistemics.html` |
 | This project’s results: id, $n$, `V`, `C`, `S`, novelty, claim | The results table’s rows, filtered to this project; the full claim and the novelty label are in each result’s overview |
 | Results by others, with credit, date, rungs and standing | The same rows, with the same credit line and standing, from the same functions (`result_credit`, `render_recent_results.standing`) |
+| A kind for every result, and a credit for this project’s results too (both columns added on `main` on 2026-10-01) | Each row shows its kind, Kind is one of the table’s filters, and the Credit column covers every row |
 | Four lineage groups as headings | **Not shown as groups.** Each row’s credit names whom the source builds on (“after Levy, Kleddamag”), and a filter separates this project’s results from others’; the four-way classification itself is only in the file |
 | Within a group, results still waiting on a replay here listed first | **Not an order the table offers.** It sorts by any column and filters by `C` |
-| Next actions, one line per result | Each result’s overview, under “Next rung” |
+| Next actions, one entry per result, in paragraphs since 2026-10-01 | Each result’s overview, under “Next rung” |
 | “Register reviewed 2026-09-30” | **Not shown** |
 
 So three things are only in the file: the lineage headings, the replay queue’s order,
@@ -90,68 +95,81 @@ Only the per-case **review date** is in the file and not on the site.
 
 ## `SYNOPSIS.md`: Thirty-One Statements
 
-| Line | Statement | Verdict | Against |
-| ---: | --- | --- | --- |
-| 3 | Date 2026-09-30 | stale, fixed | Last revised 2026-10-01 (`58d237c8c`) |
-| 10 | Evidence cutoff: the T-060 replay of 2026-09-30 | stale, fixed | The handoff at line 1314 covers Session 165 of 2026-10-01 |
-| 24 | $n = 11$ is solved at Trump’s side | current | `n-011`, T-060 |
-| 41 | A claim register for every $n \le 100$ | stale, fixed | 324 case files |
-| 72 | T-026 at `V4/C5` | stale rung | `V3/C3` in the register |
-| 74 | T-033 at `V4/C3` | stale rung | `V3/C3` |
-| 74 | $s(11) = T = 3.877083590022814\ldots$, T-060 matching T-011 | current | `n-011` |
-| 76 | T-037 and T-061 are earlier bounds | current | Both superseded |
-| 92 | The native decision supports `V4/C4` for Kleddamag’s bound | stale rung | T-037 is `V3/C3` |
-| 121 | R068’s $116511/25000$ is the verified bound, $0.0151$ below the packing | current | `n-017`: the gap is $0.01509$ |
-| 123 | T-038 to T-043 are registered | current | The register |
-| 132 | $s(32) = 6$ and $s(12) \ge 15680/3951$ at `V4/C4`; $s(21) = 5$, $s(45) = 7$ at `V4/C3` | stale rungs | T-049 and T-051 to T-053 are `V3/C3`; the bounds stand |
-| 137 | Daniel’s proof of $s(13) = 4$ “is recorded as a report” | **wrong**, fixed | T-006: kernel-checked in Lean here on 2026-09-30 |
-| 155 | The headline table: 61 results and their rungs | current | Generated; `--check` passes |
-| 247 | The status block: 165 sessions, 170 experiments, 61 results, 33 by others | current | Check 11 |
-| 268 | Agenda 040 is the current overnight queue | stale | Agendas 041 and 042 are active and later |
-| 271 | Session 143 is the latest terminal closeout | stale | Session 165, as line 1314 says |
-| 320 | The exact value is $s(11) = T$ by T-060 and T-011 | current | `n-011` |
-| 324 | Method-distinct `C4` confirmation of the strict bound | stale rung | T-037 is `C3` |
-| 456 | Bounds side by side through $n = 100$ | stale, fixed | 324 |
-| 1314 | The handoff: Session 165, seven $n = 17$ rounds, the verified ceiling $4.67553009360455\ldots$, the lower bound $4.66044$, next `think-11ma` | current | The session record, `n-017`, check 13 |
-| 1335 | T-060 is `V3/C3/S5` under the current rubric | current | The register |
-| 3975 | The $n = 11$ fact table | current | Check 15 |
-| 4049 | $n = 11$: proved, a settled target | current | `n-011` |
-| 4050 | $n = 12$: open, two rounds | stale | True as far as it goes; omits T-017 and the verified $15680/3951$ |
-| 4052 | $n = 17$: one round, `exp-011` | stale | Seven more on 2026-10-01, `exp-235` to `exp-241` |
-| 4054 | The corpus: 1–100, 39 proved, 61 open | stale, fixed | Right for $n \le 100$; the corpus is 324 cases, 63 proved and 261 open |
-| 4178 | The $n = 11$ ladder’s rung column: `V4/C5` and `V4/C3` | stale rungs | All six are `V3/C3` |
-| 4480 | T-060 audited here at `V4/C5/S5` | **wrong**, fixed | `V3/C3/S5`; contradicts line 1335 |
-| 6204 | The log contains 511 defects | current | Check 5 |
-| 6815 | “All four stand at V4 … T-018 at C5 — the rung epistemics.md defines as review-ready” | stale | `epistemics.md` no longer defines `C5` so; all four are `V3/C3` |
+The verdict is the statement’s at `fe6399451`. The last column is its state after the
+merge of `766e5f573`: fixed on `main` by pull request 274, fixed on this branch, or
+still as it was.
+
+| Line | Statement | Verdict | Against | After the merge |
+| ---: | --- | --- | --- | --- |
+| 3 | Date 2026-09-30 | stale | Last revised 2026-10-01 (`58d237c8c`) | fixed on `main` |
+| 10 | Evidence cutoff: the T-060 replay of 2026-09-30 | stale | The handoff at line 1314 covers Session 165 of 2026-10-01 | fixed on `main` |
+| 24 | $n = 11$ is solved at Trump’s side | current | `n-011`, T-060 | current |
+| 41 | A claim register for every $n \le 100$ | stale | 324 case files | fixed here |
+| 72 | T-026 at `V4/C5` | stale rung | `V3/C3` in the register | fixed on `main` |
+| 74 | T-033 at `V4/C3` | stale rung | `V3/C3` | fixed on `main` |
+| 74 | $s(11) = T = 3.877083590022814\ldots$, T-060 matching T-011 | current | `n-011` | current |
+| 76 | T-037 and T-061 are earlier bounds | current | Both superseded | current |
+| 92 | The native decision supports `V4/C4` for Kleddamag’s bound | stale rung | T-037 is `V3/C3` | fixed on `main` |
+| 121 | R068’s $116511/25000$ is the verified bound, $0.0151$ below the packing | current | `n-017`: the gap is $0.01509$ | current |
+| 123 | T-038 to T-043 are registered | current | The register | current |
+| 132 | $s(32) = 6$ and $s(12) \ge 15680/3951$ at `V4/C4`; $s(21) = 5$, $s(45) = 7$ at `V4/C3` | stale rungs | T-049 and T-051 to T-053 are `V3/C3`; the bounds stand | fixed on `main`, with the four $n = 17$ rungs at lines 97 to 121 |
+| 137 | Daniel’s proof of $s(13) = 4$ “is recorded as a report” | **wrong** | T-006: kernel-checked in Lean here on 2026-09-30 | fixed here |
+| 155 | The headline table: 61 results and their rungs | current | Generated; `--check` passes | current |
+| 247 | The status block: 165 sessions, 170 experiments, 61 results, 33 by others | current | Check 11 | current |
+| 268 | Agenda 040 is the current overnight queue | stale | Agendas 041 and 042 are active and later | still stale |
+| 271 | Session 143 is the latest terminal closeout | stale | Session 165, as line 1314 says | still stale |
+| 320 | The exact value is $s(11) = T$ by T-060 and T-011 | current | `n-011` | current |
+| 324 | Method-distinct `C4` confirmation of the strict bound | stale rung | T-037 is `C3` | still stale |
+| 456 | Bounds side by side through $n = 100$ | stale | 324 | fixed here |
+| 1314 | The handoff: Session 165, seven $n = 17$ rounds, the verified ceiling $4.67553009360455\ldots$, the lower bound $4.66044$, next `think-11ma` | current | The session record, `n-017`, check 13 | current |
+| 1335 | T-060 is `V3/C3/S5` under the current rubric | current | The register | current |
+| 3975 | The $n = 11$ fact table, whose lower-bound row ends `V4/C5` | stale rung | The two ends and the gap are right (check 15); T-060 is `V3/C3` | fixed on `main` |
+| 4049 | $n = 11$: proved, a settled target | current | `n-011` | current |
+| 4050 | $n = 12$: open, two rounds | stale | True as far as it goes; omits T-017 and the verified $15680/3951$ | still stale |
+| 4052 | $n = 17$: one round, `exp-011` | stale | Seven more on 2026-10-01, `exp-235` to `exp-241` | still stale |
+| 4054 | The corpus: 1–100, 39 proved, 61 open | stale | Right for $n \le 100$; the corpus is 324 cases, 63 proved and 261 open | fixed here |
+| 4178 | The $n = 11$ ladder’s rung column: `V4/C5` and `V4/C3` | stale rungs | All six are `V3/C3` | still stale; a dated section |
+| 4480 | T-060 audited here at `V4/C5/S5` | **wrong** | `V3/C3/S5`; contradicts line 1335 | fixed on `main` |
+| 6204 | The log contains 511 defects | current | Check 5 | current, at 512 |
+| 6815 | “All four stand at V4 … T-018 at C5 — the rung epistemics.md defines as review-ready” | stale | `epistemics.md` no longer defines `C5` so; all four are `V3/C3` | still stale |
+
+At `fe6399451` that is 12 current, 17 stale and 2 wrong.
+After the merge it is 24 current and 7 stale: `main` fixed eight, this branch four.
 
 The split follows the checks.
 The generated blocks and the checked numbers are current to the day, and so is the
 handoff, which check 13 ties to the latest session.
-The free prose around them was last true on the day each passage was written.
+The free prose around them was last true on the day each passage was written, until
+someone reread it: pull request 274 did that for the opening section.
 
 ### What Was Fixed
 
-Counts and plain facts with one right value in the record: the date and the cutoff; the
-three places that still said $n \le 100$; the corpus counts; T-060’s rung in the section
-that announces it; and the $s(13)$ sentence.
-One sentence was added under the headline table’s introduction, saying that the table
-carries the current rungs and that a rung in the prose is the one in force when the
-passage was written, with a link to the rule in `epistemics.md`. `TUTORIAL.md` and
-`conventions.md` each had one $n \le 100$ of the same kind, also fixed.
+On `main`, by pull request 274, while this review ran: the date and the cutoff, the
+rungs in the opening section and in the $n = 11$ fact table, and T-060’s rung in the
+section that announces it.
+It also added a sentence saying that the opening section’s rungs are the register’s and
+that dated sections further down keep the rungs they were written with.
+This branch had made the same corrections to the date, the cutoff and T-060’s rung, and
+the merge keeps `main`’s text for all three.
+
+On this branch only, each a count or a plain fact with one right value in the record:
+the three places that still said $n \le 100$, the corpus counts, and the $s(13)$
+sentence. `TUTORIAL.md` and `conventions.md` each had one $n \le 100$ of the same kind,
+also fixed.
 
 ### What Is Left for the Owner
 
 These are rewrites of narrative, not corrections of a value:
 
-1. **Results and their significance** (lines 66–152) reads as a current summary and
-   names ten pre-ladder rungs.
-   The added sentence covers it.
+1. **Results and their significance** (lines 66–152) named ten pre-ladder rungs, which
+   pull request 274 set to the register’s. Nothing checks them, so they will drift again
+   at the next change to the register.
    Recommendation: trim this section to its first paragraph and the generated table,
    since the site’s results table now tells the same story from the record.
 2. **Research Program Status and Roadmap** (lines 257–438): the agenda eras stop at
-   Agenda 040 and the session narrative at Session 143, twenty-two sessions back.
-   Recommendation: cut the narrative to the generated status block and a pointer to the
-   Current Handoff, which a check holds.
+   Agenda 040 and the session narrative at Session 143, twenty-two sessions back, and
+   one sentence still claims `C4` for T-037. Recommendation: cut the narrative to the
+   generated status block and a pointer to the Current Handoff, which a check holds.
 3. **The Lay of the Land, by `n`** (lines 4040–4083): the rows for $n = 12$ and $n = 17$
    predate the September intake and the October rounds.
    Recommendation: mark the table as the search programme’s view as of August, or drop
@@ -243,7 +261,8 @@ uv run --frozen --all-extras --group dev python -m devtools.preview_site --outpu
   --skip explainer --skip workbench --skip optimality
 ```
 
-All five checks passed at `fe6399451`. Inbound links were counted in the built pages.
+All five checks passed at `fe6399451`, and again after the merge of `766e5f573`. Inbound
+links were counted in the built pages.
 Each document’s history is `git log --numstat` on its path; a commit that only merged is
 not counted as a change.
 

@@ -553,8 +553,9 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record.
 
-    Its first section's prose is README's introduction, read from README's
-    `project-intro` block and its links rewritten for the site (`site_documents`).
+    Its first section opens with README's first paragraph and its Recent Results with
+    README's next two, read from README's `project-intro` and `recent-progress` blocks
+    and their links rewritten for the site (`site_documents`).
     """
     from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
@@ -562,6 +563,7 @@ def overview_page() -> Page:
     values = {
         "HERO": overview_sections.hero(),
         "README_INTRO": site_documents.overview_intro(),
+        "README_PROGRESS": site_documents.overview_progress(),
         "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
@@ -591,7 +593,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        rewrite_body=site_documents.rewrite_overview_intro,
+        rewrite_body=site_documents.rewrite_overview_blocks,
         page_scripts=(
             FORWARD_SCRIPT,
             TABLE_SCRIPT,

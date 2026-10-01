@@ -7,6 +7,9 @@ non-overlapping unit squares, which may be rotated.
 The problem is elementary to state and open for most $n$: the answer is known only to
 lie between the best packing found and the best lower bound proved.
 
+<!-- END SHARED: project-intro -->
+<!-- BEGIN SHARED: recent-progress (devtools.site_documents) -->
+
 The project covers the problem at every $n$. Its [frontier](packing/frontier/STATUS.md)
 keeps one record for each case $n = 1\ldots324$, with reported and verified bounds kept
 separate, and its [results register](packing/frontier/RESULTS.md) grades each registered
@@ -28,7 +31,7 @@ The [case record](packing/frontier/n-011.md),
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
 method’s shared dependencies and the publisher’s four stale cached-audit digests.
 
-<!-- END SHARED: project-intro -->
+<!-- END SHARED: recent-progress -->
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the

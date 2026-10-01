@@ -79,10 +79,11 @@ body {
      the awaiting-replay disclosure, and a document's own table (paper-design.md,
      Tables). */
   --site-table-space: 2rem;
-  /* The least space between a wide block and the window's edge: a table and its filter
-     bar, a row of cards, the atlas grid. It is the page's own margin, so a wide block
-     ends under the ends of the bar's rule, and on a phone, set below, the text's. */
-  --site-wide-gutter: 2rem;
+  /* The least space between a wide block and the edge of the page's content area, inside
+     the page's margin: a table and its filter bar, a row of cards, the atlas grid. It is
+     KPress's own document gutter, so a wide block with no room to spare is as wide as
+     the text, and it is measured from the page, never from the window (below). */
+  --site-wide-gutter: 0.5rem;
   /* The space under a page's title: to its subtitle and from the subtitle to the first
      paragraph, or straight to the first paragraph of a page that has no subtitle. */
   --site-subtitle-space: 1.5rem;
@@ -90,11 +91,6 @@ body {
   /* How much nearer the bar a page's opening picture sits than a title would: a drawing
      has no line spacing above its edge, so the same space reads larger. */
   --site-hero-lift: 0.5rem;
-}
-@media (width < 48rem) {
-  :root {
-    --site-wide-gutter: 1rem;
-  }
 }
 .site-page a,
 .kpress-tooltip a {
@@ -122,9 +118,13 @@ body {
   padding-inline: 0;
 }
 /* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose, and
-   stop `--site-wide-gutter` short of the window's edge on either side. */
+   stop `--site-wide-gutter` short of the page's content area on either side. That area
+   is KPress's page container less its margin, `100cqw`: the width the page is laid out
+   in. `100vw` is not, since it counts a scrollbar the layout does not, and a narrow page
+   clips at the document's edge, so a block sized from the window ran under the clip and
+   lost its first and last few pixels. */
 .site-page .site-wide {
-  --site-wide-room: calc(100vw - 2 * var(--site-wide-gutter));
+  --site-wide-room: calc(100cqw - 2 * var(--site-wide-gutter));
   margin-inline: calc((min(var(--site-wide), var(--site-wide-room)) - 100%) / -2);
   max-width: min(var(--site-wide), var(--site-wide-room));
 }
@@ -660,9 +660,9 @@ body {
    formula's box at a line of 1.4 and KaTeX its own at 1.2, either of which makes the line
    holding a formula taller than the lines around it; with no line of its own, a formula
    is as tall as KaTeX's struts, which give it the height and depth it needs. */
+.site-page :is(h1, h2, h3, h4) :is(.kpress-math, .katex),
 :is(.site-card-value, .site-popover-value, .site-case-title, .site-hero .subtitle)
-:is(.kpress-math, .katex),
-.site-page :is(h1, h2, h3, h4) :is(.kpress-math, .katex) {
+  :is(.kpress-math, .katex) {
   line-height: 0;
 }
 /* The tighter leading takes the room a looser line kept around the headline, so the
@@ -730,10 +730,11 @@ body {
     margin-block-end: 0;
   }
 }
-/* On a narrow pane KPress lets a document's table run past the column into the page's
-   margin, to the window's edge. Here it keeps to the column and scrolls inside its wrap,
-   so the scroller itself keeps the gutter. */
-@media screen and (width < 48rem) {
+/* On a narrow pane KPress lets a document's table run past the column, across the
+   document's gutter and under its clip. Here it keeps to the column and scrolls inside
+   its wrap, so the scroller itself keeps the gutter. The band is KPress's own, a query
+   on its page container, so the two rules always apply together. */
+@container kpress-doc (max-width: 47.99rem) {
   .kpress .site-page .kpress-table-wrap {
     max-inline-size: 100%;
   }
@@ -2099,7 +2100,7 @@ body {
    gutters, but never so tall that it will not fit the window whole, at the video's own
    16:9, which the poster shares, so starting playback moves nothing. */
 .site-page .site-film-frame {
-  --site-film-width: min(100vw - 2rem, (100svh - 5rem) * 16 / 9, 120rem);
+  --site-film-width: min(100cqw - 2 * var(--site-wide-gutter), (100svh - 5rem) * 16 / 9, 120rem);
   inline-size: var(--site-film-width);
   margin-block: 1.5rem;
   margin-inline: calc((var(--site-film-width) - 100%) / -2);

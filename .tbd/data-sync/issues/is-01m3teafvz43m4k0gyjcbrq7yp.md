@@ -5,11 +5,11 @@ title: "Review the verification and confirmation ladders: the top rung is reprod
 kind: task
 status: in_progress
 priority: 1
-version: 7
+version: 8
 labels: []
 dependencies: []
 created_at: 2026-10-01T00:37:39.747Z
-updated_at: 2026-10-01T00:46:27.277Z
+updated_at: 2026-10-01T00:47:03.133Z
 ---
 Owner, 2026-09-30: 'We need to review the confirmation and verification ladder rungs. The absolute highest confirmation level should be reproducible formal verification plus expert human review and confirmation of the proof and the formal verification. This should be C5 or perhaps C6. V5 would be formal verification plus human review that hasn't been externally confirmed from this project or other additional sources.' Deliver a proposal, not a change: the current V0-V5 and C0-C5 predicates from epistemics.md and what check_results derives; the owner's proposed top rungs made precise (what counts as formal verification, reproducible, expert human review, external confirmation; where AI review sits); two or three candidate ladders (redefine within six rungs, or add C6); the re-derived rungs of all registered results under each, with every change listed (T-060 is C5 today on a same-project AI-assisted review; T-006 is V5/C3 on jlevy/squares#249 by a Lean kernel check; T-037; T-051); the migration (epistemics.md, check_results, results.yaml, RESULTS/STATUS, the site's rung cards, README/SYNOPSIS copies of the rubric); and the decisions the owner must make. Related: think-7khl (does a recorded execution satisfy V4's replay predicate), think-yf6t (does a same-project review of another author's certificate earn C5). Workflow W4 process review. No edit to epistemics.md, check_results or any rating until the owner approves.
 
@@ -24,3 +24,5 @@ Owner principle, 2026-09-30: 'In no case do we blindly trust any formal reasonin
 Owner on V versus C, 2026-09-30: 'The difference between V and C is that one is basically self certification or historic certification where we haven't readily replayed the verification, while C is confirmed, verifiable by us and other third parties.' So V is the verification a result carries from its own source (self or historic certification, no replay here required); C is how far that verification has been independently confirmed and is verifiable, by this project and by third parties. The ladders are parallel: same rung meanings, different earner.
 
 Owner expectation, 2026-09-30: 'Probably nothing here then should be at C5. Maybe nothing at V5 too depending on level of the records.' A prediction to check against the records, not a figure to force; any result that would keep a 5 is flagged with its evidence.
+
+Owner, 2026-09-30: as part of this, update epistemics.md and the website's documentation of the ladder rungs: the site's epistemics page, the Verification at a Glance rung cards, the rung chips and legends on every table, and the design document.

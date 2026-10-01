@@ -45,8 +45,8 @@ A result by others is registered as *reported* when its source is taken in, and 
 *verified* only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;
 [`epistemics.md`](epistemics.html#results-by-others) states the policy.
-It starts filtered to significance S4 and up and to a maximum age of 180 days; choose
-All and clear Max age to see every row.
+The table starts filtered to significance S4 and up and to a maximum age of 180 days;
+choose All and clear Max age to see every row.
 
 {{RECENT}}
 

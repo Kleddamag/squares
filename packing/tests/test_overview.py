@@ -1392,12 +1392,18 @@ def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
     assert 0 < shown < len(overview.results)
     assert f"{shown} of {len(overview.results)} results</span>" in tools
     text = " ".join(re.sub(r"<[^>]+>", "", section).split())
-    assert "The table lists every result, newest first," in text
-    assert "1 August" not in text
     assert (
-        "It starts filtered to significance S4 and up and to a maximum age of 180 days; "
-        "choose All and clear Max age to see every row."
+        "The table lists every result, newest first: new bounds for particular numbers of "
+        "squares, found here or by others."
     ) in text
+    assert "1 August" not in text
+    assert "every result since" not in text
+    starts = (
+        "The table starts filtered to significance S4 and up and to a maximum age of 180 "
+        "days; choose All and clear Max age to see every row."
+    )
+    assert text.count(starts) == 1
+    assert "It starts filtered" not in text
 
 
 def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
@@ -1589,7 +1595,8 @@ def test_the_overviews_two_sections_are_readmes_two_blocks(page: str) -> None:
 def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> None:
     """Recent Results opens with README's two paragraphs, right under its heading and
     above the section's own prose, the filter bar and the table; the first section no
-    longer holds them. The section has one opening: its own prose starts at the table."""
+    longer holds them. The section has one opening: its own prose starts at the table,
+    which lists every result, and ends on where the filter bar under it starts."""
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     progress = _progress(page)
@@ -1600,10 +1607,22 @@ def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> Non
     # Only the template's own note stands between the heading and README's block.
     opening = section.split("</h2>", 1)[1].split("<!-- README recent-progress -->", 1)[0]
     assert re.sub(r"<!--.*?-->", "", opening, flags=re.DOTALL).strip() == ""
+    # README's block, then the section's prose, then the filter bar, then the table.
     tools = section.index('<div class="site-table-tools')
-    assert section.index(progress) < tools < section.index(_recent_table(page))
-    own = section.split("<!-- /README recent-progress -->", 1)[1][:400]
-    assert _rendered_text(own).startswith("The table lists every result since 1 August 2026")
+    table = section.index(_recent_table(page))
+    after = section.index("<!-- /README recent-progress -->")
+    assert section.index(progress) < after < tools < table
+    own = _rendered_text(section[after:tools])
+    assert own.startswith(
+        "The table lists every result, newest first: new bounds for particular numbers of "
+        "squares, found here or by others."
+    )
+    assert own.endswith(
+        "The table starts filtered to significance S4 and up and to a maximum age of 180 "
+        "days; choose All and clear Max age to see every row."
+    )
+    assert own.count("The table lists every result") == 1
+    assert " since " not in own
     assert "These are the recent results this project tracks" not in _rendered_text(section)
 
 

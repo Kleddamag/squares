@@ -5,12 +5,16 @@ title: "Site footer: two lines, the project and repository, then the version sta
 kind: task
 status: in_progress
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-01T16:19:59.612Z
-updated_at: 2026-10-01T16:20:04.709Z
+updated_at: 2026-10-01T19:12:12.003Z
 ---
 Owner, 2026-10-01: change the footer to: line 1 'The Square Packing Project · github.com/jlevy/squares'; line 2 'v0.4.2-8ac5de · Formatted and typeset with Flowmark and KPress'. The version stamp is the live one (the release version and data revision, as the atlas stamp prints it), not the literal; it becomes v0.5.0-… with the version bump (think-pt1k). github.com/jlevy/squares links the repository; Flowmark and KPress link their projects. The same footer on every page that has one: the KPress pages, the two papers, the workbench.
+
+## Notes
+
+Done on claude/site-polish-4-home, commit c2647bd1d: two-line footer from one definition render_overview.colophon_lines on KPress pages, the explainer and the optimality paper (workbench is an application with no footer). Stamp is sqpack.release.PUBLICATION_EDITION. Both lines print in the PDFs; explainer PDF still 22 pages; release.py added to the optimality paper's declared inputs.

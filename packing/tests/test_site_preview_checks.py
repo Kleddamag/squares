@@ -15,6 +15,7 @@ from devtools.preview_site import (
     off_centre,
     shot_stem,
     tabs_problems,
+    type_problems,
 )
 
 
@@ -182,3 +183,42 @@ def test_section_tabs_under_the_bars_rule_pass_and_tabs_over_it_are_reported() -
     assert tabs_problems(under) == [
         "figure.site-film-frame starts 12px above the foot of the section tabs"
     ]
+
+
+#: The paper's scale as a page resolves it: the prose base, the sans base beside it, and
+#: the three steps under the sans base.
+SCALE = {"prose": 18, "sans": 19, "support": 18.05, "note": 17.48, "colophon": 16.15}
+
+
+def _type(link: float | None, tab: float | None, name: float | None = 19) -> dict:
+    """A `preview_site/header` report's type: a link's size, a tab's and the name's."""
+    return {"type": {"body": 18, "name": name, "link": link, "tab": tab, "scale": SCALE}}
+
+
+def test_the_bars_type_is_one_step_under_the_bodys_and_no_more() -> None:
+    """A link in the bar and a section tab are under the prose base and no smaller than
+    the first step of the scale under it, whatever those are in pixels; the two are one
+    size; and the site's name is at least the body's. The sizes the bar had, 16px links
+    and 14.4px tabs under a 16px name, are each named."""
+    assert type_problems(_type(17.48, 17.48)) == []
+    assert type_problems(_type(17.48, None)) == []
+    assert type_problems(_type(None, None, None)) == []
+    unscaled = _type(17.48, None)
+    unscaled["type"]["scale"] = None
+    assert type_problems(unscaled) == []
+    wide = "it should be under the body's 18px and no smaller than the step below it, 17.48px"
+    assert type_problems(_type(16, 14.4, 16)) == [
+        f"a link in the header is 16px: {wide}",
+        f"a tab in the header is 14.4px: {wide}",
+        "a section tab is 14.4px and a link in the bar 16px",
+        "the site's name is 16px, under the body's 18px",
+    ]
+    # The support size is a step of the scale, but not one under the body.
+    assert type_problems(_type(18.05, 18.05)) == [
+        f"a link in the header is 18.05px: {wide}",
+        f"a tab in the header is 18.05px: {wide}",
+    ]
+    # A body of another size moves the step with it.
+    larger = _type(18.05, 18.05, 20)
+    larger["type"]["scale"] = {**SCALE, "prose": 19}
+    assert type_problems(larger) == []

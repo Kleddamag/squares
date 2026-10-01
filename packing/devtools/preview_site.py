@@ -231,6 +231,38 @@ def tabs_problems(found: dict[str, Any]) -> list[str]:
     return problems
 
 
+def type_problems(found: dict[str, Any]) -> list[str]:
+    """What is wrong with the size of the bar's type, in a `preview_site/header` report,
+    held against the body's and never against a pixel value. A link in the bar, and a
+    section tab, is one step below the body on the paper's scale and no more: smaller
+    than the prose base, and no smaller than the largest step of the scale under it. The
+    two are one size. The site's name is at least the body's size. A page with no bar has
+    nothing to say, and nor does one that does not carry the paper's scale, the
+    optimality paper, whose body is its own."""
+    sizes = found["type"]
+    if sizes["link"] is None or sizes["scale"] is None:
+        return []
+    body = sizes["scale"]["prose"]
+    below = max(step for step in sizes["scale"].values() if step < body)
+    problems: list[str] = []
+    for part in ("link", "tab"):
+        size = sizes[part]
+        if size is None:
+            continue
+        if not below <= size < body:
+            problems.append(
+                f"a {part} in the header is {size:g}px: it should be under the body's "
+                f"{body:g}px and no smaller than the step below it, {below:g}px"
+            )
+    if sizes["tab"] is not None and sizes["tab"] != sizes["link"]:
+        problems.append(
+            f"a section tab is {sizes['tab']:g}px and a link in the bar {sizes['link']:g}px"
+        )
+    if sizes["name"] is not None and sizes["name"] < body:
+        problems.append(f"the site's name is {sizes['name']:g}px, under the body's {body:g}px")
+    return problems
+
+
 def clipped(page: Page) -> list[str]:
     """Every wide block on the page as it stands that runs past an ancestor which clips
     or scrolls sideways, as laid out now and again with a scrollbar's width taken from
@@ -331,7 +363,8 @@ def screenshots(
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, math left untypeset or set in the other face from its text, a row of
     cards off the centre of its line, any page wider than its viewport, section tabs
-    that do not stand under the bar's rule (`tabs_problems`), and any wide block that
+    that do not stand under the bar's rule (`tabs_problems`), a bar whose type is not
+    one step under the body's (`type_problems`), and any wide block that
     runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
     checked the same way, and the window shot as `<page>-<width>-press<n>.png`. Every
@@ -374,9 +407,10 @@ def screenshots(
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
                         errors.append(f"{name} @{width}: {overflow}px wider than the viewport")
+                    header = page.evaluate(HEADER)
                     errors.extend(
                         f"{name} @{width}: {problem}"
-                        for problem in tabs_problems(page.evaluate(HEADER))
+                        for problem in (*tabs_problems(header), *type_problems(header))
                     )
                     cut = clipped(page)
                     errors.extend(f"{name} @{width}: {problem}" for problem in cut)

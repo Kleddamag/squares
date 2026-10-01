@@ -1205,6 +1205,42 @@ def test_the_visualize_section_is_marked_current_on_both_its_pages(
         render_overview.visualize_tabs("stills")
 
 
+def test_the_bars_type_is_set_from_the_papers_scale() -> None:
+    """The bar's links and a section's tabs take one token, the note step of the paper's
+    scale, which is the first size under the body's prose; the site's name takes the sans
+    base. Both come from the host base and the scale's own tokens, so no rule holds a
+    size in pixels or rem, and the bar is one size on every page. Each token names the
+    paper's value as its fallback, for the one page that carries the bar without
+    `paper-type.css`, and the fallbacks are that file's values. `test_site_wide_blocks`
+    holds the computed sizes to the body's in a browser."""
+    css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    tokens = dict(re.findall(r"\n  (--site-nav-[a-z-]+): ([^;]+);", css))
+    assert {name: " ".join(value.split()) for name, value in tokens.items()} == {
+        "--site-nav-name-size": (
+            "calc( var(--kpress-host-font-size-base, 18px) "
+            "* var(--paper-font-scale-sans, calc(19 / 18)) )"
+        ),
+        "--site-nav-font-size": (
+            "calc(var(--site-nav-name-size) * var(--paper-note-scale, 0.92))"
+        ),
+    }
+    for selector, token in (
+        (".site-nav {", "--site-nav-font-size"),
+        (".site-nav .site-name {", "--site-nav-name-size"),
+        (".site-tabs {", "--site-nav-font-size"),
+    ):
+        rule = css[css.index(f"\n{selector}") :]
+        rule = rule[: rule.index("}")]
+        assert re.findall(r"font-size: ([^;]+);", rule) == [f"var({token})"], selector
+    paper = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    for declaration in (
+        "  --kpress-host-font-size-base: 18px;\n",
+        "  --paper-font-scale-sans: calc(19 / 18);\n",
+        "  --paper-note-scale: 0.92;\n",
+    ):
+        assert declaration in paper, declaration
+
+
 def test_the_section_tabs_sit_below_the_bars_rule() -> None:
     """The tabs are in the header slot, whose lower border is the rule under the bar, so
     they would stand over it. A header that holds tabs gives up its border and the bar

@@ -73,12 +73,27 @@
   max-width: none;
   padding: 0;
 }
+/* The bar's type, on the paper's scale (paper-type.css, which the site's pages, the
+   explainer and the workbench inline). The body is 18px prose. The bar's links, and a section's tabs, are one
+   step below the body and no more: the note size, 0.92 of the sans base, 17.48px, which
+   is the first size on the scale under 18px (the support size between them, 0.95, is
+   18.05px). The site's name is the sans base, 19px, the size sans text takes beside the
+   prose, and heavier, so it reads as the name. Both are taken from the host base, which
+   is the same on every page, not from KPress's derived base, which a page may rescale,
+   so the bar does not change size between pages. The optimality paper carries the bar
+   without paper-type.css, so each token names the paper's own value as its fallback
+   there; a test holds the three fallbacks to paper-type.css. */
+:root {
+  --site-nav-name-size: calc(
+    var(--kpress-host-font-size-base, 18px) *
+    var(--paper-font-scale-sans, calc(19 / 18))
+  );
+  --site-nav-font-size: calc(var(--site-nav-name-size) * var(--paper-note-scale, 0.92));
+}
 .site-nav {
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
-  /* In rem, not from kpress's base size: the explainer sets a larger base than the site
-     pages, and the bar should not change size between them. */
-  font-size: 1rem;
+  font-size: var(--site-nav-font-size);
 }
 .site-nav-inner {
   align-items: baseline;
@@ -109,6 +124,7 @@
 /* The site name is set in capitals by style, so its text stays "Square Packing". */
 .site-nav .site-name {
   color: var(--kpress-doc-text);
+  font-size: var(--site-nav-name-size);
   font-weight: 680;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -347,7 +363,7 @@
   display: flex;
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
-  font-size: 0.9rem;
+  font-size: var(--site-nav-font-size);
   inline-size: fit-content;
   margin: var(--site-tabs-space) auto 0;
 }

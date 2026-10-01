@@ -50,8 +50,10 @@ Eight measurements, each over pages of a directory `preview_site` has built:
 - `header` reports where each page's header stands at each width, as tops and bottoms in
   CSS pixels from the top of the document: the navigation bar, the rule under it and the
   element that draws it, the section tabs with the current tab's name (on a page of the
-  Visualize section), and the first block of the page's content. `--markdown` prints one
-  line a page and width.
+  Visualize section), and the first block of the page's content. With them it reports
+  the header's type: the computed font size of the body's prose, the site's name (and
+  whether its text is shown), a link in the bar and a section tab, and how many lines the
+  bar's links take. `--markdown` prints one line a page and width.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -336,7 +338,9 @@ def measure_header(
     """Where each page's header stands at each width (`preview_site/header`), one flat
     row a page and width: the top and bottom of the bar, of the rule under it, of the
     section tabs and of the first block, with the element the rule is drawn on, the
-    current tab and the first block's name. A part a page lacks is left empty."""
+    current tab and the first block's name; then the header's type, the font size of the
+    body's prose, the site's name, a link in the bar and a section tab, and the lines the
+    bar's links take. A part a page lacks is left empty."""
     rows: list[dict[str, Any]] = []
     for name, width, found in _evaluate(base, pages, widths=widths, script=HEADER):
         row: dict[str, Any] = {"page": name, "width": width}
@@ -347,6 +351,14 @@ def measure_header(
         row["rule_on"] = (found["rule"] or {}).get("on", "")
         row["current_tab"] = (found["tabs"] or {}).get("current") or ""
         row["first"] = (found["first"] or {}).get("block", "")
+        sizes = found["type"]
+        row["body"] = sizes["body"] or (sizes["scale"] or {}).get("prose", "")
+        row["name"] = sizes["name"] or ""
+        row["name_shown"] = "yes" if sizes["name_shown"] else "no"
+        row["link"] = sizes["link"] or ""
+        row["tab"] = sizes["tab"] or ""
+        row["links_rows"] = sizes["links_rows"]
+        row["overflow"] = sizes["overflow"]
         rows.append(row)
     return rows
 

@@ -76,7 +76,9 @@ def laid(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[tuple[str, i
             path = site / name
             path.write_text(site_renders.html(name), encoding="utf-8")
             page = browser.new_page(viewport={"width": TABLE_WIDTHS[0], "height": 900})
-            page.goto(path.as_uri(), wait_until="load")
+            # The overview hides superseded rows as loaded; the columns and chips are
+            # measured with them showing, which the filter's query preset asks for.
+            page.goto(f"{path.as_uri()}?current=false", wait_until="load")
             settle_math(page)
             for width in WIDTHS:
                 page.set_viewport_size({"width": width, "height": 900})

@@ -36,7 +36,13 @@ def test_every_standing_in_the_register_agrees_with_the_bounds_its_entry_states(
         standing = view.standing(record, records)
         assert check_standing.problems(record, standing, records) == [], record["id"]
     assert check_standing.main([]) == 0
-    assert f"OK: {len(records.register.results)} results" in capsys.readouterr().out
+    quiet = capsys.readouterr().out
+    assert quiet.startswith(f"OK: {len(records.register.results)} results")
+    assert len(quiet.splitlines()) == 1
+    assert check_standing.main(["--list"]) == 0
+    listed = capsys.readouterr().out.splitlines()
+    assert len(listed) == len(records.register.results) + 1
+    assert all(line.startswith("T-") for line in listed[:-1])
 
 
 def test_the_check_reads_the_bound_of_nearly_every_entry_that_claims_one(

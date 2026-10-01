@@ -1,10 +1,11 @@
-// A table of results under its filter bar, as a reader has it now: whether Current best
-// only is checked and what the HTML starts it at, the count's words, the rows showing
-// and the rows that are current bests, and how the checkbox and its label lie in the bar.
+// A table of results under its filter bar, as a reader has it now: whether Hide
+// superseded is checked and what the HTML starts it at, the count's words, the rows
+// showing and the rows that are current, which is to say not superseded, and how the
+// checkbox and its label lie in the bar.
 // Null where the page has no such bar, checkbox and table.
 () => {
   const bar = document.querySelector(".site-result-filters");
-  const box = bar?.querySelector('input[data-filter="best"]');
+  const box = bar?.querySelector('input[data-filter="current"]');
   const table = bar?.nextElementSibling?.querySelector("table");
   if (
     !(bar instanceof HTMLElement) ||
@@ -61,6 +62,6 @@
     count: (bar.querySelector(".site-count")?.textContent ?? "").trim(),
     total: rows.length,
     shown: rows.filter((row) => !row.hidden).map(name),
-    best: rows.filter((row) => row.dataset.best === "true").map(name),
+    current: rows.filter((row) => row.dataset.current === "true").map(name),
   };
 };

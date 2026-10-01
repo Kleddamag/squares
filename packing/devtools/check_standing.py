@@ -33,7 +33,10 @@ and equals a bound that does. Two lanes are never mixed: a verified bound is not
 by a higher reported one, which is what `current best, reported` is for.
 
 Usage, from `packing/`:
-    uv run --frozen --all-extras --group dev python -m devtools.check_standing [--cases]
+    uv run --frozen --all-extras --group dev python -m devtools.check_standing [--list]
+
+`--list` prints each entry's standing and where its stated bounds hold or are beaten;
+`--cases` adds every stated bound, case by case. `packing-validate --records` runs it.
 """
 
 from __future__ import annotations
@@ -47,7 +50,6 @@ from typing import Any, NamedTuple
 
 from devtools import render_recent_results as view
 from devtools.check_results import scope_values
-from devtools.overview_data import compress
 
 LOWER = "lower"
 UPPER = "upper"
@@ -79,6 +81,7 @@ _CLOSED = re.compile(
 _FOR = re.compile(r"`? for `?n = (?P<cases>\d[\d, …]*(?: and \d+)?)")
 
 BEATEN = "beaten"
+EN_DASH = "\u2013"
 EQUAL = "equal"
 EXCEEDS = "exceeds"
 
@@ -99,6 +102,22 @@ class Finding(NamedTuple):
     stated: Stated
     verified: str | None
     reported: str | None
+
+
+def compress(cases: Sequence[int]) -> str:
+    """`18, 19, 20, 21, 26` as `18-21, 26` (en dash): a run of three or more is a range. The
+    site writes its cases the same way (`overview_data.compress`); this check reads the
+    record only and does not import the site's data layer for it."""
+    runs: list[list[int]] = []
+    for n in sorted(cases):
+        if runs and n == runs[-1][-1] + 1:
+            runs[-1].append(n)
+        else:
+            runs.append([n])
+    return ", ".join(
+        f"{run[0]}{EN_DASH}{run[-1]}" if len(run) >= 3 else ", ".join(map(str, run))
+        for run in runs
+    )
 
 
 def _cases(text: str) -> set[int]:
@@ -270,14 +289,20 @@ def main(argv: Sequence[str] | None = None) -> int:
         description="Hold each result's derived standing to the bounds its words state.",
     )
     parser.add_argument(
+        "--list", action="store_true", help="print each entry's standing and where it holds"
+    )
+    parser.add_argument(
         "--cases", action="store_true", help="also print every stated bound, case by case"
     )
     arguments = parser.parse_args(argv)
     records = view.load_records()
     wrong: list[str] = []
+    read = 0
     for record in records.register.results:
         standing = view.standing(record, records)
-        print(summary(record, standing, records))
+        read += bool(stated_bounds(record))
+        if arguments.list or arguments.cases:
+            print(summary(record, standing, records))
         if arguments.cases:
             for finding in findings(record, records):
                 print(
@@ -294,7 +319,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"{len(wrong)} standing(s) of {total} disagree with a stated bound", file=sys.stderr
         )
         return 1
-    print(f"OK: {total} results, each standing agrees with the bounds the entry states")
+    print(
+        f"OK: {total} results, each standing agrees with the bounds the entry states; "
+        f"{read} state a bound this reads"
+    )
     return 0
 
 

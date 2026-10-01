@@ -37,9 +37,9 @@ from devtools.overview_data import (
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
 from devtools.render_recent_results import (
     HOLDS,
-    HOLDS_REPORTED,
     NOT_A_BOUND,
     STANDINGS,
+    SUPERSEDED,
     Lane,
     Row,
 )
@@ -78,11 +78,14 @@ def standing_key(standing: str) -> str:
     return re.sub(r"[^a-z]+", "-", standing_label(standing)).strip("-")
 
 
-def is_current_best(standing: str) -> bool:
-    """Whether a case bound rests on a result of this standing now, verified or reported:
-    `render_recent_results.standing`'s two current bests, and no other test of it. It is
-    a row's `data-best`, which the bar's "Current best only" reads (`result_filters`)."""
-    return standing in (HOLDS, HOLDS_REPORTED)
+def is_superseded(standing: str) -> bool:
+    """Whether a result of this standing is no longer the best: it claims a bound, and no
+    case bound rests on it now. It is `render_recent_results.standing`'s own word and no
+    other test of it, which `devtools.check_standing` holds to the numbers. A result that
+    still holds a bound, a second certificate and a result that is not a bound are all
+    current. A row says so as `data-current`, which the bar's "Hide superseded" reads
+    (`result_filters`)."""
+    return standing == SUPERSEDED
 
 
 def standing_chip(standing: str) -> str:
@@ -595,17 +598,17 @@ def result_row(result: Result, *, trigger: str, here: bool, starred: bool = Fals
 class FilterDefaults(NamedTuple):
     """Where a table's bar starts, which is all that differs between the two tables of
     results: the lowest significance shown and the greatest age in days, each `None`
-    for no limit, and whether "Current best only" starts checked. Every other control
+    for no limit, and whether "Hide superseded" starts checked. Every other control
     starts at all on both."""
 
     significance: int | None = None
     max_age: int | None = None
-    current_best: bool = False
+    hide_superseded: bool = False
 
 
 #: The overview's Recent Results: what matters most, from the last half year, and of
-#: that only what a case bound rests on now.
-RECENT_DEFAULTS = FilterDefaults(significance=4, max_age=180, current_best=True)
+#: that only what nothing has superseded.
+RECENT_DEFAULTS = FilterDefaults(significance=4, max_age=180, hide_superseded=True)
 
 #: The results page: every result, of any significance, any age and any standing.
 RESULTS_DEFAULTS = FilterDefaults()
@@ -631,8 +634,8 @@ def result_cases(result: Result) -> str:
 def result_facets(result: Result) -> str:
     """A result row's facets as attributes, the same on every table of results, each one
     a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
-    its standing, whether that is a current best (`is_current_best`), its cases and the
-    date the table shows."""
+    its standing, whether it is current, which is to say not superseded
+    (`is_superseded`), its cases and the date the table shows."""
     record = result.record
     return (
         f'data-source="{"ours" if result.ours else "others"}" '
@@ -640,7 +643,7 @@ def result_facets(result: Result) -> str:
         f'data-c="{_esc(record["confirmation"][1:])}" '
         f'data-s="{significance(result)}" '
         f'data-standing="{_esc(standing_key(result.standing))}" '
-        f'data-best="{"true" if is_current_best(result.standing) else "false"}" '
+        f'data-current="{"false" if is_superseded(result.standing) else "true"}" '
         f'data-n="{_esc(result_cases(result))}" '
         f'data-date="{_esc(first_day(result.dated[1]))}"'
     )
@@ -665,7 +668,7 @@ def shown_by_default(result: Result, defaults: FilterDefaults, reference: date) 
     `defaults`, with its age measured from `reference`."""
     if defaults.significance is not None and significance(result) < defaults.significance:
         return False
-    if defaults.current_best and not is_current_best(result.standing):
+    if defaults.hide_superseded and is_superseded(result.standing):
         return False
     return defaults.max_age is None or first_day(result.dated[1]) >= age_cutoff(
         reference, defaults.max_age
@@ -714,17 +717,18 @@ def result_filters(
 
     One control per facet a row carries (`result_facets`), and they compose: Significance,
     Verification and Confirmation as floors (`data-bound="min"`), Standing and Source as
-    equalities, "Current best only" as a flag the row must carry (`data-best`), Case as a
-    number the row's cases must hold (`covers`), and Max age as the most days the row's
+    equalities, "Hide superseded" as a flag the row must carry (`data-current`), Case as
+    a number the row's cases must hold (`covers`), and Max age as the most days the row's
     date may lie behind the reader's day (`age`), empty for no limit.
 
-    "Current best only" stands straight after Standing, which it narrows: checked, it
-    keeps the two standings a case bound rests on (`is_current_best`), and Standing then
-    chooses between those two. It composes as every control does, so with it checked
-    any other standing leaves no row, as the frontier atlas's "open only" does beside
-    its Status.
+    "Hide superseded" stands straight after Standing, which it narrows: checked, it
+    hides exactly the superseded rows (`is_superseded`) and keeps every other standing,
+    so Standing still chooses among those. It composes as every control does, so with it
+    checked the one standing it hides, superseded, leaves no row, as the frontier atlas's
+    "open only" does beside its Status. Standing keeps `current best` as a choice whether
+    or not a row draws a chip for it: it is the name of the unmarked state.
 
-    A table's `defaults` are where Significance, Max age and "Current best only" start;
+    A table's `defaults` are where Significance, Max age and "Hide superseded" start;
     every other control starts at all. The tables write the rows outside those defaults
     `hidden` and the bar writes the count of the rows left, so the first paint is the
     filtered table. An age is measured there from `reference_date`, and by the script
@@ -739,7 +743,7 @@ def result_filters(
     last = f' max="{max(overview.cases)}"' if overview.cases else ""
     floor = "" if defaults.significance is None else str(defaults.significance)
     age = "" if defaults.max_age is None else f' value="{defaults.max_age}"'
-    best = " checked" if defaults.current_best else ""
+    hide = " checked" if defaults.hide_superseded else ""
     reference = reference_date(overview)
     rungs = "".join(
         f'<label>{label} <select data-filter="{scale.lower()}" data-bound="min">'
@@ -761,7 +765,7 @@ def result_filters(
         '<div class="site-table-tools site-result-filters">'
         f"{rungs}"
         f'<label>Standing <select data-filter="standing">{_options(standings)}</select></label>'
-        f'<label><input type="checkbox" data-filter="best"{best}> Current best only</label>'
+        f'<label><input type="checkbox" data-filter="current"{hide}> Hide superseded</label>'
         f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
         '<label>Case <var>n</var> <input type="number" data-filter="n" data-bound="covers" '
         f'min="1"{last} placeholder="any"></label>'

@@ -1074,11 +1074,42 @@ def test_the_visualize_section_is_marked_current_on_both_its_pages(
         assert page.count('class="site-tabs"') == 1
         assert tabs in page
         assert re.findall(r'<a data-tab="(\w+)" aria-current="page"', tabs) == [tab]
-        # In the header slot, after the bar, on both pages alike.
+        # In the header slot, directly after the bar, on both pages alike: the bar's
+        # stylesheet draws the rule between the two (the next test).
         header = page.split('class="kpress-site-header"', 1)[1].split("</header>", 1)[0]
         assert header.index('class="site-nav"') < header.index(tabs)
+        assert re.search(r'</nav>\s*<nav class="site-tabs"', header)
     with pytest.raises(SystemExit):
         render_overview.visualize_tabs("stills")
+
+
+def test_the_section_tabs_sit_below_the_bars_rule() -> None:
+    """The tabs are in the header slot, whose lower border is the rule under the bar, so
+    they would stand over it. A header that holds tabs gives up its border and the bar
+    draws the rule at its own foot, over the tabs, on a kpress page and in the
+    application shell alike. The tabs stand one space under the rule and keep it below
+    them only in the shell, where the application starts at the shell's edge; on a kpress
+    page the first block starts `--site-page-top` under them. Print hides all three.
+    `test_site_wide_blocks` measures the same in a browser."""
+    css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    shell_rule = ".site-app-shell .kpress-site-header {\n  border-block-end: 1px solid"
+    handed = ".kpress-site-header:has(> .site-tabs) {\n  border-block-end: 0;\n}"
+    drawn = (
+        ".kpress-site-header > .site-nav:has(+ .site-tabs) {\n"
+        "  border-block-end: 1px solid var(--kpress-doc-border);\n}"
+    )
+    # After the shell's own rule, which it has the same specificity as.
+    assert css.index(shell_rule) < css.index(handed) < css.index(drawn)
+    tabs = css[css.index("\n.site-tabs {") :]
+    tabs = tabs[: tabs.index("}")]
+    assert "--site-tabs-space: 0.7rem;" in tabs
+    assert "margin: var(--site-tabs-space) auto 0;" in tabs
+    assert (
+        ".site-app-shell .site-tabs {\n  margin-block-end: var(--site-tabs-space);\n}"
+    ) in css
+    assert css.count("--site-tabs-space: ") == 1
+    assert "@media print {\n  .site-tabs {\n    display: none;\n  }\n}" in css
+    assert "@media print {\n  .site-nav,\n  .kpress-site-header {\n    display: none;" in css
 
 
 def test_the_film_page_embeds_the_film_at_its_own_proportions(

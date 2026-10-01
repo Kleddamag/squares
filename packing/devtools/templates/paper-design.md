@@ -302,7 +302,8 @@ one of them changes.
 
 | Space | Token | Screen value | Declared in |
 | --- | --- | --- | --- |
-| From the bar’s rule to a page’s first block | `--site-page-top` | 4rem, 64px | `site-nav.css` |
+| From the bar’s rule to a page’s first block, or from the section tabs where a page has them | `--site-page-top` | 4rem, 64px | `site-nav.css` |
+| From the bar’s rule to the section tabs, and from them to an application | `--site-tabs-space` | 0.7rem, 11.2px | `site-nav.css` |
 | How much nearer the bar an opening picture starts | `--site-hero-lift` | 0.5rem, 8px | `site.css` |
 | Above a section heading (`h2`) | `--paper-section-space` | 2.7 of the prose base, 48.6px | `paper-type.css` |
 | Below a section heading (`h2`) | `--paper-section-space-below` | 1.7rem, 27.2px | `paper-type.css` |
@@ -312,9 +313,11 @@ one of them changes.
 
 A page’s title, or the picture that opens the homepage, starts `--site-page-top` under
 the bar’s rule on every page, the explainer and the optimality paper included.
-Every section heading on the site pages and the explainer takes the two section tokens;
-print reads its own values of both (2.8 of the base and 1.3rem), which are the paper’s.
-On the explainer the credits start 2.25rem under the title on screen and 2rem in print.
+The film’s page has section tabs under that rule, and its film starts the same space
+under the tabs. Every section heading on the site pages and the explainer takes the two
+section tokens; print reads its own values of both (2.8 of the base and 1.3rem), which
+are the paper’s. On the explainer the credits start 2.25rem under the title on screen
+and 2rem in print.
 
 `--site-table-space` is the space above and below every table, and above and below the
 rating ladders. A site table (`.site-table`) takes it above its filter bar, which keeps
@@ -408,6 +411,22 @@ it.
   `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
   stylesheet. On the film’s page it opens the document; on the workbench it sits in the
   application shell under the bar, above the application.
+  From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
+  that runs under the bar, never over it.
+  They are in the header slot, whose lower border is that rule, so a header that holds
+  tabs gives up its border and the bar draws the rule at its own foot (`:has()`, in
+  `site-nav.css`), where it is on every other page and as long.
+  The tabs start `--site-tabs-space` (0.7rem, 11.2px) under the rule.
+  On the film’s page the first block starts `--site-page-top` under the tabs; on the
+  workbench, where the application starts at the shell’s lower edge, the tabs keep the
+  same 0.7rem below them.
+  Measured at 1280px, on both pages: the bar from 16 to 68.6px with the rule its last
+  pixel, the tabs from 79.8 to 112.4px, then the film at 176.4px and the application at
+  123.6px; at 390px, where the bar wraps to two lines, the rule ends at 81.8px, the tabs
+  run from 92.9 to 125.5px, the film starts at 189.5px and the application at 136.7px.
+  `devtools.measure_site_pages header` reports these, `preview_site` fails a built page
+  whose tabs start over the rule (`tabs_problems`), and `tests/test_site_wide_blocks.py`
+  holds both pages to it in a browser.
   It is hidden in print and in the embed view.
 
 - **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every

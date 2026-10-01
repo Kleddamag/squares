@@ -295,7 +295,8 @@
    its header slot. Its shell (`render_overview.nav_shell`) takes both itself, from the same
    tokens, so the bar has the same box on every page at every width. The shell is the
    page's width and paints the page's background, so the application below starts at its
-   lower edge. */
+   lower edge. A shell that carries section tabs has its rule under the bar, above them
+   (Section tabs, below). */
 .site-app-shell {
   background: var(--kpress-doc-bg);
   box-sizing: border-box;
@@ -326,14 +327,32 @@
    carries only this stylesheet, and the tabs must look the same on both pages. The tint
    is mixed in sRGB, since an oklch mix with the near-neutral page takes that page's
    hue and drew the light tab lavender rather than teal. */
+/* The tabs sit below the rule under the bar, not above it. That rule is the header
+   slot's lower border and the tabs are in the slot, so a header that holds tabs hands
+   its rule to the bar: from the top, the bar, the rule, then the tabs. The bar spans
+   the header, so the rule is where it is on every other page, and as long. */
+.kpress-site-header:has(> .site-tabs) {
+  border-block-end: 0;
+}
+.kpress-site-header > .site-nav:has(+ .site-tabs) {
+  border-block-end: 1px solid var(--kpress-doc-border);
+}
+/* The tabs stand `--site-tabs-space` under the rule. On a kpress page nothing follows
+   them in the header, so the page's first block starts `--site-page-top` under the
+   tabs; an application starts at its shell's lower edge, so there the tabs keep the
+   same space below as above. */
 .site-tabs {
+  --site-tabs-space: 0.7rem;
   border: 1px solid var(--kpress-doc-border);
   display: flex;
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
   font-size: 0.9rem;
   inline-size: fit-content;
-  margin: 0.15rem auto 0.7rem;
+  margin: var(--site-tabs-space) auto 0;
+}
+.site-app-shell .site-tabs {
+  margin-block-end: var(--site-tabs-space);
 }
 nav.site-tabs a {
   color: var(--kpress-doc-muted);

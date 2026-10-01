@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
-the card sections' layout, the rating ladders' rows, the face of every formula, and the
-space around tables and headings.
+the card sections' layout, the rating ladders' rows, the face of every formula, the
+space around tables and headings, and where each page's header stands.
 
-Seven measurements, each over pages of a directory `preview_site` has built:
+Eight measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -46,6 +46,11 @@ Seven measurements, each over pages of a directory `preview_site` has built:
   whose `state` is the selector. `--markdown` prints one line a table and one line a
   heading role, with the least and most space found. This is the tool the design
   system's spacing tokens are measured with (`templates/paper-design.md`, Spacing).
+- `header` reports where each page's header stands at each width, as tops and bottoms in
+  CSS pixels from the top of the document: the navigation bar, the rule under it and the
+  element that draws it, the section tabs with the current tab's name (on a page of the
+  Visualize section), and the first block of the page's content. `--markdown` prints one
+  line a page and width.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -59,6 +64,8 @@ Usage, from `packing/`:
         --page index.html --press '[data-atlas-n="11"]' --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages space SITE \
         --page index.html --page all-results.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages header SITE \
+        --page visualize.html --page workbench/index.html --width 1280 --width 390 --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -77,7 +84,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.preview_site import press, serve, settle_math
+from devtools.preview_site import HEADER, press, serve, settle_math
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -322,6 +329,27 @@ def measure_space(
     return results
 
 
+def measure_header(
+    base: str, pages: Sequence[str], *, widths: Sequence[int]
+) -> list[dict[str, Any]]:
+    """Where each page's header stands at each width (`preview_site/header`), one flat
+    row a page and width: the top and bottom of the bar, of the rule under it, of the
+    section tabs and of the first block, with the element the rule is drawn on, the
+    current tab and the first block's name. A part a page lacks is left empty."""
+    rows: list[dict[str, Any]] = []
+    for name, width, found in _evaluate(base, pages, widths=widths, script=HEADER):
+        row: dict[str, Any] = {"page": name, "width": width}
+        for part in ("nav", "rule", "tabs", "first"):
+            box = found[part] or {}
+            row[f"{part}_top"] = box.get("top", "")
+            row[f"{part}_bottom"] = box.get("bottom", "")
+        row["rule_on"] = (found["rule"] or {}).get("on", "")
+        row["current_tab"] = (found["tabs"] or {}).get("current") or ""
+        row["first"] = (found["first"] or {}).get("block", "")
+        rows.append(row)
+    return rows
+
+
 def _span(values: Sequence[Any]) -> str:
     """The least and the most of some measurements, or the one value they share; nothing
     for none, and a value that is not a number, such as a line height of `normal`, is
@@ -548,7 +576,7 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
 
 
 #: The measurements, as `mode` names them.
-MODES = ("load", "type", "faces", "cards", "ladders", "math", "space")
+MODES = ("load", "type", "faces", "cards", "ladders", "math", "space", "header")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -613,6 +641,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_math(base, pages, widths=widths, presses=args.press)
             elif args.mode == "space":
                 report = measure_space(base, pages, widths=widths, presses=args.press)
+            elif args.mode == "header":
+                report = measure_header(base, pages, widths=widths)
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

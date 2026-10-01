@@ -9,7 +9,13 @@ decisions are tested here without a browser.
 from __future__ import annotations
 
 from devtools.measure_site_pages import card_rows, markdown_table, space_rows
-from devtools.preview_site import SCROLLBAR_PX, clip_problem, off_centre, shot_stem
+from devtools.preview_site import (
+    SCROLLBAR_PX,
+    clip_problem,
+    off_centre,
+    shot_stem,
+    tabs_problems,
+)
 
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
@@ -140,3 +146,39 @@ def test_a_shot_is_named_for_its_page_and_fragment() -> None:
     assert shot_stem("workbench/index.html") == "workbench"
     assert shot_stem("cases.html#n-11") == "cases-n-11"
     assert shot_stem("n11-optimality/t-060-explainer.html") == "n11-optimality-t-060-explainer"
+
+
+def _header(*, rule: tuple[float, float] | None, tabs: tuple[float, float] | None) -> dict:
+    """A `preview_site/header` report: the bar from 16 to 68.59, the rule and the tabs as
+    given, each a top and a bottom, and the film 64px under whichever ends lower."""
+    foot = max([68.59, *(part[1] for part in (rule, tabs) if part)])
+    return {
+        "nav": {"top": 16, "bottom": 68.59},
+        "rule": rule and {"top": rule[0], "bottom": rule[1], "on": "nav.site-nav"},
+        "tabs": tabs and {"top": tabs[0], "bottom": tabs[1], "current": "Film"},
+        "first": {"top": foot + 64, "bottom": 900, "block": "figure.site-film-frame"},
+    }
+
+
+def test_section_tabs_under_the_bars_rule_pass_and_tabs_over_it_are_reported() -> None:
+    """From the top a page of a section reads bar, rule, tabs, content. Tabs standing
+    above the rule, as they did while the rule was the foot of the header that holds
+    them, are named with how far; a page with no tabs has nothing to check."""
+    assert tabs_problems(_header(rule=(67.59, 68.59), tabs=(79.78, 112.38))) == []
+    assert tabs_problems(_header(rule=(67.59, 68.59), tabs=None)) == []
+    over = _header(rule=(113.77, 114.77), tabs=(69.98, 102.58))
+    over["rule"]["on"] = "header"
+    assert tabs_problems(over) == [
+        (
+            "the section tabs start 44.79px above the foot of the rule under the "
+            "navigation bar, which is on header"
+        )
+    ]
+    assert tabs_problems(_header(rule=None, tabs=(79.78, 112.38))) == [
+        "the section tabs have no rule over them, under the navigation bar"
+    ]
+    under = _header(rule=(67.59, 68.59), tabs=(79.78, 112.38))
+    under["first"]["top"] = 100.38
+    assert tabs_problems(under) == [
+        "figure.site-film-frame starts 12px above the foot of the section tabs"
+    ]

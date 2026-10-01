@@ -367,7 +367,9 @@ def visualize_tabs(current: str, *, root: str = "") -> str:
 
     Each tab is a real link to its own page, so the bar needs no script and a tab can be
     opened, bookmarked and shared. Its look is `.site-tabs` in `site-nav.css`, the one
-    stylesheet both the film's page and the workbench carry.
+    stylesheet both the film's page and the workbench carry, which also draws the rule
+    under the navigation bar over the tabs: they follow the bar in the header slot, and
+    the bar, not the slot, carries the rule on a page that has them.
     """
     if current not in {key for key, _, _ in VISUALIZE_TABS}:
         raise SystemExit(f"the Visualize section has no tab {current!r}")

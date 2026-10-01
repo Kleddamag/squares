@@ -701,6 +701,56 @@ it.
   table grouped by holder and the entries carrying the claim, each case linking to its
   row in the frontier atlas.
 
+## Result Overview
+
+A result’s row, in Recent Results and in the results table, opens a popover with the
+full overview of that result.
+`devtools/result_overview.py` writes the popover’s body, `result_popover_html`, and
+[site-result.css](site-result.css) holds its styles, apart from `site.css` and inlined
+after it on every page.
+The body is one `.site-result` block with no ids, no script and no `<table>`, so it does
+not depend on the popover around it and a page may carry many.
+Its popover takes the atlas popover’s size, up to 62rem wide and 58rem tall, and scrolls
+as one panel.
+
+- **Head.** The caps label “Result T-NNN”, then the headline with its math serif, as
+  every popover headline sets it; the V, C and S rung chips and the standing chips, as
+  the tables show them; the date with what it dates, the credit and the cases, in the
+  support colour; the claim at the note size; and a closed disclosure with the
+  significance, composition, next rung and novelty.
+- **The case.** A result about one case, or up to four, shows the atlas popover’s panel
+  for each: the gap bar, the bound as one statement with the lower bound in scarlet and
+  the best known side in green, the badges, the citation and what is open, beside the
+  packing drawn from the atlas.
+  The block carries `site-atlas-pop`, so the panel takes the rules `site.css` already
+  gives it, and its facts are the film’s own (`atlas_film_facts`). It is filled when the
+  page is rendered, on the scale `overview/atlas-grid.js` uses; two values too close to
+  sit side by side go either side of their marks.
+  Under the panel, the case record’s verified and reported bounds and the gap form a
+  small grid, each value linking to its field in the case file.
+- **Many cases.** A result about more than four cases says so and lists them in a box
+  that scrolls, one row each: the n linking to the case record, the two bounds in the
+  film’s colours, the gap, the status chip, the frontier row and the case file.
+- **The chain.** Every register result on the same case, oldest first, down one rule:
+  the date, the id linking to its row, what it established, its chips, and its credit,
+  bibliography entry, source packet and register entry.
+  The rule beside the result the overview is about is the accent, and a superseded step
+  reads quieter, as a superseded row does.
+  Where a result stands differently on this case than across its whole scope, the step
+  says both. A broad result’s chain opens on request.
+- **Links.** One list for this site (the case record, the frontier row, the result’s
+  row, the explainer for $n = 11$) and one for GitHub, every link on `main` through
+  `devtools/repo_links.py`: the register entry, each evidence entry and each cited
+  source’s bibliography entry at its line, the source packet, the artifacts, the review,
+  and the case file with its four frontmatter bounds.
+  A repository path is set as code.
+  Rendering fails on a link whose target is not in the tree, on a page the site does not
+  serve and on a fragment no row or record carries.
+
+A section heading in the overview is a caps label, so it holds no formula: capitals
+would change the formula’s letters.
+`tests/test_result_overview.py` holds every part and every link.
+
 ## Token Ownership
 
 KPress owns the regular sans weight in `--kpress-font-weight-sans-regular`. Its font

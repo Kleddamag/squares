@@ -52,9 +52,9 @@ WIDTHS = {
 #: chip; at the others it lies under the chip, across the cell.
 BESIDE = frozenset({1280, 1024, 908, 715, 390, 360, 320, 296})
 #: A rung's height in pixels where its description stands beside its chip, and where it
-#: lies under it: the two lines, or the chip's line and the two, and 0.75rem
+#: lies under it: the two lines, or the chip's line and the two, and 0.4rem
 #: (`--site-ladders-row-space`) above and below, which is all that parts the rows.
-RUNG_HEIGHT = {True: 75.3, False: 103.1}
+RUNG_HEIGHT = {True: 64.1, False: 91.8}
 #: The diagram's one rule, under each column's head, in pixels.
 HEAD_RULE = 1
 #: `--site-ladders-meaning-min`, 13.5rem, in pixels: the narrowest a description is set.

@@ -974,12 +974,14 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
 
 #: The rubric's three scored dimensions, in the site's order, significance first: the
 #: scale, its name, the `epistemics.md` section that defines it, and the question it
-#: answers, in the axis table's terms: `V` is what the result's own source certifies,
-#: `C` how far that has been independently confirmed.
+#: answers, each a short plain question in the same form (the owner's wording,
+#: 2026-10-01). In the axis table's terms `V` is what the result's own source certifies
+#: and `C` how far that has been independently confirmed; the rungs under each head say
+#: so in full.
 DIMENSIONS: tuple[tuple[str, str, str, str], ...] = (
-    ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
-    ("V", "Verification", "verification", "What does the result's own source certify?"),
-    ("C", "Confirmation", "confirmation", "How far is it confirmed, here or by a third party?"),
+    ("S", "Significance", "significance-and-novelty", "How significant is the result?"),
+    ("V", "Verification", "verification", "How was it originally verified?"),
+    ("C", "Confirmation", "confirmation", "How has it been confirmed?"),
 )
 
 _LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)

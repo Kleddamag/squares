@@ -53,7 +53,7 @@ $(x+1/2,y+1/2)$. A tilted source square with local origin $(o_x,o_y)$ has corner
 
 $$
 (1,1)+(o_x+d_x)e+(o_y+d_y-r_1)f,
-\qquad(d_x,d_y)\in\{0,1\}^2,
+\qquad(d_x,d_y)\in\lbrace0,1\rbrace^2,
 $$
 
 so averaging its corners gives
@@ -70,8 +70,8 @@ The six axis centers reconstruct as
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),& C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),& C_3&=(1/2,L-1/2),\\
+C_0&=(1/2,1/2),& C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),& C_3&=(1/2,L-1/2),\cr
 C_4&=(3/2,L-1/2),& C_5&=(1/2,L-3/2).
 \end{aligned}
 $$
@@ -90,7 +90,7 @@ For the oblique component, first allow distinct slides on all four retained edge
 
 $$
 \begin{aligned}
-C_7-C_6&=a_1e-f,& C_8-C_6&=e+b_1f,\\
+C_7-C_6&=a_1e-f,& C_8-C_6&=e+b_1f,\cr
 C_9-C_7&=e+b_2f,& C_9-C_8&=a_2e-f.
 \end{aligned}
 $$
@@ -140,7 +140,7 @@ $s=s(u)$. Averaging the five source tilted squares gives the design’s binding
 
 $$
 \begin{gathered}
-t=v=u,\quad L=U,\quad z=x_0,\quad a=u_1,\quad b=v_1,\\
+t=v=u,\quad L=U,\quad z=x_0,\quad a=u_1,\quad b=v_1,\cr
 p=(1,1)+\tfrac12e+(\tfrac12-r_1)f,\qquad
 w=p+(a+2)e-v_2f.
 \end{gathered}
@@ -278,7 +278,7 @@ $$
 Thus every target point obeys
 
 $$
-\|q-q_*\|_\infty\ge|C_{3,y}-C^*_{3,y}|=U-L
+\Vert q-q_{\ast}\Vert_\infty\ge|C_{3,y}-C^{\ast}_{3,y}|=U-L
 >\frac{1925}{497}-\frac{96}{25}
 =\frac{413}{12425}>\frac3{100}
 >\frac{808514697}{200000000000}.
@@ -318,7 +318,7 @@ It follows that
 $$
 \begin{aligned}
 w\in\operatorname{int}F_i
-&\iff w-C_i\in\operatorname{int}Q_i+\operatorname{int}Q_{10}\\
+&\iff w-C_i\in\operatorname{int}Q_i+\operatorname{int}Q_{10}\cr
 &\iff (C_i+\operatorname{int}Q_i)\cap
 (w+\operatorname{int}Q_{10})\ne\varnothing.
 \end{aligned}

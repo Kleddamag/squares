@@ -137,19 +137,19 @@ F = required_side + lambda * total_overlap + mu * spread
 ```
 
 with `spread` the mean squared distance of the centres from the centre of their own
-bounding box and `mu` held at `5`. `best_side` is still tracked from `required_side`
+bounding box and `mu` held at $5$. `best_side` is still tracked from `required_side`
 under the overlap gate, so the term can steer the search and can never flatter the
 number.
 
 | cell | record | control median / best | candidate median / best | change |
 | ---: | --- | --- | --- | --- |
-| 5 | `2.707107` | `2.707107` / `2.707107` | `2.828427` / `2.828427` | **`+0.121` worse** |
-| 10 | `3.707107` | `3.707815` / `3.707526` | `3.883618` / `3.883050` | **`+0.176` worse** |
-| 11 | `3.877084` | `3.935790` / `3.922761` | `4.000000` / `4.000000` | **`+0.064` worse** |
-| 17 | `4.675530` | `5.000000` / `4.997152` | `4.937932` / `4.933367` | `-0.062` better |
-| 19 | `4.885618` | `5.000000` / `5.000000` | `5.000000` / `5.000000` | `0` |
-| 26 | `5.621320` | `6.000000` / `6.000000` | `6.000000` / `5.975125` | `0` |
-| 27, 29, 37, 50, 52 | — | grid on every seed | grid on every seed | `0` |
+| 5 | $2.707107$ | $2.707107$ / $2.707107$ | $2.828427$ / $2.828427$ | **$+0.121$ worse** |
+| 10 | $3.707107$ | $3.707815$ / $3.707526$ | $3.883618$ / $3.883050$ | **$+0.176$ worse** |
+| 11 | $3.877084$ | $3.935790$ / $3.922761$ | $4.000000$ / $4.000000$ | **$+0.064$ worse** |
+| 17 | $4.675530$ | $5.000000$ / $4.997152$ | $4.937932$ / $4.933367$ | $-0.062$ better |
+| 19 | $4.885618$ | $5.000000$ / $5.000000$ | $5.000000$ / $5.000000$ | $0$ |
+| 26 | $5.621320$ | $6.000000$ / $6.000000$ | $6.000000$ / $5.975125$ | $0$ |
+| 27, 29, 37, 50, 52 | — | grid on every seed | grid on every seed | $0$ |
 
 | arm | verified poses | beating the grid | basin `1e-4` | hits `1e-6` | below any record |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -164,18 +164,18 @@ clause 4 exists to protect.
 
 The regressions are the informative part, because they are not noise.
 
-**At `n = 5` every seed returns exactly `2.828427126`.** That is `2 * sqrt(2)`, the side
+**At $n = 5$ every seed returns exactly $2.828427126$.** That is `2 * sqrt(2)`, the side
 of the container that holds five unit squares in the compact 45°-rotated cross, and it
-is `0.121` above the proved optimum `2 + 1/sqrt(2)` that the control reaches on every
+is $0.121$ above the proved optimum `2 + 1/sqrt(2)` that the control reaches on every
 seed to `1.2e-08`. The pressure term found the arrangement that minimises *spread* and
-stopped there. The engine selftest’s own `s(5)` positive control still passes, because
+stopped there. The engine selftest’s own $s(5)$ positive control still passes, because
 the selftest runs the control parameters; the arm fails a control the control passes.
 
-**At `n = 11` every seed returns exactly `4.0`, the trivial grid**, where the control
-reaches `3.935790`. The pressure term made the grid *more* attractive than it already
+**At $n = 11$ every seed returns exactly $4.0$, the trivial grid**, where the control
+reaches $3.935790$. The pressure term made the grid *more* attractive than it already
 was, which is the opposite of the intent.
 
-**The one improvement is at `n = 17`**, from `5.000000` to `4.937932` with disjoint
+**The one improvement is at $n = 17$**, from $5.000000$ to $4.937932$ with disjoint
 ranges — real, and a quarter of what the perturbation arm gets on the same cell.
 
 ## Why it failed, and what that says about the formulation it stood in for
@@ -188,13 +188,13 @@ adds a dense term alongside.
 The measurement says the surrogate is not a weak version of that idea.
 It is a *different objective* whose minimiser is a different object.
 `required_side` is minimised by a tight square; `spread` is minimised by a disc.
-Where the two disagree — and at `n = 5` and `n = 11` they disagree exactly at the
+Where the two disagree — and at $n = 5$ and $n = 11$ they disagree exactly at the
 optimum — the search follows the term it can feel everywhere rather than the one it is
 scored on. Making the objective dense was the right diagnosis, and making it dense with
 *this* function was the wrong prescription.
 
 [exp-201](exp-201-arm-calibration.md) already showed that the term does nothing when
-ramped down and something when held constant, over `mu` from `0.02` to `50`, three
+ramped down and something when held constant, over `mu` from $0.02$ to $50$, three
 orders of magnitude.
 Together with this round, the reading is that the useful range is empty: small `mu` is
 inert and large `mu` optimises the wrong thing.
@@ -216,14 +216,14 @@ did nothing at all, and removing it produced exactly the predicted harm.
 So both settings fail for the same reason and the parameter has no window.
 
 What was not anticipated is that the harm would be *exact and structural* rather than
-noisy: `2 * sqrt(2)` on every seed at `n = 5`, `4.0` on every seed at `n = 11`. An arm
+noisy: `2 * sqrt(2)` on every seed at $n = 5$, $4.0$ on every seed at $n = 11$. An arm
 that lands on a named wrong answer with zero spread is telling you what it optimised,
 and that is more useful than a merely worse number.
 
 ## Limits
 
-- One functional form, one constant weight, on top of exp-201’s ramped sweep from `0.02`
-  to `50`. This refutes the isotropic mean-squared-offset surrogate and nothing wider.
+- One functional form, one constant weight, on top of exp-201’s ramped sweep from $0.02$
+  to $50$. This refutes the isotropic mean-squared-offset surrogate and nothing wider.
 - `f64` screening; 495 poses independently re-checked at tolerance `1e-9`, zero
   failures.
 - Wall clock is not comparable across arms here: the host carried other agents’ work at

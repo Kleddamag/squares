@@ -45,7 +45,7 @@ Proving this closed union empty and using the accepted middle theorem would cove
 whole domain. Deleting the closed middle interval and silently calling the result closed
 would not preserve this contract.
 
-Both axis lifts, $c=s$, zero slides, every slide/side/$z$ endpoint, all weak contacts,
+Both axis lifts, $c=s$, zero slides, every slide/side/`z` endpoint, all weak contacts,
 $v=t$ and the two endpoint physical coincidences remain.
 Any division by a vanishing quantity requires the omitted cases to be covered
 separately. The complete lift map must carry its basis, slots and corners together.

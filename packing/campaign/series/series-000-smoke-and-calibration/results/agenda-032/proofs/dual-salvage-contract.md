@@ -19,7 +19,7 @@ compatibility.
 [Exp-070](../../../../../../campaign/series/series-000-smoke-and-calibration/experiments/exp-070-h-064-n11-fractional-resume.md)
 retains the
 [BC-232 family](../../../../../../campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-01-family.json):
-768 closed squares of side `B = 9977/10000` in `[0,191/50]^2`, with exact weights
+768 closed squares of side $B = 9977/10000$ in $[0{,}191/50]^{2}$, with exact weights
 summing to
 
 ```text
@@ -47,17 +47,17 @@ millions of arrangement checks.
 
 ## Exact Transport and Filtering
 
-Embed the family centrally at `q = 96/25` by adding `(1/100,1/100)` to every centre.
+Embed the family centrally at $q = 96/25$ by adding $(1/100,1/100)$ to every centre.
 Keep every side, angle, and weight unchanged.
-This is scale **one**, unlike the separate unit-square transport by `10000/9977`. The
+This is scale **one**, unlike the separate unit-square transport by $10000/9977$. The
 existing
 [transport_ceiling_family](../../../../../../devtools/transport_ceiling_family.py)
 implements the required exact transformation with `factor=1, side=96/25`.
 
-Let `U` be the union of the declared rational convex footprint polygons for one branch.
+Let $U$ be the union of the declared rational convex footprint polygons for one branch.
 Reconstruct each translated square from the source and retain it only when:
 
-1. Its side is exactly the residual program’s `B`, its actual orientation is in that
+1. Its side is exactly the residual program’s $B$, its actual orientation is in that
    program’s checked direction family, and it is contained in the target container.
 2. It is strictly disjoint from every closed footprint polygon: `P intersect T = empty`.
 
@@ -89,8 +89,8 @@ Write the translated source family as `(P_i, lambda_i)`. Exact source verificati
 sum_i lambda_i * 1[P_i contains z] <= 1   for every point z.
 ```
 
-For any retained index set `I`, deleting nonnegative summands preserves this inequality.
-Because each survivor avoids `U`, its depth is zero on `U`. Every nonnegative measure
+For any retained index set $I$, deleting nonnegative summands preserves this inequality.
+Because each survivor avoids $U$, its depth is zero on $U$. Every nonnegative measure
 covering all admissible residual cores with mass at least one consequently satisfies
 
 ```text
@@ -135,7 +135,7 @@ preserve the usual boundary-mass argument.
 
 ## Smallest Reusable Instrument
 
-Add one source-bound reader accepting the retained family, exact translation, target `B`
+Add one source-bound reader accepting the retained family, exact translation, target $B$
 and direction list, rational convex obstacle polygons, and threshold.
 Reuse `CeilingCertificate.from_record`, `Placement.corners`, and the existing transport
 function. It needs a generic exact polygon SAT predicate, fixed-weight summation, and an

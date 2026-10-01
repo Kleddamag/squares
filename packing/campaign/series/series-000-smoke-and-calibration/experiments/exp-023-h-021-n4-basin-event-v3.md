@@ -70,7 +70,7 @@ experiment:
 
 Seeds 0, 1, and 2 reach side 2, pass the independent geometry screen, and retain only
 settled fixed-point evaluations.
-Seed 3 stops at side `2.0218239546404626` when one evaluation returns a successful HiGHS
+Seed 3 stops at side $2.0218239546404626$ when one evaluation returns a successful HiGHS
 solution whose pair row 16 residual is still `4.209e-10` after the single bounded D-164
 repair. The event retains 3,865 settled evaluations, one unsettled evaluation, both
 explicit promotion blockers, and the independently valid stopping pose.

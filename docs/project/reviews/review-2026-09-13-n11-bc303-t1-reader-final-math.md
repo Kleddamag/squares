@@ -53,9 +53,9 @@ is a separate replay at implementation revision
 
 ## Independent Finite Reconstruction
 
-The raw array contains 377 distinct sites in `[0,96/25]^2`, all with positive rational
+The raw array contains 377 distinct sites in $[0,96/25]^{2}$, all with positive rational
 weights. Explicit reconstruction of the eight container symmetries verifies weighted D4
-invariance. The weight-denominator least common multiple is `W=4000000`; summing all
+invariance. The weight-denominator least common multiple is $W=4000000$; summing all
 source weights gives
 
 $$
@@ -63,28 +63,28 @@ M=\frac{22524199}{2000000},\qquad
 \varepsilon=M-11=\frac{524199}{2000000}.
 $$
 
-For the disclosed centre `(1/2,1/2)` and axis `(1,0)`, the actual unit parent is
-`[0,1]^2`. It is contained in the container with permitted left and bottom wall contact.
-Its selected core is
+For the disclosed centre $(1/2,1/2)$ and axis $(1,0)$, the actual unit parent is
+$[0,1]^{2}$. It is contained in the container with permitted left and bottom wall
+contact. Its selected core is
 
 $$
 C=[23/20000,19977/20000]^2,
 $$
 
 strictly inside that parent.
-Both BL marks, `(3152/3175,2336/3175)` and `(2336/3175,3152/3175)`, are source atoms of
-weight `106251/800000` and lie strictly inside the core.
+Both BL marks, $(3152/3175,2336/3175)$ and $(2336/3175,3152/3175)$, are source atoms of
+weight $106251/800000$ and lie strictly inside the core.
 There is one role-C owner and zero missing marks.
 For each mark the mark-to-centre displacement has two negative coordinates; only the
 west-first proper frame applies.
 West belongs to both closed bins 3 and 4. The complete labels are therefore
-`{3,4,11,12}`, so both 0 and 15 are absent.
+$\lbrace3,4,11,12\rbrace$, so both 0 and 15 are absent.
 
 Every retained row agrees with the independent raw-source reconstruction: source index,
 exact point, exact weight, integer weight, closed membership, and both slacks.
 The nineteen captured zero-based indices are
 
-`[0,2,8,10,16,18,24,26,44,46,52,54,60,62,100,102,140,361,373]`.
+$[0,2,8,10,16,18,24,26,44,46,52,54,60,62{,}100{,}102{,}140{,}361{,}373]$.
 
 The independent sum gives
 
@@ -101,12 +101,13 @@ $$
 $$
 
 All nineteen inclusions are strict; the smallest captured coordinate slack is
-`28671/24460000`. Thus the literal witness falsifies the named universal local
+$28671/24460000$. Thus the literal witness falsifies the named universal local
 inequality `S(X)>epsilon` on the declared bottom-left role-C domain with labels 0 and 15
 absent. Equality conventions cannot reverse this particular charge or its labels.
 
 The audit also independently checks the four reviewed axis centres, producing
-`{1,2,13,14}`, `{0,7,13,14}`, `{1,2,8,15}`, and `{3,4,11,12}` respectively.
+$\lbrace1,2,13,14\rbrace$, $\lbrace0,7,13,14\rbrace$, $\lbrace1,2,8,15\rbrace$, and
+$\lbrace3,4,11,12\rbrace$ respectively.
 Synthetic mark-at-centre, zero-coordinate, vertex, and just-outside controls preserve
 the expected closed labels under both axis aliases.
 Literal core-edge and core-vertex membership passes; parent-only and just-outside-core
@@ -134,13 +135,13 @@ The following independently constructed controls all raise `T1ReplayError` throu
 
 | Retained-record mutation | Observed refusal |
 | --- | --- |
-| Add `1/W` to captured row 0, updating its integer weight | Row 0 differs from bound source atom |
-| Add `1/W` to captured row 0 and subtract `1/W` from captured row 2 | Row 0 differs from bound source atom |
-| Add `1/W` to excluded row 1 and subtract `1/W` from excluded row 3 | Row 1 differs from bound source atom |
-| Give excluded row 1 weight `-1` and integer weight `-4000000` | Row 1 differs from bound source atom |
-| Move excluded row 1 to `(10,10)`, recomputing its slacks | Row 1 differs from bound source atom |
+| Add $1/W$ to captured row 0, updating its integer weight | Row 0 differs from bound source atom |
+| Add $1/W$ to captured row 0 and subtract $1/W$ from captured row 2 | Row 0 differs from bound source atom |
+| Add $1/W$ to excluded row 1 and subtract $1/W$ from excluded row 3 | Row 1 differs from bound source atom |
+| Give excluded row 1 weight $-1$ and integer weight $-4000000$ | Row 1 differs from bound source atom |
+| Move excluded row 1 to $(10,10)$, recomputing its slacks | Row 1 differs from bound source atom |
 | Flip captured row 0’s membership | Row 0 differs from bound source atom |
-| Substitute integer `1` for a membership Boolean | Row 0 differs from bound source atom |
+| Substitute integer $1$ for a membership Boolean | Row 0 differs from bound source atom |
 | Substitute Boolean `false` for source index 0 | Row 0 differs from bound source atom |
 | Substitute a numerically equal float for an integer weight | Row 0 differs from bound source atom |
 

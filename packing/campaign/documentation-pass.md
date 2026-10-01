@@ -55,7 +55,7 @@ reverse: a pass that starts from the prose inherits the prose’s mistakes.
 - No document should be the only place a load-bearing claim appears.
 - Claim boundaries survive editing.
   `reported` is not `verified`, `verified` is not the optimum, and a bound on a retained
-  witness is not a bound on `s(n)`. These are the sentences most likely to be smoothed
+  witness is not a bound on $s(n)$. These are the sentences most likely to be smoothed
   away, and the ones that must not be.
 
 ## New Result Publication
@@ -115,7 +115,7 @@ For each result, complete this sequence before declaring the change ready to lan
    rebuilding unchanged geometry.
 
 4. Reconcile the README prose around its generated tables (the introduction’s summaries,
-   the `s(11)` thread under New Results, the machine audits, Earlier in 2026 and the
+   the $s(11)$ thread under New Results, the machine audits, Earlier in 2026 and the
    Survey section), the synopsis’s current claims, and affected tutorial or survey prose
    against the refreshed artifacts.
    Each result marked `apparently-novel` or `confirmed-novel` gets its row in the New

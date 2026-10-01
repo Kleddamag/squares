@@ -40,7 +40,7 @@ say the animation’s physics is a picture of a search rather than a search, and
 improving it means changing the method rather than its dials.
 
 **Where it stands.** No repaired run in the retained summaries is within 0.1% of a
-record. The closest is 0.15% above `s(5)`, the best of 39,871 runs at shake level 6
+record. The closest is 0.15% above $s(5)$, the best of 39,871 runs at shake level 6
 ([exp-207](../series/series-000-smoke-and-calibration/experiments/exp-207-h207-what-restarts-buy.md)).
 Only the shake dial has been swept on repaired runs; inflation, the force law and the
 step count have not.

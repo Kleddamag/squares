@@ -47,11 +47,11 @@ hypothesis:
 A side-minimal packing spans the container in at least one direction, and nothing forces
 the other; the two-square minimiser is the counterexample.
 [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md) turns the
-missing direction into a measurement: the largest `H₀` such that eleven squares provably
-do not fit in `3.84 × H₀`.
+missing direction into a measurement: the largest $H_0$ such that eleven squares
+provably do not fit in $3.84 \times H_0$.
 
 The instrument change is bounded and convex, and the result is a theorem type the record
-does not yet carry at `n = 11`.
+does not yet carry at $n = 11$.
 [Agenda 030](../agendas/agenda-030-parallel-structural-lanes-at-n11.md) owns it in
 BC-298.
 

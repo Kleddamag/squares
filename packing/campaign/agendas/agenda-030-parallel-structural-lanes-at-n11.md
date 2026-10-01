@@ -833,21 +833,21 @@ one machine without contention:
 | `lanes-witnesses` | BC-300 (tentative) | float search and exact verification |
 
 Priority within the wave: the three lanes that *decide* which routes survive come first
-— BC-294 (the duality kill tests and the `B = 1` value), BC-295 (where the fractional
+— BC-294 (the duality kill tests and the $B = 1$ value), BC-295 (where the fractional
 obstruction lives in angle), BC-293 (whether the four-corner theorem is free).
-BC-301 starts as soon as BC-294 has its first `B = 1` reading.
+BC-301 starts as soon as BC-294 has its first $B = 1$ reading.
 
 If only three lanes can run, take BC-294, BC-293 and BC-295: they decide, respectively,
 whether any one-body certificate can reach the endpoint, whether the corner anchors are
-free at `q`, and whether the obstruction at `q` is Trump-shaped.
+free at $q$, and whether the obstruction at $q$ is Trump-shaped.
 
 ## What Would Count as Progress
 
-The narrow tier succeeds when one lane produces either a certificate at `q` conditioned
+The narrow tier succeeds when one lane produces either a certificate at $q$ conditioned
 on a proved constraint with its complement listed, or a proved structural theorem below
-`U` that is new (the four-corner containment theorem, a rectangle bound, a band theorem
-with `α + β ≥ 3°`). An exact `B = 1` fractional family of value at least eleven
-obstructs a strict one-body covering certificate at its side.
+$U$ that is new (the four-corner containment theorem, a rectangle bound, a band theorem
+with $\alpha + \beta \ge 3^\circ$). An exact $B = 1$ fractional family of value at least
+eleven obstructs a strict one-body covering certificate at its side.
 Sufficient weight outside an exactly specified Trump neighbourhood additionally
 obstructs that capture certificate.
 These tests leave ownership, compatibility and integrality arguments open; BC-294 alone

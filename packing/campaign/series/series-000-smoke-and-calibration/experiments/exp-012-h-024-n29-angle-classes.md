@@ -69,22 +69,22 @@ experiment:
 The predeclared numerical screen fired, but the registered claim required formally
 supported record geometry.
 The retained primary SVG reconstructs to 29 unit squares in side
-`5.933833462676929189689460616352019…`. At 160 decimal digits and tolerance `1e-80`, all
-406 pairs pass the numerical separating-axis guard, and the orientations form six
-classes modulo quarter turns—not at most three.
+$5.933833462676929189689460616352019\ldots$. At 160 decimal digits and tolerance
+`1e-80`, all 406 pairs pass the numerical separating-axis guard, and the orientations
+form six classes modulo quarter turns—not at most three.
 
 | Class | Canonical angle | Squares |
 | --- | ---: | ---: |
-| aligned | `0°` | 15 |
-| `a` | `25.2586553083514…°` | 1 |
-| `b` | `20.8001267626996…°` | 9 |
-| `−c` | `−17.5062684757324…°` | 1 |
-| `d` | `24.9625879894377…°` | 2 |
-| `i` | `24.3083584013469…°` | 1 |
+| aligned | $0^\circ$ | 15 |
+| $a$ | $25.2586553083514\ldots^\circ$ | 1 |
+| $b$ | $20.8001267626996\ldots^\circ$ | 9 |
+| $-c$ | $-17.5062684757324\ldots^\circ$ | 1 |
+| $d$ | $24.9625879894377\ldots^\circ$ | 2 |
+| $i$ | $24.3083584013469\ldots^\circ$ | 1 |
 
-The smallest gap between two declared classes is `a−d = 0.296067318913687…°`, against an
-angle-interval radius of `1e-90°`. The numerical class count is therefore insensitive to
-the declared clustering radius by roughly 89 orders of magnitude.
+The smallest gap between two declared classes is $a-d = 0.296067318913687\ldots^\circ$,
+against an angle-interval radius of `1e-90°`. The numerical class count is therefore
+insensitive to the declared clustering radius by roughly 89 orders of magnitude.
 
 ## Numerical check and source replay
 
@@ -97,7 +97,7 @@ Its mutation selftest duplicates one square and confirms that the oracle refuses
 The worst nominal pair penetration is `4.05464e-101`, consistent with truncating the
 source’s 200-digit numerical root to roughly 100 printed digits and far below the
 declared `1e-80` serialization tolerance.
-The smallest strictly positive pair separation is `0.0361709426628905`. As a second
+The smallest strictly positive pair separation is $0.0361709426628905$. As a second
 guard, the checker independently recomputes all nine placement offsets and the six
 equations printed in the SVG comment: maximum residuals are `1.11861e-99` and
 `2.55681e-100`, respectively.

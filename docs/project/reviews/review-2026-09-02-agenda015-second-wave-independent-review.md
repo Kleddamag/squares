@@ -73,7 +73,7 @@ a one-sided nearest-six interval.
 
 The reviewer independently confirmed the recorded provenance refusal.
 Frozen `_source_interval` applies an exactly-six-fractional-digit rule to SVG coordinate
-tokens. The token `8.80345993651653` has fourteen fractional digits, is release text
+tokens. The token $8.80345993651653$ has fourteen fractional digits, is release text
 rather than an SVG coordinate, and has no cited source rule projecting the coordinate
 semantics onto it. Its literal exact-rational point interpretation survives, but it
 cannot satisfy the unchanged conjunctive three-model criterion alone.

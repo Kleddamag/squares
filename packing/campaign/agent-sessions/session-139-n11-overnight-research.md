@@ -421,7 +421,7 @@ Hourly watchdog: `overnight-priority-check`. Closeout timer: `overnight-8h-close
 - Do not mutate T-025/T-026 `verify_claim.py`.
 - `packing-campaign` numeric unattended is NO-GO (D-044/D-046; no `runner.command` on
   H-216/H-163).
-- A decided H-216 does not move `s(6)=3` and is not an n=11 result.
+- A decided H-216 does not move $s(6)=3$ and is not an n=11 result.
 
 ## Lanes
 
@@ -432,7 +432,7 @@ covering < 6 both gate routes; kill only with an exact depth-one family of total
 both ceiling readers.
 
 **B / BC-358 tooling.** New reader first (`think-g3j7`). `think-3xbr` and `think-gyzw`
-wait on it. k-of-S is already T-025’s `(S,k,w)`; floor atoms are a new class.
+wait on it. k-of-S is already T-025’s $(S,k,w)$; floor atoms are a new class.
 A T-id in the new class needs two-route C4.
 
 **C / BC-343 / H-163.** Register `exp-161`, then build the named producer, then a
@@ -444,15 +444,15 @@ Timeout is unresolved, never rejected.
 
 ## Hour 1 note (2026-09-18T05:55Z)
 
-H-216 freeze covering total `76027/12500 = 6.08216` does not confirm.
-Polish then both ceiling readers: exact total `76/13`, max depth 1, K3 fails.
+H-216 freeze covering total $76027/12500 = 6.08216$ does not confirm.
+Polish then both ceiling readers: exact total $76/13$, max depth 1, K3 fails.
 That does not kill. H-216 stays open; not an n=11 result.
 exp-161 accept hole closed.
 Producer is in-tree and emits no candidate.
 F1 reader modules are in-tree with the 2-of-5 versus floor charge test.
 Hosted typecheck band is now 55.67 s / ceiling 111 s. Head `876dd80f` is hosted-green
 (37 checks).
-A second H-216 site set on grids 18/24/29/34 froze covering `151931/25000` =
+A second H-216 site set on grids 18/24/29/34 froze covering $151931/25000$ =
 6.07724 (does not confirm).
 
 ## Block 4 W5 plan (`think-g4n9`, 08:33Z)
@@ -509,49 +509,49 @@ Do not start another H-216 freeze.
 
 H-216 third freeze is not started (phase exit).
 n=7–9 are proved and have no covering rows.
-n=12 grid covering at `3969/1000` converged at `12.363498` (crossed 12 at round 4; site
+n=12 grid covering at $3969/1000$ converged at $12.363498$ (crossed 12 at round 4; site
 set refuted; side open).
-n=11 at `383/100` is next.
+n=11 at $383/100$ is next.
 Guarded `devtools.run_relational_colgen` refuses covering without sites-1 (`think-gyzw`
 remains open).
 
 ## Hour 1 n=11 383/100 (2026-09-18T06:32Z)
 
-n=11 auto grids `(25, 34, 41)` at `383/100` converged in 82.2 s at restricted optimum
-`11.192598` (rationalised `44770567/4000000`). Crossed eleven at LP round 6. Site set
+n=11 auto grids $(25, 34, 41)$ at $383/100$ converged in 82.2 s at restricted optimum
+$11.192598$ (rationalised $44770567/4000000$). Crossed eleven at LP round 6. Site set
 refuted; side open. T-025 and T-026 unchanged.
 Next cheap probe: denser grids at the same side.
 G4 and M3 sources are on disk, uncommitted until their tests pass.
 
 ## Hour 1 four-grid (2026-09-18T06:36Z)
 
-n=11 `--grid-counts 25,34,41,48` at `383/100` converged in 81.7 s at `11.142857`
-(rationalised `2228577/200000`). About 2,300 extra sites dropped 0.050 from the auto
+n=11 `--grid-counts 25,34,41,48` at $383/100$ converged in 81.7 s at $11.142857$
+(rationalised $2228577/200000$). About 2,300 extra sites dropped 0.050 from the auto
 grid. Still above eleven.
 Next: T-025-seeded grids at the same side.
 G4 and M3 landed.
 
 ## Hour 1 T-025 seed (2026-09-18T06:39Z)
 
-Four-grid union T-025 (584 seed sites, 6249 total) converged at `11.140351` in 107.9 s.
-Drop from four-grid: 0.0025. Point-atom covering at `383/100` is above eleven on three
-named site sets. Next: scout #3, denser grids at `191/50`.
+Four-grid union T-025 (584 seed sites, 6249 total) converged at $11.140351$ in 107.9 s.
+Drop from four-grid: 0.0025. Point-atom covering at $383/100$ is above eleven on three
+named site sets. Next: scout #3, denser grids at $191/50$.
 
 ## Hour 1 191/50 four-grid (2026-09-18T06:42Z)
 
-`--grid-counts 26,35,43,48` at `191/50` converged at `11.142857` on 6037 sites.
+`--grid-counts 26,35,43,48` at $191/50$ converged at $11.142857$ on 6037 sites.
 That is not a superset of the historical 6637-site exact-eleven grid.
-Next: auto `(25,34,41)` plus count 60 (6961 sites).
+Next: auto $(25,34,41)$ plus count 60 (6961 sites).
 
 ## Hour 1 auto+60 (2026-09-18T06:44Z)
 
-`--grid-counts 25,34,41,60` at `191/50` converged at `11.106195` on 6961 sites.
+`--grid-counts 25,34,41,60` at $191/50$ converged at $11.106195$ on 6961 sites.
 More sites than the historical exact-eleven grid, worse optimum.
 Next: T-025-seeded auto+60 at the same side, then M3 selftest.
 
 ## Hour 1 T-025 auto+60 (2026-09-18T06:47Z)
 
-T-025-seeded auto+60 at `191/50` converged at `11.020212` after sitting at exactly
+T-025-seeded auto+60 at $191/50$ converged at $11.020212$ after sitting at exactly
 eleven through LP round 16. Closest session-139 point construction at 3.82; still not
 below eleven. Point-atom densification at 3.82/3.83 is exhausted for this phase.
 Next: M3 selftest.
@@ -606,14 +606,14 @@ install overlap in `test_module_boundaries.py`,
 
 Three named site sets, none a certificate.
 
-- n=11 at `77/20` (3.85), T-025-seeded auto `(25, 34, 42)` plus 60: converged
-  `11.456576` in 196 s on 7705 sites.
+- n=11 at $77/20$ (3.85), T-025-seeded auto $(25, 34, 42)$ plus 60: converged
+  $11.456576$ in 196 s on 7705 sites.
   Crossed eleven at round 2. Site set refuted.
-  BC-200’s vertex-seeded unconverged `11.227631` at this side is a different set.
-- n=12 at `3969/1000`, T-017-seeded auto `(26, 35, 43)`: unconverged `12.118036` at 600
-  s (29 LP rounds). Seed dropped the unseeded `12.363498` by 0.245. Still above twelve.
+  BC-200’s vertex-seeded unconverged $11.227631$ at this side is a different set.
+- n=12 at $3969/1000$, T-017-seeded auto $(26, 35, 43)$: unconverged $12.118036$ at 600
+  s (29 LP rounds). Seed dropped the unseeded $12.363498$ by 0.245. Still above twelve.
   Site set refuted; side open.
-- n=18 at `467/100` (4.67), auto `(32, 43, 53)`: unconverged `18.000000` at 600 s (57 LP
+- n=18 at $467/100$ (4.67), auto $(32, 43, 53)$: unconverged $18.000000$ at 600 s (57 LP
   rounds; locked from round 15). Cannot confirm.
   Covering-values now 23 sides.
 
@@ -622,8 +622,8 @@ Blocks 5-7 Route S encode-only remains 09:33Z.
 
 ## Hour 2 n=11 31/8 (2026-09-18T07:40Z)
 
-Same T-025-seeded auto-plus-60 construction at `31/8` = 3.875, 0.002 below the
-known-best packing. Converged `11.561186` in 234.3 s on 7705 sites.
+Same T-025-seeded auto-plus-60 construction at $31/8$ = 3.875, 0.002 below the
+known-best packing. Converged $11.561186$ in 234.3 s on 7705 sites.
 Crossed eleven at round 2. Site set refuted; side open.
 Covering-values now 24 sides.
 Point-atom grids plus T-025 sites do not capture the packing geometry even this close to
@@ -631,13 +631,13 @@ it.
 
 ## Hour 2 windows and 3.84 (2026-09-18T07:52Z)
 
-`--seed-windows 5` on the T-025-seeded auto-plus-60 set at `191/50` converged
-`11.018646` in 176.2 s on 7473 sites (809 seed).
-Dropped the no-windows `11.020212` by 0.0016. Closest session-139 point-atom
+`--seed-windows 5` on the T-025-seeded auto-plus-60 set at $191/50$ converged
+$11.018646$ in 176.2 s on 7473 sites (809 seed).
+Dropped the no-windows $11.020212$ by 0.0016. Closest session-139 point-atom
 construction; still above eleven.
-Same construction at `96/25` = 3.84 converged `11.371819` in 222.9 s. Restricted opt at
+Same construction at $96/25$ = 3.84 converged $11.371819$ in 222.9 s. Restricted opt at
 3.82 / 3.83 / 3.84 / 3.85 / 3.875 is monotone up.
-G4 at `31/8` net9 dipped to 10.17 on seed rows then restored to 14.00; same overfit,
+G4 at $31/8$ net9 dipped to 10.17 on seed rows then restored to 14.00; same overfit,
 stop G4. Covering-values now 25 sides.
 Next: T-026-seeded auto-plus-60 at 191/50 and T-025-seeded auto-plus-60 at 381/100. n=17
 T-019 seed still in flight.
@@ -645,23 +645,23 @@ Route S encode-only remains 09:33Z.
 
 ## Hour 2 n=17 T-019 seed (2026-09-18T07:59Z)
 
-T-019-seeded auto grids at `23/5` stopped unconverged at `17.049597` after 628 s (40 LP
+T-019-seeded auto grids at $23/5$ stopped unconverged at $17.049597$ after 628 s (40 LP
 rounds, 183 violated).
-Seed dropped the unseeded `17.331710` by 0.282. Site set refuted; side open.
+Seed dropped the unseeded $17.331710$ by 0.282. Site set refuted; side open.
 T-026 seed at 191/50 and T-025 auto-plus-60 at 381/100 still in flight.
 
 ## Hour 3 T-026 seed (2026-09-18T08:03Z)
 
-T-026-fractional-seeded auto-plus-60 at `191/50` converged `11.033743` in 265.4 s on
+T-026-fractional-seeded auto-plus-60 at $191/50$ converged $11.033743$ in 265.4 s on
 8081 sites. Worse than T-025 (11.020212) and T-025 plus windows (11.018646). Site set
 refuted. 381/100 still sitting at exactly eleven; n=18 T-019 seed still below 18.
 
 ## Hour 3 n=11 381/100 (2026-09-18T08:08Z)
 
-T-025-seeded auto-plus-60 at `381/100` sat at `11.000000` from LP round 7 through the
+T-025-seeded auto-plus-60 at $381/100$ sat at $11.000000$ from LP round 7 through the
 60-round limit (120 still violated, `least_covered` 0.992). Never crossed above eleven.
 Site set refuted, unconverged; new covering side 3.81. Covering-values now 26 sides.
-n=18 T-019 seed row loop reached `17.875567` with violated 0; column generation still
+n=18 T-019 seed row loop reached $17.875567$ with violated 0; column generation still
 running.
 
 ## Hour 3 phase-1 exit (2026-09-18T08:33Z)
@@ -674,14 +674,14 @@ four-grid in flight.
 
 ## Hour 3 n=12 four-grid (2026-09-18T08:28Z)
 
-T-017-seeded four-grid at `3969/1000` stopped unconverged at `12.116115` after 634.8 s
+T-017-seeded four-grid at $3969/1000$ stopped unconverged at $12.116115$ after 634.8 s
 (29 LP rounds, 330 violated).
-Dropped the seeded auto `12.118036` by 0.002. Site set refuted; side open.
+Dropped the seeded auto $12.118036$ by 0.002. Site set refuted; side open.
 
 ## Hour 3 n=18 T-019 seed (2026-09-18T08:31Z)
 
-T-019-seeded auto grids at `467/100` with `--support-cap 0` converged the row loop at
-`17.875567` (`least_covered` 1) on 6853 sites.
+T-019-seeded auto grids at $467/100$ with `--support-cap 0` converged the row loop at
+$17.875567$ (`least_covered` 1) on 6853 sites.
 Unseeded locked at 18. `check_ceiling` on the untruncated dual was interrupted after 31
 minutes. Freeze re-run started with `--support-cap 32`. First session-139 covering
 strictly below n on a named site set.
@@ -689,7 +689,7 @@ strictly below n on a named site set.
 ## Hour 4 T-027 (2026-09-18T08:47Z)
 
 `declare_least_cell_mass` then `decide_certificate` accepted the freeze: 769 atoms, mass
-`8937839/500000 = 17.875678`, least cell mass `2000007/2000000`, sha256
+$8937839/500000 = 17.875678$, least cell mass $2000007/2000000$, sha256
 `3a11b6303e0663b502b6c1e3fc9d8da285104e199b17022937369bc781479059`. Landed as
 `cases/n18_fractional_certificate/` and T-027. Verified `s(18) >= 467/100 = 4.67`, +0.08
 over T-019’s 4.59 at n=18. T-019 unchanged at n=17. n=19 stays 4.80 (T-020). H-216 is
@@ -698,28 +698,28 @@ not an n=11 result. Route S encode-only remains 09:33Z. Covering continues at 11
 
 ## Hour 4 covering register (2026-09-18T09:05Z)
 
-T-027 committed (`3461922d`). T-019-seeded auto at `117/25` converged with exact mass
-`18000043/1000000 = 18.000043` (float 17.999999999552305) in 180 s; cannot certify.
-T-019-seeded auto at `47/10` converged `18.165413` in 390 s; cannot certify.
-T-019-seeded auto plus `--seed-windows 5` at n=17 `23/5` stopped unconverged at
-`17.042346` after 931.6 s (42 rounds, 9 violated), 0.007 below the seed without windows.
+T-027 committed (`3461922d`). T-019-seeded auto at $117/25$ converged with exact mass
+$18000043/1000000 = 18.000043$ (float 17.999999999552305) in 180 s; cannot certify.
+T-019-seeded auto at $47/10$ converged $18.165413$ in 390 s; cannot certify.
+T-019-seeded auto plus `--seed-windows 5` at n=17 $23/5$ stopped unconverged at
+$17.042346$ after 931.6 s (42 rounds, 9 violated), 0.007 below the seed without windows.
 Site sets refuted; sides open.
 4.68 windows and 4.69 seed still in flight.
 
 ## Hour 4 T-027 seed (2026-09-18T09:10Z)
 
-T-019-seeded auto plus windows at `117/25` locked `18.000000` unconverged after 912.6 s
+T-019-seeded auto plus windows at $117/25$ locked $18.000000$ unconverged after 912.6 s
 (57 rounds, 495 violated).
-T-019-seeded auto at `469/100` locked `18.000000` unconverged after 921.5 s (59 rounds,
-288 violated). T-027-seeded auto at `117/25` started 09:09Z. Route S encode-only remains
+T-019-seeded auto at $469/100$ locked $18.000000$ unconverged after 921.5 s (59 rounds,
+288 violated). T-027-seeded auto at $117/25$ started 09:09Z. Route S encode-only remains
 09:33Z.
 
 ## Hour 4 T-027 seed result (2026-09-18T09:24Z)
 
-T-027-seeded auto at `117/25` locked `18.000000` unconverged after 819.5 s (60 rounds,
+T-027-seeded auto at $117/25$ locked $18.000000$ unconverged after 819.5 s (60 rounds,
 465 violated, 769 seed sites).
 Same wall as the T-019 seed.
-T-027 at `467/100` is unchanged.
+T-027 at $467/100$ is unchanged.
 Route S encode-only remains 09:33Z.
 
 ## Hour 4 Blocks 5–7 start (2026-09-18T09:33Z)
@@ -730,7 +730,7 @@ Live `admit_threshold_compression --check` and producer `--selftest` both exited
 `exp-161-encode`. Scientific wall 09:33–12:33Z; receipt copy until 12:53Z. Timeout is
 unresolved. No covering colgen beside this process.
 
-T-027 `--push` contracts: n=18 DS7 verified bound `4.67`; n=18 interval doubled-net
+T-027 `--push` contracts: n=18 DS7 verified bound $4.67$; n=18 interval doubled-net
 registered in the exhaustive marker set; Chromium-early is the first unbudgeted
 `start_early` step ahead of exact verification.
 
@@ -741,14 +741,14 @@ Do not spend another wall on the same windows5 site set: remaining rows can only
 17.042346. Do not probe n=18 at 4.68/4.69 (locked 18 on T-019, windows, and T-027
 seeds). Do not probe n=11 at or below 3.826.
 
-1. n=12 `397/100` T-017 four-grid `(26,35,43,48)`. BC-206 seeded auto crossed at
-   12.016263; session has only `3969/1000` four-grid so far.
-2. n=17 `23/5` T-019 auto `(32,42,52)` plus `--seed-windows 6` (CLI `per_window`;
+1. n=12 $397/100$ T-017 four-grid $(26,35,43,48)$. BC-206 seeded auto crossed at
+   12.016263; session has only $3969/1000$ four-grid so far.
+2. n=17 $23/5$ T-019 auto $(32,42,52)$ plus `--seed-windows 6` (CLI `per_window`;
    windows5 was 17.042346 with 9 violated).
    Then windows 7 if windows 6 stays above 17 (adds lattice sites; do not re-run windows
    5).
-3. If wall remains: n=19 at T-021’s recorded `97/20`, seeded from T-020’s
-   `certificate-24-5.json`, aiming for mass below 19. Not another `24/5` covering.
+3. If wall remains: n=19 at T-021’s recorded $97/20$, seeded from T-020’s
+   `certificate-24-5.json`, aiming for mass below 19. Not another $24/5$ covering.
    Do not invent a new n=19 side.
 
 From `packing/`, `OMP_NUM_THREADS=OPENBLAS_NUM_THREADS=MKL_NUM_THREADS=1`:
@@ -810,12 +810,12 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_colge
   --log campaign/series/series-000-smoke-and-calibration/results/agenda-037/n19-97-20-t020-windows6.log
 ```
 
-Grid counts `34,45,56` are BC-197’s recorded auto counts at `97/20` (`bc-197-r2t.json`).
+Grid counts $34,45,56$ are BC-197’s recorded auto counts at $97/20$ (`bc-197-r2t.json`).
 T-021 converged at 19.848723 on that grid unioned with the 24/5 atoms and
 `seed_windows: 0`; remaining rows raise, so windows 6 is the site-set change.
 Seed the immutable `certificate-24-5.json`, not the moving `certificate.json` pointer
 (now 97/20). Do not invent a new n=19 side.
-Do not re-cover `24/5`. Session covering stays on the 181-net.
+Do not re-cover $24/5$. Session covering stays on the 181-net.
 
 `--freeze` is on each probe (`--support-cap 32`, never 0). A freeze file appears only on
 a converged row loop.
@@ -827,12 +827,12 @@ If `decide_certificate` prints RETAINABLE, the next T-id is **T-028**. Do not us
 BC-357. `produced_by.session` is `session-139`. Score S3 (same generator; T-020
 calibration). Copy the T-027 landing, not a new case class:
 
-- n=12 `397/100`: add `cases/n12_fractional_certificate/certificate-397-100.json` and
+- n=12 $397/100$: add `cases/n12_fractional_certificate/certificate-397-100.json` and
   point `certificate.json` at it.
-  Current verified lower is T-017 `99/25`. Keep the 99/25 bytes as a named lower rung.
-- n=17 `23/5`: add a named rung under `cases/n17_fractional_certificate/`. T-019
-  `459/100` stays the n=17 bound until mass is below 17 at 23/5.
-- n=19 `97/20`: new bytes, not T-021’s `certificate.json` (mass 19.848723). Seed was
+  Current verified lower is T-017 $99/25$. Keep the 99/25 bytes as a named lower rung.
+- n=17 $23/5$: add a named rung under `cases/n17_fractional_certificate/`. T-019
+  $459/100$ stays the n=17 bound until mass is below 17 at 23/5.
+- n=19 $97/20$: new bytes, not T-021’s `certificate.json` (mass 19.848723). Seed was
   `certificate-24-5.json`. T-020 stays until mass is below 19.
 
 Then: receipt, `results.yaml`, `evidence.yaml`, `n-0NN.md` verified lower,
@@ -850,8 +850,8 @@ n=19 has no case package; create `cases/n19_fractional_certificate/` on the n=18
 pattern. Do not overwrite `cases/n20_fractional_certificate/certificate.json` (T-021’s
 97/20, mass 19.848723). `test_fractional_certificate.py` asserts the live n=12 claim is
 `s(12) >= 99/25`; that line moves with the pointer.
-DS7 hardcodes verified lowers only for n=17 (`4.59`) and n=18 (`4.67`). Covering
-`side_decimal` `3.97`, `4.6`, and `4.85` are already in the SYNOPSIS unique-side list.
+DS7 hardcodes verified lowers only for n=17 ($4.59$) and n=18 ($4.67$). Covering
+`side_decimal` $3.97$, $4.6$, and $4.85$ are already in the SYNOPSIS unique-side list.
 Map any new receipt Markdown in `document-map.yaml` (T-027’s receipt was mapped when the
 covering run was recorded).
 A T-id landing moves the CURRENT-RESEARCH-STATUS frontier count from 27 to 28; unique
@@ -869,22 +869,22 @@ Blocks 5–7. Encode-only still running in tmux `exp-161-encode` (pid 347502, el
 08:41, ~100% CPU, peak RSS 2.45 GiB). No encoding JSON yet; the producer writes at the
 end. Log still empty.
 No `--search`. Covering colgen stays off this CPU. Post-encode queue is the n=12
-`397/100` four-grid then n=17 windows 6. CI on HEAD is in flight after the
+$397/100$ four-grid then n=17 windows 6. CI on HEAD is in flight after the
 composite-figure refresh.
 
 Packing validation on `335e8028` completed success at 09:45Z (suite-a, suite-b,
 typecheck, validate, geometry, macos-portability, sweeps, frontend, packing-required).
 A waiter in tmux `post-encode-covering` starts that queue when encode pid 347502 exits,
 copies the encode JSON, and will not start a probe inside the Block 8 closeout (12:53Z).
-No `--search`. The waiter then runs n=19 `97/20` T-020 windows 6 if wall remains.
+No `--search`. The waiter then runs n=19 $97/20$ T-020 windows 6 if wall remains.
 
 ## Hour 6 (2026-09-18T10:10Z)
 
 Encode-only still running (pid 347502, elapsed 37:41, ~100% CPU, RSS cycling 0.13–0.98
 GiB per direction, peak 2.39 GiB). No JSON. Log empty.
 No `--search`. Waiter `post-encode-covering` still waiting on that pid.
-Queue after encode: n=12 `397/100` four-grid, n=17 windows 6 then 7 if still above 17,
-n=19 `97/20` T-020 windows 6; freeze at `--support-cap 32`, declare-then-decide if mass
+Queue after encode: n=12 $397/100$ four-grid, n=17 windows 6 then 7 if still above 17,
+n=19 $97/20$ T-020 windows 6; freeze at `--support-cap 32`, declare-then-decide if mass
 < n. CI on `9c0156eb` succeeded.
 Do not land T-028 during encode.
 
@@ -907,8 +907,8 @@ No JSON. Log empty. No `--search`.
 
 The 12:53Z waiter cutoff is past and would skip every probe.
 Replaced `CLOSEOUT_EPOCH` with 18:00Z and restarted tmux `post-encode-covering`. Queue
-unchanged: n=12 `397/100` four-grid, n=17 windows 6 then 7 if still above 17, n=19
-`97/20`. Freeze at `--support-cap 32`; declare-then-decide if mass < n. Closeout after
+unchanged: n=12 $397/100$ four-grid, n=17 windows 6 then 7 if still above 17, n=19
+$97/20$. Freeze at `--support-cap 32`; declare-then-decide if mass < n. Closeout after
 covering. Do not land T-028 during encode.
 
 ## Hour 8 (2026-09-18T15:15Z)
@@ -922,44 +922,44 @@ Do not land T-028 during encode.
 ## Encode timeout (2026-09-18T15:24Z)
 
 Encode-only exited at 15:24:31Z with no JSON. Timeout unresolved.
-Log still empty. No `--search`. Waiter started n=12 `397/100` T-017 four-grid
+Log still empty. No `--search`. Waiter started n=12 $397/100$ T-017 four-grid
 (`--support-cap 32`, deadline 900 s). Then n=17 windows 6, windows 7 if needed, n=19
-`97/20`. Covering deadline 18:00Z. Freeze-then-decide if mass < n. T-028 only if
+$97/20$. Covering deadline 18:00Z. Freeze-then-decide if mass < n. T-028 only if
 RETAINABLE.
 
 ## n=12 397/100 four-grid (2026-09-18T15:40Z)
 
-T-017-seeded four-grid `(26, 35, 43, 48)` at `397/100` stopped unconverged at
-`12.122748` after 939.9 s (33 LP rounds, 108 violated).
+T-017-seeded four-grid $(26, 35, 43, 48)$ at $397/100$ stopped unconverged at
+$12.122748$ after 939.9 s (33 LP rounds, 108 violated).
 Crossed twelve at round 8. No freeze.
 Site set refuted; side open.
-T-017 unchanged. Waiter started n=17 `23/5` windows 6 at 15:40Z.
+T-017 unchanged. Waiter started n=17 $23/5$ windows 6 at 15:40Z.
 
 ## n=17 23/5 windows 6 (2026-09-18T15:55Z)
 
-T-019-seeded auto `(32, 42, 52)` plus `--seed-windows 6` at `23/5` stopped unconverged
-at `17.048472` after 920.4 s (46 LP rounds, 54 violated).
+T-019-seeded auto $(32, 42, 52)$ plus `--seed-windows 6` at $23/5$ stopped unconverged
+at $17.048472$ after 920.4 s (46 LP rounds, 54 violated).
 Seed sites 1760 (1184 T-019 plus 576 lattice).
 Crossed seventeen at round 12 and sat at 17 through round 18, then climbed.
-Slightly worse than windows 5 (`17.042346`). No freeze.
+Slightly worse than windows 5 ($17.042346$). No freeze.
 Site set refuted; side open.
 T-019 unchanged.
-Waiter started windows 7 at 15:55Z; then n=19 `97/20` if still above 17.
+Waiter started windows 7 at 15:55Z; then n=19 $97/20$ if still above 17.
 
 ## n=17 23/5 windows 7 (2026-09-18T16:10Z)
 
-T-019-seeded auto `(32, 42, 52)` plus `--seed-windows 7` at `23/5` stopped unconverged
-at `17.046923` after 904.2 s (42 LP rounds, 186 violated).
+T-019-seeded auto $(32, 42, 52)$ plus `--seed-windows 7` at $23/5$ stopped unconverged
+at $17.046923$ after 904.2 s (42 LP rounds, 186 violated).
 Seed sites 1968 (1184 T-019 plus 784 lattice).
-Crossed seventeen at round 19. Between windows 5 (`17.042346`) and windows 6
-(`17.048472`). No freeze.
+Crossed seventeen at round 19. Between windows 5 ($17.042346$) and windows 6
+($17.048472$). No freeze.
 Site set refuted; side open.
-T-019 unchanged. Waiter started n=19 `97/20` T-020 windows 6 at 16:10Z.
+T-019 unchanged. Waiter started n=19 $97/20$ T-020 windows 6 at 16:10Z.
 
 ## n=19 97/20 T-020 windows 6 (2026-09-18T16:26Z)
 
-T-020-seeded auto `(34, 45, 56)` plus `--seed-windows 6` at `97/20` for n=19 stopped
-unconverged at `19.808958` after 953.1 s (34 LP rounds, 321 violated).
+T-020-seeded auto $(34, 45, 56)$ plus `--seed-windows 6` at $97/20$ for n=19 stopped
+unconverged at $19.808958$ after 953.1 s (34 LP rounds, 321 violated).
 Seed from `certificate-24-5.json`; seed sites 2836 (2260 T-020 plus 576 lattice).
 Crossed nineteen at round 5 and climbed.
 No freeze. Site set refuted; side open.
@@ -1000,7 +1000,7 @@ Atlas composites now print n=18 at 4.67.
 skeleton. G4 n-parameterised producer.
 M3 T-018 piercing. W5 efficiency block.
 Route S encode-only (09:33Z start, 15:24:31Z timeout, no JSON). Post-encode covering:
-n=12 `397/100` four-grid; n=17 `23/5` windows 5/6/7; n=19 `97/20` T-020 windows 6. No
+n=12 $397/100$ four-grid; n=17 $23/5$ windows 5/6/7; n=19 $97/20$ T-020 windows 6. No
 `--search`.
 
 **What moved.** T-027 retained.
@@ -1008,12 +1008,12 @@ Atlas labels follow it.
 Covering register grew to 60 restricted optima at 28 sides.
 
 **What died.** Encode-only unresolved.
-n=12 `397/100` four-grid 12.122748. n=17 windows 5/6/7 all above 17 (best windows 5 at
-17.042346). n=19 `97/20` 19.808958. n=18 4.68/4.69/4.70 cannot certify.
+n=12 $397/100$ four-grid 12.122748. n=17 windows 5/6/7 all above 17 (best windows 5 at
+17.042346). n=19 $97/20$ 19.808958. n=18 4.68/4.69/4.70 cannot certify.
 T-028 not landed. H-216 is not an n=11 result.
 
-**Queue after.** Route S still needs a successful encode before `--search`. n=17 `23/5`
-open; n=19 `97/20` open; n=11 stays T-026 ~3.826447. packing-campaign numeric remains
+**Queue after.** Route S still needs a successful encode before `--search`. n=17 $23/5$
+open; n=19 $97/20$ open; n=11 stays T-026 ~3.826447. packing-campaign numeric remains
 NO-GO.
 
 **Health.** `packing-ledger check` OK before this closeout.

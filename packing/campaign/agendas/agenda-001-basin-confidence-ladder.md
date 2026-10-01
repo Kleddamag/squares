@@ -524,10 +524,10 @@ The three purposes prevent calibration from being mistaken for discovery:
 - **Research** asks a genuine question about the packing landscape.
   A research row is blocked until all validation rows it depends on are complete.
 
-The current order is deliberately conservative: finish the event stack at `n = 5`, then
-continue cheap event controls through `n = 8` while the independent identity lane uses
-exact `n = 3,4` ground truth.
-The first genuine basin question is the focused `n = 5` connectivity problem.
+The current order is deliberately conservative: finish the event stack at $n = 5$, then
+continue cheap event controls through $n = 8$ while the independent identity lane uses
+exact $n = 3,4$ ground truth.
+The first genuine basin question is the focused $n = 5$ connectivity problem.
 Statistical census work begins only after that relation is decidable or its ambiguity is
 bounded.
 

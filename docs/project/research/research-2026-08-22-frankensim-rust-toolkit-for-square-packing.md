@@ -217,7 +217,7 @@ identical*, pair for pair:
 (0,6) (1,9) (2,8) (2,10) (3,4) (3,5) (4,5) (4,8) (5,6) (6,7) (6,8) (7,9) (8,9) (9,10)
 ```
 
-Two unrelated implementations — Python exact arithmetic in `Q(u)` of degree 8, and Rust
+Two unrelated implementations — Python exact arithmetic in $Q(u)$ of degree 8, and Rust
 outward-rounded floating-point intervals — agree exactly on which separations are
 strict. This is independent confirmation of both, and a clean empirical demonstration of
 the claim in the previous research doc: **interval arithmetic buys precisely the strict
@@ -235,12 +235,12 @@ It finds 8 pairs with no separating axis at all:
 For convex polygons, no separating edge-normal axis means the interiors intersect.
 **At 16 significant digits, the published packing is not a valid packing** — eight pairs
 genuinely overlap. Cross-checked in floating point, the overlaps are at the last-bit
-scale: the deepest is `−4.4 × 10⁻¹⁶`, the smallest strictly positive gap is
-`1.1 × 10⁻¹⁶`.
+scale: the deepest is $-4.4 \times 10^{-16}$, the smallest strictly positive gap is
+$1.1 \times 10^{-16}$.
 
 A naive float SAT gap computation disagrees with the exact predicate *in both
 directions*: it reports 7 negative gaps, of which 2 are pairs `orient2d` proves are
-fine, and it reports exactly `0.0` for 3 pairs that `orient2d` proves overlap.
+fine, and it reports exactly $0.0$ for 3 pairs that `orient2d` proves overlap.
 That is the tolerance blind spot from the previous document, caught in the wild, on real
 published data.
 
@@ -264,7 +264,7 @@ interleaved 0xc244d3a5be766ac2
 ```
 
 Bit-identical. `Stream::at(index)` matches the sequential prefix, and seeking to index
-`2⁶³` costs the same as seeking to index 0 (1.29 ms versus 1.32 ms per 100,000 seeks,
+$2^{63}$ costs the same as seeking to index 0 (1.29 ms versus 1.32 ms per 100,000 seeks,
 about 13 ns per 128-bit draw).
 
 That is the whole trick behind reproducible parallel stochastic search, and it is about
@@ -352,7 +352,7 @@ Two `xtask` checks encode the doctrine as enforcement rather than documentation:
   and differs across ISAs”.
   Dev-only oracle comparisons escape with a `// det-ok: <reason>` comment on the same or
   preceding line.
-- **`check-powi`** flags `.powi(n)` for any `|n| > 3`. The reason is recorded in
+- **`check-powi`** flags `.powi(n)` for any $|n| > 3$. The reason is recorded in
   `docs/GOLDEN_POLICY.md` and is the best cautionary tale in the repository: a golden
   hash was re-pinned with a plausible but wrong justification, when the actual mover was
   optimization-level-dependent `f64::powi`. The re-pin froze release-mode bits while
@@ -461,7 +461,7 @@ the normal ecosystem freely.
 | **`fs-rand`** | Philox streams keyed by `(seed, kernel, tile, index)`, O(1) random access, Sobol/Owen QMC, alias tables | **highest.** Makes parallel search reproducible |
 | **`fs-exec`** | tile pool with fixed-slot deterministic reductions, `Cx` cancellation, speculative races, resumable solvers | **high.** The execution shape a restart-heavy search wants |
 | **`fs-math`** | deterministic elementary functions, ULP budgets, error-free transforms, double-double | **high.** `eft`/`dd` are the doubling primitives an exact kernel needs |
-| **`fs-dfo`** | CMA-ES in information-geometric form, BIPOP restarts, Nelder–Mead, NSGA-II/III, MOEA/D, hypervolume — “the whole evolution is a pure function of the seed” | **high.** A credible complement to simulated annealing for the continuous `(x, y, θ)` problem |
+| **`fs-dfo`** | CMA-ES in information-geometric form, BIPOP restarts, Nelder–Mead, NSGA-II/III, MOEA/D, hypervolume — “the whole evolution is a pure function of the seed” | **high.** A credible complement to simulated annealing for the continuous $(x, y, \theta)$ problem |
 | `fs-alloc` | 128-byte-aligned scope arenas, hugepage policy, sharded pools | medium. Standard technique, unusually well documented |
 | `fs-simd` | tiered dispatch resolved once, scalar reference, capsule discipline | medium |
 | `fs-query` | certified convex separation by Frank-Wolfe on the Minkowski difference, with a `[lo, hi]` bracket where both bounds stay valid under early stop and a `separation_proven` flag | medium. 3-D and support-function based; SAT is simpler and exact for our 2-D squares, but the *contract shape* is worth copying |
@@ -543,14 +543,14 @@ assuming the surrounding ceremony carries its own weight.
 ## Key Insights
 
 1. **Two independent verifiers agreeing pair-for-pair is the strongest evidence in
-   either research document.** Our exact `Q(u)` verifier and FrankenSim’s interval
+   either research document.** Our exact $Q(u)$ verifier and FrankenSim’s interval
    arithmetic were written for different purposes in different languages by different
    authors, and they partition the same 55 pairs into the same 41 and the same 14. That
    is what independent confirmation looks like, and it settles that the 14 contacts are
    a property of the packing rather than an artifact of either implementation.
 
 2. **The published 16-digit coordinates are not a valid packing.** Eight pairs overlap
-   by about `10⁻¹⁶`. Nobody was wrong: the record *is* the algebraic number, and the
+   by about $10^{-16}$. Nobody was wrong: the record *is* the algebraic number, and the
    decimals are a rendering of it.
    But it means any pipeline that consumes the published decimals and checks them
    numerically is checking something that is false, and the only reason it passes is a
@@ -603,9 +603,9 @@ Nothing here changes the conclusion of the previous document — grid-bucket, th
 with predicates evaluated in the packing’s number field — but it fills in every layer
 around it. A concrete Rust toolkit, in priority order:
 
-1. **`packing-exact`: the verifier.** Real algebraic number arithmetic over `Q(α)` with
-   exact zero test and exact sign, plus a filtered kernel: fast float evaluation with an
-   error bound, escalating to exact only when the sign is in doubt.
+1. **`packing-exact`: the verifier.** Real algebraic number arithmetic over $Q(\alpha)$
+   with exact zero test and exact sign, plus a filtered kernel: fast float evaluation
+   with an error bound, escalating to exact only when the sign is in doubt.
    Model the staging directly on `fs-ivl::predicates`
    (`Stage::{Filtered, Adaptive, Exact}` with per-stage filter-rate tests).
    Use FLINT/`fmpq_poly` or CGAL’s algebraic kernel underneath rather than
@@ -630,7 +630,7 @@ around it. A concrete Rust toolkit, in priority order:
    For a project whose output is records other people will cite, this is worth more than
    it costs.
 
-4. **Adopt the two determinism lints on day one.** Ban raw `.powi(n)` for `|n| > 3` and
+4. **Adopt the two determinism lints on day one.** Ban raw `.powi(n)` for $|n| > 3$ and
    ban platform `libm` in any component claiming cross-ISA reproducibility, with a
    `// det-ok:` escape for dev-only oracles.
    Roughly a hundred lines of `xtask`.
@@ -662,10 +662,10 @@ around it. A concrete Rust toolkit, in priority order:
 
 Three questions where he has already done the work and we would otherwise redo it:
 whether `fs-ivl`’s Krawczyk machinery has been pushed to multivariate boxes (we need
-`(x, y, θ)` triples, and the crate is currently 1-D); whether the tile pool’s fixed-slot
-reduction has a published worker-count-invariance measurement we could cite; and whether
-the `powi`/libm lint pair caught anything beyond the two incidents recorded in
-`GOLDEN_POLICY.md`.
+$(x, y, \theta)$ triples, and the crate is currently 1-D); whether the tile pool’s
+fixed-slot reduction has a published worker-count-invariance measurement we could cite;
+and whether the `powi`/libm lint pair caught anything beyond the two incidents recorded
+in `GOLDEN_POLICY.md`.
 
 ## Open Questions
 
@@ -727,7 +727,7 @@ FrankenSim is vendored there.
 14 zero-gap pairs from our exact verifier: identical.
 The 8 pairs `orient2d` finds unseparated were re-checked with an independent
 floating-point SAT gap computation, which disagreed in both directions — 7 negative
-gaps, 2 of them on pairs `orient2d` proves are fine, and exact `0.0` on 3 pairs
+gaps, 2 of them on pairs `orient2d` proves are fine, and exact $0.0$ on 3 pairs
 `orient2d` proves overlap.
 That disagreement is itself reported above rather than reconciled, because `orient2d` is
 the exact authority for f64 inputs and the float gap is not.
@@ -792,7 +792,7 @@ Techniques FrankenSim implements, at their sources:
 
 Companion documents in this repository:
 
-- `research-2026-08-22-packing-11-unit-squares.md` — the mathematics of `s(11)`.
+- `research-2026-08-22-packing-11-unit-squares.md` — the mathematics of $s(11)$.
 - `research-2026-08-22-square-packing-algorithms-and-tooling.md` — search and
   verification tooling; the exact verifier whose output is cross-checked here.
 - [`packing/`](../../../README.md) — the exact verifier and the FrankenSim probes.

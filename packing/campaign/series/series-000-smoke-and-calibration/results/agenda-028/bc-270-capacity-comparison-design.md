@@ -67,14 +67,14 @@ pose box fitted around a desired contradiction.
 Let $h=1/\sqrt2$. A unit square at angle $\pi/4$ is the diamond
 
 $$
-Q(c)=\{(x,y): |x-c_x|+|y-c_y|\le h\}.
+Q(c)=\lbrace(x,y): |x-c_x|+|y-c_y|\le h\rbrace.
 $$
 
 For $k=0,1,2,3$, take
 
 $$
 c_{k,x}=\frac{18}{25}+\frac{4k}{5},\qquad
-c_{k,y}=\begin{cases}8/5&k\text{ even},\\23/10&k\text{ odd},\end{cases}
+c_{k,y}=\begin{cases}8/5&k\text{ even},\cr23/10&k\text{ odd},\end{cases}
 \qquad \theta_k=\pi/4.
 $$
 
@@ -158,8 +158,8 @@ squares. The fixture makes no claim that those six can be inserted.
 For a prospective atomic comparison on $D_1$, freeze the 99-atom basis
 
 $$
-A=\left\{\left(\frac{8i}{25},\frac{8j}{25}\right):
-1\le i\le11,\ 2\le j\le10\right\},\qquad
+A=\left\lbrace\left(\frac{8i}{25},\frac{8j}{25}\right):
+1\le i\le11,\ 2\le j\le10\right\rbrace,\qquad
 \mu_w=\sum_{a\in A}w_a\delta_a,\quad w_a\ge0.
 $$
 

@@ -431,7 +431,7 @@ A draft is not a hypothesis, and a hypothesis is not a result.
 
 | # | Question | Resolution | Record |
 | --- | --- | --- | --- |
-| 1 | Atom format | Admit weighted-majority, k-of-S, and floor atoms as a certificate language. k-of-S is already T-025’s `(S, k, w)`. Floor is a new class. Do not reread T-025 or T-026, and do not mutate their `verify_claim.py`. A T-id in a new class needs two-route C4. Admission is not a bound. | `think-g3j7` lands a new reader |
+| 1 | Atom format | Admit weighted-majority, k-of-S, and floor atoms as a certificate language. k-of-S is already T-025’s $(S, k, w)$. Floor is a new class. Do not reread T-025 or T-026, and do not mutate their `verify_claim.py`. A T-id in a new class needs two-route C4. Admission is not a bound. | `think-g3j7` lands a new reader |
 | 2 | n=6 statement | Do not promote the attic negative to a result. Register the two-sided existence determination. | [H-216](../hypotheses/H-216-point-certificate-at-n6-299-100.md) |
 | 3 | M1 as Route F1 | Register the rows-complete covering at 153/40. Kill every admitted class. Confirm with the threshold gate. The instrument does not exist yet. | [H-217](../hypotheses/H-217-route-f1-majority-floor-at-153-40.md) |
 | 4 | M6 as Route D | Leave retired. Do not register a search hypothesis. | BC-360 |
@@ -439,14 +439,14 @@ A draft is not a hypothesis, and a hypothesis is not a result.
 
 ### 1. Atom format — admit the language
 
-Weighted-majority, k-of-S, and floor atoms are a method, not a statement about `s(n)`.
+Weighted-majority, k-of-S, and floor atoms are a method, not a statement about $s(n)$.
 Admitting them does not create a result and carries no V/C rung.
 
-k-of-S is already T-025’s language: an atom `(S, k, w)` charges `w` to every core
-holding at least `k` points of `S`, at budget `w floor(|S| / k)`. T-025 is the
-`(S, k, w) = (3, 2, w)` case.
+k-of-S is already T-025’s language: an atom $(S, k, w)$ charges $w$ to every core
+holding at least $k$ points of `S`, at budget `w floor(|S| / k)`. T-025 is the
+$(S, k, w) = (3, 2, w)$ case.
 Floor atoms are a new class.
-`devtools.decide_threshold_certificate` already decides general `(S, k, w)`. T-025’s and
+`devtools.decide_threshold_certificate` already decides general $(S, k, w)$. T-025’s and
 T-026’s embedded
 [`verify_claim.py`](../../cases/n11_threshold_certificate/verify_claim.py) is a 2-of-3
 reader for those frozen bytes.
@@ -475,11 +475,11 @@ stated so it can be wrong.
 Confirm with a frozen covering below 6 on a named site set that both routes of
 `decide_certificate` accept.
 Kill with an exact depth-one family of total at least 6 that both ceiling readers
-accept. The overnight bracket `[83/14, 6.006571]` does not decide either side.
+accept. The overnight bracket $[83/14, 6.006571]$ does not decide either side.
 
 G1, G2, G3, and G5 are on main, so the instrument exists.
 G4 is a threshold producer and is not this measurement.
-A decided H-216 is calibration at a solved case; `s(6) = 3` does not move.
+A decided H-216 is calibration at a solved case; $s(6) = 3$ does not move.
 
 ### 3. M1 as Route F1 — register, blocked on tools
 

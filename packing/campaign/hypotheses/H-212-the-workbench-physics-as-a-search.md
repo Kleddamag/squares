@@ -38,7 +38,7 @@ tested no registered claim:
 Filed under H-210 and H-211, the first two made those hypotheses read as tested by the
 data they were written from.
 They are filed here instead, and H-210 and H-211 wait for a preregistered test on seed
-blocks, or `n`, that these rounds did not use.
+blocks, or $n$, that these rounds did not use.
 The three file names keep the hypothesis each round was first filed under.
 
 exp-207 stays with H-207, which was registered before its runs.

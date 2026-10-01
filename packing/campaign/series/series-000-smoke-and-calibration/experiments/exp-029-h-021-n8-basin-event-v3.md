@@ -74,11 +74,11 @@ changing the instrument, seeds, per-seed budget, validity screen, blockers, or r
 contract. Every attempted seed became one replayable event, admissible or blocked.
 
 All four endpoints independently validate.
-Seed 0 converges at side `3.000000000000004` and is admissible.
-Seed 1 stops at side `3.001495814083` after one of 16,342 fixed-point evaluations
+Seed 0 converges at side $3.000000000000004$ and is admissible.
+Seed 1 stops at side $3.001495814083$ after one of 16,342 fixed-point evaluations
 reports an adjacent-objective cell cycle; the event retains both
 `producer_not_converged` and `unsettled_fixed_point_evaluation`. Seeds 2 and 3 hit the
-time budget at sides `3.493924749807` and `3.248875584058`.
+time budget at sides $3.493924749807$ and $3.248875584058$.
 
 The four quenches retain 38.004 seconds of wall time.
 Across five repeated four-event batches, the median independent screen costs 0.000684

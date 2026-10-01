@@ -152,7 +152,7 @@ A theorem relating objective slack to pose distance is missing.
 
 Even the packet’s inequality
 
-$$S-U\ge -C\|z-z_*\|_\infty^2$$
+$$S-U\ge -C\Vert z-z_{\ast}\Vert_\infty^2$$
 
 is a local inequality with an already-assumed chart domain.
 For $S<U$ it gives a lower bound on a possible displacement, not an upper bound forcing
@@ -209,7 +209,7 @@ For a feasible coordinate vector $x$, local minimality is the first-order condit
 
 $$
 \exists r>0\ \forall y\in\mathcal F:
-\quad \|y-x\|^2<r^2\ \Longrightarrow\ S(y)\ge S(x).
+\quad \Vert y-x\Vert^2<r^2\ \Longrightarrow\ S(y)\ge S(x).
 \tag{1}
 $$
 
@@ -223,7 +223,7 @@ its derivative is zero on each piece.
 Continuity joins the constant values.
 Therefore $S$ is constant on each component of $\mathcal M$, and
 
-$$\mathcal V=\{S(x):x\in\mathcal M\}$$
+$$\mathcal V=\lbrace S(x):x\in\mathcal M\rbrace$$
 
 is finite. Because the definition is over the rationals, these isolated objective values
 are real algebraic numbers.
@@ -478,7 +478,7 @@ Trump role.
 There is a sharper resource identity for mixed atoms.
 For resource $a$, let $c_a$ be its valid integer capacity, $w_a\ge0$ its weight, and
 $N_a(P)$ the number of selected cores activating it in the packing.
-For point tokens $c_a=1$; for $k$-of-$m$ features $c_a=\lfloor m/k\rfloor$. When these
+For point tokens $c_a=1$; for $k$-of-`m` features $c_a=\lfloor m/k\rfloor$. When these
 are the budget’s resources, take $M=\sum_a w_ac_a$; then
 
 $$
@@ -633,7 +633,7 @@ A certificate for the missing quantitative bridge would have the form
 
 $$
 V(P)\le E(S),\qquad
-V(P)\ge c\,d(P,Z)^p,
+V(P)\ge c\thinspace d(P,Z)^p,
 \qquad
 \sup_{S\in[L,U]}E(S)<c\rho^p,
 \tag{9}
@@ -796,7 +796,7 @@ replaced by an implicit assumption that the normal form or family bound is avail
 Define the actual orientation count
 
 $$
-\kappa(P)=\#\{\theta_i\bmod\pi/2:i=1,\ldots,11\}.
+\kappa(P)=\lvert\lbrace\theta_i\bmod\pi/2:i=1,\ldots,11\rbrace\rvert.
 $$
 
 The sufficient reduction is **there exists a global minimizing packing with
@@ -961,7 +961,7 @@ resource profiles can remove entire branches before that algebra.
 The family value is the lower envelope over **all** assignments, all separation branches
 and all feasible centre solutions.
 One imported Trump cell and its angle sheet do not provide it.
-The earlier conjecture that a $k$-angle optimum should sit at a codimension-$k$ kink
+The earlier conjecture that a $k$-angle optimum should sit at a codimension-`k` kink
 cannot delete smooth minima, flat faces or degenerate critical sets without proof.
 Nor may an angular grid turn a continuum into finitely many possible optimum angles.
 
@@ -969,7 +969,7 @@ The exact closure contract can be stated compactly.
 Suppose a verified bound gives $s(11)\ge L$, and there is a theorem that **some global
 minimizer** has a representative in a union of declared families
 $\bigcup_{j=1}^{N}\mathcal F_j$. For every family, give a complete child cover including
-all seams, and close every sub-$U$ leaf by one of the admitted arguments above: physical
+all seams, and close every sub-`U` leaf by one of the admitted arguments above: physical
 infeasibility, a direct side inequality, original-program descent, valid routing of
 global minima to a closed family, or a whole-domain inclusion in an admitted local
 endpoint chart. Keep all proof dependencies in a DAG or prove a well-founded reduction
@@ -992,8 +992,8 @@ Instead seek a theorem that every relevant minimizing packing lies in a finite u
 quantitative tubes
 
 $$
-\mathcal T_a=\{P:\ d_{\pi/2}(\theta_i,\alpha_{a,c(i)})\le\delta_a,
-\quad (x_i,y_i)\in R_{a,i}\ \text{for every }i\},
+\mathcal T_a=\lbrace P:\ d_{\pi/2}(\theta_i,\alpha_{a,c(i)})\le\delta_a,
+\quad (x_i,y_i)\in R_{a,i}\ \text{for every }i\rbrace,
 $$
 
 with all necessary assignments, angle parameters, physical alternatives and boundary
@@ -1103,7 +1103,7 @@ identifiers and authorize no enumeration campaign.
 | G8: A useful minimizing-representative angle reduction can be proved in the current band | Continue H-117/H-121 by selecting one complete two-nonaxis-component family and deriving a finite side-nonincreasing angle-merging motion, with release/recontact and endpoint siblings | A uniform motion proves one reduction edge. A configuration meeting its premises with a proved obstruction to every nonincreasing path in the actual allowed path domain rejects that motion claim; this domain may leave the starting family. A high-angle local minimum or trapping inside that starting family alone refutes neither the permitted nonlocal route nor the global existential normal form. Global acceptance needs every alternative or another complete reduction. |
 | G9: A small assembly cover survives after retaining tangential slides | First encode one whole sliding-contact family and its boundary siblings; require the two-square slide control, the actual Trump control, and the n3/n4/n6 distinction between components, points and rattlers | A complete parametrization gives a valid cover for its declared family. A feasible pose satisfying the declared family assumptions but omitted by the parametrization rejects completeness. Recovering Trump alone does not prove a global grammar or its tractability. |
 | G10: Valid resource profiles force a union of tractable angle/role tubes, with all dispersed alternatives closed | At an explicit rational outer side at least $U$, prove a profile exclusion or a tube implication on one complete coarse role domain; then test the claimed angular-thickening inequality against a full-family positive-margin control | A complete conditional tube theorem is information unavailable from an exact-angle ansatz alone. One feasible pose in its declared domain outside the tube union refutes that all-feasible conditional claim; an outer relaxation survivor is merely unresolved. A claim about every global minimizer needs a global-minimizing counterexample; an existential claim needs every proposed representative excluded. |
-| G11: An exact map of one continuous restricted family can close its boundary obligations economically | Use the BC-282 design as a representation control, then declare a fresh useful domain and prove one full facet-transition/interval-chain template including births, ties, legal touches and singleton fibers | A checked closed-domain certificate supplies one honest costed family. A missing legal boundary pose rejects the cover; a diagram, finite chamber count or successful sample does not accept it. No old $3.84$ theorem is relabelled as a near-$U$ result. |
+| G11: An exact map of one continuous restricted family can close its boundary obligations economically | Use the BC-282 design as a representation control, then declare a fresh useful domain and prove one full facet-transition/interval-chain template including births, ties, legal touches and singleton fibers | A checked closed-domain certificate supplies one honest costed family. A missing legal boundary pose rejects the cover; a diagram, finite chamber count or successful sample does not accept it. No old $3.84$ theorem is relabelled as a near-`U` result. |
 
 For discussion, G10 followed by a small G9/G11 family appears the most direct way to
 connect the newly verified research to the owner’s structural intuition.

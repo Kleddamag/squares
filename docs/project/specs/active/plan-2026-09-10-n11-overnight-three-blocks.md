@@ -45,7 +45,7 @@ A global certificate charges every admissible snapped core at least one and has 
 packing charge budget below eleven.
 Its direction-net transfer must cover all physical parent orientations.
 A conditional certificate instead covers a declared residual domain and has budget below
-`11-m` after `m` distinct owners.
+$11-m$ after $m$ distinct owners.
 Global completion requires every hypothetical physical packing to have some valid
 excluded owner selection; counts of overlapping raw labels do not count physical
 packings.
@@ -64,8 +64,8 @@ proves the ordinary exact lower bound `s(11) >=
 955000*sqrt(518400042893309449)/179696714646249` at V4/C5 by dilation and rational
 density. The method does not establish the separate strict inequality beyond this
 constant; this does not qualify the proved lower bound.
-T-023 excludes a specified owner case at `96/25`. Exp153 rules out adding any single
-site to the fixed five-dot pattern `D` on one wall-patch relaxation.
+T-023 excludes a specified owner case at $96/25$. Exp153 rules out adding any single
+site to the fixed five-dot pattern $D$ on one wall-patch relaxation.
 It does not rule out moved dots, arbitrary weighted extensions, threshold charges, or
 stronger necessary parent domains.
 
@@ -79,13 +79,13 @@ A separate exact reader admitted all 2,566 atom orbits, with 935 tight rows and 
 rows with slack. This establishes the all-site obstruction for the fixed atom set and
 declared core domain.
 Independent reconstruction of G13’s full 280-placement support and seven priced
-geometric rows also verifies the upper bound `2605263163/250000000`; the selected-row
+geometric rows also verifies the upper bound $2605263163/250000000$; the selected-row
 lower candidate remains outside that admission and fails the full-depth constraint.
 The author’s second structural-site LP ended in a container restart without a final
 value, after remaining unfinished beyond 4,260 seconds.
 
 Separate Astra Max review confirmed H157’s six neutral subclasses at ten and two
-improved subclasses at `19/2`. Its maximum-based rejection stands.
+improved subclasses at $19/2$. Its maximum-based rejection stands.
 Two intersecting cases invalidate the original positive-distance explanation; its
 mechanism record is corrected separately.
 A patch inside a named neutral core gives survivor weight at least ten; equality
@@ -244,13 +244,13 @@ An empty chosen list, resource refusal or partial arrangement likewise does not 
 the claim. This does not reconstruct BC232’s lost historical dual or test conditional
 owner pricing.
 
-**Parent-domain comparison.** Prefer global `d=D` initially; no new local angle-cell
+**Parent-domain comparison.** Prefer global $d=D$ initially; no new local angle-cell
 engine is needed. After independent proof admission, use
 `e=max(B*(abs(rx)+abs(ry))/2, 1/2, (S-T*D)/(2+D^2))`, with the contract’s definitions of
-`S,T`. Intersect with the old centre domain, preserve closed point/segment sets, empty
+$S,T$. Intersect with the old centre domain, preserve closed point/segment sets, empty
 frames, every frame source, and physical corner reflections.
 
-Freeze exp151’s saved strict escape and tuple `(0,0,0,7)`. A prospective extension of
+Freeze exp151’s saved strict escape and tuple $(0,0,0,7)$. A prospective extension of
 the existing contract can first check that residual core’s own necessary parent centre
 box: the centre-preserving transfer applies to residuals as well as owners.
 Record a violation there separately from owner incompatibility.
@@ -293,7 +293,7 @@ instances when `t <= sum(a) < 2*t`, because the floor then equals the threshold
 indicator. K5 remains open until its source mapping, readers, controls and admission are
 complete; floor implementation alone cannot close the bead.
 Admit a separate atom with finite distinct sites, nonnegative integer multiplicities
-`a_i`, integer `t>0`, and nonnegative rational weight `w`. Its charge is
+$a_i$, integer $t>0$, and nonnegative rational weight $w$. Its charge is
 `w*floor(sum_inside a_i/t)` and its budget is `w*floor(sum_all a_i/t)`. Disjoint cores
 have disjoint resource traces, and
 `sum floor(A_i/t) <= floor(sum A_i/t) <= floor(sum_all a_i/t)` proves the budget.
@@ -302,9 +302,9 @@ geometrical logic; they do not currently accept floor semantics.
 Require exact declared-budget replay and nondecreasing boundary charge.
 
 Preserve ordinary threshold atoms as binary charges.
-The bead’s suggested automatic replacement of `(S,k,w)` by floor charge with `a=1,t=k`
+The bead’s suggested automatic replacement of $(S,k,w)$ by floor charge with $a=1,t=k$
 changes semantics when `|S|>=2k`. A two-of-five atom with four sites contained must
-charge `w`, while the corresponding floor atom charges `2w`. The two-of-three legacy
+charge $w$, while the corresponding floor atom charges $2w$. The two-of-three legacy
 certificates would hide this error.
 Use explicit atom kinds or modes and include that adversarial control.
 Other controls cover budget tampering, multiplicities, D4 transport, closed tangency,
@@ -320,7 +320,7 @@ remain usable through the original admitted path.
 
 **A new comparison after A6 reconciliation.** The structural-site work in `think-q0f4`
 is reported complete.
-Do not repeat the proposed A4 comparison at `153/40` or reuse its closed bead.
+Do not repeat the proposed A4 comparison at $153/40$ or reuse its closed bead.
 The independently replayed depth-one family and atom inequalities constrain the retained
 atom set and core domain.
 They do not decide a changed atom family.
@@ -340,7 +340,7 @@ or other premise must be explicit and checked first.
 The [independent scope review](../../reviews/review-2026-09-10-n11-a6-scope-and-plan.md)
 derives these conditions.
 
-A separately registered comparison at `383/100` remains an alternative, with a fresh
+A separately registered comparison at $383/100$ remains an alternative, with a fresh
 bead and H-item. Its question is whether a frozen structural site bundle improves a
 specified restricted LP beyond an ordinary witness bundle.
 Start both arms from the same saved state and same proposed dual; specify the container,
@@ -436,7 +436,7 @@ the interval already exceeds eight blocks.
 
 | Evidence available at the checkpoint | Next instrument or target | Exact terminal scope |
 | --- | --- | --- |
-| An unconditional candidate at `383/100` with admitted charges | Freeze the candidate once; run complete all-pose gate and physical transfer review | A valid budget below eleven gives a global improvement. An exact escaped core refutes this candidate; a budget/reader/deadline failure does not refute the language. |
+| An unconditional candidate at $\frac{383}{100}$ with admitted charges | Freeze the candidate once; run complete all-pose gate and physical transfer review | A valid budget below eleven gives a global improvement. An exact escaped core refutes this candidate; a budget/reader/deadline failure does not refute the language. |
 | A site comparison improves only a restricted program | One separately budgeted row-completion attempt with the same frozen site/atom family | A fully verified certificate is progress; an exact minimum or obstruction is limited to that family. Partial completion remains partial. |
 | A source-admitted restricted-domain threshold gate exists | Test H155 on one explicitly bound qualifying four-owner class | Accept only budget below seven and complete 361-direction strict-residual coverage by both routes, with the declared rows-complete point baseline at least seven. An exact obstruction feasible for the whole declared threshold language refutes only that class, not existential H155. An escaped core refutes only its frozen candidate certificate; unsuccessful search is unresolved. |
 | Parent restrictions eliminate the fixed escape | Admit a changed residual-domain cover test, or prove a positive-area eliminated neighbourhood from a strictly negative margin | Re-evaluate the changed domain; exp153’s old negative and D4 masks do not automatically transfer. A neighbourhood or one excluded case is conditional progress. |

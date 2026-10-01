@@ -87,10 +87,10 @@ mandatory.
 ## Measurement contract
 
 BC-109 first resolves SVG transforms into global coordinates and identifies the square
-container rectangle `(x0, y0, W, H)`. For candidate mathematical side `L`, it maps a
-global SVG point `(X,Y)` to `(L * (X - x0) / W, L * (y0 + H - Y) / H)`. Thus the
-mathematical frame has lower-left origin, wall-aligned axes, container `[0,L]` by
-`[0,L]`, and unit squares constrained to side exactly 1; the released gain and every
+container rectangle `(x0, y0, W, H)`. For candidate mathematical side $L$, it maps a
+global SVG point $(X,Y)$ to `(L * (X - x0) / W, L * (y0 + H - Y) / H)`. Thus the
+mathematical frame has lower-left origin, wall-aligned axes, container $[0,L]$ by
+$[0,L]$, and unit squares constrained to side exactly 1; the released gain and every
 threshold are in these unit-square-length coordinates, not pixels or viewBox units.
 Vertex correspondence follows the source polygon order after testing the four cyclic
 shifts and both windings; an unresolved tie is a typed ambiguity, not a smaller error.
@@ -100,16 +100,16 @@ SVG coordinates and retains the published decimal itself as its nominal point.
 A rigid unit-square pose is compatible only when the inverse image of every one of its
 matched mathematical corners lies in the corresponding source rectangle; an empty
 compatible-pose set is a precision refusal.
-For square `i` and corner `k`, let `C[i,k]` contain that mathematical corner over all
+For square $i$ and corner $k$, let `C[i,k]` contain that mathematical corner over all
 compatible poses and sides.
-The corner-ambiguity statistic is the maximum, over `i,k`, of
+The corner-ambiguity statistic is the maximum, over $i,k$, of
 `sup(norm2(p - q) for p,q in C[i,k])`. The published-to-rigid displacement is the
 maximum distance, over compatible poses, from a mathematical corner to the affine image
-of its nominal published decimal at the same `L`. A unique projection can therefore have
+of its nominal published decimal at the same $L$. A unique projection can therefore have
 zero ambiguity but still fail on displacement.
 
-For a candidate side `L` and square corners `P[i]`, the signed wall clearance is
-`min(p.x, p.y, L - p.x, L - p.y for p in P[i])`. For unit axis `a`, define
+For a candidate side $L$ and square corners `P[i]`, the signed wall clearance is
+`min(p.x, p.y, L - p.x, L - p.y for p in P[i])`. For unit axis $a$, define
 `axis_gap(a,A,B) = max(min(a dot B) - max(a dot A), min(a dot A) - max(a dot B))`. The
 signed pair separation is the maximum `axis_gap` over the edge-normal axes of both
 squares. It is positive for separation, zero for contact, and negative for overlap.

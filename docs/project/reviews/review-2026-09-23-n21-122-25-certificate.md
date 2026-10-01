@@ -41,7 +41,7 @@ the mass alone. The certificate says nothing about $n=20$, where T-021’s $97/2
 
 | Severity | Finding |
 | --- | --- |
-| none | Declaring the least cell mass changed one field, from `null` to `250001/250000`; the decider treats it as a declaration to check, never an input. |
+| none | Declaring the least cell mass changed one field, from `null` to $\frac{250001}{250000}$; the decider treats it as a declaration to check, never an input. |
 | none | The certificate has no degenerate seam. Set B’s interval stall came from 616 seams at direction 0, all from window rows exactly $B$ apart. |
 | none | Every field is a rational string; floats never enter the decision. |
 | minor | The run relaunched after commit `84e410691`, not `69dac09a`; the tool path is byte-identical across both, so either may be cited with that note. |

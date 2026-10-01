@@ -136,8 +136,8 @@ They never construct its field element, point sets, event cells, or target geome
 
 The source CLI returned source side `poly[2,4/3]`, ten and twelve points, no escapes,
 and all seven obligations true.
-Its reachable event-product stratum counts by source dimension are `[280, 526, 247]` at
-0° and `[406, 841, 444]` at 45°, matching the
+Its reachable event-product stratum counts by source dimension are $[280, 526, 247]$ at
+0° and $[406, 841, 444]$ at 45°, matching the
 [retained source control](bc-255-theorem3-source-control-slice-01.md#execution-record).
 The six 45° avoiding strata and one canonical avoiding stratum are unchanged.
 Clipping can lower a stratum’s dimension, so these are not counts of the final clipped

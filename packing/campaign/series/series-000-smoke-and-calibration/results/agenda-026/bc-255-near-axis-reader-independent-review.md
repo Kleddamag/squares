@@ -52,8 +52,8 @@ The producer’s 864 triangle-vertex obligations are admission metadata; the rea
 not reuse their algebra or truth values.
 
 The power-to-Bernstein transform correctly substitutes $t=a+(b-a)z$ and then uses
-$z^j=\sum_{i=j}^n {\binom{i}{j}}/{\binom{n}{j}}\,B_i^n(z)$. Nonnegative coefficients
-certify a whole closed interval, including zero contacts.
+$z^j=\sum_{i=j}^n {\binom{i}{j}}/{\binom{n}{j}}\thinspace B_i^n(z)$. Nonnegative
+coefficients certify a whole closed interval, including zero contacts.
 Depth-12 exact bisection preserves the shared child endpoint.
 A negative endpoint or depth exhaustion returns only an uncertified obligation.
 This sufficient test cannot turn incomplete evidence into a disproof or a positive

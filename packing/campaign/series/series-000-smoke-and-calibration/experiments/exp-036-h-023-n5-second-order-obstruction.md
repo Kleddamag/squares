@@ -73,32 +73,32 @@ branchwise linearization.
 This round asks whether that specific direction is a true fixed-side Bouligand tangent.
 It does not ask whether all directions outside exp-034’s sheet are obstructed.
 
-Write `r = sqrt(2)`, `S = 1 + 5r/4`, `w_i = cos(theta_i) + sin(theta_i)`, and
+Write `r = sqrt(2)`, $S = 1 + 5r/4$, `w_i = cos(theta_i) + sin(theta_i)`, and
 `delta = theta_3 - theta_4`. A sequence normalized to the displayed direction has
 
-`w_i = r - (r/2)t^2 + o(t^2)` and `delta = o(t)`.
+$w_i = r - (r/2)t^{2} + o(t^{2})$ and `delta = o(t)`.
 
 The checker must bind the source direction, square 2’s two lower walls, square 3’s two
-upper walls, pair `(2,4)`’s unique zero owner axis, and both zero owner axes for pair
-`(3,4)` at A, the interior, and B. Continuity then leaves only two branches.
+upper walls, pair $(2,4)$’s unique zero owner axis, and both zero owner axes for pair
+$(3,4)$ at A, the interior, and B. Continuity then leaves only two branches.
 
 For the owner-4 branch, acceptance requires the necessary inequality
 
 `S >= 1 + w_3/2 + 3/(2w_4)`
 
-to exceed the fixed side by the exact positive coefficient `(r/8)t^2 + o(t^2)`. For the
-owner-3 branch, the exact common-angle upper-minus-lower coefficient must be `-1/4`; its
-relative-angle cusp must have positive margin `1/2 - |r/2 - 3/4| = r/2 - 1/4`, so
+to exceed the fixed side by the exact positive coefficient $(r/8)t^{2} + o(t^{2})$. For
+the owner-3 branch, the exact common-angle upper-minus-lower coefficient must be $-1/4$;
+its relative-angle cusp must have positive margin $1/2 - |r/2 - 3/4| = r/2 - 1/4$, so
 `delta = o(t)` cannot repair the deficit.
 
-The controls reject a changed common-angle direction, a missing pair `(2,4)` row, a
-missing pair `(3,4)` owner branch, nonpositive owner-4 or relative-angle margins, and a
+The controls reject a changed common-angle direction, a missing pair $(2,4)$ row, a
+missing pair $(3,4)$ owner branch, nonpositive owner-4 or relative-angle margins, and a
 component-isolation overclaim.
 Generation and replay had independent 30-second caps.
 
 The criterion is met.
 The owner-4 branch requires the fixed side to exceed itself by
-`(sqrt(2)/8)t^2 + o(t^2)`. The owner-3 upper-minus-lower gap is `-(1/4)t^2 + o(t^2)`
+`(sqrt(2)/8)t^2 + o(t^2)`. The owner-3 upper-minus-lower gap is $-(1/4)t^{2} + o(t^{2})$
 before the nonhelpful relative-angle cusp, whose exact positive margin is
 `sqrt(2)/2 - 1/4`. Continuity exhausts the two owner-axis choices at every declared
 stratum. All six controls reject, and independent regeneration matches the retained

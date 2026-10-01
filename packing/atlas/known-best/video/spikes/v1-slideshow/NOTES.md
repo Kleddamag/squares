@@ -21,13 +21,13 @@ writes). The record’s contract string is `v1-candidate-r4`.
 1. **The degree note sits under the value it annotates.** In revision 3 the five value
    slots were always side, exact, degree note, lower, lower’s note, so on the 36 n that
    have a degree but no printed exact form (n = 11 and 28 among them) `ALGEBRAIC DEGREE
-   d` sat under an empty slot, directly above `s(n) ≥ …`, and read as that line’s label.
-   Now, when there is no exact form, the note goes on the line directly under the side
-   value and the empty exact slot follows it; with an exact form the order is as before.
-   The slots keep their heights (50 + 58 + 30 px above the lower line in either order),
-   so the lower line and everything below it do not move: the survey now records the
-   `.line.lower` top for every n and finds the one value, 376, over all 324 (the test
-   asserts it), and on the stills the lower line’s ink is rows 383–425 and its note
+   d` sat under an empty slot, directly above $s(n) \ge \ldots$, and read as that line’s
+   label. Now, when there is no exact form, the note goes on the line directly under the
+   side value and the empty exact slot follows it; with an exact form the order is as
+   before. The slots keep their heights (50 + 58 + 30 px above the lower line in either
+   order), so the lower line and everything below it do not move: the survey now records
+   the `.line.lower` top for every n and finds the one value, 376, over all 324 (the
+   test asserts it), and on the stills the lower line’s ink is rows 383–425 and its note
    432–450 at n = 11, 28 and 147 alike.
    The degree note’s ink is rows 294–312, directly under the side line’s 245–287, at n =
    11 and 28; at n = 147 the exact line (294–341) keeps its place and the note follows
@@ -63,17 +63,17 @@ small things).
 
 What changed, per note:
 
-1. **`n =` on its own line above the numeral.** A `<p class="lead">` at 34 px — italic
-   PT Serif `n`, upright `=` 0.24 em after it, in the notes’ grey `#47525f` — in a 36 px
+1. **$n =$ on its own line above the numeral.** A `<p class="lead">` at 34 px — italic
+   PT Serif $n$, upright `=` 0.24 em after it, in the notes’ grey `#47525f` — in a 36 px
    slot directly above the numeral’s slot, both flush left at x = 1080. The revision 2
    centring (the metric lifts) is gone.
-   Measured on the stills: the `n =` ink ends at y = 139, the numeral’s ink begins at
+   Measured on the stills: the $n =$ ink ends at y = 139, the numeral’s ink begins at
    151–155 (a 12–16 px gap with nothing inked between, checked in the numeral’s
-   columns), and the two blocks’ left edges coincide; the ink of the `n` and of the
-   first digit differ by the digits’ own side bearings (3–9 px, the `1` widest).
+   columns), and the two blocks’ left edges coincide; the ink of the $n$ and of the
+   first digit differ by the digits’ own side bearings (3–9 px, the $1$ widest).
 
 2. **A lighter numeral.** PT Serif Regular (400) at 96 px, letter-spacing 0, in an 84 px
-   slot: the lining digits’ ink is 67–73 px tall (the `5` overshoots), so the slot holds
+   slot: the lining digits’ ink is 67–73 px tall (the $5$ overshoots), so the slot holds
    it, and it is the same slot for every n.
 
 3. **Scarlet means new.** `#a3123f` is written once, in
@@ -97,7 +97,7 @@ What changed, per note:
    - 28: the kicker, the degree and lower-bound notes, `OPEN`, the record block (labels
      and values), the source-URL line, the footer, the progress bar’s three numbers
      (these were 17–22).
-   - 34: the `n =` line, the badge rows, the open rows (were 24).
+   - 34: the $n =$ line, the badge rows, the open rows (were 24).
    - 44: the side, exact and lower lines (were 56 / 42).
    - 96: the numeral (was 132).
 
@@ -137,10 +137,10 @@ What changed, per note:
    certificate, 2026 (unavoidable points)”) and n = 307’s Found (three names).
 
    Progress bar: numbers at 28 px, the riding n on a line at y = 1008–1038, the track at
-   1040, `1` and `324` centred on the track 18 px outside its ends.
+   1040, $1$ and $324$ centred on the track 18 px outside its ends.
    The riding n is now held inside the track at the ends (`render()` clamps its centre
    to [w/2, W − w/2]) so it never runs into the end labels — centred on the fill’s edge,
-   the `324` had overlapped the `324` beside it; the tightest gap is now 18 px, at n = 1
+   the $324$ had overlapped the $324$ beside it; the tightest gap is now 18 px, at n = 1
    and 324. In the stub harness, which has no layout, the clamp falls back to the
    percentage.
 
@@ -159,7 +159,7 @@ spread over 1 px.
 between its sentences, the exact line’s baseline, the riding n’s distance from the end
 labels, and the record block’s height and row count; the headline check looks for each
 mark’s ink in its block’s rows, not its span’s box (a span’s box is the font’s content
-area, and the 96 px numeral’s reaches up into the `n =` line).
+area, and the 96 px numeral’s reaches up into the $n =$ line).
 `test_candidate.py` runs the survey whenever Playwright imports.
 
 Left as is, and worth a decision: the two PT Serif 700 faces are still embedded (58 KB
@@ -180,12 +180,12 @@ the new `render_review.py` measured every n headless and wrote the screenshots i
 
 What changed, per request:
 
-1. **`n =` centred on the numeral.** The italic `n` and the `=` are lifted (by
+1. **$n =$ centred on the numeral.** The italic $n$ and the `=` are lifted (by
    `position: relative`, so the numeral’s baseline and line box do not move) until each
    mark’s own ink centre sits on the digits’ cap centre.
    The lifts are computed from the embedded PT Serif faces’ ink metrics (digits 0..712,
    italic n −6..512, equals 237..450 font units) and emitted into the CSS;
-   `render_review.py` checks the pixels: the `n` and the `=` centre at y = 169.0, the
+   `render_review.py` checks the pixels: the $n$ and the `=` centre at y = 169.0, the
    numeral at 170.0.
 2. **Notes always below.** `ALGEBRAIC DEGREE d` and `PROVED LOWER BOUND` each have their
    own 24 px line directly under the value line they annotate, flush left with it, on
@@ -198,7 +198,7 @@ What changed, per request:
 3. **The poster’s badges.** Each status row now carries the poster’s badge as inline
    SVG: the 19-unit rounded box (`rx` 4.5, stroke 1.2, glyph at 15 units), scaled as a
    whole to 27 px; solid = `#5c6673` with a white glyph, muted = outlined; the star is
-   `SUMMARY_STAR_POINTS` at the poster’s `0.92` span.
+   `SUMMARY_STAR_POINTS` at the poster’s $0.92$ span.
    Glyphs are paths, not text: `O`, `=`, `R`, `?` are extracted at build time from the
    embedded Source Sans 3 Variable instanced at weight 650 (the poster’s `font-weight`),
    and `≈` from KaTeX_Main, which the latin subsets lack, drawn at 13 units with a
@@ -223,7 +223,7 @@ What changed, per request:
 5. **Faster.** Defaults 1.5 + 0.5 (still adjustable); readout and length line show the
    new total.
 6. **Progress bar.** Inside the stage at the bottom: a 4 px track from x = 90 to 1830 at
-   y = 1036, the fill in `#47525f`, `1` and `324` outside the ends, and the current n
+   y = 1036, the fill in `#47525f`, $1$ and $324$ outside the ends, and the current n
    riding above the fill’s leading edge.
    Position = (n − 1 + fade progress) / 323, clamped, so it advances across each fade
    and rests through each dwell and is exactly 1 from the last slide’s dwell on;
@@ -256,8 +256,8 @@ Also fixed on the way, both v1 defects the review did not see:
 The panel had to fit the new rows in 880 px: the numeral is 132 px (was 144), the value
 lines 56/42 px, the status rows 24 px on a 34 px pitch, the record 21 px on 27 px.
 Measured over all n, the panel’s deepest point is y = 966 (n = 268, eight record lines)
-against the footer at 972, and the nested radical `√(1 + √2)` (n = 54, 107, 178, 267) is
-lifted by the 8 px its ascent would otherwise push the baseline down.
+against the footer at 972, and the nested radical $\sqrt{1 + \sqrt{2}}$ (n = 54, 107,
+178, 267) is lifted by the 8 px its ascent would otherwise push the baseline down.
 
 `render_review.py` (needs the venv’s Playwright) seeks every n, measures the panel’s
 bottom and right edges and any intrusion of a value line into its note, checks the bar
@@ -340,11 +340,11 @@ Main-Regular slot of its composite math text face.
 This is the same composition `katex-text-face.css` uses: the reading face claims Latin,
 the KaTeX face follows in the stack for what it does not claim.
 
-The split: PT Serif carries the headline numeral (400 since revision 3), the `s(n)`
+The split: PT Serif carries the headline numeral (400 since revision 3), the $s(n)$
 lines, the exact form and the lower bound; Source Sans 3 (weight 550, the kpress medium)
 carries the kicker, the degree and lower-bound notes, the status labels, the record
 block, the stage footer and the controls.
-The `s` in `s(n)` is PT Serif italic followed by a 0.055 em kern
+The $s$ in $s(n)$ is PT Serif italic followed by a 0.055 em kern
 (`.fn i { margin-right: 0.055em }`), the poster’s `SUMMARY_ITALIC_KERN` and the
 math-text-face plan’s `\mkern1mu` in CSS form.
 
@@ -352,15 +352,15 @@ Radicals are drawn, not typed: each `√` is KaTeX’s `sqrtMain` path (resolved
 vendored `katex.min.js` with its default parameters) in a `preserveAspectRatio="xMinYMin
 slice"` SVG behind the radicand, so the vinculum is part of the surd and cannot
 misalign. The paddings (0.03 em top, 0.16 em bottom, 0.92 em radicand offset, a `tall`
-variant for the four nested `√(1 + √2)` forms) were computed from PT Serif’s metrics
-(ascent 1039, descent 286, cap height 700), not checked by eye.
-`--radical text` produces the plain `7 + 4√2` / `√(1 + √2)` notation if the drawn
-radical does not read well.
+variant for the four nested $\sqrt{1 + \sqrt{2}}$ forms) were computed from PT Serif’s
+metrics (ascent 1039, descent 286, cap height 700), not checked by eye.
+`--radical text` produces the plain $7 + 4\sqrt{2}$ / $\sqrt{1 + \sqrt{2}}$ notation if
+the drawn radical does not read well.
 Fractions are stacked (`.frac`, 0.62 em, `vertical-align: middle`).
 
 ## What the facts panel shows and where each fact comes from
 
-Fixed slots (the panel does not jump between n): kicker, the `n =` line, the numeral,
+Fixed slots (the panel does not jump between n): kicker, the $n =$ line, the numeral,
 five line slots (side; exact form and its degree note, the note first and the empty
 exact slot after it when there is no form, since revision 4; lower bound and its note —
 empty slots are kept), three badge rows, the `OPEN` heading and three rows, then a
@@ -371,10 +371,10 @@ nothing re-derived:
 
 | On screen | Field |
 | --- | --- |
-| `s(n) = 12.656854` or `s(n) ≤ …` | `side.display`, `side.relation` (asserted consistent) |
-| `= 7 + 4√2` | `exactness.exact_form`, parsed by a small grammar (`INT`, `(p/q)`, `sqrt(...)`, juxtaposition, `+`/`-`) and evaluated against `side.value` to 10⁻⁹ as a build assertion; bare integers are not repeated |
+| $s(n) = 12.656854$ or $s(n) \le \ldots$ | `side.display`, `side.relation` (asserted consistent) |
+| $= 7 + 4\sqrt{2}$ | `exactness.exact_form`, parsed by a small grammar (`INT`, `(p/q)`, `sqrt(...)`, juxtaposition, `+`/`-`) and evaluated against `side.value` to 10⁻⁹ as a build assertion; bare integers are not repeated |
 | `ALGEBRAIC DEGREE 2` | `exactness.degree`, shown when ≥ 2 as on the card |
-| `s(n) ≥ 12.135528` + “proved lower bound” | `lower.display` when `lower.shown`; the digits are ink on every n (revision 3) |
+| $s(n) \ge 12.135528$ + “proved lower bound” | `lower.display` when `lower.shown`; the digits are ink on every n (revision 3) |
 | status badges | `badges[].glyph` and `style`, drawn as the poster draws them, the star from `lower.first_proved_here` first; labelled `optimal`, `exact`, `numerical`, `rigid`, `rigid (catalogue)`, `new lower bound` (`BADGE_LABELS`), the record’s `meaning` kept for the spoken mirror |
 | `OPEN` rows | `optimality.status`, `exactness.state`, `rigidity.state`, as listed under Revision 2, worded `optimality`, `exact value`, `rigidity` since Revision 3 |
 
@@ -449,13 +449,13 @@ If so, drop it (`setSettle(false)` or the checkbox) — it is one line.
 `test_candidate.py`, run with `packing/.venv/bin/python3`: builds twice into temp
 directories and asserts byte identity, and that the shipped `index.html` is that same
 build; 324 slides, each with n polygons of 4 corners, n fill digits, a facts template
-and an `s(n)` line; no `http://`/`https://` anywhere outside the record, and inside it
+and an $s(n)$ line; no `http://`/`https://` anywhere outside the record, and inside it
 only at `slides[i].src` (324 of them); no `fetch(`, `XMLHttpRequest`, `import(`,
 `innerHTML`, `eval(`, external `src`/`href` (only `#surd` and the `#badge-*` symbols),
 `Date.now`, `Math.random`, `setInterval`; the CSP names no host; for every n, the badge
 rows are exactly the record’s (star, then `badges[]`) with their short labels, the
 `OPEN` group is present with the rows the record implies, the notes are on their own
-lines, the five value slots are in order, the `n =` line is the block before the
+lines, the five value slots are in order, the $n =$ line is the block before the
 numeral’s, and the source-URL line closes the panel; no polynomial row; the numeral’s
 rule is weight 400 at 96 px; `a3123f` occurs once outside the fonts and the record, on
 the star row, and the star is `currentColor`; every stage `font-size` is an absolute px
@@ -474,7 +474,7 @@ Visual verification (revision 2): `render_review.py` with the venv’s Playwrigh
 pinned headless shell, offline; the captures are in `review/`, looked at and corrected
 twice (the blank-layer defect above, then the radical and fraction lines clearing their
 notes). Revision 3: the `r3-*.png` stills, looked at and corrected twice (the riding n
-against the `324`, then the exact line’s three baselines).
+against the $324$, then the exact line’s three baselines).
 
 ## What a capture pipeline would look like
 

@@ -540,7 +540,7 @@ from `packing/` and therefore omit the leading `packing/`.
 - `packing/campaign/series/series-000-smoke-and-calibration/results/bc-200-state-191-50.json`
   is the warm state. Its SHA-256 is
   `8df0b9aa530149b44367842a2e6389949b27189df038d68e9d1afa8fd87df8c6`. It holds side
-  `191/50`, square side `9977/10000`, 12,761 sites, 9,868 rows, nine iterations, and
+  $191/50$, square side $9977/10000$, 12,761 sites, 9,868 rows, nine iterations, and
   best iteration 8.
 - `packing/campaign/series/series-000-smoke-and-calibration/results/bc-200-family-191-50.json`
   and
@@ -550,13 +550,13 @@ from `packing/` and therefore omit the leading `packing/`.
   is diagnostic context only.
 - `packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-064-h-063-two-threshold-class-program.md`
   is the retired class-language control.
-  Its `11.606445` result and `3.876681` ceiling forbid reopening that formulation as a
+  Its $11.606445$ result and $3.876681$ ceiling forbid reopening that formulation as a
   fallback.
 
 The retained 3.82 reading is `9.907905594982566 <= nu* <= tau* <= 11.055616942909815`,
-of width `1.147711347927249`. The continuation earns another four-CPU-hour block only
+of width $1.147711347927249$. The continuation earns another four-CPU-hour block only
 when `new_width <= 0.75 * old_width`, equivalently at width at most
-`0.86078351094543675` for this checkpoint.
+$0.86078351094543675$ for this checkpoint.
 An upper endpoint counts only from an iteration whose row loop reports
 `rows_converged: true`; keep its computational status distinct from the exact
 `verify_ceiling` lower endpoint.
@@ -569,7 +569,7 @@ An upper endpoint counts only from an iteration whose row loop reports
 - `packing/src/sqpack/fractional/interval.py` is the second, interval decision route.
 - `packing/src/sqpack/fractional/classcert.py` already supplies exact rational
   angle-cell boundaries (`cell_boundary_tangent`), folded-cell conventions, and the
-  squared rational `cos + sin` predicate.
+  squared rational $\cos + \sin$ predicate.
   Its two-threshold optimization result is retired; its cell geometry is reusable.
 - `packing/src/sqpack/fractional/cutting.py` and
   `packing/devtools/run_fractional_cutting.py` own the 3.82 cutting state and exact
@@ -598,7 +598,7 @@ An upper endpoint counts only from an iteration whose row loop reports
   importing `sqpack`; BC-238 uses it as the source-distinct implementation route.
 
 The current `Certificate`, exact sweep, and interval route all carry one `square_side`.
-Adaptive `B_k` is therefore a theorem, serialized-contract, loader, event-sweep,
+Adaptive $B_k$ is therefore a theorem, serialized-contract, loader, event-sweep,
 interval, and mutation-test change.
 It is not a generator option.
 BC-230 must specify a complete folded cover of `[0, pi/4]`, exact endpoint and seam
@@ -661,17 +661,17 @@ The cheapest checks produced these receipts from `packing/`:
 
 - the retained state hash is
   `8df0b9aa530149b44367842a2e6389949b27189df038d68e9d1afa8fd87df8c6`; the production
-  cutting driver loaded side `191/50`, 12,761 sites, 1,657 orbits, and 9,868 rows
+  cutting driver loaded side $191/50$, 12,761 sites, 1,657 orbits, and 9,868 rows
   against the declared 181-direction net, then stopped at iteration cap zero;
 - the `--help` surfaces for `run_fractional_cutting`, `run_fractional_colgen`,
   `declare_least_cell_mass`, and `decide_certificate` accept every flag used below;
 - the integrated contract-seam slice, including the declaration and strict-JSON
   controls, passed 88 tests with two exhaustive tests deselected;
 - Massaccesi’s archived verifier returned `CERTIFICATE CONDITIONS VERIFIED` with 168
-  atoms, mass `203/12`, and least score `1`; and the source-distinct `check.py` rebuilt
+  atoms, mass $203/12$, and least score $1$; and the source-distinct `check.py` rebuilt
   the control bytes and accepted both its n=11 and n=17 controls;
 - `minimal_verify.py --unpinned` accepted the live 1,121-atom scalar n=11 certificate
-  with least covered mass `4001/4000` in 48.7 seconds, confirming the independent scalar
+  with least covered mass $4001/4000$ in 48.7 seconds, confirming the independent scalar
   entry point that BC-232 and BC-233 candidates use; and
 - zero-budget colgen probes exercised both the unseeded screen and the
   `--seed-certificate ... --seed-map centre` path.
@@ -693,9 +693,9 @@ Any future summary containing `Infinity` or `NaN` is a technical failure, not a 
 
 A reviewer’s timing run on 2026-09-05 (`think-kht8`) executed the BC-233 inset-`1/2`
 screen template below unchanged, writing outside the reserved root on a four-core macOS
-host: the row loop converged in 25 LP rounds at objective `78/7 = 11.142857`, the
+host: the row loop converged in 25 LP rounds at objective $78/7 = 11.142857$, the
 restricted optimum exp-060’s iteration 0 reached on this grid, a 196-atom candidate of
-rationalised mass `11142897/1000000` was emitted, and the process took 191.0 s of wall
+rationalised mass $11142897/1000000$ was emitted, and the process took 191.0 s of wall
 including its final `check_ceiling` pass, inside the 540 s deadline.
 That is a timing receipt for one host, not a scientific result: the candidate was
 neither declared, decided, nor retained.
@@ -792,7 +792,7 @@ BC-231 does not open before the theorem is reviewed and frozen at the hour-four 
 
 | Active Portfolio Time | Manager / BC-230 | BC-232 process | BC-233 processes |
 | --- | --- | --- | --- |
-| 0--15 min | Verify packet hashes, create the reserved output root, refuse reused stems, and freeze accept rules and worker write scopes. | Load the JSON state, confirm its 181-direction compatibility, and launch leg 1. | Run the n17 source control; record that published `M` is the doubled margin. Confirm the strict-JSON deadline control, while keeping every deadline stop time-limited and ineligible for comparison. |
+| 0--15 min | Verify packet hashes, create the reserved output root, refuse reused stems, and freeze accept rules and worker write scopes. | Load the JSON state, confirm its 181-direction compatibility, and launch leg 1. | Run the n17 source control; record that published $M$ is the doubled margin. Confirm the strict-JSON deadline control, while keeping every deadline stop time-limited and ineligible for comparison. |
 | 15--45 min | Draft the lemma, serialized fields, seam rules, scalar specialization, and refusal matrix. | Run leg 1. | Run the three one-round, equal-grid inset screens sequentially; choose only among candidates that were emitted. |
 | 45--87 min | Complete the contract and turn every premise into a BC-231 positive or mutation test. | Run leg 1. | Run the selected released seed and unseeded control concurrently for the same 42-minute deadline. |
 | 87--105 min | Freeze the author draft for review. | Run leg 1. | Compare only equal-status outputs; run quick refusals and reserve a full decision for any mass below 11. |
@@ -844,21 +844,21 @@ the current one-body formulation at 3.82. Also stop on a row-converged objective
 a candidate for that bridge, not a bound.
 Do not apply the width rule at the hour-four gate after only 210 CPU-minutes.
 After the frozen additional 30-minute leg, continue only if
-`new_width <= 0.75 * old_width`, which here means width at most `0.86078351094543675`; a
+`new_width <= 0.75 * old_width`, which here means width at most $0.86078351094543675$; a
 larger width retires this checkpoint until its recorded reopen condition changes.
 
 ### BC-233 launch
 
-Massaccesi defines `M` as **twice** the one-sided empty margin.
+Massaccesi defines $M$ as **twice** the one-sided empty margin.
 The project driver’s `--inset` is the one-sided margin because its grid spans
-`L - 2*inset`. Thus the published final `M = 15513/10000` maps to `--inset 15513/20000`.
+`L - 2*inset`. Thus the published final $M = 15513/10000$ maps to `--inset 15513/20000`.
 At n=11, screen this declared set:
 
-1. `1/2`, the project control;
-2. `2962983/4505800`, the published final margin scaled by `L_n11/L_n17`; and
-3. `15513/20000`, the published absolute one-sided margin.
+1. $1/2$, the project control;
+2. $2962983/4505800$, the published final margin scaled by $L_{n11}/L_{n17}$; and
+3. $15513/20000$, the published absolute one-sided margin.
 
-All three use grid counts `25,34,41`, one column round, scale 4,000,000, and a
+All three use grid counts $25,34,41$, one column round, scale 4,000,000, and a
 540-second deadline.
 Pass the scale explicitly: this driver defaults to 200,000 even though the library and
 NPZ checkpoint driver use 4,000,000. The template is:
@@ -885,7 +885,7 @@ every ineligible run and stop BC-233 if none remains.
 Hash the selected candidate before using it as a seed.
 
 Run that candidate as `--seed-certificate ... --seed-map centre` with the control inset
-`1/2`, `--column-rounds 8`, and `--deadline-seconds 2520`. Run the unseeded control with
+$1/2$, `--column-rounds 8`, and `--deadline-seconds 2520`. Run the unseeded control with
 the same arguments and deadline but no `--seed-certificate`. Use fresh `released` and
 `control` output stems.
 `centre` preserves the seed at the same side; `scale` is equivalent here but leaves the
@@ -921,12 +921,12 @@ screen is unresolved and earns no continuation.
 ### Scalar probe at 61/16: a pre-registered first-block option
 
 Nothing between 3.81 and 3.82 has been attempted with the existing single-`B` theorem.
-The covering-values register holds `n = 11` reports at 3.82 and 3.85 only, and T-018’s
+The covering-values register holds $n = 11$ reports at 3.82 and 3.85 only, and T-018’s
 own ladder went 3.78, 19/5, 381/100, then straight to 3.82. The retained certificate
-carries `434547/40000 = 10.863675`, `0.136` below eleven; the vertex-seeded restricted
-optimum at 3.82 is `11.055617`, `0.056` above it.
-A straight line through those two points crosses eleven near 3.817, so `61/16 = 3.8125`
-and `763/200 = 3.815` are plausibly inside the current instrument’s reach before any
+carries $434547/40000 = 10.863675$, $0.136$ below eleven; the vertex-seeded restricted
+optimum at 3.82 is $11.055617$, $0.056$ above it.
+A straight line through those two points crosses eleven near 3.817, so $61/16 = 3.8125$
+and $763/200 = 3.815$ are plausibly inside the current instrument’s reach before any
 adaptive core exists, and BC-234 only reaches 61/16 after BC-230 and BC-231, at least
 390 active minutes of theorem and verifier work whose necessity for this rung has not
 been measured.

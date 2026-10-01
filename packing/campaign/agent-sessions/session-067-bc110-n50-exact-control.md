@@ -162,7 +162,7 @@ session:
 
 - **Artifact:** This session now contains the complete H-054 fixture, compatibility,
   measurement, refusal, control, mutation and instrument contract.
-- **Result:** The contract is frozen at side `53/7`. The retained source metadata does
+- **Result:** The contract is frozen at side $53/7$. The retained source metadata does
   not declare source serialization or rounding semantics, so W7 must either establish
   defensible per-scalar cells from retained evidence or stop before reconstruction.
 - **Guard:** No reconstruction, solver, n = 50 verifier or target-output command ran.
@@ -194,11 +194,11 @@ session:
 ### Exact Claim
 
 The retained n = 50 source facts admit exactly 50 rational center-direction poses at
-container side `L = 53/7`. A passing result must establish all of the following at the
+container side $L = 53/7$. A passing result must establish all of the following at the
 same frozen revision:
 
-1. Every pose has `x,y,c,s` in `Q`, with `c^2 + s^2 = 1`; `(c,s)` is the unit direction
-   of one square edge and is interpreted modulo a quarter turn.
+1. Every pose has $x,y,c,s$ in $Q$, with $c^{2} + s^{2} = 1$; $(c,s)$ is the unit
+   direction of one square edge and is interpreted modulo a quarter turn.
 2. An independently implemented exact checker accepts every wall predicate and all
    `50*49/2 = 1225` pair predicates.
 3. One compatibility receipt maps the exact certificate bijectively to the 50 retained
@@ -207,7 +207,7 @@ same frozen revision:
 
 Acceptance would certify one feasible upper-bound construction compatible with the
 retained witness. It would not establish optimality, rigidity, uniqueness or a frontier
-change. A different packing at `53/7` cannot satisfy H-054.
+change. A different packing at $53/7$ cannot satisfy H-054.
 
 ### Immutable Fixtures
 
@@ -220,9 +220,9 @@ change. A different packing at `53/7` cannot satisfy H-054.
 | `packing/resources/web/known-best-packings/sources.json` | `4fa25fab27f69a9c2d8e28c6924a36b8d0bfc00ac9b066fb53fa796412b0d687` | Source URL, attribution and retention policy |
 
 The frontier reports Thomas Schadt’s 2025 simulated-annealing construction at decimal
-side `7.57142857142857`, exact form `7 + 4/7`, while the repository-verified upper bound
-remains the grid value `8`. The witness stores 50 center-angle rows at decimal side
-`7.571428571428571428571428571428571428571`; its retained numerical replay used 120
+side $7.57142857142857$, exact form $7 + 4/7$, while the repository-verified upper bound
+remains the grid value $8$. The witness stores 50 center-angle rows at decimal side
+$7.571428571428571428571428571428571428571$; its retained numerical replay used 120
 decimal digits and tolerance `1e-8`. Those are checker settings, not
 source-serialization semantics.
 The source inventory records the upstream n = 50 SVG URL, retrieval date 2026-08-26, and
@@ -237,7 +237,7 @@ Those ids do not assume the same labels as the witness rows.
    reflection `(x,y)->(L-x,y)`, then that reflection composed with the same three
    rotations. Apply the same exact affine action to centers and direction vectors.
 2. **Orientation periodicity:** a square-edge direction is equivalent under the four
-   quarter turns `(c,s)`, `(-s,c)`, `(-c,-s)`, `(s,-c)`. A reflected source frame also
+   quarter turns $(c,s)$, $(-s,c)$, $(-c,-s)$, $(s,-c)$. A reflected source frame also
    records a local winding bit.
    Compatibility compares the induced square, not a decimal degree label as an exact
    angle.
@@ -250,9 +250,9 @@ Those ids do not assume the same labels as the witness rows.
    `(global-D4-index, witness-row vector ordered by certificate id, quarter-turn vector, winding-bit vector)`.
    Never select a symmetry or matching from geometric slack or a favorable H-054
    outcome.
-5. **Source cells:** each retained row requires closed cells for center `x`, center `y`
+5. **Source cells:** each retained row requires closed cells for center $x$, center $y$
    and the stored orientation observation.
-   A source-declared exact token yields a singleton; declared nearest rounding at `d`
+   A source-declared exact token yields a singleton; declared nearest rounding at $d$
    decimal places yields the corresponding half-ulp cell; declared truncation yields its
    directed one-ulp cell; a declared interval is used verbatim.
    Direction-component boxes are derived from an angle cell with outward-rounded
@@ -270,7 +270,7 @@ Otherwise BC-110 stops through refusal E1 below.
 ### Metric, Threshold, and Review State
 
 - **Shape:** determination.
-- **Threshold:** exact container side `53/7`.
+- **Threshold:** exact container side $53/7$.
 - **Accept:** all four claim clauses pass exactly and both mutation classes are
   rejected.
 - **Reject:** a sound exact contradiction proves the entire frozen, source-compatible
@@ -359,12 +359,12 @@ W7 may build, but not yet run on n = 50, the following separated components:
 1. A manifest loader that verifies all frozen hashes, validates 50 source rows,
    materializes only source-declared closed cells and serializes the
    D4/matching/tie-break contract.
-2. A rational certificate format for `L,x,y,c,s` using `Fraction`, with exact
-   `c^2+s^2=1` checks and stable certificate ids.
+2. A rational certificate format for $L,x,y,c,s$ using `Fraction`, with exact
+   $c^{2}+s^{2}=1$ checks and stable certificate ids.
 3. A constructor allowed to use `fixed_cell_lp` and `solve_from_scratch` but forbidden
    to treat decimal witness values as exact or infer their rounding model.
 4. An independent geometry checker that does not reuse the constructor’s LP rows.
-   It constructs corners over `Q`, checks all walls, evaluates separating axes for all
+   It constructs corners over $Q$, checks all walls, evaluates separating axes for all
    1225 pairs, and reports the first exact failing predicate.
 5. A compatibility checker separate from geometry.
    It replays source cells, D4 actions, local orientation variants, perfect matching and

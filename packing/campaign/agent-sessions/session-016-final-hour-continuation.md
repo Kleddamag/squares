@@ -300,7 +300,7 @@ The exact record set is:
 | `unbounded_delta_negative` | `abs(delta)/t^2 -> infinity` and `delta < 0` | `contact:3-4:owner3:a+:square4-feature-1` |
 | `unbounded_delta_positive` | `abs(delta)/t^2 -> infinity` and `delta > 0` | `contact:3-4:owner3:a+:square4-feature+1` |
 
-Require this exact five-key set separately for each `A`, `interior`, and `B` owner-3
+Require this exact five-key set separately for each $A$, `interior`, and $B$ owner-3
 stratum, for an exact fifteen-record Cartesian inventory.
 Every record retains the full normalized nine-row stress, including both tied rows and
 both weights.
@@ -316,8 +316,8 @@ B = G dot d_beta
 d_beta = e_theta3
 ```
 
-The canonical section has `dtheta3 - dtheta4 = 1`. Retain all fifteen `G_j`, derive them
-from the normalized production stress, and require every `G_j` and `B` to be exact zero
+The canonical section has `dtheta3 - dtheta4 = 1`. Retain all fifteen $G_j$, derive them
+from the normalized production stress, and require every $G_j$ and $B$ to be exact zero
 before checking the sign of `C`. This proves the statement for arbitrary real `beta`;
 sampling negative, zero, and positive field values does not.
 
@@ -352,22 +352,22 @@ result, or sentinel flag is invalid.
 | Frozen identifier | Current coverage | Required production entry and guard |
 | --- | --- | --- |
 | `source.minus_w` | Partial | Apply one indexed coordinate override before exact equality with all fifteen coordinates of regenerated `-W`. |
-| `source.strata` | Partial | Require exact `A`, `interior`, and `B` key equality before any case certificate. |
+| `source.strata` | Partial | Require exact $A$, `interior`, and $B$ key equality before any case certificate. |
 | `source.owner_exhaustion` | Partial | Require both owners and exact six-case key equality before disposition. |
 | `source.tied_rows` | Partial | Remove one actual row after `owner_row_jets` and before weights; translate only the named missing-label inventory failure. |
 | `jet.center_axis_cross` | Missing | Mutate one designated nonzero symmetric center-angle Hessian entry before substitution and validate that production entry independently. |
 | `jet.correction_unused` | Missing | Keep declared and applied corrections separate; verify every row equals `gradient dot declared_correction + velocity_curvature`. |
 | `jet.absolute_branch` | Partial | Override one strict nonzero SAT feature sign before `sat_gap`; require its existing exact sign-disagreement failure. |
-| `jet.curvature_homogeneity` | Missing | Evaluate zero-correction `W` and `2W` through production stress and require a nonzero `C(2W) = 4 C(W)` before certificate construction. |
+| `jet.curvature_homogeneity` | Missing | Evaluate zero-correction $W$ and $2W$ through production stress and require a nonzero $C(2W) = 4 C(W)$ before certificate construction. |
 | `certificate.weighted_curvature` | Covered | Perturb one real weight through `weight_adjustments` and translate only the exact combined-gradient-cancellation failure. |
-| `control.sheet_witness` | Covered by helper, missing driver | Require the good formula-derived path to pass first; run the `-1/2` correction through the same 17-row evaluator and retain its named negative tight row. |
+| `control.sheet_witness` | Covered by helper, missing driver | Require the good formula-derived path to pass first; run the $-\frac{1}{2}$ correction through the same 17-row evaluator and retain its named negative tight row. |
 | `certificate.scale_exhaustion` | Missing | Delete one real handler from the exact five-key map and reject before any case disposition. |
 | `scope.overclaim` | Missing | Insert a mixed or component claim into the actual emitted claim map and reject by exact allowed-key and refusal-record validation. |
 
 The thirteen refusal names from exp-044 must be dictionary keys, each with its own
 `status: refused` record and claim-specific reason.
 A list plus `all_refused: true` does not satisfy that contract.
-The exp-036 `+W` fixture must also run through the same source, row, stress, scale, and
+The exp-036 $+W$ fixture must also run through the same source, row, stress, scale, and
 validation path and reach its required positive-control outcome; asserted source
 metadata is not a fixture.
 

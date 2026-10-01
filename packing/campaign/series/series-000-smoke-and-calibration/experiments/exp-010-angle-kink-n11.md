@@ -96,18 +96,18 @@ experiment:
 Move the shared tilt of Trump’s five tilted squares off its optimal value, re-optimise
 the centres by LP at each step, and record the excess over the published side.
 
-| `δ` | `s(θ* + δ) − s*` | slope |
+| $\delta$ | $s(\theta^{\ast} + \delta) - s^{\ast}$ | slope |
 | ---: | ---: | ---: |
-| `−1e-2` | `1.748e-03` | `0.1748` |
-| `−1e-4` | `1.747e-05` | `0.1747` |
-| `−1e-6` | `1.746e-07` | `0.1746` |
-| `0` | `1.742e-10` | — |
-| `+1e-6` | `3.841e-07` | `0.3841` |
-| `+1e-4` | `3.840e-05` | `0.3840` |
-| `+1e-2` | `3.846e-03` | `0.3846` |
+| `−1e-2` | `1.748e-03` | $0.1748$ |
+| `−1e-4` | `1.747e-05` | $0.1747$ |
+| `−1e-6` | `1.746e-07` | $0.1746$ |
+| $0$ | `1.742e-10` | — |
+| `+1e-6` | `3.841e-07` | $0.3841$ |
+| `+1e-4` | `3.840e-05` | $0.3840$ |
+| `+1e-2` | `3.846e-03` | $0.3846$ |
 
-Linear on both sides, and the slopes do not match: `0.1747` against `0.3841`, a ratio of
-`2.198` holding over five decades either way.
+Linear on both sides, and the slopes do not match: $0.1747$ against $0.3841$, a ratio of
+$2.198$ holding over five decades either way.
 A smooth minimum has one derivative and it is zero.
 This has two, and neither is.
 
@@ -142,10 +142,10 @@ A bracketing search needs no derivative and so does not care that none exists.
 ## Limits
 
 - One direction in angle space, at one instance.
-  The claim’s sweep declares `n = 5` and `n = 10` as well, and both cells are open: the
+  The claim’s sweep declares $n = 5$ and $n = 10$ as well, and both cells are open: the
   ledger shows the coverage.
-- The `δ = 0` cell carries an excess of `1.742e-10` rather than zero because the tilt is
-  read from a `f64` export of the degree-8 field, not from the field itself.
+- The $\delta = 0$ cell carries an excess of `1.742e-10` rather than zero because the
+  tilt is read from a `f64` export of the degree-8 field, not from the field itself.
   It is a floor on this probe’s resolution, and it is far below every slope measured.
 
 <!-- This document follows common-doc-guidelines.md.

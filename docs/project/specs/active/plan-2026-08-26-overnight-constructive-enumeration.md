@@ -95,14 +95,14 @@ completeness.
 **Checkpoint C — bounded lattice partition: complete as a calibration control.**
 `BC-019` now has an exact-cover splitter over contiguous bars, filled rectangles, and
 corner Ls inside maximal lattice components.
-It evaluates every allowed exact free-square count `F`, prefers a certificate inside the
-six-chunk budget, then minimizes `F` and chunk count `C`. Deterministic residual and
+It evaluates every allowed exact free-square count $F$, prefers a certificate inside the
+six-chunk budget, then minimizes $F$ and chunk count `C`. Deterministic residual and
 minimum-remaining-values traversal ties select the certificate, and state-cap and
 candidate-universe limits remain typed.
-An earlier capped `F` slice does not erase a later existence certificate, but it leaves
-the retained certificate’s `F`/`C` minimality explicitly indeterminate.
-For an out-of-budget retained certificate, any capped `F` slice also leaves budget
-selection and `F`/`C` minimality indeterminate.
+An earlier capped $F$ slice does not erase a later existence certificate, but it leaves
+the retained certificate’s $F$/`C` minimality explicitly indeterminate.
+For an out-of-budget retained certificate, any capped $F$ slice also leaves budget
+selection and $F$/`C` minimality indeterminate.
 It certifies all 64 grid-derived cases and 3 of 36 non-grid cases inside the
 six-chunk/two-free budget.
 Two non-grid cases are conclusively outside that budget, 23 have no partition in this
@@ -147,12 +147,12 @@ accounting. A concrete overlapping-non-edge counterexample confirms that a local
 cannot be promoted to packing feasibility.
 
 **Checkpoint F — target-free enumeration price: complete through the bounded control.**
-The exact connected four-edge-color labeled counts for sizes 1 through 5 are `1`, `4`,
-`112`, `15,104`, and `9,684,224`. Exhaustive D4-by-relabeling canonicalization through
-size 4 reduces those rows to `1`, `1`, `7`, and `124` local LP solves; `1`, `1`, `4`,
-and `26` are locally feasible at the declared overlap margin, with no indeterminate
-solves. The raw size-five path would inspect at most `9,296,855,040` orbit images, far
-above its ten-million-image cap.
+The exact connected four-edge-color labeled counts for sizes 1 through 5 are $1$, $4$,
+$112$, $15{,}104$, and $9{,}684{,}224$. Exhaustive D4-by-relabeling canonicalization
+through size 4 reduces those rows to $1$, $1$, $7$, and $124$ local LP solves; $1$, $1$,
+$4$, and $26$ are locally feasible at the declared overlap margin, with no indeterminate
+solves. The raw size-five path would inspect at most $9{,}296{,}855{,}040$ orbit images,
+far above its ten-million-image cap.
 Its independently checked isomorph-free replacement reduces 1,533,696 topology colorings
 to 11,013 abstract orbits and deliberately runs no size-five LP. These counts are
 target-free engineering evidence, not atlas coverage or packing feasibility.
@@ -162,7 +162,7 @@ registered 1–100 census already retains wall seating, contact-graph topology, 
 slide count, component membership, and edge residuals.
 A new renderer feature keeps those tolerance-qualified graph edges separate from exact
 certified contact loci.
-Five deterministic structural strata (`n = 11`, `28`, `40`, `68`, and `89`) now have
+Five deterministic structural strata ($n = 11$, $28$, $40$, $68$, and $89$) now have
 house-rendered overlays with visible square IDs, centre-to-centre contact-graph edges,
 and centre-to-wall seating edges.
 The gallery is calibration evidence and emits no H-044 verdict.
@@ -193,8 +193,8 @@ execution is authorized.
 the session and research-loop records, commit, push, and leave the exact first
 unfinished slice. Do not start new target work in the reserve.
 
-Do **not** reach `BC-021` (the `n = 11` enumeration run) tonight.
-The corpus has now been inspected while designing the detector, so a later `n = 11` run
+Do **not** reach `BC-021` (the $n = 11$ enumeration run) tonight.
+The corpus has now been inspected while designing the detector, so a later $n = 11$ run
 is retrospective replay, not unseen rediscovery.
 A confirmatory proposer claim needs a prospectively frozen target after the grammar,
 split, and complexity controls are committed.

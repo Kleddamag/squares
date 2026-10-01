@@ -8,9 +8,9 @@
 
 ## Overview
 
-A minimum kit of composable pieces for running the first real experiments on `s(n)`:
+A minimum kit of composable pieces for running the first real experiments on $s(n)$:
 **propose candidate packings, quench them to named basins, verify them exactly, and
-accumulate a map** — with `n = 11` and `n = 12` as the working cases, and with the proof
+accumulate a map** — with $n = 11$ and $n = 12$ as the working cases, and with the proof
 lane reachable from the same parts rather than needing a second system.
 
 The deliverable is the **map**, not a record.
@@ -18,14 +18,14 @@ That framing comes from the
 [search-philosophy report](../../research/research-2026-08-23-search-philosophy-and-landscape-cartography.md):
 record constructions may have low hit probability under named proposers, so the first
 campaign measures that conditional hypothesis instead of assuming it.
-A validated map of resolved terminal components for `n ≤ 11` would steer search, give
+A validated map of resolved terminal components for $n \le 11$ would steer search, give
 negative results meaning, and approximate the case analysis a future proof must walk.
 The current atlas is only a provisional endpoint map until D-034 is resolved.
 
 The design rule throughout is Kay’s: *simple should be simple, complex should be
 possible.* Concretely, `verify(packing)` is one call that returns in milliseconds, and
 the identical predicate code — with a different scalar type — answers “is every unit
-square in `[0,k]²` hit by this point set?”
+square in $[0,k]^2$ hit by this point set?”
 for a proof attempt.
 If a capability needs a second implementation of the separating-axis test, this spec has
 failed.
@@ -42,8 +42,8 @@ failed.
   surely as if it needed a second separating-axis test.
 - **Certificates, not booleans** — every “valid” comes with the object that makes it
   checkable by someone who does not trust our code.
-- **One predicate, many scalars.** `f64` for speed, intervals for rigour, exact `ℚ(α)`
-  for contacts, and pose-boxes for the proof lane.
+- **One predicate, many scalars.** `f64` for speed, intervals for rigour, exact
+  $\mathbb{Q}(\alpha)$ for contacts, and pose-boxes for the proof lane.
 - **Each piece usable alone.** The verifier without the search; the search without the
   bindings; the corpus without either.
 
@@ -54,8 +54,8 @@ failed.
   record would be a bonus, not the objective.
 - **Lean formalization.** Tracked separately; this spec only ensures the certificate it
   will need exists.
-- **Extending the frontier corpus past `n = 100`**, or SVG geometry parsing beyond what
-  `n = 11` and `n = 12` require.
+- **Extending the frontier corpus past $n = 100$**, or SVG geometry parsing beyond what
+  $n = 11$ and $n = 12$ require.
 - **A proof of anything.** The proof lane gets a *hook*, not an attempt.
 
 ## Ownership Boundary
@@ -80,9 +80,9 @@ imported packing.
 Four research documents lead here, and their conclusions constrain this design:
 
 - [Packing 11 unit squares](../../research/research-2026-08-22-packing-11-unit-squares.md)
-  — `s(11)` is open in `[3.788854, 3.877084]`; `n = 12` is the only open case in its
+  — $s(11)$ is open in $[3.788854, 3.877084]$; $n = 12$ is the only open case in its
   range and is the better proof target because its conjectured optimum is the integer
-  `4`.
+  $4$.
 - [Algorithms and tooling](../../research/research-2026-08-22-square-packing-algorithms-and-tooling.md)
   — optimal packings *touch*, so no floating-point tolerance is sound: none both accepts
   exact contacts and rejects small overlaps.
@@ -99,10 +99,10 @@ Four research documents lead here, and their conclusions constrain this design:
   — the immediate free action is to make the verifier emit a certificate rather than a
   boolean.
 
-What exists today: `sqpack` in Python — exact `ℚ(α)` arithmetic, a separating-axis
-verifier generic over the scalar type, Trump’s packing as a worked example, negative
-controls, and `packing-validate` green.
-It verifies `n = 11` in 0.35 s and is **the correctness oracle this spec builds
+What exists today: `sqpack` in Python — exact $\mathbb{Q}(\alpha)$ arithmetic, a
+separating-axis verifier generic over the scalar type, Trump’s packing as a worked
+example, negative controls, and `packing-validate` green.
+It verifies $n = 11$ in 0.35 s and is **the correctness oracle this spec builds
 against**, not something to replace.
 
 ## Design
@@ -151,9 +151,9 @@ algebraic field. The existing Python already exploits this (`sign=exact_sign` ve
 ### Components
 
 **`sqpack-core` (Rust).** Geometry and predicates, generic over a `Scalar` trait
-providing `+ − ×` and a sign decision.
+providing $+ - \times$ and a sign decision.
 Corner generation, the separating-axis test, container containment, uniform-grid
-bucketing so pair enumeration is `Θ(n)`. No allocation on the hot path, no I/O.
+bucketing so pair enumeration is $\Theta(n)$. No allocation on the hot path, no I/O.
 
 **Scalar implementations.** Four, in priority order:
 
@@ -161,7 +161,7 @@ bucketing so pair enumeration is `Θ(n)`. No allocation on the hot path, no I/O.
 | --- | --- | --- |
 | `f64` + tolerance | approximately | search inner loop |
 | `Filtered` (`f64` + error bound, escalating) | strictly when the margin is wide | first stage of the ladder |
-| `Algebraic` over `ℚ(α)`, FLINT-backed | everything, including exact zero | contacts, final answers |
+| `Algebraic` over $\mathbb{Q}(\alpha)$, FLINT-backed | everything, including exact zero | contacts, final answers |
 | `PoseBox` (interval over a box of `(x, y, θ)`) | a *family* of placements at once | **the proof-lane hook** |
 
 The fourth is the forward-looking one and costs almost nothing now.
@@ -186,7 +186,7 @@ Retaining it is nearly free.
 **`sqpack-search` (Rust).** Perturbed billiard/inflation and simulated annealing over
 `sqpack-core`, with three properties that are cheap now and near-impossible to retrofit:
 
-- **Counter-based RNG keyed by `(seed, kernel, chain, index)`** with `O(1)` random
+- **Counter-based RNG keyed by `(seed, kernel, chain, index)`** with $O(1)$ random
   access, so any basin is addressable and replayable from its key alone.
 - **Fixed-slot reductions in chain order**, so worker count never changes the answer.
 - **Basin recording**: every local optimum reached, with its key, its refined side
@@ -202,7 +202,7 @@ Every Rust predicate result must match it.
 
 ### Stack and boundaries — decided by measurement
 
-Measured on this machine, `n = 11`, before choosing anything:
+Measured on this machine, $n = 11$, before choosing anything:
 
 | Stage | Cost |  |
 | --- | ---: | --- |
@@ -262,13 +262,13 @@ Deferring the Rust core defers when that lands, not whether.
 | Block | What it does | Unblocks |
 | --- | --- | --- |
 | `quench` | LP-in-cell: fix angles and axis assignment, solve the cell (exact in formulation; to solver precision in practice — see the revision note) | H-2; and every basin claim anyone makes |
-| `canonicalize` | geometric key (`D₄` + relabel + quantize) and structural key (contact graph up to isomorphism) | R-1, H-9; comparability across move sets |
+| `canonicalize` | geometric key ($D_4$ + relabel + quantize) and structural key (contact graph up to isomorphism) | R-1, H-9; comparability across move sets |
 | `descriptors` | tilt-class count, contact class, oblique-core size, boundary/interior split — computed from canonical data, versioned with the atlas | H-15 steering, H-3 retention, atlas records |
 | `verify` | the exact certificate (Phase 1) | H-8’s false-basin rate; any record claim |
 | `atlas` | append-only dedup store keyed by canonical identity, with quench frequencies and discovery curves | H-11, H-12, H-7; the deliverable itself |
 | `meter` | pair-test counter — the machine-independent budget currency | R-10; any comparison between proposers |
 
-**The proposer interface.** One entry point: given `n`, a budget in pair-tests, a keyed
+**The proposer interface.** One entry point: given $n$, a budget in pair-tests, a keyed
 RNG, and optionally a set of seed configurations, yield candidate configurations.
 That is the entire contract.
 A proposer never quenches, never canonicalizes, never decides validity, and never writes
@@ -337,10 +337,10 @@ The review’s H-2 is its own register’s top priority for this reason.
 - [x] **`quench`: LP-in-cell.** Fix angles and each pair’s separating axis; solve the
   cell’s linear program.
   The single-cell half is already numerically cross-checked — a 1,056-constraint LP at
-  Trump’s angles reproduced `s(11)` to solver precision and every centre to `9e-16`.
+  Trump’s angles reproduced $s(11)$ to solver precision and every centre to `9e-16`.
   What remains is the *loop*: angle moves between LP solves, behaviour at cell
   boundaries, and termination at a genuine cell-optimum.
-- [ ] **`canonicalize`: basin identity, two-level.** Geometric key (`D₄` and square
+- [ ] **`canonicalize`: basin identity, two-level.** Geometric key ($D_4$ and square
   relabelling, quantized, hashed) as the fast path; contact graph up to isomorphism as
   ground truth.
 - [ ] **`descriptors`**, computed from canonical data only, versioned alongside the
@@ -382,23 +382,23 @@ their basin sets are directly comparable; adding a proposer touches no spine cod
 The phase that produces the deliverable.
 It is mostly *running* the previous phases.
 
-- [ ] **H-11 — census `n ≤ 10`** to saturation; ship the atlas as a soft-schema artifact
-  with its discovery curves.
+- [ ] **H-11 — census $n \le 10$** to saturation; ship the atlas as a soft-schema
+  artifact with its discovery curves.
 - [ ] **H-12 — the premise**: locate the record basin in the quench-frequency ranking.
   If record basins are *not* rare, most of the cartography programme stands down and the
   campaign reverts to throughput.
   This is the cheapest available test of it.
-- [ ] **E2 — `n = 11`** basin statistics with canonical identity in place.
-- [ ] **E3 — `n = 12`**, with a saturation-based standard for what a negative result
+- [ ] **E2 — $n = 11$** basin statistics with canonical identity in place.
+- [ ] **E3 — $n = 12$**, with a saturation-based standard for what a negative result
   means.
-- [ ] Mechanism-matched calibration: `s(17)`, `n = 11` at inflated `δ`, basin-entry
-  (H-18). The `n = 5`/`n = 10` ladder validates machinery only — both are 45° mechanisms
+- [ ] Mechanism-matched calibration: $s(17)$, $n = 11$ at inflated $\delta$, basin-entry
+  (H-18). The $n = 5$/`n = 10` ladder validates machinery only — both are 45° mechanisms
   and neither exercises an oblique core.
 - [ ] Write results back into the frontier corpus and the research documents.
 
-**Done when:** the atlas exists for `n ≤ 10` with discovery curves attached, H-12 has a
-verdict, and the same seed reproduces the same complete basin records on 1 worker and on
-32\.
+**Done when:** the atlas exists for $n \le 10$ with discovery curves attached, H-12 has
+a verdict, and the same seed reproduces the same complete basin records on 1 worker and
+on 32.
 
 ### Phase 4: Strategy proposers
 
@@ -406,18 +406,19 @@ Each of these is now small, each corresponds to a registered hypothesis with a k
 criterion already written, and — because they are all quench-dominated — each is written
 in Python at full speed.
 
-- [ ] **δ-continuation** (H-13): inflate the container, walk `δ` down with a re-quench
-  at every step. Valid paths give upper bounds on minimax required-side clearance, so the
-  same runs pay twice; numerical branch coalescence is not a topology certificate.
+- [ ] **δ-continuation** (H-13): inflate the container, walk $\delta$ down with a
+  re-quench at every step.
+  Valid paths give upper bounds on minimax required-side clearance, so the same runs pay
+  twice; numerical branch coalescence is not a topology certificate.
 - [ ] **Angle-class two-level** (H-1): outer over class count and angles, inner the cell
   LP.
-- [ ] **Neighbour-transfer seeding** (H-4): seeds built from `n ± 1` records.
+- [ ] **Neighbour-transfer seeding** (H-4): seeds built from $n \pm 1$ records.
 - [ ] **MAP-Elites archive** (H-15): keyed on tilt-class × contact-class, because single
   scalars are hackable — the grid maximises contact count.
-- [ ] **Billiard/inflation**, the method that produced the `n = 29, 37` records.
+- [ ] **Billiard/inflation**, the method that produced the $n = 29, 37$ records.
 
 **Done when:** each lands as a proposer with no spine changes, and each is measured
-against multistart at equal pair-tests on the ladder plus `n = 11`.
+against multistart at equal pair-tests on the ladder plus $n = 11$.
 
 ### Phase 5: Compiled acceleration, where the profile says
 
@@ -425,8 +426,8 @@ against multistart at equal pair-tests on the ladder plus `n = 11`.
 the profile of a real campaign exists, and it says what to accelerate.
 
 On the numbers taken before any of this was written, the exact verifier is the
-candidate: 129 ms per `n = 11` verification, 100× the LP quench and 5,000× an annealer
-move. Verifying every basin in a `10⁵`-basin census would take hours.
+candidate: 129 ms per $n = 11$ verification, 100× the LP quench and 5,000× an annealer
+move. Verifying every basin in a $10^5$-basin census would take hours.
 Nothing else in the pipeline is close, and the annealer — the thing that looks slowest —
 already has a compiled implementation.
 
@@ -438,8 +439,8 @@ So this phase begins by re-measuring, and builds only what the measurement names
 - [ ] `f64` and `Filtered` scalars; the staged ladder with per-stage filter-rate
   counters.
 
-- [ ] `Algebraic` scalar over `ℚ(α)` backed by FLINT, with exact zero test and exact
-  sign.
+- [ ] `Algebraic` scalar over $\mathbb{Q}(\alpha)$ backed by FLINT, with exact zero test
+  and exact sign.
 
 - [ ] Certificate type replacing the boolean return; JSON serialization.
 
@@ -456,9 +457,9 @@ So this phase begins by re-measuring, and builds only what the measurement names
   round-trip.
 
 - [ ] **E1 — corpus re-verification.** Every analytically-optimized record, exactly,
-  with filter rates per `n`. This is what the speed is *for*.
+  with filter rates per $n$. This is what the speed is *for*.
 
-**Done when:** a certificate returns in **under 10 ms** for `n = 11` (against 129 ms
+**Done when:** a certificate returns in **under 10 ms** for $n = 11$ (against 129 ms
 today), the Rust and Python verdicts agree everywhere, and every analytically-optimized
 record in the corpus verifies exactly.
 
@@ -475,9 +476,9 @@ The certificate’s durable interface is JSON either way.
   unavoidability node.
   Exp-017 independently replays all five nodes after the preregistered source-distinct
   change `G.x=.8 → .79`: localization, centerline-reflection reduction, same-box
-  A-triple forcing, repaired Figure 14 unavoidability, and the finite `3+9` count.
+  A-triple forcing, repaired Figure 14 unavoidability, and the finite $3+9$ count.
   Search saturation proves nothing; the complete finite certificates decide both rounds.
-- [ ] **H-6 — LP duals as unavoidable-set generators** at side 4 for `n = 12`.
+- [ ] **H-6 — LP duals as unavoidable-set generators** at side 4 for $n = 12$.
 
 **Done when:** the source-faithful audit terminally decides the printed proof, a
 separately preregistered repair replays every proof node if needed, and the dual support
@@ -505,8 +506,8 @@ model into the atlas or the corpus without passing the exact layer.
 
 **Differential testing against the oracle.** The pure-Python verifier is the reference
 implementation. Every Rust verdict must match it on: Trump’s packing, all six
-perturbation magnitudes in `cases.trump11.verifier_limits` (down to `δ = 10⁻¹⁰⁰`), and
-every corpus entry carrying exact algebraic data.
+perturbation magnitudes in `cases.trump11.verifier_limits` (down to
+$\delta = 10^{-100}$), and every corpus entry carrying exact algebraic data.
 This is what stops the fast path from being the wrong path — the failure mode that
 matters most here.
 
@@ -542,7 +543,7 @@ Floors, from measurements already taken:
 | Check | Floor | Source of the number |
 | --- | --- | --- |
 | `f64` SAT throughput | ≥ 10 M pair-tests/s/core | 17.7 M measured in the infrastructure study |
-| Exact `n = 11` verification | ≤ 10 ms | 0.35 s in Python; FLINT measured 177× at degree 8 |
+| Exact $n = 11$ verification | ≤ 10 ms | 0.35 s in Python; FLINT measured 177× at degree 8 |
 | Corpus verification | completes in minutes | scaling from the above |
 
 ## Rollout Plan
@@ -567,7 +568,7 @@ consume; version it from the start.
   the pure-safe-Rust `malachite` alternative cost at degree 40–62? Phase 1 should
   measure rather than assume.
 - What is the real filter rate on the corpus — what fraction of pairs need the exact
-  path at each `n`? Known only for `n = 11` (14 of 55), and that is the smallest case.
+  path at each $n$? Known only for $n = 11$ (14 of 55), and that is the smallest case.
 - Does the annealing move set need exact arithmetic anywhere, or is float-plus-refine
   plus a final exact check enough?
   Cheap to test, and it decides how much of the exact layer the search links against.
@@ -575,7 +576,7 @@ consume; version it from the start.
   distinct basins, too fine splits one basin across floating-point noise.
   The structural key is the arbiter, so this is a performance question, but it needs a
   measured answer rather than a guess.
-- **How does the atlas scale past `n = 10`?** If H-11 finds no plateau, enumeration is
+- **How does the atlas scale past $n = 10$?** If H-11 finds no plateau, enumeration is
   out and coverage estimation over descriptor space (H-7) replaces it.
   The fallback is registered; the trigger is not yet measured.
 - **Which descriptors actually separate the grid funnel from the rigid-rare family?**
@@ -583,7 +584,7 @@ consume; version it from the start.
   separating power is an empirical question the first atlas answers.
 - Does `PoseBox` want subdivision inside the core or left to the caller?
   Left out for now; E-lane experience should decide.
-- For E3, what counts as a sufficient negative result on `n = 12`? “We searched and
+- For E3, what counts as a sufficient negative result on $n = 12$? “We searched and
   found nothing” needs a stated budget to mean anything.
 
 ## Revision history
@@ -688,9 +689,9 @@ What changed here:
   basin identity undefined.
 - **The proposer interface, the census and premise test, the strategy proposers, the
   proof lane and the LLM lanes are new**, in dependency order.
-- **Budgets are pair-tests** (R-10), and the `n = 5`/`n = 10` ladder is explicitly
+- **Budgets are pair-tests** (R-10), and the $n = 5$/`n = 10` ladder is explicitly
   demoted to machinery validation: both are 45° mechanisms and neither exercises the
-  oblique core `n = 11` demands.
+  oblique core $n = 11$ demands.
 
 What the parallel branch contributed, now folded in: the experiment-loop harness
 ([`campaign/`](../../../../packing/campaign/README.md)) implementing the review’s run

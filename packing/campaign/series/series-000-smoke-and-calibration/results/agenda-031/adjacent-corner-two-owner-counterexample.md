@@ -1,7 +1,7 @@
 # Adjacent Corner Pairs Can Each Have Two Owners
 
 Date: 2026-09-08. Status: exact analytic counterexample, independently reviewed.
-Scope: four-square local ownership compatibility at `q = 96/25`; no eleven-square
+Scope: four-square local ownership compatibility at $q = 96/25$; no eleven-square
 packing or global ownership count is asserted.
 
 Let
@@ -12,28 +12,28 @@ A = (120/100,71/100),    B_L = (71/100,165/100),
 A' = (264/100,71/100),   B_R = (313/100,165/100).
 ```
 
-A diamond of unit side centered at `c` is
+A diamond of unit side centered at $c$ is
 
 ```text
 D(c) = {p : |p_x-c_x|+|p_y-c_y| <= 1/sqrt(2)}.
 ```
 
-Use the four diamonds centered at `A`, `B_L`, `A'`, and `B_R`. All four lie strictly
-inside `[0,q]^2`: the smallest wall clearance of a center is `71/100`, whose square
-exceeds `1/2`. Their pairwise center distances in the one-norm take the values
-`143/100`, `36/25`, `121/50`, and `287/100`, all greater than `sqrt(2)`. Their interiors
+Use the four diamonds centered at $A$, $B_L$, `A'`, and $B_R$. All four lie strictly
+inside $[0,q]^{2}$: the smallest wall clearance of a center is $71/100$, whose square
+exceeds $1/2$. Their pairwise center distances in the one-norm take the values
+$143/100$, $36/25$, $121/50$, and $287/100$, all greater than `sqrt(2)`. Their interiors
 are therefore pairwise disjoint, with positive gaps.
 
-The two left corner marks `(a,b)` and `(b,a)` belong respectively to the concentric
-`B`-cores of the diamonds centered at `A` and `B_L`. Their one-norm displacements from
-those centers are `2959/12700` and `4337/6350`, both less than `7/10`, and
+The two left corner marks $(a,b)$ and $(b,a)$ belong respectively to the concentric
+$B$-cores of the diamonds centered at $A$ and $B_L$. Their one-norm displacements from
+those centers are $2959/12700$ and $4337/6350$, both less than $7/10$, and
 
 ```text
 2(7/10)^2 < (9977/10000)^2.
 ```
 
-Reflection across `x=q/2` supplies the two right corner marks in the diamonds centered
-at `A'` and `B_R`.
+Reflection across $x=q/2$ supplies the two right corner marks in the diamonds centered
+at `A'` and $B_R$.
 
 The same marks also lie inside the selected nearest-net cores, rather than merely an
 arbitrary contained concentric core.
@@ -45,7 +45,7 @@ tan(|d|) <= 207107/90000000 < 3/1000.
 ```
 
 Changing to that core frame therefore multiplies the coordinate bound by at most
-`1+3/1000`. The exact comparison
+$1+3/1000$. The exact comparison
 
 ```text
 2(7/10)^2(1003/1000)^2 = 49294441/50000000

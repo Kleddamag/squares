@@ -17,9 +17,9 @@ This is a bounded method obstruction; it changes no registered packing bound.
 The reviewer independently reconstructed direction 97 from `t = 97*(207107/90000000)`
 and recomputed the inclusion spectrum directly from all 1,121 frozen atoms.
 All 1,118 events and the retained center agree.
-The first event exceeding the usable mass `434547/440000` is
-`1696802860582378979/1700716629721128200`. The mass immediately below it is
-`96377/100000`, and the center remains admissible through the event.
+The first event exceeding the usable mass $434547/440000$ is
+$1696802860582378979/1700716629721128200$. The mass immediately below it is
+$96377/100000$, and the center remains admissible through the event.
 
 The exact positive square difference in exp-111 also agrees.
 An ordinary-containment improvement requires `b < B/sqrt(1+D^2)`, which is below that
@@ -28,8 +28,8 @@ improvement window. A common rescaling of those weights cannot repair the contra
 criterion.
 
 The remaining refined-containment interval is not excluded: its width is
-`106044519531307/85035831486056410000`, approximately `1.24705689e-6` in core side.
-The prospective target `b=997699/1000000`, `q=400003/400000` satisfies the refined
+$106044519531307/85035831486056410000$, approximately `1.24705689e-6` in core side.
+The prospective target $b=997699/1000000$, $q=400003/400000$ satisfies the refined
 containment and improvement comparisons, conditional on exact coverage.
 It was not measured in this review.
 `think-xsma` owns that distinct test.

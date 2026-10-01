@@ -187,7 +187,7 @@ native-verifier lane, and this reconciliation uses the reserved `session-154`.
 
 | PR 221 item | Disposition in the reconciliation |
 | --- | --- |
-| `T-033` exact result | Retained at `V4/C3` with its exact surd, source digest, controls, and artifacts. Its current significance is `S3`: it is substantive first-party method and calibration evidence, while the stronger verified `s(11) > 31/8` result now sets the current bound. Git retains PR 221’s earlier `S5` assessment. |
+| `T-033` exact result | Retained at `V4/C3` with its exact surd, source digest, controls, and artifacts. Its current significance is `S3`: it is substantive first-party method and calibration evidence, while the stronger verified $s(11) > \frac{31}{8}$ result now sets the current bound. Git retains PR 221’s earlier `S5` assessment. |
 | Three `E-n011-threshold-net2880-*` records | Retained. Novelty is narrowed to the project-specific frozen 2880-step rung and exact fixed-core evaluation. The later Kleddamag source is named and supersedes any reading of these entries as the current public-bound advance. |
 | 2880-step certificate and limit record | Retained byte-for-byte. Independent comparison confirms that the 1440- and 2880-step certificate records differ only in `id`, `direction_steps`, and `provenance.derivation`. The internal id remains frozen. |
 | Full exp-226 gate and limit receipts | Retained without repeating the 40-minute certificate gate or 31-minute limit replay. The source and limit-record checks bind the preserved bytes. |
@@ -200,7 +200,7 @@ native-verifier lane, and this reconciliation uses the reserved `session-154`.
 | Hard-coded producer provenance | Deferred to `think-tzg7`. The retained bytes disclose that `derived_from` names the original certificate while the multiplier is relative to the 1440-step input. The frozen file is not rewritten. |
 | Agenda-041 negative-control pruning | Merged with PR 222’s dependency-audit explanation. Linked receipts and registered artifacts return through the existing snapshot copy-back path; bulk numerical output remains pruned from each private worker. |
 | PR 221 atlas exports | Superseded as current views because they embed the weaker 3.8269975 lower bound. PR 222’s atlas exports remain byte-for-byte current; adding a historical T result does not change their case-bound inputs. |
-| README, synopsis, n11 case, and generated Frontier views | Reconciled so `31/8` remains the current verified lower bound and T-033 remains the stronger historical first-party rung. Generated views are rebuilt from the merged source records. |
+| README, synopsis, n11 case, and generated Frontier views | Reconciled so $\frac{31}{8}$ remains the current verified lower bound and T-033 remains the stronger historical first-party rung. Generated views are rebuilt from the merged source records. |
 | `BC-373` and `think-gvlg` | Completed by the retained T-033 registration and its qualifying full-gate evidence on the reconciled branch. Session 151 remains stopped as historical fact. |
 
 ## Bound relationship
@@ -208,10 +208,10 @@ native-verifier lane, and this reconciliation uses the reserved `session-154`.
 T-033 proves `s(11) >= 955000*sqrt(2073600042893309449)/359341754646249 =
 3.826997548829543624`. The result is exact and remains registered.
 
-The current verified lower bound is the stronger strict result `s(11) > 31/8 = 3.875`.
+The current verified lower bound is the stronger strict result $s(11) > 31/8 = 3.875$.
 The unchanged T-025/T-026/T-033 fixed-core family has refinement ceiling
-`955000/249507 ≈ 3.82755`, already below `3.875`. Further net refinement alone cannot
-improve the current global bound.
+$955000/249507 \approx 3.82755$, already below $3.875$. Further net refinement alone
+cannot improve the current global bound.
 This says nothing about changed weights, sites, parent domains, or richer charge atoms.
 
 <!-- This document follows common-doc-guidelines.md.

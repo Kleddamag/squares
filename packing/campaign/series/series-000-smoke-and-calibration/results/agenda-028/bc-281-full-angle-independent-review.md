@@ -15,7 +15,7 @@ exclusions retain the closed remainder
 
 $$
 \mathcal S_{\rm full}\cap
-\left\{t\in[1/24,1/3]\cup[1/2,23/25]\right\}.
+\left\lbrace t\in[1/24,1/3]\cup[1/2,23/25]\right\rbrace.
 \tag{R}
 $$
 
@@ -103,7 +103,7 @@ The independently reconstructed bounds are
 
 $$
 \begin{aligned}
-x_V-x_H&\le T-2d<d,&x_H-x_V&\le T-r-d<d,\\
+x_V-x_H&\le T-2d<d,&x_H-x_V&\le T-r-d<d,\cr
 y_V-y_H&\le T-2d<d,&y_H-y_V&\le T-r-d<d.
 \end{aligned}
 $$
@@ -340,8 +340,8 @@ At $L=96/25$, the adversary’s two scalar checks reconstruct as
 
 $$
 \begin{array}{c|c|c}
-t&(c,s)&\text{threshold difference}\\
-1/5&(12/13,5/13)&J-M=-7/325\\
+t&(c,s)&\text{threshold difference}\cr
+1/5&(12/13,5/13)&J-M=-7/325\cr
 2/3&(5/13,12/13)&J-K_5=-7/325.
 \end{array}
 $$

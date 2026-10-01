@@ -3,8 +3,8 @@
 Status: **unresolved**. Not a kill.
 Not an eleven-candidate.
 
-Session-139 ran `devtools.pierce_t018_sites --search --direction-steps 8` (`9` net
-directions) with a 180 s limit on T-018’s 1121 unique sites at `19/5` with closed unit
+Session-139 ran `devtools.pierce_t018_sites --search --direction-steps 8` ($9$ net
+directions) with a 180 s limit on T-018’s 1121 unique sites at $19/5$ with closed unit
 squares.
 Event-cell encoding hit the time limit before HiGHS ran, same as the 5-direction
 20 s selftest. Timeout is unresolved.

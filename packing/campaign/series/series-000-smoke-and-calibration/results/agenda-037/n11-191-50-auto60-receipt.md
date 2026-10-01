@@ -4,9 +4,9 @@ Status: **site set refuted**. The side stays open.
 
 Session-139 probe on `--grid-counts 25,34,41,60` at
 `(n, L, B, net) = (11, 191/50, 9977/10000, 181 directions)`. This is BC-191 auto
-`(25, 34, 41)` plus one denser count, 6961 sites, a superset of auto’s 3365. It is not
+$(25, 34, 41)$ plus one denser count, 6961 sites, a superset of auto’s 3365. It is not
 known to contain the historical 6637-site grid that sat at exactly eleven.
-Restricted optimum `11.106195` on a converged loop refutes this site set only.
+Restricted optimum $11.106195$ on a converged loop refutes this site set only.
 T-025 at this side is unchanged.
 
 ## Command
@@ -30,11 +30,11 @@ Column generation added one orbit after the row loop and stopped; wall 84.7 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.106195` |
-| Rationalised total | `2776561/250000` = `11.106244` |
+| Restricted optimum | $11.106195$ |
+| Rationalised total | $\frac{2776561}{250000}$ = $11.106244$ |
 | Sites / orbits / rows | 6961 / 921 / 6041 |
 | LP rounds | 21 |
-| Crossing | round 8 (`11.035354`); rounds 3–7 sat at `11.000000` |
+| Crossing | round 8 ($11.035354$); rounds 3–7 sat at $11.000000$ |
 | Wall | 84.7 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

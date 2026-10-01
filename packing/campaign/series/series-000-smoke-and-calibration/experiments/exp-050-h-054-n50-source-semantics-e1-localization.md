@@ -120,7 +120,7 @@ A durable receipt may retain URL, retrieval time, content hash, response identif
 attribution, licence finding, an appropriately bounded explicit semantics statement,
 token-class coverage and derived canonical cells.
 It may not retain raw geometry or infer semantics from decimal regularity, the exact
-side `53/7`, the 3-4-5 tilt or numerical feasibility.
+side $53/7$, the 3-4-5 tilt or numerical feasibility.
 
 ## Frozen E1 Order
 

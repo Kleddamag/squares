@@ -169,37 +169,37 @@ change and left the non-convex domain to `BC-204`.
 
 ## Control one: exactly nine
 
-The near-axis class at `3877/1000` returns `9.000000` in floats, converged in five
-rounds, and exactly `9` from nine unit atoms with least cell mass exactly one over the
+The near-axis class at $3877/1000$ returns $9.000000$ in floats, converged in five
+rounds, and exactly $9$ from nine unit atoms with least cell mass exactly one over the
 six leading cells. The lane then closed the bound from below as well — nine pairwise
-disjoint axis-parallel `B`-squares fit — so the optimum is *exactly* nine, not merely at
+disjoint axis-parallel $B$-squares fit — so the optimum is *exactly* nine, not merely at
 most nine. The cell’s suspension clause, which treats an optimum above nine as an
 instrument defect, does not fire.
 
 ## Control two: `0.000403` short, and not by accident
 
-At Trump’s `3.877084` the two-end-cell class gives `11885/1024 = 11.606445` against the
+At Trump’s $3.877084$ the two-end-cell class gives $11885/1024 = 11.606445$ against the
 eleven a refutation needs.
-Six independently built site sets never go below `11.6`.
+Six independently built site sets never go below $11.6$.
 
 That is not a search that ran out of budget.
 The figure that refuses it is exact and does not mention a site set:
 
-`L/B = 969271/249425 = 3.886021850` exceeds `2 + (4/3)√2 = 3.885618083`.
+$L/B = 969271/249425 = 3.886021850$ exceeds $2 + (4/3)\sqrt{2} = 3.885618083$.
 
-So eleven pairwise disjoint `B`-squares of the class fit inside the container at that
+So eleven pairwise disjoint $B$-squares of the class fit inside the container at that
 side, and no measure of total mass below eleven can cover them — whatever sites are
 chosen, however long the row loop runs.
-The control’s ceiling is `B(2 + (4/3)√2) = 3.876681`, which sits **`0.000403` below the
-side the cell asked it to reach**. The shrink costs `0.008937` of side; Stromquist’s
-headroom above Trump is `0.008534`. The control was unreachable before the first command
-ran.
+The control’s ceiling is $B(2 + (4/3)\sqrt{2}) = 3.876681$, which sits **$0.000403$
+below the side the cell asked it to reach**. The shrink costs $0.008937$ of side;
+Stromquist’s headroom above Trump is $0.008534$. The control was unreachable before the
+first command ran.
 
 `H-063`’s own text anticipated the shape without noticing the arithmetic: it says
-Stromquist’s Theorem 3 reaches `3.885618` “by a further box step this program does not
-have”, and sets the threshold at `3.877084` precisely because the program should not be
+Stromquist’s Theorem 3 reaches $3.885618$ “by a further box step this program does not
+have”, and sets the threshold at $3.877084$ precisely because the program should not be
 credited with reach it lacks.
-What nobody computed in advance is that removing the box step also removes `0.000403`
+What nobody computed in advance is that removing the box step also removes $0.000403$
 more than the margin between the two sides.
 
 ## What conditioning does buy
@@ -208,13 +208,13 @@ The round reports this rather than only the refusal, because “conditioning buy
 little” is the kill condition and the amount matters.
 
 Two thresholds do separate.
-On one site set at Trump’s side a single threshold gives margin `+0.082256`; two at
-composition `(9, 2)` give `+0.072368`, with the LP pulling `w0 = 0.093383` above
+On one site set at Trump’s side a single threshold gives margin $+0.082256$; two at
+composition $(9, 2)$ give $+0.072368$, with the LP pulling `w0 = 0.093383` above
 `w1 = 0.079777` once the site set is fine enough.
-And `X-014`’s own step-1 design point is reachable: composition `(11, 0)` over the
-leading nineteen cells at Trump’s side, grid 79, exact `39123/4096 = 9.551514`, margin
-`−5933/4096`, every condition holding, refuted.
-The `11.000000` readings at grids 39 and 95 are the round-number artefact this register
+And `X-014`’s own step-1 design point is reachable: composition $(11, 0)$ over the
+leading nineteen cells at Trump’s side, grid 79, exact $39123/4096 = 9.551514$, margin
+$-5933/4096$, every condition holding, refuted.
+The $11.000000$ readings at grids 39 and 95 are the round-number artefact this register
 now recognises at three orders, not a wall.
 
 Nothing was retained.

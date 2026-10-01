@@ -67,7 +67,7 @@ A review of one inspected revision does not admit later code on another branch.
 | Source at the inspected revision | Established evidence | Remaining implication |
 | --- | --- | --- |
 | [T-026 claim][t026] and [mapped review][t026review], T1 tree `375c7bc1d49c506636a5abf71d37a8455888ff42` | Complete finite certificate decisions, strict-core counting, exact dilation, and mapped review establish $s(11)\ge C$ at V4/C5 | A new endpoint needs a new complete exclusion; strictness at $C$ is separate |
-| [T1 reader review][t1] and [H-159][h159], same tree | The authenticated 377-row scan gives $\mu(C_0)=800003/800000$, surplus $g=3/800000$, and labels $\{3,4,11,12\}$ for parent $Q_0=[0,1]^2$ | This local parent is not known to extend to eleven parents; no continuous minimum or global routing conclusion follows |
+| [T1 reader review][t1] and [H-159][h159], same tree | The authenticated 377-row scan gives $\mu(C_0)=800003/800000$, surplus $g=3/800000$, and labels $\lbrace3,4,11,12\rbrace$ for parent $Q_0=[0,1]^2$ | This local parent is not known to extend to eleven parents; no continuous minimum or global routing conclusion follows |
 | [H-161][h161], [exp-159][exp159], and [result audit][parentaudit], execution tree `f27c8ec7c8ebeb8a9b369c1c6f7efef4b531c359` | An exact one-run scan gives $N=4000015$ for $Q_0$ and $4N=16000060$ for four separated D4 copies; both necessary tests survive with $1048233$ integer units of slack | No extension, pose-cell exclusion, owner selection, or improved global bound follows |
 | [X-029][x029], [charge bridge][bridge], and [bridge review][bridgereview], T2 tree `820e5355bdeaea122705e69f244c15725e66ec51` | Reviewed reductions of complete C geometry, its open-cell charge decision, opposite-corner separation, and a sufficient S test; exact uncharged C/S feasibility controls | C/S target charges and T2 are uncomputed in these sources; reader admission is distinct from the mathematical reduction |
 | [H-160][h160], [exp-158][exp158], and [reader readmission][t2readmission], repaired reader tree `0f20fdcdd5bac7e0734b29cd0b0efef4ffea3699` | The target-free reader passed an independent exact source/replay and all-strata readmission after two documented defects were repaired | The registered C/S charge target has not run; the merged execution head still needs its own source/readiness check before that one run |
@@ -95,7 +95,7 @@ let $A_c(P)$ contain every available closed label at corner $c$. For the two cur
 certified tuples,
 
 $$
-G_0=\{(0,0,0,0),(15,15,15,15)\},\qquad
+G_0=\lbrace(0,0,0,0),(15,15,15,15)\rbrace,\qquad
 \Gamma(P)=\prod_c A_c(P).
 $$
 
@@ -106,8 +106,8 @@ $$
 $$
 
 The accepted [routing analysis][routing] splits it into local availability,
-$A_c(P)\cap\{0,15\}\ne\varnothing$ at each corner, and consistency of forced types: no
-two corners offer opposing singleton choices.
+$A_c(P)\cap\lbrace0,15\rbrace\ne\varnothing$ at each corner, and consistency of forced
+types: no two corners offer opposing singleton choices.
 T1 was a sufficient local surplus mechanism for the first assertion.
 T2 is a different sufficient mechanism for the second.
 Even a complete positive T2 result leaves the first assertion open.
@@ -256,7 +256,7 @@ Each row below changes a different part of the implication chain.
 | Angle-count demands: exploit a proved nonuniform composition | Freeze one exact cell partition and a necessary count set $\mathcal N$ containing every physical profile; compare one same-language certificate against $\min_{n\in\mathcal N}\sum_jn_jd_j$ | Budget below that minimum, with complete per-class charge $d_j$ and physical classification, excludes the packing. A proof that $n_0\le9$ does not assert $(n_0,n_1)=(9,2)$; that vector minimizes demand only when $d_0\le d_1$. [H-131][h131], [certificate analysis][mechanisms] |
 | Conditional thresholds: beat a point obstruction on one residual class | After restricted-gate admission, freeze one four-owner class, its full 361-direction source, and a complete point baseline at least seven; seek one threshold certificate below seven | A complete accepted threshold certificate excludes that class. The retained neutral family already violates a two-of-three capacity, so it does not obstruct this language. A single escaped core rejects that candidate only. Global selection remains required. [X-028][x028] |
 | Geometrically tighter atom budgets: use joint realizability in the capacity proof | Freeze one atom with ordinary budget at least two and one admitted domain; decide whether two simultaneously realizable residual parents can both trigger it | A complete exclusion reduces that atom’s permitted simultaneous count on that domain. Independently feasible positive traces are insufficient. A surviving pair refutes only the proposed budget-one reduction; it does not invalidate the atom’s ordinary resource bound. The disjoint-trace theorem in [T-026][t026] supplies the baseline; this stronger-budget test is proposed here. |
-| Full-support pricing: detect information lost by truncating a dual family | BC331/H-135’s one-candidate exact comparison $d_{32}\le1<d_{\mathrm{full}}$, including same-point geometry and absent orbit | A hit proposes a new point orbit; it does not prove a cover improvement. The full-unit mass-eleven family at $L_*=38200/9977$ blocks unconditional point certificates there and above, so a useful continuation needs a smaller side, richer charges, or a justified restricted domain. [X-028][x028], [strategy audit][audit] |
+| Full-support pricing: detect information lost by truncating a dual family | BC331/H-135’s one-candidate exact comparison $d_{32}\le1<d_{\mathrm{full}}$, including same-point geometry and absent orbit | A hit proposes a new point orbit; it does not prove a cover improvement. The full-unit mass-eleven family at $L_{\ast}=38200/9977$ blocks unconditional point certificates there and above, so a useful continuation needs a smaller side, richer charges, or a justified restricted domain. [X-028][x028], [strategy audit][audit] |
 | Improve the upper bound constructively | Select a different contact signature and one prospectively bounded proposal search; reconstruct the best candidate and independently verify all walls and parent pairs | One valid packing below the retained upper bound improves it. Trump-local rigidity and a failed finite search do not settle other signatures or global optimality. [X-028][x028] |
 
 The weighted and finite-program rows are sequential questions rather than

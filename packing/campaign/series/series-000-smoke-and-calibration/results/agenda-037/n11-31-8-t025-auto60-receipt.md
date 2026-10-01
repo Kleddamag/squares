@@ -2,11 +2,11 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: BC-191 auto `(25, 34, 42)` plus count 60, unioned with T-025’s 584
-atom sites scaled to `31/8`, `(n, L, B, net) = (11, 31/8, 9977/10000, 181 directions)`.
-`31/8 = 3.875` sits 0.002 below the known-best packing at about 3.877. The row loop
-crossed eleven at LP round 2 (`11.000000`) and converged at `11.561186`. Same grid
-counts and seed as the `77/20` probe, which converged at `11.456576`. T-025 at `191/50`
+Session-139 probe: BC-191 auto $(25, 34, 42)$ plus count 60, unioned with T-025’s 584
+atom sites scaled to $31/8$, `(n, L, B, net) = (11, 31/8, 9977/10000, 181 directions)`.
+$31/8 = 3.875$ sits 0.002 below the known-best packing at about 3.877. The row loop
+crossed eleven at LP round 2 ($11.000000$) and converged at $11.561186$. Same grid
+counts and seed as the $77/20$ probe, which converged at $11.456576$. T-025 at $191/50$
 is unchanged.
 
 ## Command
@@ -31,12 +31,12 @@ Column generation added one orbit after the row loop and stopped; wall 234.3 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.561186` |
-| Rationalised total | `5780637/500000` = `11.561274` |
+| Restricted optimum | $11.561186$ |
+| Rationalised total | $\frac{5780637}{500000}$ = $11.561274$ |
 | Sites / orbits / rows | 7705 / 1014 / 8892 |
 | Seed sites | 584 |
 | LP rounds | 38 |
-| Crossing | round 2 (`11.000000`) |
+| Crossing | round 2 ($11.000000$) |
 | Wall | 234.3 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

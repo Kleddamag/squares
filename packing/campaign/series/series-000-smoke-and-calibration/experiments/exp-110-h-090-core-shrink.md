@@ -102,7 +102,7 @@ rule out every positive shrink.
 
 ## Why the Acceptance Rule Allows Mass Below One
 
-For fixed atoms and net, let $m(b)$ be the minimum mass over all admissible side-$b$
+For fixed atoms and net, let $m(b)$ be the minimum mass over all admissible side-`b`
 cores in the fixed container.
 If $m(b)>M/n$, replacing each weight $w_i$ with $w_i/m(b)$ makes the minimum one and the
 total strictly less than $n$. Any rational dilation $q$ satisfying $qb(1+D)<1$ then
@@ -147,7 +147,7 @@ the complete inclusion events at its witness, not that global arrangement search
 ## Verification and Next Slice
 
 Five focused tests pass, including normalization of a genuine below-one minimum through
-both production decision routes, refusal of wrong-$n$, duplicate-key and
+both production decision routes, refusal of wrong-`n`, duplicate-key and
 stale-declaration sources, failure-witness retention, containment refusal, and a direct
 atom-sum regression of the exact corner obstruction.
 Ruff and BasedPyright report zero findings.

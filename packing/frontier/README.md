@@ -1,14 +1,14 @@
 # Frontier: What Is Known About `s(n)`, Case by Case
 
-`s(n)` is the side of the smallest square holding `n` non-overlapping unit squares.
-This folder is the structured claim register for each `n ≤ 324`. Each case keeps the
+$s(n)$ is the side of the smallest square holding $n$ non-overlapping unit squares.
+This folder is the structured claim register for each $n \le 324$. Each case keeps the
 best bounds reported by the named public sources separate from the strongest bounds
 supported by formal evidence.
 It also records numerical checks, verification origin, conflicts, blockers, review date,
 and links into the local literature archive.
 
 Start with [`STATUS.md`](STATUS.md).
-Its one row per `n` shows reported and verified upper and lower bounds, formal status,
+Its one row per $n$ shows reported and verified upper and lower bounds, formal status,
 verification origin, conflicts, and freshness.
 Follow a case link for the evidence and the reason any formal bound trails its report.
 
@@ -21,11 +21,11 @@ A case is proved only when its verified upper and lower bounds coincide exactly.
 
 The frontier and the figure atlas meet through
 [`../atlas/rendering/manifest.json`](../atlas/rendering/manifest.json).
-Each manifest entry binds an `n`, evidence tier, view level, alt text, retained SVG,
+Each manifest entry binds an $n$, evidence tier, view level, alt text, retained SVG,
 matching frontier file, and exact regeneration command.
 That keeps a figure discoverable without making presentation data authoritative over a
 case’s mathematical frontmatter.
-The complete `n = 1…324` visual index lives in the
+The complete $n = 1\ldots324$ visual index lives in the
 [`known-best` atlas](../atlas/known-best/README.md); specialized examples and diagnostic
 views live in the [renderer gallery](../atlas/rendering/README.md).
 
@@ -122,16 +122,16 @@ The ones that carry the most weight:
   claims in the named source set.
   They do not endorse those claims.
 - `verified_upper_bound` and `verified_lower_bound` contain only formally supported
-  bounds. They are a ceiling and a floor, not the value of `s(n)`. The certified ceiling
+  bounds. They are a ceiling and a floor, not the value of $s(n)$. The certified ceiling
   may be a weaker rational construction or the exact grid when the tighter public pose
   is only numerical: for 83 of the 324 cases it is *larger* than the best-known side
   recorded two fields above it by more than that side’s printed precision allows, by up
-  to `0.46`, and each of those cases says so in its own body and carries a `mathematics`
+  to $0.46$, and each of those cases says so in its own body and carries a `mathematics`
   blocker. In 44 more it sits above the printed side by no more than one unit of its last
   place, which `bounds_agree_at_declared_precision` reads as the same bound: 26 of them
   are Couzo’s packings certified here (T-056), whose exact sides round up past the
   fifteen decimals the source prints.
-  An `exact_form` on the ceiling is the exact form of the ceiling; `s(n)` is known
+  An `exact_form` on the ceiling is the exact form of the ceiling; $s(n)$ is known
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
@@ -166,13 +166,13 @@ verification.
 [`source-coverage.yaml`](source-coverage.yaml) is a dated claim about a named source
 set, not a claim that a web search exhausted every publication.
 It records each source’s scope, review date, retained first-party material, evidence,
-replay disposition, in-horizon overrides, and relevant claims beyond `n = 324`.
+replay disposition, in-horizon overrides, and relevant claims beyond $n = 324$.
 
-The current baseline reparses the retained Kingbird catalogue through `n = 324`, applies
-the newer UnitSquare report at `n = 69`, Francisco Couzo’s certified packings at 49
-counts from `n = 68` to `307` (T-056) and Joost de Winter’s at `n = 211` (T-057), and
-records the Schadt `n = 29` repository as a superseded numerical witness.
-UnitSquare’s reports at `n = 68, 103, 105, 110, 131` and Griffin Casson’s 39 packings,
+The current baseline reparses the retained Kingbird catalogue through $n = 324$, applies
+the newer UnitSquare report at $n = 69$, Francisco Couzo’s certified packings at 49
+counts from $n = 68$ to $307$ (T-056) and Joost de Winter’s at $n = 211$ (T-057), and
+records the Schadt $n = 29$ repository as a superseded numerical witness.
+UnitSquare’s reports at $n = 68, 103, 105, 110, 131$ and Griffin Casson’s 39 packings,
 each larger than Couzo’s at its count, are listed as superseded reports.
 Overrides may come from any retained source: each must beat the catalogue baseline, and
 every claim a source’s retained record makes — the UnitSquare release, or a packet’s
@@ -190,7 +190,7 @@ Where a newer capture prints a side below a record’s and taking it is an intak
 own — a result by others published on or after 22 August 2026, which the register must
 hold first — the count is listed under `pending_catalogue_intake`, with the side the
 record still reports, the side the current capture prints, and the capture the record
-transcribes (`n = 69, 83, 87` today).
+transcribes ($n = 69, 83, 87$ today).
 The check reconciles such a count against that earlier capture, requires its record to
 carry a `source-evidence` blocker naming `pending_catalogue_intake` and the newer side
 (which `STATUS.md` shows as “catalogue ahead, intake pending”), and fails the entry as
@@ -203,11 +203,11 @@ uv run --frozen python -m devtools.check_source_coverage
 
 The separate [DS7 lower-bound audit](../devtools/audit_ds7_lower_bounds.py), with its
 [retained comparison report](ds7-lower-bound-audit.json), checks every case through
-`n = 324` against Green’s reported Theorems 9 and 10, usable exact Table 2 entries, and
-the already indexed `4.5705` external report for `n = 17,18`. It uses exact rational
+$n = 324$ against Green’s reported Theorems 9 and 10, usable exact Table 2 entries, and
+the already indexed $4.5705$ external report for $n = 17,18$. It uses exact rational
 enclosures for theorem comparisons and keeps Table 2’s three decimal-only rows outside
-that arithmetic. The `n = 21` decimal remains opaque reported metadata; the malformed
-`n = 82–85` table expression is excluded in favor of the separate Theorem 9
+that arithmetic. The $n = 21$ decimal remains opaque reported metadata; the malformed
+$n = 82\text{–}85$ table expression is excluded in favor of the separate Theorem 9
 specialization. None of these source corrections changes a verified bound or supplies
 Green’s missing proof.
 This is an audit of those named sources, not every publication.
@@ -344,7 +344,7 @@ certificate’s replay command.
    upper bound or optimality, and holds the cited evidence to the same kind.
    `headline` is the claim shortened for a table cell, at most 100 characters of inline
    Markdown with the mathematics in backticks: the claim’s relation exactly (`≥` is not
-   `>`), its exact form with its decimal or a truncation of it marked `…`, and its `n`
+   `>`), its exact form with its decimal or a truncation of it marked `…`, and its $n$
    values. The checker refuses a number the claim does not state.
    `established` is the day the certificate or proof first passed here, read from the
    commit that landed it, not from the day of registration.
@@ -442,7 +442,7 @@ Ten of the seventeen working proof strategies refine the same idea—place point
 they are unavoidable, and count—while four different search families have produced
 records.
 The other ten-entry proof family, the transversal and wider packing-and-covering
-toolkit, is almost entirely **unapplied** to `s(n)`. This contrast suggests that the
+toolkit, is almost entirely **unapplied** to $s(n)$. This contrast suggests that the
 lower-bound side has underused methods.
 
 ## What the Corpus Shows
@@ -451,56 +451,57 @@ Counts below are computed from the artifacts, not asserted.
 
 Of the 261 open cases, **238** have Nagamochi’s formula as their verified lower bound.
 Five others use certificates already integrated into the register: current external
-certificate bounds at `n = 12` (`15680/3951`) and `n = 17` (`116511/25000`), plus the
-first-party bounds at `n = 18` (`4679/1000`), `n = 19` (`24/5`) and `n = 20` (`97/20`).
-Complete interval and exact replays add 18 more external-certificate cases: `n = 26` at
-`1377/250` and `n = 29,30` at `571/100` (Tokoharu); `n = 27,28` at `28/5` and `n = 31`
-at `148/25` (wand125’s rectangle certificates); `n = 39,40,41` at `13/2`; `n = 52,53` at
-`369/50`; `n = 55` at `377/50`; `n = 56` at `381/50`; `n = 68,69` at `841/100`;
-`n = 70,71` at `171/20`; and `n = 72` at `861/100`. `n = 32` left the open cases on
-2026-09-27, when a replayed external closed cover proved `s(32) = 6`, and `n = 21` and
-`n = 45` on 2026-09-29, when replayed external mixed covers proved `s(21) = 5` and
-`s(45) = 7`. Within the original `n ≤ 100` corpus, the corresponding Nagamochi count is
-38\. The count is checked against the case records by `devtools.check_nagamochi_bounds`
-(`D-430`), because earlier hand-maintained counts outlived their case promotions.
+certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$), plus the
+first-party bounds at $n = 18$ ($4679/1000$), $n = 19$ ($24/5$) and $n = 20$ ($97/20$).
+Complete interval and exact replays add 18 more external-certificate cases: $n = 26$ at
+$1377/250$ and $n = 29,30$ at $571/100$ (Tokoharu); $n = 27,28$ at $28/5$ and $n = 31$
+at $148/25$ (wand125’s rectangle certificates); $n = 39,40,41$ at $13/2$; $n = 52,53$ at
+$369/50$; $n = 55$ at $377/50$; $n = 56$ at $381/50$; $n = 68,69$ at $841/100$;
+$n = 70,71$ at $171/20$; and $n = 72$ at $861/100$. $n = 32$ left the open cases on
+2026-09-27, when a replayed external closed cover proved $s(32) = 6$, and $n = 21$ and
+$n = 45$ on 2026-09-29, when replayed external mixed covers proved $s(21) = 5$ and
+$s(45) = 7$. Within the original $n \le 100$ corpus, the corresponding Nagamochi count
+is 38. The count is checked against the case records by
+`devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
+outlived their case promotions.
 
 Of the 261 open cases, 117 are still held by the trivial grid.
 The other 144 carry non-grid constructions.
-Within `n ≤ 100`, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
-annealing (nine of the ten dated 2024–2026; `n = 53` is Cantrell’s from 2002), 5
+Within $n \le 100$, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
+annealing (nine of the ten dated 2024–2026; $n = 53$ is Cantrell’s from 2002), 5
 diagonal strips, 3 extensions of smaller records, and 2 whose method the source does not
-record (`n = 68, 69`).
+record ($n = 68, 69$).
 
-Recorded catalogue degrees for `n ≤ 100` rise through 4, 5, 6, 8, 12, 18, 20, 24, 42,
-and 44, while every proved case but `n = 11`, whose side has degree 8, has degree at
+Recorded catalogue degrees for $n \le 100$ rise through 4, 5, 6, 8, 12, 18, 20, 24, 42,
+and 44, while every proved case but $n = 11$, whose side has degree 8, has degree at
 most 2.
 
 ### Smallest Open Gaps
 
 Ranked by gap—the best-known packing minus the verified lower bound, which is what
-`devtools.gap_ranking` computes—the five smallest open cases at `n ≤ 100` are:
+`devtools.gap_ranking` computes—the five smallest open cases at $n \le 100$ are:
 
-| `n` | gap | record | note |
+| $n$ | gap | record | note |
 | --- | --- | --- | --- |
-| 17 | 0.0151 | Bidwell | carried to `116511/25000` by Guzhou0806 after Kleddamag |
-| 12 | 0.0314 | grid | `4² − 4`, carried to `15680/3951` by Daniel after Burns, Massaccesi |
-| 97 | 0.0557 | grid | `10² − 3` |
-| 78 | 0.0627 | grid | `9² − 3` |
-| 61 | 0.0718 | grid | `8² − 3` |
+| 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
+| 12 | 0.0314 | grid | $4^2 - 4$, carried to $\frac{15680}{3951}$ by Daniel after Burns, Massaccesi |
+| 97 | 0.0557 | grid | $10^2 - 3$ |
+| 78 | 0.0627 | grid | $9^2 - 3$ |
+| 61 | 0.0718 | grid | $8^2 - 3$ |
 
-The `n = 17` bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
+The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
 weighted-certificate proof over 4,991 orientation intervals.
 The first two moved in September 2026 on third-party weighted certificates, and the
-`k² − 4` family now has three solved members above `k = 3`: `s(21) = 5`, `s(32) = 6` and
-`s(45) = 7`, proved by Evan Daniel on the same method’s zero-margin form, the first and
-third with mass on the grid lines as well as on points.
-`n = 21`, in this table at `0.0050` from 2026-09-27, left it with that proof.
-`n = 11`, which headed it at `0.0021` once Kleddamag carried it to `31/8`, left it on
-2026-09-30, when T-060 proved `s(11)` equal to Trump’s side.
+$k^2 - 4$ family now has three solved members above $k = 3$: $s(21) = 5$, $s(32) = 6$
+and $s(45) = 7$, proved by Evan Daniel on the same method’s zero-margin form, the first
+and third with mass on the grid lines as well as on points.
+$n = 21$, in this table at $0.0050$ from 2026-09-27, left it with that proof.
+$n = 11$, which headed it at $0.0021$ once Kleddamag carried it to $31/8$, left it on
+2026-09-30, when T-060 proved $s(11)$ equal to Trump’s side.
 
-`n = 97`, `n = 78` and `n = 61` are three consecutive unproved members of the family
-`s(m² − 3) = m`, which is **proved exactly for `m = 3, 4, 5, 6, 7`** (that is
+$n = 97$, $n = 78$ and $n = 61$ are three consecutive unproved members of the family
+$s(m^2 - 3) = m$, which is **proved exactly for $m = 3, 4, 5, 6, 7$** (that is
 `s(6), s(13), s(22), s(33), s(46)`) and conjectured beyond.
 Their gaps are small because Nagamochi’s bound is nearly tight there, and their
 conjectured optima are **integers**—the case the existing proof technique is built for.
@@ -508,12 +509,12 @@ conjectured optima are **integers**—the case the existing proof technique is b
 Their small gaps and integer conjectured optima make them candidates for the existing
 technique; the retained source audit found little case-specific treatment.
 
-Among the cases with a *non-trivial* record, `n = 19` follows `n = 17` at `0.0856`, then
-`n = 27` at `0.1071`, `n = 26` at `0.1133` and `n = 18` at `0.1439`. First-party
-certificates moved `n = 11`, `17`, `18` and `19` beginning on 2026-09-04; the retained
-`n = 18` ladder reached `4.679` on 2026-09-19. External certificates now carry `n = 11`,
-`17`, `26` and `27`, and wand125’s reported rectangle bounds stand above the verified
-values at `18` and `19` until their replays run.
+Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0856$, then
+$n = 27$ at $0.1071$, $n = 26$ at $0.1133$ and $n = 18$ at $0.1439$. First-party
+certificates moved $n = 11$, $17$, $18$ and $19$ beginning on 2026-09-04; the retained
+$n = 18$ ladder reached $4.679$ on 2026-09-19. External certificates now carry $n = 11$,
+$17$, $26$ and $27$, and wand125’s reported rectangle bounds stand above the verified
+values at $18$ and $19$ until their replays run.
 
 ## Cross-References
 
@@ -541,15 +542,15 @@ Lower bounds were computed from four sources and the strongest taken.
 The proved set and its attributions come from the research document’s own analysis,
 which is sourced to the individual papers.
 
-Editorial bodies for `n = 5, 10, 11, 12, 13, 17, 22, 23, 46, 51, 100` are hand-written.
+Editorial bodies for $n = 5, 10, 11, 12, 13, 17, 22, 23, 46, 51, 100$ are hand-written.
 The remaining bodies are generated from the structured fields.
 Adding editorial to a case is just editing its body; nothing regenerates over it.
 
 **Known limits.** The Kingbird catalogue is parsed as annotation text, so an entry
 phrased unusually can be miscounted; `improved_by` in particular under-reports where it
 uses “Refound” or prose.
-Above `n = 100` it also credits an “Optimized by” author the entry names nowhere else
-(Tej Stead at `n = 179`), and the packing paragraph quotes the catalogue’s own
+Above $n = 100$ it also credits an “Optimized by” author the entry names nowhere else
+(Tej Stead at $n = 179$), and the packing paragraph quotes the catalogue’s own
 AI-assistance sentences; the hand-written records below read neither.
 Tilt angles are recorded only for the handful of cases where this research established
 them. The coverage inventory is dated and named; a newly published source still requires

@@ -2,11 +2,11 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe on BC-191 auto grids `(26, 35, 43)` at
+Session-139 probe on BC-191 auto grids $(26, 35, 43)$ at
 `(n, L, B, net) = (12, 3969/1000, 9977/10000, 181 directions)`. A restricted optimum at
 or above 12 on a converged row loop refutes this site set only.
-Adding sites can still lower the covering value, so `3969/1000` is not barred.
-T-017 at `99/25` is unchanged.
+Adding sites can still lower the covering value, so $3969/1000$ is not barred.
+T-017 at $99/25$ is unchanged.
 
 ## Command
 
@@ -30,10 +30,10 @@ deadline. That pricing round did not change the reported optimum.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `12.363498` |
+| Restricted optimum | $12.363498$ |
 | Sites / orbits / rows | 3737 / 511 / 5226 |
 | LP rounds | 25 |
-| Crossing | round 4 (`12.043810`) |
+| Crossing | round 4 ($12.043810$) |
 | Row-loop wall | 86.8 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

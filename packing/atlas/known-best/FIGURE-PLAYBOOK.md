@@ -74,9 +74,9 @@ That distinction was learned the hard way.
 `claim.coordinate_provenance` in the witness files — named `claim.assurance` until this
 defect was fixed — names the provenance of one record’s coordinates, not the standing of
 the mathematics.
-An earlier cut of this figure read it as the latter and badged `n = 5` —
-proved optimal, side `2 + √2/2` — as “numerically verified”, because that witness stores
-decimals. Anything sourced from the witness layer is about our records.
+An earlier cut of this figure read it as the latter and badged $n = 5$ —
+proved optimal, side $2 + \sqrt{2}/2$ — as “numerically verified”, because that witness
+stores decimals. Anything sourced from the witness layer is about our records.
 Facts about the mathematics live in `frontier/n-NNN.md`.
 
 ## Field by field
@@ -87,14 +87,14 @@ instead, so the two legends differ while the rules behind them do not.
 
 | Shown | Source | Verify by |
 | --- | --- | --- |
-| `s(n) = …` vs `s(n) ≤ …` | `packing.status` (`proved` / `open`) | 38 proved; equality only for those |
+| $s(n) = \ldots$ vs $s(n) \le \ldots$ | `packing.status` (`proved` / `open`) | 38 proved; equality only for those |
 | Side value | `reported_upper_bound.value` | Matches the witness side to its stated precision |
-| `s(n) ≥ …` second line | `verified_lower_bound.value`, shown where `status` is `open` | 62 lines; cut off rather than rounded, so the printed bound stays true |
-| ★ recent result, since Aug 2026 | `recent` on the lower citation in `bound-citations.json`: first-party evidence the register scores as novel, or a source whose bibliography `dated` is on or after `RECENT_SINCE` (2026-08-22) | 27 cases: `n = 11, 12, 17–21, 26–32, 39–41, 45, 52, 53, 55, 56, 68–72`, 3 of them (`n = 18, 19, 20`) proved here; the star follows the verified lane, so the 28 cases whose recent bound is only reported carry none; drawn as a polygon, since no figure font carries a star |
+| $s(n) \ge \ldots$ second line | `verified_lower_bound.value`, shown where `status` is `open` | 62 lines; cut off rather than rounded, so the printed bound stays true |
+| ★ recent result, since Aug 2026 | `recent` on the lower citation in `bound-citations.json`: first-party evidence the register scores as novel, or a source whose bibliography `dated` is on or after `RECENT_SINCE` (2026-08-22) | 27 cases: $n = 11, 12, 17\text{–}21, 26\text{–}32, 39\text{–}41, 45, 52, 53, 55, 56, 68\text{–}72$, 3 of them ($n = 18, 19, 20$) proved here; the star follows the verified lane, so the 28 cases whose recent bound is only reported carry none; drawn as a polygon, since no figure font carries a star |
 | `=` exact value known | `exact_form`, else `minimal_polynomial` or `algebraic_degree` | Evaluate the form, compare against the witness side |
-| `≈` only known numerically | none of the three present | 5 cases: `n = 29, 55, 68, 69, 71` |
-| `deg d` | `algebraic_degree` | Present for 11 cases; absence is not a claim of low degree |
-| `R` rigidity established | derived, see below | Perfect squares by exact tiling, plus the first-party arguments at `n = 5` and `n = 11`; a catalogue annotation is shown muted and not counted |
+| `≈` only known numerically | none of the three present | 5 cases: $n = 29, 55, 68, 69, 71$ |
+| $\deg d$ | `algebraic_degree` | Present for 11 cases; absence is not a claim of low degree |
+| `R` rigidity established | derived, see below | Perfect squares by exact tiling, plus the first-party arguments at $n = 5$ and $n = 11$; a catalogue annotation is shown muted and not counted |
 | Hue | angle class of the square | Right angles pinned to hue 0, 45° tilts to hue 1 |
 | Shade | full-side contact count, 4 down to 0 | `_contact_shade` in `src/sqpack/render/color.py` |
 
@@ -104,11 +104,11 @@ instead, so the two legends differ while the rules behind them do not.
 `resources/web/kingbird-squares-in-squares.md`. That catalogue prints a radical inline
 as `$s = <radical> = \Nn{<decimal>}$`, or a locked degree as
 `$s = {}^{d}🔒 = \Nn{<decimal>}$` followed by the polynomial.
-Match an entry to an `n` by its printed decimal, never by position.
+Match an entry to an $n$ by its printed decimal, never by position.
 
 Two traps, both of which have already bitten:
 
-- One entry, `n = 54`, is rendered as a multi-line `\begin{aligned}` block instead of
+- One entry, $n = 54$, is rendered as a multi-line `\begin{aligned}` block instead of
   the single-line form.
   It was missed on the first pass and recorded as having no exact form, which put a
   wrong badge in a published figure.
@@ -118,16 +118,16 @@ Two traps, both of which have already bitten:
 
 A failed integer-relation search over a retained side is **not** evidence that a value
 is not algebraic. Retained sides run 30–100 digits, and PSLQ needs roughly
-`degree × coefficient-digits`; the search that finds nothing for `n = 29` also finds
-nothing for `n = 51`, whose degree-12 polynomial is recorded.
+`degree × coefficient-digits`; the search that finds nothing for $n = 29$ also finds
+nothing for $n = 51$, whose degree-12 polynomial is recorded.
 
 ### Rigidity
 
 Do not read `reported_upper_bound.rigid` as a boolean about the world.
 It is non-null exactly where `catalogue_pictured` is true, so `false` means “the
 catalogue pictured this and did not write Rigid”, not “this packing has play”.
-Taken literally it says `n = 1` is not rigid, which is false: one unit square exactly
-fills a `1 × 1` container.
+Taken literally it says $n = 1$ is not rigid, which is false: one unit square exactly
+fills a $1 \times 1$ container.
 
 The upstream catalogue is not at fault.
 It annotates rigidity for four packings, is silent otherwise, and never asserts
@@ -136,38 +136,38 @@ The collapse of silence into `false` is ours.
 
 So the figure derives the badge from two sound sources instead:
 
-1. `n` a perfect square.
-   The `k²` unit squares exactly tile a `k × k` container, leaving no slack, so nothing
-   can move. Ten cases on the figure, `k = 1..10`; eighteen on the poster, which adds
-   `k = 11..18` — `n = 121, 144, 169, 196, 225, 256, 289, 324`. The derivation is the
-   argument, not a list: it reads each record’s own `rigidity` block, so a new perfect
-   square earns the badge by tiling rather than by being added to a set.
-2. The catalogue annotates “Rigid”: `n = 5, 11, 28, 40`, at lines 44, 80, 163 and 224,
+1. $n$ a perfect square.
+   The $k^2$ unit squares exactly tile a $k \times k$ container, leaving no slack, so
+   nothing can move. Ten cases on the figure, `k = 1..10`; eighteen on the poster, which
+   adds `k = 11..18` — $n = 121, 144, 169, 196, 225, 256, 289, 324$. The derivation is
+   the argument, not a list: it reads each record’s own `rigidity` block, so a new
+   perfect square earns the badge by tiling rather than by being added to a set.
+2. The catalogue annotates “Rigid”: $n = 5, 11, 28, 40$, at lines 44, 80, 163 and 224,
    each identified by the side value printed above it.
 
 Absence of `R` on the figure means rigidity is **not established by a source or by the
 tiling argument**. It no longer means the corpus is silent about the packing.
-`frontier/n-NNN.md` now carries a first-party `rigidity` block for every `n`, written by
+`frontier/n-NNN.md` now carries a first-party `rigidity` block for every $n$, written by
 `devtools/assess_frontier_rigidity.py` from two sound arguments:
 
 - **301 records are positively NOT rigid** across the corpus, 85 of them in the figure’s
   hundred. The translation escape screen exhibits a square, a direction and an exact
   distance, which is a certificate of motion.
   In the hundred the smallest certified slide is `2.03e-4` against witness coordinates
-  carrying 28 or more digits, except at `n = 68`, whose witness is Francisco Couzo’s
+  carrying 28 or more digits, except at $n = 68$, whose witness is Francisco Couzo’s
   binary64 pose since 2026-09-29 and whose smallest slide, `8.6e-11`, is still five
   orders of magnitude above that pose’s rounding; every record also has a square that
-  slides at least `0.048`. None of these is numerical noise.
+  slides at least $0.048$. None of these is numerical noise.
 - **Eighteen are rigid by exact tiling**, the same eighteen the poster badges and the
   first ten of which the figure badges.
-- **Three are `undetermined`**, which is a result rather than an absence: `n = 28, 40`
+- **Three are `undetermined`**, which is a result rather than an absence: $n = 28, 40$
   because the screen finds no single-square translation but cannot rule out rotation or
-  coordinated motion, and `n = 69` because its witness geometry is excluded.
-  `n = 68, 103, 105, 110` and `131` were excluded too until their records moved from
+  coordinated motion, and $n = 69$ because its witness geometry is excluded.
+  $n = 68, 103, 105, 110$ and $131$ were excluded too until their records moved from
   UnitSquare renderings to Couzo’s packings (T-056), which the screen reads.
-- **Two are the assessment tool’s own refusals**, `n = 5` and `n = 11`, which it leaves
+- **Two are the assessment tool’s own refusals**, $n = 5$ and $n = 11$, which it leaves
   to a stronger argument and which now carry one.
-  `n = 5` held `undetermined` on a first-party exact argument rather than on a screen
+  $n = 5$ held `undetermined` on a first-party exact argument rather than on a screen
   miss —
   [`X-007`](../../campaign/explorations/X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md)
   settles its infinitesimal cone exactly and refuses the one free direction at second
@@ -178,18 +178,18 @@ The screen’s asymmetry is why the figure derives its badge from the record rat
 from the screen. A hit proves non-rigidity; a miss proves nothing.
 
 **The badge is two badges, and that is [`D-385`](../../../defects.md).** It used to be
-one: a solid `R` earned by `n` alone, from a hard-coded set of the four packings the
+one: a solid `R` earned by $n$ alone, from a hard-coded set of the four packings the
 catalogue annotates, which rendered a source’s word identically to an exact tiling
 argument — the field split failing to reach the figure.
 Now `established` means the record’s own `rigidity` block says `locally-rigid`, and
 nothing else does: **twelve** solid badges on the figure and **twenty** on the poster —
-the tilings plus `n = 11`’s own `verified` argument and `n = 5`’s, both of which the old
+the tilings plus $n = 11$’s own `verified` argument and $n = 5$’s, both of which the old
 rule credited to Kingbird.
 The catalogue’s annotation is still shown, because dropping it would lose a fact the
 corpus holds, but as a **muted** `R` on a `not-established` entry with its own legend
-line and its own total: `n = 28, 40`.
+line and its own total: $n = 28, 40$.
 
-`n = 5` is why the distinction is worth the second glyph, and it is also why the glyph
+$n = 5$ is why the distinction is worth the second glyph, and it is also why the glyph
 is not decoration.
 [`X-007`](../../campaign/explorations/X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md)
 established more about it than the catalogue ever said and still not local rigidity, so
@@ -294,7 +294,7 @@ The figure is untouched by everything below, byte for byte.
 ### A composite is a specification
 
 `KNOWN_BEST_COMPOSITES` in `src/sqpack/known_best.py` is the whole of it.
-Four fields say what a figure draws — first `n`, last `n`, columns, filename stem — and
+Four fields say what a figure draws — first $n$, last $n$, columns, filename stem — and
 the rest of the geometry follows: rows, the canvas, the legend and footer baselines, the
 layout string, the manifest record and the figure record’s own legend totals.
 Nothing is absolute, which is what a second entry demonstrated: eighteen columns is
@@ -406,11 +406,11 @@ No new constants, and no second copy of the builder.
 Two things are worth knowing before adding one.
 The palette does not widen: the renderer holds 20 hues and wraps class registrations
 onto the 18 unpinned slots, and the corpus already asks for 52 angle classes in one
-frame (`n = 301`) where the first hundred asked for 14. Feeding a class count to
+frame ($n = 301$) where the first hundred asked for 14. Feeding a class count to
 `square_fill_palette` would leave its closest pair 0.43 degrees apart, so the wrap is
 the answer and `tests/test_render_colors.py` measures both halves of that.
 And the corpus, not the drawing, is the constraint: a card needs a frontier record whose
-facts are sourced to the same standard as the rest, which is why nothing above `n = 324`
+facts are sourced to the same standard as the rest, which is why nothing above $n = 324$
 is drawn — no source makes a completeness claim there.
 
 <!-- This document follows common-doc-guidelines.md.

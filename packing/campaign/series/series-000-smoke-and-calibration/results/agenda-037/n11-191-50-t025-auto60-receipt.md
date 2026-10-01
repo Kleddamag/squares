@@ -2,10 +2,10 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: BC-191 auto `(25, 34, 41)` plus count 60, unioned with T-025’s 584
-atom sites at native side `191/50`,
+Session-139 probe: BC-191 auto $(25, 34, 41)$ plus count 60, unioned with T-025’s 584
+atom sites at native side $191/50$,
 `(n, L, B, net) = (11, 191/50, 9977/10000, 181 directions)`. The row loop sat at exactly
-`11.000000` through LP round 16, then climbed to `11.020212`. That is the closest
+$11.000000$ through LP round 16, then climbed to $11.020212$. That is the closest
 session-139 point-atom construction at this side, still above eleven, and still above
 the historical 6637-site grid that sat at exactly eleven.
 T-025 is unchanged.
@@ -32,12 +32,12 @@ Column generation added one orbit after the row loop and stopped; wall 132.3 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.020212` |
-| Rationalised total | `440811/40000` = `11.020275` |
+| Restricted optimum | $11.020212$ |
+| Rationalised total | $\frac{440811}{40000}$ = $11.020275$ |
 | Sites / orbits / rows | 7249 / 958 / 7956 |
 | Seed sites | 584 |
 | LP rounds | 29 |
-| Crossing | round 17 (`11.004716`); rounds 3–16 sat at `11.000000` |
+| Crossing | round 17 ($11.004716$); rounds 3–16 sat at $11.000000$ |
 | Wall | 132.3 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

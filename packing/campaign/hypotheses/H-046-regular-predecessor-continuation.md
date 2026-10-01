@@ -63,11 +63,11 @@ hypothesis:
 
 The intuition under test is that an optimal packing is a perturbation of a cleaner,
 slightly larger, more regular arrangement.
-At `n = 11` the ingredients are unusually explicit: Trump’s packing is six axis-aligned
+At $n = 11$ the ingredients are unusually explicit: Trump’s packing is six axis-aligned
 squares plus one five-square group at `a* ~ 40.181937` degrees, and its aligned form,
-with that group at zero, is an ordinary arrangement inside the `4.0` grid.
+with that group at zero, is an ordinary arrangement inside the $4.0$ grid.
 
-The round drives the shared angle from zero to just past `a*`, solving the
+The round drives the shared angle from zero to just past $a^{\ast}$, solving the
 cell-refreshed fixed-angle LP at every step, and retains the value, the active cell, and
 the chunk membership.
 Three things can happen, and all three are results:
@@ -85,8 +85,8 @@ Three things can happen, and all three are results:
 ## Why the per-step cell record is the point
 
 The value curve alone would only re-measure
-[T-3](../../../SYNOPSIS.md#the-corner-and-the-method-it-forced), whose corner at `a*` is
-already confirmed by
+[T-3](../../../SYNOPSIS.md#the-corner-and-the-method-it-forced), whose corner at
+$a^{\ast}$ is already confirmed by
 [exp-010](../series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md).
 What is new is the sequence of active cells along the path.
 A path crossing few canonical cell events says this continuation used few serialized
@@ -95,9 +95,9 @@ It does not by itself establish metric or topological nearness in arrangement sp
 A path crossing many gives direct evidence that the “slight perturbation” framing
 understates this continuation’s combinatorial work.
 
-Because the derivative jumps at `a*`, refinement at the minimum uses bracketing rather
-than any gradient method; the sweep supplies the bracket and the corner is expected, not
-an anomaly.
+Because the derivative jumps at $a^{\ast}$, refinement at the minimum uses bracketing
+rather than any gradient method; the sweep supplies the bracket and the corner is
+expected, not an anomaly.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

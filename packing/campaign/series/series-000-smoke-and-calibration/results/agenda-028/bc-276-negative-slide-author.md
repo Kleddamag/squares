@@ -67,9 +67,9 @@ In ordinary coordinates the block centers are
 
 $$
 \begin{aligned}
-C_6&=(p_x,p_y),\\
-C_7&=(p_x-\alpha c+s,\ p_y-\alpha s-c),\\
-C_8&=(p_x+c+\beta s,\ p_y+s-\beta c),\\
+C_6&=(p_x,p_y),\cr
+C_7&=(p_x-\alpha c+s,\ p_y-\alpha s-c),\cr
+C_8&=(p_x+c+\beta s,\ p_y+s-\beta c),\cr
 C_9&=(p_x+(1-\alpha)c+(1+\beta)s,
        \ p_y+(1-\alpha)s-(1+\beta)c).
 \end{aligned}
@@ -225,8 +225,8 @@ Their gap is uniformly positive on the frozen box:
 $$
 \begin{aligned}
 J-K_5
-&=2+3c+2s-L(c+s)\\
-&\ge2-\frac{21}{25}c-\frac{46}{25}s\\
+&=2+3c+2s-L(c+s)\cr
+&\ge2-\frac{21}{25}c-\frac{46}{25}s\cr
 &\ge2-\frac{21}{25}\frac45-\frac{46}{25}\frac7{10}
 =\frac1{25}>0.
 \end{aligned}
@@ -263,7 +263,7 @@ B\le K_5.
 \tag{14}
 $$
 
-The second is exactly negative-$f$ separation: $sX+cZ\ge D$ is equivalent to $B\le K_5$.
+The second is exactly negative-`f` separation: $sX+cZ\ge D$ is equivalent to $B\le K_5$.
 
 ### Pair 1–9: positive $f$ or upward separation
 
@@ -293,7 +293,7 @@ If the horizontal-left alternative holds, $\xi_9\ge D$, then
 $$
 \begin{aligned}
 s\xi_9+cY_9-D
-&\ge sD+c(h+s-\beta c-1/2)-D\\
+&\ge sD+c(h+s-\beta c-1/2)-D\cr
 &=c(2s-1-\beta c)\ge0.
 \end{aligned}
 \tag{16}
@@ -301,7 +301,7 @@ $$
 
 The last inequality uses $2s-1\ge1/5$ and $\beta c\le1/5$. It includes the exact
 equality at their shared extremal values.
-Thus horizontal-left separation also implies positive-$f$ separation.
+Thus horizontal-left separation also implies positive-`f` separation.
 Every legal alternative consequently gives
 
 $$
@@ -311,7 +311,7 @@ Y_9\ge D.
 \tag{17}
 $$
 
-The first is the exact positive-$f$ row for pair 1–9, since its block $f$ coordinate is
+The first is the exact positive-`f` row for pair 1–9, since its block $f$ coordinate is
 $B-1-\beta$.
 
 ### Pair 1–7 when square 9 separates upward
@@ -345,12 +345,12 @@ s\xi_7+cY_7
 \tag{19}
 $$
 
-If negative-$e$ separation holds, $c\xi_7-sY_7\ge D$, then
+If negative-`e` separation holds, $c\xi_7-sY_7\ge D$, then
 
 $$
 \begin{aligned}
 s\xi_7+cY_7
-&\ge\frac{sD+Y_7}{c}\\
+&\ge\frac{sD+Y_7}{c}\cr
 &\ge\frac{D(1+s)-s+\beta c}{c}
 =D+\frac{s^2+\beta c}{c}>D.
 \end{aligned}
@@ -358,7 +358,7 @@ s\xi_7+cY_7
 $$
 
 The identity in the last line is $D(1+s-c)-s=s^2$, using $c^2+s^2=1$. Thus both
-remaining alternatives imply the positive-$f$ alternative itself.
+remaining alternatives imply the positive-`f` alternative itself.
 Because square 7 has block $f$ coordinate $B-1$, every legal pair 1–7 gives
 
 $$
@@ -418,7 +418,7 @@ reduction therefore forces the stronger row $B-\beta\ge J$. The bound $p_x\ge h+
 
 $$
 \begin{aligned}
-A&\ge c(h+1)+s(h+c+\alpha s)\\
+A&\ge c(h+1)+s(h+c+\alpha s)\cr
 &=u+\frac12+s(2c-1)+\alpha s^2
 \ge u+\frac12.
 \end{aligned}
@@ -478,12 +478,12 @@ proposal’s remaining pair conditions.
 No square-10 pose or eleven-square witness was asserted.
 This failure directed attention to the full pair 5–6 disjunction.
 
-The positive pilot’s implication from upward pair 1–9 separation to its positive-$f$
+The positive pilot’s implication from upward pair 1–9 separation to its positive-`f`
 separation cannot be transferred directly.
 Combining that upward separation with horizontal-left pair 1–7 separation gives only
 $s\xi_9+cY_9\ge D-\beta s^2$. For negative slides this does not reach $D$. The argument
-here instead derives positive-$f$ separation for **pair 1–7**, giving $B\ge J$, and
-compares it with square 5’s negative-$f$ row.
+here instead derives positive-`f` separation for **pair 1–7**, giving $B\ge J$, and
+compares it with square 5’s negative-`f` row.
 This records the failed premise rather than treating the positive proof as a control
 inside $N$.
 

@@ -4,7 +4,7 @@ Date: September 13, 2026. Status: draft for exact-head review under `think-99bz`
 
 The
 [BC329 target-free three-profile run sheet](plan-2026-09-13-n11-bc329-three-profile-run-sheet.md)
-defines the solved `n=2` calibration fixture, frozen tuple, host conditions, sequential
+defines the solved $n=2$ calibration fixture, frozen tuple, host conditions, sequential
 profiles, source-distinct reads, and retention procedure.
 For an integrated PR157 run, replace that sheet’s **Execution Preconditions** block and
 its PR156-only remote-identity refusal with the checks below.
@@ -185,7 +185,7 @@ test "$(git -C "$REPOSITORY" rev-list --parents -n 1 "$EVIDENCE_COMMIT")" = \
 test "$(git -C "$REPOSITORY" rev-parse "$EVIDENCE_COMMIT^{tree}")" = "$TREE_OID"
 ```
 
-An accepted calibration profile remains an operational measurement on the solved `n=2`
+An accepted calibration profile remains an operational measurement on the solved $n=2$
 fixture. BC329 registration and execution require their separate admission after the
 evidence commit is published and hosted checks pass.
 

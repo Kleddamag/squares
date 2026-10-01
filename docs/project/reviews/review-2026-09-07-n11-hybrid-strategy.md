@@ -226,7 +226,7 @@ $$
 $$
 
 Every atom is at vertical distance at most $1/20<b/2$ from any allowed center.
-Adjacent horizontal atoms are $24/25<b$ apart; their open radius-$b/2$ intervals overlap
+Adjacent horizontal atoms are $24/25<b$ apart; their open radius-`b/2` intervals overlap
 and cover the full center interval $[1/2,17/5]$. At least one atom is therefore strictly
 inside every selected core.
 Disjoint unit-square interiors cannot share such an atom, giving capacity three for the
@@ -347,7 +347,7 @@ centers in a fixed compact box and a compact angular cover including all seams.
 Continuity and infeasibility imply
 
 $$
-\min_{\theta,z}\max_r\{-g_{\sigma r}(\theta,z)\}>0.
+\min_{\theta,z}\max_r\lbrace-g_{\sigma r}(\theta,z)\rbrace>0.
 $$
 
 Convergent coefficient enclosures eventually make the outer LP error smaller than this
@@ -412,15 +412,15 @@ A geometric application must supply actual certified resource rows; this example
 the rounding mechanism.
 For atomic resources, let $A(S)$ contain every atom that a selected witness from slots
 $S$ can reach. Guaranteed captures then satisfy the more localized bound
-$\sum_{i\in S}a_i\le\sum_{p\in A(S)}\mu(\{p\})$. This is another way to derive subset
-inequalities with a shared, explicitly restricted budget.
+$\sum_{i\in S}a_i\le\sum_{p\in A(S)}\mu(\lbrace p\rbrace)$. This is another way to
+derive subset inequalities with a shared, explicitly restricted budget.
 
 Weighted captures can prove some capacities; exact two-, three-, or four-square
 subproblems can prove others.
 An infeasible combination becomes a reusable exclusion only with its full geometric
 domain attached. Reuse on a narrower node is justified by domain inclusion; reuse after
 widening requires a new proof.
-Incircle distances, interval SAT, and existing small-$n$ theorems are cheap inputs when
+Incircle distances, interval SAT, and existing small-`n` theorems are cheap inputs when
 their containing region and shape assumptions match.
 A disk relaxation’s feasible placement proves nothing about the original squares.
 
@@ -500,7 +500,7 @@ $$
 $$
 
 Nine flush wall incidences anchor squares $0,1,2,3,4,5$. The other component is
-$\{6,7,8,9,10\}$, giving rank ten.
+$\lbrace6,7,8,9,10\rbrace$, giving rank ten.
 The incidences are square 0 at left and bottom; square 1 at bottom and right; square 2
 at top; square 3 at left and top; square 4 at top; and square 5 at left.
 Squares 7 and 10 also touch walls at points, which do not fix their orientation.
@@ -531,9 +531,9 @@ squares.
 ### The useful normal-form statement is existential
 
 The proposed statement is: **some global minimizer has all orientations in
-$\{0,\theta\}$ modulo $\pi/2$**. A complete lower bound of $U$ for that family would
-then prove $s(11)=U$. H-117 already contains the broader question of a bound on exact
-orientation classes.
+$\lbrace0,\theta\rbrace$ modulo $\pi/2$**. A complete lower bound of $U$ for that family
+would then prove $s(11)=U$. H-117 already contains the broader question of a bound on
+exact orientation classes.
 Requiring every optimum to have Trump’s graph is substantially stronger than needed.
 
 One possible proof selects, among global minimizers, one with the fewest distinct
@@ -560,9 +560,9 @@ proving uniqueness of a high-angle global minimizer.
 Release the segment identity $(9,10)$ from Trump’s graph, keeping the other six
 specified pair segments, all nine specified flush wall incidences, and all 55 pair
 nonoverlap and wall conditions.
-The retained equality graph has wall component $\{0,\ldots,5,*\}$ and two unanchored
-components, $\{6,7,8,9\}$ and $\{10\}$. Its rank is nine, allowing an axis class and two
-oblique parameters.
+The retained equality graph has wall component $\lbrace0,\ldots,5,\ast\rbrace$ and two
+unanchored components, $\lbrace6,7,8,9\rbrace$ and $\lbrace10\rbrace$. Its rank is nine,
+allowing an axis class and two oblique parameters.
 
 This is a precise family in which to test an LP/capacity exclusion or a conditional
 angle-merging argument.
@@ -613,8 +613,8 @@ bR(t)=\frac{39996461}{40009000}<1,
 \qquad b-q/4=1/1000>0.
 $$
 
-The nine marks $\{q/4,q/2,3q/4\}^2$ meet the interior of every contained axis core: the
-gaps between consecutive marks and either wall are smaller than its side.
+The nine marks $\lbrace q/4,q/2,3q/4\rbrace^2$ meet the interior of every contained axis
+core: the gaps between consecutive marks and either wall are smaller than its side.
 At most nine of eleven packed squares can belong to this closed angular neighborhood, so
 at least two lie outside it.
 
@@ -648,7 +648,7 @@ Conditional on the axis-plus-one-angle family, one common reflection folds the a
 into $[0,\pi/4]$, and these lemmas give
 
 $$
-m\in\{2,\ldots,11\},\qquad \alpha<\theta<\pi/4-\gamma.
+m\in\lbrace2,\ldots,11\rbrace,\qquad \alpha<\theta<\pi/4-\gamma.
 $$
 
 These ten multiplicities are useful pruning within that family.
@@ -767,7 +767,7 @@ do not reserve another BC range.
 | BC-TBD-CAPACITY | BC-262 / H-111 | A matched comparison of interval screens, coupled outer LPs, and the same geometry with local resources or subset capacities |
 | BC-TBD-ANCHOR | BC-262 / H-111 | A joint-anchor certificate on one unsplit domain if loss of anchor correlation explains the current residual |
 | BC-TBD-RELEASE | BC-267 / H-117 | An independently scoped release-family exclusion or precise angle-elimination obligation, retaining feature boundaries |
-| BC-TBD-FAMILY | BC-263/266 / H-112/113 | A complete common-angle interval pilot with all contact alternatives, plus an independent attempt to find a sub-$U$ witness |
+| BC-TBD-FAMILY | BC-263/266 / H-112/113 | A complete common-angle interval pilot with all contact alternatives, plus an independent attempt to find a sub-`U` witness |
 | BC-TBD-INTEGRATE | BC-268 | Compare closed domains, residual structure and proof cost; select the next representation from evidence |
 
 BC-259’s support review remains independently useful.
@@ -835,7 +835,7 @@ identity.
 | H-TBD-CAPACITY | Under H-111, a frozen continuous domain $D_{\rm TBD}$ at $96/25$ is excluded by a specified common-measure or subset-capacity certificate while the specified coupled outer LP has an exact feasible relaxation witness | Accept only both exact witnesses on identical domains. Exhausting a declared finite resource family can reject that family comparison. A timeout or lack of a found resource leaves it unresolved. |
 | H-TBD-ANCHOR | Under H-111, one fixed measure and unsplit anchor box have a strictly positive uniform joint capture gap, while the specified independent-minimum comparator fails | Require complete parameter coverage, exact margin, and a certified obstruction or surviving solution for the static comparator. This does not compare against arbitrary anchor subdivision or other measures. |
 | H-TBD-RELEASE | Under H-117, every candidate in one fully specified release domain satisfying the declared minimizing premises and having at least two distinct nonaxis actual angles is excluded or admits a finite nonincreasing-side motion reducing that count | Require a uniform argument through releases, new contacts and seams; route coincident or axis component angles to the restricted family. A proved counterexample refutes the conditional lemma; failure to find a motion does not. A successful local domain leaves the global remainder open. |
-| H-TBD-NORMAL-FORM | As a precise specialization of H-117, some global minimizer has orientations in $\{0,\theta\}$ modulo quarter turns | Requires a global representative argument, for example complete angle elimination or a sufficient segment-rank theorem. A high-angle feasible packing alone does not refute it. No numerical prevalence threshold can accept it. |
+| H-TBD-NORMAL-FORM | As a precise specialization of H-117, some global minimizer has orientations in $\lbrace0,\theta\rbrace$ modulo quarter turns | Requires a global representative argument, for example complete angle elimination or a sufficient segment-rank theorem. A high-angle feasible packing alone does not refute it. No numerical prevalence threshold can accept it. |
 
 H-112 and H-113 already state the corresponding restricted-family lower-bound claims, so
 another broad “few-angle optimum” hypothesis would duplicate them.
@@ -855,7 +855,7 @@ contracts rather than becoming speculative scientific hypotheses.
 | Curved resources and expanded support, H-115/116 | They are distinct from the unchanged support and present atomic cores | A concrete candidate or obstruction that identifies the next verifier |
 | Several rotator frames, few-large-tilt cases, and dispersed angle classes | Unrestricted competitors may have more than two orientations | Complete domains whose capacities or LP structure are simpler than the original root |
 | Contact and stationary algebra | Exact residual leaves may be easier than broad pose subdivision | A reviewed physical formulation and a measured finite family of remaining cases |
-| Numerical adversarial search | A different sub-$U$ witness would immediately redirect the program | Exact verification of an improvement; repeated failures alone do not restrict the feasible set |
+| Numerical adversarial search | A different sub-`U` witness would immediately redirect the program | Exact verification of an improvement; repeated failures alone do not restrict the feasible set |
 
 The strategic preference is to combine a direct proof method with a structural
 investigation whose conclusion would reduce its cost.

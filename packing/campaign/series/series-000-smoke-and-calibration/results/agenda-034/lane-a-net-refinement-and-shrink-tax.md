@@ -21,7 +21,7 @@ Source: `packing/cases/n11_fractional_certificate/certificate.json` (SHA-256
 `b121edbd044b6f326022d8783551efd947c95eec2738269857d039358ac6ae6a`, loaded through
 `devtools.decide_certificate.load_frozen_bytes`): L0 = 381/100, B0 = 9977/10000, T =
 207107/500000, 181 directions, 1121 atoms, M = 434547/40000 = 10.863675, threshold M/11
-= 434547/440000 = 0.9876068. A pass is `m > M/11` decided in `Fraction`s on the
+= 434547/440000 = 0.9876068. A pass is $m > M/11$ decided in `Fraction`s on the
 library’s own sweep (`sweep_direction_minimum`) or on `scaled_mass_grid`’s exact integer
 grid; floats propose, never decide.
 T-022 reference: 3.810025723614703.
@@ -289,13 +289,13 @@ field copied from them.
 
 | receipt | steps | B | objective (float LP) | stopped | rounds | rows | support orbits | s |
 | --- | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| [`lane-a-part_d_lp-S180-B9977000.json`](lane-a-part_d_lp-S180-B9977000.json) | 180 | `9977/10000` | 10.860299456291461 | converged: every placement covers mass 1 | 37 | 2208 | 113 | 368.3 |
-| [`lane-a-part_d_lp-S360-B9977000.json`](lane-a-part_d_lp-S360-B9977000.json) | 360 | `9977/10000` | 10.874446085672329 | converged: every placement covers mass 1 | 37 | 2863 | 100 | 531.0 |
-| [`lane-a-part_d_lp-S360-B9988513.json`](lane-a-part_d_lp-S360-B9988513.json) | 360 | `9988513/10000000` | 10.708668941979518 | converged: every placement covers mass 1 | 27 | 2771 | 72 | 327.3 |
+| [`lane-a-part_d_lp-S180-B9977000.json`](lane-a-part_d_lp-S180-B9977000.json) | 180 | $\frac{9977}{10000}$ | 10.860299456291461 | converged: every placement covers mass 1 | 37 | 2208 | 113 | 368.3 |
+| [`lane-a-part_d_lp-S360-B9977000.json`](lane-a-part_d_lp-S360-B9977000.json) | 360 | $\frac{9977}{10000}$ | 10.874446085672329 | converged: every placement covers mass 1 | 37 | 2863 | 100 | 531.0 |
+| [`lane-a-part_d_lp-S360-B9988513.json`](lane-a-part_d_lp-S360-B9988513.json) | 360 | $\frac{9988513}{10000000}$ | 10.708668941979518 | converged: every placement covers mass 1 | 27 | 2771 | 72 | 327.3 |
 
-All three are the covering LP on the frozen 1121 sites (149 D4 orbits) at `L = 381/100`,
+All three are the covering LP on the frozen 1121 sites (149 D4 orbits) at $L = 381/100$,
 each stopping with `least_covered_at_end` within `1e-12` of 1, against the retained
-total mass `434547/40000 = 10.863675`. Float LP values, CHECKED, not bounds; the
+total mass $434547/40000 = 10.863675$. Float LP values, CHECKED, not bounds; the
 per-round row, violation and timing logs are in the receipts.
 
 ## Files
@@ -307,7 +307,7 @@ Retained beside this report, in this directory:
   [`lane-a-part_a2-S720.json`](lane-a-part_a2-S720.json) (3,373 B),
   [`lane-a-part_a2-S1440.json`](lane-a-part_a2-S1440.json) (3,363 B),
   [`lane-a-part_a2-S2880.json`](lane-a-part_a2-S2880.json) (3,598 B). Each carries
-  `steps`, `D`, `B_fail`, `B_pass`, the unit-equivalent side `L0/B_pass`, the exact
+  `steps`, $D$, `B_fail`, `B_pass`, the unit-equivalent side `L0/B_pass`, the exact
   `dilation_supremum_squared` with its float, the eleven bisection tests with their
   least mass, argmin and seconds, and the total seconds.
 - Part B: [`lane-a-part_b_direct.json`](lane-a-part_b_direct.json) (43,716 B), the
@@ -325,7 +325,7 @@ Not retained (scratch only):
 - The 51 per-direction sweep logs `dirmin-*.jsonl`, 6.4 MB in total: 181 B to 831,284 B
   each, twelve of them 200 KB or more, the largest `dirmin-S2880-sharp.jsonl` at 831,284
   B and `dirmin-S2880-original.jsonl` at 410,765 B. One JSON line per direction — the
-  index `k`, its exact half-tangent `t`, the exact least reachable mass `min`, the exact
+  index $k$, its exact half-tangent $t$, the exact least reachable mass `min`, the exact
   rational witness centre `witness_uv` in the rotated frame, and the seconds.
   They are the resume logs each script restarts from and the source of the per-direction
   numbers quoted above; no table above needs them.

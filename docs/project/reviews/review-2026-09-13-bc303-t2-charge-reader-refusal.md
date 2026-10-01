@@ -70,9 +70,9 @@ L_{180}=37175706500000/37322097608629,
 \qquad U_{180}=1.
 $$
 
-The source construction reflects a folded parent `(v_x,v_y)` to `(v_y,v_x)`, modulo
+The source construction reflects a folded parent $(v_x,v_y)$ to $(v_y,v_x)$, modulo
 quarter turns. Thus, for these positive physical rays, source membership must compare
-`u_x/u_y` with `[L_180,1]`.
+$u_x/u_y$ with $[L_{180},1]$.
 
 The accepted C receipt returns
 
@@ -124,7 +124,7 @@ Set `x_high=1/1000`, `epsilon=2^-100`, and `y_low=(a+(4/5)x_high-7/10-epsilon)/(
 Two unit-weight synthetic atoms have core-frame coordinates `(x_high+h,h/2)` and
 `(h/2,y_low-h)` relative to the first mark.
 Their rectangles leave the open cell `(0,x_high) × (y_low,h)` at charge zero.
-Its wall-clearance supremum is `7/10+2^-100`, so it is feasible.
+Its wall-clearance supremum is $7/10+2^{-100}$, so it is feasible.
 The explicit rational point
 
 $$
@@ -132,16 +132,16 @@ x=x_{\rm high}-x_{\rm high}/2^{110},\qquad
 y=y_{\rm low}+(h-y_{\rm low})/2^{110}
 $$
 
-has clearance strictly greater than `7/10` and closed charge zero.
+has clearance strictly greater than $7/10$ and closed charge zero.
 The optimized sweep returns C minimum **0**; `direct_all_strata_minima` incorrectly
 returns **1**. This is a defect in the claimed reference, not a failure of the optimized
 sweep.
 
 The maintained fixtures also do not exercise an interior negative x-event.
-Their nondegenerate rectangles end at `x=h`, which the strip loop never processes.
+Their nondegenerate rectangles end at $x=h$, which the strip loop never processes.
 The coincident events they test are starts only.
 A retained independent fixture with a weight-7 rectangle ending and a weight-11
-rectangle starting at `X/2`, over a weight-13 full-domain rectangle, passes: C minimum
+rectangle starting at $X/2$, over a weight-13 full-domain rectangle, passes: C minimum
 20, S minimum 24, and closed event charge 31.
 
 **Fix:** Give each point/open-interval product stratum an exact feasibility decision,
@@ -158,7 +158,7 @@ target execution.
 **Atom binding passes.** `source_atoms` compares all six source paths with their
 reviewed Git bytes before parsing the measure.
 The parser checks all 377 rows, distinct rational sites, nonnegative weights, exact
-integer scaling at `W=4000000`, header parameters, and total integer mass `45048398`.
+integer scaling at $W=4000000$, header parameters, and total integer mass `45048398`.
 Its explicit nonnegative-weight guard establishes the premise needed for boundary
 monotonicity. The source-check operation identifies this module’s own checkout and the
 pinned clean revision before any charge.
@@ -170,10 +170,10 @@ matches. The identities are both axis aliases, unreflected 1–179, and reflecte
 there are 181 distinct selected orientations.
 
 **The event sweep and C wall prefix pass mathematical review.** Each source atom is
-projected into its exact closed membership rectangle and clipped to `[0,h]^2`. Zero-area
-intersections are discarded only from open-cell charging; `charge_at` retains the
-complete atom tuple.
-The cut `X` and axis bound `delta` are explicit event levels.
+projected into its exact closed membership rectangle and clipped to $[0,h]^{2}$.
+Zero-area intersections are discarded only from open-cell charging; `charge_at` retains
+the complete atom tuple.
+The cut $X$ and axis bound `delta` are explicit event levels.
 All starts and ends at one x-level are applied before querying the next strip, including
 full-domain rectangles.
 The range tree preserves exact integer sums and returns a stable leftmost minimum.
@@ -181,19 +181,19 @@ The range tree preserves exact integer sums and returns a stable leftmost minimu
 For a non-axis cell, positive clearance maximum `M=a+c*x_high-s*y_low` satisfies parent
 existence exactly when `4*M^2*(1+L^2)>(1+L)^2`. It is an unattained supremum, so strict
 comparison is required.
-Since `s>0`, feasible y-intervals form the prefix found by the binary search.
+Since $s>0$, feasible y-intervals form the prefix found by the binary search.
 Convex interior density and nonnegative closed atoms justify taking C minima over open
 cells; the forbidden axis edge remains excluded.
 An explicit reconstruction failure raises an error rather than issuing a positive target
 verdict. The reflected physical-parent receipt defect is R1.
 
 **The S filter and thresholds are correctly scoped.** The first owner uses the strict
-strip `X<x<=h`; insertion of `X` makes `x_low>=X` select precisely its open cells.
+strip `X<x<=h`; insertion of $X$ makes `x_low>=X` select precisely its open cells.
 The admitted interior-density argument supplies its boundary minimum.
 The code and records retain the distinction between `filter_failed_only` and an actual S
 witness.
 
-At scale `W`, the single-corner surplus allowance is `524199`. Therefore C needs integer
+At scale $W$, the single-corner surplus allowance is $524199$. Therefore C needs integer
 charge at least `4524200`, and the S pair needs at least `8524200`. Subtracting the
 imported second-owner floor `4000015` gives the first-owner sufficient threshold
 `4524185`. H-160, exp-158, and the reader use these exact values.

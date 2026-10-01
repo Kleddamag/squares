@@ -88,7 +88,7 @@ could hit both retained escapes.
 ## Frozen Prospective Protocol
 
 Freeze the original five sites followed by the exact source-bound exp149 centre, tuple
-`(0,0,0,7)`, four unchanged exp146 patches, and all 361 retained directions.
+$(0,0,0,7)$, four unchanged exp146 patches, and all 361 retained directions.
 Publish admitted source and this protocol before the single run.
 
 Accept only after all exact deficits are zero and the final deadline check passes.

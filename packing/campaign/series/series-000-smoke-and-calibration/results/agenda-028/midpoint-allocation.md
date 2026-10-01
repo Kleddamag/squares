@@ -27,7 +27,7 @@ wall distance $r(C)$. The generic design proposes the exact common core
 
 $$
 K(r)=\bigcap_{h(\theta)\le r}Q_\theta
-=\operatorname{conv}\!\left(B_{1/2}\cup[-a,a]^2\right),
+=\operatorname{conv}\negthinspace\left(B_{1/2}\cup[-a,a]^2\right),
 \qquad a=\frac{1}{4\min(r,1/\sqrt2)}.
 $$
 

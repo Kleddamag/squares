@@ -26,9 +26,9 @@ with the unchanged bounds
 $$
 \begin{gathered}
 381/100\le L\le96/25,\qquad 2\le z\le L-1,\qquad
-p\in[1/2,7/2]^2,\\
+p\in[1/2,7/2]^2,\cr
 -1/4\le a,b\le1/4,\qquad
-t\in J_1\cup J_2,\\
+t\in J_1\cup J_2,\cr
 J_1=[1/24,1/3],\qquad J_2=[1/2,23/25].
 \end{gathered}
 $$
@@ -52,16 +52,16 @@ exactly
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\\
-C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\\
-C_6&=p,&C_7&=p+ae-f,\\
+C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\cr
+C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\cr
+C_6&=p,&C_7&=p+ae-f,\cr
 C_8&=p+e+bf,&C_9&=p+(a+1)e+(b-1)f.
 \end{aligned}
 $$
 
-Each is an actual unit square $C_i+\{\xi e_i+\eta f_i:|\xi|,|\eta|\le1/2\}$. The
-counterclockwise corner order is $C_i-(e_i+f_i)/2$, $C_i+(e_i-f_i)/2$,
+Each is an actual unit square $C_i+\lbrace\xi e_i+\eta f_i:|\xi|,|\eta|\le1/2\rbrace$.
+The counterclockwise corner order is $C_i-(e_i+f_i)/2$, $C_i+(e_i-f_i)/2$,
 $C_i+(e_i+f_i)/2$, $C_i+(-e_i+f_i)/2$. The source labels and contact sides are retained.
 
 The nine flush wall incidences survive unchanged: square 0 left/bottom, 1 bottom/right,
@@ -82,7 +82,7 @@ h_i=H_i(E)=H_i(F).
 $$
 
 Here $h_i=1/2$ for $0\le i\le5$ and $h_i=(c+s)/2$ for $6\le i\le9$. Retain all four
-scalar inequalities for every $i\in\{0,\ldots,9\}$:
+scalar inequalities for every $i\in\lbrace0,\ldots,9\rbrace$:
 
 $$
 C_{i,x}\ge h_i,\quad C_{i,x}\le L-h_i,\quad
@@ -97,7 +97,7 @@ $[1/2,167/50]^2$; the retained box bound on $p$ therefore omits no contained pos
 For every $0\le i<j\le9$, retain the single complete disjunction
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \left[\sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n)\right].
 \tag{P}
 $$
@@ -157,9 +157,9 @@ finite union of closed conditions.
 ## Necessary Inclusion and Witness Meaning
 
 Let $D_{10}$ denote exactly the seven-parameter domain above, and let
-$R=\mathcal S_{\rm full}\cap\{t\in J_1\cup J_2\}$ be the retained eleven-square domain
-from BC281. Let $\pi$ forget $(w_x,w_y,v)$. Directly deleting those coordinates and
-their incident geometric conditions establishes
+$R=\mathcal S_{\rm full}\cap\lbrace t\in J_1\cup J_2\rbrace$ be the retained
+eleven-square domain from BC281. Let $\pi$ forget $(w_x,w_y,v)$. Directly deleting those
+coordinates and their incident geometric conditions establishes
 
 $$
 \pi(R)\subseteq D_{10}.
@@ -170,8 +170,8 @@ This inclusion is enough for a uniform contradiction on $D_{10}$ to exclude $R$.
 not establish $\pi(R)=D_{10}$. More precisely,
 
 $$
-\pi(R)=\left\{q\in D_{10}:\exists w\in[1/2,7/2]^2,\ v\in[0,1]
-\text{ satisfying square 10's four wall rows and ten pair clauses}\right\}.
+\pi(R)=\left\lbrace q\in D_{10}:\exists w\in[1/2,7/2]^2,\ v\in[0,1]
+\text{ satisfying square 10's four wall rows and ten pair clauses}\right\rbrace.
 $$
 
 The deleted variables have a nonempty standalone parameter box, so $D_{10}$ is the exact

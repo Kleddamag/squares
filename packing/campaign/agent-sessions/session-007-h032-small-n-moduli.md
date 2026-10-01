@@ -104,11 +104,11 @@ session:
 # Session 007 — exact small-`n` moduli
 
 The completed loop was proof-heavy and compute-light.
-The `n = 3` cell is the semantic control for every later basin atlas: it forces the
+The $n = 3$ cell is the semantic control for every later basin atlas: it forces the
 system to distinguish labelled configurations, unlabelled components, global-symmetry
 orbits, active-contact changes, and pure stabilizer changes.
 
-The `n = 4` cell was included because the same equality lemma reduces it to a finite
+The $n = 4$ cell was included because the same equality lemma reduces it to a finite
 grid enumeration. It is still a separate round so the campaign ledger cannot confuse a
 cheap corollary with evidence about an unmeasured sweep cell.
 

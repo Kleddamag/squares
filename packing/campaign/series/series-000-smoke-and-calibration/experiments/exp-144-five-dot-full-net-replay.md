@@ -74,7 +74,7 @@ its Gitblob and this record identify the repository-relative source unambiguousl
 That display convention remains a small reader follow-up, not a changed input.
 
 The numerical exp143 candidate has five atoms of common weight `beta = 1000001/1000000`.
-Its total is `1000001/200000`. Every exact core mass is an integer multiple of beta.
+Its total is $1000001/200000$. Every exact core mass is an integer multiple of beta.
 Thus any positive complete minimum implies that the five unit dots cover the complete
 residual net. A zero minimum rejects this specific proposal.
 An incomplete reader is unresolved.

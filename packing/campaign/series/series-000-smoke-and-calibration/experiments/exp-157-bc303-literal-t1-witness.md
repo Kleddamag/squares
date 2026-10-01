@@ -91,13 +91,13 @@ To validate it under the reader’s identity rule, check out that execution comm
 call `validate_record(record, repository)` there, or replay at a later head for a new
 implementation revision.
 
-The parent is `[0,1]^2`, its selected core is `[23/20000,19977/20000]^2`, and both
+The parent is $[0,1]^{2}$, its selected core is $[23/20000,19977/20000]^{2}$, and both
 bottom-left marks lie strictly inside.
-The complete labels are `{3,4,11,12}`. Nineteen of 377 atoms are captured, with mass
-`800003/800000`; therefore `S(X)=3/800000` is below `epsilon=524199/2000000`. This
-rejects only H-159’s universal local inequality.
+The complete labels are $\lbrace3,4,11,12\rbrace$. Nineteen of 377 atoms are captured,
+with mass $800003/800000$; therefore $S(X)=3/800000$ is below `epsilon=524199/2000000`.
+This rejects only H-159’s universal local inequality.
 It does not determine the least surplus over the full role-C domain, whether the parent
-occurs in an eleven-parent packing, T2, global routing, or a stronger `s(11)` bound.
+occurs in an eleven-parent packing, T2, global routing, or a stronger $s(11)$ bound.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

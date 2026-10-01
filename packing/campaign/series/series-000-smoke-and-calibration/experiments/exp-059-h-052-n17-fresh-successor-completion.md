@@ -316,8 +316,8 @@ rows to the 170 carried ones.
 
 Both 181-row summaries are byte-identical.
 Atom count 168, atom hash `37d35da0…`, direction count 181, direction hash `cc789e1a…`,
-total weight `203/12`. Every one of the 181 row minima is exactly `1/1`, so the global
-minimum is `1/1` — the frozen expectation `576/576`. All twelve certificate invariants,
+total weight $203/12$. Every one of the 181 row minima is exactly $1/1$, so the global
+minimum is $1/1$ — the frozen expectation $576/576$. All twelve certificate invariants,
 all five mutation rejections, the precondition conjunction and the shrink-and-scaling
 conjunction hold, and the progress marker was removed at the final reconciliation.
 
@@ -347,7 +347,7 @@ what the instrument can do.
 This round can produce all 181 exact pairs or the first exact disagreement.
 Agreement alone moves no bound: it establishes implementation agreement for one fixed
 certificate, and it is neither an independent proof method, nor adoption of the retained
-`4.5058` as a reviewed lower bound, nor any cross-`n` or LP-generalization claim.
+$4.5058$ as a reviewed lower bound, nor any cross-`n` or LP-generalization claim.
 A disagreement rejects the agreement claim only, at H-052’s registered scope, and leaves
 the mathematical lower bound for independent adjudication.
 The separate adoption gate remains untouched either way.
@@ -383,7 +383,7 @@ round, which is the one transition the reviewer authorised.
 The decision `accepted`, its reason and the claim boundary stand unchanged; the reviewer
 altered nothing. `H-052` is resolved on this pass at the scope its registered notes
 already fix: implementation agreement for one fixed certificate.
-Nothing here is a proof method, an adoption of `4.5058`, or a frontier change; the
+Nothing here is a proof method, an adoption of $4.5058$, or a frontier change; the
 separate source-adoption route is `BC-150` and `BC-151`, and it rests on the published
 argument rather than on this agreement.
 

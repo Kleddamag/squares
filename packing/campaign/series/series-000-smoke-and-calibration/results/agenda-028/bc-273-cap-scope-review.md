@@ -28,7 +28,7 @@ No endpoint or angle-coincidence case is removed to obtain the cap geometry.
 For precision, interpret the report’s “open portion” as
 
 $$
-K=\operatorname{int}(S_8)\cap\{(x,y):L-1<y<L\}.
+K=\operatorname{int}(S_8)\cap\lbrace(x,y):L-1<y<L\rbrace.
 $$
 
 Containment gives $H\le L$ and puts every interior point of square 8 strictly inside the
@@ -57,7 +57,7 @@ $$
 Interior cap points approach the highest vertex.
 If $K$ lay in the right strip, their limiting horizontal coordinate would satisfy
 $X\ge z+1$, contrary to this strict bound.
-Hence $K\subset\{2<x<z\}$.
+Hence $K\subset\lbrace2<x<z\rbrace$.
 
 Taking limits initially gives only $2\le X\le z$. To check the report’s strict version,
 take any sufficiently small depth $d>0$ below the highest vertex, with

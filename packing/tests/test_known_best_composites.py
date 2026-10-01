@@ -469,6 +469,29 @@ def test_a_record_is_held_to_the_repository_where_git_can_answer(
     ]
 
 
+def test_a_shallow_clone_that_holds_the_commit_is_not_asked_for_its_history(
+    history: tuple[Path, str, str, str], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The pull request's record sweeps run in a one-commit partial clone, which fetches
+    the commit a composite names and has no ancestry to place it in (jlevy/squares#285,
+    2026-10-01: both posters were reported as naming a commit not in this history). The
+    date is still held; whether the commit is an ancestor, and whether it changed the
+    data, are left to a clone with history."""
+    repo, first, _, _ = history
+    _git(repo, "config", "uploadpack.allowAnySHA1InWant", "true")
+    clone = tmp_path / "clone"
+    _git(tmp_path, "clone", "--quiet", "--depth", "1", repo.as_uri(), str(clone))
+    _git(clone, "fetch", "--quiet", "--depth", "1", "origin", first)
+    assert _git(clone, "rev-parse", "--is-shallow-repository") == "true"
+    monkeypatch.setattr(atlas, "REPOSITORY_ROOT", clone)
+    check = atlas._identity_git_problems  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
+    name = "atlas/known-best/synthetic.svg"
+    assert check(name, atlas.CompositeIdentity(first, "2026-09-28")) == []
+    assert check(name, atlas.CompositeIdentity(first, "2026-09-29")) == [
+        f"{name} dates its data 2026-09-29; {first[:12]} is dated 2026-09-28"
+    ]
+
+
 def test_a_record_is_not_judged_where_git_cannot_answer(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

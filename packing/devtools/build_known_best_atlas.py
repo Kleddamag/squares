@@ -2623,12 +2623,20 @@ def _identity_git_problems(path: str, identity: CompositeIdentity) -> list[str]:
     The revision has to be a commit in this history that changed the data, and the date
     has to be that commit's. Nothing is reported where git cannot say -- a source
     tarball, or a shallow clone cut above the commit -- as `test_release` skips there.
+
+    A shallow clone can hold the commit and still not hold its history: the pull
+    request's record sweeps check out one commit of a partial clone, which fetches the
+    named commit when asked for it and has no ancestry to place it in. There the date is
+    still the commit's own, and the two questions that walk history are left to a clone
+    that has one (`test_the_retained_composites_agree_with_their_own_records`, in the
+    behavioral shards, which fetch all of it).
     """
     revision = identity.data_revision
+    shallow = _git_result("rev-parse", "--is-shallow-repository")
+    cut = shallow.returncode != 0 or shallow.stdout.strip() == "true"
     found = _git_result("cat-file", "-t", f"{revision}^{{commit}}")
     if found.returncode != 0:
-        shallow = _git_result("rev-parse", "--is-shallow-repository")
-        if shallow.returncode != 0 or shallow.stdout.strip() == "true":
+        if cut:
             return []
         return [f"{path} names {revision[:12]} as its data, which is not a commit here"]
     problems = []
@@ -2640,6 +2648,8 @@ def _identity_git_problems(path: str, identity: CompositeIdentity) -> list[str]:
         problems.append(
             f"{path} dates its data {identity.data_date}; {revision[:12]} is dated {day}"
         )
+    if cut:
+        return problems
     last = _git_result("log", "-1", "--format=%H", revision, "--", *data_pathspec())
     if last.returncode == 0 and last.stdout.strip() != revision:
         problems.append(

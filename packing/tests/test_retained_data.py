@@ -34,6 +34,7 @@ PACKETS = (
     "wand125-point-and-mixed-2026-09-28",
     "franciscouzo-square-packing-2026-09-27",
     "casson-square-packing-2026-09-23",
+    "wang-li-n11-2026-09-29",
 )
 
 

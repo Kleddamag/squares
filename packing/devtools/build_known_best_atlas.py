@@ -19,7 +19,7 @@ import time
 import urllib.error
 import urllib.request
 import zlib
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from decimal import ROUND_HALF_EVEN, Decimal
@@ -27,6 +27,7 @@ from fractions import Fraction
 from functools import cache
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any
 from xml.etree import ElementTree as ET
 
 import mpmath as mp
@@ -806,7 +807,9 @@ def _source_index(plans: dict[int, SourcePlan]) -> dict:
                     "n": n,
                     "raw_asset_retained": False,
                     "retention_policy": KINGBIRD_RETENTION_POLICY,
-                    "retrieved": RETRIEVED_DATE,
+                    "retrieved": _retained_retrieval(
+                        load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)
+                    ),
                     "source_n": plan.source_n,
                     "url": plan.url,
                 }
@@ -867,6 +870,18 @@ def _assert_side_matches(case: FrontierCase, actual: str) -> None:
         )
 
 
+def _retained_retrieval(retained: Mapping[str, Any]) -> str:
+    """When the retained derived facts were read from the catalogue.
+
+    `devtools.derive_kingbird_facts` dates each witness by the pass that read its SVG, so
+    a count refreshed from a later capture keeps that later date; the corpus-wide
+    `RETRIEVED_DATE` is only the fallback for a witness that records none.
+    """
+    source = retained.get("source")
+    recorded = source.get("retrieved") if isinstance(source, Mapping) else None
+    return str(recorded) if recorded else RETRIEVED_DATE
+
+
 def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
     frontier_path = _relative(case.path)
     if plan.kind == "exact-grid":
@@ -884,6 +899,7 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
                 source_n=plan.source_n,
                 source_path=_relative(SOURCE_MANIFEST),
                 source_url=plan.url,
+                retrieved=_retained_retrieval(retained),
             )
         if plan.kind == PACKET_KIND:
             retained = load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)

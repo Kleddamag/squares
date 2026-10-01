@@ -1,0 +1,91 @@
+== command: /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/venv-authors/bin/python check_integrity.py   (cwd: scratch copy of kleddamag-11 with improved-global-certificate.json and verify_wang_li.py added)
+started: 2026-09-30T08:14:51Z load: 8.23 8.34 9.67
+PASS 54 pinned files
+wall 0.135 s, user 0.055 s, system 0.010 s
+exit: 0 finished: 2026-09-30T08:14:52Z
+== command: /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/venv-authors/bin/python verify_threshold_algebra.py   (cwd: scratch copy of kleddamag-11 with improved-global-certificate.json and verify_wang_li.py added)
+started: 2026-09-30T08:14:52Z load: 8.23 8.34 9.67
+{
+  "status": "PASS_EXHAUSTIVE_THRESHOLD_IDENTITIES_AND_BUDGETS",
+  "records": [
+    {
+      "sites": 3,
+      "threshold": 1,
+      "budget": 3,
+      "boolean_patterns": 8,
+      "disjoint_assignments": 125,
+      "absolute_coefficient_sum": 7
+    },
+    {
+      "sites": 3,
+      "threshold": 2,
+      "budget": 1,
+      "boolean_patterns": 8,
+      "disjoint_assignments": 27,
+      "absolute_coefficient_sum": 5
+    },
+    {
+      "sites": 3,
+      "threshold": 3,
+      "budget": 1,
+      "boolean_patterns": 8,
+      "disjoint_assignments": 27,
+      "absolute_coefficient_sum": 1
+    },
+    {
+      "sites": 5,
+      "threshold": 1,
+      "budget": 5,
+      "boolean_patterns": 32,
+      "disjoint_assignments": 16807,
+      "absolute_coefficient_sum": 31
+    },
+    {
+      "sites": 5,
+      "threshold": 2,
+      "budget": 2,
+      "boolean_patterns": 32,
+      "disjoint_assignments": 1024,
+      "absolute_coefficient_sum": 49
+    },
+    {
+      "sites": 5,
+      "threshold": 3,
+      "budget": 1,
+      "boolean_patterns": 32,
+      "disjoint_assignments": 243,
+      "absolute_coefficient_sum": 31
+    },
+    {
+      "sites": 5,
+      "threshold": 4,
+      "budget": 1,
+      "boolean_patterns": 32,
+      "disjoint_assignments": 243,
+      "absolute_coefficient_sum": 9
+    },
+    {
+      "sites": 5,
+      "threshold": 5,
+      "budget": 1,
+      "boolean_patterns": 32,
+      "disjoint_assignments": 243,
+      "absolute_coefficient_sum": 1
+    }
+  ]
+}
+wall 0.112 s, user 0.064 s, system 0.013 s
+exit: 0 finished: 2026-09-30T08:14:52Z
+== command: /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/venv-authors/bin/python verify_wang_li.py --output-dir /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/routeB/full-replay   (cwd: scratch copy of kleddamag-11 with improved-global-certificate.json and verify_wang_li.py added)
+started: 2026-09-30T08:14:52Z load: 8.23 8.34 9.67
+{
+  "status": "PASS_FRESH_PORTABLE_FULL_VERIFICATION",
+  "bound": "3875000000/999999999",
+  "certificate_sha256": "31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34",
+  "intervals": 12028,
+  "minimum_units": 1000047559,
+  "budget_units": 11000095024,
+  "surplus_units": 428125
+}
+wall 8206.659 s, user 5502.161 s, system 62.015 s
+exit: 0 finished: 2026-09-30T10:31:38Z

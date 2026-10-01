@@ -5,14 +5,15 @@ softschema:
 last_reviewed: '2026-09-30'
 results:
   - id: T-001
+    registered: '2026-08-31'
     headline: "`s(17) ≥ 4426213/1000000 = 4.426213`, from a sixteen-point unavoidable set"
     established: '2026-08-31'
     claim: >-
       Sixteen points make [0, 4426213/1000000]^2 unavoidable for open squares of
       side above one, so s(17) >= 4426213/1000000 = 4.426213.
     scope: {n_values: [17]}
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -32,19 +33,27 @@ results:
       - packing/cases/green17/interval_audit.py
     controls:
       - packing/tests/test_green17.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       C5 by assembling the review artifact (statement, hypotheses, proof
       narrative, code map, replays); V5 by a proof-assistant port. The stronger
       side at the exact ceiling is T-003's business.
   - id: T-002
+    registered: '2026-08-31'
     headline: "`s(18) ≥ 4426213/1000000`, by monotonicity from T-001"
     established: '2026-08-31'
     claim: >-
       s(18) >= 4426213/1000000, by monotonicity from T-001 (a packing of 18
       unit squares contains a packing of 17).
     scope: {n_values: [18]}
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -68,10 +77,18 @@ results:
       - packing/cases/green17/interval_audit.py
     controls:
       - packing/tests/test_green17.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       Rises with T-001; a bespoke n = 18 set stronger than the inherited bound
       would be a new result, not a rung change.
   - id: T-003
+    registered: '2026-08-31'
     headline: "The sixteen-point set's unavoidability ceiling lies in `[4426213/1000000, 4427/1000)`"
     established: '2026-08-31'
     claim: >-
@@ -81,7 +98,7 @@ results:
       a + 2b <= 2*sqrt(2) hypothesis identifying the closing mechanism at
       753/250 + sqrt(2), inside the bracket.
     scope: {n_values: [17, 18]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 2
@@ -105,17 +122,24 @@ results:
       - packing/tests/test_green17.py
     controls:
       - packing/tests/test_green17.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       think-iye2: the shared certifier generalized to a Q(sqrt 2) scalar
       certifies at the ceiling exactly and an exact escape family above it
       turns the bracket into an equality at C3.
   - id: T-004
+    registered: '2026-08-31'
     headline: "Bentz 2010, Theorem 8 (`s(46) ≥ 7`) is correct as printed, machine-audited in full"
     claim: >-
       Bentz 2010, Theorem 8: the printed 45-point unavoidable-set argument for
       s(46) >= 7 is correct as printed, machine-audited in full.
     scope: {n_values: [46]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -137,10 +161,17 @@ results:
       - packing/cases/bentz46/packing.py
     controls:
       - packing/tests/test_bentz46.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       V5 by a proof-assistant port; C4 by a second independent mechanism such
       as the pose-space interval audit generalized to Q(sqrt 2, sqrt 3) sides.
   - id: T-005
+    registered: '2026-08-31'
     headline: "Bentz 2010, Lemma 10 is false as printed and true as corrected to `(1.74, 1)`"
     established: '2026-08-31'
     claim: >-
@@ -150,7 +181,7 @@ results:
       corrected reading (1.74, 1), with all three corrected replacement covers
       certified exactly.
     scope: {n_values: [13]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 2
@@ -169,16 +200,30 @@ results:
       - packing/resources/papers/bentz-2010-optimal-packings-13-and-46.md
     controls:
       - packing/tests/test_bentz13.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       Communicate the erratum to the author or journal; nothing mechanical
       remains on our side.
   - id: T-006
+    registered: '2026-08-31'
     headline: "`s(13) = 4`"
     claim: >-
-      s(13) = 4 (Bentz 2010, Theorem 9).
+      s(13) = 4 (Bentz 2010, Theorem 9). Proved again, without cases, by Evan Daniel's
+      weighted closed cover of [0,4]^2 in evand/square-packing, and kernel-checked in Lean
+      4 here: SquarePacking.s13_eq_4 : minSide 13 = 4, depending only on propext,
+      Classical.choice and Quot.sound, built on 2026-09-30 from the retained source at
+      6aa82ba4 with Mathlib's official cache. The cover's zero-margin property was also
+      certified here by the source's zmx2 over every root of its D4 region. Evan Daniel,
+      building on Burns's and Massaccesi's method, with an AI agent under human direction
+      as his CREDITS.md says.
     scope: {n_values: [13]}
     verification: V3
-    confirmation: C1
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -188,25 +233,46 @@ results:
       by: session-061 review (repository)
     novelty: previously-published
     attribution:
-      source_keys: ['[Bentz 2010]']
+      source_keys: ['[Bentz 2010]', '[evand square-packing 2026-09-28]']
       published: '2010-09-13'
     composition: >-
-      Compound with the minimum set by the unaudited part: Figure 2's
-      unavoidability and the corrected Lemma 10 replacements are machine-
-      confirmed (C3 parts, V4 fragments), but the Sections 3.1-3.2 case
-      analysis that completes the theorem is read prose, so the whole claim
-      stays at the published proof's V3 and our read's C1.
+      Two independent proofs of one value. Bentz's is compound, with Sections 3.1-3.2's
+      case analysis read rather than machine-checked. Evan Daniel's case-free proof is
+      complete as it stands: the Lean kernel checked s13_eq_4 from the definitions,
+      including every one of the 209 cover chunks, so the claim is V5 on
+      E-n013-evand-casefree-cover-lean-kernel. The confirmation rung comes from the
+      machine-method replay E-n013-evand-casefree-cover-zmx2-replay (C3); whether a
+      kernel check itself counts toward C is the owner's open question.
     evidence:
       - E-bentz-2010-proof
       - E-bentz13-figure2-audit
+      - E-n013-evand-casefree-cover-zmx2-replay
+      - E-n013-evand-casefree-cover-lean-kernel
     artifacts:
       - packing/cases/bentz13/verify_cover.py
       - packing/resources/papers/bentz-2010-optimal-packings-13-and-46.md
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/lean/axioms_s13.log
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/lean/s13_table.txt
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/s13_zmx2_d4.log
+      - docs/project/reviews/review-2026-09-30-lean-s13.md
+    controls:
+      - packing/tests/test_evand_mixed_covers.py
+    notes: >-
+      2026-09-30: held V5/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V5
+      proof-assistant checked). It stands at V3/C3, machine-checked with the review record
+      pending: rung 5 now needs a human expert's review of the formalization, and the
+      review of the kernel-checked s13_eq_4 retained here
+      (docs/project/reviews/review-2026-09-30-lean-s13.md) was written by an AI lane of
+      this session. One named human expert's formalization review restores V5; C5 needs
+      two, with the open-review pointer, beside the rebuild already done here.
     next_rung: >-
-      C3 by machine-checking Sections 3.1-3.2's staged sets (typed on
-      think-1o1f), which would also make this the second fully audited theorem
-      of the paper.
+      C4 by a second machine method on the same cover, for example a complete
+      zeromargin.py sweep (1 h 42 min on 8 processes at the source) beside the zmx2
+      replay. Bentz's own route reaches C3 by machine-checking Sections 3.1-3.2's staged
+      sets (typed on think-1o1f), which would also make it the second fully audited
+      theorem of the paper.
   - id: T-007
+    registered: '2026-08-31'
     headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100`"
     claim: >-
       For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives
@@ -240,12 +306,13 @@ results:
       reported context and are not current bounds. C3 means machine-checking Theorem 1's
       unavoidable-set capacity argument.
   - id: T-008
+    registered: '2026-08-31'
     headline: "`s(46) = 7`"
     claim: >-
       s(46) = 7: the lower half by T-004's audited unavoidable set, the upper
       half by the exact 7 x 7 grid packing of 46 squares.
     scope: {n_values: [46]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -273,10 +340,17 @@ results:
       - packing/devtools/check_basic_bounds.py
     controls:
       - packing/tests/test_bentz46.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by a method-independent second confirmation of the lower half; rises
       with T-004.
   - id: T-009
+    registered: '2026-08-31'
     headline: "`s(29) ≤ 5.933833…`, by a Krawczyk interval certificate"
     established: '2026-08-29'
     claim: >-
@@ -284,7 +358,7 @@ results:
       certificate over the retained rational 29-square witness at a declared
       relaxation of 1e-20.
     scope: {n_values: [29]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -302,11 +376,18 @@ results:
       - packing/cases/kingbird29/certify_interval.py
     controls:
       - packing/tests/test_witness_interval.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by an exact-algebraic confirmation of the same witness; the standing
       reported-value promotion question is the owner's evidence-contract
       decision, not a rung.
   - id: T-010
+    registered: '2026-08-31'
     headline: "`s(11) ≥ 2 + 4/√5`, by a repair of Stromquist 2003's Figure 14 point set"
     established: '2026-08-24'
     claim: >-
@@ -316,7 +397,7 @@ results:
       repaired unavoidability, and 3+9 capacity chain, certified exactly.
       The printed argument does not close (exp-016) and is not relied on.
     scope: {n_values: [11]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 4
@@ -336,11 +417,18 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/exp-017-h-041-stromquist-repaired-figure14.json
     controls:
       - packing/tests/test_falsify.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by a second independent mechanism -- the pose-space interval audit
       built for T-001, run at side 2 + 4/sqrt(5) over the repaired
       twelve-point set; V5 by a proof-assistant port.
   - id: T-011
+    registered: '2026-08-31'
     headline: "Trump's 1979 packing is exactly valid, so `s(11) ≤ 3.877083590022814…`"
     claim: >-
       Trump's 1979 packing is exactly valid: 11 unit squares in a square of
@@ -348,7 +436,7 @@ results:
       14 of 55 pairs in exact zero-separation contact and 20 corner
       coordinates exactly on the boundary, so s(11) <= that side.
     scope: {n_values: [11]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 2
@@ -369,11 +457,18 @@ results:
       - packing/cases/trump11/verify_exact.py
     controls:
       - packing/tests/test_known_best_n011_rational_control.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by a second independent exact verification of the same degree-8
       witness (the retained rational control proves a slightly weaker side
       and does not confirm this claim); V5 by a proof-assistant port.
   - id: T-012
+    registered: '2026-08-31'
     headline: "Goebel's `n = 5` packing is second-order rigid at fixed side"
     established: '2026-08-30'
     claim: >-
@@ -383,7 +478,7 @@ results:
       direction is refused at second order by a verified non-negative
       self-stress, all exactly over Q(sqrt 2).
     scope: {n_values: [5]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -402,6 +497,12 @@ results:
       - packing/campaign/explorations/X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md
     controls:
       - packing/tests/test_n5_rigidity.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       Local rigidity is discharged, not open: X-007's curve-selection argument
       was written out in full as X-012, checked against a complete exact
@@ -409,6 +510,7 @@ results:
       BC-153 and registered as T-014, which is where the n = 5 frontier
       property now rests. What remains here is V5 by a proof-assistant port.
   - id: T-013
+    registered: '2026-08-31'
     headline: "Goebel's `n = 40` packing: seven verified first-order flexes, each refused at second order"
     established: '2026-08-30'
     claim: >-
@@ -418,7 +520,7 @@ results:
       non-negative self-stress, exactly over Q(sqrt 2), so no first-order
       argument can establish rigidity here.
     scope: {n_values: [40]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -437,11 +539,18 @@ results:
     controls:
       - packing/tests/test_minus_w_stress.py
       - packing/tests/test_minus_w_row_jets.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       Characterise the admissible cone past dimension 45 (the corner-touching
       branch obstruction, D-391) or establish local rigidity by another
       route; the rigidity property stays undetermined until then.
   - id: T-014
+    registered: '2026-09-03'
     headline: "Goebel's `n = 5` optimum is rigid at fixed side: its pose is an isolated feasible point"
     established: '2026-09-03'
     claim: >-
@@ -457,7 +566,7 @@ results:
       order 2m that T-012's non-negative self-stress contradicts.
     scope: {n_values: [5]}
     verification: V3
-    confirmation: C5
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -505,7 +614,16 @@ results:
     controls:
       - packing/tests/test_n5_local_rigidity.py
       - packing/tests/test_n5_rigidity.py
-    review_artifact: docs/project/reviews/review-2026-09-03-bc153-h060-proof-independent-review.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-03-bc153-h060-proof-independent-review.md
+        kind: adversarial
+        reviewer: independent reviewer for BC-153 (agenda 016); model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-03'
+        scope: >-
+          BC-153 — Independent review of the H-060 proof (Goebel `n = 5`, fixed-side local rigidity); the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     next_rung: >-
       V4 by mechanising the closing steps rather than only the quantities they
       consume, or V5 by a proof-assistant port. C5 was reached on 2026-09-03 by
@@ -522,7 +640,13 @@ results:
       which was invoked; and any novelty of method -- the closing principle is
       classical and the Connelly-Whiteley 1996 Theorem 4.3.1 proof shape is not
       new.
+      2026-09-30: held V3/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (C5
+      review-ready). Rung 4 now needs two adversarial AI reviews by distinct reviewers and
+      a retained human oversight record (epistemics.md, No Blind Trust); none is retained
+      for this result, so it stands at V3/C3: machine-checked, review record pending. The
+      oversight record restores the rung.
   - id: T-015
+    registered: '2026-09-03'
     headline: "`s(17) ≥ 22529/5000 = 4.5058`"
     claim: >-
       s(17) >= 22529/5000 = 4.5058, by Massaccesi's 168-atom fractional
@@ -534,7 +658,7 @@ results:
       (a blog post, not peer reviewed, whose author marks the value "(?)"); no new
       first-party mathematics is claimed.
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -568,6 +692,12 @@ results:
     controls:
       - packing/tests/test_n17_weighted_certificate.py
       - packing/tests/test_n17_weighted_certificate_successor.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by a method-distinct certificate: a pose-space interval branch-and-bound
       over (theta, x, y) with the true unit square and weighted atoms, on the pattern
@@ -584,6 +714,7 @@ results:
       longer reads 22529/5000 as the strongest available at this size.
 
   - id: T-016
+    registered: '2026-09-03'
     headline: "`s(n) ≥ 22529/5000` for `n = 18, 19`, by monotonicity from T-015"
     claim: >-
       s(18) >= 22529/5000 and s(19) >= 22529/5000, by monotonicity from T-015 (a
@@ -592,7 +723,7 @@ results:
       307265841/25000000 > 12; at n = 20 the certificate does not improve
       1 + sqrt(13) = 4.6055... since that square is below 13, and nothing changes.
     scope: {n_values: [18, 19]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -623,6 +754,12 @@ results:
     controls:
       - packing/tests/test_n17_weighted_certificate.py
       - packing/tests/test_n17_weighted_certificate_successor.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       Rises with T-015; a bespoke n = 18 or n = 19 certificate stronger than the
       inherited bound would be a new result, not a rung change.
@@ -631,6 +768,7 @@ results:
       from a larger base. This result stays true as stated and keeps its rungs.
 
   - id: T-017
+    registered: '2026-09-04'
     headline: "`s(12) ≥ 99/25 = 3.96`"
     established: '2026-09-04'
     claim: >-
@@ -650,8 +788,8 @@ results:
     scope:
       n_values:
         - 12
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 4
       rationale: >-
@@ -663,7 +801,7 @@ results:
         also the first bound located in the retained corpus that is proved about n = 12
         rather than inherited from n = 11: the frontier case body had recorded that
         nothing specific to n = 12 had been proved there.
-        Held below S5 because n = 12 is not the central open case, weighted resource
+        Held below S5 because n = 12 is not a central open case, weighted resource
         counting predates this project, the recent pure-atomic rational direction-net
         architecture follows Burns, the LP parameter line follows Massaccesi, the second
         exact check shares a method family with the first, and the gap to the conjectured
@@ -750,7 +888,14 @@ results:
       that date and not for the literature: Daniel's certificate, above Trump's 3.877084,
       separated s(12) from s(11) first. The novelty label stays apparently-novel under
       epistemics.md's rule that priority is stated rather than defended.
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
   - id: T-018
+    registered: '2026-09-04'
     headline: "`s(11) ≥ 381/100 = 3.81`"
     established: '2026-09-04'
     claim: >-
@@ -765,14 +910,14 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 5
       rationale: >-
         Scored against the rubric's own anchor for S5, "movement on a central open
-        case". s(11) is the smallest open case and the one the frontier record calls
-        the problem this project exists for; the recorded public search found no movement
+        case". s(11) is the smallest open case and a central one for this project; the
+        recorded public search found no movement
         beyond Stromquist's value, stated in 1984 and published in 2003, and this displaces a bound from the refereed
         literature rather than an inherited or closed-form one.
         What S5 does not claim: the weighted-resource lineage predates this project and
@@ -808,7 +953,22 @@ results:
       - packing/src/sqpack/fractional/colgen.py
     controls:
       - packing/tests/test_fractional_certificate.py
-    review_artifact: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+        kind: adversarial
+        reviewer: an agent of this project working from the branch; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-04'
+        scope: >-
+          Adversarial review of PR 78: the `s(11) ≥ 381/100` claim; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
+    notes: >-
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). Rung 4 now needs two adversarial AI reviews by
+      distinct reviewers and a retained human oversight record (epistemics.md, No Blind
+      Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
+      review record pending. The oversight record restores the rung.
     next_rung: >-
       C4 is reached by the interval-certified decision, which is independent in method
       and, deciding coverage on the doubled net, never invokes the D4 reflection and so
@@ -869,6 +1029,7 @@ results:
       decimals is evidence about the restricted optima, not a proof that tau* equals
       eleven, and nothing here rules out a site set neither run found.
   - id: T-019
+    registered: '2026-09-04'
     headline: "`s(n) ≥ 459/100 = 4.59` for `n = 17, 18, 19`"
     established: '2026-09-04'
     claim: >-
@@ -897,8 +1058,8 @@ results:
         - 17
         - 18
         - 19
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 4
       rationale: >-
@@ -913,7 +1074,7 @@ results:
         At n19, the DS7 audit now retains a stronger source-reported bound than T-019;
         its 0.0842 movement refers to the prior register. The family-level score is
         unchanged. Held
-        below S5 because none of n = 17, 18, 19 is the central open case, the movement is
+        below S5 because none of n = 17, 18, 19 is a central open case, the movement is
         0.0842 rather than a qualitative change, weighted resource counting predates this
         project, the recent pure-atomic rational direction-net architecture follows
         Burns, the LP parameter line follows Massaccesi, and the case does not change
@@ -940,6 +1101,13 @@ results:
       - packing/src/sqpack/fractional/colgen.py
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       C4 is reached by the interval-certified decision, the first here that is not
       exact-algebraic. C5 is review-ready under epistemics.md -- a mapped, non-superseded
@@ -1006,6 +1174,7 @@ results:
       remains as the previous rung. 117/25 remains the open probe this next_rung named.
 
   - id: T-020
+    registered: '2026-09-04'
     headline: "`s(n) ≥ 24/5 = 4.80` for `n = 19, 20, 21`"
     established: '2026-09-04'
     claim: >-
@@ -1034,8 +1203,8 @@ results:
         - 19
         - 20
         - 21
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 4
       rationale: >-
@@ -1048,7 +1217,7 @@ results:
         verified register. The September 2026 source audit corrects the earlier claim
         that no size-specific bounds had been reported; it does not change these
         measured displacements of the verified fields.
-        Held below S5 for the reasons T-019 was: none of the three is the central open
+        Held below S5 for the reasons T-019 was: none of the three is a central open
         case, the weighted-resource lineage predates this project, the pure-atomic
         rational direction-net architecture follows Burns, the LP parameter line follows
         Massaccesi, and no case changes character at the new value.
@@ -1081,6 +1250,13 @@ results:
       - packing/src/sqpack/fractional/colgen.py
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       This result's 24/5 rung has total 18.922620, leaving 0.077380 below nineteen,
       and that margin is where a further rung had to be found. It is a
@@ -1115,6 +1291,7 @@ results:
       and replays by name. This result stays true as stated at all three of its sizes.
 
   - id: T-021
+    registered: '2026-09-05'
     headline: "`s(n) ≥ 97/20 = 4.85` for `n = 20, 21`"
     established: '2026-09-05'
     claim: >-
@@ -1140,8 +1317,8 @@ results:
       n_values:
         - 20
         - 21
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -1181,6 +1358,13 @@ results:
       - packing/src/sqpack/fractional/colgen.py
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       The margin is 0.151277 below twenty, wider than T-020's 0.077380 was, so the side
       was not pushed to where the covering value stops it either. What is new is that
@@ -1205,6 +1389,7 @@ results:
       sizes.
 
   - id: T-022
+    registered: '2026-09-06'
     headline: "`s(11) ≥ 38100√(8100042893309449)/899996306539 = 3.8100257…`"
     established: '2026-09-06'
     claim: >-
@@ -1221,8 +1406,8 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 5
       rationale: >-
@@ -1254,7 +1439,22 @@ results:
       - packing/devtools/dilation_corollary.py
     controls:
       - packing/tests/test_dilation_corollary.py
-    review_artifact: docs/project/reviews/review-2026-09-06-t022-dilation-limit.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-06-t022-dilation-limit.md
+        kind: adversarial
+        reviewer: unstated; a first-person review by an agent of this project
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-06'
+        scope: >-
+          Independent Review of the T-022 Exact-Containment Limit; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
+    notes: >-
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). Rung 4 now needs two adversarial AI reviews by
+      distinct reviewers and a retained human oversight record (epistemics.md, No Blind
+      Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
+      review record pending. The oversight record restores the rung.
     next_rung: >-
       C5 was reached by the mapped 2026-09-06 source-distinct review. A second,
       method-distinct derivation could separately earn C4 but would not improve the
@@ -1264,6 +1464,7 @@ results:
       fixed-atom core shrinkage might extract more from the same data; the present
       argument does not establish s(11) greater than the displayed bound.
   - id: T-023
+    registered: '2026-09-08'
     headline: "Conditional exclusion: no eleven-square packing in the four-owner branch at `q = 96/25`"
     established: '2026-09-08'
     claim: >-
@@ -1281,7 +1482,7 @@ results:
     significance:
       score: 3
       rationale: >-
-        A substantive case exclusion at the central open size, demonstrating that
+        A substantive case exclusion at a central open size, demonstrating that
         forced occupied area can make a five-dot counting argument sufficient.
         It excludes one owner combination and does not move the global bound.
       scored: '2026-09-09'
@@ -1337,6 +1538,7 @@ results:
       search was performed. The subsequent independent exp145 replay passed in
       Session115 with its own process cost and preserved the original claim and grades.
   - id: T-024
+    registered: '2026-09-09'
     headline: "`s(11) ≥ 3175000√(518400042893309449)/598960960743657 = 3.8166095…`"
     established: '2026-09-09'
     claim: >-
@@ -1358,7 +1560,7 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 5
@@ -1410,6 +1612,12 @@ results:
       - packing/tests/test_dilation_corollary.py
       - packing/tests/test_fractional_certificate.py
       - packing/tests/test_fractional_interval.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision of the corollary itself, rather than a second
       decision of only the source certificate. C5 needs a mapped, non-superseded
@@ -1432,6 +1640,7 @@ results:
       dilation-limit argument rather than one individual-side certificate at the
       algebraic value.
   - id: T-025
+    registered: '2026-09-09'
     headline: "`s(11) ≥ 191/50 = 3.82`, by a threshold certificate"
     established: '2026-09-09'
     claim: >-
@@ -1447,8 +1656,8 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 5
       rationale: >-
@@ -1482,7 +1691,16 @@ results:
     evidence:
       - E-n011-threshold-certificate
       - E-n011-threshold-interval-decision
-    review_artifact: docs/project/reviews/review-2026-09-09-threshold-certificate-theorem.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-09-threshold-certificate-theorem.md
+        kind: adversarial
+        reviewer: unstated; a first-person review by an agent of this project
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-09'
+        scope: >-
+          Adversarial Review of the Threshold-Certificate Theorem and the 191/50 Candidate; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     produced_by:
       hypothesis: H-152
     artifacts:
@@ -1502,6 +1720,12 @@ results:
       - packing/tests/test_fractional_threshold_interval.py
       - packing/tests/test_verify_threshold_claim.py
       - packing/tests/test_verify_threshold_claim_oracle.py
+    notes: >-
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). Rung 4 now needs two adversarial AI reviews by
+      distinct reviewers and a retained human oversight record (epistemics.md, No Blind
+      Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
+      review record pending. The oversight record restores the rung.
     next_rung: >-
       Push the side with the same loop: the LP that produced these atoms is run again at
       a larger side, and the ceiling family says the answer cannot come from point atoms
@@ -1513,6 +1737,7 @@ results:
       The self-contained T-025 claim embeds its standard-library verifier and certificate
       bytes. T-025 needs no limit argument, so no dilation record belongs at this rung.
   - id: T-026
+    registered: '2026-09-09'
     headline: "`s(11) ≥ 955000√(518400042893309449)/179696714646249 = 3.8264474…`"
     established: '2026-09-09'
     claim: >-
@@ -1537,8 +1762,8 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 5
       rationale: >-
@@ -1583,7 +1808,16 @@ results:
       - E-n011-threshold-net1440-dilation-limit
       - E-n011-threshold-net720-certificate
       - E-n011-threshold-net720-dilation-limit
-    review_artifact: docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md
+        kind: adversarial
+        reviewer: a separate agent from the implementation authors; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-10'
+        scope: >-
+          Adversarial Review of the T-025 and T-026 Verifiable Claims; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     artifacts:
       - packing/cases/n11_threshold_certificate/certificate-191-50-net1440.json
       - packing/cases/n11_threshold_certificate/t-026-dilation-limit-corollary.json
@@ -1601,6 +1835,12 @@ results:
       - packing/tests/test_decide_threshold_certificate.py
       - packing/tests/test_verify_threshold_claim.py
       - packing/tests/test_verify_threshold_claim_oracle.py
+    notes: >-
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). Rung 4 now needs two adversarial AI reviews by
+      distinct reviewers and a retained human oversight record (epistemics.md, No Blind
+      Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
+      review record pending. The oversight record restores the rung.
     next_rung: >-
       The rescaled 1440-step budget is 5483661432/498684619, leaving
       1869377/498684619 below eleven. The measured 720- and 1440-step certificates
@@ -1616,6 +1856,7 @@ results:
       formalization, external review, or an independently reproduced full decision.
 
   - id: T-027
+    registered: '2026-09-18'
     headline: "`s(18) ≥ 467/100 = 4.67`"
     established: '2026-09-18'
     claim: >-
@@ -1634,8 +1875,8 @@ results:
     scope:
       n_values:
         - 18
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -1647,7 +1888,7 @@ results:
         field and 0.0995 against the strongest named public candidate. Held below S4
         because the technique is the one T-017 already banked, the displacement is of
         this project's own prior rung rather than a published closed form, and n = 18
-        is not the central open case.
+        is not a central open case.
       scored: '2026-09-18'
       by: session-139 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
@@ -1670,6 +1911,13 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-467-100-t019-seed-receipt.md
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       T-028 took the next rung at 187/40 on 2026-09-19. This result stays true as
       stated and keeps its bytes at certificate-467-100.json. The remaining runway
@@ -1678,6 +1926,7 @@ results:
       written for this result.
 
   - id: T-028
+    registered: '2026-09-19'
     headline: "`s(18) ≥ 187/40 = 4.675`"
     established: '2026-09-19'
     claim: >-
@@ -1697,8 +1946,8 @@ results:
     scope:
       n_values:
         - 18
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -1710,7 +1959,7 @@ results:
         field and 0.1045 against the strongest named public candidate. Held below S4
         because the technique is the one T-017 already banked, the displacement is of
         this project's own prior rung rather than a published closed form, and n = 18
-        is not the central open case.
+        is not a central open case.
       scored: '2026-09-19'
       by: session-140 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
@@ -1733,6 +1982,13 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n18-4675-1000-t027-auto-windows5-receipt.md
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       T-029 took the next rung at 1871/400 on 2026-09-19. This result stays true as
       stated and keeps its bytes at certificate-187-40.json. The remaining runway
@@ -1741,6 +1997,7 @@ results:
       been written for this result.
 
   - id: T-029
+    registered: '2026-09-19'
     headline: "`s(18) ≥ 1871/400 = 4.6775`"
     established: '2026-09-19'
     claim: >-
@@ -1761,8 +2018,8 @@ results:
     scope:
       n_values:
         - 18
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -1774,7 +2031,7 @@ results:
         field and 0.107 against the strongest named public candidate. Held below S4
         because the technique is the one T-017 already banked, the displacement is of
         this project's own prior rung rather than a published closed form, and n = 18
-        is not the central open case.
+        is not a central open case.
       scored: '2026-09-19'
       by: session-141 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
@@ -1797,6 +2054,13 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n18-1871-400-t028-auto-windows5-receipt.md
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       T-030 took the next rung at 4679/1000 on 2026-09-19. This result stays true as
       stated and keeps its bytes at certificate-1871-400.json. The remaining runway
@@ -1805,6 +2069,7 @@ results:
       been written for this result.
 
   - id: T-030
+    registered: '2026-09-19'
     headline: "`s(18) ≥ 4679/1000 = 4.679`"
     established: '2026-09-19'
     claim: >-
@@ -1825,8 +2090,8 @@ results:
     scope:
       n_values:
         - 18
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -1838,7 +2103,7 @@ results:
         field and 0.1085 against the strongest named public candidate. Held below S4
         because the technique is the one T-017 already banked, the displacement is of
         this project's own prior rung rather than a published closed form, and n = 18
-        is not the central open case.
+        is not a central open case.
       scored: '2026-09-19'
       by: session-141 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
@@ -1861,6 +2126,13 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n18-4679-1000-t029-auto-windows5-receipt.md
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       The retained certificate's total is 71573611/4000000 = 17.89340275, leaving
       426389/4000000 = 0.10659725 below eighteen, and that margin is what a further
@@ -1873,6 +2145,7 @@ results:
       review-ready under epistemics.md -- a mapped, non-superseded review artifact
       -- and none has been written for this result.
   - id: T-031
+    registered: '2026-09-20'
     headline: "The octagon corner class (threshold `1/2`) holds no eleven-square packing at side `96/25`"
     established: '2026-09-20'
     claim: >-
@@ -1894,12 +2167,12 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 2
       rationale: >-
-        The first decided item of the corner-conditioned point language at the central
+        The first decided item of the corner-conditioned point language at a central
         open size: one D4 class of the corner tree is excluded at 3.84 by a certificate
         on a clipped domain, with the structural consequence that every eleven-square
         packing in a square of side 96/25 has a square meeting an open corner triangle
@@ -1978,7 +2251,13 @@ results:
       concerns this explicit clipped-domain certificate; no priority search was
       performed. The statement itself is unconditional about every packing at 96/25;
       the exclusion of the class is what is conditional.
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
   - id: T-032
+    registered: '2026-09-21'
     headline: "`s(17) ≥ 461300/99999 = 4.61304613…`, and beneath it Mira's `s(17) ≥ 4613/1000`"
     claim: >-
       s(17) >= 461300/99999 = 4.61304613..., by Guzhou0806's R012 parent-angle
@@ -2003,8 +2282,8 @@ results:
       s(18) and s(19) are at least this value, and the register already holds 4679/1000
       and 24/5 there.
     scope: {n_values: [17]}
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -2039,7 +2318,16 @@ results:
       a formal port would address.
     produced_by:
       session: session-149
-    review_artifact: docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md
+        kind: adversarial
+        reviewer: unnamed; evidence for the coordinator, model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-20'
+        scope: >-
+          Proof Review: R012 `s(17) >= 461300/99999` and Mira’s `4.613` Certificate; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     evidence:
       - E-n017-guzhou-r012-source-replay
       - E-n017-guzhou-r012-interval-decision
@@ -2054,6 +2342,13 @@ results:
       - packing/resources/web/n17-weighted-certificates-2026-09-20/mira-17squares/certificates/lower_bound_4p613/best-certificate.json
     controls:
       - packing/tests/test_n17_external_weighted_certificates.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       Mira's dilation endpoint, 4.61302863588611..., needs a T-022-style proof note for
       this certificate and is superseded by the R012 value in any case. A retained
@@ -2066,6 +2361,7 @@ results:
       unrestricted test.
 
   - id: T-033
+    registered: '2026-09-22'
     headline: "`s(11) ≥ 955000√(2073600042893309449)/359341754646249 = 3.8269975…`"
     established: '2026-09-22'
     claim: >-
@@ -2098,7 +2394,7 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2175,6 +2471,12 @@ results:
       - packing/tests/test_decide_threshold_certificate.py
       - packing/tests/test_fractional_threshold.py
       - packing/tests/test_fractional_threshold_interval.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision of the corollary itself. C5 needs a mapped,
       non-superseded source-distinct review of this corollary and the frozen 2880-step
@@ -2195,6 +2497,7 @@ results:
       independently reproduced full decision.
 
   - id: T-034
+    registered: '2026-09-23'
     headline: "`s(21) ≥ 122/25 = 4.88`"
     established: '2026-09-23'
     claim: >-
@@ -2216,8 +2519,8 @@ results:
     scope:
       n_values:
         - 21
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -2252,7 +2555,16 @@ results:
       agenda_cell: BC-378
       session: session-156
       experiment: exp-229
-    review_artifact: docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md
+        kind: adversarial
+        reviewer: Fable, max thinking
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-23'
+        scope: >-
+          Review of the n21 Certificate at 122/25, 23 September 2026; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     evidence:
       - E-n021-fractional-certificate-122-25
       - E-fractional-interval-decision
@@ -2265,6 +2577,12 @@ results:
     controls:
       - packing/tests/test_fractional_certificate.py
       - packing/tests/test_fractional_interval.py
+    notes: >-
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). Rung 4 now needs two adversarial AI reviews by
+      distinct reviewers and a retained human oversight record (epistemics.md, No Blind
+      Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
+      review record pending. The oversight record restores the rung.
     next_rung: >-
       The margin is 0.854276 below twenty-one, more than five times T-021's 0.151277
       below twenty, so the side was not pushed to where the covering value stops it.
@@ -2283,6 +2601,7 @@ results:
       C5 is reached; V5 would need a proof-assistant port of the five-condition theorem.
 
   - id: T-035
+    registered: '2026-09-24'
     headline: "Six-plus-five packings near Trump's tilt with side `≤ U_hi` lie within `rho` of his pose"
     established: '2026-09-24'
     claim: >-
@@ -2304,8 +2623,8 @@ results:
     scope:
       n_values:
         - 11
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -2333,7 +2652,16 @@ results:
       agenda_cell: BC-375
       session: session-157
       experiment: exp-232
-    review_artifact: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+        kind: adversarial
+        reviewer: Fable, max thinking
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-24'
+        scope: >-
+          Review of the Closed Rung-0 Tree, 24 September 2026; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     evidence:
       - E-n011-h236-rung0-reduction
     artifacts:
@@ -2345,6 +2673,12 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md
     controls:
       - packing/tests/test_fixed_angle_tree.py
+    notes: >-
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). Rung 4 now needs two adversarial AI reviews by
+      distinct reviewers and a retained human oversight record (epistemics.md, No Blind
+      Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
+      review record pending. The oversight record restores the rung.
     next_rung: >-
       C5 is reached; V5 would need a proof-assistant port of the cell-tree contract and
       its reader. Three steps would strengthen the record without moving a rung. The
@@ -2357,6 +2691,7 @@ results:
       1.7e8 nodes comes before more boxes.
 
   - id: T-036
+    registered: '2026-09-24'
     headline: "Trump's pose is optimal among six-plus-five packings near its tilt, unique up to symmetry"
     established: '2026-09-24'
     claim: >-
@@ -2412,7 +2747,16 @@ results:
       agenda_cell: BC-381
       session: session-158
       experiment: exp-232
-    review_artifact: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+        kind: adversarial
+        reviewer: Fable, max thinking
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-24'
+        scope: >-
+          Review of the Closed Rung-0 Tree, 24 September 2026; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     evidence:
       - E-n011-h236-rung0-reduction
       - E-n011-trump-local-theorem-first-clause
@@ -2445,6 +2789,7 @@ results:
       from distinct source are the closure review's two bounded residual tasks.
 
   - id: T-037
+    registered: '2026-09-29'
     headline: "`s(11) > 31/8 = 3.875`"
     claim: >-
       s(11) > 31/8 = 3.875, by Kleddamag's 11-squares-certified-bound v1.0.2 release of 22
@@ -2463,13 +2808,13 @@ results:
       no new first-party mathematics is claimed. It raised the case's verified lower bound
       by 0.048002 over T-033 and leaves 0.0020836 to Trump's 3.8770835900.
     scope: {n_values: [11]}
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 5
       rationale: >-
-        Scored at S5 by the rubric's anchor, movement on a central open case. n = 11 is the
-        case this project exists for, and T-019 gave not being that case as its first reason
+        Scored at S5 by the rubric's anchor, movement on a central open case. n = 11 is a
+        central open case of this project, and T-019 gave not being one as its first reason
         for staying below S5. The bound closes about 96 per cent of the gap the register
         held, from 0.0501 to 0.0021 below Trump's packing, and it is this project's T-026
         certificate adopted and carried further outside it. The mathematics is Kleddamag's;
@@ -2508,15 +2853,25 @@ results:
       - packing/tests/test_kleddamag_n11_audit.py
       - packing/tests/test_native_parent_core_receipt.py
       - packing/tests/test_fractional_parent_core.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       C5 would need a mapped, non-superseded review of the complete claim cited as
       review_artifact. The two 2026-09-22 reviews are mapped and each reads one route; the
       case record took the bound without a C5 claim, so whether a same-project review of
       another author's certificate qualifies is the owner's decision rather than missing
       work. V5 by a proof-assistant port of the transfer theorem and the counting argument.
-      The exact value remains open; a certificate above 31/8 has 0.0020836 of runway.
+      Superseded on 2026-09-29 by Wang and Li's s(11) > 3875000000/999999999 (T-061), which
+      is this certificate reweighted and scaled, 3.9e-9 higher, and by T-060's exact
+      s(11) = T; stays true as stated.
 
   - id: T-038
+    registered: '2026-09-29'
     headline: "`s(17) > 461300/99853 = 4.6197910929…`"
     claim: >-
       s(17) > 461300/99853 = 4.6197910929..., by Kleddamag's 17-squares-certified-bound
@@ -2535,7 +2890,7 @@ results:
       first-party mathematics is claimed. It raised the verified bound by 0.0067450 over
       Guzhou0806's R012 (T-032).
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2563,6 +2918,12 @@ results:
       - docs/project/reviews/review-2026-09-21-n17-kleddamag-461300-99853.md
     controls:
       - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/independent_controls.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision. Unlike the later releases, this certificate
       carries only point and two-of-three atoms, which this repository's native parent-core
@@ -2574,6 +2935,7 @@ results:
       stays true as stated.
 
   - id: T-039
+    registered: '2026-09-29'
     headline: "`s(17) > 231001/50000 = 4.62002`"
     claim: >-
       s(17) > 231001/50000 = 4.62002, by Guzhou0806 / N17 project's R052 release (commit
@@ -2591,7 +2953,7 @@ results:
       mathematics is claimed. It raised the verified bound by 1142853/4992650000, about
       0.000229, over T-038.
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2620,6 +2982,12 @@ results:
       - docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md
     controls:
       - packing/tests/test_guzhou_r052_native.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs the native parent-core engine's static ceilings raised past this
       certificate's 8,937 atoms, 9,261 sites and 44,685 member slots, so that its complete
@@ -2629,6 +2997,7 @@ results:
       stays true as stated.
 
   - id: T-040
+    registered: '2026-09-29'
     headline: "`s(17) > 232001/50000 = 4.64002`"
     claim: >-
       s(17) > 232001/50000 = 4.64002, by Kleddamag's 17-squares-certified-bound v1.1.0
@@ -2647,7 +3016,7 @@ results:
       produced, previously published result, not peer reviewed; no new first-party
       mathematics is claimed. It raised the verified bound by exactly 1/50 over R052 (T-039).
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2676,6 +3045,12 @@ results:
     controls:
       - packing/tests/test_retained_data.py
       - packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/controls.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision, and this repository's native parent-core route
       models only k-of-m threshold atoms, so it cannot yet read the weighted and
@@ -2687,6 +3062,7 @@ results:
       (T-041); stays true as stated.
 
   - id: T-041
+    registered: '2026-09-29'
     headline: "`s(17) > 466001/100000 = 4.66001`"
     claim: >-
       s(17) > 466001/100000 = 4.66001, by the bounds/4.66001/ package of Kleddamag's
@@ -2706,7 +3082,7 @@ results:
       not peer reviewed; no new first-party mathematics is claimed. It raised the verified
       bound by exactly 1999/100000 over T-040.
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2735,6 +3111,12 @@ results:
       - packing/tests/test_guzhou_r068_packet.py
       - packing/tests/test_retained_data.py
       - packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/controls.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision; the native parent-core route cannot read the
       weighted and winning-subset features, and the review's independent exact sweep, which
@@ -2745,6 +3127,7 @@ results:
       which continues this charge; stays true as stated.
 
   - id: T-042
+    registered: '2026-09-29'
     headline: "`s(17) > 233009/50000 = 4.66018`"
     claim: >-
       s(17) > 233009/50000 = 4.66018, by Guzhou0806 / N17 project's R067 release (commit
@@ -2760,7 +3143,7 @@ results:
       previously published result, not peer reviewed; no new first-party mathematics is
       claimed.
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 2
@@ -2787,6 +3170,12 @@ results:
     controls:
       - packing/tests/test_guzhou_r068_packet.py
       - packing/tests/test_retained_data.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       No rung change is sought: the result never held a field, and a method-distinct
       decision would be spent better on R068, which runs the same charge further.
@@ -2794,6 +3183,7 @@ results:
       held the verified field; stays true as stated.
 
   - id: T-043
+    registered: '2026-09-29'
     headline: "`s(17) > 116511/25000 = 4.66044`"
     claim: >-
       s(17) > 116511/25000 = 4.66044, by Guzhou0806 / N17 project's R068 release (commit
@@ -2814,7 +3204,7 @@ results:
       raised the verified bound by exactly 43/100000 over T-041 and leaves 0.0150901 to
       Bidwell's 4.67553009.
     scope: {n_values: [17]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2843,6 +3233,12 @@ results:
     controls:
       - packing/tests/test_guzhou_r068_packet.py
       - packing/tests/test_retained_data.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision; the native parent-core route models only k-of-m
       threshold atoms and cannot read the weighted and winning-subset features, so extending
@@ -2852,6 +3248,7 @@ results:
       mapped 2026-09-28 review as review_artifact. V5 by a proof-assistant port.
 
   - id: T-044
+    registered: '2026-09-29'
     headline: "Weighted point lower bounds for ten counts in `n = 26…72`, plus four from the same files"
     claim: >-
       Ten exact weighted point certificates of wand125/square-packing-bounds at commit
@@ -2868,7 +3265,7 @@ results:
       source's adapter check_with_sqpack.py. An externally produced, previously published
       result, not peer reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [26, 29, 39, 40, 41, 52, 53, 55, 56, 68, 69, 70, 71, 72]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2906,6 +3303,12 @@ results:
       - docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md
     controls:
       - packing/tests/test_fractional_certificate.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by an interval-certified decision of the same ten files with this repository's
       fractional interval route, which decides weighted point certificates of this schema.
@@ -2916,6 +3319,7 @@ results:
       certificates (T-047), before either held the verified field; stays true as stated.
 
   - id: T-045
+    registered: '2026-09-29'
     headline: "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
     claim: >-
       s(27) >= 28/5, s(28) >= 28/5, s(31) >= 148/25 and s(32) >= 119/20, by three
@@ -2934,7 +3338,7 @@ results:
       previously published result, not peer reviewed; no new first-party mathematics is
       claimed.
     scope: {n_values: [27, 28, 31, 32]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -2969,6 +3373,12 @@ results:
     controls:
       - packing/tests/test_wand125_rectangle_audit.py
       - packing/tests/test_tokoharu_density_audit.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision of rotated coverage; global coverage is still
       decided by the source's C++ checker alone, and the exact preflight does not decide it.
@@ -2978,6 +3388,7 @@ results:
       it held the verified field; stays true as stated.
 
   - id: T-046
+    registered: '2026-09-29'
     headline: "Rectangle-density lower bounds reported for 48 counts in `n = 18…95`"
     claim: >-
       wand125/square-packing-bounds reports one standing rectangle-density certificate for
@@ -3061,6 +3472,7 @@ results:
       entry while its verified field cites the replay.
 
   - id: T-047
+    registered: '2026-09-29'
     headline: "`s(11) ≥ 381/100`; `s(n) ≥ 1377/250` for `n = 26…28`; `s(n) ≥ 571/100` for `n = 29…31`"
     claim: >-
       s(11) >= 381/100, s(26) >= 1377/250 and s(29) >= 571/100, by Tokoharu's
@@ -3079,7 +3491,7 @@ results:
       premises and the axis-event partition. An externally produced, previously published
       result, not peer reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [11, 26, 27, 28, 29, 30, 31]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 4
@@ -3116,6 +3528,12 @@ results:
     controls:
       - packing/tests/test_tokoharu_density_audit.py
       - packing/tests/test_retained_data.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 needs a method-distinct decision of global rotated coverage; the exact rational
       polygon and derivative probes exercise the interval kernel but decide no coverage.
@@ -3126,6 +3544,7 @@ results:
       Kleddamag's 31/8 (T-037). Stays true as stated.
 
   - id: T-048
+    registered: '2026-09-29'
     headline: "`s(50) ≥ 37/5 = 7.4`, reported"
     claim: >-
       wand125/square-packing-bounds (introduced at commit 75dd0952, 28 September 2026;
@@ -3187,6 +3606,7 @@ results:
       registered.
 
   - id: T-049
+    registered: '2026-09-29'
     headline: "`s(12) ≥ 15680/3951 = 3.9686155…`"
     claim: >-
       s(12) >= 15680/3951 = 3.9686155..., by Evan Daniel's weighted point certificate in
@@ -3207,8 +3627,8 @@ results:
       first-party mathematics is claimed. It raised the verified bound by 851/98775, about
       0.0086, over T-017.
     scope: {n_values: [12]}
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -3248,6 +3668,13 @@ results:
     controls:
       - packing/tests/test_evand_square_packing.py
       - packing/tests/test_fractional_parent_core.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       A review reading of the native reader (devtools.verify_evand_angle_net_native) would
       close the one unread link in the C4 route; C5 would then follow the owner's decision
@@ -3255,6 +3682,7 @@ results:
       proof-assistant port. The exact value remains open; the conjecture is s(12) = 4.
 
   - id: T-050
+    registered: '2026-09-29'
     headline: "`s(21) ≥ 5000/1001 = 4.995004995…`"
     claim: >-
       s(21) >= 5000/1001 = 4.995004995..., by Evan Daniel's weighted point certificate in
@@ -3269,7 +3697,7 @@ results:
       published result, not peer reviewed; no new first-party mathematics is claimed. It
       raised the verified bound by 2878/25025, about 0.115, over T-034.
     scope: {n_values: [21]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -3296,6 +3724,12 @@ results:
       - docs/project/reviews/review-2026-09-27-evand-s32-s12.md
     controls:
       - packing/tests/test_evand_square_packing.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by the native parent-core decision, which certified rows 0 to 2,378 of 2,486 before
       it was stopped and projects to about 2.8 CPU-hours complete; its journal was not
@@ -3304,6 +3738,7 @@ results:
       (T-052); stays true as stated.
 
   - id: T-051
+    registered: '2026-09-29'
     headline: "`s(32) = 6`"
     claim: >-
       s(32) = 6. The lower half is Evan Daniel's weighted closed cover in
@@ -3327,8 +3762,8 @@ results:
       boxes, none uncertified. An externally produced, previously published result, not
       peer reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [32]}
-    verification: V4
-    confirmation: C4
+    verification: V3
+    confirmation: C3
     significance:
       score: 4
       rationale: >-
@@ -3379,15 +3814,25 @@ results:
     controls:
       - packing/tests/test_evand_square_packing.py
       - packing/tests/test_evand_mixed_covers.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
       C5 would follow the owner's decision on citing a mapped review as review_artifact for
       others' results. V5 by building the source's hypothesis-free Lean theorem s32_eq_6
       (commit 92cc5bb5), which decides a generated box tree in the kernel with zeromargin.py
-      only as the tree generator's untrusted oracle; the cost is compute, 13.8 CPU-hours and
-      up to 15.2 GB per process at the source, and Mathlib's build cache is unreachable from
-      this session (think-angg).
+      only as the tree generator's untrusted oracle. Mathlib's build cache became reachable
+      on 2026-09-30, and the conditional s32_eq_six_of_checker and s13_eq_4 were built here
+      (the 2026-09-28 packet's receipts/lean/). The cost that remains is compute: a probe
+      puts s32_eq_6 at 14 to 28 CPU-hours emitted in about 320 parts of about 4 GB each,
+      with 8 to 10 GB for the generator (think-angg).
 
   - id: T-052
+    registered: '2026-09-29'
     headline: "`s(21) = 5`, by a mixed cover of points and grid-line segments"
     claim: >-
       s(21) = 5. The lower half is Evan Daniel's mixed cover in evand/square-packing, bundle
@@ -3405,7 +3850,7 @@ results:
       the source's; zm_mixed.py was only sampled. An externally produced, previously
       published result, not peer reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [21]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 4
@@ -3442,13 +3887,22 @@ results:
       - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
     controls:
       - packing/tests/test_evand_mixed_covers.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by a complete zm_mixed.py re-sweep, about 12.9 CPU-hours at the source, recorded as
       a second, exact-algebraic entry; the shared pose-space architecture stays the residual
-      common-mode risk. V5 would need the checker programs formalised; the Lean build was not
-      run here.
+      common-mode risk. V5 would need the checker statement S21CheckerCover proved in Lean;
+      the reduction s21_eq_five_of_checker, from that statement to s(21) = 5, was
+      kernel-checked here on 2026-09-30 with the standard axioms only (the 2026-09-28
+      packet's receipts/lean/).
 
   - id: T-053
+    registered: '2026-09-29'
     headline: "`s(45) = 7`, by a mixed cover of points and grid-line segments"
     claim: >-
       s(45) = 7. The lower half is Evan Daniel's mixed cover in evand/square-packing, bundle
@@ -3466,7 +3920,7 @@ results:
       the source's; zm_mixed.py was only sampled. An externally produced, previously
       published result, not peer reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [45]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 4
@@ -3503,6 +3957,12 @@ results:
       - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
     controls:
       - packing/tests/test_evand_mixed_covers.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       C4 by a complete zm_mixed.py re-sweep, about 16.5 CPU-hours at the source, recorded as
       a second, exact-algebraic entry; the source's own zm_mixed.py record was imported from
@@ -3510,6 +3970,7 @@ results:
       finding. V5 would need a top theorem and the checker programs formalised.
 
   - id: T-054
+    registered: '2026-09-29'
     headline: "`s(45) = 7` by a second, point-only route"
     claim: >-
       s(45) = 7 by a second, point-only route. The lower half is wand125's point-only measure
@@ -3525,7 +3986,7 @@ results:
       externally produced, previously published result, not peer reviewed; no new
       first-party mathematics is claimed.
     scope: {n_values: [45]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 2
@@ -3562,12 +4023,19 @@ results:
       - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
     controls:
       - packing/tests/test_wand125_point_and_mixed.py
+    notes: >-
+      2026-09-30: held V4/C3 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified). Rung 4 now needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust); none is
+      retained for this result, so it stands at V3/C3: machine-checked, review record
+      pending. The oversight record restores the rung.
     next_rung: >-
       The unreduced zmx2 --full sweep would remove the reliance on the D4 reduction (review
       F2). C4 would need a checker other than zmx2 to decide this point cover; the exact
       zeromargin.py route reads point covers and is the reachable one.
 
   - id: T-055
+    registered: '2026-09-29'
     headline: "`s(21) = 5` by a point-only route, reported"
     claim: >-
       wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed at
@@ -3633,26 +4101,30 @@ results:
       n = 45 replay entry only. The Lean build was not run here.
 
   - id: T-056
-    headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified exactly"
+    registered: '2026-09-29'
+    headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified two independent ways"
     claim: >-
       For each of 49 counts n from 68 to 307 (68, 102, 103, 105, 106, 110, 123, 130, 131,
       132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206 to 210, 228, 236 to 241,
       259, 263, 268 to 273, 292, 297 and 301 to 307), s(n) is at most the verified upper
       bound its case record carries: the side franciscouzo/square-packing prints at
       f3c5a529 (27 September 2026), from 8.798795237222592 at n = 68 to
-      17.981030548643712 at n = 307, or, where the exact certificate's side rounds up past
+      17.981030548643712 at n = 307, or, where the printed pose's own side rounds up past
       it, that side plus one unit of its fifteenth decimal at 26 counts and 2, 3 and 2
       units at n = 206, 259 and 305. Every printed side is below the best
       known side this project recorded before, by 3.0e-8 at n = 172 up to 0.022 at
       n = 301, and below the live catalogue of 29 September 2026. Each bound is certified
-      here by an exact rational packing, the source's decimal pose rounded to rationals at
-      centre dilation 1, decided pair by pair and wall by wall over Q by two checkers that
-      share no code. Francisco Couzo; the author said on jlevy/squares#227 that he found
+      here twice, by methods that share no geometry code: by an exact rational packing, the
+      source's decimal pose rounded to rationals at centre dilation 1, decided pair by pair
+      and wall by wall over Q by two checkers that share no code; and by outward-rounded
+      interval arithmetic on the source's own pose as printed, with the true cosine and sine
+      of each angle, which decides every pair and wall at 40 digits and encloses the pose's
+      extent to within 1e-39. Francisco Couzo; the author said on jlevy/squares#227 that he found
       the 102 and 103 packings "with the help of Claude", and the repository itself states
       no AI assistance. An externally produced, previously published result, not peer
       reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -3671,41 +4143,66 @@ results:
     evidence:
       - E-franciscouzo-2026-09-27-report
       - E-franciscouzo-2026-09-27-exact-replay
+      - E-franciscouzo-2026-09-27-interval-replay
     artifacts:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/acquisition/sources.json.gz
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/certification.json.gz
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/interval-certification.json
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/upper_bound_intervals.py
       - packing/devtools/apply_upper_bound_packets.py
       - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+      - docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/interval-negative-controls.json
       - packing/tests/test_upper_bound_packets.py
+      - packing/tests/test_upper_bound_intervals.py
+    composition: >-
+      Both machine entries decide all 49 bounds, each at its case's verified value, by
+      different methods (exact-algebraic on a rational rounding of each pose;
+      interval-certified on the printed pose), so every load-bearing part is C4. Their
+      common mode is stated in E-franciscouzo-2026-09-27-interval-replay. The comparisons
+      with earlier sides and the live catalogue are recorded values and set no rung.
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
-      C4 by an interval route: an interval-certified replay of each packing, for example a
-      Krawczyk enclosure of its contact system as T-009 did at n = 29, recorded as a
-      second, method-distinct entry. At n = 206, 259 and 305 the printed side itself needs
-      a pose refined beyond the source's binary64 digits, or coordinates the source prints
-      at higher precision.
+      C5 by a mapped, non-superseded review of the complete claim cited as review_artifact;
+      the two reviews so far, of 2026-09-29 and 2026-09-30, are same-project reviews of
+      each route. At n = 206, 259 and 305 both routes refute the printed side for the
+      printed pose, so the printed side itself needs a different pose, refined beyond the
+      source's binary64 digits, or coordinates the source prints at higher precision; that
+      would be a new packing, not a replay.
 
   - id: T-057
+    registered: '2026-09-29'
     headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record"
     claim: >-
       s(211) <= 14.99796070496771500150 < 15. JoostdeWinter/square-packing-211 at 702df9bb
       (16 September 2026) reports 211 unit squares in a square of that side, with 21-digit
       poses and the author's report of an outward interval check at 80 digits; it publishes
-      no interval boxes or checker. The bound is certified here by an exact rational
-      packing, the source's pose rounded to rationals at centre dilation 1, of side
-      74989803524838470007/5000000000000000000, 2.1e-14 below the printed side, decided
-      pair by pair and wall by wall over Q by two checkers that share no code. It is the
+      no interval boxes or checker. The bound is certified here twice, by methods that share
+      no geometry code: by an exact rational packing, the source's pose rounded to
+      rationals at centre dilation 1, of side 74989803524838470007/5000000000000000000,
+      2.1e-14 below the printed side, decided pair by pair and wall by wall over Q by two
+      checkers that share no code; and by outward-rounded interval arithmetic on the
+      source's own pose as printed, which lies in the printed square as placed with least
+      wall clearance 1.000005e-14 and least pair gap 2.10001e-14, the values the source
+      reports. It is the
       first packing of 211 squares below the 15 x 15 grid on record, so s(k^2 - k + 1) < k,
       shown in the Kingbird catalogue for k = 16, 17 and 18 (n = 241, 273 and 307), holds
       for k = 15 as well. Joost de Winter; the source says nothing about AI assistance. An
       externally produced, previously published result, not peer reviewed; no new
       first-party mathematics is claimed.
     scope: {n_values: [211]}
-    verification: V4
+    verification: V3
     confirmation: C3
     significance:
       score: 3
@@ -3724,23 +4221,38 @@ results:
     evidence:
       - E-n211-de-winter-report
       - E-n211-de-winter-exact-replay
+      - E-n211-de-winter-interval-replay
     artifacts:
       - packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md
       - packing/resources/web/de-winter-square-packing-211-2026-09-16/acquisition/sources.json
       - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/certification.json
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/interval-certification.json
       - packing/witnesses/de-winter-2026/n-211-rational.yaml.gz
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/upper_bound_intervals.py
       - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+      - docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/interval-negative-controls.json
       - packing/tests/test_upper_bound_packets.py
+      - packing/tests/test_upper_bound_intervals.py
+    notes: >-
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.
     next_rung: >-
-      C4 by an interval route: an interval-certified replay of the packing, from the
-      source's own 80-digit enclosures if it publishes them or from a Krawczyk enclosure of
-      its contact system here, recorded as a second, method-distinct entry.
+      C5 by a mapped, non-superseded review of the complete claim cited as review_artifact,
+      beside the same-project reviews of each route (2026-09-29 and 2026-09-30). The
+      source's own 80-digit interval run stays unreplayed until it publishes its boxes or
+      checker; this record no longer depends on it.
 
   - id: T-058
+    registered: '2026-09-29'
     headline: "Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises"
     claim: >-
       wand125/square-packing-tools claims that rectangle-density certificates using
@@ -3776,6 +4288,7 @@ results:
       retains its original provisional label.
 
   - id: T-059
+    registered: '2026-09-29'
     headline: "Reported equality of 12028 n11 row minima awaits a complete bound replay"
     claim: >-
       wand125/square-packing-tools reports that its exact general_pose_tree checker
@@ -3817,11 +4330,11 @@ results:
       retains its original provisional label.
 
   - id: T-060
+    registered: '2026-09-29'
     headline: "Trump's eleven-square packing is globally optimal"
     claim: >-
-      s(11)=T=(6u+4)/(1+2u-u^2)=3.8770835900228141773078970601...,
-      where u is the unique root in (9/25,37/100) of
-      5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1=0.
+      `s(11) = T = (6u+4)/(1+2u−u²) = 3.8770835900228141773078970601…`, where `u` is
+      the unique root in `(9/25, 37/100)` of `5u⁸−10u⁷−2u⁶+14u⁵+12u⁴−6u³+2u²+2u−1 = 0`.
       Independent rotations and boundary contact are allowed. The external proof
       from Queuingtheorydotcom/11SquaresOptimal at
       f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c is confirmed through complete
@@ -3829,11 +4342,11 @@ results:
       Credit remains with the source's Astra-assisted work building on
       Squares Project and Kleddamag, and Trump's matching construction.
     scope: {n_values: [11]}
-    verification: V4
-    confirmation: C5
+    verification: V3
+    confirmation: C3
     significance:
       score: 5
-      rationale: Resolves global optimality for the central n=11 case by closing the gap to Trump's exact construction, beyond the previous strict T-037 lower bound.
+      rationale: Resolves global optimality for n = 11, a central case, by closing the gap to Trump's exact construction, beyond the previous strict T-037 lower bound.
       scored: '2026-09-30'
       by: Astra-max complete mathematical review and coordinator integration
     novelty: previously-published
@@ -3846,10 +4359,19 @@ results:
       survivors. The D4 bridge reduces these to case 438; the 14-round root
       induction and complete 10-node capture graph eliminate all far branches and
       force the near state into the reviewed local region. Exact local isolation
-      and the endpoint embedding argument exclude every side below T. The exact
-      Trump witness attains T. All premises have completed exact executions and
+      and the endpoint embedding argument exclude every side below `T`. The exact
+      Trump witness attains `T`. All premises have completed exact executions and
       the mapped review, supporting V4/C5; no distinct-method C4 claim is made.
-    review_artifact: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+    reviews:
+      - path: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+        kind: adversarial
+        reviewer: GPT-6 Astra at max reasoning; author unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-29'
+        scope: >-
+          Eleven-Square Optimality: Census and Capture Ancestry Contract; the document the register cited as its review before 2026-09-30.
+        verdict: accepted
     controls:
       - packing/tests/test_n11_composition_joins.py
       - packing/tests/test_n11_completion_inventory.py
@@ -3872,4 +4394,103 @@ results:
       defects; confirmation uses independently observed geometric executions.
       Shared local arithmetic and construction primitives are disclosed in the
       evidence. The composer reconciles receipts and does not itself rerun geometry.
-      T-037 is the earlier strict lower bound; T-059's row-minimum equality is separate.
+      T-037 is the earlier strict lower bound, and T-061, Wang and Li's strict bound
+      3.9e-9 above it, is a second historical lower bound; T-059's row-minimum equality
+      is separate.
+      2026-09-30: held V4/C5 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C5 review-ready). It stands at V3/C3, machine-checked with the
+      review record pending: rung 4 needs two adversarial AI reviews by distinct reviewers
+      and a retained human oversight record (epistemics.md, No Blind Trust), and the owner
+      has not yet fully reviewed the proofs or the explainer. The owner's oversight
+      record, and a second adversarial review by a reviewer distinct from Astra, restore
+      V4/C4.
+
+  - id: T-061
+    registered: '2026-09-30'
+    headline: "`s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8`"
+    claim: >-
+      s(11) > 3875000000/999999999 = 3.875000003875000003875..., by Ke Wang and Can Li's
+      Zenodo record 23038546 of 29 September 2026, reported on jlevy/squares#247. Wang and
+      Li, building on Kleddamag and this project: the certificate is Kleddamag's v1.0.2
+      global-certificate.json (T-037) with thirteen threshold-charge orbits raised, which
+      puts the minimum core charge at 1000047559 on every one of the 12,028 parent-angle
+      intervals, and with the parent and every core side scaled by 999999999/1000000000,
+      so that the container over the parent is (31/8) times 1000000000/999999999; eleven
+      disjoint cores exceed the budget 11000095024 by 428125 integer units. The step over
+      31/8 is exactly 31/7999999992, about 3.9e-9. One more step of the scale factor,
+      1 - 2*10^-9, already fails at row 615, so these data admit at most about twice the
+      step, and scaling Kleddamag's certificate alone already passes a full sweep, so the
+      reweighting enlarges the surplus but is not needed for the bound. It was replayed
+      here in full by the authors' two verifiers and by Kleddamag's
+      own Python and JavaScript event-cell sweeps, and decided a second time by this
+      repository's native parent-core interval branch and bound, which accepted all
+      12,028 rows with no stalled box. The record makes no statement about AI assistance.
+      An externally produced, previously published result, not peer reviewed; no new
+      first-party mathematics is claimed.
+    scope: {n_values: [11]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 2
+      rationale: >-
+        It strictly raises the verified lower bound at a central case, which the S5
+        anchor names, but by 31/7999999992, about 3.9e-9, spending the slack of T-037's
+        certificate after a reweighting; the release itself calls it a proof-of-slack
+        result, and these data admit at most about twice the step. The case's gap to
+        Trump's packing, 0.0020836, does not change at any printed digit, so it is scored
+        as a citable detail rather than movement; T-042 is the precedent for scoring a
+        true, fully replayed step by what it changes.
+      scored: '2026-09-30'
+      by: issue #247 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Wang Li n11 2026]']
+      published: '2026-09-29'
+    composition: >-
+      Primary at n = 11: one certificate and the bound L/A', with no monotonicity step. C4
+      is earned by two evidence entries whose methods differ and that both passed on the
+      pinned bytes: the event-cell sweeps (exact-algebraic: the authors' primary,
+      Kleddamag's Python and JavaScript, and the authors' re-implementation are one
+      method) and this repository's directed-rounding interval coverage of every row
+      (interval-certified). Both rest on the certificate and on T-037's counting and
+      transfer theorem, whose hypotheses were re-checked at the scaled sides.
+    produced_by:
+      session: session-161
+    evidence:
+      - E-n011-wang-li-report
+      - E-n011-wang-li-source-replay
+      - E-n011-wang-li-native-parent-core
+    artifacts:
+      - packing/resources/web/wang-li-n11-2026-09-29/README.md
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/certificate/diff.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/authors/fresh-full-replay/RESULT.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/kleddamag/full-replay/RESULT.json
+      - packing/devtools/audit_wang_li_n11.py
+      - packing/devtools/verify_n11_parent_core_native.py
+      - docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    controls:
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/source-checkers.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/native.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/cliff.json
+      - packing/tests/test_wang_li_n11.py
+    next_rung: >-
+      C5 would need a mapped, non-superseded review of the complete claim cited as
+      review_artifact; the 2026-09-30 review is a same-project read. V5 by a
+      proof-assistant port of the transfer theorem and the counting argument. The
+      reweighting is not needed for the bound: Kleddamag's own weights at the scaled sides
+      pass Kleddamag's full event-cell sweep with the same minimum 999962528 and surplus
+      107864 (the packet's scale-only receipt), so the scaling alone carries the step and
+      the thirteen raised orbits only enlarge the surplus to 428125.
+    notes: >-
+      T-060 has since confirmed s(11) = T, Trump's exact side, so this strict lower bound
+      is historical: it stays true as stated and keeps its source credit, its V4/C4
+      evidence and its S2 score, and it is not the global optimality claim. This claim was
+      drafted as T-058 on jlevy/squares#249; T-061 is canonical because the merged
+      upstream (jlevy/squares#246) had already allocated T-058 to T-060. Archived intake
+      evidence retains its original provisional label.
+      2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
+      machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
+      adversarial AI reviews by distinct reviewers and a retained human oversight record
+      (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
+      V3/C3: machine-checked, review record pending. The oversight record restores the
+      rung.

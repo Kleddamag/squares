@@ -1,415 +1,75 @@
 # The Squares Project
 
-The Squares Project studies `s(n)`, the side of the smallest square that holds `n`
-non-overlapping unit squares.
-The problem is elementary to state and remains open even at small `n`. Its central case,
-eleven squares, is now settled: `s(11) = T = 3.877083590022814…`, the exact side of
-Walter Trump’s 1979 packing.
+<!-- BEGIN SHARED: project-intro (devtools.site_documents) -->
 
+The Squares Project studies $s(n)$, the side of the smallest square that holds $n$
+non-overlapping unit squares, which may be rotated.
+The problem is elementary to state and open for most $n$: the answer is known only to
+lie between the best packing found and the best lower bound proved.
+
+<!-- END SHARED: project-intro -->
+<!-- BEGIN SHARED: recent-progress (devtools.site_documents) -->
+
+The project covers the problem at every $n$. Its [frontier](packing/frontier/STATUS.md)
+keeps one record for each case $n = 1\ldots324$, with reported and verified bounds kept
+separate, and its [results register](packing/frontier/RESULTS.md) grades each registered
+result, this project’s or another’s, by how far it has been checked.
+It goes into most depth where there is recent progress, which in September 2026 means
+$n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$.
+
+A recent major result settles eleven squares, until then the smallest case still open:
+$s(11) = T = 3.877083590022814\ldots$, the exact side of Walter Trump’s 1979 packing.
 [T-060](packing/frontier/RESULTS.md) records the global lower bound from the
 Astra-assisted
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
 Queuingtheorydotcom, building on this project and Kleddamag.
 This repository independently replayed the pinned exact proof inputs and audited their
-mathematical composition (`V4/C5/S5`); [T-011](packing/frontier/RESULTS.md) verifies
-Trump’s matching witness.
+mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
+[T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
 method’s shared dependencies and the publisher’s four stale cached-audit digests.
 
-This repository contains:
+<!-- END SHARED: recent-progress -->
 
-- **[New results from this project](#new-results):** Lower bounds on `s(11)` that
-  improve Stromquist’s `3.7888543…` bound, stated in
-  [1984, Memo III, p. 10](packing/resources/papers/stromquist-1984-packing-unit-squares-inside-squares-iii-cases-through-65-and-gardner-conjecture.pdf)
-  and published in 2003; the recorded search found no improvement in between.
-  The strongest is `s(11) ≥ 3.8269975…`. With them come `s(12) ≥ 99/25`, reached
-  independently of Evan Daniel’s stronger `15680/3951`, which was in his repository from
-  25 August and was first seen here on 27 September; the first proved bounds specific to
-  twenty and twenty-one squares; and bounds for seventeen through twenty-one squares
-  that improved on the published ones.
-  The bounds for eighteen, nineteen and twenty squares are still the verified ones, with
-  wand125’s reported `939/200`, `963/200` and `979/200` above them until their replays
-  run; the others have since been raised by the results below.
-- **[Results by others](#results-by-others):** Others have built on these certificates,
-  credited them and taken the bounds further, and others have worked in parallel, one
-  from the same weighted method and two on smaller packings.
-  This repository registers each claimed bound as *reported* when it takes the source
-  in, and as *verified* only after a complete replay of its certificate here and a
-  review of its mathematics, with the credit its authors give.
-  - **`s(11) = T = 3.877083590022814…`**, by Queuingtheorydotcom, building on this
-    project and Kleddamag.
-    The independently replayed global proof meets Trump’s exact witness.
-    The [case record](packing/frontier/n-011.md) gives the endpoint and
-    [review](docs/project/reviews/review-2026-09-29-n11-optimality.md) gives the proof
-    boundary.
-  - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
-    [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
-    It was the strongest verified lower bound before T-060, about `0.0021` below Trump’s
-    packing. Recorded here: the
-    [retained copy](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md),
-    the [review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
-    and the [case record](packing/frontier/n-011.md).
-  - **`s(17) > 116511/25000 = 4.66044`**, by Guzhou0806, continuing Kleddamag’s
-    `4.66001` charge (Kleddamag building on Squares Project (Joshua Levy), Mira and
-    Guzhou0806):
-    [Guzhou0806/n17-square-packing R068 at `815b162`](https://github.com/Guzhou0806/n17-square-packing/tree/815b16261f852e389968513eec94b4b9e5b3206d/certificates/R068-C010).
-    Eight replayed certificates at seventeen squares trace their support back to T-019’s
-    atoms, and this is the strongest; it is the verified lower bound, about `0.0151`
-    below Bidwell’s packing.
-    Recorded here: the
-    [retained copy](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md), the
-    [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) and the
-    [case record](packing/frontier/n-017.md).
-  - **`s(21) = 5`, `s(32) = 6` and `s(45) = 7`**, by Evan Daniel, independent of this
-    project and building on Burns’s and Massaccesi’s weighted method: the exact values
-    of `s(k² − 4)` for `k = 5, 6, 7`, the first for any `k ≥ 4`; `s(12)` remains open.
-    His `s(12) ≥ 15680/3951`, wand125’s and Tokoharu’s point and rectangle-density
-    bounds for `n = 18` to `95`, and wand125’s `s(50) ≥ 37/5` are registered the same
-    way, most of wand125’s still as reported bounds pending replay.
-  - **Smaller packings at fifty counts**, by Francisco Couzo, 49 counts from `n = 68` to
-    `307` ([T-056](packing/frontier/RESULTS.md)), and Joost de Winter,
-    `s(211) ≤ 14.9979607… < 15`, the first packing of 211 squares below the grid
-    ([T-057](packing/frontier/RESULTS.md)). Each is certified exactly here by two
-    checkers that share no code, and at `n = 206`, `259` and `305` the certified side
-    trails the printed one by at most three units of its fifteenth decimal.
-    Griffin Casson had published packings at 39 of Couzo’s counts earlier; Couzo’s are
-    smaller at all of them.
-    Couzo’s came to this record through jlevy/squares#227.
-- **[A comprehensive survey of all known square packing results](#survey):** Every case
-  `n = 1…100`, the primary literature retained and transcribed, and the bound a source
-  *reports* kept apart from the bound this repository has *verified*. Fifty-five of its
-  hundred cases carry a lower bound published since 22 August 2026, reported or
-  verified; in twenty-seven the verified bound itself is recent, three of those are this
-  project’s, and four are new exact values.
-- **[A set of tools and AI workflows for automated mathematical research](#autonomous-research-process):**
-  The results and the survey are produced and checked by AI agents running a recorded
-  process: hypotheses registered before measurement, every claim graded, every defect
-  logged.
+**The results live on the project site,
+[Square Packing](https://jlevy.github.io/squares/).** It carries the
+[recent results](https://jlevy.github.io/squares/#recent-results) by this project and by
+others with their credit, the
+[verification ratings](https://jlevy.github.io/squares/#verification-at-a-glance),
+[the atlas](https://jlevy.github.io/squares/#the-atlas) of known-best packings and its
+films, the table of [every result](https://jlevy.github.io/squares/all-results.html),
+and [the survey](https://jlevy.github.io/squares/#the-survey) of every case
+$n = 1\ldots324$, all generated from the record in this repository.
+The in-repository record is the [results register](packing/frontier/RESULTS.md), the
+per-case [status table](packing/frontier/STATUS.md), and
+[`epistemics.md`](epistemics.md), which defines how each claim is graded; the atlas
+films are on the
+[`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2).
 
-The [**v0.4.2 explainer page**](https://jlevy.github.io/squares/) starts with an
-interactive point-certificate proof, then shows how threshold atoms and a dilation limit
-reach T-026’s `s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was
-developed from. Its figures are drawn from the point certificates they explain.
-
-The separate
+The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.
+The
 [**eleven-square optimality paper**](https://jlevy.github.io/squares/n11-optimality/)
 explains T-060 from the exact construction through the exhaustive case exclusions,
-geometric capture and local-isolation argument that prove `s(11) = 3.8770835900…`. It
-has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
+geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
+It has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
 [maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
 drawn from the retained proof data.
+The [explainer](https://jlevy.github.io/squares/explainer.html) proves the earlier,
+simpler lower bounds on $s(11)$.
 
-[![One hundred known-best square packings arranged from n equals one through one hundred, each labeled with its best-known upper bound and, where the value is still open, the strongest verified lower bound.](packing/atlas/known-best/known-best-1-100.png)](https://jlevy.github.io/squares/known-best-1-100.pdf)
+This repository also contains
+**[a set of tools and AI workflows for automated mathematical research](#autonomous-research-process)**:
+the results and the survey are produced and checked by AI agents running a recorded
+process, with hypotheses registered before measurement, every claim graded, and every
+defect logged. The rest of this README is about that work.
 
-*The retained `n = 1…100` atlas, with each packing normalized to its own container and
-labeled by its best-known side upper bound.
-For open cases, the strongest verified lower bound appears beneath it.
-A crimson star marks a recent result, a verified lower bound proved since 22 August
-2026; each bound’s source and credit are on the film’s citation line.
-The image is available in [**SVG**](packing/atlas/known-best/known-best-1-100.svg),
-[**PDF**](https://jlevy.github.io/squares/known-best-1-100.pdf), and
-[**high-resolution PNG**](packing/atlas/known-best/known-best-1-100@2x.png).*
-
-**The atlas is also a film.** The same drawing is built one square at a time, at
-1080p60, each step naming the bound it reaches, where that bound comes from, and whether
-this repository has certified it:
-[**`n = 1…100`**](https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4)
-(2m 20s, 38 MB) and the
-[**full `n = 1…324` ascent**](https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4)
-(8m 14s, 206 MB), both on the
-[`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2) with the
-receipt that records what each file is and the page it was drawn from.
-GitHub strips `<video>` from Markdown, so these are links rather than an inline player;
-the [explainer page](https://jlevy.github.io/squares/) plays them.
-
-The register now runs to `n = 324`, the end of the catalogue’s audited range, and a
-second, poster-sized composite draws all of it:
-[**`known-best-1-324`**](packing/atlas/known-best/known-best-1-324.png), an 18-by-18
-grid with the same cards, badges and legend, available as
-[**SVG**](packing/atlas/known-best/known-best-1-324.svg) and
-[**PDF**](packing/atlas/known-best/known-best-1-324.pdf) (44 by 51 inches).
-The first figure is unchanged; the [atlas README](packing/atlas/known-best/README.md)
-describes both.
-
-[New Results](#new-results) · [Results by Others](#results-by-others) ·
-[Research Status](SYNOPSIS.md#research-program-status-and-roadmap) · [Survey](#survey) ·
+[Results (site)](https://jlevy.github.io/squares/) ·
+[Research Status](SYNOPSIS.md#research-program-status-and-roadmap) ·
 [Repository Guide](#repository-guide) · [Getting Started](#getting-started) ·
 [Reports](#reports) · [Autonomous Research Process](#autonomous-research-process) ·
 [Conventions](#conventions) · [Layout](#layout)
-
-## New Results
-
-The [results register](packing/frontier/RESULTS.md) collects this project’s results, the
-published results needed to interpret them, and every result by others since 22 August
-2026 that this record registers, replays or reviews, each credited to its source.
-Each result has a `T-NNN` ID and the classifications defined in
-[`epistemics.md`](epistemics.md): **V**, the highest verification rung supported by its
-cited evidence, and **C**, what this repository has recorded or performed itself.
-The gate checks the structural support for both classifications.
-`apparently-novel` means a recorded source search did not find the named contribution;
-it is not a claim of priority.
-`confirmed-novel` means priority was confirmed outside this repository.
-The New Results section covers both labels.
-
-Each result also carries **S**, a significance score from `1` to `5` against the same
-file’s rubric: `S4` is its anchor for a reusable technique, bound family or resolved
-disputed value, and `S5` for movement on a central open case.
-
-The central thread is `s(11)`, now solved at Trump’s exact side.
-T-010 repaired the printed argument behind Stromquist’s `2 + 4/√5 = 3.788854…`; T-018
-passed it with a weighted fractional certificate at `381/100 = 3.81`, whose
-[proof card](packing/cases/n11_fractional_certificate/t-018-proof-card.md) states the
-whole proof and the one command that checks it; threshold atoms and exact dilation
-limits then carried this project’s bound to T-033’s `3.8269975…`. Kleddamag’s `31/8`,
-developed from T-026’s threshold certificate, preceded the exact global result and
-remains listed under [Results by Others](#results-by-others).
-
-Every result first established here, as far as the recorded source searches show, has a
-row below, highest `S` first and then newest.
-The table is generated from the register by `devtools.render_recent_results`; the
-register and the case records the `n` column links hold each result’s full statement,
-evidence and limitations.
-**Standing** is derived from the case records, never stored: `holds` where a case’s
-verified bound rests on the result, `holds, reported` where only a reported bound does,
-`second certificate` for another proof of an exact value that another result holds,
-`superseded` for any other bound that no case holds now, and `—` for a result that is
-not a bound.
-
-<!-- BEGIN GENERATED: new-results (devtools.render_recent_results) -->
-
-| Result | `n` | Headline | V | C | S | Established | Standing |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| [T-026](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 955000√(518400042893309449)/179696714646249 = 3.8264474…` | V4 | C5 | S5 | 2026-09-09 | superseded |
-| [T-025](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 191/50 = 3.82`, by a threshold certificate | V4 | C5 | S5 | 2026-09-09 | superseded |
-| [T-024](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 3175000√(518400042893309449)/598960960743657 = 3.8166095…` | V4 | C3 | S5 | 2026-09-09 | superseded |
-| [T-022](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 38100√(8100042893309449)/899996306539 = 3.8100257…` | V4 | C5 | S5 | 2026-09-06 | superseded |
-| [T-018](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 381/100 = 3.81` | V4 | C5 | S5 | 2026-09-04 | superseded |
-| [T-020](packing/frontier/RESULTS.md) | 19–21 | `s(n) ≥ 24/5 = 4.80` for `n = 19, 20, 21` | V4 | C4 | S4 | 2026-09-04 | holds |
-| [T-019](packing/frontier/RESULTS.md) | 17–19 | `s(n) ≥ 459/100 = 4.59` for `n = 17, 18, 19` | V4 | C4 | S4 | 2026-09-04 | superseded |
-| [T-017](packing/frontier/RESULTS.md) | [12](packing/frontier/n-012.md) | `s(12) ≥ 99/25 = 3.96` | V4 | C4 | S4 | 2026-09-04 | superseded |
-| [T-010](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 2 + 4/√5`, by a repair of Stromquist 2003’s Figure 14 point set | V4 | C3 | S4 | 2026-08-24 | superseded |
-| [T-036](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Trump’s pose is optimal among six-plus-five packings near its tilt, unique up to symmetry | V3 | C2 | S3 | 2026-09-24 | — |
-| [T-035](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Six-plus-five packings near Trump’s tilt with side `≤ U_hi` lie within `rho` of his pose | V4 | C5 | S3 | 2026-09-24 | — |
-| [T-034](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) ≥ 122/25 = 4.88` | V4 | C5 | S3 | 2026-09-23 | superseded |
-| [T-033](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) ≥ 955000√(2073600042893309449)/359341754646249 = 3.8269975…` | V4 | C3 | S3 | 2026-09-22 | superseded |
-| [T-030](packing/frontier/RESULTS.md) | [18](packing/frontier/n-018.md) | `s(18) ≥ 4679/1000 = 4.679` | V4 | C4 | S3 | 2026-09-19 | holds |
-| [T-029](packing/frontier/RESULTS.md) | [18](packing/frontier/n-018.md) | `s(18) ≥ 1871/400 = 4.6775` | V4 | C4 | S3 | 2026-09-19 | superseded |
-| [T-028](packing/frontier/RESULTS.md) | [18](packing/frontier/n-018.md) | `s(18) ≥ 187/40 = 4.675` | V4 | C4 | S3 | 2026-09-19 | superseded |
-| [T-027](packing/frontier/RESULTS.md) | [18](packing/frontier/n-018.md) | `s(18) ≥ 467/100 = 4.67` | V4 | C4 | S3 | 2026-09-18 | superseded |
-| [T-023](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Conditional exclusion: no eleven-square packing in the four-owner branch at `q = 96/25` | V3 | C3 | S3 | 2026-09-08 | — |
-| [T-021](packing/frontier/RESULTS.md) | 20, 21 | `s(n) ≥ 97/20 = 4.85` for `n = 20, 21` | V4 | C4 | S3 | 2026-09-05 | holds |
-| [T-014](packing/frontier/RESULTS.md) | [5](packing/frontier/n-005.md) | Goebel’s `n = 5` optimum is rigid at fixed side: its pose is an isolated feasible point | V3 | C5 | S3 | 2026-09-03 | — |
-| [T-002](packing/frontier/RESULTS.md) | [18](packing/frontier/n-018.md) | `s(18) ≥ 4426213/1000000`, by monotonicity from T-001 | V4 | C4 | S3 | 2026-08-31 | superseded |
-| [T-001](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) ≥ 4426213/1000000 = 4.426213`, from a sixteen-point unavoidable set | V4 | C4 | S3 | 2026-08-31 | superseded |
-| [T-013](packing/frontier/RESULTS.md) | [40](packing/frontier/n-040.md) | Goebel’s `n = 40` packing: seven verified first-order flexes, each refused at second order | V4 | C3 | S3 | 2026-08-30 | — |
-| [T-012](packing/frontier/RESULTS.md) | [5](packing/frontier/n-005.md) | Goebel’s `n = 5` packing is second-order rigid at fixed side | V4 | C3 | S3 | 2026-08-30 | — |
-| [T-009](packing/frontier/RESULTS.md) | [29](packing/frontier/n-029.md) | `s(29) ≤ 5.933833…`, by a Krawczyk interval certificate | V4 | C3 | S3 | 2026-08-29 | holds |
-| [T-031](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | The octagon corner class (threshold `1/2`) holds no eleven-square packing at side `96/25` | V4 | C3 | S2 | 2026-09-20 | — |
-| [T-005](packing/frontier/RESULTS.md) | [13](packing/frontier/n-013.md) | Bentz 2010, Lemma 10 is false as printed and true as corrected to `(1.74, 1)` | V4 | C3 | S2 | 2026-08-31 | holds |
-| [T-003](packing/frontier/RESULTS.md) | 17, 18 | The sixteen-point set’s unavoidability ceiling lies in `[4426213/1000000, 4427/1000)` | V4 | C3 | S2 | 2026-08-31 | superseded |
-
-<!-- END GENERATED: new-results -->
-
-### Machine Audits of Published Work
-
-In each case, the theorem belongs to the source; this repository adds an exact machine
-check.
-
-- **T-004 / T-008:** Bentz 2010, Theorem 8, including both halves of `s(46) = 7`.
-- **T-011:** exact verification of Trump’s 1979 `n = 11` record witness over its
-  degree-eight field, including the zero-gap contacts that finite precision cannot
-  certify.
-- **T-060:** independent exact replay and audit of the global lower-bound proof at
-  Trump’s algebraic side, matching T-011’s upper bound.
-  The publisher’s cached audits contain four stale final-state digests; the retained
-  first-party replay uses the pinned source inputs and does not depend on those cached
-  PASS strings.
-
-The complete statements, scopes, evidence, limitations, classifications, and next
-actions live in the register.
-Results that still rest on a source read rather than a machine check are labeled there
-accordingly.
-
-## Results by Others
-
-The
-[maintained upstream repository index](packing/resources/README.md#recent-external-github-repositories)
-links the projects we integrate from and distinguishes their current development from
-the pinned revisions used as evidence.
-The new [wand125 tools intake](packing/resources/web/wand125-tools-2026-09-29/README.md)
-registers the disputed certificate-ceiling claim as T-058 and the reported independent
-n11 row scans as T-059. The
-[verification tooling overview](docs/project/verification-tooling.md) records what our
-native and source-replay checkers cover and the gaps that remain.
-
-Others have built on this repository’s certificates, credited them and taken the bounds
-further, and others have worked independently of it, one of them from the same weighted
-method. The theorems and the credit belong to their authors; how this repository takes
-their work in, credits it and answers them is the policy in
-[epistemics.md → Results by Others](epistemics.md#results-by-others).
-This repository registers each claimed bound as *reported* when it takes the source in,
-and as *verified* only after a complete replay of its certificate and a review of its
-mathematics. Each has an entry in the [results register](packing/frontier/RESULTS.md),
-which carries the source’s credit beside this repository’s `V` and `C` for it.
-The relation column follows the lineage each source’s own attribution gives, as the
-bibliography records it: `builds on` for sources that build on this project’s
-certificates, data or pipeline, whose credit line names Levy; `credits second-hand` for
-a source that credits it second-hand, with a method of its own; and `independent` for
-sources independent of it.
-Each row is one register entry.
-
-The table holds every register entry by others published since 22 August 2026, newest
-first, generated from the register by `devtools.render_recent_results`. The credit is
-the bibliography’s credit line and standing is derived as under
-[New Results](#new-results); the `n` column links the case record, and the records
-column the retained source packet and this repository’s reviews.
-
-<!-- BEGIN GENERATED: results-by-others (devtools.render_recent_results) -->
-
-| Published | Result | `n` | Headline | Credit | Relation | V/C | Standing | Records |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-09-29 | [T-060](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Trump’s eleven-square packing is globally optimal | Queuingtheorydotcom after Levy, Kleddamag | builds on | V4/C5 | holds | [packet](packing/resources/web/n11-optimality-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-n11-optimality.md) · [review 2](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) |
-| 2026-09-29 | [T-059](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Reported equality of 12028 n11 row minima awaits a complete bound replay | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) · [review 3](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
-| 2026-09-29 | [T-058](packing/frontier/RESULTS.md) | 1–100 | Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) |
-| 2026-09-28 | [T-055](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5` by a point-only route, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | second certificate, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
-| 2026-09-28 | [T-054](packing/frontier/RESULTS.md) | [45](packing/frontier/n-045.md) | `s(45) = 7` by a second, point-only route | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V4/C3 | second certificate | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
-| 2026-09-28 | [T-048](packing/frontier/RESULTS.md) | [50](packing/frontier/n-050.md) | `s(50) ≥ 37/5 = 7.4`, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | holds, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) |
-| 2026-09-28 | [T-043](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 116511/25000 = 4.66044` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | holds | [packet](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) |
-| 2026-09-28 | [T-042](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 233009/50000 = 4.66018` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) |
-| 2026-09-27 | [T-056](packing/frontier/RESULTS.md) | 49 in 68–307 | Smaller packings for 49 counts from `n = 68` to `307`, each certified exactly | Couzo | independent | V4/C3 | holds | [packet](packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md) · [review](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) |
-| 2026-09-27 | [T-053](packing/frontier/RESULTS.md) | [45](packing/frontier/n-045.md) | `s(45) = 7`, by a mixed cover of points and grid-line segments | Daniel after Burns, Massaccesi | independent | V4/C3 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) |
-| 2026-09-27 | [T-052](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5`, by a mixed cover of points and grid-line segments | Daniel after Burns, Massaccesi | independent | V4/C3 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) |
-| 2026-09-27 | [T-046](packing/frontier/RESULTS.md) | 48 in 18–95 | Rectangle-density lower bounds reported for 48 counts in `n = 18…95` | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | builds on | V0/C0 | holds, reported | [packet 1](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md) · [packet 2](packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md) |
-| 2026-09-27 | [T-045](packing/frontier/RESULTS.md) | 27, 28, 31, 32 | `s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20` | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | builds on | V4/C3 | holds | [packet](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md) · [review 1](docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md) · [review 2](docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md) |
-| 2026-09-27 | [T-041](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 466001/100000 = 4.66001` | Kleddamag after Levy, Mira, Guzhou0806 | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md) · [review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) |
-| 2026-09-26 | [T-051](packing/frontier/RESULTS.md) | [32](packing/frontier/n-032.md) | `s(32) = 6` | Daniel after Burns, Massaccesi | independent | V4/C4 | holds | [packet 1](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [packet 2](packing/resources/web/evand-square-packing-2026-09-28/README.md) · [review 1](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) · [review 2](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) |
-| 2026-09-26 | [T-040](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 232001/50000 = 4.64002` | Kleddamag after Levy, Mira, Guzhou0806 | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) |
-| 2026-09-25 | [T-039](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 231001/50000 = 4.62002` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-guzhou-r052-2026-09-25/README.md) · [review](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md) |
-| 2026-09-23 | [T-050](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) ≥ 5000/1001 = 4.995004995…` | Daniel after Burns, Massaccesi | independent | V4/C3 | superseded | [packet](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) |
-| 2026-09-22 | [T-047](packing/frontier/RESULTS.md) | 11, 26–31 | `s(11) ≥ 381/100`; `s(n) ≥ 1377/250` for `n = 26…28`; `s(n) ≥ 571/100` for `n = 29…31` | Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V4/C3 | holds | [packet](packing/resources/web/external-square-certificates-2026-09-22/README.md) · [review](docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md) |
-| 2026-09-22 | [T-044](packing/frontier/RESULTS.md) | 14 in 26–72 | Weighted point lower bounds for ten counts in `n = 26…72`, plus four from the same files | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | builds on | V4/C3 | holds | [packet](packing/resources/web/external-square-certificates-2026-09-22/README.md) · [review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md) |
-| 2026-09-22 | [T-037](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) > 31/8 = 3.875` | Kleddamag after Levy, Guzhou0806, Mira | builds on | V4/C4 | superseded | [packet](packing/resources/web/external-square-certificates-2026-09-22/README.md) · [review 1](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
-| 2026-09-21 | [T-038](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 461300/99853 = 4.6197910929…` | Kleddamag after Levy, Mira, Guzhou0806 | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md) · [review](docs/project/reviews/review-2026-09-21-n17-kleddamag-461300-99853.md) |
-| 2026-09-20 | [T-032](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) ≥ 461300/99999 = 4.61304613…`, and beneath it Mira’s `s(17) ≥ 4613/1000` | Guzhou0806, Mira after Levy, Burns, Massaccesi | builds on | V4/C4 | superseded | [packet](packing/resources/web/n17-weighted-certificates-2026-09-20/README.md) · [review](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md) |
-| 2026-09-16 | [T-057](packing/frontier/RESULTS.md) | [211](packing/frontier/n-211.md) | `s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record | de Winter | independent | V4/C3 | holds | [packet](packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md) · [review](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) |
-| 2026-08-25 | [T-049](packing/frontier/RESULTS.md) | [12](packing/frontier/n-012.md) | `s(12) ≥ 15680/3951 = 3.9686155…` | Daniel after Burns, Massaccesi | independent | V4/C4 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) |
-
-<!-- END GENERATED: results-by-others -->
-
-### Earlier in 2026
-
-Seven authors published lower bounds for seventeen squares, some also for eighteen,
-before this project’s square-packing work began on 22 August 2026, all independent of
-it: Brandwijk’s `89/20` (18 July), Burns’s `4.4811` (6 August), MacIver’s `4.4502…` (8
-August), Mira’s and Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s
-`4.57` and `9141/2000` (13 and 16 August), and Massaccesi’s `4.5058` (21 August), which
-this repository replayed and registered as T-015 and T-016. Each is archived with its
-source, and the [seventeen-square record](packing/frontier/n-017.md) lists them; every
-one is superseded.
-
-## Survey
-
-The survey records the best-known packing and strongest verified lower bound for every
-`n ≤ 324`, with provenance and separate reported and verified fields.
-Complete external certificate replays qualify when their mathematical assumptions are
-discharged; each record states who performed the checks and their independence limits.
-Its source is one schema-validated case file under
-[`packing/frontier/`](packing/frontier/README.md); the generated
-[status table](packing/frontier/STATUS.md) is the reader view, and the atlas above
-renders every retained known-best packing.
-The current `n = 18` survey row records the independently verified lower bound
-`4679/1000 = 4.679` from `T-030`; the `n = 11` row records T-060’s exact Trump value,
-the `n = 17` row Guzhou0806’s `116511/25000`, and the `n = 21`, `32` and `45` rows Evan
-Daniel’s exact values, all under [Results by Others](#results-by-others).
-The
-[September 22 external review](docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
-also verifies Tokoharu’s rectangle-density bounds `s(26) ≥ 5.508` and `s(29) ≥ 5.71`,
-which the survey carries as verified lower bounds.
-
-The [literature archive](packing/resources/README.md) retains each primary source, a
-cleaned Markdown transcription, and the unedited extraction used to check it.
-The generated [evidence inventory](packing/frontier/INVENTORY.md) shows what each
-recorded claim rests on, who performed the work, and how far it has been checked.
-
-The survey audits rather than merely transcribes.
-For example, the earliest published proof of `s(7) = 3` carries four recorded defects in
-its printed route, so the case’s proved status rests on independent later proofs.
-The [`n = 7` case](packing/frontier/n-007.md) states that disposition and links the
-relevant source audit.
-
-### Recent Results, All Sources
-
-Every case up to `n = 100` whose lower bound, reported or verified, was proved since 22
-August 2026 has a row here: the verified bound, the reported one where it differs, and
-the [register](packing/frontier/RESULTS.md) entries that carry each, with their `V` and
-`C`. The table is generated from the case records and the register by
-`devtools.render_recent_results`, and each holder is the bibliography’s credit line, so
-the gate fails if a value or a credit here drifts from the record.
-Where both bounds are recent, the lineage and date columns read verified first.
-
-<!-- BEGIN GENERATED: recent-results (devtools.render_recent_results) -->
-
-| `n` | Verified lower bound | Holder | Result | Reported, where different | Holder | Result | Lineage | Published |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [11](packing/frontier/n-011.md) | 3.8770…, exact | Queuingtheorydotcom after Levy, Kleddamag | T-060 `V4/C5` | 3.8770… | Queuingtheorydotcom after Levy, Kleddamag | T-060 `V4/C5` | builds on | 2026-09-29 |
-| [12](packing/frontier/n-012.md) | `15680/3951` = 3.9686… | Daniel after Burns, Massaccesi | T-049 `V4/C4` |  |  |  | independent | 2026-08-25 |
-| [17](packing/frontier/n-017.md) | `116511/25000` = 4.66044 | Guzhou0806 after Kleddamag, Mira, Levy | T-043 `V4/C3` |  |  |  | builds on | 2026-09-28 |
-| [18](packing/frontier/n-018.md) | `4679/1000` = 4.679 | Squares Project (Levy) | T-030 `V4/C4` | `939/200` = 4.695 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | this project; builds on | 2026-09-19; 2026-09-27 |
-| [19](packing/frontier/n-019.md) | `24/5` = 4.8 | Squares Project (Levy) | T-020 `V4/C4` | `963/200` = 4.815 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | this project; builds on | 2026-09-04; 2026-09-27 |
-| [20](packing/frontier/n-020.md) | `97/20` = 4.85 | Squares Project (Levy) | T-021 `V4/C4` | `979/200` = 4.895 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | this project; builds on | 2026-09-05; 2026-09-27 |
-| [21](packing/frontier/n-021.md) | `5`, exact | Daniel after Burns, Massaccesi | T-052 `V4/C3` |  |  |  | independent | 2026-09-27 |
-| [26](packing/frontier/n-026.md) | `1377/250` = 5.508 | Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi | T-047 `V4/C3` | `553/100` = 5.53 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-27 |
-| [27](packing/frontier/n-027.md) | `28/5` = 5.6 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-045 `V4/C3` |  |  |  | builds on | 2026-09-27 |
-| [28](packing/frontier/n-028.md) | `28/5` = 5.6 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-045 `V4/C3` | `143/25` = 5.72 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-27; 2026-09-28 |
-| [29](packing/frontier/n-029.md) | `571/100` = 5.71 | Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi | T-047 `V4/C3` | `579/100` = 5.79 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-28 |
-| [30](packing/frontier/n-030.md) | `571/100` = 5.71 | Tokoharu after Levy, wand125, Stromquist, Nagamochi, Burns, Massaccesi | T-047 `V4/C3` | `1173/200` = 5.865 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | credits second-hand; builds on | 2026-09-22; 2026-09-27 |
-| [31](packing/frontier/n-031.md) | `148/25` = 5.92 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-045 `V4/C3` | `1187/200` = 5.935 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-27; 2026-09-28 |
-| [32](packing/frontier/n-032.md) | `6`, exact | Daniel after Burns, Massaccesi | T-051 `V4/C4` |  |  |  | independent | 2026-09-26 |
-| [37](packing/frontier/n-037.md) | 6.0990… | Nagamochi | T-007 `V3/C1` | `257/40` = 6.425 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [38](packing/frontier/n-038.md) | 6.1961… | Nagamochi | T-007 `V3/C1` | `327/50` = 6.54 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [39](packing/frontier/n-039.md) | `13/2` = 6.5 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `663/100` = 6.63 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [40](packing/frontier/n-040.md) | `13/2` = 6.5 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `1339/200` = 6.695 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-27 |
-| [41](packing/frontier/n-041.md) | `13/2` = 6.5 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `1351/200` = 6.755 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [42](packing/frontier/n-042.md) | 6.5677… | Nagamochi | T-007 `V3/C1` | `679/100` = 6.79 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [43](packing/frontier/n-043.md) | 6.6568… | Nagamochi | T-007 `V3/C1` | `1373/200` = 6.865 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [44](packing/frontier/n-044.md) | 6.7445… | Nagamochi | T-007 `V3/C1` | `1387/200` = 6.935 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [45](packing/frontier/n-045.md) | `7`, exact | Daniel after Burns, Massaccesi | T-053 `V4/C3` |  |  |  | independent | 2026-09-27 |
-| [50](packing/frontier/n-050.md) | 7.0827… | Nagamochi | T-007 `V3/C1` | `37/5` = 7.4 | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-048 `V0/C0` | credits second-hand | 2026-09-28 |
-| [51](packing/frontier/n-051.md) | 7.1644… | Nagamochi | T-007 `V3/C1` | `2977/400` = 7.4425 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [52](packing/frontier/n-052.md) | `369/50` = 7.38 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `1507/200` = 7.535 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [53](packing/frontier/n-053.md) | `369/50` = 7.38 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `1519/200` = 7.595 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [54](packing/frontier/n-054.md) | 7.4031… | Nagamochi | T-007 `V3/C1` | `3067/400` = 7.6675 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [55](packing/frontier/n-055.md) | `377/50` = 7.54 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `771/100` = 7.71 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [56](packing/frontier/n-056.md) | `381/50` = 7.62 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `777/100` = 7.77 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [57](packing/frontier/n-057.md) | 7.6332… | Nagamochi | T-007 `V3/C1` | `1567/200` = 7.835 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [58](packing/frontier/n-058.md) | 7.7082… | Nagamochi | T-007 `V3/C1` | `789/100` = 7.89 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [59](packing/frontier/n-059.md) | 7.7823… | Nagamochi | T-007 `V3/C1` | `198/25` = 7.92 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [60](packing/frontier/n-060.md) | 7.8556… | Nagamochi | T-007 `V3/C1` | `397/50` = 7.94 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [61](packing/frontier/n-061.md) | 7.9282… | Nagamochi | T-007 `V3/C1` | `199/25` = 7.96 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-27 |
-| [66](packing/frontier/n-066.md) | 8.1414… | Nagamochi | T-007 `V3/C1` | `67/8` = 8.375 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [67](packing/frontier/n-067.md) | 8.2111… | Nagamochi | T-007 `V3/C1` | `1691/200` = 8.455 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [68](packing/frontier/n-068.md) | `841/100` = 8.41 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `1699/200` = 8.495 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [69](packing/frontier/n-069.md) | `841/100` = 8.41 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `343/40` = 8.575 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [70](packing/frontier/n-070.md) | `171/20` = 8.55 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `431/50` = 8.62 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [71](packing/frontier/n-071.md) | `171/20` = 8.55 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `1737/200` = 8.685 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [72](packing/frontier/n-072.md) | `861/100` = 8.61 | wand125 after Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-044 `V4/C3` | `437/50` = 8.74 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-22; 2026-09-28 |
-| [73](packing/frontier/n-073.md) | 8.6157… | Nagamochi | T-007 `V3/C1` | `439/50` = 8.78 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [74](packing/frontier/n-074.md) | 8.6811… | Nagamochi | T-007 `V3/C1` | `221/25` = 8.84 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [75](packing/frontier/n-075.md) | 8.7459… | Nagamochi | T-007 `V3/C1` | `889/100` = 8.89 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-27 |
-| [76](packing/frontier/n-076.md) | 8.8102… | Nagamochi | T-007 `V3/C1` | `223/25` = 8.92 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [77](packing/frontier/n-077.md) | 8.8740… | Nagamochi | T-007 `V3/C1` | `223/25` = 8.92 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [78](packing/frontier/n-078.md) | 8.9372… | Nagamochi | T-007 `V3/C1` | `1791/200` = 8.955 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-27 |
-| [86](packing/frontier/n-086.md) | 9.3066… | Nagamochi | T-007 `V3/C1` | `1871/200` = 9.355 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [88](packing/frontier/n-088.md) | 9.4261… | Nagamochi | T-007 `V3/C1` | `189/20` = 9.45 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [89](packing/frontier/n-089.md) | 9.4852… | Nagamochi | T-007 `V3/C1` | `191/20` = 9.55 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [90](packing/frontier/n-090.md) | 9.5440… | Nagamochi | T-007 `V3/C1` | `191/20` = 9.55 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [91](packing/frontier/n-091.md) | 9.6023… | Nagamochi | T-007 `V3/C1` | `1929/200` = 9.645 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [94](packing/frontier/n-094.md) | 9.7749… | Nagamochi | T-007 `V3/C1` | `1959/200` = 9.795 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-| [95](packing/frontier/n-095.md) | 9.8317… | Nagamochi | T-007 `V3/C1` | `49209/5000` = 9.8418 | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | T-046 `V0/C0` | builds on | 2026-09-28 |
-
-<!-- END GENERATED: recent-results -->
 
 ## Repository Guide
 
@@ -418,11 +78,11 @@ Where both bounds are recent, the lineage and date columns read verified first.
 | [**Tutorial**](TUTORIAL.md) | First-principles introduction to the objects, bounds, cells, stationary branches, search, and proof obligations |
 | [**Synopsis**](SYNOPSIS.md) | Current research status and roadmap, established results, terminology, workflow contracts, and handoff |
 | [**Results register**](packing/frontier/RESULTS.md) | Whole-result bounds, audits, structural theorems, and errata graded under [`epistemics.md`](epistemics.md) |
-| [**Frontier**](packing/frontier/STATUS.md) | One record per case for `n = 1…324`, with reported and verified bounds kept separate |
+| [**Frontier**](packing/frontier/STATUS.md) | One record per case for $n = 1\ldots324$, with reported and verified bounds kept separate |
 | [**Atlas**](packing/atlas/README.md) | Known-best and prospective packings, contact-scaffold enumeration, and deterministic renderings |
-| [**Literature**](packing/resources/README.md) | Retained primary sources, cleaned transcriptions, and raw extractions |
+| [**Literature**](packing/resources/README.md) | Retained primary sources, cleaned transcriptions, raw extractions, and the [maintained index of upstream repositories](packing/resources/README.md#recent-external-github-repositories) we integrate from |
 | [**Reports**](#reports) | Research reports on the mathematics, algorithms, infrastructure, formal proof, and search strategy |
-| [**Code and development guide**](development.md) | Exact verification, search, promotion, and the [validation tiers and behavioral lanes](development.md#validation-tiers) that gate every change |
+| [**Code and development guide**](development.md) | Exact verification, search, promotion, the [verification tooling overview](docs/project/verification-tooling.md) of what the checkers cover, and the [validation tiers and behavioral lanes](development.md#validation-tiers) that gate every change |
 | [**Campaign record**](packing/campaign/README.md) | Hypotheses, preregistered experiments, session records, agendas, and generated ledger |
 | [**Defect log**](defects.md) | Generated record of defects, detection methods, fixes, and regressions |
 
@@ -468,13 +128,13 @@ The [synopsis terminology](SYNOPSIS.md#terminology) gives the full definitions.
 
 | Term | Meaning |
 | --- | --- |
-| **configuration** | A placement of all `n` squares plus the container side: `3n + 1` coordinates |
+| **configuration** | A placement of all $n$ squares plus the container side: $3n + 1$ coordinates |
 | **cell** | A separating axis and order for every pair of squares; with angles fixed, one cell is one linear program |
 | **quench** | Deterministic refinement from a configuration to a local optimum |
 | **basin** | The preimage of one returned pose under a fixed deterministic quench; one connected terminal component may contain several point-basins |
 | **polish** | Refinement within the current basin |
 | **exploration** | Work intended to reach a different basin; the term implies no assurance level |
-| **standing best** | The best published side for that `n`, hence an upper bound rather than known optimality in open cases |
+| **standing best** | The best published side for that $n$, hence an upper bound rather than known optimality in open cases |
 | **gap** | `best_side − standing_best`, always signed |
 | **assurance** | `reported`, `numerically-checked`, or `verified`; method, arithmetic, origin, limitations, and novelty are recorded separately |
 
@@ -590,7 +250,7 @@ These 21 research reports are the durable topical syntheses:
 | [BC303 T2: From the Accepted Pose Domains to Exact Charge Tests](docs/project/research/research-2026-09-13-bc303-t2-charge-bridge.md) | Accepted C open-cell reduction and S first-owner sufficient test, with exact sweep and witness conditions; no charge or T2 verdict |
 | [N11 Definitions, Findings, and the Inference Chain](docs/project/research/research-2026-09-09-n11-evidence-and-inference.md) | First-principles interpretation through exp153, exact scope of results, remaining proof obligations, and unranked alternatives |
 | [N11 Inference Audit](docs/project/research/research-2026-09-09-n11-inference-audit.md) | Corrections to overbroad summaries, physical-versus-relaxed quantifiers, and missing evidence |
-| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | Dated account of the former `s(11)` gap and earlier proof techniques; T-060 and the current case record supersede its status summary |
+| [Packing 11 Unit Squares in a Square](docs/project/research/research-2026-08-22-packing-11-unit-squares.md) | Dated account of the former $s(11)$ gap and earlier proof techniques; T-060 and the current case record supersede its status summary |
 | [Algorithms and Tooling for Square Packing](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) | Search, numerical-to-exact promotion, verification, and the record landscape |
 | [FrankenSim as a Rust Toolkit for Square Packing](docs/project/research/research-2026-08-22-frankensim-rust-toolkit-for-square-packing.md) | Assessment of certified-arithmetic and determinism components in a larger Rust framework |
 | [Infrastructure for Square-Packing Exploration](docs/project/research/research-2026-08-22-infrastructure-for-packing-exploration.md) | Build order, latency tiers, language boundaries, and symbolic tooling |
@@ -598,7 +258,7 @@ These 21 research reports are the durable topical syntheses:
 | [A Search Philosophy for Square Packing](docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md) | Basin cartography, structural diversity, relaxation ladders, and search strategy |
 | [Public Sources Beyond n = 100](docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md) | Which catalogues carry geometry above 100, their reuse terms, and why 324 is a source boundary |
 | [Stromquist’s 1984 Memos and Systematic Dots Proofs](docs/project/research/research-2026-09-07-stromquist-memos-and-helper-arguments.md) | Historical corrections, the three memo arguments, and a reusable conditional counting control |
-| [Annealing for Square Packing, and How Far It Actually Reaches](docs/project/research/research-2026-09-08-annealing-for-square-packing.md) | What “solve to `n = 100`” actually asks for, what the record engines do, and why the move set rather than the cooling schedule is the binding constraint |
+| [Annealing for Square Packing, and How Far It Actually Reaches](docs/project/research/research-2026-09-08-annealing-for-square-packing.md) | What “solve to $n = 100$” actually asks for, what the record engines do, and why the move set rather than the cooling schedule is the binding constraint |
 | [Physics and Simulation Mechanisms for Square Packing](docs/project/research/research-2026-09-09-simulation-mechanisms-for-packing.md) | Inflation, shrinking cells, constraint projection, contact solvers, smoothing continuation and differentiable simulation, and which of them could recover a record cold |
 | [Stromquist’s Twenty-Six-Square Packing](docs/project/research/research-2026-09-07-stromquist-n26-verification.md) | Exact verification, comparison with the current record, source attribution, and bounded follow-up |
 | [The Best-Known n = 26 Packing](docs/project/research/research-2026-09-07-n26-best-known-audit.md) | Dated literature and source search, exact score normalization, and the limits of the best-known claim |
@@ -642,9 +302,9 @@ The synopsis explains the full argument in
 [Why Exactness Is Not Optional](SYNOPSIS.md#why-exactness-is-not-optional).
 
 Two retained examples show the boundary.
-The Schadt `n = 29` decimal pose passes its declared 300-digit numerical check, while
+The Schadt $n = 29$ decimal pose passes its declared 300-digit numerical check, while
 the separately promoted interval witness establishes a slightly weaker side rigorously.
-Trump’s `n = 11` witness is verified exactly over a degree-eight number field, including
+Trump’s $n = 11$ witness is verified exactly over a degree-eight number field, including
 fourteen zero-gap contacts.
 The per-case records ([`n = 29`](packing/frontier/n-029.md),
 [`n = 11`](packing/frontier/n-011.md)) state exactly which bound each artifact proves.
@@ -860,6 +520,7 @@ for results by others: their scope, credit, intake and reply.
 ├── tsconfig.explainer.json The checked classic scripts in the standalone explainer
 ├── tsconfig.json           The bundled workbench application's entry module
 ├── tsconfig.motion-lab.json  The motion lab's assets and the slideshow harness
+├── tsconfig.overview.json  The site pages' table and math scripts
 └── tsconfig.probes.json    The workbench checkers' probes
 ```
 

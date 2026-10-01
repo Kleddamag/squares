@@ -130,9 +130,12 @@ The [local estimate](#the-local-argument-excludes-every-nonzero-motion) and
 [exact frame change](#closing-the-gap-between-the-rational-cap-and-the-exact-optimum)
 complete the contradiction.
 
-The Squares Project records this result as **T-060, S5/V4/C5**: a result resolving the
+The Squares Project records this result as **T-060, S5/V3/C3**: a result resolving the
 global optimum, supported by exact computational verification and a mapped mathematical
-review. This is a computer-assisted proof with a stated software trust base; a completed
+review, machine-checked here with its review record pending.
+Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
+review by a distinct reviewer and a retained human oversight record, which this result
+awaits. This is a computer-assisted proof with a stated software trust base; a completed
 proof-assistant formalization is not claimed.[^review]
 
 ## From Weighted Points to a Global Proof
@@ -677,7 +680,7 @@ c_j=\frac{M_j}{2(r_j-\epsilon_jR)}<1.
 $$
 
 This is impossible for $0<\tau\le1$: dividing by $\tau$ would give $1\le c_j\tau<1$. The
-largest certified ratio is approximately $0.6765052083$; the proof uses exact strict
+largest certified ratio is approximately $0.676505208$; the proof uses exact strict
 comparisons, not this rounded display value.
 
 **Local-isolation lemma.** The zero perturbation is the only feasible packing in the
@@ -771,9 +774,11 @@ The local construction, derivative calculations and exact arithmetic include sha
 first-party primitives.
 The confirmation follows the same mathematical argument, rather than supplying a
 distinct proof method.
-V4/C5 consequently does not mean C4 distinct-method confirmation or V5 formal
-verification. The trust base includes the reviewed mathematical reductions, checker
-source, arithmetic libraries, runtime and executing system.
+V3/C3 consequently means a machine certificate replayed here with its review record
+pending, not distinct-method confirmation, not the adversarially reviewed and
+human-overseen rung 4, and not V5 formal verification.
+The trust base includes the reviewed mathematical reductions, checker source, arithmetic
+libraries, runtime and executing system.
 
 The final composition receipt reconciles the completed geometric executions and their
 reviewed dependencies.
@@ -886,7 +891,7 @@ coordinates are not inputs to certificate acceptance.
 [^proof]: [Original proof, §1: exact statement](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#1-statement-and-exact-endpoint)
     and
     [§10: final deduction](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#10-deduction-of-the-optimum);
-    [complete independent acceptance](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance).
+    [whole-proof acceptance review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance).
 
 [^review]: [T-060](../../frontier/results.yaml);
     [current review disposition](../../../docs/project/reviews/review-2026-09-29-n11-optimality.md);
@@ -925,6 +930,7 @@ coordinates are not inputs to certificate acceptance.
     [mathematical review of the five-site charge](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#first-independent-field-exclusion-mask-0).
 
 [^exclusions]: [Complete exclusion inventory](../../resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json);
+    [case census, which counts the field certificates](../../resources/web/n11-optimality-2026-09-29/receipts/case-census/result.json);
     [original proof, §9: accepted global obligations](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#9-accepted-global-verification-obligations);
     [independent exclusion and conditional-premise review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#complete-exclusion-execution-census).
 

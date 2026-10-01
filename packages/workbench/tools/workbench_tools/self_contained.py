@@ -74,9 +74,13 @@ class _ResourceParser(HTMLParser):
                 self.findings.append("script src")
             if (values.get("type") or "").strip().casefold() not in _DATA_TYPES:
                 self._script_depth += 1
-        if folded == "link" and values.get("href") is not None:
+        href = values.get("href")
+        if folded == "link" and href is not None:
             relationships = set((values.get("rel") or "").casefold().split())
-            if "canonical" not in relationships:
+            # A canonical link names the page and fetches nothing; an icon inlined as a
+            # data URI (the site's case-11 favicon) is already in the page.
+            inline = href.lstrip().casefold().startswith("data:")
+            if "canonical" not in relationships and not inline:
                 self.findings.append("link href")
         for attribute in _FETCH_ATTRIBUTES.get(folded, ()):
             value = values.get(attribute)

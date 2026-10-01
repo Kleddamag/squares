@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
-"""Decide which published pages a pull request has to build and check.
+"""Decide which of the published site's builds a pull request has to run and check.
 
-The Pages workflow publishes the explainer at `/`, the workbench at `/workbench/`,
-and the T-060 article at `/n11-optimality/`. Until 2026-09-15 a pull request that
-touched either of the older pages paid for both. #178 changed ten workbench probe
-files and ran about 330 s of explainer Chromium checks on a page whose bytes it
-could not change; an explainer-only
+The Pages workflow publishes one artifact assembled from four builds: the explainer at
+`/explainer.html`, the site's own pages (the overview at `/` and the pages
+`render_overview.PAGES` puts beside it), the workbench at `/workbench/`, and the T-060
+article at `/n11-optimality/`. Until 2026-09-15 every pull request that touched the
+explainer's or the workbench's paths paid for both. #178 changed ten workbench probe
+files and ran about 330 s of explainer Chromium checks on a page whose bytes it could
+not change; an explainer-only
 change paid for the workbench build the same way.
 
 This tool is what lets each half run only on its own inputs. For each half it takes:
 
 * the builder's own declaration of what a render reads -- `RENDER_INPUTS` in
-  `devtools/render_explainer.py` for the explainer,
-  `workbench_tools/build_site.py` for the workbench, and
-  `devtools/render_n11_optimality_explainer.py` for the T-060 article. Read live from
-  those modules rather than copied here, because a copy
-  is a second list that drifts, and the builders' lists already have tests that keep
-  them honest (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
+  `devtools/render_explainer.py` for the explainer, in `workbench_tools/build_site.py`
+  for the workbench and in `devtools/render_n11_optimality_explainer.py` for the T-060
+  article, and `inputs()` in `devtools/render_overview.py` for the site's own pages (its
+  `RENDER_INPUTS` and the record `overview_data.INPUTS` names). Read live from those
+  modules rather than copied here, because a copy is a second list that drifts, and the
+  builders' lists already have tests that keep them honest
+  (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
 * every developer tool and test the workflow's jobs for that half run, read out of
   `pages.yml` itself, with the modules those tools import from this repository. A checker
   is an input of the verdict even though it is not an input of the page: editing
@@ -66,7 +69,7 @@ REPO = PACKING.parent
 WORKFLOW = REPO / ".github" / "workflows" / "pages.yml"
 
 #: The first-party packages whose modules the workflow runs and whose imports are
-#: followed. `sqpack` is not here: both builders declare the parts of it they read.
+#: followed. `sqpack` is not here: each builder declares the parts of it that it reads.
 LOCAL_PACKAGES = ("devtools", "workbench_tools", "tests")
 
 _RUN_MODULE = re.compile(r"\bpython\s+-m\s+((?:devtools|workbench_tools)(?:\.\w+)+)")
@@ -92,6 +95,12 @@ def _workbench_inputs() -> tuple[Path, ...]:
     return tuple(build_site.RENDER_INPUTS)
 
 
+def _overview_inputs() -> tuple[Path, ...]:
+    from devtools import render_overview  # noqa: PLC0415
+
+    return render_overview.inputs()
+
+
 def _optimality_inputs() -> tuple[Path, ...]:
     from devtools import render_n11_optimality_explainer  # noqa: PLC0415
 
@@ -103,6 +112,7 @@ def _optimality_inputs() -> tuple[Path, ...]:
 BUILDER_INPUTS: Mapping[str, Callable[[], tuple[Path, ...]]] = {
     "explainer": _explainer_inputs,
     "workbench": _workbench_inputs,
+    "overview": _overview_inputs,
     "optimality": _optimality_inputs,
 }
 

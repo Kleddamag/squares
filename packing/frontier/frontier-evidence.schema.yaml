@@ -114,6 +114,12 @@ $defs:
       tolerance: {type: string, minLength: 1}
       certificate: {type: string, minLength: 1}
       replay: {type: string, minLength: 1}
+      axioms_receipt:
+        type: string
+        minLength: 1
+        description: >-
+          For proof-assistant-checked evidence: the retained receipt printing the axioms
+          the checked theorem depends on. Rung 5 requires it (epistemics.md).
       replay_status:
         enum: [passed, failed, unsupported, public-certificate-missing, not-attempted]
       proof: {$ref: '#/$defs/proof'}

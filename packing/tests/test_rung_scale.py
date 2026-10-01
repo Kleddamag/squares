@@ -1,0 +1,168 @@
+"""The rung chips' colour scale: saturation and strength rise with the level, and the
+chip's text stays readable on every fill.
+
+The scale is four tokens a theme and a hue a ladder in `templates/site.css`;
+`devtools.rung_scale` computes every fill they make and the contrast of the page's text
+on it, with no browser. These tests hold that report to what the design system says of
+it (`templates/paper-design.md`, Color, The Rung Scale).
+"""
+
+from __future__ import annotations
+
+from itertools import pairwise
+
+import pytest
+
+from devtools import render_overview, rung_scale
+from devtools.overview_sections import rubric_levels
+
+#: The ladders that carry a hue, and so a chroma that rises.
+HUED = ("V", "C")
+#: The minus sign the design document writes a negative step with.
+MINUS = chr(0x2212)
+
+
+@pytest.fixture(scope="module")
+def fills() -> list[rung_scale.Fill]:
+    return rung_scale.fills()
+
+
+def _ladder(fills: list[rung_scale.Fill], theme: str, scale: str) -> list[rung_scale.Fill]:
+    ladder = [fill for fill in fills if fill.theme == theme and fill.scale == scale]
+    assert [fill.level for fill in ladder] == sorted(fill.level for fill in ladder)
+    return ladder
+
+
+def _rising(values: list[float]) -> bool:
+    return all(low < high for low, high in pairwise(values))
+
+
+def test_every_rung_of_the_rubric_has_a_fill_in_both_themes(
+    fills: list[rung_scale.Fill],
+) -> None:
+    levels = rubric_levels()
+    expected = [
+        (theme, f"{scale}{level}")
+        for theme in rung_scale.THEMES
+        for scale in rung_scale.LADDERS
+        for level, _ in sorted(levels[scale])
+    ]
+    assert [(fill.theme, fill.rung) for fill in fills] == expected
+    used = {level for scale in rung_scale.LADDERS for level, _ in levels[scale]}
+    assert used <= rung_scale.styled_levels()
+
+
+@pytest.mark.parametrize("theme", rung_scale.THEMES)
+@pytest.mark.parametrize("scale", HUED)
+def test_saturation_rises_with_the_level(
+    theme: str, scale: str, fills: list[rung_scale.Fill]
+) -> None:
+    """Rung 0 is the least saturated and the top rung the most, with no step level or
+    reversed, whether saturation is read as chroma or as chroma against lightness."""
+    ladder = _ladder(fills, theme, scale)
+    assert ladder[0].level == 0
+    assert _rising([fill.chroma for fill in ladder])
+    assert _rising([fill.chroma / fill.lightness for fill in ladder])
+    assert ladder[-1].chroma >= 4 * ladder[0].chroma
+
+
+@pytest.mark.parametrize("theme", rung_scale.THEMES)
+@pytest.mark.parametrize("scale", rung_scale.LADDERS)
+def test_strength_rises_with_the_level(
+    theme: str, scale: str, fills: list[rung_scale.Fill]
+) -> None:
+    """Each level is further from the page background than the one below it, in
+    lightness and in contrast against the page: darker in light mode, lighter in dark."""
+    page = rung_scale.page_colours()[theme]["bg"]
+    ladder = _ladder(fills, theme, scale)
+    assert _rising([abs(fill.lightness - page[0]) for fill in ladder])
+    against_page = [
+        rung_scale.contrast(page, (fill.lightness, fill.chroma, fill.hue)) for fill in ladder
+    ]
+    assert _rising(against_page)
+    direction = -1 if theme == "light" else 1
+    assert all(direction * (fill.lightness - page[0]) > 0 for fill in ladder)
+
+
+@pytest.mark.parametrize("theme", rung_scale.THEMES)
+def test_rung_zero_is_closest_to_the_neutral_background(
+    theme: str, fills: list[rung_scale.Fill]
+) -> None:
+    page = rung_scale.page_colours()[theme]["bg"]
+    for scale in HUED:
+        lowest = _ladder(fills, theme, scale)[0]
+        assert abs(lowest.lightness - page[0]) <= 0.07, lowest
+        assert lowest.chroma <= 0.02, lowest
+
+
+@pytest.mark.parametrize("theme", rung_scale.THEMES)
+def test_significance_is_gray_and_as_strong_as_the_hued_ladders(
+    theme: str, fills: list[rung_scale.Fill]
+) -> None:
+    """Significance takes the lightness steps and no chroma: its top rung is as dark (as
+    light, in dark mode) as verification's, and no rung of it is coloured."""
+    gray = _ladder(fills, theme, "S")
+    assert {fill.chroma for fill in gray} == {gray[0].chroma}
+    assert gray[0].chroma <= 0.01
+    blue = {fill.level: fill for fill in _ladder(fills, theme, "V")}
+    assert all(fill.lightness == blue[fill.level].lightness for fill in gray)
+
+
+def test_every_fill_is_shown_as_written_and_keeps_its_text_readable(
+    fills: list[rung_scale.Fill],
+) -> None:
+    """Inside sRGB, so no browser maps the chroma down, and the page's text on the fill
+    at WCAG AA or better. One text colour serves every step of a theme."""
+    for fill in fills:
+        assert fill.in_gamut, fill
+        assert fill.contrast >= rung_scale.MINIMUM_CONTRAST, fill
+
+
+def test_the_scale_is_tokens_and_no_chip_has_a_value_of_its_own() -> None:
+    """One `oklch()` in the rung rules, the rule's; a ladder sets a hue or a chroma and a
+    level sets its number, never a colour."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    start = css.index(".site-rung-fill {")
+    rules = css[start : css.index(".site-star {", start)]
+    assert rules.count("oklch(") == 1
+    assert rules.count("background:") == 1
+    assert "#" not in rules
+    for theme, tokens in rung_scale.theme_tokens().items():
+        assert set(tokens) == {
+            "--site-rung-base",
+            "--site-rung-step",
+            "--site-rung-chroma-base",
+            "--site-rung-chroma-step",
+        }, theme
+    for scale, declared in rung_scale.ladder_tokens().items():
+        assert set(declared) == {
+            "--rung-hue",
+            "--rung-chroma-base",
+            "--rung-chroma-step",
+            "--rung-level",
+        }, scale
+
+
+def test_the_design_document_carries_the_measured_scale(
+    fills: list[rung_scale.Fill],
+) -> None:
+    """The table in `paper-design.md` is this tool's output, and the token table beside
+    it states the tokens `site.css` sets."""
+    design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
+    for line in rung_scale.markdown_table(fills).splitlines():
+        assert line in design, line
+    themes = rung_scale.theme_tokens()
+    for token in sorted(themes["light"]):
+        light, dark = (themes[theme][token].replace("-", MINUS) for theme in rung_scale.THEMES)
+        dark = f"+{dark}" if token == "--site-rung-step" else dark
+        row = [line for line in design.splitlines() if line.startswith(f"| `{token}`")]
+        assert len(row) == 1, token
+        assert row[0].endswith(f"| {light} | {dark} |"), row[0]
+    lowest = {
+        theme: min(fill.contrast for fill in fills if fill.theme == theme)
+        for theme in rung_scale.THEMES
+    }
+    assert (
+        f"{lowest['light']:.1f}:1 or better in light mode and "
+        f"{lowest['dark']:.1f}:1 or better in dark"
+    ) in " ".join(design.split())

@@ -1,6 +1,7 @@
 // The stage separator's layout now: the stage's drawn height, whether the controls end inside
 // the window, whether the page is marked as resizing, the share stored under o.key, the
-// separator's ARIA range, and the window's height.
+// separator's ARIA range, the window's height, and the height the stage and the controls share:
+// `#viewport`'s, the window's less the site's navigation bar above it on the published page.
 /** @param {{key: string}} o */
 (o) => {
   /** @param {string} id */
@@ -28,5 +29,6 @@
     valueMax: Number(handle.getAttribute("aria-valuemax")),
     valueNow: Number(handle.getAttribute("aria-valuenow")),
     innerHeight: window.innerHeight,
+    viewportHeight: element("viewport").clientHeight,
   };
 };

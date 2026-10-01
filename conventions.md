@@ -32,7 +32,7 @@ The prefix says what kind of thing it is.
 | Agent session | `session-NNN` | campaign | `session-001` |
 | Agenda | `agenda-NNN` | campaign | `agenda-001` |
 | Agenda cell | `BC-NNN` | campaign; owned by one agenda | `BC-001` |
-| Frontier case | `n-NNN` | `frontier/`, one artifact per `n ≤ 100` | `n-011` |
+| Frontier case | `n-NNN` | `frontier/`, one artifact per $n \le 100$ | `n-011` |
 | Search/proof strategy | `search:N`, `proof:N` | the frontier catalogues | `search:12` |
 | Defect | `D-NNN` | the directory, logged in `defects.yaml` | `D-014` |
 | Bead | `think-xxxx` | the repository’s `tbd` queue (prefix set in `.tbd/config.yml`) | `think-1s0h` |
@@ -302,7 +302,7 @@ Methods name how the result was obtained: `numerical-f64`, `numerical-multipreci
 `interval-certified`, `exact-algebraic`, `published-proof`, `proof-audited`, or
 `proof-assistant-checked`. Every numerical result records the precision actually used
 and its tolerance. A multiprecision library does not make a result arbitrarily precise,
-and a tolerance of `1e-100` is still numerical.
+and a tolerance of $10^{-100}$ is still numerical.
 
 **`beat_record: true` requires `assurance: verified`.** [checked] Campaign semantic
 validation rejects a numerical record flag.
@@ -339,7 +339,7 @@ Verbatim source archives and literal third-party machine identifiers may reprodu
 external letter-C notation; they are preserved evidence or syntax, not repository
 terminology.
 
-**Budgets are in pair-tests**, tiers S/M/L = `1e9`/`1e11`/`1e13`. [convention]
+**Budgets are in pair-tests**, tiers S/M/L = $10^9$/`1e11`/`1e13`. [convention]
 Machine-independent, and comparable across proposers whose move semantics differ.
 Wall clock is reported alongside as a courtesy, never as the budget.
 
@@ -359,15 +359,17 @@ Both restatements have drifted from it before.
 
 **Mathematical notation follows four rules.** [convention]
 
-- **A subscript `i` names one square; a bare letter is the whole `n`-vector.** So `θᵢ`
-  is one angle and `θ` is all `n` of them, and “fix the angles” means fix every `θᵢ`.
-- **`s(n)` is the optimal side and `s` is the decision variable** of a linear program.
+- **A subscript $i$ names one square; a bare letter is the whole $n$-vector.** So
+  $\theta_i$ is one angle and $\theta$ is all $n$ of them, and “fix the angles” means
+  fix every $\theta_i$.
+- **$s(n)$ is the optimal side and $s$ is the decision variable** of a linear program.
   They are not interchangeable: one is the answer, the other is what a solver moves.
-- **A `*` marks a distinguished value, not one fixed relation.** `a*` is a minimiser;
-  `s*` is the standing best for an `n`, which is *not* known to be a minimum in the open
-  cases. Never read `s*` as an optimum.
+- **A `*` marks a distinguished value, not one fixed relation.** $a^{\ast}$ is a
+  minimiser; $s^{\ast}$ is the standing best for an $n$, which is *not* known to be a
+  minimum in the open cases.
+  Never read $s^{\ast}$ as an optimum.
 - **A gap is qualified.** A **bound gap** is the distance between the best upper and
-  lower bounds for an `n`, a property of the problem.
+  lower bounds for an $n$, a property of the problem.
   A **search gap** is `best_side − standing_best`, signed, a property of one run.
   Bare *gap* means the search gap, which is the sense the synopsis and the campaign
   artifacts use; write the qualifier wherever both senses are in play.
@@ -378,9 +380,9 @@ meets each symbol, and is the place to look up a letter.
 a newcomer learns them.
 
 **Neighbouring research reports predate these rules and are not being retrofitted.**
-[convention] The `n = 11` report writes `θ` for the shared class angle the tutorial
-calls `a`, `u_i` for a per-square half-angle parameter rather than a single primitive
-element, and `α` for two quantities unrelated to a field’s primitive element.
+[convention] The $n = 11$ report writes $\theta$ for the shared class angle the tutorial
+calls $a$, $u_i$ for a per-square half-angle parameter rather than a single primitive
+element, and $\alpha$ for two quantities unrelated to a field’s primitive element.
 Those documents are dated records; the tutorial’s notation card names the collisions so
 a reader crossing between them is warned.
 
@@ -552,19 +554,19 @@ output in declared order.
 What they enforce, grouped:
 
 **Mathematics, checked exactly where the claim is formal.** Exact verification of the
-Trump, Göbel, and retained rational `n = 29` witnesses, including an independent
+Trump, Göbel, and retained rational $n = 29$ witnesses, including an independent
 rational checker; negative controls showing why finite precision cannot certify a
 contact; field irreducibility and unique-root isolation; the degree-8 field re-derived
 independently (where sympy is installed); the fixed-angle cell rebuilt as a linear
 program through independent constraint rows and solved back to Trump’s packing; Trump’s
 exact branchwise linearized cones (exp-013); the H-041 repaired-cover exact certificate
-and the H-010 printed-cover exact rejection (exp-016, exp-017); the exact `n = 3, 4`
-optimal moduli (exp-014, exp-015); the exact terminal-component controls and `n = 5`
+and the H-010 printed-cover exact rejection (exp-016, exp-017); the exact $n = 3, 4$
+optimal moduli (exp-014, exp-015); the exact terminal-component controls and $n = 5$
 local-geometry results through exp-036; and the golden basin maps, whose proved-case
 rows are checked against mathematics rather than against a stored snapshot.
 
 **Instruments.** `sqsearch --selftest` (geometry against a naive reference, determinism,
-the `s(5)` positive control, the recomputed-overlap guard); the differential test
+the $s(5)$ positive control, the recomputed-overlap guard); the differential test
 between search energy and the validity oracle; the basin atlas store invariants; the
 basin event record and its replay; basin identity; and the historical regressions each
 earlier defect fix left behind.

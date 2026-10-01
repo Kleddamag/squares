@@ -4995,7 +4995,14 @@ const SQUARES_WORKBENCH_CORE = workbenchBundle.core;
     }
   }
   function stageBounds() {
-    return { min: STAGE_MIN, max: window.innerHeight - CONTROLS_MIN };
+    return { min: STAGE_MIN, max: viewportHeight() - CONTROLS_MIN };
+  }
+  // The height the stage and the controls share: `#viewport`'s, which is the window's less the
+  // site's navigation bar the published page carries above it. Read from the element rather than
+  // from the window, so the two cannot run under the bar; the window's is the fallback for a
+  // document not yet laid out.
+  function viewportHeight() {
+    return viewportNode.clientHeight || window.innerHeight;
   }
   // The layout is two numbers the stylesheet turns into boxes: `--stage-scale`, which sizes the
   // stage and its wrapper, and `--controls-height`, which a separator-sized column takes while it
@@ -5018,7 +5025,7 @@ const SQUARES_WORKBENCH_CORE = workbenchBundle.core;
       placeAttribution();
     }
     const vw = window.innerWidth,
-      vh = window.innerHeight;
+      vh = viewportHeight();
     const sized =
       stageShare !== null && !state.capture && !document.body.classList.contains("search-active");
     if (sized) {
@@ -6867,7 +6874,7 @@ const SQUARES_WORKBENCH_CORE = workbenchBundle.core;
     position: () => stageWrap.getBoundingClientRect().height,
     bounds: stageBounds,
     place: (height) => {
-      stageShare = height === null ? null : height / window.innerHeight;
+      stageShare = height === null ? null : height / viewportHeight();
       writeStageShare(stageShare);
       // Back to the automatic layout, the tallest-controls measurement starts again: the
       // height the controls were held at is not evidence about their own.
@@ -6877,7 +6884,7 @@ const SQUARES_WORKBENCH_CORE = workbenchBundle.core;
       layout();
     },
     describe: (height) =>
-      `stage ${Math.round((100 * height) / window.innerHeight)} percent of the window height`,
+      `stage ${Math.round((100 * height) / viewportHeight())} percent of the window height`,
   });
   setRange(DEFAULT_STEP_N, DEFAULT_STEP_N);
   // The page opens on Animate, the aspect the owner uses most (2026-09-14), through the same

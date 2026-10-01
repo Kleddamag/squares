@@ -4,7 +4,9 @@
 publishes a proposed computer-assisted proof that the known eleven-square packing is
 globally optimal under independent rotations and boundary contact.
 Its claimed minimum side is the algebraic Trump construction side, about 3.8770835900.
-**T-060 is now confirmed at S5/V4/C5.** The complete independent geometric
+**T-060 is recorded at S5/V3/C3: machine-checked here, with its review record pending**
+(it held V4/C5 before the ladder change of 2026-09-30;
+[epistemics](../../../../epistemics.md)). The complete independent geometric
 execution ensemble covers all 2,180 exclusions and ten capture nodes. Astra at max
 reasoning reviewed their mathematical composition; the
 [final receipt](receipts/final-composition.json) has no pending obligations.

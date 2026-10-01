@@ -984,6 +984,9 @@
       pm.addEventListener("change", repaint);
     }
   }
+  /* The reader's theme choice from the navigation bar (overview/theme.js) recolours the
+   page without a media change. */
+  document.addEventListener("squares:themechange", repaint);
   window.addEventListener("beforeprint", repaint);
   window.addEventListener("afterprint", repaint);
 })();

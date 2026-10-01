@@ -1,0 +1,135 @@
+# target Sqpack.S13.Part11  start 2026-09-30T08:16:24Z  LEAN_NUM_THREADS=1  guard 6.0 GB anon
+# load: 8.21 8.28 9.52   free: used 1640 MB, available 14454 MB
+⚠ [8706/8716] Replayed Sqpack.Basic
+warning: Sqpack/Basic.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Sqpack/Basic.lean:18:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+warning: Sqpack/Basic.lean:23:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+warning: Sqpack/Basic.lean:260:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+⚠ [8707/8716] Replayed Sqpack.Chord
+warning: Sqpack/Chord.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Sqpack/Chord.lean:40:23: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:48:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:54:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:245:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Sqpack/Chord.lean:257:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+⚠ [8708/8716] Replayed Sqpack.ZeroMargin
+warning: Sqpack/ZeroMargin.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Sqpack/ZeroMargin.lean:715:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+⚠ [8709/8716] Replayed Sqpack.D4
+warning: Sqpack/D4.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Sqpack/D4.lean:29:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+⚠ [8710/8716] Replayed Sqpack.Cover
+warning: Sqpack/Cover.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [8711/8716] Replayed Sqpack.S32Data
+warning: Sqpack/S32Data.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [8712/8716] Replayed Sqpack.S32
+warning: Sqpack/S32.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Sqpack/S32.lean:27:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+⚠ [8713/8716] Replayed Sqpack.BoxTree
+warning: Sqpack/BoxTree.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [8714/8716] Replayed Sqpack.ZMTree
+warning: Sqpack/ZMTree.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [8715/8716] Replayed Sqpack.S13.Pts
+warning: Sqpack/S13/Pts.lean:31:0: Please, add a comment explaining the need for modifying the maxHeartbeat limit, as in
+set_option maxHeartbeats 0 in
+-- reason for change
+...
+
+Note: This linter can be disabled with `set_option linter.style.maxHeartbeats false`
+✔ [8716/8716] Built Sqpack.S13.Part11 (297s)
+Build completed successfully (8716 jobs).
+memwatch: rc 0 wall 309.4 s peak_anon_MB 3506 peak_file_MB 6661
+	Command being timed: "/home/user/squares/packing/.venv/bin/python3 /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lean/memwatch.py 6.0 /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lean/logs/mem_s13_Sqpack.S13.Part11.log -- lake build Sqpack.S13.Part11"
+	User time (seconds): 223.93
+	System time (seconds): 18.38
+	Percent of CPU this job got: 78%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 5:09.49
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9413960
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1074940
+	Voluntary context switches: 69797
+	Involuntary context switches: 57554
+	Swaps: 0
+	File system inputs: 1040
+	File system outputs: 21368
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# end 2026-09-30T08:21:33Z rc 0

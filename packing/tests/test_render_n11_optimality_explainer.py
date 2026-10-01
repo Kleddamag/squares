@@ -69,6 +69,62 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
     assert 'href="https://github.com/jlevy/squares"' in html
 
 
+def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str, str]) -> None:
+    """The paper is one of the site's papers, so it carries the site's navigation bar as
+    the explainer does, through the shared helper: Papers is the current entry, the
+    bar's links climb to the site's root from the directory the paper is served in, the
+    gear's program and the embed script ride with it, and print hides the bar."""
+    from devtools import render_overview  # noqa: PLC0415
+
+    html, _ = rendered
+    assert paper.SITE_PATH == "n11-optimality/t-060-explainer.html"
+    assert paper.SITE_PATH in render_overview.SITE_PAGES
+    assert paper.SITE_PATH.count("/") == paper.SITE_ROOT.count("../") == 1
+    assert render_overview.nav_html("papers", root="../") in html
+    assert '<a data-page="papers" aria-current="page" href="../papers.html">Papers</a>' in html
+    # One link is current, the bar's entry: the format chips link the other formats.
+    assert len(re.findall(r'<a\b[^>]*\saria-current="page"', html)) == 1
+    main = html.split('<main class="kpress-page-main kpress-viewport">', 1)[1]
+    assert main.lstrip().startswith('<nav class="site-nav"')
+    nav_css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert nav_css in html
+    # The shared text tokens come first, then the bar, then the publication layer both
+    # papers share, which reads both, then this paper's own diagram rules.
+    type_css = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    publication_css = paper.render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8")
+    paper_css = paper.STYLE.read_text(encoding="utf-8")
+    order = [html.index(sheet) for sheet in (type_css, nav_css, publication_css, paper_css)]
+    assert order == sorted(order)
+    assert (
+        "@media print {\n  .site-nav,\n  .kpress-site-header {\n    display: none;" in nav_css
+    )
+    for script in (render_overview.THEME_SCRIPT, render_overview.EMBED_SCRIPT):
+        assert script.read_text(encoding="utf-8") in html, script.name
+    for needed in (
+        render_overview.PAPER_TYPE_CSS,
+        render_overview.SITE_NAV,
+        render_overview.SITE_NAV_CSS,
+        render_overview.THEME_SCRIPT,
+        render_overview.EMBED_SCRIPT,
+    ):
+        assert needed in paper.RENDER_INPUTS, needed.name
+    # The page's hero starts the site's one space below the bar's rule, by the rule the
+    # first paper's hero uses; this paper declares no top space of its own.
+    assert "    padding-block-start: var(--site-page-top);\n" in publication_css
+    assert "--site-page-top" not in paper_css
+
+
+def test_link_revision_is_the_commit_the_paper_is_built_from(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The paper's citations name the checkout's `HEAD`, in full, and where git names no
+    commit the renderer says so rather than writing a link no one can follow."""
+    assert re.fullmatch(r"[0-9a-f]{40}", paper.link_revision())
+    monkeypatch.setattr(paper, "REPO", tmp_path)
+    with pytest.raises(SystemExit, match="give --revision"):
+        paper.link_revision()
+
+
 def test_local_citation_is_pinned(rendered: tuple[str, str]) -> None:
     html, markdown = rendered
     url = (
@@ -157,6 +213,68 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     assert "../../resources/" not in markdown
     assert f"/blob/{REVISION}/packing/resources/" in markdown
     assert markdown.count(f"/blob/{REVISION}/") >= 39
+
+
+def test_a_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -> None:
+    """The page carries the site's theme control, so a diagram is read on the dark theme
+    too. One drawn in the theme's tokens follows it; one whose labels are a fixed dark
+    ink needs a light ground there, or its labels are dark on dark. The stylesheet's list
+    of diagrams that take that ground is exactly the diagrams that carry fixed ink, and
+    it keys on KPress's resolved theme, as every site stylesheet does."""
+    fixed, themed = set(), set()
+    for svg in paper.render_all_figures().values():
+        found = re.match(r'<svg\b[^>]*\bclass="n11-diagram (n11-[a-z-]+)"', svg)
+        if found is None:
+            continue  # Figure 1, the atlas's rendering, which draws its own ground.
+        ink = re.findall(r'<text\b[^>]*\bfill="(#[0-9a-fA-F]{3,6})"', svg)
+        (fixed if ink else themed).add(found.group(1))
+    assert fixed, "no diagram carries fixed ink: the ground rule has nothing to hold"
+    assert themed, "no diagram follows the theme: the rule would apply to every diagram"
+    css = paper.STYLE.read_text(encoding="utf-8")
+    rule = re.search(
+        r':root\[data-kpress-resolved-theme="dark"\]\s+\.n11-paper\s+:is\(([^)]*)\)\s*'
+        r"\{\s*background: #fff;\s*\}",
+        css,
+    )
+    assert rule is not None
+    listed = {name.strip().removeprefix(".") for name in rule.group(1).split(",")}
+    assert listed == fixed
+    assert "prefers-color-scheme" not in css
+
+
+def test_the_credits_are_one_column_no_wider_than_the_page() -> None:
+    """The credits carry the original proof's address, one unbreakable word wider than a
+    phone's column. As a grid's automatic column the credits took that width, and every
+    credit was cut at the page's edge; the column is the page's width and the address
+    may break."""
+    css = paper.STYLE.read_text(encoding="utf-8")
+    assert ".n11-paper .credits {\n  grid-template-columns: minmax(0, 1fr);\n}" in css
+    assert ".n11-paper .credits a {\n  overflow-wrap: anywhere;\n}" in css
+    parts = paper.ARTICLE.read_text(encoding="utf-8").split('<div class="credits centred">')
+    assert len(parts) == 2
+    assert "<strong>github.com/Queuingtheorydotcom/11SquaresOptimal</strong>" in parts[1]
+
+
+def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
+    """The shared column rule caps a block at the measure, which outranks KPress's cap on
+    a table's wrap, so on a phone the wrap ran past the article that clips it. The
+    paper's own rule caps the wrap at the column too, later in the page and at a higher
+    specificity than the shared rule, and the page has tables for it to hold.
+    `preview_site --clips` measures the result in the browser."""
+    css = paper.STYLE.read_text(encoding="utf-8")
+    cap = "max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));"
+    assert f".cert-page.n11-paper > .kpress-table-wrap {{\n  {cap}\n}}" in css
+    shared = paper.render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8")
+    assert ".cert-page > :not(figure, .cert-figure, .kpress-figure),\n.col {" in shared
+    html, _ = paper.render(
+        paper.ARTICLE.read_text(encoding="utf-8"),
+        figures=paper.render_all_figures(),
+        revision=REVISION,
+    )
+    assert html.index(shared) < html.index(css)
+    article = html.split('<article class="kpress kpress-doc kpress-prose cert-page n11-paper">')
+    assert len(article) == 2
+    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 2
 
 
 @pytest.mark.skipif(

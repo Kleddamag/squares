@@ -55,9 +55,9 @@ body {
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
 }
+/* The reading measure (forty of the base) and the h2 scale (1.2) are in paper-type.css,
+   shared with every page of the site. */
 .cert-page {
-  --kpress-measure: calc(var(--kpress-font-size-base) * 40);
-  --kpress-font-size-h2: calc(var(--kpress-font-size-base) * 1.2);
   padding-block-end: calc(var(--kpress-font-size-base) * 6);
 }
 /* Paper typography profile; see paper-design.md beside this template.
@@ -74,17 +74,13 @@ body {
    declaration behind each request, and it is how a fourth weight is found. Two used
    to be there: the caption label sat at the medium while the title credits were bold,
    and the footnote controls at KPress's literal 600, which is neither token. */
+/* The values, and the `--paper-*` role scales, are in paper-type.css, shared with every
+   page of the site; this page reads them under its own names. */
 :root {
-  --cert-font-scale-sans: calc(19 / 18);
+  --cert-font-scale-sans: var(--paper-font-scale-sans);
   --cert-font-weight-sans-light: var(--kpress-font-weight-sans-regular);
-  --cert-font-weight-sans-medium: 550;
-  --cert-font-weight-sans-bold: 680;
-  --paper-title-scale: 1.5;
-  --paper-subtitle-scale: 1.25;
-  --paper-support-scale: 0.95;
-  --paper-note-scale: 0.92;
-  --paper-note-inset: 1.4rem;
-  --paper-support-leading: 1.4;
+  --cert-font-weight-sans-medium: var(--paper-font-weight-sans-medium);
+  --cert-font-weight-sans-bold: var(--paper-font-weight-sans-bold);
 }
 /* Resolve the sans base in the prose scope so nested sans components all use
    the same size instead of multiplying the scale at each level. */
@@ -163,12 +159,6 @@ body {
 }
 .cert-page :is(.line-fig, .chart) [font-weight="650"] {
   font-weight: var(--cert-font-weight-sans-bold);
-}
-@media print {
-  /* Keep small sans text compact as its letter size increases. */
-  :root {
-    --paper-support-leading: 1.32;
-  }
 }
 .cert-page a,
 .cert-page .kpress-footnote-ref a,
@@ -275,9 +265,10 @@ body {
   font-weight: var(--kpress-font-weight-sans-medium);
 }
 
-/* One transition for every hover and every replaced readout: fast, and the
-   same everywhere. The scripts set `.swap` on a readout whose text they
-   replace, so it fades in rather than flicking. */
+/* One transition for every hover and every replaced readout: the site's one hover
+   timing (site-nav.css, paper-design.md Motion), fast and the same everywhere. The
+   scripts set `.swap` on a readout whose text they replace, so it fades in rather than
+   flicking. */
 .cert-page a,
 .cert-page button,
 .cert-page .verdict,
@@ -285,9 +276,9 @@ body {
 .cert-page .kpress-footnote-ref a,
 .cert-page a.kpress-footnote-backref {
   transition:
-    color 120ms ease-out,
-    background-color 120ms ease-out,
-    border-color 120ms ease-out;
+    color var(--site-hover-duration) var(--site-hover-easing),
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    border-color var(--site-hover-duration) var(--site-hover-easing);
 }
 @keyframes cert-swap {
   from {
@@ -355,7 +346,7 @@ body {
 }
 /* A section starts with room above its heading and a breath below it. */
 .cert-page h2 {
-  margin-block: calc(var(--kpress-font-size-base) * 2.8) 1.3rem;
+  margin-block: var(--paper-section-space) var(--paper-section-space-below);
   text-align: center;
 }
 /* A box holds discrete statements rather than continuous argument, so its
@@ -381,14 +372,18 @@ body {
 .hero {
   padding-block-start: calc(var(--kpress-font-size-base) * 3);
 }
-/* The heading is set in caps by kpress; its s(n) run is mathematics and keeps both
-   mathematical italic and lowercase rather than inheriting the heading transform. */
+/* The heading is set in caps by kpress; its math run, `n = 11`, is mathematics and keeps
+   both mathematical italic and lowercase rather than inheriting the heading transform.
+   It also stays on one line: KaTeX allows a break after a relation, and at phone width
+   the title ended one line on `n =` and began the next with `11`. */
 .hero h1 .tex {
   letter-spacing: 0;
   text-transform: none;
+  white-space: nowrap;
 }
-/* Prepared math reserves its full measured ascent and descent. In this single-line
-   title, s(11)'s 1.27-1.30em profile reservations are taller than the heading's 1.05
+/* Prepared math reserves its full measured ascent and descent. In the title, a math
+   run's 1.27-1.30em profile reservations (measured on `s(11)`, which the title once
+   carried; `n = 11` reserves 1.20-1.27em) are taller than the heading's 1.05
    line-height and can push Figure 1 onto the next printed page. Both profiles keep a
    0.9123em ascent, so this limits only the invisible inline box while leaving the 1em
    glyphs in the same painted position: 1.05 - 0.9123 = 0.1377em below the baseline. */
@@ -532,11 +527,32 @@ body {
   /* kpress underlines a link on hover, which is right for a link in a sentence and
      wrong for a bordered chip: the rule lands inside the box and reads as a defect.
      The chip already answers the hover with its border, its ground and its colour,
-     all three on the page's shared 120ms transition. */
+     all three on the site's one hover timing. */
   text-decoration: none;
 }
 .doc-links .chip svg {
   display: block;
+}
+/* On screen the page's first block is the source chips' row, a little below the bar's
+   rule, and the hero starts the site's shared `--site-page-top` below that row
+   (site-nav.css), as every page's title does; print keeps the space above.
+   These follow the hero's, the credits' and the chips' own rules above, which they
+   adjust on screen. */
+@media screen {
+  .cert-page .doc-links {
+    margin-block-start: 0.5rem;
+  }
+  .hero {
+    clear: both;
+    padding-block-start: var(--site-page-top);
+  }
+  .cert-page .hero h1 {
+    margin-block-start: 0;
+  }
+  /* The credits start a little further under the title on screen than in print. */
+  .cert-page .hero .credits {
+    margin-block-start: 2.25rem;
+  }
 }
 
 /* The deck is a div so its footnote renders; the paragraph inside keeps its edges. */
@@ -1039,9 +1055,7 @@ body {
 /* One role kpress has no token for: the square the reader drags, which must
    read as a separate instrument from the mass it measures. */
 :root {
-  /* kpress derives every size from this one token, so the page reads larger
-     everywhere without any element being restyled. */
-  --kpress-host-font-size-base: 18px;
+  /* The type base, 18px, is paper-type.css's, shared with every page of the site. */
   --cert-probe: oklch(55% 0.145 52);
   --cert-below: #e26e82;
   --cert-near: #c9a13a;

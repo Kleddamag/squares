@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Check the explainer as GitHub Pages serves it, against the commit it should be built from.
+"""Check the site as GitHub Pages serves it, against the commit it should be built from.
 
-`pages.yml` renders the page, its Markdown edition and its PDF from `main` and deploys
-them. Nothing is checked in, so nothing in the repository says whether a deploy landed
-or what the page it served links to; this asks the live site. From `packing/`:
+`pages.yml` renders the overview and the pages beside it, the explainer with its Markdown
+edition and PDF, and the workbench from `main`, and deploys them. Nothing is checked in,
+so nothing in the repository says whether a deploy landed or what the pages it served
+link to; this asks the live site. From `packing/`:
 
     uv run --frozen --group dev python -m devtools.check_published_site --commit <sha>
 
@@ -11,12 +12,29 @@ With no `--commit` the checkout's `origin/main` is the expectation, which is the
 the last deploy built from once `git fetch` has run. One line per check, `ok` or
 `FAIL`, and the exit status is 0 only when every check passes:
 
-- the page is served and carries the edition stamp `sqpack.release` names;
-- every repository link in the page and in the Markdown edition names the expected
-  commit, and each resolves on GitHub;
+- every page `render_overview.PAGES` owns is served at its URL (the overview at the
+  root), and the explainer at `explainer.html`; each carries the edition stamp
+  `sqpack.release` names and the canonical URL its renderer wrote;
+- no page and not the Markdown edition links a repository file at a commit hash: every
+  repository link names `main` (`repo_links`), because a permalink to the commit a page
+  was built from 404s once a squash merge leaves that commit on no branch. Every path a
+  page links on `main` exists in the expected commit's tree, which is `main` when the
+  deploy runs, and each link on the explainer, its Markdown edition, the overview and
+  the frontier atlas is also asked of GitHub;
+- every result overview the results table's rows name (`data-row-pop-src`) is served
+  beside the pages and is that result's, and the overviews' repository links pass the
+  same two checks against the tree;
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
+- the optimality paper, which the Papers page's first card opens, is served where that
+  card points, with its landing address, Markdown and PDF, and its bar marks Papers as
+  the current section. Its own Pages job builds and checks its content. It is the one
+  page whose repository links are held to a commit and not to `main`: a paper cites the
+  evidence as it stood when the paper was typeset, so each citation on the page and in
+  its Markdown names the expected commit, the one the deploy built from, which `main`
+  keeps, and every path it cites is in that commit's tree. A citation that names `main`,
+  or any other commit, fails;
 - the workbench names the expected source commit, starts its public API in the pinned
   browser, and links back to this project's root rather than the account site's root.
 
@@ -41,16 +59,24 @@ from urllib.parse import urljoin
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
+from devtools import render_overview
+from devtools.overview_sections import OPTIMALITY_PAPER, result_fragment
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
-    OUTPUT,
+    PAGE_URL,
     REPO,
-    REPO_URL,
     SITE_URL,
 )
 from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.repo_links import (
+    REPO_URL,
+    RepositoryTree,
+    branch_paths,
+    hash_pinned_links,
+    repository_tree,
+)
 from sqpack.probes import probe
 from sqpack.release import PUBLICATION_EDITION
 
@@ -60,8 +86,41 @@ PROBES = Path(__file__).resolve().parent / "probes"
 #: A link into this repository as GitHub spells one: the ref, then the path, under
 #: `blob/` for a file and `tree/` for a directory.
 REPOSITORY_LINK = re.compile(re.escape(REPO_URL) + r"/(blob|tree)/([^/\s\"<>)]+)/([^\s\"<>)]*)")
+CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
+#: The fuller body a row's popover fetches, as its address beside the page, and how a
+#: result's overview opens: the one block it is, naming its result.
+ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
+RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
 
-#: Every file the deploy serves beside `index.html`, by name.
+#: Where the explainer is served. It is built as `index.html` and renamed when the site
+#: is assembled, because the root is the overview's.
+EXPLAINER = PAGE_URL.removeprefix(SITE_URL)
+
+#: The site's own pages, by served name, read from the renderer that owns them so a page
+#: added there is checked here without an edit. `index.html` is fetched as the root.
+SITE_PAGES = tuple(render_overview.PAGES)
+
+#: The pages whose repository links are each asked of GitHub as well. The rest are
+#: checked against the commit's tree alone, which is offline, as the reader documents'
+#: links already are when they are rendered; asking GitHub would cost a request per link
+#: on every deploy. The results page is one, since its records are the register's links
+#: and were asked of GitHub when the table was on the overview.
+LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html", render_overview.RESULTS_PAGE})
+
+#: The optimality paper's page, by path under the site's root, and what is served with
+#: it: its directory's landing address, its Markdown and its PDF. The path is the one the
+#: Papers card links (`overview_sections.OPTIMALITY_PAPER`).
+OPTIMALITY_PAPER_FILES = (
+    f"{OPTIMALITY_PAPER.rsplit('/', 1)[0]}/",
+    f"{OPTIMALITY_PAPER.removesuffix('.html')}.md",
+    f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
+)
+#: The paper's Markdown, whose citations are held to the same commit as the page's.
+OPTIMALITY_PAPER_MARKDOWN = f"{OPTIMALITY_PAPER.removesuffix('.html')}.md"
+#: The bar's current entry on that page, a level below the root.
+PAPERS_CURRENT = '<a data-page="papers" aria-current="page" href="../papers.html">'
+
+#: Every file the deploy serves beside the explainer, by name.
 SERVED = (
     MARKDOWN_OUTPUT.name,
     PDF_OUTPUT.name,
@@ -73,7 +132,7 @@ WORKBENCH_PATH = "workbench/"
 WORKBENCH_REVISION = re.compile(
     r'<meta\s+name="squares-workbench-revision"\s+content="([0-9a-f]{40})">'
 )
-WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the explainer</a>')
+WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the overview</a>')
 
 
 def repository_links(text: str) -> set[tuple[str, str, str]]:
@@ -82,6 +141,22 @@ def repository_links(text: str) -> set[tuple[str, str, str]]:
     return {
         (kind, ref, path.rstrip("/")) for kind, ref, path in REPOSITORY_LINK.findall(markup)
     }
+
+
+def paper_citations(text: str, commit: str) -> tuple[set[tuple[str, str]], list[str]]:
+    """The optimality paper's repository links: each (kind, path) it cites at `commit`,
+    without any query or anchor, and every link that names another ref, `main` among
+    them, as `kind/ref/path`. The paper pins its citations to the commit it was built
+    from (`render_n11_optimality_explainer.link_revision`), and the deploy builds it
+    from the commit it deploys."""
+    cited: set[tuple[str, str]] = set()
+    strays: list[str] = []
+    for kind, ref, path in sorted(repository_links(text)):
+        if ref == commit:
+            cited.add((kind, re.split(r"[?#]", path, maxsplit=1)[0].rstrip("/")))
+        else:
+            strays.append(f"{kind}/{ref}/{path}")
+    return cited, strays
 
 
 def pdf_pages(data: bytes) -> int:
@@ -195,22 +270,94 @@ def check(
     results: list[tuple[bool, str]] = []
     site = site.rstrip("/") + "/"
 
-    status, page = fetch(site + OUTPUT.name, timeout=timeout)
-    text = page.decode("utf-8", errors="replace")
-    results.append(
-        (status == 200, f"page {site}{OUTPUT.name}: HTTP {status}, {len(page)} bytes")
-    )
-    # The shared version (think-qsuu), pinned in release.py: the page names the data it was
-    # drawn from, as the atlas and the videos do, whatever commit built it. The commit is
-    # still what the page's links and the workbench's source revision must name.
-    edition = PUBLICATION_EDITION
-    stamped = edition in text
+    def served_page(name: str, url: str, canonical: str) -> tuple[bytes, str]:
+        """Fetch one page and check it is served, stamped and canonical; its bytes and text."""
+        status, body = fetch(url, timeout=timeout)
+        text = body.decode("utf-8", errors="replace")
+        results.append((status == 200, f"page {url}: HTTP {status}, {len(body)} bytes"))
+        # The shared version (think-qsuu), pinned in release.py: a page names the data it
+        # was drawn from, as the atlas and the videos do, whatever commit built it. The
+        # commit is still what the workbench's source revision must name.
+        stamped = PUBLICATION_EDITION in text
+        where = f"{'' if stamped else 'not '}on {name}"
+        results.append((stamped, f"edition stamp {PUBLICATION_EDITION!r} is {where}"))
+        found = CANONICAL.search(text)
+        declared = found.group(1) if found is not None else None
+        results.append(
+            (
+                declared == canonical,
+                f"{name} names canonical URL {declared!r} against expected {canonical!r}",
+            )
+        )
+        return body, text
+
+    try:
+        tree: RepositoryTree | None = repository_tree(commit)
+    except SystemExit as error:
+        tree = None
+        results.append((False, f"the tree of {commit} cannot be read here: {error}"))
+
+    def links_main(name: str, text: str) -> None:
+        """No link names a commit, and every path linked on `main` is in the tree."""
+        pinned = hash_pinned_links(text)
+        results.append(
+            (
+                not pinned,
+                f"{name}: {len(pinned)} repository links pinned to a commit: {pinned[:5]}"
+                if pinned
+                else f"{name}: no repository link is pinned to a commit",
+            )
+        )
+        if tree is None:
+            return
+        missing = tree.missing(branch_paths(text))
+        results.append(
+            (
+                not missing,
+                f"{name}: linked on main but not in {commit[:12]}: {missing[:5]}"
+                if missing
+                else f"{name}: every path linked on main is in {commit[:12]}",
+            )
+        )
+
+    checked_links: set[tuple[str, str, str]] = set()
+    overviews: list[str] = []
+    for name in SITE_PAGES:
+        url = site if name == "index.html" else site + name
+        _, text = served_page(name, url, render_overview.canonical_url(name))
+        links_main(name, text)
+        if name in LINK_CHECKED_PAGES:
+            checked_links |= repository_links(text)
+        if name == render_overview.RESULTS_PAGE:
+            overviews = sorted(set(ROW_SOURCE.findall(text)))
+
+    # The result overviews are files beside the pages, fetched when a row is opened: a
+    # deploy that lost one would show only as a popover that keeps its short detail.
     results.append(
         (
-            stamped,
-            f"edition stamp {edition!r} is {'' if stamped else 'not '}on the page",
+            bool(overviews),
+            f"{render_overview.RESULTS_PAGE} names {len(overviews)} result overviews",
         )
     )
+    bodies = []
+    for address in overviews:
+        status, body = fetch(site + address, timeout=timeout)
+        fragment = body.decode("utf-8", errors="replace")
+        found = RESULT_OVERVIEW.match(fragment)
+        holds = None if found is None else result_fragment(found.group(1))
+        results.append(
+            (
+                status == 200 and holds == address,
+                f"result overview {address}: HTTP {status}, {len(body)} bytes"
+                + ("" if holds == address else f", but it is {holds!r}"),
+            )
+        )
+        bodies.append(fragment)
+    if bodies:
+        links_main("the result overviews", "\n".join(bodies))
+
+    # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
+    page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)
 
     status, markdown = fetch(site + MARKDOWN_OUTPUT.name, timeout=timeout)
     results.append(
@@ -220,19 +367,11 @@ def check(
         )
     )
 
-    links = repository_links(text) | repository_links(
-        markdown.decode("utf-8", errors="replace")
-    )
-    refs = sorted({ref for _, ref, _ in links})
-    results.append(
-        (
-            refs == [commit],
-            f"repository links name {refs} against expected {commit}"
-            if links
-            else "no repository links found",
-        )
-    )
-    for kind, ref, path in sorted(links):
+    markdown_text = markdown.decode("utf-8", errors="replace")
+    links_main(EXPLAINER, text)
+    links_main(MARKDOWN_OUTPUT.name, markdown_text)
+    checked_links |= repository_links(text) | repository_links(markdown_text)
+    for kind, ref, path in sorted(checked_links):
         url = f"{REPO_URL}/{kind}/{ref}/{path}"
         status, _ = fetch(url, head=True, timeout=timeout)
         results.append((status == 200, f"link HTTP {status}: {url}"))
@@ -255,6 +394,46 @@ def check(
                 else "missing, malformed, or mismatched"
             )
         results.append((ok, line))
+
+    def cites_commit(name: str, text: str) -> None:
+        """The paper's rule, where every other page's is `links_main`: each repository
+        link names the expected commit, and every path cited there is in its tree."""
+        cited, strays = paper_citations(text, commit)
+        results.append(
+            (
+                bool(cited) and not strays,
+                f"{name}: {len(strays)} repository links not pinned to {commit[:12]}: "
+                f"{strays[:5]}"
+                if strays
+                else f"{name}: {len(cited)} citations, each pinned to {commit[:12]}",
+            )
+        )
+        if tree is None:
+            return
+        missing = tree.missing(cited)
+        results.append(
+            (
+                not missing,
+                f"{name}: cited at {commit[:12]} but not in its tree: {missing[:5]}"
+                if missing
+                else f"{name}: every cited path is in {commit[:12]}",
+            )
+        )
+
+    status, paper = fetch(site + OPTIMALITY_PAPER, timeout=timeout)
+    paper_text = paper.decode("utf-8", errors="replace")
+    current = PAPERS_CURRENT in paper_text
+    marked = f"Papers is {'' if current else 'not '}the bar's current entry"
+    line = f"optimality paper {OPTIMALITY_PAPER}: HTTP {status}, {len(paper)} bytes, {marked}"
+    results.append((status == 200 and current, line))
+    if status == 200:
+        cites_commit(OPTIMALITY_PAPER, paper_text)
+    for name in OPTIMALITY_PAPER_FILES:
+        cited_here = name == OPTIMALITY_PAPER_MARKDOWN
+        status, body = fetch(site + name, head=not cited_here, timeout=timeout)
+        results.append((status == 200, f"served {name}: HTTP {status}"))
+        if cited_here and status == 200:
+            cites_commit(name, body.decode("utf-8", errors="replace"))
 
     workbench_url = site + WORKBENCH_PATH
     status, workbench = fetch(workbench_url, timeout=timeout)

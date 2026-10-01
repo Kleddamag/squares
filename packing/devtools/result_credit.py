@@ -1,7 +1,7 @@
 """Credit and lineage for a result by others, read from the bibliography.
 
-`frontier/RESULTS.md` (`devtools.render_results`) and README's Results by Others table
-(`devtools.render_recent_results`) print the same credit cell and group by the same
+`frontier/RESULTS.md` (`devtools.render_results`) and the site's overview
+(`devtools.overview_data`) print the same credit cell and group by the same
 lineage, so both read them here and cannot credit a result differently. The credit
 text itself has one home, `resources/bibliography.yaml`; nothing here restates it.
 """
@@ -26,7 +26,7 @@ OTHERS = (
 def credit_line(record: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]) -> str:
     """The sources' credit lines, each once, in the order the attribution names them.
 
-    `RESULTS.md` and README's Results by Others table print this same cell.
+    `RESULTS.md` and the site's overview print this same cell.
     """
     lines = [
         sources[key].get("credit") or ", ".join(sources[key]["authors"])
@@ -40,7 +40,7 @@ def source_lineage(
 ) -> str | None:
     """The group an attributed result reads under: its sources' lineage, if recent.
 
-    Also README's Results by Others relation column, read through the same function.
+    Also the relation `render_recent_results.relation` names, read through this function.
     """
     attribution = record["attribution"]
     if attribution["published"] < RECENT_SINCE.isoformat():

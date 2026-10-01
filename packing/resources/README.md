@@ -468,6 +468,11 @@ Its Frontier keys are **[Tokoharu density 2026]**, **[Kleddamag n11 2026]** and
 [integration review](../../docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md)
 distinguishes literal reported bounds, verified replays and proposed native extensions.
 
+The [Wang–Li packet](web/wang-li-n11-2026-09-29/README.md) retains Ke Wang and Can Li’s
+Zenodo record 23038546: Kleddamag’s `s(11)` certificate reweighted and scaled to
+`s(11) > 3875000000/999999999`, its two verifiers, the preprint, and this repository’s
+full replays, native coverage and controls, under **[Wang Li n11 2026]**, T-061.
+
 The
 [September 27 wand125 rectangle packet](web/wand125-rectangle-certificates-2026-09-27/README.md)
 pins wand125’s later rectangle-density certificates for 44 counts from `n = 18` to
@@ -542,7 +547,7 @@ is [epistemics.md → Results by Others](../../epistemics.md#results-by-others).
 | **[Friedman Center]** | Packing Center record tables and diagrams | erich-friedman.github.io | `friedman-packing-center-squares` |
 | **[Guzhou R038 2026]** | The pinned R038 parent-angle certificate and verifier used in the external n17 comparison | github.com/Guzhou0806/N17 | `external-square-certificates-2026-09-22/dependencies/guzhou-n17-full/certificates/R038/` |
 | **[Friedman DS7 html]** | 2009 HTML edition of the DS7 survey | combinatorics.org | `friedman-ds7-survey-2009-html` |
-| **[Kingbird]** | Squares-in-Squares catalogue: exact minimal polynomials, rigidity flags | kingbird.myphotos.cc | `kingbird-squares-in-squares` |
+| **[Kingbird]** | Squares-in-Squares catalogue: exact minimal polynomials, rigidity flags; captured 2026-09-30 (page dated 2026-09-24). The capture of 2026-08-22 that the UnitSquare and certified-packet intakes read is kept byte for byte under `kingbird-squares-in-squares-2026-08-22`, whose header still names the undated files it was archived as; `devtools.diff_kingbird_catalogue` compares the two count by count | kingbird.myphotos.cc | `kingbird-squares-in-squares` |
 | **[Kingbird-compared]** | Supersession history: which record fell to which method, when | kingbird.myphotos.cc | `kingbird-squares-in-squares-compared` |
 | **[Kingbird-rigid]** | Author-maintained rigid-packing classification | kingbird.myphotos.cc | `kingbird-squares-in-squares-rigid` |
 | **[Kingbird-Göbel-squares]** | The Göbel-square family in closed form, `n = 2(a+1)a + b²` at side `a + 1 + (b/2)√2`, with its rendered members: 32 picture panels over 18 distinct `n`, from 5 to 9465; retrieved 2026-09-07 | kingbird.myphotos.cc | `kingbird-squares-in-squares-gobel-squares` |

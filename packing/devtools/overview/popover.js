@@ -1,0 +1,24 @@
+// The overview's card popovers. They open and close natively (`popovertarget`), so the
+// page works without this script; it adds two things the platform does not:
+//   - a formula inside a popover is typeset when the popover opens, since the math driver
+//     leaves hidden math until it is shown;
+//   - following a link in a popover closes it, so a reader sent to a row on this page
+//     lands on the row rather than behind the panel. The popover listens for the click
+//     itself, so a link placed in it later, as a row's deferred body is, closes it too.
+(() => {
+  for (const popover of document.querySelectorAll(".site-popover[popover]")) {
+    if (!(popover instanceof HTMLElement)) {
+      continue;
+    }
+    popover.addEventListener("toggle", (event) => {
+      if (event instanceof ToggleEvent && event.newState === "open") {
+        void globalThis.siteMath?.typeset(popover, true);
+      }
+    });
+    popover.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("a[href]") !== null) {
+        popover.hidePopover();
+      }
+    });
+  }
+})();

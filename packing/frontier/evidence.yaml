@@ -740,6 +740,147 @@ evidence:
       the local replay and mathematical review recorded separately.
     source_reviewed: '2026-09-22'
 
+  - id: E-n011-wang-li-report
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Wang Li n11 2026]'
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
+    replay_status: not-attempted
+    limitations: >-
+      Zenodo record 23038546 (29 September 2026) claims the strict bound s(11) >
+      3875000000/999999999 = 3.875000003875..., with independent rotations and boundary
+      contact allowed, from Kleddamag's v1.0.2 certificate with thirteen threshold-charge
+      orbits reweighted and the parent and core sides scaled by 999999999/1000000000. Its
+      two verifiers are Kleddamag's event-cell sweep and the authors' re-implementation
+      of the same method, which rebuilds the certificate from the source file and the
+      stated deltas and passes on equality with a hard-coded minimum. This entry preserves
+      the source claim, apart from the local replay and review recorded separately.
+    source_reviewed: '2026-09-30'
+
+  - id: E-n011-wang-li-source-replay
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Wang Li n11 2026]'
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
+    replay: >-
+      From a fresh extraction of the retained archive, with the authors' pinned upstream
+      interpreter (CPython 3.14.7, numpy 2.3.5, numba 0.65.1, llvmlite 0.47.0): python
+      verify.py --mode full --jobs 1, which must print
+      PASS_FRESH_TWO_IMPLEMENTATION_FULL_REPLAY; then, from a scratch copy of the retained
+      kleddamag-11 tree prepared with prepare_secondary.py --source on the retained R038
+      file, the improved certificate beside it and the packet's
+      replay/kleddamag-verify-wang-li.py as verify_wang_li.py: check_integrity.py,
+      verify_threshold_algebra.py and verify_wang_li.py --output-dir OUT, which must print
+      PASS_FRESH_PORTABLE_FULL_VERIFICATION. The packet README (Replays Here, Reproduce)
+      gives the commands and receipts.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/wang-li-n11-2026-09-29/n11_lower_bound_wang_li.pdf
+      theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The preprint's certificate and scaling sections; Kleddamag's PROOF.md lines 7-85
+        for the counting and transfer theorem; exact_mixed.py and integer_sweep.py as
+        retained under verifier/primary_kleddamag/; the packet's certificate diff
+        (receipts/certificate/diff.json).
+      assumptions:
+        - Exact nonnegative point and threshold charges form the validated D4-invariant system; a k-of-m feature costs floor(m/k) times its weight; the thirteen reweighted orbits are increments only.
+        - The 12028 contiguous parent-angle intervals cover the folded angular range, and each core of side lambda times its source side lies strictly inside every parent of side A' = 190999999809/193750000000 in its interval; containment is homogeneous of degree one in the two sides, so every premise margin is lambda times the source's.
+        - Every legal parent centre lies in its row's verified centre envelope, and the exact sweeps cover every generic centre cell there; upper semicontinuity extends the bound to all boundary centres.
+        - Distinct closed cores lie in disjoint parent interiors, and 11 times 1000047559 exceeds the budget 11000095024 by 428125 integer weight units; compactness makes the minimum packing side attained, so the bound is strict.
+      audit_record: docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: An independent adversarial review lane in this repository, with the coordinator's integration review.
+      note: >-
+        No mathematical defect. Every hypothesis of the counting and transfer theorem was
+        re-derived for the scaled sides with exact arithmetic by code sharing nothing with
+        the release or with Kleddamag; 651 of the 12,028 rows, the shrink-sensitive and the
+        historically weakest first, were re-decided there and each returned exactly
+        1000047559; the budget, the surplus 428125 and the ratio were recomputed.
+    limitations: >-
+      Pinned Zenodo 23038546 v1.0.0; the retained archive matches Zenodo's MD5 and the
+      improved certificate matches the SHA-256 the authors published. The authors' full
+      mode passed (9,356 s wall on a shared host): its primary Python sweep gave histogram
+      {1000047559: 12028}, 86,299,918 slabs and 511,649,696,956 cells, every row equal to
+      the archive's receipt, and its independent sweep gave zero bad rows. Kleddamag's own
+      launcher, adapted in three lines to the new certificate's path and constants, passed
+      the Python and BigInt JavaScript sweeps over all 12,028 intervals (8,207 s wall) and
+      independent_controls.py over 48,112 containment quadratics. Every sweep here is the
+      event-cell method, so this entry supports V4/C3 by itself; the method-distinct
+      decision is E-n011-wang-li-native-parent-core. Mutated certificates (the minimum
+      raised one unit, the counting gap closed, orbit 130 reverted, lambda one step past
+      the authors', a side beyond Trump's packing) are refused by every checker
+      (receipts/controls/). The exact optimum remains open.
+    source_reviewed: '2026-09-30'
+
+  - id: E-n011-wang-li-native-parent-core
+    claim: lower-bound
+    scope: {n_values: [11]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Wang Li n11 2026]'
+    certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.verify_n11_parent_core_native
+      --all --workers 2 --output OUT/all.json, from packing/, which reads
+      certificate/improved-global-certificate.json from inside the retained archive and must
+      report PASS_COMPLETE; about 3 hours on two workers of an idle host, 5.2 hours here.
+    replay_status: passed
+    proof:
+      source: packing/src/sqpack/fractional/parent_core.py
+      theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The frozen devtools.verify_kleddamag_n11_native run, called unchanged by the
+        wrapper devtools.verify_n11_parent_core_native with the release pin lifted for
+        this certificate; validate_parent_core and the parent-centre domain derivation;
+        the directed-rounding interval and threshold searches; the complete receipt and
+        row journal in the packet's receipts/native/.
+      assumptions:
+        - Exact nonnegative point and threshold charges are D4 invariant; each k-of-m charge contributes at most floor(m/k) times its weight to the packing budget.
+        - The contiguous 12028-row half-tangent partition covers all folded parent orientations; rational vertex-projection quadratics prove each closed core lies strictly inside every parent in its row, the least containment numerator being 999999999/10^21.
+        - Directed-rounding boxes cover each entire parent-centre domain and count only sites guaranteed inside the closed core; every row certifies at the exact threshold 1000047559 with no stalled or exhausted boxes.
+        - Disjoint parent interiors make their closed cores disjoint; 11 times 1000047559 exceeds the budget 11000095024; uniform scaling with L = 191/50 and A' gives L/A' = 3875000000/999999999, and compactness makes the bound strict.
+      audit_record: docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: The same independent review lane and the coordinator's integration review.
+      note: >-
+        The native method and its transfer argument were reviewed for T-037
+        (docs/project/reviews/review-2026-09-22-native-n11-parent-core.md); here its
+        hypotheses were re-checked at the scaled sides and the complete run's receipt read.
+    limitations: >-
+      The complete native run on 2026-09-30 accepted all 12,028 rows in 18,853 s of wall
+      on two workers of a shared host, with 136,388,356 boxes, zero stalls, no exhausted
+      budgets and no refutations, every row at the exact threshold 1000047559. The receipt,
+      every row included, and the run's log are packing/resources/web/wang-li-n11-2026-09-29/
+      receipts/native/native-all.json.gz and native-all.log.gz; the pilot and the native
+      controls are beside them. The wrapper leaves the frozen tool's code and its 19 proof inputs
+      unchanged and decides a Kleddamag row as the frozen tool does
+      (tests/test_wang_li_n11.py). This directed-rounding coverage differs from the
+      event-cell sweeps of E-n011-wang-li-source-replay; the two methods share the
+      certificate and the counting and transfer theorem. The exact optimum remains open.
+    source_reviewed: '2026-09-30'
+
   - id: E-tokoharu-density-report
     claim: lower-bound
     scope: {n_values: [11, 26, 29]}
@@ -3212,6 +3353,99 @@ evidence:
       source 34 minutes on 4 threads and zeromargin.py 1 h 42 min on 8
       processes. The theorem is Bentz's; the bound on this case is unchanged.
     source_reviewed: '2026-09-27'
+
+  - id: E-n013-evand-casefree-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [13]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/rung2/s13_closed_cover_4.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, with every .gz restored (the 2026-09-28
+      packet README, Replay From the Packets): verify2/target/release/zmx2 cert
+      certificates/rung2/s13_closed_cover_4.txt --d4 --threads 2 --log OUT, which must
+      print VERIFIED-D4 over all 1,600 roots with no uncertified box; then, from packing/,
+      .venv/bin/python3 -m devtools.audit_evand_mixed_covers check must exit 0.
+    replay_status: passed
+    limitations: >-
+      Replays the source's zmx2 on the retained case-free cover of [0,4]^2 on 2026-09-28:
+      VERIFIED-D4, 1,600 roots, 47,162 boxes, 22,136 certified and 2,245 empty leaves,
+      maximum depth 20, none uncertified, 11 s wall (receipts/s13_zmx2_d4.log and its
+      roots log), the totals the source reports. zmx2's acceptances are exact integer
+      tests on outward-rounded binary64 enclosures (its Lemma R), and the run uses the D4
+      fold. It certifies the cover hypothesis of the Lean route in
+      E-n013-evand-casefree-cover-lean-kernel by a separate program; the theorem is
+      Bentz's (T-006), proved again here by another route.
+    source_reviewed: '2026-09-30'
+
+  - id: E-n013-evand-casefree-cover-lean-kernel
+    claim: exact-value
+    scope: {n_values: [13]}
+    assurance: verified
+    method: proof-assistant-checked
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-09-28]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/rung2/s13_closed_cover_4.txt.gz
+    replay: >-
+      From s12/ of the two evand packets overlaid, with every .gz restored and python3 the
+      project interpreter: python3 lean/scripts/gen_s32_data.py (S32Data.lean, which the
+      import closure needs and neither packet retains); python3 lean/scripts/gen_zmtree.py
+      certificates/rung2/s13_closed_cover_4.txt --n 13 --name S13 --outdir
+      lean/Sqpack/S13 --nproc 1 --save OUT/s13.pkl, which must report the census of
+      lean/LADDER.md (10,024 boxes, 209 chunks); then, from lean/, with elan and the
+      pinned leanprover/lean4:v4.33.1: lake exe cache get, lake build Sqpack.S13Lower,
+      and lake env lean on a file importing Sqpack.S13Lower with #print axioms
+      SquarePacking.s13_eq_4, which must print [propext, Classical.choice, Quot.sound].
+      About 1 h 45 min and up to 9.5 GB here with LEAN_NUM_THREADS=1.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/lean/LADDER.md
+      theorem: 'SquarePacking.s13_eq_4, minSide 13 = 4, where minSide n is the infimum of the sides s of the closed square [0,s]^2 holding n closed unit squares with arbitrary independent rotations and pairwise disjoint open interiors.'
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        Sqpack/Basic.lean (coord, sq, sqInt, box, Packs, minSide); Sqpack/ZMTree.lean
+        (ZMTree.sound); Sqpack/BoxTree.lean (le_minSide); Sqpack/S13Lower.lean
+        (s13_ge_4, s13_eq_4 via packs_grid 4 13 and le_csInf); the generated
+        Sqpack/S13/Pts, Part0..15 and Cov; the build and axiom receipts in the
+        2026-09-28 packet's receipts/lean/.
+      assumptions:
+        - The Lean kernel of leanprover/lean4 v4.33.1 (commit 819816b2e0a3) and Mathlib 0df444a3 from the official cache are sound; that is the whole trusted base, with the definitions in Sqpack/Basic.lean.
+        - The generated S13 data are untrusted input; every chunk fact is proved by decide +kernel and Cov glues the 209 chunk theorems by name, so a wrong datum fails the build rather than the theorem.
+      audit_record: docs/project/reviews/review-2026-09-30-lean-s13.md
+    external_review:
+      state: informally-verified
+      date: '2026-09-30'
+      reviewed_by: An independent adversarial review lane in this repository.
+      note: >-
+        The definitions state s(13) in this record's convention exactly: closed unit
+        squares, independent real rotations, open interiors disjoint, containment in the
+        closed square, the infimum attained by the 4 x 4 grid. No sorry, axiom,
+        native_decide, ofReduceBool, extern or kernel-bypassing option in the project
+        sources; the axiom printout is genuine; all 209 chunks enter the proof through Cov.
+    limitations: >-
+      Built here on 2026-09-30 at the pinned 6aa82ba4 with Lean 4.33.1 and Mathlib's
+      official cache (8,690 files, no Mathlib compiled locally). The S13 data were
+      generated here by the source's gen_zmtree.py, with the census LADDER.md reports,
+      and emitted into 16 part files instead of the source's 4 to fit memory; the chunk
+      definitions and theorems are the same text. Pts, Part0..15, Cov and S13Lower built
+      with exit 0 (6,255 s wall, 3,978 CPU-s, single-threaded, peak 4.1 GB beyond the
+      mapped Mathlib), and s13_eq_4 and s13_ge_4 depend only on propext,
+      Classical.choice and Quot.sound (receipts/lean/axioms_s13.log). The first
+      hypothesis-free kernel-checked exact value of s(n) for a nontrivial n on this
+      record; it is not the first kernel-checked s(13) = 4 anywhere. The source's own
+      Axioms.lean over its default target also printed only the standard axioms
+      (receipts/lean/axioms_default.log). The theorem is Bentz's (T-006); this is Evan
+      Daniel's case-free proof of it, made with an AI agent under his direction as his
+      CREDITS.md says.
+    source_reviewed: '2026-09-30'
 
   - id: E-n021-evand-mixed-cover-report
     claim: lower-bound
@@ -6471,9 +6705,65 @@ evidence:
       At n = 206, 259 and 305 it lies 2, 3 and 2 units above, which the case records keep
       as conflicts; the reported sides there are not certified. Two negative controls on the
       n = 68 certificate, its side cut by 1e-15 and one square moved by 1e-6, are refused
-      by both checkers (receipts/negative-controls.json). One exact method, so no C4; no
-      optimality at any count.
+      by both checkers (receipts/negative-controls.json). The method-distinct second
+      entry is E-franciscouzo-2026-09-27-interval-replay; no optimality at any count.
     source_reviewed: '2026-09-29'
+
+  - id: E-franciscouzo-2026-09-27-interval-replay
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-09-27]'
+    certificate: resources/web/franciscouzo-square-packing-2026-09-27/facts/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_intervals
+      check --source franciscouzo-square-packing, which rebuilds each upstream file from
+      the packet's retained facts and requires the size and SHA-256 the acquisition took
+      from the pinned clone, decides each printed pose again by outward-rounded decimal
+      interval arithmetic, and requires every row of receipts/interval-certification.json
+      and receipts/interval-negative-controls.json to be what it records; it must print
+      "every case and control decided as its receipt records". About six seconds on one
+      worker.
+    replay_status: passed
+    limitations: >-
+      Proves, for each listed count, s(n) at most the same verified value that
+      E-franciscouzo-2026-09-27-exact-replay gives, from the source's own pose as printed
+      rather than a rational rounding of it: the printed centres, each angle in the
+      radians the source declares, and its true cosine and sine, enclosed by Taylor
+      polynomials with the Lagrange remainder. On decimal fixed-point intervals of 40
+      digits rounded outward, 24,014 of the 1,229,925 pairs are proved disjoint by the
+      separating-axis test over the four edge normals and the rest by bounding circles
+      decided exactly on the printed centres; nothing needed more than 40 digits, no pair
+      touches, and the least gap at any count is 1.98e-13 (n = 106). The pose, translated
+      so that its least x and y are zero, lies inside a square of the larger of the printed
+      side and its own extent's upper end rounded up at 15 decimals. That is the printed
+      side at 20 counts; at the other 29 the printed pose's extent exceeds its printed side
+      by 7.8e-17 to 2.13e-15, one unit of the fifteenth decimal at 26 and 2, 3 and 2 units
+      at n = 206, 259 and 305, so the printed sides there are not those of the printed
+      poses in any arithmetic. As placed, 47 of the 49 poses cross a wall of the source's
+      frame by up to 1.87e-15; the bound is the translated pose's, as the exact entry's is.
+      At every count the verified value equals the exact entry's, and the exact
+      certificate's side lies within 3.2e-37 of the enclosure of the pose's extent. Three
+      controls on n = 68 are refused (receipts/interval-negative-controls.json). Method-
+      distinct from the exact entry in its arithmetic (enclosures of transcendental values
+      against exact rationals), in the object decided (the printed pose against one whose
+      angles moved by up to 1e-36) and in code: it takes nothing from sqpack's geometry,
+      from mpmath or from either exact checker, which tests/test_upper_bound_intervals.py
+      enforces. The common mode is the same retained facts, which this entry rebuilds into
+      the upstream files and matches to the acquisition's pins (so a transcription error is
+      caught and a wrong pin is not); the separating-axis criterion, the side as the pose's
+      extent and the verified-value ceiling rule; upper_bound_packets' source records and
+      acquisition readers; the YAML loader; and authorship by agents in this repository.
+      Soundness rests on the directed rounding of integer floor division and on the Taylor
+      remainder bound, reviewed in docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md,
+      which re-decided all 50 cases a third way; the program is not formally verified. No
+      optimality at any count.
+    source_reviewed: '2026-09-30'
 
   - id: E-n211-de-winter-report
     claim: upper-bound
@@ -6522,8 +6812,46 @@ evidence:
       centre dilation 1. Every pair and wall is decided over Q twice, by the promotion's
       exact test and by an independent Fraction checker. The first packing of 211 squares
       below the grid side 15; nothing about optimality, and the lower bound is untouched.
-      One exact method, so no C4.
+      The method-distinct second entry is E-n211-de-winter-interval-replay.
     source_reviewed: '2026-09-29'
+
+  - id: E-n211-de-winter-interval-replay
+    claim: upper-bound
+    scope: {n_values: [211]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[de Winter n211 2026-09-16]'
+    certificate: resources/web/de-winter-square-packing-211-2026-09-16/facts/n-211.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_intervals
+      check --source de-winter-square-packing-211, which rebuilds the upstream JSON record
+      from the packet's retained facts and requires its pinned size and SHA-256, decides the
+      printed pose again by outward-rounded decimal interval arithmetic, and requires
+      receipts/interval-certification.json and receipts/interval-negative-controls.json to
+      be what they record; it must print "every case and control decided as its receipt
+      records".
+    replay_status: passed
+    limitations: >-
+      Proves s(211) <= 14.99796070496771500150, the printed side, from the source's own
+      21-digit pose as printed, with each angle's true cosine and sine enclosed, by
+      outward-rounded decimal interval arithmetic at 40 digits. The pose as placed lies in
+      [0, 14.99796070496771500150]^2 with least wall clearance exactly 1.000005e-14, at
+      square 66 counting from one; its 469 near pairs are proved disjoint by the
+      separating-axis test and the other 21,686 of 22,155 by bounding circles on the exact
+      centres, with least gap exactly 2.10001e-14, between squares 80 and 82. Those are the
+      values and squares (65, and 79 and 81, counting from zero) that the source's own
+      interval summary reports, now replayed; the source's 80-digit run itself, whose boxes
+      and checker are not published, is not. The pose's extent is exactly
+      14.9979607049676940014, the exact certificate's side. Three controls are refused
+      (receipts/interval-negative-controls.json). Method-distinct from
+      E-n211-de-winter-exact-replay, with the common mode that
+      E-franciscouzo-2026-09-27-interval-replay states and the same review. Nothing about
+      optimality.
+    source_reviewed: '2026-09-30'
 
   - id: E-casson-2026-09-23-report
     claim: upper-bound

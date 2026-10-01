@@ -1,0 +1,9 @@
+command: .venv/bin/python3 -m devtools.audit_wang_li_n11 controls --upstream-python SCRATCH/venv-authors/bin/python --kleddamag-tree SCRATCH/kleddamag-11 --release-tree SCRATCH/controls-release/n11_wang_li_zenodo_release_2026-09-29 --output /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/source-checkers.json
+SCRATCH: /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247
+started: 2026-09-30T06:05:04Z load: 10.91 11.54 10.44
+{
+  "status": "PASS_EVERY_MUTATION_REFUSED",
+  "seconds": 32.46592334299976
+}
+wall 32.658 s, user 20.497 s, system 0.668 s
+exit: 0

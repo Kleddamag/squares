@@ -21,6 +21,7 @@ from devtools.check_source_coverage import (
     FRONTIER,
     catalogue_transcription_errors,
     parse_case,
+    record_catalogue,
     source_by_id,
 )
 from sqpack.kingbird_catalogue import (
@@ -34,7 +35,9 @@ from sqpack.kingbird_catalogue import (
     default_catalogue_path,
     evaluate_exact_form,
     exact_form_matches_decimal,
+    html_entry_labels,
     index_entries,
+    intake_catalogue_path,
     normalized_polynomial,
     parse_catalogue,
     parse_entries,
@@ -52,9 +55,13 @@ CASE_MAXIMUM = 100
 GOLDEN_RECONCILED: dict[str, tuple[int, int]] = {
     # Lowered on 2026-09-29: Couzo's packings (T-056) took 44 catalogue-sourced cases, 15 of
     # them at n <= 200, off the catalogue, and de Winter's (T-057) took n = 211's grid.
+    # Lowered by one on 2026-09-30, when the page was captured again: n = 126's new entry
+    # prints no degree lock or polynomial (-2) and n = 179's prints a lock and a polynomial
+    # where it printed a closed form (+1). n = 69, 83 and 87, pending intake, are still
+    # reconciled against the capture of 2026-08-22.
     "n=1..100": (60, 206),
-    "n=1..200": (99, 393),
-    "n=1..324": (139, 615),
+    "n=1..200": (99, 392),
+    "n=1..324": (139, 614),
 }
 
 #: A block whose printed form uses LaTeX this parser does not read. It must raise rather
@@ -158,6 +165,27 @@ def test_exact_grid_entry_yields_an_integer() -> None:
     assert evaluate_exact_form(entry.exact_form) == Decimal(3)
 
 
+def test_a_bare_decimal_side_is_a_printed_decimal_and_not_a_closed_form() -> None:
+    """`n = 68` prints `$s = 8.7987961402601$` in the 2026-09-30 capture, without `\\Nn`.
+
+    The macro only adds the ellipsis; the digits are the same truncation every other
+    block prints. Read as a closed form, it would have the record claim that the side is
+    exactly a thirteen-place decimal.
+    """
+    (entry,) = parse_entries(
+        "68\n[](square-68.svg)\n\n$s = 8.7987961402601$  \n"
+        "Found by Sigvart Brendberg in June 2023.\n"
+    )
+    html = (
+        '<div class="box"><font size="+3">68<br></font>'
+        '<div align="center"><font size="+1">$s = 8.7987961402601$<br>'
+    )
+
+    assert entry.side_decimal == "8.7987961402601"
+    assert entry.exact_form is None
+    assert html_entry_labels(html) == (((68,), "8.7987961402601"),)
+
+
 def test_one_picture_serves_both_counts_it_lists() -> None:
     """A picture of eight squares settles seven by removing any one of them."""
     catalogue = _by_n()
@@ -188,13 +216,15 @@ def test_entries_beyond_the_case_corpus_parse() -> None:
     assert len(beyond) == 119
     assert catalogue[101].exact_form == "7 + (5/2)sqrt(2)"
     assert catalogue[107].exact_form == "10 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))"
-    assert catalogue[307].side_decimal == "17.98281564631754"
+    assert catalogue[307].side_decimal == "17.98272201579610"
     assert catalogue[307].found_by == (
         "M.Z. Arslanov",
         "S.A. Mustafin",
         "Z.K. Shangitbayev",
     )
-    assert catalogue[2043].algebraic_degree == 12
+    # Its degree-12 lock went with the 2026-09 improvement; the 1850 entry keeps one.
+    assert catalogue[2043].algebraic_degree is None
+    assert catalogue[1850].algebraic_degree == 4
 
 
 def test_quadratic_field_polynomial_normalises_to_its_rational_norm() -> None:
@@ -209,18 +239,24 @@ def test_quadratic_field_polynomial_normalises_to_its_rational_norm() -> None:
     )  # fmt: skip
 
 
-def test_every_printed_closed_form_matches_its_printed_decimal_except_n179() -> None:
-    """The catalogue prints one stale closed form, and the parser must not hide it.
+def test_a_stale_closed_form_is_reported_and_the_current_capture_prints_none() -> None:
+    """A self-contradicting entry is reported, and the parser must not hide it.
 
-    `n = 179` pairs a January-2025 closed form with a January-2026 decimal it does not
-    equal, and says "Not yet analytically optimized" underneath. That is a fact about the
-    source, so it is reported rather than raised -- but it is also why nothing downstream
-    may read `exact_form` without checking it against `side_decimal`.
+    The capture of 2026-08-22 paired `n = 179`'s January-2025 closed form with a
+    January-2026 decimal it does not equal, and said "Not yet analytically optimized"
+    underneath. That is a fact about the source, so it is reported rather than raised --
+    but it is also why nothing downstream may read `exact_form` without checking it
+    against `side_decimal`. The capture of 2026-09-30 prints a degree-158 root there
+    instead, and no entry contradicts itself.
     """
-    stale = [entry.n for entry in _entries() if not exact_form_matches_decimal(entry)]
+    earlier = parse_entries(intake_catalogue_path().read_text(encoding="utf-8"))
+    stale_then = [entry.n for entry in earlier if not exact_form_matches_decimal(entry)]
+    stale_now = [entry.n for entry in _entries() if not exact_form_matches_decimal(entry)]
 
-    assert stale == [179]
-    assert all(n > CASE_MAXIMUM for n in stale)
+    assert stale_then == [179]
+    assert stale_now == []
+    assert _by_n()[179].exact_form is None
+    assert _by_n()[179].algebraic_degree == 158
 
 
 def test_every_pictured_entry_carries_its_credit_line_verbatim() -> None:
@@ -243,11 +279,11 @@ def test_every_pictured_entry_carries_its_credit_line_verbatim() -> None:
         "Proved by Walter Stromquist in 2003.\n"
         "[Explore group](squares_in_squares__Göbel_strips.html)"
     )
-    assert _by_n()[179].credit_line == (
+    assert (_by_n()[179].credit_line or "").startswith(
         "Found by David Ellsworth in January 2025, using a computer program he wrote.\n"
         "Improved by David Ellsworth in January 2026, using his modified version of "
         "Thomas Schadt's simulated annealing program.\n"
-        "Not yet analytically optimized."
+        "Optimized by Tej Stead in June 2026, working with "
     )
     # Every line of the block below the side value, and nothing above it.
     assert all("\\Nn{" not in (entry.credit_line or "") for entry in entries)
@@ -255,16 +291,22 @@ def test_every_pictured_entry_carries_its_credit_line_verbatim() -> None:
 
 
 def test_the_credit_line_is_where_the_page_states_analytic_optimization() -> None:
-    """The disclaimer exists, it is exact, and it appears only above the case corpus."""
+    """The disclaimer exists, it is exact, and below the case corpus only `n = 68` has it.
+
+    The capture of 2026-08-22 printed it at 32 entries, all above `n = 100`. The capture
+    of 2026-09-30 adds it at seven improved entries (`n = 68, 126, 152, 236, 268, 1453`
+    and `2043`) and drops it at `n = 179` and `n = 206`, which were optimized since.
+    """
     stated = [
         entry.n
         for entry in _entries()
         if "Not yet analytically optimized." in (entry.credit_line or "")
     ]
 
-    assert len(stated) == 32
-    assert all(n > CASE_MAXIMUM for n in stated)
-    assert 179 in stated
+    assert len(stated) == 37
+    assert [n for n in stated if n <= CASE_MAXIMUM] == [68]
+    assert 179 not in stated
+    assert 126 in stated
 
 
 def test_the_six_credit_openers_the_page_writes_are_all_read() -> None:
@@ -346,6 +388,13 @@ def _kingbird_source_key() -> str:
     return str(source_by_id(coverage, "kingbird-current")["source_key"])
 
 
+def _record_catalogue() -> dict[int, CatalogueEntry]:
+    """What each record transcribes: the current capture, or for a count pending intake,
+    the earlier one -- the index `check_source_coverage` reconciles against."""
+    coverage = safe_load(COVERAGE.read_text(encoding="utf-8"))
+    return record_catalogue(_by_n(), coverage.get("pending_catalogue_intake", []))
+
+
 def test_frontier_transcription_diverges_nowhere_below_the_case_maximum() -> None:
     """The gate `think-l0vj` exists to hold: zero divergences at n = 1..100."""
     cases = _frontier_cases()
@@ -353,7 +402,7 @@ def test_frontier_transcription_diverges_nowhere_below_the_case_maximum() -> Non
 
     errors, compared, facts = catalogue_transcription_errors(
         cases,
-        _by_n(),
+        _record_catalogue(),
         _kingbird_source_key(),
         completeness_bound_from_text(_catalogue_text()),
     )
@@ -384,7 +433,7 @@ def test_a_perturbed_record_is_refused(
 
     errors, _, _ = catalogue_transcription_errors(
         cases,
-        _by_n(),
+        _record_catalogue(),
         _kingbird_source_key(),
         completeness_bound_from_text(_catalogue_text()),
     )

@@ -10,7 +10,6 @@ substitution, and nothing in the page is a reference outside it.
 from __future__ import annotations
 
 import re
-import subprocess
 from dataclasses import replace
 from fnmatch import fnmatchcase
 from fractions import Fraction
@@ -20,7 +19,7 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import render_explainer
+from devtools import render_explainer, render_overview
 from devtools.render_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -33,6 +32,7 @@ from devtools.render_explainer import (
     GENERATOR,
     MARKDOWN_OUTPUT,
     OUTPUT,
+    PAGE_URL,
     RENDER_INPUTS,
     REPO,
     REPO_URL,
@@ -43,12 +43,12 @@ from devtools.render_explainer import (
     WALKTHROUGH,
     assert_self_contained,
     current_bound_facts,
-    link_revision,
     png_size,
     render,
 )
 from devtools.render_explainer import load_certificate as load
 from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.render_overview import SITE_PAGES
 from sqpack.release import (
     FIRST_PUBLISHED,
     PUBLICATION_DATE,
@@ -100,11 +100,26 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
     assert re.findall(r"\{\{[A-Z_]+\}\}", page) == []
 
 
+def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
+    """The explainer is one of the site's papers: the bar has no entry of its own for it,
+    Papers is the one marked current, and the page keeps its address."""
+    assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["papers"]
+    assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in page
+    assert 'data-page="explainer"' not in page
+    assert f"{SITE_URL}explainer.html" == PAGE_URL
+    assert {"papers.html", "explainer.html"} <= set(SITE_PAGES)
+
+
 def test_title_block_names_the_result_without_a_subtitle(page: str, document: str) -> None:
-    """The title stands alone; the exact theorem is typeset in the opening section."""
+    """The title stands alone; the exact theorem is typeset in the opening section. Its
+    `n = 11` is a math run, so the hero's caps leave the variable lowercase, and the run
+    never breaks after its relation, as it did at phone width."""
     heading = re.search(r"<h1\b.*?</h1>", page, re.DOTALL)
     assert heading is not None
-    assert "A New Lower Bound for Packing 11 Squares" in heading.group(0)
+    assert re.sub(r"<[^>]+>", "", heading.group(0)) == render_explainer.TITLE
+    assert '<span class="tex">n = 11</span></h1>' in heading.group(0)
+    rule = ".hero h1 .tex { letter-spacing: 0; text-transform: none; white-space: nowrap; }"
+    assert rule in page
     assert '<p class="subtitle centred">' not in page
     assert "Weighted Certificates for Square Packing" not in page
     current = current_bound_facts()
@@ -151,18 +166,30 @@ def test_certificate_comparisons_match_the_rendered_certificates(
     assert f"weighted points reach ${render_explainer.decimal(facts.outer_side)}$" in document
 
 
+def test_the_explainer_carries_the_site_theme_control(page: str) -> None:
+    """The explainer's nav ends in the same gear as every other page, and its script
+    runs after the nav is drawn."""
+    script = render_explainer.INLINE_SCRIPT_ASSETS["SITE_THEME"].read_text(encoding="utf-8")
+    assert page.count('class="site-theme-button"') == 1
+    assert page.index('class="site-theme-button"') < page.index(script)
+    assert 'stored("kpress.theme")' in page
+
+
 def test_the_page_is_self_contained(page: str) -> None:
     """The renderer's own check passes on its own output; the workflow relies on this.
 
-    The page carries exactly one `<link>`, and it is the canonical URL. That is not a
-    fetch -- a browser reads it and does not request it -- but it is the one element in
-    the head that could become one, so it is counted rather than merely permitted: a
-    second `<link>` arriving here is a stylesheet, an icon or a preload, and the count
-    fails before the refusal has to.
+    The page carries exactly two `<link>`s: the canonical URL and the site icon as a
+    data URI. Neither is a fetch -- a browser reads the one and carries the other's bytes
+    -- but each could become one, so they are counted rather than merely permitted: a
+    third `<link>` arriving here is a stylesheet, an icon at an address or a preload,
+    and the count fails before the refusal has to.
     """
 
     assert_self_contained(page)
-    assert re.findall(r"<link[^>]*>", page) == [f'<link rel="canonical" href="{SITE_URL}">']
+    assert re.findall(r"<link[^>]*>", page) == [
+        f'<link rel="canonical" href="{PAGE_URL}">',
+        render_overview.favicon_html(),
+    ]
     assert re.search(r"<script[^>]*\ssrc=", page) is None
 
 
@@ -216,7 +243,7 @@ def test_the_published_document_is_markdown_and_not_the_template(document: str) 
     assert "3.81" in document
     assert "1,121" in document
     assert "181" in document
-    assert document.startswith("# A New Lower Bound for Packing 11 Squares")
+    assert document.startswith("# New Lower Bounds for Square Packing for $n = 11$\n")
 
 
 def test_the_three_stage_guide_wraps_each_print_grid_item_in_a_paragraph(page: str) -> None:
@@ -434,8 +461,8 @@ def test_the_link_preview_is_complete_and_its_urls_are_absolute(page: str) -> No
     assert tags.keys() >= REQUIRED_CARD_TAGS, sorted(REQUIRED_CARD_TAGS - tags.keys())
     for key in ("og:url", "og:image", "twitter:image"):
         assert tags[key].startswith("https://"), (key, tags[key])
-    assert f'<link rel="canonical" href="{SITE_URL}">' in page
-    assert tags["og:url"] == SITE_URL
+    assert f'<link rel="canonical" href="{PAGE_URL}">' in page
+    assert tags["og:url"] == PAGE_URL
 
 
 def test_the_card_image_is_one_the_render_serves_beside_the_page(page: str) -> None:
@@ -510,10 +537,14 @@ def test_the_card_and_the_page_say_the_same_thing(page: str) -> None:
     assert tags["og:description"] == tags["twitter:description"] == described.group(1)
     assert tags["og:image:alt"] == tags["twitter:image:alt"]
     current = current_bound_facts()
-    for text in (title.group(1), described.group(1)):
-        assert "s(11)" in text
-        assert current.bounded_side_decimal in text or "current lower bound" in text
-    assert title.group(1).startswith("A New Lower Bound for Packing 11 Squares")
+    # The title is the page's, bound-free: T-060 has settled the case, and one bound
+    # after a title about several would read as its current one. The sentence names it.
+    assert title.group(1) == render_explainer.TITLE
+    assert title.group(1) == "New Lower Bounds for Square Packing for n = 11"
+    assert "s(11)" not in title.group(1)
+    assert "s(11)" in described.group(1)
+    assert current.bounded_side_decimal in described.group(1)
+    assert "T-026's historical bound" in described.group(1)
 
 
 def test_advanced_section_derives_the_current_lower_bound(document: str) -> None:
@@ -560,7 +591,7 @@ def test_the_published_document_is_named_for_the_result(document: str) -> None:
     for claim in claims:
         assert claim.name.startswith(f"{RESULT_ID}-"), claim.name
     # The document is what it is named after: the article, not the template.
-    assert document.startswith("# A New Lower Bound for Packing 11 Squares")
+    assert document.startswith("# New Lower Bounds for Square Packing for $n = 11$\n")
 
 
 def test_the_md_chip_offers_the_document_by_its_published_name(page: str) -> None:
@@ -616,7 +647,7 @@ def test_pages_installs_the_locked_package_before_building_the_workbench() -> No
 
 
 def test_workbench_navigation_resolves_to_the_pages_project_root() -> None:
-    href = re.search(r'<a href="([^"]+)">the explainer</a>', WORKBENCH_NOTE)
+    href = re.search(r'<a href="([^"]+)">the overview</a>', WORKBENCH_NOTE)
     assert href is not None
     workbench = "https://jlevy.github.io/squares/workbench/"
     assert urljoin(workbench, href.group(1)) == "https://jlevy.github.io/squares/"
@@ -721,6 +752,34 @@ def test_the_workbench_input_guard_detects_an_omitted_input_class() -> None:
 def test_every_declared_workbench_input_exists() -> None:
     """The other half, for the workbench: a filter entry naming a file that is gone."""
     for declared in WORKBENCH_INPUTS:
+        assert declared.exists(), declared.relative_to(REPO).as_posix()
+
+
+def test_the_pages_filter_covers_every_overview_input() -> None:
+    """The site's own pages are the third build the workflow publishes; the same guard.
+
+    `render_overview.inputs()` is its declaration: the renderer's own `RENDER_INPUTS` and
+    the record `overview_data.INPUTS` reads. A register entry, a case record, the
+    bibliography or `TUTORIAL.md` changed on `main` outside this filter would leave `/`
+    and the pages beside it showing the previous render with every check green.
+    """
+    declared = render_overview.inputs()
+    assert REPO / "TUTORIAL.md" in declared
+    assert REPO / "packing/frontier/evidence.yaml" in declared
+    for event, patterns in pages_filters().items():
+        missing = [
+            path.relative_to(REPO).as_posix()
+            for path in declared
+            if not covered(path, patterns)
+        ]
+        assert not missing, f"{event}: overview inputs not covered by paths: {missing}"
+        without_documents = [p for p in patterns if p != "TUTORIAL.md"]
+        exposed = [path for path in declared if not covered(path, without_documents)]
+        assert exposed == [REPO / "TUTORIAL.md"], event
+
+
+def test_every_declared_overview_input_exists() -> None:
+    for declared in render_overview.inputs():
         assert declared.exists(), declared.relative_to(REPO).as_posix()
 
 
@@ -918,6 +977,10 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
         MARKDOWN_OUTPUT.name,
         PDF_OUTPUT.name,
         *(asset.name for asset in COMPOSITE_ASSETS),
+        # The site's other pages, which the navigation bar links to. A directory index is
+        # linked as its directory.
+        *SITE_PAGES,
+        *(page.removesuffix("index.html") or "./" for page in SITE_PAGES),
     }
     # Markup only. The page inlines KaTeX and kpress's client, and a minified
     # `'+a(this.src)+'` in one of them reads as an attribute to a regex that does not
@@ -951,26 +1014,29 @@ def repository_links(text: str) -> set[tuple[str, str]]:
     return {(ref, path.rstrip("/")) for ref, path in REPOSITORY_LINK.findall(markup)}
 
 
-def test_every_repository_link_is_a_permalink_to_the_commit_the_page_is_built_from(
-    page: str, document: str
-) -> None:
-    """A link on `main` names whatever is there when the reader clicks, not this build.
+def test_every_repository_link_names_main_and_exists_there(page: str, document: str) -> None:
+    """Each link into the repository names `main`, and each linked path is in `HEAD`.
 
-    The certificate digests the page prints identify the data; the links are what
-    identify the verifier, the generator, the checking package and the exposition a
-    reported run used, and every one of them was built as `blob/main/...` (review of
-    2026-09-05, Finding 8). So each link into the repository names the commit the page
-    is rendered from, in full, in the page and in the Markdown edition alike, and that
-    commit is read from the checkout rather than pinned, so that no merge leaves the
-    deployed page linking to files older than the ones it describes. The set of linked
-    paths is checked with it: a permalink to the wrong file is pinned just as firmly.
+    The page used to link the commit it was built from, so that a link identified the
+    verifier, the generator and the exposition a reported run used (review of
+    2026-09-05, Finding 8). Those permalinks 404ed once a squash merge left the build
+    commit on no branch, so the page now links `main`, where it deploys from, and the
+    committed claim documents are what pin a run's verifier at the edition's revision.
+    Every piece of evidence the page walks through is still linked, and every linked
+    path is asked of git at `HEAD`, the tree `main` holds when the page deploys.
     """
-    revision = link_revision()
-    assert re.fullmatch(r"[0-9a-f]{40}", revision), revision
+    from devtools.repo_links import (  # noqa: PLC0415
+        DEFAULT_BRANCH,
+        hash_pinned_links,
+        repository_tree,
+    )
+
+    assert not hash_pinned_links(page)
+    assert not hash_pinned_links(document)
     links = repository_links(page) | repository_links(document)
     assert links, "the page links nothing in the repository"
-    unpinned = sorted(f"{ref}/{path}" for ref, path in links if ref != revision)
-    assert not unpinned, f"repository links not pinned to {revision}: {unpinned}"
+    elsewhere = sorted(f"{ref}/{path}" for ref, path in links if ref != DEFAULT_BRANCH)
+    assert not elsewhere, f"repository links not on {DEFAULT_BRANCH}: {elsewhere}"
     linked = {path for _, path in links}
     evidence = (
         VERIFIER,
@@ -987,40 +1053,16 @@ def test_every_repository_link_is_a_permalink_to_the_commit_the_page_is_built_fr
     )
     for path in evidence:
         assert path.resolve().relative_to(REPO).as_posix() in linked, path.name
-
-
-def test_every_permalinked_path_exists_at_the_linked_commit(page: str, document: str) -> None:
-    """A permalink to a path the commit does not have is a 404 from the day it is published.
-
-    The linked commit is the checkout's `HEAD` and the paths are resolved against the
-    working tree, so what this catches is a linked file that is new and not yet
-    committed, or renamed in the tree but not in the commit. Asked of git rather than of
-    the working tree, since the working tree is exactly what a permalink does not point
-    at. Skipped where git cannot answer for the commit, which a source tarball cannot.
-    """
-
-    def exists(spec: str) -> bool:
-        result = subprocess.run(
-            ["git", "cat-file", "-e", spec], cwd=REPO, capture_output=True, check=False
-        )
-        return result.returncode == 0
-
-    revision = link_revision()
-    if not exists(f"{revision}^{{commit}}"):
-        pytest.skip(f"{revision} is not in this clone; the check needs git")
-    links = repository_links(page) | repository_links(document)
-    pinned = sorted(path for ref, path in links if ref == revision)
-    assert pinned, "nothing is linked at the build commit"
-    missing = [path for path in pinned if not exists(f"{revision}:{path}")]
-    assert not missing, f"linked at {revision} but not in that commit: {missing}"
+    tree = repository_tree()
+    missing = sorted(path for path in linked if path not in tree.files | tree.directories)
+    assert not missing, f"linked on {DEFAULT_BRANCH} but not in HEAD: {missing}"
 
 
 def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, document: str) -> None:
     """The credits print the version the atlas footer prints, not the build commit.
 
     One version names the data both are drawn from, so a reader holding the page and
-    the atlas sees one string on each. The build commit is still on the page, in every
-    repository link.
+    the atlas sees one string on each.
     """
     for composite in (path for path in COMPOSITE_ASSETS if path.suffix == ".svg"):
         footer = re.search(

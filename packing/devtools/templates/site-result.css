@@ -1,0 +1,312 @@
+/* ============================================================
+   The result overview: the body of the popover a registered result's row opens.
+
+   Its design is paper-design.md, Result Overview, beside this file, and its markup is
+   written by devtools/result_overview.py. Every value is a kpress token or one of the
+   site's own from site.css and site-nav.css, so it follows the theme and the print
+   rules; change the document first, then this file.
+
+   The case's panel is the atlas popover's own: its block carries `site-atlas-pop`, so
+   the film's gap bar, bound, badges and citation take the rules site.css already gives
+   them. This sheet adds only what the overview has beyond that panel: its head, the
+   record's bounds, the compact case list, the chain of results and the links.
+   ============================================================ */
+
+/* ---------- The popover that holds an overview ----------
+   As large as the atlas popover, whatever kind of popover the row opens, and one
+   scrolling panel: a page popover's flex column, made for a framed page, would clip it.
+   A row's popover holds the result's short detail until its overview is fetched
+   (`data-row-pop-src`, `overview/row-popover.js`); it is this size from the start, so
+   the panel does not change width when the overview lands. */
+.site-popover:has(.site-result, [data-row-pop-src]) {
+  inline-size: min(62rem, 100vw - 2rem);
+  max-inline-size: none;
+}
+/* One limit on the panel's height, the logical one: a `max-height` beside it in the
+   same rule would be the same property declared later, and `none` there let the panel
+   run the whole height of the window. */
+.site-popover:has(.site-result, [data-row-pop-src]):popover-open {
+  block-size: auto;
+  display: block;
+  max-block-size: min(92dvh, 58rem);
+  overflow: auto;
+}
+@media (max-width: 40rem) {
+  .site-popover:has(.site-result, [data-row-pop-src]) {
+    inline-size: calc(100vw - 1rem);
+  }
+  .site-popover:has(.site-result, [data-row-pop-src]):popover-open {
+    max-block-size: calc(100dvh - 1rem);
+  }
+}
+/* A formula cannot break across lines, and some results' are longer than a phone is
+   wide: a line that holds one (the popover's headline, the claim, a step's summary)
+   scrolls sideways rather than widening the panel. */
+.site-popover:has(.site-result, [data-row-pop-src]) > .site-popover-value {
+  overflow: auto hidden;
+}
+
+/* ---------- The overview ----------
+   Sans throughout, as every popover is, so its mathematics is sans too. Its label and
+   headline are the popover's own, above it (`overview_sections.result_row`). */
+.site-result {
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  text-align: start;
+}
+.kpress .site-result p {
+  margin-block: 0 0.45rem;
+}
+.site-result-meta,
+.site-result-note,
+.site-result-step-cite {
+  color: var(--site-support-color);
+  font-size: var(--site-font-size-note);
+  line-height: 1.45;
+}
+.site-result .site-date-kind {
+  color: var(--site-support-color);
+  display: inline;
+}
+.site-result-claim {
+  font-size: var(--site-font-size-note);
+  line-height: 1.5;
+  overflow: auto hidden;
+  overflow-wrap: anywhere;
+}
+.site-result-step-summary {
+  overflow: auto hidden;
+}
+
+/* A disclosure reads as plain text with its chevron, as one does in a table row; kpress
+   draws a <details> as a bordered box with a caps label. */
+.kpress .site-result details {
+  border: 0;
+  font-family: inherit;
+  font-weight: inherit;
+  margin: 0.3rem 0 0;
+}
+.kpress .site-result details > summary {
+  color: var(--kpress-doc-text);
+  display: block;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-variant-caps: normal;
+  font-weight: inherit;
+  letter-spacing: normal;
+  line-height: 1.4;
+  padding: 0;
+  text-transform: none;
+}
+.kpress .site-result details > summary::before {
+  color: var(--kpress-doc-accent);
+  display: inline-block;
+  margin-inline-end: 0.3rem;
+}
+.kpress .site-result details[open] > summary {
+  border-bottom: 0;
+}
+.kpress .site-result details > :not(summary) {
+  padding: 0.3rem 0 0;
+}
+.kpress .site-result .site-detail {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  line-height: 1.45;
+  margin-block: 0.3rem 0.2rem;
+}
+.kpress .site-result .site-detail dt {
+  color: var(--kpress-doc-text);
+  font-weight: var(--site-font-weight-sans-medium);
+}
+.kpress .site-result .site-detail dd {
+  margin: 0 0 0.4rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Sections ----------
+   Each part under a hairline and a caps heading, the atlas popover's own heading. */
+.site-result-section {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  margin-block-start: 1.1rem;
+}
+.kpress .site-result .site-result-heading {
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-caps-label-size, 0.8rem);
+  font-style: normal;
+  font-weight: var(--site-font-weight-sans-medium);
+  letter-spacing: var(--kpress-caps-spacing);
+  line-height: 1.4;
+  margin-block: 0.9rem 0.5rem;
+  text-align: start;
+  text-transform: var(--kpress-caps-transform);
+}
+.kpress .site-result .site-result-subhead {
+  color: var(--kpress-doc-text);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-block: 0.7rem 0.1rem;
+}
+
+/* ---------- The case ----------
+   The atlas popover's panel, with the drawing in the page's ink and a caption. A result
+   about a few cases stacks one panel per case, each headed by its n. */
+.site-result-film + .site-result-film {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  margin-block-start: 1rem;
+  padding-block-start: 0.8rem;
+}
+.site-result-film .site-atlas-pop-figure {
+  margin: 0;
+}
+.site-result-film .site-atlas-pop-figure svg {
+  color: var(--kpress-doc-text);
+}
+.site-result-film .site-atlas-pop-figure figcaption {
+  color: var(--site-support-color);
+  font-size: var(--site-font-size-note);
+  margin-block-start: 0.5rem;
+  text-align: center;
+}
+.kpress .site-result .site-result-case-n {
+  font-size: 1.3em;
+  margin-block: 0 0.7rem;
+}
+/* The bar's labels are placed when the page is rendered, each centred on its mark by
+   site.css. Two values too close to sit side by side are set either side of their
+   marks instead, where the atlas popover's script would move them. */
+.site-result-film .site-atlas-gap-values span[data-anchor="end"] {
+  transform: translateX(calc(-100% - 0.3rem));
+}
+.site-result-film .site-atlas-gap-values span[data-anchor="start"] {
+  transform: translateX(0.3rem);
+}
+
+/* The record's four bounds and the gap: a small plain grid marked with table roles,
+   each value a link to its field in the case file. It is not a <table>, which kpress
+   would restyle as its own component and a results table's script would count. */
+.site-result-bounds {
+  display: grid;
+  font-variant-numeric: tabular-nums;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: start;
+  margin-block: 0.2rem 0;
+  /* Three columns of whole values can be wider than a phone's panel: the grid scrolls
+     inside its own box, so the popover's margin stays clear on both sides. */
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+.site-result-bounds > [role="row"],
+.site-result-cases > [role="row"] {
+  display: contents;
+}
+.site-result-bounds > [role="row"] > * {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  padding: 0.3rem 1.4rem 0.3rem 0;
+}
+.site-result-bounds > [role="row"]:last-child > * {
+  border-block-end: 0;
+}
+.site-result-bounds :is([role="columnheader"], [role="rowheader"]) {
+  color: var(--site-support-color);
+  font-weight: var(--site-font-weight-sans-medium);
+}
+.site-result-bounds .site-result-gap {
+  grid-column: span 2;
+}
+
+/* ---------- A broad result's cases ----------
+   One compact row per case in a box that scrolls, the two bounds in the film's colours:
+   a grid with table roles, its headings held at the top of the box. */
+.site-result-case-list {
+  border: 1px solid var(--kpress-doc-border);
+  max-block-size: 19rem;
+  overflow: auto;
+}
+.site-result-cases {
+  display: grid;
+  font-size: var(--site-font-size-note);
+  font-variant-numeric: tabular-nums;
+  grid-template-columns: repeat(5, max-content) minmax(max-content, 1fr);
+}
+.site-result-cases > [role="row"] > * {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  padding: 0.25rem 0.8rem;
+  white-space: nowrap;
+}
+.site-result-cases > [role="row"] > .num {
+  text-align: end;
+}
+.site-result-cases [role="columnheader"] {
+  background: var(--kpress-doc-bg);
+  color: var(--site-support-color);
+  font-weight: var(--site-font-weight-sans-medium);
+  inset-block-start: 0;
+  position: sticky;
+}
+.site-result-cases .is-lower {
+  color: var(--site-bound-lower);
+}
+.site-result-cases .is-upper {
+  color: var(--site-bound-upper);
+}
+.site-result-cases .site-star {
+  margin-inline-start: 0.25rem;
+}
+.site-result-case-records {
+  display: flex;
+  gap: 0.7rem;
+}
+
+/* ---------- The chain ----------
+   Every result on the case, oldest first, down one rule: a step is a result, the rule
+   beside this one is the accent, and a superseded step reads quieter, as a superseded
+   row does in a table. */
+.kpress .site-result .site-result-chain {
+  font-size: var(--site-font-size-note);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.kpress-prose .site-result .site-result-chain > li {
+  border-inline-start: 2px solid var(--kpress-doc-border);
+  margin: 0;
+  padding: 0.1rem 0 0.7rem 0.9rem;
+}
+.kpress-prose .site-result .site-result-chain > li::before {
+  content: none;
+}
+.kpress .site-result .site-result-chain p {
+  margin-block: 0 0.15rem;
+}
+.site-result-chain > li[data-current] {
+  border-inline-start-color: var(--kpress-doc-accent);
+}
+.site-result-chain > li[data-standing="superseded"] .site-result-step-summary {
+  color: var(--site-support-color);
+}
+.site-result-step-head {
+  font-variant-numeric: tabular-nums;
+}
+.site-result-this {
+  color: var(--kpress-doc-accent);
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-inline-start: 0.3rem;
+}
+
+/* ---------- Links ----------
+   A repository path is code that may break after a slash rather than widen the panel. */
+.site-result-links code {
+  overflow-wrap: anywhere;
+}
+.site-result-artifacts > a {
+  display: block;
+}
+
+@media (max-width: 40rem) {
+  .site-result-cases > [role="row"] > * {
+    padding-inline: 0.45rem;
+  }
+}

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import shlex
 import shutil
@@ -33,6 +34,12 @@ OVERLAPPED_PREPARED_PAGE_JOBS = {
     "font-loading",
     "browser-geometry",
 }
+
+#: Page jobs with a budget entry but no hosted run to measure yet. Their entries carry a
+#: ceiling and null measurements; the first pull-request run that includes them is the
+#: measurement, and whoever records it removes the name here, so the exception cannot
+#: quietly outlive the reason for it.
+AWAITING_FIRST_RUN = frozenset({"overview", "overview-unchanged"})
 
 #: The step right before every download by artifact id, reading the same id expression.
 #: With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the run.
@@ -145,7 +152,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     workflow = load()
     jobs = workflow["jobs"]
     scope = jobs["scope"]
-    halves = ("explainer", "workbench", "optimality")
+    halves = ("explainer", "workbench", "overview", "optimality")
     assert set(scope["outputs"]) == {
         name for half in halves for name in (half, f"{half}_reason")
     }
@@ -170,6 +177,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     assert gated == {
         "explainer": {"prepare", *OVERLAPPED_PREPARED_PAGE_JOBS},
         "workbench": {"workbench"},
+        "overview": {"overview"},
         "optimality": {"optimality"},
     }
     for half, roots in gated.items():
@@ -188,24 +196,23 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         assert ("T-060" if half == "optimality" else half) in step["run"]
         assert "not built" in step["run"]
 
+    builders = (
+        r"python -m (devtools\.render_(?:explainer|overview|n11_optimality_explainer)"
+        r"|workbench_tools\.build_site)\b"
+    )
     for name, job in jobs.items():
         commands = "\n".join(step.get("run", "") for step in job.get("steps", []))
-        renderers = (
-            "devtools.render_explainer",
-            "devtools.render_n11_optimality_explainer",
-            "workbench_tools.build_site",
-        )
-        works = "playwright install" in commands or any(
-            re.search(rf"\bpython -m {re.escape(module)}\b", commands) for module in renderers
-        )
+        works = "playwright install" in commands or re.search(builders, commands)
         if works and name not in DEPLOY_PATH:
             directly_scoped = job.get("if") in {
                 "needs.scope.outputs.explainer == 'true'",
                 "needs.scope.outputs.workbench == 'true'",
+                "needs.scope.outputs.overview == 'true'",
                 "needs.scope.outputs.optimality == 'true'",
             }
             assert (
-                upstream(jobs, name) & {"prepare", "workbench", "optimality"} or directly_scoped
+                upstream(jobs, name) & {"prepare", "workbench", "overview", "optimality"}
+                or directly_scoped
             ), f"{name} does page work on a pull request without waiting for the scope"
 
 
@@ -229,7 +236,8 @@ def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> No
     program = step["run"]
     assert '.scope.result == "success"' in program
     decisions = (
-        "[.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.optimality]"
+        "[.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview, "
+        ".scope.outputs.optimality]"
     )
     assert f'{decisions} | all(. == "true" or . == "false")' in program
     assert '(.scope.outputs.optimality != "true" or .optimality.result == "success")' in program
@@ -580,7 +588,7 @@ def test_every_browser_check_waits_for_deployment() -> None:
     checks = browser_check_jobs(jobs)
     assert len(checks) >= 6
     assert set(checks) <= upstream(jobs, "deploy")
-    assert {"workbench", "publish", "prepare"} <= upstream(jobs, "deploy")
+    assert {"workbench", "overview", "publish", "prepare"} <= upstream(jobs, "deploy")
 
 
 def test_the_firefox_and_webkit_system_packages_are_cached_and_installed_the_same_way() -> None:
@@ -627,16 +635,17 @@ def test_live_verification_waits_for_the_exact_deployed_revision() -> None:
     assert "--no-browser" not in commands
 
 
-def test_publication_assembles_the_four_checked_products_and_only_main_uploads_it() -> None:
-    """The four independently checked artifacts are assembled for main publication.
+def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -> None:
+    """What `build` uploaded from one directory is now five artifacts put back together.
 
-    The prepared page at the root, the checked PDF beside it, the workbench under
-    `/workbench/`, and T-060 under `/n11-optimality/` share one published tree.
-    The only upload to Pages is a push to `main`.
+    The prepared page renamed to `explainer.html`, the checked PDF beside it, the site's
+    own pages at the root, the workbench under `/workbench/`, and T-060 under
+    `/n11-optimality/` share one published tree; the only upload to Pages is a push to
+    `main`.
     """
     jobs = load()["jobs"]
     publish = jobs["publish"]
-    assert set(needs_of(publish)) == {"prepare", "pdf", "workbench", "optimality"}
+    assert set(needs_of(publish)) == {"prepare", "pdf", "overview", "workbench", "optimality"}
     steps = publish["steps"]
     assert steps[0]["name"] == ARTIFACT_ID_GUARD
     assert steps[0]["env"] == {
@@ -654,6 +663,7 @@ def test_publication_assembles_the_four_checked_products_and_only_main_uploads_i
             "merge-multiple": True,
         },
         {"name": "explainer-pdf", "path": "packing/site"},
+        {"name": "overview-pages", "path": "${{ runner.temp }}/overview-pages"},
         {"name": "workbench-page", "path": "packing/site/workbench"},
         {"name": "n11-optimality-page", "path": "packing/site/n11-optimality"},
     ]
@@ -674,6 +684,7 @@ def test_publication_assembles_the_four_checked_products_and_only_main_uploads_i
     assert produced["prepared-page"] == ("prepare", "packing/site")
     assert produced["explainer-pdf"] == ("pdf", "packing/site/t-018-explainer.pdf")
     assert produced["workbench-page"] == ("workbench", "packing/site/workbench")
+    assert produced["overview-pages"] == ("overview", "packing/site")
     assert produced["n11-optimality-page"] == ("optimality", "packing/site/n11-optimality")
     (upload,) = [
         step
@@ -703,6 +714,225 @@ def test_publication_assembles_the_four_checked_products_and_only_main_uploads_i
     assert "--check" in shlex.split(workbench[build]["run"])
 
 
+def test_the_site_pages_render_twice_beside_prepare_and_agree() -> None:
+    """The overview's build reads nothing the explainer's produces, so it does not wait.
+
+    It is one of `prepare`'s siblings under `scope`, with no explainer job upstream: a
+    queue behind `prepare` would add its whole length to a wall with seconds to spare.
+    Its two renders run at once, the second outside `site/`, and must agree file for file
+    before the one under `site/` is shared.
+    """
+    jobs = load()["jobs"]
+    overview = jobs["overview"]
+    assert needs_of(overview) == ["scope"]
+    assert overview["if"] == "needs.scope.outputs.overview == 'true'"
+    assert not upstream(jobs, "overview") - {"scope"}
+    assert "overview" not in upstream(jobs, "prepare")
+    steps = overview["steps"]
+    checkout = next(step for step in steps if "actions/checkout@" in step.get("uses", ""))
+    assert checkout["with"]["submodules"] is True
+    assert checkout["with"]["persist-credentials"] is False
+    assert "fetch-depth" not in checkout["with"], "ls-tree needs trees, not history"
+    render_index = next(
+        index
+        for index, step in enumerate(steps)
+        if "devtools.render_overview" in step.get("run", "")
+    )
+    lines = steps[render_index]["run"].splitlines()
+    launches = [line for line in lines if "python -m devtools.render_overview" in line]
+    assert len(launches) == 2
+    assert sum(line.rstrip().endswith(" &") for line in launches) == 1
+    assert any('--output "$twin"' in line for line in launches)
+    assert any(line.rstrip().endswith("--output site") for line in launches)
+    assert 'wait "$twin_pid"' in lines
+    assert 'diff --recursive site "$twin"' in lines
+    assert lines.index('wait "$twin_pid"') < lines.index('diff --recursive site "$twin"')
+    share = next(
+        index
+        for index, step in enumerate(steps)
+        if step.get("with", {}).get("name") == "overview-pages"
+    )
+    assert render_index < share
+    assert steps[share]["with"]["if-no-files-found"] == "error"
+
+
+def _publish_step(steps: list[dict[str, Any]], name: str) -> int:
+    return next(index for index, step in enumerate(steps) if step.get("name") == name)
+
+
+def test_publication_moves_the_explainer_before_the_overview_lands(tmp_path: Path) -> None:
+    """The explainer is built as `index.html` and served as `explainer.html`.
+
+    Every check reads it under its build name, so the rename is the publication's, and it
+    has to happen before the overview's `index.html` exists: in the other order one page
+    overwrites the other with every check green. The merge is run here on a tree shaped
+    like the real one, in the right order and without the rename, which it must refuse.
+    """
+    steps = load()["jobs"]["publish"]["steps"]
+    prepared = _publish_step(steps, "Use the prepared page")
+    pdf = _publish_step(steps, "Use the checked PDF")
+    rename = _publish_step(steps, "Move the explainer to its own URL")
+    staged = _publish_step(steps, "Use the site's pages")
+    merge = _publish_step(
+        steps, "Put the site's pages at the root, refusing any name already there"
+    )
+    workbench = _publish_step(steps, "Use the workbench")
+    listing = _publish_step(steps, "List what the publication holds")
+    assert prepared < pdf < rename < staged < merge < workbench < listing
+    assert steps[rename]["working-directory"] == "packing/site"
+    assert "mv index.html explainer.html" in steps[rename]["run"]
+    assert steps[merge]["env"] == {"STAGED": "${{ runner.temp }}/overview-pages"}
+    for index in (rename, merge):
+        assert "if" not in steps[index]
+        assert "continue-on-error" not in steps[index]
+
+    bash = shutil.which("bash")
+    assert bash
+
+    def assemble(*, renamed: bool) -> subprocess.CompletedProcess[str]:
+        root = tmp_path / ("renamed" if renamed else "unrenamed")
+        site = root / "packing" / "site"
+        site.mkdir(parents=True)
+        (site / "index.html").write_text("explainer", encoding="utf-8")
+        (site / "t-018-explainer.pdf").write_text("pdf", encoding="utf-8")
+        pages = root / "overview-pages"
+        pages.mkdir()
+        for page in ("index.html", "frontier.html", "tutorial.html"):
+            (pages / page).write_text(f"overview {page}", encoding="utf-8")
+        if renamed:
+            subprocess.run((bash, "-e", "-c", steps[rename]["run"]), cwd=site, check=True)
+        return subprocess.run(
+            (bash, "-e", "-c", steps[merge]["run"]),
+            cwd=root,
+            env={"STAGED": str(pages), "PATH": "/usr/bin:/bin"},
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+    result = assemble(renamed=True)
+    assert result.returncode == 0, result
+    site = tmp_path / "renamed" / "packing" / "site"
+    assert (site / "explainer.html").read_text(encoding="utf-8") == "explainer"
+    assert (site / "index.html").read_text(encoding="utf-8") == "overview index.html"
+    assert sorted(path.name for path in site.iterdir()) == [
+        "explainer.html",
+        "frontier.html",
+        "index.html",
+        "t-018-explainer.pdf",
+        "tutorial.html",
+    ]
+    refused = assemble(renamed=False)
+    assert refused.returncode != 0
+    assert "both publish index.html" in refused.stdout
+    unrenamed = tmp_path / "unrenamed" / "packing" / "site"
+    assert (unrenamed / "index.html").read_text(encoding="utf-8") == "explainer"
+
+
+#: The `if:` forms the pull-request graph uses, and how each reads for a scope decision.
+_SCOPE_GATE = re.compile(r"needs\.scope\.outputs\.(\w+) (==|!=) 'true'")
+
+
+def pull_request_outcomes(decision: Mapping[str, bool]) -> dict[str, str]:
+    """Every pull-request job's result, for one scope decision, when nothing fails.
+
+    GitHub's rule, for the forms this workflow uses: a job whose condition has no status
+    function runs only when every need succeeded; `always()` runs regardless; a scope gate
+    reads the decision; a dispatch-only job skips on a pull request.
+    """
+    workflow = load()
+    jobs = workflow["jobs"]
+    runnable = pull_request_jobs(workflow)
+    results = dict.fromkeys(set(jobs) - runnable, "skipped")
+    pending = sorted(runnable)
+    while pending:
+        ready = [
+            name for name in pending if all(need in results for need in needs_of(jobs[name]))
+        ]
+        assert ready, f"the pull-request graph has a cycle among {pending}"
+        for name in ready:
+            job = jobs[name]
+            needs = needs_of(job)
+            condition = str(job.get("if", ""))
+            if condition == "always()":
+                runs = True
+            elif condition == "github.event_name == 'workflow_dispatch'":
+                runs = False
+            else:
+                gate = _SCOPE_GATE.fullmatch(condition)
+                assert gate or not condition, f"{name}: unmodelled condition {condition!r}"
+                runs = all(results[need] == "success" for need in needs)
+                if gate:
+                    half, operator = gate.groups()
+                    runs = runs and decision[half] == (operator == "==")
+            results[name] = "success" if runs else "skipped"
+            pending.remove(name)
+    return results
+
+
+def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> None:
+    """Sixteen decisions, from nothing in scope to everything, on a pull request.
+
+    Each build runs exactly when its page is in scope and says why when it is not; the
+    assembly runs only for a whole site, which is every push to `main`; and the required
+    aggregate, which sees a skip as a pass only because its scope decided it, passes all
+    sixteen. A pull request that changes only the overview's inputs builds the overview
+    and nothing else.
+    """
+    halves = tuple(BUILDER_INPUTS)
+    assert halves == ("explainer", "workbench", "overview", "optimality")
+    builds = {
+        "explainer": "prepare",
+        "workbench": "workbench",
+        "overview": "overview",
+        "optimality": "optimality",
+    }
+    jq = shutil.which("jq")
+    program = next(
+        step["run"]
+        for step in load()["jobs"]["pages-required"]["steps"]
+        if step.get("name") == "Require every page this run builds to pass"
+    )
+    check = program.split("jq -e ", 1)[1].split(" <<<", 1)[0].strip().strip("'")
+    for bits in range(2 ** len(halves)):
+        decision = {half: bool(bits >> index & 1) for index, half in enumerate(halves)}
+        outcome = pull_request_outcomes(decision)
+        for half, build in builds.items():
+            assert (outcome[build] == "success") == decision[half], (decision, build)
+            assert (outcome[f"{half}-unchanged"] == "success") != decision[half], decision
+        assert (outcome["publish"] == "success") == all(decision.values()), decision
+        assert outcome["pages-required"] == "success"
+        if jq:
+            needs: dict[str, dict[str, Any]] = {
+                name: {"result": outcome[name]}
+                for name in needs_of(load()["jobs"]["pages-required"])
+            }
+            needs["scope"]["outputs"] = {
+                half: "true" if in_scope else "false" for half, in_scope in decision.items()
+            }
+            passed = subprocess.run(
+                (jq, "-e", check),
+                input=json.dumps(needs),
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            assert passed.returncode == 0, (decision, passed)
+    only_overview = pull_request_outcomes(
+        {"explainer": False, "workbench": False, "overview": True, "optimality": False}
+    )
+    ran = {name for name, result in only_overview.items() if result == "success"}
+    assert "startup-timing" in only_overview, "dispatch-only jobs are modelled as skips"
+    assert ran == {
+        "scope",
+        "overview",
+        "explainer-unchanged",
+        "workbench-unchanged",
+        "optimality-unchanged",
+        "pages-required",
+    }
+
+
 def test_every_page_job_a_pull_request_runs_is_budgeted() -> None:
     """A page job with no recorded cost is a job that can double without anything objecting.
 
@@ -711,7 +941,9 @@ def test_every_page_job_a_pull_request_runs_is_budgeted() -> None:
     (`think-xfqk`). The tiers' own rule, asked of these jobs: every job a pull request runs
     has an entry, every entry names a job that exists, every entry carries a cost measured
     on named runs, and every ceiling is inside the register's `max_headroom` of that cost.
-    A matrix job is one entry per cell, because that is what a runner runs.
+    A matrix job is one entry per cell, because that is what a runner runs. The one
+    exception is a job no hosted run has measured yet (`AWAITING_FIRST_RUN`): its entry
+    has a ceiling and every measured field null, so it states no cost it does not have.
 
     Enforcement against a live run belongs to the pull-request wall tool; this is the
     declaration check, and like `check_gate_budgets` it needs no clock.
@@ -727,8 +959,16 @@ def test_every_page_job_a_pull_request_runs_is_budgeted() -> None:
     assert {entry["id"] for entry in pages["jobs"]} == expected
     assert pages["reference"] == {"runner": "ubuntu-latest", "cpus": 4, "caches": "warm"}
     headroom = register["policy"]["max_headroom"]
+    unmeasured = {entry["id"] for entry in pages["jobs"] if entry["measured_seconds"] is None}
+    assert unmeasured <= AWAITING_FIRST_RUN, f"unmeasured without a reason: {unmeasured}"
     for entry in pages["jobs"]:
         where = entry["id"]
+        if where in unmeasured:
+            assert entry["measured_on"] is None, where
+            assert entry["measured_where"] is None, where
+            assert 0 < entry["ceiling_seconds"] < 180.0, where
+            assert entry["argument"].strip(), where
+            continue
         assert entry["measured_seconds"] > 0, where
         assert entry["measured_on"], where
         assert re.search(r"run \d{8,}", entry["measured_where"]), where
@@ -747,7 +987,7 @@ def test_every_page_job_a_pull_request_runs_is_budgeted() -> None:
     assert wall["ceiling_seconds"] == wall_budget == 180.0
     assert wall["argument"].strip()
     assert pages["wall"]["measured_seconds"] >= max(
-        entry["measured_seconds"] for entry in pages["jobs"]
+        entry["measured_seconds"] for entry in pages["jobs"] if entry["id"] not in unmeasured
     ), "the wall is at least the longest job"
 
 
@@ -1085,9 +1325,14 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
                 assert settings["sparse-checkout-cone-mode"] is False, name
                 assert settings["filter"] == "blob:none", name
                 sparse.append(name)
-    assert {"scope", "prepare", "workbench", "optimality", *browser_check_jobs(jobs)} <= set(
-        sparse
-    )
+    assert {
+        "scope",
+        "prepare",
+        "workbench",
+        "overview",
+        "optimality",
+        *browser_check_jobs(jobs),
+    } <= set(sparse)
     omitted_roots = (REPO / "packing/resources", REPO / "packing/campaign")
     for half, builder in BUILDER_INPUTS.items():
         omitted = []

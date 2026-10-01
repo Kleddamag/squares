@@ -603,7 +603,7 @@ it.
 
 - **Closing credit.** Every page with a footer ends on the same two centred lines:
 
-  > The Square Packing Project · github.com/jlevy/squares\
+  > The Squares Project · github.com/jlevy/squares\
   > v0.4.2-8ac5de · Formatted and typeset with Flowmark and KPress
 
   The first is the project’s formal name and its repository, shown without its scheme
@@ -1649,14 +1649,14 @@ these tags itself, so the set cannot differ between page kinds.
 
 | Tag | Rule |
 | --- | --- |
-| `<title>` | The page’s own name, a middle dot, then “The Square Packing Project”; the overview’s is the project’s name alone |
+| `<title>` | The page’s own name, a middle dot, then “The Squares Project”; the overview’s is the project’s name alone |
 | `meta name="description"` | One or two plain sentences about this page and no other, at most 160 characters |
 | `link rel="canonical"` | The address the page is served at, in full, built from `render_overview.SITE_URL`; a directory’s `index.html` is the directory |
 | `og:title`, `twitter:title` | The page’s own name, without the project’s |
 | `og:description`, `twitter:description` | The description, unchanged |
 | `og:url` | The canonical address |
 | `og:type` | `article` for the two papers and the tutorial, with `article:published_time` and `article:modified_time` where the paper states its dates; `website` for every other page |
-| `og:site_name`, `og:locale` | “The Square Packing Project” and `en_US` |
+| `og:site_name`, `og:locale` | “The Squares Project” and `en_US` |
 | `og:image`, `twitter:image` | The site’s one card, `social-card.png` at the site’s root, in full |
 | `og:image:type`, `og:image:width`, `og:image:height` | `image/png`, 1200 and 630 |
 | `og:image:alt`, `twitter:image:alt` | What the card shows |

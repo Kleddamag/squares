@@ -75,13 +75,13 @@ def test_head_tags_writes_each_tag_once_from_a_page_record() -> None:
     Open Graph and Twitter, each once, the addresses in full under the published root."""
     head = read_head(document(head_tags(RESULTS)))
     url = SITE_URL + "all-results.html"
-    assert head.titles == ("Every Result · The Square Packing Project",)
+    assert head.titles == ("Every Result · The Squares Project",)
     assert head.link("canonical") == [url]
     assert [key for key, _ in head.metas] == list(REQUIRED_META)
     assert dict(head.metas) == {
         "description": RESULTS.description,
         "og:type": "website",
-        "og:site_name": "The Square Packing Project",
+        "og:site_name": "The Squares Project",
         "og:locale": "en_US",
         "og:title": "Every Result",
         "og:description": RESULTS.description,
@@ -109,8 +109,8 @@ def test_head_tags_writes_each_tag_once_from_a_page_record() -> None:
 def test_the_overview_is_titled_with_the_projects_name_alone() -> None:
     """A page's title is its own name and then the project's; the overview's name is the
     project's, so it is written once and not on both sides of the dot."""
-    assert page_title("Papers") == "Papers · The Square Packing Project"
-    assert page_title(PROJECT_NAME) == PROJECT_NAME == "The Square Packing Project"
+    assert page_title("Papers") == "Papers · The Squares Project"
+    assert page_title(PROJECT_NAME) == PROJECT_NAME == "The Squares Project"
     head = read_head(
         document(head_tags(PageMeta(PROJECT_NAME, "The front door.", "index.html")))
     )
@@ -134,7 +134,7 @@ def test_what_a_record_says_is_escaped_and_read_back_whole() -> None:
     said = 'Squares & "bounds" for n < 12, the project\'s own.'
     head = read_head(document(head_tags(RESULTS._replace(name="A & B", description=said))))
     assert head.meta("description") == head.meta("og:description") == [said]
-    assert head.titles == ("A & B · The Square Packing Project",)
+    assert head.titles == ("A & B · The Squares Project",)
     assert head.meta("og:title") == ["A & B"]
 
 
@@ -238,12 +238,12 @@ OG_TITLE = '<meta property="og:title" content="Every Result">'
         ),
         (("<title>Every Result · The", "<title>Every Result · A"), "does not end in"),
         (
-            ("<title>Every Result · The Square Packing Project", "<title>Squares"),
+            ("<title>Every Result · The Squares Project", "<title>Squares"),
             "does not end",
         ),
         (
             (
-                'og:site_name" content="The Square Packing Project',
+                'og:site_name" content="The Squares Project',
                 'og:site_name" content="Squares',
             ),
             "og:site_name is 'Squares'",
@@ -304,7 +304,7 @@ def test_a_head_is_read_by_a_parser_and_only_to_its_end() -> None:
         '<meta property="og:title" content="Body"></body></html>'
     )
     head = read_head(page)
-    assert head.titles == ("Every Result · The Square Packing Project",)
+    assert head.titles == ("Every Result · The Squares Project",)
     assert head.meta("og:title") == ["Every Result"]
     assert head_problems(page, SITE_URL + RESULTS.path) == []
     assert read_head(

@@ -63,7 +63,7 @@ def test_the_page_carries_the_sites_head_at_the_address_it_is_served_at(page: st
     assert url == render_overview.SITE_URL + "workbench/"
     assert check_published_site.head_problems(page, url) == []
     head = check_published_site.read_head(page)
-    assert head.titles == ("Workbench · The Square Packing Project",)
+    assert head.titles == ("Workbench · The Squares Project",)
     assert head.meta("og:title") == ["Workbench"]
     assert head.meta("og:type") == ["website"]
     assert head.meta("description") == [build_site.PAGE.description]

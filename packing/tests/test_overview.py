@@ -772,7 +772,7 @@ def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
     assert '<a href="frontier.html">Frontier</a> page shows every case' in section
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
     frontier = rendered("frontier.html")
-    assert "<title>The Frontier Survey · The Square Packing Project</title>" in frontier
+    assert "<title>The Frontier Survey · The Squares Project</title>" in frontier
     assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
     card = next(body for href, _, body in _page_cards(page) if href == "frontier.html")
     assert '<span class="site-card-label">Frontier survey</span>' in card
@@ -1298,7 +1298,7 @@ def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
     assert len(lines) == 2
     first, second = (COLOPHON_PART.findall(line) for line in lines)
     assert first == [
-        "The Square Packing Project",
+        "The Squares Project",
         '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>',
     ]
     assert second == [
@@ -1549,7 +1549,7 @@ def test_the_film_page_shows_no_title_and_keeps_one_for_a_screen_reader(
     no subtitle. It keeps its document title and one `h1`, for a screen reader alone, and
     the film, the first block a reader sees, brings no margin of its own."""
     page = rendered("visualize.html")
-    assert "<title>Visualize · The Square Packing Project</title>" in page
+    assert "<title>Visualize · The Squares Project</title>" in page
     assert re.findall(r"<h1\b[^>]*>.*?</h1>", page, re.DOTALL) == [
         '<h1 class="site-visually-hidden" id="visualize">Visualize</h1>'
     ]
@@ -2303,7 +2303,7 @@ def test_recent_results_says_eleven_squares_is_settled(
 #: and not yet replayed here.
 SITE_STATEMENT = (
     (
-        "This Square Packing Project site collects all known historic research and "
+        "This Squares Project site collects all known historic research and "
         "current new results on the square packing problem. Work on this problem has "
         "exploded in the summer of 2026 thanks to AI-powered research efforts."
     ),
@@ -2349,30 +2349,30 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
 
 def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> None:
     """README's two paragraphs stay under the page's first heading, and the site's own
-    statement has a section heading of its own, The Square Packing Project: an ordinary
+    statement has a section heading of its own, The Squares Project: an ordinary
     `h2` with its own id and its entry in the page's contents, directly after README's
     block and directly above the paragraph that says what the site collects. It is no
     page title, so it takes the two section spaces every `h2` takes
     (`test_section_headings_share_one_space_above_and_one_below`)."""
     from devtools import site_documents  # noqa: PLC0415
 
-    heading = '<h2 id="the-square-packing-project">The Square Packing Project</h2>'
+    heading = '<h2 id="the-squares-project">The Squares Project</h2>'
     assert page.count(heading) == 1
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     after_intro = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1]
     assert after_intro.lstrip().startswith(heading)
     following = after_intro.split(heading, 1)[1].lstrip()
-    assert following.startswith("<p>This Square Packing Project site collects")
+    assert following.startswith("<p>This Squares Project site collects")
     assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
     contents = (
-        '{"href": "#the-square-packing-project", "level": 1, '
-        '"title": "The Square Packing Project"}'
+        '{"href": "#the-squares-project", "level": 1, '
+        '"title": "The Squares Project"}'
     )
     assert contents in page
     assert page.index(contents) < page.index('{"href": "#recent-results"')
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     assert (
-        "{{README_INTRO}}\n\n## The Square Packing Project\n\nThis Square Packing Project "
+        "{{README_INTRO}}\n\n## The Squares Project\n\nThis Squares Project "
         "site collects" in template
     )
 
@@ -2380,7 +2380,7 @@ def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> 
 def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
     page: str, rendered: Callable[[str], str]
 ) -> None:
-    """The project's formal name is The Square Packing Project (the owner, 2026-10-01),
+    """The project's formal name is The Squares Project (the owner, 2026-10-01),
     and no page of the site calls it the Squares Project in its own words: the README's
     title and its card, the closing section's heading, whose old fragment an empty
     anchor keeps, and the sentence under it. The one place the old name remains is a
@@ -2389,20 +2389,20 @@ def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
     from devtools import site_documents  # noqa: PLC0415
 
     heading = (
-        '<h2 id="square-packing-project-documentation">Square Packing Project Documentation'
+        '<h2 id="squares-project-documentation">Squares Project Documentation'
         '<a id="squares-project-documentation"></a></h2>'
     )
     assert page.count(heading) == 1
     section = page.split(heading, 1)[1]
-    assert "live in the Square Packing Project\u2019s" in _rendered_text(section)
+    assert "live in the Squares Project\u2019s" in _rendered_text(section)
     readme = site_documents.README.read_text(encoding="utf-8")
-    assert readme.startswith("# The Square Packing Project\n")
+    assert readme.startswith("# The Squares Project\n")
     # README's page is named for the file in its tab, since the project's name follows
     # it there as it does every page's name, and the overview's title is that name alone.
-    assert "<title>README · The Square Packing Project</title>" in rendered("readme.html")
-    assert "<title>The Square Packing Project</title>" in page
+    assert "<title>README · The Squares Project</title>" in rendered("readme.html")
+    assert "<title>The Squares Project</title>" in page
     labels = [label for _, label, _ in overview_sections.DOCUMENTS]
-    assert labels[0] == "The Square Packing Project"
+    assert labels[0] == "The Squares Project"
     for name in ("index.html", "papers.html", "frontier.html", "readme.html", "visualize.html"):
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)

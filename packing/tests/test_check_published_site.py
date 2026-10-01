@@ -897,7 +897,7 @@ def test_check_fails_a_page_whose_head_is_not_the_sites(
     assert failure.startswith(
         f"{OPTIMALITY_PAPER}: head: 0 canonical links, not one; 0 og:type"
     )
-    assert "the title 'A Review' does not end in ' · The Square Packing Project'" in failure
+    assert "the title 'A Review' does not end in ' · The Squares Project'" in failure
     assert "0 canonical links, not one" in failure
     assert "0 og:image tags, not one" in failure
     assert "0 twitter:card tags, not one" in failure

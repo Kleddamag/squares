@@ -100,7 +100,7 @@ SITE_NAME = "Square Packing"
 #: The project's formal name (the owner, 2026-10-01). The name in the bar stays the
 #: shorter `SITE_NAME`; a page's title and its link preview carry the formal name
 #: (`page_title`, `head_tags`; think-3w07).
-PROJECT_NAME = "The Square Packing Project"
+PROJECT_NAME = "The Squares Project"
 #: What stands between a page's own name and the project's in `<title>`.
 TITLE_SEPARATOR = " \u00b7 "
 #: The picture a shared link to any page of the site shows: the homepage's hero, the

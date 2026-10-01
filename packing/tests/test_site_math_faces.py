@@ -38,7 +38,9 @@ SERIF_MATH, SANS_MATH = "KPress Math Text", "KPress Math Text Sans"
 CASES = (11, 29)
 ATLAS_CELL = '[data-atlas-n="11"]'
 CASE_LINK = 'a[data-case="11"]'
-EXPLAINER_CARD = '[popovertarget="pop-page-explainer"]'
+#: The explainer's card on the Papers page, the one card left whose popover headline has
+#: words and a formula; the overview's page cards navigate and open no popover.
+EXPLAINER_CARD = '.site-card[popovertarget="pop-paper-explainer"]'
 
 #: A walk's findings: the formulas set in the wrong face, and every formula counted by
 #: (surface, text face, math face).
@@ -183,19 +185,18 @@ def test_a_case_records_panels_set_sans_math(case_records: dict[int, Walk], n: i
     assert not [key for key in rows if key[0].startswith("case") and key[2] != SANS_MATH]
 
 
-def test_the_walk_catches_serif_math_in_a_sans_headline(
-    browser: Any, root: Path, overview_html: str
-) -> None:
+def test_the_walk_catches_serif_math_in_a_sans_headline(browser: Any, root: Path) -> None:
     """The control: mark a headline that has words in it for serif mathematics, as every
     popover's headline once was, and the walk names it."""
     plain = '<p class="site-popover-value">New lower bounds for square packing for '
-    assert overview_html.count(plain) == 1
+    papers = site_renders.html("papers.html")
+    assert papers.count(plain) == 1
     marked = root / "marked.html"
     marked.write_text(
-        overview_html.replace(plain, plain.replace(">", ' data-math-face="serif">', 1)),
+        papers.replace(plain, plain.replace(">", ' data-math-face="serif">', 1)),
         encoding="utf-8",
     )
     wrong, _ = walk(browser, marked.as_uri(), presses=(EXPLAINER_CARD,), whole=False)
     assert wrong == [
-        "serif math in sans text: p.site-popover-value in #pop-page-explainer: n = 11"
+        "serif math in sans text: p.site-popover-value in #pop-paper-explainer: n = 11"
     ]

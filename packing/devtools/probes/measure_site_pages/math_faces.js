@@ -18,7 +18,6 @@
     [".site-nav", "nav"],
     ["figcaption, caption", "caption"],
     [".subtitle", "subtitle"],
-    [".site-recent-lead", "lead line"],
     [".site-case-head", "case head"],
     [".site-case-bounds", "case bounds"],
     [".site-case-more", "case detail"],

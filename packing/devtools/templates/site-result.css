@@ -193,6 +193,10 @@
   grid-template-columns: repeat(3, max-content);
   justify-content: start;
   margin-block: 0.2rem 0;
+  /* Three columns of whole values can be wider than a phone's panel: the grid scrolls
+     inside its own box, so the popover's margin stays clear on both sides. */
+  max-inline-size: 100%;
+  overflow-x: auto;
 }
 .site-result-bounds > [role="row"],
 .site-result-cases > [role="row"] {

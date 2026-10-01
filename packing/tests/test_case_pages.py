@@ -158,6 +158,22 @@ def test_case_11_carries_its_polynomial_results_and_links(page: str) -> None:
     assert 'href="#n-12" rel="next"' in record
 
 
+def test_a_case_records_results_list_significance_first(page: str) -> None:
+    """Each result in a case record shows its rungs after its id as the tables do: S,
+    then V, then C (`overview_sections.rung_chips`)."""
+    results = {result.id: result for result in site_renders.overview().results}
+    heads = re.findall(
+        r'<li class="site-case-result" data-result="(T-\d{3})">'
+        r'<p class="site-case-result-head"><a [^>]*>T-\d{3}</a> (.*?) '
+        r'<span class="site-credit">',
+        _record(page, 11),
+    )
+    assert {"T-018", "T-026", "T-033"} <= {result_id for result_id, _ in heads}
+    for result_id, chips in heads:
+        assert chips == overview_sections.rung_chips(results[result_id]), result_id
+        assert [label[0] for label in re.findall(r">([SVC]\d)</span>", chips)] == list("SVC")
+
+
 def test_every_repository_link_names_main(page: str) -> None:
     from devtools.check_published_site import repository_links  # noqa: PLC0415
 

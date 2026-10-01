@@ -25,8 +25,11 @@ Six checks:
    synopsis must define the work units those workflows produce, and retired workflow
    identifiers must not survive elsewhere in repository-owned text.
 6. **The introduction is marked.** The site's overview renders README's introduction
-   as its own first section, read from the block between the `project-intro` markers
-   (`site_documents.intro_block`). The block must be there once and hold prose alone.
+   as its own prose, read from two blocks: the one between the `project-intro` markers
+   is its first section, and the one between the `recent-progress` markers opens its
+   Recent Results (`site_documents.shared_blocks`). Each block must be there once and
+   hold prose alone, with no heading or comment and no case called the central one,
+   and the second must follow the first directly.
 
 Two more checks held README's New Results section to the register and its survey
 summary's recent-result counts to the records. Both went with those sections when the
@@ -57,7 +60,7 @@ from typing import NamedTuple
 
 from devtools.check_synopsis import check_links
 from devtools.repo_scope import tracked_files, vendored_directories
-from devtools.site_documents import intro_block
+from devtools.site_documents import shared_blocks
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -512,9 +515,10 @@ def check_work_model(text: str) -> list[str]:
 
 
 def check_intro(text: str) -> list[str]:
-    """The introduction the site's overview renders is marked once and is prose alone."""
+    """The two blocks of the introduction the site's overview renders are each marked
+    once, in order, and are prose alone."""
     try:
-        intro_block(text)
+        shared_blocks(text)
     except ValueError as error:
         return [f"README.md: {error}"]
     return []

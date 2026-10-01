@@ -169,13 +169,13 @@ alone is not full pre-merge evidence.
 | `--edit` | contributor, in the edit loop | 51 of 85 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
 | `--fast` | contributor, at a block boundary; the union of the eight tiers below | 74 of 85 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 54 of 85 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 54 of 85 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
 | `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 85 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
 | `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 85 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
 | `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 85 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
 | `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 85 | 131 s | 85.03 s geometric mean of the three-shard observations 65.67/110.09 s in runs 36739024277 and 36740609969 |
 | `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 85 | 154 s | 104.65 s on the three-shard partition, run 36739024277, job 109968163416 |
-| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 85 | 154 s | 88.59 s on the three-shard partition, run 36739024277, job 109968163208 |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 85 | 154 s | 102.94 s, the geometric mean of thirty-one hosted readings on 2026-09-30 and 10-01, with the band 62.96–143.87 s (2.29x) the runner pool spanned on unchanged tests; the single 88.59 s reading from run 36739024277 stays in the register as history |
 | `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 85 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
 | *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 85 of 85 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
@@ -789,6 +789,30 @@ ceiling if lower, before a rule fires, and each banded tier’s record states th
 The records check independently rejects a ceiling above `max_headroom` times the
 baseline. A `null` baseline leaves those ratio checks unarmed; a measurement printed by
 CI does not update the file automatically.
+
+**On a hosted pull-request run the drift and stale rules are advisory under
+`think-be1s`, since 2026-10-01; the ceiling is not.** The register’s
+`policy.pull_request_relative_rules` declares it, the way `pull_request_walls` declares
+an advisory wall: `enforcing` when absent, and `advisory` only with a `tracking_bead`
+and an `advisory_reason`, which `devtools.check_gate_budgets` refuses when the bead is
+closed or unknown. The gate detects the run from the runner’s own `GITHUB_ACTIONS` and
+`GITHUB_EVENT_NAME`, computes both rules as before, prints each finding as
+`FAIL (advisory, not enforced)` with the bead, raises a warning annotation on the run,
+and passes; a run over its ceiling still fails, and `--enforce-budget` overrides the
+relaxation for an operator asking on purpose.
+Off a pull request nothing changes.
+The measurement behind it, 2026-09-30, is retained with every reading’s verdict in
+`packing/tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml` and replayed by
+`test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner`: on unchanged steps the
+`checks` tier read 59.4 to 137.1 s and shard C 62.96 to 143.87 s across one day’s hosted
+runs, 2.3x apart with every test green, and the two rules failed four runs for the
+runner they drew while a re-run of the identical commit passed.
+The policy’s window around a point record is 2.5x, so no record can hold that pool, and
+a single hosted reading cannot tell a slow draw from a slow change.
+What can is a median over several hosted readings, which the wall register already
+judges and `think-be1s` owns for the tiers, or a wall normalised by the runner’s
+measured speed; until one of those judges a pull request, the ceiling is the rule a pull
+request is held to.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.

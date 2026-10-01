@@ -76,20 +76,43 @@ void test("a query parameter names a filter by its key, and a bound by key and b
   assert.equal(table.controlParam("n", "max"), "n-max");
 });
 
-void test("a date range reads ISO dates as text, and an empty end is open", () => {
-  /** @param {"from" | "to"} kind @param {string} value @returns {SiteTableFilter[]} */
-  const bound = (kind, value) => [{ key: "date", kind, value }];
+void test("a first day reads ISO dates as text, and an empty one is no limit", () => {
+  /** @param {string} value @returns {SiteTableFilter[]} */
+  const since = (value) => [{ key: "date", kind: "since", value }];
   const row = { date: "2026-09-04" };
-  assert.ok(table.rowMatches(row, bound("from", "2026-09-04")));
-  assert.ok(table.rowMatches(row, bound("from", "2026-08-31")));
-  assert.ok(!table.rowMatches(row, bound("from", "2026-09-05")));
-  assert.ok(table.rowMatches(row, bound("to", "2026-09-04")));
-  assert.ok(!table.rowMatches(row, bound("to", "2026-09-03")));
-  assert.ok(table.rowMatches(row, bound("from", "")));
-  assert.ok(table.rowMatches(row, bound("to", "")));
-  // A row with no date is outside every range that has an end.
-  assert.ok(!table.rowMatches({}, bound("from", "2026-01-01")));
-  assert.ok(table.rowMatches({}, bound("from", "")));
+  assert.ok(table.rowMatches(row, since("2026-09-04")));
+  assert.ok(table.rowMatches(row, since("2026-08-31")));
+  assert.ok(!table.rowMatches(row, since("2026-09-05")));
+  assert.ok(table.rowMatches(row, since("")));
+  // A row with no date is older than every limit.
+  assert.ok(!table.rowMatches({}, since("2026-01-01")));
+  assert.ok(table.rowMatches({}, since("")));
+});
+
+void test("a maximum age in days is the first day a row may be dated, from a given day", () => {
+  // The same reckoning as `overview_sections.age_cutoff`, which writes the HTML's default.
+  assert.equal(table.ageCutoff("2026-09-30", "180"), "2026-04-03");
+  assert.equal(table.ageCutoff("2026-10-01", "0"), "2026-10-01");
+  assert.equal(table.ageCutoff("2026-10-01", "1"), "2026-09-30");
+  assert.equal(table.ageCutoff("2026-03-01", "1"), "2026-02-28");
+  assert.equal(table.ageCutoff("2024-03-01", "1"), "2024-02-29");
+  assert.equal(table.ageCutoff("2026-01-01", "1"), "2025-12-31");
+  assert.equal(table.ageCutoff("2026-10-01", "365"), "2025-10-01");
+  // Part of a day is not counted, and an age below none is none.
+  assert.equal(table.ageCutoff("2026-10-01", "1.9"), "2026-09-30");
+  assert.equal(table.ageCutoff("2026-10-01", "-5"), "2026-10-01");
+  // Empty is no limit, and so is an age that is no number or is past the calendar.
+  assert.equal(table.ageCutoff("2026-10-01", ""), "");
+  assert.equal(table.ageCutoff("2026-10-01", "old"), "");
+  assert.equal(table.ageCutoff("2026-10-01", "1e12"), "");
+  assert.equal(table.ageCutoff("2026-10-01", "999999"), "");
+  assert.equal(table.ageCutoff("", "180"), "");
+});
+
+void test("the reader's day is the local one, as an ISO date", () => {
+  assert.equal(table.localDay(new Date(2026, 0, 5, 23, 59)), "2026-01-05");
+  assert.equal(table.localDay(new Date(2026, 9, 1, 0, 0)), "2026-10-01");
+  assert.equal(table.localDay(new Date(2026, 11, 31, 12)), "2026-12-31");
 });
 
 void test("a case filter finds its number in a row's list of cases and ranges", () => {
@@ -115,8 +138,7 @@ const FAILING = {
   flag: { value: "true" },
   min: { value: "6" },
   max: { value: "0" },
-  from: { value: "2026-10-01" },
-  to: { value: "2026-08-01" },
+  since: { value: "2026-10-01" },
   covers: { value: "44" },
 };
 
@@ -138,8 +160,7 @@ void test("filters compose: a row shows only when it passes every one", () => {
     { key: "standing", kind: "equals", value: "current-best" },
     { key: "source", kind: "equals", value: "others" },
     { key: "n", kind: "covers", value: "45" },
-    { key: "date", kind: "from", value: "2026-09-01" },
-    { key: "date", kind: "to", value: "2026-09-30" },
+    { key: "date", kind: "since", value: "2026-09-01" },
   ];
   assert.ok(table.rowMatches(row, all));
   all.forEach((filter, index) => {
@@ -167,8 +188,8 @@ void test("a group heading shows while a row under it does, until the table is s
   );
 });
 
-void test("a covers control takes the plain key as its query parameter", () => {
+void test("a covers control takes the plain key as its query parameter, and an age `age`", () => {
   assert.equal(table.controlParam("n", "covers"), "n");
-  assert.equal(table.controlParam("date", "from"), "date-from");
+  assert.equal(table.controlParam("date", "age"), "age");
   assert.equal(table.controlParam("s", "min"), "s-min");
 });

@@ -959,6 +959,27 @@ agenda:
     - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
     note: Preregistered before target arithmetic. H027 continues to own local angle-cone proof obligations; this test only assesses chart fidelity.
 
+  - id: BC-399
+    purpose: research
+    owner_focus: insight
+    instances: [17]
+    state: in_progress
+    priority: 0
+    question: Does the fixed rational box contain an exact root of the two n17 contact-chart polynomials?
+    hypotheses: [H-255]
+    budget: One controlled instrument slice, one90second producer run and one90second independent checker run; one worker and10MiB per output.
+    entry: H254 chart fidelity and independently reviewed polynomial reduction and conditional box-minimum theorem.
+    exit: Exact contraction and inclusion pass independent checking, or a complete unresolved refusal is retained without changing the box.
+    bead: think-bj81
+    depends_on: [BC-398]
+    next_evidence: packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+    workflows: [pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+    - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    note: Root existence only; endpoint feasibility, joint slider domains and capture remain separate obligations.
+
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

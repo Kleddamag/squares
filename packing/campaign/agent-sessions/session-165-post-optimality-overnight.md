@@ -351,7 +351,7 @@ session:
     bead: think-bj81
     objective: Specify the smallest independently checkable root-existence certificate before registering
       the next experiment.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
       two-polynomial root.
@@ -364,10 +364,35 @@ session:
       proposed certificate contract.
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: H255 fixed polynomial system, rational midpoint, radius and domain guards reviewed before
+      target use. Sol found a hand-control inverse typo; both Astra reviewers confirmed the corrected
+      fixture, retained with an explicit erratum and inverse-rejection control.
+    evidence:
+    - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+    stop_reason: Exact acceptance contract agreed; independent implementations proceed before target admission.
+    next_action: Complete controlled producer and separate checker with third-agent adversarial review.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-bj81
+    objective: Build and independently review the bounded exact polynomial certificate producer and checker.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 26
+    started_at: '2026-10-01T11:40:00Z'
+    deadline_at: '2026-10-01T12:06:00Z'
+    expected_output: Disjoint Sol producer, Astra checker and Astra adversarial review; synthetic controls
+      before any target run.
+    validation_command: cd packing && .venv/bin/pytest tests/test_n17_root_certificate.py -q -p no:cacheprovider
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Collect Astra readiness review; freeze next hypothesis before any root computation.
+    next_action: Freeze reviewed code and exp237 provenance before executing the fixed H255 target.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -504,8 +529,8 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Await fresh Astra max chart derivation under think-j516; then preregister a bounded test.
-    PR265 CI runs asynchronously; no target replay needs repeating.
+  next_action: Complete H255 producer/checker controls and independent review; freeze code before the
+    one bounded target run.
 ---
 # Session 165: Post-optimality Research
 
@@ -552,13 +577,14 @@ The next bead is `think-bj81`: rigorous existence of the root of the two polynom
 equations in the W3 report, then endpoint containment, all pairs and joint slider
 domains. The reviewed conditional minimum is already available; root existence and
 capture are separate obligations.
-A readiness review is comparing the existing Krawczyk primitives with a small
-exact-rational polynomial certificate checker before H-255 is registered.
-No new root target is admitted or executed yet.
+[H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) fixes the root box and exact
+contraction criterion.
+Sol owns the producer, Astra max owns the independently implemented checker, and a
+second Astra max reviews both.
+Synthetic controls and a frozen commit precede target admission.
+No root target has run yet.
 
-Resume with `sed -n '1,260p' packing/src/sqpack/promote/krawczyk.py` and the
-[polynomial reduction](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md#smaller-root-isolation-problem),
-then freeze the next criterion and controls.
+Resume with the H-255 synthetic controls, then the independent code review.
 Do not repeat H253/H254 or source intake.
 `think-vdmf` retains rational frontier admission; `think-je3v` retains the observed
 checkpoint-efficiency issue.

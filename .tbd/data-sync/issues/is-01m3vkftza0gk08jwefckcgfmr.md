@@ -5,15 +5,18 @@ title: Certify the n17 contact-chart root and endpoint slider feasibility
 kind: task
 status: open
 priority: 1
-version: 2
+version: 5
 spec_path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
 labels: []
 dependencies: []
 parent_id: is-01m3v9vq36ykk2jdzce75req44
+child_order_hints:
+  - is-01m3vm88ged9w5hxj8m0c7tg0s
+  - is-01m3vm88wwh06x54j13vmjazhp
 created_at: 2026-10-01T11:27:12.360Z
-updated_at: 2026-10-01T11:31:36.194Z
+updated_at: 2026-10-01T12:00:22.277Z
 ---
-Continue from H254/exp236 fidelity and the independently reviewed slack-contact conditional minimum in the Oct1 W3 report. First preregister a rigorous root-existence/isolation test for F1/F2/F3 in the fixed half-angle box; use existing interval/Krawczyk machinery only after reviewing its contract and independent output-check path. Then certify all endpoint containment, all136pair separations and a joint slider domain; exact contacts need algebraic identities, not intervals straddlingzero treatedaszero. Preserve common-angle/directed-branch/box capture as separate missing obligations. No new dependencies or broad search; bounded one-worker tests with controls and retained evidence. Add machine-replayable rational derivative bounds if needed to support the conditional lemma. No exact endpoint or global optimum currently claimed.
+H255 exact polynomial root accepted in exp237 at b3e5e1526; producer0.67s checker0.09s with separate Astra output audit. Remaining scope: certify exact endpoint reconstruction, all wall/pair obligations and joint slider domain. H254 conditional minimum now has its root premise; no physical endpoint or global capture claim. Two Astra reviews and Sol readiness in progress, deadline12:22UTC; freeze next criterion before target arithmetic.
 
 ## Notes
 

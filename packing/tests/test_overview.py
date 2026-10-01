@@ -1826,10 +1826,10 @@ def test_every_heading_and_headline_shares_one_leading() -> None:
         assert "line-height: var(--paper-heading-leading);" in rule[: rule.index("}")], selector
     assert css.count("var(--paper-heading-leading)") == 3
     assert "--paper-heading-leading:" not in css
-    math = css[css.index(":is(.site-card-value, .site-popover-value, .site-case-title,") :]
+    math = css[css.index(".site-page :is(h1, h2, h3, h4) :is(.kpress-math, .katex),\n") :]
     math = math[: math.index("}")]
-    assert ":is(.kpress-math, .katex),\n" in math
-    assert ".site-page :is(h1, h2, h3, h4) :is(.kpress-math, .katex) {" in math
+    assert ":is(.site-card-value, .site-popover-value, .site-case-title," in math
+    assert "  :is(.kpress-math, .katex) {\n" in math
     assert "line-height: 0;" in math
     # The explainer's hero title keeps KPress's own leading, which its math is fitted to.
     shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
@@ -2193,25 +2193,43 @@ def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
     assert "max-width: var(--site-table-wide);" in rule
 
 
-def test_a_wide_block_keeps_one_gutter_from_the_windows_edge() -> None:
-    """A table and its filter bar, a row of cards and the atlas grid stop one token short
-    of the window on either side: the page's margin, and the text's on a phone. A wide
-    track and a table's bleed both read it; a document's own table keeps to its column on
-    a narrow pane, a phone's row cards are padded, and a result overview's bounds scroll
-    inside their own box, so nothing runs to the edge of the window or of a popover."""
+def test_a_wide_block_keeps_one_gutter_inside_the_pages_content_area() -> None:
+    """A table and its filter bar, a row of cards, the atlas grid and the film stop one
+    token short of the page's content area on either side. That area is KPress's page
+    container, `100cqw`, never the window: `100vw` counts a scrollbar the layout does
+    not, and a narrow page clips at the document's edge. A wide track, a table's bleed
+    and the film all read the one room; a document's own table keeps to its column in
+    KPress's own narrow band, a phone's row cards are padded, and a result overview's
+    bounds scroll inside their own box."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    assert css.count("--site-wide-gutter: 2rem;") == 1
-    assert "@media (width < 48rem) {\n  :root {\n    --site-wide-gutter: 1rem;\n  }\n}" in css
+    assert css.count("--site-wide-gutter: 0.5rem;") == 1
+    assert css.count("--site-wide-gutter:") == 1
     wide = css[css.index(".site-page .site-wide {") :]
     wide = wide[: wide.index("}")]
-    assert "--site-wide-room: calc(100vw - 2 * var(--site-wide-gutter));" in wide
+    assert "--site-wide-room: calc(100cqw - 2 * var(--site-wide-gutter));" in wide
     assert "max-width: min(var(--site-wide), var(--site-wide-room));" in wide
     rule = css[css.index(TABLE_BLEED) :]
     assert "    var(--site-wide-room),\n" in rule[: rule.index("\n}")]
-    assert "100vw - 2rem" not in css[: css.index("/* ---------- Cards ---------- */")]
+    film = css[css.index(".site-page .site-film-frame {") :]
+    assert "min(100cqw - 2 * var(--site-wide-gutter), " in film[: film.index("}")]
+    # No block in the page's flow is sized from the window: only a popover, which is
+    # laid out in the window's own top layer, and a table's growth above 1280 pixels,
+    # which the room still caps.
+    sized = [
+        line.strip()
+        for line in css.splitlines()
+        if "100vw" in line and re.match(r"\s*[\w-]+:\s", line)
+    ]
+    assert sized == [
+        "--site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));",
+        "max-width: min(36rem, 100vw - 2rem);",
+        "inline-size: min(46rem, 100vw - 2rem);",
+        "inline-size: min(62rem, 100vw - 2rem);",
+        "inline-size: calc(100vw - 1rem);",
+    ]
     assert (
-        "@media screen and (width < 48rem) {\n  .kpress .site-page .kpress-table-wrap {\n"
-        "    max-inline-size: 100%;\n  }\n}"
+        "@container kpress-doc (max-width: 47.99rem) {\n"
+        "  .kpress .site-page .kpress-table-wrap {\n    max-inline-size: 100%;\n  }\n}"
     ) in css
     row = css[css.index("  .site-results tr {") :]
     assert "padding: 0.7rem 0.5rem;" in row[: row.index("}")]

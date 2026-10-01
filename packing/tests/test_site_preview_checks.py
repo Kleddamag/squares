@@ -9,7 +9,7 @@ decisions are tested here without a browser.
 from __future__ import annotations
 
 from devtools.measure_site_pages import card_rows, markdown_table, space_rows
-from devtools.preview_site import off_centre, shot_stem
+from devtools.preview_site import SCROLLBAR_PX, clip_problem, off_centre, shot_stem
 
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
@@ -119,6 +119,20 @@ def test_a_heading_with_no_resolved_line_height_still_has_a_line() -> None:
     row = _heading("h1", 64, 20, line_height="normal", leading=None, lines=None)
     (only,) = space_rows([row])
     assert (only["line_height"], only["leading"], only["lines"]) == ("", "", 0)
+
+
+def test_a_clipped_block_is_named_with_how_far_it_runs_past_each_side() -> None:
+    """The preview reports a wide block an ancestor cuts off by naming both, each side
+    it runs past, and whether it took a scrollbar's width to show it."""
+    cut = {"block": "div.site-table-wrap", "frame": "article.kpress", "left": 7.5, "right": 7.5}
+    assert clip_problem(cut, scrollbar=SCROLLBAR_PX) == (
+        "div.site-table-wrap runs 7.5px past its left edge and 7.5px past its right edge of "
+        "article.kpress, which clips it, with a 15px scrollbar"
+    )
+    count = {"block": "span.site-count", "frame": "article.kpress", "left": 0, "right": 16}
+    assert clip_problem(count) == (
+        "span.site-count runs 16px past its right edge of article.kpress, which clips it"
+    )
 
 
 def test_a_shot_is_named_for_its_page_and_fragment() -> None:

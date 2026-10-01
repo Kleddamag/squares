@@ -261,7 +261,7 @@ one of them changes.
 | Below a section heading (`h2`) | `--paper-section-space-below` | 1.7rem, 27.2px | `paper-type.css` |
 | Below a page’s title, and below its subtitle | `--site-subtitle-space` | 1.5rem, 24px | `site.css` |
 | Above and below a table | `--site-table-space` | 2rem, 32px | `site.css` |
-| Between a wide block and the window’s edge | `--site-wide-gutter` | 2rem, 32px; 1rem, 16px, below 48rem | `site.css` |
+| Between a wide block and the edge of the page’s content area | `--site-wide-gutter` | 0.5rem, 8px | `site.css` |
 
 A page’s title, or the picture that opens the homepage, starts `--site-page-top` under
 the bar’s rule on every page, the explainer and the optimality paper included.
@@ -278,18 +278,28 @@ value moves every table on the site.
 Where a larger margin meets it, as a section heading’s does below the disclosure, the
 larger one stands.
 
-`--site-wide-gutter` is the least space between a wide block and the window’s edge: a
-table with its filter bar, a row of cards, the atlas grid.
-It is the page’s own margin, so a wide block ends under the ends of the bar’s rule, and
-below 48rem it is the 1rem the text keeps on a phone.
-The wide track and a table’s bleed both stop that far short of the window
-(`--site-wide-room`), so between a phone and the width where a table has room to spare
-(about 1170 pixels for the results tables, 1440 for the frontier atlas) a table sits 32
-pixels from either edge, where it sat 16. Nothing that scrolls sideways gives the gutter
-up: a document’s own table keeps to its column on a narrow pane and scrolls inside its
-wrap, where KPress would run it to the window’s edge, and a result overview’s bounds
-scroll inside their own box rather than past the popover’s margin.
+`--site-wide-gutter` is the least space between a wide block and the edge of the page’s
+content area: a table with its filter bar, a row of cards, the atlas grid, the film.
+The content area is the page inside its margin, which is where KPress clips a narrow
+page, and its width is KPress’s page container’s, `100cqw`. A wide block’s room is that
+width less the gutter on either side (`--site-wide-room`), and the wide track, a table’s
+bleed and the film all stop there.
+The gutter is KPress’s own document gutter, so a wide block with no room to spare is
+exactly as wide as the text: 40 pixels from either edge of the window between 768 and
+about 1180 pixels wide (1456 for the frontier atlas), and 16 on a phone.
+The room is never measured from the window.
+`100vw` counts a scrollbar that the layout does not, so a block sized from it ran 16
+pixels under the document’s clip at 768 pixels, and 7.5 more with a scrollbar, cutting
+the first letters of the filter labels and the end of the count.
+Nothing that scrolls sideways gives the gutter up either: in KPress’s narrow band a
+document’s own table keeps to its column and scrolls inside its wrap, where KPress would
+run it under the clip, and a result overview’s bounds scroll inside their own box rather
+than past the popover’s margin.
 On a phone a results table’s row cards are padded 0.5rem at the sides.
+`devtools.preview_site` fails a build on any wide block that runs past an ancestor which
+clips or scrolls sideways (`--clips`, and with `--shots`), at 1024, 768 and 390 pixels,
+as laid out and again with a scrollbar’s 15 pixels taken from the layout;
+`tests/test_site_wide_blocks.py` holds the pages to none.
 
 `devtools.measure_site_pages space` measures these on a built site: the white space
 above and below every table and heading, in pixels between boxes, at each width asked
@@ -630,9 +640,9 @@ it.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
   columns wrap less. The Every Result table is 1104 pixels wide up to 1280, 1424 at 1600
   and 1600 from about 1780 up; the frontier table, whose own track is 86rem, is the
-  window less its gutters up to 1440 pixels and goes from 1376 to 1600 above that.
-  The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
-  bleeds with no rule of its own.
+  page’s content area less its gutters up to 1456 pixels and goes from 1376 to 1600
+  above that. The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a
+  new table bleeds with no rule of its own.
   The replay table is the exception because it keeps to its content.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a

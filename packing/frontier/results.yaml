@@ -5278,7 +5278,7 @@ results:
   - id: T-065
     kind: upper-bound
     registered: '2026-10-01'
-    headline: "`s(17) ≤ 4.6755300936045509516342148538535054`, Bidwell's packing certified exactly"
+    headline: "`s(17) ≤ 4.6755300936045509…`, Bidwell's packing certified exactly"
     claim: >-
       s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square
       of at most that side. The figure is a rational outward ceiling, not the exact side of

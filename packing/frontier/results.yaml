@@ -4950,3 +4950,223 @@ results:
       (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
+
+  - id: T-062
+    kind: optimality
+    registered: '2026-10-01'
+    headline: "`s(60) = 8`, reported, by a mixed cover of points and grid-line segments"
+    claim: >-
+      Evan Daniel reports s(60) = 8, published on 28 September 2026: the lower half by a
+      mixed cover of the side-8 square, the upper half by the 8 x 8 grid.
+
+      The cover is 23,744 weighted points of [0,8]^2 plus mass spread uniformly along 5,216
+      segments of length 1/50 on the interior grid lines, total 748233441/12500000 =
+      59.85867528 < 60. The source states that every closed unit square in [0,8]^2 captures
+      mass at least one, a boundary point and a segment along an edge counting in full, so
+      that a packing of 60 at side s below 8, its centres scaled by 8/s, would give 60
+      pairwise disjoint closed unit squares in [0,8]^2 capturing at least 60.
+
+      The source reports that statement decided at margin zero by its two checkers:
+      zm_mixed.py in exact rational arithmetic over 102,400 root boxes, and the Rust zmx2
+      with outward-rounded binary64 enclosures over 6,400 symmetry-reduced roots and 51,200
+      unreduced ones, none uncertified. It has no Lean theorem for this cover.
+
+      Here the bundle's report and the argument from the cover to the bound were read, and
+      nothing was replayed: neither checker was run, and no check of the cover's mass or
+      pose coverage is retained here. The value stands as reported, and the case's verified
+      lower bound is unchanged.
+
+      Evan Daniel,
+      [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/s60),
+      building on Burns's and Massaccesi's method. The source's CREDITS.md says the work was
+      produced by Claude (Anthropic) in a single session under human direction.
+    scope: {n_values: [60]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: an exact value for an open case if the reported cover passes
+        replay and review here. A substantive case result at S3; the score gates nothing,
+        and V0/C1 says how far it stands.
+      scored: '2026-10-01'
+      by: W1 and W2 source intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-01]']
+      published: '2026-09-28'
+    composition: >-
+      Compound, and the minimum is set by the lower half. The upper half is the 8 x 8 grid,
+      E-basic-grid-upper, replayed exactly here; the lower half is
+      E-n060-evand-mixed-cover-report, the source's claim, read here and not replayed. The
+      checker derives V3 and C3 from the grid's entry; this note is why the declared rungs
+      are V0 and C1.
+    evidence:
+      - E-n060-evand-mixed-cover-report
+      - E-basic-grid-upper
+    artifacts:
+      - packing/frontier/n-060.md
+      - packing/resources/web/evand-square-packing-2026-10-01/README.md
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/README.md
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/s60_mixed_cover_8.txt.gz
+      - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+      - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    next_rung: >-
+      think-e7xa: replay the source's two checkers on the retained cover, with the complete
+      root censuses retained, and review the geometric premises, before the verified lower
+      bound of the case is raised.
+    notes: >-
+      V0 because the lower half rests on the source's claim alone: assurance reported, replay
+      not attempted. The source reports both of its checkers accepting the cover, and the
+      root records of those runs are not in the retained packet; the source says the bundle
+      has had no independent review. C1 because the 1 October mathematical review read the
+      bundle's report and the argument from the cover to the bound and found no defect in
+      it; a read is no kind of verification, which is why C1 may stand above V0.
+
+  - id: T-063
+    kind: optimality
+    registered: '2026-10-01'
+    headline: "`s(61) = 8`, reported, by monotonicity from T-062"
+    claim: >-
+      Evan Daniel reports s(61) = 8 as a corollary of the reported s(60) = 8 (T-062),
+      published with it on 28 September 2026.
+
+      Removing a square from a packing leaves a packing, so s(61) is at least s(60), and the
+      8 x 8 grid holds 61 unit squares.
+
+      Here the deduction was read. Its premise, the lower half of T-062, has not been
+      replayed here, so this value stands as reported too. The same source's family
+      s(k^2 - 3) = k (T-064) states the value again at k = 8, by a separate certificate.
+
+      Evan Daniel,
+      [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/s60),
+      building on Burns's and Massaccesi's method. The source's CREDITS.md says the work was
+      produced by Claude (Anthropic) in a single session under human direction.
+    scope: {n_values: [61]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 1
+      rationale: >-
+        A routine consequence of T-062, immediate once its premise is proved, though it
+        would close a second open case.
+      scored: '2026-10-01'
+      by: W1 and W2 source intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-01]']
+      published: '2026-09-28'
+    composition: >-
+      Derived, and the minimum is set by its premise. The inputs are the lower half of
+      T-062, E-n060-evand-mixed-cover-report, the source's claim, read here and not
+      replayed; monotonicity by deletion, E-n061-evand-derived-report; and the 8 x 8 grid,
+      E-basic-grid-upper, replayed exactly here. The checker derives V3 and C3 from the
+      grid's entry; this note is why the declared rungs are V0 and C1. wand125's separate
+      point-only route to s(61) = 8 is another source's claim and no evidence for this
+      entry.
+    evidence:
+      - E-n060-evand-mixed-cover-report
+      - E-n061-evand-derived-report
+      - E-basic-grid-upper
+    artifacts:
+      - packing/frontier/n-061.md
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/README.md
+      - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+      - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    next_rung: >-
+      Nothing of its own: this entry rises with T-062, once that cover is replayed here and
+      its deduction reviewed (think-e7xa). think-hxrz tracks the intake of wand125's
+      separate point-only source for the same value.
+    notes: >-
+      V0 because the premise is the source's claim alone, assurance reported, replay not
+      attempted. C1 because the 1 October mathematical review read the deduction and the
+      premise's argument; a read is no kind of verification, which is why C1 may stand above
+      V0.
+
+  - id: T-064
+    kind: optimality
+    registered: '2026-10-01'
+    headline: "`s(k² − 3) = k` for every integer `k ≥ 6`, reported; `k = 6…18` are the cases held here"
+    claim: >-
+      Evan Daniel reports s(k^2 - 3) = k for every integer k >= 6, dated 29 September 2026
+      by the source and public in its repository on 30 September: the lower half by one
+      family of periodic measures, the upper half by the k x k grid.
+
+      This entry's scope is the projection of that theorem onto the cases this record
+      holds, n <= 324, which is k = 6 to 18: s(33) = 6, s(46) = 7, s(61) = 8, s(78) = 9,
+      s(97) = 10, s(118) = 11, s(141) = 12, s(166) = 13, s(193) = 14, s(222) = 15,
+      s(253) = 16, s(286) = 17 and s(321) = 18. The reported theorem does not end at k = 18.
+
+      For each k the measure on [0,k]^2 is a corner module in each corner, a profile of
+      period one along each wall and Lebesgue measure on the middle square, of total mass
+      k^2 - 4D with D = 423621306389/500000000000, so that 4D exceeds 3. The source states
+      that every closed unit square in [0,k]^2 has mass at least one, and reduces that, for
+      every k >= 6, to one finite statement it calls Valid7: every closed unit square in
+      [0,7]^2 has mass at least one under the k = 7 measure.
+
+      The source's Lean development takes Valid7 as a hypothesis and, the source reports,
+      kernel-checks that it implies the theorem for every k >= 6; it does not prove Valid7.
+      Valid7 is the claim of one exact-rational Python checker, qx2_zm.py, which the source
+      reports accepting all 9,800 root boxes in 32,079 leaves, with the axis-parallel poses
+      decided by a separate exact enumeration. The source says the tilted part has no
+      second implementation, and reports six adversarial reviews of the certificate by AI
+      agents and none by outside mathematicians.
+
+      Here the Lean reduction, the checker and the finite-box argument were read, and
+      nothing was replayed: the checker was not run and the Lean development was not built.
+      Every value stands as reported. s(33) = 6 and s(46) = 7 are proved cases of this
+      record already, on Bentz's proofs, and their standing does not change; the eleven
+      values from k = 8 on are new reports, and k = 8 is also T-063's.
+
+      Evan Daniel,
+      [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/k2m3),
+      building on Burns's and Massaccesi's method. The source's CREDITS.md says the work was
+      produced by Claude (Anthropic) in a single session under human direction.
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 4
+      rationale: >-
+        Scored as a claim: a bound family, which would settle eleven open cases of this
+        record and every later k if the finite premise and its reduction pass replay and
+        review here. S4 by the anchor "a reusable technique, bound family"; the score gates
+        nothing, and V0/C1 says how far it stands.
+      scored: '2026-10-01'
+      by: W1 and W2 source intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-01]']
+      published: '2026-09-30'
+    composition: >-
+      Compound, and the minimum is set by the lower half. The upper half is the k x k grid,
+      E-basic-grid-upper, replayed exactly here; the lower half is
+      E-k2m3-evand-family-report, the source's claim, which rests on the finite Valid7
+      premise, decided by one source checker, and on the Lean reduction from it, neither
+      replayed here. The checker derives V3 and C3 from the grid's entry; this note is why
+      the declared rungs are V0 and C1. The scope lists the cases this record holds, since a
+      scope is a set of cases; the theorem's own domain is every k >= 6, and a scope that
+      can say so is think-kqi1.
+    evidence:
+      - E-k2m3-evand-family-report
+      - E-basic-grid-upper
+    artifacts:
+      - packing/resources/web/evand-square-packing-2026-10-01/README.md
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/README.md
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean/Sqpack/Bentz.lean
+      - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+      - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    next_rung: >-
+      think-4k80: replay the exact Valid7 checker on the retained box cover, review its
+      pose-space coverage, and build the Lean reduction with its axiom receipt, before any
+      case's verified bound is raised. think-kqi1 tracks a scope that can state an infinite
+      family.
+    notes: >-
+      V0 because the lower half rests on the source's claim alone: assurance reported, replay
+      not attempted. The Lean reduction is conditional on Valid7 and was not built here, and
+      the retained packet lacks the files it imports, so no proof-assistant-checked entry is
+      recorded. C1 because the 1 October mathematical
+      review read the reduction, the checker and the finite-box argument and found no
+      blocking defect; a read is no kind of verification, which is why C1 may stand above
+      V0.

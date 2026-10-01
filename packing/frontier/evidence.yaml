@@ -75,6 +75,94 @@ evidence:
       stationarity, unrestricted local minimality and global optimality remain unproved. No new packing
       discovery is claimed.
 
+  - id: E-n060-evand-mixed-cover-report
+    claim: lower-bound
+    scope: {n_values: [60]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-01]'
+    certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/s60_mixed_cover_8.txt.gz
+    replay_status: not-attempted
+    external_review:
+      state: informally-verified
+      date: '2026-10-01'
+      reviewed_by: GPT-6 Astra at max reasoning, W2 mathematical-transfer review
+      note: >-
+        The reviewer read the s60 bundle's report and the mixed-cover argument and found
+        no defect in the implication from a nonnegative mass-below-60 universal
+        cover to s(60) >= 8. The certificate's mass and full pose coverage were
+        not recomputed, and neither source checker was freshly run here.
+    limitations: >-
+      At 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 the source reports
+      s(60) = 8 from a mixed cover of 23,744 weighted points and 5,216
+      grid-line segments, total mass 748233441/12500000 = 59.85867528.
+      It reports accepted zm_mixed.py and zmx2 sweeps, including 51,200
+      full-space roots for zmx2. Neither checker has been freshly replayed
+      here; no Lean theorem checks this cover. The grid gives the upper bound.
+    source_reviewed: '2026-10-01'
+  - id: E-n061-evand-derived-report
+    claim: lower-bound
+    scope: {n_values: [61]}
+    assurance: reported
+    reported_method: published-proof
+    performed_by: source-author
+    relationship_to_generator: not-applicable
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-01]'
+    replay_status: not-attempted
+    external_review:
+      state: informally-verified
+      date: '2026-10-01'
+      reviewed_by: GPT-6 Astra at max reasoning, W2 mathematical-transfer review
+      note: >-
+        The reviewer checked deletion monotonicity from s(60) >= 8 and the
+        side-8 grid upper bound. The s(60) premise remains source-reported;
+        this read does not establish it.
+    limitations: >-
+      The source states s(61) = 8 as a corollary of its reported s(60) = 8, by
+      monotonicity: deleting one square from a hypothetical packing of 61 at side
+      below 8 would contradict the s(60) lower bound. The grid gives s(61) <= 8.
+      This elementary deduction inherits the un-replayed s(60) premise and is
+      not an independent certificate for s(61). A separate wand125 point-only
+      s(61) claim awaits primary-source intake.
+    source_reviewed: '2026-10-01'
+  - id: E-k2m3-evand-family-report
+    claim: lower-bound
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-01]'
+    certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt
+    replay_status: not-attempted
+    external_review:
+      state: informally-verified
+      date: '2026-10-01'
+      reviewed_by: GPT-6 Astra at max reasoning, W2 mathematical-transfer review
+      note: >-
+        The reviewer read Bentz.lean, qx2_zm and the finite-box argument and
+        found no blocking defect in integer-shift localization, mass identity
+        or strict-core deduction. The positive-tilt Valid7 premise is decided
+        by one source Python checker, with no fresh local replay or Lean proof
+        of that premise.
+    limitations: >-
+      The pinned source reports s(k^2 - 3) = k for all integers k >= 6.
+      Its periodic wall-segment plus interior-area measure has mass k^2 - 4D,
+      D = 423621306389/500000000000, with 4D > 3. One exact Python checker
+      reports Valid7 after 9,800 accepted roots and 32,079 leaves. Lean proves
+      Valid7 implies the universal equality, but does not discharge Valid7.
+      The fast source script rechecks hashes and recorded coverage; its full
+      positive-tilt checker and the Lean build have not run here. The finite
+      scope enumerates this corpus's instances, not the theorem's full domain.
+    source_reviewed: '2026-10-01'
   - id: E-n011-global-optimality-report
     claim: lower-bound
     scope: {n_values: [11]}

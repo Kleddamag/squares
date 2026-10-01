@@ -70,10 +70,13 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # left the open cases; n = 45 was Nagamochi-bounded, n = 21 carried a certificate.
     # T-060's independent exact audit proves n=11, reducing both open lanes by one
     # in every corpus. Its previous reported-only status had already removed n=11
-    # from the n=1..324 reported-open count.
-    "n=1..100": (61, 61, 38),
-    "n=1..200": (149, 149, 126),
-    "n=1..324": (261, 261, 238),
+    # from the n=1..324 reported-open count. T-062 and T-063 report exact values
+    # at n=60 and n=61, while T-064 reports the k^2-3 family. Its ten new open
+    # instances n=78..321 bring the reported-open count down without changing
+    # the formal-open or Nagamochi-bounded counts.
+    "n=1..100": (61, 57, 38),
+    "n=1..200": (149, 141, 126),
+    "n=1..324": (261, 249, 238),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

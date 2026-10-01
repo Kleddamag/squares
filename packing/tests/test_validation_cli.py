@@ -35,6 +35,14 @@ FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
     "n=1..324": (63, 261),
 }
 
+# Source-reported closures from T-062 to T-064 change this lane alone; the
+# verified/formal lane above remains open until certificate replay.
+REPORTED_LANE_SPLIT: dict[str, tuple[int, int]] = {
+    "n=1..100": (43, 57),
+    "n=1..200": (59, 141),
+    "n=1..324": (75, 249),
+}
+
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"
 """The gate's own workflow, read by the test that keeps its post-merge jobs a
 partition of `STEPS`. Repository-relative from `packing/tests/`, so two levels up."""
@@ -2148,11 +2156,10 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    # T-060's exact audit closes n=11 in both formal and reported lanes.
-    reported_open = validate.FRONTIER_COUNTS[corpus.label][1]
-    assert (
-        f"reported lane: {corpus.count - reported_open} proved, {reported_open} open" in stdout
-    )
+    # T-062 to T-064 close twelve cases in the reported lane only. Keep this
+    # expectation independent of the production count tuple.
+    reported_proved, reported_open = REPORTED_LANE_SPLIT[corpus.label]
+    assert f"reported lane: {reported_proved} proved, {reported_open} open" in stdout
 
 
 def _budget_context(*, timeout_seconds: float, explicit: bool) -> validate.Context:

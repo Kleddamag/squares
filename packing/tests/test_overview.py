@@ -1905,7 +1905,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
         dated = overview_sections.first_day(result.dated[1])
         assert f'data-s="{score}"' in row, result.id
         assert f'data-date="{dated}"' in row, result.id
-        current = result.standing != "superseded"
+        current = not overview_sections.is_superseded(result)
         assert f'data-current="{"true" if current else "false"}"' in row, result.id
         keeps = score >= 4 and dated >= cutoff and current
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
@@ -4191,7 +4191,7 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "s": str(record["significance"]["score"]),
             "kind": record["kind"],
             "status": result.status,
-            "current": "false" if result.standing == "superseded" else "true",
+            "current": "false" if overview_sections.is_superseded(result) else "true",
             "n": overview_sections.result_cases(result),
             "date": overview_sections.first_day(result.dated[1]),
         }

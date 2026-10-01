@@ -847,13 +847,15 @@ it.
   A date cell leads with the date and then says what it dates, `published` or
   `established`, in the support colour (`date_cell`): under the date on a wide table,
   which keeps the column narrow, and beside it on a phone.
-  In both tables of results the star follows the text of a new result, joined to it by a
-  no-break space (`new_result_star`). The rule is the atlas’s, asked of a result instead
-  of a case (`overview_data.starred_results`): the verified lower bound of a case rests
-  on the result now, and that bound is recent, so a superseded result and an upper bound
-  carry no star. The star is never the only signal: it is an image whose name and tooltip
-  say “New result” and the cases, the row’s own name ends “new result”, and the prose
-  above each table says what it marks (`star_legend`). A superseded result’s row reads
+  In both tables of results the star follows the text of a new result
+  (`new_result_star`). It hangs after the last character: it takes no width, so it never
+  wraps to a line by itself, and its cell keeps 1.1em for it at the end of every line.
+  The rule is the atlas’s, asked of a result instead of a case
+  (`overview_data.starred_results`): the verified lower bound of a case rests on the
+  result now, and that bound is recent, so a superseded result and an upper bound carry
+  no star. The star is never the only signal: it is an image whose name and tooltip say
+  “New result” and the cases, the row’s own name ends “new result”, and the prose above
+  each table says what it marks (`star_legend`). A superseded result’s row reads
   quieter, its text in the support colour, in every site table, by one rule on
   `tr[data-standing="superseded"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes

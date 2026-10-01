@@ -529,15 +529,18 @@ def new_result_label(result: Result, overview: Overview) -> str:
 
 
 def new_result_star(result: Result, overview: Overview) -> str:
-    """The red star after a new result's text in a table of results, joined to it by a
-    space that does not break, or nothing (`new_result_label`). The glyph is an image
-    whose name and tooltip are the label, so it is read and not only seen, and the row's
-    own name says "new result" too (`result_row`)."""
+    """The red star straight after a new result's text in a table of results, or nothing
+    (`new_result_label`). The glyph is an image whose name and tooltip are the label, so
+    it is read and not only seen, and the row's own name says "new result" too
+    (`result_row`). No space joins it to the text: a browser may break a line between a
+    formula and a space that does not break, which left the star on a line of its own.
+    `site.css` hangs it after the last character instead, with a gap, in room the cell
+    keeps for it."""
     label = new_result_label(result, overview)
     if not label:
         return ""
     return (
-        f'\u00a0<span class="site-star" role="img" aria-label="{_esc(label)}" '
+        f'<span class="site-star" role="img" aria-label="{_esc(label)}" '
         f'title="{_esc(label)}">{STAR}</span>'
     )
 

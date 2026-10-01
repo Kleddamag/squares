@@ -2259,11 +2259,10 @@ def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
     assert ".site-results .site-date-kind {\n    display: inline;" in css
 
 
-#: A new result's star as a row carries it: joined to the result's text by a space that
-#: does not break, an image whose name and tooltip are one label.
+#: A new result's star as a row carries it, straight after the result's text: an image
+#: whose name and tooltip are one label.
 ROW_STAR = re.compile(
-    '\u00a0<span class="site-star" role="img" aria-label="([^"]+)" title="([^"]+)">'
-    "\u2605</span>"
+    '<span class="site-star" role="img" aria-label="([^"]+)" title="([^"]+)">\u2605</span>'
 )
 
 
@@ -2333,6 +2332,16 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         assert len(ROW_STAR.findall(served)) == len(starred)
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert ".site-star {\n  color: oklch(52% 0.19 25);\n}" in css
+    # The star hangs after the text's last character: with no width it cannot wrap to a
+    # line of its own, and its cell keeps room for it, as a table's cell and as a card's.
+    hang = css[css.index("\n.site-results .site-col-result .site-star {") :]
+    hang = hang[: hang.index("}")]
+    assert "display: inline-block;" in hang
+    assert "width: 0;" in hang
+    room = ".kpress .site-results td.site-col-result:has(.site-star) {\n"
+    assert room + "  padding-inline-end: calc(0.5rem + 1.1em);" in css
+    assert "  " + room + "    padding-inline-end: 1.1em;" in css
+    assert "\u00a0" not in table + recent
 
 
 def test_grouping_agrees_with_readmes_relation(

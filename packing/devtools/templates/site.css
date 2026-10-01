@@ -1012,6 +1012,18 @@ body {
 .site-table .site-col-result {
   min-width: 18rem;
 }
+/* A new result's star hangs after the last character of the result's text. It takes no
+   width of its own, so it can never wrap to a line by itself, and its cell keeps room
+   for it at the end of every line, so it never runs into the next column. */
+.site-results .site-col-result .site-star {
+  display: inline-block;
+  inset-inline-start: 0.2em;
+  position: relative;
+  width: 0;
+}
+.kpress .site-results td.site-col-result:has(.site-star) {
+  padding-inline-end: calc(0.5rem + 1.1em);
+}
 /* On a wide table the result takes the spare width: past KPress's 40rem cell cap, and
    ahead of a long credit, which wraps at 20rem. */
 .kpress .site-table td.site-col-result {
@@ -1115,6 +1127,10 @@ body {
   }
   .site-results .site-col-result {
     min-width: 0;
+  }
+  /* A card's cells have no padding, so the star's room is all there is at the end. */
+  .kpress .site-results td.site-col-result:has(.site-star) {
+    padding-inline-end: 1.1em;
   }
 }
 

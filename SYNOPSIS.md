@@ -507,6 +507,8 @@ case or experiment separately.
 | [Research: Exact Arithmetic and Verifier Performance](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | research synthesis | record | retained | — |
 | [Eleven-Square Global Optimality: Source Intake and Verification Handoff](docs/project/reviews/review-2026-09-29-n11-optimality.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Census and Capture Ancestry Contract](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) | dated review record | record | retained | — |
+| [Eleven-Square Optimality: Expository Simplification Review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md) | dated review record | record | retained | — |
+| [Eleven-Square Optimality Explainer: Mathematical Review](docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md) | dated review record | record | retained | — |
 | [D-490 PDF Incident: Run 35784981711](packing/campaign/agent-sessions/session-152-validation/pdf-d490-run-35784981711.md) | failure analysis and lessons | record | retained | — |
 | [Senior Review of PRs 199–201](docs/project/reviews/review-2026-09-19-pr199-201-correctness.md) | dated review record | record | retained | — |
 | [Proof Review: R012 `s(17) >= 461300/99999` and Mira’s `4.613` Certificate](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md) | dated review record | record | retained | — |
@@ -1289,6 +1291,18 @@ source-bound geometry, not those cached results.
 T-037’s verified `s(11) > 31/8` and T-059’s reported row-minimum equality retain their
 separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
 fresh-ensemble replay entry point.
+
+The [dedicated optimality paper](packing/devtools/templates/n11-optimality-article.md)
+explains that complete argument from first principles, separately from the historical
+lower-bound explainer.
+Its
+[simplification review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md)
+consolidates the proof dependencies and geometric invariant without removing required
+cases, branches or checks.
+The [rendered paper](https://jlevy.github.io/squares/n11-optimality/) and
+[PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) include the
+exact center cover, occupied mask and capture ancestry, with the implementation-sharing
+and fresh-replay limits stated beside the verification record.
 
 The following paragraphs retain the previous intake handoff as an execution record.
 It placed tooling and efficiency off the proof’s critical path, then assigned

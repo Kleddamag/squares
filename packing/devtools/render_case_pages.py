@@ -797,9 +797,11 @@ def cases_page() -> Any:
     """The records as one kpress page, with the case files' links made to work here.
 
     The prose's links are rewritten as a reader document's are (`site_documents`): a
-    link to another case file becomes that case's record on this page, a link to a
-    rendered document its page, and anything else its link on `main`; a
-    link the record itself writes to a served page is kept.
+    link to another case file becomes that case's record on this page, a link to the
+    results register the results table, at the result's row when its text is a result's
+    id (`site_documents.RECORD_PAGES`), a link to a rendered document its page, and
+    anything else its link on `main`; a link the record itself writes to a served page
+    is kept.
     """
     from devtools import render_overview, site_documents  # noqa: PLC0415
     from devtools.repo_links import repository_tree  # noqa: PLC0415
@@ -810,7 +812,10 @@ def cases_page() -> Any:
         repository_tree(),
         "packing/frontier",
         served=frozenset({*render_overview.SITE_PAGES, "./"}),
-        aliases={f"packing/frontier/n-{n:03d}.md": f"#n-{n}" for n in numbers},
+        aliases={
+            **site_documents.RECORD_PAGES,
+            **{f"packing/frontier/n-{n:03d}.md": f"#n-{n}" for n in numbers},
+        },
     )
     report = site_documents.LinkReport()
     page = render_overview.kpress_page(

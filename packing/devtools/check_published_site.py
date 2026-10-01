@@ -21,6 +21,9 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   page links on `main` exists in the expected commit's tree, which is `main` when the
   deploy runs, and each link on the explainer, its Markdown edition, the overview and
   the frontier atlas is also asked of GitHub;
+- every address a page used to have (`render_overview.MOVED_PAGES`) is still served, as
+  a forwarder that names where a visit is sent now, so a link written before a page
+  moved or was withdrawn does not 404;
 - every result overview the results table's rows name (`data-row-pop-src`) is served
   beside the pages and is that result's, and the overviews' repository links pass the
   same two checks against the tree;
@@ -91,6 +94,8 @@ CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
 #: result's overview opens: the one block it is, naming its result.
 ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
 RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
+#: Where a forwarder sends a visit, as its root element names it.
+MOVED_TO = re.compile(r'<html\b[^>]*\sdata-moved-to="([^"]*)"')
 
 #: Where the explainer is served. It is built as `index.html` and renamed when the site
 #: is assembled, because the root is the overview's.
@@ -330,6 +335,20 @@ def check(
             checked_links |= repository_links(text)
         if name == render_overview.RESULTS_PAGE:
             overviews = sorted(set(ROW_SOURCE.findall(text)))
+
+    # A page that moved or was withdrawn is still served at its old address, as a
+    # forwarder: a deploy that dropped one would 404 every link written before the change.
+    for forwarder in render_overview.forwarder_pages():
+        status, body = fetch(site + forwarder.name, timeout=timeout)
+        expected = MOVED_TO.search(forwarder.html)
+        served = MOVED_TO.search(body.decode("utf-8", errors="replace"))
+        target = None if served is None else served.group(1)
+        results.append(
+            (
+                status == 200 and expected is not None and target == expected.group(1),
+                f"forwarder {forwarder.name}: HTTP {status}, sends a visit to {target!r}",
+            )
+        )
 
     # The result overviews are files beside the pages, fetched when a row is opened: a
     # deploy that lost one would show only as a popover that keeps its short detail.

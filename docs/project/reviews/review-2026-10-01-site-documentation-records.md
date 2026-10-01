@@ -177,7 +177,7 @@ Neither should be deleted or left ungenerated without replacing these:
 
 - **Gates.** `render_results --check` and `render_research_tables --check` run on the
   pull-request surface.
-  `check_generated_markdown` and `.flowmarkignore` name both files.
+  `.flowmarkignore` names both files, and `check_generated_markdown` holds it to that.
 - **The synopsis.** Every row of its generated headline links `RESULTS.md`
   (`render_results_headline.REGISTER_VIEW`), and 94 links in its prose do.
 - **Other records.** `RESULTS.md` is linked from 53 campaign records, 18 documents under
@@ -207,12 +207,15 @@ The recommendation is to keep generating both.
 - **Links repointed.** In every reader document and case record, a link to `RESULTS.md`
   now leads to the results table, at the result’s row when the link’s text is a result’s
   id (106 of the 121); a link to `STATUS.md` leads to the frontier atlas; a link to a
-  case file leads to that case’s record on the site.
-  A link whose text names the file itself, as `epistemics.md` does where it says the
-  view is generated, opens the file on GitHub.
+  case file leads to that case’s record on the site (11 links, in `README.md` and the
+  synopsis). A link whose text names the file itself, as `epistemics.md` does where it
+  says the view is generated, opens the file on GitHub.
   A link to `defects.md` opens the file on GitHub: each is a citation of a defect.
 - **The overview’s survey** no longer links the status table, and links the $n = 7$ and
   $n = 17$ case records on the site instead of their files.
+- **The frontier atlas** no longer says that the same table “with full provenance” is
+  `STATUS.md`, with a link to the file.
+  The row popovers and the case records carry more provenance than the file does.
 
 ## Not Changed
 

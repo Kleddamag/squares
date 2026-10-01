@@ -184,7 +184,7 @@ The data layer reuses the register’s own code rather than re-deriving it:
 
 ### URL Layout
 
-As built (amended 2026-09-30):
+As built (amended 2026-09-30 and 2026-10-01):
 
 | Path | Page | Nav tab |
 | --- | --- | --- |
@@ -198,7 +198,8 @@ As built (amended 2026-09-30):
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
 | `/visualize.html` | the $n = 1\ldots324$ film at full width, with Film and Workbench tabs (new) | Visualize |
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
-| `/readme.html`, `/synopsis.html`, `/results.html`, `/status.html`, `/epistemics.html`, `/conventions.html`, `/development.html`, `/defects.html` | the repository documents, rendered for the documentation cards’ popovers | none |
+| `/readme.html`, `/epistemics.html`, `/synopsis.html`, `/conventions.html`, `/development.html` | the repository documents, rendered for the documentation cards’ popovers, in the cards’ order | none |
+| `/results.html`, `/status.html`, `/defects.html` | forwarders since 2026-10-01 (`think-bk2e`): `RESULTS.md`, `STATUS.md` and `defects.md` are no longer pages, and their old addresses send a visit to `/all-results.html`, to `/frontier.html` and to `defects.md` on GitHub | none |
 | `/result/t-nnn.html` | one result’s overview, a fragment its row’s popover fetches; not a page | none |
 | `/t-018-explainer.{md,pdf}` and the composite assets | unchanged | none |
 

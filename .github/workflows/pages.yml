@@ -70,6 +70,7 @@ name: Certificate page
       - packing/devtools/templates/all-results-article.md
       - packing/devtools/templates/visualize-article.md
       - packing/devtools/templates/papers-article.md
+      - packing/devtools/templates/site-forwarder.html
       - packing/devtools/render_overview.py
       - packing/devtools/overview_data.py
       - packing/devtools/overview_sections.py
@@ -98,7 +99,6 @@ name: Certificate page
       - SYNOPSIS.md
       - conventions.md
       - development.md
-      - defects.md
       - packing/devtools/templates/fonts/**
       - packing/atlas/known-best/known-best-1-100.svg
       - packing/atlas/known-best/known-best-1-100.png

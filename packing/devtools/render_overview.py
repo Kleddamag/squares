@@ -19,6 +19,8 @@ adds the front door and the pages around it, as the plan in
   `render_explainer`) and the tutorial are the section's papers, and the bar's Papers
   entry is current on all four;
 - `tutorial.html`, the tutorial rendered as a page;
+- a forwarder at each address a page used to have (`MOVED_PAGES`), so an old link still
+  arrives, query and fragment kept (`forwarder_pages`);
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
   `workbench_tools.build_site` builds and gives the same tab bar (`visualize_tabs`).
@@ -141,21 +143,20 @@ FRONTIER_DESCRIPTION = (
     "the best known packing, the reported and verified bounds, and the records behind them."
 )
 
-#: The results table's page. `results.html` is `RESULTS.md` rendered, a reader document,
-#: so the table's own page takes this name; its row ids are the results' (`#t-018`).
+#: The results table's page; its row ids are the results' (`#t-018`). `results.html` was
+#: `RESULTS.md` rendered as a reader document until 2026-10-01, and is now a forwarder
+#: to this page (`MOVED_PAGES`).
 RESULTS_PAGE = "all-results.html"
 
 #: The repository documents served as pages outside the navigation, reached from the
-#: overview's cards; `site_documents` renders them.
+#: overview's cards, in the cards' order; `site_documents` renders them. README and
+#: `epistemics.md` lead, then the synopsis and the two reference documents.
 DOCUMENT_PAGES: tuple[str, ...] = (
     "readme.html",
-    "synopsis.html",
-    "results.html",
-    "status.html",
     "epistemics.html",
+    "synopsis.html",
     "conventions.html",
     "development.html",
-    "defects.html",
 )
 #: Every page the published site serves, by path under the site root, whichever build
 #: writes it. The navigation bar links only to these, and tests hold it to that.
@@ -173,6 +174,28 @@ SITE_PAGES: tuple[str, ...] = (
     *DOCUMENT_PAGES,
 )
 
+#: Every page that moved or was withdrawn, by the path it was served at and where a
+#: visit to it is sent now: a path under the site's root, or the address of a file on
+#: `main`. Three generated views of the record were served as reader documents until
+#: 2026-10-01 (think-bk2e). The results register's page gave way to the results table
+#: and the status table's to the frontier atlas, each built from the same record; the
+#: defect log is internal to the repository, so its old address opens the file on
+#: GitHub. Each old path is still served, as a forwarder (`forwarder_pages`), so a link
+#: written before the change arrives with its query and its fragment. Nothing on the
+#: site links an old path; a test holds every page to that.
+MOVED_PAGES: tuple[tuple[str, str], ...] = (
+    ("results.html", RESULTS_PAGE),
+    ("status.html", "frontier.html"),
+    ("defects.html", repo_url(repo_links.DEFECTS, kind="blob")),
+)
+#: What a forwarder calls the place it sends a reader, by that place's address.
+FORWARDER_TITLES: dict[str, str] = {
+    RESULTS_PAGE: "Every Result",
+    "frontier.html": "The Frontier Atlas",
+    repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
+}
+FORWARDER = TEMPLATES / "site-forwarder.html"
+
 #: Every file a render reads beside the record `overview_data.INPUTS` names; `inputs()`
 #: is the two together. The Pages workflow's deploy filter and the scope tool are checked
 #: against that, so a page cannot go stale because an input moved unseen. The record is
@@ -189,6 +212,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     RESULTS_ARTICLE,
     VISUALIZE_ARTICLE,
     PAPERS_ARTICLE,
+    FORWARDER,
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
@@ -198,7 +222,6 @@ RENDER_INPUTS: tuple[Path, ...] = (
     REPO / repo_links.SYNOPSIS,
     REPO / repo_links.CONVENTIONS,
     REPO / repo_links.DEVELOPMENT,
-    REPO / repo_links.DEFECTS,
     PACKING / "devtools" / "repo_links.py",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
@@ -760,9 +783,42 @@ def result_fragments() -> list[Page]:
     ]
 
 
+def forwarder_pages() -> list[Page]:
+    """A forwarder at each address a page used to have (`MOVED_PAGES`), so no link written
+    before the change breaks.
+
+    A forwarder is a few lines and no page of the site: `overview/forward.js`, the script
+    the overview already forwards its own old fragments with, reads where the reader is
+    sent from the root element and sends them there with the query string and the
+    fragment they came with. For a reader without scripts it carries a refresh and a
+    link, and for a crawler the canonical address of the place it stands for. It has no
+    bar, no stamp and no styles, and is not among `PAGES`. A target is written as the
+    old path's reader must follow it: relative for a page of the site, whole for an
+    address off it.
+    """
+    import posixpath  # noqa: PLC0415
+
+    template = FORWARDER.read_text(encoding="utf-8")
+    pages = []
+    for old, new in MOVED_PAGES:
+        external = new.startswith("https://")
+        target = new if external else posixpath.relpath(new, posixpath.dirname(old))
+        values = {
+            "TARGET": html.escape(target, quote=True),
+            "TITLE": html.escape(FORWARDER_TITLES[new]),
+            "CANONICAL_URL": html.escape(new if external else canonical_url(new), quote=True),
+            "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
+        }
+        page = fill(template, values, where=FORWARDER.name)
+        assert_self_contained(old, page)
+        pages.append(Page(old, page))
+    return pages
+
+
 def render_site() -> list[Page]:
-    """Every file this module writes: the pages, then the result fragments."""
-    return [*render_all(), *result_fragments()]
+    """Every file this module writes: the pages, the result fragments, and a forwarder
+    at each address a page used to have."""
+    return [*render_all(), *result_fragments(), *forwarder_pages()]
 
 
 def write_site(output: Path, files: Sequence[Page]) -> None:
@@ -794,21 +850,27 @@ def main(argv: Sequence[str] | None = None) -> int:
     output = args.output.resolve()
     pages = render_all()
     fragments = result_fragments()
+    forwarders = forwarder_pages()
     if args.check:
         stale = [
             p.name
-            for p in (*pages, *fragments)
+            for p in (*pages, *fragments, *forwarders)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
         ]
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
-        print(f"{len(pages)} pages and {len(fragments)} result overviews match a fresh render")
+        print(
+            f"{len(pages)} pages, {len(fragments)} result overviews and "
+            f"{len(forwarders)} forwarders match a fresh render"
+        )
         return 0
-    write_site(output, [*pages, *fragments])
+    write_site(output, [*pages, *fragments, *forwarders])
     for page in pages:
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
+    for forwarder in forwarders:
+        print(f"wrote {output / forwarder.name}, a forwarder")
     total = sum(len(fragment.html.encode("utf-8")) for fragment in fragments)
     places = sorted({(output / fragment.name).parent for fragment in fragments})
     print(

@@ -39,22 +39,24 @@ def test_a_file_a_directory_and_an_image_link_main() -> None:
 
 
 def test_the_named_documents_exist_and_are_the_pages_the_site_serves() -> None:
-    """Each document the site links by name is defined once, and each is served."""
-    named = {
+    """Each document the site links by name is defined once. The reader documents are
+    served as pages; the three generated views are not, and each is either shown by a
+    page built from the same record or linked on `main`."""
+    documents = {
         repo_links.README,
         repo_links.TUTORIAL,
         repo_links.SYNOPSIS,
         repo_links.CONVENTIONS,
         repo_links.DEVELOPMENT,
-        repo_links.DEFECTS,
         repo_links.EPISTEMICS,
-        repo_links.RESULTS,
-        repo_links.STATUS,
     }
-    for path in named:
+    views = {repo_links.DEFECTS, repo_links.RESULTS, repo_links.STATUS}
+    for path in documents | views:
         assert (REPO / path).is_file(), path
     served = {doc.source.relative_to(REPO).as_posix() for doc in site_documents.DOCUMENTS}
-    assert served == named
+    assert served == documents
+    assert set(site_documents.RECORD_PAGES) == {repo_links.RESULTS, repo_links.STATUS}
+    assert views - set(site_documents.RECORD_PAGES) == {repo_links.DEFECTS}
 
 
 def test_a_commit_hash_is_refused_and_a_release_is_not() -> None:

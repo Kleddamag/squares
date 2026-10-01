@@ -625,11 +625,10 @@ it.
   frontier atlas, and the Papers page’s three paper cards lead to full pages the site
   serves, so each is a direct card that goes to its page in the same tab
   (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`, `think-w82r`).
-  Popovers are for records, targets that are not site pages of their own: a result, a
-  case, a repository document rendered for its card’s popover.
-  A direct card is a link and holds no other link, so what its note names is linked from
-  the prose beside it.
+  framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets that are not
+  site pages of their own: a result, a case, a repository document rendered for its
+  card’s popover. A direct card is a link and holds no other link, so what its note names
+  is linked from the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -1149,9 +1148,9 @@ about a line. Without scripts a filter cannot be changed, so nothing stays filte
 under `@media (scripting: none)` every row shows, and the bar, which would do nothing,
 does not. `tests/node/overview_table/` runs the script’s filters, alone and wired to a
 stand-in table, and `tests/test_overview.py` holds both pages to the identical bar and
-each to its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a
-browser on both pages, by pointer and by keyboard, and measures its label at 1280, 768
-and 390 pixels.
+each to its defaults.
+`tests/test_site_result_filters.py` uses Hide superseded in a browser on both pages, by
+pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1247,15 +1246,14 @@ and 390 pixels.
 
 - **Results page.** Every registered result is one row of the results table on its own
   page, `all-results.html`, “Results” in the navigation bar after Frontier.
-  (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
-  takes the other name.)
+  (`results.html` was `RESULTS.md` rendered as a reader document, so the table’s page
+  took the other name; since 2026-10-01 `results.html` is a forwarder to this page.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
   `every-result`, a subtitle, the prose that defines the ratings and standings, and the
   table under its filters (**Result filters**, above), which start with significance at
   All, no maximum age and Hide superseded clear, so every result shows, newest first, in
-  one flat list.
-  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
-  recent table and replay table, and each case record’s results link.
+  one flat list. Each row keeps its id, the result’s own (`#t-018`), which is where the
+  overview’s recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”
@@ -1266,6 +1264,27 @@ and 390 pixels.
   to the explainer, as before.
   `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
   every row id to the form it recognises.
+
+- **Document cards and moved pages.** The overview’s documentation section has one card
+  for each repository document the site renders, in the order of
+  `render_overview.DOCUMENT_PAGES`: `README.md` and `epistemics.md` first, then
+  `SYNOPSIS.md`, `conventions.md` and `development.md`. `RESULTS.md`, `STATUS.md` and
+  `defects.md` were cards and pages until 2026-10-01 (`think-bk2e`); the first two are
+  generated views of the record the results table and the frontier atlas show, and the
+  defect log is internal to the repository.
+  A link to either register, in a reader document or a case record, leads to the page
+  that shows it, at the result’s row when the link’s text is a result’s id, and a link
+  whose text names the file opens the file on `main` (`site_documents.RECORD_PAGES`,
+  `_record_links`). A page that moved or was withdrawn is still served at its old
+  address, as a forwarder (`render_overview.MOVED_PAGES`,
+  `templates/site-forwarder.html`): `forward.js` reads where a visit goes from the root
+  element’s `data-moved-to` and sends it there with its query string and fragment, and a
+  reader without scripts gets a refresh and a link.
+  `results.html` goes to the results table, `status.html` to the frontier atlas, and
+  `defects.html` to the defect log on GitHub.
+  No page of the site links a forwarder; `tests/test_site_documents.py` and
+  `preview_site.moved_links` hold the pages to that, and `check_published_site` asks the
+  deployed site for each one.
 
 - **Papers page.** The site’s papers, the optimality paper, the explainer and the
   tutorial, share one entry in the navigation bar, “Papers”, after Results.
@@ -1335,7 +1354,8 @@ results, so each is written once, as `result/t-nnn.html` beside the pages
 opens (**Row popovers**, Fetched bodies).
 A fragment is the one block and nothing else: it has no shell, and its links are written
 from the site’s root, so only a page there may place it.
-The directory is `result/`, not `results/`, since `results.html` is `RESULTS.md`.
+The directory is `result/`, not `results/`, since `results.html` is still served, as the
+forwarder where `RESULTS.md` was a page.
 `tests/test_overview.py` holds the two pages under a size ceiling each, and
 `check_published_site` asks the deployed site for every overview the results table
 names.

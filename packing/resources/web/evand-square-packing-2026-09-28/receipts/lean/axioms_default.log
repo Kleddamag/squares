@@ -1,0 +1,128 @@
+'SquarePacking.wall_strip_le_three' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.wall_strip_le_three_of_packing' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.packing_le_weight_regions_choice' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.sum_assign_eq_sum_counts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.sq_subset_box_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.mem_sq_of_corners' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.lemmaA' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.le_maxQuad' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.maxQuad_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.mem_sq_iff_gval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.gsum_le_corners' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.gsum_le_gmax' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.gmax_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.lemmaG' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.lemmaG'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.lemmaH' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.lemmaG_box' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.lemmaH_box' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.gval_le_of_gmax_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.chain_regions_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.chain_region_down' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.widU_strictMonoOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.adm_widU_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.clip_bin_no_loss' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.xnR_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.xnW_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.xnM_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.condPoly_eq_gval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.condPoly_nonpos_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.condPoly_rect' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.qeval4_eq_bern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.bern_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.qeval4_le_maxBern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.bern_endpoints' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.polyOk_bern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.polyOk_quad' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.sq_add_pi_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.mem_sq_reflX' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.mem_sq_swapXY' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.capt_reflX' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.capt_swapXY' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.d4_reduce' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.d4_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.d4_reduction_u' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.sum_filter_coverA' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.sum_coverA' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.D4Inv_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.PTree.mem_sound' depends on axioms: [propext]
+'SquarePacking.PTree.nodup_of_chainB' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.not_packs_of_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.packs_grid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S32Data.check_ok' depends on axioms: [propext]
+'SquarePacking.S32Data.wsum_tree' does not depend on any axioms
+'SquarePacking.S32Data.card_entries' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S32Data.total_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S32Data.d4Inv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S32CheckerCover.region' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s32_cover_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s32_not_packs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s32_packs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s32_isLeast' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s32_eq_six' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s32_eq_six_of_checker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.packing_le_measure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.not_packs_of_measure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.d4_reduction_measure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.d4_reduction_measure_u' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.segMeasure_comm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.segFrac_comm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.MixedCover.measure_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.MixedCover.measure_univ_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.MixedCover.measure_univ_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.MixedCover.measure_preimage_invol' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.MixedCover.d4InvM' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.STree.mem_sound' depends on axioms: [propext]
+'SquarePacking.S21Data.check_ok' depends on axioms: [propext]
+'SquarePacking.S21Data.pwsum_tree' does not depend on any axioms
+'SquarePacking.S21Data.swsum_tree' does not depend on any axioms
+'SquarePacking.S21Data.card_pentries' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S21Data.card_sentries' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S21Data.total_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S21Data.mu_box_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S21Data.mu_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S21Data.d4' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.S21CheckerCover.region' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s21_cover_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s21_not_packs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s21_packs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s21_isLeast' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s21_eq_five' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s21_eq_five_of_checker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.BoxTree.sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.BoxTree.le_minSide' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s12_ge_35_9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.s12_ge_3920_997' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.qOk_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.bOk_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.pairOk_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.admK_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.ptOkK_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.E_cov' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.C_cov' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.Z_cov' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ZMTree.sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+memwatch: rc 0 wall 17.1 s peak_anon_MB 518 peak_file_MB 6650
+	Command being timed: "/home/user/squares/packing/.venv/bin/python3 /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lean/memwatch.py 6.0 /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lean/logs/mem_axioms.log -- lake env lean Axioms.lean"
+	User time (seconds): 4.25
+	System time (seconds): 3.47
+	Percent of CPU this job got: 44%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:17.27
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 6532840
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 7
+	Minor (reclaiming a frame) page faults: 183444
+	Voluntary context switches: 791
+	Involuntary context switches: 2475
+	Swaps: 0
+	File system inputs: 976
+	File system outputs: 32
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

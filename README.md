@@ -45,6 +45,17 @@ per-case [status table](packing/frontier/STATUS.md), and
 films are on the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2).
 
+The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.
+The
+[**eleven-square optimality paper**](https://jlevy.github.io/squares/n11-optimality/)
+explains T-060 from the exact construction through the exhaustive case exclusions,
+geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
+It has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
+[maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
+drawn from the retained proof data.
+The [explainer](https://jlevy.github.io/squares/explainer.html) proves the earlier,
+simpler lower bounds on $s(11)$.
+
 This repository also contains
 **[a set of tools and AI workflows for automated mathematical research](#autonomous-research-process)**:
 the results and the survey are produced and checked by AI agents running a recorded

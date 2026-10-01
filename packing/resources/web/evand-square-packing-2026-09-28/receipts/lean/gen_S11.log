@@ -1,0 +1,26 @@
+leaves 89689 splits 89688 maxdepth 37 avg cands/leaf 235.3  (607.0s)
+wrote lean/Sqpack/S11: 372 chunks in 48 parts, 795 prune nodes, 6197689 digits
+	Command being timed: "/home/user/squares/packing/.venv/bin/python3 lean/scripts/gen_boxtree.py certificates/s11_lower_3.8143.txt --n 11 --look 0 --parts 48 --name S11 --outdir lean/Sqpack/S11"
+	User time (seconds): 382.76
+	System time (seconds): 0.18
+	Percent of CPU this job got: 48%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 13:06.65
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 36264
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 8089
+	Voluntary context switches: 12
+	Involuntary context switches: 91754
+	Swaps: 0
+	File system inputs: 344
+	File system outputs: 20584
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+exit=0

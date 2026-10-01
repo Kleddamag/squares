@@ -59,6 +59,14 @@ Usage, from `packing/`::
     uv run --frozen --all-extras --group dev python -m devtools.derive_kingbird_facts \
         --n 147
 
+**After the catalogue is captured again**, a count whose printed side moved keeps a
+witness of the packing the page no longer shows. `--refresh` re-derives exactly those --
+a retained witness whose side still agrees with the catalogue is left alone -- and
+`--retrieved` dates what it writes::
+
+    uv run --frozen --all-extras --group dev python -m devtools.derive_kingbird_facts \
+        --range 101 324 --refresh --retrieved 2026-09-30
+
 The source is one person's personal site. Fetches are sequential by default, each
 followed by a pause, and `--jobs` is capped low on purpose.
 """
@@ -113,6 +121,8 @@ SUMMARY = (
 #: by the grid rule or by a retained UnitSquare rendering, neither of which needs a
 #: fetch.
 CATALOGUE_SOURCE_KEY = "kingbird-current-catalogue"
+#: How a frontier record names the catalogue as the source of its reported side.
+CATALOGUE_RECORD_KEY = "[Kingbird]"
 
 #: The date this acquisition pass read the catalogue, recorded in every witness it
 #: writes. Not `sqpack.known_best.RETRIEVED_DATE`, which belongs to the 2026-08-26 pass
@@ -236,6 +246,7 @@ def derivation_plans(
     out_root: Path,
     availability: dict[int, dict[str, Any]] | None = None,
     catalogue: dict[int, CatalogueEntry] | None = None,
+    refresh: bool = False,
 ) -> tuple[list[DerivationPlan], list[SkippedCase], list[tuple[int, DerivationRefusedError]]]:
     """Split the requested counts into what this pass acquires, leaves, and refuses.
 
@@ -252,7 +263,7 @@ def derivation_plans(
     refusals: list[tuple[int, DerivationRefusedError]] = []
     for n in numbers:
         try:
-            plan = _plan_one(n, entries, catalogued, out_root=out_root)
+            plan = _plan_one(n, entries, catalogued, out_root=out_root, refresh=refresh)
         except DerivationRefusedError as error:
             refusals.append((n, error))
             continue
@@ -269,8 +280,15 @@ def _plan_one(
     catalogued: dict[int, CatalogueEntry],
     *,
     out_root: Path,
+    refresh: bool = False,
 ) -> DerivationPlan | SkippedCase:
-    """Decide one count: acquire it, skip it, or refuse it."""
+    """Decide one count: acquire it, skip it, or refuse it.
+
+    A retained witness is skipped, since this pass never refetches what it already
+    holds -- unless `refresh` is set and the witness's side is no longer the catalogue's.
+    That is the one reason to replace one: the page was captured again and prints a new
+    side for the count, so the retained numbers describe a packing it no longer shows.
+    """
     entry = entries.get(n)
     if entry is None:
         raise DerivationRefusedError(
@@ -290,7 +308,18 @@ def _plan_one(
         return SkippedCase(n, "grid-covered", f"catalogue side {listed.side_decimal} is a grid")
     witness_path = out_root / f"n-{n:03d}.yaml"
     if witness_path.is_file():
-        return SkippedCase(n, "existing", _relative(witness_path))
+        if not refresh:
+            return SkippedCase(n, "existing", _relative(witness_path))
+        reported_by = frontier_source_key(n)
+        if reported_by not in {None, CATALOGUE_RECORD_KEY}:
+            # The record's upper lane is another source's packing, and so is the witness
+            # the builder wrote for it; the catalogue's picture is not this count's.
+            return SkippedCase(n, "other-source", f"the frontier record reports {reported_by}")
+        retained = retained_side(witness_path)
+        if _sides_agree(listed.side_decimal, retained):
+            return SkippedCase(
+                n, "current", f"{_relative(witness_path)} agrees with the catalogue"
+            )
     return DerivationPlan(
         n=n,
         source_n=int(entry["source_n"]),
@@ -319,7 +348,9 @@ def fetch_svg(url: str) -> str:
             if attempt < FETCH_ATTEMPTS - 1:
                 time.sleep(2**attempt)
         else:
-            if b"<svg" not in content[:100_000]:
+            # The whole response, not a prefix: `square-179.svg` of 2026-09-30 opens with a
+            # 166,839-byte comment carrying its degree-158 polynomial before `<svg`.
+            if b"<svg" not in content:
                 raise DerivationRefusedError("not-svg", f"upstream response is not SVG: {url}")
             time.sleep(FETCH_PAUSE_SECONDS)
             return content.decode("utf-8")
@@ -372,19 +403,34 @@ def subpacking_poses(
     return tuple(pose for index, pose in enumerate(poses) if index not in dropped)
 
 
-def _assert_side_matches(reported: str, actual: str, *, what: str, n: int) -> None:
+def _sides_agree(reported: str, actual: str) -> bool:
     """The builder's side agreement, at the tolerance the Kingbird facts are checked at."""
     with mp.workdps(120):
         difference = abs(mp.mpf(reported) - mp.mpf(actual))
         tolerance = max(mp.mpf("1e-8"), abs(mp.mpf(reported)) * mp.mpf("1e-12"))
-    if difference > tolerance:
+        return bool(difference <= tolerance)
+
+
+def retained_side(path: Path) -> str:
+    """The side a retained witness records, read without loading its geometry."""
+    document = safe_load(path.read_text(encoding="utf-8"))
+    witness = document.get("witness") if isinstance(document, dict) else None
+    if not isinstance(witness, dict) or "side" not in witness:
+        raise DerivationRefusedError(
+            "witness-unreadable", f"{_relative(path)} records no witness side"
+        )
+    return str(witness["side"])
+
+
+def _assert_side_matches(reported: str, actual: str, *, what: str, n: int) -> None:
+    """Refuse where `_sides_agree` does not hold."""
+    if not _sides_agree(reported, actual):
         raise DerivationRefusedError(
             "side-mismatch", f"n={n}: source side {actual} disagrees with {what} {reported}"
         )
 
 
-def frontier_reported_side(n: int, *, frontier_root: Path | None = None) -> str | None:
-    """What `frontier/n-NNN.md` reports as the upper bound, or None where no record is."""
+def _frontier_upper(n: int, frontier_root: Path | None) -> dict[str, Any] | None:
     root = FRONTIER if frontier_root is None else frontier_root
     path = root / f"n-{n:03d}.md"
     if not path.is_file():
@@ -392,8 +438,19 @@ def frontier_reported_side(n: int, *, frontier_root: Path | None = None) -> str 
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
         raise DerivationRefusedError("frontier-malformed", f"{path.name}: missing frontmatter")
-    metadata = safe_load(text.split("---\n", 2)[1])
-    return str(metadata["packing"]["reported_upper_bound"]["value"])
+    return safe_load(text.split("---\n", 2)[1])["packing"]["reported_upper_bound"]
+
+
+def frontier_source_key(n: int, *, frontier_root: Path | None = None) -> str | None:
+    """Whose side `frontier/n-NNN.md` reports, or None where no record is."""
+    upper = _frontier_upper(n, frontier_root)
+    return None if upper is None else str(upper.get("source_key"))
+
+
+def frontier_reported_side(n: int, *, frontier_root: Path | None = None) -> str | None:
+    """What `frontier/n-NNN.md` reports as the upper bound, or None where no record is."""
+    upper = _frontier_upper(n, frontier_root)
+    return None if upper is None else str(upper["value"])
 
 
 def derive_witness(
@@ -511,10 +568,11 @@ def derive(
     dry_run: bool = False,
     retrieved: str = DERIVED_RETRIEVED_DATE,
     fetch: Callable[[str], str] = fetch_svg,
+    refresh: bool = False,
 ) -> int:
     """Run one acquisition pass and report it. Returns the process exit status."""
     assert_no_raw_retention(out_root)
-    plans, skipped, refusals = derivation_plans(numbers, out_root=out_root)
+    plans, skipped, refusals = derivation_plans(numbers, out_root=out_root, refresh=refresh)
     for case in skipped:
         print(f"  n={case.n:<3} skipped  {case.reason}: {case.detail}")
     for n, refusal in refusals:
@@ -569,7 +627,7 @@ def derive(
             f"check={'passed' if receipt['check_passed'] else 'failed'} "
             f"-> {_relative(case.path)}"
         )
-    existing = sum(1 for case in skipped if case.reason == "existing")
+    existing = sum(1 for case in skipped if case.reason in {"existing", "current"})
     print(
         f"derived {len(derived)}, fetched {len(sources)} picture"
         f"{'' if len(sources) == 1 else 's'}, skipped {len(skipped)} "
@@ -606,6 +664,19 @@ def parser() -> argparse.ArgumentParser:
         default=1,
         help=f"concurrent fetches, 1..{MAX_JOBS} (default: 1)",
     )
+    command.add_argument(
+        "--refresh",
+        action="store_true",
+        help=(
+            "re-derive a retained witness whose side the catalogue no longer prints, "
+            "instead of skipping it; one that still agrees is left alone"
+        ),
+    )
+    command.add_argument(
+        "--retrieved",
+        default=DERIVED_RETRIEVED_DATE,
+        help=f"the retrieval date written witnesses record (default: {DERIVED_RETRIEVED_DATE})",
+    )
     return command
 
 
@@ -624,7 +695,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             command.error("--n takes a positive count")
         numbers = [args.n]
     try:
-        return derive(numbers, out_root=args.out, jobs=args.jobs, dry_run=args.dry_run)
+        return derive(
+            numbers,
+            out_root=args.out,
+            jobs=args.jobs,
+            dry_run=args.dry_run,
+            retrieved=args.retrieved,
+            refresh=args.refresh,
+        )
     except DerivationRefusedError as error:
         print(f"refused: {error}")
         return 1

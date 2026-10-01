@@ -778,6 +778,7 @@ def linked_pruned_targets() -> list[Path]:
             )
         elif document.is_file() and document.suffix == ".md":
             documents.append(document)
+    roots = frozenset(LINKED_PRUNE_ROOTS)
     targets: set[Path] = set()
     roots = frozenset(LINKED_PRUNE_ROOTS)
     for document in documents:
@@ -791,6 +792,7 @@ def linked_pruned_targets() -> list[Path]:
 def result_pruned_targets() -> list[Path]:
     """Pruned files named structurally by the results register."""
     register = safe_load((ROOT / "frontier/results.yaml").read_text(encoding="utf-8"))
+    roots = frozenset(LINKED_PRUNE_ROOTS)
     targets: set[Path] = set()
     roots = frozenset(LINKED_PRUNE_ROOTS)
     for record in register["results"]:

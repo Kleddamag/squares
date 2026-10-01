@@ -65,16 +65,131 @@ def test_confirmation_ladder_on_synthetic_atoms() -> None:
     assert derive_confirmation([replayed]) == "C2"
     assert derive_confirmation([{**replayed, "replay": None}]) == "C0"
     assert derive_confirmation([dict(MACHINE_ENTRY)]) == "C3"
-    # Two machine proofs of the same method are still C3: independence is
-    # between mechanisms.
+    # Distinct methods are an attribute, not a rung: two machine proofs of one method
+    # or of two methods both derive C3 without the rung-4 review record.
     assert derive_confirmation([dict(MACHINE_ENTRY), dict(MACHINE_ENTRY)]) == "C3"
     interval = dict(MACHINE_ENTRY, method="interval-certified")
-    assert derive_confirmation([dict(MACHINE_ENTRY), interval]) == "C4"
-    assert derive_confirmation([dict(MACHINE_ENTRY)], review_ready=True) == "C5"
-    assert derive_confirmation([replayed], review_ready=True) == "C2"
+    assert derive_confirmation([dict(MACHINE_ENTRY), interval]) == "C3"
+    assert check_results.distinct_methods([dict(MACHINE_ENTRY), interval]) == 2
+    # A third party's own replay, retained here, confirms like ours.
+    third_party = dict(MACHINE_ENTRY, origin="independently-external")
+    assert derive_confirmation([third_party]) == "C3"
+    assert check_results.third_party_replayed([third_party])
     # The world's machine proof raises V, never C.
     external_machine = dict(MACHINE_ENTRY, origin="external")
     assert derive_confirmation([external_machine]) == "C0"
+    # A review record alone changes nothing without machine evidence.
+    assert derive_confirmation([replayed], RUNG_4_REVIEWS) == "C2"
+
+
+#: The review record rung 4 needs: two adversarial AI reviews by distinct reviewers, the
+#: latest accepting, and a human oversight record with the three checks.
+RUNG_4_REVIEWS: list[dict[str, object]] = [
+    {
+        "path": "a.md",
+        "kind": "adversarial",
+        "reviewer": "Model A at max reasoning",
+        "reviewer_kind": "ai",
+        "date": "2026-09-01",
+        "verdict": "defects-resolved",
+    },
+    {
+        "path": "b.md",
+        "kind": "adversarial",
+        "reviewer": "Model B, independent lane",
+        "reviewer_kind": "ai",
+        "date": "2026-09-02",
+        "verdict": "accepted",
+    },
+    {
+        "path": "c.md",
+        "kind": "oversight",
+        "reviewer": "A. Person",
+        "reviewer_kind": "human",
+        "relation": "owner",
+        "date": "2026-09-03",
+        "verdict": "accepted",
+        "checked": ["trust-boundary", "certificate-meaning", "ai-findings"],
+    },
+]
+
+FORMAL_ENTRY: dict[str, object] = {
+    **MACHINE_ENTRY,
+    "method": "proof-assistant-checked",
+    "origin": "replayed-here",
+    "axioms_receipt": "axioms.log",
+}
+
+
+def _expert(name: str, **changes: object) -> dict[str, object]:
+    return {
+        "path": f"{name}.md",
+        "kind": "formalization",
+        "reviewer": name,
+        "reviewer_kind": "human",
+        "relation": "external",
+        "date": "2026-09-04",
+        "verdict": "accepted",
+        "checked": ["statement-fidelity", "definitions", "axioms", "build"],
+        "independent_of_author": True,
+        **changes,
+    }
+
+
+def test_rung_4_needs_two_distinct_adversarial_reviews_and_human_oversight() -> None:
+    machine = [dict(MACHINE_ENTRY)]
+    assert derive_confirmation(machine, RUNG_4_REVIEWS) == "C4"
+    assert derive_verification(machine, RUNG_4_REVIEWS) == "V4"
+    # One reviewer twice is one reviewer.
+    same = [dict(RUNG_4_REVIEWS[0]), dict(RUNG_4_REVIEWS[0], path="d.md"), RUNG_4_REVIEWS[2]]
+    assert derive_confirmation(machine, same) == "C3"
+    # No human oversight, no rung 4; an AI "oversight" record is not oversight.
+    ai_only = RUNG_4_REVIEWS[:2]
+    assert derive_confirmation(machine, ai_only) == "C3"
+    ai_oversight = [*ai_only, dict(RUNG_4_REVIEWS[2], reviewer_kind="ai")]
+    assert derive_verification(machine, ai_oversight) == "V3"
+    # Oversight that did not check the AI findings is not the record.
+    partial = [*ai_only, dict(RUNG_4_REVIEWS[2], checked=["trust-boundary"])]
+    assert derive_confirmation(machine, partial) == "C3"
+    # An open defect in the latest review holds the rung at 3.
+    open_defect = [
+        *RUNG_4_REVIEWS,
+        dict(RUNG_4_REVIEWS[1], path="e.md", date="2026-09-09", verdict="defect-open"),
+    ]
+    assert derive_confirmation(machine, open_defect) == "C3"
+    # The source's own reviews count toward V and not toward C.
+    source_side = [dict(review, relation="source") for review in RUNG_4_REVIEWS]
+    assert derive_verification(machine, source_side) == "V4"
+    assert derive_confirmation(machine, source_side) == "C3"
+
+
+def test_rung_5_needs_formal_evidence_experts_and_openness() -> None:
+    experts = [_expert("Expert One"), _expert("Expert Two")]
+    assert derive_verification([FORMAL_ENTRY], experts[:1]) == "V5"
+    assert derive_confirmation([FORMAL_ENTRY], experts, open_review=True) == "C5"
+    # A kernel check without its axiom receipt, or without the expert review, is rung 3.
+    assert derive_verification([dict(FORMAL_ENTRY, axioms_receipt=None)], experts) == "V3"
+    assert derive_verification([FORMAL_ENTRY]) == "V3"
+    assert derive_verification([{"method": "proof-assistant-checked"}]) == "V0"
+    # C5 needs two distinct experts, the rebuild here and the open pointer.
+    assert derive_confirmation([FORMAL_ENTRY], experts[:1], open_review=True) == "C3"
+    assert derive_confirmation([FORMAL_ENTRY], experts, open_review=False) == "C3"
+    assert (
+        derive_confirmation(
+            [dict(FORMAL_ENTRY, origin="audited-here")], experts, open_review=True
+        )
+        == "C3"
+    )
+    assert (
+        derive_confirmation(
+            [FORMAL_ENTRY], [experts[0], _expert("Expert One", path="x.md")], open_review=True
+        )
+        == "C3"
+    )
+    # The author reading their own formalization is not a review.
+    author = [_expert("Expert One"), _expert("The Author", independent_of_author=False)]
+    assert derive_confirmation([FORMAL_ENTRY], author, open_review=True) == "C3"
+    assert derive_verification([FORMAL_ENTRY], author[1:]) == "V3"
 
 
 def test_verification_ladder_on_synthetic_atoms() -> None:
@@ -85,8 +200,9 @@ def test_verification_ladder_on_synthetic_atoms() -> None:
     assert derive_verification([published]) == "V3"
     audited = {"method": "proof-audited", "proof": {"theorem": "T"}}
     assert derive_verification([audited]) == "V3"
-    assert derive_verification([dict(MACHINE_ENTRY, origin="external")]) == "V4"
-    assert derive_verification([{"method": "proof-assistant-checked"}]) == "V5"
+    # A machine certificate of any origin is checkable, V3, until the review record.
+    assert derive_verification([dict(MACHINE_ENTRY, origin="external")]) == "V3"
+    assert derive_verification([dict(MACHINE_ENTRY, origin="external")], RUNG_4_REVIEWS) == "V4"
 
 
 def test_v2_bridges_only_an_unavailable_proof() -> None:
@@ -154,23 +270,34 @@ def _changed_result(tmp_path: Path, result_id: str, **changes: object) -> Path:
     return target
 
 
-def test_c5_is_earned_by_a_mapped_review_artifact(
+#: A mapped, non-superseded review the live document map holds.
+MAPPED_REVIEW = (
+    "docs/project/reviews/review-2026-08-31-overnight-run-verification-determinations.md"
+)
+
+
+def _live_reviews(**changes: object) -> list[dict[str, object]]:
+    """Rung 4's record on paths the live document map holds, with `changes` applied to
+    the oversight record."""
+    reviews: list[dict[str, object]] = [
+        dict(review, path=MAPPED_REVIEW) for review in RUNG_4_REVIEWS
+    ]
+    reviews[1]["path"] = "docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md"
+    reviews[2].update(changes)
+    return reviews
+
+
+def test_rung_4_is_earned_by_mapped_review_records(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     promoted = _changed_result(
-        tmp_path,
-        "T-004",
-        confirmation="C5",
-        review_artifact=(
-            "docs/project/reviews/"
-            "review-2026-08-31-overnight-run-verification-determinations.md"
-        ),
+        tmp_path, "T-004", verification="V4", confirmation="C4", reviews=_live_reviews()
     )
     monkeypatch.setattr(check_results, "RESULTS", promoted)
     assert check_results.main() == 0
 
 
-def test_c5_refuses_a_mapped_document_that_is_not_a_review(
+def test_a_review_that_is_not_a_mapped_review_earns_nothing(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
@@ -178,12 +305,50 @@ def test_c5_refuses_a_mapped_document_that_is_not_a_review(
     promoted = _changed_result(
         tmp_path,
         "T-004",
-        confirmation="C5",
-        review_artifact="epistemics.md",
+        verification="V4",
+        confirmation="C4",
+        reviews=_live_reviews(path="epistemics.md"),
     )
     monkeypatch.setattr(check_results, "RESULTS", promoted)
     assert check_results.main() == 1
-    assert "not a non-superseded review" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "not a non-superseded review" in out
+    assert "declares C4 but the cited atoms support only C3" in out
+
+
+def test_a_human_review_without_a_relation_is_refused(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    reviews = _live_reviews()
+    del reviews[2]["relation"]
+    promoted = _changed_result(tmp_path, "T-004", reviews=reviews)
+    monkeypatch.setattr(check_results, "RESULTS", promoted)
+    assert check_results.main() == 1
+    assert "states no relation to the project" in capsys.readouterr().out
+
+
+def test_a_review_covering_other_results_is_refused(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    promoted = _changed_result(tmp_path, "T-004", reviews=_live_reviews(covers=["T-005"]))
+    monkeypatch.setattr(check_results, "RESULTS", promoted)
+    assert check_results.main() == 1
+    assert "covers ['T-005'], not this result" in capsys.readouterr().out
+
+
+def test_a_confirmation_above_the_verification_is_refused(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    promoted = _changed_result(tmp_path, "T-046", confirmation="C2")
+    monkeypatch.setattr(check_results, "RESULTS", promoted)
+    assert check_results.main() == 1
+    assert "confirmation C2 exceeds verification V0" in capsys.readouterr().out
 
 
 def test_an_inflated_rung_is_refused(
@@ -208,10 +373,10 @@ def test_an_unexplained_understatement_is_refused(
     # must fail in the sandbagging direction.
     poisoned = _poisoned_register(
         tmp_path,
-        "    verification: V4\n    confirmation: C3\n    significance:\n"
+        "    verification: V3\n    confirmation: C3\n    significance:\n"
         "      score: 3\n      rationale: >-\n"
         "        As far as the archived corpus shows, the first machine verification of",
-        "    verification: V4\n    confirmation: C2\n    significance:\n"
+        "    verification: V3\n    confirmation: C2\n    significance:\n"
         "      score: 3\n      rationale: >-\n"
         "        As far as the archived corpus shows, the first machine verification of",
     )
@@ -231,7 +396,7 @@ def test_v0_cannot_hide_machine_verification_behind_notes(
     )
     monkeypatch.setattr(check_results, "RESULTS", poisoned)
     assert check_results.main() == 1
-    assert "T-004: understates V4 as V0" in capsys.readouterr().out
+    assert "T-004: understates V3 as V0" in capsys.readouterr().out
 
 
 @pytest.mark.parametrize(

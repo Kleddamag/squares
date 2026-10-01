@@ -795,8 +795,7 @@ def result_pruned_targets() -> list[Path]:
     roots = frozenset(LINKED_PRUNE_ROOTS)
     for record in register["results"]:
         raw_paths = [*(record.get("artifacts") or []), *(record.get("controls") or [])]
-        if review := record.get("review_artifact"):
-            raw_paths.append(review)
+        raw_paths.extend(review["path"] for review in record.get("reviews") or [])
         for raw in raw_paths:
             resolved = (REPO / raw).resolve()
             if resolved.is_file() and in_pruned_roots(resolved, roots):

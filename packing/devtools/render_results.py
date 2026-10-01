@@ -53,9 +53,12 @@ HEADER = """# Results
 One row per registered result: this project's first, then results by others grouped
 by the lineage their sources state, each sorted by significance, then confirmation.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
-highest verification rung supported by the cited evidence, `C` what this
-repository has recorded or performed, `S` a judged score that never gates,
-and novelty a scoped source-search classification.
+verification the result carries as certified by its own source, `C` how far that
+verification has been independently confirmed here or by a third party, `S` a
+judged score that never gates, and novelty a scoped source-search classification.
+Rung 4 on either axis needs adversarial AI review and a retained human oversight
+record; rung 5, formal verification reviewed by human experts; a rung-3 result is
+machine-checked with its review record pending.
 `devtools/check_results.py` validates the structural support and required
 explanations for every declared `V` and `C`.
 """

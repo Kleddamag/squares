@@ -1223,6 +1223,7 @@ def test_the_bars_type_is_set_from_the_papers_scale() -> None:
         "--site-nav-font-size": (
             "calc(var(--site-nav-name-size) * var(--paper-note-scale, 0.92))"
         ),
+        # The line the bar's items are set on (`test_the_bars_name_is_aligned_by_its_text`).
         "--site-nav-line": "calc(var(--site-nav-font-size) * 1.43)",
     }
     for selector, token in (

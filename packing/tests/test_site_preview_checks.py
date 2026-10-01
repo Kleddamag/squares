@@ -20,6 +20,7 @@ from devtools.preview_site import (
     SCROLLBAR_PX,
     baseline_problems,
     clip_problem,
+    motion_for,
     off_centre,
     shot_stem,
     split_problem,
@@ -472,3 +473,14 @@ def test_the_name_and_the_links_stand_on_one_baseline() -> None:
         "the link Frontier stands +1.2px off the baseline of Overview, beside it",
         "the section tab Workbench stands -1.08px off the baseline of Film, beside it",
     ]
+
+
+def test_only_a_page_that_starts_a_film_is_opened_under_reduced_motion() -> None:
+    """The film's page is opened as for a reader who asks for reduced motion, with any
+    fragment, so no tool starts its download; every other page is opened as any reader's,
+    the overview among them, whose idle-time formulas did not finish under reduced
+    motion."""
+    assert motion_for("visualize.html") == "reduce"
+    assert motion_for("visualize.html#film") == "reduce"
+    for name in ("index.html", "frontier.html", "workbench/index.html", "cases.html#n-11"):
+        assert motion_for(name) == "no-preference", name

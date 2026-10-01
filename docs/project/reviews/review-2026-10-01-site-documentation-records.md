@@ -170,18 +170,19 @@ These are rewrites of narrative, not corrections of a value:
    Agenda 040 and the session narrative at Session 143, twenty-two sessions back, and
    one sentence still claims `C4` for T-037. Recommendation: cut the narrative to the
    generated status block and a pointer to the Current Handoff, which a check holds.
-3. **The Lay of the Land, by `n`** (lines 4040–4083): the rows for $n = 12$ and $n = 17$
+3. **The Lay of the Land, by $n$** (lines 4040–4083): the rows for $n = 12$ and $n = 17$
    predate the September intake and the October rounds.
    Recommendation: mark the table as the search programme’s view as of August, or drop
    the two rows’ round counts.
-4. **`n = 11`, End to End** (lines 4085–4472) and **Where This Stands** (lines
+4. **$n = 11$, End to End** (lines 4085–4472) and **Where This Stands** (lines
    6768–7159) argue from the old rungs, the second from a definition of `C5` that
    `epistemics.md` no longer has.
    Recommendation: mark both as dated record, as the first already half does (“the
    former open-case account”).
-5. **`README.md`, lines 111–117**: the small-$n$ audit and the W10 route-selection
-   review of 14 September are introduced as challenging “the current research
-   approaches”. They predate T-060. Recommendation: drop the two sentences.
+5. **`README.md`, lines 111–117**: the mathematical audit of small $n$ and the W10
+   route-selection review of 14 September are introduced as challenging “the current
+   research approaches”.
+   They predate T-060. Recommendation: drop the two sentences.
 
 Overall recommendation for the synopsis: **keep it on the site, and trim it toward what
 is generated or checked.** It is the only document that holds the workflow contracts,

@@ -588,6 +588,10 @@ it.
   (0.15rem) so a wrapped row never touches the row above, on any page or at any width.
   A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its fill
   strengthens and saturates with the level (Color, The Rung Scale).
+  Significance is listed first: wherever a result’s rungs are shown together, in a table
+  row, a popover, a result’s overview or a case record, they run S, V, C, from the one
+  function that sets the order, `overview_sections.rung_chips`. The generated register
+  documents keep their own order, verification first.
   A standing chip carries `data-standing` and adds no style of its own: `current best`
   takes the accent, as a settled state, and every other standing
   (`current best, reported`, `second certificate`, `superseded`, `not a bound`) the
@@ -910,7 +914,7 @@ table, and `tests/test_overview.py` holds both pages to the identical bar and de
   there is none; the credit, the finder first and “after …” quiet, the list cut after
   three names with the whole of it in the cell’s `title`; and the status, every chip in
   one cell side by side.
-  The status cell holds the V, C and S rung chips and then one chip per part of the
+  The status cell holds the S, V and C rung chips and then one chip per part of the
   standing (`second certificate, reported` is two chips), left to right a space apart,
   wrapping only where the cell is too narrow, with the chips’ own block margin between
   wrapped rows; it never stacks one chip per line.
@@ -1000,7 +1004,7 @@ names.
 
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
-  the overview lands. The body opens with the V, C and S rung chips and the standing
+  the overview lands. The body opens with the S, V and C rung chips and the standing
   chips, as the tables show them; then the date with what it dates, the credit and the
   cases, in the support colour; the claim at the note size; and a closed disclosure with
   the significance, composition, next rung and novelty.

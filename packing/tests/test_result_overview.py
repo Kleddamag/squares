@@ -80,8 +80,19 @@ def test_the_head_states_the_result_as_the_site_does(
     assert f'<p class="site-result-claim">{claim}</p>' in head
     assert "kpress-math" in claim
     assert overview_sections.status_chips(result) in head
-    for rung in (record["verification"], record["confirmation"]):
-        assert f'data-rung="{rung[0]}" data-level="{rung[1:]}">{rung}</span>' in head
+    # Significance first, then verification and confirmation (think-ucon).
+    rungs = (
+        f"S{record['significance']['score']}",
+        record["verification"],
+        record["confirmation"],
+    )
+    places = [
+        head.index(f'data-rung="{rung[0]}" data-level="{rung[1:]}">{rung}</span>')
+        for rung in rungs
+    ]
+    assert places == sorted(places)
+    status = head.split('<p class="site-result-status">', 1)[1]
+    assert status.startswith(overview_sections.rung_chips(result) + " ")
     kind, dated = result.dated
     assert f'<span class="site-date-kind">{kind}</span> {dated}' in head
     assert html.escape(result.credit) in head

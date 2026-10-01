@@ -36,7 +36,7 @@ The first four are the owner’s.
 | Kind | Stored as | A result of this kind | Results |
 | --- | --- | --- | ---: |
 | lower bound | `lower-bound` | proves $s(n) \ge v$ or $s(n) > v$: no packing of $n$ unit squares fits in a smaller square | 37 |
-| upper bound | `upper-bound` | proves $s(n) \le v$ by a verified packing of $n$ unit squares in a square of side $v$ | 4 |
+| upper bound | `upper-bound` | proves $s(n) \le v$ by a packing of $n$ unit squares in a square of side $v$ | 4 |
 | optimality | `optimality` | settles an exact value $s(n) = v$: a lower bound that meets an upper bound | 6 |
 | simplification | `simplification` | proves again a result the record already holds, by a shorter, cleaner or more elementary route, and moves no bound | 2 |
 | rigidity | `rigidity` | says whether one named packing can move at fixed side: its flexes, its rigidity at first or second order, the isolation of its pose | 3 |

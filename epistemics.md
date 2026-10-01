@@ -230,7 +230,7 @@ matters; the kind says what sort of claim it is.
 | Kind | A result of this kind |
 | --- | --- |
 | lower bound | Proves $s(n) \ge v$ or $s(n) > v$: no packing of $n$ unit squares fits in a smaller square |
-| upper bound | Proves $s(n) \le v$ by a verified packing of $n$ unit squares in a square of side $v$ |
+| upper bound | Proves $s(n) \le v$ by a packing of $n$ unit squares in a square of side $v$ |
 | optimality | Settles an exact value $s(n) = v$: a lower bound that meets an upper bound |
 | simplification | Proves again a result the record already holds, by a shorter, cleaner or more elementary route, and moves no bound |
 | rigidity | Says whether one named packing can move at fixed side: its flexes, its rigidity at first or second order, the isolation of its pose |

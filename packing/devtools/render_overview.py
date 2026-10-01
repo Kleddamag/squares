@@ -51,6 +51,9 @@ PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 TEMPLATES = PACKING / "devtools" / "templates"
 SITE_CSS = TEMPLATES / "site.css"
+#: The result overview's styles, the popover body a result's row opens
+#: (`devtools.result_overview`), kept apart from `site.css` and inlined after it.
+SITE_RESULT_CSS = TEMPLATES / "site-result.css"
 SITE_NAV = TEMPLATES / "site-nav.html"
 SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 #: The text tokens every page shares with the explainer: its type base, reading measure,
@@ -159,6 +162,7 @@ SITE_PAGES: tuple[str, ...] = (
 RENDER_INPUTS: tuple[Path, ...] = (
     Path(__file__).resolve(),
     SITE_CSS,
+    SITE_RESULT_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
     PAPER_TYPE_CSS,
@@ -168,6 +172,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
+    PACKING / "devtools" / "result_overview.py",
     REPO / repo_links.TUTORIAL,
     REPO / repo_links.README,
     REPO / repo_links.SYNOPSIS,
@@ -251,7 +256,8 @@ def page_assets() -> tuple[str, str]:
         f"<style>{relation_face_css(static)}</style>\n"
         f"<style>{PAPER_TYPE_CSS.read_text(encoding='utf-8')}</style>\n"
         f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>"
+        f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>\n"
+        f"<style>{SITE_RESULT_CSS.read_text(encoding='utf-8')}</style>"
     )
     return head, f"<script>{katex_js(static)}</script>"
 

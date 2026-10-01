@@ -1579,9 +1579,43 @@ def test_every_popover_shares_one_margin_and_close_target() -> None:
         assert f"var({token}" in close
 
 
-def test_popover_headlines_set_their_math_serif() -> None:
-    """Every popover's headline is marked for serif mathematics, and no popover forces sans
+def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
+    """A headline that is mathematics standing alone, such as `n = 11`, is marked for
+    serif mathematics, on a card and in its popover; a headline with words in it carries
+    no mark, so its math follows the words into the sans. No popover forces sans
     mathematics on everything inside it."""
+    formula = overview_data.math_html("n = 11")
+    assert overview_sections.is_all_math(formula)
+    assert overview_sections.is_all_math(f" {formula} {formula}\n")
+    for mixed in (f"Earlier {formula} lower bounds", f"{formula}.", "Results", ""):
+        assert not overview_sections.is_all_math(mixed), mixed
+    assert overview_sections.SERIF_MATH == 'data-math-face="serif"'
+
+    def built(value: str) -> str:
+        return overview_sections.card(
+            "pop-x", "Case", value, "A note.", href="#recent-results", action="Go"
+        )
+
+    alone = built(formula)
+    assert f'<span class="site-card-value" data-math-face="serif">{formula}</span>' in alone
+    assert f'<p class="site-popover-value" data-math-face="serif">{formula}</p>' in alone
+    assert "data-math-face" not in built(f"Earlier {formula} lower bounds")
+    link = overview_sections.link_card("frontier.html", "Case", formula, "A note.")
+    assert f'<span class="site-card-value" data-math-face="serif">{formula}</span>' in link
+    assert "data-math-face" not in overview_sections.link_card(
+        "frontier.html", "Case", f"{formula} to 100", "A note."
+    )
+
+    headlines = re.findall(
+        r'<span class="site-card-value"([^>]*)>(.*?)</span><span class="site-card-note">', page
+    ) + re.findall(r'<p class="site-popover-value"([^>]*)>(.*?)</p>', page)
+    assert len(headlines) > len(overview_sections.DOCUMENTS)
+    for attributes, value in headlines:
+        if "data-atlas-title" in attributes:
+            continue
+        marked = overview_sections.SERIF_MATH in attributes
+        assert marked == overview_sections.is_all_math(value), value
+
     card = overview_sections.atlas_popover()
     assert 'data-math-face="serif" id="pop-atlas-title"' in card
     assert "data-kpress-prose-font" not in card.split(">", 1)[0]

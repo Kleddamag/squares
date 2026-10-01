@@ -144,36 +144,76 @@ _VOID_TAGS = frozenset({"br", "hr", "img", "input", "wbr"})
 
 class _ReadingText(HTMLParser):
     """An HTML fragment's text as a reader sees it: a formula is its MathML's text, not
-    also the TeX kpress carries beside it for KaTeX to set."""
+    also the TeX kpress carries beside it for KaTeX to set. `outside` is the text that
+    is in no formula, and `formulas` counts them."""
 
     def __init__(self) -> None:
         super().__init__()
         self.parts: list[str] = []
+        self.outside: list[str] = []
+        self.formulas = 0
         self._skipping = 0
+        self._in_math = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag in _VOID_TAGS:
             return
+        classes = (dict(attrs).get("class") or "").split()
+        if self._in_math:
+            self._in_math += 1
+        elif "kpress-math" in classes:
+            self._in_math = 1
+            self.formulas += 1
         if self._skipping:
             self._skipping += 1
-        elif "kpress-math-render" in (dict(attrs).get("class") or "").split():
+        elif "kpress-math-render" in classes:
             self._skipping = 1
 
     def handle_endtag(self, tag: str) -> None:
-        if self._skipping and tag not in _VOID_TAGS:
+        if tag in _VOID_TAGS:
+            return
+        if self._skipping:
             self._skipping -= 1
+        if self._in_math:
+            self._in_math -= 1
 
     def handle_data(self, data: str) -> None:
         if not self._skipping:
             self.parts.append(data)
+        if not self._in_math:
+            self.outside.append(data)
+
+
+def _read(fragment: str) -> _ReadingText:
+    reader = _ReadingText()
+    reader.feed(fragment)
+    reader.close()
+    return reader
 
 
 def reading_text(fragment: str) -> str:
     """`fragment`'s text as it reads, with runs of white space as one space."""
-    reader = _ReadingText()
-    reader.feed(fragment)
-    reader.close()
-    return " ".join("".join(reader.parts).split())
+    return " ".join("".join(_read(fragment).parts).split())
+
+
+def is_all_math(fragment: str) -> bool:
+    """Whether `fragment` is mathematics standing alone: at least one formula, and no
+    word, digit or mark outside one. `$n = 11$` is; "Earlier $n = 11$ lower bounds" is
+    not."""
+    reader = _read(fragment)
+    return reader.formulas > 0 and not "".join(reader.outside).strip()
+
+
+#: The mark that sets a block's mathematics in the serif face whatever the words around
+#: it are set in; the host adapter's sans test (`host_math_init.js`) honours it.
+SERIF_MATH = 'data-math-face="serif"'
+
+
+def headline_math_face(headline: str) -> str:
+    """The attribute, with its leading space, for a headline's element: `SERIF_MATH`
+    when the headline is mathematics standing alone, such as `$n = 11$`, and nothing
+    when it has words, whose math then follows them into the sans face."""
+    return f" {SERIF_MATH}" if is_all_math(headline) else ""
 
 
 def size_for_length(length: float) -> CardSize:
@@ -227,10 +267,12 @@ def card(
     left out, `card_size` chooses it from the length of the value and note.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
-    and follows its button with no script. It is set in sans, and its attribute tells
-    kpress so, so its math is sans too. The label and action are escaped here; the value,
-    note and preview are HTML, so they may carry math.
+    and follows its button with no script. It is set in sans, so its math is sans too,
+    with one exception the card shares: a headline that is mathematics standing alone
+    (`headline_math_face`) is set in the serif. The label and action are escaped here;
+    the value, note and preview are HTML, so they may carry math.
     """
+    face = headline_math_face(value)
     kind = card_kind(href)
     if kind == "page" and not preview:
         body = (
@@ -249,14 +291,14 @@ def card(
         f'data-go="{kind}" {_size_attribute(size, value, note)}>'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-value"{face}>{value}</span>'
         f'<span class="site-card-note">{note}</span></button>'
         f'<div class="site-popover" id="{_esc(target)}" popover '
         f'data-go="{kind}">'
         f'<button type="button" class="site-popover-close" popovertarget="{_esc(target)}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<p class="site-popover-value" data-math-face="serif">{value}</p>{body}'
+        f'<p class="site-popover-value"{face}>{value}</p>{body}'
         f'<p class="site-popover-actions"><a class="site-popover-action" href="{_esc(href)}" '
         f'data-go="{kind}">{_esc(action)}</a>{second}</p>'
         "</div>"
@@ -962,7 +1004,7 @@ def link_card(
         'target="_blank" rel="noopener noreferrer">'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-value"{headline_math_face(value)}>{value}</span>'
         f'<span class="site-card-note">{note}</span>'
         f"{address}"
         "</a>"
@@ -1152,7 +1194,7 @@ def atlas_popover() -> str:
         '<button type="button" class="site-popover-close" popovertarget="pop-atlas" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         '<span class="site-card-label">Best known packing</span>'
-        '<p class="site-popover-value site-atlas-pop-title" data-math-face="serif" '
+        f'<p class="site-popover-value site-atlas-pop-title" {SERIF_MATH} '
         'id="pop-atlas-title" data-atlas-title></p>'
         '<div class="site-atlas-pop-body">'
         '<div class="site-atlas-pop-figure" data-atlas-figure></div>'

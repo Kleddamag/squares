@@ -151,10 +151,15 @@ a caption, a footnote), so a site style must not set text inside one of those co
 in the serif face, or the other way round; set the text in the face KPress will pick for
 its math. The outer math em follows the surrounding text in inline and display formulas;
 KaTeX still controls the internal sizes of scripts and nested expressions.
-One exception: a popover’s headline (`.site-popover-value`, such as $n = 11$ or a card’s
-title) sets its math in the serif face, though the headline itself is sans.
-It is marked `data-math-face="serif"`, which the host adapter’s sans test
-(`host_math_init.js`) honours before it reads the surrounding face.
+One exception: a headline that is mathematics standing alone, such as $n = 11$, is set
+in the serif face, on a card, in a popover and in any heading, though the headline’s own
+face is sans. A headline with words in it, such as “Earlier $n = 11$ lower bounds”, is
+not one: its math follows the words into the sans.
+The exception’s element is marked `data-math-face="serif"`, which the host adapter’s
+sans test (`host_math_init.js`) honours before it reads the surrounding face.
+`overview_sections.headline_math_face` marks a card’s headline and its popover’s when
+the value is all math, and the two headlines a script fills with $n = N$, the atlas
+popover’s and the case popover’s, carry the mark in their markup.
 Popovers carry no `data-kpress-prose-font` mark, so every other formula in them follows
 its own text. Documents write math as LaTeX (`$…$`) rather than in code spans;
 `devtools.check_math_markup` holds the documents already migrated to it.

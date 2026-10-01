@@ -81,17 +81,21 @@ def case_popover() -> str:
     """The one popover a page opens every case record in, framed as a card's page
     popover is. `case-popover.js` points its frame and its Expand button at the case
     that was pressed; the frame keeps its page between cases, so a second case only
-    moves its fragment."""
+    moves its fragment. Its headline is the case, `n = 11`, set as mathematics from the
+    template at its foot, and, being math standing alone, marked for the serif face."""
+    from devtools.overview_sections import SERIF_MATH  # noqa: PLC0415
+
     return (
         f'<div class="site-popover" id="{CASE_POPOVER_ID}" popover '
         'data-go="page" data-case-popover>'
         f'<button type="button" class="site-popover-close" popovertarget="{CASE_POPOVER_ID}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         '<span class="site-card-label">Case record</span>'
-        '<p class="site-popover-value" data-math-face="serif" data-case-title>Case record</p>'
+        f'<p class="site-popover-value" {SERIF_MATH} data-case-title>Case record</p>'
         '<iframe class="site-popover-frame" title="Case record" data-case-frame></iframe>'
         '<p class="site-popover-actions"><a class="site-popover-action" data-go="page" '
         f'data-case-expand href="{CASES_PAGE}">See All Cases</a></p>'
+        f"<template data-case-math>{_math('n')}</template>"
         "</div>"
     )
 

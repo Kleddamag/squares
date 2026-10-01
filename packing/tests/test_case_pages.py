@@ -83,6 +83,28 @@ def test_the_popover_frames_the_record_and_expands_to_it() -> None:
     assert 'data-case-expand href="cases.html"' in markup
 
 
+def test_the_popover_headline_is_the_case_as_serif_math() -> None:
+    """The case popover's headline is `n = 11` as mathematics, not plain text: the script
+    fills kpress's own math node from the template the popover carries and has the
+    site's math driver typeset it, and the headline, math standing alone, is marked for
+    the serif face."""
+    markup = render_case_pages.case_popover()
+    assert '<p class="site-popover-value" data-math-face="serif" data-case-title>' in markup
+    template = markup.split("<template data-case-math>", 1)[1].split("</template>", 1)[0]
+    assert template.startswith('<span class="kpress-math kpress-math-inline"')
+    assert 'class="kpress-math-render"' in template
+    assert 'class="kpress-math-semantic"' in template
+    script = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
+    for token in (
+        "template[data-case-math]",
+        ".kpress-math-render",
+        "siteMath",
+        "replaceChildren",
+    ):
+        assert token in script, token
+    assert "heading.textContent = `n = " not in script
+
+
 def test_the_page_shows_one_record_by_its_fragment(page: str) -> None:
     assert render_case_pages.CASE_VIEW_SCRIPT.read_text(encoding="utf-8") in page
     assert "data-case-records" in page

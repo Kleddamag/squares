@@ -931,14 +931,26 @@ For every newly retained result, first complete the
 update the frontier, README and survey, and regenerate affected survey SVG/PDF/PNG
 exports together. That sequence also applies when no explainer edition changes.
 
-The explainer at <https://jlevy.github.io/squares/> is not checked in.
-GitHub Pages builds it from `main` in `.github/workflows/pages.yml`, on every push that
-touches one of the renderer’s declared inputs (`RENDER_INPUTS` in
+**The site’s two papers are served under `papers/`, each by its slug**, and the slug is
+the paper’s name in the source too (see
+[conventions.md → Naming](conventions.md#2-naming)): `n11-lower-bounds-explainer`, “New
+lower bounds for square packing for n = 11”, and `n11-optimality-review`, “A review of
+the optimality proof of the Trump packing of 11 squares”.
+Each is `papers/<slug>.html` with `papers/<slug>.md` and `papers/<slug>.pdf` beside it.
+A renderer is given the site’s root (`--site`, by default `packing/site/`) and writes
+its paper there, where it is served, so every check reads the page at its published path
+and the publication renames nothing.
+
+The explainer at
+<https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html> is not checked
+in. GitHub Pages builds it from `main` in `.github/workflows/pages.yml`, on every push
+that touches one of the renderer’s declared inputs (`RENDER_INPUTS` in
 `devtools/render_n11_lower_bounds_explainer.py`, which a test ensures the workflow’s
 path filter covers).
-The build writes the page (`site/index.html`), the Markdown edition
-(`site/t-018-explainer.md`), the PDF (`site/t-018-explainer.pdf`, drawn by Playwright’s
-Chromium), and the composite assets beside them.
+The build writes the page (`site/papers/n11-lower-bounds-explainer.html`), the Markdown
+edition beside it (`.md`), the PDF (`.pdf`, drawn by Playwright’s Chromium), and the
+atlas’s composite assets at the site’s root, where the overview links them too and a
+link preview names the card.
 It checks that the prepared HTML reproduces itself and compares the stored PDF with a
 fresh render, including the receipt that binds it to the HTML source.
 Font and page-count checks inspect that stored PDF. The workflow uploads the checked
@@ -952,7 +964,8 @@ a job named for the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
-The separate **T-060 optimality paper** lives at `/n11-optimality/`. Its source is
+The separate **T-060 optimality paper** lives at `/papers/n11-optimality-review.html`.
+Its source is
 [`n11-optimality-review-article.md`](packing/devtools/templates/n11-optimality-review-article.md);
 [`render_n11_optimality_review.py`](packing/devtools/render_n11_optimality_review.py)
 uses the same KPress fonts and
@@ -967,11 +980,10 @@ From `packing/`, with the scratch environment required by `AGENTS.md`:
 uv run --frozen --all-extras --group dev python -m devtools.render_n11_optimality_review --pdf
 ```
 
-The outputs are `site/n11-optimality/t-060-explainer.html`, `.md`, and `.pdf`, with an
-`index.html` entry point.
-`--output-dir` selects another destination; `--check` compares the HTML and Markdown
-without writing. Repository citations name the source commit selected by `--revision`
-(the publication revision by default).
+The outputs are `site/papers/n11-optimality-review.html`, `.md`, and `.pdf`. `--site`
+selects another site root; `--check` compares the HTML and Markdown without writing.
+Repository citations name the source commit selected by `--revision` (the publication
+revision by default).
 A dedicated Pages job builds this paper and its PDF independently of the historical
 explainer. The paper is an explanation of accepted evidence, and rendering it does not
 rerun the geometric proof.
@@ -998,8 +1010,23 @@ Deployment waits for all of them.
 The workbench job selects Node 24.18.0, installs the root lockfile with scripts
 disabled, and builds the typed workbench package into the self-contained `/workbench/`
 page, beside `prepare` rather than after it.
-The publish job puts the prepared page, the checked PDF and the workbench back into one
-tree; only a push to `main` uploads that tree to Pages.
+The publish job puts the two papers, the checked PDF, the site’s own pages and the
+workbench back into one tree; only a push to `main` uploads that tree to Pages.
+
+**An address the site has served keeps working.** The papers moved to `papers/<slug>` on
+2026-10-01, from `explainer.html` and from `n11-optimality/t-060-explainer.html`.
+`render_overview.MOVED_PAGES` lists each page that moved, and the overview’s build
+writes a forwarder at each old address: a page of a few lines whose script
+(`devtools/overview/forward.js`, the one the overview forwards its own old fragments
+with) sends the reader on with the query string and the fragment they came with, with a
+refresh and a link for a reader without scripts and the new address as its canonical
+URL. `render_overview.MOVED_FILES` lists each file that moved and cannot forward, a
+paper’s Markdown and PDF; the publish job copies each to its old address, and a test
+holds that step to the list.
+Nothing on the site links an old address.
+`check_published_site` asks the deployed site for every one of them, and visits each
+forwarder in the pinned browser with a query string and a fragment.
+To move a page again, add it to the list; do not delete an entry.
 Before drawing PDF bytes, the exporter checks that visible math is typeset; a completed
 font-error fallback that exposes literal TeX fails this check.
 Readable native MathML fallback is accepted by that check and remains subject to the
@@ -1043,12 +1070,22 @@ pin the verifier at the edition’s revision
 uv run --frozen --all-extras --group dev python -m devtools.check_published_site --commit <merge commit>
 ```
 
-It fetches the live page, Markdown edition, PDF, assets, and workbench.
-It checks the explainer edition, verifies that repository links name and resolve at the
-expected commit, and requires the PDF source receipt to match the exact served HTML
-bytes and its page count to match the publication.
+It fetches the live pages, both papers with their Markdown editions and PDFs, the assets
+and the workbench. It checks the explainer edition, verifies that repository links name
+and resolve at the expected commit, and requires the PDF source receipt to match the
+exact served HTML bytes and its page count to match the publication.
 It also requires the workbench’s exact source revision, starts its public API in pinned
-Chromium, and follows its project-relative link to the explainer.
+Chromium, and follows its project-relative link to the overview.
+It asks for every address a paper used to have, as the paragraph above says.
+
+The same check runs on a build before it is deployed.
+`python -m devtools.preview_site --output DIR --serve` builds the whole site into one
+directory and serves it at `http://127.0.0.1:8765/`, and
+`python -m devtools.check_published_site --site http://127.0.0.1:8765/ --commit <the commit the build was made from>`
+asks it the same questions; a local address is the one kind that is not https and is
+still asked. A preview has the first paper’s PDF only if one is put there: that PDF is
+drawn from `packing/site/` by `render_n11_lower_bounds_explainer_pdf`, which a preview
+never writes.
 
 **One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
 credits, the atlas footer, the workbench stage and the videos all print

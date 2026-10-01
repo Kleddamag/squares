@@ -304,14 +304,14 @@ pipeline:
 
 | Page | Width | DOMContentLoaded | Visible math | Load-time math done | Longest task | Blocking |
 | --- | --- | --- | --- | --- | --- | --- |
-| `explainer.html` | 1280 | 712 → 993 | 727 → 1,008 | 947 → 1,238 | 132 → 128 | 211 → 263 |
+| `papers/n11-lower-bounds-explainer.html` | 1280 | 712 → 993 | 727 → 1,008 | 947 → 1,238 | 132 → 128 | 211 → 263 |
 | `tutorial.html` | 1280 | 2,233 → 594 | 2,235 → 595 | 2,458 → 741 | 1,875 → 198 | 2,101 → 182 |
 | `synopsis.html` | 1280 | 14,040 → 1,089 | 14,704 → 1,668 | 14,704 → 1,758 | 13,002 → 847 | 16,123 → 1,179 |
 | `results.html` | 1280 | 568 → 236 | 600 → 387 | 600 → 387 | 82 → 75 | 32 → 25 |
 | `readme.html` | 1280 | 608 → 233 | 642 → 297 | 642 → 322 | 74 → 98 | 28 → 48 |
 | `index.html` | 1280 | 3,331 → 686 | 3,595 → 811 | 3,595 → 903 | 2,152 → 152 | 2,507 → 219 |
 | `cases.html#n-11` | 1280 | 7,958 → 5,362 | 8,106 → 5,386 | 8,106 → 5,509 | 3,773 → 2,399 | 7,247 → 4,130 |
-| `explainer.html` | 390 | 696 → 1,156 | 710 → 1,171 | 932 → 1,421 | 121 → 128 | 205 → 263 |
+| `papers/n11-lower-bounds-explainer.html` | 390 | 696 → 1,156 | 710 → 1,171 | 932 → 1,421 | 121 → 128 | 205 → 263 |
 | `tutorial.html` | 390 | 2,336 → 651 | 2,338 → 652 | 2,541 → 743 | 1,924 → 191 | 2,163 → 175 |
 | `synopsis.html` | 390 | 14,969 → 1,361 | 15,657 → 1,363 | 15,657 → 1,525 | 13,922 → 326 | 17,132 → 880 |
 | `results.html` | 390 | 166 → 190 | 214 → 240 | 214 → 240 | 79 → 87 | 29 → 37 |
@@ -1284,9 +1284,16 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   is the background to both.
   The explainer’s card names the newer optimality proofs, and reads the same on the
   overview. The page has no popover, so it carries no popover script.
-  The papers keep their addresses, `explainer.html`, `tutorial.html` and
-  `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
-  page and on each of them.
+  The two papers are served under `papers/`, each by its slug, with its Markdown and its
+  PDF beside it under the same slug: `papers/n11-optimality-review.html` and
+  `papers/n11-lower-bounds-explainer.html`. The tutorial stays at `tutorial.html`.
+  Papers is the current entry on the papers page and on each of them.
+  The addresses the papers had before 2026-10-01, `explainer.html` and
+  `n11-optimality/t-060-explainer.html` with its directory, each serve a forwarder: a
+  page of a few lines that sends a reader on with the query string and the fragment they
+  came with (`overview/forward.js`, which reads the root element’s `data-moved-to`),
+  with a refresh and a link for a reader without scripts and the new address as its
+  canonical URL. Nothing on the site links an old address.
   The optimality paper has its own renderer, shell and Pages job
   (`render_n11_optimality_review`); it carries the bar as the explainer does, through
   `render_overview.nav_html`, with the links climbing one level to the site’s root.

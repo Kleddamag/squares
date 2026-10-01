@@ -184,7 +184,7 @@ The data layer reuses the register’s own code rather than re-deriving it:
 
 ### URL Layout
 
-As built (amended 2026-09-30):
+As built (amended 2026-09-30, and on 2026-10-01 for the papers’ addresses):
 
 | Path | Page | Nav tab |
 | --- | --- | --- |
@@ -193,14 +193,16 @@ As built (amended 2026-09-30):
 | `/all-results.html` | every register entry, the results table (new) | Results |
 | `/cases.html#n-N` | one case record per tracked $n$ (new) | none; opened from the atlas grid and the frontier atlas |
 | `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial, each a link that goes to its paper in the same tab (new) | Papers |
-| `/n11-optimality/t-060-explainer.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it | Papers |
-| `/explainer.html` | the n = 11 explainer (moved from `/`) | Papers |
+| `/papers/n11-optimality-review.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it under the same slug | Papers |
+| `/papers/n11-lower-bounds-explainer.html` | the n = 11 explainer, with its Markdown and PDF beside it under the same slug (moved from `/explainer.html`, and before that from `/`) | Papers |
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
 | `/visualize.html` | the $n = 1\ldots324$ film at full width, with Film and Workbench tabs (new) | Visualize |
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
 | `/readme.html`, `/synopsis.html`, `/results.html`, `/status.html`, `/epistemics.html`, `/conventions.html`, `/development.html`, `/defects.html` | the repository documents, rendered for the documentation cards’ popovers | none |
 | `/result/t-nnn.html` | one result’s overview, a fragment its row’s popover fetches; not a page | none |
-| `/t-018-explainer.{md,pdf}` and the composite assets | unchanged | none |
+| the composite assets | unchanged, at the root | none |
+| `/explainer.html`, `/n11-optimality/`, `/n11-optimality/t-060-explainer.html` | forwarders at the papers’ old addresses: each sends a reader on to the paper with the query string and fragment they came with | none |
+| `/t-018-explainer.{md,pdf}`, `/n11-optimality/t-060-explainer.{md,pdf}` | copies of the papers’ Markdown and PDF at their old addresses | none |
 
 The nav also links the repository on GitHub.
 The planned `/synopsis.html` nav page was dropped for a card (see
@@ -209,6 +211,20 @@ only as one of the rendered documents behind the cards, beside its GitHub copy.
 
 The explainer moves to `/explainer.html` rather than `/explainer/` so it stays beside
 the composite assets and PDF it references with relative paths.
+
+**Amended 2026-10-01: the papers are served under `/papers/` by their slugs**
+(`think-cmz6`, the owner: “papers should have those simple slug names internally and
+externally”). The explainer is `papers/n11-lower-bounds-explainer.html` and the
+optimality paper `papers/n11-optimality-review.html`, each with its Markdown and PDF
+beside it under the same slug, and each renderer, template, test and Pages job carries
+the slug in its name.
+A paper is now rendered where it is served, so the next two paragraphs describe what
+held until then: nothing is renamed at publish, the jobs read
+`site/papers/n11-lower-bounds-explainer.html`, and the composite assets stay at the
+root, which the page reaches a level up.
+Old links keep working by the same script: `render_overview.MOVED_PAGES` lists each page
+that moved and the overview’s build writes a forwarder at its old address, and
+`MOVED_FILES` lists the Markdown and PDF files, which the publish job copies to theirs.
 
 **The explainer is renamed at publish, not at render.** `pages.yml` names
 `site/index.html` about forty times across the twin render, the PDF, and the geometry,
@@ -806,6 +822,10 @@ decisions that changed the plan above:
   statement and where to report a result, and Recent Results opens with README’s next
   two, what the project covers and its newest major result (`think-u7pb`). Eleven
   squares is a central case, never the central one.
+- **Papers are named by simple slugs, internally and externally** (2026-10-01,
+  `think-cmz6`): `papers/n11-lower-bounds-explainer.html` and
+  `papers/n11-optimality-review.html`, with the source renamed to match and every old
+  address still served.
 - **Repository links name `main`**, never a commit: permalinks at the build commit 404ed
   once a squash merge left that commit on no branch (`think-eefp`, `think-xv28`).
 - **The site lands with current `main` and presents T-060**, the n = 11 optimality

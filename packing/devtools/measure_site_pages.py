@@ -109,7 +109,8 @@ Usage, from `packing/`:
         popover SITE --page frontier.html --press 'a[data-case="79"]' \
         --width 1280 --height 900 --height 1200 --height 1440 --markdown
 
-`SITE` is a directory holding `explainer.html` and the kpress pages. Set
+`SITE` is a directory holding the whole site, as `devtools.preview_site` builds it: the
+kpress pages and the papers under `papers/`. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
 """
 
@@ -126,6 +127,7 @@ from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import Any
 
+from devtools import render_overview
 from devtools.preview_site import (
     BASELINES,
     HEADER,
@@ -157,7 +159,7 @@ OPENED = ":popover-open, details[open]"
 #: The pages compared by default: the explainer, the long reports, a short one, the
 #: homepage and one case record.
 DEFAULT_PAGES = (
-    "explainer.html",
+    render_overview.paper_path(render_overview.N11_LOWER_BOUNDS_EXPLAINER),
     "tutorial.html",
     "synopsis.html",
     "results.html",
@@ -795,7 +797,8 @@ def font_faces(path: Path) -> dict[str, str]:
 
 def compare_faces(site: Path, pages: Sequence[str]) -> list[dict[str, Any]]:
     """Per page and family: blocks shared with the explainer, and blocks it lacks or adds."""
-    reference = font_faces(site / "explainer.html")
+    explainer = render_overview.paper_path(render_overview.N11_LOWER_BOUNDS_EXPLAINER)
+    reference = font_faces(site / explainer)
     rows: list[dict[str, Any]] = []
     for name in pages:
         path = site / name.split("#")[0]

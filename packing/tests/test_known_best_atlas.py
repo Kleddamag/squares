@@ -27,7 +27,13 @@ from sqpack.known_best import (
     parse_unitsquare_svg,
     sampled_sequence,
 )
-from sqpack.release import DATA_PATHS, data_pathspec
+from sqpack.release import (
+    COMPOSITES_MAY_TRAIL,
+    DATA_PATHS,
+    PUBLICATION_VERSION,
+    data_pathspec,
+    edition_at,
+)
 from sqpack.render.color import ANGLE_CLASS_CONTRACT
 from sqpack.render.model import RenderSpec
 from sqpack.render.style import FIRST_PARTY_ACCENT_COLOR
@@ -537,18 +543,35 @@ def test_known_best_composite_contains_every_case_and_square() -> None:
     # runs the slow lane at `--inner-jobs 2`, so this is what it costs there. The build is
     # memoized on the worker count, so the serial memo the corrupted-source test above
     # builds is untouched by this one.
-    outputs, _manifest = known_best_builder.expected_outputs(
-        worker_count(known_best_builder.CORPUS.count)
-    )
+    workers = worker_count(known_best_builder.CORPUS.count)
+    outputs, _manifest = known_best_builder.expected_outputs(workers)
     composite_path = ATLAS / "known-best-1-100.svg"
+    canvas = known_best_builder.PRIMARY_COMPOSITE
+    assert canvas.svg_path == composite_path
+
+    # The composites are not part of the data layer `--update` writes: they are drawn
+    # apart, under the record of the data each was drawn from, and redrawn on demand.
+    assert not any(item.svg_path in outputs for item in known_best_builder.COMPOSITES)
+    retained = composite_path.read_text(encoding="utf-8")
+    identity = known_best_builder.retained_identity(retained)
+    rebuilt = known_best_builder.expected_composite(canvas, identity, workers)
+
+    # A composite is drawn from the retained witnesses, which costs seconds where this
+    # rebuild costs minutes. That is sound exactly when the two drawings are one, which
+    # is held here for the figure and by `--check` for every witness it is drawn from.
+    cards = known_best_builder.retained_cases(canvas.spec.numbers)
+    assert known_best_builder.render_known_best_summary_svg(cards, canvas, identity) == rebuilt
 
     # The pin the quick lane's four composite tests stand on: they read the retained
     # vector, and this is where "retained" and "built" are made one thing inside pytest.
     # Free here -- the build above is already paid -- and checked again from the other
-    # side by the full gate's `known-best n=1..324 atlas rebuild` step.
-    assert composite_path.read_text(encoding="utf-8") == outputs[composite_path]
+    # side by the full gate's `known-best n=1..324 atlas rebuild` step. A composite that
+    # trails the pin may differ from the rebuild (`sqpack.release`, rule 5), and then the
+    # quick lane's tests describe the drawing as it was released.
+    if identity.current or not COMPOSITES_MAY_TRAIL:
+        assert retained == rebuilt
 
-    root = ET.fromstring(outputs[composite_path])
+    root = ET.fromstring(rebuilt)
     metadata = {
         node.attrib["name"]: node.text or ""
         for node in root.iter()
@@ -1195,7 +1218,12 @@ def test_only_the_bound_numeral_carries_the_new_result_accent() -> None:
         for entry in record["figure"]["entries"]
         if entry["n"] <= 100 and entry["lower"]["recent_result"] and entry["lower"]["shown"]
     ]
-    assert len(accented) == len(drawn)
+    # The count is the current record's, so it is held while the figure shows the pinned
+    # data. A figure that trails the pin shows the count of the data it was drawn from
+    # (`sqpack.release`, rule 5), and `--check-composites` lists the cards that differ.
+    identity = known_best_builder.retained_identity(_committed_composite_svg())
+    if identity.current or not COMPOSITES_MAY_TRAIL:
+        assert len(accented) == len(drawn)
     assert len(plain) > len(accented)
 
 
@@ -1244,26 +1272,33 @@ def test_fast_composite_check_rejects_a_stale_bound_label(monkeypatch) -> None:
     )
 
 
-def test_fast_composite_check_rejects_a_stale_version_stamp() -> None:
-    """Re-pinning the data revision moves the stamp and no card, so it is checked alone."""
+def test_fast_composite_check_rejects_a_stamp_that_is_not_the_composites_own() -> None:
+    """A composite's footer and dateline are held to the record of what it was drawn from.
+
+    They used to be held to the pin, which is why re-pinning the data revision meant
+    redrawing the posters. The record is the drawing's own, so a re-pin leaves both
+    right, and a footer naming any other data is still caught without a rebuild.
+    """
     canvas = known_best_builder.CompositeCanvas(
         CompositeSpec(first_n=18, last_n=18, columns=1, stem="synthetic")
     )
-    release = known_best_builder.SUMMARY_RELEASE_TEXT
-    stamp = known_best_builder.SUMMARY_RELEASE_STAMP
+    identity = known_best_builder.CompositeIdentity("1" * 40, "2026-09-28")
+    assert identity.dateline == "Including new results (September 28, 2026)"
+    assert identity.stamp == edition_at("1" * 40)
+    assert not identity.current
     root = ET.fromstring(
         f"""<svg xmlns="http://www.w3.org/2000/svg">
-        <text data-feature="release">{release}</text>
-        <text data-feature="release-stamp">v0.0.0-000000</text>
+        <text data-feature="release">{identity.dateline}</text>
+        <text data-feature="release-stamp">{PUBLICATION_VERSION}-000000</text>
         </svg>"""
     )
 
     problems = known_best_builder._composite_edition_problems(  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
-        canvas, root
+        canvas, root, identity
     )
     expected = (
-        "atlas/known-best/synthetic.svg release-stamp is ('v0.0.0-000000',); "
-        f"expected ({stamp!r},)"
+        f"atlas/known-best/synthetic.svg release-stamp is ('{PUBLICATION_VERSION}-000000',); "
+        f"expected ({identity.stamp!r},)"
     )
     assert problems == [expected]
 
@@ -1272,9 +1307,9 @@ def test_fast_composite_check_rejects_a_stale_version_stamp() -> None:
         for node in root.iter("{http://www.w3.org/2000/svg}text")
         if node.attrib.get("data-feature") == "release-stamp"
     )
-    footer.text = stamp
+    footer.text = identity.stamp
     assert not known_best_builder._composite_edition_problems(  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
-        canvas, root
+        canvas, root, identity
     )
 
 

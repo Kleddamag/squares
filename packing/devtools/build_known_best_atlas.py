@@ -3,9 +3,19 @@
 
 Usage:
     uv run --frozen python -m devtools.build_known_best_atlas --update
+    uv run --frozen python -m devtools.build_known_best_atlas --update-composites
     uv run --frozen python -m devtools.build_known_best_atlas --check
     uv run --frozen python -m devtools.build_known_best_atlas --check --jobs 4
     uv run --frozen python -m devtools.build_known_best_atlas --check --sample
+    uv run --frozen python -m devtools.build_known_best_atlas --check-composites
+
+Two layers, updated apart. `--update` rewrites the data: the witnesses, the house
+renderings, the manifest and the frontier links, all text. `--update-composites` redraws
+the two posters and their PNG and PDF exports from the retained witnesses, and is run at
+a version bump or on demand, never because the data moved: a poster states the data
+commit it was drawn from (`CompositeIdentity`) and may trail the pin until the next
+version (`sqpack.release`, rules 4 and 5). `--check-composites` holds the retained
+posters to that record without rebuilding anything.
 """
 
 from __future__ import annotations
@@ -21,9 +31,10 @@ import time
 import urllib.error
 import urllib.request
 import zlib
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
+from datetime import date
 from decimal import ROUND_HALF_EVEN, Decimal
 from fractions import Fraction
 from functools import cache
@@ -31,7 +42,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 from xml.etree import ElementTree as ET
-from xml.sax.saxutils import escape
 
 import mpmath as mp
 from strif import atomic_output_file
@@ -61,7 +71,15 @@ from sqpack.known_best import (
     sampled_numbers,
     unitsquare_witness,
 )
-from sqpack.release import PUBLICATION_DATE, PUBLICATION_EDITION
+from sqpack.release import (
+    COMPOSITES_MAY_TRAIL,
+    DATA_REVISION,
+    PUBLICATION_VERSION,
+    commit_date,
+    data_pathspec,
+    data_revision,
+    edition_at,
+)
 from sqpack.render import render_packing_svg
 from sqpack.render.color import (
     ANGLE_CLASS_CONTRACT,
@@ -316,12 +334,6 @@ SUMMARY_MATH_GLYPH_BASELINE = Decimal(14)
 #: row beside the lettered badges.
 SUMMARY_BADGE_STAR_SPAN = Decimal("0.92")
 SUMMARY_CREDIT = "Diagram by Joshua Levy with assistance from Claude and Codex"
-#: The shared version, last of the footer lines and in the same voice as the rest of it.
-#: Taken whole from `sqpack.release` rather than assembled here, so this line, the
-#: explainer's credits and the videos print one string. Its hash is the pinned data
-#: revision, not one read from git, because this drawing is committed and compared byte
-#: for byte; `sqpack.release` says how the pin is kept true.
-SUMMARY_RELEASE_STAMP = PUBLICATION_EDITION
 SUMMARY_REPOSITORY = "github.com/jlevy/squares"
 #: Where the bounds on the cards are cited, under the explainer and above the credit.
 #: The cards print numbers and no sources, so the footer says where the sources are
@@ -336,7 +348,6 @@ SUMMARY_SUBTITLE_SIZE = "26"
 SUMMARY_REPOSITORY_SIZE = SUMMARY_SUBTITLE_SIZE
 SUMMARY_RELEASE_BASELINE = Decimal(114)
 SUMMARY_RELEASE_SIZE = SUMMARY_SUBTITLE_SIZE
-SUMMARY_RELEASE_TEXT = f"Including new results ({PUBLICATION_DATE})"
 SUMMARY_RELEASE_GAP = Decimal(11)
 SUMMARY_SUBTITLE_BASELINE = Decimal(148)
 # Helvetica, with Arial as the metric-compatible stand-in where Helvetica is
@@ -350,6 +361,60 @@ PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 # costs far more than reading a tEXt chunk. Not a tamper check; a staleness link.
 PNG_SOURCE_KEY = b"sqpack-source-svg-sha256"
 PNG_RENDER_TIMEOUT_SECONDS = 120
+
+
+#: The two facts a composite records about itself, as its metadata names them.
+IDENTITY_REVISION_KEY = "data-revision"
+IDENTITY_DATE_KEY = "data-date"
+
+
+@dataclass(frozen=True)
+class CompositeIdentity:
+    """What one composite was drawn from: the data commit, and that commit's date.
+
+    A poster is stamped once, when it is drawn, and is not re-stamped when the data
+    moves (`sqpack.release`, rule 4). So what its footer and its dateline say is held to
+    this record, which the drawing carries in its own metadata, and not to the pin: the
+    footer is the edition as it read at this revision, and the dateline is the day of
+    the data the cards show. A poster that travels alone can be traced to its data by
+    either. The record is a git revision and a date, nothing a second file has to keep
+    in step (`OR-16`).
+
+    It used to be the pin and the release's date. The pin made every data commit rewrite
+    eight binaries, and the release's date stood still while the drawing took in results
+    registered after it: on 2026-09-30 the posters said "September 28" over cards
+    redrawn that morning.
+    """
+
+    data_revision: str
+    data_date: str
+
+    @property
+    def stamp(self) -> str:
+        """The footer's last line: the edition as it read at this data revision."""
+        return edition_at(self.data_revision)
+
+    @property
+    def dateline(self) -> str:
+        """The line under the title, dated by the data and written as a reader reads it."""
+        day = date.fromisoformat(self.data_date)
+        return f"Including new results ({day:%B} {day.day}, {day.year})"
+
+    @property
+    def current(self) -> bool:
+        """Whether this is the data every page now prints: the pin has not moved on."""
+        return self.data_revision == DATA_REVISION
+
+    def problems(self) -> list[str]:
+        """What is wrong with the record as written, before git is asked anything."""
+        found = []
+        if re.fullmatch(r"[0-9a-f]{40}", self.data_revision) is None:
+            found.append(f"{IDENTITY_REVISION_KEY} {self.data_revision!r} is not a full commit")
+        try:
+            date.fromisoformat(self.data_date)
+        except ValueError:
+            found.append(f"{IDENTITY_DATE_KEY} {self.data_date!r} is not an ISO date")
+        return found
 
 
 @dataclass(frozen=True)
@@ -718,6 +783,7 @@ def clear_build_caches() -> None:
     different key and cannot collide with the real one.
     """
     source_plans.cache_clear()
+    _built_corpus.cache_clear()
     _expected_outputs.cache_clear()
 
 
@@ -1580,8 +1646,14 @@ def _append_summary_legend(
 
 
 @emission_precision()
-def render_known_best_summary_svg(built: list[BuiltCase], canvas: CompositeCanvas) -> str:
+def render_known_best_summary_svg(
+    built: Sequence[BuiltCase], canvas: CompositeCanvas, identity: CompositeIdentity
+) -> str:
     """Render a complete, zoomable overview of one composite's range of cases.
+
+    `identity` is what the drawing says of itself: the data commit it shows, in its
+    metadata and its footer, and that commit's date, in its dateline. The caller says
+    which: `drawable_identity` for a new drawing, the retained one to check an old one.
 
     The pin covers the per-card scale and corner arithmetic in `_append_summary_card`
     and `_summary_points`, which is its own Decimal work rather than the house
@@ -1620,6 +1692,8 @@ def render_known_best_summary_svg(built: list[BuiltCase], canvas: CompositeCanva
             "color-shades-per-hue": str(spec.shades_per_hue),
             "columns": str(composite.columns),
             "first-n": str(composite.first_n),
+            IDENTITY_DATE_KEY: identity.data_date,
+            IDENTITY_REVISION_KEY: identity.data_revision,
             "generated-by": GENERATOR,
             "last-n": str(composite.last_n),
             "rows": str(composite.rows),
@@ -1651,7 +1725,7 @@ def render_known_best_summary_svg(built: list[BuiltCase], canvas: CompositeCanva
             "fill": PAPER_THEME.ink,
         },
     ).text = f"{composite.count} BEST KNOWN SQUARE PACKINGS"
-    release_width = _text_width(SUMMARY_RELEASE_TEXT, SUMMARY_RELEASE_SIZE)
+    release_width = _text_width(identity.dateline, SUMMARY_RELEASE_SIZE)
     release_scale = _star_scale(SUMMARY_RELEASE_SIZE)
     star_span = SUMMARY_STAR_INSET * 2 * release_scale
     group_width = star_span + SUMMARY_RELEASE_GAP + release_width
@@ -1675,7 +1749,7 @@ def render_known_best_summary_svg(built: list[BuiltCase], canvas: CompositeCanva
             "font-weight": "700",
             "fill": PAPER_THEME.ink,
         },
-    ).text = SUMMARY_RELEASE_TEXT
+    ).text = identity.dateline
     sub(
         root,
         "text",
@@ -1769,7 +1843,7 @@ def render_known_best_summary_svg(built: list[BuiltCase], canvas: CompositeCanva
             "font-weight": SUMMARY_SMALL_WEIGHT,
             "fill": SUMMARY_SMALL_FILL,
         },
-    ).text = SUMMARY_RELEASE_STAMP
+    ).text = identity.stamp
     for item in built:
         _append_summary_card(root, item, spec=spec, canvas=canvas)
     return serialize_svg(root)
@@ -1891,6 +1965,18 @@ def _update_png_export(export: RasterExport, svg_text: str) -> None:
     """
     if _png_matches_summary(export, svg_text):
         return
+    stamped = png_export_bytes(export, svg_text)
+    with atomic_output_file(export.path, make_parents=True) as temporary:
+        temporary.write_bytes(stamped)
+
+
+def png_export_bytes(export: RasterExport, svg_text: str) -> bytes:
+    """One raster of the SVG, with its receipt, as bytes and without writing it.
+
+    Apart from `_update_png_export` so the cost of drawing an export can be measured
+    (`devtools.measure_release_assets`) by the code that draws it, without touching the
+    retained file.
+    """
     # SVG construction and receipt checks do not need the native Cairo library.
     import cairosvg  # noqa: PLC0415
 
@@ -1911,8 +1997,7 @@ def _update_png_export(export: RasterExport, svg_text: str) -> None:
             f"PNG {export.role} dimensions are {width}x{height}; expected "
             f"{export.width}x{export.height}"
         )
-    with atomic_output_file(export.path, make_parents=True) as temporary:
-        temporary.write_bytes(stamped)
+    return stamped
 
 
 def _update_png_exports(canvas: CompositeCanvas, svg_text: str) -> None:
@@ -2072,7 +2157,10 @@ def _manifest_entry(built: BuiltCase) -> dict:
 
 
 def expected_outputs(workers: int = 1) -> tuple[dict[Path, str], dict]:
-    """Every derived artifact, and the manifest describing them.
+    """Every derived artifact of the data layer, and the manifest describing them.
+
+    The composites are not among them: a composite is drawn under an identity
+    (`expected_composite`), on demand, and its retained copy may trail these.
 
     Callers get copies so the memo cannot be mutated underneath them.
 
@@ -2176,10 +2264,20 @@ def _composite_record(canvas: CompositeCanvas) -> dict:
 
 
 @cache
+def _built_corpus(workers: int) -> tuple[BuiltCase, ...]:
+    """Every case, built once for a worker count.
+
+    The data layer and the composite comparison both read it, and each would otherwise
+    pay the whole corpus build, which is nearly all of this module's cost.
+    """
+    return tuple(built_cases(CORPUS.numbers, workers))
+
+
+@cache
 def _expected_outputs(workers: int) -> tuple[dict[Path, str], dict]:
     plans = source_plans()
     source_index = _source_index(plans)
-    built = built_cases(CORPUS.numbers, workers)
+    built = _built_corpus(workers)
     outputs: dict[Path, str] = {SOURCE_MANIFEST: _json_text(source_index)}
     for item in built:
         n = item.frontier.n
@@ -2188,9 +2286,6 @@ def _expected_outputs(workers: int) -> tuple[dict[Path, str], dict]:
         outputs[item.frontier.path] = _frontier_with_witness(
             item.frontier, str(item.witness["id"])
         )
-    for canvas in COMPOSITES:
-        cards = [item for item in built if item.frontier.n in canvas.spec.numbers]
-        outputs[canvas.svg_path] = render_known_best_summary_svg(cards, canvas)
     manifest = _manifest_document(
         [_manifest_entry(item) for item in built],
         [_composite_record(canvas) for canvas in COMPOSITES],
@@ -2199,9 +2294,61 @@ def _expected_outputs(workers: int) -> tuple[dict[Path, str], dict]:
     return outputs, manifest
 
 
+def _cards(built: Sequence[BuiltCase], canvas: CompositeCanvas) -> list[BuiltCase]:
+    """The cases one composite draws, in its order."""
+    wanted = set(canvas.spec.numbers)
+    return [item for item in built if item.frontier.n in wanted]
+
+
+def expected_composite(
+    canvas: CompositeCanvas, identity: CompositeIdentity, workers: int = 1
+) -> str:
+    """One composite as a rebuild of the whole corpus draws it, under `identity`.
+
+    This is the expensive drawing, from cases re-derived from their sources, and it is
+    what the whole `--check` compares a retained composite with. `workers` is as
+    `expected_outputs` has it, and the corpus build is shared with it.
+    """
+    return render_known_best_summary_svg(
+        _cards(_built_corpus(workers), canvas), canvas, identity
+    )
+
+
+def retained_cases(numbers: Sequence[int]) -> list[BuiltCase]:
+    """The named cases as the retained records state them, without rebuilding one.
+
+    What a composite is drawn from. The drawing reads a case's number and its witness
+    and nothing else, and re-deriving 324 witnesses from their sources was 397 of the
+    415 seconds a redraw took (`devtools.measure_release_assets --timings`, 2026-10-01),
+    all of it spent proving again what `--check` proves already. Both composites drawn
+    from these are byte for byte what the whole rebuild draws, which
+    `test_known_best_composite_contains_every_case_and_square` holds.
+    """
+    plans = source_plans()
+    cases = []
+    for n in numbers:
+        witness_path = WITNESS_ROOT / f"n-{n:03d}.yaml"
+        cases.append(
+            BuiltCase(
+                _frontier_case(n),
+                plans[n],
+                dict(load_witness(witness_path, fallback_schema=WITNESS_SCHEMA)),
+                witness_path.read_text(encoding="utf-8"),
+                (RENDER_ROOT / f"n-{n:03d}.svg").read_text(encoding="utf-8"),
+            )
+        )
+    return cases
+
+
 def update(workers: int = 1) -> None:
-    # The figure record decides every claim the drawing states, so refresh it
-    # first and drop the memo, or the render would use a stale one.
+    """Rewrite the data layer: witnesses, renderings, manifest and frontier links.
+
+    The composites are left alone. They are redrawn by `update_composites`, at a
+    version bump or on demand, and until then say which data they show; a data change
+    that rewrote them was eight binaries and several megabytes a commit.
+    """
+    # The figure record decides every claim a drawing states, so refresh it first and
+    # drop the memo, or the comparison below would read a stale one.
     build_composite_figure_data.update()
     _figure_entries.cache_clear()
     clear_build_caches()
@@ -2212,19 +2359,13 @@ def update(workers: int = 1) -> None:
             continue
         with atomic_output_file(path) as temporary:
             temporary.write_text(content, encoding="utf-8")
-    # Each composite ships as one family drawn from one SVG in one run: the vector
-    # itself, every PNG raster, and the PDF. Splitting the exports across commands
-    # is what would let four of the five be current and the fifth be last week's.
-    rasters = 0
-    for canvas in COMPOSITES:
-        _update_png_exports(canvas, outputs[canvas.svg_path])
-        render_composite_pdf.update(canvas.spec.stem)
-        rasters += len(canvas.rasters)
     print(
         f"known-best atlas updated: {CORPUS.count} witnesses, {CORPUS.count} house "
-        f"renderings, {len(COMPOSITES)} composite{_plural(len(COMPOSITES))} "
-        f"(SVG, {rasters} PNG rasters, PDF), {CORPUS.count} frontier links"
+        f"renderings, {CORPUS.count} frontier links; the {len(COMPOSITES)} "
+        f"composite{_plural(len(COMPOSITES))} are redrawn by --update-composites"
     )
+    for note in composite_findings().notes:
+        print(note)
 
 
 def _git_result(*arguments: str) -> subprocess.CompletedProcess[str]:
@@ -2236,113 +2377,92 @@ def _git_result(*arguments: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def restamp_source_guard() -> None:
-    """Refuse a stamp-only build if any retained geometry input changed since the SVGs."""
-    baselines = []
-    for canvas in COMPOSITES:
-        relative = str(canvas.svg_path.relative_to(REPOSITORY_ROOT))
-        found = _git_result("log", "-1", "--format=%H", "--", relative)
-        if found.returncode or not found.stdout.strip():
-            raise ValueError(f"cannot identify the retained {relative} build commit")
-        baselines.append(found.stdout.strip())
-    if len(set(baselines)) != 1:
-        raise ValueError("composite SVGs do not share one retained build commit")
-    baseline = baselines[0]
-    for canvas in COMPOSITES:
-        relative = str(canvas.svg_path.relative_to(REPOSITORY_ROOT))
-        retained = _git_result("show", f"{baseline}:{relative}")
-        current = canvas.svg_path.read_bytes().decode("utf-8")
-        if retained.returncode or retained.stdout != current:
-            raise ValueError(f"{relative} differs from its retained composite build")
-    stable_paths = {
-        CATALOGUE,
-        UNITSQUARE_RESULTS,
-        SOURCE_MANIFEST,
-        WITNESS_ROOT,
-        RENDER_ROOT,
-        MANIFEST,
-        build_composite_figure_data.RECORD,
-        *(
-            plan.path
-            for plan in source_plans().values()
-            if not plan.path.is_relative_to(FRONTIER)
-        ),
-    }
-    relative_paths = sorted(
-        str(path.relative_to(REPOSITORY_ROOT))
-        for path in stable_paths
-        if path.is_relative_to(REPOSITORY_ROOT)
-    )
-    for revision in (baseline, "HEAD"):
-        changed = _git_result("diff", "--quiet", revision, "--", *relative_paths)
-        if changed.returncode:
-            raise ValueError("retained atlas geometry inputs changed since the composite build")
-    changed_cases = _git_result("diff", "--name-only", baseline, "--", "packing/frontier")
-    if changed_cases.returncode:
-        raise ValueError("cannot audit frontier changes since the composite build")
-    cases = [
-        path
-        for path in changed_cases.stdout.splitlines()
-        if re.fullmatch(r"packing/frontier/n-\d{3}\.md", path)
-    ]
-    if any(path != "packing/frontier/n-017.md" for path in cases):
-        raise ValueError("a frontier case other than n-017 changed since the composite build")
-    for path in ("packing/frontier/n-017.md",):
-        old = _git_result("show", f"{baseline}:{path}")
-        if old.returncode:
-            raise ValueError(f"cannot read prior {path}")
-        previous = safe_load(old.stdout.split("---\n", 2)[1])["packing"]
-        current = safe_load((REPOSITORY_ROOT / path).read_text("utf-8").split("---\n", 2)[1])[
-            "packing"
-        ]
-        if previous["reported_upper_bound"] != current["reported_upper_bound"]:
-            raise ValueError(f"{path} changed its atlas geometry source")
+def drawable_identity() -> CompositeIdentity:
+    """What a composite drawn now says of itself, or a refusal to draw one.
 
-
-_STAMP_TEXT = re.compile(r'(<text\b[^>]*data-feature="release-stamp"[^>]*>)([^<]*)(</text>)')
-
-
-def restamped_svg(svg_text: str, stamp: str) -> str:
-    """Replace exactly one footer text node, preserving every other SVG byte."""
-    matches = list(_STAMP_TEXT.finditer(svg_text))
-    if len(matches) != 1:
-        raise ValueError("composite must contain exactly one plain release-stamp text node")
-    match = matches[0]
-    result = svg_text[: match.start(2)] + escape(stamp) + svg_text[match.end(2) :]
-    root = ET.fromstring(result)
-    recorded = [
-        "".join(node.itertext())
-        for node in root.iter(svg_tag("text"))
-        if node.attrib.get("data-feature") == "release-stamp"
-    ]
-    if recorded != [stamp]:
-        raise ValueError("restamped composite footer does not match the current edition")
-    return result
-
-
-def restamp_only() -> None:
-    """Update composite footers and exports after proving retained geometry is unchanged."""
-    restamp_source_guard()
-    build_composite_figure_data.check()
-    problems, _entries = _retained_problems(allow_stale_stamp=True)
-    if problems:
-        raise ValueError("atlas restamp preflight failed:\n  " + "\n  ".join(problems[:20]))
-    replacements = {
-        canvas.svg_path: restamped_svg(
-            canvas.svg_path.read_bytes().decode("utf-8"), SUMMARY_RELEASE_STAMP
+    The drawing is stamped with the pinned data revision, so the pin has to be the data
+    the working tree holds: git's last data commit, with nothing uncommitted on top of
+    it. Otherwise the stamp would name data the cards do not show, which is the one
+    thing the stamp is for. Drawing therefore needs a repository, which rendering a page
+    never does; a composite is drawn by a person at a desk, not by the deploy.
+    """
+    try:
+        live = data_revision(REPOSITORY_ROOT)
+        day = commit_date(REPOSITORY_ROOT, DATA_REVISION)
+    except RuntimeError as error:
+        raise ValueError(
+            f"a composite is stamped with the data commit it shows, and {error}"
+        ) from error
+    if live != DATA_REVISION:
+        raise ValueError(
+            f"the data changed at {live[:12]} and release.py still pins "
+            f"{DATA_REVISION[:12]}: run `python -m devtools.release_pin --update`, "
+            "commit it, then draw"
         )
-        for canvas in COMPOSITES
-    }
-    for path, content in replacements.items():
-        with atomic_output_file(path) as temporary:
-            temporary.write_text(content, encoding="utf-8")
-    for canvas in COMPOSITES:
-        _update_png_exports(canvas, replacements[canvas.svg_path])
-        render_composite_pdf.update(canvas.spec.stem)
+    dirty = _git_result("status", "--porcelain", "--", *data_pathspec())
+    if dirty.returncode or dirty.stdout.strip():
+        raise ValueError(
+            "the data has uncommitted changes, so a composite drawn now would show data "
+            "its stamp does not name; commit them and re-pin first:\n"
+            + (dirty.stdout.rstrip() or dirty.stderr.strip())
+        )
+    return CompositeIdentity(DATA_REVISION, day)
+
+
+def retained_identity(svg_text: str) -> CompositeIdentity:
+    """The record a retained composite carries of what it was drawn from."""
+    values = render_composite_pdf.svg_metadata(svg_text)
+    missing = [key for key in (IDENTITY_REVISION_KEY, IDENTITY_DATE_KEY) if key not in values]
+    if missing:
+        raise ValueError(
+            f"records no {' or '.join(missing)}: it does not say what data it was drawn "
+            "from; redraw it with --update-composites"
+        )
+    return CompositeIdentity(values[IDENTITY_REVISION_KEY], values[IDENTITY_DATE_KEY])
+
+
+def update_composites() -> None:
+    """Redraw both composites and every export, from the retained witnesses.
+
+    Run at a version bump and on demand, never because the data moved. The drawing is
+    made from the retained records, so they are held to their own cheap checks first:
+    a composite drawn from a manifest or a figure record that is stale would be stale
+    the same way. Whether the retained witnesses are what their sources give is the
+    whole `--check`, which is not repeated here.
+    """
+    identity = drawable_identity()
+    build_composite_figure_data.check()
+    _figure_entries.cache_clear()
     problems, _entries = _retained_problems()
     if problems:
-        raise ValueError("atlas restamp postflight failed:\n  " + "\n  ".join(problems[:20]))
-    print(f"known-best atlas restamped: {len(COMPOSITES)} composite export families")
+        raise ValueError(
+            "the retained atlas records disagree with each other, so a composite drawn "
+            "from them would too; run --update first:\n  " + "\n  ".join(problems[:20])
+        )
+    cases = retained_cases(CORPUS.numbers)
+    rasters = 0
+    for canvas in COMPOSITES:
+        svg_text = render_known_best_summary_svg(_cards(cases, canvas), canvas, identity)
+        retained = canvas.svg_path
+        if not retained.is_file() or retained.read_text(encoding="utf-8") != svg_text:
+            with atomic_output_file(retained, make_parents=True) as temporary:
+                temporary.write_text(svg_text, encoding="utf-8")
+        # Each composite ships as one family drawn from one SVG in one run: the vector
+        # itself, every PNG raster, and the PDF. Splitting the exports across commands
+        # is what would let four of the five be current and the fifth be last week's.
+        _update_png_exports(canvas, svg_text)
+        render_composite_pdf.update(canvas.spec.stem)
+        rasters += len(canvas.rasters)
+    findings = composite_findings()
+    if findings.problems:
+        raise ValueError(
+            "composite redraw postflight failed:\n  " + "\n  ".join(findings.problems[:20])
+        )
+    print(
+        f"known-best composites redrawn from {identity.stamp}, data of "
+        f"{identity.data_date}: {len(COMPOSITES)} SVG, {rasters} PNG rasters, "
+        f"{len(COMPOSITES)} PDF"
+    )
 
 
 def check(workers: int = 1) -> None:
@@ -2367,19 +2487,16 @@ def check(workers: int = 1) -> None:
         )
     if KINGBIRD_RAW_ROOT.exists():
         problems.append("raw Kingbird source directory must not be retained")
-    # One --check covers every composite family, not just the vectors: the rasters and
-    # the PDF are exports of one SVG each, and each carries a receipt naming the SVG it
-    # was drawn from. Reading four receipts costs nothing next to redrawing a
-    # 25-by-30-inch page, and a report that lists every stale export at once beats
-    # finding them one command at a time.
-    for canvas in COMPOSITES:
-        svg_text = outputs[canvas.svg_path]
-        problems.extend(
-            f"missing or stale {export.name} {export.role} receipt"
-            for export in canvas.rasters
-            if not _png_matches_summary(export, svg_text)
-        )
-        problems.extend(_composite_pdf_problems(canvas, svg_text))
+    # One --check covers every composite family, not just the vectors: each retained
+    # composite is redrawn from the rebuilt corpus under its own record and compared,
+    # and the rasters and the PDF are exports of one SVG each, each carrying a receipt
+    # naming the SVG it was drawn from. Reading four receipts costs nothing next to
+    # redrawing a 25-by-30-inch page, and a report that lists every stale export at once
+    # beats finding them one command at a time.
+    findings = composite_findings(
+        lambda canvas, identity: expected_composite(canvas, identity, workers)
+    )
+    problems.extend(findings.problems)
     atlas = manifest["atlas"]
     # The count the schema no longer pins as a constant is pinned here instead, against
     # the range the same record states: a case that went missing between the frontier
@@ -2394,16 +2511,16 @@ def check(workers: int = 1) -> None:
         problems.append(f"manifest entries are not exactly {CORPUS.label}")
     if problems:
         raise ValueError("known-best atlas drift:\n  " + "\n  ".join(problems[:20]))
+    for note in findings.notes:
+        print(note)
     print(
         f"known-best atlas check passed: {CORPUS.count} sources/plans, witnesses, "
         f"renders, {len(COMPOSITES)} composite{_plural(len(COMPOSITES))}, and links"
     )
 
 
-def _retained_problems(
-    *, allow_stale_stamp: bool = False
-) -> tuple[list[str], list[dict] | None]:
-    """Everything the retained records say about themselves, checked without geometry.
+def _retained_problems() -> tuple[list[str], list[dict] | None]:
+    """Everything the retained data records say about themselves, checked without geometry.
 
     This is the half of `check` that does not rebuild a case, and at `n=1..324` it is
     almost free next to the half that does. It still re-derives rather than merely
@@ -2454,42 +2571,195 @@ def _retained_problems(
             problems.append(f"manifest reported_side disagrees with {case.path.name}")
         elif case.text != _frontier_with_witness(case, str(entry["witness"]["id"])):
             problems.append(f"stale {_relative(case.path)}")
-    problems.extend(_composite_receipt_problems(allow_stale_stamp=allow_stale_stamp))
     return problems, entries
 
 
-def _composite_receipt_problems(*, allow_stale_stamp: bool = False) -> list[str]:
-    """Every retained composite claim and export, checked without rebuilding geometry.
+@dataclass(frozen=True)
+class CompositeFindings:
+    """What a check of the retained composites found.
 
-    The whole check compares the entire SVG against a fresh rendering. Here the current
-    figure record is cheap enough to compare directly with the visible labels in the
-    retained SVG, so a changed bound cannot wait for that deferred rebuild to be found,
-    and the same holds for the footer's version against `sqpack.release`.
-    Exports are checked against the retained drawing they declare they came from, and
-    the drawing is held to the canvas its own specification computes.
+    `problems` fail the check. `notes` do not: they say which data each composite shows
+    and, where a composite trails the pin, which of its claims have since changed.
+    """
+
+    problems: tuple[str, ...]
+    notes: tuple[str, ...]
+
+
+#: A card in a serialized composite: one group at the root's indent, named by its case.
+_CARD_START = re.compile(r'^  <g data-feature="packing-card" data-n="(\d+)"', re.MULTILINE)
+
+
+def _composite_parts(svg_text: str) -> dict[str, str]:
+    """A serialized composite, cut into its frame and its cards.
+
+    The frame is everything ahead of the first card: the title, the dateline, the
+    legend and the footer. Each card runs to the next, and the last carries the closing
+    tag. Two drawings are compared part by part so a difference names the cases it is in.
+    """
+    marks = list(_CARD_START.finditer(svg_text))
+    if not marks:
+        return {"the frame": svg_text}
+    parts = {"the frame": svg_text[: marks[0].start()]}
+    for index, mark in enumerate(marks):
+        end = marks[index + 1].start() if index + 1 < len(marks) else len(svg_text)
+        parts[f"n={mark.group(1)}"] = svg_text[mark.start() : end]
+    return parts
+
+
+def _redraw_differences(retained: str, redrawn: str) -> list[str]:
+    """The parts of a retained composite that a redraw under its own record changes."""
+    if retained == redrawn:
+        return []
+    before, after = _composite_parts(retained), _composite_parts(redrawn)
+    differing = [name for name in after if before.get(name) != after[name]]
+    differing.extend(name for name in before if name not in after)
+    return differing or ["its bytes"]
+
+
+def _identity_git_problems(path: str, identity: CompositeIdentity) -> list[str]:
+    """Hold a composite's record to the repository, wherever git can answer.
+
+    The revision has to be a commit in this history that changed the data, and the date
+    has to be that commit's. Nothing is reported where git cannot say -- a source
+    tarball, or a shallow clone cut above the commit -- as `test_release` skips there.
+
+    A shallow clone can hold the commit and still not hold its history: the pull
+    request's record sweeps check out one commit of a partial clone, which fetches the
+    named commit when asked for it and has no ancestry to place it in. There the date is
+    still the commit's own, and the two questions that walk history are left to a clone
+    that has one (`test_the_retained_composites_agree_with_their_own_records`, in the
+    behavioral shards, which fetch all of it).
+    """
+    revision = identity.data_revision
+    shallow = _git_result("rev-parse", "--is-shallow-repository")
+    cut = shallow.returncode != 0 or shallow.stdout.strip() == "true"
+    found = _git_result("cat-file", "-t", f"{revision}^{{commit}}")
+    if found.returncode != 0:
+        if cut:
+            return []
+        return [f"{path} names {revision[:12]} as its data, which is not a commit here"]
+    problems = []
+    try:
+        day = commit_date(REPOSITORY_ROOT, revision)
+    except RuntimeError:
+        return []
+    if day != identity.data_date:
+        problems.append(
+            f"{path} dates its data {identity.data_date}; {revision[:12]} is dated {day}"
+        )
+    if cut:
+        return problems
+    last = _git_result("log", "-1", "--format=%H", revision, "--", *data_pathspec())
+    if last.returncode == 0 and last.stdout.strip() != revision:
+        problems.append(
+            f"{path} names {revision[:12]} as its data, which did not change the data"
+        )
+    if _git_result("merge-base", "--is-ancestor", revision, "HEAD").returncode == 1:
+        problems.append(
+            f"{path} names {revision[:12]} as its data, which is not in this history"
+        )
+    return problems
+
+
+def composite_findings(
+    redraw: Callable[[CompositeCanvas, CompositeIdentity], str] | None = None,
+) -> CompositeFindings:
+    """Every retained composite, held to its own record, the release and its exports.
+
+    Nothing is rebuilt unless `redraw` is given. What is held, for each composite:
+
+    - it records the data commit and date it was drawn from, and where git can answer
+      that is a data commit in this history, of that date;
+    - its footer is the edition as it read at that commit and its dateline is that date,
+      so a composite drawn for an earlier version fails here until it is redrawn;
+    - its canvas is the one its specification computes;
+    - every claim printed on a card agrees with the current figure record;
+    - with `redraw`, the whole `--check`'s rebuild of the corpus, its bytes are what
+      that rebuild draws under the composite's own record;
+    - each PNG and the PDF carry the receipt of this SVG.
+
+    The two comparisons with current data are where a composite may trail
+    (`sqpack.release`, rule 5). While its data revision is the pin they are failures, as
+    they always were: the drawing claims the data every page prints and does not show
+    it. Once the pin has moved on they are notes, naming the cards, unless
+    `COMPOSITES_MAY_TRAIL` is off.
     """
     problems: list[str] = []
+    notes: list[str] = []
     for canvas in COMPOSITES:
+        path = _relative(canvas.svg_path)
         if not canvas.svg_path.is_file():
-            problems.append(f"missing {_relative(canvas.svg_path)}")
+            problems.append(f"missing {path}")
             continue
         svg_text = canvas.svg_path.read_text(encoding="utf-8")
         root = ET.fromstring(svg_text)
         if (root.get("width"), root.get("height")) != (str(canvas.width), str(canvas.height)):
-            problems.append(
-                f"{_relative(canvas.svg_path)} is not the canvas its specification computes"
+            problems.append(f"{path} is not the canvas its specification computes")
+        identity: CompositeIdentity | None = None
+        try:
+            identity = retained_identity(svg_text)
+        except ValueError as error:
+            problems.append(f"{path} {error}")
+        if identity is not None and identity.problems():
+            problems.extend(f"{path} {problem}" for problem in identity.problems())
+            identity = None
+        differing = _composite_label_problems(canvas, root)
+        if identity is not None:
+            problems.extend(_composite_edition_problems(canvas, root, identity))
+            problems.extend(_identity_git_problems(path, identity))
+            if redraw is not None:
+                parts = _redraw_differences(svg_text, redraw(canvas, identity))
+                if parts:
+                    shown = ", ".join(parts[:12]) + (" ..." if len(parts) > 12 else "")
+                    differing.append(
+                        f"{path} is not what a rebuild draws under its own record, in "
+                        f"{len(parts)} part{_plural(len(parts))}: {shown}"
+                    )
+            shows = f"{path} shows {identity.stamp}, data of {identity.data_date}"
+            if identity.current:
+                notes.append(f"{shows}: the data every page prints")
+            else:
+                notes.append(
+                    f"{shows}; the pin has moved to {DATA_REVISION[:12]}, and the composite "
+                    "is redrawn at the next version or by --update-composites"
+                )
+        if differing and identity is not None and not identity.current and COMPOSITES_MAY_TRAIL:
+            notes.append(
+                f"{path} trails the data in {len(differing)} "
+                f"place{_plural(len(differing))}, which fails nothing until the next version:"
             )
-        problems.extend(_composite_label_problems(canvas, root))
-        problems.extend(
-            _composite_edition_problems(canvas, root, allow_stale_stamp=allow_stale_stamp)
-        )
+            notes.extend(f"  {line}" for line in differing[:20])
+        else:
+            problems.extend(differing)
         problems.extend(
             f"missing or stale {export.name} {export.role} receipt"
             for export in canvas.rasters
             if not _png_matches_summary(export, svg_text)
         )
         problems.extend(_composite_pdf_problems(canvas, svg_text))
-    return problems
+    return CompositeFindings(tuple(problems), tuple(notes))
+
+
+def check_composites() -> None:
+    """Hold the retained composites to their records, without rebuilding anything.
+
+    The half of the atlas check that concerns the posters, on its own and in seconds:
+    what to run after a version bump, after `--update-composites`, or to see how far a
+    poster trails the data. The pull-request surface runs it inside `--check --sample`.
+    """
+    findings = composite_findings()
+    if findings.problems:
+        raise ValueError(
+            "known-best composite drift:\n  " + "\n  ".join(findings.problems[:20])
+        )
+    for note in findings.notes:
+        print(note)
+    print(
+        f"known-best composites check passed: {len(COMPOSITES)} "
+        f"composite{_plural(len(COMPOSITES))} against their own records, the figure "
+        "record and their exports"
+    )
 
 
 def _composite_label_problems(canvas: CompositeCanvas, root: ET.Element) -> list[str]:
@@ -2544,22 +2814,21 @@ def _composite_label_problems(canvas: CompositeCanvas, root: ET.Element) -> list
 
 
 def _composite_edition_problems(
-    canvas: CompositeCanvas, root: ET.Element, *, allow_stale_stamp: bool = False
+    canvas: CompositeCanvas, root: ET.Element, identity: CompositeIdentity
 ) -> list[str]:
-    """Compare the release line and the version stamp with `sqpack.release`.
+    """Compare the dateline and the version stamp with the composite's own record.
 
-    Both say which data the drawing shows, and re-pinning the data revision changes the
-    stamp without touching a card, so a stale stamp would otherwise wait for the
-    deferred rebuild to be found.
+    Both say which data the drawing shows. They are held to the record the drawing
+    carries, not to the pin, so re-pinning the data revision leaves a composite right;
+    and the record's stamp is written with the current version, so a composite drawn for
+    an earlier one is wrong here until it is redrawn.
     """
     path = _relative(canvas.svg_path)
     problems: list[str] = []
     for feature, expected in (
-        ("release", SUMMARY_RELEASE_TEXT),
-        ("release-stamp", SUMMARY_RELEASE_STAMP),
+        ("release", identity.dateline),
+        ("release-stamp", identity.stamp),
     ):
-        if allow_stale_stamp and feature == "release-stamp":
-            continue
         actual = tuple(
             "".join(node.itertext())
             for node in root.iter(svg_tag("text"))
@@ -2567,6 +2836,13 @@ def _composite_edition_problems(
         )
         if actual != (expected,):
             problems.append(f"{path} {feature} is {actual!r}; expected {(expected,)!r}")
+            if feature == "release-stamp" and not any(
+                PUBLICATION_VERSION in text for text in actual
+            ):
+                problems.append(
+                    f"{path} was drawn for another version than {PUBLICATION_VERSION}; "
+                    "redraw it with --update-composites"
+                )
     return problems
 
 
@@ -2602,17 +2878,22 @@ def check_sample(stride: int = ATLAS_SAMPLE_STRIDE, workers: int = 1) -> None:
 
     What it does not cover, stated so nobody has to infer it: the per-case geometry of
     the cases the stride skips, and the composite SVGs' own bytes beyond their canvas,
-    visible claim labels, release line and version stamp, and export receipts. Both are
+    visible claim labels, dateline, version stamp and record of the data they were drawn
+    from, and export receipts (`composite_findings`). Both are
     covered by `known-best n=1..324 atlas rebuild` on the deferred surface, which is the
     exact complement
     `test_the_deep_gate_runs_exactly_what_the_pull_request_surface_defers` holds.
     """
     numbers = sampled_numbers(CORPUS, stride)
     problems, entries = _retained_problems()
+    findings = composite_findings()
+    problems.extend(findings.problems)
     if entries is not None:
         problems.extend(_sample_problems(numbers, entries, workers))
     if problems:
         raise ValueError("known-best atlas drift:\n  " + "\n  ".join(problems[:20]))
+    for note in findings.notes:
+        print(note)
     print(
         f"known-best atlas sample check passed: {len(numbers)} of {CORPUS.count} cases "
         f"rebuilt (every {stride}th from n={CORPUS.first_n}), {CORPUS.count} manifest "
@@ -2721,14 +3002,25 @@ def parser() -> argparse.ArgumentParser:
     mode.add_argument(
         "--fetch", action="store_true", help="acquire missing retained upstream assets"
     )
-    mode.add_argument("--update", action="store_true", help="regenerate all retained outputs")
     mode.add_argument(
-        "--restamp-only",
+        "--update",
         action="store_true",
-        help="verify retained geometry and claims, then update composite stamps and exports",
+        help="regenerate the data layer: witnesses, renderings, manifest, frontier links",
+    )
+    mode.add_argument(
+        "--update-composites",
+        action="store_true",
+        help="redraw both composites and their PNG and PDF exports from the retained "
+        "witnesses: at a version bump, or on demand",
     )
     mode.add_argument(
         "--check", action="store_true", help="compare retained outputs to a rebuild"
+    )
+    mode.add_argument(
+        "--check-composites",
+        action="store_true",
+        help="hold the retained composites to their own records, the figure record and "
+        "their exports, rebuilding nothing",
     )
     mode.add_argument(
         "--smoke", action="store_true", help="build corpus into a temporary directory"
@@ -2780,8 +3072,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         fetch_sources(refresh=args.refresh)
     elif args.update:
         update(workers)
-    elif args.restamp_only:
-        restamp_only()
+    elif args.update_composites:
+        update_composites()
+    elif args.check_composites:
+        check_composites()
     elif args.check:
         check_sample(workers=workers) if args.sample else check(workers)
     elif args.report:

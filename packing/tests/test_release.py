@@ -9,6 +9,10 @@ holds the pinned data revision to git.
 The version history is held to two rules of its own: it only grows, back to the first
 edition, and each edition is dated by when it was first published rather than when its
 label was first written down.
+
+A re-pin is one line and rebuilds nothing (`devtools.release_pin`, with tests of its
+own). The posters and the films are stamped when they are drawn, with `edition_at` their
+own data revision, and `tests/test_known_best_composites.py` holds a poster to that.
 """
 
 from __future__ import annotations
@@ -20,6 +24,7 @@ from pathlib import Path
 import pytest
 
 from sqpack.release import (
+    COMPOSITES_MAY_TRAIL,
     DATA_REVISION,
     DATA_REVISION_LENGTH,
     FIRST_PUBLISHED,
@@ -31,9 +36,12 @@ from sqpack.release import (
     PUBLICATION_STATUS,
     PUBLICATION_VERSION,
     PublicationHistoryEntry,
+    commit_date,
     data_pathspec,
     data_revision,
     data_version,
+    edition_at,
+    last_change_date,
 )
 
 REPO = Path(__file__).resolve().parents[2]
@@ -65,13 +73,17 @@ def _git(repo: Path, *arguments: str) -> str:
     return done.stdout.strip()
 
 
-def _commit(repo: Path, path: str, text: str) -> str:
-    """Write `path` under `repo`, commit it alone, and return the commit's hash."""
+def _commit(repo: Path, path: str, text: str, when: str | None = None) -> str:
+    """Write `path` under `repo`, commit it alone, and return the commit's hash.
+
+    `when` is the commit's author date, with its offset, as `--date` takes it.
+    """
     target = repo / path
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(text)
     _git(repo, "add", path)
-    _git(repo, "commit", "--quiet", "-m", f"touch {path}")
+    dated = () if when is None else (f"--date={when}",)
+    _git(repo, "commit", "--quiet", "-m", f"touch {path}", *dated)
     return _git(repo, "rev-parse", "HEAD")
 
 
@@ -79,7 +91,7 @@ def _commit(repo: Path, path: str, text: str) -> str:
 def history(tmp_path: Path) -> tuple[Path, str]:
     """A scratch repository whose last data commit is followed by three that are not.
 
-    One commit re-stamps an atlas composite and one edits a video spike, which the data
+    One commit redraws an atlas composite and one edits a video spike, which the data
     paths exclude; one changes a file outside them. Returns the repository and the hash
     of its last data commit.
     """
@@ -154,6 +166,24 @@ def test_the_edition_is_the_stamp_with_the_status_ahead_of_it() -> None:
     assert PUBLICATION_EDITION.strip() == PUBLICATION_EDITION
 
 
+def test_a_drawn_asset_is_stamped_with_the_edition_at_its_own_data_revision() -> None:
+    """Rule 4: one spelling of the version, at whichever data commit an asset shows.
+
+    A page prints the edition at the pin. A poster or a film keeps the edition at the
+    commit it was drawn from, written by the same function, so the two differ in the
+    six characters that say which data each shows and in nothing else.
+    """
+    assert edition_at(DATA_REVISION) == PUBLICATION_EDITION
+    earlier = "0123456789abcdef0123456789abcdef01234567"
+    assert edition_at(earlier).endswith(f"{PUBLICATION_VERSION}-012345")
+    assert edition_at(earlier).removesuffix("012345") == (
+        PUBLICATION_EDITION.removesuffix(DATA_REVISION[:DATA_REVISION_LENGTH])
+    )
+    # The owner's rule of 2026-10-01, on by default: a poster may trail the data until
+    # the next version. `test_known_best_composites` exercises both positions.
+    assert COMPOSITES_MAY_TRAIL is True
+
+
 @pytest.mark.parametrize("revision", [DATA_REVISION, PUBLICATION_REVISION])
 def test_each_pinned_revision_names_a_commit_this_repository_has(revision: str) -> None:
     """A hash a reader cannot resolve is worse than no hash.
@@ -211,10 +241,10 @@ def test_the_pinned_data_revision_is_the_last_data_commit() -> None:
         pytest.skip(str(error))
     assert live == DATA_REVISION, (
         f"the data changed at {live[:12]}, but the version still names "
-        f"{DATA_REVISION[:12]}: set DATA_REVISION = {live!r} in "
-        "packing/src/sqpack/release.py, then run "
-        "`python -m devtools.build_known_best_atlas --update` from packing/ to re-stamp "
-        "the atlas, and commit the two together"
+        f"{DATA_REVISION[:12]}: run `python -m devtools.release_pin --update` from "
+        f"packing/, which sets DATA_REVISION = {live!r} in "
+        "packing/src/sqpack/release.py, and commit that one line. Nothing is rebuilt: "
+        "the atlas posters state the data they were drawn from and are not re-stamped"
     )
     assert data_version(REPO) == PUBLICATION_STAMP
 
@@ -245,7 +275,7 @@ def test_no_file_inside_the_data_carries_the_stamp_unless_it_is_excluded() -> No
 def test_the_data_commit_is_the_last_one_that_changed_the_data(
     history: tuple[Path, str],
 ) -> None:
-    """Re-stamping a composite, editing a video spike and editing prose do not count."""
+    """Redrawing a composite, editing a video spike and editing prose do not count."""
     repo, data = history
     assert data_revision(repo) == data
     assert data_version(repo) == f"{PUBLICATION_VERSION}-{data[:DATA_REVISION_LENGTH]}"
@@ -300,3 +330,69 @@ def test_a_directory_that_is_not_a_repository_cannot_name_a_data_commit(
 ) -> None:
     with pytest.raises(RuntimeError, match="cannot name the last data commit"):
         data_revision(tmp_path)
+
+
+def test_a_commit_is_dated_on_its_authors_own_calendar(tmp_path: Path) -> None:
+    """A date derived from a commit is the day its author would say it was made.
+
+    The commit records its own offset from UTC, so the answer does not depend on the
+    machine that asks: 23:30 at seven hours behind UTC is the 28th, though it is the
+    29th in UTC, and 00:30 at nine hours ahead is the 30th, though it is the 29th there.
+    """
+    repo = tmp_path / "origin"
+    repo.mkdir()
+    _git(repo, "init", "--quiet")
+    west = _commit(repo, "paper.md", "one\n", "2026-09-28T23:30:00-07:00")
+    east = _commit(repo, "paper.md", "two\n", "2026-09-30T00:30:00+09:00")
+    assert commit_date(repo, west) == "2026-09-28"
+    assert commit_date(repo, east) == "2026-09-30"
+    with pytest.raises(RuntimeError, match="git cannot date"):
+        commit_date(repo, "0" * 40)
+    with pytest.raises(RuntimeError, match="git cannot date"):
+        commit_date(tmp_path, west)
+
+
+def test_the_last_change_to_a_text_is_its_latest_commit_merges_excluded(
+    tmp_path: Path,
+) -> None:
+    """What a paper's "revised" line is held to, and each way it could be wrong.
+
+    The latest author date among the commits that changed the file. A commit to another
+    file does not count; a merge is not when anyone wrote the text, so it does not
+    either; and of two branches merged out of order the later change wins, though git
+    lists the earlier one first.
+    """
+    repo = tmp_path / "origin"
+    repo.mkdir()
+    _git(repo, "init", "--quiet")
+    _commit(repo, "paper.md", "one\n", "2026-09-28T12:00:00+00:00")
+    base = _git(repo, "rev-parse", "HEAD")
+    _commit(repo, "other.md", "prose\n", "2026-10-05T12:00:00+00:00")
+    assert last_change_date(repo, "paper.md") == "2026-09-28"
+
+    _git(repo, "switch", "--quiet", "-c", "branch", base)
+    _commit(repo, "paper.md", "one\ntwo\n", "2026-10-01T12:00:00+00:00")
+    _git(repo, "switch", "--quiet", "-")
+    _commit(repo, "notes.md", "later, and not the paper\n", "2026-10-03T12:00:00+00:00")
+    _git(
+        repo,
+        "-c",
+        "user.name=release test",
+        "merge",
+        "--quiet",
+        "--no-ff",
+        "--no-edit",
+        "branch",
+    )
+    assert last_change_date(repo, "paper.md") == "2026-10-01"
+    assert last_change_date(repo, "paper.md", "other.md") == "2026-10-05"
+
+    with pytest.raises(RuntimeError, match="no commit changes it"):
+        last_change_date(repo, "absent.md")
+    with pytest.raises(RuntimeError, match="cannot date the last change"):
+        last_change_date(tmp_path, "paper.md")
+
+    shallow = tmp_path / "shallow"
+    _git(tmp_path, "clone", "--quiet", "--depth", "1", f"file://{repo}", str(shallow))
+    with pytest.raises(RuntimeError, match="history is shallow"):
+        last_change_date(shallow, "paper.md")

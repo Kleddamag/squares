@@ -53,6 +53,14 @@ PDF's fonts and pagination without rewriting it.
 Neither mode compares against a committed PDF or a portable digest. `--diagnostics-dir`
 retains the raw comparison pair and a neutral report when a check fails; a successful
 check creates no diagnostic files.
+The published document's two date fields are the publication's, not the clock's.
+Chromium stamps `/CreationDate` and `/ModDate` with the second it printed, which is why
+every comparison here normalises them, and which made a PDF's properties say when a
+runner last built it. `--update` sets both to the day the page says it was last revised
+(`REVISED`), at noon UTC, in place and at the same length, so no offset moves
+(`dated`); `--check-artifact` refuses a stored file dated otherwise. A document that
+states neither field is left as it is drawn and passes: every PDF Chromium writes states
+both, and the rule is that a stated date is never the clock's.
 With `--trace-math`, each completed draw also retains visible prepared-math geometry
 and font state around the existing final frames and PDF call. A render exception retains
 its available observations, with no PDF. The observer can change timing and force layout:
@@ -70,6 +78,7 @@ import re
 import sys
 import zlib
 from collections.abc import Iterable, Sequence
+from datetime import date, datetime
 from functools import cache
 from importlib.metadata import version
 from pathlib import Path
@@ -78,7 +87,9 @@ from typing import TYPE_CHECKING, Never
 
 from strif import atomic_output_file
 
+from devtools.render_composite_pdf import PDF_TIME, pdf_dates
 from sqpack.probes import applied, probe
+from sqpack.release import EXPLAINER_REVISED
 
 if TYPE_CHECKING:
     from playwright.sync_api import Page
@@ -98,6 +109,9 @@ EXPECTED_PAGE_COUNT = 22
 #: renders of one page. Normalised rather than removed: the length has to stay put or
 #: every cross-reference offset after them shifts.
 _DATES = re.compile(rb"/(CreationDate|ModDate) \(D:[^)]{0,32}\)")
+
+#: The day the explainer says it was last revised, which its PDF's dates state too.
+REVISED = datetime.strptime(EXPLAINER_REVISED, "%B %d, %Y").date()  # noqa: DTZ007
 
 #: The page marks its submitted math work finished, including recovered failures.
 #: This marker and `document.fonts.ready` establish settlement; `_MATH_RENDERED`
@@ -267,6 +281,60 @@ _PRINT_DRAWS = 4
 def _normalised(pdf: bytes) -> bytes:
     """The document without its clock, for comparing one render against another."""
     return _DATES.sub(rb"/\1 (D:00000000000000+00'00')", pdf)
+
+
+def publication_date_text(day: date) -> str:
+    """`day` at `PDF_TIME`, as Chromium writes a date less its `D:`: 20261001120000+00'00'.
+
+    Noon UTC, as the composite PDFs have it (`render_composite_pdf.PDF_TIME`) and for
+    the same reason: a reader shows the instant in its own timezone.
+    """
+    if PDF_TIME != "12:00:00Z":  # pragma: no cover - the two spellings of one time
+        raise ValueError("publication_date_text spells PDF_TIME out; change both together")
+    return f"{day:%Y%m%d}120000+00'00'"
+
+
+def dated(pdf: bytes, day: date) -> bytes:
+    """`pdf` with its creation and modification dates set to `day`, and nothing moved.
+
+    Chromium writes both fields from the clock. Each is replaced by a date of exactly
+    its own length, since a byte more or fewer would shift every cross-reference offset
+    after it. A document that states neither field, or one of another length, is refused
+    rather than left half dated: the browser's writer changed, and so must this.
+    """
+    stated = f"(D:{publication_date_text(day)})".encode("ascii")
+    seen: list[bytes] = []
+
+    def replace(match: re.Match[bytes]) -> bytes:
+        name = match.group(1)
+        seen.append(name)
+        replacement = b"/" + name + b" " + stated
+        if len(replacement) != len(match.group(0)):
+            raise ValueError(
+                f"the PDF's {name.decode('ascii')} is {match.group(0)!r}, which is not "
+                f"the length of {stated!r}; it cannot be dated in place"
+            )
+        return replacement
+
+    result = _DATES.sub(replace, pdf)
+    if sorted(seen) != [b"CreationDate", b"ModDate"]:
+        raise ValueError(
+            "a Chromium PDF states one CreationDate and one ModDate; this one states "
+            f"{[name.decode('ascii') for name in seen]}"
+        )
+    return result
+
+
+def date_problem(pdf: bytes, day: date) -> str | None:
+    """What is wrong with the dates `pdf` states, held to `day`; `None` when nothing is."""
+    expected = publication_date_text(day)
+    stated = pdf_dates(pdf)
+    if stated == {"CreationDate": expected, "ModDate": expected}:
+        return None
+    return (
+        f"the PDF's dates are {stated}; a published PDF is dated by its last revision, "
+        f"{day.isoformat()} at noon UTC ({expected}), not by the clock that drew it"
+    )
 
 
 #: An object header as Chromium's writer emits it: at a line start, which is where a
@@ -1127,6 +1195,8 @@ def update() -> None:
     the rule and its cost.
     """
     drawn, loads = _confirmed_draw()
+    if _DATES.search(drawn) is not None:
+        drawn = dated(drawn, REVISED)
     written = _with_receipt(drawn, PAGE.read_bytes())
     with atomic_output_file(OUTPUT, make_parents=True) as temporary:
         temporary.write_bytes(written)
@@ -1588,6 +1658,11 @@ def check_artifact(
         diagnostics_dir=diagnostics_dir,
         trace_dir=trace_dir,
     )
+    # Last, so a document that is wrong in its content is reported for that. Every
+    # comparison above ignores the two date fields; this is what holds them.
+    problem = date_problem(reference, REVISED) if _DATES.search(reference) else None
+    if problem is not None:
+        raise SystemExit(f"{OUTPUT.name}: {problem}")
 
 
 def fonts() -> None:

@@ -13,6 +13,11 @@ under the rule that runs under the navigation bar, never over it, with the conte
 shared space under them (`preview_site.tabs_problems`, `templates/paper-design.md`,
 Section tabs).
 
+It also holds the header's type to the body's, by relation and not by pixel value: a
+link in the bar and a section tab are one step under the prose on the paper's scale and
+no more, and the site's name is no smaller than the prose (`preview_site.type_problems`,
+`templates/paper-design.md`, Navigation bar).
+
 Every page that may be the film's is opened as for a reader who asks for reduced motion
 (`preview_site.REDUCED_MOTION`), so its film stands at its poster and no test starts the
 film's download.
@@ -38,6 +43,7 @@ from devtools.preview_site import (
     SCROLLBAR_PX,
     clipped,
     tabs_problems,
+    type_problems,
 )
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
@@ -54,6 +60,15 @@ RULE_UNDER_THE_TABS = (
 #: (`--site-tabs-space`) and over a page's first block (`--site-page-top`).
 REM = 16
 TABS_SPACE, PAGE_TOP = 0.7, 4
+#: The sizes the bar had before its type was tied to the body's: 16px links and name,
+#: 14.4px tabs, under 18px prose.
+OLD_BAR_TYPE = (
+    ".site-nav, .site-nav .site-name { font-size: 1rem !important; }"
+    " .site-tabs { font-size: 0.9rem !important; }"
+)
+#: The widths the bar is measured at, and how many lines its links may take at each: one
+#: on a desktop and a tablet, two on a phone.
+BAR_WIDTHS = {1280: 1, 768: 1, 390: 2}
 
 
 @pytest.fixture(scope="module")
@@ -181,3 +196,72 @@ def test_tabs_over_the_rule_are_caught(
         assert len(problems) == 1, name
         assert problems[0].startswith("the section tabs start "), name
         assert problems[0].endswith("which is on header"), name
+
+
+def _header(browser: Any, path: Path, width: int, *, style: str = "") -> dict[str, Any]:
+    """The `preview_site/header` report of the page at `path`, `width` pixels wide, with
+    `style` added to it first."""
+    page = browser.new_page(
+        viewport={"width": width, "height": 900}, reduced_motion=REDUCED_MOTION
+    )
+    try:
+        page.goto(path.as_uri(), wait_until="load")
+        if style:
+            page.add_style_tag(content=style)
+        return page.evaluate(HEADER)
+    finally:
+        page.close()
+
+
+def test_the_bars_type_is_one_step_under_the_bodys(
+    browser: Any,
+    pages: dict[str, Path],
+    section_pages: dict[str, tuple[Path, str, float]],
+) -> None:
+    """At a desktop, a tablet and a phone width, on a page of prose, on the film's page
+    and on the workbench: a link in the bar and a section tab are smaller than the body's
+    prose and no smaller than the first step of the paper's scale under it, the two are
+    one size, and the site's name is at least the body's size. Nothing here is a pixel
+    value: the body is the prose base the page resolves, which a prose paragraph is set
+    at, and the step is read from the same scale. The larger type leaves the bar's links
+    on one line on a desktop and a tablet and two on a phone, and no page wider than its
+    window."""
+    opened = {
+        "frontier.html": pages["frontier.html"],
+        **{name: path for name, (path, _, _) in section_pages.items()},
+    }
+    seen: dict[str, set[tuple[float, float | None, float]]] = {name: set() for name in opened}
+    for width, rows in BAR_WIDTHS.items():
+        for name, path in opened.items():
+            sizes = _header(browser, path, width)["type"]
+            where = f"{name} at {width}"
+            assert type_problems({"type": sizes}) == [], where
+            body, scale = sizes["scale"]["prose"], sizes["scale"]
+            below = max(step for step in scale.values() if step < body)
+            assert below <= sizes["link"] < body <= sizes["name"], where
+            assert sizes["name_shown"] is (width == 1280), where
+            assert (sizes["links_rows"], sizes["overflow"]) == (rows, 0), where
+            if name == "frontier.html":
+                assert sizes["body"] == body, where
+                assert sizes["tab"] is None, where
+            else:
+                assert sizes["tab"] == sizes["link"], where
+            seen[name].add((sizes["link"], sizes["tab"], sizes["name"]))
+    # One size at every width, and the same bar on every page.
+    assert all(len(found) == 1 for found in seen.values()), seen
+    assert len({next(iter(found))[::2] for found in seen.values()}) == 1, seen
+
+
+def test_a_bar_set_smaller_than_one_step_under_the_body_is_caught(
+    browser: Any, section_pages: dict[str, tuple[Path, str, float]]
+) -> None:
+    """The control: give the bar and the tabs the sizes they had, in rem and not from the
+    body's scale, and the check names the links, the tabs and the name."""
+    path = section_pages["visualize.html"][0]
+    problems = type_problems(_header(browser, path, 1280, style=OLD_BAR_TYPE))
+    assert [problem.split(":")[0] for problem in problems] == [
+        "a link in the header is 16px",
+        "a tab in the header is 14.4px",
+        "a section tab is 14.4px and a link in the bar 16px",
+        "the site's name is 16px, under the body's 18px",
+    ]

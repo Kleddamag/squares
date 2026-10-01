@@ -45,6 +45,8 @@ physical sizes.
 | Figure labels and controls | 18.05px | About 12.0333pt | Sans, 0.95 of the sans base |
 | Captions and end footnotes | 17.48px | About 11.6533pt | Shared sans size: 0.92 of the sans base; 1.4rem side inset |
 | Colophon | 16.15px | About 10.7667pt | Sans, 0.85 of the sans base |
+| Navigation links and section tabs | 17.48px | Not printed | Sans medium at the caption size, 0.92 of the sans base: one step under the prose |
+| Site name in the bar | 19px | Not printed | Sans bold caps at the sans base |
 | Sans weights | 410 regular, 550 medium, 680 bold | Same | Preserve serif weight settings |
 | Supporting text color | KPress gray text role | Solid black | Preserve semantic diagram and status colors |
 
@@ -366,6 +368,19 @@ it.
   same on every page, the explainer and the workbench included, led by the site name,
   “Square Packing”, set in capitals by CSS (`text-transform`, lightly tracked) so its
   text is unchanged, and a step heavier.
+  The bar’s type is tied to the body’s on the scale above (Typography Roles), never set
+  in pixels or rem. A link, and a section tab, is one step under the 18px prose and no
+  more: the caption size, 0.92 of the sans base, 17.48px, which is the first size of the
+  scale under 18px (`--site-nav-font-size`; the step between, 0.95, is 18.05px, not
+  under the prose). The site’s name is the sans base, 19px (`--site-nav-name-size`), the
+  size sans text takes beside the prose, so with its weight and capitals it reads as the
+  name. Both tokens are in `site-nav.css` and are computed from the host base
+  (`--kpress-host-font-size-base`), which is the same on every page, so the bar is one
+  size on every page and at every width.
+  `devtools.measure_site_pages header` reports the four sizes, `preview_site` fails a
+  page whose bar is not one step under its body (`type_problems`), and
+  `tests/test_site_wide_blocks.py` holds the relation in a browser at 1280, 768 and 390
+  pixels, where the links keep one line, one line and two lines.
   Case 11, the site’s icon, sits before the name as its mark, 18px square, inside the
   same link, so it takes the same hover.
   Narrower than 56rem, where the bar with the name would wrap, the name gives way and
@@ -404,9 +419,10 @@ it.
   tab is a real link to its own page, so the bar needs no script, and a tab can be
   opened, bookmarked and shared; every existing `workbench/` address lands on the
   Workbench tab. The bar is a centred strip with square corners and the cards’ thin
-  border, a hairline between tabs, in the bar’s sans at 0.9rem and medium weight: a tab
-  is gray, takes the nav items’ wash and accent on hover, and the current tab is filled
-  with a 16% accent tint over the page background in the page’s own text colour.
+  border, a hairline between tabs, in the bar’s sans at the links’ own size
+  (`--site-nav-font-size`) and medium weight: a tab is gray, takes the nav items’ wash
+  and accent on hover, and the current tab is filled with a 16% accent tint over the
+  page background in the page’s own text colour.
   It is `.site-tabs`, rendered by `render_overview.visualize_tabs`, and defined in
   `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
   stylesheet. On the film’s page it opens the document; on the workbench it sits in the
@@ -420,10 +436,10 @@ it.
   On the film’s page the first block starts `--site-page-top` under the tabs; on the
   workbench, where the application starts at the shell’s lower edge, the tabs keep the
   same 0.7rem below them.
-  Measured at 1280px, on both pages: the bar from 16 to 68.6px with the rule its last
-  pixel, the tabs from 79.8 to 112.4px, then the film at 176.4px and the application at
-  123.6px; at 390px, where the bar wraps to two lines, the rule ends at 81.8px, the tabs
-  run from 92.9 to 125.5px, the film starts at 189.5px and the application at 136.7px.
+  Measured at 1280px, on both pages: the bar from 16 to 72.1px with the rule its last
+  pixel, the tabs from 83.3 to 119.9px, then the film at 183.9px and the application at
+  131.1px; at 390px, where the bar wraps to two lines, the rule ends at 84.8px, the tabs
+  run from 96.0 to 132.6px, the film starts at 196.6px and the application at 143.8px.
   `devtools.measure_site_pages header` reports these, `preview_site` fails a built page
   whose tabs start over the rule (`tabs_problems`), and `tests/test_site_wide_blocks.py`
   holds both pages to it in a browser.

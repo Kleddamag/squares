@@ -1107,7 +1107,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 0
     question: Does a closed-assignment D4 quotient reduce the n17 occupancy census with independent exact
       counting?
@@ -1128,7 +1128,8 @@ agenda:
     program: post-optimality-low-n
     artifacts:
     - packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md
-    note: No lex-priority exclusions; geometric leaves remain open.
+    note: H260accepted:20155518necessaryclosedassignmentorbits; all8countsindependentlyagree,0.14s group.
+      Geometricexclusionsremainthink-11ma.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

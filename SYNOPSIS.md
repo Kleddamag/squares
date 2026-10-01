@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 393 | 200 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 14 in progress |
+| Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
 | Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 195 | 38 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted; 1 needs review |
-| Experiments | 170 | 52 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
+| Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -511,6 +511,8 @@ case or experiment separately.
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |
+| [October 1 Post-optimality Research Findings](docs/project/reviews/review-2026-10-01-post-optimality-morning.md) | dated review record | record | retained | — |
+| [H260 Closed-Cell Symmetry: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md) | dated review record | record | retained | — |
 | [n17 Symmetry of Closed-Cell Assignment States](docs/project/reviews/review-2026-10-01-n17-closed-cell-symmetry.md) | dated review record | record | retained | — |
 | [n17 Mixed-Capacity Centre Cover](docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md) | dated review record | record | retained | — |
 | [n12 Weighted Cycles: Exact Inequality and Capture Scope](docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md) | dated review record | record | retained | — |
@@ -5249,7 +5251,7 @@ round that names the hypothesis, control roles included.
 | [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | confirmed | Complete exact-root feature inventory, independently audited:168owner-axis options,60active-wall corners,9tangent offsets | 1 | 42s wall |
 | [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
 | [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted:161100756 versus8597496600 |
-| [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | needs review | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | Preregistered; instrument readiness pending |
+| [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241accepted:20155518orbits |
 
 ### Confirmed
 
@@ -5573,7 +5575,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 There are 170 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4020.7 wall-minutes.
+They record 2512.1 agent-minutes and 4020.8 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -5784,7 +5786,7 @@ archive beside it.
 | [exp-238](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md) | 17 | target | H-256 | Exact endpoint geometry with fixed centroid sliders | Complete exact endpoint certificate passes independent output review; conditional class minimum attained | accepted |
 | [exp-239](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md) | 17 | target | H-257 | Exact owner-axis and active-wall feature inventory | Allfrozen counts, identities andstrictsigns pass;175interval records independently matched | accepted |
 | [exp-240](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md) | 17 | target | H-259 | Mixed-capacity complete centre cover and exact census | 161100756 mixed patterns versus8597496600 baseline; independent audit | accepted |
-| [exp-241](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md) | 17 | target | H-260 | Closed-assignment D4 census | Preregistered; target not run | in-progress |
+| [exp-241](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md) | 17 | target | H-260 | Closed-assignment D4 census | 20155518orbits;all8fixedcountsindependentlyagree | accepted |
 
 ### Cost and provenance
 
@@ -5959,11 +5961,11 @@ archive beside it.
 | exp-238 | 180 seconds; one worker | 43.45 s | — | criterion | `f77b3e0a7`; symbolic25.80s, interval and formatting16.42s |
 | exp-239 | 180 seconds; one worker | 41.80 s | — | criterion | `b34801483`; symbolic24.51s, interval andformatting16.09s |
 | exp-240 | 30 seconds; one worker | 0.35s | — | criterion | Full independent census agreement; geometry exclusions remain open |
-| exp-241 | 30 seconds; one worker | — | — | pending | Controlled symmetry count pending |
+| exp-241 | 30 seconds; one worker | 0.14s | — | criterion | IndependentcompleteD4census; no geometricexclusion |
 
 ### What the 170 rounds jointly establish
 
-The 170 rounds use 2512.1 agent-minutes and 4020.7 wall-minutes under the campaign’s
+The 170 rounds use 2512.1 agent-minutes and 4020.8 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

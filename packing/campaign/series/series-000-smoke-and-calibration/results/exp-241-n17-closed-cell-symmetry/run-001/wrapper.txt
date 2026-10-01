@@ -1,0 +1,1 @@
+/usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 30s /bin/bash --noprofile --norc -e /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/commands.txt

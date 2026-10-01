@@ -74,11 +74,10 @@ No rating or frontier field is changed here.
 | T-061: Wang–Li n11 certificate | A strict rational improvement above 31/8, now superseded by T-060 | Certificate slack and rescaling are useful diagnostics, but do not replace an endpoint theorem |
 | [Native arithmetic measurements](../../../docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | A bounded Rust verifier comparison preserves exact outputs and reduces measured CPU | Reuse measurement infrastructure when a selected proof lane is expensive; do not infer global replay speed from kernel timing |
 
-The n17 gap to the **reported** Bidwell value is approximately 0.0150901. That is a
-research target gap, not the repository’s fully verified bracket: the
-[case record](../../frontier/n-017.md) still verifies only the upper bound 5. An exact
-or interval-certified witness near Bidwell’s value is therefore an early deliverable,
-even if a global exclusion route looks promising immediately.
+The [n17 case](../../frontier/n-017.md) now has a verified rational outward upper
+ceiling4.6755300936045509516342148538535054 from the exact chart endpoint.
+Together with the established lower bound4.66044, this leaves a gap of approximately
+0.0150901. The certificate admits the known packing; global optimality remains open.
 
 ## What Transfers from the Eleven-Square Proof
 
@@ -426,7 +425,7 @@ preserving its selection rationale.
 
 ## October 1 Execution Checkpoint
 
-[Session 165](../agent-sessions/session-165-post-optimality-overnight.md) has five
+[Session 165](../agent-sessions/session-165-post-optimality-overnight.md) has seven
 accepted rounds, with immutable inputs and independent review:
 
 | Obligation | Result | Exact Scope |
@@ -436,6 +435,8 @@ accepted rounds, with immutable inputs and independent review:
 | [H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) | Accepted | Exact existence and uniqueness in the fixed root box, with an independently implemented checker |
 | [H-256](../hypotheses/H-256-n17-exact-endpoint-feasibility.md) | Accepted | Exact physical endpoint at fixed centroid sliders; all 68 walls and 136 pairs certified, all 187 interval bounds independently recalculated |
 | [H-257](../hypotheses/H-257-n17-endpoint-contact-features.md) | Accepted | Complete168owner-axis/60wall-corner/9offset inventory; all175interval records independently recalculated |
+| [H-259](../hypotheses/H-259-n17-mixed-capacity-cover.md) | Accepted | Complete closed5by5mixedcapacitycover;161100756occupancies; independent exact census |
+| [H-260](../hypotheses/H-260-n17-closed-cell-symmetry.md) | Accepted | Complete D4action onexistentialclosedassignments;20155518orbits; independent eight-term audit |
 
 The
 [mathematical review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)

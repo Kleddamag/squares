@@ -14,7 +14,9 @@ import argparse
 import copy
 import hashlib
 import json
+import re
 import struct
+import subprocess
 import time
 import urllib.error
 import urllib.request
@@ -29,6 +31,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 from xml.etree import ElementTree as ET
+from xml.sax.saxutils import escape
 
 import mpmath as mp
 from strif import atomic_output_file
@@ -2224,6 +2227,124 @@ def update(workers: int = 1) -> None:
     )
 
 
+def _git_result(*arguments: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "-C", str(REPOSITORY_ROOT), *arguments],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def restamp_source_guard() -> None:
+    """Refuse a stamp-only build if any retained geometry input changed since the SVGs."""
+    baselines = []
+    for canvas in COMPOSITES:
+        relative = str(canvas.svg_path.relative_to(REPOSITORY_ROOT))
+        found = _git_result("log", "-1", "--format=%H", "--", relative)
+        if found.returncode or not found.stdout.strip():
+            raise ValueError(f"cannot identify the retained {relative} build commit")
+        baselines.append(found.stdout.strip())
+    if len(set(baselines)) != 1:
+        raise ValueError("composite SVGs do not share one retained build commit")
+    baseline = baselines[0]
+    for canvas in COMPOSITES:
+        relative = str(canvas.svg_path.relative_to(REPOSITORY_ROOT))
+        retained = _git_result("show", f"{baseline}:{relative}")
+        current = canvas.svg_path.read_bytes().decode("utf-8")
+        if retained.returncode or retained.stdout != current:
+            raise ValueError(f"{relative} differs from its retained composite build")
+    stable_paths = {
+        CATALOGUE,
+        UNITSQUARE_RESULTS,
+        SOURCE_MANIFEST,
+        WITNESS_ROOT,
+        RENDER_ROOT,
+        MANIFEST,
+        build_composite_figure_data.RECORD,
+        *(
+            plan.path
+            for plan in source_plans().values()
+            if not plan.path.is_relative_to(FRONTIER)
+        ),
+    }
+    relative_paths = sorted(
+        str(path.relative_to(REPOSITORY_ROOT))
+        for path in stable_paths
+        if path.is_relative_to(REPOSITORY_ROOT)
+    )
+    for revision in (baseline, "HEAD"):
+        changed = _git_result("diff", "--quiet", revision, "--", *relative_paths)
+        if changed.returncode:
+            raise ValueError("retained atlas geometry inputs changed since the composite build")
+    changed_cases = _git_result("diff", "--name-only", baseline, "--", "packing/frontier")
+    if changed_cases.returncode:
+        raise ValueError("cannot audit frontier changes since the composite build")
+    cases = [
+        path
+        for path in changed_cases.stdout.splitlines()
+        if re.fullmatch(r"packing/frontier/n-\d{3}\.md", path)
+    ]
+    if any(path != "packing/frontier/n-017.md" for path in cases):
+        raise ValueError("a frontier case other than n-017 changed since the composite build")
+    for path in ("packing/frontier/n-017.md",):
+        old = _git_result("show", f"{baseline}:{path}")
+        if old.returncode:
+            raise ValueError(f"cannot read prior {path}")
+        previous = safe_load(old.stdout.split("---\n", 2)[1])["packing"]
+        current = safe_load((REPOSITORY_ROOT / path).read_text("utf-8").split("---\n", 2)[1])[
+            "packing"
+        ]
+        if previous["reported_upper_bound"] != current["reported_upper_bound"]:
+            raise ValueError(f"{path} changed its atlas geometry source")
+
+
+_STAMP_TEXT = re.compile(r'(<text\b[^>]*data-feature="release-stamp"[^>]*>)([^<]*)(</text>)')
+
+
+def restamped_svg(svg_text: str, stamp: str) -> str:
+    """Replace exactly one footer text node, preserving every other SVG byte."""
+    matches = list(_STAMP_TEXT.finditer(svg_text))
+    if len(matches) != 1:
+        raise ValueError("composite must contain exactly one plain release-stamp text node")
+    match = matches[0]
+    result = svg_text[: match.start(2)] + escape(stamp) + svg_text[match.end(2) :]
+    root = ET.fromstring(result)
+    recorded = [
+        "".join(node.itertext())
+        for node in root.iter(svg_tag("text"))
+        if node.attrib.get("data-feature") == "release-stamp"
+    ]
+    if recorded != [stamp]:
+        raise ValueError("restamped composite footer does not match the current edition")
+    return result
+
+
+def restamp_only() -> None:
+    """Update composite footers and exports after proving retained geometry is unchanged."""
+    restamp_source_guard()
+    build_composite_figure_data.check()
+    problems, _entries = _retained_problems(allow_stale_stamp=True)
+    if problems:
+        raise ValueError("atlas restamp preflight failed:\n  " + "\n  ".join(problems[:20]))
+    replacements = {
+        canvas.svg_path: restamped_svg(
+            canvas.svg_path.read_bytes().decode("utf-8"), SUMMARY_RELEASE_STAMP
+        )
+        for canvas in COMPOSITES
+    }
+    for path, content in replacements.items():
+        with atomic_output_file(path) as temporary:
+            temporary.write_text(content, encoding="utf-8")
+    for canvas in COMPOSITES:
+        _update_png_exports(canvas, replacements[canvas.svg_path])
+        render_composite_pdf.update(canvas.spec.stem)
+    problems, _entries = _retained_problems()
+    if problems:
+        raise ValueError("atlas restamp postflight failed:\n  " + "\n  ".join(problems[:20]))
+    print(f"known-best atlas restamped: {len(COMPOSITES)} composite export families")
+
+
 def check(workers: int = 1) -> None:
     outputs, manifest = expected_outputs(workers)
     problems = []
@@ -2279,7 +2400,9 @@ def check(workers: int = 1) -> None:
     )
 
 
-def _retained_problems() -> tuple[list[str], list[dict] | None]:
+def _retained_problems(
+    *, allow_stale_stamp: bool = False
+) -> tuple[list[str], list[dict] | None]:
     """Everything the retained records say about themselves, checked without geometry.
 
     This is the half of `check` that does not rebuild a case, and at `n=1..324` it is
@@ -2331,11 +2454,11 @@ def _retained_problems() -> tuple[list[str], list[dict] | None]:
             problems.append(f"manifest reported_side disagrees with {case.path.name}")
         elif case.text != _frontier_with_witness(case, str(entry["witness"]["id"])):
             problems.append(f"stale {_relative(case.path)}")
-    problems.extend(_composite_receipt_problems())
+    problems.extend(_composite_receipt_problems(allow_stale_stamp=allow_stale_stamp))
     return problems, entries
 
 
-def _composite_receipt_problems() -> list[str]:
+def _composite_receipt_problems(*, allow_stale_stamp: bool = False) -> list[str]:
     """Every retained composite claim and export, checked without rebuilding geometry.
 
     The whole check compares the entire SVG against a fresh rendering. Here the current
@@ -2357,7 +2480,9 @@ def _composite_receipt_problems() -> list[str]:
                 f"{_relative(canvas.svg_path)} is not the canvas its specification computes"
             )
         problems.extend(_composite_label_problems(canvas, root))
-        problems.extend(_composite_edition_problems(canvas, root))
+        problems.extend(
+            _composite_edition_problems(canvas, root, allow_stale_stamp=allow_stale_stamp)
+        )
         problems.extend(
             f"missing or stale {export.name} {export.role} receipt"
             for export in canvas.rasters
@@ -2418,7 +2543,9 @@ def _composite_label_problems(canvas: CompositeCanvas, root: ET.Element) -> list
     return problems
 
 
-def _composite_edition_problems(canvas: CompositeCanvas, root: ET.Element) -> list[str]:
+def _composite_edition_problems(
+    canvas: CompositeCanvas, root: ET.Element, *, allow_stale_stamp: bool = False
+) -> list[str]:
     """Compare the release line and the version stamp with `sqpack.release`.
 
     Both say which data the drawing shows, and re-pinning the data revision changes the
@@ -2431,6 +2558,8 @@ def _composite_edition_problems(canvas: CompositeCanvas, root: ET.Element) -> li
         ("release", SUMMARY_RELEASE_TEXT),
         ("release-stamp", SUMMARY_RELEASE_STAMP),
     ):
+        if allow_stale_stamp and feature == "release-stamp":
+            continue
         actual = tuple(
             "".join(node.itertext())
             for node in root.iter(svg_tag("text"))
@@ -2594,6 +2723,11 @@ def parser() -> argparse.ArgumentParser:
     )
     mode.add_argument("--update", action="store_true", help="regenerate all retained outputs")
     mode.add_argument(
+        "--restamp-only",
+        action="store_true",
+        help="verify retained geometry and claims, then update composite stamps and exports",
+    )
+    mode.add_argument(
         "--check", action="store_true", help="compare retained outputs to a rebuild"
     )
     mode.add_argument(
@@ -2646,6 +2780,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         fetch_sources(refresh=args.refresh)
     elif args.update:
         update(workers)
+    elif args.restamp_only:
+        restamp_only()
     elif args.check:
         check_sample(workers=workers) if args.sample else check(workers)
     elif args.report:

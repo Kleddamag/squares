@@ -90,6 +90,36 @@ not lex-owned. Future symmetry-reduced leaves must retain the existential closed
 domains above; adding the original lexicographic exclusions would invalidate this
 coverage argument.
 
+## Future Use Below the Endpoint
+
+The accepted
+[H256 endpoint](../../../packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md)
+has side $S_{\ast}<U$ and therefore belongs to the present cover.
+Consequently, excluding every occupancy case at $U$ is impossible: at least one case
+contains that certified packing.
+The registered H260 experiment only counts orbits and does not attempt such an
+exclusion.
+
+For a future lower-bound proof, retain the actual container side $S$ in each geometric
+case and impose $S<S_{\ast}$, or select a separately declared rational cap below
+$S_{\ast}$. A bound at one smaller rational cap does not by itself establish exact
+optimality at $S_{\ast}$. Using the fixed $U$ grid remains sound: embed the actual
+container concentrically as
+
+$$
+\left[\frac{U-S}{2},\frac{U+S}{2}\right]^2.
+$$
+
+Its centres lie in the covered centre box, and every physical symmetry about the centre
+of the $U$ container preserves this smaller container as well as the grid.
+The stronger containment inequalities for the actual side must remain in every case.
+An uncentred embedding $[0,S]^2$ is also contained in the cap, but its side constraints
+are not preserved by the fixed grid’s rotations about $(U/2,U/2)$ when $S<U$. The
+symmetry transport above must not be applied to that uncentred domain unchanged.
+
+This clarification concerns future geometric use and changes none of H260’s registered
+cap, states, fixed polynomials or arithmetic acceptance conditions.
+
 ## The Eight Frozen Actions and Their Cycles
 
 Let composition act from right to left and define
@@ -141,11 +171,11 @@ complete frozen polynomials are
 
 $$
 \begin{aligned}
-N_I&=\operatorname{coeff}_{x^{17}}\,(1+x)^{16}(1+x+x^2)^9,\cr
-N_R=N_{R^3}&=\operatorname{coeff}_{x^{17}}\,(1+x+x^2)(1+x^4)^4(1+x^4+x^8)^2,\cr
-N_{R^2}&=\operatorname{coeff}_{x^{17}}\,(1+x+x^2)(1+x^2)^8(1+x^2+x^4)^4,\cr
+N_I&=\operatorname{coeff}_{x^{17}}\thinspace(1+x)^{16}(1+x+x^2)^9,\cr
+N_R=N_{R^3}&=\operatorname{coeff}_{x^{17}}\thinspace(1+x+x^2)(1+x^4)^4(1+x^4+x^8)^2,\cr
+N_{R^2}&=\operatorname{coeff}_{x^{17}}\thinspace(1+x+x^2)(1+x^2)^8(1+x^2+x^4)^4,\cr
 N_F=N_{RF}=N_{R^2F}=N_{R^3F}
-&=\operatorname{coeff}_{x^{17}}\,(1+x)^2(1+x+x^2)^3(1+x^2)^7(1+x^2+x^4)^3.
+&=\operatorname{coeff}_{x^{17}}\thinspace(1+x)^2(1+x+x^2)^3(1+x^2)^7(1+x^2+x^4)^3.
 \end{aligned}
 $$
 
@@ -174,16 +204,16 @@ For the half turn, parity does the same.
 Thus equivalent lower-degree expressions are
 
 $$
-N_R=N_{R^3}=\operatorname{coeff}_{y^{4}}\,(1+y)^4(1+y+y^2)^2,
+N_R=N_{R^3}=\operatorname{coeff}_{y^{4}}\thinspace(1+y)^4(1+y+y^2)^2,
 \qquad
-N_{R^2}=\operatorname{coeff}_{y^{8}}\,(1+y)^8(1+y+y^2)^4.
+N_{R^2}=\operatorname{coeff}_{y^{8}}\thinspace(1+y)^8(1+y+y^2)^4.
 $$
 
 For a reflection, define the complete coefficient sequences
 
 $$
-A_j=\operatorname{coeff}_{x^{j}}\,(1+x)^2(1+x+x^2)^3,\qquad
-B_k=\operatorname{coeff}_{y^{k}}\,(1+y)^7(1+y+y^2)^3.
+A_j=\operatorname{coeff}_{x^{j}}\thinspace(1+x)^2(1+x+x^2)^3,\qquad
+B_k=\operatorname{coeff}_{y^{k}}\thinspace(1+y)^7(1+y+y^2)^3.
 $$
 
 The fixed cells contribute degree at most eight; the paired cells contribute an even

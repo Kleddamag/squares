@@ -771,7 +771,7 @@ def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
     assert '<a href="frontier.html">Frontier</a> page shows every case' in section
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
     frontier = rendered("frontier.html")
-    assert "<title>The Frontier Survey · Square Packing</title>" in frontier
+    assert "<title>The Frontier Survey · The Square Packing Project</title>" in frontier
     assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
     card = next(body for href, _, body in _page_cards(page) if href == "frontier.html")
     assert '<span class="site-card-label">Frontier survey</span>' in card
@@ -1550,7 +1550,7 @@ def test_the_film_page_shows_no_title_and_keeps_one_for_a_screen_reader(
     no subtitle. It keeps its document title and one `h1`, for a screen reader alone, and
     the film, the first block a reader sees, brings no margin of its own."""
     page = rendered("visualize.html")
-    assert "<title>Visualize · Square Packing</title>" in page
+    assert "<title>Visualize · The Square Packing Project</title>" in page
     assert re.findall(r"<h1\b[^>]*>.*?</h1>", page, re.DOTALL) == [
         '<h1 class="site-visually-hidden" id="visualize">Visualize</h1>'
     ]
@@ -2410,9 +2410,10 @@ def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
     assert "live in the Square Packing Project\u2019s" in _rendered_text(section)
     readme = site_documents.README.read_text(encoding="utf-8")
     assert readme.startswith("# The Square Packing Project\n")
-    assert "<title>The Square Packing Project · Square Packing</title>" in rendered(
-        "readme.html"
-    )
+    # README's page is named for the file in its tab, since the project's name follows
+    # it there as it does every page's name, and the overview's title is that name alone.
+    assert "<title>README · The Square Packing Project</title>" in rendered("readme.html")
+    assert "<title>The Square Packing Project</title>" in page
     labels = [label for _, label, _ in overview_sections.DOCUMENTS]
     assert labels[0] == "The Square Packing Project"
     for name in ("index.html", "papers.html", "frontier.html", "readme.html", "visualize.html"):

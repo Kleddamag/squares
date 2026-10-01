@@ -669,7 +669,7 @@ def frontier_page() -> Page:
         frontier_markdown(fill),
         name="frontier.html",
         current="frontier",
-        title=f"The Frontier Atlas · {SITE_NAME}",
+        title=f"The Frontier Survey · {SITE_NAME}",
         description=FRONTIER_DESCRIPTION,
         toc=False,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),

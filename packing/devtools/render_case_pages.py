@@ -726,7 +726,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
         '<div class="site-case-note"><span class="site-card-label">Evidence and sources</span>'
         f"<details><summary>{len(evidence)} evidence entries</summary>"
         f"<p>{frontier.evidence_links(evidence)}</p></details>{_sources(case)}</div>"
-        f'<p class="site-case-links"><a href="frontier.html#n-{n}">In the frontier atlas</a>'
+        f'<p class="site-case-links"><a href="frontier.html#n-{n}">In the frontier survey</a>'
         f' <a class="site-case-github" href="{branch_file(source)}">On GitHub</a></p></div>'
     )
 

@@ -184,7 +184,7 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     assert 'class="site-card ' not in atlas
     assert atlas.count('class="site-atlas-note"') == 1
     assert 'class="site-wide site-atlas-note"' not in atlas
-    assert page.index('id="the-atlas"') < page.index(heading) < page.index('id="the-survey"')
+    assert page.index('id="the-atlas"') < page.index(heading) < page.index('id="the-frontier-survey"')
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
     assert section.lstrip().startswith('<div class="site-cards-frame')
     assert section.count('<a class="site-card site-card-link"') == len(
@@ -737,6 +737,37 @@ def test_the_section_is_verification_ladders_and_its_old_fragment_lands_on_it(
     assert 'href="#verification-at-a-glance"' not in page
     contents = '{"href": "#verification-ladders", "level": 1, "title": "Verification Ladders"}'
     assert contents in page
+
+
+def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
+    page: str, rendered: Callable[[str], str]
+) -> None:
+    """The homepage's section on the record of every case is headed The Frontier Survey,
+    and it was The Survey until 2026-10-01: an empty anchor in the heading keeps
+    `#the-survey` landing on it, the device Verification Ladders uses. One vocabulary
+    holds in what a reader sees: the page and its bar entry are Frontier, what the page
+    holds is the frontier survey, and "atlas" is the grid of packings, never the table of
+    cases, so no page calls the Frontier page an atlas."""
+    heading = '<h2 id="the-frontier-survey">The Frontier Survey<a id="the-survey"></a></h2>'
+    assert page.count(heading) == 1
+    assert 'href="#the-survey"' not in page
+    contents = '{"href": "#the-frontier-survey", "level": 1, "title": "The Frontier Survey"}'
+    assert contents in page
+    section = page.split(heading, 1)[1].split("<h2", 1)[0]
+    assert _rendered_text(section).startswith("The frontier survey records the best-known")
+    assert '<a href="frontier.html">Frontier</a> page shows every case' in section
+    assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
+    frontier = rendered("frontier.html")
+    assert "<title>The Frontier Survey · Square Packing</title>" in frontier
+    assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
+    card = next(body for href, _, body in _page_cards(page) if href == "frontier.html")
+    assert '<span class="site-card-label">Frontier survey</span>' in card
+    for name in ("index.html", "frontier.html", "cases.html", render_overview.RESULTS_PAGE):
+        # What a reader sees or hears: the page without its inlined styles and programs.
+        text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
+        assert "frontier atlas" not in text.lower(), name
+    # The generated status table's page is no second page called The Frontier.
+    assert "<title>The Status Table · Square Packing</title>" in rendered("status.html")
 
 
 def test_verification_ladders_is_one_ladder_diagram_significance_first(page: str) -> None:

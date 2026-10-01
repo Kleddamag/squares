@@ -793,7 +793,7 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
     record = result.record
     site: list[str] = []
     if is_broad(cases):
-        site.append(_link("frontier.html", "The frontier atlas"))
+        site.append(_link("frontier.html", "The frontier survey"))
         site.append(_link("cases.html", "Every case record"))
     else:
         for n in cases:

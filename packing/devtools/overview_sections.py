@@ -1233,7 +1233,7 @@ def awaiting_replay(overview: Overview) -> str:
             label="Awaiting replay",
             title=math_html(f"n = {row.n}"),
             body=replay_row_popover_body(row),
-            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier atlas"),
+            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier survey"),
         )
         popovers.append(detail.popover)
         groups.setdefault((reported.holder, reported.results), []).append(
@@ -1274,7 +1274,7 @@ DOCUMENTS: tuple[tuple[str, str, str], ...] = (
         "The full research record: methods, claims and status.",
     ),
     (repo_links.RESULTS, "Results", "Every registered result with its rungs."),
-    (repo_links.STATUS, "The frontier", "Every case to 324, with provenance."),
+    (repo_links.STATUS, "The status table", "Every case to 324, with provenance."),
     (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
     (repo_links.CONVENTIONS, "Conventions", "Record formats, identifiers and naming."),
     (repo_links.DEVELOPMENT, "Development", "Building, testing and validating the code."),
@@ -1430,7 +1430,7 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
     ),
     (
         "frontier.html",
-        "Frontier atlas",
+        "Frontier survey",
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
@@ -1468,7 +1468,7 @@ def hero() -> str:
     n = HERO_CASE
     return (
         f'<figure class="site-hero-figure"><a href="frontier.html#n-{n}" '
-        f'aria-label="The best packing known for {n} squares, in the frontier atlas">'
+        f'aria-label="The best packing known for {n} squares, in the frontier survey">'
         f"{packing_svg(n, units=1000)}</a>"
         f"<figcaption>The best packing known for {n} squares</figcaption></figure>"
     )
@@ -1939,6 +1939,6 @@ def atlas_grid() -> str:
         'data-atlas-toggle aria-expanded="false" '
         f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
-        '<a href="frontier.html">frontier atlas</a>, and each has a '
+        '<a href="frontier.html">frontier survey</a>, and each has a '
         f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'
     )

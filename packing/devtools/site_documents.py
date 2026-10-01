@@ -145,7 +145,7 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
     _document(
         repo_links.STATUS,
         "status.html",
-        "The Frontier",
+        "The Status Table",
         "Every case to 324, with provenance.",
     ),
     _document(

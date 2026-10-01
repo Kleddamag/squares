@@ -402,9 +402,9 @@ certificate’s replay command.
    `render_results --update`, `render_evidence_inventory --update`,
    `render_research_tables` and `render_results_headline`; never edit inside a generated
    view’s markers. The site’s overview renders the results table, the recent results and
-   the survey from the same records (`render_overview`). `packing-validate --records`
-   runs those checks and the related record checks; it does not replace certificate
-   replay or the full checkpoint.
+   the frontier survey from the same records (`render_overview`).
+   `packing-validate --records` runs those checks and the related record checks; it does
+   not replace certificate replay or the full checkpoint.
    Complete the remaining publication steps too: regenerate affected atlas exports,
    reconcile the synopsis, and run the applicable
    [validation tiers](../../development.md#validation-tiers), including the full

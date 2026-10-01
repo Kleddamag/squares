@@ -150,9 +150,14 @@ author.
 
 {{OTHER_PROJECTS}}
 
-## Squares Project Documentation
+<!-- This section was Squares Project Documentation until 2026-10-01, when the project's
+     formal name became The Square Packing Project; the empty anchor keeps its old
+     fragment landing here. -->
+
+## Square Packing Project Documentation<a id="squares-project-documentation"></a>
 
 The code, the certificates, the literature archive and the documents that record all of
-this live in the Squares Project’s [repository](https://github.com/jlevy/squares).
+this live in the Square Packing Project’s
+[repository](https://github.com/jlevy/squares).
 
 {{DOCUMENT_CARDS}}

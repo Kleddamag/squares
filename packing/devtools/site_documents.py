@@ -127,7 +127,7 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
     _document(
         repo_links.README,
         "readme.html",
-        "The Squares Project",
+        "The Square Packing Project",
         "What the project is, how it works, and where to start.",
     ),
     _document(

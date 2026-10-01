@@ -31,7 +31,7 @@ from devtools.preview_site import (
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
     return {
-        "section": "Squares Project Documentation",
+        "section": "Square Packing Project Documentation",
         "block_width": 1104,
         "rows": [
             {"cards": n, "sizes": [""] * n, "widths": [264] * n, "start": a, "end": b}
@@ -47,8 +47,8 @@ def test_a_row_off_the_centre_of_its_line_is_reported() -> None:
     report = [_section((4, 0, 0), (2, 280, 280), (2, 0, 560))]
     assert off_centre(report) == [
         (
-            "a row of 2 cards in Squares Project Documentation is off centre: 0px before it, "
-            "560px after"
+            "a row of 2 cards in Square Packing Project Documentation is off centre: "
+            "0px before it, 560px after"
         )
     ]
 

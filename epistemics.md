@@ -279,8 +279,8 @@ to credit it as carefully as this project’s own.
   (`wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi`). This
   project is credited as `after Levy` only where the source itself says so.
 - **People and projects, never tools.** Credit names people, or the handles they publish
-  under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
-  inside another source’s credit line.
+  under. This project is `Square Packing Project (Levy)` where it holds a bound and
+  `Levy` inside another source’s credit line.
   An AI agent is never a credited author.
   Where a source states that AI assisted its work, its case record or register entry
   says so in the source’s own terms, and so does any README prose about the result;

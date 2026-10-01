@@ -2247,6 +2247,38 @@ def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> 
     )
 
 
+def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
+    page: str, rendered: Callable[[str], str]
+) -> None:
+    """The project's formal name is The Square Packing Project (the owner, 2026-10-01),
+    and no page of the site calls it the Squares Project in its own words: the README's
+    title and its card, the closing section's heading, whose old fragment an empty
+    anchor keeps, and the sentence under it. The one place the old name remains is a
+    register claim's account of how another source credits this project, which is
+    record text and not the site's own naming."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    heading = (
+        '<h2 id="square-packing-project-documentation">Square Packing Project Documentation'
+        '<a id="squares-project-documentation"></a></h2>'
+    )
+    assert page.count(heading) == 1
+    section = page.split(heading, 1)[1]
+    assert "live in the Square Packing Project\u2019s" in _rendered_text(section)
+    readme = site_documents.README.read_text(encoding="utf-8")
+    assert readme.startswith("# The Square Packing Project\n")
+    assert "<title>The Square Packing Project · Square Packing</title>" in rendered(
+        "readme.html"
+    )
+    labels = [label for _, label, _ in overview_sections.DOCUMENTS]
+    assert labels[0] == "The Square Packing Project"
+    for name in ("index.html", "papers.html", "frontier.html", "readme.html", "visualize.html"):
+        text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
+        text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+        own = re.sub(r"building on Squares Project(?: \(Joshua Levy\))?", "", text)
+        assert "squares project" not in own.lower(), name
+
+
 def _the_central_case() -> re.Pattern[str]:
     """The framing the owner refused on 2026-09-30, as `site_documents` holds README's
     shared blocks to it: eleven squares is a central case, never the central one."""

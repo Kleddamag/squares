@@ -36,7 +36,7 @@ and every recent reported bound has a register entry to show.
 
 **Nothing about a source is restated in a row either.** The holder is the
 bibliography's credit line as the stage prints it (`Source.credited`), or
-`Squares Project (Levy)` for this project's own bound; the lineage is the bibliography's
+`Square Packing Project (Levy)` for this project's own bound; the lineage is the bibliography's
 typed `lineage`; the results are those that carry the bound's own evidence for this `n`,
 as the stage lists them, each with its register `V` and `C`. The date is the register's
 `published` for a source release it registers on its own, the release's `dated` where one

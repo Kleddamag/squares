@@ -16,7 +16,7 @@ last_reviewed: '2026-09-29'
 # when this project's "(confirmed, T-NNN)" would not otherwise fit. `credit`, where given,
 # is printed in place of the joined authors, for a source whose credit is joint with the
 # lineage it builds on: last names, or handles where no name is published, this project
-# as "Squares Project (Levy)" where that fits and "Levy" where it does not, never an AI
+# as "Square Packing Project (Levy)" where that fits and "Levy" where it does not, never an AI
 # agent, and every link the source names. Where `credit year, venue`, or the line with this
 # project's note, would not fit the atlas stage's 66 characters, `short_credit` is what the
 # stage prints instead: the same authors, `after`, the first of the same links, and

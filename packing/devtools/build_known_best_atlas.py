@@ -327,7 +327,8 @@ SUMMARY_REPOSITORY = "github.com/jlevy/squares"
 #: The cards print numbers and no sources, so the footer says where the sources are
 #: (the owner, 2026-09-28).
 SUMMARY_CITATIONS = (
-    f"Citations for all results are available in the Squares Project: {SUMMARY_REPOSITORY}"
+    "Citations for all results are available in the Square Packing Project: "
+    f"{SUMMARY_REPOSITORY}"
 )
 # Set a step above the other small labels so the URL reads as part of the
 # heading block rather than as another footnote.

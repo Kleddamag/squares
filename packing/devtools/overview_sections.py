@@ -1265,7 +1265,7 @@ def awaiting_replay(overview: Overview) -> str:
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
     (
         repo_links.README,
-        "The Squares Project",
+        "The Square Packing Project",
         "What the project is, how it works, and where to start.",
     ),
     (

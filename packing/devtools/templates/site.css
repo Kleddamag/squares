@@ -1032,7 +1032,12 @@ body {
 .site-table .site-col-date {
   white-space: nowrap;
 }
-/* A result's standing sits under its rungs, on a line of its own, one chip to each part
+/* What a result is sits under its rungs, on a line of its own: its kind, one chip. */
+.site-table .site-kind {
+  display: block;
+  margin-block-start: 0.3rem;
+}
+/* A result's standing sits under its kind, on a line of its own, one chip to each part
    of it (`second certificate, reported` is two). The chips wrap between themselves, a
    second one under the first where the cell is too narrow for both, and never inside
    one: the column is as wide as its widest chip. */

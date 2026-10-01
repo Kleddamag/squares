@@ -23,8 +23,12 @@ the interval decision several first-party certificates cite, does not make every
 decided hold the bound. Where only a reported bound rests on an entry, it is the current
 best as reported. An entry that holds no bound is a *second certificate* where it proves
 the exact value of a proved case (it cites that case's verified upper bound beside a
-lower bound of its own), *superseded* where it is any other bound, and not a bound at
-all where its evidence claims none.
+lower bound of its own) and *superseded* where it is any other bound.
+
+**Standing is about bounds, so an entry whose evidence claims none has no standing**
+(`NO_STANDING`): nothing supersedes a rigidity or a case exclusion. The views show such
+an entry's `kind` (epistemics.md, Result Kinds) and no standing, and
+`devtools.check_results` holds it to a kind that is no bound.
 
 **Recent is decided where the record already decides it; nothing here defines it.** A
 verified lower bound is recent where the stage and the atlas star it,
@@ -89,8 +93,6 @@ LINEAGES = {
 EXACT_PLACES = 6
 PLACES = 4
 ELLIPSIS = "…"
-#: The standing of an entry that is not a bound: a rigidity, an exclusion, an erratum.
-NOT_A_BOUND = "—"
 
 #: An entry's standing, derived from the case records (see the module docstring).
 HOLDS = "current best"
@@ -106,8 +108,9 @@ STANDINGS = (
     SECOND_CERTIFICATE,
     SECOND_CERTIFICATE_REPORTED,
     SUPERSEDED,
-    NOT_A_BOUND,
 )
+#: What `standing` returns for an entry whose evidence claims no bound: it has none.
+NO_STANDING = ""
 #: The confirmation rungs at which a certificate has been replayed here (epistemics.md).
 REPLAYED_RUNGS = frozenset({"C3", "C4", "C5"})
 #: The evidence claims that make an entry a bound on `s(n)`, as the evidence schema types
@@ -449,7 +452,8 @@ def held(n: int, records: Records) -> Held:
 
 
 def standing(record: Mapping[str, Any], records: Records) -> str:
-    """Whether an entry holds a case bound now, and if not, why not."""
+    """Whether an entry holds a case bound now, and if not, why not. An entry whose
+    evidence claims no bound has no standing, `NO_STANDING`."""
     entry = str(record["id"])
     cases = [held(n, records) for n in _scope(record) if n in records.cases]
     if any(entry in case.verified for case in cases):
@@ -459,7 +463,7 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     cited = {str(item) for item in record["evidence"]}
     claims = {records.register.evidence[item].get("claim") for item in cited}
     if not claims & BOUND_CLAIMS:
-        return NOT_A_BOUND
+        return NO_STANDING
     if "lower-bound" in claims and any(case.proved and cited & case.upper for case in cases):
         if str(record["confirmation"]) in REPLAYED_RUNGS:
             return SECOND_CERTIFICATE

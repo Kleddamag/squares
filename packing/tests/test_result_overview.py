@@ -11,6 +11,7 @@ import pytest
 from devtools import (
     overview_data,
     overview_sections,
+    register_prose,
     render_overview,
     repo_links,
     result_overview,
@@ -28,7 +29,7 @@ SETTLED, EARLIER, BROAD = "T-060", "T-037", "T-056"
 HREF = re.compile(r'href="([^"]+)"')
 LINE_LINK = re.compile(re.escape(REPO_URL) + r"/blob/main/([^\"?#]+)\?plain=1#L(\d+)")
 STEP = re.compile(
-    r'<li class="site-result-step" data-step="(t-\d{3})" data-standing="([a-z-]+)"'
+    r'<li class="site-result-step" data-step="(t-\d{3})" data-standing="([a-z-]*)"'
 )
 
 
@@ -76,8 +77,14 @@ def test_the_head_states_the_result_as_the_site_does(
     )
     assert "site-card-label" not in head
     assert "site-popover-value" not in head
-    claim = overview_data.tex_bounds(" ".join(str(record["claim"]).split()))
-    assert f'<p class="site-result-claim">{claim}</p>' in head
+    # One paragraph element for each paragraph of the claim, in order.
+    paragraphs = register_prose.paragraphs(record["claim"])
+    claim = "".join(
+        f'<p class="site-result-claim">{overview_data.tex_bounds(paragraph)}</p>'
+        for paragraph in paragraphs
+    )
+    assert claim in head
+    assert head.count('<p class="site-result-claim">') == len(paragraphs)
     assert "kpress-math" in claim
     assert overview_sections.status_chips(result) in head
     # Significance first, then verification and confirmation (think-ucon).
@@ -195,8 +202,9 @@ def test_a_result_about_a_few_cases_draws_each(bodies: dict[str, str]) -> None:
 def test_the_chain_is_every_result_on_the_case_oldest_first(
     result_id: str, overview: overview_data.Overview, bodies: dict[str, str]
 ) -> None:
-    """Each step names its result, links its row, and carries its standing; the result the
-    overview is about is marked; and each step links the register entry at its line."""
+    """Each step names its result, links its row, and carries its kind and its standing;
+    the result the overview is about is marked; and each step links the register entry
+    at its line."""
     result = _result(overview, result_id)
     cases = set(result_overview.scope(result))
     expected = [
@@ -215,7 +223,7 @@ def test_the_chain_is_every_result_on_the_case_oldest_first(
         step = body.split(f'data-step="{other.id.lower()}"', 1)[1].split("</li>", 1)[0]
         assert f'<a href="all-results.html#{other.id.lower()}">{other.id}</a>' in step
         assert overview_data.tex_bounds(other.summary) in step
-        assert overview_sections.standing_chips(other.standing) in step
+        assert overview_sections.kind_and_standing(other) in step
         assert f"packing/frontier/results.yaml?plain=1#L{lines[other.id]}" in step
         assert html.escape(other.credit) in step
         for key in (other.record.get("attribution") or {}).get("source_keys") or []:

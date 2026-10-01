@@ -565,13 +565,28 @@ controls:
 # atoms rather than asserted. The one failure that would hollow it out silently is a
 # register entry claiming a rung its citations do not support, so the checker's refusal
 # is itself controlled.
+#
+# The anchor is T-006's structured fields and no line of its prose: two entries have
+# scope 13 at V3/C3, and the score that follows tells them apart. It was anchored on the
+# claim's last line until 2026-10-01, when rewrapping the claim moved that line.
 - name: results - a confirmation rung claimed past its atoms
   file: frontier/results.yaml
   replace:
-    - "      as his CREDITS.md says.\n    scope: {n_values: [13]}\n    verification: V3\n    confirmation: C3"
-    - "      as his CREDITS.md says.\n    scope: {n_values: [13]}\n    verification: V3\n    confirmation: C5"
+    - "    scope: {n_values: [13]}\n    verification: V3\n    confirmation: C3\n    significance:\n      score: 3"
+    - "    scope: {n_values: [13]}\n    verification: V3\n    confirmation: C5\n    significance:\n      score: 3"
   run: python3 -m devtools.check_results
   expect: "T-006: declares C5 but the cited atoms support only C3"
+
+# Reader-facing prose credits a source and links it (conventions.md, Provenance). The
+# mutation writes back the phrase the owner quoted on 2026-10-01, in the claim it came
+# from.
+- name: results - a commit id and a clock written back into a claim
+  file: frontier/results.yaml
+  replace:
+    - "      s(32) = 6: the lower half by Evan Daniel's weighted closed cover of 26 September 2026,"
+    - "      s(32) = 6: the lower half by Evan Daniel's weighted closed cover, certified at commit c8b36419 by the author's clock,"
+  run: python3 -m devtools.check_prose_ceremony
+  expect: "T-051 claim: clock: \"author's clock\""
 
 
 - name: frontier - generated table drifting from its source

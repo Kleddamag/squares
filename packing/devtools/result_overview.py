@@ -68,6 +68,7 @@ from devtools.overview_data import (
     Overview,
     Result,
     math_html,
+    prose_html,
     tex_bounds,
 )
 from devtools.repo_links import path_kind, repo_url
@@ -577,16 +578,14 @@ def head(result: Result, cases: Sequence[int]) -> str:
 
     record = result.record
     kind, dated = result.dated
-    claim = tex_bounds(" ".join(str(record["claim"]).split()))
+    claim = prose_html(record["claim"], between='</p><p class="site-result-claim">')
     more = [
         ("Significance", record["significance"]["rationale"]),
         ("Composition", record.get("composition")),
         ("Next rung", record.get("next_rung")),
     ]
     rows = "".join(
-        f"<dt>{label}</dt><dd>{tex_bounds(' '.join(str(text).split()))}</dd>"
-        for label, text in more
-        if text
+        f"<dt>{label}</dt><dd>{prose_html(text)}</dd>" for label, text in more if text
     )
     meaning = novelty_labels().get(result.novelty, "")
     rows += (
@@ -698,13 +697,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     """One result in the chain: when, which, what it established, how it stands, and its
     citations and sources.
 
-    A broad result's chain runs to dozens of results, so a step there keeps its standing
-    and leaves its rungs to its own row."""
+    A broad result's chain runs to dozens of results, so a step there keeps its kind and
+    standing and leaves its rungs to its own row."""
     from devtools.overview_sections import (  # noqa: PLC0415
+        kind_and_standing,
         result_url,
-        standing_chips,
         standing_key,
-        standing_label,
         status_chips,
     )
 
@@ -722,16 +720,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     if other.id == current.id:
         current_mark = ' data-current=""'
         this = ' <span class="site-result-this">this result</span>'
-    chips = standing_chips(other.standing) if is_broad(cases) else status_chips(other)
+    chips = kind_and_standing(other) if is_broad(cases) else status_chips(other)
     here = standing_on(other, shared)
     if here != other.standing:
         on_case = "on this case" if len(cases) == 1 else "on these cases"
-        chips += (
-            f' <span class="site-cell-quiet">{on_case}, {_esc(standing_label(here))}</span>'
-        )
-    # A result that still stands draws no standing chip, so a step may have no chip line.
-    chips = chips.strip()
-    chip_line = f'<p class="site-result-step-chips">{chips}</p>' if chips else ""
+        chips += f' <span class="site-cell-quiet">{on_case}, {_esc(here)}</span>'
+    chip_line = f'<p class="site-result-step-chips">{chips}</p>'
     cites = [_esc(other.credit), *citations(other)]
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '

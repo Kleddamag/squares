@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-09-30'
+last_reviewed: '2026-10-01'
 results:
   - id: T-001
     registered: '2026-08-31'
@@ -44,6 +44,7 @@ results:
       C5 by assembling the review artifact (statement, hypotheses, proof
       narrative, code map, replays); V5 by a proof-assistant port. The stronger
       side at the exact ceiling is T-003's business.
+
   - id: T-002
     registered: '2026-08-31'
     headline: "`s(18) ≥ 4426213/1000000`, by monotonicity from T-001"
@@ -4494,3 +4495,124 @@ results:
       (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
+
+  - id: T-062
+    registered: '2026-10-01'
+    headline: "Source reports `s(60) = 8` from a mixed cover"
+    claim: >-
+      Evan Daniel reports s(60) = 8 at source revision
+      08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5. A mixed cover of
+      the side-8 container has total mass 748233441/12500000 = 59.85867528
+      below 60; the source reports accepted exact and interval sweeps.
+      The grid supplies the upper bound 8. This register has not freshly
+      replayed either checker or accepted the lower bound into its verified lane.
+    scope: {n_values: [60]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: An exact value for an open case if the reported cover passes local mathematical review and replay.
+      scored: '2026-10-01'
+      by: W1 and W2 source intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-01]']
+      published: '2026-10-01'
+    evidence: [E-n060-evand-mixed-cover-report]
+    artifacts:
+      - packing/frontier/n-060.md
+      - packing/resources/web/evand-square-packing-2026-10-01/README.md
+      - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+      - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    next_rung: >-
+      think-e7xa: replay the pinned mixed-cover checker and examine its geometric
+      premises; retain full root censuses and review before raising the verified bound.
+    notes: >-
+      V0/C1 records the source report and a scoped mathematical read. Two source
+      checkers are reported, but neither has been run here, and no Lean theorem
+      covers this case. The source's CREDITS.md says this work was produced by
+      Claude (Anthropic) in a single session under human direction.
+
+  - id: T-063
+    registered: '2026-10-01'
+    headline: "Source-reported `s(60) = 8` implies `s(61) = 8`"
+    claim: >-
+      The source-reported s(60) = 8 would imply s(61) = 8 by monotonicity:
+      deleting a square from any hypothetical side-below-8 packing of 61
+      squares would contradict s(60) >= 8; an 8 by 8 grid gives s(61) <= 8.
+      The premise is not locally replayed, so this is a reported-lane result.
+    scope: {n_values: [61]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 1
+      rationale: The consequence is immediate once the n60 premise is proved, though it would close a second open case.
+      scored: '2026-10-01'
+      by: W1 and W2 source intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-01]']
+      published: '2026-10-01'
+    composition: >-
+      This uses T-062's un-replayed lower-bound premise, monotonicity by deletion,
+      and the trivial grid upper bound. The reported premise fixes this result's rung.
+      The separate wand125 point-only s(61) source is not evidence for this deduction.
+    evidence: [E-n060-evand-mixed-cover-report, E-n061-evand-derived-report]
+    artifacts:
+      - packing/frontier/n-061.md
+      - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+      - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    next_rung: >-
+      Raise this result only after T-062's cover is locally replayed and its
+      geometric deduction reviewed. think-hxrz tracks the independent wand125
+      point-only source for a separate primary-source intake.
+    notes: >-
+      V0/C1 reflects a reviewed deduction with an un-replayed source premise.
+      The source's CREDITS.md says this work was produced by Claude (Anthropic)
+      in a single session under human direction.
+
+  - id: T-064
+    registered: '2026-10-01'
+    headline: "Source reports `s(k² − 3) = k` for `6 ≤ k ≤ 18` in this corpus"
+    claim: >-
+      Evan Daniel's source reports the universal theorem s(k^2 - 3) = k for
+      every integer k >= 6. This row registers its finite projection to the
+      current n <= 324 corpus, k = 6 through 18. Its periodic wall-segment
+      and interior-area measure has mass k^2 - 4D, where
+      D = 423621306389/500000000000 and 4D > 3. The source's exact Python
+      checker reports the finite Valid7 covering premise; Lean proves that
+      Valid7 implies the universal theorem but does not establish Valid7.
+      The positive-tilt inequalities have not been replayed locally.
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 4
+      rationale: The reported finite premise and reduction would close a bound family extending beyond this corpus if independently checked.
+      scored: '2026-10-01'
+      by: W1 and W2 source intake
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-01]']
+      published: '2026-10-01'
+    composition: >-
+      The universal source theorem rests on a finite Valid7 covering premise
+      and its conditional Lean reduction. Only one source implementation reports
+      the positive-tilt exact decision. The finite scope is the case-corpus projection,
+      not a claim that the theorem ends at k = 18; schema extension is tracked by
+      think-kqi1.
+    evidence: [E-k2m3-evand-family-report]
+    artifacts:
+      - packing/resources/web/evand-square-packing-2026-10-01/README.md
+      - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+      - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    next_rung: >-
+      think-4k80: replay and independently review the exact Valid7 premise,
+      its pose-space coverage, and the Lean reduction before any verified case
+      is promoted. think-kqi1 tracks a native infinite-family scope type.
+    notes: >-
+      V0/C1 records a source report and scoped mathematical read, not a
+      discharged Lean theorem. Known k = 6
+      and 7 instances retain Bentz's independent proof; k = 8 is also covered
+      by the separate T-062 report. The source's CREDITS.md says this work
+      was produced by Claude (Anthropic) in a single session under human direction.

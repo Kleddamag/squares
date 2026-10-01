@@ -221,6 +221,30 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: moves between editions. Change it in the commit that changes the article.
 EXPLAINER_REVISED = "October 1, 2026"
 
+#: The optimality review's own version, and where it stands: the paper that explains
+#: T-060's proof is a draft at its first version, written on the two papers' one credits
+#: form (`devtools.paper_front`; the owner, 2026-10-01: "Draft v0.1.0", not bold). It
+#: is the review's version, not the publication's: the publication's edition is what
+#: the site's footer prints under it, and whether the review should carry that edition
+#: instead is the owner's question, listed in think-2cqu. Joined as `edition_at` joins
+#: the publication's status and stamp, so going final is one edit here too.
+OPTIMALITY_REVIEW_STATUS = "Draft"
+OPTIMALITY_REVIEW_VERSION = "v0.1.0"
+OPTIMALITY_REVIEW_EDITION = " ".join(
+    part for part in (OPTIMALITY_REVIEW_STATUS, OPTIMALITY_REVIEW_VERSION) if part
+)
+
+#: When the optimality review's own text last changed: the date its "Last revised" line
+#: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
+#: that changed its article, `n11-optimality-review-article.md`, held to git by
+#: `devtools.artifact_dates`. Change it in the commit that changes the article.
+OPTIMALITY_REVIEW_REVISED = "October 1, 2026"
+
+#: The day the proof the review explains was published by its source, which the review's
+#: "Original proof" date prints. A fact about someone else's work, so it is typed, and
+#: held by `devtools.artifact_dates` to the day the register records for T-060.
+OPTIMALITY_PROOF_PUBLISHED = "September 29, 2026"
+
 #: The commit the committed claim documents link to
 #: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is
 #: pinned for the reason `DATA_REVISION` is: those documents are compared byte for byte with a

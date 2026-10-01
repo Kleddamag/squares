@@ -31,7 +31,7 @@ from kpress.format.pdf import _await_print_fonts  # pyright: ignore[reportPrivat
 from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
-from devtools import artifact_dates, render_n11_lower_bounds_explainer
+from devtools import artifact_dates, paper_front, render_n11_lower_bounds_explainer
 from devtools.render_n11_lower_bounds_explainer_pdf import dated
 from devtools.render_overview import (
     EMBED_SCRIPT,
@@ -50,6 +50,11 @@ from devtools.render_overview import (
     paper_path,
 )
 from sqpack.probes import probe
+from sqpack.release import (
+    OPTIMALITY_PROOF_PUBLISHED,
+    OPTIMALITY_REVIEW_EDITION,
+    OPTIMALITY_REVIEW_REVISED,
+)
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -70,9 +75,28 @@ DESCRIPTION = (
     "A review of Queuingtheorydotcom's computer-assisted proof that Trump's 1979 packing "
     "of eleven unit squares is optimal, explained step by step."
 )
-#: The day the article says it was last revised, in its credits. The head states the
-#: same day to a link preview (`page_meta`).
-REVISED = re.compile(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})")
+#: The paper's front, in the two papers' one form (`devtools.paper_front`): the proof it
+#: explains, credited first by its author and address; then who oversaw the review and
+#: which agents wrote it; its own version, a draft at its first, with no history to
+#: link; and its dates, the day the source published the proof and the day the article
+#: last changed, both from `sqpack.release`. The head states the second to a link
+#: preview (`page_meta`).
+FRONT = paper_front.check(
+    paper_front.PaperFront(
+        slug=SLUG,
+        title=TITLE,
+        source=paper_front.Source(
+            "Queuingtheorydotcom", "https://github.com/Queuingtheorydotcom/11SquaresOptimal"
+        ),
+        oversight=(paper_front.Person("Joshua Levy", "https://x.com/ojoshe"),),
+        agents=("GPT-6 Astra", "GPT-6 Sol"),
+        version=OPTIMALITY_REVIEW_EDITION,
+        dates=(
+            paper_front.Dated("Original proof", OPTIMALITY_PROOF_PUBLISHED),
+            paper_front.Dated(paper_front.REVISED, OPTIMALITY_REVIEW_REVISED),
+        ),
+    )
+)
 FIGURE_KEYS = (
     "WITNESS_SVG",
     "ROADMAP_SVG",
@@ -111,6 +135,8 @@ RENDER_INPUTS = (
     SHELL,
     STYLE,
     *ARCHIVED_CITATION_SOURCES,
+    # The front of the paper is written by the component both papers share.
+    PACKING / "devtools" / "paper_front.py",
     render_n11_lower_bounds_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
     PACKING / "devtools/n11_optimality_overview_figures.py",
@@ -301,10 +327,12 @@ def expanded_markdown(
     revision: str,
     facts: Mapping[str, str] | None = None,
 ) -> str:
-    """Fill the declared figure slots and the caption facts, and pin local source
-    citations to a Git commit. A fact the article does not use is refused, as a slot it
-    does not fill is: the two lists are the article's and the figure modules' alike."""
+    """Fill the paper's front, the declared figure slots and the caption facts, and pin
+    local source citations to a Git commit. A fact the article does not use is refused,
+    as a slot it does not fill is: the two lists are the article's and the figure
+    modules' alike."""
     facts = facts or {}
+    source = paper_front.fill(source, FRONT)
     unused = sorted(key for key in facts if "{{" + key + "}}" not in source)
     if unused or any(FIGURE_SLOT.fullmatch("{{" + key + "}}") for key in facts):
         raise ValueError(f"{article.name}: caption facts unused or named as figures: {unused}")
@@ -356,19 +384,17 @@ def math_scripts(static: Path) -> dict[str, str]:
     }
 
 
-def page_meta(source: str) -> PageMeta:
+def page_meta() -> PageMeta:
     """What the page says of itself in its head (`render_overview.head_tags`): its title,
-    its sentence, the address it is served at, and the day `source`, the article, says
-    it was last revised, when it says one."""
-    revised = REVISED.search(source)
+    its sentence, the address it is served at, and the day its front says it was last
+    revised. It states no first publication: the review has one version, and the day
+    it first went live is not recorded (think-2cqu lists the question)."""
     return PageMeta(
         name=TITLE,
         description=DESCRIPTION,
         path=SITE_PATH,
         kind="article",
-        modified=render_n11_lower_bounds_explainer.iso_date(revised.group(1))
-        if revised
-        else "",
+        modified=paper_front.iso_date(paper_front.revised(FRONT)),
     )
 
 
@@ -380,7 +406,12 @@ def render(
     article: Path = ARTICLE,
     facts: Mapping[str, str] | None = None,
 ) -> tuple[str, str]:
-    """Return self-contained HTML and the expanded Markdown it typesets."""
+    """Return self-contained HTML and the Markdown edition of the same document.
+
+    The page typesets the expanded article, its front included; the edition is that
+    document with its front in the Markdown edition's form (`paper_front.published`):
+    the title as a heading and the credits as a list, and no formats row, which is the
+    page's navigation. The rest, the figures as their SVG among it, is kept whole."""
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
     markdown = expanded_markdown(
@@ -394,7 +425,7 @@ def render(
         raise ValueError(f"{article.name}: KPress refused the article: {'; '.join(errors)}")
     static = render_n11_lower_bounds_explainer.kpress_static()
     values = {
-        "PAGE_HEAD": head_tags(page_meta(source)),
+        "PAGE_HEAD": head_tags(page_meta()),
         "KPRESS_CSS": render_n11_lower_bounds_explainer.kpress_css(static),
         "KATEX_CSS": render_n11_lower_bounds_explainer.katex_css(static)
         if document.has_math
@@ -415,13 +446,10 @@ def render(
         "DIAGRAM_LABEL_SCRIPT": render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS[
             "DIAGRAM_LABEL_SCRIPT"
         ].read_text(encoding="utf-8"),
-        "PDF_NAME": SLUG + ".pdf",
-        "MARKDOWN_NAME": SLUG + ".md",
-        "REPO_URL": render_n11_lower_bounds_explainer.REPO_URL,
     }
     page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL, strict=True)
     render_n11_lower_bounds_explainer.assert_self_contained(page)
-    return page, markdown
+    return page, paper_front.published(markdown, FRONT)
 
 
 def output_files(site: Path, html: str, markdown: str) -> dict[Path, str]:

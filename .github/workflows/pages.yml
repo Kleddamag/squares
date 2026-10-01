@@ -36,6 +36,7 @@ name: Certificate page
       - packing/cases/n11_fractional_certificate/**
       - packing/cases/n11_threshold_certificate/**
       - packing/devtools/render_n11_lower_bounds_explainer.py
+      - packing/devtools/paper_front.py
       - packing/devtools/prepare_n11_lower_bounds_explainer_math.py
       - packing/devtools/measure_net_coarsening.py
       - packing/devtools/build_composite_figure_data.py

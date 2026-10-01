@@ -15,8 +15,9 @@ The rules:
   calendar** (`sqpack.release.commit_date`), the day a reader would say the change was
   made. The commit records its offset, so every machine reads the same day.
 - **A paper's "revised" date is the date of the last commit that changed its article**,
-  merges excluded (`sqpack.release.last_change_date`). It is stated where the page reads
-  it and held to git here, so it is changed in the commit that changes the article and
+  merges excluded (`sqpack.release.last_change_date`). It is stated in `sqpack.release`,
+  where the paper's front reads it (`EXPLAINER_REVISED`, `OPTIMALITY_REVIEW_REVISED`),
+  and held to git here, so it is changed in the commit that changes the article and
   cannot stand still under one.
 - **A poster's dateline is the date of the data commit it was drawn from**, which the
   poster records (`build_known_best_atlas.CompositeIdentity`).
@@ -61,11 +62,6 @@ RESULTS = PACKING / "frontier/results.yaml"
 SYNOPSIS = REPO / "SYNOPSIS.md"
 #: The result the optimality paper reviews, whose publication is its "Original proof".
 OPTIMALITY_RESULT = "T-060"
-#: The optimality paper's date line, as its credits write it.
-OPTIMALITY_DATES = re.compile(
-    r"Original proof ([A-Z][a-z]+ \d{1,2}, \d{4}) · "
-    r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})"
-)
 SYNOPSIS_DATE = re.compile(r"^\*\*Date:\*\* (\d{4}-\d{2}-\d{2})$", re.MULTILINE)
 
 
@@ -81,14 +77,10 @@ def written_date(text: str) -> date:
 
 
 def optimality_dates() -> tuple[str, str]:
-    """The optimality paper's two dates as its article states them: proof, then review."""
-    found = OPTIMALITY_DATES.findall(OPTIMALITY_ARTICLE.read_text(encoding="utf-8"))
-    if len(found) != 1:
-        raise ValueError(
-            f"{OPTIMALITY_ARTICLE.name} must state its two dates exactly once, as "
-            f"'Original proof <date> · This review revised <date>'; found {len(found)}"
-        )
-    return found[0]
+    """The optimality paper's two dates as its front states them: the day the proof it
+    reviews was published, then the day the review itself was last revised, both from
+    `sqpack.release`, where the paper's renderer reads them."""
+    return release.OPTIMALITY_PROOF_PUBLISHED, release.OPTIMALITY_REVIEW_REVISED
 
 
 def optimality_revised() -> date:
@@ -216,14 +208,14 @@ def _paper_rows() -> list[Row]:
         Row(
             "optimality paper, Original proof",
             proof,
-            f"typed in {OPTIMALITY_ARTICLE.name}",
+            "release.OPTIMALITY_PROOF_PUBLISHED",
             f"the day the register says {OPTIMALITY_RESULT} was published",
             long_date(published(OPTIMALITY_RESULT)),
         ),
         Row(
-            "optimality paper, This review revised",
+            "optimality paper, Last revised",
             review,
-            f"typed in {OPTIMALITY_ARTICLE.name}",
+            "release.OPTIMALITY_REVIEW_REVISED",
             f"the last commit that changed {OPTIMALITY_ARTICLE.name}",
             None if optimality_changed is None else long_date(optimality_changed),
             unknown,
@@ -232,7 +224,7 @@ def _paper_rows() -> list[Row]:
             "optimality paper PDF CreationDate, ModDate",
             publication_date_text(written_date(review)),
             "set by render_n11_optimality_review --pdf",
-            "This review revised, at noon UTC",
+            "Last revised, at noon UTC",
             held_by="built at deploy; artifact_dates --pdf holds a built file",
         ),
     ]

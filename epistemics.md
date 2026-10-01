@@ -189,6 +189,9 @@ to `C3`, because no retained record of human oversight existed; each such result
 `notes` says what it held and what restores the rung.
 Dated prose in reviews, handoffs and the synopsis that names a rung describes the ladder
 in force when it was written.
+A result’s `claim`, `composition` and `next_rung` and the case records are not dated
+prose: they describe the present ladder, and the checker holds the rung labels in them
+to the rungs the register holds.
 The proposal behind the change is
 [the ladder review of 2026-09-30](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md).
 
@@ -435,6 +438,12 @@ The checker:
   claim does not, and an `established` date on every result without `attribution`, the
   day its certificate or proof first passed here, which it refuses beside `attribution`
   and before 22 August 2026;
+- refuses a rung label in a result’s `claim`, `composition` or `next_rung`, or in a case
+  record, that asserts a rung no result the clause is about declares or derives.
+  A statement of what a rung needs, or of what a result once held, passes; `notes` is
+  exempt, because it records what each result held before 2026-09-30. The rule reads
+  labels and not arguments, so whether a requirement is stated correctly is a review
+  obligation;
 - fails when a case’s reported or verified lower bound cites evidence from a source
   dated on or after 22 August 2026 that no register entry covering that $n$ cites; and
 - rejects unknown `T-NNN` references in the README and synopsis.

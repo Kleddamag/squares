@@ -108,10 +108,12 @@ def test_every_result_overview_links_main_at_paths_in_head() -> None:
     """A result's overview is rendered for its row's popover, apart from any page, so it
     is audited on its own: every repository link in every overview names `main`, and
     every path it opens is in `HEAD`."""
-    audit = result_overview.link_audit(overview_data.load())
+    overview = overview_data.load()
+    audit = result_overview.link_audit(overview)
     assert audit.results >= 60
     assert not audit.off_main
     assert not audit.missing
     assert audit.github > 1000, f"only {audit.github} links on {DEFAULT_BRANCH}"
     assert audit.github_paths > 100
     assert audit.site > 500
+    assert set(audit.sizes) == {result.id for result in overview.results}

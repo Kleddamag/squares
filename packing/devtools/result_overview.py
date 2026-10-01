@@ -970,6 +970,9 @@ class LinkAudit(NamedTuple):
     off_main: list[str]
     missing: list[str]
     """Repository paths the tree at `HEAD` does not hold, as `kind/path`."""
+    sizes: dict[str, int]
+    """Each overview's size in bytes of UTF-8, by result: what a page that carries every
+    overview gains."""
 
 
 _HREF = re.compile(r'href="([^"]+)"')
@@ -990,8 +993,10 @@ def link_audit(overview: Overview) -> LinkAudit:
     github = site = external = 0
     paths: set[tuple[str, str]] = set()
     off_main: list[str] = []
+    sizes: dict[str, int] = {}
     for result in overview.results:
         body = result_popover_html(result, overview)
+        sizes[result.id] = len(body.encode("utf-8"))
         for href in _HREF.findall(body):
             if href.startswith(on_main):
                 github += 1
@@ -1010,6 +1015,7 @@ def link_audit(overview: Overview) -> LinkAudit:
         external=external,
         off_main=off_main,
         missing=tree.missing(paths),
+        sizes=sizes,
     )
 
 
@@ -1083,6 +1089,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"{audit.results} result overviews: {audit.github} GitHub links to "
             f"{audit.github_paths} paths on {repo_links.DEFAULT_BRANCH}, {audit.site} links "
             f"to pages of this site, {audit.external} links off the site"
+        )
+        ordered = sorted(audit.sizes.items(), key=lambda item: item[1])
+        (small, least), (_, median), (large, most) = (
+            ordered[0],
+            ordered[len(ordered) // 2],
+            ordered[-1],
+        )
+        print(
+            f"sizes: {sum(audit.sizes.values()) // 1024} KB in all, from {least // 1024} KB "
+            f"({small}) to {most // 1024} KB ({large}), median {median // 1024} KB"
         )
         for problem in audit.off_main:
             print(f"not on {repo_links.DEFAULT_BRANCH}: {problem}", file=sys.stderr)

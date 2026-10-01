@@ -85,7 +85,7 @@ Add a compact map with two routes to the theorem: the exact construction attains
 assuming a packing with side $S<T$ leads to a contradiction.
 Along the second route, label what each stage establishes.
 Counts such as 2,184 and 2,180 are secondary annotations, not the names of the ideas.
-Foreshadow the rational cap $U>T$ and the fixed-$T$ local theorem here, so their
+Foreshadow the rational cap $U>T$ and the fixed-`T` local theorem here, so their
 different roles do not become a surprise at the end.
 
 The witness also retains an atlas footer labeled “U Trump.”
@@ -128,7 +128,7 @@ cells do not have that symmetry.
 **8. Separate capture from isolation visually (P4, R2).** The capture tree gives an
 enclosure; the next section opens with several feature counts before explaining what
 local isolation does.
-Put the conceptual statement first: for a packing feasible in the fixed-$T$ container
+Put the conceptual statement first: for a packing feasible in the fixed-`T` container
 whose coordinates lie inside the checked rectangle, any nonzero feasible displacement
 would require $\tau\le c_j\tau^2$ with $0<\tau\le1$ and $c_j<1$. Plot the two sides as
 an algebraic schematic, then derive the inequality and give its complete
@@ -137,8 +137,8 @@ A two-coordinate projection may illustrate uncertainty, but must not purport to 
 full 33-dimensional feasible set or prove isolation by a few animated motions.
 
 **9. Make the exact endpoint part of the main story (R2, J3).** In “Closing the Gap,”
-show the same hypothetical side-$S$ container centered in the rational cap and then
-rigidly aligned inside the fixed-$T$ container.
+show the same hypothetical side-`S` container centered in the rational cap and then
+rigidly aligned inside the fixed-`T` container.
 The field scale is a coordinate conversion.
 The physical unit squares never shrink.
 Local isolation forces the exact construction, whose span $T$ contradicts fitting in

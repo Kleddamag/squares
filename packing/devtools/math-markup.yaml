@@ -200,6 +200,9 @@ migrated:
 - docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
 - docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
 - docs/project/reviews/review-2026-09-30-lean-s13.md
+- docs/project/reviews/review-2026-09-30-n11-explainer-citations-and-docs.md
+- docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md
+- docs/project/reviews/review-2026-09-30-n11-explainer-proof-reconciliation.md
 - docs/project/reviews/review-2026-09-30-n11-expository-simplification.md
 - docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md
 - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
@@ -238,6 +241,7 @@ migrated:
 - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 - docs/project/specs/active/plan-2026-09-29-third-party-results-register.md
 - docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md
+- docs/project/specs/active/plan-2026-09-30-n11-optimality-illustrations.md
 - docs/project/specs/active/spike-2026-08-25-n5-motion-lab.md
 - docs/project/stromquist-helper-arguments-math-review.md
 - docs/project/three-lane-research-method.md

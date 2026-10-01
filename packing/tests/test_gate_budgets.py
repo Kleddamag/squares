@@ -26,6 +26,7 @@ import json
 import math
 import os
 from dataclasses import replace
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -435,6 +436,7 @@ def test_the_tier_of_an_invocation_is_always_one_the_register_declares() -> None
         ["--suite-a"],
         ["--suite-b"],
         ["--suite-c"],
+        ["--suite-d"],
     ):
         namespace = validate._parser().parse_args(flags)
         tier = validate._tier_id(namespace)
@@ -525,6 +527,246 @@ def test_every_tier_the_workflow_runs_on_a_pull_request_is_recorded() -> None:
     assert set(tiers) <= set(live().ids)
     assert tiers, "no pull-request job runs a whole tier"
     assert unrecorded_problems(live(), tiers) == []
+
+
+# --- a tier pending its first hosted measurement: a bead, a date, and the ceiling --------
+
+#: The record lines `fabricated` writes, which a pending tier carries none of.
+FABRICATED_RECORD = (
+    "  measured_seconds: 100.0\n"
+    "  measured_on: '2026-08-30'\n"
+    "  measured_where: a fabricated register\n"
+)
+PENDING_UNTIL = date(2026, 10, 8)
+
+
+def pending_tier(
+    tmp_path: Path,
+    *,
+    bead: str | None = "think-aaaa",
+    until: str | None = f"'{PENDING_UNTIL.isoformat()}'",
+    record: str = "",
+) -> Path:
+    """The fabricated register with its one tier's record replaced by pending fields.
+
+    Each field is written only when given, so a test can leave one out to see it refused,
+    and `record` puts observation fields beside them for the same purpose. `fast` stands in
+    for a tier a pull request runs: the caller says so in the mapping it passes.
+    """
+    spec = fabricated(tmp_path, ceiling=200.0, measured="100.0")
+    document = spec.read_text(encoding="utf-8")
+    assert FABRICATED_RECORD in document
+    lines = "".join(
+        f"  {name}: {value}\n"
+        for name, value in (("pending_measurement", bead), ("pending_until", until))
+        if value is not None
+    )
+    spec.write_text(document.replace(FABRICATED_RECORD, record + lines, 1), encoding="utf-8")
+    return spec
+
+
+def test_a_pending_pull_request_tier_passes_until_its_date_and_fails_after_it(
+    tmp_path: Path,
+) -> None:
+    """A tier that has never run has no hosted reading to cite, for a while.
+
+    Under a live bead it passes up to and on `pending_until`, and the day after it is an
+    empty record like any other, with the date and the command that records it in the
+    message. The ceiling is not part of the allowance: a run over it fails throughout.
+    """
+    register = gate_budgets.load(pending_tier(tmp_path))
+    tier = register.tiers[0]
+    assert tier.measured_seconds is None
+    assert tier.pending_measurement == "think-aaaa"
+    assert tier.pending_until == PENDING_UNTIL
+    assert gate_budgets.declaration_problems(register) == []
+    read = bead_state.fixture_store({"aaaa": "open"})
+    run_by = {tier.id: "a job"}
+
+    for day in (PENDING_UNTIL - timedelta(days=7), PENDING_UNTIL):
+        assert unrecorded_problems(register, run_by, today=day, read=read) == [], day
+
+    expired = unrecorded_problems(
+        register, run_by, today=PENDING_UNTIL + timedelta(days=1), read=read
+    )
+    assert len(expired) == 1, expired
+    assert f"tier {tier.id!r}" in expired[0]
+    assert f"pending measurement under think-aaaa expired on {PENDING_UNTIL}" in expired[0]
+    assert f"python -m devtools.read_tier_walls --tier {tier.id} --run-id" in expired[0]
+
+    over = judge_at_reference(register, tier, ((SLOW_STEP, tier.ceiling_seconds * 1.01),))
+    assert over.failed, over
+    assert any("ceiling" in reason for reason in over.failures), over.failures
+    inside = judge_at_reference(register, tier, ((SLOW_STEP, tier.ceiling_seconds / 2),))
+    assert not inside.failed, inside
+    assert any("no cost is recorded" in note for note in inside.notes), inside.notes
+
+
+def test_an_unowned_empty_record_is_still_refused_whatever_the_date(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The allowance is the bead and the date together, not the absence of a record."""
+    register = gate_budgets.load(pending_tier(tmp_path, bead=None, until=None))
+    tier = register.tiers[0]
+    assert tier.pending_measurement is None
+
+    def unreachable() -> None:
+        raise AssertionError("a tier with nothing pending must not need the bead store")
+
+    monkeypatch.setattr(bead_state, "store", unreachable)
+    problems = unrecorded_problems(
+        register, {tier.id: "a job"}, today=PENDING_UNTIL - timedelta(days=7)
+    )
+    assert len(problems) == 1, problems
+    assert "no recorded cost" in problems[0]
+
+
+@pytest.mark.parametrize(
+    ("record", "named"),
+    [
+        ("  measured_seconds: 100.0\n  measured_on: '2026-08-30'\n", "measured_seconds"),
+        ("  measured_where: estimated from the shard beside it\n", "measured_where"),
+        ("  measured_on: '2026-08-30'\n", "measured_on"),
+        ("  measured_band: {low: 80, high: 120}\n", "measured_band"),
+    ],
+)
+def test_a_pending_tier_cannot_masquerade_as_measured(
+    tmp_path: Path, record: str, named: str
+) -> None:
+    """A forecast is not a reading, and a reading is not pending."""
+    with pytest.raises(BudgetError, match="pending and measured at once") as refusal:
+        gate_budgets.load(pending_tier(tmp_path, record=record))
+    assert named in str(refusal.value)
+
+
+@pytest.mark.parametrize(
+    ("bead", "until", "message"),
+    [
+        ("later", "'2026-10-08'", r"pending_measurement must name a `think-xxxx` bead"),
+        ("closed-4cwy", "'2026-10-08'", r"pending_measurement must name a `think-xxxx` bead"),
+        ("think-aaaa", None, "pending_measurement requires pending_until"),
+        (None, "'2026-10-08'", "pending_until requires pending_measurement"),
+        ("think-aaaa", "next week", "pending_until must be an ISO date"),
+        ("think-aaaa", "'2026-13-08'", "pending_until must be an ISO date"),
+        ("think-aaaa", "20", "pending_until must be an ISO date"),
+    ],
+)
+def test_a_malformed_pending_declaration_is_refused(
+    tmp_path: Path, bead: str | None, until: str | None, message: str
+) -> None:
+    """The bead and the date come together, and each has to be what it says it is."""
+    with pytest.raises(BudgetError, match=message):
+        gate_budgets.load(pending_tier(tmp_path, bead=bead, until=until))
+
+
+def test_a_pending_date_may_be_written_quoted_or_as_yaml_s_own(tmp_path: Path) -> None:
+    """The register quotes its dates; an unquoted one is the same day, not a refusal."""
+    for until in ("'2026-10-08'", "2026-10-08"):
+        register = gate_budgets.load(pending_tier(tmp_path, until=until))
+        assert register.tiers[0].pending_until == PENDING_UNTIL, until
+
+
+def test_a_pending_tier_must_be_owned_by_an_open_bead(tmp_path: Path) -> None:
+    """The ratchet an advisory wall is held to, applied to a pending measurement.
+
+    A closed bead means the measurement is claimed taken while the record is still empty;
+    an unknown one never owned anything. Both are refused inside the date, on a fixture
+    store so this runs anywhere.
+    """
+    read = bead_state.fixture_store({"aaaa": "open", "bbbb": "in_progress", "cccc": "closed"})
+    run_by = {"fast": "a job"}
+
+    def problems(bead: str) -> list[str]:
+        register = gate_budgets.load(pending_tier(tmp_path, bead=bead))
+        return unrecorded_problems(register, run_by, today=PENDING_UNTIL, read=read)
+
+    assert problems("think-aaaa") == []
+    assert problems("think-bbbb") == []
+    closed = problems("think-cccc")
+    assert len(closed) == 1, closed
+    assert "tier 'fast' is pending its first hosted measurement" in closed[0]
+    assert "under think-cccc: closed" in closed[0]
+    assert "python -m devtools.read_tier_walls --tier fast --run-id" in closed[0]
+    unknown = problems("think-zzzz")
+    assert len(unknown) == 1, unknown
+    assert "under think-zzzz: no such bead" in unknown[0]
+
+
+def test_a_pending_tier_with_no_bead_store_fails_under_ci_and_skips_locally(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A bead nothing can resolve is not trusted in CI; a recorded tier never asks."""
+    register = gate_budgets.load(pending_tier(tmp_path))
+    run_by = {"fast": "a job"}
+    monkeypatch.setattr(bead_state, "store", lambda: None)
+    monkeypatch.setenv("CI", "true")
+    problems = unrecorded_problems(register, run_by, today=PENDING_UNTIL)
+    assert len(problems) == 1, problems
+    assert "no bead store is reachable" in problems[0]
+    assert "fetch full history" in problems[0]
+
+    monkeypatch.delenv("CI")
+    capsys.readouterr()
+    assert unrecorded_problems(register, run_by, today=PENDING_UNTIL) == []
+    printed = capsys.readouterr().out
+    assert printed.startswith("SKIP "), printed
+    assert "no bead store is reachable" in printed
+    assert "think-aaaa" in printed
+
+    # Past the date the bead is beside the point: the tier fails on the calendar alone.
+    capsys.readouterr()
+    expired = unrecorded_problems(register, run_by, today=PENDING_UNTIL + timedelta(days=1))
+    assert len(expired) == 1, expired
+    assert "expired on" in expired[0]
+    assert capsys.readouterr().out == ""
+
+    def unreachable() -> None:
+        raise AssertionError("a recorded tier must not need the bead store")
+
+    monkeypatch.setattr(bead_state, "store", unreachable)
+    recorded = gate_budgets.load(fabricated(tmp_path, ceiling=200.0, measured="100.0"))
+    problems = unrecorded_problems(recorded, run_by, today=PENDING_UNTIL)
+    assert len(problems) == 1, problems
+    assert "names no hosted run" in problems[0]
+
+
+def test_the_live_pending_tiers_pass_until_their_dates_and_are_named_after_them() -> None:
+    """The register as checked in, with the dates read from it rather than typed here.
+
+    Each tier pending a first hosted measurement is one a pull-request job runs, since
+    that is the only place the date and the bead are held to anything. The whole surface
+    passes up to the earliest date, each tier is named the day after its own, and the
+    beads are then resolved in the checkout's real store. With nothing pending this
+    skips, as the unmeasured-tier test does: the mechanism is for a new tier's first days.
+    """
+    register = live()
+    tiers = pull_request_tiers()
+    pending = [tier for tier in register.tiers if tier.pending_measurement is not None]
+    if not pending:
+        pytest.skip("no tier is currently pending its first measurement")
+    dates: dict[str, date] = {}
+    for tier in pending:
+        assert tier.pending_until is not None
+        assert tier.id in tiers, (
+            f"{tier.id} is pending a first hosted measurement and no pull-request job runs "
+            "it, so nothing holds its date or its bead"
+        )
+        dates[tier.id] = tier.pending_until
+    every_bead_open = bead_state.fixture_store(
+        {(tier.pending_measurement or "").removeprefix("think-"): "open" for tier in pending}
+    )
+    earliest = min(dates.values())
+    assert unrecorded_problems(register, tiers, today=earliest, read=every_bead_open) == []
+    for tier_id, until in dates.items():
+        after = unrecorded_problems(
+            register, tiers, today=until + timedelta(days=1), read=every_bead_open
+        )
+        assert any(
+            f"tier {tier_id!r}" in problem and f"expired on {until}" in problem
+            for problem in after
+        ), (tier_id, after)
+    real = _require_bead_store()
+    assert unrecorded_problems(register, tiers, today=earliest, read=real) == []
 
 
 def test_a_record_that_rises_without_attribution_is_refused() -> None:
@@ -1254,13 +1496,37 @@ def test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner() -> None:
 
     The fixture carries the readings with their run ids and the verdict intended under
     each rule; this computes all three from the register and holds them to it, so the
-    table in the fixture is what the code does and not a story about it. Under the live
-    register every clean reading passes, and the only walls still failed are the two over
-    the 154 s ceiling, which `OR-17` keeps absolute.
+    table in the fixture is what the code does and not a story about it. The `intended`
+    column is judged against the live register with the two tiers' records as they were
+    re-taken from these readings on 2026-10-01, which the fixture's `retaken` block
+    carries, so a later re-take of either record from later readings does not rewrite what
+    this day's readings were held to. Under it every clean reading passes, and the only
+    walls still failed are the two over the 154 s ceiling, which `OR-17` keeps absolute.
+
+    Two things keep `retaken` honest. It is the counted readings' own geometric mean and
+    range, computed here; and each of its records is still in the live register, as the
+    current record or in its history.
     """
     document = safe_load(HOSTED_DAY.read_text(encoding="utf-8"))
     register = live()
     superseded = document["superseded"]
+    retaken = document["retaken"]
+    intended = replace(
+        register,
+        tiers=tuple(
+            replace(
+                tier,
+                measured_seconds=float(retaken[tier.id]["measured_seconds"]),
+                measured_band=(
+                    float(retaken[tier.id]["measured_band"]["low"]),
+                    float(retaken[tier.id]["measured_band"]["high"]),
+                ),
+            )
+            if tier.id in retaken
+            else tier
+            for tier in register.tiers
+        ),
+    )
     old_register = replace(
         register,
         policy=replace(register.policy, pull_request_relative_rules=None),
@@ -1303,19 +1569,24 @@ def test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner() -> None:
         where = f"{tier_id} {wall} in run {reading['run']}"
         assert verdict(old_register, tier_id, wall) == reading["old_rule"], where
         assert verdict(relaxed_old, tier_id, wall) == reading["relaxation_alone"], where
-        assert verdict(register, tier_id, wall) == reading["intended"], where
+        assert verdict(intended, tier_id, wall) == reading["intended"], where
 
     counted = [r for r in readings if not r.get("step_failed")]
     assert all(r["intended"] == "passed" for r in counted)
     refused = [r for r in readings if r.get("step_failed")]
     assert refused
     assert all(r["intended"] == "failed" for r in refused)
-    for tier_id in ("checks", "suite_c"):
+    assert set(retaken) == {str(r["tier"]) for r in readings} == set(superseded)
+    for tier_id, record in retaken.items():
+        walls = [float(r["wall"]) for r in counted if r["tier"] == tier_id]
+        band = (float(record["measured_band"]["low"]), float(record["measured_band"]["high"]))
+        assert band == (min(walls), max(walls)), tier_id
+        geometric = math.exp(sum(math.log(w) for w in walls) / len(walls))
+        seconds = float(record["measured_seconds"])
+        assert seconds == pytest.approx(geometric, abs=0.01), tier_id
         tier = register.tier(tier_id)
         assert tier is not None
-        assert tier.measured_band is not None
-        walls = [float(r["wall"]) for r in counted if r["tier"] == tier_id]
-        assert tier.measured_band == (min(walls), max(walls)), tier_id
-        assert tier.measured_seconds is not None
-        geometric = math.exp(sum(math.log(w) for w in walls) / len(walls))
-        assert tier.measured_seconds == pytest.approx(geometric, abs=0.01), tier_id
+        assert any(held.seconds == pytest.approx(seconds, abs=0.01) for held in tier.records), (
+            f"the {tier_id} record re-taken from this day's readings, {seconds:g}s, is no "
+            "longer in the live register as the current record or in its history"
+        )

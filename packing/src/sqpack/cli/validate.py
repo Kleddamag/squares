@@ -138,6 +138,7 @@ TIER_FLAGS = (
     "suite_a",
     "suite_b",
     "suite_c",
+    "suite_d",
     "checks",
     "sweeps",
     "geometry",
@@ -146,8 +147,8 @@ TIER_FLAGS = (
 )
 TIER_IDS = (*TIER_FLAGS, "full")
 #: The quick-lane partition. Keep the public tier names stable; this count is the
-#: shared contract with `devtools.suite_files`. The three-way wall is pending CI measurement.
-SUITE_SHARDS = 3
+#: shared contract with `devtools.suite_files`. The four-way wall is pending CI measurement.
+SUITE_SHARDS = 4
 #: Whole-file shards for the deferred exhaustive lane. The alternate cost record is
 #: derived from the retained 58-test hosted JUnit receipt on run 35579234418.
 EXHAUSTIVE_SHARDS = 3
@@ -183,7 +184,7 @@ FAST_SUITE_BUDGET_SECONDS = 1800.0
 #: the value for nearly none of the cost.
 QUICK_TESTS = "not exhaustive_exact and not slow"
 #: Browser-floor liveness follows the Node toolchain to the frontend job rather than
-#: making both behavioural shards install Node.
+#: making every behavioural shard install Node.
 BROWSER_FLOOR_LIVENESS_TESTS = "tests/test_browser_floor_contract.py"
 SLOW_TESTS = "slow and not exhaustive_exact"
 EXHAUSTIVE_TESTS = "exhaustive_exact"
@@ -523,11 +524,11 @@ class Step:
     enough that the pull request runs it on its own runner rather than beside the rest.
 
     `fast` says *whether* a pull request runs a step; this field, `frontend`,
-    `suite_a`, `suite_b`, `suite_c`, `geometry`, and `typecheck` say *which pull-request
-    job* runs it. Every sweep is also `fast`, the eight selections complement `--fast`, and
-    `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks all
-    eight against what CI actually invokes -- so a step cannot land in no job, and no
-    step is paid for twice.
+    `suite_a`, `suite_b`, `suite_c`, `suite_d`, `geometry`, and `typecheck` say *which
+    pull-request job* runs it. Every sweep is also `fast`, the nine selections complement
+    `--fast`, and `test_the_pull_request_jobs_partition_the_surface` reads the workflow and
+    checks all nine against what CI actually invokes -- so a step cannot land in no job,
+    and no step is paid for twice.
 
     The boundary is a measurement, not a topic. Four steps carry it, and on CI's
     four-cpu runner (run 34010470187) they cost 313.95s of step time: the
@@ -572,10 +573,10 @@ class Step:
     """Assigns this step to shard B of the pull request's behavioural lane.
 
     ``devtools.suite_files`` assigns each test file to one shard from recorded costs and
-    filters before collection. The three selections are complete and disjoint, and each
+    filters before collection. The four selections are complete and disjoint, and each
     runs alone so xdist can use every cpu while module-scoped fixtures remain reusable.
 
-    Three step instances carry these fields, one per file shard.
+    Four step instances carry these fields, one per file shard.
     Their separate runners follow from arithmetic rather than kind. `_pytest_workers`
     sizes the lane to `cpus - jobs + 1`, because a lane that asks for every cpu beside
     two other steps oversubscribes the runner and fails ordinary tests against the
@@ -592,12 +593,15 @@ class Step:
     does not buy is coverage -- the step runs on every pull request either way, which is
     the distinction `test_the_pull_request_surface_defers_only_what_was_measured` keeps.
 
-    Like `sweep` all three fields default to False, so forgetting one makes the `checks` job
+    Like `sweep` all four fields default to False, so forgetting one makes the `checks` job
     slower rather than leaving a step unrun. Their membership is pinned by the workflow
     partition contracts."""
 
     suite_c: bool = False
     """Assigns this step to shard C of the pull request's behavioural lane."""
+
+    suite_d: bool = False
+    """Assigns this step to shard D of the pull request's behavioural lane."""
 
     typecheck: bool = False
     """Assigns the type floor to its own pull-request runner.
@@ -683,7 +687,7 @@ class Step:
     Measured on 2026-08-30 over the 42 steps: an edit to the rigidity assessor selects 11,
     one root document 9, one agenda 10, the Rust engine 12, and one unrecognised file
     still selects all 42. That surface had six deliberately unattributed steps. The
-    current surface has eight because `fast behavioral tests` is now represented by three
+    current surface has nine because `fast behavioral tests` is now represented by four
     shard steps; both walk `REPO.rglob("*")`. The other five remain `negative controls`,
     which snapshots nearly everything, plus `synopsis`, `README`, `soft-schema
     validation`, and the exhaustive test step, each of which resolves or enumerates
@@ -742,6 +746,8 @@ class Step:
             tags.append("suite-b")
         elif self.suite_c:
             tags.append("suite-c")
+        elif self.suite_d:
+            tags.append("suite-d")
         elif self.typecheck:
             tags.append("typecheck")
         elif self.geometry:
@@ -1530,6 +1536,11 @@ def _fast_tests_c(context: Context) -> str:
     return _fast_tests(context, 3)
 
 
+def _fast_tests_d(context: Context) -> str:
+    """Run pre-collection shard D of the quick lane."""
+    return _fast_tests(context, 4)
+
+
 #: Under xdist, exit 5 can also mean every worker failed before collection. Only a
 #: separate serial collection can establish that the slow lane is actually empty.
 _PYTEST_NOTHING_SELECTED = "command exited 5:"
@@ -1613,6 +1624,10 @@ def _exhaustive_exact_tests(context: Context) -> str:
             _SUITE_FILES_PLUGIN,
             f"--suite-shard={context.exhaustive_shard}",
             f"--suite-file-costs={EXHAUSTIVE_FILE_COSTS}",
+            # The exhaustive record names only the files that carry an exhaustive test,
+            # so nearly every file is unrecorded by design and the quick lane's
+            # unrecorded-share warning would be a false alarm here.
+            "--suite-unrecorded-share=1",
         )
         if context.exhaustive_shard
         else ()
@@ -3434,8 +3449,8 @@ _WORKBENCH_INPUTS = (
 # tier that has to hold everything a merge would otherwise be the first to check. Since
 # 2026-09-06 a pull request runs it as concurrent jobs rather than one. The current
 # partition is `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
-# `--suite-b`, `--suite-c`, and `--sweeps`, argued on the corresponding `Step` fields;
-# the tier is unchanged and what
+# `--suite-b`, `--suite-c`, `--suite-d`, and `--sweeps`, argued on the corresponding
+# `Step` fields; the tier is unchanged and what
 # a pull request waits for is its longest part rather than their sum.
 #
 # The three-way split was the second cut and it was taken on the two-job surface's own
@@ -3906,7 +3921,7 @@ STEPS: tuple[Step, ...] = (
     # one hung test, and this step is now ordinary enough to live under it. What the lane
     # is allowed to *cost*, as against how long one hung subprocess may hang, is
     # `devtools/gate-budgets.yaml`.
-    # The pull request runs two pre-collection file selections on separate runners. The
+    # The pull request runs four pre-collection file selections on separate runners. The
     # measured plugin assigns each module to exactly one shard, preserving every quick
     # test and its fixture boundary without importing the other shard's files.
     # Scheduling-only variants were measured and refused: default 302.70s, loadscope
@@ -3931,6 +3946,13 @@ STEPS: tuple[Step, ...] = (
         fast=True,
         broad=True,
         suite_c=True,
+    ),
+    Step(
+        "fast behavioral tests, shard D",
+        _fast_tests_d,
+        fast=True,
+        broad=True,
+        suite_d=True,
     ),
     # The half of the behavioural suite that costs the wall. It is the same tests under
     # the same runner, selected by the `slow` marker instead of against it, and it runs
@@ -4974,6 +4996,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "fast behavioral tests, shard A",
         "fast behavioral tests, shard B",
         "fast behavioral tests, shard C",
+        "fast behavioral tests, shard D",
         "golden basin maps (proved cases, checked against mathematics)",
         "basin identity",
         "soft-schema validation",
@@ -5051,19 +5074,20 @@ def _select_steps(
     suite_a: bool = False,
     suite_b: bool = False,
     suite_c: bool = False,
+    suite_d: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
     skip: Sequence[str] = (),
 ) -> list[Step]:
     """The steps a tier and its name filters select.
 
-    `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--suite-c`, `--sweeps`,
+    `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--suite-c`, `--suite-d`, `--sweeps`,
     `--geometry`, and `--typecheck` are the parts of `--fast`, and they exist because CI runs
-    them as concurrent GitHub jobs. They are a partition by construction here: seven
+    them as concurrent GitHub jobs. They are a partition by construction here: eight
     select their placement field and `--checks` selects fast steps marked with none of
     them. No step can be in two parts or in none.
 
-    Eight jobs could have divided the tier with `--only` and `--skip` instead, and that
+    Nine jobs could have divided the tier with `--only` and `--skip` instead, and that
     was rejected on the register rather than on taste. A subset of a tier has no
     declared cost: `--only` reports no tier at all, and `--skip` reports the tier it
     narrowed, so a part-tier run would have been judged against the whole tier's
@@ -5100,6 +5124,8 @@ def _select_steps(
         selected = [step for step in STEPS if step.suite_b]
     elif suite_c:
         selected = [step for step in STEPS if step.suite_c]
+    elif suite_d:
+        selected = [step for step in STEPS if step.suite_d]
     elif geometry:
         selected = [step for step in STEPS if step.geometry]
     elif typecheck:
@@ -5115,6 +5141,7 @@ def _select_steps(
                 or step.suite_a
                 or step.suite_b
                 or step.suite_c
+                or step.suite_d
                 or step.geometry
                 or step.typecheck
             )
@@ -5644,7 +5671,7 @@ def _parser() -> ArgumentParser:
         "--checks",
         action="store_true",
         help=(
-            "run the part of --fast that is none of the other six: the Python and Rust "
+            "run the part of --fast that is none of the other eight: the Python and Rust "
             "record checks, and everything that needs the Rust engine"
         ),
     )
@@ -5678,6 +5705,11 @@ def _parser() -> ArgumentParser:
         "--suite-c",
         action="store_true",
         help=("run file shard C of the quick behavioral lane"),
+    )
+    parser.add_argument(
+        "--suite-d",
+        action="store_true",
+        help=("run file shard D of the quick behavioral lane"),
     )
     parser.add_argument(
         "--typecheck",
@@ -5795,6 +5827,7 @@ def _validate_invocation(
     suite_a: bool = False,
     suite_b: bool = False,
     suite_c: bool = False,
+    suite_d: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
     since: str | None = None,
@@ -5802,29 +5835,40 @@ def _validate_invocation(
     skip: Sequence[str] = (),
     exhaustive_shard: str = "",
 ) -> None:
-    parts = any((checks, frontend, sweeps, suite_a, suite_b, suite_c, geometry, typecheck))
+    selections = (
+        checks,
+        frontend,
+        sweeps,
+        suite_a,
+        suite_b,
+        suite_c,
+        suite_d,
+        geometry,
+        typecheck,
+    )
+    parts = any(selections)
     narrowed = only or skip or fast or records or edit or parts or since or push
     if strict and narrowed:
         raise UsageError(
             "--strict cannot be combined with --only, --skip, --fast, --checks, "
-            "--frontend, --suite-a, --suite-b, --suite-c, --sweeps, --geometry, --typecheck, "
-            "--records, --edit, --push, or --since"
+            "--frontend, --suite-a, --suite-b, --suite-c, --suite-d, --sweeps, --geometry, "
+            "--typecheck, --records, --edit, --push, or --since"
         )
     if edit and fast:
         raise UsageError(
             "--edit and --fast select different tiers; --fast is the wider of the two"
         )
-    if sum((checks, frontend, sweeps, suite_a, suite_b, suite_c, geometry, typecheck)) > 1:
+    if sum(selections) > 1:
         raise UsageError(
-            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --sweeps and "
-            "--typecheck are the eight parts of --fast; ask for --fast to run them all, "
-            "or for one of them to run that part"
+            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --suite-d, "
+            "--sweeps and --typecheck are the nine parts of --fast; ask for --fast to run "
+            "them all, or for one of them to run that part"
         )
     if parts and (fast or records or edit or push):
         raise UsageError(
-            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --sweeps and "
-            "--typecheck are parts of --fast and are not combined with another tier; "
-            "--fast is all eight of them"
+            "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --suite-d, "
+            "--sweeps and --typecheck are parts of --fast and are not combined with another "
+            "tier; --fast is all nine of them"
         )
     if push and (fast or records or edit):
         raise UsageError(
@@ -5891,6 +5935,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             suite_a=namespace.suite_a,
             suite_b=namespace.suite_b,
             suite_c=namespace.suite_c,
+            suite_d=namespace.suite_d,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
             since=namespace.since,
@@ -5935,6 +5980,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             suite_a=namespace.suite_a,
             suite_b=namespace.suite_b,
             suite_c=namespace.suite_c,
+            suite_d=namespace.suite_d,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
             skip=namespace.skip,

@@ -14,7 +14,11 @@ rules added on 2026-09-15 are each named for how that one got through:
   absolute ceiling. `checks` and `sweeps` sat empty for eight days while the gate printed
   the line to write on every run. Which tiers a pull request runs is read from
   `packing-validation.yml`, so a new PR job cannot arrive with an empty record either; the
-  record must cite the hosted runs it came from.
+  record must cite the hosted runs it came from. The one exception is short-lived and
+  tracked: a tier that names a `pending_measurement` bead and a `pending_until` date
+  passes while the bead is live and the date has not passed, because a tier that has
+  never run has no hosted reading to cite. Its ceiling applies throughout. Past the
+  date, or under a closed or unknown bead, it fails like any other empty record.
 * **A record that rises without attribution fails.** `suite`'s record went 102.83 →
   162.62 → 118.72 → 183.44 s in three days, each move a real reading, and 2.4x of growth
   went through a 1.5x drift rule. `gate_budgets.rise_findings` is the rule; the history it
@@ -27,14 +31,16 @@ rules added on 2026-09-15 are each named for how that one got through:
   relaxation has outlived the work that was to end it. That is the ratchet a relaxed
   `tsconfig` flag is held to, read from the same bead store.
 
-Nothing here runs a tier or looks at a clock, so it cannot be dismissed as a busy runner.
-It asserts, about `devtools/gate-budgets.yaml`:
+Nothing here runs a tier or times one, so it cannot be dismissed as a busy runner. The
+one thing it reads off a clock is today's date, for a pending measurement's
+`pending_until`. It asserts, about `devtools/gate-budgets.yaml`:
 
 * every tier `packing-validate` can select as a whole has a declared ceiling, so a new
   tier cannot arrive without one;
 * every declared tier is a tier that exists, so a ceiling cannot outlive its tier;
 * every ceiling is within `policy.max_headroom` of the cost recorded for that tier;
-* every tier a pull-request job runs has a recorded cost that cites a hosted run;
+* every tier a pull-request job runs has a recorded cost that cites a hosted run, or a
+  pending measurement under a live bead and a date not yet passed;
 * no record rose past `policy.max_unattributed_rise` without an attribution;
 * every pull-request wall budget is inside `OR-14`'s three minutes, and runs, whatever
   its enforcement;
@@ -62,6 +68,7 @@ import re
 import shlex
 import sys
 from collections.abc import Sequence
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -171,25 +178,90 @@ def pull_request_tiers(workflow: Path = PULL_REQUEST_WORKFLOW) -> dict[str, str]
     return found
 
 
-def unrecorded_problems(register: Register, tiers: dict[str, str]) -> list[str]:
-    """Pull-request tiers whose record is empty, or cites no hosted run."""
+def unconfirmed_problems(claims: Sequence[str]) -> list[str]:
+    """What becomes of tracker claims when no bead store is reachable to confirm them.
+
+    Each claim is a clause ending in the bead it rests on. This follows `check_bead_tree`
+    and the tracker tests: under `CI` every claim fails rather than being taken on its
+    name, since an exception nothing can confirm is exactly the state a tracked exception
+    must not reach, and on a local checkout without the `tbd-sync` branch, which is a
+    normal state, each prints a loud skip instead.
+    """
+    unconfirmed = [
+        f"{claim}, and no bead store is reachable (no tbd sync worktree, no tbd-sync "
+        "branch) to confirm that bead is still open"
+        for claim in claims
+    ]
+    if os.environ.get("CI"):
+        return [f"{problem}; fetch full history" for problem in unconfirmed]
+    for problem in unconfirmed:
+        print(f"SKIP {problem}; the tracker is unchecked here, and CI fails on it")
+    return []
+
+
+def unrecorded_problems(
+    register: Register,
+    tiers: dict[str, str],
+    *,
+    today: date | None = None,
+    read: bead_state.Reader | None = None,
+) -> list[str]:
+    """Pull-request tiers whose record is empty, or cites no hosted run.
+
+    An empty record passes in one case: the tier names a `pending_measurement` bead and a
+    `pending_until` date, `today` is not past that date, and the bead is live. A tier that
+    has never run has no hosted reading to cite, and the ceiling holds it meanwhile.
+    `today` is the UTC date when not given; `read` is the bead store the pending tiers'
+    beads are resolved in, the checkout's own when not given, and it is not looked for
+    unless some tier is pending. With no store reachable the answer is
+    `unconfirmed_problems`': fail under `CI`, skip loudly on a laptop.
+    """
+    today = datetime.now(UTC).date() if today is None else today
     problems: list[str] = []
+    pending: list[tuple[str, str]] = []
     for tier_id, job in sorted(tiers.items()):
         tier = register.tier(tier_id)
         if tier is None:
             continue
-        if tier.measured_seconds is None:
+        how = f"python -m devtools.read_tier_walls --tier {tier_id} --run-id ..."
+        if tier.measured_seconds is not None:
+            if not RUN_ID.search(tier.measured_where or ""):
+                problems.append(
+                    f"tier {tier_id!r} runs on every pull request and its record names no "
+                    "hosted run in measured_where, so nobody can re-take the reading it "
+                    "rests on"
+                )
+        elif tier.pending_measurement is None or tier.pending_until is None:
             problems.append(
                 f"tier {tier_id!r} runs on every pull request, in the `{job}` job, and has "
                 "no recorded cost, so its drift, stale and headroom rules are all off. Record "
-                "it from hosted runs: python -m devtools.read_tier_walls --tier "
-                f"{tier_id} --run-id ..."
+                f"it from hosted runs: {how}"
             )
-        elif not RUN_ID.search(tier.measured_where or ""):
+        elif today > tier.pending_until:
             problems.append(
-                f"tier {tier_id!r} runs on every pull request and its record names no hosted "
-                "run in measured_where, so nobody can re-take the reading it rests on"
+                f"tier {tier_id!r} runs on every pull request, in the `{job}` job, and its "
+                f"pending measurement under {tier.pending_measurement} expired on "
+                f"{tier.pending_until.isoformat()}, so it has no recorded cost and its "
+                "drift, stale and headroom rules are all off. Record it from hosted runs "
+                f"and drop the pending fields: {how}"
             )
+        else:
+            pending.append((tier_id, tier.pending_measurement))
+    if not pending:
+        return problems
+    label = "tier {!r} is pending its first hosted measurement under {}"
+    store = read if read is not None else bead_state.store()
+    if store is None:
+        return problems + unconfirmed_problems(
+            [label.format(tier_id, bead) for tier_id, bead in pending]
+        )
+    problems.extend(
+        f"{label.format(tier_id, fault)}, so nothing tracks taking it; record the tier from "
+        f"hosted runs (python -m devtools.read_tier_walls --tier {tier_id} --run-id ...), "
+        "or name the open bead that owns the measurement"
+        for tier_id, bead in pending
+        for fault in bead_state.dead_trackers([bead], store)
+    )
     return problems
 
 
@@ -198,10 +270,8 @@ def advisory_problems(walls: WallRegister, read: bead_state.Reader | None = None
 
     `load_walls` already refuses an advisory wall with no bead alias or no reason. What it
     cannot see, from the aggregator's two-file sparse checkout, is whether that bead is
-    live. With no bead store to ask, this follows `check_bead_tree` and the tracker tests:
-    under `CI` it fails rather than trusting the name, since a relaxation nothing can
-    confirm is exactly the state an advisory wall must not reach, and on a local checkout
-    without the `tbd-sync` branch, which is a normal state, it prints a loud skip instead.
+    live. With no bead store to ask, `unconfirmed_problems` decides: fail under `CI`, skip
+    loudly on a laptop.
     """
     advisory = [
         (workflow.id, declared)
@@ -212,17 +282,12 @@ def advisory_problems(walls: WallRegister, read: bead_state.Reader | None = None
         return []
     store = read if read is not None else bead_state.store()
     if store is None:
-        unconfirmed = [
-            f"pull-request wall {workflow_id!r} is advisory under "
-            f"{declared.tracking_bead}, and no bead store is reachable (no tbd sync "
-            "worktree, no tbd-sync branch) to confirm that bead is still open"
-            for workflow_id, declared in advisory
-        ]
-        if os.environ.get("CI"):
-            return [f"{problem}; fetch full history" for problem in unconfirmed]
-        for problem in unconfirmed:
-            print(f"SKIP {problem}; the tracker is unchecked here, and CI fails on it")
-        return []
+        return unconfirmed_problems(
+            [
+                f"pull-request wall {workflow_id!r} is advisory under {declared.tracking_bead}"
+                for workflow_id, declared in advisory
+            ]
+        )
     return [
         f"pull-request wall {workflow_id!r} is advisory under {fault}, so nothing tracks "
         "switching it back on; set `enforcement: enforcing` and drop its tracker, or name "
@@ -247,14 +312,7 @@ def relative_rule_problems(
     label = "the drift and stale rules are advisory on pull requests under {}"
     store = read if read is not None else bead_state.store()
     if store is None:
-        problem = (
-            f"{label.format(declared.tracking_bead)}, and no bead store is reachable (no "
-            "tbd sync worktree, no tbd-sync branch) to confirm that bead is still open"
-        )
-        if os.environ.get("CI"):
-            return [f"{problem}; fetch full history"]
-        print(f"SKIP {problem}; the tracker is unchecked here, and CI fails on it")
-        return []
+        return unconfirmed_problems([label.format(declared.tracking_bead)])
     return [
         f"{label.format(fault)}, so nothing tracks switching them back on; set "
         "policy.pull_request_relative_rules.enforcement to enforcing and drop its tracker, "
@@ -383,7 +441,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         coverage_problems(register)
         + declaration_problems(register)
         + documentation_problems(register)
-        + unrecorded_problems(register, tiers)
+        + unrecorded_problems(register, tiers, read=store)
         + ratchets
         + relative_rule_problems(register, store)
         + wall_problems(read=store)
@@ -408,17 +466,32 @@ def main(argv: Sequence[str] | None = None) -> int:
                 f"note: pull-request wall {workflow.id!r} is advisory under {tracked} "
                 f"{workflow.advisory.tracking_bead}: {workflow.advisory.reason}"
             )
+    # Having passed, a pull-request tier with no record is a pending one inside its date.
+    pending = [
+        tier
+        for tier in register.tiers
+        if tier.id in tiers and tier.measured_seconds is None and tier.pending_until is not None
+    ]
+    for tier in pending:
+        print(
+            f"note: tier {tier.id!r} is pending its first hosted measurement under "
+            f"{tracked} {tier.pending_measurement} until {tier.pending_until}; its "
+            f"{tier.ceiling_seconds:g}s ceiling is enforced meanwhile"
+        )
     recorded = sum(1 for tier in register.tiers if tier.measured_seconds is not None)
     trackers = (
         "tracked by a live bead"
         if store is not None
         else "naming a bead no store here could confirm"
     )
+    awaited = (
+        f" or pending a first one ({', '.join(tier.id for tier in pending)})" if pending else ""
+    )
     print(
         f"gate budget declaration passed: {len(register.tiers)} tiers, {recorded} with a "
         f"recorded cost, all ceilings within {register.policy.max_headroom:g}x of it, every "
-        f"pull-request tier ({', '.join(sorted(tiers))}) recorded from hosted runs, no "
-        "unattributed rise, the pull-request walls inside OR-14 and wired with every "
+        f"pull-request tier ({', '.join(sorted(tiers))}) recorded from hosted runs{awaited}, "
+        "no unattributed rise, the pull-request walls inside OR-14 and wired with every "
         f"advisory wall {trackers}, all named in {GUIDE.name}"
     )
     return 0

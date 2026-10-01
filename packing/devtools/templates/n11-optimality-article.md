@@ -650,7 +650,7 @@ opposite to $h_j$. A certificate supplies nonnegative rational weights $\lambda_
 that
 
 $$
-\left\|\lambda^{\mathsf T}A-\sigma e_j^{\mathsf T}\right\|_1
+\left\|\lambda^{\top}A-\sigma e_j^{\top}\right\|_1
 \le\epsilon_j.
 $$
 

@@ -20,8 +20,10 @@
 <!-- The site's navigation bar, shared with every other page of the site and hidden in
      print, so the PDF does not move. See templates/site-nav.css. -->
 <style>{{SITE_NAV_CSS}}</style>
-<!-- The publication styles this paper shares with the first one. See
-     templates/explainer-publication.css. -->
+<!-- The publication layer this paper shares with the first one: its stylesheet and the
+     head script that stylesheet's math rule reads the platform from, which go together
+     (`render_explainer.publication_layer`). See templates/explainer-publication.css. -->
+<script>{{NATIVE_MATH_METRICS}}</script>
 <style>{{PUBLICATION_CSS}}</style>
 <style>{{PAPER_CSS}}</style>
 <script>{{THEME_BOOTSTRAP}}</script>
@@ -41,7 +43,10 @@
 </article>
 </main>
 <script>{{SITE_THEME}}</script>
+<!-- The math pipeline every page of the site shares, and the site pages' driver for
+     it. See `render_n11_optimality_explainer.math_scripts`. -->
 <script>{{KATEX_JS}}</script>
+<script>{{SITE_MATH}}</script>
 <script>{{DIAGRAM_LABEL_SCRIPT}}</script>
 </body>
 </html>

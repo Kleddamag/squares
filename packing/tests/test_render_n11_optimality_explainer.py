@@ -9,6 +9,7 @@ from typing import Literal
 
 import pytest
 
+from devtools import measure_site_pages as measure
 from devtools import n11_optimality_mechanism_figures as mechanism
 from devtools import n11_optimality_overview_figures as overview
 from devtools import render_n11_optimality_explainer as paper
@@ -112,6 +113,62 @@ def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str,
     # first paper's hero uses; this paper declares no top space of its own.
     assert "    padding-block-start: var(--site-page-top);\n" in publication_css
     assert "--site-page-top" not in paper_css
+
+
+def test_the_paper_takes_the_publication_layer_and_the_sites_math_pipeline(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper draws its text and its mathematics as the explainer and every site page
+    do, from the same sources. The publication layer is the stylesheet and the head
+    script its math rule reads the platform from, both from
+    `render_explainer.publication_layer` and both in the head: the paper once inlined
+    the stylesheet alone, and on macOS every formula was drawn a sixth lighter than the
+    explainer's (think-jc3w). The math pipeline is the explainer's, driven by the site
+    pages' own script, and not KPress's auto-render entry points, which neither kern a
+    function's name nor wait for a formula's faces."""
+    from devtools import render_overview  # noqa: PLC0415
+
+    html, _ = rendered
+    head, body = html.split("</head>", 1)
+    layer = paper.render_explainer.publication_layer()
+    assert set(layer) == {"PUBLICATION_CSS", "NATIVE_MATH_METRICS"}
+    for name, value in layer.items():
+        assert head.count(value) == 1, name
+    assert f"<script>{layer['NATIVE_MATH_METRICS']}</script>" in head
+    static = paper.render_explainer.kpress_static()
+    scripts = paper.math_scripts(static)
+    assert scripts["KATEX_JS"] == paper.render_explainer.katex_js(static)
+    assert scripts["SITE_MATH"] == render_overview.MATH_SCRIPT.read_text(encoding="utf-8")
+    assert body.index(scripts["KATEX_JS"]) < body.index(scripts["SITE_MATH"])
+    assert "squaresMath" in scripts["KATEX_JS"]
+    for stock in ("katex/auto-render.min.js", "katex/katex-init.js"):
+        assert (static / stock).read_text(encoding="utf-8") not in html, stock
+    for needed in (
+        render_overview.MATH_SCRIPT,
+        paper.render_explainer.INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"],
+        paper.render_explainer.PROBES / "render_explainer" / "host_math_init.js",
+        paper.render_explainer.PROBES / "render_n11_optimality_explainer" / "typeset_all.js",
+    ):
+        assert needed.is_file()
+        assert needed in paper.RENDER_INPUTS, needed.name
+
+
+@pytest.mark.parametrize(
+    "dropped",
+    ["<script>{{NATIVE_MATH_METRICS}}</script>\n", "<script>{{SITE_MATH}}</script>\n"],
+)
+def test_a_shell_that_drops_half_of_a_shared_layer_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, dropped: str
+) -> None:
+    """A value the shell has no place for fails the render, so the stylesheet cannot be
+    inlined without its head script, nor the math pipeline without its driver."""
+    shell = paper.SHELL.read_text(encoding="utf-8")
+    assert shell.count(dropped) == 1
+    broken = tmp_path / paper.SHELL.name
+    broken.write_text(shell.replace(dropped, ""), encoding="utf-8")
+    monkeypatch.setattr(paper, "SHELL", broken)
+    with pytest.raises(ValueError, match="values with no placeholder"):
+        paper.render(SOURCE, figures=FIGURES, revision=REVISION, article=ARTICLE)
 
 
 def test_link_revision_is_the_commit_the_paper_is_built_from(
@@ -297,6 +354,38 @@ def test_pdf_refuses_a_math_host_without_rendered_katex(
     os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
     reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
 )
+def test_a_print_can_ask_for_every_formula_at_once(tmp_path: Path) -> None:
+    """The site's math driver typesets the formulas near the window and leaves the rest
+    to the browser's idle time, after the page and its fonts have loaded. A print does
+    not wait for that: asked through the probe `_print_pdf` evaluates, the driver
+    typesets every formula, three hundred paragraphs down included, before it answers.
+    The page is read as soon as its markup is parsed, when the far formulas are still
+    waiting, so the answer is the probe's doing."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    far = "\n\n".join(f"Paragraph {index} holds $z_{{{index}}}^9$." for index in range(300))
+    html, _ = paper.render(
+        SOURCE + "\n\n" + far + "\n", figures=FIGURES, revision=REVISION, article=ARTICLE
+    )
+    page_path = tmp_path / "far.html"
+    page_path.write_text(html, encoding="utf-8")
+    pending = probe(paper.render_explainer.PROBES, "preview_site/math_pending")
+    with sync_playwright() as driver:
+        browser = driver.chromium.launch()
+        try:
+            page = browser.new_page()
+            page.goto(page_path.as_uri(), wait_until="domcontentloaded")
+            assert page.evaluate(pending) > 0
+            page.evaluate(paper._TYPESET_ALL)  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
+            assert page.evaluate(pending) == 0
+        finally:
+            browser.close()
+
+
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
 def test_radical_svg_has_print_geometry(tmp_path: Path) -> None:
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
@@ -369,6 +458,78 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                 page.close()
         finally:
             browser.close()
+
+
+#: The article's `s(11)=T` as the site's pipeline typesets it.
+KERNED = r"s\mkern1mu(11)=T"
+#: Mathematics on each surface the paper sets it on: prose, a sans heading, a table's
+#: cells, a display, and a footnote. `s(11)` is a function's name before a bracket,
+#: which the site's pipeline kerns by one mu.
+MATH_SURFACES = """
+
+### A sans heading with $n = 11$
+
+The side is $s(11)=T$.[^side]
+
+| Branch | Verdict |
+| --- | --- |
+| $y_{15}\\le5/4$ | $u^2<1$ |
+
+$$
+\\left\\|\\lambda^{\\top}A-\\sigma e_j^{\\top}\\right\\|_1\\le\\epsilon_j.
+$$
+
+[^side]: Where $T$ is the side of the construction.
+"""
+
+
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
+def test_formulas_are_drawn_as_their_text_is_on_macos_and_linearly_elsewhere(
+    tmp_path: Path,
+) -> None:
+    """The paper told it is on macOS and told it is not, on whatever machine this runs:
+    on macOS the head script stamps the root and every formula is rasterised as the text
+    around it; elsewhere it keeps the publication layer's linear advances. On both,
+    every formula is typeset, at its text's size, colour and weight, in the face its
+    text is in, from faces the page ships, with the function's name kerned."""
+    html, _ = paper.render(
+        SOURCE + MATH_SURFACES, figures=FIGURES, revision=REVISION, article=ARTICLE
+    )
+    (tmp_path / "paper.html").write_text(html, encoding="utf-8")
+    for platform, flag, rendering in (
+        ("MacIntel", "true", "auto"),
+        ("Linux x86_64", None, "geometricprecision"),
+    ):
+        (found,) = measure.measure_glyphs(
+            tmp_path.as_uri(),
+            ("paper.html",),
+            widths=(1280,),
+            platform=platform,
+            tex=(KERNED,),
+            every_ink=False,
+        )
+        assert found["platform"] == platform
+        assert found["root"].get(measure.NATIVE_METRICS) == flag, platform
+        assert measure.glyph_problems(found, katex=measure.shipped_katex()) == [], platform
+        formulas = {(row["surface"], row["layout"]): row for row in found["math"]}
+        assert set(formulas) == {
+            ("prose", "inline"),
+            ("prose", "display"),
+            ("heading", "inline"),
+            ("table cell", "inline"),
+            ("footnote", "inline"),
+        }
+        assert {row["text_rendering"] for row in found["math"]} == {rendering}, platform
+        sans = {
+            surface
+            for (surface, _), row in formulas.items()
+            if row["math"] == measure.SANS_MATH
+        }
+        assert sans == {"heading", "table cell", "footnote"}
+        assert [row["example"] for row in found["math"] if row["compared"]] == [KERNED]
 
 
 def test_new_figure_dependencies_are_declared_to_publication_scope() -> None:

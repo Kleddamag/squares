@@ -1,0 +1,8 @@
+.venv/bin/python3 -m sqpack.cli.witness verify witnesses/grid-n004.yaml --json 
+.venv/bin/python3 -m devtools.check_rational_witness_independent witnesses/grid-n004.yaml 
+.venv/bin/python3 -m sqpack.cli.witness verify witnesses/overlap-negative-control.yaml --json 
+.venv/bin/python3 -m devtools.check_rational_witness_independent witnesses/overlap-negative-control.yaml 
+.venv/bin/python3 -m devtools.import_half_angle_witness resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/upper-packing-certificate.json --expected-n 17 --expected-side 4675530093604551/1000000000000000 --output campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/witness.yaml 
+.venv/bin/python3 -m sqpack.cli.witness verify campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/witness.yaml --json 
+.venv/bin/python3 -m devtools.check_rational_witness_independent campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/witness.yaml 
+.venv/bin/python3 resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/verify_upper.py resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/upper-packing-certificate.json 

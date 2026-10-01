@@ -15,11 +15,13 @@ from devtools.check_published_site import (
     LINK_CHECKED_PAGES,
     OPTIMALITY_PAPER,
     OPTIMALITY_PAPER_FILES,
+    OPTIMALITY_PAPER_MARKDOWN,
     PAPERS_CURRENT,
     SERVED,
     SITE_PAGES,
     WORKBENCH_HOME,
     WORKBENCH_REVISION,
+    paper_citations,
     pdf_pages,
     repository_links,
 )
@@ -89,6 +91,19 @@ def result_overview(
     ).encode()
 
 
+def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
+    """The optimality paper's page as the check reads one: the bar with Papers current,
+    and one citation, which the paper pins to the commit it was built from."""
+    return (
+        PAPERS_CURRENT + f'Papers</a><a href="{REPO_URL}/blob/{ref}/{link}#anchor">Receipt</a>'
+    ).encode()
+
+
+def optimality_markdown(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
+    """The paper's Markdown, with the same citation as a Markdown link."""
+    return f"[Receipt]({REPO_URL}/blob/{ref}/{link}#anchor)\n".encode()
+
+
 def site_pages(**overrides: bytes) -> dict[str, bytes]:
     """Every page a good deploy serves, by served name, each named as its renderer names it,
     and the result overviews its results table names, by their address."""
@@ -105,7 +120,8 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
     pages[EXPLAINER] = page(PAGE_URL)
     for address in OVERVIEWS:
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
-    pages[OPTIMALITY_PAPER] = PAPERS_CURRENT.encode() + b"Papers</a>"
+    pages[OPTIMALITY_PAPER] = optimality_paper()
+    pages[OPTIMALITY_PAPER_MARKDOWN] = optimality_markdown()
     pages.update(overrides)
     pages[render_overview.RESULTS_PAGE] += "".join(
         f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
@@ -370,7 +386,9 @@ def test_check_requires_the_optimality_paper_where_the_papers_card_points(
     assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 404, ")
     assert failure.endswith("Papers is not the bar's current entry")
 
-    bare = site_pages(**{OPTIMALITY_PAPER: b"<p>a page with no bar</p>"})
+    bare = site_pages(
+        **{OPTIMALITY_PAPER: optimality_paper().replace(b' aria-current="page"', b"")}
+    )
     (failure,) = failures(monkeypatch, fake_site(bare))
     assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 200, ")
     assert failure.endswith("Papers is not the bar's current entry")
@@ -379,6 +397,57 @@ def test_check_requires_the_optimality_paper_where_the_papers_card_points(
         assert failures(monkeypatch, fake_site(site_pages(), lost=(name,))) == [
             f"served {name}: HTTP 404"
         ]
+
+
+def test_the_optimality_papers_citations_name_the_deployed_commit(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The paper is the one page whose repository links are held to a commit and not to
+    `main`: it cites the evidence as it stood when it was typeset, and the deploy builds
+    it from the commit it deploys, which `main` keeps. So each citation, on the page and
+    in its Markdown, names the expected commit, and every cited path is in that commit's
+    tree. A citation on `main` or at another commit fails, as does a page with none and
+    a cited path the tree lacks."""
+    assert OPTIMALITY_PAPER_MARKDOWN == "n11-optimality/t-060-explainer.md"
+    assert OPTIMALITY_PAPER_MARKDOWN in OPTIMALITY_PAPER_FILES
+    other = "f" * 40
+    text = (
+        f'<a href="{REPO_URL}/blob/{COMMIT}/packing/a.md#part">a</a>'
+        f'<a href="{REPO_URL}/blob/{COMMIT}/packing/b.json?plain=1">b</a>'
+        f'<a href="{REPO_URL}/blob/main/README.md">c</a>'
+        f'<a href="{REPO_URL}/tree/{other}/packing">d</a>'
+        f'<a href="{REPO_URL}">the repository itself is not a citation</a>'
+    )
+    assert paper_citations(text, COMMIT) == (
+        {("blob", "packing/a.md"), ("blob", "packing/b.json")},
+        ["blob/main/README.md", f"tree/{other}/packing"],
+    )
+
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    assert f"https://example.org/{OPTIMALITY_PAPER_MARKDOWN}" in requested
+
+    for name, made in (
+        (OPTIMALITY_PAPER, optimality_paper),
+        (OPTIMALITY_PAPER_MARKDOWN, optimality_markdown),
+    ):
+        stray = f"{name}: 1 repository links not pinned to {COMMIT[:12]}: "
+        on_main = site_pages(**{name: made(ref=DEFAULT_BRANCH)})
+        assert failures(monkeypatch, fake_site(on_main)) == [
+            stray + "['blob/main/README.md#anchor']"
+        ]
+        elsewhere = site_pages(**{name: made(ref=other)})
+        assert failures(monkeypatch, fake_site(elsewhere)) == [
+            stray + f"['blob/{other}/README.md#anchor']"
+        ]
+        gone = site_pages(**{name: made(link="packing/gone.md")})
+        assert failures(monkeypatch, fake_site(gone)) == [
+            f"{name}: cited at {COMMIT[:12]} but not in its tree: ['blob/packing/gone.md']"
+        ]
+    uncited = site_pages(**{OPTIMALITY_PAPER_MARKDOWN: b"# A paper citing nothing\n"})
+    assert failures(monkeypatch, fake_site(uncited)) == [
+        f"{OPTIMALITY_PAPER_MARKDOWN}: 0 citations, each pinned to {COMMIT[:12]}"
+    ]
 
 
 def test_check_fails_when_the_commit_tree_cannot_be_read(

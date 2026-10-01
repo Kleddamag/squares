@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import gzip
 import json
 from fractions import Fraction
@@ -75,6 +76,24 @@ def test_header_and_blob_helpers() -> None:
     assert not is_deterministic_gzip(gzip.compress(b"x", mtime=1))
     # `git hash-object /dev/null`.
     assert git_blob(b"") == "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+
+
+def test_evand_october_source_manifest() -> None:
+    """Pinned source blobs survive retention, including the one local gzip transform."""
+    packet = WEB / "evand-square-packing-2026-10-01"
+    with (packet / "source-manifest.tsv").open(newline="") as stream:
+        rows = list(csv.DictReader(stream, delimiter="\t"))
+    assert len(rows) == 62
+    assert len({row["upstream_path"] for row in rows}) == len(rows)
+    for row in rows:
+        upstream = row["upstream_path"]
+        stored = row["stored_path"]
+        assert stored in {f"source/{upstream}", f"source/{upstream}.gz"}
+        data = (packet / stored).read_bytes()
+        if stored == f"source/{upstream}.gz":
+            data = gzip.decompress(data)
+        assert len(data) == int(row["upstream_bytes"]), upstream
+        assert git_blob(data) == row["upstream_git_blob"], upstream
 
 
 def test_tokoharu_packet_on_main_still_reads_plain_files() -> None:

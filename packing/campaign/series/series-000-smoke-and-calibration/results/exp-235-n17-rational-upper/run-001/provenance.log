@@ -1,0 +1,10 @@
+started_at=2026-10-01T10:48:50Z
+bacacdd15f4c7a410dfc9b8fff32c918e5851748
+?? campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/
+3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]
+ 3:48  up 1 day, 10:37, 1 user, load averages: 53.81 66.25 98.50
+workers=1
+command_timeout_seconds=90
+file_limit_kib=10240
+memory_guard=unavailable-platform-data-limit
+finished_at=2026-10-01T10:48:58Z

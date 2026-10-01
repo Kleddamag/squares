@@ -52,6 +52,21 @@ def test_the_page_carries_the_shared_nav_with_visualize_current(page: str) -> No
     assert f"{visualize}Visualize</a>" in page
 
 
+def test_the_bar_has_one_papers_entry_reaching_the_site_root(page: str) -> None:
+    """The bar is the site's partial, so the workbench carries its Papers entry, which
+    stands for the explainer and the tutorial, and no entry for either of them."""
+    entries = re.findall(r'<a data-page="(\w+)"[^>]* href="([^"]+)">([^<]+)</a>', page)
+    assert [key for key, _, _ in entries] == [
+        "overview",
+        "frontier",
+        "results",
+        "papers",
+        "visualize",
+        "github",
+    ]
+    assert ("papers", "../papers.html", "Papers") in entries
+
+
 def test_the_page_is_the_workbench_tab_of_the_visualize_section(page: str) -> None:
     """The workbench carries the Visualize section's tabs under the bar with its own tab
     current, so an existing `workbench/` link lands on the Workbench tab beside the Film."""

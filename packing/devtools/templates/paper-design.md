@@ -1,7 +1,7 @@
 # Design System
 
 This is the one description of how every page of the site looks: the explainer, the
-overview, the frontier atlas, the tutorial and the Visualize section.
+overview, the frontier atlas, the papers page, the tutorial and the Visualize section.
 Each stylesheet implements what is written here and points back to it; when a page needs
 something new, it is added here first and then to the stylesheet that owns it.
 
@@ -273,9 +273,11 @@ it.
   (0.5rem) nearer the bar, since a drawing has no line spacing above its edge.
   On the explainer the source chips sit in that space and the title starts the token
   below them. Print keeps KPress’s spacing, so the explainer’s PDF does not move.
-  Its entries are Overview, Frontier, Results, Explainer, Tutorial, Visualize and
-  GitHub. Visualize leads to the film (`visualize.html`) and is current on both pages of
-  the Visualize section, the film and the workbench.
+  Its entries are Overview, Frontier, Results, Papers, Visualize and GitHub.
+  Papers leads to the papers page (`papers.html`) and is current on it and on both
+  papers, the explainer and the tutorial, which keep their own addresses.
+  Visualize leads to the film (`visualize.html`) and is current on both pages of the
+  Visualize section, the film and the workbench.
   The workbench is an application rather than a KPress page, so its build
   (`workbench_tools.build_site`) takes the bar, its stylesheet, the theme bootstrap and
   the gear’s script from `render_overview.nav_shell`, in a shell that gives it the page
@@ -673,6 +675,22 @@ it.
   to the explainer, as before.
   `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
   every row id to the form it recognises.
+
+- **Papers page.** The site’s papers, the explainer and the tutorial, share one entry in
+  the navigation bar, “Papers”, after Results.
+  It leads to `papers.html`: a hero title, “Papers”, a subtitle, a short introduction
+  and one large card for each paper (`data-card-size="large"`), saying what the paper
+  is. The cards come from one ordered list, `overview_sections.PAPERS`, each entry a
+  paper’s address, label, title, description and card size, so a new paper is one entry.
+  Each is a page card, as on the overview: pressing it opens a popover that frames the
+  paper and expands to it.
+  A card is a button and holds no link of its own, so what its description names is
+  linked from its popover, beside the button.
+  The explainer’s card, the same on the overview, names the newer optimality proofs and
+  links T-060 there; a link to the optimality paper replaces that link or joins it in
+  the one list that holds them (`OPTIMALITY_LINKS`). The papers keep their addresses,
+  `explainer.html` and `tutorial.html`, and Papers is the current entry on the papers
+  page and on each of them.
 
 - **Awaiting replay.** Under the recent table, a closed disclosure in the sans face at
   the note size: its summary names how many cases and the range, and it opens a compact

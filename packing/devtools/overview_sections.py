@@ -12,10 +12,11 @@ from __future__ import annotations
 import base64
 import html
 import re
+from collections.abc import Sequence
 from datetime import date
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Literal, get_args
+from typing import Literal, NamedTuple, get_args
 from urllib.parse import urlsplit
 
 from devtools import repo_links
@@ -261,6 +262,7 @@ def card(
     also: tuple[str, str] | None = None,
     hero: str = "",
     size: CardSize | None = None,
+    links: Sequence[tuple[str, str]] = (),
 ) -> str:
     """A card and the popover it opens. The card is a caps label, the summary and a line
     under it; pressing it opens a popover that repeats the label and summary, shows
@@ -273,7 +275,9 @@ def card(
     such as a result's in the results table, and the button goes to that page. `also`
     adds a second, quiet link, such as the document on GitHub. `hero` heads the card
     with a picture (`card_hero`). `size` is the card's width, small, medium or large;
-    left out, `card_size` chooses it from the length of the value and note.
+    left out, `card_size` chooses it from the length of the value and note. `links` are
+    further quiet links beside the button, each its address and its words, for what a
+    card's note names but cannot link: a card is a button.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
     and follows its button with no script. It is set in sans, so its math is sans too,
@@ -290,10 +294,9 @@ def card(
         )
     else:
         body = f'<div class="site-popover-preview">{preview}</div>'
-    second = (
-        f' <a class="site-popover-also" href="{_esc(also[0])}">{_esc(also[1])}</a>'
-        if also
-        else ""
+    second = "".join(
+        f' <a class="site-popover-also" href="{_esc(url)}">{_esc(words)}</a>'
+        for url, words in (*((also,) if also else ()), *links)
     )
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
@@ -786,19 +789,94 @@ def document_cards() -> str:
     )
 
 
-#: The site's other pages, as the overview's cards show them: the page, a label, its
-#: title, and one line on what a reader finds there. Both are register prose, so a
-#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math.
-PAGES: tuple[tuple[str, str, str, str], ...] = (
-    (
-        "explainer.html",
-        "Explainer",
-        "Earlier n = 11 lower bounds",
-        (
-            "How weighted certificates proved s(11) >= 3.8264… before T-060 settled the case, "
-            "with the certificate drawn and checkable in the page."
+#: When the explainer's proofs are from, as its cards say it: T-018 was established on
+#: 4 September 2026 and T-025 and T-026 on 9 September (`results.yaml`), first published
+#: on 5 and 13 September (`sqpack.release.PUBLICATION_HISTORY`). A test holds this phrase
+#: to those dates.
+EXPLAINER_AS_OF = "early September"
+
+
+class Paper(NamedTuple):
+    """One of the site's papers, as its card says what it is: where it is served, a caps
+    label naming its kind, its title, one or two sentences on what it is, the size of
+    its card on the Papers page, and the quiet links its card's popover carries for
+    what the description names. The title and description are register prose, so
+    `n = 11` in either is set as math."""
+
+    href: str
+    label: str
+    title: str
+    description: str
+    size: CardSize = "large"
+    links: tuple[tuple[str, str], ...] = ()
+
+
+#: Where the explainer's card sends a reader for the newer optimality proofs it names:
+#: T-060's row in the results table, for now. When the optimality paper is a page of
+#: the site, its link replaces this one or joins it, here, and both of the explainer's
+#: cards carry the change. A card is a button and holds no link, so its popover does.
+OPTIMALITY_LINKS: tuple[tuple[str, str], ...] = (
+    (result_url("T-060"), "The optimality proof, T-060"),
+)
+
+#: The site's papers, in the order the Papers page shows them, one large card each
+#: (`paper_cards`). A new paper is one entry here. The explainer's title is the owner's
+#: (2026-09-30), as `render_explainer.TITLE` has it in title case; the tutorial's
+#: description is `TUTORIAL.md`'s own opening, its audience and what it owns.
+PAPERS: tuple[Paper, ...] = (
+    Paper(
+        href="explainer.html",
+        label="Explainer",
+        title="New lower bounds for square packing for n = 11",
+        description=(
+            "An explainer and proof of certain lower bounds for n = 11. It explains the "
+            f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
+            "exist (T-060)."
+        ),
+        links=OPTIMALITY_LINKS,
+    ),
+    Paper(
+        href="tutorial.html",
+        label="Tutorial",
+        title="Square packing from first principles",
+        description=(
+            "An introduction for anyone new to the problem: what the objects are, why the "
+            "approach is shaped the way it is, and what the research has and has not "
+            "established. Each outside idea it uses, from linear programming to algebraic "
+            "number fields, is introduced where it is first needed."
         ),
     ),
+)
+#: The explainer, whose card is the same on the overview as on the Papers page.
+EXPLAINER = PAPERS[0]
+
+
+def paper_cards() -> str:
+    """One card per paper, the overview's page cards in kind: the whole card is a button
+    that opens a popover framing the paper, which expands to it."""
+    return _cards(
+        [
+            card(
+                "pop-paper-" + re.sub(r"[^a-z0-9]+", "-", paper.href.removesuffix(".html")),
+                paper.label,
+                tex_bounds(paper.title),
+                tex_bounds(paper.description),
+                href=paper.href,
+                action=f"Expand the {paper.label.lower()}",
+                size=paper.size,
+                links=paper.links,
+            )
+            for paper in PAPERS
+        ]
+    )
+
+
+#: The site's other pages, as the overview's cards show them: the page, a label, its
+#: title, and one line on what a reader finds there. Both are register prose, so a
+#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
+#: explainer's card is its paper's; the tutorial's keeps a shorter line here.
+PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",
         "Tutorial",
@@ -833,6 +911,7 @@ def page_cards() -> str:
                 href=href,
                 action=f"Expand the {label.lower()}",
                 size=SECTION_CARD_SIZES["pages"],
+                links=EXPLAINER.links if href == EXPLAINER.href else (),
             )
             for href, label, title, note in PAGES
         ]

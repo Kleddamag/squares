@@ -1334,10 +1334,10 @@ OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
 #: explains the result that stands, T-060, where the explainer proves the lower bounds
 #: T-060 superseded and the tutorial is the background to both. Its title is its
 #: renderer's (`render_n11_optimality_explainer.TITLE`) in sentence case, and its
-#: description says what T-060's rungs allow: a proof, machine-verified and reviewed
-#: here. The explainer's title is the owner's (2026-09-30), as `render_explainer.TITLE`
-#: has it in title case; the tutorial's description is `TUTORIAL.md`'s own opening, its
-#: audience and what it owns.
+#: description says what T-060's rungs allow, `V3/C3`: an accepted proof, machine-checked
+#: here with its review record pending. The explainer's title is the owner's
+#: (2026-09-30), as `render_explainer.TITLE` has it in title case; the tutorial's
+#: description is `TUTORIAL.md`'s own opening, its audience and what it owns.
 PAPERS: tuple[Paper, ...] = (
     Paper(
         href=OPTIMALITY_PAPER,

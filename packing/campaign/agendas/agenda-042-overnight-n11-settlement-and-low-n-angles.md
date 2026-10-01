@@ -1004,7 +1004,7 @@ agenda:
     purpose: research
     owner_focus: correctness
     instances: [17]
-    state: in_progress
+    state: complete
     priority: 0
     question: Does the exact n17 endpoint have the complete predicted owner-axis and wall-corner feature inventory?
     hypotheses: [H-257]
@@ -1018,7 +1018,27 @@ agenda:
     program: post-optimality-low-n
     artifacts:
     - packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
-    note: Blocked until synthetic controls and independent instrument review pass; no stationarity or optimality claim.
+    note: Accepted exp239 completes all168owner options,60corners and9offsets; independent175interval audit passes. Stationarity remains separate.
+
+  - id: BC-402
+    purpose: research
+    owner_focus: correctness
+    instances: [17]
+    state: in_progress
+    priority: 0
+    question: Does the fixed analytic common-core stress exclude negative-side first-order directions in both n17corner branches?
+    hypotheses: [H-258]
+    budget: One25minute controlled instrument slice; one300second target,oneworker,10MiB output andindependent review.
+    entry: H257 exact feature inventory accepted; deterministic force/torque allocation derived beforetarget.
+    exit: Exact52column dual identities andall58commonrow weight signs certified, orretained unresolvedcandidate withoutretuning.
+    bead: think-wrgx
+    depends_on: [BC-401]
+    next_evidence: packing/campaign/hypotheses/H-258-n17-common-core-stress.md
+    workflows: [pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
+    note: First-orderstationarity only; local/globaloptimality andH027 quantitativeclass-angle threshold remain separate.
 
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles

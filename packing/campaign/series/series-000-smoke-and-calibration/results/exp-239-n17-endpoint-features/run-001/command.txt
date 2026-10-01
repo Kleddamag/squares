@@ -1,0 +1,7 @@
+Working directory: packing/. Frozen H257 target at b34801483; one worker.
+TMPDIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/tmp
+CARGO_TARGET_DIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/cargo
+UV_CACHE_DIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/uv-cache
+PYTHONDONTWRITEBYTECODE=1; PYTHONOPTIMIZE unset.
+ulimit -f 10240; optional ulimit -d1048576 recorded separately.
+/usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 180s .venv/bin/python3 -m devtools.check_n17_endpoint_features campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json

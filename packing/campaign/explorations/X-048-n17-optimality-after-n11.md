@@ -42,7 +42,7 @@ exploration:
     - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
     - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
     - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
-  proposes: [H-253, H-254, H-255, H-256, H-257]
+  proposes: [H-253, H-254, H-255, H-256, H-257, H-258]
 ---
 # X-048: Optimality Routes After n = 11
 
@@ -435,6 +435,7 @@ accepted rounds, with immutable inputs and independent review:
 | [H-254](../hypotheses/H-254-n17-contact-chart-fidelity.md) | Accepted | All 458 chart-fidelity comparisons at the relaxed rational witness |
 | [H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) | Accepted | Exact existence and uniqueness in the fixed root box, with an independently implemented checker |
 | [H-256](../hypotheses/H-256-n17-exact-endpoint-feasibility.md) | Accepted | Exact physical endpoint at fixed centroid sliders; all 68 walls and 136 pairs certified, all 187 interval bounds independently recalculated |
+| [H-257](../hypotheses/H-257-n17-endpoint-contact-features.md) | Accepted | Complete168owner-axis/60wall-corner/9offset inventory; all175interval records independently recalculated |
 
 The
 [mathematical review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)

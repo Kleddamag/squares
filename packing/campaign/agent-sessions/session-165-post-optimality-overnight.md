@@ -670,7 +670,7 @@ session:
     clock_role: work
     bead: think-6dg0
     objective: Execute one frozen exact-root feature inventory and preserve its complete raw receipt.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Independent mathematical/code review and synthetic controls pass; H257fixed criterion
       is ready.
@@ -683,11 +683,39 @@ session:
       campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
     kill_condition: 180second process deadline,10MiBfile ceiling oranyfrozenidentity/sign/coverage refusal.
     fallback: Retain unresolved featureinventory anddonotlaunch a dependentcone solve.
+    outcome: 'exp239 accepted: all168owner options,60active-wall corners and9offsets pass; independent175interval
+      audit11.2749s. Target41.80s,6.198MB,hostload80.52on10cores/0idle; no criterion/input changes. Two-branch
+      first-order model feature premises established.'
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md
+    stop_reason: Frozen criterion met and independently reviewed; raw target remains immutable.
+    next_action: Publish feature checkpoint and build only the selected deterministic common-core stress.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-wrgx
+    objective: Implement the fixed analytic common-core dual with exact residual identities and independent
+      mathematical/code review.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: H257 feature premises are accepted; a deterministic force/torque recipe reduces the
+      next question to five moment capacities.
+    budget_minutes: 25
+    started_at: '2026-10-01T13:10:54Z'
+    deadline_at: '2026-10-01T13:35:54Z'
+    expected_output: Controlled and independently reviewed58row/52column stress instrument with immutableH258criterion;
+      no optimizer or target fitting.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n17_core_stress.py -q -p
+      no:cacheprovider
+    kill_condition: Unresolved symbolic residual, incomplete row contract, three repeated instrument failures
+      orslice deadline.
+    fallback: Retain H258 blocked on the named instrument defect and publish completedfeatureevidence.
     outcome: null
     evidence:
-    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md
+    - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     stop_reason: null
-    next_action: Freezeproducercommit; remeasurehost and runonce,thenindependentaudit.
+    next_action: Review symbolic recipe and synthetic controls before any target stress computation.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -705,8 +733,9 @@ session:
     metric: Independently checked useful discriminators and resolved proof obligations.
     before: X-048 and evand intake reviewed; no W3 target execution; n17 candidate has only a numerical
       receipt.
-    after: 'Four accepted n17 rounds: rational feasibility, chart fidelity, exact root and exact endpoint
-      packing. Conditional class minimum is attained; global capture remains unproved.'
+    after: 'Five accepted n17 rounds: rational feasibility, chart fidelity, exact root, endpoint packing
+      and full contact-feature inventory. Conditional minimum attained; deterministic first-order stress
+      selected, local/global capture unproved.'
   delegations:
   - task: think-s6ty endpoint and flexible-family mathematical review
     operator: gpt-6-astra max
@@ -806,6 +835,8 @@ session:
   - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
   - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
   - docs/project/reviews/review-2026-10-01-n17-projection-branches.md
+  - packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md
   checks:
   - Both PR265 and PR267 scheduled checks pass at the launch heads fb0fc2332 and a02703f13; conditional
     jobs skipped by scope are not claimed as executed.
@@ -827,8 +858,8 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Complete H257 feature-audit readiness under think-6dg0; no target until frozen criterion
-    and controls. Deadline15UTC unchanged.
+  next_action: Complete H258 deterministic stress controls and independent review under think-wrgx, then
+    freeze before one bounded run. Finalization14:30UTC/deadline15UTC unchanged.
 ---
 # Session 165: Post-optimality Research
 
@@ -871,7 +902,7 @@ identity. The launcher unsets `PYTHONOPTIMIZE` and confirms assertions are activ
 
 ## Next Mathematical Slice
 
-H253 through H256 are accepted.
+H253 through H257 are accepted.
 The exact chart root has a certified physical packing, with a two-parameter
 slider-family corollary from the reviewed analytic triangle proof.
 Raw exp235–238 evidence is immutable; none is rerun for integration fixes.
@@ -884,9 +915,9 @@ Sol completed W5 phase-cost analysis under `think-4krl`; no optimization has an
 observed speedup and no arithmetic contract has been changed.
 `think-r8ns` is retaining the independent endpoint receipt audit as a reusable tool.
 
-The full independent receipt audit and projection-branch theorem are retained.
-Next, review and freeze the exact-root contact-feature inventory under `think-6dg0`,
-then execute only after synthetic controls and independent review pass.
+The contact-feature target and independent full175-interval audit pass.
+Next, complete the deterministic common-core stress instrument under `think-wrgx`, with
+exact identities and nonnegative weights required before any stationarity claim.
 Keep global nonoverlap distinct from a chosen directed projection inequality, and
 first-order stationarity distinct from local optimality.
 `think-vdmf` retains upper-bound frontier admission; `think-je3v` retains checkpoint

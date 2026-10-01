@@ -1,0 +1,6 @@
+Working directory: packing/ (repository Python 3.14)
+Auditor frozen in commit b34801483; independent receipt review, not a producer rerun.
+Premises: accepted H255 root, H256 strict packing, and independently reviewed symbolic zero/normalization/tangent identities.
+Execution note: the actual invocation mistyped the unused UV_CACHE_DIR as /Volumes/spud1/agent-scratch/n17-root-checker/uv-cache. Direct project Python ran no uv command and created no cache there. The replay command below corrects that environment spelling; TMPDIR and CARGO_TARGET_DIR were as shown.
+
+env TMPDIR=/Volumes/spud-ext1/agent-scratch/n17-root-checker/tmp CARGO_TARGET_DIR=/Volumes/spud-ext1/agent-scratch/n17-root-checker/cargo-target UV_CACHE_DIR=/Volumes/spud-ext1/agent-scratch/n17-root-checker/uv-cache PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 -m devtools.audit_n17_endpoint_features campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/run-001/certificate.json > campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/audit/independent-receipt.json

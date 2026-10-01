@@ -208,6 +208,7 @@ migrated:
 - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
 - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
 - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+- docs/project/reviews/review-2026-10-01-n17-core-stress.md
 - docs/project/reviews/review-2026-10-01-n17-first-order-branches.md
 - docs/project/reviews/review-2026-10-01-n17-projection-branches.md
 - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
@@ -744,6 +745,7 @@ migrated:
 - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
 - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
 - packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
+- packing/campaign/hypotheses/H-258-n17-common-core-stress.md
 - packing/campaign/ideas.md
 - packing/campaign/remediation-pass.md
 - packing/campaign/research-loop-logbook/README.md
@@ -1169,6 +1171,7 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md
 - packing/cases/n11_five_dot_cover/after-direct-family-decision.md
 - packing/cases/n11_five_dot_cover/after-exp148-strategy.md
 - packing/cases/n11_five_dot_cover/after-exp149-strategy.md

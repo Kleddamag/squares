@@ -428,12 +428,11 @@ def _prepend_list(front: str, name: str, items: list[str]) -> str:
 
 def reported_field(n: int, bound: Bound) -> dict[str, Any]:
     registration = bound.registration
-    revision = registration.packet.revision[:7]
     direct = bound.source == n
     note = (
         "Rectangle-density certificate in Tokoharu's format, reported in the retained source "
-        f"at {revision} and accepted there by Tokoharu's unchanged interval checker. The "
-        "verified lane records the local replay separately."
+        "and accepted there by Tokoharu's unchanged interval checker. The verified lane "
+        "records the local replay separately."
         if direct
         else f"wand125's n={bound.source} rectangle-density certificate has mass below {n}, "
         f"so monotonicity carries its bound to n={n}. The verified lane records the local "
@@ -463,8 +462,8 @@ def _verified_sentence(plan: Plan, registration: Registration) -> str | None:
     if proof is None:
         if n in cases:
             return (
-                "The first-party exact audit binds the regenerated checker input to the "
-                "published digest and checks the mass and net premises; the complete "
+                "This repository’s exact audit checks that the regenerated checker input "
+                "is the published one, and checks the mass and net premises; the complete "
                 "coverage replay has not yet run here, so the verified lower bound is "
                 "unchanged."
             )
@@ -482,15 +481,15 @@ def _verified_sentence(plan: Plan, registration: Registration) -> str | None:
         )
     if proof.side == cases[n][1]:
         return (
-            "The complete 201-direction coverage replay here accepted it again, after the "
-            "first-party exact audit bound the regenerated checker input to the published "
-            "digest and checked the mass and net premises, so it is also verified."
+            "The complete 201-direction coverage replay here accepted it again, after "
+            "this repository’s exact audit checked that the regenerated checker input is "
+            "the published one and checked the mass and net premises, so it is also "
+            "verified."
         )
-    earlier = proof.registration.packet.revision[:7]
     return (
         "Its complete coverage replay has not yet run here; the verified lower bound is "
-        f"{claim}, from the source’s `{earlier}` certificate for this count, whose "
-        "complete 201-direction replay passed here."
+        f"{claim}, from the source’s certificate for this count in the "
+        f"{proof.registration.date} intake, whose complete 201-direction replay passed here."
     )
 
 
@@ -498,7 +497,7 @@ def intake(plan: Plan, registration: Registration) -> str:
     n = plan.n
     cases = registration.packet.cases
     link = f"[rectangle-density source]({registration.link})"
-    head = f"{registration.intake} wand125’s {link} at `{registration.packet.revision[:7]}`"
+    head = f"{registration.intake} wand125’s {link}"
     sentences: list[str] = []
     monotone = plan.reported is not None and plan.reported.source != n
     if n in cases:

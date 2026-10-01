@@ -138,8 +138,33 @@ def test_shared_counts_state_both_sources_dates_and_values() -> None:
         flat = " ".join(body.split())
         assert f"`{plan.casson['side']}`" in flat, plan.n
         assert f"`{plan.case['history'][0]['side']}`" in flat, plan.n
-        assert "22:45 UTC\u22126" in flat, plan.n
+        first = apply.day(plan.case["history"][0]["authored_utc"])
+        assert "dated 23 September 2026 and made with the help of Claude" in flat, plan.n
+        assert f"`{plan.case['history'][0]['side']}`, is dated {first}" in flat, plan.n
+        assert "by the timestamps this record\u2019s priority notes keep" in flat, plan.n
         assert "infers nothing about whether either packing derives" in flat, plan.n
+
+
+def test_the_body_gives_plain_dates_and_the_priority_notes_keep_the_timestamps() -> None:
+    """A sentence dates a packing by its day; the time of day and the revision that order
+    two claims made on one day are the front matter's `priority_notes`."""
+    for plan in apply.plans():
+        text = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
+        _, front, body = text.split("---\n", 2)
+        assert "UTC" not in body, plan.n
+        assert "clock" not in body, plan.n
+        assert plan.registration.source.revision[:7] not in body, plan.n
+        if plan.casson is None:
+            continue
+        first = plan.case["history"][0]
+        kept = [note["published"] for note in safe_load(front)["packing"]["priority_notes"]]
+        cassons, couzos = (note["published"] for note in apply.priority_notes(plan))
+        assert cassons in kept, plan.n
+        assert couzos in kept, plan.n
+        assert f"committed {plan.casson['first_authored_utc']}" in cassons, plan.n
+        assert "(2026-09-23 22:45 UTC-6)" in cassons, plan.n
+        assert f"authored {first['authored_utc']}" in couzos, plan.n
+        assert f"committed {first['committed_utc']}" in couzos, plan.n
 
 
 def test_issue_227_dates_a_claim_only_at_the_shared_count_it_names() -> None:
@@ -147,7 +172,7 @@ def test_issue_227_dates_a_claim_only_at_the_shared_count_it_names() -> None:
     for plan in apply.plans():
         body = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
         flat = " ".join(body.split())
-        cited = "opened on 23 September 2026 at 02:48 UTC" in flat
+        cited = "opened on 23 September 2026, already linked Couzo\u2019s repository" in flat
         assert cited == (plan.n == 103), plan.n
 
 

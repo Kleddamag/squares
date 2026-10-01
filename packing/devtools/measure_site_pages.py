@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
 the card sections' layout, the rating ladders' rows, the face of every formula, the
-space around tables and headings, and where each page's header stands.
+space around tables and headings, where each page's header stands, and the baselines its
+labels stand on.
 
-Eight measurements, each over pages of a directory `preview_site` has built:
+Nine measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -53,6 +54,11 @@ Eight measurements, each over pages of a directory `preview_site` has built:
   the header's type: the computed font size of the body's prose, the site's name (and
   whether its text is shown), a link in the bar and a section tab, and how many lines the
   bar's links take. `--markdown` prints one line a page and width.
+- `baselines` reports the text baselines of the header's labels, measured and not read
+  from a box's edge: the site's name (where its text is shown), the links of each line
+  of the bar, the section tabs, how far the name stands off the links, and how far the
+  current link's and the current tab's baseline stand over the rule and the foot of the
+  tab strip. `--markdown` prints one line a page and width.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -68,6 +74,9 @@ Usage, from `packing/`:
         --page index.html --page all-results.html --width 1280 --width 390 --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages header SITE \
         --page visualize.html --page workbench/index.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages baselines \
+        SITE --page frontier.html --page visualize.html --width 1280 --width 768 --width 390 \
+        --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -86,7 +95,14 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.preview_site import HEADER, REDUCED_MOTION, press, serve, settle_math
+from devtools.preview_site import (
+    BASELINES,
+    HEADER,
+    REDUCED_MOTION,
+    press,
+    serve,
+    settle_math,
+)
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -362,6 +378,41 @@ def measure_header(
     return rows
 
 
+def measure_baselines(
+    base: str, pages: Sequence[str], *, widths: Sequence[int]
+) -> list[dict[str, Any]]:
+    """The baselines of each page's header labels at each width (`preview_site/baselines`),
+    one flat row a page and width: the name's, the links' line by line, the tabs', how far
+    the name stands off the links of the first line, and how far the current link and the
+    current tab stand over the rule and the foot of the tab strip."""
+    rows: list[dict[str, Any]] = []
+    for name, width, found in _evaluate(base, pages, widths=widths, script=BASELINES):
+        lines: dict[int, set[float]] = {}
+        for link in found["links"]:
+            lines.setdefault(link["top"], set()).add(link["baseline"])
+        ordered = [sorted(lines[top]) for top in sorted(lines)]
+        first = ordered[0][0] if ordered else None
+        shown = found["name"] is not None and first is not None
+        rows.append(
+            {
+                "page": name,
+                "width": width,
+                "name": "" if found["name"] is None else found["name"],
+                "links": " / ".join(
+                    " ".join(f"{value:g}" for value in line) for line in ordered
+                ),
+                "name_off_links": round(found["name"] - first, 2) if shown else "",
+                "tabs": " ".join(
+                    f"{value:g}" for value in sorted({t["baseline"] for t in found["tabs"]})
+                ),
+                "rule": "" if found["rule"] is None else found["rule"],
+                "current_above_rule": found["current_above_rule"] or "",
+                "current_tab_above_foot": found["current_tab_above_foot"] or "",
+            }
+        )
+    return rows
+
+
 def _span(values: Sequence[Any]) -> str:
     """The least and the most of some measurements, or the one value they share; nothing
     for none, and a value that is not a number, such as a line height of `normal`, is
@@ -591,7 +642,7 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
 
 
 #: The measurements, as `mode` names them.
-MODES = ("load", "type", "faces", "cards", "ladders", "math", "space", "header")
+MODES = ("load", "type", "faces", "cards", "ladders", "math", "space", "header", "baselines")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -658,6 +709,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_space(base, pages, widths=widths, presses=args.press)
             elif args.mode == "header":
                 report = measure_header(base, pages, widths=widths)
+            elif args.mode == "baselines":
+                report = measure_baselines(base, pages, widths=widths)
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

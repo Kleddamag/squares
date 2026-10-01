@@ -65,6 +65,7 @@ _AT_FOOT = probe(PROBES, "preview_site/at_foot")
 _CARDS = probe(PROBES, "measure_site_pages/cards")
 CLIPPED = probe(PROBES, "preview_site/clipped")
 HEADER = probe(PROBES, "preview_site/header")
+BASELINES = probe(PROBES, "preview_site/baselines")
 #: The widths every page is laid out at to look for a clipped wide block, beside the
 #: two it is shot at: a tablet upright and on its side, where a narrow page clips at the
 #: document's edge and a wide block has no room to spare.
@@ -76,6 +77,8 @@ CLIP_WIDTHS = (1024, 768)
 SCROLLBAR_PX = 15
 #: How far, in CSS pixels, a row of cards may sit off the centre of its line.
 CENTRE_TOLERANCE = 1.0
+#: How far apart, in CSS pixels, two labels of the header that share a line may stand.
+BASELINE_TOLERANCE = 0.5
 #: How long a page may take to typeset all its math before it is shot as it stands. The
 #: site typesets the formulas near the viewport first and the rest in idle time
 #: (`overview/math.js`); the synopsis's 1,357 took 40 to 50 seconds of scrolling in all.
@@ -231,6 +234,45 @@ def tabs_problems(found: dict[str, Any]) -> list[str]:
     return problems
 
 
+def baseline_problems(found: dict[str, Any]) -> list[str]:
+    """What is wrong with the header's text baselines, in a `preview_site/baselines`
+    report: the site's name, where its text is shown, stands on the baseline of the links
+    of the bar's first line; the links of each line of the bar stand on one baseline; and
+    the section tabs stand on one. Each is held to `BASELINE_TOLERANCE`, and the mark is
+    held to the middle of the name's line by the same measure."""
+    problems: list[str] = []
+    lines: dict[int, list[dict[str, Any]]] = {}
+    for link in found["links"]:
+        lines.setdefault(link["top"], []).append(link)
+    for group, what in ((list(lines.values()), "link"), ([found["tabs"]], "section tab")):
+        for labels in group:
+            if not labels:
+                continue
+            first = labels[0]
+            for label in labels[1:]:
+                offset = label["baseline"] - first["baseline"]
+                if abs(offset) > BASELINE_TOLERANCE:
+                    problems.append(
+                        f"the {what} {label['label']} stands {offset:+g}px off the "
+                        f"baseline of {first['label']}, beside it"
+                    )
+    if found["name"] is not None and lines:
+        first = lines[min(lines)][0]
+        offset = found["name"] - first["baseline"]
+        if abs(offset) > BASELINE_TOLERANCE:
+            problems.append(
+                f"the site's name stands {offset:+g}px off the baseline of the bar's links"
+            )
+        text, logo = found["name_text"], found["logo"]
+        if text is not None and logo is not None:
+            lift = (logo["top"] + logo["bottom"] - text["top"] - text["bottom"]) / 2
+            if abs(lift) > BASELINE_TOLERANCE:
+                problems.append(
+                    f"the site's mark is centred {lift:+g}px off the middle of its name's line"
+                )
+    return problems
+
+
 def type_problems(found: dict[str, Any]) -> list[str]:
     """What is wrong with the size of the bar's type, in a `preview_site/header` report,
     held against the body's and never against a pixel value. A link in the bar, and a
@@ -364,7 +406,8 @@ def screenshots(
     console errors, math left untypeset or set in the other face from its text, a row of
     cards off the centre of its line, any page wider than its viewport, section tabs
     that do not stand under the bar's rule (`tabs_problems`), a bar whose type is not
-    one step under the body's (`type_problems`), and any wide block that
+    one step under the body's (`type_problems`), a site name or a link off the bar's
+    baseline (`baseline_problems`), and any wide block that
     runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
     checked the same way, and the window shot as `<page>-<width>-press<n>.png`. Every
@@ -410,7 +453,11 @@ def screenshots(
                     header = page.evaluate(HEADER)
                     errors.extend(
                         f"{name} @{width}: {problem}"
-                        for problem in (*tabs_problems(header), *type_problems(header))
+                        for problem in (
+                            *tabs_problems(header),
+                            *type_problems(header),
+                            *baseline_problems(page.evaluate(BASELINES)),
+                        )
                     )
                     cut = clipped(page)
                     errors.extend(f"{name} @{width}: {problem}" for problem in cut)

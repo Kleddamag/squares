@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
-the card sections' layout, the rating ladders' rows, the face of every formula, and the
-space around tables and headings.
+the card sections' layout, the rating ladders' rows, the face of every formula, the
+space around tables and headings, and the size of what a press opens.
 
-Seven measurements, each over pages of a directory `preview_site` has built:
+Eight measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -46,6 +46,13 @@ Seven measurements, each over pages of a directory `preview_site` has built:
   whose `state` is the selector. `--markdown` prints one line a table and one line a
   heading role, with the least and most space found. This is the tool the design
   system's spacing tokens are measured with (`templates/paper-design.md`, Spacing).
+- `popover` presses each `--press SELECTOR` in a window of each `--width` and `--height`
+  and reports the popover it opened: its box, the margin the window keeps above, below
+  and beside it, the height of what it holds, the share of that it shows without
+  scrolling (its frame's share, where it frames a page), and every word in it broken
+  across lines inside the word (`preview_site.split_problem`). `--shots DIR` also shoots
+  the window with each popover open. This is the tool the popovers' height limits are
+  measured with (`templates/paper-design.md`, Cards and Popovers).
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -59,6 +66,9 @@ Usage, from `packing/`:
         --page index.html --press '[data-atlas-n="11"]' --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages space SITE \
         --page index.html --page all-results.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages \
+        popover SITE --page frontier.html --press 'a[data-case="79"]' \
+        --width 1280 --height 900 --height 1200 --height 1440 --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -77,7 +87,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.preview_site import press, serve, settle_math
+from devtools.preview_site import press, serve, settle_math, shot_stem, split_words
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -90,6 +100,7 @@ CARDS = probe(PROBES, "measure_site_pages/cards")
 LADDERS = probe(PROBES, "measure_site_pages/ladders")
 MATH_FACES = probe(PROBES, "measure_site_pages/math_faces")
 SPACING = probe(PROBES, "measure_site_pages/spacing")
+POPOVER = probe(PROBES, "measure_site_pages/popover")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
 OPENED = ":popover-open, details[open]"
 
@@ -322,6 +333,63 @@ def measure_space(
     return results
 
 
+def measure_popovers(
+    base: str,
+    pages: Sequence[str],
+    *,
+    widths: Sequence[int],
+    heights: Sequence[int],
+    presses: Sequence[str],
+    shots: Path | None = None,
+) -> list[dict[str, Any]]:
+    """What each selector in `presses` opens on each page, in a window of each width and
+    height: one row a popover, with its box, its margins, the share of its content it
+    shows without scrolling and the words in it broken across lines. A page is scrolled
+    through first only when a selector matches nothing as loaded, which is how the atlas
+    grid's later cells are placed. With `shots`, the window is shot there with each
+    popover open: `popover-<page>-<width>x<height>-press<n>.png`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for height in heights:
+                for name in pages:
+                    print(f"measuring {name} at {width}x{height}", file=sys.stderr, flush=True)
+                    page = browser.new_page(viewport={"width": width, "height": height})
+                    page.goto(f"{base}/{name}", wait_until="load")
+                    page.wait_for_timeout(300)
+                    if not all(page.locator(selector).count() for selector in presses):
+                        settle_math(page)
+                    for index, selector in enumerate(presses, start=1):
+                        target = page.locator(selector)
+                        if not target.count() or not target.first.is_visible():
+                            continue
+                        press(page, selector)
+                        split = split_words(page)
+                        results.extend(
+                            {
+                                "page": name,
+                                "width": width,
+                                "press": selector,
+                                **row,
+                                "split_words": len(split),
+                                "split": split,
+                            }
+                            for row in page.evaluate(POPOVER)
+                        )
+                        if shots is not None:
+                            stem = f"popover-{shot_stem(name)}-{width}x{height}-press{index}"
+                            page.screenshot(path=str(shots / f"{stem}.png"))
+                        page.keyboard.press("Escape")
+                    page.close()
+        browser.close()
+    return results
+
+
 def _span(values: Sequence[Any]) -> str:
     """The least and the most of some measurements, or the one value they share; nothing
     for none, and a value that is not a number, such as a line height of `normal`, is
@@ -548,7 +616,7 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
 
 
 #: The measurements, as `mode` names them.
-MODES = ("load", "type", "faces", "cards", "ladders", "math", "space")
+MODES = ("load", "type", "faces", "cards", "ladders", "math", "space", "popover")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -561,6 +629,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--page", action="append", help="a page, with any #fragment; repeatable"
     )
     parser.add_argument("--width", type=int, action="append", help="viewport width; repeatable")
+    parser.add_argument(
+        "--height",
+        type=int,
+        action="append",
+        help="with `popover`: viewport height, 900 by default; repeatable",
+    )
     parser.add_argument("--runs", type=int, default=3)
     parser.add_argument("--port", type=int, default=18961)
     parser.add_argument("--json", type=Path, help="read a saved report rather than measuring")
@@ -578,13 +652,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         metavar="SELECTOR",
         help="with `math`: press the first element this CSS selector matches, where a page "
         "has one, before counting; with `space`: press it once the page is measured and "
-        "report what it opened; repeatable",
+        "report what it opened; with `popover`: press it and measure the popover it opens; "
+        "repeatable",
     )
     parser.add_argument(
         "--shots",
         type=Path,
         metavar="DIR",
-        help="with `ladders`: also shoot each diagram here at each width, light and dark",
+        help="with `ladders`: also shoot each diagram here at each width, light and dark; "
+        "with `popover`: also shoot the window here with each popover open",
     )
     parser.add_argument(
         "--tokens",
@@ -613,6 +689,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_math(base, pages, widths=widths, presses=args.press)
             elif args.mode == "space":
                 report = measure_space(base, pages, widths=widths, presses=args.press)
+            elif args.mode == "popover":
+                report = measure_popovers(
+                    base,
+                    pages,
+                    widths=widths,
+                    heights=tuple(args.height or (900,)),
+                    presses=args.press,
+                    shots=args.shots,
+                )
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

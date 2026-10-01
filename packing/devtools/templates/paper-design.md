@@ -175,6 +175,29 @@ The explainer’s title is its own role (sans caps, 28.5px); a report’s h1 is 
 title and keeps KPress’s ratio of the same base.
 The homepage sets its summary lists and tables a step smaller, in `site.css`.
 
+**Line breaks.** No text on the site breaks inside a word.
+KPress sets `overflow-wrap: break-word` on every page, which cuts a run of characters
+only when it is longer than a whole line.
+The site adds `overflow-wrap: anywhere` in two places, both runs with no space in them
+by nature: a case record’s exact decimal (`.site-case-decimal`, as many as 67 digits)
+and a repository path in a result overview’s links (`.site-result-links code`).
+`anywhere` also lets a grid column or a table cell shrink to one character, which sets a
+label a letter to a line, so it never goes on prose, on a label or on a column holding
+either. No sheet uses `word-break` to break words, and none hyphenates.
+A name set as code, such as the evidence identifier `E-nagamochi-lower`, is one word
+too, though a browser may end a line on any of its hyphens.
+`render_frontier_page.evidence_links` puts each name, with the comma after it, in one
+inline box (`.site-name`): a line breaks before the box and never inside it, and only a
+name longer than the whole line wraps, inside its box.
+A result overview’s links are boxes of the same kind, each link that holds a code name.
+A label column has no width of its own; it is as wide as its labels (**Atlas popover**
+and **Case records**, below).
+A case file’s own prose is a KPress document like every report, and KPress may still end
+a line on the hyphen of a code span there.
+`tests/test_overview.py` holds the sheets to this, and `devtools.preview_site --press`
+fails on any word broken across lines in what a press opens (**Print and Verification**,
+below).
+
 **Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
 punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
 composites), because every page takes them from the same functions,
@@ -761,10 +784,13 @@ it.
   bounds as bold rules with their values above and the open span between them shaded);
   under PROVEN the bound as one statement, the proved lower bound in scarlet and the
   best known side in green, with the star for a recent lower bound; the badges; the
-  citation, one line per bound with this project’s note; and what is OPEN. The facts are
-  the film’s own, read from the atlas figure and `bound-citations.json` into one JSON
-  element (`atlas_film_facts`), and the script fills the popover from them with kpress’s
-  math nodes, never HTML strings.
+  citation, one line per bound with this project’s note; and what is OPEN. A citation
+  line is a table row of two cells, the label (“lower” or “upper”) and the source, so
+  the label column is as wide as the wider label however it is drawn, and the source
+  wraps between words beside it.
+  The facts are the film’s own, read from the atlas figure and `bound-citations.json`
+  into one JSON element (`atlas_film_facts`), and the script fills the popover from them
+  with kpress’s math nodes, never HTML strings.
   It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,
   and the arrow keys, step to the neighbouring case.
   The two arrows are the site’s arrow, right and left (Arrows, above).
@@ -781,10 +807,16 @@ it.
   below): how the best known packing was built, the minimal polynomial behind a decimal,
   the sources, the verification, the notes and the evidence entries, with “Details” in
   the Records cell as the trigger.
+  That popover sets label and value side by side (`.site-pairs`): one grid whose first
+  column is `max-content`, as wide as the longest label, and whose second takes the
+  rest; its three lists share the two columns through `subgrid`, and its headings run
+  across both. It is up to 46rem wide, the case popover’s width.
+  On a phone the block is a plain list, each label above its value, as it was.
   A record leads with a caps label, the n, its status chip and recent star, and the
   verified interval as display-size math; then the known-best packing drawn large beside
   a grid of bordered sans panels, one per bound (best known, verified upper, reported
-  lower, verified lower) and the gap.
+  lower, verified lower) and the gap, as many abreast as fit and none narrower than
+  17rem, which holds the usual evidence names whole.
   Each panel shows its value as math when it has a closed form (a lone fraction at full
   size) and as figures when it is a decimal, the recorded decimal in full beneath, then
   its credit, source, minimal polynomial as math and evidence.
@@ -1222,9 +1254,12 @@ included), and a row of cards off the centre of its line (more than a pixel betw
 two slacks). `--page cases.html#n-11` walks one page at a fragment, and
 `--press SELECTOR` presses a card or an atlas cell on each page that has one, then walks
 and shoots what it opened, since a popover a script fills has no math until it opens.
-`devtools.measure_site_pages cards` reports the rows the preview reads: each card
-section’s lines, their cards’ widths and the slack at either end.
-`devtools.measure_site_pages ladders` reports the rating ladders as laid out: every
+What a press opens is also checked for a word broken across lines, in the popover and in
+a page it frames: a break between two letters or digits, or on a hyphen of a name the
+site sets as code, unless the run is 24 characters or longer and wider than its line
+(`preview_site.split_problem`). `devtools.measure_site_pages cards` reports the rows the
+preview reads: each card section’s lines, their cards’ widths and the slack at either
+end. `devtools.measure_site_pages ladders` reports the rating ladders as laid out: every
 rung’s height, each description’s box and the lines its words take, the room between the
 diagram and whatever clips it sideways, and with `--shots DIR` a picture of the diagram
 at each width, light and dark.
@@ -1233,6 +1268,9 @@ the narrowest of each layout among them.
 `devtools.measure_site_pages math` reports every formula’s face beside its text’s,
 counted by surface. `devtools.measure_site_pages space` reports the space around every
 table and heading (**Spacing**, above).
+`devtools.measure_site_pages popover` reports what each `--press` opens at each
+`--width` and `--height`: the popover’s box, the window’s margin around it, the share of
+its content it shows without scrolling, and its broken words.
 `tests/test_site_math_faces.py` runs the same walk wherever a browser is installed, over
 the overview and its atlas popover, the results table, the frontier atlas and its case
 popover, and two case records, with a control that marks a worded headline for serif

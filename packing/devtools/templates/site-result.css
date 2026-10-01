@@ -72,7 +72,6 @@
   font-size: var(--site-font-size-note);
   line-height: 1.5;
   overflow: auto hidden;
-  overflow-wrap: anywhere;
 }
 .site-result-step-summary {
   overflow: auto hidden;
@@ -122,7 +121,6 @@
 }
 .kpress .site-result .site-detail dd {
   margin: 0 0 0.4rem;
-  overflow-wrap: anywhere;
 }
 
 /* ---------- Sections ----------
@@ -297,7 +295,14 @@
 }
 
 /* ---------- Links ----------
-   A repository path is code that may break after a slash rather than widen the panel. */
+   A name set as code, an evidence identifier or a file, is one word: the link holding it
+   is an inline box that a line breaks before, never inside (site.css, Words stay whole).
+   A repository path longer than the whole line is the one thing here that breaks, where
+   its line ends, rather than widen the panel. */
+.site-result-links a:has(> code) {
+  display: inline-block;
+  max-inline-size: 100%;
+}
 .site-result-links code {
   overflow-wrap: anywhere;
 }

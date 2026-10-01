@@ -2571,6 +2571,80 @@ def test_every_popover_shares_one_margin_and_close_target() -> None:
         assert f"var({token}" in close
 
 
+def _rule(css: str, selector: str) -> str:
+    """The declarations of the first rule in `css` whose selector is exactly `selector`:
+    the rule itself, ahead of any media query that restates it."""
+    rules = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    found = re.search(rf"(?:^|}}|{{)\s*{re.escape(selector)} {{([^}}]*)}}", rules)
+    assert found is not None, selector
+    return found.group(1)
+
+
+def test_no_site_text_breaks_inside_a_word() -> None:
+    """KPress's `overflow-wrap: break-word` cuts a run only when it is longer than a whole
+    line. `anywhere` also lets a column shrink to one character, so the site puts it on
+    the two things that are long runs by nature, an exact decimal and a repository path,
+    and nowhere else; and no sheet breaks words with `word-break` or hyphenates them."""
+    sheets = {
+        sheet.name: re.sub(r"/\*.*?\*/", "", sheet.read_text(encoding="utf-8"), flags=re.DOTALL)
+        for sheet in (
+            render_overview.SITE_CSS,
+            render_overview.SITE_RESULT_CSS,
+            render_overview.SITE_NAV_CSS,
+            render_overview.PAPER_TYPE_CSS,
+        )
+    }
+    anywhere = {
+        (name, selector.strip())
+        for name, rules in sheets.items()
+        for selector, body in re.findall(r"([^{}]+){([^{}]*)}", rules)
+        if "overflow-wrap: anywhere" in body
+    }
+    assert anywhere == {
+        ("site.css", ".site-case-decimal"),
+        ("site-result.css", ".site-result-links code"),
+    }
+    for name, rules in sheets.items():
+        assert set(re.findall(r"word-break: ([a-z-]+)", rules)) <= {"normal"}, name
+        assert "hyphens:" not in rules, name
+
+
+def test_a_label_column_is_as_wide_as_its_labels() -> None:
+    """No label column has a width of its own. A row's pairs put the labels in a
+    `max-content` column and the values in the rest; the atlas panel's citation rows are
+    table rows, so their label cell is as wide as "lower" or "upper" is drawn; and a name
+    set as code is one box that a line breaks before, never inside."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    pairs = _rule(css, ".site-pairs")
+    assert "grid-template-columns: max-content minmax(0, 1fr);" in pairs
+    # Two columns only where there is room: a phone lays the block out as a plain list.
+    assert "@media (width > 40rem) {\n  .site-pairs {\n" in css
+    assert css.count(".site-pairs {") == 1
+    assert "grid-template-columns: subgrid;" in _rule(
+        css, ".site-popover .site-pairs > .site-detail"
+    )
+    cite = _rule(css, ".site-atlas-pop .site-atlas-pop-cite")
+    assert "display: table-row;" in cite
+    assert "padding-inline-start" not in cite
+    assert "text-indent" not in cite
+    which = _rule(css, ".site-atlas-pop-which")
+    assert "display: table-cell;" in which
+    assert "white-space: nowrap;" in which
+    assert "inline-size" not in which
+    # A hidden row stays hidden: `display: table-row` would otherwise show it.
+    assert "display: none;" in _rule(css, ".site-atlas-pop .site-atlas-pop-cite[hidden]")
+    name = _rule(css, ".site-name")
+    assert "display: inline-block;" in name
+    assert "max-inline-size: 100%;" in name
+    assert "minmax(min(100%, 17rem), 1fr)" in _rule(css, ".site-case-bounds")
+    link = _rule(
+        render_overview.SITE_RESULT_CSS.read_text(encoding="utf-8"),
+        ".site-result-links a:has(> code)",
+    )
+    assert "display: inline-block;" in link
+    assert "max-inline-size: 100%;" in link
+
+
 def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
     """A headline that is mathematics standing alone, such as `n = 11`, is marked for
     serif mathematics, on a card and in its popover; a headline with words in it carries
@@ -2676,6 +2750,7 @@ def test_a_wide_block_keeps_one_gutter_inside_the_pages_content_area() -> None:
         "--site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));",
         "max-width: min(36rem, 100vw - 2rem);",
         "inline-size: min(46rem, 100vw - 2rem);",
+        "max-inline-size: min(46rem, 100vw - 2rem);",
         "inline-size: min(62rem, 100vw - 2rem);",
         "inline-size: calc(100vw - 1rem);",
     ]

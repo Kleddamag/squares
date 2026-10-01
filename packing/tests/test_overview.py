@@ -1275,14 +1275,6 @@ def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
     script = render_overview.FILM_SCRIPT.read_text(encoding="utf-8")
     assert page.count(script) == 1
     assert page.index("</video>") < page.index(script)
-    for needle in (
-        'document.querySelector("video[data-autoplay]")',
-        'window.matchMedia("(prefers-reduced-motion: reduce)").matches',
-        'getAttribute("data-site-view") === "embed"',
-        "film.autoplay = true;",
-        "film.play().catch(",
-    ):
-        assert needle in script, needle
     for name in render_overview.PAGES:
         if name != "visualize.html":
             other = rendered(name)

@@ -3,9 +3,9 @@ type: is
 id: is-01m3vkftza0gk08jwefckcgfmr
 title: Certify the n17 contact-chart root and endpoint slider feasibility
 kind: task
-status: open
+status: closed
 priority: 1
-version: 5
+version: 9
 spec_path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
 labels: []
 dependencies: []
@@ -13,10 +13,16 @@ parent_id: is-01m3v9vq36ykk2jdzce75req44
 child_order_hints:
   - is-01m3vm88ged9w5hxj8m0c7tg0s
   - is-01m3vm88wwh06x54j13vmjazhp
+  - is-01m3vnhv9r47gcc5y2y6rftvrg
+  - is-01m3vnhvps3a8s95pjfmx1xgq0
 created_at: 2026-10-01T11:27:12.360Z
-updated_at: 2026-10-01T12:00:22.277Z
+updated_at: 2026-10-01T12:44:31.579Z
+closed_at: 2026-10-01T12:44:31.576Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
-H255 exact polynomial root accepted in exp237 at b3e5e1526; producer0.67s checker0.09s with separate Astra output audit. Remaining scope: certify exact endpoint reconstruction, all wall/pair obligations and joint slider domain. H254 conditional minimum now has its root premise; no physical endpoint or global capture claim. Two Astra reviews and Sol readiness in progress, deadline12:22UTC; freeze next criterion before target arithmetic.
+Completed H255 and H256: exact polynomial root certified with independent checker; full endpoint has68wall/136pair obligations, independently audited187interval bounds. Analytic slider-triangle feasibility reviewed. Records: exp237/238 and review-2026-10-01-post-optimality-w3-opening.md. Global capture remains separate think-zsgl. Endpoint target43.45s; fullreceipt audit5.005s.
 
 ## Notes
 

@@ -221,19 +221,29 @@ def _page_card_parts(page: str, href: str) -> tuple[str, str]:
 
 
 def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
-    """The overview's four page cards lead to full pages the site serves, so each card
+    """The overview's five page cards lead to full pages the site serves, so each card
     is the link itself and goes there in the same tab: an `<a href>` with the page icon
     (`data-go="page"`), no popover, no framed preview and no new tab. Each keeps its
-    label, headline, note and size."""
+    label, headline, note and size. The optimality paper is first, as on the Papers
+    page: its card carries the Papers card's label and title, a shorter note within what
+    T-060's rungs allow, and an address a directory below the site's root."""
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
     assert [href for href, *_ in pages] == [
+        "n11-optimality/t-060-explainer.html",
         "explainer.html",
         "tutorial.html",
         "workbench/",
         "frontier.html",
     ]
+    paper = overview_sections.PAPERS[0]
+    assert pages[0][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
+    assert overview_sections.OPTIMALITY is paper
+    note = pages[0][3]
+    assert note.startswith("Explains the accepted proof that Trump\u2019s packing")
+    assert "(T-060)" in note
+    assert "formal" not in note.lower()
     served = {*render_overview.SITE_PAGES, "workbench/"}
     size = overview_sections.SECTION_CARD_SIZES["pages"]
     for (href, tag, body), (_, label, title, note) in zip(cards, pages, strict=True):
@@ -245,7 +255,8 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
         assert f'<span class="site-card-label">{label}</span>' in body, href
         value, shown = _page_card_parts(page, href)
         assert card_text(value) == title, href
-        assert card_text(shown) == note, href
+        # A bound's ellipsis is set inside its formula, which reads back as TeX.
+        assert card_text(shown) == note.replace("\u2026", r"\ldots"), href
         assert f'src="{overview_sections.embed_url(href)}"' not in page, href
     assert "pop-page-" not in page
     frame = page.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]

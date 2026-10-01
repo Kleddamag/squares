@@ -533,12 +533,12 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A page card navigates.** The overview’s four page cards, the explainer, the
-  tutorial, the workbench and the frontier atlas, lead to full pages the site serves, so
-  each is a direct card that goes to its page in the same tab (`new_tab=False`), with
-  the right arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`).
-  Popovers are for targets that are not site pages of their own: a result’s row, a
-  repository document rendered for its card’s popover, a case.
+  **A page card navigates.** The overview’s five page cards, the optimality paper, the
+  explainer, the tutorial, the workbench and the frontier atlas, lead to full pages the
+  site serves, so each is a direct card that goes to its page in the same tab
+  (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
+  framed (`think-bc5d`). Popovers are for targets that are not site pages of their own:
+  a result’s row, a repository document rendered for its card’s popover, a case.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.

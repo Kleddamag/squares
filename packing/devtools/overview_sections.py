@@ -1281,6 +1281,8 @@ PAPERS: tuple[Paper, ...] = (
 )
 #: The explainer, whose card reads the same on the overview as on the Papers page.
 EXPLAINER = next(paper for paper in PAPERS if paper.href == "explainer.html")
+#: The optimality paper, whose card on the overview carries its label and its title.
+OPTIMALITY = next(paper for paper in PAPERS if paper.href == OPTIMALITY_PAPER)
 
 
 def paper_cards() -> str:
@@ -1306,9 +1308,20 @@ def paper_cards() -> str:
 #: The site's other pages, as the overview's cards show them: the page, a label, its
 #: title, and one line on what a reader finds there. Both are register prose, so a
 #: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
-#: explainer's card takes its paper's words; the tutorial's keeps a shorter line here.
-#: Every address is a full page the site serves, so its card links straight to it.
+#: explainer's card takes its paper's words; the optimality paper's and the tutorial's
+#: keep a shorter line here. The optimality paper is first, as on the Papers page: it
+#: explains the result that stands. Every address is a full page the site serves, the
+#: paper's a directory below the root, so its card links straight to it.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        OPTIMALITY.href,
+        OPTIMALITY.label,
+        OPTIMALITY.title,
+        (
+            "Explains the accepted proof that Trump\u2019s packing of eleven squares is "
+            "optimal, s(11) = 3.8770835\u2026 (T-060)."
+        ),
+    ),
     (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",

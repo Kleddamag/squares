@@ -610,7 +610,6 @@ def results_page() -> Page:
 
     overview = overview_data.load()
     values = {
-        "COUNT": str(len(overview.results)),
         "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "RESULTS_TABLE": overview_sections.results_table(overview),
     }

@@ -2,7 +2,7 @@
 
 # Every Result
 
-<p class="subtitle">{{COUNT}} results, this project’s and others’</p>
+<p class="subtitle">A survey of all reviewed results</p>
 
 </div>
 

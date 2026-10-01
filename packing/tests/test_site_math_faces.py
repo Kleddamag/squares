@@ -166,11 +166,16 @@ def test_the_results_table_sets_sans_math(results: Walk) -> None:
 
 
 def test_the_case_popovers_headline_is_serif_math(frontier_atlas: Walk) -> None:
-    """The frontier atlas's table is sans math, and its case popover's headline, set by
-    script as `n = 11`, is typeset and serif."""
+    """The frontier atlas's table is sans math, as is its subtitle's range of cases, and
+    its case popover's headline, set by script as `n = 11`, is typeset and serif."""
     wrong, rows = frontier_atlas
     assert wrong == []
     assert rows[("table cell", SANS_TEXT, SANS_MATH)]["count"] > 0
+    numbers = [case["n"] for case in frontier.frontier_cases()]
+    subtitle = rows[("subtitle", SANS_TEXT, SANS_MATH)]
+    assert subtitle["count"] == 1
+    assert subtitle["example"] == rf"n = {min(numbers)}, \ldots, {max(numbers)}"
+    assert [key for key in rows if key[0] == "subtitle"] == [("subtitle", SANS_TEXT, SANS_MATH)]
     headline = rows[("popover headline", SANS_TEXT, SERIF_MATH)]
     assert headline["count"] == headline["alone"] == 1
     assert headline["example"] == "n = 11"

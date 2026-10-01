@@ -546,9 +546,12 @@ def frontier_markdown(fill: Callable[..., str]) -> str:
     """The article with every count and link filled from the record."""
     cases = frontier_cases()
     recent = recent_lower_bounds()
+    first, last = min(case["n"] for case in cases), max(case["n"] for case in cases)
     values = {
         "COUNT": str(len(cases)),
-        "LAST_N": str(max(case["n"] for case in cases)),
+        # The subtitle's range, as math: the subtitle is an HTML block, where kpress
+        # leaves `$…$` literal, and it is sans text, so the formula is set sans.
+        "CASE_RANGE": math_html(rf"n = {first}, \ldots, {last}"),
         "PROVED": str(sum(case["status"] == "proved" for case in cases)),
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
         "RECENT": str(sum(recent.values())),

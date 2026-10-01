@@ -172,9 +172,10 @@ body {
   text-align: center;
   text-transform: var(--kpress-caps-transform);
 }
-/* A page's subtitle, such as "Every tracked case, n = 1 to 324": the sans face a small
+/* A page's subtitle, such as "A survey of all reviewed results": the sans face a small
    step above the base (`--site-subtitle-scale`), in the page's own text colour, with
-   the same space above it (from the title) as below it (to the first paragraph). */
+   the same space above it (from the title) as below it (to the first paragraph). A
+   formula in one is sans math, as its text is. */
 .kpress .site-hero .subtitle {
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);

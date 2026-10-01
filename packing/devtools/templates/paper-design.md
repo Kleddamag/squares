@@ -213,8 +213,8 @@ Popovers carry no `data-kpress-prose-font` mark, so every other formula in them 
 its own text. The rule holds on every surface, walked formula by formula on the built
 site: a card’s headline and note, a popover and the atlas popover, a table’s cells,
 heads, summaries and disclosures, a caption, a footnote, a case record’s head, panels
-and detail, and a sans heading are sans text with sans math; prose and its lists are
-serif with serif math.
+and detail, a page’s subtitle, and a sans heading are sans text with sans math; prose
+and its lists are serif with serif math.
 A card’s headline and note are prose whose mathematical runs are set as math, so a case
 a note names, such as $n = 21$, is sans math too, never upright words.
 Documents write math as LaTeX (`$…$`) rather than in code spans;
@@ -440,13 +440,21 @@ it.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
   sections are `h2`s. A page that has a title (the frontier atlas, the case records)
-  sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
-  = 1 to 324”. The subtitle is the sans face at 1.1 times the sans base
-  (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
-  no subtitle, a document’s own `h1` among them, stands that space above its first
-  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
-  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  sets it in the hero, centred, with a subtitle under it.
+  The frontier atlas’s is “A survey of everything known for cases $n = 1, \ldots, 324$”,
+  the results page’s “A survey of all reviewed results” and the Papers page’s “Papers
+  and interactive explanations for specific results”.
+  The subtitle is the sans face at 1.1 times the sans base (`--site-subtitle-scale`,
+  about 21px), in the page’s own text colour, never gray, with the same space above it
+  and below it (`--site-subtitle-space`, 1.5rem). A formula in a subtitle is math, not
+  `<var>` and digits: the subtitle is an HTML block, where KPress leaves `$…$` literal,
+  so the renderer fills it with KPress’s own math markup
+  (`render_frontier_page.math_html`), and it is set sans as the subtitle’s text is.
+  The atlas’s range is read from the case records, first and last, never typed.
+  A title with no subtitle, a document’s own `h1` among them, stands that space above
+  its first paragraph.
+  The page title style (every hero `h1`, and `.site-title`) is the sans face in upright
+  caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
   That section opens with README’s first paragraph: the block between README’s
@@ -1021,9 +1029,9 @@ its defaults.
   (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle with the count, the prose that defines the ratings and
-  standings, and the table under its filters (**Result filters**, above), which start
-  with significance at All and no maximum age, so every result shows.
+  `every-result`, a subtitle, the prose that defines the ratings and standings, and the
+  table under its filters (**Result filters**, above), which start with significance at
+  All and no maximum age, so every result shows.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in

@@ -2351,12 +2351,40 @@ def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
 
 
 def test_page_subtitles_share_one_size() -> None:
-    """Every hero's subtitle ("The ascent, n = 1 to 324") is set from one scale of the sans
-    base, a small step above it."""
+    """Every hero's subtitle ("A survey of all reviewed results") is set from one scale of
+    the sans base, a small step above it."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert "--site-subtitle-scale: 1.1;" in css
     rule = css[css.index(".kpress .site-hero .subtitle {") :]
     assert "var(--site-subtitle-scale)" in rule[: rule.index("}")]
+
+
+def test_the_frontier_results_and_papers_pages_carry_their_subtitles(
+    rendered: Callable[[str], str],
+) -> None:
+    """Each page's subtitle is one line under its title. The atlas's names its range as a
+    formula, kpress's own math markup, with both ends read from the case records; the
+    results page's carries no count, so its template takes none."""
+    from devtools.render_frontier_page import (  # noqa: PLC0415
+        FRONTIER_ARTICLE,
+        frontier_cases,
+        math_html,
+    )
+
+    numbers = [case["n"] for case in frontier_cases()]
+    cases = math_html(rf"n = {min(numbers)}, \ldots, {max(numbers)}")
+    for name, subtitle in (
+        ("frontier.html", f"A survey of everything known for cases {cases}"),
+        (render_overview.RESULTS_PAGE, "A survey of all reviewed results"),
+        ("papers.html", "Papers and interactive explanations for specific results"),
+    ):
+        page = rendered(name)
+        assert page.count('<p class="subtitle">') == 1, name
+        assert f'<p class="subtitle">{subtitle}</p>' in page, name
+    assert 'class="kpress-math' in cases
+    assert "<var>" not in cases
+    assert "{{CASE_RANGE}}" in FRONTIER_ARTICLE.read_text(encoding="utf-8")
+    assert "{{COUNT}}" not in render_overview.RESULTS_ARTICLE.read_text(encoding="utf-8")
 
 
 def test_wrapped_chips_never_touch() -> None:

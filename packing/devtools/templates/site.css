@@ -814,13 +814,17 @@ body {
 }
 /* The short columns keep as narrow as their content, leaving the spare width to the long
    text column. The id and the date stay on one line; an n can be a long list of counts,
-   so it wraps. A phone's card-per-row layout sizes its own cells. */
+   so it wraps. An id is five characters, narrower than the 6rem KPress keeps a cell to,
+   so its column gives that floor up. A phone's card-per-row layout sizes its own cells. */
 @media (width >= 40rem) {
   .site-table :is(.site-col-id, .site-col-n, .site-col-date) {
     width: 0;
   }
   .site-table :is(.site-col-id, .site-col-date) {
     white-space: nowrap;
+  }
+  .site-table .site-col-id {
+    min-width: 0;
   }
 }
 .site-table tr[hidden] {
@@ -1115,9 +1119,9 @@ body {
 }
 
 /* ---------- Quiet cell text and quiet rows ----------
-   Secondary text inside a cell, a result's id beside its math, a credit or a finder, in
-   the support colour and the sans face, at the table's own size so it stays readable. A superseded result's row reads quieter in every
-   site table; its chips keep their fills. */
+   Secondary text inside a cell, a credit, an "after" list or a finder, in the support
+   colour and the sans face, at the table's own size so it stays readable. A superseded
+   result's row reads quieter in every site table; its chips keep their fills. */
 .site-cell-quiet {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
@@ -1127,25 +1131,21 @@ body {
 }
 
 /* ---------- The recent results table ----------
-   The overview's newest results: date, result, method, credit, status. The status cell
-   holds every chip side by side, wrapping only when the cell is too narrow. On a phone
-   it keeps the results table's card per row: the result and the date on the first
-   line, then the method, the credit and the chips each across the card. */
+   The overview's newest results: id, date, result, method, credit, status. The id is
+   the results table's own column, first in the row. The status cell holds every chip
+   side by side, wrapping only when the cell is too narrow. On a phone it keeps the
+   results table's card per row: the id and the date on the first line, then the
+   result, the method, the credit and the chips each across the card. */
 .site-recent-table .site-col-result {
   min-width: 12rem;
 }
-/* Wide enough for three rungs and two standing chips on one line. */
+/* Wide enough for three rungs and one standing chip on a line: a second chip
+   ("reported"), or the longest one ("second certificate"), wraps under the rungs, so a
+   status takes two lines at most. The id's column takes the room this one gave up. */
 .site-recent-table .site-col-status {
-  min-width: 22rem;
-}
-/* A result's id never breaks at its hyphen. */
-.site-recent-table .site-col-result .site-cell-quiet {
-  white-space: nowrap;
+  min-width: 14.5rem;
 }
 @media (width < 40rem) {
-  .site-recent-table .site-col-result {
-    grid-area: 1 / 1 / 2 / 3;
-  }
   .site-recent-table .site-col-date {
     grid-area: 1 / 3;
   }

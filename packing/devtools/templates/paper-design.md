@@ -830,8 +830,11 @@ it.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) stay on one line and as narrow as their content, which leaves the
   spare width to the long text column.
-  Secondary content in a cell, such as a result’s id, a credit or an “after …” list,
-  takes `.site-cell-quiet`, which sets it in the support colour and the sans face.
+  A result’s id is the first column of both tables of results, one cell written by one
+  helper (`id_cell`), and the row’s trigger; the column is as narrow as an id, under the
+  6rem KPress keeps a cell to.
+  Secondary content in a cell, such as a credit or an “after …” list, takes
+  `.site-cell-quiet`, which sets it in the support colour and the sans face.
   It keeps the table’s size, so the quiet text does not become harder to read.
   Every table stands `--site-table-space` clear of the text above and below it
   (**Spacing**, above).
@@ -1010,18 +1013,21 @@ its defaults.
   maximum age of 180 days, with the count of rows shown out of the total at the bar’s
   end. Those two defaults are all that make the table recent: no result is left out of it
   by a date the page fixes.
-  Its five columns are the date, then what it dates (`published` or `established`); the
-  result, its math linking to its row on the results page, with the id beside it quiet,
-  which is the row’s trigger; the method, the phrase the summary gives after the formula
-  (“by a point-only route” reads “point-only route”), empty when there is none; the
-  credit, the finder first and “after …” quiet, the list cut after three names with the
-  whole of it in the cell’s `title`; and the status, every chip in one cell side by
-  side. The status cell holds the S, V and C rung chips and then one chip per part of the
-  standing (`second certificate, reported` is two chips), left to right a space apart,
-  wrapping only where the cell is too narrow, with the chips’ own block margin between
-  wrapped rows; it never stacks one chip per line.
-  On a phone it takes the results table’s card-per-row form: the result and the date on
-  the first line, then the method, the credit and the chips each across the card.
+  Its six columns are the id, the results table’s own first column, which is the row’s
+  trigger; the date, then what it dates (`published` or `established`); the result, its
+  math linking to its row on the results page; the method, the phrase the summary gives
+  after the formula (“by a point-only route” reads “point-only route”), empty when there
+  is none; the credit, the finder first and “after …” quiet, the list cut after three
+  names with the whole of it in the cell’s `title`; and the status, every chip in one
+  cell side by side. The status cell holds the S, V and C rung chips and then one chip
+  per part of the standing (`second certificate, reported` is two chips), left to right
+  a space apart, wrapping only where the cell is too narrow, with the chips’ own block
+  margin between wrapped rows; it never stacks one chip per line.
+  The cell is at least 14.5rem wide, which holds the rungs and one standing chip on a
+  line; a second chip, or the longest (“second certificate”), wraps under the rungs.
+  On a phone it takes the results table’s card-per-row form: the id and the date on the
+  first line, as the results table’s card opens with its id, then the result, the
+  method, the credit and the chips each across the card.
   A row opens its result’s popover (**Row popovers**, above), the same panel the results
   page opens for that result.
   The section holds no card or bulleted list, and the “See all results” line, with the

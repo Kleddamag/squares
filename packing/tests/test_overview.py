@@ -1374,7 +1374,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
-    date, the result linking its row, the method, the credit and the status chips; no
+    id, the date, the result linking its row, the method, the credit and the status chips; no
     card or list is left in it, and its only popovers are its rows' own. What a row's
     popover holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
@@ -1393,21 +1393,24 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert 'class="kpress-table site-table site-results site-recent-table"' in recent
     assert "data-site-table" not in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["Date", "Result", "Method", "Credit", "Status"]
+    assert heads == ["ID", "Date", "Result", "Method", "Credit", "Status"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
         row = _recent_row(recent, result.id)
         cells = re.findall(r'<td class="(site-col-[a-z]+)"', row)
         assert cells == [
-            f"site-col-{c}" for c in ("date", "result", "method", "credit", "status")
+            f"site-col-{c}" for c in ("id", "date", "result", "method", "credit", "status")
         ]
         assert f'<a href="all-results.html#{result.id.lower()}">' in row
-        # The quiet id is the row's native trigger, which opens its popover unscripted.
+        # The id, in its own cell, is the row's native trigger, which opens its popover
+        # unscripted; the result's cell holds the result and no id.
         assert (
-            '<span class="site-cell-quiet"><button type="button" class="site-row-open" '
-            f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button></span>'
+            '<button type="button" class="site-row-open" '
+            f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button></td>'
         ) in row
+        assert row.count(f">{result.id}<") == 1
+        assert "site-row-open" not in row.split('<td class="site-col-result"', 1)[1]
         status = row.split('<td class="site-col-status"', 1)[1]
         # Every chip in the one status cell, side by side: S, V and C, then the standing.
         chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', status)
@@ -2162,6 +2165,41 @@ def test_results_by_others_show_their_publication_date(
     assert max(r.dated[1] for r in overview.results) == dates[0][0]
 
 
+def test_both_tables_of_results_lead_with_the_same_id_column(
+    overview: overview_data.Overview,
+) -> None:
+    """The id is a column of its own, the first, in the results table and in Recent
+    Results alike: one cell, written by one helper, holding the row's trigger and
+    nothing else. On a phone it opens each card, in both tables."""
+    table = overview_sections.results_table(overview)
+    recent = overview_sections.recent_table(overview)
+    first = re.compile(r"<thead><tr><th([^>]*)>([^<]+)</th>")
+    for html_table, sortable in ((table, True), (recent, False)):
+        head = first.search(html_table)
+        assert head
+        assert head.group(2) == "ID"
+        assert 'class="site-col-id"' in head.group(1)
+        assert ("data-sort=" in head.group(1)) is sortable
+    for result in overview.results:
+        trigger = (
+            '<button type="button" class="site-row-open" '
+            f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button>'
+        )
+        cell = f'<td class="site-col-id" data-value="{result.id}">{trigger}</td>'
+        for row in (_row(table, result.id), _recent_row(recent, result.id)):
+            # The row's first cell, straight after the row's own tag.
+            assert row.split(">", 1)[1].startswith(cell), result.id
+            assert row.count("site-row-open") == 1, result.id
+            assert row.count(f">{result.id}<") == 1, result.id
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    # As narrow as an id, below the floor KPress keeps a cell to.
+    assert "  .site-table .site-col-id {\n    min-width: 0;\n  }" in css
+    # On a phone the id opens the card and the date ends its first line, in both tables.
+    assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
+    assert "  .site-recent-table .site-col-date {\n    grid-area: 1 / 3;\n  }" in css
+    assert ".site-recent-table .site-col-result {\n    grid-area" not in css
+
+
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
     overview: overview_data.Overview,
 ) -> None:
@@ -2227,7 +2265,10 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         # Each row, and where its star stands: after the result's own text.
         rows = (
             (_row(table, result.id), overview_data.tex_bounds(result.summary) + "{star}</td>"),
-            (_recent_row(recent, result.id), overview_data.tex_bounds(formula) + "</a>{star} "),
+            (
+                _recent_row(recent, result.id),
+                overview_data.tex_bounds(formula) + "</a>{star}</td>",
+            ),
         )
         for row, placed in rows:
             name = re.search(r' aria-label="([^"]*)"', row)

@@ -727,6 +727,13 @@ def result_filters(
     )
 
 
+def id_cell(result: Result, detail: RowDetail) -> str:
+    """A result's id cell, the first of its row in both tables of results: the id in a
+    column of its own (`.site-col-id`), as the row's native trigger, which opens the
+    row's popover without scripts (`row_detail`)."""
+    return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
+
+
 def date_cell(result: Result) -> str:
     """What a result's date cell holds, in both tables of results: the date first, then
     what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
@@ -739,7 +746,8 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
     relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
     standing and, for a result by others, the date it was published. Each row opens its
-    result's popover (`result_row`), placed after the table; its id is the trigger.
+    result's popover (`result_row`), placed after the table; its id, in the first
+    column (`id_cell`), is the trigger.
     The bar above it is `result_filters`, starting at `defaults`, which on the results
     page hide nothing; a row outside them is `hidden` in the HTML, and so is a group
     heading with no row left under it."""
@@ -774,7 +782,7 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
                 f"{detail.attributes}{'' if shown[result.id] else ' hidden'}>"
-                f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
+                f"{id_cell(result, detail)}"
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
                 f'<td class="site-col-result">{tex_bounds(result.summary)}{star}</td>'
@@ -1039,19 +1047,20 @@ def status_chips(result: Result) -> str:
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
-    """Every result as one table, newest first: the date, the result linking to its row
-    on the results page with its id quiet beside it, the method, the credit and the
-    status chips. A result by others is dated by its publication, as `RESULTS.md` dates
-    it, and this project's by the day it was established; the cell says which, after
-    the date (`date_cell`). The bar above it is `result_filters`, the results page's,
-    starting at `defaults`: a row outside them is `hidden` in the HTML, so the first
-    paint is already filtered. Each row opens its result's popover (`result_row`), the
-    results page's, ending in the button to that page's row; the quiet id is its
-    trigger."""
+    """Every result as one table, newest first: the id in the first column, as the
+    results table has it (`id_cell`), the date, the result linking to its row on the
+    results page, the method, the credit and the status chips. A result by others is
+    dated by its publication, as `RESULTS.md` dates it, and this project's by the day it
+    was established; the cell says which, after the date (`date_cell`). The bar above it
+    is `result_filters`, the results page's, starting at `defaults`: a row outside them
+    is `hidden` in the HTML, so the first paint is already filtered. Each row opens its
+    result's popover (`result_row`), the results page's, ending in the button to that
+    page's row; its id is the trigger."""
     results = recent_results(overview)
     reference = reference_date(overview)
     head = (
         "<thead><tr>"
+        '<th class="site-col-id">ID</th>'
         '<th class="site-col-date">Date</th>'
         '<th class="site-col-result">Result</th>'
         '<th class="site-col-method">Method</th>'
@@ -1071,10 +1080,10 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
             f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
             f"{detail.attributes}"
             f"{'' if shown_by_default(result, defaults, reference) else ' hidden'}>"
+            f"{id_cell(result, detail)}"
             f'<td class="site-col-date">{date_cell(result)}</td>'
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
-            f"{tex_bounds(formula)}</a>{star} "
-            f'<span class="site-cell-quiet">{detail.trigger}</span></td>'
+            f"{tex_bounds(formula)}</a>{star}</td>"
             f'<td class="site-col-method">{tex_bounds(method)}</td>'
             f'<td class="site-col-credit" title="{_esc(result.credit)}">'
             f"{credit_cell(result.credit)}</td>"

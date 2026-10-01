@@ -24,6 +24,7 @@ from urllib.parse import urlsplit
 
 from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
+from devtools.check_results import KINDS, kind_label
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
@@ -32,10 +33,11 @@ from devtools.overview_data import (
     Result,
     compress,
     math_html,
+    prose_html,
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
-from devtools.render_recent_results import NOT_A_BOUND, SUPERSEDED, position_marks
+from devtools.render_recent_results import SUPERSEDED, superseded
 from devtools.repo_links import branch_file
 from devtools.result_status import CONFIRMED, STATUSES
 
@@ -56,47 +58,46 @@ def _rung(label: str) -> str:
     return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
-#: What the table and its filter call an entry that is no bound on `s(n)`:
-#: `render_recent_results` spells that standing as a dash, which a filter cannot name.
-NOT_A_BOUND_LABEL = "not a bound"
-
-
-def standing_label(standing: str) -> str:
-    """The words a standing chip shows: `render_recent_results`'s own, the dash spelled."""
-    return NOT_A_BOUND_LABEL if standing == NOT_A_BOUND else standing
-
-
 def standing_key(standing: str) -> str:
     """A standing as a row attribute and a filter value: `current best, reported`
-    is `current-best-reported`."""
-    return re.sub(r"[^a-z]+", "-", standing_label(standing)).strip("-")
+    is `current-best-reported`. A result that has no standing, one that claims no
+    bound, has the empty key."""
+    return re.sub(r"[^a-z]+", "-", standing).strip("-")
 
 
-def is_superseded(standing: str) -> bool:
-    """Whether a result of this standing is no longer the best: it claims a bound, and no
-    case bound rests on it now. It is `render_recent_results.standing`'s own word and no
-    other test of it, which `devtools.check_standing` holds to the numbers. A result that
-    still holds a bound, a second certificate and a result that is not a bound are all
-    current. A row says so as `data-current`, which the bar's "Hide superseded" reads
-    (`result_filters`)."""
-    return standing == SUPERSEDED
+def is_superseded(result: Result) -> bool:
+    """Whether a result is no longer the best: it is a bound, and no case bound rests on
+    it now (`render_recent_results.superseded`). The standing is derived from the case
+    records, and `devtools.check_standing` holds it to the numbers. A result that still
+    holds a bound, a second proof of a value another result holds, and a result that is
+    no bound are all current. A row says so as `data-current`, which the bar's "Hide
+    superseded" reads (`result_filters`), and draws the `superseded` chip
+    (`status_marks`)."""
+    return superseded(result.record, result.standing)
 
 
 def standing_chip(standing: str) -> str:
-    """One part of a result's standing as a chip, the plain gray one: every standing chip
-    is the one component, so `superseded`, `reported` and `second certificate` are one
-    size and differ only in their words (`standing_chips` chooses which are drawn)."""
+    """A result's standing as a chip, the plain gray one. A table draws one, `superseded`
+    (`status_marks`); it is the kind's and the status's own chip and differs from them
+    only in its word."""
     return (
         f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}">'
-        f"{_esc(standing_label(standing))}</span>"
+        f"{_esc(standing)}</span>"
     )
+
+
+def kind_chip(result: Result) -> str:
+    """What a result is, as a chip: its `kind` in the rubric's words, `lower bound` or
+    `case exclusion` (epistemics.md, Result Kinds). The plain gray chip, the standing
+    chips' own, and every result has one."""
+    kind = str(result.record["kind"])
+    return f'<span class="site-chip" data-kind="{_esc(kind)}">{_esc(kind_label(kind))}</span>'
 
 
 def status_chip(status: str) -> str:
     """A result's status as its chip: `recorded`, `reviewed`, `confirmed` or
     `incomplete` (`devtools.result_status`), the one word for how far this project's
-    workflow has taken the result. A plain chip like every other; `site.css` gives
-    `incomplete` the one mark that asks for attention."""
+    workflow has taken the result. The plain gray chip, like the kind's."""
     return f'<span class="site-chip" data-status="{_esc(status)}">{_esc(status)}</span>'
 
 
@@ -477,13 +478,11 @@ def _detail(result: Result) -> str:
     """A result's claim, composition, next rung, why it matters and novelty label: the
     short form of what its row opens to, which the page itself carries (`result_row`)."""
     record = result.record
-    rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
+    rows = [("Claim", prose_html(record["claim"]))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
         if record.get(key):
-            rows.append((label, tex_bounds(" ".join(str(record[key]).split()))))
-    rows.append(
-        ("Significance", tex_bounds(" ".join(str(record["significance"]["rationale"]).split())))
-    )
+            rows.append((label, prose_html(record[key])))
+    rows.append(("Significance", prose_html(record["significance"]["rationale"])))
     meaning = novelty_labels().get(result.novelty, "")
     rows.append(
         (
@@ -651,7 +650,7 @@ def result_cases(result: Result) -> str:
 def result_facets(result: Result) -> str:
     """A result row's facets as attributes, the same on every table of results, each one
     a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
-    its status, whether it is current, which is to say not superseded
+    its kind, its status, whether it is current, which is to say not superseded
     (`is_superseded`), its cases and the date the table shows."""
     record = result.record
     return (
@@ -659,8 +658,9 @@ def result_facets(result: Result) -> str:
         f'data-v="{_esc(record["verification"][1:])}" '
         f'data-c="{_esc(record["confirmation"][1:])}" '
         f'data-s="{significance(result)}" '
+        f'data-kind="{_esc(record["kind"])}" '
         f'data-status="{_esc(result.status)}" '
-        f'data-current="{"false" if is_superseded(result.standing) else "true"}" '
+        f'data-current="{"false" if is_superseded(result) else "true"}" '
         f'data-n="{_esc(result_cases(result))}" '
         f'data-date="{_esc(first_day(result.dated[1]))}"'
     )
@@ -685,7 +685,7 @@ def shown_by_default(result: Result, defaults: FilterDefaults, reference: date) 
     `defaults`, with its age measured from `reference`."""
     if defaults.significance is not None and significance(result) < defaults.significance:
         return False
-    if defaults.hide_superseded and is_superseded(result.standing):
+    if defaults.hide_superseded and is_superseded(result):
         return False
     return defaults.max_age is None or first_day(result.dated[1]) >= age_cutoff(
         reference, defaults.max_age
@@ -733,16 +733,17 @@ def result_filters(
     the results page's table. `overview/table.js` drives it.
 
     One control per facet a row carries (`result_facets`), and they compose: Significance,
-    Verification and Confirmation as floors (`data-bound="min"`), Status and Source as
-    equalities, "Hide superseded" as a flag the row must carry (`data-current`), Case as
-    a number the row's cases must hold (`covers`), and Max age as the most days the row's
-    date may lie behind the reader's day (`age`), empty for no limit.
+    Verification and Confirmation as floors (`data-bound="min"`), Kind, Status and
+    Source as equalities, "Hide superseded" as a flag the row must carry
+    (`data-current`), Case as a number the row's cases must hold (`covers`), and Max age
+    as the most days the row's date may lie behind the reader's day (`age`), empty for no
+    limit.
 
-    Status offers the four workflow statuses a result can have (`result_status`), each
-    one that some result has: recorded, reviewed, confirmed and incomplete. "Hide
-    superseded" stands straight after it and is a different question, the result's place
-    on the frontier: checked, it hides exactly the superseded rows (`is_superseded`),
-    whatever their status.
+    Kind offers the kinds the register holds, in the rubric's order. Status offers the
+    workflow statuses some result has (`result_status`): recorded, reviewed, confirmed
+    and incomplete. "Hide superseded" stands straight after it and is a different
+    question, the result's place on the frontier: checked, it hides exactly the
+    superseded rows (`is_superseded`), whatever their status.
 
     A table's `defaults` are where Significance, Max age and "Hide superseded" start;
     every other control starts at all. The tables write the rows outside those defaults
@@ -756,6 +757,7 @@ def result_filters(
     its count.
     """
     present = {result.status for result in overview.results}
+    held = {str(result.record["kind"]) for result in overview.results}
     last = f' max="{max(overview.cases)}"' if overview.cases else ""
     floor = "" if defaults.significance is None else str(defaults.significance)
     age = "" if defaults.max_age is None else f' value="{defaults.max_age}"'
@@ -767,12 +769,14 @@ def result_filters(
         "</select></label>"
         for scale, label in RUNG_FILTERS
     )
+    kinds = [("", ALL), *((kind, kind_label(kind)) for kind in KINDS if kind in held)]
     statuses = [("", ALL), *((status, status) for status in STATUSES if status in present)]
     sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
     shown = sum(shown_by_default(result, defaults, reference) for result in listed)
     return (
         '<div class="site-table-tools site-result-filters">'
         f"{rungs}"
+        f'<label>Kind <select data-filter="kind">{_options(kinds)}</select></label>'
         f'<label>Status <select data-filter="status">{_options(statuses)}</select></label>'
         f'<label><input type="checkbox" data-filter="current"{hide}> Hide superseded</label>'
         f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
@@ -788,8 +792,9 @@ def result_filters(
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
     in one order. The id, which is the row's trigger; the cases; the result, with its
-    records under it; the credit; the rungs, with the status under them; and the
-    date. A column sorts where an order means something, on either page."""
+    records under it; the credit; the rungs, with the kind under them and the status
+    under that; and the date. A column sorts where an order means something, on either
+    page."""
     return (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
@@ -797,7 +802,7 @@ def result_head() -> str:
         '<th class="site-col-result">Result</th>'
         '<th data-sort="text">Credit</th>'
         '<th data-sort="text" title="Significance, verification and confirmation, then '
-        'the status: how far the workflow here has taken the result">Rungs</th>'
+        'what the result is, and how far the work on it here has gone">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
         "</tr></thead>"
@@ -846,11 +851,12 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
     """A result's cells, one for each column of `result_head`, the same on both tables:
     its id (`id_cell`), its cases, its summary with the star a new result earns
     (`result_text`, `new_result_star`) and its records on a quiet line under it, its
-    credit (`credit_cell`), its rung chips with its status under them
-    (`status_marks`), and its date (`date_cell`). The records are no
-    column of their own: a column narrow enough to fit set them a link to a line, and
-    under the summary they take a line or two. The overview's table carries them and
-    does not show them (`site.css`, `.site-recent-table`)."""
+    credit (`credit_cell`), its rung chips with its kind on a line under them
+    (`kind_chip`) and its status line under that (`status_marks`), and its date
+    (`date_cell`). The records are no column of their own: a column narrow enough to fit
+    set them a link to a line, and under the summary they take a line or two. The
+    overview's table carries them and does not show them (`site.css`,
+    `.site-recent-table`)."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
@@ -863,7 +869,8 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-        f"{rung_chips(result)}{standing}</td>"
+        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span>'
+        f"{standing}</td>"
         f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
         f"{date_cell(result)}</td>"
     )
@@ -1140,29 +1147,25 @@ def split_summary(summary: str) -> tuple[str, str]:
     return match.group(1), match.group("method") or ""
 
 
-def standing_chips(standing: str) -> str:
-    """A result's place on the frontier as chips, where it has one to say: `superseded`,
-    that it no longer holds a bound, or `second certificate`, that it proves a value
-    another result holds. A result that still stands, `current best`, is the default and
-    takes none. How far the result has been checked here is no part of it: that is the
-    status (`status_chip`), so `current best, reported` draws nothing here and
-    `second certificate, reported` draws one chip
-    (`render_recent_results.position_marks`)."""
-    return " ".join(standing_chip(part) for part in position_marks(standing))
-
-
 def status_marks(result: Result) -> str:
-    """What sits under a result's rungs: its status chip, always; who has the next move,
-    where the register records it (`activity_chip`); and its place on the frontier,
-    where it is superseded or a second certificate (`standing_chips`)."""
-    marks = (status_chip(result.status), activity_chip(result), standing_chips(result.standing))
-    return " ".join(filter(None, marks))
+    """A result's status line: its status chip, always; who has the next move, where
+    the register records it (`activity_chip`); and `superseded`, where it is a bound
+    that no case bound rests on now (`is_superseded`)."""
+    mark = standing_chip(SUPERSEDED) if is_superseded(result) else ""
+    return " ".join(filter(None, (status_chip(result.status), activity_chip(result), mark)))
+
+
+def kind_and_status(result: Result) -> str:
+    """What a result is and where it stands, as chips a space apart: its kind chip, then
+    its status line (`status_marks`). A popover's head and a chain's step set them on
+    one line; a table's row sets each on a line of its own."""
+    return f"{kind_chip(result)} {status_marks(result)}"
 
 
 def status_chips(result: Result) -> str:
-    """A result's rung chips, S, V and C, then its status and the marks beside it
-    (`status_marks`), side by side."""
-    return f"{rung_chips(result)} {status_marks(result)}"
+    """A result's rung chips, S, V and C, then its kind chip and its status line, side
+    by side."""
+    return f"{rung_chips(result)} {kind_and_status(result)}"
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
@@ -1291,10 +1294,10 @@ OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
 #: explains the result that stands, T-060, where the explainer proves the lower bounds
 #: T-060 superseded and the tutorial is the background to both. Its title is its
 #: renderer's (`render_n11_optimality_explainer.TITLE`) in sentence case, and its
-#: description says what T-060's rungs allow: a proof, machine-verified and reviewed
-#: here. The explainer's title is the owner's (2026-09-30), as `render_explainer.TITLE`
-#: has it in title case; the tutorial's description is `TUTORIAL.md`'s own opening, its
-#: audience and what it owns.
+#: description says what T-060's rungs allow, `V3/C3`: an accepted proof, machine-checked
+#: here with its review record pending. The explainer's title is the owner's
+#: (2026-09-30), as `render_explainer.TITLE` has it in title case; the tutorial's
+#: description is `TUTORIAL.md`'s own opening, its audience and what it owns.
 PAPERS: tuple[Paper, ...] = (
     Paper(
         href=OPTIMALITY_PAPER,

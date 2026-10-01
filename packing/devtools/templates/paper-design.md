@@ -736,22 +736,28 @@ it.
   row, a popover, a result’s overview or a case record, they run S, V, C, from the one
   function that sets the order, `overview_sections.rung_chips`. The generated register
   documents keep their own order, verification first.
-  A result’s status line sits under its rungs (`status_marks`). Its first chip is the
-  status, `recorded`, `reviewed`, `confirmed` or `incomplete` (`data-status`), which
-  every result has: how far the work on it here has gone, derived by
-  `devtools.result_status` from the confirmation rung and the defects on record, and
-  defined in `epistemics.md`. Next, where the register records one, is who has the next
-  move (`data-activity`): `in analysis` for a replay or review under way here, `waiting
-  on source` for a request with another party; its title says what is in hand and since
-  when. Last is the result’s place on the frontier where it is not the current best
-  (`standing_chips`, `data-standing`): `superseded`, or `second certificate`. A result
-  that still stands draws no chip for that: `current best` is the default, so it is left
-  unsaid. That a bound is only reported is no chip of its own: it is the status
-  `recorded`. Each of these chips adds no style of its own, so every one is the same
-  plain gray chip, one font size, line height and height, and they differ only in their
-  words. A row keeps its status as `data-status` for the filters; a step of a result’s
-  chain keeps its standing on that case as `data-standing`. A novelty chip
-  (`data-novelty`) is always plain gray.
+  A kind chip (`kind_chip`) says what a result is, in the rubric’s words, `lower bound`
+  or `case exclusion`, and carries `data-kind`. Every result draws one: on a line of its
+  own under its rungs in a table, and after the rungs in a popover’s head and a chain’s
+  step. A result’s status line follows it (`status_marks`), on a line of its own in a
+  table. Its first chip is the status, `recorded`, `reviewed`, `confirmed` or
+  `incomplete` (`data-status`), which every result has: how far the work on it here has
+  gone, derived by `devtools.result_status` from the confirmation rung and the defects
+  on record, and defined in `epistemics.md`. Next, where the register records one, is
+  who has the next move (`data-activity`): `in analysis` for a replay or review under
+  way here, `waiting on source` for a request with another party; its title says what is
+  in hand and since when.
+  Last is `superseded` (`data-standing`), on a bound that no case bound rests on now.
+  A result that still stands draws no chip for that: `current best` is the default, so
+  it is left unsaid. That a bound is only reported is no chip of its own: it is the
+  status `recorded`. A second proof of a value another result holds says so by its kind,
+  `simplification`, and a result that bounds nothing by its kind too.
+  Each of these chips adds no style of its own, so every one is the same plain gray
+  chip, one font size, line height and height, and they differ only in their words.
+  The Rungs column is as wide as its widest chip, so in a table each chip of the status
+  line takes a line. A row keeps its kind and status as `data-kind` and `data-status` for
+  the filters; a step of a result’s chain keeps its standing on that case as
+  `data-standing`. A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the
   site’s text face has glyphs for `↑` and `↓` only, so `←`, `→` and `↗` came from a
@@ -999,22 +1005,24 @@ it.
   6rem KPress keeps a cell to; the cases, n; the result, its summary whole, method and
   all, with its records on a quiet line under it; the credit, the finder first and
   “after …”, what the result builds on, quiet after it, in full; the rungs, with the
-  status line under them (**Chips**, above); and the date.
-  The tables differ in three things only: where the filter bar starts, the order of the
-  rows, and that a row on the results page is the result’s own address, where a row on
-  the overview links there from its summary’s leading formula (`result_text`). Both sort
-  on any column whose header carries the sort pair.
+  kind on a line under them and the status line under that (**Chips**, above); and the
+  date. The tables differ in three things only: where the filter bar starts, the order of
+  the rows, and that a row on the results page is the result’s own address, where a row
+  on the overview links there from its summary’s leading formula (`result_text`). Both
+  sort on any column whose header carries the sort pair.
   The widths follow from what cannot give.
   Four results’ formulas do not break and hold the result column to 411 pixels.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
-  at 114 pixels, and “second certificate” at 159 where a row with one shows.
-  Those, the id, n and the date come to 1006 of the 1104 pixels a table has at a
-  1280-pixel window, so the result and the credit share 98 to spare, and below that
+  at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
+  one shows. The kind and the standing each take a line under the rungs, so a superseded
+  bound has three lines of chips, 114 pixels of row.
+  Those, the id, n and the date come to 1027 of the 1104 pixels a table has at a
+  1280-pixel window, so the result and the credit share 77 to spare, and below that
   width the table scrolls sideways in its wrap, as it did.
-  The records are therefore no column of their own, which would be left 98 pixels and
+  The records are therefore no column of their own, which would be left 77 pixels and
   set a link to a line: they sit under the summary, a line or two of links.
   The overview’s table carries them and does not show them, at any width, by one rule on
   `.site-recent-table`: each row’s popover holds every link.
@@ -1059,6 +1067,7 @@ it.
 | Significance | `data-s`, the S level | a floor: S4 and up |
 | Verification | `data-v`, the V level | a floor: V4 and up |
 | Confirmation | `data-c`, the C level | a floor: C3 and up |
+| Kind | `data-kind`, the register’s `kind` | equal to the kind chosen |
 | Status | `data-status` | equal to the status chosen |
 | Hide superseded | `data-current`, `true` or `false` | checked: the result is not superseded |
 | Source | `data-source`, `ours` or `others` | this project’s, or others’ |
@@ -1067,7 +1076,8 @@ it.
 
 ```
 A rung select offers All, then each level of the rubric above its lowest as a floor,
-the top level bare (S5). Status offers the statuses the register's results have.
+the top level bare (S5). Kind offers the kinds the register holds, in the rubric's
+order and words. Status offers the statuses the register's results have.
 A date the register gives only to the year is the first day of it (`1979-01-01`).
 Max age is a number of days, and empty is no limit. There is no date range.
 ```
@@ -1082,12 +1092,11 @@ Max age is a number of days, and empty is no limit. There is no date range.
   results recorded and not yet replayed here, which is how the overview points at them.
 
 - **Hide superseded.** One checkbox, straight after Status, hides exactly the superseded
-  results: those that claim a bound no case bound rests on now, because a later or a
-  stronger result holds the case (`overview_sections.is_superseded`). Every other result
-  stays: one that still holds a bound, verified or reported, a second certificate of a
-  proved value, and a result that bounds nothing, such as a rigidity or an erratum,
-  which no better bound supersedes.
-  A result that holds one case of several is not superseded.
+  results: the bounds no case bound rests on now, because a later or a stronger result
+  holds the case (`overview_sections.is_superseded`). Every other result stays: one that
+  still holds a bound, verified or reported, and a result of a kind that is no bound,
+  such as a rigidity, a simplification or the limit of a method, which no better bound
+  supersedes. A result that holds one case of several is not superseded.
   The word is derived from the case records (`render_recent_results.standing`), so the
   checkbox and the `superseded` chip cannot disagree, and `devtools.check_standing`
   holds it to the bounds each entry states.
@@ -1252,11 +1261,12 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle, the prose that defines the ratings and statuses, and the
-  table under its filters (**Result filters**, above), which start with significance at
-  All, no maximum age and Hide superseded clear, so every result shows, newest first, in
-  one flat list. Each row keeps its id, the result’s own (`#t-018`), which is where the
-  overview’s recent table and each case record’s results link.
+  `every-result`, a subtitle, the prose that defines the ratings, kinds and statuses,
+  and the table under its filters (**Result filters**, above), which start with
+  significance at All, no maximum age and Hide superseded clear, so every result shows,
+  newest first, in one flat list.
+  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
+  recent table and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”
@@ -1334,10 +1344,10 @@ names.
 
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
-  the overview lands. The body opens with the S, V and C rung chips and the status line,
-  as the tables show them; then the date with what it dates, the credit and the cases,
-  in the support colour; the claim at the note size; and a closed disclosure with the
-  significance, composition, next rung and novelty.
+  the overview lands. The body opens with the S, V and C rung chips, the kind chip and
+  the status line, as the tables show them; then the date with what it dates, the credit
+  and the cases, in the support colour; the claim at the note size; and a closed
+  disclosure with the significance, composition, next rung and novelty.
 - **The case.** A result about one case, or up to four, shows the atlas popover’s panel
   for each: the gap bar, the bound as one statement with the lower bound in scarlet and
   the best known side in green, the badges, the citation and what is open, beside the

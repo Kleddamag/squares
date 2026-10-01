@@ -141,7 +141,7 @@ def test_every_registered_result_has_exactly_one_status_from_the_record() -> Non
             assert word == (CONFIRMED if rank >= 2 else REVIEWED if rank == 1 else RECORDED)
             assert open_issues(entry, evidence) == [], entry["id"]
         marks = render_recent_results.position_marks(
-            render_recent_results.standing(entry, records)
+            entry, render_recent_results.standing(entry, records)
         )
         line = status_line(entry, evidence, marks)
         assert line.startswith(word), entry["id"]
@@ -173,14 +173,34 @@ def test_a_status_line_is_the_status_then_the_activity_then_the_place() -> None:
     assert activity_label(None) == ""
 
 
-def test_position_marks_are_the_frontier_place_and_nothing_of_the_status() -> None:
-    marks = render_recent_results.position_marks
-    assert marks(render_recent_results.HOLDS) == []
-    assert marks(render_recent_results.HOLDS_REPORTED) == []
-    assert marks(render_recent_results.NOT_A_BOUND) == []
-    assert marks(render_recent_results.SUPERSEDED) == ["superseded"]
-    assert marks(render_recent_results.SECOND_CERTIFICATE) == ["second certificate"]
-    assert marks(render_recent_results.SECOND_CERTIFICATE_REPORTED) == ["second certificate"]
+def test_superseded_is_marked_on_a_bound_and_on_nothing_else() -> None:
+    """Of a standing a table draws one mark, `superseded`, and only on a result whose
+    kind is a bound. That a bound is only reported is the status; a second proof of a
+    held value is the kind simplification; and a result that is no bound is never
+    superseded, though it may cite a bound's evidence and so derive the standing."""
+    view = render_recent_results
+    bound = {"kind": "lower-bound"}
+    for held in (view.HOLDS, view.HOLDS_REPORTED, view.NO_STANDING):
+        assert view.position_marks(bound, held) == [], held
+    for held in (view.SECOND_CERTIFICATE, view.SECOND_CERTIFICATE_REPORTED):
+        assert view.position_marks({"kind": "simplification"}, held) == [], held
+    for kind in check_results.KINDS:
+        marked = view.position_marks({"kind": kind}, view.SUPERSEDED)
+        assert marked == (["superseded"] if kind in check_results.BOUND_KINDS else []), kind
+        assert view.superseded({"kind": kind}, view.SUPERSEDED) is bool(marked), kind
+    # The live register: the limit of a method derives the standing and is not marked.
+    records = view.load_records()
+    limit = records.results["T-003"]
+    assert limit["kind"] == "method-limit"
+    assert view.standing(limit, records) == view.SUPERSEDED
+    assert view.position_marks(limit, view.SUPERSEDED) == []
+    marked = [
+        str(entry["id"])
+        for entry in records.register.results
+        if view.superseded(entry, view.standing(entry, records))
+    ]
+    assert len(marked) == 26
+    assert {str(records.results[entry]["kind"]) for entry in marked} == {"lower-bound"}
 
 
 def activity(**changes: Any) -> Record:

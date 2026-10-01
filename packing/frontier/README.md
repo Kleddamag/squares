@@ -227,14 +227,19 @@ credited, is policy in
    its own attribution files.
 3. Put the literal public claim in the reported lane and give it typed evidence.
    A result by others that the record acts on gets its `T-NNN` register entry now, at
-   its derived rung, with a `headline`, `attribution` and a `next_rung` naming the
-   replay and review it waits on.
+   its derived rung, with a `kind`, a `headline`, `attribution` and a `next_rung` naming
+   the replay and review it waits on.
    Its date is `attribution.published`; `established` is this project’s own results’
    date and the checker refuses it here.
-   Its [status](../../epistemics.md#status) is derived and reads *recorded* from this
-   step on. Once a replay or review of it is under way here, or a question about it is
-   with its authors, say so in the entry’s `activity`, dated and linked to the bead or
-   issue that shows it, and remove it when the work lands or the answer arrives.
+   Write the `claim` in short paragraphs: the statement, the certificate, how the source
+   checked it, what was replayed here, and the credit with a link to the source.
+   The revision and digests of the retained copy belong to the evidence entry and the
+   packet, not to the claim or the case record’s prose;
+   [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
+   that. Its [status](../../epistemics.md#status) is derived and reads *recorded* from
+   this step on. Once a replay or review of it is under way here, or a question about it
+   is with its authors, say so in the entry’s `activity`, dated and linked to the bead
+   or issue that shows it, and remove it when the work lands or the answer arrives.
 4. If geometry is available, adapt it once to
    [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
    or `check` with explicit arithmetic, precision, and tolerance.
@@ -305,6 +310,14 @@ certificate’s replay command.
    1440-step certificate, the dilation-limit record that turns its shrink into the
    registered bound, and the 720-step pair retained as its control.
 
+   **Say whose work the result rests on.** The result is credited `Levy`. Where it rests
+   directly on another’s proof, method or tool, give the row a `builds_on` with the
+   names to print after `Levy after` and the bibliography keys they come from, and name
+   those keys as the `source_key` of the evidence entries that use them; the checker
+   refuses a name the cited evidence does not support.
+   A proof the result repairs or corrects is a basis; a packing whose property it proves
+   is its subject and is not listed.
+
 3. **Keep first-party certificate packages under `cases/`.** `T-026`’s certificates,
    limit records, proof note, and verifier are all in
    [`../cases/n11_threshold_certificate/`](../cases/n11_threshold_certificate/), one
@@ -339,13 +352,17 @@ certificate’s replay command.
    Preserve earlier evidence and decisions.
 
 5. **Write the row** with what [`results.schema.yaml`](results.schema.yaml) requires:
-   `id`, `headline`, `established`, `claim`, `scope`, `verification`, `confirmation`,
-   `significance`, `novelty`, `evidence`, `artifacts`, and `next_rung`, plus `controls`
-   at `C3` or above. `headline` and `established` come right after `id`. `headline` is
-   the claim shortened for a table cell, at most 100 characters of inline Markdown with
-   the mathematics in backticks: the claim’s relation exactly (`≥` is not `>`), its
-   exact form with its decimal or a truncation of it marked `…`, and its $n$ values.
-   The checker refuses a number the claim does not state.
+   `id`, `kind`, `headline`, `established`, `claim`, `scope`, `verification`,
+   `confirmation`, `significance`, `novelty`, `evidence`, `artifacts`, and `next_rung`,
+   plus `controls` at `C3` or above.
+   `kind` is the line after `id`, then `headline` and `established`. `kind` says what
+   the result is, one of the [result kinds](../../epistemics.md#result-kinds): the
+   checker reads a headline that opens with a relation on $s(n)$ as a lower bound (`≥`),
+   an upper bound (`≤`) or optimality (`=`), and holds the cited evidence to the same
+   kind. `headline` is the claim shortened for a table cell, at most 100 characters of
+   inline Markdown with the mathematics in backticks: the claim’s relation exactly (`≥`
+   is not `>`), its exact form with its decimal or a truncation of it marked `…`, and
+   its $n$ values. The checker refuses a number the claim does not state.
    `established` is the day the certificate or proof first passed here, read from the
    commit that landed it, not from the day of registration.
    `claim` is the one statement the rungs attach to, in full and with exact values where

@@ -35,6 +35,7 @@ from typing import Any
 
 from devtools import render_results, result_status
 from devtools.migrate_math import classify
+from devtools.register_prose import LINK, paragraphs
 from devtools.render_recent_results import (
     RecentCounts,
     Row,
@@ -44,7 +45,7 @@ from devtools.render_recent_results import (
     standing,
 )
 from devtools.render_research_tables import load_cases
-from devtools.repo_links import repo_url
+from devtools.repo_links import path_kind, repo_url
 from devtools.result_credit import credit_line
 from devtools.significance import headline as first_sentence
 from sqpack.yamlio import safe_load
@@ -130,7 +131,21 @@ _CODE_SPAN = re.compile(r"`([^`\n]+)`")
 
 
 def _prose_html(text: str) -> str:
-    """Escape plain register prose, setting each ASCII mathematical run as inline math."""
+    """Escape plain register prose, setting each ASCII mathematical run as inline math
+    and each Markdown link to a web address (`register_prose.LINK`) as a link."""
+    parts: list[str] = []
+    last = 0
+    for link in LINK.finditer(text):
+        parts.append(_math_html(text[last : link.start()]))
+        href = html.escape(link.group(2), quote=True)
+        parts.append(f'<a href="{href}">{_math_html(link.group(1))}</a>')
+        last = link.end()
+    parts.append(_math_html(text[last:]))
+    return "".join(parts)
+
+
+def _math_html(text: str) -> str:
+    """Escape a run of register prose, setting each ASCII mathematical run as math."""
     parts: list[str] = []
     last = 0
     for match in MATH.finditer(text):
@@ -166,6 +181,12 @@ def tex_bounds(text: str) -> str:
     return "".join(parts)
 
 
+def prose_html(text: object, *, between: str = "<br><br>") -> str:
+    """A register prose field as HTML: each paragraph set by `tex_bounds`, the
+    paragraphs kept apart by `between`. A field of one paragraph reads as it always did."""
+    return between.join(tex_bounds(paragraph) for paragraph in paragraphs(text))
+
+
 def _line_of(path: Path, needle: str) -> int:
     """The 1-based line of the first line containing `needle`, for a line anchor."""
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -199,7 +220,8 @@ class Result:
     standing: str = ""
     """Whether a case bound rests on the result now, and if not, why not:
     `render_recent_results.standing`. A table shows one thing of it, whether the result
-    is superseded; a result's chain shows it case by case."""
+    is superseded; a result's chain shows it case by case. Empty for a result that
+    claims no bound, which has no standing."""
     status: str = ""
     """How far this project's workflow has taken the result: recorded, reviewed,
     confirmed or incomplete (`result_status.status`), the word `RESULTS.md` prints."""
@@ -303,10 +325,11 @@ def _evidence() -> dict[str, dict]:
 
 
 def _repo_path(path: str) -> Path | None:
-    """A record's path, which may be packing-relative or repository-relative."""
+    """A record's path, which may be packing-relative or repository-relative, where the
+    repository has it (`repo_links.path_kind`, which a partial checkout cannot fool)."""
     for base in (REPO, PACKING):
         candidate = base / path
-        if candidate.exists():
+        if path_kind(candidate) is not None:
             return candidate
     return None
 
@@ -390,11 +413,7 @@ def load() -> Overview:
             Result(
                 r,
                 group=title,
-                credit=(
-                    credit_line(r, sources).replace(r"\|", "|")
-                    if r.get("attribution")
-                    else "This project"
-                ),
+                credit=credit_line(r, sources).replace(r"\|", "|"),
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
                 standing=standing(r, records),

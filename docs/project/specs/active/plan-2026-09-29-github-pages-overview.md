@@ -241,7 +241,7 @@ explainer build, so the overview job does not depend on `prepare`.
 
 ### The Overview Page
 
-Sections, top to bottom:
+Sections, top to bottom, as first planned; the list after this one is the page as built:
 
 1. **Header and navigation bar.** The project name, the edition stamp
    (`PUBLICATION_EDITION`), and links to Overview, Frontier, Explainer, Tutorial,
@@ -264,19 +264,21 @@ Sections, top to bottom:
    (`frontier/RESULTS.md`), `epistemics.md`, and the research process.
 9. **Footer.** Edition, data revision, build commit, and the licence.
 
-As built (amended 2026-09-30), after the owner’s preview review, the page runs:
+As built (amended 2026-09-30 and 2026-10-01), after the owner’s preview review, the page
+runs:
 
 1. **Nav bar and hero.** The case-11 drawing is the site’s mark beside “Square Packing”,
    and alone below 50rem; a theme gear (System, Light, Dark) ends the bar.
    The edition appears only in the footer.
    There is no `h1` and no tagline; an n = 53 hero graphic opens the page.
 2. **The Square Packing Problem.** Brief, and carrying no bound or open-case claim,
-   followed by cards for the explainer, the tutorial, the workbench and the frontier
-   atlas.
-3. **Recent Results.** One table (date, result, method, credit, status) of every result,
-   newest first, filtered by default to significance S4 and up and a maximum age of 180
-   days, with a link to the full table on `all-results.html`. It replaces the headline
-   cards, the exact-value cards and the recent-changes list.
+   followed by five page cards: the optimality paper, the explainer, the tutorial, the
+   workbench and the frontier atlas.
+3. **Recent Results.** One table of every result, newest first, in the results page’s
+   six columns (id, n, result, credit, rungs with the kind and the status under them,
+   date), filtered by default to significance S4 and up, a maximum age of 180 days and
+   superseded results hidden, with a link to the full table on `all-results.html`. It
+   replaces the headline cards, the exact-value cards and the recent-changes list.
    Until 2026-10-01 a separate disclosure followed it, the cases awaiting a replay; a
    reported result is now a row of the table with the status *recorded* (`think-d04u`).
 4. **Verification Ladders**, named Verification at a Glance until 2026-10-01. One ladder
@@ -294,7 +296,7 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
 7. **Footer.**
 
 A card opens a popover that previews where it leads, with a button to go there; a direct
-card is the link itself: the four page cards, and the Papers page’s three paper cards,
+card is the link itself: the five page cards, and the Papers page’s three paper cards,
 go to their pages in the same tab, with no popover (`think-bc5d`, `think-w82r`), and an
 atlas poster opens its target in a new tab.
 A card whose target is a full page of the site navigates; popovers are for records.
@@ -311,6 +313,13 @@ One row per register entry, grouped and ordered exactly as `RESULTS.md` is, thro
 shared `grouped_results()`. Amended 2026-09-30: the table is its own page,
 `all-results.html`, with a Results nav tab; the overview keeps Recent Results, and
 `forward.js` sends old `index.html#every-result` and `#t-nnn` links there.
+Amended 2026-10-01: the table is one flat list, newest first, with no lineage headings;
+`RESULTS.md` keeps the grouping.
+It has six columns: ID, $n$, Result with its records under it, Credit, Rungs (`S`, `V`,
+`C`, with the standing under them) and Date.
+Novelty, `composition` and `next_rung` are in the row’s popover, and the filters are
+those of [`paper-design.md`](../../../../packing/devtools/templates/paper-design.md),
+Result filters. The column table and the behaviour paragraph below are the first design.
 
 | Column | Source |
 | --- | --- |
@@ -558,8 +567,8 @@ and `python -m devtools.preview_site`.
   page, `all-results.html` (`think-sk27`, `think-x8ev`)
 - [x] The frontier atlas page from the `SquarePackingCase/v2` records, with clean value
   rendering, thumbnails and its tests (`think-404b`)
-- [x] Verification at a Glance, built as one card per rung dimension in place of the
-  counts and inline SVG bar (`think-6hre`)
+- [x] Verification at a Glance (Verification Ladders since 2026-10-01), built as one
+  card per rung dimension in place of the counts and inline SVG bar (`think-6hre`)
 - [x] Table sorting and filtering script under the browser floor (`think-sk27`)
 - [x] Tests: every register entry is a row; every record link resolves on `main`;
   statistics equal the register’s own counts; byte-identical double render
@@ -791,7 +800,8 @@ decisions that changed the plan above:
   written once beside the pages and fetched when its row is first opened, and the page
   keeps the result’s short detail for a reader without scripts.
 - **Rung cards replace the stacked verification bar**, and Verification at a Glance
-  moves near the top (`think-6hre`, `think-1f2m`).
+  (Verification Ladders since 2026-10-01) moves near the top (`think-6hre`,
+  `think-1f2m`).
 - **One look on every page**: a theme gear, the n = 11 packing as logo and favicon, one
   chip design, one shared table component, and math set in the face of its text, with a
   headline that is mathematics alone in serif (`think-4085`, `think-38h1`, `think-w7ef`,

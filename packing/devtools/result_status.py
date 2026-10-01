@@ -148,8 +148,8 @@ def activity_label(activity: Mapping[str, Any] | None) -> str:
 
 def status_line(record: Record, evidence: Evidence, position: Sequence[str] = ()) -> str:
     """A result's status as one cell of a Markdown table: the status, then its activity
-    and its place on the frontier (`render_recent_results.position_marks`: superseded,
-    or a second certificate), the marks the site draws as chips beside it."""
+    and `superseded` where it is one (`render_recent_results.position_marks`), the
+    marks the site draws as chips beside it."""
     marks = [status(record, evidence), activity_label(record.get("activity")), *position]
     return ", ".join(mark for mark in marks if mark)
 
@@ -237,7 +237,8 @@ def listing() -> list[str]:
             doing = f"{doing}: since {activity['since']}, {activity['link']}"
         lines.append(
             f"| {record['id']} | {stands} | {status(record, evidence)} "
-            f"| {decided_by(record, evidence)} | {', '.join(position_marks(stands))} "
+            f"| {decided_by(record, evidence)} "
+            f"| {', '.join(position_marks(record, stands))} "
             f"| {doing} |"
         )
     return lines

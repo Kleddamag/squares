@@ -120,7 +120,7 @@ It is sound. It answered one question well and was being asked three.
 | --- | ---: | --- |
 | superseded | 27 | It claims a bound, and no case bound rests on it now |
 | current best | 21 | A verified case bound rests on it |
-| not a bound | 9 | Its evidence claims no bound: a rigidity, a case exclusion, an audit |
+| none, shown as “not a bound” until the kinds landed | 9 | Its evidence claims no bound: a rigidity, a case exclusion, an audit |
 | current best, reported | 2 | Only a reported case bound rests on it |
 | second certificate | 1 | It proves a value another result holds |
 | second certificate, reported | 1 | The same, and not replayed here |
@@ -135,10 +135,16 @@ It mixed three things.
   other.
 - **What kind of result it is.** *Second certificate* and *not a bound* say what the
   entry is, which no bound can change.
+  [The result-kinds plan](plan-2026-10-01-result-kinds.md) took *not a bound* out on the
+  same day and gave every result a kind.
+  It left five results of a kind that is no bound still carrying a standing, because
+  each cites a bound’s evidence: T-003, a method limit, *superseded*; T-004, an audit,
+  and T-005, a correction, *current best*; T-054 and T-055, simplifications, *second
+  certificate*. This plan settles them.
 
 A reader got little from it.
 On the page, *current best* drew no chip, so 21 rows showed nothing; 27 rows said
-*superseded*; 9 said *not a bound*; and 4 rows carried any other word.
+*superseded*; 9 said *not a bound*, and then nothing; and 4 rows carried any other word.
 As a filter it separated superseded results from the rest, which the “Hide superseded”
 checkbox beside it already did.
 It did not say where a result stands in this project’s work on it: taken in, read,
@@ -210,25 +216,39 @@ list on a result, `omissions`, each item a sentence, a date and a link, with
 It is not added here: the register has no placeholder entry today, since the schema
 requires every field.
 
-### Superseded, Second Certificate and Reported
+### Kind, Status and the Superseded Mark
 
-- **Superseded** stays, as its own mark and its own filter.
-  It is the result’s position on the frontier, and no status: 27 results are superseded,
-  and every one of them is confirmed.
+Three things now sit under a result’s rungs, each answering one question.
+
+|  | Question | Values | Where it comes from |
+| --- | --- | --- | --- |
+| Kind | What is the result? | lower bound, upper bound, optimality, simplification and six others | Declared in the register, checked against the claim and the evidence |
+| Status | How far has the work on it here gone? | recorded, reviewed, confirmed, incomplete; and beside it, who has the next move | Derived from the rungs and the defects on record; the activity is recorded and dated |
+| Superseded | Does a case bound still rest on it? | marked, or not | Derived from the case records |
+
+- **Superseded** stays, as its own mark and its own filter, and it is asked only of a
+  bound: a result whose kind is lower bound, upper bound or optimality.
+  26 results are marked, every one a confirmed lower bound.
   The “Hide superseded” checkbox is unchanged.
   *Current best* is not drawn.
-- **Second certificate** is what kind of result the entry is.
-  [The result-kinds plan](https://github.com/jlevy/squares/pull/270) gives T-054 and
-  T-055 the kind *simplification*. Until that lands this branch keeps the mark, drawn
-  where *superseded* would be.
+- **A result of another kind is never marked superseded.** This settles T-003: it is the
+  limit of a method, it cites the evidence of the bound it measures, and so its standing
+  derives as *superseded*, though no later bound supersedes a method’s limit.
+  It draws its kind and its status, it is not hidden by “Hide superseded”, and
+  `render_recent_results.superseded` is the one rule.
+  T-004 and T-005 derive *current best*, which was never drawn, so nothing changes for
+  them.
+- **Second certificate** is the kind *simplification*, which T-054 and T-055 carry.
+  The mark is gone from the tables.
 - **Reported** is gone as a word.
   *Current best, reported* is the status *recorded* at `V0/C0`.
-- **Not a bound** is gone from this slot.
-  A result that bounds nothing draws its status and no mark; its kind says what it is.
+
+The derivation of standing is untouched: `render_recent_results.standing` and
+`devtools.check_standing` work as they did, and the chain of results on a case, inside a
+result’s overview, still says which result holds the case and which are superseded
+there. What changed is what a table of results shows of it: one mark.
 
 The field is named *status* on the site, in `RESULTS.md` and in the filter bar.
-“Standing” survives in one place, the chain of results on a case inside a result’s
-overview, where the question really is which result holds the case.
 
 ## Who Has the Next Move
 
@@ -313,75 +333,76 @@ request for $s(60) = 8$, which pull request 267 answers.
 ## Every Result
 
 The table is `python -m devtools.result_status --list` with notes added.
-“Mark” is the result’s place on the frontier where it is not the current best.
+“Mark” is *superseded*, drawn on a bound that no case bound rests on now.
 
-| id | standing until now | status | decided by | mark | activity | notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| T-001 | superseded | confirmed | `C3` | superseded |  |  |
-| T-002 | superseded | confirmed | `C3` | superseded |  |  |
-| T-003 | superseded | confirmed | `C3` | superseded |  |  |
-| T-004 | current best | confirmed | `C3` |  |  |  |
-| T-005 | current best | confirmed | `C3` |  |  |  |
-| T-006 | current best | confirmed | `C3` |  |  |  |
-| T-007 | current best | reviewed | `C1` |  |  | The read names four unverified items; `C3` needs Theorem 1 machine-checked. |
-| T-008 | current best | confirmed | `C3` |  |  |  |
-| T-009 | current best | confirmed | `C3` |  |  |  |
-| T-010 | superseded | confirmed | `C3` | superseded |  |  |
-| T-011 | current best | confirmed | `C3` |  |  |  |
-| T-012 | not a bound | confirmed | `C3` |  |  |  |
-| T-013 | not a bound | confirmed | `C3` |  |  |  |
-| T-014 | not a bound | confirmed | `C3` |  |  |  |
-| T-015 | superseded | confirmed | `C3` | superseded |  |  |
-| T-016 | superseded | confirmed | `C3` | superseded |  |  |
-| T-017 | superseded | confirmed | `C3` | superseded |  |  |
-| T-018 | superseded | confirmed | `C3` | superseded |  |  |
-| T-019 | superseded | confirmed | `C3` | superseded |  |  |
-| T-020 | current best | confirmed | `C3` |  |  |  |
-| T-021 | current best | confirmed | `C3` |  |  |  |
-| T-022 | superseded | confirmed | `C3` | superseded |  |  |
-| T-023 | not a bound | confirmed | `C3` |  |  |  |
-| T-024 | superseded | confirmed | `C3` | superseded |  |  |
-| T-025 | superseded | confirmed | `C3` | superseded |  |  |
-| T-026 | superseded | confirmed | `C3` | superseded |  |  |
-| T-027 | superseded | confirmed | `C3` | superseded |  |  |
-| T-028 | superseded | confirmed | `C3` | superseded |  |  |
-| T-029 | superseded | confirmed | `C3` | superseded |  |  |
-| T-030 | current best | confirmed | `C3` |  |  |  |
-| T-031 | not a bound | confirmed | `C3` |  |  |  |
-| T-032 | superseded | confirmed | `C3` | superseded |  |  |
-| T-033 | superseded | confirmed | `C3` | superseded |  |  |
-| T-034 | superseded | confirmed | `C3` | superseded |  |  |
-| T-035 | not a bound | confirmed | `C3` |  |  |  |
-| T-036 | not a bound | confirmed | `C2` |  |  | `C2`: replayed without a machine certificate; `C3` waits on a replay mode for the isolation radius. |
-| T-037 | superseded | confirmed | `C3` | superseded |  |  |
-| T-038 | superseded | confirmed | `C3` | superseded |  |  |
-| T-039 | superseded | confirmed | `C3` | superseded |  |  |
-| T-040 | superseded | confirmed | `C3` | superseded |  |  |
-| T-041 | superseded | confirmed | `C3` | superseded |  |  |
-| T-042 | superseded | confirmed | `C3` | superseded |  |  |
-| T-043 | current best | confirmed | `C3` |  |  |  |
-| T-044 | current best | confirmed | `C3` |  |  |  |
-| T-045 | current best | confirmed | `C3` |  |  |  |
-| T-046 | current best, reported | recorded | `C0` |  | in analysis | 47 cases of the old block. 21 of its 45 unreplayed certificates passed a full replay on 2026-09-29; the receipts are on transfer branches, not in the record. |
-| T-047 | current best | confirmed | `C3` |  |  |  |
-| T-048 | current best, reported | recorded | `C0` |  | in analysis | $n = 50$ of the old block. The complete replay passed on 2026-09-29; the receipts are on a transfer branch, not in the record. |
-| T-049 | current best | confirmed | `C3` |  |  |  |
-| T-050 | superseded | confirmed | `C3` | superseded |  |  |
-| T-051 | current best | confirmed | `C3` |  |  |  |
-| T-052 | current best | confirmed | `C3` |  |  | A second, `zm_mixed.py` re-sweep was started here (issue 238) and is not in the record. |
-| T-053 | current best | confirmed | `C3` |  |  | A second, `zm_mixed.py` re-sweep was started here (issue 238) and is not in the record. |
-| T-054 | second certificate | confirmed | `C3` | second certificate |  | Kind: a second proof of a value `T-053` holds. |
-| T-055 | second certificate, reported | recorded | `C0` | second certificate | in analysis | The complete replay passed on 2026-09-29; the receipts are on a transfer branch, not in the record. |
-| T-056 | current best | confirmed | `C3` |  |  | At $n = 206, 259, 305$ the printed side needs coordinates at higher precision from the source. |
-| T-057 | current best | confirmed | `C3` |  |  | The source’s own interval run cannot be replayed until it publishes its boxes; the result no longer depends on it. |
-| T-058 | not a bound | incomplete | `C1`, and a read that found a defect |  |  | The read found a missing premise in the source’s ceiling; `think-xgjo` is open. |
-| T-059 | not a bound | incomplete | `C1`, and a read that found a defect |  |  | The read found journal-admission defects; the replay of all 12,028 rows is queued (`think-11z6`). |
-| T-060 | current best | confirmed | `C3` |  |  | Rung 4 waits on the owner’s oversight record and a second adversarial review. |
-| T-061 | superseded | confirmed | `C3` | superseded |  | A revised Zenodo release was asked for on issue 247; nothing here depends on it. |
+| id | kind | standing until now | status | decided by | mark | activity | notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| T-001 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-002 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-003 | method limit | superseded | confirmed | `C3` |  |  | Its evidence gives it the standing *superseded*; it is a method’s limit, so it is not marked. |
+| T-004 | audit | current best | confirmed | `C3` |  |  |  |
+| T-005 | correction | current best | confirmed | `C3` |  |  |  |
+| T-006 | optimality | current best | confirmed | `C3` |  |  |  |
+| T-007 | lower bound | current best | reviewed | `C1` |  |  | The read names four unverified items; `C3` needs Theorem 1 machine-checked. |
+| T-008 | optimality | current best | confirmed | `C3` |  |  |  |
+| T-009 | upper bound | current best | confirmed | `C3` |  |  |  |
+| T-010 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-011 | upper bound | current best | confirmed | `C3` |  |  |  |
+| T-012 | rigidity | none | confirmed | `C3` |  |  |  |
+| T-013 | rigidity | none | confirmed | `C3` |  |  |  |
+| T-014 | rigidity | none | confirmed | `C3` |  |  |  |
+| T-015 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-016 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-017 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-018 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-019 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-020 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-021 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-022 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-023 | case exclusion | none | confirmed | `C3` |  |  |  |
+| T-024 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-025 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-026 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-027 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-028 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-029 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-030 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-031 | case exclusion | none | confirmed | `C3` |  |  |  |
+| T-032 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-033 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-034 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-035 | case exclusion | none | confirmed | `C3` |  |  |  |
+| T-036 | restricted optimality | none | confirmed | `C2` |  |  | `C2`: replayed without a machine certificate; `C3` waits on a replay mode for the isolation radius. |
+| T-037 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-038 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-039 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-040 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-041 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-042 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-043 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-044 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-045 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-046 | lower bound | current best, reported | recorded | `C0` |  | in analysis | 47 cases of the old block. 21 of its 45 unreplayed certificates passed a full replay on 2026-09-29; the receipts are on transfer branches, not in the record. |
+| T-047 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-048 | lower bound | current best, reported | recorded | `C0` |  | in analysis | $n = 50$ of the old block. The complete replay passed on 2026-09-29; the receipts are on a transfer branch, not in the record. |
+| T-049 | lower bound | current best | confirmed | `C3` |  |  |  |
+| T-050 | lower bound | superseded | confirmed | `C3` | superseded |  |  |
+| T-051 | optimality | current best | confirmed | `C3` |  |  |  |
+| T-052 | optimality | current best | confirmed | `C3` |  |  | A second, `zm_mixed.py` re-sweep was started here (issue 238) and is not in the record. |
+| T-053 | optimality | current best | confirmed | `C3` |  |  | A second, `zm_mixed.py` re-sweep was started here (issue 238) and is not in the record. |
+| T-054 | simplification | second certificate | confirmed | `C3` |  |  |  |
+| T-055 | simplification | second certificate, reported | recorded | `C0` |  | in analysis | The complete replay passed on 2026-09-29; the receipts are on a transfer branch, not in the record. |
+| T-056 | upper bound | current best | confirmed | `C3` |  |  | At $n = 206, 259, 305$ the printed side needs coordinates at higher precision from the source. |
+| T-057 | upper bound | current best | confirmed | `C3` |  |  | The source’s own interval run cannot be replayed until it publishes its boxes; the result no longer depends on it. |
+| T-058 | method limit | none | incomplete | `C1`, and a read that found a defect |  |  | The read found a missing premise in the source’s ceiling; `think-xgjo` is open. |
+| T-059 | audit | none | incomplete | `C1`, and a read that found a defect |  |  | The read found journal-admission defects; the replay of all 12,028 rows is queued (`think-11z6`). |
+| T-060 | optimality | current best | confirmed | `C3` |  |  | Rung 4 waits on the owner’s oversight record and a second adversarial review. |
+| T-061 | lower bound | superseded | confirmed | `C3` | superseded |  | A revised Zenodo release was asked for on issue 247; nothing here depends on it. |
 
-Counts: 55 confirmed, 3 recorded, 1 reviewed, 2 incomplete; 27 superseded, all of them
-confirmed. Every result of this project is confirmed: its certificate is replayed from
-the repository before it is registered.
+Counts: 55 confirmed, 3 recorded, 1 reviewed, 2 incomplete; 26 marked superseded, all of
+them confirmed lower bounds.
+Every result of this project is confirmed: its certificate is replayed from the
+repository before it is registered.
 
 ## Reports That Are Not Register Entries
 
@@ -459,6 +480,7 @@ shape of T-044:
 
 ```yaml
   - id: T-065            # the next free identifier when it lands
+    kind: upper-bound
     registered: '2026-10-01'
     headline: "`s(17) ≤ 4.6755300936045509516342148538535054`, Bidwell's packing certified exactly"
     claim: >-
@@ -493,10 +515,10 @@ is now certified exactly, so $4.66044 < s(17) \le 4.67553009\ldots$, both ends v
 | --- | --- |
 | Derivation | `devtools/result_status.py`: `status`, `open_issues`, `status_line`, the activity checks, and `--list`. |
 | Schema | `results.schema.yaml`: the optional `activity` object. No stored status. |
-| Checker | `check_results` holds each `activity` to its fields, link and age, and prints the count by status. `check_standing` is unchanged; it is what holds the superseded mark to the numbers. |
+| Checker | `check_results` holds each `activity` to its fields, link and age, and prints the count by status. `check_standing` is unchanged; it is what holds the superseded mark to the numbers. `render_recent_results.superseded` says which results are marked. |
 | Register | `activity` on T-046, T-048 and T-055. No rung changed. |
-| Generated views | `RESULTS.md`: a `status` column in both tables, in place of `standing`. |
-| Site | One status chip under the rungs of every row, then the activity and the superseded mark; a Status select in place of Standing; “Hide superseded” unchanged; the block, its popovers, its styles and `.site-group-row` removed; a sentence above the homepage table that counts the results not yet confirmed and links each count to those rows. |
+| Generated views | `RESULTS.md`: a `status` column in both tables, after `kind`, `credit` and the rungs, in place of `standing`. |
+| Site | Under the rungs of every row, the kind on its line and then the status line: the status chip, the activity and the superseded mark, each a chip on a line of its own, so the Rungs column is no wider than it was. A Status select in place of Standing, after Kind; “Hide superseded” unchanged; the block, its popovers, its styles and `.site-group-row` removed; a sentence above the homepage table that counts the results not yet confirmed and links each count to those rows. |
 | Definitions | `epistemics.md`, Status; the frontier README’s procedure; `paper-design.md`. |
 
 **What each page shows where its filters start.**
@@ -525,13 +547,17 @@ At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every signi
    their own. Recommended: A, as built.
 5. **Which activities to record.** Three are entered.
    Seven more are listed above with the reason each was left out.
-6. **Whether a recorded omission makes a result incomplete.** It would need the
+6. **Superseded is asked only of a bound.** It leaves T-003, a method limit, unmarked
+   and showing under “Hide superseded”.
+   Recommended as built; the alternative is to mark any result whose evidence derives
+   the standing, as before.
+7. **Whether a recorded omission makes a result incomplete.** It would need the
    `omissions` list. Recommended: not until the register admits placeholder entries.
-7. **The homepage default.** Unassessed results show on the results page and not on the
+8. **The homepage default.** Unassessed results show on the results page and not on the
    homepage, which starts at `S4`. Recommended: keep it.
    T-064 will be the first unassessed result on the homepage when pull request 267
    lands.
-8. **The $n = 17$ upper bound.** Whose result it is, as set out above.
+9. **The $n = 17$ upper bound.** Whose result it is, as set out above.
    Recommended: one entry in the shape of T-044, credited to Kleddamag, with Bidwell
    named in the claim.
 
@@ -545,8 +571,9 @@ At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every signi
 - **Record the reviews that exist** as `external_review` on the three report entries
   (`think-wcex`), which makes T-046, T-048 and T-055 *reviewed* until then.
 - **Register the $n = 17$ upper bound** and the three catalogue intakes.
-- **A kind on entries added here.** The result-kinds branch makes `kind` required.
-  This branch adds no register entry, so nothing here needs one.
+- **A kind on entries added later.** `kind` is required.
+  This branch adds no register entry; the $n = 17$ entry drafted above would be an
+  *upper bound*.
 
 ## References
 

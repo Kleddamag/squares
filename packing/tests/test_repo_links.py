@@ -17,6 +17,7 @@ from devtools.repo_links import (
     RepositoryTree,
     branch_paths,
     hash_pinned_links,
+    path_kind,
     repo_url,
     repository_tree,
 )
@@ -36,6 +37,37 @@ def test_a_file_a_directory_and_an_image_link_main() -> None:
     )
     with pytest.raises(SystemExit, match="outside the repository"):
         repo_url(REPO.parent / "elsewhere.md")
+
+
+def test_a_path_the_checkout_lacks_is_asked_of_the_commit(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Pages jobs check the repository out without the directories under
+    `packing/resources` and `packing/campaign`. What a path is, a file, a directory or
+    nothing, is the same there as in a full checkout, because the commit answers where
+    the disk does not; a directory is still linked under `tree/`, never `blob/`."""
+    packet = "packing/resources/web/n11-optimality-2026-09-29"
+    asked = (
+        (packet, "tree"),
+        (f"{packet}/README.md", "blob"),
+        (REPO / packet / "source" / "PROOF.md", "blob"),
+        ("packing/campaign/series", "tree"),
+        ("packing/resources/bibliography.yaml", "blob"),
+        ("packing/frontier", "tree"),
+        (f"{packet}/no-such-file.md", None),
+        ("packing/frontier/n-999.md", None),
+        (REPO.parent / "elsewhere.md", None),
+    )
+    full = [path_kind(path) for path, _ in asked]
+    assert full == [kind for _, kind in asked]
+    site_renders.leave_out_the_archive_and_the_campaign(monkeypatch)
+    # The stand-in hides what a partial checkout lacks and nothing else.
+    assert not (REPO / packet).exists()
+    assert not (REPO / packet / "README.md").is_file()
+    assert (REPO / "packing/resources/bibliography.yaml").is_file()
+    assert (REPO / "packing/frontier").is_dir()
+    assert [path_kind(path) for path, _ in asked] == full
+    assert repo_url(REPO / packet) == f"{REPO_URL}/tree/main/{packet}"
 
 
 def test_the_named_documents_exist_and_are_the_pages_the_site_serves() -> None:

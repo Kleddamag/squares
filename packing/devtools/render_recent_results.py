@@ -23,8 +23,12 @@ the interval decision several first-party certificates cite, does not make every
 decided hold the bound. Where only a reported bound rests on an entry, it is the current
 best as reported. An entry that holds no bound is a *second certificate* where it proves
 the exact value of a proved case (it cites that case's verified upper bound beside a
-lower bound of its own), *superseded* where it is any other bound, and not a bound at
-all where its evidence claims none.
+lower bound of its own) and *superseded* where it is any other bound.
+
+**Standing is about bounds, so an entry whose evidence claims none has no standing**
+(`NO_STANDING`): nothing supersedes a rigidity or a case exclusion. The views show such
+an entry's `kind` (epistemics.md, Result Kinds) and no standing, and
+`devtools.check_results` holds it to a kind that is no bound.
 
 **Recent is decided where the record already decides it; nothing here defines it.** A
 verified lower bound is recent where the stage and the atlas star it,
@@ -65,7 +69,7 @@ from devtools.build_bound_citations import (
     project_result,
     results_carrying,
 )
-from devtools.check_results import recent_evidence, scope_values
+from devtools.check_results import BOUND_KINDS, recent_evidence, scope_values
 from devtools.result_credit import source_lineage
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
@@ -89,8 +93,6 @@ LINEAGES = {
 EXACT_PLACES = 6
 PLACES = 4
 ELLIPSIS = "…"
-#: The standing of an entry that is not a bound: a rigidity, an exclusion, an erratum.
-NOT_A_BOUND = "—"
 
 #: An entry's standing, derived from the case records (see the module docstring).
 HOLDS = "current best"
@@ -106,8 +108,9 @@ STANDINGS = (
     SECOND_CERTIFICATE,
     SECOND_CERTIFICATE_REPORTED,
     SUPERSEDED,
-    NOT_A_BOUND,
 )
+#: What `standing` returns for an entry whose evidence claims no bound: it has none.
+NO_STANDING = ""
 #: The confirmation rungs at which a certificate has been replayed here (epistemics.md).
 REPLAYED_RUNGS = frozenset({"C3", "C4", "C5"})
 #: The evidence claims that make an entry a bound on `s(n)`, as the evidence schema types
@@ -449,7 +452,8 @@ def held(n: int, records: Records) -> Held:
 
 
 def standing(record: Mapping[str, Any], records: Records) -> str:
-    """Whether an entry holds a case bound now, and if not, why not."""
+    """Whether an entry holds a case bound now, and if not, why not. An entry whose
+    evidence claims no bound has no standing, `NO_STANDING`."""
     entry = str(record["id"])
     cases = [held(n, records) for n in _scope(record) if n in records.cases]
     if any(entry in case.verified for case in cases):
@@ -459,7 +463,7 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     cited = {str(item) for item in record["evidence"]}
     claims = {records.register.evidence[item].get("claim") for item in cited}
     if not claims & BOUND_CLAIMS:
-        return NOT_A_BOUND
+        return NO_STANDING
     if "lower-bound" in claims and any(case.proved and cited & case.upper for case in cases):
         if str(record["confirmation"]) in REPLAYED_RUNGS:
             return SECOND_CERTIFICATE
@@ -467,17 +471,25 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     return SUPERSEDED
 
 
-#: The parts of a standing a table of results draws beside a result's status: its place
-#: on the frontier, where it is not simply the best. That a bound is only reported is the
-#: result's status (`devtools.result_status`: recorded), and what an entry that bounds
-#: nothing is, is its kind.
-POSITION_MARKS = (SUPERSEDED, SECOND_CERTIFICATE)
+def superseded(record: Mapping[str, Any], held: str) -> bool:
+    """Whether a table of results marks an entry superseded, given its standing `held`:
+    it is a bound, a result whose `kind` is one of `BOUND_KINDS`, and no case bound rests
+    on it now.
+
+    Of a standing, this is all a table draws beside a result's kind and status. That a
+    bound is only reported is the result's status (`devtools.result_status`: recorded).
+    A second proof of a value another result holds says so by its kind, simplification.
+    And a result that is no bound has no place on the frontier to lose, though it may
+    cite the evidence of the bound it is about and so derive a standing: `T-003`, the
+    limit of a method, cites the bound it measures and derives `superseded`, and no
+    later bound supersedes a method's limit."""
+    return held == SUPERSEDED and str(record.get("kind")) in BOUND_KINDS
 
 
-def position_marks(held: str) -> list[str]:
-    """A standing's place on the frontier as the marks a table draws: `superseded`, or
-    `second certificate`; none for a result that is the current best or is no bound."""
-    return [part for part in held.split(", ") if part in POSITION_MARKS]
+def position_marks(record: Mapping[str, Any], held: str) -> list[str]:
+    """An entry's place on the frontier as the marks a table draws after its status:
+    `superseded` (`superseded`), or nothing."""
+    return [SUPERSEDED] if superseded(record, held) else []
 
 
 def is_recent_by_others(record: Mapping[str, Any]) -> bool:

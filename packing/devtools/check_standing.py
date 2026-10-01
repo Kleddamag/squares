@@ -22,7 +22,7 @@ same direction, in both lanes:
   (the reported one, where it is the current best as reported), and never more than the
   record carries;
 - a **second certificate** states exactly the verified value at every case;
-- an entry that is **not a bound** states none.
+- an entry with **no standing**, one whose evidence claims no bound, states none.
 
 An entry that still holds one case of several is not superseded, and this reports the
 cases it no longer holds without refusing them: `T-047` holds `n = 26, 29, 30` and is
@@ -54,7 +54,7 @@ from fractions import Fraction
 from typing import Any, NamedTuple
 
 from devtools import render_recent_results as view
-from devtools.check_results import scope_values
+from devtools.check_results import kind_label, scope_values
 
 LOWER = "lower"
 UPPER = "upper"
@@ -220,9 +220,9 @@ def problems(record: Mapping[str, Any], standing: str, records: view.Records) ->
     stands = [f for f in found if f.verified in {EQUAL, EXCEEDS}]
     reported = [f for f in found if f.reported in {EQUAL, EXCEEDS}]
     wrong: list[str] = []
-    if standing == view.NOT_A_BOUND:
+    if standing == view.NO_STANDING:
         if found:
-            wrong.append(f"{entry} is not a bound, yet states one at {_at(found)}")
+            wrong.append(f"{entry} has no standing, yet states a bound at {_at(found)}")
     elif standing == view.SUPERSEDED:
         if stands:
             wrong.append(
@@ -277,7 +277,7 @@ def summary(record: Mapping[str, Any], standing: str, records: view.Records) -> 
     lane = "reported" if standing == view.HOLDS_REPORTED else "verified"
     holds = [f for f in found if (f.reported if lane == "reported" else f.verified) == EQUAL]
     beaten = [f for f in found if f.verified == BEATEN and f not in holds]
-    name = "not a bound" if standing == view.NOT_A_BOUND else standing
+    name = standing or f"({kind_label(str(record['kind']))})"
     parts = [f"{record['id']}  {name:<28s}"]
     if not found:
         parts.append("states no bound this reads")

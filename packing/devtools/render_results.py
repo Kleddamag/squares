@@ -7,18 +7,21 @@ significance descending, then confirmation descending, then id.
 `devtools/check_results.py` grants the rungs; this file only displays them,
 and the gate fails when the committed view drifts from the register.
 
-This project's results come first. Results by others follow in the lineage their
-sources state, read from the bibliography rather than restated: building on this
-project, crediting it second-hand, independent of it, and published before it began.
+This project's results come first, credited to Levy by name and to the authors each
+rests on directly (`result_credit.credit_line`, from the entry's `builds_on`). Results
+by others follow in the lineage their sources state, read from the bibliography rather
+than restated: building on this project, crediting it second-hand, independent of it,
+and published before it began.
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
-rungs. Every row of both tables ends its ratings with the result's status
-(`devtools.result_status`, the function the site's tables use): recorded, reviewed,
-confirmed or incomplete, derived from the rungs and the cited evidence and never
-stored; then who has the next move, where the register records an `activity`; then
-its place on the frontier where it is not the current best, `superseded` or `second
-certificate`, which `devtools.render_recent_results.standing` derives from the case
-records.
+rungs. Every row of both tables states the result's `kind`, what the result is: a
+lower bound, an upper bound, optimality, or one of the kinds that are no bound on
+`s(n)`. Every row ends its ratings with the result's status (`devtools.result_status`,
+the function the site's tables use): recorded, reviewed, confirmed or incomplete,
+derived from the rungs and the cited evidence and never stored; then who has the next
+move, where the register records an `activity`; then `superseded`, where the result is
+a bound no case bound rests on now, which `devtools.render_recent_results.standing`
+derives from the case records.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -32,6 +35,8 @@ from pathlib import Path
 
 from strif import atomic_output_file
 
+from devtools.check_results import kind_label
+from devtools.register_prose import paragraphs
 from devtools.render_recent_results import load_records, position_marks, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
 from devtools.result_status import status_line
@@ -47,6 +52,7 @@ OUTPUT = ROOT / "frontier" / "RESULTS.md"
 #: diff and ambiguous on sight.
 APOSTROPHE = "\u2019"
 
+
 #: The title of the first group: this project's own results.
 OURS = f"This Project{APOSTROPHE}s Results"
 
@@ -56,6 +62,11 @@ HEADER = """# Results
 
 One row per registered result: this project's first, then results by others grouped
 by the lineage their sources state, each sorted by significance, then confirmation.
+A result's kind says what it is: a lower bound, an upper bound, optimality (an exact
+value), or one of the kinds [`epistemics.md`](../../epistemics.md#result-kinds) defines
+for a result that is no bound on `s(n)`.
+Every credit names people: `X`, or `X after Y` where X's result rests directly on Y's
+proof, method or tool.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
 verification the result carries as certified by its own source, `C` how far that
 verification has been independently confirmed here or by a third party, `S` a
@@ -68,8 +79,7 @@ explanations for every declared `V` and `C`.
 A result's status says how far the work on it here has gone, and follows `C`:
 *recorded* (`C0`), *reviewed* (`C1`), *confirmed* (`C2` and up), or *incomplete* while a
 defect found in it is open. After it come who has the next move, where one is recorded,
-and the result's place on the frontier where it is not the current best: *superseded*,
-or a *second certificate* for a value another result holds.
+and *superseded*, where the result is a bound that no case bound rests on now.
 """
 
 
@@ -80,8 +90,22 @@ def _scope(record: dict) -> str:
     return f"{scope['n_min']}-{scope['n_max']}"
 
 
-def _claim(record: dict) -> str:
-    return " ".join(str(record["claim"]).split()).replace("|", r"\|")
+def claim_cell(record: dict) -> str:
+    """The claim in one table cell, its paragraphs kept apart by line breaks."""
+    return "<br><br>".join(paragraphs(record["claim"])).replace("|", r"\|")
+
+
+def next_action(record: dict) -> list[str]:
+    """One result's `next_rung` as a list item: its first paragraph on the bullet's line,
+    and each later paragraph as a paragraph of the same item, indented under it."""
+    first, *rest = paragraphs(record["next_rung"])
+    lines = [f"- **{record['id']}** — {first}"]
+    for paragraph in rest:
+        lines += ["", f"  {paragraph}"]
+    if rest:
+        # A blank line closes a multi-paragraph item, so the next bullet starts clean.
+        lines.append("")
+    return lines
 
 
 def order(record: dict) -> tuple[int, int, str]:
@@ -135,14 +159,17 @@ def render() -> str:
     evidence = records.register.evidence
 
     def status(record: dict) -> str:
-        return status_line(record, evidence, position_marks(standing(record, records)))
+        position = position_marks(record, standing(record, records))
+        return status_line(record, evidence, position)
 
-    lines.append("| id | n | V | C | S | status | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
+    lines.append("| id | n | kind | credit | V | C | S | status | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
-        f"| {record['id']} | {_scope(record)} | {record['verification']} "
+        f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+        f"| {credit_line(record, sources)} "
+        f"| {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
-        f"| {status(record)} | {record['novelty']} | {_claim(record)} |"
+        f"| {status(record)} | {record['novelty']} | {claim_cell(record)} |"
         for record in ours
     )
     lines.append("")
@@ -158,13 +185,14 @@ def render() -> str:
         for title, group in others:
             lines.append(f"### {title}")
             lines.append("")
-            lines.append("| id | n | credit | published | V | C | S | status | claim |")
-            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+            lines.append("| id | n | kind | credit | published | V | C | S | status | claim |")
+            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
-                f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
+                f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+                f"| {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {status(record)} | {_claim(record)} |"
+                f"| {status(record)} | {claim_cell(record)} |"
                 for record in group
             )
             lines.append("")
@@ -173,8 +201,7 @@ def render() -> str:
     lines.append("The next evidence-improving action or terminal rationale for each result:")
     lines.append("")
     for record in results:
-        next_rung = " ".join(str(record["next_rung"]).split())
-        lines.append(f"- **{record['id']}** — {next_rung}")
+        lines.extend(next_action(record))
     lines.append("")
     lines.append(f"Register reviewed {register['last_reviewed']}.")
     lines.append("")

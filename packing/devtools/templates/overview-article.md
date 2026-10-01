@@ -43,11 +43,12 @@ and cite your work.
 The table lists every result, newest first: new bounds for particular numbers of
 squares, found here or by others.
 Each is dated by its publication if it is by others and by the day it was established if
-it is this project’s, and carries its rungs and its status, how far the work on it here
-has gone: *recorded* when it has been registered from its source and nothing here has
-read or replayed it, *reviewed* once its argument has been read here, *confirmed* once a
-replay of its certificate has passed, and *incomplete* while a defect found in it is
-open. A result that no longer holds a case bound is marked *superseded*.
+it is this project’s, and carries its rungs, its kind, which says what it is, and its
+status, how far the work on it here has gone: *recorded* when it has been registered
+from its source and nothing here has read or replayed it, *reviewed* once its argument
+has been read here, *confirmed* once a replay of its certificate has passed, and
+*incomplete* while a defect found in it is open.
+A bound that no case bound rests on now is marked *superseded*.
 {{STAR_LEGEND}}
 
 A result by others is recorded when its source is taken in, and its bound counts as

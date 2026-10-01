@@ -76,8 +76,7 @@ body {
      apart and a row gets harder to follow. */
   --site-table-max: 100rem;
   /* The space above and below every table, on screen: a site table with its filter bar,
-     the awaiting-replay disclosure, and a document's own table (paper-design.md,
-     Tables). */
+     and a document's own table (paper-design.md, Tables). */
   --site-table-space: 2rem;
   /* The least space between a wide block and the edge of the page's content area, inside
      the page's margin: a table and its filter bar, a row of cards, the atlas grid. It is
@@ -735,8 +734,7 @@ body {
 /* Every table stands `--site-table-space` clear of the text above and below it, on
    screen: the space is above a table's filter bar when it has one, which keeps its own
    small gap to the table, and below the table's wrap. A document's table, which KPress
-   wraps itself, takes the same token, and so does the awaiting-replay disclosure, whose
-   table sits flush under its summary. Print keeps KPress's own spacing. */
+   wraps itself, takes the same token. Print keeps KPress's own spacing. */
 .site-table-tools {
   display: flex;
   flex-wrap: wrap;
@@ -1026,11 +1024,15 @@ body {
 .site-table .site-col-date {
   white-space: nowrap;
 }
-/* A result's status sits under its rungs, on a line of its own: the status chip, then
-   who has the next move where the register records it, then `superseded` or `second
-   certificate` where the result is one. The chips wrap between themselves, one under
-   another where the cell is too narrow, and never inside one: the column is as wide as
-   its widest chip. */
+/* What a result is sits under its rungs, on a line of its own: its kind, one chip. */
+.site-table .site-kind {
+  display: block;
+  margin-block-start: 0.3rem;
+}
+/* A result's status sits under its kind, on a line of its own: the status chip, then
+   who has the next move where the register records it, then `superseded` where the
+   result is. The chips wrap between themselves, one under another where the cell is too
+   narrow, and never inside one: the column is as wide as its widest chip. */
 .site-table .site-standing {
   display: block;
   margin-block-start: 0.3rem;
@@ -1074,7 +1076,7 @@ body {
    line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
-   wide as its widest chip, since no chip wraps: "current best" at 118px, and "second
+   wide as its widest chip, since no chip wraps: the three rungs at 114px, and "second
    certificate" at 159 where a row with one shows. The result column cannot give that
    room: four results' formulas, which do not break, hold it to 411px. So a result's
    records are no column of their own, which would be left 98px of a 1280px window's
@@ -1155,7 +1157,7 @@ body {
     grid-area: 1 / 2;
   }
   /* The rungs' track is as wide as its content, and a status line of three chips
-     (`recorded`, `in analysis`, `second certificate`) would take the whole card and
+     (`recorded`, `waiting on third party`, `superseded`) would take the whole card and
      leave the cases and the credit no room. So the cell stops at two chips' width, and
      a third chip wraps under them. */
   .site-results .site-rungs {

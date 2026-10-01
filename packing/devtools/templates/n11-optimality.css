@@ -9,6 +9,16 @@
 .cert-page.n11-paper > .kpress-table-wrap {
   max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));
 }
+/* The credits are one column the width of the page, and the original proof's address
+   may break anywhere. As a grid's automatic column the credits were as wide as that
+   address, wider than a phone's column, so every credit centred on a column wider than
+   the page and was cut at its edge. */
+.n11-paper .credits {
+  grid-template-columns: minmax(0, 1fr);
+}
+.n11-paper .credits a {
+  overflow-wrap: anywhere;
+}
 .n11-paper figure > svg,
 .n11-paper .figure-pair > svg {
   display: block;
@@ -41,6 +51,26 @@
   width: auto;
   max-width: 100%;
   margin-inline: auto;
+}
+/* The cover, mask, capacity, capture and mechanism diagrams are drawn in one fixed
+   light palette, ink included, as the construction in Figure 1 is. On the dark theme
+   they keep a light ground under them, as Figure 1 does, so a label drawn outside a
+   panel stays readable; without it the labels were dark ink on the dark page. The
+   roadmap, local and endpoint diagrams are drawn in the theme's own tokens and take
+   none. A test holds this list to the diagrams that carry fixed ink. */
+:root[data-kpress-resolved-theme="dark"]
+  .n11-paper
+  :is(
+    .n11-cover,
+    .n11-mask,
+    .n11-capacity,
+    .n11-capture,
+    .n11-mechanism-pose,
+    .n11-mechanism-row,
+    .n11-mechanism-charge,
+    .n11-mechanism-symmetry
+  ) {
+  background: #fff;
 }
 @media print {
   /* Chromium measures before pagination; fix the same Letter text-column width

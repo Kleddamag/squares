@@ -215,6 +215,46 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     assert markdown.count(f"/blob/{REVISION}/") >= 39
 
 
+def test_a_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -> None:
+    """The page carries the site's theme control, so a diagram is read on the dark theme
+    too. One drawn in the theme's tokens follows it; one whose labels are a fixed dark
+    ink needs a light ground there, or its labels are dark on dark. The stylesheet's list
+    of diagrams that take that ground is exactly the diagrams that carry fixed ink, and
+    it keys on KPress's resolved theme, as every site stylesheet does."""
+    fixed, themed = set(), set()
+    for svg in paper.render_all_figures().values():
+        found = re.match(r'<svg\b[^>]*\bclass="n11-diagram (n11-[a-z-]+)"', svg)
+        if found is None:
+            continue  # Figure 1, the atlas's rendering, which draws its own ground.
+        ink = re.findall(r'<text\b[^>]*\bfill="(#[0-9a-fA-F]{3,6})"', svg)
+        (fixed if ink else themed).add(found.group(1))
+    assert fixed, "no diagram carries fixed ink: the ground rule has nothing to hold"
+    assert themed, "no diagram follows the theme: the rule would apply to every diagram"
+    css = paper.STYLE.read_text(encoding="utf-8")
+    rule = re.search(
+        r':root\[data-kpress-resolved-theme="dark"\]\s+\.n11-paper\s+:is\(([^)]*)\)\s*'
+        r"\{\s*background: #fff;\s*\}",
+        css,
+    )
+    assert rule is not None
+    listed = {name.strip().removeprefix(".") for name in rule.group(1).split(",")}
+    assert listed == fixed
+    assert "prefers-color-scheme" not in css
+
+
+def test_the_credits_are_one_column_no_wider_than_the_page() -> None:
+    """The credits carry the original proof's address, one unbreakable word wider than a
+    phone's column. As a grid's automatic column the credits took that width, and every
+    credit was cut at the page's edge; the column is the page's width and the address
+    may break."""
+    css = paper.STYLE.read_text(encoding="utf-8")
+    assert ".n11-paper .credits {\n  grid-template-columns: minmax(0, 1fr);\n}" in css
+    assert ".n11-paper .credits a {\n  overflow-wrap: anywhere;\n}" in css
+    parts = paper.ARTICLE.read_text(encoding="utf-8").split('<div class="credits centred">')
+    assert len(parts) == 2
+    assert "<strong>github.com/Queuingtheorydotcom/11SquaresOptimal</strong>" in parts[1]
+
+
 def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
     """The shared column rule caps a block at the measure, which outranks KPress's cap on
     a table's wrap, so on a phone the wrap ran past the article that clips it. The

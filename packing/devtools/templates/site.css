@@ -35,17 +35,24 @@ body {
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   /* The accent's dark value is in site-nav.css, which every page carries, the workbench
-     included. Chips turn over with the page: dark fills that lighten with the level,
-     the lowest close to the page's own dark background. */
+     included. Chips turn over with the page: dark fills that lighten and saturate with
+     the level, the lowest close to the page's own dark background. */
   --site-rung-base: 25%;
-  --site-rung-step: 4%;
+  --site-rung-step: 4.6%;
+  --site-rung-chroma-base: 0.012;
+  --site-rung-chroma-step: 0.019;
   --site-hero-filter: brightness(0.88);
 }
-/* Chips are light fills carrying the page's own text colour, darkening with the level
-   from close to the page background; dark mode turns the scale over (above). */
+/* The rung scale: a fill's lightness and chroma at level 0, and what one level adds to
+   each. Chips are light fills carrying the page's own text colour: level 0 sits close to
+   the page background, nearly neutral, and each level is darker and more saturated;
+   dark mode turns the lightness over (above). `devtools.rung_scale` measures every fill
+   these make and its text contrast (paper-design.md, Color). */
 :root {
-  --site-rung-base: 96%;
-  --site-rung-step: -3.5%;
+  --site-rung-base: 95%;
+  --site-rung-step: -5.5%;
+  --site-rung-chroma-base: 0.015;
+  --site-rung-chroma-step: 0.024;
 }
 
 /* The paper typography profile, read from paper-type.css, which the explainer carries
@@ -884,16 +891,19 @@ body {
   color: var(--kpress-doc-text);
 }
 
-/* A rung's fill moves with its level on its own scale, darker in light mode and lighter
-   in dark, always behind the page's text colour: verification in blue and confirmation in green, each a desaturated shade of
-   the packing palette's blue and green squares, and significance in gray. */
+/* A rung's fill moves with its level on its own scale, always behind the page's text
+   colour: level 0 is nearly the page background, and each level above it is stronger
+   (darker in light mode, lighter in dark) and more saturated. Verification is the blue
+   and confirmation the green of the packing palette's squares. Significance is gray at
+   every level, so it takes the lightness steps and no chroma step. */
 .site-rung-fill {
   --rung-hue: 250;
-  --rung-chroma: 0.06;
+  --rung-chroma-base: var(--site-rung-chroma-base);
+  --rung-chroma-step: var(--site-rung-chroma-step);
   --rung-level: 0;
   background: oklch(
-    calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step)) var(--rung-chroma)
-      var(--rung-hue)
+    calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step))
+      calc(var(--rung-chroma-base) + var(--rung-level) * var(--rung-chroma-step)) var(--rung-hue)
   );
   color: var(--kpress-doc-text);
 }
@@ -901,7 +911,8 @@ body {
   --rung-hue: 158;
 }
 .site-rung-fill[data-rung="S"] {
-  --rung-chroma: 0.008;
+  --rung-chroma-base: 0.008;
+  --rung-chroma-step: 0;
 }
 .site-rung-fill[data-level="1"] {
   --rung-level: 1;

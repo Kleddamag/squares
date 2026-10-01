@@ -5,7 +5,7 @@ title: "W3: transfer recent optimality methods to n17 and low-n targets"
 kind: epic
 status: in_progress
 priority: 1
-version: 33
+version: 35
 spec_path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
 labels: []
 dependencies: []
@@ -40,11 +40,12 @@ child_order_hints:
   - is-01m3vtm0h235yent341xendqcm
   - is-01m3vwtt6h4hnbvwp4m69zkv0t
   - is-01m3vx9gwbnbw9dp6er4haq4jc
+  - is-01m3vy2qw2dbjac5syh9qkrs1j
 created_at: 2026-10-01T08:38:55.840Z
-updated_at: 2026-10-01T14:18:31.178Z
+updated_at: 2026-10-01T14:36:04.417Z
 ---
 Plan and execute a fresh W3 session using T-060 n11 global capture and exact endpoint methods, T-052 n21 mixed measures, recent n17 certificates, and current upper-bound assurance. Prioritize n17; preserve separate exploration, preregistration, execution and W2 acceptance. Planning is on codex/w3-post-optimality-transfer stacked over PR261. No new proof claimed by planning.
 
 ## Notes
 
-Research PR265 now53ae8a5d3 incorporates updated parent c56d5264c/main cleanly. W1 source audit and Astra max W2 review completed; 62-file pinned evand packet plus source integrity test. Companion main-based PR267 at08daa2e7c registers T062/T063/T064 at V0/C1 with S3/S1/S4, 12 reported solved cases and no verified changes. New W3 limiting-pose/clique/higher-order/deficit-four ideas mapped in X048. Overnight heartbeat active through08:00PDT Oct1, finalization07:30. CI finalization ongoing; PR265 has one inherited CSS whitespace assertion failure being fixed with upstream patch84a6b3c04.
+OvernightSession165 scientific outcome:7acceptedn17rounds H253-257,H259,H260, exactphysicalendpoint andattainedconditionalminimum; global/unrestrictedlocaloptimality stillopen. Completecover161100756states,closedD4quotient20155518orbits,nonegeometricallyexcluded. H258stoppedafterthreepreparationfailures. n12finite-rowgraphlemma reviewed. Safeatlasstamp-only path passed17.41s with no324geometryrebuild. Nextresearchthink-11ma; W5think-n7xf andthink-am9e are supporting. Scientific/exporthead4f312e21e allscheduledCIpass; finalrecordonlycloseout inprogress.

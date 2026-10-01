@@ -19,8 +19,8 @@ import pytest
 from devtools import (
     overview_data,
     pages_scope,
-    render_explainer,
-    render_n11_optimality_explainer,
+    render_n11_lower_bounds_explainer,
+    render_n11_optimality_review,
     render_overview,
 )
 from devtools.pages_scope import (
@@ -54,11 +54,11 @@ def in_scope(changed: list[str], declared: dict[str, tuple[Path, ...]]) -> set[s
 @pytest.mark.parametrize(
     ("half", "builder_inputs"),
     [
-        ("explainer", lambda: render_explainer.RENDER_INPUTS),
+        ("explainer", lambda: render_n11_lower_bounds_explainer.RENDER_INPUTS),
         ("workbench", lambda: build_site.RENDER_INPUTS),
         ("overview", lambda: render_overview.RENDER_INPUTS),
         ("overview", lambda: overview_data.INPUTS),
-        ("optimality", lambda: render_n11_optimality_explainer.RENDER_INPUTS),
+        ("optimality", lambda: render_n11_optimality_review.RENDER_INPUTS),
     ],
 )
 def test_every_builder_input_puts_its_page_in_scope(
@@ -83,7 +83,9 @@ def test_the_scope_reads_each_builder_declaration_live(monkeypatch: pytest.Monke
     before = declared_inputs()
     assert "explainer" not in in_scope([probe(added)], before)
     monkeypatch.setattr(
-        render_explainer, "RENDER_INPUTS", (*render_explainer.RENDER_INPUTS, added)
+        render_n11_lower_bounds_explainer,
+        "RENDER_INPUTS",
+        (*render_n11_lower_bounds_explainer.RENDER_INPUTS, added),
     )
     assert "explainer" in in_scope([probe(added)], declared_inputs())
     monkeypatch.setattr(build_site, "RENDER_INPUTS", (*build_site.RENDER_INPUTS, added))
@@ -145,14 +147,17 @@ def test_the_workflow_and_the_scope_itself_select_every_page(
 def test_a_helper_a_checker_imports_is_an_input(declared: dict[str, tuple[Path, ...]]) -> None:
     """A tool's first-party imports change its verdict as much as the tool does.
 
-    `check_scroll_restoration` reads the page path from `render_explainer_pdf`, so the
-    closure the scope computes over the files a job runs has to reach that module.
+    `check_scroll_restoration` reads the page path from `render_n11_lower_bounds_explainer_pdf`,
+    so the closure the scope computes over the files a job runs has to reach that module.
     """
     closure = pages_scope.import_closure(
         {REPO / "packing/devtools/check_scroll_restoration.py"}
     )
-    assert REPO / "packing/devtools/render_explainer_pdf.py" in closure
-    assert REPO / "packing/devtools/render_explainer_pdf.py" in declared["explainer"]
+    assert REPO / "packing/devtools/render_n11_lower_bounds_explainer_pdf.py" in closure
+    assert (
+        REPO / "packing/devtools/render_n11_lower_bounds_explainer_pdf.py"
+        in declared["explainer"]
+    )
 
 
 def test_every_pdf_browser_control_probe_selects_the_explainer(
@@ -209,9 +214,9 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     tutorial are the overview's alone, so a pull request changing only those
     runs its job and no explainer Chromium. The register itself is read by the explainer
     too, and so is n = 11's case record, whose exact T-060 endpoint Figure 3 checks
-    (`render_explainer.n11_solved`); the renderer module by all three, since it also
-    writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by
-    all three.
+    (`render_n11_lower_bounds_explainer.n11_solved`); the renderer module by all three, since it
+    also writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by all
+    three.
     """
     for changed in (
         "TUTORIAL.md",
@@ -233,9 +238,9 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
 
 
 def test_t060_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]]) -> None:
-    assert in_scope(["packing/devtools/templates/n11-optimality-article.md"], declared) == {
-        "optimality"
-    }
+    assert in_scope(
+        ["packing/devtools/templates/n11-optimality-review-article.md"], declared
+    ) == {"optimality"}
     assert in_scope(
         ["packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json"],
         declared,
@@ -251,12 +256,10 @@ def test_t060_page_has_an_independent_required_build() -> None:
         for step in jobs["optimality"]["steps"]
         if step.get("name") == "Check T-060 figures and article renderer"
     )
-    assert browser_control["env"]["SQPACK_N11_PAPER_BROWSER"] == "1"
+    assert browser_control["env"]["SQPACK_N11_OPTIMALITY_REVIEW_BROWSER"] == "1"
     commands = "\n".join(str(step.get("run", "")) for step in jobs["optimality"]["steps"])
-    assert "render_n11_optimality_explainer --output-dir site/n11-optimality --pdf" in commands
-    assert (
-        "render_n11_optimality_explainer --output-dir site/n11-optimality --check" in commands
-    )
+    assert "render_n11_optimality_review --output-dir site/n11-optimality --pdf" in commands
+    assert "render_n11_optimality_review --output-dir site/n11-optimality --check" in commands
     assert "test -s site/n11-optimality/t-060-explainer.pdf" in commands
     assert "optimality" in jobs["publish"]["needs"]
     assert "optimality" in jobs["pages-required"]["needs"]

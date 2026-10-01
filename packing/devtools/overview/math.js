@@ -1,6 +1,6 @@
 // Typesets a kpress page's formulas the way the explainer typesets its own: through the
-// explainer's host adapter, `squaresMath` (`probes/render_explainer/host_math_init.js`,
-// inlined after KPress's shared runtime by `render_explainer.katex_js`), in batches of
+// explainer's host adapter, `squaresMath` (`probes/render_n11_lower_bounds_explainer/host_math_init.js`,
+// inlined after KPress's shared runtime by `render_n11_lower_bounds_explainer.katex_js`), in batches of
 // sixteen per task so no formula holds the main thread for the rest. The formulas within
 // two screens of the viewport go first; the rest wait until the reader scrolls toward
 // them, what hides them opens, or the browser is idle after the page has loaded. Each

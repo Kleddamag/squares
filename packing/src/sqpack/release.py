@@ -181,12 +181,12 @@ PUBLICATION_DATE = PUBLICATION_HISTORY[0].first_published
 #: result is and how recently it was revised.
 FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 
-#: The commit the committed claim documents link to (`render_explainer.edition_file`), at
-#: this repository's short length. It is pinned for the reason `DATA_REVISION` is: those
-#: documents are compared byte for byte with a fresh render, so a link naming the build
-#: commit would fail their drift check forever. It is in no version string. It moves
-#: when the claim documents are regenerated for an edition. It must be a commit on
-#: `main`; the site's own links name `main` itself (`devtools.repo_links`).
+#: The commit the committed claim documents link to
+#: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is
+#: pinned for the reason `DATA_REVISION` is: those documents are compared byte for byte with a
+#: fresh render, so a link naming the build commit would fail their drift check forever. It is
+#: in no version string. It moves when the claim documents are regenerated for an edition. It
+#: must be a commit on `main`; the site's own links name `main` itself (`devtools.repo_links`).
 PUBLICATION_REVISION = "0d7bb0fa"
 
 

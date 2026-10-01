@@ -14963,7 +14963,7 @@ defects:
     the preceding commits had been changing.
   fix: >-
     Fixed on 2026-09-05 by declaring the inputs where the outputs are declared, as
-    RENDER_INPUTS in packing/devtools/render_explainer.py, and adding the four missing
+    RENDER_INPUTS in packing/devtools/render_n11_lower_bounds_explainer.py, and adding the four missing
     patterns to both the push and the pull_request filters. The workflow comment now
     says not to maintain the list by reading the renderer, because the test names what
     to add.
@@ -14974,7 +14974,7 @@ defects:
     companion requires every declared input to exist, so a rename cannot leave a matched
     pair of dead entries agreeing with each other.
   status: fixed
-  recorded_in: packing/tests/test_explainer.py
+  recorded_in: packing/tests/test_n11_lower_bounds_explainer.py
   bead: think-bl0n
 - id: D-462
   title: A plain git clone fails the documentation check
@@ -15049,7 +15049,7 @@ defects:
     gate does not have; the property is stated where the rule is, with the measurement
     that decided it.
   status: fixed
-  recorded_in: packing/devtools/templates/explainer-shell.html
+  recorded_in: packing/devtools/templates/n11-lower-bounds-explainer-shell.html
 - id: D-464
   title: Every link on the page failed contrast in dark mode
   date: '2026-09-05'
@@ -15087,7 +15087,7 @@ defects:
     `color-mix()`, which the gate does not have, and a hand-computed ratio in a test
     would pin the arithmetic rather than what is drawn.
   status: fixed
-  recorded_in: packing/devtools/templates/explainer-shell.html
+  recorded_in: packing/devtools/templates/n11-lower-bounds-explainer-shell.html
 - id: D-465
   title: The gate counted its own render output against the mutation-snapshot cap
   date: '2026-09-05'
@@ -16447,7 +16447,7 @@ defects:
     None of this stops the page from re-rendering math while it is drawn, which is what
     contained still means here: the export refuses to hand out bytes it could not draw
     twice, and a draw it did have to repeat says so in the log.
-  recorded_in: packing/devtools/render_explainer_pdf.py
+  recorded_in: packing/devtools/render_n11_lower_bounds_explainer_pdf.py
 - id: D-491
   title: The math geometry probe mixed observations and left a page watchdog uncontrolled
   date: '2026-09-11'
@@ -16512,7 +16512,7 @@ defects:
     bases, exposed no box in the early observation, left none hidden after release, and
     returned no finding. Firefox and WebKit run the same geometry oracle in hosted CI; the
     Chromium self-test also runs the independent queue-watchdog control.
-  recorded_in: packing/devtools/prepare_explainer_math.py
+  recorded_in: packing/devtools/prepare_n11_lower_bounds_explainer_math.py
 - id: D-492
   title: Threshold producer called solver errors infeasible
   date: '2026-09-19'
@@ -17021,7 +17021,7 @@ defects:
     and a first and third that agree are published over a differing second, each with
     the differing load's decoded line in the log; three different loads refuse, leave the
     previous file in place, and give the census against load 1.
-  recorded_in: packing/devtools/render_explainer_pdf.py
+  recorded_in: packing/devtools/render_n11_lower_bounds_explainer_pdf.py
 - id: D-510
   title: Independent rational checker ignored the declared coordinate frame
   date: '2026-10-01'

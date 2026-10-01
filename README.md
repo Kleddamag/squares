@@ -59,8 +59,8 @@ The
 explains T-060 from the exact construction through the exhaustive case exclusions,
 geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
 It has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
-[maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
-drawn from the retained proof data.
+[maintained source](packing/devtools/templates/n11-optimality-review-article.md), with
+figures drawn from the retained proof data.
 The [explainer](https://jlevy.github.io/squares/explainer.html) proves the earlier,
 simpler lower bounds on $s(11)$.
 
@@ -522,7 +522,7 @@ for results by others: their scope, credit, intake and reply.
 ├── package-lock.json       Root and workbench workspace lockfile
 ├── tsconfig.base.json      The shared TypeScript type floor every program extends
 ├── tsconfig.devtools-node.json  The Node scripts the Python devtools and tests run
-├── tsconfig.explainer.json The checked classic scripts in the standalone explainer
+├── tsconfig.n11-lower-bounds-explainer.json The checked classic scripts in the standalone explainer
 ├── tsconfig.json           The bundled workbench application's entry module
 ├── tsconfig.motion-lab.json  The motion lab's assets and the slideshow harness
 ├── tsconfig.overview.json  The site pages' table and math scripts

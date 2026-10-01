@@ -934,7 +934,8 @@ exports together. That sequence also applies when no explainer edition changes.
 The explainer at <https://jlevy.github.io/squares/> is not checked in.
 GitHub Pages builds it from `main` in `.github/workflows/pages.yml`, on every push that
 touches one of the renderer’s declared inputs (`RENDER_INPUTS` in
-`devtools/render_explainer.py`, which a test ensures the workflow’s path filter covers).
+`devtools/render_n11_lower_bounds_explainer.py`, which a test ensures the workflow’s
+path filter covers).
 The build writes the page (`site/index.html`), the Markdown edition
 (`site/t-018-explainer.md`), the PDF (`site/t-018-explainer.pdf`, drawn by Playwright’s
 Chromium), and the composite assets beside them.
@@ -952,18 +953,18 @@ a job named for the reason.
 nothing else.
 
 The separate **T-060 optimality paper** lives at `/n11-optimality/`. Its source is
-[`n11-optimality-article.md`](packing/devtools/templates/n11-optimality-article.md);
-[`render_n11_optimality_explainer.py`](packing/devtools/render_n11_optimality_explainer.py)
+[`n11-optimality-review-article.md`](packing/devtools/templates/n11-optimality-review-article.md);
+[`render_n11_optimality_review.py`](packing/devtools/render_n11_optimality_review.py)
 uses the same KPress fonts and
-[`explainer-publication.css`](packing/devtools/templates/explainer-publication.css) as
-the historical explainer for screen and print typography, metadata, and format links.
+[`paper-publication.css`](packing/devtools/templates/paper-publication.css) as the
+historical explainer for screen and print typography, metadata, and format links.
 Its separate stylesheet contains diagram layout only.
 It reuses the Trump witness rendering and draws the center cells and capture graph from
 the retained proof packet.
 From `packing/`, with the scratch environment required by `AGENTS.md`:
 
 ```bash
-uv run --frozen --all-extras --group dev python -m devtools.render_n11_optimality_explainer --pdf
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_optimality_review --pdf
 ```
 
 The outputs are `site/n11-optimality/t-060-explainer.html`, `.md`, and `.pdf`, with an
@@ -975,8 +976,8 @@ A dedicated Pages job builds this paper and its PDF independently of the histori
 explainer. The paper is an explanation of accepted evidence, and rendering it does not
 rerun the geometric proof.
 
-Publication uses `python -m devtools.render_explainer --prepare-math` after installing
-the locked Playwright Chromium.
+Publication uses `python -m devtools.render_n11_lower_bounds_explainer --prepare-math`
+after installing the locked Playwright Chromium.
 This pass measures the final math bases under the page’s CSS and ships their geometry
 with the initial HTML, so decoding a font does not change the space a formula occupies.
 It prepares the supported custom/system and serif/sans settings, shares identical
@@ -1034,9 +1035,9 @@ hash, and checks that every path linked on `main` is in the deployed commit’s 
 The reader documents the site links by name (the status table, the results register,
 `epistemics.md` and the rest) are constants in that module, so each has one stable path.
 The committed claim documents are the one exception: they are not site pages, and they
-pin the verifier at the edition’s revision (`render_explainer.edition_file`). After a
-merge, wait for the “Certificate page” workflow on `main` and confirm the deploy from
-the checkout:
+pin the verifier at the edition’s revision
+(`render_n11_lower_bounds_explainer.edition_file`). After a merge, wait for the
+“Certificate page” workflow on `main` and confirm the deploy from the checkout:
 
 ```shell
 uv run --frozen --all-extras --group dev python -m devtools.check_published_site --commit <merge commit>
@@ -1120,7 +1121,7 @@ To cut one:
    `uv run --frozen --all-extras --group dev python -m devtools.render_verifiable_claim`.
 3. Run `packing-validate --only "known-best"` — which since 2026-09-07 also selects the
    deferred whole-atlas rebuild, and is meant to here — and
-   `pytest tests/test_explainer.py tests/test_verify_claim.py tests/test_release.py`,
+   `pytest tests/test_n11_lower_bounds_explainer.py tests/test_verify_claim.py tests/test_release.py`,
    and commit the release module, the eight atlas files and the three generated
    documents together.
 

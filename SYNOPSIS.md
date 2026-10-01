@@ -1348,7 +1348,8 @@ T-037’s verified $s(11) > 31/8$ and T-059’s reported row-minimum equality re
 separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
 fresh-ensemble replay entry point.
 
-The [dedicated optimality paper](packing/devtools/templates/n11-optimality-article.md)
+The
+[dedicated optimality paper](packing/devtools/templates/n11-optimality-review-article.md)
 explains that complete argument from first principles, separately from the historical
 lower-bound explainer.
 Its

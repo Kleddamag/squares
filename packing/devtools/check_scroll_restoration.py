@@ -19,7 +19,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Literal, TypedDict
 
-from devtools.render_explainer_pdf import PAGE
+from devtools.render_n11_lower_bounds_explainer_pdf import PAGE
 from sqpack.probes import applied, probe
 
 

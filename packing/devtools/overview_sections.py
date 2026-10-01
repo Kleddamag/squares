@@ -1324,7 +1324,7 @@ class Paper(NamedTuple):
     size: CardSize = "large"
 
 
-#: Where the optimality paper is served, which `render_n11_optimality_explainer` builds
+#: Where the optimality paper is served, which `render_n11_optimality_review` builds
 #: (its `SITE_PATH`; a test holds the two together). Named here rather than read from
 #: that module, which loads the explainer's renderer and so this one's.
 OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
@@ -1333,11 +1333,11 @@ OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
 #: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
 #: explains the result that stands, T-060, where the explainer proves the lower bounds
 #: T-060 superseded and the tutorial is the background to both. Its title is its
-#: renderer's (`render_n11_optimality_explainer.TITLE`) in sentence case, and its
+#: renderer's (`render_n11_optimality_review.TITLE`) in sentence case, and its
 #: description says what T-060's rungs allow: a proof, machine-verified and reviewed
-#: here. The explainer's title is the owner's (2026-09-30), as `render_explainer.TITLE`
-#: has it in title case; the tutorial's description is `TUTORIAL.md`'s own opening, its
-#: audience and what it owns.
+#: here. The explainer's title is the owner's (2026-09-30), as
+#: `render_n11_lower_bounds_explainer.TITLE` has it in title case; the tutorial's description is
+#: `TUTORIAL.md`'s own opening, its audience and what it owns.
 PAPERS: tuple[Paper, ...] = (
     Paper(
         href=OPTIMALITY_PAPER,

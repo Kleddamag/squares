@@ -12,7 +12,7 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
 
-from devtools import render_n11_optimality_explainer as optimality_paper
+from devtools import render_n11_optimality_review as optimality_paper
 from devtools.pages_scope import BUILDER_INPUTS, declared_inputs, pull_request_jobs
 from sqpack.yamlio import safe_load
 
@@ -550,7 +550,9 @@ def test_saved_font_geometry_runs_as_two_bounded_pairs() -> None:
         if step.get("name") == "Check saved font settings retain geometry at 1280 px"
     )
     lines = command.splitlines()
-    launches = [line for line in lines if "devtools.prepare_explainer_math" in line]
+    launches = [
+        line for line in lines if "devtools.prepare_n11_lower_bounds_explainer_math" in line
+    ]
     waits = [line for line in lines if line.strip().startswith("wait ")]
     assert len(launches) == 4
     assert all(line.endswith(" &") for line in launches)
@@ -1035,12 +1037,13 @@ def test_pages_runs_real_math_failure_controls_on_the_pdf_it_draws() -> None:
     draws = [
         before
         for before, candidate in enumerate(steps)
-        if "devtools.render_explainer_pdf --update" in candidate.get("run", "")
+        if "devtools.render_n11_lower_bounds_explainer_pdf --update" in candidate.get("run", "")
     ]
     checks = [
         after
         for after, candidate in enumerate(steps)
-        if "devtools.render_explainer_pdf --check-artifact" in candidate.get("run", "")
+        if "devtools.render_n11_lower_bounds_explainer_pdf --check-artifact"
+        in candidate.get("run", "")
     ]
     assert downloads
     assert installs
@@ -1068,7 +1071,7 @@ def test_pages_checks_the_pdf_it_uploads_and_retains_mismatch_evidence() -> None
     """A later pair of fresh draws must not stand in for the artifact being published."""
     workflow = load()
     steps = workflow["jobs"]["pdf"]["steps"]
-    module = "devtools.render_explainer_pdf"
+    module = "devtools.render_n11_lower_bounds_explainer_pdf"
     commands = [
         (index, shlex.split(line))
         for index, step in enumerate(steps)
@@ -1134,7 +1137,7 @@ def test_pdf_tracing_is_manual_and_preserves_the_uninstrumented_artifact_gate() 
     )
     assert not trace.get("continue-on-error")
     args = shlex.split(trace["run"])
-    assert args[args.index("devtools.render_explainer_pdf") + 1 :] == [
+    assert args[args.index("devtools.render_n11_lower_bounds_explainer_pdf") + 1 :] == [
         "--check",
         "--renders",
         "20",
@@ -1174,7 +1177,7 @@ def test_pdf_reconstruction_is_a_separate_optional_diagnostic_arm() -> None:
     )
     assert not treatment.get("continue-on-error")
     args = shlex.split(treatment["run"])
-    assert args[args.index("devtools.render_explainer_pdf") + 1 :] == [
+    assert args[args.index("devtools.render_n11_lower_bounds_explainer_pdf") + 1 :] == [
         "--check",
         "--renders",
         "20",
@@ -1217,8 +1220,8 @@ def test_every_browser_checks_the_same_prepared_publication() -> None:
         for name, job in jobs.items()
         for index, step in enumerate(job.get("steps", []))
         for line in step.get("run", "").splitlines()
-        if "python -m devtools.render_explainer " in line
-        or line.endswith("python -m devtools.render_explainer")
+        if "python -m devtools.render_n11_lower_bounds_explainer " in line
+        or line.endswith("python -m devtools.render_n11_lower_bounds_explainer")
     ]
     assert renders, "publication never renders its HTML"
     assert all("--prepare-math" in line for _, _, line in renders)
@@ -1227,7 +1230,11 @@ def test_every_browser_checks_the_same_prepared_publication() -> None:
     steps = jobs["prepare"]["steps"]
     (render_index,) = {index for _, index, _ in renders}
     render = steps[render_index]["run"].splitlines()
-    lines = [line for line in render if "python -m devtools.render_explainer" in line]
+    lines = [
+        line
+        for line in render
+        if "python -m devtools.render_n11_lower_bounds_explainer" in line
+    ]
     assert len(lines) == 2, "two independent renders"
     twin, published = lines
     assert twin.endswith('--output "$twin/index.html" &'), "the twin renders outside site/"
@@ -1441,7 +1448,7 @@ def test_prepared_geometry_checks_cover_each_browser_and_their_controls() -> Non
     dropped in the split fails here as it would have in one job.
     """
     jobs = load()["jobs"]
-    module = "devtools.prepare_explainer_math"
+    module = "devtools.prepare_n11_lower_bounds_explainer_math"
 
     def option(command: list[str], flag: str, default: str) -> str:
         return command[command.index(flag) + 1] if flag in command else default

@@ -88,14 +88,19 @@ from typing import Any
 # not declare itself safe without the GIL, so importing this module re-enables the GIL
 # in the process that did it -- including the one pytest worker that collects the test
 # beside this file. Playwright and Pillow are imported where they are used instead,
-# which is the pattern `render_explainer_pdf` sets and the reason a `metrics` run neither
-# starts a browser nor loads an image library.
+# which is the pattern `render_n11_lower_bounds_explainer_pdf` sets and the reason a `metrics`
+# run neither starts a browser nor loads an image library.
 from fontTools.pens.basePen import BasePen
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib import TTFont
 from strif import atomic_output_file
 
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE, FONTS_READY, PAGE, READY
+from devtools.render_n11_lower_bounds_explainer_pdf import (
+    BROWSER_OVERRIDE,
+    FONTS_READY,
+    PAGE,
+    READY,
+)
 from sqpack.probes import probe
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -411,8 +416,8 @@ def _prose_face(html: str, family: str, style: str, weight: str) -> str:
 def _katex_face(html: str, name: str, style: str, weight: str) -> str:
     """One of KaTeX's, which arrive minified and in a fixed property order."""
     # `font-display` is the one property the renderer rewrites in this stylesheet:
-    # KaTeX ships `swap` and `render_explainer._blocking_faces` makes it `block`, so
-    # this reads whichever the page in front of it carries.
+    # KaTeX ships `swap` and `render_n11_lower_bounds_explainer._blocking_faces` makes it
+    # `block`, so this reads whichever the page in front of it carries.
     pattern = (
         rf"@font-face\{{font-display:(?:swap|block);font-family:{re.escape(name)};"
         rf'font-style:{style};font-weight:{weight};src:url\("(data:[^"]+)"\)'

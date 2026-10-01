@@ -15,9 +15,9 @@ adds the front door and the pages around it, as the plan in
   the atlas grid and the frontier atlas both open (`render_case_pages`);
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
   `overview_sections.PAPERS`. The optimality paper (`n11-optimality/`,
-  `render_n11_optimality_explainer`), the explainer (`explainer.html`,
-  `render_explainer`) and the tutorial are the section's papers, and the bar's Papers
-  entry is current on all four;
+  `render_n11_optimality_review`), the explainer (`explainer.html`,
+  `render_n11_lower_bounds_explainer`) and the tutorial are the section's papers, and the bar's
+  Papers entry is current on all four;
 - `tutorial.html`, the tutorial rendered as a page;
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
@@ -224,7 +224,7 @@ def inputs() -> tuple[Path, ...]:
     """Every file any page this module renders reads: its own inputs and the record's.
 
     The page modules are imported here rather than at the top because
-    `render_frontier_page` reads `render_explainer`, which imports this module.
+    `render_frontier_page` reads `render_n11_lower_bounds_explainer`, which imports this module.
     """
     from devtools import overview_data  # noqa: PLC0415
     from devtools.render_case_pages import CASES_INPUTS  # noqa: PLC0415
@@ -256,13 +256,13 @@ def page_assets() -> tuple[str, str]:
     faces already inlined as data URIs, so a reader moving between the explainer and
     these pages sees one design system; `paper-type.css`, the text tokens the explainer
     also carries, follows them. The script is the explainer's math pipeline,
-    `render_explainer.katex_js`: KaTeX, kpress's metric tables and shared runtime, and
-    the explainer's host adapter (`squaresMath`), without kpress's auto-render entry
-    point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
-    places after it, drives the adapter over kpress's own math markup. The pipeline is
-    described in `templates/paper-design.md`, under Math Loading.
+    `render_n11_lower_bounds_explainer.katex_js`: KaTeX, kpress's metric tables and shared
+    runtime, and the explainer's host adapter (`squaresMath`), without kpress's auto-render
+    entry point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
+    places after it, drives the adapter over kpress's own math markup. The pipeline is described
+    in `templates/paper-design.md`, under Math Loading.
     """
-    from devtools.render_explainer import (  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         katex_css,
         katex_js,
         kpress_css,
@@ -335,7 +335,7 @@ def nav_shell(current: str, *, root: str, tabs: str = "") -> NavShell:
     any of its own custom properties the tokens also name. `tabs`, a section's tab bar
     (`visualize_tabs`), follows the bar in the header, as on a kpress page.
     """
-    from devtools.render_explainer import (  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         FONT_FACE_BLOCK,
         inline_font_urls,
         kpress_static,
@@ -520,9 +520,12 @@ def kpress_client_script() -> str:
     """kpress's contents-rail and history modules as one classic script element.
 
     Flattened by the explainer's checked flattener, since an inline module would fetch
-    its siblings at view time; see `render_explainer.kpress_client_js`.
+    its siblings at view time; see `render_n11_lower_bounds_explainer.kpress_client_js`.
     """
-    from devtools.render_explainer import kpress_client_js, kpress_static  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
+        kpress_client_js,
+        kpress_static,
+    )
 
     script = kpress_client_js(
         kpress_static(),

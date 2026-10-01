@@ -42,12 +42,14 @@ keep the same argument available in print.
 
 ## Overview
 
-The [earlier explainer](../../../../packing/devtools/templates/explainer-article.md)
+The
+[earlier explainer](../../../../packing/devtools/templates/n11-lower-bounds-explainer-article.md)
 lets a reader manipulate a square and see covered mass, then shows the finite-angle
 reduction and its cost.
 Its screen controls teach a specific mechanism; captions and static figures carry the
 argument into print.
-The [T-060 paper](../../../../packing/devtools/templates/n11-optimality-article.md)
+The
+[T-060 paper](../../../../packing/devtools/templates/n11-optimality-review-article.md)
 began with four source-bound SVGs: the exact-construction witness, sixteen Voronoi
 cells, case-438 mask, and capture ancestry.
 Those drawings establish the objects and the proof’s structure, but do not yet show

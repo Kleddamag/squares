@@ -47,8 +47,8 @@ The original date and later published derivation can both be credited.
 
 The chronology correction belongs in the maintained [README](../../../README.md), lines
 6–7 and 61–64; the
-[explainer template](../../../packing/devtools/templates/explainer-article.md), lines
-55–58 and its source notes; and any generated introduction using those fields.
+[explainer template](../../../packing/devtools/templates/n11-lower-bounds-explainer-article.md),
+lines 55–58 and its source notes; and any generated introduction using those fields.
 The existing “first improvement in 23 years” wording is defensible when explicitly
 anchored to journal publication, but leaves out the earlier statement.
 Historical experiment records retain the source descriptions used at their original

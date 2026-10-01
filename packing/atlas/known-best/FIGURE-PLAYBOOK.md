@@ -236,10 +236,11 @@ Changing the canvas size means four edits, not one: the card metrics in
 `devtools/build_known_best_atlas.py`, the pinned dimensions in
 [`known-best-atlas.schema.yaml`](known-best-atlas.schema.yaml), the expected dimensions
 in `tests/test_known_best_atlas.py`, and the `width` and `height` on the `img` tag in
-`devtools/templates/explainer-article.md`, which reserves the space the page scrolls
-past. The card metrics are shared, so an edit to them moves both composites; the schema
-pins each canvas under its own stem, so a silent resize of either fails the gate.
-The last three pin every raster each composite publishes — for the figure, the 1x
+`devtools/templates/n11-lower-bounds-explainer-article.md`, which reserves the space the
+page scrolls past.
+The card metrics are shared, so an edit to them moves both composites;
+the schema pins each canvas under its own stem, so a silent resize of either fails the
+gate. The last three pin every raster each composite publishes — for the figure, the 1x
 preview, the 2x export and the link-preview crop — so a canvas change that moves one and
 not the others is caught rather than shipped.
 Only the builder needs a single edit: each raster derives its size from the canvas

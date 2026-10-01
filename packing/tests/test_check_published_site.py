@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 from devtools import check_published_site, render_overview
-from devtools import render_explainer_pdf as pdf
+from devtools import render_n11_lower_bounds_explainer_pdf as pdf
 from devtools.check_published_site import (
     EXPLAINER,
     LINK_CHECKED_PAGES,
@@ -25,9 +25,13 @@ from devtools.check_published_site import (
     pdf_pages,
     repository_links,
 )
-from devtools.render_explainer import COMPOSITE_ASSETS, MARKDOWN_OUTPUT, PAGE_URL
-from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
-from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.render_n11_lower_bounds_explainer import (
+    COMPOSITE_ASSETS,
+    MARKDOWN_OUTPUT,
+    PAGE_URL,
+)
+from devtools.render_n11_lower_bounds_explainer_pdf import EXPECTED_PAGE_COUNT
+from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, RepositoryTree
 from sqpack.release import PUBLICATION_EDITION
 

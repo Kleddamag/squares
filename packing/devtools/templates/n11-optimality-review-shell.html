@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-kpress-viewport data-kpress-theme="system"
+      data-kpress-resolved-theme="light" data-kpress-palette="neutral"
+      data-kpress-prose-font="serif" data-kpress-math-text="prose"
+      data-kpress-mono-font="planetaire">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="generator" content="kpress">
+<title>{{PAGE_TITLE}}</title>
+<meta name="description" content="{{PAGE_DESCRIPTION}}">
+{{SITE_FAVICON}}
+<style>{{KPRESS_CSS}}</style>
+<style>{{KATEX_CSS}}</style>
+<style>{{RELATION_CSS}}</style>
+<!-- The text tokens every page of the site shares: type base, reading measure, heading
+     scale, the paper's roles, and the site's own faces. See templates/paper-type.css. -->
+<style>{{PAPER_TYPE_CSS}}</style>
+<!-- The site's navigation bar, shared with every other page of the site and hidden in
+     print, so the PDF does not move. See templates/site-nav.css. -->
+<style>{{SITE_NAV_CSS}}</style>
+<!-- The publication styles this paper shares with the first one. See
+     templates/paper-publication.css. -->
+<style>{{PUBLICATION_CSS}}</style>
+<style>{{PAPER_CSS}}</style>
+<script>{{THEME_BOOTSTRAP}}</script>
+<script>{{SITE_EMBED}}</script>
+</head>
+<body>
+<main class="kpress-page-main kpress-viewport">
+{{SITE_NAV}}
+<article class="kpress kpress-doc kpress-prose cert-page n11-paper">
+<div class="doc-links screen-only">
+  <a class="chip" href="{{MARKDOWN_NAME}}" title="The Markdown this page is rendered from">MD</a>
+  <a class="chip" href="{{PDF_NAME}}" title="The typeset PDF of this page">PDF</a>
+  <a class="chip" href="{{REPO_URL}}" title="The project on GitHub"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GITHUB</a>
+</div>
+{{BODY_HTML}}
+<p class="col colophon centred">Formatted and typeset with <a href="https://github.com/jlevy/flowmark"><strong>Flowmark</strong></a> and <a href="https://github.com/jlevy/kpress"><strong>KPress</strong></a></p>
+</article>
+</main>
+<script>{{SITE_THEME}}</script>
+<script>{{KATEX_JS}}</script>
+<script>{{DIAGRAM_LABEL_SCRIPT}}</script>
+</body>
+</html>

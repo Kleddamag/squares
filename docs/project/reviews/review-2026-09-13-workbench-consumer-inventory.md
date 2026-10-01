@@ -112,9 +112,10 @@ declares seven paths, but the invoked builder reads the 324 witnesses, 324 rende
 composite record, kpress assets, and `devtools.render_explainer` described above.
 It also declares the tracked `transition-stats.json`, although the invoked builder
 regenerates that file in its scratch output and the site builder does not read the
-tracked copy. [test_explainer.py](../../../packing/tests/test_explainer.py#L470) proves
-only that Pages filters cover the declared list and that each declared path exists; it
-does not prove that the list is the builder’s true input closure.
+tracked copy.
+[test_explainer.py](../../../packing/tests/test_n11_lower_bounds_explainer.py#L470)
+proves only that Pages filters cover the declared list and that each declared path
+exists; it does not prove that the list is the builder’s true input closure.
 
 `think-g0lh` must replace this hand-maintained partial list with the package build’s
 actual input contract and update both Pages filter blocks.

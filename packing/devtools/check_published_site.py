@@ -61,15 +61,15 @@ from playwright.sync_api import sync_playwright
 
 from devtools import render_overview
 from devtools.overview_sections import OPTIMALITY_PAPER, result_fragment
-from devtools.render_explainer import (
+from devtools.render_n11_lower_bounds_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
     PAGE_URL,
     REPO,
     SITE_URL,
 )
-from devtools.render_explainer_pdf import EXPECTED_PAGE_COUNT
-from devtools.render_explainer_pdf import OUTPUT as PDF_OUTPUT
+from devtools.render_n11_lower_bounds_explainer_pdf import EXPECTED_PAGE_COUNT
+from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
 from devtools.repo_links import (
     REPO_URL,
     RepositoryTree,
@@ -147,7 +147,7 @@ def paper_citations(text: str, commit: str) -> tuple[set[tuple[str, str]], list[
     """The optimality paper's repository links: each (kind, path) it cites at `commit`,
     without any query or anchor, and every link that names another ref, `main` among
     them, as `kind/ref/path`. The paper pins its citations to the commit it was built
-    from (`render_n11_optimality_explainer.link_revision`), and the deploy builds it
+    from (`render_n11_optimality_review.link_revision`), and the deploy builds it
     from the commit it deploys."""
     cited: set[tuple[str, str]] = set()
     strays: list[str] = []

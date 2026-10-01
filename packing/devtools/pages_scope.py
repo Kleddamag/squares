@@ -13,13 +13,13 @@ change paid for the workbench build the same way.
 This tool is what lets each half run only on its own inputs. For each half it takes:
 
 * the builder's own declaration of what a render reads -- `RENDER_INPUTS` in
-  `devtools/render_explainer.py` for the explainer, in `workbench_tools/build_site.py`
-  for the workbench and in `devtools/render_n11_optimality_explainer.py` for the T-060
-  article, and `inputs()` in `devtools/render_overview.py` for the site's own pages (its
-  `RENDER_INPUTS` and the record `overview_data.INPUTS` names). Read live from those
-  modules rather than copied here, because a copy is a second list that drifts, and the
-  builders' lists already have tests that keep them honest
-  (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
+  `devtools/render_n11_lower_bounds_explainer.py` for the explainer, in
+  `workbench_tools/build_site.py` for the workbench and in
+  `devtools/render_n11_optimality_review.py` for the T-060 article, and `inputs()` in
+  `devtools/render_overview.py` for the site's own pages (its `RENDER_INPUTS` and the record
+  `overview_data.INPUTS` names). Read live from those modules rather than copied here, because a
+  copy is a second list that drifts, and the builders' lists already have tests that keep them
+  honest (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
 * every developer tool and test the workflow's jobs for that half run, read out of
   `pages.yml` itself, with the modules those tools import from this repository. A checker
   is an input of the verdict even though it is not an input of the page: editing
@@ -84,9 +84,9 @@ _NOT_ON_PULL_REQUESTS = re.compile(
 
 
 def _explainer_inputs() -> tuple[Path, ...]:
-    from devtools import render_explainer  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer  # noqa: PLC0415
 
-    return tuple(render_explainer.RENDER_INPUTS)
+    return tuple(render_n11_lower_bounds_explainer.RENDER_INPUTS)
 
 
 def _workbench_inputs() -> tuple[Path, ...]:
@@ -102,9 +102,9 @@ def _overview_inputs() -> tuple[Path, ...]:
 
 
 def _optimality_inputs() -> tuple[Path, ...]:
-    from devtools import render_n11_optimality_explainer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review  # noqa: PLC0415
 
-    return tuple(render_n11_optimality_explainer.RENDER_INPUTS)
+    return tuple(render_n11_optimality_review.RENDER_INPUTS)
 
 
 #: Each half, and the builder declaration it starts from, in the order the workflow's
@@ -241,7 +241,8 @@ def _imported_modules(path: Path) -> set[str]:
             names.update(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
             names.add(node.module)
-            # `from devtools import render_explainer_pdf as pdf` imports a module too.
+            # `from devtools import render_n11_lower_bounds_explainer_pdf as pdf` imports a
+            # module too.
             names.update(f"{node.module}.{alias.name}" for alias in node.names)
     return {name for name in names if name.split(".")[0] in LOCAL_PACKAGES}
 

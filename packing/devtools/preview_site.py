@@ -50,7 +50,7 @@ from devtools import render_overview
 
 if TYPE_CHECKING:
     from playwright.sync_api import Page
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -125,7 +125,12 @@ def build_explainer(output: Path) -> None:
     """The explainer as `publish` leaves it: `index.html` renamed, assets beside it."""
     with tempfile.TemporaryDirectory() as scratch:
         page = Path(scratch) / "index.html"
-        _run("devtools.render_explainer", "--prepare-math", "--output", str(page))
+        _run(
+            "devtools.render_n11_lower_bounds_explainer",
+            "--prepare-math",
+            "--output",
+            str(page),
+        )
         for built in Path(scratch).iterdir():
             target = output / ("explainer.html" if built == page else built.name)
             shutil.copyfile(built, target)
@@ -138,10 +143,10 @@ def build_workbench(output: Path) -> None:
 def build_optimality(output: Path) -> None:
     """The optimality paper as its Pages job leaves it: the page, its Markdown and its
     PDF, in the directory it is served from."""
-    from devtools.render_n11_optimality_explainer import OUTPUT_DIR  # noqa: PLC0415
+    from devtools.render_n11_optimality_review import OUTPUT_DIR  # noqa: PLC0415
 
     _run(
-        "devtools.render_n11_optimality_explainer",
+        "devtools.render_n11_optimality_review",
         "--output-dir",
         str(output / OUTPUT_DIR.name),
         "--pdf",

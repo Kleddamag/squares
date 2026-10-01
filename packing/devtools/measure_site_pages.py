@@ -136,7 +136,7 @@ from devtools.preview_site import (
     shot_stem,
     split_words,
 )
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
 PROBES = Path(__file__).resolve().parent / "probes"

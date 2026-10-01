@@ -31,7 +31,7 @@ import pytest
 from devtools import render_overview
 from devtools.measure_site_pages import CHIPS, COLUMNS
 from devtools.preview_site import settle_math
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 #: The pages that hold a table of results.

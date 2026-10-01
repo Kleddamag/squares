@@ -18,10 +18,10 @@ import pytest
 
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
 from devtools.check_results import scope_values
-from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
-from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
-from devtools.render_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
-from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
+from devtools.render_n11_lower_bounds_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
+from devtools.render_n11_lower_bounds_explainer import MARKDOWN as EXPLAINER_ARTICLE
+from devtools.render_n11_lower_bounds_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
+from devtools.render_n11_lower_bounds_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
 from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
@@ -1020,7 +1020,8 @@ NAV_ENTRIES = [
     ("github", "https://github.com/jlevy/squares", "GitHub"),
 ]
 #: The pages the bar's Papers entry is current on, of those this renderer owns; the
-#: explainer, the third, is rendered by its own module and held there (`test_explainer`).
+#: explainer, the third, is rendered by its own module and held there
+#: (`test_n11_lower_bounds_explainer`).
 PAPERS_SECTION = {"papers.html", "tutorial.html"}
 
 
@@ -1077,7 +1078,10 @@ def test_every_site_page_loads_math_through_the_explainers_pipeline(
     """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
     site's queue, and neither of kpress's whole-page entry points (auto-render and its
     native initializer), which typeset every formula in one task at DOMContentLoaded."""
-    from devtools.render_explainer import katex_js, kpress_static  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
+        katex_js,
+        kpress_static,
+    )
 
     page = rendered(name)
     static = kpress_static()
@@ -1127,11 +1131,11 @@ def test_the_shared_stylesheet_states_the_provers_two_palette_colours() -> None:
     """The first paper's stylesheet was a block of its shell, where the renderer filled
     in the two colours the prover's canvases also draw with. As a file of its own it
     states them, so they are held to the renderer's here and cannot drift apart."""
-    from devtools import render_explainer  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer  # noqa: PLC0415
 
     css = EXPLAINER_STYLE.read_text(encoding="utf-8")
-    assert f"  --cert-below: {render_explainer.BELOW_ONE};\n" in css
-    assert f"  --cert-near: {render_explainer.NEAR_LIMIT};\n" in css
+    assert f"  --cert-below: {render_n11_lower_bounds_explainer.BELOW_ONE};\n" in css
+    assert f"  --cert-near: {render_n11_lower_bounds_explainer.NEAR_LIMIT};\n" in css
     assert "{{" not in css
 
 
@@ -1587,7 +1591,7 @@ def test_each_results_row_shows_its_rungs_significance_first(
 
 def test_the_prose_links_repository_files_on_main(page: str) -> None:
     """Every `repo:` link in the template becomes a link on `main` to a file that exists."""
-    from devtools.render_explainer import REPO  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import REPO  # noqa: PLC0415
 
     article = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     paths = re.findall(r'(?:\]\(|href=")repo:([^)"\s#]+)', article)
@@ -2358,7 +2362,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     titled as its renderer titles it, in sentence case, and described as explaining the
     accepted proof, T-060, in the words T-060's rungs allow, V3 and C3: a proof, never a
     formal one. The card is the link to the paper, in the same tab."""
-    from devtools import render_n11_optimality_explainer as renderer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as renderer  # noqa: PLC0415
 
     paper = overview_sections.PAPERS[0]
     assert paper.href == overview_sections.OPTIMALITY_PAPER == renderer.SITE_PATH
@@ -3339,7 +3343,7 @@ def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
         render_overview.PACKING
         / "devtools"
         / "probes"
-        / "render_explainer"
+        / "render_n11_lower_bounds_explainer"
         / "host_math_init.js"
     ).read_text(encoding="utf-8")
     assert "closest('[data-math-face=\"serif\"]')" in shell

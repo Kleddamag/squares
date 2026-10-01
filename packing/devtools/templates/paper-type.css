@@ -1,7 +1,7 @@
 /* ============================================================
    The text every page of the site shares with the explainer.
 
-   One file, inlined by the explainer's shell (`render_explainer`) and by every kpress page
+   One file, inlined by the explainer's shell (`render_n11_lower_bounds_explainer`) and by every kpress page
    (`render_overview.page_assets`), right after KPress's own stylesheets so these values
    win over KPress's defaults at the same scopes. The values are the explainer's; the
    typography entry of paper-design.md beside this file is where they are written down

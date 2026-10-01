@@ -11,7 +11,7 @@ Three layers carry it, from the bottom up, with the paper’s text tokens shared
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
 | Text | [paper-type.css](paper-type.css) | The type base, reading measure, heading scale, role scales and pinned faces every page shares |
-| Paper | [explainer-publication.css](explainer-publication.css) | The publication layer both papers share: figures, panels, components and print rules |
+| Paper | [paper-publication.css](paper-publication.css) | The publication layer both papers share: figures, panels, components and print rules |
 | Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the workbench included |
 
 The paper and site layers read the same values from `paper-type.css`, under their own
@@ -25,15 +25,17 @@ captions, notes, and controls.
 The web page and PDF share this hierarchy, with sizes scaled for each medium.
 Keep these conventions reusable across papers.
 
-[explainer-publication.css](explainer-publication.css) contains the publication layer
-both papers share, above KPress and `paper-type.css`. Both
-[explainer-shell.html](explainer-shell.html) and
-[n11-optimality-shell.html](n11-optimality-shell.html) inline that stylesheet;
-[explainer-article.md](explainer-article.md) and
-[n11-optimality-article.md](n11-optimality-article.md) contain the separate articles.
-KPress supplies the fonts, Markdown typography, math, themes, and general print
-behavior. `paper-type.css` sets the type proportions and reading measure, and the
-publication layer sets the figure layout and the paper’s components.
+[paper-publication.css](paper-publication.css) contains the publication layer both
+papers share, above KPress and `paper-type.css`. Both
+[n11-lower-bounds-explainer-shell.html](n11-lower-bounds-explainer-shell.html) and
+[n11-optimality-review-shell.html](n11-optimality-review-shell.html) inline that
+stylesheet;
+[n11-lower-bounds-explainer-article.md](n11-lower-bounds-explainer-article.md) and
+[n11-optimality-review-article.md](n11-optimality-review-article.md) contain the
+separate articles. KPress supplies the fonts, Markdown typography, math, themes, and
+general print behavior.
+`paper-type.css` sets the type proportions and reading measure, and the publication
+layer sets the figure layout and the paper’s components.
 
 ## Typography Roles
 
@@ -213,7 +215,7 @@ below).
 **Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
 punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
 composites), because every page takes them from the same functions,
-`render_explainer.kpress_css`, `katex_css` and `relation_face_css`;
+`render_n11_lower_bounds_explainer.kpress_css`, `katex_css` and `relation_face_css`;
 `devtools.measure_site_pages faces` compares them block by block.
 KPress leads each family token with an embedding host’s hook, `--kpress-host-font-sans`
 and its siblings, so an application embedding a KPress fragment can supply its own face.
@@ -264,11 +266,11 @@ Every page loads its mathematics through the explainer’s pipeline, from the sa
   URIs and switched from `font-display: swap` to `block`, so no formula is drawn in a
   host face and redrawn; KPress’s math composites; the three relation glyphs
   (`relation_face_css`).
-- **Scripts.** `render_explainer.katex_js`: KaTeX, KPress’s metric tables and shared
-  runtime, and the explainer’s host adapter, `squaresMath`
-  (`probes/render_explainer/host_math_init.js`). KPress’s own entry points,
-  `auto-render.min.js` and `katex-init.js`, are left out: `katex-init.js` typesets every
-  formula on the page in one task at DOMContentLoaded.
+- **Scripts.** `render_n11_lower_bounds_explainer.katex_js`: KaTeX, KPress’s metric
+  tables and shared runtime, and the explainer’s host adapter, `squaresMath`
+  (`probes/render_n11_lower_bounds_explainer/host_math_init.js`). KPress’s own entry
+  points, `auto-render.min.js` and `katex-init.js`, are left out: `katex-init.js`
+  typesets every formula on the page in one task at DOMContentLoaded.
 - **Per-formula readiness.** The runtime lays a formula out hidden, waits for the faces
   its glyphs need, and reveals that formula alone; a formula whose faces fail keeps its
   readable fallback.
@@ -276,11 +278,12 @@ Every page loads its mathematics through the explainer’s pipeline, from the sa
   is ready shows while later ones are still being submitted.
 
 The explainer adds what only a single published page can: its formulas are typeset,
-measured and written into the HTML at publication (`render_explainer --prepare-math`),
-so the client hydrates rather than lays out, and its queue puts the interactive panels
-first. The KPress pages are rendered without a browser, so they typeset in the client,
-driven by `overview/math.js`: the formulas within two screens of the viewport first, the
-rest as the reader scrolls toward them or opens what hides them, and, once the page has
+measured and written into the HTML at publication
+(`render_n11_lower_bounds_explainer --prepare-math`), so the client hydrates rather than
+lays out, and its queue puts the interactive panels first.
+The KPress pages are rendered without a browser, so they typeset in the client, driven
+by `overview/math.js`: the formulas within two screens of the viewport first, the rest
+as the reader scrolls toward them or opens what hides them, and, once the page has
 loaded, one at a time in the browser’s idle time.
 A formula whose faces missed the runtime’s wait is retried twice after the page and its
 fonts load, which a long page needed when every face decoded at once.
@@ -625,11 +628,10 @@ it.
   frontier atlas, and the Papers page’s three paper cards lead to full pages the site
   serves, so each is a direct card that goes to its page in the same tab
   (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`, `think-w82r`).
-  Popovers are for records, targets that are not site pages of their own: a result, a
-  case, a repository document rendered for its card’s popover.
-  A direct card is a link and holds no other link, so what its note names is linked from
-  the prose beside it.
+  framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets that are not
+  site pages of their own: a result, a case, a repository document rendered for its
+  card’s popover. A direct card is a link and holds no other link, so what its note names
+  is linked from the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -784,7 +786,7 @@ it.
   A rule transitions only the properties its hover changes (`background-color`, `color`,
   `border-color`, `opacity`, `translate`), never `all`, and never with a literal
   duration: `tests/test_overview.py` fails a `transition` in `site.css`, `site-nav.css`
-  or `explainer-publication.css` that names a time instead of the token.
+  or `paper-publication.css` that names a time instead of the token.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
@@ -1149,9 +1151,9 @@ about a line. Without scripts a filter cannot be changed, so nothing stays filte
 under `@media (scripting: none)` every row shows, and the bar, which would do nothing,
 does not. `tests/node/overview_table/` runs the script’s filters, alone and wired to a
 stand-in table, and `tests/test_overview.py` holds both pages to the identical bar and
-each to its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a
-browser on both pages, by pointer and by keyboard, and measures its label at 1280, 768
-and 390 pixels.
+each to its defaults.
+`tests/test_site_result_filters.py` uses Hide superseded in a browser on both pages, by
+pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1253,9 +1255,8 @@ and 390 pixels.
   `every-result`, a subtitle, the prose that defines the ratings and standings, and the
   table under its filters (**Result filters**, above), which start with significance at
   All, no maximum age and Hide superseded clear, so every result shows, newest first, in
-  one flat list.
-  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
-  recent table and replay table, and each case record’s results link.
+  one flat list. Each row keeps its id, the result’s own (`#t-018`), which is where the
+  overview’s recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”
@@ -1287,10 +1288,10 @@ and 390 pixels.
   `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
   page and on each of them.
   The optimality paper has its own renderer, shell and Pages job
-  (`render_n11_optimality_explainer`); it carries the bar as the explainer does, through
+  (`render_n11_optimality_review`); it carries the bar as the explainer does, through
   `render_overview.nav_html`, with the links climbing one level to the site’s root.
   Its page shares the explainer’s publication layer and `paper-type.css`, and keeps only
-  its diagrams’ rules in [n11-optimality.css](n11-optimality.css).
+  its diagrams’ rules in [n11-optimality-review.css](n11-optimality-review.css).
   There a table keeps to the column and scrolls inside its own wrap, the credits are one
   column no wider than the page, and a diagram drawn in fixed ink keeps a light ground
   on the dark theme, as the construction in its first figure does.
@@ -1301,7 +1302,7 @@ and 390 pixels.
   should land on the text the paper read.
   The hazard that links on `main` avoid, a commit that a squash merge leaves on no
   branch, does not reach the deployed paper: the deploy builds it from the commit it
-  deploys, which `main` keeps (`render_n11_optimality_explainer.link_revision`).
+  deploys, which `main` keeps (`render_n11_optimality_review.link_revision`).
   `check_published_site` holds each citation on the page and in its Markdown to that
   commit and to its tree, and fails one that names `main` or any other commit.
   A pull request’s build names a commit that may not outlive the merge; it is checked
@@ -1435,12 +1436,12 @@ Preserve the hierarchy when adjusting page breaks or figure dimensions.
 From `packing/`, render and check the result:
 
 ```shell
-uv run --frozen --all-extras --group dev python -m devtools.render_explainer --prepare-math
-uv run --frozen --all-extras --group dev pytest tests/test_explainer.py -q
-uv run --frozen --all-extras --group dev python -m devtools.inspect_explainer_typography --check-supporting --check-math --theme light
-uv run --frozen --all-extras --group dev python -m devtools.inspect_explainer_typography --check-supporting --check-math --theme dark --width 390
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_lower_bounds_explainer --prepare-math
+uv run --frozen --all-extras --group dev pytest tests/test_n11_lower_bounds_explainer.py -q
+uv run --frozen --all-extras --group dev python -m devtools.inspect_n11_lower_bounds_explainer_typography --check-supporting --check-math --theme light
+uv run --frozen --all-extras --group dev python -m devtools.inspect_n11_lower_bounds_explainer_typography --check-supporting --check-math --theme dark --width 390
 uv run --frozen --all-extras --group dev python -m devtools.check_print_layout
-uv run --frozen --all-extras --group dev python -m devtools.render_explainer_pdf --update
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --update
 ```
 
 The typography check compares ordinary captions and endnotes with their shared role, and

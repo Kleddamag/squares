@@ -21,13 +21,13 @@ different days. The same export on the same host is 817,119 bytes now, with the 
 sans weight gone and the relation glyphs drawn from a shipped face.
 
 A static instance embeds like any other font. This tool writes one per face the print
-pass asks for, into `templates/fonts/`, and hands them to `render_explainer_pdf` as
-`@font-face` rules with the bytes inline (`print_face_css`). They are injected into the
-loaded page immediately before it is printed, so the screen keeps the variable font and
-the served `site/index.html` does not gain a byte. The instancer itself is kpress's
-(`vendor/kpress/devtools/instance_sans.py`), loaded from the submodule by path: kpress
-ships instances at its own weight tokens, and this page overrides them, which is the
-case that file is written to serve.
+pass asks for, into `templates/fonts/`, and hands them to
+`render_n11_lower_bounds_explainer_pdf` as `@font-face` rules with the bytes inline
+(`print_face_css`). They are injected into the loaded page immediately before it is printed, so
+the screen keeps the variable font and the served `site/index.html` does not gain a byte. The
+instancer itself is kpress's (`vendor/kpress/devtools/instance_sans.py`), loaded from the
+submodule by path: kpress ships instances at its own weight tokens, and this page overrides
+them, which is the case that file is written to serve.
 
 The family those instances declare is kpress's too, and it is read off the loaded
 module (`print_family`) rather than written down here. The instances are a modified
@@ -46,12 +46,12 @@ and which no tree walk reaches, so a walk over text alone would have let a weigh
 nothing instances back into the PDF as outlines.
 
 What is left outside is the `@page` margin box, and it is outside by construction: a
-margin box is not in the document tree, so no probe reaches it. `render_explainer_pdf`
-covers that side instead, by loading the families the margin boxes name before it
-prints. One request is answered without an instance of its own, and it is 400: the
-margin-box footer inherits it. CSS font matching sends a request in [400, 500] ascending
-before descending, so it lands on the 410 instance, ten units away and below what shows
-at 11pt.
+margin box is not in the document tree, so no probe reaches it.
+`render_n11_lower_bounds_explainer_pdf` covers that side instead, by loading the families the
+margin boxes name before it prints. One request is answered without an instance of its own, and
+it is 400: the margin-box footer inherits it. CSS font matching sends a request in [400, 500]
+ascending before descending, so it lands on the 410 instance, ten units away and below what
+shows at 11pt.
 
 `--weights` is the audit beside the gate. It lists every family, weight and style the
 page draws in, under both media, with the run count, a few of the elements that ask, and
@@ -79,8 +79,13 @@ from functools import cache
 from pathlib import Path
 from typing import NotRequired, Protocol, TypedDict, cast
 
-from devtools.render_explainer import data_uri, kpress_static
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE, FONTS_READY, PAGE, READY
+from devtools.render_n11_lower_bounds_explainer import data_uri, kpress_static
+from devtools.render_n11_lower_bounds_explainer_pdf import (
+    BROWSER_OVERRIDE,
+    FONTS_READY,
+    PAGE,
+    READY,
+)
 from sqpack.probes import probe as load_probe
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -161,10 +166,10 @@ def print_family() -> str:
     """The family the instances declare, taken from the generator that writes them.
 
     Every consumer here asks for it through this function -- the probe that recognises
-    the print stack, the prune in `render_explainer` that keeps kpress's own copies out
-    of the served page, the PostScript prefix `render_explainer_pdf` scans the PDF for.
-    One string, in kpress, where the faces are named; a literal on this side would be a
-    second definition of the same thing and would survive the rename that moved it.
+    the print stack, the prune in `render_n11_lower_bounds_explainer` that keeps kpress's own
+    copies out of the served page, the PostScript prefix `render_n11_lower_bounds_explainer_pdf`
+    scans the PDF for. One string, in kpress, where the faces are named; a literal on this side
+    would be a second definition of the same thing and would survive the rename that moved it.
     """
     return generator().FAMILY
 
@@ -237,8 +242,8 @@ def probe(page_path: Path) -> list[Requested]:
     for a document nobody prints.
     """
     # Deferred, both of them: `check_print_layout` imports playwright at module scope
-    # and imports `render_explainer_pdf`, which reaches this module when it prints, so
-    # importing either up here would put playwright behind every unit test that reads
+    # and imports `render_n11_lower_bounds_explainer_pdf`, which reaches this module when it
+    # prints, so importing either up here would put playwright behind every unit test that reads
     # the coverage rule.
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
@@ -569,7 +574,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     if not arguments.check and not arguments.weights:
         return write()
     if not arguments.page.is_file():
-        raise SystemExit(f"{arguments.page}: no rendered page; run `render_explainer` first")
+        raise SystemExit(
+            f"{arguments.page}: no rendered page; run `render_n11_lower_bounds_explainer` first"
+        )
     if arguments.weights:
         return list_weights(arguments.page)
     return check(arguments.page)

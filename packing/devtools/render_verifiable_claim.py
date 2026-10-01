@@ -31,7 +31,7 @@ from typing import TypedDict, cast
 
 from strif import atomic_output_file
 
-from devtools.render_explainer import (
+from devtools.render_n11_lower_bounds_explainer import (
     CASE,
     PACKING,
     REPO,

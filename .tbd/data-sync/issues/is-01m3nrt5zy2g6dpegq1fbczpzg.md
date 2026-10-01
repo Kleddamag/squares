@@ -5,7 +5,7 @@ title: "Register others' results beside this project's: every result since 22 Au
 kind: epic
 status: open
 priority: 1
-version: 9
+version: 10
 labels:
   - packing
   - results-register
@@ -17,8 +17,9 @@ child_order_hints:
   - is-01m3nrt8jt5aqjx0qb9r905fe8
   - is-01m3nxpjnz3e1wq82nh7vtgsbk
   - is-01m3nxpkbysggxnjeejdjw7xnp
+  - is-01m3wvgebtkjqb3km59h7768zx
 created_at: 2026-09-29T05:04:47.614Z
-updated_at: 2026-09-29T06:30:13.118Z
+updated_at: 2026-10-01T23:06:35.248Z
 closed_at: null
 close_reason: null
 resolution: null

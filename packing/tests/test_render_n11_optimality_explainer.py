@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import re
 from pathlib import Path
+from typing import Literal
 
 import pytest
 
@@ -212,7 +213,12 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
     with sync_playwright() as driver:
         browser = driver.chromium.launch()
         try:
-            for width, media in ((1280, "screen"), (390, "screen"), (1280, "print")):
+            views: tuple[tuple[int, Literal["screen", "print"]], ...] = (
+                (1280, "screen"),
+                (390, "screen"),
+                (1280, "print"),
+            )
+            for width, media in views:
                 page = browser.new_page(viewport={"width": width, "height": 900})
                 page.goto(page_path.as_uri(), wait_until="networkidle")
                 page.emulate_media(media=media)

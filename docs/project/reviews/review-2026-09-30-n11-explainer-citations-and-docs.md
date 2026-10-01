@@ -71,6 +71,15 @@ The development guide and paper-design document now identify that ownership.
 The engineering review was read-only; screen/PDF inspection and focused tests provide
 the rendering evidence recorded with the draft pull request.
 
+The SVG labels reuse the historical explainer’s measured transform compensation.
+A browser regression check compares effective support and note sizes at desktop, mobile,
+and print dimensions.
+A separate Sol inspection of the rebuilt PDF checked transformed glyph geometry with
+pdfplumber/pdfminer: Figure 3 labels measured 12.0288 pt against the 12.0333 pt support
+role; notes measured 11.6483 pt against the caption’s 11.6475 pt; prose measured 12 pt.
+Poppler XML’s raw font sizes differed for the SVG text, but those values did not account
+for its effective transform and did not establish a visual-size discrepancy.
+
 ## Editorial Disposition
 
 Two precision corrections were accepted by the mathematical reviewer and applied in the

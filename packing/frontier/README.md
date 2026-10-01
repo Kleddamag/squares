@@ -231,6 +231,12 @@ credited, is policy in
    replay and review it waits on.
    Its date is `attribution.published`; `established` is this project’s own results’
    date and the checker refuses it here.
+   Write the `claim` in short paragraphs: the statement, the certificate, how the source
+   checked it, what was replayed here, and the credit with a link to the source.
+   The revision and digests of the retained copy belong to the evidence entry and the
+   packet, not to the claim or the case record’s prose;
+   [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
+   that.
 4. If geometry is available, adapt it once to
    [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
    or `check` with explicit arithmetic, precision, and tolerance.

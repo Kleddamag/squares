@@ -3153,6 +3153,16 @@ def _case_prose(context: Context) -> str:
     return _module(context, "devtools.check_case_prose")
 
 
+def _prose_ceremony(context: Context) -> str:
+    # Sub-second: it regex-scans the register's prose fields and the reader documents,
+    # the case records among them. Records tier because it checks how the record reads,
+    # not what it claims -- twenty-four register claims ended in one disclaimer sentence and
+    # forty-four case records dated a commit to the minute and the timezone, each a fact with
+    # a structured home already, before the owner asked on 2026-10-01 for credit and a
+    # link in their place. It also holds a long register field to paragraphs.
+    return _module(context, "devtools.check_prose_ceremony")
+
+
 def _session_rollups(context: Context) -> str:
     # Sub-second: it reads frontmatter and stats files. Records-tier because that is exactly
     # what it checks -- that a terminal session names what it cost and the record is there.
@@ -4551,6 +4561,28 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "reader prose credits and links, without audit mechanics",
+        _prose_ceremony,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_prose_ceremony.py",
+            "packing/devtools/prose-ceremony.yaml",
+            "packing/devtools/register_prose.py",
+            "packing/devtools/templates/*-article.md",
+            "packing/frontier/results.yaml",
+            "packing/frontier/n-*.md",
+            "packing/frontier/README.md",
+            "packing/frontier/STATUS.md",
+            "README.md",
+            "TUTORIAL.md",
+            "SYNOPSIS.md",
+            "conventions.md",
+            "epistemics.md",
+        ),
+    ),
+    Step(
         "terminal sessions name what they cost",
         _session_rollups,
         fast=True,
@@ -4944,6 +4976,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "exact certificates are named by their records",
         "rung figures agree with their certificates",
         "case prose agrees with its own front matter",
+        # Reads the register, the reader documents and its own allowlist; the `git grep`
+        # in the module belongs to `--retained`, which this step does not run.
+        "reader prose credits and links, without audit mechanics",
         "terminal sessions name what they cost",
         "terminal sessions name the gate that certified them",
         "Goebel's family reaches the sizes it reaches",

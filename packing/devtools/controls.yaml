@@ -577,6 +577,17 @@ controls:
   run: python3 -m devtools.check_results
   expect: "T-006: declares C5 but the cited atoms support only C3"
 
+# Reader-facing prose credits a source and links it (conventions.md, Provenance). The
+# mutation writes back the phrase the owner quoted on 2026-10-01, in the claim it came
+# from.
+- name: results - a commit id and a clock written back into a claim
+  file: frontier/results.yaml
+  replace:
+    - "      s(32) = 6: the lower half by Evan Daniel's weighted closed cover of 26 September 2026,"
+    - "      s(32) = 6: the lower half by Evan Daniel's weighted closed cover, certified at commit c8b36419 by the author's clock,"
+  run: python3 -m devtools.check_prose_ceremony
+  expect: "T-051 claim: clock: \"author's clock\""
+
 
 - name: frontier - generated table drifting from its source
   file: frontier/n-011.md

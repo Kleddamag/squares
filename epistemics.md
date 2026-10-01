@@ -286,6 +286,13 @@ to credit it as carefully as this project’s own.
   says so in the source’s own terms, and so does any README prose about the result;
   `devtools.state_ai_assistance` names a case record that cites such a source without
   saying so.
+- **A citation, not a disclaimer.** A register claim names the result’s authors, its
+  date and its source, with a link.
+  That a result is another’s is what its credit line and `attribution` state, and where
+  it was published is the citation’s venue; the claim adds no sentence disclaiming it.
+  The revision and digests of the retained copy are the evidence entry’s and the
+  packet’s, and stay out of sentences
+  ([conventions.md → Provenance](conventions.md#6-provenance)).
 - **Our rung is not their credit.** `V` and `C` describe verification.
   A result replayed here remains its authors’ result, and a rung never changes a credit
   line. A defect found here goes back to the authors with the review that found it.

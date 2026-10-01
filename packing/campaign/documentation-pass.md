@@ -101,18 +101,29 @@ For each result, complete this sequence before declaring the change ready to lan
    uv run --frozen python -m devtools.render_results_headline
    ```
 
-3. When a result changes an atlas value, badge, label, or geometry, regenerate both
-   survey composites and all their exports together:
+3. When a result changes an atlas value, badge, label, or geometry, regenerate the atlas
+   data:
 
    ```shell
    uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --update
    ```
 
-   This refreshes the figure data, both composite SVGs and PDFs, and all declared PNG
-   exports for `known-best-1-100` and `known-best-1-324`. Inspect the affected cards in
-   the SVG and PDF and confirm their values and evidence status against the frontier.
-   If a result does not affect those figures, record that disposition instead of
-   rebuilding unchanged geometry.
+   This refreshes the figure data, the witnesses, the house renderings and the manifest.
+   The two survey composites, `known-best-1-100` and `known-best-1-324`, are not redrawn
+   for a result: each states the data it was drawn from and is redrawn at the next
+   version bump, as
+   [Release assets](../../development.md#release-assets-are-drawn-at-a-version-bump-or-on-demand)
+   says. `--check-composites` lists the cards that now trail.
+   When the result should be on the posters before then, redraw them with
+   `--update-composites` in a commit of its own, inspect the affected cards in the SVG
+   and PDF, and confirm their values and evidence status against the frontier.
+
+   After the data is committed, re-pin the data revision, which is one line and rebuilds
+   nothing:
+
+   ```shell
+   uv run --frozen --all-extras --group dev python -m devtools.release_pin --update
+   ```
 
 4. Reconcile the README prose around its generated tables (the introduction’s summaries,
    the $s(11)$ thread under New Results, the machine audits, Earlier in 2026 and the

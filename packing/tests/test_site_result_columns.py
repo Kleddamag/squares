@@ -398,16 +398,17 @@ def test_no_chip_wraps(laid: dict[tuple[str, int], Laid], name: str, width: int)
 def test_every_kind_and_standing_chip_is_one_size(
     laid: dict[tuple[str, int], Laid], name: str, width: int
 ) -> None:
-    """`lower bound`, `case exclusion`, `superseded`, `reported` and the rest are the one
-    chip: one font size, one line height and one block size, the rung chips' own, and
-    they differ only in their words. A result that still stands draws no standing chip
-    at all."""
+    """`lower bound`, `case exclusion`, `confirmed`, `recorded`, `superseded` and the
+    rest are the one chip: one font size, one line height and one block size, the rung
+    chips' own, and they differ only in their words. Every row draws its kind and its
+    status, and a result that is the current best draws no chip for that."""
     chips = laid[name, width].chips
     standing = [chip for chip in chips if chip["chip"] == "standing"]
     kinds = [chip for chip in chips if chip["chip"] == "kind"]
     rungs = [chip for chip in chips if chip["chip"] == "rung"]
-    assert {chip["text"] for chip in standing} >= {"superseded"}
-    assert "current best" not in {chip["text"] for chip in standing}
+    assert {chip["text"] for chip in standing} >= {"confirmed", "superseded"}
+    gone = {"current best", "reported", "not a bound", "second certificate"}
+    assert not gone & {chip["text"] for chip in standing}
     assert {chip["text"] for chip in kinds} >= {"lower bound", "optimality"}
     for measure in ("font_size", "line_height", "block_size"):
         sizes = {chip[measure] for chip in (*standing, *kinds)}

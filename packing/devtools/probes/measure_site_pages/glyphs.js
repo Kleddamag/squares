@@ -140,7 +140,11 @@
     ["blockquote", "blockquote, blockquote p"],
     ["summary", "summary"],
     ["contents entry", ".kpress-toc a"],
-    ["colophon", ".colophon, .site-colophon, .site-colophon p"],
+    [
+      "colophon",
+      ".colophon, .site-colophon, .site-colophon p, " +
+        ":is(.colophon, .site-colophon) :is(.site-colophon-line, .site-colophon-part)",
+    ],
     ["h1", "h1"],
     ["h2", "h2"],
     ["h3", "h3"],

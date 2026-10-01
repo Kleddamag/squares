@@ -28,6 +28,11 @@ An entry that still holds one case of several is not superseded, and this report
 cases it no longer holds without refusing them: `T-047` holds `n = 26, 29, 30` and is
 beaten at `n = 11, 27, 28, 31`.
 
+What a table of results draws of a standing is its place on the frontier, `superseded`
+or `second certificate`, beside the result's status (`devtools.result_status`); the
+"Hide superseded" filter reads the same word. So this check is what holds that mark,
+and that filter, to the numbers.
+
 A value written as cut decimals, `3.8100257…`, stands for every number that starts so,
 and equals a bound that does. Two lanes are never mixed: a verified bound is not beaten
 by a higher reported one, which is what `current best, reported` is for.

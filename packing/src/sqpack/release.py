@@ -1,36 +1,49 @@
 """The version this project's reader-facing artifacts carry, and the rule that keeps it true.
 
-The explainer prints it in its credits and the atlas draws it in its footer, and the
-workbench and the videos show it too, so a release is stamped in one place and all of
-them follow. This is the publication's version, not the package's: `pyproject.toml`
-versions the code, and the two move for different reasons.
+The explainer prints it in its credits and every site page in its footer, the workbench
+shows it on its stage, and the atlas posters and the films carry it too, so a release is
+stamped in one place and all of them follow. This is the publication's version, not the
+package's: `pyproject.toml` versions the code, and the two move for different reasons.
 
 It is written `v0.4.1-f5e113` (the owner, 2026-09-22): the edition's semver core, then
 the first six characters of the last commit that changed the evidence and data. Two
 artifacts drawn from the same data carry the same version, whatever code commit built
 them. The rule that keeps that true without any artifact chasing its own hash:
 
-1. **Every artifact prints `PUBLICATION_EDITION`, whose hash is the pinned
-   `DATA_REVISION`.** Nothing reads git to stamp a version, so a render needs no history
-   -- the deploy's shallow checkout and a source tarball stamp the same string as a full
-   clone -- and the committed atlas, the page rendered beside it and a video built from
-   the same tree cannot disagree.
+1. **Every page prints `PUBLICATION_EDITION`, whose hash is the pinned `DATA_REVISION`.**
+   Nothing reads git to stamp a version, so a render needs no history -- the deploy's
+   shallow checkout and a source tarball stamp the same string as a full clone.
 2. **`DATA_REVISION` must be what git says** -- `data_revision`, the last commit that
    changed `DATA_PATHS`. `tests/test_release.py` fails when the two differ, wherever git
-   can answer; both pull-request behavioral shards check out full history, so every pull
+   can answer; the pull-request behavioral shards check out full history, so every pull
    request asks.
-3. **A commit that changes the data is followed by one that re-pins**: `DATA_REVISION`
-   set to the hash the failing test names, and the stamped artifacts rebuilt
-   (`build_known_best_atlas --update`). No commit can contain its own hash, so the pin
-   trails the data by one commit, as `PUBLICATION_REVISION` always trailed the content
-   it named. Only a branch's head has to agree: merges here are merge commits, so the
-   data commit a branch pinned is still the last one on `main` after it lands. If
-   `main`'s data also moved meanwhile, the merge is itself the new data commit, so the
-   pull request's merge ref fails the check until the branch merges `main` and re-pins.
-4. **The re-pinning commit is not itself a data commit.** The artifacts that carry the
-   stamp are excluded from the data (`DATA_EXCLUDED`); counting them would make each
-   re-stamp a new data commit, and the pin would chase its own hash forever. A test fails
-   when a text file inside the data paths carries the stamp without being excluded.
+3. **A commit that changes the data is followed by one that re-pins, and a re-pin is one
+   line**: `DATA_REVISION` set to the hash the failing test names, which
+   `python -m devtools.release_pin --update` writes. No commit can contain its own hash,
+   so the pin trails the data by one commit. Only a branch's head has to agree: merges
+   here are merge commits, so the data commit a branch pinned is still the last one on
+   `main` after it lands. If `main`'s data also moved meanwhile, the merge is itself the
+   new data commit, so the pull request's merge ref fails the check until the branch
+   merges `main` and re-pins. **Nothing is rebuilt for a re-pin.**
+4. **A drawn release asset states the data it was drawn from, and is never re-stamped.**
+   The atlas posters and the films are expensive to draw, so each is stamped once, with
+   the edition as it read when the asset was drawn (`edition_at`), and redrawn at a
+   version bump or on demand. A poster records the data commit and its date in its own
+   metadata (`devtools.build_known_best_atlas.CompositeIdentity`), so the stamp in its
+   footer is held to the poster's own record and not to the pin. Until 2026-10-01 the
+   posters printed the pin itself, and every data commit rewrote eight binaries to
+   change six characters: thirty re-pins in a row, 13.6 MB of blobs each, and not one
+   changed a card (`devtools.measure_release_assets --history`).
+5. **A poster may trail the data until the next version bump** (`COMPOSITES_MAY_TRAIL`;
+   the owner, 2026-10-01). While a poster's data revision is the pin, every claim on it
+   must agree with the current record. Once the pin has moved, the cards that differ
+   are listed by every check and fail none. A version bump redraws: a poster whose
+   stamp does not carry `PUBLICATION_VERSION` fails.
+6. **The re-pinning commit is not itself a data commit, and neither is a redraw.** The
+   artifacts that carry a stamp are excluded from the data (`DATA_EXCLUDED`); counting
+   them would make each redraw a new data commit, and the pin would chase its own hash
+   forever. A test fails when a text file inside the data paths carries the stamp
+   without being excluded.
 """
 
 from __future__ import annotations
@@ -153,10 +166,18 @@ DATA_EXCLUDED: tuple[str, ...] = (
 #: How many characters of that commit the version carries (the owner, 2026-09-22).
 DATA_REVISION_LENGTH = 6
 
+#: Whether an atlas poster may show data older than the pin between version bumps (rule
+#: 5; the owner, 2026-10-01: the large assets are regenerated "whenever we do an official
+#: site version number bump", and on demand). `True`: a card that differs from the
+#: current record is listed and fails nothing, once the pin has moved past the poster's
+#: own data revision. `False`: it fails, and the poster is redrawn whenever a card
+#: changes -- as 26 commits did in September 2026, at 13.6 MB of blobs each.
+COMPOSITES_MAY_TRAIL = True
+
 #: The last data commit, pinned in full: what `data_revision` returned when it was last
 #: re-pinned. Full rather than six characters so the drift check compares a commit, not
 #: a prefix.
-DATA_REVISION = "afd83121da989462650d9b39314e676c728fa7eb"
+DATA_REVISION = "1061d2bcede8c4a0885ecd15d17784dd9232c2e2"
 
 #: The version, written the one way it is ever written: `v0.4.1-f5e113`. Semver core,
 #: then the data revision, in the shape a build identifier takes everywhere else.
@@ -167,11 +188,22 @@ DATA_REVISION = "afd83121da989462650d9b39314e676c728fa7eb"
 #: are how they come to disagree.
 PUBLICATION_STAMP = f"{PUBLICATION_VERSION}-{DATA_REVISION[:DATA_REVISION_LENGTH]}"
 
+
+def edition_at(revision: str) -> str:
+    """The edition as an artifact drawn from the data commit `revision` writes it.
+
+    `PUBLICATION_EDITION` is this at the pin. A drawn release asset keeps the one it
+    was drawn with (rule 4), so its stamp is this at its own data revision.
+    """
+    stamp = f"{PUBLICATION_VERSION}-{revision[:DATA_REVISION_LENGTH]}"
+    return " ".join(part for part in (PUBLICATION_STATUS, stamp) if part)
+
+
 #: How the version is written wherever it is stamped: the stamp, with the status ahead
-#: of it while there is one. The atlas footer, the explainer's credits and every other
-#: artifact take this string whole, so none can disagree about whether the reader is
-#: holding a draft, nor about how the version is spelled.
-PUBLICATION_EDITION = " ".join(part for part in (PUBLICATION_STATUS, PUBLICATION_STAMP) if part)
+#: of it while there is one. The site's footer, the explainer's credits and the workbench
+#: take this string whole, so none can disagree about whether the reader is holding a
+#: draft, nor about how the version is spelled.
+PUBLICATION_EDITION = edition_at(DATA_REVISION)
 
 #: When the current edition was first published, written the way a reader reads it.
 PUBLICATION_DATE = PUBLICATION_HISTORY[0].first_published
@@ -180,6 +212,14 @@ PUBLICATION_DATE = PUBLICATION_HISTORY[0].first_published
 #: page puts at the top beside the current version, so a reader sees both how old the
 #: result is and how recently it was revised.
 FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
+
+#: When the explainer's own text last changed: the date its "Last revised" line prints.
+#: It is the author date of the last commit that changed the article
+#: (`devtools.artifact_dates` names the file and holds this to git), and it used to be
+#: `PUBLICATION_DATE`, the day the edition was first published, which stood still while
+#: the article changed under it: merging is the whole publish, so the text a reader sees
+#: moves between editions. Change it in the commit that changes the article.
+EXPLAINER_REVISED = "September 30, 2026"
 
 #: The commit the committed claim documents link to (`render_explainer.edition_file`), at
 #: this repository's short length. It is pinned for the reason `DATA_REVISION` is: those
@@ -236,6 +276,57 @@ def data_revision(repo: Path) -> str:
             f"at {revision[:12]}, so whether that commit changed the data cannot be seen"
         )
     return revision
+
+
+def commit_date(repo: Path, revision: str) -> str:
+    """The ISO date of the commit `revision` in `repo`: its author date, on the author's
+    own calendar, which is the day a reader would say the change was made.
+
+    The commit records its own offset, so the answer is the same on every machine. Raises
+    where git cannot say: outside a repository, or for a commit this clone does not have.
+    """
+    found = subprocess.run(
+        ["git", "-C", str(repo), "show", "-s", "--format=%as", f"{revision}^{{commit}}"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    day = found.stdout.strip()
+    if found.returncode != 0 or not day:
+        raise RuntimeError(
+            f"git cannot date {revision[:12]} in {repo}: "
+            f"{found.stderr.strip() or 'no such commit'}"
+        )
+    return day
+
+
+def last_change_date(repo: Path, *paths: str) -> str:
+    """The ISO date of the last change to any of `paths`: the latest author date among
+    the commits that changed one, merges excluded.
+
+    A merge is excluded because it is not when anyone wrote the text, and the latest date
+    is taken, not the first commit `git log` lists, because two branches merged out of
+    order list the earlier change first. Raises where git cannot say, and in a shallow
+    clone, where a change below the cut cannot be seen.
+    """
+    found = subprocess.run(
+        ["git", "-C", str(repo), "log", "--no-merges", "--format=%H %as", "--", *paths],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    changes = [line.split() for line in found.stdout.splitlines() if line.strip()]
+    if found.returncode != 0 or not changes:
+        raise RuntimeError(
+            f"git cannot date the last change to {', '.join(paths)} in {repo}: "
+            f"{found.stderr.strip() or 'no commit changes it'}"
+        )
+    if _shallow_boundary(repo):
+        raise RuntimeError(
+            f"git cannot date the last change to {', '.join(paths)} in {repo}: its "
+            "history is shallow, so a later change may lie below the cut"
+        )
+    return max(day for _commit, day in changes)
 
 
 def data_version(repo: Path) -> str:

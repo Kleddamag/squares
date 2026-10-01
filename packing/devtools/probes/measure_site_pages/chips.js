@@ -5,7 +5,8 @@
 // `white_space` is the chip's computed value, `nowrap` wherever the one chip rule holds.
 //
 // A chip is a `rung` for a rating (S, V or C), `kind` for what a result is, `standing`
-// for a result's standing, `novelty` for a novelty label, and `chip` for any other; its
+// for a chip of a result's status line (its status, who has the next move, and whether
+// it is superseded), `novelty` for a novelty label, and `chip` for any other; its
 // surface is a table, a popover, the rating ladders, a card or the prose. `scope` keeps
 // only the chips inside an element it matches, for what a press opened; without one,
 // the chips inside a popover are left out, since a closed popover shows none.
@@ -21,7 +22,7 @@
     if (chip.hasAttribute("data-kind")) {
       return "kind";
     }
-    if (chip.hasAttribute("data-standing")) {
+    if (["data-status", "data-activity", "data-standing"].some((name) => chip.hasAttribute(name))) {
       return "standing";
     }
     return chip.hasAttribute("data-novelty") ? "novelty" : "chip";

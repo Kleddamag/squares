@@ -824,7 +824,7 @@ def overview_page() -> Page:
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
-        "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
+        "STATUS_COUNTS": overview_sections.status_counts(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
     }

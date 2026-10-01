@@ -76,8 +76,7 @@ body {
      apart and a row gets harder to follow. */
   --site-table-max: 100rem;
   /* The space above and below every table, on screen: a site table with its filter bar,
-     the awaiting-replay disclosure, and a document's own table (paper-design.md,
-     Tables). */
+     and a document's own table (paper-design.md, Tables). */
   --site-table-space: 2rem;
   /* The measure a long list of cases wraps in, in the n column of a table of results: a
      result about five values or more sets them in the line, this many digits to a line
@@ -135,9 +134,8 @@ body {
 /* A data table's wide track bleeds as the atlas grid does, but only above
    `--site-table-bleed-from`: there it is exactly the wide track above, and past it the
    table grows a pixel for each pixel of window, to the gutters or `--site-table-max`.
-   Any `.site-wide` that is or holds a table wrap takes it, so a new table needs no rule;
-   the replay table keeps to its content and does not. */
-.site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)):not(.site-replay) {
+   Any `.site-wide` that is or holds a table wrap takes it, so a new table needs no rule. */
+.site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)) {
   --site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));
   --site-table-wide: min(
     var(--site-table-max),
@@ -403,6 +401,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.4;
   margin: 0;
   padding: 0 1rem var(--site-card-pad-block) var(--site-card-pad-start);
@@ -796,8 +795,7 @@ body {
 /* Every table stands `--site-table-space` clear of the text above and below it, on
    screen: the space is above a table's filter bar when it has one, which keeps its own
    small gap to the table, and below the table's wrap. A document's table, which KPress
-   wraps itself, takes the same token, and so does the awaiting-replay disclosure, whose
-   table sits flush under its summary. Print keeps KPress's own spacing. */
+   wraps itself, takes the same token. Print keeps KPress's own spacing. */
 .site-table-tools {
   display: flex;
   flex-wrap: wrap;
@@ -812,17 +810,12 @@ body {
   margin-block: var(--site-table-space) 0.5rem;
 }
 @media screen {
-  .kpress details.site-replay,
   .kpress-table-wrap,
   .site-table-wrap {
     margin-block: var(--site-table-space);
   }
-  .site-table-tools + .site-table-wrap,
-  .site-replay .site-table-wrap {
+  .site-table-tools + .site-table-wrap {
     margin-block-start: 0;
-  }
-  .site-replay .site-table-wrap {
-    margin-block-end: 0;
   }
 }
 /* On a narrow pane KPress lets a document's table run past the column, across the
@@ -1098,10 +1091,10 @@ body {
   display: block;
   margin-block-start: 0.3rem;
 }
-/* A result's standing sits under its kind, on a line of its own, one chip to each part
-   of it (`second certificate, reported` is two). The chips wrap between themselves, a
-   second one under the first where the cell is too narrow for both, and never inside
-   one: the column is as wide as its widest chip. */
+/* A result's status sits under its kind, on a line of its own: the status chip, then
+   who has the next move where the register records it, then `superseded` where the
+   result is. The chips wrap between themselves, one under another where the cell is too
+   narrow, and never inside one: the column is as wide as its widest chip. */
 .site-table .site-standing {
   display: block;
   margin-block-start: 0.3rem;
@@ -1146,7 +1139,8 @@ body {
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
    wide as its widest chip, since no chip wraps: the three rungs at 114px, and the
-   widest kind, "restricted optimality", at 180 where a row with one shows. The result
+   widest kind, "restricted optimality", at 180 where a row with one shows; no chip of
+   the status line is wider. The result
    column's floor is its 18rem (above): the widest piece of a formula a line cannot end
    inside is narrower than that, now that a long quotient may end a line after its
    solidus (`overview_data.breakable_quotients`). A result's records are no column of
@@ -1206,14 +1200,6 @@ body {
   margin-block-start: 0.3rem;
   min-width: 0;
 }
-.kpress .site-table .site-group-row th {
-  background: var(--site-wash);
-  color: var(--kpress-doc-text);
-  font-family: var(--kpress-font-sans);
-  font-weight: var(--site-font-weight-sans-medium);
-  padding-block: 0.6rem;
-  text-align: start;
-}
 
 .site-table .site-rungs {
   white-space: nowrap;
@@ -1225,8 +1211,8 @@ body {
 /* ---------- A table of results on a phone ----------
    Six columns do not fit 390px, and scrolling a table sideways to read one claim is the
    wrong trade: each row becomes a small card, id, cases and rungs on its first line,
-   then the claim with its records under it, and the credit and date; the standing sits
-   under the rungs. The results page's table and the overview's recent table are the one
+   then the claim with its records under it, and the credit and date; the status line
+   sits under the rungs. The results page's table and the overview's recent table are the one
    table (`.site-results`), so both take it. */
 @media (width < 40rem) {
   .site-results thead {
@@ -1268,8 +1254,15 @@ body {
   .site-results .site-col-n {
     grid-area: 1 / 2;
   }
+  /* The rungs' track is as wide as its content, and a status line of three chips
+     (`recorded`, `waiting on third party`, `superseded`) would take the whole card and
+     leave the cases and the credit no room. So the cell stops at two chips' width, and
+     a third chip wraps under them. */
   .site-results .site-rungs {
     grid-area: 1 / 3;
+  }
+  .kpress .site-results td.site-rungs {
+    max-width: 14.5rem;
   }
   .site-results td.site-col-n {
     text-align: start;
@@ -1320,7 +1313,7 @@ body {
   font-family: var(--kpress-font-sans);
   font-weight: var(--site-font-weight-sans-light);
 }
-.kpress .site-table tr[data-standing="superseded"] td {
+.kpress .site-table tr[data-current="false"] td {
   color: var(--site-support-color);
 }
 
@@ -1330,7 +1323,7 @@ body {
   background: none;
   border-block-end: 1px solid var(--kpress-doc-border);
 }
-.kpress .site-table tbody tr:not(.site-group-row):hover {
+.kpress .site-table tbody tr:hover {
   background: var(--site-wash);
 }
 /* A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) is
@@ -1426,58 +1419,6 @@ body {
   margin: 0;
   transform: none;
   width: 100%;
-}
-
-/* ---------- Reported, awaiting replay ----------
-   A closed disclosure under the recent list: its summary names how many cases and which,
-   and opens a compact table grouped by holder, each case linking to the frontier atlas. */
-.kpress details.site-replay {
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-  font-weight: var(--site-font-weight-sans-light);
-}
-/* The summary is a sentence, not kpress's caps label: its math stays lower case. */
-.kpress details.site-replay > summary {
-  color: var(--kpress-doc-text);
-  cursor: pointer;
-  display: list-item;
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-  font-variant-caps: normal;
-  font-weight: var(--site-font-weight-sans-medium);
-  letter-spacing: normal;
-  text-transform: none;
-}
-/* Four short columns: the table keeps to its content rather than the wide track. */
-.kpress .site-replay .site-replay-table {
-  font-variant-numeric: tabular-nums;
-  min-width: 0;
-  width: auto;
-}
-.kpress .site-replay .site-replay-table th {
-  text-align: start;
-}
-.kpress .site-replay .site-replay-table td {
-  white-space: nowrap;
-}
-/* On a phone the dates give way, so a case's two bounds fit on one line. */
-@media (width < 40rem) {
-  .kpress .site-replay .site-replay-table :is(thead th, td):nth-child(4) {
-    display: none;
-  }
-  .kpress .site-replay .site-replay-table :is(th, td) {
-    min-width: 0;
-    padding-inline: 0.35rem;
-  }
-}
-.kpress .site-replay .site-group-row th {
-  font-variant-caps: normal;
-  font-weight: var(--site-font-weight-sans-medium);
-  letter-spacing: normal;
-  text-transform: none;
-}
-.site-replay .site-group-row .site-chip {
-  margin-inline-start: 0.15rem;
 }
 
 /* ---------- Frontier atlas ---------- */

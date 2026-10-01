@@ -683,10 +683,12 @@ def test_artifact_cli_counts_the_saved_draw_and_leaves_its_original_bytes_intact
     capsys: pytest.CaptureFixture[str],
     renders: int | None,
 ) -> None:
+    # The stored file carries the publication's date; a fresh draw carries the clock's.
+    published = pdf.publication_date_text(pdf.REVISED).encode("ascii")
     raw = _HEADER + _pages(pdf.EXPECTED_PAGE_COUNT)
-    raw += b"/CreationDate (D:20260912000000+00'00') /ModDate (D:20260912000000+00'00')\n"
+    raw += b"/CreationDate (D:%s) /ModDate (D:%s)\n" % (published, published)
     stored = _artifact(monkeypatch, tmp_path, raw)
-    fresh = raw.replace(b"20260912000000", b"20260913000001")
+    fresh = raw.replace(published, b"20260913000001+00'00'")
     drawn: list[int] = []
     inspected: list[bytes] = []
     monkeypatch.setattr(pdf, "render_pdf_bytes", lambda: (drawn.append(1), fresh)[1])
@@ -699,6 +701,52 @@ def test_artifact_cli_counts_the_saved_draw_and_leaves_its_original_bytes_intact
     assert pdf.OUTPUT.read_bytes() == stored
     assert not diagnostics.exists(), "a successful check must create no failure artifacts"
     assert "stored artifact" in capsys.readouterr().out
+
+
+def _clocked(document: bytes, clock: bytes = b"20261001195544") -> bytes:
+    """A document as Chromium leaves it: both date fields, from the clock."""
+    return document + b"/CreationDate (D:%s+00'00')\n/ModDate (D:%s+00'00')\n" % (clock, clock)
+
+
+def test_update_dates_the_publication_by_its_revision_and_not_by_the_clock(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """What is published says when the paper was last revised, at noon UTC.
+
+    Two loads agree apart from the second Chromium printed each, which is all a fresh
+    draw's dates ever say. The file written carries the page's revised day in both
+    fields, at the length Chromium wrote, so nothing after them moves, and the artifact
+    check then passes against draws that carry the clock again.
+    """
+    _artifact(monkeypatch, tmp_path, b"an earlier publication")
+    _loads(monkeypatch, [_clocked(_MAJORITY), _clocked(_MAJORITY, b"20261001195551")])
+    pdf.update()
+    written = pdf.OUTPUT.read_bytes()
+    stated = pdf.publication_date_text(pdf.REVISED)
+    assert pdf.pdf_dates(written) == {"CreationDate": stated, "ModDate": stated}
+    assert written == pdf._with_receipt(
+        pdf.dated(_clocked(_MAJORITY), pdf.REVISED), pdf.PAGE.read_bytes()
+    )
+    assert len(written) == len(pdf._with_receipt(_clocked(_MAJORITY), pdf.PAGE.read_bytes()))
+
+    _loads(monkeypatch, [_clocked(_MAJORITY, b"20261002080000")])
+    pdf.check_artifact()
+
+
+def test_artifact_check_refuses_a_stored_pdf_dated_by_the_clock(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The comparisons ignore the two date fields, so this is the check that reads them.
+
+    The stored file reproduces exactly, and is refused for saying when it was drawn in
+    place of when the paper was revised.
+    """
+    stored = _artifact(monkeypatch, tmp_path, _clocked(_MAJORITY))
+    _loads(monkeypatch, [_clocked(_MAJORITY, b"20261002080000")])
+    with pytest.raises(SystemExit, match="dated by its last revision") as refused:
+        pdf.check_artifact()
+    assert "not by the clock that drew it" in str(refused.value)
+    assert pdf.OUTPUT.read_bytes() == stored
 
 
 @pytest.mark.parametrize("failure", ["fonts", "pagination"])

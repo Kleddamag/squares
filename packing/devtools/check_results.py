@@ -22,7 +22,10 @@ puts `after …` in the credit of a result of this project, to the sources the
 result's own evidence cites. It refuses a rung label in a `claim`, `composition`
 or `next_rung`, or in a case record, that asserts a rung no result the clause is
 about holds (`devtools.rung_prose`); a statement of what a rung needs is not such
-an assertion. Human review owns evidence relevance, claim
+an assertion. A result's status (recorded, reviewed, confirmed, incomplete) is
+derived from its rungs by `devtools.result_status` and never stored; this holds
+the one hand-recorded workflow fact, an entry's `activity`, to its fields, its
+link and its age. Human review owns evidence relevance, claim
 coverage, composition, significance, novelty, whether a headline says what its
 claim says, and the choice between kinds the record cannot tell apart.
 
@@ -39,6 +42,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from devtools.build_bound_citations import RECENT_SINCE
+from devtools.result_status import STATUSES, activity_problems, status
 from devtools.rung_prose import REGISTER_FIELDS, Standing, label_problems
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
 from sqpack.yamlio import safe_load
@@ -845,6 +849,7 @@ def main() -> int:
         problems.extend(headline_problems(record))
         problems.extend(kind_problems(record, cited, scopes))
         problems.extend(established_problems(record, register["last_reviewed"]))
+        problems.extend(activity_problems(record, str(register["last_reviewed"])))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):
@@ -919,11 +924,13 @@ def main() -> int:
             print(f"  {line}")
         return 1
 
+    held = [status(record, evidence_index) for record in results]
     print(
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
         "headline and date holds, every kind agrees with its claim and evidence, every "
-        "recent case lower bound is covered, every reader-tier mention exists"
+        "recent case lower bound is covered, every reader-tier mention exists; by status, "
+        + ", ".join(f"{held.count(name)} {name}" for name in STATUSES)
     )
     return 0
 

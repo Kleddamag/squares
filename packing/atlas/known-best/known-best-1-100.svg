@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:sqpack="https://github.com/jlevy/thinking-scratchpad/ns/sqpack/v1" width="2400" height="2896" viewBox="0 0 2400 2896" role="img" aria-labelledby="figure-title figure-description">
   <title id="figure-title">Best known packings of one through one hundred unit squares</title>
-  <desc id="figure-description">A ten-by-ten atlas of the retained best known unit-square packings for n equals 1 through 100. Each tile is normalized to its own container and labeled with n, the best known upper bound on the container side and, where the value is not yet settled, the best proved lower bound beneath it. A star in crimson marks a recent result, a lower bound proved since August 2026. Badges mark which side lengths are proved optimal, and whether a side length is pinned exactly by a radical or a minimal polynomial rather than only by a decimal. Citations for all results are available in the Squares Project: github.com/jlevy/squares.</desc>
+  <desc id="figure-description">A ten-by-ten atlas of the retained best known unit-square packings for n equals 1 through 100. Each tile is normalized to its own container and labeled with n, the best known upper bound on the container side and, where the value is not yet settled, the best proved lower bound beneath it. A star in crimson marks a recent result, a lower bound proved since August 2026. Badges mark which side lengths are proved optimal, and whether a side length is pinned exactly by a radical or a minimal polynomial rather than only by a decimal. Citations for all results are available in the Square Packing Project: github.com/jlevy/squares.</desc>
   <metadata>
     <sqpack:profile version="8">
       <sqpack:coordinates>mathematical-y-up; svg-y-down</sqpack:coordinates>
@@ -62,9 +62,9 @@
     <text x="1259.827" y="2752" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">shade indicates number of full-side contacts</text>
   </g>
   <text data-feature="explainer" x="709.572" y="2790" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f"><tspan font-style="italic">s</tspan><tspan dx="1.045">(</tspan><tspan font-style="italic">n</tspan><tspan dx="1.045">) is the side of the smallest square holding </tspan><tspan font-style="italic">n</tspan><tspan dx="1.045"> unit squares; deg is the algebraic degree of that side length</tspan></text>
-  <text data-feature="citations" x="1200" y="2817" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">Citations for all results are available in the Squares Project: github.com/jlevy/squares</text>
+  <text data-feature="citations" x="1200" y="2817" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">Citations for all results are available in the Square Packing Project: github.com/jlevy/squares</text>
   <text data-feature="credit" x="1200" y="2844" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">Diagram by Joshua Levy with assistance from Claude and Codex</text>
-  <text data-feature="release-stamp" x="1200" y="2871" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">v0.4.2-d3fc77</text>
+  <text data-feature="release-stamp" x="1200" y="2871" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#47525f">v0.4.2-b7850a</text>
   <g data-feature="packing-card" data-n="1" data-row="0" data-column="0" data-source-id="W-known-best-n001">
     <rect data-feature="container-outline" x="84" y="186" width="158" height="158" fill="#ffffff" stroke="#000000" stroke-width="1.15" />
     <polygon data-feature="square-fill" data-square="n-001-square-001" data-hue-index="0" data-shade-index="0" data-contact-sides="4" data-orientation-radians="0.0" points="84,344 242,344 242,186 84,186" fill="#257260" stroke="#000000" stroke-width="0.42" stroke-linejoin="round" data-angle-class="0" />

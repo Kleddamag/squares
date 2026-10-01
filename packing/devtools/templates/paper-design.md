@@ -625,11 +625,10 @@ it.
   frontier atlas, and the Papers page’s three paper cards lead to full pages the site
   serves, so each is a direct card that goes to its page in the same tab
   (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`, `think-w82r`).
-  Popovers are for records, targets that are not site pages of their own: a result, a
-  case, a repository document rendered for its card’s popover.
-  A direct card is a link and holds no other link, so what its note names is linked from
-  the prose beside it.
+  framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets that are not
+  site pages of their own: a result, a case, a repository document rendered for its
+  card’s popover. A direct card is a link and holds no other link, so what its note names
+  is linked from the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -1149,9 +1148,9 @@ about a line. Without scripts a filter cannot be changed, so nothing stays filte
 under `@media (scripting: none)` every row shows, and the bar, which would do nothing,
 does not. `tests/node/overview_table/` runs the script’s filters, alone and wired to a
 stand-in table, and `tests/test_overview.py` holds both pages to the identical bar and
-each to its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a
-browser on both pages, by pointer and by keyboard, and measures its label at 1280, 768
-and 390 pixels.
+each to its defaults.
+`tests/test_site_result_filters.py` uses Hide superseded in a browser on both pages, by
+pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1253,9 +1252,8 @@ and 390 pixels.
   `every-result`, a subtitle, the prose that defines the ratings and standings, and the
   table under its filters (**Result filters**, above), which start with significance at
   All, no maximum age and Hide superseded clear, so every result shows, newest first, in
-  one flat list.
-  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
-  recent table and replay table, and each case record’s results link.
+  one flat list. Each row keeps its id, the result’s own (`#t-018`), which is where the
+  overview’s recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”

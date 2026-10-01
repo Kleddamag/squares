@@ -23,8 +23,8 @@ We and several others have proved new results as part of this project for low va
 $n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
 As part of a collaborative open effort, several people have built on results from this
 project or developed other new proofs, and this site
-[independently checks and documents](#verification-ladders) the proofs and
-certificates behind them.
+[independently checks and documents](#verification-ladders) the proofs and certificates
+behind them.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them

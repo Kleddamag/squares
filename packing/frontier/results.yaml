@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-09-30'
+last_reviewed: '2026-10-01'
 results:
   - id: T-001
     registered: '2026-08-31'
@@ -3470,6 +3470,16 @@ results:
       2026-09-27 checker-scaling review is recorded on the replay entry only. n = 27 is in
       both this entry and T-045, because its case's reported field still cites the report
       entry while its verified field cites the replay.
+    activity:
+      state: in-analysis
+      what: >-
+        The complete 201-direction replays of the 45 standing certificates this record has
+        not yet replayed. Twenty-one passed on 2026-09-29, at n = 18, 19, 20, 26, 29, 30,
+        38, 39, 40, 41, 52, 53, 59, 61, 67, 69, 71, 75, 78, 86 and 95, with receipts on the
+        transfer branches claude/replay-wand125-rect-b02, b04, b07, b08 and b09 that are not
+        yet merged into the packets or entered as evidence. The other 24 have no receipt.
+      since: '2026-09-29'
+      link: think-20mv
 
   - id: T-047
     registered: '2026-09-29'
@@ -3604,6 +3614,16 @@ results:
       2026-09-28 verifier review is not recorded as an external_review on the report entry.
       The same day's 147/20 and 3659/500 rungs are superseded within the release and are not
       registered.
+    activity:
+      state: in-analysis
+      what: >-
+        The complete L740 replay passed here on 2026-09-29 at all 201 angles
+        (ALL_ANGLES_VERIFIED_AND_REPLAYED, FULL_REPLAY_MATCHES_SHIPPED), with receipts on
+        the transfer branch claude/replay-wand125-n50-l740-local. Its evidence entry, the
+        verified lane of n = 50 and the monotone transfers to n = 51 to 53 are not yet in
+        the record.
+      since: '2026-09-29'
+      link: think-nnlg
 
   - id: T-049
     registered: '2026-09-29'
@@ -4099,6 +4119,15 @@ results:
       that run, and two frontier shards of 15,839 parents each were still running. C0
       because the 2026-09-28 point-only review is recorded as an external_review on the
       n = 45 replay entry only. The Lean build was not run here.
+    activity:
+      state: in-analysis
+      what: >-
+        The complete portable replay passed here on 2026-09-29, both frontier shards
+        included (FRESH_ALL_DOMAIN_REPLAY_VERIFIED), with receipts on the transfer branch
+        claude/replay-wand125-n21-point. The comparison with the pinned linkage
+        (n21-compare) and the replay's evidence entry are not yet in the record.
+      since: '2026-09-29'
+      link: think-ifsv
 
   - id: T-056
     registered: '2026-09-29'

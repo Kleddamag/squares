@@ -2159,9 +2159,7 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
     # T-062 to T-064 close twelve cases in the reported lane only. Keep this
     # expectation independent of the production count tuple.
     reported_proved, reported_open = REPORTED_LANE_SPLIT[corpus.label]
-    assert (
-        f"reported lane: {reported_proved} proved, {reported_open} open" in stdout
-    )
+    assert f"reported lane: {reported_proved} proved, {reported_open} open" in stdout
 
 
 def _budget_context(*, timeout_seconds: float, explicit: bool) -> validate.Context:

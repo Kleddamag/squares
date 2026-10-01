@@ -1,6 +1,6 @@
 # Synopsis: The `s(n)` Program
 
-**Date:** 2026-09-30
+**Date:** 2026-10-01
 
 **Status:** Living document, revised whenever a result lands.
 
@@ -8,7 +8,8 @@
 what it is doing next.
 
 **Evidence cutoff:** Includes the independently audited T-060 global proof replay of
-2026-09-30. Earlier record-state and validation revisions are retained in
+2026-09-30 and Session 165’s seven reviewed $n = 17$ rounds of 2026-10-01. Earlier
+record-state and validation revisions are retained in
 [Session 128](packing/campaign/agent-sessions/session-128-research-state-rollup.md).
 
 > Every number here also appears in a schema-validated artifact in this repository, or
@@ -38,7 +39,7 @@ and contribute to the work.
 Those principles govern four capabilities built so far:
 
 1. **Know the frontier.** A schema-validated reported and formal claim register for
-   every $n \le 100$, reconciled against a dated named-source inventory, with a
+   every $n \le 324$, reconciled against a dated named-source inventory, with a
    generated reader-first status view and a local archive of the primary literature.
 2. **Inspect, check, and verify witnesses.** One interchange accepts supported decimal,
    rational, and algebraic geometry.
@@ -134,11 +135,12 @@ its binary64-enclosure `zmx2`, which share their author, point test and symmetry
 and differ in how they close germs, and $s(12) \ge 15680/3951$ at `V4/C4`; its
 $s(21) \ge 5000/1001$ was superseded by the same author’s mixed covers of 27 September,
 weighted points plus mass on interior grid-line segments, which prove $s(21) = 5$ and
-$s(45) = 7$, both `V4/C3`. Its case-free proof of Bentz’s $s(13) = 4$ is recorded as a
-report. wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at
-`39d8ecc` for $n = 18$ to $95$, built with Tokoharu’s solver and decided by Tokoharu’s
-reviewed interval verifier, are verified at $n = 27$, $28$ by monotonicity, and $31$,
-and reported at the other counts until their replays run.
+$s(45) = 7$, both `V4/C3`. Its case-free proof of Bentz’s $s(13) = 4$ was kernel-checked
+in Lean here on 30 September and is recorded under T-006. wand125’s rectangle-density
+certificates, 44 at `ad43d29` and 50 standing at `39d8ecc` for $n = 18$ to $95$, built
+with Tokoharu’s solver and decided by Tokoharu’s reviewed interval verifier, are
+verified at $n = 27$, $28$ by monotonicity, and $31$, and reported at the other counts
+until their replays run.
 wand125’s point-only routes to $s(21) = 5$ and $s(45) = 7$, the latter verified here as
 a second certificate, and its reported $s(50) \ge 37/5$ followed on 28 September.
 Guzhou0806’s continuation of R052, $s(17) > 4.62003$, superseded by `v1.1.0`, is
@@ -151,6 +153,11 @@ Every result this project has registered, in the reading order its significance 
 set. The full claims, the rationale behind each score, and the next evidence-improving
 action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the `V`,
 `C` and `S` axes are defined in [`epistemics.md`](epistemics.md).
+The table’s rungs are the current ones.
+A rung named in the prose above, or elsewhere in this synopsis, is the one in force when
+that passage was written:
+[What Changed on 2026-09-30](epistemics.md#what-changed-on-2026-09-30) moved every `V4`
+to `V3` and every `C4` or `C5` to `C3`.
 
 <!-- BEGIN GENERATED: results-headline (devtools.render_results_headline) -->
 
@@ -453,7 +460,7 @@ The detailed implementation statuses remain in [What Is Built](#what-is-built).
 | --- | --- | --- | --- |
 | Research record and process | Reconstruct hypotheses, experiments, sessions, effort, and known failures | A closed bead or plausible output is not evidence until the artifact, landed tree, and generated views agree | [Ledger](packing/campaign/ledger.md), [defect log](defects.md), and [confidence ladder](packing/campaign/agendas/agenda-001-basin-confidence-ladder.md) |
 | Agent loop and throughput | Run bounded phases with declared clocks, checkpoint each result, and select the next dependency-ready bead | Portable recovery and final receipts remain incomplete; wall-clock budgets do not define equal scientific work under load | [Campaign runbook](packing/campaign/README.md), [launch agenda](docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md#the-autonomous-agent-loop), and [D-126](defects.md) |
-| Frontier and literature | Read reported and verified bounds side by side through $n = 100$; reconcile the named public sources and retain conflicts | Most reported records still lack a public formal witness; dated named-source coverage is not universal web completeness | [`frontier/STATUS.md`](packing/frontier/STATUS.md), [`frontier/`](packing/frontier/README.md), and [`resources/`](packing/resources/README.md) |
+| Frontier and literature | Read reported and verified bounds side by side through $n = 324$; reconcile the named public sources and retain conflicts | Most reported records still lack a public formal witness; dated named-source coverage is not universal web completeness | [`frontier/STATUS.md`](packing/frontier/STATUS.md), [`frontier/`](packing/frontier/README.md), and [`resources/`](packing/resources/README.md) |
 | Witness inspection and verification | Inspect or numerically check supported decimal geometry; verify rational and certified algebraic witnesses exactly | Generic interval-certification components are built, but the arbitrary-`Witness/v2` public command is not exposed | [Exact layer](#the-exact-layerbuilt) and [capability ladder](#verification-capability-ladder) |
 | Numerical refinement | Polish and compare fixed-cell controls above the measured solver floor | A stopped quench is neither certified stationary nor comparable by wall-clock budget under load | [Refinement layer](#the-refinement-layerbuilt-with-a-floor) and [D-021, D-052, D-126](defects.md) |
 | Exact local geometry and proof | Run the specialized small-`n`, Trump, and Stromquist checkers; this is the most productive mathematical lane so far | There is no generic proof-synthesis or interval branch-and-bound pipeline | [Proof lane](#the-proof-lanebuilt-and-producing-theorems) |
@@ -4052,7 +4059,7 @@ Where the program has spent effort, and what came of it.
 | 16 | proved, $4$ | $4$ | proved not-below control | The valid replacement for the old $n=12$ guard: any reported side below $4$ is known to be invalid |
 | 17 | open | $4.67553009\ldots$ (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of $0^{\circ}$, $+39.80496^{\circ}$, and $-36.62379^{\circ}$. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports $5.0$, the trivial $5\times5$ grid, on all five binary64 screening seeds |
 | 61, 78, 97 | open, $m^2 - 3$ | $8$, $9$, $10$ (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at $\arctan(3/4)$ is registered and **not yet made** |
-| 1–100 | 39 proved, 61 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
+| 1–324 | 63 proved, 261 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
 
 Three facts about this table drive the strategy.
 
@@ -4478,7 +4485,8 @@ packing. [T-011](packing/frontier/RESULTS.md) verifies the algebraic witness and
 [T-060](packing/frontier/RESULTS.md) supplies the matching global lower bound for
 arbitrarily rotated unit squares with disjoint interiors and boundary contact allowed.
 The latter is Queuingtheorydotcom’s Astra-assisted proof, building on this project and
-Kleddamag, independently replayed and mathematically audited here at `V4/C5/S5`.
+Kleddamag, independently replayed and mathematically audited here at `V3/C3/S5`:
+machine-checked, with its review record pending.
 
 The [proof review](docs/project/reviews/review-2026-09-29-n11-optimality.md) maps the
 2,184 canonical patterns, 2,180 exclusions, four symmetric survivors, exact D4 bridge,

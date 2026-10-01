@@ -965,13 +965,14 @@ it.
 
 - **Tables.** Every data table is one component, `.site-table` on a KPress table, in a
   `.site-table-wrap` that scrolls sideways if the table cannot fit.
-  It is set in the sans face at the note size, with sortable headers, filters above and
-  group rows. A row with detail opens its popover, and no cell expands on its own (**Row
-  popovers**, below). Rows are separated by a light rule, not zebra stripes, and a row
-  takes the wash on hover.
-  Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit at
-  the bottom of their cell, aligned as their column is: text columns to the start,
-  number columns (`.num`, tabular figures) to the end.
+  It is set in the sans face at the note size, with sortable headers and filters above.
+  A table may divide its rows under group rows, as the awaiting-replay table does by
+  holder; a table of results does not.
+  A row with detail opens its popover, and no cell expands on its own (**Row popovers**,
+  below). Rows are separated by a light rule, not zebra stripes, and a row takes the wash
+  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers
+  sit at the bottom of their cell, aligned as their column is: text columns to the
+  start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) stay on one line and as narrow as their content, which leaves the
   spare width to the long text column.
@@ -1112,9 +1113,12 @@ Max age is a number of days, and empty is no limit. There is no date range.
   which decides only which rows start `hidden` and the count written beside them; the
   script settles both again on load.
 
-- **Group headings.** A group heading shows while a row under it does: one with no row
-  left is hidden with them, in the HTML for the default.
-  A sort hides the group headings, since the rows are then no longer in their groups.
+- **One flat list.** A table of results has no heading row among its rows, on either
+  page: every row is a result, in one order, newest first by the date the table shows,
+  until a reader sorts it.
+  Whose a result is, and what it builds on, is read from its credit, and the Source
+  filter narrows the table to this project’s results or to others’.
+  `RESULTS.md`, the generated register document, keeps its groups.
 
 - **A row named by the address** (`all-results.html#t-048`) shows whatever the filters
   hide, so a link to a result never lands on nothing.
@@ -1130,13 +1134,12 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 The bar wraps onto further lines as the page narrows; on a phone each control takes
 about a line. Without scripts a filter cannot be changed, so nothing stays filtered:
-under `@media (scripting: none)` every row shows, each group under its heading, and the
-bar, which would do nothing, does not.
-`tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
-table, and `tests/test_overview.py` holds both pages to the identical bar and each to
-its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a browser on
-both pages, by pointer and by keyboard, and measures its label at 1280, 768 and 390
-pixels.
+under `@media (scripting: none)` every row shows, and the bar, which would do nothing,
+does not. `tests/node/overview_table/` runs the script’s filters, alone and wired to a
+stand-in table, and `tests/test_overview.py` holds both pages to the identical bar and
+each to its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a
+browser on both pages, by pointer and by keyboard, and measures its label at 1280, 768
+and 390 pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1237,7 +1240,8 @@ pixels.
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
   `every-result`, a subtitle, the prose that defines the ratings and standings, and the
   table under its filters (**Result filters**, above), which start with significance at
-  All, no maximum age and Hide superseded clear, so every result shows.
+  All, no maximum age and Hide superseded clear, so every result shows, newest first, in
+  one flat list.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in

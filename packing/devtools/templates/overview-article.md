@@ -38,11 +38,11 @@ A result by others is registered as *reported* when its source is taken in, and 
 *verified* only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;
 [`epistemics.md`](epistemics.html#results-by-others) states the policy.
-The table lists every result since {{RECENT_FROM}}, newest first, each dated by its
-publication if it is by others and by the day it was established if it is this
-project’s, with its rungs and its standing: *current best* where a verified case bound
-rests on it now, and otherwise why not.
-It starts filtered to significance S4 and up; choose All to see every row.
+The table lists every result, newest first, each dated by its publication if it is by
+others and by the day it was established if it is this project’s, with its rungs and its
+standing: *current best* where a verified case bound rests on it now, and otherwise why
+not. It starts filtered to significance S4 and up and to a maximum age of 180 days;
+choose All and clear Max age to see every row.
 
 {{RECENT}}
 

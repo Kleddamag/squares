@@ -8,6 +8,7 @@ import html.parser
 import re
 from collections import Counter
 from collections.abc import Callable
+from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import cast
@@ -1119,20 +1120,22 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert exact <= shown
 
 
-def test_the_recent_table_lists_every_result_since_august_filtered_to_s4(
+def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
     page: str, overview: overview_data.Overview
 ) -> None:
-    """Every result dated on or after 1 August 2026 is a row, and none before it; the
-    Significance filter starts at S4 and up, with the rows below it hidden in the HTML
-    and the count already written, so the first paint is the filtered table."""
-    assert overview_sections.RECENT_FROM.isoformat() == "2026-08-01"
-    since = [r for r in overview.results if r.dated[1] >= "2026-08-01"]
-    before = [r for r in overview.results if r.dated[1] < "2026-08-01"]
-    assert before, "the floor should leave older results to the results page"
+    """Every result is a row, and no date the page fixes leaves one out: what makes the
+    table recent is where its bar starts, Significance at S4 and up and Max age at 180
+    days. The rows outside those are hidden in the HTML, their age measured from the
+    register's own reference date, and the count is already written, so the first paint
+    is the filtered table."""
+    defaults = overview_sections.RECENT_DEFAULTS
+    assert defaults == overview_sections.FilterDefaults(significance=4, max_age=180)
+    assert not hasattr(overview_sections, "RECENT_FROM")
     recent = _recent_table(page)
     listed = re.findall(r'<tr data-result="(t-\d+)"', recent)
-    assert sorted(listed) == sorted(r.id.lower() for r in since)
-    assert not {r.id.lower() for r in before} & set(listed)
+    assert sorted(listed) == sorted(r.id.lower() for r in overview.results)
+    dates = [overview_sections.first_day(r.dated[1]) for r in overview.results]
+    assert min(dates) < "2026-08-01", "the table should reach back past the old floor"
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     tools = _filter_bar(section)
     assert section.index(tools) < section.index(recent)
@@ -1142,18 +1145,78 @@ def test_the_recent_table_lists_every_result_since_august_filtered_to_s4(
     assert ("4", " selected", "S4 and up") in options
     assert ("3", "", "S3 and up") in options
     assert options[0] == ("", "", "All")
+    assert (
+        '<label>Max age <input type="number" data-filter="date" data-bound="age" '
+        'min="0" placeholder="any" value="180"> days</label>'
+    ) in tools
+    reference = overview_sections.reference_date(overview)
+    cutoff = (reference - timedelta(days=180)).isoformat()
     shown = 0
-    for result in since:
+    for result in overview.results:
         row = _recent_row(recent, result.id)
         score = result.record["significance"]["score"]
+        dated = overview_sections.first_day(result.dated[1])
         assert f'data-s="{score}"' in row, result.id
-        assert (" hidden>" in row.split(">", 1)[0] + ">") == (score < 4), result.id
-        shown += score >= 4
-    assert 0 < shown < len(since)
-    assert f"{shown} of {len(since)} results</span>" in tools
-    text = re.sub(r"<[^>]+>", "", section)
-    assert "every result since 1 August 2026" in text
-    assert "It starts filtered to significance S4 and up; choose All to see every row." in text
+        assert f'data-date="{dated}"' in row, result.id
+        keeps = score >= 4 and dated >= cutoff
+        assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
+        shown += keeps
+    assert 0 < shown < len(overview.results)
+    assert f"{shown} of {len(overview.results)} results</span>" in tools
+    text = " ".join(re.sub(r"<[^>]+>", "", section).split())
+    assert "The table lists every result, newest first," in text
+    assert "1 August" not in text
+    assert (
+        "It starts filtered to significance S4 and up and to a maximum age of 180 days; "
+        "choose All and clear Max age to see every row."
+    ) in text
+
+
+def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
+    overview: overview_data.Overview, register: list[dict]
+) -> None:
+    """The rows a render starts `hidden`, and the count beside them, are measured from
+    the newest `registered` date in the register, so two renders of one tree are the
+    same bytes whatever day they run on. The script measures again from the reader's
+    day (`tests/node/overview_table/`), by the same reckoning: a row dated exactly the
+    maximum age ago still shows."""
+    reference = overview_sections.reference_date(overview)
+    assert reference == max(date.fromisoformat(str(r["registered"])) for r in register)
+    source = Path(overview_sections.__file__).read_text(encoding="utf-8")
+    for clock in ("today()", "now()", "time.time"):
+        assert clock not in source, clock
+    # The same answer `overview/table.js` gives (`ageCutoff`), which its Node test pins.
+    assert overview_sections.age_cutoff(date(2026, 9, 30), 180) == "2026-04-03"
+    assert overview_sections.age_cutoff(date(2026, 10, 1), 0) == "2026-10-01"
+    assert overview_sections.age_cutoff(date(2024, 3, 1), 1) == "2024-02-29"
+
+    def result(dated: str, score: int) -> overview_data.Result:
+        record = {
+            "id": "T-900",
+            "scope": {"n_values": [11]},
+            "established": dated,
+            "registered": "2026-09-30",
+            "significance": {"score": score},
+        }
+        return overview_data.Result(record, group="", credit="", ours=True)
+
+    shows = overview_sections.shown_by_default
+    recent = overview_sections.RECENT_DEFAULTS
+    every = overview_sections.RESULTS_DEFAULTS
+    assert every == overview_sections.FilterDefaults(significance=None, max_age=None)
+    day = date(2026, 9, 30)
+    assert shows(result("2026-04-03", 4), recent, day)
+    assert not shows(result("2026-04-02", 5), recent, day)
+    assert not shows(result("2026-09-29", 3), recent, day)
+    assert not shows(result("1979", 5), recent, day)
+    # A result dated after the reference is no older than any age.
+    assert shows(result("2026-10-15", 4), recent, day)
+    # The same row a day later is a day older.
+    assert not shows(result("2026-04-03", 4), recent, date(2026, 10, 1))
+    for dated, score in (("1979", 2), ("2026-04-02", 3), ("2026-09-29", 5)):
+        assert shows(result(dated, score), every, day), dated
+    assert shows(result("1979", 4), overview_sections.FilterDefaults(significance=4), day)
+    assert not shows(result("1979", 2), overview_sections.FilterDefaults(max_age=30), day)
 
 
 def test_the_recent_table_splits_method_credit_and_standing() -> None:
@@ -2644,8 +2707,7 @@ RESULT_FILTERS = [
     ("standing", ""),
     ("source", ""),
     ("n", "covers"),
-    ("date", "from"),
-    ("date", "to"),
+    ("date", "age"),
 ]
 
 _COUNT = re.compile(r'(<span class="site-count"[^>]*>)[^<]*</span>')
@@ -2675,29 +2737,37 @@ def _controls(bar: str) -> list[tuple[str, str]]:
     return found
 
 
-def test_both_tables_of_results_carry_the_identical_filter_set_and_default(
-    page: str, results: str
-) -> None:
+def _without_defaults(bar: str) -> str:
+    """A bar less what is a table's own: its count, which option each select starts at
+    and the value an input starts with."""
+    bar = _COUNT.sub(r"\1</span>", bar).replace(" selected>", ">")
+    return re.sub(r'(<input\b[^>]*?) value="[^"]*"', r"\1", bar)
+
+
+def test_both_tables_of_results_carry_the_identical_filter_set(page: str, results: str) -> None:
     """The overview's recent table and the results page's table sit under one bar: the
-    same controls with the same choices in the same order, starting from the same
-    default, Significance at S4 and up and everything else at All. Only the count, which
-    is each table's own, differs."""
+    same controls with the same choices in the same order. They differ only in where
+    two of them start, and in the count. Recent Results starts at Significance S4 and up
+    and a maximum age of 180 days; the results page starts with both off, and every
+    other control starts at All on both. No control is a date, and none is a range."""
     here = _filter_bar(page.split('id="recent-results"', 1)[1])
     there = _filter_bar(results)
-    assert _COUNT.sub(r"\1</span>", here) == _COUNT.sub(r"\1</span>", there)
+    assert _without_defaults(here) == _without_defaults(there)
     assert here != there
-    assert _controls(here) == RESULT_FILTERS
-    assert here.count(" selected>") == here.count("<select ") == 5
-    assert dict(_SELECTED.findall(here)) == {
-        "s": "4",
-        "v": "",
-        "c": "",
-        "standing": "",
-        "source": "",
-    }
-    for control in re.findall(r"<input\b[^>]*>", here):
-        assert " value=" not in control, control
-        assert " checked" not in control, control
+    assert _controls(here) == _controls(there) == RESULT_FILTERS
+    everything = {"s": "", "v": "", "c": "", "standing": "", "source": ""}
+    for bar in (here, there):
+        assert bar.count(" selected>") == bar.count("<select ") == 5
+        assert bar.count("<input ") == 2
+        assert 'type="date"' not in bar
+        assert " checked" not in bar
+        assert "<label>Max age <input " in bar
+        assert "> days</label>" in bar
+    assert dict(_SELECTED.findall(here)) == everything | {"s": "4"}
+    assert dict(_SELECTED.findall(there)) == everything
+    started = r'<input\b[^>]*data-bound="([a-z]+)"[^>]* value="([^"]*)"'
+    assert re.findall(started, here) == [("age", "180")]
+    assert re.findall(started, there) == []
     assert page.count('class="site-table-tools site-result-filters"') == 1
     assert results.count('class="site-table-tools site-result-filters"') == 1
 
@@ -2705,19 +2775,33 @@ def test_both_tables_of_results_carry_the_identical_filter_set_and_default(
 def test_the_filter_bar_is_one_helpers_and_reads_the_whole_register(
     overview: overview_data.Overview,
 ) -> None:
-    """`result_filters` writes the bar for both tables. Its choices come from the whole
-    register, so a table that lists fewer results offers the same ones; only its count
-    is the table's. Each rung select offers the rubric's levels above the lowest as
-    floors, the top one bare."""
+    """`result_filters` writes the bar for both tables, each passing where its own
+    starts. Its choices come from the whole register, so a table that lists fewer
+    results offers the same ones; only its count is the table's. Each rung select offers
+    the rubric's levels above the lowest as floors, the top one bare."""
     recent = overview_sections.recent_results(overview)
-    assert 0 < len(recent) < len(overview.results)
-    full = overview_sections.result_filters(overview, overview.results)
-    part = overview_sections.result_filters(overview, recent)
+    assert sorted(r.id for r in recent) == sorted(r.id for r in overview.results)
+    assert [r.id for r in recent] == [
+        r.id
+        for r in sorted(
+            overview.results,
+            key=lambda r: (overview_sections.first_day(r.dated[1]), r.id),
+            reverse=True,
+        )
+    ]
+    every = overview_sections.RESULTS_DEFAULTS
+    full = overview_sections.result_filters(overview, overview.results, every)
+    part = overview_sections.result_filters(overview, recent, overview_sections.RECENT_DEFAULTS)
+    few = overview_sections.result_filters(overview, recent[:3], every)
     assert full in overview_sections.results_table(overview)
     assert part in overview_sections.recent_table(overview)
-    assert _COUNT.sub("", full) == _COUNT.sub("", part)
-    assert overview_sections.result_filters(overview, []).endswith(">0 results</span></div>")
-    assert overview_sections.SIGNIFICANCE_DEFAULT == 4
+    assert few.endswith(">3 results</span></div>")
+    assert _COUNT.sub("", full) == _COUNT.sub("", few)
+    assert _without_defaults(full) == _without_defaults(part)
+    for defaults in (every, overview_sections.RECENT_DEFAULTS):
+        assert overview_sections.result_filters(overview, [], defaults).endswith(
+            ">0 results</span></div>"
+        )
     assert overview_sections.rung_options("S") == [
         ("", "All"),
         ("2", "S2 and up"),
@@ -2736,8 +2820,8 @@ def test_the_filter_bar_is_one_helpers_and_reads_the_whole_register(
         overview_sections.standing_key(result.standing) for result in overview.results
     }
     assert f' min="1" max="{max(overview.cases)}" ' in full
-    dates = sorted(overview_sections.first_day(r.dated[1]) for r in overview.results)
-    assert full.count(f' min="{dates[0]}" max="{dates[-1]}">') == 2
+    assert 'data-bound="age" min="0" placeholder="any"> days</label>' in full
+    assert 'data-bound="age" min="0" placeholder="any" value="180"> days</label>' in part
     assert overview_sections.count_text(3, 3) == "3 results"
     assert overview_sections.count_text(2, 3) == "2 of 3 results"
 
@@ -2797,32 +2881,53 @@ def test_a_results_cases_and_date_are_written_for_the_filters() -> None:
     assert overview_sections.first_day("2026-09-04") == "2026-09-04"
 
 
-def test_rows_below_the_default_are_hidden_in_the_html_and_stay_in_it(
+def test_the_results_page_starts_with_every_result_showing(
     results: str, overview: overview_data.Overview
 ) -> None:
-    """On the results page as on the overview, a row below S4 is `hidden` in the HTML,
-    never left out of it, and the count is written for the rows left, so the first
-    paint is the filtered table. A group heading with no row left under it is hidden
-    with them."""
-    shown = 0
+    """The results page's bar starts with Significance at All and no maximum age, so no
+    row and no group heading is `hidden` in its HTML and its count is the whole
+    register's."""
     for result in overview.results:
         tag = _row(results, result.id).split(">", 1)[0] + ">"
-        below = result.record["significance"]["score"] < 4
-        assert overview_sections.shown_by_default(result) == (not below), result.id
-        assert tag.endswith(" hidden>") == below, result.id
-        shown += not below
-    assert 0 < shown < len(overview.results)
-    assert f"{shown} of {len(overview.results)} results</span>" in _filter_bar(results)
+        assert not tag.endswith(" hidden>"), result.id
+    assert f">{len(overview.results)} results</span>" in _filter_bar(results)
     headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', results)
     assert len(headings) == len(overview.groups)
+    assert not any(headings)
+    text = " ".join(re.sub(r"<[^>]+>", "", results).split())
+    assert "The table starts with every result showing." in text
+    assert "case and age, and they combine." in text
+    assert "starts filtered" not in text
+
+
+def test_rows_outside_a_tables_defaults_are_hidden_in_the_html_and_stay_in_it(
+    overview: overview_data.Overview,
+) -> None:
+    """Under defaults that hide rows, as the overview's are, a row outside them is
+    `hidden` in the HTML, never left out of it, and the count is written for the rows
+    left, so the first paint is the filtered table. A group heading with no row left
+    under it is hidden with them. The results table is the one with groups, so it is
+    rendered here under the overview's defaults."""
+    defaults = overview_sections.RECENT_DEFAULTS
+    reference = overview_sections.reference_date(overview)
+    table = overview_sections.results_table(overview, defaults)
+    shown = 0
+    for result in overview.results:
+        tag = _row(table, result.id).split(">", 1)[0] + ">"
+        keeps = overview_sections.shown_by_default(result, defaults, reference)
+        assert tag.endswith(" hidden>") == (not keeps), result.id
+        shown += keeps
+    assert 0 < shown < len(overview.results)
+    assert f"{shown} of {len(overview.results)} results</span>" in _filter_bar(table)
+    headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', table)
+    assert len(headings) == len(overview.groups)
     for hidden, (title, members) in zip(headings, overview.groups, strict=True):
-        left = any(overview_sections.shown_by_default(result) for result in members)
+        left = any(
+            overview_sections.shown_by_default(result, defaults, reference)
+            for result in members
+        )
         assert bool(hidden) == (not left), title
     assert {bool(hidden) for hidden in headings} == {True, False}
-    text = re.sub(r"<[^>]+>", "", results)
-    assert (
-        "The table starts filtered to significance S4 and up; choose All to see every" in text
-    )
 
 
 def test_a_row_named_by_the_address_shows_whatever_the_filters_hide() -> None:

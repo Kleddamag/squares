@@ -273,11 +273,11 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
 2. **The Square Packing Problem.** Brief, and carrying no bound or open-case claim,
    followed by cards for the explainer, the tutorial, the workbench and the frontier
    atlas.
-3. **Recent Results.** One table (date, result, method, credit, status) of every result
-   since 1 August 2026, newest first, filtered by default to significance S4 and up,
-   with a link to the full table on `all-results.html`. It replaces the headline cards,
-   the exact-value cards and the recent-changes list, and is followed by the cases
-   awaiting a replay.
+3. **Recent Results.** One table (date, result, method, credit, status) of every result,
+   newest first, filtered by default to significance S4 and up and a maximum age of 180
+   days, with a link to the full table on `all-results.html`. It replaces the headline
+   cards, the exact-value cards and the recent-changes list, and is followed by the
+   cases awaiting a replay.
 4. **Verification at a Glance.** One card per rung dimension (Verification,
    Confirmation, Significance) in place of the counts and stacked bar.
 5. **The Atlas.** A grid of every known-best packing, `n = 1…100` expanding to 324, each
@@ -769,10 +769,13 @@ decisions that changed the plan above:
   `cases.html#n-N`, and Visualize (`visualize.html`) shows the film with the workbench
   under a second tab (`think-x8ev`, `think-7vjh`, `think-88zu`).
 - **Recent Results replaces the headline cards and the recent-changes list**: one table
-  of everything since 1 August 2026 (`think-vvns`, `think-kjd1`, `think-5oih`).
+  of every result, whose filters start at the recent ones (`think-vvns`, `think-kjd1`,
+  `think-5oih`, `think-1vo2`).
 - **One set of filters on both result tables**, the recent table and the results page:
-  significance, verification, confirmation, standing, source, case and date, composing,
-  with “S4 and up” as the default.
+  significance, verification, confirmation, standing, source, case and a maximum age in
+  days, composing. There is no date range.
+  The two tables differ only in where the bar starts: Recent Results at “S4 and up” and
+  180 days, the results page at All and no maximum age (`think-1vo2`).
 - **The row is the unit.** A table row with detail opens one popover for the whole row,
   on the recent, awaiting-replay, results and frontier tables; no cell expands on its
   own.

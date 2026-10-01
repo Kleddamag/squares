@@ -14,7 +14,7 @@ import base64
 import html
 import re
 from collections.abc import Iterable, Sequence
-from datetime import date
+from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Literal, NamedTuple, get_args
@@ -509,8 +509,21 @@ def result_row(result: Result, *, trigger: str, here: bool) -> RowDetail:
 
 # ---------- Result filters: one tools bar for every table of results ----------
 
-#: The lowest significance a table of results shows until the reader asks for more.
-SIGNIFICANCE_DEFAULT = 4
+
+class FilterDefaults(NamedTuple):
+    """Where a table's bar starts, which is all that differs between the two tables of
+    results: the lowest significance shown and the greatest age in days, each `None`
+    for no limit. Every other control starts at all on both."""
+
+    significance: int | None = None
+    max_age: int | None = None
+
+
+#: The overview's Recent Results: what matters most, from the last half year.
+RECENT_DEFAULTS = FilterDefaults(significance=4, max_age=180)
+
+#: The results page: every result, of any significance and any age.
+RESULTS_DEFAULTS = FilterDefaults()
 
 #: The rung filters, in the bar's order: the scale, which names the row's attribute
 #: (`data-s`), and the select's label.
@@ -546,9 +559,28 @@ def result_facets(result: Result) -> str:
     )
 
 
-def shown_by_default(result: Result) -> bool:
-    """Whether a result's row shows before the reader touches the filters."""
-    return significance(result) >= SIGNIFICANCE_DEFAULT
+def reference_date(overview: Overview) -> date:
+    """The day a render measures a result's age from: the newest `registered` date in
+    the register. It is the register's own and never the clock's, so two renders of one
+    tree are the same bytes. It decides only what the HTML starts with: on the page,
+    `overview/table.js` measures every age again from the reader's own day."""
+    return max(date.fromisoformat(str(r.record["registered"])) for r in overview.results)
+
+
+def age_cutoff(reference: date, days: int) -> str:
+    """The first day a row may be dated to be no older than `days` on `reference`, as
+    `overview/table.js` reckons it (`ageCutoff`): 180 days on 2026-09-30 is 2026-04-03."""
+    return (reference - timedelta(days=days)).isoformat()
+
+
+def shown_by_default(result: Result, defaults: FilterDefaults, reference: date) -> bool:
+    """Whether a result's row shows before the reader touches the filters, a table's
+    `defaults`, with its age measured from `reference`."""
+    if defaults.significance is not None and significance(result) < defaults.significance:
+        return False
+    return defaults.max_age is None or first_day(result.dated[1]) >= age_cutoff(
+        reference, defaults.max_age
+    )
 
 
 def rung_options(scale: str) -> list[tuple[str, str]]:
@@ -585,28 +617,35 @@ def count_text(shown: int, total: int, noun: str = "results") -> str:
     return f"{total} {noun}" if shown == total else f"{shown} of {total} {noun}"
 
 
-def result_filters(overview: Overview, listed: Sequence[Result]) -> str:
+def result_filters(
+    overview: Overview, listed: Sequence[Result], defaults: FilterDefaults
+) -> str:
     """The one tools bar every table of results carries: the overview's recent table and
     the results page's table. `overview/table.js` drives it.
 
     One control per facet a row carries (`result_facets`), and they compose: Significance,
     Verification and Confirmation as floors (`data-bound="min"`), Standing and Source as
-    equalities, Case as a number the row's cases must hold (`covers`), and the date as a
-    range (`from`, `to`). Significance starts at `SIGNIFICANCE_DEFAULT` and every other
-    control at all, so the tables write the rows below that floor `hidden` and the bar
-    writes the count of the rows left: the first paint is the filtered table. Without
-    scripts nothing stays filtered: `site.css` shows every row and drops the bar.
+    equalities, Case as a number the row's cases must hold (`covers`), and Max age as the
+    most days the row's date may lie behind the reader's day (`age`), empty for no limit.
+
+    A table's `defaults` are where Significance and Max age start; every other control
+    starts at all. The tables write the rows outside those defaults `hidden` and the bar
+    writes the count of the rows left, so the first paint is the filtered table. An age
+    is measured there from `reference_date`, and by the script from the reader's day.
+    Without scripts nothing stays filtered: `site.css` shows every row and drops the bar.
 
     The choices come from the whole register, never from `listed`, the rows of the table
-    the bar sits over, so the bar is the same on both pages but for its count.
+    the bar sits over, so the bar is the same on both pages but for where it starts and
+    its count.
     """
     present = {result.standing for result in overview.results}
-    dates = sorted(first_day(result.dated[1]) for result in overview.results)
-    span = f' min="{_esc(dates[0])}" max="{_esc(dates[-1])}"' if dates else ""
     last = f' max="{max(overview.cases)}"' if overview.cases else ""
+    floor = "" if defaults.significance is None else str(defaults.significance)
+    age = "" if defaults.max_age is None else f' value="{defaults.max_age}"'
+    reference = reference_date(overview)
     rungs = "".join(
         f'<label>{label} <select data-filter="{scale.lower()}" data-bound="min">'
-        f"{_options(rung_options(scale), str(SIGNIFICANCE_DEFAULT) if scale == 'S' else '')}"
+        f"{_options(rung_options(scale), floor if scale == 'S' else '')}"
         "</select></label>"
         for scale, label in RUNG_FILTERS
     )
@@ -619,7 +658,7 @@ def result_filters(overview: Overview, listed: Sequence[Result]) -> str:
         ),
     ]
     sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
-    shown = sum(shown_by_default(result) for result in listed)
+    shown = sum(shown_by_default(result, defaults, reference) for result in listed)
     return (
         '<div class="site-table-tools site-result-filters">'
         f"{rungs}"
@@ -627,20 +666,22 @@ def result_filters(overview: Overview, listed: Sequence[Result]) -> str:
         f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
         '<label>Case <var>n</var> <input type="number" data-filter="n" data-bound="covers" '
         f'min="1"{last} placeholder="any"></label>'
-        f'<label>From <input type="date" data-filter="date" data-bound="from"{span}></label>'
-        f'<label>to <input type="date" data-filter="date" data-bound="to"{span}></label>'
+        '<label>Max age <input type="number" data-filter="date" data-bound="age" '
+        f'min="0" placeholder="any"{age}> days</label>'
         '<span class="site-count" data-count data-noun="results" aria-live="polite">'
         f"{count_text(shown, len(listed))}</span></div>"
     )
 
 
-def results_table(overview: Overview) -> str:
+def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
     relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
     standing and, for a result by others, the date it was published. Each row opens its
     result's popover (`result_row`), placed after the table; its id is the trigger.
-    The bar above it is `result_filters`: a row below its default is `hidden` in the
-    HTML, and so is a group heading with no row left under it."""
+    The bar above it is `result_filters`, starting at `defaults`, which on the results
+    page hide nothing; a row outside them is `hidden` in the HTML, and so is a group
+    heading with no row left under it."""
+    reference = reference_date(overview)
     head = (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
@@ -657,7 +698,8 @@ def results_table(overview: Overview) -> str:
     body = []
     popovers = []
     for title, members in overview.groups:
-        hidden = "" if any(shown_by_default(result) for result in members) else " hidden"
+        shown = {result.id: shown_by_default(result, defaults, reference) for result in members}
+        hidden = "" if any(shown.values()) else " hidden"
         body.append(
             f'<tr class="site-group-row" data-group="{_esc(title)}"{hidden}>'
             f'<th colspan="7" scope="colgroup">{_esc(title)}</th></tr>'
@@ -669,7 +711,7 @@ def results_table(overview: Overview) -> str:
             popovers.append(detail.popover)
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
-                f"{detail.attributes}{'' if shown_by_default(result) else ' hidden'}>"
+                f"{detail.attributes}{'' if shown[result.id] else ' hidden'}>"
                 f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
@@ -688,7 +730,7 @@ def results_table(overview: Overview) -> str:
                 "</tr>"
             )
     return (
-        f'<div class="site-wide">{result_filters(overview, overview.results)}'
+        f'<div class="site-wide">{result_filters(overview, overview.results, defaults)}'
         '<div class="site-table-wrap">'
         f'<table class="kpress-table site-table site-results" data-site-table>{head}'
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
@@ -766,10 +808,6 @@ def verification_block() -> str:
     )
 
 
-#: The first day the overview's Recent Results table lists: every result dated on or
-#: after it, by the date the table shows.
-RECENT_FROM = date(2026, 8, 1)
-
 #: A summary that leads with its formula: the formula, then the method after "by", then
 #: a trailing ", reported" that the standing chips already say.
 _LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
@@ -779,10 +817,10 @@ CREDIT_AFTER_SHOWN = 3
 
 
 def recent_results(overview: Overview) -> list[Result]:
-    """Every result dated on or after `RECENT_FROM`, newest first: by date, then by id."""
-    since = RECENT_FROM.isoformat()
-    recent = [r for r in overview.results if r.dated[1] >= since]
-    return sorted(recent, key=lambda r: (r.dated[1], r.id), reverse=True)
+    """Every result, newest first: by the date the table shows, then by id. What makes
+    the table recent is its bar's defaults (`RECENT_DEFAULTS`), which a reader can
+    change, and never a cut the page makes for them."""
+    return sorted(overview.results, key=lambda r: (first_day(r.dated[1]), r.id), reverse=True)
 
 
 def significance(result: Result) -> int:
@@ -827,16 +865,17 @@ def status_chips(result: Result) -> str:
     return " ".join(_rung(rung) for rung in rungs) + " " + standing_chips(result.standing)
 
 
-def recent_table(overview: Overview) -> str:
-    """Every result since `RECENT_FROM` as one table, newest first: the date, the result
-    linking to its row on the results page with its id quiet beside it, the method, the
-    credit and the status chips. A result by others is dated by its publication, as
-    `RESULTS.md` dates it, and this project's by the day it was established; the cell
-    says which. The bar above it is `result_filters`, the results page's: a row below
-    its default is `hidden` in the HTML, so the first paint is already filtered. Each
+def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
+    """Every result as one table, newest first: the date, the result linking to its row
+    on the results page with its id quiet beside it, the method, the credit and the
+    status chips. A result by others is dated by its publication, as `RESULTS.md` dates
+    it, and this project's by the day it was established; the cell says which. The bar
+    above it is `result_filters`, the results page's, starting at `defaults`: a row
+    outside them is `hidden` in the HTML, so the first paint is already filtered. Each
     row opens its result's popover (`result_row`), the results page's, ending in the
     button to that page's row; the quiet id is its trigger."""
     results = recent_results(overview)
+    reference = reference_date(overview)
     head = (
         "<thead><tr>"
         '<th class="site-col-date">Date</th>'
@@ -856,7 +895,8 @@ def recent_table(overview: Overview) -> str:
         popovers.append(detail.popover)
         rows.append(
             f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
-            f"{detail.attributes}{'' if shown_by_default(result) else ' hidden'}>"
+            f"{detail.attributes}"
+            f"{'' if shown_by_default(result, defaults, reference) else ' hidden'}>"
             f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
             f"{_esc(dated)}</td>"
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
@@ -869,16 +909,11 @@ def recent_table(overview: Overview) -> str:
             "</tr>"
         )
     return (
-        f'<div class="site-wide">{result_filters(overview, results)}'
+        f'<div class="site-wide">{result_filters(overview, results, defaults)}'
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results site-recent-table">'
         f"{head}<tbody>{''.join(rows)}</tbody></table></div>{''.join(popovers)}</div>"
     )
-
-
-def recent_from() -> str:
-    """`RECENT_FROM` as prose: 1 August 2026."""
-    return f"{RECENT_FROM.day} {RECENT_FROM:%B %Y}"
 
 
 def _since() -> str:

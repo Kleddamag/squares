@@ -82,6 +82,8 @@ name: Certificate page
       - packing/atlas/rendering/trump11-overview.svg
       - packing/cases/trump11/**
       - packing/resources/web/n11-optimality-2026-09-29/**
+      - packing/resources/papers/kingbird-square-11-provenance.svg
+      - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md
       - packing/devtools/wait_for_run_artifact.py
       - packing/devtools/explainer/**
       - packing/devtools/probes/**
@@ -254,6 +256,8 @@ jobs:
             !/packing/resources/*/
             !/packing/campaign/*/
             /packing/resources/web/n11-optimality-2026-09-29/
+            /packing/resources/papers/kingbird-square-11-provenance.svg
+            /packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md
 
       - name: Install uv and Python 3.14
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0

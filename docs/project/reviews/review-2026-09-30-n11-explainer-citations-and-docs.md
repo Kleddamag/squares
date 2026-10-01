@@ -80,6 +80,17 @@ role; notes measured 11.6483 pt against the caption’s 11.6475 pt; prose measur
 Poppler XML’s raw font sizes differed for the SVG text, but those values did not account
 for its effective transform and did not establish a visual-size discrepancy.
 
+The first hosted publication run exposed a checkout gap (`think-dhsh`): the new
+provenance paragraph cited the retained construction SVG and Kleddamag README outside
+the proof packet, but the sparse checkout omitted both files.
+Their exact paths are now declared as archived citation inputs and included in the
+publication checkout and trigger list.
+The workflow test also checks the article’s relative archive citations against the
+declared inputs, so a later citation cannot silently add another omitted dependency.
+The hosted browser floor also found an unchecked nullable parent in the new typography
+probe. An explicit guard now reports that malformed DOM state, and the probe passes the
+isolated strict TypeScript program as well as its browser regression test.
+
 ## Editorial Disposition
 
 Two precision corrections were accepted by the mathematical reviewer and applied in the

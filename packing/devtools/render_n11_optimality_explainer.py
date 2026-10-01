@@ -37,11 +37,16 @@ LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
 RELATIVE_ANCHOR = re.compile(r'(?P<start><a\b[^>]*\bhref=")(?P<url>\.\.?/[^"]+)(?P<end>")')
+ARCHIVED_CITATION_SOURCES = (
+    PACKING / "resources/papers/kingbird-square-11-provenance.svg",
+    PACKING / "resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md",
+)
 RENDER_INPUTS = (
     Path(__file__),
     ARTICLE,
     SHELL,
     STYLE,
+    *ARCHIVED_CITATION_SOURCES,
     render_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
     PACKING / "devtools" / "check_n11_optimality_d4.py",

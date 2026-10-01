@@ -138,6 +138,7 @@ Triage exits with the claim map and the validation plan in the bead.
    [`../resources/web/`](../resources/README.md), named
    `<author>-<repository or subject>-<date of the pinned revision>`. A later revision of
    the same source is a new packet; the earlier one is not edited.
+   Files retained later from the same revision are added to its packet and its manifest.
    The packet’s `README.md` records:
 
    - the source’s address, the pinned revision, the date of that revision and the time
@@ -195,8 +196,9 @@ Triage exits with the claim map and the validation plan in the bead.
    The `claim` is short paragraphs: the statement, the certificate, how the source
    checked it, what was done here, and the credit with a link to the source.
    `attribution.published` is the day the claim first appeared in its source, which can
-   be earlier than the pinned revision; `next_rung` names the replay, the review and the
-   bead they are tracked under.
+   be earlier than the pinned revision: the date the source gives for it, or, where it
+   gives none, the UTC date of the first commit that contains the certificate.
+   `next_rung` names the replay, the review and the bead they are tracked under.
    Every count in `scope` is covered by the scope of a cited evidence entry.
 
 4. **Take the `T-NNN` last and merge the same day.** An id is its row’s position, so it
@@ -231,7 +233,10 @@ chooses the smallest sufficient check and measures its cost.
 2. **Run the source’s own verification on the retained bytes, in full.** The source’s
    fast tier, a sample of roots or a green test suite is a diagnostic and not a replay.
    Compare the outcome with the census the source reports, root for root where it ships
-   one.
+   one. Run the retained copy of each checker: a script that fetches one over the network
+   is run with the fetch replaced by the retained bytes, and the receipt says so.
+   Where the source’s script cannot pass as published, record that as a conflict, tell
+   the author, and run the same checks as this repository’s own sequence.
 3. **Decide the certificate a second way where one exists here**: a verifier of this
    repository’s that reads the format, or a second checker of the source’s that shares
    no code with the first.

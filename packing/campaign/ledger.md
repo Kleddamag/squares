@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 19 | think-kaqh | Freeze reviewed H256 instrument and exp238 before one 180-second target run. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `review-planning-oversight` (correctness) | 24 | think-kaqh | Complete H257 feature-audit readiness under think-6dg0; no target until frozen criterion and controls. Deadline15UTC unchanged. |
 
 ### Workflow summary
 
@@ -188,15 +188,15 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | workflow | declared entries | retrospective entries | declared phases | retrospective phases |
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
-| `factual-review` | 11 | 1 | 65 | 3 |
+| `factual-review` | 11 | 1 | 66 | 3 |
 | `insight-iteration` | 28 | 1 | 87 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
-| `efficiency-loop` | 11 | 1 | 39 | 1 |
-| `research-loop` | 31 | 4 | 111 | 8 |
+| `efficiency-loop` | 11 | 1 | 40 | 1 |
+| `research-loop` | 31 | 4 | 112 | 8 |
 | `pipeline-improvement` | 38 | 2 | 202 | 6 |
-| `documentation-pass` | 1 | 0 | 27 | 3 |
+| `documentation-pass` | 1 | 0 | 28 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 38 | 2 |
+| `review-planning-oversight` | 6 | 0 | 39 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -861,7 +861,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-397 | measurement_validation | 17 | complete | 0 | think-08sm | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md |
 | BC-398 | research | 17 | complete | 0 | think-j516 | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md |
 | BC-399 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md |
-| BC-400 | research | 17 | in_progress | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
+| BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
 
 ## Series
 
@@ -1063,7 +1063,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-253 | confirmed | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  | 8s wall |
 | H-254 | confirmed | proof | The proposed three-variable endpoint equality chart, including its exp |  | 1 |  | 1s wall |
 | H-255 | confirmed | proof | The two exact n17 chart polynomials have a unique real root in the fix |  | 1 |  | 1s wall |
-| H-256 | running | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 |  |  |
+| H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 |  | 43s wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1203,7 +1203,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (49)
+### accepted (50)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1256,6 +1256,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-235 | series-000 | 17 | Codex Session165 coordinator | H-253 | The frozen exact source, two local geometry implementations, independent mapping audit and all positive/negative controls agree. Acceptance is only of the rational upper witness. |
 | exp-236 | series-000 | 17 | Codex Session165 coordinator | H-254 | All458 frozen comparisons pass with complete independently audited coverage and controlled instrument. Acceptance establishes fidelity at the relaxed rational source only. |
 | exp-237 | series-000 | 17 | Codex Session165 coordinator | H-255 | Exact root existence and uniqueness in the fixed box are established by both implementations and independent output review. Endpoint packing feasibility and global capture remain separate. |
+| exp-238 | series-000 | 17 | Codex Session165 coordinator | H-256 | The exact root now has a certified17-square endpoint packing at fixed centroid sliders. All frozen obligations pass independent output review; global and split-orientation capture remain separate. |
 
 ### baseline (12)
 
@@ -1273,12 +1274,6 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-031 | series-000 | 10 | openai-codex | H-002 | All four source perturbations satisfy every declared condition and return to the proved side within floating-point precision. This confirms the narrow known-answer control without reopening H-002's refuted universal claim. |
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
-
-### in-progress (1)
-
-| id | series | instance | operator | hypotheses | reason |
-| --- | --- | --- | --- | --- | --- |
-| exp-238 | series-000 | 17 | Codex Session165 coordinator | H-256 | Preregistered before endpoint target evaluation; final instrument controls and independent review precede frozen execution. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1326,7 +1321,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-167 rounds, 2512.1 agent-minutes, 4019.3 wall-minutes.
+167 rounds, 2512.1 agent-minutes, 4020.0 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

@@ -127,6 +127,15 @@ the stated necessary orientation/branch/parameter class.
 Capture of split orientations, other contact branches and the global packing space
 remains open.
 
+## Accepted Result
+
+[exp-238](../series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md)
+passes the complete frozen criterion.
+Independent review confirms the exact endpoint packing, with the conditional minimum
+attained in the stated class.
+Global capture is not established.
+The original pretarget record below is retained as provenance.
+
 ## Pretarget Review Record
 
 Two Astra max reviews approved the centroid algebra, root-enclosure consequence,

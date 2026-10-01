@@ -5,6 +5,22 @@
 **Baseline:** `fb0fc2332`. **Review:** Astra max mathematics; two Sol source and tool
 reviews. **Tracking:** `think-s6ty`, `think-70sf`, `think-ayt3`, selection `think-eh7g`.
 
+The companion [projection-branch review](review-2026-10-01-n17-projection-branches.md)
+proves the same necessary inequalities under weaker orientation premises and identifies
+a rotational freedom at square 6. Its conditional family still assumes particular
+directed separating inequalities; coverage of arbitrary feasible perturbations remains
+open.
+
+## Current Result
+
+Four preregistered n17 rounds are accepted: the retained rational witness (H253), its
+contact-chart fidelity (H254), exact root existence (H255), and an exact physical
+endpoint packing (H256). The reviewed conditional minimum is attained in its stated
+orientation, directed-projection and parameter class.
+The analytic slider triangle gives a two-parameter family.
+General local capture and global optimality remain open.
+The sections below retain the derivations and evidence that led to that result.
+
 ## Selected: Independent Admission of the Existing n17 Upper Witness
 
 The September 21
@@ -330,7 +346,7 @@ No numerical exclusion or target evaluation was used in this symbolic derivation
 The two Astra max reviewers also independently derived and checked a monotonicity
 argument on the whole H-254 box.
 It gives a conditional minimum and at most one equality root, without assuming saturated
-contacts. Root existence remains unproved.
+contacts. H-255 below now proves root existence, and H-256 certifies a packing there.
 
 Put
 
@@ -407,12 +423,11 @@ $\theta$ by $g$ and then equal $\beta$ by strict monotonicity of $F_2$.
 
 This is a conditional analytic result reviewed by two mathematical agents.
 It has no machine-checked derivative certificate yet.
-The separate H-255 result below discharges root existence; a packing at that root still
-needs certification.
-Applying it to all nearby or all global packings additionally requires coverage of
-orientations, directed branches and parameters outside the box.
-The next useful slice is rigorous root isolation and endpoint/slider feasibility, with
-these capture obligations kept separate.
+The separate H-255 and H-256 results below discharge root existence and physical packing
+feasibility. Applying it to all nearby or all global packings additionally requires
+coverage of orientations, directed branches and parameters outside the box.
+The next mathematical obligation is capture of configurations outside the declared
+orientation and directed-projection class.
 
 ## Smaller Root-Isolation Problem
 
@@ -575,8 +590,13 @@ leave the certificate incomplete.
 [H-256](../../../packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md)
 freezes the accepted root enclosure, this centroid and the complete coverage before any
 endpoint evaluation.
-At this checkpoint it is an instrument in preparation, not an accepted endpoint
-certificate. Global and split-orientation capture remain separate.
+It is accepted by
+[exp-238](../../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md):
+all 68 wall and 136 pair obligations pass independent review.
+The conditional minimum is attained by a physical packing.
+The analytic roster above extends the centroid to the whole closed slider triangle, with
+area $T^2/(2s)>0$, without claiming maximal flexibility.
+Global and split-orientation capture remain separate.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

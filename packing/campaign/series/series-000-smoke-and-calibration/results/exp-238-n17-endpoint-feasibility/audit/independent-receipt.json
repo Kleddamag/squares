@@ -1,0 +1,43 @@
+{
+  "schema": "n17-endpoint-receipt-audit/v1",
+  "audit_passed": true,
+  "counts": {
+    "walls": 68,
+    "wall_identities": 15,
+    "wall_strict": 53,
+    "pairs": 136,
+    "pair_identities": 21,
+    "pair_strict": 115,
+    "strict_intervals_recomputed": 168,
+    "other_intervals_recomputed": 19
+  },
+  "root_certificate_git_ref": "7866e2623:packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json",
+  "producer_imported_or_rerun": false,
+  "trust_premises": [
+    "previously accepted H255 root existence certificate",
+    "separately reviewed analytic identity proofs and polynomial normalizations"
+  ],
+  "scope": "all strict intervals independently recomputed; identity manifests checked, analytic identities not reproved",
+  "receipt_bytes": 4717067,
+  "run_file_bytes": {
+    "certificate.json": 4717067,
+    "command.txt": 408,
+    "ended-at.txt": 21,
+    "exit.txt": 2,
+    "memory-guard.log": 153,
+    "provenance.log": 657,
+    "timing.log": 777
+  },
+  "audited_receipt_sha256": "f052f6ae476c4d4a79a082aecbab981e6d4885934efd36f2bf5acf4a63c73992",
+  "accepted_root_sha256": "883f51b994c19476908353781cb4c1b8f8da68deaa484a2e8f192cc56d809057",
+  "side": {
+    "outward_decimal_enclosure": [
+      "4.6755300936045509516340076871127879",
+      "4.6755300936045509516342148538535054"
+    ],
+    "retained_rational_upper": "4675530093604551/1000000000000000",
+    "exact_upper_at_most_retained_rational_upper": true,
+    "exact_upper_strictly_below_retained_rational_upper": true
+  },
+  "elapsed_seconds": 5.005088874982903
+}

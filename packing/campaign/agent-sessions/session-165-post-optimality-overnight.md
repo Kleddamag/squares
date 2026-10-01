@@ -508,7 +508,7 @@ session:
     bead: think-bj81
     objective: Execute H256 once with exact symbolic identities and complete interval geometry at fixed
       centroid sliders.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
       two-polynomial root.
@@ -520,11 +520,118 @@ session:
     validation_command: cd packing && .venv/bin/python3 -m devtools.check_n17_endpoint_feasibility campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: "Frozen f77b3e0a7 target ran12:23:08\u201312:23:54UTC and exited0: all68 walls/all136 pairs\
+      \ pass.43.45s wall,116MBRSS,4,717,067-byte receipt. Independent output review follows; no criterion\
+      \ adjustment or rerun."
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
+    stop_reason: One bounded endpoint run completed inside180seconds and10MiB.
+    next_action: Audit complete output before acceptance and inspect measured arithmetic/serialization
+      costs.
+  - workflow: factual-review
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-r8ns
+    objective: Audit all endpoint obligations and independently recalculate selected exact interval bounds.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 15
+    started_at: '2026-10-01T12:23:54Z'
+    deadline_at: '2026-10-01T12:38:54Z'
+    expected_output: Astra fullcoverage/sign audit, root identity, independent interval checks and scoped
+      verdict.
+    validation_command: Read immutable exp238 certificate and provenance against H256; no producer replay.
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: Astra confirms all68/136 unique obligations, root-only identities, strict whole-box bounds,
+      frozen root/source/provenance and selected independently recomputed intervals. H256accepted. Fullsignaudit0.9197s,
+      selectedarithmetic0.7963s. Reusablefullreceipt audit now being retained.
+    evidence: &id001
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+    stop_reason: No discrepancy; exact endpoint feasibility accepted. Globalcapture remainsopen.
+    next_action: Retain independent audit tool while next math lane studies orientation capture.
+  - workflow: efficiency-loop
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    bead: think-4krl
+    objective: Separate measured endpoint validation costs and decide whether optimization displaces mathematical
+      progress.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 16
+    started_at: '2026-10-01T12:23:54Z'
+    deadline_at: '2026-10-01T12:39:54Z'
+    expected_output: Retained phase cost and output-size analysis with bounded next optimization options.
+    validation_command: Inspect exp238 timing and bound-string lengths without rerunning target.
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: Symbolic25.797s; interval arithmetic plus formatting16.419s; rootchecker0.021s; measuredorchestration0.042s.
+      Bound literals are99.1percent of4.717MBreceipt. Arithmetic and formatting were not separately timed.
+      Currentrun meetscaps; defer unmeasuredcaching/dyadic-rounding changes under think-4krl and keep
+      capturemathematics first.
+    evidence: *id001
+    stop_reason: W5review complete; no targetrerun or retrospective criterion change.
+    next_action: Publish accepted endpoint while advancing the strengthened support/branch lemma.
+  - workflow: documentation-pass
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-kaqh
+    objective: Publish accepted endpoint proof, independent audit extent and measured efficiency limits;
+      retain next capture obligations.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: H256 acceptance and full independent audit close endpoint feasibility; the next question
+      is capture of geometric perturbations.
+    budget_minutes: 18
+    started_at: '2026-10-01T12:30:38Z'
+    deadline_at: '2026-10-01T12:48:38Z'
+    expected_output: Recoverable evidence commit, current PR review comment, refreshed campaign views
+      and exactnextcommand.
+    validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
+    kill_condition: A generated view or review claim contradicts the immutable accepted evidence.
+    fallback: Retain the scientific receipts unchanged and repair only the conflicting integration record.
+    outcome: Accepted H256 evidence, independent full187-interval audit and strengthened projection theorem
+      retained. Two Astra mathematical reviews agree; publication checkpoint follows without rerunning
+      targets.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+    - docs/project/reviews/review-2026-10-01-n17-projection-branches.md
+    stop_reason: Documentation and scientific review complete; Git/PR publication is the immediate integration
+      action.
+    next_action: Commit and publish this reviewed checkpoint alongside H257 instrument readiness.
+  - workflow: review-planning-oversight
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-6dg0
+    objective: Select a complete exact-root contact-feature audit before any first-order stationarity
+      calculation.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Endpoint feasibility is complete; local owner-axis alternatives and nonsmooth wall
+      supports remain to be inventoried.
+    budget_minutes: 20
+    started_at: '2026-10-01T12:46:04Z'
+    deadline_at: '2026-10-01T13:06:04Z'
+    expected_output: Frozen H257 feature criterion, controlled instrument and independent derivation of
+      branch completeness, or named blocker.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n17_endpoint_features.py
+      -q -p no:cacheprovider
+    kill_condition: The owner-axis disjunction or strict inactive-feature coverage is incomplete.
+    fallback: Retain the analytic capture gap and do not run a cone solver.
     outcome: null
-    evidence: []
+    evidence:
+    - docs/project/reviews/review-2026-10-01-n17-projection-branches.md
     stop_reason: null
-    next_action: Independent Astra output review before acceptance; parallel read-only W3 investigates
-      split-orientation capture.
+    next_action: Review Sol feature instrument and Astra owner-axis reduction, freeze criterion before
+      target.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -542,9 +649,8 @@ session:
     metric: Independently checked useful discriminators and resolved proof obligations.
     before: X-048 and evand intake reviewed; no W3 target execution; n17 candidate has only a numerical
       receipt.
-    after: H253 rational feasibility, H254 chart fidelity and H255 exact root existence accepted. Reviewed
-      conditional minimum applies to the declared necessary system; endpoint packing and capture remain
-      open.
+    after: 'Four accepted n17 rounds: rational feasibility, chart fidelity, exact root and exact endpoint
+      packing. Conditional class minimum is attained; global capture remains unproved.'
   delegations:
   - task: think-s6ty endpoint and flexible-family mathematical review
     operator: gpt-6-astra max
@@ -640,6 +746,10 @@ session:
   - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
   - packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
   - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md
+  - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+  - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+  - docs/project/reviews/review-2026-10-01-n17-projection-branches.md
   checks:
   - Both PR265 and PR267 scheduled checks pass at the launch heads fb0fc2332 and a02703f13; conditional
     jobs skipped by scope are not claimed as executed.
@@ -661,8 +771,8 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Independent Astra output review before acceptance; parallel read-only W3 investigates split-orientation
-    capture.
+  next_action: Complete H257 feature-audit readiness under think-6dg0; no target until frozen criterion
+    and controls. Deadline15UTC unchanged.
 ---
 # Session 165: Post-optimality Research
 
@@ -705,26 +815,27 @@ identity. The launcher unsets `PYTHONOPTIMIZE` and confirms assertions are activ
 
 ## Next Mathematical Slice
 
-[H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) is accepted: exact root
-existence and uniqueness pass separate implementations and independent output review.
-The raw exp-237 receipt is immutable.
-Its tighter coordinatewise inclusion enclosure is a logical consequence of the accepted
-certificate, not a new radius trial.
+H253 through H256 are accepted.
+The exact chart root has a certified physical packing, with a two-parameter
+slider-family corollary from the reviewed analytic triangle proof.
+Raw exp235–238 evidence is immutable; none is rerun for integration fixes.
 
-`think-bj81` now owns endpoint containment, all pairs and joint slider feasibility.
-Two Astra agents are deriving and challenging those obligations while Sol maps the
-smallest instrument.
-Separate algebraic zero contacts from strict interval clearances; the 2/3 corner contact
-is an additional identity beyond the selected 20 chart contacts.
-No endpoint target computation is authorized until its criterion and controls are
-frozen.
+`think-zsgl` studies the remaining orientation and directed-projection capture gap.
+Astra identified a rotational rattler at square6 and a universal support inequality that
+relaxes several exact-angle premises, while retaining explicit directed projection
+branches.
+Sol completed W5 phase-cost analysis under `think-4krl`; no optimization has an
+observed speedup and no arithmetic contract has been changed.
+`think-r8ns` is retaining the independent endpoint receipt audit as a reusable tool.
 
-Resume with the endpoint reviewers’ complete obligation roster and the H254
-reconstruction, then register the next fixed criterion.
-Do not repeat H253/H254/H255 or source intake.
-`think-vdmf` retains rational frontier admission; `think-je3v` retains
-checkpoint-efficiency work.
-The overnight deadline and finalization start are unchanged.
+The full independent receipt audit and projection-branch theorem are retained.
+Next, review and freeze the exact-root contact-feature inventory under `think-6dg0`,
+then execute only after synthetic controls and independent review pass.
+Keep global nonoverlap distinct from a chosen directed projection inequality, and
+first-order stationarity distinct from local optimality.
+`think-vdmf` retains upper-bound frontier admission; `think-je3v` retains checkpoint
+integration efficiency.
+The fixed15:00UTC deadline and14:30UTC finalization start remain.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

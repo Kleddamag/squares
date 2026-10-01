@@ -92,6 +92,13 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
+#: The project's formal name (the owner, 2026-10-01). The site's own name, in the bar and
+#: in page titles, stays the shorter `SITE_NAME`.
+PROJECT_NAME = "The Square Packing Project"
+#: The two tools the closing line credits, at the addresses the repository already uses:
+#: README links Flowmark there, and KPress is the `vendor/kpress` submodule's origin.
+FLOWMARK_URL = "https://github.com/jlevy/flowmark"
+KPRESS_URL = "https://github.com/jlevy/kpress"
 #: Where a reader reports a result the site does not have yet: a new issue on the
 #: repository, which the overview's own statement links.
 NEW_ISSUE_URL = f"{repo_links.REPO_URL}/issues/new"
@@ -412,14 +419,44 @@ def favicon_html() -> str:
     return f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{quote(svg)}">'
 
 
-def colophon_html() -> str:
-    """The closing line every page carries, as the explainer's does."""
-    return (
-        '<p class="site-colophon">'
-        f"{html.escape(SITE_NAME)} · {html.escape(PUBLICATION_EDITION)} · "
-        'Formatted and typeset with <a href="https://github.com/jlevy/flowmark">Flowmark</a> '
-        'and <a href="https://github.com/jlevy/kpress">KPress</a></p>'
+def colophon_lines() -> str:
+    """The closing credit's two lines, the one definition every page's footer is made of:
+    the site's pages (`colophon_html`), the explainer and the optimality paper, whose
+    shells set it in their own closing paragraph.
+
+    The first line is the project's formal name and its repository, shown without its
+    scheme and linked. The second is the version every artifact prints, then the credit
+    to the two tools. The version is `sqpack.release.PUBLICATION_EDITION` taken whole,
+    the stamp the atlas footer and the film carry (`v0.4.2-8ac5de`, with the edition's
+    status ahead of it while it has one), so it follows a re-pin and a new edition with
+    no edit here; a build that prints it names `release.py` among its inputs.
+
+    A line is a block, so there are two at every width, and each part beside a middle
+    dot is an inline block, so a line too long for a phone breaks at its dot before it
+    breaks inside a part (`site-nav.css`, which every page carries).
+    """
+
+    def part(markup: str) -> str:
+        return f'<span class="site-colophon-part">{markup}</span>'
+
+    def line(*parts: str) -> str:
+        return f'<span class="site-colophon-line">{" · ".join(map(part, parts))}</span>'
+
+    repository = repo_links.REPO_URL
+    return line(
+        html.escape(PROJECT_NAME),
+        f'<a href="{repository}">{html.escape(repository.removeprefix("https://"))}</a>',
+    ) + line(
+        html.escape(PUBLICATION_EDITION),
+        f'Formatted and typeset with <a href="{FLOWMARK_URL}">Flowmark</a> '
+        f'and <a href="{KPRESS_URL}">KPress</a>',
     )
+
+
+def colophon_html() -> str:
+    """The closing credit every site page carries, in KPress's footer slot: the two lines
+    every page shares (`colophon_lines`), as the explainer's are."""
+    return f'<p class="site-colophon">{colophon_lines()}</p>'
 
 
 def kpress_page(

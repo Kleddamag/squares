@@ -435,7 +435,7 @@ it.
   the mark alone leads home, labelled “Square Packing home” for a screen reader.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
   current page alone is underlined in the accent.
-  The edition appears only in the closing line.
+  The edition appears only in the closing credit (below).
   Every page renders it from the one partial, `site-nav.html`, and it has the same box
   on every page at every width.
   It sits 1rem below the top of the window on every page, the explainer and the
@@ -524,6 +524,34 @@ it.
   for anything drawn on a canvas.
   Adapted from metabrowser’s settings gear, reduced to one chooser with words beside its
   icons.
+
+- **Closing credit.** Every page with a footer ends on the same two centred lines:
+
+  > The Square Packing Project · github.com/jlevy/squares\
+  > v0.4.2-8ac5de · Formatted and typeset with Flowmark and KPress
+
+  The first is the project’s formal name and its repository, shown without its scheme
+  and linked. The second is the version and the credit to the two tools, each linked to
+  its project. The version is never typed: it is `sqpack.release.PUBLICATION_EDITION`,
+  the stamp the atlas footer and the film print (the edition’s semver core and the first
+  six characters of the pinned data revision, with the edition’s status ahead of it
+  while it has one), so it follows a re-pin and a new edition with no edit.
+  One function writes the lines, `render_overview.colophon_lines`: the site’s pages set
+  them in KPress’s footer slot as `.site-colophon` (`colophon_html`), and the explainer
+  and the optimality paper in their own closing paragraph, `.colophon`, which keeps each
+  paper’s type and print rules, so both lines print at the end of each PDF. The
+  workbench is an application that fills the window and has no footer; its stage prints
+  the same version. A middle dot with a space either side parts a line.
+  There are two lines at every width: a line is a block (`.site-colophon-line`), and
+  each part beside a dot an inline block (`.site-colophon-part`), so on a phone a line
+  breaks at its dot, and a part wider than the page breaks into balanced rows.
+  Both rules are in `site-nav.css`, the stylesheet every page carries.
+  The type is quiet: the sans face at the colophon scale (0.85 of the sans base,
+  16.15px) in the support colour on a site page, KPress’s tiny size in its muted colour
+  on a paper; the links take the page’s link colour, and all of it follows the theme.
+  A build that prints the version names `release.py` among its declared inputs, as the
+  workbench’s does, so a re-pin puts every such page in the Pages workflow’s scope
+  (`devtools.pages_scope`); nothing compares a page’s bytes with an earlier build’s.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
   sections are `h2`s. The Visualize page shows none either: the bar, the section tabs

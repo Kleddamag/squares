@@ -63,6 +63,7 @@ from devtools.render_overview import (
     PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
+    colophon_lines,
     favicon_html,
     nav_html,
 )
@@ -2455,6 +2456,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers"),
+        "COLOPHON": colophon_lines(),
         **shared,
         "BODY_HTML": body,
     }

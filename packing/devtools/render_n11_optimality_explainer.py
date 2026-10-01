@@ -31,6 +31,7 @@ from devtools.render_overview import (
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
+    colophon_lines,
     favicon_html,
     nav_html,
 )
@@ -95,6 +96,9 @@ RENDER_INPUTS = (
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
+    # The closing credit prints the shared version, which is pinned here, so a re-pin
+    # redraws the page, as it does the workbench's (`build_site.RENDER_INPUTS`).
+    PACKING / "src" / "sqpack" / "release.py",
     PACKING / "cases" / "trump11" / "packing.py",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/final-composition.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
@@ -260,6 +264,7 @@ def render(
         "SITE_FAVICON": favicon_html(),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers", root=SITE_ROOT),
+        "COLOPHON": colophon_lines(),
         "SITE_EMBED": EMBED_SCRIPT.read_text(encoding="utf-8"),
         "SITE_THEME": THEME_SCRIPT.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_explainer.theme_bootstrap(static),

@@ -17,6 +17,7 @@ from typing import cast
 import pytest
 
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
+from devtools.build_known_best_atlas import SUMMARY_RELEASE_STAMP
 from devtools.check_results import scope_values
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
@@ -184,7 +185,11 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     assert 'class="site-card ' not in atlas
     assert atlas.count('class="site-atlas-note"') == 1
     assert 'class="site-wide site-atlas-note"' not in atlas
-    assert page.index('id="the-atlas"') < page.index(heading) < page.index('id="the-frontier-survey"')
+    assert (
+        page.index('id="the-atlas"')
+        < page.index(heading)
+        < page.index('id="the-frontier-survey"')
+    )
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
     assert section.lstrip().startswith('<div class="site-cards-frame')
     assert section.count('<a class="site-card site-card-link"') == len(
@@ -1236,6 +1241,67 @@ def test_every_site_page_carries_the_theme_control(
     # control stores into the key that bootstrap reads.
     assert 'stored("kpress.theme")' in page
     assert 'storageKey = "kpress.theme"' in script
+
+
+#: The closing credit as a page carries it: a line a block, a part beside each middle dot.
+COLOPHON_LINE = re.compile(
+    r'<span class="site-colophon-line">(.*?)</span>(?=<span class="site-colophon-line">|$)'
+)
+COLOPHON_PART = re.compile(r'<span class="site-colophon-part">(.*?)</span>(?= · |$)')
+
+
+def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
+    """Every footer is made of one definition, `colophon_lines`: the project's formal
+    name and its repository, linked, on the first line, and on the second the version
+    every artifact prints and the credit to the two tools, each linked where README
+    links it. The parts of a line stand either side of a middle dot with a space each
+    side. The version is the release's own edition stamp, the string the atlas footer
+    prints, so a re-pin or a new edition changes it here with no edit."""
+    from sqpack import release  # noqa: PLC0415
+
+    lines = COLOPHON_LINE.findall(render_overview.colophon_lines())
+    assert len(lines) == 2
+    first, second = (COLOPHON_PART.findall(line) for line in lines)
+    assert first == [
+        "The Square Packing Project",
+        '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>',
+    ]
+    assert second == [
+        release.PUBLICATION_EDITION,
+        (
+            "Formatted and typeset with "
+            '<a href="https://github.com/jlevy/flowmark">Flowmark</a> '
+            'and <a href="https://github.com/jlevy/kpress">KPress</a>'
+        ),
+    ]
+    for line, parts in zip(lines, (first, second), strict=True):
+        assert line == " · ".join(f'<span class="site-colophon-part">{p}</span>' for p in parts)
+    assert release.PUBLICATION_EDITION.endswith(release.PUBLICATION_STAMP)
+    assert re.fullmatch(r"v\d+\.\d+\.\d+-[0-9a-f]{6}", release.PUBLICATION_STAMP)
+    revision = release.DATA_REVISION[: release.DATA_REVISION_LENGTH]
+    assert f"{release.PUBLICATION_VERSION}-{revision}" == release.PUBLICATION_STAMP
+    assert second[0] == SUMMARY_RELEASE_STAMP
+    # The tools' addresses are the repository's own: README links Flowmark there, and
+    # KPress is the submodule this site is rendered with.
+    readme = (render_overview.REPO / "README.md").read_text(encoding="utf-8")
+    assert f"({render_overview.FLOWMARK_URL})" in readme
+    modules = (render_overview.REPO / ".gitmodules").read_text(encoding="utf-8")
+    assert f"url = {render_overview.KPRESS_URL}" in modules
+    nav_css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert ".site-colophon-line {\n  display: block;\n}" in nav_css
+    part = ".site-colophon-part {\n  display: inline-block;\n  text-wrap: balance;\n}"
+    assert part in nav_css
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_every_site_page_ends_with_the_closing_credit(
+    name: str, rendered: Callable[[str], str]
+) -> None:
+    """Each KPress page carries the two lines once, in its footer slot."""
+    footer = f'<p class="site-colophon">{render_overview.colophon_lines()}</p>'
+    page = rendered(name)
+    assert page.count(footer) == 1
+    assert page.count('class="site-colophon-line"') == 2
 
 
 SITE_NAV_BLOCK = re.compile(r'<nav class="site-nav" aria-label="Site">.*?</nav>', re.DOTALL)

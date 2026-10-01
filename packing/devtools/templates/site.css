@@ -203,6 +203,8 @@ body {
 .kpress .site-hero:has(.subtitle) h1 {
   margin-block-end: 0;
 }
+/* The closing credit: two quiet centred lines (`render_overview.colophon_lines`), whose
+   line and part rules are in site-nav.css, which the papers carry too. */
 .site-colophon {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);

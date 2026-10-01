@@ -189,6 +189,20 @@ judgments, not gate predicates.
 | New Lean proof-assistant claims for older bounds | Evidence updates to existing `T-049`, `T-051`, and `T-052`, not new values. The pinned [`LADDER.md`](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/lean/LADDER.md) describes n12 theorem coverage; Proofs distinguishes the n21 conditional top theorem and n32 unconditional theorem. | Keep the main baseline `V3/C3` until the claimed Lean builds and exact certificate interfaces are mapped. A source statement about a kernel check is a reported proof claim, not a local `V5` build. The [September review](review-2026-09-28-evand-s21-s45-mixed-covers.md) remains the replay evidence for the old numerical certificates. |
 | Side-4 and side-5 fractional-dual obstructions; side-3.99 exact witness | Research evidence, not new square-packing values. [COVER4](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/COVER4.md) has public exact side-4 support; [S21_KILL](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/S21_KILL.md) has public side-5 support, obstructing additive-cover budgets below about `20.648` there, but its mass remains below 21. The side-3.99 support is absent. | Track as method/obstruction research, with exact-versus-measured labels. Replay the public supports in a portable wrapper and inspect the `--n`/support invariants before registering a negative-method result. Do not infer `s(12) = 4` or `s(20) = 5` from these LP duals. |
 
+**Integration disposition, 2026-10-01.**
+[PR 267](https://github.com/jlevy/squares/pull/267) registers Daniel’s `s(60) = 8` as
+T-062 (`V0/C1/S3`), its `s(61) = 8` corollary as T-063 (`V0/C1/S1`), and the finite
+`n ≤ 324` projection of the square-minus-three family as T-064 (`V0/C1/S4`). The
+source’s all-`k ≥ 6` theorem remains explicit in T-064’s claim and review while
+`think-kqi1` tracks an infinite-family scope type.
+The reported case lane changes; verified bounds do not.
+`think-e7xa` tracks the `s60` replay, `think-4k80` the `Valid7` premise and Lean
+reduction review, `think-hxrz` the independent wand125 primary-source intake, and
+`think-q5tt` the public dual support replay.
+No older `T-049`/`T-051`/`T-052` Lean claim was promoted by this intake.
+`think-e8qx` tracks those source Lean changes, and `think-2z60` tracks the auxiliary
+clique-lemma repair identified in the mathematical-transfer review.
+
 For W2, retrieve the omitted `s60` run logs and the full source/Lean build only for
 chosen checks, using the pinned commit and separate receipts for each tier actually run.
 The

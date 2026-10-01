@@ -1115,8 +1115,8 @@ def test_the_section_tabs_sit_below_the_bars_rule() -> None:
 def test_the_film_page_embeds_the_film_at_its_own_proportions(
     rendered: Callable[[str], str],
 ) -> None:
-    """The film is inline with its controls, fetches nothing until played, and shows a
-    poster at the video's own 16:9, so starting playback moves nothing."""
+    """The film is inline with its controls, fetches nothing until it is started, and
+    shows a poster at the video's own 16:9, so starting playback moves nothing."""
     page = rendered("visualize.html")
     video = re.search(r"<video [^>]*>", page)
     assert video is not None
@@ -1131,6 +1131,47 @@ def test_the_film_page_embeds_the_film_at_its_own_proportions(
         assert attribute in video[0], attribute
     assert f'<source src="{render_overview.FILM_URL}" type="video/mp4' in page
     assert page.index('class="site-tabs"') < page.index("<h1") < page.index("<video")
+
+
+def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
+    rendered: Callable[[str], str],
+) -> None:
+    """Visiting the Visualize page starts its film. The markup mutes it, which a browser
+    requires of a film it starts unasked, keeps its controls and its inline playback, and
+    marks it `data-autoplay`; `overview/film.js`, which only this page carries, starts it
+    unless the reader asks for reduced motion or the page is framed in a popover
+    (`tests/node/overview_film` runs it). The markup itself has no `autoplay`, so a
+    reader the script leaves alone fetches nothing (`preload="none"`), and no `loop`.
+    No other page carries the script, and the explainer's film is not marked."""
+    page = rendered("visualize.html")
+    videos = re.findall(r"<video [^>]*>", page)
+    assert len(videos) == 1
+    attributes = videos[0].removeprefix("<video ").removesuffix(">").split()
+    for attribute in ("controls", "muted", "playsinline", "data-autoplay", 'preload="none"'):
+        assert attribute in attributes, attribute
+    assert not {"autoplay", "loop"} & {name.partition("=")[0] for name in attributes}
+    script = render_overview.FILM_SCRIPT.read_text(encoding="utf-8")
+    assert page.count(script) == 1
+    assert page.index("</video>") < page.index(script)
+    for needle in (
+        'document.querySelector("video[data-autoplay]")',
+        'window.matchMedia("(prefers-reduced-motion: reduce)").matches',
+        'getAttribute("data-site-view") === "embed"',
+        "film.autoplay = true;",
+        "film.play().catch(",
+    ):
+        assert needle in script, needle
+    for name in render_overview.PAGES:
+        if name != "visualize.html":
+            other = rendered(name)
+            assert script not in other, name
+            assert "data-autoplay" not in other, name
+            assert not re.search(r"<video\b[^>]*\sautoplay\b", other), name
+    explainer = re.findall(r"<video [^>]*>", EXPLAINER_ARTICLE.read_text(encoding="utf-8"))
+    assert len(explainer) == 1
+    assert 'preload="none"' in explainer[0]
+    for absent in ("autoplay", "muted", "loop"):
+        assert absent not in explainer[0], absent
 
 
 def test_the_film_page_shows_no_title_and_keeps_one_for_a_screen_reader(

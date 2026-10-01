@@ -13,6 +13,10 @@ under the rule that runs under the navigation bar, never over it, with the conte
 shared space under them (`preview_site.tabs_problems`, `templates/paper-design.md`,
 Section tabs).
 
+Every page that may be the film's is opened as for a reader who asks for reduced motion
+(`preview_site.REDUCED_MOTION`), so its film stands at its poster and no test starts the
+film's download.
+
 Skipped where no Chromium can be launched; `SQPACK_CHROMIUM` names one the environment
 supplies, as the other browser tools read it.
 """
@@ -30,6 +34,7 @@ from devtools.preview_site import (
     CLIP_WIDTHS,
     CLIPPED,
     HEADER,
+    REDUCED_MOTION,
     SCROLLBAR_PX,
     clipped,
     tabs_problems,
@@ -79,7 +84,9 @@ def test_no_wide_block_runs_past_an_ancestor_that_clips_it(
     browser: Any, pages: dict[str, Path], name: str
 ) -> None:
     for width in WIDTHS:
-        page = browser.new_page(viewport={"width": width, "height": 900})
+        page = browser.new_page(
+            viewport={"width": width, "height": 900}, reduced_motion=REDUCED_MOTION
+        )
         try:
             page.goto(pages[name].as_uri(), wait_until="load")
             assert clipped(page) == [], f"{name} at {width}"
@@ -137,7 +144,9 @@ def test_the_section_tabs_stand_under_the_bars_rule(
     it with their own tab current; the film starts `--site-page-top` under the tabs, and
     the application the tabs' own space under them."""
     for name, (path, current, below) in section_pages.items():
-        page = browser.new_page(viewport={"width": width, "height": 900})
+        page = browser.new_page(
+            viewport={"width": width, "height": 900}, reduced_motion=REDUCED_MOTION
+        )
         try:
             page.goto(path.as_uri(), wait_until="load")
             found = page.evaluate(HEADER)
@@ -160,7 +169,9 @@ def test_tabs_over_the_rule_are_caught(
     """The control: give the header that holds the tabs its lower border back, as it had
     while the tabs stood over the rule, and the check names the tabs on both pages."""
     for name, (path, _, _) in section_pages.items():
-        page = browser.new_page(viewport={"width": 1280, "height": 900})
+        page = browser.new_page(
+            viewport={"width": 1280, "height": 900}, reduced_motion=REDUCED_MOTION
+        )
         try:
             page.goto(path.as_uri(), wait_until="load")
             page.add_style_tag(content=RULE_UNDER_THE_TABS)

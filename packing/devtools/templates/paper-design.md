@@ -840,11 +840,26 @@ it.
   film at full size directly under the section tabs, with no page title and no subtitle
   (**Page headings**, above).
   It is as wide as the window allows less the page gutters, up to 120rem, but never so
-  tall that it will not fit the window whole (`.site-film-frame`), and embedded as the
-  explainer embeds its film: inline, with its controls, fetching nothing until a reader
-  presses play (`preload="none"`), and showing its poster until then,
-  `ascent-n1-324-poster.png`, published beside the explainer’s assets, at the video’s
-  own 16:9, so starting playback moves nothing.
+  tall that it will not fit the window whole (`.site-film-frame`), and embedded inline,
+  with its controls. Its poster, `ascent-n1-324-poster.png`, published beside the
+  explainer’s assets, shows until playback starts, at the video’s own 16:9, so starting
+  moves nothing. The film starts when the page is visited.
+  Its markup mutes it (`muted`, which a browser requires of a film it starts unasked)
+  and marks it `data-autoplay`, and `overview/film.js`, which only this page carries,
+  sets `autoplay` and plays it.
+  It does not loop. **Visiting the page therefore starts the film’s download**, a 216 MB
+  file on the release, which the browser fetches as it plays.
+  A reader who asks for reduced motion (`prefers-reduced-motion: reduce`) keeps the
+  poster and the play control, and so does a reader without scripts, the page framed in
+  a card’s popover, and a browser that refuses to start the film.
+  For them nothing is fetched until they press play: the markup keeps `preload="none"`
+  and has no `autoplay` of its own, since markup cannot make that depend on the motion
+  preference. No other film on the site starts unasked: the explainer’s stays as it was,
+  fetching nothing until a reader presses play, and the overview embeds no video.
+  The tools that open the site’s pages in a browser (`preview_site`,
+  `measure_site_pages header`, the browser tests) open them under reduced motion
+  (`preview_site.REDUCED_MOTION`), so none of them starts the download.
+  `tests/node/overview_film/` runs the script against a stand-in film.
   A caption and a note in the support colour follow at the reading measure: what the
   film shows, its length, the shorter 1 to 100 film, the release both are on, and the
   Workbench.

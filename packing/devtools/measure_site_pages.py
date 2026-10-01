@@ -84,7 +84,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.preview_site import HEADER, press, serve, settle_math
+from devtools.preview_site import HEADER, REDUCED_MOTION, press, serve, settle_math
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -459,7 +459,10 @@ def _evaluate(
         browser = _launch(driver)
         for width in widths:
             for name in pages:
-                page = browser.new_page(viewport={"width": width, "height": 900})
+                # Reduced motion, so the Visualize page's film stays at its poster.
+                page = browser.new_page(
+                    viewport={"width": width, "height": 900}, reduced_motion=REDUCED_MOTION
+                )
                 page.emulate_media(media="print" if media == "print" else "screen")
                 page.goto(f"{base}/{name}", wait_until="load")
                 page.wait_for_timeout(300)

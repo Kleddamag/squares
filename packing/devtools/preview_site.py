@@ -42,7 +42,7 @@ import time
 from collections.abc import Sequence
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from devtools import render_overview
 
@@ -85,6 +85,12 @@ LAZY_WAIT_MS = 5_000
 #: How long what a press opens may take to typeset its math.
 PRESS_WAIT_MS = 5_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
+#: The motion preference a tool opens the site's pages under: a reader's who asks for
+#: reduced motion. The Visualize page starts its film on a visit unless the reader asks
+#: that (`overview/film.js`), and the film is a 216 MB release download a page would wait
+#: on and a shot would catch mid-frame; under this it stands at its poster and nothing
+#: is fetched. The only other difference is that a hover's colour changes at once.
+REDUCED_MOTION: Literal["reduce"] = "reduce"
 
 
 def _run(*args: str) -> None:
@@ -263,7 +269,10 @@ def clip_check(
                 if not (output / name.partition("#")[0]).is_file():
                     continue
                 for width in widths:
-                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900},
+                        reduced_motion=REDUCED_MOTION,
+                    )
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="load")
                     page.wait_for_timeout(200)
                     errors.extend(f"{name} @{width}: {problem}" for problem in clipped(page))
@@ -325,7 +334,9 @@ def screenshots(
     that do not stand under the bar's rule (`tabs_problems`), and any wide block that
     runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
-    checked the same way, and the window shot as `<page>-<width>-press<n>.png`."""
+    checked the same way, and the window shot as `<page>-<width>-press<n>.png`. Every
+    page is opened as for a reader who asks for reduced motion (`REDUCED_MOTION`), so
+    the Visualize page's film is shot at its poster and its download never starts."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -338,7 +349,10 @@ def screenshots(
                 if not (output / name.partition("#")[0]).is_file():
                     continue
                 for width in WIDTHS:
-                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900},
+                        reduced_motion=REDUCED_MOTION,
+                    )
                     page.on(
                         "console",
                         lambda message, name=name, width=width: (

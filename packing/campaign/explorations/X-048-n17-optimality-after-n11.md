@@ -419,14 +419,14 @@ and the exact next artifact for every selected route.
 The
 [session plan](../../../docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md)
 sets execution dependencies, review boundaries and efficiency triggers.
-H-253 through H-256 now discharge rational feasibility, chart fidelity, root existence
-and endpoint feasibility.
+H-253 through H-257 now discharge rational feasibility, chart fidelity, root existence,
+endpoint feasibility and the complete active-feature inventory.
 The following execution checkpoint supersedes the initial readiness assessment while
 preserving its selection rationale.
 
 ## October 1 Execution Checkpoint
 
-[Session 165](../agent-sessions/session-165-post-optimality-overnight.md) has four
+[Session 165](../agent-sessions/session-165-post-optimality-overnight.md) has five
 accepted rounds, with immutable inputs and independent review:
 
 | Obligation | Result | Exact Scope |
@@ -448,18 +448,34 @@ equality, while keeping the branch premises explicit.
 A rotational freedom at square 6 shows why an isolated-coordinate theorem is
 inappropriate.
 
-The next selected discriminator is
-[H-257](../hypotheses/H-257-n17-endpoint-contact-features.md), a complete inventory of
-owner-axis alternatives and active-wall corners at the exact endpoint.
-It must be independently accepted before the proposed first-order cone analysis.
+[H-258](../hypotheses/H-258-n17-common-core-stress.md) selected a fixed common-core
+stress for both first-order branches.
+Its mathematical recipe passed static review, but three bounded symbolic preparation
+attempts did not finish.
+The instrument is stopped, and no target stress was evaluated.
+Neither stationarity nor its negation has been established.
+Exact residual completion, adversarial controls and bounded interval arithmetic remain
+prerequisites for a separately admitted future run.
 Even a complete stationarity certificate would require further higher-order and global
 arguments. H-027’s class-angle derivative threshold is not silently replaced by this
 weaker question.
 
+The separately registered
+[n12 weighted-cycle review](../../../docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md)
+proves a finite-row inequality for arbitrary nonnegative edge weights.
+At side 4, canonical componentwise wall repair loses no certificate with a nonpositive
+margin bound on a fixed pair support.
+This removes wall variables from that conditional certificate problem.
+Exact hand controls and independent algebra review passed; no source solver run or
+geometric target was replayed.
+Global coverage of valid row supports remains the missing premise, so this is not a new
+n12 lower bound.
+
 The two main scientific gaps remain local capture of unrestricted orientations and
 separating branches, and global exclusion outside a captured neighbourhood.
-Frontier admission of the already checked upper witness remains `think-vdmf`; this
-checkpoint does not silently alter that registry.
+The [n17 case](../../frontier/n-017.md) now admits the accepted endpoint’s rational
+outward ceiling under `think-vdmf`, replacing the grid ceiling5 while leaving the case
+open. The rational H253 witness remains separate fallback evidence.
 Low-n and global-cover routes retain their recorded readiness limits rather than
 launching a broad search during endpoint work.
 

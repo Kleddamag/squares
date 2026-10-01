@@ -245,7 +245,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 391 | 199 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 14 in progress |
+| Commitments | 391 | 199 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
 | Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 193 | 37 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
@@ -510,6 +510,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [n12 Weighted Cycles: Exact Inequality and Capture Scope](docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md) | dated review record | record | retained | — |
 | [Deterministic n17 Common-Core Stress Certificate](docs/project/reviews/review-2026-10-01-n17-core-stress.md) | dated review record | record | retained | — |
 | [Independent Review of the n17 Endpoint Feature Inventory](packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md) | dated review record | record | retained | — |
 | [n17 First-Order Branch Inventory and Capture Readiness](docs/project/reviews/review-2026-10-01-n17-first-order-branches.md) | dated review record | record | retained | — |
@@ -5243,7 +5244,7 @@ round that names the hypothesis, control roles included.
 | [H-255](packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md) | confirmed | Exact existence and uniqueness of the contact-chart root in its fixed rational box; endpoint packing feasibility and capture remain separate | 1 | 1s wall |
 | [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | confirmed | Exact endpoint packing at the H255 root with fixed interior sliders; all68 wall and136 pair obligations certified; global capture remains open | 1 | 43s wall |
 | [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | confirmed | Complete exact-root feature inventory, independently audited:168owner-axis options,60active-wall corners,9tangent offsets | 1 | 42s wall |
-| [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed analytic common-core stress for both complete first-order branches; exact symbolic residuals and nonnegative weights required | 0 | — |
+| [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
 
 ### Confirmed
 

@@ -40,7 +40,7 @@ from sqpack.known_best import KNOWN_BEST_CORPUS
 #: reports with certified ones, three of which, n = 206, 259 and 305, still trail by 2 or
 #: 3 units of the printed fifteenth decimal; de Winter's n = 211 (T-057) moved a report
 #: and its ceiling together off the grid.
-TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 17, "n=1..200": 48, "n=1..324": 83}
+TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 16, "n=1..200": 47, "n=1..324": 82}
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # The consumers of this field now span the repository: it is named in SYNOPSIS.md and
@@ -378,8 +378,8 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     # family's 27, 38, 52, 67 and 84, the off-centre family's 26 and 85, and the lifted
     # witnesses 19 and 66 in Q(sqrt 2) and 18 and 86 in Q(sqrt 7) -- leaving n = 50's
     # 3/7 as the widest.
-    # 18 at n = 1..100; the new cases above 100 trail on the grid ceiling wherever the
-    # catalogue reports a non-integer side, so the measurement grows with the corpus.
+    # 16 at n = 1..100 after n=17's certified endpoint. New cases above 100 trail
+    # on the grid ceiling wherever the catalogue reports a non-integer side.
     assert len(trailing) == TRAILING_BY_CORPUS[KNOWN_BEST_CORPUS.label]
     for n, (reported, verified) in trailing.items():
         assert verified > reported, n
@@ -404,6 +404,31 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     proved = sum(1 for case in loaded_cases.values() if case["status"] == "proved")
     assert exact_forms == KNOWN_BEST_CORPUS.count
     assert proved < exact_forms
+
+
+def test_n17_endpoint_ceiling_keeps_report_and_optimality_distinct() -> None:
+    case = cases()[17]
+    upper = case["verified_upper_bound"]
+    reported = case["reported_upper_bound"]
+    assert upper == {
+        "value": "4.6755300936045509516342148538535054",
+        "exact_form": "4.6755300936045509516342148538535054",
+        "evidence": ["E-n017-certified-endpoint"],
+    }
+    assert Decimal(upper["value"]) < Decimal("4.675530093604551")
+    assert bounds_agree_at_declared_precision(reported, upper)
+    assert reported["algebraic_degree"] == 18
+    assert case["status"] == "open"
+    assert case["verified_lower_bound"]["exact_form"] == "116511/25000"
+    assert "E-n017-kleddamag-rational-upper" in case["evidence"]
+    assert all(
+        "E-kingbird-upper-register" not in blocker.get("evidence", [])
+        for blocker in case["blockers"]
+    )
+    body = _body(17)
+    assert CEILING_HEADING not in body
+    assert "degree-18 polynomial" in body
+    assert "global minimum" in body
 
 
 def test_every_trailing_case_says_so_in_the_record_a_reader_opens() -> None:

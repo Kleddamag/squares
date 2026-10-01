@@ -319,10 +319,10 @@
         "n": 17,
         "record": "n-017",
         "upper": {
-          "assurance": "reported",
+          "assurance": "verified",
           "basis": "external",
           "confirmed_by": [],
-          "note": "(reported)",
+          "note": null,
           "result": null,
           "results": [],
           "source_key": "[Kingbird]",

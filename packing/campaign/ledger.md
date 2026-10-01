@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 27 | think-kaqh | Complete H258 deterministic stress controls and independent review under think-wrgx, then freeze before one bounded run. Finalization14:30UTC/deadline15UTC unchanged. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `documentation-pass` (correctness) | 30 | think-kaqh | Publish n17 verified ceiling and n12 conditional graph inequality. H258 remains stopped before target use. Finalization14:30UTC/deadline15UTC unchanged. |
 
 ### Workflow summary
 
@@ -189,14 +189,14 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
 | `factual-review` | 11 | 1 | 66 | 3 |
-| `insight-iteration` | 28 | 1 | 87 | 4 |
+| `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 40 | 1 |
 | `research-loop` | 31 | 4 | 113 | 8 |
 | `pipeline-improvement` | 38 | 2 | 204 | 6 |
-| `documentation-pass` | 1 | 0 | 28 | 3 |
+| `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 39 | 2 |
+| `review-planning-oversight` | 6 | 0 | 40 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -863,7 +863,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-399 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md |
 | BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
 | BC-401 | research | 17 | complete | 0 | think-6dg0 | packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md |
-| BC-402 | research | 17 | in_progress | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
+| BC-402 | research | 17 | blocked | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
 
 ## Series
 

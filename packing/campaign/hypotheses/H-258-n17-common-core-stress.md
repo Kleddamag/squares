@@ -26,7 +26,8 @@ hypothesis:
     threshold: Exact A-transpose-lambda=e-side identity at the certified root; weight lowerbounds at leastzero
       with no tolerance; strictpositive denominator/force guards.
   instrument: devtools.check_n17_core_stress; deterministic symbolic stress construction, exact rational-function
-    residual reduction and Fraction interval sign audit. No numerical optimizer or fitted parameters.
+    residual reduction and fixed256bit outward dyadic interval sign audit using exact Fraction operations.
+    No numerical optimizer or fitted parameters.
   instrument_ready: false
   regime: Unchanged H255 inclusion box and accepted H256centroid/H257feature inventory; fixed analytic
     force and torque allocation, no rootrefinement or alternate allocation.
@@ -121,6 +122,26 @@ normalization, row or required input.
 Synthetic controls must not read the target.
 Retain exact symbolic equalities and independently audit all interval conclusions.
 
+For a future admitted implementation, the interval contract uses a fixed 256-bit dyadic
+grid. Enclose each input and every arithmetic result by rounding its lower endpoint down
+and upper endpoint up to multiples of $2^{-256}$, using exact integer floor and ceiling
+operations. Division requires a denominator interval excluding zero.
+This widens the unchanged accepted root enclosure; it does not refine the root or change
+any sign threshold. Synthetic controls must check containment, including negative values
+and division. The independent auditor implements the enclosure operations separately and
+reports any differences between its bounds and the producer’s bounds; both must
+establish the required signs.
+
+This proposed arithmetic contract was selected before any H258 target evaluation; it has
+not been implemented or validated.
+An unrelated synthetic 58-weight assembly at $(t,b)=(1/3,1/5)\pm10^{-12}$ took 0.049
+seconds but produced 128,454 characters for weight bounds alone with unrestricted
+rational denominators.
+Fixed outward rounding bounds representation cost without weakening the exact
+containment requirement.
+The separate symbolic identity calculation continues to use exact rational functions,
+with no numerical tolerance.
+
 Freeze the criterion, analytic recipe, instrument, controls and prerequisite Git blobs
 before one target run.
 Use existing dependencies, project Python, one worker, a 300-second process limit and 10
@@ -139,6 +160,24 @@ Other stresses may still work.
 Even success leaves zero-side motions, higher-order local analysis and global
 capture/exclusion as separate obligations.
 It does not meet H027’s stronger quantitative class-angle criterion by substitution.
+
+## Instrument Stop Before Target Use
+
+Three synthetic symbolic preparation attempts did not finish: the fully substituted
+calculation was interrupted after about two minutes; the formal-load and block-cancelled
+versions each reached a 90-second ceiling.
+The overnight three-failure guard stopped this instrument.
+No target stress was evaluated, so the candidate is neither confirmed nor refuted.
+
+The
+[preparation record](../explorations/X048-stress-preparation/preparation-2026-10-01.json)
+and [observed output](../explorations/X048-stress-preparation/observed-tool-output.txt)
+retain the commands, exits, controls, missing measurements and source-snapshot limits.
+Both draft command-line tools refuse before reading target files.
+The producer has three passing fast synthetic controls; full identity completion,
+derivative and mutation controls, outward dyadic arithmetic, and independent receipt
+binding remain unfinished.
+A future attempt requires a new readiness review and a separately admitted run.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

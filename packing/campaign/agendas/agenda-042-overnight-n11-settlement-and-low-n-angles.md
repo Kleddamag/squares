@@ -1024,7 +1024,7 @@ agenda:
     purpose: research
     owner_focus: correctness
     instances: [17]
-    state: in_progress
+    state: blocked
     priority: 0
     question: Does the fixed analytic common-core stress exclude negative-side first-order directions in both n17corner branches?
     hypotheses: [H-258]
@@ -1033,12 +1033,13 @@ agenda:
     exit: Exact52column dual identities andall58commonrow weight signs certified, orretained unresolvedcandidate withoutretuning.
     bead: think-wrgx
     depends_on: [BC-401]
+    blocked_on: Three synthetic symbolic preparation guard failures; the exact52column executable identity proof and adversarial controls are incomplete. No target run is admitted.
     next_evidence: packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     workflows: [pipeline-improvement, research-loop, factual-review]
     program: post-optimality-low-n
     artifacts:
     - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
-    note: First-orderstationarity only; local/globaloptimality andH027 quantitativeclass-angle threshold remain separate.
+    note: Three target-free symbolic preparation guard failures stop this instrument. No target run or stationarity verdict; exact residual proof and controls remain missing. Local/globaloptimality remains separate.
 
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles

@@ -697,7 +697,7 @@ session:
     bead: think-wrgx
     objective: Implement the fixed analytic common-core dual with exact residual identities and independent
       mathematical/code review.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: H257 feature premises are accepted; a deterministic force/torque recipe reduces the
       next question to five moment capacities.
@@ -711,11 +711,100 @@ session:
     kill_condition: Unresolved symbolic residual, incomplete row contract, three repeated instrument failures
       orslice deadline.
     fallback: Retain H258 blocked on the named instrument defect and publish completedfeatureevidence.
-    outcome: null
+    outcome: 'Three target-free symbolic preparation attempts failed: full substitution interrupted after
+      about120seconds, then two supervised90second exact residual checks timed out. Mathematical recipe
+      passed static review but executable52identity proof and adversarial controls remain incomplete.
+      No H258 target arithmetic occurred; instrument stopped under the three-failure guard.'
     evidence:
     - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
+    stop_reason: Three consecutive preparation guard failures; instrument_ready remains false.
+    next_action: Retain drafts, timings and review; do not retry this instrument in the overnight session.
+  - workflow: review-planning-oversight
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-vdmf
+    objective: Audit admission of already accepted n17 upper evidence and select one bounded source or
+      global-capture review while retaining the stopped stress instrument.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: H258 instrument reached its three-failure stop; accepted H253 through H257 remain useful
+      and independent.
+    budget_minutes: 25
+    started_at: '2026-10-01T13:30:00Z'
+    deadline_at: '2026-10-01T13:55:00Z'
+    expected_output: Explicit frontier-admission requirements, retained stress preparation failures and
+      a separately scoped next mathematical review.
+    validation_command: Read accepted exp235 through exp239 evidence and frontier admission contracts;
+      no target replay.
+    kill_condition: Admission requires unreviewed theorem identity or a broad atlas refresh; proposed
+      research bypasses the stopped H258 instrument.
+    fallback: Retain named missing evidence and finalize accepted results without changing frontier authority.
+    outcome: Astra confirms the accepted H256 outward decimal is a schema-admissible rational ceiling;
+      H253 remains a standalone fallback. Only citation metadata and research tables need refresh, not
+      atlas geometry. A separate n12 weighted-cycle hand-proof review is registered before work.
+    evidence:
+    - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
+    stop_reason: Admission contracts and bounded secondary mathematical review selected without replay.
+    next_action: Integrate accepted endpoint evidence while Astra audits the finite weighted-cycle inequality.
+  - workflow: insight-iteration
+    focus: insight
+    recording: contemporaneous
+    clock_role: work
+    bead: think-1htp
+    objective: Audit the n12 directed-cycle inequality for arbitrary nonnegative link weights, with exact
+      hand controls and an explicit global-capture premise; integrate already accepted n17 evidence in
+      parallel.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: H258 instrument stopped; X048 low-n alternatives include a bounded source lemma review
+      independent of that instrument.
+    budget_minutes: 25
+    started_at: '2026-10-01T13:36:00Z'
+    deadline_at: '2026-10-01T14:01:00Z'
+    expected_output: Exact finite-row cancellation proof,45degree and non-axis handcontrols, precise missing
+      universal coverage obligation; no new numerical target or global bound.
+    validation_command: Read the registered review and retained T4 source; independently assess algebra
+      and quantified premises.
+    kill_condition: Review needs a broad sweep, target computation or evidence outside the declared finite-row
+      domain.
+    fallback: Retain conditional source findings and missing premises without promoting a packing bound.
+    outcome: Exact arbitrary-weight directed-graph inequality, canonical wall elimination atT4, three
+      hand controls and dilation-to-positive-margin reduction pass twoAstra and coordinator review. Universal
+      support coverage remains missing; no target run/newbound. Independently reviewed n17 endpoint ceiling
+      admission is implemented; focused18tests passed.
+    evidence:
+    - docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md
+    stop_reason: Finite-row mathematical obligations complete; global-capture requirement retained explicitly.
+    next_action: Publish reviewed n17 admission and n12 lemma with metadata-only checks; select further
+      work only if a bounded useful discriminator is ready.
+  - workflow: documentation-pass
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-kaqh
+    objective: Publish accepted n17 bound admission, conditional n12 inequality and stopped H258 instrument
+      with complete evidence limits.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Independent mathematical and admission reviews are complete; retained evidence needs
+      a recoverable checkpoint.
+    budget_minutes: 15
+    started_at: '2026-10-01T13:43:00Z'
+    deadline_at: '2026-10-01T13:58:00Z'
+    expected_output: Clean checkpoint, scoped PR update and passing relevant metadata checks; no geometry
+      replay.
+    validation_command: Focused frontier metadata, schema, document and existing contract checks; hosted
+      CI runs separately.
+    kill_condition: Unrelated atlas rebuild or general slow testing displaces selected research.
+    fallback: Retain explicit integration blocker and preserve accepted scientific receipts.
+    outcome: null
+    evidence:
+    - packing/frontier/n-017.md
+    - docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md
     stop_reason: null
-    next_action: Review symbolic recipe and synthetic controls before any target stress computation.
+    next_action: Commit reviewed stable files, push and inspect hosted CI beside the next bounded source-review
+      proposal.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -734,8 +823,8 @@ session:
     before: X-048 and evand intake reviewed; no W3 target execution; n17 candidate has only a numerical
       receipt.
     after: 'Five accepted n17 rounds: rational feasibility, chart fidelity, exact root, endpoint packing
-      and full contact-feature inventory. Conditional minimum attained; deterministic first-order stress
-      selected, local/global capture unproved.'
+      and full contact-feature inventory. Conditional minimum attained. H258 stress instrument stopped
+      after three preparation failures; stationarity and local/global capture unproved.'
   delegations:
   - task: think-s6ty endpoint and flexible-family mathematical review
     operator: gpt-6-astra max
@@ -858,8 +947,8 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Complete H258 deterministic stress controls and independent review under think-wrgx, then
-    freeze before one bounded run. Finalization14:30UTC/deadline15UTC unchanged.
+  next_action: Publish n17 verified ceiling and n12 conditional graph inequality. H258 remains stopped
+    before target use. Finalization14:30UTC/deadline15UTC unchanged.
 ---
 # Session 165: Post-optimality Research
 
@@ -916,8 +1005,10 @@ observed speedup and no arithmetic contract has been changed.
 `think-r8ns` is retaining the independent endpoint receipt audit as a reusable tool.
 
 The contact-feature target and independent full175-interval audit pass.
-Next, complete the deterministic common-core stress instrument under `think-wrgx`, with
-exact identities and nonnegative weights required before any stationarity claim.
+The deterministic common-core stress instrument under `think-wrgx` is stopped after
+three symbolic preparation failures.
+No target stress was evaluated; its mathematical recipe and unfinished tools are
+retained for a future readiness review.
 Keep global nonoverlap distinct from a chosen directed projection inequality, and
 first-order stationarity distinct from local optimality.
 `think-vdmf` retains upper-bound frontier admission; `think-je3v` retains checkpoint

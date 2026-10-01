@@ -384,6 +384,41 @@ require a separate local-minimum argument.
 The candidate gives no global coverage beyond the endpoint neighbourhood and does not by
 itself meet H027’s quantitative class-angle derivative threshold.
 
+## Instrument Review Checkpoint
+
+The independent mathematical and static code reviews agree on the proposed stress: the
+58 common rows and 52 columns, original directed contact signs, partial angular
+derivatives with $S$ fixed, force and moment tables, six prescribed zero weights, and
+normalization $K$ match the derivation above.
+The two exceptional residual columns have the stated opposite signs at squares 12 and
+16\. The draft also binds its input receipts and root enclosure to the frozen
+prerequisites.
+
+The executable proof remains incomplete.
+The first synthetic proof attempt with fully substituted loads was interrupted after
+approximately 120 seconds; two subsequent exact symbolic attempts reached their
+90-second limits. These controls did not read the target, and no H258 target run took
+place.
+A time limit supplies no conclusion about the signs of the proposed weights or the
+existence of a different stress.
+
+The final reviewed draft cancels tied rows in blocks before assembling the residuals.
+Its 23 block-shape checks cover 14 axis wall pairs and nine parallel contact pairs;
+their source and target signs and the generic cancellation identities are correct.
+Those checks bind the block formulas to the physical rows, but they do not replace a
+completed exact proof of all 52 residual identities.
+
+Before this instrument can be declared ready, a separately registered continuation must
+complete the bounded symbolic proof and the remaining controls: compare the owner-axis
+derivatives with the reduced rows for both angular signs and nonzero offsets; check a
+rotating owner at a nonparallel contact; and exercise refusal paths for altered row,
+force, moment, normalization, and exceptional-residual signs.
+The output must also distinguish a certified strictly negative weight, which rejects
+this fixed allocation only, from a bound straddling zero or a failed prerequisite, which
+leaves the candidate unresolved.
+The retained derivation is therefore a proposed exact dual, not a computationally
+verified stationarity certificate.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -47,6 +47,15 @@ edges around a point or a band can hold without also letting a real 2x regressio
 through. A single hosted reading cannot tell a slow draw from a slow change; the ceiling
 can still refuse a slow run, and that is the rule a pull request is held to.
 
+A tier that has never been read at its reference shape may say so instead of leaving its
+record empty without comment. `pending_measurement` names the bead that owns the first
+reading and `pending_until` the last day the tier may go without one; the two come
+together, and neither may sit beside `measured_seconds`, `measured_on`, `measured_where`
+or `measured_band`, so a forecast cannot pass for a reading. Nothing in `judge` reads
+either: the ceiling applies from the first run, and the drift and stale rules have no
+record to be relative to. `devtools.check_gate_budgets` is what holds the date and the
+bead, and only for a tier a pull request runs, where an empty record otherwise fails.
+
 Nothing here prints or exits; `sqpack.cli.validate` renders the verdict and
 `devtools.check_gate_budgets` is the static check's command surface.
 """
@@ -57,6 +66,7 @@ import itertools
 import math
 import re
 from dataclasses import dataclass, field
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Literal
 
@@ -153,6 +163,12 @@ class TierBudget:
     #: The lowest and highest readings at the reference shape, for a tier whose walls are
     #: a distribution: the stale rule reads the low edge and the drift rule the high one.
     measured_band: tuple[float, float] | None = None
+    #: The bead that owns the first reading of a tier with no record yet. A forecast is
+    #: not data, so this never sits beside a current record; the ceiling applies meanwhile.
+    pending_measurement: str | None = None
+    #: The last day the tier may go unrecorded under `pending_measurement`. Required with
+    #: it, so the allowance ends on a date and not when somebody remembers.
+    pending_until: date | None = None
 
     @property
     def records(self) -> tuple[Record, ...]:
@@ -377,6 +393,7 @@ def _tier_from(raw: object, index: int) -> TierBudget:
     reference = _require_mapping(entry.get("reference"), f"{where}.reference")
     measured = _optional_positive(entry.get("measured_seconds"), f"{where}.measured_seconds")
     measured_on = _optional_text(entry.get("measured_on"), f"{where}.measured_on")
+    pending, pending_until = _pending_from(entry, where)
     if (measured is None) != (measured_on is None):
         raise BudgetError(
             f"{where} records a cost without a date or a date without a cost; a "
@@ -406,7 +423,63 @@ def _tier_from(raw: object, index: int) -> TierBudget:
         history=_history_from(entry.get("history"), where),
         attribution=_attribution_from(entry.get("attribution"), f"{where}.attribution"),
         measured_band=band,
+        pending_measurement=pending,
+        pending_until=pending_until,
     )
+
+
+#: The fields of a current record. A pending tier may carry none of them: its superseded
+#: records stay in `history` and its forecast in `argument`.
+OBSERVATION_FIELDS = ("measured_seconds", "measured_on", "measured_where", "measured_band")
+
+
+def _pending_from(entry: dict[str, Any], where: str) -> tuple[str | None, date | None]:
+    """A tier's `pending_measurement` and `pending_until`: both, or neither.
+
+    The contract `_ci_job_from` holds a pending hosted job to, plus the date. A tier is
+    something a pull request waits on, so its allowance names the day it ends as well as
+    the bead that ends it. Whether that day has passed and that bead is live is
+    `devtools.check_gate_budgets`' question: this module reads no clock and no bead store.
+    """
+    pending = _optional_text(entry.get("pending_measurement"), f"{where}.pending_measurement")
+    raw_until = entry.get("pending_until")
+    if pending is None:
+        if raw_until is not None:
+            raise BudgetError(
+                f"{where}.pending_until requires pending_measurement; a date with no bead "
+                "behind it is an allowance nothing tracks"
+            )
+        return None, None
+    if re.fullmatch(TRACKING_BEAD, pending) is None:
+        raise BudgetError(
+            f"{where}.pending_measurement must name a `think-xxxx` bead, found {pending!r}"
+        )
+    if raw_until is None:
+        raise BudgetError(
+            f"{where}.pending_measurement requires pending_until; a pending measurement "
+            "with no date is a permanent one"
+        )
+    observed = [name for name in OBSERVATION_FIELDS if entry.get(name) is not None]
+    if observed:
+        raise BudgetError(
+            f"{where} cannot be pending and measured at once: it names pending_measurement "
+            f"beside {', '.join(observed)}. Retain superseded records in history and "
+            "estimates in argument"
+        )
+    return pending, _iso_date(raw_until, f"{where}.pending_until")
+
+
+def _iso_date(value: object, what: str) -> date:
+    """A calendar date, quoted as the register's other dates are or written as YAML's own."""
+    refusal = f"{what} must be an ISO date, 'YYYY-MM-DD', found {value!r}"
+    if isinstance(value, date) and not isinstance(value, datetime):
+        return value
+    if not isinstance(value, str):
+        raise BudgetError(refusal)
+    try:
+        return date.fromisoformat(value.strip())
+    except ValueError as error:
+        raise BudgetError(refusal) from error
 
 
 def _band_from(raw: object, where: str) -> tuple[float, float] | None:

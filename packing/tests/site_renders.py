@@ -21,9 +21,46 @@ A worker of a parallel run is a process of its own and renders its own.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import cache
+from pathlib import Path
+
+import pytest
 
 from devtools import overview_data, render_overview, result_overview
+from devtools.repo_links import REPO
+
+#: What the Pages jobs' partial checkouts leave out, as `pages.yml` writes the patterns
+#: (`!/packing/resources/*/`, `!/packing/campaign/*/`, which
+#: `test_pages_workflow` holds): every directory directly under either, with all it
+#: holds. The files directly under them, `bibliography.yaml` among them, are kept.
+PARTIAL_CHECKOUT_OMITS = (REPO / "packing" / "resources", REPO / "packing" / "campaign")
+
+
+def leave_out_the_archive_and_the_campaign(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Make the working tree answer as a Pages job's checkout does: nothing under a
+    directory of `PARTIAL_CHECKOUT_OMITS` is a file, is a directory or exists. Git still
+    has every path, as it does there. A renderer that reads the content of such a file
+    is not caught here; the Pages job itself fails on that."""
+    asked = {name: getattr(Path, name) for name in ("is_file", "is_dir", "exists")}
+
+    def omitted(path: Path) -> bool:
+        for root in PARTIAL_CHECKOUT_OMITS:
+            if not path.is_absolute() or root not in path.parents:
+                continue
+            below = path.relative_to(root).parts
+            if len(below) > 1 or asked["is_dir"](path):
+                return True
+        return False
+
+    def patched(name: str) -> Callable[..., bool]:
+        def answer(self: Path, *args: object, **kwargs: object) -> bool:
+            return False if omitted(self) else asked[name](self, *args, **kwargs)
+
+        return answer
+
+    for name in asked:
+        monkeypatch.setattr(Path, name, patched(name))
 
 
 @cache

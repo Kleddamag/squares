@@ -16,7 +16,13 @@ from typing import cast
 
 import pytest
 
-from devtools import overview_data, overview_sections, render_overview, render_recent_results
+from devtools import (
+    check_results,
+    overview_data,
+    overview_sections,
+    render_overview,
+    render_recent_results,
+)
 from devtools.check_results import scope_values
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
@@ -1678,19 +1684,17 @@ def test_every_result_shows_the_standing_readme_derives(
 ) -> None:
     """Standing is `render_recent_results.standing`, never restated: every table row
     carries it as an attribute, for the filters, and draws it as chips under its rungs,
-    one a part. A result that still stands is the default and draws no chip: the row of
-    a current best has none, and one that is the current best as reported has only
-    `reported`. Every standing chip is the one plain chip."""
+    one a part, after the result's kind chip. A result that still stands is the default
+    and draws no chip: the row of a current best has none, and one that is the current
+    best as reported has only `reported`. A result that claims no bound has no standing
+    and draws none. Every standing chip is the one plain chip."""
     held = render_recent_results.HOLDS
     recent = _recent_table(page)
     standing = re.compile(r'<span class="site-chip" data-standing="[^"]*"[^>]*>([^<]+)</span>')
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
-        if expected == render_recent_results.NOT_A_BOUND:
-            parts = [overview_sections.standing_label(expected)]
-        else:
-            parts = [part for part in expected.split(", ") if part != held]
+        parts = [part for part in expected.split(", ") if part and part != held]
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f'data-standing="{overview_sections.standing_key(expected)}"' in row
             assert standing.findall(row) == parts, result.id
@@ -1700,6 +1704,48 @@ def test_every_result_shows_the_standing_readme_derives(
     assert any(result.standing == held for result in overview.results)
     for other in render_recent_results.STANDINGS:
         assert "data-tone" not in overview_sections.standing_chip(other), other
+
+
+def test_every_result_shows_its_kind(
+    page: str,
+    results: str,
+    overview: overview_data.Overview,
+) -> None:
+    """A result's kind is the register's `kind`, never restated: every row of both
+    tables carries it as `data-kind`, for the Kind filter, and draws it as one plain
+    chip in the rubric's words, on a line of its own under its rungs and above any
+    standing chip. A result with no standing shows its kind alone, and its kind is no
+    bound."""
+    recent = _recent_table(page)
+    for result in overview.results:
+        kind = result.record["kind"]
+        chip = overview_sections.kind_chip(result)
+        label = check_results.kind_label(kind)
+        assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
+        assert "data-tone" not in chip
+        standing = overview_sections.standing_chips(result.standing)
+        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
+        if standing:
+            under += f'<span class="site-standing">{standing}</span>'
+        for row in (_row(results, result.id), _recent_row(recent, result.id)):
+            assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
+            assert f">{under}</td>" in row, result.id
+            assert row.count(chip) == 1, result.id
+        if result.standing == render_recent_results.NO_STANDING:
+            assert kind not in check_results.BOUND_KINDS, result.id
+            assert standing == "", result.id
+    assert ">not a bound<" not in results + recent
+    assert 'data-standing="not-a-bound"' not in results + recent
+    # The popover's head and a chain's step show the kind beside the rungs.
+    t036 = next(result for result in overview.results if result.id == "T-036")
+    assert overview_sections.status_chips(t036) == (
+        f"{overview_sections.rung_chips(t036)} {overview_sections.kind_chip(t036)}"
+    )
+    from devtools import result_overview  # noqa: PLC0415
+
+    assert ">restricted optimality</span>" in result_overview.result_popover_html(
+        t036, overview
+    )
 
 
 def _recent_row(table: str, result_id: str) -> str:
@@ -1822,7 +1868,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
         "The table lists every result, newest first: new bounds for particular numbers of "
         "squares, found here or by others."
     ) in text
-    assert "1 August" not in text
+    # The retired lead, not the date: a row's claim may cite a source of 21 August.
+    assert "since 1 August" not in text
     assert "every result since" not in text
     starts = (
         "The table starts with superseded results hidden, at significance S4 and up and a "
@@ -1907,14 +1954,14 @@ def test_a_summary_splits_at_its_formula_and_a_credit_at_what_it_builds_on() -> 
     assert credit == (
         'wand125 <span class="site-cell-quiet">after Daniel, Tokoharu, Levy, Stromquist</span>'
     )
-    assert overview_sections.credit_cell("This project") == "This project"
+    assert overview_sections.credit_cell("Levy") == "Levy"
+    assert overview_sections.credit_cell("Levy after Burns, Massaccesi") == (
+        'Levy <span class="site-cell-quiet">after Burns, Massaccesi</span>'
+    )
     assert overview_sections.credit_cell("A & B") == "A &amp; B"
     chips = overview_sections.standing_chips("second certificate, reported")
     assert chips.count('class="site-chip"') == 2
-    assert (
-        overview_sections.standing_chips(render_recent_results.NOT_A_BOUND).count("site-chip")
-        == 1
-    )
+    assert overview_sections.standing_chips("case exclusion").count("site-chip") == 1
     # A result that still stands draws no chip; what else its standing says, it draws.
     held = overview_sections.standing_chips("current best, reported")
     assert held == '<span class="site-chip" data-standing="reported">reported</span>'
@@ -2467,7 +2514,9 @@ def test_the_standing_filter_offers_each_standing_on_the_page(
     offered = re.findall(r'<option value="([^"]*)"[^>]*>', tools.group(1))
     present = {overview_sections.standing_key(r.standing) for r in overview.results}
     assert offered[0] == ""
-    assert set(offered[1:]) == present
+    # A result that claims no bound has no standing, so its empty key is no choice.
+    assert set(offered[1:]) == present - {""}
+    assert "" in present
     # The unmarked state keeps its name as a choice, first after All, whether or not a
     # row draws a chip for it; `superseded` is the one choice Hide superseded leaves no
     # row for (think-nr0y).
@@ -3796,6 +3845,13 @@ def test_a_replay_rows_popover_body_comes_from_one_function(
     assert "<dt>Reported</dt>" in body
     assert "<dt>Verified here</dt>" in body
     assert html.escape(row.reported.holder) in body
+    # Each lane's date is what the tables' Date column says it is: a bound by others was
+    # published then, and this project's own was established then.
+    ours = next(r for r in overview.awaiting_replay if r.verified.ours and r.reported.published)
+    detail = overview_sections.replay_row_popover_body(ours)
+    assert f", established {ours.verified.published}" in detail
+    assert f", published {ours.reported.published}" in detail
+    assert f", published {ours.verified.published}" not in detail.split("Verified here")[1]
     block = overview_sections.awaiting_replay(overview)
     assert body in _row_popover(block, f"pop-replay-n-{row.n}")
     assert block.index("</details>") < block.index('<div class="site-popover site-row-pop"')
@@ -3937,6 +3993,7 @@ RESULT_FILTERS = [
     ("s", "min"),
     ("v", "min"),
     ("c", "min"),
+    ("kind", ""),
     ("standing", ""),
     ("current", ""),
     ("source", ""),
@@ -3995,9 +4052,9 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert _without_defaults(here) == _without_defaults(there)
     assert here != there
     assert _controls(here) == _controls(there) == RESULT_FILTERS
-    everything = {"s": "", "v": "", "c": "", "standing": "", "source": ""}
+    everything = {"s": "", "v": "", "c": "", "kind": "", "standing": "", "source": ""}
     for bar in (here, there):
-        assert bar.count(" selected>") == bar.count("<select ") == 5
+        assert bar.count(" selected>") == bar.count("<select ") == 6
         assert bar.count("<input ") == 3
         assert 'type="date"' not in bar
         assert bar.count('type="checkbox"') == 1
@@ -4069,7 +4126,19 @@ def test_the_filter_bar_is_one_helpers_and_reads_the_whole_register(
     assert standings
     assert set(re.findall(r'<option value="([^"]+)"', standings[1])) == {
         overview_sections.standing_key(result.standing) for result in overview.results
-    }
+    } - {""}
+    # Kind offers the kinds the register holds, in the rubric's order and words.
+    kinds = re.search(r'<label>Kind <select data-filter="kind">(.*?)</select>', full)
+    assert kinds
+    held = {result.record["kind"] for result in overview.results}
+    assert re.findall(r'<option value="([^"]*)"[^>]*>([^<]*)</option>', kinds[1]) == [
+        ("", "All"),
+        *(
+            (kind, check_results.kind_label(kind))
+            for kind in check_results.KINDS
+            if kind in held
+        ),
+    ]
     assert f' min="1" max="{max(overview.cases)}" ' in full
     assert 'data-bound="age" min="0" placeholder="any"> days</label>' in full
     assert 'data-bound="age" min="0" placeholder="any" value="180"> days</label>' in part
@@ -4099,6 +4168,7 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "v": record["verification"][1:],
             "c": record["confirmation"][1:],
             "s": str(record["significance"]["score"]),
+            "kind": record["kind"],
             "standing": overview_sections.standing_key(result.standing),
             "current": "false" if result.standing == "superseded" else "true",
             "n": overview_sections.result_cases(result),
@@ -4157,7 +4227,8 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
     and clear in the results page's, from each table's `FilterDefaults`. What it hides is
     the register's own standing: a row's `data-current` is `false` exactly where its
     standing is `superseded`, and `true` for every other, a current best, a second
-    certificate and a result that is not a bound alike. So on the overview no row shown
+    certificate and a result that claims no bound, which has no standing, alike. So on
+    the overview no row shown
     is superseded and the count is of the rest, and on the results page the same rows
     carry the flag but none is hidden. No result a star marks is superseded, so the
     default never hides a new result."""
@@ -4191,8 +4262,12 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
         without += overview_sections.shown_by_default(result, unchecked, reference)
         if result.id in overview.starred:
             assert not superseded, result.id
-    # Every standing but the one stays: nothing but a superseded result is hidden for it.
-    assert kept == set(render_recent_results.STANDINGS) - {render_recent_results.SUPERSEDED}
+    # Every standing but the one stays, and so does a result with none: nothing but a
+    # superseded result is hidden for it.
+    assert kept == {
+        *render_recent_results.STANDINGS,
+        render_recent_results.NO_STANDING,
+    } - {render_recent_results.SUPERSEDED}
     current = sum(not overview_sections.is_superseded(r.standing) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)

@@ -43,8 +43,9 @@ and cite your work.
 The table lists every result, newest first: new bounds for particular numbers of
 squares, found here or by others.
 Each is dated by its publication if it is by others and by the day it was established if
-it is this project’s, and carries its rungs and, unless a verified case bound rests on
-it now, its standing, which says why not: most often, that it is *superseded*.
+it is this project’s, and carries its rungs, its kind, which says what it is, and, where
+it is a bound that no verified case bound rests on now, its standing, which says why
+not: most often, that it is *superseded*.
 {{STAR_LEGEND}}
 A result by others is registered as *reported* when its source is taken in, and as
 *verified* only after its certificate is replayed here in full and its mathematics

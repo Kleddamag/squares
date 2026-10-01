@@ -68,9 +68,10 @@ from devtools.overview_data import (
     Overview,
     Result,
     math_html,
+    prose_html,
     tex_bounds,
 )
-from devtools.repo_links import repo_url
+from devtools.repo_links import path_kind, repo_url
 
 #: The film's gap bar, as `overview/atlas-grid.js` draws it (`INSET` and `at`): the
 #: inset at each end, in percent of the bar, and the span the bar covers, from one below
@@ -117,10 +118,14 @@ def is_broad(cases: Sequence[int]) -> bool:
 
 
 def _resolve(path: str) -> Path | None:
-    """A path a record names, repository-relative or packing-relative, if it exists."""
+    """A path a record names, repository-relative or packing-relative, if the repository
+    has it. Whether it does is `repo_links.path_kind`'s to say, here and in every test
+    below of a file or a directory: the deployed site is rendered from a checkout
+    without the archive's and the campaign's directories, and their links must not
+    depend on which checkout rendered the page."""
     for base in (REPO, PACKING):
         candidate = base / path
-        if candidate.exists():
+        if path_kind(candidate) is not None:
             return candidate
     return None
 
@@ -220,8 +225,8 @@ def packets(result: Result) -> list[Path]:
             continue
         directory = REPO / match.group(0)
         readme = directory / "README.md"
-        target = readme if readme.is_file() else directory
-        if target.exists() and target not in found:
+        target = readme if path_kind(readme) == "blob" else directory
+        if path_kind(target) is not None and target not in found:
             found.append(target)
     return found
 
@@ -231,15 +236,15 @@ def _local_copy(local: str) -> Path | None:
     transcription, else its PDF. `local` is resources-relative or repository-relative."""
     for base in (REPO, PACKING / "resources"):
         path = base / local
-        if path.is_dir():
+        if path_kind(path) == "tree":
             readme = path / "README.md"
-            return readme if readme.is_file() else path
+            return readme if path_kind(readme) == "blob" else path
         for candidate in (
             path,
             path.with_name(path.name + ".md"),
             path.with_name(path.name + ".pdf"),
         ):
-            if candidate.is_file():
+            if path_kind(candidate) == "blob":
                 return candidate
     return None
 
@@ -573,16 +578,14 @@ def head(result: Result, cases: Sequence[int]) -> str:
 
     record = result.record
     kind, dated = result.dated
-    claim = tex_bounds(" ".join(str(record["claim"]).split()))
+    claim = prose_html(record["claim"], between='</p><p class="site-result-claim">')
     more = [
         ("Significance", record["significance"]["rationale"]),
         ("Composition", record.get("composition")),
         ("Next rung", record.get("next_rung")),
     ]
     rows = "".join(
-        f"<dt>{label}</dt><dd>{tex_bounds(' '.join(str(text).split()))}</dd>"
-        for label, text in more
-        if text
+        f"<dt>{label}</dt><dd>{prose_html(text)}</dd>" for label, text in more if text
     )
     meaning = novelty_labels().get(result.novelty, "")
     rows += (
@@ -694,13 +697,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     """One result in the chain: when, which, what it established, how it stands, and its
     citations and sources.
 
-    A broad result's chain runs to dozens of results, so a step there keeps its standing
-    and leaves its rungs to its own row."""
+    A broad result's chain runs to dozens of results, so a step there keeps its kind and
+    standing and leaves its rungs to its own row."""
     from devtools.overview_sections import (  # noqa: PLC0415
+        kind_and_standing,
         result_url,
-        standing_chips,
         standing_key,
-        standing_label,
         status_chips,
     )
 
@@ -718,16 +720,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     if other.id == current.id:
         current_mark = ' data-current=""'
         this = ' <span class="site-result-this">this result</span>'
-    chips = standing_chips(other.standing) if is_broad(cases) else status_chips(other)
+    chips = kind_and_standing(other) if is_broad(cases) else status_chips(other)
     here = standing_on(other, shared)
     if here != other.standing:
         on_case = "on this case" if len(cases) == 1 else "on these cases"
-        chips += (
-            f' <span class="site-cell-quiet">{on_case}, {_esc(standing_label(here))}</span>'
-        )
-    # A result that still stands draws no standing chip, so a step may have no chip line.
-    chips = chips.strip()
-    chip_line = f'<p class="site-result-step-chips">{chips}</p>' if chips else ""
+        chips += f' <span class="site-cell-quiet">{on_case}, {_esc(here)}</span>'
+    chip_line = f'<p class="site-result-step-chips">{chips}</p>'
     cites = [_esc(other.credit), *citations(other)]
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '
@@ -786,8 +784,12 @@ def _path_link(path: Path, label: str = "") -> str:
 
 
 def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> str:
-    """Where to read more: this site's pages, and the record on GitHub at `main`."""
-    from devtools.overview_sections import result_url  # noqa: PLC0415
+    """Where to read more: this site's pages, and the record on GitHub at `main`.
+
+    A result on eleven squares links both papers on that case, the one on the result
+    that stands first: the optimality paper, which explains T-060, then the explainer,
+    which proves the lower bounds T-060 superseded."""
+    from devtools.overview_sections import OPTIMALITY_PAPER, result_url  # noqa: PLC0415
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     record = result.record
@@ -801,6 +803,7 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
             site.append(_link(f"frontier.html#n-{n}", f"Frontier row, {math_html(f'n = {n}')}"))
     site.append(_link(result_url(result.id), f"{_esc(result.id)} in the results table"))
     if 11 in cases:
+        site.append(_link(OPTIMALITY_PAPER, f"The {math_html('n = 11')} optimality paper"))
         site.append(_link("explainer.html", f"The {math_html('n = 11')} explainer"))
 
     evidence_rows: list[str] = []
@@ -907,9 +910,7 @@ def check_links(result_id: str, body: str, overview: Overview) -> None:
         raise SystemExit(f"{result_id}: links a commit rather than main: {pinned[:3]}")
     missing = []
     for kind, path in sorted(repo_links.branch_paths(body)):
-        target = REPO / path
-        exists = target.is_dir() if kind == "tree" else target.is_file()
-        if not exists:
+        if path_kind(path) != ("tree" if kind == "tree" else "blob"):
             missing.append(f"{kind}/{path}")
     ids = {other.id.lower() for other in overview.results}
     fragments = {

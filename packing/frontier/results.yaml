@@ -5170,3 +5170,76 @@ results:
       review read the reduction, the checker and the finite-box argument and found no
       blocking defect; a read is no kind of verification, which is why C1 may stand above
       V0.
+
+  - id: T-065
+    kind: upper-bound
+    registered: '2026-10-01'
+    headline: "`s(17) ≤ 4.6755300936045509516342148538535054`, Bidwell's packing certified exactly"
+    claim: >-
+      s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square
+      of at most that side. The figure is a rational outward ceiling, not the exact side of
+      the packing.
+
+      Kleddamag's release of 21 September 2026 carries John Bidwell's 1998 construction
+      forward as an exact rational witness, s(17) <= 4675530093604551/10^15, which two exact
+      implementations here and the source's own checker accept: 17 unit squares, 68 vertices
+      contained, 136 pairs separated.
+
+      From that seed this project certified the packing at the unique root of its contact
+      chart: the root exists and is unique in a frozen rational box, and all 68 wall and 136
+      pair obligations hold there, 36 as exact identities and 168 by rational interval
+      bounds, and an independent audit reconstructs every interval record. This lowers
+      Kleddamag's rational ceiling in the seventeenth decimal.
+
+      The ceiling agrees with Bidwell's record in the Kingbird catalogue at the catalogue's
+      printed precision. No identity with the catalogue's degree-18 polynomial is proved, no
+      new packing is claimed, and optimality is not claimed.
+
+      Kleddamag,
+      [Kleddamag/17-squares-certified-bound](https://github.com/Kleddamag/17-squares-certified-bound),
+      for the rational witness of Bidwell's packing; its AUTHORS.md says the work was
+      produced with AI agents under Kleddamag's direction.
+    scope: {n_values: [17]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The first verified upper bound at n = 17 below the grid's 5: the case's verified
+        bracket becomes 4.66044 < s(17) <= 4.67553009..., both ends machine-checked, where
+        the upper end was a reported catalogue value. S3 by the anchor "a substantive case
+        result or machine audit"; it moves no reported bound.
+      scored: '2026-10-01'
+      by: think-7nez registration (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Kleddamag n17 certified bound]']
+      published: '2026-09-21'
+    composition: >-
+      Two parts, both V3/C3. Kleddamag's rational witness is E-n017-kleddamag-rational-upper,
+      replayed here exactly. The registered ceiling is E-n017-certified-endpoint, derived
+      here from that witness and audited here; its accepted root proof and its reviewed
+      symbolic identities are stated premises of the audit. The second part sets the bound.
+    produced_by:
+      hypothesis: H-256
+      experiment: exp-238
+    evidence:
+      - E-n017-kleddamag-rational-upper
+      - E-n017-certified-endpoint
+    artifacts:
+      - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/portable-witness.yaml
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+      - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/audit_n17_endpoint_receipt.py
+      - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    controls:
+      - packing/tests/test_rational_witness_independent_contract.py
+      - packing/tests/test_n17_endpoint_receipt_audit.py
+    next_rung: >-
+      Rung 4 on either axis needs two adversarial AI reviews by distinct reviewers and a
+      retained human oversight record. A proof that the endpoint's side is the root of the
+      catalogue's degree-18 polynomial would make the bound Bidwell's exact value. First-order
+      stationarity, local minimality and global optimality are unproved.

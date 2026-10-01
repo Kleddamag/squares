@@ -20,7 +20,12 @@ keeps one record for each case $n = 1\ldots324$, with reported and verified boun
 separate, and its [results register](packing/frontier/RESULTS.md) grades each registered
 result, this project’s or another’s, by how far it has been checked.
 It goes into most depth where there is recent progress, which in September 2026 means
-$n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$.
+$n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$. At
+seventeen squares both ends of the bracket are now machine-checked,
+$4.66044 < s(17) \le 4.67553009\ldots$: the lower bound is Guzhou0806’s
+([T-043](packing/frontier/RESULTS.md)), and the upper is John Bidwell’s 1998 packing,
+certified exactly from Kleddamag’s rational witness
+([T-065](packing/frontier/RESULTS.md)).
 
 A recent major result settles eleven squares, until then the smallest case still open:
 $s(11) = T = 3.877083590022814\ldots$, the exact side of Walter Trump’s 1979 packing.

@@ -279,11 +279,11 @@ def test_a_superseded_entry_this_cannot_read_needs_another_holder(
 ) -> None:
     """T-010's `2 + 4/√5` is a closed form with no decimals, so its supersession is
     held to the structure: T-060 holds the verified bound at n = 11. Were it the only
-    entry at a case, as T-043 is at n = 17, nothing would have superseded it."""
+    entry at a case, as T-051 is at n = 32, nothing would have superseded it."""
     record = records.results["T-010"]
     assert check_standing.stated_bounds(record) == {}
     assert check_standing.problems(record, view.SUPERSEDED, records) == []
-    alone = _entry(records, "T-010", id="T-043", scope={"n_values": [17]})
+    alone = _entry(records, "T-010", id="T-051", scope={"n_values": [32]})
     (problem,) = check_standing.problems(alone, view.SUPERSEDED, records)
     assert "no other entry holds a verified bound" in problem
 

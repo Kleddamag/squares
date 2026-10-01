@@ -115,6 +115,8 @@ nothing; and the results page lists both entries.
 Standing is derived by `render_recent_results.standing` from which evidence the case
 records cite, and `devtools.check_standing` holds it to the numbers.
 It is sound. It answered one question well and was being asked three.
+The counts are of the 61 results the register held when the owner asked; four more
+arrived the same day (T-062 to T-065).
 
 | Standing | Results | What it says |
 | --- | ---: | --- |
@@ -159,8 +161,8 @@ cites. It is never stored, so it cannot be set by hand or drift from the rungs.
 | Status | Meaning | Predicate | Results |
 | --- | --- | --- | ---: |
 | recorded | Registered here from its source; nothing here has read or replayed it | `C0` | 3 |
-| reviewed | Its argument has been read here and the read is on file; no replay has passed | `C1` | 1 |
-| confirmed | A confirming replay has passed, here or by a third party whose replay is retained | `C2` and up | 55 |
+| reviewed | Its argument has been read here and the read is on file; no replay has passed | `C1` | 4 |
+| confirmed | A confirming replay has passed, here or by a third party whose replay is retained | `C2` and up | 56 |
 | incomplete | The record holds an open defect against it | See below; it wins over the other three | 2 |
 
 A result is **incomplete** while any of these holds:
@@ -291,7 +293,7 @@ activity:
 | Vocabulary | recorded, reviewed, confirmed, incomplete; plus a second chip, *in analysis* or *waiting on source* | recorded, in analysis, waiting, reviewed, confirmed, incomplete |
 | A result confirmed and waiting on its source | *confirmed*, *waiting on source* | *confirmed*; the wait is not shown |
 | A result recorded and in analysis | *recorded*, *in analysis* | *in analysis*; that it has not been read is not shown |
-| Counts today | 3 recorded, 1 reviewed, 55 confirmed, 2 incomplete; 3 of them in analysis | 0 recorded, 3 in analysis, 0 waiting, 1 reviewed, 55 confirmed, 2 incomplete |
+| Counts today | 3 recorded, 4 reviewed, 56 confirmed, 2 incomplete; 3 of them in analysis | 0 recorded, 3 in analysis, 0 waiting, 4 reviewed, 56 confirmed, 2 incomplete |
 | What decides it | The rung, and separately the dated activity | The activity where one is recorded, else the rung |
 
 **A is recommended.** The status stays a pure function of the rungs and the defects on
@@ -398,9 +400,13 @@ The table is `python -m devtools.result_status --list` with notes added.
 | T-059 | audit | none | incomplete | `C1`, and a read that found a defect |  |  | The read found journal-admission defects; the replay of all 12,028 rows is queued (`think-11z6`). |
 | T-060 | optimality | current best | confirmed | `C3` |  |  | Rung 4 waits on the owner’s oversight record and a second adversarial review. |
 | T-061 | lower bound | superseded | confirmed | `C3` | superseded |  | A revised Zenodo release was asked for on issue 247; nothing here depends on it. |
+| T-062 | optimality | current best, reported | reviewed | `C1` |  |  |  |
+| T-063 | optimality | current best, reported | reviewed | `C1` |  |  |  |
+| T-064 | optimality | current best, reported | reviewed | `C1` |  |  |  |
+| T-065 | upper bound | current best | confirmed | `C3` |  |  |  |
 
-Counts: 55 confirmed, 3 recorded, 1 reviewed, 2 incomplete; 26 marked superseded, all of
-them confirmed lower bounds.
+Counts, of 65: 56 confirmed, 4 reviewed, 3 recorded, 2 incomplete; 26 marked superseded,
+all of them confirmed lower bounds.
 Every result of this project is confirmed: its certificate is replayed from the
 repository before it is registered.
 
@@ -410,17 +416,19 @@ The owner asked that results not fully assessed be in the register and the table
 tag, so the table reflects the state of the work.
 The count of such results is small, and the tag exists: it is the status.
 
-**In the register and not confirmed: 6 of 61.** T-046, T-048, T-055 recorded; T-007
-reviewed; T-058, T-059 incomplete.
-All but T-007 are wand125’s, taken in on 29 September.
+**In the register and not confirmed: 9 of 65.** T-046, T-048, T-055 recorded; T-007,
+T-062, T-063, T-064 reviewed; T-058, T-059 incomplete.
+Five are wand125’s, taken in on 29 September, and three are Evan Daniel’s claims of
+$s(60) = 8$, $s(61) = 8$ and $s(k^2 - 3) = k$, registered on 1 October by pull request
+267 with a read on file.
+T-064 is `S4`, so it is the one unconfirmed result the homepage shows where its filters
+start.
 
 **Acted on by the record and not in the register:**
 
 | What | Count | Source | Why it has no entry | What a registration needs |
 | --- | ---: | --- | --- | --- |
-| The verified upper bound of $n = 17$, $s(17) \le 4.6755300936045509516342148538535054$ | 1 result | This project, 1 October 2026 (`E-n017-certified-endpoint`, `exp-238`), from Kleddamag’s rational witness of 21 September (`E-n017-kleddamag-rational-upper`, `exp-235`) | Pull request 265 moved the case record and registered nothing | See the next section |
 | Catalogue sides newer than the record | 3: $n = 69, 83, 87$ | David Ellsworth; Allen Chang with Ellsworth; Chang, all September 2026, as the Kingbird catalogue’s capture of 30 September prints them | `source-coverage.yaml` lists them under `pending_catalogue_intake`: “the register holds it before the record takes it” | A bibliography key for each with `dated`, `credit` and `lineage`. The catalogue gives a month, and `attribution.published` takes a day or a year; and the three witnesses have to be taken in. |
-| Evan Daniel’s claims of 1 October | 3: $s(60) = 8$, $s(61) = 8$, $s(k^2 - 3) = k$ | Issue 256 | Being registered in pull request 267 as T-062, T-063 and T-064, at `V0/C1` | Nothing from this branch. Each would read *reviewed*; T-064 is `S4` and would show on the homepage. |
 
 **Reported in a case record and outside the register’s scope:**
 
@@ -436,126 +444,43 @@ asks for no work stays in its case record.
 The frontier atlas shows every one in its reported lane.
 
 One more gap follows from the same rule and is not closed here.
-Sixteen evidence entries hold a verified field, at 26 case fields between them, and are
+Fifteen evidence entries hold a verified field, at 25 case fields between them, and are
 cited by no register entry: the trivial lower bounds at $n = 1, 2, 3$; the published
-proofs at $n = 5, 6, 10, 22, 33$; the replayed packings of Göbel’s and others at
-$n = 5, 10, 18, 19, 26, 27, 38, 40, 52, 65, 66, 67, 82, 84, 85, 86, 89$; and the upper
-bound at $n = 17$, below.
-All but the last predate the project.
+proofs at $n = 5, 6, 10, 22, 33$; and the replayed packings of Göbel’s and others at
+$n = 5, 10, 18, 19, 26, 27, 38, 40, 52, 65, 66, 67, 82, 84, 85, 86, 89$. All predate the
+project. A sixteenth, the upper bound at $n = 17$, was this project’s own and is now
+registered.
 
 ## The Upper Bound at Seventeen Squares
 
-The case record of $n = 17$ carries a verified upper bound that no register entry
-states. It should have one.
-It is drafted here and not registered on this branch, for three reasons, each a decision
-and not a computation.
+The case record of $n = 17$ carried a verified upper bound that no register entry
+stated: $s(17) \le 4.6755300936045509516342148538535054$, certified on 1 October
+(`E-n017-certified-endpoint`). It is registered on this branch as **T-065**, the next
+identifier after the three that pull request 267 took.
 
-1. **Its identifier.** Pull request 267 holds T-062, T-063 and T-064 for Evan Daniel’s
-   claims, so this result would be T-065. The checker requires the register’s
-   identifiers to run without a gap, so a branch that does not hold those three cannot
-   add T-065 and pass, and adding it as T-062 would collide with 267.
-2. **Whose result it is.** The evidence entry says its novelty is not assessed and that
+The rungs are derived: `V3/C3` from its two evidence entries, both exact with a
+certificate and a passing replay.
+Its kind is *upper bound*, its status *confirmed*, and it is the current best.
+`check_results` and `check_standing` pass, the atlas’s citation for the case now reads
+“Bidwell 1998, Squares in Squares (confirmed T-065)”, and the shared README and homepage
+paragraph says that both ends of the bracket at seventeen squares are machine-checked.
+
+Two things in the entry are judgments, entered as drafts for the owner to confirm.
+
+1. **Whose result it is.** The evidence entry says its novelty is not assessed and that
    no new packing is claimed.
    The packing is John Bidwell’s of 1998, as the atlas credits it.
    Kleddamag’s release of 21 September carries that construction forward as an exact
    rational witness at $4675530093604551/10^{15}$, replayed here.
    This project derived the certified endpoint from that witness, which lowers the
    ceiling in the seventeenth decimal.
-   The draft follows T-044 and T-045, where a bound derived here from a source’s files
+   The entry follows T-044 and T-045, where a bound derived here from a source’s files
    is part of the source’s result: it is a result by others, credited to Kleddamag’s
    release, with Bidwell and this project’s part named in the claim.
    The other reading follows T-011, Bidwell’s bound verified here, and needs a
    bibliography key for Bidwell’s packing, which does not exist.
-3. **Its significance.** A score and its rationale are a judgment.
-   The draft says `S3`, the level of T-009 and T-057, the register’s other first
-   verified upper bounds, and marks the score a draft.
-
-What the record does support is checked.
-Appended to the register as its next entry, the draft passes `devtools.check_results`:
-the rungs derive as `V3/C3` from the two evidence entries, both exact with a certificate
-and a passing replay; the kind agrees with the headline and the evidence; every path,
-source and campaign id resolves.
-Its status would be *confirmed*, and it would be the current best, unmarked.
-
-```yaml
-  - id: T-065    # T-062 if this lands before pull request 267
-    kind: upper-bound
-    registered: '2026-10-01'
-    headline: "`s(17) ≤ 4.6755300936045509516342148538535054`, Bidwell's packing certified exactly"
-    claim: >-
-      s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square
-      of at most that side. The figure is a rational outward ceiling, not the exact side of
-      the packing.
-
-      Kleddamag's release of 21 September 2026 carries John Bidwell's 1998 construction
-      forward as an exact rational witness, s(17) <= 4675530093604551/10^15, which two exact
-      implementations here and the source's own checker accept: 17 unit squares, 68 vertices
-      contained, 136 pairs separated.
-
-      From that seed this project certified the packing at the unique root of its contact
-      chart: the root exists and is unique in a frozen rational box, and all 68 wall and 136
-      pair obligations hold there, 36 as exact identities and 168 by rational interval
-      bounds, and an independent audit reconstructs every interval record. This lowers
-      Kleddamag's rational ceiling in the seventeenth decimal.
-
-      The ceiling agrees with Bidwell's record in the Kingbird catalogue at the catalogue's
-      printed precision. No identity with the catalogue's degree-18 polynomial is proved, no
-      new packing is claimed, and optimality is not claimed.
-
-      Kleddamag,
-      [Kleddamag/17-squares-certified-bound](https://github.com/Kleddamag/17-squares-certified-bound),
-      for the rational witness of Bidwell's packing; its AUTHORS.md says the work was
-      produced with AI agents under Kleddamag's direction.
-    scope: {n_values: [17]}
-    verification: V3
-    confirmation: C3
-    significance:
-      score: 3
-      rationale: >-
-        The first verified upper bound at n = 17 below the grid's 5: the case's verified
-        bracket becomes 4.66044 < s(17) <= 4.67553009..., both ends machine-checked, where
-        the upper end was a reported catalogue value. S3 by the anchor "a substantive case
-        result or machine audit"; it moves no reported bound.
-      scored: '2026-10-01'
-      by: think-7nez registration (repository; draft)
-    novelty: previously-published
-    attribution:
-      source_keys: ['[Kleddamag n17 certified bound]']
-      published: '2026-09-21'
-    composition: >-
-      Two parts, both V3/C3. Kleddamag's rational witness is E-n017-kleddamag-rational-upper,
-      replayed here exactly. The registered ceiling is E-n017-certified-endpoint, derived
-      here from that witness and audited here; its accepted root proof and its reviewed
-      symbolic identities are stated premises of the audit. The second part sets the bound.
-    produced_by:
-      hypothesis: H-256
-      experiment: exp-238
-    evidence:
-      - E-n017-kleddamag-rational-upper
-      - E-n017-certified-endpoint
-    artifacts:
-      - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md
-      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/portable-witness.yaml
-      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md
-      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
-      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
-      - packing/devtools/check_rational_witness_independent.py
-      - packing/devtools/audit_n17_endpoint_receipt.py
-      - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
-    controls:
-      - packing/tests/test_rational_witness_independent_contract.py
-      - packing/tests/test_n17_endpoint_receipt_audit.py
-    next_rung: >-
-      Rung 4 on either axis needs two adversarial AI reviews by distinct reviewers and a
-      retained human oversight record. A proof that the endpoint's side is the root of the
-      catalogue's degree-18 polynomial would make the bound Bidwell's exact value. First-order
-      stationarity, local minimality and global optimality are unproved.
-```
-
-When it exists, the shared README and homepage paragraph on recent progress gains one
-clause for seventeen squares, after the sentence on eleven: Bidwell’s 1998 packing is
-now certified exactly, so $4.66044 < s(17) \le 4.67553009\ldots$ with both ends
-verified.
+2. **Its significance.** `S3`, the level of T-009 and T-057, the register’s other first
+   verified upper bounds, scored as a draft.
 
 ## What Is Built on the Branch
 
@@ -564,7 +489,7 @@ verified.
 | Derivation | `devtools/result_status.py`: `status`, `open_issues`, `status_line`, the activity checks, and `--list`. |
 | Schema | `results.schema.yaml`: the optional `activity` object. No stored status. |
 | Checker | `check_results` holds each `activity` to its fields, link and age, and prints the count by status. `check_standing` is unchanged; it is what holds the superseded mark to the numbers. `render_recent_results.superseded` says which results are marked. |
-| Register | `activity` on T-046, T-048 and T-055. No rung changed. |
+| Register | `activity` on T-046, T-048 and T-055; T-065, the upper bound at $n = 17$. No rung of an existing entry changed. |
 | Generated views | `RESULTS.md`: a `status` column in both tables, after `kind`, `credit` and the rungs, in place of `standing`. |
 | Site | Under the rungs of every row, the kind on its line and then the status line: the status chip, the activity and the superseded mark, each a chip on a line of its own, so the Rungs column is no wider than it was. A Status select in place of Standing, after Kind; “Hide superseded” unchanged; the block, its popovers, its styles and `.site-group-row` removed; a sentence above the homepage table that counts the results not yet confirmed and links each count to those rows. |
 | Definitions | `epistemics.md`, Status; the frontier README’s procedure; `paper-design.md`. |
@@ -573,12 +498,12 @@ verified.
 
 | Page | Rows | Of them not confirmed |
 | --- | ---: | --- |
-| Homepage, at `S4` and up, 180 days, superseded hidden | 6 of 61 | None |
-| Results page, every result | 61 | 3 recorded, 1 reviewed, 2 incomplete |
+| Homepage, at `S4` and up, 180 days, superseded hidden | 7 of 65 | 1 reviewed (T-064) |
+| Results page, every result | 65 | 3 recorded, 4 reviewed, 2 incomplete |
 
 The homepage’s defaults are unchanged.
-At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every significance,
-29, with T-055, T-058 and T-059.
+At `S3` and up it would show 26 rows, T-046, T-048 and T-062 among them; at every
+significance, 34, with T-055, T-058, T-059 and T-063.
 
 ## Decisions for the Owner
 
@@ -587,9 +512,9 @@ At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every signi
 2. **Where *confirmed* begins.** `C2`, where a replay has passed, or `C3`, where a
    machine certificate replays.
    It moves one result, T-036. Recommended: `C2`.
-3. **Whether to draw *confirmed*.** It is on 55 of 61 rows.
+3. **Whether to draw *confirmed*.** It is on 56 of 65 rows.
    Drawing it gives every row the same schema; leaving it undrawn, as *current best* is,
-   would mark only the six that are not.
+   would mark only the nine that are not.
    Recommended: draw it, and revisit if the column reads as noise.
 4. **The activity mark.** Shape A, a mark beside the status, or shape B, statuses of
    their own. Recommended: A, as built.
@@ -601,14 +526,12 @@ At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every signi
    the standing, as before.
 7. **Whether a recorded omission makes a result incomplete.** It would need the
    `omissions` list. Recommended: not until the register admits placeholder entries.
-8. **The homepage default.** Unassessed results show on the results page and not on the
-   homepage, which starts at `S4`. Recommended: keep it.
-   T-064 will be the first unassessed result on the homepage when pull request 267
-   lands.
-9. **The $n = 17$ upper bound.** Whose result it is, and when it takes its identifier,
-   as set out above. Recommended: the drafted entry, credited to Kleddamag with Bidwell
-   and this project’s part named in the claim, registered as T-065 once pull request 267
-   has landed.
+8. **The homepage default.** An unassessed result shows on the homepage only if it is
+   `S4` or above; today that is one, T-064. Every one shows on the results page.
+   Recommended: keep it.
+9. **T-065, the $n = 17$ upper bound.** Its credit and its significance, as set out
+   above. Recommended as registered: credited to Kleddamag with Bidwell and this
+   project’s part named in the claim, at `S3`.
 
 ## Follow-Up Work, Not Done Here
 
@@ -619,10 +542,7 @@ At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every signi
   old block’s rows *confirmed*.
 - **Record the reviews that exist** as `external_review` on the three report entries
   (`think-wcex`), which makes T-046, T-048 and T-055 *reviewed* until then.
-- **Register the $n = 17$ upper bound** and the three catalogue intakes.
-- **A kind on entries added later.** `kind` is required.
-  This branch adds no register entry; the $n = 17$ entry drafted above would be an
-  *upper bound*.
+- **Register the three catalogue intakes**, at $n = 69, 83, 87$.
 
 ## References
 

@@ -13,9 +13,9 @@ as an id; a long list of cases wraps in its own measure, no value of it cut, and
 row taller than its six lines; the result column gives way to its floor, which its
 widest formula fits, and a formula ends a line only after a relation or a binary
 operator; the credit column keeps room for its longest name, so no credit breaks inside
-a word; the rungs column holds its widest chip, a kind's or a standing's; the overview
-carries each result's records without showing them; and every chip on either page is
-one line high, every kind and standing chip one size.
+a word; the rungs column holds its widest chip, a kind's or a standing's; both tables
+show each result's records; and every chip on either page is one line high, every kind
+and standing chip one size.
 
 Each page is rendered and loaded once, in a module fixture, with every row showing, its
 math typeset, and then resized for each width; the overview is then loaded as it opens,
@@ -187,13 +187,13 @@ def test_a_long_list_of_cases_wraps_in_its_measure(
     cases = _column(laid[name, 1280].table, "n")
     assert cases["width"] == pytest.approx(CASES_MEASURE, abs=1)
     assert cases["lines"] == CASES_LINES
-    assert cases["tallest"] is None or cases["tallest"]["lines"] <= CASES_LINES
-    if name == render_overview.RESULTS_PAGE:
-        # Where the summaries carry their records, the list's row is no taller than the
-        # tallest a summary sets: the measure stops where the list stops being the
-        # reason a row is tall.
-        summary = _column(laid[name, 1280].table, "Result")["tallest"]
-        assert cases["tallest"]["height"] <= summary["height"]
+    # The tallest row the list sets is T-056's, those six lines, and it is no taller
+    # than the tallest a summary sets, with its records under it: the measure stops
+    # where the list stops being the reason a row is tall.
+    longest = cases["tallest"]
+    summary = _column(laid[name, 1280].table, "Result")["tallest"]
+    assert (longest["row"], longest["lines"]) == (MOST_CASES.lower(), CASES_LINES)
+    assert longest["height"] <= summary["height"]
     for width in TABLE_WIDTHS:
         column = _column(laid[name, width].table, "n")
         assert CASES_MIN - 0.5 <= column["width"] <= CASES_MEASURE + 1, width
@@ -296,7 +296,7 @@ def test_a_long_quotient_may_end_a_line_after_its_solidus() -> None:
         assert breakable(kept) == kept
     overview = site_renders.overview()
     for result in overview.results:
-        cell = overview_sections.result_text(result, here=True)
+        cell = overview_sections.result_text(result)
         assert (r"\mathbin{/}" in cell) is (result.id in LONG_QUOTIENTS), result.id
         spoken = re.findall(r'<span class="kpress-math-semantic">(.*?)</span>', cell)
         assert not any("\\" in semantic for semantic in spoken), result.id
@@ -325,14 +325,22 @@ def test_both_tables_lay_out_the_same_columns(
 
 
 @pytest.mark.parametrize("width", WIDTHS)
-def test_the_overview_carries_the_records_and_shows_none(
+def test_both_tables_show_each_results_records(
     laid: dict[tuple[str, int], Laid], width: int
 ) -> None:
-    """A result's records are a line under its summary on the results page, at every
-    width, and the overview's table, which is the same table, shows none of them."""
-    assert laid["index.html", width].records == 0
+    """A result's records are a line under its summary at every width, on the results
+    page and on the overview alike, which is the same table under other filters: one
+    line of records to each row showing. So with every row showing the two tables are
+    laid out the same, column for column and row for row."""
+    recent = laid["index.html", width]
     results = laid[render_overview.RESULTS_PAGE, width]
+    assert recent.records == recent.table["shown_rows"] > 0
     assert results.records == results.table["shown_rows"] > 0
+    assert recent.table["columns"] == results.table["columns"]
+    assert recent.table["tallest_row"] == results.table["tallest_row"]
+    if width == TABLE_WIDTHS[0]:
+        opened = laid[AS_OPENED, width]
+        assert opened.records == opened.table["shown_rows"] > 0
 
 
 @pytest.mark.parametrize("width", TABLE_WIDTHS)

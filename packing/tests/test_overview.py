@@ -1728,7 +1728,7 @@ def _recent_table(page: str) -> str:
     """The recent table as the page carries it, after kpress has wrapped it and labelled
     its cells, from its opening tag to its close."""
     match = re.search(
-        r'<table class="kpress-table site-table site-results site-recent-table"[^>]*>'
+        r'<table class="kpress-table site-table site-results"[^>]*>'
         r".*?</table>",
         page,
         re.DOTALL,
@@ -1741,9 +1741,9 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
-    columns every table of results has, the result linking its row on the results page;
-    no card or list is left in it, and its only popovers are its rows' own. What a row's
-    popover holds is the popover's own business, so the section is read without them."""
+    columns every table of results has; no row links across to the results page, no card
+    or list is left in it, and its only popovers are its rows' own. What a row's popover
+    holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
     assert recent in section
@@ -1757,7 +1757,8 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert not re.search(r'class="site-card[ "]', before_replay)
     assert "<li>" not in before_replay
     assert section.count("<table") == 2  # the recent table, then the replay table
-    assert 'class="kpress-table site-table site-results site-recent-table"' in recent
+    assert 'class="kpress-table site-table site-results"' in recent
+    assert "site-recent-table" not in page
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
@@ -1766,10 +1767,9 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
         row = _recent_row(recent, result.id)
-        # The summary's leading formula, or the whole of one that leads with none, links
-        # the result's row on the results page.
-        link = f'<a href="all-results.html#{result.id.lower()}">'
-        assert re.search(rf'<td class="site-col-result"[^>]*>{re.escape(link)}', row), result.id
+        # The row is the result's own here too, so nothing in it leads to its row on
+        # the results page: the summary is plain, as it is there.
+        assert "all-results.html" not in row, result.id
         # The id, in its own cell, is the row's native trigger, which opens its popover
         # unscripted; the result's cell holds the result and no id.
         assert (
@@ -1905,19 +1905,7 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(result("1979", 2, standing), every, day), standing
 
 
-def test_a_summary_splits_at_its_formula_and_a_credit_at_what_it_builds_on() -> None:
-    split = overview_sections.split_summary
-    assert split("`s(21) = 5` by a point-only route, reported") == (
-        "`s(21) = 5`",
-        "point-only route",
-    )
-    assert split("`s(45) = 7`, by a mixed cover of points and grid-line segments") == (
-        "`s(45) = 7`",
-        "mixed cover of points and grid-line segments",
-    )
-    assert split("`s(50) ≥ 37/5 = 7.4`, reported") == ("`s(50) ≥ 37/5 = 7.4`", "")
-    batch = "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
-    assert split(batch) == (batch, "")
+def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() -> None:
     # A credit is set whole, whatever the register's credit line says: the finder, then
     # what the result builds on, quiet.
     credit = overview_sections.credit_cell("wand125 after Daniel, Tokoharu, Levy, Stromquist")
@@ -2557,12 +2545,14 @@ def test_results_by_others_show_their_publication_date(
 def test_both_tables_of_results_have_the_same_columns(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """Recent Results and the results page's table are one table: the same header cells
-    in the same order, from one definition (`result_head`), and for each result the same
-    cells from one function (`result_cells`), which differ only in that the overview's
-    summary links the result's row on the results page. Both sort and both filter. A
-    result's records are a line under its summary, no column, which the overview carries
-    and does not show."""
+    """Recent Results and the results page's table are one table under two filters: the
+    same header cells in the same order, from one definition (`result_head`), and for
+    each result the same row and the same popover. A row differs between the two in
+    what names the page it is on and nothing else: its key, the result's own address
+    (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
+    where each table's filters start. So the overview shows each result's records, as
+    the results page does, and no row of one links to the other. Both sort and both
+    filter. A result's records are a line under its summary, no column."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
@@ -2578,7 +2568,12 @@ def test_both_tables_of_results_have_the_same_columns(
     on_results = served.findall(results.split("<thead>", 1)[1].split("</thead>", 1)[0])
     assert on_overview == on_results == [words for _, words in heads]
     classes = re.compile(r'<td class="([^"]+)"')
-    unlinked = re.compile(r'<a href="all-results\.html#t-\d+">(.*?)</a>', re.DOTALL)
+    # What names the page a row is on: its key and whether its table's filters hide it.
+    placed = re.compile(r'^<tr (?:id|data-result)="(t-\d+)"([^>]*?)(?: hidden)?>')
+
+    def anywhere(row: str) -> str:
+        return placed.sub(r'<tr key="\1"\2>', row)
+
     for result in overview.results:
         here = _row(table, result.id)
         there = _recent_row(recent, result.id)
@@ -2596,18 +2591,27 @@ def test_both_tables_of_results_have_the_same_columns(
         assert re.search(
             r'<div class="site-records">.*?</div></td><td class="site-col-credit"', here
         )
-        # The cells are the same but for the link on the overview's summary.
-        cells = here.split(">", 1)[1]
-        assert unlinked.sub(r"\1", there.split(">", 1)[1], count=1) == cells, result.id
-        assert there.count('<a href="all-results.html#') == 1, result.id
-        assert f'<a href="all-results.html#{result.id.lower()}">' in there, result.id
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
+        # The row is the same markup on both pages, as written and as each page serves
+        # it, apart from what names the page; and no row links to the other table.
+        assert anywhere(here) != here
+        assert anywhere(here) == anywhere(there), result.id
+        served_here = _row(results, result.id)
+        served_there = _recent_row(_recent_table(page), result.id)
+        assert anywhere(served_here) == anywhere(served_there), result.id
+        assert "all-results.html" not in there + served_there, result.id
+        # The popover a row opens is the same panel too.
+        target = f"pop-result-{result.id.lower()}"
+        assert _row_popover(recent, target) == _row_popover(table, target), result.id
+    # The tables themselves are one element, with one class list.
+    opened = re.compile(r"<table[^>]*>")
+    assert opened.findall(table) == opened.findall(recent)
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    # One table, so one set of rules. The recent table has one of its own: it carries a
-    # result's records and does not show them, at any width.
-    assert css.count(".site-recent-table") == 1
-    assert "\n.kpress .site-recent-table .site-records {\n  display: none;\n}" in css
+    # One table, so one set of rules: the overview's has none of its own, and it shows
+    # each result's records as the results page does.
+    assert "site-recent-table" not in css + table + recent
+    assert not re.search(r"\.site-records\s*\{[^}]*display:\s*none", css)
     assert "Records" not in head
     for gone in ("site-col-method", "site-col-status"):
         assert gone not in css + table + recent, gone
@@ -2710,11 +2714,11 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         rows = (
             (
                 _row(table, result.id),
-                overview_sections.result_text(result, here=True) + "{star}" + records,
+                overview_sections.result_text(result) + "{star}" + records,
             ),
             (
                 _recent_row(recent, result.id),
-                overview_sections.result_text(result, here=False) + "{star}" + records,
+                overview_sections.result_text(result) + "{star}" + records,
             ),
         )
         for row, placed in rows:
@@ -3772,13 +3776,13 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
 
 
-def test_a_result_row_popover_leads_to_its_row_only_from_another_page(
+def test_a_result_row_popover_is_the_same_panel_in_both_tables(
     overview: overview_data.Overview,
 ) -> None:
     """A result's popover is the same panel on both pages, a card's: the id as its caps
-    label and the summary as its headline. On the overview it ends in the button to the
-    result's row on the results page; on that page, where the row is the one pressed,
-    it has no button."""
+    label and the summary as its headline. It has no button on either: the row pressed
+    is the result's row, and a button from the overview's table to the same row of the
+    results page's would lead nowhere new."""
     result = overview_sections.recent_results(overview)[0]
     target = f"pop-result-{result.id.lower()}"
     away = _row_popover(overview_sections.recent_table(overview), target)
@@ -3788,13 +3792,10 @@ def test_a_result_row_popover_leads_to_its_row_only_from_another_page(
         assert f'<span class="site-card-label">{result.id}</span>' in panel
         assert f'<p class="site-popover-value"{face} id="{target}-title">' in panel
         assert 'popovertargetaction="hide" aria-label="Close">' in panel
-    (action,) = ACTION.findall(away)
-    assert action == (f"all-results.html#{result.id.lower()}", "page")
-    assert f"Open {result.id} in the results table</a>" in away
+    assert not ACTION.findall(away)
     assert not ACTION.findall(here)
-    assert (
-        away.replace(away[away.index('<p class="site-popover-actions">') :], "</div>") == here
-    )
+    assert "in the results table" not in away
+    assert away == here
 
 
 def test_a_replay_rows_popover_body_comes_from_one_function(

@@ -30,6 +30,18 @@ class Control {
 }
 class Select extends Control {}
 class Input extends Control {}
+/** A preset-only control's label: out of the bar, `hidden`, until its control filters. */
+class Label {
+  hidden = true;
+}
+/** A preset-only select (`data-preset`), inside its label. */
+class Preset extends Select {
+  label = new Label();
+
+  closest() {
+    return this.label;
+  }
+}
 /** A checkbox: what it says is whether it is checked, never its value. */
 class Checkbox extends Input {
   /** @param {string} key @param {boolean} checked */
@@ -85,12 +97,29 @@ function page({ search = "", hash = "", age = "", hide = false, today = "2026-10
   const superseded = { source: "others", standing: "superseded", current: "false" };
   const structure = { source: "others", standing: "not-a-bound", current: "true" };
   const reported = { source: "others", standing: "current-best-reported", current: "true" };
+  // The projects a row is attributed to, a space apart: none for this project's rows.
+  const none = { project: "" };
+  const beta = { project: "beta-two" };
+  const alpha = { project: "alpha-one" };
+  const both = { project: "alpha-one beta-two" };
   const rows = [
-    row("t-001", { ...ours, v: "4", c: "5", s: "5", n: "11", date: "2026-09-04" }),
-    row("t-002", { ...ours, v: "3", c: "2", s: "3", n: "17 18", date: "2026-08-31" }, true),
-    row("t-003", { ...structure, v: "0", c: "0", s: "2", n: "18-21 26", date: "1979-01-01" }, true),
-    row("t-004", { ...reported, v: "4", c: "3", s: "3", n: "1-100", date: "2026-09-27" }, true),
-    row("t-005", { ...superseded, v: "4", c: "4", s: "4", n: "45", date: "2026-09-27" }),
+    row("t-001", { ...ours, ...none, v: "4", c: "5", s: "5", n: "11", date: "2026-09-04" }),
+    row(
+      "t-002",
+      { ...ours, ...none, v: "3", c: "2", s: "3", n: "17 18", date: "2026-08-31" },
+      true,
+    ),
+    row(
+      "t-003",
+      { ...structure, ...beta, v: "0", c: "0", s: "2", n: "18-21 26", date: "1979-01-01" },
+      true,
+    ),
+    row(
+      "t-004",
+      { ...reported, ...alpha, v: "4", c: "3", s: "3", n: "1-100", date: "2026-09-27" },
+      true,
+    ),
+    row("t-005", { ...superseded, ...both, v: "4", c: "4", s: "4", n: "45", date: "2026-09-27" }),
   ];
   const controls = {
     s: new Select("s", "min", "4"),
@@ -101,7 +130,10 @@ function page({ search = "", hash = "", age = "", hide = false, today = "2026-10
     source: new Select("source", null, ""),
     n: new Input("n", "covers", ""),
     age: new Input("date", "age", age),
+    project: new Preset("project", "has", ""),
+    exact: new Preset("s", null, ""),
   };
+  const presets = [controls.project, controls.exact];
   const count = { textContent: "2 of 5 results", getAttribute: () => "results" };
   /** @type {Record<string, (() => void)[]>} */
   const listeners = { change: [], hashchange: [], click: [] };
@@ -110,7 +142,9 @@ function page({ search = "", hash = "", age = "", hide = false, today = "2026-10
       /** @param {string} name */
       contains: (name) => name === "site-table-tools",
     },
-    querySelectorAll: () => Object.values(controls),
+    /** @param {string} selector */
+    querySelectorAll: (selector) =>
+      selector === "[data-preset]" ? presets : Object.values(controls),
     querySelector: () => count,
     removeAttribute: () => undefined,
     /** @param {string} type @param {() => void} listener */
@@ -161,6 +195,7 @@ function page({ search = "", hash = "", age = "", hide = false, today = "2026-10
       HTMLSelectElement: Select,
       HTMLInputElement: Input,
       HTMLTableElement: Table,
+      HTMLElement: Label,
     }),
   );
   /** @param {keyof typeof listeners} type */
@@ -313,6 +348,37 @@ void test("an age is measured from the reader's day, again on every load", () =>
   assert.deepEqual(page({ age: "180", today: "2028-01-01", hash: "#t-003" }).shown().rows, [
     "t-003",
   ]);
+});
+
+void test("a link can open the table on one project's results, at one significance", () => {
+  // `project` names a `has` control: the row's list of projects has the name among
+  // them. `s` names the exact-significance control, beside the `s-min` floor. Both are
+  // preset-only: out of the bar until a link sets them, and out again once cleared.
+  const closed = page({ search: "?s-min=" });
+  assert.equal(closed.controls.project.label.hidden, true);
+  assert.equal(closed.controls.exact.label.hidden, true);
+  const alpha = page({ search: "?s-min=&project=alpha-one" });
+  assert.equal(alpha.controls.project.value, "alpha-one");
+  assert.deepEqual(alpha.shown().rows, ["t-004", "t-005"]);
+  assert.equal(alpha.count.textContent, "2 of 5 results");
+  assert.equal(alpha.controls.project.label.hidden, false);
+  assert.equal(alpha.controls.exact.label.hidden, true);
+  // A row attributed to two projects is each one's.
+  assert.deepEqual(page({ search: "?s-min=&project=beta-two" }).shown().rows, ["t-003", "t-005"]);
+  // A name is held whole: part of one matches no row.
+  assert.deepEqual(page({ search: "?s-min=&project=alpha" }).shown().rows, []);
+  // With `s`, only the rows at that level: S3 exactly, where `s-min=3` keeps S4 too.
+  const exact = page({ search: "?s-min=&project=alpha-one&s=3" });
+  assert.deepEqual(exact.shown().rows, ["t-004"]);
+  assert.equal(exact.controls.exact.label.hidden, false);
+  assert.deepEqual(page({ search: "?s-min=3&project=alpha-one" }).shown().rows.length, 2);
+  // The page's own defaults still apply to a link that does not clear them.
+  assert.deepEqual(page({ search: "?project=alpha-one" }).shown().rows, ["t-005"]);
+  // Set back to all, each control passes every row and leaves the bar again.
+  exact.choose({ project: "", exact: "" });
+  assert.equal(exact.count.textContent, "5 results");
+  assert.equal(exact.controls.project.label.hidden, true);
+  assert.equal(exact.controls.exact.label.hidden, true);
 });
 
 void test("a link can open the table filtered, by each control's parameter", () => {

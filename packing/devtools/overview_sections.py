@@ -28,6 +28,7 @@ from devtools.check_results import KINDS, kind_label
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
+    FRONTIER,
     REPO,
     Overview,
     Result,
@@ -45,6 +46,7 @@ from devtools.render_recent_results import (
     Row,
 )
 from devtools.repo_links import branch_file
+from sqpack.yamlio import safe_load
 
 
 def _esc(text: object) -> str:
@@ -632,8 +634,9 @@ def result_cases(result: Result) -> str:
 def result_facets(result: Result) -> str:
     """A result row's facets as attributes, the same on every table of results, each one
     a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
-    its kind, its standing, whether it is current, which is to say not superseded
-    (`is_superseded`), its cases and the date the table shows."""
+    its kind, the listed projects it is attributed to, as their slugs a space apart
+    (`result_projects`; empty for most rows), its standing, whether it is current, which
+    is to say not superseded (`is_superseded`), its cases and the date the table shows."""
     record = result.record
     return (
         f'data-source="{"ours" if result.ours else "others"}" '
@@ -641,6 +644,7 @@ def result_facets(result: Result) -> str:
         f'data-c="{_esc(record["confirmation"][1:])}" '
         f'data-s="{significance(result)}" '
         f'data-kind="{_esc(record["kind"])}" '
+        f'data-project="{_esc(" ".join(result_projects(result)))}" '
         f'data-standing="{_esc(standing_key(result.standing))}" '
         f'data-current="{"false" if is_superseded(result.standing) else "true"}" '
         f'data-n="{_esc(result_cases(result))}" '
@@ -730,6 +734,14 @@ def result_filters(
     the kinds the register holds, in the rubric's order; a result that claims no bound
     has no standing, so a standing chosen leaves it out.
 
+    Two more controls are preset-only (`data-preset`): Project, which holds a row to one
+    of the listed projects it is attributed to (`has`, against the row's `data-project`),
+    and At significance, which holds it to one S rung exactly. Each is `hidden` in the
+    HTML and starts at all. A link sets them, `all-results.html?project=…&s=4`, as the
+    tallies on the other projects' cards do (`project_tally`), and the script shows a
+    preset control while it filters, so the reader sees what narrows the table and can
+    set it back to All.
+
     A table's `defaults` are where Significance, Max age and "Hide superseded" start;
     every other control starts at all. The tables write the rows outside those defaults
     `hidden` and the bar writes the count of the rows left, so the first paint is the
@@ -760,6 +772,8 @@ def result_filters(
         *((standing_key(standing), standing) for standing in STANDINGS if standing in present),
     ]
     sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
+    projects = [("", ALL), *((project_slug(url), project_name(url)) for url in project_urls())]
+    exact = [("", ALL), *((str(level), f"S{level}") for level in significance_levels())]
     shown = sum(shown_by_default(result, defaults, reference) for result in listed)
     return (
         '<div class="site-table-tools site-result-filters">'
@@ -772,6 +786,10 @@ def result_filters(
         f'min="1"{last} placeholder="any"></label>'
         '<label>Max age <input type="number" data-filter="date" data-bound="age" '
         f'min="0" placeholder="any"{age}> days</label>'
+        '<label hidden>Project <select data-filter="project" data-bound="has" data-preset>'
+        f"{_options(projects)}</select></label>"
+        '<label hidden>At significance <select data-filter="s" data-preset>'
+        f"{_options(exact)}</select></label>"
         '<span class="site-count" data-count data-noun="results" aria-live="polite">'
         f"{count_text(shown, len(listed))}</span></div>"
     )
@@ -1617,6 +1635,7 @@ def link_card(
     hero: str = "",
     size: CardSize | None = None,
     new_tab: bool = True,
+    foot: str = "",
 ) -> str:
     """A card that is itself the link, with no popover: for a place whose address, or
     whose picture, is the whole of what a preview would say, and for a full page of this
@@ -1632,6 +1651,12 @@ def link_card(
     arrow for a page or file of this site, the external arrow for a place off it. An
     address off the site is shown under the note beside the host's mark; a PDF is typed
     as one, so the browser opens it in place.
+
+    `foot` is a closing line that holds links of its own, such as a project's tally of
+    results. A link cannot hold a link, so a card with a foot is a box, `div.site-card`,
+    holding the card's link (`site-card-main`, everything above the foot) and then the
+    foot (`site-card-foot`), inside the one border. It sizes, washes and shows its
+    corner icon as every card does (`site.css`).
     """
     kind = card_kind(url)
     if not new_tab and not is_site_page(url):
@@ -1645,32 +1670,227 @@ def link_card(
             f'<span class="site-card-url">{link_icon(url)}'
             f"<span>{_breakable(shown)}</span></span>"
         )
-    return (
-        f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
-        f"{_size_attribute(size, value, note, address)}{tab}>"
+    body = (
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value"{headline_math_face(value)}>{value}</span>'
         f'<span class="site-card-note">{note}</span>'
         f"{address}"
-        "</a>"
+    )
+    sized = _size_attribute(size, value, note, address)
+    if foot:
+        return (
+            f'<div class="site-card site-card-footed" data-go="{kind}" {sized}>'
+            f'<a class="site-card-link site-card-main" href="{_esc(url)}"{typed}{tab}>'
+            f'{body}</a><p class="site-card-foot">{foot}</p></div>'
+        )
+    return (
+        f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
+        f"{sized}{tab}>{body}</a>"
     )
 
 
-def other_project_cards() -> str:
-    """One card per other project: its repository's name, its author, what it holds and
-    its address. Each card is the link itself, opening the project in a new tab. The note
-    is prose like a page card's, so a case it names (`n = 21`) is set as math."""
+#: Where a listed project's results are attributed under a bibliography key that the
+#: source-coverage register ties to no repository of its own. The September 20 packet
+#: of weighted certificates is two repositories under one key, Guzhou0806's R012 and
+#: Mira's measure; Guzhou0806's is listed here, so the result registered from the packet
+#: counts for it.
+PROJECT_EXTRA_KEYS: dict[str, tuple[str, ...]] = {
+    "https://github.com/Guzhou0806/n17-square-packing": (
+        "[n17 weighted certificates 2026-09-20]",
+    ),
+}
+
+#: The source-coverage register: each source repository the record reviews, with the
+#: bibliography key its results are attributed under.
+SOURCE_COVERAGE = FRONTIER / "source-coverage.yaml"
+
+
+def project_urls() -> tuple[str, ...]:
+    """The listed projects' repositories, in the order `OTHER_PROJECTS` writes them,
+    which is not the order the page shows them in (`project_order`)."""
+    return tuple(url for url, _, _ in OTHER_PROJECTS)
+
+
+def project_name(url: str) -> str:
+    """A project as its owner and repository, `evand/square-packing`: the name the
+    Project filter shows, since three of the repositories are called `square-packing`."""
+    return urlsplit(url).path.strip("/")
+
+
+def project_slug(url: str) -> str:
+    """A project as the slug its results' rows carry (`data-project`) and a link names
+    (`?project=`): its owner and repository in lower case, joined by a hyphen."""
+    return re.sub(r"[^a-z0-9]+", "-", project_name(url).lower()).strip("-")
+
+
+def source_repository(url: str) -> str:
+    """A source's address as its repository's: a revision or a directory under it,
+    `/tree/…`, names the same project."""
+    return re.sub(r"/tree/.*", "", url).rstrip("/")
+
+
+@cache
+def project_source_keys() -> dict[str, frozenset[str]]:
+    """Each listed project's bibliography keys: those the source-coverage register gives
+    the sources at its repository, and those `PROJECT_EXTRA_KEYS` adds. A result is a
+    project's where its `attribution.source_keys` names one of them."""
+    coverage = safe_load(SOURCE_COVERAGE.read_text(encoding="utf-8"))["sources"]
+    keys: dict[str, set[str]] = {
+        url: set(PROJECT_EXTRA_KEYS.get(url, ())) for url in project_urls()
+    }
+    for source in coverage:
+        repository = source_repository(source["url"])
+        if repository in keys and source.get("source_key"):
+            keys[repository].add(source["source_key"])
+    return {url: frozenset(found) for url, found in keys.items()}
+
+
+def result_projects(result: Result) -> tuple[str, ...]:
+    """The slugs of the listed projects a result is attributed to, in the list's order.
+    A result attributed to sources of several projects is each one's; this project's
+    results, and a result by others whose source no listed project holds, are none's."""
+    cited = set((result.record.get("attribution") or {}).get("source_keys") or ())
+    return tuple(
+        project_slug(url) for url, keys in project_source_keys().items() if cited & keys
+    )
+
+
+def significance_levels() -> tuple[int, ...]:
+    """The significance rubric's levels, the highest first: 5 down to 1."""
+    return tuple(sorted((level for level, _ in rubric_levels()["S"]), reverse=True))
+
+
+class Cited(NamedTuple):
+    """One registered result as the projects' order reads it: its id, its S rung, the
+    date its row shows, and the projects it is attributed to, by any hashable name."""
+
+    id: str
+    level: int
+    dated: str
+    projects: tuple[str, ...]
+
+
+class ProjectTally(NamedTuple):
+    """The results the register cites from one project: their ids in the order given,
+    how many stand at each significance level, the highest level first and every level
+    present, and the date of the newest, empty where there is none."""
+
+    results: tuple[str, ...]
+    counts: tuple[tuple[int, int], ...]
+    latest: str
+
+
+def project_tallies(
+    projects: Sequence[str], results: Iterable[Cited], levels: Sequence[int]
+) -> dict[str, ProjectTally]:
+    """Each project's tally over `results`. A result attributed to several projects
+    counts once for each of them."""
+    cited = list(results)
+    tallies = {}
+    for project in projects:
+        own = [result for result in cited if project in result.projects]
+        tallies[project] = ProjectTally(
+            tuple(result.id for result in own),
+            tuple((level, sum(result.level == level for result in own)) for level in levels),
+            max((result.dated for result in own), default=""),
+        )
+    return tallies
+
+
+def project_order(tallies: dict[str, ProjectTally], names: dict[str, str]) -> list[str]:
+    """The projects by the significance of the results the register cites from each (the
+    owner, 2026-10-01): by how many stand at the highest level, then at the next, and so
+    down the scale, more first at each, compared in that order, so any project with a
+    result at a level stands before every project with none at it or above. Projects
+    level on every count stand by their newest result, the most recent first, and then
+    by name. A project with no registered result has every count at zero and no date, so
+    it comes after all the others, by name."""
+
+    def newest_first(dated: str) -> int:
+        return -date.fromisoformat(dated).toordinal() if dated else 0
+
+    return sorted(
+        tallies,
+        key=lambda project: (
+            tuple(-count for _, count in tallies[project].counts),
+            newest_first(tallies[project].latest),
+            names[project].lower(),
+            project,
+        ),
+    )
+
+
+def cited_results(overview: Overview) -> list[Cited]:
+    """The register's results as `project_tallies` reads them: each with its S rung, the
+    date its row shows (`Result.dated`, to the day) and the slugs of its projects."""
+    return [
+        Cited(
+            result.id, significance(result), first_day(result.dated[1]), result_projects(result)
+        )
+        for result in overview.results
+    ]
+
+
+def repository_name(url: str) -> str:
+    """A project's repository by its name alone, a card's headline."""
+    return urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
+
+
+def ranked_projects(overview: Overview) -> list[tuple[str, ProjectTally]]:
+    """The listed projects in the order the page shows them, each with its tally: read
+    from the register when the page is rendered, never kept by hand."""
+    slugs = {project_slug(url): url for url in project_urls()}
+    tallies = project_tallies(list(slugs), cited_results(overview), significance_levels())
+    names = {slug: repository_name(url) for slug, url in slugs.items()}
+    return [(slugs[slug], tallies[slug]) for slug in project_order(tallies, names)]
+
+
+def results_filter_url(project: str, level: int | None = None) -> str:
+    """The results page opened on one project's results, and on those at one S rung with
+    `level`: the Project and At significance presets of the bar (`result_filters`). The
+    page's own defaults hide no result, so the link clears nothing."""
+    exact = "" if level is None else f"&s={level}"
+    return f"{RESULTS_PAGE}?project={project}{exact}"
+
+
+def project_tally(url: str, tally: ProjectTally) -> str:
+    """A project card's closing line, its results in the register: the total, then in
+    parentheses the count at each significance level that has one, the highest first,
+    `6 results (3 at S4, 3 at S3)`. The total links to the results table filtered to the
+    project, and each count to the same table at that level. A project with one level
+    keeps the parentheses, so every tally reads the same way and names its level. A
+    project with no registered result has no line."""
+    total = len(tally.results)
+    if not total:
+        return ""
+    slug = project_slug(url)
+    counts = ", ".join(
+        f'<a href="{_esc(results_filter_url(slug, level))}">{count} at S{level}</a>'
+        for level, count in tally.counts
+        if count
+    )
+    noun = "result" if total == 1 else "results"
+    return f'<a href="{_esc(results_filter_url(slug))}">{total} {noun}</a> ({counts})'
+
+
+def other_project_cards(overview: Overview) -> str:
+    """One card per other project, in `project_order`: its repository's name, its author,
+    what it holds and its address, and at its foot its tally of registered results
+    (`project_tally`). Each card's link opens the project in a new tab. The note is prose
+    like a page card's, so a case it names (`n = 21`) is set as math."""
+    listed = {url: (author, note) for url, author, note in OTHER_PROJECTS}
     cards = []
-    for url, author, note in OTHER_PROJECTS:
-        name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
+    for url, tally in ranked_projects(overview):
+        author, note = listed[url]
         cards.append(
             link_card(
                 url,
                 f"By {author}",
-                _esc(name),
+                _esc(repository_name(url)),
                 tex_bounds(note),
                 size=SECTION_CARD_SIZES["projects"],
+                foot=project_tally(url, tally),
             )
         )
     return _cards(cards)

@@ -772,6 +772,8 @@ it.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
     and inlined, since the page fetches nothing), and opens it in a new tab.
+    An other project’s card ends with its tally of results (**Card foot** and **Other
+    projects**, below).
   - When the card leads to a poster’s PDF or to the Visualize page, it is a direct card
     headed by the picture it opens (below).
     A PDF card is typed `application/pdf` and never marked `download`, so the browser
@@ -833,6 +835,42 @@ it.
   A card built without a size (`card()` or `link_card()` with no `size=`) takes the
   default for its own text: its headline and note, and a direct card’s address, counted
   as they read, a formula once.
+
+- **Card foot.** A direct card may end with a line that holds links of its own
+  (`link_card(foot=)`), as an other project’s card ends with its tally of results.
+  A link cannot hold a link, so such a card is a box, `div.site-card.site-card-footed`,
+  around the card’s link (`.site-card-main`, everything above the foot) and the foot
+  (`.site-card-foot`), inside the one border.
+  The box takes the card’s size and place in its row, and washes and shows its corner
+  icon while its link is hovered or focused, so it reads as every other card does.
+  The foot is set in the sans face at the note size in the support colour, at the card’s
+  lower edge, so the feet of a row line up; its links take the page’s link colour.
+  A card with no foot stays the link itself.
+  The cards’ widths, rows and centring are the same with a foot as without
+  (`measure_site_pages cards`, at 1280, 1024, 768 and 390).
+
+- **Other projects.** The overview’s Other Square Packing Projects section orders its
+  cards by the significance of the results the register cites from each project (the
+  owner, 2026-10-01): by how many of its results stand at S5, then at S4, and so on down
+  the scale, more first at each level and compared in that order, so one result at S5
+  stands before any number below it.
+  Projects level on every count stand by their newest result, the most recent first, and
+  then by repository name; a project with no registered result comes last, by name.
+  The order is computed from `results.yaml` when the page is rendered
+  (`overview_sections.ranked_projects`, over `project_tallies` and `project_order`) and
+  is kept nowhere by hand; the section’s introduction says the rule in a sentence.
+  A result is a project’s where its `attribution.source_keys` names a bibliography key
+  the source-coverage register gives a source at the project’s repository
+  (`project_source_keys`; `PROJECT_EXTRA_KEYS` adds the one key two repositories share),
+  and a result attributed to sources of several listed projects counts for each.
+  This project’s own results, and results by others from a source no listed project
+  holds, count for none.
+  Each card with a result ends with its tally (**Card foot**, above), in the form “6
+  results (3 at S4, 3 at S3)”: the total, “1 result” for one, then every level that has
+  a result, the highest first, in parentheses, which are kept when there is one level so
+  each tally reads the same way.
+  The total links to the results table filtered to the project’s results and each count
+  to the same table at that level (**Result filters**, **Preset-only controls**, below).
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
@@ -1291,6 +1329,8 @@ it.
 | Source | `data-source`, `ours` or `others` | this project’s, or others’ |
 | Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
 | Max age | `data-date`, a whole ISO date | dated at most that many days ago |
+| Project (preset only) | `data-project`, the slugs of the listed projects the result is attributed to | the list has the project chosen |
+| At significance (preset only) | `data-s`, the S level | equal to the level chosen |
 
 ```
 A rung select offers All, then each level of the rubric above its lowest as a floor,
@@ -1302,6 +1342,18 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 - **Composition.** The filters compose: a row shows when it passes every one, and an
   empty control, or an unchecked one, passes every row.
+
+- **Preset-only controls.** Project and At significance follow the bar’s own controls
+  and are out of the bar (`hidden`, on their labels) until a link sets them:
+  `all-results.html?project=evand-square-packing` opens the table on the results
+  attributed to one listed project, and `&s=4` on those at S4 exactly, where the
+  Significance floor would keep S5 as well.
+  The other projects’ cards link this way (**Other projects**, above).
+  While a preset control filters, its label is in the bar with the choice it holds, the
+  project by its owner and repository, so the reader sees what narrows the table, and
+  choosing All takes it out again.
+  A project’s slug is its owner and repository in lower case, hyphenated
+  (`overview_sections.project_slug`).
 
 - **Standing.** The select offers every standing the register holds, in the register’s
   own words, `current best` and `current best, reported` among them.

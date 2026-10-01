@@ -54,7 +54,8 @@
     label_before: frame ? round(edge.left - frame.left) : null,
     label_after: frame ? round(frame.right - edge.right) : null,
     bar_overflow: bar.scrollWidth - bar.clientWidth,
-    labels: [...bar.querySelectorAll("label")].map((other) => ({
+    // The labels in the bar: a preset-only control's is out of it until a link sets it.
+    labels: [...bar.querySelectorAll("label:not([hidden])")].map((other) => ({
       filter: other.querySelector("[data-filter]")?.getAttribute("data-filter") ?? "",
       lines: words(other),
       after: round(other.getBoundingClientRect().right - edge.right),

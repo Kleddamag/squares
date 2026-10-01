@@ -146,7 +146,10 @@ been superseded.
 
 Others are working on the problem in the open.
 These are the projects on GitHub that the research frontier cites, each credited to its
-author.
+author. They are ordered by the significance of their results in the
+[register](all-results.html): by how many stand at S5, then at S4, and so on down, the
+newest first among equals.
+Each card ends with a count that opens those results.
 
 {{OTHER_PROJECTS}}
 

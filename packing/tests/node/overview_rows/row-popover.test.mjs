@@ -224,13 +224,15 @@ function page() {
   /**
    * A row with detail and its popover, as `overview_sections.row_detail` writes them.
    * @param {string} key
+   * @param {Record<string, string>} [more] further attributes of the row, such as `hidden`
    */
-  function row(key) {
+  function row(key, more = {}) {
     const target = `pop-${key}`;
     const trigger = new StandInElement("button", { class: "site-row-open", popovertarget: target });
     const link = new StandInElement("a", { href: `records/${key}` });
     const text = new StandInElement("td");
-    const element = new StandInElement("tr", { id: key, "data-row-popover": target }, [
+    const attributes = { id: key, "data-row-popover": target, ...more };
+    const element = new StandInElement("tr", attributes, [
       new StandInElement("td", {}, [trigger]),
       text,
       new StandInElement("td", {}, [link]),
@@ -241,7 +243,8 @@ function page() {
   }
 
   const first = row("t-001");
-  const second = row("t-002");
+  // The second row is one the filters hide at load, as a results table writes it.
+  const second = row("t-002", { hidden: "" });
   // A row naming a popover the page does not carry: its popover is never appended.
   const orphan = row("t-003");
   const tbody = new StandInElement("tbody", {}, [first.element, second.element, orphan.element]);
@@ -370,4 +373,14 @@ void test("a row whose popover is not on the page is left as the HTML has it", (
   assert.equal(orphan.trigger.tabIndex, 0);
   assert.ok(!orphan.element.hasAttribute("aria-expanded"));
   assert.ok(!fire(orphan.text, "click"));
+});
+
+void test("a row the filters hide at load is wired all the same, for when they show it", () => {
+  const { document, fire, second } = page();
+  assert.ok(second.element.hasAttribute("hidden"));
+  assert.equal(second.element.tabIndex, 0);
+  assert.equal(second.trigger.tabIndex, -1);
+  fire(second.text, "click");
+  assert.ok(second.popover.open);
+  assert.equal(document.activeElement, second.close);
 });

@@ -21,7 +21,10 @@ from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
 
 ID = re.compile(r'\sid="([^"]+)"')
-ROW = re.compile(r'<tr id="(t-\d{3})" data-source="(ours|others)" data-c="(C\d)"[^>]*>')
+#: A results-table row: its id, whose result it is, and its confirmation rung's level.
+ROW = re.compile(
+    r'<tr id="(t-\d{3})" data-source="(ours|others)" data-v="\d" data-c="(\d)"[^>]*>'
+)
 
 
 @pytest.fixture(scope="module")
@@ -64,7 +67,7 @@ def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> 
     for row_id, source, confirmation in rows:
         record = declared[row_id]
         assert source == ("others" if record.get("attribution") else "ours"), row_id
-        assert confirmation == record["confirmation"], row_id
+        assert f"C{confirmation}" == record["confirmation"], row_id
 
 
 def test_counts_are_the_declared_rungs(register: list[dict]) -> None:
@@ -883,11 +886,11 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert exact <= shown
 
 
-def test_the_recent_table_lists_every_result_since_august_filtered_to_s3(
+def test_the_recent_table_lists_every_result_since_august_filtered_to_s4(
     page: str, overview: overview_data.Overview
 ) -> None:
     """Every result dated on or after 1 August 2026 is a row, and none before it; the
-    Significance filter starts at S3 and up, with the rows below it hidden in the HTML
+    Significance filter starts at S4 and up, with the rows below it hidden in the HTML
     and the count already written, so the first paint is the filtered table."""
     assert overview_sections.RECENT_FROM.isoformat() == "2026-08-01"
     since = [r for r in overview.results if r.dated[1] >= "2026-08-01"]
@@ -898,24 +901,26 @@ def test_the_recent_table_lists_every_result_since_august_filtered_to_s3(
     assert sorted(listed) == sorted(r.id.lower() for r in since)
     assert not {r.id.lower() for r in before} & set(listed)
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    tools = re.search(r'<div class="site-table-tools site-recent-tools">.*?</div>', section)
-    assert tools
-    assert section.index(tools.group(0)) < section.index(recent)
-    assert '<label>Significance <select data-filter="s" data-bound="min">' in tools[0]
-    options = re.findall(r'<option value="(\d?)"( selected)?>([^<]+)</option>', tools[0])
-    assert options[0] == ("3", " selected", "S3 and up")
-    assert ("", "", "All") in options
+    tools = _filter_bar(section)
+    assert section.index(tools) < section.index(recent)
+    assert '<label>Significance <select data-filter="s" data-bound="min">' in tools
+    significance = tools.split('data-filter="s"', 1)[1].split("</select>", 1)[0]
+    options = re.findall(r'<option value="(\d?)"( selected)?>([^<]+)</option>', significance)
+    assert ("4", " selected", "S4 and up") in options
+    assert ("3", "", "S3 and up") in options
+    assert options[0] == ("", "", "All")
     shown = 0
     for result in since:
         row = _recent_row(recent, result.id)
         score = result.record["significance"]["score"]
         assert f'data-s="{score}"' in row, result.id
-        assert (" hidden>" in row.split(">", 1)[0] + ">") == (score < 3), result.id
-        shown += score >= 3
-    assert shown < len(since)
-    assert f"{shown} of {len(since)} results</span>" in tools[0]
+        assert (" hidden>" in row.split(">", 1)[0] + ">") == (score < 4), result.id
+        shown += score >= 4
+    assert 0 < shown < len(since)
+    assert f"{shown} of {len(since)} results</span>" in tools
     text = re.sub(r"<[^>]+>", "", section)
     assert "every result since 1 August 2026" in text
+    assert "It starts filtered to significance S4 and up; choose All to see every row." in text
 
 
 def test_the_recent_table_splits_method_credit_and_standing() -> None:
@@ -1084,7 +1089,7 @@ def test_the_standing_filter_offers_each_standing_on_the_page(
 ) -> None:
     tools = re.search(r'<select data-filter="standing">(.*?)</select>', results, re.DOTALL)
     assert tools
-    offered = re.findall(r'<option value="([^"]*)">', tools.group(1))
+    offered = re.findall(r'<option value="([^"]*)"[^>]*>', tools.group(1))
     present = {overview_sections.standing_key(r.standing) for r in overview.results}
     assert offered[0] == ""
     assert set(offered[1:]) == present
@@ -1789,6 +1794,234 @@ def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> No
     for declaration in ("background: none;", "border: 0;", "color: inherit;", "font: inherit;"):
         assert declaration in trigger[: trigger.index("}")], declaration
     assert not re.search(r"\.site-(?:table|frontier)[^{}]*\b(?:details|summary)\b[^{}]*\{", css)
+
+
+# ---------- Result filters: one bar on both tables of results (think-3pi5) ----------
+
+#: The bar's controls, in its order: the row attribute each filters and how.
+RESULT_FILTERS = [
+    ("s", "min"),
+    ("v", "min"),
+    ("c", "min"),
+    ("standing", ""),
+    ("source", ""),
+    ("n", "covers"),
+    ("date", "from"),
+    ("date", "to"),
+]
+
+_COUNT = re.compile(r'(<span class="site-count"[^>]*>)[^<]*</span>')
+_SELECTED = re.compile(
+    r'<select data-filter="([a-z]+)"[^>]*>'
+    r'(?:<option value="[^"]*">[^<]*</option>)*<option value="([^"]*)" selected>'
+)
+
+
+def _filter_bar(page: str) -> str:
+    """A results table's tools bar as the page carries it, from its tag to its close."""
+    match = re.search(
+        r'<div class="site-table-tools site-result-filters">.*?</div>', page, re.DOTALL
+    )
+    assert match
+    return match.group(0)
+
+
+def _controls(bar: str) -> list[tuple[str, str]]:
+    """Each control's row attribute and bound, in the bar's order."""
+    found = []
+    for attributes in re.findall(r"<(?:select|input)\b([^>]*)>", bar):
+        key = re.search(r'data-filter="([^"]+)"', attributes)
+        bound = re.search(r'data-bound="([^"]+)"', attributes)
+        assert key, attributes
+        found.append((key[1], bound[1] if bound else ""))
+    return found
+
+
+def test_both_tables_of_results_carry_the_identical_filter_set_and_default(
+    page: str, results: str
+) -> None:
+    """The overview's recent table and the results page's table sit under one bar: the
+    same controls with the same choices in the same order, starting from the same
+    default, Significance at S4 and up and everything else at All. Only the count, which
+    is each table's own, differs."""
+    here = _filter_bar(page.split('id="recent-results"', 1)[1])
+    there = _filter_bar(results)
+    assert _COUNT.sub(r"\1</span>", here) == _COUNT.sub(r"\1</span>", there)
+    assert here != there
+    assert _controls(here) == RESULT_FILTERS
+    assert here.count(" selected>") == here.count("<select ") == 5
+    assert dict(_SELECTED.findall(here)) == {
+        "s": "4",
+        "v": "",
+        "c": "",
+        "standing": "",
+        "source": "",
+    }
+    for control in re.findall(r"<input\b[^>]*>", here):
+        assert " value=" not in control, control
+        assert " checked" not in control, control
+    assert page.count('class="site-table-tools site-result-filters"') == 1
+    assert results.count('class="site-table-tools site-result-filters"') == 1
+
+
+def test_the_filter_bar_is_one_helpers_and_reads_the_whole_register(
+    overview: overview_data.Overview,
+) -> None:
+    """`result_filters` writes the bar for both tables. Its choices come from the whole
+    register, so a table that lists fewer results offers the same ones; only its count
+    is the table's. Each rung select offers the rubric's levels above the lowest as
+    floors, the top one bare."""
+    recent = overview_sections.recent_results(overview)
+    assert 0 < len(recent) < len(overview.results)
+    full = overview_sections.result_filters(overview, overview.results)
+    part = overview_sections.result_filters(overview, recent)
+    assert full in overview_sections.results_table(overview)
+    assert part in overview_sections.recent_table(overview)
+    assert _COUNT.sub("", full) == _COUNT.sub("", part)
+    assert overview_sections.result_filters(overview, []).endswith(">0 results</span></div>")
+    assert overview_sections.SIGNIFICANCE_DEFAULT == 4
+    assert overview_sections.rung_options("S") == [
+        ("", "All"),
+        ("2", "S2 and up"),
+        ("3", "S3 and up"),
+        ("4", "S4 and up"),
+        ("5", "S5"),
+    ]
+    for scale in "VC":
+        choices = overview_sections.rung_options(scale)
+        assert choices[0] == ("", "All")
+        assert choices[1] == ("1", f"{scale}1 and up")
+        assert choices[-1] == ("5", f"{scale}5")
+    standings = re.search(r'<select data-filter="standing">(.*?)</select>', full)
+    assert standings
+    assert set(re.findall(r'<option value="([^"]+)"', standings[1])) == {
+        overview_sections.standing_key(result.standing) for result in overview.results
+    }
+    assert f' min="1" max="{max(overview.cases)}" ' in full
+    dates = sorted(overview_sections.first_day(r.dated[1]) for r in overview.results)
+    assert full.count(f' min="{dates[0]}" max="{dates[-1]}">') == 2
+    assert overview_sections.count_text(3, 3) == "3 results"
+    assert overview_sections.count_text(2, 3) == "2 of 3 results"
+
+
+def _facets(tag: str) -> dict[str, str]:
+    """A row's `data-*` attributes but for the two that name it and its popover."""
+    found = dict(re.findall(r'\sdata-([a-z-]+)="([^"]*)"', tag))
+    return {key: value for key, value in found.items() if key not in {"result", "row-popover"}}
+
+
+def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """A row of either table carries the same facets, each from the register: whose
+    result it is, its V, C and S levels, its standing, its cases and its date. The bar
+    has a control for each and no control without one."""
+    filtered = {key for key, _ in RESULT_FILTERS}
+    recent = _recent_table(page)
+    listed = {r.id for r in overview_sections.recent_results(overview)}
+    for result in overview.results:
+        record = result.record
+        expected = {
+            "source": "ours" if result.ours else "others",
+            "v": record["verification"][1:],
+            "c": record["confirmation"][1:],
+            "s": str(record["significance"]["score"]),
+            "standing": overview_sections.standing_key(result.standing),
+            "n": overview_sections.result_cases(result),
+            "date": overview_sections.first_day(result.dated[1]),
+        }
+        assert set(expected) == filtered
+        tags = [_row(results, result.id).split(">", 1)[0]]
+        if result.id in listed:
+            tags.append(_recent_row(recent, result.id).split(">", 1)[0])
+        for tag in tags:
+            assert _facets(html.unescape(tag)) == expected, result.id
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", expected["date"]), result.id
+        assert re.fullmatch(r"\d+(?:-\d+)?(?: \d+(?:-\d+)?)*", expected["n"]), result.id
+
+
+def test_a_results_cases_and_date_are_written_for_the_filters() -> None:
+    """A result's cases are a list of counts and ranges, and a date the register gives
+    to the year or the month is the first day of it, so both order as the script reads
+    them."""
+
+    def cases(scope: dict) -> str:
+        record = {"id": "T-900", "scope": scope}
+        result = overview_data.Result(record, group="", credit="", ours=True)
+        return overview_sections.result_cases(result)
+
+    assert cases({"n_values": [11]}) == "11"
+    assert cases({"n_values": [17, 18]}) == "17 18"
+    assert cases({"n_values": [26, 18, 19, 20, 21]}) == "18-21 26"
+    assert cases({"n_min": 1, "n_max": 100}) == "1-100"
+    assert overview_sections.first_day("1979") == "1979-01-01"
+    assert overview_sections.first_day("2005-03") == "2005-03-01"
+    assert overview_sections.first_day("2026-09-04") == "2026-09-04"
+
+
+def test_rows_below_the_default_are_hidden_in_the_html_and_stay_in_it(
+    results: str, overview: overview_data.Overview
+) -> None:
+    """On the results page as on the overview, a row below S4 is `hidden` in the HTML,
+    never left out of it, and the count is written for the rows left, so the first
+    paint is the filtered table. A group heading with no row left under it is hidden
+    with them."""
+    shown = 0
+    for result in overview.results:
+        tag = _row(results, result.id).split(">", 1)[0] + ">"
+        below = result.record["significance"]["score"] < 4
+        assert overview_sections.shown_by_default(result) == (not below), result.id
+        assert tag.endswith(" hidden>") == below, result.id
+        shown += not below
+    assert 0 < shown < len(overview.results)
+    assert f"{shown} of {len(overview.results)} results</span>" in _filter_bar(results)
+    headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', results)
+    assert len(headings) == len(overview.groups)
+    for hidden, (title, members) in zip(headings, overview.groups, strict=True):
+        left = any(overview_sections.shown_by_default(result) for result in members)
+        assert bool(hidden) == (not left), title
+    assert {bool(hidden) for hidden in headings} == {True, False}
+    text = re.sub(r"<[^>]+>", "", results)
+    assert (
+        "The table starts filtered to significance S4 and up; choose All to see every" in text
+    )
+
+
+def test_a_row_named_by_the_address_shows_whatever_the_filters_hide() -> None:
+    """A link to a result's row (`all-results.html#t-048`) must land on the row even
+    when the default filter hides it. With scripts `table.js` keeps the row the fragment
+    names, which `tests/node/overview_table/filters.test.mjs` runs; without them one
+    rule shows a hidden row that is the target, as a table row and, on a phone, as the
+    card a results row is there. A targeted row takes the wash in every site table."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    hidden = css[css.index("\n.site-table tr[hidden] {") :]
+    assert "display: none;" in hidden[: hidden.index("}")]
+    target = css[css.index("\n.site-table tr[hidden]:target {") :]
+    assert "display: table-row;" in target[: target.index("}")]
+    assert css.index("\n.site-table tr[hidden] {") < css.index(
+        "\n.site-table tr[hidden]:target {"
+    )
+    phone = css[css.index("  .site-results tr[hidden]:target {") :]
+    assert "display: grid;" in phone[: phone.index("}")]
+    assert "  .site-results tr.site-group-row:not([hidden]) {" in css
+    wash = css[css.index("\n.kpress .site-table tbody tr:target {") :]
+    assert "background: var(--site-wash);" in wash[: wash.index("}")]
+
+
+def test_without_scripts_no_row_stays_filtered() -> None:
+    """A reader without scripts cannot change a filter, so the default must not hide
+    anything from them: under `scripting: none` every row shows, as a table row or, on a
+    phone, as the results table's card, each group under its heading, and the bar, which
+    would do nothing, is not shown."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    block = css[css.index("\n@media (scripting: none) {") :]
+    block = block[: block.index("\n}\n")]
+    assert ".site-result-filters {\n    display: none;" in block
+    assert ".site-table tbody tr[hidden] {\n    display: table-row;" in block
+    phone = css[css.index("\n@media (scripting: none) and (width < 40rem) {") :]
+    phone = phone[: phone.index("\n}\n")]
+    assert ".site-results tbody tr[hidden] {\n    display: grid;" in phone
+    assert ".site-results tbody tr.site-group-row[hidden] {\n    display: block;" in phone
 
 
 def test_secondary_cell_content_is_quiet(results: str) -> None:

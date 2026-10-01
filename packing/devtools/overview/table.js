@@ -1,4 +1,5 @@
-// Sorting and filtering for the site's tables: the frontier atlas and the results table.
+// Sorting and filtering for the site's tables: the frontier atlas, the results table and
+// the overview's recent results.
 //
 // A classic script, inlined into each page by `devtools.render_overview`. It enhances
 // every `table.site-table` whose wrapper follows a `.site-table-tools` bar; the table is
@@ -6,15 +7,31 @@
 //
 // Headings with `data-sort="num"` or `data-sort="text"` sort on click (a numeric sort
 // reads each cell's `data-value`, else its text). Filters are the bar's controls, each
-// naming a row attribute with `data-filter`:
+// naming a row attribute with `data-filter`; `data-bound` says how the control's value
+// is held against the row's:
 //   <select data-filter="status">                 row's data-status equals the value
 //   <input type="checkbox" data-filter="open">     row's data-open is "true"
 //   <input type="number" data-filter="n" data-bound="min|max">  row's data-n in range
 //   <select data-filter="s" data-bound="min">     row's data-s at least the value
-//                                                 (an empty value passes every row)
+//   <input type="date" data-filter="date" data-bound="from|to">
+//                                                 row's data-date, an ISO date, on or
+//                                                 after, or on or before, the value
+//   <input type="number" data-filter="n" data-bound="covers">
+//                                                 row's data-n, a list of numbers and
+//                                                 ranges ("27 28 31-32"), holds the value
+// An empty value passes every row, and filters compose: a row shows when it passes every
+// one. A control's state in the HTML is its default, so a bar can start filtered, with
+// the rows it hides already `hidden` and its count already written.
+//
+// Two rows are placed by more than the filters. The row the page's fragment names
+// (`all-results.html#t-018`) always shows, so a link to a row never lands on nothing.
+// A group row, which heads the rows under it, shows while one of them does, and only
+// while the rows are in the order the page wrote them: a sort hides the group headings.
+//
 // The bar's `.site-count` shows how many rows remain. A link can open the table
 // filtered: each query parameter presets the control it names, `status=proved`,
-// `recent=true`, or `n-max=100` for a bound, so a card can point at a filtered view.
+// `recent=true`, `n-max=100` for a bound, or `n=11` for a `covers` control, so a card
+// can point at a filtered view.
 // The pure functions are published
 // on `globalThis.SiteTable` for the Node tests; nothing else leaves this file.
 
@@ -69,6 +86,19 @@
   }
 
   /**
+   * Whether a list of numbers and ranges, "27 28 31-32", holds `value`.
+   * @param {string} list
+   * @param {number} value
+   * @returns {boolean}
+   */
+  function covers(list, value) {
+    return list.split(/\s+/).some((entry) => {
+      const [low = "", high = low] = entry.split("-");
+      return entry !== "" && Number(low) <= value && value <= Number(high);
+    });
+  }
+
+  /**
    * Whether a row with these attributes passes every active filter.
    * @param {Readonly<Record<string, string | undefined>>} row
    * @param {readonly SiteTableFilter[]} filters
@@ -91,10 +121,47 @@
           const value = Number.parseFloat(actual ?? "");
           return filter.kind === "min" ? value >= bound : value <= bound;
         }
+        case "from":
+        case "to": {
+          // ISO dates order as text, so no date is parsed.
+          if (filter.value === "") {
+            return true;
+          }
+          const value = actual ?? "";
+          return (
+            value !== "" && (filter.kind === "from" ? value >= filter.value : value <= filter.value)
+          );
+        }
+        case "covers": {
+          const wanted = Number.parseFloat(filter.value);
+          return Number.isNaN(wanted) || covers(actual ?? "", wanted);
+        }
         default:
           return true;
       }
     });
+  }
+
+  /**
+   * Which rows show, in the table's current order. A row that is not a group heading
+   * shows when it passes; a group heading shows when the rows are still in their groups
+   * and one of the rows under it, up to the next heading, shows.
+   * @param {readonly boolean[]} headings whether each row is a group heading
+   * @param {readonly boolean[]} passes whether each other row passes
+   * @param {boolean} grouped whether the rows are in the order the page wrote them
+   * @returns {boolean[]}
+   */
+  function rowsShown(headings, passes, grouped) {
+    const shown = passes.map((pass, index) => pass && headings[index] !== true);
+    let heading = -1;
+    shown.forEach((show, index) => {
+      if (headings[index] === true) {
+        heading = index;
+      } else if (show && grouped && heading >= 0) {
+        shown[heading] = true;
+      }
+    });
+    return shown;
   }
 
   /**
@@ -109,13 +176,14 @@
   }
 
   /**
-   * The query parameter that presets a filter control: its key, with its bound if any.
+   * The query parameter that presets a filter control: its key, with its bound if it
+   * is one end of a range.
    * @param {string} key
    * @param {string | null} bound
    * @returns {string}
    */
   function controlParam(key, bound) {
-    return bound ? `${key}-${bound}` : key;
+    return bound && bound !== "covers" ? `${key}-${bound}` : key;
   }
 
   /**
@@ -142,6 +210,24 @@
   }
 
   /**
+   * What each `data-bound` makes of its control.
+   * @type {Readonly<Record<string, SiteTableFilter["kind"]>>}
+   */
+  const BOUNDS = { min: "min", max: "max", from: "from", to: "to", covers: "covers" };
+
+  /**
+   * The id the page's fragment names: "" for none, or for one that does not decode.
+   * @returns {string}
+   */
+  function fragmentTarget() {
+    try {
+      return decodeURIComponent(location.hash.slice(1));
+    } catch {
+      return "";
+    }
+  }
+
+  /**
    * The filters a tools bar's controls currently express.
    * @param {Element} tools
    * @returns {SiteTableFilter[]}
@@ -157,7 +243,7 @@
       } else if (control instanceof HTMLInputElement && control.type === "checkbox") {
         filters.push({ key, kind: "flag", value: control.checked ? "true" : "false" });
       } else if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) {
-        filters.push({ key, kind: bound === "max" ? "max" : "min", value: control.value });
+        filters.push({ key, kind: BOUNDS[bound ?? ""] ?? "min", value: control.value });
       }
     }
     return filters;
@@ -186,25 +272,36 @@
     if (!body) {
       return;
     }
-    const rows = Array.from(body.rows);
     // A group row heads the rows under it and is not one of the rows counted.
-    const counted = new Set(rows.filter((row) => !row.classList.contains("site-group-row")));
+    const counted = new Set(
+      Array.from(body.rows).filter((row) => !row.classList.contains("site-group-row")),
+    );
     const count = tools?.querySelector(".site-count") ?? null;
     const noun = count?.getAttribute("data-noun") ?? "rows";
+    let grouped = true;
 
     const applyFilters = () => {
       if (!tools) {
         return;
       }
       const filters = readFilters(tools);
-      let shown = 0;
-      for (const row of rows) {
-        const visible = rowMatches(rowData(row), filters);
-        row.hidden = !visible;
-        shown += Number(visible && counted.has(row));
-      }
+      const target = fragmentTarget();
+      const rows = Array.from(body.rows);
+      const passes = rows.map(
+        (row) =>
+          counted.has(row) &&
+          (rowMatches(rowData(row), filters) || (row.id !== "" && row.id === target)),
+      );
+      const shown = rowsShown(
+        rows.map((row) => !counted.has(row)),
+        passes,
+        grouped,
+      );
+      rows.forEach((row, index) => {
+        row.hidden = shown[index] !== true;
+      });
       if (count) {
-        count.textContent = countText(shown, counted.size, noun);
+        count.textContent = countText(passes.filter(Boolean).length, counted.size, noun);
       }
     };
 
@@ -229,6 +326,8 @@
         const keys = current.map((row) => cellKey(row.cells[column]));
         const order = sortOrder(keys, type, direction);
         body.append(...order.flatMap((index) => current[index] ?? []));
+        grouped = false;
+        applyFilters();
       };
       heading.addEventListener("click", sort);
       heading.addEventListener("keydown", (event) => {
@@ -243,6 +342,7 @@
       tools.removeAttribute("hidden");
       tools.addEventListener("input", applyFilters);
       tools.addEventListener("change", applyFilters);
+      window.addEventListener("hashchange", applyFilters);
       presetFilters(tools, new URLSearchParams(location.search));
       applyFilters();
     }
@@ -261,7 +361,16 @@
     }
   }
 
-  globalThis.SiteTable = { compareKeys, sortOrder, rowMatches, countText, controlParam, init };
+  globalThis.SiteTable = {
+    compareKeys,
+    sortOrder,
+    covers,
+    rowMatches,
+    rowsShown,
+    countText,
+    controlParam,
+    init,
+  };
 
   if (typeof document === "undefined") {
     return;

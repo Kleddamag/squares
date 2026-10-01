@@ -19,4 +19,7 @@ Open a row for the full claim and its novelty label, and follow the records to t
 file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).
 
+The table starts filtered to significance S4 and up; choose All to see every result.
+The filters narrow it by rating, standing, source, case and date, and they combine.
+
 {{RESULTS_TABLE}}

@@ -13,6 +13,7 @@ from __future__ import annotations
 import base64
 import html
 import re
+from collections.abc import Iterable, Sequence
 from datetime import date
 from pathlib import Path
 from typing import NamedTuple
@@ -32,9 +33,6 @@ from devtools.overview_data import (
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
-
-#: Confirmation rungs from strongest to weakest.
-C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
 
 
 def _esc(text: object) -> str:
@@ -321,12 +319,140 @@ def result_row(result: Result, overview: Overview, *, trigger: str, here: bool) 
     )
 
 
+# ---------- Result filters: one tools bar for every table of results ----------
+
+#: The lowest significance a table of results shows until the reader asks for more.
+SIGNIFICANCE_DEFAULT = 4
+
+#: The rung filters, in the bar's order: the scale, which names the row's attribute
+#: (`data-s`), and the select's label.
+RUNG_FILTERS: tuple[tuple[str, str], ...] = (
+    ("S", "Significance"),
+    ("V", "Verification"),
+    ("C", "Confirmation"),
+)
+
+#: What every select of the bar offers first: no filter on that facet.
+ALL = "All"
+
+
+def result_cases(result: Result) -> str:
+    """A result's cases as its row's `data-n`, which the Case filter reads: each count,
+    and a run of counts as a range, `18-21 26`."""
+    return result.scope.replace(EN_DASH, "-").replace(",", "")
+
+
+def result_facets(result: Result) -> str:
+    """A result row's facets as attributes, the same on every table of results, each one
+    a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
+    its standing, its cases and the date the table shows."""
+    record = result.record
+    return (
+        f'data-source="{"ours" if result.ours else "others"}" '
+        f'data-v="{_esc(record["verification"][1:])}" '
+        f'data-c="{_esc(record["confirmation"][1:])}" '
+        f'data-s="{significance(result)}" '
+        f'data-standing="{_esc(standing_key(result.standing))}" '
+        f'data-n="{_esc(result_cases(result))}" '
+        f'data-date="{_esc(first_day(result.dated[1]))}"'
+    )
+
+
+def shown_by_default(result: Result) -> bool:
+    """Whether a result's row shows before the reader touches the filters."""
+    return significance(result) >= SIGNIFICANCE_DEFAULT
+
+
+def rung_options(scale: str) -> list[tuple[str, str]]:
+    """A rung filter's choices: all, then each level above the scale's lowest as a
+    floor, `S4 and up`, the top one bare. The levels are the rubric's own."""
+    levels = sorted(level for level, _ in rubric_levels()[scale])
+    return [
+        ("", ALL),
+        *(
+            (str(level), f"{scale}{level}" + ("" if level == levels[-1] else " and up"))
+            for level in levels[1:]
+        ),
+    ]
+
+
+def _options(options: Iterable[tuple[str, str]], selected: str = "") -> str:
+    return "".join(
+        f'<option value="{_esc(value)}"{" selected" if value == selected else ""}>'
+        f"{_esc(label)}</option>"
+        for value, label in options
+    )
+
+
+def first_day(dated: str) -> str:
+    """A date the register gives only to its year or its month, as the first day of it,
+    so every row's `data-date` is a whole date and orders as text: `1979` is
+    `1979-01-01`, and `2005-03` is `2005-03-01`."""
+    missing = "-01-01"[max(len(dated) - 4, 0) :]
+    return dated + missing if len(dated) < len("2026-01-01") else dated
+
+
+def count_text(shown: int, total: int, noun: str = "results") -> str:
+    """A tools bar's count, as `overview/table.js` writes it (`countText`)."""
+    return f"{total} {noun}" if shown == total else f"{shown} of {total} {noun}"
+
+
+def result_filters(overview: Overview, listed: Sequence[Result]) -> str:
+    """The one tools bar every table of results carries: the overview's recent table and
+    the results page's table. `overview/table.js` drives it.
+
+    One control per facet a row carries (`result_facets`), and they compose: Significance,
+    Verification and Confirmation as floors (`data-bound="min"`), Standing and Source as
+    equalities, Case as a number the row's cases must hold (`covers`), and the date as a
+    range (`from`, `to`). Significance starts at `SIGNIFICANCE_DEFAULT` and every other
+    control at all, so the tables write the rows below that floor `hidden` and the bar
+    writes the count of the rows left: the first paint is the filtered table. Without
+    scripts nothing stays filtered: `site.css` shows every row and drops the bar.
+
+    The choices come from the whole register, never from `listed`, the rows of the table
+    the bar sits over, so the bar is the same on both pages but for its count.
+    """
+    present = {result.standing for result in overview.results}
+    dates = sorted(first_day(result.dated[1]) for result in overview.results)
+    span = f' min="{_esc(dates[0])}" max="{_esc(dates[-1])}"' if dates else ""
+    last = f' max="{max(overview.cases)}"' if overview.cases else ""
+    rungs = "".join(
+        f'<label>{label} <select data-filter="{scale.lower()}" data-bound="min">'
+        f"{_options(rung_options(scale), str(SIGNIFICANCE_DEFAULT) if scale == 'S' else '')}"
+        "</select></label>"
+        for scale, label in RUNG_FILTERS
+    )
+    standings = [
+        ("", ALL),
+        *(
+            (standing_key(standing), standing_label(standing))
+            for standing in STANDINGS
+            if standing in present
+        ),
+    ]
+    sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
+    shown = sum(shown_by_default(result) for result in listed)
+    return (
+        '<div class="site-table-tools site-result-filters">'
+        f"{rungs}"
+        f'<label>Standing <select data-filter="standing">{_options(standings)}</select></label>'
+        f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
+        '<label>Case <var>n</var> <input type="number" data-filter="n" data-bound="covers" '
+        f'min="1"{last} placeholder="any"></label>'
+        f'<label>From <input type="date" data-filter="date" data-bound="from"{span}></label>'
+        f'<label>to <input type="date" data-filter="date" data-bound="to"{span}></label>'
+        '<span class="site-count" data-count data-noun="results" aria-live="polite">'
+        f"{count_text(shown, len(listed))}</span></div>"
+    )
+
+
 def results_table(overview: Overview) -> str:
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
     relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
     standing and, for a result by others, the date it was published. Each row opens its
-    result's popover (`result_row`), placed after the table; its id is the trigger."""
-    present = {result.standing for result in overview.results}
+    result's popover (`result_row`), placed after the table; its id is the trigger.
+    The bar above it is `result_filters`: a row below its default is `hidden` in the
+    HTML, and so is a group heading with no row left under it."""
     head = (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
@@ -343,8 +469,9 @@ def results_table(overview: Overview) -> str:
     body = []
     popovers = []
     for title, members in overview.groups:
+        hidden = "" if any(shown_by_default(result) for result in members) else " hidden"
         body.append(
-            f'<tr class="site-group-row" data-group="{_esc(title)}">'
+            f'<tr class="site-group-row" data-group="{_esc(title)}"{hidden}>'
             f'<th colspan="7" scope="colgroup">{_esc(title)}</th></tr>'
         )
         for result in members:
@@ -353,11 +480,8 @@ def results_table(overview: Overview) -> str:
             detail = result_row(result, overview, trigger=_esc(result.id), here=True)
             popovers.append(detail.popover)
             body.append(
-                f'<tr id="{_esc(result.id.lower())}" '
-                f'data-source="{"ours" if result.ours else "others"}" '
-                f'data-c="{_esc(record["confirmation"])}" '
-                f'data-standing="{_esc(standing_key(result.standing))}" '
-                f"{detail.attributes}>"
+                f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
+                f"{detail.attributes}{'' if shown_by_default(result) else ' hidden'}>"
                 f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
@@ -375,29 +499,9 @@ def results_table(overview: Overview) -> str:
                 f'<td class="site-records">{_records(result)}</td>'
                 "</tr>"
             )
-    tools = (
-        '<div class="site-table-tools">'
-        '<label>Source <select data-filter="source">'
-        '<option value="">all</option><option value="ours">this project</option>'
-        '<option value="others">others</option></select></label>'
-        '<label>Confirmation <select data-filter="c">'
-        '<option value="">all</option>'
-        + "".join(f'<option value="{c}">{c}</option>' for c in C_RUNGS)
-        + "</select></label>"
-        '<label>Standing <select data-filter="standing">'
-        '<option value="">all</option>'
-        + "".join(
-            f'<option value="{_esc(standing_key(standing))}">'
-            f"{_esc(standing_label(standing))}</option>"
-            for standing in STANDINGS
-            if standing in present
-        )
-        + "</select></label>"
-        '<span class="site-count" data-count data-noun="results"></span>'
-        "</div>"
-    )
     return (
-        f'<div class="site-wide">{tools}<div class="site-table-wrap">'
+        f'<div class="site-wide">{result_filters(overview, overview.results)}'
+        '<div class="site-table-wrap">'
         f'<table class="kpress-table site-table site-results" data-site-table>{head}'
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
     )
@@ -477,15 +581,6 @@ def verification_block() -> str:
 #: after it, by the date the table shows.
 RECENT_FROM = date(2026, 8, 1)
 
-#: The recent table's Significance filter, as (the lowest S rung shown, its label), the
-#: default first. The empty value shows every row.
-RECENT_SIGNIFICANCE: tuple[tuple[str, str], ...] = (
-    ("3", "S3 and up"),
-    ("4", "S4 and up"),
-    ("5", "S5"),
-    ("", "All"),
-)
-
 #: A summary that leads with its formula: the formula, then the method after "by", then
 #: a trailing ", reported" that the standing chips already say.
 _LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
@@ -543,34 +638,15 @@ def status_chips(result: Result) -> str:
     return " ".join(_rung(rung) for rung in rungs) + " " + standing_chips(result.standing)
 
 
-def recent_filter(shown: int, total: int) -> str:
-    """The recent table's tools bar: one Significance select over the rows' `data-s`,
-    read as a lower bound and set to its default, and the count of the rows it leaves,
-    written as `table.js` writes it so the first paint already reads right."""
-    options = "".join(
-        f'<option value="{value}"{" selected" if index == 0 else ""}>{_esc(label)}</option>'
-        for index, (value, label) in enumerate(RECENT_SIGNIFICANCE)
-    )
-    count = f"{total} results" if shown == total else f"{shown} of {total} results"
-    return (
-        '<div class="site-table-tools site-recent-tools">'
-        '<label>Significance <select data-filter="s" data-bound="min">'
-        f"{options}</select></label>"
-        '<span class="site-count" data-count data-noun="results" aria-live="polite">'
-        f"{count}</span></div>"
-    )
-
-
 def recent_table(overview: Overview) -> str:
     """Every result since `RECENT_FROM` as one table, newest first: the date, the result
     linking to its row on the results page with its id quiet beside it, the method, the
     credit and the status chips. A result by others is dated by its publication, as
     `RESULTS.md` dates it, and this project's by the day it was established; the cell
-    says which. The Significance filter above it starts at its default, and a row below
-    that is `hidden` in the HTML, so the first paint is already filtered. Each row opens
-    its result's popover (`result_row`), the results page's, ending in the button to
-    that page's row; the quiet id is its trigger."""
-    floor = int(RECENT_SIGNIFICANCE[0][0])
+    says which. The bar above it is `result_filters`, the results page's: a row below
+    its default is `hidden` in the HTML, so the first paint is already filtered. Each
+    row opens its result's popover (`result_row`), the results page's, ending in the
+    button to that page's row; the quiet id is its trigger."""
     results = recent_results(overview)
     head = (
         "<thead><tr>"
@@ -587,13 +663,11 @@ def recent_table(overview: Overview) -> str:
     for result in results:
         kind, dated = result.dated
         formula, method = split_summary(result.summary)
-        score = significance(result)
         detail = result_row(result, overview, trigger=_esc(result.id), here=False)
         popovers.append(detail.popover)
         rows.append(
-            f'<tr data-result="{_esc(result.id.lower())}" '
-            f'data-standing="{_esc(standing_key(result.standing))}" '
-            f'data-s="{score}" {detail.attributes}{" hidden" if score < floor else ""}>'
+            f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
+            f"{detail.attributes}{'' if shown_by_default(result) else ' hidden'}>"
             f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
             f"{_esc(dated)}</td>"
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
@@ -605,9 +679,8 @@ def recent_table(overview: Overview) -> str:
             f'<td class="site-col-status">{status_chips(result)}</td>'
             "</tr>"
         )
-    shown = sum(significance(r) >= floor for r in results)
     return (
-        f'<div class="site-wide">{recent_filter(shown, len(results))}'
+        f'<div class="site-wide">{result_filters(overview, results)}'
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results site-recent-table">'
         f"{head}<tbody>{''.join(rows)}</tbody></table></div>{''.join(popovers)}</div>"

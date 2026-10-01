@@ -665,6 +665,30 @@ body {
 .site-table tr[hidden] {
   display: none;
 }
+/* The row a page's address names (`all-results.html#t-018`) shows whatever the filters
+   hide, so a link to a row never lands on nothing: with scripts `table.js` keeps it,
+   and without them this rule does. */
+.site-table tr[hidden]:target {
+  display: table-row;
+}
+/* Without scripts the filters cannot be changed, so nothing stays filtered: every row
+   shows, each group under its heading, and the bar, which would do nothing, does not. */
+@media (scripting: none) {
+  .site-result-filters {
+    display: none;
+  }
+  .site-table tbody tr[hidden] {
+    display: table-row;
+  }
+}
+@media (scripting: none) and (width < 40rem) {
+  .site-results tbody tr[hidden] {
+    display: grid;
+  }
+  .site-results tbody tr.site-group-row[hidden] {
+    display: block;
+  }
+}
 :is(.site-table, .site-popover) .site-detail {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
@@ -873,7 +897,10 @@ body {
   .site-results tr[hidden] {
     display: none;
   }
-  .site-results tr.site-group-row {
+  .site-results tr[hidden]:target {
+    display: grid;
+  }
+  .site-results tr.site-group-row:not([hidden]) {
     display: block;
   }
   .kpress .site-results td {
@@ -975,6 +1002,11 @@ body {
 .kpress .site-table tbody tr:not(.site-group-row):hover {
   background: var(--site-wash);
 }
+/* A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) is
+   marked with the same wash. */
+.kpress .site-table tbody tr:target {
+  background: var(--site-wash);
+}
 
 /* ---------- Row popovers ----------
    The row is the unit (paper-design.md, Row popovers): a row with detail opens one
@@ -1072,10 +1104,6 @@ body {
 /* Nine columns: the atlas takes a wider track than the site's other wide blocks. */
 .site-page .site-frontier {
   --site-wide: 86rem;
-}
-/* A case reached by its anchor (`frontier.html#n-11`) is marked with the card wash. */
-.kpress .site-frontier tbody tr:target {
-  background: var(--site-wash);
 }
 .site-frontier .site-frontier-n {
   align-items: center;

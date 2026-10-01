@@ -587,11 +587,66 @@ it.
   It keeps the table’s size, so the quiet text does not become harder to read.
   Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, the results table becomes one card per row.
-  In the results table a result’s standing chip sits under its rungs, and a Standing
-  filter selects by it; a date cell says what it dates, `published` or `established`, in
-  the support colour. A superseded result’s row reads quieter, its text in the support
-  colour, in every site table, by one rule on `tr[data-standing="superseded"]`; its
-  chips keep their fills.
+  In the results table a result’s standing chip sits under its rungs; a date cell says
+  what it dates, `published` or `established`, in the support colour.
+  A superseded result’s row reads quieter, its text in the support colour, in every site
+  table, by one rule on `tr[data-standing="superseded"]`; its chips keep their fills.
+  A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
+  the wash, in every site table.
+
+- **Result filters.** Every table of results sits under one tools bar, the same on the
+  overview’s recent table and on the results page: the same controls, the same choices,
+  the same order and the same default.
+  Only the count at its end is the table’s own.
+  `overview_sections.result_filters` writes it and `overview/table.js` drives it.
+  - **Facets.** A result’s row carries each facet as an attribute
+    (`overview_sections.result_facets`), and the bar has one control for each:
+
+| Control | Row attribute | Reads as |
+| --- | --- | --- |
+| Significance | `data-s`, the S level | a floor: S4 and up |
+| Verification | `data-v`, the V level | a floor: V4 and up |
+| Confirmation | `data-c`, the C level | a floor: C3 and up |
+| Standing | `data-standing` | equal to the standing chosen |
+| Source | `data-source`, `ours` or `others` | this project’s, or others’ |
+| Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
+| From, to | `data-date`, a whole ISO date | the date is in the range |
+
+    A rung select offers All, then each level of the rubric above its lowest as a floor,
+    the top level bare (S5). Standing offers the standings the register holds.
+    A date the register gives only to the year is the first day of it (`1979-01-01`).
+
+  - **Composition.** The filters compose: a row shows when it passes every one, and an
+    empty control passes every row.
+
+  - **Default.** Significance starts at S4 and up (`SIGNIFICANCE_DEFAULT`) and every
+    other control at All.
+    A row below the default is `hidden` in the HTML, never left out of it, and the count
+    is written there too, so the first paint is already the filtered table and never
+    flashes every row. A control’s state in the HTML is its default, which is all the
+    script knows of it.
+
+  - **Group headings.** A group heading shows while a row under it does: one with no row
+    left is hidden with them, in the HTML for the default.
+    A sort hides the group headings, since the rows are then no longer in their groups.
+
+  - **A row named by the address** (`all-results.html#t-048`) shows whatever the filters
+    hide, so a link to a result never lands on nothing.
+    The script keeps it, and without scripts one rule, `.site-table tr[hidden]:target`,
+    shows it.
+
+  - **Links.** A link can open either table filtered: each query parameter presets the
+    control it names, `s-min=3`, `source=ours`, `n=17`, `date-from=2026-09-01`.
+
+  - **A row’s popover** follows it through filtering and sorting, since the row finds it
+    by id (**Row popovers**, below).
+
+  The bar wraps onto further lines as the page narrows; on a phone each control takes
+  about a line. Without scripts a filter cannot be changed, so nothing stays filtered:
+  under `@media (scripting: none)` every row shows, each group under its heading, and
+  the bar, which would do nothing, does not.
+  `tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
+  table, and `tests/test_overview.py` holds both pages to the identical bar and default.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -649,13 +704,9 @@ it.
 - **Recent results.** The overview’s Recent Results section is one table, not cards or a
   list: every result dated on or after 1 August 2026 (`RECENT_FROM`), by the date the
   table shows, newest first, one row each, the same `.site-table` in the sans face as
-  the results page, without sorting (`recent_table`). One filter sits above it in the
-  results page’s tools bar (`.site-table-tools`, driven by `overview/table.js`): a
-  labelled Significance select over the row’s S rung (`data-s`), read as a lower bound,
-  offering S3 and up (the default), S4 and up, S5 and All, with the count of rows shown
-  out of the total at the bar’s end.
-  A row below the default is `hidden` in the HTML and the count is written there too, so
-  the first paint is already the filtered table and never flashes every row.
+  the results page, without sorting (`recent_table`). The results page’s tools bar sits
+  above it (**Result filters**, above), starting at significance S4 and up, with the
+  count of rows shown out of the total at the bar’s end.
   Its five columns are the date, which says what it dates (`published` or
   `established`); the result, its math linking to its row on the results page, with the
   id beside it quiet, which is the row’s trigger; the method, the phrase the summary
@@ -680,7 +731,8 @@ it.
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
   `every-result`, a subtitle with the count, the prose that defines the ratings and
-  standings, and the table with its filters.
+  standings, and the table under its filters (**Result filters**, above), which start at
+  significance S4 and up as they do on the overview.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in

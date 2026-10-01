@@ -11,6 +11,8 @@
 // and its wrap; a table inside a disclosure is measured as the disclosure, open or
 // closed, with the space inside it reported apart. A heading is every `h1` to `h4` and
 // every headline set in a heading's face: a card's, a popover's, a case record's.
+// The page's first block is whatever opens its column, a title, a picture or a row of
+// chips, with the space from the bar's rule down to it.
 // `scope` keeps only what sits inside an element it matches, for what a press opened.
 (/** @type {{scope?: string | null} | undefined} */ options) => {
   const scope = options?.scope ?? null;
@@ -169,5 +171,20 @@
       top: Math.round(box.top + window.scrollY),
     });
   }
-  return { tables, headings: found };
+  // The first block: down through the column's wrappers to the first thing a reader sees.
+  const firsts = [];
+  /** @type {Element | null} */
+  let first = scope === null ? document.querySelector(".kpress-long-text, .cert-page") : null;
+  while (first?.matches("div, header, section, article")) {
+    const child = [...first.children].find(inFlow);
+    if (!child) {
+      break;
+    }
+    first = child;
+  }
+  if (first) {
+    const above = gap(first, "previousElementSibling");
+    firsts.push({ block: name(first), above: above.gap, above_to: above.to });
+  }
+  return { tables, headings: found, first: firsts };
 };

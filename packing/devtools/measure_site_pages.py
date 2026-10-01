@@ -197,7 +197,8 @@ def measure_space(
     base: str, pages: Sequence[str], *, widths: Sequence[int], presses: Sequence[str] = ()
 ) -> list[dict[str, Any]]:
     """The space around every table and heading on each page at each width, once its
-    math is typeset, as rows of `kind` `table` or `heading`. Each selector in `presses`
+    math is typeset, as rows of `kind` `first` (the page's first block, with the space
+    from the bar down to it), `table` or `heading`. Each selector in `presses`
     that matches is then pressed, and what it opened is reported with the selector as
     its `state`; the page as loaded is the state `page`."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
@@ -205,7 +206,7 @@ def measure_space(
     results: list[dict[str, Any]] = []
 
     def collect(name: str, width: int, state: str, found: dict[str, Any]) -> None:
-        for kind, key in (("table", "tables"), ("heading", "headings")):
+        for kind, key in (("first", "first"), ("table", "tables"), ("heading", "headings")):
             results.extend(
                 {"page": name, "width": width, "state": state, "kind": kind, **row}
                 for row in found[key]
@@ -243,21 +244,26 @@ def _span(values: Sequence[Any]) -> str:
 
 
 def space_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """A `space` report as its two tables, one row a table and one a heading role.
+    """A `space` report as a table: one row for each page's first block, one a table and
+    one a heading role.
 
-    Tables come first, each with the space above and below it and what that space is
-    measured to. Headings are grouped by page, width, state and role (`h2`,
-    `span.site-card-value`): how many there are, their size, line height and leading,
-    the most lines one takes, the most its box cannot show of its content, and the
-    least and most space above and below.
+    A page's first block comes with the space from the bar down to it, and each table
+    with the space above and below it and what that space is measured to. Headings are
+    grouped by page, width, state and role (`h2`, `span.site-card-value`): how many
+    there are, their size, line height and leading, the most lines one takes, the most
+    its box cannot show of its content, and the least and most space above and below.
     """
     rows: list[dict[str, Any]] = [
         {
             "page": row["page"],
             "width": row["width"],
             "state": row["state"],
-            "what": row["component"] + (" with bar" if row["bar"] else ""),
-            "where": row["section"],
+            "what": (
+                f"first block: {row['block']}"
+                if row["kind"] == "first"
+                else row["component"] + (" with bar" if row["bar"] else "")
+            ),
+            "where": row.get("section", ""),
             "count": 1,
             "size": "",
             "line_height": "",
@@ -266,11 +272,11 @@ def space_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "overflow": "",
             "above": f"{row['above']:g}",
             "above_to": row["above_to"],
-            "below": f"{row['below']:g}",
-            "below_to": row["below_to"],
+            "below": _span([row.get("below")]),
+            "below_to": row.get("below_to", ""),
         }
         for row in report
-        if row["kind"] == "table"
+        if row["kind"] in ("first", "table")
     ]
     groups: dict[tuple[str, int, str, str], list[dict[str, Any]]] = {}
     for row in report:

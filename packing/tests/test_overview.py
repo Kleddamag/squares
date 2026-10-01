@@ -1813,7 +1813,7 @@ def test_every_page_starts_one_shared_space_below_the_bar() -> None:
     """The space from the bar's rule to a page's first block is one token, declared in the
     stylesheet every page carries and read by the site's column and the explainer's hero."""
     nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
-    assert "--site-page-top: 3rem;" in nav
+    assert "--site-page-top: 4rem;" in nav
     assert "padding-block-start: var(--site-page-top);" in render_overview.SITE_CSS.read_text(
         encoding="utf-8"
     )
@@ -1828,14 +1828,40 @@ def test_an_opening_picture_sits_one_token_nearer_the_bar() -> None:
     assert "margin-block-start: calc(-1 * var(--site-hero-lift));" in css
 
 
-def test_section_headings_share_one_space_above() -> None:
-    """The space above an `h2` is one token in the text layer both the site and the
-    explainer read, narrower on screen than in print."""
+def test_section_headings_share_one_space_above_and_one_below() -> None:
+    """The space above an `h2` and the space below it are two tokens in the text layer
+    both the site and the explainer read. Each has a screen value and, under print, the
+    paper's own, so the explainer's PDF paginates as it did."""
     text = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
-    assert "--paper-section-space: calc(var(--kpress-font-size-base) * 1.8);" in text
+    start = "@media print {\n  .kpress {\n    --paper-section-space"
+    screen, _, printed = text.partition(start)
+    assert "  --paper-section-space: calc(var(--kpress-font-size-base) * 2.7);\n" in screen
+    assert "  --paper-section-space-below: 1.7rem;\n" in screen
+    assert printed.startswith(": calc(var(--kpress-font-size-base) * 2.8);\n")
+    assert "    --paper-section-space-below: 1.3rem;\n  }\n}" in printed[:120]
     shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
     for css in (render_overview.SITE_CSS.read_text(encoding="utf-8"), shell):
-        assert "margin-block: var(--paper-section-space) 1.3rem;" in css
+        assert (
+            "margin-block: var(--paper-section-space) var(--paper-section-space-below);" in css
+        )
+        assert "var(--paper-section-space) 1.3rem" not in css
+
+
+def test_a_page_title_stands_one_space_above_what_follows_it() -> None:
+    """The space under a page's title is one token: around its subtitle, and under a title
+    that has none, a document's own `h1` among them, on screen. A hero title with a
+    subtitle hands the space to the subtitle."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert css.count("--site-subtitle-space: 1.5rem;") == 1
+    assert "  margin-block: var(--site-subtitle-space);\n" in css
+    assert (
+        "@media screen {\n  .site-page h1 {\n"
+        "    margin-block-end: var(--site-subtitle-space);\n  }\n}\n"
+        ".kpress .site-hero:has(.subtitle) h1 {\n  margin-block-end: 0;\n}"
+    ) in css
+    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
+    assert "  .cert-page .hero .credits { margin-block-start: 2.25rem; }\n}" in shell
+    assert "  margin-block: 2rem 2.2rem;\n" in shell
 
 
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
@@ -1847,10 +1873,10 @@ def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     assert css.count("--site-table-space: 2rem;") == 1
     bar = css[css.index("\n.site-table-tools {") :]
     assert "margin-block: var(--site-table-space) 0.5rem;" in bar[: bar.index("}")]
-    start = css.index("@media screen {\n  .kpress-table-wrap,")
+    start = css.index("@media screen {\n  .kpress details.site-replay,")
     screen = css[start : css.index("\n}\n", start)]
     assert (
-        "  .kpress-table-wrap,\n  .site-table-wrap,\n  .kpress details.site-replay {\n"
+        "  .kpress details.site-replay,\n  .kpress-table-wrap,\n  .site-table-wrap {\n"
         "    margin-block: var(--site-table-space);\n  }"
     ) in screen
     # The bar keeps its own gap to its table, and the disclosure's table sits flush.

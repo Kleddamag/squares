@@ -39,7 +39,8 @@ physical sizes.
 | Subtitle | 23.75px | About 15.8333pt | Sans caps, 1.25 of the sans base |
 | Title credits and date | 19px | 12⅔pt | Sans base size |
 | Section headings | 21.6px | 14.4pt | Serif italic, 1.2 of the prose base |
-| Space above a section heading | 32.4px | 37.8pt | `--paper-section-space`: 1.8 of the prose base on screen, 2.8 in print |
+| Space above a section heading | 48.6px | 37.8pt | `--paper-section-space`: 2.7 of the prose base on screen, 2.8 in print |
+| Space below a section heading | 27.2px | 15.6pt | `--paper-section-space-below`: 1.7rem on screen, 1.3rem in print |
 | Figure labels and controls | 18.05px | About 12.0333pt | Sans, 0.95 of the sans base |
 | Captions and end footnotes | 17.48px | About 11.6533pt | Shared sans size: 0.92 of the sans base; 1.4rem side inset |
 | Colophon | 16.15px | About 10.7667pt | Sans, 0.85 of the sans base |
@@ -253,11 +254,18 @@ one of them changes.
 
 | Space | Token | Screen value | Declared in |
 | --- | --- | --- | --- |
-| From the bar’s rule to a page’s first block | `--site-page-top` | 3rem, 48px | `site-nav.css` |
+| From the bar’s rule to a page’s first block | `--site-page-top` | 4rem, 64px | `site-nav.css` |
 | How much nearer the bar an opening picture starts | `--site-hero-lift` | 0.5rem, 8px | `site.css` |
-| Above a section heading (`h2`) | `--paper-section-space` | 1.8 of the prose base, 32.4px | `paper-type.css` |
-| Above and below a page’s subtitle | `--site-subtitle-space` | 1.25rem, 20px | `site.css` |
+| Above a section heading (`h2`) | `--paper-section-space` | 2.7 of the prose base, 48.6px | `paper-type.css` |
+| Below a section heading (`h2`) | `--paper-section-space-below` | 1.7rem, 27.2px | `paper-type.css` |
+| Below a page’s title, and below its subtitle | `--site-subtitle-space` | 1.5rem, 24px | `site.css` |
 | Above and below a table | `--site-table-space` | 2rem, 32px | `site.css` |
+
+A page’s title, or the picture that opens the homepage, starts `--site-page-top` under
+the bar’s rule on every page, the explainer and the optimality paper included.
+Every section heading on the site pages and the explainer takes the two section tokens;
+print reads its own values of both (2.8 of the base and 1.3rem), which are the paper’s.
+On the explainer the credits start 2.25rem under the title on screen and 2rem in print.
 
 `--site-table-space` is the space above and below every table.
 A site table (`.site-table`) takes it above its filter bar, which keeps its own 0.5rem
@@ -294,7 +302,7 @@ it.
   It sits 1rem below the top of the window on every page, the explainer and the
   workbench included: `site-nav.css` narrows KPress’s page top margin
   (`--kpress-page-margin-block-start`) from 2.5rem. Below the bar, every page’s first
-  block starts one shared space under its rule, `--site-page-top` (3rem, in
+  block starts one shared space under its rule, `--site-page-top` (4rem, in
   `site-nav.css`): KPress’s document padding above the column is dropped on screen, the
   column’s own top padding is the token, and the first block (a hero or a document’s
   title) adds no margin of its own.
@@ -362,9 +370,10 @@ it.
   sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
   = 1 to 324”. The subtitle is the sans face at 1.1 times the sans base
   (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.25rem). The page
-  title style (every hero `h1`, and `.site-title`) is the sans face in upright caps (not
-  KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
+  no subtitle, a document’s own `h1` among them, stands that space above its first
+  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
+  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
   That section’s prose is README’s introduction: the block between README’s

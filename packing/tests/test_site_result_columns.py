@@ -51,8 +51,13 @@ WIDTHS = (*TABLE_WIDTHS, PHONE)
 #: Each page's address with every row of its table showing: the overview opens on what
 #: is recent, significant and current, and its filters' query presets clear all three.
 EVERY_ROW = {"index.html": "?s-min=&age=&current=false", render_overview.RESULTS_PAGE: ""}
-#: The overview as it opens, under its own filters, where no long list of cases shows.
+#: The overview as it opens, under its own filters.
 AS_OPENED = "index.html as it opens"
+#: A view where no long list of cases shows: the results of one kind that each hold a
+#: case or two. (The overview as it opens held only such rows until T-064, a family of
+#: thirteen cases at S4, joined it.)
+SHORT_LISTS = "index.html, one kind of short lists"
+SHORT_LISTS_QUERY = "?s-min=&age=&current=false&kind=rigidity"
 #: The credit column's floor, 11.5rem, in pixels (`site.css`).
 CREDIT_MIN = 184
 #: The result column's floor, 18rem, in pixels (`site.css`), and what four formulas no
@@ -122,6 +127,9 @@ def laid(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[tuple[str, i
                 page.goto(path.as_uri(), wait_until="load")
                 settle_math(page)
                 found[AS_OPENED, TABLE_WIDTHS[0]] = _laid(page)
+                page.goto(f"{path.as_uri()}{SHORT_LISTS_QUERY}", wait_until="load")
+                settle_math(page)
+                found[SHORT_LISTS, TABLE_WIDTHS[0]] = _laid(page)
             page.close()
         browser.close()
         yield found
@@ -203,10 +211,10 @@ def test_a_long_list_of_cases_wraps_in_its_measure(
 def test_the_n_column_is_as_narrow_as_its_lists_where_none_is_long(
     laid: dict[tuple[str, int], Laid],
 ) -> None:
-    """The overview opens on rows that each hold a case or two, and there the n column
-    is as narrow as what it holds, each cell one line, under KPress's 6rem: the measure
-    is a long list's alone, so a single case has no empty column beside it."""
-    table = laid[AS_OPENED, 1280].table
+    """Where every row shown holds a case or two, the n column is as narrow as what it
+    holds, each cell one line, under KPress's 6rem: the measure is a long list's alone,
+    so a single case has no empty column beside it."""
+    table = laid[SHORT_LISTS, 1280].table
     cases = _column(table, "n")
     assert 0 < table["shown_rows"] < len(site_renders.overview().results)
     assert cases["lines"] == 1

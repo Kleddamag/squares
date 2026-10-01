@@ -13,6 +13,21 @@ is at `167d842cd27ba1451cb2833773ea930c80b9e65b`. The selected new source bytes 
 Git-blob manifest are retained in the
 [October packet](../../../packing/resources/web/evand-square-packing-2026-10-01/README.md).
 
+The October 1 pin dates this intake snapshot, not first publication of either claim.
+The
+[first `s60` bundle commit](https://github.com/evand/square-packing/commit/cdd9b2a4fde0dfed7a3dcff455fab7cfa66230c2)
+is timestamped 2026-09-29 01:13:36 UTC, September 28 in Pacific time.
+Its README already states the `s(61) = 8` monotonicity corollary.
+The pinned
+[`k2m3` README](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/k2m3/README.md)
+also dates the `s(60) = 8` result to September 28. The
+[first public family write-up](https://github.com/evand/square-packing/commit/d9f79bc1beb52a38854b675c330fd25a6d37eeee)
+and
+[first full `k2m3` bundle](https://github.com/evand/square-packing/commit/69999aff04bfecef4181ce5c7dbebe9914df0b92)
+both entered the source on 2026-09-30 14:47:52 UTC. These dates supply
+`attribution.published` for T-062 through T-064; the later snapshot supplies
+`source_date` for the October coverage entry.
+
 Evan Daniel’s live
 [Proofs and Results](https://evand.github.io/square-packing/proofs.html) and
 [Sources](https://evand.github.io/square-packing/sources.html) pages announce two
@@ -173,6 +188,20 @@ judgments, not gate predicates.
 | `s(k² − 3) = k` for every integer `k ≥ 6` | New family-level reported result. Extend the scope schema for a parameterized infinite family, or hold the all-`k` statement in a separately linked theorem record until that schema exists. Finite instances `n = 33, 46, 61, 78, 97, …` may be materialized only with their derivation and source family named. `n = 33` and `46` already have Bentz-era values; `n = 61` also has the two routes above. | `S4` for a bound family, potentially `S5` if the project separately judges broad significance. The lower half depends on `Valid7`, checked by one exact source implementation; the Lean theorem proves its implication, not the premise. Retain and audit the leaf record, exact checker and conditional Lean mapping, then select a bounded full rerun or independent implementation. Scope and composition must prevent the conditional theorem from being mistaken for a kernel check of the computational premise. |
 | New Lean proof-assistant claims for older bounds | Evidence updates to existing `T-049`, `T-051`, and `T-052`, not new values. The pinned [`LADDER.md`](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/lean/LADDER.md) describes n12 theorem coverage; Proofs distinguishes the n21 conditional top theorem and n32 unconditional theorem. | Keep the main baseline `V3/C3` until the claimed Lean builds and exact certificate interfaces are mapped. A source statement about a kernel check is a reported proof claim, not a local `V5` build. The [September review](review-2026-09-28-evand-s21-s45-mixed-covers.md) remains the replay evidence for the old numerical certificates. |
 | Side-4 and side-5 fractional-dual obstructions; side-3.99 exact witness | Research evidence, not new square-packing values. [COVER4](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/COVER4.md) has public exact side-4 support; [S21_KILL](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/S21_KILL.md) has public side-5 support, obstructing additive-cover budgets below about `20.648` there, but its mass remains below 21. The side-3.99 support is absent. | Track as method/obstruction research, with exact-versus-measured labels. Replay the public supports in a portable wrapper and inspect the `--n`/support invariants before registering a negative-method result. Do not infer `s(12) = 4` or `s(20) = 5` from these LP duals. |
+
+**Integration disposition, 2026-10-01.**
+[PR 267](https://github.com/jlevy/squares/pull/267) registers Daniel’s `s(60) = 8` as
+T-062 (`V0/C1/S3`), its `s(61) = 8` corollary as T-063 (`V0/C1/S1`), and the finite
+`n ≤ 324` projection of the square-minus-three family as T-064 (`V0/C1/S4`). The
+source’s all-`k ≥ 6` theorem remains explicit in T-064’s claim and review while
+`think-kqi1` tracks an infinite-family scope type.
+The reported case lane changes; verified bounds do not.
+`think-e7xa` tracks the `s60` replay, `think-4k80` the `Valid7` premise and Lean
+reduction review, `think-hxrz` the independent wand125 primary-source intake, and
+`think-q5tt` the public dual support replay.
+No older `T-049`/`T-051`/`T-052` Lean claim was promoted by this intake.
+`think-e8qx` tracks those source Lean changes, and `think-2z60` tracks the auxiliary
+clique-lemma repair identified in the mathematical-transfer review.
 
 For W2, retrieve the omitted `s60` run logs and the full source/Lean build only for
 chosen checks, using the pinned commit and separate receipts for each tier actually run.

@@ -356,9 +356,9 @@ def test_an_inflated_rung_is_refused(
 ) -> None:
     poisoned = _poisoned_register(
         tmp_path,
-        "    verification: V5\n    confirmation: C3\n    significance:\n"
+        "    verification: V3\n    confirmation: C3\n    significance:\n"
         "      score: 3\n      rationale: >-\n        A published exact value",
-        "    verification: V5\n    confirmation: C5\n    significance:\n"
+        "    verification: V3\n    confirmation: C5\n    significance:\n"
         "      score: 3\n      rationale: >-\n        A published exact value",
     )
     monkeypatch.setattr(check_results, "RESULTS", poisoned)

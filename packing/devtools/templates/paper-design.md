@@ -607,7 +607,7 @@ it.
 
 - **Closing credit.** Every page with a footer ends on the same two centred lines:
 
-  > The Square Packing Project · github.com/jlevy/squares\
+  > The Squares Project · github.com/jlevy/squares\
   > v0.4.2-8ac5de · Formatted and typeset with Flowmark and KPress
 
   The first is the project’s formal name and its repository, shown without its scheme
@@ -776,6 +776,8 @@ it.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
     and inlined, since the page fetches nothing), and opens it in a new tab.
+    An other project’s card ends with its tally of results (**Card foot** and **Other
+    projects**, below).
   - When the card leads to a poster’s PDF or to the Visualize page, it is a direct card
     headed by the picture it opens (below).
     A PDF card is typed `application/pdf` and never marked `download`, so the browser
@@ -837,6 +839,42 @@ it.
   A card built without a size (`card()` or `link_card()` with no `size=`) takes the
   default for its own text: its headline and note, and a direct card’s address, counted
   as they read, a formula once.
+
+- **Card foot.** A direct card may end with a line that holds links of its own
+  (`link_card(foot=)`), as an other project’s card ends with its tally of results.
+  A link cannot hold a link, so such a card is a box, `div.site-card.site-card-footed`,
+  around the card’s link (`.site-card-main`, everything above the foot) and the foot
+  (`.site-card-foot`), inside the one border.
+  The box takes the card’s size and place in its row, and washes and shows its corner
+  icon while its link is hovered or focused, so it reads as every other card does.
+  The foot is set in the sans face at the note size in the support colour, at the card’s
+  lower edge, so the feet of a row line up; its links take the page’s link colour.
+  A card with no foot stays the link itself.
+  The cards’ widths, rows and centring are the same with a foot as without
+  (`measure_site_pages cards`, at 1280, 1024, 768 and 390).
+
+- **Other projects.** The overview’s Other Square Packing Projects section orders its
+  cards by the significance of the results the register cites from each project (the
+  owner, 2026-10-01): by how many of its results stand at S5, then at S4, and so on down
+  the scale, more first at each level and compared in that order, so one result at S5
+  stands before any number below it.
+  Projects level on every count stand by their newest result, the most recent first, and
+  then by repository name; a project with no registered result comes last, by name.
+  The order is computed from `results.yaml` when the page is rendered
+  (`overview_sections.ranked_projects`, over `project_tallies` and `project_order`) and
+  is kept nowhere by hand; the section’s introduction says the rule in a sentence.
+  A result is a project’s where its `attribution.source_keys` names a bibliography key
+  the source-coverage register gives a source at the project’s repository
+  (`project_source_keys`; `PROJECT_EXTRA_KEYS` adds the one key two repositories share),
+  and a result attributed to sources of several listed projects counts for each.
+  This project’s own results, and results by others from a source no listed project
+  holds, count for none.
+  Each card with a result ends with its tally (**Card foot**, above), in the form “6
+  results (3 at S4, 3 at S3)”: the total, “1 result” for one, then every level that has
+  a result, the highest first, in parentheses, which are kept when there is one level so
+  each tally reads the same way.
+  The total links to the results table filtered to the project’s results and each count
+  to the same table at that level (**Result filters**, **Preset-only controls**, below).
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
@@ -1117,9 +1155,10 @@ it.
   holder; a table of results does not.
   A row with detail opens its popover, and no cell expands on its own (**Row popovers**,
   below). Rows are separated by a light rule, not zebra stripes, and a row takes the wash
-  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers
-  sit at the bottom of their cell, aligned as their column is: text columns to the
-  start, number columns (`.num`, tabular figures) to the end.
+  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4 (the
+  frontier table centres its cells and keeps 0.4rem at their sides: **Frontier table**,
+  below). Headers sit at the bottom of their cell, aligned as their column is: text
+  columns to the start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) are as narrow as their content, the id and the date on one line,
   which leaves the spare width to the long text column.
@@ -1132,10 +1171,14 @@ it.
   “after …”, what the result builds on, quiet after it, in full; the rungs, with the
   kind on a line under them and the standing on a line under that where there is one to
   draw (**Chips**, above); and the date.
-  The tables differ in three things only: where the filter bar starts, the order of the
-  rows, and that a row on the results page is the result’s own address, where a row on
-  the overview links there from its summary’s leading formula (`result_text`). Both sort
-  on any column whose header carries the sort pair.
+  The tables are two filters of one table, and differ only in where the filter bar
+  starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
+  the results page a row is the result’s own address (`id="t-018"`), and on the overview
+  it names the result as `data-result`. Every other byte of a row and of its popover is
+  the same, so each shows the result’s records under its summary, each opens its popover
+  from the id, and no row of one links to the other.
+  The line under the overview’s table, “See all results”, is the one link between them.
+  Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
   The id, the rungs and the date are as narrow as what they hold.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
@@ -1181,8 +1224,7 @@ it.
   At 24ch the longest list sets a row 165 pixels tall, under the 171 the tallest summary
   sets there. The records are no column of their own, which would set a link to a line:
   they sit under the summary, a line or two of links.
-  The overview’s table carries them and does not show them, at any width, by one rule on
-  `.site-recent-table`: each row’s popover holds every link.
+  Both tables show them.
   `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
   each column’s width, the most lines a cell takes, the words a line break splits and
   the tallest row a column sets; the values of a list of cases cut across lines, the
@@ -1216,6 +1258,62 @@ it.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
   the wash, in every site table.
 
+- **Frontier table.** The frontier atlas’s table is a site table of ten columns, in this
+  order (`render_frontier_page.HEADERS`): the drawing, n, Recent, Status, Best known
+  packing, Verified upper, Reported lower, Verified lower, Gap and Records.
+  The left edge of a row says which case it is and whether its bound is new, and what is
+  known follows.
+  - **The drawing** of the best known packing has the first column to itself.
+    Its header shows no words and is named “Packing” for a screen reader (`aria-label`).
+    The cell is the drawing alone, an inline SVG with no wrapper, and the column is the
+    drawing and the row’s start padding.
+    Its side is `--site-frontier-thumb`, two lines of the table’s text (2.8 times the
+    note size, 49 pixels; it was 2.6rem, 42 pixels, set under the number).
+    Every row holds two lines at least, since its Records cell is the case file’s link
+    over the row’s trigger, so the drawing never makes a row taller than its text does.
+    The drawing is no link: pressing it opens the row’s popover, as pressing anywhere
+    else on the row does, and the number beside it opens the case record.
+  - **The case number** is the number alone and the only bold text in a row, in
+    `--site-font-weight-sans-bold`.
+  - **Recent** holds the star of a recent verified lower bound, third, as narrow as its
+    heading. It sorts, and “recent only” filters on it.
+  - **Centring.** Every body cell is centred on its row’s height
+    (`vertical-align: middle`), so a value of one line sits level with the drawing and
+    with the middle of a neighbour of three lines.
+    No cell is exempt: the longest, a fraction over its decimal and its credit, is four
+    lines, and reads as one block beside the others.
+    Headers keep the foot of their cell, as in every site table.
+  - **Decimals.** A bound set as a closed form that is not a whole number (a fraction, a
+    radical) has its decimal on a quiet line under it, `.site-approx`, in the four bound
+    columns and under the gap.
+    Where the decimal is the whole value it reads `= 4.695`, and where it is cut,
+    `≈ 3.96861554…`. The digits are the closed form’s own
+    (`render_frontier_page.exact_decimal`): a rational is divided in whole numbers,
+    anything else is evaluated to 30 significant digits, and both are cut after eight
+    places and never rounded, the page’s one rule for a decimal.
+    They are not the record’s `value`, which a lower bound may hold to fewer places
+    (`15680/3951` is recorded as `3.968615`); that value stays the cell’s sort key.
+    A whole number, and a root shown as a decimal already, carry none.
+    The credit follows on its own line and wraps between words, never inside a name.
+  - **Widths.** The table fits the 1200 pixels a 1280-pixel window gives it, with 6 to
+    spare, and scrolls sideways in its wrap below that, on a phone too: it has no card
+    layout. Every column is as wide as what it holds, without KPress’s 6rem floor, which
+    set n and the star in 96 pixels each.
+    A cell keeps 0.4rem at either side (`--site-frontier-cell-inline`) where the other
+    tables keep 0.5rem, and the Records cell half a rem more at its start, which keeps a
+    decimal in the gap clear of the case file’s name.
+    At 1280 the columns are 56, 42, 88, 85, 196, 165, 185, 152, 139 and 91 pixels.
+    Before the drawing had its column the table was 1282 pixels wide at every window
+    width and ran 82 past its track at 1280.
+  - **Bytes.** The page is held under 4 MiB (`tests/test_frontier_page.py`), and a row’s
+    markup is paid 324 times, so a cell carries a class and no wrapper it can do
+    without.
+  - **Checks.** `tests/test_site_frontier_table.py` holds the order, the drawing’s
+    column and size, the bold number, the centring, the fit at 1280, the decimal under a
+    fraction, and sorting, filtering and both popovers, in a browser at 1280, 1024, 768
+    and 390 pixels; `tests/test_frontier_page.py` holds every decimal to its closed
+    form’s exact value. `devtools.measure_site_pages columns` reports the widths.
+
 - **Result filters.** Every table of results sits under one tools bar, the same on the
   overview’s recent table and on the results page: the same controls, the same choices
   and the same order. Only where Significance, Max age and Hide superseded start, and the
@@ -1235,6 +1333,8 @@ it.
 | Source | `data-source`, `ours` or `others` | this project’s, or others’ |
 | Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
 | Max age | `data-date`, a whole ISO date | dated at most that many days ago |
+| Project (preset only) | `data-project`, the slugs of the listed projects the result is attributed to | the list has the project chosen |
+| At significance (preset only) | `data-s`, the S level | equal to the level chosen |
 
 ```
 A rung select offers All, then each level of the rubric above its lowest as a floor,
@@ -1246,6 +1346,18 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 - **Composition.** The filters compose: a row shows when it passes every one, and an
   empty control, or an unchecked one, passes every row.
+
+- **Preset-only controls.** Project and At significance follow the bar’s own controls
+  and are out of the bar (`hidden`, on their labels) until a link sets them:
+  `all-results.html?project=evand-square-packing` opens the table on the results
+  attributed to one listed project, and `&s=4` on those at S4 exactly, where the
+  Significance floor would keep S5 as well.
+  The other projects’ cards link this way (**Other projects**, above).
+  While a preset control filters, its label is in the bar with the choice it holds, the
+  project by its owner and repository, so the reader sees what narrows the table, and
+  choosing All takes it out again.
+  A project’s slug is its owner and repository in lower case, hyphenated
+  (`overview_sections.project_slug`).
 
 - **Standing.** The select offers every standing the register holds, in the register’s
   own words, `current best` and `current best, reported` among them.
@@ -1377,8 +1489,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
     `overview_sections.result_row_popover_body` for a result, on the overview and the
     results page alike; `overview_sections.replay_row_popover_body` for a case awaiting
     replay; and `render_frontier_page.frontier_row_popover_body` for a frontier row.
-    A result’s popover ends in **Open T-NNN in the results table** on the overview and
-    has no button on the results page, where the row pressed is that row.
+    A result’s popover has no button, on the overview or the results page: the row
+    pressed is the result’s row in either table.
     A replay row’s ends in the button to its case on the Frontier page, and a frontier
     row’s in the button to its case record.
   - **Deferred bodies.** A body too heavy to render once per row when the page loads can
@@ -1419,8 +1531,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   the count of rows shown out of the total at the bar’s end.
   Those three defaults are all that make the table recent and current: no result is left
   out of it by a date or a standing the page fixes.
-  A row opens its result’s popover (**Row popovers**, above), the same panel the results
-  page opens for that result.
+  A row shows its records and opens its result’s popover (**Row popovers**, above), as
+  the same row of the results page does, and links nowhere else.
   The section holds no card or bulleted list, and the “See all results” line, with the
   right arrow, follows the table.
 
@@ -1590,6 +1702,44 @@ A section heading in the overview is a caps label, so it holds no formula: capit
 would change the formula’s letters.
 `tests/test_result_overview.py` holds every part and every link.
 
+## Page Metadata and Social Cards
+
+One function, `render_overview.head_tags`, writes every page’s title, description,
+canonical link and link preview from a small record of the page (`PageMeta`): its own
+name, one description, the path it is served at, and whether it is a paper.
+The site’s own pages, both papers and the workbench call it, and no shell writes one of
+these tags itself, so the set cannot differ between page kinds.
+
+| Tag | Rule |
+| --- | --- |
+| `<title>` | The page’s own name, a middle dot, then “The Squares Project”; the overview’s is the project’s name alone |
+| `meta name="description"` | One or two plain sentences about this page and no other, at most 160 characters |
+| `link rel="canonical"` | The address the page is served at, in full, built from `render_overview.SITE_URL`; a directory’s `index.html` is the directory |
+| `og:title`, `twitter:title` | The page’s own name, without the project’s |
+| `og:description`, `twitter:description` | The description, unchanged |
+| `og:url` | The canonical address |
+| `og:type` | `article` for the two papers and the tutorial, with `article:published_time` and `article:modified_time` where the paper states its dates; `website` for every other page |
+| `og:site_name`, `og:locale` | “The Squares Project” and `en_US` |
+| `og:image`, `twitter:image` | The site’s one card, `social-card.png` at the site’s root, in full |
+| `og:image:type`, `og:image:width`, `og:image:height` | `image/png`, 1200 and 630 |
+| `og:image:alt`, `twitter:image:alt` | What the card shows |
+| `twitter:card` | `summary_large_image` |
+
+The card is the overview’s hero, the best packing known of 53 squares, at 1200 by 630:
+the hero’s own drawing in the light theme’s ink on its background, with the project’s
+name under it as the bar sets the site’s name, drawn as outlines so no machine’s fonts
+decide it. `devtools.social_card` draws it when the site is built, and it is not checked
+in. Every page uses the one image.
+
+A forwarder carries a canonical link to the address it sends a reader to, in full, and
+no card. A result’s overview is a fragment fetched into a popover and has no head.
+
+`check_published_site` holds the deployed pages to these rules after each deploy: one of
+each tag, the canonical link and `og:url` equal to the page’s address, no description
+shared by two pages, and a card that is a PNG of the declared size.
+`check_published_site --local DIR` asks the same of a built directory;
+`devtools.preview_site` and the Pages workflow’s `overview` job both run it.
+
 ## Token Ownership
 
 KPress owns the regular sans weight in `--kpress-font-weight-sans-regular`. Its font
@@ -1628,6 +1778,42 @@ The 100-packing atlas is an explicit exception: it is a standalone SVG with its 
 dense grid, title, and labels.
 Enlarging every internal label to the figure-label size would obscure its cells.
 Its caption uses the shared role; the linked full-size PDF provides the detailed view.
+
+## Figures
+
+A figure is its drawing, centred in the column, with its caption under it.
+The caption is a `figcaption` in the shared caption role, and it is where a figure’s
+title and every sentence about it go.
+A drawing carries its labels and nothing else: the name of a cell, a node or a panel, an
+axis value, a short formula beside what it measures.
+No title is lettered across the top of an SVG and no sentence under it.
+
+Both papers open on a packing, set one way: the atlas rendering cut to its container’s
+outline (`render_n11_lower_bounds_explainer.crop_to_container`), with the atlas’s own
+lettering gone, in a centred stage (`.stage.trump`) 24rem wide on screen and 3in in
+print, linked to the rendering in the repository.
+The optimality paper’s first figure used to be the atlas’s whole canvas, 960 units wide
+for a container of 536, with the atlas’s caption under the drawing: the packing stood
+18% of the figure’s width left of the column’s centre, over a line of its own text.
+
+The other diagrams of that paper carried a title or sentences of explanation in the
+drawing as well; those are in the captions now.
+What a caption states that is data, a count of rows, of regions or of margins, it names
+as a placeholder (`{{LOCAL_MARGINS}}`) and the figure module supplies from the receipt
+the figure is drawn from (`caption_facts`), so a caption cannot retype a number.
+A caption writes its mathematics as LaTeX, as the prose does: a figure is an HTML block,
+where KPress leaves `$…$` literal, so `render_n11_optimality_review.caption_math` puts
+KPress’s math markup in its place for the page, and the Markdown edition keeps the
+`$…$`. The formula is then set in the caption’s own sans, where it used to be Unicode
+text in characters the sans does not carry.
+
+`devtools.measure_site_pages figures` reports every figure: how far its drawing, and
+what the drawing paints, stand from the centre of the column, the widest run of text in
+it as a share of its width, any text that reads as a sentence, and its caption; each row
+carries its problems.
+A wide diagram that scrolls sideways on a phone and an apparatus with controls beside
+its drawing are not held to the centre.
+`tests/test_site_glyphs.py` holds both papers to none at 1280 and 390 pixels.
 
 ## Print and Verification
 

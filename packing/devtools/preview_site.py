@@ -14,6 +14,11 @@ address as a copy, as the workflow's `publish` job leaves it (`copy_moved_files`
 lower-bounds explainer's PDF is drawn by its own Pages job from `packing/site/`, which a
 preview never writes, so a preview has that PDF only if one is put there.
 
+With the pages it draws the card every page's link preview names
+(`devtools.social_card`), at the site's root as the deploy serves it, and after every
+build it holds each page's head to the site's identity and card tags and the card to its
+size (`check_published_site.local_head_checks`, the checks the deployed site gets).
+
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --serve
@@ -53,7 +58,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 
-from devtools import render_overview
+from devtools import check_published_site, render_overview, social_card
 
 if TYPE_CHECKING:
     from playwright.sync_api import Page
@@ -183,6 +188,7 @@ def build(output: Path, skip: set[str]) -> None:
         print(f"wrote {len(fragments)} result overviews beside them")
         for forwarder in forwarders:
             print(f"wrote {output / forwarder.name}, a forwarder")
+        print(f"wrote {social_card.write(output)}, the link preview's card")
     if "workbench" not in skip:
         build_workbench(output)
     if render_overview.N11_OPTIMALITY_REVIEW not in skip:
@@ -673,6 +679,10 @@ def main(argv: list[str] | None = None) -> int:
     for problem in moved_links(output):
         print(f"problem: a link to a page that moved: {problem}", file=sys.stderr)
         status = 1
+    for passed, line in check_published_site.local_head_checks(output):
+        if not passed:
+            print(f"problem: {line}", file=sys.stderr)
+            status = 1
     if args.shots:
         pages = tuple(args.page or render_overview.SITE_PAGES)
         problems = screenshots(output, args.shots.resolve(), args.port, pages, args.press)

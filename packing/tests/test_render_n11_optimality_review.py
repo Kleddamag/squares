@@ -9,11 +9,13 @@ from typing import Literal
 
 import pytest
 
+from devtools import check_published_site, render_n11_lower_bounds_explainer, render_overview
 from devtools import measure_site_pages as measure
 from devtools import n11_optimality_mechanism_figures as mechanism
 from devtools import n11_optimality_overview_figures as overview
 from devtools import render_n11_optimality_review as paper
 from devtools.render_n11_lower_bounds_explainer import assert_self_contained
+from devtools.render_n11_optimality_review import TYPESET_ALL
 from sqpack.probes import probe
 
 ARTICLE = paper.TEMPLATES / "n11-optimality-review-article.md"
@@ -68,6 +70,39 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
         assert f">{name}</a>" in html
     assert '<div class="doc-links screen-only">' in html
     assert 'href="https://github.com/jlevy/squares"' in html
+
+
+def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper's head carried a title and a description and nothing else, so a shared
+    link to it previewed as a line of text. It is the site's one set now
+    (`render_overview.head_tags`), written from the paper's record: an article, at the
+    address its own path constant gives, with the day the article says it was revised."""
+    html, _ = rendered
+    url = render_overview.canonical_url(paper.SITE_PATH)
+    assert url == render_overview.SITE_URL + paper.SITE_PATH
+    assert check_published_site.head_problems(html, url) == []
+    head = check_published_site.read_head(html)
+    assert head.titles == (f"{paper.TITLE} · {render_overview.PROJECT_NAME}",)
+    assert head.meta("og:title") == [paper.TITLE]
+    assert head.meta("og:type") == ["article"]
+    assert head.meta("description") == [paper.DESCRIPTION]
+    assert not paper.DESCRIPTION.startswith(paper.TITLE)
+    # The stand-in article states no date, so its head states none.
+    assert head.meta("article:modified_time") == []
+    # The article's own: the head says what its credits say, or nothing.
+    article = ARTICLE.read_text(encoding="utf-8")
+    stated = re.search(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})</span>", article)
+    meta = paper.page_meta(article)
+    assert meta.modified == (
+        render_n11_lower_bounds_explainer.iso_date(stated.group(1)) if stated else ""
+    )
+    assert meta.published == ""
+    assert (meta.kind, meta.path) == ("article", paper.SITE_PATH)
+    if stated:
+        tags = render_overview.head_tags(meta)
+        assert f'<meta property="article:modified_time" content="{meta.modified}">' in tags
 
 
 def test_the_paper_ends_with_the_sites_closing_credit(rendered: tuple[str, str]) -> None:
@@ -194,6 +229,38 @@ def test_a_shell_that_drops_half_of_a_shared_layer_is_refused(
         paper.render(SOURCE, figures=FIGURES, revision=REVISION, article=ARTICLE)
 
 
+def test_a_caption_fact_the_article_does_not_use_is_refused() -> None:
+    """The captions' facts are the article's list and the figure modules' alike: one the
+    article does not name is refused, and one it names with no value is a leftover
+    slot."""
+    with pytest.raises(ValueError, match="caption facts unused"):
+        paper.render(
+            SOURCE, figures=FIGURES, revision=REVISION, article=ARTICLE, facts={"A": "1"}
+        )
+    used = SOURCE.replace("exact witness check</a>.", "exact witness check</a>, {{ROWS}} rows.")
+    html, markdown = paper.render(
+        used, figures=FIGURES, revision=REVISION, article=ARTICLE, facts={"ROWS": "32"}
+    )
+    assert "exact witness check</a>, 32 rows." in html
+    assert "32 rows." in markdown
+    with pytest.raises(ValueError, match="unresolved placeholders"):
+        paper.render(used, figures=FIGURES, revision=REVISION, article=ARTICLE)
+
+
+def test_a_captions_formula_is_typeset_and_kept_as_latex_in_the_markdown() -> None:
+    source = SOURCE.replace(
+        "exact witness check</a>.", "exact witness check</a>, $t_i \\le 1$."
+    )
+    html, markdown = paper.render(source, figures=FIGURES, revision=REVISION, article=ARTICLE)
+    caption = re.search(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
+    assert caption is not None
+    assert "$" not in caption.group(1)
+    assert '<span class="kpress-math-render" aria-hidden="true">\\(t_i \\le 1\\)</span>' in (
+        caption.group(1)
+    )
+    assert "exact witness check</a>, $t_i \\le 1$." in markdown
+
+
 def test_link_revision_is_the_commit_the_paper_is_built_from(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -288,6 +355,7 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     html, markdown = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision=REVISION,
     )
     assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
@@ -296,10 +364,46 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     assert (
         html.count("<svg") >= len(paper.FIGURE_KEYS) + 1
     )  # article figures and KPress icon sprite
-    assert all(
-        "$" not in caption
-        for caption in re.findall(r"<figcaption>(.*?)</figcaption>", html, re.DOTALL)
+    captions = re.findall(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
+    assert len(captions) == 11
+    assert all("$" not in caption for caption in captions)
+    # A caption's formulas are KPress math, typeset by the page as the prose's are, and
+    # the Markdown edition keeps them as LaTeX; none is written as text any more.
+    assert (
+        sum(caption.count('class="kpress-math kpress-math-inline"') for caption in captions)
+        >= 12
     )
+    written = re.findall(r"<figcaption>(.*?)</figcaption>", markdown, re.DOTALL)
+    assert sum(caption.count("$") for caption in written) >= 24
+    assert not UNICODE_MATH.search("".join(written))
+    # Each count a caption states is the figure module's, from its receipt.
+    facts = paper.render_all_facts()
+    assert set(facts) == {
+        "CAPACITY_CELL",
+        "LOCAL_BRANCHES",
+        "LOCAL_MARGINS",
+        "ROW_UPDATE_ROWS",
+        "ROW_CASE_UPDATES",
+        "D4_BAN_REGIONS",
+        "D4_REGIONS",
+        "D4_BANS",
+    }
+    said = " ".join(" ".join(caption.split()) for caption in written)
+    for phrase in (
+        f"cell {facts['CAPACITY_CELL']}, comes from the exact cover",
+        f"one of {facts['ROW_UPDATE_ROWS']} in its update",
+        f"{facts['ROW_CASE_UPDATES']} complete updates exclude case 2095",
+        f"overlay regions {facts['D4_BAN_REGIONS']} is below 1",
+        f"over {facts['D4_REGIONS']} closed regions and {facts['D4_BANS']} bans",
+        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} branches",
+    ):
+        assert phrase in said, phrase
+    # The first figure is set as the first paper sets its own: the drawing alone in a
+    # centred stage, linked to the rendering it is cut from, its caption under it.
+    first = html.split("<figure", 2)[1]
+    assert '<div class="stage trump"><a href="https://github.com/jlevy/squares/blob/' in first
+    assert f"/blob/{REVISION}/packing/atlas/rendering/trump11-overview.svg" in first
+    assert "<text" not in first
     assert "<pre><code><svg" not in html
     assert "kpress-math-render" in html
     assert "{{" not in markdown
@@ -311,16 +415,17 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
 
 def test_a_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -> None:
     """The page carries the site's theme control, so a diagram is read on the dark theme
-    too. One drawn in the theme's tokens follows it; one whose labels are a fixed dark
-    ink needs a light ground there, or its labels are dark on dark. The stylesheet's list
-    of diagrams that take that ground is exactly the diagrams that carry fixed ink, and
-    it keys on KPress's resolved theme, as every site stylesheet does."""
+    too. One drawn in the theme's tokens follows it; one painted in fixed colours, its
+    labels and its dark strokes among them, needs a light ground there, or it is dark on
+    dark. The stylesheet's list of diagrams that take that ground is exactly the diagrams
+    that carry a fixed colour, and it keys on KPress's resolved theme, as every site
+    stylesheet does."""
     fixed, themed = set(), set()
     for svg in paper.render_all_figures().values():
         found = re.match(r'<svg\b[^>]*\bclass="n11-diagram (n11-[a-z-]+)"', svg)
         if found is None:
-            continue  # Figure 1, the atlas's rendering, which draws its own ground.
-        ink = re.findall(r'<text\b[^>]*\bfill="(#[0-9a-fA-F]{3,6})"', svg)
+            continue  # Figure 1, the atlas's rendering, which carries no lettering.
+        ink = re.findall(r'\b(?:fill|stroke)="(#[0-9a-fA-F]{3,6})"', svg)
         (fixed if ink else themed).add(found.group(1))
     assert fixed, "no diagram carries fixed ink: the ground rule has nothing to hold"
     assert themed, "no diagram follows the theme: the rule would apply to every diagram"
@@ -378,6 +483,7 @@ def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision=REVISION,
     )
     assert html.index(shared) < html.index(css)
@@ -421,15 +527,15 @@ def test_a_print_can_ask_for_every_formula_at_once(tmp_path: Path) -> None:
     )
     page_path = tmp_path / "far.html"
     page_path.write_text(html, encoding="utf-8")
-    pending = probe(paper.render_n11_lower_bounds_explainer.PROBES, "preview_site/math_pending")
+    untypeset = ".kpress-math:not([data-kpress-math-rendered])"
     with sync_playwright() as driver:
         browser = driver.chromium.launch()
         try:
             page = browser.new_page()
             page.goto(page_path.as_uri(), wait_until="domcontentloaded")
-            assert page.evaluate(pending) > 0
-            page.evaluate(paper._TYPESET_ALL)  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
-            assert page.evaluate(pending) == 0
+            assert page.locator(untypeset).count() > 0
+            page.evaluate(TYPESET_ALL)
+            assert page.locator(untypeset).count() == 0
         finally:
             browser.close()
 
@@ -475,6 +581,7 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision=REVISION,
     )
     page_path = tmp_path / "diagram-roles.html"
@@ -494,7 +601,9 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                 page.emulate_media(media=media)
                 page.wait_for_function(measure, arg={"readyOnly": True})
                 roles = page.evaluate(measure, {"readyOnly": False})
-                assert len(roles) == len(paper.FIGURE_KEYS)
+                # Every diagram that carries a label: the construction and the capacity
+                # drawing carry none.
+                assert len(roles) == len(paper.FIGURE_KEYS) - 2
                 for role in roles:
                     assert not role["overflowingLabels"], (width, media, role)
                     assert abs(role["label"] - role["support"]) < 0.1, (width, media, role)
@@ -512,6 +621,9 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
             browser.close()
 
 
+#: Mathematics written as text, which a caption once had to be: the relations, Greek
+#: letters, subscripts and minus sign the sans face does not carry.
+UNICODE_MATH = re.compile("[\u2264\u2265\u03c4\u03b8\u1d62\u1d67\u2081\u2085\u00b2\u2212]")
 #: The article's `s(11)=T` as the site's pipeline typesets it.
 KERNED = r"s\mkern1mu(11)=T"
 #: Mathematics on each surface the paper sets it on: prose, a sans heading, a table's

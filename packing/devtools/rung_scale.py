@@ -166,7 +166,8 @@ def contrast(first: Oklch, second: Oklch) -> float:
     return (lighter + 0.05) / (darker + 0.05)
 
 
-def _hex(colour: Oklch) -> str:
+def hex_colour(colour: Oklch) -> str:
+    """An OkLCh colour as the sRGB hex a browser shows it as, clipped to the gamut."""
     channels = (
         round(_linear_to_srgb(min(1.0, max(0.0, channel))) * 255)
         for channel in _oklch_linear_rgb(*colour)
@@ -205,7 +206,7 @@ def fills() -> list[Fill]:
                         lightness=colour[0],
                         chroma=colour[1],
                         hue=hue,
-                        hex=_hex(colour),
+                        hex=hex_colour(colour),
                         in_gamut=colour[1] <= _maximum_chroma(colour[0], hue),
                         contrast=contrast(pages[theme]["text"], colour),
                     )

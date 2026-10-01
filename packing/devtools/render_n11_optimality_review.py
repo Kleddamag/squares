@@ -41,8 +41,10 @@ from devtools.render_overview import (
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
+    PageMeta,
     colophon_lines,
     favicon_html,
+    head_tags,
     nav_html,
     paper_path,
 )
@@ -63,7 +65,13 @@ SLUG = N11_OPTIMALITY_REVIEW
 SITE_PATH = paper_path(SLUG)
 SITE_ROOT = PAPERS_ROOT
 TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
-DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
+DESCRIPTION = (
+    "A review of Queuingtheorydotcom's computer-assisted proof that Trump's 1979 packing "
+    "of eleven unit squares is optimal, explained step by step."
+)
+#: The day the article says it was last revised, in its credits. The head states the
+#: same day to a link preview (`page_meta`).
+REVISED = re.compile(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})")
 FIGURE_KEYS = (
     "WITNESS_SVG",
     "ROADMAP_SVG",
@@ -80,10 +88,14 @@ FIGURE_KEYS = (
 )
 MATH_WAIT_MS = 15_000
 #: Asks the page's math driver for every formula at once, before a print.
-_TYPESET_ALL = probe(
+TYPESET_ALL = probe(
     render_n11_lower_bounds_explainer.PROBES, "render_n11_optimality_review/typeset_all"
 )
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
+#: A figure's caption, and a formula in one. A caption is an HTML block, where KPress
+#: leaves `$…$` as it is written, so the renderer typesets a caption's formulas itself.
+FIGCAPTION = re.compile(r"<figcaption>.*?</figcaption>", re.DOTALL)
+CAPTION_MATH = re.compile(r"\$([^$\n]+)\$")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
@@ -106,6 +118,7 @@ RENDER_INPUTS = (
     PACKING / "devtools" / "render_n11_lower_bounds_explainer.py",
     PACKING / "devtools" / "n11-lower-bounds-explainer" / "diagram-labels.js",
     PACKING / "devtools" / "render_overview.py",
+    PACKING / "devtools" / "render_frontier_page.py",
     PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
@@ -166,6 +179,47 @@ def render_all_figures() -> dict[str, str]:
             raise ValueError("figure renderers supplied duplicate slots")
         figures.update(group)
     return figures
+
+
+def render_all_facts() -> dict[str, str]:
+    """What the captions say of the figures that is data, from the modules that draw
+    them: each value comes from the receipt its figure is drawn from, once that receipt
+    checks, so a caption can name a count and cannot retype one."""
+    from devtools import (  # noqa: PLC0415
+        n11_optimality_figures,
+        n11_optimality_mechanism_figures,
+        n11_optimality_overview_figures,
+    )
+
+    groups = (
+        n11_optimality_figures.caption_facts(),
+        n11_optimality_overview_figures.caption_facts(),
+        n11_optimality_mechanism_figures.caption_facts(),
+    )
+    facts: dict[str, str] = {}
+    for group in groups:
+        if facts.keys() & group.keys():
+            raise ValueError("figure modules supplied duplicate caption facts")
+        facts.update(group)
+    return facts
+
+
+def caption_math(markdown: str) -> str:
+    """The article with each caption's `$…$` formulas in KPress's own math markup.
+
+    A figure and its caption are an HTML block, where KPress leaves `$…$` literal, so a
+    caption used to write its mathematics as text (`17/32 ≤ t ≤ 9/16`, `tᵢ = tan(θᵢ/2)`),
+    in characters the sans face does not carry and the reader's machine drew. A caption
+    writes LaTeX as the prose does, the page's math pipeline typesets it in the
+    caption's own face, and the Markdown edition keeps the `$…$` as written."""
+    from devtools.render_frontier_page import math_html  # noqa: PLC0415
+
+    return FIGCAPTION.sub(
+        lambda caption: CAPTION_MATH.sub(
+            lambda formula: math_html(formula.group(1)), caption.group(0)
+        ),
+        markdown,
+    )
 
 
 def link_revision() -> str:
@@ -239,9 +293,20 @@ def _repository_links(markdown: str, *, source: Path, revision: str) -> str:
 
 
 def expanded_markdown(
-    source: str, *, figures: Mapping[str, str], article: Path = ARTICLE, revision: str
+    source: str,
+    *,
+    figures: Mapping[str, str],
+    article: Path = ARTICLE,
+    revision: str,
+    facts: Mapping[str, str] | None = None,
 ) -> str:
-    """Fill only declared figure slots and pin local source citations to a Git commit."""
+    """Fill the declared figure slots and the caption facts, and pin local source
+    citations to a Git commit. A fact the article does not use is refused, as a slot it
+    does not fill is: the two lists are the article's and the figure modules' alike."""
+    facts = facts or {}
+    unused = sorted(key for key in facts if "{{" + key + "}}" not in source)
+    if unused or any(FIGURE_SLOT.fullmatch("{{" + key + "}}") for key in facts):
+        raise ValueError(f"{article.name}: caption facts unused or named as figures: {unused}")
     if set(figures) != set(FIGURE_KEYS):
         raise ValueError("figures must provide exactly the declared SVG slots")
     if set(FIGURE_SLOT.findall(source)) != set(FIGURE_KEYS):
@@ -257,7 +322,7 @@ def expanded_markdown(
             re.IGNORECASE,
         ):
             raise ValueError(f"{key} contains active or remote SVG content")
-    filled = _fill(source, figures, source=article)
+    filled = _fill(source, {**figures, **facts}, source=article)
     return _repository_links(filled, source=article, revision=revision)
 
 
@@ -290,25 +355,45 @@ def math_scripts(static: Path) -> dict[str, str]:
     }
 
 
+def page_meta(source: str) -> PageMeta:
+    """What the page says of itself in its head (`render_overview.head_tags`): its title,
+    its sentence, the address it is served at, and the day `source`, the article, says
+    it was last revised, when it says one."""
+    revised = REVISED.search(source)
+    return PageMeta(
+        name=TITLE,
+        description=DESCRIPTION,
+        path=SITE_PATH,
+        kind="article",
+        modified=render_n11_lower_bounds_explainer.iso_date(revised.group(1))
+        if revised
+        else "",
+    )
+
+
 def render(
     source: str,
     *,
     figures: Mapping[str, str],
     revision: str,
     article: Path = ARTICLE,
+    facts: Mapping[str, str] | None = None,
 ) -> tuple[str, str]:
     """Return self-contained HTML and the expanded Markdown it typesets."""
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
-    markdown = expanded_markdown(source, figures=figures, article=article, revision=revision)
-    document = parse_markdown(markdown, title=TITLE, trust_mode="trusted", math="auto")
+    markdown = expanded_markdown(
+        source, figures=figures, article=article, revision=revision, facts=facts
+    )
+    document = parse_markdown(
+        caption_math(markdown), title=TITLE, trust_mode="trusted", math="auto"
+    )
     errors = [item.message for item in document.diagnostics if item.severity == "error"]
     if errors:
         raise ValueError(f"{article.name}: KPress refused the article: {'; '.join(errors)}")
     static = render_n11_lower_bounds_explainer.kpress_static()
     values = {
-        "PAGE_TITLE": escape(TITLE),
-        "PAGE_DESCRIPTION": escape(DESCRIPTION),
+        "PAGE_HEAD": head_tags(page_meta(source)),
         "KPRESS_CSS": render_n11_lower_bounds_explainer.kpress_css(static),
         "KATEX_CSS": render_n11_lower_bounds_explainer.katex_css(static)
         if document.has_math
@@ -363,7 +448,7 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
                 raise ValueError("the paper has no typeset math")
             # The driver leaves the formulas far from the window to idle time; a print
             # asks for them all, so the wait below is for work already under way.
-            page.evaluate(_TYPESET_ALL)
+            page.evaluate(TYPESET_ALL)
             try:
                 expect(page.locator(".kpress-math:not(:has(.katex))")).to_have_count(
                     0, timeout=MATH_WAIT_MS
@@ -398,6 +483,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     html, markdown = render(
         ARTICLE.read_text(encoding="utf-8"),
         figures=render_all_figures(),
+        facts=render_all_facts(),
         revision=args.revision or link_revision(),
     )
     site = args.site.resolve()

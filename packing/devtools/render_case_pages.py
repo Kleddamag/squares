@@ -788,8 +788,7 @@ def cases_markdown(fill: Any) -> str:
 
 CASES_DESCRIPTION = (
     "Every tracked case of packing n unit squares in the smallest square, one record "
-    "each: the best packing known, every bound with its exact form and credit, and every "
-    "result that concerns it."
+    "each: the best packing known, every bound and its credit, and its results."
 )
 
 
@@ -822,7 +821,7 @@ def cases_page() -> Any:
         cases_markdown(render_overview.fill),
         name=CASES_PAGE,
         current="frontier",
-        title=f"Case Records · {render_overview.SITE_NAME}",
+        title="Case Records",
         description=CASES_DESCRIPTION,
         toc=False,
         rewrite_body=lambda text: site_documents.rewrite_article(

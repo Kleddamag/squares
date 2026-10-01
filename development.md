@@ -1088,7 +1088,13 @@ results page carries its own, and the overviews of three sampled results carry e
 repository link the renderer writes for them ([D-512](defects.md)). Run it from a
 checkout at the deployed commit, since the register it reads is the checkout’s.
 
-The same check runs on a build before it is deployed.
+The check also reads every page’s head for the site’s identity and link-preview tags and
+fetches the card they name:
+[paper-design.md → Page Metadata and Social Cards](packing/devtools/templates/paper-design.md#page-metadata-and-social-cards)
+has the rule. `--local DIR` asks only that, of a site built into a directory, and
+`devtools.preview_site` runs it on every build.
+
+The whole check also runs on a build before it is deployed.
 `python -m devtools.preview_site --output DIR --serve` builds the whole site into one
 directory and serves it at `http://127.0.0.1:8765/`, and
 `python -m devtools.check_published_site --site http://127.0.0.1:8765/ --commit <the commit the build was made from>`

@@ -59,7 +59,7 @@ reason, so a gap is reported rather than filled.
 the current state of understanding ... and they should show recent changes to be new."
 The star says when, not whose. A line credits case by case: another's work under its
 authors, joint work that builds on this project as `credit` in the bibliography (`Kleddamag
-after Levy, Mira, Guzhou0806`), and this project's sole work as `Square Packing Project (Levy)`.
+after Levy, Mira, Guzhou0806`), and this project's sole work as `Squares Project (Levy)`.
 Recent is a typed date, never a year or a source key read as text: this project's own new
 bounds are recent by construction, and an external bound is recent where its source's
 `dated` is on or after `RECENT_SINCE`. A source from that year that carries no date fails
@@ -129,7 +129,7 @@ REPORTED = "reported"
 #: How a line credits this project's own bound: the project and its human author, as a
 #: brief note does (the owner, 2026-09-27). The longest project line is well inside
 #: `TEXT_LIMIT`, so the bare "Levy" the credit rules allow where room is short is not needed.
-PROJECT_NAME = "Square Packing Project (Levy)"
+PROJECT_NAME = "Squares Project (Levy)"
 
 #: The novelty the evidence schema gives the grid, area and center-counting bounds.
 COMMON_KNOWLEDGE = "common-knowledge"

@@ -95,11 +95,31 @@ KPRESS_CLIENT_MODULES = ("viewport.js", "overlay.js", "runtime.js", "toc.js", "h
 KPRESS_CLIENT_API = {"runtime.js": "behaviors", "toc.js": "initKpressToc"}
 OUTPUT = PACKING / "site"
 
+#: Where the deploy serves the site: the one statement of the published root. Every
+#: canonical URL and every address in a link preview is built from it (`canonical_url`,
+#: `head_tags`), and `render_n11_lower_bounds_explainer.SITE_URL` is this constant.
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
-#: The project's formal name (the owner, 2026-10-01). The site's own name, in the bar and
-#: in page titles, stays the shorter `SITE_NAME`.
-PROJECT_NAME = "The Square Packing Project"
+#: The project's formal name (the owner, 2026-10-01). The name in the bar stays the
+#: shorter `SITE_NAME`; a page's title and its link preview carry the formal name
+#: (`page_title`, `head_tags`; think-3w07).
+PROJECT_NAME = "The Squares Project"
+#: What stands between a page's own name and the project's in `<title>`.
+TITLE_SEPARATOR = " \u00b7 "
+#: The picture a shared link to any page of the site shows: the homepage's hero, the
+#: best packing known of `overview_sections.HERO_CASE` squares, on the page's light
+#: background with the project's name under it. `devtools.social_card` draws it when
+#: the site is built, at this size, and it is served under this name at the site's
+#: root; it is not checked in. 1200 by 630 is the large card every consumer shows
+#: uncropped, 1.905 to 1.
+SOCIAL_CARD = "social-card.png"
+SOCIAL_CARD_WIDTH = 1200
+SOCIAL_CARD_HEIGHT = 630
+#: The locale Open Graph names the site's language by; every page is `lang="en"`.
+SITE_LOCALE = "en_US"
+#: The longest description a page may carry. A search result and a link preview both cut
+#: a longer one mid-sentence, at about this length.
+DESCRIPTION_LIMIT = 160
 #: The two tools the closing line credits, at the addresses the repository already uses:
 #: README links Flowmark there, and KPress is the `vendor/kpress` submodule's origin.
 FLOWMARK_URL = "https://github.com/jlevy/flowmark"
@@ -112,9 +132,8 @@ OVERVIEW_DESCRIPTION = (
     "and how each one is verified."
 )
 RESULTS_DESCRIPTION = (
-    "Every registered result on packing unit squares in the smallest square, this "
-    "project's and others', with its significance, verification, confirmation, standing "
-    "and records."
+    "Every reviewed result on packing unit squares in the smallest square, this project's "
+    "and others': its claim, credit, date and ratings, with its records."
 )
 PAPERS_DESCRIPTION = (
     "The project's papers on packing unit squares in the smallest square: its "
@@ -150,7 +169,7 @@ VISUALIZE_TABS: tuple[tuple[str, str, str], ...] = (
 )
 FRONTIER_DESCRIPTION = (
     "Every tracked case of packing n unit squares in the smallest square, n = 1 to 324: "
-    "the best known packing, the reported and verified bounds, and the records behind them."
+    "the best known packing, the reported and verified bounds, and their records."
 )
 
 #: The results table's page; its row ids are the results' (`#t-018`). `results.html` was
@@ -266,6 +285,9 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
     PACKING / "devtools" / "result_overview.py",
+    # The card every page's head names is drawn beside the pages, in the page's colours.
+    PACKING / "devtools" / "social_card.py",
+    PACKING / "devtools" / "rung_scale.py",
     REPO / repo_links.TUTORIAL,
     REPO / repo_links.README,
     REPO / repo_links.SYNOPSIS,
@@ -288,8 +310,134 @@ _EXTERNAL_REFERENCE = re.compile(
 
 
 def canonical_url(name: str) -> str:
-    """A served page's canonical URL: the site's root for the overview, else its name."""
-    return SITE_URL if name == "index.html" else SITE_URL + name
+    """A served page's canonical URL, from its path under the site's root: the address it
+    is served at. A directory's `index.html` is served as the directory, so the overview
+    is the root and the workbench is `workbench/`."""
+    if name == "index.html" or name.endswith("/index.html"):
+        return SITE_URL + name.removesuffix("index.html")
+    return SITE_URL + name
+
+
+#: What a page is to Open Graph: a page of the site, or a paper.
+PageKind = Literal["website", "article"]
+_ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+
+class PageMeta(NamedTuple):
+    """What a page says of itself in its `<head>`: to a tab, to a search engine and to
+    whatever draws a preview of a shared link (`head_tags`)."""
+
+    name: str
+    """The page's own name, with no site name after it: `Every Result`. The overview's is
+    the project's name."""
+    description: str
+    """One or two plain sentences on this page and no other, `DESCRIPTION_LIMIT`
+    characters at most."""
+    path: str
+    """Where the page is served, under the site's root: `all-results.html`,
+    `workbench/index.html`. Its canonical URL is read from this (`canonical_url`)."""
+    kind: PageKind = "website"
+    """`article` for a paper, `website` for every other page."""
+    published: str = ""
+    """For a paper that states them, the day it was first published and the day it was
+    last revised, as ISO dates (`2026-09-05`)."""
+    modified: str = ""
+
+
+def page_title(name: str) -> str:
+    """A page's `<title>`: its own name, then the project's. The overview's name is the
+    project's, written once."""
+    return name if name == PROJECT_NAME else f"{name}{TITLE_SEPARATOR}{PROJECT_NAME}"
+
+
+def social_card_url() -> str:
+    """The card image's address on the deployed site, which every page names in full."""
+    return SITE_URL + SOCIAL_CARD
+
+
+def social_card_alt() -> str:
+    """What the card is a picture of, for a reader who cannot see it."""
+    from devtools.overview_sections import HERO_CASE  # noqa: PLC0415
+
+    return (
+        f"The best packing known of {HERO_CASE} unit squares in a square: rows of upright "
+        "squares around a diagonal band of tilted ones. Under it, the name "
+        f"{PROJECT_NAME}."
+    )
+
+
+def head_tags(page: PageMeta) -> str:
+    """A page's identity and its link preview, the one definition every page's head is
+    written from: the site's own pages (`kpress_page`), the two papers and the workbench.
+
+    One tag to a line: the title, the description, the canonical link, the Open Graph set
+    and the Twitter set. The preview's title is the page's own name, since `og:site_name`
+    already says whose page it is, and its description is the page's own. Every address
+    is absolute, built from `SITE_URL`, because a crawler reads these off the markup with
+    no base to resolve against: the canonical URL and `og:url` are one address, the one
+    the page is served at, and the image is the site's one card (`SOCIAL_CARD`), with the
+    size `devtools.social_card` draws it at so a consumer can reserve its box. None of
+    them is a load: no browser fetches any of them to draw the page.
+
+    The description is refused if it is empty, runs over `DESCRIPTION_LIMIT` or breaks
+    across lines, and a paper's dates if they are not ISO dates, so a page that would
+    carry a broken tag does not render. `check_published_site.head_problems` holds a
+    rendered page to this set.
+    """
+    description = page.description.strip()
+    if not description or "\n" in description or len(description) > DESCRIPTION_LIMIT:
+        raise SystemExit(
+            f"{page.path}: a description is one line of at most {DESCRIPTION_LIMIT} "
+            f"characters, and this is {len(description)}: {description!r}"
+        )
+    if not page.name.strip():
+        raise SystemExit(f"{page.path}: a page has a name")
+    for moment in (page.published, page.modified):
+        if moment and not _ISO_DATE.fullmatch(moment):
+            raise SystemExit(f"{page.path}: {moment!r} is not an ISO date")
+    if (page.published or page.modified) and page.kind != "article":
+        raise SystemExit(f"{page.path}: only an article states when it was published")
+
+    def attribute(value: str) -> str:
+        return html.escape(value, quote=True)
+
+    def meta(key: str, value: str) -> str:
+        # Open Graph's tags are `property`; the description and Twitter's are `name`.
+        named = "property" if key.startswith(("og:", "article:")) else "name"
+        return f'<meta {named}="{key}" content="{attribute(value)}">'
+
+    url = canonical_url(page.path)
+    image = social_card_url()
+    alt = social_card_alt()
+    article = [
+        meta(f"article:{key}_time", moment)
+        for key, moment in (("published", page.published), ("modified", page.modified))
+        if moment
+    ]
+    return "\n".join(
+        (
+            f"<title>{html.escape(page_title(page.name), quote=False)}</title>",
+            meta("description", description),
+            f'<link rel="canonical" href="{attribute(url)}">',
+            meta("og:type", page.kind),
+            meta("og:site_name", PROJECT_NAME),
+            meta("og:locale", SITE_LOCALE),
+            meta("og:title", page.name),
+            meta("og:description", description),
+            meta("og:url", url),
+            meta("og:image", image),
+            meta("og:image:type", "image/png"),
+            meta("og:image:width", str(SOCIAL_CARD_WIDTH)),
+            meta("og:image:height", str(SOCIAL_CARD_HEIGHT)),
+            meta("og:image:alt", alt),
+            *article,
+            meta("twitter:card", "summary_large_image"),
+            meta("twitter:title", page.name),
+            meta("twitter:description", description),
+            meta("twitter:image", image),
+            meta("twitter:image:alt", alt),
+        )
+    )
 
 
 def inputs() -> tuple[Path, ...]:
@@ -537,8 +685,14 @@ def kpress_page(
     trust_mode: Literal["trusted", "sanitized"] = "trusted",
     strict_anchors: bool = False,
     tabs: str = "",
+    kind: PageKind = "website",
 ) -> Page:
     """One standalone kpress page with the site's layer, nav and colophon.
+
+    `title` is the page's own name, with no site name after it, and `description` its
+    own sentence: its `<title>`, description, canonical link and link preview are the
+    site's one set (`head_tags`), in place of the tags kpress's shell writes. `kind` is
+    `article` for a paper.
 
     `tabs`, a section's tab bar (`visualize_tabs`), follows the navigation bar in the
     header slot, where the workbench's shell also puts it, so it sits in one place on
@@ -553,14 +707,12 @@ def kpress_page(
     from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
     from kpress.format.render import render_page  # noqa: PLC0415
 
-    canonical = canonical_url(name)
     document = DocumentInput(
-        title=title,
+        title=page_title(title),
         source_text=markdown,
         source_path=name,
         body_markdown=markdown,
         trust_mode=trust_mode,
-        metadata={"description": description, "url": canonical, "site_name": SITE_NAME},
     )
     head, math_scripts = page_assets()
     options = RenderOptions(
@@ -583,8 +735,9 @@ def kpress_page(
     ]
     if errors:
         raise SystemExit(f"{name}: kpress reported errors: {errors[:3]}")
+    page = _site_head(name, rendered.html, PageMeta(title, description, name, kind))
     prose = 'class="kpress-prose kpress-long-text'
-    page = rendered.html.replace(prose + '"', prose + ' site-page"', 1)
+    page = page.replace(prose + '"', prose + ' site-page"', 1)
     page = _document_scrolls(name, page)
     if rewrite_body is not None:
         page = rewrite_body(page)
@@ -595,6 +748,38 @@ def kpress_page(
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
+
+
+#: What kpress's standalone shell writes of a page's identity: its own link-preview tags,
+#: then the title. The site writes the whole set itself (`head_tags`), so this goes.
+_KPRESS_IDENTITY = re.compile(
+    r'(?:<(?:meta (?:property="og:|name="twitter:)|link rel="canonical")[^>]*>\s*)*'
+    r"<title>[^<]*</title>"
+)
+
+
+def _site_head(name: str, page: str, meta: PageMeta) -> str:
+    """Put the site's identity tags (`head_tags`) where kpress's shell wrote its own.
+
+    kpress writes four link-preview tags on every page whatever it is told, with
+    `og:type` always `website` and the preview's title the tab's, so they are taken out
+    with the title they precede rather than added to: a head with two `og:title` is read
+    differently by each consumer. A shell that stops writing them there fails here.
+    """
+    found = _KPRESS_IDENTITY.search(page)
+    body = page.find("<body")
+    if found is None or body < 0 or found.start() > body:
+        raise SystemExit(f"{name}: kpress's shell no longer writes a title in its head")
+    page = page[: found.start()] + head_tags(meta) + page[found.end() :]
+    head = page[: page.find("<body")]
+    stray = [
+        tag
+        for tag in ("<title>", 'property="og:title"', 'name="twitter:card"', 'rel="canonical"')
+        if head.count(tag) != 1
+    ]
+    if stray:
+        raise SystemExit(f"{name}: the head does not carry exactly one of {stray}")
+    return page
 
 
 #: kpress's standalone shell marks `<main>` as the pane the document scrolls in.
@@ -676,7 +861,7 @@ def overview_page() -> Page:
         "README_PROGRESS": site_documents.overview_progress(),
         "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
-        "OTHER_PROJECTS": overview_sections.other_project_cards(),
+        "OTHER_PROJECTS": overview_sections.other_project_cards(overview),
         "ATLAS_GRID": overview_sections.atlas_grid(),
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
@@ -701,7 +886,7 @@ def overview_page() -> Page:
         markdown,
         name="index.html",
         current="overview",
-        title=SITE_NAME,
+        title=PROJECT_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
         rewrite_body=site_documents.rewrite_overview_blocks,
@@ -732,7 +917,7 @@ def results_page() -> Page:
         markdown,
         name=RESULTS_PAGE,
         current="results",
-        title=f"Every Result · {SITE_NAME}",
+        title="Every Result",
         description=RESULTS_DESCRIPTION,
         toc=False,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
@@ -757,7 +942,7 @@ def papers_page() -> Page:
         markdown,
         name="papers.html",
         current="papers",
-        title=f"Papers · {SITE_NAME}",
+        title="Papers",
         description=PAPERS_DESCRIPTION,
         toc=False,
     )
@@ -778,7 +963,7 @@ def frontier_page() -> Page:
         frontier_markdown(fill),
         name="frontier.html",
         current="frontier",
-        title=f"The Frontier Survey · {SITE_NAME}",
+        title="The Frontier Survey",
         description=FRONTIER_DESCRIPTION,
         toc=False,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
@@ -813,7 +998,7 @@ def visualize_page() -> Page:
         markdown,
         name="visualize.html",
         current="visualize",
-        title=f"Visualize · {SITE_NAME}",
+        title="Visualize",
         description=VISUALIZE_DESCRIPTION,
         toc=False,
         page_scripts=(FILM_SCRIPT,),

@@ -245,9 +245,10 @@ def test_the_atlas_film_is_a_hero_card_opening_the_visualize_page(page: str) -> 
     assert f'<img src="{OVERVIEW_FILM_POSTER.name}" alt=""' in body
     # Under a heading that says PDFs and Videos, each label says which its card is.
     assert '<span class="site-card-label">Film \u00b7 Video</span>' in body
-    assert [
-        re.search(r'<span class="site-card-label">([^<]*)</span>', body)[1] for _, body in cards
-    ] == ["Poster \u00b7 PDF", "Poster \u00b7 PDF", "Film \u00b7 Video"]
+    labels = [
+        re.findall(r'<span class="site-card-label">([^<]*)</span>', body) for _, body in cards
+    ]
+    assert labels == [["Poster \u00b7 PDF"], ["Poster \u00b7 PDF"], ["Film \u00b7 Video"]]
     assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
     assert OVERVIEW_FILM_POSTER.is_file()
     assert "<video" not in page
@@ -606,8 +607,8 @@ def test_each_card_size_is_a_column_of_its_own_grid() -> None:
 #: A card, as its opening tag's size and everything after its caps label: the headline,
 #: the note and a direct card's address.
 _CARD_ELEMENT = re.compile(
-    r'<(button|a)\b[^>]*class="site-card[ "][^>]*data-card-size="([^"]*)"[^>]*>'
-    r'.*?<span class="site-card-value">(.*?)</\1>',
+    r'<(button|a|div)\b[^>]*class="site-card[ "][^>]*data-card-size="([^"]*)"[^>]*>'
+    r'.*?<span class="site-card-value">(.*?)</(?:button|a)>',
     re.DOTALL,
 )
 
@@ -628,7 +629,7 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     assert overview_sections.CARD_SIZES == ("small", "medium", "large")
     sections = _card_sections(page)
     assert sum(len(cards) for cards in sections.values()) == len(
-        re.findall(r'<(?:button|a)\b[^>]*class="site-card[ "]', page)
+        re.findall(r'<(?:button|a|div)\b[^>]*class="site-card[ "]', page)
     ), "a card with no size"
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
@@ -777,7 +778,7 @@ def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
     assert '<a href="frontier.html">Frontier</a> page shows every case' in section
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
     frontier = rendered("frontier.html")
-    assert "<title>The Frontier Survey · Square Packing</title>" in frontier
+    assert "<title>The Frontier Survey · The Squares Project</title>" in frontier
     assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
     card = next(body for href, _, body in _page_cards(page) if href == "frontier.html")
     assert '<span class="site-card-label">Frontier survey</span>' in card
@@ -785,8 +786,6 @@ def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
         # What a reader sees or hears: the page without its inlined styles and programs.
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         assert "frontier atlas" not in text.lower(), name
-    # The generated status table's page is no second page called The Frontier.
-    assert "<title>The Status Table · Square Packing</title>" in rendered("status.html")
 
 
 def test_verification_ladders_is_one_ladder_diagram_significance_first(page: str) -> None:
@@ -1075,12 +1074,22 @@ def test_other_projects_include_every_source_repository_the_record_reviews() -> 
     assert not any("jlevy/squares" in url for url in listed)
 
 
-def test_other_project_cards_are_links_showing_their_address(page: str) -> None:
-    """Each other project's card is the link itself, with no popover, and shows its
-    address beside GitHub's mark (or the host's saved favicon)."""
+def test_other_project_cards_are_links_showing_their_address(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """Each other project's card links the project, with no popover, and shows its
+    address beside GitHub's mark (or the host's saved favicon). A card with a tally of
+    results is a box around that link and the tally; one with none is the link itself
+    (`tests/test_site_project_tallies.py` holds the order, the tallies and their links)."""
     section = page.split('id="other-square-packing-projects"', 1)[1].split("<h2", 1)[0]
-    cards = re.findall(r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', section)
-    assert [url for url, _ in cards] == [url for url, _, _ in overview_sections.OTHER_PROJECTS]
+    cards = re.findall(
+        r'<a class="site-card(?: site-card-link|-link site-card-main)" href="([^"]+)"(.*?)</a>',
+        section,
+    )
+    assert [url for url, _ in cards] == [
+        url for url, _ in overview_sections.ranked_projects(overview)
+    ]
+    assert sorted(url for url, _ in cards) == sorted(overview_sections.project_urls())
     for url, body in cards:
         assert url.removeprefix("https://") in body.replace("<wbr>", ""), url
         assert 'class="site-link-icon"' in body, url
@@ -1309,7 +1318,7 @@ def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
     assert len(lines) == 2
     first, second = (COLOPHON_PART.findall(line) for line in lines)
     assert first == [
-        "The Square Packing Project",
+        "The Squares Project",
         '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>',
     ]
     assert second == [
@@ -1560,7 +1569,7 @@ def test_the_film_page_shows_no_title_and_keeps_one_for_a_screen_reader(
     no subtitle. It keeps its document title and one `h1`, for a screen reader alone, and
     the film, the first block a reader sees, brings no margin of its own."""
     page = rendered("visualize.html")
-    assert "<title>Visualize · Square Packing</title>" in page
+    assert "<title>Visualize · The Squares Project</title>" in page
     assert re.findall(r"<h1\b[^>]*>.*?</h1>", page, re.DOTALL) == [
         '<h1 class="site-visually-hidden" id="visualize">Visualize</h1>'
     ]
@@ -1900,7 +1909,7 @@ def _recent_table(page: str) -> str:
     """The recent table as the page carries it, after kpress has wrapped it and labelled
     its cells, from its opening tag to its close."""
     match = re.search(
-        r'<table class="kpress-table site-table site-results site-recent-table"[^>]*>'
+        r'<table class="kpress-table site-table site-results"[^>]*>'
         r".*?</table>",
         page,
         re.DOTALL,
@@ -1913,9 +1922,9 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
-    columns every table of results has, the result linking its row on the results page;
-    no card or list is left in it, and its only popovers are its rows' own. What a row's
-    popover holds is the popover's own business, so the section is read without them."""
+    columns every table of results has; no row links across to the results page, no card
+    or list is left in it, and its only popovers are its rows' own. What a row's popover
+    holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
     assert recent in section
@@ -1929,7 +1938,8 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert not re.search(r'class="site-card[ "]', before_replay)
     assert "<li>" not in before_replay
     assert section.count("<table") == 2  # the recent table, then the replay table
-    assert 'class="kpress-table site-table site-results site-recent-table"' in recent
+    assert 'class="kpress-table site-table site-results"' in recent
+    assert "site-recent-table" not in page
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
@@ -1938,10 +1948,9 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
         row = _recent_row(recent, result.id)
-        # The summary's leading formula, or the whole of one that leads with none, links
-        # the result's row on the results page.
-        link = f'<a href="all-results.html#{result.id.lower()}">'
-        assert re.search(rf'<td class="site-col-result"[^>]*>{re.escape(link)}', row), result.id
+        # The row is the result's own here too, so nothing in it leads to its row on
+        # the results page: the summary is plain, as it is there.
+        assert "all-results.html" not in row, result.id
         # The id, in its own cell, is the row's native trigger, which opens its popover
         # unscripted; the result's cell holds the result and no id.
         assert (
@@ -2077,19 +2086,7 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(result("1979", 2, standing), every, day), standing
 
 
-def test_a_summary_splits_at_its_formula_and_a_credit_at_what_it_builds_on() -> None:
-    split = overview_sections.split_summary
-    assert split("`s(21) = 5` by a point-only route, reported") == (
-        "`s(21) = 5`",
-        "point-only route",
-    )
-    assert split("`s(45) = 7`, by a mixed cover of points and grid-line segments") == (
-        "`s(45) = 7`",
-        "mixed cover of points and grid-line segments",
-    )
-    assert split("`s(50) ≥ 37/5 = 7.4`, reported") == ("`s(50) ≥ 37/5 = 7.4`", "")
-    batch = "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
-    assert split(batch) == (batch, "")
+def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() -> None:
     # A credit is set whole, whatever the register's credit line says: the finder, then
     # what the result builds on, quiet.
     credit = overview_sections.credit_cell("wand125 after Daniel, Tokoharu, Levy, Stromquist")
@@ -2326,7 +2323,7 @@ def test_recent_results_says_eleven_squares_is_settled(
 #: and not yet replayed here.
 SITE_STATEMENT = (
     (
-        "This Square Packing Project site collects all known historic research and "
+        "This Squares Project site collects all known historic research and "
         "current new results on the square packing problem. Work on this problem has "
         "exploded in the summer of 2026 thanks to AI-powered research efforts."
     ),
@@ -2372,64 +2369,58 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
 
 def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> None:
     """README's two paragraphs stay under the page's first heading, and the site's own
-    statement has a section heading of its own, The Square Packing Project: an ordinary
+    statement has a section heading of its own, The Squares Project: an ordinary
     `h2` with its own id and its entry in the page's contents, directly after README's
     block and directly above the paragraph that says what the site collects. It is no
     page title, so it takes the two section spaces every `h2` takes
     (`test_section_headings_share_one_space_above_and_one_below`)."""
     from devtools import site_documents  # noqa: PLC0415
 
-    heading = '<h2 id="the-square-packing-project">The Square Packing Project</h2>'
+    heading = '<h2 id="the-squares-project">The Squares Project</h2>'
     assert page.count(heading) == 1
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     after_intro = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1]
     assert after_intro.lstrip().startswith(heading)
     following = after_intro.split(heading, 1)[1].lstrip()
-    assert following.startswith("<p>This Square Packing Project site collects")
+    assert following.startswith("<p>This Squares Project site collects")
     assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
-    contents = (
-        '{"href": "#the-square-packing-project", "level": 1, '
-        '"title": "The Square Packing Project"}'
-    )
+    contents = '{"href": "#the-squares-project", "level": 1, "title": "The Squares Project"}'
     assert contents in page
     assert page.index(contents) < page.index('{"href": "#recent-results"')
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     assert (
-        "{{README_INTRO}}\n\n## The Square Packing Project\n\nThis Square Packing Project "
+        "{{README_INTRO}}\n\n## The Squares Project\n\nThis Squares Project "
         "site collects" in template
     )
 
 
-def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
+def test_the_project_is_named_the_squares_project_wherever_it_is_named(
     page: str, rendered: Callable[[str], str]
 ) -> None:
-    """The project's formal name is The Square Packing Project (the owner, 2026-10-01),
-    and no page of the site calls it the Squares Project in its own words: the README's
-    title and its card, the closing section's heading, whose old fragment an empty
-    anchor keeps, and the sentence under it. The one place the old name remains is a
-    register claim's account of how another source credits this project, which is
-    record text and not the site's own naming."""
+    """The project's formal name is The Squares Project (the owner, 2026-10-01, in place
+    of The Square Packing Project of earlier that day), and no page of the site calls it
+    anything else in its own words: the README's title and its card, the closing
+    section's heading, which carries its own fragment, and the sentence under it. Other
+    Square Packing Projects, the plural, names other people's projects, and The Square
+    Packing Problem the subject; neither is this project's name."""
     from devtools import site_documents  # noqa: PLC0415
 
-    heading = (
-        '<h2 id="square-packing-project-documentation">Square Packing Project Documentation'
-        '<a id="squares-project-documentation"></a></h2>'
-    )
+    heading = '<h2 id="squares-project-documentation">Squares Project Documentation</h2>'
     assert page.count(heading) == 1
     section = page.split(heading, 1)[1]
-    assert "live in the Square Packing Project\u2019s" in _rendered_text(section)
+    assert "live in the Squares Project\u2019s" in _rendered_text(section)
     readme = site_documents.README.read_text(encoding="utf-8")
-    assert readme.startswith("# The Square Packing Project\n")
-    assert "<title>The Square Packing Project · Square Packing</title>" in rendered(
-        "readme.html"
-    )
+    assert readme.startswith("# The Squares Project\n")
+    # README's page is named for the file in its tab, since the project's name follows
+    # it there as it does every page's name, and the overview's title is that name alone.
+    assert "<title>README · The Squares Project</title>" in rendered("readme.html")
+    assert "<title>The Squares Project</title>" in page
     labels = [label for _, label, _ in overview_sections.DOCUMENTS]
-    assert labels[0] == "The Square Packing Project"
+    assert labels[0] == "The Squares Project"
     for name in ("index.html", "papers.html", "frontier.html", "readme.html", "visualize.html"):
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
-        own = re.sub(r"building on Squares Project(?: \(Joshua Levy\))?", "", text)
-        assert "squares project" not in own.lower(), name
+        assert not re.search(r"square packing project(?!s)", text, flags=re.IGNORECASE), name
 
 
 def _the_central_case() -> re.Pattern[str]:
@@ -2792,12 +2783,14 @@ def test_results_by_others_show_their_publication_date(
 def test_both_tables_of_results_have_the_same_columns(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """Recent Results and the results page's table are one table: the same header cells
-    in the same order, from one definition (`result_head`), and for each result the same
-    cells from one function (`result_cells`), which differ only in that the overview's
-    summary links the result's row on the results page. Both sort and both filter. A
-    result's records are a line under its summary, no column, which the overview carries
-    and does not show."""
+    """Recent Results and the results page's table are one table under two filters: the
+    same header cells in the same order, from one definition (`result_head`), and for
+    each result the same row and the same popover. A row differs between the two in
+    what names the page it is on and nothing else: its key, the result's own address
+    (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
+    where each table's filters start. So the overview shows each result's records, as
+    the results page does, and no row of one links to the other. Both sort and both
+    filter. A result's records are a line under its summary, no column."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
@@ -2813,7 +2806,12 @@ def test_both_tables_of_results_have_the_same_columns(
     on_results = served.findall(results.split("<thead>", 1)[1].split("</thead>", 1)[0])
     assert on_overview == on_results == [words for _, words in heads]
     classes = re.compile(r'<td class="([^"]+)"')
-    unlinked = re.compile(r'<a href="all-results\.html#t-\d+">(.*?)</a>', re.DOTALL)
+    # What names the page a row is on: its key and whether its table's filters hide it.
+    placed = re.compile(r'^<tr (?:id|data-result)="(t-\d+)"([^>]*?)(?: hidden)?>')
+
+    def anywhere(row: str) -> str:
+        return placed.sub(r'<tr key="\1"\2>', row)
+
     for result in overview.results:
         here = _row(table, result.id)
         there = _recent_row(recent, result.id)
@@ -2831,18 +2829,27 @@ def test_both_tables_of_results_have_the_same_columns(
         assert re.search(
             r'<div class="site-records">.*?</div></td><td class="site-col-credit"', here
         )
-        # The cells are the same but for the link on the overview's summary.
-        cells = here.split(">", 1)[1]
-        assert unlinked.sub(r"\1", there.split(">", 1)[1], count=1) == cells, result.id
-        assert there.count('<a href="all-results.html#') == 1, result.id
-        assert f'<a href="all-results.html#{result.id.lower()}">' in there, result.id
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
+        # The row is the same markup on both pages, as written and as each page serves
+        # it, apart from what names the page; and no row links to the other table.
+        assert anywhere(here) != here
+        assert anywhere(here) == anywhere(there), result.id
+        served_here = _row(results, result.id)
+        served_there = _recent_row(_recent_table(page), result.id)
+        assert anywhere(served_here) == anywhere(served_there), result.id
+        assert "all-results.html" not in there + served_there, result.id
+        # The popover a row opens is the same panel too.
+        target = f"pop-result-{result.id.lower()}"
+        assert _row_popover(recent, target) == _row_popover(table, target), result.id
+    # The tables themselves are one element, with one class list.
+    opened = re.compile(r"<table[^>]*>")
+    assert opened.findall(table) == opened.findall(recent)
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    # One table, so one set of rules. The recent table has one of its own: it carries a
-    # result's records and does not show them, at any width.
-    assert css.count(".site-recent-table") == 1
-    assert "\n.kpress .site-recent-table .site-records {\n  display: none;\n}" in css
+    # One table, so one set of rules: the overview's has none of its own, and it shows
+    # each result's records as the results page does.
+    assert "site-recent-table" not in css + table + recent
+    assert not re.search(r"\.site-records\s*\{[^}]*display:\s*none", css)
     assert "Records" not in head
     for gone in ("site-col-method", "site-col-status"):
         assert gone not in css + table + recent, gone
@@ -2945,11 +2952,11 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         rows = (
             (
                 _row(table, result.id),
-                overview_sections.result_text(result, here=True) + "{star}" + records,
+                overview_sections.result_text(result) + "{star}" + records,
             ),
             (
                 _recent_row(recent, result.id),
-                overview_sections.result_text(result, here=False) + "{star}" + records,
+                overview_sections.result_text(result) + "{star}" + records,
             ),
         )
         for row, placed in rows:
@@ -4015,13 +4022,13 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
 
 
-def test_a_result_row_popover_leads_to_its_row_only_from_another_page(
+def test_a_result_row_popover_is_the_same_panel_in_both_tables(
     overview: overview_data.Overview,
 ) -> None:
     """A result's popover is the same panel on both pages, a card's: the id as its caps
-    label and the summary as its headline. On the overview it ends in the button to the
-    result's row on the results page; on that page, where the row is the one pressed,
-    it has no button."""
+    label and the summary as its headline. It has no button on either: the row pressed
+    is the result's row, and a button from the overview's table to the same row of the
+    results page's would lead nowhere new."""
     result = overview_sections.recent_results(overview)[0]
     target = f"pop-result-{result.id.lower()}"
     away = _row_popover(overview_sections.recent_table(overview), target)
@@ -4031,13 +4038,10 @@ def test_a_result_row_popover_leads_to_its_row_only_from_another_page(
         assert f'<span class="site-card-label">{result.id}</span>' in panel
         assert f'<p class="site-popover-value"{face} id="{target}-title">' in panel
         assert 'popovertargetaction="hide" aria-label="Close">' in panel
-    (action,) = ACTION.findall(away)
-    assert action == (f"all-results.html#{result.id.lower()}", "page")
-    assert f"Open {result.id} in the results table</a>" in away
+    assert not ACTION.findall(away)
     assert not ACTION.findall(here)
-    assert (
-        away.replace(away[away.index('<p class="site-popover-actions">') :], "</div>") == here
-    )
+    assert "in the results table" not in away
+    assert away == here
 
 
 def test_a_replay_rows_popover_body_comes_from_one_function(
@@ -4206,6 +4210,10 @@ RESULT_FILTERS = [
     ("source", ""),
     ("n", "covers"),
     ("date", "age"),
+    # The two preset-only controls, out of the bar until a link sets them: the listed
+    # project a row is attributed to, and its significance exactly.
+    ("project", "has"),
+    ("s", ""),
 ]
 
 #: The bar's one checkbox, as `result_filters` writes it: its own label, after Standing.
@@ -4215,7 +4223,7 @@ HIDE_SUPERSEDED = (
 
 _COUNT = re.compile(r'(<span class="site-count"[^>]*>)[^<]*</span>')
 _SELECTED = re.compile(
-    r'<select data-filter="([a-z]+)"[^>]*>'
+    r'<select data-filter="([a-z]+)"(?![^>]*data-preset)[^>]*>'
     r'(?:<option value="[^"]*">[^<]*</option>)*<option value="([^"]*)" selected>'
 )
 
@@ -4261,7 +4269,10 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert _controls(here) == _controls(there) == RESULT_FILTERS
     everything = {"s": "", "v": "", "c": "", "kind": "", "standing": "", "source": ""}
     for bar in (here, there):
-        assert bar.count(" selected>") == bar.count("<select ") == 6
+        # Six selects of the bar's own, each with its starting choice marked, and the two
+        # preset-only selects (`tests/test_site_project_tallies.py`), which start at All.
+        assert bar.count(" selected>") == bar.count("<select ") == 8
+        assert bar.count(" data-preset>") == 2
         assert bar.count("<input ") == 3
         assert 'type="date"' not in bar
         assert bar.count('type="checkbox"') == 1
@@ -4363,8 +4374,9 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
     """A row of either table carries the same facets, each from the register: whose
-    result it is, its V, C and S levels, its standing, whether that is a current best,
-    its cases and its date. The bar has a control for each and no control without one."""
+    result it is, its V, C and S levels, its kind, the listed projects it is attributed
+    to, its standing, whether that is a current best, its cases and its date. The bar
+    has a control for each and no control without one."""
     filtered = {key for key, _ in RESULT_FILTERS}
     recent = _recent_table(page)
     listed = {r.id for r in overview_sections.recent_results(overview)}
@@ -4376,6 +4388,7 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "c": record["confirmation"][1:],
             "s": str(record["significance"]["score"]),
             "kind": record["kind"],
+            "project": " ".join(overview_sections.result_projects(result)),
             "standing": overview_sections.standing_key(result.standing),
             "current": "false" if result.standing == "superseded" else "true",
             "n": overview_sections.result_cases(result),

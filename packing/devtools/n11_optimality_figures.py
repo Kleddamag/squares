@@ -19,6 +19,7 @@ from xml.etree import ElementTree as ET
 
 from devtools.check_n11_optimality_d4 import EXPECTED_MASKS
 from devtools.packing_render_adapters import frame_from_trump11
+from devtools.render_n11_lower_bounds_explainer import crop_to_container
 from sqpack.render import render_packing_svg
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -29,6 +30,8 @@ D4_RECEIPT = PACKET / "d4-independent/result.json"
 SOURCE_GRAPH = PACKET / "source-graph/result.json"
 CASE_MASK = EXPECTED_MASKS[438]
 CELL_COUNT = 16
+#: The cell of the exact cover the capacity figure draws its two hypothetical centers in.
+CAPACITY_CELL = 9
 CAPTURE_NODE_COUNT = 10
 SVG_NS = "http://www.w3.org/2000/svg"
 
@@ -110,13 +113,19 @@ def _svg(
     width: int,
     height: int,
     content: str,
+    origin: tuple[float, float] = (0, 0),
 ) -> str:
+    """One diagram on a canvas `width` by `height`, whose top left corner is `origin` in
+    the coordinates its parts are drawn in. A diagram carries its labels and nothing
+    else: its title and whatever a sentence says of it are the figure's caption."""
     title_id = f"n11-{identifier}-title"
     desc_id = f"n11-{identifier}-desc"
+    left, top = origin
     return (
         f'<svg xmlns="{SVG_NS}" class="n11-diagram n11-{identifier}" '
         f'width="{width}" height="{height}" '
-        f'viewBox="0 0 {width} {height}" role="img" aria-labelledby="{title_id} {desc_id}">'
+        f'viewBox="{left:g} {top:g} {width} {height}" role="img" '
+        f'aria-labelledby="{title_id} {desc_id}">'
         f'<title id="{title_id}">{escape(title)}</title>'
         f'<desc id="{desc_id}">{escape(description)}</desc>'
         f"{content}</svg>"
@@ -191,7 +200,8 @@ def _cell_svg(cells: list[dict[str, Any]], *, mask: bool) -> str:
 
 def _capacity_svg(cells: list[dict[str, Any]], cap: Fraction) -> str:
     """Illustrate the disk argument using one admitted cell and hypothetical centers."""
-    vertices = [tuple(Fraction(v) * (cap - 1) for v in point) for point in cells[9]["vertices"]]
+    cell = cells[CAPACITY_CELL]
+    vertices = [tuple(Fraction(v) * (cap - 1) for v in point) for point in cell["vertices"]]
     diameter_squared = max(
         sum((x - y) ** 2 for x, y in zip(a, b, strict=True)) for a in vertices for b in vertices
     )
@@ -213,7 +223,8 @@ def _capacity_svg(cells: list[dict[str, Any]], cap: Fraction) -> str:
     points = " ".join(f"{x:.3f},{y:.3f}" for x, y in map(pixel, vertices))
     parts = [
         (
-            f'<polygon data-capacity-cell="9" data-diameter-squared="{diameter_squared}" '
+            f'<polygon data-capacity-cell="{CAPACITY_CELL}" '
+            f'data-diameter-squared="{diameter_squared}" '
             f'points="{points}" fill="#e2e8f0" stroke="#52667a" stroke-width="2"/>'
         )
     ]
@@ -225,31 +236,27 @@ def _capacity_svg(cells: list[dict[str, Any]], cap: Fraction) -> str:
             'stroke-width="2" stroke-dasharray="6 4"/>'
             f'<circle cx="{x:.3f}" cy="{y:.3f}" r="4" fill="#172b3a"/>'
         )
-    for y, label in (
-        (65, "One cell; two centers?"),
-        (110, "Cell diameter < 1"),
-        (155, "Each disk has radius 1/2"),
-        (200, "The open disks overlap"),
-        (245, "So the square interiors"),
-        (274, "would overlap too"),
-    ):
-        parts.append(
-            f'<text class="n11-diagram-label" x="345" y="{y}" fill="#172b3a">'
-            f"{escape(label)}</text>"
-        )
-    parts.append(
-        '<text class="n11-diagram-note" x="30" y="350" fill="#34465a">'
-        "Exact cell 9; hypothetical centers. Disk boundaries are open.</text>"
-    )
+    # The cell and the two disks are the whole drawing, and the canvas is cut to them:
+    # the argument they illustrate is the caption's.
+    disks = [pixel(center) for center in centers]
+    reach = [
+        *map(pixel, vertices),
+        *((x + dx, y + dy) for x, y in disks for dx in (-100, 100) for dy in (-100, 100)),
+    ]
+    left, right = min(x for x, _ in reach), max(x for x, _ in reach)
+    top, bottom = min(y for _, y in reach), max(y for _, y in reach)
+    width = round(right - left) + 2 * CELL_MARGIN
+    height = round(bottom - top) + 2 * CELL_MARGIN
     return _svg(
         "capacity",
         "One center per cell",
-        "Two hypothetical centers in exact cell 9 "
+        f"Two hypothetical centers in exact cell {CAPACITY_CELL} "
         "would have overlapping open radius-one-half disks. This illustrates the "
         "capacity lemma, not an actual packing.",
-        width=640,
-        height=385,
+        width=width,
+        height=height,
         content="".join(parts),
+        origin=(round(left) - CELL_MARGIN, round(top) - CELL_MARGIN),
     )
 
 
@@ -397,11 +404,14 @@ def _witness_svg() -> str:
     container = root.findall(f'.//{{{SVG_NS}}}rect[@data-feature="container-outline"]')
     if len(outlines) != 11 or len(container) != 1:
         raise ValueError("retained exact witness SVG lacks its eleven squares or container")
-    text = text.replace(
-        "U Trump n=11: side ~ 3.87708359 (certified upper bound)", "Trump construction at T"
-    )
-    text = re.sub(r"<\?xml[^>]*\?>\s*", "", text, count=1)
-    text = re.sub(r"<metadata>.*?</metadata>\s*", "", text, count=1, flags=re.DOTALL)
+    # The atlas letters a caption under its drawing, on a canvas nearly twice as wide as
+    # the container, so set as it comes the drawing stood left of centre over a line of
+    # its own text. The paper sets it as the first paper sets its own: the drawing
+    # alone, cut to the container, with the caption as the figure's.
+    text, lettered = re.subn(r"\s*<text\b[^>]*>[^<]*</text>", "", text)
+    if lettered != 1:
+        raise ValueError("retained exact witness SVG letters something other than its caption")
+    text = crop_to_container(text, name=WITNESS.name)
     text = re.sub(
         r'<title id="figure-title">.*?</title>',
         '<title id="figure-title">Trump construction of eleven unit squares</title>',
@@ -416,6 +426,13 @@ def _witness_svg() -> str:
         text,
         count=1,
     )
+
+
+def caption_facts() -> dict[str, str]:
+    """What the article's captions say of these drawings that is a choice of this module:
+    which cell of the exact cover the capacity figure shows. A caption names it and
+    never types it."""
+    return {"CAPACITY_CELL": str(CAPACITY_CELL)}
 
 
 def render_figures() -> dict[str, str]:

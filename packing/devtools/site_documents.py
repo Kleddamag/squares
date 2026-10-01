@@ -115,13 +115,17 @@ class SiteDocument:
     name: str
     current: str
     title: str
+    """The page's own name, as its tab and its link preview give it; the site's name
+    follows it in `<title>` (`render_overview.page_title`)."""
     description: str
+    kind: render_overview.PageKind = "website"
+    """`article` for a paper (`render_overview.PageMeta.kind`)."""
 
 
 def _document(path: str, name: str, title: str, description: str) -> SiteDocument:
     """A repository document served as a page that the navigation does not list: it is
     reached from its card's popover, which frames it, and from links in the others."""
-    return SiteDocument(REPO / path, name, "github", f"{title} · Square Packing", description)
+    return SiteDocument(REPO / path, name, "github", title, description)
 
 
 DOCUMENTS: tuple[SiteDocument, ...] = (
@@ -130,15 +134,17 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
         TUTORIAL,
         "tutorial.html",
         "papers",
-        "Tutorial · Square Packing",
+        "Tutorial",
         "A guided walk through square packing: the problem, the bounds and how each "
         "result here is checked.",
+        "article",
     ),
     # The overview's document cards, in their order (`render_overview.DOCUMENT_PAGES`).
     _document(
         repo_links.README,
         "readme.html",
-        "The Square Packing Project",
+        # The file's name: the page's own would repeat the project's, which follows it.
+        "README",
         "What the project is, how it works, and where to start.",
     ),
     _document(
@@ -397,6 +403,7 @@ def render_document(
         current=document.current,
         title=document.title,
         description=document.description,
+        kind=document.kind,
         # A long report gets the contents rail and a short one does not, by kpress's
         # own length rule, so every report keeps one layout either way.
         toc="auto",

@@ -1,0 +1,255 @@
+"""The frontier atlas's table as a reader has it, in a browser.
+
+Each row leads with the drawing of its best known packing in a column of its own, under
+no heading; then the case number, bold; then the star of a recent bound; then the status,
+the four bounds, the gap and the records (`templates/paper-design.md`, Frontier table).
+Every cell is centred on its row's height, a closed form has its decimal under it, and
+the ten columns fit the 1200 pixels a 1280-pixel window gives the table.
+
+Where a column ends, which rule centres a cell and how tall a row comes out are the
+browser's to say, from the faces, the typeset formulas and the rules `site.css` gives
+the table. So this opens the rendered page in Chromium, its math typeset, and reads the
+table through one probe at 1280, 1024 and 768 pixels and at 390, where the same table
+scrolls sideways in its wrap (the frontier has no card layout). It then uses the table
+as a reader does: sorts it, filters it, opens a row's popover from its drawing and a
+case's record from its number.
+
+Skipped where no Chromium can be launched; `SQPACK_CHROMIUM` names one the environment
+supplies, as the other browser tools read it.
+"""
+
+from __future__ import annotations
+
+import os
+from collections.abc import Iterator
+from fractions import Fraction
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from devtools.preview_site import settle_math
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
+from sqpack.probes import probe
+from tests import site_renders
+from tests.test_frontier_page import COLUMNS, column
+
+PROBES = Path(__file__).resolve().parent / "probes"
+LAYOUT = probe(PROBES, "site_frontier_table/layout")
+
+#: The widths the table is read at: the one its track is sized for, two it scrolls
+#: sideways at, and a phone.
+WIDTHS = (1280, 1024, 768, 390)
+#: The rows read: a row of whole numbers (the shortest a row can be), a radical with its
+#: credit, the proved case with a root shown as a decimal and the longest credited name,
+#: a fraction that is a recent bound, a verified bound printed beside the reported one,
+#: and a three-digit case with a rational upper bound.
+CASES = (1, 5, 11, 12, 18, 230)
+ROWS = [f"n-{n}" for n in CASES]
+#: The drawing's side before it had a column: 2.6rem.
+OLD_THUMB = 41.6
+#: The site's bold in a sans table, `--site-font-weight-sans-bold`.
+BOLD = "680"
+#: A cell's padding above and below, 0.55rem, in pixels.
+PADDING = 8.8
+#: How far two middles may sit apart and still read as level: a pixel, and the half
+#: pixel a box lands off the grid.
+LEVEL = 1.5
+
+
+@pytest.fixture(scope="module")
+def page(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
+    """The rendered frontier atlas, loaded once with its math typeset."""
+    sync_api = pytest.importorskip("playwright.sync_api")
+    path = Path(tmp_path_factory.mktemp("site")) / "frontier.html"
+    path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
+    with sync_api.sync_playwright() as driver:
+        try:
+            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+        except sync_api.Error as error:
+            pytest.skip(f"no Chromium to launch: {error.message.splitlines()[0]}")
+        opened = browser.new_page(viewport={"width": WIDTHS[0], "height": 900})
+        opened.goto(path.as_uri(), wait_until="load")
+        settle_math(opened)
+        yield opened
+        browser.close()
+
+
+@pytest.fixture(scope="module")
+def laid(page: Any) -> dict[int, dict[str, Any]]:
+    """The table as laid out at each width, read before any test sorts or filters it."""
+    found: dict[int, dict[str, Any]] = {}
+    for width in WIDTHS:
+        page.set_viewport_size({"width": width, "height": 900})
+        page.wait_for_timeout(150)
+        found[width] = page.evaluate(LAYOUT, {"rows": ROWS})
+    page.set_viewport_size({"width": WIDTHS[0], "height": 900})
+    page.wait_for_timeout(150)
+    return found
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_the_drawing_has_the_first_column_under_no_heading(
+    laid: dict[int, dict[str, Any]], width: int
+) -> None:
+    """The columns are the ten in their order. The first shows no heading and is named
+    "Packing" for a screen reader; each row's first cell is the drawing and nothing
+    else, a square larger than the 41.6 pixels it was under the number, and its column
+    is the drawing and the row's start padding, with no room to spare."""
+    table = laid[width]
+    head = table["head"]
+    assert [cell["words"] for cell in head] == COLUMNS
+    assert head[0]["label"] == "Packing"
+    assert head[0]["sorts"] is None
+    assert all(cell["label"] is None for cell in head[1:])
+    sides = set()
+    for row in table["rows"]:
+        thumb = row["thumb"]
+        assert thumb["index"] == 0, row["id"]
+        assert thumb["alone"], row["id"]
+        assert thumb["width"] == thumb["height"], row["id"]
+        sides.add(thumb["width"])
+        # The number starts after the drawing, in the next column.
+        assert row["n"]["left"] > thumb["left"] + thumb["width"], row["id"]
+    (side,) = sides
+    assert OLD_THUMB + 4 < side < OLD_THUMB * 1.3
+    assert side < head[0]["width"] <= side + 10
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_the_drawing_makes_no_row_taller_than_its_text(
+    laid: dict[int, dict[str, Any]], width: int
+) -> None:
+    """The drawing is two lines of the table's text high, and every row has two lines
+    at least, the case file's link over the row's trigger. So in the shortest row, one
+    of whole numbers, the drawing and the Records cell's two lines each fill the cell's
+    height between its padding, and the row is no taller than those two lines need."""
+    shortest = laid[width]["rows"][ROWS.index("n-1")]
+    thumb, records = shortest["cells"][0], shortest["cells"][column("Records")]
+    assert shortest["height"] == min(row["height"] for row in laid[width]["rows"])
+    assert shortest["height"] == pytest.approx(shortest["thumb"]["height"] + 2 * PADDING, abs=1)
+    for cell in (thumb, records):
+        assert cell["above"] == pytest.approx(0, abs=1)
+        assert cell["below"] == pytest.approx(0, abs=1)
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_the_case_number_is_bold_and_level_with_the_drawing(
+    laid: dict[int, dict[str, Any]], width: int
+) -> None:
+    """A row's `n` is the number alone, in the site's bold, and the middle of its text
+    is the middle of the drawing beside it, in a short row and in a tall one."""
+    for row, n in zip(laid[width]["rows"], CASES, strict=True):
+        assert row["n"]["words"] == str(n)
+        assert row["n"]["weight"] == BOLD, row["id"]
+        assert row["n"]["middle"] == pytest.approx(row["thumb"]["middle"], abs=LEVEL), row["id"]
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_every_cell_is_centred_on_its_row(laid: dict[int, dict[str, Any]], width: int) -> None:
+    """Every body cell is set to the middle of its row, and the cells of plain text and
+    the drawing show it: what each holds has the same room above it as below. (A typeset
+    formula's own box reaches past its line, so a cell of math is held to the rule and
+    not to the measurement.) The header keeps the foot of its cell and still sticks."""
+    table = laid[width]
+    for cell in table["head"]:
+        assert cell["vertical_align"] == "bottom"
+        assert cell["position"] == "sticky"
+    assert len({cell["top"] for cell in table["head"]}) == 1
+    plain = [column(label) for label in ("", "n", "Status", "Records")]
+    for row in table["rows"]:
+        assert [cell["vertical_align"] for cell in row["cells"]] == ["middle"] * len(COLUMNS)
+        for index in plain:
+            cell = row["cells"][index]
+            assert cell["above"] == pytest.approx(cell["below"], abs=2), (row["id"], index)
+    # A tall row: the status chip of n = 12 sits well clear of the top of its cell.
+    tall = table["rows"][ROWS.index("n-12")]
+    assert tall["height"] > table["rows"][ROWS.index("n-1")]["height"] + 20
+    assert tall["cells"][column("Status")]["above"] > 20
+
+
+def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
+    laid: dict[int, dict[str, Any]],
+) -> None:
+    """At a 1280-pixel window the ten columns fit the table's track, so nothing scrolls
+    sideways; before the drawing had its column the table ran 82 pixels past it. Below
+    that the table keeps its width and scrolls inside its wrap, and at no width does the
+    page itself scroll sideways. The star's column is as narrow as its heading, and `n`
+    narrower still."""
+    wide = laid[1280]
+    assert wide["scrolls"] == 0, wide["table_width"]
+    assert wide["table_width"] <= wide["frame_width"]
+    widths = {cell["words"]: cell["width"] for cell in wide["head"]}
+    assert widths["n"] < 50
+    assert widths["Recent"] < 96
+    for width in WIDTHS[1:]:
+        assert laid[width]["scrolls"] > 0, width
+        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=8), width
+    assert [laid[width]["page_scrolls"] for width in WIDTHS] == [0] * len(WIDTHS)
+
+
+def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
+    laid: dict[int, dict[str, Any]],
+) -> None:
+    """The reported lower bound of n = 12 is `15680/3951`, and the cell prints its
+    decimal under it: the fraction's value cut after eight places, which is not the
+    `3.968615` the record holds. The row's other closed form is its gap. A credit's
+    longest name, in the row above, is set on one line."""
+    rows = {row["id"]: row for row in laid[1280]["rows"]}
+    lower = rows["n-12"]["cells"][column("Reported lower")]["approx"]
+    assert lower == ["≈ 3.96861554…"]
+    exact, shown = Fraction(15680, 3951), Fraction(lower[0][2:-1])
+    assert 0 < exact - shown < Fraction(1, 10**8)
+    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
+    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03138445…"]
+    assert rows["n-18"]["cells"][column("Verified lower")]["approx"] == ["= 4.679"]
+    assert rows["n-18"]["cells"][column("Reported lower")]["approx"] == ["= 4.695"]
+    assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
+    assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []
+
+
+def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]) -> None:
+    """The columns moved and the script did not: a heading sorts its own column, the
+    filters narrow the rows, the drawing opens the row's popover as the rest of the row
+    does, and the number opens the case's record."""
+    assert laid
+    shown = page.locator("#frontier-table tbody tr:not([hidden])")
+    recent = page.locator("#frontier-table thead th", has_text="Recent")
+    recent.click()
+    assert recent.get_attribute("aria-sort") == "ascending"
+    assert shown.first.get_attribute("data-recent") == "false"
+    recent.click()
+    assert recent.get_attribute("aria-sort") == "descending"
+    assert shown.first.get_attribute("id") == "n-11"
+    number = page.locator("#frontier-table thead th.site-col-n")
+    number.click()
+    number.click()
+    assert number.get_attribute("aria-sort") == "descending"
+    assert shown.first.get_attribute("id") == "n-324"
+    number.click()
+    assert shown.first.get_attribute("id") == "n-1"
+    # The heading with no words sorts nothing and is no tab stop.
+    assert page.locator("#frontier-table thead th.site-thumb").get_attribute("tabindex") is None
+
+    page.get_by_label("recent only").check()
+    assert page.locator(".site-table-tools .site-count").inner_text() == "27 of 324 cases"
+    assert shown.count() == 27
+    assert shown.first.get_attribute("id") == "n-11"
+    page.get_by_label("recent only").uncheck()
+    assert shown.count() == 324
+
+    row = page.locator("#n-12")
+    row.scroll_into_view_if_needed()
+    row.locator("td.site-thumb svg").click()
+    popover = page.locator("#pop-frontier-n-12")
+    assert popover.is_visible()
+    assert row.get_attribute("aria-expanded") == "true"
+    page.keyboard.press("Escape")
+    assert not popover.is_visible()
+    row.locator("td.site-col-n a").click()
+    record = page.locator("[data-case-popover]")
+    assert record.is_visible()
+    assert not popover.is_visible()
+    assert record.locator("[data-case-expand]").get_attribute("href") == "cases.html#n-12"
+    page.keyboard.press("Escape")
+    assert not record.is_visible()

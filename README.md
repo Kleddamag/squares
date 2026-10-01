@@ -1,4 +1,4 @@
-# The Square Packing Project
+# The Squares Project
 
 <!-- BEGIN SHARED: project-intro (devtools.site_documents) -->
 

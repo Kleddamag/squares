@@ -50,7 +50,7 @@ from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from devtools.render_overview import nav_shell, visualize_tabs
+from devtools.render_overview import PageMeta, head_tags, nav_shell, visualize_tabs
 from workbench_tools.self_contained import assert_self_contained_html
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
@@ -134,6 +134,36 @@ NAV_PAGE = "visualize"
 SECTION_TAB = "workbench"
 #: Where the site's root is from the page: it is served at `workbench/index.html`.
 NAV_ROOT = "../"
+
+
+#: What the published page says of itself in its head: its name, its sentence and the
+#: address it is served at, `workbench/` under the site's root.
+PAGE = PageMeta(
+    name="Workbench",
+    description=(
+        "An interactive workbench for packing unit squares in a square: animate the best "
+        "packings known, or pack any number of squares and move them yourself."
+    ),
+    path="workbench/index.html",
+)
+TITLE = re.compile(r"<title>[^<]*</title>")
+
+
+def with_head(page: str) -> str:
+    """Give the page the site's identity tags in place of the template's bare title.
+
+    The title, the description, the canonical link and the link preview are the site's
+    one set (`render_overview.head_tags`), written from `PAGE`, so a shared link to the
+    workbench previews as every other page of the site does. Like the bar, they are a
+    property of the published page: the candidate the checkers open keeps its own title.
+    Their addresses are absolute and none is a load, so the page stays self-contained
+    and its policy, which grants no network source, is not asked about them.
+    """
+    head = page.find("</head>")
+    found = TITLE.search(page)
+    if found is None or head < 0 or found.start() > head:
+        raise ValueError("could not place the site's head tags; the page has no title")
+    return f"{page[: found.start()]}{head_tags(PAGE)}{page[found.end() :]}"
 
 
 def with_nav(page: str) -> str:
@@ -305,7 +335,9 @@ def build(
             dirty_metadata(dirty=source_dirty() if dirty is None else dirty),
         )
     )
-    marked = with_policy(with_nav(page)).replace("</head>", f"{identity}\n</head>", 1)
+    marked = with_policy(with_nav(with_head(page))).replace(
+        "</head>", f"{identity}\n</head>", 1
+    )
     if identity not in marked:
         raise ValueError("could not stamp the page; it has no </head> to close")
 

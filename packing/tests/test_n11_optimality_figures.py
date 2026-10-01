@@ -51,6 +51,11 @@ def test_geometric_illustrations_are_self_contained_and_source_bound() -> None:
     assert len(witness.findall(f'.//{SVG}polygon[@data-feature="square-outline"]')) == 11
     assert len(witness.findall(f'.//{SVG}rect[@data-feature="container-outline"]')) == 1
     assert "exact Trump construction" in description(witness)
+    # The drawing alone, cut to its container: the atlas's lettered caption and its wide
+    # canvas are gone, and the figure's caption is the article's.
+    assert witness.findall(f".//{SVG}text") == []
+    assert witness.attrib["viewBox"] == "24 24 560 560"
+    assert "width" not in witness.attrib
 
     cover = roots["COVER_SVG"]
     mask = roots["MASK_SVG"]
@@ -122,4 +127,9 @@ def test_closed_cut_labels_and_capacity_use_exact_inputs() -> None:
     cell = capacity.find(f".//{SVG}polygon[@data-capacity-cell]")
     assert cell is not None
     assert 0 < Fraction(cell.attrib["data-diameter-squared"]) < 1
+    # The capacity drawing is the cell and its two disks, with no lettering, and the
+    # caption is told which cell it is by the module that chose it.
+    assert capacity.findall(f".//{SVG}text") == []
+    assert cell.attrib["data-capacity-cell"] == str(figures.CAPACITY_CELL)
+    assert figures.caption_facts() == {"CAPACITY_CELL": str(figures.CAPACITY_CELL)}
     assert "U Trump" not in rendered["WITNESS_SVG"]

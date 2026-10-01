@@ -477,7 +477,7 @@ def test_a_novel_first_party_bound_cites_this_project_and_its_result() -> None:
     line = citations.lower_citation(7, _synthetic_case(["E-ours", "E-paper"]), register)
     assert line is not None
     assert (line["text"], line["basis"], line["result"], line["source_key"]) == (
-        "Square Packing Project (Levy) 2026, result T-900",
+        "Squares Project (Levy) 2026, result T-900",
         "project",
         "T-900",
         None,
@@ -915,7 +915,7 @@ def test_a_project_line_names_the_result_that_carries_its_evidence() -> None:
             continue
         result = results[line["result"]]
         year = str(result["significance"]["scored"])[:4]
-        assert line["text"] == f"Square Packing Project (Levy) {year}, result {line['result']}"
+        assert line["text"] == f"Squares Project (Levy) {year}, result {line['result']}"
         evidence = citations.load_case(entry["n"])["verified_lower_bound"]["evidence"]
         novel = {
             item

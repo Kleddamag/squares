@@ -28,6 +28,7 @@ from devtools.check_results import KINDS, kind_label
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
+    FRONTIER,
     REPO,
     Overview,
     Result,
@@ -52,6 +53,7 @@ from devtools.render_recent_results import (
     Row,
 )
 from devtools.repo_links import branch_file
+from sqpack.yamlio import safe_load
 
 
 def _esc(text: object) -> str:
@@ -577,14 +579,14 @@ def star_legend() -> str:
     )
 
 
-def result_row(result: Result, *, trigger: str, here: bool, starred: bool = False) -> RowDetail:
-    """A result's row popover, the same on every page: its id as the caps label, its
-    summary as the headline, then the result's short detail (`_detail`), which the
-    script replaces with the whole overview, fetched from `result_fragment` when the
-    popover first opens. A row on the results page (`here`) is the result's own row, so
-    its popover has no button; anywhere else it ends in the button to that row. A
-    `starred` row's name ends ", new result", what its star says (`new_result_star`)."""
-    action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
+def result_row(result: Result, *, trigger: str, starred: bool = False) -> RowDetail:
+    """A result's row popover, the same on both tables of results: its id as the caps
+    label, its summary as the headline, then the result's short detail (`_detail`),
+    which the script replaces with the whole overview, fetched from `result_fragment`
+    when the popover first opens. It has no button: the row pressed is the result's
+    row, in either table, and a button from one table to the same row of the other
+    leads nowhere new. A `starred` row's name ends ", new result", what its star says
+    (`new_result_star`)."""
     name = f"{result.id}: {plain_text(result.summary)}"
     return row_detail(
         f"pop-result-{result.id.lower()}",
@@ -593,7 +595,6 @@ def result_row(result: Result, *, trigger: str, here: bool, starred: bool = Fals
         label=result.id,
         title=tex_bounds(result.summary),
         body=_detail(result),
-        action=action,
         source=result_fragment(result.id),
     )
 
@@ -640,8 +641,9 @@ def result_cases(result: Result) -> str:
 def result_facets(result: Result) -> str:
     """A result row's facets as attributes, the same on every table of results, each one
     a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
-    its kind, its standing, whether it is current, which is to say not superseded
-    (`is_superseded`), its cases and the date the table shows."""
+    its kind, the listed projects it is attributed to, as their slugs a space apart
+    (`result_projects`; empty for most rows), its standing, whether it is current, which
+    is to say not superseded (`is_superseded`), its cases and the date the table shows."""
     record = result.record
     return (
         f'data-source="{"ours" if result.ours else "others"}" '
@@ -649,6 +651,7 @@ def result_facets(result: Result) -> str:
         f'data-c="{_esc(record["confirmation"][1:])}" '
         f'data-s="{significance(result)}" '
         f'data-kind="{_esc(record["kind"])}" '
+        f'data-project="{_esc(" ".join(result_projects(result)))}" '
         f'data-standing="{_esc(standing_key(result.standing))}" '
         f'data-current="{"false" if is_superseded(result.standing) else "true"}" '
         f'data-n="{_esc(result_cases(result))}" '
@@ -738,6 +741,14 @@ def result_filters(
     the kinds the register holds, in the rubric's order; a result that claims no bound
     has no standing, so a standing chosen leaves it out.
 
+    Two more controls are preset-only (`data-preset`): Project, which holds a row to one
+    of the listed projects it is attributed to (`has`, against the row's `data-project`),
+    and At significance, which holds it to one S rung exactly. Each is `hidden` in the
+    HTML and starts at all. A link sets them, `all-results.html?project=…&s=4`, as the
+    tallies on the other projects' cards do (`project_tally`), and the script shows a
+    preset control while it filters, so the reader sees what narrows the table and can
+    set it back to All.
+
     A table's `defaults` are where Significance, Max age and "Hide superseded" start;
     every other control starts at all. The tables write the rows outside those defaults
     `hidden` and the bar writes the count of the rows left, so the first paint is the
@@ -768,6 +779,8 @@ def result_filters(
         *((standing_key(standing), standing) for standing in STANDINGS if standing in present),
     ]
     sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
+    projects = [("", ALL), *((project_slug(url), project_name(url)) for url in project_urls())]
+    exact = [("", ALL), *((str(level), f"S{level}") for level in significance_levels())]
     shown = sum(shown_by_default(result, defaults, reference) for result in listed)
     return (
         '<div class="site-table-tools site-result-filters">'
@@ -780,6 +793,10 @@ def result_filters(
         f'min="1"{last} placeholder="any"></label>'
         '<label>Max age <input type="number" data-filter="date" data-bound="age" '
         f'min="0" placeholder="any"{age}> days</label>'
+        '<label hidden>Project <select data-filter="project" data-bound="has" data-preset>'
+        f"{_options(projects)}</select></label>"
+        '<label hidden>At significance <select data-filter="s" data-preset>'
+        f"{_options(exact)}</select></label>"
         '<span class="site-count" data-count data-noun="results" aria-live="polite">'
         f"{count_text(shown, len(listed))}</span></div>"
     )
@@ -827,17 +844,11 @@ def case_list(result: Result) -> str:
     return " ".join(f'<span class="site-n-value">{_esc(value)}</span>' for value in values)
 
 
-def result_text(result: Result, *, here: bool) -> str:
-    """A result's summary as its Result cell sets it: the register's headline, its math
-    typeset. On the results page (`here`) it is plain text, since the row is the
-    result's own. Anywhere else what the summary leads with, its formula, or the whole
-    of a summary that leads with none, links to that row; the words are the same."""
-    if here:
-        return tex_bounds(result.summary)
-    formula, _ = split_summary(result.summary)
-    link = f'<a href="{_esc(result_url(result.id))}">{tex_bounds(formula)}</a>'
-    rest = result.summary[len(formula) :]
-    return link + (tex_bounds(rest) if rest else "")
+def result_text(result: Result) -> str:
+    """A result's summary as its Result cell sets it, in both tables of results: the
+    register's headline, its math typeset. It links nowhere: the row is the result's
+    own in either table, and opens its popover."""
+    return tex_bounds(result.summary)
 
 
 def credit_cell(credit: str) -> str:
@@ -860,7 +871,7 @@ def date_cell(result: Result) -> str:
     return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
 
 
-def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
+def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
     its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
     earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
@@ -868,8 +879,7 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
     (`kind_chip`) and its standing on a line under that where it has one to show
     (`standing_chips`), and its date (`date_cell`). The records are no column of their
     own: a column narrow enough to fit set them a link to a line, and under the summary
-    they take a line or two. The overview's table carries them and does not show them
-    (`site.css`, `.site-recent-table`)."""
+    they take a line or two, in both tables."""
     record = result.record
     standing = standing_chips(result.standing)
     if standing:
@@ -877,7 +887,7 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
     return (
         f"{id_cell(result, detail)}"
         f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
-        f'<td class="site-col-result">{result_text(result, here=here)}'
+        f'<td class="site-col-result">{result_text(result)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
@@ -895,17 +905,18 @@ def result_table_row(
     result: Result, overview: Overview, *, here: bool, shown: bool
 ) -> tuple[str, str]:
     """One result's row in a table of results, and the popover the row opens: the one
-    row both tables write. On the results page (`here`) the row is the result's own
-    address, `id="t-018"`; anywhere else it names the result as `data-result`, since
-    that address is the results page's. A row that is not `shown`, one outside its
-    table's defaults, is `hidden` in the HTML."""
+    row both tables write, the same cells and the same popover. On the results page
+    (`here`) the row is the result's own address, `id="t-018"`; anywhere else it names
+    the result as `data-result`, since that address is the results page's. A row that is
+    not `shown`, one outside its table's defaults, is `hidden` in the HTML. Those two
+    attributes are all a row differs in between the tables."""
     starred = bool(new_result_label(result, overview))
-    detail = result_row(result, trigger=_esc(result.id), here=here, starred=starred)
+    detail = result_row(result, trigger=_esc(result.id), starred=starred)
     key = "id" if here else "data-result"
     row = (
         f'<tr {key}="{_esc(result.id.lower())}" {result_facets(result)} '
         f"{detail.attributes}{'' if shown else ' hidden'}>"
-        f"{result_cells(result, overview, detail, here=here)}</tr>"
+        f"{result_cells(result, overview, detail)}</tr>"
     )
     return row, detail.popover
 
@@ -915,11 +926,11 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
     result as one flat table under `result_head`, newest first (`recent_results`),
     sortable and filterable (`overview/table.js`), and the rows' popovers after it.
 
-    Both pages' tables are this one. They differ in `defaults`, where the bar starts,
-    with a row outside them `hidden` in the HTML, so the first paint is already
-    filtered; and in `here`, which is the results page: there each row is the result's
-    own address, and anywhere else the table is named `site-recent-table` and its rows
-    link to that address (`result_table_row`).
+    Both pages' tables are this one, and they are two filters of it. They differ in
+    `defaults`, where the bar starts, with a row outside them `hidden` in the HTML, so
+    the first paint is already filtered; and in `here`, which is the results page, where
+    each row is the result's own address (`result_table_row`). Every row shows its
+    records and opens its popover in both, and no row of one links to the other.
 
     No heading divides the rows. Whose a result is, and what it builds on, is read from
     its credit (`credit_cell`), and the Source filter narrows the table to this
@@ -935,11 +946,11 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
         )
         body.append(row)
         popovers.append(popover)
-    table = "kpress-table site-table site-results" + ("" if here else " site-recent-table")
     return (
         f'<div class="site-wide">{result_filters(overview, results, defaults)}'
         '<div class="site-table-wrap">'
-        f'<table class="{table}" data-site-table>{result_head()}'
+        '<table class="kpress-table site-table site-results" data-site-table>'
+        f"{result_head()}"
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
     )
 
@@ -1119,11 +1130,6 @@ def verification_block() -> str:
     )
 
 
-#: A summary that leads with its formula: the formula, then the method after "by", then
-#: a trailing ", reported" that the standing chips already say.
-_LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
-
-
 def recent_results(overview: Overview) -> list[Result]:
     """Every result, newest first: by the date the table shows, then by id. It is the
     order of both tables of results. What makes the overview's table recent is its
@@ -1149,17 +1155,6 @@ def rung_chips(result: Result) -> str:
     """A result's rung chips, S, V and C, a space apart: the one place their order is
     set, for a table's row, a popover, a result's overview and a case record."""
     return " ".join(_rung(rung) for rung in result_rungs(result))
-
-
-def split_summary(summary: str) -> tuple[str, str]:
-    """A summary as its result and its method: `` `s(21) = 5` by a point-only route ``
-    is the formula and "point-only route". A summary that does not lead with one
-    formula, such as a batch of counts, is all result and no method. A table of results
-    shows the summary whole and links what it leads with (`result_text`)."""
-    match = _LEADING_FORMULA.fullmatch(summary)
-    if not match:
-        return summary, ""
-    return match.group(1), match.group("method") or ""
 
 
 def standing_chips(standing: str) -> str:
@@ -1189,8 +1184,8 @@ def status_chips(result: Result) -> str:
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
     """The overview's Recent Results: the results page's table (`table_of_results`), its
-    bar starting at the recent defaults, each row opening the result's popover, which
-    ends in the button to the result's row on the results page."""
+    bar starting at the recent defaults. The line under it, "See all results", is the
+    one link from this table to the other."""
     return table_of_results(overview, defaults, here=False)
 
 
@@ -1311,7 +1306,7 @@ def awaiting_replay(overview: Overview) -> str:
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
     (
         repo_links.README,
-        "The Square Packing Project",
+        "The Squares Project",
         "What the project is, how it works, and where to start.",
     ),
     (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
@@ -1650,6 +1645,7 @@ def link_card(
     hero: str = "",
     size: CardSize | None = None,
     new_tab: bool = True,
+    foot: str = "",
 ) -> str:
     """A card that is itself the link, with no popover: for a place whose address, or
     whose picture, is the whole of what a preview would say, and for a full page of this
@@ -1665,6 +1661,12 @@ def link_card(
     arrow for a page or file of this site, the external arrow for a place off it. An
     address off the site is shown under the note beside the host's mark; a PDF is typed
     as one, so the browser opens it in place.
+
+    `foot` is a closing line that holds links of its own, such as a project's tally of
+    results. A link cannot hold a link, so a card with a foot is a box, `div.site-card`,
+    holding the card's link (`site-card-main`, everything above the foot) and then the
+    foot (`site-card-foot`), inside the one border. It sizes, washes and shows its
+    corner icon as every card does (`site.css`).
     """
     kind = card_kind(url)
     if not new_tab and not is_site_page(url):
@@ -1678,32 +1680,227 @@ def link_card(
             f'<span class="site-card-url">{link_icon(url)}'
             f"<span>{_breakable(shown)}</span></span>"
         )
-    return (
-        f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
-        f"{_size_attribute(size, value, note, address)}{tab}>"
+    body = (
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value"{headline_math_face(value)}>{value}</span>'
         f'<span class="site-card-note">{note}</span>'
         f"{address}"
-        "</a>"
+    )
+    sized = _size_attribute(size, value, note, address)
+    if foot:
+        return (
+            f'<div class="site-card site-card-footed" data-go="{kind}" {sized}>'
+            f'<a class="site-card-link site-card-main" href="{_esc(url)}"{typed}{tab}>'
+            f'{body}</a><p class="site-card-foot">{foot}</p></div>'
+        )
+    return (
+        f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
+        f"{sized}{tab}>{body}</a>"
     )
 
 
-def other_project_cards() -> str:
-    """One card per other project: its repository's name, its author, what it holds and
-    its address. Each card is the link itself, opening the project in a new tab. The note
-    is prose like a page card's, so a case it names (`n = 21`) is set as math."""
+#: Where a listed project's results are attributed under a bibliography key that the
+#: source-coverage register ties to no repository of its own. The September 20 packet
+#: of weighted certificates is two repositories under one key, Guzhou0806's R012 and
+#: Mira's measure; Guzhou0806's is listed here, so the result registered from the packet
+#: counts for it.
+PROJECT_EXTRA_KEYS: dict[str, tuple[str, ...]] = {
+    "https://github.com/Guzhou0806/n17-square-packing": (
+        "[n17 weighted certificates 2026-09-20]",
+    ),
+}
+
+#: The source-coverage register: each source repository the record reviews, with the
+#: bibliography key its results are attributed under.
+SOURCE_COVERAGE = FRONTIER / "source-coverage.yaml"
+
+
+def project_urls() -> tuple[str, ...]:
+    """The listed projects' repositories, in the order `OTHER_PROJECTS` writes them,
+    which is not the order the page shows them in (`project_order`)."""
+    return tuple(url for url, _, _ in OTHER_PROJECTS)
+
+
+def project_name(url: str) -> str:
+    """A project as its owner and repository, `evand/square-packing`: the name the
+    Project filter shows, since three of the repositories are called `square-packing`."""
+    return urlsplit(url).path.strip("/")
+
+
+def project_slug(url: str) -> str:
+    """A project as the slug its results' rows carry (`data-project`) and a link names
+    (`?project=`): its owner and repository in lower case, joined by a hyphen."""
+    return re.sub(r"[^a-z0-9]+", "-", project_name(url).lower()).strip("-")
+
+
+def source_repository(url: str) -> str:
+    """A source's address as its repository's: a revision or a directory under it,
+    `/tree/…`, names the same project."""
+    return re.sub(r"/tree/.*", "", url).rstrip("/")
+
+
+@cache
+def project_source_keys() -> dict[str, frozenset[str]]:
+    """Each listed project's bibliography keys: those the source-coverage register gives
+    the sources at its repository, and those `PROJECT_EXTRA_KEYS` adds. A result is a
+    project's where its `attribution.source_keys` names one of them."""
+    coverage = safe_load(SOURCE_COVERAGE.read_text(encoding="utf-8"))["sources"]
+    keys: dict[str, set[str]] = {
+        url: set(PROJECT_EXTRA_KEYS.get(url, ())) for url in project_urls()
+    }
+    for source in coverage:
+        repository = source_repository(source["url"])
+        if repository in keys and source.get("source_key"):
+            keys[repository].add(source["source_key"])
+    return {url: frozenset(found) for url, found in keys.items()}
+
+
+def result_projects(result: Result) -> tuple[str, ...]:
+    """The slugs of the listed projects a result is attributed to, in the list's order.
+    A result attributed to sources of several projects is each one's; this project's
+    results, and a result by others whose source no listed project holds, are none's."""
+    cited = set((result.record.get("attribution") or {}).get("source_keys") or ())
+    return tuple(
+        project_slug(url) for url, keys in project_source_keys().items() if cited & keys
+    )
+
+
+def significance_levels() -> tuple[int, ...]:
+    """The significance rubric's levels, the highest first: 5 down to 1."""
+    return tuple(sorted((level for level, _ in rubric_levels()["S"]), reverse=True))
+
+
+class Cited(NamedTuple):
+    """One registered result as the projects' order reads it: its id, its S rung, the
+    date its row shows, and the projects it is attributed to, by any hashable name."""
+
+    id: str
+    level: int
+    dated: str
+    projects: tuple[str, ...]
+
+
+class ProjectTally(NamedTuple):
+    """The results the register cites from one project: their ids in the order given,
+    how many stand at each significance level, the highest level first and every level
+    present, and the date of the newest, empty where there is none."""
+
+    results: tuple[str, ...]
+    counts: tuple[tuple[int, int], ...]
+    latest: str
+
+
+def project_tallies(
+    projects: Sequence[str], results: Iterable[Cited], levels: Sequence[int]
+) -> dict[str, ProjectTally]:
+    """Each project's tally over `results`. A result attributed to several projects
+    counts once for each of them."""
+    cited = list(results)
+    tallies = {}
+    for project in projects:
+        own = [result for result in cited if project in result.projects]
+        tallies[project] = ProjectTally(
+            tuple(result.id for result in own),
+            tuple((level, sum(result.level == level for result in own)) for level in levels),
+            max((result.dated for result in own), default=""),
+        )
+    return tallies
+
+
+def project_order(tallies: dict[str, ProjectTally], names: dict[str, str]) -> list[str]:
+    """The projects by the significance of the results the register cites from each (the
+    owner, 2026-10-01): by how many stand at the highest level, then at the next, and so
+    down the scale, more first at each, compared in that order, so any project with a
+    result at a level stands before every project with none at it or above. Projects
+    level on every count stand by their newest result, the most recent first, and then
+    by name. A project with no registered result has every count at zero and no date, so
+    it comes after all the others, by name."""
+
+    def newest_first(dated: str) -> int:
+        return -date.fromisoformat(dated).toordinal() if dated else 0
+
+    return sorted(
+        tallies,
+        key=lambda project: (
+            tuple(-count for _, count in tallies[project].counts),
+            newest_first(tallies[project].latest),
+            names[project].lower(),
+            project,
+        ),
+    )
+
+
+def cited_results(overview: Overview) -> list[Cited]:
+    """The register's results as `project_tallies` reads them: each with its S rung, the
+    date its row shows (`Result.dated`, to the day) and the slugs of its projects."""
+    return [
+        Cited(
+            result.id, significance(result), first_day(result.dated[1]), result_projects(result)
+        )
+        for result in overview.results
+    ]
+
+
+def repository_name(url: str) -> str:
+    """A project's repository by its name alone, a card's headline."""
+    return urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
+
+
+def ranked_projects(overview: Overview) -> list[tuple[str, ProjectTally]]:
+    """The listed projects in the order the page shows them, each with its tally: read
+    from the register when the page is rendered, never kept by hand."""
+    slugs = {project_slug(url): url for url in project_urls()}
+    tallies = project_tallies(list(slugs), cited_results(overview), significance_levels())
+    names = {slug: repository_name(url) for slug, url in slugs.items()}
+    return [(slugs[slug], tallies[slug]) for slug in project_order(tallies, names)]
+
+
+def results_filter_url(project: str, level: int | None = None) -> str:
+    """The results page opened on one project's results, and on those at one S rung with
+    `level`: the Project and At significance presets of the bar (`result_filters`). The
+    page's own defaults hide no result, so the link clears nothing."""
+    exact = "" if level is None else f"&s={level}"
+    return f"{RESULTS_PAGE}?project={project}{exact}"
+
+
+def project_tally(url: str, tally: ProjectTally) -> str:
+    """A project card's closing line, its results in the register: the total, then in
+    parentheses the count at each significance level that has one, the highest first,
+    `6 results (3 at S4, 3 at S3)`. The total links to the results table filtered to the
+    project, and each count to the same table at that level. A project with one level
+    keeps the parentheses, so every tally reads the same way and names its level. A
+    project with no registered result has no line."""
+    total = len(tally.results)
+    if not total:
+        return ""
+    slug = project_slug(url)
+    counts = ", ".join(
+        f'<a href="{_esc(results_filter_url(slug, level))}">{count} at S{level}</a>'
+        for level, count in tally.counts
+        if count
+    )
+    noun = "result" if total == 1 else "results"
+    return f'<a href="{_esc(results_filter_url(slug))}">{total} {noun}</a> ({counts})'
+
+
+def other_project_cards(overview: Overview) -> str:
+    """One card per other project, in `project_order`: its repository's name, its author,
+    what it holds and its address, and at its foot its tally of registered results
+    (`project_tally`). Each card's link opens the project in a new tab. The note is prose
+    like a page card's, so a case it names (`n = 21`) is set as math."""
+    listed = {url: (author, note) for url, author, note in OTHER_PROJECTS}
     cards = []
-    for url, author, note in OTHER_PROJECTS:
-        name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
+    for url, tally in ranked_projects(overview):
+        author, note = listed[url]
         cards.append(
             link_card(
                 url,
                 f"By {author}",
-                _esc(name),
+                _esc(repository_name(url)),
                 tex_bounds(note),
                 size=SECTION_CARD_SIZES["projects"],
+                foot=project_tally(url, tally),
             )
         )
     return _cards(cards)

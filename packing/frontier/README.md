@@ -124,10 +124,10 @@ The ones that carry the most weight:
 - `verified_upper_bound` and `verified_lower_bound` contain only formally supported
   bounds. They are a ceiling and a floor, not the value of $s(n)$. The certified ceiling
   may be a weaker rational construction or the exact grid when the tighter public pose
-  is only numerical: for 83 of the 324 cases it is *larger* than the best-known side
+  is only numerical: for 82 of the 324 cases it is *larger* than the best-known side
   recorded two fields above it by more than that side’s printed precision allows, by up
   to $0.46$, and each of those cases says so in its own body and carries a `mathematics`
-  blocker. In 44 more it sits above the printed side by no more than one unit of its last
+  blocker. In 45 more it sits above the printed side by no more than one unit of its last
   place, which `bounds_agree_at_declared_precision` reads as the same bound: 26 of them
   are Couzo’s packings certified here (T-056), whose exact sides round up past the
   fifteen decimals the source prints.

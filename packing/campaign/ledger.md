@@ -179,6 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
 
 ### Workflow summary
 
@@ -187,15 +188,15 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | workflow | declared entries | retrospective entries | declared phases | retrospective phases |
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
-| `factual-review` | 11 | 1 | 63 | 3 |
-| `insight-iteration` | 27 | 1 | 84 | 4 |
+| `factual-review` | 11 | 1 | 66 | 3 |
+| `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
-| `efficiency-loop` | 11 | 1 | 37 | 1 |
-| `research-loop` | 31 | 4 | 108 | 8 |
-| `pipeline-improvement` | 38 | 2 | 198 | 6 |
-| `documentation-pass` | 1 | 0 | 25 | 3 |
+| `efficiency-loop` | 11 | 1 | 40 | 1 |
+| `research-loop` | 31 | 4 | 115 | 8 |
+| `pipeline-improvement` | 38 | 2 | 208 | 6 |
+| `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 35 | 2 |
+| `review-planning-oversight` | 6 | 0 | 40 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -857,12 +858,20 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-394 | research | 82, 50 | ready | 1 | think-pr2b | The ladder logs and certificate directories, then the replay receipts. |
 | BC-395 | research | 12 | ready | 2 | think-ujwy | The ladder log and the highest certificate directory. |
 | BC-396 | research | 45 | blocked | 1 | think-0g4t | The k = 7 cover, both censuses and the review. |
+| BC-397 | measurement_validation | 17 | complete | 0 | think-08sm | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md |
+| BC-398 | research | 17 | complete | 0 | think-j516 | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md |
+| BC-399 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md |
+| BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
+| BC-401 | research | 17 | complete | 0 | think-6dg0 | packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md |
+| BC-402 | research | 17 | blocked | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
+| BC-403 | research | 17 | complete | 0 | think-70sf | packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md |
+| BC-404 | research | 17 | complete | 0 | think-gr22 | packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 163 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 170 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1055,6 +1064,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-250 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-251 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-252 | blocked | proof | A D4-invariant weighted point set in [0,7]^2 with rational weights and |  | 0 |  |  |
+| H-253 | confirmed | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  | 8s wall |
+| H-254 | confirmed | proof | The proposed three-variable endpoint equality chart, including its exp |  | 1 |  | 1s wall |
+| H-255 | confirmed | proof | The two exact n17 chart polynomials have a unique real root in the fix |  | 1 |  | 1s wall |
+| H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 |  | 43s wall |
+| H-257 | confirmed | proof | At the accepted H255 root and H256 centroid packing, all owner-axis al |  | 1 |  | 42s wall |
+| H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
+| H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
+| H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1194,7 +1211,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (46)
+### accepted (53)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1244,6 +1261,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-228 | series-000 | 11 | Claude Session 156, Opus extra-high lane | H-238 | The census found none, and every apparent candidate was refuted by an exact descending packing; this confirms H-238 at its declared census scope only, since descent-stability is empirical and starts are jolts of at most 0.3 about two known packings. |
 | exp-229 | series-000 | 21 | Claude Session 156, Opus high lane | H-240 | Both routes accept set C's certificate at least cell mass 250001/250000 with total mass 20.145724 < 21, so the gate certifies the covering at side 122/25. The Fable max W2 review H-240 requires accepted it on three routes, and it is registered as T-034. |
 | exp-232 | series-000 | 11 | Claude Session 157 coordinator | H-236 | The independent reader closes all 256 subtrees with no unresolved leaf and three Trump-degenerate leaves, so every packing of six axis-aligned squares and five at a common tilt within 10^-6 of Trump's half-tangent has side at least U, with equality only on Trump's orbit; the local theorem it relies on is BC-240, accepted at retained-record-dependent scope pending BC-241, and the certificate tree itself (5.5 GB) is retained outside the record. The Fable max W2 review of 2026-09-24 accepted it, and it is registered as T-035 (the reduction) and T-036 (the composed theorem). |
+| exp-235 | series-000 | 17 | Codex Session165 coordinator | H-253 | The frozen exact source, two local geometry implementations, independent mapping audit and all positive/negative controls agree. Acceptance is only of the rational upper witness. |
+| exp-236 | series-000 | 17 | Codex Session165 coordinator | H-254 | All458 frozen comparisons pass with complete independently audited coverage and controlled instrument. Acceptance establishes fidelity at the relaxed rational source only. |
+| exp-237 | series-000 | 17 | Codex Session165 coordinator | H-255 | Exact root existence and uniqueness in the fixed box are established by both implementations and independent output review. Endpoint packing feasibility and global capture remain separate. |
+| exp-238 | series-000 | 17 | Codex Session165 coordinator | H-256 | The exact root now has a certified17-square endpoint packing at fixed centroid sliders. All frozen obligations pass independent output review; global and split-orientation capture remain separate. |
+| exp-239 | series-000 | 17 | Codex Session165 coordinator | H-257 | The exact-root geometric feature inventory is complete and independently audited. The two-branch first-order model now has its feature premises; stationarity and higher-order/global arguments remain separate. |
+| exp-240 | series-000 | 17 | Codex Session165 coordinator | H-259 | Reviewed complete cover and exact census agree independently. Raw occupancy reduction only; geometric realization and exclusion remain open. |
+| exp-241 | series-000 | 17 | Codex Session165 coordinator | H-260 | Complete independent eight-term audit and closed-assignment cover review pass. Necessaryoccupancyorbits only; no geometriccaseexcluded ornewbound. |
 
 ### baseline (12)
 
@@ -1308,7 +1332,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-163 rounds, 2512.1 agent-minutes, 4019.2 wall-minutes.
+170 rounds, 2512.1 agent-minutes, 4020.8 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

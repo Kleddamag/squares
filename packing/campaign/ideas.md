@@ -49,7 +49,40 @@ Budgets are in **pair-tests**, tiers S/M/L = `1e9`/`1e11`/`1e13`.
 
 ## Orientation
 
-The [current certified bracket](../frontier/n-011.md) is
+The next owner-requested W3 entry is
+[X-048: Optimality Routes After n = 11](explorations/X-048-n17-optimality-after-n11.md),
+with its
+[session plan](../../docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md).
+At the plan’s merged-main baseline, n11 and n21 are settled in the machine-checked
+record; n17 is the primary new target and n12 is secondary.
+The older n11 bracket and route premises below describe the historical program and must
+be reconciled before selecting its unfinished tasks.
+
+| Idea | Status | Crux |
+| --- | --- | --- |
+| [X-048 R1: n17 endpoint family](explorations/X-048-n17-optimality-after-n11.md#r1-verify-the-candidate-and-describe-its-endpoint-family) | shaped | Certify a flexible candidate and a uniform side inequality |
+| [Retained n17 rational upper witness](hypotheses/H-253-n17-retained-rational-upper.md) | registered | H-253 tests the archived exact certificate using independent local checkers at its fixed rational side |
+| [n17 endpoint contact-chart fidelity](hypotheses/H-254-n17-contact-chart-fidelity.md) | registered | H-254 tests exact residuals and contact-feature separation at the retained rational witness; root certification and capture remain separate |
+| [n17 exact polynomial root](hypotheses/H-255-n17-exact-polynomial-root.md) | registered | H-255 fixes a rational box and exact contraction certificate; separate producer and checker precede any target computation |
+| [n17 exact endpoint feasibility](hypotheses/H-256-n17-exact-endpoint-feasibility.md) | registered | H-256 uses the accepted exact root and a fixed interior slider choice; complete wall and pair coverage precedes any endpoint claim |
+| [n17 endpoint contact features](hypotheses/H-257-n17-endpoint-contact-features.md) | registered | H-257 audits every owner-axis alternative and active-wall corner before a complete first-order branch argument |
+| [n17 common-core stress](hypotheses/H-258-n17-common-core-stress.md) | registered | H-258 fixes a deterministic exact dual for the complete two-branch first-order model; no optimizer or fitted stress |
+| [n17 mixed-capacity cover](hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | H-259 proves a wall-aware5by5capacity cover and quantifies its exact occupancy census without geometric exclusions |
+| [X-048 R2: occupancy decomposition](explorations/X-048-n17-optimality-after-n11.md#r2-build-a-small-occupancy-problem-before-a-large-search) | shaped | Compress a complete centre cover before geometric enumeration |
+| [X-048 R3: charge compatibility](explorations/X-048-n17-optimality-after-n11.md#r3-turn-r068-saturation-into-constraints-on-joint-placements) | shaped | Prove low-charge pose classes cannot all coexist |
+| [X-048 R4: capacity-one ceiling](explorations/X-048-n17-optimality-after-n11.md#r4-establish-the-limit-of-the-present-certificate-architecture) | registered | Existing H-248 owns the weighted-clique architecture discriminator |
+| [X-048 R5: necessary backbone](explorations/X-048-n17-optimality-after-n11.md#r5-prove-a-backbone-without-assuming-the-catalogue-picture) | shaped | Test a global structural lemma with its quantifier explicit |
+| [X-048 R6: local certificate hierarchy](explorations/X-048-n17-optimality-after-n11.md#r6-a-hierarchy-of-local-certificates-with-global-coverage) | shaped | Strengthen relaxations only on unresolved cases |
+| [X-048 R7: endpoint measure](explorations/X-048-n17-optimality-after-n11.md#r7-try-a-direct-endpoint-measure) | shaped | Closed-square charge and dilation may close an algebraic endpoint |
+| [X-048 R8: richer resources](explorations/X-048-n17-optimality-after-n11.md#r8-change-the-certificate-features-then-measure-their-value) | shaped | Test new features against a frozen finite primal/dual control |
+| [X-048 R9: subconfiguration cuts](explorations/X-048-n17-optimality-after-n11.md#r9-use-settled-small-cases-as-subconfiguration-cuts) | shaped | Transfer settled cases through proved whole-square containment |
+| [X-048 low-n alternatives](explorations/X-048-n17-optimality-after-n11.md#other-low-cases) | shaped | n12 conditional occupancy first; audit reported additive obstructions before transferring n21’s method |
+| [X-048 exact limiting configurations](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | shaped | Derive exact contact-family constraints before sampling endpoint covers |
+| [X-048 continuum clique resources](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | shaped | Test uniform charge across grazing contacts, using the existing evand construction |
+| [X-048 higher-order obstructions](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | raw | Resolve zero-margin local plateaus beyond first-order constraints |
+| [X-048 periodic deficit-four family](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | parked | Require exact deficit D > 1 before selecting the costly width-three coverage campaign |
+
+The historical starting bracket for the program below was
 `3.875 < s(11) <= 3.877083590022814177...`. The strict lower end is Kleddamag’s verified
 $31/8$ certificate. The upper end is Walter Trump’s 1979 packing — six axis-aligned
 squares plus a tightly constrained block of five tilted at $\approx40.1819^\circ$ — and
@@ -811,7 +844,7 @@ these rows as BC-393 to BC-395 and retargeted BC-387.
 | 263 | The Kleddamag/Guzhou mixed family applied at n18..21 | not selected | — | The rectangle route leads there by 0.015 to 0.1 and the point parent-core lock at n18 was 4.68 < 4.695; the mixed producer would have to beat both before it earns a run. |
 | 264 | Daniel’s zero-margin closed cover transferred upward in k: s(45) = 7, then n60, n77, n96 | registered | [H-252](hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md) | s(32) = 6 by a cover of mass 31.71 checked at margin zero; the same construction fell short at k = 5 (4.995) and k = 4 (3.968616, cover LP pinned at 12.000). About 4 CPU-h per cover at k = 7. Blocked on the intake review. |
 | 265 | Exact replay of the reported upper-bound packings for n = 68..307 (franciscouzo, griffcass, JoostdeWinter n211) | done 2026-09-29: T-056 and T-057 at V4/C3 | — | All 49 of Couzo’s packings and de Winter’s n211 promote at centre dilation 1 and pass the independent checker; the verified lane carries them, with conflicts at n = 206, 259, 305 where the certificate sits 2–3 units of the 15th decimal above the printed side. Casson’s 39 are larger at every shared n, so retained and superseded, not replayed. `devtools.upper_bound_packets`, the three packets under `resources/web/`, issue #227. |
-| 266 | A zero-margin cover at the n12 endpoint | dead by Daniel’s record | — | The pure weighted-cover LP at side 4 sits at exactly 12.000 on every pose set evand tried (notes/n12-gap.md §4.1); the rectangle ladder (row 260) is the route left at n12. |
+| 266 | A zero-margin additive spatial cover at the n12 endpoint | restricted by a reported exact dual; replay pending | — | Updated 2026-10-01: Daniel publishes a side-4 fractional packing of mass 24537607710/1999999999 > 12. If its closed-depth bound is reproduced, it rules out any nonnegative additive spatial cover of total mass below 12 that assigns mass at least one to every admissible closed unit square; point, segment and area covers are all included. The earlier measured LP plateau alone did not prove this. Guarded replay is think-q5tt; conditional and clique resources remain separate routes in [X-048](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review). |
 
 ## Dead ends
 
@@ -859,6 +892,10 @@ This section is why the campaign does not rediscover its own mistakes.
   here needs `V4/C3`, and a T-id needs two-route C4. An SDP solver would be a new
   dependency without a confirmation path.
   Reopen only with an owner-approved exact PSD route.
+
+The [closed-cell symmetry follow-up](hypotheses/H-260-n17-closed-cell-symmetry.md) is
+preregistered; its geometric coverage uses existential assignments without lex-priority
+seam exclusions.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

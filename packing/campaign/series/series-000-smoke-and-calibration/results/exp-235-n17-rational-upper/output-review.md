@@ -27,31 +27,39 @@ import json
 import yaml
 
 assert __debug__
-p = Path('campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001')
-src = json.loads(Path('resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/upper-packing-certificate.json').read_text())
-w = yaml.safe_load((p / 'witness.yaml').read_text())['witness']
-assert w['n'] == len(w['squares']) == len(src['squares']) == 17
-assert F(w['side']) == F(src['side']) == F('4675530093604551/1000000000000000')
-assert w['square_size'] == '1'
-for index, (a, b) in enumerate(zip(src['squares'], w['squares'], strict=True), 1):
-    assert b['id'] == index
-    pts = [tuple(map(F, v)) for v in b['corners']]
-    x, y, t = (F(a[k]) for k in ('x', 'y', 't'))
+p = Path(
+    "campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001"
+)
+src = json.loads(
+    Path(
+        "resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/upper-packing-certificate.json"
+    ).read_text()
+)
+w = yaml.safe_load((p / "witness.yaml").read_text())["witness"]
+assert w["n"] == len(w["squares"]) == len(src["squares"]) == 17
+assert F(w["side"]) == F(src["side"]) == F("4675530093604551/1000000000000000")
+assert w["square_size"] == "1"
+for index, (a, b) in enumerate(zip(src["squares"], w["squares"], strict=True), 1):
+    assert b["id"] == index
+    pts = [tuple(map(F, v)) for v in b["corners"]]
+    x, y, t = (F(a[k]) for k in ("x", "y", "t"))
     assert tuple(sum(v[j] for v in pts) / 4 for j in (0, 1)) == (x, y)
     u = tuple(pts[1][j] - pts[0][j] for j in (0, 1))
     v = tuple(pts[2][j] - pts[1][j] for j in (0, 1))
-    assert u == ((1-t*t)/(1+t*t), 2*t/(1+t*t))
+    assert u == ((1 - t * t) / (1 + t * t), 2 * t / (1 + t * t))
     assert v == (-u[1], u[0])
     assert t == u[1] / (1 + u[0])
     assert tuple(pts[3][j] + u[j] for j in (0, 1)) == pts[2]
-r = json.loads((p / 'target-main.stdout').read_text())
-assert r['verification_passed'] and r['n'] == 17 and r['pairs_tested'] == 136 and not r['failures']
-assert F(r['side']) == F(w['side'])
-text = (p / 'target-independent.stdout').read_text()
-assert 'VERIFIED: 17 squares, 136 pairs' in text
-assert 'minimum pair gap: ' + r['minimum_best_pair_gap'] in text
-assert F(r['minimum_best_pair_gap']) > 0 and F(r['minimum_containment_clearance']) > 0
-assert max(q.stat().st_size for q in p.iterdir() if q.is_file()) < 10*1024*1024
+r = json.loads((p / "target-main.stdout").read_text())
+assert (
+    r["verification_passed"] and r["n"] == 17 and r["pairs_tested"] == 136 and not r["failures"]
+)
+assert F(r["side"]) == F(w["side"])
+text = (p / "target-independent.stdout").read_text()
+assert "VERIFIED: 17 squares, 136 pairs" in text
+assert "minimum pair gap: " + r["minimum_best_pair_gap"] in text
+assert F(r["minimum_best_pair_gap"]) > 0 and F(r["minimum_containment_clearance"]) > 0
+assert max(q.stat().st_size for q in p.iterdir() if q.is_file()) < 10 * 1024 * 1024
 ```
 
 The audit passed all 17 rows; maximum retained output was `witness.yaml`, 32,223 bytes.

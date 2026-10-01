@@ -1,5 +1,5 @@
 ---
-title: Session 165 — Post-optimality n17 research
+title: "Session 165 \u2014 Post-optimality n17 research"
 softschema:
   contract: packing.squares:AgentSession/v2
   schema: ../schemas/agent-session.schema.yaml
@@ -107,8 +107,8 @@ session:
       campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001
     kill_condition: Unexpected control status, timeout, source mismatch or target checker rejection.
     fallback: Retain refusal and no accepted scientific verdict.
-    outcome: All8 command statuses match, both local exact checkers accept 17 squares and136 pairs at the
-      exact side, and source checker agrees. Measured command wall sum7.91s, target-independent0.36s;
+    outcome: All8 command statuses match, both local exact checkers accept 17 squares and136 pairs at
+      the exact side, and source checker agrees. Measured command wall sum7.91s, target-independent0.36s;
       source output still requires W2 review.
     evidence:
     - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
@@ -167,7 +167,7 @@ session:
     clock_role: work
     objective: Publish the accepted exact-upper replay, checker repair and next mathematical queue without
       closing the overnight session.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: The first bounded experiment and independent review are complete.
     budget_minutes: 15
@@ -177,10 +177,64 @@ session:
     validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
     kill_condition: A focused consistency check rejects the evidence record.
     fallback: Repair the named record mismatch without new target measurements.
+    outcome: Checkpoint1c90d7af4 pushed with full exp235 evidence, portable witness and D510/D511 fixes.
+      PR265 description and review comment updated; focused checks pass, hosted checks running in parallel.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
+    stop_reason: Recoverable evidence and queue published; hosted CI proceeds asynchronously.
+    next_action: Fresh independent Astra max chart derivation while hosted checks run.
+  - workflow: insight-iteration
+    focus: insight
+    recording: contemporaneous
+    clock_role: work
+    bead: think-j516
+    objective: Have a fresh Astra max reviewer derive and challenge the candidate n17 contact chart before
+      numerical testing.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: Rational feasibility is independently established; chart validity is the next named
+      mathematical obligation.
+    budget_minutes: 10
+    started_at: '2026-10-01T11:01:00Z'
+    deadline_at: '2026-10-01T11:11:00Z'
+    expected_output: Independent contact-feature derivation or exact counterexample, with a proposed frozen
+      fidelity criterion.
+    validation_command: Compare the derivation with the retained witness and proposed equations; no target
+      numerical experiment is selected.
+    kill_condition: A chart sign, contact-label or necessary-domain mismatch is found.
+    fallback: Record the correction and retain the chart unvalidated until a separately registered test.
+    outcome: Fresh Astra max independently derived all three equations and their support-sign assumptions.
+      The equality chart is consistent, but no necessary contact capture or local/global minimality follows.
+      Full reconstruction additionally requires an explicit tangential contact for square11.
+    evidence:
+    - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    stop_reason: Independent symbolic derivation complete; no target arithmetic executed.
+    next_action: Freeze H254 contact fidelity, complete the contact table and implement its exact residual
+      instrument.
+  - workflow: review-planning-oversight
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-j516
+    objective: Freeze H254 domain, residual criterion and contact reconstruction before target execution;
+      repair bounded integration failures concurrently.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Independent equations are consistent; a cheap source-fidelity test can locate any feature
+      mismatch before root isolation.
+    budget_minutes: 15
+    started_at: '2026-10-01T11:10:00Z'
+    deadline_at: '2026-10-01T11:25:00Z'
+    expected_output: H254 and BC398 with immutable clauses and reviewed complete contact table; reusable
+      Python replay and refreshed views.
+    validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
+    kill_condition: No complete reconstruction or controlled instrument can be specified within the slice.
+    fallback: Retain H254 blocked and continue independent symbolic obligations.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Commit receipts, run focused push checks and publish; then start think-j516.
+    next_action: Complete contact table, then delegate bounded instrument implementation; no target arithmetic
+      before committed readiness.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -292,6 +346,7 @@ session:
   - packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
   - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
   - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
+  - packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
   checks:
   - Both PR265 and PR267 scheduled checks pass at the launch heads fb0fc2332 and a02703f13; conditional
     jobs skipped by scope are not claimed as executed.
@@ -304,9 +359,11 @@ session:
     implementation and controlled execution.
   - Astra independent mapping audit passed in 0.208s command wall; source and exact-output fidelity confirmed
     without repeating pair verification.
+  - Hosted CI at1c90d7af4 found synopsis/agenda/session-cost view drift, an unformatted audit code block
+    and a prohibited shell entrypoint. Corrections are isolated from accepted run-001 evidence.
   stop_reason: null
-  next_action: Complete output review, publish exp235, then select think-j516 endpoint-chart work; think-vdmf
-    owns separate frontier admission.
+  next_action: Await fresh Astra max chart derivation under think-j516; then preregister a bounded test.
+    PR265 CI runs asynchronously; no target replay needs repeating.
 ---
 # Session 165: Post-optimality Research
 
@@ -340,11 +397,12 @@ endpoint or global optimality.
 
 The preregistered
 [exp-235](../series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md)
-names the exact supervised command; its retained `replay.sh` contains all four controls,
+names the original supervised command, retained at its frozen instrument commit.
+The reusable `devtools.replay_n17_rational_upper` entrypoint contains all four controls,
 the expected count17 and rational side, conversion, both local checkers and source
-replay. Run it only after committing the reviewed adapter and coordinate-contract fix.
+replay. Use a fresh output directory for any rerun; the original run-001 is immutable.
 Its outputs retain command lines, exits, wall/CPU/memory receipts and source/Git
-identity. The script unsets `PYTHONOPTIMIZE` and confirms assertions are active.
+identity. The launcher unsets `PYTHONOPTIMIZE` and confirms assertions are active.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

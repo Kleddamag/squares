@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 164 | 102 completed; 62 stopped; all terminal |
-| Explorations | 46 | 26 linked to proposed hypotheses; 20 uncodified |
-| Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Commitments | 387 | 195 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
+| Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
+| Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
+| Hypotheses | 189 | 33 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 164 | 47 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5231,6 +5231,8 @@ round that names the hypothesis, control roles included.
 | [H-250](packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md) | open | A rectangle-density certificate with mass below 50 at 73/10, the row wand125’s ladder left at 1 + √37 (BC-394) | 0 | — |
 | [H-251](packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md) | open | A rectangle-density certificate with mass below 82 at 93/10, covering n = 82..85 by mass against Nagamochi’s 1 + √(n − 17) (BC-394) | 0 | — |
 | [H-252](packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md) | blocked | Evan Daniel’s zero-margin closed cover carried to k = 7: a cover of [0,7]² with mass below 45, so s(45) = 7; blocked on the intake lane’s review of the s(32) certificate (BC-396) | 0 | — |
+| [H-253](packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md) | confirmed | The retained Kleddamag rational reconstruction contains seventeen unit squares at exact side 4675530093604551/1000000000000000 | 1 | 8s wall |
+| [H-254](packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md) | blocked | The proposed three-variable endpoint contact chart reproduces the fixed rational n17 witness within exact residual and contact-feature thresholds; blocked until its instrument and full reconstruction table are built and reviewed | 0 | — |
 
 ### Confirmed
 
@@ -5535,8 +5537,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | Coverage | sessions |
 | --- | ---: |
 | measured | 110 |
-| unmeasured | 54 |
-| **total** | **164** |
+| unmeasured | 55 |
+| **total** | **165** |
 
 <!-- END GENERATED: session-close-report -->
 
@@ -5552,9 +5554,9 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 163 rounds registered in `series-000`.
+There are 164 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4019.2 wall-minutes.
+They record 2512.1 agent-minutes and 4019.3 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -5759,6 +5761,7 @@ archive beside it.
 | [exp-232](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md) | 11 | target | H-236 | The 58 remaining rung-0 subtrees, then the independent reader over the complete tree | Closed: 119,556,859 leaf certificates, three Trump-degenerate leaves, no unresolved leaf; registered as T-035 and T-036 after the Fable max W2 review | accepted |
 | [exp-233](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md) | 12 | target | H-241 | Warm-started cutting loop at side 39609/10000 with six row rounds and support 192 | Row loop converged at covering value 11.980175 < 12; no family reaches 12 | rejected |
 | [exp-234](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-234-h242-rung1-pilot.md) | 11 | target | H-242 | Rung-0 cell tree on eighteen boxes away from Trump’s tilt, 150,000 nodes per subtree | No box closed; about two-thirds closed at about four million nodes each, flat in width and tilt | unresolved |
+| [exp-235](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md) | 17 | target | H-253 | Exact replay of the fixed Kleddamag rational source through two local geometry implementations, with source and control agreement | Seventeen unit squares and all 136 pair separations verified at exact side 4675530093604551/1000000000000000; rational upper witness accepted | accepted |
 
 ### Cost and provenance
 
@@ -5927,10 +5930,11 @@ archive beside it.
 | exp-232 | One night on 9 workers, then the reader | 16764 s | — | criterion | `7b4847aa` |
 | exp-233 | 345 minutes on one process | 7941 s | — | criterion | `7b4847aa` |
 | exp-234 | 150,000 nodes per subtree, eighteen boxes | 11264 s | — | criterion | `42d52c38` |
+| exp-235 | 90 seconds per command; 600 seconds total | 7.91 s | — | criterion | `bacacdd15` |
 
-### What the 163 rounds jointly establish
+### What the 164 rounds jointly establish
 
-The 163 rounds use 2512.1 agent-minutes and 4019.2 wall-minutes under the campaign’s
+The 164 rounds use 2512.1 agent-minutes and 4019.3 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded
@@ -6138,15 +6142,15 @@ table above.
 
 Kept with the same discipline as the experiment record, because the aggregate says
 things no individual bug report can.
-The log contains 509 defects, [one line each](defects.md), generated from `defects.yaml`
+The log contains 511 defects, [one line each](defects.md), generated from `defects.yaml`
 and checked in the gate.
 
 | Class | Count | The system … |
 | --- | ---: | --- |
-| soundness | 103 | asserted something false about the mathematics |
+| soundness | 104 | asserted something false about the mathematics |
 | validity | 127 | was correct, but the measurement did not bear on the question |
 | bookkeeping | 191 | recorded something its own evidence contradicts |
-| robustness | 69 | did not finish, or finished only by luck |
+| robustness | 70 | did not finish, or finished only by luck |
 | performance | 19 | worked, but cost far more than it should |
 
 One entry is filed under a class it only half fits, and the table reads accordingly.
@@ -6167,11 +6171,11 @@ That allocation remains unimplemented and needs measurement.
 
 Two observations the log exists to make.
 
-**79 of the 103 soundness defects pointed in the *flattering* direction**, where the
+**80 of the 104 soundness defects pointed in the *flattering* direction**, where the
 error looks like a success.
 That is the dangerous class, and it is the majority of it.
 
-**The automated gate has caught eighty-one defects in 509, and no soundness defect
+**The automated gate has caught eighty-one defects in 511, and no soundness defect
 ever.** Every soundness failure was found by a control cell whose answer was known in
 advance, a rule written down before the measurement, a generated view contradicting its
 source, or someone reading carefully.

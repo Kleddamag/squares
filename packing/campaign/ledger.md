@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `documentation-pass` (correctness) | 7 | think-kaqh | Complete output review, publish exp235, then select think-j516 endpoint-chart work; think-vdmf owns separate frontier admission. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `review-planning-oversight` (correctness) | 9 | think-kaqh | Await fresh Astra max chart derivation under think-j516; then preregister a bounded test. PR265 CI runs asynchronously; no target replay needs repeating. |
 
 ### Workflow summary
 
@@ -189,14 +189,14 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
 | `factual-review` | 11 | 1 | 64 | 3 |
-| `insight-iteration` | 28 | 1 | 85 | 4 |
+| `insight-iteration` | 28 | 1 | 86 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 38 | 1 |
 | `research-loop` | 31 | 4 | 109 | 8 |
 | `pipeline-improvement` | 38 | 2 | 199 | 6 |
 | `documentation-pass` | 1 | 0 | 26 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 36 | 2 |
+| `review-planning-oversight` | 6 | 0 | 37 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -859,6 +859,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-395 | research | 12 | ready | 2 | think-ujwy | The ladder log and the highest certificate directory. |
 | BC-396 | research | 45 | blocked | 1 | think-0g4t | The k = 7 cover, both censuses and the review. |
 | BC-397 | measurement_validation | 17 | complete | 0 | think-08sm | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md |
+| BC-398 | research | 17 | blocked | 0 | think-j516 | Reviewed complete contact table and controlled devtools.check_n17_contact_chart instrument. |
 
 ## Series
 
@@ -1058,6 +1059,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-251 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-252 | blocked | proof | A D4-invariant weighted point set in [0,7]^2 with rational weights and |  | 0 |  |  |
 | H-253 | confirmed | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  | 8s wall |
+| H-254 | blocked | proof | The proposed three-variable endpoint equality chart, including its exp |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 

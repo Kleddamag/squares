@@ -62,6 +62,7 @@ be reconciled before selecting its unfinished tasks.
 | --- | --- | --- |
 | [X-048 R1: n17 endpoint family](explorations/X-048-n17-optimality-after-n11.md#r1-verify-the-candidate-and-describe-its-endpoint-family) | shaped | Certify a flexible candidate and a uniform side inequality |
 | [Retained n17 rational upper witness](hypotheses/H-253-n17-retained-rational-upper.md) | registered | H-253 tests the archived exact certificate using independent local checkers at its fixed rational side |
+| [n17 endpoint contact-chart fidelity](hypotheses/H-254-n17-contact-chart-fidelity.md) | registered | H-254 tests exact residuals and contact-feature separation at the retained rational witness; root certification and capture remain separate |
 | [X-048 R2: occupancy decomposition](explorations/X-048-n17-optimality-after-n11.md#r2-build-a-small-occupancy-problem-before-a-large-search) | shaped | Compress a complete centre cover before geometric enumeration |
 | [X-048 R3: charge compatibility](explorations/X-048-n17-optimality-after-n11.md#r3-turn-r068-saturation-into-constraints-on-joint-placements) | shaped | Prove low-charge pose classes cannot all coexist |
 | [X-048 R4: capacity-one ceiling](explorations/X-048-n17-optimality-after-n11.md#r4-establish-the-limit-of-the-present-certificate-architecture) | registered | Existing H-248 owns the weighted-clique architecture discriminator |

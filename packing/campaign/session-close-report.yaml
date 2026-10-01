@@ -7,12 +7,12 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 164
+count: 165
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
   sessions_measured: 110
-  sessions_unmeasured: 54
+  sessions_unmeasured: 55
   attributed:
     rollups: 254
     turns: 63978
@@ -2837,3 +2837,13 @@ sessions:
     active_union_hours: 2.73
     wall_hours: 2.74
     snapshot_incomplete: true
+- id: session-165
+  title: "Post-optimality n17 research"
+  status: in_progress
+  primary_bead: think-kaqh
+  phases: 9
+  measured: false
+  unmeasured_reason: >-
+    declares no resource measurement
+  rollups: []
+  codex_receipts: []

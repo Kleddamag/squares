@@ -938,6 +938,28 @@ agenda:
     - packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
     note: Selected at the October1 W10 checkpoint. H248/BC387 remains the architecture question; this is feasibility admission of an existing source upper construction.
 
+  - id: BC-398
+    purpose: research
+    owner_focus: insight
+    instances: [17]
+    state: blocked
+    priority: 0
+    question: Does the proposed n17 endpoint contact chart match the retained rational witness within its frozen exact residual and feature thresholds?
+    hypotheses: [H-254]
+    budget: One 20-minute instrument slice; one target evaluation capped at90seconds, one worker and10MiB output; independent output review.
+    entry: H253 accepts the source feasibility; fresh Astra max derives the equality chart and identifies the missing capture implication.
+    exit: Every frozen fidelity clause passes or its exact counterexample is retained; no root or optimality claim.
+    bead: think-j516
+    depends_on: [BC-397]
+    blocked_on: Complete frozen contact table and independently reviewed exact residual instrument with synthetic controls.
+    next_evidence: Reviewed complete contact table and controlled devtools.check_n17_contact_chart instrument.
+    workflows: [pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
+    - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    note: Preregistered before target arithmetic. H027 continues to own local angle-cone proof obligations; this test only assesses chart fidelity.
+
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

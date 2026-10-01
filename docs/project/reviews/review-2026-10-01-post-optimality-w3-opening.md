@@ -196,6 +196,65 @@ Timing comparisons would require repeated matched runs; none is claimed here.
 `think-j516` owns validation of the proposed endpoint chart, with an immutable fidelity
 criterion required before new target measurements.
 
+## Independent Contact-Chart Derivation
+
+A fresh Astra max reviewer independently derived the proposed equations on October 1,
+without executing target arithmetic.
+No sign or label error was found.
+The result is a conditional equality chart, not a necessary condition for every nearby
+feasible packing. For centres $r_i$, put
+
+$$
+u=(c,s),\quad v=(-s,c),\quad p=(d,-e),\quad q=(e,d),\quad h=(c+s)/2.
+$$
+
+A directed contact $i\to j$ along unit axis $a$ means $a\cdot(r_j-r_i)=H_i(a)+H_j(a)$,
+where $H_i$ is the support radius of square $i$. The independent derivation identifies
+the meanings of the auxiliary variables:
+
+| Quantity | Contact derivation |
+| --- | --- |
+| $X=x_{15}$ | The left wall and vertical $3\to9$ give $r_9=(h,2+h)$. The $u$ contacts $9\to10\to15$, with $r_{15}=(X,S-1/2)$, give the stated $X$. |
+| $Y=y_{17}$ | The $u$ contacts $2\to13\to14\to17$, anchored at $r_2=(3/2,1/2)$ and $r_{17}=(S-1/2,Y)$, give the stated $Y$. |
+| $A=p\cdot r_{16}$ | The $p$ contact $15\to16$ gives the stated $A$. |
+| $B=q\cdot r_{16}$ | The $q$ contact $16\to8$, with $r_8=(S-1/2,S-1/2)$, gives the stated $B$. |
+| $F_2=0$ | The $p$ contact $16\to17$. |
+| $F_3=0$ | The $u$ contacts $3\to11\to12$ give $u\cdot r_{12}=c+2s+3/2$; the final $u$ contact $12\to16$ gives $F_3$. |
+
+The support formula in the final row needs $c,s,d,e>0$, $cd-se>0$, and $ce+sd>0$. The
+local domain $0<\theta,\beta<\pi/4$ suffices; in particular, $\theta+\beta<\pi/2$.
+Clearing rational half-angle denominators must preserve these signs and $c,s\ne0$.
+Square 16’s source angle is equivalent modulo $90$ degrees to $-\beta$.
+
+On $w=-v=(s,-c)$, sum the four directed separation inequalities $4\to10\to12\to14\to7$.
+Their required support sum is $3+c+s$, while the anchored endpoint displacement projects
+to $s(S-1)+c(S-2)$. Thus
+
+$$
+F_1\ge0,\qquad S\ge2+\frac{c+3}{c+s},\qquad
+\frac{d}{d\theta}\left(2+\frac{c+3}{c+s}\right)
+=\frac{3s-3c-1}{(c+s)^2}<0
+$$
+
+for $0<\theta\le\pi/4$. This is a conditional inequality: common orientations, anchored
+endpoints and the named directed SAT branches are premises.
+Generic non-overlap does not establish them.
+
+The weakest missing implication is a capture statement: every nearby smaller feasible
+packing must satisfy these anchors, angle classes and saturated contacts, or admit a
+transformation to one that does without increasing its side.
+Excluding every smaller root of the equality system would leave slack contacts and split
+orientations untreated.
+The observed sliders do not prove rigidity of the remaining squares.
+H-027 retains the separate local angle-cone obligation.
+
+The next proposed test uses the already accepted rational witness, with no fitting:
+source square 9 supplies $t=\tan(\theta/2)$ and source square 16 supplies
+$b=\tan(\beta/2)$. Exact rational residuals can test contact fidelity at a stated
+$10^{-12}$ tolerance.
+Even a pass would establish fidelity at this relaxed witness, not existence of an exact
+root, admissible slider intervals, or local/global optimality.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

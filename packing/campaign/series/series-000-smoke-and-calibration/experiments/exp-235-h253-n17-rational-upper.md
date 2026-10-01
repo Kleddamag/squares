@@ -74,10 +74,22 @@ experiment:
 
 [H-253](../../../hypotheses/H-253-n17-retained-rational-upper.md) fixes the claim,
 source bytes, controls and refusal rules.
-The [replay script](../results/exp-235-n17-rational-upper/replay.sh) records exact
-commands, exit statuses, source integrity, Git provenance, per-command wall/CPU time and
-memory. The adapter’s preflight shares the independent checker’s geometry and is not
-counted as an additional independent verification route.
+Run-001 used the shell entry point recorded above.
+Its original source is available with
+`git show bacacdd15f4c7a410dfc9b8fff32c918e5851748:packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/replay.sh`;
+its component commands and outputs remain in the immutable raw receipts.
+The current [Python replay launcher](../../../../devtools/replay_n17_rational_upper.py)
+runs the same fixed checks into a fresh output directory:
+
+```bash
+cd packing
+gtimeout --signal=TERM --kill-after=5s 600s .venv/bin/python3 -m devtools.replay_n17_rational_upper FRESH_OUTPUT_DIRECTORY
+```
+
+The launcher records commands, exit statuses, source integrity, Git provenance,
+per-command wall/CPU time and memory.
+The adapter’s preflight shares the independent checker’s geometry and is not counted as
+an additional independent verification route.
 The source verifier runs unoptimized, with `PYTHONOPTIMIZE` unset.
 
 The requested per-process data/heap limit is unavailable on this platform;
